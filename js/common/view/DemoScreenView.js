@@ -7,11 +7,10 @@ define( function( require ) {
   'use strict';
 
   // modules
-  const Bounds2 = require( 'DOT/Bounds2' );
+  const DemoMassNode = require( 'DENSITY_BUOYANCY_COMMON/common/view/DemoMassNode' );
   const densityBuoyancyCommon = require( 'DENSITY_BUOYANCY_COMMON/densityBuoyancyCommon' );
   const ModelViewTransform2 = require( 'PHETCOMMON/view/ModelViewTransform2' );
   const Path = require( 'SCENERY/nodes/Path' );
-  const Rectangle = require( 'SCENERY/nodes/Rectangle' );
   const ResetAllButton = require( 'SCENERY_PHET/buttons/ResetAllButton' );
   const ScreenView = require( 'JOIST/ScreenView' );
   const Shape = require( 'KITE/Shape' );
@@ -27,7 +26,7 @@ define( function( require ) {
 
       super();
 
-      const scale = 0.75;
+      const scale = 75;
 
       // @private {DemoModel}
       this.model = model;
@@ -47,13 +46,26 @@ define( function( require ) {
       ] );
       const viewPoolShape = this.modelViewTransform.modelToViewShape( modelPoolShape );
 
-      this.mobile1 = Rectangle.bounds( new Bounds2( -50 * scale, -50 * scale, 50 * scale, 50 * scale ), { stroke: 'red' } );
-      this.addChild( this.mobile1 );
-      // TODO: init
-
       this.addChild( new Path( viewPoolShape, {
         stroke: 'black'
       } ) );
+
+      // @private {Array.<DemoMassNode>}
+      this.massNodes = [];
+
+      const onMassAdded = mass => {
+        const massNode = new DemoMassNode( mass, this.modelViewTransform );
+        this.addChild( massNode );
+        this.massNodes.push( massNode );
+      };
+      model.masses.addItemAddedListener( onMassAdded );
+      model.masses.forEach( onMassAdded );
+
+      model.masses.addItemRemovedListener( mass => {
+        const massNode = _.find( this.massNodes, massNode => massNode.mass === mass );
+        this.removeChild( massNode );
+        massNode.dispose();
+      } );
 
       const resetAllButton = new ResetAllButton( {
         listener: () => {
@@ -68,10 +80,7 @@ define( function( require ) {
 
     // @public
     step( dt ) {
-      this.mobile1.rotation = -this.model.mobileBodies[ 0 ].angle;
-      const position = this.model.mobileBodies[ 0 ].position;
-      this.mobile1.translation = this.modelViewTransform.modelToViewPosition( new Vector2( position.x, position.y ) );
-      //TODO Handle view animation here.
+
     }
   }
 

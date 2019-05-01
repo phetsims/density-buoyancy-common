@@ -1,32 +1,35 @@
 {
-  "representationMax": {
-    "value": "Max"
+  "material.air": {
+    "value": "Air"
   },
-  "mixedNumber": {
-    "value": "Mixed Number"
+  "material.aluminum": {
+    "value": "Aluminum"
   },
-  "levelTitlePattern": {
-    "value": "Level {{number}}"
+  "material.brick": {
+    "value": "Brick"
   },
-  "myMatches": {
-    "value": "My Matches"
+  "material.copper": {
+    "value": "Copper"
   },
-  "ok": {
-    "value": "OK"
+  "material.glass": {
+    "value": "Glass"
   },
-  "timeNumberSec": {
-    "value": "Time: {0} sec"
+  "material.human": {
+    "value": "Human"
   },
-  "mixedNumbersChooseYourLevel": {
-    "value": "Mixed Numbers: Choose Your Level!"
+  "material.ice": {
+    "value": "Ice"
   },
-  "fractionsChooseYourLevel": {
-    "value": "Fractions: Choose Your Level!"
+  "material.steel": {
+    "value": "Steel"
   },
-  "chooseYourLevel": {
-    "value": "Choose Your Level!"
+  "material.styrofoam": {
+    "value": "Styrofoam"
   },
-  "equation": {
-    "value": "Equation"
+  "material.titanium": {
+    "value": "Titanium"
+  },
+  "material.wood": {
+    "value": "Wood"
   }
 }

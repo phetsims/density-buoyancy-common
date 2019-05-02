@@ -11,7 +11,6 @@ define( require => {
   // modules
   const densityBuoyancyCommon = require( 'DENSITY_BUOYANCY_COMMON/densityBuoyancyCommon' );
   const FixedTimestepEngine = require( 'DENSITY_BUOYANCY_COMMON/common/model/FixedTimestepEngine' );
-  const Matrix3 = require( 'DOT/Matrix3' );
   const Vector2 = require( 'DOT/Vector2' );
 
   // constants
@@ -107,18 +106,6 @@ define( require => {
      */
     bodyGetMatrixTransform( body, matrix ) {
       return matrix.setToTranslationRotation( body.position.x / MATTER_SCALE, body.position.y / MATTER_SCALE, body.angle );
-    }
-
-    /**
-     * Returns the transformation matrix of the given body.
-     * @public
-     * @override
-     *
-     * @param {Engine.Body} body
-     * @returns {Matrix3}
-     */
-    bodyGetMatrix( body ) {
-      return this.bodyGetMatrixTransform( body, new Matrix3() );
     }
 
     /**
@@ -219,23 +206,8 @@ define( require => {
     }
 
     /**
-     * Creates a rectangular body (centered around the origin) with the given dimensions
-     * @public
-     * @override
-     *
-     * @param {number} width
-     * @param {number} height
-     * @param {Object} [options]
-     * @returns {Engine.Body}
-     */
-    createRectangularBody( width, height, options ) {
-      return this.createBoundsBody( -width / 2, -height / 2, width, height, options );
-    }
-
-    /**
      * Converts a Vector2 to a Matter.Vector.
      * @public
-     * @override
      *
      * @param {Vector2} vector
      * @returns {Matter.Vector}
@@ -247,7 +219,6 @@ define( require => {
     /**
      * Converts a Matter.Vector to a Vector2.
      * @public
-     * @override
      *
      * @param {Matter.Vector} vector
      * @returns {Vector2}

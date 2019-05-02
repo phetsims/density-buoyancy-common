@@ -10,48 +10,63 @@ define( require => {
 
   // modules
   const densityBuoyancyCommon = require( 'DENSITY_BUOYANCY_COMMON/densityBuoyancyCommon' );
-  const Matrix3 = require( 'DOT/Matrix3' );
+  const Engine = require( 'DENSITY_BUOYANCY_COMMON/common/model/Engine' );
+  const Vector2 = require( 'DOT/Vector2' );
+
+  // constants
+  const FIXED_TIME_STEP = 1 / 60;
+  const MAX_SUB_STEPS = 10;
 
   /**
    * @constructor
    */
-  class Engine {
+  class P2Engine extends Engine {
     constructor() {
+      super();
+
+      // @private {p2.World}
+      this.world = new p2.World( {
+        gravity: [ 0, -9.82 ]
+      } );
     }
 
     /**
      * Steps forward in time.
      * @public
+     * @override
      *
      * @param {number} dt
      */
     step( dt ) {
-      throw new Error( 'unimplemented' );
+      this.world.step( FIXED_TIME_STEP, dt, MAX_SUB_STEPS );
     }
 
     /**
      * Adds a body into the engine, so that it will be tracked during the step.
      * @public
+     * @override
      *
      * @param {Engine.Body} body
      */
     addBody( body ) {
-      throw new Error( 'unimplemented' );
+      this.world.addBody( body );
     }
 
     /**
      * Removes a body from the engine, so that it will not be tracked during the step anymore.
      * @public
+     * @override
      *
      * @param {Engine.Body} body
      */
     removeBody( body ) {
-      throw new Error( 'unimplemented' );
+      this.world.removeBody( body );
     }
 
     /**
      * Sets the mass of a body (and whether it can rotate, which for some engines needs to be set at the same time).
      * @public
+     * @override
      *
      * @param {Engine.Body} body
      * @param {number} mass
@@ -63,122 +78,145 @@ define( require => {
         canRotate: false
       }, options );
 
-      throw new Error( 'unimplemented' );
+      body.mass = mass;
+
+      if ( !options.canRotate ) {
+        body.fixedRotation = true;
+      }
+
+      body.updateMassProperties();
     }
 
     /**
      * Sets the provided matrix to the current transformation matrix of the body (to reduce allocations)
      * @public
+     * @override
      *
      * @param {Engine.Body} body
      * @param {Matrix3} matrix
      */
     bodyGetMatrixTransform( body, matrix ) {
-      throw new Error( 'unimplemented' );
-    }
-
-    /**
-     * Returns the transformation matrix of the given body.
-     * @public
-     *
-     * @param {Engine.Body} body
-     * @returns {Matrix3}
-     */
-    bodyGetMatrix( body ) {
-      return this.bodyGetMatrixTransform( body, new Matrix3() );
+      return matrix.setToTranslationRotation( body.interpolatedPosition[ 0 ], body.interpolatedPosition[ 1 ], body.interpolatedAngle );
     }
 
     /**
      * Sets the position of a body.
      * @public
+     * @override
      *
      * @param {Engine.Body} body
      * @param {Vector2} position
      */
     bodySetPosition( body, position ) {
-      throw new Error( 'unimplemented' );
+      body.position[ 0 ] = position.x;
+      body.position[ 1 ] = position.y;
     }
 
     /**
      * Sets the rotation of a body.
      * @public
+     * @override
      *
      * @param {Engine.Body} body
      * @param {number} rotation
      */
     bodySetRotation( body, rotation ) {
-      throw new Error( 'unimplemented' );
+      body.angle = rotation;
     }
 
     /**
      * Returns the angular velocity of a body.
      * @public
+     * @override
      *
      * @param {Engine.Body} body
      * @returns {number}
      */
     bodyGetAngularVelocity( body ) {
-      throw new Error( 'unimplemented' );
+      return body.angularVelocity;
     }
 
     /**
      * Sets the angular velocity of a body.
      * @public
+     * @override
      *
      * @param {Engine.Body} body
      * @param {number} angularVelocity
      */
     bodySetAngularVelocity( body, angularVelocity ) {
-      throw new Error( 'unimplemented' );
+      body.angularVelocity = angularVelocity;
     }
 
     /**
      * Returns the velocity of a body.
      * @public
+     * @override
      *
      * @param {Engine.Body} body
      * @returns {Vector2}
      */
     bodyGetVelocity( body ) {
-      throw new Error( 'unimplemented' );
+      return P2Engine.p2ToVector( body.velocity );
     }
 
     /**
      * Sets the velocity of a body.
      * @public
+     * @override
      *
      * @param {Engine.Body} body
      * @param {Vector2} velocity
      */
     bodySetVelocity( body, velocity ) {
-      throw new Error( 'unimplemented' );
+      body.velocity[ 0 ] = velocity.x;
+      body.velocity[ 1 ] = velocity.y;
     }
 
     /**
      * Creates a rectangular body from the given bounds.
      * @public
+     * @override
      *
      * @param {Bounds2} bounds
      * @param {Object} [options]
      * @returns {Engine.Body}
      */
     createBoundsBody( bounds, options ) {
-      throw new Error( 'unimplemented' );
+      options = _.extend( {
+        isStatic: false
+      }, options );
+
+      const body = new p2.Body( {
+        type: options.isStatic ? p2.Body.STATIC : p2.Body.DYNAMIC
+      } );
+
+      const rectangularShape = new p2.Convex( {
+        vertices: [
+          p2.vec2.fromValues( bounds.minX, bounds.minY ),
+          p2.vec2.fromValues( bounds.maxX, bounds.minY ),
+          p2.vec2.fromValues( bounds.maxX, bounds.maxY ),
+          p2.vec2.fromValues( bounds.minX, bounds.maxY )
+        ],
+        axes: [
+          p2.vec2.fromValues( 1, 0 ),
+          p2.vec2.fromValues( 0, 1 )
+        ]
+      } );
+
+      body.addShape( rectangularShape );
+
+      return body;
     }
 
-    /**
-     * Creates a rectangular body (centered around the origin) with the given dimensions
-     * @public
-     *
-     * @param {number} width
-     * @param {number} height
-     * @param {Object} [options]
-     * @returns {Engine.Body}
-     */
-    createRectangularBody( width, height, options ) {
-      return this.createBoundsBody( -width / 2, -height / 2, width, height, options );
+    static vectorToP2( vector ) {
+      return p2.vec2.fromValues( vector.x, vector.y );
+    }
+
+    static p2ToVector( vector ) {
+      return new Vector2( vector[ 0 ], vector[ 1 ] );
     }
   }
 
-  return densityBuoyancyCommon.register( 'Engine', Engine );
+  return densityBuoyancyCommon.register( 'P2Engine', P2Engine );
 } );

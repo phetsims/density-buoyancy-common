@@ -11,10 +11,12 @@ define( require => {
   const Bounds3 = require( 'DOT/Bounds3' );
   const Cuboid = require( 'DENSITY_BUOYANCY_COMMON/common/model/Cuboid' );
   const densityBuoyancyCommon = require( 'DENSITY_BUOYANCY_COMMON/densityBuoyancyCommon' );
+  const DensityBuoyancyCommonQueryParameters = require( 'DENSITY_BUOYANCY_COMMON/common/DensityBuoyancyCommonQueryParameters' );
   const Material = require( 'DENSITY_BUOYANCY_COMMON/common/model/Material' );
   const Matrix3 = require( 'DOT/Matrix3' );
   const MatterEngine = require( 'DENSITY_BUOYANCY_COMMON/common/model/MatterEngine' );
   const ObservableArray = require( 'AXON/ObservableArray' );
+  const P2Engine = require( 'DENSITY_BUOYANCY_COMMON/common/model/P2Engine' );
 
   /**
    * @constructor
@@ -35,7 +37,9 @@ define( require => {
       this.farRightX = 10;
       this.farBelow = -10;
 
-      this.engine = new MatterEngine();
+      const engineType = DensityBuoyancyCommonQueryParameters.engine;
+      assert( engineType === 'p2' || engineType === 'matter' );
+      this.engine = engineType === 'p2' ? new P2Engine() : new MatterEngine();
 
       // @public {Array.<Engine.Body>}
       this.groundBodies = [

@@ -12,7 +12,10 @@ define( require => {
   const densityBuoyancyCommon = require( 'DENSITY_BUOYANCY_COMMON/densityBuoyancyCommon' );
 
   const DensityBuoyancyCommonQueryParameters = QueryStringMachine.getAll( {
-
+    engine: {
+      type: 'string',
+      defaultValue: 'p2'
+    }
   } );
 
   return densityBuoyancyCommon.register( 'DensityBuoyancyCommonQueryParameters', DensityBuoyancyCommonQueryParameters );

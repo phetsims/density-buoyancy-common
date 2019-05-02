@@ -11,6 +11,7 @@ define( require => {
   // modules
   const densityBuoyancyCommon = require( 'DENSITY_BUOYANCY_COMMON/densityBuoyancyCommon' );
   const FixedTimestepEngine = require( 'DENSITY_BUOYANCY_COMMON/common/model/FixedTimestepEngine' );
+  const Matrix3 = require( 'DOT/Matrix3' );
   const Vector2 = require( 'DOT/Vector2' );
 
   // constants
@@ -29,16 +30,188 @@ define( require => {
       this.engine.world.gravity.scale = 1 / ( MATTER_SCALE * 9.8 );
     }
 
-    createRectangularBody( width, height, options ) {
+    /**
+     * Steps forward in time.
+     * @public
+     * @override
+     *
+     * @param {number} dt
+     */
+    step( dt ) {
+      // TODO variable DT testing!!!
+      Matter.Engine.update( this.engine, 1000 / 60 );
+    }
+
+    /**
+     * Adds a body into the engine, so that it will be tracked during the step.
+     * @public
+     * @override
+     *
+     * @param {Engine.Body} body
+     */
+    addBody( body ) {
+      Matter.World.add( this.engine.world, body );
+    }
+
+    /**
+     * Removes a body from the engine, so that it will not be tracked during the step anymore.
+     * @public
+     * @override
+     *
+     * @param {Engine.Body} body
+     */
+    removeBody( body ) {
+      Matter.World.remove( this.engine.world, body );
+    }
+
+    // Matter.Body.create({ parts: [partA, partB] });
+
+    // return Matter.Bodies.fromVertices( 0, 0, [
+    //   Matter.Vector.create( bounds.minX, bounds.minY ),
+    //   Matter.Vector.create( bounds.minX, bounds.maxY ),
+    //   Matter.Vector.create( bounds.maxX, bounds.maxY ),
+    //   Matter.Vector.create( bounds.maxX, bounds.minY )
+    // ], {
+    //   isStatic: true
+    // } );
+
+    /**
+     * Sets the mass of a body (and whether it can rotate, which for some engines needs to be set at the same time).
+     * @public
+     * @override
+     *
+     * @param {Engine.Body} body
+     * @param {number} mass
+     * @param {Object} [options]
+     */
+    bodySetMass( body, mass, options ) {
+      options = _.extend( {
+        // {boolean} - optional
+        canRotate: false
+      }, options );
+
+      Matter.Body.setMass( body, mass );
+
+      if ( !options.canRotate ) {
+        Matter.Body.setInertia( body, Number.POSITIVE_INFINITY );
+      }
+    }
+
+    /**
+     * Sets the provided matrix to the current transformation matrix of the body (to reduce allocations)
+     * @public
+     * @override
+     *
+     * @param {Engine.Body} body
+     * @param {Matrix3} matrix
+     */
+    bodyGetMatrixTransform( body, matrix ) {
+      return matrix.setToTranslationRotation( body.position.x / MATTER_SCALE, body.position.y / MATTER_SCALE, body.angle );
+    }
+
+    /**
+     * Returns the transformation matrix of the given body.
+     * @public
+     * @override
+     *
+     * @param {Engine.Body} body
+     * @returns {Matrix3}
+     */
+    bodyGetMatrix( body ) {
+      return this.bodyGetMatrixTransform( body, new Matrix3() );
+    }
+
+    /**
+     * Sets the position of a body.
+     * @public
+     * @override
+     *
+     * @param {Engine.Body} body
+     * @param {Vector2} position
+     */
+    bodySetPosition( body, position ) {
+      Matter.Body.setPosition( body, MatterEngine.vectorToMatter( position ) );
+    }
+
+    /**
+     * Sets the rotation of a body.
+     * @public
+     * @override
+     *
+     * @param {Engine.Body} body
+     * @param {number} rotation
+     */
+    bodySetRotation( body, rotation ) {
+      Matter.Body.setAngle( body, rotation );
+    }
+
+    /**
+     * Returns the angular velocity of a body.
+     * @public
+     * @override
+     *
+     * @param {Engine.Body} body
+     * @returns {number}
+     */
+    bodyGetAngularVelocity( body ) {
+      return body.angularVelocity;
+    }
+
+    /**
+     * Sets the angular velocity of a body.
+     * @public
+     * @override
+     *
+     * @param {Engine.Body} body
+     * @param {number} angularVelocity
+     */
+    bodySetAngularVelocity( body, angularVelocity ) {
+      Matter.Body.setAngularVelocity( body, angularVelocity );
+    }
+
+    /**
+     * Returns the velocity of a body.
+     * @public
+     * @override
+     *
+     * @param {Engine.Body} body
+     * @returns {Vector2}
+     */
+    bodyGetVelocity( body ) {
+      return MatterEngine.matterToVector( body.velocity );
+    }
+
+    /**
+     * Sets the velocity of a body.
+     * @public
+     * @override
+     *
+     * @param {Engine.Body} body
+     * @param {Vector2} velocity
+     */
+    bodySetVelocity( body, velocity ) {
+      Matter.Body.setVelocity( body, MatterEngine.vectorToMatter( velocity ) );
+    }
+
+    /**
+     * Creates a rectangular body from the given bounds.
+     * @public
+     * @override
+     *
+     * @param {Bounds2} bounds
+     * @param {Object} [options]
+     * @returns {Engine.Body}
+     */
+    createBoundsBody( bounds, options ) {
       options = _.extend( {
         isStatic: false
       }, options );
 
       return Matter.Bodies.rectangle(
-        0,
-        0,
-        width * MATTER_SCALE,
-        height * MATTER_SCALE,
+        bounds.centerX * MATTER_SCALE,
+        bounds.centerY * MATTER_SCALE,
+        bounds.width * MATTER_SCALE,
+        bounds.height * MATTER_SCALE,
         {
           isStatic: options.isStatic
         }
@@ -46,8 +219,23 @@ define( require => {
     }
 
     /**
+     * Creates a rectangular body (centered around the origin) with the given dimensions
+     * @public
+     * @override
+     *
+     * @param {number} width
+     * @param {number} height
+     * @param {Object} [options]
+     * @returns {Engine.Body}
+     */
+    createRectangularBody( width, height, options ) {
+      return this.createBoundsBody( -width / 2, -height / 2, width, height, options );
+    }
+
+    /**
      * Converts a Vector2 to a Matter.Vector.
      * @public
+     * @override
      *
      * @param {Vector2} vector
      * @returns {Matter.Vector}
@@ -59,41 +247,13 @@ define( require => {
     /**
      * Converts a Matter.Vector to a Vector2.
      * @public
+     * @override
      *
      * @param {Matter.Vector} vector
      * @returns {Vector2}
      */
     static matterToVector( vector ) {
       return new Vector2( vector.x / MATTER_SCALE, vector.y / MATTER_SCALE );
-    }
-
-    static bodyFromRectangle( centerX, centerY, width, height ) {
-      return Matter.Bodies.rectangle(
-        centerX * MATTER_SCALE,
-        centerY * MATTER_SCALE,
-        width * MATTER_SCALE,
-        height * MATTER_SCALE
-      );
-    }
-
-    static staticBodyFromBounds( bounds ) {
-      return Matter.Bodies.rectangle(
-        bounds.centerX * MATTER_SCALE,
-        bounds.centerY * MATTER_SCALE,
-        bounds.width * MATTER_SCALE,
-        bounds.height * MATTER_SCALE,
-        {
-          isStatic: true
-        }
-      );
-      // return Matter.Bodies.fromVertices( 0, 0, [
-      //   Matter.Vector.create( bounds.minX, bounds.minY ),
-      //   Matter.Vector.create( bounds.minX, bounds.maxY ),
-      //   Matter.Vector.create( bounds.maxX, bounds.maxY ),
-      //   Matter.Vector.create( bounds.maxX, bounds.minY )
-      // ], {
-      //   isStatic: true
-      // } );
     }
   }
 

@@ -9,7 +9,6 @@ define( require => {
   // modules
   const densityBuoyancyCommon = require( 'DENSITY_BUOYANCY_COMMON/densityBuoyancyCommon' );
   const Mass = require( 'DENSITY_BUOYANCY_COMMON/common/model/Mass' );
-  const MatterUtil = require( 'DENSITY_BUOYANCY_COMMON/common/MatterUtil' );
   const Property = require( 'AXON/Property' );
   const Shape = require( 'KITE/Shape' );
 
@@ -18,19 +17,20 @@ define( require => {
    */
   class Cuboid extends Mass {
     /**
+     * @param {Engine} engine
      * @param {Bounds3} size
      * @param {Object} config
      */
-    constructor( size, config ) {
+    constructor( engine, size, config ) {
       config = _.extend( {
-        body: MatterUtil.bodyFromRectangle( size.centerX, size.centerY, size.width, size.height ),
+        body: engine.createBoundsBody( size ),
         shape: Shape.rect( size.minX, size.minY, size.width, size.height ),
         volume: size.width * size.height * size.depth
 
         // material
       }, config );
 
-      super( config );
+      super( engine, config );
 
       // @public {Property.<Bounds3>}
       this.sizeProperty = new Property( size );

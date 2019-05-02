@@ -12,8 +12,7 @@ define( require => {
   const densityBuoyancyCommon = require( 'DENSITY_BUOYANCY_COMMON/densityBuoyancyCommon' );
 
   const DensityBuoyancyCommonConstants = {
-    // @public {number}
-    MATTER_SIZE_SCALE: 100
+
   };
 
   densityBuoyancyCommon.register( 'DensityBuoyancyCommonConstants', DensityBuoyancyCommonConstants );

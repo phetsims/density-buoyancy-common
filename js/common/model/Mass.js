@@ -9,7 +9,6 @@ define( require => {
   // modules
   const Bounds2 = require( 'DOT/Bounds2' );
   const densityBuoyancyCommon = require( 'DENSITY_BUOYANCY_COMMON/densityBuoyancyCommon' );
-  const DensityBuoyancyCommonConstants = require( 'DENSITY_BUOYANCY_COMMON/common/DensityBuoyancyCommonConstants' );
   const DerivedProperty = require( 'AXON/DerivedProperty' );
   const Emitter = require( 'AXON/Emitter' );
   const Matrix3 = require( 'DOT/Matrix3' );
@@ -24,12 +23,13 @@ define( require => {
    */
   class Mass {
     /**
+     * @param {Engine} engine
      * @param {Object} config
      */
-    constructor( config ) {
+    constructor( engine, config ) {
 
       config = _.extend( {
-        // {Matter.Body}
+        // {Engine.Body}
         body: null,
 
         // {Shape}
@@ -51,7 +51,10 @@ define( require => {
         tandem: null
       }, config );
 
-      // @public {Matter.Body}
+      // @public {Engine}
+      this.engine = engine;
+
+      // @public {Engine.Body}
       this.body = config.body;
 
       // @public {Property.<Shape>}
@@ -89,16 +92,12 @@ define( require => {
       this.originalMatrix = this.matrix.copy();
 
       this.massProperty.link( mass => {
-        Matter.Body.setMass( this.body, mass );
-
-        if ( !config.canRotate ) {
-          Matter.Body.setInertia( this.body, Number.POSITIVE_INFINITY );
-        }
+        engine.bodySetMass( this.body, mass, {
+          canRotate: config.canRotate
+        } );
       } );
 
       this.writeData();
-
-      // Matter.Body.create({ parts: [partA, partB] });
     }
 
     /**
@@ -126,32 +125,16 @@ define( require => {
     }
 
     readData() {
-      this.matrix.setToTranslationRotation(
-        this.body.position.x / DensityBuoyancyCommonConstants.MATTER_SIZE_SCALE,
-        this.body.position.y / DensityBuoyancyCommonConstants.MATTER_SIZE_SCALE,
-        this.body.angle
-      );
-      this.angularVelocityProperty.value = this.body.angularVelocity;
-      this.velocityProperty.value = new Vector2(
-        this.body.velocity.x / DensityBuoyancyCommonConstants.MATTER_SIZE_SCALE,
-        this.body.velocity.y / DensityBuoyancyCommonConstants.MATTER_SIZE_SCALE
-      );
+      this.engine.bodyGetMatrixTransform( this.body, this.matrix );
+      this.angularVelocityProperty.value = this.engine.bodyGetAngularVelocity( this.body );
+      this.velocityProperty.value = this.engine.bodyGetVelocity( this.body );
     }
 
     writeData() {
-      const translation = this.matrix.translation;
-      const rotation = this.matrix.rotation;
-      const velocity = this.velocityProperty.value;
-      Matter.Body.setPosition( this.body, Matter.Vector.create(
-        translation.x * DensityBuoyancyCommonConstants.MATTER_SIZE_SCALE,
-        translation.y * DensityBuoyancyCommonConstants.MATTER_SIZE_SCALE
-      ) );
-      Matter.Body.setAngle( this.body, rotation );
-      Matter.Body.setAngularVelocity( this.body, this.angularVelocityProperty.value );
-      Matter.Body.setVelocity( this.body, Matter.Vector.create(
-        velocity.x * DensityBuoyancyCommonConstants.MATTER_SIZE_SCALE,
-        velocity.y * DensityBuoyancyCommonConstants.MATTER_SIZE_SCALE
-      ) );
+      this.engine.bodySetPosition( this.body, this.matrix.translation );
+      this.engine.bodySetRotation( this.body, this.matrix.rotation );
+      this.engine.bodySetAngularVelocity( this.body, this.angularVelocityProperty.value );
+      this.engine.bodySetVelocity( this.body, this.velocityProperty.value );
     }
 
     /**

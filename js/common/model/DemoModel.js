@@ -81,8 +81,22 @@ define( require => {
         this.engine.removeBody( mass.body );
       } );
 
+      this.masses.push( new Cuboid( this.engine, new Bounds3( -0.3, -0.3, -0.3, 0.3, 0.3, 0.3 ), {
+        matrix: Matrix3.translation( -1.5, 0.5 ),
+        material: Material.BRICK,
+        volume: 1,
+        canRotate: false
+      } ) );
+
       this.masses.push( new Cuboid( this.engine, new Bounds3( -0.5, -0.5, -0.5, 0.5, 0.5, 0.5 ), {
         matrix: Matrix3.translation( 0, 0.5 ),
+        material: Material.ICE,
+        volume: 1,
+        canRotate: false
+      } ) );
+
+      this.masses.push( new Cuboid( this.engine, new Bounds3( -0.7, -0.7, -0.7, 0.7, 0.7, 0.7 ), {
+        matrix: Matrix3.translation( 1.5, 0.5 ),
         material: Material.WOOD,
         volume: 1,
         canRotate: false

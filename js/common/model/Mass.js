@@ -8,14 +8,12 @@ define( require => {
 
   // modules
   const BooleanProperty = require( 'AXON/BooleanProperty' );
-  const Bounds2 = require( 'DOT/Bounds2' );
   const densityBuoyancyCommon = require( 'DENSITY_BUOYANCY_COMMON/densityBuoyancyCommon' );
   const DerivedProperty = require( 'AXON/DerivedProperty' );
   const Emitter = require( 'AXON/Emitter' );
   const Matrix3 = require( 'DOT/Matrix3' );
   const NumberProperty = require( 'AXON/NumberProperty' );
   const Property = require( 'AXON/Property' );
-  const Shape = require( 'KITE/Shape' );
   const Vector2 = require( 'DOT/Vector2' );
   const Vector2Property = require( 'DOT/Vector2Property' );
 
@@ -32,6 +30,7 @@ define( require => {
 
         // {Shape}
         shape: null,
+        displacedShape: null,
 
         // {Material}
         material: null,
@@ -57,6 +56,9 @@ define( require => {
 
       // @public {Property.<Shape>}
       this.shapeProperty = new Property( config.shape );
+
+      // @public {Property.<Shape>}
+      this.displacedShapeProperty = new Property( config.displacedShape );
 
       // @public {Property.<boolean>}
       this.userControlledProperty = new BooleanProperty( false );
@@ -111,23 +113,8 @@ define( require => {
      * @param {number} liquidLevel
      * @returns {number}
      */
-    getSubmergedVolume( liquidLevel ) {
-      return this.computeGeneralSubmergedArea( liquidLevel );
-    }
-
-    // TODO: do this based on liquid shapes? or is this enough?
-    computeGeneralSubmergedArea( liquidLevel ) {
-      this.engine.bodyGetStepMatrixTransform( this.body, this.stepMatrix );
-
-      const transformedShape = this.shapeProperty.value.transformed( this.stepMatrix );
-      const liquidShape = Shape.bounds( new Bounds2(
-        transformedShape.bounds.left - 1,
-        Math.min( liquidLevel, transformedShape.bounds.minY ) - 1,
-        transformedShape.bounds.right + 1,
-        liquidLevel
-      ) );
-      const submergedShape = transformedShape.shapeIntersection( liquidShape );
-      return submergedShape.getArea();
+    getDisplacedVolume( liquidLevel ) {
+      throw new Error( 'unimplemented' );
     }
 
     /**
@@ -184,7 +171,9 @@ define( require => {
      * @public
      */
     reset() {
+      // TODO: check everything to reset
       this.shapeProperty.reset();
+      this.displacedShapeProperty.reset();
       this.materialProperty.reset();
       this.volumeProperty.reset();
       this.velocityProperty.reset();

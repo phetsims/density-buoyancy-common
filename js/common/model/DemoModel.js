@@ -8,6 +8,7 @@ define( require => {
 
   // modules
   const AreaMarker = require( 'DENSITY_BUOYANCY_COMMON/common/model/AreaMarker' );
+  const Boat = require( 'DENSITY_BUOYANCY_COMMON/common/model/Boat' );
   const Bounds3 = require( 'DOT/Bounds3' );
   const Cuboid = require( 'DENSITY_BUOYANCY_COMMON/common/model/Cuboid' );
   const densityBuoyancyCommon = require( 'DENSITY_BUOYANCY_COMMON/densityBuoyancyCommon' );
@@ -89,23 +90,22 @@ define( require => {
 
       this.masses.push( new Cuboid( this.engine, new Bounds3( -0.3, -0.3, -0.3, 0.3, 0.3, 0.3 ), {
         matrix: Matrix3.translation( -1.5, 0.5 ),
-        material: Material.BRICK,
-        volume: Math.pow( 0.3 * 2, 3 ),
-        canRotate: false
+        material: Material.BRICK
       } ) );
 
       this.masses.push( new Cuboid( this.engine, new Bounds3( -0.5, -0.5, -0.5, 0.5, 0.5, 0.5 ), {
         matrix: Matrix3.translation( 0, 0.5 ),
-        material: Material.ICE,
-        volume: Math.pow( 0.5 * 2, 3 ),
-        canRotate: false
+        material: Material.ICE
       } ) );
 
       this.masses.push( new Cuboid( this.engine, new Bounds3( -0.7, -0.7, -0.7, 0.7, 0.7, 0.7 ), {
         matrix: Matrix3.translation( 1.5, 0.5 ),
-        material: Material.WOOD,
-        volume: Math.pow( 0.7 * 2, 3 ),
-        canRotate: false
+        material: Material.WOOD
+      } ) );
+
+      this.masses.push( new Boat( this.engine, new Bounds3( -1, -1, -1, 1, 1, 1 ), 0.05, {
+        matrix: Matrix3.translation( -1.5, 2 ),
+        material: Material.ALUMINUM
       } ) );
 
       this.engine.addPostStepListener( () => {
@@ -113,7 +113,7 @@ define( require => {
 
         this.masses.forEach( mass => {
           // TODO: should we step the liquid y here for stability?
-          const submergedVolume = mass.getSubmergedVolume( this.currentLiquidY );
+          const submergedVolume = mass.getDisplacedVolume( this.currentLiquidY );
           if ( submergedVolume ) {
             const displacedMass = submergedVolume * this.liquidDensityProperty.value;
             const buoyantForce = displacedMass * DensityBuoyancyCommonConstants.GRAVITATIONAL_ACCELERATION;
@@ -134,6 +134,17 @@ define( require => {
      * @private
      */
     updateLiquidY() {
+
+      // TODO!!!! Determine when things are in the boat, as they aren't displacing more liquid!!!
+      // TODO!!!! Determine when things are in the boat, as they aren't displacing more liquid!!!
+      // TODO!!!! Determine when things are in the boat, as they aren't displacing more liquid!!!
+      // TODO!!!! Determine when things are in the boat, as they aren't displacing more liquid!!!
+      // TODO!!!! Determine when things are in the boat, as they aren't displacing more liquid!!!
+      // TODO!!!! Determine when things are in the boat, as they aren't displacing more liquid!!!
+      // TODO!!!! Determine when things are in the boat, as they aren't displacing more liquid!!!
+      // TODO!!!! Determine when things are in the boat, as they aren't displacing more liquid!!!
+      // TODO!!!! Determine when things are in the boat, as they aren't displacing more liquid!!!
+
       const areaMarkers = [];
       this.masses.forEach( mass => mass.pushAreaMarkers( areaMarkers ) );
       AreaMarker.sortMarkers( areaMarkers );

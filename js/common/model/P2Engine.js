@@ -268,6 +268,28 @@ define( require => {
     }
 
     /**
+     * Creates a (dynamic) boat body, with the origin at the center of the box.
+     * @public
+     * @override
+     *
+     * @param {Array.<Vector2>} vertices
+     * @returns {Engine.Body}
+     */
+    createBoat( vertices ) {
+      const body = new p2.Body( {
+        type: p2.Body.DYNAMIC,
+        fixedRotation: true
+      } );
+
+      body.fromPolygon( vertices.map( v => p2.vec2.fromValues( v.x, v.y ) ) );
+
+      // Workaround, since using Convex wasn't working
+      body.shapes[ 0 ].material = dynamicMaterial;
+
+      return body;
+    }
+
+    /**
      * Adds a listener to be called after each internal step.
      * @public
      * @override

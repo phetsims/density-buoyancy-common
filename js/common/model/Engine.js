@@ -199,6 +199,19 @@ define( require => {
     }
 
     /**
+     * Creates a (dynamic) boat body, with the origin at the center of the box.
+     * @public
+     *
+     * @param {number} width
+     * @param {number} height
+     * @param {number} thickness
+     * @returns {Engine.Body}
+     */
+    createBoat( width, height, thickness ) {
+      throw new Error( 'unimplemented' );
+    }
+
+    /**
      * Adds a listener to be called after each internal step.
      * @public
      *

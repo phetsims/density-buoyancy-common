@@ -88,7 +88,7 @@ define( function( require ) {
       ) ) );
       const bodyShape = Shape.union( this.model.masses.getArray().map( mass => {
         const matrix = scratchMatrix.set( this.modelViewTransform.getMatrix() ).multiplyMatrix( mass.matrix );
-        return mass.shapeProperty.value.transformed( matrix );
+        return mass.displacedShapeProperty.value.transformed( matrix );
       } ) );
       this.waterPath.shape = waterShape.shapeDifference( bodyShape );
     }

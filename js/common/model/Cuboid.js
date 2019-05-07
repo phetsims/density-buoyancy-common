@@ -25,6 +25,7 @@ define( require => {
       config = _.extend( {
         body: engine.createBox( size.width, size.height ),
         shape: Shape.rect( size.minX, size.minY, size.width, size.height ),
+        displacedShape: Shape.rect( size.minX, size.minY, size.width, size.height ),
         volume: size.width * size.height * size.depth,
         canRotate: false
 
@@ -49,7 +50,7 @@ define( require => {
      * @param {number} liquidLevel
      * @returns {number}
      */
-    getSubmergedVolume( liquidLevel ) {
+    getDisplacedVolume( liquidLevel ) {
       this.engine.bodyGetStepMatrixTransform( this.body, this.stepMatrix );
 
       const offset = this.stepMatrix.m12();

@@ -18,9 +18,6 @@ define( require => {
   const Vector2 = require( 'DOT/Vector2' );
   const Vector2Property = require( 'DOT/Vector2Property' );
 
-  /**
-   * @constructor
-   */
   class Mass {
     /**
      * @param {Engine} engine
@@ -127,6 +124,16 @@ define( require => {
       ) );
       const submergedShape = transformedShape.shapeIntersection( liquidShape );
       return submergedShape.getArea();
+    }
+
+    /**
+     * Pushes area markers for this mass onto the array.
+     * @public
+     *
+     * @param {Array.<AreaMarker>} areaMarkers
+     */
+    pushAreaMarkers( areaMarkers ) {
+      throw new Error( 'unimplemented' );
     }
 
     readData() {

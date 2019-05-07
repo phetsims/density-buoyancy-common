@@ -12,9 +12,6 @@ define( require => {
   const densityBuoyancyCommon = require( 'DENSITY_BUOYANCY_COMMON/densityBuoyancyCommon' );
   const Engine = require( 'DENSITY_BUOYANCY_COMMON/common/model/Engine' );
 
-  /**
-   * @constructor
-   */
   class FixedTimestepEngine extends Engine {
     constructor() {
       super();

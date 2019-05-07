@@ -23,9 +23,6 @@ define( require => {
   const materialWoodString = require( 'string!DENSITY_BUOYANCY_COMMON/material.wood' );
   const materialWaterString = require( 'string!DENSITY_BUOYANCY_COMMON/material.water' );
 
-  /**
-   * @constructor
-   */
   class Material {
     /**
      * @param {Object} config

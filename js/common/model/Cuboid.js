@@ -7,14 +7,12 @@ define( require => {
   'use strict';
 
   // modules
+  const AreaMarker = require( 'DENSITY_BUOYANCY_COMMON/common/model/AreaMarker' );
   const densityBuoyancyCommon = require( 'DENSITY_BUOYANCY_COMMON/densityBuoyancyCommon' );
   const Mass = require( 'DENSITY_BUOYANCY_COMMON/common/model/Mass' );
   const Property = require( 'AXON/Property' );
   const Shape = require( 'KITE/Shape' );
 
-  /**
-   * @constructor
-   */
   class Cuboid extends Mass {
     /**
      * @param {Engine} engine
@@ -66,6 +64,30 @@ define( require => {
           return this.volumeProperty.value * ( liquidLevel - bottom ) / ( top - bottom );
         }
       }
+    }
+
+    /**
+     * Pushes area markers for this mass onto the array.
+     * @public
+     * @override
+     *
+     * @param {Array.<AreaMarker>} areaMarkers
+     */
+    pushAreaMarkers( areaMarkers ) {
+      this.engine.bodyGetStepMatrixTransform( this.body, this.stepMatrix );
+      assert && assert( !this.canRotate );
+
+      const offset = this.stepMatrix.m12();
+      const area = this.sizeProperty.value.width * this.sizeProperty.value.depth;
+
+      areaMarkers.push( AreaMarker.createFromPool(
+        offset + this.sizeProperty.value.minY,
+        area
+      ) );
+      areaMarkers.push( AreaMarker.createFromPool(
+        offset + this.sizeProperty.value.maxY,
+        -area
+      ) );
     }
   }
 

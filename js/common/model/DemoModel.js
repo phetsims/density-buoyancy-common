@@ -7,12 +7,12 @@ define( require => {
   'use strict';
 
   // modules
+  const AreaMarker = require( 'DENSITY_BUOYANCY_COMMON/common/model/AreaMarker' );
   const Bounds3 = require( 'DOT/Bounds3' );
   const Cuboid = require( 'DENSITY_BUOYANCY_COMMON/common/model/Cuboid' );
   const densityBuoyancyCommon = require( 'DENSITY_BUOYANCY_COMMON/densityBuoyancyCommon' );
   const DensityBuoyancyCommonConstants = require( 'DENSITY_BUOYANCY_COMMON/common/DensityBuoyancyCommonConstants' );
   const DensityBuoyancyCommonQueryParameters = require( 'DENSITY_BUOYANCY_COMMON/common/DensityBuoyancyCommonQueryParameters' );
-  const DerivedProperty = require( 'AXON/DerivedProperty' );
   const Material = require( 'DENSITY_BUOYANCY_COMMON/common/model/Material' );
   const Matrix3 = require( 'DOT/Matrix3' );
   const MatterEngine = require( 'DENSITY_BUOYANCY_COMMON/common/model/MatterEngine' );
@@ -21,9 +21,6 @@ define( require => {
   const P2Engine = require( 'DENSITY_BUOYANCY_COMMON/common/model/P2Engine' );
   const Vector2 = require( 'DOT/Vector2' );
 
-  /**
-   * @constructor
-   */
   class DemoModel  {
 
     /**
@@ -65,10 +62,7 @@ define( require => {
       this.liquidVolumeProperty = new NumberProperty( 0.75 * this.poolBounds.width * this.poolBounds.height * this.poolBounds.depth );
 
       // @public {Property.<number>} - The y coordinate of the main liquid level in the pool
-      this.liquidYProperty = new DerivedProperty( [ this.liquidVolumeProperty ], volume => {
-        const area = this.poolBounds.width * this.poolBounds.depth;
-        return this.poolBounds.minY + volume / area;
-      } );
+      this.liquidYProperty = new NumberProperty( this.poolBounds.minY + this.liquidVolumeProperty.value / ( this.poolBounds.width * this.poolBounds.depth ) );
 
       const engineType = DensityBuoyancyCommonQueryParameters.engine;
       assert( engineType === 'p2' || engineType === 'matter' );
@@ -95,6 +89,8 @@ define( require => {
       } ) );
 
       this.engine.addPostStepListener( () => {
+        this.updateLiquidY();
+
         this.masses.forEach( mass => {
           // TODO: should we step the liquid y here for stability?
           const submergedVolume = mass.getSubmergedVolume( this.liquidYProperty.value );
@@ -108,6 +104,51 @@ define( require => {
           }
         } );
       } );
+    }
+
+    /**
+     * Computes the y-value of the top of the main pool's liquid.
+     * @private
+     */
+    updateLiquidY() {
+      const areaMarkers = [];
+      this.masses.forEach( mass => mass.pushAreaMarkers( areaMarkers ) );
+      AreaMarker.sortMarkers( areaMarkers );
+
+      let y = this.poolBounds.minY;
+      let area = this.poolBounds.width * this.poolBounds.depth;
+      let remainingVolume = this.liquidVolumeProperty.value;
+      let finished = false;
+
+      for ( let i = 0; i < areaMarkers.length; i++ ) {
+        const areaMarker = areaMarkers[ i ];
+
+        if ( !finished ) {
+          // Handle simultaneous (or almost equivalent) markers without processing
+          if ( areaMarker.y > y ) {
+            const chunkHeight = areaMarker.y - y;
+            const chunkVolume = chunkHeight * area;
+            if ( remainingVolume <= chunkVolume ) {
+              y += ( remainingVolume / chunkVolume ) * chunkHeight;
+              remainingVolume = 0; // TODO: can we just remove this?
+              finished = true;
+            }
+            else {
+              y = areaMarker.y;
+              remainingVolume -= chunkVolume;
+            }
+          }
+          area -= areaMarker.delta;
+        }
+
+        areaMarker.freeToPool();
+      }
+
+      if ( !finished ) {
+        y += remainingVolume / area;
+      }
+
+      this.liquidYProperty.value = y;
     }
 
     /**

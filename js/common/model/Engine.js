@@ -12,9 +12,6 @@ define( require => {
   const densityBuoyancyCommon = require( 'DENSITY_BUOYANCY_COMMON/densityBuoyancyCommon' );
   const Matrix3 = require( 'DOT/Matrix3' );
 
-  /**
-   * @constructor
-   */
   class Engine {
     constructor() {
     }

@@ -16,9 +16,6 @@ define( require => {
   // constants
   const MATTER_SCALE = 100;
 
-  /**
-   * @constructor
-   */
   class MatterEngine extends FixedTimestepEngine {
     constructor() {
       super();

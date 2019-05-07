@@ -21,9 +21,6 @@ define( require => {
   const groundMaterial = new p2.Material();
   const dynamicMaterial = new p2.Material();
 
-  /**
-   * @constructor
-   */
   class P2Engine extends Engine {
     constructor() {
       super();

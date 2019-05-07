@@ -7,6 +7,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  const Bounds2 = require( 'DOT/Bounds2' );
   const DemoMassNode = require( 'DENSITY_BUOYANCY_COMMON/common/view/DemoMassNode' );
   const densityBuoyancyCommon = require( 'DENSITY_BUOYANCY_COMMON/densityBuoyancyCommon' );
   const ModelViewTransform2 = require( 'PHETCOMMON/view/ModelViewTransform2' );
@@ -34,16 +35,19 @@ define( function( require ) {
       // @private {ModelViewTransform2}
       this.modelViewTransform = ModelViewTransform2.createSinglePointScaleInvertedYMapping( Vector2.ZERO, this.layoutBounds.center, scale );
 
-      const modelPoolShape = Shape.polygon( [
-        new Vector2( model.farLeftX, model.groundY ),
-        new Vector2( model.leftX, model.groundY ),
-        new Vector2( model.leftX, model.poolY ),
-        new Vector2( model.rightX, model.poolY ),
-        new Vector2( model.rightX, model.groundY ),
-        new Vector2( model.farRightX, model.groundY ),
-        new Vector2( model.farRightX, model.farBelow ),
-        new Vector2( model.farLeftX, model.farBelow )
-      ] );
+      const waterPath = new Path( null, {
+        fill: 'rgba(0,128,255,0.3)'
+      } );
+      this.addChild( waterPath );
+
+      model.liquidYProperty.link( y => {
+        waterPath.shape = Shape.bounds( this.modelViewTransform.modelToViewBounds( new Bounds2(
+          model.poolBounds.minX, model.poolBounds.minY,
+          model.poolBounds.maxX, y
+        ) ) );
+      } );
+
+      const modelPoolShape = Shape.polygon( model.groundPoints );
       const viewPoolShape = this.modelViewTransform.modelToViewShape( modelPoolShape );
 
       this.addChild( new Path( viewPoolShape, {

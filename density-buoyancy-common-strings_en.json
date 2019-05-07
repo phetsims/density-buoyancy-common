@@ -29,6 +29,9 @@
   "material.titanium": {
     "value": "Titanium"
   },
+  "material.water": {
+    "value": "Water"
+  },
   "material.wood": {
     "value": "Wood"
   }

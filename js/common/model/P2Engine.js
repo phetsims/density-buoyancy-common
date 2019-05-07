@@ -10,6 +10,7 @@ define( require => {
 
   // modules
   const densityBuoyancyCommon = require( 'DENSITY_BUOYANCY_COMMON/densityBuoyancyCommon' );
+  const DensityBuoyancyCommonConstants = require( 'DENSITY_BUOYANCY_COMMON/common/DensityBuoyancyCommonConstants' );
   const Engine = require( 'DENSITY_BUOYANCY_COMMON/common/model/Engine' );
   const Vector2 = require( 'DOT/Vector2' );
 
@@ -29,7 +30,7 @@ define( require => {
 
       // @private {p2.World}
       this.world = new p2.World( {
-        gravity: [ 0, -9.82 ]
+        gravity: [ 0, -DensityBuoyancyCommonConstants.GRAVITATIONAL_ACCELERATION ]
       } );
 
       this.world.setGlobalStiffness( Number.MAX_VALUE );
@@ -114,6 +115,18 @@ define( require => {
     }
 
     /**
+     * Sets the provided matrix to the current transformation matrix of the body (to reduce allocations)
+     * @public
+     * @override
+     *
+     * @param {Engine.Body} body
+     * @param {Matrix3} matrix
+     */
+    bodyGetStepMatrixTransform( body, matrix ) {
+      return matrix.setToTranslationRotation( body.position[ 0 ], body.position[ 1 ], body.angle );
+    }
+
+    /**
      * Sets the position of a body.
      * @public
      * @override
@@ -188,6 +201,19 @@ define( require => {
     }
 
     /**
+     * Applies a given force to a body (should be in the post-step listener ideally)
+     * @public
+     * @override
+     *
+     * @param {Engine.Body} body
+     * @param {Vector2} velocity
+     */
+    bodyApplyForce( body, force ) {
+      body.force[ 0 ] += force.x;
+      body.force[ 1 ] += force.y;
+    }
+
+    /**
      * Creates a (static) ground body with the given vertices.
      * @public
      * @override
@@ -232,6 +258,28 @@ define( require => {
       body.addShape( box );
 
       return body;
+    }
+
+    /**
+     * Adds a listener to be called after each internal step.
+     * @public
+     * @override
+     *
+     * @param {function} listener
+     */
+    addPostStepListener( listener ) {
+      this.world.on( 'postStep', listener );
+    }
+
+    /**
+     * Removes a listener to be called after each internal step.
+     * @public
+     * @override
+     *
+     * @param {function} listener
+     */
+    removePostStepListener( listener ) {
+      this.world.off( 'postStep', listener );
     }
 
     static vectorToP2( vector ) {

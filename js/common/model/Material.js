@@ -21,6 +21,7 @@ define( require => {
   const materialStyrofoamString = require( 'string!DENSITY_BUOYANCY_COMMON/material.styrofoam' );
   const materialTitaniumString = require( 'string!DENSITY_BUOYANCY_COMMON/material.titanium' );
   const materialWoodString = require( 'string!DENSITY_BUOYANCY_COMMON/material.wood' );
+  const materialWaterString = require( 'string!DENSITY_BUOYANCY_COMMON/material.water' );
 
   /**
    * @constructor
@@ -38,6 +39,9 @@ define( require => {
         // {number} - in SI (kg/m^3)
         density: 1,
 
+        // {number} - in SI (Pa * s)
+        viscosity: 1000,
+
         // {boolean} - optional
         custom: false
       }, config );
@@ -47,6 +51,9 @@ define( require => {
 
       // @public {number}
       this.density = config.density;
+
+      // @public {number}
+      this.viscosity = config.viscosity;
 
       // @public {boolean}
       this.custom = config.custom;
@@ -95,6 +102,11 @@ define( require => {
     name: materialTitaniumString,
     density: 4500
   } );
+  Material.WATER = new Material( {
+    name: materialWaterString,
+    density: 1000,
+    viscosity: 890
+  } );
   Material.WOOD = new Material( {
     name: materialWoodString,
     density: 400
@@ -111,6 +123,7 @@ define( require => {
     Material.STEEL,
     Material.STYROFOAM,
     Material.TITANIUM,
+    Material.WATER,
     Material.WOOD
   ];
 

@@ -76,6 +76,9 @@ define( require => {
       // @public {Matrix}
       this.matrix = config.matrix;
 
+      // @public {Matrix}
+      this.stepMatrix = new Matrix3();
+
       // @public {Emitter}
       this.transformedEmitter = new Emitter();
 
@@ -108,15 +111,17 @@ define( require => {
      * @returns {number}
      */
     getSubmergedVolume( liquidLevel ) {
-      throw new Error( 'abstract method' );
+      return this.computeGeneralSubmergedArea( liquidLevel );
     }
 
     // TODO: do this based on liquid shapes? or is this enough?
     computeGeneralSubmergedArea( liquidLevel ) {
-      const transformedShape = this.shapeProperty.value.transformed( this.matrix );
+      this.engine.bodyGetStepMatrixTransform( this.body, this.stepMatrix );
+
+      const transformedShape = this.shapeProperty.value.transformed( this.stepMatrix );
       const liquidShape = Shape.bounds( new Bounds2(
         transformedShape.bounds.left - 1,
-        Math.min( liquidLevel, transformedShape.minY ) - 1,
+        Math.min( liquidLevel, transformedShape.bounds.minY ) - 1,
         transformedShape.bounds.right + 1,
         liquidLevel
       ) );

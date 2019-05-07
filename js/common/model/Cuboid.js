@@ -47,11 +47,13 @@ define( require => {
      * @returns {number}
      */
     getSubmergedVolume( liquidLevel ) {
+      this.engine.bodyGetStepMatrixTransform( this.body, this.stepMatrix );
+
       if ( this.canRotate ) {
         return this.computeGeneralSubmergedArea( liquidLevel ) * this.sizeProperty.depth;
       }
       else {
-        const offset = this.m12();
+        const offset = this.stepMatrix.m12();
         const bottom = offset + this.sizeProperty.value.minY;
         const top = offset + this.sizeProperty.value.maxY;
         if ( liquidLevel <= bottom ) {

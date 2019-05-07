@@ -78,6 +78,17 @@ define( require => {
     }
 
     /**
+     * Sets the provided matrix to the current transformation matrix of the body (to reduce allocations)
+     * @public
+     *
+     * @param {Engine.Body} body
+     * @param {Matrix3} matrix
+     */
+    bodyGetStepMatrixTransform( body, matrix ) {
+      throw new Error( 'unimplemented' );
+    }
+
+    /**
      * Returns the transformation matrix of the given body.
      * @public
      *
@@ -155,6 +166,17 @@ define( require => {
     }
 
     /**
+     * Applies a given force to a body (should be in the post-step listener ideally)
+     * @public
+     *
+     * @param {Engine.Body} body
+     * @param {Vector2} velocity
+     */
+    bodyApplyForce( body, force ) {
+      throw new Error( 'unimplemented' );
+    }
+
+    /**
      * Creates a (static) ground body with the given vertices.
      * @public
      *
@@ -174,6 +196,26 @@ define( require => {
      * @returns {Engine.Body}
      */
     createBox( width, height ) {
+      throw new Error( 'unimplemented' );
+    }
+
+    /**
+     * Adds a listener to be called after each internal step.
+     * @public
+     *
+     * @param {function} listener
+     */
+    addPostStepListener( listener ) {
+      throw new Error( 'unimplemented' );
+    }
+
+    /**
+     * Removes a listener to be called after each internal step.
+     * @public
+     *
+     * @param {function} listener
+     */
+    removePostStepListener( listener ) {
       throw new Error( 'unimplemented' );
     }
   }

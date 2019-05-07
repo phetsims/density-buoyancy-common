@@ -109,6 +109,18 @@ define( require => {
     }
 
     /**
+     * Sets the provided matrix to the current transformation matrix of the body (to reduce allocations)
+     * @public
+     * @override
+     *
+     * @param {Engine.Body} body
+     * @param {Matrix3} matrix
+     */
+    bodyGetStepMatrixTransform( body, matrix ) {
+      return this.bodyGetMatrixTransform( body, matrix );
+    }
+
+    /**
      * Sets the position of a body.
      * @public
      * @override

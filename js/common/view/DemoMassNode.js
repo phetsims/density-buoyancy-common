@@ -8,6 +8,7 @@ define( function( require ) {
 
   // modules
   const densityBuoyancyCommon = require( 'DENSITY_BUOYANCY_COMMON/densityBuoyancyCommon' );
+  const DragListener = require( 'SCENERY/listeners/DragListener' );
   const Emitter = require( 'AXON/Emitter' );
   const Matrix3 = require( 'DOT/Matrix3' );
   const Node = require( 'SCENERY/nodes/Node' );
@@ -23,7 +24,9 @@ define( function( require ) {
      * @param {ModelViewTransform2} modelViewTransform
      */
     constructor( mass, modelViewTransform ) {
-      super();
+      super( {
+        cursor: 'pointer'
+      } );
 
       const path = new Path( null, {
         stroke: 'red'
@@ -60,6 +63,22 @@ define( function( require ) {
         mass.transformedEmitter.removeListener( transformListener );
       } );
       transformListener();
+
+      // @public {DragListener}
+      this.dragListener = new DragListener( {
+        transform: modelViewTransform,
+        applyOffset: false,
+        start: ( event, listener ) => {
+          mass.startDrag( listener.modelPoint );
+        },
+        drag: ( event, listener ) => {
+          mass.updateDrag( listener.modelPoint );
+        },
+        end: ( event, listener ) => {
+          mass.endDrag();
+        }
+      } );
+      this.addInputListener( this.dragListener );
     }
 
     /**

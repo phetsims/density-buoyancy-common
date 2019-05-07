@@ -7,6 +7,7 @@ define( require => {
   'use strict';
 
   // modules
+  const BooleanProperty = require( 'AXON/BooleanProperty' );
   const Bounds2 = require( 'DOT/Bounds2' );
   const densityBuoyancyCommon = require( 'DENSITY_BUOYANCY_COMMON/densityBuoyancyCommon' );
   const DerivedProperty = require( 'AXON/DerivedProperty' );
@@ -56,6 +57,9 @@ define( require => {
 
       // @public {Property.<Shape>}
       this.shapeProperty = new Property( config.shape );
+
+      // @public {Property.<boolean>}
+      this.userControlledProperty = new BooleanProperty( false );
 
       // @public {Property.<Material>}
       this.materialProperty = new Property( config.material );
@@ -147,6 +151,20 @@ define( require => {
       this.engine.bodySetRotation( this.body, this.matrix.rotation );
       this.engine.bodySetAngularVelocity( this.body, this.angularVelocityProperty.value );
       this.engine.bodySetVelocity( this.body, this.velocityProperty.value );
+    }
+
+    startDrag( position ) {
+      this.userControlledProperty.value = true;
+      this.engine.addPointerConstraint( this.body, position );
+    }
+
+    updateDrag( position ) {
+      this.engine.updatePointerConstraint( this.body, position );
+    }
+
+    endDrag() {
+      this.engine.removePointerConstraint( this.body );
+      this.userControlledProperty.value = false;
     }
 
     /**

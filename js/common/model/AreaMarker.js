@@ -40,7 +40,7 @@ define( require => {
      * @param {Array.<AreaMarker>}
      */
     static sortMarkers( array ) {
-      array.sort( ( a, b ) => a - b );
+      array.sort( ( a, b ) => a.y - b.y );
     }
   }
 

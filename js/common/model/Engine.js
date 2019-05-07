@@ -215,6 +215,39 @@ define( require => {
     removePostStepListener( listener ) {
       throw new Error( 'unimplemented' );
     }
+
+    /**
+     * Adds in a pointer constraint so that the body's current point at the position will stay at the position
+     * (if the body is getting dragged).
+     * @public
+     *
+     * @param {Engine.Body} body
+     * @param {Vector2} position
+     */
+    addPointerConstraint( body, position ) {
+      throw new Error( 'unimplemented' );
+    }
+
+    /**
+     * Updates a pointer constraint so that the body will essentially be dragged to the new position.
+     * @public
+     *
+     * @param {Engine.Body} body
+     * @param {Vector2} position
+     */
+    updatePointerConstraint( body, position ) {
+      throw new Error( 'unimplemented' );
+    }
+
+    /**
+     * Removes a pointer constraint.
+     * @public
+     *
+     * @param {Engine.Body} body
+     */
+    removePointerConstraint( body ) {
+      throw new Error( 'unimplemented' );
+    }
   }
 
   return densityBuoyancyCommon.register( 'Engine', Engine );

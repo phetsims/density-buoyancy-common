@@ -36,6 +36,12 @@ define( require => {
       this.world.solver.tolerance = 0.01;
       this.world.solver.frictionIterations = 10;
 
+      // @private {Object} - Maps {number} body.id => {p2.RevoluteConstraint}
+      this.pointerConstraintMap = {};
+
+      // @private {Object} - Maps {number} body.id => {p2.Body}
+      this.nullBodyMap = {};
+
       // this.world.addContactMaterial( new p2.ContactMaterial( groundMaterial, dynamicMaterial, {
       //   restitution: 0,
       //   stiffness: Number.MAX_VALUE
@@ -277,6 +283,70 @@ define( require => {
      */
     removePostStepListener( listener ) {
       this.world.off( 'postStep', listener );
+    }
+
+    /**
+     * Adds in a pointer constraint so that the body's current point at the position will stay at the position
+     * (if the body is getting dragged).
+     * @public
+     * @override
+     *
+     * @param {Engine.Body} body
+     * @param {Vector2} position
+     */
+    addPointerConstraint( body, position ) {
+      const nullBody = new p2.Body();
+      this.nullBodyMap[ body.id ] = nullBody;
+
+      const globalPoint = P2Engine.vectorToP2( position );
+      const localPoint = p2.vec2.create();
+      body.toLocalFrame( localPoint, globalPoint );
+      this.world.addBody( nullBody );
+
+      body.wakeUp();
+
+      const pointerConstraint = new p2.RevoluteConstraint( nullBody, body, {
+        localPivotA: globalPoint,
+        localPivotB: localPoint,
+        maxForce: 1000 * body.mass
+      } );
+      this.pointerConstraintMap[ body.id ] = pointerConstraint;
+      this.world.addConstraint( pointerConstraint );
+    }
+
+    /**
+     * Updates a pointer constraint so that the body will essentially be dragged to the new position.
+     * @public
+     * @override
+     *
+     * @param {Engine.Body} body
+     * @param {Vector2} position
+     */
+    updatePointerConstraint( body, position ) {
+      const pointerConstraint = this.pointerConstraintMap[ body.id ];
+      assert && assert( pointerConstraint );
+
+      p2.vec2.copy( pointerConstraint.pivotA, P2Engine.vectorToP2( position ) );
+      pointerConstraint.bodyA.wakeUp();
+      pointerConstraint.bodyB.wakeUp();
+    }
+
+    /**
+     * Removes a pointer constraint.
+     * @public
+     * @override
+     *
+     * @param {Engine.Body} body
+     */
+    removePointerConstraint( body ) {
+      const nullBody = this.nullBodyMap[ body.id ];
+      const pointerConstraint = this.pointerConstraintMap[ body.id ];
+
+      this.world.removeConstraint( pointerConstraint );
+      this.world.removeBody( nullBody );
+
+      delete this.nullBodyMap[ body.id ];
+      delete this.pointerConstraintMap[ body.id ];
     }
 
     static vectorToP2( vector ) {

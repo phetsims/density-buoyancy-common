@@ -64,6 +64,10 @@ define( require => {
       // @public {Property.<number>} - The y coordinate of the main liquid level in the pool
       this.liquidYProperty = new NumberProperty( this.poolBounds.minY + this.liquidVolumeProperty.value / ( this.poolBounds.width * this.poolBounds.depth ) );
 
+      // @private {number}
+      this.previousLiquidY = this.liquidYProperty.value;
+      this.currentLiquidY = this.liquidYProperty.value;
+
       const engineType = DensityBuoyancyCommonQueryParameters.engine;
       assert( engineType === 'p2' || engineType === 'matter' );
       this.engine = engineType === 'p2' ? new P2Engine() : new MatterEngine();
@@ -107,7 +111,7 @@ define( require => {
 
         this.masses.forEach( mass => {
           // TODO: should we step the liquid y here for stability?
-          const submergedVolume = mass.getSubmergedVolume( this.liquidYProperty.value );
+          const submergedVolume = mass.getSubmergedVolume( this.currentLiquidY );
           if ( submergedVolume ) {
             const displacedMass = submergedVolume * this.liquidDensityProperty.value;
             const buoyantForce = displacedMass * DensityBuoyancyCommonConstants.GRAVITATIONAL_ACCELERATION;
@@ -162,7 +166,8 @@ define( require => {
         y += remainingVolume / area;
       }
 
-      this.liquidYProperty.value = y;
+      this.previousLiquidY = this.currentLiquidY;
+      this.currentLiquidY = y;
     }
 
     /**
@@ -181,6 +186,8 @@ define( require => {
      */
     step( dt ) {
       this.engine.step( dt );
+
+      this.liquidYProperty.value = this.previousLiquidY + this.engine.interpolationRatio * ( this.currentLiquidY - this.previousLiquidY );
 
       this.masses.forEach( mass => {
         mass.step( dt );

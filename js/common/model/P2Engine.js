@@ -57,6 +57,7 @@ define( require => {
      */
     step( dt ) {
       this.world.step( FIXED_TIME_STEP, dt, MAX_SUB_STEPS );
+      this.interpolationRatio = ( this.world.accumulator % FIXED_TIME_STEP ) / FIXED_TIME_STEP;
     }
 
     /**

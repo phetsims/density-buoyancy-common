@@ -10,6 +10,7 @@ define( require => {
 
   // modules
   const densityBuoyancyCommon = require( 'DENSITY_BUOYANCY_COMMON/densityBuoyancyCommon' );
+  const DensityBuoyancyCommonConstants = require( 'DENSITY_BUOYANCY_COMMON/common/DensityBuoyancyCommonConstants' );
   const FixedTimestepEngine = require( 'DENSITY_BUOYANCY_COMMON/common/model/FixedTimestepEngine' );
   const Vector2 = require( 'DOT/Vector2' );
 
@@ -23,7 +24,7 @@ define( require => {
       // @private {Matter.Engine}
       this.engine = Matter.Engine.create();
       this.engine.world.gravity.y = -1; // So that it's physical with positive y up
-      this.engine.world.gravity.scale = 1 / ( MATTER_SCALE * 9.8 );
+      this.engine.world.gravity.scale = 1 / ( MATTER_SCALE * DensityBuoyancyCommonConstants.GRAVITATIONAL_ACCELERATION );
     }
 
     /**
@@ -59,17 +60,6 @@ define( require => {
     removeBody( body ) {
       Matter.World.remove( this.engine.world, body );
     }
-
-    // Matter.Body.create({ parts: [partA, partB] });
-
-    // return Matter.Bodies.fromVertices( 0, 0, [
-    //   Matter.Vector.create( bounds.minX, bounds.minY ),
-    //   Matter.Vector.create( bounds.minX, bounds.maxY ),
-    //   Matter.Vector.create( bounds.maxX, bounds.maxY ),
-    //   Matter.Vector.create( bounds.maxX, bounds.minY )
-    // ], {
-    //   isStatic: true
-    // } );
 
     /**
      * Sets the mass of a body (and whether it can rotate, which for some engines needs to be set at the same time).
@@ -190,6 +180,18 @@ define( require => {
     }
 
     /**
+     * Applies a given force to a body (should be in the post-step listener ideally)
+     * @public
+     * @override
+     *
+     * @param {Engine.Body} body
+     * @param {Vector2} velocity
+     */
+    bodyApplyForce( body, force ) {
+      Matter.Body.applyForce( body, body.position, MatterEngine.vectorToMatter( force ) );
+    }
+
+    /**
      * Creates a (static) ground body with the given vertices.
      * @public
      * @override
@@ -199,20 +201,45 @@ define( require => {
      */
     createGround( vertices ) {
       return Matter.Bodies.fromVertices( 0, 0, vertices.map( MatterEngine.vectorToMatter ), {
-        isStatic: true
+        isStatic: true,
+        position: MatterEngine.vectorToMatter( Vector2.ZERO )
       } );
     }
 
     /**
      * Creates a (dynamic) box body, with the origin at the center of the box.
      * @public
+     * @override
      *
      * @param {number} width
      * @param {number} height
      * @returns {Engine.Body}
      */
     createBox( width, height ) {
+      // For composites: Matter.Body.create({ parts: [partA, partB] });
       return Matter.Bodies.rectangle( 0, 0, width * MATTER_SCALE, height * MATTER_SCALE );
+    }
+
+    /**
+     * Adds a listener to be called after each internal step.
+     * @public
+     * @override
+     *
+     * @param {function} listener
+     */
+    addPostStepListener( listener ) {
+      Matter.Events.on( this.engine, 'afterUpdate', listener );
+    }
+
+    /**
+     * Removes a listener to be called after each internal step.
+     * @public
+     * @override
+     *
+     * @param {function} listener
+     */
+    removePostStepListener( listener ) {
+      Matter.Events.off( this.engine, 'afterUpdate', listener );
     }
 
     /**

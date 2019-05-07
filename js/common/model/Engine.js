@@ -14,6 +14,8 @@ define( require => {
 
   class Engine {
     constructor() {
+      // @public {number} - TODO: doc
+      this.interpolationRatio = 1;
     }
 
     /**

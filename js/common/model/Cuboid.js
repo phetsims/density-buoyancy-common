@@ -23,7 +23,7 @@ define( require => {
      */
     constructor( engine, size, config ) {
       config = _.extend( {
-        body: engine.createBoundsBody( size ),
+        body: engine.createBox( size.width, size.height ),
         shape: Shape.rect( size.minX, size.minY, size.width, size.height ),
         volume: size.width * size.height * size.depth
 

@@ -17,6 +17,9 @@ define( require => {
   const FIXED_TIME_STEP = 1 / 60;
   const MAX_SUB_STEPS = 10;
 
+  const groundMaterial = new p2.Material();
+  const dynamicMaterial = new p2.Material();
+
   /**
    * @constructor
    */
@@ -28,6 +31,17 @@ define( require => {
       this.world = new p2.World( {
         gravity: [ 0, -9.82 ]
       } );
+
+      this.world.setGlobalStiffness( Number.MAX_VALUE );
+      this.world.setGlobalRelaxation( 1 );
+      this.world.solver.iterations = 20;
+      this.world.solver.tolerance = 0.01;
+      this.world.solver.frictionIterations = 10;
+
+      // this.world.addContactMaterial( new p2.ContactMaterial( groundMaterial, dynamicMaterial, {
+      //   restitution: 0,
+      //   stiffness: Number.MAX_VALUE
+      // } ) );
     }
 
     /**
@@ -174,37 +188,48 @@ define( require => {
     }
 
     /**
-     * Creates a rectangular body from the given bounds.
+     * Creates a (static) ground body with the given vertices.
      * @public
      * @override
      *
-     * @param {Bounds2} bounds
-     * @param {Object} [options]
+     * @param {Array.<Vector2>} vertices
      * @returns {Engine.Body}
      */
-    createBoundsBody( bounds, options ) {
-      options = _.extend( {
-        isStatic: false
-      }, options );
-
+    createGround( vertices ) {
       const body = new p2.Body( {
-        type: options.isStatic ? p2.Body.STATIC : p2.Body.DYNAMIC
+        type: p2.Body.STATIC,
+        mass: 0
       } );
 
-      const rectangularShape = new p2.Convex( {
-        vertices: [
-          p2.vec2.fromValues( bounds.minX, bounds.minY ),
-          p2.vec2.fromValues( bounds.maxX, bounds.minY ),
-          p2.vec2.fromValues( bounds.maxX, bounds.maxY ),
-          p2.vec2.fromValues( bounds.minX, bounds.maxY )
-        ],
-        axes: [
-          p2.vec2.fromValues( 1, 0 ),
-          p2.vec2.fromValues( 0, 1 )
-        ]
+      body.fromPolygon( vertices.map( v => p2.vec2.fromValues( v.x, v.y ) ) );
+
+      // Workaround, since using Convex wasn't working
+      body.shapes[ 0 ].material = groundMaterial;
+
+      return body;
+    }
+
+    /**
+     * Creates a (dynamic) box body, with the origin at the center of the box.
+     * @public
+     *
+     * @param {number} width
+     * @param {number} height
+     * @returns {Engine.Body}
+     */
+    createBox( width, height ) {
+      const body = new p2.Body( {
+        type: p2.Body.DYNAMIC,
+        fixedRotation: true
       } );
 
-      body.addShape( rectangularShape );
+      const box = new p2.Box( {
+        width: width,
+        height: height,
+        material: dynamicMaterial
+      } );
+
+      body.addShape( box );
 
       return body;
     }

@@ -181,28 +181,29 @@ define( require => {
     }
 
     /**
-     * Creates a rectangular body from the given bounds.
+     * Creates a (static) ground body with the given vertices.
      * @public
      * @override
      *
-     * @param {Bounds2} bounds
-     * @param {Object} [options]
+     * @param {Array.<Vector2>} vertices
      * @returns {Engine.Body}
      */
-    createBoundsBody( bounds, options ) {
-      options = _.extend( {
-        isStatic: false
-      }, options );
+    createGround( vertices ) {
+      return Matter.Bodies.fromVertices( 0, 0, vertices.map( MatterEngine.vectorToMatter ), {
+        isStatic: true
+      } );
+    }
 
-      return Matter.Bodies.rectangle(
-        bounds.centerX * MATTER_SCALE,
-        bounds.centerY * MATTER_SCALE,
-        bounds.width * MATTER_SCALE,
-        bounds.height * MATTER_SCALE,
-        {
-          isStatic: options.isStatic
-        }
-      );
+    /**
+     * Creates a (dynamic) box body, with the origin at the center of the box.
+     * @public
+     *
+     * @param {number} width
+     * @param {number} height
+     * @returns {Engine.Body}
+     */
+    createBox( width, height ) {
+      return Matter.Bodies.rectangle( 0, 0, width * MATTER_SCALE, height * MATTER_SCALE );
     }
 
     /**

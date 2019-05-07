@@ -155,28 +155,26 @@ define( require => {
     }
 
     /**
-     * Creates a rectangular body from the given bounds.
+     * Creates a (static) ground body with the given vertices.
      * @public
      *
-     * @param {Bounds2} bounds
-     * @param {Object} [options]
+     * @param {Array.<Vector2>} vertices
      * @returns {Engine.Body}
      */
-    createBoundsBody( bounds, options ) {
+    createGround( vertices ) {
       throw new Error( 'unimplemented' );
     }
 
     /**
-     * Creates a rectangular body (centered around the origin) with the given dimensions
+     * Creates a (dynamic) box body, with the origin at the center of the box.
      * @public
      *
      * @param {number} width
      * @param {number} height
-     * @param {Object} [options]
      * @returns {Engine.Body}
      */
-    createRectangularBody( width, height, options ) {
-      return this.createBoundsBody( -width / 2, -height / 2, width, height, options );
+    createBox( width, height ) {
+      throw new Error( 'unimplemented' );
     }
   }
 

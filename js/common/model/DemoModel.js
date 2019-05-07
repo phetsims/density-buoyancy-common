@@ -145,6 +145,8 @@ define( require => {
       // TODO!!!! Determine when things are in the boat, as they aren't displacing more liquid!!!
       // TODO!!!! Determine when things are in the boat, as they aren't displacing more liquid!!!
 
+      // TODO: maybe determine what "basin" each object is inside? (can kind of be in multiple?)
+
       const areaMarkers = [];
       this.masses.forEach( mass => mass.pushAreaMarkers( areaMarkers ) );
       AreaMarker.sortMarkers( areaMarkers );

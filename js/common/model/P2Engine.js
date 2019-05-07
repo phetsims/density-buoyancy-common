@@ -27,8 +27,11 @@ define( require => {
 
       // @private {p2.World}
       this.world = new p2.World( {
+        // TODO: can we remove this line?
         gravity: [ 0, -DensityBuoyancyCommonConstants.GRAVITATIONAL_ACCELERATION ]
       } );
+
+      this.world.applyGravity = false;
 
       this.world.setGlobalStiffness( Number.MAX_VALUE );
       this.world.setGlobalRelaxation( 1 );

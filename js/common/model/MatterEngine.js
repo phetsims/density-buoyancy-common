@@ -10,7 +10,6 @@ define( require => {
 
   // modules
   const densityBuoyancyCommon = require( 'DENSITY_BUOYANCY_COMMON/densityBuoyancyCommon' );
-  const DensityBuoyancyCommonConstants = require( 'DENSITY_BUOYANCY_COMMON/common/DensityBuoyancyCommonConstants' );
   const FixedTimestepEngine = require( 'DENSITY_BUOYANCY_COMMON/common/model/FixedTimestepEngine' );
   const Vector2 = require( 'DOT/Vector2' );
 
@@ -23,8 +22,9 @@ define( require => {
 
       // @private {Matter.Engine}
       this.engine = Matter.Engine.create();
-      this.engine.world.gravity.y = -1; // So that it's physical with positive y up
-      this.engine.world.gravity.scale = 1 / ( MATTER_SCALE * DensityBuoyancyCommonConstants.GRAVITATIONAL_ACCELERATION );
+
+      // Disable gravity (will handle the force manually)
+      this.engine.world.gravity.y = 0;
     }
 
     /**

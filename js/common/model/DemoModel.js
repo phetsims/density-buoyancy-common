@@ -40,6 +40,8 @@ define( require => {
         10, 0, 1
       );
 
+      // TODO: make naming between actual and interpolated values!
+
       // @public {Array.<Vector2>}
       this.groundPoints = [
         new Vector2( this.groundBounds.minX, this.groundBounds.minY ),
@@ -120,6 +122,9 @@ define( require => {
             const velocity = this.engine.bodyGetVelocity( mass.body );
             this.engine.bodyApplyForce( mass.body, velocity.times( -this.liquidViscosityProperty.value ) );
           }
+
+          // Gravity
+          this.engine.bodyApplyForce( mass.body, new Vector2( 0, -mass.massProperty.value * DensityBuoyancyCommonConstants.GRAVITATIONAL_ACCELERATION ) );
         } );
       } );
     }

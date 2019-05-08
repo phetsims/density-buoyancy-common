@@ -9,7 +9,6 @@ define( require => {
   'use strict';
 
   // modules
-  const AreaMarker = require( 'DENSITY_BUOYANCY_COMMON/common/model/AreaMarker' );
   const densityBuoyancyCommon = require( 'DENSITY_BUOYANCY_COMMON/densityBuoyancyCommon' );
   const Mass = require( 'DENSITY_BUOYANCY_COMMON/common/model/Mass' );
   const Property = require( 'AXON/Property' );
@@ -39,55 +38,71 @@ define( require => {
       // @public {Property.<Bounds3>}
       this.sizeProperty = new Property( size );
 
+      // Step information
+
+      this.stepArea = 0;
+      this.stepMaximumVolume = 0;
+
       // TODO: link updates if size changes
     }
 
+    updateStepInformation() {
+      // TODO: see if we can extend cuboid
+      this.engine.bodyGetStepMatrixTransform( this.body, this.stepMatrix );
+
+      const xOffset = this.stepMatrix.m02();
+      const yOffset = this.stepMatrix.m12();
+
+      this.stepX = xOffset;
+      this.stepBottom = yOffset + this.sizeProperty.value.minY;
+      this.stepTop = yOffset + this.sizeProperty.value.maxY;
+
+      this.stepArea = this.sizeProperty.value.width * this.sizeProperty.value.depth;
+      this.stepMaximumVolume = this.stepArea * this.sizeProperty.value.height;
+    }
+
     /**
-     * Returns the submerged volume of this object, assuming a y value for the given liquid level.
+     * Returns the cumulative displaced volume of this object up to a given y level.
      * @public
      * @override
+     *
+     * Assumes step information was updated.
+     *
+     * @param {number} liquidLevel
+     * @returns {number}
+     */
+    getDisplacedArea( liquidLevel ) {
+      if ( liquidLevel < this.stepBottom || liquidLevel > this.stepTop ) {
+        return 0;
+      }
+      else {
+        return this.stepArea;
+      }
+    }
+
+    /**
+     * Returns the displaced volume of this object up to a given y level, assuming a y value for the given liquid level.
+     * @public
+     * @override
+     *
+     * Assumes step information was updated.
      *
      * @param {number} liquidLevel
      * @returns {number}
      */
     getDisplacedVolume( liquidLevel ) {
-      this.engine.bodyGetStepMatrixTransform( this.body, this.stepMatrix );
+      const bottom = this.stepBottom;
+      const top = this.stepTop;
 
-      const offset = this.stepMatrix.m12();
-      const bottom = offset + this.sizeProperty.value.minY;
-      const top = offset + this.sizeProperty.value.maxY;
       if ( liquidLevel <= bottom ) {
         return 0;
       }
       else if ( liquidLevel >= top ) {
-        return this.volumeProperty.value;
+        return this.stepMaximumVolume;
       }
       else {
-        return this.volumeProperty.value * ( liquidLevel - bottom ) / ( top - bottom );
+        return this.stepMaximumVolume * ( liquidLevel - bottom ) / ( top - bottom );
       }
-    }
-
-    /**
-     * Pushes area markers for this mass onto the array.
-     * @public
-     * @override
-     *
-     * @param {Array.<AreaMarker>} areaMarkers
-     */
-    pushAreaMarkers( areaMarkers ) {
-      this.engine.bodyGetStepMatrixTransform( this.body, this.stepMatrix );
-
-      const offset = this.stepMatrix.m12();
-      const area = this.sizeProperty.value.width * this.sizeProperty.value.depth;
-
-      areaMarkers.push( AreaMarker.createFromPool(
-        offset + this.sizeProperty.value.minY,
-        area
-      ) );
-      areaMarkers.push( AreaMarker.createFromPool(
-        offset + this.sizeProperty.value.maxY,
-        -area
-      ) );
     }
   }
 

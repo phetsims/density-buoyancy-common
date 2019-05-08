@@ -7,7 +7,6 @@ define( require => {
   'use strict';
 
   // modules
-  const AreaMarker = require( 'DENSITY_BUOYANCY_COMMON/common/model/AreaMarker' );
   const Boat = require( 'DENSITY_BUOYANCY_COMMON/common/model/Boat' );
   const Bounds3 = require( 'DOT/Bounds3' );
   const Cuboid = require( 'DENSITY_BUOYANCY_COMMON/common/model/Cuboid' );
@@ -88,8 +87,13 @@ define( require => {
         this.engine.removeBody( mass.body );
       } );
 
+      this.masses.push( new Boat( this.engine, new Bounds3( -1, -1, -1, 1, 1, 1 ), 0.05, {
+        matrix: Matrix3.translation( -1.8, 0 ),
+        material: Material.ALUMINUM
+      } ) );
+
       this.masses.push( new Cuboid( this.engine, new Bounds3( -0.3, -0.3, -0.3, 0.3, 0.3, 0.3 ), {
-        matrix: Matrix3.translation( -1.5, 0.5 ),
+        matrix: Matrix3.translation( -1.5, -2 ),
         material: Material.BRICK
       } ) );
 
@@ -103,17 +107,12 @@ define( require => {
         material: Material.WOOD
       } ) );
 
-      this.masses.push( new Boat( this.engine, new Bounds3( -1, -1, -1, 1, 1, 1 ), 0.05, {
-        matrix: Matrix3.translation( -1.5, 2 ),
-        material: Material.ALUMINUM
-      } ) );
-
       this.engine.addPostStepListener( () => {
-        this.updateLiquidY();
+        this.updateLiquid();
 
         this.masses.forEach( mass => {
           // TODO: should we step the liquid y here for stability?
-          const submergedVolume = mass.getDisplacedVolume( this.currentLiquidY );
+          const submergedVolume = mass.getDisplacedBuoyantVolume( this.currentLiquidY );
           if ( submergedVolume ) {
             const displacedMass = submergedVolume * this.liquidDensityProperty.value;
             const buoyantForce = displacedMass * DensityBuoyancyCommonConstants.GRAVITATIONAL_ACCELERATION;
@@ -129,63 +128,212 @@ define( require => {
       } );
     }
 
+    getDisplacedPoolVolume( y, boat ) {
+      assert && assert( boat || boat === null );
+
+      let volume = 0;
+      this.masses.forEach( mass => {
+        const mightBeInBoat = boat && mass.alignedWithBoat;
+
+        if ( !mightBeInBoat ) {
+          volume += mass.getDisplacedVolume( y );
+        }
+        else if ( y > boat.stepTop ) {
+          volume += mass.getDisplacedVolume( y );
+          volume -= mass.getDisplacedVolume( boat.stepTop );
+        }
+      } );
+      return volume;
+    }
+
+    getEmptyPoolVolume( y, boat ) {
+      assert && assert( boat || boat === null );
+
+      return this.poolBounds.width * this.poolBounds.depth * ( y - this.poolBounds.minY ) - this.getDisplacedPoolVolume( y, boat );
+    }
+
+    getDisplacedPoolArea( y, boat ) {
+      assert && assert( boat || boat === null );
+
+      let area = 0;
+      this.masses.forEach( mass => {
+        if ( boat && mass.alignedWithBoat && y >= boat.stepBottom && y <= boat.stepTop ) {
+          area += 0;
+        }
+        else {
+          area += mass.getDisplacedArea( y );
+        }
+      } );
+      return area;
+    }
+
+    getEmptyPoolArea( y, boat ) {
+      assert && assert( boat || boat === null );
+
+      return this.poolBounds.width * this.poolBounds.depth - this.getDisplacedPoolArea( y, boat );
+    }
+
+    getDisplacedBoatVolume( y, boat ) {
+      assert && assert( boat || boat === null );
+
+      let volume = 0;
+      y = Math.min( y, boat.stepTop );
+      this.masses.forEach( mass => {
+        if ( mass.alignedWithBoat ) {
+          volume += mass.getDisplacedVolume( y );
+        }
+      } );
+      return volume;
+    }
+
+    getEmptyBoatVolume( y, boat ) {
+      assert && assert( boat || boat === null );
+
+      return boat.boatInternalArea * ( y - boat.boatInternalBottom ) - this.getDisplacedBoatVolume( y, boat );
+    }
+
+    getDisplacedBoatArea( y, boat ) {
+      assert && assert( boat || boat === null );
+
+      let area = 0;
+      this.masses.forEach( mass => {
+        if ( mass.alignedWithBoat && y >= boat.stepBottom && y <= boat.stepTop ) {
+          area += mass.getDisplacedArea( y );
+        }
+      } );
+      return area;
+    }
+
+    getEmptyBoatArea( y, boat ) {
+      assert && assert( boat || boat === null );
+
+      return boat.boatInternalArea - this.getDisplacedBoatArea( y, boat );
+    }
+
     /**
-     * Computes the y-value of the top of the main pool's liquid.
+     * Computes the heights of the main pool liquid (and optionally that of the boat)
      * @private
      */
-    updateLiquidY() {
+    updateLiquid() {
+      const boat = _.find( this.masses.getArray(), mass => mass.isBoat() ) || null;
 
-      // TODO!!!! Determine when things are in the boat, as they aren't displacing more liquid!!!
-      // TODO!!!! Determine when things are in the boat, as they aren't displacing more liquid!!!
-      // TODO!!!! Determine when things are in the boat, as they aren't displacing more liquid!!!
-      // TODO!!!! Determine when things are in the boat, as they aren't displacing more liquid!!!
-      // TODO!!!! Determine when things are in the boat, as they aren't displacing more liquid!!!
-      // TODO!!!! Determine when things are in the boat, as they aren't displacing more liquid!!!
-      // TODO!!!! Determine when things are in the boat, as they aren't displacing more liquid!!!
-      // TODO!!!! Determine when things are in the boat, as they aren't displacing more liquid!!!
-      // TODO!!!! Determine when things are in the boat, as they aren't displacing more liquid!!!
+      const criticalPoints = [];
 
-      // TODO: maybe determine what "basin" each object is inside? (can kind of be in multiple?)
+      this.masses.forEach( mass => {
+        mass.updateStepInformation();
+        criticalPoints.push( mass.stepBottom );
+        criticalPoints.push( mass.stepTop );
+      } );
+      criticalPoints.sort( ( a, b ) => a - b ); // TODO: is this the default sort?
 
-      const areaMarkers = [];
-      this.masses.forEach( mass => mass.pushAreaMarkers( areaMarkers ) );
-      AreaMarker.sortMarkers( areaMarkers );
+      this.masses.forEach( mass => {
+        mass.alignedWithBoat = boat && boat !== mass && boat.stepBottom < mass.stepBottom && boat.boatMinX <= mass.stepX && mass.stepX <= boat.boatMaxX;
+      } );
 
-      let y = this.poolBounds.minY;
-      let area = this.poolBounds.width * this.poolBounds.depth;
-      let remainingVolume = this.liquidVolumeProperty.value;
-      let finished = false;
+      const poolArea = this.poolBounds.width * this.poolBounds.depth;
+      let poolLiquidVolume = this.liquidVolumeProperty.value;
+      let boatLiquidVolume = boat ? boat.currentLiquidVolume : 0;
 
-      for ( let i = 0; i < areaMarkers.length; i++ ) {
-        const areaMarker = areaMarkers[ i ];
+      // May need to adjust volumes between the boat/pool if there is a boat
+      if ( boat ) {
 
-        if ( !finished ) {
-          // Handle simultaneous (or almost equivalent) markers without processing
-          if ( areaMarker.y > y ) {
-            const chunkHeight = areaMarker.y - y;
-            const chunkVolume = chunkHeight * area;
-            if ( remainingVolume <= chunkVolume ) {
-              y += ( remainingVolume / chunkVolume ) * chunkHeight;
-              remainingVolume = 0; // TODO: can we just remove this?
-              finished = true;
-            }
-            else {
-              y = areaMarker.y;
-              remainingVolume -= chunkVolume;
-            }
-          }
-          area -= areaMarker.delta;
+        const poolEmptyVolumeToBoatTop = this.getEmptyPoolVolume( boat.stepTop, boat );
+        const boatEmptyVolumeToBoatTop = this.getEmptyBoatVolume( boat.stepTop, boat );
+
+        const poolExcess = poolLiquidVolume - poolEmptyVolumeToBoatTop;
+        const boatExcess = boatLiquidVolume - boatEmptyVolumeToBoatTop;
+
+        if ( poolExcess > 0 && boatExcess < 0 ) {
+          const transferVolume = Math.min( poolExcess, -boatExcess );
+          poolLiquidVolume -= transferVolume;
+          boatLiquidVolume += transferVolume;
+        }
+        if ( poolExcess < 0 && boatExcess > 0 ) {
+          const transferVolume = Math.min( -poolExcess, boatExcess );
+          poolLiquidVolume += transferVolume;
+          boatLiquidVolume -= transferVolume;
         }
 
-        areaMarker.freeToPool();
+        boat.previousLiquidVolume = boat.currentLiquidVolume;
+        boat.currentLiquidVolume = boatLiquidVolume;
       }
 
+      // Check to see if water "spilled" out of the pool
+      const totalEmptyPoolVolumeToTop = this.getEmptyPoolVolume( this.poolBounds.maxY, boat );
+      if ( poolLiquidVolume > totalEmptyPoolVolumeToTop ) {
+        poolLiquidVolume = totalEmptyPoolVolumeToTop;
+      }
+
+      // TODO: animation handling for actual volume in the pool? OR DO WE NOT NEED, only care about the y?
+      this.liquidVolumeProperty.value = poolLiquidVolume;
+
+      // Handle the pool liquid y
+      let y = this.poolBounds.minY;
+      let currentEmptyVolume = this.getEmptyPoolVolume( y, boat ); // TODO: how to handle things slightly below pool bottom. like this?
+      let finished = false;
+      for ( let i = 0; i < criticalPoints.length; i++ ) {
+        const criticalPoint = criticalPoints[ i ];
+
+        if ( criticalPoint > y ) {
+          const emptyVolume = this.getEmptyPoolVolume( criticalPoint, boat );
+          if ( emptyVolume >= poolLiquidVolume ) {
+            y = DemoModel.findRoot(
+              y,
+              criticalPoint,
+              1e-7,
+              yTest => this.getEmptyPoolVolume( yTest, boat ) - poolLiquidVolume,
+              yTest => this.getEmptyPoolArea( yTest, boat )
+            );
+            currentEmptyVolume = this.getEmptyPoolVolume( y, boat );
+            finished = true;
+            break;
+          }
+          else {
+            y = criticalPoint;
+            currentEmptyVolume = emptyVolume;
+          }
+        }
+      }
       if ( !finished ) {
-        y += remainingVolume / area;
+        y += ( poolLiquidVolume - currentEmptyVolume ) / poolArea;
       }
-
       this.previousLiquidY = this.currentLiquidY;
       this.currentLiquidY = y;
+
+      // Handle the boat liquid y
+      if ( boat ) {
+        let y = boat.stepBottom;
+        let currentEmptyVolume = this.getEmptyBoatVolume( y, boat ); // TODO: how to handle things slightly below boat bottom. like this?
+        let finished = false;
+        for ( let i = 0; i < criticalPoints.length; i++ ) {
+          const criticalPoint = criticalPoints[ i ];
+
+          if ( criticalPoint > y ) {
+            const emptyVolume = this.getEmptyBoatVolume( criticalPoint, boat );
+            if ( emptyVolume >= boatLiquidVolume ) {
+              y = DemoModel.findRoot(
+                y,
+                criticalPoint,
+                1e-7,
+                yTest => this.getEmptyBoatVolume( yTest, boat ) - boatLiquidVolume,
+                yTest => this.getEmptyBoatArea( yTest, boat )
+              );
+              currentEmptyVolume = this.getEmptyBoatVolume( y, boat );
+              finished = true;
+              break;
+            }
+            else {
+              y = criticalPoint;
+              currentEmptyVolume = emptyVolume;
+            }
+          }
+        }
+        if ( !finished ) {
+          y += ( boatLiquidVolume - currentEmptyVolume ) / boat.boatInternalArea;
+        }
+        boat.previousLiquidY = boat.currentLiquidY;
+        boat.currentLiquidY = y;
+      }
     }
 
     /**
@@ -206,7 +354,7 @@ define( require => {
       this.engine.step( dt );
 
       this.masses.forEach( mass => {
-        mass.step( dt );
+        mass.step( dt, this.engine.interpolationRatio );
       } );
 
       this.liquidYProperty.value = this.previousLiquidY + this.engine.interpolationRatio * ( this.currentLiquidY - this.previousLiquidY );
@@ -230,7 +378,6 @@ define( require => {
       let dy;
 
       while ( Math.abs( y = valueFunction( x ) ) > tolerance ) {
-        console.log( x );
         dy = derivativeFunction( x );
 
         if ( y < 0 ) {

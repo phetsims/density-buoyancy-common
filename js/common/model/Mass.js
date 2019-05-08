@@ -104,10 +104,33 @@ define( require => {
       } );
 
       this.writeData();
+
+      // @public {number}
+      this.stepX = 0;
+      this.stepBottom = 0;
+      this.stepTop = 0;
+
+      // @public {boolean}
+      this.alignedWithBoat = false;
+    }
+
+    isBoat() {
+      return false;
     }
 
     /**
-     * Returns the submerged volume of this object, assuming a y value for the given liquid level.
+     * Returns the cross-sectional area of this object at a given y level.
+     * @public
+     *
+     * @param {number} liquidLevel
+     * @returns {number}
+     */
+    getDisplacedArea( liquidLevel ) {
+      throw new Error( 'unimplemented' );
+    }
+
+    /**
+     * Returns the cumulative displaced volume of this object up to a given y level.
      * @public
      *
      * @param {number} liquidLevel
@@ -118,13 +141,14 @@ define( require => {
     }
 
     /**
-     * Pushes area markers for this mass onto the array.
+     * TODO: doc. Uses liquid compensation
      * @public
      *
-     * @param {Array.<AreaMarker>} areaMarkers
+     * @param {number} liquidLevel
+     * @returns {number}
      */
-    pushAreaMarkers( areaMarkers ) {
-      throw new Error( 'unimplemented' );
+    getDisplacedBuoyantVolume( liquidLevel ) {
+      return this.getDisplacedVolume( liquidLevel );
     }
 
     readData() {
@@ -154,13 +178,18 @@ define( require => {
       this.userControlledProperty.value = false;
     }
 
+    updateStepInformation() {
+      throw new Error( 'unimplemented' );
+    }
+
     /**
      * Steps forward in time.
      * @public
      *
      * @param {number} dt
+     * @param {number} interpolationRatio
      */
-    step( dt ) {
+    step( dt, interpolationRatio ) {
       this.readData();
 
       this.transformedEmitter.emit();

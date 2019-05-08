@@ -10,16 +10,12 @@ define( function( require ) {
   const Bounds2 = require( 'DOT/Bounds2' );
   const DemoMassNode = require( 'DENSITY_BUOYANCY_COMMON/common/view/DemoMassNode' );
   const densityBuoyancyCommon = require( 'DENSITY_BUOYANCY_COMMON/densityBuoyancyCommon' );
-  const Matrix3 = require( 'DOT/Matrix3' );
   const ModelViewTransform2 = require( 'PHETCOMMON/view/ModelViewTransform2' );
   const Path = require( 'SCENERY/nodes/Path' );
   const ResetAllButton = require( 'SCENERY_PHET/buttons/ResetAllButton' );
   const ScreenView = require( 'JOIST/ScreenView' );
   const Shape = require( 'KITE/Shape' );
   const Vector2 = require( 'DOT/Vector2' );
-
-  // constants
-  const scratchMatrix = new Matrix3();
 
   class DemoScreenView extends ScreenView {
 
@@ -86,11 +82,7 @@ define( function( require ) {
         this.model.poolBounds.minX, this.model.poolBounds.minY,
         this.model.poolBounds.maxX, this.model.liquidYProperty.value
       ) ) );
-      const bodyShape = Shape.union( this.model.masses.getArray().map( mass => {
-        const matrix = scratchMatrix.set( this.modelViewTransform.getMatrix() ).multiplyMatrix( mass.matrix );
-        return mass.displacedShapeProperty.value.transformed( matrix );
-      } ) );
-      this.waterPath.shape = waterShape.shapeDifference( bodyShape );
+      this.waterPath.shape = waterShape;
     }
   }
 

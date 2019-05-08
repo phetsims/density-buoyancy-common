@@ -9,7 +9,6 @@ define( require => {
   'use strict';
 
   // modules
-  const AreaMarker = require( 'DENSITY_BUOYANCY_COMMON/common/model/AreaMarker' );
   const Bounds3 = require( 'DOT/Bounds3' );
   const densityBuoyancyCommon = require( 'DENSITY_BUOYANCY_COMMON/densityBuoyancyCommon' );
   const Mass = require( 'DENSITY_BUOYANCY_COMMON/common/model/Mass' );
@@ -61,8 +60,6 @@ define( require => {
         new Vector2( size.minX, size.maxY )
       ];
 
-      console.log( boatVertices );
-
       config = _.extend( {
         body: engine.createBoat( boatVertices ),
         shape: Shape.polygon( boatVertices ),
@@ -77,66 +74,116 @@ define( require => {
 
       super( engine, config );
 
+      // @public {number}
+      this.thickness = thickness;
+
       // @public {Property.<Bounds3>}
       this.sizeProperty = new Property( size );
 
       // @public {Property.<Bounds3>}
       this.interiorSizeProperty = new Property( interiorSize );
 
+      this.previousLiquidVolume = 0;
+      this.currentLiquidVolume = 0;
+
+      this.previousLiquidY = 0;
+      this.currentLiquidY = 0;
+
+      // Step information
+
+      this.stepArea = 0;
+      this.stepMaximumVolume = 0;
+      this.boatMinX = 0;
+      this.boatMaxX = 0;
+      this.boatInternalBottom = 0;
+      this.boatInternalArea = 0;
+
       // TODO: link updates if size changes
     }
 
+    isBoat() {
+      return true;
+    }
+
+    updateStepInformation() {
+      // TODO: see if we can extend cuboid
+      this.engine.bodyGetStepMatrixTransform( this.body, this.stepMatrix );
+
+      const xOffset = this.stepMatrix.m02();
+      const yOffset = this.stepMatrix.m12();
+
+      this.stepX = xOffset;
+      this.stepBottom = yOffset + this.sizeProperty.value.minY;
+      this.stepTop = yOffset + this.sizeProperty.value.maxY;
+
+      this.stepArea = this.sizeProperty.value.width * this.sizeProperty.value.depth;
+      this.stepMaximumVolume = this.stepArea * this.sizeProperty.value.height;
+
+      this.boatMinX = xOffset + this.sizeProperty.value.minX;
+      this.boatMaxX = xOffset + this.sizeProperty.value.maxX;
+
+      this.boatInternalBottom = this.stepBottom + this.thickness;
+      this.boatInternalArea = ( this.sizeProperty.value.width - this.thickness * 2 ) * ( this.sizeProperty.value.depth - this.thickness * 2 );
+    }
+
     /**
-     * Returns the submerged volume of this object, assuming a y value for the given liquid level.
+     * Returns the cumulative displaced volume of this object up to a given y level.
+     * @public
+     * @override
+     *
+     * Assumes step information was updated.
+     *
+     * @param {number} liquidLevel
+     * @returns {number}
+     */
+    getDisplacedArea( liquidLevel ) {
+      if ( liquidLevel < this.stepBottom || liquidLevel > this.stepTop ) {
+        return 0;
+      }
+      else {
+        return this.stepArea;
+      }
+    }
+
+    /**
+     * Returns the displaced volume of this object up to a given y level, assuming a y value for the given liquid level.
+     * @public
+     * @override
+     *
+     * Assumes step information was updated.
+     *
+     * @param {number} liquidLevel
+     * @returns {number}
+     */
+    getDisplacedVolume( liquidLevel ) {
+      const bottom = this.stepBottom;
+      const top = this.stepTop;
+
+      if ( liquidLevel <= bottom ) {
+        return 0;
+      }
+      else if ( liquidLevel >= top ) {
+        return this.stepMaximumVolume;
+      }
+      else {
+        return this.stepMaximumVolume * ( liquidLevel - bottom ) / ( top - bottom );
+      }
+    }
+
+    /**
+     * TODO: doc. Uses liquid compensation
      * @public
      * @override
      *
      * @param {number} liquidLevel
      * @returns {number}
      */
-    getDisplacedVolume( liquidLevel ) {
-      // TODO: this is the same as Cuboid, no? (well, with the fix)
-      this.engine.bodyGetStepMatrixTransform( this.body, this.stepMatrix );
-
-      const offset = this.stepMatrix.m12();
-      const bottom = offset + this.sizeProperty.value.minY;
-      const top = offset + this.sizeProperty.value.maxY;
-      const maximumVolume = this.sizeProperty.value.width * this.sizeProperty.value.height * this.sizeProperty.value.depth;
-
-      if ( liquidLevel <= bottom ) {
-        return 0;
-      }
-      else if ( liquidLevel >= top ) {
-        return maximumVolume;
-      }
-      else {
-        return maximumVolume * ( liquidLevel - bottom ) / ( top - bottom );
-      }
+    getDisplacedBuoyantVolume( liquidLevel ) {
+      // TODO: yikes! Imagine boat with liquid with things floating in it. figure out.
+      // TODO: NOPE NOPE NOPE NOPE NOPE NOPE NOPE this isn't right
+      return this.getDisplacedVolume( liquidLevel ) - this.boatInternalArea * ( this.currentLiquidY - this.stepBottom );
     }
 
-    /**
-     * Pushes area markers for this mass onto the array.
-     * @public
-     * @override
-     *
-     * @param {Array.<AreaMarker>} areaMarkers
-     */
-    pushAreaMarkers( areaMarkers ) {
-      // TODO: this is the same as Cuboid, no?
-      this.engine.bodyGetStepMatrixTransform( this.body, this.stepMatrix );
-
-      const offset = this.stepMatrix.m12();
-      const area = this.sizeProperty.value.width * this.sizeProperty.value.depth;
-
-      areaMarkers.push( AreaMarker.createFromPool(
-        offset + this.sizeProperty.value.minY,
-        area
-      ) );
-      areaMarkers.push( AreaMarker.createFromPool(
-        offset + this.sizeProperty.value.maxY,
-        -area
-      ) );
-    }
   }
 
   return densityBuoyancyCommon.register( 'Boat', Boat );

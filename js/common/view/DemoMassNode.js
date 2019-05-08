@@ -29,6 +29,7 @@ define( function( require ) {
       } );
 
       const path = new Path( null, {
+        fill: '#aaa',
         stroke: 'red'
       } );
       this.addChild( path );

@@ -211,6 +211,46 @@ define( require => {
 
       this.liquidYProperty.value = this.previousLiquidY + this.engine.interpolationRatio * ( this.currentLiquidY - this.previousLiquidY );
     }
+
+    /**
+     * Hybrid root-finding given our constraints.
+     * @private
+     *
+     * @param {number} minX
+     * @param {number} maxX
+     * @param {number} tolerance
+     * @param {function} valueFunction
+     * @param {function} derivativeFunction
+     * @returns {number}
+     */
+    static findRoot( minX, maxX, tolerance, valueFunction, derivativeFunction ) {
+      let x = ( minX + maxX ) / 2;
+
+      let y;
+      let dy;
+
+      while ( Math.abs( y = valueFunction( x ) ) > tolerance ) {
+        console.log( x );
+        dy = derivativeFunction( x );
+
+        if ( y < 0 ) {
+          minX = x;
+        }
+        else {
+          maxX = x;
+        }
+
+        // Newton's method first
+        x -= y / dy;
+
+        // Bounded to be bisection at the very least
+        if ( x <= minX || x >= maxX ) {
+          x = ( minX + maxX ) / 2;
+        }
+      }
+
+      return x;
+    }
   }
 
   return densityBuoyancyCommon.register( 'DemoModel', DemoModel );

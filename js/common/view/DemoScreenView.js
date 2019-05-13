@@ -20,7 +20,7 @@ define( function( require ) {
   class DemoScreenView extends ScreenView {
 
     /**
-     * @param {DemoModel} model
+     * @param {DensityBuoyancyModel} model
      * @param {Tandem} tandem
      */
     constructor( model, tandem ) {
@@ -29,7 +29,7 @@ define( function( require ) {
 
       const scale = 75;
 
-      // @private {DemoModel}
+      // @private {DensityBuoyancyModel}
       this.model = model;
 
       // @private {ModelViewTransform2}

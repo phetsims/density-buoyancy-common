@@ -21,7 +21,7 @@ define( require => {
   const P2Engine = require( 'DENSITY_BUOYANCY_COMMON/common/model/P2Engine' );
   const Vector2 = require( 'DOT/Vector2' );
 
-  class DemoModel  {
+  class DensityBuoyancyModel  {
 
     /**
      * @param {Tandem} tandem
@@ -277,7 +277,7 @@ define( require => {
         if ( criticalPoint > y ) {
           const emptyVolume = this.getEmptyPoolVolume( criticalPoint, boat );
           if ( emptyVolume >= poolLiquidVolume ) {
-            y = DemoModel.findRoot(
+            y = DensityBuoyancyModel.findRoot(
               y,
               criticalPoint,
               1e-7,
@@ -311,7 +311,7 @@ define( require => {
           if ( criticalPoint > y ) {
             const emptyVolume = this.getEmptyBoatVolume( criticalPoint, boat );
             if ( emptyVolume >= boatLiquidVolume ) {
-              y = DemoModel.findRoot(
+              y = DensityBuoyancyModel.findRoot(
                 y,
                 criticalPoint,
                 1e-7,
@@ -400,5 +400,5 @@ define( require => {
     }
   }
 
-  return densityBuoyancyCommon.register( 'DemoModel', DemoModel );
+  return densityBuoyancyCommon.register( 'DensityBuoyancyModel', DensityBuoyancyModel );
 } );

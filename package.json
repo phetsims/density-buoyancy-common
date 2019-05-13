@@ -22,7 +22,8 @@
     "extends": "../chipper/eslint/sim_eslintrc.js",
     "globals": {
       "Matter": false,
-      "p2": false
+      "p2": false,
+      "THREE": false
     }
   }
 }

@@ -36,7 +36,7 @@ define( require => {
 
       // @public {Bounds3}
       this.groundBounds = new Bounds3(
-        -20, -20, -1,
+        -20, -20, -5,
         20, 0, 1
       );
 

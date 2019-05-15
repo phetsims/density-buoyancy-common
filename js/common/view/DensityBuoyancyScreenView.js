@@ -80,6 +80,12 @@ define( function( require ) {
         ...ThreeUtil.topVertices( new Bounds2(
           model.poolBounds.maxX, model.groundBounds.minZ,
           model.groundBounds.maxX, model.groundBounds.maxZ
+        ), model.groundBounds.maxY ),
+
+        // Back side side
+        ...ThreeUtil.topVertices( new Bounds2(
+          model.poolBounds.minX, model.groundBounds.minZ,
+          model.poolBounds.maxX, model.poolBounds.minZ
         ), model.groundBounds.maxY )
       ] ), 3 ) );
       const topMaterial = new THREE.MeshBasicMaterial( { color: new Color( 107, 165, 75 ).toNumber() } );

@@ -36,8 +36,8 @@ define( require => {
 
       // @public {Bounds3}
       this.groundBounds = new Bounds3(
-        -10, -10, -1,
-        10, 0, 1
+        -20, -20, -1,
+        20, 0, 1
       );
 
       // TODO: make naming between actual and interpolated values!

@@ -214,6 +214,7 @@ define( function( require ) {
           waterGeometry.attributes.position.array[ i ] = vertices[ i ];
         }
         waterGeometry.attributes.position.needsUpdate = true;
+        waterGeometry.computeBoundingSphere();
       } );
 
       // const meshes = [];

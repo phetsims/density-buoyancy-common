@@ -156,6 +156,65 @@ define( function( require ) {
       const poolMesh = new THREE.Mesh( poolGeometry, poolMaterial );
       this.sceneNode.threeScene.add( poolMesh );
 
+      // Water
+      const waterGeometry = new THREE.BufferGeometry();
+      waterGeometry.addAttribute( 'position', new THREE.BufferAttribute( new Float32Array( [
+        // Front
+        ...ThreeUtil.frontVertices( new Bounds2(
+          model.poolBounds.minX, model.poolBounds.minY,
+          model.poolBounds.maxX, model.poolBounds.maxY
+        ), model.poolBounds.maxZ ),
+
+        // Top
+        ...ThreeUtil.topVertices( new Bounds2(
+          model.poolBounds.minX, model.poolBounds.minZ,
+          model.poolBounds.maxX, model.poolBounds.maxZ
+        ), model.poolBounds.maxY )
+      ] ), 3 ) );
+      waterGeometry.addAttribute( 'normal', new THREE.BufferAttribute( new Float32Array( [
+        // Front
+        0, 0, 1,
+        0, 0, 1,
+        0, 0, 1,
+        0, 0, 1,
+        0, 0, 1,
+        0, 0, 1,
+
+        // Top
+        0, 1, 0,
+        0, 1, 0,
+        0, 1, 0,
+        0, 1, 0,
+        0, 1, 0,
+        0, 1, 0
+      ] ), 3 ) );
+      const waterMaterial = new THREE.MeshLambertMaterial( {
+        color: new Color( 0, 128, 255 ).toNumber(),
+        transparent: true,
+        opacity: 0.4
+      } );
+      const waterMesh = new THREE.Mesh( waterGeometry, waterMaterial );
+      this.sceneNode.threeScene.add( waterMesh );
+
+      model.liquidYProperty.link( y => {
+        const vertices = [
+          // Front
+          ...ThreeUtil.frontVertices( new Bounds2(
+            model.poolBounds.minX, model.poolBounds.minY,
+            model.poolBounds.maxX, y
+          ), model.poolBounds.maxZ ),
+
+          // Top
+          ...ThreeUtil.topVertices( new Bounds2(
+            model.poolBounds.minX, model.poolBounds.minZ,
+            model.poolBounds.maxX, model.poolBounds.maxZ
+          ), y )
+        ];
+        for ( let i = 0; i < vertices.length; i++ ) {
+          waterGeometry.attributes.position.array[ i ] = vertices[ i ];
+        }
+        waterGeometry.attributes.position.needsUpdate = true;
+      } );
 
       // const meshes = [];
       const onMassAdded = mass => {
@@ -165,7 +224,7 @@ define( function( require ) {
 
         const boxGeometry = new THREE.BoxGeometry( size.width, size.height, size.depth );
         const boxMesh = new THREE.Mesh( boxGeometry, new THREE.MeshLambertMaterial( {
-          color: 0x7777ff
+          color: 0xffaa44
         } ) );
         this.sceneNode.threeScene.add( boxMesh );
 

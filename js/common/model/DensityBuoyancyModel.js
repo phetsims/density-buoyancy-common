@@ -30,14 +30,14 @@ define( require => {
 
       // @public {Bounds3}
       this.poolBounds = new Bounds3(
-        -3, -4, -1,
-        3, 0, 1
+        -3, -4, -1.5,
+        3, 0, 1.5
       );
 
       // @public {Bounds3}
       this.groundBounds = new Bounds3(
-        -20, -20, -5,
-        20, 0, 1
+        -20, -20, -10,
+        20, 0, 1.5
       );
 
       // TODO: make naming between actual and interpolated values!

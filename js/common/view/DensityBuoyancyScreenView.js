@@ -105,7 +105,19 @@ define( function( require ) {
         ...ThreeUtil.frontVertices( new Bounds2(
           model.poolBounds.minX, model.poolBounds.minY,
           model.poolBounds.maxX, model.poolBounds.maxY
-        ), model.poolBounds.minZ )
+        ), model.poolBounds.minZ ),
+
+        // Left
+        ...ThreeUtil.rightVertices( new Bounds2(
+          model.poolBounds.minZ, model.poolBounds.minY,
+          model.poolBounds.maxZ, model.poolBounds.maxY
+        ), model.poolBounds.minX ),
+
+        // Right
+        ...ThreeUtil.leftVertices( new Bounds2(
+          model.poolBounds.minZ, model.poolBounds.minY,
+          model.poolBounds.maxZ, model.poolBounds.maxY
+        ), model.poolBounds.maxX )
       ] ), 3 ) );
       poolGeometry.addAttribute( 'normal', new THREE.BufferAttribute( new Float32Array( [
         // Bottom
@@ -122,7 +134,23 @@ define( function( require ) {
         0, 0, 1,
         0, 0, 1,
         0, 0, 1,
-        0, 0, 1
+        0, 0, 1,
+
+        // Left
+        1, 0, 0,
+        1, 0, 0,
+        1, 0, 0,
+        1, 0, 0,
+        1, 0, 0,
+        1, 0, 0,
+
+        // Right
+        -1, 0, 0,
+        -1, 0, 0,
+        -1, 0, 0,
+        -1, 0, 0,
+        -1, 0, 0,
+        -1, 0, 0
       ] ), 3 ) );
       const poolMaterial = new THREE.MeshLambertMaterial( { color: new Color( 106, 106, 106 ).toNumber() } );
       const poolMesh = new THREE.Mesh( poolGeometry, poolMaterial );

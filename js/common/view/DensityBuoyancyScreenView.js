@@ -10,11 +10,19 @@ define( function( require ) {
   const Bounds2 = require( 'DOT/Bounds2' );
   const Color = require( 'SCENERY/util/Color' );
   const densityBuoyancyCommon = require( 'DENSITY_BUOYANCY_COMMON/densityBuoyancyCommon' );
+  const FontAwesomeNode = require( 'SUN/FontAwesomeNode' );
+  const HBox = require( 'SCENERY/nodes/HBox' );
   const MobiusSceneNode = require( 'MOBIUS/MobiusSceneNode' );
+  const PhetFont = require( 'SCENERY_PHET/PhetFont' );
   const ResetAllButton = require( 'SCENERY_PHET/buttons/ResetAllButton' );
   const ScreenView = require( 'JOIST/ScreenView' );
+  const Text = require( 'SCENERY/nodes/Text' );
   const ThreeUtil = require( 'MOBIUS/ThreeUtil' );
+  const Util = require( 'SCENERY/util/Util' );
   const Vector3 = require( 'DOT/Vector3' );
+
+  // strings
+  const webglWarningBodyString = require( 'string!SCENERY_PHET/webglWarning.body' );
 
   class DensityBuoyancyScreenView extends ScreenView {
 
@@ -25,6 +33,38 @@ define( function( require ) {
     constructor( model, tandem ) {
 
       super();
+
+      // TODO: Some logic from CanvasWarningNode. Factor out once ideal description is found
+      if ( !phet.chipper.queryParameters.webgl && !Util.isWebGLSupported ) {
+        const warningNode = new HBox( {
+          children: [
+            new FontAwesomeNode( 'warning_sign', {
+              fill: '#E87600', // "safety orange", according to Wikipedia
+              scale: 0.8
+            } ),
+            new Text( webglWarningBodyString, {
+              font: new PhetFont( 16 ),
+              fill: '#000',
+              maxWidth: 600
+            } )
+          ],
+          spacing: 12,
+          align: 'center',
+          cursor: 'pointer',
+          center: this.layoutBounds.center
+        } );
+        this.addChild( warningNode );
+
+        warningNode.mouseArea = warningNode.touchArea = warningNode.localBounds;
+
+        warningNode.addInputListener( {
+          up: function() {
+            var phetWindow = window.open( 'http://phet.colorado.edu/webgl-disabled-page?simLocale=' + phet.joist.sim.locale, '_blank' );
+            phetWindow.focus();
+          }
+        } );
+        return this;
+      }
 
       // @private {DensityBuoyancyModel}
       this.model = model;
@@ -267,7 +307,7 @@ define( function( require ) {
     layout( width, height ) {
       super.layout( width, height );
 
-      this.sceneNode.layout( width, height );
+      this.sceneNode && this.sceneNode.layout( width, height );
     }
 
     // @public
@@ -278,7 +318,7 @@ define( function( require ) {
       // ) ) );
       // this.waterPath.shape = waterShape;
 
-      this.sceneNode.render( undefined );
+      this.sceneNode && this.sceneNode.render( undefined );
     }
   }
 

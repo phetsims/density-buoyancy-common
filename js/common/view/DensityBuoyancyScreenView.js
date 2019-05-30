@@ -35,7 +35,7 @@ define( function( require ) {
       super();
 
       // TODO: Some logic from CanvasWarningNode. Factor out once ideal description is found
-      if ( !phet.chipper.queryParameters.webgl && !Util.isWebGLSupported ) {
+      if ( !phet.chipper.queryParameters.webgl || !Util.isWebGLSupported ) {
         const warningNode = new HBox( {
           children: [
             new FontAwesomeNode( 'warning_sign', {

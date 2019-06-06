@@ -182,6 +182,10 @@ define( require => {
       throw new Error( 'unimplemented' );
     }
 
+    intersect( ray, isTouch ) {
+      return null;
+    }
+
     /**
      * Steps forward in time.
      * @public

@@ -61,6 +61,40 @@ define( require => {
       this.stepMaximumVolume = this.stepArea * this.sizeProperty.value.height;
     }
 
+    intersect( ray, isTouch ) {
+      let tNear = Number.NEGATIVE_INFINITY;
+      let tFar = Number.POSITIVE_INFINITY;
+
+      const size = this.sizeProperty.value;
+      const translation = this.matrix.getTranslation().toVector3();
+
+      if ( ray.direction.x > 0 ) {
+        tNear = Math.max( tNear, ( size.minX + translation.x - ray.position.x ) / ray.direction.x );
+        tFar = Math.min( tFar, ( size.maxX + translation.x - ray.position.x ) / ray.direction.x );
+      } else if ( ray.direction.x < 0 ) {
+        tNear = Math.max( tNear, ( size.maxX + translation.x - ray.position.x ) / ray.direction.x );
+        tFar = Math.min( tFar, ( size.minX + translation.x - ray.position.x ) / ray.direction.x );
+      }
+
+      if ( ray.direction.y > 0 ) {
+        tNear = Math.max( tNear, ( size.minY + translation.y - ray.position.y ) / ray.direction.y );
+        tFar = Math.min( tFar, ( size.maxY + translation.y - ray.position.y ) / ray.direction.y );
+      } else if ( ray.direction.y < 0 ) {
+        tNear = Math.max( tNear, ( size.maxY + translation.y - ray.position.y ) / ray.direction.y );
+        tFar = Math.min( tFar, ( size.minY + translation.y - ray.position.y ) / ray.direction.y );
+      }
+
+      if ( ray.direction.z > 0 ) {
+        tNear = Math.max( tNear, ( size.minZ + translation.z - ray.position.z ) / ray.direction.z );
+        tFar = Math.min( tFar, ( size.maxZ + translation.z - ray.position.z ) / ray.direction.z );
+      } else if ( ray.direction.z < 0 ) {
+        tNear = Math.max( tNear, ( size.maxZ + translation.z - ray.position.z ) / ray.direction.z );
+        tFar = Math.min( tFar, ( size.minZ + translation.z - ray.position.z ) / ray.direction.z );
+      }
+
+      return ( tNear >= tFar ) ? null : ( tNear >= 0 ? tNear : ( isFinite( tFar ) && tFar >= 0 ? tFar : null ) );
+    }
+
     /**
      * Returns the cumulative displaced volume of this object up to a given y level.
      * @public

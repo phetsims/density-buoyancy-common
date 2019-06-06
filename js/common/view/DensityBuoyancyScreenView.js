@@ -13,7 +13,9 @@ define( function( require ) {
   const FontAwesomeNode = require( 'SUN/FontAwesomeNode' );
   const HBox = require( 'SCENERY/nodes/HBox' );
   const MobiusSceneNode = require( 'MOBIUS/MobiusSceneNode' );
+  const Mouse = require( 'SCENERY/input/Mouse' );
   const PhetFont = require( 'SCENERY_PHET/PhetFont' );
+  const Plane3 = require( 'DOT/Plane3' );
   const ResetAllButton = require( 'SCENERY_PHET/buttons/ResetAllButton' );
   const ScreenView = require( 'JOIST/ScreenView' );
   const Text = require( 'SCENERY/nodes/Text' );
@@ -74,6 +76,59 @@ define( function( require ) {
         cameraPosition: new Vector3( 0, 1.25, 13 )
       } );
       this.addChild( this.sceneNode );
+
+      this.sceneNode.backgroundEventTarget.addInputListener( {
+        mousemove: event => {
+          this.sceneNode.backgroundEventTarget.cursor = this.getMassUnderPointer( event.pointer, false ) ? 'pointer' : null;
+        }
+      } );
+
+      // TODO: cleanup!
+      const self = this;
+      this.sceneNode.backgroundEventTarget.addInputListener( {
+        down: function( event, trail ) {
+          if ( !event.canStartPress() ) { return; }
+
+          const isTouch = !( event.pointer instanceof Mouse );
+          const mass = self.getMassUnderPointer( event.pointer, isTouch );
+
+          if ( mass && !mass.userControlledProperty.value ) {
+
+            const initialRay = self.sceneNode.getRayFromScreenPoint( event.pointer.point );
+            const initialT = mass.intersect( initialRay, isTouch );
+            const initialPosition = initialRay.pointAtDistance( initialT );
+            const initialPlane = new Plane3( Vector3.Z_UNIT, initialPosition.z );
+
+            mass.startDrag( initialPosition.toVector2() );
+
+            event.pointer.cursor = 'pointer';
+            event.pointer.addInputListener( {
+              // end drag on either up or cancel (not supporting full cancel behavior)
+              up: function( event, trail ) {
+                this.endDrag( event, trail );
+              },
+              cancel: function( event, trail ) {
+                this.endDrag( event, trail );
+              },
+
+              move: function( event, trail ) {
+                const ray = self.sceneNode.getRayFromScreenPoint( event.pointer.point );
+                const position = initialPlane.intersectWithRay( ray );
+
+                mass.updateDrag( position.toVector2() );
+              },
+
+              // not a Scenery event
+              endDrag: function( event, trail ) {
+                event.pointer.removeInputListener( this );
+                event.pointer.cursor = null;
+
+                mass.endDrag();
+              }
+            } );
+          }
+        }
+      } );
 
       const ambientLight = new THREE.AmbientLight( 0x555555 );
       this.sceneNode.threeScene.add( ambientLight );
@@ -297,6 +352,24 @@ define( function( require ) {
         tandem: tandem.createTandem( 'resetAllButton' )
       } );
       this.addChild( resetAllButton );
+    }
+
+    getMassUnderPointer( pointer, isTouch ) {
+      const ray = this.sceneNode.getRayFromScreenPoint( pointer.point );
+
+      let closestT = Number.POSITIVE_INFINITY;
+      let closestMass = null;
+
+      this.model.masses.forEach( mass => {
+        const t = mass.intersect( ray, isTouch );
+
+        if ( t !== null && t < closestT ) {
+          closestT = t;
+          closestMass = mass;
+        }
+      } );
+
+      return closestMass;
     }
 
     /**

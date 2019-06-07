@@ -72,7 +72,7 @@ define( require => {
       this.currentLiquidY = this.liquidYProperty.value;
 
       const engineType = DensityBuoyancyCommonQueryParameters.engine;
-      assert( engineType === 'p2' || engineType === 'matter' );
+      assert && assert( engineType === 'p2' || engineType === 'matter' );
       this.engine = engineType === 'p2' ? new P2Engine() : new MatterEngine();
 
       // @public {Engine.Body}

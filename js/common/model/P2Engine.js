@@ -268,6 +268,36 @@ define( require => {
     }
 
     /**
+     * Creates a (dynamic) cone body, with the origin at the center of mass
+     * @public
+     * @override
+     *
+     * @param {number} radius
+     * @param {number} height
+     * @param {boolean} isVertexUp
+     * @returns {Engine.Body}
+     */
+    createCone( radius, height, isVertexUp ) {
+      const body = new p2.Body( {
+        type: p2.Body.DYNAMIC,
+        fixedRotation: true
+      } );
+
+      const vertexSign = isVertexUp ? 1 : -1;
+      const cone = new p2.Convex( {
+        vertices: [
+          new Vector2( 0, 0.75 * vertexSign * height ),
+          new Vector2( -vertexSign * radius, -0.25 * vertexSign * height ),
+          new Vector2( vertexSign * radius, -0.25 * vertexSign * height )
+        ].map( P2Engine.vectorToP2 )
+      } );
+
+      body.addShape( cone );
+
+      return body;
+    }
+
+    /**
      * Creates a (dynamic) boat body, with the origin at the center of the box.
      * @public
      * @override

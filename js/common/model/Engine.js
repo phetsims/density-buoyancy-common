@@ -199,6 +199,19 @@ define( require => {
     }
 
     /**
+     * Creates a (dynamic) cone body, with the origin at the center of mass
+     * @public
+     *
+     * @param {number} radius
+     * @param {number} height
+     * @param {boolean} isVertexUp
+     * @returns {Engine.Body}
+     */
+    createCone( radius, height, isVertexUp ) {
+      throw new Error( 'unimplemented' );
+    }
+
+    /**
      * Creates a (dynamic) boat body, with the origin at the center of the box.
      * @public
      *

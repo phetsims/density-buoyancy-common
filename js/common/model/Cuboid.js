@@ -39,7 +39,6 @@ define( require => {
       this.sizeProperty = new Property( size );
 
       // Step information
-
       this.stepArea = 0;
       this.stepMaximumVolume = 0;
 

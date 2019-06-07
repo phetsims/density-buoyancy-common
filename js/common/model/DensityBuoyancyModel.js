@@ -9,6 +9,7 @@ define( require => {
   // modules
   const Boat = require( 'DENSITY_BUOYANCY_COMMON/common/model/Boat' );
   const Bounds3 = require( 'DOT/Bounds3' );
+  const Cone = require( 'DENSITY_BUOYANCY_COMMON/common/model/Cone' );
   const Cuboid = require( 'DENSITY_BUOYANCY_COMMON/common/model/Cuboid' );
   const densityBuoyancyCommon = require( 'DENSITY_BUOYANCY_COMMON/densityBuoyancyCommon' );
   const DensityBuoyancyCommonConstants = require( 'DENSITY_BUOYANCY_COMMON/common/DensityBuoyancyCommonConstants' );
@@ -104,6 +105,11 @@ define( require => {
 
       this.masses.push( new Cuboid( this.engine, new Bounds3( -0.7, -0.7, -0.7, 0.7, 0.7, 0.7 ), {
         matrix: Matrix3.translation( 1.5, 0.5 ),
+        material: Material.WOOD
+      } ) );
+
+      this.masses.push( new Cone( this.engine, 0.5, 1, true, {
+        matrix: Matrix3.translation( 1.5, 3 ),
         material: Material.WOOD
       } ) );
 

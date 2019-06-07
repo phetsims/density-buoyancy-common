@@ -3,12 +3,17 @@
 /**
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
-define( function( require ) {
+define( require => {
   'use strict';
 
   // modules
+  const Boat = require( 'DENSITY_BUOYANCY_COMMON/common/model/Boat' );
   const Bounds2 = require( 'DOT/Bounds2' );
   const Color = require( 'SCENERY/util/Color' );
+  const Cone = require( 'DENSITY_BUOYANCY_COMMON/common/model/Cone' );
+  const ConeView = require( 'DENSITY_BUOYANCY_COMMON/common/view/ConeView' );
+  const Cuboid = require( 'DENSITY_BUOYANCY_COMMON/common/model/Cuboid' );
+  const CuboidView = require( 'DENSITY_BUOYANCY_COMMON/common/view/CuboidView' );
   const densityBuoyancyCommon = require( 'DENSITY_BUOYANCY_COMMON/densityBuoyancyCommon' );
   const FontAwesomeNode = require( 'SUN/FontAwesomeNode' );
   const HBox = require( 'SCENERY/nodes/HBox' );
@@ -314,29 +319,18 @@ define( function( require ) {
 
       // const meshes = [];
       const onMassAdded = mass => {
-
-        // TODO: different view types for each
-        const size = mass.sizeProperty.value;
-
-        const boxGeometry = new THREE.BoxGeometry( size.width, size.height, size.depth );
-        const boxMesh = new THREE.Mesh( boxGeometry, new THREE.MeshLambertMaterial( {
-          color: 0xffaa44
-        } ) );
-        this.sceneNode.threeScene.add( boxMesh );
-
-        const updatePosition = () => {
-          const position = mass.matrix.translation;
-
-          boxMesh.position.x = position.x;
-          boxMesh.position.y = position.y;
-        };
-
-        mass.transformedEmitter.addListener( updatePosition );
-        updatePosition();
+        // TODO: disposal
+        if ( mass instanceof Cuboid || mass instanceof Boat ) {
+          this.sceneNode.threeScene.add( new CuboidView( mass ) );
+        }
+        else if ( mass instanceof Cone ) {
+          this.sceneNode.threeScene.add( new ConeView( mass ) );
+        }
       };
       model.masses.addItemAddedListener( onMassAdded );
       model.masses.forEach( onMassAdded );
 
+      // TODO: yup here
       // model.masses.addItemRemovedListener( mass => {
       //   const massNode = _.find( this.massNodes, massNode => massNode.mass === mass );
       //   this.removeChild( massNode );

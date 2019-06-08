@@ -83,129 +83,19 @@ define( require => {
     }
 
     intersect( ray, isTouch ) {
-/*
-
-
-
-  normalize( ray.relativePosition + t * ray.direction ).y = cos
-
-
-  ( relativePosition.y + t * ray.direction.y ) / sqrt(
-    ( relativePosition.x + t * ray.direction.x )^2 +
-    ( relativePosition.y + t * ray.direction.y )^2 +
-    ( relativePosition.y + t * ray.direction.z )^2
-  ) === cos
-
-  ( relativePosition.y + t * ray.direction.y )^2 / (
-    ( relativePosition.x + t * ray.direction.x )^2 +
-    ( relativePosition.y + t * ray.direction.y )^2 +
-    ( relativePosition.y + t * ray.direction.z )^2
-  ) === cos^2
-
-  ( relativePosition.y + t * ray.direction.y )^2 === cos^2 * (
-    ( relativePosition.x + t * ray.direction.x )^2 +
-    ( relativePosition.y + t * ray.direction.y )^2 +
-    ( relativePosition.y + t * ray.direction.z )^2
-  )
-
-  0 === cos^2 * (
-    ( relativePosition.x + t * ray.direction.x )^2 +
-    ( relativePosition.y + t * ray.direction.y )^2 +
-    ( relativePosition.y + t * ray.direction.z )^2
-  ) - ( relativePosition.y + t * ray.direction.y )^2
-
-  0 === cos^2 * (
-    relativePosition.x^2 + relativePosition.x * ray.direction.x * t + ray.direction.x^2 * t^2 +
-    relativePosition.y^2 + relativePosition.y * ray.direction.y * t + ray.direction.y^2 * t^2 +
-    relativePosition.z^2 + relativePosition.z * ray.direction.z * t + ray.direction.z^2 * t^2 +
-  ) - ( relativePosition.y^2 + relativePosition.y * ray.direction.y * t + ray.direction.y^2 * t^2 )
-
-  0 === cos^2 * (
-    relativePosition.x^2 + relativePosition.y^2 + relativePosition.z^2
-    t * ( relativePosition.x * ray.direction.x + relativePosition.y * ray.direction.y + relativePosition.z * ray.direction.z )
-    t^2 * ( ray.direction.x^2 + ray.direction.y^2 + ray.direction.z^2 )
-  ) - ( relativePosition.y^2 + relativePosition.y * ray.direction.y * t + ray.direction.y^2 * t^2 )
-
-  cos^2 ( relativePosition.x^2 + relativePosition.y^2 + relativePosition.z^2 ) - relativePosition.y^2
-  cos^2 ( relativePosition.x * ray.direction.x + relativePosition.y * ray.direction.y + relativePosition.z * ray.direction.z ) - relativePosition.y * ray.direction.y
-  cos^2 ( ray.direction.x^2 + ray.direction.y^2 + ray.direction.z^2 ) - ray.direction.y^2
-
-  0 === cos^2 * (
-    relativePosition.x^2 + relativePosition.y^2 + relativePosition.z^2
-    t * ( relativePosition.x * ray.direction.x + relativePosition.y * ray.direction.y + relativePosition.z * ray.direction.z )
-    t^2 * ( ray.direction.x^2 + ray.direction.y^2 + ray.direction.z^2 )
-  ) - ( relativePosition.y^2 + relativePosition.y * ray.direction.y * t + ray.direction.y^2 * t^2 )
-*/
-
-
-
-/*
-      // normalized( ray.relativePosition + t * ray.direction ).y = cos
-
-      ( ray.relativePosition.y + t * ray.direction.y ) / Math.sqrt(
-        ( ray.relativePosition.x + t * ray.direction.x ) ^ 2
-        ( ray.relativePosition.y + t * ray.direction.y ) ^ 2
-        ( ray.relativePosition.y + t * ray.direction.z ) ^ 2
-      ) === cos
-
-      0 === cos^2 * (
-        ( ray.relativePosition.x + t * ray.direction.x ) ^ 2
-        ( ray.relativePosition.y + t * ray.direction.y ) ^ 2
-        ( ray.relativePosition.y + t * ray.direction.z ) ^ 2
-      ) - ( ray.relativePosition.y + t * ray.direction.y )^2
-
-      (rp + t * dir)^2 =
-      cos^2( rp^2 + rp * t * dir + t^2 * dir^2 )    -     rp.y^2 + rp.y * t * dir.y + t^2 * dir^2
-
-      cosSquared
-
-
-
-
-ax^2 + by^2 + cz^2 + d === 0
-
-
-a * ( rp.x + t * rd.x )^2 + b * ( rp.y + t * rd.y )^2 + c * ( rp.z + t * rd.z )^2 + d === 0
-
-
-
-t^2: a * rd.x * rd.x + b * rd.y * rd.y + c * rd.z * rd.z
-t  : a * rp.x * rd.x + b * rp.y * rd.y + c * rp.z * rd.z
-   : a * rp.x * rp.x + b * rp.y * rp.y + c * rp.z * rp.z + d
-
-*/
-
       const translation = this.matrix.getTranslation().toVector3();
 
       const tipY = translation.y + this.vertexSign * 0.75;
       const baseY = translation.y - this.vertexSign * 0.25;
       const cos = this.radiusProperty.value / this.heightProperty.value;
       const cosSquared = cos * cos;
+      const cosSquaredInverse = 1 / cosSquared;
 
       const relativePosition = ray.position.minusXYZ( translation.x, tipY, translation.z );
 
-// console.log( `tip: ${translation.x}, ${translation.y + tipY}, )
-      // const a = ray.direction.x * ray.direction.x - ( 1 / cosSquared ) * ray.direction.y * ray.direction.y + ray.direction.z * ray.direction.z;
-      // const b = relativePosition.x * ray.direction.x - ( 1 / cosSquared ) * relativePosition.y * ray.direction.y + relativePosition.z * ray.direction.z;
-      // const c = relativePosition.x * relativePosition.x - ( 1 / cosSquared ) * relativePosition.y * relativePosition.y + relativePosition.z * relativePosition.z;
-
-      const a = cosSquared - ray.direction.y * ray.direction.y;
-      const b = cosSquared * relativePosition.dot( ray.direction ) - relativePosition.y * ray.direction.y;
-      const c = cosSquared * relativePosition.dot( relativePosition ) - relativePosition.y * relativePosition.y;
-  //cosSquared * ( Math.pow(relativePosition.x,2) + Math.pow(relativePosition.y,2) + Math.pow(relativePosition.z,2) ) - Math.pow(relativePosition.y,2)
-  //cosSquared * ( relativePosition.x * ray.direction.x + relativePosition.y * ray.direction.y + relativePosition.z * ray.direction.z ) - relativePosition.y * ray.direction.y
-  //cosSquared * ( Math.pow(ray.direction.x,2) + Math.pow(ray.direction.y,2) + Math.pow(ray.direction.z,2) ) - Math.pow(ray.direction.y,2)
-
-      // const coneDirection = new Vector3( 0, -this.vertexSign, 0 );
-
-      // const dv = ray.direction.dot( coneDirection );
-      // const cov = relativePosition.dot( coneDirection );
-      // const coco = relativePosition.dot( relativePosition );
-      // const dco = ray.direction.dot( relativePosition );
-
-      // const a = dv * dv - cosSquared;
-      // const b = 2 * ( dv * cov - dco * cosSquared );
-      // const c = cov * cov - coco * cosSquared;
+      const a = cosSquaredInverse * ( ray.direction.x * ray.direction.x + ray.direction.z * ray.direction.z ) - ray.direction.y * ray.direction.y;
+      const b = cosSquaredInverse * 2 * ( relativePosition.x * ray.direction.x + relativePosition.z * ray.direction.z ) - relativePosition.y * ray.direction.y;
+      const c = cosSquaredInverse * ( relativePosition.x * relativePosition.x + relativePosition.z * relativePosition.z ) - relativePosition.y * relativePosition.y;
 
       const tValues = Util.solveQuadraticRootsReal( a, b, c ).filter( t => {
         if ( t <= 0 ) {

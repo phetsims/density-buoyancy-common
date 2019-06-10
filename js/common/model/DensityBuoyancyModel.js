@@ -97,8 +97,8 @@ define( require => {
         this.engine.removeBody( mass.body );
       } );
 
-      this.masses.push( new Boat( this.engine, new Bounds3( -1, -1, -1, 1, 1, 1 ), 0.05, {
-        matrix: Matrix3.translation( -1.8, 0 ),
+      this.masses.push( new Boat( this.engine, new Bounds3( -1, -0.5, -1, 1, 0.5, 1 ), 0.05, {
+        matrix: Matrix3.translation( -1.8, -1 ),
         material: Material.ALUMINUM
       } ) );
 
@@ -243,12 +243,16 @@ define( require => {
       return boat.boatInternalArea - this.getDisplacedBoatArea( y, boat );
     }
 
+    getBoat() {
+      return _.find( this.masses.getArray(), mass => mass.isBoat() ) || null;
+    }
+
     /**
      * Computes the heights of the main pool liquid (and optionally that of the boat)
      * @private
      */
     updateLiquid() {
-      const boat = _.find( this.masses.getArray(), mass => mass.isBoat() ) || null;
+      const boat = this.getBoat();
 
       const criticalPoints = [];
 
@@ -257,7 +261,7 @@ define( require => {
         criticalPoints.push( mass.stepBottom );
         criticalPoints.push( mass.stepTop );
       } );
-      criticalPoints.sort( ( a, b ) => a - b ); // TODO: is this the default sort?
+      criticalPoints.sort( ( a, b ) => a - b );
 
       this.masses.forEach( mass => {
         mass.alignedWithBoat = boat && boat !== mass && boat.stepBottom < mass.stepBottom && boat.boatMinX <= mass.stepX && mass.stepX <= boat.boatMaxX;
@@ -265,7 +269,7 @@ define( require => {
 
       const poolArea = this.poolBounds.width * this.poolBounds.depth;
       let poolLiquidVolume = this.liquidVolumeProperty.value;
-      let boatLiquidVolume = boat ? boat.currentLiquidVolume : 0;
+      let boatLiquidVolume = boat ? boat.liquidVolumeProperty.value : 0;
 
       // May need to adjust volumes between the boat/pool if there is a boat
       if ( boat ) {
@@ -287,8 +291,7 @@ define( require => {
           boatLiquidVolume -= transferVolume;
         }
 
-        boat.previousLiquidVolume = boat.currentLiquidVolume;
-        boat.currentLiquidVolume = boatLiquidVolume;
+        boat.liquidVolumeProperty.value = boatLiquidVolume;
       }
 
       // Check to see if water "spilled" out of the pool
@@ -334,7 +337,7 @@ define( require => {
 
       // Handle the boat liquid y
       if ( boat ) {
-        let y = boat.stepBottom;
+        let y = boat.boatInternalBottom;
         let currentEmptyVolume = this.getEmptyBoatVolume( y, boat ); // TODO: how to handle things slightly below boat bottom. like this?
         let finished = false;
         for ( let i = 0; i < criticalPoints.length; i++ ) {
@@ -363,8 +366,7 @@ define( require => {
         if ( !finished ) {
           y += ( boatLiquidVolume - currentEmptyVolume ) / boat.boatInternalArea;
         }
-        boat.previousLiquidY = boat.currentLiquidY;
-        boat.currentLiquidY = y;
+        boat.liquidYProperty.setNextValue( y );
       }
     }
 

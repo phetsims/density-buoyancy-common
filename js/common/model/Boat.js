@@ -11,7 +11,9 @@ define( require => {
   // modules
   const Bounds3 = require( 'DOT/Bounds3' );
   const densityBuoyancyCommon = require( 'DENSITY_BUOYANCY_COMMON/densityBuoyancyCommon' );
+  const InterpolatedProperty = require( 'DENSITY_BUOYANCY_COMMON/common/model/InterpolatedProperty' );
   const Mass = require( 'DENSITY_BUOYANCY_COMMON/common/model/Mass' );
+  const NumberProperty = require( 'AXON/NumberProperty' );
   const Property = require( 'AXON/Property' );
   const Shape = require( 'KITE/Shape' );
   const Vector2 = require( 'DOT/Vector2' );
@@ -83,14 +85,15 @@ define( require => {
       // @public {Property.<Bounds3>}
       this.interiorSizeProperty = new Property( interiorSize );
 
-      this.previousLiquidVolume = 0;
-      this.currentLiquidVolume = 0;
+      // @public {Property.<number>}
+      this.liquidVolumeProperty = new NumberProperty( 0 );
 
-      this.previousLiquidY = 0;
-      this.currentLiquidY = 0;
-
+      // @public {Property.<number>} - The y coordinate of the main liquid level in the boat (relative to interiorSize.minY)
+      this.liquidYProperty = new InterpolatedProperty( 0, {
+        interpolate: InterpolatedProperty.interpolateNumber
+      } );
+ 
       // Step information
-
       this.stepArea = 0;
       this.stepMaximumVolume = 0;
       this.boatMinX = 0;
@@ -101,6 +104,19 @@ define( require => {
       // TODO: link updates if size changes
     }
 
+    /**
+     * Steps forward in time.
+     * @public
+     * @override
+     *
+     * @param {number} dt
+     * @param {number} interpolationRatio
+     */
+    step( dt, interpolationRatio ) {
+      super.step( dt, interpolationRatio );
+
+      this.liquidYProperty.setRatio( interpolationRatio );
+    }
     /**
      * Returns whether this is a boat (as more complicated handling is needed in this case).
      * @public
@@ -188,7 +204,7 @@ define( require => {
     getDisplacedBuoyantVolume( liquidLevel ) {
       // TODO: yikes! Imagine boat with liquid with things floating in it. figure out.
       // TODO: NOPE NOPE NOPE NOPE NOPE NOPE NOPE this isn't right
-      return this.getDisplacedVolume( liquidLevel ) - this.boatInternalArea * ( this.currentLiquidY - this.stepBottom );
+      return this.getDisplacedVolume( liquidLevel ) - this.boatInternalArea * ( this.liquidYProperty.currentValue - this.stepBottom );
     }
 
   }

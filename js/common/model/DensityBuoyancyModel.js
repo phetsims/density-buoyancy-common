@@ -399,6 +399,11 @@ define( require => {
         // Bounded to be bisection at the very least
         if ( x <= minX || x >= maxX ) {
           x = ( minX + maxX ) / 2;
+
+          // Check to see if it's impossible to pass our tolerance
+          if ( x === minX || x === maxX ) {
+            break;
+          }
         }
       }
 

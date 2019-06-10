@@ -98,7 +98,7 @@ define( require => {
       } );
 
       this.masses.push( new Boat( this.engine, new Bounds3( -1, -0.5, -1, 1, 0.5, 1 ), 0.05, {
-        matrix: Matrix3.translation( -1.8, -1 ),
+        matrix: Matrix3.translation( -3, 2 ),
         material: Material.ALUMINUM
       } ) );
 
@@ -366,7 +366,7 @@ define( require => {
         if ( !finished ) {
           y += ( boatLiquidVolume - currentEmptyVolume ) / boat.boatInternalArea;
         }
-        boat.liquidYProperty.setNextValue( y );
+        boat.liquidYProperty.setNextValue( y - boat.boatInternalBottom );
       }
     }
 

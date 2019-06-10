@@ -204,7 +204,7 @@ define( require => {
     getDisplacedBuoyantVolume( liquidLevel ) {
       // TODO: yikes! Imagine boat with liquid with things floating in it. figure out.
       // TODO: NOPE NOPE NOPE NOPE NOPE NOPE NOPE this isn't right
-      return this.getDisplacedVolume( liquidLevel ) - this.boatInternalArea * ( this.liquidYProperty.currentValue - this.stepBottom );
+      return this.getDisplacedVolume( liquidLevel ) - this.boatInternalArea * this.liquidYProperty.currentValue;
     }
 
   }

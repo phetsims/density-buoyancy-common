@@ -41,6 +41,12 @@ define( require => {
       } );
       this.addChild( this.waterPath );
 
+      // @private {Path}
+      this.boatWaterPath = new Path( null, {
+        fill: 'rgba(0,128,255,0.3)'
+      } );
+      this.addChild( this.boatWaterPath );
+
       const modelPoolShape = Shape.polygon( model.groundPoints );
       const viewPoolShape = this.modelViewTransform.modelToViewShape( modelPoolShape );
 
@@ -78,11 +84,21 @@ define( require => {
 
     // @public
     step( dt ) {
-      const waterShape = Shape.bounds( this.modelViewTransform.modelToViewBounds( new Bounds2(
+      this.waterPath.shape = Shape.bounds( this.modelViewTransform.modelToViewBounds( new Bounds2(
         this.model.poolBounds.minX, this.model.poolBounds.minY,
         this.model.poolBounds.maxX, this.model.liquidYProperty.value
       ) ) );
-      this.waterPath.shape = waterShape;
+
+      const boat = this.model.getBoat();
+      if ( boat ) {
+        const interiorSize = boat.interiorSizeProperty.value;
+        this.boatWaterPath.shape = this.modelViewTransform.modelToViewShape( Shape.bounds( new Bounds2(
+          interiorSize.minX,
+          interiorSize.minY,
+          interiorSize.maxX,
+          boat.liquidYProperty.value + interiorSize.minY
+        ) ).transformed( boat.matrix ) );
+      }
     }
   }
 

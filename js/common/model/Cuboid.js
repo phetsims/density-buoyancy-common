@@ -60,38 +60,22 @@ define( require => {
       this.stepMaximumVolume = this.stepArea * this.sizeProperty.value.height;
     }
 
+    /**
+     * If there is an intersection with the ray and this mass, the t-value (distance the ray would need to travel to
+     * reach the intersection, e.g. ray.position + ray.distance * t === intersectionPoint) will be returned. Otherwise
+     * if there is no intersection, null will be returned.
+     * @public
+     * @override
+     *
+     * @param {Ray3} ray
+     * @param {boolean} isTouch
+     * @returns {number|null}
+     */
     intersect( ray, isTouch ) {
-      let tNear = Number.NEGATIVE_INFINITY;
-      let tFar = Number.POSITIVE_INFINITY;
-
       const size = this.sizeProperty.value;
       const translation = this.matrix.getTranslation().toVector3();
 
-      if ( ray.direction.x > 0 ) {
-        tNear = Math.max( tNear, ( size.minX + translation.x - ray.position.x ) / ray.direction.x );
-        tFar = Math.min( tFar, ( size.maxX + translation.x - ray.position.x ) / ray.direction.x );
-      } else if ( ray.direction.x < 0 ) {
-        tNear = Math.max( tNear, ( size.maxX + translation.x - ray.position.x ) / ray.direction.x );
-        tFar = Math.min( tFar, ( size.minX + translation.x - ray.position.x ) / ray.direction.x );
-      }
-
-      if ( ray.direction.y > 0 ) {
-        tNear = Math.max( tNear, ( size.minY + translation.y - ray.position.y ) / ray.direction.y );
-        tFar = Math.min( tFar, ( size.maxY + translation.y - ray.position.y ) / ray.direction.y );
-      } else if ( ray.direction.y < 0 ) {
-        tNear = Math.max( tNear, ( size.maxY + translation.y - ray.position.y ) / ray.direction.y );
-        tFar = Math.min( tFar, ( size.minY + translation.y - ray.position.y ) / ray.direction.y );
-      }
-
-      if ( ray.direction.z > 0 ) {
-        tNear = Math.max( tNear, ( size.minZ + translation.z - ray.position.z ) / ray.direction.z );
-        tFar = Math.min( tFar, ( size.maxZ + translation.z - ray.position.z ) / ray.direction.z );
-      } else if ( ray.direction.z < 0 ) {
-        tNear = Math.max( tNear, ( size.maxZ + translation.z - ray.position.z ) / ray.direction.z );
-        tFar = Math.min( tFar, ( size.minZ + translation.z - ray.position.z ) / ray.direction.z );
-      }
-
-      return ( tNear >= tFar ) ? null : ( tNear >= 0 ? tNear : ( isFinite( tFar ) && tFar >= 0 ? tFar : null ) );
+      return Cuboid.rayCuboidIntersection( size, translation, ray );
     }
 
     /**
@@ -136,6 +120,46 @@ define( require => {
       else {
         return this.stepMaximumVolume * ( liquidLevel - bottom ) / ( top - bottom );
       }
+    }
+
+    /**
+     * Returns a (quick) closest ray intersection with a cuboid (defined by the given Bounds3 and translation).
+     * @public
+     *
+     * @param {Bounds3} bounds
+     * @param {Vector3} translation
+     * @param {Ray3} ray
+     * @returns {number|null}
+     */
+    static rayCuboidIntersection( bounds, translation, ray ) {
+      let tNear = Number.NEGATIVE_INFINITY;
+      let tFar = Number.POSITIVE_INFINITY;
+
+      if ( ray.direction.x > 0 ) {
+        tNear = Math.max( tNear, ( bounds.minX + translation.x - ray.position.x ) / ray.direction.x );
+        tFar = Math.min( tFar, ( bounds.maxX + translation.x - ray.position.x ) / ray.direction.x );
+      } else if ( ray.direction.x < 0 ) {
+        tNear = Math.max( tNear, ( bounds.maxX + translation.x - ray.position.x ) / ray.direction.x );
+        tFar = Math.min( tFar, ( bounds.minX + translation.x - ray.position.x ) / ray.direction.x );
+      }
+
+      if ( ray.direction.y > 0 ) {
+        tNear = Math.max( tNear, ( bounds.minY + translation.y - ray.position.y ) / ray.direction.y );
+        tFar = Math.min( tFar, ( bounds.maxY + translation.y - ray.position.y ) / ray.direction.y );
+      } else if ( ray.direction.y < 0 ) {
+        tNear = Math.max( tNear, ( bounds.maxY + translation.y - ray.position.y ) / ray.direction.y );
+        tFar = Math.min( tFar, ( bounds.minY + translation.y - ray.position.y ) / ray.direction.y );
+      }
+
+      if ( ray.direction.z > 0 ) {
+        tNear = Math.max( tNear, ( bounds.minZ + translation.z - ray.position.z ) / ray.direction.z );
+        tFar = Math.min( tFar, ( bounds.maxZ + translation.z - ray.position.z ) / ray.direction.z );
+      } else if ( ray.direction.z < 0 ) {
+        tNear = Math.max( tNear, ( bounds.maxZ + translation.z - ray.position.z ) / ray.direction.z );
+        tFar = Math.min( tFar, ( bounds.minZ + translation.z - ray.position.z ) / ray.direction.z );
+      }
+
+      return ( tNear >= tFar ) ? null : ( tNear >= 0 ? tNear : ( isFinite( tFar ) && tFar >= 0 ? tFar : null ) );
     }
   }
 

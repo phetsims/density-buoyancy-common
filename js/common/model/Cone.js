@@ -82,6 +82,17 @@ define( require => {
       this.stepMaximumVolume = this.stepArea * this.heightProperty.value / 3;
     }
 
+    /**
+     * If there is an intersection with the ray and this mass, the t-value (distance the ray would need to travel to
+     * reach the intersection, e.g. ray.position + ray.distance * t === intersectionPoint) will be returned. Otherwise
+     * if there is no intersection, null will be returned.
+     * @public
+     * @override
+     *
+     * @param {Ray3} ray
+     * @param {boolean} isTouch
+     * @returns {number|null}
+     */
     intersect( ray, isTouch ) {
       const translation = this.matrix.getTranslation().toVector3();
 

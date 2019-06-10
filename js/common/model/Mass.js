@@ -74,8 +74,6 @@ define( require => {
         return material.density * volume;
       } );
 
-      // TODO: computation of submerged volume
-
       // @public {Matrix}
       this.matrix = config.matrix;
 
@@ -114,6 +112,12 @@ define( require => {
       this.alignedWithBoat = false;
     }
 
+    /**
+     * Returns whether this is a boat (as more complicated handling is needed in this case).
+     * @public
+     *
+     * @returns {boolean}
+     */
     isBoat() {
       return false;
     }
@@ -182,6 +186,16 @@ define( require => {
       throw new Error( 'unimplemented' );
     }
 
+    /**
+     * If there is an intersection with the ray and this mass, the t-value (distance the ray would need to travel to
+     * reach the intersection, e.g. ray.position + ray.distance * t === intersectionPoint) will be returned. Otherwise
+     * if there is no intersection, null will be returned.
+     * @public
+     *
+     * @param {Ray3} ray
+     * @param {boolean} isTouch
+     * @returns {number|null}
+     */
     intersect( ray, isTouch ) {
       return null;
     }

@@ -12,8 +12,7 @@ define( require => {
   const densityBuoyancyCommon = require( 'DENSITY_BUOYANCY_COMMON/densityBuoyancyCommon' );
 
   const DensityBuoyancyCommonConstants = {
-    // {number}
-    GRAVITATIONAL_ACCELERATION: 9.8
+    // TODO
   };
 
   densityBuoyancyCommon.register( 'DensityBuoyancyCommonConstants', DensityBuoyancyCommonConstants );

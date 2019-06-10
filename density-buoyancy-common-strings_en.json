@@ -34,5 +34,8 @@
   },
   "material.wood": {
     "value": "Wood"
+  },
+  "litersPattern": {
+    "value": "{{liters}} L"
   }
 }

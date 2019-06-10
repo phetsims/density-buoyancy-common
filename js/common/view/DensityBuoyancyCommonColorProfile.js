@@ -16,7 +16,9 @@ define( require => {
   // Initial colors for each profile, by string key. Only profile currently is default (still helpful for making color
   // tweaks with the top-level files)
   const DensityBuoyancyCommonColorProfile = new ColorProfile( [ 'default' ], {
-    skyBottom: { default: new Color( 174, 205, 220 ) }
+    skyBottom: { default: new Color( 174, 205, 220 ) },
+
+    waterIndicatorHighlight: { default: new Color( 255, 0, 0 ) }
   } );
 
   densityBuoyancyCommon.register( 'DensityBuoyancyCommonColorProfile', DensityBuoyancyCommonColorProfile );

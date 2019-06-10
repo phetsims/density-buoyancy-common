@@ -10,7 +10,6 @@ define( require => {
 
   // modules
   const densityBuoyancyCommon = require( 'DENSITY_BUOYANCY_COMMON/densityBuoyancyCommon' );
-  const DensityBuoyancyCommonConstants = require( 'DENSITY_BUOYANCY_COMMON/common/DensityBuoyancyCommonConstants' );
   const Engine = require( 'DENSITY_BUOYANCY_COMMON/common/model/Engine' );
   const Vector2 = require( 'DOT/Vector2' );
 
@@ -28,7 +27,6 @@ define( require => {
       // @private {p2.World}
       this.world = new p2.World( {
         // TODO: can we remove this line?
-        gravity: [ 0, -DensityBuoyancyCommonConstants.GRAVITATIONAL_ACCELERATION ]
       } );
 
       this.world.applyGravity = false;

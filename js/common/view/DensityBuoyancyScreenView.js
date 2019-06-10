@@ -15,6 +15,7 @@ define( require => {
   const Cuboid = require( 'DENSITY_BUOYANCY_COMMON/common/model/Cuboid' );
   const CuboidView = require( 'DENSITY_BUOYANCY_COMMON/common/view/CuboidView' );
   const densityBuoyancyCommon = require( 'DENSITY_BUOYANCY_COMMON/densityBuoyancyCommon' );
+  const DerivedProperty = require( 'AXON/DerivedProperty' );
   const FontAwesomeNode = require( 'SUN/FontAwesomeNode' );
   const HBox = require( 'SCENERY/nodes/HBox' );
   const MobiusSceneNode = require( 'MOBIUS/MobiusSceneNode' );
@@ -27,6 +28,7 @@ define( require => {
   const ThreeUtil = require( 'MOBIUS/ThreeUtil' );
   const Util = require( 'SCENERY/util/Util' );
   const Vector3 = require( 'DOT/Vector3' );
+  const WaterLevelIndicator = require( 'DENSITY_BUOYANCY_COMMON/common/view/WaterLevelIndicator' );
 
   // strings
   const webglWarningBodyString = require( 'string!SCENERY_PHET/webglWarning.body' );
@@ -337,6 +339,15 @@ define( require => {
       //   massNode.dispose();
       // } );
 
+      const waterLevelIndicator = new WaterLevelIndicator( new DerivedProperty( [ model.liquidYProperty ], liquidY => {
+        return model.poolBounds.width * model.poolBounds.depth * ( liquidY - model.poolBounds.minY );
+      } ) );
+      this.addChild( waterLevelIndicator );
+      model.liquidYProperty.link( liquidY => {
+        const modelPoint = new Vector3( model.poolBounds.minX, liquidY, model.poolBounds.maxZ );
+        waterLevelIndicator.translation = this.modelToViewPoint( modelPoint );
+      } );
+
       const resetAllButton = new ResetAllButton( {
         listener: () => {
           model.reset();
@@ -346,6 +357,17 @@ define( require => {
         tandem: tandem.createTandem( 'resetAllButton' )
       } );
       this.addChild( resetAllButton );
+    }
+
+    /**
+     * Projects a 3d model point to a 2d view point (in the screen view's coordinate frame).
+     * @public
+     *
+     * @param {Vector3} point
+     * @returns {Vector2}
+     */
+    modelToViewPoint( point ) {
+      return this.parentToLocalPoint( this.sceneNode.projectPoint( point ) );
     }
 
     getMassUnderPointer( pointer, isTouch ) {

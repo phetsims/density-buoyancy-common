@@ -101,6 +101,13 @@ define( require => {
       // TODO: link updates if size changes
     }
 
+    /**
+     * Returns whether this is a boat (as more complicated handling is needed in this case).
+     * @public
+     * @override
+     *
+     * @returns {boolean}
+     */
     isBoat() {
       return true;
     }

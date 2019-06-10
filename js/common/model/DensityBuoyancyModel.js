@@ -8,11 +8,11 @@ define( require => {
 
   // modules
   const Boat = require( 'DENSITY_BUOYANCY_COMMON/common/model/Boat' );
+  const BooleanProperty = require( 'AXON/BooleanProperty' );
   const Bounds3 = require( 'DOT/Bounds3' );
   const Cone = require( 'DENSITY_BUOYANCY_COMMON/common/model/Cone' );
   const Cuboid = require( 'DENSITY_BUOYANCY_COMMON/common/model/Cuboid' );
   const densityBuoyancyCommon = require( 'DENSITY_BUOYANCY_COMMON/densityBuoyancyCommon' );
-  const DensityBuoyancyCommonConstants = require( 'DENSITY_BUOYANCY_COMMON/common/DensityBuoyancyCommonConstants' );
   const DensityBuoyancyCommonQueryParameters = require( 'DENSITY_BUOYANCY_COMMON/common/DensityBuoyancyCommonQueryParameters' );
   const Material = require( 'DENSITY_BUOYANCY_COMMON/common/model/Material' );
   const Matrix3 = require( 'DOT/Matrix3' );
@@ -28,6 +28,22 @@ define( require => {
      * @param {Tandem} tandem
      */
     constructor( tandem ) {
+
+      // @public {Property.<boolean>}
+      this.showGravityForceProperty = new BooleanProperty( false );
+      this.showBuoyancyForceProperty = new BooleanProperty( false );
+      this.showContactForceProperty = new BooleanProperty( false );
+      this.showMassesProperty = new BooleanProperty( false );
+      this.showForceValuesProperty = new BooleanProperty( false );
+
+      // @public {Property.<number>} - Gravitational acceleration downwards (m/s^2)
+      this.gravityProperty = new NumberProperty( 9.8 );
+
+      // @public {Property.<number>}
+      this.liquidDensityProperty = new NumberProperty( Material.WATER.density );
+
+      // @public {Property.<number>}
+      this.liquidViscosityProperty = new NumberProperty( Material.WATER.viscosity );
 
       // @public {Bounds3}
       this.poolBounds = new Bounds3(
@@ -54,12 +70,6 @@ define( require => {
         new Vector2( this.poolBounds.minX, this.poolBounds.maxY ),
         new Vector2( this.groundBounds.minX, this.groundBounds.maxY )
       ];
-
-      // @public {Property.<number>}
-      this.liquidDensityProperty = new NumberProperty( Material.WATER.density );
-
-      // @public {Property.<number>}
-      this.liquidViscosityProperty = new NumberProperty( Material.WATER.viscosity );
 
       // @public {Property.<number>}
       this.liquidVolumeProperty = new NumberProperty( 0.75 * this.poolBounds.width * this.poolBounds.height * this.poolBounds.depth );
@@ -116,12 +126,14 @@ define( require => {
       this.engine.addPostStepListener( () => {
         this.updateLiquid();
 
+        const gravity = this.gravityProperty.value;
+
         this.masses.forEach( mass => {
           // TODO: should we step the liquid y here for stability?
           const submergedVolume = mass.getDisplacedBuoyantVolume( this.currentLiquidY );
           if ( submergedVolume ) {
             const displacedMass = submergedVolume * this.liquidDensityProperty.value;
-            const buoyantForce = displacedMass * DensityBuoyancyCommonConstants.GRAVITATIONAL_ACCELERATION;
+            const buoyantForce = displacedMass * gravity;
             this.engine.bodyApplyForce( mass.body, new Vector2( 0, buoyantForce ) );
 
             const velocity = this.engine.bodyGetVelocity( mass.body );
@@ -129,11 +141,19 @@ define( require => {
           }
 
           // Gravity
-          this.engine.bodyApplyForce( mass.body, new Vector2( 0, -mass.massProperty.value * DensityBuoyancyCommonConstants.GRAVITATIONAL_ACCELERATION ) );
+          this.engine.bodyApplyForce( mass.body, new Vector2( 0, -mass.massProperty.value * gravity ) );
         } );
       } );
     }
 
+    /**
+     * Returns the filled volume in the pool (i.e. things that aren't air or water) that is below the given y value.
+     * (including an optional boat).
+     * @private
+     *
+     * @param {number} y
+     * @param {Boat|null} boat
+     */
     getDisplacedPoolVolume( y, boat ) {
       assert && assert( boat || boat === null );
 
@@ -152,6 +172,14 @@ define( require => {
       return volume;
     }
 
+    /**
+     * Returns the empty volume in the pool (i.e. air, that isn't a solid object) that is below the given y value.
+     * (including an optional boat).
+     * @private
+     *
+     * @param {number} y
+     * @param {Boat|null} boat
+     */
     getEmptyPoolVolume( y, boat ) {
       assert && assert( boat || boat === null );
 
@@ -347,6 +375,17 @@ define( require => {
      * @public
      */
     reset() {
+      this.showGravityForceProperty.reset();
+      this.showBuoyancyForceProperty.reset();
+      this.showContactForceProperty.reset();
+      this.showMassesProperty.reset();
+      this.showForceValuesProperty.reset();
+      this.gravityProperty.reset();
+      this.liquidDensityProperty.reset();
+      this.liquidViscosityProperty.reset();
+      this.liquidVolumeProperty.reset();
+      this.liquidYProperty.reset();
+
       this.masses.forEach( mass => mass.reset() );
     }
 

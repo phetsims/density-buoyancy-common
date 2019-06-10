@@ -14,6 +14,7 @@ define( require => {
   const Cuboid = require( 'DENSITY_BUOYANCY_COMMON/common/model/Cuboid' );
   const densityBuoyancyCommon = require( 'DENSITY_BUOYANCY_COMMON/densityBuoyancyCommon' );
   const DensityBuoyancyCommonQueryParameters = require( 'DENSITY_BUOYANCY_COMMON/common/DensityBuoyancyCommonQueryParameters' );
+  const InterpolatedProperty = require( 'DENSITY_BUOYANCY_COMMON/common/model/InterpolatedProperty' );
   const Material = require( 'DENSITY_BUOYANCY_COMMON/common/model/Material' );
   const Matrix3 = require( 'DOT/Matrix3' );
   const MatterEngine = require( 'DENSITY_BUOYANCY_COMMON/common/model/MatterEngine' );
@@ -75,11 +76,9 @@ define( require => {
       this.liquidVolumeProperty = new NumberProperty( 0.75 * this.poolBounds.width * this.poolBounds.height * this.poolBounds.depth );
 
       // @public {Property.<number>} - The y coordinate of the main liquid level in the pool
-      this.liquidYProperty = new NumberProperty( this.poolBounds.minY + this.liquidVolumeProperty.value / ( this.poolBounds.width * this.poolBounds.depth ) );
-
-      // @private {number}
-      this.previousLiquidY = this.liquidYProperty.value;
-      this.currentLiquidY = this.liquidYProperty.value;
+      this.liquidYProperty = new InterpolatedProperty( this.poolBounds.minY + this.liquidVolumeProperty.value / ( this.poolBounds.width * this.poolBounds.depth ), {
+        interpolate: InterpolatedProperty.interpolateNumber
+      } );
 
       const engineType = DensityBuoyancyCommonQueryParameters.engine;
       assert && assert( engineType === 'p2' || engineType === 'matter' );
@@ -130,7 +129,7 @@ define( require => {
 
         this.masses.forEach( mass => {
           // TODO: should we step the liquid y here for stability?
-          const submergedVolume = mass.getDisplacedBuoyantVolume( this.currentLiquidY );
+          const submergedVolume = mass.getDisplacedBuoyantVolume( this.liquidYProperty.currentValue );
           if ( submergedVolume ) {
             const displacedMass = submergedVolume * this.liquidDensityProperty.value;
             const buoyantForce = displacedMass * gravity;
@@ -331,8 +330,7 @@ define( require => {
       if ( !finished ) {
         y += ( poolLiquidVolume - currentEmptyVolume ) / poolArea;
       }
-      this.previousLiquidY = this.currentLiquidY;
-      this.currentLiquidY = y;
+      this.liquidYProperty.setNextValue( y );
 
       // Handle the boat liquid y
       if ( boat ) {
@@ -402,7 +400,7 @@ define( require => {
         mass.step( dt, this.engine.interpolationRatio );
       } );
 
-      this.liquidYProperty.value = this.previousLiquidY + this.engine.interpolationRatio * ( this.currentLiquidY - this.previousLiquidY );
+      this.liquidYProperty.setRatio( this.engine.interpolationRatio );
     }
 
     /**

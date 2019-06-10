@@ -10,6 +10,7 @@ define( require => {
 
   // modules
   const Bounds3 = require( 'DOT/Bounds3' );
+  const Cuboid = require( 'DENSITY_BUOYANCY_COMMON/common/model/Cuboid' );
   const densityBuoyancyCommon = require( 'DENSITY_BUOYANCY_COMMON/densityBuoyancyCommon' );
   const InterpolatedProperty = require( 'DENSITY_BUOYANCY_COMMON/common/model/InterpolatedProperty' );
   const Mass = require( 'DENSITY_BUOYANCY_COMMON/common/model/Mass' );
@@ -26,6 +27,8 @@ define( require => {
      * @param {Object} config
      */
     constructor( engine, size, thickness, config ) {
+
+      // TODO: Boat needs to be dynamic (or at least theoretically possible)
 
       // TODO: can we just extend Cuboid?
 
@@ -92,6 +95,24 @@ define( require => {
       this.liquidYProperty = new InterpolatedProperty( 0, {
         interpolate: InterpolatedProperty.interpolateNumber
       } );
+
+      // @private {Array.<Bounds3>} - Used for intersection (and they overlap for ease)
+      this.intersectionBoundsArray = [
+        // Bottom
+        new Bounds3( size.minX, size.minY, size.minZ, size.minZ, interiorSize.minY, size.maxZ ),
+
+        // Right side
+        new Bounds3( interiorSize.minX, size.minY, size.minZ, size.maxX, size.maxY, size.maxZ ),
+
+        // Left side
+        new Bounds3( size.minX, size.minY, size.minZ, interiorSize.minX, size.maxY, size.maxZ ),
+
+        // Front side
+        new Bounds3( size.minX, size.minY, interiorSize.maxZ, size.maxX, size.maxY, size.maxZ ),
+
+        // Back side
+        new Bounds3( size.minX, size.minY, size.minZ, size.maxX, size.maxY, interiorSize.minZ )
+      ];
  
       // Step information
       this.stepArea = 0;
@@ -147,6 +168,30 @@ define( require => {
 
       this.boatInternalBottom = this.stepBottom + this.thickness;
       this.boatInternalArea = ( this.sizeProperty.value.width - this.thickness * 2 ) * ( this.sizeProperty.value.depth - this.thickness * 2 );
+    }
+
+    /**
+     * If there is an intersection with the ray and this mass, the t-value (distance the ray would need to travel to
+     * reach the intersection, e.g. ray.position + ray.distance * t === intersectionPoint) will be returned. Otherwise
+     * if there is no intersection, null will be returned.
+     * @public
+     * @override
+     *
+     * @param {Ray3} ray
+     * @param {boolean} isTouch
+     * @returns {number|null}
+     */
+    intersect( ray, isTouch ) {
+      const translation = this.matrix.getTranslation().toVector3();
+
+      let best = null;
+      this.intersectionBoundsArray.forEach( bounds => {
+        const intersection = Cuboid.rayCuboidIntersection( bounds, translation, ray );
+        if ( intersection !== null && ( best === null || intersection < best ) ) {
+          best = intersection;
+        }
+      } );
+      return best;
     }
 
     /**
@@ -207,6 +252,14 @@ define( require => {
       return this.getDisplacedVolume( liquidLevel ) - this.boatInternalArea * this.liquidYProperty.currentValue;
     }
 
+    reset() {
+      this.sizeProperty.reset();
+      this.interiorSizeProperty.reset();
+      this.liquidVolumeProperty.reset();
+      this.liquidYProperty.reset();
+
+      super.reset();
+    }
   }
 
   return densityBuoyancyCommon.register( 'Boat', Boat );

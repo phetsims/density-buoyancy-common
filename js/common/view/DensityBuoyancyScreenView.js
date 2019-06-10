@@ -8,6 +8,7 @@ define( require => {
 
   // modules
   const Boat = require( 'DENSITY_BUOYANCY_COMMON/common/model/Boat' );
+  const BoatView = require( 'DENSITY_BUOYANCY_COMMON/common/view/BoatView' );
   const Bounds2 = require( 'DOT/Bounds2' );
   const Color = require( 'SCENERY/util/Color' );
   const Cone = require( 'DENSITY_BUOYANCY_COMMON/common/model/Cone' );
@@ -322,8 +323,11 @@ define( require => {
       // const meshes = [];
       const onMassAdded = mass => {
         // TODO: disposal
-        if ( mass instanceof Cuboid || mass instanceof Boat ) {
+        if ( mass instanceof Cuboid ) {
           this.sceneNode.threeScene.add( new CuboidView( mass ) );
+        }
+        else if ( mass instanceof Boat ) {
+          this.sceneNode.threeScene.add( new BoatView( mass ) );
         }
         else if ( mass instanceof Cone ) {
           this.sceneNode.threeScene.add( new ConeView( mass ) );

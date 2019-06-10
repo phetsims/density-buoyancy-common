@@ -65,7 +65,6 @@ define( require => {
         normalArray.push( 0, 0, -vertexSign, 0, 0, -vertexSign, 0, 0, -vertexSign );
       }
 
-      // Pool interior
       const coneGeometry = new THREE.BufferGeometry();
       coneGeometry.addAttribute( 'position', new THREE.BufferAttribute( new Float32Array( positionArray ), 3 ) );
       coneGeometry.addAttribute( 'normal', new THREE.BufferAttribute( new Float32Array( normalArray ), 3 ) );

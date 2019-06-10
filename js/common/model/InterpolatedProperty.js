@@ -61,6 +61,19 @@ define( require => {
     }
 
     /**
+     * Resets the Property to its initial state.
+     * @public
+     * @override
+     */
+    reset() {
+      super.reset();
+
+      this.currentValue = this.value;
+      this.previousValue = this.value;
+      this.ratio = 0;
+    }
+
+    /**
      * Interpolation for numbers.
      * @public
      *

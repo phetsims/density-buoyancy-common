@@ -107,7 +107,7 @@ define( require => {
       const relativePosition = ray.position.minusXYZ( translation.x, tipY, translation.z );
 
       const a = cosSquaredInverse * ( ray.direction.x * ray.direction.x + ray.direction.z * ray.direction.z ) - ray.direction.y * ray.direction.y;
-      const b = cosSquaredInverse * 2 * ( relativePosition.x * ray.direction.x + relativePosition.z * ray.direction.z ) - relativePosition.y * ray.direction.y;
+      const b = cosSquaredInverse * 2 * ( relativePosition.x * ray.direction.x + relativePosition.z * ray.direction.z ) - 2 * relativePosition.y * ray.direction.y;
       const c = cosSquaredInverse * ( relativePosition.x * relativePosition.x + relativePosition.z * relativePosition.z ) - relativePosition.y * relativePosition.y;
 
       const tValues = Util.solveQuadraticRootsReal( a, b, c ).filter( t => {

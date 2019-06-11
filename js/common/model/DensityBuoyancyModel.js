@@ -7,6 +7,7 @@ define( require => {
   'use strict';
 
   // modules
+  const Boat = require( 'DENSITY_BUOYANCY_COMMON/common/model/Boat' );
   const BooleanProperty = require( 'AXON/BooleanProperty' );
   const Bounds3 = require( 'DOT/Bounds3' );
   const Cone = require( 'DENSITY_BUOYANCY_COMMON/common/model/Cone' );
@@ -96,10 +97,10 @@ define( require => {
         this.engine.removeBody( mass.body );
       } );
 
-      // this.masses.push( new Boat( this.engine, new Bounds3( -1, -0.5, -1, 1, 0.5, 1 ), 0.05, {
-      //   matrix: Matrix3.translation( -3, 2 ),
-      //   material: Material.ALUMINUM
-      // } ) );
+      this.masses.push( new Boat( this.engine, new Bounds3( -0.1, -0.05, -0.1, 0.1, 0.05, 0.1 ), 0.005, {
+        matrix: Matrix3.translation( -0.3, -0.1 ),
+        material: Material.ALUMINUM
+      } ) );
 
       this.masses.push( new Cuboid( this.engine, new Bounds3( -0.03, -0.03, -0.03, 0.03, 0.03, 0.03 ), {
         matrix: Matrix3.translation( -0.15, -0.2 ),

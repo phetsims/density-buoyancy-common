@@ -210,6 +210,18 @@ define( require => {
     }
 
     /**
+     * Updates the width/height of a box body.
+     * @public
+     *
+     * @param {Engine.Body}
+     * @param {number} width
+     * @param {number} height
+     */
+    updateBox( body, width, height ) {
+      throw new Error( 'unimplemented' );
+    }
+
+    /**
      * Creates a (dynamic) cone body, with the origin at the center of mass
      * @public
      *
@@ -223,15 +235,37 @@ define( require => {
     }
 
     /**
+     * Updates the radius/height of a cone body
+     * @public
+     *
+     * @param {Engine.Body}
+     * @param {number} radius
+     * @param {number} height
+     * @param {boolean} isVertexUp
+     */
+    updateCone( body, radius, height, isVertexUp ) {
+      throw new Error( 'unimplemented' );
+    }
+
+    /**
      * Creates a (dynamic) boat body, with the origin at the center of the box.
      * @public
      *
-     * @param {number} width
-     * @param {number} height
-     * @param {number} thickness
+     * @param {Array.<Vector2>} vertices
      * @returns {Engine.Body}
      */
-    createBoat( width, height, thickness ) {
+    createBoat( vertices ) {
+      throw new Error( 'unimplemented' );
+    }
+
+    /**
+     * Updates the vertices of a boat body
+     * @public
+     *
+     * @param {Engine.Body}
+     * @param {Array.<Vector2>} vertices
+     */
+    updateBoat( body, vertices ) {
       throw new Error( 'unimplemented' );
     }
 

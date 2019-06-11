@@ -261,6 +261,7 @@ define( require => {
     /**
      * Creates a (dynamic) box body, with the origin at the center of the box.
      * @public
+     * @override
      *
      * @param {number} width
      * @param {number} height
@@ -272,6 +273,23 @@ define( require => {
         fixedRotation: true
       } );
 
+      this.updateBox( body, width, height );
+
+      return body;
+    }
+
+    /**
+     * Updates the width/height of a box body.
+     * @public
+     * @override
+     *
+     * @param {Engine.Body}
+     * @param {number} width
+     * @param {number} height
+     */
+    updateBox( body, width, height ) {
+      P2Engine.removeShapes( body );
+
       const box = new p2.Box( {
         width: width * SCALE,
         height: height * SCALE,
@@ -279,8 +297,6 @@ define( require => {
       } );
 
       body.addShape( box );
-
-      return body;
     }
 
     /**
@@ -299,6 +315,24 @@ define( require => {
         fixedRotation: true
       } );
 
+      this.updateCone( body, radius, height, isVertexUp );
+
+      return body;
+    }
+
+    /**
+     * Updates the radius/height of a cone body
+     * @public
+     * @override
+     *
+     * @param {Engine.Body}
+     * @param {number} radius
+     * @param {number} height
+     * @param {boolean} isVertexUp
+     */
+    updateCone( body, radius, height, isVertexUp ) {
+      P2Engine.removeShapes( body );
+
       const vertexSign = isVertexUp ? 1 : -1;
       const cone = new p2.Convex( {
         vertices: [
@@ -310,8 +344,6 @@ define( require => {
       cone.material = dynamicMaterial;
 
       body.addShape( cone );
-
-      return body;
     }
 
     /**
@@ -328,12 +360,26 @@ define( require => {
         fixedRotation: true
       } );
 
+      this.updateBoat( body, vertices );
+
+      return body;
+    }
+
+    /**
+     * Updates the vertices of a boat body
+     * @public
+     * @override
+     *
+     * @param {Engine.Body}
+     * @param {Array.<Vector2>} vertices
+     */
+    updateBoat( body, vertices ) {
+      P2Engine.removeShapes( body );
+
       body.fromPolygon( vertices.map( v => p2.vec2.fromValues( v.x * SCALE, v.y * SCALE ) ) );
 
       // Workaround, since using Convex wasn't working
       body.shapes[ 0 ].material = dynamicMaterial;
-
-      return body;
     }
 
     /**
@@ -428,6 +474,12 @@ define( require => {
 
     static p2ToVector( vector ) {
       return new Vector2( vector[ 0 ] / SCALE, vector[ 1 ] / SCALE );
+    }
+
+    static removeShapes( body ) {
+      while ( body.shapes.length ) {
+        body.removeShape( body.shapes[ body.shapes.length - 1 ] );
+      }
     }
   }
 

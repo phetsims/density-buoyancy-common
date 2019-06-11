@@ -15,7 +15,6 @@ define( require => {
   const Shape = require( 'KITE/Shape' );
   const Util = require( 'DOT/Util' );
   const Vector2 = require( 'DOT/Vector2' );
-  // const Vector3 = require( 'DOT/Vector3' );
 
   class Cone extends Mass {
     /**

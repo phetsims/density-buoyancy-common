@@ -25,16 +25,9 @@ define( require => {
      * @param {Object} config
      */
     constructor( engine, radius, height, isVertexUp, config ) {
-      const vertexSign = isVertexUp ? 1 : -1;
-      const shape = Shape.polygon( [
-        new Vector2( 0, 0.75 * vertexSign * height ),
-        new Vector2( radius, -0.25 * vertexSign * height ),
-        new Vector2( -radius, -0.25 * vertexSign * height )
-      ] );
-
       config = _.extend( {
         body: engine.createCone( radius, height, isVertexUp ),
-        shape: shape,
+        shape: Cone.getConeShape( radius, height, isVertexUp ),
         volume: Math.PI * radius * radius * height / 3,
         canRotate: false
 
@@ -53,7 +46,7 @@ define( require => {
       this.isVertexUp = isVertexUp;
 
       // @private {number}
-      this.vertexSign = vertexSign;
+      this.vertexSign = isVertexUp ? 1 : -1;
 
       // Step information
       this.stepRadius = 0;
@@ -72,18 +65,12 @@ define( require => {
      * @param {number} height
      */
     updateSize( radius, height ) {
-      const vertexSign = this.isVertexUp ? 1 : -1;
-
       this.engine.updateCone( this.body, radius, height, this.isVertexUp );
 
       this.radiusProperty.value = radius;
       this.heightProperty.value = height;
 
-      this.shapeProperty.value = Shape.polygon( [
-        new Vector2( 0, 0.75 * vertexSign * height ),
-        new Vector2( radius, -0.25 * vertexSign * height ),
-        new Vector2( -radius, -0.25 * vertexSign * height )
-      ] );
+      this.shapeProperty.value = Cone.getConeShape( radius, height, this.isVertexUp );
 
       this.volumeProperty.value = Math.PI * radius * radius * height / 3;
     }
@@ -220,6 +207,24 @@ define( require => {
       this.updateSize( this.radiusProperty.value, this.heightProperty.value );
 
       super.reset();
+    }
+
+    /**
+     * Returns a cone shape for a given radius/height/isVertexUp.
+     * @public
+     *
+     * @param {number} radius
+     * @param {number} height
+     * @param {boolean} isVertexUp
+     */
+    static getConeShape( radius, height, isVertexUp ) {
+      const vertexSign = isVertexUp ? 1 : -1;
+
+      return Shape.polygon( [
+        new Vector2( 0, 0.75 * vertexSign * height ),
+        new Vector2( radius, -0.25 * vertexSign * height ),
+        new Vector2( -radius, -0.25 * vertexSign * height )
+      ] );
     }
   }
 

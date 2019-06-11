@@ -18,7 +18,11 @@ define( require => {
   const DensityBuoyancyCommonColorProfile = new ColorProfile( [ 'default' ], {
     skyBottom: { default: new Color( 174, 205, 220 ) },
 
-    waterIndicatorHighlight: { default: new Color( 255, 0, 0 ) }
+    waterIndicatorHighlight: { default: new Color( 255, 0, 0 ) },
+
+    contactForce: { default: new Color( 234, 150, 62 ) },
+    gravityForce: { default: new Color( 41, 59, 139 ) },
+    buoyancyForce: { default: new Color( 218, 51, 138 ) }
   } );
 
   densityBuoyancyCommon.register( 'DensityBuoyancyCommonColorProfile', DensityBuoyancyCommonColorProfile );

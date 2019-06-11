@@ -48,13 +48,13 @@ define( require => {
 
       // @public {Bounds3}
       this.poolBounds = new Bounds3(
-        -0.5, -0.35, -0.2,
-        0.5, 0, 0.2
+        -0.45, -0.35, -0.2,
+        0.45, 0, 0.2
       );
 
       // @public {Bounds3}
       this.groundBounds = new Bounds3(
-        -20, -20, -10,
+        -20, -20, -2,
         20, 0, 0.2
       );
 

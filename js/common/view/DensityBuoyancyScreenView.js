@@ -17,10 +17,12 @@ define( require => {
   const CuboidView = require( 'DENSITY_BUOYANCY_COMMON/common/view/CuboidView' );
   const densityBuoyancyCommon = require( 'DENSITY_BUOYANCY_COMMON/densityBuoyancyCommon' );
   const DerivedProperty = require( 'AXON/DerivedProperty' );
+  const DisplayOptionsNode = require( 'DENSITY_BUOYANCY_COMMON/common/view/DisplayOptionsNode' );
   const FontAwesomeNode = require( 'SUN/FontAwesomeNode' );
   const HBox = require( 'SCENERY/nodes/HBox' );
   const MobiusSceneNode = require( 'MOBIUS/MobiusSceneNode' );
   const Mouse = require( 'SCENERY/input/Mouse' );
+  const Panel = require( 'SUN/Panel' );
   const PhetFont = require( 'SCENERY_PHET/PhetFont' );
   const Plane3 = require( 'DOT/Plane3' );
   const ResetAllButton = require( 'SCENERY_PHET/buttons/ResetAllButton' );
@@ -33,6 +35,9 @@ define( require => {
 
   // strings
   const webglWarningBodyString = require( 'string!SCENERY_PHET/webglWarning.body' );
+
+  // constants
+  const MARGIN = 10;
 
   class DensityBuoyancyScreenView extends ScreenView {
 
@@ -81,11 +86,11 @@ define( require => {
 
       // @private {MobiusSceneNode}
       this.sceneNode = new MobiusSceneNode( this.layoutBounds, {
-        cameraPosition: new Vector3( 0, 0.2, 2 )
+        cameraPosition: new Vector3( 0, 0.4, 2 )
       } );
       this.addChild( this.sceneNode );
 
-      this.sceneNode.threeCamera.zoom = 1.8;
+      this.sceneNode.threeCamera.zoom = 1.7;
       this.sceneNode.threeCamera.updateProjectionMatrix();
       this.sceneNode.threeCamera.up = new THREE.Vector3( 0, 0, -1 );
       this.sceneNode.threeCamera.lookAt( new THREE.Vector3( 0, 0, 0 ) );
@@ -361,11 +366,18 @@ define( require => {
         listener: () => {
           model.reset();
         },
-        right: this.layoutBounds.maxX - 10,
-        bottom: this.layoutBounds.maxY - 10,
+        right: this.layoutBounds.right - MARGIN,
+        bottom: this.layoutBounds.bottom - MARGIN,
         tandem: tandem.createTandem( 'resetAllButton' )
       } );
       this.addChild( resetAllButton );
+
+      this.addChild( new Panel( new DisplayOptionsNode( model ), {
+        xMargin: 10,
+        yMargin: 10,
+        left: this.layoutBounds.left + MARGIN,
+        bottom: this.layoutBounds.bottom - MARGIN
+      } ) );
     }
 
     /**

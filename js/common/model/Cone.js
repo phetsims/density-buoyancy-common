@@ -64,6 +64,30 @@ define( require => {
       // TODO: link updates if size changes
     }
 
+    /**
+     * Updates the size of the cone.
+     * @public
+     *
+     * @param {number} radius
+     * @param {number} height
+     */
+    updateSize( radius, height ) {
+      const vertexSign = this.isVertexUp ? 1 : -1;
+
+      this.engine.updateCone( this.body, radius, height, this.isVertexUp );
+
+      this.radiusProperty.value = radius;
+      this.heightProperty.value = height;
+
+      this.shapeProperty.value = Shape.polygon( [
+        new Vector2( 0, 0.75 * vertexSign * height ),
+        new Vector2( radius, -0.25 * vertexSign * height ),
+        new Vector2( -radius, -0.25 * vertexSign * height )
+      ] );
+
+      this.volumeProperty.value = Math.PI * radius * radius * height / 3;
+    }
+
     updateStepInformation() {
       this.engine.bodyGetStepMatrixTransform( this.body, this.stepMatrix );
 
@@ -184,6 +208,18 @@ define( require => {
           return this.stepArea * this.heightProperty.value * ratio * ratio * ratio / 3;
         }
       }
+    }
+
+    /**
+     * Resets things to their original values.
+     * @public
+     */
+    reset() {
+      this.radiusProperty.reset();
+      this.heightProperty.reset();
+      this.updateSize( this.radiusProperty.value, this.heightProperty.value );
+
+      super.reset();
     }
   }
 

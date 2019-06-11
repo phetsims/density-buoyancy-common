@@ -142,6 +142,7 @@ define( require => {
 
       super.reset();
     }
+
     /**
      * Returns a (quick) closest ray intersection with a cuboid (defined by the given Bounds3 and translation).
      * @public

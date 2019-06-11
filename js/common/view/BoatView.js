@@ -27,14 +27,14 @@ define( require => {
 
       const addSection = ( inside0, outside0, inside1, outside1, normal ) => {
         positionArray.push(
-          center.x, interiorSize.minY, center.y, 
+          center.x, interiorSize.minY, center.y,
           inside1.x, interiorSize.minY, inside1.y,
           inside0.x, interiorSize.minY, inside0.y,
 
           inside1.x, interiorSize.minY, inside1.y,
           inside1.x, interiorSize.maxY, inside1.y,
           inside0.x, interiorSize.minY, inside0.y,
-          
+
           inside0.x, interiorSize.minY, inside0.y,
           inside1.x, interiorSize.maxY, inside1.y,
           inside0.x, interiorSize.maxY, inside0.y,
@@ -50,12 +50,12 @@ define( require => {
           outside1.x, size.minY, outside1.y,
           outside0.x, size.minY, outside0.y,
           outside1.x, size.maxY, outside1.y,
-          
+
           outside0.x, size.minY, outside0.y,
           outside0.x, size.maxY, outside0.y,
           outside1.x, size.maxY, outside1.y,
 
-          center.x, size.minY, center.y, 
+          center.x, size.minY, center.y,
           outside0.x, size.minY, outside0.y,
           outside1.x, size.minY, outside1.y
         );
@@ -123,7 +123,6 @@ define( require => {
         new Vector3( 0, 0, -1 )
       );
 
-      // Pool interior
       const boatGeometry = new THREE.BufferGeometry();
       boatGeometry.addAttribute( 'position', new THREE.BufferAttribute( new Float32Array( positionArray ), 3 ) );
       boatGeometry.addAttribute( 'normal', new THREE.BufferAttribute( new Float32Array( normalArray ), 3 ) );

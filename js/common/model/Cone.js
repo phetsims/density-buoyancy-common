@@ -35,7 +35,6 @@ define( require => {
       config = _.extend( {
         body: engine.createCone( radius, height, isVertexUp ),
         shape: shape,
-        displacedShape: shape,
         volume: Math.PI * radius * radius * height / 3,
         canRotate: false
 

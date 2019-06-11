@@ -31,7 +31,6 @@ define( require => {
 
         // {Shape}
         shape: null,
-        displacedShape: null,
 
         // {Material}
         material: null,
@@ -57,9 +56,6 @@ define( require => {
 
       // @public {Property.<Shape>}
       this.shapeProperty = new Property( config.shape );
-
-      // @public {Property.<Shape>}
-      this.displacedShapeProperty = new Property( config.displacedShape );
 
       // @public {Property.<boolean>}
       this.userControlledProperty = new BooleanProperty( false );
@@ -114,8 +110,11 @@ define( require => {
       // @private {Matrix3}
       this.originalMatrix = this.matrix.copy();
 
-      this.massProperty.link( mass => {
-        engine.bodySetMass( this.body, mass, {
+      Property.multilink( [
+        this.shapeProperty,
+        this.massProperty
+      ], () => {
+        engine.bodySetMass( this.body, this.massProperty.value, {
           canRotate: config.canRotate
         } );
       } );
@@ -243,7 +242,6 @@ define( require => {
     reset() {
       // TODO: check everything to reset
       this.shapeProperty.reset();
-      this.displacedShapeProperty.reset();
       this.materialProperty.reset();
       this.volumeProperty.reset();
       this.velocityProperty.reset();

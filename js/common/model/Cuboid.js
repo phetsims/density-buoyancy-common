@@ -24,7 +24,6 @@ define( require => {
       config = _.extend( {
         body: engine.createBox( size.width, size.height ),
         shape: Shape.rect( size.minX, size.minY, size.width, size.height ),
-        displacedShape: Shape.rect( size.minX, size.minY, size.width, size.height ),
         volume: size.width * size.height * size.depth,
         canRotate: false
 
@@ -41,8 +40,19 @@ define( require => {
       // Step information
       this.stepArea = 0;
       this.stepMaximumVolume = 0;
+    }
 
-      // TODO: link updates if size changes
+    /**
+     * Updates the size of the cuboid.
+     * @public
+     *
+     * @param {Bounds3} size
+     */
+    updateSize( size ) {
+      this.engine.updateBox( this.body, size.width, size.height );
+      this.sizeProperty.value = size;
+      this.shapeProperty.value = Shape.rect( size.minX, size.minY, size.width, size.height );
+      this.volumeProperty.value = size.width * size.height * size.depth;
     }
 
     updateStepInformation() {
@@ -122,6 +132,16 @@ define( require => {
       }
     }
 
+    /**
+     * Resets things to their original values.
+     * @public
+     */
+    reset() {
+      this.sizeProperty.reset();
+      this.updateSize( this.sizeProperty.value );
+
+      super.reset();
+    }
     /**
      * Returns a (quick) closest ray intersection with a cuboid (defined by the given Bounds3 and translation).
      * @public

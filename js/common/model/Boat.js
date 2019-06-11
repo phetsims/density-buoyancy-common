@@ -68,7 +68,6 @@ define( require => {
       config = _.extend( {
         body: engine.createBoat( boatVertices ),
         shape: Shape.polygon( boatVertices ),
-        displacedShape: Shape.rect( size.minX, size.minY, size.width, size.height ),
         volume: volume,
         canRotate: false
 
@@ -113,7 +112,7 @@ define( require => {
         // Back side
         new Bounds3( size.minX, size.minY, size.minZ, size.maxX, size.maxY, interiorSize.minZ )
       ];
- 
+
       // Step information
       this.stepArea = 0;
       this.stepMaximumVolume = 0;

@@ -127,21 +127,32 @@ define( require => {
 
         const gravity = this.gravityProperty.value;
 
+        // Will set all of the mass's force Properties
         this.masses.forEach( mass => {
+          const contactForce = this.engine.bodyGetContactForces( mass.body );
+          mass.contactForceProperty.setNextValue( contactForce );
+
           // TODO: should we step the liquid y here for stability?
           const submergedVolume = mass.getDisplacedBuoyantVolume( this.liquidYProperty.currentValue );
           if ( submergedVolume ) {
             const displacedMass = submergedVolume * this.liquidDensityProperty.value;
-            const buoyantForce = displacedMass * gravity;
-            this.engine.bodyApplyForce( mass.body, new Vector2( 0, buoyantForce ) );
+            const buoyantForce = new Vector2( 0, displacedMass * gravity );
+            this.engine.bodyApplyForce( mass.body, buoyantForce );
+            mass.buoyancyForceProperty.setNextValue( buoyantForce );
 
+            // TODO: Do we ever want to display the viscous forces?
             const velocity = this.engine.bodyGetVelocity( mass.body );
             // TODO: determine a non-hackish way
             this.engine.bodyApplyForce( mass.body, velocity.times( -this.liquidViscosityProperty.value * mass.massProperty.value * 0.005 ) );
           }
+          else {
+            mass.buoyancyForceProperty.setNextValue( Vector2.ZERO );
+          }
 
           // Gravity
-          this.engine.bodyApplyForce( mass.body, new Vector2( 0, -mass.massProperty.value * gravity ) );
+          const gravityForce = new Vector2( 0, -mass.massProperty.value * gravity );
+          this.engine.bodyApplyForce( mass.body, gravityForce );
+          mass.gravityForceProperty.setNextValue( gravityForce );
         } );
       } );
     }

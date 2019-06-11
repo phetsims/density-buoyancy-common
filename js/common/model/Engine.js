@@ -176,6 +176,17 @@ define( require => {
     }
 
     /**
+     * Returns the applied contact force computed in the last step.
+     * @public
+     *
+     * @param {Engine.Body} body
+     * @returns {Vector2}
+     */
+    bodyGetContactForces( body ) {
+      throw new Error( 'unimplemented' );
+    }
+
+    /**
      * Creates a (static) ground body with the given vertices.
      * @public
      *

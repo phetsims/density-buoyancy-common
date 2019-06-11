@@ -11,6 +11,7 @@ define( require => {
   const densityBuoyancyCommon = require( 'DENSITY_BUOYANCY_COMMON/densityBuoyancyCommon' );
   const DerivedProperty = require( 'AXON/DerivedProperty' );
   const Emitter = require( 'AXON/Emitter' );
+  const InterpolatedProperty = require( 'DENSITY_BUOYANCY_COMMON/common/model/InterpolatedProperty' );
   const Matrix3 = require( 'DOT/Matrix3' );
   const NumberProperty = require( 'AXON/NumberProperty' );
   const Property = require( 'AXON/Property' );
@@ -72,6 +73,24 @@ define( require => {
       // @public {Property.<number>} - In kg (kilograms)
       this.massProperty = new DerivedProperty( [ this.materialProperty, this.volumeProperty ], ( material, volume ) => {
         return material.density * volume;
+      } );
+
+      // @public {Property.<Vector2>}
+      this.contactForceProperty = new InterpolatedProperty( Vector2.ZERO, {
+        interpolate: InterpolatedProperty.interpolateVector2,
+        useDeepEquality: true
+      } );
+
+      // @public {Property.<Vector2>}
+      this.buoyancyForceProperty = new InterpolatedProperty( Vector2.ZERO, {
+        interpolate: InterpolatedProperty.interpolateVector2,
+        useDeepEquality: true
+      } );
+
+      // @public {Property.<Vector2>}
+      this.gravityForceProperty = new InterpolatedProperty( Vector2.ZERO, {
+        interpolate: InterpolatedProperty.interpolateVector2,
+        useDeepEquality: true
       } );
 
       // @public {Matrix}
@@ -211,6 +230,10 @@ define( require => {
       this.readData();
 
       this.transformedEmitter.emit();
+
+      this.contactForceProperty.setRatio( interpolationRatio );
+      this.buoyancyForceProperty.setRatio( interpolationRatio );
+      this.gravityForceProperty.setRatio( interpolationRatio );
     }
 
     /**

@@ -225,6 +225,18 @@ define( require => {
     }
 
     /**
+     * Returns the applied contact force computed in the last step.
+     * @public
+     * @override
+     *
+     * @param {Engine.Body} body
+     * @returns {Vector2}
+     */
+    bodyGetContactForces( body ) {
+      return P2Engine.p2ToVector( body.vlambda );
+    }
+
+    /**
      * Creates a (static) ground body with the given vertices.
      * @public
      * @override

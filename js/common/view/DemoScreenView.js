@@ -27,7 +27,7 @@ define( require => {
 
       super();
 
-      const scale = 75;
+      const scale = 600;
 
       // @private {DensityBuoyancyModel}
       this.model = model;

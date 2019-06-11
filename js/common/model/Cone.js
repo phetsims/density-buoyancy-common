@@ -95,10 +95,12 @@ define( require => {
      */
     intersect( ray, isTouch ) {
       const translation = this.matrix.getTranslation().toVector3();
+      const height = this.heightProperty.value;
+      const radius = this.radiusProperty.value;
 
-      const tipY = translation.y + this.vertexSign * 0.75;
-      const baseY = translation.y - this.vertexSign * 0.25;
-      const cos = this.radiusProperty.value / this.heightProperty.value;
+      const tipY = translation.y + this.vertexSign * height * 0.75;
+      const baseY = translation.y - this.vertexSign * height * 0.25;
+      const cos = radius / height;
       const cosSquared = cos * cos;
       const cosSquaredInverse = 1 / cosSquared;
 
@@ -176,12 +178,12 @@ define( require => {
         if ( this.isVertexUp ) {
           // a = pi * ( r * ( 1 - t ) )^2 = pi * r^2 * ( 1 - t )^2 = ( pi * r^2 ) - ( pi * r^2 * t^2 )
           // v = pi * r^2 * t - 1/3 pi * r^2 * t^3 = pi * r^2 * ( t - 1/3 t^3 )
-          return this.stepArea * ( ratio - ratio * ratio * ratio / 3 );
+          return this.stepArea * this.heightProperty.value * ( ratio - ratio * ratio * ratio / 3 );
         }
         else {
           // a = pi * (r*t)^2 = pi * r^2 * t^2
           // v = 1/3 pi * r^2 * t^3
-          return this.stepArea * ratio * ratio * ratio / 3;
+          return this.stepArea * this.heightProperty.value * ratio * ratio * ratio / 3;
         }
       }
     }

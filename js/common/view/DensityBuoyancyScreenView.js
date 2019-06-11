@@ -81,9 +81,14 @@ define( require => {
 
       // @private {MobiusSceneNode}
       this.sceneNode = new MobiusSceneNode( this.layoutBounds, {
-        cameraPosition: new Vector3( 0, 1.25, 13 )
+        cameraPosition: new Vector3( 0, 0.2, 2 )
       } );
       this.addChild( this.sceneNode );
+
+      this.sceneNode.threeCamera.zoom = 1.8;
+      this.sceneNode.threeCamera.updateProjectionMatrix();
+      this.sceneNode.threeCamera.up = new THREE.Vector3( 0, 0, -1 );
+      this.sceneNode.threeCamera.lookAt( new THREE.Vector3( 0, 0, 0 ) );
 
       this.sceneNode.backgroundEventTarget.addInputListener( {
         mousemove: event => {

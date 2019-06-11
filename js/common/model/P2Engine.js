@@ -16,6 +16,7 @@ define( require => {
   // constants
   const FIXED_TIME_STEP = 1 / 60;
   const MAX_SUB_STEPS = 10;
+  const SCALE = 5;
 
   const groundMaterial = new p2.Material();
   const dynamicMaterial = new p2.Material();
@@ -31,11 +32,10 @@ define( require => {
 
       this.world.applyGravity = false;
 
-      this.world.setGlobalStiffness( Number.MAX_VALUE );
-      this.world.setGlobalRelaxation( 1 );
-      this.world.solver.iterations = 20;
-      this.world.solver.tolerance = 0.01;
+      this.world.solver.iterations = 40;
+      this.world.solver.tolerance = 0.000001;
       this.world.solver.frictionIterations = 10;
+      this.world.solver.tolerance = 1e-10;
 
       // @private {Object} - Maps {number} body.id => {p2.RevoluteConstraint}
       this.pointerConstraintMap = {};
@@ -43,10 +43,16 @@ define( require => {
       // @private {Object} - Maps {number} body.id => {p2.Body}
       this.nullBodyMap = {};
 
-      // this.world.addContactMaterial( new p2.ContactMaterial( groundMaterial, dynamicMaterial, {
-      //   restitution: 0,
-      //   stiffness: Number.MAX_VALUE
-      // } ) );
+      this.world.addContactMaterial( new p2.ContactMaterial( groundMaterial, dynamicMaterial, {
+        restitution: 0,
+        stiffness: Number.POSITIVE_INFINITY,
+        relaxation: 0.5
+      } ) );
+      this.world.addContactMaterial( new p2.ContactMaterial( dynamicMaterial, dynamicMaterial, {
+        restitution: 0,
+        stiffness: Number.POSITIVE_INFINITY,
+        relaxation: 0.5
+      } ) );
     }
 
     /**
@@ -116,7 +122,7 @@ define( require => {
      * @param {Matrix3} matrix
      */
     bodyGetMatrixTransform( body, matrix ) {
-      return matrix.setToTranslationRotation( body.interpolatedPosition[ 0 ], body.interpolatedPosition[ 1 ], body.interpolatedAngle );
+      return matrix.setToTranslationRotation( body.interpolatedPosition[ 0 ] / SCALE, body.interpolatedPosition[ 1 ] / SCALE, body.interpolatedAngle );
     }
 
     /**
@@ -128,7 +134,7 @@ define( require => {
      * @param {Matrix3} matrix
      */
     bodyGetStepMatrixTransform( body, matrix ) {
-      return matrix.setToTranslationRotation( body.position[ 0 ], body.position[ 1 ], body.angle );
+      return matrix.setToTranslationRotation( body.position[ 0 ] / SCALE, body.position[ 1 ] / SCALE, body.angle );
     }
 
     /**
@@ -140,8 +146,8 @@ define( require => {
      * @param {Vector2} position
      */
     bodySetPosition( body, position ) {
-      body.position[ 0 ] = position.x;
-      body.position[ 1 ] = position.y;
+      body.position[ 0 ] = position.x * SCALE;
+      body.position[ 1 ] = position.y * SCALE;
     }
 
     /**
@@ -201,8 +207,8 @@ define( require => {
      * @param {Vector2} velocity
      */
     bodySetVelocity( body, velocity ) {
-      body.velocity[ 0 ] = velocity.x;
-      body.velocity[ 1 ] = velocity.y;
+      body.velocity[ 0 ] = velocity.x * SCALE;
+      body.velocity[ 1 ] = velocity.y * SCALE;
     }
 
     /**
@@ -214,8 +220,8 @@ define( require => {
      * @param {Vector2} velocity
      */
     bodyApplyForce( body, force ) {
-      body.force[ 0 ] += force.x;
-      body.force[ 1 ] += force.y;
+      body.force[ 0 ] += force.x * SCALE;
+      body.force[ 1 ] += force.y * SCALE;
     }
 
     /**
@@ -232,7 +238,7 @@ define( require => {
         mass: 0
       } );
 
-      body.fromPolygon( vertices.map( v => p2.vec2.fromValues( v.x, v.y ) ) );
+      body.fromPolygon( vertices.map( v => p2.vec2.fromValues( v.x * SCALE, v.y * SCALE ) ) );
 
       // Workaround, since using Convex wasn't working
       body.shapes[ 0 ].material = groundMaterial;
@@ -255,8 +261,8 @@ define( require => {
       } );
 
       const box = new p2.Box( {
-        width: width,
-        height: height,
+        width: width * SCALE,
+        height: height * SCALE,
         material: dynamicMaterial
       } );
 
@@ -289,6 +295,7 @@ define( require => {
           new Vector2( vertexSign * radius, -0.25 * vertexSign * height )
         ].map( P2Engine.vectorToP2 )
       } );
+      cone.material = dynamicMaterial;
 
       body.addShape( cone );
 
@@ -309,7 +316,7 @@ define( require => {
         fixedRotation: true
       } );
 
-      body.fromPolygon( vertices.map( v => p2.vec2.fromValues( v.x, v.y ) ) );
+      body.fromPolygon( vertices.map( v => p2.vec2.fromValues( v.x * SCALE, v.y * SCALE ) ) );
 
       // Workaround, since using Convex wasn't working
       body.shapes[ 0 ].material = dynamicMaterial;
@@ -404,11 +411,11 @@ define( require => {
     }
 
     static vectorToP2( vector ) {
-      return p2.vec2.fromValues( vector.x, vector.y );
+      return p2.vec2.fromValues( vector.x * SCALE, vector.y * SCALE );
     }
 
     static p2ToVector( vector ) {
-      return new Vector2( vector[ 0 ], vector[ 1 ] );
+      return new Vector2( vector[ 0 ] / SCALE, vector[ 1 ] / SCALE );
     }
   }
 

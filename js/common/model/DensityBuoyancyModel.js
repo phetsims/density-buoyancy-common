@@ -7,7 +7,6 @@ define( require => {
   'use strict';
 
   // modules
-  const Boat = require( 'DENSITY_BUOYANCY_COMMON/common/model/Boat' );
   const BooleanProperty = require( 'AXON/BooleanProperty' );
   const Bounds3 = require( 'DOT/Bounds3' );
   const Cone = require( 'DENSITY_BUOYANCY_COMMON/common/model/Cone' );
@@ -48,14 +47,14 @@ define( require => {
 
       // @public {Bounds3}
       this.poolBounds = new Bounds3(
-        -3, -4, -1.5,
-        3, 0, 1.5
+        -0.5, -0.35, -0.2,
+        0.5, 0, 0.2
       );
 
       // @public {Bounds3}
       this.groundBounds = new Bounds3(
         -20, -20, -10,
-        20, 0, 1.5
+        20, 0, 0.2
       );
 
       // TODO: make naming between actual and interpolated values!
@@ -73,7 +72,7 @@ define( require => {
       ];
 
       // @public {Property.<number>}
-      this.liquidVolumeProperty = new NumberProperty( 0.75 * this.poolBounds.width * this.poolBounds.height * this.poolBounds.depth );
+      this.liquidVolumeProperty = new NumberProperty( 0.1 );
 
       // @public {Property.<number>} - The y coordinate of the main liquid level in the pool
       this.liquidYProperty = new InterpolatedProperty( this.poolBounds.minY + this.liquidVolumeProperty.value / ( this.poolBounds.width * this.poolBounds.depth ), {
@@ -97,28 +96,28 @@ define( require => {
         this.engine.removeBody( mass.body );
       } );
 
-      this.masses.push( new Boat( this.engine, new Bounds3( -1, -0.5, -1, 1, 0.5, 1 ), 0.05, {
-        matrix: Matrix3.translation( -3, 2 ),
-        material: Material.ALUMINUM
-      } ) );
+      // this.masses.push( new Boat( this.engine, new Bounds3( -1, -0.5, -1, 1, 0.5, 1 ), 0.05, {
+      //   matrix: Matrix3.translation( -3, 2 ),
+      //   material: Material.ALUMINUM
+      // } ) );
 
-      this.masses.push( new Cuboid( this.engine, new Bounds3( -0.3, -0.3, -0.3, 0.3, 0.3, 0.3 ), {
-        matrix: Matrix3.translation( -1.5, -2 ),
+      this.masses.push( new Cuboid( this.engine, new Bounds3( -0.03, -0.03, -0.03, 0.03, 0.03, 0.03 ), {
+        matrix: Matrix3.translation( -0.15, -0.2 ),
         material: Material.BRICK
       } ) );
 
-      this.masses.push( new Cuboid( this.engine, new Bounds3( -0.5, -0.5, -0.5, 0.5, 0.5, 0.5 ), {
-        matrix: Matrix3.translation( 0, 0.5 ),
+      this.masses.push( new Cuboid( this.engine, new Bounds3( -0.05, -0.05, -0.05, 0.05, 0.05, 0.05 ), {
+        matrix: Matrix3.translation( 0, 0.05 ),
         material: Material.ICE
       } ) );
 
-      this.masses.push( new Cuboid( this.engine, new Bounds3( -0.7, -0.7, -0.7, 0.7, 0.7, 0.7 ), {
-        matrix: Matrix3.translation( 1.5, 0.5 ),
+      this.masses.push( new Cuboid( this.engine, new Bounds3( -0.07, -0.07, -0.07, 0.07, 0.07, 0.07 ), {
+        matrix: Matrix3.translation( 0.5, 0.2 ),
         material: Material.WOOD
       } ) );
 
-      this.masses.push( new Cone( this.engine, 0.5, 1, true, {
-        matrix: Matrix3.translation( 1.5, 3 ),
+      this.masses.push( new Cone( this.engine, 0.05, 0.1, true, {
+        matrix: Matrix3.translation( 0.3, 0.3 ),
         material: Material.WOOD
       } ) );
 
@@ -136,7 +135,8 @@ define( require => {
             this.engine.bodyApplyForce( mass.body, new Vector2( 0, buoyantForce ) );
 
             const velocity = this.engine.bodyGetVelocity( mass.body );
-            this.engine.bodyApplyForce( mass.body, velocity.times( -this.liquidViscosityProperty.value ) );
+            // TODO: determine a non-hackish way
+            this.engine.bodyApplyForce( mass.body, velocity.times( -this.liquidViscosityProperty.value * mass.massProperty.value * 0.005 ) );
           }
 
           // Gravity

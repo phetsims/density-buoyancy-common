@@ -35,12 +35,12 @@ define( require => {
       this.cuboid = cuboid;
 
       // @private {function}
-      this.sizeListener = size => {
+      this.updateListener = size => {
         CuboidView.updateArrays( boxGeometry.attributes.position.array, null, size );
         boxGeometry.attributes.position.needsUpdate = true;
         boxGeometry.computeBoundingSphere();
       };
-      this.cuboid.sizeProperty.link( this.sizeListener );
+      this.cuboid.sizeProperty.lazyLink( this.updateListener );
     }
 
     /**
@@ -49,7 +49,7 @@ define( require => {
      * @override
      */
     dispose() {
-      this.cuboid.sizeProperty.unlink( this.sizeListener );
+      this.cuboid.sizeProperty.unlink( this.updateListener );
 
       super.dispose();
     }

@@ -11,29 +11,90 @@ define( require => {
   const MassView = require( 'DENSITY_BUOYANCY_COMMON/common/view/MassView' );
   const Vector3 = require( 'DOT/Vector3' );
 
+  // constants
+  const segments = 64;
+  const bufferSize = 18 * segments;
+
   class ConeView extends MassView {
     /**
      * @param {Cone} cone
      */
     constructor( cone ) {
 
-      const positionArray = [];
-      const normalArray = [];
+      const positionArray = new Float32Array( bufferSize );
+      const normalArray = new Float32Array( bufferSize );
 
-      const segments = 64;
-      // TODO: dynamic updates
-      const radius = cone.radiusProperty.value;
-      const height = cone.heightProperty.value;
-      const isVertexUp = cone.isVertexUp;
-      const vertexSign = cone.vertexSign;
+      ConeView.updateArrays( positionArray, normalArray, cone.radiusProperty.value, cone.heightProperty.value, cone.isVertexUp );
 
+      const coneGeometry = new THREE.BufferGeometry();
+      coneGeometry.addAttribute( 'position', new THREE.BufferAttribute( positionArray, 3 ) );
+      coneGeometry.addAttribute( 'normal', new THREE.BufferAttribute( normalArray, 3 ) );
+
+      super( cone, coneGeometry );
+
+      // @public {Cone}
+      this.cone = cone;
+
+      // @private {function}
+      this.updateListener = size => {
+        ConeView.updateArrays( coneGeometry.attributes.position.array, coneGeometry.attributes.normal.array, cone.radiusProperty.value, cone.heightProperty.value, cone.isVertexUp );
+        coneGeometry.attributes.position.needsUpdate = true;
+        coneGeometry.attributes.normal.needsUpdate = true;
+        coneGeometry.computeBoundingSphere();
+      };
+      this.cone.radiusProperty.lazyLink( this.updateListener );
+      this.cone.heightProperty.lazyLink( this.updateListener );
+    }
+
+    /**
+     * Releases references.
+     * @public
+     * @override
+     */
+    dispose() {
+      this.cone.radiusProperty.unlink( this.updateListener );
+      this.cone.heightProperty.unlink( this.updateListener );
+
+      super.dispose();
+    }
+
+    /**
+     * Updates provided geometry arrays given the specific size.
+     * @private
+     *
+     * @param {Float32Array|null} positionArray
+     * @param {Float32Array|null} normalArray
+     * @param {number} radius
+     * @param {number} height
+     * @param {boolean} isVertexUp
+     */
+    static updateArrays( positionArray, normalArray, radius, height, isVertexUp ) {
+      const vertexSign = isVertexUp ? 1 : -1;
       const vertexY = vertexSign * 0.75 * height;
       const baseY = -vertexSign * 0.25 * height;
+
+      let positionIndex = 0;
+      let normalIndex = 0;
+
+      function position( x, y, z ) {
+        if ( positionArray ) {
+          positionArray[ positionIndex++ ] = x;
+          positionArray[ positionIndex++ ] = y;
+          positionArray[ positionIndex++ ] = z;
+        }
+      }
+
+      function normal( x, y, z ) {
+        if ( normalArray ) {
+          normalArray[ normalIndex++ ] = x;
+          normalArray[ normalIndex++ ] = y;
+          normalArray[ normalIndex++ ] = z;
+        }
+      }
 
       for ( let i = 0; i < segments; i++ ) {
         const theta0 = 2 * Math.PI * i / segments;
         const theta1 = 2 * Math.PI * ( i + 1 ) / segments;
-
 
         const vertices = [
           new Vector3( 0, vertexY, 0 ),
@@ -50,29 +111,22 @@ define( require => {
         ];
 
         // TODO: make sure it's pointed the right way? x/z signs should be the same
-        const normal = vertices[ 2 ].minus( vertices[ 0 ] ).cross( vertices[ 1 ].minus( vertices[ 0 ] ) ).normalized().negated();
+        const normalVector = vertices[ 2 ].minus( vertices[ 0 ] ).cross( vertices[ 1 ].minus( vertices[ 0 ] ) ).normalized().negated();
 
         // Side
         for ( let j = 0; j < vertices.length; j++ ) {
-          positionArray.push( vertices[ j ].x, vertices[ j ].y, vertices[ j ].z );
-          normalArray.push( normal.x, normal.y, normal.z );
+          position( vertices[ j ].x, vertices[ j ].y, vertices[ j ].z );
+          normal( normalVector.x, normalVector.y, normalVector.z );
         }
 
         // Top/Bottom
-        positionArray.push( 0, baseY, 0 );
-        positionArray.push( vertices[ 2 ].x, vertices[ 2 ].y, vertices[ 2 ].z );
-        positionArray.push( vertices[ 1 ].x, vertices[ 1 ].y, vertices[ 1 ].z );
-        normalArray.push( 0, 0, -vertexSign, 0, 0, -vertexSign, 0, 0, -vertexSign );
+        position( 0, baseY, 0 );
+        position( vertices[ 2 ].x, vertices[ 2 ].y, vertices[ 2 ].z );
+        position( vertices[ 1 ].x, vertices[ 1 ].y, vertices[ 1 ].z );
+        normal( 0, 0, -vertexSign );
+        normal( 0, 0, -vertexSign );
+        normal( 0, 0, -vertexSign );
       }
-
-      const coneGeometry = new THREE.BufferGeometry();
-      coneGeometry.addAttribute( 'position', new THREE.BufferAttribute( new Float32Array( positionArray ), 3 ) );
-      coneGeometry.addAttribute( 'normal', new THREE.BufferAttribute( new Float32Array( normalArray ), 3 ) );
-
-      super( cone, coneGeometry );
-
-      // @public {Cone}
-      this.cone = cone;
     }
   }
 

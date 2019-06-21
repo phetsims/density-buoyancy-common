@@ -14,6 +14,7 @@ define( require => {
   const Cuboid = require( 'DENSITY_BUOYANCY_COMMON/common/model/Cuboid' );
   const densityBuoyancyCommon = require( 'DENSITY_BUOYANCY_COMMON/densityBuoyancyCommon' );
   const DensityBuoyancyCommonQueryParameters = require( 'DENSITY_BUOYANCY_COMMON/common/DensityBuoyancyCommonQueryParameters' );
+  const Ellipsoid = require( 'DENSITY_BUOYANCY_COMMON/common/model/Ellipsoid' );
   const InterpolatedProperty = require( 'DENSITY_BUOYANCY_COMMON/common/model/InterpolatedProperty' );
   const Material = require( 'DENSITY_BUOYANCY_COMMON/common/model/Material' );
   const Matrix3 = require( 'DOT/Matrix3' );
@@ -119,6 +120,11 @@ define( require => {
 
       this.masses.push( new Cone( this.engine, 0.05, 0.1, true, {
         matrix: Matrix3.translation( 0.3, 0.3 ),
+        material: Material.WOOD
+      } ) );
+
+      this.masses.push( new Ellipsoid( this.engine, new Bounds3( -0.08, -0.05, -0.08, 0.08, 0.05, 0.08 ), {
+        matrix: Matrix3.translation( -0.3, 0.4 ),
         material: Material.WOOD
       } ) );
 

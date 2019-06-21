@@ -300,6 +300,54 @@ define( require => {
     }
 
     /**
+     * Creates a (dynamic) ellipsoid body, with the origin at the center of the ellipsoid (bounded by the width/height)
+     * @public
+     * @override
+     *
+     * @param {number} width
+     * @param {number} height
+     * @returns {Engine.Body}
+     */
+    createEllipsoid( width, height ) {
+      const body = new p2.Body( {
+        type: p2.Body.DYNAMIC,
+        fixedRotation: true
+      } );
+
+      this.updateEllipsoid( body, width, height );
+
+      return body;
+    }
+
+    /**
+     * Updates the width/height of a ellipsoid body.
+     * @public
+     * @override
+     *
+     * @param {Engine.Body}
+     * @param {number} width
+     * @param {number} height
+     */
+    updateEllipsoid( body, width, height ) {
+      P2Engine.removeShapes( body );
+
+      const segments = 80;
+      const vertices = [];
+      for ( let i = 0; i < segments; i++ ) {
+        const theta = i / segments * 2 * Math.PI;
+
+        vertices.push( P2Engine.vectorToP2( new Vector2( Math.cos( theta ) * width / 2, Math.sin( theta ) * height / 2 ) ) );
+      }
+
+      const ellipsoid = new p2.Convex( {
+        vertices: vertices
+      } );
+      ellipsoid.material = dynamicMaterial;
+
+      body.addShape( ellipsoid );
+    }
+
+    /**
      * Creates a (dynamic) cone body, with the origin at the center of mass
      * @public
      * @override

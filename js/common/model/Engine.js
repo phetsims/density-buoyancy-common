@@ -222,6 +222,30 @@ define( require => {
     }
 
     /**
+     * Creates a (dynamic) ellipsoid body, with the origin at the center of the ellipsoid (bounded by the width/height)
+     * @public
+     *
+     * @param {number} width
+     * @param {number} height
+     * @returns {Engine.Body}
+     */
+    createEllipsoid( width, height ) {
+      throw new Error( 'unimplemented' );
+    }
+
+    /**
+     * Updates the width/height of a ellipsoid body.
+     * @public
+     *
+     * @param {Engine.Body}
+     * @param {number} width
+     * @param {number} height
+     */
+    updateEllipsoid( body, width, height ) {
+      throw new Error( 'unimplemented' );
+    }
+
+    /**
      * Creates a (dynamic) cone body, with the origin at the center of mass
      * @public
      *

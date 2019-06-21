@@ -18,6 +18,8 @@ define( require => {
   const densityBuoyancyCommon = require( 'DENSITY_BUOYANCY_COMMON/densityBuoyancyCommon' );
   const DerivedProperty = require( 'AXON/DerivedProperty' );
   const DisplayOptionsNode = require( 'DENSITY_BUOYANCY_COMMON/common/view/DisplayOptionsNode' );
+  const Ellipsoid = require( 'DENSITY_BUOYANCY_COMMON/common/model/Ellipsoid' );
+  const EllipsoidView = require( 'DENSITY_BUOYANCY_COMMON/common/view/EllipsoidView' );
   const FontAwesomeNode = require( 'SUN/FontAwesomeNode' );
   const HBox = require( 'SCENERY/nodes/HBox' );
   const MobiusSceneNode = require( 'MOBIUS/MobiusSceneNode' );
@@ -341,6 +343,9 @@ define( require => {
         }
         else if ( mass instanceof Cone ) {
           this.sceneNode.threeScene.add( new ConeView( mass ) );
+        }
+        else if ( mass instanceof Ellipsoid ) {
+          this.sceneNode.threeScene.add( new EllipsoidView( mass ) );
         }
       };
       model.masses.addItemAddedListener( onMassAdded );

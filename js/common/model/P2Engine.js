@@ -233,7 +233,14 @@ define( require => {
      * @returns {Vector2}
      */
     bodyGetContactForces( body ) {
-      return P2Engine.p2ToVector( body.vlambda );
+      // TODO: yikes! we are including the timestep bit here?
+      return P2Engine.p2ToVector( body.vlambda ).timesScalar( body.mass / FIXED_TIME_STEP );
+    }
+
+    // TODO: doc
+    resetContactForces( body ) {
+      body.vlambda[ 0 ] = 0;
+      body.vlambda[ 1 ] = 0;
     }
 
     /**

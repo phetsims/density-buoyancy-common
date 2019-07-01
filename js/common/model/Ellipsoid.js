@@ -14,6 +14,7 @@ define( require => {
   const Property = require( 'AXON/Property' );
   const Shape = require( 'KITE/Shape' );
   const Util = require( 'DOT/Util' );
+  const Vector3 = require( 'DOT/Vector3' );
 
   class Ellipsoid extends Mass {
     /**
@@ -54,6 +55,7 @@ define( require => {
       this.sizeProperty.value = size;
       this.shapeProperty.value = Ellipsoid.getEllipsoidShape( size.width, size.height );
       this.volumeProperty.value = Math.PI * size.width * size.height * size.depth / 6;
+      this.forceOffsetProperty.value = new Vector3( 0, 0, size.maxZ );
     }
 
     updateStepInformation() {

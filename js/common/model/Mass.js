@@ -17,6 +17,7 @@ define( require => {
   const Property = require( 'AXON/Property' );
   const Vector2 = require( 'DOT/Vector2' );
   const Vector2Property = require( 'DOT/Vector2Property' );
+  const Vector3 = require( 'DOT/Vector3' );
 
   class Mass {
     /**
@@ -72,7 +73,7 @@ define( require => {
       } );
 
       // @public {Property.<Vector2>}
-      this.contactForceProperty = new InterpolatedProperty( Vector2.ZERO, {
+      this.gravityForceProperty = new InterpolatedProperty( Vector2.ZERO, {
         interpolate: InterpolatedProperty.interpolateVector2,
         useDeepEquality: true
       } );
@@ -84,12 +85,17 @@ define( require => {
       } );
 
       // @public {Property.<Vector2>}
-      this.gravityForceProperty = new InterpolatedProperty( Vector2.ZERO, {
+      this.contactForceProperty = new InterpolatedProperty( Vector2.ZERO, {
         interpolate: InterpolatedProperty.interpolateVector2,
         useDeepEquality: true
       } );
 
-      // @public {Matrix}
+      // @public {Property.<Vector3>}
+      this.forceOffsetProperty = new Property( Vector3.ZERO, {
+        useDeepEquality: true
+      } );
+
+      // @public {Matrix3}
       this.matrix = config.matrix;
 
       // @public {Matrix}

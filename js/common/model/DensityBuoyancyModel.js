@@ -136,6 +136,7 @@ define( require => {
         // Will set all of the mass's force Properties
         this.masses.forEach( mass => {
           const contactForce = this.engine.bodyGetContactForces( mass.body );
+          this.engine.resetContactForces( mass.body );
           mass.contactForceProperty.setNextValue( contactForce );
 
           // TODO: should we step the liquid y here for stability?

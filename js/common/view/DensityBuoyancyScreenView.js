@@ -7,6 +7,7 @@ define( require => {
   'use strict';
 
   // modules
+  const arrayRemove = require( 'PHET_CORE/arrayRemove' );
   const Boat = require( 'DENSITY_BUOYANCY_COMMON/common/model/Boat' );
   const BoatView = require( 'DENSITY_BUOYANCY_COMMON/common/view/BoatView' );
   const Bounds2 = require( 'DOT/Bounds2' );
@@ -21,9 +22,11 @@ define( require => {
   const Ellipsoid = require( 'DENSITY_BUOYANCY_COMMON/common/model/Ellipsoid' );
   const EllipsoidView = require( 'DENSITY_BUOYANCY_COMMON/common/view/EllipsoidView' );
   const FontAwesomeNode = require( 'SUN/FontAwesomeNode' );
+  const ForceDiagramNode = require( 'DENSITY_BUOYANCY_COMMON/common/view/ForceDiagramNode' );
   const HBox = require( 'SCENERY/nodes/HBox' );
   const MobiusSceneNode = require( 'MOBIUS/MobiusSceneNode' );
   const Mouse = require( 'SCENERY/input/Mouse' );
+  const Node = require( 'SCENERY/nodes/Node' );
   const Panel = require( 'SUN/Panel' );
   const PhetFont = require( 'SCENERY_PHET/PhetFont' );
   const Plane3 = require( 'DOT/Plane3' );
@@ -91,6 +94,16 @@ define( require => {
         cameraPosition: new Vector3( 0, 0.4, 2 )
       } );
       this.addChild( this.sceneNode );
+
+      // @private {Node}
+      this.forceDiagramLayer = new Node();
+      this.addChild( this.forceDiagramLayer );
+
+      // @private {Array.<MassView>}
+      this.massViews = [];
+
+      // @private {Array.<ForceDiagramNode>}
+      this.forceDiagramNodes = [];
 
       this.sceneNode.threeCamera.zoom = 1.7;
       this.sceneNode.threeCamera.updateProjectionMatrix();
@@ -332,31 +345,54 @@ define( require => {
         waterGeometry.computeBoundingSphere();
       } );
 
-      // const meshes = [];
       const onMassAdded = mass => {
-        // TODO: disposal
+        let massView = null;
+
         if ( mass instanceof Cuboid ) {
-          this.sceneNode.threeScene.add( new CuboidView( mass ) );
+          massView = new CuboidView( mass );
         }
         else if ( mass instanceof Boat ) {
-          this.sceneNode.threeScene.add( new BoatView( mass ) );
+          massView = new BoatView( mass );
         }
         else if ( mass instanceof Cone ) {
-          this.sceneNode.threeScene.add( new ConeView( mass ) );
+          massView = new ConeView( mass );
         }
         else if ( mass instanceof Ellipsoid ) {
-          this.sceneNode.threeScene.add( new EllipsoidView( mass ) );
+          massView = new EllipsoidView( mass );
+        }
+
+        if ( massView ) {
+          this.sceneNode.threeScene.add( massView );
+          this.massViews.push( massView );
+
+          const forceDiagramNode = new ForceDiagramNode(
+            mass,
+            model.showGravityForceProperty,
+            model.showBuoyancyForceProperty,
+            model.showContactForceProperty,
+            model.showForceValuesProperty
+          );
+          this.forceDiagramLayer.addChild( forceDiagramNode );
+          this.forceDiagramNodes.push( forceDiagramNode );
         }
       };
       model.masses.addItemAddedListener( onMassAdded );
       model.masses.forEach( onMassAdded );
 
-      // TODO: yup here
-      // model.masses.addItemRemovedListener( mass => {
-      //   const massNode = _.find( this.massNodes, massNode => massNode.mass === mass );
-      //   this.removeChild( massNode );
-      //   massNode.dispose();
-      // } );
+      const onMassRemoved = mass => {
+        // Mass view
+        const massView = _.find( this.massViews, massView => massView.mass === mass );
+        this.sceneNode.threeScene.remove( massView );
+        arrayRemove( this.massViews, massView );
+        massView.dispose();
+
+        // Force diagram node
+        const forceDiagramNode = _.find( this.forceDiagramNodes, forceDiagramNode => forceDiagramNode.mass === mass );
+        this.forceDiagramLayer.removeChild( forceDiagramNode );
+        arrayRemove( this.forceDiagramNodes, forceDiagramNode );
+        forceDiagramNode.dispose();
+      };
+      model.masses.addItemRemovedListener( onMassRemoved );
 
       const waterLevelIndicator = new WaterLevelIndicator( new DerivedProperty( [ model.liquidYProperty ], liquidY => {
         return model.poolBounds.width * model.poolBounds.depth * ( liquidY - model.poolBounds.minY );
@@ -425,15 +461,21 @@ define( require => {
       this.sceneNode && this.sceneNode.layout( width, height );
     }
 
-    // @public
+    /**
+     * Steps forward in time.
+     * @public
+     *
+     * @param {number} dt
+     */
     step( dt ) {
-      // const waterShape = Shape.bounds( this.modelViewTransform.modelToViewBounds( new Bounds2(
-      //   this.model.poolBounds.minX, this.model.poolBounds.minY,
-      //   this.model.poolBounds.maxX, this.model.liquidYProperty.value
-      // ) ) );
-      // this.waterPath.shape = waterShape;
-
       this.sceneNode && this.sceneNode.render( undefined );
+
+      this.forceDiagramNodes.forEach( forceDiagramNode => {
+        forceDiagramNode.update();
+
+        const mass = forceDiagramNode.mass;
+        forceDiagramNode.translation = this.modelToViewPoint( mass.matrix.translation.plus( mass.forceOffsetProperty.value ) );
+      } );
     }
   }
 

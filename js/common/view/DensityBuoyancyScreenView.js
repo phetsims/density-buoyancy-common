@@ -458,7 +458,12 @@ define( require => {
     layout( width, height ) {
       super.layout( width, height );
 
-      this.sceneNode && this.sceneNode.layout( width, height );
+      // If the simulation was not able to load for WebGL, bail out
+      if ( !this.sceneNode ) {
+        return;
+      }
+
+      this.sceneNode.layout( width, height );
     }
 
     /**
@@ -468,7 +473,12 @@ define( require => {
      * @param {number} dt
      */
     step( dt ) {
-      this.sceneNode && this.sceneNode.render( undefined );
+      // If the simulation was not able to load for WebGL, bail out
+      if ( !this.sceneNode ) {
+        return;
+      }
+
+      this.sceneNode.render( undefined );
 
       this.forceDiagramNodes.forEach( forceDiagramNode => {
         forceDiagramNode.update();

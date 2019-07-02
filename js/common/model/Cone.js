@@ -187,7 +187,7 @@ define( require => {
         if ( this.isVertexUp ) {
           // a = pi * ( r * ( 1 - t ) )^2 = pi * r^2 * ( 1 - t )^2 = ( pi * r^2 ) - ( pi * r^2 * t^2 )
           // v = pi * r^2 * t - 1/3 pi * r^2 * t^3 = pi * r^2 * ( t - 1/3 t^3 )
-          return this.stepArea * this.heightProperty.value * ( ratio - ratio * ratio * ratio / 3 );
+          return this.stepArea * this.heightProperty.value * ( ratio * ( 3 + ratio * ( ratio - 3 ) ) ) / 3;
         }
         else {
           // a = pi * (r*t)^2 = pi * r^2 * t^2

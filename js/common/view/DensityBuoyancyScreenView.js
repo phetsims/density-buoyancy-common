@@ -17,6 +17,7 @@ define( require => {
   const Cuboid = require( 'DENSITY_BUOYANCY_COMMON/common/model/Cuboid' );
   const CuboidView = require( 'DENSITY_BUOYANCY_COMMON/common/view/CuboidView' );
   const densityBuoyancyCommon = require( 'DENSITY_BUOYANCY_COMMON/densityBuoyancyCommon' );
+  const DensityBuoyancyCommonColorProfile = require( 'DENSITY_BUOYANCY_COMMON/common/view/DensityBuoyancyCommonColorProfile' );
   const DerivedProperty = require( 'AXON/DerivedProperty' );
   const DisplayOptionsNode = require( 'DENSITY_BUOYANCY_COMMON/common/view/DisplayOptionsNode' );
   const Ellipsoid = require( 'DENSITY_BUOYANCY_COMMON/common/model/Ellipsoid' );
@@ -24,12 +25,14 @@ define( require => {
   const FontAwesomeNode = require( 'SUN/FontAwesomeNode' );
   const ForceDiagramNode = require( 'DENSITY_BUOYANCY_COMMON/common/view/ForceDiagramNode' );
   const HBox = require( 'SCENERY/nodes/HBox' );
+  const LinearGradient = require( 'SCENERY/util/LinearGradient' );
   const MobiusSceneNode = require( 'MOBIUS/MobiusSceneNode' );
   const Mouse = require( 'SCENERY/input/Mouse' );
   const Node = require( 'SCENERY/nodes/Node' );
   const Panel = require( 'SUN/Panel' );
   const PhetFont = require( 'SCENERY_PHET/PhetFont' );
   const Plane3 = require( 'DOT/Plane3' );
+  const Rectangle = require( 'SCENERY/nodes/Rectangle' );
   const ResetAllButton = require( 'SCENERY_PHET/buttons/ResetAllButton' );
   const ScreenView = require( 'JOIST/ScreenView' );
   const Text = require( 'SCENERY/nodes/Text' );
@@ -88,6 +91,18 @@ define( require => {
 
       // @private {DensityBuoyancyModel}
       this.model = model;
+
+      // @private {Rectangle} - The sky background, in a unit 0-to-1 rectangle (so we can scale it to match)
+      this.backgroundNode = new Rectangle( 0, 0, 1, 1, {
+        fill: new LinearGradient( 0, 0, 0, 1 )
+                .addColorStop( 0, DensityBuoyancyCommonColorProfile.skyTopProperty )
+                .addColorStop( 1, DensityBuoyancyCommonColorProfile.skyBottomProperty )
+      } );
+      this.visibleBoundsProperty.link( visibleBounds => {
+        this.backgroundNode.translation = visibleBounds.leftTop;
+        this.backgroundNode.setScaleMagnitude( visibleBounds.width, visibleBounds.height / 2 );
+      } );
+      this.addChild( this.backgroundNode );
 
       // @private {MobiusSceneNode}
       this.sceneNode = new MobiusSceneNode( this.layoutBounds, {
@@ -191,8 +206,12 @@ define( require => {
           model.poolBounds.maxX, model.poolBounds.minY
         ), model.groundBounds.maxZ )
       ] ), 3 ) );
-      const frontMaterial = new THREE.MeshBasicMaterial( { color: new Color( 144, 104, 46 ).toNumber() } );
-      const frontMesh = new THREE.Mesh( frontGeometry, frontMaterial );
+      const groundMaterial = new THREE.MeshBasicMaterial();
+      DensityBuoyancyCommonColorProfile.groundProperty.link( groundColor => {
+        groundMaterial.color = ThreeUtil.colorToThree( groundColor );
+      } );
+
+      const frontMesh = new THREE.Mesh( frontGeometry, groundMaterial );
       this.sceneNode.threeScene.add( frontMesh );
 
       // Top ground
@@ -200,23 +219,93 @@ define( require => {
       topGeometry.addAttribute( 'position', new THREE.BufferAttribute( new Float32Array( [
         // Left side
         ...ThreeUtil.topVertices( new Bounds2(
-          model.groundBounds.minX, model.groundBounds.minZ,
+          model.groundBounds.minX, model.poolBounds.minZ,
           model.poolBounds.minX, model.groundBounds.maxZ
         ), model.groundBounds.maxY ),
 
         // Right side
         ...ThreeUtil.topVertices( new Bounds2(
-          model.poolBounds.maxX, model.groundBounds.minZ,
+          model.poolBounds.maxX, model.poolBounds.minZ,
           model.groundBounds.maxX, model.groundBounds.maxZ
         ), model.groundBounds.maxY ),
 
-        // Back side side
+        // Back side
         ...ThreeUtil.topVertices( new Bounds2(
-          model.poolBounds.minX, model.groundBounds.minZ,
-          model.poolBounds.maxX, model.poolBounds.minZ
+          model.groundBounds.minX, model.groundBounds.minZ,
+          model.groundBounds.maxX, model.poolBounds.minZ
         ), model.groundBounds.maxY )
       ] ), 3 ) );
-      const topMaterial = new THREE.MeshBasicMaterial( { color: new Color( 107, 165, 75 ).toNumber() } );
+      topGeometry.addAttribute( 'normal', new THREE.BufferAttribute( new Float32Array( [
+        // Left
+        0, 1, 0,
+        0, 1, 0,
+        0, 1, 0,
+        0, 1, 0,
+        0, 1, 0,
+        0, 1, 0,
+
+        // Right
+        0, 1, 0,
+        0, 1, 0,
+        0, 1, 0,
+        0, 1, 0,
+        0, 1, 0,
+        0, 1, 0,
+
+        // Back
+        0, 1, 0,
+        0, 1, 0,
+        0, 1, 0,
+        0, 1, 0,
+        0, 1, 0,
+        0, 1, 0
+      ] ), 3 ) );
+      const topColorArray = new Float32Array( [
+        // Left
+        0, 1, 0,
+        0, 1, 0,
+        0, 1, 0,
+        0, 1, 0,
+        0, 1, 0,
+        0, 1, 0,
+
+        // Right
+        0, 1, 0,
+        0, 1, 0,
+        0, 1, 0,
+        0, 1, 0,
+        0, 1, 0,
+        0, 1, 0,
+
+        // Back
+        1, 1, 0,
+        1, 1, 0,
+        0, 1, 1,
+        0, 1, 1,
+        1, 1, 0,
+        0, 1, 1
+      ] );
+      topGeometry.addAttribute( 'color', new THREE.BufferAttribute( topColorArray, 3 ) );
+      DensityBuoyancyCommonColorProfile.grassCloseProperty.link( grassCloseColor => {
+        for ( let i = 0; i < 12; i++ ) {
+          topColorArray[ i * 3 + 0 ] = grassCloseColor.r / 255;
+          topColorArray[ i * 3 + 1 ] = grassCloseColor.g / 255;
+          topColorArray[ i * 3 + 2 ] = grassCloseColor.b / 255;
+        }
+        const offset = 3 * 2 * 6;
+        topColorArray[ offset + 0 ] = topColorArray[ offset + 3 ] = topColorArray[ offset + 12 ] = grassCloseColor.r / 255;
+        topColorArray[ offset + 1 ] = topColorArray[ offset + 4 ] = topColorArray[ offset + 13 ] = grassCloseColor.g / 255;
+        topColorArray[ offset + 2 ] = topColorArray[ offset + 5 ] = topColorArray[ offset + 14 ] = grassCloseColor.b / 255;
+        topGeometry.attributes.color.needsUpdate = true;
+      } );
+      DensityBuoyancyCommonColorProfile.grassFarProperty.link( grassFarColor => {
+        const offset = 3 * 2 * 6;
+        topColorArray[ offset + 6 ] = topColorArray[ offset + 9 ] = topColorArray[ offset + 15 ] = grassFarColor.r / 255;
+        topColorArray[ offset + 7 ] = topColorArray[ offset + 10 ] = topColorArray[ offset + 16 ] = grassFarColor.g / 255;
+        topColorArray[ offset + 8 ] = topColorArray[ offset + 11 ] = topColorArray[ offset + 17 ] = grassFarColor.b / 255;
+        topGeometry.attributes.color.needsUpdate = true;
+      } );
+      const topMaterial = new THREE.MeshBasicMaterial( { vertexColors: THREE.VertexColors } );
       const topMesh = new THREE.Mesh( topGeometry, topMaterial );
       this.sceneNode.threeScene.add( topMesh );
 
@@ -280,7 +369,11 @@ define( require => {
         -1, 0, 0,
         -1, 0, 0
       ] ), 3 ) );
-      const poolMaterial = new THREE.MeshLambertMaterial( { color: new Color( 106, 106, 106 ).toNumber() } );
+      const poolMaterial = new THREE.MeshLambertMaterial();
+      DensityBuoyancyCommonColorProfile.poolSurfaceProperty.link( poolSurfaceColor => {
+        poolMaterial.color = ThreeUtil.colorToThree( poolSurfaceColor );
+      } );
+
       const poolMesh = new THREE.Mesh( poolGeometry, poolMaterial );
       this.sceneNode.threeScene.add( poolMesh );
 

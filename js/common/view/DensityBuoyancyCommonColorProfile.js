@@ -16,7 +16,12 @@ define( require => {
   // Initial colors for each profile, by string key. Only profile currently is default (still helpful for making color
   // tweaks with the top-level files)
   const DensityBuoyancyCommonColorProfile = new ColorProfile( [ 'default' ], {
-    skyBottom: { default: new Color( 174, 205, 220 ) },
+    skyBottom: { default: new Color( 255, 255, 255 ) },
+    skyTop: { default: new Color( 19, 165, 224 ) },
+    ground: { default: new Color( 161, 101, 47 ) },
+    grassClose: { default: new Color( 107, 165, 75 ) },
+    grassFar: { default: new Color( 107, 165, 75 ).colorUtilsDarker( 0.7 ) },
+    poolSurface: { default: new Color( 106, 106, 106 ) },
 
     waterIndicatorHighlight: { default: new Color( 255, 0, 0 ) },
 

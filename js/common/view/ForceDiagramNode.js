@@ -14,10 +14,13 @@ define( require => {
 
   // constants
   const arrowOptions = {
-    stroke: null
+    stroke: null,
+    tailWidth: 4,
+    headWidth: 15,
+    headHeight: 12
   };
-  const forceScale = 5;
-  const arrowSpacing = 15;
+  const forceScale = 7;
+  const arrowSpacing = arrowOptions.headWidth + 3;
 
   class ForceDiagramNode extends Node {
     /**

@@ -144,7 +144,7 @@ define( require => {
   Material.HONEY = new Material( {
     name: materialHoneyString,
     density: 1440,
-    viscosity: 2.5
+    viscosity: 0.03 // TODO: actual value around 2.5, but we can get away with this for animation
   } );
   Material.MERCURY = new Material( {
     name: materialMercuryString,

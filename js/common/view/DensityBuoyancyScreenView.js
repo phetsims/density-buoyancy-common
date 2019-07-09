@@ -25,6 +25,7 @@ define( require => {
   const EllipsoidView = require( 'DENSITY_BUOYANCY_COMMON/common/view/EllipsoidView' );
   const FontAwesomeNode = require( 'SUN/FontAwesomeNode' );
   const ForceDiagramNode = require( 'DENSITY_BUOYANCY_COMMON/common/view/ForceDiagramNode' );
+  const GravityControlNode = require( 'DENSITY_BUOYANCY_COMMON/common/view/GravityControlNode' );
   const HBox = require( 'SCENERY/nodes/HBox' );
   const LinearGradient = require( 'SCENERY/util/LinearGradient' );
   const MobiusSceneNode = require( 'MOBIUS/MobiusSceneNode' );
@@ -126,7 +127,7 @@ define( require => {
       this.sceneNode.threeCamera.zoom = 1.7;
       this.sceneNode.threeCamera.updateProjectionMatrix();
       this.sceneNode.threeCamera.up = new THREE.Vector3( 0, 0, -1 );
-      this.sceneNode.threeCamera.lookAt( new THREE.Vector3( 0, 0, 0 ) );
+      this.sceneNode.threeCamera.lookAt( new THREE.Vector3( 0, -0.1, 0 ) );
 
       this.sceneNode.backgroundEventTarget.addInputListener( {
         mousemove: event => {
@@ -520,6 +521,13 @@ define( require => {
         xMargin: 10,
         yMargin: 10,
         right: this.layoutBounds.centerX - MARGIN,
+        bottom: this.layoutBounds.bottom - MARGIN
+      } ) );
+
+      this.addChild( new Panel( new GravityControlNode( model.gravityProperty, popupLayer ), {
+        xMargin: 10,
+        yMargin: 10,
+        left: this.layoutBounds.centerX + MARGIN,
         bottom: this.layoutBounds.bottom - MARGIN
       } ) );
 

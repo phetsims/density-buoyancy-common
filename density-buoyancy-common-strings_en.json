@@ -95,6 +95,9 @@
   "kilogramsPerLiterPattern": {
     "value": "{{value}} kg/L"
   },
+  "metersPerSecondSquaredPattern": {
+    "value": "{{value}} m/s<sup>2</sup>"
+  },
   "fluidDensity": {
     "value": "Fluid Density"
   },

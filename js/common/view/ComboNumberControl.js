@@ -66,15 +66,15 @@ define( require => {
           } ),
 
           titleNodeOptions: {
-            font: new PhetFont( { size: 14, weight: 'bold' } ),
-            maxWidth: 70
+            font: new PhetFont( { size: 12, weight: 'bold' } ),
+            maxWidth: 80
           },
           numberDisplayOptions: {
             font: new PhetFont( 14 ),
             valuePattern: StringUtils.fillIn( config.valuePattern, { value: SunConstants.VALUE_NUMBERED_PLACEHOLDER } ),
             maxWidth: 100,
             decimalPlaces: 2,
-            useRichText: true // TODO: why?
+            useRichText: true
           },
           arrowButtonOptions: { scale: 0.56 },
 
@@ -90,7 +90,7 @@ define( require => {
               value: config.range.max,
               label: new Text( config.range.max, { font: new PhetFont( 12 ), maxWidth: 50 } )
             } ],
-            trackSize: new Dimension2( 100, 0.5 )
+            trackSize: new Dimension2( 110, 0.5 )
           }
         },
 
@@ -161,7 +161,9 @@ define( require => {
           locked = true;
 
           this.property.value = config.isCustomValue( value ) ? config.createCustomValue( this.numberProperty.value ) : value;
-          this.numberProperty.value = getNumericValue( value );
+          if ( !config.isCustomValue( value ) ) {
+            this.numberProperty.value = getNumericValue( value );
+          }
 
           locked = false;
         }

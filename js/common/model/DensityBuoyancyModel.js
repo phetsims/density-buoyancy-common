@@ -14,7 +14,9 @@ define( require => {
   const Cuboid = require( 'DENSITY_BUOYANCY_COMMON/common/model/Cuboid' );
   const densityBuoyancyCommon = require( 'DENSITY_BUOYANCY_COMMON/densityBuoyancyCommon' );
   const DensityBuoyancyCommonQueryParameters = require( 'DENSITY_BUOYANCY_COMMON/common/DensityBuoyancyCommonQueryParameters' );
+  const DerivedProperty = require( 'AXON/DerivedProperty' );
   const Ellipsoid = require( 'DENSITY_BUOYANCY_COMMON/common/model/Ellipsoid' );
+  const Gravity = require( 'DENSITY_BUOYANCY_COMMON/common/model/Gravity' );
   const InterpolatedProperty = require( 'DENSITY_BUOYANCY_COMMON/common/model/InterpolatedProperty' );
   const Material = require( 'DENSITY_BUOYANCY_COMMON/common/model/Material' );
   const Matrix3 = require( 'DOT/Matrix3' );
@@ -22,6 +24,7 @@ define( require => {
   const NumberProperty = require( 'AXON/NumberProperty' );
   const ObservableArray = require( 'AXON/ObservableArray' );
   const P2Engine = require( 'DENSITY_BUOYANCY_COMMON/common/model/P2Engine' );
+  const Property = require( 'AXON/Property' );
   const Vector2 = require( 'DOT/Vector2' );
 
   class DensityBuoyancyModel  {
@@ -38,14 +41,17 @@ define( require => {
       this.showMassesProperty = new BooleanProperty( false );
       this.showForceValuesProperty = new BooleanProperty( false );
 
-      // @public {Property.<number>} - Gravitational acceleration downwards (m/s^2)
-      this.gravityProperty = new NumberProperty( 9.8 );
+      // @public {Property.<Gravity>}
+      this.gravityProperty = new Property( Gravity.EARTH );
+
+      // @public {Property.<Material>}
+      this.liquidMaterialProperty = new Property( Material.WATER );
 
       // @public {Property.<number>}
-      this.liquidDensityProperty = new NumberProperty( Material.WATER.density );
+      this.liquidDensityProperty = new DerivedProperty( [ this.liquidMaterialProperty ], liquidMaterial => liquidMaterial.density );
 
       // @public {Property.<number>}
-      this.liquidViscosityProperty = new NumberProperty( Material.WATER.viscosity );
+      this.liquidViscosityProperty = new DerivedProperty( [ this.liquidMaterialProperty ], liquidMaterial => liquidMaterial.viscosity );
 
       // @public {Bounds3}
       this.poolBounds = new Bounds3(
@@ -131,7 +137,8 @@ define( require => {
       this.engine.addPostStepListener( () => {
         this.updateLiquid();
 
-        const gravity = this.gravityProperty.value;
+        // {number}
+        const gravity = this.gravityProperty.value.value;
 
         // Will set all of the mass's force Properties
         this.masses.forEach( mass => {
@@ -150,7 +157,7 @@ define( require => {
             // TODO: Do we ever want to display the viscous forces?
             const velocity = this.engine.bodyGetVelocity( mass.body );
             // TODO: determine a non-hackish way
-            this.engine.bodyApplyForce( mass.body, velocity.times( -this.liquidViscosityProperty.value * mass.massProperty.value * 0.005 ) );
+            this.engine.bodyApplyForce( mass.body, velocity.times( -this.liquidViscosityProperty.value * mass.massProperty.value * 3000 ) );
           }
           else {
             mass.buoyancyForceProperty.setNextValue( Vector2.ZERO );
@@ -400,8 +407,7 @@ define( require => {
       this.showMassesProperty.reset();
       this.showForceValuesProperty.reset();
       this.gravityProperty.reset();
-      this.liquidDensityProperty.reset();
-      this.liquidViscosityProperty.reset();
+      this.liquidMaterialProperty.reset();
       this.liquidVolumeProperty.reset();
       this.liquidYProperty.reset();
 

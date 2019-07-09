@@ -1,4 +1,19 @@
 {
+  "gravity.custom": {
+    "value": "Custom"
+  },
+  "gravity.earth": {
+    "value": "Earth"
+  },
+  "gravity.jupiter": {
+    "value": "Jupiter"
+  },
+  "gravity.moon": {
+    "value": "Moon"
+  },
+  "gravity.planetX": {
+    "value": "Planet X"
+  },
   "material.air": {
     "value": "Air"
   },
@@ -11,14 +26,35 @@
   "material.copper": {
     "value": "Copper"
   },
+  "material.custom": {
+    "value": "Custom"
+  },
+  "material.densityX": {
+    "value": "Density X"
+  },
+  "material.densityY": {
+    "value": "Density Y"
+  },
+  "material.gasoline": {
+    "value": "Gasoline"
+  },
   "material.glass": {
     "value": "Glass"
+  },
+  "material.honey": {
+    "value": "Honey"
   },
   "material.human": {
     "value": "Human"
   },
   "material.ice": {
     "value": "Ice"
+  },
+  "material.mercury": {
+    "value": "Mercury"
+  },
+  "material.seawater": {
+    "value": "Seawater"
   },
   "material.steel": {
     "value": "Steel"
@@ -55,5 +91,14 @@
   },
   "forceValues": {
     "value": "Force Values"
+  },
+  "kilogramsPerLiterPattern": {
+    "value": "{{value}} kg/L"
+  },
+  "fluidDensity": {
+    "value": "Fluid Density"
+  },
+  "gravity": {
+    "value": "Gravity"
   }
 }

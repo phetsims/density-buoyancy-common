@@ -18,6 +18,7 @@ define( require => {
   const CuboidView = require( 'DENSITY_BUOYANCY_COMMON/common/view/CuboidView' );
   const densityBuoyancyCommon = require( 'DENSITY_BUOYANCY_COMMON/densityBuoyancyCommon' );
   const DensityBuoyancyCommonColorProfile = require( 'DENSITY_BUOYANCY_COMMON/common/view/DensityBuoyancyCommonColorProfile' );
+  const DensityControlNode = require( 'DENSITY_BUOYANCY_COMMON/common/view/DensityControlNode' );
   const DerivedProperty = require( 'AXON/DerivedProperty' );
   const DisplayOptionsNode = require( 'DENSITY_BUOYANCY_COMMON/common/view/DisplayOptionsNode' );
   const Ellipsoid = require( 'DENSITY_BUOYANCY_COMMON/common/model/Ellipsoid' );
@@ -91,6 +92,8 @@ define( require => {
 
       // @private {DensityBuoyancyModel}
       this.model = model;
+
+      const popupLayer = new Node();
 
       // @private {Rectangle} - The sky background, in a unit 0-to-1 rectangle (so we can scale it to match)
       this.backgroundNode = new Rectangle( 0, 0, 1, 1, {
@@ -512,6 +515,15 @@ define( require => {
         left: this.layoutBounds.left + MARGIN,
         bottom: this.layoutBounds.bottom - MARGIN
       } ) );
+
+      this.addChild( new Panel( new DensityControlNode( model.liquidMaterialProperty, popupLayer ), {
+        xMargin: 10,
+        yMargin: 10,
+        right: this.layoutBounds.centerX - MARGIN,
+        bottom: this.layoutBounds.bottom - MARGIN
+      } ) );
+
+      this.addChild( popupLayer );
     }
 
     /**

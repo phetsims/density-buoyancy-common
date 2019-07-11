@@ -13,7 +13,7 @@ define( require => {
 
   // constants
   const segments = 64;
-  const bufferSize = 18 * segments;
+  const numElements = 6 * segments;
 
   class ConeView extends MassView {
     /**
@@ -21,14 +21,16 @@ define( require => {
      */
     constructor( cone ) {
 
-      const positionArray = new Float32Array( bufferSize );
-      const normalArray = new Float32Array( bufferSize );
+      const positionArray = new Float32Array( numElements * 3 );
+      const normalArray = new Float32Array( numElements * 3 );
+      const uvArray = new Float32Array( numElements * 2 );
 
-      ConeView.updateArrays( positionArray, normalArray, cone.radiusProperty.value, cone.heightProperty.value, cone.isVertexUp );
+      ConeView.updateArrays( positionArray, normalArray, uvArray, cone.radiusProperty.value, cone.heightProperty.value, cone.isVertexUp );
 
       const coneGeometry = new THREE.BufferGeometry();
       coneGeometry.addAttribute( 'position', new THREE.BufferAttribute( positionArray, 3 ) );
       coneGeometry.addAttribute( 'normal', new THREE.BufferAttribute( normalArray, 3 ) );
+      coneGeometry.addAttribute( 'uv', new THREE.BufferAttribute( uvArray, 2 ) );
 
       super( cone, coneGeometry );
 
@@ -37,7 +39,7 @@ define( require => {
 
       // @private {function}
       this.updateListener = size => {
-        ConeView.updateArrays( coneGeometry.attributes.position.array, coneGeometry.attributes.normal.array, cone.radiusProperty.value, cone.heightProperty.value, cone.isVertexUp );
+        ConeView.updateArrays( coneGeometry.attributes.position.array, coneGeometry.attributes.normal.array, null, cone.radiusProperty.value, cone.heightProperty.value, cone.isVertexUp );
         coneGeometry.attributes.position.needsUpdate = true;
         coneGeometry.attributes.normal.needsUpdate = true;
         coneGeometry.computeBoundingSphere();
@@ -64,17 +66,19 @@ define( require => {
      *
      * @param {Float32Array|null} positionArray
      * @param {Float32Array|null} normalArray
+     * @param {Float32Array|null} uvArray
      * @param {number} radius
      * @param {number} height
      * @param {boolean} isVertexUp
      */
-    static updateArrays( positionArray, normalArray, radius, height, isVertexUp ) {
+    static updateArrays( positionArray, normalArray, uvArray, radius, height, isVertexUp ) {
       const vertexSign = isVertexUp ? 1 : -1;
       const vertexY = vertexSign * 0.75 * height;
       const baseY = -vertexSign * 0.25 * height;
 
       let positionIndex = 0;
       let normalIndex = 0;
+      let uvIndex = 0;
 
       function position( x, y, z ) {
         if ( positionArray ) {
@@ -92,9 +96,18 @@ define( require => {
         }
       }
 
+      function uv( u, v ) {
+        if ( uvArray ) {
+          uvArray[ uvIndex++ ] = u;
+          uvArray[ uvIndex++ ] = v;
+        }
+      }
+
+      const TWO_PI = 2 * Math.PI;
+
       for ( let i = 0; i < segments; i++ ) {
-        const theta0 = 2 * Math.PI * i / segments;
-        const theta1 = 2 * Math.PI * ( i + 1 ) / segments;
+        const theta0 = TWO_PI * i / segments;
+        const theta1 = TWO_PI * ( i + 1 ) / segments;
 
         const vertices = [
           new Vector3( 0, vertexY, 0 ),
@@ -118,6 +131,9 @@ define( require => {
           position( vertices[ j ].x, vertices[ j ].y, vertices[ j ].z );
           normal( normalVector.x, normalVector.y, normalVector.z );
         }
+        uv( 0.5, 0 );
+        uv( ( isVertexUp ? theta1 : theta0 ) / TWO_PI, 1 );
+        uv( ( isVertexUp ? theta0 : theta1 ) / TWO_PI, 1 );
 
         // Top/Bottom
         position( 0, baseY, 0 );
@@ -126,6 +142,9 @@ define( require => {
         normal( 0, 0, -vertexSign );
         normal( 0, 0, -vertexSign );
         normal( 0, 0, -vertexSign );
+        uv( 0.5, 0 );
+        uv( ( isVertexUp ? theta0 : theta1 ) / TWO_PI, 1 );
+        uv( ( isVertexUp ? theta1 : theta0 ) / TWO_PI, 1 );
       }
     }
   }

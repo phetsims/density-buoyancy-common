@@ -8,6 +8,7 @@ define( require => {
 
   // modules
   const densityBuoyancyCommon = require( 'DENSITY_BUOYANCY_COMMON/densityBuoyancyCommon' );
+  const DensityMaterials = require( 'DENSITY_BUOYANCY_COMMON/common/view/DensityMaterials' );
 
   class MassView extends THREE.Mesh {
     /**
@@ -15,12 +16,15 @@ define( require => {
      * @param {THREE.Geometry} geometry
      */
     constructor( mass, initialGeometry ) {
-      super( initialGeometry, new THREE.MeshLambertMaterial( {
-        color: 0xffaa44
-      } ) );
+      const materialView = DensityMaterials.getMaterialView( mass.materialProperty.value );
+
+      super( initialGeometry, materialView.material );
 
       // @public {Mass}
       this.mass = mass;
+
+      // @private {MaterialView}
+      this.materialView = materialView; // TODO: hook up changes
 
       // @private {function}
       this.positionListener = () => {
@@ -32,6 +36,17 @@ define( require => {
 
       this.mass.transformedEmitter.addListener( this.positionListener );
       this.positionListener();
+    }
+
+    /**
+     * Updates the mass's view before main rendering
+     * @public
+     *
+     * @param {THREE.Scene} scene
+     * @param {THREE.Renderer} renderer
+     */
+    update( scene, renderer ) {
+      this.materialView.update( this, scene, renderer );
     }
 
     /**

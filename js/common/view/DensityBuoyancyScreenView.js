@@ -591,6 +591,9 @@ define( require => {
         return;
       }
 
+      // Update the views
+      this.massViews.forEach( massView => massView.update( this.sceneNode.threeScene, this.sceneNode.threeRenderer ) );
+
       this.sceneNode.render( undefined );
 
       this.forceDiagramNodes.forEach( forceDiagramNode => {

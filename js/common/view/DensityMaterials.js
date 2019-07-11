@@ -1,0 +1,213 @@
+// Copyright 2019, University of Colorado Boulder
+
+/**
+ * @author Jonathan Olson <jonathan.olson@colorado.edu>
+ */
+define( require => {
+  'use strict';
+
+  // modules
+  const CameraMaterialView = require( 'DENSITY_BUOYANCY_COMMON/common/view/CameraMaterialView' );
+  const densityBuoyancyCommon = require( 'DENSITY_BUOYANCY_COMMON/densityBuoyancyCommon' );
+  const Material = require( 'DENSITY_BUOYANCY_COMMON/common/model/Material' );
+  const MaterialView = require( 'DENSITY_BUOYANCY_COMMON/common/view/MaterialView' );
+
+  // constants
+  const Bricks25AOImage = require( 'image!DENSITY_BUOYANCY_COMMON/Bricks25_AO.jpg' );
+  const Bricks25ColImage = require( 'image!DENSITY_BUOYANCY_COMMON/Bricks25_col.jpg' );
+  const Bricks25NrmImage = require( 'image!DENSITY_BUOYANCY_COMMON/Bricks25_nrm.jpg' );
+  const DiamondPlate01ColImage = require( 'image!DENSITY_BUOYANCY_COMMON/DiamondPlate01_col.jpg' );
+  const DiamondPlate01MetImage = require( 'image!DENSITY_BUOYANCY_COMMON/DiamondPlate01_met.jpg' );
+  const DiamondPlate01NrmImage = require( 'image!DENSITY_BUOYANCY_COMMON/DiamondPlate01_nrm.jpg' );
+  const DiamondPlate01RghImage = require( 'image!DENSITY_BUOYANCY_COMMON/DiamondPlate01_rgh.jpg' );
+  const Ice01AlphaImage = require( 'image!DENSITY_BUOYANCY_COMMON/Ice01_alpha.jpg' );
+  const Ice01ColImage = require( 'image!DENSITY_BUOYANCY_COMMON/Ice01_col.jpg' );
+  const Ice01NrmImage = require( 'image!DENSITY_BUOYANCY_COMMON/Ice01_nrm.jpg' );
+  const Metal08ColImage = require( 'image!DENSITY_BUOYANCY_COMMON/Metal08_col.jpg' );
+  const Metal08MetImage = require( 'image!DENSITY_BUOYANCY_COMMON/Metal08_met.jpg' );
+  const Metal08NrmImage = require( 'image!DENSITY_BUOYANCY_COMMON/Metal08_nrm.jpg' );
+  const Metal08RghImage = require( 'image!DENSITY_BUOYANCY_COMMON/Metal08_rgh.jpg' );
+  const Metal10ColImage = require( 'image!DENSITY_BUOYANCY_COMMON/Metal10_col.jpg' );
+  const Metal10MetImage = require( 'image!DENSITY_BUOYANCY_COMMON/Metal10_met.jpg' );
+  const Metal10NrmImage = require( 'image!DENSITY_BUOYANCY_COMMON/Metal10_nrm.jpg' );
+  const Metal10RghImage = require( 'image!DENSITY_BUOYANCY_COMMON/Metal10_rgh.jpg' );
+  const Wood26ColImage = require( 'image!DENSITY_BUOYANCY_COMMON/Wood26_col.jpg' );
+  const Wood26NrmImage = require( 'image!DENSITY_BUOYANCY_COMMON/Wood26_nrm.jpg' );
+  const Wood26RghImage = require( 'image!DENSITY_BUOYANCY_COMMON/Wood26_rgh.jpg' );
+
+  function toTexture( image ) {
+    return new THREE.TextureLoader().load( image.src );
+  }
+
+  // textures
+  const aluminumColorTexture = toTexture( Metal10ColImage );
+  const aluminumMetalnessTexture = toTexture( Metal10MetImage );
+  const aluminumNormalTexture = toTexture( Metal10NrmImage );
+  const aluminumRoughnessTexture = toTexture( Metal10RghImage );
+  const brickAmbientOcclusionTexture = toTexture( Bricks25AOImage );
+  const brickColorTexture = toTexture( Bricks25ColImage );
+  const brickNormalTexture = toTexture( Bricks25NrmImage );
+  const copperColorTexture = toTexture( Metal08ColImage );
+  const copperMetalnessTexture = toTexture( Metal08MetImage );
+  const copperNormalTexture = toTexture( Metal08NrmImage );
+  const copperRoughnessTexture = toTexture( Metal08RghImage );
+  const iceAlphaTexture = toTexture( Ice01AlphaImage );
+  const iceColorTexture = toTexture( Ice01ColImage );
+  const iceNormalTexture = toTexture( Ice01NrmImage );
+  const steelColorTexture = toTexture( DiamondPlate01ColImage );
+  const steelMetalnessTexture = toTexture( DiamondPlate01MetImage );
+  const steelNormalTexture = toTexture( DiamondPlate01NrmImage );
+  const steelRoughnessTexture = toTexture( DiamondPlate01RghImage );
+  const woodColorTexture = toTexture( Wood26ColImage );
+  const woodNormalTexture = toTexture( Wood26NrmImage );
+  const woodRoughnessTexture = toTexture( Wood26RghImage );
+
+  class AluminumMaterialView extends CameraMaterialView {
+    constructor() {
+      super();
+
+      this.material = new THREE.MeshStandardMaterial( {
+        map: aluminumColorTexture,
+        normalMap: aluminumNormalTexture,
+        normalScale: new THREE.Vector2( 1, -1 ),
+        roughnessMap: aluminumRoughnessTexture,
+        metalnessMap: aluminumMetalnessTexture,
+        envMap: this.getTexture()
+      } );
+    }
+  }
+
+  class BrickMaterialView extends CameraMaterialView {
+    constructor() {
+      super();
+
+      this.material = new THREE.MeshStandardMaterial( {
+        map: brickColorTexture,
+        aoMap: brickAmbientOcclusionTexture,
+        normalMap: brickNormalTexture,
+        normalScale: new THREE.Vector2( 0.5, -0.5 ),
+        roughness: 1,
+        metalness: 0,
+        envMap: this.getTexture()
+      } );
+    }
+  }
+
+  class CopperMaterialView extends CameraMaterialView {
+    constructor() {
+      super();
+
+      this.material = new THREE.MeshStandardMaterial( {
+        map: copperColorTexture,
+        normalMap: copperNormalTexture,
+        normalScale: new THREE.Vector2( 1, -1 ),
+        roughnessMap: copperRoughnessTexture,
+        metalnessMap: copperMetalnessTexture,
+        envMap: this.getTexture()
+      } );
+    }
+  }
+
+  class IceMaterialView extends CameraMaterialView {
+    constructor() {
+      super();
+
+      const texture = this.getTexture();
+
+      texture.mapping = THREE.CubeRefractionMapping;
+      texture.needsUpdate = true;
+
+      this.material = new THREE.MeshPhysicalMaterial( {
+        map: iceColorTexture,
+        alphaMap: iceAlphaTexture,
+        normalMap: iceNormalTexture,
+        normalScale: new THREE.Vector2( 1, -1 ),
+        roughness: 0.1,
+        refractionRatio: 1 / 1.309,
+        metalness: 0.4,
+        clearCoat: 1,
+        reflectivity: 1,
+        envMap: texture,
+        envMapIntensity: 2, // is this too much cheating?
+
+        transparent: true,
+        side: THREE.DoubleSide
+      } );
+    }
+  }
+
+  class SteelMaterialView extends CameraMaterialView {
+    constructor() {
+      super();
+
+      this.material = new THREE.MeshStandardMaterial( {
+        map: steelColorTexture,
+        normalMap: steelNormalTexture,
+        normalScale: new THREE.Vector2( 1, -1 ),
+        roughnessMap: steelRoughnessTexture,
+        metalnessMap: steelMetalnessTexture,
+        envMap: this.getTexture()
+      } );
+    }
+  }
+
+  class WoodMaterialView extends CameraMaterialView {
+    constructor() {
+      super();
+
+      this.material = new THREE.MeshStandardMaterial( {
+        map: woodColorTexture,
+        normalMap: woodNormalTexture,
+        normalScale: new THREE.Vector2( 1, -1 ),
+        roughnessMap: woodRoughnessTexture,
+        metalness: 0,
+        envMap: this.getTexture()
+      } );
+    }
+  }
+
+  class DebugMaterialView extends MaterialView {
+    constructor() {
+      super();
+
+      this.material = new THREE.MeshLambertMaterial( {
+        color: 0xffaa44
+      } );
+    }
+  }
+
+  class DensityMaterials {
+    /**
+     * Returns a view for the given Material.
+     * @public
+     *
+     * @param {Material} material
+     * @returns {MaterialView}
+     */
+    static getMaterialView( material ) {
+      if ( material === Material.ALUMINUM ) {
+        return new AluminumMaterialView();
+      }
+      if ( material === Material.BRICK ) {
+        return new BrickMaterialView();
+      }
+      if ( material === Material.COPPER ) {
+        return new CopperMaterialView();
+      }
+      if ( material === Material.ICE ) {
+        return new IceMaterialView();
+      }
+      if ( material === Material.STEEL ) {
+        return new SteelMaterialView();
+      }
+      if ( material === Material.WOOD ) {
+        return new WoodMaterialView();
+      }
+      else {
+        return new DebugMaterialView();
+      }
+    }
+  }
+
+  return densityBuoyancyCommon.register( 'DensityMaterials', DensityMaterials );
+} );

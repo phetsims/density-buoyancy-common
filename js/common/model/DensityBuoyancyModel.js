@@ -109,9 +109,14 @@ define( require => {
         material: Material.ALUMINUM
       } ) );
 
-      this.masses.push( new Cuboid( this.engine, new Bounds3( -0.03, -0.03, -0.03, 0.03, 0.03, 0.03 ), {
+      this.masses.push( new Cuboid( this.engine, new Bounds3( -0.06, -0.06, -0.06, 0.06, 0.06, 0.06 ), {
         matrix: Matrix3.translation( -0.15, -0.2 ),
         material: Material.BRICK
+      } ) );
+
+      this.masses.push( new Cuboid( this.engine, new Bounds3( -0.05, -0.05, -0.05, 0.05, 0.05, 0.05 ), {
+        matrix: Matrix3.translation( -0.5, 0.2 ),
+        material: Material.STEEL
       } ) );
 
       this.masses.push( new Cuboid( this.engine, new Bounds3( -0.05, -0.05, -0.05, 0.05, 0.05, 0.05 ), {
@@ -130,8 +135,13 @@ define( require => {
       } ) );
 
       this.masses.push( new Ellipsoid( this.engine, new Bounds3( -0.08, -0.05, -0.08, 0.08, 0.05, 0.08 ), {
-        matrix: Matrix3.translation( -0.3, 0.4 ),
+        matrix: Matrix3.translation( -0.1, 0.4 ),
         material: Material.WOOD
+      } ) );
+
+      this.masses.push( new Ellipsoid( this.engine, new Bounds3( -0.07, -0.07, -0.07, 0.07, 0.07, 0.07 ), {
+        matrix: Matrix3.translation( 0.5, 0.6 ),
+        material: Material.COPPER
       } ) );
 
       this.engine.addPostStepListener( () => {

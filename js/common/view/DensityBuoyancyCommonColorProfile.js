@@ -21,7 +21,7 @@ define( require => {
     ground: { default: new Color( 161, 101, 47 ) },
     grassClose: { default: new Color( 107, 165, 75 ) },
     grassFar: { default: new Color( 107, 165, 75 ).colorUtilsDarker( 0.7 ) },
-    poolSurface: { default: new Color( 106, 106, 106 ) },
+    poolSurface: { default: new Color( 170, 170, 170 ) },
 
     waterIndicatorHighlight: { default: new Color( 255, 0, 0 ) },
 

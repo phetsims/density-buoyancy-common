@@ -11,7 +11,7 @@ define( require => {
   const MassView = require( 'DENSITY_BUOYANCY_COMMON/common/view/MassView' );
 
   // constats
-  const bufferSize = 18 * 6;
+  const numElements = 18 * 3;
 
   class CuboidView extends MassView {
     /**
@@ -20,14 +20,16 @@ define( require => {
     constructor( cuboid ) {
       const size = cuboid.sizeProperty.value;
 
-      const positionArray = new Float32Array( bufferSize );
-      const normalArray = new Float32Array( bufferSize );
+      const positionArray = new Float32Array( numElements * 3 );
+      const normalArray = new Float32Array( numElements * 3 );
+      const uvArray = new Float32Array( numElements * 2 );
 
-      CuboidView.updateArrays( positionArray, normalArray, size );
+      CuboidView.updateArrays( positionArray, normalArray, uvArray, size );
 
       const boxGeometry = new THREE.BufferGeometry();
       boxGeometry.addAttribute( 'position', new THREE.BufferAttribute( positionArray, 3 ) );
       boxGeometry.addAttribute( 'normal', new THREE.BufferAttribute( normalArray, 3 ) );
+      boxGeometry.addAttribute( 'uv', new THREE.BufferAttribute( uvArray, 2 ) );
 
       super( cuboid, boxGeometry );
 
@@ -36,7 +38,7 @@ define( require => {
 
       // @private {function}
       this.updateListener = size => {
-        CuboidView.updateArrays( boxGeometry.attributes.position.array, null, size );
+        CuboidView.updateArrays( boxGeometry.attributes.position.array, null, null, size );
         boxGeometry.attributes.position.needsUpdate = true;
         boxGeometry.computeBoundingSphere();
       };
@@ -60,11 +62,13 @@ define( require => {
      *
      * @param {Float32Array|null} positionArray
      * @param {Float32Array|null} normalArray
+     * @param {Float32Array|null} uvArray
      * @param {Bounds3} size
      */
-    static updateArrays( positionArray, normalArray, size ) {
+    static updateArrays( positionArray, normalArray, uvArray, size ) {
       let positionIndex = 0;
       let normalIndex = 0;
+      let uvIndex = 0;
 
       function position( x, y, z ) {
         if ( positionArray ) {
@@ -84,6 +88,13 @@ define( require => {
         }
       }
 
+      function uv( u, v ) {
+        if ( uvArray ) {
+          uvArray[ uvIndex++ ] = u;
+          uvArray[ uvIndex++ ] = v;
+        }
+      }
+
       function quad( p0x, p0y, p0z, p1x, p1y, p1z, p2x, p2y, p2z, p3x, p3y, p3z ) {
         position( p0x, p0y, p0z );
         position( p1x, p1y, p1z );
@@ -92,8 +103,16 @@ define( require => {
         position( p0x, p0y, p0z );
         position( p2x, p2y, p2z );
         position( p3x, p3y, p3z );
+
+        uv( 1, 0 );
+        uv( 0, 0 );
+        uv( 0, 1 );
+
+        uv( 1, 0 );
+        uv( 0, 1 );
+        uv( 1, 1 );
       }
-      
+
       // Bottom
       quad(
         size.minX, size.minY, size.minZ,

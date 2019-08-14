@@ -31,6 +31,7 @@ define( require => {
   const MobiusSceneNode = require( 'MOBIUS/MobiusSceneNode' );
   const Mouse = require( 'SCENERY/input/Mouse' );
   const Node = require( 'SCENERY/nodes/Node' );
+  const openPopup = require( 'PHET_CORE/openPopup' );
   const Panel = require( 'SUN/Panel' );
   const PhetFont = require( 'SCENERY_PHET/PhetFont' );
   const Plane3 = require( 'DOT/Plane3' );
@@ -84,8 +85,7 @@ define( require => {
 
         warningNode.addInputListener( {
           up: function() {
-            var phetWindow = window.open( 'http://phet.colorado.edu/webgl-disabled-page?simLocale=' + phet.joist.sim.locale, '_blank' );
-            phetWindow.focus();
+            openPopup( 'http://phet.colorado.edu/webgl-disabled-page?simLocale=' + phet.joist.sim.locale );
           }
         } );
         return this;

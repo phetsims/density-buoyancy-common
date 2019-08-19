@@ -187,6 +187,18 @@ define( require => {
     }
 
     /**
+     * Returns the applied contact force computed in the last step (as a force on A from B).
+     * @public
+     *
+     * @param {Engine.Body} bodyA
+     * @param {Engine.Body} bodyB
+     * @returns {Vector2}
+     */
+    bodyGetContactForceBetween( bodyA, bodyB ) {
+      throw new Error( 'unimplemented' );
+    }
+
+    /**
      * Creates a (static) ground body with the given vertices.
      * @public
      *

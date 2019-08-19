@@ -237,6 +237,38 @@ define( require => {
       return P2Engine.p2ToVector( body.vlambda ).timesScalar( body.mass / FIXED_TIME_STEP );
     }
 
+    /**
+     * Returns the applied contact force computed in the last step (as a force on A from B).
+     * @public
+     * @override
+     *
+     * @param {Engine.Body} bodyA
+     * @param {Engine.Body} bodyB
+     * @returns {Vector2}
+     */
+    bodyGetContactForceBetween( bodyA, bodyB ) {
+      const result = Vector2.ZERO.copy();
+      const equations = this.world.narrowphase.contactEquations;
+
+      for ( let i = 0; i < equations.length; i++ ) {
+        const equation = equations[ i ];
+
+        let sign = 0;
+        if ( bodyA === equation.bodyA && bodyB === equation.bodyB ) {
+          sign = 1;
+        }
+        if ( bodyA === equation.bodyB && bodyB === equation.bodyA ) {
+          sign = -1;
+        }
+
+        if ( sign ) {
+          result.add( P2Engine.p2ToVector( equation.normalA ).timesScalar( sign * equation.multiplier ) );
+        }
+      }
+
+      return result;
+    }
+
     // TODO: doc
     resetContactForces( body ) {
       body.vlambda[ 0 ] = 0;

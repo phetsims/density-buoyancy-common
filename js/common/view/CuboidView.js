@@ -64,11 +64,13 @@ define( require => {
      * @param {Float32Array|null} normalArray
      * @param {Float32Array|null} uvArray
      * @param {Bounds3} size
+     * @param {number} offset - How many vertices have been specified so far?
+     * @returns {number} - The offset after the specified verticies have been written
      */
-    static updateArrays( positionArray, normalArray, uvArray, size ) {
-      let positionIndex = 0;
-      let normalIndex = 0;
-      let uvIndex = 0;
+    static updateArrays( positionArray, normalArray, uvArray, size, offset = 0 ) {
+      let positionIndex = offset * 3;
+      let normalIndex = offset * 3;
+      let uvIndex = offset * 2;
 
       function position( x, y, z ) {
         if ( positionArray ) {
@@ -111,6 +113,8 @@ define( require => {
         uv( 1, 0 );
         uv( 0, 1 );
         uv( 1, 1 );
+
+        offset += 6;
       }
 
       // Bottom
@@ -166,6 +170,8 @@ define( require => {
         size.minX, size.maxY, size.maxZ
       );
       normal( 0, 0, 1 );
+
+      return offset;
     }
   }
 

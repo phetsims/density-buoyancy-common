@@ -434,6 +434,88 @@ define( require => {
     }
 
     /**
+     * Creates a (dynamic) vertical cylinder body, with the origin at the center of mass
+     * @public
+     * @override
+     *
+     * @param {number} radius
+     * @param {number} height
+     * @returns {Engine.Body}
+     */
+    createVerticalCylinder( radius, height ) {
+      const body = new p2.Body( {
+        type: p2.Body.DYNAMIC,
+        fixedRotation: true
+      } );
+
+      this.updateVerticalCylinder( body, radius, height );
+
+      return body;
+    }
+
+    /**
+     * Updates the radius/height of a vertical cylinder body
+     * @public
+     * @override
+     *
+     * @param {Engine.Body}
+     * @param {number} radius
+     * @param {number} height
+     */
+    updateVerticalCylinder( body, radius, height ) {
+      P2Engine.removeShapes( body );
+
+      const box = new p2.Box( {
+        width: 2 * radius * SCALE,
+        height: height * SCALE,
+        material: dynamicMaterial
+      } );
+
+      body.addShape( box );
+    }
+
+    /**
+     * Creates a (dynamic) horizontal cylinder body, with the origin at the center of mass
+     * @public
+     * @override
+     *
+     * @param {number} radius
+     * @param {number} length
+     * @returns {Engine.Body}
+     */
+    createHorizontalCylinder( radius, length ) {
+      const body = new p2.Body( {
+        type: p2.Body.DYNAMIC,
+        fixedRotation: true
+      } );
+
+      this.updateHorizontalCylinder( body, radius, length );
+
+      return body;
+    }
+
+    /**
+     * Updates the radius/length of a horizontal cylinder body
+     * @public
+     * @override
+     *
+     * @param {Engine.Body}
+     * @param {number} radius
+     * @param {number} length
+     */
+    updateHorizontalCylinder( body, radius, length ) {
+      P2Engine.removeShapes( body );
+
+      const box = new p2.Box( {
+        width: length * SCALE,
+        height: 2 * radius * SCALE,
+        material: dynamicMaterial
+      } );
+
+      body.addShape( box );
+    }
+
+    /**
      * Creates a (dynamic) boat body, with the origin at the center of the box.
      * @public
      * @override

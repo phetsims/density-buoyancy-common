@@ -70,15 +70,17 @@ define( require => {
      * @param {number} radius
      * @param {number} height
      * @param {boolean} isVertexUp
+     * @param {number} offset - How many vertices have been specified so far?
+     * @returns {number} - The offset after the specified verticies have been written
      */
-    static updateArrays( positionArray, normalArray, uvArray, radius, height, isVertexUp ) {
+    static updateArrays( positionArray, normalArray, uvArray, radius, height, isVertexUp, offset = 0 ) {
       const vertexSign = isVertexUp ? 1 : -1;
       const vertexY = vertexSign * 0.75 * height;
       const baseY = -vertexSign * 0.25 * height;
 
-      let positionIndex = 0;
-      let normalIndex = 0;
-      let uvIndex = 0;
+      let positionIndex = offset * 3;
+      let normalIndex = offset * 3;
+      let uvIndex = offset * 2;
 
       function position( x, y, z ) {
         if ( positionArray ) {
@@ -86,6 +88,8 @@ define( require => {
           positionArray[ positionIndex++ ] = y;
           positionArray[ positionIndex++ ] = z;
         }
+
+        offset++;
       }
 
       function normal( x, y, z ) {
@@ -146,6 +150,8 @@ define( require => {
         uv( ( isVertexUp ? theta0 : theta1 ) / TWO_PI, 1 );
         uv( ( isVertexUp ? theta1 : theta0 ) / TWO_PI, 1 );
       }
+
+      return offset;
     }
   }
 

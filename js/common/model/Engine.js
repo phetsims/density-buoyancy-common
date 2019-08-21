@@ -284,6 +284,54 @@ define( require => {
     }
 
     /**
+     * Creates a (dynamic) vertical cylinder body, with the origin at the center of mass
+     * @public
+     *
+     * @param {number} radius
+     * @param {number} height
+     * @returns {Engine.Body}
+     */
+    createVerticalCylinder( radius, height ) {
+      throw new Error( 'unimplemented' );
+    }
+
+    /**
+     * Updates the radius/height of a vertical cylinder body
+     * @public
+     *
+     * @param {Engine.Body}
+     * @param {number} radius
+     * @param {number} height
+     */
+    updateVerticalCylinder( body, radius, height ) {
+      throw new Error( 'unimplemented' );
+    }
+
+    /**
+     * Creates a (dynamic) horizontal cylinder body, with the origin at the center of mass
+     * @public
+     *
+     * @param {number} radius
+     * @param {number} length
+     * @returns {Engine.Body}
+     */
+    createHorizontalCylinder( radius, length ) {
+      throw new Error( 'unimplemented' );
+    }
+
+    /**
+     * Updates the radius/length of a horizontal cylinder body
+     * @public
+     *
+     * @param {Engine.Body}
+     * @param {number} radius
+     * @param {number} length
+     */
+    updateHorizontalCylinder( body, radius, length ) {
+      throw new Error( 'unimplemented' );
+    }
+
+    /**
      * Creates a (dynamic) boat body, with the origin at the center of the box.
      * @public
      *

@@ -42,6 +42,8 @@ define( require => {
   const ThreeUtil = require( 'MOBIUS/ThreeUtil' );
   const Util = require( 'SCENERY/util/Util' );
   const Vector3 = require( 'DOT/Vector3' );
+  const VerticalCylinder = require( 'DENSITY_BUOYANCY_COMMON/common/model/VerticalCylinder' );
+  const VerticalCylinderView = require( 'DENSITY_BUOYANCY_COMMON/common/view/VerticalCylinderView' );
   const WaterLevelIndicator = require( 'DENSITY_BUOYANCY_COMMON/common/view/WaterLevelIndicator' );
 
   // strings
@@ -456,6 +458,9 @@ define( require => {
         }
         else if ( mass instanceof Ellipsoid ) {
           massView = new EllipsoidView( mass );
+        }
+        else if ( mass instanceof VerticalCylinder ) {
+          massView = new VerticalCylinderView( mass );
         }
 
         if ( massView ) {

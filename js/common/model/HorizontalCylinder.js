@@ -9,7 +9,6 @@ define( require => {
   'use strict';
 
   // modules
-  const Complex = require( 'DOT/Complex' );
   const densityBuoyancyCommon = require( 'DENSITY_BUOYANCY_COMMON/densityBuoyancyCommon' );
   const Mass = require( 'DENSITY_BUOYANCY_COMMON/common/model/Mass' );
   const NumberProperty = require( 'AXON/NumberProperty' );
@@ -97,21 +96,25 @@ define( require => {
      */
     intersect( ray, isTouch ) {
       const translation = this.matrix.getTranslation().toVector3();
-      const size = this.sizeProperty.value;
+      const radius = this.radiusProperty.value;
+      const length = this.lengthProperty.value;
       const relativePosition = ray.position.minusXYZ( translation.x, translation.y, translation.z );
 
-      // TODO: remove comments if things work
-      // x^2/a^2 + ... = 1
-      // ( ray.direction.x * t + relativePosition.x )^2 / a^2 + ... === 1
-
-      const yp = 4 / ( size.height * size.height );
-      const zp = 4 / ( size.depth * size.depth );
+      const yp = 4 / ( radius * radius );
+      const zp = 4 / ( radius * radius );
 
       const a = yp * ray.direction.y * ray.direction.y + zp * ray.direction.z * ray.direction.z;
       const b = 2 * ( yp * relativePosition.y * ray.direction.y + zp * relativePosition.z * ray.direction.z );
       const c = -1 + yp * relativePosition.y * relativePosition.y + zp * relativePosition.z * relativePosition.z;
 
-      const tValues = Util.solveQuadraticRootsReal( a, b, c ).filter( t => t > 0 );
+      const tValues = Util.solveQuadraticRootsReal( a, b, c ).filter( t => {
+        if ( t <= 0 ) {
+          return false;
+        }
+        const x = ray.pointAtDistance( t ).x;
+
+        return Math.abs( x - translation.x ) <= length / 2;
+      } );
 
       if ( tValues.length ) {
         return tValues[ 0 ];
@@ -161,11 +164,10 @@ define( require => {
       }
       else {
         const ratio = ( liquidLevel - this.stepBottom ) / ( this.stepTop - this.stepBottom );
-        const z = new Complex( ratio - 1, 0 ).sqrtOf();
-        const arcsinh = Math.log( z.plus( z.times( z ).plus( new Complex( 1, 0 ) ).sqrtOf() ) );
+        const f = 2 * ratio - 1;
 
         // Computed with Mathematica
-        return this.stepMaximumVolume * ( Math.PI + 2 * Math.sqrt( ratio - ratio * ratio ) * ( 2 * ratio - 1 ) + ( 2 * Math.sqrt( ratio - 1 ) * arcsinh ) / Math.sqrt( 1 - ratio ) ) / Math.PI;
+        return this.stepMaximumVolume * 2 * Math.sqrt( ratio - ratio * ratio ) * f + Math.acos( -f ) / Math.PI;
       }
     }
 

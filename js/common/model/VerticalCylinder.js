@@ -96,21 +96,25 @@ define( require => {
      */
     intersect( ray, isTouch ) {
       const translation = this.matrix.getTranslation().toVector3();
-      const size = this.sizeProperty.value;
+      const radius = this.radiusProperty.value;
+      const height = this.heightProperty.value;
       const relativePosition = ray.position.minusXYZ( translation.x, translation.y, translation.z );
 
-      // TODO: remove comments if things work
-      // x^2/a^2 + ... = 1
-      // ( ray.direction.x * t + relativePosition.x )^2 / a^2 + ... === 1
-
-      const xp = 4 / ( size.width * size.width );
-      const zp = 4 / ( size.depth * size.depth );
+      const xp = 4 / ( radius * radius );
+      const zp = 4 / ( radius * radius );
 
       const a = xp * ray.direction.x * ray.direction.x + zp * ray.direction.z * ray.direction.z;
       const b = 2 * ( xp * relativePosition.x * ray.direction.x + zp * relativePosition.z * ray.direction.z );
       const c = -1 + xp * relativePosition.x * relativePosition.x + zp * relativePosition.z * relativePosition.z;
 
-      const tValues = Util.solveQuadraticRootsReal( a, b, c ).filter( t => t > 0 );
+      const tValues = Util.solveQuadraticRootsReal( a, b, c ).filter( t => {
+        if ( t <= 0 ) {
+          return false;
+        }
+        const y = ray.pointAtDistance( t ).y;
+
+        return Math.abs( y - translation.y ) <= height / 2;
+      } );
 
       if ( tValues.length ) {
         return tValues[ 0 ];

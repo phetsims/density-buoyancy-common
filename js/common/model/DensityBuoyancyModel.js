@@ -26,6 +26,7 @@ define( require => {
   const P2Engine = require( 'DENSITY_BUOYANCY_COMMON/common/model/P2Engine' );
   const Property = require( 'AXON/Property' );
   const Vector2 = require( 'DOT/Vector2' );
+  const VerticalCylinder = require( 'DENSITY_BUOYANCY_COMMON/common/model/VerticalCylinder' );
 
   class DensityBuoyancyModel  {
 
@@ -136,6 +137,11 @@ define( require => {
 
       this.masses.push( new Ellipsoid( this.engine, new Bounds3( -0.08, -0.05, -0.08, 0.08, 0.05, 0.08 ), {
         matrix: Matrix3.translation( -0.1, 0.4 ),
+        material: Material.WOOD
+      } ) );
+
+      this.masses.push( new VerticalCylinder( this.engine, 0.05, 0.1, {
+        matrix: Matrix3.translation( -0.1, 1.0 ),
         material: Material.WOOD
       } ) );
 

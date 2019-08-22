@@ -167,7 +167,7 @@ define( require => {
         const f = 2 * ratio - 1;
 
         // Computed with Mathematica
-        return this.stepMaximumVolume * 2 * Math.sqrt( ratio - ratio * ratio ) * f + Math.acos( -f ) / Math.PI;
+        return this.stepMaximumVolume * ( 2 * Math.sqrt( ratio - ratio * ratio ) * f + Math.acos( -f ) ) / Math.PI;
       }
     }
 
@@ -191,7 +191,7 @@ define( require => {
      * @param {number} length
      */
     static getHorizontalCylinderShape( radius, length ) {
-      return Shape.rect( -length / 2, -radius, length / 2, radius );
+      return Shape.rect( -length / 2, -radius, length, 2 * radius );
     }
   }
 

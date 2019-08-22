@@ -188,7 +188,7 @@ define( require => {
      * @param {number} height
      */
     static getVerticalCylinderShape( radius, height ) {
-      return Shape.rect( -radius, -height / 2, radius, height / 2 );
+      return Shape.rect( -radius, -height / 2, 2 * radius, height );
     }
   }
 

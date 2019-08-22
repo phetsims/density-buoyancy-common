@@ -17,6 +17,7 @@ define( require => {
   const DerivedProperty = require( 'AXON/DerivedProperty' );
   const Ellipsoid = require( 'DENSITY_BUOYANCY_COMMON/common/model/Ellipsoid' );
   const Gravity = require( 'DENSITY_BUOYANCY_COMMON/common/model/Gravity' );
+  const HorizontalCylinder = require( 'DENSITY_BUOYANCY_COMMON/common/model/HorizontalCylinder' );
   const InterpolatedProperty = require( 'DENSITY_BUOYANCY_COMMON/common/model/InterpolatedProperty' );
   const Material = require( 'DENSITY_BUOYANCY_COMMON/common/model/Material' );
   const Matrix3 = require( 'DOT/Matrix3' );
@@ -142,6 +143,11 @@ define( require => {
 
       this.masses.push( new VerticalCylinder( this.engine, 0.05, 0.1, {
         matrix: Matrix3.translation( -0.1, 1.0 ),
+        material: Material.WOOD
+      } ) );
+
+      this.masses.push( new HorizontalCylinder( this.engine, 0.05, 0.1, {
+        matrix: Matrix3.translation( 0.2, 1.5 ),
         material: Material.WOOD
       } ) );
 

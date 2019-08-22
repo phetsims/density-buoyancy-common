@@ -27,6 +27,8 @@ define( require => {
   const ForceDiagramNode = require( 'DENSITY_BUOYANCY_COMMON/common/view/ForceDiagramNode' );
   const GravityControlNode = require( 'DENSITY_BUOYANCY_COMMON/common/view/GravityControlNode' );
   const HBox = require( 'SCENERY/nodes/HBox' );
+  const HorizontalCylinder = require( 'DENSITY_BUOYANCY_COMMON/common/model/HorizontalCylinder' );
+  const HorizontalCylinderView = require( 'DENSITY_BUOYANCY_COMMON/common/view/HorizontalCylinderView' );
   const LinearGradient = require( 'SCENERY/util/LinearGradient' );
   const MobiusSceneNode = require( 'MOBIUS/MobiusSceneNode' );
   const Mouse = require( 'SCENERY/input/Mouse' );
@@ -458,6 +460,9 @@ define( require => {
         }
         else if ( mass instanceof Ellipsoid ) {
           massView = new EllipsoidView( mass );
+        }
+        else if ( mass instanceof HorizontalCylinder ) {
+          massView = new HorizontalCylinderView( mass );
         }
         else if ( mass instanceof VerticalCylinder ) {
           massView = new VerticalCylinderView( mass );

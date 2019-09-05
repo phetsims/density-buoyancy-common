@@ -15,6 +15,7 @@ define( require => {
   const Shape = require( 'KITE/Shape' );
   const Util = require( 'DOT/Util' );
   const Vector2 = require( 'DOT/Vector2' );
+  const Vector3 = require( 'DOT/Vector3' );
 
   class Cone extends Mass {
     /**
@@ -54,6 +55,8 @@ define( require => {
       this.stepArea = 0;
       this.stepMaximumVolume = 0;
 
+      this.updateSize( radius, height );
+
       // TODO: link updates if size changes
     }
 
@@ -71,8 +74,10 @@ define( require => {
       this.heightProperty.value = height;
 
       this.shapeProperty.value = Cone.getConeShape( radius, height, this.isVertexUp );
-
       this.volumeProperty.value = Math.PI * radius * radius * height / 3;
+
+      this.forceOffsetProperty.value = new Vector3( 0, 0, 0 );
+      this.massOffsetProperty.value = new Vector3( 0, -this.heightProperty.value * ( this.isVertexUp ? 0.1 : 0.6 ), radius * 0.7 );
     }
 
     updateStepInformation() {

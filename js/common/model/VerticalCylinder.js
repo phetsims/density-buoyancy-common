@@ -14,6 +14,8 @@ define( require => {
   const NumberProperty = require( 'AXON/NumberProperty' );
   const Shape = require( 'KITE/Shape' );
   const Util = require( 'DOT/Util' );
+  const Vector2 = require( 'DOT/Vector2' );
+  const Vector3 = require( 'DOT/Vector3' );
 
   class VerticalCylinder extends Mass {
     /**
@@ -46,6 +48,10 @@ define( require => {
       this.stepArea = 0;
       this.stepMaximumVolume = 0;
 
+      this.massOffsetOrientationProperty.value = new Vector2( 0, -1 );
+
+      this.updateSize( radius, height );
+
       // TODO: link updates if size changes
     }
 
@@ -65,6 +71,9 @@ define( require => {
       this.shapeProperty.value = VerticalCylinder.getVerticalCylinderShape( radius, height );
 
       this.volumeProperty.value = Math.PI * radius * radius * height;
+
+      this.forceOffsetProperty.value = new Vector3( 0, 0, radius );
+      this.massOffsetProperty.value = new Vector3( 0, -height / 2, radius );
     }
 
     updateStepInformation() {

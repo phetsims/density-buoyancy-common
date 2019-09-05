@@ -14,6 +14,7 @@ define( require => {
   const NumberProperty = require( 'AXON/NumberProperty' );
   const Shape = require( 'KITE/Shape' );
   const Util = require( 'DOT/Util' );
+  const Vector3 = require( 'DOT/Vector3' );
 
   class HorizontalCylinder extends Mass {
     /**
@@ -46,6 +47,8 @@ define( require => {
       this.stepArea = 0;
       this.stepMaximumVolume = 0;
 
+      this.updateSize( radius, length );
+
       // TODO: link updates if size changes
     }
 
@@ -65,6 +68,9 @@ define( require => {
       this.shapeProperty.value = HorizontalCylinder.getHorizontalCylinderShape( radius, length );
 
       this.volumeProperty.value = Math.PI * radius * radius * length;
+
+      this.forceOffsetProperty.value = new Vector3( 0, 0, radius );
+      this.massOffsetProperty.value = new Vector3( 0, -radius * 0.5, radius * 0.7 );
     }
 
     updateStepInformation() {

@@ -95,6 +95,16 @@ define( require => {
         useDeepEquality: true
       } );
 
+      // @public {Property.<Vector3>}
+      this.massOffsetProperty = new Property( Vector3.ZERO, {
+        useDeepEquality: true
+      } );
+
+      // @public {Property.<Vector3>} - Orientation multiplied by 1/2 width,height for an offset in view space
+      this.massOffsetOrientationProperty = new Property( Vector2.ZERO, {
+        useDeepEquality: true
+      } );
+
       // @public {Matrix3}
       this.matrix = config.matrix;
 

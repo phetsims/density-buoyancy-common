@@ -30,6 +30,7 @@ define( require => {
   const HorizontalCylinder = require( 'DENSITY_BUOYANCY_COMMON/common/model/HorizontalCylinder' );
   const HorizontalCylinderView = require( 'DENSITY_BUOYANCY_COMMON/common/view/HorizontalCylinderView' );
   const LinearGradient = require( 'SCENERY/util/LinearGradient' );
+  const MassLabelNode = require( 'DENSITY_BUOYANCY_COMMON/common/view/MassLabelNode' );
   const MobiusSceneNode = require( 'MOBIUS/MobiusSceneNode' );
   const Mouse = require( 'SCENERY/input/Mouse' );
   const Node = require( 'SCENERY/nodes/Node' );
@@ -43,6 +44,7 @@ define( require => {
   const Text = require( 'SCENERY/nodes/Text' );
   const ThreeUtil = require( 'MOBIUS/ThreeUtil' );
   const Util = require( 'SCENERY/util/Util' );
+  const Vector2 = require( 'DOT/Vector2' );
   const Vector3 = require( 'DOT/Vector3' );
   const VerticalCylinder = require( 'DENSITY_BUOYANCY_COMMON/common/model/VerticalCylinder' );
   const VerticalCylinderView = require( 'DENSITY_BUOYANCY_COMMON/common/view/VerticalCylinderView' );
@@ -53,6 +55,7 @@ define( require => {
 
   // constants
   const MARGIN = 10;
+  const scratchVector2 = new Vector2( 0, 0 );
 
   class DensityBuoyancyScreenView extends ScreenView {
 
@@ -119,6 +122,10 @@ define( require => {
       this.addChild( this.sceneNode );
 
       // @private {Node}
+      this.massLabelLayer = new Node();
+      this.addChild( this.massLabelLayer );
+
+      // @private {Node}
       this.forceDiagramLayer = new Node();
       this.addChild( this.forceDiagramLayer );
 
@@ -127,6 +134,9 @@ define( require => {
 
       // @private {Array.<ForceDiagramNode>}
       this.forceDiagramNodes = [];
+
+      // @private {Array.<MassLabelNode>}
+      this.massLabelNodes = [];
 
       this.sceneNode.threeCamera.zoom = 1.7;
       this.sceneNode.threeCamera.updateProjectionMatrix();
@@ -481,6 +491,10 @@ define( require => {
           );
           this.forceDiagramLayer.addChild( forceDiagramNode );
           this.forceDiagramNodes.push( forceDiagramNode );
+
+          const massLabelNode = new MassLabelNode( mass, model.showMassesProperty );
+          this.massLabelLayer.addChild( massLabelNode );
+          this.massLabelNodes.push( massLabelNode );
         }
       };
       model.masses.addItemAddedListener( onMassAdded );
@@ -498,6 +512,11 @@ define( require => {
         this.forceDiagramLayer.removeChild( forceDiagramNode );
         arrayRemove( this.forceDiagramNodes, forceDiagramNode );
         forceDiagramNode.dispose();
+
+        const massLabelNode = _.find( this.massLabelNodes, massLabelNode => massLabelNode.mass === mass );
+        this.massLabelLayer.removeChild( massLabelNode );
+        arrayRemove( this.massLabelNodes, massLabelNode );
+        massLabelNode.dispose();
       };
       model.masses.addItemRemovedListener( onMassRemoved );
 
@@ -610,7 +629,14 @@ define( require => {
         forceDiagramNode.update();
 
         const mass = forceDiagramNode.mass;
-        forceDiagramNode.translation = this.modelToViewPoint( mass.matrix.translation.plus( mass.forceOffsetProperty.value ) );
+        forceDiagramNode.translation = this.modelToViewPoint( mass.matrix.translation.toVector3().plus( mass.forceOffsetProperty.value ) );
+      } );
+
+      this.massLabelNodes.forEach( massLabelNode => {
+        const mass = massLabelNode.mass;
+        const modelPoint = this.modelToViewPoint( mass.matrix.translation.toVector3().plus( mass.massOffsetProperty.value ) );
+        const offsetPoint = scratchVector2.setXY( massLabelNode.width / 2, massLabelNode.height / 2 ).componentMultiply( mass.massOffsetOrientationProperty.value );
+        massLabelNode.translation = modelPoint.plus( offsetPoint );
       } );
     }
   }

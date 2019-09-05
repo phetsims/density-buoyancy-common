@@ -42,6 +42,8 @@ define( require => {
       // Step information
       this.stepMaximumArea = 0;
       this.stepMaximumVolume = 0;
+
+      this.updateSize( size );
     }
 
     /**
@@ -56,6 +58,7 @@ define( require => {
       this.shapeProperty.value = Ellipsoid.getEllipsoidShape( size.width, size.height );
       this.volumeProperty.value = Math.PI * size.width * size.height * size.depth / 6;
       this.forceOffsetProperty.value = new Vector3( 0, 0, size.maxZ );
+      this.massOffsetProperty.value = new Vector3( 0, size.minY * 0.5, size.maxZ * 0.7 );
     }
 
     updateStepInformation() {

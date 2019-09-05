@@ -26,6 +26,7 @@ define( require => {
   const ObservableArray = require( 'AXON/ObservableArray' );
   const P2Engine = require( 'DENSITY_BUOYANCY_COMMON/common/model/P2Engine' );
   const Property = require( 'AXON/Property' );
+  const Scale = require( 'DENSITY_BUOYANCY_COMMON/common/model/Scale' );
   const Vector2 = require( 'DOT/Vector2' );
   const VerticalCylinder = require( 'DENSITY_BUOYANCY_COMMON/common/model/VerticalCylinder' );
 
@@ -126,7 +127,7 @@ define( require => {
         material: Material.ICE
       } ) );
 
-      this.masses.push( new Cuboid( this.engine, new Bounds3( -0.07, -0.07, -0.07, 0.07, 0.07, 0.07 ), {
+      this.masses.push( new Scale( this.engine, new Bounds3( -0.07, -0.07, -0.07, 0.07, 0.07, 0.07 ), {
         matrix: Matrix3.translation( 0.5, 0.2 ),
         material: Material.WOOD
       } ) );
@@ -167,6 +168,19 @@ define( require => {
           const contactForce = this.engine.bodyGetContactForces( mass.body );
           this.engine.resetContactForces( mass.body );
           mass.contactForceProperty.setNextValue( contactForce );
+
+          if ( mass instanceof Scale ) {
+            let scaleForce = 0;
+            this.masses.forEach( otherMass => {
+              if ( mass !== otherMass ) {
+                const verticalForce = this.engine.bodyGetContactForceBetween( mass.body, otherMass.body ).y;
+                if ( verticalForce > 0 ) {
+                  scaleForce += verticalForce;
+                }
+              }
+            } );
+            mass.scaleForceProperty.setNextValue( scaleForce );
+          }
 
           // TODO: should we step the liquid y here for stability?
           const submergedVolume = mass.getDisplacedBuoyantVolume( this.liquidYProperty.currentValue );

@@ -13,6 +13,7 @@ define( require => {
   const Mass = require( 'DENSITY_BUOYANCY_COMMON/common/model/Mass' );
   const Property = require( 'AXON/Property' );
   const Shape = require( 'KITE/Shape' );
+  const Vector2 = require( 'DOT/Vector2' );
   const Vector3 = require( 'DOT/Vector3' );
 
   class Cuboid extends Mass {
@@ -41,6 +42,10 @@ define( require => {
       // Step information
       this.stepArea = 0;
       this.stepMaximumVolume = 0;
+
+      this.massOffsetOrientationProperty.value = new Vector2( 1, -1 );
+
+      this.updateSize( size );
     }
 
     /**
@@ -55,6 +60,7 @@ define( require => {
       this.shapeProperty.value = Shape.rect( size.minX, size.minY, size.width, size.height );
       this.volumeProperty.value = size.width * size.height * size.depth;
       this.forceOffsetProperty.value = new Vector3( 0, 0, size.maxZ );
+      this.massOffsetProperty.value = new Vector3( size.minX, size.minY, size.maxZ );
     }
 
     updateStepInformation() {

@@ -71,6 +71,9 @@
   "material.wood": {
     "value": "Wood"
   },
+  "kilogramsPattern": {
+    "value": "{{kilograms}} kg"
+  },
   "litersPattern": {
     "value": "{{liters}} L"
   },

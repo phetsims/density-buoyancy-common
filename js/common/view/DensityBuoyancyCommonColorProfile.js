@@ -27,7 +27,9 @@ define( require => {
 
     contactForce: { default: new Color( 234, 150, 62 ) },
     gravityForce: { default: new Color( 41, 59, 139 ) },
-    buoyancyForce: { default: new Color( 218, 51, 138 ) }
+    buoyancyForce: { default: new Color( 218, 51, 138 ) },
+
+    massLabelBackground: { default: Color.WHITE }
   } );
 
   densityBuoyancyCommon.register( 'DensityBuoyancyCommonColorProfile', DensityBuoyancyCommonColorProfile );

@@ -69,9 +69,10 @@ define( require => {
         }
       }
 
+      // Documentation specifies that contact force should always be on the left if there are conflicts
+      updateArrow( this.mass.contactForceProperty, this.showContactForceProperty, this.contactArrowNode );
       updateArrow( this.mass.gravityForceProperty, this.showGravityForceProperty, this.gravityArrowNode );
       updateArrow( this.mass.buoyancyForceProperty, this.showBuoyancyForceProperty, this.buoyancyArrowNode );
-      updateArrow( this.mass.contactForceProperty, this.showContactForceProperty, this.contactArrowNode );
 
       this.children = [
         ...upwardArrows,

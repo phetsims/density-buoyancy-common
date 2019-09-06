@@ -9,6 +9,7 @@ define( require => {
   'use strict';
 
   // modules
+  const Bounds3 = require( 'DOT/Bounds3' );
   const densityBuoyancyCommon = require( 'DENSITY_BUOYANCY_COMMON/densityBuoyancyCommon' );
   const Mass = require( 'DENSITY_BUOYANCY_COMMON/common/model/Mass' );
   const Property = require( 'AXON/Property' );
@@ -59,6 +60,20 @@ define( require => {
       this.volumeProperty.value = Math.PI * size.width * size.height * size.depth / 6;
       this.forceOffsetProperty.value = new Vector3( 0, 0, size.maxZ );
       this.massOffsetProperty.value = new Vector3( 0, size.minY * 0.5, size.maxZ * 0.7 );
+    }
+
+    /**
+     * Sets the general size of the mass based on a general size scale.
+     * @public
+     * @override
+     *
+     * @param {number} widthRatio
+     * @param {number} heightRatio
+     */
+    setRatios( widthRatio, heightRatio ) {
+      const x = 0.01 + widthRatio * 0.09;
+      const y = 0.01 + heightRatio * 0.09;
+      this.updateSize( new Bounds3( -x, -y, -x, x, y, x ) );
     }
 
     updateStepInformation() {

@@ -216,6 +216,17 @@ define( require => {
       this.userControlledProperty.value = false;
     }
 
+    /**
+     * Sets the general size of the mass based on a general size scale.
+     * @public
+     *
+     * @param {number} widthRatio
+     * @param {number} heightRatio
+     */
+    setRatios( widthRatio, heightRatio ) {
+      throw new Error( 'unimplemented' );
+    }
+
     updateStepInformation() {
       throw new Error( 'unimplemented' );
     }

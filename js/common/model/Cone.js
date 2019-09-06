@@ -80,6 +80,20 @@ define( require => {
       this.massOffsetProperty.value = new Vector3( 0, -this.heightProperty.value * ( this.isVertexUp ? 0.1 : 0.6 ), radius * 0.7 );
     }
 
+    /**
+     * Sets the general size of the mass based on a general size scale.
+     * @public
+     * @override
+     *
+     * @param {number} widthRatio
+     * @param {number} heightRatio
+     */
+    setRatios( widthRatio, heightRatio ) {
+      const x = 0.01 + widthRatio * 0.09;
+      const y = 0.01 + heightRatio * 0.09;
+      this.updateSize( x, 2 * y );
+    }
+
     updateStepInformation() {
       this.engine.bodyGetStepMatrixTransform( this.body, this.stepMatrix );
 

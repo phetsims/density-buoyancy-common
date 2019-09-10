@@ -24,7 +24,14 @@ define( require => {
       this.mass = mass;
 
       // @private {MaterialView}
-      this.materialView = materialView; // TODO: hook up changes
+      this.materialView = materialView;
+
+      mass.materialProperty.lazyLink( material => {
+        // TODO: No MaterialView disposal?
+
+        this.materialView = DensityMaterials.getMaterialView( material );
+        this.material = this.materialView.material;
+      } );
 
       // @private {function}
       this.positionListener = () => {

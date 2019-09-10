@@ -566,9 +566,7 @@ define( require => {
 
       // private {Property.<Mass>}
       this.currentMassProperty = new Property( model.masses.get( 0 ) );
-      this.addChild( new AlignBox( new Panel( new DebugEditNode( this.currentMassProperty, popupLayer ), {
-        minWidth: 200
-      } ), {
+      this.addChild( new AlignBox( new Panel( new DebugEditNode( this.currentMassProperty, popupLayer ) ), {
         alignBounds: this.layoutBounds,
         xAlign: 'right',
         yAlign: 'bottom',

@@ -36,7 +36,11 @@ define( require => {
   const Wood26RghImage = require( 'image!DENSITY_BUOYANCY_COMMON/Wood26_rgh.jpg' );
 
   function toTexture( image ) {
-    return new THREE.TextureLoader().load( image.src );
+    const texture = new THREE.TextureLoader().load( image.src );
+    texture.wrapS = THREE.RepeatWrapping;
+    texture.wrapT = THREE.RepeatWrapping;
+    // texture.repeat.set( 4, 4 ); // TODO: any performance or quality due to this?
+    return texture;
   }
 
   // textures

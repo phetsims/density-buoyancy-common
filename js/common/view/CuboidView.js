@@ -9,6 +9,7 @@ define( require => {
   // modules
   const densityBuoyancyCommon = require( 'DENSITY_BUOYANCY_COMMON/densityBuoyancyCommon' );
   const MassView = require( 'DENSITY_BUOYANCY_COMMON/common/view/MassView' );
+  const Vector3 = require( 'DOT/Vector3' );
 
   // constats
   const numElements = 18 * 3;
@@ -38,8 +39,9 @@ define( require => {
 
       // @private {function}
       this.updateListener = size => {
-        CuboidView.updateArrays( boxGeometry.attributes.position.array, null, null, size );
+        CuboidView.updateArrays( boxGeometry.attributes.position.array, null, boxGeometry.attributes.uv.array, size );
         boxGeometry.attributes.position.needsUpdate = true;
+        boxGeometry.attributes.uv.needsUpdate = true;
         boxGeometry.computeBoundingSphere();
       };
       this.cuboid.sizeProperty.lazyLink( this.updateListener );
@@ -65,18 +67,23 @@ define( require => {
      * @param {Float32Array|null} uvArray
      * @param {Bounds3} size
      * @param {number} offset - How many vertices have been specified so far?
+     * @param {Vector3} offsetPosition - How to transform all of the points
      * @returns {number} - The offset after the specified verticies have been written
      */
-    static updateArrays( positionArray, normalArray, uvArray, size, offset = 0 ) {
+    static updateArrays( positionArray, normalArray, uvArray, size, offset = 0, offsetPosition = Vector3.ZERO ) {
       let positionIndex = offset * 3;
       let normalIndex = offset * 3;
       let uvIndex = offset * 2;
 
+      const offsetX = offsetPosition.x;
+      const offsetY = offsetPosition.y;
+      const offsetZ = offsetPosition.z;
+
       function position( x, y, z ) {
         if ( positionArray ) {
-          positionArray[ positionIndex++ ] = x;
-          positionArray[ positionIndex++ ] = y;
-          positionArray[ positionIndex++ ] = z;
+          positionArray[ positionIndex++ ] = x + offsetX;
+          positionArray[ positionIndex++ ] = y + offsetY;
+          positionArray[ positionIndex++ ] = z + offsetZ;
         }
       }
 
@@ -106,13 +113,20 @@ define( require => {
         position( p2x, p2y, p2z );
         position( p3x, p3y, p3z );
 
-        uv( 1, 0 );
-        uv( 0, 0 );
-        uv( 0, 1 );
+        const du = 2.5 * ( Math.abs( p1x - p0x ) + Math.abs( p1y - p0y ) + Math.abs( p1z - p0z ) );
+        const dv = 2.5 * ( Math.abs( p1x - p2x ) + Math.abs( p1y - p2y ) + Math.abs( p1z - p2z ) );
+        const uMin = 0.5 - du;
+        const uMax = 0.5 + du;
+        const vMin = 0.5 - dv;
+        const vMax = 0.5 + dv;
 
-        uv( 1, 0 );
-        uv( 0, 1 );
-        uv( 1, 1 );
+        uv( uMax, vMin );
+        uv( uMin, vMin );
+        uv( uMin, vMax );
+
+        uv( uMax, vMin );
+        uv( uMin, vMax );
+        uv( uMax, vMax );
 
         offset += 6;
       }

@@ -9,6 +9,7 @@ define( require => {
   // modules
   const densityBuoyancyCommon = require( 'DENSITY_BUOYANCY_COMMON/densityBuoyancyCommon' );
   const MassView = require( 'DENSITY_BUOYANCY_COMMON/common/view/MassView' );
+  const Vector3 = require( 'DOT/Vector3' );
 
   // constants
   const segments = 64;
@@ -38,8 +39,9 @@ define( require => {
 
       // @private {function}
       this.updateListener = size => {
-        VerticalCylinderView.updateArrays( verticalCylinderGeometry.attributes.position.array, null, null, verticalCylinder.radiusProperty.value, verticalCylinder.heightProperty.value );
+        VerticalCylinderView.updateArrays( verticalCylinderGeometry.attributes.position.array, null, verticalCylinderGeometry.attributes.uv.array, verticalCylinder.radiusProperty.value, verticalCylinder.heightProperty.value );
         verticalCylinderGeometry.attributes.position.needsUpdate = true;
+        verticalCylinderGeometry.attributes.uv.needsUpdate = true;
         verticalCylinderGeometry.computeBoundingSphere();
       };
       this.verticalCylinder.radiusProperty.lazyLink( this.updateListener );
@@ -68,9 +70,10 @@ define( require => {
      * @param {number} radius
      * @param {number} height
      * @param {number} offset - How many vertices have been specified so far?
+     * @param {Vector3} offsetPosition - How to transform all of the points
      * @returns {number} - The offset after the specified verticies have been written
      */
-    static updateArrays( positionArray, normalArray, uvArray, radius, height, offset = 0 ) {
+    static updateArrays( positionArray, normalArray, uvArray, radius, height, offset = 0, offsetPosition = Vector3.ZERO ) {
       const baseY = -height / 2;
       const topY = height / 2;
 
@@ -78,11 +81,15 @@ define( require => {
       let normalIndex = offset * 3;
       let uvIndex = offset * 2;
 
+      const offsetX = offsetPosition.x;
+      const offsetY = offsetPosition.y;
+      const offsetZ = offsetPosition.z;
+
       function position( x, y, z ) {
         if ( positionArray ) {
-          positionArray[ positionIndex++ ] = x;
-          positionArray[ positionIndex++ ] = y;
-          positionArray[ positionIndex++ ] = z;
+          positionArray[ positionIndex++ ] = x + offsetX;
+          positionArray[ positionIndex++ ] = y + offsetY;
+          positionArray[ positionIndex++ ] = z + offsetZ;
         }
 
         offset++;
@@ -103,11 +110,22 @@ define( require => {
         }
       }
 
+      const du = 5 * 2 * Math.PI * radius;
+      const dv = 2.5 * height;
+      const dvCap = 2.5 * radius;
+      const vMin = 0.5 - dv;
+      const vMax = 0.5 + dv;
+      const vCapMin = 0.5 - dvCap;
+      const vCapMax = 0.5 + dvCap;
+
       const TWO_PI = 2 * Math.PI;
+      const HALF_PI = 0.5 * Math.PI;
 
       for ( let i = 0; i < segments; i++ ) {
-        const theta0 = TWO_PI * i / segments;
-        const theta1 = TWO_PI * ( i + 1 ) / segments;
+        const ratio0 = i / segments;
+        const ratio1 = ( i + 1 ) / segments;
+        const theta0 = TWO_PI * ratio0 - HALF_PI;
+        const theta1 = TWO_PI * ratio1 - HALF_PI;
 
         // Normals
         const nx0 = Math.cos( theta0 );
@@ -128,9 +146,9 @@ define( require => {
         normal( 0, -1, 0 );
         normal( 0, -1, 0 );
         normal( 0, -1, 0 );
-        uv( 0.5, 1 );
-        uv( theta0 / TWO_PI, 0 );
-        uv( theta1 / TWO_PI, 0 );
+        uv( 0.5, vCapMax );
+        uv( du * ( ratio0 - 0.5 ), vCapMin );
+        uv( du * ( ratio1 - 0.5 ), vCapMin );
 
         // Side
         position( x0, baseY, z0 );
@@ -145,12 +163,12 @@ define( require => {
         normal( nx1, 0, nz1 );
         normal( nx0, 0, nz0 );
         normal( nx1, 0, nz1 );
-        uv( theta0 / TWO_PI, 0 );
-        uv( theta0 / TWO_PI, 1 );
-        uv( theta1 / TWO_PI, 0 );
-        uv( theta1 / TWO_PI, 0 );
-        uv( theta0 / TWO_PI, 1 );
-        uv( theta1 / TWO_PI, 1 );
+        uv( du * ( ratio0 - 0.5 ), vMin );
+        uv( du * ( ratio0 - 0.5 ), vMax );
+        uv( du * ( ratio1 - 0.5 ), vMin );
+        uv( du * ( ratio1 - 0.5 ), vMin );
+        uv( du * ( ratio0 - 0.5 ), vMax );
+        uv( du * ( ratio1 - 0.5 ), vMax );
 
         // Top
         position( 0, topY, 0 );
@@ -159,9 +177,9 @@ define( require => {
         normal( 0, 1, 0 );
         normal( 0, 1, 0 );
         normal( 0, 1, 0 );
-        uv( 0.5, 1 );
-        uv( theta1 / TWO_PI, 0 );
-        uv( theta0 / TWO_PI, 0 );
+        uv( 0.5, vCapMax );
+        uv( du * ( ratio1 - 0.5 ), vCapMin );
+        uv( du * ( ratio0 - 0.5 ), vCapMin );
       }
 
       return offset;

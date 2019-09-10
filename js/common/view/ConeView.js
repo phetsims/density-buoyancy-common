@@ -71,9 +71,10 @@ define( require => {
      * @param {number} height
      * @param {boolean} isVertexUp
      * @param {number} offset - How many vertices have been specified so far?
+     * @param {Vector3} offsetPosition - How to transform all of the points
      * @returns {number} - The offset after the specified verticies have been written
      */
-    static updateArrays( positionArray, normalArray, uvArray, radius, height, isVertexUp, offset = 0 ) {
+    static updateArrays( positionArray, normalArray, uvArray, radius, height, isVertexUp, offset = 0, offsetPosition = Vector3.ZERO ) {
       const vertexSign = isVertexUp ? 1 : -1;
       const vertexY = vertexSign * 0.75 * height;
       const baseY = -vertexSign * 0.25 * height;
@@ -82,11 +83,15 @@ define( require => {
       let normalIndex = offset * 3;
       let uvIndex = offset * 2;
 
+      const offsetX = offsetPosition.x;
+      const offsetY = offsetPosition.y;
+      const offsetZ = offsetPosition.z;
+
       function position( x, y, z ) {
         if ( positionArray ) {
-          positionArray[ positionIndex++ ] = x;
-          positionArray[ positionIndex++ ] = y;
-          positionArray[ positionIndex++ ] = z;
+          positionArray[ positionIndex++ ] = x + offsetX;
+          positionArray[ positionIndex++ ] = y + offsetY;
+          positionArray[ positionIndex++ ] = z + offsetZ;
         }
 
         offset++;
@@ -108,10 +113,13 @@ define( require => {
       }
 
       const TWO_PI = 2 * Math.PI;
+      const HALF_PI = 0.5 * Math.PI;
 
       for ( let i = 0; i < segments; i++ ) {
-        const theta0 = TWO_PI * i / segments;
-        const theta1 = TWO_PI * ( i + 1 ) / segments;
+        const ratio0 = i / segments;
+        const ratio1 = ( i + 1 ) / segments;
+        const theta0 = TWO_PI * ratio0 - HALF_PI;
+        const theta1 = TWO_PI * ratio1 - HALF_PI;
 
         const vertices = [
           new Vector3( 0, vertexY, 0 ),

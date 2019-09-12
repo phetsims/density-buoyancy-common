@@ -27,7 +27,7 @@ define( require => {
       config = _.extend( {
         body: engine.createHorizontalCylinder( radius, length ),
         shape: HorizontalCylinder.getHorizontalCylinderShape( radius, length ),
-        volume: Math.PI * radius * radius * length,
+        volume: HorizontalCylinder.getVolume( radius, length ),
         canRotate: false
 
         // material
@@ -66,8 +66,7 @@ define( require => {
       this.lengthProperty.value = length;
 
       this.shapeProperty.value = HorizontalCylinder.getHorizontalCylinderShape( radius, length );
-
-      this.volumeProperty.value = Math.PI * radius * radius * length;
+      this.volumeProperty.value = HorizontalCylinder.getVolume( radius, length );
 
       this.forceOffsetProperty.value = new Vector3( 0, 0, radius );
       this.massOffsetProperty.value = new Vector3( 0, -radius * 0.5, radius * 0.7 );
@@ -212,6 +211,18 @@ define( require => {
      */
     static getHorizontalCylinderShape( radius, length ) {
       return Shape.rect( -length / 2, -radius, length, 2 * radius );
+    }
+
+    /**
+     * Returns the volume of a horizontal cylinder with the given radius and length.
+     * @public
+     *
+     * @param {number} radius
+     * @param {number} length
+     * @returns {number}
+     */
+    static getVolume( radius, length ) {
+      return Math.PI * radius * radius * length;
     }
   }
 

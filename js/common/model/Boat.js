@@ -185,7 +185,7 @@ define( require => {
 
       let best = null;
       this.intersectionBoundsArray.forEach( bounds => {
-        const intersection = Cuboid.rayCuboidIntersection( bounds, translation, ray );
+        const intersection = Cuboid.intersect( bounds, translation, ray );
         if ( intersection !== null && ( best === null || intersection < best ) ) {
           best = intersection;
         }

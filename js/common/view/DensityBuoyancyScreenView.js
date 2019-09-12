@@ -43,6 +43,9 @@ define( require => {
   const Property = require( 'AXON/Property' );
   const Rectangle = require( 'SCENERY/nodes/Rectangle' );
   const ResetAllButton = require( 'SCENERY_PHET/buttons/ResetAllButton' );
+  const Scale = require( 'DENSITY_BUOYANCY_COMMON/common/model/Scale' );
+  const ScaleReadoutNode = require( 'DENSITY_BUOYANCY_COMMON/common/view/ScaleReadoutNode' );
+  const ScaleView = require( 'DENSITY_BUOYANCY_COMMON/common/view/ScaleView' );
   const ScreenView = require( 'JOIST/ScreenView' );
   const Text = require( 'SCENERY/nodes/Text' );
   const ThreeUtil = require( 'MOBIUS/ThreeUtil' );
@@ -125,6 +128,10 @@ define( require => {
       this.addChild( this.sceneNode );
 
       // @private {Node}
+      this.scaleReadoutLayer = new Node();
+      this.addChild( this.scaleReadoutLayer );
+
+      // @private {Node}
       this.massLabelLayer = new Node();
       this.addChild( this.massLabelLayer );
 
@@ -134,6 +141,9 @@ define( require => {
 
       // @private {Array.<MassView>}
       this.massViews = [];
+
+      // @private {Array.<ScaleReadoutNode>}
+      this.scaleReadoutNodes = [];
 
       // @private {Array.<ForceDiagramNode>}
       this.forceDiagramNodes = [];
@@ -466,6 +476,9 @@ define( require => {
         if ( mass instanceof Cuboid ) {
           massView = new CuboidView( mass );
         }
+        else if ( mass instanceof Scale ) {
+          massView = new ScaleView( mass );
+        }
         else if ( mass instanceof Boat ) {
           massView = new BoatView( mass );
         }
@@ -486,19 +499,26 @@ define( require => {
           this.sceneNode.threeScene.add( massView );
           this.massViews.push( massView );
 
-          const forceDiagramNode = new ForceDiagramNode(
-            mass,
-            model.showGravityForceProperty,
-            model.showBuoyancyForceProperty,
-            model.showContactForceProperty,
-            model.showForceValuesProperty
-          );
-          this.forceDiagramLayer.addChild( forceDiagramNode );
-          this.forceDiagramNodes.push( forceDiagramNode );
+          if ( massView instanceof ScaleView ) {
+            const scaleReadoutNode = new ScaleReadoutNode( mass );
+            this.scaleReadoutLayer.addChild( scaleReadoutNode );
+            this.scaleReadoutNodes.push( scaleReadoutNode );
+          }
+          else {
+            const forceDiagramNode = new ForceDiagramNode(
+              mass,
+              model.showGravityForceProperty,
+              model.showBuoyancyForceProperty,
+              model.showContactForceProperty,
+              model.showForceValuesProperty
+            );
+            this.forceDiagramLayer.addChild( forceDiagramNode );
+            this.forceDiagramNodes.push( forceDiagramNode );
 
-          const massLabelNode = new MassLabelNode( mass, model.showMassesProperty );
-          this.massLabelLayer.addChild( massLabelNode );
-          this.massLabelNodes.push( massLabelNode );
+            const massLabelNode = new MassLabelNode( mass, model.showMassesProperty );
+            this.massLabelLayer.addChild( massLabelNode );
+            this.massLabelNodes.push( massLabelNode );
+          }
         }
       };
       model.masses.addItemAddedListener( onMassAdded );
@@ -511,16 +531,24 @@ define( require => {
         arrayRemove( this.massViews, massView );
         massView.dispose();
 
-        // Force diagram node
-        const forceDiagramNode = _.find( this.forceDiagramNodes, forceDiagramNode => forceDiagramNode.mass === mass );
-        this.forceDiagramLayer.removeChild( forceDiagramNode );
-        arrayRemove( this.forceDiagramNodes, forceDiagramNode );
-        forceDiagramNode.dispose();
+        if ( massView instanceof ScaleView ) {
+          const scaleReadoutNode = _.find( this.scaleReadoutNodes, scaleReadoutNode => scaleReadoutNode.mass === mass );
+          this.scaleReadoutLayer.removeChild( scaleReadoutNode );
+          arrayRemove( this.scaleReadoutNodes, scaleReadoutNode );
+          scaleReadoutNode.dispose();
+        }
+        else {
+          // Force diagram node
+          const forceDiagramNode = _.find( this.forceDiagramNodes, forceDiagramNode => forceDiagramNode.mass === mass );
+          this.forceDiagramLayer.removeChild( forceDiagramNode );
+          arrayRemove( this.forceDiagramNodes, forceDiagramNode );
+          forceDiagramNode.dispose();
 
-        const massLabelNode = _.find( this.massLabelNodes, massLabelNode => massLabelNode.mass === mass );
-        this.massLabelLayer.removeChild( massLabelNode );
-        arrayRemove( this.massLabelNodes, massLabelNode );
-        massLabelNode.dispose();
+          const massLabelNode = _.find( this.massLabelNodes, massLabelNode => massLabelNode.mass === mass );
+          this.massLabelLayer.removeChild( massLabelNode );
+          arrayRemove( this.massLabelNodes, massLabelNode );
+          massLabelNode.dispose();
+        }
       };
       model.masses.addItemRemovedListener( onMassRemoved );
 
@@ -638,6 +666,10 @@ define( require => {
       this.massViews.forEach( massView => massView.update( this.sceneNode.threeScene, this.sceneNode.threeRenderer ) );
 
       this.sceneNode.render( undefined );
+
+      this.scaleReadoutNodes.forEach( scaleReadoutNode => {
+        scaleReadoutNode.translation = this.modelToViewPoint( scaleReadoutNode.mass.matrix.translation.toVector3().plus( Scale.SCALE_FRONT_OFFSET ) );
+      } );
 
       this.forceDiagramNodes.forEach( forceDiagramNode => {
         forceDiagramNode.update();

@@ -108,7 +108,7 @@ define( require => {
       const size = this.sizeProperty.value;
       const translation = this.matrix.getTranslation().toVector3();
 
-      return Cuboid.rayCuboidIntersection( size, translation, ray );
+      return Cuboid.intersect( size, translation, ray );
     }
 
     /**
@@ -175,7 +175,7 @@ define( require => {
      * @param {Ray3} ray
      * @returns {number|null}
      */
-    static rayCuboidIntersection( bounds, translation, ray ) {
+    static intersect( bounds, translation, ray ) {
       let tNear = Number.NEGATIVE_INFINITY;
       let tFar = Number.POSITIVE_INFINITY;
 

@@ -28,7 +28,7 @@ define( require => {
       config = _.extend( {
         body: engine.createVerticalCylinder( radius, height ),
         shape: VerticalCylinder.getVerticalCylinderShape( radius, height ),
-        volume: Math.PI * radius * radius * height,
+        volume: VerticalCylinder.getVolume( radius, height ),
         canRotate: false
 
         // material
@@ -69,8 +69,7 @@ define( require => {
       this.heightProperty.value = height;
 
       this.shapeProperty.value = VerticalCylinder.getVerticalCylinderShape( radius, height );
-
-      this.volumeProperty.value = Math.PI * radius * radius * height;
+      this.volumeProperty.value = VerticalCylinder.getVolume( radius, height );
 
       this.forceOffsetProperty.value = new Vector3( 0, 0, radius );
       this.massOffsetProperty.value = new Vector3( 0, -height / 2, radius );
@@ -118,33 +117,7 @@ define( require => {
      * @returns {number|null}
      */
     intersect( ray, isTouch ) {
-      const translation = this.matrix.getTranslation().toVector3();
-      const radius = this.radiusProperty.value;
-      const height = this.heightProperty.value;
-      const relativePosition = ray.position.minusXYZ( translation.x, translation.y, translation.z );
-
-      const xp = 4 / ( radius * radius );
-      const zp = 4 / ( radius * radius );
-
-      const a = xp * ray.direction.x * ray.direction.x + zp * ray.direction.z * ray.direction.z;
-      const b = 2 * ( xp * relativePosition.x * ray.direction.x + zp * relativePosition.z * ray.direction.z );
-      const c = -1 + xp * relativePosition.x * relativePosition.x + zp * relativePosition.z * relativePosition.z;
-
-      const tValues = Util.solveQuadraticRootsReal( a, b, c ).filter( t => {
-        if ( t <= 0 ) {
-          return false;
-        }
-        const y = ray.pointAtDistance( t ).y;
-
-        return Math.abs( y - translation.y ) <= height / 2;
-      } );
-
-      if ( tValues.length ) {
-        return tValues[ 0 ];
-      }
-      else {
-        return null;
-      }
+      return VerticalCylinder.intersect( ray, isTouch, this.matrix.getTranslation().toVector3(), this.radiusProperty.value, this.heightProperty.value );
     }
 
     /**
@@ -212,6 +185,56 @@ define( require => {
      */
     static getVerticalCylinderShape( radius, height ) {
       return Shape.rect( -radius, -height / 2, 2 * radius, height );
+    }
+
+    /**
+     * Returns the volume of a vertical cylinder with the given radius and height.
+     * @public
+     *
+     * @param {number} radius
+     * @param {number} height
+     * @returns {number}
+     */
+    static getVolume( radius, height ) {
+      return Math.PI * radius * radius * height;
+    }
+
+    /**
+     * If there is an intersection with the ray and the cone, the t-value (distance the ray would need to travel to
+     * reach the intersection, e.g. ray.position + ray.distance * t === intersectionPoint) will be returned. Otherwise
+     * if there is no intersection, null will be returned.
+     * @public
+     * @override
+     *
+     * @param {Ray3} ray
+     * @param {boolean} isTouch
+     * @returns {number|null}
+     */
+    static intersect( ray, isTouch, translation, radius, height ) {
+      const relativePosition = ray.position.minusXYZ( translation.x, translation.y, translation.z );
+
+      const xp = 4 / ( radius * radius );
+      const zp = 4 / ( radius * radius );
+
+      const a = xp * ray.direction.x * ray.direction.x + zp * ray.direction.z * ray.direction.z;
+      const b = 2 * ( xp * relativePosition.x * ray.direction.x + zp * relativePosition.z * ray.direction.z );
+      const c = -1 + xp * relativePosition.x * relativePosition.x + zp * relativePosition.z * relativePosition.z;
+
+      const tValues = Util.solveQuadraticRootsReal( a, b, c ).filter( t => {
+        if ( t <= 0 ) {
+          return false;
+        }
+        const y = ray.pointAtDistance( t ).y;
+
+        return Math.abs( y - translation.y ) <= height / 2;
+      } );
+
+      if ( tValues.length ) {
+        return tValues[ 0 ];
+      }
+      else {
+        return null;
+      }
     }
   }
 

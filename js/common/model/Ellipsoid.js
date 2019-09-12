@@ -27,7 +27,7 @@ define( require => {
       config = _.extend( {
         body: engine.createEllipsoid( size.width, size.height ),
         shape: Ellipsoid.getEllipsoidShape( size.width, size.height ),
-        volume: Math.PI * size.width * size.height * size.depth / 6,
+        volume: Ellipsoid.getVolume( size ),
         canRotate: false
 
         // material
@@ -57,7 +57,7 @@ define( require => {
       this.engine.updateEllipsoid( this.body, size.width, size.height );
       this.sizeProperty.value = size;
       this.shapeProperty.value = Ellipsoid.getEllipsoidShape( size.width, size.height );
-      this.volumeProperty.value = Math.PI * size.width * size.height * size.depth / 6;
+      this.volumeProperty.value = Ellipsoid.getVolume( size );
       this.forceOffsetProperty.value = new Vector3( 0, 0, size.maxZ );
       this.massOffsetProperty.value = new Vector3( 0, size.minY * 0.5, size.maxZ * 0.7 );
     }
@@ -197,6 +197,17 @@ define( require => {
      */
     static getEllipsoidShape( width, height ) {
       return Shape.ellipse( 0, 0, width / 2, height / 2, 0 );
+    }
+
+    /**
+     * Returns the volume of an ellipsoid with the given axis-aligned bounding box.
+     * @public
+     *
+     * @param {Bounds3} size
+     * @returns {number}
+     */
+    static getVolume( size ) {
+      return Math.PI * size.width * size.height * size.depth / 6;
     }
   }
 

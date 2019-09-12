@@ -127,9 +127,9 @@ define( require => {
         material: Material.ICE
       } ) );
 
-      this.masses.push( new Scale( this.engine, new Bounds3( -0.07, -0.07, -0.07, 0.07, 0.07, 0.07 ), {
+      this.masses.push( new Scale( this.engine, {
         matrix: Matrix3.translation( 0.5, 0.2 ),
-        material: Material.WOOD
+        material: Material.ALUMINUM
       } ) );
 
       this.masses.push( new Cone( this.engine, 0.05, 0.1, true, {

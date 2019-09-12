@@ -29,7 +29,7 @@ define( require => {
       config = _.extend( {
         body: engine.createCone( radius, height, isVertexUp ),
         shape: Cone.getConeShape( radius, height, isVertexUp ),
-        volume: Math.PI * radius * radius * height / 3,
+        volume: Cone.getVolume( radius, height ),
         canRotate: false
 
         // material
@@ -74,7 +74,7 @@ define( require => {
       this.heightProperty.value = height;
 
       this.shapeProperty.value = Cone.getConeShape( radius, height, this.isVertexUp );
-      this.volumeProperty.value = Math.PI * radius * radius * height / 3;
+      this.volumeProperty.value = Cone.getVolume( radius, height );
 
       this.forceOffsetProperty.value = new Vector3( 0, 0, 0 );
       this.massOffsetProperty.value = new Vector3( 0, -this.heightProperty.value * ( this.isVertexUp ? 0.1 : 0.6 ), radius * 0.7 );
@@ -244,6 +244,18 @@ define( require => {
         new Vector2( radius, -0.25 * vertexSign * height ),
         new Vector2( -radius, -0.25 * vertexSign * height )
       ] );
+    }
+
+    /**
+     * Returns the volume of a cone with the given radius and height.
+     * @public
+     *
+     * @param {number} radius
+     * @param {number} height
+     * @returns {number}
+     */
+    static getVolume( radius, height ) {
+      return Math.PI * radius * radius * height / 3;
     }
   }
 

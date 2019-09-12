@@ -73,6 +73,9 @@ define( require => {
 
       super();
 
+      // @protected {boolean} - If we detect that we can't use WebGL, we'll set this to false so we can bail out.
+      this.enabled = true;
+
       // TODO: Some logic from CanvasWarningNode. Factor out once ideal description is found
       if ( !phet.chipper.queryParameters.webgl || !Util.isWebGLSupported ) {
         const warningNode = new HBox( {
@@ -101,13 +104,15 @@ define( require => {
             openPopup( 'http://phet.colorado.edu/webgl-disabled-page?simLocale=' + phet.joist.sim.locale );
           }
         } );
+        this.enabled = false;
         return this;
       }
 
       // @private {DensityBuoyancyModel}
       this.model = model;
 
-      const popupLayer = new Node();
+      // @protected {Node}
+      this.popupLayer = new Node();
 
       // @private {Rectangle} - The sky background, in a unit 0-to-1 rectangle (so we can scale it to match)
       this.backgroundNode = new Rectangle( 0, 0, 1, 1, {
@@ -570,39 +575,6 @@ define( require => {
         tandem: tandem.createTandem( 'resetAllButton' )
       } );
       this.addChild( resetAllButton );
-
-      this.addChild( new Panel( new DisplayOptionsNode( model ), {
-        xMargin: 10,
-        yMargin: 10,
-        left: this.layoutBounds.left + MARGIN,
-        bottom: this.layoutBounds.bottom - MARGIN
-      } ) );
-
-      this.addChild( new Panel( new DensityControlNode( model.liquidMaterialProperty, popupLayer ), {
-        xMargin: 10,
-        yMargin: 10,
-        right: this.layoutBounds.centerX - MARGIN,
-        bottom: this.layoutBounds.bottom - MARGIN
-      } ) );
-
-      this.addChild( new Panel( new GravityControlNode( model.gravityProperty, popupLayer ), {
-        xMargin: 10,
-        yMargin: 10,
-        left: this.layoutBounds.centerX + MARGIN,
-        bottom: this.layoutBounds.bottom - MARGIN
-      } ) );
-
-      // private {Property.<Mass>}
-      this.currentMassProperty = new Property( model.masses.get( 0 ) );
-      this.addChild( new AlignBox( new Panel( new DebugEditNode( this.currentMassProperty, popupLayer ) ), {
-        alignBounds: this.layoutBounds,
-        xAlign: 'right',
-        yAlign: 'bottom',
-        xMargin: 10,
-        yMargin: 70
-      } ) );
-
-      this.addChild( popupLayer );
     }
 
     /**

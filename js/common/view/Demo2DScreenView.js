@@ -17,7 +17,7 @@ define( require => {
   const Shape = require( 'KITE/Shape' );
   const Vector2 = require( 'DOT/Vector2' );
 
-  class DemoScreenView extends ScreenView {
+  class Demo2DScreenView extends ScreenView {
 
     /**
      * @param {DensityBuoyancyModel} model
@@ -102,5 +102,5 @@ define( require => {
     }
   }
 
-  return densityBuoyancyCommon.register( 'DemoScreenView', DemoScreenView );
+  return densityBuoyancyCommon.register( 'Demo2DScreenView', Demo2DScreenView );
 } );

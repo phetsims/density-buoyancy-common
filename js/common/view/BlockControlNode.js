@@ -9,7 +9,9 @@ define( require => {
   // modules
   const ComboBox = require( 'SUN/ComboBox' );
   const ComboBoxItem = require( 'SUN/ComboBoxItem' );
+  const Cuboid = require( 'DENSITY_BUOYANCY_COMMON/common/model/Cuboid' );
   const densityBuoyancyCommon = require( 'DENSITY_BUOYANCY_COMMON/densityBuoyancyCommon' );
+  const DerivedProperty = require( 'AXON/DerivedProperty' );
   const Dimension2 = require( 'DOT/Dimension2' );
   const DynamicProperty = require( 'AXON/DynamicProperty' );
   const Material = require( 'DENSITY_BUOYANCY_COMMON/common/model/Material' );
@@ -21,6 +23,7 @@ define( require => {
   const Range = require( 'DOT/Range' );
   const StringUtils = require( 'PHETCOMMON/util/StringUtils' );
   const Text = require( 'SCENERY/nodes/Text' );
+  const Util = require( 'DOT/Util' );
   const VBox = require( 'SCENERY/nodes/VBox' );
 
   // strings
@@ -36,6 +39,10 @@ define( require => {
 
   // constants
   const LITERS_IN_CUBIC_METER = 1000;
+  const MIN_MASS = 0;
+  const MAX_MASS = 27;
+  const MIN_VOLUME_LITERS = 1;
+  const MAX_VOLUME_LITERS = 10;
 
   class BlockControlNode extends VBox {
     /**
@@ -54,10 +61,72 @@ define( require => {
         bidirectional: true
       } );
 
+      let modelMassChanging = false;
+      let userMassChanging = false;
+      let modelVolumeChanging = false;
+      let userVolumeChanging = false;
+
       const massNumberProperty = new NumberProperty( cuboid.massProperty.value );
 
-      // liters to m^3
-      const volumeProperty = new NumberProperty( cuboid.volumeProperty.value / LITERS_IN_CUBIC_METER );
+      // liters from m^3
+      const volumeProperty = new NumberProperty( cuboid.volumeProperty.value * LITERS_IN_CUBIC_METER );
+
+      volumeProperty.lazyLink( liters => {
+        if ( !modelVolumeChanging ) {
+          const cubicMeters = liters / LITERS_IN_CUBIC_METER;
+
+          userVolumeChanging = true;
+
+          cuboid.updateSize( Cuboid.boundsFromVolume( cubicMeters ) );
+
+          userVolumeChanging = false;
+        }
+      } );
+      cuboid.volumeProperty.lazyLink( cubicMeters => {
+        if ( !userVolumeChanging ) {
+          // TODO: handle re-entrance?
+          modelVolumeChanging = true;
+
+          volumeProperty.value = cubicMeters * LITERS_IN_CUBIC_METER;
+
+          modelVolumeChanging = false;
+        }
+      } );
+
+      massNumberProperty.lazyLink( mass => {
+        if ( !modelMassChanging ) {
+          userMassChanging = true;
+
+          if ( cuboid.materialProperty.value.custom ) {
+            cuboid.materialProperty.value = Material.createCustomMaterial( {
+              density: mass / cuboid.volumeProperty.value
+            } );
+          }
+          else {
+            volumeProperty.value = mass / cuboid.materialProperty.value.density * LITERS_IN_CUBIC_METER;
+          }
+
+          userMassChanging = false;
+        }
+      } );
+      cuboid.massProperty.lazyLink( mass => {
+        if ( !userMassChanging ) {
+          modelMassChanging = true;
+
+          massNumberProperty.value = mass;
+
+          modelMassChanging = false;
+        }
+      } );
+
+      const enabledMassRangeProperty = new DerivedProperty( [ cuboid.materialProperty ], material => {
+        const density = material.density;
+
+        const minMass = Util.clamp( density * MIN_VOLUME_LITERS / LITERS_IN_CUBIC_METER, MIN_MASS, MAX_MASS );
+        const maxMass = Util.clamp( density * MAX_VOLUME_LITERS / LITERS_IN_CUBIC_METER, MIN_MASS, MAX_MASS );
+
+        return new Range( minMass, maxMass );
+      } );
 
       const comboBox = new ComboBox( [
         new ComboBoxItem( new Text( materialStyrofoamString, { font: new PhetFont( 12 ) } ), Material.STYROFOAM ),
@@ -85,22 +154,23 @@ define( require => {
         } )
       };
 
-      const massNumberControl = new NumberControl( massString, massNumberProperty, new Range( 0, 27 ), merge( {
+      const massNumberControl = new NumberControl( massString, massNumberProperty, new Range( MIN_MASS, MAX_MASS ), merge( {
+        sliderOptions: {
+          enabledRangeProperty: enabledMassRangeProperty
+        },
         numberDisplayOptions: {
           valuePattern: StringUtils.fillIn( kilogramsPatternString, {
             kilograms: '{{value}}'
           } )
         }
       }, numberControlOptions ) );
-      const volumeNumberControl = new NumberControl( volumeString, volumeProperty, new Range( 1, 10 ), merge( {
+      const volumeNumberControl = new NumberControl( volumeString, volumeProperty, new Range( MIN_VOLUME_LITERS, MAX_VOLUME_LITERS ), merge( {
         numberDisplayOptions: {
           valuePattern: StringUtils.fillIn( litersPatternString, {
             liters: '{{value}}'
           } )
         }
       }, numberControlOptions ) );
-
-      // mass.updateSize( size );
 
       this.children = [
         comboBox,

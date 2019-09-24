@@ -39,7 +39,9 @@ define( require => {
       super( engine, config );
 
       // @public {Property.<Bounds3>}
-      this.sizeProperty = new Property( size );
+      this.sizeProperty = new Property( size, {
+        useDeepEquality: true
+      } );
 
       // Step information
       this.stepArea = 0;

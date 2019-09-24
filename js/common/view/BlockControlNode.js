@@ -32,6 +32,7 @@ define( require => {
   const massString = require( 'string!DENSITY_BUOYANCY_COMMON/mass' );
   const materialAluminumString = require( 'string!DENSITY_BUOYANCY_COMMON/material.aluminum' );
   const materialBrickString = require( 'string!DENSITY_BUOYANCY_COMMON/material.brick' );
+  const materialCustomString = require( 'string!DENSITY_BUOYANCY_COMMON/material.custom' );
   const materialIceString = require( 'string!DENSITY_BUOYANCY_COMMON/material.ice' );
   const materialStyrofoamString = require( 'string!DENSITY_BUOYANCY_COMMON/material.styrofoam' );
   const materialWoodString = require( 'string!DENSITY_BUOYANCY_COMMON/material.wood' );
@@ -43,6 +44,7 @@ define( require => {
   const MAX_MASS = 27;
   const MIN_VOLUME_LITERS = 1;
   const MAX_VOLUME_LITERS = 10;
+  const CUSTOM_MATERIAL_PLACEHOLDER = null;
 
   class BlockControlNode extends VBox {
     /**
@@ -58,7 +60,16 @@ define( require => {
 
       const materialProperty = new DynamicProperty( new Property( cuboid ), {
         derive: 'materialProperty',
-        bidirectional: true
+        bidirectional: true,
+        map: material => {
+          return material.custom ? CUSTOM_MATERIAL_PLACEHOLDER : material;
+        },
+        inverseMap: material => {
+          return material || Material.createCustomMaterial( {
+            density: cuboid.materialProperty.value.density
+          } );
+        },
+        reentrant: true
       } );
 
       let modelMassChanging = false;
@@ -77,6 +88,12 @@ define( require => {
 
           userVolumeChanging = true;
 
+          // If we're custom, adjust the density
+          if ( cuboid.materialProperty.value.custom ) {
+            cuboid.materialProperty.value = Material.createCustomMaterial( {
+              density: cuboid.massProperty.value / cubicMeters
+            } );
+          }
           cuboid.updateSize( Cuboid.boundsFromVolume( cubicMeters ) );
 
           userVolumeChanging = false;
@@ -120,12 +137,17 @@ define( require => {
       } );
 
       const enabledMassRangeProperty = new DerivedProperty( [ cuboid.materialProperty ], material => {
-        const density = material.density;
+        if ( material.custom ) {
+          return new Range( MIN_MASS, MAX_MASS );
+        }
+        else {
+          const density = material.density;
 
-        const minMass = Util.clamp( density * MIN_VOLUME_LITERS / LITERS_IN_CUBIC_METER, MIN_MASS, MAX_MASS );
-        const maxMass = Util.clamp( density * MAX_VOLUME_LITERS / LITERS_IN_CUBIC_METER, MIN_MASS, MAX_MASS );
+          const minMass = Util.clamp( density * MIN_VOLUME_LITERS / LITERS_IN_CUBIC_METER, MIN_MASS, MAX_MASS );
+          const maxMass = Util.clamp( density * MAX_VOLUME_LITERS / LITERS_IN_CUBIC_METER, MIN_MASS, MAX_MASS );
 
-        return new Range( minMass, maxMass );
+          return new Range( minMass, maxMass );
+        }
       } );
 
       const comboBox = new ComboBox( [
@@ -133,8 +155,8 @@ define( require => {
         new ComboBoxItem( new Text( materialWoodString, { font: new PhetFont( 12 ) } ), Material.WOOD ),
         new ComboBoxItem( new Text( materialIceString, { font: new PhetFont( 12 ) } ), Material.ICE ),
         new ComboBoxItem( new Text( materialBrickString, { font: new PhetFont( 12 ) } ), Material.BRICK ),
-        new ComboBoxItem( new Text( materialAluminumString, { font: new PhetFont( 12 ) } ), Material.ALUMINUM )
-        // TODO: custom!
+        new ComboBoxItem( new Text( materialAluminumString, { font: new PhetFont( 12 ) } ), Material.ALUMINUM ),
+        new ComboBoxItem( new Text( materialCustomString, { font: new PhetFont( 12 ) } ), CUSTOM_MATERIAL_PLACEHOLDER )
       ], materialProperty, listParent, {
         xMargin: 8,
         yMargin: 4

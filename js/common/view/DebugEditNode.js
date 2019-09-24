@@ -35,6 +35,7 @@ define( require => {
   const materialCopperString = require( 'string!DENSITY_BUOYANCY_COMMON/material.copper' );
   const materialIceString = require( 'string!DENSITY_BUOYANCY_COMMON/material.ice' );
   const materialSteelString = require( 'string!DENSITY_BUOYANCY_COMMON/material.steel' );
+  const materialStyrofoamString = require( 'string!DENSITY_BUOYANCY_COMMON/material.styrofoam' );
   const materialWoodString = require( 'string!DENSITY_BUOYANCY_COMMON/material.wood' );
 
   class DebugEditNode extends VBox {
@@ -76,6 +77,7 @@ define( require => {
         new ComboBoxItem( new Text( materialCopperString, { font: new PhetFont( 12 ) } ), Material.COPPER ),
         new ComboBoxItem( new Text( materialIceString, { font: new PhetFont( 12 ) } ), Material.ICE ),
         new ComboBoxItem( new Text( materialSteelString, { font: new PhetFont( 12 ) } ), Material.STEEL ),
+        new ComboBoxItem( new Text( materialStyrofoamString, { font: new PhetFont( 12 ) } ), Material.STYROFOAM ),
         new ComboBoxItem( new Text( materialWoodString, { font: new PhetFont( 12 ) } ), Material.WOOD )
       ], materialProperty, listParent, {
         xMargin: 8,

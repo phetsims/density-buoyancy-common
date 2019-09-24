@@ -32,6 +32,10 @@ define( require => {
   const Metal10MetImage = require( 'image!DENSITY_BUOYANCY_COMMON/Metal10_met.jpg' );
   const Metal10NrmImage = require( 'image!DENSITY_BUOYANCY_COMMON/Metal10_nrm.jpg' );
   const Metal10RghImage = require( 'image!DENSITY_BUOYANCY_COMMON/Metal10_rgh.jpg' );
+  const Styrofoam001AOImage = require( 'image!DENSITY_BUOYANCY_COMMON/Styrofoam_001_AO.jpg' );
+  const Styrofoam001colImage = require( 'image!DENSITY_BUOYANCY_COMMON/Styrofoam_001_col.jpg' );
+  const Styrofoam001nrmImage = require( 'image!DENSITY_BUOYANCY_COMMON/Styrofoam_001_nrm.jpg' );
+  const Styrofoam001rghImage = require( 'image!DENSITY_BUOYANCY_COMMON/Styrofoam_001_rgh.jpg' );
   const Wood26ColImage = require( 'image!DENSITY_BUOYANCY_COMMON/Wood26_col.jpg' );
   const Wood26NrmImage = require( 'image!DENSITY_BUOYANCY_COMMON/Wood26_nrm.jpg' );
   const Wood26RghImage = require( 'image!DENSITY_BUOYANCY_COMMON/Wood26_rgh.jpg' );
@@ -63,6 +67,10 @@ define( require => {
   const steelMetalnessTexture = toWrappedTexture( DiamondPlate01MetImage );
   const steelNormalTexture = toWrappedTexture( DiamondPlate01NrmImage );
   const steelRoughnessTexture = toWrappedTexture( DiamondPlate01RghImage );
+  const styrofoamAmbientOcclusionTexture = toWrappedTexture( Styrofoam001AOImage );
+  const styrofoamColorTexture = toWrappedTexture( Styrofoam001colImage );
+  const styrofoamNormalTexture = toWrappedTexture( Styrofoam001nrmImage );
+  const styrofoamRoughnessTexture = toWrappedTexture( Styrofoam001rghImage );
   const woodColorTexture = toWrappedTexture( Wood26ColImage );
   const woodNormalTexture = toWrappedTexture( Wood26NrmImage );
   const woodRoughnessTexture = toWrappedTexture( Wood26RghImage );
@@ -156,6 +164,22 @@ define( require => {
     }
   }
 
+  class StyrofoamMaterialView extends CameraMaterialView {
+    constructor() {
+      super();
+
+      this.material = new THREE.MeshStandardMaterial( {
+        map: styrofoamColorTexture,
+        aoMap: styrofoamAmbientOcclusionTexture,
+        normalMap: styrofoamNormalTexture,
+        normalScale: new THREE.Vector2( 1, 1 ),
+        roughnessMap: styrofoamRoughnessTexture,
+        metalness: 0,
+        envMap: this.getTexture()
+      } );
+    }
+  }
+
   class WoodMaterialView extends CameraMaterialView {
     constructor() {
       super();
@@ -193,19 +217,22 @@ define( require => {
       if ( material === Material.ALUMINUM ) {
         return new AluminumMaterialView();
       }
-      if ( material === Material.BRICK ) {
+      else if ( material === Material.BRICK ) {
         return new BrickMaterialView();
       }
-      if ( material === Material.COPPER ) {
+      else if ( material === Material.COPPER ) {
         return new CopperMaterialView();
       }
-      if ( material === Material.ICE ) {
+      else if ( material === Material.ICE ) {
         return new IceMaterialView();
       }
-      if ( material === Material.STEEL ) {
+      else if ( material === Material.STEEL ) {
         return new SteelMaterialView();
       }
-      if ( material === Material.WOOD ) {
+      else if ( material === Material.STYROFOAM ) {
+        return new StyrofoamMaterialView();
+      }
+      else if ( material === Material.WOOD ) {
         return new WoodMaterialView();
       }
       else {

@@ -47,7 +47,7 @@ define( require => {
      * @override
      */
     reset() {
-      this.secondMassVisibleProperty.reset();
+      this.secondaryMassVisibleProperty.reset();
 
       this.primaryMass.reset();
       this.secondaryMass.reset();

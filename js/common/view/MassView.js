@@ -63,8 +63,6 @@ define( require => {
      */
     dispose() {
       this.mass.transformedEmitter.removeListener( this.positionListener );
-
-      super.dispose();
     }
   }
 

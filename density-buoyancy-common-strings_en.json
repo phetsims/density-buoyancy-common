@@ -92,6 +92,12 @@
   "contact": {
     "value": "Contact"
   },
+  "mass": {
+    "value": "Mass"
+  },
+  "volume": {
+    "value": "Volume"
+  },
   "masses": {
     "value": "Masses"
   },
@@ -109,5 +115,8 @@
   },
   "gravity": {
     "value": "Gravity"
+  },
+  "secondBlock": {
+    "value": "Second Block"
   }
 }

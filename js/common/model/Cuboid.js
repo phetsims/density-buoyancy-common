@@ -12,6 +12,7 @@ define( require => {
   const Bounds3 = require( 'DOT/Bounds3' );
   const densityBuoyancyCommon = require( 'DENSITY_BUOYANCY_COMMON/densityBuoyancyCommon' );
   const Mass = require( 'DENSITY_BUOYANCY_COMMON/common/model/Mass' );
+  const Matrix3 = require( 'DOT/Matrix3' );
   const Property = require( 'AXON/Property' );
   const Shape = require( 'KITE/Shape' );
   const Vector2 = require( 'DOT/Vector2' );
@@ -204,6 +205,56 @@ define( require => {
       }
 
       return ( tNear >= tFar ) ? null : ( tNear >= 0 ? tNear : ( isFinite( tFar ) && tFar >= 0 ? tFar : null ) );
+    }
+
+    /**
+     * Returns the Bounds3 for a Cuboid that would be used for a specific volume (cubical).
+     * @public
+     *
+     * @param {number} volume
+     * @returns {Bounds3}
+     */
+    static boundsFromVolume( volume ) {
+      const halfSideLength = Math.pow( volume, 1 / 3 ) / 2;
+      return new Bounds3(
+        -halfSideLength,
+        -halfSideLength,
+        -halfSideLength,
+        halfSideLength,
+        halfSideLength,
+        halfSideLength
+      );
+    }
+
+    /**
+     * Creates a Cuboid with a defined volume (cubical by default).
+     * @public
+     *
+     * @param {Engine} engine
+     * @param {Material} material
+     * @param {Vector2} position
+     * @param {number} volume - m^3
+     * @returns {Cuboid}
+     */
+    static createWithVolume( engine, material, position, volume ) {
+      return new Cuboid( engine, Cuboid.boundsFromVolume( volume ), {
+        matrix: Matrix3.translation( position.x, position.y ),
+        material: material
+      } );
+    }
+
+    /**
+     * Creates a Cuboid with a defined volume (cubical by default).
+     * @public
+     *
+     * @param {Engine} engine
+     * @param {Material} material
+     * @param {Vector2} position
+     * @param {number} mass - kg
+     * @returns {Cuboid}
+     */
+    static createWithMass( engine, material, position, mass ) {
+      return Cuboid.createWithVolume( engine, material, position, mass / material.density );
     }
   }
 

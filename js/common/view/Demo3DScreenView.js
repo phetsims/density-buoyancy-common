@@ -15,7 +15,6 @@ define( require => {
   const DisplayOptionsNode = require( 'DENSITY_BUOYANCY_COMMON/common/view/DisplayOptionsNode' );
   const GravityControlNode = require( 'DENSITY_BUOYANCY_COMMON/common/view/GravityControlNode' );
   const Panel = require( 'SUN/Panel' );
-  const Property = require( 'AXON/Property' );
 
   // constants
   const MARGIN = 10;
@@ -55,8 +54,6 @@ define( require => {
         bottom: this.layoutBounds.bottom - MARGIN
       } ) );
 
-      // private {Property.<Mass>}
-      this.currentMassProperty = new Property( model.masses.get( 0 ) );
       this.addChild( new AlignBox( new Panel( new DebugEditNode( this.currentMassProperty, this.popupLayer ) ), {
         alignBounds: this.layoutBounds,
         xAlign: 'right',

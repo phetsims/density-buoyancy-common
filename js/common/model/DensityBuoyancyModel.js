@@ -7,20 +7,14 @@ define( require => {
   'use strict';
 
   // modules
-  const Boat = require( 'DENSITY_BUOYANCY_COMMON/common/model/Boat' );
   const BooleanProperty = require( 'AXON/BooleanProperty' );
   const Bounds3 = require( 'DOT/Bounds3' );
-  const Cone = require( 'DENSITY_BUOYANCY_COMMON/common/model/Cone' );
-  const Cuboid = require( 'DENSITY_BUOYANCY_COMMON/common/model/Cuboid' );
   const densityBuoyancyCommon = require( 'DENSITY_BUOYANCY_COMMON/densityBuoyancyCommon' );
   const DensityBuoyancyCommonQueryParameters = require( 'DENSITY_BUOYANCY_COMMON/common/DensityBuoyancyCommonQueryParameters' );
   const DerivedProperty = require( 'AXON/DerivedProperty' );
-  const Ellipsoid = require( 'DENSITY_BUOYANCY_COMMON/common/model/Ellipsoid' );
   const Gravity = require( 'DENSITY_BUOYANCY_COMMON/common/model/Gravity' );
-  const HorizontalCylinder = require( 'DENSITY_BUOYANCY_COMMON/common/model/HorizontalCylinder' );
   const InterpolatedProperty = require( 'DENSITY_BUOYANCY_COMMON/common/model/InterpolatedProperty' );
   const Material = require( 'DENSITY_BUOYANCY_COMMON/common/model/Material' );
-  const Matrix3 = require( 'DOT/Matrix3' );
   const MatterEngine = require( 'DENSITY_BUOYANCY_COMMON/common/model/MatterEngine' );
   const NumberProperty = require( 'AXON/NumberProperty' );
   const ObservableArray = require( 'AXON/ObservableArray' );
@@ -28,7 +22,6 @@ define( require => {
   const Property = require( 'AXON/Property' );
   const Scale = require( 'DENSITY_BUOYANCY_COMMON/common/model/Scale' );
   const Vector2 = require( 'DOT/Vector2' );
-  const VerticalCylinder = require( 'DENSITY_BUOYANCY_COMMON/common/model/VerticalCylinder' );
 
   class DensityBuoyancyModel  {
 
@@ -106,56 +99,6 @@ define( require => {
       this.masses.addItemRemovedListener( mass => {
         this.engine.removeBody( mass.body );
       } );
-
-      this.masses.push( new Boat( this.engine, new Bounds3( -0.1, -0.05, -0.1, 0.1, 0.05, 0.1 ), 0.005, {
-        matrix: Matrix3.translation( -0.3, -0.1 ),
-        material: Material.ALUMINUM
-      } ) );
-
-      this.masses.push( new Cuboid( this.engine, new Bounds3( -0.06, -0.06, -0.06, 0.06, 0.06, 0.06 ), {
-        matrix: Matrix3.translation( -0.15, -0.2 ),
-        material: Material.BRICK
-      } ) );
-
-      this.masses.push( new Cuboid( this.engine, new Bounds3( -0.05, -0.05, -0.05, 0.05, 0.05, 0.05 ), {
-        matrix: Matrix3.translation( -0.5, 0.2 ),
-        material: Material.STEEL
-      } ) );
-
-      this.masses.push( new Cuboid( this.engine, new Bounds3( -0.05, -0.05, -0.05, 0.05, 0.05, 0.05 ), {
-        matrix: Matrix3.translation( 0, 0.05 ),
-        material: Material.ICE
-      } ) );
-
-      this.masses.push( new Scale( this.engine, {
-        matrix: Matrix3.translation( 0.5, 0.2 ),
-        material: Material.ALUMINUM
-      } ) );
-
-      this.masses.push( new Cone( this.engine, 0.05, 0.1, true, {
-        matrix: Matrix3.translation( 0.3, 0.3 ),
-        material: Material.WOOD
-      } ) );
-
-      this.masses.push( new Ellipsoid( this.engine, new Bounds3( -0.08, -0.05, -0.08, 0.08, 0.05, 0.08 ), {
-        matrix: Matrix3.translation( -0.1, 0.4 ),
-        material: Material.WOOD
-      } ) );
-
-      this.masses.push( new VerticalCylinder( this.engine, 0.05, 0.1, {
-        matrix: Matrix3.translation( -0.1, 1.0 ),
-        material: Material.WOOD
-      } ) );
-
-      this.masses.push( new HorizontalCylinder( this.engine, 0.05, 0.1, {
-        matrix: Matrix3.translation( 0.2, 1.5 ),
-        material: Material.WOOD
-      } ) );
-
-      this.masses.push( new Ellipsoid( this.engine, new Bounds3( -0.07, -0.07, -0.07, 0.07, 0.07, 0.07 ), {
-        matrix: Matrix3.translation( 0.5, 0.6 ),
-        material: Material.COPPER
-      } ) );
 
       this.engine.addPostStepListener( () => {
         this.updateLiquid();

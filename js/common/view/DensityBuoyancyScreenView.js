@@ -34,6 +34,7 @@ define( require => {
   const openPopup = require( 'PHET_CORE/openPopup' );
   const PhetFont = require( 'SCENERY_PHET/PhetFont' );
   const Plane3 = require( 'DOT/Plane3' );
+  const Property = require( 'AXON/Property' );
   const Rectangle = require( 'SCENERY/nodes/Rectangle' );
   const ResetAllButton = require( 'SCENERY_PHET/buttons/ResetAllButton' );
   const Scale = require( 'DENSITY_BUOYANCY_COMMON/common/model/Scale' );
@@ -106,6 +107,9 @@ define( require => {
 
       // @protected {Node}
       this.popupLayer = new Node();
+
+      // @protected {Property.<Mass>} - Support controlling or changing the latest-touched mass in certain demos.
+      this.currentMassProperty = new Property( model.masses.get( 0 ) );
 
       // @private {Rectangle} - The sky background, in a unit 0-to-1 rectangle (so we can scale it to match)
       this.backgroundNode = new Rectangle( 0, 0, 1, 1, {

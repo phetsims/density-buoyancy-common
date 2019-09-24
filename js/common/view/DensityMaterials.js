@@ -12,6 +12,7 @@ define( require => {
   const Material = require( 'DENSITY_BUOYANCY_COMMON/common/model/Material' );
   const MaterialView = require( 'DENSITY_BUOYANCY_COMMON/common/view/MaterialView' );
   const ThreeUtil = require( 'MOBIUS/ThreeUtil' );
+  const Util = require( 'DOT/Util' );
 
   // constants
   const Bricks25AOImage = require( 'image!DENSITY_BUOYANCY_COMMON/Bricks25_AO.jpg' );
@@ -195,6 +196,19 @@ define( require => {
     }
   }
 
+  class CustomMaterialView extends MaterialView {
+    constructor( density ) {
+      super();
+
+      const lightness = Util.roundSymmetric( Util.clamp( Util.linear( 1, -2, 0, 255, Util.log10( density / 1000 ) ), 0, 255 ) );
+      const color = lightness + lightness * 0x100 + lightness * 0x10000;
+
+      this.material = new THREE.MeshLambertMaterial( {
+        color: color
+      } );
+    }
+  }
+
   class DebugMaterialView extends MaterialView {
     constructor() {
       super();
@@ -234,6 +248,9 @@ define( require => {
       }
       else if ( material === Material.WOOD ) {
         return new WoodMaterialView();
+      }
+      else if ( material.custom ) {
+        return new CustomMaterialView( material.density );
       }
       else {
         return new DebugMaterialView();

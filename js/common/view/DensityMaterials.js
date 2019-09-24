@@ -11,6 +11,7 @@ define( require => {
   const densityBuoyancyCommon = require( 'DENSITY_BUOYANCY_COMMON/densityBuoyancyCommon' );
   const Material = require( 'DENSITY_BUOYANCY_COMMON/common/model/Material' );
   const MaterialView = require( 'DENSITY_BUOYANCY_COMMON/common/view/MaterialView' );
+  const ThreeUtil = require( 'MOBIUS/ThreeUtil' );
 
   // constants
   const Bricks25AOImage = require( 'image!DENSITY_BUOYANCY_COMMON/Bricks25_AO.jpg' );
@@ -35,8 +36,8 @@ define( require => {
   const Wood26NrmImage = require( 'image!DENSITY_BUOYANCY_COMMON/Wood26_nrm.jpg' );
   const Wood26RghImage = require( 'image!DENSITY_BUOYANCY_COMMON/Wood26_rgh.jpg' );
 
-  function toTexture( image ) {
-    const texture = new THREE.TextureLoader().load( image.src );
+  function toWrappedTexture( image ) {
+    const texture = ThreeUtil.imageToTexture( image );
     texture.wrapS = THREE.RepeatWrapping;
     texture.wrapT = THREE.RepeatWrapping;
     // texture.repeat.set( 4, 4 ); // TODO: any performance or quality due to this?
@@ -44,27 +45,27 @@ define( require => {
   }
 
   // textures
-  const aluminumColorTexture = toTexture( Metal10ColImage );
-  const aluminumMetalnessTexture = toTexture( Metal10MetImage );
-  const aluminumNormalTexture = toTexture( Metal10NrmImage );
-  const aluminumRoughnessTexture = toTexture( Metal10RghImage );
-  const brickAmbientOcclusionTexture = toTexture( Bricks25AOImage );
-  const brickColorTexture = toTexture( Bricks25ColImage );
-  const brickNormalTexture = toTexture( Bricks25NrmImage );
-  const copperColorTexture = toTexture( Metal08ColImage );
-  const copperMetalnessTexture = toTexture( Metal08MetImage );
-  const copperNormalTexture = toTexture( Metal08NrmImage );
-  const copperRoughnessTexture = toTexture( Metal08RghImage );
-  const iceAlphaTexture = toTexture( Ice01AlphaImage );
-  const iceColorTexture = toTexture( Ice01ColImage );
-  const iceNormalTexture = toTexture( Ice01NrmImage );
-  const steelColorTexture = toTexture( DiamondPlate01ColImage );
-  const steelMetalnessTexture = toTexture( DiamondPlate01MetImage );
-  const steelNormalTexture = toTexture( DiamondPlate01NrmImage );
-  const steelRoughnessTexture = toTexture( DiamondPlate01RghImage );
-  const woodColorTexture = toTexture( Wood26ColImage );
-  const woodNormalTexture = toTexture( Wood26NrmImage );
-  const woodRoughnessTexture = toTexture( Wood26RghImage );
+  const aluminumColorTexture = toWrappedTexture( Metal10ColImage );
+  const aluminumMetalnessTexture = toWrappedTexture( Metal10MetImage );
+  const aluminumNormalTexture = toWrappedTexture( Metal10NrmImage );
+  const aluminumRoughnessTexture = toWrappedTexture( Metal10RghImage );
+  const brickAmbientOcclusionTexture = toWrappedTexture( Bricks25AOImage );
+  const brickColorTexture = toWrappedTexture( Bricks25ColImage );
+  const brickNormalTexture = toWrappedTexture( Bricks25NrmImage );
+  const copperColorTexture = toWrappedTexture( Metal08ColImage );
+  const copperMetalnessTexture = toWrappedTexture( Metal08MetImage );
+  const copperNormalTexture = toWrappedTexture( Metal08NrmImage );
+  const copperRoughnessTexture = toWrappedTexture( Metal08RghImage );
+  const iceAlphaTexture = toWrappedTexture( Ice01AlphaImage );
+  const iceColorTexture = toWrappedTexture( Ice01ColImage );
+  const iceNormalTexture = toWrappedTexture( Ice01NrmImage );
+  const steelColorTexture = toWrappedTexture( DiamondPlate01ColImage );
+  const steelMetalnessTexture = toWrappedTexture( DiamondPlate01MetImage );
+  const steelNormalTexture = toWrappedTexture( DiamondPlate01NrmImage );
+  const steelRoughnessTexture = toWrappedTexture( DiamondPlate01RghImage );
+  const woodColorTexture = toWrappedTexture( Wood26ColImage );
+  const woodNormalTexture = toWrappedTexture( Wood26NrmImage );
+  const woodRoughnessTexture = toWrappedTexture( Wood26RghImage );
 
   class AluminumMaterialView extends CameraMaterialView {
     constructor() {

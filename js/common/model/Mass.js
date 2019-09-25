@@ -62,7 +62,9 @@ define( require => {
       this.userControlledProperty = new BooleanProperty( false );
 
       // @public {Property.<Material>}
-      this.materialProperty = new Property( config.material );
+      this.materialProperty = new Property( config.material, {
+        reentrant: true
+      } );
 
       // @public {Property.<number>} - In m^3 (cubic meters)
       this.volumeProperty = new NumberProperty( config.volume );

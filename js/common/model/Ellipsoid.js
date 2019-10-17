@@ -12,6 +12,7 @@ define( require => {
   const Bounds3 = require( 'DOT/Bounds3' );
   const densityBuoyancyCommon = require( 'DENSITY_BUOYANCY_COMMON/densityBuoyancyCommon' );
   const Mass = require( 'DENSITY_BUOYANCY_COMMON/common/model/Mass' );
+  const merge = require( 'PHET_CORE/merge' );
   const Property = require( 'AXON/Property' );
   const Shape = require( 'KITE/Shape' );
   const Util = require( 'DOT/Util' );
@@ -24,7 +25,7 @@ define( require => {
      * @param {Object} config
      */
     constructor( engine, size, config ) {
-      config = _.extend( {
+      config = merge( {
         body: engine.createEllipsoid( size.width, size.height ),
         shape: Ellipsoid.getEllipsoidShape( size.width, size.height ),
         volume: Ellipsoid.getVolume( size ),

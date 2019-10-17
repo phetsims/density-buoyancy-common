@@ -8,6 +8,7 @@ define( require => {
 
   // modules
   const densityBuoyancyCommon = require( 'DENSITY_BUOYANCY_COMMON/densityBuoyancyCommon' );
+  const merge = require( 'PHET_CORE/merge' );
 
   // strings
   const materialAirString = require( 'string!DENSITY_BUOYANCY_COMMON/material.air' );
@@ -36,7 +37,7 @@ define( require => {
      */
     constructor( config ) {
 
-      config = _.extend( {
+      config = merge( {
         // {string}
         name: 'unknown',
 
@@ -71,7 +72,7 @@ define( require => {
      * @returns {Material}
      */
     static createCustomMaterial( config ) {
-      return new Material( _.extend( {
+      return new Material( merge( {
         name: materialCustomString,
         custom: true
       }, config ));

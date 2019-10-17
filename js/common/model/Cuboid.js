@@ -13,6 +13,7 @@ define( require => {
   const densityBuoyancyCommon = require( 'DENSITY_BUOYANCY_COMMON/densityBuoyancyCommon' );
   const Mass = require( 'DENSITY_BUOYANCY_COMMON/common/model/Mass' );
   const Matrix3 = require( 'DOT/Matrix3' );
+  const merge = require( 'PHET_CORE/merge' );
   const Property = require( 'AXON/Property' );
   const Shape = require( 'KITE/Shape' );
   const Vector2 = require( 'DOT/Vector2' );
@@ -25,7 +26,7 @@ define( require => {
      * @param {Object} config
      */
     constructor( engine, size, config ) {
-      config = _.extend( {
+      config = merge( {
         body: engine.createBox( size.width, size.height ),
         shape: Shape.rect( size.minX, size.minY, size.width, size.height ),
         volume: size.width * size.height * size.depth,

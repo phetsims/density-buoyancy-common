@@ -11,6 +11,7 @@ define( require => {
   // modules
   const densityBuoyancyCommon = require( 'DENSITY_BUOYANCY_COMMON/densityBuoyancyCommon' );
   const Engine = require( 'DENSITY_BUOYANCY_COMMON/common/model/Engine' );
+  const merge = require( 'PHET_CORE/merge' );
   const Vector2 = require( 'DOT/Vector2' );
 
   // constants
@@ -99,7 +100,7 @@ define( require => {
      * @param {Object} [options]
      */
     bodySetMass( body, mass, options ) {
-      options = _.extend( {
+      options = merge( {
         // {boolean} - optional
         canRotate: false
       }, options );

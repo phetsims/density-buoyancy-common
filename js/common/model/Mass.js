@@ -13,6 +13,7 @@ define( require => {
   const Emitter = require( 'AXON/Emitter' );
   const InterpolatedProperty = require( 'DENSITY_BUOYANCY_COMMON/common/model/InterpolatedProperty' );
   const Matrix3 = require( 'DOT/Matrix3' );
+  const merge = require( 'PHET_CORE/merge' );
   const NumberProperty = require( 'AXON/NumberProperty' );
   const Property = require( 'AXON/Property' );
   const Vector2 = require( 'DOT/Vector2' );
@@ -26,7 +27,7 @@ define( require => {
      */
     constructor( engine, config ) {
 
-      config = _.extend( {
+      config = merge( {
         // {Engine.Body}
         body: null,
 

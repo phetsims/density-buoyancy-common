@@ -11,6 +11,7 @@ define( require => {
   // modules
   const densityBuoyancyCommon = require( 'DENSITY_BUOYANCY_COMMON/densityBuoyancyCommon' );
   const Mass = require( 'DENSITY_BUOYANCY_COMMON/common/model/Mass' );
+  const merge = require( 'PHET_CORE/merge' );
   const NumberProperty = require( 'AXON/NumberProperty' );
   const Shape = require( 'KITE/Shape' );
   const Util = require( 'DOT/Util' );
@@ -26,7 +27,7 @@ define( require => {
      * @param {Object} config
      */
     constructor( engine, radius, height, isVertexUp, config ) {
-      config = _.extend( {
+      config = merge( {
         body: engine.createCone( radius, height, isVertexUp ),
         shape: Cone.getConeShape( radius, height, isVertexUp ),
         volume: Cone.getVolume( radius, height ),

@@ -14,6 +14,7 @@ define( require => {
   const densityBuoyancyCommon = require( 'DENSITY_BUOYANCY_COMMON/densityBuoyancyCommon' );
   const InterpolatedProperty = require( 'DENSITY_BUOYANCY_COMMON/common/model/InterpolatedProperty' );
   const Mass = require( 'DENSITY_BUOYANCY_COMMON/common/model/Mass' );
+  const merge = require( 'PHET_CORE/merge' );
   const NumberProperty = require( 'AXON/NumberProperty' );
   const Property = require( 'AXON/Property' );
   const Shape = require( 'KITE/Shape' );
@@ -65,7 +66,7 @@ define( require => {
         new Vector2( size.minX, size.maxY )
       ];
 
-      config = _.extend( {
+      config = merge( {
         body: engine.createBoat( boatVertices ),
         shape: Shape.polygon( boatVertices ),
         volume: volume,

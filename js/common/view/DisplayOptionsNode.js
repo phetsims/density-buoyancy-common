@@ -15,6 +15,7 @@ define( require => {
   const DensityBuoyancyCommonColorProfile = require( 'DENSITY_BUOYANCY_COMMON/common/view/DensityBuoyancyCommonColorProfile' );
   const HBox = require( 'SCENERY/nodes/HBox' );
   const Line = require( 'SCENERY/nodes/Line' );
+  const merge = require( 'PHET_CORE/merge' );
   const PhetFont = require( 'SCENERY_PHET/PhetFont' );
   const Text = require( 'SCENERY/nodes/Text' );
   const VBox = require( 'SCENERY/nodes/VBox' );
@@ -22,8 +23,8 @@ define( require => {
   // strings
   const buoyancyString = require( 'string!DENSITY_BUOYANCY_COMMON/buoyancy' );
   const contactString = require( 'string!DENSITY_BUOYANCY_COMMON/contact' );
-  const forceValuesString = require( 'string!DENSITY_BUOYANCY_COMMON/forceValues' );
   const forcesString = require( 'string!DENSITY_BUOYANCY_COMMON/forces' );
+  const forceValuesString = require( 'string!DENSITY_BUOYANCY_COMMON/forceValues' );
   const gravityString = require( 'string!DENSITY_BUOYANCY_COMMON/gravity' );
   const massesString = require( 'string!DENSITY_BUOYANCY_COMMON/masses' );
 
@@ -53,7 +54,7 @@ define( require => {
      */
     constructor( model, options ) {
 
-      options = _.extend( {
+      options = merge( {
         spacing: 10,
         align: 'left'
       }, options );
@@ -75,7 +76,7 @@ define( require => {
             group: forceAlignGroup,
             xAlign: 'left'
           } ),
-          new ArrowNode( 0, 0, arrowLength, 0, _.extend( {
+          new ArrowNode( 0, 0, arrowLength, 0, merge( {
             fill: DensityBuoyancyCommonColorProfile.gravityForceProperty
           }, arrowOptions ) )
         ]
@@ -88,7 +89,7 @@ define( require => {
             group: forceAlignGroup,
             xAlign: 'left'
           } ),
-          new ArrowNode( 0, 0, arrowLength, 0, _.extend( {
+          new ArrowNode( 0, 0, arrowLength, 0, merge( {
             fill: DensityBuoyancyCommonColorProfile.buoyancyForceProperty
           }, arrowOptions ) )
         ]
@@ -101,7 +102,7 @@ define( require => {
             group: forceAlignGroup,
             xAlign: 'left'
           } ),
-          new ArrowNode( 0, 0, arrowLength, 0, _.extend( {
+          new ArrowNode( 0, 0, arrowLength, 0, merge( {
             fill: DensityBuoyancyCommonColorProfile.contactForceProperty
           }, arrowOptions ) )
         ]

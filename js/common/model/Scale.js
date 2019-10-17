@@ -12,6 +12,7 @@ define( require => {
   const densityBuoyancyCommon = require( 'DENSITY_BUOYANCY_COMMON/densityBuoyancyCommon' );
   const InterpolatedProperty = require( 'DENSITY_BUOYANCY_COMMON/common/model/InterpolatedProperty' );
   const Mass = require( 'DENSITY_BUOYANCY_COMMON/common/model/Mass' );
+  const merge = require( 'PHET_CORE/merge' );
   const Shape = require( 'KITE/Shape' );
   const Vector3 = require( 'DOT/Vector3' );
   const VerticalCylinder = require( 'DENSITY_BUOYANCY_COMMON/common/model/VerticalCylinder' );
@@ -43,7 +44,7 @@ define( require => {
      * @param {Object} config
      */
     constructor( engine, config ) {
-      config = _.extend( {
+      config = merge( {
         body: engine.createBox( SCALE_WIDTH, SCALE_HEIGHT ),
         shape: Shape.rect( -SCALE_WIDTH / 2, -SCALE_HEIGHT / 2, SCALE_WIDTH, SCALE_HEIGHT ),
         volume: SCALE_VOLUME,

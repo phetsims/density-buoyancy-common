@@ -11,6 +11,7 @@ define( require => {
   const densityBuoyancyCommon = require( 'DENSITY_BUOYANCY_COMMON/densityBuoyancyCommon' );
   const DensityBuoyancyCommonColorProfile = require( 'DENSITY_BUOYANCY_COMMON/common/view/DensityBuoyancyCommonColorProfile' );
   const Line = require( 'SCENERY/nodes/Line' );
+  const merge = require( 'PHET_CORE/merge' );
   const Node = require( 'SCENERY/nodes/Node' );
   const Panel = require( 'SUN/Panel' );
   const PhetFont = require( 'SCENERY_PHET/PhetFont' );
@@ -53,13 +54,13 @@ define( require => {
       this.showForceValuesProperty = showForceValuesProperty;
 
       // @private {ArrowNode}
-      this.gravityArrowNode = new ArrowNode( 0, 0, 0, 0, _.extend( {
+      this.gravityArrowNode = new ArrowNode( 0, 0, 0, 0, merge( {
         fill: DensityBuoyancyCommonColorProfile.gravityForceProperty
       }, arrowOptions ) );
-      this.buoyancyArrowNode = new ArrowNode( 0, 0, 0, 0, _.extend( {
+      this.buoyancyArrowNode = new ArrowNode( 0, 0, 0, 0, merge( {
         fill: DensityBuoyancyCommonColorProfile.buoyancyForceProperty
       }, arrowOptions ) );
-      this.contactArrowNode = new ArrowNode( 0, 0, 0, 0, _.extend( {
+      this.contactArrowNode = new ArrowNode( 0, 0, 0, 0, merge( {
         fill: DensityBuoyancyCommonColorProfile.contactForceProperty
       }, arrowOptions ) );
 

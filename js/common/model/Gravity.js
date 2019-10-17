@@ -8,6 +8,7 @@ define( require => {
 
   // modules
   const densityBuoyancyCommon = require( 'DENSITY_BUOYANCY_COMMON/densityBuoyancyCommon' );
+  const merge = require( 'PHET_CORE/merge' );
 
   // strings
   const gravityCustomString = require( 'string!DENSITY_BUOYANCY_COMMON/gravity.custom' );
@@ -22,7 +23,7 @@ define( require => {
      */
     constructor( config ) {
 
-      config = _.extend( {
+      config = merge( {
         // {string}
         name: 'unknown',
 

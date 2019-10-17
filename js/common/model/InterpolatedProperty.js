@@ -10,6 +10,7 @@ define( require => {
 
   // modules
   const densityBuoyancyCommon = require( 'DENSITY_BUOYANCY_COMMON/densityBuoyancyCommon' );
+  const merge = require( 'PHET_CORE/merge' );
   const Property = require( 'AXON/Property' );
 
   class InterpolatedProperty extends Property {
@@ -19,7 +20,7 @@ define( require => {
      */
     constructor( value, config ) {
 
-      config = _.extend( {
+      config = merge( {
         // {function} - function( a, b, ratio ), to interpolate
         interpolate: null
       }, config );

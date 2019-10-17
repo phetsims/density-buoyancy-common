@@ -11,6 +11,7 @@ define( require => {
   // modules
   const densityBuoyancyCommon = require( 'DENSITY_BUOYANCY_COMMON/densityBuoyancyCommon' );
   const Matrix3 = require( 'DOT/Matrix3' );
+  const merge = require( 'PHET_CORE/merge' );
 
   class Engine {
     constructor() {
@@ -57,7 +58,7 @@ define( require => {
      * @param {Object} [options]
      */
     bodySetMass( body, mass, options ) {
-      options = _.extend( {
+      options = merge( {
         // {boolean} - optional
         canRotate: false
       }, options );

@@ -28,7 +28,6 @@ define( require => {
   const HorizontalCylinderView = require( 'DENSITY_BUOYANCY_COMMON/common/view/HorizontalCylinderView' );
   const LinearGradient = require( 'SCENERY/util/LinearGradient' );
   const MassLabelNode = require( 'DENSITY_BUOYANCY_COMMON/common/view/MassLabelNode' );
-  const MobiusSceneNode = require( 'MOBIUS/MobiusSceneNode' );
   const Mouse = require( 'SCENERY/input/Mouse' );
   const Node = require( 'SCENERY/nodes/Node' );
   const openPopup = require( 'PHET_CORE/openPopup' );
@@ -42,6 +41,7 @@ define( require => {
   const ScaleView = require( 'DENSITY_BUOYANCY_COMMON/common/view/ScaleView' );
   const ScreenView = require( 'JOIST/ScreenView' );
   const Text = require( 'SCENERY/nodes/Text' );
+  const ThreeIsometricNode = require( 'MOBIUS/ThreeIsometricNode' );
   const ThreeUtil = require( 'MOBIUS/ThreeUtil' );
   const Util = require( 'SCENERY/util/Util' );
   const Vector2 = require( 'DOT/Vector2' );
@@ -123,8 +123,8 @@ define( require => {
       } );
       this.addChild( this.backgroundNode );
 
-      // @private {MobiusSceneNode}
-      this.sceneNode = new MobiusSceneNode( this.layoutBounds, {
+      // @private {ThreeIsometricNode}
+      this.sceneNode = new ThreeIsometricNode( this.layoutBounds, {
         cameraPosition: new Vector3( 0, 0.4, 2 )
       } );
       this.addChild( this.sceneNode );
@@ -153,10 +153,10 @@ define( require => {
       // @private {Array.<MassLabelNode>}
       this.massLabelNodes = [];
 
-      this.sceneNode.threeCamera.zoom = 1.7;
-      this.sceneNode.threeCamera.updateProjectionMatrix();
-      this.sceneNode.threeCamera.up = new THREE.Vector3( 0, 0, -1 );
-      this.sceneNode.threeCamera.lookAt( new THREE.Vector3( 0, -0.1, 0 ) );
+      this.sceneNode.stage.threeCamera.zoom = 1.7;
+      this.sceneNode.stage.threeCamera.updateProjectionMatrix();
+      this.sceneNode.stage.threeCamera.up = new THREE.Vector3( 0, 0, -1 );
+      this.sceneNode.stage.threeCamera.lookAt( new THREE.Vector3( 0, -0.1, 0 ) );
 
       this.sceneNode.backgroundEventTarget.addInputListener( {
         mousemove: event => {
@@ -213,11 +213,11 @@ define( require => {
       } );
 
       const ambientLight = new THREE.AmbientLight( 0x555555 );
-      this.sceneNode.threeScene.add( ambientLight );
+      this.sceneNode.stage.threeScene.add( ambientLight );
 
       const sunLight = new THREE.DirectionalLight( 0xffffff, 1 );
       sunLight.position.set( -1, 1.5, 0.8 );
-      this.sceneNode.threeScene.add( sunLight );
+      this.sceneNode.stage.threeScene.add( sunLight );
 
       // Front ground
       const frontGeometry = new THREE.BufferGeometry();
@@ -246,7 +246,7 @@ define( require => {
       } );
 
       const frontMesh = new THREE.Mesh( frontGeometry, groundMaterial );
-      this.sceneNode.threeScene.add( frontMesh );
+      this.sceneNode.stage.threeScene.add( frontMesh );
 
       // Top ground
       const topGeometry = new THREE.BufferGeometry();
@@ -341,7 +341,7 @@ define( require => {
       } );
       const topMaterial = new THREE.MeshBasicMaterial( { vertexColors: THREE.VertexColors } );
       const topMesh = new THREE.Mesh( topGeometry, topMaterial );
-      this.sceneNode.threeScene.add( topMesh );
+      this.sceneNode.stage.threeScene.add( topMesh );
 
       // Pool interior
       const poolGeometry = new THREE.BufferGeometry();
@@ -409,7 +409,7 @@ define( require => {
       } );
 
       const poolMesh = new THREE.Mesh( poolGeometry, poolMaterial );
-      this.sceneNode.threeScene.add( poolMesh );
+      this.sceneNode.stage.threeScene.add( poolMesh );
 
       // Water
       const waterGeometry = new THREE.BufferGeometry();
@@ -449,7 +449,7 @@ define( require => {
         opacity: 0.4
       } );
       const waterMesh = new THREE.Mesh( waterGeometry, waterMaterial );
-      this.sceneNode.threeScene.add( waterMesh );
+      this.sceneNode.stage.threeScene.add( waterMesh );
 
       model.liquidYProperty.link( y => {
         const vertices = [
@@ -498,7 +498,7 @@ define( require => {
         }
 
         if ( massView ) {
-          this.sceneNode.threeScene.add( massView );
+          this.sceneNode.stage.threeScene.add( massView );
           this.massViews.push( massView );
 
           if ( massView instanceof ScaleView ) {
@@ -529,7 +529,7 @@ define( require => {
       const onMassRemoved = mass => {
         // Mass view
         const massView = _.find( this.massViews, massView => massView.mass === mass );
-        this.sceneNode.threeScene.remove( massView );
+        this.sceneNode.stage.threeScene.remove( massView );
         arrayRemove( this.massViews, massView );
         massView.dispose();
 
@@ -632,7 +632,7 @@ define( require => {
       }
 
       // Update the views
-      this.massViews.forEach( massView => massView.update( this.sceneNode.threeScene, this.sceneNode.threeRenderer ) );
+      this.massViews.forEach( massView => massView.update( this.sceneNode.stage.threeScene, this.sceneNode.stage.threeRenderer ) );
 
       this.sceneNode.render( undefined );
 

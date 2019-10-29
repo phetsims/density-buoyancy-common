@@ -29,7 +29,10 @@ define( require => {
     gravityForce: { default: new Color( 41, 59, 139 ) },
     buoyancyForce: { default: new Color( 218, 51, 138 ) },
 
-    massLabelBackground: { default: Color.WHITE }
+    massLabelBackground: { default: Color.WHITE },
+
+    labelA: { default: new Color( 237, 55, 50 ) },
+    labelB: { default: new Color( 48, 89, 166 ) }
   } );
 
   densityBuoyancyCommon.register( 'DensityBuoyancyCommonColorProfile', DensityBuoyancyCommonColorProfile );

@@ -118,5 +118,8 @@
   },
   "secondBlock": {
     "value": "Second Block"
+  },
+  "densityReadout": {
+    "value": "Density Readout"
   }
 }

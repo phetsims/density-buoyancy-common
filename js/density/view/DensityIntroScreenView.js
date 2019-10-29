@@ -7,18 +7,22 @@ define( require => {
   'use strict';
 
   // modules
+  const AccordionBox = require( 'SUN/AccordionBox' );
   const AlignBox = require( 'SCENERY/nodes/AlignBox' );
   const AlignGroup = require( 'SCENERY/nodes/AlignGroup' );
   const BlockControlNode = require( 'DENSITY_BUOYANCY_COMMON/common/view/BlockControlNode' );
   const Checkbox = require( 'SUN/Checkbox' );
   const densityBuoyancyCommon = require( 'DENSITY_BUOYANCY_COMMON/densityBuoyancyCommon' );
   const DensityBuoyancyScreenView = require( 'DENSITY_BUOYANCY_COMMON/common/view/DensityBuoyancyScreenView' );
+  const DensityReadoutNode = require( 'DENSITY_BUOYANCY_COMMON/density/view/DensityReadoutNode' );
+  const DerivedProperty = require( 'AXON/DerivedProperty' );
   const Panel = require( 'SUN/Panel' );
   const PhetFont = require( 'SCENERY_PHET/PhetFont' );
   const Text = require( 'SCENERY/nodes/Text' );
   const VBox = require( 'SCENERY/nodes/VBox' );
 
   // strings
+  const densityReadoutString = require( 'string!DENSITY_BUOYANCY_COMMON/densityReadout' );
   const secondBlockString = require( 'string!DENSITY_BUOYANCY_COMMON/secondBlock' );
 
   class DensityIntroScreenView extends DensityBuoyancyScreenView {
@@ -70,6 +74,26 @@ define( require => {
           new Panel( rightAlignGroup.createBox( secondaryBox, rightAlignBoxOptions ) )
         ]
       } );
+
+      const densityReadoutBox = new AccordionBox( new DensityReadoutNode(
+        new DerivedProperty( [ model.primaryMass.materialProperty ], material => material.density ),
+        new DerivedProperty( [ model.secondaryMass.materialProperty ], material => material.density ),
+        model.secondaryMassVisibleProperty
+      ), {
+        titleNode: new Text( densityReadoutString, { font: new PhetFont( 14 ) } ),
+        expandedProperty: model.densityReadoutExpandedProperty,
+        buttonAlign: 'right',
+        titleYMargin: 5,
+        buttonXMargin: 5,
+        titleAlignX: 'left'
+      } );
+
+      this.addChild( new AlignBox( densityReadoutBox, {
+        alignBounds: this.layoutBounds,
+        xAlign: 'center',
+        yAlign: 'top',
+        yMargin: 10
+      } ) );
 
       this.addChild( new AlignBox( rightBox, {
         alignBounds: this.layoutBounds,

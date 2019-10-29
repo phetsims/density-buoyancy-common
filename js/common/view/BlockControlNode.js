@@ -148,6 +148,8 @@ define( require => {
 
           return new Range( minMass, maxMass );
         }
+      }, {
+        reentrant: true
       } );
 
       const comboBox = new ComboBox( [

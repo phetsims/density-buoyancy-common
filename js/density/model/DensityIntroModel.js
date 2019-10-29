@@ -39,6 +39,9 @@ define( require => {
           this.masses.remove( this.secondaryMass );
         }
       } );
+
+      // @public {Property.<boolean>}
+      this.densityReadoutExpandedProperty = new BooleanProperty( false );
     }
 
     /**
@@ -51,6 +54,8 @@ define( require => {
 
       this.primaryMass.reset();
       this.secondaryMass.reset();
+
+      this.densityReadoutExpandedProperty.reset();
 
       super.reset();
     }

@@ -90,7 +90,7 @@ define( require => {
   } );
   Material.COPPER = new Material( {
     name: materialCopperString,
-    density: 2700
+    density: 8960
   } );
   Material.GLASS = new Material( {
     name: materialGlassString,

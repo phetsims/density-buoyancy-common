@@ -1,6 +1,8 @@
 // Copyright 2019, University of Colorado Boulder
 
 /**
+ * Displays a bar-scale with interactive density labels above/below and named reference values.
+ *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 define( require => {
@@ -8,6 +10,7 @@ define( require => {
 
   // modules
   const ArrowNode = require( 'SCENERY_PHET/ArrowNode' );
+  const Bounds2 = require( 'DOT/Bounds2' );
   const densityBuoyancyCommon = require( 'DENSITY_BUOYANCY_COMMON/densityBuoyancyCommon' );
   const DensityBuoyancyCommonColorProfile = require( 'DENSITY_BUOYANCY_COMMON/common/view/DensityBuoyancyCommonColorProfile' );
   const Line = require( 'SCENERY/nodes/Line' );
@@ -15,6 +18,7 @@ define( require => {
   const merge = require( 'PHET_CORE/merge' );
   const Node = require( 'SCENERY/nodes/Node' );
   const PhetFont = require( 'SCENERY_PHET/PhetFont' );
+  const Property = require( 'AXON/Property' );
   const Rectangle = require( 'SCENERY/nodes/Rectangle' );
   const StringUtils = require( 'PHETCOMMON/util/StringUtils' );
   const Text = require( 'SCENERY/nodes/Text' );
@@ -35,7 +39,8 @@ define( require => {
   const HEIGHT = 22;
   const MAX_DENSITY = 10000;
   const LINE_PADDING = 2;
-  const mvt = density => WIDTH * density / MAX_DENSITY;
+  const mvt = density => WIDTH * Math.min( density, MAX_DENSITY ) / MAX_DENSITY;
+  const MAX_LABEL_WIDTH = 55;
 
   class DensityReadoutNode extends Node {
 
@@ -47,9 +52,13 @@ define( require => {
     constructor( densityAProperty, densityBProperty, secondaryMassVisibleProperty ) {
       super();
 
-      this.addChild( new Rectangle( 0, 0, WIDTH, HEIGHT, {
+      const background = new Rectangle( 0, 0, WIDTH, HEIGHT, {
         stroke: 'black'
-      } ) );
+      } );
+      this.addChild( background );
+
+      // Include the width necessary for the labels
+      background.localBounds = new Bounds2( 0, 0, WIDTH, HEIGHT ).dilatedX( MAX_LABEL_WIDTH / 2 );
 
       const lineOptions = { stroke: 'black' };
       materials.forEach( material => {
@@ -64,6 +73,14 @@ define( require => {
         this.addChild( new Line( x, HEIGHT, x, label.bottom + LINE_PADDING, lineOptions ) );
       } );
 
+      this.addChild( new Text( StringUtils.fillIn( kilogramsPerLiterPatternString, {
+        value: '10'
+      } ), {
+        left: WIDTH + 10,
+        centerY: background.centerY,
+        font: new PhetFont( { size: 12, weight: 'bold' } )
+      } ) );
+
       const arrowOptions = {
         headHeight: 4,
         headWidth: 5,
@@ -71,7 +88,8 @@ define( require => {
         stroke: null
       };
       const labelOptions = {
-        font: new PhetFont( { size: 10, weight: 'bold' } )
+        font: new PhetFont( { size: 12, weight: 'bold' } ),
+        maxWidth: MAX_LABEL_WIDTH
       };
 
       const primaryArrow = new ArrowNode( 0, -7, 0, 0, merge( {
@@ -103,8 +121,7 @@ define( require => {
       } );
       this.addChild( secondaryMarker );
 
-      // TODO: maxWidth
-
+      // Density links
       densityAProperty.link( density => {
         primaryMarker.x = mvt( density );
         primaryLabel.text = StringUtils.fillIn( kilogramsPerLiterPatternString, {
@@ -112,7 +129,6 @@ define( require => {
         } );
         primaryLabel.centerBottom = primaryArrow.centerTop;
       } );
-
       densityBProperty.link( density => {
         secondaryMarker.x = mvt( density );
         secondaryLabel.text = StringUtils.fillIn( kilogramsPerLiterPatternString, {
@@ -121,7 +137,13 @@ define( require => {
         secondaryLabel.centerTop = secondaryArrow.centerBottom;
       } );
 
-      secondaryMassVisibleProperty.linkAttribute( secondaryMarker, 'visible' );
+      // TODO: handle off-scale values properly
+      densityAProperty.link( density => {
+        primaryMarker.visible = density < MAX_DENSITY;
+      } );
+      Property.multilink( [ secondaryMassVisibleProperty, densityBProperty ], ( visible, density ) => {
+        secondaryMarker.visible = visible && density < MAX_DENSITY;
+      } );
     }
   }
 

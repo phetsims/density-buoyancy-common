@@ -8,9 +8,12 @@ define( require => {
 
   // modules
   const densityBuoyancyCommon = require( 'DENSITY_BUOYANCY_COMMON/densityBuoyancyCommon' );
+  const DensityBuoyancyCommonColorProfile = require( 'DENSITY_BUOYANCY_COMMON/common/view/DensityBuoyancyCommonColorProfile' );
   const Node = require( 'SCENERY/nodes/Node' );
+  const NodeTexture = require( 'MOBIUS/NodeTexture' );
   const Panel = require( 'SUN/Panel' );
   const PhetFont = require( 'SCENERY_PHET/PhetFont' );
+  const Rectangle = require( 'SCENERY/nodes/Rectangle' );
   const StringUtils = require( 'PHETCOMMON/util/StringUtils' );
   const Text = require( 'SCENERY/nodes/Text' );
   const Util = require( 'DOT/Util' );
@@ -18,6 +21,27 @@ define( require => {
 
   // strings
   const kilogramsPatternString = require( 'string!DENSITY_BUOYANCY_COMMON/kilogramsPattern' );
+  const primaryMassLabelString = require( 'string!DENSITY_BUOYANCY_COMMON/primaryMassLabel' );
+  const secondaryMassLabelString = require( 'string!DENSITY_BUOYANCY_COMMON/secondaryMassLabel' );
+
+  // constants
+  const MASS_LABEL_SIZE = 32;
+  const createMassLabel = ( string, fill ) => {
+    const rectangle = new Rectangle( 0, 0, MASS_LABEL_SIZE, MASS_LABEL_SIZE, {
+      cornerRadius: 5,
+      fill: fill
+    } );
+    const label = new Text( string, {
+      font: new PhetFont( { size: 24, weight: 'bold' } ),
+      fill: 'white',
+      center: rectangle.center,
+      maxWidth: 30
+    } );
+    rectangle.addChild( label );
+    return rectangle;
+  };
+  const PRIMARY_LABEL = createMassLabel( primaryMassLabelString, DensityBuoyancyCommonColorProfile.labelAProperty );
+  const SECONDARY_LABEL = createMassLabel( secondaryMassLabelString, DensityBuoyancyCommonColorProfile.labelBProperty );
 
   class MassLabelNode extends Node {
     /**
@@ -75,7 +99,46 @@ define( require => {
 
       super.dispose();
     }
+
+    /**
+     * Returns a NodeTexture for a given label node.
+     * @private
+     *
+     * @param {Node} labelNode
+     * @returns {NodeTexture}
+     */
+    static getLabelTexture( labelNode ) {
+      const scaledNode = new Node( {
+        children: [ labelNode ],
+        scale: 2
+      } );
+      return new NodeTexture( scaledNode, Math.ceil( scaledNode.width ), Math.ceil( scaledNode.height ) );
+    }
+
+    /**
+     * Returns a NodeTexture for the primary.
+     * @public
+     *
+     * @returns {NodeTexture}
+     */
+    static getPrimaryTexture() {
+      return MassLabelNode.getLabelTexture( PRIMARY_LABEL );
+    }
+
+    /**
+     * Returns a NodeTexture for the secondary.
+     * @public
+     *
+     * @returns {NodeTexture}
+     */
+    static getSecondaryTexture() {
+      return MassLabelNode.getLabelTexture( SECONDARY_LABEL );
+    }
   }
+
+  // @public {Node}
+  MassLabelNode.PRIMARY_LABEL = PRIMARY_LABEL;
+  MassLabelNode.SECONDARY_LABEL = SECONDARY_LABEL;
 
   return densityBuoyancyCommon.register( 'MassLabelNode', MassLabelNode );
 } );

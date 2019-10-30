@@ -11,6 +11,7 @@ define( require => {
   const densityBuoyancyCommon = require( 'DENSITY_BUOYANCY_COMMON/densityBuoyancyCommon' );
   const DerivedProperty = require( 'AXON/DerivedProperty' );
   const Emitter = require( 'AXON/Emitter' );
+  const Enumeration = require( 'PHET_CORE/Enumeration' );
   const InterpolatedProperty = require( 'DENSITY_BUOYANCY_COMMON/common/model/InterpolatedProperty' );
   const Matrix3 = require( 'DOT/Matrix3' );
   const merge = require( 'PHET_CORE/merge' );
@@ -19,6 +20,13 @@ define( require => {
   const Vector2 = require( 'DOT/Vector2' );
   const Vector2Property = require( 'DOT/Vector2Property' );
   const Vector3 = require( 'DOT/Vector3' );
+
+  // constants
+  const MassTag = new Enumeration( [
+    'PRIMARY',
+    'SECONDARY',
+    'NONE'
+  ] );
 
   class Mass {
     /**
@@ -45,6 +53,9 @@ define( require => {
 
         // {boolean} - optional
         canRotate: false,
+
+        // {MassTag} - optional
+        tag: MassTag.NONE,
 
         // {Tandem}
         tandem: null
@@ -119,6 +130,9 @@ define( require => {
 
       // @public {boolean}
       this.canRotate = config.canRotate;
+
+      // @public {MassTag}
+      this.tag = config.tag;
 
       // @public {Property.<Vector2>}
       this.velocityProperty = new Vector2Property( Vector2.ZERO );
@@ -283,6 +297,9 @@ define( require => {
       this.transformedEmitter.emit();
     }
   }
+
+  // @public {Enumeration}
+  Mass.MassTag = MassTag;
 
   return densityBuoyancyCommon.register( 'Mass', Mass );
 } );

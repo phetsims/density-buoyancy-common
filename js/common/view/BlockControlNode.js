@@ -14,6 +14,7 @@ define( require => {
   const DerivedProperty = require( 'AXON/DerivedProperty' );
   const Dimension2 = require( 'DOT/Dimension2' );
   const DynamicProperty = require( 'AXON/DynamicProperty' );
+  const HBox = require( 'SCENERY/nodes/HBox' );
   const Material = require( 'DENSITY_BUOYANCY_COMMON/common/model/Material' );
   const merge = require( 'PHET_CORE/merge' );
   const NumberControl = require( 'SCENERY_PHET/NumberControl' );
@@ -55,7 +56,10 @@ define( require => {
     constructor( cuboid, listParent, options ) {
       super( {
         spacing: 3,
-        align: 'left'
+        align: 'left',
+
+        // {Node|null}
+        labelNode: null
       } );
 
       const materialProperty = new DynamicProperty( new Property( cuboid ), {
@@ -196,8 +200,17 @@ define( require => {
         }
       }, numberControlOptions ) );
 
+      // TODO: ensure maxWidth for combo box contents so this isn't an issue. How do we want to do layout?
+      const topRow = options.labelNode ? new HBox( {
+        children: [
+          comboBox,
+          options.labelNode
+        ],
+        spacing: 5
+      } ) : comboBox;
+
       this.children = [
-        comboBox,
+        topRow,
         massNumberControl,
         volumeNumberControl
       ];

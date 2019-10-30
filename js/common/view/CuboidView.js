@@ -8,11 +8,16 @@ define( require => {
 
   // modules
   const densityBuoyancyCommon = require( 'DENSITY_BUOYANCY_COMMON/densityBuoyancyCommon' );
+  const Mass = require( 'DENSITY_BUOYANCY_COMMON/common/model/Mass' );
+  const MassLabelNode = require( 'DENSITY_BUOYANCY_COMMON/common/view/MassLabelNode' );
   const MassView = require( 'DENSITY_BUOYANCY_COMMON/common/view/MassView' );
+  const TextureQuad = require( 'MOBIUS/TextureQuad' );
   const Vector3 = require( 'DOT/Vector3' );
 
   // constats
   const numElements = 18 * 3;
+  const TAG_SIZE = 0.03;
+  const TAG_OFFSET = 0.005;
 
   class CuboidView extends MassView {
     /**
@@ -37,14 +42,34 @@ define( require => {
       // @public {Cuboid}
       this.cuboid = cuboid;
 
+      let tagMesh = null;
+      if ( cuboid.tag === Mass.MassTag.PRIMARY ) {
+        tagMesh = new TextureQuad( MassLabelNode.getPrimaryTexture(), TAG_SIZE, TAG_SIZE );
+      }
+      if ( cuboid.tag === Mass.MassTag.SECONDARY ) {
+        tagMesh = new TextureQuad( MassLabelNode.getSecondaryTexture(), TAG_SIZE, TAG_SIZE );
+      }
+
+      if ( tagMesh ) {
+        this.add( tagMesh );
+      }
+
+      const positionTag = () => {
+        const size = cuboid.sizeProperty.value;
+        tagMesh && tagMesh.position.set( size.minX + TAG_OFFSET, size.maxY - TAG_SIZE - TAG_OFFSET, size.maxZ + 0.0001 );
+      };
+      positionTag();
+
       // @private {function}
       this.updateListener = size => {
+        positionTag();
         CuboidView.updateArrays( boxGeometry.attributes.position.array, null, boxGeometry.attributes.uv.array, size );
         boxGeometry.attributes.position.needsUpdate = true;
         boxGeometry.attributes.uv.needsUpdate = true;
         boxGeometry.computeBoundingSphere();
       };
       this.cuboid.sizeProperty.lazyLink( this.updateListener );
+
     }
 
     /**

@@ -237,13 +237,14 @@ define( require => {
      * @param {Material} material
      * @param {Vector2} position
      * @param {number} volume - m^3
+     * @param {Object} [options]
      * @returns {Cuboid}
      */
-    static createWithVolume( engine, material, position, volume ) {
-      return new Cuboid( engine, Cuboid.boundsFromVolume( volume ), {
+    static createWithVolume( engine, material, position, volume, options ) {
+      return new Cuboid( engine, Cuboid.boundsFromVolume( volume ), merge( {
         matrix: Matrix3.translation( position.x, position.y ),
         material: material
-      } );
+      }, options ) );
     }
 
     /**
@@ -254,10 +255,11 @@ define( require => {
      * @param {Material} material
      * @param {Vector2} position
      * @param {number} mass - kg
+     * @param {Object} [options]
      * @returns {Cuboid}
      */
-    static createWithMass( engine, material, position, mass ) {
-      return Cuboid.createWithVolume( engine, material, position, mass / material.density );
+    static createWithMass( engine, material, position, mass, options ) {
+      return Cuboid.createWithVolume( engine, material, position, mass / material.density, options );
     }
   }
 

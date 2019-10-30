@@ -11,6 +11,7 @@ define( require => {
   const Cuboid = require( 'DENSITY_BUOYANCY_COMMON/common/model/Cuboid' );
   const densityBuoyancyCommon = require( 'DENSITY_BUOYANCY_COMMON/densityBuoyancyCommon' );
   const DensityBuoyancyModel = require( 'DENSITY_BUOYANCY_COMMON/common/model/DensityBuoyancyModel' );
+  const Mass = require( 'DENSITY_BUOYANCY_COMMON/common/model/Mass' );
   const Material = require( 'DENSITY_BUOYANCY_COMMON/common/model/Material' );
   const Vector2 = require( 'DOT/Vector2' );
 
@@ -26,8 +27,12 @@ define( require => {
       this.secondaryMassVisibleProperty = new BooleanProperty( false );
 
       // @public {Mass}
-      this.primaryMass = Cuboid.createWithVolume( this.engine, Material.WOOD, new Vector2( 0.15, -0.2 ), 0.005 );
-      this.secondaryMass = Cuboid.createWithVolume( this.engine, Material.BRICK, new Vector2( -0.15, -0.2 ), 0.005 );
+      this.primaryMass = Cuboid.createWithVolume( this.engine, Material.WOOD, new Vector2( 0.15, -0.2 ), 0.005, {
+        tag: Mass.MassTag.PRIMARY
+      } );
+      this.secondaryMass = Cuboid.createWithVolume( this.engine, Material.BRICK, new Vector2( -0.15, -0.2 ), 0.005, {
+        tag: Mass.MassTag.SECONDARY
+      } );
 
       this.masses.push( this.primaryMass );
 

@@ -16,6 +16,8 @@ define( require => {
   const DensityBuoyancyScreenView = require( 'DENSITY_BUOYANCY_COMMON/common/view/DensityBuoyancyScreenView' );
   const DensityReadoutNode = require( 'DENSITY_BUOYANCY_COMMON/density/view/DensityReadoutNode' );
   const DerivedProperty = require( 'AXON/DerivedProperty' );
+  const MassLabelNode = require( 'DENSITY_BUOYANCY_COMMON/common/view/MassLabelNode' );
+  const Node = require( 'SCENERY/nodes/Node' );
   const Panel = require( 'SUN/Panel' );
   const PhetFont = require( 'SCENERY_PHET/PhetFont' );
   const Text = require( 'SCENERY/nodes/Text' );
@@ -39,8 +41,18 @@ define( require => {
         return this;
       }
 
-      const primaryControl = new BlockControlNode( model.primaryMass, this.popupLayer );
-      const secondaryControl = new BlockControlNode( model.secondaryMass, this.popupLayer );
+      const primaryControl = new BlockControlNode( model.primaryMass, this.popupLayer, {
+        labelNode: new Node( {
+          children: [ MassLabelNode.PRIMARY_LABEL ],
+          scale: 0.7
+        } )
+      } );
+      const secondaryControl = new BlockControlNode( model.secondaryMass, this.popupLayer, {
+        labelNode: new Node( {
+          children: [ MassLabelNode.SECONDARY_LABEL ],
+          scale: 0.7
+        } )
+      } );
       const secondaryCheckbox = new Checkbox( new Text( secondBlockString, {
         font: new PhetFont( 12 )
       } ), model.secondaryMassVisibleProperty, {

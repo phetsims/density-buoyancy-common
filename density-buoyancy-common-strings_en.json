@@ -139,5 +139,11 @@
   },
   "mode.mystery": {
     "value": "Mystery"
+  },
+  "showTable": {
+    "value": "Show Table"
+  },
+  "hideTable": {
+    "value": "Hide Table"
   }
 }

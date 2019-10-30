@@ -7,6 +7,7 @@ define( require => {
   'use strict';
 
   // modules
+  const BooleanProperty = require( 'AXON/BooleanProperty' );
   const Cuboid = require( 'DENSITY_BUOYANCY_COMMON/common/model/Cuboid' );
   const densityBuoyancyCommon = require( 'DENSITY_BUOYANCY_COMMON/densityBuoyancyCommon' );
   const DensityBuoyancyCommonColorProfile = require( 'DENSITY_BUOYANCY_COMMON/common/view/DensityBuoyancyCommonColorProfile' );
@@ -37,6 +38,9 @@ define( require => {
 
       // @public {Property.<Mode>}
       this.modeProperty = new Property( Mode.SAME_MASS );
+
+      // @public {Property.<boolean>}
+      this.tableVisibleProperty = new BooleanProperty( false );
 
       this.modeProperty.link( this.setup.bind( this ) );
     }
@@ -334,6 +338,7 @@ define( require => {
      */
     reset() {
       this.modeProperty.reset();
+      this.tableVisibleProperty.reset();
 
       super.reset();
 

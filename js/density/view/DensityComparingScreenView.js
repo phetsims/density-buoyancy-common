@@ -8,19 +8,24 @@ define( require => {
 
   // modules
   const AlignBox = require( 'SCENERY/nodes/AlignBox' );
+  const BooleanRectangularToggleButton = require( 'SUN/buttons/BooleanRectangularToggleButton' );
   const densityBuoyancyCommon = require( 'DENSITY_BUOYANCY_COMMON/densityBuoyancyCommon' );
   const DensityBuoyancyScreenView = require( 'DENSITY_BUOYANCY_COMMON/common/view/DensityBuoyancyScreenView' );
   const DensityComparingModel = require( 'DENSITY_BUOYANCY_COMMON/density/model/DensityComparingModel' );
   const Panel = require( 'SUN/Panel' );
+  const PhetColorScheme = require( 'SCENERY_PHET/PhetColorScheme' );
   const PhetFont = require( 'SCENERY_PHET/PhetFont' );
   const Text = require( 'SCENERY/nodes/Text' );
+  const VBox = require( 'SCENERY/nodes/VBox' );
   const VerticalAquaRadioButtonGroup = require( 'SUN/VerticalAquaRadioButtonGroup' );
 
   // strings
+  const hideTableString = require( 'string!DENSITY_BUOYANCY_COMMON/hideTable' );
   const modeMysteryString = require( 'string!DENSITY_BUOYANCY_COMMON/mode.mystery' );
   const modeSameDensityString = require( 'string!DENSITY_BUOYANCY_COMMON/mode.sameDensity' );
   const modeSameMassString = require( 'string!DENSITY_BUOYANCY_COMMON/mode.sameMass' );
   const modeSameVolumeString = require( 'string!DENSITY_BUOYANCY_COMMON/mode.sameVolume' );
+  const showTableString = require( 'string!DENSITY_BUOYANCY_COMMON/showTable' );
 
   // constants
   const modeStringMap = {
@@ -50,7 +55,32 @@ define( require => {
           value: mode
         };
       } ) );
-      this.addChild( new AlignBox( new Panel( modeControl ), {
+      const modePanel = new Panel( modeControl );
+
+      const tableControl = new BooleanRectangularToggleButton(
+        new Text( hideTableString, { font: new PhetFont( 12 ) } ),
+        new Text( showTableString, { font: new PhetFont( 12 ) } ),
+        model.tableVisibleProperty, {
+
+      } );
+
+      model.tableVisibleProperty.link( tableVisible => {
+        tableControl.setBaseColor( tableVisible ? PhetColorScheme.RESET_ALL_BUTTON_BASE_COLOR : PhetColorScheme.BUTTON_YELLOW );
+      } );
+
+      model.modeProperty.link( mode => {
+        tableControl.visible = mode === DensityComparingModel.Mode.MYSTERY;
+      } );
+
+      const rightContent = new VBox( {
+        spacing: 10,
+        children: [
+          modePanel,
+          tableControl
+        ]
+      } );
+
+      this.addChild( new AlignBox( rightContent, {
         alignBounds: this.layoutBounds,
         xAlign: 'right',
         yAlign: 'top',

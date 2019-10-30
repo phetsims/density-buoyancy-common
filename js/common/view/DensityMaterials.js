@@ -209,6 +209,18 @@ define( require => {
     }
   }
 
+  class CustomColoredMaterialView extends MaterialView {
+    constructor( colorProperty ) {
+      super();
+
+      this.material = new THREE.MeshLambertMaterial();
+
+      colorProperty.link( color => {
+        this.material.color = ThreeUtil.colorToThree( color );
+      } );
+    }
+  }
+
   class DebugMaterialView extends MaterialView {
     constructor() {
       super();
@@ -250,7 +262,12 @@ define( require => {
         return new WoodMaterialView();
       }
       else if ( material.custom ) {
-        return new CustomMaterialView( material.density );
+        if ( material.customColor === null ) {
+          return new CustomMaterialView( material.density );
+        }
+        else {
+          return new CustomColoredMaterialView( material.customColor );
+        }
       }
       else {
         return new DebugMaterialView();

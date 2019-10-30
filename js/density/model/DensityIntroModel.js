@@ -27,10 +27,10 @@ define( require => {
       this.secondaryMassVisibleProperty = new BooleanProperty( false );
 
       // @public {Mass}
-      this.primaryMass = Cuboid.createWithVolume( this.engine, Material.WOOD, new Vector2( 0.15, -0.2 ), 0.005, {
+      this.primaryMass = Cuboid.createWithMass( this.engine, Material.WOOD, new Vector2( -0.2, 0.2 ), 2, {
         tag: Mass.MassTag.PRIMARY
       } );
-      this.secondaryMass = Cuboid.createWithVolume( this.engine, Material.BRICK, new Vector2( -0.15, -0.2 ), 0.005, {
+      this.secondaryMass = Cuboid.createWithMass( this.engine, Material.ALUMINUM, new Vector2( -0.2, 0.35 ), 13.5, {
         tag: Mass.MassTag.SECONDARY
       } );
 

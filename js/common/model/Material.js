@@ -48,7 +48,10 @@ define( require => {
         viscosity: 1e-3,
 
         // {boolean} - optional
-        custom: false
+        custom: false,
+
+        // {Property.<Color>|null} - optional
+        customColor: null
       }, config );
 
       // @public {string}
@@ -62,6 +65,9 @@ define( require => {
 
       // @public {boolean}
       this.custom = config.custom;
+
+      // @public {Property.<Color>|null}
+      this.customColor = config.customColor;
     }
 
     /**

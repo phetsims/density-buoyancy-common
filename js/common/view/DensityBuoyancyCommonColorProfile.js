@@ -32,7 +32,13 @@ define( require => {
     massLabelBackground: { default: Color.WHITE },
 
     labelA: { default: new Color( 237, 55, 50 ) },
-    labelB: { default: new Color( 48, 89, 166 ) }
+    labelB: { default: new Color( 48, 89, 166 ) },
+
+    comparingYellow: { default: new Color( 252, 246, 80 ) },
+    comparingBlue: { default: new Color( 46, 88, 166 ) },
+    comparingGreen: { default: new Color( 125, 195, 52 ) },
+    comparingRed: { default: new Color( 233, 55, 50 ) },
+    comparingPurple: { default: new Color( 131, 43, 126 ) }
   } );
 
   densityBuoyancyCommon.register( 'DensityBuoyancyCommonColorProfile', DensityBuoyancyCommonColorProfile );

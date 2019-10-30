@@ -127,5 +127,17 @@
   },
   "secondaryMassLabel": {
     "value": "B"
+  },
+  "mode.sameMass": {
+    "value": "Same Mass"
+  },
+  "mode.sameVolume": {
+    "value": "Same Volume"
+  },
+  "mode.sameDensity": {
+    "value": "Same Density"
+  },
+  "mode.mystery": {
+    "value": "Mystery"
   }
 }

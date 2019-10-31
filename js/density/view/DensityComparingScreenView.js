@@ -12,9 +12,11 @@ define( require => {
   const densityBuoyancyCommon = require( 'DENSITY_BUOYANCY_COMMON/densityBuoyancyCommon' );
   const DensityBuoyancyScreenView = require( 'DENSITY_BUOYANCY_COMMON/common/view/DensityBuoyancyScreenView' );
   const DensityComparingModel = require( 'DENSITY_BUOYANCY_COMMON/density/model/DensityComparingModel' );
+  const DensityTableNode = require( 'DENSITY_BUOYANCY_COMMON/common/view/DensityTableNode' );
   const Panel = require( 'SUN/Panel' );
   const PhetColorScheme = require( 'SCENERY_PHET/PhetColorScheme' );
   const PhetFont = require( 'SCENERY_PHET/PhetFont' );
+  const Property = require( 'AXON/Property' );
   const Text = require( 'SCENERY/nodes/Text' );
   const VBox = require( 'SCENERY/nodes/VBox' );
   const VerticalAquaRadioButtonGroup = require( 'SUN/VerticalAquaRadioButtonGroup' );
@@ -86,6 +88,20 @@ define( require => {
         yAlign: 'top',
         margin: 10
       } ) );
+
+      const densityTablePanel = new Panel( new DensityTableNode(), {
+        xMargin: 15,
+        yMargin: 10
+      } );
+      this.addChild( new AlignBox( densityTablePanel, {
+        alignBounds: this.layoutBounds,
+        xAlign: 'center',
+        yAlign: 'top',
+        margin: 10
+      } ) );
+      Property.multilink( [ model.tableVisibleProperty, model.modeProperty ], ( visible, mode ) => {
+        densityTablePanel.visible = visible && mode === DensityComparingModel.Mode.MYSTERY;
+      } );
 
       this.addChild( this.popupLayer );
     }

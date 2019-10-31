@@ -13,16 +13,20 @@ define( require => {
   // strings
   const materialAirString = require( 'string!DENSITY_BUOYANCY_COMMON/material.air' );
   const materialAluminumString = require( 'string!DENSITY_BUOYANCY_COMMON/material.aluminum' );
+  const materialAppleString = require( 'string!DENSITY_BUOYANCY_COMMON/material.apple' );
   const materialBrickString = require( 'string!DENSITY_BUOYANCY_COMMON/material.brick' );
   const materialCopperString = require( 'string!DENSITY_BUOYANCY_COMMON/material.copper' );
   const materialCustomString = require( 'string!DENSITY_BUOYANCY_COMMON/material.custom' );
   const materialDensityXString = require( 'string!DENSITY_BUOYANCY_COMMON/material.densityX' );
   const materialDensityYString = require( 'string!DENSITY_BUOYANCY_COMMON/material.densityY' );
+  const materialDiamondString = require( 'string!DENSITY_BUOYANCY_COMMON/material.diamond' );
   const materialGasolineString = require( 'string!DENSITY_BUOYANCY_COMMON/material.gasoline' );
   const materialGlassString = require( 'string!DENSITY_BUOYANCY_COMMON/material.glass' );
+  const materialGoldString = require( 'string!DENSITY_BUOYANCY_COMMON/material.gold' );
   const materialHoneyString = require( 'string!DENSITY_BUOYANCY_COMMON/material.honey' );
   const materialHumanString = require( 'string!DENSITY_BUOYANCY_COMMON/material.human' );
   const materialIceString = require( 'string!DENSITY_BUOYANCY_COMMON/material.ice' );
+  const materialLeadString = require( 'string!DENSITY_BUOYANCY_COMMON/material.lead' );
   const materialMercuryString = require( 'string!DENSITY_BUOYANCY_COMMON/material.mercury' );
   const materialSeawaterString = require( 'string!DENSITY_BUOYANCY_COMMON/material.seawater' );
   const materialSteelString = require( 'string!DENSITY_BUOYANCY_COMMON/material.steel' );
@@ -90,6 +94,12 @@ define( require => {
     name: materialAluminumString,
     density: 2700
   } );
+  Material.APPLE = new Material( {
+    name: materialAppleString,
+    // "Some Physical Properties of Apple" - Averaged the two cultivars' densities for this
+    // http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.548.1131&rep=rep1&type=pdf
+    density: 832
+  } );
   Material.BRICK = new Material( {
     name: materialBrickString,
     density: 2000
@@ -98,9 +108,17 @@ define( require => {
     name: materialCopperString,
     density: 8960
   } );
+  Material.DIAMOND = new Material( {
+    name: materialDiamondString,
+    density: 3510
+  } );
   Material.GLASS = new Material( {
     name: materialGlassString,
     density: 2700
+  } );
+  Material.GOLD = new Material( {
+    name: materialGoldString,
+    density: 19320
   } );
   Material.HUMAN = new Material( {
     name: materialHumanString,
@@ -109,6 +127,10 @@ define( require => {
   Material.ICE = new Material( {
     name: materialIceString,
     density: 919
+  } );
+  Material.LEAD = new Material( {
+    name: materialLeadString,
+    density: 11342
   } );
   Material.STEEL = new Material( {
     name: materialSteelString,
@@ -173,15 +195,19 @@ define( require => {
   Material.MATERIALS = [
     Material.AIR,
     Material.ALUMINUM,
+    Material.APPLE,
     Material.BRICK,
     Material.COPPER,
     Material.DENSITY_X,
     Material.DENSITY_Y,
+    Material.DIAMOND,
     Material.GASOLINE,
     Material.GLASS,
+    Material.GOLD,
     Material.HONEY,
     Material.HUMAN,
     Material.ICE,
+    Material.LEAD,
     Material.MERCURY,
     Material.SEAWATER,
     Material.STEEL,

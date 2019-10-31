@@ -20,6 +20,9 @@
   "material.aluminum": {
     "value": "Aluminum"
   },
+  "material.apple": {
+    "value": "Apple"
+  },
   "material.brick": {
     "value": "Brick"
   },
@@ -35,11 +38,17 @@
   "material.densityY": {
     "value": "Density Y"
   },
+  "material.diamond": {
+    "value": "Diamond"
+  },
   "material.gasoline": {
     "value": "Gasoline"
   },
   "material.glass": {
     "value": "Glass"
+  },
+  "material.gold": {
+    "value": "Gold"
   },
   "material.honey": {
     "value": "Honey"
@@ -49,6 +58,9 @@
   },
   "material.ice": {
     "value": "Ice"
+  },
+  "material.lead": {
+    "value": "Lead"
   },
   "material.mercury": {
     "value": "Mercury"
@@ -145,5 +157,14 @@
   },
   "hideTable": {
     "value": "Hide Table"
+  },
+  "densitiesOfVariousMaterials": {
+    "value": "Densities of Various Materials"
+  },
+  "material": {
+    "value": "Material"
+  },
+  "densityKgL": {
+    "value": "Density (kg/L)"
   }
 }

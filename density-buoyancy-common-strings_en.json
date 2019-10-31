@@ -137,6 +137,9 @@
   "secondBlock": {
     "value": "Second Block"
   },
+  "density": {
+    "value": "Density"
+  },
   "densityReadout": {
     "value": "Density Readout"
   },
@@ -145,6 +148,12 @@
   },
   "secondaryMassLabel": {
     "value": "B"
+  },
+  "blockA": {
+    "value": "Block A:"
+  },
+  "blockB": {
+    "value": "Block B:"
   },
   "mode.sameMass": {
     "value": "Same Mass"

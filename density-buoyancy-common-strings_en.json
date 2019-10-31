@@ -68,6 +68,9 @@
   "material.oil": {
     "value": "Oil"
   },
+  "material.platinum": {
+    "value": "Platinum"
+  },
   "material.seawater": {
     "value": "Seawater"
   },

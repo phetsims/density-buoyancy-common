@@ -225,7 +225,6 @@ define( require => {
 
         new Scale( this.engine, {
           matrix: Matrix3.translation( -0.67, -Scale.SCALE_BASE_BOUNDS.minY ),
-          material: Material.ALUMINUM,
           displayType: Scale.DisplayType.KILOGRAMS
         } )
       ];

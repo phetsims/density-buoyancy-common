@@ -150,6 +150,22 @@ define( require => {
     }
   }
 
+  // We just use aluminum
+  class PlatinumMaterialView extends CameraMaterialView {
+    constructor() {
+      super();
+
+      this.material = new THREE.MeshStandardMaterial( {
+        map: aluminumColorTexture,
+        normalMap: aluminumNormalTexture,
+        normalScale: new THREE.Vector2( 1, -1 ),
+        roughnessMap: aluminumRoughnessTexture,
+        metalnessMap: aluminumMetalnessTexture,
+        envMap: this.getTexture()
+      } );
+    }
+  }
+
   class SteelMaterialView extends CameraMaterialView {
     constructor() {
       super();
@@ -251,6 +267,9 @@ define( require => {
       }
       else if ( material === Material.ICE ) {
         return new IceMaterialView();
+      }
+      else if ( material === Material.PLATINUM ) {
+        return new PlatinumMaterialView();
       }
       else if ( material === Material.STEEL ) {
         return new SteelMaterialView();

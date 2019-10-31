@@ -13,6 +13,7 @@ define( require => {
   const Enumeration = require( 'PHET_CORE/Enumeration' );
   const InterpolatedProperty = require( 'DENSITY_BUOYANCY_COMMON/common/model/InterpolatedProperty' );
   const Mass = require( 'DENSITY_BUOYANCY_COMMON/common/model/Mass' );
+  const Material = require( 'DENSITY_BUOYANCY_COMMON/common/model/Material' );
   const merge = require( 'PHET_CORE/merge' );
   const Shape = require( 'KITE/Shape' );
   const Vector3 = require( 'DOT/Vector3' );
@@ -57,9 +58,10 @@ define( require => {
         canRotate: false,
 
         // {DisplayType}
-        displayType: DisplayType.NEWTONS
+        displayType: DisplayType.NEWTONS,
 
         // material
+        material: Material.PLATINUM
       }, config );
 
       super( engine, config );

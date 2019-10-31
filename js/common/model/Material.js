@@ -29,6 +29,7 @@ define( require => {
   const materialLeadString = require( 'string!DENSITY_BUOYANCY_COMMON/material.lead' );
   const materialMercuryString = require( 'string!DENSITY_BUOYANCY_COMMON/material.mercury' );
   const materialOilString = require( 'string!DENSITY_BUOYANCY_COMMON/material.oil' );
+  const materialPlatinumString = require( 'string!DENSITY_BUOYANCY_COMMON/material.platinum' );
   const materialSeawaterString = require( 'string!DENSITY_BUOYANCY_COMMON/material.seawater' );
   const materialSteelString = require( 'string!DENSITY_BUOYANCY_COMMON/material.steel' );
   const materialStyrofoamString = require( 'string!DENSITY_BUOYANCY_COMMON/material.styrofoam' );
@@ -132,6 +133,10 @@ define( require => {
   Material.LEAD = new Material( {
     name: materialLeadString,
     density: 11342
+  } );
+  Material.PLATINUM = new Material( {
+    name: materialPlatinumString,
+    density: 21450
   } );
   Material.STEEL = new Material( {
     name: materialSteelString,

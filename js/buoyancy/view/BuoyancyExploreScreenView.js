@@ -87,7 +87,7 @@ define( require => {
         children: [
           labelAText, labelBText,
           densityAText, densityBText,
-          new HStrut( displayOptionsNode.width ) // Same internal size as displayOptionsNode
+          new HStrut( displayOptionsNode.width - 10 ) // Same internal size as displayOptionsNode
         ]
       } );
 

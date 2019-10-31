@@ -50,14 +50,12 @@ define( require => {
       // Left scale
       this.masses.push( new Scale( this.engine, {
         matrix: Matrix3.translation( -0.65, -Scale.SCALE_BASE_BOUNDS.minY ),
-        material: Material.ALUMINUM,
         displayType: Scale.DisplayType.NEWTONS
       } ) );
 
       // Pool scale
       this.masses.push( new Scale( this.engine, {
         matrix: Matrix3.translation( 0.25, -Scale.SCALE_BASE_BOUNDS.minY + this.poolBounds.minY ),
-        material: Material.ALUMINUM,
         displayType: Scale.DisplayType.NEWTONS
       } ) );
 

@@ -502,7 +502,7 @@ define( require => {
           this.massViews.push( massView );
 
           if ( massView instanceof ScaleView ) {
-            const scaleReadoutNode = new ScaleReadoutNode( mass );
+            const scaleReadoutNode = new ScaleReadoutNode( mass, model.gravityProperty );
             this.scaleReadoutLayer.addChild( scaleReadoutNode );
             this.scaleReadoutNodes.push( scaleReadoutNode );
           }

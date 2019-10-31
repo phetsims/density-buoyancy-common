@@ -11,19 +11,23 @@ define( require => {
   const Node = require( 'SCENERY/nodes/Node' );
   const Panel = require( 'SUN/Panel' );
   const PhetFont = require( 'SCENERY_PHET/PhetFont' );
+  const Property = require( 'AXON/Property' );
+  const Scale = require( 'DENSITY_BUOYANCY_COMMON/common/model/Scale' );
   const StringUtils = require( 'PHETCOMMON/util/StringUtils' );
   const Text = require( 'SCENERY/nodes/Text' );
   const Util = require( 'DOT/Util' );
   const Vector2 = require( 'DOT/Vector2' );
 
   // strings
+  const kilogramsPatternString = require( 'string!DENSITY_BUOYANCY_COMMON/kilogramsPattern' );
   const newtonsPatternString = require( 'string!DENSITY_BUOYANCY_COMMON/newtonsPattern' );
 
   class ScaleReadoutNode extends Node {
     /**
-     * @param {Mass} mass
+     * @param {Scale} mass
+     * @param {Property.<Gravity>}
      */
-    constructor( mass ) {
+    constructor( mass, gravityProperty ) {
       super();
 
       const readoutText = new Text( '', {
@@ -42,18 +46,23 @@ define( require => {
 
       this.addChild( readoutPanel );
 
-      // @private {Mass}
+      // @private {Scale}
       this.mass = mass;
 
-      // @private {function(number)}
-      this.scaleForceListener = mass => {
-        readoutText.text = StringUtils.fillIn( newtonsPatternString, {
-          newtons: Util.toFixed( mass, 2 )
-        } );
+      // @private {Multilink}
+      this.scaleForceMultilink = Property.multilink( [ mass.scaleForceProperty, gravityProperty ], ( scaleForce, gravity ) => {
+        if ( mass.displayType === Scale.DisplayType.NEWTONS ) {
+          readoutText.text = StringUtils.fillIn( newtonsPatternString, {
+            newtons: Util.toFixed( scaleForce, 2 )
+          } );
+        }
+        else {
+          readoutText.text = StringUtils.fillIn( kilogramsPatternString, {
+            kilograms: gravity.value > 0 ? Util.toFixed( scaleForce / gravity.value, 2 ) : '-'
+          } );
+        }
         readoutPanel.center = Vector2.ZERO;
-      };
-
-      this.mass.scaleForceProperty.link( this.scaleForceListener );
+      } );
     }
 
     /**
@@ -62,7 +71,7 @@ define( require => {
      * @override
      */
     dispose() {
-      this.mass.scaleForceProperty.unlink( this.scaleForceListener );
+      this.scaleForceMultilink.dispose();
 
       super.dispose();
     }

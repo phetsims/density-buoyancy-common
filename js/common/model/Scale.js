@@ -10,6 +10,7 @@ define( require => {
   const Bounds3 = require( 'DOT/Bounds3' );
   const Cuboid = require( 'DENSITY_BUOYANCY_COMMON/common/model/Cuboid' );
   const densityBuoyancyCommon = require( 'DENSITY_BUOYANCY_COMMON/densityBuoyancyCommon' );
+  const Enumeration = require( 'PHET_CORE/Enumeration' );
   const InterpolatedProperty = require( 'DENSITY_BUOYANCY_COMMON/common/model/InterpolatedProperty' );
   const Mass = require( 'DENSITY_BUOYANCY_COMMON/common/model/Mass' );
   const merge = require( 'PHET_CORE/merge' );
@@ -17,6 +18,7 @@ define( require => {
   const Vector3 = require( 'DOT/Vector3' );
   const VerticalCylinder = require( 'DENSITY_BUOYANCY_COMMON/common/model/VerticalCylinder' );
 
+  // constants
   const SCALE_WIDTH = 0.15;
   const SCALE_HEIGHT = 0.06;
   const SCALE_DEPTH = 0.2;
@@ -37,6 +39,10 @@ define( require => {
     SCALE_BASE_BOUNDS.centerY,
     SCALE_BASE_BOUNDS.maxZ
   );
+  const DisplayType = new Enumeration( [
+    'NEWTONS',
+    'KILOGRAMS'
+  ] );
 
   class Scale extends Mass {
     /**
@@ -48,7 +54,10 @@ define( require => {
         body: engine.createBox( SCALE_WIDTH, SCALE_HEIGHT ),
         shape: Shape.rect( -SCALE_WIDTH / 2, -SCALE_HEIGHT / 2, SCALE_WIDTH, SCALE_HEIGHT ),
         volume: SCALE_VOLUME,
-        canRotate: false
+        canRotate: false,
+
+        // {DisplayType}
+        displayType: DisplayType.NEWTONS
 
         // material
       }, config );
@@ -59,6 +68,9 @@ define( require => {
       this.scaleForceProperty = new InterpolatedProperty( 0, {
         interpolate: InterpolatedProperty.interpolateNumber
       } );
+
+      // @public {DisplayType}
+      this.displayType = config.displayType;
     }
 
     updateStepInformation() {
@@ -173,6 +185,9 @@ define( require => {
 
   // @public {Vector3}
   Scale.SCALE_FRONT_OFFSET = SCALE_FRONT_OFFSET;
+
+  // @public {Enumeration}
+  Scale.DisplayType = DisplayType;
 
   return densityBuoyancyCommon.register( 'Scale', Scale );
 } );

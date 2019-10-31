@@ -42,7 +42,10 @@ define( require => {
       // @public {Property.<boolean>}
       this.tableVisibleProperty = new BooleanProperty( false );
 
-      this.modeProperty.link( this.setup.bind( this ) );
+      this.modeProperty.link( mode => {
+        this.setup();
+        this.showMassesProperty.value = mode !== Mode.MYSTERY;
+      } );
     }
 
     /**

@@ -12,7 +12,7 @@ define( require => {
   const densityBuoyancyCommon = require( 'DENSITY_BUOYANCY_COMMON/densityBuoyancyCommon' );
   const DensityBuoyancyScreenView = require( 'DENSITY_BUOYANCY_COMMON/common/view/DensityBuoyancyScreenView' );
   const DensityComparingModel = require( 'DENSITY_BUOYANCY_COMMON/density/model/DensityComparingModel' );
-  const DensityTableNode = require( 'DENSITY_BUOYANCY_COMMON/common/view/DensityTableNode' );
+  const DensityTableNode = require( 'DENSITY_BUOYANCY_COMMON/density/view/DensityTableNode' );
   const Panel = require( 'SUN/Panel' );
   const PhetColorScheme = require( 'SCENERY_PHET/PhetColorScheme' );
   const PhetFont = require( 'SCENERY_PHET/PhetFont' );
@@ -40,7 +40,7 @@ define( require => {
   class DensityComparingScreenView extends DensityBuoyancyScreenView {
 
     /**
-     * @param {DensityBuoyancyModel} model
+     * @param {DensityComparingModel} model
      * @param {Tandem} tandem
      */
     constructor( model, tandem ) {

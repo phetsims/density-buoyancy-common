@@ -28,6 +28,7 @@ define( require => {
   const materialIceString = require( 'string!DENSITY_BUOYANCY_COMMON/material.ice' );
   const materialLeadString = require( 'string!DENSITY_BUOYANCY_COMMON/material.lead' );
   const materialMercuryString = require( 'string!DENSITY_BUOYANCY_COMMON/material.mercury' );
+  const materialOilString = require( 'string!DENSITY_BUOYANCY_COMMON/material.oil' );
   const materialSeawaterString = require( 'string!DENSITY_BUOYANCY_COMMON/material.seawater' );
   const materialSteelString = require( 'string!DENSITY_BUOYANCY_COMMON/material.steel' );
   const materialStyrofoamString = require( 'string!DENSITY_BUOYANCY_COMMON/material.styrofoam' );
@@ -179,6 +180,11 @@ define( require => {
     name: materialMercuryString,
     density: 13593,
     viscosity: 1.53e-3
+  } );
+  Material.OIL = new Material( {
+    name: materialOilString,
+    density: 920,
+    viscosity: 0.02 // Too much bigger and it won't work, not particularly physical
   } );
   Material.SEAWATER = new Material( {
     name: materialSeawaterString,

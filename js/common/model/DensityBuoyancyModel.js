@@ -23,6 +23,9 @@ define( require => {
   const Scale = require( 'DENSITY_BUOYANCY_COMMON/common/model/Scale' );
   const Vector2 = require( 'DOT/Vector2' );
 
+  // constants
+  const BLOCK_SPACING = 0.01;
+
   class DensityBuoyancyModel  {
 
     /**
@@ -51,7 +54,7 @@ define( require => {
 
       // @public {Bounds3}
       this.poolBounds = new Bounds3(
-        -0.45, -0.35, -0.2,
+        -0.45, -0.15 / 0.9 / 0.4, -0.2, // Computed for 150L
         0.45, 0, 0.2
       );
 
@@ -75,7 +78,7 @@ define( require => {
         new Vector2( this.groundBounds.minX, this.groundBounds.maxY )
       ];
 
-      // @public {Property.<number>}
+      // @public {Property.<number>} - in m^3
       this.liquidVolumeProperty = new NumberProperty( 0.1 );
 
       // @public {Property.<number>} - The y coordinate of the main liquid level in the pool
@@ -407,6 +410,85 @@ define( require => {
       } );
 
       this.liquidYProperty.setRatio( this.engine.interpolationRatio );
+    }
+
+    /**
+     * Positions masses from the left of the pool outward, with padding
+     * @private
+     *
+     * @param {Array.<Cuboid>} masses
+     */
+    positionMassesLeft( masses ) {
+      let position = this.poolBounds.minX;
+
+      masses.forEach( mass => {
+        mass.matrix.setToTranslation(
+          position - BLOCK_SPACING - mass.sizeProperty.value.width / 2,
+          -mass.sizeProperty.value.minY
+        );
+        position -= BLOCK_SPACING + mass.sizeProperty.value.width;
+        mass.writeData();
+      } );
+    }
+
+    /**
+     * Positions masses from the right of the pool outward, with padding
+     * @private
+     *
+     * @param {Array.<Cuboid>} masses
+     */
+    positionMassesRight( masses ) {
+      let position = this.poolBounds.maxX;
+
+      masses.forEach( mass => {
+        mass.matrix.setToTranslation(
+          position + BLOCK_SPACING + mass.sizeProperty.value.width / 2,
+          -mass.sizeProperty.value.minY
+        );
+        position += BLOCK_SPACING + mass.sizeProperty.value.width;
+        mass.writeData();
+      } );
+    }
+
+    /**
+     * Positions masses from the left of the pool up
+     * @private
+     *
+     * @param {Array.<Cuboid>} masses
+     */
+    positionStackLeft( masses ) {
+      const x = this.poolBounds.minX - BLOCK_SPACING - Math.max( ...masses.map( mass => mass.sizeProperty.value.width ) ) / 2;
+
+      this.positionStack( masses, x );
+    }
+
+    /**
+     * Positions masses from the right of the pool up
+     * @private
+     *
+     * @param {Array.<Cuboid>} masses
+     */
+    positionStackRight( masses ) {
+      const x = this.poolBounds.maxX + BLOCK_SPACING + Math.max( ...masses.map( mass => mass.sizeProperty.value.width ) ) / 2;
+
+      this.positionStack( masses, x );
+    }
+
+    /**
+     * Position a stack of masses at a given center x.
+     * @private
+     *
+     * @param {Array.<Cuboid>} masses
+     * @param {number} x
+     */
+    positionStack( masses, x ) {
+      let position = 0;
+
+      masses.forEach( mass => {
+        mass.matrix.setToTranslation( x, position + mass.sizeProperty.value.height / 2 );
+        position += mass.sizeProperty.value.height;
+        mass.writeData();
+      } );
     }
 
     /**

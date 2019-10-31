@@ -65,6 +65,9 @@
   "material.mercury": {
     "value": "Mercury"
   },
+  "material.oil": {
+    "value": "Oil"
+  },
   "material.seawater": {
     "value": "Seawater"
   },
@@ -121,6 +124,9 @@
   },
   "metersPerSecondSquaredPattern": {
     "value": "{{value}} m/s<sup>2</sup>"
+  },
+  "fluid": {
+    "value": "Fluid"
   },
   "fluidDensity": {
     "value": "Fluid Density"

@@ -26,7 +26,6 @@ define( require => {
     'SAME_DENSITY',
     'MYSTERY'
   ] );
-  const BLOCK_SPACING = 0.01;
 
   class DensityComparingModel extends DensityBuoyancyModel {
     /**
@@ -71,85 +70,6 @@ define( require => {
         default:
           throw new Error( 'unknown mode: ' + this.modeProperty.value );
       }
-    }
-
-    /**
-     * Positions masses from the left of the pool outward, with padding
-     * @private
-     *
-     * @param {Array.<Mass>} masses
-     */
-    positionMassesLeft( masses ) {
-      let position = this.poolBounds.minX;
-
-      masses.forEach( mass => {
-        mass.matrix.setToTranslation(
-          position - BLOCK_SPACING - mass.sizeProperty.value.width / 2,
-          -mass.sizeProperty.value.minY
-        );
-        position -= BLOCK_SPACING + mass.sizeProperty.value.width;
-        mass.writeData();
-      } );
-    }
-
-    /**
-     * Positions masses from the right of the pool outward, with padding
-     * @private
-     *
-     * @param {Array.<Mass>} masses
-     */
-    positionMassesRight( masses ) {
-      let position = this.poolBounds.maxX;
-
-      masses.forEach( mass => {
-        mass.matrix.setToTranslation(
-          position + BLOCK_SPACING + mass.sizeProperty.value.width / 2,
-          -mass.sizeProperty.value.minY
-        );
-        position += BLOCK_SPACING + mass.sizeProperty.value.width;
-        mass.writeData();
-      } );
-    }
-
-    /**
-     * Positions masses from the left of the pool up
-     * @private
-     *
-     * @param {Array.<Mass>} masses
-     */
-    positionStackLeft( masses ) {
-      const x = this.poolBounds.minX - BLOCK_SPACING - Math.max( ...masses.map( mass => mass.sizeProperty.value.width ) ) / 2;
-
-      this.positionStack( masses, x );
-    }
-
-    /**
-     * Positions masses from the right of the pool up
-     * @private
-     *
-     * @param {Array.<Mass>} masses
-     */
-    positionStackRight( masses ) {
-      const x = this.poolBounds.maxX + BLOCK_SPACING + Math.max( ...masses.map( mass => mass.sizeProperty.value.width ) ) / 2;
-
-      this.positionStack( masses, x );
-    }
-
-    /**
-     * Position a stack of masses at a given center x.
-     * @private
-     *
-     * @param {Array.<Mass>} masses
-     * @param {number} x
-     */
-    positionStack( masses, x ) {
-      let position = 0;
-
-      masses.forEach( mass => {
-        mass.matrix.setToTranslation( x, position + mass.sizeProperty.value.height / 2 );
-        position += mass.sizeProperty.value.height;
-        mass.writeData();
-      } );
     }
 
     /**

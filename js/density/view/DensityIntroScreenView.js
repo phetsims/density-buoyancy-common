@@ -30,7 +30,7 @@ define( require => {
   class DensityIntroScreenView extends DensityBuoyancyScreenView {
 
     /**
-     * @param {DensityBuoyancyModel} model
+     * @param {DensityIntroModel} model
      * @param {Tandem} tandem
      */
     constructor( model, tandem ) {

@@ -39,7 +39,7 @@ define( require => {
     tailWidth: 4
   };
   const labelOptions = {
-    font: new PhetFont( 16 ),
+    font: new PhetFont( 14 ),
     maxWidth: maxWidth
   };
   const checkboxOptions = {
@@ -63,7 +63,7 @@ define( require => {
 
       const forcesText = new Text( forcesString, {
         font: new PhetFont( {
-          size: 16,
+          size: 14,
           weight: 'bold'
         } ),
         maxWidth: maxWidth

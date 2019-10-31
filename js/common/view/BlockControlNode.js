@@ -42,6 +42,7 @@ define( require => {
   // constants
   const LITERS_IN_CUBIC_METER = 1000;
   const MIN_MASS = 0;
+  const MAX_CUSTOM_MASS = 10;
   const MAX_MASS = 27;
   const MIN_VOLUME_LITERS = 1;
   const MAX_VOLUME_LITERS = 10;
@@ -142,7 +143,7 @@ define( require => {
 
       const enabledMassRangeProperty = new DerivedProperty( [ cuboid.materialProperty ], material => {
         if ( material.custom ) {
-          return new Range( MIN_MASS, MAX_MASS );
+          return new Range( MIN_MASS, MAX_CUSTOM_MASS );
         }
         else {
           const density = material.density;

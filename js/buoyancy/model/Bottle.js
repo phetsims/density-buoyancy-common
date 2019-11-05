@@ -12,6 +12,7 @@ define( require => {
   const Mass = require( 'DENSITY_BUOYANCY_COMMON/common/model/Mass' );
   const merge = require( 'PHET_CORE/merge' );
   const Shape = require( 'KITE/Shape' );
+  const Util = require( 'DOT/Util' );
   const Vector2 = require( 'DOT/Vector2' );
 
   // constants
@@ -22,6 +23,7 @@ define( require => {
   const LIP_RADIUS = 0.285;
   const NECK_RADIUS = 0.187;
   const FULL_RADIUS = 0.85;
+  const TIP_RADIUS = 0.6;
   const BODY_RADIUS = FULL_RADIUS - BODY_CORNER_RADIUS;
   // const BASE_TIP_RADIUS = 0.6;
   const CAP_LENGTH = 0.28;
@@ -29,12 +31,13 @@ define( require => {
   const LIP_LENGTH = LIP_CORNER_RADIUS * 2;
   const TAPER_LENGTH = 1.35;
   const BODY_LENGTH = 2.25;
-  // const BASE_SADDLE_LENGTH = 0.7;
-  // const BASE_TIP_LENGTH = 0.85;
+  const BASE_SADDLE_LENGTH = 0.7;
+  const BASE_TIP_LENGTH = 0.85;
   const CAP_BODY_LENGTH = CAP_LENGTH - CAP_CORNER_RADIUS;
   // const FULL_LENGTH = CAP_CORNER_RADIUS + CAP_BODY_LENGTH + GAP_LENGTH + LIP_LENGTH + TAPER_LENGTH + BODY_CORNER_RADIUS + BODY_LENGTH + BODY_CORNER_RADIUS + BASE_TIP_LENGTH;
   const CORNER_SEGMENTS = 8;
   const TAPER_SEGMENTS = 20;
+  const BASE_SEGMENTS = 20;
 
   class Bottle extends Mass {
     /**
@@ -150,6 +153,151 @@ define( require => {
       );
 
       return complex.real;
+    }
+
+    static getParametricFromBaseSaddle( r ) {
+      const r0 = FULL_RADIUS;
+      const r1 = FULL_RADIUS;
+      const r2 = 0.5 * FULL_RADIUS;
+      const r3 = 0;
+
+      const roots = Util.solveCubicRootsReal(
+        -r0 + 3 * r1 - 3 * r2 + r3,
+        3 * r0 - 6 * r1 + 3 * r2,
+        -3 * r0 + 3 * r1,
+        r0 - r
+      ).filter( t => t >= 0 && t <= 1 );
+
+      return roots[ 0 ];
+    }
+
+    static getParametricFromBaseFirstTip( r ) {
+      const r0 = FULL_RADIUS;
+      const r1 = FULL_RADIUS;
+      const r2 = FULL_RADIUS + 0.4 * ( TIP_RADIUS - FULL_RADIUS );
+      const r3 = TIP_RADIUS;
+
+      const roots = Util.solveCubicRootsReal(
+        -r0 + 3 * r1 - 3 * r2 + r3,
+        3 * r0 - 6 * r1 + 3 * r2,
+        -3 * r0 + 3 * r1,
+        r0 - r
+      ).filter( t => t >= 0 && t <= 1 );
+
+      return roots[ 0 ];
+    }
+
+    static getParametricFromBaseSecondTip( r ) {
+      const r0 = TIP_RADIUS;
+      const r1 = 0.5 * TIP_RADIUS;
+      const r2 = 0.7 * TIP_RADIUS;
+      const r3 = 0;
+
+      const roots = Util.solveCubicRootsReal(
+        -r0 + 3 * r1 - 3 * r2 + r3,
+        3 * r0 - 6 * r1 + 3 * r2,
+        -3 * r0 + 3 * r1,
+        r0 - r
+      ).filter( t => t >= 0 && t <= 1 );
+
+      return roots[ 0 ];
+    }
+
+    static getBaseSaddleParametricProfilePoint( t ) {
+      const BASE_START = CAP_CORNER_RADIUS + CAP_BODY_LENGTH + GAP_LENGTH + LIP_LENGTH + TAPER_LENGTH + BODY_CORNER_RADIUS + BODY_LENGTH + BODY_CORNER_RADIUS;
+      const BASE_SADDLE = BASE_START + BASE_SADDLE_LENGTH;
+
+      const mt = 1 - t;
+      const mmm = mt * mt * mt;
+      const mmt = 3 * mt * mt * t;
+      const mtt = 3 * mt * t * t;
+      const ttt = t * t * t;
+
+      const x0 = BASE_START;
+      const x1 = BASE_START + 0.5 * ( BASE_SADDLE - BASE_START );
+      const x2 = BASE_SADDLE;
+      const x3 = BASE_SADDLE;
+
+      const r0 = FULL_RADIUS;
+      const r1 = FULL_RADIUS;
+      const r2 = 0.5 * FULL_RADIUS;
+      const r3 = 0;
+
+      return new Vector2(
+        x0 * mmm +
+        x1 * mmt +
+        x2 * mtt +
+        x3 * ttt,
+        r0 * mmm +
+        r1 * mmt +
+        r2 * mtt +
+        r3 * ttt
+      );
+    }
+
+    static getBaseFirstTipParametricProfilePoint( t ) {
+      const BASE_START = CAP_CORNER_RADIUS + CAP_BODY_LENGTH + GAP_LENGTH + LIP_LENGTH + TAPER_LENGTH + BODY_CORNER_RADIUS + BODY_LENGTH + BODY_CORNER_RADIUS;
+      const BASE_TIP = BASE_START + BASE_TIP_LENGTH;
+
+      const mt = 1 - t;
+      const mmm = mt * mt * mt;
+      const mmt = 3 * mt * mt * t;
+      const mtt = 3 * mt * t * t;
+      const ttt = t * t * t;
+
+      const x0 = BASE_START;
+      const x1 = BASE_START + 0.5 * ( BASE_TIP - BASE_START );
+      const x2 = BASE_TIP;
+      const x3 = BASE_TIP;
+
+      const r0 = FULL_RADIUS;
+      const r1 = FULL_RADIUS;
+      const r2 = FULL_RADIUS + 0.4 * ( TIP_RADIUS - FULL_RADIUS );
+      const r3 = TIP_RADIUS;
+
+      return new Vector2(
+        x0 * mmm +
+        x1 * mmt +
+        x2 * mtt +
+        x3 * ttt,
+        r0 * mmm +
+        r1 * mmt +
+        r2 * mtt +
+        r3 * ttt
+      );
+    }
+
+    static getBaseSecondTipParametricProfilePoint( t ) {
+      const BASE_START = CAP_CORNER_RADIUS + CAP_BODY_LENGTH + GAP_LENGTH + LIP_LENGTH + TAPER_LENGTH + BODY_CORNER_RADIUS + BODY_LENGTH + BODY_CORNER_RADIUS;
+      const BASE_TIP = BASE_START + BASE_TIP_LENGTH;
+      const BASE_SADDLE = BASE_START + BASE_SADDLE_LENGTH;
+
+      const mt = 1 - t;
+      const mmm = mt * mt * mt;
+      const mmt = 3 * mt * mt * t;
+      const mtt = 3 * mt * t * t;
+      const ttt = t * t * t;
+
+      const x0 = BASE_TIP;
+      const x1 = BASE_TIP;
+      const x2 = BASE_SADDLE;
+      const x3 = BASE_SADDLE;
+
+      const r0 = TIP_RADIUS;
+      const r1 = 0.5 * TIP_RADIUS;
+      const r2 = 0.7 * TIP_RADIUS;
+      const r3 = 0;
+
+      return new Vector2(
+        x0 * mmm +
+        x1 * mmt +
+        x2 * mtt +
+        x3 * ttt,
+        r0 * mmm +
+        r1 * mmt +
+        r2 * mtt +
+        r3 * ttt
+      );
     }
 
     static getTaperParametricProfilePoint( t ) {
@@ -272,6 +420,28 @@ define( require => {
       context.stroke();
       context.beginPath();
       mainBottleProfile.forEach( p => context.lineTo( mapX( p.x ), mapY( -p.y ) ) );
+      context.stroke();
+
+      context.strokeStyle = 'green';
+      context.beginPath();
+      const baseSaddleProfile = _.range( 0, BASE_SEGMENTS + 1 ).map( i => Bottle.getBaseSaddleParametricProfilePoint( i / BASE_SEGMENTS ) );
+      baseSaddleProfile.forEach( p => context.lineTo( mapX( p.x ), mapY( p.y ) ) );
+      context.stroke();
+      context.beginPath();
+      baseSaddleProfile.forEach( p => context.lineTo( mapX( p.x ), mapY( -p.y ) ) );
+      context.stroke();
+
+      context.strokeStyle = 'magenta';
+      context.beginPath();
+      // TODO: figure out segments improvement
+      const baseTipProfile = [
+        ..._.range( 0, BASE_SEGMENTS + 1 ).map( i => Bottle.getBaseFirstTipParametricProfilePoint( i / BASE_SEGMENTS ) ),
+        ..._.range( 1, BASE_SEGMENTS + 1 ).map( i => Bottle.getBaseSecondTipParametricProfilePoint( i / BASE_SEGMENTS ) )
+      ];
+      baseTipProfile.forEach( p => context.lineTo( mapX( p.x ), mapY( p.y ) ) );
+      context.stroke();
+      context.beginPath();
+      baseTipProfile.forEach( p => context.lineTo( mapX( p.x ), mapY( -p.y ) ) );
       context.stroke();
 
       while ( document.body.childNodes[ 0 ] ) {

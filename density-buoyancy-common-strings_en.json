@@ -26,6 +26,9 @@
   "material.brick": {
     "value": "Brick"
   },
+  "material.cement": {
+    "value": "Cement"
+  },
   "material.copper": {
     "value": "Copper"
   },
@@ -71,14 +74,26 @@
   "material.platinum": {
     "value": "Platinum"
   },
+  "material.pyrite": {
+    "value": "Pyrite"
+  },
+  "material.sand": {
+    "value": "Sand"
+  },
   "material.seawater": {
     "value": "Seawater"
+  },
+  "material.silver": {
+    "value": "Silver"
   },
   "material.steel": {
     "value": "Steel"
   },
   "material.styrofoam": {
     "value": "Styrofoam"
+  },
+  "material.tantalum": {
+    "value": "Tantalum"
   },
   "material.titanium": {
     "value": "Titanium"

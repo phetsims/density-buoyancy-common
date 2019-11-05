@@ -15,6 +15,7 @@ define( require => {
   const materialAluminumString = require( 'string!DENSITY_BUOYANCY_COMMON/material.aluminum' );
   const materialAppleString = require( 'string!DENSITY_BUOYANCY_COMMON/material.apple' );
   const materialBrickString = require( 'string!DENSITY_BUOYANCY_COMMON/material.brick' );
+  const materialCementString = require( 'string!DENSITY_BUOYANCY_COMMON/material.cement' );
   const materialCopperString = require( 'string!DENSITY_BUOYANCY_COMMON/material.copper' );
   const materialCustomString = require( 'string!DENSITY_BUOYANCY_COMMON/material.custom' );
   const materialDensityXString = require( 'string!DENSITY_BUOYANCY_COMMON/material.densityX' );
@@ -30,9 +31,13 @@ define( require => {
   const materialMercuryString = require( 'string!DENSITY_BUOYANCY_COMMON/material.mercury' );
   const materialOilString = require( 'string!DENSITY_BUOYANCY_COMMON/material.oil' );
   const materialPlatinumString = require( 'string!DENSITY_BUOYANCY_COMMON/material.platinum' );
+  const materialPyriteString = require( 'string!DENSITY_BUOYANCY_COMMON/material.pyrite' );
+  const materialSandString = require( 'string!DENSITY_BUOYANCY_COMMON/material.sand' );
   const materialSeawaterString = require( 'string!DENSITY_BUOYANCY_COMMON/material.seawater' );
+  const materialSilverString = require( 'string!DENSITY_BUOYANCY_COMMON/material.silver' );
   const materialSteelString = require( 'string!DENSITY_BUOYANCY_COMMON/material.steel' );
   const materialStyrofoamString = require( 'string!DENSITY_BUOYANCY_COMMON/material.styrofoam' );
+  const materialTantalumString = require( 'string!DENSITY_BUOYANCY_COMMON/material.tantalum' );
   const materialTitaniumString = require( 'string!DENSITY_BUOYANCY_COMMON/material.titanium' );
   const materialWaterString = require( 'string!DENSITY_BUOYANCY_COMMON/material.water' );
   const materialWoodString = require( 'string!DENSITY_BUOYANCY_COMMON/material.wood' );
@@ -106,6 +111,10 @@ define( require => {
     name: materialBrickString,
     density: 2000
   } );
+  Material.CEMENT = new Material( {
+    name: materialCementString,
+    density: 3150
+  } );
   Material.COPPER = new Material( {
     name: materialCopperString,
     density: 8960
@@ -138,6 +147,14 @@ define( require => {
     name: materialPlatinumString,
     density: 21450
   } );
+  Material.PYRITE = new Material( {
+    name: materialPyriteString,
+    density: 5010
+  } );
+  Material.SILVER = new Material( {
+    name: materialSilverString,
+    density: 10490
+  } );
   Material.STEEL = new Material( {
     name: materialSteelString,
     density: 7800
@@ -147,6 +164,10 @@ define( require => {
     // From Flash version: between 25 and 200 according to http://wiki.answers.com/Q/What_is_the_density_of_styrofoam;
     // chose 150 so it isn't too low to show on slider, but not 200 so it's not half of wood
     density: 150
+  } );
+  Material.TANTALUM = new Material( {
+    name: materialTantalumString,
+    density: 16650
   } );
   Material.TITANIUM = new Material( {
     name: materialTitaniumString,
@@ -191,6 +212,11 @@ define( require => {
     density: 920,
     viscosity: 0.02 // Too much bigger and it won't work, not particularly physical
   } );
+  Material.SAND = new Material( {
+    name: materialSandString,
+    density: 1442,
+    viscosity: 0.03 // Too much bigger and it won't work, not particularly physical
+  } );
   Material.SEAWATER = new Material( {
     name: materialSeawaterString,
     density: 1029,
@@ -208,6 +234,7 @@ define( require => {
     Material.ALUMINUM,
     Material.APPLE,
     Material.BRICK,
+    Material.CEMENT,
     Material.COPPER,
     Material.DENSITY_X,
     Material.DENSITY_Y,
@@ -220,9 +247,15 @@ define( require => {
     Material.ICE,
     Material.LEAD,
     Material.MERCURY,
+    Material.OIL,
+    Material.PLATINUM,
+    Material.PYRITE,
+    Material.SAND,
     Material.SEAWATER,
+    Material.SILVER,
     Material.STEEL,
     Material.STYROFOAM,
+    Material.TANTALUM,
     Material.TITANIUM,
     Material.WATER,
     Material.WOOD

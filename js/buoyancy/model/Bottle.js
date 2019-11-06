@@ -7,7 +7,6 @@ define( require => {
   'use strict';
 
   // modules
-  const Complex = require( 'DOT/Complex' );
   const densityBuoyancyCommon = require( 'DENSITY_BUOYANCY_COMMON/densityBuoyancyCommon' );
   const Mass = require( 'DENSITY_BUOYANCY_COMMON/common/model/Mass' );
   const merge = require( 'PHET_CORE/merge' );
@@ -23,9 +22,8 @@ define( require => {
   const LIP_RADIUS = 0.285;
   const NECK_RADIUS = 0.187;
   const FULL_RADIUS = 0.85;
-  const TIP_RADIUS = 0.6;
+  const BASE_TIP_RADIUS = 0.6;
   const BODY_RADIUS = FULL_RADIUS - BODY_CORNER_RADIUS;
-  // const BASE_TIP_RADIUS = 0.6;
   const CAP_LENGTH = 0.28;
   const GAP_LENGTH = 0.03;
   const LIP_LENGTH = LIP_CORNER_RADIUS * 2;
@@ -34,10 +32,45 @@ define( require => {
   const BASE_SADDLE_LENGTH = 0.7;
   const BASE_TIP_LENGTH = 0.85;
   const CAP_BODY_LENGTH = CAP_LENGTH - CAP_CORNER_RADIUS;
-  // const FULL_LENGTH = CAP_CORNER_RADIUS + CAP_BODY_LENGTH + GAP_LENGTH + LIP_LENGTH + TAPER_LENGTH + BODY_CORNER_RADIUS + BODY_LENGTH + BODY_CORNER_RADIUS + BASE_TIP_LENGTH;
   const CORNER_SEGMENTS = 8;
   const TAPER_SEGMENTS = 20;
   const BASE_SEGMENTS = 20;
+
+  const LIP_START = CAP_CORNER_RADIUS + CAP_BODY_LENGTH + GAP_LENGTH;
+  const LIP_END = LIP_START + LIP_LENGTH;
+  const TAPER_START = CAP_CORNER_RADIUS + CAP_BODY_LENGTH + GAP_LENGTH + LIP_LENGTH;
+  const TAPER_END = TAPER_START + TAPER_LENGTH;
+  const BODY_START = TAPER_END + BODY_CORNER_RADIUS;
+  const BODY_END = BODY_START + BODY_LENGTH;
+  const BASE_START = CAP_CORNER_RADIUS + CAP_BODY_LENGTH + GAP_LENGTH + LIP_LENGTH + TAPER_LENGTH + BODY_CORNER_RADIUS + BODY_LENGTH + BODY_CORNER_RADIUS;
+  const BASE_SADDLE = BASE_START + BASE_SADDLE_LENGTH;
+  const BASE_TIP = BASE_START + BASE_TIP_LENGTH;
+
+  // {Array.<Vector2>} - Each vector is (x,r)
+  const BASE_SADDLE_CONTROL_POINTS = [
+    new Vector2( BASE_START, FULL_RADIUS ),
+    new Vector2( BASE_START + 0.5 * ( BASE_SADDLE - BASE_START ), FULL_RADIUS ),
+    new Vector2( BASE_SADDLE, 0.5 * FULL_RADIUS ),
+    new Vector2( BASE_SADDLE, 0 )
+  ];
+  const BASE_FIRST_TIP_CONTROL_POINTS = [
+    new Vector2( BASE_START, FULL_RADIUS ),
+    new Vector2( BASE_START + 0.5 * ( BASE_TIP - BASE_START ), FULL_RADIUS ),
+    new Vector2( BASE_TIP, FULL_RADIUS + 0.4 * ( BASE_TIP_RADIUS - FULL_RADIUS ) ),
+    new Vector2( BASE_TIP, BASE_TIP_RADIUS )
+  ];
+  const BASE_SECOND_TIP_CONTROL_POINTS = [
+    new Vector2( BASE_TIP, BASE_TIP_RADIUS ),
+    new Vector2( BASE_TIP, 0.5 * BASE_TIP_RADIUS ),
+    new Vector2( BASE_SADDLE, 0.7 * BASE_TIP_RADIUS ),
+    new Vector2( BASE_SADDLE, 0 )
+  ];
+  const TAPER_CONTROL_POINTS = [
+    new Vector2( TAPER_START, NECK_RADIUS ),
+    new Vector2( TAPER_START + 0.4 * ( TAPER_END - TAPER_START ), NECK_RADIUS ),
+    new Vector2( TAPER_START + 0.2 * ( TAPER_END - TAPER_START ), FULL_RADIUS ),
+    new Vector2( TAPER_END, FULL_RADIUS )
+  ]; // TODO: old y was NECK_RADIUS + ( t * t * ( 3 - 2 * t ) ) * ( FULL_RADIUS - NECK_RADIUS )
 
   class Bottle extends Mass {
     /**
@@ -140,58 +173,46 @@ define( require => {
       super.reset();
     }
 
-    static getParametricFrom0011( r ) {
-      // from mathematica:
-      // 1/2 - (1 - I Sqrt[3])/(4 (1 - 2 r + 2 Sqrt[-r + r^2])^(1/3)) - 1/4 (1 + I Sqrt[3]) (1 - 2 r + 2 Sqrt[-r + r^2])^(1/3)
-      const body = new Complex( 1 - 2 * r, 2 * Math.sqrt( r - r * r ) ).powerByReal( 1 / 3 );
-      const complex = new Complex( 0.5, 0 ).minus(
-        new Complex( 1, -Math.sqrt( 3 ) ).dividedBy(
-          body.times( new Complex( 4, 0 ) )
-        )
-      ).minus(
-        new Complex( 1 / 4, Math.sqrt( 3 ) / 4 ).times( body )
+    /**
+     * @public
+     *
+     * @param {Array.<Vector2>} - Four points for a cubic
+     * @param {number} t
+     * @returns {Vector2}
+     */
+    static evaluateCubic( controlPoints, t ) {
+      const mt = 1 - t;
+      const mmm = mt * mt * mt;
+      const mmt = 3 * mt * mt * t;
+      const mtt = 3 * mt * t * t;
+      const ttt = t * t * t;
+
+      return new Vector2(
+        controlPoints[ 0 ].x * mmm +
+        controlPoints[ 1 ].x * mmt +
+        controlPoints[ 2 ].x * mtt +
+        controlPoints[ 3 ].x * ttt,
+        controlPoints[ 0 ].y * mmm +
+        controlPoints[ 1 ].y * mmt +
+        controlPoints[ 2 ].y * mtt +
+        controlPoints[ 3 ].y * ttt
       );
-
-      return complex.real;
     }
 
-    static getParametricFromBaseSaddle( r ) {
-      const r0 = FULL_RADIUS;
-      const r1 = FULL_RADIUS;
-      const r2 = 0.5 * FULL_RADIUS;
-      const r3 = 0;
-
-      const roots = Util.solveCubicRootsReal(
-        -r0 + 3 * r1 - 3 * r2 + r3,
-        3 * r0 - 6 * r1 + 3 * r2,
-        -3 * r0 + 3 * r1,
-        r0 - r
-      ).filter( t => t >= 0 && t <= 1 );
-
-      return roots[ 0 ];
-    }
-
-    static getParametricFromBaseFirstTip( r ) {
-      const r0 = FULL_RADIUS;
-      const r1 = FULL_RADIUS;
-      const r2 = FULL_RADIUS + 0.4 * ( TIP_RADIUS - FULL_RADIUS );
-      const r3 = TIP_RADIUS;
-
-      const roots = Util.solveCubicRootsReal(
-        -r0 + 3 * r1 - 3 * r2 + r3,
-        3 * r0 - 6 * r1 + 3 * r2,
-        -3 * r0 + 3 * r1,
-        r0 - r
-      ).filter( t => t >= 0 && t <= 1 );
-
-      return roots[ 0 ];
-    }
-
-    static getParametricFromBaseSecondTip( r ) {
-      const r0 = TIP_RADIUS;
-      const r1 = 0.5 * TIP_RADIUS;
-      const r2 = 0.7 * TIP_RADIUS;
-      const r3 = 0;
+    /**
+     * Given control points for a parametric cubic bezier, finds the parametric value for the curve that will have the
+     * defined radius.
+     * @public
+     *
+     * @param {Array.<Vector2>} controlPoints
+     * @param {number} r
+     * @returns {number}
+     */
+    static getParametricFromRadius( controlPoints, r ) {
+      const r0 = controlPoints[ 0 ].y;
+      const r1 = controlPoints[ 1 ].y;
+      const r2 = controlPoints[ 2 ].y;
+      const r3 = controlPoints[ 3 ].y;
 
       const roots = Util.solveCubicRootsReal(
         -r0 + 3 * r1 - 3 * r2 + r3,
@@ -204,124 +225,35 @@ define( require => {
     }
 
     static getBaseSaddleParametricProfilePoint( t ) {
-      const BASE_START = CAP_CORNER_RADIUS + CAP_BODY_LENGTH + GAP_LENGTH + LIP_LENGTH + TAPER_LENGTH + BODY_CORNER_RADIUS + BODY_LENGTH + BODY_CORNER_RADIUS;
-      const BASE_SADDLE = BASE_START + BASE_SADDLE_LENGTH;
-
-      const mt = 1 - t;
-      const mmm = mt * mt * mt;
-      const mmt = 3 * mt * mt * t;
-      const mtt = 3 * mt * t * t;
-      const ttt = t * t * t;
-
-      const x0 = BASE_START;
-      const x1 = BASE_START + 0.5 * ( BASE_SADDLE - BASE_START );
-      const x2 = BASE_SADDLE;
-      const x3 = BASE_SADDLE;
-
-      const r0 = FULL_RADIUS;
-      const r1 = FULL_RADIUS;
-      const r2 = 0.5 * FULL_RADIUS;
-      const r3 = 0;
-
-      return new Vector2(
-        x0 * mmm +
-        x1 * mmt +
-        x2 * mtt +
-        x3 * ttt,
-        r0 * mmm +
-        r1 * mmt +
-        r2 * mtt +
-        r3 * ttt
-      );
+      return Bottle.evaluateCubic( BASE_SADDLE_CONTROL_POINTS, t );
     }
 
     static getBaseFirstTipParametricProfilePoint( t ) {
-      const BASE_START = CAP_CORNER_RADIUS + CAP_BODY_LENGTH + GAP_LENGTH + LIP_LENGTH + TAPER_LENGTH + BODY_CORNER_RADIUS + BODY_LENGTH + BODY_CORNER_RADIUS;
-      const BASE_TIP = BASE_START + BASE_TIP_LENGTH;
-
-      const mt = 1 - t;
-      const mmm = mt * mt * mt;
-      const mmt = 3 * mt * mt * t;
-      const mtt = 3 * mt * t * t;
-      const ttt = t * t * t;
-
-      const x0 = BASE_START;
-      const x1 = BASE_START + 0.5 * ( BASE_TIP - BASE_START );
-      const x2 = BASE_TIP;
-      const x3 = BASE_TIP;
-
-      const r0 = FULL_RADIUS;
-      const r1 = FULL_RADIUS;
-      const r2 = FULL_RADIUS + 0.4 * ( TIP_RADIUS - FULL_RADIUS );
-      const r3 = TIP_RADIUS;
-
-      return new Vector2(
-        x0 * mmm +
-        x1 * mmt +
-        x2 * mtt +
-        x3 * ttt,
-        r0 * mmm +
-        r1 * mmt +
-        r2 * mtt +
-        r3 * ttt
-      );
+      return Bottle.evaluateCubic( BASE_FIRST_TIP_CONTROL_POINTS, t );
     }
 
     static getBaseSecondTipParametricProfilePoint( t ) {
-      const BASE_START = CAP_CORNER_RADIUS + CAP_BODY_LENGTH + GAP_LENGTH + LIP_LENGTH + TAPER_LENGTH + BODY_CORNER_RADIUS + BODY_LENGTH + BODY_CORNER_RADIUS;
-      const BASE_TIP = BASE_START + BASE_TIP_LENGTH;
-      const BASE_SADDLE = BASE_START + BASE_SADDLE_LENGTH;
-
-      const mt = 1 - t;
-      const mmm = mt * mt * mt;
-      const mmt = 3 * mt * mt * t;
-      const mtt = 3 * mt * t * t;
-      const ttt = t * t * t;
-
-      const x0 = BASE_TIP;
-      const x1 = BASE_TIP;
-      const x2 = BASE_SADDLE;
-      const x3 = BASE_SADDLE;
-
-      const r0 = TIP_RADIUS;
-      const r1 = 0.5 * TIP_RADIUS;
-      const r2 = 0.7 * TIP_RADIUS;
-      const r3 = 0;
-
-      return new Vector2(
-        x0 * mmm +
-        x1 * mmt +
-        x2 * mtt +
-        x3 * ttt,
-        r0 * mmm +
-        r1 * mmt +
-        r2 * mtt +
-        r3 * ttt
-      );
+      return Bottle.evaluateCubic( BASE_SECOND_TIP_CONTROL_POINTS, t );
     }
 
     static getTaperParametricProfilePoint( t ) {
-      const TAPER_START = CAP_CORNER_RADIUS + CAP_BODY_LENGTH + GAP_LENGTH + LIP_LENGTH;
-      const TAPER_END = TAPER_START + TAPER_LENGTH;
+      return Bottle.evaluateCubic( TAPER_CONTROL_POINTS, t );
+    }
 
-      const mt = 1 - t;
-      const mmm = mt * mt * mt;
-      const mmt = 3 * mt * mt * t;
-      const mtt = 3 * mt * t * t;
-      const ttt = t * t * t;
+    static getBaseSaddleParametricFromRadius( r ) {
+      return Bottle.getParametricFromRadius( BASE_SADDLE_CONTROL_POINTS, r );
+    }
 
-      const x0 = TAPER_START;
-      const x1 = TAPER_START + 0.4 * ( TAPER_END - TAPER_START );
-      const x2 = TAPER_START + 0.2 * ( TAPER_END - TAPER_START );
-      const x3 = TAPER_END;
+    static getBaseFirstTipParametricFromRadius( r ) {
+      return Bottle.getParametricFromRadius( BASE_FIRST_TIP_CONTROL_POINTS, r );
+    }
 
-      return new Vector2(
-        x0 * mmm +
-        x1 * mmt +
-        x2 * mtt +
-        x3 * ttt,
-        NECK_RADIUS + ( t * t * ( 3 - 2 * t ) ) * ( FULL_RADIUS - NECK_RADIUS )
-      );
+    static getBaseSecondTipParametricFromRadius( r ) {
+      return Bottle.getParametricFromRadius( BASE_SECOND_TIP_CONTROL_POINTS, r );
+    }
+
+    static getTaperParametricFromRadius( r ) {
+      return Bottle.getParametricFromRadius( TAPER_CONTROL_POINTS, r );
     }
 
     /**
@@ -353,11 +285,6 @@ define( require => {
      * @returns {Array.<Vector2>}
      */
     static getMainBottleProfile() {
-      const LIP_START = CAP_CORNER_RADIUS + CAP_BODY_LENGTH + GAP_LENGTH;
-      const LIP_END = LIP_START + LIP_LENGTH;
-      const TAPER_END = LIP_END + TAPER_LENGTH;
-      const BODY_START = TAPER_END + BODY_CORNER_RADIUS;
-      const BODY_END = BODY_START + BODY_LENGTH;
       return [
         new Vector2( CAP_CORNER_RADIUS, NECK_RADIUS ),
         new Vector2( CAP_CORNER_RADIUS + CAP_BODY_LENGTH + GAP_LENGTH, NECK_RADIUS ),

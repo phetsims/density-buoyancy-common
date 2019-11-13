@@ -691,7 +691,7 @@ define( require => {
       Bottle.quadRing(
         positions, normals, uvs, radialSegments,
         LIP_START, NECK_RADIUS,
-        LIP_START, LIP_RADIUS - LIP_CORNER_RADIUS
+        LIP_START, LIP_RADIUS - LIP_CORNER_RADIUS,
         -1, 0,
         -1, 0
       );

@@ -30,6 +30,7 @@ define( require => {
       const mainBottleMesh = new THREE.Mesh( Bottle.getPrimaryGeometry(), new THREE.MeshLambertMaterial( {
         color: 0xAAAAAA
       } ) );
+      mainBottleMesh.position.x = -0.3;
       this.sceneNode.stage.threeScene.add( mainBottleMesh );
 
       this.addChild( this.popupLayer );

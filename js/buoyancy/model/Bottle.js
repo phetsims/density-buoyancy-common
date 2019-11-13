@@ -13,6 +13,7 @@ define( require => {
   const Shape = require( 'KITE/Shape' );
   const Util = require( 'DOT/Util' );
   const Vector2 = require( 'DOT/Vector2' );
+  const Vector3 = require( 'DOT/Vector3' );
 
   // constants
   const BODY_CORNER_RADIUS = 0.03;
@@ -300,8 +301,9 @@ define( require => {
 
       const ratio = Math.cos( theta * 5 ) * 0.5 + 0.5;
 
-      return new Vector2(
+      return new Vector3(
         tipPoint.x + ratio * ( saddlePoint.x - tipPoint.x ),
+        y,
         z
       );
     }
@@ -408,7 +410,10 @@ define( require => {
         // x,z
         const points = [
           new Vector2( BASE_START, maxZ ),
-          ...zValues.map( z => Bottle.getBasePoint( y, z ) ),
+          ...zValues.map( z => {
+            const basePoint = Bottle.getBasePoint( y, z );
+            return new Vector2( basePoint.x, basePoint.z );
+          } ),
           new Vector2( BASE_START, -maxZ )
         ];
 
@@ -673,6 +678,7 @@ define( require => {
       const radialSegments = 64;
       const cornerSegments = 6;
       const taperSegments = 30;
+      const baseSegments = 40;
 
       const positions = [];
       const normals = [];
@@ -744,7 +750,90 @@ define( require => {
         Math.PI, 0.5 * Math.PI, BASE_START, BODY_RADIUS, BODY_CORNER_RADIUS
       );
 
-      // TODO the base
+
+      const baseRValues = _.range( 1, baseSegments ).map( i => FULL_RADIUS * Math.pow( ( 1 - i / baseSegments ), 2 / 3 ) );
+
+      // {Array.<Array.<Vector3>>}
+      const baseMesh = _.range( 0, radialSegments ).map( i => {
+        const theta = 2 * Math.PI * i / radialSegments;
+
+        return [
+          new Vector3( BASE_START, FULL_RADIUS * Math.sin( theta ), FULL_RADIUS * Math.cos( theta ) ),
+          ...baseRValues.map( r => Bottle.getBasePoint( r * Math.sin( theta ), r * Math.cos( theta ) ) ),
+          new Vector3( BASE_SADDLE, 0, 0 )
+        ];
+      } );
+      const baseMeshNormals = baseMesh.map( ( positions, i ) => {
+        return positions.map( ( position, j ) => {
+          if ( j === 0 ) {
+            return new Vector3( 0, position.y, position.z ).normalize();
+          }
+          else if ( j === positions.length - 1 ) {
+            return Vector3.X_UNIT;
+          }
+          else {
+            const west = positions[ j - 1 ].minus( position );
+            const east = positions[ j + 1 ].minus( position );
+            const north = baseMesh[ Util.moduloBetweenDown( i - 1, 0, radialSegments ) ][ j ].minus( position );
+            const south = baseMesh[ Util.moduloBetweenDown( i + 1, 0, radialSegments ) ][ j ].minus( position );
+
+            // TODO: check sign
+            const cumulativeNormal = new Vector3( 0, 0, 0 );
+            cumulativeNormal.add( north.cross( east ).normalize() );
+            cumulativeNormal.add( east.cross( south ).normalize() );
+            cumulativeNormal.add( south.cross( west ).normalize() );
+            cumulativeNormal.add( west.cross( north ).normalize() );
+            cumulativeNormal.normalize();
+            return cumulativeNormal;
+          }
+        } );
+      } );
+
+      _.range( 0, radialSegments ).map( iRadial => {
+        _.range( 0, baseSegments ).map( iBase => {
+          const radial0 = iRadial;
+          const radial1 = Util.moduloBetweenDown( iRadial + 1, 0, radialSegments );
+          const base0 = iBase;
+          const base1 = iBase + 1;
+
+          const p0 = baseMesh[ radial0 ][ base0 ];
+          const p1 = baseMesh[ radial0 ][ base1 ];
+          const p2 = baseMesh[ radial1 ][ base1 ];
+          const p3 = baseMesh[ radial1 ][ base0 ];
+
+          const n0 = baseMeshNormals[ radial0 ][ base0 ];
+          const n1 = baseMeshNormals[ radial0 ][ base1 ];
+          const n2 = baseMeshNormals[ radial1 ][ base1 ];
+          const n3 = baseMeshNormals[ radial1 ][ base0 ];
+
+          positions.push(
+            p0.x, p0.y, p0.z,
+            p1.x, p1.y, p1.z,
+            p2.x, p2.y, p2.z,
+            p0.x, p0.y, p0.z,
+            p2.x, p2.y, p2.z,
+            p3.x, p3.y, p3.z
+          );
+
+          normals.push(
+            n0.x, n0.y, n0.z,
+            n1.x, n1.y, n1.z,
+            n2.x, n2.y, n2.z,
+            n0.x, n0.y, n0.z,
+            n2.x, n2.y, n2.z,
+            n3.x, n3.y, n3.z
+          );
+
+          uvs.push(
+            Bottle.xToU( p0.x ), Bottle.yToV( p0.y ),
+            Bottle.xToU( p1.x ), Bottle.yToV( p1.y ),
+            Bottle.xToU( p2.x ), Bottle.yToV( p2.y ),
+            Bottle.xToU( p0.x ), Bottle.yToV( p0.y ),
+            Bottle.xToU( p2.x ), Bottle.yToV( p2.y ),
+            Bottle.xToU( p3.x ), Bottle.yToV( p3.y )
+          );
+        } );
+      } );
 
       const bottleGeometry = new THREE.BufferGeometry();
       bottleGeometry.addAttribute( 'position', new THREE.BufferAttribute( new Float32Array( positions.map( p => p * TEN_LITER_SCALE_MULTIPLIER ) ), 3 ) );

@@ -28,9 +28,15 @@ define( require => {
       window.Bottle = Bottle;
 
       const mainBottleMesh = new THREE.Mesh( Bottle.getPrimaryGeometry(), new THREE.MeshLambertMaterial( {
-        color: 0xAAAAAA
+        color: 0xCCCCCC
       } ) );
-      mainBottleMesh.position.x = -0.3;
+      mainBottleMesh.add( new THREE.Mesh( Bottle.getCapGeometry(), new THREE.MeshLambertMaterial( {
+        color: 0xFF3333
+      } ) ) );
+      mainBottleMesh.position.x = -0.4;
+      mainBottleMesh.scale.x = 2;
+      mainBottleMesh.scale.y = 2;
+      mainBottleMesh.scale.z = 2;
       this.sceneNode.stage.threeScene.add( mainBottleMesh );
 
       this.addChild( this.popupLayer );

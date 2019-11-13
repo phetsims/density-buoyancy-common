@@ -207,6 +207,28 @@ define( require => {
     }
 
     /**
+     * @public
+     *
+     * @param {Array.<Vector2>} - Four points for a cubic
+     * @param {number} t
+     * @returns {Vector2}
+     */
+    static evaluateCubicDerivative( controlPoints, t ) {
+      const mt = 1 - t;
+
+      return new Vector2(
+        controlPoints[ 0 ].x * ( -3 * mt * mt ) +
+        controlPoints[ 1 ].x * ( 3 * mt * mt - 6 * mt * t ) +
+        controlPoints[ 2 ].x * ( 6 * mt * t - 3 * t * t ) +
+        controlPoints[ 3 ].x * ( 3 * t * t ),
+        controlPoints[ 0 ].y * ( -3 * mt * mt ) +
+        controlPoints[ 1 ].y * ( 3 * mt * mt - 6 * mt * t ) +
+        controlPoints[ 2 ].y * ( 6 * mt * t - 3 * t * t ) +
+        controlPoints[ 3 ].y * ( 3 * t * t )
+      );
+    }
+
+    /**
      * Given control points for a parametric cubic bezier, finds the parametric value for the curve that will have the
      * defined radius.
      * @public
@@ -233,6 +255,10 @@ define( require => {
 
     static getTaperParametricProfilePoint( t ) {
       return Bottle.evaluateCubic( TAPER_CONTROL_POINTS, t );
+    }
+
+    static getTaperParametricDerivative( t ) {
+      return Bottle.evaluateCubicDerivative( TAPER_CONTROL_POINTS, t );
     }
 
     static getBaseFirstTipParametricProfilePoint( t ) {
@@ -575,6 +601,229 @@ define( require => {
         ...Bottle.getCapProfile(),
         ...Bottle.getLipToBodyProfile()
       ];
+    }
+
+    static xToU( x ) {
+      return x / BASE_TIP;
+    }
+
+    // TODO: What is the most efficient to have the value of V?
+    static yToV( y ) {
+      return y / ( 2 * FULL_RADIUS ) + 0.5;
+    }
+
+    static quadRing( positions, normals, uvs, radialSegments, x0, r0, x1, r1, nx0, nr0, nx1, nr1 ) {
+      _.range( 0, radialSegments ).forEach( i => {
+        const theta0 = 2 * Math.PI * i / radialSegments;
+        const theta1 = 2 * Math.PI * ( i + 1 ) / radialSegments;
+
+        const sin0 = Math.sin( theta0 );
+        const sin1 = Math.sin( theta1 );
+        const cos0 = Math.cos( theta0 );
+        const cos1 = Math.cos( theta1 );
+
+        positions.push(
+          x0, r0 * sin0, r0 * cos0,
+          x1, r1 * sin0, r1 * cos0,
+          x1, r1 * sin1, r1 * cos1,
+          x0, r0 * sin0, r0 * cos0,
+          x1, r1 * sin1, r1 * cos1,
+          x0, r0 * sin1, r0 * cos1
+        );
+
+        normals.push(
+          nx0, nr0 * sin0, nr0 * cos0,
+          nx1, nr1 * sin0, nr1 * cos0,
+          nx1, nr1 * sin1, nr1 * cos1,
+          nx0, nr0 * sin0, nr0 * cos0,
+          nx1, nr1 * sin1, nr1 * cos1,
+          nx0, nr0 * sin1, nr0 * cos1
+        );
+
+        uvs.push(
+          Bottle.xToU( x0 ), Bottle.yToV( r0 * sin0 ),
+          Bottle.xToU( x1 ), Bottle.yToV( r1 * sin0 ),
+          Bottle.xToU( x1 ), Bottle.yToV( r1 * sin1 ),
+          Bottle.xToU( x0 ), Bottle.yToV( r0 * sin0 ),
+          Bottle.xToU( x1 ), Bottle.yToV( r1 * sin1 ),
+          Bottle.xToU( x0 ), Bottle.yToV( r0 * sin1 )
+        );
+      } );
+    }
+
+    static roundedCornerRing( positions, normals, uvs, radialSegments, cornerSegments, startTheta, endTheta, x, r, cornerRadius ) {
+      _.range( 0, cornerSegments ).forEach( i => {
+        const theta0 = startTheta + ( i / cornerSegments ) * ( endTheta - startTheta );
+        const theta1 = startTheta + ( ( i + 1 ) / cornerSegments ) * ( endTheta - startTheta );
+
+        const nx0 = Math.cos( theta0 );
+        const nr0 = Math.sin( theta0 );
+        const nx1 = Math.cos( theta1 );
+        const nr1 = Math.sin( theta1 );
+        const x0 = x + cornerRadius * nx0;
+        const r0 = r + cornerRadius * nr0;
+        const x1 = x + cornerRadius * nx1;
+        const r1 = r + cornerRadius * nr1;
+
+        Bottle.quadRing( positions, normals, uvs, radialSegments, x0, r0, x1, r1, nx0, nr0, nx1, nr1 );
+      } );
+    }
+
+    static getPrimaryGeometry() {
+      const radialSegments = 64;
+      const cornerSegments = 6;
+      const taperSegments = 30;
+
+      const positions = [];
+      const normals = [];
+      const uvs = []; // x / CAP_LENGTH, theta/2pi (approximately) in case we want to texture the cap
+
+      // the under-cap portion
+      Bottle.quadRing(
+        positions, normals, uvs, radialSegments,
+        CAP_CORNER_RADIUS, NECK_RADIUS,
+        LIP_START, NECK_RADIUS,
+        0, 1,
+        0, 1
+      );
+
+      // top surface of the lip
+      Bottle.quadRing(
+        positions, normals, uvs, radialSegments,
+        LIP_START, NECK_RADIUS,
+        LIP_START, LIP_RADIUS - LIP_CORNER_RADIUS
+        -1, 0,
+        -1, 0
+      );
+
+      // lip corner
+      Bottle.roundedCornerRing(
+        positions, normals, uvs, radialSegments, 2 * cornerSegments,
+        Math.PI, 0, LIP_START + LIP_CORNER_RADIUS, LIP_RADIUS - LIP_CORNER_RADIUS, LIP_CORNER_RADIUS
+      );
+
+      // bottom surface of the lip
+      Bottle.quadRing(
+        positions, normals, uvs, radialSegments,
+        LIP_END, LIP_RADIUS - LIP_CORNER_RADIUS,
+        LIP_END, NECK_RADIUS,
+        1, 0,
+        1, 0
+      );
+
+      const bottlePoints = _.range( 0, taperSegments + 1 ).map( i => Bottle.getTaperParametricProfilePoint( i / taperSegments ) );
+      const bottleTangents = _.range( 0, taperSegments + 1 ).map( i => Bottle.getTaperParametricDerivative( i / taperSegments ).normalized() );
+      _.range( 0, taperSegments ).forEach( i => {
+        Bottle.quadRing(
+          positions, normals, uvs, radialSegments,
+          bottlePoints[ i ].x, bottlePoints[ i ].y,
+          bottlePoints[ i + 1 ].x, bottlePoints[ i + 1 ].y,
+          -bottleTangents[ i ].y, bottleTangents[ i ].x,
+          -bottleTangents[ i + 1 ].y, bottleTangents[ i + 1 ].x
+        );
+      } );
+
+      // body start corner
+      Bottle.roundedCornerRing(
+        positions, normals, uvs, radialSegments, cornerSegments,
+        0.5 * Math.PI, 0, TAPER_END, BODY_RADIUS, BODY_CORNER_RADIUS
+      );
+
+      // the under-cap portion
+      Bottle.quadRing(
+        positions, normals, uvs, radialSegments,
+        BODY_START, BODY_RADIUS,
+        BODY_END, BODY_RADIUS,
+        0, 1,
+        0, 1
+      );
+
+      // body end corner
+      Bottle.roundedCornerRing(
+        positions, normals, uvs, radialSegments, cornerSegments,
+        Math.PI, 0.5 * Math.PI, BASE_START, BODY_RADIUS, BODY_CORNER_RADIUS
+      );
+
+      // TODO the base
+
+      const bottleGeometry = new THREE.BufferGeometry();
+      bottleGeometry.addAttribute( 'position', new THREE.BufferAttribute( new Float32Array( positions.map( p => p * TEN_LITER_SCALE_MULTIPLIER ) ), 3 ) );
+      bottleGeometry.addAttribute( 'normal', new THREE.BufferAttribute( new Float32Array( normals ), 3 ) );
+      bottleGeometry.addAttribute( 'uv', new THREE.BufferAttribute( new Float32Array( uvs ), 2 ) );
+      return bottleGeometry;
+    }
+
+    /**
+     * Returns the model-coordinate THREE.BufferGeometry representing the bottle cap.
+     * @public
+     *
+     * @returns {THREE.BufferGeometry}
+     */
+    static getCapGeometry() {
+      const radialSegments = 64;
+      const cornerSegments = 6;
+
+      const positions = [];
+      const normals = [];
+      const uvs = []; // x / CAP_LENGTH, theta/2pi (approximately) in case we want to texture the cap
+
+      // The top of the cap
+      _.range( 0, radialSegments ).forEach( i => {
+        const theta0 = 2 * Math.PI * i / radialSegments;
+        const theta1 = 2 * Math.PI * ( i + 1 ) / radialSegments;
+
+        const y0 = ( CAP_RADIUS - CAP_CORNER_RADIUS ) * Math.sin( theta0 );
+        const y1 = ( CAP_RADIUS - CAP_CORNER_RADIUS ) * Math.sin( theta1 );
+        const z0 = ( CAP_RADIUS - CAP_CORNER_RADIUS ) * Math.cos( theta0 );
+        const z1 = ( CAP_RADIUS - CAP_CORNER_RADIUS ) * Math.cos( theta1 );
+
+        // triangle fan for the top of the cap
+        positions.push(
+          0, 0, 0,
+          0, y0, z0,
+          0, y1, z1
+        );
+        normals.push(
+          -1, 0, 0,
+          -1, 0, 0,
+          -1, 0, 0
+        );
+        uvs.push(
+          0, 0,
+          0, Bottle.yToV( y0 ),
+          0, Bottle.yToV( y1 )
+        );
+      } );
+
+      // corner
+      Bottle.roundedCornerRing(
+        positions, normals, uvs, radialSegments, cornerSegments,
+        Math.PI, 0.5 * Math.PI, CAP_CORNER_RADIUS, CAP_RADIUS - CAP_CORNER_RADIUS, CAP_CORNER_RADIUS
+      );
+
+      // main outside face
+      Bottle.quadRing(
+        positions, normals, uvs, radialSegments,
+        CAP_CORNER_RADIUS, CAP_RADIUS,
+        CAP_CORNER_RADIUS + CAP_BODY_LENGTH, CAP_RADIUS,
+        0, 1,
+        0, 1
+      );
+
+      // lip underneath
+      Bottle.quadRing(
+        positions, normals, uvs, radialSegments,
+        CAP_CORNER_RADIUS + CAP_BODY_LENGTH, CAP_RADIUS,
+        CAP_CORNER_RADIUS + CAP_BODY_LENGTH, NECK_RADIUS,
+        1, 0,
+        1, 0
+      );
+
+      const capGeometry = new THREE.BufferGeometry();
+      capGeometry.addAttribute( 'position', new THREE.BufferAttribute( new Float32Array( positions.map( p => p * TEN_LITER_SCALE_MULTIPLIER ) ), 3 ) );
+      capGeometry.addAttribute( 'normal', new THREE.BufferAttribute( new Float32Array( normals ), 3 ) );
+      capGeometry.addAttribute( 'uv', new THREE.BufferAttribute( new Float32Array( uvs ), 2 ) );
+      return capGeometry;
     }
 
     static getDebugCanvas() {

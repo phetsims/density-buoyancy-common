@@ -25,8 +25,12 @@ define( require => {
         return this;
       }
 
-      // TODO remove
       window.Bottle = Bottle;
+
+      const mainBottleMesh = new THREE.Mesh( Bottle.getPrimaryGeometry(), new THREE.MeshLambertMaterial( {
+        color: 0xAAAAAA
+      } ) );
+      this.sceneNode.stage.threeScene.add( mainBottleMesh );
 
       this.addChild( this.popupLayer );
     }

@@ -108,8 +108,8 @@ define( require => {
       // @protected {Node}
       this.popupLayer = new Node();
 
-      // @protected {Property.<Mass>} - Support controlling or changing the latest-touched mass in certain demos.
-      this.currentMassProperty = new Property( model.masses.get( 0 ) );
+      // @protected {Property.<Mass|null>} - Support controlling or changing the latest-touched mass in certain demos.
+      this.currentMassProperty = new Property( model.masses.length > 0 ? model.masses.get( 0 ) : null );
 
       // @private {Rectangle} - The sky background, in a unit 0-to-1 rectangle (so we can scale it to match)
       this.backgroundNode = new Rectangle( 0, 0, 1, 1, {

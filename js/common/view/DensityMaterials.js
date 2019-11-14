@@ -150,6 +150,32 @@ define( require => {
     }
   }
 
+  class PlasticMaterialView extends CameraMaterialView {
+    constructor() {
+      super();
+
+      const texture = this.getTexture();
+
+      texture.mapping = THREE.CubeRefractionMapping;
+      texture.needsUpdate = true;
+
+      this.material = new THREE.MeshPhysicalMaterial( {
+        color: 0xff0000,
+        opacity: 0.5,
+        roughness: 0.1,
+        refractionRatio: 1 / 1.309,
+        metalness: 0.1,
+        clearCoat: 1,
+        reflectivity: 1,
+        envMap: texture,
+        envMapIntensity: 2, // is this too much cheating?
+
+        transparent: true,
+        side: THREE.DoubleSide
+      } );
+    }
+  }
+
   // We just use aluminum
   class PlatinumMaterialView extends CameraMaterialView {
     constructor() {
@@ -291,6 +317,10 @@ define( require => {
       else {
         return new DebugMaterialView();
       }
+    }
+
+    static getBottleMaterialView() {
+      return new PlasticMaterialView();
     }
   }
 

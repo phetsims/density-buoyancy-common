@@ -14,36 +14,80 @@ define( require => {
   class BottleView extends MassView {
     /**
      * @param {Bottle} bottle
+     * @param {Property.<number>} liquidYProperty
      */
-    constructor( bottle ) {
+    constructor( bottle, liquidYProperty ) {
 
       const primaryGeometry = Bottle.getPrimaryGeometry();
       // const capGeometry = Bottle.getCapGeometry();
 
       super( bottle, new THREE.Geometry() );
 
-      this.add( new THREE.Mesh( primaryGeometry, new THREE.MeshPhongMaterial( {
-        color: 0xcccccc
-      } ) ) );
+      const bottomClipPlane = new THREE.Plane( new THREE.Vector3( 0, -1, 0 ), 0 );
+      const topClipPlane = new THREE.Plane( new THREE.Vector3( 0, 1, 0 ), 0 );
+
+      liquidYProperty.link( y => {
+        bottomClipPlane.constant = y;
+        topClipPlane.constant = -y;
+      } );
 
       // this.add( new THREE.Mesh( primaryGeometry, new THREE.MeshPhongMaterial( {
-      //   color: 0xffffff,
-      //   opacity: 0.4,
-      //   transparent: true,
-      //   side: THREE.BackSide,
-      //   depthWrite: false
-      // } ), {
-      //   renderOrder: 1
-      // } ) );
+      //   color: 0xcccccc,
+      //   clippingPlanes: [ bottomClipPlane ]
+      // } ) ) );
+
       // this.add( new THREE.Mesh( primaryGeometry, new THREE.MeshPhongMaterial( {
-      //   color: 0xffffff,
-      //   opacity: 0.4,
-      //   transparent: true,
-      //   side: THREE.FrontSide,
-      //   depthWrite: false
-      // } ), {
-      //   renderOrder: 2
-      // } ) );
+      //   color: 0x888888,
+      //   clippingPlanes: [ topClipPlane ]
+      // } ) ) );
+
+      // Back top
+      this.add( new THREE.Mesh( primaryGeometry, new THREE.MeshPhongMaterial( {
+        color: 0xffffff,
+        opacity: 0.4,
+        transparent: true,
+        side: THREE.BackSide,
+        // depthWrite: false,
+        clippingPlanes: [ topClipPlane ]
+      } ), {
+        renderOrder: 1
+      } ) );
+
+      // Back bottom
+      this.add( new THREE.Mesh( primaryGeometry, new THREE.MeshPhongMaterial( {
+        color: 0xffffff,
+        opacity: 0.4,
+        transparent: true,
+        side: THREE.BackSide,
+        // depthWrite: false,
+        clippingPlanes: [ bottomClipPlane ]
+      } ), {
+        renderOrder: 2
+      } ) );
+
+      // Front top
+      this.add( new THREE.Mesh( primaryGeometry, new THREE.MeshPhongMaterial( {
+        color: 0xffffff,
+        opacity: 0.4,
+        transparent: true,
+        side: THREE.FrontSide,
+        // depthWrite: false,
+        clippingPlanes: [ topClipPlane ]
+      } ), {
+        renderOrder: 3
+      } ) );
+
+      // Front bottom
+      this.add( new THREE.Mesh( primaryGeometry, new THREE.MeshPhongMaterial( {
+        color: 0xffffff,
+        opacity: 0.4,
+        transparent: true,
+        side: THREE.FrontSide,
+        // depthWrite: false,
+        clippingPlanes: [ bottomClipPlane ]
+      } ), {
+        renderOrder: 4
+      } ) );
 
       this.add( new THREE.Mesh( Bottle.getCapGeometry(), new THREE.MeshLambertMaterial( {
         color: 0xFF3333

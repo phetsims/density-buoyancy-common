@@ -499,7 +499,7 @@ define( require => {
           massView = new VerticalCylinderView( mass );
         }
         else if ( mass instanceof Bottle ) {
-          massView = new BottleView( mass );
+          massView = new BottleView( mass, model.liquidYProperty );
         }
 
         if ( massView ) {

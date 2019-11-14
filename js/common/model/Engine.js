@@ -333,24 +333,24 @@ define( require => {
     }
 
     /**
-     * Creates a (dynamic) boat body, with the origin at the center of the box.
+     * Creates a (dynamic) body, with the origin at the centroid.
      * @public
      *
      * @param {Array.<Vector2>} vertices
      * @returns {Engine.Body}
      */
-    createBoat( vertices ) {
+    createFromVertices( vertices ) {
       throw new Error( 'unimplemented' );
     }
 
     /**
-     * Updates the vertices of a boat body
+     * Updates the vertices of a dynamic vertex-based body.
      * @public
      *
      * @param {Engine.Body}
      * @param {Array.<Vector2>} vertices
      */
-    updateBoat( body, vertices ) {
+    updateFromVertices( body, vertices ) {
       throw new Error( 'unimplemented' );
     }
 

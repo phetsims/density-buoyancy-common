@@ -67,7 +67,7 @@ define( require => {
       ];
 
       config = merge( {
-        body: engine.createBoat( boatVertices ),
+        body: engine.createFromVertices( boatVertices ),
         shape: Shape.polygon( boatVertices ),
         volume: volume,
         canRotate: false

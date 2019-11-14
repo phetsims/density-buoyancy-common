@@ -27,8 +27,6 @@ define( require => {
         return this;
       }
 
-      window.Bottle = Bottle;
-
       // const offsetMaterial = new THREE.MeshLambertMaterial( {
       //   color: 0xcccccc,
       //   polygonOffset: true,

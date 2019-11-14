@@ -517,33 +517,33 @@ define( require => {
     }
 
     /**
-     * Creates a (dynamic) boat body, with the origin at the center of the box.
+     * Creates a (dynamic) body, with the origin at the centroid.
      * @public
      * @override
      *
      * @param {Array.<Vector2>} vertices
      * @returns {Engine.Body}
      */
-    createBoat( vertices ) {
+    createFromVertices( vertices ) {
       const body = new p2.Body( {
         type: p2.Body.DYNAMIC,
         fixedRotation: true
       } );
 
-      this.updateBoat( body, vertices );
+      this.updateFromVertices( body, vertices );
 
       return body;
     }
 
     /**
-     * Updates the vertices of a boat body
+     * Updates the vertices of a dynamic vertex-based body.
      * @public
      * @override
      *
      * @param {Engine.Body}
      * @param {Array.<Vector2>} vertices
      */
-    updateBoat( body, vertices ) {
+    updateFromVertices( body, vertices ) {
       P2Engine.removeShapes( body );
 
       body.fromPolygon( vertices.map( v => p2.vec2.fromValues( v.x * SCALE, v.y * SCALE ) ) );

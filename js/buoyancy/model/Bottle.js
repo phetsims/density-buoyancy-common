@@ -15,6 +15,7 @@ define( require => {
   const NumberProperty = require( 'AXON/NumberProperty' );
   const Property = require( 'AXON/Property' );
   const Shape = require( 'KITE/Shape' );
+  const ThreeUtil = require( 'MOBIUS/ThreeUtil' );
   const Util = require( 'DOT/Util' );
   const Vector2 = require( 'DOT/Vector2' );
   const Vector3 = require( 'DOT/Vector3' );
@@ -135,6 +136,15 @@ define( require => {
           density: ( BOTTLE_MASS + material.density * volume ) / BOTTLE_VOLUME
         } );
       } );
+
+      // @public {THREE.BufferGeometry}
+      this.primaryGeometry = Bottle.getPrimaryGeometry();
+      this.capGeometry = Bottle.getCapGeometry();
+
+      // @public {THREE.Group}
+      this.intersectionGroup = new THREE.Group();
+      this.intersectionGroup.add( new THREE.Mesh( this.primaryGeometry, new THREE.MeshLambertMaterial() ) );
+      this.intersectionGroup.add( new THREE.Mesh( this.capGeometry, new THREE.MeshLambertMaterial() ) );
     }
 
     updateStepInformation() {
@@ -160,9 +170,14 @@ define( require => {
      * @returns {number|null}
      */
     intersect( ray, isTouch ) {
+      const translation = this.matrix.translation;
+      const adjustedPosition = ray.position.minusXYZ( translation.x, translation.y, 0 );
 
-      // TODO
-      return null;
+      const raycaster = new THREE.Raycaster( ThreeUtil.vectorToThree( adjustedPosition ), ThreeUtil.vectorToThree( ray.direction ) );
+      const intersections = [];
+      raycaster.intersectObject( this.intersectionGroup, true, intersections );
+
+      return intersections.length ? intersections[ 0 ].distance : null;
     }
 
     /**

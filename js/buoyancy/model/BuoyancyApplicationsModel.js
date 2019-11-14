@@ -7,8 +7,11 @@ define( require => {
   'use strict';
 
   // modules
+  const Bottle = require( 'DENSITY_BUOYANCY_COMMON/buoyancy/model/Bottle' );
   const densityBuoyancyCommon = require( 'DENSITY_BUOYANCY_COMMON/densityBuoyancyCommon' );
   const DensityBuoyancyModel = require( 'DENSITY_BUOYANCY_COMMON/common/model/DensityBuoyancyModel' );
+  const Matrix3 = require( 'DOT/Matrix3' );
+  const Scale = require( 'DENSITY_BUOYANCY_COMMON/common/model/Scale' );
 
   class BuoyancyApplicationsModel extends DensityBuoyancyModel {
     /**
@@ -17,6 +20,15 @@ define( require => {
     constructor( tandem ) {
 
       super( tandem );
+
+      this.masses.push( new Bottle( this.engine, {
+        matrix: Matrix3.translation( 0, 0 )
+      } ) );
+
+      this.masses.push( new Scale( this.engine, {
+        matrix: Matrix3.translation( -0.8, -Scale.SCALE_BASE_BOUNDS.minY ),
+        displayType: Scale.DisplayType.NEWTONS
+      } ) );
     }
 
     /**

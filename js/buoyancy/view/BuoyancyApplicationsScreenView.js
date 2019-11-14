@@ -86,7 +86,7 @@ define( require => {
       //   lineWidth: 2
       // } ) ) );
 
-      // group.position.x = -0.4;
+      group.position.y = 0.2;
       // group.scale.x = 2;
       // group.scale.y = 2;
       // group.scale.z = 2;

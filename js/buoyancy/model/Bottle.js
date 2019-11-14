@@ -7,6 +7,7 @@ define( require => {
   'use strict';
 
   // modules
+  const Bounds2 = require( 'DOT/Bounds2' );
   const densityBuoyancyCommon = require( 'DENSITY_BUOYANCY_COMMON/densityBuoyancyCommon' );
   const Mass = require( 'DENSITY_BUOYANCY_COMMON/common/model/Mass' );
   const Material = require( 'DENSITY_BUOYANCY_COMMON/common/model/Material' );
@@ -90,6 +91,12 @@ define( require => {
   // {number} - in m^3, 10L bottle
   const BOTTLE_VOLUME = 0.01;
 
+  // {number} - m^3
+  const BOTTLE_INITIAL_INTERIOR_VOLUME = 0.004;
+
+  // {Material}
+  const BOTTLE_INITIAL_INTERIOR_MATERIAL = Material.WATER;
+
   class Bottle extends Mass {
     /**
      * @param {Engine} engine
@@ -100,47 +107,45 @@ define( require => {
       const vertices = Bottle.getFlatIntersectionVertices();
 
       config = merge( {
-        body: engine.createBottle( vertices ),
+        body: engine.createFromVertices( vertices ),
         shape: Shape.polygon( vertices ),
         volume: BOTTLE_VOLUME,
-        canRotate: false
-
-        // material
+        canRotate: false,
+        material: Material.createCustomMaterial( {
+          density: ( BOTTLE_MASS + BOTTLE_INITIAL_INTERIOR_MATERIAL.density * BOTTLE_INITIAL_INTERIOR_VOLUME ) / BOTTLE_VOLUME
+        } )
       }, config );
 
       assert && assert( !config.canRotate );
 
       super( engine, config );
 
+      // @private {Bounds2} - model-coordinate bounds in x,y
+      this.bottleBounds = Bounds2.NOTHING.copy();
+      Bottle.getFlatIntersectionVertices().forEach( p => this.bottleBounds.addPoint( p ) );
+
       // @public {Property.<Material>}
-      this.interiorMaterialProperty = new Property( Material.WATER );
+      this.interiorMaterialProperty = new Property( BOTTLE_INITIAL_INTERIOR_MATERIAL );
 
       // @public {Property.<number>}
-      this.interiorVolumeProperty = new NumberProperty( 0.004 );
+      this.interiorVolumeProperty = new NumberProperty( BOTTLE_INITIAL_INTERIOR_VOLUME );
 
       Property.multilink( [ this.interiorMaterialProperty, this.interiorVolumeProperty ], ( material, volume ) => {
         this.materialProperty.value = Material.createCustomMaterial( {
           density: ( BOTTLE_MASS + material.density * volume ) / BOTTLE_VOLUME
         } );
       } );
-
-      // Step information
-      this.stepArea = 0;
-      this.stepMaximumVolume = 0;
     }
 
     updateStepInformation() {
-      // this.engine.bodyGetStepMatrixTransform( this.body, this.stepMatrix );
+      this.engine.bodyGetStepMatrixTransform( this.body, this.stepMatrix );
 
-      // const xOffset = this.stepMatrix.m02();
-      // const yOffset = this.stepMatrix.m12();
+      const xOffset = this.stepMatrix.m02();
+      const yOffset = this.stepMatrix.m12();
 
-      // this.stepX = xOffset;
-      // this.stepBottom = yOffset + this.sizeProperty.value.minY;
-      // this.stepTop = yOffset + this.sizeProperty.value.maxY;
-
-      // this.stepArea = this.sizeProperty.value.width * this.sizeProperty.value.depth;
-      // this.stepMaximumVolume = this.stepArea * this.sizeProperty.value.height;
+      this.stepX = xOffset;
+      this.stepBottom = yOffset + this.bottleBounds.minY;
+      this.stepTop = yOffset + this.bottleBounds.maxY;
     }
 
     /**
@@ -174,9 +179,13 @@ define( require => {
       const bottom = this.stepBottom;
       const top = this.stepTop;
 
+      if ( liquidLevel < bottom || liquidLevel > top ) {
+        return 0;
+      }
+
       const ratio = ( liquidLevel - bottom ) / ( top - bottom );
 
-      return 0 * ratio; // TODO
+      return Bottle.evaluatePiecewiseLinear( TEN_LITER_DISPLACED_AREAS, ratio );
     }
 
     /**
@@ -193,9 +202,17 @@ define( require => {
       const bottom = this.stepBottom;
       const top = this.stepTop;
 
-      const ratio = ( liquidLevel - bottom ) / ( top - bottom );
+      if ( liquidLevel <= bottom ) {
+        return 0;
+      }
+      else if ( liquidLevel >= top ) {
+        return BOTTLE_VOLUME;
+      }
+      else {
+        const ratio = ( liquidLevel - bottom ) / ( top - bottom );
 
-      return 0 * ratio; // TODO
+        return Bottle.evaluatePiecewiseLinear( TEN_LITER_DISPLACED_VOLUMES, ratio );
+      }
     }
 
     reset() {
@@ -203,6 +220,18 @@ define( require => {
       this.interiorVolumeProperty.reset();
 
       super.reset();
+    }
+
+    static evaluatePiecewiseLinear( values, ratio ) {
+      const logicalIndex = ratio * values.length;
+      if ( logicalIndex % 1 === 0 ) {
+        return values[ logicalIndex ];
+      }
+      else {
+        const a = values[ Math.floor( logicalIndex ) ];
+        const b = values[ Math.ceil( logicalIndex ) ];
+        return Util.linear( Math.floor( logicalIndex ), Math.ceil( logicalIndex ), a, b, logicalIndex );
+      }
     }
 
     /**

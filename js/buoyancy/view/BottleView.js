@@ -20,7 +20,34 @@ define( require => {
       const primaryGeometry = Bottle.getPrimaryGeometry();
       // const capGeometry = Bottle.getCapGeometry();
 
-      super( bottle, primaryGeometry );
+      super( bottle, new THREE.Geometry() );
+
+      this.add( new THREE.Mesh( primaryGeometry, new THREE.MeshPhongMaterial( {
+        color: 0xcccccc
+      } ) ) );
+
+      // this.add( new THREE.Mesh( primaryGeometry, new THREE.MeshPhongMaterial( {
+      //   color: 0xffffff,
+      //   opacity: 0.4,
+      //   transparent: true,
+      //   side: THREE.BackSide,
+      //   depthWrite: false
+      // } ), {
+      //   renderOrder: 1
+      // } ) );
+      // this.add( new THREE.Mesh( primaryGeometry, new THREE.MeshPhongMaterial( {
+      //   color: 0xffffff,
+      //   opacity: 0.4,
+      //   transparent: true,
+      //   side: THREE.FrontSide,
+      //   depthWrite: false
+      // } ), {
+      //   renderOrder: 2
+      // } ) );
+
+      this.add( new THREE.Mesh( Bottle.getCapGeometry(), new THREE.MeshLambertMaterial( {
+        color: 0xFF3333
+      } ) ) );
 
       // @public {Bottle}
       this.bottle = bottle;

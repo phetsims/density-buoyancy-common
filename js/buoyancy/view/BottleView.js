@@ -68,19 +68,30 @@ define( require => {
         opacity: 0.8,
         transparent: true,
         side: THREE.FrontSide,
-        depthWrite: false,
+        // depthWrite: false, // TODO: hmmm?
         clippingPlanes: [ bottomClipPlane ]
       } );
       const frontBottom = new THREE.Mesh( primaryGeometry, frontBottomMaterial );
       this.add( frontBottom );
 
-      const frontForDepth = new THREE.Mesh( primaryGeometry, new THREE.MeshPhongMaterial( {
+      // TODO: optimize
+      const frontBottomForDepth = new THREE.Mesh( primaryGeometry, new THREE.MeshPhongMaterial( {
         color: 0xFF0000,
         opacity: 0,
         transparent: true,
-        side: THREE.FrontSide
+        side: THREE.FrontSide,
+        clippingPlanes: [ bottomClipPlane ]
       } ) );
-      this.add( frontForDepth );
+      this.add( frontBottomForDepth );
+
+      const frontTopForDepth = new THREE.Mesh( primaryGeometry, new THREE.MeshPhongMaterial( {
+        color: 0xFF0000,
+        opacity: 0,
+        transparent: true,
+        side: THREE.FrontSide,
+        clippingPlanes: [ topClipPlane ]
+      } ) );
+      this.add( frontTopForDepth );
 
       const cap = new THREE.Mesh( Bottle.getCapGeometry(), new THREE.MeshLambertMaterial( {
         color: 0xFF3333
@@ -129,11 +140,13 @@ define( require => {
 
       this.add( interiorSurface );
 
-      backTop.renderOrder = -5;
-      backBottom.renderOrder = -4;
-      frontBottom.renderOrder = -3;
-      interiorSurface.renderOrder = -2;
-      frontTop.renderOrder = -1;
+      backTop.renderOrder = -7;
+      backBottom.renderOrder = -6;
+      frontBottom.renderOrder = -5;
+      frontBottomForDepth.renderOrder = -4;
+      interiorSurface.renderOrder = -3;
+      frontTop.renderOrder = -2;
+      frontTopForDepth.renderOrder = -1;
 
       bottle.interiorMaterialProperty.link( material => {
         let color = 0xffffff;

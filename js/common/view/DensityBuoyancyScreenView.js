@@ -214,12 +214,16 @@ define( require => {
         }
       } );
 
-      const ambientLight = new THREE.AmbientLight( 0x555555 );
+      const ambientLight = new THREE.AmbientLight( 0x333333 );
       this.sceneNode.stage.threeScene.add( ambientLight );
 
       const sunLight = new THREE.DirectionalLight( 0xffffff, 1 );
       sunLight.position.set( -1, 1.5, 0.8 );
       this.sceneNode.stage.threeScene.add( sunLight );
+
+      const moonLight = new THREE.DirectionalLight( 0xffffff, 0.2 );
+      moonLight.position.set( 2.0, -1.0, 1.0 );
+      this.sceneNode.stage.threeScene.add( moonLight );
 
       // Front ground
       const frontGeometry = new THREE.BufferGeometry();

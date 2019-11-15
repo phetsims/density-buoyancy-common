@@ -93,8 +93,9 @@ define( require => {
       } ) );
       this.add( frontTopForDepth );
 
-      const cap = new THREE.Mesh( Bottle.getCapGeometry(), new THREE.MeshLambertMaterial( {
-        color: 0xFF3333
+      const cap = new THREE.Mesh( Bottle.getCapGeometry(), new THREE.MeshPhongMaterial( {
+        color: 0xFF3333,
+        side: THREE.DoubleSide
       } ) );
       this.add( cap );
 

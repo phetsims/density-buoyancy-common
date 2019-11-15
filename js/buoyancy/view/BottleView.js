@@ -93,6 +93,29 @@ define( require => {
         color: 0xFF3333
       } ) ) );
 
+      const crossSectionPositionArray = Bottle.createCrossSectionVertexArray();
+      const crossSectionNormalArray = new Float32Array( crossSectionPositionArray.length );
+      for ( let i = 1; i < crossSectionNormalArray.length; i += 3 ) {
+        crossSectionNormalArray[ i ] = 1; // normals should all be 0,1,0
+      }
+
+      const interiorSurfaceGeometry = new THREE.BufferGeometry();
+      interiorSurfaceGeometry.addAttribute( 'position', new THREE.BufferAttribute( crossSectionPositionArray, 3 ) );
+      interiorSurfaceGeometry.addAttribute( 'normal', new THREE.BufferAttribute( crossSectionNormalArray, 3 ) );
+
+      const setCrossSectionRelativeY = y => {
+        Bottle.fillCrossSectionVertexArray( y, crossSectionPositionArray );
+        interiorSurfaceGeometry.attributes.position.needsUpdate = true;
+        interiorSurfaceGeometry.computeBoundingSphere();
+      };
+      setCrossSectionRelativeY( 0 );
+
+      const interiorSurface = new THREE.Mesh( interiorSurfaceGeometry, new THREE.MeshLambertMaterial( {
+        color: 0x33FF33
+      } ) );
+
+      this.add( interiorSurface );
+
       // @public {Bottle}
       this.bottle = bottle;
     }

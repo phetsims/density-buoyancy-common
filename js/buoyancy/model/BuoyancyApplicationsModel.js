@@ -21,9 +21,12 @@ define( require => {
 
       super( tandem );
 
-      this.masses.push( new Bottle( this.engine, {
+      // @public {Bottle}
+      this.bottle = new Bottle( this.engine, {
         matrix: Matrix3.translation( 0, 0 )
-      } ) );
+      } );
+
+      this.masses.push( this.bottle );
 
       this.masses.push( new Scale( this.engine, {
         matrix: Matrix3.translation( -0.8, -Scale.SCALE_BASE_BOUNDS.minY ),

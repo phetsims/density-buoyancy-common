@@ -9,6 +9,7 @@ define( require => {
   // modules
   const Bounds2 = require( 'DOT/Bounds2' );
   const densityBuoyancyCommon = require( 'DENSITY_BUOYANCY_COMMON/densityBuoyancyCommon' );
+  const DerivedProperty = require( 'AXON/DerivedProperty' );
   const Mass = require( 'DENSITY_BUOYANCY_COMMON/common/model/Mass' );
   const Material = require( 'DENSITY_BUOYANCY_COMMON/common/model/Material' );
   const merge = require( 'PHET_CORE/merge' );
@@ -133,6 +134,11 @@ define( require => {
 
       // @public {Property.<number>}
       this.interiorVolumeProperty = new NumberProperty( BOTTLE_INITIAL_INTERIOR_VOLUME );
+
+      // @public {Property.<number>} - In kg (kilograms)
+      this.interiorMassProperty = new DerivedProperty( [ this.interiorMaterialProperty, this.interiorVolumeProperty ], ( material, volume ) => {
+        return material.density * volume;
+      } );
 
       Property.multilink( [ this.interiorMaterialProperty, this.interiorVolumeProperty ], ( material, volume ) => {
         this.materialProperty.value = Material.createCustomMaterial( {

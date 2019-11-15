@@ -108,7 +108,10 @@ define( require => {
         interiorSurfaceGeometry.attributes.position.needsUpdate = true;
         interiorSurfaceGeometry.computeBoundingSphere();
       };
-      setCrossSectionRelativeY( 0 );
+      // TODO: unlink
+      bottle.interiorVolumeProperty.link( volume => {
+        setCrossSectionRelativeY( Bottle.getYFromVolume( volume ) );
+      } );
 
       const interiorSurface = new THREE.Mesh( interiorSurfaceGeometry, new THREE.MeshLambertMaterial( {
         color: 0x33FF33
@@ -126,6 +129,8 @@ define( require => {
      * @override
      */
     dispose() {
+      // TODO: hook up disposal
+
       super.dispose();
     }
   }

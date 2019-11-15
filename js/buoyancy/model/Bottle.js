@@ -387,6 +387,31 @@ define( require => {
       );
     }
 
+    static getYFromVolume( volume ) {
+      const min = -FULL_RADIUS * TEN_LITER_SCALE_MULTIPLIER;
+      const max = FULL_RADIUS * TEN_LITER_SCALE_MULTIPLIER;
+
+      if ( volume <= 0 ) {
+        return min;
+      }
+      else if ( volume >= BOTTLE_VOLUME ) {
+        return max;
+      }
+      else {
+        for ( let i = 1; i < TEN_LITER_DISPLACED_VOLUMES.length; i++ ) {
+          if ( volume < TEN_LITER_DISPLACED_VOLUMES[ i ] ) {
+            const ratio = Util.linear(
+              TEN_LITER_DISPLACED_VOLUMES[ i - 1 ],
+              TEN_LITER_DISPLACED_VOLUMES[ i ],
+              ( i - 1 ) / ( TEN_LITER_DISPLACED_VOLUMES.length - 1 ),
+              i / ( TEN_LITER_DISPLACED_VOLUMES.length - 1 ),
+              volume );
+            return min + ( max - min ) * ratio;
+          }
+        }
+      }
+    }
+
     static getMainBottleCrossSectionTriangles( y, precisionMultiplier = 1 ) {
       const triangles = [];
       const absY = Math.abs( y );

@@ -242,7 +242,7 @@ define( require => {
     constructor( density ) {
       super();
 
-      const lightness = Util.roundSymmetric( Util.clamp( Util.linear( 1, -2, 0, 255, Util.log10( density / 1000 ) ), 0, 255 ) );
+      const lightness = DensityMaterials.getCustomLightness( density );
       const color = lightness + lightness * 0x100 + lightness * 0x10000;
 
       this.material = new THREE.MeshLambertMaterial( {
@@ -317,6 +317,10 @@ define( require => {
       else {
         return new DebugMaterialView();
       }
+    }
+
+    static getCustomLightness( density ) {
+      return Util.roundSymmetric( Util.clamp( Util.linear( 1, -2, 0, 255, Util.log10( density / 1000 ) ), 0, 255 ) );
     }
 
     static getBottleMaterialView() {

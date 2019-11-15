@@ -10,6 +10,7 @@ define( require => {
   const Bottle = require( 'DENSITY_BUOYANCY_COMMON/buoyancy/model/Bottle' );
   const Color = require( 'SCENERY/util/Color' );
   const densityBuoyancyCommon = require( 'DENSITY_BUOYANCY_COMMON/densityBuoyancyCommon' );
+  const DensityMaterials = require( 'DENSITY_BUOYANCY_COMMON/common/view/DensityMaterials' );
   const MassView = require( 'DENSITY_BUOYANCY_COMMON/common/view/MassView' );
   const Material = require( 'DENSITY_BUOYANCY_COMMON/common/model/Material' );
   const ThreeUtil = require( 'MOBIUS/ThreeUtil' );
@@ -130,9 +131,9 @@ define( require => {
 
       backTop.renderOrder = -5;
       backBottom.renderOrder = -4;
-      interiorSurface.renderOrder = -3;
-      frontTop.renderOrder = -2;
-      frontBottom.renderOrder = -1;
+      frontBottom.renderOrder = -3;
+      interiorSurface.renderOrder = -2;
+      frontTop.renderOrder = -1;
 
       bottle.interiorMaterialProperty.link( material => {
         let color = 0xffffff;
@@ -168,6 +169,11 @@ define( require => {
         }
         else if ( material === Material.MERCURY ) {
           color = ThreeUtil.colorToThree( new Color( 219, 206, 202 ) );
+          opacity = 1;
+        }
+        else if ( material.custom ) {
+          const lightness = DensityMaterials.getCustomLightness( material.density );
+          color = ThreeUtil.colorToThree( new Color( lightness, lightness, lightness ) );
           opacity = 1;
         }
 

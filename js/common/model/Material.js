@@ -18,6 +18,8 @@ define( require => {
   const materialCementString = require( 'string!DENSITY_BUOYANCY_COMMON/material.cement' );
   const materialCopperString = require( 'string!DENSITY_BUOYANCY_COMMON/material.copper' );
   const materialCustomString = require( 'string!DENSITY_BUOYANCY_COMMON/material.custom' );
+  const materialDensityPString = require( 'string!DENSITY_BUOYANCY_COMMON/material.densityP' );
+  const materialDensityQString = require( 'string!DENSITY_BUOYANCY_COMMON/material.densityQ' );
   const materialDensityXString = require( 'string!DENSITY_BUOYANCY_COMMON/material.densityX' );
   const materialDensityYString = require( 'string!DENSITY_BUOYANCY_COMMON/material.densityY' );
   const materialDiamondString = require( 'string!DENSITY_BUOYANCY_COMMON/material.diamond' );
@@ -184,6 +186,14 @@ define( require => {
     density: 1.2,
     viscosity: 0
   } );
+  Material.DENSITY_P = new Material( {
+    name: materialDensityPString,
+    density: 200
+  } );
+  Material.DENSITY_Q = new Material( {
+    name: materialDensityQString,
+    density: 4000
+  } );
   Material.DENSITY_X = new Material( {
     name: materialDensityXString,
     density: 500
@@ -236,6 +246,8 @@ define( require => {
     Material.BRICK,
     Material.CEMENT,
     Material.COPPER,
+    Material.DENSITY_P,
+    Material.DENSITY_Q,
     Material.DENSITY_X,
     Material.DENSITY_Y,
     Material.DIAMOND,

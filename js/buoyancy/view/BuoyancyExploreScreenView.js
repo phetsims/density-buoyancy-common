@@ -16,6 +16,7 @@ define( require => {
   const DisplayOptionsNode = require( 'DENSITY_BUOYANCY_COMMON/common/view/DisplayOptionsNode' );
   const GravityControlNode = require( 'DENSITY_BUOYANCY_COMMON/common/view/GravityControlNode' );
   const HStrut = require( 'SCENERY/nodes/HStrut' );
+  const Material = require( 'DENSITY_BUOYANCY_COMMON/common/model/Material' );
   const Node = require( 'SCENERY/nodes/Node' );
   const Panel = require( 'SUN/Panel' );
   const PhetFont = require( 'SCENERY_PHET/PhetFont' );
@@ -113,7 +114,16 @@ define( require => {
         bottom: this.layoutBounds.bottom - MARGIN
       } ) );
 
-      this.addChild( new Panel( new DensityControlNode( model.liquidMaterialProperty, this.popupLayer ), {
+      this.addChild( new Panel( new DensityControlNode( model.liquidMaterialProperty, [
+        Material.AIR,
+        Material.GASOLINE,
+        Material.WATER,
+        Material.SEAWATER,
+        Material.HONEY,
+        Material.MERCURY,
+        Material.DENSITY_X,
+        Material.DENSITY_Y
+      ], this.popupLayer ), {
         xMargin: 10,
         yMargin: 10,
         right: this.layoutBounds.centerX - MARGIN,

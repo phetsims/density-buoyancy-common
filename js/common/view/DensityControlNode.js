@@ -22,9 +22,10 @@ define( require => {
   class DensityControlNode extends ComboNumberControl {
     /**
      * @param {Property.<Material>} liquidMaterialProperty
+     * @param {Array.<Material>} materials
      * @param {Node} listParent
      */
-    constructor( liquidMaterialProperty, listParent ) {
+    constructor( liquidMaterialProperty, materials, listParent ) {
 
       const customValue = Material.createCustomMaterial( { density: 1000 } );
 
@@ -38,14 +39,7 @@ define( require => {
         isCustomValue: material => material.custom,
         listParent: listParent,
         comboItems: [
-          Material.AIR,
-          Material.GASOLINE,
-          Material.WATER,
-          Material.SEAWATER,
-          Material.HONEY,
-          Material.MERCURY,
-          Material.DENSITY_X,
-          Material.DENSITY_Y,
+          ...materials,
           customValue
         ].map( material => new ComboBoxItem( new Text( material.name, {
           font: new PhetFont( 12 )

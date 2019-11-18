@@ -35,6 +35,12 @@
   "material.custom": {
     "value": "Custom"
   },
+  "material.densityP": {
+    "value": "Density P"
+  },
+  "material.densityQ": {
+    "value": "Density Q"
+  },
   "material.densityX": {
     "value": "Density X"
   },
@@ -103,6 +109,12 @@
   },
   "material.wood": {
     "value": "Wood"
+  },
+  "materialInside": {
+    "value": "Material inside"
+  },
+  "airVolume": {
+    "value": "Air Volume"
   },
   "kilogramsPattern": {
     "value": "{{kilograms}} kg"

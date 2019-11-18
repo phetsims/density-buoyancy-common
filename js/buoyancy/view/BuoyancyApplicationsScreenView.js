@@ -7,12 +7,15 @@ define( require => {
   'use strict';
 
   // modules
+  const AccordionBox = require( 'SUN/AccordionBox' );
   const AlignBox = require( 'SCENERY/nodes/AlignBox' );
   const densityBuoyancyCommon = require( 'DENSITY_BUOYANCY_COMMON/densityBuoyancyCommon' );
   const DensityBuoyancyScreenView = require( 'DENSITY_BUOYANCY_COMMON/common/view/DensityBuoyancyScreenView' );
   const DensityControlNode = require( 'DENSITY_BUOYANCY_COMMON/common/view/DensityControlNode' );
   const DerivedProperty = require( 'AXON/DerivedProperty' );
+  const DisplayOptionsNode = require( 'DENSITY_BUOYANCY_COMMON/common/view/DisplayOptionsNode' );
   const HSeparator = require( 'SUN/HSeparator' );
+  const HStrut = require( 'SCENERY/nodes/HStrut' );
   const Material = require( 'DENSITY_BUOYANCY_COMMON/common/model/Material' );
   const MaterialMassVolumeControlNode = require( 'DENSITY_BUOYANCY_COMMON/common/view/MaterialMassVolumeControlNode' );
   const Node = require( 'SCENERY/nodes/Node' );
@@ -22,10 +25,14 @@ define( require => {
   const Range = require( 'DOT/Range' );
   const StringUtils = require( 'PHETCOMMON/util/StringUtils' );
   const Text = require( 'SCENERY/nodes/Text' );
+  const Util = require( 'DOT/Util' );
   const VBox = require( 'SCENERY/nodes/VBox' );
 
   // strings
   const airVolumeString = require( 'string!DENSITY_BUOYANCY_COMMON/airVolume' );
+  const averageString = require( 'string!DENSITY_BUOYANCY_COMMON/average' );
+  const densityReadoutPatternString = require( 'string!DENSITY_BUOYANCY_COMMON/densityReadoutPattern' );
+  const densityString = require( 'string!DENSITY_BUOYANCY_COMMON/density' );
   const litersPatternString = require( 'string!DENSITY_BUOYANCY_COMMON/litersPattern' );
   const materialInsideString = require( 'string!DENSITY_BUOYANCY_COMMON/materialInside' );
 
@@ -129,6 +136,62 @@ define( require => {
         xMargin: 10,
         yMargin: 10,
         centerX: this.layoutBounds.centerX,
+        bottom: this.layoutBounds.bottom - MARGIN
+      } ) );
+
+      const displayOptionsNode = new DisplayOptionsNode( model );
+
+      // TODO: handle maxWidths here nicely
+      const insideDensityLabel = new Text( '', { font: new PhetFont( 14 ), maxWidth: 200 } );
+      const averageDensityLabel = new Text( '', { font: new PhetFont( 14 ), maxWidth: 200 } );
+
+      model.bottle.interiorMaterialProperty.link( material => {
+        insideDensityLabel.text = StringUtils.fillIn( densityReadoutPatternString, {
+          material: material.name,
+          density: Util.toFixed( material.density / 1000, 2 )
+        } );
+      } );
+      model.bottle.materialProperty.link( material => {
+        averageDensityLabel.text = StringUtils.fillIn( densityReadoutPatternString, {
+          material: averageString,
+          density: Util.toFixed( material.density / 1000, 2 )
+        } );
+      } );
+
+      const densityContainer = new VBox( {
+        spacing: 0,
+        children: [
+          new HStrut( displayOptionsNode.width - 10 ), // Same internal size as displayOptionsNode
+          new VBox( {
+            spacing: 5,
+            align: 'center',
+            children: [
+              insideDensityLabel,
+              averageDensityLabel
+            ]
+          } )
+        ]
+      } );
+
+      const densityBox = new AccordionBox( densityContainer, {
+        titleNode: new Text( densityString, { font: new PhetFont( { size: 14, weight: 'bold' } ) } ),
+        expandedProperty: model.densityReadoutExpandedProperty,
+        fill: 'white',
+        titleYMargin: 5,
+        buttonXMargin: 5,
+        titleAlignX: 'left'
+      } );
+
+      this.addChild( new VBox( {
+        spacing: 10,
+        children: [
+          densityBox,
+          new Panel( displayOptionsNode, {
+            xMargin: 10,
+            yMargin: 10
+          } )
+        ],
+        left: this.layoutBounds.left + MARGIN,
         bottom: this.layoutBounds.bottom - MARGIN
       } ) );
 

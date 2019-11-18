@@ -211,5 +211,11 @@
   },
   "densityKgL": {
     "value": "Density (kg/L)"
+  },
+  "average": {
+    "value": "Average"
+  },
+  "densityReadoutPattern": {
+    "value": "{{material}}: {{density}} kg/L"
   }
 }

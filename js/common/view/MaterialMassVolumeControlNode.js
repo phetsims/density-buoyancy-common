@@ -72,7 +72,7 @@ define( require => {
           return material.custom ? CUSTOM_MATERIAL_PLACEHOLDER : material;
         },
         inverseMap: material => {
-          return material || Material.createCustomMaterial( {
+          return material || Material.createCustomSolidMaterial( {
             density: materialProperty.value.density
           } );
         },
@@ -97,7 +97,7 @@ define( require => {
 
           // If we're custom, adjust the density
           if ( materialProperty.value.custom ) {
-            materialProperty.value = Material.createCustomMaterial( {
+            materialProperty.value = Material.createCustomSolidMaterial( {
               density: massProperty.value / cubicMeters
             } );
           }
@@ -122,7 +122,7 @@ define( require => {
           userMassChanging = true;
 
           if ( materialProperty.value.custom ) {
-            materialProperty.value = Material.createCustomMaterial( {
+            materialProperty.value = Material.createCustomSolidMaterial( {
               density: mass / volumeProperty.value
             } );
           }

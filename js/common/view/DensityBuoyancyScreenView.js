@@ -13,7 +13,6 @@ define( require => {
   const Bottle = require( 'DENSITY_BUOYANCY_COMMON/buoyancy/model/Bottle' );
   const BottleView = require( 'DENSITY_BUOYANCY_COMMON/buoyancy/view/BottleView' );
   const Bounds2 = require( 'DOT/Bounds2' );
-  const Color = require( 'SCENERY/util/Color' );
   const Cone = require( 'DENSITY_BUOYANCY_COMMON/common/model/Cone' );
   const ConeView = require( 'DENSITY_BUOYANCY_COMMON/common/view/ConeView' );
   const Cuboid = require( 'DENSITY_BUOYANCY_COMMON/common/model/Cuboid' );
@@ -21,6 +20,7 @@ define( require => {
   const densityBuoyancyCommon = require( 'DENSITY_BUOYANCY_COMMON/densityBuoyancyCommon' );
   const DensityBuoyancyCommonColorProfile = require( 'DENSITY_BUOYANCY_COMMON/common/view/DensityBuoyancyCommonColorProfile' );
   const DerivedProperty = require( 'AXON/DerivedProperty' );
+  const DynamicProperty = require( 'AXON/DynamicProperty' );
   const Ellipsoid = require( 'DENSITY_BUOYANCY_COMMON/common/model/Ellipsoid' );
   const EllipsoidView = require( 'DENSITY_BUOYANCY_COMMON/common/view/EllipsoidView' );
   const FontAwesomeNode = require( 'SUN/FontAwesomeNode' );
@@ -450,9 +450,13 @@ define( require => {
         0, 1, 0
       ] ), 3 ) );
       const waterMaterial = new THREE.MeshLambertMaterial( {
-        color: new Color( 0, 128, 255 ).toNumber(),
-        transparent: true,
-        opacity: 0.4
+        transparent: true
+      } );
+      new DynamicProperty( model.liquidMaterialProperty, {
+        derive: 'liquidColor'
+      } ).link( color => {
+        waterMaterial.color = ThreeUtil.colorToThree( color );
+        waterMaterial.opacity = color.alpha;
       } );
       const waterMesh = new THREE.Mesh( waterGeometry, waterMaterial );
       this.sceneNode.stage.threeScene.add( waterMesh );

@@ -26,8 +26,9 @@ define( require => {
      * @param {Node} listParent
      */
     constructor( liquidMaterialProperty, materials, listParent ) {
-
-      const customValue = Material.createCustomMaterial( { density: 1000 } );
+      const customValue = Material.createCustomLiquidMaterial( {
+        density: 1000
+      } );
 
       super( {
         title: fluidDensityString,
@@ -35,7 +36,9 @@ define( require => {
         property: liquidMaterialProperty,
         range: new Range( 0, 15 ),
         toNumericValue: material => material.density / 1000,
-        createCustomValue: density => Material.createCustomMaterial( { density: density * 1000 } ),
+        createCustomValue: density => Material.createCustomLiquidMaterial( {
+          density: density * 1000
+        } ),
         isCustomValue: material => material.custom,
         listParent: listParent,
         comboItems: [

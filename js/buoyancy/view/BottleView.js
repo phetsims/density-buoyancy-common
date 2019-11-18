@@ -8,11 +8,9 @@ define( require => {
 
   // modules
   const Bottle = require( 'DENSITY_BUOYANCY_COMMON/buoyancy/model/Bottle' );
-  const Color = require( 'SCENERY/util/Color' );
   const densityBuoyancyCommon = require( 'DENSITY_BUOYANCY_COMMON/densityBuoyancyCommon' );
-  const DensityMaterials = require( 'DENSITY_BUOYANCY_COMMON/common/view/DensityMaterials' );
+  const DynamicProperty = require( 'AXON/DynamicProperty' );
   const MassView = require( 'DENSITY_BUOYANCY_COMMON/common/view/MassView' );
-  const Material = require( 'DENSITY_BUOYANCY_COMMON/common/model/Material' );
   const ThreeUtil = require( 'MOBIUS/ThreeUtil' );
 
   class BottleView extends MassView {
@@ -23,7 +21,6 @@ define( require => {
     constructor( bottle, liquidYProperty ) {
 
       const primaryGeometry = Bottle.getPrimaryGeometry();
-      // const capGeometry = Bottle.getCapGeometry();
 
       super( bottle, new THREE.Geometry() );
 
@@ -149,54 +146,18 @@ define( require => {
       frontTop.renderOrder = -2;
       frontTopForDepth.renderOrder = -1;
 
-      bottle.interiorMaterialProperty.link( material => {
-        let color = 0xffffff;
-        let opacity = 0.4;
+      new DynamicProperty( bottle.interiorMaterialProperty, {
+        derive: 'liquidColor'
+      } ).link( color => {
+        const threeColor = ThreeUtil.colorToThree( color );
+        const alpha = color.alpha;
 
-        if ( material === Material.WATER ) {
-          color = ThreeUtil.colorToThree( new Color( 0, 128, 255 ) );
-          opacity = 0.4;
-        }
-        else if ( material === Material.GASOLINE ) {
-          color = ThreeUtil.colorToThree( new Color( 230, 255, 0 ) );
-          opacity = 0.4;
-        }
-        else if ( material === Material.OIL ) {
-          color = ThreeUtil.colorToThree( new Color( 170, 255, 0 ) );
-          opacity = 0.6;
-        }
-        else if ( material === Material.SAND ) {
-          color = ThreeUtil.colorToThree( new Color( 194, 178, 128 ) );
-          opacity = 1;
-        }
-        else if ( material === Material.CEMENT ) {
-          color = ThreeUtil.colorToThree( new Color( 128, 130, 133 ) );
-          opacity = 1;
-        }
-        else if ( material === Material.COPPER ) {
-          color = ThreeUtil.colorToThree( new Color( 184, 115, 51 ) );
-          opacity = 1;
-        }
-        else if ( material === Material.LEAD ) {
-          color = ThreeUtil.colorToThree( new Color( 80, 85, 90 ) );
-          opacity = 1;
-        }
-        else if ( material === Material.MERCURY ) {
-          color = ThreeUtil.colorToThree( new Color( 219, 206, 202 ) );
-          opacity = 1;
-        }
-        else if ( material.custom ) {
-          const lightness = DensityMaterials.getCustomLightness( material.density );
-          color = ThreeUtil.colorToThree( new Color( lightness, lightness, lightness ) );
-          opacity = 1;
-        }
-
-        interiorSurfaceMaterial.color = color;
-        backBottomMaterial.color = color;
-        frontBottomMaterial.color = color;
-        interiorSurfaceMaterial.opacity = opacity;
-        backBottomMaterial.opacity = opacity;
-        frontBottomMaterial.opacity = opacity;
+        interiorSurfaceMaterial.color = threeColor;
+        backBottomMaterial.color = threeColor;
+        frontBottomMaterial.color = threeColor;
+        interiorSurfaceMaterial.opacity = alpha;
+        backBottomMaterial.opacity = alpha;
+        frontBottomMaterial.opacity = alpha;
       } );
 
       // @public {Bottle}

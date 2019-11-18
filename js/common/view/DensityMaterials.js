@@ -242,7 +242,7 @@ define( require => {
     constructor( density ) {
       super();
 
-      const lightness = DensityMaterials.getCustomLightness( density );
+      const lightness = Material.getCustomLightness( density );
       const color = lightness + lightness * 0x100 + lightness * 0x10000;
 
       this.material = new THREE.MeshLambertMaterial( {

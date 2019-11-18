@@ -40,7 +40,24 @@ define( require => {
     comparingRed: { default: new Color( 233, 55, 50 ) },
     comparingPurple: { default: new Color( 131, 43, 126 ) },
 
-    chartHeader: { default: new Color( 230, 230, 230 ) }
+    chartHeader: { default: new Color( 230, 230, 230 ) },
+
+    // "liquid" material colors
+    materialAir: { default: new Color( 0, 0, 0, 0 ) },
+    materialCement: { default: new Color( 128, 130, 133 ) },
+    materialCopper: { default: new Color( 184, 115, 51 ) },
+    materialDensityP: { default: new Color( 255, 128, 128, 0.6 ) },
+    materialDensityQ: { default: new Color( 128, 255, 128, 0.6 ) },
+    materialDensityX: { default: new Color( 255, 255, 80, 0.6 ) },
+    materialDensityY: { default: new Color( 80, 255, 255, 0.6 ) },
+    materialGasoline: { default: new Color( 230, 255, 0, 0.4 ) },
+    materialHoney: { default: new Color( 238, 141, 0, 0.9 ) },
+    materialLead: { default: new Color( 80, 85, 90 ) },
+    materialMercury: { default: new Color( 219, 206, 202 ) },
+    materialOil: { default: new Color( 170, 255, 0, 0.6 ) },
+    materialSand: { default: new Color( 194, 178, 128 ) },
+    materialSeawater: { default: new Color( 0, 150, 255, 0.4 ) },
+    materialWater: { default: new Color( 0, 128, 255, 0.4 ) }
   } );
 
   densityBuoyancyCommon.register( 'DensityBuoyancyCommonColorProfile', DensityBuoyancyCommonColorProfile );

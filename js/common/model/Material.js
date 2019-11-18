@@ -7,8 +7,12 @@ define( require => {
   'use strict';
 
   // modules
+  const Color = require( 'SCENERY/util/Color' );
   const densityBuoyancyCommon = require( 'DENSITY_BUOYANCY_COMMON/densityBuoyancyCommon' );
+  const DensityBuoyancyCommonColorProfile = require( 'DENSITY_BUOYANCY_COMMON/common/view/DensityBuoyancyCommonColorProfile' );
   const merge = require( 'PHET_CORE/merge' );
+  const Property = require( 'AXON/Property' );
+  const Util = require( 'DOT/Util' );
 
   // strings
   const materialAirString = require( 'string!DENSITY_BUOYANCY_COMMON/material.air' );
@@ -64,7 +68,10 @@ define( require => {
         custom: false,
 
         // {Property.<Color>|null} - optional
-        customColor: null
+        customColor: null,
+
+        // {Property.<Color>|null} - optional, uses the alpha channel for opacity
+        liquidColor: null
       }, config );
 
       // @public {string}
@@ -81,6 +88,12 @@ define( require => {
 
       // @public {Property.<Color>|null}
       this.customColor = config.customColor;
+
+      // @public {Property.<Color>|null}
+      this.liquidColor = config.liquidColor;
+
+      // @public {number}
+      this.liquidOpacity = config.liquidOpacity;
     }
 
     /**
@@ -95,6 +108,34 @@ define( require => {
         name: materialCustomString,
         custom: true
       }, config ));
+    }
+
+    static createCustomLiquidMaterial( config ) {
+      return Material.createCustomMaterial( merge( {
+        liquidColor: Material.getCustomLiquidColor( config.density )
+      }, config ) );
+    }
+
+    static createCustomSolidMaterial( config ) {
+      return Material.createCustomMaterial( merge( {
+        liquidColor: Material.getCustomSolidColor( config.density )
+      }, config ) );
+    }
+
+    static getCustomLightness( density ) {
+      return Util.roundSymmetric( Util.clamp( Util.linear( 1, -2, 0, 255, Util.log10( density / 1000 ) ), 0, 255 ) );
+    }
+
+    static getCustomLiquidColor( density ) {
+      const lightness = Material.getCustomLightness( density );
+
+      return new Property( new Color( lightness, lightness, lightness, 0.8 * ( 1 - lightness / 255 ) ) );
+    }
+
+    static getCustomSolidColor( density ) {
+      const lightness = Material.getCustomLightness( density );
+
+      return new Property( new Color( lightness, lightness, lightness ) );
     }
   }
 
@@ -115,11 +156,13 @@ define( require => {
   } );
   Material.CEMENT = new Material( {
     name: materialCementString,
-    density: 3150
+    density: 3150,
+    liquidColor: DensityBuoyancyCommonColorProfile.materialCementProperty
   } );
   Material.COPPER = new Material( {
     name: materialCopperString,
-    density: 8960
+    density: 8960,
+    liquidColor: DensityBuoyancyCommonColorProfile.materialCopperProperty
   } );
   Material.DIAMOND = new Material( {
     name: materialDiamondString,
@@ -143,7 +186,8 @@ define( require => {
   } );
   Material.LEAD = new Material( {
     name: materialLeadString,
-    density: 11342
+    density: 11342,
+    liquidColor: DensityBuoyancyCommonColorProfile.materialLeadProperty
   } );
   Material.PLATINUM = new Material( {
     name: materialPlatinumString,
@@ -184,58 +228,70 @@ define( require => {
   Material.AIR = new Material( {
     name: materialAirString,
     density: 1.2,
-    viscosity: 0
+    viscosity: 0,
+    liquidColor: DensityBuoyancyCommonColorProfile.materialAirProperty
   } );
   Material.DENSITY_P = new Material( {
     name: materialDensityPString,
-    density: 200
+    density: 200,
+    liquidColor: DensityBuoyancyCommonColorProfile.materialDensityPProperty
   } );
   Material.DENSITY_Q = new Material( {
     name: materialDensityQString,
-    density: 4000
+    density: 4000,
+    liquidColor: DensityBuoyancyCommonColorProfile.materialDensityQProperty
   } );
   Material.DENSITY_X = new Material( {
     name: materialDensityXString,
-    density: 500
+    density: 500,
+    liquidColor: DensityBuoyancyCommonColorProfile.materialDensityXProperty
   } );
   Material.DENSITY_Y = new Material( {
     name: materialDensityYString,
-    density: 5000
+    density: 5000,
+    liquidColor: DensityBuoyancyCommonColorProfile.materialDensityYProperty
   } );
   Material.GASOLINE = new Material( {
     name: materialGasolineString,
     density: 680,
-    viscosity: 6e-4
+    viscosity: 6e-4,
+    liquidColor: DensityBuoyancyCommonColorProfile.materialGasolineProperty
   } );
   Material.HONEY = new Material( {
     name: materialHoneyString,
     density: 1440,
-    viscosity: 0.03 // TODO: actual value around 2.5, but we can get away with this for animation
+    viscosity: 0.03, // TODO: actual value around 2.5, but we can get away with this for animation
+    liquidColor: DensityBuoyancyCommonColorProfile.materialHoneyProperty
   } );
   Material.MERCURY = new Material( {
     name: materialMercuryString,
     density: 13593,
-    viscosity: 1.53e-3
+    viscosity: 1.53e-3,
+    liquidColor: DensityBuoyancyCommonColorProfile.materialMercuryProperty
   } );
   Material.OIL = new Material( {
     name: materialOilString,
     density: 920,
-    viscosity: 0.02 // Too much bigger and it won't work, not particularly physical
+    viscosity: 0.02, // Too much bigger and it won't work, not particularly physical
+    liquidColor: DensityBuoyancyCommonColorProfile.materialOilProperty
   } );
   Material.SAND = new Material( {
     name: materialSandString,
     density: 1442,
-    viscosity: 0.03 // Too much bigger and it won't work, not particularly physical
+    viscosity: 0.03, // Too much bigger and it won't work, not particularly physical
+    liquidColor: DensityBuoyancyCommonColorProfile.materialSandProperty
   } );
   Material.SEAWATER = new Material( {
     name: materialSeawaterString,
     density: 1029,
-    viscosity: 1.88e-3
+    viscosity: 1.88e-3,
+    liquidColor: DensityBuoyancyCommonColorProfile.materialSeawaterProperty
   } );
   Material.WATER = new Material( {
     name: materialWaterString,
     density: 1000,
-    viscosity: 8.9e-4
+    viscosity: 8.9e-4,
+    liquidColor: DensityBuoyancyCommonColorProfile.materialWaterProperty
   } );
 
   // @public {Array.<Material>}

@@ -9,6 +9,7 @@ define( require => {
   // modules
   const ComboBox = require( 'SUN/ComboBox' );
   const densityBuoyancyCommon = require( 'DENSITY_BUOYANCY_COMMON/densityBuoyancyCommon' );
+  const DensityBuoyancyCommonConstants = require( 'DENSITY_BUOYANCY_COMMON/common/DensityBuoyancyCommonConstants' );
   const Dimension2 = require( 'DOT/Dimension2' );
   const merge = require( 'PHET_CORE/merge' );
   const Node = require( 'SCENERY/nodes/Node' );
@@ -66,7 +67,7 @@ define( require => {
           } ),
 
           titleNodeOptions: {
-            font: new PhetFont( { size: 12, weight: 'bold' } ),
+            font: DensityBuoyancyCommonConstants.TITLE_FONT,
             maxWidth: 80
           },
           numberDisplayOptions: {
@@ -90,7 +91,7 @@ define( require => {
               value: config.range.max,
               label: new Text( config.range.max, { font: new PhetFont( 12 ), maxWidth: 50 } )
             } ],
-            trackSize: new Dimension2( 110, 0.5 )
+            trackSize: new Dimension2( 120, 0.5 )
           }
         },
 

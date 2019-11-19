@@ -91,7 +91,7 @@ define( require => {
         align: 'left',
         children: [
           new Text( materialInsideString, {
-            font: new PhetFont( 12 )
+            font: DensityBuoyancyCommonConstants.TITLE_FONT
           } ),
           bottleControl,
           new HSeparator( bottleControl.width ),

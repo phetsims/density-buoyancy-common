@@ -33,7 +33,7 @@ define( require => {
       this.masses.push( this.bottle );
 
       this.masses.push( new Scale( this.engine, {
-        matrix: Matrix3.translation( -0.8, -Scale.SCALE_BASE_BOUNDS.minY ),
+        matrix: Matrix3.translation( -0.7, -Scale.SCALE_BASE_BOUNDS.minY ),
         displayType: Scale.DisplayType.NEWTONS
       } ) );
     }

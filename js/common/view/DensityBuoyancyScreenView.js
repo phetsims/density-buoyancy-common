@@ -30,6 +30,7 @@ define( require => {
   const HorizontalCylinderView = require( 'DENSITY_BUOYANCY_COMMON/common/view/HorizontalCylinderView' );
   const LinearGradient = require( 'SCENERY/util/LinearGradient' );
   const MassLabelNode = require( 'DENSITY_BUOYANCY_COMMON/common/view/MassLabelNode' );
+  const merge = require( 'PHET_CORE/merge' );
   const Mouse = require( 'SCENERY/input/Mouse' );
   const Node = require( 'SCENERY/nodes/Node' );
   const openPopup = require( 'PHET_CORE/openPopup' );
@@ -64,8 +65,15 @@ define( require => {
     /**
      * @param {DensityBuoyancyModel} model
      * @param {Tandem} tandem
+     * @param {Object} [options]
      */
-    constructor( model, tandem ) {
+    constructor( model, tandem, options ) {
+
+      options = merge( {
+        cameraPosition: new Vector3( 0, 0.4, 2 ),
+        cameraZoom: 1.7,
+        cameraLookAt: new Vector3( 0, -0.1, 0 )
+      }, options );
 
       super();
 
@@ -127,7 +135,7 @@ define( require => {
 
       // @private {ThreeIsometricNode}
       this.sceneNode = new ThreeIsometricNode( this.layoutBounds, {
-        cameraPosition: new Vector3( 0, 0.4, 2 )
+        cameraPosition: options.cameraPosition
       } );
       this.addChild( this.sceneNode );
 
@@ -155,10 +163,10 @@ define( require => {
       // @private {Array.<MassLabelNode>}
       this.massLabelNodes = [];
 
-      this.sceneNode.stage.threeCamera.zoom = 1.7;
+      this.sceneNode.stage.threeCamera.zoom = options.cameraZoom;
       this.sceneNode.stage.threeCamera.updateProjectionMatrix();
       this.sceneNode.stage.threeCamera.up = new THREE.Vector3( 0, 0, -1 );
-      this.sceneNode.stage.threeCamera.lookAt( new THREE.Vector3( 0, -0.1, 0 ) );
+      this.sceneNode.stage.threeCamera.lookAt( ThreeUtil.vectorToThree( options.cameraLookAt ) );
 
       this.sceneNode.backgroundEventTarget.addInputListener( {
         mousemove: event => {

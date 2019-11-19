@@ -27,6 +27,7 @@ define( require => {
   const Text = require( 'SCENERY/nodes/Text' );
   const Util = require( 'DOT/Util' );
   const VBox = require( 'SCENERY/nodes/VBox' );
+  const Vector3 = require( 'DOT/Vector3' );
 
   // strings
   const airVolumeString = require( 'string!DENSITY_BUOYANCY_COMMON/airVolume' );
@@ -47,7 +48,9 @@ define( require => {
      */
     constructor( model, tandem ) {
 
-      super( model, tandem );
+      super( model, tandem, {
+        cameraLookAt: new Vector3( 0, -0.18, 0 )
+      } );
 
       if ( !this.enabled ) {
         return this;

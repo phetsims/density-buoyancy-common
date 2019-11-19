@@ -51,10 +51,10 @@ define( require => {
     materialDensityX: { default: new Color( 255, 255, 80, 0.6 ) },
     materialDensityY: { default: new Color( 80, 255, 255, 0.6 ) },
     materialGasoline: { default: new Color( 230, 255, 0, 0.4 ) },
-    materialHoney: { default: new Color( 238, 141, 0, 0.9 ) },
+    materialHoney: { default: new Color( 238, 170, 0, 0.8 ) },
     materialLead: { default: new Color( 80, 85, 90 ) },
     materialMercury: { default: new Color( 219, 206, 202 ) },
-    materialOil: { default: new Color( 170, 255, 0, 0.6 ) },
+    materialOil: { default: new Color( 180, 230, 20, 0.4 ) },
     materialSand: { default: new Color( 194, 178, 128 ) },
     materialSeawater: { default: new Color( 0, 150, 255, 0.4 ) },
     materialWater: { default: new Color( 0, 128, 255, 0.4 ) }

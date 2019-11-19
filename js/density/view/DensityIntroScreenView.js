@@ -10,15 +10,18 @@ define( require => {
   const AccordionBox = require( 'SUN/AccordionBox' );
   const AlignBox = require( 'SCENERY/nodes/AlignBox' );
   const densityBuoyancyCommon = require( 'DENSITY_BUOYANCY_COMMON/densityBuoyancyCommon' );
+  const DensityBuoyancyCommonConstants = require( 'DENSITY_BUOYANCY_COMMON/common/DensityBuoyancyCommonConstants' );
   const DensityBuoyancyScreenView = require( 'DENSITY_BUOYANCY_COMMON/common/view/DensityBuoyancyScreenView' );
   const DensityReadoutNode = require( 'DENSITY_BUOYANCY_COMMON/density/view/DensityReadoutNode' );
   const DerivedProperty = require( 'AXON/DerivedProperty' );
-  const PhetFont = require( 'SCENERY_PHET/PhetFont' );
   const PrimarySecondaryControlsNode = require( 'DENSITY_BUOYANCY_COMMON/common/view/PrimarySecondaryControlsNode' );
   const Text = require( 'SCENERY/nodes/Text' );
 
   // strings
   const densityReadoutString = require( 'string!DENSITY_BUOYANCY_COMMON/densityReadout' );
+
+  // constants
+  const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
 
   class DensityIntroScreenView extends DensityBuoyancyScreenView {
 
@@ -46,7 +49,7 @@ define( require => {
         new DerivedProperty( [ model.secondaryMass.materialProperty ], material => material.density ),
         model.secondaryMassVisibleProperty
       ), {
-        titleNode: new Text( densityReadoutString, { font: new PhetFont( 14 ) } ),
+        titleNode: new Text( densityReadoutString, { font: DensityBuoyancyCommonConstants.TITLE_FONT } ),
         expandedProperty: model.densityReadoutExpandedProperty,
         buttonAlign: 'right',
         titleYMargin: 5,
@@ -58,15 +61,15 @@ define( require => {
         alignBounds: this.layoutBounds,
         xAlign: 'center',
         yAlign: 'top',
-        yMargin: 10
+        yMargin: MARGIN
       } ) );
 
       this.addChild( new AlignBox( rightBox, {
         alignBounds: this.layoutBounds,
         xAlign: 'right',
         yAlign: 'top',
-        xMargin: 10,
-        yMargin: 10
+        xMargin: MARGIN,
+        yMargin: MARGIN
       } ) );
 
       this.addChild( this.popupLayer );

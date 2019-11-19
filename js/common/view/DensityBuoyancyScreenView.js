@@ -19,6 +19,7 @@ define( require => {
   const CuboidView = require( 'DENSITY_BUOYANCY_COMMON/common/view/CuboidView' );
   const densityBuoyancyCommon = require( 'DENSITY_BUOYANCY_COMMON/densityBuoyancyCommon' );
   const DensityBuoyancyCommonColorProfile = require( 'DENSITY_BUOYANCY_COMMON/common/view/DensityBuoyancyCommonColorProfile' );
+  const DensityBuoyancyCommonConstants = require( 'DENSITY_BUOYANCY_COMMON/common/DensityBuoyancyCommonConstants' );
   const DerivedProperty = require( 'AXON/DerivedProperty' );
   const DynamicProperty = require( 'AXON/DynamicProperty' );
   const Ellipsoid = require( 'DENSITY_BUOYANCY_COMMON/common/model/Ellipsoid' );
@@ -57,7 +58,7 @@ define( require => {
   const webglWarningBodyString = require( 'string!SCENERY_PHET/webglWarning.body' );
 
   // constants
-  const MARGIN = 10;
+  const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
   const scratchVector2 = new Vector2( 0, 0 );
 
   class DensityBuoyancyScreenView extends ScreenView {

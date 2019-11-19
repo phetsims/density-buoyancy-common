@@ -11,6 +11,7 @@ define( require => {
   const AlignBox = require( 'SCENERY/nodes/AlignBox' );
   const densityBuoyancyCommon = require( 'DENSITY_BUOYANCY_COMMON/densityBuoyancyCommon' );
   const DensityBuoyancyCommonColorProfile = require( 'DENSITY_BUOYANCY_COMMON/common/view/DensityBuoyancyCommonColorProfile' );
+  const DensityBuoyancyCommonConstants = require( 'DENSITY_BUOYANCY_COMMON/common/DensityBuoyancyCommonConstants' );
   const DensityBuoyancyScreenView = require( 'DENSITY_BUOYANCY_COMMON/common/view/DensityBuoyancyScreenView' );
   const DensityControlNode = require( 'DENSITY_BUOYANCY_COMMON/common/view/DensityControlNode' );
   const DisplayOptionsNode = require( 'DENSITY_BUOYANCY_COMMON/common/view/DisplayOptionsNode' );
@@ -34,7 +35,7 @@ define( require => {
   const kilogramsPerLiterPatternString = require( 'string!DENSITY_BUOYANCY_COMMON/kilogramsPerLiterPattern' );
 
   // constants
-  const MARGIN = 10;
+  const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
 
   class BuoyancyExploreScreenView extends DensityBuoyancyScreenView {
 
@@ -96,7 +97,7 @@ define( require => {
       } );
 
       const densityBox = new AccordionBox( densityContainer, {
-        titleNode: new Text( densityString, { font: new PhetFont( { size: 14, weight: 'bold' } ) } ),
+        titleNode: new Text( densityString, { font: DensityBuoyancyCommonConstants.TITLE_FONT } ),
         expandedProperty: model.densityReadoutExpandedProperty,
         fill: 'white',
         titleYMargin: 5,

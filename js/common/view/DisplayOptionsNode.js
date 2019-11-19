@@ -13,6 +13,7 @@ define( require => {
   const Checkbox = require( 'SUN/Checkbox' );
   const densityBuoyancyCommon = require( 'DENSITY_BUOYANCY_COMMON/densityBuoyancyCommon' );
   const DensityBuoyancyCommonColorProfile = require( 'DENSITY_BUOYANCY_COMMON/common/view/DensityBuoyancyCommonColorProfile' );
+  const DensityBuoyancyCommonConstants = require( 'DENSITY_BUOYANCY_COMMON/common/DensityBuoyancyCommonConstants' );
   const HBox = require( 'SCENERY/nodes/HBox' );
   const Line = require( 'SCENERY/nodes/Line' );
   const merge = require( 'PHET_CORE/merge' );
@@ -62,10 +63,7 @@ define( require => {
       const forceAlignGroup = new AlignGroup();
 
       const forcesText = new Text( forcesString, {
-        font: new PhetFont( {
-          size: 14,
-          weight: 'bold'
-        } ),
+        font: DensityBuoyancyCommonConstants.TITLE_FONT,
         maxWidth: maxWidth
       } );
 

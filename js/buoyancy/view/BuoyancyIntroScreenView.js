@@ -11,6 +11,7 @@ define( require => {
   const AquaRadioButton = require( 'SUN/AquaRadioButton' );
   const BuoyancyIntroModel = require( 'DENSITY_BUOYANCY_COMMON/buoyancy/model/BuoyancyIntroModel' );
   const densityBuoyancyCommon = require( 'DENSITY_BUOYANCY_COMMON/densityBuoyancyCommon' );
+  const DensityBuoyancyCommonConstants = require( 'DENSITY_BUOYANCY_COMMON/common/DensityBuoyancyCommonConstants' );
   const DensityBuoyancyScreenView = require( 'DENSITY_BUOYANCY_COMMON/common/view/DensityBuoyancyScreenView' );
   const DisplayOptionsNode = require( 'DENSITY_BUOYANCY_COMMON/common/view/DisplayOptionsNode' );
   const HBox = require( 'SCENERY/nodes/HBox' );
@@ -33,7 +34,7 @@ define( require => {
     [ BuoyancyIntroModel.Mode.SAME_VOLUME.name ]: modeSameVolumeString,
     [ BuoyancyIntroModel.Mode.SAME_DENSITY.name ]: modeSameDensityString
   };
-  const MARGIN = 10;
+  const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
 
   class BuoyancyIntroScreenView extends DensityBuoyancyScreenView {
 

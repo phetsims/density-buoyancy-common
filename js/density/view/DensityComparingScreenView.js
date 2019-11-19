@@ -10,6 +10,7 @@ define( require => {
   const AlignBox = require( 'SCENERY/nodes/AlignBox' );
   const BooleanRectangularToggleButton = require( 'SUN/buttons/BooleanRectangularToggleButton' );
   const densityBuoyancyCommon = require( 'DENSITY_BUOYANCY_COMMON/densityBuoyancyCommon' );
+  const DensityBuoyancyCommonConstants = require( 'DENSITY_BUOYANCY_COMMON/common/DensityBuoyancyCommonConstants' );
   const DensityBuoyancyScreenView = require( 'DENSITY_BUOYANCY_COMMON/common/view/DensityBuoyancyScreenView' );
   const DensityComparingModel = require( 'DENSITY_BUOYANCY_COMMON/density/model/DensityComparingModel' );
   const DensityTableNode = require( 'DENSITY_BUOYANCY_COMMON/density/view/DensityTableNode' );
@@ -36,6 +37,7 @@ define( require => {
     [ DensityComparingModel.Mode.SAME_DENSITY.name ]: modeSameDensityString,
     [ DensityComparingModel.Mode.MYSTERY.name ]: modeMysteryString
   };
+  const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
 
   class DensityComparingScreenView extends DensityBuoyancyScreenView {
 
@@ -75,7 +77,7 @@ define( require => {
       } );
 
       const rightContent = new VBox( {
-        spacing: 10,
+        spacing: MARGIN,
         children: [
           modePanel,
           tableControl
@@ -86,7 +88,7 @@ define( require => {
         alignBounds: this.layoutBounds,
         xAlign: 'right',
         yAlign: 'top',
-        margin: 10
+        margin: MARGIN
       } ) );
 
       const densityTablePanel = new Panel( new DensityTableNode(), {
@@ -97,7 +99,7 @@ define( require => {
         alignBounds: this.layoutBounds,
         xAlign: 'center',
         yAlign: 'top',
-        margin: 10
+        margin: MARGIN
       } ) );
       Property.multilink( [ model.tableVisibleProperty, model.modeProperty ], ( visible, mode ) => {
         densityTablePanel.visible = visible && mode === DensityComparingModel.Mode.MYSTERY;

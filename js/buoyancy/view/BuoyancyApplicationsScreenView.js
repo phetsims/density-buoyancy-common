@@ -12,6 +12,7 @@ define( require => {
   const BuoyancyApplicationsModel = require( 'DENSITY_BUOYANCY_COMMON/buoyancy/model/BuoyancyApplicationsModel' );
   const densityBuoyancyCommon = require( 'DENSITY_BUOYANCY_COMMON/densityBuoyancyCommon' );
   const DensityBuoyancyCommonColorProfile = require( 'DENSITY_BUOYANCY_COMMON/common/view/DensityBuoyancyCommonColorProfile' );
+  const DensityBuoyancyCommonConstants = require( 'DENSITY_BUOYANCY_COMMON/common/DensityBuoyancyCommonConstants' );
   const DensityBuoyancyScreenView = require( 'DENSITY_BUOYANCY_COMMON/common/view/DensityBuoyancyScreenView' );
   const DensityControlNode = require( 'DENSITY_BUOYANCY_COMMON/common/view/DensityControlNode' );
   const DensityReadoutListNode = require( 'DENSITY_BUOYANCY_COMMON/buoyancy/view/DensityReadoutListNode' );
@@ -39,7 +40,7 @@ define( require => {
   const materialInsideString = require( 'string!DENSITY_BUOYANCY_COMMON/materialInside' );
 
   // constants
-  const MARGIN = 10; // TODO: refactor to one place
+  const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
 
   class BuoyancyApplicationsScreenView extends DensityBuoyancyScreenView {
 
@@ -113,7 +114,7 @@ define( require => {
         ]
       } );
 
-      this.addChild( new AlignBox( new Panel( bottleBox, {
+      const rightBottleContent = new AlignBox( new Panel( bottleBox, {
         xMargin: 10,
         yMargin: 10,
         resize: true
@@ -123,7 +124,12 @@ define( require => {
         yAlign: 'bottom',
         xMargin: 10,
         yMargin: 60
-      } ) );
+      } );
+
+      this.addChild( rightBottleContent );
+      model.sceneProperty.link( scene => {
+        rightBottleContent.visible = scene === BuoyancyApplicationsModel.Scene.BOTTLE;
+      } );
 
       const densityControlPanel = new Panel( new DensityControlNode( model.liquidMaterialProperty, [
         Material.AIR,
@@ -156,7 +162,7 @@ define( require => {
       } );
 
       const densityBox = new AccordionBox( densityContainer, {
-        titleNode: new Text( densityString, { font: new PhetFont( { size: 14, weight: 'bold' } ) } ),
+        titleNode: new Text( densityString, { font: DensityBuoyancyCommonConstants.TITLE_FONT } ),
         expandedProperty: model.densityReadoutExpandedProperty,
         fill: 'white',
         titleYMargin: 5,

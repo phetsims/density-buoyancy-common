@@ -10,6 +10,7 @@ define( require => {
   const AlignBox = require( 'SCENERY/nodes/AlignBox' );
   const DebugEditNode = require( 'DENSITY_BUOYANCY_COMMON/common/view/DebugEditNode' );
   const densityBuoyancyCommon = require( 'DENSITY_BUOYANCY_COMMON/densityBuoyancyCommon' );
+  const DensityBuoyancyCommonConstants = require( 'DENSITY_BUOYANCY_COMMON/common/DensityBuoyancyCommonConstants' );
   const DensityBuoyancyScreenView = require( 'DENSITY_BUOYANCY_COMMON/common/view/DensityBuoyancyScreenView' );
   const DensityControlNode = require( 'DENSITY_BUOYANCY_COMMON/common/view/DensityControlNode' );
   const DisplayOptionsNode = require( 'DENSITY_BUOYANCY_COMMON/common/view/DisplayOptionsNode' );
@@ -18,7 +19,7 @@ define( require => {
   const Panel = require( 'SUN/Panel' );
 
   // constants
-  const MARGIN = 10;
+  const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
 
   class Demo3DScreenView extends DensityBuoyancyScreenView {
 

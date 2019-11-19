@@ -10,9 +10,17 @@ define( require => {
 
   // modules
   const densityBuoyancyCommon = require( 'DENSITY_BUOYANCY_COMMON/densityBuoyancyCommon' );
+  const PhetFont = require( 'SCENERY_PHET/PhetFont' );
 
   const DensityBuoyancyCommonConstants = {
-    // TODO
+    // {number} - Used for margins from the offset of screens or between panels/boxes
+    MARGIN: 10,
+
+    // {Font}
+    TITLE_FONT: new PhetFont( {
+      size: 14,
+      weight: 'bold'
+    } )
   };
 
   densityBuoyancyCommon.register( 'DensityBuoyancyCommonConstants', DensityBuoyancyCommonConstants );

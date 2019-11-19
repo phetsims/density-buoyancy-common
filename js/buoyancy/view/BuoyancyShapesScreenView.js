@@ -10,6 +10,7 @@ define( require => {
   const AccordionBox = require( 'SUN/AccordionBox' );
   const AlignBox = require( 'SCENERY/nodes/AlignBox' );
   const densityBuoyancyCommon = require( 'DENSITY_BUOYANCY_COMMON/densityBuoyancyCommon' );
+  const DensityBuoyancyCommonConstants = require( 'DENSITY_BUOYANCY_COMMON/common/DensityBuoyancyCommonConstants' );
   const DensityBuoyancyScreenView = require( 'DENSITY_BUOYANCY_COMMON/common/view/DensityBuoyancyScreenView' );
   const DensityControlNode = require( 'DENSITY_BUOYANCY_COMMON/common/view/DensityControlNode' );
   const DensityReadoutListNode = require( 'DENSITY_BUOYANCY_COMMON/buoyancy/view/DensityReadoutListNode' );
@@ -18,7 +19,6 @@ define( require => {
   const HStrut = require( 'SCENERY/nodes/HStrut' );
   const Material = require( 'DENSITY_BUOYANCY_COMMON/common/model/Material' );
   const Panel = require( 'SUN/Panel' );
-  const PhetFont = require( 'SCENERY_PHET/PhetFont' );
   const PrimarySecondaryPanelsNode = require( 'DENSITY_BUOYANCY_COMMON/common/view/PrimarySecondaryPanelsNode' );
   const Property = require( 'AXON/Property' );
   const ShapeSizeControlNode = require( 'DENSITY_BUOYANCY_COMMON/buoyancy/view/ShapeSizeControlNode' );
@@ -31,7 +31,7 @@ define( require => {
   const secondShapeString = require( 'string!DENSITY_BUOYANCY_COMMON/secondShape' );
 
   // constants
-  const MARGIN = 10; // TODO: refactor this out
+  const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
 
   class BuoyancyShapesScreenView extends DensityBuoyancyScreenView {
 
@@ -76,8 +76,9 @@ define( require => {
         ]
       } );
 
+      // TODO: check common accordion box styles
       const densityBox = new AccordionBox( densityContainer, {
-        titleNode: new Text( densityString, { font: new PhetFont( { size: 14, weight: 'bold' } ) } ),
+        titleNode: new Text( densityString, { font: DensityBuoyancyCommonConstants.TITLE_FONT } ),
         expandedProperty: model.densityReadoutExpandedProperty,
         fill: 'white',
         titleYMargin: 5,

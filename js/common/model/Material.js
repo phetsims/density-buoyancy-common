@@ -24,6 +24,8 @@ define( require => {
   const materialCustomString = require( 'string!DENSITY_BUOYANCY_COMMON/material.custom' );
   const materialDensityPString = require( 'string!DENSITY_BUOYANCY_COMMON/material.densityP' );
   const materialDensityQString = require( 'string!DENSITY_BUOYANCY_COMMON/material.densityQ' );
+  const materialDensityRString = require( 'string!DENSITY_BUOYANCY_COMMON/material.densityR' );
+  const materialDensitySString = require( 'string!DENSITY_BUOYANCY_COMMON/material.densityS' );
   const materialDensityXString = require( 'string!DENSITY_BUOYANCY_COMMON/material.densityX' );
   const materialDensityYString = require( 'string!DENSITY_BUOYANCY_COMMON/material.densityY' );
   const materialDiamondString = require( 'string!DENSITY_BUOYANCY_COMMON/material.diamond' );
@@ -240,6 +242,16 @@ define( require => {
     name: materialDensityQString,
     density: 4000,
     liquidColor: DensityBuoyancyCommonColorProfile.materialDensityQProperty
+  } );
+  Material.DENSITY_R = new Material( {
+    name: materialDensityRString,
+    density: 200,
+    liquidColor: DensityBuoyancyCommonColorProfile.materialDensityRProperty
+  } );
+  Material.DENSITY_S = new Material( {
+    name: materialDensitySString,
+    density: 4000,
+    liquidColor: DensityBuoyancyCommonColorProfile.materialDensitySProperty
   } );
   Material.DENSITY_X = new Material( {
     name: materialDensityXString,

@@ -142,7 +142,6 @@ define( require => {
         centerX: this.layoutBounds.centerX,
         bottom: this.layoutBounds.bottom - MARGIN
       } );
-
       this.addChild( densityControlPanel );
 
       const displayOptionsNode = new DisplayOptionsNode( model );

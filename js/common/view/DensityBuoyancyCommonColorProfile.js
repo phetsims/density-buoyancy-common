@@ -52,6 +52,8 @@ define( require => {
     materialCopper: { default: new Color( 184, 115, 51 ) },
     materialDensityP: { default: new Color( 255, 128, 128, 0.6 ) },
     materialDensityQ: { default: new Color( 128, 255, 128, 0.6 ) },
+    materialDensityR: { default: new Color( 255, 128, 255, 0.6 ) },
+    materialDensityS: { default: new Color( 128, 255, 255, 0.6 ) },
     materialDensityX: { default: new Color( 255, 255, 80, 0.6 ) },
     materialDensityY: { default: new Color( 80, 255, 255, 0.6 ) },
     materialGasoline: { default: new Color( 230, 255, 0, 0.4 ) },

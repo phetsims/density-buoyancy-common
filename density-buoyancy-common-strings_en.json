@@ -41,6 +41,12 @@
   "material.densityQ": {
     "value": "Density Q"
   },
+  "material.densityR": {
+    "value": "Density R"
+  },
+  "material.densityS": {
+    "value": "Density S"
+  },
   "material.densityX": {
     "value": "Density X"
   },

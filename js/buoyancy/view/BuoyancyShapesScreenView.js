@@ -8,22 +8,27 @@ define( require => {
 
   // modules
   const AccordionBox = require( 'SUN/AccordionBox' );
+  const AlignBox = require( 'SCENERY/nodes/AlignBox' );
   const densityBuoyancyCommon = require( 'DENSITY_BUOYANCY_COMMON/densityBuoyancyCommon' );
   const DensityBuoyancyScreenView = require( 'DENSITY_BUOYANCY_COMMON/common/view/DensityBuoyancyScreenView' );
   const DensityControlNode = require( 'DENSITY_BUOYANCY_COMMON/common/view/DensityControlNode' );
   const DensityReadoutListNode = require( 'DENSITY_BUOYANCY_COMMON/buoyancy/view/DensityReadoutListNode' );
   const DisplayOptionsNode = require( 'DENSITY_BUOYANCY_COMMON/common/view/DisplayOptionsNode' );
+  const DynamicProperty = require( 'AXON/DynamicProperty' );
   const HStrut = require( 'SCENERY/nodes/HStrut' );
   const Material = require( 'DENSITY_BUOYANCY_COMMON/common/model/Material' );
   const Panel = require( 'SUN/Panel' );
   const PhetFont = require( 'SCENERY_PHET/PhetFont' );
+  const PrimarySecondaryPanelsNode = require( 'DENSITY_BUOYANCY_COMMON/common/view/PrimarySecondaryPanelsNode' );
   const Property = require( 'AXON/Property' );
+  const ShapeSizeControlNode = require( 'DENSITY_BUOYANCY_COMMON/buoyancy/view/ShapeSizeControlNode' );
   const Text = require( 'SCENERY/nodes/Text' );
   const VBox = require( 'SCENERY/nodes/VBox' );
   const Vector3 = require( 'DOT/Vector3' );
 
   // strings
   const densityString = require( 'string!DENSITY_BUOYANCY_COMMON/density' );
+  const secondShapeString = require( 'string!DENSITY_BUOYANCY_COMMON/secondShape' );
 
   // constants
   const MARGIN = 10; // TODO: refactor this out
@@ -91,6 +96,38 @@ define( require => {
         ],
         left: this.layoutBounds.left + MARGIN,
         bottom: this.layoutBounds.bottom - MARGIN
+      } ) );
+
+      const primarySecondaryPanelsNode = new PrimarySecondaryPanelsNode(
+        new ShapeSizeControlNode(
+          model.primaryShapeProperty,
+          model.primaryWidthRatioProperty,
+          model.primaryHeightRatioProperty,
+          new DynamicProperty( model.primaryMassProperty, {
+            derive: 'volumeProperty'
+          } ),
+          this.popupLayer,
+          { labelNode: PrimarySecondaryPanelsNode.getPrimaryLabelNode() }
+        ),
+        new ShapeSizeControlNode(
+          model.secondaryShapeProperty,
+          model.secondaryWidthRatioProperty,
+          model.secondaryHeightRatioProperty,
+          new DynamicProperty( model.secondaryMassProperty, {
+            derive: 'volumeProperty'
+          } ),
+          this.popupLayer,
+          { labelNode: PrimarySecondaryPanelsNode.getSecondaryLabelNode() }
+        ),
+        secondShapeString,
+        model.secondaryMassVisibleProperty
+      );
+
+      this.addChild( new AlignBox( primarySecondaryPanelsNode, {
+        alignBounds: this.layoutBounds,
+        xAlign: 'right',
+        yAlign: 'top',
+        margin: MARGIN
       } ) );
 
       this.addChild( this.popupLayer );

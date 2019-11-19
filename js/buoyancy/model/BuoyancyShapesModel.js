@@ -131,6 +131,9 @@ define( require => {
       Property.lazyMultilink( [ this.primaryWidthRatioProperty, this.primaryHeightRatioProperty ], ( widthRatio, heightRatio ) => {
         this.primaryMassProperty.value.setRatios( widthRatio, heightRatio );
       } );
+      Property.lazyMultilink( [ this.secondaryWidthRatioProperty, this.secondaryHeightRatioProperty ], ( widthRatio, heightRatio ) => {
+        this.secondaryMassProperty.value.setRatios( widthRatio, heightRatio );
+      } );
 
       // When a new mass is created, set up its position to be that of the old mass
       [ this.primaryMassProperty, this.secondaryMassProperty ].forEach( massProperty => {
@@ -144,6 +147,31 @@ define( require => {
           }
         } );
       } );
+
+      this.masses.add( this.primaryMassProperty.value );
+
+      this.secondaryMassVisibleProperty.lazyLink( secondaryMassVisible => {
+        if ( secondaryMassVisible ) {
+          this.masses.push( this.secondaryMassProperty.value );
+        }
+        else {
+          this.masses.remove( this.secondaryMassProperty.value );
+        }
+      } );
+
+      this.setInitialLocations();
+    }
+
+    /**
+     * Sets up the initial locations of the masses (since some resets may not change the mass).
+     * @private
+     */
+    setInitialLocations() {
+      this.primaryMassProperty.value.matrix.setToTranslation( -0.3, 0 );
+      this.primaryMassProperty.value.writeData();
+
+      this.secondaryMassProperty.value.matrix.setToTranslation( 0.3, 0 );
+      this.secondaryMassProperty.value.writeData();
     }
 
     /**
@@ -162,7 +190,7 @@ define( require => {
       this.primaryWidthRatioProperty.reset();
       this.secondaryWidthRatioProperty.reset();
 
-      // TODO: reset other things, this isn't complete
+      this.setInitialLocations();
 
       super.reset();
     }

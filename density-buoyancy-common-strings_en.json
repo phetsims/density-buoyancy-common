@@ -116,6 +116,24 @@
   "material.wood": {
     "value": "Wood"
   },
+  "shape.block": {
+    "value": "Block"
+  },
+  "shape.cone": {
+    "value": "Cone"
+  },
+  "shape.ellipsoid": {
+    "value": "Ellipsoid"
+  },
+  "shape.horizontalCylinder": {
+    "value": "Horizontal Cylinder"
+  },
+  "shape.invertedCone": {
+    "value": "Inverted Cone"
+  },
+  "shape.verticalCylinder": {
+    "value": "Vertical Cylinder"
+  },
   "materialInside": {
     "value": "Material inside"
   },
@@ -173,6 +191,9 @@
   "secondBlock": {
     "value": "Second Block"
   },
+  "secondShape": {
+    "value": "Second Shape"
+  },
   "density": {
     "value": "Density"
   },
@@ -217,6 +238,12 @@
   },
   "densityKgL": {
     "value": "Density (kg/L)"
+  },
+  "width": {
+    "value": "Width"
+  },
+  "height": {
+    "value": "Height"
   },
   "average": {
     "value": "Average"

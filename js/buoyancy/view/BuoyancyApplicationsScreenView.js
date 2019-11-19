@@ -79,8 +79,6 @@ define( require => {
         maxVolumeLiters: 10
       } );
 
-      const bottleControlSeparator = new HSeparator( bottleControl.width );
-
       const airVolumeLabel = new Text( airVolumeString, { font: new PhetFont( 12 ) } );
 
       const airLitersProperty = new DerivedProperty( [ model.bottle.interiorVolumeProperty ], volume => {
@@ -95,7 +93,7 @@ define( require => {
             font: new PhetFont( 12 )
           } ),
           bottleControl,
-          bottleControlSeparator,
+          new HSeparator( bottleControl.width ),
           new Node( {
             children: [
               airVolumeLabel,

@@ -12,6 +12,7 @@ define( require => {
   const Color = require( 'SCENERY/util/Color' );
   const ColorProfile = require( 'SCENERY_PHET/ColorProfile' );
   const densityBuoyancyCommon = require( 'DENSITY_BUOYANCY_COMMON/densityBuoyancyCommon' );
+  const PhetColorScheme = require( 'SCENERY_PHET/PhetColorScheme' );
 
   // Initial colors for each profile, by string key. Only profile currently is default (still helpful for making color
   // tweaks with the top-level files)
@@ -41,6 +42,9 @@ define( require => {
     comparingPurple: { default: new Color( 131, 43, 126 ) },
 
     chartHeader: { default: new Color( 230, 230, 230 ) },
+
+    radioBorder: { default: PhetColorScheme.BUTTON_YELLOW },
+    radioBackground: { default: Color.WHITE },
 
     // "liquid" material colors
     materialAir: { default: new Color( 0, 0, 0, 0 ) },

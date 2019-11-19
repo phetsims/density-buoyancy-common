@@ -21,6 +21,9 @@ define( require => {
   const Vector2 = require( 'DOT/Vector2' );
   const Vector3 = require( 'DOT/Vector3' );
 
+  // strings
+  const averageString = require( 'string!DENSITY_BUOYANCY_COMMON/average' );
+
   // constants
   const BODY_CORNER_RADIUS = 0.02;
   const CAP_CORNER_RADIUS = 0.03;
@@ -142,6 +145,7 @@ define( require => {
 
       Property.multilink( [ this.interiorMaterialProperty, this.interiorVolumeProperty ], ( material, volume ) => {
         this.materialProperty.value = Material.createCustomMaterial( {
+          name: averageString,
           density: ( BOTTLE_MASS + material.density * volume ) / BOTTLE_VOLUME
         } );
       } );

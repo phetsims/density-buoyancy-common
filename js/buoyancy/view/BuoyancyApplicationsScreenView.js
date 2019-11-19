@@ -9,9 +9,12 @@ define( require => {
   // modules
   const AccordionBox = require( 'SUN/AccordionBox' );
   const AlignBox = require( 'SCENERY/nodes/AlignBox' );
+  const BuoyancyApplicationsModel = require( 'DENSITY_BUOYANCY_COMMON/buoyancy/model/BuoyancyApplicationsModel' );
   const densityBuoyancyCommon = require( 'DENSITY_BUOYANCY_COMMON/densityBuoyancyCommon' );
+  const DensityBuoyancyCommonColorProfile = require( 'DENSITY_BUOYANCY_COMMON/common/view/DensityBuoyancyCommonColorProfile' );
   const DensityBuoyancyScreenView = require( 'DENSITY_BUOYANCY_COMMON/common/view/DensityBuoyancyScreenView' );
   const DensityControlNode = require( 'DENSITY_BUOYANCY_COMMON/common/view/DensityControlNode' );
+  const DensityReadoutListNode = require( 'DENSITY_BUOYANCY_COMMON/buoyancy/view/DensityReadoutListNode' );
   const DerivedProperty = require( 'AXON/DerivedProperty' );
   const DisplayOptionsNode = require( 'DENSITY_BUOYANCY_COMMON/common/view/DisplayOptionsNode' );
   const HSeparator = require( 'SUN/HSeparator' );
@@ -22,17 +25,15 @@ define( require => {
   const NumberDisplay = require( 'SCENERY_PHET/NumberDisplay' );
   const Panel = require( 'SUN/Panel' );
   const PhetFont = require( 'SCENERY_PHET/PhetFont' );
+  const RadioButtonGroup = require( 'SUN/buttons/RadioButtonGroup' );
   const Range = require( 'DOT/Range' );
   const StringUtils = require( 'PHETCOMMON/util/StringUtils' );
   const Text = require( 'SCENERY/nodes/Text' );
-  const Util = require( 'DOT/Util' );
   const VBox = require( 'SCENERY/nodes/VBox' );
   const Vector3 = require( 'DOT/Vector3' );
 
   // strings
   const airVolumeString = require( 'string!DENSITY_BUOYANCY_COMMON/airVolume' );
-  const averageString = require( 'string!DENSITY_BUOYANCY_COMMON/average' );
-  const densityReadoutPatternString = require( 'string!DENSITY_BUOYANCY_COMMON/densityReadoutPattern' );
   const densityString = require( 'string!DENSITY_BUOYANCY_COMMON/density' );
   const litersPatternString = require( 'string!DENSITY_BUOYANCY_COMMON/litersPattern' );
   const materialInsideString = require( 'string!DENSITY_BUOYANCY_COMMON/materialInside' );
@@ -126,7 +127,7 @@ define( require => {
         yMargin: 60
       } ) );
 
-      this.addChild( new Panel( new DensityControlNode( model.liquidMaterialProperty, [
+      const densityControlPanel = new Panel( new DensityControlNode( model.liquidMaterialProperty, [
         Material.AIR,
         Material.GASOLINE,
         Material.WATER,
@@ -140,39 +141,20 @@ define( require => {
         yMargin: 10,
         centerX: this.layoutBounds.centerX,
         bottom: this.layoutBounds.bottom - MARGIN
-      } ) );
+      } );
+
+      this.addChild( densityControlPanel );
 
       const displayOptionsNode = new DisplayOptionsNode( model );
-
-      // TODO: handle maxWidths here nicely
-      const insideDensityLabel = new Text( '', { font: new PhetFont( 14 ), maxWidth: 200 } );
-      const averageDensityLabel = new Text( '', { font: new PhetFont( 14 ), maxWidth: 200 } );
-
-      model.bottle.interiorMaterialProperty.link( material => {
-        insideDensityLabel.text = StringUtils.fillIn( densityReadoutPatternString, {
-          material: material.name,
-          density: Util.toFixed( material.density / 1000, 2 )
-        } );
-      } );
-      model.bottle.materialProperty.link( material => {
-        averageDensityLabel.text = StringUtils.fillIn( densityReadoutPatternString, {
-          material: averageString,
-          density: Util.toFixed( material.density / 1000, 2 )
-        } );
-      } );
 
       const densityContainer = new VBox( {
         spacing: 0,
         children: [
           new HStrut( displayOptionsNode.width - 10 ), // Same internal size as displayOptionsNode
-          new VBox( {
-            spacing: 5,
-            align: 'center',
-            children: [
-              insideDensityLabel,
-              averageDensityLabel
-            ]
-          } )
+          new DensityReadoutListNode( [
+            model.bottle.interiorMaterialProperty,
+            model.bottle.materialProperty
+          ] )
         ]
       } );
 
@@ -196,6 +178,30 @@ define( require => {
         ],
         left: this.layoutBounds.left + MARGIN,
         bottom: this.layoutBounds.bottom - MARGIN
+      } ) );
+
+      this.addChild( new RadioButtonGroup( model.sceneProperty, [
+        {
+          value: BuoyancyApplicationsModel.Scene.BOTTLE,
+          node: new Text( '(bottle)' )
+        },
+        {
+          value: BuoyancyApplicationsModel.Scene.BOAT,
+          node: new Text( '(boat)' )
+        }
+      ], {
+        orientation: 'horizontal',
+        buttonContentXMargin: 10,
+        buttonContentYMargin: 10,
+        selectedLineWidth: 2,
+        deselectedLineWidth: 1.5,
+        touchAreaXDilation: 6,
+        touchAreaYDilation: 6,
+        selectedStroke: DensityBuoyancyCommonColorProfile.radioBorderProperty,
+        baseColor: DensityBuoyancyCommonColorProfile.radioBackgroundProperty,
+
+        bottom: this.layoutBounds.bottom - MARGIN,
+        left: densityControlPanel.right + MARGIN
       } ) );
 
       this.addChild( this.popupLayer );

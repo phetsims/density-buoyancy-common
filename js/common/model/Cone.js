@@ -82,6 +82,30 @@ define( require => {
     }
 
     /**
+     * Returns the radius from a general size scale
+     * @public
+     * @override
+     *
+     * @param {number} widthRatio
+     * @returns {number}
+     */
+    static getRadiusFromRatio( widthRatio ) {
+      return 0.01 + widthRatio * 0.09;
+    }
+
+    /**
+     * Returns the height from a general size scale
+     * @public
+     * @override
+     *
+     * @param {number} heightRatio
+     * @returns {number}
+     */
+    static getHeightFromRatio( heightRatio ) {
+      return 2 * ( 0.01 + heightRatio * 0.09 );
+    }
+
+    /**
      * Sets the general size of the mass based on a general size scale.
      * @public
      * @override
@@ -90,9 +114,10 @@ define( require => {
      * @param {number} heightRatio
      */
     setRatios( widthRatio, heightRatio ) {
-      const x = 0.01 + widthRatio * 0.09;
-      const y = 0.01 + heightRatio * 0.09;
-      this.updateSize( x, 2 * y );
+      this.updateSize(
+        Cone.getRadiusFromRatio( widthRatio ),
+        Cone.getHeightFromRatio( heightRatio )
+      );
     }
 
     updateStepInformation() {

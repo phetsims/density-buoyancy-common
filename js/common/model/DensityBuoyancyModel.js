@@ -154,6 +154,23 @@ define( require => {
     }
 
     /**
+     * Sets whether a mass is visible in the scene.
+     * @public
+     *
+     * @param {Mass} mass
+     * @param {boolean} visible
+     */
+    setMassVisible( mass, visible ) {
+      const contains = this.masses.contains( mass );
+      if ( visible && !contains ) {
+        this.masses.add( mass );
+      }
+      if ( !visible && contains ) {
+        this.masses.remove( mass );
+      }
+    }
+
+    /**
      * Returns the filled volume in the pool (i.e. things that aren't air or water) that is below the given y value.
      * (including an optional boat).
      * @private

@@ -4,6 +4,21 @@
  * Models a 3-dimensional bottle that is borrowed from an approximate 2-liter bottle design (although it is increased
  * to a 10-liter volume).
  *
+ * The bottle is mathematically modeled so that we can quickly compute cross-sections (we'll need those to display
+ * "liquid" contents inside), and also to compute cross-sectional areas and cumulative volumes accurately (for the
+ * buoyancy model, we need to quickly compute displaced area and volume). We'll also want to compute an accurate volume
+ * for our model, so that we can apply a correction factor and scale things so that our model is an exact 10-liter
+ * bottle.
+ *
+ * This means we have a coordinate separation from "logical coordinates" (x,r, center top of the cap is 0,0, and values
+ * are unitless) to "model coordinates" (the bottle is scaled so that it is exactly 10 liters in volume, and the center
+ * is the centroid of the 2d physics intersection shape).
+ *
+ * As part of this modeling, we'll precompute some expensive things (like the curve for displaced areas and volumes,
+ * the exact multiplier to convert the bottle into 10 liters, and the 2d shape used for physics intersection). Some
+ * auto-generated data is in the constants section, computed with
+ * `copy( phet.densityBuoyancyCommon.Bottle.computeBottleData() )`.
+ *
  * Terminology:
  * - Cap: On the left, with a rounded corner on the upper left. It will be included as a separate geometry, and is not
  *        part of the filled-in fluid content.
@@ -34,8 +49,9 @@
  * |     | | |       XX                                curve   X  X second tip curve
  * |     | | |    XXX                                           XX
  * + +-----+ +XXXX                                              X <- saddle point
- *     neck
- *
+ *   neck ^
+ *        |
+ *       gap
  *
  * Coordinate frame for this "non-scaled" version:
  *
@@ -68,15 +84,15 @@ define( require => {
   // strings
   const averageString = require( 'string!DENSITY_BUOYANCY_COMMON/average' );
 
-  // constants
-  const BODY_CORNER_RADIUS = 0.02;
-  const CAP_CORNER_RADIUS = 0.03;
-  const LIP_CORNER_RADIUS = 0.02;
+  // constants (in logical coordinates)
+  const BODY_CORNER_RADIUS = 0.02; // Used both between the taper/body and between the body/base
+  const CAP_CORNER_RADIUS = 0.03; // Used just at the top of the cap on the left
+  const LIP_CORNER_RADIUS = 0.02; // Used at the start and end of the lip
   const CAP_RADIUS = 0.23;
   const LIP_RADIUS = 0.285;
   const NECK_RADIUS = 0.187;
-  const FULL_RADIUS = 0.85;
-  const BASE_TIP_RADIUS = 0.6;
+  const FULL_RADIUS = 0.85; // The largest extent of the bottle from the center-line
+  const BASE_TIP_RADIUS = 0.6; // Where the first and second tip curves join
   const BODY_RADIUS = FULL_RADIUS - BODY_CORNER_RADIUS;
   const CAP_LENGTH = 0.28;
   const GAP_LENGTH = 0.03;
@@ -90,6 +106,7 @@ define( require => {
   const TAPER_SEGMENTS = 20;
   const BASE_SEGMENTS = 20;
 
+  // x positions in logical space
   const LIP_START = CAP_CORNER_RADIUS + CAP_BODY_LENGTH + GAP_LENGTH;
   const LIP_END = LIP_START + LIP_LENGTH;
   const TAPER_START = CAP_CORNER_RADIUS + CAP_BODY_LENGTH + GAP_LENGTH + LIP_LENGTH;

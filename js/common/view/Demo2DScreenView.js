@@ -88,17 +88,6 @@ define( require => {
         this.model.poolBounds.minX, this.model.poolBounds.minY,
         this.model.poolBounds.maxX, this.model.liquidYProperty.value
       ) ) );
-
-      const boat = this.model.getBoat();
-      if ( boat ) {
-        const interiorSize = boat.interiorSizeProperty.value;
-        this.boatWaterPath.shape = this.modelViewTransform.modelToViewShape( Shape.bounds( new Bounds2(
-          interiorSize.minX,
-          interiorSize.minY,
-          interiorSize.maxX,
-          boat.liquidYProperty.value + interiorSize.minY
-        ) ).transformed( boat.matrix ) );
-      }
     }
   }
 

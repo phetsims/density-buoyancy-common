@@ -7,7 +7,6 @@ define( require => {
   'use strict';
 
   // modules
-  const Boat = require( 'DENSITY_BUOYANCY_COMMON/common/model/Boat' );
   const Bounds3 = require( 'DOT/Bounds3' );
   const Cone = require( 'DENSITY_BUOYANCY_COMMON/common/model/Cone' );
   const Cuboid = require( 'DENSITY_BUOYANCY_COMMON/common/model/Cuboid' );
@@ -27,11 +26,6 @@ define( require => {
     constructor( tandem ) {
 
       super( tandem );
-
-      this.masses.push( new Boat( this.engine, new Bounds3( -0.1, -0.05, -0.1, 0.1, 0.05, 0.1 ), 0.005, {
-        matrix: Matrix3.translation( -0.3, -0.1 ),
-        material: Material.ALUMINUM
-      } ) );
 
       this.masses.push( new Cuboid( this.engine, new Bounds3( -0.06, -0.06, -0.06, 0.06, 0.06, 0.06 ), {
         matrix: Matrix3.translation( -0.15, -0.2 ),

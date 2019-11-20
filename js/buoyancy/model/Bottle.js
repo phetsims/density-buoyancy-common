@@ -1,6 +1,50 @@
 // Copyright 2019, University of Colorado Boulder
 
 /**
+ * Models a 3-dimensional bottle that is borrowed from an approximate 2-liter bottle design (although it is increased
+ * to a 10-liter volume).
+ *
+ * Terminology:
+ * - Cap: On the left, with a rounded corner on the upper left. It will be included as a separate geometry, and is not
+ *        part of the filled-in fluid content.
+ * - Neck: Part of the main bottle, where the threads around the cap would go (up to the lip)
+ * - Lip: The protrusion from the neck (before the taper) with rounded corners on each side
+ * - Taper: The parametric surface going from the lip base and expanding to the full radius. Will have a rounded corner
+ *          going from the taper down to the slightly-smaller body radius
+ * - Body: The cylindrical part in the middle.
+ * - Base: The complicated surface at the base of the bottle, not including the rounded corner between it and the body.
+ *         It's composed of the combination of two curves (depending on the angle around the base) by the saddle and tip
+ *         curves.
+ * - Saddle curve: The curve that is the most "rounded" form of the bottle, in-between the "legs" the bottle stands on.
+ * - Tip curve: The curve that takes on the shape of the "leg" the bottle will stand on, that is the furthest.
+ *              This will be made of two curves, one going from the full radius to the tip (first curve), and one from
+ *              the tip to the saddle point (second curve).
+ * - Saddle point: The true mathematical saddle where the saddle/tip curves meet back up, at r=0
+ *
+ * Diagram in x,r coordinates, showing the "profile" (exactly half of the bottle, and the curves that the
+ * three-dimensional form will be made from):
+ *
+ *                                                    +---+base+----+
+ *
+ *                           XXX\       body         /XXXXXXXXX
+ *                        XXX   +--------------------+  XXX    XXX first tip curve
+ *         lip     taper X                                 XX     XX
+ *   cap   /-\          X                                    X      X <- tip
+ * /-----+ | |         X                               saddle X    X
+ * |     | | |       XX                                curve   X  X second tip curve
+ * |     | | |    XXX                                           XX
+ * + +-----+ +XXXX                                              X <- saddle point
+ *     neck
+ *
+ *
+ * Coordinate frame for this "non-scaled" version:
+ *
+ *   r
+ *   ^
+ *   |
+ *   |
+ *   +-----> x
+ *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 define( require => {

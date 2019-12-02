@@ -7,6 +7,7 @@ define( require => {
   'use strict';
 
   // modules
+  const Boat = require( 'DENSITY_BUOYANCY_COMMON/buoyancy/model/Boat' );
   const BooleanProperty = require( 'AXON/BooleanProperty' );
   const Cone = require( 'DENSITY_BUOYANCY_COMMON/common/model/Cone' );
   const Cuboid = require( 'DENSITY_BUOYANCY_COMMON/common/model/Cuboid' );
@@ -42,6 +43,9 @@ define( require => {
     constructor( tandem ) {
 
       super( tandem );
+
+      // TODO: remove
+      this.testBoat = Boat;
 
       // @public {Property.<boolean>}
       this.secondaryMassVisibleProperty = new BooleanProperty( false );

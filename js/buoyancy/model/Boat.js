@@ -13,6 +13,15 @@ define( require => {
   const merge = require( 'PHET_CORE/merge' );
   const NumberProperty = require( 'AXON/NumberProperty' );
   const Shape = require( 'KITE/Shape' );
+  const Util = require( 'DOT/Util' );
+  const Vector2 = require( 'DOT/Vector2' );
+
+  // constants
+  const OUTSIDE = 3;
+  const BOAT_HEIGHT = 50;
+
+  const ONE_LITER_SCALE_MULTIPLIER = 1;
+  const ONE_LITER_INTERSECTION_CENTROID = new Vector2( 0, 0 );
 
   class Boat extends Mass {
     /**
@@ -151,6 +160,157 @@ define( require => {
       this.liquidYProperty.reset();
 
       super.reset();
+    }
+
+    static getHeightRatioFromDesignY( y ) {
+      return Util.linear( -BOAT_HEIGHT, 0, 0, 1, y );
+    }
+
+    static getControlPoints( heightRatio, isInside ) {
+      const v0 = new Vector2( 0, 0 );
+      const v1 = new Vector2( 50, 50 );
+      const v2 = new Vector2( 150, 50 );
+      const v3 = new Vector2( 200, 40 );
+
+      const ratio = Math.pow( heightRatio, 2 );
+      const oppositeRatio = 1 - ratio;
+
+      v0.x += 50 * oppositeRatio;
+      v1.x += 60 * oppositeRatio;
+
+      v1.y += -20 * oppositeRatio;
+      v2.y += -15 * oppositeRatio;
+      v3.y += -5 * oppositeRatio;
+
+      if ( !isInside ) {
+        v0.x += -( 1.4 + 0.5 * oppositeRatio ) * OUTSIDE;
+
+        v1.x += -0.9 * OUTSIDE;
+        v1.y += 0.9 * OUTSIDE;
+
+        v2.y += OUTSIDE;
+
+        v3.x += OUTSIDE;
+        v3.y += ( 0.9 - 0.1 * ratio ) * OUTSIDE;
+      }
+
+      return [ v0, v1, v2, v3 ];
+    }
+
+    /**
+     * Meant for mapping a raw number-based array of x,y,z position data from the construction coordinates to model
+     * coordinates.
+     * @private
+     *
+     * @param {number} point
+     * @param {number} index
+     * @returns {number}
+     */
+    static positionArrayMap( point, index ) {
+      const mod = index % 3;
+
+      // x
+      if ( mod === 0 ) {
+        point -= ONE_LITER_INTERSECTION_CENTROID.x;
+      }
+
+      // y
+      if ( mod === 1 ) {
+        point -= ONE_LITER_INTERSECTION_CENTROID.y;
+      }
+
+      return point * ONE_LITER_SCALE_MULTIPLIER;
+    }
+
+    /**
+     * Returns the model-coordinate main geometry for the bulk of the boat.
+     * @public
+     *
+     * @returns {THREE.BufferGeometry}
+     */
+    static getPrimaryGeometry() {
+      const positions = [];
+      const normals = [];
+      const uvs = [];
+
+      const boatGeometry = new THREE.BufferGeometry();
+      boatGeometry.addAttribute( 'position', new THREE.BufferAttribute( new Float32Array( positions.map( Boat.positionArrayMap ) ), 3 ) );
+      boatGeometry.addAttribute( 'normal', new THREE.BufferAttribute( new Float32Array( normals ), 3 ) );
+      boatGeometry.addAttribute( 'uv', new THREE.BufferAttribute( new Float32Array( uvs ), 2 ) );
+      return boatGeometry;
+    }
+
+    /**
+     * Replaces the main page with a debug view of the bottle, for debugging various curves and properties.
+     * @public
+     */
+    static getDebugCanvas() {
+      const canvas = document.createElement( 'canvas' );
+      const context = canvas.getContext( '2d' );
+
+      const width = 800;
+      const height = 400;
+
+      const pixelRatio = window.devicePixelRatio || 1;
+      canvas.width = width * pixelRatio;
+      canvas.height = height * pixelRatio;
+      canvas.style.width = width + 'px';
+      canvas.style.height = height + 'px';
+      context.scale( pixelRatio, pixelRatio );
+
+      const scale = width / 210;
+
+      const mapX = x => ( x + 5 ) * scale;
+      const mapY = y => -y * scale + height / 2;
+
+      const cubic = points => {
+        context.moveTo( mapX( points[ 0 ].x ), mapY( points[ 0 ].y ) );
+        context.bezierCurveTo(
+          mapX( points[ 1 ].x ), mapY( points[ 1 ].y ),
+          mapX( points[ 2 ].x ), mapY( points[ 2 ].y ),
+          mapX( points[ 3 ].x ), mapY( points[ 3 ].y )
+        );
+        context.moveTo( mapX( points[ 0 ].x ), mapY( -points[ 0 ].y ) );
+        context.bezierCurveTo(
+          mapX( points[ 1 ].x ), mapY( -points[ 1 ].y ),
+          mapX( points[ 2 ].x ), mapY( -points[ 2 ].y ),
+          mapX( points[ 3 ].x ), mapY( -points[ 3 ].y )
+        );
+      };
+
+      const boatProfile = points => {
+        cubic( points );
+        context.moveTo( mapX( points[ 3 ].x ), mapY( points[ 3 ].y ) );
+        context.lineTo( mapX( points[ 3 ].x ), mapY( -points[ 3 ].y ) );
+      };
+
+      context.strokeStyle = 'red';
+      context.beginPath();
+      boatProfile( Boat.getControlPoints( 1, false ) );
+      context.stroke();
+
+      context.strokeStyle = 'blue';
+      context.beginPath();
+      boatProfile( Boat.getControlPoints( 1, true ) );
+      context.stroke();
+
+      context.strokeStyle = 'green';
+      context.beginPath();
+      boatProfile( Boat.getControlPoints( 0, false ) );
+      context.stroke();
+
+      context.strokeStyle = 'magenta';
+      context.beginPath();
+      boatProfile( Boat.getControlPoints( 0, true ) );
+      context.stroke();
+
+      while ( document.body.childNodes[ 0 ] ) {
+        document.body.removeChild( document.body.childNodes[ 0 ] );
+      }
+      document.body.appendChild( canvas );
+      document.body.style.background = 'white';
+
+      return canvas;
     }
   }
 

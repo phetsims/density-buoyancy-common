@@ -26,7 +26,7 @@ define( require => {
   const VerticalCylinder = require( 'DENSITY_BUOYANCY_COMMON/common/model/VerticalCylinder' );
 
   // constants
-  const MassShape = new Enumeration( [
+  const MassShape = Enumeration.byKeys( [
     'BLOCK',
     'ELLIPSOID',
     'VERTICAL_CYLINDER',

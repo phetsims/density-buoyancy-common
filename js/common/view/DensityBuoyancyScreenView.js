@@ -22,9 +22,7 @@ define( require => {
   const DynamicProperty = require( 'AXON/DynamicProperty' );
   const Ellipsoid = require( 'DENSITY_BUOYANCY_COMMON/common/model/Ellipsoid' );
   const EllipsoidView = require( 'DENSITY_BUOYANCY_COMMON/common/view/EllipsoidView' );
-  const FontAwesomeNode = require( 'SUN/FontAwesomeNode' );
   const ForceDiagramNode = require( 'DENSITY_BUOYANCY_COMMON/common/view/ForceDiagramNode' );
-  const HBox = require( 'SCENERY/nodes/HBox' );
   const HorizontalCylinder = require( 'DENSITY_BUOYANCY_COMMON/common/model/HorizontalCylinder' );
   const HorizontalCylinderView = require( 'DENSITY_BUOYANCY_COMMON/common/view/HorizontalCylinderView' );
   const LinearGradient = require( 'SCENERY/util/LinearGradient' );
@@ -32,8 +30,6 @@ define( require => {
   const merge = require( 'PHET_CORE/merge' );
   const Mouse = require( 'SCENERY/input/Mouse' );
   const Node = require( 'SCENERY/nodes/Node' );
-  const openPopup = require( 'PHET_CORE/openPopup' );
-  const PhetFont = require( 'SCENERY_PHET/PhetFont' );
   const Plane3 = require( 'DOT/Plane3' );
   const Property = require( 'AXON/Property' );
   const Rectangle = require( 'SCENERY/nodes/Rectangle' );
@@ -42,18 +38,13 @@ define( require => {
   const ScaleReadoutNode = require( 'DENSITY_BUOYANCY_COMMON/common/view/ScaleReadoutNode' );
   const ScaleView = require( 'DENSITY_BUOYANCY_COMMON/common/view/ScaleView' );
   const ScreenView = require( 'JOIST/ScreenView' );
-  const Text = require( 'SCENERY/nodes/Text' );
   const ThreeIsometricNode = require( 'MOBIUS/ThreeIsometricNode' );
   const ThreeUtil = require( 'MOBIUS/ThreeUtil' );
-  const Util = require( 'SCENERY/util/Util' );
   const Vector2 = require( 'DOT/Vector2' );
   const Vector3 = require( 'DOT/Vector3' );
   const VerticalCylinder = require( 'DENSITY_BUOYANCY_COMMON/common/model/VerticalCylinder' );
   const VerticalCylinderView = require( 'DENSITY_BUOYANCY_COMMON/common/view/VerticalCylinderView' );
   const WaterLevelIndicator = require( 'DENSITY_BUOYANCY_COMMON/common/view/WaterLevelIndicator' );
-
-  // strings
-  const webglWarningBodyString = require( 'string!SCENERY_PHET/webglWarning.body' );
 
   // constants
   const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
@@ -80,33 +71,8 @@ define( require => {
       this.enabled = true;
 
       // TODO: Some logic from CanvasWarningNode. Factor out once ideal description is found
-      if ( !phet.chipper.queryParameters.webgl || !Util.isWebGLSupported ) {
-        const warningNode = new HBox( {
-          children: [
-            new FontAwesomeNode( 'warning_sign', {
-              fill: '#E87600', // "safety orange", according to Wikipedia
-              scale: 0.8
-            } ),
-            new Text( webglWarningBodyString, {
-              font: new PhetFont( 16 ),
-              fill: '#000',
-              maxWidth: 600
-            } )
-          ],
-          spacing: 12,
-          align: 'center',
-          cursor: 'pointer',
-          center: this.layoutBounds.center
-        } );
-        this.addChild( warningNode );
-
-        warningNode.mouseArea = warningNode.touchArea = warningNode.localBounds;
-
-        warningNode.addInputListener( {
-          up: function() {
-            openPopup( 'http://phet.colorado.edu/webgl-disabled-page?simLocale=' + phet.joist.sim.locale );
-          }
-        } );
+      if ( ThreeUtil.isWebGLEnabled() ) {
+        ThreeUtil.showWebGLWarning( this );
         this.enabled = false;
         return this;
       }
@@ -123,8 +89,8 @@ define( require => {
       // @private {Rectangle} - The sky background, in a unit 0-to-1 rectangle (so we can scale it to match)
       this.backgroundNode = new Rectangle( 0, 0, 1, 1, {
         fill: new LinearGradient( 0, 0, 0, 1 )
-                .addColorStop( 0, DensityBuoyancyCommonColorProfile.skyTopProperty )
-                .addColorStop( 1, DensityBuoyancyCommonColorProfile.skyBottomProperty )
+          .addColorStop( 0, DensityBuoyancyCommonColorProfile.skyTopProperty )
+          .addColorStop( 1, DensityBuoyancyCommonColorProfile.skyBottomProperty )
       } );
       this.visibleBoundsProperty.link( visibleBounds => {
         this.backgroundNode.translation = visibleBounds.leftTop;

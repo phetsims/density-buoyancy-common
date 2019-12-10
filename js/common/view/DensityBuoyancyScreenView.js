@@ -71,7 +71,7 @@ define( require => {
       this.enabled = true;
 
       // TODO: Some logic from CanvasWarningNode. Factor out once ideal description is found
-      if ( ThreeUtil.isWebGLEnabled() ) {
+      if ( !ThreeUtil.isWebGLEnabled() ) {
         ThreeUtil.showWebGLWarning( this );
         this.enabled = false;
         return this;

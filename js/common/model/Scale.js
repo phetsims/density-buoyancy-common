@@ -40,7 +40,7 @@ define( require => {
     SCALE_BASE_BOUNDS.centerY,
     SCALE_BASE_BOUNDS.maxZ
   );
-  const DisplayType = new Enumeration( [
+  const DisplayType = Enumeration.byKeys( [
     'NEWTONS',
     'KILOGRAMS'
   ] );

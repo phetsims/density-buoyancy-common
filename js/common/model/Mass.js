@@ -22,7 +22,7 @@ define( require => {
   const Vector3 = require( 'DOT/Vector3' );
 
   // constants
-  const MassTag = new Enumeration( [
+  const MassTag = Enumeration.byKeys( [
     'PRIMARY',
     'SECONDARY',
     'NONE'

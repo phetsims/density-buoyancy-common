@@ -17,7 +17,7 @@ define( require => {
   const Scale = require( 'DENSITY_BUOYANCY_COMMON/common/model/Scale' );
 
   // constants
-  const Scene = new Enumeration( [
+  const Scene = Enumeration.byKeys( [
     'BOTTLE',
     'BOAT'
   ] );

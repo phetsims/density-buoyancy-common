@@ -18,7 +18,7 @@ define( require => {
   const Vector2 = require( 'DOT/Vector2' );
 
   // constants
-  const Mode = new Enumeration( [
+  const Mode = Enumeration.byKeys( [
     'SAME_MASS',
     'SAME_VOLUME',
     'SAME_DENSITY'

@@ -714,23 +714,7 @@ define( require => {
         new Vector2( 0, -CAP_RADIUS )
       ];
 
-      const centroid = new Vector2( 0, 0 );
-      let intersectionArea = 0;
-      flatIntersectionVertices.forEach( ( v0, i ) => {
-        const v1 = flatIntersectionVertices[ ( i + 1 ) % flatIntersectionVertices.length ];
-        const doubleShoelace = v0.x * v1.y - v1.x * v0.y;
-
-        // Compute the area of the flat intersection with Green's Theorem P=-y/2, Q=x/2 (similar to how kite computes
-        // areas). See also https://en.wikipedia.org/wiki/Shoelace_formula
-        intersectionArea += doubleShoelace / 2;
-
-        // Compute the centroid of the flat intersection with https://en.wikipedia.org/wiki/Centroid#Of_a_polygon
-        centroid.addXY(
-          ( v0.x + v1.x ) * doubleShoelace,
-          ( v0.y + v1.y ) * doubleShoelace
-        );
-      } );
-      centroid.divideScalar( 6 * intersectionArea );
+      const centroid = Util.centroidOfPolygon( flatIntersectionVertices );
 
       const maxCrossSectionVertexCount = Math.max( ..._.range( -FULL_RADIUS, FULL_RADIUS, 0.01 ).map( y => {
         return phet.densityBuoyancyCommon.Bottle.getMainBottleCrossSectionTriangles( y, CROSS_SECTION_PRECISION ).length;

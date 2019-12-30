@@ -12,7 +12,7 @@ define( require => {
   const DensityBuoyancyCommonColorProfile = require( 'DENSITY_BUOYANCY_COMMON/common/view/DensityBuoyancyCommonColorProfile' );
   const merge = require( 'PHET_CORE/merge' );
   const Property = require( 'AXON/Property' );
-  const Util = require( 'DOT/Util' );
+  const Utils = require( 'DOT/Utils' );
 
   // strings
   const materialAirString = require( 'string!DENSITY_BUOYANCY_COMMON/material.air' );
@@ -125,7 +125,7 @@ define( require => {
     }
 
     static getCustomLightness( density ) {
-      return Util.roundSymmetric( Util.clamp( Util.linear( 1, -2, 0, 255, Util.log10( density / 1000 ) ), 0, 255 ) );
+      return Utils.roundSymmetric( Utils.clamp( Utils.linear( 1, -2, 0, 255, Utils.log10( density / 1000 ) ), 0, 255 ) );
     }
 
     static getCustomLiquidColor( density ) {

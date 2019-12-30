@@ -16,7 +16,7 @@ define( require => {
   const Rectangle = require( 'SCENERY/nodes/Rectangle' );
   const StringUtils = require( 'PHETCOMMON/util/StringUtils' );
   const Text = require( 'SCENERY/nodes/Text' );
-  const Util = require( 'DOT/Util' );
+  const Utils = require( 'DOT/Utils' );
   const Vector2 = require( 'DOT/Vector2' );
 
   // strings
@@ -74,7 +74,7 @@ define( require => {
       // @private {function(number)}
       this.massListener = mass => {
         readoutText.text = StringUtils.fillIn( kilogramsPatternString, {
-          kilograms: Util.toFixed( mass, 2 )
+          kilograms: Utils.toFixed( mass, 2 )
         } );
         readoutPanel.center = Vector2.ZERO;
       };

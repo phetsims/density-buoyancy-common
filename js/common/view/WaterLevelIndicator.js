@@ -16,7 +16,7 @@ define( require => {
   const Shape = require( 'KITE/Shape' );
   const StringUtils = require( 'PHETCOMMON/util/StringUtils' );
   const Text = require( 'SCENERY/nodes/Text' );
-  const Util = require( 'DOT/Util' );
+  const Utils = require( 'DOT/Utils' );
 
   // strings
   const litersPatternString = require( 'string!DENSITY_BUOYANCY_COMMON/litersPattern' );
@@ -48,7 +48,7 @@ define( require => {
         const liters = 1000 * volume;
 
         readoutText.text = StringUtils.fillIn( litersPatternString, {
-          liters: Util.toFixed( liters, 2 )
+          liters: Utils.toFixed( liters, 2 )
         } );
 
         readoutPanel.rightCenter = highlightPath.leftCenter;

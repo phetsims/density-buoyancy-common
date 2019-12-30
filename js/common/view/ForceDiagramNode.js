@@ -17,7 +17,7 @@ define( require => {
   const PhetFont = require( 'SCENERY_PHET/PhetFont' );
   const StringUtils = require( 'PHETCOMMON/util/StringUtils' );
   const Text = require( 'SCENERY/nodes/Text' );
-  const Util = require( 'DOT/Util' );
+  const Utils = require( 'DOT/Utils' );
 
   // strings
   const newtonsPatternString = require( 'string!DENSITY_BUOYANCY_COMMON/newtonsPattern' );
@@ -118,7 +118,7 @@ define( require => {
 
           if ( this.showForceValuesProperty.value ) {
             textNode.text = StringUtils.fillIn( newtonsPatternString, {
-              newtons: Util.toFixed( forceProperty.value.magnitude, 2 )
+              newtons: Utils.toFixed( forceProperty.value.magnitude, 2 )
             } );
             labels.push( labelNode );
           }

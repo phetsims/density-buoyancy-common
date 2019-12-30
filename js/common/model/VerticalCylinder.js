@@ -14,7 +14,7 @@ define( require => {
   const merge = require( 'PHET_CORE/merge' );
   const NumberProperty = require( 'AXON/NumberProperty' );
   const Shape = require( 'KITE/Shape' );
-  const Util = require( 'DOT/Util' );
+  const Utils = require( 'DOT/Utils' );
   const Vector2 = require( 'DOT/Vector2' );
   const Vector3 = require( 'DOT/Vector3' );
 
@@ -246,7 +246,7 @@ define( require => {
       const b = 2 * ( xp * relativePosition.x * ray.direction.x + zp * relativePosition.z * ray.direction.z );
       const c = -1 + xp * relativePosition.x * relativePosition.x + zp * relativePosition.z * relativePosition.z;
 
-      const tValues = Util.solveQuadraticRootsReal( a, b, c ).filter( t => {
+      const tValues = Utils.solveQuadraticRootsReal( a, b, c ).filter( t => {
         if ( t <= 0 ) {
           return false;
         }

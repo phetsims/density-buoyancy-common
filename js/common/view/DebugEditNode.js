@@ -23,7 +23,7 @@ define( require => {
   const Range = require( 'DOT/Range' );
   const StringUtils = require( 'PHETCOMMON/util/StringUtils' );
   const Text = require( 'SCENERY/nodes/Text' );
-  const Util = require( 'DOT/Util' );
+  const Utils = require( 'DOT/Utils' );
   const VBox = require( 'SCENERY/nodes/VBox' );
   const VerticalCylinder = require( 'DENSITY_BUOYANCY_COMMON/common/model/VerticalCylinder' );
 
@@ -104,22 +104,22 @@ define( require => {
 
       massNumberProperty.link( mass => {
         massText.text = `Mass: ${StringUtils.fillIn( kilogramsPatternString, {
-          kilograms: Util.toFixed( mass, 6 )
+          kilograms: Utils.toFixed( mass, 6 )
         } )}`;
       } );
       volumeProperty.link( volume => {
         volumeText.text = `Volume: ${StringUtils.fillIn( litersPatternString, {
-          liters: Util.toFixed( volume, 6 )
+          liters: Utils.toFixed( volume, 6 )
         } )}`;
       } );
       gravityForceProperty.link( gravityForce => {
-        gravityForceText.text = `Gravity: ${Util.toFixed( gravityForce.x, 6 )}, ${Util.toFixed( gravityForce.y, 6 )}`;
+        gravityForceText.text = `Gravity: ${Utils.toFixed( gravityForce.x, 6 )}, ${Utils.toFixed( gravityForce.y, 6 )}`;
       } );
       buoyancyForceProperty.link( buoyancyForce => {
-        buoyancyForceText.text = `Buoyancy: ${Util.toFixed( buoyancyForce.x, 6 )}, ${Util.toFixed( buoyancyForce.y, 6 )}`;
+        buoyancyForceText.text = `Buoyancy: ${Utils.toFixed( buoyancyForce.x, 6 )}, ${Utils.toFixed( buoyancyForce.y, 6 )}`;
       } );
       contactForceProperty.link( contactForce => {
-        contactForceText.text = `Contact: ${Util.toFixed( contactForce.x, 6 )}, ${Util.toFixed( contactForce.y, 6 )}`;
+        contactForceText.text = `Contact: ${Utils.toFixed( contactForce.x, 6 )}, ${Utils.toFixed( contactForce.y, 6 )}`;
       } );
 
       const controlsContainer = new VBox( {

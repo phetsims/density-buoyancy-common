@@ -12,7 +12,7 @@ define( require => {
   const Material = require( 'DENSITY_BUOYANCY_COMMON/common/model/Material' );
   const MaterialView = require( 'DENSITY_BUOYANCY_COMMON/common/view/MaterialView' );
   const ThreeUtil = require( 'MOBIUS/ThreeUtil' );
-  const Util = require( 'DOT/Util' );
+  const Utils = require( 'DOT/Utils' );
 
   // constants
   const Bricks25AOImage = require( 'image!DENSITY_BUOYANCY_COMMON/Bricks25_AO.jpg' );
@@ -320,7 +320,7 @@ define( require => {
     }
 
     static getCustomLightness( density ) {
-      return Util.roundSymmetric( Util.clamp( Util.linear( 1, -2, 0, 255, Util.log10( density / 1000 ) ), 0, 255 ) );
+      return Utils.roundSymmetric( Utils.clamp( Utils.linear( 1, -2, 0, 255, Utils.log10( density / 1000 ) ), 0, 255 ) );
     }
 
     static getBottleMaterialView() {

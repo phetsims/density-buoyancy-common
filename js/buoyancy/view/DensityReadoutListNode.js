@@ -11,7 +11,7 @@ define( require => {
   const PhetFont = require( 'SCENERY_PHET/PhetFont' );
   const StringUtils = require( 'PHETCOMMON/util/StringUtils' );
   const Text = require( 'SCENERY/nodes/Text' );
-  const Util = require( 'DOT/Util' );
+  const Utils = require( 'DOT/Utils' );
   const VBox = require( 'SCENERY/nodes/VBox' );
 
   // strings
@@ -35,7 +35,7 @@ define( require => {
         materialProperty.link( material => {
           text.text = StringUtils.fillIn( densityReadoutPatternString, {
             material: material.name,
-            density: Util.toFixed( material.density / 1000, 2 )
+            density: Utils.toFixed( material.density / 1000, 2 )
           } );
         } );
 

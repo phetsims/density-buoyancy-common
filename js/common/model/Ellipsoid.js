@@ -15,7 +15,7 @@ define( require => {
   const merge = require( 'PHET_CORE/merge' );
   const Property = require( 'AXON/Property' );
   const Shape = require( 'KITE/Shape' );
-  const Util = require( 'DOT/Util' );
+  const Utils = require( 'DOT/Utils' );
   const Vector3 = require( 'DOT/Vector3' );
 
   class Ellipsoid extends Mass {
@@ -135,7 +135,7 @@ define( require => {
       const b = 2 * ( xp * relativePosition.x * ray.direction.x + yp * relativePosition.y * ray.direction.y + zp * relativePosition.z * ray.direction.z );
       const c = -1 + xp * relativePosition.x * relativePosition.x + yp * relativePosition.y * relativePosition.y + zp * relativePosition.z * relativePosition.z;
 
-      const tValues = Util.solveQuadraticRootsReal( a, b, c ).filter( t => t > 0 );
+      const tValues = Utils.solveQuadraticRootsReal( a, b, c ).filter( t => t > 0 );
 
       if ( tValues.length ) {
         return tValues[ 0 ];

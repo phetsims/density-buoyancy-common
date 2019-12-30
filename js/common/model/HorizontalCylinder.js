@@ -14,7 +14,7 @@ define( require => {
   const merge = require( 'PHET_CORE/merge' );
   const NumberProperty = require( 'AXON/NumberProperty' );
   const Shape = require( 'KITE/Shape' );
-  const Util = require( 'DOT/Util' );
+  const Utils = require( 'DOT/Utils' );
   const Vector3 = require( 'DOT/Vector3' );
 
   class HorizontalCylinder extends Mass {
@@ -152,7 +152,7 @@ define( require => {
       const b = 2 * ( yp * relativePosition.y * ray.direction.y + zp * relativePosition.z * ray.direction.z );
       const c = -1 + yp * relativePosition.y * relativePosition.y + zp * relativePosition.z * relativePosition.z;
 
-      const tValues = Util.solveQuadraticRootsReal( a, b, c ).filter( t => {
+      const tValues = Utils.solveQuadraticRootsReal( a, b, c ).filter( t => {
         if ( t <= 0 ) {
           return false;
         }

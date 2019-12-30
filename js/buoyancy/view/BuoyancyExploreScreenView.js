@@ -24,7 +24,7 @@ define( require => {
   const PrimarySecondaryControlsNode = require( 'DENSITY_BUOYANCY_COMMON/common/view/PrimarySecondaryControlsNode' );
   const StringUtils = require( 'PHETCOMMON/util/StringUtils' );
   const Text = require( 'SCENERY/nodes/Text' );
-  const Util = require( 'DOT/Util' );
+  const Utils = require( 'DOT/Utils' );
   const VBox = require( 'SCENERY/nodes/VBox' );
   const Vector3 = require( 'DOT/Vector3' );
 
@@ -67,12 +67,12 @@ define( require => {
       model.primaryMass.materialProperty.link( material => {
         // TODO: that string utils fill-in or to-fixed density conversion
         densityAText.text = StringUtils.fillIn( kilogramsPerLiterPatternString, {
-          value: Util.toFixed( material.density / 1000, 2 )
+          value: Utils.toFixed( material.density / 1000, 2 )
         } );
       } );
       model.secondaryMass.materialProperty.link( material => {
         densityBText.text = StringUtils.fillIn( kilogramsPerLiterPatternString, {
-          value: Util.toFixed( material.density / 1000, 2 )
+          value: Utils.toFixed( material.density / 1000, 2 )
         } );
       } );
 

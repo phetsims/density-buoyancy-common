@@ -77,7 +77,7 @@ define( require => {
   const Property = require( 'AXON/Property' );
   const Shape = require( 'KITE/Shape' );
   const ThreeUtil = require( 'MOBIUS/ThreeUtil' );
-  const Util = require( 'DOT/Util' );
+  const Utils = require( 'DOT/Utils' );
   const Vector2 = require( 'DOT/Vector2' );
   const Vector3 = require( 'DOT/Vector3' );
 
@@ -320,7 +320,7 @@ define( require => {
       else {
         const a = values[ Math.floor( logicalIndex ) ];
         const b = values[ Math.ceil( logicalIndex ) ];
-        return Util.linear( Math.floor( logicalIndex ), Math.ceil( logicalIndex ), a, b, logicalIndex );
+        return Utils.linear( Math.floor( logicalIndex ), Math.ceil( logicalIndex ), a, b, logicalIndex );
       }
     }
 
@@ -387,7 +387,7 @@ define( require => {
       const r2 = controlPoints[ 2 ].y;
       const r3 = controlPoints[ 3 ].y;
 
-      const roots = Util.solveCubicRootsReal(
+      const roots = Utils.solveCubicRootsReal(
         -r0 + 3 * r1 - 3 * r2 + r3,
         3 * r0 - 6 * r1 + 3 * r2,
         -3 * r0 + 3 * r1,
@@ -466,7 +466,7 @@ define( require => {
       else {
         for ( let i = 1; i < TEN_LITER_DISPLACED_VOLUMES.length; i++ ) {
           if ( volume < TEN_LITER_DISPLACED_VOLUMES[ i ] ) {
-            const ratio = Util.linear(
+            const ratio = Utils.linear(
               TEN_LITER_DISPLACED_VOLUMES[ i - 1 ],
               TEN_LITER_DISPLACED_VOLUMES[ i ],
               ( i - 1 ) / ( TEN_LITER_DISPLACED_VOLUMES.length - 1 ),
@@ -628,7 +628,7 @@ define( require => {
     static getCrossSectionArea( triangles ) {
       let area = 0;
       _.range( 0, triangles.length, 3 ).forEach( i => {
-        area += Util.triangleArea(
+        area += Utils.triangleArea(
           triangles[ i ],
           triangles[ i + 1 ],
           triangles[ i + 2 ]
@@ -714,7 +714,7 @@ define( require => {
         new Vector2( 0, -CAP_RADIUS )
       ];
 
-      const centroid = Util.centroidOfPolygon( flatIntersectionVertices );
+      const centroid = Utils.centroidOfPolygon( flatIntersectionVertices );
 
       const maxCrossSectionVertexCount = Math.max( ..._.range( -FULL_RADIUS, FULL_RADIUS, 0.01 ).map( y => {
         return phet.densityBuoyancyCommon.Bottle.getMainBottleCrossSectionTriangles( y, CROSS_SECTION_PRECISION ).length;
@@ -1004,8 +1004,8 @@ define( require => {
           else {
             const west = positions[ j - 1 ].minus( position );
             const east = positions[ j + 1 ].minus( position );
-            const north = baseMesh[ Util.moduloBetweenDown( i - 1, 0, radialSegments ) ][ j ].minus( position );
-            const south = baseMesh[ Util.moduloBetweenDown( i + 1, 0, radialSegments ) ][ j ].minus( position );
+            const north = baseMesh[ Utils.moduloBetweenDown( i - 1, 0, radialSegments ) ][ j ].minus( position );
+            const south = baseMesh[ Utils.moduloBetweenDown( i + 1, 0, radialSegments ) ][ j ].minus( position );
 
             // TODO: check sign
             const cumulativeNormal = new Vector3( 0, 0, 0 );
@@ -1022,7 +1022,7 @@ define( require => {
       _.range( 0, radialSegments ).map( iRadial => {
         _.range( 0, baseSegments ).map( iBase => {
           const radial0 = iRadial;
-          const radial1 = Util.moduloBetweenDown( iRadial + 1, 0, radialSegments );
+          const radial1 = Utils.moduloBetweenDown( iRadial + 1, 0, radialSegments );
           const base0 = iBase;
           const base1 = iBase + 1;
 

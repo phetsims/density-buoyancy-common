@@ -22,7 +22,7 @@ define( require => {
   const Rectangle = require( 'SCENERY/nodes/Rectangle' );
   const StringUtils = require( 'PHETCOMMON/util/StringUtils' );
   const Text = require( 'SCENERY/nodes/Text' );
-  const Util = require( 'DOT/Util' );
+  const Utils = require( 'DOT/Utils' );
 
   // strings
   const kilogramsPerLiterPatternString = require( 'string!DENSITY_BUOYANCY_COMMON/kilogramsPerLiterPattern' );
@@ -125,14 +125,14 @@ define( require => {
       densityAProperty.link( density => {
         primaryMarker.x = mvt( density );
         primaryLabel.text = StringUtils.fillIn( kilogramsPerLiterPatternString, {
-          value: Util.toFixed( density / 1000, 2 )
+          value: Utils.toFixed( density / 1000, 2 )
         } );
         primaryLabel.centerBottom = primaryArrow.centerTop;
       } );
       densityBProperty.link( density => {
         secondaryMarker.x = mvt( density );
         secondaryLabel.text = StringUtils.fillIn( kilogramsPerLiterPatternString, {
-          value: Util.toFixed( density / 1000, 2 )
+          value: Utils.toFixed( density / 1000, 2 )
         } );
         secondaryLabel.centerTop = secondaryArrow.centerBottom;
       } );

@@ -15,7 +15,7 @@ define( require => {
   const merge = require( 'PHET_CORE/merge' );
   const NumberProperty = require( 'AXON/NumberProperty' );
   const Shape = require( 'KITE/Shape' );
-  const Util = require( 'DOT/Util' );
+  const Utils = require( 'DOT/Utils' );
   const Vector2 = require( 'DOT/Vector2' );
   const Vector3 = require( 'DOT/Vector3' );
 
@@ -170,7 +170,7 @@ define( require => {
     }
 
     static getHeightRatioFromDesignY( y ) {
-      return Util.linear( -BOAT_HEIGHT, 0, 0, 1, y );
+      return Utils.linear( -BOAT_HEIGHT, 0, 0, 1, y );
     }
 
     static getControlPoints( heightRatio, isInside ) {
@@ -286,8 +286,8 @@ define( require => {
         const internalControlPoints = Boat.getControlPoints( heightRatio, true );
         const externalArea = Boat.getAreaFromControlPoints( externalControlPoints );
         const internalArea = Boat.getAreaFromControlPoints( internalControlPoints );
-        const externalCentroid = Util.centroidOfPolygon( Boat.getDiscretizationFromControlPoints( externalControlPoints, discretizationPoints ) );
-        const internalCentroid = Util.centroidOfPolygon( Boat.getDiscretizationFromControlPoints( internalControlPoints, discretizationPoints ) );
+        const externalCentroid = Utils.centroidOfPolygon( Boat.getDiscretizationFromControlPoints( externalControlPoints, discretizationPoints ) );
+        const internalCentroid = Utils.centroidOfPolygon( Boat.getDiscretizationFromControlPoints( internalControlPoints, discretizationPoints ) );
 
         let area = externalArea;
         let weightedCentroid = externalCentroid.timesScalar( externalArea );

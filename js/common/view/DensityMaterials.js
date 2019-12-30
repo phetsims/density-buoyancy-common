@@ -11,7 +11,7 @@ define( require => {
   const densityBuoyancyCommon = require( 'DENSITY_BUOYANCY_COMMON/densityBuoyancyCommon' );
   const Material = require( 'DENSITY_BUOYANCY_COMMON/common/model/Material' );
   const MaterialView = require( 'DENSITY_BUOYANCY_COMMON/common/view/MaterialView' );
-  const ThreeUtil = require( 'MOBIUS/ThreeUtil' );
+  const ThreeUtils = require( 'MOBIUS/ThreeUtils' );
   const Utils = require( 'DOT/Utils' );
 
   // constants
@@ -42,7 +42,7 @@ define( require => {
   const Wood26RghImage = require( 'image!DENSITY_BUOYANCY_COMMON/Wood26_rgh.jpg' );
 
   function toWrappedTexture( image ) {
-    const texture = ThreeUtil.imageToTexture( image );
+    const texture = ThreeUtils.imageToTexture( image );
     texture.wrapS = THREE.RepeatWrapping;
     texture.wrapT = THREE.RepeatWrapping;
     // texture.repeat.set( 4, 4 ); // TODO: any performance or quality due to this?
@@ -258,7 +258,7 @@ define( require => {
       this.material = new THREE.MeshLambertMaterial();
 
       colorProperty.link( color => {
-        this.material.color = ThreeUtil.colorToThree( color );
+        this.material.color = ThreeUtils.colorToThree( color );
       } );
     }
   }

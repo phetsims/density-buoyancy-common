@@ -11,7 +11,7 @@ define( require => {
   const densityBuoyancyCommon = require( 'DENSITY_BUOYANCY_COMMON/densityBuoyancyCommon' );
   const DynamicProperty = require( 'AXON/DynamicProperty' );
   const MassView = require( 'DENSITY_BUOYANCY_COMMON/common/view/MassView' );
-  const ThreeUtil = require( 'MOBIUS/ThreeUtil' );
+  const ThreeUtils = require( 'MOBIUS/ThreeUtils' );
 
   class BottleView extends MassView {
     /**
@@ -149,7 +149,7 @@ define( require => {
       new DynamicProperty( bottle.interiorMaterialProperty, {
         derive: 'liquidColor'
       } ).link( color => {
-        const threeColor = ThreeUtil.colorToThree( color );
+        const threeColor = ThreeUtils.colorToThree( color );
         const alpha = color.alpha;
 
         interiorSurfaceMaterial.color = threeColor;

@@ -39,7 +39,7 @@ define( require => {
   const ScaleView = require( 'DENSITY_BUOYANCY_COMMON/common/view/ScaleView' );
   const ScreenView = require( 'JOIST/ScreenView' );
   const ThreeIsometricNode = require( 'MOBIUS/ThreeIsometricNode' );
-  const ThreeUtil = require( 'MOBIUS/ThreeUtil' );
+  const ThreeUtils = require( 'MOBIUS/ThreeUtils' );
   const Vector2 = require( 'DOT/Vector2' );
   const Vector3 = require( 'DOT/Vector3' );
   const VerticalCylinder = require( 'DENSITY_BUOYANCY_COMMON/common/model/VerticalCylinder' );
@@ -71,8 +71,8 @@ define( require => {
       this.enabled = true;
 
       // TODO: Some logic from CanvasWarningNode. Factor out once ideal description is found
-      if ( !ThreeUtil.isWebGLEnabled() ) {
-        ThreeUtil.showWebGLWarning( this );
+      if ( !ThreeUtils.isWebGLEnabled() ) {
+        ThreeUtils.showWebGLWarning( this );
         this.enabled = false;
         return this;
       }
@@ -131,7 +131,7 @@ define( require => {
       this.sceneNode.stage.threeCamera.zoom = options.cameraZoom;
       this.sceneNode.stage.threeCamera.updateProjectionMatrix();
       this.sceneNode.stage.threeCamera.up = new THREE.Vector3( 0, 0, -1 );
-      this.sceneNode.stage.threeCamera.lookAt( ThreeUtil.vectorToThree( options.cameraLookAt ) );
+      this.sceneNode.stage.threeCamera.lookAt( ThreeUtils.vectorToThree( options.cameraLookAt ) );
 
       this.sceneNode.backgroundEventTarget.addInputListener( {
         mousemove: event => {
@@ -202,26 +202,26 @@ define( require => {
       const frontGeometry = new THREE.BufferGeometry();
       frontGeometry.addAttribute( 'position', new THREE.BufferAttribute( new Float32Array( [
         // Left side
-        ...ThreeUtil.frontVertices( new Bounds2(
+        ...ThreeUtils.frontVertices( new Bounds2(
           model.groundBounds.minX, model.groundBounds.minY,
           model.poolBounds.minX, model.groundBounds.maxY
         ), model.groundBounds.maxZ ),
 
         // Right side
-        ...ThreeUtil.frontVertices( new Bounds2(
+        ...ThreeUtils.frontVertices( new Bounds2(
           model.poolBounds.maxX, model.groundBounds.minY,
           model.groundBounds.maxX, model.groundBounds.maxY
         ), model.groundBounds.maxZ ),
 
         // Bottom
-        ...ThreeUtil.frontVertices( new Bounds2(
+        ...ThreeUtils.frontVertices( new Bounds2(
           model.poolBounds.minX, model.groundBounds.minY,
           model.poolBounds.maxX, model.poolBounds.minY
         ), model.groundBounds.maxZ )
       ] ), 3 ) );
       const groundMaterial = new THREE.MeshBasicMaterial();
       DensityBuoyancyCommonColorProfile.groundProperty.link( groundColor => {
-        groundMaterial.color = ThreeUtil.colorToThree( groundColor );
+        groundMaterial.color = ThreeUtils.colorToThree( groundColor );
       } );
 
       const frontMesh = new THREE.Mesh( frontGeometry, groundMaterial );
@@ -231,19 +231,19 @@ define( require => {
       const topGeometry = new THREE.BufferGeometry();
       topGeometry.addAttribute( 'position', new THREE.BufferAttribute( new Float32Array( [
         // Left side
-        ...ThreeUtil.topVertices( new Bounds2(
+        ...ThreeUtils.topVertices( new Bounds2(
           model.groundBounds.minX, model.poolBounds.minZ,
           model.poolBounds.minX, model.groundBounds.maxZ
         ), model.groundBounds.maxY ),
 
         // Right side
-        ...ThreeUtil.topVertices( new Bounds2(
+        ...ThreeUtils.topVertices( new Bounds2(
           model.poolBounds.maxX, model.poolBounds.minZ,
           model.groundBounds.maxX, model.groundBounds.maxZ
         ), model.groundBounds.maxY ),
 
         // Back side
-        ...ThreeUtil.topVertices( new Bounds2(
+        ...ThreeUtils.topVertices( new Bounds2(
           model.groundBounds.minX, model.groundBounds.minZ,
           model.groundBounds.maxX, model.poolBounds.minZ
         ), model.groundBounds.maxY )
@@ -326,25 +326,25 @@ define( require => {
       const poolGeometry = new THREE.BufferGeometry();
       poolGeometry.addAttribute( 'position', new THREE.BufferAttribute( new Float32Array( [
         // Bottom
-        ...ThreeUtil.topVertices( new Bounds2(
+        ...ThreeUtils.topVertices( new Bounds2(
           model.poolBounds.minX, model.poolBounds.minZ,
           model.poolBounds.maxX, model.poolBounds.maxZ
         ), model.poolBounds.minY ),
 
         // Back
-        ...ThreeUtil.frontVertices( new Bounds2(
+        ...ThreeUtils.frontVertices( new Bounds2(
           model.poolBounds.minX, model.poolBounds.minY,
           model.poolBounds.maxX, model.poolBounds.maxY
         ), model.poolBounds.minZ ),
 
         // Left
-        ...ThreeUtil.rightVertices( new Bounds2(
+        ...ThreeUtils.rightVertices( new Bounds2(
           model.poolBounds.minZ, model.poolBounds.minY,
           model.poolBounds.maxZ, model.poolBounds.maxY
         ), model.poolBounds.minX ),
 
         // Right
-        ...ThreeUtil.leftVertices( new Bounds2(
+        ...ThreeUtils.leftVertices( new Bounds2(
           model.poolBounds.minZ, model.poolBounds.minY,
           model.poolBounds.maxZ, model.poolBounds.maxY
         ), model.poolBounds.maxX )
@@ -384,7 +384,7 @@ define( require => {
       ] ), 3 ) );
       const poolMaterial = new THREE.MeshLambertMaterial();
       DensityBuoyancyCommonColorProfile.poolSurfaceProperty.link( poolSurfaceColor => {
-        poolMaterial.color = ThreeUtil.colorToThree( poolSurfaceColor );
+        poolMaterial.color = ThreeUtils.colorToThree( poolSurfaceColor );
       } );
 
       const poolMesh = new THREE.Mesh( poolGeometry, poolMaterial );
@@ -394,13 +394,13 @@ define( require => {
       const waterGeometry = new THREE.BufferGeometry();
       waterGeometry.addAttribute( 'position', new THREE.BufferAttribute( new Float32Array( [
         // Front
-        ...ThreeUtil.frontVertices( new Bounds2(
+        ...ThreeUtils.frontVertices( new Bounds2(
           model.poolBounds.minX, model.poolBounds.minY,
           model.poolBounds.maxX, model.poolBounds.maxY
         ), model.poolBounds.maxZ ),
 
         // Top
-        ...ThreeUtil.topVertices( new Bounds2(
+        ...ThreeUtils.topVertices( new Bounds2(
           model.poolBounds.minX, model.poolBounds.minZ,
           model.poolBounds.maxX, model.poolBounds.maxZ
         ), model.poolBounds.maxY )
@@ -428,7 +428,7 @@ define( require => {
       new DynamicProperty( model.liquidMaterialProperty, {
         derive: 'liquidColor'
       } ).link( color => {
-        waterMaterial.color = ThreeUtil.colorToThree( color );
+        waterMaterial.color = ThreeUtils.colorToThree( color );
         waterMaterial.opacity = color.alpha;
       } );
       const waterMesh = new THREE.Mesh( waterGeometry, waterMaterial );
@@ -437,13 +437,13 @@ define( require => {
       model.liquidYProperty.link( y => {
         const vertices = [
           // Front
-          ...ThreeUtil.frontVertices( new Bounds2(
+          ...ThreeUtils.frontVertices( new Bounds2(
             model.poolBounds.minX, model.poolBounds.minY,
             model.poolBounds.maxX, y
           ), model.poolBounds.maxZ ),
 
           // Top
-          ...ThreeUtil.topVertices( new Bounds2(
+          ...ThreeUtils.topVertices( new Bounds2(
             model.poolBounds.minX, model.poolBounds.minZ,
             model.poolBounds.maxX, model.poolBounds.maxZ
           ), y )

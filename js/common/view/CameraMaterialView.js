@@ -10,7 +10,7 @@ define( require => {
   const densityBuoyancyCommon = require( 'DENSITY_BUOYANCY_COMMON/densityBuoyancyCommon' );
   const DensityBuoyancyCommonColorProfile = require( 'DENSITY_BUOYANCY_COMMON/common/view/DensityBuoyancyCommonColorProfile' );
   const MaterialView = require( 'DENSITY_BUOYANCY_COMMON/common/view/MaterialView' );
-  const ThreeUtil = require( 'MOBIUS/ThreeUtil' );
+  const ThreeUtils = require( 'MOBIUS/ThreeUtils' );
 
   class CameraMaterialView extends MaterialView {
     /**
@@ -48,7 +48,7 @@ define( require => {
       const initiallyVisible = massView.visible;
       massView.visible = false;
       // TODO: more of a cubemap. THEN use the cubemap in everything
-      scene.background = ThreeUtil.colorToThree( DensityBuoyancyCommonColorProfile.skyBottomProperty.value );
+      scene.background = ThreeUtils.colorToThree( DensityBuoyancyCommonColorProfile.skyBottomProperty.value );
 
       // NOTE NOTE NOTE: Just adjust this based on water level or other things?
 

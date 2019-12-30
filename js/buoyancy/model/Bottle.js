@@ -76,7 +76,7 @@ define( require => {
   const NumberProperty = require( 'AXON/NumberProperty' );
   const Property = require( 'AXON/Property' );
   const Shape = require( 'KITE/Shape' );
-  const ThreeUtil = require( 'MOBIUS/ThreeUtil' );
+  const ThreeUtils = require( 'MOBIUS/ThreeUtils' );
   const Utils = require( 'DOT/Utils' );
   const Vector2 = require( 'DOT/Vector2' );
   const Vector3 = require( 'DOT/Vector3' );
@@ -248,7 +248,7 @@ define( require => {
       const translation = this.matrix.translation;
       const adjustedPosition = ray.position.minusXYZ( translation.x, translation.y, 0 );
 
-      const raycaster = new THREE.Raycaster( ThreeUtil.vectorToThree( adjustedPosition ), ThreeUtil.vectorToThree( ray.direction ) );
+      const raycaster = new THREE.Raycaster( ThreeUtils.vectorToThree( adjustedPosition ), ThreeUtils.vectorToThree( ray.direction ) );
       const intersections = [];
       raycaster.intersectObject( this.intersectionGroup, true, intersections );
 

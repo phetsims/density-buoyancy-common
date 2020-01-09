@@ -17,6 +17,7 @@ define( require => {
   const merge = require( 'PHET_CORE/merge' );
   const NumberProperty = require( 'AXON/NumberProperty' );
   const Property = require( 'AXON/Property' );
+  const Utils = require( 'DOT/Utils' );
   const Vector2 = require( 'DOT/Vector2' );
   const Vector2Property = require( 'DOT/Vector2Property' );
   const Vector3 = require( 'DOT/Vector3' );
@@ -295,6 +296,26 @@ define( require => {
       this.writeData();
 
       this.transformedEmitter.emit();
+    }
+
+    /**
+     * Given a list of values and a ratio from 0 (the start) to 1 (the end), return an interpolated value.
+     * @public
+     *
+     * @param {Array.<number>} values
+     * @param {number} ratio
+     * @returns {number}
+     */
+    static evaluatePiecewiseLinear( values, ratio ) {
+      const logicalIndex = ratio * values.length;
+      if ( logicalIndex % 1 === 0 ) {
+        return values[ logicalIndex ];
+      }
+      else {
+        const a = values[ Math.floor( logicalIndex ) ];
+        const b = values[ Math.ceil( logicalIndex ) ];
+        return Utils.linear( Math.floor( logicalIndex ), Math.ceil( logicalIndex ), a, b, logicalIndex );
+      }
     }
   }
 

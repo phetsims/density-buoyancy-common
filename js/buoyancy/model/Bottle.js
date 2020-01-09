@@ -275,7 +275,7 @@ define( require => {
 
       const ratio = ( liquidLevel - bottom ) / ( top - bottom );
 
-      return Bottle.evaluatePiecewiseLinear( TEN_LITER_DISPLACED_AREAS, ratio );
+      return Mass.evaluatePiecewiseLinear( TEN_LITER_DISPLACED_AREAS, ratio );
     }
 
     /**
@@ -301,7 +301,7 @@ define( require => {
       else {
         const ratio = ( liquidLevel - bottom ) / ( top - bottom );
 
-        return Bottle.evaluatePiecewiseLinear( TEN_LITER_DISPLACED_VOLUMES, ratio );
+        return Mass.evaluatePiecewiseLinear( TEN_LITER_DISPLACED_VOLUMES, ratio );
       }
     }
 
@@ -310,18 +310,6 @@ define( require => {
       this.interiorVolumeProperty.reset();
 
       super.reset();
-    }
-
-    static evaluatePiecewiseLinear( values, ratio ) {
-      const logicalIndex = ratio * values.length;
-      if ( logicalIndex % 1 === 0 ) {
-        return values[ logicalIndex ];
-      }
-      else {
-        const a = values[ Math.floor( logicalIndex ) ];
-        const b = values[ Math.ceil( logicalIndex ) ];
-        return Utils.linear( Math.floor( logicalIndex ), Math.ceil( logicalIndex ), a, b, logicalIndex );
-      }
     }
 
     /**

@@ -7,14 +7,19 @@ define( require => {
   'use strict';
 
   // modules
+  const Boat = require( 'DENSITY_BUOYANCY_COMMON/buoyancy/model/Boat' );
   const BooleanProperty = require( 'AXON/BooleanProperty' );
   const Bottle = require( 'DENSITY_BUOYANCY_COMMON/buoyancy/model/Bottle' );
+  const Cuboid = require( 'DENSITY_BUOYANCY_COMMON/common/model/Cuboid' );
   const densityBuoyancyCommon = require( 'DENSITY_BUOYANCY_COMMON/densityBuoyancyCommon' );
   const DensityBuoyancyModel = require( 'DENSITY_BUOYANCY_COMMON/common/model/DensityBuoyancyModel' );
+  const DerivedProperty = require( 'AXON/DerivedProperty' );
   const Enumeration = require( 'PHET_CORE/Enumeration' );
   const EnumerationProperty = require( 'AXON/EnumerationProperty' );
+  const Material = require( 'DENSITY_BUOYANCY_COMMON/common/model/Material' );
   const Matrix3 = require( 'DOT/Matrix3' );
   const Scale = require( 'DENSITY_BUOYANCY_COMMON/common/model/Scale' );
+  const Vector2 = require( 'DOT/Vector2' );
 
   // constants
   const Scene = Enumeration.byKeys( [
@@ -40,6 +45,17 @@ define( require => {
       this.bottle = new Bottle( this.engine, {
         matrix: Matrix3.translation( 0, 0 )
       } );
+
+
+      // @public {Cuboid}
+      this.block = Cuboid.createWithVolume( this.engine, Material.STEEL, new Vector2( 0, 1 ), 0.005 );
+
+      // @public {Boat}
+      this.boat = new Boat( this.engine, new DerivedProperty( [ this.block.sizeProperty ], size => size.depth ), {
+        matrix: Matrix3.translation( 0, 0 ),
+        material: Material.STEEL
+      } );
+
 
       // @public {Scale}
       this.leftScale = new Scale( this.engine, {

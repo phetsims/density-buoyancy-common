@@ -390,18 +390,214 @@ define( require => {
     }
 
     /**
-     * Returns the model-coordinate main geometry for the bulk of the boat.
+     * Returns the one-liter model-coordinate main geometry for the bulk of the boat.
      * @public
      *
      * @returns {THREE.BufferGeometry}
      */
-    static getPrimaryGeometry() {
+    static getPrimaryGeometry( liters = 1 ) {
       const positions = [];
       const normals = [];
       const uvs = [];
 
+      const parametricSamples = 50;
+      const heightSamples = 30;
+
+      const getRows = isInside => _.range( 0, heightSamples ).map( sample => {
+        const designY = ( -BOAT_HEIGHT + ( isInside ? OUTSIDE : 0 ) ) * sample / ( heightSamples - 1 );
+        const controlPoints = Boat.getControlPoints( Boat.getHeightRatioFromDesignY( designY ), isInside );
+        const cubic = new Cubic( ...controlPoints );
+        return _.range( 0, parametricSamples ).map( pSample => {
+          const t = pSample / ( parametricSamples - 1 );
+          const point = cubic.positionAt( t );
+          return Boat.designToModel( new Vector3( point.x, designY, point.y ), liters );
+        } );
+      } );
+      const exteriorRows = getRows( false );
+      const interiorRows = getRows( true );
+
+      const normalizeRows = rows => rows.map( ( row, i ) => row.map( ( position, j ) => {
+        // these will be null if they are not available
+        const west = j > 0 ? row[ j - 1 ].minus( position ) : null;
+        const east = j < row.length - 1 ? row[ j + 1 ].minus( position ) : null;
+        const north = i > 0 ? rows[ i - 1 ][ j ].minus( position ) : null;
+        const south = i < rows.length - 1 ? rows[ i + 1 ][ j ].minus( position ) : null;
+
+        const cumulativeNormal = new Vector3( 0, 0, 0 );
+        north && east && cumulativeNormal.add( north.cross( east ).normalize() );
+        east && south && cumulativeNormal.add( east.cross( south ).normalize() );
+        south && west && cumulativeNormal.add( south.cross( west ).normalize() );
+        west && north && cumulativeNormal.add( west.cross( north ).normalize() );
+        cumulativeNormal.normalize();
+        return cumulativeNormal;
+      } ) );
+
+      const writeFlat = ( frontCurve, backCurve, normal ) => {
+        assert && assert( frontCurve.length === backCurve.length );
+
+        for ( let i = 0; i < frontCurve.length - 1; i++ ) {
+          // Positions for our quad
+          const pA = backCurve[ i ];
+          const pB = backCurve[ i + 1 ];
+          const pC = frontCurve[ i ];
+          const pD = frontCurve[ i + 1 ];
+
+          // UV coordinates for each side
+          const uL = i / ( frontCurve.length - 1 );
+          const uR = ( i + 1 ) / ( frontCurve.length - 1 );
+          const vL = 0;
+          const vR = 1; // TODO: better mapping for the boat bottom presumably?
+
+          positions.push(
+            pA.x, pA.y, pA.z,
+            pC.x, pC.y, pC.z,
+            pB.x, pB.y, pB.z,
+            pC.x, pC.y, pC.z,
+            pD.x, pD.y, pD.z,
+            pB.x, pB.y, pB.z
+          );
+          normals.push(
+            normal.x, normal.y, normal.z,
+            normal.x, normal.y, normal.z,
+            normal.x, normal.y, normal.z,
+            normal.x, normal.y, normal.z,
+            normal.x, normal.y, normal.z,
+            normal.x, normal.y, normal.z
+          );
+          uvs.push(
+            uL, vL,
+            uL, vL,
+            uR, vR,
+            uL, vL,
+            uR, vR,
+            uR, vR,
+          );
+        }
+      };
+
+      const writeGrid = ( rows, normalRows, reverse ) => _.range( 0, rows.length - 1 ).forEach( i => _.range( 0, rows[ i ].length - 1 ).forEach( j => {
+        // Positions for our quad
+        const pA = rows[ i ][ j ];
+        const pB = rows[ i + 1 ][ j ];
+        const pC = rows[ i ][ j + 1 ];
+        const pD = rows[ i + 1 ][ j + 1 ];
+
+        // Normals for our quad
+        const nA = normalRows[ i ][ j ];
+        const nB = normalRows[ i + 1 ][ j ];
+        const nC = normalRows[ i ][ j + 1 ];
+        const nD = normalRows[ i + 1 ][ j + 1 ];
+
+        // UV coordinates for each side
+        const uL = j / ( rows[ i ].length - 1 );
+        const uR = ( j + 1 ) / ( rows[ i ].length - 1 );
+        const vL = i / ( rows.length - 1 );
+        const vR = ( i + 1 ) / ( rows.length - 1 );
+
+        // TODO: better way to factor this out?
+        if ( reverse ) {
+          positions.push(
+            pA.x, pA.y, pA.z,
+            pB.x, pB.y, pB.z,
+            pC.x, pC.y, pC.z,
+            pC.x, pC.y, pC.z,
+            pB.x, pB.y, pB.z,
+            pD.x, pD.y, pD.z
+          );
+          normals.push(
+            nA.x, nA.y, nA.z,
+            nB.x, nB.y, nB.z,
+            nC.x, nC.y, nC.z,
+            nC.x, nC.y, nC.z,
+            nB.x, nB.y, nB.z,
+            nD.x, nD.y, nD.z
+          );
+          uvs.push(
+            uL, vL,
+            uR, vR,
+            uL, vL,
+            uL, vL,
+            uR, vR,
+            uR, vR
+          );
+        }
+        else {
+          positions.push(
+            pA.x, pA.y, pA.z,
+            pC.x, pC.y, pC.z,
+            pB.x, pB.y, pB.z,
+            pC.x, pC.y, pC.z,
+            pD.x, pD.y, pD.z,
+            pB.x, pB.y, pB.z
+          );
+          normals.push(
+            nA.x, nA.y, nA.z,
+            nC.x, nC.y, nC.z,
+            nB.x, nB.y, nB.z,
+            nC.x, nC.y, nC.z,
+            nD.x, nD.y, nD.z,
+            nB.x, nB.y, nB.z
+          );
+          uvs.push(
+            uL, vL,
+            uL, vL,
+            uR, vR,
+            uL, vL,
+            uR, vR,
+            uR, vR,
+          );
+        }
+      } ) );
+
+      const flipZVector = new Vector3( 1, 1, -1 );
+      const flipRow = row => row.map( v => v.componentTimes( flipZVector ) );
+      const negateRows = rows => rows.map( row => row.map( v => v.negated() ) );
+      const flipRows = rows => rows.map( flipRow );
+
+      const exteriorNormalRows = normalizeRows( exteriorRows );
+      const interiorNormalRows = normalizeRows( interiorRows ); // TODO: we'll presumably need to reverse these
+
+      // Z+ exterior side
+      writeGrid( exteriorRows, negateRows( exteriorNormalRows ), true );
+
+      // Z+ interior side
+      writeGrid( interiorRows, interiorNormalRows, false );
+
+      // Z- exterior side
+      writeGrid( flipRows( exteriorRows ), flipRows( negateRows( exteriorNormalRows ) ), false );
+
+      // Z- interior side
+      writeGrid( flipRows( interiorRows ), flipRows( interiorNormalRows ), true );
+
+      // Top of the boat bottom
+      writeFlat( interiorRows[ interiorRows.length - 1 ], flipRow( interiorRows[ interiorRows.length - 1 ] ), new Vector3( 0, 1, 0 ) );
+
+      // Bottom of the boat bottom
+      writeFlat( flipRow( exteriorRows[ exteriorRows.length - 1 ] ), exteriorRows[ exteriorRows.length - 1 ], new Vector3( 0, -1, 0 ) );
+
+      // Z+ gunwale
+      writeFlat( exteriorRows[ 0 ], interiorRows[ 0 ], new Vector3( 0, 1, 0 ) );
+
+      // Z- gunwale
+      writeFlat( flipRow( interiorRows[ 0 ] ), flipRow( exteriorRows[ 0 ] ), new Vector3( 0, 1, 0 ) );
+
+      // Stern gunwale
+      const sternGunwaleRow = [
+        interiorRows[ 0 ][ interiorRows[ 0 ].length - 1 ],
+        exteriorRows[ 0 ][ exteriorRows[ 0 ].length - 1 ]
+      ];
+      writeFlat( sternGunwaleRow, flipRow( sternGunwaleRow ), new Vector3( 0, 1, 0 ) );
+
+      // Stern interior
+      const sternInteriorRow = interiorRows.map( row => row[ row.length - 1 ] );
+      writeFlat( flipRow( sternInteriorRow ), sternInteriorRow, new Vector3( -1, 0, 0 ) );
+
+      // Stern exterior
+      const sternExteriorRow = exteriorRows.map( row => row[ row.length - 1 ] );
+      writeFlat( sternExteriorRow, flipRow( sternExteriorRow ), new Vector3( 1, 0, 0 ) );
+
       const boatGeometry = new THREE.BufferGeometry();
-      boatGeometry.addAttribute( 'position', new THREE.BufferAttribute( new Float32Array( positions.map( Boat.positionArrayMap ) ), 3 ) );
+      boatGeometry.addAttribute( 'position', new THREE.BufferAttribute( new Float32Array( positions ), 3 ) );
       boatGeometry.addAttribute( 'normal', new THREE.BufferAttribute( new Float32Array( normals ), 3 ) );
       boatGeometry.addAttribute( 'uv', new THREE.BufferAttribute( new Float32Array( uvs ), 2 ) );
       return boatGeometry;

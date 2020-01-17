@@ -9,6 +9,7 @@ define( require => {
   // modules
   const AccordionBox = require( 'SUN/AccordionBox' );
   const AlignBox = require( 'SCENERY/nodes/AlignBox' );
+  const Boat = require( 'DENSITY_BUOYANCY_COMMON/buoyancy/model/Boat' );
   const BuoyancyApplicationsModel = require( 'DENSITY_BUOYANCY_COMMON/buoyancy/model/BuoyancyApplicationsModel' );
   const densityBuoyancyCommon = require( 'DENSITY_BUOYANCY_COMMON/densityBuoyancyCommon' );
   const DensityBuoyancyCommonColorProfile = require( 'DENSITY_BUOYANCY_COMMON/common/view/DensityBuoyancyCommonColorProfile' );
@@ -60,6 +61,17 @@ define( require => {
 
       // For clipping planes in BottleView
       this.sceneNode.stage.threeRenderer.localClippingEnabled = true;
+
+      const boatGeometry = Boat.getPrimaryGeometry( 10 );
+
+      // @private {THREE.Mesh}
+      this.boatMesh = new THREE.Mesh( boatGeometry, new THREE.MeshLambertMaterial( {
+      // const boatMesh = new THREE.Mesh( boatGeometry, new THREE.MeshBasicMaterial( {
+      // const boatMesh = new THREE.Mesh( new THREE.SphereGeometry( 0.1, 32, 32 ), new THREE.MeshBasicMaterial( {
+        // side: THREE.DoubleSide,
+        color: 0xffaa44
+      } ) );
+      // this.sceneNode.stage.threeScene.add( this.boatMesh );
 
       const bottleControl = new MaterialMassVolumeControlNode( model.bottle.interiorMaterialProperty, model.bottle.interiorMassProperty, model.bottle.interiorVolumeProperty, [
         Material.GASOLINE,
@@ -208,6 +220,14 @@ define( require => {
       } ) );
 
       this.addChild( this.popupLayer );
+    }
+
+    // TODO: remove
+    step( dt ) {
+      super.step( dt );
+
+      this.boatMesh.rotation.y += dt * 0.5;
+      this.boatMesh.rotation.x += dt * 0.1;
     }
   }
 

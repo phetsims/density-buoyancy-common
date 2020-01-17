@@ -48,7 +48,7 @@ define( require => {
 
 
       // @public {Cuboid}
-      this.block = Cuboid.createWithVolume( this.engine, Material.STEEL, new Vector2( 0, 1 ), 0.005 );
+      this.block = Cuboid.createWithVolume( this.engine, Material.STEEL, new Vector2( 0.5, 0.5 ), 0.005 );
 
       // @public {Boat}
       this.boat = new Boat( this.engine, new DerivedProperty( [ this.block.sizeProperty ], size => size.depth ), {
@@ -73,6 +73,8 @@ define( require => {
 
       this.sceneProperty.link( scene => {
         this.setMassVisible( this.bottle, scene === Scene.BOTTLE );
+        this.setMassVisible( this.boat, scene === Scene.BOAT );
+        this.setMassVisible( this.block, scene === Scene.BOAT );
       } );
     }
 
@@ -85,6 +87,10 @@ define( require => {
       this.densityReadoutExpandedProperty.reset();
 
       this.sceneProperty.reset();
+
+      this.bottle.reset();
+      this.block.reset();
+      this.boat.reset();
 
       super.reset();
     }

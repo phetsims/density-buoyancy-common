@@ -17,6 +17,7 @@ define( require => {
   const merge = require( 'PHET_CORE/merge' );
   const NumberProperty = require( 'AXON/NumberProperty' );
   const Shape = require( 'KITE/Shape' );
+  const ThreeUtils = require( 'MOBIUS/ThreeUtils' );
   const Utils = require( 'DOT/Utils' );
   const Vector2 = require( 'DOT/Vector2' );
   const Vector3 = require( 'DOT/Vector3' );
@@ -83,6 +84,19 @@ define( require => {
 
       // @private {number} - How to multiply our one-liter size up to the model coordinates
       this.stepMultiplier = 0;
+
+      // @public {THREE.Group}
+      this.intersectionGroup = new THREE.Group();
+      const intersectionMesh = new THREE.Mesh( Boat.getPrimaryGeometry( 1 ), new THREE.MeshLambertMaterial() );
+      this.intersectionGroup.add( intersectionMesh );
+
+      this.displacementVolumeProperty.link( volume => {
+        const scale = Math.pow( volume / 0.001, 1 / 3 );
+        intersectionMesh.scale.x = scale;
+        intersectionMesh.scale.y = scale;
+        intersectionMesh.scale.z = scale;
+        intersectionMesh.updateMatrix();
+      } );
     }
 
     /**
@@ -136,9 +150,15 @@ define( require => {
      * @returns {number|null}
      */
     intersect( ray, isTouch ) {
-      // TODO
+      // TODO: somewhat borrowed with Bottle, let's combine
+      const translation = this.matrix.translation;
+      const adjustedPosition = ray.position.minusXYZ( translation.x, translation.y, 0 );
 
-      return null;
+      const raycaster = new THREE.Raycaster( ThreeUtils.vectorToThree( adjustedPosition ), ThreeUtils.vectorToThree( ray.direction ) );
+      const intersections = [];
+      raycaster.intersectObject( this.intersectionGroup, true, intersections );
+
+      return intersections.length ? intersections[ 0 ].distance : null;
     }
 
     /**

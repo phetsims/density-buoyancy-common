@@ -8,6 +8,8 @@ define( require => {
 
   // modules
   const arrayRemove = require( 'PHET_CORE/arrayRemove' );
+  const Boat = require( 'DENSITY_BUOYANCY_COMMON/buoyancy/model/Boat' );
+  const BoatView = require( 'DENSITY_BUOYANCY_COMMON/buoyancy/view/BoatView' );
   const Bottle = require( 'DENSITY_BUOYANCY_COMMON/buoyancy/model/Bottle' );
   const BottleView = require( 'DENSITY_BUOYANCY_COMMON/buoyancy/view/BottleView' );
   const Bounds2 = require( 'DOT/Bounds2' );
@@ -478,6 +480,9 @@ define( require => {
         }
         else if ( mass instanceof Bottle ) {
           massView = new BottleView( mass, model.liquidYProperty );
+        }
+        else if ( mass instanceof Boat ) {
+          massView = new BoatView( mass, model.liquidYProperty );
         }
 
         if ( massView ) {

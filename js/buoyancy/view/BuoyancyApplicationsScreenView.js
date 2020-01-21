@@ -11,6 +11,7 @@ define( require => {
   const AlignBox = require( 'SCENERY/nodes/AlignBox' );
   const Boat = require( 'DENSITY_BUOYANCY_COMMON/buoyancy/model/Boat' );
   const BuoyancyApplicationsModel = require( 'DENSITY_BUOYANCY_COMMON/buoyancy/model/BuoyancyApplicationsModel' );
+  const Cuboid = require( 'DENSITY_BUOYANCY_COMMON/common/model/Cuboid' );
   const densityBuoyancyCommon = require( 'DENSITY_BUOYANCY_COMMON/densityBuoyancyCommon' );
   const DensityBuoyancyCommonColorProfile = require( 'DENSITY_BUOYANCY_COMMON/common/view/DensityBuoyancyCommonColorProfile' );
   const DensityBuoyancyCommonConstants = require( 'DENSITY_BUOYANCY_COMMON/common/DensityBuoyancyCommonConstants' );
@@ -19,14 +20,18 @@ define( require => {
   const DensityReadoutListNode = require( 'DENSITY_BUOYANCY_COMMON/buoyancy/view/DensityReadoutListNode' );
   const DerivedProperty = require( 'AXON/DerivedProperty' );
   const DisplayOptionsNode = require( 'DENSITY_BUOYANCY_COMMON/common/view/DisplayOptionsNode' );
+  const DynamicProperty = require( 'AXON/DynamicProperty' );
   const HSeparator = require( 'SUN/HSeparator' );
   const HStrut = require( 'SCENERY/nodes/HStrut' );
   const Material = require( 'DENSITY_BUOYANCY_COMMON/common/model/Material' );
   const MaterialMassVolumeControlNode = require( 'DENSITY_BUOYANCY_COMMON/common/view/MaterialMassVolumeControlNode' );
+  const merge = require( 'PHET_CORE/merge' );
   const Node = require( 'SCENERY/nodes/Node' );
+  const NumberControl = require( 'SCENERY_PHET/NumberControl' );
   const NumberDisplay = require( 'SCENERY_PHET/NumberDisplay' );
   const Panel = require( 'SUN/Panel' );
   const PhetFont = require( 'SCENERY_PHET/PhetFont' );
+  const Property = require( 'AXON/Property' );
   const RadioButtonGroup = require( 'SUN/buttons/RadioButtonGroup' );
   const Range = require( 'DOT/Range' );
   const StringUtils = require( 'PHETCOMMON/util/StringUtils' );
@@ -36,6 +41,7 @@ define( require => {
 
   // strings
   const airVolumeString = require( 'string!DENSITY_BUOYANCY_COMMON/airVolume' );
+  const boatVolumeString = require( 'string!DENSITY_BUOYANCY_COMMON/boatVolume' );
   const densityString = require( 'string!DENSITY_BUOYANCY_COMMON/density' );
   const litersPatternString = require( 'string!DENSITY_BUOYANCY_COMMON/litersPattern' );
   const materialInsideString = require( 'string!DENSITY_BUOYANCY_COMMON/materialInside' );
@@ -138,9 +144,52 @@ define( require => {
         yMargin: 60
       } );
 
+      const blockControlNode = new MaterialMassVolumeControlNode( model.block.materialProperty, model.block.massProperty, model.block.volumeProperty, [
+        Material.PYRITE,
+        Material.STEEL,
+        Material.SILVER,
+        Material.TANTALUM,
+        Material.GOLD,
+        Material.PLATINUM
+      ], cubicMeters => model.block.updateSize( Cuboid.boundsFromVolume( cubicMeters ) ), this.popupLayer );
+
+      const boatBox = new VBox( {
+        spacing: 10,
+        align: 'left',
+        children: [
+          blockControlNode,
+          new HSeparator( blockControlNode.width ),
+          new NumberControl( boatVolumeString, new DynamicProperty( new Property( model.boat.displacementVolumeProperty ), {
+            map: cubicMeters => 1000 * cubicMeters,
+            inverseMap: liters => liters / 1000,
+            bidirectional: true
+          } ), new Range( 0, 20 ), merge( {
+            numberDisplayOptions: {
+              valuePattern: StringUtils.fillIn( litersPatternString, {
+                liters: '{{value}}'
+              } )
+            }
+          }, MaterialMassVolumeControlNode.getNumberControlOptions() ) )
+        ]
+      } );
+
+      const rightBoatContent = new AlignBox( new Panel( boatBox, {
+        xMargin: 10,
+        yMargin: 10,
+        resize: true
+      } ), {
+        alignBounds: this.layoutBounds,
+        xAlign: 'right',
+        yAlign: 'bottom',
+        xMargin: 10,
+        yMargin: 60
+      } );
+
       this.addChild( rightBottleContent );
+      this.addChild( rightBoatContent );
       model.sceneProperty.link( scene => {
         rightBottleContent.visible = scene === BuoyancyApplicationsModel.Scene.BOTTLE;
+        rightBoatContent.visible = scene === BuoyancyApplicationsModel.Scene.BOAT;
       } );
 
       const densityControlPanel = new Panel( new DensityControlNode( model.liquidMaterialProperty, [

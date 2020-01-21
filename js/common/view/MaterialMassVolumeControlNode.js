@@ -169,20 +169,6 @@ define( require => {
         yMargin: 4
       } );
 
-      const numberControlOptions = {
-        delta: 0.01,
-        sliderOptions: {
-          trackSize: new Dimension2( 120, 3 ),
-          thumbSize: new Dimension2( 8, 20 )
-        },
-        numberDisplayOptions: {
-          decimalPlaces: 2
-        },
-        layoutFunction: NumberControl.createLayoutFunction4( {
-          // TODO: createBottomContent for custom? or no?
-        } )
-      };
-
       const massNumberControl = new NumberControl( massString, massNumberProperty, new Range( options.minMass, options.maxMass ), merge( {
         sliderOptions: {
           enabledRangeProperty: enabledMassRangeProperty
@@ -192,14 +178,14 @@ define( require => {
             kilograms: '{{value}}'
           } )
         }
-      }, numberControlOptions ) );
+      }, MaterialMassVolumeControlNode.getNumberControlOptions() ) );
       const volumeNumberControl = new NumberControl( volumeString, numberControlVolumeProperty, new Range( options.minVolumeLiters, options.maxVolumeLiters ), merge( {
         numberDisplayOptions: {
           valuePattern: StringUtils.fillIn( litersPatternString, {
             liters: '{{value}}'
           } )
         }
-      }, numberControlOptions ) );
+      }, MaterialMassVolumeControlNode.getNumberControlOptions() ) );
 
       // TODO: ensure maxWidth for combo box contents so this isn't an issue. How do we want to do layout?
       const topRow = options.labelNode ? new HBox( {
@@ -217,6 +203,22 @@ define( require => {
       ];
 
       this.mutate( options );
+    }
+
+    static getNumberControlOptions() {
+      return {
+        delta: 0.01,
+        sliderOptions: {
+          trackSize: new Dimension2( 120, 3 ),
+          thumbSize: new Dimension2( 8, 20 )
+        },
+        numberDisplayOptions: {
+          decimalPlaces: 2
+        },
+        layoutFunction: NumberControl.createLayoutFunction4( {
+          // TODO: createBottomContent for custom? or no?
+        } )
+      };
     }
   }
 

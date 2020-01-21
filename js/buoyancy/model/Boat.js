@@ -16,6 +16,7 @@ define( require => {
   const Mass = require( 'DENSITY_BUOYANCY_COMMON/common/model/Mass' );
   const merge = require( 'PHET_CORE/merge' );
   const NumberProperty = require( 'AXON/NumberProperty' );
+  const Property = require( 'AXON/Property' );
   const Shape = require( 'KITE/Shape' );
   const ThreeUtils = require( 'MOBIUS/ThreeUtils' );
   const Utils = require( 'DOT/Utils' );
@@ -67,6 +68,19 @@ define( require => {
       assert && assert( !config.canRotate );
 
       super( engine, config );
+
+      // Update the shape when the block width or displacement changes
+      Property.multilink( [ blockWidthProperty, displacementVolumeProperty ], ( blockWidth, displacementVolume ) => {
+        const vertices = Boat.getIntersectionVertices( blockWidth / 2, displacementVolume * 1000 );
+        const volume = ONE_LITER_ACTUAL_VOLUME * displacementVolume * 1000;
+
+        engine.updateFromVertices( this.body, vertices );
+        this.shapeProperty.value = Shape.polygon( vertices );
+        this.volumeProperty.value = volume;
+
+        this.bodyOffsetProperty.value = Utils.centroidOfPolygon( vertices ).negated();
+        this.writeData();
+      } );
 
       // @public {Property.<number>}
       this.displacementVolumeProperty = displacementVolumeProperty;

@@ -87,6 +87,9 @@ define( require => {
         return material.density * volume;
       } );
 
+      // @public {Property.<Vector2>} - The following offset will be added onto the body's position to determine ours.
+      this.bodyOffsetProperty = new Property( Vector2.ZERO );
+
       // @public {Property.<Vector2>}
       this.gravityForceProperty = new InterpolatedProperty( Vector2.ZERO, {
         interpolate: InterpolatedProperty.interpolateVector2,
@@ -209,12 +212,17 @@ define( require => {
 
     readData() {
       this.engine.bodyGetMatrixTransform( this.body, this.matrix );
+
+      // Apply the body offset
+      this.matrix.set02( this.matrix.m02() + this.bodyOffsetProperty.value.x );
+      this.matrix.set12( this.matrix.m12() + this.bodyOffsetProperty.value.y );
+
       this.angularVelocityProperty.value = this.engine.bodyGetAngularVelocity( this.body );
       this.velocityProperty.value = this.engine.bodyGetVelocity( this.body );
     }
 
     writeData() {
-      this.engine.bodySetPosition( this.body, this.matrix.translation );
+      this.engine.bodySetPosition( this.body, this.matrix.translation.minus( this.bodyOffsetProperty.value ) );
       this.engine.bodySetRotation( this.body, this.matrix.rotation );
       this.engine.bodySetAngularVelocity( this.body, this.angularVelocityProperty.value );
       this.engine.bodySetVelocity( this.body, this.velocityProperty.value );

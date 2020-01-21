@@ -140,6 +140,9 @@
   "airVolume": {
     "value": "Air Volume"
   },
+  "boatVolume": {
+    "value": "Boat Volume"
+  },
   "kilogramsPattern": {
     "value": "{{kilograms}} kg"
   },

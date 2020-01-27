@@ -52,8 +52,7 @@ define( require => {
 
       // @public {Boat}
       this.boat = new Boat( this.engine, new DerivedProperty( [ this.block.sizeProperty ], size => size.depth ), {
-        matrix: Matrix3.translation( 0, 0 ),
-        material: Material.STEEL
+        matrix: Matrix3.translation( 0, 0 )
       } );
 
 

@@ -14,6 +14,7 @@ define( require => {
   const InterpolatedProperty = require( 'DENSITY_BUOYANCY_COMMON/common/model/InterpolatedProperty' );
   const Line = require( 'KITE/segments/Line' );
   const Mass = require( 'DENSITY_BUOYANCY_COMMON/common/model/Mass' );
+  const Material = require( 'DENSITY_BUOYANCY_COMMON/common/model/Material' );
   const merge = require( 'PHET_CORE/merge' );
   const NumberProperty = require( 'AXON/NumberProperty' );
   const Property = require( 'AXON/Property' );
@@ -60,9 +61,10 @@ define( require => {
         body: engine.createFromVertices( boatVertices ),
         shape: Shape.polygon( boatVertices ),
         volume: volume,
-        canRotate: false
+        canRotate: false,
 
         // material
+        material: Material.ALUMINUM
       }, config );
 
       assert && assert( !config.canRotate );
@@ -71,6 +73,10 @@ define( require => {
 
       // Update the shape when the block width or displacement changes
       Property.multilink( [ blockWidthProperty, displacementVolumeProperty ], ( blockWidth, displacementVolume ) => {
+        if ( displacementVolume === 0 ) {
+          return;
+        }
+
         const vertices = Boat.getIntersectionVertices( blockWidth / 2, displacementVolume * 1000 );
         const volume = ONE_LITER_ACTUAL_VOLUME * displacementVolume * 1000;
 
@@ -136,6 +142,10 @@ define( require => {
       const xOffset = this.stepMatrix.m02();
       const yOffset = this.stepMatrix.m12();
 
+      // boatInternalArea
+      // boatInternalBottom
+      // boatMinX or boatMaxX --- How to determine if a block is in the boat
+
       this.stepVolume = this.displacementVolumeProperty.value;
       this.stepMultiplier = Math.pow( this.stepVolume / 0.001, 1 / 3 );
 
@@ -188,7 +198,7 @@ define( require => {
 
       const ratio = ( liquidLevel - bottom ) / ( top - bottom );
 
-      return Mass.evaluatePiecewiseLinear( ONE_LITER_DISPLACED_AREAS, ratio );
+      return Mass.evaluatePiecewiseLinear( ONE_LITER_DISPLACED_AREAS, ratio ) * this.stepMultiplier * this.stepMultiplier;
     }
 
     /**
@@ -214,7 +224,7 @@ define( require => {
       else {
         const ratio = ( liquidLevel - bottom ) / ( top - bottom );
 
-        return Mass.evaluatePiecewiseLinear( ONE_LITER_DISPLACED_VOLUMES, ratio );
+        return Mass.evaluatePiecewiseLinear( ONE_LITER_DISPLACED_VOLUMES, ratio ) * this.stepMultiplier * this.stepMultiplier * this.stepMultiplier;
       }
     }
 
@@ -227,9 +237,10 @@ define( require => {
      * @returns {number}
      */
     getDisplacedBuoyantVolume( liquidLevel ) {
+      return this.getDisplacedVolume( liquidLevel );
       // TODO: yikes! Imagine boat with liquid with things floating in it. figure out.
       // TODO: NOPE NOPE NOPE NOPE NOPE NOPE NOPE this isn't right
-      return 0; // TODO:
+      // return 0; // TODO:
     }
 
     reset() {

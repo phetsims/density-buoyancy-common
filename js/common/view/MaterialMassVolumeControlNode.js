@@ -176,14 +176,24 @@ define( require => {
         numberDisplayOptions: {
           valuePattern: StringUtils.fillIn( kilogramsPatternString, {
             kilograms: '{{value}}'
-          } )
+          } ),
+          font: new PhetFont( 14 )
+        },
+        titleNodeOptions: {
+          font: new PhetFont( { size: 14, weight: 'bold' } ),
+          maxWidth: 70
         }
       }, MaterialMassVolumeControlNode.getNumberControlOptions() ) );
       const volumeNumberControl = new NumberControl( volumeString, numberControlVolumeProperty, new Range( options.minVolumeLiters, options.maxVolumeLiters ), merge( {
         numberDisplayOptions: {
           valuePattern: StringUtils.fillIn( litersPatternString, {
             liters: '{{value}}'
-          } )
+          } ),
+          font: new PhetFont( 14 )
+        },
+        titleNodeOptions: {
+          font: new PhetFont( { size: 14, weight: 'bold' } ),
+          maxWidth: 70
         }
       }, MaterialMassVolumeControlNode.getNumberControlOptions() ) );
 

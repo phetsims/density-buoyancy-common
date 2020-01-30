@@ -201,7 +201,7 @@
     "value": "Density"
   },
   "densityReadout": {
-    "value": "Density Readout"
+    "value": "Density Readout (kg/L)"
   },
   "primaryMassLabel": {
     "value": "A"

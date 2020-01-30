@@ -47,6 +47,9 @@ define( require => {
 
       // @public {Property.<boolean>}
       this.densityReadoutExpandedProperty = new BooleanProperty( false );
+
+      // TODO: better way of setting default also
+      this.showMassesProperty.value = true;
     }
 
     /**
@@ -63,6 +66,8 @@ define( require => {
       this.densityReadoutExpandedProperty.reset();
 
       super.reset();
+
+      this.showMassesProperty.value = true;
     }
   }
 

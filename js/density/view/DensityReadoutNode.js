@@ -64,7 +64,7 @@ define( require => {
       materials.forEach( material => {
         const x = mvt( material.density );
         const label = new Text( material.name, {
-          font: new PhetFont( 10 ),
+          font: new PhetFont( 12 ),
           centerX: x,
           centerY: HEIGHT / 2
         } );
@@ -73,12 +73,16 @@ define( require => {
         this.addChild( new Line( x, HEIGHT, x, label.bottom + LINE_PADDING, lineOptions ) );
       } );
 
-      this.addChild( new Text( StringUtils.fillIn( kilogramsPerLiterPatternString, {
-        value: '10'
-      } ), {
+      this.addChild( new Text( '0', {
+        right: -10,
+        centerY: background.centerY,
+        font: new PhetFont( { size: 14, weight: 'bold' } )
+      } ) );
+
+      this.addChild( new Text( '10', {
         left: WIDTH + 10,
         centerY: background.centerY,
-        font: new PhetFont( { size: 12, weight: 'bold' } )
+        font: new PhetFont( { size: 14, weight: 'bold' } )
       } ) );
 
       const arrowOptions = {
@@ -88,7 +92,7 @@ define( require => {
         stroke: null
       };
       const labelOptions = {
-        font: new PhetFont( { size: 12, weight: 'bold' } ),
+        font: new PhetFont( { size: 16, weight: 'bold' } ),
         maxWidth: MAX_LABEL_WIDTH
       };
 

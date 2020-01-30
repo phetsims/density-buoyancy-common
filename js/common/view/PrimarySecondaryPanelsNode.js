@@ -52,12 +52,17 @@ define( require => {
       const rightAlignBoxOptions = {
         xAlign: 'left'
       };
+      const panelOptions = {
+        cornerRadius: 5,
+        xMargin: 10,
+        yMargin: 10
+      };
 
       super( {
         spacing: 10,
         children: [
-          new Panel( rightAlignGroup.createBox( primaryNode, rightAlignBoxOptions ) ),
-          new Panel( rightAlignGroup.createBox( secondaryBox, rightAlignBoxOptions ) )
+          new Panel( rightAlignGroup.createBox( primaryNode, rightAlignBoxOptions ), panelOptions ),
+          new Panel( rightAlignGroup.createBox( secondaryBox, rightAlignBoxOptions ), panelOptions )
         ]
       } );
     }

@@ -20,6 +20,7 @@ define( require => {
   const Property = require( 'AXON/Property' );
   const Text = require( 'SCENERY/nodes/Text' );
   const VBox = require( 'SCENERY/nodes/VBox' );
+  const Vector3 = require( 'DOT/Vector3' );
   const VerticalAquaRadioButtonGroup = require( 'SUN/VerticalAquaRadioButtonGroup' );
 
   // strings
@@ -39,7 +40,7 @@ define( require => {
   };
   const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
 
-  class DensityComparingScreenView extends DensityBuoyancyScreenView {
+  class DensityCompareScreenView extends DensityBuoyancyScreenView {
 
     /**
      * @param {DensityComparingModel} model
@@ -47,7 +48,9 @@ define( require => {
      */
     constructor( model, tandem ) {
 
-      super( model, tandem );
+      super( model, tandem, {
+        cameraLookAt: new Vector3( 0, 0, 0 )
+      } );
 
       if ( !this.enabled ) {
         return this;
@@ -109,5 +112,5 @@ define( require => {
     }
   }
 
-  return densityBuoyancyCommon.register( 'DensityComparingScreenView', DensityComparingScreenView );
+  return densityBuoyancyCommon.register( 'DensityCompareScreenView', DensityCompareScreenView );
 } );

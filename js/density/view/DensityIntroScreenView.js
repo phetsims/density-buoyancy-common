@@ -16,6 +16,7 @@ define( require => {
   const DerivedProperty = require( 'AXON/DerivedProperty' );
   const PrimarySecondaryControlsNode = require( 'DENSITY_BUOYANCY_COMMON/common/view/PrimarySecondaryControlsNode' );
   const Text = require( 'SCENERY/nodes/Text' );
+  const Vector3 = require( 'DOT/Vector3' );
 
   // strings
   const densityReadoutString = require( 'string!DENSITY_BUOYANCY_COMMON/densityReadout' );
@@ -31,7 +32,9 @@ define( require => {
      */
     constructor( model, tandem ) {
 
-      super( model, tandem );
+      super( model, tandem, {
+        cameraLookAt: new Vector3( 0, 0, 0 )
+      } );
 
       if ( !this.enabled ) {
         return this;
@@ -51,7 +54,7 @@ define( require => {
       ), {
         titleNode: new Text( densityReadoutString, { font: DensityBuoyancyCommonConstants.TITLE_FONT } ),
         expandedProperty: model.densityReadoutExpandedProperty,
-        buttonAlign: 'right',
+        buttonAlign: 'left',
         titleYMargin: 5,
         buttonXMargin: 5,
         titleAlignX: 'left'

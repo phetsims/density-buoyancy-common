@@ -36,7 +36,7 @@ define( require => {
 
       const readoutText = new Text( '', {
         font: new PhetFont( {
-          size: 16,
+          size: 18,
           weight: 'bold'
         } )
       } );

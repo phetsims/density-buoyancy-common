@@ -18,7 +18,7 @@ define( require => {
 
     // {Font}
     TITLE_FONT: new PhetFont( {
-      size: 14,
+      size: 16,
       weight: 'bold'
     } )
   };

@@ -508,7 +508,7 @@ define( require => {
             uR, vR,
             uL, vL,
             uR, vR,
-            uR, vR,
+            uR, vR
           );
         }
       };
@@ -582,7 +582,7 @@ define( require => {
             uR, vR,
             uL, vL,
             uR, vR,
-            uR, vR,
+            uR, vR
           );
         }
       } ) );

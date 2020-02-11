@@ -57,7 +57,8 @@ define( require => {
         buttonAlign: 'left',
         titleYMargin: 5,
         buttonXMargin: 5,
-        titleAlignX: 'left'
+        titleAlignX: 'left',
+        cornerRadius: DensityBuoyancyCommonConstants.CORNER_RADIUS
       } );
 
       this.addChild( new AlignBox( densityReadoutBox, {

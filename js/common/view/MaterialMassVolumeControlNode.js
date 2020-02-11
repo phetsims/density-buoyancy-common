@@ -62,7 +62,7 @@ define( require => {
       }, options );
 
       super( {
-        spacing: 3,
+        spacing: 15,
         align: 'left'
       } );
 

@@ -9,6 +9,7 @@ define( require => {
   // modules
   const densityBuoyancyCommon = require( 'DENSITY_BUOYANCY_COMMON/densityBuoyancyCommon' );
   const DensityBuoyancyCommonColorProfile = require( 'DENSITY_BUOYANCY_COMMON/common/view/DensityBuoyancyCommonColorProfile' );
+  const DensityBuoyancyCommonConstants = require( 'DENSITY_BUOYANCY_COMMON/common/DensityBuoyancyCommonConstants' );
   const Node = require( 'SCENERY/nodes/Node' );
   const NodeTexture = require( 'MOBIUS/NodeTexture' );
   const Panel = require( 'SUN/Panel' );
@@ -28,7 +29,7 @@ define( require => {
   const MASS_LABEL_SIZE = 32;
   const createMassLabel = ( string, fill ) => {
     const rectangle = new Rectangle( 0, 0, MASS_LABEL_SIZE, MASS_LABEL_SIZE, {
-      cornerRadius: 5,
+      cornerRadius: DensityBuoyancyCommonConstants.CORNER_RADIUS,
       fill: fill
     } );
     const label = new Text( string, {
@@ -58,7 +59,7 @@ define( require => {
         } )
       } );
       const readoutPanel = new Panel( readoutText, {
-        cornerRadius: 5,
+        cornerRadius: DensityBuoyancyCommonConstants.CORNER_RADIUS,
         xMargin: 2,
         yMargin: 2
       } );

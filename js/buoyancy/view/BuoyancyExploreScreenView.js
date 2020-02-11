@@ -102,7 +102,9 @@ define( require => {
         fill: 'white',
         titleYMargin: 5,
         buttonXMargin: 5,
-        titleAlignX: 'left'
+        titleAlignX: 'left',
+        cornerRadius: DensityBuoyancyCommonConstants.CORNER_RADIUS
+        // TODO: take common AccordionBox styles out into a file
       } );
 
       this.addChild( new VBox( {

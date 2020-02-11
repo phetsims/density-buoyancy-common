@@ -8,6 +8,7 @@ define( require => {
 
   // modules
   const densityBuoyancyCommon = require( 'DENSITY_BUOYANCY_COMMON/densityBuoyancyCommon' );
+  const DensityBuoyancyCommonConstants = require( 'DENSITY_BUOYANCY_COMMON/common/DensityBuoyancyCommonConstants' );
   const Node = require( 'SCENERY/nodes/Node' );
   const Panel = require( 'SUN/Panel' );
   const PhetFont = require( 'SCENERY_PHET/PhetFont' );
@@ -37,7 +38,7 @@ define( require => {
         } )
       } );
       const readoutPanel = new Panel( readoutText, {
-        cornerRadius: 5,
+        cornerRadius: DensityBuoyancyCommonConstants.CORNER_RADIUS,
         xMargin: 2,
         yMargin: 2,
         fill: null, // TODO,

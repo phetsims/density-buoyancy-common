@@ -16,6 +16,9 @@ define( require => {
     // {number} - Used for margins from the offset of screens or between panels/boxes
     MARGIN: 10,
 
+    // {number} - Used for panels/boxes by default
+    CORNER_RADIUS: 5,
+
     // {Font}
     TITLE_FONT: new PhetFont( {
       size: 16,

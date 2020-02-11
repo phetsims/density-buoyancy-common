@@ -138,8 +138,10 @@ define( require => {
 
             // TODO: Do we ever want to display the viscous forces?
             const velocity = this.engine.bodyGetVelocity( mass.body );
-            // TODO: determine a non-hackish way
-            this.engine.bodyApplyForce( mass.body, velocity.times( -this.liquidViscosityProperty.value * mass.massProperty.value * 3000 ) );
+
+            // Increase the generally-visible viscosity effect
+            const hackedViscosity = this.liquidViscosityProperty.value ? 0.03 * Math.pow( this.liquidViscosityProperty.value / 0.03, 0.8 ) : 0;
+            this.engine.bodyApplyForce( mass.body, velocity.times( -hackedViscosity * mass.massProperty.value * 3000 ) );
           }
           else {
             mass.buoyancyForceProperty.setNextValue( Vector2.ZERO );

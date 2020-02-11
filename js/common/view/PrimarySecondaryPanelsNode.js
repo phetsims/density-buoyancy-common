@@ -10,6 +10,7 @@ define( require => {
   const AlignGroup = require( 'SCENERY/nodes/AlignGroup' );
   const Checkbox = require( 'SUN/Checkbox' );
   const densityBuoyancyCommon = require( 'DENSITY_BUOYANCY_COMMON/densityBuoyancyCommon' );
+  const DensityBuoyancyCommonConstants = require( 'DENSITY_BUOYANCY_COMMON/common/DensityBuoyancyCommonConstants' );
   const MassLabelNode = require( 'DENSITY_BUOYANCY_COMMON/common/view/MassLabelNode' );
   const Node = require( 'SCENERY/nodes/Node' );
   const Panel = require( 'SUN/Panel' );
@@ -53,7 +54,7 @@ define( require => {
         xAlign: 'left'
       };
       const panelOptions = {
-        cornerRadius: 5,
+        cornerRadius: DensityBuoyancyCommonConstants.CORNER_RADIUS,
         xMargin: 10,
         yMargin: 10
       };

@@ -30,6 +30,7 @@ define( require => {
   const Metal08NrmImage = require( 'image!DENSITY_BUOYANCY_COMMON/Metal08_nrm.jpg' );
   const Metal08RghImage = require( 'image!DENSITY_BUOYANCY_COMMON/Metal08_rgh.jpg' );
   const Metal10ColImage = require( 'image!DENSITY_BUOYANCY_COMMON/Metal10_col.jpg' );
+  const Metal10ColBrightenedImage = require( 'image!DENSITY_BUOYANCY_COMMON/Metal10_col_brightened.jpg' );
   const Metal10MetImage = require( 'image!DENSITY_BUOYANCY_COMMON/Metal10_met.jpg' );
   const Metal10NrmImage = require( 'image!DENSITY_BUOYANCY_COMMON/Metal10_nrm.jpg' );
   const Metal10RghImage = require( 'image!DENSITY_BUOYANCY_COMMON/Metal10_rgh.jpg' );
@@ -64,6 +65,7 @@ define( require => {
   const iceAlphaTexture = toWrappedTexture( Ice01AlphaImage );
   const iceColorTexture = toWrappedTexture( Ice01ColImage );
   const iceNormalTexture = toWrappedTexture( Ice01NrmImage );
+  const platinumColorTexture = toWrappedTexture( Metal10ColBrightenedImage );
   const steelColorTexture = toWrappedTexture( DiamondPlate01ColImage );
   const steelMetalnessTexture = toWrappedTexture( DiamondPlate01MetImage );
   const steelNormalTexture = toWrappedTexture( DiamondPlate01NrmImage );
@@ -182,12 +184,13 @@ define( require => {
       super();
 
       this.material = new THREE.MeshStandardMaterial( {
-        map: aluminumColorTexture,
+        map: platinumColorTexture,
         normalMap: aluminumNormalTexture,
         normalScale: new THREE.Vector2( 1, -1 ),
         roughnessMap: aluminumRoughnessTexture,
         metalnessMap: aluminumMetalnessTexture,
-        envMap: this.getTexture()
+        envMap: this.getTexture(),
+        envMapIntensity: 1.5
       } );
     }
   }

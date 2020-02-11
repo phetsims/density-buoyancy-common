@@ -23,7 +23,11 @@ define( require => {
     TITLE_FONT: new PhetFont( {
       size: 16,
       weight: 'bold'
-    } )
+    } ),
+    COMBO_BOX_ITEM_FONT: new PhetFont( {
+      size: 14
+    } ),
+    READOUT_FONT: new PhetFont( 14 )
   };
 
   densityBuoyancyCommon.register( 'DensityBuoyancyCommonConstants', DensityBuoyancyCommonConstants );

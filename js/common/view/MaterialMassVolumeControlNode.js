@@ -10,6 +10,7 @@ define( require => {
   const ComboBox = require( 'SUN/ComboBox' );
   const ComboBoxItem = require( 'SUN/ComboBoxItem' );
   const densityBuoyancyCommon = require( 'DENSITY_BUOYANCY_COMMON/densityBuoyancyCommon' );
+  const DensityBuoyancyCommonConstants = require( 'DENSITY_BUOYANCY_COMMON/common/DensityBuoyancyCommonConstants' );
   const DerivedProperty = require( 'AXON/DerivedProperty' );
   const Dimension2 = require( 'DOT/Dimension2' );
   const DynamicProperty = require( 'AXON/DynamicProperty' );
@@ -161,9 +162,9 @@ define( require => {
 
       const comboBox = new ComboBox( [
         ...materials.map( material => {
-          return new ComboBoxItem( new Text( material.name, { font: new PhetFont( 12 ) } ), material );
+          return new ComboBoxItem( new Text( material.name, { font: DensityBuoyancyCommonConstants.COMBO_BOX_ITEM_FONT } ), material );
         } ),
-        new ComboBoxItem( new Text( materialCustomString, { font: new PhetFont( 12 ) } ), CUSTOM_MATERIAL_PLACEHOLDER )
+        new ComboBoxItem( new Text( materialCustomString, { font: DensityBuoyancyCommonConstants.COMBO_BOX_ITEM_FONT } ), CUSTOM_MATERIAL_PLACEHOLDER )
       ], comboBoxMaterialProperty, listParent, {
         xMargin: 8,
         yMargin: 4

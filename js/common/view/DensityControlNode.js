@@ -10,8 +10,8 @@ define( require => {
   const ComboBoxItem = require( 'SUN/ComboBoxItem' );
   const ComboNumberControl = require( 'DENSITY_BUOYANCY_COMMON/common/view/ComboNumberControl' );
   const densityBuoyancyCommon = require( 'DENSITY_BUOYANCY_COMMON/densityBuoyancyCommon' );
+  const DensityBuoyancyCommonConstants = require( 'DENSITY_BUOYANCY_COMMON/common/DensityBuoyancyCommonConstants' );
   const Material = require( 'DENSITY_BUOYANCY_COMMON/common/model/Material' );
-  const PhetFont = require( 'SCENERY_PHET/PhetFont' );
   const Range = require( 'DOT/Range' );
   const Text = require( 'SCENERY/nodes/Text' );
 
@@ -45,7 +45,7 @@ define( require => {
           ...materials,
           customValue
         ].map( material => new ComboBoxItem( new Text( material.name, {
-          font: new PhetFont( 12 )
+          font: DensityBuoyancyCommonConstants.COMBO_BOX_ITEM_FONT
         } ), material ) ),
         customValue: customValue,
         numberControlOptions: {

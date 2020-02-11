@@ -13,6 +13,7 @@ define( require => {
   const ComboBox = require( 'SUN/ComboBox' );
   const ComboBoxItem = require( 'SUN/ComboBoxItem' );
   const densityBuoyancyCommon = require( 'DENSITY_BUOYANCY_COMMON/densityBuoyancyCommon' );
+  const DensityBuoyancyCommonConstants = require( 'DENSITY_BUOYANCY_COMMON/common/DensityBuoyancyCommonConstants' );
   const DerivedProperty = require( 'AXON/DerivedProperty' );
   const Dimension2 = require( 'DOT/Dimension2' );
   const HBox = require( 'SCENERY/nodes/HBox' );
@@ -71,7 +72,7 @@ define( require => {
       } );
 
       const comboBox = new ComboBox( BuoyancyShapesModel.MassShape.VALUES.map( massShape => {
-        return new ComboBoxItem( new Text( shapeStringMap[ massShape ], { font: new PhetFont( 12 ) } ), massShape );
+        return new ComboBoxItem( new Text( shapeStringMap[ massShape ], { font: DensityBuoyancyCommonConstants.COMBO_BOX_ITEM_FONT } ), massShape );
       } ), massShapeProperty, listParent, {
         xMargin: 8,
         yMargin: 4
@@ -84,7 +85,8 @@ define( require => {
           thumbSize: new Dimension2( 8, 20 )
         },
         numberDisplayOptions: {
-          decimalPlaces: 2
+          decimalPlaces: 2,
+          font: DensityBuoyancyCommonConstants.READOUT_FONT
         },
         layoutFunction: NumberControl.createLayoutFunction4( {
           hasReadoutProperty: new BooleanProperty( false )
@@ -123,7 +125,7 @@ define( require => {
                 liters: '{{value}}'
               } ),
               decimalPlaces: 2,
-              font: new PhetFont( 12 )
+              font: DensityBuoyancyCommonConstants.READOUT_FONT
             } ), {
               alignBounds: volumeLabel.bounds.withMaxX( heightNumberControl.width ),
               xAlign: 'right',

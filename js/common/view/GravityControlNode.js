@@ -10,8 +10,8 @@ define( require => {
   const ComboBoxItem = require( 'SUN/ComboBoxItem' );
   const ComboNumberControl = require( 'DENSITY_BUOYANCY_COMMON/common/view/ComboNumberControl' );
   const densityBuoyancyCommon = require( 'DENSITY_BUOYANCY_COMMON/densityBuoyancyCommon' );
+  const DensityBuoyancyCommonConstants = require( 'DENSITY_BUOYANCY_COMMON/common/DensityBuoyancyCommonConstants' );
   const Gravity = require( 'DENSITY_BUOYANCY_COMMON/common/model/Gravity' );
-  const PhetFont = require( 'SCENERY_PHET/PhetFont' );
   const Range = require( 'DOT/Range' );
   const Text = require( 'SCENERY/nodes/Text' );
 
@@ -44,7 +44,7 @@ define( require => {
           Gravity.PLANET_X,
           customValue
         ].map( gravity => new ComboBoxItem( new Text( gravity.name, {
-          font: new PhetFont( 12 )
+          font: DensityBuoyancyCommonConstants.COMBO_BOX_ITEM_FONT
         } ), gravity ) ),
         customValue: customValue,
         numberControlOptions: {

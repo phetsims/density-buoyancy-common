@@ -167,7 +167,8 @@ define( require => {
             numberDisplayOptions: {
               valuePattern: StringUtils.fillIn( litersPatternString, {
                 liters: '{{value}}'
-              } )
+              } ),
+              font: DensityBuoyancyCommonConstants.READOUT_FONT
             }
           }, MaterialMassVolumeControlNode.getNumberControlOptions() ) )
         ]

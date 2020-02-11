@@ -71,7 +71,7 @@ define( require => {
             maxWidth: 80
           },
           numberDisplayOptions: {
-            font: new PhetFont( 14 ),
+            font: DensityBuoyancyCommonConstants.READOUT_FONT,
             valuePattern: StringUtils.fillIn( config.valuePattern, { value: SunConstants.VALUE_NUMBERED_PLACEHOLDER } ),
             maxWidth: 100,
             decimalPlaces: 2,

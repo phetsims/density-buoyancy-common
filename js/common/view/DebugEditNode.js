@@ -12,6 +12,7 @@ define( require => {
   const Cone = require( 'DENSITY_BUOYANCY_COMMON/common/model/Cone' );
   const Cuboid = require( 'DENSITY_BUOYANCY_COMMON/common/model/Cuboid' );
   const densityBuoyancyCommon = require( 'DENSITY_BUOYANCY_COMMON/densityBuoyancyCommon' );
+  const DensityBuoyancyCommonConstants = require( 'DENSITY_BUOYANCY_COMMON/common/DensityBuoyancyCommonConstants' );
   const Dimension2 = require( 'DOT/Dimension2' );
   const DynamicProperty = require( 'AXON/DynamicProperty' );
   const Ellipsoid = require( 'DENSITY_BUOYANCY_COMMON/common/model/Ellipsoid' );
@@ -72,13 +73,13 @@ define( require => {
       } );
 
       const comboBox = new ComboBox( [
-        new ComboBoxItem( new Text( materialAluminumString, { font: new PhetFont( 12 ) } ), Material.ALUMINUM ),
-        new ComboBoxItem( new Text( materialBrickString, { font: new PhetFont( 12 ) } ), Material.BRICK ),
-        new ComboBoxItem( new Text( materialCopperString, { font: new PhetFont( 12 ) } ), Material.COPPER ),
-        new ComboBoxItem( new Text( materialIceString, { font: new PhetFont( 12 ) } ), Material.ICE ),
-        new ComboBoxItem( new Text( materialSteelString, { font: new PhetFont( 12 ) } ), Material.STEEL ),
-        new ComboBoxItem( new Text( materialStyrofoamString, { font: new PhetFont( 12 ) } ), Material.STYROFOAM ),
-        new ComboBoxItem( new Text( materialWoodString, { font: new PhetFont( 12 ) } ), Material.WOOD )
+        new ComboBoxItem( new Text( materialAluminumString, { font: DensityBuoyancyCommonConstants.COMBO_BOX_ITEM_FONT } ), Material.ALUMINUM ),
+        new ComboBoxItem( new Text( materialBrickString, { font: DensityBuoyancyCommonConstants.COMBO_BOX_ITEM_FONT } ), Material.BRICK ),
+        new ComboBoxItem( new Text( materialCopperString, { font: DensityBuoyancyCommonConstants.COMBO_BOX_ITEM_FONT } ), Material.COPPER ),
+        new ComboBoxItem( new Text( materialIceString, { font: DensityBuoyancyCommonConstants.COMBO_BOX_ITEM_FONT } ), Material.ICE ),
+        new ComboBoxItem( new Text( materialSteelString, { font: DensityBuoyancyCommonConstants.COMBO_BOX_ITEM_FONT } ), Material.STEEL ),
+        new ComboBoxItem( new Text( materialStyrofoamString, { font: DensityBuoyancyCommonConstants.COMBO_BOX_ITEM_FONT } ), Material.STYROFOAM ),
+        new ComboBoxItem( new Text( materialWoodString, { font: DensityBuoyancyCommonConstants.COMBO_BOX_ITEM_FONT } ), Material.WOOD )
       ], materialProperty, listParent, {
         xMargin: 8,
         yMargin: 4

@@ -59,7 +59,7 @@ define( require => {
       const maxHeight = Math.max( ...materialNodes.concat( densityNodes ).map( node => node.height ) );
       const maxMaterialWidth = Math.max( materialHeader.width, ...materialNodes.map( node => node.width ) );
       const maxDensityWidth = Math.max( densityHeader.width, ...densityNodes.map( node => node.width ) );
-      const sidePadding = 3;
+      const sidePadding = 5;
       const topPadding = 2;
       const bottomPadding = 2;
 

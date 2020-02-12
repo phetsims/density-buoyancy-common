@@ -94,8 +94,6 @@ define( require => {
       this.densityTableExpandedProperty.reset();
 
       super.reset();
-
-      this.setup();
     }
   }
 

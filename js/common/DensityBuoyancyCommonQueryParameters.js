@@ -15,6 +15,10 @@ define( require => {
     engine: {
       type: 'string',
       defaultValue: 'p2'
+    },
+    poolWidthMultiplier: {
+      type: 'number',
+      defaultValue: 1
     }
   } );
 

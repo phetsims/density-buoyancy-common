@@ -25,6 +25,7 @@ define( require => {
 
   // constants
   const BLOCK_SPACING = 0.01;
+  const POOL_HEIGHT = 0.15 / 0.9 / 0.4; // Computed for 150L
 
   class DensityBuoyancyModel  {
 
@@ -54,7 +55,7 @@ define( require => {
 
       // @public {Bounds3}
       this.poolBounds = new Bounds3(
-        -0.45, -0.15 / 0.9 / 0.4, -0.2, // Computed for 150L
+        -0.45, POOL_HEIGHT, -0.2,
         0.45, 0, 0.2
       );
 
@@ -63,6 +64,19 @@ define( require => {
         -20, -20, -2,
         20, 0, 0.2
       );
+
+      if ( DensityBuoyancyCommonQueryParameters.poolWidthMultiplier !== 1 ) {
+        const halfX = DensityBuoyancyCommonQueryParameters.poolWidthMultiplier * 0.45;
+        const halfZ = 0.15 / ( 2 * halfX * POOL_HEIGHT * 2 );
+        this.poolBounds = new Bounds3(
+          -halfX, -POOL_HEIGHT, -halfZ,
+          halfX, 0, halfZ
+        );
+        this.groundBounds = new Bounds3(
+          -20, -20, -2,
+          20, 0, halfZ
+        );
+      }
 
       // TODO: make naming between actual and interpolated values!
 

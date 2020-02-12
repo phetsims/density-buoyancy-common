@@ -25,7 +25,6 @@ define( require => {
   const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
 
   class DensityIntroScreenView extends DensityBuoyancyScreenView {
-
     /**
      * @param {DensityIntroModel} model
      * @param {Tandem} tandem

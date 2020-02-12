@@ -7,43 +7,37 @@ define( require => {
   'use strict';
 
   // modules
-  const BooleanProperty = require( 'AXON/BooleanProperty' );
   const Cuboid = require( 'DENSITY_BUOYANCY_COMMON/common/model/Cuboid' );
   const densityBuoyancyCommon = require( 'DENSITY_BUOYANCY_COMMON/densityBuoyancyCommon' );
   const DensityBuoyancyCommonColorProfile = require( 'DENSITY_BUOYANCY_COMMON/common/view/DensityBuoyancyCommonColorProfile' );
   const DensityBuoyancyModel = require( 'DENSITY_BUOYANCY_COMMON/common/model/DensityBuoyancyModel' );
   const Enumeration = require( 'PHET_CORE/Enumeration' );
   const Material = require( 'DENSITY_BUOYANCY_COMMON/common/model/Material' );
-  const Matrix3 = require( 'DOT/Matrix3' );
   const Property = require( 'AXON/Property' );
-  const Scale = require( 'DENSITY_BUOYANCY_COMMON/common/model/Scale' );
   const Vector2 = require( 'DOT/Vector2' );
 
   // constants
   const Mode = Enumeration.byKeys( [
     'SAME_MASS',
     'SAME_VOLUME',
-    'SAME_DENSITY',
-    'MYSTERY'
+    'SAME_DENSITY'
   ] );
 
-  class DensityComparingModel extends DensityBuoyancyModel {
+  class DensityCompareModel extends DensityBuoyancyModel {
     /**
      * @param {Tandem} tandem
      */
     constructor( tandem ) {
 
-      super( tandem );
+      super( tandem, {
+        showMassesDefault: true
+      } );
 
       // @public {Property.<Mode>}
       this.modeProperty = new Property( Mode.SAME_MASS );
 
-      // @public {Property.<boolean>}
-      this.tableVisibleProperty = new BooleanProperty( false );
-
       this.modeProperty.link( mode => {
         this.setup();
-        this.showMassesProperty.value = mode !== Mode.MYSTERY;
       } );
     }
 
@@ -63,9 +57,6 @@ define( require => {
           break;
         case Mode.SAME_DENSITY:
           this.setupSameDensity();
-          break;
-        case Mode.MYSTERY:
-          this.setupMystery();
           break;
         default:
           throw new Error( 'unknown mode: ' + this.modeProperty.value );
@@ -193,57 +184,6 @@ define( require => {
     }
 
     /**
-     * Sets up the initial state for the "Mystery" mode.
-     * @public
-     */
-    setupMystery() {
-      const masses = [
-        Cuboid.createWithMass( this.engine, Material.createCustomMaterial( {
-          density: 19320,
-          customColor: DensityBuoyancyCommonColorProfile.comparingYellowProperty
-        } ), Vector2.ZERO, 65.3 ),
-
-        Cuboid.createWithMass( this.engine, Material.createCustomMaterial( {
-          density: 640,
-          customColor: DensityBuoyancyCommonColorProfile.comparingBlueProperty
-        } ), Vector2.ZERO, 0.64 ),
-
-        Cuboid.createWithMass( this.engine, Material.createCustomMaterial( {
-          density: 700,
-          customColor: DensityBuoyancyCommonColorProfile.comparingGreenProperty
-        } ), Vector2.ZERO, 4.08 ),
-
-        Cuboid.createWithMass( this.engine, Material.createCustomMaterial( {
-          density: 920,
-          customColor: DensityBuoyancyCommonColorProfile.comparingRedProperty
-        } ), Vector2.ZERO, 3.10 ),
-
-        Cuboid.createWithMass( this.engine, Material.createCustomMaterial( {
-          density: 3530,
-          customColor: DensityBuoyancyCommonColorProfile.comparingPurpleProperty
-        } ), Vector2.ZERO, 3.53 ),
-
-        new Scale( this.engine, {
-          matrix: Matrix3.translation( -0.67, -Scale.SCALE_BASE_BOUNDS.minY ),
-          displayType: Scale.DisplayType.KILOGRAMS
-        } )
-      ];
-
-      this.positionStackLeft( [
-        masses[ 1 ],
-        masses[ 4 ]
-      ] );
-
-      this.positionStackRight( [
-        masses[ 2 ],
-        masses[ 3 ],
-        masses[ 0 ]
-      ] );
-
-      this.masses.addAll( masses );
-    }
-
-    /**
      * Clears all of the masses away.
      * @private
      */
@@ -261,7 +201,6 @@ define( require => {
      */
     reset() {
       this.modeProperty.reset();
-      this.tableVisibleProperty.reset();
 
       super.reset();
 
@@ -270,7 +209,7 @@ define( require => {
   }
 
   // @public {Enumeration}
-  DensityComparingModel.Mode = Mode;
+  DensityCompareModel.Mode = Mode;
 
-  return densityBuoyancyCommon.register( 'DensityComparingModel', DensityComparingModel );
+  return densityBuoyancyCommon.register( 'DensityCompareModel', DensityCompareModel );
 } );

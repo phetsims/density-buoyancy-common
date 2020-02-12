@@ -16,6 +16,7 @@ define( require => {
   const InterpolatedProperty = require( 'DENSITY_BUOYANCY_COMMON/common/model/InterpolatedProperty' );
   const Material = require( 'DENSITY_BUOYANCY_COMMON/common/model/Material' );
   const MatterEngine = require( 'DENSITY_BUOYANCY_COMMON/common/model/MatterEngine' );
+  const merge = require( 'PHET_CORE/merge' );
   const NumberProperty = require( 'AXON/NumberProperty' );
   const ObservableArray = require( 'AXON/ObservableArray' );
   const P2Engine = require( 'DENSITY_BUOYANCY_COMMON/common/model/P2Engine' );
@@ -31,14 +32,19 @@ define( require => {
 
     /**
      * @param {Tandem} tandem
+     * @param {Object} [options]
      */
-    constructor( tandem ) {
+    constructor( tandem, options ) {
+      options = merge( {
+        // {boolean}
+        showMassesDefault: false
+      }, options );
 
       // @public {Property.<boolean>}
       this.showGravityForceProperty = new BooleanProperty( false );
       this.showBuoyancyForceProperty = new BooleanProperty( false );
       this.showContactForceProperty = new BooleanProperty( false );
-      this.showMassesProperty = new BooleanProperty( false );
+      this.showMassesProperty = new BooleanProperty( options.showMassesDefault );
       this.showForceValuesProperty = new BooleanProperty( false );
 
       // @public {Property.<Gravity>}

@@ -16,15 +16,12 @@ define( require => {
   const Rectangle = require( 'SCENERY/nodes/Rectangle' );
   const Shape = require( 'KITE/Shape' );
   const Text = require( 'SCENERY/nodes/Text' );
-  const VBox = require( 'SCENERY/nodes/VBox' );
 
   // strings
-  const densitiesOfVariousMaterialsString = require( 'string!DENSITY_BUOYANCY_COMMON/densitiesOfVariousMaterials' );
   const densityKgLString = require( 'string!DENSITY_BUOYANCY_COMMON/densityKgL' );
   const materialString = require( 'string!DENSITY_BUOYANCY_COMMON/material' );
 
   // constants
-  const titleFont = new PhetFont( { size: 14, weight: 'bold' } );
   const headerFont = new PhetFont( { size: 12, weight: 'bold' } );
   const bodyFont = new PhetFont( { size: 12 } );
   const materials = _.sortBy( [
@@ -43,13 +40,10 @@ define( require => {
     Material.GOLD
   ], material => material.density );
 
-  class DensityTableNode extends VBox {
+  class DensityTableNode extends Node {
     constructor() {
-      super( {
-        spacing: 10
-      } );
+      super();
 
-      const titleText = new Text( densitiesOfVariousMaterialsString, { font: titleFont, maxWidth: 500 } );
       const materialHeader = new Text( materialString, { font: headerFont } );
       const densityHeader = new Text( densityKgLString, { font: headerFont } );
 
@@ -114,18 +108,14 @@ define( require => {
         fill: DensityBuoyancyCommonColorProfile.chartHeaderProperty
       } );
 
-      const chartNode = new Node( {
-        children: [
-          highlightBackground,
-          gridPath,
-          materialHeader,
-          densityHeader,
-          ...materialNodes,
-          ...densityNodes
-        ]
-      } );
-
-      this.children = [ titleText, chartNode ];
+      this.children = [
+        highlightBackground,
+        gridPath,
+        materialHeader,
+        densityHeader,
+        ...materialNodes,
+        ...densityNodes
+      ];
     }
   }
 

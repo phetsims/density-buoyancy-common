@@ -100,6 +100,10 @@ define( require => {
       } );
       this.addChild( this.backgroundNode );
 
+      // @protected {Node}
+      this.backgroundLayer = new Node();
+      this.addChild( this.backgroundLayer );
+
       // @private {ThreeIsometricNode}
       this.sceneNode = new ThreeIsometricNode( this.layoutBounds, {
         cameraPosition: options.cameraPosition

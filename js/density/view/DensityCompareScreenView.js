@@ -61,8 +61,10 @@ define( require => {
           node: new Text( modeStringMap[ mode.name ], { font: new PhetFont( 12 ) } ),
           value: mode
         };
-      } ) );
-      const modePanel = new Panel( modeControl );
+      } ), {
+        spacing: 8
+      } );
+      const modePanel = new Panel( modeControl, DensityBuoyancyCommonConstants.PANEL_OPTIONS );
 
       const tableControl = new BooleanRectangularToggleButton(
         new Text( hideTableString, { font: new PhetFont( 12 ) } ),

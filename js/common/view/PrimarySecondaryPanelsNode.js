@@ -29,7 +29,7 @@ define( require => {
     constructor( primaryNode, secondaryNode, secondaryLabel, secondaryMassVisibleProperty ) {
 
       const secondaryCheckbox = new Checkbox( new Text( secondaryLabel, {
-        font: new PhetFont( 12 )
+        font: new PhetFont( 14 )
       } ), secondaryMassVisibleProperty, {
         boxWidth: 15
       } );
@@ -53,17 +53,12 @@ define( require => {
       const rightAlignBoxOptions = {
         xAlign: 'left'
       };
-      const panelOptions = {
-        cornerRadius: DensityBuoyancyCommonConstants.CORNER_RADIUS,
-        xMargin: 10,
-        yMargin: 10
-      };
 
       super( {
         spacing: 10,
         children: [
-          new Panel( rightAlignGroup.createBox( primaryNode, rightAlignBoxOptions ), panelOptions ),
-          new Panel( rightAlignGroup.createBox( secondaryBox, rightAlignBoxOptions ), panelOptions )
+          new Panel( rightAlignGroup.createBox( primaryNode, rightAlignBoxOptions ), DensityBuoyancyCommonConstants.PANEL_OPTIONS ),
+          new Panel( rightAlignGroup.createBox( secondaryBox, rightAlignBoxOptions ), DensityBuoyancyCommonConstants.PANEL_OPTIONS )
         ]
       } );
     }

@@ -20,12 +20,8 @@ define( require => {
   const PhetFont = require( 'SCENERY_PHET/PhetFont' );
   const Property = require( 'AXON/Property' );
   const Rectangle = require( 'SCENERY/nodes/Rectangle' );
-  const StringUtils = require( 'PHETCOMMON/util/StringUtils' );
   const Text = require( 'SCENERY/nodes/Text' );
   const Utils = require( 'DOT/Utils' );
-
-  // strings
-  const kilogramsPerLiterPatternString = require( 'string!DENSITY_BUOYANCY_COMMON/kilogramsPerLiterPattern' );
 
   // constants
   const materials = [
@@ -40,7 +36,7 @@ define( require => {
   const MAX_DENSITY = 10000;
   const LINE_PADDING = 2;
   const mvt = density => WIDTH * Math.min( density, MAX_DENSITY ) / MAX_DENSITY;
-  const MAX_LABEL_WIDTH = 55;
+  const MAX_LABEL_WIDTH = 80;
 
   class DensityReadoutNode extends Node {
 
@@ -128,16 +124,12 @@ define( require => {
       // Density links
       densityAProperty.link( density => {
         primaryMarker.x = mvt( density );
-        primaryLabel.text = StringUtils.fillIn( kilogramsPerLiterPatternString, {
-          value: Utils.toFixed( density / 1000, 2 )
-        } );
+        primaryLabel.text = Utils.toFixed( density / 1000, 2 );
         primaryLabel.centerBottom = primaryArrow.centerTop;
       } );
       densityBProperty.link( density => {
         secondaryMarker.x = mvt( density );
-        secondaryLabel.text = StringUtils.fillIn( kilogramsPerLiterPatternString, {
-          value: Utils.toFixed( density / 1000, 2 )
-        } );
+        secondaryLabel.text = Utils.toFixed( density / 1000, 2 );
         secondaryLabel.centerTop = secondaryArrow.centerBottom;
       } );
 

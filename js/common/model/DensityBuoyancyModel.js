@@ -55,7 +55,7 @@ define( require => {
 
       // @public {Bounds3}
       this.poolBounds = new Bounds3(
-        -0.45, POOL_HEIGHT, -0.2,
+        -0.45, -POOL_HEIGHT, -0.2,
         0.45, 0, 0.2
       );
 

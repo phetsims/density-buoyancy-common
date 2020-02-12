@@ -20,6 +20,7 @@ define( require => {
   const NumberControl = require( 'SCENERY_PHET/NumberControl' );
   const NumberProperty = require( 'AXON/NumberProperty' );
   const PhetFont = require( 'SCENERY_PHET/PhetFont' );
+  const PrecisionSliderThumb = require( 'DENSITY_BUOYANCY_COMMON/common/view/PrecisionSliderThumb' );
   const Property = require( 'AXON/Property' );
   const Range = require( 'DOT/Range' );
   const StringUtils = require( 'PHETCOMMON/util/StringUtils' );
@@ -37,6 +38,7 @@ define( require => {
   // constants
   const LITERS_IN_CUBIC_METER = 1000;
   const CUSTOM_MATERIAL_PLACEHOLDER = null;
+  const TRACK_HEIGHT = 3;
 
   class MaterialMassVolumeControlNode extends VBox {
     /**
@@ -59,7 +61,10 @@ define( require => {
         maxCustomMass: 10,
         maxMass: 27,
         minVolumeLiters: 1,
-        maxVolumeLiters: 10
+        maxVolumeLiters: 10,
+
+        // {PaintDef}
+        color: null
       }, options );
 
       super( {
@@ -172,7 +177,11 @@ define( require => {
 
       const massNumberControl = new NumberControl( massString, massNumberProperty, new Range( options.minMass, options.maxMass ), merge( {
         sliderOptions: {
-          enabledRangeProperty: enabledMassRangeProperty
+          enabledRangeProperty: enabledMassRangeProperty,
+          thumbNode: new PrecisionSliderThumb( {
+            thumbFill: options.color
+          } ),
+          thumbYOffset: new PrecisionSliderThumb().height / 2 - TRACK_HEIGHT / 2
         },
         numberDisplayOptions: {
           valuePattern: StringUtils.fillIn( kilogramsPatternString, {
@@ -186,6 +195,12 @@ define( require => {
         }
       }, MaterialMassVolumeControlNode.getNumberControlOptions() ) );
       const volumeNumberControl = new NumberControl( volumeString, numberControlVolumeProperty, new Range( options.minVolumeLiters, options.maxVolumeLiters ), merge( {
+        sliderOptions: {
+          thumbNode: new PrecisionSliderThumb( {
+            thumbFill: options.color
+          } ),
+          thumbYOffset: new PrecisionSliderThumb().height / 2 - TRACK_HEIGHT / 2
+        },
         numberDisplayOptions: {
           valuePattern: StringUtils.fillIn( litersPatternString, {
             liters: '{{value}}'
@@ -220,8 +235,7 @@ define( require => {
       return {
         delta: 0.01,
         sliderOptions: {
-          trackSize: new Dimension2( 120, 3 ),
-          thumbSize: new Dimension2( 8, 20 )
+          trackSize: new Dimension2( 120, TRACK_HEIGHT )
         },
         numberDisplayOptions: {
           decimalPlaces: 2

@@ -9,6 +9,7 @@ define( require => {
   // modules
   const BlockControlNode = require( 'DENSITY_BUOYANCY_COMMON/common/view/BlockControlNode' );
   const densityBuoyancyCommon = require( 'DENSITY_BUOYANCY_COMMON/densityBuoyancyCommon' );
+  const DensityBuoyancyCommonColorProfile = require( 'DENSITY_BUOYANCY_COMMON/common/view/DensityBuoyancyCommonColorProfile' );
   const PrimarySecondaryPanelsNode = require( 'DENSITY_BUOYANCY_COMMON/common/view/PrimarySecondaryPanelsNode' );
 
   // strings
@@ -25,10 +26,12 @@ define( require => {
     constructor( primaryMass, secondaryMass, secondaryMassVisibleProperty, popupLayer ) {
       super(
         new BlockControlNode( primaryMass, popupLayer, {
-          labelNode: PrimarySecondaryPanelsNode.getPrimaryLabelNode()
+          labelNode: PrimarySecondaryPanelsNode.getPrimaryLabelNode(),
+          color: DensityBuoyancyCommonColorProfile.labelAProperty
         } ),
         new BlockControlNode( secondaryMass, popupLayer, {
-          labelNode: PrimarySecondaryPanelsNode.getSecondaryLabelNode()
+          labelNode: PrimarySecondaryPanelsNode.getSecondaryLabelNode(),
+          color: DensityBuoyancyCommonColorProfile.labelBProperty
         } ),
         secondBlockString,
         secondaryMassVisibleProperty

@@ -54,8 +54,7 @@ define( require => {
 
       const readoutText = new Text( '', {
         font: new PhetFont( {
-          size: 18,
-          weight: 'bold'
+          size: 18
         } )
       } );
       const readoutPanel = new Panel( readoutText, {

@@ -9,6 +9,7 @@ define( require => {
   // modules
   const densityBuoyancyCommon = require( 'DENSITY_BUOYANCY_COMMON/densityBuoyancyCommon' );
   const DensityBuoyancyCommonColorProfile = require( 'DENSITY_BUOYANCY_COMMON/common/view/DensityBuoyancyCommonColorProfile' );
+  const DensityBuoyancyCommonConstants = require( 'DENSITY_BUOYANCY_COMMON/common/DensityBuoyancyCommonConstants' );
   const Node = require( 'SCENERY/nodes/Node' );
   const Panel = require( 'SUN/Panel' );
   const Path = require( 'SCENERY/nodes/Path' );
@@ -41,7 +42,9 @@ define( require => {
         } )
       } );
 
-      const readoutPanel = new Panel( readoutText );
+      const readoutPanel = new Panel( readoutText, {
+        cornerRadius: DensityBuoyancyCommonConstants.CORNER_RADIUS
+      } );
       this.addChild( readoutPanel );
 
       volumeProperty.link( volume => {

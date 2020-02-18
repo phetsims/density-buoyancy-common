@@ -59,8 +59,8 @@ define( require => {
       } );
       const readoutPanel = new Panel( readoutText, {
         cornerRadius: DensityBuoyancyCommonConstants.CORNER_RADIUS,
-        xMargin: 2,
-        yMargin: 2
+        xMargin: 4,
+        yMargin: 4
       } );
 
       this.addChild( readoutPanel );

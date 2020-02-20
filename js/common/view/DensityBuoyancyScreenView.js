@@ -79,7 +79,7 @@ define( require => {
         return this;
       }
 
-      // @private {DensityBuoyancyModel}
+      // @protected {DensityBuoyancyModel}
       this.model = model;
 
       // @protected {Node}
@@ -609,6 +609,9 @@ define( require => {
       }
 
       this.sceneNode.layout( width, height );
+
+      // We need to do an initial render for certain layout-based code to work
+      this.sceneNode.render( undefined );
     }
 
     /**

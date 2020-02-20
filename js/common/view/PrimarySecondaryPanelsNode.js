@@ -8,44 +8,22 @@ define( require => {
 
   // modules
   const AlignGroup = require( 'SCENERY/nodes/AlignGroup' );
-  const Checkbox = require( 'SUN/Checkbox' );
   const densityBuoyancyCommon = require( 'DENSITY_BUOYANCY_COMMON/densityBuoyancyCommon' );
   const DensityBuoyancyCommonConstants = require( 'DENSITY_BUOYANCY_COMMON/common/DensityBuoyancyCommonConstants' );
+  const HSeparator = require( 'SUN/HSeparator' );
   const MassLabelNode = require( 'DENSITY_BUOYANCY_COMMON/common/view/MassLabelNode' );
   const Node = require( 'SCENERY/nodes/Node' );
   const Panel = require( 'SUN/Panel' );
-  const PhetFont = require( 'SCENERY_PHET/PhetFont' );
-  const Text = require( 'SCENERY/nodes/Text' );
   const VBox = require( 'SCENERY/nodes/VBox' );
 
-  class PrimarySecondaryPanelsNode extends VBox {
+  class PrimarySecondaryPanelsNode extends Panel {
 
     /**
      * @param {Node} primaryNode
      * @param {Node} secondaryNode
-     * @param {string} secondaryLabel
      * @param {Property.<boolean>} secondaryMassVisibleProperty
      */
-    constructor( primaryNode, secondaryNode, secondaryLabel, secondaryMassVisibleProperty ) {
-
-      const secondaryCheckbox = new Checkbox( new Text( secondaryLabel, {
-        font: new PhetFont( 14 )
-      } ), secondaryMassVisibleProperty, {
-        boxWidth: 15
-      } );
-
-      const secondaryBox = new VBox( {
-        spacing: 10,
-        align: 'left',
-        children: [
-          secondaryCheckbox,
-          secondaryNode
-        ]
-      } );
-
-      secondaryMassVisibleProperty.link( secondaryVisible => {
-        secondaryBox.children = secondaryVisible ? [ secondaryCheckbox, secondaryNode ] : [ secondaryCheckbox ];
-      } );
+    constructor( primaryNode, secondaryNode, secondaryMassVisibleProperty ) {
 
       const rightAlignGroup = new AlignGroup( {
         matchVertical: false
@@ -54,13 +32,22 @@ define( require => {
         xAlign: 'left'
       };
 
-      super( {
-        spacing: 10,
-        children: [
-          new Panel( rightAlignGroup.createBox( primaryNode, rightAlignBoxOptions ), DensityBuoyancyCommonConstants.PANEL_OPTIONS ),
-          new Panel( rightAlignGroup.createBox( secondaryBox, rightAlignBoxOptions ), DensityBuoyancyCommonConstants.PANEL_OPTIONS )
-        ]
+      const primaryContent = rightAlignGroup.createBox( primaryNode, rightAlignBoxOptions );
+      const secondaryContent = rightAlignGroup.createBox( secondaryNode, rightAlignBoxOptions );
+
+      const separator = new HSeparator( rightAlignGroup.maxWidth );
+      rightAlignGroup.maxWidthProperty.link( maxWidth => {
+        separator.x2 = maxWidth;
       } );
+
+      const box = new VBox( {
+        spacing: 10
+      } );
+      secondaryMassVisibleProperty.link( secondaryVisible => {
+        box.children = secondaryVisible ? [ primaryContent, separator, secondaryContent ] : [ primaryContent ];
+      } );
+
+      super( box, DensityBuoyancyCommonConstants.PANEL_OPTIONS );
     }
 
     static getPrimaryLabelNode() {

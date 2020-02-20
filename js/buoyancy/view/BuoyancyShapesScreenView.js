@@ -11,7 +11,6 @@ define( require => {
   const AlignBox = require( 'SCENERY/nodes/AlignBox' );
   const densityBuoyancyCommon = require( 'DENSITY_BUOYANCY_COMMON/densityBuoyancyCommon' );
   const DensityBuoyancyCommonConstants = require( 'DENSITY_BUOYANCY_COMMON/common/DensityBuoyancyCommonConstants' );
-  const DensityBuoyancyScreenView = require( 'DENSITY_BUOYANCY_COMMON/common/view/DensityBuoyancyScreenView' );
   const DensityControlNode = require( 'DENSITY_BUOYANCY_COMMON/common/view/DensityControlNode' );
   const DensityReadoutListNode = require( 'DENSITY_BUOYANCY_COMMON/buoyancy/view/DensityReadoutListNode' );
   const DisplayOptionsNode = require( 'DENSITY_BUOYANCY_COMMON/common/view/DisplayOptionsNode' );
@@ -22,18 +21,18 @@ define( require => {
   const PrimarySecondaryPanelsNode = require( 'DENSITY_BUOYANCY_COMMON/common/view/PrimarySecondaryPanelsNode' );
   const Property = require( 'AXON/Property' );
   const ShapeSizeControlNode = require( 'DENSITY_BUOYANCY_COMMON/buoyancy/view/ShapeSizeControlNode' );
+  const SecondaryMassScreenView = require( 'DENSITY_BUOYANCY_COMMON/common/view/SecondaryMassScreenView' );
   const Text = require( 'SCENERY/nodes/Text' );
   const VBox = require( 'SCENERY/nodes/VBox' );
   const Vector3 = require( 'DOT/Vector3' );
 
   // strings
   const densityString = require( 'string!DENSITY_BUOYANCY_COMMON/density' );
-  const secondShapeString = require( 'string!DENSITY_BUOYANCY_COMMON/secondShape' );
 
   // constants
   const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
 
-  class BuoyancyShapesScreenView extends DensityBuoyancyScreenView {
+  class BuoyancyShapesScreenView extends SecondaryMassScreenView {
 
     /**
      * @param {BuoyancyIntroModel} model
@@ -100,7 +99,8 @@ define( require => {
         bottom: this.layoutBounds.bottom - MARGIN
       } ) );
 
-      const primarySecondaryPanelsNode = new PrimarySecondaryPanelsNode(
+      // @private {Node}
+      this.rightBox = new PrimarySecondaryPanelsNode(
         new ShapeSizeControlNode(
           model.primaryShapeProperty,
           model.primaryWidthRatioProperty,
@@ -121,16 +121,17 @@ define( require => {
           this.popupLayer,
           { labelNode: PrimarySecondaryPanelsNode.getSecondaryLabelNode() }
         ),
-        secondShapeString,
         model.secondaryMassVisibleProperty
       );
 
-      this.addChild( new AlignBox( primarySecondaryPanelsNode, {
+      this.addChild( new AlignBox( this.rightBox, {
         alignBounds: this.layoutBounds,
         xAlign: 'right',
         yAlign: 'top',
         margin: MARGIN
       } ) );
+
+      this.addSecondMassControl();
 
       this.addChild( this.popupLayer );
     }

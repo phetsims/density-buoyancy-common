@@ -191,12 +191,6 @@
   "gravity": {
     "value": "Gravity"
   },
-  "secondBlock": {
-    "value": "Second Block"
-  },
-  "secondShape": {
-    "value": "Second Shape"
-  },
   "density": {
     "value": "Density"
   },

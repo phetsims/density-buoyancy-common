@@ -12,7 +12,6 @@ define( require => {
   const densityBuoyancyCommon = require( 'DENSITY_BUOYANCY_COMMON/densityBuoyancyCommon' );
   const DensityBuoyancyCommonColorProfile = require( 'DENSITY_BUOYANCY_COMMON/common/view/DensityBuoyancyCommonColorProfile' );
   const DensityBuoyancyCommonConstants = require( 'DENSITY_BUOYANCY_COMMON/common/DensityBuoyancyCommonConstants' );
-  const DensityBuoyancyScreenView = require( 'DENSITY_BUOYANCY_COMMON/common/view/DensityBuoyancyScreenView' );
   const DensityControlNode = require( 'DENSITY_BUOYANCY_COMMON/common/view/DensityControlNode' );
   const DisplayOptionsNode = require( 'DENSITY_BUOYANCY_COMMON/common/view/DisplayOptionsNode' );
   const GravityControlNode = require( 'DENSITY_BUOYANCY_COMMON/common/view/GravityControlNode' );
@@ -22,6 +21,7 @@ define( require => {
   const Panel = require( 'SUN/Panel' );
   const PhetFont = require( 'SCENERY_PHET/PhetFont' );
   const PrimarySecondaryControlsNode = require( 'DENSITY_BUOYANCY_COMMON/common/view/PrimarySecondaryControlsNode' );
+  const SecondaryMassScreenView = require( 'DENSITY_BUOYANCY_COMMON/common/view/SecondaryMassScreenView' );
   const StringUtils = require( 'PHETCOMMON/util/StringUtils' );
   const Text = require( 'SCENERY/nodes/Text' );
   const Utils = require( 'DOT/Utils' );
@@ -37,7 +37,7 @@ define( require => {
   // constants
   const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
 
-  class BuoyancyExploreScreenView extends DensityBuoyancyScreenView {
+  class BuoyancyExploreScreenView extends SecondaryMassScreenView {
 
     /**
      * @param {BuoyancyExploreModel} model
@@ -143,20 +143,23 @@ define( require => {
         bottom: this.layoutBounds.bottom - MARGIN
       } ) );
 
-      const rightBox = new PrimarySecondaryControlsNode(
+      // @private {Node}
+      this.rightBox = new PrimarySecondaryControlsNode(
         model.primaryMass,
         model.secondaryMass,
         model.secondaryMassVisibleProperty,
         this.popupLayer
       );
 
-      this.addChild( new AlignBox( rightBox, {
+      this.addChild( new AlignBox( this.rightBox, {
         alignBounds: this.layoutBounds,
         xAlign: 'right',
         yAlign: 'top',
         xMargin: 10,
         yMargin: 10
       } ) );
+
+      this.addSecondMassControl();
 
       this.addChild( this.popupLayer );
     }

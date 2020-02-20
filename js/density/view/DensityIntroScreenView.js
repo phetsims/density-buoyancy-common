@@ -11,10 +11,10 @@ define( require => {
   const AlignBox = require( 'SCENERY/nodes/AlignBox' );
   const densityBuoyancyCommon = require( 'DENSITY_BUOYANCY_COMMON/densityBuoyancyCommon' );
   const DensityBuoyancyCommonConstants = require( 'DENSITY_BUOYANCY_COMMON/common/DensityBuoyancyCommonConstants' );
-  const DensityBuoyancyScreenView = require( 'DENSITY_BUOYANCY_COMMON/common/view/DensityBuoyancyScreenView' );
   const DensityReadoutNode = require( 'DENSITY_BUOYANCY_COMMON/density/view/DensityReadoutNode' );
   const DerivedProperty = require( 'AXON/DerivedProperty' );
   const PrimarySecondaryControlsNode = require( 'DENSITY_BUOYANCY_COMMON/common/view/PrimarySecondaryControlsNode' );
+  const SecondaryMassScreenView = require( 'DENSITY_BUOYANCY_COMMON/common/view/SecondaryMassScreenView' );
   const Text = require( 'SCENERY/nodes/Text' );
   const Vector3 = require( 'DOT/Vector3' );
 
@@ -24,7 +24,7 @@ define( require => {
   // constants
   const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
 
-  class DensityIntroScreenView extends DensityBuoyancyScreenView {
+  class DensityIntroScreenView extends SecondaryMassScreenView {
     /**
      * @param {DensityIntroModel} model
      * @param {Tandem} tandem
@@ -39,7 +39,8 @@ define( require => {
         return this;
       }
 
-      const rightBox = new PrimarySecondaryControlsNode(
+      // @private {Node}
+      this.rightBox = new PrimarySecondaryControlsNode(
         model.primaryMass,
         model.secondaryMass,
         model.secondaryMassVisibleProperty,
@@ -67,13 +68,15 @@ define( require => {
         yMargin: MARGIN
       } ) );
 
-      this.addChild( new AlignBox( rightBox, {
+      this.addChild( new AlignBox( this.rightBox, {
         alignBounds: this.layoutBounds,
         xAlign: 'right',
         yAlign: 'top',
         xMargin: MARGIN,
         yMargin: MARGIN
       } ) );
+
+      this.addSecondMassControl();
 
       this.addChild( this.popupLayer );
     }

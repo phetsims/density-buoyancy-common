@@ -12,9 +12,6 @@ define( require => {
   const DensityBuoyancyCommonColorProfile = require( 'DENSITY_BUOYANCY_COMMON/common/view/DensityBuoyancyCommonColorProfile' );
   const PrimarySecondaryPanelsNode = require( 'DENSITY_BUOYANCY_COMMON/common/view/PrimarySecondaryPanelsNode' );
 
-  // strings
-  const secondBlockString = require( 'string!DENSITY_BUOYANCY_COMMON/secondBlock' );
-
   class PrimarySecondaryControlsNode extends PrimarySecondaryPanelsNode {
 
     /**
@@ -33,7 +30,6 @@ define( require => {
           labelNode: PrimarySecondaryPanelsNode.getSecondaryLabelNode(),
           color: DensityBuoyancyCommonColorProfile.labelBProperty
         } ),
-        secondBlockString,
         secondaryMassVisibleProperty
       );
     }

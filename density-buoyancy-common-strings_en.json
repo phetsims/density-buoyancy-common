@@ -188,9 +188,6 @@
   "fluidDensity": {
     "value": "Fluid Density"
   },
-  "gravity": {
-    "value": "Gravity"
-  },
   "density": {
     "value": "Density"
   },

@@ -16,7 +16,7 @@ define( require => {
   const Text = require( 'SCENERY/nodes/Text' );
 
   // strings
-  const gravityString = require( 'string!DENSITY_BUOYANCY_COMMON/gravity' );
+  const gravityNameString = require( 'string!DENSITY_BUOYANCY_COMMON/gravity.name' );
   const metersPerSecondSquaredPatternString = require( 'string!DENSITY_BUOYANCY_COMMON/metersPerSecondSquaredPattern' );
 
   class GravityControlNode extends ComboNumberControl {
@@ -29,7 +29,7 @@ define( require => {
       const customValue = Gravity.createCustomGravity( 9.8 );
 
       super( {
-        title: gravityString,
+        title: gravityNameString,
         valuePattern: metersPerSecondSquaredPatternString,
         property: gravityProperty,
         range: new Range( 0, 25 ),

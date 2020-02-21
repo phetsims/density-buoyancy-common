@@ -155,7 +155,7 @@
   "forces": {
     "value": "Forces"
   },
-  "gravity": {
+  "gravity.name": {
     "value": "Gravity"
   },
   "buoyancy": {

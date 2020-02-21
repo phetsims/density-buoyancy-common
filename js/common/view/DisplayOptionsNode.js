@@ -26,7 +26,7 @@ define( require => {
   const contactString = require( 'string!DENSITY_BUOYANCY_COMMON/contact' );
   const forcesString = require( 'string!DENSITY_BUOYANCY_COMMON/forces' );
   const forceValuesString = require( 'string!DENSITY_BUOYANCY_COMMON/forceValues' );
-  const gravityString = require( 'string!DENSITY_BUOYANCY_COMMON/gravity' );
+  const gravityNameString = require( 'string!DENSITY_BUOYANCY_COMMON/gravity.name' );
   const massesString = require( 'string!DENSITY_BUOYANCY_COMMON/masses' );
 
   // constants
@@ -70,7 +70,7 @@ define( require => {
       const gravityNode = new HBox( {
         spacing: arrowSpacing,
         children: [
-          new AlignBox( new Checkbox( new Text( gravityString, labelOptions ), model.showGravityForceProperty, checkboxOptions ), {
+          new AlignBox( new Checkbox( new Text( gravityNameString, labelOptions ), model.showGravityForceProperty, checkboxOptions ), {
             group: forceAlignGroup,
             xAlign: 'left'
           } ),

@@ -19,7 +19,7 @@ define( require => {
 
   // strings
   const densityKgLString = require( 'string!DENSITY_BUOYANCY_COMMON/densityKgL' );
-  const materialString = require( 'string!DENSITY_BUOYANCY_COMMON/material' );
+  const materialNameString = require( 'string!DENSITY_BUOYANCY_COMMON/material.name' );
 
   // constants
   const headerFont = new PhetFont( { size: 12, weight: 'bold' } );
@@ -44,7 +44,7 @@ define( require => {
     constructor() {
       super();
 
-      const materialHeader = new Text( materialString, { font: headerFont } );
+      const materialHeader = new Text( materialNameString, { font: headerFont } );
       const densityHeader = new Text( densityKgLString, { font: headerFont } );
 
       const materialNodes = materials.map( material => new Text( material.name, {

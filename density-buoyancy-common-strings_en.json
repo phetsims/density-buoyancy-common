@@ -221,7 +221,7 @@
   "densitiesOfVariousMaterials": {
     "value": "Densities of Various Materials"
   },
-  "material": {
+  "material.name": {
     "value": "Material"
   },
   "densityKgL": {

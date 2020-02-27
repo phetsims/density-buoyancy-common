@@ -3,187 +3,184 @@
 /**
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
-define( require => {
-  'use strict';
 
-  // modules
-  const densityBuoyancyCommon = require( 'DENSITY_BUOYANCY_COMMON/densityBuoyancyCommon' );
-  const MassView = require( 'DENSITY_BUOYANCY_COMMON/common/view/MassView' );
-  const Vector3 = require( 'DOT/Vector3' );
+import Vector3 from '../../../../dot/js/Vector3.js';
+import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
+import MassView from './MassView.js';
 
-  // constants
-  const segments = 64;
-  const numElements = 12 * segments;
+// constants
+const segments = 64;
+const numElements = 12 * segments;
 
-  class HorizontalCylinderView extends MassView {
-    /**
-     * @param {VerticalCylinder} verticalCylinder
-     */
-    constructor( verticalCylinder ) {
+class HorizontalCylinderView extends MassView {
+  /**
+   * @param {VerticalCylinder} verticalCylinder
+   */
+  constructor( verticalCylinder ) {
 
-      const positionArray = new Float32Array( numElements * 3 );
-      const normalArray = new Float32Array( numElements * 3 );
-      const uvArray = new Float32Array( numElements * 2 );
+    const positionArray = new Float32Array( numElements * 3 );
+    const normalArray = new Float32Array( numElements * 3 );
+    const uvArray = new Float32Array( numElements * 2 );
 
-      HorizontalCylinderView.updateArrays( positionArray, normalArray, uvArray, verticalCylinder.radiusProperty.value, verticalCylinder.lengthProperty.value );
+    HorizontalCylinderView.updateArrays( positionArray, normalArray, uvArray, verticalCylinder.radiusProperty.value, verticalCylinder.lengthProperty.value );
 
-      const verticalCylinderGeometry = new THREE.BufferGeometry();
-      verticalCylinderGeometry.addAttribute( 'position', new THREE.BufferAttribute( positionArray, 3 ) );
-      verticalCylinderGeometry.addAttribute( 'normal', new THREE.BufferAttribute( normalArray, 3 ) );
-      verticalCylinderGeometry.addAttribute( 'uv', new THREE.BufferAttribute( uvArray, 2 ) );
+    const verticalCylinderGeometry = new THREE.BufferGeometry();
+    verticalCylinderGeometry.addAttribute( 'position', new THREE.BufferAttribute( positionArray, 3 ) );
+    verticalCylinderGeometry.addAttribute( 'normal', new THREE.BufferAttribute( normalArray, 3 ) );
+    verticalCylinderGeometry.addAttribute( 'uv', new THREE.BufferAttribute( uvArray, 2 ) );
 
-      super( verticalCylinder, verticalCylinderGeometry );
+    super( verticalCylinder, verticalCylinderGeometry );
 
-      // @public {VerticalCylinder}
-      this.verticalCylinder = verticalCylinder;
+    // @public {VerticalCylinder}
+    this.verticalCylinder = verticalCylinder;
 
-      // @private {function}
-      this.updateListener = size => {
-        HorizontalCylinderView.updateArrays( verticalCylinderGeometry.attributes.position.array, null, null, verticalCylinder.radiusProperty.value, verticalCylinder.lengthProperty.value );
-        verticalCylinderGeometry.attributes.position.needsUpdate = true;
-        verticalCylinderGeometry.computeBoundingSphere();
-      };
-      this.verticalCylinder.radiusProperty.lazyLink( this.updateListener );
-      this.verticalCylinder.lengthProperty.lazyLink( this.updateListener );
-    }
-
-    /**
-     * Releases references.
-     * @public
-     * @override
-     */
-    dispose() {
-      this.verticalCylinder.radiusProperty.unlink( this.updateListener );
-      this.verticalCylinder.lengthProperty.unlink( this.updateListener );
-
-      super.dispose();
-    }
-
-    /**
-     * Updates provided geometry arrays given the specific size.
-     * @private
-     *
-     * @param {Float32Array|null} positionArray
-     * @param {Float32Array|null} normalArray
-     * @param {Float32Array|null} uvArray
-     * @param {number} radius
-     * @param {number} length
-     * @param {number} offset - How many vertices have been specified so far?
-     * @param {Vector3} offsetPosition - How to transform all of the points
-     * @returns {number} - The offset after the specified verticies have been written
-     */
-    static updateArrays( positionArray, normalArray, uvArray, radius, length, offset = 0, offsetPosition = Vector3.ZERO ) {
-      const leftX = -length / 2;
-      const rightX = length / 2;
-
-      let positionIndex = offset * 3;
-      let normalIndex = offset * 3;
-      let uvIndex = offset * 2;
-
-      const offsetX = offsetPosition.x;
-      const offsetY = offsetPosition.y;
-      const offsetZ = offsetPosition.z;
-
-      function position( x, y, z ) {
-        if ( positionArray ) {
-          positionArray[ positionIndex++ ] = x + offsetX;
-          positionArray[ positionIndex++ ] = y + offsetY;
-          positionArray[ positionIndex++ ] = z + offsetZ;
-        }
-
-        offset++;
-      }
-
-      function normal( x, y, z ) {
-        if ( normalArray ) {
-          normalArray[ normalIndex++ ] = x;
-          normalArray[ normalIndex++ ] = y;
-          normalArray[ normalIndex++ ] = z;
-        }
-      }
-
-      function uv( u, v ) {
-        if ( uvArray ) {
-          uvArray[ uvIndex++ ] = u;
-          uvArray[ uvIndex++ ] = v;
-        }
-      }
-
-      const du = 2.5 * length;
-      const dv = 5 * 2 * Math.PI * radius;
-      const duCap = 2.5 * radius;
-      const uMin = 0.5 - du;
-      const uMax = 0.5 + du;
-      const uCapMin = 0.5 - duCap;
-      const uCapMax = 0.5 + duCap;
-
-      const TWO_PI = 2 * Math.PI;
-      const HALF_PI = 0.5 * Math.PI;
-
-      for ( let i = 0; i < segments; i++ ) {
-        const ratio0 = i / segments;
-        const ratio1 = ( i + 1 ) / segments;
-        const theta0 = TWO_PI * ratio0 - HALF_PI;
-        const theta1 = TWO_PI * ratio1 - HALF_PI;
-
-        // Normals
-        const ny0 = Math.cos( theta0 );
-        const ny1 = Math.cos( theta1 );
-        const nz0 = Math.sin( theta0 );
-        const nz1 = Math.sin( theta1 );
-
-        // Positions
-        const y0 = radius * ny0;
-        const y1 = radius * ny1;
-        const z0 = radius * nz0;
-        const z1 = radius * nz1;
-
-        // Left cap
-        position( leftX, 0, 0 );
-        position( leftX, y1, z1 );
-        position( leftX, y0, z0 );
-        normal( -1, 0, 0 );
-        normal( -1, 0, 0 );
-        normal( -1, 0, 0 );
-        uv( uCapMax, 0.5 );
-        uv( uCapMin, dv * ( ratio1 - 0.5 ) );
-        uv( uCapMin, dv * ( ratio0 - 0.5 ) );
-
-        // Side
-        position( leftX, y0, z0 );
-        position( leftX, y1, z1 );
-        position( rightX, y0, z0 );
-        position( rightX, y0, z0 );
-        position( leftX, y1, z1 );
-        position( rightX, y1, z1 );
-        normal( 0, ny0, nz0 );
-        normal( 0, ny0, nz0 );
-        normal( 0, ny1, nz1 );
-        normal( 0, ny0, nz0 );
-        normal( 0, ny1, nz1 );
-        normal( 0, ny1, nz1 );
-        uv( uMax, dv * ( ratio0 - 0.5 ) );
-        uv( uMin, dv * ( ratio0 - 0.5 ) );
-        uv( uMin, dv * ( ratio1 - 0.5 ) );
-        uv( uMax, dv * ( ratio0 - 0.5 ) );
-        uv( uMin, dv * ( ratio1 - 0.5 ) );
-        uv( uMax, dv * ( ratio1 - 0.5 ) );
-
-        // Right cap
-        position( rightX, 0, 0 );
-        position( rightX, y0, z0 );
-        position( rightX, y1, z1 );
-        normal( 1, 0, 0 );
-        normal( 1, 0, 0 );
-        normal( 1, 0, 0 );
-        uv( uCapMax, 0.5 );
-        uv( uCapMin, dv * ( ratio0 - 0.5 ) );
-        uv( uCapMin, dv * ( ratio1 - 0.5 ) );
-      }
-
-      return offset;
-    }
+    // @private {function}
+    this.updateListener = size => {
+      HorizontalCylinderView.updateArrays( verticalCylinderGeometry.attributes.position.array, null, null, verticalCylinder.radiusProperty.value, verticalCylinder.lengthProperty.value );
+      verticalCylinderGeometry.attributes.position.needsUpdate = true;
+      verticalCylinderGeometry.computeBoundingSphere();
+    };
+    this.verticalCylinder.radiusProperty.lazyLink( this.updateListener );
+    this.verticalCylinder.lengthProperty.lazyLink( this.updateListener );
   }
 
-  return densityBuoyancyCommon.register( 'HorizontalCylinderView', HorizontalCylinderView );
-} );
+  /**
+   * Releases references.
+   * @public
+   * @override
+   */
+  dispose() {
+    this.verticalCylinder.radiusProperty.unlink( this.updateListener );
+    this.verticalCylinder.lengthProperty.unlink( this.updateListener );
+
+    super.dispose();
+  }
+
+  /**
+   * Updates provided geometry arrays given the specific size.
+   * @private
+   *
+   * @param {Float32Array|null} positionArray
+   * @param {Float32Array|null} normalArray
+   * @param {Float32Array|null} uvArray
+   * @param {number} radius
+   * @param {number} length
+   * @param {number} offset - How many vertices have been specified so far?
+   * @param {Vector3} offsetPosition - How to transform all of the points
+   * @returns {number} - The offset after the specified verticies have been written
+   */
+  static updateArrays( positionArray, normalArray, uvArray, radius, length, offset = 0, offsetPosition = Vector3.ZERO ) {
+    const leftX = -length / 2;
+    const rightX = length / 2;
+
+    let positionIndex = offset * 3;
+    let normalIndex = offset * 3;
+    let uvIndex = offset * 2;
+
+    const offsetX = offsetPosition.x;
+    const offsetY = offsetPosition.y;
+    const offsetZ = offsetPosition.z;
+
+    function position( x, y, z ) {
+      if ( positionArray ) {
+        positionArray[ positionIndex++ ] = x + offsetX;
+        positionArray[ positionIndex++ ] = y + offsetY;
+        positionArray[ positionIndex++ ] = z + offsetZ;
+      }
+
+      offset++;
+    }
+
+    function normal( x, y, z ) {
+      if ( normalArray ) {
+        normalArray[ normalIndex++ ] = x;
+        normalArray[ normalIndex++ ] = y;
+        normalArray[ normalIndex++ ] = z;
+      }
+    }
+
+    function uv( u, v ) {
+      if ( uvArray ) {
+        uvArray[ uvIndex++ ] = u;
+        uvArray[ uvIndex++ ] = v;
+      }
+    }
+
+    const du = 2.5 * length;
+    const dv = 5 * 2 * Math.PI * radius;
+    const duCap = 2.5 * radius;
+    const uMin = 0.5 - du;
+    const uMax = 0.5 + du;
+    const uCapMin = 0.5 - duCap;
+    const uCapMax = 0.5 + duCap;
+
+    const TWO_PI = 2 * Math.PI;
+    const HALF_PI = 0.5 * Math.PI;
+
+    for ( let i = 0; i < segments; i++ ) {
+      const ratio0 = i / segments;
+      const ratio1 = ( i + 1 ) / segments;
+      const theta0 = TWO_PI * ratio0 - HALF_PI;
+      const theta1 = TWO_PI * ratio1 - HALF_PI;
+
+      // Normals
+      const ny0 = Math.cos( theta0 );
+      const ny1 = Math.cos( theta1 );
+      const nz0 = Math.sin( theta0 );
+      const nz1 = Math.sin( theta1 );
+
+      // Positions
+      const y0 = radius * ny0;
+      const y1 = radius * ny1;
+      const z0 = radius * nz0;
+      const z1 = radius * nz1;
+
+      // Left cap
+      position( leftX, 0, 0 );
+      position( leftX, y1, z1 );
+      position( leftX, y0, z0 );
+      normal( -1, 0, 0 );
+      normal( -1, 0, 0 );
+      normal( -1, 0, 0 );
+      uv( uCapMax, 0.5 );
+      uv( uCapMin, dv * ( ratio1 - 0.5 ) );
+      uv( uCapMin, dv * ( ratio0 - 0.5 ) );
+
+      // Side
+      position( leftX, y0, z0 );
+      position( leftX, y1, z1 );
+      position( rightX, y0, z0 );
+      position( rightX, y0, z0 );
+      position( leftX, y1, z1 );
+      position( rightX, y1, z1 );
+      normal( 0, ny0, nz0 );
+      normal( 0, ny0, nz0 );
+      normal( 0, ny1, nz1 );
+      normal( 0, ny0, nz0 );
+      normal( 0, ny1, nz1 );
+      normal( 0, ny1, nz1 );
+      uv( uMax, dv * ( ratio0 - 0.5 ) );
+      uv( uMin, dv * ( ratio0 - 0.5 ) );
+      uv( uMin, dv * ( ratio1 - 0.5 ) );
+      uv( uMax, dv * ( ratio0 - 0.5 ) );
+      uv( uMin, dv * ( ratio1 - 0.5 ) );
+      uv( uMax, dv * ( ratio1 - 0.5 ) );
+
+      // Right cap
+      position( rightX, 0, 0 );
+      position( rightX, y0, z0 );
+      position( rightX, y1, z1 );
+      normal( 1, 0, 0 );
+      normal( 1, 0, 0 );
+      normal( 1, 0, 0 );
+      uv( uCapMax, 0.5 );
+      uv( uCapMin, dv * ( ratio0 - 0.5 ) );
+      uv( uCapMin, dv * ( ratio1 - 0.5 ) );
+    }
+
+    return offset;
+  }
+}
+
+densityBuoyancyCommon.register( 'HorizontalCylinderView', HorizontalCylinderView );
+export default HorizontalCylinderView;

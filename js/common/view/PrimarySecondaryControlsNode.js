@@ -3,37 +3,34 @@
 /**
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
-define( require => {
-  'use strict';
 
-  // modules
-  const BlockControlNode = require( 'DENSITY_BUOYANCY_COMMON/common/view/BlockControlNode' );
-  const densityBuoyancyCommon = require( 'DENSITY_BUOYANCY_COMMON/densityBuoyancyCommon' );
-  const DensityBuoyancyCommonColorProfile = require( 'DENSITY_BUOYANCY_COMMON/common/view/DensityBuoyancyCommonColorProfile' );
-  const PrimarySecondaryPanelsNode = require( 'DENSITY_BUOYANCY_COMMON/common/view/PrimarySecondaryPanelsNode' );
+import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
+import BlockControlNode from './BlockControlNode.js';
+import DensityBuoyancyCommonColorProfile from './DensityBuoyancyCommonColorProfile.js';
+import PrimarySecondaryPanelsNode from './PrimarySecondaryPanelsNode.js';
 
-  class PrimarySecondaryControlsNode extends PrimarySecondaryPanelsNode {
+class PrimarySecondaryControlsNode extends PrimarySecondaryPanelsNode {
 
-    /**
-     * @param {Mass} primaryMass
-     * @param {Mass} secondaryMass
-     * @param {Property.<boolean>} secondaryMassVisibleProperty
-     * @param {Node} popupLayer
-     */
-    constructor( primaryMass, secondaryMass, secondaryMassVisibleProperty, popupLayer ) {
-      super(
-        new BlockControlNode( primaryMass, popupLayer, {
-          labelNode: PrimarySecondaryPanelsNode.getPrimaryLabelNode(),
-          color: DensityBuoyancyCommonColorProfile.labelAProperty
-        } ),
-        new BlockControlNode( secondaryMass, popupLayer, {
-          labelNode: PrimarySecondaryPanelsNode.getSecondaryLabelNode(),
-          color: DensityBuoyancyCommonColorProfile.labelBProperty
-        } ),
-        secondaryMassVisibleProperty
-      );
-    }
+  /**
+   * @param {Mass} primaryMass
+   * @param {Mass} secondaryMass
+   * @param {Property.<boolean>} secondaryMassVisibleProperty
+   * @param {Node} popupLayer
+   */
+  constructor( primaryMass, secondaryMass, secondaryMassVisibleProperty, popupLayer ) {
+    super(
+      new BlockControlNode( primaryMass, popupLayer, {
+        labelNode: PrimarySecondaryPanelsNode.getPrimaryLabelNode(),
+        color: DensityBuoyancyCommonColorProfile.labelAProperty
+      } ),
+      new BlockControlNode( secondaryMass, popupLayer, {
+        labelNode: PrimarySecondaryPanelsNode.getSecondaryLabelNode(),
+        color: DensityBuoyancyCommonColorProfile.labelBProperty
+      } ),
+      secondaryMassVisibleProperty
+    );
   }
+}
 
-  return densityBuoyancyCommon.register( 'PrimarySecondaryControlsNode', PrimarySecondaryControlsNode );
-} );
+densityBuoyancyCommon.register( 'PrimarySecondaryControlsNode', PrimarySecondaryControlsNode );
+export default PrimarySecondaryControlsNode;

@@ -3,100 +3,97 @@
 /**
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
-define( require => {
-  'use strict';
 
-  // modules
-  const Boat = require( 'DENSITY_BUOYANCY_COMMON/buoyancy/model/Boat' );
-  const BooleanProperty = require( 'AXON/BooleanProperty' );
-  const Bottle = require( 'DENSITY_BUOYANCY_COMMON/buoyancy/model/Bottle' );
-  const Cuboid = require( 'DENSITY_BUOYANCY_COMMON/common/model/Cuboid' );
-  const densityBuoyancyCommon = require( 'DENSITY_BUOYANCY_COMMON/densityBuoyancyCommon' );
-  const DensityBuoyancyModel = require( 'DENSITY_BUOYANCY_COMMON/common/model/DensityBuoyancyModel' );
-  const DerivedProperty = require( 'AXON/DerivedProperty' );
-  const Enumeration = require( 'PHET_CORE/Enumeration' );
-  const EnumerationProperty = require( 'AXON/EnumerationProperty' );
-  const Material = require( 'DENSITY_BUOYANCY_COMMON/common/model/Material' );
-  const Matrix3 = require( 'DOT/Matrix3' );
-  const Scale = require( 'DENSITY_BUOYANCY_COMMON/common/model/Scale' );
-  const Vector2 = require( 'DOT/Vector2' );
+import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
+import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
+import EnumerationProperty from '../../../../axon/js/EnumerationProperty.js';
+import Matrix3 from '../../../../dot/js/Matrix3.js';
+import Vector2 from '../../../../dot/js/Vector2.js';
+import Enumeration from '../../../../phet-core/js/Enumeration.js';
+import Cuboid from '../../common/model/Cuboid.js';
+import DensityBuoyancyModel from '../../common/model/DensityBuoyancyModel.js';
+import Material from '../../common/model/Material.js';
+import Scale from '../../common/model/Scale.js';
+import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
+import Boat from './Boat.js';
+import Bottle from './Bottle.js';
 
-  // constants
-  const Scene = Enumeration.byKeys( [
-    'BOTTLE',
-    'BOAT'
-  ] );
+// constants
+const Scene = Enumeration.byKeys( [
+  'BOTTLE',
+  'BOAT'
+] );
 
-  class BuoyancyApplicationsModel extends DensityBuoyancyModel {
-    /**
-     * @param {Tandem} tandem
-     */
-    constructor( tandem ) {
+class BuoyancyApplicationsModel extends DensityBuoyancyModel {
+  /**
+   * @param {Tandem} tandem
+   */
+  constructor( tandem ) {
 
-      super( tandem );
+    super( tandem );
 
-      // @public {Property.<Scene>}
-      this.sceneProperty = new EnumerationProperty( Scene, Scene.BOTTLE );
+    // @public {Property.<Scene>}
+    this.sceneProperty = new EnumerationProperty( Scene, Scene.BOTTLE );
 
-      // @public {Property.<boolean>}
-      this.densityReadoutExpandedProperty = new BooleanProperty( false );
+    // @public {Property.<boolean>}
+    this.densityReadoutExpandedProperty = new BooleanProperty( false );
 
-      // @public {Bottle}
-      this.bottle = new Bottle( this.engine, {
-        matrix: Matrix3.translation( 0, 0 )
-      } );
+    // @public {Bottle}
+    this.bottle = new Bottle( this.engine, {
+      matrix: Matrix3.translation( 0, 0 )
+    } );
 
 
-      // @public {Cuboid}
-      this.block = Cuboid.createWithVolume( this.engine, Material.STEEL, new Vector2( 0.5, 0.5 ), 0.005 );
+    // @public {Cuboid}
+    this.block = Cuboid.createWithVolume( this.engine, Material.STEEL, new Vector2( 0.5, 0.5 ), 0.005 );
 
-      // @public {Boat}
-      this.boat = new Boat( this.engine, new DerivedProperty( [ this.block.sizeProperty ], size => size.depth ), {
-        matrix: Matrix3.translation( 0, 0 )
-      } );
+    // @public {Boat}
+    this.boat = new Boat( this.engine, new DerivedProperty( [ this.block.sizeProperty ], size => size.depth ), {
+      matrix: Matrix3.translation( 0, 0 )
+    } );
 
 
-      // @public {Scale}
-      this.leftScale = new Scale( this.engine, {
-        matrix: Matrix3.translation( -0.7, -Scale.SCALE_BASE_BOUNDS.minY ),
-        displayType: Scale.DisplayType.NEWTONS
-      } );
-      this.masses.push( this.leftScale );
+    // @public {Scale}
+    this.leftScale = new Scale( this.engine, {
+      matrix: Matrix3.translation( -0.7, -Scale.SCALE_BASE_BOUNDS.minY ),
+      displayType: Scale.DisplayType.NEWTONS
+    } );
+    this.masses.push( this.leftScale );
 
-      // @public {Scale}
-      this.poolScale = new Scale( this.engine, {
-        matrix: Matrix3.translation( 0.25, -Scale.SCALE_BASE_BOUNDS.minY + this.poolBounds.minY ),
-        displayType: Scale.DisplayType.NEWTONS
-      } );
-      this.masses.push( this.poolScale );
+    // @public {Scale}
+    this.poolScale = new Scale( this.engine, {
+      matrix: Matrix3.translation( 0.25, -Scale.SCALE_BASE_BOUNDS.minY + this.poolBounds.minY ),
+      displayType: Scale.DisplayType.NEWTONS
+    } );
+    this.masses.push( this.poolScale );
 
-      this.sceneProperty.link( scene => {
-        this.setMassVisible( this.bottle, scene === Scene.BOTTLE );
-        this.setMassVisible( this.boat, scene === Scene.BOAT );
-        this.setMassVisible( this.block, scene === Scene.BOAT );
-      } );
-    }
-
-    /**
-     * Resets things to their original values.
-     * @public
-     * @override
-     */
-    reset() {
-      this.densityReadoutExpandedProperty.reset();
-
-      this.sceneProperty.reset();
-
-      this.bottle.reset();
-      this.block.reset();
-      this.boat.reset();
-
-      super.reset();
-    }
+    this.sceneProperty.link( scene => {
+      this.setMassVisible( this.bottle, scene === Scene.BOTTLE );
+      this.setMassVisible( this.boat, scene === Scene.BOAT );
+      this.setMassVisible( this.block, scene === Scene.BOAT );
+    } );
   }
 
-  // @public {Enumeration}
-  BuoyancyApplicationsModel.Scene = Scene;
+  /**
+   * Resets things to their original values.
+   * @public
+   * @override
+   */
+  reset() {
+    this.densityReadoutExpandedProperty.reset();
 
-  return densityBuoyancyCommon.register( 'BuoyancyApplicationsModel', BuoyancyApplicationsModel );
-} );
+    this.sceneProperty.reset();
+
+    this.bottle.reset();
+    this.block.reset();
+    this.boat.reset();
+
+    super.reset();
+  }
+}
+
+// @public {Enumeration}
+BuoyancyApplicationsModel.Scene = Scene;
+
+densityBuoyancyCommon.register( 'BuoyancyApplicationsModel', BuoyancyApplicationsModel );
+export default BuoyancyApplicationsModel;

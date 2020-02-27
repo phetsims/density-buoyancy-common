@@ -5,18 +5,15 @@
  *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
-define( require => {
-  'use strict';
 
-  // modules
-  const densityBuoyancyCommon = require( 'DENSITY_BUOYANCY_COMMON/densityBuoyancyCommon' );
-  const Engine = require( 'DENSITY_BUOYANCY_COMMON/common/model/Engine' );
+import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
+import Engine from './Engine.js';
 
-  class FixedTimestepEngine extends Engine {
-    constructor() {
-      super();
-    }
+class FixedTimestepEngine extends Engine {
+  constructor() {
+    super();
   }
+}
 
-  return densityBuoyancyCommon.register( 'FixedTimestepEngine', FixedTimestepEngine );
-} );
+densityBuoyancyCommon.register( 'FixedTimestepEngine', FixedTimestepEngine );
+export default FixedTimestepEngine;

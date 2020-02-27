@@ -3,82 +3,79 @@
 /**
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
-define( require => {
-  'use strict';
 
-  // modules
-  const BooleanProperty = require( 'AXON/BooleanProperty' );
-  const Cuboid = require( 'DENSITY_BUOYANCY_COMMON/common/model/Cuboid' );
-  const densityBuoyancyCommon = require( 'DENSITY_BUOYANCY_COMMON/densityBuoyancyCommon' );
-  const DensityBuoyancyModel = require( 'DENSITY_BUOYANCY_COMMON/common/model/DensityBuoyancyModel' );
-  const Mass = require( 'DENSITY_BUOYANCY_COMMON/common/model/Mass' );
-  const Material = require( 'DENSITY_BUOYANCY_COMMON/common/model/Material' );
-  const Matrix3 = require( 'DOT/Matrix3' );
-  const Scale = require( 'DENSITY_BUOYANCY_COMMON/common/model/Scale' );
-  const Vector2 = require( 'DOT/Vector2' );
+import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
+import Matrix3 from '../../../../dot/js/Matrix3.js';
+import Vector2 from '../../../../dot/js/Vector2.js';
+import Cuboid from '../../common/model/Cuboid.js';
+import DensityBuoyancyModel from '../../common/model/DensityBuoyancyModel.js';
+import Mass from '../../common/model/Mass.js';
+import Material from '../../common/model/Material.js';
+import Scale from '../../common/model/Scale.js';
+import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 
-  class BuoyancyExploreModel extends DensityBuoyancyModel {
-    /**
-     * @param {Tandem} tandem
-     */
-    constructor( tandem ) {
+class BuoyancyExploreModel extends DensityBuoyancyModel {
+  /**
+   * @param {Tandem} tandem
+   */
+  constructor( tandem ) {
 
-      super( tandem );
+    super( tandem );
 
-      // @public {Property.<boolean>}
-      this.secondaryMassVisibleProperty = new BooleanProperty( false );
+    // @public {Property.<boolean>}
+    this.secondaryMassVisibleProperty = new BooleanProperty( false );
 
-      // @public {Mass}
-      this.primaryMass = Cuboid.createWithMass( this.engine, Material.WOOD, new Vector2( -0.2, 0.2 ), 2, {
-        tag: Mass.MassTag.PRIMARY
-      } );
-      this.secondaryMass = Cuboid.createWithMass( this.engine, Material.ALUMINUM, new Vector2( -0.2, 0.35 ), 13.5, {
-        tag: Mass.MassTag.SECONDARY
-      } );
+    // @public {Mass}
+    this.primaryMass = Cuboid.createWithMass( this.engine, Material.WOOD, new Vector2( -0.2, 0.2 ), 2, {
+      tag: Mass.MassTag.PRIMARY
+    } );
+    this.secondaryMass = Cuboid.createWithMass( this.engine, Material.ALUMINUM, new Vector2( -0.2, 0.35 ), 13.5, {
+      tag: Mass.MassTag.SECONDARY
+    } );
 
-      this.masses.push( this.primaryMass );
+    this.masses.push( this.primaryMass );
 
-      this.secondaryMassVisibleProperty.lazyLink( secondaryMassVisible => {
-        if ( secondaryMassVisible ) {
-          this.masses.push( this.secondaryMass );
-        }
-        else {
-          this.masses.remove( this.secondaryMass );
-        }
-      } );
+    this.secondaryMassVisibleProperty.lazyLink( secondaryMassVisible => {
+      if ( secondaryMassVisible ) {
+        this.masses.push( this.secondaryMass );
+      }
+      else {
+        this.masses.remove( this.secondaryMass );
+      }
+    } );
 
-      // Left scale
-      this.masses.push( new Scale( this.engine, {
-        matrix: Matrix3.translation( -0.65, -Scale.SCALE_BASE_BOUNDS.minY ),
-        displayType: Scale.DisplayType.NEWTONS
-      } ) );
+    // Left scale
+    this.masses.push( new Scale( this.engine, {
+      matrix: Matrix3.translation( -0.65, -Scale.SCALE_BASE_BOUNDS.minY ),
+      displayType: Scale.DisplayType.NEWTONS
+    } ) );
 
-      // Pool scale
-      this.masses.push( new Scale( this.engine, {
-        matrix: Matrix3.translation( 0.25, -Scale.SCALE_BASE_BOUNDS.minY + this.poolBounds.minY ),
-        displayType: Scale.DisplayType.NEWTONS
-      } ) );
+    // Pool scale
+    this.masses.push( new Scale( this.engine, {
+      matrix: Matrix3.translation( 0.25, -Scale.SCALE_BASE_BOUNDS.minY + this.poolBounds.minY ),
+      displayType: Scale.DisplayType.NEWTONS
+    } ) );
 
-      // @public {Property.<boolean>}
-      this.densityReadoutExpandedProperty = new BooleanProperty( false );
-    }
-
-    /**
-     * Resets things to their original values.
-     * @public
-     * @override
-     */
-    reset() {
-      this.secondaryMassVisibleProperty.reset();
-
-      this.primaryMass.reset();
-      this.secondaryMass.reset();
-
-      this.densityReadoutExpandedProperty.reset();
-
-      super.reset();
-    }
+    // @public {Property.<boolean>}
+    this.densityReadoutExpandedProperty = new BooleanProperty( false );
   }
 
-  return densityBuoyancyCommon.register( 'BuoyancyExploreModel', BuoyancyExploreModel );
-} );
+  /**
+   * Resets things to their original values.
+   * @public
+   * @override
+   */
+  reset() {
+    this.secondaryMassVisibleProperty.reset();
+
+    this.primaryMass.reset();
+    this.secondaryMass.reset();
+
+    this.densityReadoutExpandedProperty.reset();
+
+    super.reset();
+  }
+}
+
+densityBuoyancyCommon.register( 'BuoyancyExploreModel', BuoyancyExploreModel );
+export default BuoyancyExploreModel;

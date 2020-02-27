@@ -5,41 +5,37 @@
  *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
-define( require => {
-  'use strict';
 
-  // modules
-  const densityBuoyancyCommon = require( 'DENSITY_BUOYANCY_COMMON/densityBuoyancyCommon' );
-  const PhetFont = require( 'SCENERY_PHET/PhetFont' );
+import PhetFont from '../../../scenery-phet/js/PhetFont.js';
+import densityBuoyancyCommon from '../densityBuoyancyCommon.js';
 
-  const CORNER_RADIUS = 5;
+const CORNER_RADIUS = 5;
 
-  const DensityBuoyancyCommonConstants = {
-    // {number} - Used for margins from the offset of screens or between panels/boxes
-    MARGIN: 10,
+const DensityBuoyancyCommonConstants = {
+  // {number} - Used for margins from the offset of screens or between panels/boxes
+  MARGIN: 10,
 
-    // {number} - Used for panels/boxes by default
-    CORNER_RADIUS: CORNER_RADIUS,
+  // {number} - Used for panels/boxes by default
+  CORNER_RADIUS: CORNER_RADIUS,
 
-    // {Font}
-    TITLE_FONT: new PhetFont( {
-      size: 16,
-      weight: 'bold'
-    } ),
-    COMBO_BOX_ITEM_FONT: new PhetFont( {
-      size: 14
-    } ),
-    READOUT_FONT: new PhetFont( 14 ),
+  // {Font}
+  TITLE_FONT: new PhetFont( {
+    size: 16,
+    weight: 'bold'
+  } ),
+  COMBO_BOX_ITEM_FONT: new PhetFont( {
+    size: 14
+  } ),
+  READOUT_FONT: new PhetFont( 14 ),
 
-    // {Object}
-    PANEL_OPTIONS: {
-      cornerRadius: CORNER_RADIUS,
-      xMargin: 10,
-      yMargin: 10
-    }
-  };
+  // {Object}
+  PANEL_OPTIONS: {
+    cornerRadius: CORNER_RADIUS,
+    xMargin: 10,
+    yMargin: 10
+  }
+};
 
-  densityBuoyancyCommon.register( 'DensityBuoyancyCommonConstants', DensityBuoyancyCommonConstants );
+densityBuoyancyCommon.register( 'DensityBuoyancyCommonConstants', DensityBuoyancyCommonConstants );
 
-  return DensityBuoyancyCommonConstants;
-} );
+export default DensityBuoyancyCommonConstants;

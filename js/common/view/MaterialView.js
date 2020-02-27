@@ -3,29 +3,26 @@
 /**
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
-define( require => {
-  'use strict';
 
-  // modules
-  const densityBuoyancyCommon = require( 'DENSITY_BUOYANCY_COMMON/densityBuoyancyCommon' );
+import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 
-  class MaterialView {
-    constructor() {
-      // @public {THREE.Material}
-      this.material = null;
-    }
-
-    /**
-     * Updates the material view (before the main rendering)
-     * @public
-     *
-     * @param {MassView} massView
-     * @param {THREE.Scene} scene
-     */
-    update( massView, scene ) {
-
-    }
+class MaterialView {
+  constructor() {
+    // @public {THREE.Material}
+    this.material = null;
   }
 
-  return densityBuoyancyCommon.register( 'MaterialView', MaterialView );
-} );
+  /**
+   * Updates the material view (before the main rendering)
+   * @public
+   *
+   * @param {MassView} massView
+   * @param {THREE.Scene} scene
+   */
+  update( massView, scene ) {
+
+  }
+}
+
+densityBuoyancyCommon.register( 'MaterialView', MaterialView );
+export default MaterialView;

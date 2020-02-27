@@ -3,60 +3,57 @@
 /**
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
-define( require => {
-  'use strict';
 
-  // modules
-  const densityBuoyancyCommon = require( 'DENSITY_BUOYANCY_COMMON/densityBuoyancyCommon' );
-  const DensityBuoyancyCommonColorProfile = require( 'DENSITY_BUOYANCY_COMMON/common/view/DensityBuoyancyCommonColorProfile' );
-  const DensityBuoyancyCommonConstants = require( 'DENSITY_BUOYANCY_COMMON/common/DensityBuoyancyCommonConstants' );
-  const Node = require( 'SCENERY/nodes/Node' );
-  const Panel = require( 'SUN/Panel' );
-  const Path = require( 'SCENERY/nodes/Path' );
-  const PhetFont = require( 'SCENERY_PHET/PhetFont' );
-  const Shape = require( 'KITE/Shape' );
-  const StringUtils = require( 'PHETCOMMON/util/StringUtils' );
-  const Text = require( 'SCENERY/nodes/Text' );
-  const Utils = require( 'DOT/Utils' );
+import Utils from '../../../../dot/js/Utils.js';
+import Shape from '../../../../kite/js/Shape.js';
+import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
+import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
+import Node from '../../../../scenery/js/nodes/Node.js';
+import Path from '../../../../scenery/js/nodes/Path.js';
+import Text from '../../../../scenery/js/nodes/Text.js';
+import Panel from '../../../../sun/js/Panel.js';
+import densityBuoyancyCommonStrings from '../../density-buoyancy-common-strings.js';
+import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
+import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
+import DensityBuoyancyCommonColorProfile from './DensityBuoyancyCommonColorProfile.js';
 
-  // strings
-  const litersPatternString = require( 'string!DENSITY_BUOYANCY_COMMON/litersPattern' );
+const litersPatternString = densityBuoyancyCommonStrings.litersPattern;
 
-  class WaterLevelIndicator extends Node {
-    /**
-     * @param {Property.<number>} volumeProperty
-     */
-    constructor( volumeProperty ) {
-      super();
+class WaterLevelIndicator extends Node {
+  /**
+   * @param {Property.<number>} volumeProperty
+   */
+  constructor( volumeProperty ) {
+    super();
 
-      const highlightShape = new Shape().moveTo( 0, 0 ).lineTo( -20, -10 ).lineTo( -20, 10 ).close();
-      const highlightPath = new Path( highlightShape, {
-        fill: DensityBuoyancyCommonColorProfile.waterIndicatorHighlightProperty
+    const highlightShape = new Shape().moveTo( 0, 0 ).lineTo( -20, -10 ).lineTo( -20, 10 ).close();
+    const highlightPath = new Path( highlightShape, {
+      fill: DensityBuoyancyCommonColorProfile.waterIndicatorHighlightProperty
+    } );
+    this.addChild( highlightPath );
+
+    const readoutText = new Text( '', {
+      font: new PhetFont( {
+        size: 18
+      } )
+    } );
+
+    const readoutPanel = new Panel( readoutText, {
+      cornerRadius: DensityBuoyancyCommonConstants.CORNER_RADIUS
+    } );
+    this.addChild( readoutPanel );
+
+    volumeProperty.link( volume => {
+      const liters = 1000 * volume;
+
+      readoutText.text = StringUtils.fillIn( litersPatternString, {
+        liters: Utils.toFixed( liters, 2 )
       } );
-      this.addChild( highlightPath );
 
-      const readoutText = new Text( '', {
-        font: new PhetFont( {
-          size: 18
-        } )
-      } );
-
-      const readoutPanel = new Panel( readoutText, {
-        cornerRadius: DensityBuoyancyCommonConstants.CORNER_RADIUS
-      } );
-      this.addChild( readoutPanel );
-
-      volumeProperty.link( volume => {
-        const liters = 1000 * volume;
-
-        readoutText.text = StringUtils.fillIn( litersPatternString, {
-          liters: Utils.toFixed( liters, 2 )
-        } );
-
-        readoutPanel.rightCenter = highlightPath.leftCenter;
-      } );
-    }
+      readoutPanel.rightCenter = highlightPath.leftCenter;
+    } );
   }
+}
 
-  return densityBuoyancyCommon.register( 'WaterLevelIndicator', WaterLevelIndicator );
-} );
+densityBuoyancyCommon.register( 'WaterLevelIndicator', WaterLevelIndicator );
+export default WaterLevelIndicator;

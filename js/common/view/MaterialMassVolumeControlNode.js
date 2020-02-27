@@ -3,249 +3,246 @@
 /**
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
-define( require => {
-  'use strict';
 
-  // modules
-  const ComboBox = require( 'SUN/ComboBox' );
-  const ComboBoxItem = require( 'SUN/ComboBoxItem' );
-  const densityBuoyancyCommon = require( 'DENSITY_BUOYANCY_COMMON/densityBuoyancyCommon' );
-  const DensityBuoyancyCommonConstants = require( 'DENSITY_BUOYANCY_COMMON/common/DensityBuoyancyCommonConstants' );
-  const DerivedProperty = require( 'AXON/DerivedProperty' );
-  const Dimension2 = require( 'DOT/Dimension2' );
-  const DynamicProperty = require( 'AXON/DynamicProperty' );
-  const HBox = require( 'SCENERY/nodes/HBox' );
-  const Material = require( 'DENSITY_BUOYANCY_COMMON/common/model/Material' );
-  const merge = require( 'PHET_CORE/merge' );
-  const NumberControl = require( 'SCENERY_PHET/NumberControl' );
-  const NumberProperty = require( 'AXON/NumberProperty' );
-  const PhetFont = require( 'SCENERY_PHET/PhetFont' );
-  const PrecisionSliderThumb = require( 'DENSITY_BUOYANCY_COMMON/common/view/PrecisionSliderThumb' );
-  const Property = require( 'AXON/Property' );
-  const Range = require( 'DOT/Range' );
-  const StringUtils = require( 'PHETCOMMON/util/StringUtils' );
-  const Text = require( 'SCENERY/nodes/Text' );
-  const Utils = require( 'DOT/Utils' );
-  const VBox = require( 'SCENERY/nodes/VBox' );
+import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
+import DynamicProperty from '../../../../axon/js/DynamicProperty.js';
+import NumberProperty from '../../../../axon/js/NumberProperty.js';
+import Property from '../../../../axon/js/Property.js';
+import Dimension2 from '../../../../dot/js/Dimension2.js';
+import Range from '../../../../dot/js/Range.js';
+import Utils from '../../../../dot/js/Utils.js';
+import merge from '../../../../phet-core/js/merge.js';
+import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
+import NumberControl from '../../../../scenery-phet/js/NumberControl.js';
+import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
+import HBox from '../../../../scenery/js/nodes/HBox.js';
+import Text from '../../../../scenery/js/nodes/Text.js';
+import VBox from '../../../../scenery/js/nodes/VBox.js';
+import ComboBox from '../../../../sun/js/ComboBox.js';
+import ComboBoxItem from '../../../../sun/js/ComboBoxItem.js';
+import densityBuoyancyCommonStrings from '../../density-buoyancy-common-strings.js';
+import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
+import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
+import Material from '../model/Material.js';
+import PrecisionSliderThumb from './PrecisionSliderThumb.js';
 
-  // strings
-  const kilogramsPatternString = require( 'string!DENSITY_BUOYANCY_COMMON/kilogramsPattern' );
-  const litersPatternString = require( 'string!DENSITY_BUOYANCY_COMMON/litersPattern' );
-  const massString = require( 'string!DENSITY_BUOYANCY_COMMON/mass' );
-  const materialCustomString = require( 'string!DENSITY_BUOYANCY_COMMON/material.custom' );
-  const volumeString = require( 'string!DENSITY_BUOYANCY_COMMON/volume' );
+const kilogramsPatternString = densityBuoyancyCommonStrings.kilogramsPattern;
+const litersPatternString = densityBuoyancyCommonStrings.litersPattern;
+const massString = densityBuoyancyCommonStrings.mass;
+const materialCustomString = densityBuoyancyCommonStrings.material.custom;
+const volumeString = densityBuoyancyCommonStrings.volume;
 
-  // constants
-  const LITERS_IN_CUBIC_METER = 1000;
-  const CUSTOM_MATERIAL_PLACEHOLDER = null;
-  const TRACK_HEIGHT = 3;
+// constants
+const LITERS_IN_CUBIC_METER = 1000;
+const CUSTOM_MATERIAL_PLACEHOLDER = null;
+const TRACK_HEIGHT = 3;
 
-  class MaterialMassVolumeControlNode extends VBox {
-    /**
-     * @param {Property.<Material>} materialProperty
-     * @param {Property.<number>} massProperty
-     * @param {Property.<number>} volumeProperty
-     * @param {Array.<Material>} materials
-     * @param {function} setVolume
-     * @param {Node} listParent
-     * @param {Object} [options]
-     */
-    constructor( materialProperty, massProperty, volumeProperty, materials, setVolume, listParent, options ) {
+class MaterialMassVolumeControlNode extends VBox {
+  /**
+   * @param {Property.<Material>} materialProperty
+   * @param {Property.<number>} massProperty
+   * @param {Property.<number>} volumeProperty
+   * @param {Array.<Material>} materials
+   * @param {function} setVolume
+   * @param {Node} listParent
+   * @param {Object} [options]
+   */
+  constructor( materialProperty, massProperty, volumeProperty, materials, setVolume, listParent, options ) {
 
-      options = merge( {
-        // {Node|null}
-        labelNode: null,
+    options = merge( {
+      // {Node|null}
+      labelNode: null,
 
-        // {number}
-        minMass: 0,
-        maxCustomMass: 10,
-        maxMass: 27,
-        minVolumeLiters: 1,
-        maxVolumeLiters: 10,
+      // {number}
+      minMass: 0,
+      maxCustomMass: 10,
+      maxMass: 27,
+      minVolumeLiters: 1,
+      maxVolumeLiters: 10,
 
-        // {PaintDef}
-        color: null
-      }, options );
+      // {PaintDef}
+      color: null
+    }, options );
 
-      super( {
-        spacing: 15,
-        align: 'left'
-      } );
+    super( {
+      spacing: 15,
+      align: 'left'
+    } );
 
-      const comboBoxMaterialProperty = new DynamicProperty( new Property( materialProperty ), {
-        bidirectional: true,
-        map: material => {
-          return material.custom ? CUSTOM_MATERIAL_PLACEHOLDER : material;
-        },
-        inverseMap: material => {
-          return material || Material.createCustomSolidMaterial( {
-            density: materialProperty.value.density
+    const comboBoxMaterialProperty = new DynamicProperty( new Property( materialProperty ), {
+      bidirectional: true,
+      map: material => {
+        return material.custom ? CUSTOM_MATERIAL_PLACEHOLDER : material;
+      },
+      inverseMap: material => {
+        return material || Material.createCustomSolidMaterial( {
+          density: materialProperty.value.density
+        } );
+      },
+      reentrant: true
+    } );
+
+    let modelMassChanging = false;
+    let userMassChanging = false;
+    let modelVolumeChanging = false;
+    let userVolumeChanging = false;
+
+    const massNumberProperty = new NumberProperty( massProperty.value );
+
+    // liters from m^3
+    const numberControlVolumeProperty = new NumberProperty( volumeProperty.value * LITERS_IN_CUBIC_METER );
+
+    numberControlVolumeProperty.lazyLink( liters => {
+      if ( !modelVolumeChanging ) {
+        const cubicMeters = liters / LITERS_IN_CUBIC_METER;
+
+        userVolumeChanging = true;
+
+        // If we're custom, adjust the density
+        if ( materialProperty.value.custom ) {
+          materialProperty.value = Material.createCustomSolidMaterial( {
+            density: massProperty.value / cubicMeters
           } );
-        },
-        reentrant: true
-      } );
-
-      let modelMassChanging = false;
-      let userMassChanging = false;
-      let modelVolumeChanging = false;
-      let userVolumeChanging = false;
-
-      const massNumberProperty = new NumberProperty( massProperty.value );
-
-      // liters from m^3
-      const numberControlVolumeProperty = new NumberProperty( volumeProperty.value * LITERS_IN_CUBIC_METER );
-
-      numberControlVolumeProperty.lazyLink( liters => {
-        if ( !modelVolumeChanging ) {
-          const cubicMeters = liters / LITERS_IN_CUBIC_METER;
-
-          userVolumeChanging = true;
-
-          // If we're custom, adjust the density
-          if ( materialProperty.value.custom ) {
-            materialProperty.value = Material.createCustomSolidMaterial( {
-              density: massProperty.value / cubicMeters
-            } );
-          }
-          setVolume( cubicMeters );
-
-          userVolumeChanging = false;
         }
-      } );
-      volumeProperty.lazyLink( cubicMeters => {
-        if ( !userVolumeChanging ) {
-          // TODO: handle re-entrance?
-          modelVolumeChanging = true;
+        setVolume( cubicMeters );
 
-          numberControlVolumeProperty.value = cubicMeters * LITERS_IN_CUBIC_METER;
+        userVolumeChanging = false;
+      }
+    } );
+    volumeProperty.lazyLink( cubicMeters => {
+      if ( !userVolumeChanging ) {
+        // TODO: handle re-entrance?
+        modelVolumeChanging = true;
 
-          modelVolumeChanging = false;
-        }
-      } );
+        numberControlVolumeProperty.value = cubicMeters * LITERS_IN_CUBIC_METER;
 
-      massNumberProperty.lazyLink( mass => {
-        if ( !modelMassChanging ) {
-          userMassChanging = true;
+        modelVolumeChanging = false;
+      }
+    } );
 
-          if ( materialProperty.value.custom ) {
-            materialProperty.value = Material.createCustomSolidMaterial( {
-              density: mass / volumeProperty.value
-            } );
-          }
-          else {
-            numberControlVolumeProperty.value = mass / materialProperty.value.density * LITERS_IN_CUBIC_METER;
-          }
+    massNumberProperty.lazyLink( mass => {
+      if ( !modelMassChanging ) {
+        userMassChanging = true;
 
-          userMassChanging = false;
-        }
-      } );
-      massProperty.lazyLink( mass => {
-        if ( !userMassChanging ) {
-          modelMassChanging = true;
-
-          massNumberProperty.value = mass;
-
-          modelMassChanging = false;
-        }
-      } );
-
-      const enabledMassRangeProperty = new DerivedProperty( [ materialProperty ], material => {
-        if ( material.custom ) {
-          return new Range( options.minMass, options.maxCustomMass );
+        if ( materialProperty.value.custom ) {
+          materialProperty.value = Material.createCustomSolidMaterial( {
+            density: mass / volumeProperty.value
+          } );
         }
         else {
-          const density = material.density;
-
-          const minMass = Utils.clamp( density * options.minVolumeLiters / LITERS_IN_CUBIC_METER, options.minMass, options.maxMass );
-          const maxMass = Utils.clamp( density * options.maxVolumeLiters / LITERS_IN_CUBIC_METER, options.minMass, options.maxMass );
-
-          return new Range( minMass, maxMass );
+          numberControlVolumeProperty.value = mass / materialProperty.value.density * LITERS_IN_CUBIC_METER;
         }
-      }, {
-        reentrant: true
-      } );
 
-      const comboBox = new ComboBox( [
-        ...materials.map( material => {
-          return new ComboBoxItem( new Text( material.name, { font: DensityBuoyancyCommonConstants.COMBO_BOX_ITEM_FONT } ), material );
+        userMassChanging = false;
+      }
+    } );
+    massProperty.lazyLink( mass => {
+      if ( !userMassChanging ) {
+        modelMassChanging = true;
+
+        massNumberProperty.value = mass;
+
+        modelMassChanging = false;
+      }
+    } );
+
+    const enabledMassRangeProperty = new DerivedProperty( [ materialProperty ], material => {
+      if ( material.custom ) {
+        return new Range( options.minMass, options.maxCustomMass );
+      }
+      else {
+        const density = material.density;
+
+        const minMass = Utils.clamp( density * options.minVolumeLiters / LITERS_IN_CUBIC_METER, options.minMass, options.maxMass );
+        const maxMass = Utils.clamp( density * options.maxVolumeLiters / LITERS_IN_CUBIC_METER, options.minMass, options.maxMass );
+
+        return new Range( minMass, maxMass );
+      }
+    }, {
+      reentrant: true
+    } );
+
+    const comboBox = new ComboBox( [
+      ...materials.map( material => {
+        return new ComboBoxItem( new Text( material.name, { font: DensityBuoyancyCommonConstants.COMBO_BOX_ITEM_FONT } ), material );
+      } ),
+      new ComboBoxItem( new Text( materialCustomString, { font: DensityBuoyancyCommonConstants.COMBO_BOX_ITEM_FONT } ), CUSTOM_MATERIAL_PLACEHOLDER )
+    ], comboBoxMaterialProperty, listParent, {
+      xMargin: 8,
+      yMargin: 4
+    } );
+
+    const massNumberControl = new NumberControl( massString, massNumberProperty, new Range( options.minMass, options.maxMass ), merge( {
+      sliderOptions: {
+        enabledRangeProperty: enabledMassRangeProperty,
+        thumbNode: new PrecisionSliderThumb( {
+          thumbFill: options.color
         } ),
-        new ComboBoxItem( new Text( materialCustomString, { font: DensityBuoyancyCommonConstants.COMBO_BOX_ITEM_FONT } ), CUSTOM_MATERIAL_PLACEHOLDER )
-      ], comboBoxMaterialProperty, listParent, {
-        xMargin: 8,
-        yMargin: 4
-      } );
+        thumbYOffset: new PrecisionSliderThumb().height / 2 - TRACK_HEIGHT / 2
+      },
+      numberDisplayOptions: {
+        valuePattern: StringUtils.fillIn( kilogramsPatternString, {
+          kilograms: '{{value}}'
+        } ),
+        font: new PhetFont( 14 )
+      },
+      titleNodeOptions: {
+        font: new PhetFont( { size: 14, weight: 'bold' } ),
+        maxWidth: 70
+      }
+    }, MaterialMassVolumeControlNode.getNumberControlOptions() ) );
+    const volumeNumberControl = new NumberControl( volumeString, numberControlVolumeProperty, new Range( options.minVolumeLiters, options.maxVolumeLiters ), merge( {
+      sliderOptions: {
+        thumbNode: new PrecisionSliderThumb( {
+          thumbFill: options.color
+        } ),
+        thumbYOffset: new PrecisionSliderThumb().height / 2 - TRACK_HEIGHT / 2
+      },
+      numberDisplayOptions: {
+        valuePattern: StringUtils.fillIn( litersPatternString, {
+          liters: '{{value}}'
+        } ),
+        font: new PhetFont( 14 )
+      },
+      titleNodeOptions: {
+        font: new PhetFont( { size: 14, weight: 'bold' } ),
+        maxWidth: 70
+      }
+    }, MaterialMassVolumeControlNode.getNumberControlOptions() ) );
 
-      const massNumberControl = new NumberControl( massString, massNumberProperty, new Range( options.minMass, options.maxMass ), merge( {
-        sliderOptions: {
-          enabledRangeProperty: enabledMassRangeProperty,
-          thumbNode: new PrecisionSliderThumb( {
-            thumbFill: options.color
-          } ),
-          thumbYOffset: new PrecisionSliderThumb().height / 2 - TRACK_HEIGHT / 2
-        },
-        numberDisplayOptions: {
-          valuePattern: StringUtils.fillIn( kilogramsPatternString, {
-            kilograms: '{{value}}'
-          } ),
-          font: new PhetFont( 14 )
-        },
-        titleNodeOptions: {
-          font: new PhetFont( { size: 14, weight: 'bold' } ),
-          maxWidth: 70
-        }
-      }, MaterialMassVolumeControlNode.getNumberControlOptions() ) );
-      const volumeNumberControl = new NumberControl( volumeString, numberControlVolumeProperty, new Range( options.minVolumeLiters, options.maxVolumeLiters ), merge( {
-        sliderOptions: {
-          thumbNode: new PrecisionSliderThumb( {
-            thumbFill: options.color
-          } ),
-          thumbYOffset: new PrecisionSliderThumb().height / 2 - TRACK_HEIGHT / 2
-        },
-        numberDisplayOptions: {
-          valuePattern: StringUtils.fillIn( litersPatternString, {
-            liters: '{{value}}'
-          } ),
-          font: new PhetFont( 14 )
-        },
-        titleNodeOptions: {
-          font: new PhetFont( { size: 14, weight: 'bold' } ),
-          maxWidth: 70
-        }
-      }, MaterialMassVolumeControlNode.getNumberControlOptions() ) );
+    // TODO: ensure maxWidth for combo box contents so this isn't an issue. How do we want to do layout?
+    const topRow = options.labelNode ? new HBox( {
+      children: [
+        comboBox,
+        options.labelNode
+      ],
+      spacing: 5
+    } ) : comboBox;
 
-      // TODO: ensure maxWidth for combo box contents so this isn't an issue. How do we want to do layout?
-      const topRow = options.labelNode ? new HBox( {
-        children: [
-          comboBox,
-          options.labelNode
-        ],
-        spacing: 5
-      } ) : comboBox;
+    this.children = [
+      topRow,
+      massNumberControl,
+      volumeNumberControl
+    ];
 
-      this.children = [
-        topRow,
-        massNumberControl,
-        volumeNumberControl
-      ];
-
-      this.mutate( options );
-    }
-
-    static getNumberControlOptions() {
-      return {
-        delta: 0.01,
-        sliderOptions: {
-          trackSize: new Dimension2( 120, TRACK_HEIGHT )
-        },
-        numberDisplayOptions: {
-          decimalPlaces: 2
-        },
-        layoutFunction: NumberControl.createLayoutFunction4( {
-          // TODO: createBottomContent for custom? or no?
-        } )
-      };
-    }
+    this.mutate( options );
   }
 
-  return densityBuoyancyCommon.register( 'MaterialMassVolumeControlNode', MaterialMassVolumeControlNode );
-} );
+  static getNumberControlOptions() {
+    return {
+      delta: 0.01,
+      sliderOptions: {
+        trackSize: new Dimension2( 120, TRACK_HEIGHT )
+      },
+      numberDisplayOptions: {
+        decimalPlaces: 2
+      },
+      layoutFunction: NumberControl.createLayoutFunction4( {
+        // TODO: createBottomContent for custom? or no?
+      } )
+    };
+  }
+}
+
+densityBuoyancyCommon.register( 'MaterialMassVolumeControlNode', MaterialMassVolumeControlNode );
+export default MaterialMassVolumeControlNode;

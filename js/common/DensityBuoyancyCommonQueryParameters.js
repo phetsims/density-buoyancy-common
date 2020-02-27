@@ -5,22 +5,19 @@
  *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
-define( require => {
-  'use strict';
 
-  // modules
-  const densityBuoyancyCommon = require( 'DENSITY_BUOYANCY_COMMON/densityBuoyancyCommon' );
+import densityBuoyancyCommon from '../densityBuoyancyCommon.js';
 
-  const DensityBuoyancyCommonQueryParameters = QueryStringMachine.getAll( {
-    engine: {
-      type: 'string',
-      defaultValue: 'p2'
-    },
-    poolWidthMultiplier: {
-      type: 'number',
-      defaultValue: 1
-    }
-  } );
-
-  return densityBuoyancyCommon.register( 'DensityBuoyancyCommonQueryParameters', DensityBuoyancyCommonQueryParameters );
+const DensityBuoyancyCommonQueryParameters = QueryStringMachine.getAll( {
+  engine: {
+    type: 'string',
+    defaultValue: 'p2'
+  },
+  poolWidthMultiplier: {
+    type: 'number',
+    defaultValue: 1
+  }
 } );
+
+densityBuoyancyCommon.register( 'DensityBuoyancyCommonQueryParameters', DensityBuoyancyCommonQueryParameters );
+export default DensityBuoyancyCommonQueryParameters;

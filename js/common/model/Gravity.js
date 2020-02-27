@@ -3,88 +3,85 @@
 /**
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
-define( require => {
-  'use strict';
 
-  // modules
-  const densityBuoyancyCommon = require( 'DENSITY_BUOYANCY_COMMON/densityBuoyancyCommon' );
-  const merge = require( 'PHET_CORE/merge' );
+import merge from '../../../../phet-core/js/merge.js';
+import densityBuoyancyCommonStrings from '../../density-buoyancy-common-strings.js';
+import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 
-  // strings
-  const gravityCustomString = require( 'string!DENSITY_BUOYANCY_COMMON/gravity.custom' );
-  const gravityEarthString = require( 'string!DENSITY_BUOYANCY_COMMON/gravity.earth' );
-  const gravityJupiterString = require( 'string!DENSITY_BUOYANCY_COMMON/gravity.jupiter' );
-  const gravityMoonString = require( 'string!DENSITY_BUOYANCY_COMMON/gravity.moon' );
-  const gravityPlanetXString = require( 'string!DENSITY_BUOYANCY_COMMON/gravity.planetX' );
+const gravityCustomString = densityBuoyancyCommonStrings.gravity.custom;
+const gravityEarthString = densityBuoyancyCommonStrings.gravity.earth;
+const gravityJupiterString = densityBuoyancyCommonStrings.gravity.jupiter;
+const gravityMoonString = densityBuoyancyCommonStrings.gravity.moon;
+const gravityPlanetXString = densityBuoyancyCommonStrings.gravity.planetX;
 
-  class Gravity {
-    /**
-     * @param {Object} config
-     */
-    constructor( config ) {
+class Gravity {
+  /**
+   * @param {Object} config
+   */
+  constructor( config ) {
 
-      config = merge( {
-        // {string}
-        name: 'unknown',
+    config = merge( {
+      // {string}
+      name: 'unknown',
 
-        // {number} - m/s^2
-        value: 1,
+      // {number} - m/s^2
+      value: 1,
 
-        // {boolean} - optional
-        custom: false
-      }, config );
+      // {boolean} - optional
+      custom: false
+    }, config );
 
-      // @public {string}
-      this.name = config.name;
+    // @public {string}
+    this.name = config.name;
 
-      // @public {number}
-      this.value = config.value;
+    // @public {number}
+    this.value = config.value;
 
-      // @public {boolean}
-      this.custom = config.custom;
-    }
-
-    /**
-     * Returns a custom material that can be modified at will.
-     * @public
-     *
-     * @param {number} value
-     * @returns {Gravity}
-     */
-    static createCustomGravity( value ) {
-      return new Gravity( {
-        name: gravityCustomString,
-        value: value,
-        custom: true
-      } );
-    }
+    // @public {boolean}
+    this.custom = config.custom;
   }
 
-  // @public {Gravity}
-  Gravity.EARTH = new Gravity( {
-    name: gravityEarthString,
-    value: 9.8
-  } );
-  Gravity.JUPITER = new Gravity( {
-    name: gravityJupiterString,
-    value: 24.8
-  } );
-  Gravity.MOON = new Gravity( {
-    name: gravityMoonString,
-    value: 1.6
-  } );
-  Gravity.PLANET_X = new Gravity( {
-    name: gravityPlanetXString,
-    value: 19.6
-  } );
+  /**
+   * Returns a custom material that can be modified at will.
+   * @public
+   *
+   * @param {number} value
+   * @returns {Gravity}
+   */
+  static createCustomGravity( value ) {
+    return new Gravity( {
+      name: gravityCustomString,
+      value: value,
+      custom: true
+    } );
+  }
+}
 
-  // @public {Array.<Gravity>}
-  Gravity.GRAVITIES = [
-    Gravity.EARTH,
-    Gravity.JUPITER,
-    Gravity.MOON,
-    Gravity.PLANET_X
-  ];
-
-  return densityBuoyancyCommon.register( 'Gravity', Gravity );
+// @public {Gravity}
+Gravity.EARTH = new Gravity( {
+  name: gravityEarthString,
+  value: 9.8
 } );
+Gravity.JUPITER = new Gravity( {
+  name: gravityJupiterString,
+  value: 24.8
+} );
+Gravity.MOON = new Gravity( {
+  name: gravityMoonString,
+  value: 1.6
+} );
+Gravity.PLANET_X = new Gravity( {
+  name: gravityPlanetXString,
+  value: 19.6
+} );
+
+// @public {Array.<Gravity>}
+Gravity.GRAVITIES = [
+  Gravity.EARTH,
+  Gravity.JUPITER,
+  Gravity.MOON,
+  Gravity.PLANET_X
+];
+
+densityBuoyancyCommon.register( 'Gravity', Gravity );
+export default Gravity;

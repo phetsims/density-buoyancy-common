@@ -3,62 +3,59 @@
 /**
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
-define( require => {
-  'use strict';
 
-  // modules
-  const densityBuoyancyCommon = require( 'DENSITY_BUOYANCY_COMMON/densityBuoyancyCommon' );
-  const Line = require( 'SCENERY/nodes/Line' );
-  const merge = require( 'PHET_CORE/merge' );
-  const Node = require( 'SCENERY/nodes/Node' );
-  const Path = require( 'SCENERY/nodes/Path' );
-  const Shape = require( 'KITE/Shape' );
+import Shape from '../../../../kite/js/Shape.js';
+import merge from '../../../../phet-core/js/merge.js';
+import Line from '../../../../scenery/js/nodes/Line.js';
+import Node from '../../../../scenery/js/nodes/Node.js';
+import Path from '../../../../scenery/js/nodes/Path.js';
+import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 
-  class PrecisionSliderThumb extends Node {
-    /**
-     * @param {Object} [options]
-     */
-    constructor( options ) {
-      options = merge( {
-        // {PaintDef}
-        thumbFill: '#eee',
-        thumbStroke: '#000',
+class PrecisionSliderThumb extends Node {
+  /**
+   * @param {Object} [options]
+   */
+  constructor( options ) {
+    options = merge( {
+      // {PaintDef}
+      thumbFill: '#eee',
+      thumbStroke: '#000',
 
-        // {number}
-        mainHeight: 15,
-        taperHeight: 5,
-        thumbWidth: 15,
-        lineHeight: 5,
-        touchXDilation: 5,
-        touchYDilation: 10
-      }, options );
+      // {number}
+      mainHeight: 15,
+      taperHeight: 5,
+      thumbWidth: 15,
+      lineHeight: 5,
+      touchXDilation: 5,
+      touchYDilation: 10
+    }, options );
 
-      const precisionLine = new Line( 0, -options.lineHeight / 2, 0, options.lineHeight / 2, {
-        stroke: options.thumbStroke
-      } );
+    const precisionLine = new Line( 0, -options.lineHeight / 2, 0, options.lineHeight / 2, {
+      stroke: options.thumbStroke
+    } );
 
-      const thumbShape = new Shape().moveTo( 0, options.lineHeight / 2 )
-                                    .lineToRelative( options.thumbWidth / 2, options.taperHeight )
-                                    .lineToRelative( 0, options.mainHeight )
-                                    .lineToRelative( -options.thumbWidth, 0 )
-                                    .lineToRelative( 0, -options.mainHeight )
-                                    .close();
+    const thumbShape = new Shape().moveTo( 0, options.lineHeight / 2 )
+      .lineToRelative( options.thumbWidth / 2, options.taperHeight )
+      .lineToRelative( 0, options.mainHeight )
+      .lineToRelative( -options.thumbWidth, 0 )
+      .lineToRelative( 0, -options.mainHeight )
+      .close();
 
-      const thumbPath = new Path( thumbShape, {
-        fill: options.thumbFill,
-        stroke: options.thumbStroke
-      } );
+    const thumbPath = new Path( thumbShape, {
+      fill: options.thumbFill,
+      stroke: options.thumbStroke
+    } );
 
-      options.children = [
-        precisionLine,
-        thumbPath
-      ];
+    options.children = [
+      precisionLine,
+      thumbPath
+    ];
 
-      super( options );
+    super( options );
 
-      this.touchArea = this.localBounds.dilatedXY( options.touchXDilation, options.touchYDilation );
-    }
+    this.touchArea = this.localBounds.dilatedXY( options.touchXDilation, options.touchYDilation );
   }
+}
 
-  return densityBuoyancyCommon.register( 'PrecisionSliderThumb', PrecisionSliderThumb );
-} );
+densityBuoyancyCommon.register( 'PrecisionSliderThumb', PrecisionSliderThumb );
+export default PrecisionSliderThumb;

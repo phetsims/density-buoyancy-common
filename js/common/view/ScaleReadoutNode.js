@@ -3,80 +3,77 @@
 /**
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
-define( require => {
-  'use strict';
 
-  // modules
-  const densityBuoyancyCommon = require( 'DENSITY_BUOYANCY_COMMON/densityBuoyancyCommon' );
-  const DensityBuoyancyCommonConstants = require( 'DENSITY_BUOYANCY_COMMON/common/DensityBuoyancyCommonConstants' );
-  const Node = require( 'SCENERY/nodes/Node' );
-  const Panel = require( 'SUN/Panel' );
-  const PhetFont = require( 'SCENERY_PHET/PhetFont' );
-  const Property = require( 'AXON/Property' );
-  const Scale = require( 'DENSITY_BUOYANCY_COMMON/common/model/Scale' );
-  const StringUtils = require( 'PHETCOMMON/util/StringUtils' );
-  const Text = require( 'SCENERY/nodes/Text' );
-  const Utils = require( 'DOT/Utils' );
-  const Vector2 = require( 'DOT/Vector2' );
+import Property from '../../../../axon/js/Property.js';
+import Utils from '../../../../dot/js/Utils.js';
+import Vector2 from '../../../../dot/js/Vector2.js';
+import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
+import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
+import Node from '../../../../scenery/js/nodes/Node.js';
+import Text from '../../../../scenery/js/nodes/Text.js';
+import Panel from '../../../../sun/js/Panel.js';
+import densityBuoyancyCommonStrings from '../../density-buoyancy-common-strings.js';
+import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
+import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
+import Scale from '../model/Scale.js';
 
-  // strings
-  const kilogramsPatternString = require( 'string!DENSITY_BUOYANCY_COMMON/kilogramsPattern' );
-  const newtonsPatternString = require( 'string!DENSITY_BUOYANCY_COMMON/newtonsPattern' );
+const kilogramsPatternString = densityBuoyancyCommonStrings.kilogramsPattern;
+const newtonsPatternString = densityBuoyancyCommonStrings.newtonsPattern;
 
-  class ScaleReadoutNode extends Node {
-    /**
-     * @param {Scale} mass
-     * @param {Property.<Gravity>}
-     */
-    constructor( mass, gravityProperty ) {
-      super();
+class ScaleReadoutNode extends Node {
+  /**
+   * @param {Scale} mass
+   * @param {Property.<Gravity>}
+   */
+  constructor( mass, gravityProperty ) {
+    super();
 
-      const readoutText = new Text( '', {
-        font: new PhetFont( {
-          size: 16,
-          weight: 'bold'
-        } )
-      } );
-      const readoutPanel = new Panel( readoutText, {
-        cornerRadius: DensityBuoyancyCommonConstants.CORNER_RADIUS,
-        xMargin: 2,
-        yMargin: 2,
-        fill: null, // TODO,
-        stroke: null // TODO
-      } );
+    const readoutText = new Text( '', {
+      font: new PhetFont( {
+        size: 16,
+        weight: 'bold'
+      } )
+    } );
+    const readoutPanel = new Panel( readoutText, {
+      cornerRadius: DensityBuoyancyCommonConstants.CORNER_RADIUS,
+      xMargin: 2,
+      yMargin: 2,
+      fill: null, // TODO,
+      stroke: null // TODO
+    } );
 
-      this.addChild( readoutPanel );
+    this.addChild( readoutPanel );
 
-      // @private {Scale}
-      this.mass = mass;
+    // @private {Scale}
+    this.mass = mass;
 
-      // @private {Multilink}
-      this.scaleForceMultilink = Property.multilink( [ mass.scaleForceProperty, gravityProperty ], ( scaleForce, gravity ) => {
-        if ( mass.displayType === Scale.DisplayType.NEWTONS ) {
-          readoutText.text = StringUtils.fillIn( newtonsPatternString, {
-            newtons: Utils.toFixed( scaleForce, 2 )
-          } );
-        }
-        else {
-          readoutText.text = StringUtils.fillIn( kilogramsPatternString, {
-            kilograms: gravity.value > 0 ? Utils.toFixed( scaleForce / gravity.value, 2 ) : '-'
-          } );
-        }
-        readoutPanel.center = Vector2.ZERO;
-      } );
-    }
-
-    /**
-     * Releases references.
-     * @public
-     * @override
-     */
-    dispose() {
-      this.scaleForceMultilink.dispose();
-
-      super.dispose();
-    }
+    // @private {Multilink}
+    this.scaleForceMultilink = Property.multilink( [ mass.scaleForceProperty, gravityProperty ], ( scaleForce, gravity ) => {
+      if ( mass.displayType === Scale.DisplayType.NEWTONS ) {
+        readoutText.text = StringUtils.fillIn( newtonsPatternString, {
+          newtons: Utils.toFixed( scaleForce, 2 )
+        } );
+      }
+      else {
+        readoutText.text = StringUtils.fillIn( kilogramsPatternString, {
+          kilograms: gravity.value > 0 ? Utils.toFixed( scaleForce / gravity.value, 2 ) : '-'
+        } );
+      }
+      readoutPanel.center = Vector2.ZERO;
+    } );
   }
 
-  return densityBuoyancyCommon.register( 'ScaleReadoutNode', ScaleReadoutNode );
-} );
+  /**
+   * Releases references.
+   * @public
+   * @override
+   */
+  dispose() {
+    this.scaleForceMultilink.dispose();
+
+    super.dispose();
+  }
+}
+
+densityBuoyancyCommon.register( 'ScaleReadoutNode', ScaleReadoutNode );
+export default ScaleReadoutNode;

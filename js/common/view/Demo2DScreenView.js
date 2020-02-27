@@ -3,93 +3,90 @@
 /**
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
-define( require => {
-  'use strict';
 
-  // modules
-  const Bounds2 = require( 'DOT/Bounds2' );
-  const DemoMassNode = require( 'DENSITY_BUOYANCY_COMMON/common/view/DemoMassNode' );
-  const densityBuoyancyCommon = require( 'DENSITY_BUOYANCY_COMMON/densityBuoyancyCommon' );
-  const ModelViewTransform2 = require( 'PHETCOMMON/view/ModelViewTransform2' );
-  const Path = require( 'SCENERY/nodes/Path' );
-  const ResetAllButton = require( 'SCENERY_PHET/buttons/ResetAllButton' );
-  const ScreenView = require( 'JOIST/ScreenView' );
-  const Shape = require( 'KITE/Shape' );
-  const Vector2 = require( 'DOT/Vector2' );
+import Bounds2 from '../../../../dot/js/Bounds2.js';
+import Vector2 from '../../../../dot/js/Vector2.js';
+import ScreenView from '../../../../joist/js/ScreenView.js';
+import Shape from '../../../../kite/js/Shape.js';
+import ModelViewTransform2 from '../../../../phetcommon/js/view/ModelViewTransform2.js';
+import ResetAllButton from '../../../../scenery-phet/js/buttons/ResetAllButton.js';
+import Path from '../../../../scenery/js/nodes/Path.js';
+import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
+import DemoMassNode from './DemoMassNode.js';
 
-  class Demo2DScreenView extends ScreenView {
+class Demo2DScreenView extends ScreenView {
 
-    /**
-     * @param {DensityBuoyancyModel} model
-     * @param {Tandem} tandem
-     */
-    constructor( model, tandem ) {
+  /**
+   * @param {DensityBuoyancyModel} model
+   * @param {Tandem} tandem
+   */
+  constructor( model, tandem ) {
 
-      super();
+    super();
 
-      const scale = 600;
+    const scale = 600;
 
-      // @private {DensityBuoyancyModel}
-      this.model = model;
+    // @private {DensityBuoyancyModel}
+    this.model = model;
 
-      // @private {ModelViewTransform2}
-      this.modelViewTransform = ModelViewTransform2.createSinglePointScaleInvertedYMapping( Vector2.ZERO, this.layoutBounds.center, scale );
+    // @private {ModelViewTransform2}
+    this.modelViewTransform = ModelViewTransform2.createSinglePointScaleInvertedYMapping( Vector2.ZERO, this.layoutBounds.center, scale );
 
-      // @private {Path}
-      this.waterPath = new Path( null, {
-        fill: 'rgba(0,128,255,0.3)'
-      } );
-      this.addChild( this.waterPath );
+    // @private {Path}
+    this.waterPath = new Path( null, {
+      fill: 'rgba(0,128,255,0.3)'
+    } );
+    this.addChild( this.waterPath );
 
-      // @private {Path}
-      this.boatWaterPath = new Path( null, {
-        fill: 'rgba(0,128,255,0.3)'
-      } );
-      this.addChild( this.boatWaterPath );
+    // @private {Path}
+    this.boatWaterPath = new Path( null, {
+      fill: 'rgba(0,128,255,0.3)'
+    } );
+    this.addChild( this.boatWaterPath );
 
-      const modelPoolShape = Shape.polygon( model.groundPoints );
-      const viewPoolShape = this.modelViewTransform.modelToViewShape( modelPoolShape );
+    const modelPoolShape = Shape.polygon( model.groundPoints );
+    const viewPoolShape = this.modelViewTransform.modelToViewShape( modelPoolShape );
 
-      this.addChild( new Path( viewPoolShape, {
-        stroke: 'black'
-      } ) );
+    this.addChild( new Path( viewPoolShape, {
+      stroke: 'black'
+    } ) );
 
-      // @private {Array.<DemoMassNode>}
-      this.massNodes = [];
+    // @private {Array.<DemoMassNode>}
+    this.massNodes = [];
 
-      const onMassAdded = mass => {
-        const massNode = new DemoMassNode( mass, this.modelViewTransform );
-        this.addChild( massNode );
-        this.massNodes.push( massNode );
-      };
-      model.masses.addItemAddedListener( onMassAdded );
-      model.masses.forEach( onMassAdded );
+    const onMassAdded = mass => {
+      const massNode = new DemoMassNode( mass, this.modelViewTransform );
+      this.addChild( massNode );
+      this.massNodes.push( massNode );
+    };
+    model.masses.addItemAddedListener( onMassAdded );
+    model.masses.forEach( onMassAdded );
 
-      model.masses.addItemRemovedListener( mass => {
-        const massNode = _.find( this.massNodes, massNode => massNode.mass === mass );
-        this.removeChild( massNode );
-        massNode.dispose();
-      } );
+    model.masses.addItemRemovedListener( mass => {
+      const massNode = _.find( this.massNodes, massNode => massNode.mass === mass );
+      this.removeChild( massNode );
+      massNode.dispose();
+    } );
 
-      const resetAllButton = new ResetAllButton( {
-        listener: () => {
-          model.reset();
-        },
-        right: this.layoutBounds.maxX - 10,
-        bottom: this.layoutBounds.maxY - 10,
-        tandem: tandem.createTandem( 'resetAllButton' )
-      } );
-      this.addChild( resetAllButton );
-    }
-
-    // @public
-    step( dt ) {
-      this.waterPath.shape = Shape.bounds( this.modelViewTransform.modelToViewBounds( new Bounds2(
-        this.model.poolBounds.minX, this.model.poolBounds.minY,
-        this.model.poolBounds.maxX, this.model.liquidYProperty.value
-      ) ) );
-    }
+    const resetAllButton = new ResetAllButton( {
+      listener: () => {
+        model.reset();
+      },
+      right: this.layoutBounds.maxX - 10,
+      bottom: this.layoutBounds.maxY - 10,
+      tandem: tandem.createTandem( 'resetAllButton' )
+    } );
+    this.addChild( resetAllButton );
   }
 
-  return densityBuoyancyCommon.register( 'Demo2DScreenView', Demo2DScreenView );
-} );
+  // @public
+  step( dt ) {
+    this.waterPath.shape = Shape.bounds( this.modelViewTransform.modelToViewBounds( new Bounds2(
+      this.model.poolBounds.minX, this.model.poolBounds.minY,
+      this.model.poolBounds.maxX, this.model.liquidYProperty.value
+    ) ) );
+  }
+}
+
+densityBuoyancyCommon.register( 'Demo2DScreenView', Demo2DScreenView );
+export default Demo2DScreenView;

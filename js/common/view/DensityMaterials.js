@@ -3,333 +3,330 @@
 /**
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
-define( require => {
-  'use strict';
 
-  // modules
-  const CameraMaterialView = require( 'DENSITY_BUOYANCY_COMMON/common/view/CameraMaterialView' );
-  const densityBuoyancyCommon = require( 'DENSITY_BUOYANCY_COMMON/densityBuoyancyCommon' );
-  const Material = require( 'DENSITY_BUOYANCY_COMMON/common/model/Material' );
-  const MaterialView = require( 'DENSITY_BUOYANCY_COMMON/common/view/MaterialView' );
-  const ThreeUtils = require( 'MOBIUS/ThreeUtils' );
-  const Utils = require( 'DOT/Utils' );
+import Utils from '../../../../dot/js/Utils.js';
+import ThreeUtils from '../../../../mobius/js/ThreeUtils.js';
+import Bricks25AOImage from '../../../images/Bricks25_AO_jpg.js';
+import Bricks25ColImage from '../../../images/Bricks25_col_jpg.js';
+import Bricks25NrmImage from '../../../images/Bricks25_nrm_jpg.js';
+import DiamondPlate01ColImage from '../../../images/DiamondPlate01_col_jpg.js';
+import DiamondPlate01MetImage from '../../../images/DiamondPlate01_met_jpg.js';
+import DiamondPlate01NrmImage from '../../../images/DiamondPlate01_nrm_jpg.js';
+import DiamondPlate01RghImage from '../../../images/DiamondPlate01_rgh_jpg.js';
+import Ice01AlphaImage from '../../../images/Ice01_alpha_jpg.js';
+import Ice01ColImage from '../../../images/Ice01_col_jpg.js';
+import Ice01NrmImage from '../../../images/Ice01_nrm_jpg.js';
+import Metal08ColImage from '../../../images/Metal08_col_jpg.js';
+import Metal08MetImage from '../../../images/Metal08_met_jpg.js';
+import Metal08NrmImage from '../../../images/Metal08_nrm_jpg.js';
+import Metal08RghImage from '../../../images/Metal08_rgh_jpg.js';
+import Metal10ColBrightenedImage from '../../../images/Metal10_col_brightened_jpg.js';
+import Metal10ColImage from '../../../images/Metal10_col_jpg.js';
+import Metal10MetImage from '../../../images/Metal10_met_jpg.js';
+import Metal10NrmImage from '../../../images/Metal10_nrm_jpg.js';
+import Metal10RghImage from '../../../images/Metal10_rgh_jpg.js';
+import Styrofoam001AOImage from '../../../images/Styrofoam_001_AO_jpg.js';
+import Styrofoam001colImage from '../../../images/Styrofoam_001_col_jpg.js';
+import Styrofoam001nrmImage from '../../../images/Styrofoam_001_nrm_jpg.js';
+import Styrofoam001rghImage from '../../../images/Styrofoam_001_rgh_jpg.js';
+import Wood26ColImage from '../../../images/Wood26_col_jpg.js';
+import Wood26NrmImage from '../../../images/Wood26_nrm_jpg.js';
+import Wood26RghImage from '../../../images/Wood26_rgh_jpg.js';
+import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
+import Material from '../model/Material.js';
+import CameraMaterialView from './CameraMaterialView.js';
+import MaterialView from './MaterialView.js';
 
-  // constants
-  const Bricks25AOImage = require( 'image!DENSITY_BUOYANCY_COMMON/Bricks25_AO.jpg' );
-  const Bricks25ColImage = require( 'image!DENSITY_BUOYANCY_COMMON/Bricks25_col.jpg' );
-  const Bricks25NrmImage = require( 'image!DENSITY_BUOYANCY_COMMON/Bricks25_nrm.jpg' );
-  const DiamondPlate01ColImage = require( 'image!DENSITY_BUOYANCY_COMMON/DiamondPlate01_col.jpg' );
-  const DiamondPlate01MetImage = require( 'image!DENSITY_BUOYANCY_COMMON/DiamondPlate01_met.jpg' );
-  const DiamondPlate01NrmImage = require( 'image!DENSITY_BUOYANCY_COMMON/DiamondPlate01_nrm.jpg' );
-  const DiamondPlate01RghImage = require( 'image!DENSITY_BUOYANCY_COMMON/DiamondPlate01_rgh.jpg' );
-  const Ice01AlphaImage = require( 'image!DENSITY_BUOYANCY_COMMON/Ice01_alpha.jpg' );
-  const Ice01ColImage = require( 'image!DENSITY_BUOYANCY_COMMON/Ice01_col.jpg' );
-  const Ice01NrmImage = require( 'image!DENSITY_BUOYANCY_COMMON/Ice01_nrm.jpg' );
-  const Metal08ColImage = require( 'image!DENSITY_BUOYANCY_COMMON/Metal08_col.jpg' );
-  const Metal08MetImage = require( 'image!DENSITY_BUOYANCY_COMMON/Metal08_met.jpg' );
-  const Metal08NrmImage = require( 'image!DENSITY_BUOYANCY_COMMON/Metal08_nrm.jpg' );
-  const Metal08RghImage = require( 'image!DENSITY_BUOYANCY_COMMON/Metal08_rgh.jpg' );
-  const Metal10ColImage = require( 'image!DENSITY_BUOYANCY_COMMON/Metal10_col.jpg' );
-  const Metal10ColBrightenedImage = require( 'image!DENSITY_BUOYANCY_COMMON/Metal10_col_brightened.jpg' );
-  const Metal10MetImage = require( 'image!DENSITY_BUOYANCY_COMMON/Metal10_met.jpg' );
-  const Metal10NrmImage = require( 'image!DENSITY_BUOYANCY_COMMON/Metal10_nrm.jpg' );
-  const Metal10RghImage = require( 'image!DENSITY_BUOYANCY_COMMON/Metal10_rgh.jpg' );
-  const Styrofoam001AOImage = require( 'image!DENSITY_BUOYANCY_COMMON/Styrofoam_001_AO.jpg' );
-  const Styrofoam001colImage = require( 'image!DENSITY_BUOYANCY_COMMON/Styrofoam_001_col.jpg' );
-  const Styrofoam001nrmImage = require( 'image!DENSITY_BUOYANCY_COMMON/Styrofoam_001_nrm.jpg' );
-  const Styrofoam001rghImage = require( 'image!DENSITY_BUOYANCY_COMMON/Styrofoam_001_rgh.jpg' );
-  const Wood26ColImage = require( 'image!DENSITY_BUOYANCY_COMMON/Wood26_col.jpg' );
-  const Wood26NrmImage = require( 'image!DENSITY_BUOYANCY_COMMON/Wood26_nrm.jpg' );
-  const Wood26RghImage = require( 'image!DENSITY_BUOYANCY_COMMON/Wood26_rgh.jpg' );
+// constants
 
-  function toWrappedTexture( image ) {
-    const texture = ThreeUtils.imageToTexture( image );
-    texture.wrapS = THREE.RepeatWrapping;
-    texture.wrapT = THREE.RepeatWrapping;
-    // texture.repeat.set( 4, 4 ); // TODO: any performance or quality due to this?
-    return texture;
+function toWrappedTexture( image ) {
+  const texture = ThreeUtils.imageToTexture( image );
+  texture.wrapS = THREE.RepeatWrapping;
+  texture.wrapT = THREE.RepeatWrapping;
+  // texture.repeat.set( 4, 4 ); // TODO: any performance or quality due to this?
+  return texture;
+}
+
+// textures
+const aluminumColorTexture = toWrappedTexture( Metal10ColImage );
+const aluminumMetalnessTexture = toWrappedTexture( Metal10MetImage );
+const aluminumNormalTexture = toWrappedTexture( Metal10NrmImage );
+const aluminumRoughnessTexture = toWrappedTexture( Metal10RghImage );
+const brickAmbientOcclusionTexture = toWrappedTexture( Bricks25AOImage );
+const brickColorTexture = toWrappedTexture( Bricks25ColImage );
+const brickNormalTexture = toWrappedTexture( Bricks25NrmImage );
+const copperColorTexture = toWrappedTexture( Metal08ColImage );
+const copperMetalnessTexture = toWrappedTexture( Metal08MetImage );
+const copperNormalTexture = toWrappedTexture( Metal08NrmImage );
+const copperRoughnessTexture = toWrappedTexture( Metal08RghImage );
+const iceAlphaTexture = toWrappedTexture( Ice01AlphaImage );
+const iceColorTexture = toWrappedTexture( Ice01ColImage );
+const iceNormalTexture = toWrappedTexture( Ice01NrmImage );
+const platinumColorTexture = toWrappedTexture( Metal10ColBrightenedImage );
+const steelColorTexture = toWrappedTexture( DiamondPlate01ColImage );
+const steelMetalnessTexture = toWrappedTexture( DiamondPlate01MetImage );
+const steelNormalTexture = toWrappedTexture( DiamondPlate01NrmImage );
+const steelRoughnessTexture = toWrappedTexture( DiamondPlate01RghImage );
+const styrofoamAmbientOcclusionTexture = toWrappedTexture( Styrofoam001AOImage );
+const styrofoamColorTexture = toWrappedTexture( Styrofoam001colImage );
+const styrofoamNormalTexture = toWrappedTexture( Styrofoam001nrmImage );
+const styrofoamRoughnessTexture = toWrappedTexture( Styrofoam001rghImage );
+const woodColorTexture = toWrappedTexture( Wood26ColImage );
+const woodNormalTexture = toWrappedTexture( Wood26NrmImage );
+const woodRoughnessTexture = toWrappedTexture( Wood26RghImage );
+
+class AluminumMaterialView extends CameraMaterialView {
+  constructor() {
+    super();
+
+    this.material = new THREE.MeshStandardMaterial( {
+      map: aluminumColorTexture,
+      normalMap: aluminumNormalTexture,
+      normalScale: new THREE.Vector2( 1, -1 ),
+      roughnessMap: aluminumRoughnessTexture,
+      metalnessMap: aluminumMetalnessTexture,
+      envMap: this.getTexture()
+    } );
   }
+}
 
-  // textures
-  const aluminumColorTexture = toWrappedTexture( Metal10ColImage );
-  const aluminumMetalnessTexture = toWrappedTexture( Metal10MetImage );
-  const aluminumNormalTexture = toWrappedTexture( Metal10NrmImage );
-  const aluminumRoughnessTexture = toWrappedTexture( Metal10RghImage );
-  const brickAmbientOcclusionTexture = toWrappedTexture( Bricks25AOImage );
-  const brickColorTexture = toWrappedTexture( Bricks25ColImage );
-  const brickNormalTexture = toWrappedTexture( Bricks25NrmImage );
-  const copperColorTexture = toWrappedTexture( Metal08ColImage );
-  const copperMetalnessTexture = toWrappedTexture( Metal08MetImage );
-  const copperNormalTexture = toWrappedTexture( Metal08NrmImage );
-  const copperRoughnessTexture = toWrappedTexture( Metal08RghImage );
-  const iceAlphaTexture = toWrappedTexture( Ice01AlphaImage );
-  const iceColorTexture = toWrappedTexture( Ice01ColImage );
-  const iceNormalTexture = toWrappedTexture( Ice01NrmImage );
-  const platinumColorTexture = toWrappedTexture( Metal10ColBrightenedImage );
-  const steelColorTexture = toWrappedTexture( DiamondPlate01ColImage );
-  const steelMetalnessTexture = toWrappedTexture( DiamondPlate01MetImage );
-  const steelNormalTexture = toWrappedTexture( DiamondPlate01NrmImage );
-  const steelRoughnessTexture = toWrappedTexture( DiamondPlate01RghImage );
-  const styrofoamAmbientOcclusionTexture = toWrappedTexture( Styrofoam001AOImage );
-  const styrofoamColorTexture = toWrappedTexture( Styrofoam001colImage );
-  const styrofoamNormalTexture = toWrappedTexture( Styrofoam001nrmImage );
-  const styrofoamRoughnessTexture = toWrappedTexture( Styrofoam001rghImage );
-  const woodColorTexture = toWrappedTexture( Wood26ColImage );
-  const woodNormalTexture = toWrappedTexture( Wood26NrmImage );
-  const woodRoughnessTexture = toWrappedTexture( Wood26RghImage );
+class BrickMaterialView extends CameraMaterialView {
+  constructor() {
+    super();
 
-  class AluminumMaterialView extends CameraMaterialView {
-    constructor() {
-      super();
+    this.material = new THREE.MeshStandardMaterial( {
+      map: brickColorTexture,
+      aoMap: brickAmbientOcclusionTexture,
+      normalMap: brickNormalTexture,
+      normalScale: new THREE.Vector2( 0.5, -0.5 ),
+      roughness: 1,
+      metalness: 0,
+      envMap: this.getTexture()
+    } );
+  }
+}
 
-      this.material = new THREE.MeshStandardMaterial( {
-        map: aluminumColorTexture,
-        normalMap: aluminumNormalTexture,
-        normalScale: new THREE.Vector2( 1, -1 ),
-        roughnessMap: aluminumRoughnessTexture,
-        metalnessMap: aluminumMetalnessTexture,
-        envMap: this.getTexture()
-      } );
+class CopperMaterialView extends CameraMaterialView {
+  constructor() {
+    super();
+
+    this.material = new THREE.MeshStandardMaterial( {
+      map: copperColorTexture,
+      normalMap: copperNormalTexture,
+      normalScale: new THREE.Vector2( 1, -1 ),
+      roughnessMap: copperRoughnessTexture,
+      metalnessMap: copperMetalnessTexture,
+      envMap: this.getTexture()
+    } );
+  }
+}
+
+class IceMaterialView extends CameraMaterialView {
+  constructor() {
+    super();
+
+    const texture = this.getTexture();
+
+    texture.mapping = THREE.CubeRefractionMapping;
+    texture.needsUpdate = true;
+
+    this.material = new THREE.MeshPhysicalMaterial( {
+      map: iceColorTexture,
+      alphaMap: iceAlphaTexture,
+      normalMap: iceNormalTexture,
+      normalScale: new THREE.Vector2( 1, -1 ),
+      roughness: 0.1,
+      refractionRatio: 1 / 1.309,
+      metalness: 0.4,
+      clearCoat: 1,
+      reflectivity: 1,
+      envMap: texture,
+      envMapIntensity: 2, // is this too much cheating?
+
+      transparent: true,
+      side: THREE.DoubleSide
+    } );
+  }
+}
+
+class PlasticMaterialView extends CameraMaterialView {
+  constructor() {
+    super();
+
+    const texture = this.getTexture();
+
+    texture.mapping = THREE.CubeRefractionMapping;
+    texture.needsUpdate = true;
+
+    this.material = new THREE.MeshPhysicalMaterial( {
+      color: 0xff0000,
+      opacity: 0.5,
+      roughness: 0.1,
+      refractionRatio: 1 / 1.309,
+      metalness: 0.1,
+      clearCoat: 1,
+      reflectivity: 1,
+      envMap: texture,
+      envMapIntensity: 2, // is this too much cheating?
+
+      transparent: true,
+      side: THREE.DoubleSide
+    } );
+  }
+}
+
+// We just use aluminum
+class PlatinumMaterialView extends CameraMaterialView {
+  constructor() {
+    super();
+
+    this.material = new THREE.MeshStandardMaterial( {
+      map: platinumColorTexture,
+      normalMap: aluminumNormalTexture,
+      normalScale: new THREE.Vector2( 1, -1 ),
+      roughnessMap: aluminumRoughnessTexture,
+      metalnessMap: aluminumMetalnessTexture,
+      envMap: this.getTexture(),
+      envMapIntensity: 1.5
+    } );
+  }
+}
+
+class SteelMaterialView extends CameraMaterialView {
+  constructor() {
+    super();
+
+    this.material = new THREE.MeshStandardMaterial( {
+      map: steelColorTexture,
+      normalMap: steelNormalTexture,
+      normalScale: new THREE.Vector2( 1, -1 ),
+      roughnessMap: steelRoughnessTexture,
+      metalnessMap: steelMetalnessTexture,
+      envMap: this.getTexture()
+    } );
+  }
+}
+
+class StyrofoamMaterialView extends CameraMaterialView {
+  constructor() {
+    super();
+
+    this.material = new THREE.MeshStandardMaterial( {
+      map: styrofoamColorTexture,
+      aoMap: styrofoamAmbientOcclusionTexture,
+      normalMap: styrofoamNormalTexture,
+      normalScale: new THREE.Vector2( 1, 1 ),
+      roughnessMap: styrofoamRoughnessTexture,
+      metalness: 0,
+      envMap: this.getTexture()
+    } );
+  }
+}
+
+class WoodMaterialView extends CameraMaterialView {
+  constructor() {
+    super();
+
+    this.material = new THREE.MeshStandardMaterial( {
+      map: woodColorTexture,
+      normalMap: woodNormalTexture,
+      normalScale: new THREE.Vector2( 1, -1 ),
+      roughnessMap: woodRoughnessTexture,
+      metalness: 0,
+      envMap: this.getTexture()
+    } );
+  }
+}
+
+class CustomMaterialView extends MaterialView {
+  constructor( density ) {
+    super();
+
+    const lightness = Material.getCustomLightness( density );
+    const color = lightness + lightness * 0x100 + lightness * 0x10000;
+
+    this.material = new THREE.MeshLambertMaterial( {
+      color: color
+    } );
+  }
+}
+
+class CustomColoredMaterialView extends MaterialView {
+  constructor( colorProperty ) {
+    super();
+
+    this.material = new THREE.MeshLambertMaterial();
+
+    colorProperty.link( color => {
+      this.material.color = ThreeUtils.colorToThree( color );
+    } );
+  }
+}
+
+class DebugMaterialView extends MaterialView {
+  constructor() {
+    super();
+
+    this.material = new THREE.MeshLambertMaterial( {
+      color: 0xffaa44
+    } );
+  }
+}
+
+class DensityMaterials {
+  /**
+   * Returns a view for the given Material.
+   * @public
+   *
+   * @param {Material} material
+   * @returns {MaterialView}
+   */
+  static getMaterialView( material ) {
+    if ( material === Material.ALUMINUM ) {
+      return new AluminumMaterialView();
     }
-  }
-
-  class BrickMaterialView extends CameraMaterialView {
-    constructor() {
-      super();
-
-      this.material = new THREE.MeshStandardMaterial( {
-        map: brickColorTexture,
-        aoMap: brickAmbientOcclusionTexture,
-        normalMap: brickNormalTexture,
-        normalScale: new THREE.Vector2( 0.5, -0.5 ),
-        roughness: 1,
-        metalness: 0,
-        envMap: this.getTexture()
-      } );
+    else if ( material === Material.BRICK ) {
+      return new BrickMaterialView();
     }
-  }
-
-  class CopperMaterialView extends CameraMaterialView {
-    constructor() {
-      super();
-
-      this.material = new THREE.MeshStandardMaterial( {
-        map: copperColorTexture,
-        normalMap: copperNormalTexture,
-        normalScale: new THREE.Vector2( 1, -1 ),
-        roughnessMap: copperRoughnessTexture,
-        metalnessMap: copperMetalnessTexture,
-        envMap: this.getTexture()
-      } );
+    else if ( material === Material.COPPER ) {
+      return new CopperMaterialView();
     }
-  }
-
-  class IceMaterialView extends CameraMaterialView {
-    constructor() {
-      super();
-
-      const texture = this.getTexture();
-
-      texture.mapping = THREE.CubeRefractionMapping;
-      texture.needsUpdate = true;
-
-      this.material = new THREE.MeshPhysicalMaterial( {
-        map: iceColorTexture,
-        alphaMap: iceAlphaTexture,
-        normalMap: iceNormalTexture,
-        normalScale: new THREE.Vector2( 1, -1 ),
-        roughness: 0.1,
-        refractionRatio: 1 / 1.309,
-        metalness: 0.4,
-        clearCoat: 1,
-        reflectivity: 1,
-        envMap: texture,
-        envMapIntensity: 2, // is this too much cheating?
-
-        transparent: true,
-        side: THREE.DoubleSide
-      } );
+    else if ( material === Material.ICE ) {
+      return new IceMaterialView();
     }
-  }
-
-  class PlasticMaterialView extends CameraMaterialView {
-    constructor() {
-      super();
-
-      const texture = this.getTexture();
-
-      texture.mapping = THREE.CubeRefractionMapping;
-      texture.needsUpdate = true;
-
-      this.material = new THREE.MeshPhysicalMaterial( {
-        color: 0xff0000,
-        opacity: 0.5,
-        roughness: 0.1,
-        refractionRatio: 1 / 1.309,
-        metalness: 0.1,
-        clearCoat: 1,
-        reflectivity: 1,
-        envMap: texture,
-        envMapIntensity: 2, // is this too much cheating?
-
-        transparent: true,
-        side: THREE.DoubleSide
-      } );
+    else if ( material === Material.PLATINUM ) {
+      return new PlatinumMaterialView();
     }
-  }
-
-  // We just use aluminum
-  class PlatinumMaterialView extends CameraMaterialView {
-    constructor() {
-      super();
-
-      this.material = new THREE.MeshStandardMaterial( {
-        map: platinumColorTexture,
-        normalMap: aluminumNormalTexture,
-        normalScale: new THREE.Vector2( 1, -1 ),
-        roughnessMap: aluminumRoughnessTexture,
-        metalnessMap: aluminumMetalnessTexture,
-        envMap: this.getTexture(),
-        envMapIntensity: 1.5
-      } );
+    else if ( material === Material.STEEL ) {
+      return new SteelMaterialView();
     }
-  }
-
-  class SteelMaterialView extends CameraMaterialView {
-    constructor() {
-      super();
-
-      this.material = new THREE.MeshStandardMaterial( {
-        map: steelColorTexture,
-        normalMap: steelNormalTexture,
-        normalScale: new THREE.Vector2( 1, -1 ),
-        roughnessMap: steelRoughnessTexture,
-        metalnessMap: steelMetalnessTexture,
-        envMap: this.getTexture()
-      } );
+    else if ( material === Material.STYROFOAM ) {
+      return new StyrofoamMaterialView();
     }
-  }
-
-  class StyrofoamMaterialView extends CameraMaterialView {
-    constructor() {
-      super();
-
-      this.material = new THREE.MeshStandardMaterial( {
-        map: styrofoamColorTexture,
-        aoMap: styrofoamAmbientOcclusionTexture,
-        normalMap: styrofoamNormalTexture,
-        normalScale: new THREE.Vector2( 1, 1 ),
-        roughnessMap: styrofoamRoughnessTexture,
-        metalness: 0,
-        envMap: this.getTexture()
-      } );
+    else if ( material === Material.WOOD ) {
+      return new WoodMaterialView();
     }
-  }
-
-  class WoodMaterialView extends CameraMaterialView {
-    constructor() {
-      super();
-
-      this.material = new THREE.MeshStandardMaterial( {
-        map: woodColorTexture,
-        normalMap: woodNormalTexture,
-        normalScale: new THREE.Vector2( 1, -1 ),
-        roughnessMap: woodRoughnessTexture,
-        metalness: 0,
-        envMap: this.getTexture()
-      } );
-    }
-  }
-
-  class CustomMaterialView extends MaterialView {
-    constructor( density ) {
-      super();
-
-      const lightness = Material.getCustomLightness( density );
-      const color = lightness + lightness * 0x100 + lightness * 0x10000;
-
-      this.material = new THREE.MeshLambertMaterial( {
-        color: color
-      } );
-    }
-  }
-
-  class CustomColoredMaterialView extends MaterialView {
-    constructor( colorProperty ) {
-      super();
-
-      this.material = new THREE.MeshLambertMaterial();
-
-      colorProperty.link( color => {
-        this.material.color = ThreeUtils.colorToThree( color );
-      } );
-    }
-  }
-
-  class DebugMaterialView extends MaterialView {
-    constructor() {
-      super();
-
-      this.material = new THREE.MeshLambertMaterial( {
-        color: 0xffaa44
-      } );
-    }
-  }
-
-  class DensityMaterials {
-    /**
-     * Returns a view for the given Material.
-     * @public
-     *
-     * @param {Material} material
-     * @returns {MaterialView}
-     */
-    static getMaterialView( material ) {
-      if ( material === Material.ALUMINUM ) {
-        return new AluminumMaterialView();
-      }
-      else if ( material === Material.BRICK ) {
-        return new BrickMaterialView();
-      }
-      else if ( material === Material.COPPER ) {
-        return new CopperMaterialView();
-      }
-      else if ( material === Material.ICE ) {
-        return new IceMaterialView();
-      }
-      else if ( material === Material.PLATINUM ) {
-        return new PlatinumMaterialView();
-      }
-      else if ( material === Material.STEEL ) {
-        return new SteelMaterialView();
-      }
-      else if ( material === Material.STYROFOAM ) {
-        return new StyrofoamMaterialView();
-      }
-      else if ( material === Material.WOOD ) {
-        return new WoodMaterialView();
-      }
-      else if ( material.custom ) {
-        if ( material.customColor === null ) {
-          return new CustomMaterialView( material.density );
-        }
-        else {
-          return new CustomColoredMaterialView( material.customColor );
-        }
+    else if ( material.custom ) {
+      if ( material.customColor === null ) {
+        return new CustomMaterialView( material.density );
       }
       else {
-        return new DebugMaterialView();
+        return new CustomColoredMaterialView( material.customColor );
       }
     }
-
-    static getCustomLightness( density ) {
-      return Utils.roundSymmetric( Utils.clamp( Utils.linear( 1, -2, 0, 255, Utils.log10( density / 1000 ) ), 0, 255 ) );
-    }
-
-    static getBottleMaterialView() {
-      return new PlasticMaterialView();
+    else {
+      return new DebugMaterialView();
     }
   }
 
-  return densityBuoyancyCommon.register( 'DensityMaterials', DensityMaterials );
-} );
+  static getCustomLightness( density ) {
+    return Utils.roundSymmetric( Utils.clamp( Utils.linear( 1, -2, 0, 255, Utils.log10( density / 1000 ) ), 0, 255 ) );
+  }
+
+  static getBottleMaterialView() {
+    return new PlasticMaterialView();
+  }
+}
+
+densityBuoyancyCommon.register( 'DensityMaterials', DensityMaterials );
+export default DensityMaterials;

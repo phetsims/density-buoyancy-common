@@ -3,46 +3,43 @@
 /**
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
-define( require => {
-  'use strict';
 
-  // modules
-  const densityBuoyancyCommon = require( 'DENSITY_BUOYANCY_COMMON/densityBuoyancyCommon' );
-  const PhetFont = require( 'SCENERY_PHET/PhetFont' );
-  const StringUtils = require( 'PHETCOMMON/util/StringUtils' );
-  const Text = require( 'SCENERY/nodes/Text' );
-  const Utils = require( 'DOT/Utils' );
-  const VBox = require( 'SCENERY/nodes/VBox' );
+import Utils from '../../../../dot/js/Utils.js';
+import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
+import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
+import Text from '../../../../scenery/js/nodes/Text.js';
+import VBox from '../../../../scenery/js/nodes/VBox.js';
+import densityBuoyancyCommonStrings from '../../density-buoyancy-common-strings.js';
+import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 
-  // strings
-  const densityReadoutPatternString = require( 'string!DENSITY_BUOYANCY_COMMON/densityReadoutPattern' );
+const densityReadoutPatternString = densityBuoyancyCommonStrings.densityReadoutPattern;
 
-  class DensityReadoutListNode extends VBox {
+class DensityReadoutListNode extends VBox {
 
-    /**
-     * @param {Array.<Property.<Material>>} materialProperties
-     */
-    constructor( materialProperties ) {
+  /**
+   * @param {Array.<Property.<Material>>} materialProperties
+   */
+  constructor( materialProperties ) {
 
-      super( {
-        spacing: 5,
-        align: 'center'
-      } );
+    super( {
+      spacing: 5,
+      align: 'center'
+    } );
 
-      this.children = materialProperties.map( materialProperty => {
-        const text = new Text( '', { font: new PhetFont( 14 ), maxWidth: 200 } );
+    this.children = materialProperties.map( materialProperty => {
+      const text = new Text( '', { font: new PhetFont( 14 ), maxWidth: 200 } );
 
-        materialProperty.link( material => {
-          text.text = StringUtils.fillIn( densityReadoutPatternString, {
-            material: material.name,
-            density: Utils.toFixed( material.density / 1000, 2 )
-          } );
+      materialProperty.link( material => {
+        text.text = StringUtils.fillIn( densityReadoutPatternString, {
+          material: material.name,
+          density: Utils.toFixed( material.density / 1000, 2 )
         } );
-
-        return text;
       } );
-    }
-  }
 
-  return densityBuoyancyCommon.register( 'DensityReadoutListNode', DensityReadoutListNode );
-} );
+      return text;
+    } );
+  }
+}
+
+densityBuoyancyCommon.register( 'DensityReadoutListNode', DensityReadoutListNode );
+export default DensityReadoutListNode;

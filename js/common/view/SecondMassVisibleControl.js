@@ -94,7 +94,7 @@ class SecondMassVisibleControl extends RadioButtonGroup {
    * @private
    *
    * @param {number} zoom
-   * @param {function:THREE.Scene} stepScene
+   * @param {function:THREE.Scene} setupScene
    * @returns {Node}
    */
   static getIcon( zoom, setupScene ) {

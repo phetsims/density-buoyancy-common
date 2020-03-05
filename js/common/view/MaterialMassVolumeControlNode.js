@@ -178,7 +178,8 @@ class MaterialMassVolumeControlNode extends VBox {
         thumbNode: new PrecisionSliderThumb( {
           thumbFill: options.color
         } ),
-        thumbYOffset: new PrecisionSliderThumb().height / 2 - TRACK_HEIGHT / 2
+        thumbYOffset: new PrecisionSliderThumb().height / 2 - TRACK_HEIGHT / 2,
+        constrainValue: value => Utils.toFixedNumber( value, 1 )
       },
       numberDisplayOptions: {
         valuePattern: StringUtils.fillIn( kilogramsPatternString, {
@@ -196,7 +197,8 @@ class MaterialMassVolumeControlNode extends VBox {
         thumbNode: new PrecisionSliderThumb( {
           thumbFill: options.color
         } ),
-        thumbYOffset: new PrecisionSliderThumb().height / 2 - TRACK_HEIGHT / 2
+        thumbYOffset: new PrecisionSliderThumb().height / 2 - TRACK_HEIGHT / 2,
+        constrainValue: value => Utils.toFixedNumber( value, 1 )
       },
       numberDisplayOptions: {
         valuePattern: StringUtils.fillIn( litersPatternString, {

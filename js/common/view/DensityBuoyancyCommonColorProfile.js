@@ -38,6 +38,17 @@ const DensityBuoyancyCommonColorProfile = new ColorProfile( [ 'default' ], {
   comparingRed: { default: new Color( 233, 55, 50 ) },
   comparingPurple: { default: new Color( 131, 43, 126 ) },
 
+  mysteryPink: { default: new Color( 255, 192, 203 ) },
+  mysteryOrange: { default: new Color( 255, 127, 0 ) },
+  mysteryLightPurple: { default: new Color( 177, 156, 217 ) },
+  mysteryLightGreen: { default: new Color( 144, 238, 144 ) },
+  mysteryBrown: { default: new Color( 150, 75, 0 ) },
+  mysteryWhite: { default: new Color( 255, 255, 255 ) },
+  mysteryGray: { default: new Color( 140, 140, 140 ) },
+  mysteryMustard: { default: new Color( 225, 173, 0 ) },
+  mysteryPeach: { default: new Color( 255, 229, 180 ) },
+  mysteryMaroon: { default: new Color( 128, 0, 0 ) },
+
   chartHeader: { default: new Color( 230, 230, 230 ) },
 
   radioBorder: { default: PhetColorScheme.BUTTON_YELLOW },

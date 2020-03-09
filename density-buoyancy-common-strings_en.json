@@ -206,14 +206,28 @@
   "blockB": {
     "value": "Block B:"
   },
-  "mode.sameMass": {
-    "value": "Same Mass"
-  },
-  "mode.sameVolume": {
-    "value": "Same Volume"
-  },
-  "mode.sameDensity": {
-    "value": "Same Density"
+  "mode": {
+    "sameMass": {
+      "value": "Same Mass"
+    },
+    "sameVolume": {
+      "value": "Same Volume"
+    },
+    "sameDensity": {
+      "value": "Same Density"
+    },
+    "set1": {
+      "value": "Blocks Set 1"
+    },
+    "set2": {
+      "value": "Blocks Set 2"
+    },
+    "set3": {
+      "value": "Blocks Set 3"
+    },
+    "random": {
+      "value": "Random"
+    }
   },
   "densitiesOfVariousMaterials": {
     "value": "Densities of Various Materials"

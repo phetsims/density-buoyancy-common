@@ -55,7 +55,8 @@ class DensityIntroScreenView extends SecondaryMassScreenView {
       titleYMargin: 5,
       buttonXMargin: 5,
       titleAlignX: 'left',
-      cornerRadius: DensityBuoyancyCommonConstants.CORNER_RADIUS
+      cornerRadius: DensityBuoyancyCommonConstants.CORNER_RADIUS,
+      fill: 'white'
     } );
 
     this.addChild( new AlignBox( densityReadoutBox, {

@@ -6,6 +6,7 @@
 
 import Utils from '../../../../dot/js/Utils.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
+import merge from '../../../../phet-core/js/merge.js';
 import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import AlignBox from '../../../../scenery/js/nodes/AlignBox.js';
@@ -93,25 +94,16 @@ class BuoyancyExploreScreenView extends SecondaryMassScreenView {
       ]
     } );
 
-    const densityBox = new AccordionBox( densityContainer, {
+    const densityBox = new AccordionBox( densityContainer, merge( {
       titleNode: new Text( densityString, { font: DensityBuoyancyCommonConstants.TITLE_FONT } ),
-      expandedProperty: model.densityReadoutExpandedProperty,
-      fill: 'white',
-      titleYMargin: 5,
-      buttonXMargin: 5,
-      titleAlignX: 'left',
-      cornerRadius: DensityBuoyancyCommonConstants.CORNER_RADIUS
-      // TODO: take common AccordionBox styles out into a file
-    } );
+      expandedProperty: model.densityReadoutExpandedProperty
+    }, DensityBuoyancyCommonConstants.ACCORDION_BOX_OPTIONS ) );
 
     this.addChild( new VBox( {
       spacing: 10,
       children: [
         densityBox,
-        new Panel( displayOptionsNode, {
-          xMargin: 10,
-          yMargin: 10
-        } )
+        new Panel( displayOptionsNode, DensityBuoyancyCommonConstants.PANEL_OPTIONS )
       ],
       left: this.layoutBounds.left + MARGIN,
       bottom: this.layoutBounds.bottom - MARGIN
@@ -126,19 +118,15 @@ class BuoyancyExploreScreenView extends SecondaryMassScreenView {
       Material.MERCURY,
       Material.DENSITY_X,
       Material.DENSITY_Y
-    ], this.popupLayer ), {
-      xMargin: 10,
-      yMargin: 10,
+    ], this.popupLayer ), merge( {
       right: this.layoutBounds.centerX - MARGIN,
       bottom: this.layoutBounds.bottom - MARGIN
-    } ) );
+    }, DensityBuoyancyCommonConstants.PANEL_OPTIONS ) ) );
 
-    this.addChild( new Panel( new GravityControlNode( model.gravityProperty, this.popupLayer ), {
-      xMargin: 10,
-      yMargin: 10,
+    this.addChild( new Panel( new GravityControlNode( model.gravityProperty, this.popupLayer ), merge( {
       left: this.layoutBounds.centerX + MARGIN,
       bottom: this.layoutBounds.bottom - MARGIN
-    } ) );
+    }, DensityBuoyancyCommonConstants.PANEL_OPTIONS ) ) );
 
     // @private {Node}
     this.rightBox = new PrimarySecondaryControlsNode(

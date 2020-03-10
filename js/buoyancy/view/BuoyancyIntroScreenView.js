@@ -4,6 +4,7 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
+import merge from '../../../../phet-core/js/merge.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import AlignBox from '../../../../scenery/js/nodes/AlignBox.js';
 import HBox from '../../../../scenery/js/nodes/HBox.js';
@@ -54,19 +55,17 @@ class BuoyancyIntroScreenView extends DensityBuoyancyScreenView {
       };
     } ) );
 
-    this.addChild( new AlignBox( new Panel( modeControl ), {
+    this.addChild( new AlignBox( new Panel( modeControl, DensityBuoyancyCommonConstants.PANEL_OPTIONS ), {
       alignBounds: this.layoutBounds,
       xAlign: 'right',
       yAlign: 'top',
       margin: 10
     } ) );
 
-    this.addChild( new Panel( new DisplayOptionsNode( model ), {
-      xMargin: 10,
-      yMargin: 10,
+    this.addChild( new Panel( new DisplayOptionsNode( model ), merge( {
       left: this.layoutBounds.left + MARGIN,
       bottom: this.layoutBounds.bottom - MARGIN
-    } ) );
+    }, DensityBuoyancyCommonConstants.PANEL_OPTIONS ) ) );
 
     const radioButtonLabelOptions = {
       font: new PhetFont( 14 )
@@ -86,12 +85,10 @@ class BuoyancyIntroScreenView extends DensityBuoyancyScreenView {
     } );
     this.addChild( new Panel( new Node( {
       children: [ fluidTitle, fluidBox ]
-    } ), {
-      xMargin: 10,
-      yMargin: 10,
+    } ), merge( {
       centerX: this.layoutBounds.centerX,
       bottom: this.layoutBounds.bottom - MARGIN
-    } ) );
+    }, DensityBuoyancyCommonConstants.PANEL_OPTIONS ) ) );
 
     this.addChild( this.popupLayer );
   }

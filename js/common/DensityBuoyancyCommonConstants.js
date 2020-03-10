@@ -33,6 +33,15 @@ const DensityBuoyancyCommonConstants = {
     cornerRadius: CORNER_RADIUS,
     xMargin: 10,
     yMargin: 10
+  },
+
+  // {Object}
+  ACCORDION_BOX_OPTIONS: {
+    cornerRadius: CORNER_RADIUS,
+    titleYMargin: 5,
+    buttonXMargin: 5,
+    titleAlignX: 'left',
+    fill: 'white'
   }
 };
 

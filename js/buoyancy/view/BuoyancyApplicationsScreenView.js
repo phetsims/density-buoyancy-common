@@ -129,11 +129,7 @@ class BuoyancyApplicationsScreenView extends DensityBuoyancyScreenView {
       ]
     } );
 
-    const rightBottleContent = new AlignBox( new Panel( bottleBox, {
-      xMargin: 10,
-      yMargin: 10,
-      resize: true
-    } ), {
+    const rightBottleContent = new AlignBox( new Panel( bottleBox, DensityBuoyancyCommonConstants.PANEL_OPTIONS ), {
       alignBounds: this.layoutBounds,
       xAlign: 'right',
       yAlign: 'bottom',
@@ -171,11 +167,7 @@ class BuoyancyApplicationsScreenView extends DensityBuoyancyScreenView {
       ]
     } );
 
-    const rightBoatContent = new AlignBox( new Panel( boatBox, {
-      xMargin: 10,
-      yMargin: 10,
-      resize: true
-    } ), {
+    const rightBoatContent = new AlignBox( new Panel( boatBox, DensityBuoyancyCommonConstants.PANEL_OPTIONS ), {
       alignBounds: this.layoutBounds,
       xAlign: 'right',
       yAlign: 'bottom',
@@ -199,12 +191,10 @@ class BuoyancyApplicationsScreenView extends DensityBuoyancyScreenView {
       Material.MERCURY,
       Material.DENSITY_P,
       Material.DENSITY_Q
-    ], this.popupLayer ), {
-      xMargin: 10,
-      yMargin: 10,
+    ], this.popupLayer ), merge( {
       centerX: this.layoutBounds.centerX,
       bottom: this.layoutBounds.bottom - MARGIN
-    } );
+    }, DensityBuoyancyCommonConstants.PANEL_OPTIONS ) );
     this.addChild( densityControlPanel );
 
     const displayOptionsNode = new DisplayOptionsNode( model );
@@ -220,24 +210,16 @@ class BuoyancyApplicationsScreenView extends DensityBuoyancyScreenView {
       ]
     } );
 
-    const densityBox = new AccordionBox( densityContainer, {
+    const densityBox = new AccordionBox( densityContainer, merge( {
       titleNode: new Text( densityString, { font: DensityBuoyancyCommonConstants.TITLE_FONT } ),
-      expandedProperty: model.densityReadoutExpandedProperty,
-      fill: 'white',
-      titleYMargin: 5,
-      buttonXMargin: 5,
-      titleAlignX: 'left',
-      cornerRadius: DensityBuoyancyCommonConstants.CORNER_RADIUS
-    } );
+      expandedProperty: model.densityReadoutExpandedProperty
+    }, DensityBuoyancyCommonConstants.ACCORDION_BOX_OPTIONS ) );
 
     this.addChild( new VBox( {
       spacing: 10,
       children: [
         densityBox,
-        new Panel( displayOptionsNode, {
-          xMargin: 10,
-          yMargin: 10
-        } )
+        new Panel( displayOptionsNode, DensityBuoyancyCommonConstants.PANEL_OPTIONS )
       ],
       left: this.layoutBounds.left + MARGIN,
       bottom: this.layoutBounds.bottom - MARGIN

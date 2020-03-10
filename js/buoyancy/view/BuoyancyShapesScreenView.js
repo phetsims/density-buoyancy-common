@@ -7,6 +7,7 @@
 import DynamicProperty from '../../../../axon/js/DynamicProperty.js';
 import Property from '../../../../axon/js/Property.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
+import merge from '../../../../phet-core/js/merge.js';
 import AlignBox from '../../../../scenery/js/nodes/AlignBox.js';
 import HStrut from '../../../../scenery/js/nodes/HStrut.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
@@ -54,12 +55,10 @@ class BuoyancyShapesScreenView extends SecondaryMassScreenView {
       Material.MERCURY,
       Material.DENSITY_R,
       Material.DENSITY_S
-    ], this.popupLayer ), {
-      xMargin: 10,
-      yMargin: 10,
+    ], this.popupLayer ), merge( {
       centerX: this.layoutBounds.centerX,
       bottom: this.layoutBounds.bottom - MARGIN
-    } );
+    }, DensityBuoyancyCommonConstants.PANEL_OPTIONS ) );
     this.addChild( densityControlPanel );
 
     const displayOptionsNode = new DisplayOptionsNode( model );
@@ -73,24 +72,16 @@ class BuoyancyShapesScreenView extends SecondaryMassScreenView {
     } );
 
     // TODO: check common accordion box styles
-    const densityBox = new AccordionBox( densityContainer, {
+    const densityBox = new AccordionBox( densityContainer, merge( {
       titleNode: new Text( densityString, { font: DensityBuoyancyCommonConstants.TITLE_FONT } ),
-      expandedProperty: model.densityReadoutExpandedProperty,
-      fill: 'white',
-      titleYMargin: 5,
-      buttonXMargin: 5,
-      titleAlignX: 'left',
-      cornerRadius: DensityBuoyancyCommonConstants.CORNER_RADIUS
-    } );
+      expandedProperty: model.densityReadoutExpandedProperty
+    }, DensityBuoyancyCommonConstants.ACCORDION_BOX_OPTIONS ) );
 
     this.addChild( new VBox( {
       spacing: 10,
       children: [
         densityBox,
-        new Panel( displayOptionsNode, {
-          xMargin: 10,
-          yMargin: 10
-        } )
+        new Panel( displayOptionsNode, DensityBuoyancyCommonConstants.PANEL_OPTIONS )
       ],
       left: this.layoutBounds.left + MARGIN,
       bottom: this.layoutBounds.bottom - MARGIN

@@ -6,6 +6,7 @@
 
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
+import merge from '../../../../phet-core/js/merge.js';
 import AlignBox from '../../../../scenery/js/nodes/AlignBox.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
 import AccordionBox from '../../../../sun/js/AccordionBox.js';
@@ -48,16 +49,11 @@ class DensityIntroScreenView extends SecondaryMassScreenView {
       new DerivedProperty( [ model.primaryMass.materialProperty ], material => material.density ),
       new DerivedProperty( [ model.secondaryMass.materialProperty ], material => material.density ),
       model.secondaryMassVisibleProperty
-    ), {
+    ), merge( {
       titleNode: new Text( densityReadoutString, { font: DensityBuoyancyCommonConstants.TITLE_FONT } ),
       expandedProperty: model.densityReadoutExpandedProperty,
-      buttonAlign: 'left',
-      titleYMargin: 5,
-      buttonXMargin: 5,
-      titleAlignX: 'left',
-      cornerRadius: DensityBuoyancyCommonConstants.CORNER_RADIUS,
-      fill: 'white'
-    } );
+      buttonAlign: 'left'
+    }, DensityBuoyancyCommonConstants.ACCORDION_BOX_OPTIONS ) );
 
     this.addChild( new AlignBox( densityReadoutBox, {
       alignBounds: this.layoutBounds,

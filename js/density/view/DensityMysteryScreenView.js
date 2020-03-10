@@ -5,6 +5,7 @@
  */
 
 import Vector3 from '../../../../dot/js/Vector3.js';
+import merge from '../../../../phet-core/js/merge.js';
 import RefreshButton from '../../../../scenery-phet/js/buttons/RefreshButton.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import AlignBox from '../../../../scenery/js/nodes/AlignBox.js';
@@ -46,16 +47,10 @@ class DensityMysteryScreenView extends DensityBuoyancyScreenView {
       return this;
     }
 
-    const densityBox = new AccordionBox( new DensityTableNode(), {
+    const densityBox = new AccordionBox( new DensityTableNode(), merge( {
       titleNode: new Text( densitiesOfVariousMaterialsString, { font: DensityBuoyancyCommonConstants.TITLE_FONT } ),
-      expandedProperty: model.densityTableExpandedProperty,
-      fill: 'white',
-      titleYMargin: 5,
-      buttonXMargin: 5,
-      titleAlignX: 'left',
-      cornerRadius: DensityBuoyancyCommonConstants.CORNER_RADIUS
-      // TODO: take common AccordionBox styles out into a file
-    } );
+      expandedProperty: model.densityTableExpandedProperty
+    }, DensityBuoyancyCommonConstants.ACCORDION_BOX_OPTIONS ) );
 
     this.addChild( new AlignBox( densityBox, {
       alignBounds: this.layoutBounds,

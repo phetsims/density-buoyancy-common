@@ -4,6 +4,7 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
+import merge from '../../../../phet-core/js/merge.js';
 import AlignBox from '../../../../scenery/js/nodes/AlignBox.js';
 import Panel from '../../../../sun/js/Panel.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
@@ -32,12 +33,10 @@ class Demo3DScreenView extends DensityBuoyancyScreenView {
       return this;
     }
 
-    this.addChild( new Panel( new DisplayOptionsNode( model ), {
-      xMargin: 10,
-      yMargin: 10,
+    this.addChild( new Panel( new DisplayOptionsNode( model ), merge( {
       left: this.layoutBounds.left + MARGIN,
       bottom: this.layoutBounds.bottom - MARGIN
-    } ) );
+    }, DensityBuoyancyCommonConstants.PANEL_OPTIONS ) ) );
 
     this.addChild( new Panel( new DensityControlNode( model.liquidMaterialProperty, [
       Material.AIR,
@@ -48,21 +47,17 @@ class Demo3DScreenView extends DensityBuoyancyScreenView {
       Material.MERCURY,
       Material.DENSITY_X,
       Material.DENSITY_Y
-    ], this.popupLayer ), {
-      xMargin: 10,
-      yMargin: 10,
+    ], this.popupLayer ), merge( {
       right: this.layoutBounds.centerX - MARGIN,
       bottom: this.layoutBounds.bottom - MARGIN
-    } ) );
+    }, DensityBuoyancyCommonConstants.PANEL_OPTIONS ) ) );
 
-    this.addChild( new Panel( new GravityControlNode( model.gravityProperty, this.popupLayer ), {
-      xMargin: 10,
-      yMargin: 10,
+    this.addChild( new Panel( new GravityControlNode( model.gravityProperty, this.popupLayer ), merge( {
       left: this.layoutBounds.centerX + MARGIN,
       bottom: this.layoutBounds.bottom - MARGIN
-    } ) );
+    }, DensityBuoyancyCommonConstants.PANEL_OPTIONS ) ) );
 
-    this.addChild( new AlignBox( new Panel( new DebugEditNode( this.currentMassProperty, this.popupLayer ) ), {
+    this.addChild( new AlignBox( new Panel( new DebugEditNode( this.currentMassProperty, this.popupLayer ), DensityBuoyancyCommonConstants.PANEL_OPTIONS ), {
       alignBounds: this.layoutBounds,
       xAlign: 'right',
       yAlign: 'bottom',

@@ -252,23 +252,27 @@ class DensityMysteryModel extends DensityBuoyancyModel {
   setupRandom() {
     const densities = phet.joist.random.shuffle( randomMaterials ).slice( 0, 5 ).map( material => material.density );
     const colors = phet.joist.random.shuffle( randomColors ).slice( 0, 5 );
+    const volumes = [
+      ...phet.joist.random.shuffle( [ 1, 2, 3, 4, 5, 6 ].map( n => n / 1000 ) ).slice( 0, 3 ),
+      ...phet.joist.random.shuffle( [ 7, 8, 9, 10 ].map( n => n / 1000 ) ).slice( 0, 2 )
+    ];
 
-    const masses = _.range( 0, 5 ).map( i => Cuboid.createWithVolume( this.engine, Material.createCustomMaterial( {
+    const masses = _.sortBy( _.range( 0, 5 ).map( i => Cuboid.createWithVolume( this.engine, Material.createCustomMaterial( {
       density: densities[ i ],
       customColor: colors[ i ]
-    } ), Vector2.ZERO, phet.joist.random.nextIntBetween( 1, 10 ) / 1000 ) );
+    } ), Vector2.ZERO, volumes[ i ] ) ), mass => mass.volumeProperty.value );
 
     masses.push( this.scale );
 
     this.positionStackLeft( [
-      masses[ 1 ],
+      masses[ 3 ],
       masses[ 4 ]
     ] );
 
     this.positionStackRight( [
-      masses[ 2 ],
-      masses[ 3 ],
-      masses[ 0 ]
+      masses[ 0 ],
+      masses[ 1 ],
+      masses[ 2 ]
     ] );
 
     this.masses.addAll( masses );

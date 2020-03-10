@@ -520,6 +520,8 @@ class DensityBuoyancyModel {
   positionStack( masses, x ) {
     let position = 0;
 
+    masses = _.sortBy( masses, mass => -mass.volumeProperty.value );
+
     masses.forEach( mass => {
       mass.matrix.setToTranslation( x, position + mass.sizeProperty.value.height / 2 );
       position += mass.sizeProperty.value.height;

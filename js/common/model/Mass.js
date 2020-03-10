@@ -52,6 +52,9 @@ class Mass {
       // {boolean} - optional
       canRotate: false,
 
+      // {boolean} - optional
+      canMove: true,
+
       // {MassTag} - optional
       tag: MassTag.NONE,
 
@@ -131,6 +134,9 @@ class Mass {
 
     // @public {boolean}
     this.canRotate = config.canRotate;
+
+    // @public {boolean}
+    this.canMove = config.canMove;
 
     // @public {MassTag}
     this.tag = config.tag;

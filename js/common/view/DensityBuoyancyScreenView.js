@@ -151,7 +151,7 @@ class DensityBuoyancyScreenView extends ScreenView {
         const isTouch = !( event.pointer instanceof Mouse );
         const mass = self.getMassUnderPointer( event.pointer, isTouch );
 
-        if ( mass && !mass.userControlledProperty.value ) {
+        if ( mass && mass.canMove && !mass.userControlledProperty.value ) {
 
           const initialRay = self.sceneNode.getRayFromScreenPoint( event.pointer.point );
           const initialT = mass.intersect( initialRay, isTouch );
@@ -574,6 +574,14 @@ class DensityBuoyancyScreenView extends ScreenView {
     return this.parentToLocalPoint( this.sceneNode.projectPoint( point ) );
   }
 
+  /**
+   * Returns the closest grab-able mass under the pointer/
+   * @public
+   *
+   * @param {Pointer} pointer
+   * @param {boolean} isTouch
+   * @returns {Mass|null}
+   */
   getMassUnderPointer( pointer, isTouch ) {
     const ray = this.sceneNode.getRayFromScreenPoint( pointer.point );
 
@@ -581,6 +589,10 @@ class DensityBuoyancyScreenView extends ScreenView {
     let closestMass = null;
 
     this.model.masses.forEach( mass => {
+      if ( !mass.canMove ) {
+        return;
+      }
+
       const t = mass.intersect( ray, isTouch );
 
       if ( t !== null && t < closestT ) {

@@ -64,6 +64,13 @@ class DensityMysteryModel extends DensityBuoyancyModel {
     // @public {Property.<DensityMysteryModel.Mode>}
     this.modeProperty = new EnumerationProperty( DensityMysteryModel.Mode, DensityMysteryModel.Mode.SET_1 );
 
+    // @public {Scale}
+    this.scale = new Scale( this.engine, {
+      matrix: Matrix3.translation( -0.75, -Scale.SCALE_BASE_BOUNDS.minY ),
+      displayType: Scale.DisplayType.KILOGRAMS,
+      canMove: false
+    } );
+
     this.modeProperty.link( mode => {
       this.setup();
     } );
@@ -125,10 +132,7 @@ class DensityMysteryModel extends DensityBuoyancyModel {
         customColor: DensityBuoyancyCommonColorProfile.comparingPurpleProperty
       } ), Vector2.ZERO, 3.53 ),
 
-      new Scale( this.engine, {
-        matrix: Matrix3.translation( -0.75, -Scale.SCALE_BASE_BOUNDS.minY ),
-        displayType: Scale.DisplayType.KILOGRAMS
-      } )
+      this.scale
     ];
 
     this.positionStackLeft( [
@@ -176,10 +180,7 @@ class DensityMysteryModel extends DensityBuoyancyModel {
         customColor: DensityBuoyancyCommonColorProfile.mysteryBrownProperty
       } ), Vector2.ZERO, 10.8 ),
 
-      new Scale( this.engine, {
-        matrix: Matrix3.translation( -0.75, -Scale.SCALE_BASE_BOUNDS.minY ),
-        displayType: Scale.DisplayType.KILOGRAMS
-      } )
+      this.scale
     ];
 
     this.positionStackLeft( [
@@ -227,10 +228,7 @@ class DensityMysteryModel extends DensityBuoyancyModel {
         customColor: DensityBuoyancyCommonColorProfile.mysteryMaroonProperty
       } ), Vector2.ZERO, 2.85 ),
 
-      new Scale( this.engine, {
-        matrix: Matrix3.translation( -0.75, -Scale.SCALE_BASE_BOUNDS.minY ),
-        displayType: Scale.DisplayType.KILOGRAMS
-      } )
+      this.scale
     ];
 
     this.positionStackLeft( [
@@ -260,12 +258,7 @@ class DensityMysteryModel extends DensityBuoyancyModel {
       customColor: colors[ i ]
     } ), Vector2.ZERO, phet.joist.random.nextIntBetween( 1, 10 ) / 1000 ) );
 
-    masses.push(
-      new Scale( this.engine, {
-        matrix: Matrix3.translation( -0.75, -Scale.SCALE_BASE_BOUNDS.minY ),
-        displayType: Scale.DisplayType.KILOGRAMS
-      } )
-    );
+    masses.push( this.scale );
 
     this.positionStackLeft( [
       masses[ 1 ],

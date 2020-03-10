@@ -55,7 +55,7 @@ class Boat extends Mass {
     const volume = ONE_LITER_ACTUAL_VOLUME * displacementVolumeProperty.value * 1000;
 
     config = merge( {
-      body: engine.createFromVertices( boatVertices ),
+      body: engine.createFromVertices( boatVertices, true ),
       shape: Shape.polygon( boatVertices ),
       volume: volume,
       canRotate: false,
@@ -77,7 +77,7 @@ class Boat extends Mass {
       const vertices = Boat.getIntersectionVertices( blockWidth / 2, displacementVolume * 1000 );
       const volume = ONE_LITER_ACTUAL_VOLUME * displacementVolume * 1000;
 
-      engine.updateFromVertices( this.body, vertices );
+      engine.updateFromVertices( this.body, vertices, true );
       this.shapeProperty.value = Shape.polygon( vertices );
       this.volumeProperty.value = volume;
 
@@ -358,7 +358,8 @@ class Boat extends Mass {
 
     const fullPoints = points.concat( _.sortBy( interiorPoints, point => point.x ) );
 
-    return fullPoints.map( designPoint => Boat.designToModel( designPoint.toVector3(), liters ).toVector2() );
+    // TODO: Don't require a reverse here
+    return _.reverse( fullPoints.map( designPoint => Boat.designToModel( designPoint.toVector3(), liters ).toVector2() ) );
   }
 
   static getSegmentsFromControlPoints( points ) {

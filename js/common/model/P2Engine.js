@@ -385,53 +385,6 @@ class P2Engine extends Engine {
   }
 
   /**
-   * Creates a (dynamic) cone body, with the origin at the center of mass
-   * @public
-   * @override
-   *
-   * @param {number} radius
-   * @param {number} height
-   * @param {boolean} isVertexUp
-   * @returns {Engine.Body}
-   */
-  createCone( radius, height, isVertexUp ) {
-    const body = new p2.Body( {
-      type: p2.Body.DYNAMIC,
-      fixedRotation: true
-    } );
-
-    this.updateCone( body, radius, height, isVertexUp );
-
-    return body;
-  }
-
-  /**
-   * Updates the radius/height of a cone body
-   * @public
-   * @override
-   *
-   * @param {Engine.Body}
-   * @param {number} radius
-   * @param {number} height
-   * @param {boolean} isVertexUp
-   */
-  updateCone( body, radius, height, isVertexUp ) {
-    P2Engine.removeShapes( body );
-
-    const vertexSign = isVertexUp ? 1 : -1;
-    const cone = new p2.Convex( {
-      vertices: [
-        new Vector2( 0, 0.75 * vertexSign * height ),
-        new Vector2( -vertexSign * radius, -0.25 * vertexSign * height ),
-        new Vector2( vertexSign * radius, -0.25 * vertexSign * height )
-      ].map( P2Engine.vectorToP2 )
-    } );
-    cone.material = dynamicMaterial;
-
-    body.addShape( cone );
-  }
-
-  /**
    * Creates a (dynamic) vertical cylinder body, with the origin at the center of mass
    * @public
    * @override
@@ -519,15 +472,16 @@ class P2Engine extends Engine {
    * @override
    *
    * @param {Array.<Vector2>} vertices
+   * @param {boolean} workaround
    * @returns {Engine.Body}
    */
-  createFromVertices( vertices ) {
+  createFromVertices( vertices, workaround ) {
     const body = new p2.Body( {
       type: p2.Body.DYNAMIC,
       fixedRotation: true
     } );
 
-    this.updateFromVertices( body, vertices );
+    this.updateFromVertices( body, vertices, workaround );
 
     return body;
   }
@@ -539,14 +493,26 @@ class P2Engine extends Engine {
    *
    * @param {Engine.Body}
    * @param {Array.<Vector2>} vertices
+   * @param {boolean} workaround
    */
-  updateFromVertices( body, vertices ) {
+  updateFromVertices( body, vertices, workaround ) {
     P2Engine.removeShapes( body );
 
-    body.fromPolygon( vertices.map( v => p2.vec2.fromValues( v.x * SCALE, v.y * SCALE ) ) );
+    if ( workaround ) {
+      body.fromPolygon( vertices.map( v => p2.vec2.fromValues( v.x * SCALE, v.y * SCALE ) ) );
 
-    // Workaround, since using Convex wasn't working
-    body.shapes[ 0 ].material = dynamicMaterial;
+      // Workaround, since using Convex wasn't working
+      body.shapes[ 0 ].material = dynamicMaterial;
+    }
+    else {
+      const shape = new p2.Convex( {
+        vertices: vertices.map( P2Engine.vectorToP2 )
+      } );
+
+      shape.material = dynamicMaterial;
+
+      body.addShape( shape );
+    }
   }
 
   /**

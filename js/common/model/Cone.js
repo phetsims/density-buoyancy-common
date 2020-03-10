@@ -24,9 +24,12 @@ class Cone extends Mass {
    * @param {Object} config
    */
   constructor( engine, radius, height, isVertexUp, config ) {
+
+    const initialVertices = Cone.getConeVertices( radius, height, isVertexUp );
+
     config = merge( {
-      body: engine.createCone( radius, height, isVertexUp ),
-      shape: Cone.getConeShape( radius, height, isVertexUp ),
+      body: engine.createFromVertices( initialVertices, false ),
+      shape: Shape.polygon( initialVertices ),
       volume: Cone.getVolume( radius, height ),
       canRotate: false
 
@@ -66,12 +69,14 @@ class Cone extends Mass {
    * @param {number} height
    */
   updateSize( radius, height ) {
-    this.engine.updateCone( this.body, radius, height, this.isVertexUp );
+    const vertices = Cone.getConeVertices( radius, height, this.isVertexUp );
+
+    this.engine.updateFromVertices( this.body, vertices, false );
 
     this.radiusProperty.value = radius;
     this.heightProperty.value = height;
 
-    this.shapeProperty.value = Cone.getConeShape( radius, height, this.isVertexUp );
+    this.shapeProperty.value = Shape.polygon( vertices );
     this.volumeProperty.value = Cone.getVolume( radius, height );
 
     this.forceOffsetProperty.value = new Vector3( 0, 0, 0 );
@@ -252,21 +257,22 @@ class Cone extends Mass {
   }
 
   /**
-   * Returns a cone shape for a given radius/height/isVertexUp.
+   * Returns an array of vertices for the 2d physics model
    * @public
    *
    * @param {number} radius
    * @param {number} height
    * @param {boolean} isVertexUp
+   * @returns {Array.<Vector2>}
    */
-  static getConeShape( radius, height, isVertexUp ) {
+  static getConeVertices( radius, height, isVertexUp ) {
     const vertexSign = isVertexUp ? 1 : -1;
 
-    return Shape.polygon( [
+    return [
       new Vector2( 0, 0.75 * vertexSign * height ),
-      new Vector2( radius, -0.25 * vertexSign * height ),
-      new Vector2( -radius, -0.25 * vertexSign * height )
-    ] );
+      new Vector2( -vertexSign * radius, -0.25 * vertexSign * height ),
+      new Vector2( vertexSign * radius, -0.25 * vertexSign * height )
+    ];
   }
 
   /**

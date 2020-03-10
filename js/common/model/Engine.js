@@ -256,32 +256,6 @@ class Engine {
   }
 
   /**
-   * Creates a (dynamic) cone body, with the origin at the center of mass
-   * @public
-   *
-   * @param {number} radius
-   * @param {number} height
-   * @param {boolean} isVertexUp
-   * @returns {Engine.Body}
-   */
-  createCone( radius, height, isVertexUp ) {
-    throw new Error( 'unimplemented' );
-  }
-
-  /**
-   * Updates the radius/height of a cone body
-   * @public
-   *
-   * @param {Engine.Body}
-   * @param {number} radius
-   * @param {number} height
-   * @param {boolean} isVertexUp
-   */
-  updateCone( body, radius, height, isVertexUp ) {
-    throw new Error( 'unimplemented' );
-  }
-
-  /**
    * Creates a (dynamic) vertical cylinder body, with the origin at the center of mass
    * @public
    *
@@ -334,9 +308,10 @@ class Engine {
    * @public
    *
    * @param {Array.<Vector2>} vertices
+   * @param {boolean} workaround
    * @returns {Engine.Body}
    */
-  createFromVertices( vertices ) {
+  createFromVertices( vertices, workaround ) {
     throw new Error( 'unimplemented' );
   }
 
@@ -346,6 +321,7 @@ class Engine {
    *
    * @param {Engine.Body}
    * @param {Array.<Vector2>} vertices
+   * @param {boolean} workaround
    */
   updateFromVertices( body, vertices ) {
     throw new Error( 'unimplemented' );

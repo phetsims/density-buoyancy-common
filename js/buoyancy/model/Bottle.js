@@ -174,7 +174,7 @@ class Bottle extends Mass {
     const vertices = Bottle.getFlatIntersectionVertices();
 
     config = merge( {
-      body: engine.createFromVertices( vertices ),
+      body: engine.createFromVertices( vertices, true ),
       shape: Shape.polygon( vertices ),
       volume: BOTTLE_VOLUME,
       canRotate: false,

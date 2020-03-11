@@ -9,6 +9,7 @@
 import Property from '../../../../axon/js/Property.js';
 import Bounds3 from '../../../../dot/js/Bounds3.js';
 import Utils from '../../../../dot/js/Utils.js';
+import Vector2 from '../../../../dot/js/Vector2.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
 import Shape from '../../../../kite/js/Shape.js';
 import merge from '../../../../phet-core/js/merge.js';
@@ -23,7 +24,7 @@ class Ellipsoid extends Mass {
    */
   constructor( engine, size, config ) {
     config = merge( {
-      body: engine.createEllipsoid( size.width, size.height ),
+      body: engine.createFromVertices( Ellipsoid.getEllipsoidVertices( size.width, size.height ), false ),
       shape: Ellipsoid.getEllipsoidShape( size.width, size.height ),
       volume: Ellipsoid.getVolume( size ),
       canRotate: false
@@ -52,7 +53,7 @@ class Ellipsoid extends Mass {
    * @param {Bounds3} size
    */
   updateSize( size ) {
-    this.engine.updateEllipsoid( this.body, size.width, size.height );
+    this.engine.updateFromVertices( this.body, Ellipsoid.getEllipsoidVertices( size.width, size.height ), false );
     this.sizeProperty.value = size;
     this.shapeProperty.value = Ellipsoid.getEllipsoidShape( size.width, size.height );
     this.volumeProperty.value = Ellipsoid.getVolume( size );
@@ -208,6 +209,26 @@ class Ellipsoid extends Mass {
    */
   static getEllipsoidShape( width, height ) {
     return Shape.ellipse( 0, 0, width / 2, height / 2, 0 );
+  }
+
+  /**
+   * Returns vertices for an ellipsoid
+   * @public
+   *
+   * @param {number} width
+   * @param {number} height
+   * @returns {Array.<Vector2>}
+   */
+  static getEllipsoidVertices( width, height ) {
+    const segments = 80;
+    const vertices = [];
+    for ( let i = 0; i < segments; i++ ) {
+      const theta = i / segments * 2 * Math.PI;
+
+      vertices.push( new Vector2( Math.cos( theta ) * width / 2, Math.sin( theta ) * height / 2 ) );
+    }
+
+    return vertices;
   }
 
   /**

@@ -23,7 +23,7 @@ class HorizontalCylinder extends Mass {
    */
   constructor( engine, radius, length, config ) {
     config = merge( {
-      body: engine.createHorizontalCylinder( radius, length ),
+      body: engine.createBox( length, radius * 2 ),
       shape: HorizontalCylinder.getHorizontalCylinderShape( radius, length ),
       volume: HorizontalCylinder.getVolume( radius, length ),
       canRotate: false
@@ -58,7 +58,7 @@ class HorizontalCylinder extends Mass {
    * @param {number} length
    */
   updateSize( radius, length ) {
-    this.engine.updateHorizontalCylinder( this.body, radius, length );
+    this.engine.updateBox( this.body, length, radius * 2 );
 
     this.radiusProperty.value = radius;
     this.lengthProperty.value = length;

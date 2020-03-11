@@ -24,9 +24,7 @@ class P2Engine extends Engine {
     super();
 
     // @private {p2.World}
-    this.world = new p2.World( {
-      // TODO: can we remove this line?
-    } );
+    this.world = new p2.World( {} );
 
     this.world.applyGravity = false;
 
@@ -287,7 +285,7 @@ class P2Engine extends Engine {
       mass: 0
     } );
 
-    body.fromPolygon( vertices.map( v => p2.vec2.fromValues( v.x * SCALE, v.y * SCALE ) ) );
+    body.fromPolygon( vertices.map( P2Engine.vectorToP2 ) );
 
     // Workaround, since using Convex wasn't working
     body.shapes[ 0 ].material = groundMaterial;
@@ -330,136 +328,6 @@ class P2Engine extends Engine {
     const box = new p2.Box( {
       width: width * SCALE,
       height: height * SCALE,
-      material: dynamicMaterial
-    } );
-
-    body.addShape( box );
-  }
-
-  /**
-   * Creates a (dynamic) ellipsoid body, with the origin at the center of the ellipsoid (bounded by the width/height)
-   * @public
-   * @override
-   *
-   * @param {number} width
-   * @param {number} height
-   * @returns {Engine.Body}
-   */
-  createEllipsoid( width, height ) {
-    const body = new p2.Body( {
-      type: p2.Body.DYNAMIC,
-      fixedRotation: true
-    } );
-
-    this.updateEllipsoid( body, width, height );
-
-    return body;
-  }
-
-  /**
-   * Updates the width/height of a ellipsoid body.
-   * @public
-   * @override
-   *
-   * @param {Engine.Body}
-   * @param {number} width
-   * @param {number} height
-   */
-  updateEllipsoid( body, width, height ) {
-    P2Engine.removeShapes( body );
-
-    const segments = 80;
-    const vertices = [];
-    for ( let i = 0; i < segments; i++ ) {
-      const theta = i / segments * 2 * Math.PI;
-
-      vertices.push( P2Engine.vectorToP2( new Vector2( Math.cos( theta ) * width / 2, Math.sin( theta ) * height / 2 ) ) );
-    }
-
-    const ellipsoid = new p2.Convex( {
-      vertices: vertices
-    } );
-    ellipsoid.material = dynamicMaterial;
-
-    body.addShape( ellipsoid );
-  }
-
-  /**
-   * Creates a (dynamic) vertical cylinder body, with the origin at the center of mass
-   * @public
-   * @override
-   *
-   * @param {number} radius
-   * @param {number} height
-   * @returns {Engine.Body}
-   */
-  createVerticalCylinder( radius, height ) {
-    const body = new p2.Body( {
-      type: p2.Body.DYNAMIC,
-      fixedRotation: true
-    } );
-
-    this.updateVerticalCylinder( body, radius, height );
-
-    return body;
-  }
-
-  /**
-   * Updates the radius/height of a vertical cylinder body
-   * @public
-   * @override
-   *
-   * @param {Engine.Body}
-   * @param {number} radius
-   * @param {number} height
-   */
-  updateVerticalCylinder( body, radius, height ) {
-    P2Engine.removeShapes( body );
-
-    const box = new p2.Box( {
-      width: 2 * radius * SCALE,
-      height: height * SCALE,
-      material: dynamicMaterial
-    } );
-
-    body.addShape( box );
-  }
-
-  /**
-   * Creates a (dynamic) horizontal cylinder body, with the origin at the center of mass
-   * @public
-   * @override
-   *
-   * @param {number} radius
-   * @param {number} length
-   * @returns {Engine.Body}
-   */
-  createHorizontalCylinder( radius, length ) {
-    const body = new p2.Body( {
-      type: p2.Body.DYNAMIC,
-      fixedRotation: true
-    } );
-
-    this.updateHorizontalCylinder( body, radius, length );
-
-    return body;
-  }
-
-  /**
-   * Updates the radius/length of a horizontal cylinder body
-   * @public
-   * @override
-   *
-   * @param {Engine.Body}
-   * @param {number} radius
-   * @param {number} length
-   */
-  updateHorizontalCylinder( body, radius, length ) {
-    P2Engine.removeShapes( body );
-
-    const box = new p2.Box( {
-      width: length * SCALE,
-      height: 2 * radius * SCALE,
       material: dynamicMaterial
     } );
 
@@ -601,14 +469,34 @@ class P2Engine extends Engine {
     delete this.pointerConstraintMap[ body.id ];
   }
 
+  /**
+   * Converts a Vector2 to a p2.vec2, for use with p2.js
+   * @private
+   *
+   * @param {Vector2} vector
+   * @returns {p2.vec2}
+   */
   static vectorToP2( vector ) {
     return p2.vec2.fromValues( vector.x * SCALE, vector.y * SCALE );
   }
 
+  /**
+   * Converts a p2.vec2 to a Vector2
+   * @private
+   *
+   * @param {p2.vec2} vector
+   * @returns {Vector2}
+   */
   static p2ToVector( vector ) {
     return new Vector2( vector[ 0 ] / SCALE, vector[ 1 ] / SCALE );
   }
 
+  /**
+   * Helper method that removes all shapes from a given body.
+   * @private
+   *
+   * @param {Engine.Body} body
+   */
   static removeShapes( body ) {
     while ( body.shapes.length ) {
       body.removeShape( body.shapes[ body.shapes.length - 1 ] );

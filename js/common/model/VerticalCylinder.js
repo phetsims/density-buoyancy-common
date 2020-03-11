@@ -24,7 +24,7 @@ class VerticalCylinder extends Mass {
    */
   constructor( engine, radius, height, config ) {
     config = merge( {
-      body: engine.createVerticalCylinder( radius, height ),
+      body: engine.createBox( 2 * radius, height ),
       shape: VerticalCylinder.getVerticalCylinderShape( radius, height ),
       volume: VerticalCylinder.getVolume( radius, height ),
       canRotate: false
@@ -61,7 +61,7 @@ class VerticalCylinder extends Mass {
    * @param {number} height
    */
   updateSize( radius, height ) {
-    this.engine.updateVerticalCylinder( this.body, radius, height );
+    this.engine.updateBox( this.body, 2 * radius, height );
 
     this.radiusProperty.value = radius;
     this.heightProperty.value = height;

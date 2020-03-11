@@ -35,7 +35,7 @@ class SecondaryMassScreenView extends DensityBuoyancyScreenView {
       this.model.poolBounds.maxZ
     );
     this.secondMassVisibleControl.bottom = this.modelToViewPoint( point3 ).y;
-    this.secondMassVisibleControl.centerX = this.rightBox.centerX;
+    this.secondMassVisibleControl.left = this.rightBox.left;
   }
 
   /**

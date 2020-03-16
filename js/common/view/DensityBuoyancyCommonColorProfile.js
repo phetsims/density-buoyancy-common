@@ -14,6 +14,8 @@ import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 // Initial colors for each profile, by string key. Only profile currently is default (still helpful for making color
 // tweaks with the top-level files)
 const DensityBuoyancyCommonColorProfile = new ColorProfile( [ 'default' ], {
+  panelBackground: { default: new Color( 230, 230, 230 ) },
+
   skyBottom: { default: new Color( 255, 255, 255 ) },
   skyTop: { default: new Color( 19, 165, 224 ) },
   ground: { default: new Color( 161, 101, 47 ) },

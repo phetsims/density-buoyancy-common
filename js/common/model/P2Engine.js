@@ -29,7 +29,6 @@ class P2Engine extends Engine {
     this.world.applyGravity = false;
 
     this.world.solver.iterations = 40;
-    this.world.solver.tolerance = 0.000001;
     this.world.solver.frictionIterations = 10;
     this.world.solver.tolerance = 1e-10;
 
@@ -40,9 +39,14 @@ class P2Engine extends Engine {
     this.nullBodyMap = {};
 
     this.world.addContactMaterial( new p2.ContactMaterial( groundMaterial, dynamicMaterial, {
+      // no bounce is 0
       restitution: 0,
+
+      // TODO: try Number.MAX_VALUE? Saw comment "We need infinite stiffness to get exact restitution" online
       stiffness: Number.POSITIVE_INFINITY,
-      relaxation: 0.5
+
+      // default is 4?
+      relaxation: 0.4
     } ) );
     this.world.addContactMaterial( new p2.ContactMaterial( dynamicMaterial, dynamicMaterial, {
       restitution: 0,

@@ -5,9 +5,9 @@
  */
 
 import Vector3 from '../../../../dot/js/Vector3.js';
-import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import AlignBox from '../../../../scenery/js/nodes/AlignBox.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
+import VBox from '../../../../scenery/js/nodes/VBox.js';
 import Panel from '../../../../sun/js/Panel.js';
 import VerticalAquaRadioButtonGroup from '../../../../sun/js/VerticalAquaRadioButtonGroup.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
@@ -45,13 +45,22 @@ class DensityCompareScreenView extends DensityBuoyancyScreenView {
 
     const modeControl = new VerticalAquaRadioButtonGroup( model.modeProperty, DensityCompareModel.Mode.VALUES.map( mode => {
       return {
-        node: new Text( modeStringMap[ mode.name ], { font: new PhetFont( 12 ) } ),
+        node: new Text( modeStringMap[ mode.name ], { font: DensityBuoyancyCommonConstants.RADIO_BUTTON_FONT } ),
         value: mode
       };
     } ), {
       spacing: 8
     } );
-    const modePanel = new Panel( modeControl, DensityBuoyancyCommonConstants.PANEL_OPTIONS );
+    const modePanel = new Panel( new VBox( {
+      children: [
+        new Text( densityBuoyancyCommonStrings.blocks, {
+          font: DensityBuoyancyCommonConstants.TITLE_FONT
+        } ),
+        modeControl
+      ],
+      spacing: 10,
+      align: 'left'
+    } ), DensityBuoyancyCommonConstants.PANEL_OPTIONS );
 
     this.addChild( new AlignBox( modePanel, {
       alignBounds: this.layoutBounds,

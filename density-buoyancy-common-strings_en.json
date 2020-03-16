@@ -192,7 +192,7 @@
     "value": "Density"
   },
   "densityReadout": {
-    "value": "Density Readout (kg/L)"
+    "value": "Density (kg/L)"
   },
   "primaryMassLabel": {
     "value": "A"
@@ -206,6 +206,9 @@
   "blockB": {
     "value": "Block B:"
   },
+  "blocks": {
+    "value": "Blocks"
+  },
   "mode": {
     "sameMass": {
       "value": "Same Mass"
@@ -217,20 +220,20 @@
       "value": "Same Density"
     },
     "set1": {
-      "value": "Blocks Set 1"
+      "value": "Set 1"
     },
     "set2": {
-      "value": "Blocks Set 2"
+      "value": "Set 2"
     },
     "set3": {
-      "value": "Blocks Set 3"
+      "value": "Set 3"
     },
     "random": {
       "value": "Random"
     }
   },
-  "densitiesOfVariousMaterials": {
-    "value": "Densities of Various Materials"
+  "densityTable": {
+    "value": "Density Table"
   },
   "material.name": {
     "value": "Material"

@@ -50,7 +50,7 @@ class BuoyancyIntroScreenView extends DensityBuoyancyScreenView {
 
     const modeControl = new VerticalAquaRadioButtonGroup( model.modeProperty, BuoyancyIntroModel.Mode.VALUES.map( mode => {
       return {
-        node: new Text( modeStringMap[ mode.name ], { font: new PhetFont( 12 ) } ),
+        node: new Text( modeStringMap[ mode.name ], { font: DensityBuoyancyCommonConstants.RADIO_BUTTON_FONT } ),
         value: mode
       };
     } ) );

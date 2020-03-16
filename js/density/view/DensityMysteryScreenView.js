@@ -7,7 +7,6 @@
 import Vector3 from '../../../../dot/js/Vector3.js';
 import merge from '../../../../phet-core/js/merge.js';
 import RefreshButton from '../../../../scenery-phet/js/buttons/RefreshButton.js';
-import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import AlignBox from '../../../../scenery/js/nodes/AlignBox.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
 import VBox from '../../../../scenery/js/nodes/VBox.js';
@@ -21,7 +20,7 @@ import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityMysteryModel from '../model/DensityMysteryModel.js';
 import DensityTableNode from './DensityTableNode.js';
 
-const densitiesOfVariousMaterialsString = densityBuoyancyCommonStrings.densitiesOfVariousMaterials;
+const densityTableString = densityBuoyancyCommonStrings.densityTable;
 
 // constants
 const modeStringMap = {
@@ -48,7 +47,7 @@ class DensityMysteryScreenView extends DensityBuoyancyScreenView {
     }
 
     const densityBox = new AccordionBox( new DensityTableNode(), merge( {
-      titleNode: new Text( densitiesOfVariousMaterialsString, { font: DensityBuoyancyCommonConstants.TITLE_FONT } ),
+      titleNode: new Text( densityTableString, { font: DensityBuoyancyCommonConstants.TITLE_FONT } ),
       expandedProperty: model.densityTableExpandedProperty
     }, DensityBuoyancyCommonConstants.ACCORDION_BOX_OPTIONS ) );
 
@@ -61,7 +60,7 @@ class DensityMysteryScreenView extends DensityBuoyancyScreenView {
 
     const modeControl = new VerticalAquaRadioButtonGroup( model.modeProperty, DensityMysteryModel.Mode.VALUES.map( mode => {
       return {
-        node: new Text( modeStringMap[ mode.name ], { font: new PhetFont( 12 ) } ),
+        node: new Text( modeStringMap[ mode.name ], { font: DensityBuoyancyCommonConstants.RADIO_BUTTON_FONT } ),
         value: mode
       };
     } ), {
@@ -75,9 +74,23 @@ class DensityMysteryScreenView extends DensityBuoyancyScreenView {
       spacing: 10
     } );
     model.modeProperty.link( mode => {
-      modeContent.children = mode === DensityMysteryModel.Mode.RANDOM ? [ modeControl, modeRefreshButton ] : [ modeControl ];
+      modeContent.children = mode === DensityMysteryModel.Mode.RANDOM ? [
+        modeControl,
+        modeRefreshButton
+      ] : [
+        modeControl
+      ];
     } );
-    const modePanel = new Panel( modeContent, DensityBuoyancyCommonConstants.PANEL_OPTIONS );
+    const modePanel = new Panel( new VBox( {
+      children: [
+        new Text( densityBuoyancyCommonStrings.blocks, {
+          font: DensityBuoyancyCommonConstants.TITLE_FONT
+        } ),
+        modeContent
+      ],
+      spacing: 10,
+      align: 'left'
+    } ), DensityBuoyancyCommonConstants.PANEL_OPTIONS );
 
     this.addChild( new AlignBox( modePanel, {
       alignBounds: this.layoutBounds,

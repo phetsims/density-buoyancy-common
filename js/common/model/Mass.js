@@ -23,7 +23,27 @@ import InterpolatedProperty from './InterpolatedProperty.js';
 const MassTag = Enumeration.byKeys( [
   'PRIMARY',
   'SECONDARY',
-  'NONE'
+  'NONE',
+  'ONE_A',
+  'ONE_B',
+  'ONE_C',
+  'ONE_D',
+  'ONE_E',
+  'TWO_A',
+  'TWO_B',
+  'TWO_C',
+  'TWO_D',
+  'TWO_E',
+  'THREE_A',
+  'THREE_B',
+  'THREE_C',
+  'THREE_D',
+  'THREE_E',
+  'A',
+  'B',
+  'C',
+  'D',
+  'E'
 ] );
 
 class Mass {

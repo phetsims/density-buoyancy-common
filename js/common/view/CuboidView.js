@@ -6,15 +6,39 @@
 
 import Vector3 from '../../../../dot/js/Vector3.js';
 import TextureQuad from '../../../../mobius/js/TextureQuad.js';
+import densityBuoyancyCommonStrings from '../../density-buoyancy-common-strings.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import Mass from '../model/Mass.js';
 import MassLabelNode from './MassLabelNode.js';
 import MassView from './MassView.js';
 
-// constats
+// constants
 const numElements = 18 * 3;
 const TAG_SIZE = 0.03;
 const TAG_OFFSET = 0.005;
+const TAG_SCALE = 0.0005;
+const blockStringMap = {
+  [ Mass.MassTag.ONE_A.name ]: densityBuoyancyCommonStrings.massLabel[ '1a' ],
+  [ Mass.MassTag.ONE_B.name ]: densityBuoyancyCommonStrings.massLabel[ '1b' ],
+  [ Mass.MassTag.ONE_C.name ]: densityBuoyancyCommonStrings.massLabel[ '1c' ],
+  [ Mass.MassTag.ONE_D.name ]: densityBuoyancyCommonStrings.massLabel[ '1d' ],
+  [ Mass.MassTag.ONE_E.name ]: densityBuoyancyCommonStrings.massLabel[ '1e' ],
+  [ Mass.MassTag.TWO_A.name ]: densityBuoyancyCommonStrings.massLabel[ '2a' ],
+  [ Mass.MassTag.TWO_B.name ]: densityBuoyancyCommonStrings.massLabel[ '2b' ],
+  [ Mass.MassTag.TWO_C.name ]: densityBuoyancyCommonStrings.massLabel[ '2c' ],
+  [ Mass.MassTag.TWO_D.name ]: densityBuoyancyCommonStrings.massLabel[ '2d' ],
+  [ Mass.MassTag.TWO_E.name ]: densityBuoyancyCommonStrings.massLabel[ '2e' ],
+  [ Mass.MassTag.THREE_A.name ]: densityBuoyancyCommonStrings.massLabel[ '3a' ],
+  [ Mass.MassTag.THREE_B.name ]: densityBuoyancyCommonStrings.massLabel[ '3b' ],
+  [ Mass.MassTag.THREE_C.name ]: densityBuoyancyCommonStrings.massLabel[ '3c' ],
+  [ Mass.MassTag.THREE_D.name ]: densityBuoyancyCommonStrings.massLabel[ '3d' ],
+  [ Mass.MassTag.THREE_E.name ]: densityBuoyancyCommonStrings.massLabel[ '3e' ],
+  [ Mass.MassTag.A.name ]: densityBuoyancyCommonStrings.massLabel.a,
+  [ Mass.MassTag.B.name ]: densityBuoyancyCommonStrings.massLabel.b,
+  [ Mass.MassTag.C.name ]: densityBuoyancyCommonStrings.massLabel.c,
+  [ Mass.MassTag.D.name ]: densityBuoyancyCommonStrings.massLabel.d,
+  [ Mass.MassTag.E.name ]: densityBuoyancyCommonStrings.massLabel.e
+};
 
 class CuboidView extends MassView {
   /**
@@ -40,11 +64,21 @@ class CuboidView extends MassView {
     this.cuboid = cuboid;
 
     let tagMesh = null;
+    let tagHeight = null;
     if ( cuboid.tag === Mass.MassTag.PRIMARY ) {
       tagMesh = new TextureQuad( MassLabelNode.getPrimaryTexture(), TAG_SIZE, TAG_SIZE );
+      tagHeight = TAG_SIZE;
     }
-    if ( cuboid.tag === Mass.MassTag.SECONDARY ) {
+    else if ( cuboid.tag === Mass.MassTag.SECONDARY ) {
       tagMesh = new TextureQuad( MassLabelNode.getSecondaryTexture(), TAG_SIZE, TAG_SIZE );
+      tagHeight = TAG_SIZE;
+    }
+    else if ( cuboid.tag !== Mass.MassTag.NONE ) {
+      const string = blockStringMap[ cuboid.tag.name ];
+      const texture = MassLabelNode.getBasicLabelTexture( string );
+
+      tagMesh = new TextureQuad( texture, TAG_SCALE * texture._width, TAG_SCALE * texture._height );
+      tagHeight = TAG_SCALE * texture._height;
     }
 
     if ( tagMesh ) {
@@ -53,7 +87,7 @@ class CuboidView extends MassView {
 
     const positionTag = () => {
       const size = cuboid.sizeProperty.value;
-      tagMesh && tagMesh.position.set( size.minX + TAG_OFFSET, size.maxY - TAG_SIZE - TAG_OFFSET, size.maxZ + 0.0001 );
+      tagMesh && tagMesh.position.set( size.minX + TAG_OFFSET, size.maxY - tagHeight - TAG_OFFSET, size.maxZ + 0.0001 );
     };
     positionTag();
 

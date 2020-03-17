@@ -8,6 +8,7 @@ import Utils from '../../../../dot/js/Utils.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import NodeTexture from '../../../../mobius/js/NodeTexture.js';
 import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
+import SceneryUtils from '../../../../scenery/js/util/Utils.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import Node from '../../../../scenery/js/nodes/Node.js';
 import Rectangle from '../../../../scenery/js/nodes/Rectangle.js';
@@ -19,8 +20,8 @@ import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js
 import DensityBuoyancyCommonColorProfile from './DensityBuoyancyCommonColorProfile.js';
 
 const kilogramsPatternString = densityBuoyancyCommonStrings.kilogramsPattern;
-const primaryMassLabelString = densityBuoyancyCommonStrings.primaryMassLabel;
-const secondaryMassLabelString = densityBuoyancyCommonStrings.secondaryMassLabel;
+const primaryMassLabelString = densityBuoyancyCommonStrings.massLabel.primary;
+const secondaryMassLabelString = densityBuoyancyCommonStrings.massLabel.secondary;
 
 // constants
 const MASS_LABEL_SIZE = 32;
@@ -109,7 +110,9 @@ class MassLabelNode extends Node {
       children: [ labelNode ],
       scale: 2
     } );
-    return new NodeTexture( scaledNode, Math.ceil( scaledNode.width ), Math.ceil( scaledNode.height ) );
+    const width = SceneryUtils.toPowerOf2( Math.ceil( scaledNode.width ) );
+    const height = SceneryUtils.toPowerOf2( Math.ceil( scaledNode.height ) );
+    return new NodeTexture( scaledNode, width, height );
   }
 
   /**
@@ -130,6 +133,27 @@ class MassLabelNode extends Node {
    */
   static getSecondaryTexture() {
     return MassLabelNode.getLabelTexture( SECONDARY_LABEL );
+  }
+
+  /**
+   * Returns a basic texture for a given (short) string label.
+   * @public
+   *
+   * @param {string} string
+   * @returns {NodeTexture}
+   */
+  static getBasicLabelTexture( string ) {
+    const label = new Text( string, {
+      font: new PhetFont( { size: 24, weight: 'bold' } )
+    } );
+    const rectangle = new Rectangle( 0, 0, label.width + 5, label.height + 3, {
+      cornerRadius: DensityBuoyancyCommonConstants.CORNER_RADIUS,
+      fill: 'white'
+    } );
+    label.center = rectangle.center;
+    rectangle.addChild( label );
+
+    return MassLabelNode.getLabelTexture( rectangle );
   }
 }
 

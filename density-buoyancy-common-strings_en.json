@@ -194,11 +194,73 @@
   "densityReadout": {
     "value": "Density (kg/L)"
   },
-  "primaryMassLabel": {
-    "value": "A"
-  },
-  "secondaryMassLabel": {
-    "value": "B"
+  "massLabel": {
+    "primary": {
+      "value": "A"
+    },
+    "secondary": {
+      "value": "B"
+    },
+    "1a": {
+      "value": "1A"
+    },
+    "1b": {
+      "value": "1B"
+    },
+    "1c": {
+      "value": "1C"
+    },
+    "1d": {
+      "value": "1D"
+    },
+    "1e": {
+      "value": "1E"
+    },
+    "2a": {
+      "value": "2A"
+    },
+    "2b": {
+      "value": "2B"
+    },
+    "2c": {
+      "value": "2C"
+    },
+    "2d": {
+      "value": "2D"
+    },
+    "2e": {
+      "value": "2E"
+    },
+    "3a": {
+      "value": "3A"
+    },
+    "3b": {
+      "value": "3B"
+    },
+    "3c": {
+      "value": "3C"
+    },
+    "3d": {
+      "value": "3D"
+    },
+    "3e": {
+      "value": "3E"
+    },
+    "a": {
+      "value": "A"
+    },
+    "b": {
+      "value": "B"
+    },
+    "c": {
+      "value": "C"
+    },
+    "d": {
+      "value": "D"
+    },
+    "e": {
+      "value": "E"
+    }
   },
   "blockA": {
     "value": "Block A:"

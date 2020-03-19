@@ -83,7 +83,9 @@ class ShapeSizeControlNode extends VBox {
       },
       numberDisplayOptions: {
         decimalPlaces: 2,
-        font: DensityBuoyancyCommonConstants.READOUT_FONT
+        textOptions: {
+          font: DensityBuoyancyCommonConstants.READOUT_FONT
+        }
       },
       layoutFunction: NumberControl.createLayoutFunction4( {
         hasReadoutProperty: new BooleanProperty( false )
@@ -122,7 +124,9 @@ class ShapeSizeControlNode extends VBox {
               liters: '{{value}}'
             } ),
             decimalPlaces: 2,
-            font: DensityBuoyancyCommonConstants.READOUT_FONT
+            textOptions: {
+              font: DensityBuoyancyCommonConstants.READOUT_FONT
+            }
           } ), {
             alignBounds: volumeLabel.bounds.withMaxX( heightNumberControl.width ),
             xAlign: 'right',

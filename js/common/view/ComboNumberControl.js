@@ -68,7 +68,9 @@ class ComboNumberControl extends VBox {
           maxWidth: 80
         },
         numberDisplayOptions: {
-          font: DensityBuoyancyCommonConstants.READOUT_FONT,
+          textOptions: {
+            font: DensityBuoyancyCommonConstants.READOUT_FONT
+          },
           valuePattern: StringUtils.fillIn( config.valuePattern, { value: SunConstants.VALUE_NUMBERED_PLACEHOLDER } ),
           maxWidth: 100,
           decimalPlaces: 2,

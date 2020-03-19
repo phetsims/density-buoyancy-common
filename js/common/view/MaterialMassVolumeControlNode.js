@@ -185,7 +185,9 @@ class MaterialMassVolumeControlNode extends VBox {
         valuePattern: StringUtils.fillIn( kilogramsPatternString, {
           kilograms: '{{value}}'
         } ),
-        font: new PhetFont( 14 )
+        textOptions: {
+          font: new PhetFont( 14 )
+        }
       },
       titleNodeOptions: {
         font: new PhetFont( { size: 14, weight: 'bold' } ),
@@ -204,7 +206,9 @@ class MaterialMassVolumeControlNode extends VBox {
         valuePattern: StringUtils.fillIn( litersPatternString, {
           liters: '{{value}}'
         } ),
-        font: new PhetFont( 14 )
+        textOptions: {
+          font: new PhetFont( 14 )
+        }
       },
       titleNodeOptions: {
         font: new PhetFont( { size: 14, weight: 'bold' } ),

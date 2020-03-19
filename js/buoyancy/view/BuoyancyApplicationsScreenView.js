@@ -118,7 +118,9 @@ class BuoyancyApplicationsScreenView extends DensityBuoyancyScreenView {
                 liters: '{{value}}'
               } ),
               decimalPlaces: 2,
-              font: new PhetFont( 12 )
+              textOptions: {
+                font: new PhetFont( 12 )
+              }
             } ), {
               alignBounds: airVolumeLabel.bounds.withMaxX( bottleControl.width ),
               xAlign: 'right',
@@ -161,7 +163,9 @@ class BuoyancyApplicationsScreenView extends DensityBuoyancyScreenView {
             valuePattern: StringUtils.fillIn( litersPatternString, {
               liters: '{{value}}'
             } ),
-            font: DensityBuoyancyCommonConstants.READOUT_FONT
+            textOptions: {
+              font: DensityBuoyancyCommonConstants.READOUT_FONT
+            }
           }
         }, MaterialMassVolumeControlNode.getNumberControlOptions() ) )
       ]

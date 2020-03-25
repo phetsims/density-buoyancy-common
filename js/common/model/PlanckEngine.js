@@ -1,58 +1,48 @@
-// Copyright 2019-2020, University of Colorado Boulder
+// Copyright 2020, University of Colorado Boulder
 
 /**
- * Adapter for the p2.js physics engine
+ * Adapter for the planck.js physics engine
  *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
+import Emitter from '../../../../axon/js/Emitter.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import merge from '../../../../phet-core/js/merge.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import Engine from './Engine.js';
 
 // constants
+const SCALE = 1;
 const FIXED_TIME_STEP = 1 / 60;
-const MAX_SUB_STEPS = 10;
-const SCALE = 5;
 
-const groundMaterial = new p2.Material();
-const dynamicMaterial = new p2.Material();
+let globalBodyId = 0;
 
-class P2Engine extends Engine {
+class PlanckEngine extends Engine {
   constructor() {
     super();
 
-    // @private {p2.World}
-    this.world = new p2.World( {} );
+    // @private {planck.World}
+    this.world = planck.World( {
+      gravity: PlanckEngine.vectorToPlanck( Vector2.ZERO )
 
-    this.world.applyGravity = false;
+      // allowSleep: true,
+      // warmStarting: true,
+      // continuousPhysics: true,
+      // subStepping: false,
+      // blockSolve: true,
+      // velocityIterations: 8,
+      // positionIterations: 3
+    } );
 
-    this.world.solver.iterations = 40;
-    this.world.solver.frictionIterations = 10;
-    this.world.solver.tolerance = 1e-10;
+    // @private {Emitter}
+    this.stepEmitter = new Emitter();
 
-    // @private {Object} - Maps {number} body.id => {p2.RevoluteConstraint}
-    this.pointerConstraintMap = {};
-
-    // @private {Object} - Maps {number} body.id => {p2.Body}
+    // @private {Object} - Maps {number} body.id => {planck.Body}
     this.nullBodyMap = {};
 
-    this.world.addContactMaterial( new p2.ContactMaterial( groundMaterial, dynamicMaterial, {
-      // no bounce is 0
-      restitution: 0,
-
-      // TODO: try Number.MAX_VALUE? Saw comment "We need infinite stiffness to get exact restitution" online
-      stiffness: Number.POSITIVE_INFINITY,
-
-      // default is 4?
-      relaxation: 0.4
-    } ) );
-    this.world.addContactMaterial( new p2.ContactMaterial( dynamicMaterial, dynamicMaterial, {
-      restitution: 0,
-      stiffness: Number.POSITIVE_INFINITY,
-      relaxation: 0.5
-    } ) );
+    // @private {Object} - Maps {number} body.id => {planck.MouseJoint}
+    this.mouseJointMap = {};
   }
 
   /**
@@ -63,8 +53,12 @@ class P2Engine extends Engine {
    * @param {number} dt
    */
   step( dt ) {
-    this.world.step( FIXED_TIME_STEP, dt, MAX_SUB_STEPS );
-    this.interpolationRatio = ( this.world.accumulator % FIXED_TIME_STEP ) / FIXED_TIME_STEP;
+    // TODO: interpolate this shit
+    this.world.step( FIXED_TIME_STEP, 8, 3 );
+    this.stepEmitter.emit();
+
+    // TODO:
+    this.interpolationRatio = 0;
   }
 
   /**
@@ -75,7 +69,7 @@ class P2Engine extends Engine {
    * @param {Engine.Body} body
    */
   addBody( body ) {
-    this.world.addBody( body );
+    body.setActive( true );
   }
 
   /**
@@ -86,7 +80,9 @@ class P2Engine extends Engine {
    * @param {Engine.Body} body
    */
   removeBody( body ) {
-    this.world.removeBody( body );
+    body.setActive( false );
+
+    // TODO: destroy!! add a disposeBody
   }
 
   /**
@@ -104,13 +100,11 @@ class P2Engine extends Engine {
       canRotate: false
     }, options );
 
-    body.mass = mass;
-
-    if ( !options.canRotate ) {
-      body.fixedRotation = true;
-    }
-
-    body.updateMassProperties();
+    body.setMassData( {
+      mass: mass,
+      center: PlanckEngine.vectorToPlanck( Vector2.ZERO ),
+      I: options.canRotate ? 1 : Number.POSITIVE_INFINITY
+    } );
   }
 
   /**
@@ -122,7 +116,9 @@ class P2Engine extends Engine {
    * @param {Matrix3} matrix
    */
   bodyGetMatrixTransform( body, matrix ) {
-    return matrix.setToTranslationRotation( body.interpolatedPosition[ 0 ] / SCALE, body.interpolatedPosition[ 1 ] / SCALE, body.interpolatedAngle );
+    // TODO: do we need to handle interpolation ourself?
+    const position = body.getPosition();
+    return matrix.setToTranslationRotation( position.x / SCALE, position.y / SCALE, body.getAngle() );
   }
 
   /**
@@ -134,7 +130,8 @@ class P2Engine extends Engine {
    * @param {Matrix3} matrix
    */
   bodyGetStepMatrixTransform( body, matrix ) {
-    return matrix.setToTranslationRotation( body.position[ 0 ] / SCALE, body.position[ 1 ] / SCALE, body.angle );
+    const position = body.getPosition();
+    return matrix.setToTranslationRotation( position.x / SCALE, position.y / SCALE, body.getAngle() );
   }
 
   /**
@@ -146,8 +143,7 @@ class P2Engine extends Engine {
    * @param {Vector2} position
    */
   bodySetPosition( body, position ) {
-    body.position[ 0 ] = position.x * SCALE;
-    body.position[ 1 ] = position.y * SCALE;
+    body.setPosition( PlanckEngine.vectorToPlanck( position ) );
   }
 
   /**
@@ -159,7 +155,7 @@ class P2Engine extends Engine {
    * @param {number} rotation
    */
   bodySetRotation( body, rotation ) {
-    body.angle = rotation;
+    body.setAngle( rotation );
   }
 
   /**
@@ -171,7 +167,7 @@ class P2Engine extends Engine {
    * @returns {number}
    */
   bodyGetAngularVelocity( body ) {
-    return body.angularVelocity;
+    return body.getAngularVelocity();
   }
 
   /**
@@ -183,7 +179,7 @@ class P2Engine extends Engine {
    * @param {number} angularVelocity
    */
   bodySetAngularVelocity( body, angularVelocity ) {
-    body.angularVelocity = angularVelocity;
+    body.setAngularVelocity( angularVelocity );
   }
 
   /**
@@ -195,7 +191,7 @@ class P2Engine extends Engine {
    * @returns {Vector2}
    */
   bodyGetVelocity( body ) {
-    return P2Engine.p2ToVector( body.velocity );
+    return PlanckEngine.planckToVector( body.getLinearVelocity() );
   }
 
   /**
@@ -207,8 +203,7 @@ class P2Engine extends Engine {
    * @param {Vector2} velocity
    */
   bodySetVelocity( body, velocity ) {
-    body.velocity[ 0 ] = velocity.x * SCALE;
-    body.velocity[ 1 ] = velocity.y * SCALE;
+    body.setLinearVelocity( PlanckEngine.vectorToPlanck( velocity ) );
   }
 
   /**
@@ -220,8 +215,7 @@ class P2Engine extends Engine {
    * @param {Vector2} velocity
    */
   bodyApplyForce( body, force ) {
-    body.force[ 0 ] += force.x * SCALE;
-    body.force[ 1 ] += force.y * SCALE;
+    body.applyForceToCenter( PlanckEngine.vectorToPlanck( force ) );
   }
 
   /**
@@ -233,8 +227,7 @@ class P2Engine extends Engine {
    * @returns {Vector2}
    */
   bodyGetContactForces( body ) {
-    // TODO: yikes! we are including the timestep bit here?
-    return P2Engine.p2ToVector( body.vlambda ).timesScalar( body.mass / FIXED_TIME_STEP );
+    return Vector2.ZERO; // TODO
   }
 
   /**
@@ -247,32 +240,11 @@ class P2Engine extends Engine {
    * @returns {Vector2}
    */
   bodyGetContactForceBetween( bodyA, bodyB ) {
-    const result = Vector2.ZERO.copy();
-    const equations = this.world.narrowphase.contactEquations;
-
-    for ( let i = 0; i < equations.length; i++ ) {
-      const equation = equations[ i ];
-
-      let sign = 0;
-      if ( bodyA === equation.bodyA && bodyB === equation.bodyB ) {
-        sign = 1;
-      }
-      if ( bodyA === equation.bodyB && bodyB === equation.bodyA ) {
-        sign = -1;
-      }
-
-      if ( sign ) {
-        result.add( P2Engine.p2ToVector( equation.normalA ).timesScalar( sign * equation.multiplier ) );
-      }
-    }
-
-    return result;
+    return Vector2.ZERO; // TODO
   }
 
   // TODO: doc
   resetContactForces( body ) {
-    body.vlambda[ 0 ] = 0;
-    body.vlambda[ 1 ] = 0;
   }
 
   /**
@@ -284,15 +256,41 @@ class P2Engine extends Engine {
    * @returns {Engine.Body}
    */
   createGround( vertices ) {
-    const body = new p2.Body( {
-      type: p2.Body.STATIC,
-      mass: 0
+    const body = this.world.createBody( {
+      type: 'static',
+      fixedRotation: false,
+      userData: {
+        id: globalBodyId++
+      }
+
+      // type: staticBody,
+      // position: Vec2.zero(),
+      // angle: 0,
+      // linearVelocity: Vec2.zero(),
+      // angularVelocity: 0,
+      // linearDamping: 0,
+      // angularDamping: 0,
+      // bullet: false,
+      // gravityScale: 1,
+      // allowSleep: true,
+      // awake: true,
+      // active: true,
     } );
 
-    body.fromPolygon( vertices.map( P2Engine.vectorToP2 ) );
+    PlanckEngine.decompToPlank( vertices ).forEach( convexVertices => {
+      body.createFixture( planck.Polygon( convexVertices ), {
+        // userData: null,
+        // friction: .2,
+        // restitution: 0,
+        // density: 0,
+        // isSensor: false,
+        // filterGroupIndex: 0,
+        // filterCategoryBits: 1,
+        // filterMaskBits: 65535
+      } );
+    } );
 
-    // Workaround, since using Convex wasn't working
-    body.shapes[ 0 ].material = groundMaterial;
+    body.setActive( false );
 
     return body;
   }
@@ -307,12 +305,17 @@ class P2Engine extends Engine {
    * @returns {Engine.Body}
    */
   createBox( width, height ) {
-    const body = new p2.Body( {
-      type: p2.Body.DYNAMIC,
-      fixedRotation: true
+    const body = this.world.createBody( {
+      type : 'dynamic',
+      fixedRotation: true,
+      userData: {
+        id: globalBodyId++
+      }
     } );
 
     this.updateBox( body, width, height );
+
+    body.setActive( false );
 
     return body;
   }
@@ -327,15 +330,28 @@ class P2Engine extends Engine {
    * @param {number} height
    */
   updateBox( body, width, height ) {
-    P2Engine.removeShapes( body );
+    while ( body.getFixtureList() ) {
+      body.destroyFixture( body.getFixtureList() );
+    }
 
-    const box = new p2.Box( {
-      width: width * SCALE,
-      height: height * SCALE,
-      material: dynamicMaterial
+    // body.createFixture( planck.Polygon( [
+    //   -width * SCALE / 2, -height * SCALE / 2,
+    //   width * SCALE / 2, -height * SCALE / 2,
+    //   width * SCALE / 2, height * SCALE / 2,
+    //   -width * SCALE / 2, height * SCALE / 2
+    // ].map( PlanckEngine.vectorToPlanck ) ), {
+    body.createFixture( planck.Box( width * SCALE / 2, height * SCALE / 2 ), {
+      // TODO: eek, what happensthere?
+      // density: 1
+
+      // userData: null,
+      // friction: .2,
+      // restitution: 0,
+      // isSensor: false,
+      // filterGroupIndex: 0,
+      // filterCategoryBits: 1,
+      // filterMaskBits: 65535
     } );
-
-    body.addShape( box );
   }
 
   /**
@@ -348,12 +364,17 @@ class P2Engine extends Engine {
    * @returns {Engine.Body}
    */
   createFromVertices( vertices, workaround ) {
-    const body = new p2.Body( {
-      type: p2.Body.DYNAMIC,
-      fixedRotation: true
+    const body = this.world.createBody( {
+      type : 'dynamic',
+      fixedRotation: true,
+      userData: {
+        id: globalBodyId++
+      }
     } );
 
     this.updateFromVertices( body, vertices, workaround );
+
+    body.setActive( false );
 
     return body;
   }
@@ -368,23 +389,24 @@ class P2Engine extends Engine {
    * @param {boolean} workaround
    */
   updateFromVertices( body, vertices, workaround ) {
-    P2Engine.removeShapes( body );
-
-    if ( workaround ) {
-      body.fromPolygon( vertices.map( v => p2.vec2.fromValues( v.x * SCALE, v.y * SCALE ) ) );
-
-      // Workaround, since using Convex wasn't working
-      body.shapes[ 0 ].material = dynamicMaterial;
+    while ( body.getFixtureList() ) {
+      body.destroyFixture( body.getFixtureList() );
     }
-    else {
-      const shape = new p2.Convex( {
-        vertices: vertices.map( P2Engine.vectorToP2 )
+
+    PlanckEngine.decompToPlank( vertices ).forEach( convexVertices => {
+      body.createFixture( planck.Polygon( convexVertices ), {
+        // TODO: eek, what happensthere?
+        // density: 1
+
+        // userData: null,
+        // friction: .2,
+        // restitution: 0,
+        // isSensor: false,
+        // filterGroupIndex: 0,
+        // filterCategoryBits: 1,
+        // filterMaskBits: 65535
       } );
-
-      shape.material = dynamicMaterial;
-
-      body.addShape( shape );
-    }
+    } );
   }
 
   /**
@@ -395,7 +417,7 @@ class P2Engine extends Engine {
    * @param {function} listener
    */
   addPostStepListener( listener ) {
-    this.world.on( 'postStep', listener );
+    this.stepEmitter.addListener( listener );
   }
 
   /**
@@ -406,7 +428,7 @@ class P2Engine extends Engine {
    * @param {function} listener
    */
   removePostStepListener( listener ) {
-    this.world.off( 'postStep', listener );
+    this.stepEmitter.removeListener( listener );
   }
 
   /**
@@ -419,23 +441,13 @@ class P2Engine extends Engine {
    * @param {Vector2} position
    */
   addPointerConstraint( body, position ) {
-    const nullBody = new p2.Body();
-    this.nullBodyMap[ body.id ] = nullBody;
 
-    const globalPoint = P2Engine.vectorToP2( position );
-    const localPoint = p2.vec2.create();
-    body.toLocalFrame( localPoint, globalPoint );
-    this.world.addBody( nullBody );
+    const nullBody = this.world.createBody();
+    this.nullBodyMap[ body.getUserData().id ] = nullBody;
 
-    body.wakeUp();
-
-    const pointerConstraint = new p2.RevoluteConstraint( nullBody, body, {
-      localPivotA: globalPoint,
-      localPivotB: localPoint,
-      maxForce: 1000 * body.mass
-    } );
-    this.pointerConstraintMap[ body.id ] = pointerConstraint;
-    this.world.addConstraint( pointerConstraint );
+    const mouseJoint = planck.MouseJoint( { maxForce: 10000 }, nullBody, body, PlanckEngine.vectorToPlanck( position ) );
+    this.world.createJoint( mouseJoint );
+    this.mouseJointMap[ body.getUserData().id ] = mouseJoint;
   }
 
   /**
@@ -447,12 +459,7 @@ class P2Engine extends Engine {
    * @param {Vector2} position
    */
   updatePointerConstraint( body, position ) {
-    const pointerConstraint = this.pointerConstraintMap[ body.id ];
-    assert && assert( pointerConstraint );
-
-    p2.vec2.copy( pointerConstraint.pivotA, P2Engine.vectorToP2( position ) );
-    pointerConstraint.bodyA.wakeUp();
-    pointerConstraint.bodyB.wakeUp();
+    this.mouseJointMap[ body.getUserData().id ].setTarget( PlanckEngine.vectorToPlanck( position ) );
   }
 
   /**
@@ -463,50 +470,42 @@ class P2Engine extends Engine {
    * @param {Engine.Body} body
    */
   removePointerConstraint( body ) {
-    const nullBody = this.nullBodyMap[ body.id ];
-    const pointerConstraint = this.pointerConstraintMap[ body.id ];
+    this.world.destroyJoint( this.mouseJointMap[ body.getUserData().id ] );
+    delete[ this.mouseJointMap[ body.getUserData().id ] ];
 
-    this.world.removeConstraint( pointerConstraint );
-    this.world.removeBody( nullBody );
-
-    delete this.nullBodyMap[ body.id ];
-    delete this.pointerConstraintMap[ body.id ];
+    this.world.destroyBody( this.nullBodyMap[ body.getUserData().id ] );
+    delete[ this.nullBodyMap[ body.getUserData().id ] ];
   }
 
   /**
-   * Converts a Vector2 to a p2.vec2, for use with p2.js
+   * Converts a Vector2 to a planck.Vec2, for use with planck.js
    * @private
    *
    * @param {Vector2} vector
-   * @returns {p2.vec2}
+   * @returns {planck.Vec2}
    */
-  static vectorToP2( vector ) {
-    return p2.vec2.fromValues( vector.x * SCALE, vector.y * SCALE );
+  static vectorToPlanck( vector ) {
+    return planck.Vec2( vector.x * SCALE, vector.y * SCALE );
   }
 
   /**
-   * Converts a p2.vec2 to a Vector2
+   * Converts a planck.Vec2 to a Vector2
    * @private
    *
-   * @param {p2.vec2} vector
+   * @param {planck.Vec2} vector
    * @returns {Vector2}
    */
-  static p2ToVector( vector ) {
-    return new Vector2( vector[ 0 ] / SCALE, vector[ 1 ] / SCALE );
+  static planckToVector( vector ) {
+    return new Vector2( vector.x / SCALE, vector.x / SCALE );
   }
 
-  /**
-   * Helper method that removes all shapes from a given body.
-   * @private
-   *
-   * @param {Engine.Body} body
-   */
-  static removeShapes( body ) {
-    while ( body.shapes.length ) {
-      body.removeShape( body.shapes[ body.shapes.length - 1 ] );
-    }
+  static decompToPlank( vertices ) {
+    return decomp.quickDecomp( vertices.map( v => [
+      v.x * SCALE,
+      v.y * SCALE
+    ] ) ).map( list => list.map( v => planck.Vec2( v[ 0 ], v[ 1 ] ) ));
   }
 }
 
-densityBuoyancyCommon.register( 'P2Engine', P2Engine );
-export default P2Engine;
+densityBuoyancyCommon.register( 'PlanckEngine', PlanckEngine );
+export default PlanckEngine;

@@ -19,6 +19,7 @@ import InterpolatedProperty from './InterpolatedProperty.js';
 import Material from './Material.js';
 import MatterEngine from './MatterEngine.js';
 import P2Engine from './P2Engine.js';
+import PlanckEngine from './PlanckEngine.js';
 import Scale from './Scale.js';
 
 // constants
@@ -104,8 +105,8 @@ class DensityBuoyancyModel {
     } );
 
     const engineType = DensityBuoyancyCommonQueryParameters.engine;
-    assert && assert( engineType === 'p2' || engineType === 'matter' );
-    this.engine = engineType === 'p2' ? new P2Engine() : new MatterEngine();
+    assert && assert( engineType === 'p2' || engineType === 'matter' || engineType === 'planck' );
+    this.engine = engineType === 'p2' ? new P2Engine() : ( engineType === 'matter' ? new MatterEngine() : new PlanckEngine() );
 
     // @public {Engine.Body}
     this.groundBody = this.engine.createGround( this.groundPoints );

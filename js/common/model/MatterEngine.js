@@ -1,7 +1,7 @@
 // Copyright 2019-2020, University of Colorado Boulder
 
 /**
- * Abstract base type for handling physics engines
+ * Adapter for the matter.js physics engine
  *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
@@ -50,7 +50,7 @@ class MatterEngine extends FixedTimestepEngine {
    * @param {Engine.Body} body
    */
   addBody( body ) {
-    assert && log( 'Matter.World.add( ..., body )' );
+    assert && log( `Matter.World.add( this.engine.world, #${body.id} )` );
     Matter.World.add( this.engine.world, body );
   }
 
@@ -62,7 +62,7 @@ class MatterEngine extends FixedTimestepEngine {
    * @param {Engine.Body} body
    */
   removeBody( body ) {
-    assert && log( 'Matter.World.remove( ..., body )' );
+    assert && log( `Matter.World.remove( this.engine.world, #${body.id} )` );
     Matter.World.remove( this.engine.world, body );
   }
 
@@ -81,11 +81,11 @@ class MatterEngine extends FixedTimestepEngine {
       canRotate: false
     }, options );
 
-    assert && log( `Matter.Body.setMass( ..., ${mass} )` );
+    assert && log( `Matter.Body.setMass( #${body.id}, ${mass} )` );
     Matter.Body.setMass( body, mass );
 
     if ( !options.canRotate ) {
-      assert && log( 'Matter.Body.setInertia( ..., Number.POSITIVE_INFINITY )' );
+      assert && log( `Matter.Body.setInertia( #${body.id}, Number.POSITIVE_INFINITY )` );
       Matter.Body.setInertia( body, Number.POSITIVE_INFINITY );
     }
   }
@@ -99,6 +99,7 @@ class MatterEngine extends FixedTimestepEngine {
    * @param {Matrix3} matrix
    */
   bodyGetMatrixTransform( body, matrix ) {
+    assert && log( `bodyGetMatrixTransform: #${body.id}: position: ${body.position.x}, ${body.position.y}, angle: ${body.angle}` );
     return matrix.setToTranslationRotation( body.position.x / MATTER_SCALE, body.position.y / MATTER_SCALE, body.angle );
   }
 
@@ -123,7 +124,7 @@ class MatterEngine extends FixedTimestepEngine {
    * @param {Vector2} position
    */
   bodySetPosition( body, position ) {
-    assert && log( `Matter.Body.setPosition( ..., ${mvecToString( MatterEngine.vectorToMatter( position ) )} )` );
+    assert && log( `Matter.Body.setPosition( #${body.id}, ${mvecToString( MatterEngine.vectorToMatter( position ) )} )` );
     Matter.Body.setPosition( body, MatterEngine.vectorToMatter( position ) );
   }
 
@@ -136,7 +137,7 @@ class MatterEngine extends FixedTimestepEngine {
    * @param {number} rotation
    */
   bodySetRotation( body, rotation ) {
-    assert && log( `Matter.Body.setAngle( ..., ${rotation} )` );
+    assert && log( `Matter.Body.setAngle( #${body.id}, ${rotation} )` );
     Matter.Body.setAngle( body, rotation );
   }
 
@@ -161,7 +162,7 @@ class MatterEngine extends FixedTimestepEngine {
    * @param {number} angularVelocity
    */
   bodySetAngularVelocity( body, angularVelocity ) {
-    assert && log( `Matter.Body.setAngularVelocity( ..., ${angularVelocity} )` );
+    assert && log( `Matter.Body.setAngularVelocity( #${body.id}, ${angularVelocity} )` );
     Matter.Body.setAngularVelocity( body, angularVelocity );
   }
 
@@ -174,7 +175,7 @@ class MatterEngine extends FixedTimestepEngine {
    * @returns {Vector2}
    */
   bodyGetVelocity( body ) {
-    assert && log( `body.velocity: ${mvecToString( body.velocity )}` );
+    assert && log( `body.velocity #${body.id}: ${mvecToString( body.velocity )}` );
     return MatterEngine.matterToVector( body.velocity );
   }
 
@@ -187,7 +188,7 @@ class MatterEngine extends FixedTimestepEngine {
    * @param {Vector2} velocity
    */
   bodySetVelocity( body, velocity ) {
-    assert && log( `Matter.Body.setVelocity( ..., ${mvecToString( MatterEngine.vectorToMatter( velocity ) )} )` );
+    assert && log( `Matter.Body.setVelocity( #${body.id}, ${mvecToString( MatterEngine.vectorToMatter( velocity ) )} )` );
     Matter.Body.setVelocity( body, MatterEngine.vectorToMatter( velocity ) );
   }
 
@@ -200,7 +201,7 @@ class MatterEngine extends FixedTimestepEngine {
    * @param {Vector2} velocity
    */
   bodyApplyForce( body, force ) {
-    assert && log( `Matter.Body.applyForce( ..., ${mvecToString( body.position )}, ${mvecToString( MatterEngine.vectorToMatter( force ) )} )` );
+    assert && log( `Matter.Body.applyForce( #${body.id}, ${mvecToString( body.position )}, ${mvecToString( MatterEngine.vectorToMatter( force ) )} )` );
     Matter.Body.applyForce( body, body.position, MatterEngine.vectorToMatter( force ) );
   }
 
@@ -214,10 +215,12 @@ class MatterEngine extends FixedTimestepEngine {
    */
   createGround( vertices ) {
     assert && log( `createGround: Matter.Bodies.fromVertices( 0, 0, ${vertices.map( MatterEngine.vectorToMatter ).map( mvecToString ).join( ',' )} )` );
-    return Matter.Bodies.fromVertices( 0, 0, vertices.map( MatterEngine.vectorToMatter ), {
+    const body = Matter.Bodies.fromVertices( 0, 0, vertices.map( MatterEngine.vectorToMatter ), {
       isStatic: true,
       position: MatterEngine.vectorToMatter( Vector2.ZERO )
     } );
+    assert && log( `created #${body.id}` );
+    return body;
   }
 
   /**
@@ -232,7 +235,9 @@ class MatterEngine extends FixedTimestepEngine {
   createBox( width, height ) {
     // For composites: Matter.Body.create({ parts: [partA, partB] });
     assert && log( `createBox: Matter.Bodies.fromVertices( 0, 0, ${MatterEngine.rectangleVerties( width, height ).map( mvecToString ).join( ',' )} )` );
-    return Matter.Bodies.fromVertices( 0, 0, MatterEngine.rectangleVerties( width, height ) );
+    const body = Matter.Bodies.fromVertices( 0, 0, MatterEngine.rectangleVerties( width, height ) );
+    assert && log( `created #${body.id}` );
+    return body;
   }
 
   /**
@@ -245,7 +250,7 @@ class MatterEngine extends FixedTimestepEngine {
    * @param {number} height
    */
   updateBox( body, width, height ) {
-    assert && log( `updateBox: Matter.Body.setVertices( ..., ${MatterEngine.rectangleVerties( width, height ).map( mvecToString ).join( ',' )} )` );
+    assert && log( `updateBox: Matter.Body.setVertices( #${body.id}, ${MatterEngine.rectangleVerties( width, height ).map( mvecToString ).join( ',' )} )` );
     Matter.Body.setVertices( body, MatterEngine.rectangleVerties( width, height ) );
   }
 
@@ -257,7 +262,7 @@ class MatterEngine extends FixedTimestepEngine {
    * @param {function} listener
    */
   addPostStepListener( listener ) {
-    assert && log( 'Matter.Events.on( ..., \'afterUpdate\', ... )' );
+    assert && log( 'Matter.Events.on( this.engine, \'afterUpdate\', ... )' );
     Matter.Events.on( this.engine, 'afterUpdate', listener );
   }
 
@@ -269,7 +274,7 @@ class MatterEngine extends FixedTimestepEngine {
    * @param {function} listener
    */
   removePostStepListener( listener ) {
-    assert && log( 'Matter.Events.off( ..., \'afterUpdate\', ... )' );
+    assert && log( 'Matter.Events.off( this.engine, \'afterUpdate\', ... )' );
     Matter.Events.off( this.engine, 'afterUpdate', listener );
   }
 

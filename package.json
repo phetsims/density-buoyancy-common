@@ -15,6 +15,7 @@
     "preload": [
       "../sherpa/lib/matter-0.14.2.js",
       "../sherpa/lib/p2-0.7.1.js",
+      "../sherpa/lib/planck-0.3.0-rc.2.js",
       "../sherpa/lib/three-r104.js"
     ]
   },
@@ -23,7 +24,9 @@
     "globals": {
       "Matter": false,
       "p2": false,
-      "THREE": false
+      "THREE": false,
+      "planck": false,
+      "decomp": false
     }
   }
 }

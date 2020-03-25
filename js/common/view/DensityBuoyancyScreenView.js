@@ -18,6 +18,7 @@ import arrayRemove from '../../../../phet-core/js/arrayRemove.js';
 import merge from '../../../../phet-core/js/merge.js';
 import ResetAllButton from '../../../../scenery-phet/js/buttons/ResetAllButton.js';
 import Mouse from '../../../../scenery/js/input/Mouse.js';
+import DOM from '../../../../scenery/js/nodes/DOM.js';
 import Node from '../../../../scenery/js/nodes/Node.js';
 import Rectangle from '../../../../scenery/js/nodes/Rectangle.js';
 import LinearGradient from '../../../../scenery/js/util/LinearGradient.js';
@@ -27,6 +28,7 @@ import BoatView from '../../buoyancy/view/BoatView.js';
 import BottleView from '../../buoyancy/view/BottleView.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
+import DensityBuoyancyCommonQueryParameters from '../DensityBuoyancyCommonQueryParameters.js';
 import Cone from '../model/Cone.js';
 import Cuboid from '../model/Cuboid.js';
 import Ellipsoid from '../model/Ellipsoid.js';
@@ -561,6 +563,32 @@ class DensityBuoyancyScreenView extends ScreenView {
       tandem: tandem.createTandem( 'resetAllButton' )
     } );
     this.addChild( resetAllButton );
+
+    if ( DensityBuoyancyCommonQueryParameters.engineDebug && DensityBuoyancyCommonQueryParameters.engine === 'matter' ) {
+      const width = 800;
+      const height = 640;
+      const canvas = document.createElement( 'canvas' );
+      canvas.width = width;
+      canvas.height = height;
+      canvas.style.opacity = 0.5;
+      const matterRender = Matter.Render.create( {
+        canvas: canvas,
+        // element: document.body,
+        engine: model.engine.engine,
+        options: {
+          width: width,
+          height: height
+        }
+      } );
+
+      Matter.Render.run( matterRender );
+
+      this.addChild( new DOM( canvas, {
+        center: this.layoutBounds.center,
+        pickable: false
+      } ) );
+      console.log( 'added matter renderer' );
+    }
   }
 
   /**

@@ -187,7 +187,9 @@ class PlatinumMaterialView extends CameraMaterialView {
       roughnessMap: aluminumRoughnessTexture,
       metalnessMap: aluminumMetalnessTexture,
       envMap: this.getTexture(),
-      envMapIntensity: 1.5
+      envMapIntensity: 0.5,
+      emissive: 0xffffff,
+      emissiveIntensity: 0.5
     } );
   }
 }

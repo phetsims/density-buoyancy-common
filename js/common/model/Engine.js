@@ -213,9 +213,10 @@ class Engine {
    *
    * @param {number} width
    * @param {number} height
+   * @param {boolean} [isStatic]
    * @returns {Engine.Body}
    */
-  createBox( width, height ) {
+  createBox( width, height, isStatic ) {
     throw new Error( 'unimplemented' );
   }
 

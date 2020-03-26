@@ -49,7 +49,7 @@ class Scale extends Mass {
    */
   constructor( engine, config ) {
     config = merge( {
-      body: engine.createBox( SCALE_WIDTH, SCALE_HEIGHT ),
+      body: engine.createBox( SCALE_WIDTH, SCALE_HEIGHT, config.canMove === false ),
       shape: Shape.rect( -SCALE_WIDTH / 2, -SCALE_HEIGHT / 2, SCALE_WIDTH, SCALE_HEIGHT ),
       volume: SCALE_VOLUME,
       canRotate: false,

@@ -240,11 +240,18 @@ class MatterEngine extends FixedTimestepEngine {
    *
    * @param {number} width
    * @param {number} height
+   * @param {boolean} [isStatic]
    * @returns {Engine.Body}
    */
-  createBox( width, height ) {
+  createBox( width, height, isStatic ) {
+    let options = BODY_OPTIONS;
+    if ( isStatic ) {
+      options = merge( {
+        isStatic: true
+      }, BODY_OPTIONS );
+    }
     // For composites: Matter.Body.create({ parts: [partA, partB] });
-    const body = Matter.Bodies.fromVertices( 0, 0, MatterEngine.rectangleVerties( width, height ), BODY_OPTIONS );
+    const body = Matter.Bodies.fromVertices( 0, 0, MatterEngine.rectangleVerties( width, height ), options );
     return body;
   }
 

@@ -302,11 +302,12 @@ class PlanckEngine extends Engine {
    *
    * @param {number} width
    * @param {number} height
+   * @param {boolean} [isStatic]
    * @returns {Engine.Body}
    */
-  createBox( width, height ) {
+  createBox( width, height, isStatic ) {
     const body = this.world.createBody( {
-      type : 'dynamic',
+      type : isStatic ? 'static' : 'dynamic',
       fixedRotation: true,
       userData: {
         id: globalBodyId++

@@ -304,11 +304,12 @@ class P2Engine extends Engine {
    *
    * @param {number} width
    * @param {number} height
+   * @param {boolean} [isStatic]
    * @returns {Engine.Body}
    */
-  createBox( width, height ) {
+  createBox( width, height, isStatic ) {
     const body = new p2.Body( {
-      type: p2.Body.DYNAMIC,
+      type: isStatic ? p2.Body.STATIC : p2.Body.DYNAMIC,
       fixedRotation: true
     } );
 

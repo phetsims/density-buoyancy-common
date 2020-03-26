@@ -29,6 +29,9 @@ class MatterEngine extends FixedTimestepEngine {
 
     // Disable gravity (will handle the force manually)
     this.engine.world.gravity.y = 0;
+
+    // @private {Object} - Maps {number} body.id => {Matter.Constraint}
+    this.pointerConstraintMap = {};
   }
 
   /**
@@ -221,7 +224,9 @@ class MatterEngine extends FixedTimestepEngine {
 
     const body = Matter.Body.create( {
       isStatic: true,
-      parts: MatterEngine.verticesToParts( vertices )
+      parts: MatterEngine.verticesToParts( vertices, {
+        isStatic: true
+      } )
     } );
 
     // const body = Matter.Bodies.fromVertices( 0, 0, vertices.map( MatterEngine.vectorToMatter ), {
@@ -347,6 +352,72 @@ class MatterEngine extends FixedTimestepEngine {
   resetContactForces( body ) {
     // TODO
   }
+/**
+   * Adds in a pointer constraint so that the body's current point at the position will stay at the position
+   * (if the body is getting dragged).
+   * @public
+   * @override
+   *
+   * @param {Engine.Body} body
+   * @param {Vector2} position
+   */
+  addPointerConstraint( body, position ) {
+    const constraint = Matter.Constraint.create( {
+      label: 'Pointer Constraint',
+      pointA: MatterEngine.vectorToMatter( position ),
+      pointB: { x: 0, y: 0 },
+      bodyB: body,
+      angleB: 0,
+      length: 0.01,
+      stiffness: 1.1, // TODO: experiment with stiffness?
+      angularStiffness: 1,
+      render: {
+        strokeStyle: '#90EE90',
+        lineWidth: 3
+      }
+    } );
+    this.pointerConstraintMap[ body.id ] = constraint;
+
+    // Wake it up?
+    Matter.Sleeping.set( body, false );
+
+    Matter.World.add( this.engine.world, constraint );
+  }
+
+  /**
+   * Updates a pointer constraint so that the body will essentially be dragged to the new position.
+   * @public
+   * @override
+   *
+   * @param {Engine.Body} body
+   * @param {Vector2} position
+   */
+  updatePointerConstraint( body, position ) {
+    const constraint = this.pointerConstraintMap[ body.id ];
+
+    // Wake it up
+    Matter.Sleeping.set( body, false );
+
+    constraint.pointA = MatterEngine.vectorToMatter( position );
+  }
+
+  /**
+   * Removes a pointer constraint.
+   * @public
+   * @override
+   *
+   * @param {Engine.Body} body
+   */
+  removePointerConstraint( body ) {
+    const constraint = this.pointerConstraintMap[ body.id ];
+
+    constraint.bodyB = null;
+    constraint.pointB = null;
+
+    Matter.World.remove( this.engine.world, constraint );
+
+    delete this.pointerConstraintMap[ body.id ];
+  }
 
   /**
    * Returns matter.js vertices for a given rectangle width and height.
@@ -387,6 +458,15 @@ class MatterEngine extends FixedTimestepEngine {
     return new Vector2( vector.x / SCALE, vector.y / SCALE );
   }
 
+  /**
+   * Returns an array of parts for a matter.js body based on a section of vertices. This seems to be working better than
+   * the included Matter.Bodies.fromVertices, as that had a number of quite buggy-seeming qualities.
+   * @private
+   *
+   * @param {Array.<Vector2>} vertices
+   * @param {Object} [options] - Passed to the parts
+   * @returns {Array.<Matter.Body>}
+   */
   static verticesToParts( vertices, options ) {
     const arrayVertices = vertices.map( v => [
       v.x,
@@ -403,8 +483,6 @@ class MatterEngine extends FixedTimestepEngine {
         vertices: matterVertices
       }, options ) );
     } );
-
-    // Body.create(Common.extend({ parts: parts.slice(0) }, options))
   }
 }
 

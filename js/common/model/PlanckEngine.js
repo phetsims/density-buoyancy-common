@@ -13,7 +13,7 @@ import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import Engine from './Engine.js';
 
 // constants
-const SCALE = 1;
+const SCALE = 5;
 const FIXED_TIME_STEP = 1 / 60;
 
 let globalBodyId = 0;
@@ -53,7 +53,7 @@ class PlanckEngine extends Engine {
    * @param {number} dt
    */
   step( dt ) {
-    // TODO: interpolate this shit
+    // TODO: interpolate this
     this.world.step( FIXED_TIME_STEP, 8, 3 );
     this.stepEmitter.emit();
 

@@ -6,6 +6,7 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
+import Emitter from '../../../../axon/js/Emitter.js';
 import Util from '../../../../dot/js/Utils.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import merge from '../../../../phet-core/js/merge.js';
@@ -13,19 +14,24 @@ import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import FixedTimestepEngine from './FixedTimestepEngine.js';
 
 // constants
-const SCALE = 30;
-
-// const log = message => console.log( message );
-const log = () => {};
-const mvecToString = vector => `(${vector.x},${vector.y})`;
+const SCALE = 100;
+const BODY_OPTIONS = {
+  slop: 0.05, // default 0.05
+  restitution: 0, // default 0
+  friction: 0.1, // default  0.1
+  frictionStatic: 0.5, // default  0.5
+  frictionAir: 0.01 // default 0.01
+};
 
 class MatterEngine extends FixedTimestepEngine {
   constructor() {
     super();
 
     // @private {Matter.Engine}
-    assert && log( 'Matter.Engine.create()' );
     this.engine = Matter.Engine.create();
+
+    // @private {Emitter}
+    this.stepEmitter = new Emitter();
 
     // Disable gravity (will handle the force manually)
     this.engine.world.gravity.y = 0;
@@ -43,8 +49,12 @@ class MatterEngine extends FixedTimestepEngine {
    */
   step( dt ) {
     // TODO variable DT testing!!!
-    assert && log( 'Matter.Engine.update( ..., 1 / 60 )' );
     Matter.Engine.update( this.engine, 1 / 60 );
+
+    this.stepEmitter.emit();
+
+    // TODO:
+    this.interpolationRatio = 0;
   }
 
   /**
@@ -55,7 +65,6 @@ class MatterEngine extends FixedTimestepEngine {
    * @param {Engine.Body} body
    */
   addBody( body ) {
-    assert && log( `Matter.World.add( this.engine.world, #${body.id} )` );
     Matter.World.add( this.engine.world, body );
   }
 
@@ -67,7 +76,6 @@ class MatterEngine extends FixedTimestepEngine {
    * @param {Engine.Body} body
    */
   removeBody( body ) {
-    assert && log( `Matter.World.remove( this.engine.world, #${body.id} )` );
     Matter.World.remove( this.engine.world, body );
   }
 
@@ -86,11 +94,9 @@ class MatterEngine extends FixedTimestepEngine {
       canRotate: false
     }, options );
 
-    assert && log( `Matter.Body.setMass( #${body.id}, ${mass} )` );
     Matter.Body.setMass( body, mass );
 
     if ( !options.canRotate ) {
-      assert && log( `Matter.Body.setInertia( #${body.id}, Number.POSITIVE_INFINITY )` );
       Matter.Body.setInertia( body, Number.POSITIVE_INFINITY );
     }
   }
@@ -104,7 +110,6 @@ class MatterEngine extends FixedTimestepEngine {
    * @param {Matrix3} matrix
    */
   bodyGetMatrixTransform( body, matrix ) {
-    assert && log( `bodyGetMatrixTransform: #${body.id}: position: ${body.position.x}, ${body.position.y}, angle: ${body.angle}` );
     return matrix.setToTranslationRotation( body.position.x / SCALE, body.position.y / SCALE, body.angle );
   }
 
@@ -129,7 +134,6 @@ class MatterEngine extends FixedTimestepEngine {
    * @param {Vector2} position
    */
   bodySetPosition( body, position ) {
-    assert && log( `Matter.Body.setPosition( #${body.id}, ${mvecToString( MatterEngine.vectorToMatter( position ) )} )` );
     Matter.Body.setPosition( body, MatterEngine.vectorToMatter( position ) );
   }
 
@@ -142,7 +146,6 @@ class MatterEngine extends FixedTimestepEngine {
    * @param {number} rotation
    */
   bodySetRotation( body, rotation ) {
-    assert && log( `Matter.Body.setAngle( #${body.id}, ${rotation} )` );
     Matter.Body.setAngle( body, rotation );
   }
 
@@ -167,7 +170,6 @@ class MatterEngine extends FixedTimestepEngine {
    * @param {number} angularVelocity
    */
   bodySetAngularVelocity( body, angularVelocity ) {
-    assert && log( `Matter.Body.setAngularVelocity( #${body.id}, ${angularVelocity} )` );
     Matter.Body.setAngularVelocity( body, angularVelocity );
   }
 
@@ -180,7 +182,6 @@ class MatterEngine extends FixedTimestepEngine {
    * @returns {Vector2}
    */
   bodyGetVelocity( body ) {
-    assert && log( `body.velocity #${body.id}: ${mvecToString( body.velocity )}` );
     return MatterEngine.matterToVector( body.velocity );
   }
 
@@ -193,7 +194,6 @@ class MatterEngine extends FixedTimestepEngine {
    * @param {Vector2} velocity
    */
   bodySetVelocity( body, velocity ) {
-    assert && log( `Matter.Body.setVelocity( #${body.id}, ${mvecToString( MatterEngine.vectorToMatter( velocity ) )} )` );
     Matter.Body.setVelocity( body, MatterEngine.vectorToMatter( velocity ) );
   }
 
@@ -206,7 +206,6 @@ class MatterEngine extends FixedTimestepEngine {
    * @param {Vector2} velocity
    */
   bodyApplyForce( body, force ) {
-    assert && log( `Matter.Body.applyForce( #${body.id}, ${mvecToString( body.position )}, ${mvecToString( MatterEngine.vectorToMatter( force ) )} )` );
     Matter.Body.applyForce( body, body.position, MatterEngine.vectorToMatter( force ) );
   }
 
@@ -219,21 +218,18 @@ class MatterEngine extends FixedTimestepEngine {
    * @returns {Engine.Body}
    */
   createGround( vertices ) {
-    // assert && log( `createGround: Matter.Bodies.fromVertices( 0, 0, ${vertices.map( MatterEngine.vectorToMatter ).map( mvecToString ).join( ',' )} )` );
-    assert && log( 'createGround' );
 
-    const body = Matter.Body.create( {
+    const body = Matter.Body.create( merge( {
       isStatic: true,
       parts: MatterEngine.verticesToParts( vertices, {
         isStatic: true
       } )
-    } );
+    }, BODY_OPTIONS ) );
 
     // const body = Matter.Bodies.fromVertices( 0, 0, vertices.map( MatterEngine.vectorToMatter ), {
     //   isStatic: true,
     //   position: MatterEngine.vectorToMatter( Vector2.ZERO )
     // } );
-    assert && log( `created #${body.id}` );
     return body;
   }
 
@@ -248,9 +244,7 @@ class MatterEngine extends FixedTimestepEngine {
    */
   createBox( width, height ) {
     // For composites: Matter.Body.create({ parts: [partA, partB] });
-    assert && log( `createBox: Matter.Bodies.fromVertices( 0, 0, ${MatterEngine.rectangleVerties( width, height ).map( mvecToString ).join( ',' )} )` );
-    const body = Matter.Bodies.fromVertices( 0, 0, MatterEngine.rectangleVerties( width, height ) );
-    assert && log( `created #${body.id}` );
+    const body = Matter.Bodies.fromVertices( 0, 0, MatterEngine.rectangleVerties( width, height ), BODY_OPTIONS );
     return body;
   }
 
@@ -264,7 +258,6 @@ class MatterEngine extends FixedTimestepEngine {
    * @param {number} height
    */
   updateBox( body, width, height ) {
-    assert && log( `updateBox: Matter.Body.setVertices( #${body.id}, ${MatterEngine.rectangleVerties( width, height ).map( mvecToString ).join( ',' )} )` );
     Matter.Body.setVertices( body, MatterEngine.rectangleVerties( width, height ) );
   }
 
@@ -278,9 +271,9 @@ class MatterEngine extends FixedTimestepEngine {
    * @returns {Engine.Body}
    */
   createFromVertices( vertices, workaround ) {
-    return Matter.Body.create( {
+    return Matter.Body.create( merge( {
       parts: MatterEngine.verticesToParts( vertices )
-    } );
+    }, BODY_OPTIONS ) );
   }
 
   /**
@@ -307,8 +300,7 @@ class MatterEngine extends FixedTimestepEngine {
    * @param {function} listener
    */
   addPostStepListener( listener ) {
-    assert && log( 'Matter.Events.on( this.engine, \'afterUpdate\', ... )' );
-    Matter.Events.on( this.engine, 'afterUpdate', listener );
+    this.stepEmitter.addListener( listener );
   }
 
   /**
@@ -319,8 +311,7 @@ class MatterEngine extends FixedTimestepEngine {
    * @param {function} listener
    */
   removePostStepListener( listener ) {
-    assert && log( 'Matter.Events.off( this.engine, \'afterUpdate\', ... )' );
-    Matter.Events.off( this.engine, 'afterUpdate', listener );
+    this.stepEmitter.removeListener( listener );
   }
 
   /**
@@ -477,11 +468,10 @@ class MatterEngine extends FixedTimestepEngine {
       const dotVertices = partVertices.map( v => new Vector2( v[ 0 ], v[ 1 ] ) );
       const centroid = Util.centroidOfPolygon( dotVertices );
       const matterVertices = dotVertices.map( v => v.minus( centroid ) ).map( MatterEngine.vectorToMatter );
-      console.log( matterVertices );
       return Matter.Body.create( merge( {
         position: MatterEngine.vectorToMatter( centroid ),
         vertices: matterVertices
-      }, options ) );
+      }, BODY_OPTIONS, options ) );
     } );
   }
 }

@@ -101,11 +101,15 @@ class DensityTableNode extends Node {
       node.top = topPadding + headerCellHeight + n * cellHeight;
     } );
 
+    const defaultBackground = new Rectangle( 0, 0, fullWidth, fullHeight, {
+      fill: 'white'
+    } );
     const highlightBackground = new Rectangle( 0, 0, fullWidth, headerCellHeight, {
       fill: DensityBuoyancyCommonColorProfile.chartHeaderProperty
     } );
 
     this.children = [
+      defaultBackground,
       highlightBackground,
       gridPath,
       materialHeader,

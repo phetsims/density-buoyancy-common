@@ -49,10 +49,7 @@ class DensityMysteryScreenView extends DensityBuoyancyScreenView {
     const densityBox = new AccordionBox( new DensityTableNode(), merge( {
       titleNode: new Text( densityTableString, { font: DensityBuoyancyCommonConstants.TITLE_FONT } ),
       expandedProperty: model.densityTableExpandedProperty
-    }, DensityBuoyancyCommonConstants.ACCORDION_BOX_OPTIONS, {
-      // Exception for the background, see https://github.com/phetsims/density/issues/6#issuecomment-600911868
-      fill: 'white'
-    } ) );
+    }, DensityBuoyancyCommonConstants.ACCORDION_BOX_OPTIONS ) );
 
     this.addChild( new AlignBox( densityBox, {
       alignBounds: this.layoutBounds,

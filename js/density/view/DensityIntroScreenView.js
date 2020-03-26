@@ -53,10 +53,7 @@ class DensityIntroScreenView extends SecondaryMassScreenView {
       titleNode: new Text( densityReadoutString, { font: DensityBuoyancyCommonConstants.TITLE_FONT } ),
       expandedProperty: model.densityReadoutExpandedProperty,
       buttonAlign: 'left'
-    }, DensityBuoyancyCommonConstants.ACCORDION_BOX_OPTIONS, {
-      // Exception for the background, see https://github.com/phetsims/density/issues/6#issuecomment-600911868
-      fill: 'white'
-    } ) );
+    }, DensityBuoyancyCommonConstants.ACCORDION_BOX_OPTIONS ) );
 
     this.addChild( new AlignBox( densityReadoutBox, {
       alignBounds: this.layoutBounds,

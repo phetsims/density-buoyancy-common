@@ -50,6 +50,7 @@ class DensityReadoutNode extends Node {
     super();
 
     const background = new Rectangle( 0, 0, WIDTH, HEIGHT, {
+      fill: 'white',
       stroke: 'black'
     } );
     this.addChild( background );

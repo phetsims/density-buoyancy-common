@@ -65,8 +65,8 @@ class DensityBuoyancyModel {
 
     // @public {Bounds3}
     this.groundBounds = new Bounds3(
-      -20, -20, -2,
-      20, 0, 0.2
+      -10, -10, -2,
+      10, 0, 0.2
     );
 
     if ( DensityBuoyancyCommonQueryParameters.poolWidthMultiplier !== 1 ) {
@@ -77,8 +77,8 @@ class DensityBuoyancyModel {
         halfX, 0, halfZ
       );
       this.groundBounds = new Bounds3(
-        -20, -20, -2,
-        20, 0, halfZ
+        -10, -10, -2,
+        10, 0, halfZ
       );
     }
 

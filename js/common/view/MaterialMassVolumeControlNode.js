@@ -54,7 +54,7 @@ class MaterialMassVolumeControlNode extends VBox {
       labelNode: null,
 
       // {number}
-      minMass: 0,
+      minMass: 0.1,
       maxCustomMass: 10,
       maxMass: 27,
       minVolumeLiters: 1,

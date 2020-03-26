@@ -57,12 +57,15 @@ class Cuboid extends Mass {
    * @param {Bounds3} size
    */
   updateSize( size ) {
-    this.engine.updateBox( this.body, size.width, size.height );
-    this.sizeProperty.value = size;
-    this.shapeProperty.value = Shape.rect( size.minX, size.minY, size.width, size.height );
-    this.volumeProperty.value = size.width * size.height * size.depth;
-    this.forceOffsetProperty.value = new Vector3( 0, 0, size.maxZ );
-    this.massOffsetProperty.value = new Vector3( size.minX, size.minY, size.maxZ );
+    // Don't update our model if it's no-volume, we'll have ourselves removed anyway
+    if ( size.width && size.height ) {
+      this.engine.updateBox( this.body, size.width, size.height );
+      this.sizeProperty.value = size;
+      this.shapeProperty.value = Shape.rect( size.minX, size.minY, size.width, size.height );
+      this.volumeProperty.value = size.width * size.height * size.depth;
+      this.forceOffsetProperty.value = new Vector3( 0, 0, size.maxZ );
+      this.massOffsetProperty.value = new Vector3( size.minX, size.minY, size.maxZ );
+    }
   }
 
   /**

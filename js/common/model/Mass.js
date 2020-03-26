@@ -174,7 +174,8 @@ class Mass {
       this.shapeProperty,
       this.massProperty
     ], () => {
-      engine.bodySetMass( this.body, this.massProperty.value, {
+      // Don't allow a fully-zero value for the physics engines
+      engine.bodySetMass( this.body, Math.max( this.massProperty.value, 0.01 ), {
         canRotate: config.canRotate
       } );
     } );

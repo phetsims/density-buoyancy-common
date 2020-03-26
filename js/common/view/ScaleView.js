@@ -16,6 +16,29 @@ class ScaleView extends MassView {
    * @param {Scale} mass
    */
   constructor( mass ) {
+
+    super( mass, ScaleView.getScaleGeometry() );
+
+    // @public {Scale}
+    this.mass = mass;
+  }
+
+  /**
+   * Releases references.
+   * @public
+   * @override
+   */
+  dispose() {
+    super.dispose();
+  }
+
+  /**
+   * Returns the geometry used for the scale
+   * @public
+   *
+   * @returns {THREE.Geometry}
+   */
+  static getScaleGeometry() {
     const cuboidElements = 18 * 3;
     const cylinderElements = 12 * 64; // TODO: share these!
     const numElements = cuboidElements + cylinderElements;
@@ -38,19 +61,7 @@ class ScaleView extends MassView {
     scaleGeometry.addAttribute( 'normal', new THREE.BufferAttribute( normalArray, 3 ) );
     scaleGeometry.addAttribute( 'uv', new THREE.BufferAttribute( uvArray, 2 ) );
 
-    super( mass, scaleGeometry );
-
-    // @public {Scale}
-    this.mass = mass;
-  }
-
-  /**
-   * Releases references.
-   * @public
-   * @override
-   */
-  dispose() {
-    super.dispose();
+    return scaleGeometry;
   }
 }
 

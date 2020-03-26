@@ -330,5 +330,10 @@ class DensityMaterials {
   }
 }
 
+// @public {THREE.Texture}
+DensityMaterials.woodColorTexture = woodColorTexture;
+DensityMaterials.woodNormalTexture = woodNormalTexture;
+DensityMaterials.woodRoughnessTexture = woodRoughnessTexture;
+
 densityBuoyancyCommon.register( 'DensityMaterials', DensityMaterials );
 export default DensityMaterials;

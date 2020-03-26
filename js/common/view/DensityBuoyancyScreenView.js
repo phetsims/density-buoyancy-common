@@ -11,16 +11,23 @@ import Bounds2 from '../../../../dot/js/Bounds2.js';
 import Plane3 from '../../../../dot/js/Plane3.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
+import Screen from '../../../../joist/js/Screen.js';
 import ScreenView from '../../../../joist/js/ScreenView.js';
+import NodeTexture from '../../../../mobius/js/NodeTexture.js';
+import TextureQuad from '../../../../mobius/js/TextureQuad.js';
 import ThreeIsometricNode from '../../../../mobius/js/ThreeIsometricNode.js';
+import ThreeStage from '../../../../mobius/js/ThreeStage.js';
 import ThreeUtils from '../../../../mobius/js/ThreeUtils.js';
 import arrayRemove from '../../../../phet-core/js/arrayRemove.js';
 import merge from '../../../../phet-core/js/merge.js';
 import ResetAllButton from '../../../../scenery-phet/js/buttons/ResetAllButton.js';
+import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import Mouse from '../../../../scenery/js/input/Mouse.js';
 import DOM from '../../../../scenery/js/nodes/DOM.js';
+import Image from '../../../../scenery/js/nodes/Image.js';
 import Node from '../../../../scenery/js/nodes/Node.js';
 import Rectangle from '../../../../scenery/js/nodes/Rectangle.js';
+import Text from '../../../../scenery/js/nodes/Text.js';
 import LinearGradient from '../../../../scenery/js/util/LinearGradient.js';
 import Boat from '../../buoyancy/model/Boat.js';
 import Bottle from '../../buoyancy/model/Bottle.js';
@@ -38,6 +45,7 @@ import VerticalCylinder from '../model/VerticalCylinder.js';
 import ConeView from './ConeView.js';
 import CuboidView from './CuboidView.js';
 import DensityBuoyancyCommonColorProfile from './DensityBuoyancyCommonColorProfile.js';
+import DensityMaterials from './DensityMaterials.js';
 import EllipsoidView from './EllipsoidView.js';
 import ForceDiagramNode from './ForceDiagramNode.js';
 import HorizontalCylinderView from './HorizontalCylinderView.js';
@@ -689,6 +697,187 @@ class DensityBuoyancyScreenView extends ScreenView {
       const modelPoint = this.modelToViewPoint( mass.matrix.translation.toVector3().plus( mass.massOffsetProperty.value ) );
       const offsetPoint = scratchVector2.setXY( massLabelNode.width / 2, massLabelNode.height / 2 ).componentMultiply( mass.massOffsetOrientationProperty.value );
       massLabelNode.translation = modelPoint.plus( offsetPoint );
+    } );
+  }
+
+  /**
+   * Returns an icon for selection, given a scene setup callback.
+   * @private
+   *
+   * @param {number} zoom
+   * @param {Vector3} lookAt
+   * @param {function(THREE.Scene)} setupScene
+   * @returns {Node}
+   */
+  static getAngledIcon( zoom, lookAt, setupScene ) {
+    const width = Screen.MINIMUM_HOME_SCREEN_ICON_SIZE.width;
+    const height = Screen.MINIMUM_HOME_SCREEN_ICON_SIZE.height;
+
+    // TODO: handle color changes?
+    const stage = new ThreeStage( { fov: 50 } );
+
+    stage.threeCamera.near = 0.5;
+
+    const ambientLight = new THREE.AmbientLight( 0x333333 );
+    stage.threeScene.add( ambientLight );
+
+    const sunLight = new THREE.DirectionalLight( 0xffffff, 1 );
+    sunLight.position.set( -1, 1.5, 0.8 );
+    stage.threeScene.add( sunLight );
+
+    const moonLight = new THREE.DirectionalLight( 0xffffff, 0.2 );
+    moonLight.position.set( 2.0, -1.0, 1.0 );
+    stage.threeScene.add( moonLight );
+
+    stage.threeScene.background = new THREE.Color( 0xffffff );
+
+
+    stage.threeCamera.position.copy( ThreeUtils.vectorToThree( new Vector3( 0, 0.4, 1 ) ) );
+    stage.threeCamera.zoom = zoom;
+    stage.threeCamera.lookAt( ThreeUtils.vectorToThree( lookAt ) );
+    stage.threeCamera.updateProjectionMatrix();
+
+    // const fullWidth = width * 3;
+    // const fullHeight = height * 3;
+    // stage.threeCamera.setViewOffset( fullWidth, fullHeight, 0.1 * width, 1.0 * height, width, height );
+
+    setupScene( stage.threeScene, stage.threeRenderer );
+
+    stage.threeCamera.fov = 50;
+    stage.threeCamera.aspect = width / height;
+    stage.setDimensions( width, height );
+    stage.threeCamera.updateProjectionMatrix();
+    stage.render( undefined );
+
+    const canvas = stage.renderToCanvas();
+
+    stage.dispose();
+
+    const image = new Image( canvas, {
+      mipmap: true
+    } );
+    image.setScaleMagnitude( 1, -1 );
+    image.left = 0;
+    image.top = 0;
+    return image;
+  }
+
+  /**
+   * @public
+   *
+   * @returns {Node}
+   */
+  static getDensityIntroIcon() {
+    return DensityBuoyancyScreenView.getAngledIcon( 5.5, new Vector3( 0, 0, 0 ), ( scene, renderer ) => {
+
+      const boxGeometry = new THREE.BoxGeometry( 0.1, 0.1, 0.1 );
+
+      const box = new THREE.Mesh( boxGeometry, new THREE.MeshStandardMaterial( {
+        map: DensityMaterials.woodColorTexture,
+        normalMap: DensityMaterials.woodNormalTexture,
+        normalScale: new THREE.Vector2( 1, -1 ),
+        roughnessMap: DensityMaterials.woodRoughnessTexture,
+        metalness: 0
+        // NOTE: Removed the environment map for now
+      } ) );
+      box.position.copy( ThreeUtils.vectorToThree( new Vector3( 0, 0, 0 ) ) );
+
+      scene.add( box );
+
+      const waterMaterial = new THREE.MeshLambertMaterial( {
+        transparent: true
+      } );
+      const waterColor = DensityBuoyancyCommonColorProfile.materialWaterProperty.value;
+      waterMaterial.color = ThreeUtils.colorToThree( waterColor );
+      waterMaterial.opacity = waterColor.alpha;
+
+      // Fake it!
+      const waterGeometry = new THREE.BoxGeometry( 1, 1, 0.12 );
+
+      const water = new THREE.Mesh( waterGeometry, waterMaterial );
+      water.position.copy( ThreeUtils.vectorToThree( new Vector3( 0, -0.5, 0 ) ) );
+      scene.add( water );
+    } );
+  }
+
+  /**
+   * @public
+   *
+   * @returns {Node}
+   */
+  static getDensityCompareIcon() {
+    return DensityBuoyancyScreenView.getAngledIcon( 4.6, new Vector3( 0, -0.02, 0 ), scene => {
+
+      const boxGeometry = new THREE.BoxGeometry( 0.1, 0.1, 0.1 );
+
+      const leftBox = new THREE.Mesh( boxGeometry, new THREE.MeshLambertMaterial( {
+        color: 0xffff00
+      } ) );
+      leftBox.position.copy( ThreeUtils.vectorToThree( new Vector3( -0.07, 0, 0 ) ) );
+      scene.add( leftBox );
+
+      const rightBox = new THREE.Mesh( boxGeometry, new THREE.MeshLambertMaterial( {
+        color: 0xff0000
+      } ) );
+      rightBox.position.copy( ThreeUtils.vectorToThree( new Vector3( 0.07, -0.06, 0 ) ) );
+      scene.add( rightBox );
+
+      const waterMaterial = new THREE.MeshLambertMaterial( {
+        transparent: true
+      } );
+      const waterColor = DensityBuoyancyCommonColorProfile.materialWaterProperty.value;
+      waterMaterial.color = ThreeUtils.colorToThree( waterColor );
+      waterMaterial.opacity = waterColor.alpha;
+
+      // Fake it!
+      const waterGeometry = new THREE.BoxGeometry( 1, 1, 0.12 );
+
+      const water = new THREE.Mesh( waterGeometry, waterMaterial );
+      water.position.copy( ThreeUtils.vectorToThree( new Vector3( 0, -0.5, 0 ) ) );
+      scene.add( water );
+    } );
+  }
+
+  /**
+   * @public
+   *
+   * @returns {Node}
+   */
+  static getDensityMysteryIcon() {
+    return DensityBuoyancyScreenView.getAngledIcon( 4, new Vector3( -0.2, -0.01, 0 ), scene => {
+
+      const boxGeometry = new THREE.BoxGeometry( 0.1, 0.1, 0.1 );
+
+      const box = new THREE.Mesh( boxGeometry, new THREE.MeshLambertMaterial( {
+        color: 0x00ff00
+      } ) );
+      box.position.copy( ThreeUtils.vectorToThree( new Vector3( -0.2, 0.03, 0 ) ) );
+
+      scene.add( box );
+
+      const labelSize = 0.1;
+      const label = new TextureQuad( new NodeTexture( new Text( '?', {
+        font: new PhetFont( {
+          size: 120
+        } ),
+        center: new Vector2( 128, 128 )
+      } ), 256, 256 ), labelSize, labelSize );
+
+      label.position.copy( ThreeUtils.vectorToThree( new Vector3( -0.2 - labelSize * 0.29, 0.03, 0.15 ) ) );
+
+      scene.add( label );
+
+      const scaleGeometry = ScaleView.getScaleGeometry();
+
+      const scale = new THREE.Mesh( scaleGeometry, new THREE.MeshStandardMaterial( {
+        color: 0xffffff,
+        roughness: 0.2,
+        metalness: 0.7,
+        emissive: 0x666666
+      } ) );
+
+      scale.position.copy( ThreeUtils.vectorToThree( new Vector3( -0.2, -0.03, 0 ) ) );
+      scene.add( scale );
     } );
   }
 }

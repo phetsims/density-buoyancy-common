@@ -6,15 +6,17 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
+import Util from '../../../../dot/js/Utils.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import merge from '../../../../phet-core/js/merge.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import FixedTimestepEngine from './FixedTimestepEngine.js';
 
 // constants
-const MATTER_SCALE = 100;
+const SCALE = 30;
 
-const log = message => console.log( message );
+// const log = message => console.log( message );
+const log = () => {};
 const mvecToString = vector => `(${vector.x},${vector.y})`;
 
 class MatterEngine extends FixedTimestepEngine {
@@ -38,8 +40,8 @@ class MatterEngine extends FixedTimestepEngine {
    */
   step( dt ) {
     // TODO variable DT testing!!!
-    assert && log( 'Matter.Engine.update( ..., 1000 / 60 )' );
-    Matter.Engine.update( this.engine, 1000 / 60 );
+    assert && log( 'Matter.Engine.update( ..., 1 / 60 )' );
+    Matter.Engine.update( this.engine, 1 / 60 );
   }
 
   /**
@@ -100,7 +102,7 @@ class MatterEngine extends FixedTimestepEngine {
    */
   bodyGetMatrixTransform( body, matrix ) {
     assert && log( `bodyGetMatrixTransform: #${body.id}: position: ${body.position.x}, ${body.position.y}, angle: ${body.angle}` );
-    return matrix.setToTranslationRotation( body.position.x / MATTER_SCALE, body.position.y / MATTER_SCALE, body.angle );
+    return matrix.setToTranslationRotation( body.position.x / SCALE, body.position.y / SCALE, body.angle );
   }
 
   /**
@@ -214,11 +216,18 @@ class MatterEngine extends FixedTimestepEngine {
    * @returns {Engine.Body}
    */
   createGround( vertices ) {
-    assert && log( `createGround: Matter.Bodies.fromVertices( 0, 0, ${vertices.map( MatterEngine.vectorToMatter ).map( mvecToString ).join( ',' )} )` );
-    const body = Matter.Bodies.fromVertices( 0, 0, vertices.map( MatterEngine.vectorToMatter ), {
+    // assert && log( `createGround: Matter.Bodies.fromVertices( 0, 0, ${vertices.map( MatterEngine.vectorToMatter ).map( mvecToString ).join( ',' )} )` );
+    assert && log( 'createGround' );
+
+    const body = Matter.Body.create( {
       isStatic: true,
-      position: MatterEngine.vectorToMatter( Vector2.ZERO )
+      parts: MatterEngine.verticesToParts( vertices )
     } );
+
+    // const body = Matter.Bodies.fromVertices( 0, 0, vertices.map( MatterEngine.vectorToMatter ), {
+    //   isStatic: true,
+    //   position: MatterEngine.vectorToMatter( Vector2.ZERO )
+    // } );
     assert && log( `created #${body.id}` );
     return body;
   }
@@ -252,6 +261,37 @@ class MatterEngine extends FixedTimestepEngine {
   updateBox( body, width, height ) {
     assert && log( `updateBox: Matter.Body.setVertices( #${body.id}, ${MatterEngine.rectangleVerties( width, height ).map( mvecToString ).join( ',' )} )` );
     Matter.Body.setVertices( body, MatterEngine.rectangleVerties( width, height ) );
+  }
+
+  /**
+   * Creates a (dynamic) body, with the origin at the centroid.
+   * @public
+   * @override
+   *
+   * @param {Array.<Vector2>} vertices
+   * @param {boolean} workaround
+   * @returns {Engine.Body}
+   */
+  createFromVertices( vertices, workaround ) {
+    return Matter.Body.create( {
+      parts: MatterEngine.verticesToParts( vertices )
+    } );
+  }
+
+  /**
+   * Updates the vertices of a dynamic vertex-based body.
+   * @public
+   * @override
+   *
+   * @param {Engine.Body}
+   * @param {Array.<Vector2>} vertices
+   * @param {boolean} workaround
+   */
+  updateFromVertices( body, vertices, workaround ) {
+    const x = body.position.x;
+    const y = body.position.y;
+    Matter.Body.setParts( body, MatterEngine.verticesToParts( vertices ) );
+    Matter.Body.setPosition( body, Matter.Vector.create( x, y ) );
   }
 
   /**
@@ -333,7 +373,7 @@ class MatterEngine extends FixedTimestepEngine {
    * @returns {Matter.Vector}
    */
   static vectorToMatter( vector ) {
-    return Matter.Vector.create( vector.x * MATTER_SCALE, vector.y * MATTER_SCALE );
+    return Matter.Vector.create( vector.x * SCALE, vector.y * SCALE );
   }
 
   /**
@@ -344,7 +384,27 @@ class MatterEngine extends FixedTimestepEngine {
    * @returns {Vector2}
    */
   static matterToVector( vector ) {
-    return new Vector2( vector.x / MATTER_SCALE, vector.y / MATTER_SCALE );
+    return new Vector2( vector.x / SCALE, vector.y / SCALE );
+  }
+
+  static verticesToParts( vertices, options ) {
+    const arrayVertices = vertices.map( v => [
+      v.x,
+      v.y
+    ] );
+    decomp.makeCCW( arrayVertices );
+    return decomp.quickDecomp( arrayVertices ).map( partVertices => {
+      const dotVertices = partVertices.map( v => new Vector2( v[ 0 ], v[ 1 ] ) );
+      const centroid = Util.centroidOfPolygon( dotVertices );
+      const matterVertices = dotVertices.map( v => v.minus( centroid ) ).map( MatterEngine.vectorToMatter );
+      console.log( matterVertices );
+      return Matter.Body.create( merge( {
+        position: MatterEngine.vectorToMatter( centroid ),
+        vertices: matterVertices
+      }, options ) );
+    } );
+
+    // Body.create(Common.extend({ parts: parts.slice(0) }, options))
   }
 }
 

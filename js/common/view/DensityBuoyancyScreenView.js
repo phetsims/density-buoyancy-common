@@ -581,6 +581,11 @@ class DensityBuoyancyScreenView extends ScreenView {
         }
       } );
 
+      matterRender.options.hasBounds = true;
+      matterRender.bounds.min.x = -80;
+      matterRender.bounds.max.x = 80;
+      matterRender.bounds.min.y = -64;
+      matterRender.bounds.max.y = 64;
       Matter.Render.run( matterRender );
 
       this.addChild( new DOM( canvas, {

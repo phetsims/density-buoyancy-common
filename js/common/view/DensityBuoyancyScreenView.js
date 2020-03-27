@@ -749,7 +749,7 @@ class DensityBuoyancyScreenView extends ScreenView {
     stage.threeCamera.updateProjectionMatrix();
     stage.render( undefined );
 
-    const canvas = stage.renderToCanvas();
+    const canvas = stage.renderToCanvas( 3 );
 
     stage.dispose();
 

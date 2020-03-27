@@ -40,7 +40,7 @@ import MaterialView from './MaterialView.js';
 // constants
 
 function toWrappedTexture( image ) {
-  const texture = ThreeUtils.imageToTexture( image );
+  const texture = ThreeUtils.imageToTexture( image, true );
   texture.wrapS = THREE.RepeatWrapping;
   texture.wrapT = THREE.RepeatWrapping;
   // texture.repeat.set( 4, 4 ); // TODO: any performance or quality due to this?

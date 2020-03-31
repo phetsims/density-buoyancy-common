@@ -12,7 +12,7 @@ import Rectangle from '../../../../scenery/js/nodes/Rectangle.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
 import Material from '../../common/model/Material.js';
 import DensityBuoyancyCommonColorProfile from '../../common/view/DensityBuoyancyCommonColorProfile.js';
-import densityBuoyancyCommonStrings from '../../density-buoyancy-common-strings.js';
+import densityBuoyancyCommonStrings from '../../densityBuoyancyCommonStrings.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 
 const densityKgLString = densityBuoyancyCommonStrings.densityKgL;

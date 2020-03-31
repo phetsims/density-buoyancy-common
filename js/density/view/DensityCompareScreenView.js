@@ -12,7 +12,7 @@ import Panel from '../../../../sun/js/Panel.js';
 import VerticalAquaRadioButtonGroup from '../../../../sun/js/VerticalAquaRadioButtonGroup.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 import DensityBuoyancyScreenView from '../../common/view/DensityBuoyancyScreenView.js';
-import densityBuoyancyCommonStrings from '../../density-buoyancy-common-strings.js';
+import densityBuoyancyCommonStrings from '../../densityBuoyancyCommonStrings.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityCompareModel from '../model/DensityCompareModel.js';
 

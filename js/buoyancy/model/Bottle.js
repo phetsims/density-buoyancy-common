@@ -76,7 +76,7 @@ import ThreeUtils from '../../../../mobius/js/ThreeUtils.js';
 import merge from '../../../../phet-core/js/merge.js';
 import Mass from '../../common/model/Mass.js';
 import Material from '../../common/model/Material.js';
-import densityBuoyancyCommonStrings from '../../density-buoyancy-common-strings.js';
+import densityBuoyancyCommonStrings from '../../densityBuoyancyCommonStrings.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 
 const averageString = densityBuoyancyCommonStrings.average;

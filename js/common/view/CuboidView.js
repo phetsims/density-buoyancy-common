@@ -6,7 +6,7 @@
 
 import Vector3 from '../../../../dot/js/Vector3.js';
 import TextureQuad from '../../../../mobius/js/TextureQuad.js';
-import densityBuoyancyCommonStrings from '../../density-buoyancy-common-strings.js';
+import densityBuoyancyCommonStrings from '../../densityBuoyancyCommonStrings.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import Mass from '../model/Mass.js';
 import MassLabelNode from './MassLabelNode.js';

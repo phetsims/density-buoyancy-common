@@ -27,11 +27,6 @@ import SecondaryMassScreenView from '../../common/view/SecondaryMassScreenView.j
 import densityBuoyancyCommonStrings from '../../densityBuoyancyCommonStrings.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 
-const blockAString = densityBuoyancyCommonStrings.blockA;
-const blockBString = densityBuoyancyCommonStrings.blockB;
-const densityString = densityBuoyancyCommonStrings.density;
-const kilogramsPerLiterPatternString = densityBuoyancyCommonStrings.kilogramsPerLiterPattern;
-
 // constants
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
 
@@ -54,29 +49,31 @@ class BuoyancyExploreScreenView extends SecondaryMassScreenView {
     const displayOptionsNode = new DisplayOptionsNode( model );
 
     const densityAText = new Text( '', {
+      maxWidth: 120,
       font: new PhetFont( { size: 14, weight: 'bold' } ),
       fill: DensityBuoyancyCommonColorProfile.labelAProperty
     } );
     const densityBText = new Text( '', {
+      maxWidth: 120,
       font: new PhetFont( { size: 14, weight: 'bold' } ),
       fill: DensityBuoyancyCommonColorProfile.labelBProperty
     } );
 
     model.primaryMass.materialProperty.link( material => {
       // TODO: that string utils fill-in or to-fixed density conversion
-      densityAText.text = StringUtils.fillIn( kilogramsPerLiterPatternString, {
+      densityAText.text = StringUtils.fillIn( densityBuoyancyCommonStrings.kilogramsPerLiterPattern, {
         value: Utils.toFixed( material.density / 1000, 2 )
       } );
     } );
     model.secondaryMass.materialProperty.link( material => {
-      densityBText.text = StringUtils.fillIn( kilogramsPerLiterPatternString, {
+      densityBText.text = StringUtils.fillIn( densityBuoyancyCommonStrings.kilogramsPerLiterPattern, {
         value: Utils.toFixed( material.density / 1000, 2 )
       } );
     } );
 
     // TODO: handle maxWidths here nicely
-    const labelAText = new Text( blockAString, { font: new PhetFont( 14 ), maxWidth: 200 } );
-    const labelBText = new Text( blockBString, { font: new PhetFont( 14 ), maxWidth: 200 } );
+    const labelAText = new Text( densityBuoyancyCommonStrings.blockA, { font: new PhetFont( 14 ), maxWidth: 200 } );
+    const labelBText = new Text( densityBuoyancyCommonStrings.blockB, { font: new PhetFont( 14 ), maxWidth: 200 } );
 
     // vertical alignment
     densityBText.top = densityAText.bottom + 3;
@@ -95,7 +92,10 @@ class BuoyancyExploreScreenView extends SecondaryMassScreenView {
     } );
 
     const densityBox = new AccordionBox( densityContainer, merge( {
-      titleNode: new Text( densityString, { font: DensityBuoyancyCommonConstants.TITLE_FONT } ),
+      titleNode: new Text( densityBuoyancyCommonStrings.density, {
+        font: DensityBuoyancyCommonConstants.TITLE_FONT,
+        maxWidth: 160
+      } ),
       expandedProperty: model.densityReadoutExpandedProperty
     }, DensityBuoyancyCommonConstants.ACCORDION_BOX_OPTIONS ) );
 

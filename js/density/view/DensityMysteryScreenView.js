@@ -20,8 +20,6 @@ import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityMysteryModel from '../model/DensityMysteryModel.js';
 import DensityTableNode from './DensityTableNode.js';
 
-const densityTableString = densityBuoyancyCommonStrings.densityTable;
-
 // constants
 const modeStringMap = {
   [ DensityMysteryModel.Mode.SET_1.name ]: densityBuoyancyCommonStrings.mode.set1,
@@ -47,7 +45,10 @@ class DensityMysteryScreenView extends DensityBuoyancyScreenView {
     }
 
     const densityBox = new AccordionBox( new DensityTableNode(), merge( {
-      titleNode: new Text( densityTableString, { font: DensityBuoyancyCommonConstants.TITLE_FONT } ),
+      titleNode: new Text( densityBuoyancyCommonStrings.densityTable, {
+        font: DensityBuoyancyCommonConstants.TITLE_FONT,
+        maxWidth: 200
+      } ),
       expandedProperty: model.densityTableExpandedProperty
     }, DensityBuoyancyCommonConstants.ACCORDION_BOX_OPTIONS ) );
 
@@ -60,7 +61,10 @@ class DensityMysteryScreenView extends DensityBuoyancyScreenView {
 
     const modeControl = new VerticalAquaRadioButtonGroup( model.modeProperty, DensityMysteryModel.Mode.VALUES.map( mode => {
       return {
-        node: new Text( modeStringMap[ mode.name ], { font: DensityBuoyancyCommonConstants.RADIO_BUTTON_FONT } ),
+        node: new Text( modeStringMap[ mode.name ], {
+          font: DensityBuoyancyCommonConstants.RADIO_BUTTON_FONT,
+          maxWidth: 160
+        } ),
         value: mode
       };
     } ), {
@@ -84,7 +88,8 @@ class DensityMysteryScreenView extends DensityBuoyancyScreenView {
     const modePanel = new Panel( new VBox( {
       children: [
         new Text( densityBuoyancyCommonStrings.blocks, {
-          font: DensityBuoyancyCommonConstants.TITLE_FONT
+          font: DensityBuoyancyCommonConstants.TITLE_FONT,
+          maxWidth: 160
         } ),
         modeContent
       ],

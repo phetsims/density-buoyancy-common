@@ -26,25 +26,14 @@ import densityBuoyancyCommonStrings from '../../densityBuoyancyCommonStrings.js'
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import BuoyancyShapesModel from '../model/BuoyancyShapesModel.js';
 
-const heightString = densityBuoyancyCommonStrings.height;
-const litersPatternString = densityBuoyancyCommonStrings.litersPattern;
-const shapeBlockString = densityBuoyancyCommonStrings.shape.block;
-const shapeConeString = densityBuoyancyCommonStrings.shape.cone;
-const shapeEllipsoidString = densityBuoyancyCommonStrings.shape.ellipsoid;
-const shapeHorizontalCylinderString = densityBuoyancyCommonStrings.shape.horizontalCylinder;
-const shapeInvertedConeString = densityBuoyancyCommonStrings.shape.invertedCone;
-const shapeVerticalCylinderString = densityBuoyancyCommonStrings.shape.verticalCylinder;
-const volumeString = densityBuoyancyCommonStrings.volume;
-const widthString = densityBuoyancyCommonStrings.width;
-
 // constants
 const shapeStringMap = {
-  [ BuoyancyShapesModel.MassShape.BLOCK ]: shapeBlockString,
-  [ BuoyancyShapesModel.MassShape.ELLIPSOID ]: shapeEllipsoidString,
-  [ BuoyancyShapesModel.MassShape.VERTICAL_CYLINDER ]: shapeVerticalCylinderString,
-  [ BuoyancyShapesModel.MassShape.HORIZONTAL_CYLINDER ]: shapeHorizontalCylinderString,
-  [ BuoyancyShapesModel.MassShape.CONE ]: shapeConeString,
-  [ BuoyancyShapesModel.MassShape.INVERTED_CONE ]: shapeInvertedConeString
+  [ BuoyancyShapesModel.MassShape.BLOCK ]: densityBuoyancyCommonStrings.shape.block,
+  [ BuoyancyShapesModel.MassShape.ELLIPSOID ]: densityBuoyancyCommonStrings.shape.ellipsoid,
+  [ BuoyancyShapesModel.MassShape.VERTICAL_CYLINDER ]: densityBuoyancyCommonStrings.shape.verticalCylinder,
+  [ BuoyancyShapesModel.MassShape.HORIZONTAL_CYLINDER ]: densityBuoyancyCommonStrings.shape.horizontalCylinder,
+  [ BuoyancyShapesModel.MassShape.CONE ]: densityBuoyancyCommonStrings.shape.cone,
+  [ BuoyancyShapesModel.MassShape.INVERTED_CONE ]: densityBuoyancyCommonStrings.shape.invertedCone
 };
 
 class ShapeSizeControlNode extends VBox {
@@ -69,7 +58,10 @@ class ShapeSizeControlNode extends VBox {
     } );
 
     const comboBox = new ComboBox( BuoyancyShapesModel.MassShape.VALUES.map( massShape => {
-      return new ComboBoxItem( new Text( shapeStringMap[ massShape ], { font: DensityBuoyancyCommonConstants.COMBO_BOX_ITEM_FONT } ), massShape );
+      return new ComboBoxItem( new Text( shapeStringMap[ massShape ], {
+        font: DensityBuoyancyCommonConstants.COMBO_BOX_ITEM_FONT,
+        maxWidth: 160
+      } ), massShape );
     } ), massShapeProperty, listParent, {
       xMargin: 8,
       yMargin: 4
@@ -90,11 +82,14 @@ class ShapeSizeControlNode extends VBox {
       layoutFunction: NumberControl.createLayoutFunction4( {
         hasReadoutProperty: new BooleanProperty( false )
         // TODO: createBottomContent for custom? or no?
-      } )
+      } ),
+      titleNodeOptions: {
+        maxWidth: 160
+      }
     };
 
-    const widthNumberControl = new NumberControl( widthString, widthRatioProperty, new Range( 0, 1 ), numberControlOptions );
-    const heightNumberControl = new NumberControl( heightString, heightRatioProperty, new Range( 0, 1 ), numberControlOptions );
+    const widthNumberControl = new NumberControl( densityBuoyancyCommonStrings.width, widthRatioProperty, new Range( 0, 1 ), numberControlOptions );
+    const heightNumberControl = new NumberControl( densityBuoyancyCommonStrings.height, heightRatioProperty, new Range( 0, 1 ), numberControlOptions );
 
     // TODO: ensure maxWidth for combo box contents so this isn't an issue. How do we want to do layout?
     const topRow = options.labelNode ? new HBox( {
@@ -105,7 +100,10 @@ class ShapeSizeControlNode extends VBox {
       spacing: 5
     } ) : comboBox;
 
-    const volumeLabel = new Text( volumeString, { font: new PhetFont( 12 ) } );
+    const volumeLabel = new Text( densityBuoyancyCommonStrings.volume, {
+      font: new PhetFont( 12 ),
+      maxWidth: 120
+    } );
 
     const litersProperty = new DerivedProperty( [ volumeProperty ], volume => {
       return volume * 1000;
@@ -120,12 +118,13 @@ class ShapeSizeControlNode extends VBox {
         children: [
           volumeLabel,
           new AlignBox( new NumberDisplay( litersProperty, new Range( 0, 10 ), { // TODO: is 10 the most?
-            valuePattern: StringUtils.fillIn( litersPatternString, {
+            valuePattern: StringUtils.fillIn( densityBuoyancyCommonStrings.litersPattern, {
               liters: '{{value}}'
             } ),
             decimalPlaces: 2,
             textOptions: {
-              font: DensityBuoyancyCommonConstants.READOUT_FONT
+              font: DensityBuoyancyCommonConstants.READOUT_FONT,
+              maxWidth: 160
             }
           } ), {
             alignBounds: volumeLabel.bounds.withMaxX( heightNumberControl.width ),

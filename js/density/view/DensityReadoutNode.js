@@ -22,8 +22,6 @@ import DensityBuoyancyCommonColorProfile from '../../common/view/DensityBuoyancy
 import densityBuoyancyCommonStrings from '../../densityBuoyancyCommonStrings.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 
-const kilogramsPerLiterPatternString = densityBuoyancyCommonStrings.kilogramsPerLiterPattern;
-
 // constants
 const materials = [
   Material.HUMAN,
@@ -64,7 +62,8 @@ class DensityReadoutNode extends Node {
       const label = new Text( material.name, {
         font: new PhetFont( 12 ),
         centerX: x,
-        centerY: HEIGHT / 2
+        centerY: HEIGHT / 2,
+        maxWidth: 160
       } );
       this.addChild( label );
       this.addChild( new Line( x, 0, x, label.top - LINE_PADDING, lineOptions ) );
@@ -126,14 +125,14 @@ class DensityReadoutNode extends Node {
     // Density links
     densityAProperty.link( density => {
       primaryMarker.x = mvt( density );
-      primaryLabel.text = StringUtils.fillIn( kilogramsPerLiterPatternString, {
+      primaryLabel.text = StringUtils.fillIn( densityBuoyancyCommonStrings.kilogramsPerLiterPattern, {
         value: Utils.toFixed( density / 1000, 2 )
       } );
       primaryLabel.centerBottom = primaryArrow.centerTop;
     } );
     densityBProperty.link( density => {
       secondaryMarker.x = mvt( density );
-      secondaryLabel.text = StringUtils.fillIn( kilogramsPerLiterPatternString, {
+      secondaryLabel.text = StringUtils.fillIn( densityBuoyancyCommonStrings.kilogramsPerLiterPattern, {
         value: Utils.toFixed( density / 1000, 2 )
       } );
       secondaryLabel.centerTop = secondaryArrow.centerBottom;

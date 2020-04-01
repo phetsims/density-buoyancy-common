@@ -19,10 +19,6 @@ import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
 import DensityBuoyancyCommonColorProfile from './DensityBuoyancyCommonColorProfile.js';
 
-const kilogramsPatternString = densityBuoyancyCommonStrings.kilogramsPattern;
-const primaryMassLabelString = densityBuoyancyCommonStrings.massLabel.primary;
-const secondaryMassLabelString = densityBuoyancyCommonStrings.massLabel.secondary;
-
 // constants
 const MASS_LABEL_SIZE = 32;
 const createMassLabel = ( string, fill ) => {
@@ -39,8 +35,8 @@ const createMassLabel = ( string, fill ) => {
   rectangle.addChild( label );
   return rectangle;
 };
-const PRIMARY_LABEL = createMassLabel( primaryMassLabelString, DensityBuoyancyCommonColorProfile.labelAProperty );
-const SECONDARY_LABEL = createMassLabel( secondaryMassLabelString, DensityBuoyancyCommonColorProfile.labelBProperty );
+const PRIMARY_LABEL = createMassLabel( densityBuoyancyCommonStrings.massLabel.primary, DensityBuoyancyCommonColorProfile.labelAProperty );
+const SECONDARY_LABEL = createMassLabel( densityBuoyancyCommonStrings.massLabel.secondary, DensityBuoyancyCommonColorProfile.labelBProperty );
 
 class MassLabelNode extends Node {
   /**
@@ -53,7 +49,8 @@ class MassLabelNode extends Node {
     const readoutText = new Text( '', {
       font: new PhetFont( {
         size: 18
-      } )
+      } ),
+      maxWidth: 200
     } );
     const readoutPanel = new Panel( readoutText, {
       cornerRadius: DensityBuoyancyCommonConstants.CORNER_RADIUS,
@@ -71,7 +68,7 @@ class MassLabelNode extends Node {
 
     // @private {function(number)}
     this.massListener = mass => {
-      readoutText.text = StringUtils.fillIn( kilogramsPatternString, {
+      readoutText.text = StringUtils.fillIn( densityBuoyancyCommonStrings.kilogramsPattern, {
         kilograms: Utils.toFixed( mass, 2 )
       } );
       readoutPanel.center = Vector2.ZERO;
@@ -144,7 +141,8 @@ class MassLabelNode extends Node {
    */
   static getBasicLabelTexture( string ) {
     const label = new Text( string, {
-      font: new PhetFont( { size: 24, weight: 'bold' } )
+      font: new PhetFont( { size: 24, weight: 'bold' } ),
+      maxWidth: 100
     } );
     const rectangle = new Rectangle( 0, 0, label.width + 5, label.height + 3, {
       cornerRadius: DensityBuoyancyCommonConstants.CORNER_RADIUS,

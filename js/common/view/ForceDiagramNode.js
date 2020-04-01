@@ -17,8 +17,6 @@ import densityBuoyancyCommonStrings from '../../densityBuoyancyCommonStrings.js'
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonColorProfile from './DensityBuoyancyCommonColorProfile.js';
 
-const newtonsPatternString = densityBuoyancyCommonStrings.newtonsPattern;
-
 // constants
 const arrowOptions = {
   stroke: null,
@@ -64,15 +62,18 @@ class ForceDiagramNode extends Node {
     // @private {Text}
     this.gravityLabelText = new Text( '', {
       font: labelFont,
-      fill: DensityBuoyancyCommonColorProfile.gravityForceProperty
+      fill: DensityBuoyancyCommonColorProfile.gravityForceProperty,
+      maxWidth: 200
     } );
     this.buoyancyLabelText = new Text( '', {
       font: labelFont,
-      fill: DensityBuoyancyCommonColorProfile.buoyancyForceProperty
+      fill: DensityBuoyancyCommonColorProfile.buoyancyForceProperty,
+      maxWidth: 200
     } );
     this.contactLabelText = new Text( '', {
       font: labelFont,
-      fill: DensityBuoyancyCommonColorProfile.contactForceProperty
+      fill: DensityBuoyancyCommonColorProfile.contactForceProperty,
+      maxWidth: 200
     } );
 
     const panelOptions = {
@@ -114,7 +115,7 @@ class ForceDiagramNode extends Node {
         ( y > 0 ? upwardArrows : downwardArrows ).push( arrowNode );
 
         if ( this.showForceValuesProperty.value ) {
-          textNode.text = StringUtils.fillIn( newtonsPatternString, {
+          textNode.text = StringUtils.fillIn( densityBuoyancyCommonStrings.newtonsPattern, {
             newtons: Utils.toFixed( forceProperty.value.magnitude, 2 )
           } );
           labels.push( labelNode );

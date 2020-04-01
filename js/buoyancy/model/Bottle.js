@@ -79,8 +79,6 @@ import Material from '../../common/model/Material.js';
 import densityBuoyancyCommonStrings from '../../densityBuoyancyCommonStrings.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 
-const averageString = densityBuoyancyCommonStrings.average;
-
 // constants (in logical coordinates)
 const BODY_CORNER_RADIUS = 0.02; // Used both between the taper/body and between the body/base
 const CAP_CORNER_RADIUS = 0.03; // Used just at the top of the cap on the left
@@ -204,7 +202,7 @@ class Bottle extends Mass {
 
     Property.multilink( [ this.interiorMaterialProperty, this.interiorVolumeProperty ], ( material, volume ) => {
       this.materialProperty.value = Material.createCustomMaterial( {
-        name: averageString,
+        name: densityBuoyancyCommonStrings.average,
         density: ( BOTTLE_MASS + material.density * volume ) / BOTTLE_VOLUME
       } );
     } );

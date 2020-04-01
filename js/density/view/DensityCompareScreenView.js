@@ -16,15 +16,11 @@ import densityBuoyancyCommonStrings from '../../densityBuoyancyCommonStrings.js'
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityCompareModel from '../model/DensityCompareModel.js';
 
-const modeSameDensityString = densityBuoyancyCommonStrings.mode.sameDensity;
-const modeSameMassString = densityBuoyancyCommonStrings.mode.sameMass;
-const modeSameVolumeString = densityBuoyancyCommonStrings.mode.sameVolume;
-
 // constants
 const modeStringMap = {
-  [ DensityCompareModel.Mode.SAME_MASS.name ]: modeSameMassString,
-  [ DensityCompareModel.Mode.SAME_VOLUME.name ]: modeSameVolumeString,
-  [ DensityCompareModel.Mode.SAME_DENSITY.name ]: modeSameDensityString
+  [ DensityCompareModel.Mode.SAME_MASS.name ]: densityBuoyancyCommonStrings.mode.sameMass,
+  [ DensityCompareModel.Mode.SAME_VOLUME.name ]: densityBuoyancyCommonStrings.mode.sameVolume,
+  [ DensityCompareModel.Mode.SAME_DENSITY.name ]: densityBuoyancyCommonStrings.mode.sameDensity
 };
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
 
@@ -45,7 +41,10 @@ class DensityCompareScreenView extends DensityBuoyancyScreenView {
 
     const modeControl = new VerticalAquaRadioButtonGroup( model.modeProperty, DensityCompareModel.Mode.VALUES.map( mode => {
       return {
-        node: new Text( modeStringMap[ mode.name ], { font: DensityBuoyancyCommonConstants.RADIO_BUTTON_FONT } ),
+        node: new Text( modeStringMap[ mode.name ], {
+          font: DensityBuoyancyCommonConstants.RADIO_BUTTON_FONT,
+          maxWidth: 160
+        } ),
         value: mode
       };
     } ), {
@@ -54,7 +53,8 @@ class DensityCompareScreenView extends DensityBuoyancyScreenView {
     const modePanel = new Panel( new VBox( {
       children: [
         new Text( densityBuoyancyCommonStrings.blocks, {
-          font: DensityBuoyancyCommonConstants.TITLE_FONT
+          font: DensityBuoyancyCommonConstants.TITLE_FONT,
+          maxWidth: 160
         } ),
         modeControl
       ],

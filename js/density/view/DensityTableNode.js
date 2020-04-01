@@ -15,9 +15,6 @@ import DensityBuoyancyCommonColorProfile from '../../common/view/DensityBuoyancy
 import densityBuoyancyCommonStrings from '../../densityBuoyancyCommonStrings.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 
-const densityKgLString = densityBuoyancyCommonStrings.densityKgL;
-const materialNameString = densityBuoyancyCommonStrings.material.name;
-
 // constants
 const headerFont = new PhetFont( { size: 12, weight: 'bold' } );
 const bodyFont = new PhetFont( { size: 12 } );
@@ -41,8 +38,8 @@ class DensityTableNode extends Node {
   constructor() {
     super();
 
-    const materialHeader = new Text( materialNameString, { font: headerFont } );
-    const densityHeader = new Text( densityKgLString, { font: headerFont } );
+    const materialHeader = new Text( densityBuoyancyCommonStrings.material.name, { font: headerFont, maxWidth: 160 } );
+    const densityHeader = new Text( densityBuoyancyCommonStrings.densityKgL, { font: headerFont, maxWidth: 160 } );
 
     const materialNodes = materials.map( material => new Text( material.name, {
       font: bodyFont,

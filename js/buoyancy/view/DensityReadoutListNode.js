@@ -12,8 +12,6 @@ import VBox from '../../../../scenery/js/nodes/VBox.js';
 import densityBuoyancyCommonStrings from '../../densityBuoyancyCommonStrings.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 
-const densityReadoutPatternString = densityBuoyancyCommonStrings.densityReadoutPattern;
-
 class DensityReadoutListNode extends VBox {
 
   /**
@@ -30,7 +28,7 @@ class DensityReadoutListNode extends VBox {
       const text = new Text( '', { font: new PhetFont( 14 ), maxWidth: 200 } );
 
       materialProperty.link( material => {
-        text.text = StringUtils.fillIn( densityReadoutPatternString, {
+        text.text = StringUtils.fillIn( densityBuoyancyCommonStrings.densityReadoutPattern, {
           material: material.name,
           density: Utils.toFixed( material.density / 1000, 2 )
         } );

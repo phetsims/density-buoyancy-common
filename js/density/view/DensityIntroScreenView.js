@@ -17,8 +17,6 @@ import densityBuoyancyCommonStrings from '../../densityBuoyancyCommonStrings.js'
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityReadoutNode from './DensityReadoutNode.js';
 
-const densityReadoutString = densityBuoyancyCommonStrings.densityReadout;
-
 // constants
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
 
@@ -50,7 +48,10 @@ class DensityIntroScreenView extends SecondaryMassScreenView {
       new DerivedProperty( [ model.secondaryMass.materialProperty ], material => material.density ),
       model.secondaryMassVisibleProperty
     ), merge( {
-      titleNode: new Text( densityReadoutString, { font: DensityBuoyancyCommonConstants.TITLE_FONT } ),
+      titleNode: new Text( densityBuoyancyCommonStrings.densityReadout, {
+        font: DensityBuoyancyCommonConstants.TITLE_FONT,
+        maxWidth: 200
+      } ),
       expandedProperty: model.densityReadoutExpandedProperty,
       buttonAlign: 'left'
     }, DensityBuoyancyCommonConstants.ACCORDION_BOX_OPTIONS ) );

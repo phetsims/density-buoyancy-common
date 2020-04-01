@@ -25,8 +25,6 @@ import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityReadoutListNode from './DensityReadoutListNode.js';
 import ShapeSizeControlNode from './ShapeSizeControlNode.js';
 
-const densityString = densityBuoyancyCommonStrings.density;
-
 // constants
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
 
@@ -73,7 +71,10 @@ class BuoyancyShapesScreenView extends SecondaryMassScreenView {
 
     // TODO: check common accordion box styles
     const densityBox = new AccordionBox( densityContainer, merge( {
-      titleNode: new Text( densityString, { font: DensityBuoyancyCommonConstants.TITLE_FONT } ),
+      titleNode: new Text( densityBuoyancyCommonStrings.density, {
+        font: DensityBuoyancyCommonConstants.TITLE_FONT,
+        maxWidth: 160
+      } ),
       expandedProperty: model.densityReadoutExpandedProperty
     }, DensityBuoyancyCommonConstants.ACCORDION_BOX_OPTIONS ) );
 

@@ -26,17 +26,6 @@ import HorizontalCylinder from '../model/HorizontalCylinder.js';
 import Material from '../model/Material.js';
 import VerticalCylinder from '../model/VerticalCylinder.js';
 
-const kilogramsPatternString = densityBuoyancyCommonStrings.kilogramsPattern;
-const litersPatternString = densityBuoyancyCommonStrings.litersPattern;
-const materialAluminumString = densityBuoyancyCommonStrings.material.aluminum;
-const materialBrickString = densityBuoyancyCommonStrings.material.brick;
-const materialCopperString = densityBuoyancyCommonStrings.material.copper;
-const materialIceString = densityBuoyancyCommonStrings.material.ice;
-const materialPlatinumString = densityBuoyancyCommonStrings.material.platinum;
-const materialSteelString = densityBuoyancyCommonStrings.material.steel;
-const materialStyrofoamString = densityBuoyancyCommonStrings.material.styrofoam;
-const materialWoodString = densityBuoyancyCommonStrings.material.wood;
-
 class DebugEditNode extends VBox {
   /**
    * @param {Property.<Mass>} massProperty
@@ -70,25 +59,44 @@ class DebugEditNode extends VBox {
       derive: 'contactForceProperty'
     } );
 
+    const comboBoxItemTextOptions = {
+      font: DensityBuoyancyCommonConstants.COMBO_BOX_ITEM_FONT,
+      maxWidth: 160
+    };
     const comboBox = new ComboBox( [
-      new ComboBoxItem( new Text( materialAluminumString, { font: DensityBuoyancyCommonConstants.COMBO_BOX_ITEM_FONT } ), Material.ALUMINUM ),
-      new ComboBoxItem( new Text( materialBrickString, { font: DensityBuoyancyCommonConstants.COMBO_BOX_ITEM_FONT } ), Material.BRICK ),
-      new ComboBoxItem( new Text( materialCopperString, { font: DensityBuoyancyCommonConstants.COMBO_BOX_ITEM_FONT } ), Material.COPPER ),
-      new ComboBoxItem( new Text( materialIceString, { font: DensityBuoyancyCommonConstants.COMBO_BOX_ITEM_FONT } ), Material.ICE ),
-      new ComboBoxItem( new Text( materialPlatinumString, { font: DensityBuoyancyCommonConstants.COMBO_BOX_ITEM_FONT } ), Material.PLATINUM ),
-      new ComboBoxItem( new Text( materialSteelString, { font: DensityBuoyancyCommonConstants.COMBO_BOX_ITEM_FONT } ), Material.STEEL ),
-      new ComboBoxItem( new Text( materialStyrofoamString, { font: DensityBuoyancyCommonConstants.COMBO_BOX_ITEM_FONT } ), Material.STYROFOAM ),
-      new ComboBoxItem( new Text( materialWoodString, { font: DensityBuoyancyCommonConstants.COMBO_BOX_ITEM_FONT } ), Material.WOOD )
+      new ComboBoxItem( new Text( densityBuoyancyCommonStrings.material.aluminum, comboBoxItemTextOptions ), Material.ALUMINUM ),
+      new ComboBoxItem( new Text( densityBuoyancyCommonStrings.material.brick, comboBoxItemTextOptions ), Material.BRICK ),
+      new ComboBoxItem( new Text( densityBuoyancyCommonStrings.material.copper, comboBoxItemTextOptions ), Material.COPPER ),
+      new ComboBoxItem( new Text( densityBuoyancyCommonStrings.material.ice, comboBoxItemTextOptions ), Material.ICE ),
+      new ComboBoxItem( new Text( densityBuoyancyCommonStrings.material.platinum, comboBoxItemTextOptions ), Material.PLATINUM ),
+      new ComboBoxItem( new Text( densityBuoyancyCommonStrings.material.steel, comboBoxItemTextOptions ), Material.STEEL ),
+      new ComboBoxItem( new Text( densityBuoyancyCommonStrings.material.styrofoam, comboBoxItemTextOptions ), Material.STYROFOAM ),
+      new ComboBoxItem( new Text( densityBuoyancyCommonStrings.material.wood, comboBoxItemTextOptions ), Material.WOOD )
     ], materialProperty, listParent, {
       xMargin: 8,
       yMargin: 4
     } );
 
-    const massText = new Text( '', { font: new PhetFont( 10 ) } );
-    const volumeText = new Text( '', { font: new PhetFont( 10 ) } );
-    const gravityForceText = new Text( '', { font: new PhetFont( 10 ) } );
-    const buoyancyForceText = new Text( '', { font: new PhetFont( 10 ) } );
-    const contactForceText = new Text( '', { font: new PhetFont( 10 ) } );
+    const massText = new Text( '', {
+      font: new PhetFont( 10 ),
+      maxWidth: 160
+    } );
+    const volumeText = new Text( '', {
+      font: new PhetFont( 10 ),
+      maxWidth: 160
+    } );
+    const gravityForceText = new Text( '', {
+      font: new PhetFont( 10 ),
+      maxWidth: 160
+    } );
+    const buoyancyForceText = new Text( '', {
+      font: new PhetFont( 10 ),
+      maxWidth: 160
+    } );
+    const contactForceText = new Text( '', {
+      font: new PhetFont( 10 ),
+      maxWidth: 160
+    } );
 
     const readoutsContainer = new VBox( {
       spacing: 1,
@@ -103,12 +111,12 @@ class DebugEditNode extends VBox {
     } );
 
     massNumberProperty.link( mass => {
-      massText.text = `Mass: ${StringUtils.fillIn( kilogramsPatternString, {
+      massText.text = `Mass: ${StringUtils.fillIn( densityBuoyancyCommonStrings.kilogramsPattern, {
         kilograms: Utils.toFixed( mass, 6 )
       } )}`;
     } );
     volumeProperty.link( volume => {
-      volumeText.text = `Volume: ${StringUtils.fillIn( litersPatternString, {
+      volumeText.text = `Volume: ${StringUtils.fillIn( densityBuoyancyCommonStrings.litersPattern, {
         liters: Utils.toFixed( volume, 6 )
       } )}`;
     } );

@@ -26,12 +26,6 @@ import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js
 import Material from '../model/Material.js';
 import PrecisionSliderThumb from './PrecisionSliderThumb.js';
 
-const kilogramsPatternString = densityBuoyancyCommonStrings.kilogramsPattern;
-const litersPatternString = densityBuoyancyCommonStrings.litersPattern;
-const massString = densityBuoyancyCommonStrings.mass;
-const materialCustomString = densityBuoyancyCommonStrings.material.custom;
-const volumeString = densityBuoyancyCommonStrings.volume;
-
 // constants
 const LITERS_IN_CUBIC_METER = 1000;
 const CUSTOM_MATERIAL_PLACEHOLDER = null;
@@ -162,17 +156,24 @@ class MaterialMassVolumeControlNode extends VBox {
       reentrant: true
     } );
 
+    const comboMaxWidth = 160;
     const comboBox = new ComboBox( [
       ...materials.map( material => {
-        return new ComboBoxItem( new Text( material.name, { font: DensityBuoyancyCommonConstants.COMBO_BOX_ITEM_FONT } ), material );
+        return new ComboBoxItem( new Text( material.name, {
+          font: DensityBuoyancyCommonConstants.COMBO_BOX_ITEM_FONT,
+          maxWidth: comboMaxWidth
+        } ), material );
       } ),
-      new ComboBoxItem( new Text( materialCustomString, { font: DensityBuoyancyCommonConstants.COMBO_BOX_ITEM_FONT } ), CUSTOM_MATERIAL_PLACEHOLDER )
+      new ComboBoxItem( new Text( densityBuoyancyCommonStrings.material.custom, {
+        font: DensityBuoyancyCommonConstants.COMBO_BOX_ITEM_FONT,
+        maxWidth: comboMaxWidth
+      } ), CUSTOM_MATERIAL_PLACEHOLDER )
     ], comboBoxMaterialProperty, listParent, {
       xMargin: 8,
       yMargin: 4
     } );
 
-    const massNumberControl = new NumberControl( massString, massNumberProperty, new Range( options.minMass, options.maxMass ), merge( {
+    const massNumberControl = new NumberControl( densityBuoyancyCommonStrings.mass, massNumberProperty, new Range( options.minMass, options.maxMass ), merge( {
       sliderOptions: {
         enabledRangeProperty: enabledMassRangeProperty,
         thumbNode: new PrecisionSliderThumb( {
@@ -182,11 +183,12 @@ class MaterialMassVolumeControlNode extends VBox {
         constrainValue: value => Utils.toFixedNumber( value, 1 )
       },
       numberDisplayOptions: {
-        valuePattern: StringUtils.fillIn( kilogramsPatternString, {
+        valuePattern: StringUtils.fillIn( densityBuoyancyCommonStrings.kilogramsPattern, {
           kilograms: '{{value}}'
         } ),
         textOptions: {
-          font: new PhetFont( 14 )
+          font: new PhetFont( 14 ),
+          maxWidth: 200
         }
       },
       titleNodeOptions: {
@@ -194,7 +196,7 @@ class MaterialMassVolumeControlNode extends VBox {
         maxWidth: 70
       }
     }, MaterialMassVolumeControlNode.getNumberControlOptions() ) );
-    const volumeNumberControl = new NumberControl( volumeString, numberControlVolumeProperty, new Range( options.minVolumeLiters, options.maxVolumeLiters ), merge( {
+    const volumeNumberControl = new NumberControl( densityBuoyancyCommonStrings.volume, numberControlVolumeProperty, new Range( options.minVolumeLiters, options.maxVolumeLiters ), merge( {
       sliderOptions: {
         thumbNode: new PrecisionSliderThumb( {
           thumbFill: options.color
@@ -203,11 +205,12 @@ class MaterialMassVolumeControlNode extends VBox {
         constrainValue: value => Utils.toFixedNumber( value, 1 )
       },
       numberDisplayOptions: {
-        valuePattern: StringUtils.fillIn( litersPatternString, {
+        valuePattern: StringUtils.fillIn( densityBuoyancyCommonStrings.litersPattern, {
           liters: '{{value}}'
         } ),
         textOptions: {
-          font: new PhetFont( 14 )
+          font: new PhetFont( 14 ),
+          maxWidth: 200
         }
       },
       titleNodeOptions: {
@@ -245,7 +248,10 @@ class MaterialMassVolumeControlNode extends VBox {
       },
       layoutFunction: NumberControl.createLayoutFunction4( {
         // TODO: createBottomContent for custom? or no?
-      } )
+      } ),
+      titleNodeOptions: {
+        maxWidth: 160
+      }
     };
   }
 }

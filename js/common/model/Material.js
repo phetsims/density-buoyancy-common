@@ -12,41 +12,6 @@ import densityBuoyancyCommonStrings from '../../densityBuoyancyCommonStrings.js'
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonColorProfile from '../view/DensityBuoyancyCommonColorProfile.js';
 
-const materialAirString = densityBuoyancyCommonStrings.material.air;
-const materialAluminumString = densityBuoyancyCommonStrings.material.aluminum;
-const materialAppleString = densityBuoyancyCommonStrings.material.apple;
-const materialBrickString = densityBuoyancyCommonStrings.material.brick;
-const materialCementString = densityBuoyancyCommonStrings.material.cement;
-const materialCopperString = densityBuoyancyCommonStrings.material.copper;
-const materialCustomString = densityBuoyancyCommonStrings.material.custom;
-const materialDensityPString = densityBuoyancyCommonStrings.material.densityP;
-const materialDensityQString = densityBuoyancyCommonStrings.material.densityQ;
-const materialDensityRString = densityBuoyancyCommonStrings.material.densityR;
-const materialDensitySString = densityBuoyancyCommonStrings.material.densityS;
-const materialDensityXString = densityBuoyancyCommonStrings.material.densityX;
-const materialDensityYString = densityBuoyancyCommonStrings.material.densityY;
-const materialDiamondString = densityBuoyancyCommonStrings.material.diamond;
-const materialGasolineString = densityBuoyancyCommonStrings.material.gasoline;
-const materialGlassString = densityBuoyancyCommonStrings.material.glass;
-const materialGoldString = densityBuoyancyCommonStrings.material.gold;
-const materialHoneyString = densityBuoyancyCommonStrings.material.honey;
-const materialHumanString = densityBuoyancyCommonStrings.material.human;
-const materialIceString = densityBuoyancyCommonStrings.material.ice;
-const materialLeadString = densityBuoyancyCommonStrings.material.lead;
-const materialMercuryString = densityBuoyancyCommonStrings.material.mercury;
-const materialOilString = densityBuoyancyCommonStrings.material.oil;
-const materialPlatinumString = densityBuoyancyCommonStrings.material.platinum;
-const materialPyriteString = densityBuoyancyCommonStrings.material.pyrite;
-const materialSandString = densityBuoyancyCommonStrings.material.sand;
-const materialSeawaterString = densityBuoyancyCommonStrings.material.seawater;
-const materialSilverString = densityBuoyancyCommonStrings.material.silver;
-const materialSteelString = densityBuoyancyCommonStrings.material.steel;
-const materialStyrofoamString = densityBuoyancyCommonStrings.material.styrofoam;
-const materialTantalumString = densityBuoyancyCommonStrings.material.tantalum;
-const materialTitaniumString = densityBuoyancyCommonStrings.material.titanium;
-const materialWaterString = densityBuoyancyCommonStrings.material.water;
-const materialWoodString = densityBuoyancyCommonStrings.material.wood;
-
 class Material {
   /**
    * @param {Object} config
@@ -104,7 +69,7 @@ class Material {
    */
   static createCustomMaterial( config ) {
     return new Material( merge( {
-      name: materialCustomString,
+      name: densityBuoyancyCommonStrings.material.custom,
       custom: true
     }, config ) );
   }
@@ -140,164 +105,164 @@ class Material {
 
 // @public {Material} - "Solids"
 Material.ALUMINUM = new Material( {
-  name: materialAluminumString,
+  name: densityBuoyancyCommonStrings.material.aluminum,
   density: 2700
 } );
 Material.APPLE = new Material( {
-  name: materialAppleString,
+  name: densityBuoyancyCommonStrings.material.apple,
   // "Some Physical Properties of Apple" - Averaged the two cultivars' densities for this
   // http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.548.1131&rep=rep1&type=pdf
   density: 832
 } );
 Material.BRICK = new Material( {
-  name: materialBrickString,
+  name: densityBuoyancyCommonStrings.material.brick,
   density: 2000
 } );
 Material.CEMENT = new Material( {
-  name: materialCementString,
+  name: densityBuoyancyCommonStrings.material.cement,
   density: 3150,
   liquidColor: DensityBuoyancyCommonColorProfile.materialCementProperty
 } );
 Material.COPPER = new Material( {
-  name: materialCopperString,
+  name: densityBuoyancyCommonStrings.material.copper,
   density: 8960,
   liquidColor: DensityBuoyancyCommonColorProfile.materialCopperProperty
 } );
 Material.DIAMOND = new Material( {
-  name: materialDiamondString,
+  name: densityBuoyancyCommonStrings.material.diamond,
   density: 3510
 } );
 Material.GLASS = new Material( {
-  name: materialGlassString,
+  name: densityBuoyancyCommonStrings.material.glass,
   density: 2700
 } );
 Material.GOLD = new Material( {
-  name: materialGoldString,
+  name: densityBuoyancyCommonStrings.material.gold,
   density: 19320
 } );
 Material.HUMAN = new Material( {
-  name: materialHumanString,
+  name: densityBuoyancyCommonStrings.material.human,
   density: 950
 } );
 Material.ICE = new Material( {
-  name: materialIceString,
+  name: densityBuoyancyCommonStrings.material.ice,
   density: 919
 } );
 Material.LEAD = new Material( {
-  name: materialLeadString,
+  name: densityBuoyancyCommonStrings.material.lead,
   density: 11342,
   liquidColor: DensityBuoyancyCommonColorProfile.materialLeadProperty
 } );
 Material.PLATINUM = new Material( {
-  name: materialPlatinumString,
+  name: densityBuoyancyCommonStrings.material.platinum,
   density: 21450
 } );
 Material.PYRITE = new Material( {
-  name: materialPyriteString,
+  name: densityBuoyancyCommonStrings.material.pyrite,
   density: 5010
 } );
 Material.SILVER = new Material( {
-  name: materialSilverString,
+  name: densityBuoyancyCommonStrings.material.silver,
   density: 10490
 } );
 Material.STEEL = new Material( {
-  name: materialSteelString,
+  name: densityBuoyancyCommonStrings.material.steel,
   density: 7800
 } );
 Material.STYROFOAM = new Material( {
-  name: materialStyrofoamString,
+  name: densityBuoyancyCommonStrings.material.styrofoam,
   // From Flash version: between 25 and 200 according to http://wiki.answers.com/Q/What_is_the_density_of_styrofoam;
   // chose 150 so it isn't too low to show on slider, but not 200 so it's not half of wood
   density: 150
 } );
 Material.TANTALUM = new Material( {
-  name: materialTantalumString,
+  name: densityBuoyancyCommonStrings.material.tantalum,
   density: 16650
 } );
 Material.TITANIUM = new Material( {
-  name: materialTitaniumString,
+  name: densityBuoyancyCommonStrings.material.titanium,
   density: 4500
 } );
 Material.WOOD = new Material( {
-  name: materialWoodString,
+  name: densityBuoyancyCommonStrings.material.wood,
   density: 400
 } );
 
 // @public {Material} - "Liquids".
 Material.AIR = new Material( {
-  name: materialAirString,
+  name: densityBuoyancyCommonStrings.material.air,
   density: 1.2,
   viscosity: 0,
   liquidColor: DensityBuoyancyCommonColorProfile.materialAirProperty
 } );
 Material.DENSITY_P = new Material( {
-  name: materialDensityPString,
+  name: densityBuoyancyCommonStrings.material.densityP,
   density: 200,
   liquidColor: DensityBuoyancyCommonColorProfile.materialDensityPProperty
 } );
 Material.DENSITY_Q = new Material( {
-  name: materialDensityQString,
+  name: densityBuoyancyCommonStrings.material.densityQ,
   density: 4000,
   liquidColor: DensityBuoyancyCommonColorProfile.materialDensityQProperty
 } );
 Material.DENSITY_R = new Material( {
-  name: materialDensityRString,
+  name: densityBuoyancyCommonStrings.material.densityR,
   density: 200,
   liquidColor: DensityBuoyancyCommonColorProfile.materialDensityRProperty
 } );
 Material.DENSITY_S = new Material( {
-  name: materialDensitySString,
+  name: densityBuoyancyCommonStrings.material.densityS,
   density: 4000,
   liquidColor: DensityBuoyancyCommonColorProfile.materialDensitySProperty
 } );
 Material.DENSITY_X = new Material( {
-  name: materialDensityXString,
+  name: densityBuoyancyCommonStrings.material.densityX,
   density: 500,
   liquidColor: DensityBuoyancyCommonColorProfile.materialDensityXProperty
 } );
 Material.DENSITY_Y = new Material( {
-  name: materialDensityYString,
+  name: densityBuoyancyCommonStrings.material.densityY,
   density: 5000,
   liquidColor: DensityBuoyancyCommonColorProfile.materialDensityYProperty
 } );
 Material.GASOLINE = new Material( {
-  name: materialGasolineString,
+  name: densityBuoyancyCommonStrings.material.gasoline,
   density: 680,
   viscosity: 6e-4,
   liquidColor: DensityBuoyancyCommonColorProfile.materialGasolineProperty
 } );
 Material.HONEY = new Material( {
-  name: materialHoneyString,
+  name: densityBuoyancyCommonStrings.material.honey,
   density: 1440,
   viscosity: 0.03, // TODO: actual value around 2.5, but we can get away with this for animation
   liquidColor: DensityBuoyancyCommonColorProfile.materialHoneyProperty
 } );
 Material.MERCURY = new Material( {
-  name: materialMercuryString,
+  name: densityBuoyancyCommonStrings.material.mercury,
   density: 13593,
   viscosity: 1.53e-3,
   liquidColor: DensityBuoyancyCommonColorProfile.materialMercuryProperty
 } );
 Material.OIL = new Material( {
-  name: materialOilString,
+  name: densityBuoyancyCommonStrings.material.oil,
   density: 920,
   viscosity: 0.02, // Too much bigger and it won't work, not particularly physical
   liquidColor: DensityBuoyancyCommonColorProfile.materialOilProperty
 } );
 Material.SAND = new Material( {
-  name: materialSandString,
+  name: densityBuoyancyCommonStrings.material.sand,
   density: 1442,
   viscosity: 0.03, // Too much bigger and it won't work, not particularly physical
   liquidColor: DensityBuoyancyCommonColorProfile.materialSandProperty
 } );
 Material.SEAWATER = new Material( {
-  name: materialSeawaterString,
+  name: densityBuoyancyCommonStrings.material.seawater,
   density: 1029,
   viscosity: 1.88e-3,
   liquidColor: DensityBuoyancyCommonColorProfile.materialSeawaterProperty
 } );
 Material.WATER = new Material( {
-  name: materialWaterString,
+  name: densityBuoyancyCommonStrings.material.water,
   density: 1000,
   viscosity: 8.9e-4,
   liquidColor: DensityBuoyancyCommonColorProfile.materialWaterProperty

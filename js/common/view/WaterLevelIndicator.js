@@ -17,8 +17,6 @@ import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
 import DensityBuoyancyCommonColorProfile from './DensityBuoyancyCommonColorProfile.js';
 
-const litersPatternString = densityBuoyancyCommonStrings.litersPattern;
-
 class WaterLevelIndicator extends Node {
   /**
    * @param {Property.<number>} volumeProperty
@@ -35,7 +33,8 @@ class WaterLevelIndicator extends Node {
     const readoutText = new Text( '', {
       font: new PhetFont( {
         size: 18
-      } )
+      } ),
+      maxWidth: 200
     } );
 
     const readoutPanel = new Panel( readoutText, {
@@ -46,7 +45,7 @@ class WaterLevelIndicator extends Node {
     volumeProperty.link( volume => {
       const liters = 1000 * volume;
 
-      readoutText.text = StringUtils.fillIn( litersPatternString, {
+      readoutText.text = StringUtils.fillIn( densityBuoyancyCommonStrings.litersPattern, {
         liters: Utils.toFixed( liters, 2 )
       } );
 

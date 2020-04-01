@@ -17,9 +17,6 @@ import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
 import Scale from '../model/Scale.js';
 
-const kilogramsPatternString = densityBuoyancyCommonStrings.kilogramsPattern;
-const newtonsPatternString = densityBuoyancyCommonStrings.newtonsPattern;
-
 class ScaleReadoutNode extends Node {
   /**
    * @param {Scale} mass
@@ -32,7 +29,8 @@ class ScaleReadoutNode extends Node {
       font: new PhetFont( {
         size: 16,
         weight: 'bold'
-      } )
+      } ),
+      maxWidth: 200
     } );
     const readoutPanel = new Panel( readoutText, {
       cornerRadius: DensityBuoyancyCommonConstants.CORNER_RADIUS,
@@ -50,12 +48,12 @@ class ScaleReadoutNode extends Node {
     // @private {Multilink}
     this.scaleForceMultilink = Property.multilink( [ mass.scaleForceProperty, gravityProperty ], ( scaleForce, gravity ) => {
       if ( mass.displayType === Scale.DisplayType.NEWTONS ) {
-        readoutText.text = StringUtils.fillIn( newtonsPatternString, {
+        readoutText.text = StringUtils.fillIn( densityBuoyancyCommonStrings.newtonsPattern, {
           newtons: Utils.toFixed( scaleForce, 2 )
         } );
       }
       else {
-        readoutText.text = StringUtils.fillIn( kilogramsPatternString, {
+        readoutText.text = StringUtils.fillIn( densityBuoyancyCommonStrings.kilogramsPattern, {
           kilograms: gravity.value > 0 ? Utils.toFixed( scaleForce / gravity.value, 2 ) : '-'
         } );
       }

@@ -13,9 +13,6 @@ import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js
 import Gravity from '../model/Gravity.js';
 import ComboNumberControl from './ComboNumberControl.js';
 
-const gravityNameString = densityBuoyancyCommonStrings.gravity.name;
-const metersPerSecondSquaredPatternString = densityBuoyancyCommonStrings.metersPerSecondSquaredPattern;
-
 class GravityControlNode extends ComboNumberControl {
   /**
    * @param {Property.<Gravity>} gravityProperty
@@ -26,8 +23,8 @@ class GravityControlNode extends ComboNumberControl {
     const customValue = Gravity.createCustomGravity( 9.8 );
 
     super( {
-      title: gravityNameString,
-      valuePattern: metersPerSecondSquaredPatternString,
+      title: densityBuoyancyCommonStrings.gravity.name,
+      valuePattern: densityBuoyancyCommonStrings.metersPerSecondSquaredPattern,
       property: gravityProperty,
       range: new Range( 0, 25 ),
       toNumericValue: gravity => gravity.value,
@@ -41,7 +38,8 @@ class GravityControlNode extends ComboNumberControl {
         Gravity.PLANET_X,
         customValue
       ].map( gravity => new ComboBoxItem( new Text( gravity.name, {
-        font: DensityBuoyancyCommonConstants.COMBO_BOX_ITEM_FONT
+        font: DensityBuoyancyCommonConstants.COMBO_BOX_ITEM_FONT,
+        maxWidth: 160
       } ), gravity ) ),
       customValue: customValue,
       numberControlOptions: {

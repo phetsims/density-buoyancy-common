@@ -21,16 +21,11 @@ import densityBuoyancyCommonStrings from '../../densityBuoyancyCommonStrings.js'
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import BuoyancyIntroModel from '../model/BuoyancyIntroModel.js';
 
-const fluidString = densityBuoyancyCommonStrings.fluid;
-const modeSameDensityString = densityBuoyancyCommonStrings.mode.sameDensity;
-const modeSameMassString = densityBuoyancyCommonStrings.mode.sameMass;
-const modeSameVolumeString = densityBuoyancyCommonStrings.mode.sameVolume;
-
 // constants
 const modeStringMap = {
-  [ BuoyancyIntroModel.Mode.SAME_MASS.name ]: modeSameMassString,
-  [ BuoyancyIntroModel.Mode.SAME_VOLUME.name ]: modeSameVolumeString,
-  [ BuoyancyIntroModel.Mode.SAME_DENSITY.name ]: modeSameDensityString
+  [ BuoyancyIntroModel.Mode.SAME_MASS.name ]: densityBuoyancyCommonStrings.mode.sameMass,
+  [ BuoyancyIntroModel.Mode.SAME_VOLUME.name ]: densityBuoyancyCommonStrings.mode.sameVolume,
+  [ BuoyancyIntroModel.Mode.SAME_DENSITY.name ]: densityBuoyancyCommonStrings.mode.sameDensity
 };
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
 
@@ -50,7 +45,10 @@ class BuoyancyIntroScreenView extends DensityBuoyancyScreenView {
 
     const modeControl = new VerticalAquaRadioButtonGroup( model.modeProperty, BuoyancyIntroModel.Mode.VALUES.map( mode => {
       return {
-        node: new Text( modeStringMap[ mode.name ], { font: DensityBuoyancyCommonConstants.RADIO_BUTTON_FONT } ),
+        node: new Text( modeStringMap[ mode.name ], {
+          font: DensityBuoyancyCommonConstants.RADIO_BUTTON_FONT,
+          maxWidth: 160
+        } ),
         value: mode
       };
     } ) );
@@ -68,7 +66,8 @@ class BuoyancyIntroScreenView extends DensityBuoyancyScreenView {
     }, DensityBuoyancyCommonConstants.PANEL_OPTIONS ) ) );
 
     const radioButtonLabelOptions = {
-      font: new PhetFont( 14 )
+      font: new PhetFont( 14 ),
+      maxWidth: 120
     };
     const fluidBox = new HBox( {
       spacing: 20,
@@ -78,10 +77,11 @@ class BuoyancyIntroScreenView extends DensityBuoyancyScreenView {
         new AquaRadioButton( model.liquidMaterialProperty, Material.SEAWATER, new Text( Material.SEAWATER.name, radioButtonLabelOptions ) )
       ]
     } );
-    const fluidTitle = new Text( fluidString, {
+    const fluidTitle = new Text( densityBuoyancyCommonStrings.fluid, {
       font: new PhetFont( { size: 14, weight: 'bold' } ),
       right: fluidBox.left,
-      bottom: fluidBox.top - 3
+      bottom: fluidBox.top - 3,
+      maxWidth: 160
     } );
     this.addChild( new Panel( new Node( {
       children: [ fluidTitle, fluidBox ]

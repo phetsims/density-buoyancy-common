@@ -37,12 +37,6 @@ import Boat from '../model/Boat.js';
 import BuoyancyApplicationsModel from '../model/BuoyancyApplicationsModel.js';
 import DensityReadoutListNode from './DensityReadoutListNode.js';
 
-const airVolumeString = densityBuoyancyCommonStrings.airVolume;
-const boatVolumeString = densityBuoyancyCommonStrings.boatVolume;
-const densityString = densityBuoyancyCommonStrings.density;
-const litersPatternString = densityBuoyancyCommonStrings.litersPattern;
-const materialInsideString = densityBuoyancyCommonStrings.materialInside;
-
 // constants
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
 
@@ -95,7 +89,10 @@ class BuoyancyApplicationsScreenView extends DensityBuoyancyScreenView {
       maxVolumeLiters: 10
     } );
 
-    const airVolumeLabel = new Text( airVolumeString, { font: new PhetFont( 12 ) } );
+    const airVolumeLabel = new Text( densityBuoyancyCommonStrings.airVolume, {
+      font: new PhetFont( 12 ),
+      maxWidth: 160
+    } );
 
     const airLitersProperty = new DerivedProperty( [ model.bottle.interiorVolumeProperty ], volume => {
       return ( 0.01 - volume ) * 1000;
@@ -105,8 +102,9 @@ class BuoyancyApplicationsScreenView extends DensityBuoyancyScreenView {
       spacing: 10,
       align: 'left',
       children: [
-        new Text( materialInsideString, {
-          font: DensityBuoyancyCommonConstants.TITLE_FONT
+        new Text( densityBuoyancyCommonStrings.materialInside, {
+          font: DensityBuoyancyCommonConstants.TITLE_FONT,
+          maxWidth: 160
         } ),
         bottleControl,
         new HSeparator( bottleControl.width ),
@@ -114,12 +112,13 @@ class BuoyancyApplicationsScreenView extends DensityBuoyancyScreenView {
           children: [
             airVolumeLabel,
             new AlignBox( new NumberDisplay( airLitersProperty, new Range( 0, 10 ), {
-              valuePattern: StringUtils.fillIn( litersPatternString, {
+              valuePattern: StringUtils.fillIn( densityBuoyancyCommonStrings.litersPattern, {
                 liters: '{{value}}'
               } ),
               decimalPlaces: 2,
               textOptions: {
-                font: new PhetFont( 12 )
+                font: new PhetFont( 12 ),
+                maxWidth: 120
               }
             } ), {
               alignBounds: airVolumeLabel.bounds.withMaxX( bottleControl.width ),
@@ -154,17 +153,18 @@ class BuoyancyApplicationsScreenView extends DensityBuoyancyScreenView {
       children: [
         blockControlNode,
         new HSeparator( blockControlNode.width ),
-        new NumberControl( boatVolumeString, new DynamicProperty( new Property( model.boat.displacementVolumeProperty ), {
+        new NumberControl( densityBuoyancyCommonStrings.boatVolume, new DynamicProperty( new Property( model.boat.displacementVolumeProperty ), {
           map: cubicMeters => 1000 * cubicMeters,
           inverseMap: liters => liters / 1000,
           bidirectional: true
         } ), new Range( 0, 20 ), merge( {
           numberDisplayOptions: {
-            valuePattern: StringUtils.fillIn( litersPatternString, {
+            valuePattern: StringUtils.fillIn( densityBuoyancyCommonStrings.litersPattern, {
               liters: '{{value}}'
             } ),
             textOptions: {
-              font: DensityBuoyancyCommonConstants.READOUT_FONT
+              font: DensityBuoyancyCommonConstants.READOUT_FONT,
+              maxWidth: 120
             }
           }
         }, MaterialMassVolumeControlNode.getNumberControlOptions() ) )
@@ -215,7 +215,10 @@ class BuoyancyApplicationsScreenView extends DensityBuoyancyScreenView {
     } );
 
     const densityBox = new AccordionBox( densityContainer, merge( {
-      titleNode: new Text( densityString, { font: DensityBuoyancyCommonConstants.TITLE_FONT } ),
+      titleNode: new Text( densityBuoyancyCommonStrings.density, {
+        maxWidth: 160,
+        font: DensityBuoyancyCommonConstants.TITLE_FONT
+      } ),
       expandedProperty: model.densityReadoutExpandedProperty
     }, DensityBuoyancyCommonConstants.ACCORDION_BOX_OPTIONS ) );
 

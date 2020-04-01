@@ -19,16 +19,9 @@ import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
 import DensityBuoyancyCommonColorProfile from './DensityBuoyancyCommonColorProfile.js';
 
-const buoyancyString = densityBuoyancyCommonStrings.buoyancy;
-const contactString = densityBuoyancyCommonStrings.contact;
-const forcesString = densityBuoyancyCommonStrings.forces;
-const forceValuesString = densityBuoyancyCommonStrings.forceValues;
-const gravityNameString = densityBuoyancyCommonStrings.gravity.name;
-const massesString = densityBuoyancyCommonStrings.masses;
-
 // constants
 const arrowSpacing = 15;
-const maxWidth = 300;
+const maxWidth = 200;
 const arrowLength = 60;
 const arrowOptions = {
   stroke: null,
@@ -57,7 +50,7 @@ class DisplayOptionsNode extends VBox {
 
     const forceAlignGroup = new AlignGroup();
 
-    const forcesText = new Text( forcesString, {
+    const forcesText = new Text( densityBuoyancyCommonStrings.forces, {
       font: DensityBuoyancyCommonConstants.TITLE_FONT,
       maxWidth: maxWidth
     } );
@@ -65,7 +58,7 @@ class DisplayOptionsNode extends VBox {
     const gravityNode = new HBox( {
       spacing: arrowSpacing,
       children: [
-        new AlignBox( new Checkbox( new Text( gravityNameString, labelOptions ), model.showGravityForceProperty, checkboxOptions ), {
+        new AlignBox( new Checkbox( new Text( densityBuoyancyCommonStrings.gravity.name, labelOptions ), model.showGravityForceProperty, checkboxOptions ), {
           group: forceAlignGroup,
           xAlign: 'left'
         } ),
@@ -78,7 +71,7 @@ class DisplayOptionsNode extends VBox {
     const buoyancyNode = new HBox( {
       spacing: arrowSpacing,
       children: [
-        new AlignBox( new Checkbox( new Text( buoyancyString, labelOptions ), model.showBuoyancyForceProperty, checkboxOptions ), {
+        new AlignBox( new Checkbox( new Text( densityBuoyancyCommonStrings.buoyancy, labelOptions ), model.showBuoyancyForceProperty, checkboxOptions ), {
           group: forceAlignGroup,
           xAlign: 'left'
         } ),
@@ -91,7 +84,7 @@ class DisplayOptionsNode extends VBox {
     const contactNode = new HBox( {
       spacing: arrowSpacing,
       children: [
-        new AlignBox( new Checkbox( new Text( contactString, labelOptions ), model.showContactForceProperty, checkboxOptions ), {
+        new AlignBox( new Checkbox( new Text( densityBuoyancyCommonStrings.contact, labelOptions ), model.showContactForceProperty, checkboxOptions ), {
           group: forceAlignGroup,
           xAlign: 'left'
         } ),
@@ -101,8 +94,8 @@ class DisplayOptionsNode extends VBox {
       ]
     } );
 
-    const massesNode = new Checkbox( new Text( massesString, labelOptions ), model.showMassesProperty, checkboxOptions );
-    const forceValuesNode = new Checkbox( new Text( forceValuesString, labelOptions ), model.showForceValuesProperty, checkboxOptions );
+    const massesNode = new Checkbox( new Text( densityBuoyancyCommonStrings.masses, labelOptions ), model.showMassesProperty, checkboxOptions );
+    const forceValuesNode = new Checkbox( new Text( densityBuoyancyCommonStrings.forceValues, labelOptions ), model.showForceValuesProperty, checkboxOptions );
 
     const separator = new Line( 0, 0, Math.max(
       forcesText.width,

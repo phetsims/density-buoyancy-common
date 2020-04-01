@@ -13,9 +13,6 @@ import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js
 import Material from '../model/Material.js';
 import ComboNumberControl from './ComboNumberControl.js';
 
-const fluidDensityString = densityBuoyancyCommonStrings.fluidDensity;
-const kilogramsPerLiterPatternString = densityBuoyancyCommonStrings.kilogramsPerLiterPattern;
-
 class DensityControlNode extends ComboNumberControl {
   /**
    * @param {Property.<Material>} liquidMaterialProperty
@@ -28,8 +25,8 @@ class DensityControlNode extends ComboNumberControl {
     } );
 
     super( {
-      title: fluidDensityString,
-      valuePattern: kilogramsPerLiterPatternString,
+      title: densityBuoyancyCommonStrings.fluidDensity,
+      valuePattern: densityBuoyancyCommonStrings.kilogramsPerLiterPattern,
       property: liquidMaterialProperty,
       range: new Range( 0, 15 ),
       toNumericValue: material => material.density / 1000,
@@ -42,7 +39,8 @@ class DensityControlNode extends ComboNumberControl {
         ...materials,
         customValue
       ].map( material => new ComboBoxItem( new Text( material.name, {
-        font: DensityBuoyancyCommonConstants.COMBO_BOX_ITEM_FONT
+        font: DensityBuoyancyCommonConstants.COMBO_BOX_ITEM_FONT,
+        maxWidth: 160
       } ), material ) ),
       customValue: customValue,
       numberControlOptions: {

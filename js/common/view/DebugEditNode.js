@@ -32,6 +32,7 @@ const materialAluminumString = densityBuoyancyCommonStrings.material.aluminum;
 const materialBrickString = densityBuoyancyCommonStrings.material.brick;
 const materialCopperString = densityBuoyancyCommonStrings.material.copper;
 const materialIceString = densityBuoyancyCommonStrings.material.ice;
+const materialPlatinumString = densityBuoyancyCommonStrings.material.platinum;
 const materialSteelString = densityBuoyancyCommonStrings.material.steel;
 const materialStyrofoamString = densityBuoyancyCommonStrings.material.styrofoam;
 const materialWoodString = densityBuoyancyCommonStrings.material.wood;
@@ -74,6 +75,7 @@ class DebugEditNode extends VBox {
       new ComboBoxItem( new Text( materialBrickString, { font: DensityBuoyancyCommonConstants.COMBO_BOX_ITEM_FONT } ), Material.BRICK ),
       new ComboBoxItem( new Text( materialCopperString, { font: DensityBuoyancyCommonConstants.COMBO_BOX_ITEM_FONT } ), Material.COPPER ),
       new ComboBoxItem( new Text( materialIceString, { font: DensityBuoyancyCommonConstants.COMBO_BOX_ITEM_FONT } ), Material.ICE ),
+      new ComboBoxItem( new Text( materialPlatinumString, { font: DensityBuoyancyCommonConstants.COMBO_BOX_ITEM_FONT } ), Material.PLATINUM ),
       new ComboBoxItem( new Text( materialSteelString, { font: DensityBuoyancyCommonConstants.COMBO_BOX_ITEM_FONT } ), Material.STEEL ),
       new ComboBoxItem( new Text( materialStyrofoamString, { font: DensityBuoyancyCommonConstants.COMBO_BOX_ITEM_FONT } ), Material.STYROFOAM ),
       new ComboBoxItem( new Text( materialWoodString, { font: DensityBuoyancyCommonConstants.COMBO_BOX_ITEM_FONT } ), Material.WOOD )

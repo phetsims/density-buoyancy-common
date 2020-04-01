@@ -38,6 +38,7 @@
         "preload": [
           "../sherpa/lib/matter-0.14.2.js",
           "../sherpa/lib/p2-0.7.1.js",
+          "../sherpa/lib/planck-0.3.0-rc.2.js",
           "../sherpa/lib/three-r104.js"
         ]
       },
@@ -46,7 +47,9 @@
         "globals": {
           "Matter": false,
           "p2": false,
-          "THREE": false
+          "THREE": false,
+          "planck": false,
+          "decomp": false
         }
       }
     };
@@ -103,6 +106,7 @@
     '../chipper/js/SimVersion.js',
     '../sherpa/lib/matter-0.14.2.js',
     '../sherpa/lib/p2-0.7.1.js',
+    '../sherpa/lib/planck-0.3.0-rc.2.js',
     '../sherpa/lib/three-r104.js',
     '../sherpa/lib/qunit-2.4.1.js',
     '../aqua/js/qunit-connector.js'
@@ -114,7 +118,6 @@
     ] );
   }
 
-  // TODO: es6 modules won't need a "main" param in this function
   // Loads a synchronously-executed asynchronously-downloaded script tag, with optional data-main parameter.
   // See http://www.html5rocks.com/en/tutorials/speed/script-loading/ for more about script loading. It helps to
   // load all of the scripts with this method, so they are treated the same (and placed in the correct execution
@@ -128,13 +131,13 @@
   };
 
   // Kick off string loading immediately
-  loadURL( '../chipper/js/load-runtime-strings.js' );
+  loadURL( '../chipper/js/load-unbuilt-strings.js' );
 
   // Queue all of the preloads to be loaded.
   preloads.forEach( preload => loadURL( preload ) );
 
   // Module loading in compilation-free (development) mode will be kicked off once strings are loaded.
-  // This is done in load-runtime-strings.js
+  // This is done in load-unbuilt-strings.js
   window.phet.chipper.loadModules = () => loadURL( 'js/density-buoyancy-common-tests.js', 'module' );
 </script>
 </body>

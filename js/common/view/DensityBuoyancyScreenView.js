@@ -763,11 +763,27 @@ class DensityBuoyancyScreenView extends ScreenView {
   }
 
   /**
+   * Returns an icon meant to be used as a fallback in case webgl is not available.
+   * @private
+   *
+   * @returns {Node}
+   */
+  static getFallbackIcon() {
+    return new Rectangle( 0, 0, Screen.MINIMUM_HOME_SCREEN_ICON_SIZE.width, Screen.MINIMUM_HOME_SCREEN_ICON_SIZE.height, {
+      fill: 'gray'
+    } );
+  }
+
+  /**
    * @public
    *
    * @returns {Node}
    */
   static getDensityIntroIcon() {
+    if ( !ThreeUtils.isWebGLEnabled() ) {
+      return DensityBuoyancyScreenView.getFallbackIcon();
+    }
+
     return DensityBuoyancyScreenView.getAngledIcon( 5.5, new Vector3( 0, 0, 0 ), ( scene, renderer ) => {
 
       const boxGeometry = new THREE.BoxGeometry( 0.1, 0.1, 0.1 );
@@ -806,6 +822,10 @@ class DensityBuoyancyScreenView extends ScreenView {
    * @returns {Node}
    */
   static getDensityCompareIcon() {
+    if ( !ThreeUtils.isWebGLEnabled() ) {
+      return DensityBuoyancyScreenView.getFallbackIcon();
+    }
+
     return DensityBuoyancyScreenView.getAngledIcon( 4.6, new Vector3( 0, -0.02, 0 ), scene => {
 
       const boxGeometry = new THREE.BoxGeometry( 0.1, 0.1, 0.1 );
@@ -844,6 +864,10 @@ class DensityBuoyancyScreenView extends ScreenView {
    * @returns {Node}
    */
   static getDensityMysteryIcon() {
+    if ( !ThreeUtils.isWebGLEnabled() ) {
+      return DensityBuoyancyScreenView.getFallbackIcon();
+    }
+
     return DensityBuoyancyScreenView.getAngledIcon( 4, new Vector3( -0.2, -0.01, 0 ), scene => {
 
       const boxGeometry = new THREE.BoxGeometry( 0.1, 0.1, 0.1 );

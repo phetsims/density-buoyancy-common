@@ -263,6 +263,10 @@ class BuoyancyApplicationsScreenView extends DensityBuoyancyScreenView {
   step( dt ) {
     super.step( dt );
 
+    if ( !this.enabled ) {
+      return;
+    }
+
     this.boatMesh.rotation.y += dt * 0.5;
     this.boatMesh.rotation.x += dt * 0.1;
   }

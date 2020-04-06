@@ -38,20 +38,30 @@ class P2Engine extends Engine {
     // @private {Object} - Maps {number} body.id => {p2.Body}
     this.nullBodyMap = {};
 
-    this.world.addContactMaterial( new p2.ContactMaterial( groundMaterial, dynamicMaterial, {
-      // no bounce is 0
+    // restitution - no bounce is 0, default is 0
+    // stiffness default 1e6, Number.POSITIVE_INFINITy maybe?
+    //  Saw comment "We need infinite stiffness to get exact restitution" online
+    // relaxation default is 4
+
+    this.world.addContactMaterial( new p2.ContactMaterial( groundMaterial, groundMaterial, {
       restitution: 0,
-
-      // TODO: try Number.MAX_VALUE? Saw comment "We need infinite stiffness to get exact restitution" online
-      stiffness: Number.POSITIVE_INFINITY,
-
-      // default is 4?
-      relaxation: 0.4
+      stiffness: 1e6,
+      relaxation: 1
+    } ) );
+    this.world.addContactMaterial( new p2.ContactMaterial( groundMaterial, dynamicMaterial, {
+      restitution: 0,
+      stiffness: 1e6,
+      relaxation: 1
+    } ) );
+    this.world.addContactMaterial( new p2.ContactMaterial( dynamicMaterial, groundMaterial, {
+      restitution: 0,
+      stiffness: 1e6,
+      relaxation: 1
     } ) );
     this.world.addContactMaterial( new p2.ContactMaterial( dynamicMaterial, dynamicMaterial, {
       restitution: 0,
-      stiffness: Number.POSITIVE_INFINITY,
-      relaxation: 0.5
+      stiffness: 1e6,
+      relaxation: 1
     } ) );
   }
 
@@ -292,7 +302,9 @@ class P2Engine extends Engine {
     body.fromPolygon( vertices.map( P2Engine.vectorToP2 ) );
 
     // Workaround, since using Convex wasn't working
-    body.shapes[ 0 ].material = groundMaterial;
+    body.shapes.forEach( shape => {
+      shape.material = groundMaterial;
+    } );
 
     return body;
   }
@@ -374,8 +386,11 @@ class P2Engine extends Engine {
     if ( workaround ) {
       body.fromPolygon( vertices.map( v => p2.vec2.fromValues( v.x * SCALE, v.y * SCALE ) ) );
 
+      // TODO: can we commonize code?
       // Workaround, since using Convex wasn't working
-      body.shapes[ 0 ].material = dynamicMaterial;
+      body.shapes.forEach( shape => {
+        shape.material = groundMaterial;
+      } );
     }
     else {
       const shape = new p2.Convex( {

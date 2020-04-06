@@ -6,7 +6,6 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
-import Matrix3 from '../../../../dot/js/Matrix3.js';
 import merge from '../../../../phet-core/js/merge.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 
@@ -83,17 +82,6 @@ class Engine {
    */
   bodyGetStepMatrixTransform( body, matrix ) {
     throw new Error( 'unimplemented' );
-  }
-
-  /**
-   * Returns the transformation matrix of the given body.
-   * @public
-   *
-   * @param {Engine.Body} body
-   * @returns {Matrix3}
-   */
-  bodyGetMatrix( body ) {
-    return this.bodyGetMatrixTransform( body, new Matrix3() );
   }
 
   /**

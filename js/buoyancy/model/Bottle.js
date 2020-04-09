@@ -76,8 +76,8 @@ import ThreeUtils from '../../../../mobius/js/ThreeUtils.js';
 import merge from '../../../../phet-core/js/merge.js';
 import Mass from '../../common/model/Mass.js';
 import Material from '../../common/model/Material.js';
-import densityBuoyancyCommonStrings from '../../densityBuoyancyCommonStrings.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
+import densityBuoyancyCommonStrings from '../../densityBuoyancyCommonStrings.js';
 
 // constants (in logical coordinates)
 const BODY_CORNER_RADIUS = 0.02; // Used both between the taper/body and between the body/base

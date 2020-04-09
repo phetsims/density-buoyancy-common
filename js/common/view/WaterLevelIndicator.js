@@ -12,8 +12,8 @@ import Node from '../../../../scenery/js/nodes/Node.js';
 import Path from '../../../../scenery/js/nodes/Path.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
 import Panel from '../../../../sun/js/Panel.js';
-import densityBuoyancyCommonStrings from '../../densityBuoyancyCommonStrings.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
+import densityBuoyancyCommonStrings from '../../densityBuoyancyCommonStrings.js';
 import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
 import DensityBuoyancyCommonColorProfile from './DensityBuoyancyCommonColorProfile.js';
 

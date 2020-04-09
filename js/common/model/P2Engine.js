@@ -13,7 +13,7 @@ import Engine from './Engine.js';
 
 // constants
 const FIXED_TIME_STEP = 1 / 60;
-const MAX_SUB_STEPS = 10;
+const MAX_SUB_STEPS = 30;
 const SCALE = 5;
 
 const groundMaterial = new p2.Material();
@@ -73,6 +73,8 @@ class P2Engine extends Engine {
    * @param {number} dt
    */
   step( dt ) {
+    assert && Engine.log( '[step]' );
+
     this.world.step( FIXED_TIME_STEP, dt, MAX_SUB_STEPS );
     this.interpolationRatio = ( this.world.accumulator % FIXED_TIME_STEP ) / FIXED_TIME_STEP;
   }

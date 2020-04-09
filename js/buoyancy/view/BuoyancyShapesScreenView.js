@@ -20,8 +20,8 @@ import DensityControlNode from '../../common/view/DensityControlNode.js';
 import DisplayOptionsNode from '../../common/view/DisplayOptionsNode.js';
 import PrimarySecondaryPanelsNode from '../../common/view/PrimarySecondaryPanelsNode.js';
 import SecondaryMassScreenView from '../../common/view/SecondaryMassScreenView.js';
-import densityBuoyancyCommonStrings from '../../densityBuoyancyCommonStrings.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
+import densityBuoyancyCommonStrings from '../../densityBuoyancyCommonStrings.js';
 import DensityReadoutListNode from './DensityReadoutListNode.js';
 import ShapeSizeControlNode from './ShapeSizeControlNode.js';
 

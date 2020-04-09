@@ -8,14 +8,14 @@ import Utils from '../../../../dot/js/Utils.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import NodeTexture from '../../../../mobius/js/NodeTexture.js';
 import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
-import SceneryUtils from '../../../../scenery/js/util/Utils.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import Node from '../../../../scenery/js/nodes/Node.js';
 import Rectangle from '../../../../scenery/js/nodes/Rectangle.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
+import SceneryUtils from '../../../../scenery/js/util/Utils.js';
 import Panel from '../../../../sun/js/Panel.js';
-import densityBuoyancyCommonStrings from '../../densityBuoyancyCommonStrings.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
+import densityBuoyancyCommonStrings from '../../densityBuoyancyCommonStrings.js';
 import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
 import DensityBuoyancyCommonColorProfile from './DensityBuoyancyCommonColorProfile.js';
 

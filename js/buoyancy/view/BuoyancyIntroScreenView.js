@@ -17,8 +17,8 @@ import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonCo
 import Material from '../../common/model/Material.js';
 import DensityBuoyancyScreenView from '../../common/view/DensityBuoyancyScreenView.js';
 import DisplayOptionsNode from '../../common/view/DisplayOptionsNode.js';
-import densityBuoyancyCommonStrings from '../../densityBuoyancyCommonStrings.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
+import densityBuoyancyCommonStrings from '../../densityBuoyancyCommonStrings.js';
 import BuoyancyIntroModel from '../model/BuoyancyIntroModel.js';
 
 // constants

@@ -13,9 +13,11 @@ const DensityBuoyancyCommonQueryParameters = QueryStringMachine.getAll( {
     type: 'string',
     defaultValue: 'p2'
   },
+  engineLog: {
+    type: 'flag'
+  },
   engineDebug: {
-    type: 'boolean',
-    defaultValue: false
+    type: 'flag'
   },
   poolWidthMultiplier: {
     type: 'number',

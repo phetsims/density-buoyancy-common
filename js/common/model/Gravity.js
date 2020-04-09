@@ -5,8 +5,8 @@
  */
 
 import merge from '../../../../phet-core/js/merge.js';
-import densityBuoyancyCommonStrings from '../../densityBuoyancyCommonStrings.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
+import densityBuoyancyCommonStrings from '../../densityBuoyancyCommonStrings.js';
 
 class Gravity {
   /**

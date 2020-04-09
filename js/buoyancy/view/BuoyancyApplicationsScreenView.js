@@ -31,8 +31,8 @@ import DensityBuoyancyScreenView from '../../common/view/DensityBuoyancyScreenVi
 import DensityControlNode from '../../common/view/DensityControlNode.js';
 import DisplayOptionsNode from '../../common/view/DisplayOptionsNode.js';
 import MaterialMassVolumeControlNode from '../../common/view/MaterialMassVolumeControlNode.js';
-import densityBuoyancyCommonStrings from '../../densityBuoyancyCommonStrings.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
+import densityBuoyancyCommonStrings from '../../densityBuoyancyCommonStrings.js';
 import Boat from '../model/Boat.js';
 import BuoyancyApplicationsModel from '../model/BuoyancyApplicationsModel.js';
 import DensityReadoutListNode from './DensityReadoutListNode.js';

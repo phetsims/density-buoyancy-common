@@ -20,8 +20,8 @@ class SecondaryMassScreenView extends DensityBuoyancyScreenView {
 
     this.addChild( this.secondMassVisibleControl );
 
-    this.rightBox.on( 'transform', () => this.positionSecondMassControl() );
-    this.on( 'transform', () => this.positionSecondMassControl() );
+    this.rightBox.transformEmitter.addListener( () => this.positionSecondMassControl() );
+    this.transformEmitter.addListener( () => this.positionSecondMassControl() );
   }
 
   /**

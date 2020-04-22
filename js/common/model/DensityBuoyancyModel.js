@@ -70,6 +70,12 @@ class DensityBuoyancyModel {
       10, 0, 0.2
     );
 
+    // @public {Bounds3} - We'll keep blocks within these bounds, to generally stay in-screen
+    this.constraintBounds = new Bounds3(
+      -0.875, 0, 0,
+      0.875, 4, 0
+    );
+
     if ( DensityBuoyancyCommonQueryParameters.poolWidthMultiplier !== 1 ) {
       const halfX = DensityBuoyancyCommonQueryParameters.poolWidthMultiplier * 0.45;
       const halfZ = 0.15 / ( 2 * halfX * POOL_HEIGHT * 2 );
@@ -97,6 +103,18 @@ class DensityBuoyancyModel {
       new Vector2( this.groundBounds.minX, this.groundBounds.maxY )
     ];
 
+    // @public {Array.<Vector2>}
+    this.ceilingPoints = [
+      new Vector2( this.constraintBounds.maxX, this.constraintBounds.minY ),
+      new Vector2( this.constraintBounds.maxX + 1, this.constraintBounds.minY ),
+      new Vector2( this.constraintBounds.maxX + 1, this.constraintBounds.maxY + 1 ),
+      new Vector2( this.constraintBounds.minX - 1, this.constraintBounds.maxY + 1 ),
+      new Vector2( this.constraintBounds.minX - 1, this.constraintBounds.minY ),
+      new Vector2( this.constraintBounds.minX, this.constraintBounds.minY ),
+      new Vector2( this.constraintBounds.minX, this.constraintBounds.maxY ),
+      new Vector2( this.constraintBounds.maxX, this.constraintBounds.maxY )
+    ];
+
     // @public {Property.<number>} - in m^3
     this.liquidVolumeProperty = new NumberProperty( 0.1 );
 
@@ -112,6 +130,10 @@ class DensityBuoyancyModel {
     // @public {Engine.Body}
     this.groundBody = this.engine.createGround( this.groundPoints );
     this.engine.addBody( this.groundBody );
+
+    // @public {Engine.Body}
+    this.ceilingBody = this.engine.createGround( this.ceilingPoints );
+    this.engine.addBody( this.ceilingBody );
 
     // @public {ObservableArray.<Mass>}
     this.masses = new ObservableArray();

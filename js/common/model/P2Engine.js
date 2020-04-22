@@ -12,7 +12,7 @@ import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import Engine from './Engine.js';
 
 // constants
-const FIXED_TIME_STEP = 1 / 60;
+const FIXED_TIME_STEP = 1 / 120;
 const MAX_SUB_STEPS = 30;
 const SCALE = 5;
 
@@ -450,7 +450,7 @@ class P2Engine extends Engine {
     const pointerConstraint = new p2.RevoluteConstraint( nullBody, body, {
       localPivotA: globalPoint,
       localPivotB: localPoint,
-      maxForce: 1000 * body.mass
+      maxForce: 5000 * body.mass
     } );
     this.pointerConstraintMap[ body.id ] = pointerConstraint;
     this.world.addConstraint( pointerConstraint );

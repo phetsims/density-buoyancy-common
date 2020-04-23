@@ -104,7 +104,7 @@ class DensityBuoyancyModel {
     ];
 
     // @public {Array.<Vector2>}
-    this.ceilingPoints = [
+    this.barrierPoints = [
       new Vector2( this.constraintBounds.maxX, this.constraintBounds.minY ),
       new Vector2( this.constraintBounds.maxX + 1, this.constraintBounds.minY ),
       new Vector2( this.constraintBounds.maxX + 1, this.constraintBounds.maxY + 1 ),
@@ -132,8 +132,8 @@ class DensityBuoyancyModel {
     this.engine.addBody( this.groundBody );
 
     // @public {Engine.Body}
-    this.ceilingBody = this.engine.createGround( this.ceilingPoints );
-    this.engine.addBody( this.ceilingBody );
+    this.barrierBody = this.engine.createBarrier( this.barrierPoints );
+    this.engine.addBody( this.barrierBody );
 
     // @public {ObservableArray.<Mass>}
     this.masses = new ObservableArray();

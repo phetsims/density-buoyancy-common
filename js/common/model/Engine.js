@@ -199,6 +199,16 @@ class Engine {
   }
 
   /**
+   * Creates a (static) barrier body with the given vertices.
+   * @public
+   *
+   * @param {Array.<Vector2>} vertices
+   * @returns {Engine.Body}
+   */
+  createBarrier( vertices ) {
+  }
+
+  /**
    * Creates a (dynamic) box body, with the origin at the center of the box.
    * @public
    *

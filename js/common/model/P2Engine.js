@@ -17,6 +17,7 @@ const MAX_SUB_STEPS = 30;
 const SCALE = 5;
 
 const groundMaterial = new p2.Material();
+const barrierMaterial = new p2.Material();
 const dynamicMaterial = new p2.Material();
 
 class P2Engine extends Engine {
@@ -43,17 +44,7 @@ class P2Engine extends Engine {
     //  Saw comment "We need infinite stiffness to get exact restitution" online
     // relaxation default is 4
 
-    this.world.addContactMaterial( new p2.ContactMaterial( groundMaterial, groundMaterial, {
-      restitution: 0,
-      stiffness: 1e6,
-      relaxation: 1
-    } ) );
     this.world.addContactMaterial( new p2.ContactMaterial( groundMaterial, dynamicMaterial, {
-      restitution: 0,
-      stiffness: 1e6,
-      relaxation: 1
-    } ) );
-    this.world.addContactMaterial( new p2.ContactMaterial( dynamicMaterial, groundMaterial, {
       restitution: 0,
       stiffness: 1e6,
       relaxation: 1
@@ -62,6 +53,11 @@ class P2Engine extends Engine {
       restitution: 0,
       stiffness: 1e6,
       relaxation: 1
+    } ) );
+    this.world.addContactMaterial( new p2.ContactMaterial( barrierMaterial, dynamicMaterial, {
+      restitution: 0,
+      stiffness: 1e6,
+      relaxation: 4
     } ) );
   }
 
@@ -306,6 +302,30 @@ class P2Engine extends Engine {
     // Workaround, since using Convex wasn't working
     body.shapes.forEach( shape => {
       shape.material = groundMaterial;
+    } );
+
+    return body;
+  }
+
+  /**
+   * Creates a (static) barrier body with the given vertices.
+   * @public
+   * @override
+   *
+   * @param {Array.<Vector2>} vertices
+   * @returns {Engine.Body}
+   */
+  createBarrier( vertices ) {
+    const body = new p2.Body( {
+      type: p2.Body.STATIC,
+      mass: 0
+    } );
+
+    body.fromPolygon( vertices.map( P2Engine.vectorToP2 ) );
+
+    // Workaround, since using Convex wasn't working
+    body.shapes.forEach( shape => {
+      shape.material = barrierMaterial;
     } );
 
     return body;

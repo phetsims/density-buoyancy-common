@@ -36,7 +36,10 @@ class DensityBuoyancyModel {
   constructor( tandem, options ) {
     options = merge( {
       // {boolean}
-      showMassesDefault: false
+      showMassesDefault: false,
+
+      constraintMinX: -0.875,
+      constraintMaxX: 0.875
     }, options );
 
     // @public {Property.<boolean>}
@@ -72,8 +75,8 @@ class DensityBuoyancyModel {
 
     // @public {Bounds3} - We'll keep blocks within these bounds, to generally stay in-screen
     this.constraintBounds = new Bounds3(
-      -0.875, 0, 0,
-      0.875, 4, 0
+      options.constraintMinX, 0, 0,
+      options.constraintMaxX, 4, 0
     );
 
     if ( DensityBuoyancyCommonQueryParameters.poolWidthMultiplier !== 1 ) {

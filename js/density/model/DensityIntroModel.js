@@ -18,7 +18,9 @@ class DensityIntroModel extends DensityBuoyancyModel {
    */
   constructor( tandem ) {
 
-    super( tandem );
+    super( tandem, {
+      constraintMaxX: 0.45
+    } );
 
     // @public {Property.<boolean>}
     this.secondaryMassVisibleProperty = new BooleanProperty( false );

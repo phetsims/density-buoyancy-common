@@ -87,7 +87,7 @@ class MaterialMassVolumeControlNode extends VBox {
     const numberControlVolumeProperty = new NumberProperty( volumeProperty.value * LITERS_IN_CUBIC_METER );
 
     numberControlVolumeProperty.lazyLink( liters => {
-      if ( !modelVolumeChanging ) {
+      if ( !modelVolumeChanging && !userMassChanging ) {
         const cubicMeters = liters / LITERS_IN_CUBIC_METER;
 
         userVolumeChanging = true;
@@ -115,7 +115,7 @@ class MaterialMassVolumeControlNode extends VBox {
     } );
 
     massNumberProperty.lazyLink( mass => {
-      if ( !modelMassChanging ) {
+      if ( !modelMassChanging && !userVolumeChanging ) {
         userMassChanging = true;
 
         if ( materialProperty.value.custom ) {

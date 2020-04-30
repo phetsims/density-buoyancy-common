@@ -175,7 +175,6 @@ class MaterialMassVolumeControlNode extends VBox {
 
     const massNumberControl = new NumberControl( densityBuoyancyCommonStrings.mass, massNumberProperty, new Range( options.minMass, options.maxMass ), merge( {
       sliderOptions: {
-        enabledRangeProperty: enabledMassRangeProperty,
         thumbNode: new PrecisionSliderThumb( {
           thumbFill: options.color
         } ),
@@ -194,7 +193,8 @@ class MaterialMassVolumeControlNode extends VBox {
       titleNodeOptions: {
         font: new PhetFont( { size: 14, weight: 'bold' } ),
         maxWidth: 70
-      }
+      },
+      enabledRangeProperty: enabledMassRangeProperty
     }, MaterialMassVolumeControlNode.getNumberControlOptions() ) );
     const volumeNumberControl = new NumberControl( densityBuoyancyCommonStrings.volume, numberControlVolumeProperty, new Range( options.minVolumeLiters, options.maxVolumeLiters ), merge( {
       sliderOptions: {

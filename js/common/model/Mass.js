@@ -234,6 +234,9 @@ class Mass {
     return this.getDisplacedVolume( liquidLevel );
   }
 
+  /**
+   * Reads transform/velocity
+   */
   readData() {
     this.engine.bodyGetMatrixTransform( this.body, this.matrix );
 

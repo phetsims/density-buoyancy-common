@@ -40,7 +40,7 @@ class VerticalCylinder extends Mass {
     this.radiusProperty = new NumberProperty( radius );
     this.heightProperty = new NumberProperty( height );
 
-    // Step information
+    // @private {number} - Step information
     this.stepRadius = 0;
     this.stepHeight = 0;
     this.stepArea = 0;

@@ -39,7 +39,7 @@ class HorizontalCylinder extends Mass {
     this.radiusProperty = new NumberProperty( radius );
     this.lengthProperty = new NumberProperty( length );
 
-    // Step information
+    // @private {number} - Step information
     this.stepRadius = 0;
     this.stepHeight = 0;
     this.stepArea = 0;

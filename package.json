@@ -10,7 +10,6 @@
     "grunt": "~1.0.0"
   },
   "phet": {
-    "generatedUnitTests": true,
     "requirejsNamespace": "DENSITY_BUOYANCY_COMMON",
     "preload": [
       "../sherpa/lib/matter-0.14.2.js",

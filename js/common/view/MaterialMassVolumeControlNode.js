@@ -196,13 +196,14 @@ class MaterialMassVolumeControlNode extends VBox {
       },
       enabledRangeProperty: enabledMassRangeProperty
     }, MaterialMassVolumeControlNode.getNumberControlOptions() ) );
+
     const volumeNumberControl = new NumberControl( densityBuoyancyCommonStrings.volume, numberControlVolumeProperty, new Range( options.minVolumeLiters, options.maxVolumeLiters ), merge( {
       sliderOptions: {
         thumbNode: new PrecisionSliderThumb( {
           thumbFill: options.color
         } ),
         thumbYOffset: new PrecisionSliderThumb().height / 2 - TRACK_HEIGHT / 2,
-        constrainValue: value => Utils.toFixedNumber( value, 1 )
+        constrainValue: value => Utils.roundSymmetric( value * 2 ) / 2
       },
       numberDisplayOptions: {
         valuePattern: StringUtils.fillIn( densityBuoyancyCommonStrings.litersPattern, {

@@ -52,7 +52,7 @@ class P2Engine extends Engine {
     this.world.addContactMaterial( new p2.ContactMaterial( dynamicMaterial, dynamicMaterial, {
       restitution: 0,
       stiffness: 1e6,
-      relaxation: 1
+      relaxation: 4
     } ) );
     this.world.addContactMaterial( new p2.ContactMaterial( barrierMaterial, dynamicMaterial, {
       restitution: 0,

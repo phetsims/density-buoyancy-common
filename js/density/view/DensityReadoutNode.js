@@ -138,9 +138,8 @@ class DensityReadoutNode extends Node {
       secondaryLabel.centerTop = secondaryArrow.centerBottom;
     } );
 
-    // TODO: handle off-scale values properly
     densityAProperty.link( density => {
-      primaryMarker.visible = density < MAX_DENSITY;
+      primaryMarker.visible = density < MAX_DENSITY + 1e-5; // Allow rounding error
     } );
     Property.multilink( [ secondaryMassVisibleProperty, densityBProperty ], ( visible, density ) => {
       secondaryMarker.visible = visible && density < MAX_DENSITY;

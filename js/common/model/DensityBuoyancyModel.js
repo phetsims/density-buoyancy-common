@@ -189,7 +189,7 @@ class DensityBuoyancyModel {
 
           // Increase the generally-visible viscosity effect
           const hackedViscosity = this.liquidViscosityProperty.value ? 0.03 * Math.pow( this.liquidViscosityProperty.value / 0.03, 0.8 ) : 0;
-          const viscousForce = velocity.times( -hackedViscosity * mass.massProperty.value * 3000 );
+          const viscousForce = velocity.times( -hackedViscosity * Math.max( 0.5, mass.massProperty.value ) * 3000 );
           this.engine.bodyApplyForce( mass.body, viscousForce );
 
           assert && Engine.log( `buoyancy: ${buoyantForce.toString()}` );

@@ -19,7 +19,8 @@ class DensityIntroModel extends DensityBuoyancyModel {
   constructor( tandem ) {
 
     super( tandem, {
-      constraintMaxX: 0.45
+      constraintMaxX: 0.45,
+      showMassesDefault: true
     } );
 
     // @public {Property.<boolean>}
@@ -46,9 +47,6 @@ class DensityIntroModel extends DensityBuoyancyModel {
 
     // @public {Property.<boolean>}
     this.densityReadoutExpandedProperty = new BooleanProperty( false );
-
-    // TODO: better way of setting default also
-    this.showMassesProperty.value = true;
   }
 
   /**
@@ -65,8 +63,6 @@ class DensityIntroModel extends DensityBuoyancyModel {
     this.densityReadoutExpandedProperty.reset();
 
     super.reset();
-
-    this.showMassesProperty.value = true;
   }
 }
 

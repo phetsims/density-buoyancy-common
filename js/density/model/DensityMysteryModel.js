@@ -294,7 +294,6 @@ class DensityMysteryModel extends DensityBuoyancyModel {
   clearMasses() {
     this.masses.forEach( mass => {
       this.masses.remove( mass );
-      // TODO: memory management for the colors/etc.?
     } );
   }
 

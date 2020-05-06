@@ -74,28 +74,64 @@ class Material {
     }, config ) );
   }
 
+  /**
+   * Returns a custom material that can be modified at will, but with a liquid color specified.
+   * @public
+   *
+   * @param {Object} config
+   * @returns {Material}
+   */
   static createCustomLiquidMaterial( config ) {
     return Material.createCustomMaterial( merge( {
       liquidColor: Material.getCustomLiquidColor( config.density )
     }, config ) );
   }
 
+  /**
+   * Returns a custom material that can be modified at will, but with a solid color specified
+   * @public
+   *
+   * @param {Object} config
+   * @returns {Material}
+   */
   static createCustomSolidMaterial( config ) {
     return Material.createCustomMaterial( merge( {
       liquidColor: Material.getCustomSolidColor( config.density )
     }, config ) );
   }
 
+  /**
+   * Returns a value suitable for use in colors (0-255 value) that should be used as a grayscale value for
+   * a material of a given density.
+   * @public
+   *
+   * @param {number} density
+   * @returns {number}
+   */
   static getCustomLightness( density ) {
     return Utils.roundSymmetric( Utils.clamp( Utils.linear( 1, -2, 0, 255, Utils.log10( density / 1000 ) ), 0, 255 ) );
   }
 
+  /**
+   * Similar to getCustomLightness, but returns the generated color, with an included alpha effect.
+   * @public
+   *
+   * @param {number} density
+   * @returns {ColorDef}
+   */
   static getCustomLiquidColor( density ) {
     const lightness = Material.getCustomLightness( density );
 
     return new Property( new Color( lightness, lightness, lightness, 0.8 * ( 1 - lightness / 255 ) ) );
   }
 
+  /**
+   * Similar to getCustomLightness, but returns the generated color
+   * @public
+   *
+   * @param {number} density
+   * @returns {ColorDef}
+   */
   static getCustomSolidColor( density ) {
     const lightness = Material.getCustomLightness( density );
 

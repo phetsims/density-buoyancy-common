@@ -7,7 +7,7 @@
  */
 
 import Emitter from '../../../../axon/js/Emitter.js';
-import Util from '../../../../dot/js/Utils.js';
+import Utils from '../../../../dot/js/Utils.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import merge from '../../../../phet-core/js/merge.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
@@ -203,7 +203,7 @@ class MatterEngine extends FixedTimestepEngine {
    * @override
    *
    * @param {Engine.Body} body
-   * @param {Vector2} velocity
+   * @param {Vector2} force
    */
   bodyApplyForce( body, force ) {
     Matter.Body.applyForce( body, body.position, MatterEngine.vectorToMatter( force ) );
@@ -260,7 +260,7 @@ class MatterEngine extends FixedTimestepEngine {
    * @public
    * @override
    *
-   * @param {Engine.Body}
+   * @param {Engine.Body} body
    * @param {number} width
    * @param {number} height
    */
@@ -346,7 +346,13 @@ class MatterEngine extends FixedTimestepEngine {
     return new Vector2( 0, 0 ); // TODO
   }
 
-  // TODO: doc
+  /**
+   * Resets the contact forces that have happened on a body to 0 after measurement.
+   * @public
+   * @override
+   *
+   * @param {Engine.Body} body
+   */
   resetContactForces( body ) {
     // TODO
   }
@@ -473,7 +479,7 @@ class MatterEngine extends FixedTimestepEngine {
     decomp.makeCCW( arrayVertices );
     return decomp.quickDecomp( arrayVertices ).map( partVertices => {
       const dotVertices = partVertices.map( v => new Vector2( v[ 0 ], v[ 1 ] ) );
-      const centroid = Util.centroidOfPolygon( dotVertices );
+      const centroid = Utils.centroidOfPolygon( dotVertices );
       const matterVertices = dotVertices.map( v => v.minus( centroid ) ).map( MatterEngine.vectorToMatter );
       return Matter.Body.create( merge( {
         position: MatterEngine.vectorToMatter( centroid ),

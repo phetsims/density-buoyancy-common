@@ -128,6 +128,8 @@ class DensityBuoyancyModel {
 
     const engineType = DensityBuoyancyCommonQueryParameters.engine;
     assert && assert( engineType === 'p2' || engineType === 'matter' || engineType === 'planck' );
+
+    // @public {Engine}
     this.engine = engineType === 'p2' ? new P2Engine() : ( engineType === 'matter' ? new MatterEngine() : new PlanckEngine() );
 
     // @public {Engine.Body}
@@ -264,6 +266,15 @@ class DensityBuoyancyModel {
     return this.poolBounds.width * this.poolBounds.depth * ( y - this.poolBounds.minY ) - this.getDisplacedPoolVolume( y, boat );
   }
 
+  /**
+   * Returns the displaced area at a given y level (if the liquid was at that level, how much surface area would be
+   * missing due to objects in the pool).
+   * @public
+   *
+   * @param {number} y
+   * @param {Boat|null} boat
+   * @returns {number}
+   */
   getDisplacedPoolArea( y, boat ) {
     assert && assert( boat || boat === null );
 
@@ -279,6 +290,14 @@ class DensityBuoyancyModel {
     return area;
   }
 
+  /**
+   * Returns the open pool area at a given y level (if the liquid was at that level, how much surface area would it have)
+   * @public
+   *
+   * @param {number} y
+   * @param {Boat|null} boat
+   * @returns {number}
+   */
   getEmptyPoolArea( y, boat ) {
     assert && assert( boat || boat === null );
 
@@ -322,6 +341,12 @@ class DensityBuoyancyModel {
     return boat.boatInternalArea - this.getDisplacedBoatArea( y, boat );
   }
 
+  /**
+   * Returns the boat (if there is one)
+   * @public
+   *
+   * @returns {Boat|null}
+   */
   getBoat() {
     return _.find( this.masses.getArray(), mass => mass.isBoat() ) || null;
   }

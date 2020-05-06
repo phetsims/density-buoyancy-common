@@ -109,8 +109,16 @@ class HorizontalCylinder extends Mass {
     );
   }
 
+  /**
+   * Called after a engine-physics-model step once before doing other operations (like computing buoyanct forces,
+   * displacement, etc.) so that it can set high-performance flags used for this purpose.
+   * @public
+   * @override
+   *
+   * Type-specific values are likely to be set, but this should set at least stepX/stepBottom/stepTop
+   */
   updateStepInformation() {
-    this.engine.bodyGetStepMatrixTransform( this.body, this.stepMatrix );
+    super.updateStepInformation();
 
     const xOffset = this.stepMatrix.m02();
     const yOffset = this.stepMatrix.m12();

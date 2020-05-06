@@ -225,7 +225,7 @@ class P2Engine extends Engine {
    * @override
    *
    * @param {Engine.Body} body
-   * @param {Vector2} velocity
+   * @param {Vector2} force
    */
   bodyApplyForce( body, force ) {
     body.force[ 0 ] += force.x * SCALE;
@@ -277,7 +277,13 @@ class P2Engine extends Engine {
     return result;
   }
 
-  // TODO: doc
+  /**
+   * Resets the contact forces that have happened on a body to 0 after measurement.
+   * @public
+   * @override
+   *
+   * @param {Engine.Body} body
+   */
   resetContactForces( body ) {
     body.vlambda[ 0 ] = 0;
     body.vlambda[ 1 ] = 0;
@@ -357,7 +363,7 @@ class P2Engine extends Engine {
    * @public
    * @override
    *
-   * @param {Engine.Body}
+   * @param {Engine.Body} body
    * @param {number} width
    * @param {number} height
    */
@@ -398,7 +404,7 @@ class P2Engine extends Engine {
    * @public
    * @override
    *
-   * @param {Engine.Body}
+   * @param {Engine.Body} body
    * @param {Array.<Vector2>} vertices
    * @param {boolean} workaround
    */

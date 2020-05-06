@@ -133,9 +133,16 @@ class Boat extends Mass {
     return true;
   }
 
+  /**
+   * Called after a engine-physics-model step once before doing other operations (like computing buoyanct forces,
+   * displacement, etc.) so that it can set high-performance flags used for this purpose.
+   * @public
+   * @override
+   *
+   * Type-specific values are likely to be set, but this should set at least stepX/stepBottom/stepTop
+   */
   updateStepInformation() {
-    // TODO: see if we can extend cuboid
-    this.engine.bodyGetStepMatrixTransform( this.body, this.stepMatrix );
+    super.updateStepInformation();
 
     const xOffset = this.stepMatrix.m02();
     const yOffset = this.stepMatrix.m12();

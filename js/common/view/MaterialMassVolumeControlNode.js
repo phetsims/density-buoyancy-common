@@ -238,6 +238,12 @@ class MaterialMassVolumeControlNode extends VBox {
     this.mutate( options );
   }
 
+  /**
+   * Returns the default NumberControl options used by this component.
+   * @public
+   *
+   * @returns {Object}
+   */
   static getNumberControlOptions() {
     return {
       delta: 0.01,

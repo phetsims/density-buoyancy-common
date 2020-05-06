@@ -158,7 +158,7 @@ class Engine {
    * @public
    *
    * @param {Engine.Body} body
-   * @param {Vector2} velocity
+   * @param {Vector2} force
    */
   bodyApplyForce( body, force ) {
     throw new Error( 'unimplemented' );
@@ -184,6 +184,16 @@ class Engine {
    * @returns {Vector2}
    */
   bodyGetContactForceBetween( bodyA, bodyB ) {
+    throw new Error( 'unimplemented' );
+  }
+
+  /**
+   * Resets the contact forces that have happened on a body to 0 after measurement.
+   * @public
+   *
+   * @param {Engine.Body} body
+   */
+  resetContactForces( body ) {
     throw new Error( 'unimplemented' );
   }
 

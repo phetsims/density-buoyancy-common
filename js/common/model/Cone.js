@@ -50,15 +50,13 @@ class Cone extends Mass {
     // @private {number}
     this.vertexSign = isVertexUp ? 1 : -1;
 
-    // Step information
+    // @private {number} - Step information
     this.stepRadius = 0;
     this.stepHeight = 0;
     this.stepArea = 0;
     this.stepMaximumVolume = 0;
 
     this.updateSize( radius, height );
-
-    // TODO: link updates if size changes
   }
 
   /**
@@ -122,8 +120,16 @@ class Cone extends Mass {
     );
   }
 
+  /**
+   * Called after a engine-physics-model step once before doing other operations (like computing buoyanct forces,
+   * displacement, etc.) so that it can set high-performance flags used for this purpose.
+   * @public
+   * @override
+   *
+   * Type-specific values are likely to be set, but this should set at least stepX/stepBottom/stepTop
+   */
   updateStepInformation() {
-    this.engine.bodyGetStepMatrixTransform( this.body, this.stepMatrix );
+    super.updateStepInformation();
 
     const xOffset = this.stepMatrix.m02();
     const yOffset = this.stepMatrix.m12();

@@ -79,7 +79,12 @@ class Demo2DScreenView extends ScreenView {
     this.addChild( resetAllButton );
   }
 
-  // @public
+  /**
+   * Steps forward in time.
+   * @public
+   *
+   * @param {number} dt
+   */
   step( dt ) {
     this.waterPath.shape = Shape.bounds( this.modelViewTransform.modelToViewBounds( new Bounds2(
       this.model.poolBounds.minX, this.model.poolBounds.minY,

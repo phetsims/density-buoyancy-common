@@ -235,9 +235,11 @@ class Mass {
   }
 
   /**
-   * Reads transform/velocity
+   * Reads transform/velocity from the physics model engine.
+   * @private
    */
   readData() {
+    // TODO: Are we doing this on the updateStep stuff too?
     this.engine.bodyGetMatrixTransform( this.body, this.matrix );
 
     // Apply the body offset
@@ -248,6 +250,10 @@ class Mass {
     this.velocityProperty.value = this.engine.bodyGetVelocity( this.body );
   }
 
+  /**
+   * Writes position/velocity/etc. to the physics model engine.
+   * @public
+   */
   writeData() {
     this.engine.bodySetPosition( this.body, this.matrix.translation.minus( this.bodyOffsetProperty.value ) );
     this.engine.bodySetRotation( this.body, this.matrix.rotation );
@@ -255,15 +261,31 @@ class Mass {
     this.engine.bodySetVelocity( this.body, this.velocityProperty.value );
   }
 
+  /**
+   * Starts a physics model engine drag at the given 2d (x,y) model location.
+   * @public
+   *
+   * @param {Vector2} position
+   */
   startDrag( position ) {
     this.userControlledProperty.value = true;
     this.engine.addPointerConstraint( this.body, position );
   }
 
+  /**
+   * Updates a current drag with a new 2d (x,y) model location.
+   * @public
+   *
+   * @param {Vector2} position
+   */
   updateDrag( position ) {
     this.engine.updatePointerConstraint( this.body, position );
   }
 
+  /**
+   * Ends a physics model engine drag.
+   * @public
+   */
   endDrag() {
     this.engine.removePointerConstraint( this.body );
     this.userControlledProperty.value = false;
@@ -280,8 +302,15 @@ class Mass {
     throw new Error( 'unimplemented' );
   }
 
+  /**
+   * Called after a engine-physics-model step once before doing other operations (like computing buoyanct forces,
+   * displacement, etc.) so that it can set high-performance flags used for this purpose.
+   * @public
+   *
+   * Type-specific values are likely to be set, but this should set at least stepX/stepBottom/stepTop
+   */
   updateStepInformation() {
-    throw new Error( 'unimplemented' );
+    this.engine.bodyGetStepMatrixTransform( this.body, this.stepMatrix );
   }
 
   /**

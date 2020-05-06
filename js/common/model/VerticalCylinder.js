@@ -49,8 +49,6 @@ class VerticalCylinder extends Mass {
     this.massOffsetOrientationProperty.value = new Vector2( 0, -1 );
 
     this.updateSize( radius, height );
-
-    // TODO: link updates if size changes
   }
 
   /**
@@ -112,8 +110,16 @@ class VerticalCylinder extends Mass {
     );
   }
 
+  /**
+   * Called after a engine-physics-model step once before doing other operations (like computing buoyanct forces,
+   * displacement, etc.) so that it can set high-performance flags used for this purpose.
+   * @public
+   * @override
+   *
+   * Type-specific values are likely to be set, but this should set at least stepX/stepBottom/stepTop
+   */
   updateStepInformation() {
-    this.engine.bodyGetStepMatrixTransform( this.body, this.stepMatrix );
+    super.updateStepInformation();
 
     const xOffset = this.stepMatrix.m02();
     const yOffset = this.stepMatrix.m12();
@@ -231,6 +237,9 @@ class VerticalCylinder extends Mass {
    *
    * @param {Ray3} ray
    * @param {boolean} isTouch
+   * @param {Vector3} translation
+   * @param {number} radius
+   * @param {number} height
    * @returns {number|null}
    */
   static intersect( ray, isTouch, translation, radius, height ) {

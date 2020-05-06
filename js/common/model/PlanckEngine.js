@@ -212,7 +212,7 @@ class PlanckEngine extends Engine {
    * @override
    *
    * @param {Engine.Body} body
-   * @param {Vector2} velocity
+   * @param {Vector2} force
    */
   bodyApplyForce( body, force ) {
     body.applyForceToCenter( PlanckEngine.vectorToPlanck( force ) );
@@ -243,7 +243,13 @@ class PlanckEngine extends Engine {
     return Vector2.ZERO; // TODO
   }
 
-  // TODO: doc
+  /**
+   * Resets the contact forces that have happened on a body to 0 after measurement.
+   * @public
+   * @override
+   *
+   * @param {Engine.Body} body
+   */
   resetContactForces( body ) {
   }
 
@@ -500,6 +506,13 @@ class PlanckEngine extends Engine {
     return new Vector2( vector.x / SCALE, vector.x / SCALE );
   }
 
+  /**
+   * Decomposes a given polygon from vertices into a list of convex polygons in planck format.
+   * @private
+   *
+   * @param {Array.<Vector2>} vertices
+   * @returns {Array.<Array.<planck.Vec2>>} - Multiple convex polygons
+   */
   static decompToPlank( vertices ) {
     return decomp.quickDecomp( vertices.map( v => [
       v.x * SCALE,

@@ -13,13 +13,13 @@ import DensityBuoyancyCommonColorProfile from './view/DensityBuoyancyCommonColor
 const CORNER_RADIUS = 5;
 
 const DensityBuoyancyCommonConstants = {
-  // {number} - Used for margins from the offset of screens or between panels/boxes
+  // @public {number} - Used for margins from the offset of screens or between panels/boxes
   MARGIN: 10,
 
-  // {number} - Used for panels/boxes by default
+  // @public {number} - Used for panels/boxes by default
   CORNER_RADIUS: CORNER_RADIUS,
 
-  // {Font}
+  // @public {Font}
   TITLE_FONT: new PhetFont( {
     size: 16,
     weight: 'bold'
@@ -32,7 +32,7 @@ const DensityBuoyancyCommonConstants = {
   } ),
   READOUT_FONT: new PhetFont( 14 ),
 
-  // {Object}
+  // @public {Object}
   PANEL_OPTIONS: {
     cornerRadius: CORNER_RADIUS,
     fill: DensityBuoyancyCommonColorProfile.panelBackgroundProperty,
@@ -40,7 +40,7 @@ const DensityBuoyancyCommonConstants = {
     yMargin: 10
   },
 
-  // {Object}
+  // @public {Object}
   ACCORDION_BOX_OPTIONS: {
     cornerRadius: CORNER_RADIUS,
     titleYMargin: 5,

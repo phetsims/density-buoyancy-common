@@ -14,7 +14,6 @@ import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js
 import MassLabelNode from './MassLabelNode.js';
 
 class PrimarySecondaryPanelsNode extends Panel {
-
   /**
    * @param {Node} primaryNode
    * @param {Node} secondaryNode
@@ -47,6 +46,12 @@ class PrimarySecondaryPanelsNode extends Panel {
     super( box, DensityBuoyancyCommonConstants.PANEL_OPTIONS );
   }
 
+  /**
+   * Returns a Node that displays the "primary mass" label.
+   * @public
+   *
+   * @returns {Node}
+   */
   static getPrimaryLabelNode() {
     return new Node( {
       children: [ MassLabelNode.PRIMARY_LABEL ],
@@ -54,6 +59,12 @@ class PrimarySecondaryPanelsNode extends Panel {
     } );
   }
 
+  /**
+   * Returns a Node that displays the "secondary mass" label.
+   * @public
+   *
+   * @returns {Node}
+   */
   static getSecondaryLabelNode() {
     return new Node( {
       children: [ MassLabelNode.SECONDARY_LABEL ],

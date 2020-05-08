@@ -124,7 +124,8 @@ class MaterialMassVolumeControlNode extends VBox {
           } );
         }
         else {
-          numberControlVolumeProperty.value = mass / materialProperty.value.density * LITERS_IN_CUBIC_METER;
+          // TODO: We shouldn't need a method call to setVolume? Can we listen and have that adjust instead?
+          setVolume( mass / materialProperty.value.density );
         }
 
         userMassChanging = false;

@@ -262,7 +262,7 @@ class Mass {
   }
 
   /**
-   * Starts a physics model engine drag at the given 2d (x,y) model location.
+   * Starts a physics model engine drag at the given 2d (x,y) model position.
    * @public
    *
    * @param {Vector2} position
@@ -273,7 +273,7 @@ class Mass {
   }
 
   /**
-   * Updates a current drag with a new 2d (x,y) model location.
+   * Updates a current drag with a new 2d (x,y) model position.
    * @public
    *
    * @param {Vector2} position

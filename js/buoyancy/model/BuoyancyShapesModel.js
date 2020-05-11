@@ -160,14 +160,14 @@ class BuoyancyShapesModel extends DensityBuoyancyModel {
       }
     } );
 
-    this.setInitialLocations();
+    this.setInitialPositions();
   }
 
   /**
-   * Sets up the initial locations of the masses (since some resets may not change the mass).
+   * Sets up the initial positions of the masses (since some resets may not change the mass).
    * @private
    */
-  setInitialLocations() {
+  setInitialPositions() {
     this.primaryMassProperty.value.matrix.setToTranslation( -0.3, 0 );
     this.primaryMassProperty.value.writeData();
 
@@ -191,7 +191,7 @@ class BuoyancyShapesModel extends DensityBuoyancyModel {
     this.primaryWidthRatioProperty.reset();
     this.secondaryWidthRatioProperty.reset();
 
-    this.setInitialLocations();
+    this.setInitialPositions();
 
     super.reset();
   }

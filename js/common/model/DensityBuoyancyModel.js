@@ -343,7 +343,7 @@ class DensityBuoyancyModel {
    * @returns {Boat|null}
    */
   getBoat() {
-    return _.find( this.masses.getArray(), mass => mass.isBoat() ) || null;
+    return this.masses.find( mass => mass.isBoat() ) || null;
   }
 
   /**

@@ -368,7 +368,7 @@ class DensityBuoyancyModel {
 
     const poolArea = this.poolBounds.width * this.poolBounds.depth;
     let poolLiquidVolume = this.pool.liquidVolumeProperty.value;
-    let boatLiquidVolume = boat ? boat.liquidVolumeProperty.value : 0;
+    let boatLiquidVolume = boat ? boat.basin.liquidVolumeProperty.value : 0;
 
     // May need to adjust volumes between the boat/pool if there is a boat
     if ( boat ) {
@@ -390,7 +390,7 @@ class DensityBuoyancyModel {
         boatLiquidVolume -= transferVolume;
       }
 
-      boat.liquidVolumeProperty.value = boatLiquidVolume;
+      boat.basin.liquidVolumeProperty.value = boatLiquidVolume;
     }
 
     // Check to see if water "spilled" out of the pool
@@ -399,7 +399,6 @@ class DensityBuoyancyModel {
       poolLiquidVolume = totalEmptyPoolVolumeToTop;
     }
 
-    // TODO: animation handling for actual volume in the pool? OR DO WE NOT NEED, only care about the y?
     this.pool.liquidVolumeProperty.value = poolLiquidVolume;
 
     // Handle the pool liquid y
@@ -465,7 +464,7 @@ class DensityBuoyancyModel {
       if ( !finished ) {
         y += ( boatLiquidVolume - currentEmptyVolume ) / boat.boatInternalArea;
       }
-      boat.liquidYProperty.setNextValue( y - boat.boatInternalBottom );
+      boat.basin.liquidYProperty.setNextValue( y - boat.boatInternalBottom );
     }
   }
 

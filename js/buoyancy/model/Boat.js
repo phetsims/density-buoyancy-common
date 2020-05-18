@@ -10,16 +10,16 @@ import Bounds3 from '../../../../dot/js/Bounds3.js';
 import Utils from '../../../../dot/js/Utils.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
+import Shape from '../../../../kite/js/Shape.js';
 import Cubic from '../../../../kite/js/segments/Cubic.js';
 import Line from '../../../../kite/js/segments/Line.js';
-import Shape from '../../../../kite/js/Shape.js';
 import ThreeUtils from '../../../../mobius/js/ThreeUtils.js';
 import merge from '../../../../phet-core/js/merge.js';
 import Color from '../../../../scenery/js/util/Color.js';
-import InterpolatedProperty from '../../common/model/InterpolatedProperty.js';
 import Mass from '../../common/model/Mass.js';
 import Material from '../../common/model/Material.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
+import BoatBasin from './BoatBasin.js';
 
 // constants
 const OUTSIDE = 3;
@@ -88,13 +88,8 @@ class Boat extends Mass {
     // @public {Property.<number>}
     this.displacementVolumeProperty = displacementVolumeProperty;
 
-    // @public {Property.<number>}
-    this.liquidVolumeProperty = new NumberProperty( 0 );
-
-    // @public {Property.<number>} - The y coordinate of the main liquid level in the boat (relative to interiorSize.minY)
-    this.liquidYProperty = new InterpolatedProperty( 0, {
-      interpolate: InterpolatedProperty.interpolateNumber
-    } );
+    // @public {Basin}
+    this.basin = new BoatBasin( this );
 
     // @private {number} - Amount of volume displaced by the boat in the step
     this.stepVolume = 0;
@@ -119,7 +114,7 @@ class Boat extends Mass {
   step( dt, interpolationRatio ) {
     super.step( dt, interpolationRatio );
 
-    this.liquidYProperty.setRatio( interpolationRatio );
+    this.basin.liquidYProperty.setRatio( interpolationRatio );
   }
 
   /**
@@ -250,8 +245,8 @@ class Boat extends Mass {
 
   reset() {
     this.displacementVolumeProperty.reset();
-    this.liquidVolumeProperty.reset();
-    this.liquidYProperty.reset();
+
+    this.basin.reset();
 
     super.reset();
   }

@@ -1,6 +1,8 @@
 // Copyright 2019-2020, University of Colorado Boulder
 
 /**
+ * Represents a mass that interacts in the scene, and can potentially float or displace liquid.
+ *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 

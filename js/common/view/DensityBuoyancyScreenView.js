@@ -447,7 +447,7 @@ class DensityBuoyancyScreenView extends ScreenView {
     const waterMesh = new THREE.Mesh( waterGeometry, waterMaterial );
     this.sceneNode.stage.threeScene.add( waterMesh );
 
-    model.liquidYProperty.link( y => {
+    model.pool.liquidYProperty.link( y => {
       const vertices = [
         // Front
         ...ThreeUtils.frontVertices( new Bounds2(
@@ -490,10 +490,10 @@ class DensityBuoyancyScreenView extends ScreenView {
         massView = new VerticalCylinderView( mass );
       }
       else if ( mass instanceof Bottle ) {
-        massView = new BottleView( mass, model.liquidYProperty );
+        massView = new BottleView( mass, model.pool.liquidYProperty );
       }
       else if ( mass instanceof Boat ) {
-        massView = new BoatView( mass, model.liquidYProperty );
+        massView = new BoatView( mass, model.pool.liquidYProperty );
       }
 
       if ( massView ) {
@@ -553,11 +553,11 @@ class DensityBuoyancyScreenView extends ScreenView {
     };
     model.masses.addItemRemovedListener( onMassRemoved );
 
-    const waterLevelIndicator = new WaterLevelIndicator( new DerivedProperty( [ model.liquidYProperty ], liquidY => {
+    const waterLevelIndicator = new WaterLevelIndicator( new DerivedProperty( [ model.pool.liquidYProperty ], liquidY => {
       return model.poolBounds.width * model.poolBounds.depth * ( liquidY - model.poolBounds.minY );
     } ) );
     this.addChild( waterLevelIndicator );
-    model.liquidYProperty.link( liquidY => {
+    model.pool.liquidYProperty.link( liquidY => {
       const modelPoint = new Vector3( model.poolBounds.minX, liquidY, model.poolBounds.maxZ );
       waterLevelIndicator.translation = this.modelToViewPoint( modelPoint );
     } );

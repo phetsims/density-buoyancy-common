@@ -88,7 +88,7 @@ class Demo2DScreenView extends ScreenView {
   step( dt ) {
     this.waterPath.shape = Shape.bounds( this.modelViewTransform.modelToViewBounds( new Bounds2(
       this.model.poolBounds.minX, this.model.poolBounds.minY,
-      this.model.poolBounds.maxX, this.model.liquidYProperty.value
+      this.model.poolBounds.maxX, this.model.pool.liquidYProperty.value
     ) ) );
   }
 }

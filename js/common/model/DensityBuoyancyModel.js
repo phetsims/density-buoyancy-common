@@ -1,12 +1,13 @@
 // Copyright 2019-2020, University of Colorado Boulder
 
 /**
+ * The core model for the Density and Buoyancy sim screens, including a pool and masses.
+ *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
 import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
-import NumberProperty from '../../../../axon/js/NumberProperty.js';
 import ObservableArray from '../../../../axon/js/ObservableArray.js';
 import Property from '../../../../axon/js/Property.js';
 import Bounds3 from '../../../../dot/js/Bounds3.js';
@@ -16,11 +17,11 @@ import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonQueryParameters from '../DensityBuoyancyCommonQueryParameters.js';
 import Engine from './Engine.js';
 import Gravity from './Gravity.js';
-import InterpolatedProperty from './InterpolatedProperty.js';
 import Material from './Material.js';
 import MatterEngine from './MatterEngine.js';
 import P2Engine from './P2Engine.js';
 import PlanckEngine from './PlanckEngine.js';
+import Pool from './Pool.js';
 import Scale from './Scale.js';
 
 // constants
@@ -118,13 +119,8 @@ class DensityBuoyancyModel {
       new Vector2( this.constraintBounds.maxX, this.constraintBounds.maxY )
     ];
 
-    // @public {Property.<number>} - in m^3
-    this.liquidVolumeProperty = new NumberProperty( 0.1 );
-
-    // @public {Property.<number>} - The y coordinate of the main liquid level in the pool
-    this.liquidYProperty = new InterpolatedProperty( this.poolBounds.minY + this.liquidVolumeProperty.value / ( this.poolBounds.width * this.poolBounds.depth ), {
-      interpolate: InterpolatedProperty.interpolateNumber
-    } );
+    // @public {Pool}
+    this.pool = new Pool( this.poolBounds );
 
     const engineType = DensityBuoyancyCommonQueryParameters.engine;
     assert && assert( engineType === 'p2' || engineType === 'matter' || engineType === 'planck' );
@@ -157,7 +153,7 @@ class DensityBuoyancyModel {
       // {number}
       const gravity = this.gravityProperty.value.value;
 
-      // Will set all of the mass's force Properties
+      // Will set the force Properties for all of the masses
       this.masses.forEach( mass => {
         const contactForce = this.engine.bodyGetContactForces( mass.body );
         this.engine.resetContactForces( mass.body );
@@ -176,8 +172,7 @@ class DensityBuoyancyModel {
           mass.scaleForceProperty.setNextValue( scaleForce );
         }
 
-        // TODO: should we step the liquid y here for stability?
-        const submergedVolume = mass.getDisplacedBuoyantVolume( this.liquidYProperty.currentValue );
+        const submergedVolume = mass.getDisplacedBuoyantVolume( this.pool.liquidYProperty.currentValue );
         if ( submergedVolume ) {
           const displacedMass = submergedVolume * this.liquidDensityProperty.value;
           const buoyantForce = new Vector2( 0, displacedMass * gravity );
@@ -372,7 +367,7 @@ class DensityBuoyancyModel {
     } );
 
     const poolArea = this.poolBounds.width * this.poolBounds.depth;
-    let poolLiquidVolume = this.liquidVolumeProperty.value;
+    let poolLiquidVolume = this.pool.liquidVolumeProperty.value;
     let boatLiquidVolume = boat ? boat.liquidVolumeProperty.value : 0;
 
     // May need to adjust volumes between the boat/pool if there is a boat
@@ -405,7 +400,7 @@ class DensityBuoyancyModel {
     }
 
     // TODO: animation handling for actual volume in the pool? OR DO WE NOT NEED, only care about the y?
-    this.liquidVolumeProperty.value = poolLiquidVolume;
+    this.pool.liquidVolumeProperty.value = poolLiquidVolume;
 
     // Handle the pool liquid y
     let y = this.poolBounds.minY;
@@ -437,7 +432,7 @@ class DensityBuoyancyModel {
     if ( !finished ) {
       y += ( poolLiquidVolume - currentEmptyVolume ) / poolArea;
     }
-    this.liquidYProperty.setNextValue( y );
+    this.pool.liquidYProperty.setNextValue( y );
 
     // Handle the boat liquid y
     if ( boat ) {
@@ -486,9 +481,8 @@ class DensityBuoyancyModel {
     this.showForceValuesProperty.reset();
     this.gravityProperty.reset();
     this.liquidMaterialProperty.reset();
-    this.liquidVolumeProperty.reset();
-    this.liquidYProperty.reset();
 
+    this.pool.reset();
     this.masses.forEach( mass => mass.reset() );
   }
 
@@ -505,7 +499,7 @@ class DensityBuoyancyModel {
       mass.step( dt, this.engine.interpolationRatio );
     } );
 
-    this.liquidYProperty.setRatio( this.engine.interpolationRatio );
+    this.pool.liquidYProperty.setRatio( this.engine.interpolationRatio );
   }
 
   /**

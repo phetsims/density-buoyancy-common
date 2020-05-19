@@ -222,121 +222,6 @@ class DensityBuoyancyModel {
   }
 
   /**
-   * Returns the filled volume in the pool (i.e. things that aren't air or water) that is below the given y value.
-   * (including an optional boat).
-   * @private
-   *
-   * @param {number} y
-   * @param {Boat|null} boat
-   */
-  getDisplacedPoolVolume( y, boat ) {
-    assert && assert( boat || boat === null );
-
-    let volume = 0;
-    this.masses.forEach( mass => {
-      const mightBeInBoat = boat && mass.alignedWithBoat;
-
-      if ( !mightBeInBoat ) {
-        volume += mass.getDisplacedVolume( y );
-      }
-      else if ( y > boat.stepTop ) {
-        volume += mass.getDisplacedVolume( y );
-        volume -= mass.getDisplacedVolume( boat.stepTop );
-      }
-    } );
-    return volume;
-  }
-
-  /**
-   * Returns the empty volume in the pool (i.e. air, that isn't a solid object) that is below the given y value.
-   * (including an optional boat).
-   * @private
-   *
-   * @param {number} y
-   * @param {Boat|null} boat
-   */
-  getEmptyPoolVolume( y, boat ) {
-    assert && assert( boat || boat === null );
-
-    return this.poolBounds.width * this.poolBounds.depth * ( y - this.poolBounds.minY ) - this.getDisplacedPoolVolume( y, boat );
-  }
-
-  /**
-   * Returns the displaced area at a given y level (if the liquid was at that level, how much surface area would be
-   * missing due to objects in the pool).
-   * @public
-   *
-   * @param {number} y
-   * @param {Boat|null} boat
-   * @returns {number}
-   */
-  getDisplacedPoolArea( y, boat ) {
-    assert && assert( boat || boat === null );
-
-    let area = 0;
-    this.masses.forEach( mass => {
-      if ( boat && mass.alignedWithBoat && y >= boat.stepBottom && y <= boat.stepTop ) {
-        area += 0;
-      }
-      else {
-        area += mass.getDisplacedArea( y );
-      }
-    } );
-    return area;
-  }
-
-  /**
-   * Returns the open pool area at a given y level (if the liquid was at that level, how much surface area would it have)
-   * @public
-   *
-   * @param {number} y
-   * @param {Boat|null} boat
-   * @returns {number}
-   */
-  getEmptyPoolArea( y, boat ) {
-    assert && assert( boat || boat === null );
-
-    return this.poolBounds.width * this.poolBounds.depth - this.getDisplacedPoolArea( y, boat );
-  }
-
-  getDisplacedBoatVolume( y, boat ) {
-    assert && assert( boat || boat === null );
-
-    let volume = 0;
-    y = Math.min( y, boat.stepTop );
-    this.masses.forEach( mass => {
-      if ( mass.alignedWithBoat ) {
-        volume += mass.getDisplacedVolume( y );
-      }
-    } );
-    return volume;
-  }
-
-  getEmptyBoatVolume( y, boat ) {
-    assert && assert( boat || boat === null );
-
-    return boat.boatInternalArea * ( y - boat.boatInternalBottom ) - this.getDisplacedBoatVolume( y, boat );
-  }
-
-  getDisplacedBoatArea( y, boat ) {
-    assert && assert( boat || boat === null );
-
-    let area = 0;
-    this.masses.forEach( mass => {
-      if ( mass.alignedWithBoat && y >= boat.stepBottom && y <= boat.stepTop ) {
-        area += mass.getDisplacedArea( y );
-      }
-    } );
-    return area;
-  }
-
-  getEmptyBoatArea( y, boat ) {
-    assert && assert( boat || boat === null );
-
-    return boat.boatInternalArea - this.getDisplacedBoatArea( y, boat );
-  }
-
-  /**
    * Returns the boat (if there is one)
    * @public
    *
@@ -353,28 +238,29 @@ class DensityBuoyancyModel {
   updateLiquid() {
     const boat = this.getBoat();
 
-    const criticalPoints = [];
+    const basins = [ this.pool ];
+    if ( boat ) {
+      basins.push( boat.basin );
+      this.pool.childBasin = boat.basin;
+    }
+    else {
+      this.pool.childBasin = null;
+    }
 
-    this.masses.forEach( mass => {
-      mass.updateStepInformation();
-      criticalPoints.push( mass.stepBottom );
-      criticalPoints.push( mass.stepTop );
+    this.masses.forEach( mass => mass.updateStepInformation() );
+    basins.forEach( basin => {
+      basin.stepMasses = this.masses.filter( mass => basin.isMassInside( mass ) );
     } );
-    criticalPoints.sort( ( a, b ) => a - b );
 
-    this.masses.forEach( mass => {
-      mass.alignedWithBoat = boat && boat !== mass && boat.stepBottom < mass.stepBottom && boat.boatMinX <= mass.stepX && mass.stepX <= boat.boatMaxX;
-    } );
-
-    const poolArea = this.poolBounds.width * this.poolBounds.depth;
     let poolLiquidVolume = this.pool.liquidVolumeProperty.value;
-    let boatLiquidVolume = boat ? boat.basin.liquidVolumeProperty.value : 0;
 
     // May need to adjust volumes between the boat/pool if there is a boat
     if ( boat ) {
+      let boatLiquidVolume = boat.basin.liquidVolumeProperty.value;
 
-      const poolEmptyVolumeToBoatTop = this.getEmptyPoolVolume( boat.stepTop, boat );
-      const boatEmptyVolumeToBoatTop = this.getEmptyBoatVolume( boat.stepTop, boat );
+      // the getEmptyVolume would be double-counting the interior displaced volume
+      const poolEmptyVolumeToBoatTop = this.pool.getEmptyVolume( Math.min( boat.stepTop, this.poolBounds.maxY ) );
+      const boatEmptyVolumeToBoatTop = boat.basin.getEmptyVolume( boat.stepTop );
 
       const poolExcess = poolLiquidVolume - poolEmptyVolumeToBoatTop;
       const boatExcess = boatLiquidVolume - boatEmptyVolumeToBoatTop;
@@ -384,87 +270,23 @@ class DensityBuoyancyModel {
         poolLiquidVolume -= transferVolume;
         boatLiquidVolume += transferVolume;
       }
-      if ( poolExcess < 0 && boatExcess > 0 ) {
-        const transferVolume = Math.min( -poolExcess, boatExcess );
-        poolLiquidVolume += transferVolume;
-        boatLiquidVolume -= transferVolume;
+      else if ( boatExcess > 0 ) {
+        // If the boat overflows, just dump the rest in the pool
+        poolLiquidVolume += boatExcess;
+        boatLiquidVolume -= boatExcess;
       }
-
       boat.basin.liquidVolumeProperty.value = boatLiquidVolume;
     }
 
-    // Check to see if water "spilled" out of the pool
-    const totalEmptyPoolVolumeToTop = this.getEmptyPoolVolume( this.poolBounds.maxY, boat );
-    if ( poolLiquidVolume > totalEmptyPoolVolumeToTop ) {
-      poolLiquidVolume = totalEmptyPoolVolumeToTop;
-    }
+    // Check to see if water "spilled" out of the pool, and set the finalized liquid volume
+    this.pool.liquidVolumeProperty.value = Math.min( poolLiquidVolume, this.pool.getEmptyVolume( this.poolBounds.maxY ) );
 
-    this.pool.liquidVolumeProperty.value = poolLiquidVolume;
+    // TODO: check to see if one basin contains another -- mainly assign basins to each mass, so we can handle viscosity
+    // and moving boats in general
 
-    // Handle the pool liquid y
-    let y = this.poolBounds.minY;
-    let currentEmptyVolume = this.getEmptyPoolVolume( y, boat ); // TODO: how to handle things slightly below pool bottom. like this?
-    let finished = false;
-    for ( let i = 0; i < criticalPoints.length; i++ ) {
-      const criticalPoint = criticalPoints[ i ];
-
-      if ( criticalPoint > y ) {
-        const emptyVolume = this.getEmptyPoolVolume( criticalPoint, boat );
-        if ( emptyVolume >= poolLiquidVolume ) {
-          y = DensityBuoyancyModel.findRoot(
-            y,
-            criticalPoint,
-            1e-7,
-            yTest => this.getEmptyPoolVolume( yTest, boat ) - poolLiquidVolume,
-            yTest => this.getEmptyPoolArea( yTest, boat )
-          );
-          currentEmptyVolume = this.getEmptyPoolVolume( y, boat );
-          finished = true;
-          break;
-        }
-        else {
-          y = criticalPoint;
-          currentEmptyVolume = emptyVolume;
-        }
-      }
-    }
-    if ( !finished ) {
-      y += ( poolLiquidVolume - currentEmptyVolume ) / poolArea;
-    }
-    this.pool.liquidYProperty.setNextValue( y );
-
-    // Handle the boat liquid y
+    this.pool.computeY();
     if ( boat ) {
-      let y = boat.boatInternalBottom;
-      let currentEmptyVolume = this.getEmptyBoatVolume( y, boat ); // TODO: how to handle things slightly below boat bottom. like this?
-      let finished = false;
-      for ( let i = 0; i < criticalPoints.length; i++ ) {
-        const criticalPoint = criticalPoints[ i ];
-
-        if ( criticalPoint > y ) {
-          const emptyVolume = this.getEmptyBoatVolume( criticalPoint, boat );
-          if ( emptyVolume >= boatLiquidVolume ) {
-            y = DensityBuoyancyModel.findRoot(
-              y,
-              criticalPoint,
-              1e-7,
-              yTest => this.getEmptyBoatVolume( yTest, boat ) - boatLiquidVolume,
-              yTest => this.getEmptyBoatArea( yTest, boat )
-            );
-            currentEmptyVolume = this.getEmptyBoatVolume( y, boat );
-            finished = true;
-            break;
-          }
-          else {
-            y = criticalPoint;
-            currentEmptyVolume = emptyVolume;
-          }
-        }
-      }
-      if ( !finished ) {
-        y += ( boatLiquidVolume - currentEmptyVolume ) / boat.boatInternalArea;
-      }
-      boat.basin.liquidYProperty.setNextValue( y - boat.boatInternalBottom );
+      boat.basin.computeY();
     }
   }
 
@@ -580,50 +402,6 @@ class DensityBuoyancyModel {
       position += mass.sizeProperty.value.height;
       mass.writeData();
     } );
-  }
-
-  /**
-   * Hybrid root-finding given our constraints.
-   * @private
-   *
-   * @param {number} minX
-   * @param {number} maxX
-   * @param {number} tolerance
-   * @param {function} valueFunction
-   * @param {function} derivativeFunction
-   * @returns {number}
-   */
-  static findRoot( minX, maxX, tolerance, valueFunction, derivativeFunction ) {
-    let x = ( minX + maxX ) / 2;
-
-    let y;
-    let dy;
-
-    while ( Math.abs( y = valueFunction( x ) ) > tolerance ) {
-      dy = derivativeFunction( x );
-
-      if ( y < 0 ) {
-        minX = x;
-      }
-      else {
-        maxX = x;
-      }
-
-      // Newton's method first
-      x -= y / dy;
-
-      // Bounded to be bisection at the very least
-      if ( x <= minX || x >= maxX ) {
-        x = ( minX + maxX ) / 2;
-
-        // Check to see if it's impossible to pass our tolerance
-        if ( x === minX || x === maxX ) {
-          break;
-        }
-      }
-    }
-
-    return x;
   }
 }
 

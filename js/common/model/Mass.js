@@ -188,9 +188,6 @@ class Mass {
     this.stepX = 0;
     this.stepBottom = 0;
     this.stepTop = 0;
-
-    // @public {boolean}
-    this.alignedWithBoat = false;
   }
 
   /**

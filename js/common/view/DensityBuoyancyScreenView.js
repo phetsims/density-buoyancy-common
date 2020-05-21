@@ -4,6 +4,7 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
+import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import DynamicProperty from '../../../../axon/js/DynamicProperty.js';
 import Property from '../../../../axon/js/Property.js';
@@ -20,8 +21,8 @@ import ThreeStage from '../../../../mobius/js/ThreeStage.js';
 import ThreeUtils from '../../../../mobius/js/ThreeUtils.js';
 import arrayRemove from '../../../../phet-core/js/arrayRemove.js';
 import merge from '../../../../phet-core/js/merge.js';
-import ResetAllButton from '../../../../scenery-phet/js/buttons/ResetAllButton.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
+import ResetAllButton from '../../../../scenery-phet/js/buttons/ResetAllButton.js';
 import Mouse from '../../../../scenery/js/input/Mouse.js';
 import DOM from '../../../../scenery/js/nodes/DOM.js';
 import Image from '../../../../scenery/js/nodes/Image.js';
@@ -29,6 +30,7 @@ import Node from '../../../../scenery/js/nodes/Node.js';
 import Rectangle from '../../../../scenery/js/nodes/Rectangle.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
 import LinearGradient from '../../../../scenery/js/util/LinearGradient.js';
+import Checkbox from '../../../../sun/js/Checkbox.js';
 import Boat from '../../buoyancy/model/Boat.js';
 import Bottle from '../../buoyancy/model/Bottle.js';
 import BoatView from '../../buoyancy/view/BoatView.js';
@@ -44,6 +46,7 @@ import Scale from '../model/Scale.js';
 import VerticalCylinder from '../model/VerticalCylinder.js';
 import ConeView from './ConeView.js';
 import CuboidView from './CuboidView.js';
+import DebugView from './DebugView.js';
 import DensityBuoyancyCommonColorProfile from './DensityBuoyancyCommonColorProfile.js';
 import DensityMaterials from './DensityMaterials.js';
 import EllipsoidView from './EllipsoidView.js';
@@ -602,6 +605,16 @@ class DensityBuoyancyScreenView extends ScreenView {
       } ) );
       console.log( 'added matter renderer' );
     }
+
+    if ( DensityBuoyancyCommonQueryParameters.showDebug ) {
+      const debugVisibleProperty = new BooleanProperty( true );
+
+      // @private {DebugView|undefined}
+      this.debugView = new DebugView( model, this.layoutBounds );
+      this.debugView.visibleProperty = debugVisibleProperty;
+      this.popupLayer.addChild( this.debugView );
+      this.addChild( new Checkbox( new Text( 'Debug', { font: new PhetFont( 12 ) } ), debugVisibleProperty ) );
+    }
   }
 
   /**
@@ -698,6 +711,8 @@ class DensityBuoyancyScreenView extends ScreenView {
       const offsetPoint = scratchVector2.setXY( massLabelNode.width / 2, massLabelNode.height / 2 ).componentMultiply( mass.massOffsetOrientationProperty.value );
       massLabelNode.translation = modelPoint.plus( offsetPoint );
     } );
+
+    this.debugView && this.debugView.step( dt );
   }
 
   /**

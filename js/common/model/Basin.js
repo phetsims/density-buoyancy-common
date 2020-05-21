@@ -89,6 +89,7 @@ class Basin {
     let area = 0;
     this.stepMasses.forEach( mass => {
       area += mass.getDisplacedArea( y );
+      assert && assert( !isNaN( area ) );
     } );
 
     // Don't double-count things, since we're counting the full displacement of the child basin's container
@@ -109,6 +110,7 @@ class Basin {
     let volume = 0;
     this.stepMasses.forEach( mass => {
       volume += mass.getDisplacedVolume( y );
+      assert && assert( !isNaN( volume ) );
     } );
 
     // Don't double-count things, since we're counting the full displacement of the child basin's container

@@ -4,6 +4,9 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
+import DynamicProperty from '../../../../axon/js/DynamicProperty.js';
+import Property from '../../../../axon/js/Property.js';
+import ThreeUtils from '../../../../mobius/js/ThreeUtils.js';
 import MassView from '../../common/view/MassView.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import Boat from '../model/Boat.js';
@@ -56,6 +59,44 @@ class BoatView extends MassView {
       side: THREE.FrontSide
     } ) );
     boatGroup.add( frontForDepth );
+
+    const crossSectionPositionArray = Boat.createCrossSectionVertexArray();
+    const crossSectionNormalArray = new Float32Array( crossSectionPositionArray.length );
+    for ( let i = 1; i < crossSectionNormalArray.length; i += 3 ) {
+      crossSectionNormalArray[ i ] = 1; // normals should all be 0,1,0
+    }
+
+    const interiorSurfaceGeometry = new THREE.BufferGeometry();
+    interiorSurfaceGeometry.addAttribute( 'position', new THREE.BufferAttribute( crossSectionPositionArray, 3 ) );
+    interiorSurfaceGeometry.addAttribute( 'normal', new THREE.BufferAttribute( crossSectionNormalArray, 3 ) );
+
+    // TODO: unlink
+    Property.multilink( [ boat.basin.liquidYProperty, boat.basin.liquidVolumeProperty ], ( y, volume ) => {
+      Boat.fillCrossSectionVertexArray( y - boat.matrix.translation.y, boat.displacementVolumeProperty.value / 0.001, crossSectionPositionArray );
+      interiorSurfaceGeometry.attributes.position.needsUpdate = true;
+      interiorSurfaceGeometry.computeBoundingSphere();
+    } );
+
+    const interiorSurfaceMaterial = new THREE.MeshPhongMaterial( {
+      color: 0x33FF33,
+      opacity: 0.8,
+      transparent: true,
+      depthWrite: false,
+      side: THREE.DoubleSide
+    } );
+    const interiorSurface = new THREE.Mesh( interiorSurfaceGeometry, interiorSurfaceMaterial );
+
+    new DynamicProperty( boat.liquidMaterialProperty, {
+      derive: 'liquidColor'
+    } ).link( color => {
+      const threeColor = ThreeUtils.colorToThree( color );
+      const alpha = color.alpha;
+
+      interiorSurfaceMaterial.color = threeColor;
+      interiorSurfaceMaterial.opacity = alpha;
+    } );
+
+    this.add( interiorSurface );
 
     // @public {Boat}
     this.boat = boat;

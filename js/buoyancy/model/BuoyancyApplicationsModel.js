@@ -48,10 +48,9 @@ class BuoyancyApplicationsModel extends DensityBuoyancyModel {
     this.block = Cuboid.createWithVolume( this.engine, Material.STEEL, new Vector2( 0.5, 0.5 ), 0.005 );
 
     // @public {Boat}
-    this.boat = new Boat( this.engine, new DerivedProperty( [ this.block.sizeProperty ], size => size.depth ), {
-      matrix: Matrix3.translation( 0, 0 )
+    this.boat = new Boat( this.engine, new DerivedProperty( [ this.block.sizeProperty ], size => size.depth ), this.liquidMaterialProperty, {
+      matrix: Matrix3.translation( 0, -0.1 )
     } );
-
 
     // @public {Scale}
     this.leftScale = new Scale( this.engine, {

@@ -370,7 +370,7 @@ class Mass {
    * @returns {number}
    */
   static evaluatePiecewiseLinear( values, ratio ) {
-    const logicalIndex = ratio * values.length;
+    const logicalIndex = ratio * ( values.length - 1 );
     if ( logicalIndex % 1 === 0 ) {
       return values[ logicalIndex ];
     }

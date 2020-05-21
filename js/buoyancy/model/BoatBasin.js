@@ -39,10 +39,12 @@ class BoatBasin extends Basin {
    * @returns {boolean}
    */
   isMassInside( mass ) {
-    if ( mass === this.boat || mass.stepBottom >= this.stepTop || mass.stepTop <= this.stepBottom - 1e-5 ) {
+    const slip = 1e-2;
+    if ( mass === this.boat || mass.stepBottom >= this.stepTop || mass.stepTop <= this.stepBottom - slip ) {
       return false;
     }
-    const oneLiterBottomPoint = new Vector2( mass.stepX, mass.stepBottom ).minus( this.boat.matrix.translation ).timesScalar( 1 / this.stepMultiplier );
+    const oneLiterBottomPoint = new Vector2( mass.stepX, mass.stepBottom ).minus( this.boat.matrix.translation ).timesScalar( 1 / this.boat.stepMultiplier );
+    oneLiterBottomPoint.y += slip;
 
     if ( this.oneLiterShape.bounds.containsPoint( oneLiterBottomPoint ) && this.oneLiterShape.containsPoint( oneLiterBottomPoint ) ) {
       return true;

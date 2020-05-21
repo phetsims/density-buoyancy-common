@@ -92,6 +92,18 @@ class DebugView extends Node {
       stroke: 'green'
     } );
     this.addChild( this.poolVolumePath );
+
+    // @private {Path}
+    this.boatAreaPath = new Path( null, {
+      stroke: 'red'
+    } );
+    this.addChild( this.boatAreaPath );
+
+    // @private {Path}
+    this.boatVolumePath = new Path( null, {
+      stroke: 'green'
+    } );
+    this.addChild( this.boatVolumePath );
   }
 
   /**
@@ -136,6 +148,29 @@ class DebugView extends Node {
       poolVolumeShape.lineTo( this.modelViewTransform.modelToViewX( this.model.pool.bounds.maxX ) + point.x * 10000, this.modelViewTransform.modelToViewY( point.y ) );
     } );
     this.poolVolumePath.shape = poolVolumeShape;
+
+    const boat = this.model.masses.find( mass => mass.isBoat() );
+    if ( boat ) {
+      const boatYValues = _.range( boat.stepBottom, boat.stepTop, 0.002 );
+
+      const boatNode = _.find( this.massNodes, massNode => massNode.mass === boat );
+
+      const boatAreaShape = new Shape();
+      boatYValues.map( y => new Vector2( boat.basin.getDisplacedArea( y ), y ) ).forEach( point => {
+        boatAreaShape.lineTo( boatNode.right + point.x * 2000, this.modelViewTransform.modelToViewY( point.y ) );
+      } );
+      this.boatAreaPath.shape = boatAreaShape;
+
+      const boatVolumeShape = new Shape();
+      boatYValues.map( y => new Vector2( boat.basin.getDisplacedVolume( y ), y ) ).forEach( point => {
+        boatVolumeShape.lineTo( boatNode.right + point.x * 10000, this.modelViewTransform.modelToViewY( point.y ) );
+      } );
+      this.boatVolumePath.shape = boatVolumeShape;
+    }
+    else {
+      this.boatAreaPath.shape = null;
+      this.boatVolumePath.shape = null;
+    }
   }
 }
 

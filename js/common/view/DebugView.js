@@ -16,6 +16,7 @@ import DragListener from '../../../../scenery/js/listeners/DragListener.js';
 import Node from '../../../../scenery/js/nodes/Node.js';
 import Path from '../../../../scenery/js/nodes/Path.js';
 import Rectangle from '../../../../scenery/js/nodes/Rectangle.js';
+import Boat from '../../buoyancy/model/Boat.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 
 // constants
@@ -67,7 +68,7 @@ class DebugView extends Node {
     this.massNodes = [];
 
     const onMassAdded = mass => {
-      const massNode = new DebugMassNode( mass, this.modelViewTransform );
+      const massNode = new DebugMassNode( model, mass, this.modelViewTransform );
       this.addChild( massNode );
       this.massNodes.push( massNode );
     };
@@ -111,6 +112,10 @@ class DebugView extends Node {
     this.model.masses.forEach( mass => {
       try {
         poolShape = poolShape.shapeDifference( mass.shapeProperty.value.transformed( mass.matrix ) );
+        if ( mass instanceof Boat ) {
+          const multiplier = Math.pow( mass.displacementVolumeProperty.value / 0.001, 1 / 3 );
+          poolShape = poolShape.shapeDifference( mass.basin.oneLiterShape.transformed( Matrix3.scaling( multiplier ) ).transformed( mass.matrix ) );
+        }
       } catch ( e ) {
         console.log( e );
       }
@@ -136,10 +141,11 @@ class DebugView extends Node {
 
 class DebugMassNode extends Node {
   /**
+   * @param {DensityBuoyancyModel} model
    * @param {Mass} mass
    * @param {ModelViewTransform2} modelViewTransform
    */
-  constructor( mass, modelViewTransform ) {
+  constructor( model, mass, modelViewTransform ) {
     super( {
       cursor: 'pointer'
     } );
@@ -149,6 +155,11 @@ class DebugMassNode extends Node {
       stroke: 'black'
     } );
     this.addChild( path );
+
+    const intersectionPath = new Path( null, {
+      stroke: 'black'
+    } );
+    this.addChild( intersectionPath );
 
     // @public {Mass}
     this.mass = mass;
@@ -163,7 +174,15 @@ class DebugMassNode extends Node {
       matrix.set02( 0 );
       matrix.set12( 0 );
 
-      path.shape = shape.transformed( matrix );
+      if ( mass instanceof Boat ) {
+        const multiplier = Math.pow( mass.displacementVolumeProperty.value / 0.001, 1 / 3 );
+        const basinShape = mass.basin.oneLiterShape.transformed( Matrix3.scaling( multiplier ) );
+        path.shape = shape.shapeDifference( basinShape ).transformed( matrix );
+        intersectionPath.shape = shape.transformed( matrix );
+      }
+      else {
+        path.shape = shape.transformed( matrix );
+      }
     };
     mass.shapeProperty.link( shapeListener );
     this.disposeEmitter.addListener( () => {
@@ -180,6 +199,51 @@ class DebugMassNode extends Node {
       mass.transformedEmitter.removeListener( transformListener );
     } );
     transformListener();
+
+    if ( mass instanceof Boat ) {
+      const waterPath = new Path( null, {
+        fill: 'rgba(0,128,255,0.5)',
+        stroke: 'black'
+      } );
+      this.addChild( waterPath );
+
+      const liquidListener = y => {
+        if ( mass.basin.liquidVolumeProperty.value > 0 ) {
+          const matrix = scratchMatrix.set( modelViewTransform.getMatrix() );
+
+          // Zero out the translation
+          matrix.set02( 0 );
+          matrix.set12( 0 );
+
+          const invertedMatrix = mass.matrix.inverted();
+
+          const multiplier = Math.pow( mass.displacementVolumeProperty.value / 0.001, 1 / 3 );
+          const basinShape = mass.basin.oneLiterShape.transformed( Matrix3.scaling( multiplier ) );
+          const rectangleShape = Shape.bounds( new Bounds2( -10, -10, 10, y ) ).transformed( invertedMatrix );
+
+          let waterShape = rectangleShape.shapeIntersection( basinShape );
+          model.masses.forEach( otherMass => {
+            try {
+              if ( !( otherMass instanceof Boat ) ) {
+                const otherShape = otherMass.shapeProperty.value.transformed( otherMass.matrix ).transformed( invertedMatrix );
+                waterShape = waterShape.shapeDifference( otherShape );
+              }
+            } catch ( e ) {
+              console.log( e );
+            }
+          } );
+
+          waterPath.shape = waterShape.transformed( matrix );
+        }
+        else {
+          waterPath.shape = null;
+        }
+      };
+      mass.basin.liquidYProperty.link( liquidListener );
+      this.disposeEmitter.addListener( () => {
+        mass.basin.liquidYProperty.unlink( liquidListener );
+      } );
+    }
 
     // @public {DragListener}
     this.dragListener = new DragListener( {

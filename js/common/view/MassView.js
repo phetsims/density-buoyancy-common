@@ -10,7 +10,7 @@ import DensityMaterials from './DensityMaterials.js';
 class MassView extends THREE.Mesh {
   /**
    * @param {Mass} mass
-   * @param {THREE.Geometry} geometry
+   * @param {THREE.Geometry} initialGeometry
    */
   constructor( mass, initialGeometry ) {
     const materialView = DensityMaterials.getMaterialView( mass.materialProperty.value );
@@ -22,6 +22,9 @@ class MassView extends THREE.Mesh {
 
     // @private {MaterialView}
     this.materialView = materialView;
+
+    // @private {Material}
+    this.material = materialView.material;
 
     mass.materialProperty.lazyLink( material => {
       // TODO: No MaterialView disposal?

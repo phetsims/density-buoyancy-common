@@ -288,7 +288,7 @@ class MatterEngine extends FixedTimestepEngine {
    * @public
    * @override
    *
-   * @param {Engine.Body}
+   * @param {Engine.Body} body
    * @param {Array.<Vector2>} vertices
    * @param {boolean} workaround
    */

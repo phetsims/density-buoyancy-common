@@ -46,8 +46,6 @@ class HorizontalCylinder extends Mass {
     this.stepMaximumVolume = 0;
 
     this.updateSize( radius, length );
-
-    // TODO: link updates if size changes
   }
 
   /**

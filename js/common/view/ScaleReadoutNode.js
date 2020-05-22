@@ -20,7 +20,7 @@ import Scale from '../model/Scale.js';
 class ScaleReadoutNode extends Node {
   /**
    * @param {Scale} mass
-   * @param {Property.<Gravity>}
+   * @param {Property.<Gravity>} gravityProperty
    */
   constructor( mass, gravityProperty ) {
     super();

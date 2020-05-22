@@ -4,7 +4,6 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
-import Utils from '../../../../dot/js/Utils.js';
 import ThreeUtils from '../../../../mobius/js/ThreeUtils.js';
 import Bricks25AOImage from '../../../images/Bricks25_AO_jpg.js';
 import Bricks25ColImage from '../../../images/Bricks25_col_jpg.js';
@@ -26,9 +25,9 @@ import Metal10MetImage from '../../../images/Metal10_met_jpg.js';
 import Metal10NrmImage from '../../../images/Metal10_nrm_jpg.js';
 import Metal10RghImage from '../../../images/Metal10_rgh_jpg.js';
 import Styrofoam001AOImage from '../../../images/Styrofoam_001_AO_jpg.js';
-import Styrofoam001colImage from '../../../images/Styrofoam_001_col_jpg.js';
-import Styrofoam001nrmImage from '../../../images/Styrofoam_001_nrm_jpg.js';
-import Styrofoam001rghImage from '../../../images/Styrofoam_001_rgh_jpg.js';
+import Styrofoam001ColImage from '../../../images/Styrofoam_001_col_jpg.js';
+import Styrofoam001NrmImage from '../../../images/Styrofoam_001_nrm_jpg.js';
+import Styrofoam001RghImage from '../../../images/Styrofoam_001_rgh_jpg.js';
 import Wood26ColImage from '../../../images/Wood26_col_jpg.js';
 import Wood26NrmImage from '../../../images/Wood26_nrm_jpg.js';
 import Wood26RghImage from '../../../images/Wood26_rgh_jpg.js';
@@ -43,7 +42,6 @@ function toWrappedTexture( image ) {
   const texture = ThreeUtils.imageToTexture( image, true );
   texture.wrapS = THREE.RepeatWrapping;
   texture.wrapT = THREE.RepeatWrapping;
-  // texture.repeat.set( 4, 4 ); // TODO: any performance or quality due to this?
   return texture;
 }
 
@@ -68,9 +66,9 @@ const steelMetalnessTexture = toWrappedTexture( DiamondPlate01MetImage );
 const steelNormalTexture = toWrappedTexture( DiamondPlate01NrmImage );
 const steelRoughnessTexture = toWrappedTexture( DiamondPlate01RghImage );
 const styrofoamAmbientOcclusionTexture = toWrappedTexture( Styrofoam001AOImage );
-const styrofoamColorTexture = toWrappedTexture( Styrofoam001colImage );
-const styrofoamNormalTexture = toWrappedTexture( Styrofoam001nrmImage );
-const styrofoamRoughnessTexture = toWrappedTexture( Styrofoam001rghImage );
+const styrofoamColorTexture = toWrappedTexture( Styrofoam001ColImage );
+const styrofoamNormalTexture = toWrappedTexture( Styrofoam001NrmImage );
+const styrofoamRoughnessTexture = toWrappedTexture( Styrofoam001RghImage );
 const woodColorTexture = toWrappedTexture( Wood26ColImage );
 const woodNormalTexture = toWrappedTexture( Wood26NrmImage );
 const woodRoughnessTexture = toWrappedTexture( Wood26RghImage );
@@ -149,32 +147,6 @@ class IceMaterialView extends CameraMaterialView {
   }
 }
 
-class PlasticMaterialView extends CameraMaterialView {
-  constructor() {
-    super();
-
-    const texture = this.getTexture();
-
-    texture.mapping = THREE.CubeRefractionMapping;
-    texture.needsUpdate = true;
-
-    this.material = new THREE.MeshPhysicalMaterial( {
-      color: 0xff0000,
-      opacity: 0.5,
-      roughness: 0.1,
-      refractionRatio: 1 / 1.309,
-      metalness: 0.1,
-      clearCoat: 1,
-      reflectivity: 1,
-      envMap: texture,
-      envMapIntensity: 2, // is this too much cheating?
-
-      transparent: true,
-      side: THREE.DoubleSide
-    } );
-  }
-}
-
 // We just use aluminum
 class PlatinumMaterialView extends CameraMaterialView {
   constructor() {
@@ -241,6 +213,9 @@ class WoodMaterialView extends CameraMaterialView {
 }
 
 class CustomMaterialView extends MaterialView {
+  /**
+   * @param {number} density
+   */
   constructor( density ) {
     super();
 
@@ -254,6 +229,9 @@ class CustomMaterialView extends MaterialView {
 }
 
 class CustomColoredMaterialView extends MaterialView {
+  /**
+   * @param {Property.<Color>} colorProperty
+   */
   constructor( colorProperty ) {
     super();
 
@@ -319,14 +297,6 @@ class DensityMaterials {
     else {
       return new DebugMaterialView();
     }
-  }
-
-  static getCustomLightness( density ) {
-    return Utils.roundSymmetric( Utils.clamp( Utils.linear( 1, -2, 0, 255, Utils.log10( density / 1000 ) ), 0, 255 ) );
-  }
-
-  static getBottleMaterialView() {
-    return new PlasticMaterialView();
   }
 }
 

@@ -14,7 +14,8 @@ const logging = assert && DensityBuoyancyCommonQueryParameters.engineLog;
 
 class Engine {
   constructor() {
-    // @public {number} - TODO: doc
+    // @public {number} - Engines typically work in fixed-time steps, this is how far we are in the
+    // display from the "previous" step (0) to the "next" step (1).
     this.interpolationRatio = 1;
   }
 
@@ -235,7 +236,7 @@ class Engine {
    * Updates the width/height of a box body.
    * @public
    *
-   * @param {Engine.Body}
+   * @param {Engine.Body} body
    * @param {number} width
    * @param {number} height
    */
@@ -259,11 +260,11 @@ class Engine {
    * Updates the vertices of a dynamic vertex-based body.
    * @public
    *
-   * @param {Engine.Body}
+   * @param {Engine.Body} body
    * @param {Array.<Vector2>} vertices
    * @param {boolean} workaround
    */
-  updateFromVertices( body, vertices ) {
+  updateFromVertices( body, vertices, workaround ) {
     throw new Error( 'unimplemented' );
   }
 

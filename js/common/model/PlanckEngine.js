@@ -332,7 +332,7 @@ class PlanckEngine extends Engine {
    * @public
    * @override
    *
-   * @param {Engine.Body}
+   * @param {Engine.Body} body
    * @param {number} width
    * @param {number} height
    */
@@ -391,7 +391,7 @@ class PlanckEngine extends Engine {
    * @public
    * @override
    *
-   * @param {Engine.Body}
+   * @param {Engine.Body} body
    * @param {Array.<Vector2>} vertices
    * @param {boolean} workaround
    */

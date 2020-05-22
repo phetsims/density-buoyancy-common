@@ -659,6 +659,7 @@ class DensityBuoyancyScreenView extends ScreenView {
   }
 
   /**
+   * @public
    * @override
    * @param {number} width
    * @param {number} height

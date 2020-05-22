@@ -47,6 +47,14 @@ class SecondMassVisibleControl extends RadioButtonGroup {
     } );
   }
 
+  /**
+   * Creates a box mesh for use in icons.
+   * @private
+   *
+   * @param {THREE.Material} material
+   * @param {Vector3} position
+   * @returns {THREE.Mesh}
+   */
   static createBox( material, position ) {
     const boxGeometry = new THREE.BoxGeometry( 0.1, 0.1, 0.1 );
 

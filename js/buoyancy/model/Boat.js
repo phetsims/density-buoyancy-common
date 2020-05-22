@@ -276,6 +276,10 @@ class Boat extends Mass {
     // return 0; // TODO:
   }
 
+  /**
+   * Resets values to their original state
+   * @public
+   */
   reset() {
     this.displacementVolumeProperty.reset();
 

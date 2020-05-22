@@ -102,6 +102,7 @@ class ForceDiagramNode extends Node {
 
   /**
    * Updates the displayed view.
+   * @public
    */
   update() {
     const upwardArrows = [];

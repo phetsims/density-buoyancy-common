@@ -20,7 +20,6 @@ import Material from '../../common/model/Material.js';
 import Scale from '../../common/model/Scale.js';
 import VerticalCylinder from '../../common/model/VerticalCylinder.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
-import Boat from './Boat.js';
 
 // constants
 const MassShape = Enumeration.byKeys( [
@@ -40,9 +39,6 @@ class BuoyancyShapesModel extends DensityBuoyancyModel {
   constructor( tandem ) {
 
     super( tandem );
-
-    // TODO: remove
-    this.testBoat = Boat;
 
     // @public {Property.<boolean>}
     this.secondaryMassVisibleProperty = new BooleanProperty( false );

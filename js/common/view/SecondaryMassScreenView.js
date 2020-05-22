@@ -11,7 +11,8 @@ import SecondMassVisibleControl from './SecondMassVisibleControl.js';
 
 class SecondaryMassScreenView extends DensityBuoyancyScreenView {
   /**
-   * Adding the second-mass control
+   * Adding the second-mass control.
+   * @protected
    */
   addSecondMassControl() {
 
@@ -39,6 +40,7 @@ class SecondaryMassScreenView extends DensityBuoyancyScreenView {
   }
 
   /**
+   * @public
    * @override
    * @param {number} width
    * @param {number} height

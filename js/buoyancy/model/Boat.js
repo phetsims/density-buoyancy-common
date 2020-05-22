@@ -28,7 +28,7 @@ class Boat extends Mass {
     const displacementVolumeProperty = new NumberProperty( 0.005 );
 
     const boatIntersectionVertices = BoatDesign.getIntersectionVertices( blockWidthProperty.value / 2, displacementVolumeProperty.value * 1000 );
-    const volume = BoatDesign.ONE_LITER_ACTUAL_VOLUME * displacementVolumeProperty.value * 1000;
+    const volume = BoatDesign.ONE_LITER_HULL_VOLUME * displacementVolumeProperty.value * 1000;
 
     config = merge( {
       body: engine.createFromVertices( boatIntersectionVertices, true ),
@@ -51,7 +51,7 @@ class Boat extends Mass {
       }
 
       const vertices = BoatDesign.getIntersectionVertices( blockWidth / 2, displacementVolume * 1000 );
-      const volume = BoatDesign.ONE_LITER_ACTUAL_VOLUME * displacementVolume * 1000;
+      const volume = BoatDesign.ONE_LITER_HULL_VOLUME * displacementVolume * 1000;
 
       engine.updateFromVertices( this.body, vertices, true );
       this.shapeProperty.value = Shape.polygon( vertices ); // TODO: remove shapeProperty for perf?

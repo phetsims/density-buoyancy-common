@@ -33,7 +33,6 @@ import DisplayOptionsNode from '../../common/view/DisplayOptionsNode.js';
 import MaterialMassVolumeControlNode from '../../common/view/MaterialMassVolumeControlNode.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import densityBuoyancyCommonStrings from '../../densityBuoyancyCommonStrings.js';
-import BoatDesign from '../model/BoatDesign.js';
 import BuoyancyApplicationsModel from '../model/BuoyancyApplicationsModel.js';
 import DensityReadoutListNode from './DensityReadoutListNode.js';
 
@@ -58,17 +57,6 @@ class BuoyancyApplicationsScreenView extends DensityBuoyancyScreenView {
 
     // For clipping planes in BottleView
     this.sceneNode.stage.threeRenderer.localClippingEnabled = true;
-
-    const boatGeometry = BoatDesign.getPrimaryGeometry( 10 );
-
-    // @private {THREE.Mesh}
-    this.boatMesh = new THREE.Mesh( boatGeometry, new THREE.MeshLambertMaterial( {
-      // const boatMesh = new THREE.Mesh( boatGeometry, new THREE.MeshBasicMaterial( {
-      // const boatMesh = new THREE.Mesh( new THREE.SphereGeometry( 0.1, 32, 32 ), new THREE.MeshBasicMaterial( {
-      // side: THREE.DoubleSide,
-      color: 0xffaa44
-    } ) );
-    // this.sceneNode.stage.threeScene.add( this.boatMesh );
 
     const bottleControl = new MaterialMassVolumeControlNode( model.bottle.interiorMaterialProperty, model.bottle.interiorMassProperty, model.bottle.interiorVolumeProperty, [
       Material.GASOLINE,
@@ -257,18 +245,6 @@ class BuoyancyApplicationsScreenView extends DensityBuoyancyScreenView {
     } ) );
 
     this.addChild( this.popupLayer );
-  }
-
-  // TODO: remove
-  step( dt ) {
-    super.step( dt );
-
-    if ( !this.enabled ) {
-      return;
-    }
-
-    this.boatMesh.rotation.y += dt * 0.5;
-    this.boatMesh.rotation.x += dt * 0.1;
   }
 }
 

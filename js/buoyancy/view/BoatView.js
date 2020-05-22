@@ -9,7 +9,7 @@ import Property from '../../../../axon/js/Property.js';
 import ThreeUtils from '../../../../mobius/js/ThreeUtils.js';
 import MassView from '../../common/view/MassView.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
-import Boat from '../model/Boat.js';
+import BoatDesign from '../model/BoatDesign.js';
 
 class BoatView extends MassView {
   /**
@@ -20,7 +20,7 @@ class BoatView extends MassView {
 
     super( boat, new THREE.Geometry() );
 
-    const boatOneLiterGeometry = Boat.getPrimaryGeometry( 1 );
+    const boatOneLiterGeometry = BoatDesign.getPrimaryGeometry( 1 );
 
     const boatGroup = new THREE.Group();
     this.add( boatGroup );
@@ -60,7 +60,7 @@ class BoatView extends MassView {
     } ) );
     boatGroup.add( frontForDepth );
 
-    const crossSectionPositionArray = Boat.createCrossSectionVertexArray();
+    const crossSectionPositionArray = BoatDesign.createCrossSectionVertexArray();
     const crossSectionNormalArray = new Float32Array( crossSectionPositionArray.length );
     for ( let i = 1; i < crossSectionNormalArray.length; i += 3 ) {
       crossSectionNormalArray[ i ] = 1; // normals should all be 0,1,0
@@ -72,7 +72,7 @@ class BoatView extends MassView {
 
     // TODO: unlink
     Property.multilink( [ boat.basin.liquidYProperty, boat.basin.liquidVolumeProperty ], ( y, volume ) => {
-      Boat.fillCrossSectionVertexArray( y - boat.matrix.translation.y, boat.displacementVolumeProperty.value / 0.001, crossSectionPositionArray );
+      BoatDesign.fillCrossSectionVertexArray( y - boat.matrix.translation.y, boat.displacementVolumeProperty.value / 0.001, crossSectionPositionArray );
       interiorSurfaceGeometry.attributes.position.needsUpdate = true;
       interiorSurfaceGeometry.computeBoundingSphere();
     } );

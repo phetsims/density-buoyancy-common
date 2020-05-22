@@ -20,9 +20,9 @@ import Node from '../../../../scenery/js/nodes/Node.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
 import VBox from '../../../../scenery/js/nodes/VBox.js';
 import AccordionBox from '../../../../sun/js/AccordionBox.js';
-import RadioButtonGroup from '../../../../sun/js/buttons/RadioButtonGroup.js';
 import HSeparator from '../../../../sun/js/HSeparator.js';
 import Panel from '../../../../sun/js/Panel.js';
+import RadioButtonGroup from '../../../../sun/js/buttons/RadioButtonGroup.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 import Cuboid from '../../common/model/Cuboid.js';
 import Material from '../../common/model/Material.js';
@@ -33,7 +33,7 @@ import DisplayOptionsNode from '../../common/view/DisplayOptionsNode.js';
 import MaterialMassVolumeControlNode from '../../common/view/MaterialMassVolumeControlNode.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import densityBuoyancyCommonStrings from '../../densityBuoyancyCommonStrings.js';
-import Boat from '../model/Boat.js';
+import BoatDesign from '../model/BoatDesign.js';
 import BuoyancyApplicationsModel from '../model/BuoyancyApplicationsModel.js';
 import DensityReadoutListNode from './DensityReadoutListNode.js';
 
@@ -59,7 +59,7 @@ class BuoyancyApplicationsScreenView extends DensityBuoyancyScreenView {
     // For clipping planes in BottleView
     this.sceneNode.stage.threeRenderer.localClippingEnabled = true;
 
-    const boatGeometry = Boat.getPrimaryGeometry( 10 );
+    const boatGeometry = BoatDesign.getPrimaryGeometry( 10 );
 
     // @private {THREE.Mesh}
     this.boatMesh = new THREE.Mesh( boatGeometry, new THREE.MeshLambertMaterial( {

@@ -10,7 +10,7 @@ import Vector2 from '../../../../dot/js/Vector2.js';
 import Shape from '../../../../kite/js/Shape.js';
 import Basin from '../../common/model/Basin.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
-import Boat from './Boat.js';
+import BoatDesign from './BoatDesign.js';
 
 class BoatBasin extends Basin {
   /**
@@ -26,7 +26,7 @@ class BoatBasin extends Basin {
     this.boat = boat;
 
     // @private {Shape} - Used for intersection
-    this.oneLiterShape = Shape.polygon( Boat.getBasinOneLiterVertices() );
+    this.oneLiterShape = Shape.polygon( BoatDesign.getBasinOneLiterVertices() );
   }
 
   /**

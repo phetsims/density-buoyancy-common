@@ -104,9 +104,12 @@ class Mass {
     // @public {Property.<number>} - In m^3 (cubic meters)
     this.volumeProperty = new NumberProperty( config.volume );
 
+    // @public {Property.<number>} - In kg (kilograms), added to the normal mass (computed from density and volume)
+    this.containedMassProperty = new NumberProperty( 0 );
+
     // @public {Property.<number>} - In kg (kilograms)
-    this.massProperty = new DerivedProperty( [ this.materialProperty, this.volumeProperty ], ( material, volume ) => {
-      return material.density * volume;
+    this.massProperty = new DerivedProperty( [ this.materialProperty, this.volumeProperty, this.containedMassProperty ], ( material, volume, containedMass ) => {
+      return material.density * volume + containedMass;
     } );
 
     // @public {Property.<Vector2>} - The following offset will be added onto the body's position to determine ours.
@@ -352,6 +355,7 @@ class Mass {
     this.shapeProperty.reset();
     this.materialProperty.reset();
     this.volumeProperty.reset();
+    this.containedMassProperty.reset();
     this.velocityProperty.reset();
     this.angularVelocityProperty.reset();
 

@@ -70,6 +70,10 @@ class Boat extends Mass {
     // @public {Basin}
     this.basin = new BoatBasin( this );
 
+    Property.multilink( [ this.liquidMaterialProperty, this.basin.liquidVolumeProperty ], ( material, volume ) => {
+      this.containedMassProperty.value = material.density * volume;
+    } );
+
     // @private {number} - Amount of volume displaced by the boat in the step
     this.stepVolume = 0;
 

@@ -1,6 +1,8 @@
 // Copyright 2019-2020, University of Colorado Boulder
 
 /**
+ * A scale used for measuring mass/weight (depending on the DisplayType)
+ *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 

@@ -1,6 +1,8 @@
 // Copyright 2020, University of Colorado Boulder
 
 /**
+ * A subtype of ScreenView that has a primary/secondary mass (with visibility controls for the second mass)
+ *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 

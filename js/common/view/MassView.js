@@ -1,6 +1,8 @@
 // Copyright 2019-2020, University of Colorado Boulder
 
 /**
+ * The base type for 3D views of any type of mass.
+ *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 

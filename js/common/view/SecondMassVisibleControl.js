@@ -1,6 +1,8 @@
 // Copyright 2020, University of Colorado Boulder
 
 /**
+ * Controls whether the second mass is visible.
+ *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 

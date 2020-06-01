@@ -1,6 +1,8 @@
 // Copyright 2019-2020, University of Colorado Boulder
 
 /**
+ * Handles controlling a quantity with a NumberControl, but combined with a ComboBox for specific non-custom values.
+ *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 

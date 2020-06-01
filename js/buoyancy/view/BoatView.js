@@ -1,6 +1,8 @@
 // Copyright 2020, University of Colorado Boulder
 
 /**
+ * The 3D view for a Boat.
+ *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 

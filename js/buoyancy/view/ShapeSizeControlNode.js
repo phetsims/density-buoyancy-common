@@ -1,6 +1,8 @@
 // Copyright 2019-2020, University of Colorado Boulder
 
 /**
+ * Controls the dimensions of different masses with a generic "height/width" control.
+ *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 

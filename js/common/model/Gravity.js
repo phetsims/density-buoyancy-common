@@ -1,6 +1,8 @@
 // Copyright 2019-2020, University of Colorado Boulder
 
 /**
+ * Represents different gravity values, including a custom option.
+ *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 

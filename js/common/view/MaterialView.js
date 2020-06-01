@@ -1,6 +1,8 @@
 // Copyright 2019-2020, University of Colorado Boulder
 
 /**
+ * A container for a three.js material and various associated functions/data that are needed to update it.
+ *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 

@@ -1,6 +1,8 @@
 // Copyright 2019-2020, University of Colorado Boulder
 
 /**
+ * A mass/volume control specifically for blocks.
+ *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
@@ -9,7 +11,6 @@ import Cuboid from '../model/Cuboid.js';
 import Material from '../model/Material.js';
 import MaterialMassVolumeControlNode from './MaterialMassVolumeControlNode.js';
 
-// TODO: move out
 class BlockControlNode extends MaterialMassVolumeControlNode {
   /**
    * @param {Cuboid} cuboid

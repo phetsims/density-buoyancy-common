@@ -1,6 +1,8 @@
 // Copyright 2019-2020, University of Colorado Boulder
 
 /**
+ * Shows a combined NumberControl/ComboBox for controlling liquid density.
+ *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 

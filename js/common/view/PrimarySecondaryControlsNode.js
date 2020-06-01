@@ -1,6 +1,8 @@
 // Copyright 2019-2020, University of Colorado Boulder
 
 /**
+ * Shows mass/volume controls for a primary and secondary mass.
+ *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 

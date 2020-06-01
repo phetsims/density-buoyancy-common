@@ -1,6 +1,8 @@
 // Copyright 2019-2020, University of Colorado Boulder
 
 /**
+ * Shows the water level numerically next to the top-left of the pool's water.
+ *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 

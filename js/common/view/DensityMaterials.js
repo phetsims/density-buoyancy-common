@@ -1,6 +1,8 @@
 // Copyright 2019-2020, University of Colorado Boulder
 
 /**
+ * Provides factory methods for creating MaterialViews for various Materials.
+ *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 

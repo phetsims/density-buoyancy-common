@@ -1,6 +1,8 @@
 // Copyright 2019-2020, University of Colorado Boulder
 
 /**
+ * A control that allows modification of the mass and volume (which can be linked, or unlinked for custom materials).
+ *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 

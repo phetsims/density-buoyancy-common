@@ -1,6 +1,8 @@
 // Copyright 2019-2020, University of Colorado Boulder
 
 /**
+ * A specific MaterialView that uses its own camera for an environment map texture.
+ *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 

@@ -1,6 +1,9 @@
 // Copyright 2019-2020, University of Colorado Boulder
 
 /**
+ * A Panel with primary/secondary nodes, where the primary one is always shown, and the secondary one is conditionally
+ * shown based on a boolean Property.
+ *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 

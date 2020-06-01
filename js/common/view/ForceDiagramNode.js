@@ -1,6 +1,8 @@
 // Copyright 2019-2020, University of Colorado Boulder
 
 /**
+ * Shows a force diagram for an individual mass.
+ *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 

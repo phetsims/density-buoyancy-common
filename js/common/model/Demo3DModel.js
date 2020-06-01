@@ -1,6 +1,8 @@
 // Copyright 2019-2020, University of Colorado Boulder
 
 /**
+ * Main model for the demo (debugging) screen.
+ *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 

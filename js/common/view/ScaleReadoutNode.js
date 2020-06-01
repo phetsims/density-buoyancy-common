@@ -1,6 +1,8 @@
 // Copyright 2019-2020, University of Colorado Boulder
 
 /**
+ * Shows a readout in front of a scale, for its measured mass/weight.
+ *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 

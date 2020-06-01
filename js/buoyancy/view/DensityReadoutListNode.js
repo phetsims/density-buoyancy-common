@@ -1,6 +1,8 @@
 // Copyright 2019-2020, University of Colorado Boulder
 
 /**
+ * Shows a reference list of densities for named quantities (which can switch between different materials).
+ *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 

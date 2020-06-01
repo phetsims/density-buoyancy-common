@@ -1,6 +1,8 @@
 // Copyright 2019-2020, University of Colorado Boulder
 
 /**
+ * Represents different materials that solids/liquids in the simulations can take, including density/viscosity/color.
+ *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
@@ -270,7 +272,7 @@ Material.GASOLINE = new Material( {
 Material.HONEY = new Material( {
   name: densityBuoyancyCommonStrings.material.honey,
   density: 1440,
-  viscosity: 0.03, // TODO: actual value around 2.5, but we can get away with this for animation
+  viscosity: 0.03, // NOTE: actual value around 2.5, but we can get away with this for animation
   liquidColor: DensityBuoyancyCommonColorProfile.materialHoneyProperty
 } );
 Material.MERCURY = new Material( {

@@ -1,6 +1,8 @@
 // Copyright 2019-2020, University of Colorado Boulder
 
 /**
+ * A boat (Mass) that can contain some liquid inside.
+ *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 

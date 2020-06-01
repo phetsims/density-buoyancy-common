@@ -1,6 +1,8 @@
 // Copyright 2019-2020, University of Colorado Boulder
 
 /**
+ * The main base ScreenView for all Density/Buoyancy screens.
+ *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 

@@ -1,6 +1,8 @@
 // Copyright 2019-2020, University of Colorado Boulder
 
 /**
+ * The 3D view for a Scale.
+ *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
@@ -40,7 +42,7 @@ class ScaleView extends MassView {
    */
   static getScaleGeometry() {
     const cuboidElements = 18 * 3;
-    const cylinderElements = 12 * 64; // TODO: share these!
+    const cylinderElements = 12 * 64;
     const numElements = cuboidElements + cylinderElements;
 
     const positionArray = new Float32Array( numElements * 3 );

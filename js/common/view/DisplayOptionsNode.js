@@ -1,6 +1,8 @@
 // Copyright 2019-2020, University of Colorado Boulder
 
 /**
+ * Panel content for showing/hiding various arrows/readouts.
+ *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 

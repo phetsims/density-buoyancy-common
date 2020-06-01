@@ -1,6 +1,8 @@
 // Copyright 2019-2020, University of Colorado Boulder
 
 /**
+ * The 3D view for a HorizontalCylinder.
+ *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 

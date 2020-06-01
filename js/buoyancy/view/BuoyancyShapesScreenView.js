@@ -1,6 +1,8 @@
 // Copyright 2019-2020, University of Colorado Boulder
 
 /**
+ * The main view for the Shapes screen of the Buoyancy simulation.
+ *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
@@ -22,7 +24,7 @@ import PrimarySecondaryPanelsNode from '../../common/view/PrimarySecondaryPanels
 import SecondaryMassScreenView from '../../common/view/SecondaryMassScreenView.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import densityBuoyancyCommonStrings from '../../densityBuoyancyCommonStrings.js';
-import DensityReadoutListNode from './DensityReadoutListNode.js';
+import DensityReadoutListNode form './DensityReadoutListNode.js';
 import ShapeSizeControlNode from './ShapeSizeControlNode.js';
 
 // constants

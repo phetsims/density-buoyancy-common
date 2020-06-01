@@ -1,6 +1,8 @@
 // Copyright 2020, University of Colorado Boulder
 
 /**
+ * The main model for the Mystery screen of the Density simulation.
+ *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 

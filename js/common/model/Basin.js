@@ -22,8 +22,6 @@ class Basin {
     }, options );
 
     // @public {Property.<number>} - in m^3
-    // TODO: animation handling for actual volume in the pool? OR DO WE NOT NEED, only care about the y?
-    // TODO: We only really tend to set this, not read it?
     this.liquidVolumeProperty = new NumberProperty( options.initialVolume );
 
     // @public {Property.<number>} - The y coordinate of the liquid level

@@ -1,6 +1,8 @@
 // Copyright 2019-2020, University of Colorado Boulder
 
 /**
+ * The main model for the Intro screen of the Buoyancy simulation.
+ *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 

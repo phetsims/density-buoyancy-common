@@ -1,6 +1,8 @@
 // Copyright 2019-2020, University of Colorado Boulder
 
 /**
+ * The main view for the Explore screen of the Buoyancy simulation.
+ *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 

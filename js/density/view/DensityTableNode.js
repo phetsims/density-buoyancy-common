@@ -1,6 +1,8 @@
 // Copyright 2019-2020, University of Colorado Boulder
 
 /**
+ * A table of common densities shown for reference.
+ *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 

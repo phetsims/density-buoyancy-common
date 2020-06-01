@@ -258,7 +258,6 @@ class DensityBuoyancyModel {
     if ( boat ) {
       let boatLiquidVolume = boat.basin.liquidVolumeProperty.value;
 
-      // the getEmptyVolume would be double-counting the interior displaced volume
       const poolEmptyVolumeToBoatTop = this.pool.getEmptyVolume( Math.min( boat.stepTop, this.poolBounds.maxY ) );
       const boatEmptyVolumeToBoatTop = boat.basin.getEmptyVolume( boat.stepTop );
 

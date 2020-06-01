@@ -24,7 +24,7 @@ import PrimarySecondaryPanelsNode from '../../common/view/PrimarySecondaryPanels
 import SecondaryMassScreenView from '../../common/view/SecondaryMassScreenView.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import densityBuoyancyCommonStrings from '../../densityBuoyancyCommonStrings.js';
-import DensityReadoutListNode form './DensityReadoutListNode.js';
+import DensityReadoutListNode from './DensityReadoutListNode.js';
 import ShapeSizeControlNode from './ShapeSizeControlNode.js';
 
 // constants

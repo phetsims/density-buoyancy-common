@@ -9,16 +9,6 @@
 import densityBuoyancyCommon from '../densityBuoyancyCommon.js';
 
 const DensityBuoyancyCommonQueryParameters = QueryStringMachine.getAll( {
-  engine: {
-    type: 'string',
-    defaultValue: 'p2'
-  },
-  engineLog: {
-    type: 'flag'
-  },
-  engineDebug: {
-    type: 'flag'
-  },
   poolWidthMultiplier: {
     type: 'number',
     defaultValue: 1

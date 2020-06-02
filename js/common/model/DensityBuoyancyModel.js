@@ -15,12 +15,9 @@ import Vector2 from '../../../../dot/js/Vector2.js';
 import merge from '../../../../phet-core/js/merge.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonQueryParameters from '../DensityBuoyancyCommonQueryParameters.js';
-import Engine from './Engine.js';
 import Gravity from './Gravity.js';
 import Material from './Material.js';
-import MatterEngine from './MatterEngine.js';
 import P2Engine from './P2Engine.js';
-import PlanckEngine from './PlanckEngine.js';
 import Pool from './Pool.js';
 import Scale from './Scale.js';
 
@@ -122,11 +119,8 @@ class DensityBuoyancyModel {
     // @public {Pool}
     this.pool = new Pool( this.poolBounds );
 
-    const engineType = DensityBuoyancyCommonQueryParameters.engine;
-    assert && assert( engineType === 'p2' || engineType === 'matter' || engineType === 'planck' );
-
     // @public {Engine}
-    this.engine = engineType === 'p2' ? new P2Engine() : ( engineType === 'matter' ? new MatterEngine() : new PlanckEngine() );
+    this.engine = new P2Engine();
 
     // @public {Engine.Body}
     this.groundBody = this.engine.createGround( this.groundPoints );
@@ -146,7 +140,6 @@ class DensityBuoyancyModel {
     } );
 
     this.engine.addPostStepListener( () => {
-      assert && Engine.log( '[post-step]' );
 
       this.updateLiquid();
 
@@ -186,9 +179,6 @@ class DensityBuoyancyModel {
           const hackedViscosity = this.liquidViscosityProperty.value ? 0.03 * Math.pow( this.liquidViscosityProperty.value / 0.03, 0.8 ) : 0;
           const viscousForce = velocity.times( -hackedViscosity * Math.max( 0.5, mass.massProperty.value ) * 3000 );
           this.engine.bodyApplyForce( mass.body, viscousForce );
-
-          assert && Engine.log( `buoyancy: ${buoyantForce.toString()}` );
-          assert && Engine.log( `viscous: ${viscousForce.toString()}` );
         }
         else {
           mass.buoyancyForceProperty.setNextValue( Vector2.ZERO );
@@ -198,8 +188,6 @@ class DensityBuoyancyModel {
         const gravityForce = new Vector2( 0, -mass.massProperty.value * gravity );
         this.engine.bodyApplyForce( mass.body, gravityForce );
         mass.gravityForceProperty.setNextValue( gravityForce );
-
-        assert && Engine.log( `gravity: ${gravityForce.toString()}` );
       } );
     } );
   }

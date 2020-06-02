@@ -26,7 +26,6 @@ import merge from '../../../../phet-core/js/merge.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import ResetAllButton from '../../../../scenery-phet/js/buttons/ResetAllButton.js';
 import Mouse from '../../../../scenery/js/input/Mouse.js';
-import DOM from '../../../../scenery/js/nodes/DOM.js';
 import Image from '../../../../scenery/js/nodes/Image.js';
 import Node from '../../../../scenery/js/nodes/Node.js';
 import Rectangle from '../../../../scenery/js/nodes/Rectangle.js';
@@ -576,37 +575,6 @@ class DensityBuoyancyScreenView extends ScreenView {
       tandem: tandem.createTandem( 'resetAllButton' )
     } );
     this.addChild( resetAllButton );
-
-    if ( DensityBuoyancyCommonQueryParameters.engineDebug && DensityBuoyancyCommonQueryParameters.engine === 'matter' ) {
-      const width = 800;
-      const height = 640;
-      const canvas = document.createElement( 'canvas' );
-      canvas.width = width;
-      canvas.height = height;
-      canvas.style.opacity = 0.5;
-      const matterRender = Matter.Render.create( {
-        canvas: canvas,
-        // element: document.body,
-        engine: model.engine.engine,
-        options: {
-          width: width,
-          height: height
-        }
-      } );
-
-      matterRender.options.hasBounds = true;
-      matterRender.bounds.min.x = -80;
-      matterRender.bounds.max.x = 80;
-      matterRender.bounds.min.y = -64;
-      matterRender.bounds.max.y = 64;
-      Matter.Render.run( matterRender );
-
-      this.addChild( new DOM( canvas, {
-        center: this.layoutBounds.center,
-        pickable: false
-      } ) );
-      console.log( 'added matter renderer' );
-    }
 
     if ( DensityBuoyancyCommonQueryParameters.showDebug ) {
       const debugVisibleProperty = new BooleanProperty( true );

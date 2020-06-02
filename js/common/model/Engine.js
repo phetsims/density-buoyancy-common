@@ -8,9 +8,6 @@
 
 import merge from '../../../../phet-core/js/merge.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
-import DensityBuoyancyCommonQueryParameters from '../DensityBuoyancyCommonQueryParameters.js';
-
-const logging = assert && DensityBuoyancyCommonQueryParameters.engineLog;
 
 class Engine {
   constructor() {
@@ -319,16 +316,6 @@ class Engine {
    */
   removePointerConstraint( body ) {
     throw new Error( 'unimplemented' );
-  }
-
-  /**
-   * Logs an engine message if desired.
-   * @public
-   *
-   * @param {string} str
-   */
-  static log( str ) {
-    logging && console.log( str );
   }
 }
 

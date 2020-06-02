@@ -475,7 +475,7 @@ class P2Engine extends Engine {
     const pointerConstraint = new p2.RevoluteConstraint( nullBody, body, {
       localPivotA: globalPoint,
       localPivotB: localPoint,
-      maxForce: 5000 * body.mass * MASS_SCALE
+      maxForce: 5000 * body.mass
     } );
     this.pointerConstraintMap[ body.id ] = pointerConstraint;
     this.world.addConstraint( pointerConstraint );

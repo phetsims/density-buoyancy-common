@@ -14,7 +14,8 @@ import Engine from './Engine.js';
 // constants
 const FIXED_TIME_STEP = 1 / 120;
 const MAX_SUB_STEPS = 30;
-const SCALE = 5;
+const SIZE_SCALE = 5;
+const MASS_SCALE = 0.1;
 
 const groundMaterial = new p2.Material();
 const barrierMaterial = new p2.Material();
@@ -112,7 +113,7 @@ class P2Engine extends Engine {
       canRotate: false
     }, options );
 
-    body.mass = mass;
+    body.mass = mass * MASS_SCALE;
 
     if ( !options.canRotate ) {
       body.fixedRotation = true;
@@ -130,7 +131,7 @@ class P2Engine extends Engine {
    * @param {Matrix3} matrix
    */
   bodyGetMatrixTransform( body, matrix ) {
-    return matrix.setToTranslationRotation( body.interpolatedPosition[ 0 ] / SCALE, body.interpolatedPosition[ 1 ] / SCALE, body.interpolatedAngle );
+    return matrix.setToTranslationRotation( body.interpolatedPosition[ 0 ] / SIZE_SCALE, body.interpolatedPosition[ 1 ] / SIZE_SCALE, body.interpolatedAngle );
   }
 
   /**
@@ -142,7 +143,7 @@ class P2Engine extends Engine {
    * @param {Matrix3} matrix
    */
   bodyGetStepMatrixTransform( body, matrix ) {
-    return matrix.setToTranslationRotation( body.position[ 0 ] / SCALE, body.position[ 1 ] / SCALE, body.angle );
+    return matrix.setToTranslationRotation( body.position[ 0 ] / SIZE_SCALE, body.position[ 1 ] / SIZE_SCALE, body.angle );
   }
 
   /**
@@ -154,8 +155,8 @@ class P2Engine extends Engine {
    * @param {Vector2} position
    */
   bodySetPosition( body, position ) {
-    body.position[ 0 ] = position.x * SCALE;
-    body.position[ 1 ] = position.y * SCALE;
+    body.position[ 0 ] = position.x * SIZE_SCALE;
+    body.position[ 1 ] = position.y * SIZE_SCALE;
   }
 
   /**
@@ -215,8 +216,8 @@ class P2Engine extends Engine {
    * @param {Vector2} velocity
    */
   bodySetVelocity( body, velocity ) {
-    body.velocity[ 0 ] = velocity.x * SCALE;
-    body.velocity[ 1 ] = velocity.y * SCALE;
+    body.velocity[ 0 ] = velocity.x * SIZE_SCALE;
+    body.velocity[ 1 ] = velocity.y * SIZE_SCALE;
   }
 
   /**
@@ -228,8 +229,8 @@ class P2Engine extends Engine {
    * @param {Vector2} force
    */
   bodyApplyForce( body, force ) {
-    body.force[ 0 ] += force.x * SCALE;
-    body.force[ 1 ] += force.y * SCALE;
+    body.force[ 0 ] += force.x * SIZE_SCALE * MASS_SCALE;
+    body.force[ 1 ] += force.y * SIZE_SCALE * MASS_SCALE;
   }
 
   /**
@@ -242,7 +243,7 @@ class P2Engine extends Engine {
    */
   bodyGetContactForces( body ) {
     // TODO: yikes! we are including the timestep bit here?
-    return P2Engine.p2ToVector( body.vlambda ).timesScalar( body.mass / FIXED_TIME_STEP );
+    return P2Engine.p2ToVector( body.vlambda ).timesScalar( body.mass / FIXED_TIME_STEP / MASS_SCALE );
   }
 
   /**
@@ -270,7 +271,7 @@ class P2Engine extends Engine {
       }
 
       if ( sign ) {
-        result.add( P2Engine.p2ToVector( equation.normalA ).timesScalar( sign * equation.multiplier ) );
+        result.add( P2Engine.p2ToVector( equation.normalA ).timesScalar( sign * equation.multiplier / MASS_SCALE ) );
       }
     }
 
@@ -371,8 +372,8 @@ class P2Engine extends Engine {
     P2Engine.removeShapes( body );
 
     const box = new p2.Box( {
-      width: width * SCALE,
-      height: height * SCALE,
+      width: width * SIZE_SCALE,
+      height: height * SIZE_SCALE,
       material: dynamicMaterial
     } );
 
@@ -412,7 +413,7 @@ class P2Engine extends Engine {
     P2Engine.removeShapes( body );
 
     if ( workaround ) {
-      body.fromPolygon( vertices.map( v => p2.vec2.fromValues( v.x * SCALE, v.y * SCALE ) ) );
+      body.fromPolygon( vertices.map( v => p2.vec2.fromValues( v.x * SIZE_SCALE, v.y * SIZE_SCALE ) ) );
 
       // TODO: can we commonize code?
       // Workaround, since using Convex wasn't working
@@ -476,7 +477,7 @@ class P2Engine extends Engine {
     const pointerConstraint = new p2.RevoluteConstraint( nullBody, body, {
       localPivotA: globalPoint,
       localPivotB: localPoint,
-      maxForce: 5000 * body.mass
+      maxForce: 5000 * body.mass * MASS_SCALE
     } );
     this.pointerConstraintMap[ body.id ] = pointerConstraint;
     this.world.addConstraint( pointerConstraint );
@@ -525,7 +526,7 @@ class P2Engine extends Engine {
    * @returns {p2.vec2}
    */
   static vectorToP2( vector ) {
-    return p2.vec2.fromValues( vector.x * SCALE, vector.y * SCALE );
+    return p2.vec2.fromValues( vector.x * SIZE_SCALE, vector.y * SIZE_SCALE );
   }
 
   /**
@@ -536,7 +537,7 @@ class P2Engine extends Engine {
    * @returns {Vector2}
    */
   static p2ToVector( vector ) {
-    return new Vector2( vector[ 0 ] / SCALE, vector[ 1 ] / SCALE );
+    return new Vector2( vector[ 0 ] / SIZE_SCALE, vector[ 1 ] / SIZE_SCALE );
   }
 
   /**

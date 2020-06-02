@@ -24,6 +24,14 @@ class MaterialView {
   update( massView, scene ) {
 
   }
+
+  /**
+   * Releases references
+   * @public
+   */
+  dispose() {
+    this.material.dispose();
+  }
 }
 
 densityBuoyancyCommon.register( 'MaterialView', MaterialView );

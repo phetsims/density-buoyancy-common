@@ -38,8 +38,8 @@ class ScaleReadoutNode extends Node {
       cornerRadius: DensityBuoyancyCommonConstants.CORNER_RADIUS,
       xMargin: 2,
       yMargin: 2,
-      fill: null, // TODO,
-      stroke: null // TODO
+      fill: null,
+      stroke: null
     } );
 
     this.addChild( readoutPanel );

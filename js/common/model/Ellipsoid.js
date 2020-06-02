@@ -133,10 +133,6 @@ class Ellipsoid extends Mass {
     const yp = 4 / ( size.height * size.height );
     const zp = 4 / ( size.depth * size.depth );
 
-    // TODO: remove comments if things work
-    // x^2/a^2 + ... = 1
-    // ( ray.direction.x * t + relativePosition.x )^2 / a^2 + ... === 1
-
     const a = xp * ray.direction.x * ray.direction.x + yp * ray.direction.y * ray.direction.y + zp * ray.direction.z * ray.direction.z;
     const b = 2 * ( xp * relativePosition.x * ray.direction.x + yp * relativePosition.y * ray.direction.y + zp * relativePosition.z * ray.direction.z );
     const c = -1 + xp * relativePosition.x * relativePosition.x + yp * relativePosition.y * relativePosition.y + zp * relativePosition.z * relativePosition.z;

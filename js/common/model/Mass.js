@@ -339,7 +339,6 @@ class Mass {
    * @public
    */
   reset() {
-    // TODO: check everything to reset
     this.shapeProperty.reset();
     this.materialProperty.reset();
     this.volumeProperty.reset();

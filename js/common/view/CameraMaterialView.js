@@ -57,6 +57,17 @@ class CameraMaterialView extends MaterialView {
 
     super.update( massView, scene );
   }
+
+  /**
+   * Releases references
+   * @public
+   * @override
+   */
+  dispose() {
+    this.camera.renderTarget.dispose();
+
+    super.dispose();
+  }
 }
 
 densityBuoyancyCommon.register( 'CameraMaterialView', CameraMaterialView );

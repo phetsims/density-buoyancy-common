@@ -239,9 +239,24 @@ class CustomColoredMaterialView extends MaterialView {
 
     this.material = new THREE.MeshLambertMaterial();
 
-    colorProperty.link( color => {
+    // @private
+    this.colorProperty = colorProperty;
+
+    // @private {function}
+    this.listener = color => {
       this.material.color = ThreeUtils.colorToThree( color );
-    } );
+    };
+    this.colorProperty.link( this.listener );
+  }
+
+  /**
+   * Releases references
+   * @public
+   * @override
+   */
+  dispose() {
+    this.colorProperty.unlink( this.listener );
+    super.dispose();
   }
 }
 

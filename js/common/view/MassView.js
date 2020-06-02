@@ -29,8 +29,7 @@ class MassView extends THREE.Mesh {
     this.material = materialView.material;
 
     mass.materialProperty.lazyLink( material => {
-      // TODO: No MaterialView disposal?
-
+      this.materialView.dispose();
       this.materialView = DensityMaterials.getMaterialView( material );
       this.material = this.materialView.material;
     } );

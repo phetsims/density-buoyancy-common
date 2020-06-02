@@ -241,7 +241,6 @@ class P2Engine extends Engine {
    * @returns {Vector2}
    */
   bodyGetContactForces( body ) {
-    // TODO: yikes! we are including the timestep bit here?
     return P2Engine.p2ToVector( body.vlambda ).timesScalar( body.mass / FIXED_TIME_STEP / MASS_SCALE );
   }
 
@@ -414,7 +413,6 @@ class P2Engine extends Engine {
     if ( workaround ) {
       body.fromPolygon( vertices.map( v => p2.vec2.fromValues( v.x * SIZE_SCALE, v.y * SIZE_SCALE ) ) );
 
-      // TODO: can we commonize code?
       // Workaround, since using Convex wasn't working
       body.shapes.forEach( shape => {
         shape.material = groundMaterial;

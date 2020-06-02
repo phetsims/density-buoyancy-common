@@ -43,10 +43,7 @@ class CameraMaterialView extends MaterialView {
 
     const initiallyVisible = massView.visible;
     massView.visible = false;
-    // TODO: more of a cubemap. THEN use the cubemap in everything
     scene.background = ThreeUtils.colorToThree( DensityBuoyancyCommonColorProfile.skyBottomProperty.value );
-
-    // NOTE NOTE NOTE: Just adjust this based on water level or other things?
 
     this.camera.position.copy( massView.position );
     this.camera.update( renderer, scene );

@@ -30,9 +30,8 @@ class EllipsoidView extends MassView {
         newSize.height / oldSize.height,
         newSize.depth / oldSize.depth
       ) );
-      // TODO: how to update
       ellipsoidGeometry.computeBoundingSphere();
-      this.updateMatrix(); // TODO: do we need this?
+      this.updateMatrix();
     };
     this.ellipsoid.sizeProperty.lazyLink( this.updateListener );
     this.updateListener( this.ellipsoid.sizeProperty.value, new Bounds3( -1, -1, -1, 1, 1, 1 ) );

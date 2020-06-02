@@ -83,7 +83,6 @@ class DensityBuoyancyScreenView extends ScreenView {
     // @protected {boolean} - If we detect that we can't use WebGL, we'll set this to false so we can bail out.
     this.enabled = true;
 
-    // TODO: Some logic from CanvasWarningNode. Factor out once ideal description is found
     if ( !ThreeUtils.isWebGLEnabled() ) {
       ThreeUtils.showWebGLWarning( this );
       this.enabled = false;
@@ -699,7 +698,6 @@ class DensityBuoyancyScreenView extends ScreenView {
     const width = Screen.MINIMUM_HOME_SCREEN_ICON_SIZE.width;
     const height = Screen.MINIMUM_HOME_SCREEN_ICON_SIZE.height;
 
-    // TODO: handle color changes?
     const stage = new ThreeStage( { fov: 50 } );
 
     stage.threeCamera.near = 0.5;

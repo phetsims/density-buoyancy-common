@@ -1,6 +1,8 @@
 // Copyright 2019-2020, University of Colorado Boulder
 
 /**
+ * A label shown in front of a mass that shows its mass-value.
+ *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 

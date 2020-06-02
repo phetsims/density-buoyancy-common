@@ -108,7 +108,6 @@ class SecondMassVisibleControl extends RadioButtonGroup {
    * @returns {Node}
    */
   static getIcon( zoom, setupScene ) {
-    // TODO: handle color changes?
     const stage = new ThreeStage( { fov: 50 } );
 
     const ambientLight = new THREE.AmbientLight( 0x333333 );

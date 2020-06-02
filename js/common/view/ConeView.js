@@ -134,7 +134,6 @@ class ConeView extends MassView {
         )
       ];
 
-      // TODO: make sure it's pointed the right way? x/z signs should be the same
       const normalVector = vertices[ 2 ].minus( vertices[ 0 ] ).cross( vertices[ 1 ].minus( vertices[ 0 ] ) ).normalized().negated();
 
       // Side

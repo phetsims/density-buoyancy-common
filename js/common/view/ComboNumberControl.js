@@ -61,9 +61,7 @@ class ComboNumberControl extends VBox {
 
       // {Object} Options for the number control
       numberControlOptions: {
-        layoutFunction: NumberControl.createLayoutFunction4( {
-          // TODO? Control the readout visibility
-        } ),
+        layoutFunction: NumberControl.createLayoutFunction4(),
 
         titleNodeOptions: {
           font: DensityBuoyancyCommonConstants.TITLE_FONT,

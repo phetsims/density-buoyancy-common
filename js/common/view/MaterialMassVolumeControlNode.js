@@ -107,7 +107,6 @@ class MaterialMassVolumeControlNode extends VBox {
     } );
     volumeProperty.lazyLink( cubicMeters => {
       if ( !userVolumeChanging ) {
-        // TODO: handle re-entrance?
         modelVolumeChanging = true;
 
         numberControlVolumeProperty.value = cubicMeters * LITERS_IN_CUBIC_METER;
@@ -126,7 +125,6 @@ class MaterialMassVolumeControlNode extends VBox {
           } );
         }
         else {
-          // TODO: We shouldn't need a method call to setVolume? Can we listen and have that adjust instead?
           setVolume( mass / materialProperty.value.density );
         }
 
@@ -256,9 +254,7 @@ class MaterialMassVolumeControlNode extends VBox {
       numberDisplayOptions: {
         decimalPlaces: 2
       },
-      layoutFunction: NumberControl.createLayoutFunction4( {
-        // TODO: createBottomContent for custom? or no?
-      } ),
+      layoutFunction: NumberControl.createLayoutFunction4(),
       titleNodeOptions: {
         maxWidth: 160
       }

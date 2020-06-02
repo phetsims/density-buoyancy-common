@@ -119,7 +119,7 @@ class DebugView extends Node {
 
     let poolShape = Shape.bounds( new Bounds2(
       this.model.poolBounds.minX, this.model.poolBounds.minY,
-      this.model.poolBounds.maxX, this.model.pool.liquidYProperty.value
+      this.model.poolBounds.maxX, this.model.pool.liquidYInterpolatedProperty.value
     ) );
     this.model.masses.forEach( mass => {
       try {
@@ -274,9 +274,9 @@ class DebugMassNode extends Node {
           waterPath.shape = null;
         }
       };
-      mass.basin.liquidYProperty.link( liquidListener );
+      mass.basin.liquidYInterpolatedProperty.link( liquidListener );
       this.disposeEmitter.addListener( () => {
-        mass.basin.liquidYProperty.unlink( liquidListener );
+        mass.basin.liquidYInterpolatedProperty.unlink( liquidListener );
       } );
     }
 

@@ -90,8 +90,6 @@ class DensityBuoyancyModel {
       );
     }
 
-    // TODO: make naming between actual and interpolated values!
-
     // @public {Array.<Vector2>}
     this.groundPoints = [
       new Vector2( this.groundBounds.minX, this.groundBounds.minY ),
@@ -150,7 +148,7 @@ class DensityBuoyancyModel {
       this.masses.forEach( mass => {
         const contactForce = this.engine.bodyGetContactForces( mass.body );
         this.engine.resetContactForces( mass.body );
-        mass.contactForceProperty.setNextValue( contactForce );
+        mass.contactForceInterpolatedProperty.setNextValue( contactForce );
 
         if ( mass instanceof Scale ) {
           let scaleForce = 0;
@@ -162,15 +160,15 @@ class DensityBuoyancyModel {
               }
             }
           } );
-          mass.scaleForceProperty.setNextValue( scaleForce );
+          mass.scaleForceInterpolatedProperty.setNextValue( scaleForce );
         }
 
-        const submergedVolume = mass.getDisplacedBuoyantVolume( this.pool.liquidYProperty.currentValue );
+        const submergedVolume = mass.getDisplacedBuoyantVolume( this.pool.liquidYInterpolatedProperty.currentValue );
         if ( submergedVolume ) {
           const displacedMass = submergedVolume * this.liquidDensityProperty.value;
           const buoyantForce = new Vector2( 0, displacedMass * gravity );
           this.engine.bodyApplyForce( mass.body, buoyantForce );
-          mass.buoyancyForceProperty.setNextValue( buoyantForce );
+          mass.buoyancyForceInterpolatedProperty.setNextValue( buoyantForce );
 
           // TODO: Do we ever want to display the viscous forces?
           const velocity = this.engine.bodyGetVelocity( mass.body );
@@ -181,13 +179,13 @@ class DensityBuoyancyModel {
           this.engine.bodyApplyForce( mass.body, viscousForce );
         }
         else {
-          mass.buoyancyForceProperty.setNextValue( Vector2.ZERO );
+          mass.buoyancyForceInterpolatedProperty.setNextValue( Vector2.ZERO );
         }
 
         // Gravity
         const gravityForce = new Vector2( 0, -mass.massProperty.value * gravity );
         this.engine.bodyApplyForce( mass.body, gravityForce );
-        mass.gravityForceProperty.setNextValue( gravityForce );
+        mass.gravityForceInterpolatedProperty.setNextValue( gravityForce );
       } );
     } );
   }
@@ -307,7 +305,7 @@ class DensityBuoyancyModel {
       mass.step( dt, this.engine.interpolationRatio );
     } );
 
-    this.pool.liquidYProperty.setRatio( this.engine.interpolationRatio );
+    this.pool.liquidYInterpolatedProperty.setRatio( this.engine.interpolationRatio );
   }
 
   /**

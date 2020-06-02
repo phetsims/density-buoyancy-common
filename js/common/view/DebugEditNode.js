@@ -51,14 +51,14 @@ class DebugEditNode extends VBox {
     const volumeProperty = new DynamicProperty( massProperty, {
       derive: 'volumeProperty'
     } );
-    const gravityForceProperty = new DynamicProperty( massProperty, {
-      derive: 'gravityForceProperty'
+    const gravityForceInterpolatedProperty = new DynamicProperty( massProperty, {
+      derive: 'gravityForceInterpolatedProperty'
     } );
-    const buoyancyForceProperty = new DynamicProperty( massProperty, {
-      derive: 'buoyancyForceProperty'
+    const buoyancyForceInterpolatedProperty = new DynamicProperty( massProperty, {
+      derive: 'buoyancyForceInterpolatedProperty'
     } );
-    const contactForceProperty = new DynamicProperty( massProperty, {
-      derive: 'contactForceProperty'
+    const contactForceInterpolatedProperty = new DynamicProperty( massProperty, {
+      derive: 'contactForceInterpolatedProperty'
     } );
 
     const comboBoxItemTextOptions = {
@@ -122,13 +122,13 @@ class DebugEditNode extends VBox {
         liters: Utils.toFixed( volume, 6 )
       } )}`;
     } );
-    gravityForceProperty.link( gravityForce => {
+    gravityForceInterpolatedProperty.link( gravityForce => {
       gravityForceText.text = `Gravity: ${Utils.toFixed( gravityForce.x, 6 )}, ${Utils.toFixed( gravityForce.y, 6 )}`;
     } );
-    buoyancyForceProperty.link( buoyancyForce => {
+    buoyancyForceInterpolatedProperty.link( buoyancyForce => {
       buoyancyForceText.text = `Buoyancy: ${Utils.toFixed( buoyancyForce.x, 6 )}, ${Utils.toFixed( buoyancyForce.y, 6 )}`;
     } );
-    contactForceProperty.link( contactForce => {
+    contactForceInterpolatedProperty.link( contactForce => {
       contactForceText.text = `Contact: ${Utils.toFixed( contactForce.x, 6 )}, ${Utils.toFixed( contactForce.y, 6 )}`;
     } );
 

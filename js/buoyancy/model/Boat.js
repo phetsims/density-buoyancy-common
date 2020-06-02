@@ -99,7 +99,7 @@ class Boat extends Mass {
   step( dt, interpolationRatio ) {
     super.step( dt, interpolationRatio );
 
-    this.basin.liquidYProperty.setRatio( interpolationRatio );
+    this.basin.liquidYInterpolatedProperty.setRatio( interpolationRatio );
   }
 
   /**

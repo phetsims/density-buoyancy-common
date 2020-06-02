@@ -12,9 +12,6 @@ import DensityBuoyancyCommonColorProfile from './DensityBuoyancyCommonColorProfi
 import MaterialView from './MaterialView.js';
 
 class CameraMaterialView extends MaterialView {
-  /**
-   *
-   */
   constructor() {
     super();
 

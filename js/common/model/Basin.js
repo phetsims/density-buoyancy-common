@@ -25,7 +25,7 @@ class Basin {
     this.liquidVolumeProperty = new NumberProperty( options.initialVolume );
 
     // @public {Property.<number>} - The y coordinate of the liquid level
-    this.liquidYProperty = new InterpolatedProperty( options.initialY, {
+    this.liquidYInterpolatedProperty = new InterpolatedProperty( options.initialY, {
       interpolate: InterpolatedProperty.interpolateNumber
     } );
 
@@ -146,17 +146,17 @@ class Basin {
   computeY() {
     const liquidVolume = this.liquidVolumeProperty.value;
     if ( liquidVolume === 0 ) {
-      this.liquidYProperty.setNextValue( this.stepBottom );
+      this.liquidYInterpolatedProperty.setNextValue( this.stepBottom );
       return;
     }
 
     const emptyVolume = this.getEmptyVolume( this.stepTop );
     if ( emptyVolume === liquidVolume ) {
-      this.liquidYProperty.setNextValue( this.stepTop );
+      this.liquidYInterpolatedProperty.setNextValue( this.stepTop );
       return;
     }
 
-    this.liquidYProperty.setNextValue( Basin.findRoot(
+    this.liquidYInterpolatedProperty.setNextValue( Basin.findRoot(
       this.stepBottom,
       this.stepTop,
       1e-7,
@@ -171,7 +171,7 @@ class Basin {
    */
   reset() {
     this.liquidVolumeProperty.reset();
-    this.liquidYProperty.reset();
+    this.liquidYInterpolatedProperty.reset();
   }
 
   /**

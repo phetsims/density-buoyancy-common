@@ -116,19 +116,19 @@ class Mass {
     this.bodyOffsetProperty = new Property( Vector2.ZERO );
 
     // @public {Property.<Vector2>}
-    this.gravityForceProperty = new InterpolatedProperty( Vector2.ZERO, {
+    this.gravityForceInterpolatedProperty = new InterpolatedProperty( Vector2.ZERO, {
       interpolate: InterpolatedProperty.interpolateVector2,
       useDeepEquality: true
     } );
 
     // @public {Property.<Vector2>}
-    this.buoyancyForceProperty = new InterpolatedProperty( Vector2.ZERO, {
+    this.buoyancyForceInterpolatedProperty = new InterpolatedProperty( Vector2.ZERO, {
       interpolate: InterpolatedProperty.interpolateVector2,
       useDeepEquality: true
     } );
 
     // @public {Property.<Vector2>}
-    this.contactForceProperty = new InterpolatedProperty( Vector2.ZERO, {
+    this.contactForceInterpolatedProperty = new InterpolatedProperty( Vector2.ZERO, {
       interpolate: InterpolatedProperty.interpolateVector2,
       useDeepEquality: true
     } );
@@ -341,9 +341,9 @@ class Mass {
 
     this.transformedEmitter.emit();
 
-    this.contactForceProperty.setRatio( interpolationRatio );
-    this.buoyancyForceProperty.setRatio( interpolationRatio );
-    this.gravityForceProperty.setRatio( interpolationRatio );
+    this.contactForceInterpolatedProperty.setRatio( interpolationRatio );
+    this.buoyancyForceInterpolatedProperty.setRatio( interpolationRatio );
+    this.gravityForceInterpolatedProperty.setRatio( interpolationRatio );
   }
 
   /**

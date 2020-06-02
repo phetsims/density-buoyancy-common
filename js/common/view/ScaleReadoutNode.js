@@ -48,7 +48,7 @@ class ScaleReadoutNode extends Node {
     this.mass = mass;
 
     // @private {Multilink}
-    this.scaleForceMultilink = Property.multilink( [ mass.scaleForceProperty, gravityProperty ], ( scaleForce, gravity ) => {
+    this.scaleForceMultilink = Property.multilink( [ mass.scaleForceInterpolatedProperty, gravityProperty ], ( scaleForce, gravity ) => {
       if ( mass.displayType === Scale.DisplayType.NEWTONS ) {
         readoutText.text = StringUtils.fillIn( densityBuoyancyCommonStrings.newtonsPattern, {
           newtons: Utils.toFixed( scaleForce, 2 )

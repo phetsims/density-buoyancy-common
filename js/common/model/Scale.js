@@ -66,7 +66,7 @@ class Scale extends Mass {
     super( engine, config );
 
     // @public {Property.<number>} - In Newtons.
-    this.scaleForceProperty = new InterpolatedProperty( 0, {
+    this.scaleForceInterpolatedProperty = new InterpolatedProperty( 0, {
       interpolate: InterpolatedProperty.interpolateNumber
     } );
 
@@ -168,7 +168,7 @@ class Scale extends Mass {
   step( dt, interpolationRatio ) {
     super.step( dt, interpolationRatio );
 
-    this.scaleForceProperty.setRatio( interpolationRatio );
+    this.scaleForceInterpolatedProperty.setRatio( interpolationRatio );
   }
 
   /**

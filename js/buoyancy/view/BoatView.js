@@ -16,9 +16,9 @@ import BoatDesign from '../model/BoatDesign.js';
 class BoatView extends MassView {
   /**
    * @param {Boat} boat
-   * @param {Property.<number>} liquidYProperty
+   * @param {Property.<number>} liquidYInterpolatedProperty
    */
-  constructor( boat, liquidYProperty ) {
+  constructor( boat, liquidYInterpolatedProperty ) {
 
     super( boat, new THREE.Geometry() );
 
@@ -73,7 +73,7 @@ class BoatView extends MassView {
     interiorSurfaceGeometry.addAttribute( 'normal', new THREE.BufferAttribute( crossSectionNormalArray, 3 ) );
 
     // TODO: unlink
-    Property.multilink( [ boat.basin.liquidYProperty, boat.basin.liquidVolumeProperty ], ( y, volume ) => {
+    Property.multilink( [ boat.basin.liquidYInterpolatedProperty, boat.basin.liquidVolumeProperty ], ( y, volume ) => {
       BoatDesign.fillCrossSectionVertexArray( y - boat.matrix.translation.y, boat.displacementVolumeProperty.value / 0.001, crossSectionPositionArray );
       interiorSurfaceGeometry.attributes.position.needsUpdate = true;
       interiorSurfaceGeometry.computeBoundingSphere();

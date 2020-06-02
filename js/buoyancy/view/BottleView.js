@@ -15,9 +15,9 @@ import Bottle from '../model/Bottle.js';
 class BottleView extends MassView {
   /**
    * @param {Bottle} bottle
-   * @param {Property.<number>} liquidYProperty
+   * @param {Property.<number>} liquidYInterpolatedProperty
    */
-  constructor( bottle, liquidYProperty ) {
+  constructor( bottle, liquidYInterpolatedProperty ) {
 
     const primaryGeometry = Bottle.getPrimaryGeometry();
 

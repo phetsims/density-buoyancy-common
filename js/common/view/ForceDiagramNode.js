@@ -127,9 +127,9 @@ class ForceDiagramNode extends Node {
     };
 
     // Documentation specifies that contact force should always be on the left if there are conflicts
-    updateArrow( this.mass.contactForceProperty, this.showContactForceProperty, this.contactArrowNode, this.contactLabelText, this.contactLabelNode );
-    updateArrow( this.mass.gravityForceProperty, this.showGravityForceProperty, this.gravityArrowNode, this.gravityLabelText, this.gravityLabelNode );
-    updateArrow( this.mass.buoyancyForceProperty, this.showBuoyancyForceProperty, this.buoyancyArrowNode, this.buoyancyLabelText, this.buoyancyLabelNode );
+    updateArrow( this.mass.contactForceInterpolatedProperty, this.showContactForceProperty, this.contactArrowNode, this.contactLabelText, this.contactLabelNode );
+    updateArrow( this.mass.gravityForceInterpolatedProperty, this.showGravityForceProperty, this.gravityArrowNode, this.gravityLabelText, this.gravityLabelNode );
+    updateArrow( this.mass.buoyancyForceInterpolatedProperty, this.showBuoyancyForceProperty, this.buoyancyArrowNode, this.buoyancyLabelText, this.buoyancyLabelNode );
 
     this.children = [
       ...upwardArrows,

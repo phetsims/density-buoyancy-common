@@ -268,21 +268,6 @@ class Boat extends Mass {
   }
 
   /**
-   * TODO: doc. Uses liquid compensation
-   * @public
-   * @override
-   *
-   * @param {number} liquidLevel
-   * @returns {number}
-   */
-  getDisplacedBuoyantVolume( liquidLevel ) {
-    return this.getDisplacedVolume( liquidLevel );
-    // TODO: yikes! Imagine boat with liquid with things floating in it. figure out.
-    // TODO: NOPE NOPE NOPE NOPE NOPE NOPE NOPE this isn't right
-    // return 0; // TODO:
-  }
-
-  /**
    * Resets values to their original state
    * @public
    */

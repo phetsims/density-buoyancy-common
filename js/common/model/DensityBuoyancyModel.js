@@ -163,14 +163,13 @@ class DensityBuoyancyModel {
           mass.scaleForceInterpolatedProperty.setNextValue( scaleForce );
         }
 
-        const submergedVolume = mass.getDisplacedBuoyantVolume( this.pool.liquidYInterpolatedProperty.currentValue );
+        const submergedVolume = mass.getDisplacedVolume( this.pool.liquidYInterpolatedProperty.currentValue );
         if ( submergedVolume ) {
           const displacedMass = submergedVolume * this.liquidDensityProperty.value;
           const buoyantForce = new Vector2( 0, displacedMass * gravity );
           this.engine.bodyApplyForce( mass.body, buoyantForce );
           mass.buoyancyForceInterpolatedProperty.setNextValue( buoyantForce );
 
-          // TODO: Do we ever want to display the viscous forces?
           const velocity = this.engine.bodyGetVelocity( mass.body );
 
           // Increase the generally-visible viscosity effect

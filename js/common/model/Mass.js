@@ -226,22 +226,10 @@ class Mass {
   }
 
   /**
-   * TODO: doc. Uses liquid compensation
-   * @public
-   *
-   * @param {number} liquidLevel
-   * @returns {number}
-   */
-  getDisplacedBuoyantVolume( liquidLevel ) {
-    return this.getDisplacedVolume( liquidLevel );
-  }
-
-  /**
    * Reads transform/velocity from the physics model engine.
    * @private
    */
   readData() {
-    // TODO: Are we doing this on the updateStep stuff too?
     this.engine.bodyGetMatrixTransform( this.body, this.matrix );
 
     // Apply the body offset
@@ -358,6 +346,14 @@ class Mass {
     this.containedMassProperty.reset();
     this.velocityProperty.reset();
     this.angularVelocityProperty.reset();
+    this.userControlledProperty.reset();
+
+    this.gravityForceInterpolatedProperty.reset();
+    this.buoyancyForceInterpolatedProperty.reset();
+    this.contactForceInterpolatedProperty.reset();
+
+    // NOTE: NOT resetting bodyOffsetProperty/forceOffsetProperty/massOffsetProperty/massOffsetOrientationProperty on
+    // purpose, it will be adjusted by subtypes whenever necessary, and a reset may break things here.
 
     this.matrix.set( this.originalMatrix );
     this.writeData();

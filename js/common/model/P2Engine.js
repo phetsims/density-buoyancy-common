@@ -9,13 +9,14 @@
 import Vector2 from '../../../../dot/js/Vector2.js';
 import merge from '../../../../phet-core/js/merge.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
+import DensityBuoyancyCommonQueryParameters from '../DensityBuoyancyCommonQueryParameters.js';
 import Engine from './Engine.js';
 
 // constants
-const FIXED_TIME_STEP = 1 / 120;
-const MAX_SUB_STEPS = 30;
-const SIZE_SCALE = 5;
-const MASS_SCALE = 0.1;
+const FIXED_TIME_STEP = DensityBuoyancyCommonQueryParameters.p2FixedTimeStep;
+const MAX_SUB_STEPS = DensityBuoyancyCommonQueryParameters.p2MaxSubSteps;
+const SIZE_SCALE = DensityBuoyancyCommonQueryParameters.p2SizeScale;
+const MASS_SCALE = DensityBuoyancyCommonQueryParameters.p2MassScale;
 
 const groundMaterial = new p2.Material();
 const barrierMaterial = new p2.Material();
@@ -30,9 +31,9 @@ class P2Engine extends Engine {
 
     this.world.applyGravity = false;
 
-    this.world.solver.iterations = 40;
-    this.world.solver.frictionIterations = 10;
-    this.world.solver.tolerance = 1e-10;
+    this.world.solver.iterations = DensityBuoyancyCommonQueryParameters.p2Iterations;
+    this.world.solver.frictionIterations = DensityBuoyancyCommonQueryParameters.p2FrictionIterations;
+    this.world.solver.tolerance = DensityBuoyancyCommonQueryParameters.p2Tolerance;
 
     // @private {Object} - Maps {number} body.id => {p2.RevoluteConstraint}
     this.pointerConstraintMap = {};
@@ -46,19 +47,19 @@ class P2Engine extends Engine {
     // relaxation default is 4
 
     this.world.addContactMaterial( new p2.ContactMaterial( groundMaterial, dynamicMaterial, {
-      restitution: 0,
-      stiffness: 1e6,
-      relaxation: 1
+      restitution: DensityBuoyancyCommonQueryParameters.p2Restitution,
+      stiffness: DensityBuoyancyCommonQueryParameters.p2GroundStiffness,
+      relaxation: DensityBuoyancyCommonQueryParameters.p2GroundRelaxation
     } ) );
     this.world.addContactMaterial( new p2.ContactMaterial( dynamicMaterial, dynamicMaterial, {
-      restitution: 0,
-      stiffness: 1e6,
-      relaxation: 4
+      restitution: DensityBuoyancyCommonQueryParameters.p2Restitution,
+      stiffness: DensityBuoyancyCommonQueryParameters.p2DynamicStiffness,
+      relaxation: DensityBuoyancyCommonQueryParameters.p2DynamicRelaxation
     } ) );
     this.world.addContactMaterial( new p2.ContactMaterial( barrierMaterial, dynamicMaterial, {
-      restitution: 0,
-      stiffness: 1e6,
-      relaxation: 4
+      restitution: DensityBuoyancyCommonQueryParameters.p2Restitution,
+      stiffness: DensityBuoyancyCommonQueryParameters.p2BarrierStiffness,
+      relaxation: DensityBuoyancyCommonQueryParameters.p2BarrierRelaxation
     } ) );
   }
 
@@ -475,7 +476,7 @@ class P2Engine extends Engine {
     const pointerConstraint = new p2.RevoluteConstraint( nullBody, body, {
       localPivotA: globalPoint,
       localPivotB: localPoint,
-      maxForce: 5000 * body.mass
+      maxForce: DensityBuoyancyCommonQueryParameters.p2PointerMassForce * body.mass + DensityBuoyancyCommonQueryParameters.p2PointerBaseForce
     } );
     this.pointerConstraintMap[ body.id ] = pointerConstraint;
     this.world.addConstraint( pointerConstraint );

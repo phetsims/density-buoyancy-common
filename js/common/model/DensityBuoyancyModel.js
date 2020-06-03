@@ -266,7 +266,7 @@ class DensityBuoyancyModel {
     this.pool.liquidVolumeProperty.value = Math.min( poolLiquidVolume, this.pool.getEmptyVolume( this.poolBounds.maxY ) );
 
     // TODO: check to see if one basin contains another -- mainly assign basins to each mass, so we can handle viscosity
-    // and moving boats in general
+    // and moving boats in general - NOTE: This is a TODO for the BUOYANCY work!
 
     this.pool.computeY();
     if ( boat ) {

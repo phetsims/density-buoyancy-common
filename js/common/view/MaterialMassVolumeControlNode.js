@@ -157,7 +157,7 @@ class MaterialMassVolumeControlNode extends VBox {
       reentrant: true
     } );
 
-    const comboMaxWidth = 160;
+    const comboMaxWidth = options.labelNode ? 110 : 160;
     const comboBox = new ComboBox( [
       ...materials.map( material => {
         return new ComboBoxItem( new Text( material.name, {
@@ -185,15 +185,7 @@ class MaterialMassVolumeControlNode extends VBox {
       numberDisplayOptions: {
         valuePattern: StringUtils.fillIn( densityBuoyancyCommonStrings.kilogramsPattern, {
           kilograms: '{{value}}'
-        } ),
-        textOptions: {
-          font: new PhetFont( 14 ),
-          maxWidth: 200
-        }
-      },
-      titleNodeOptions: {
-        font: new PhetFont( { size: 14, weight: 'bold' } ),
-        maxWidth: 70
+        } )
       },
       enabledRangeProperty: enabledMassRangeProperty
     }, MaterialMassVolumeControlNode.getNumberControlOptions() ) );
@@ -209,19 +201,10 @@ class MaterialMassVolumeControlNode extends VBox {
       numberDisplayOptions: {
         valuePattern: StringUtils.fillIn( densityBuoyancyCommonStrings.litersPattern, {
           liters: '{{value}}'
-        } ),
-        textOptions: {
-          font: new PhetFont( 14 ),
-          maxWidth: 200
-        }
-      },
-      titleNodeOptions: {
-        font: new PhetFont( { size: 14, weight: 'bold' } ),
-        maxWidth: 70
+        } )
       }
     }, MaterialMassVolumeControlNode.getNumberControlOptions() ) );
 
-    // TODO: ensure maxWidth for combo box contents so this isn't an issue. How do we want to do layout?
     const topRow = options.labelNode ? new HBox( {
       children: [
         comboBox,
@@ -252,11 +235,16 @@ class MaterialMassVolumeControlNode extends VBox {
         trackSize: new Dimension2( 120, TRACK_HEIGHT )
       },
       numberDisplayOptions: {
-        decimalPlaces: 2
+        decimalPlaces: 2,
+        font: new PhetFont( 14 ),
+        textOptions: {
+          maxWidth: 60
+        }
       },
       layoutFunction: NumberControl.createLayoutFunction4(),
       titleNodeOptions: {
-        maxWidth: 160
+        font: new PhetFont( { size: 14, weight: 'bold' } ),
+        maxWidth: 90
       }
     };
   }

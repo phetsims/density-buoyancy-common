@@ -30,6 +30,10 @@ const materials = [
   Material.STEEL,
   Material.COPPER
 ];
+// We need different maxWidths for each, since some are closer to others
+const materialsMaxWidths = [
+  70, 70, 70, 45, 45
+];
 const WIDTH = 400;
 const HEIGHT = 22;
 const MAX_DENSITY = 10000;
@@ -57,13 +61,13 @@ class DensityReadoutNode extends Node {
     background.localBounds = new Bounds2( 0, 0, WIDTH, HEIGHT ).dilatedX( MAX_LABEL_WIDTH / 2 );
 
     const lineOptions = { stroke: 'black' };
-    materials.forEach( material => {
+    materials.forEach( ( material, index ) => {
       const x = mvt( material.density );
       const label = new Text( material.name, {
         font: new PhetFont( 12 ),
         centerX: x,
         centerY: HEIGHT / 2,
-        maxWidth: 160
+        maxWidth: materialsMaxWidths[ index ]
       } );
       this.addChild( label );
       this.addChild( new Line( x, 0, x, label.top - LINE_PADDING, lineOptions ) );

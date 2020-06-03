@@ -155,50 +155,43 @@ class DensityBuoyancyScreenView extends ScreenView {
       }
     } );
 
-    // TODO: cleanup!
-    const self = this;
     this.sceneNode.backgroundEventTarget.addInputListener( {
-      down: function( event, trail ) {
+      down: ( event, trail ) => {
         if ( !event.canStartPress() ) { return; }
 
         const isTouch = !( event.pointer instanceof Mouse );
-        const mass = self.getMassUnderPointer( event.pointer, isTouch );
+        const mass = this.getMassUnderPointer( event.pointer, isTouch );
 
         if ( mass && mass.canMove && !mass.userControlledProperty.value ) {
 
-          const initialRay = self.sceneNode.getRayFromScreenPoint( event.pointer.point );
+          const initialRay = this.sceneNode.getRayFromScreenPoint( event.pointer.point );
           const initialT = mass.intersect( initialRay, isTouch );
           const initialPosition = initialRay.pointAtDistance( initialT );
           const initialPlane = new Plane3( Vector3.Z_UNIT, initialPosition.z );
 
           mass.startDrag( initialPosition.toVector2() );
-          self.currentMassProperty.value = mass;
+          this.currentMassProperty.value = mass;
 
           event.pointer.cursor = 'pointer';
-          event.pointer.addInputListener( {
-            // end drag on either up or cancel (not supporting full cancel behavior)
-            up: function( event, trail ) {
-              this.endDrag( event, trail );
-            },
-            cancel: function( event, trail ) {
-              this.endDrag( event, trail );
-            },
+          const endDrag = event => {
+            event.pointer.removeInputListener( listener );
+            event.pointer.cursor = null;
 
-            move: function( event, trail ) {
-              const ray = self.sceneNode.getRayFromScreenPoint( event.pointer.point );
+            mass.endDrag();
+          };
+          const listener = {
+            // end drag on either up or cancel (not supporting full cancel behavior)
+            up: endDrag,
+            cancel: endDrag,
+
+            move: ( event, trail ) => {
+              const ray = this.sceneNode.getRayFromScreenPoint( event.pointer.point );
               const position = initialPlane.intersectWithRay( ray );
 
               mass.updateDrag( position.toVector2() );
-            },
-
-            // not a Scenery event
-            endDrag: function( event, trail ) {
-              event.pointer.removeInputListener( this );
-              event.pointer.cursor = null;
-
-              mass.endDrag();
             }
-          } );
+          };
+          event.pointer.addInputListener( listener );
         }
       }
     } );

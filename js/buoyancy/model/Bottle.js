@@ -308,6 +308,10 @@ class Bottle extends Mass {
     }
   }
 
+  /**
+   * Resets values to their original state
+   * @public
+   */
   reset() {
     this.interiorMaterialProperty.reset();
     this.interiorVolumeProperty.reset();
@@ -388,42 +392,103 @@ class Bottle extends Mass {
     return roots[ 0 ];
   }
 
+  /**
+   * @private
+   *
+   * @param {number} t
+   * @returns {Vector2}
+   */
   static getTaperParametricProfilePoint( t ) {
     return Bottle.evaluateCubic( TAPER_CONTROL_POINTS, t );
   }
 
+  /**
+   * @private
+   *
+   * @param {number} t
+   * @returns {Vector2}
+   */
   static getTaperParametricDerivative( t ) {
     return Bottle.evaluateCubicDerivative( TAPER_CONTROL_POINTS, t );
   }
 
+  /**
+   * @private
+   *
+   * @param {number} t
+   * @returns {Vector2}
+   */
   static getBaseFirstTipParametricProfilePoint( t ) {
     return Bottle.evaluateCubic( BASE_FIRST_TIP_CONTROL_POINTS, t );
   }
 
+  /**
+   * @private
+   *
+   * @param {number} t
+   * @returns {Vector2}
+   */
   static getBaseSecondTipParametricProfilePoint( t ) {
     return Bottle.evaluateCubic( BASE_SECOND_TIP_CONTROL_POINTS, t );
   }
 
+  /**
+   * @private
+   *
+   * @param {number} t
+   * @returns {Vector2}
+   */
   static getBaseSaddleParametricProfilePoint( t ) {
     return Bottle.evaluateCubic( BASE_SADDLE_CONTROL_POINTS, t );
   }
 
+  /**
+   * @private
+   *
+   * @param {number} t
+   * @returns {number}
+   */
   static getTaperParametricFromRadius( r ) {
     return Bottle.getParametricFromRadius( TAPER_CONTROL_POINTS, r );
   }
 
+  /**
+   * @private
+   *
+   * @param {number} t
+   * @returns {number}
+   */
   static getBaseFirstTipParametricFromRadius( r ) {
     return Bottle.getParametricFromRadius( BASE_FIRST_TIP_CONTROL_POINTS, r );
   }
 
+  /**
+   * @private
+   *
+   * @param {number} t
+   * @returns {number}
+   */
   static getBaseSecondTipParametricFromRadius( r ) {
     return Bottle.getParametricFromRadius( BASE_SECOND_TIP_CONTROL_POINTS, r );
   }
 
+  /**
+   * @private
+   *
+   * @param {number} t
+   * @returns {number}
+   */
   static getBaseSaddleParametricFromRadius( r ) {
     return Bottle.getParametricFromRadius( BASE_SADDLE_CONTROL_POINTS, r );
   }
 
+  /**
+   * @private
+   *
+   * @param {number} y
+   * @param {number} z
+   * @returns {Vector3}
+   */
   static getBasePoint( y, z ) {
     const r = Math.sqrt( y * y + z * z );
     const theta = Math.atan2( z, y ); // angled so we're symmetric?
@@ -444,6 +509,12 @@ class Bottle extends Mass {
     );
   }
 
+  /**
+   * @public
+   *
+   * @param {number} volume
+   * @returns {number}
+   */
   static getYFromVolume( volume ) {
     const min = -FULL_RADIUS * TEN_LITER_SCALE_MULTIPLIER;
     const max = FULL_RADIUS * TEN_LITER_SCALE_MULTIPLIER;
@@ -469,6 +540,13 @@ class Bottle extends Mass {
     }
   }
 
+  /**
+   * @private
+   *
+   * @param {number} y
+   * @param {number} [precisionMultiplier]
+   * @returns {Array.<Vector2>}
+   */
   static getMainBottleCrossSectionTriangles( y, precisionMultiplier = 1 ) {
     const triangles = [];
     const absY = Math.abs( y );
@@ -589,10 +667,21 @@ class Bottle extends Mass {
     return triangles;
   }
 
+  /**
+   * @public
+   *
+   * @returns {Float32Array}
+   */
   static createCrossSectionVertexArray() {
     return new Float32Array( MAX_CROSS_SECTION_VERTEX_COUNT * 3 );
   }
 
+  /**
+   * @public
+   *
+   * @param {number} y
+   * @param {Float32Array} positionArray
+   */
   static fillCrossSectionVertexArray( y, positionArray ) {
     const triangleXZs = Bottle.getMainBottleCrossSectionTriangles( y / TEN_LITER_SCALE_MULTIPLIER + TEN_LITER_INTERSECTION_CENTROID.y, CROSS_SECTION_PRECISION );
     for ( let i = 0; i < triangleXZs.length; i++ ) {
@@ -628,6 +717,13 @@ class Bottle extends Mass {
     return area;
   }
 
+  /**
+   * @public
+   *
+   * @param {number} [samples]
+   * @param {number} [accuracyMultiplier]
+   * @returns {string}
+   */
   static computeBottleData( samples = 1000, accuracyMultiplier = 100 ) {
     const desiredVolume = 0.01;
 
@@ -745,6 +841,11 @@ const FLAT_INTERSECTION_VERTICES = [ ${flatIntersectionVertices.map( v => `new V
     ];
   }
 
+  /**
+   * @private
+   *
+   * @returns {Array.<Vector2>}
+   */
   static getLipToBodyProfile() {
     return [
       new Vector2( CAP_CORNER_RADIUS + CAP_BODY_LENGTH + GAP_LENGTH, NECK_RADIUS ),
@@ -790,6 +891,11 @@ const FLAT_INTERSECTION_VERTICES = [ ${flatIntersectionVertices.map( v => `new V
     ];
   }
 
+  /**
+   * @public
+   *
+   * @returns {Array.<Vector2>}
+   */
   static getMainFlatIntersectionProfile() {
     return [
       ...Bottle.getCapProfile(),
@@ -797,15 +903,46 @@ const FLAT_INTERSECTION_VERTICES = [ ${flatIntersectionVertices.map( v => `new V
     ];
   }
 
+  /**
+   * For UV-mapping
+   * @private
+   *
+   * @param {number} x
+   * @returns {number}
+   */
   static xToU( x ) {
     return x / BASE_TIP;
   }
 
-  // TODO: What is the most efficient to have the value of V?
+  /**
+   * For UV-mapping
+   * @private
+   *
+   * TODO: What is the most efficient to have the value of V?
+   *
+   * @param {number} y
+   * @returns {number}
+   */
   static yToV( y ) {
     return y / ( 2 * FULL_RADIUS ) + 0.5;
   }
 
+  /**
+   * @private
+   *
+   * @param {Array.<number>} positions
+   * @param {Array.<number>} normals
+   * @param {Array.<number>} uvs
+   * @param {number} radialSegments
+   * @param {number} x0
+   * @param {number} r0
+   * @param {number} x1
+   * @param {number} r1
+   * @param {number} nx0
+   * @param {number} nr0
+   * @param {number} nx1
+   * @param {number} nr1
+   */
   static quadRing( positions, normals, uvs, radialSegments, x0, r0, x1, r1, nx0, nr0, nx1, nr1 ) {
     _.range( 0, radialSegments ).forEach( i => {
       const theta0 = 2 * Math.PI * i / radialSegments;
@@ -845,6 +982,20 @@ const FLAT_INTERSECTION_VERTICES = [ ${flatIntersectionVertices.map( v => `new V
     } );
   }
 
+  /**
+   * @private
+   *
+   * @param {Array.<number>} positions
+   * @param {Array.<number>} normals
+   * @param {Array.<number>} uvs
+   * @param {number} radialSegments
+   * @param {number} cornerSegments
+   * @param {number} startTheta
+   * @param {number} endTheta
+   * @param {number} x
+   * @param {number} r
+   * @param {number} cornerRadius
+   */
   static roundedCornerRing( positions, normals, uvs, radialSegments, cornerSegments, startTheta, endTheta, x, r, cornerRadius ) {
     _.range( 0, cornerSegments ).forEach( i => {
       const theta0 = startTheta + ( i / cornerSegments ) * ( endTheta - startTheta );

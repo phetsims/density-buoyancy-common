@@ -35,39 +35,11 @@ class DensityCompareModel extends DensityBuoyancyModel {
     // @public {Property.<Mode>}
     this.modeProperty = new Property( Mode.SAME_MASS );
 
-    this.modeProperty.link( mode => {
-      this.setup();
-    } );
-  }
+    // @private {Object.<Mode,Array.<Mass>>}
+    this.modeToMassesMap = {};
 
-  /**
-   * Sets up the scene with the given mode.
-   * @public
-   */
-  setup() {
-    this.clearMasses();
-
-    switch( this.modeProperty.value ) {
-      case Mode.SAME_MASS:
-        this.setupSameMass();
-        break;
-      case Mode.SAME_VOLUME:
-        this.setupSameVolume();
-        break;
-      case Mode.SAME_DENSITY:
-        this.setupSameDensity();
-        break;
-      default:
-        throw new Error( 'unknown mode: ' + this.modeProperty.value );
-    }
-  }
-
-  /**
-   * Sets up the initial state for the "Same Mass" mode.
-   * @public
-   */
-  setupSameMass() {
-    const masses = [
+    // @private {Array.<Mass>}
+    this.sameMassMasses = [
       Cuboid.createWithMass( this.engine, Material.createCustomMaterial( {
         density: 500,
         customColor: DensityBuoyancyCommonColorProfile.comparingYellowProperty
@@ -88,26 +60,10 @@ class DensityCompareModel extends DensityBuoyancyModel {
         customColor: DensityBuoyancyCommonColorProfile.comparingRedProperty
       } ), Vector2.ZERO, 5 )
     ];
+    this.modeToMassesMap[ Mode.SAME_MASS ] = this.sameMassMasses;
 
-    this.positionMassesLeft( [
-      masses[ 0 ],
-      masses[ 1 ]
-    ] );
-
-    this.positionMassesRight( [
-      masses[ 2 ],
-      masses[ 3 ]
-    ] );
-
-    this.masses.addAll( masses );
-  }
-
-  /**
-   * Sets up the initial state for the "Same Volume" mode.
-   * @public
-   */
-  setupSameVolume() {
-    const masses = [
+    // @private {Array.<Mass>}
+    this.sameVolumeMasses = [
       Cuboid.createWithMass( this.engine, Material.createCustomMaterial( {
         density: 1600,
         customColor: DensityBuoyancyCommonColorProfile.comparingYellowProperty
@@ -128,26 +84,10 @@ class DensityCompareModel extends DensityBuoyancyModel {
         customColor: DensityBuoyancyCommonColorProfile.comparingRedProperty
       } ), Vector2.ZERO, 2 )
     ];
+    this.modeToMassesMap[ Mode.SAME_VOLUME ] = this.sameVolumeMasses;
 
-    this.positionMassesLeft( [
-      masses[ 3 ],
-      masses[ 0 ]
-    ] );
-
-    this.positionMassesRight( [
-      masses[ 1 ],
-      masses[ 2 ]
-    ] );
-
-    this.masses.addAll( masses );
-  }
-
-  /**
-   * Sets up the initial state for the "Same Density" mode.
-   * @public
-   */
-  setupSameDensity() {
-    const masses = [
+    // @private {Array.<Mass>}
+    this.sameDensityMasses = [
       Cuboid.createWithMass( this.engine, Material.createCustomMaterial( {
         density: 800,
         customColor: DensityBuoyancyCommonColorProfile.comparingYellowProperty
@@ -168,28 +108,30 @@ class DensityCompareModel extends DensityBuoyancyModel {
         customColor: DensityBuoyancyCommonColorProfile.comparingRedProperty
       } ), Vector2.ZERO, 1 )
     ];
+    this.modeToMassesMap[ Mode.SAME_DENSITY ] = this.sameDensityMasses;
 
-    this.positionMassesLeft( [
-      masses[ 0 ],
-      masses[ 1 ]
-    ] );
+    this.applyInitialPositions();
 
-    this.positionMassesRight( [
-      masses[ 2 ],
-      masses[ 3 ]
-    ] );
-
-    this.masses.addAll( masses );
+    this.modeProperty.link( ( mode, oldMode ) => {
+      if ( oldMode ) {
+        this.modeToMassesMap[ oldMode ].forEach( mass => this.masses.remove( mass ) );
+      }
+      this.modeToMassesMap[ mode ].forEach( mass => this.masses.push( mass ) );
+    } );
   }
 
   /**
-   * Clears all of the masses away.
    * @private
    */
-  clearMasses() {
-    this.masses.forEach( mass => {
-      this.masses.remove( mass );
-    } );
+  applyInitialPositions() {
+    this.positionMassesLeft( [ this.sameMassMasses[ 0 ], this.sameMassMasses[ 1 ] ] );
+    this.positionMassesRight( [ this.sameMassMasses[ 2 ], this.sameMassMasses[ 3 ] ] );
+
+    this.positionMassesLeft( [ this.sameVolumeMasses[ 3 ], this.sameVolumeMasses[ 0 ] ] );
+    this.positionMassesRight( [ this.sameVolumeMasses[ 1 ], this.sameVolumeMasses[ 2 ] ] );
+
+    this.positionMassesLeft( [ this.sameDensityMasses[ 0 ], this.sameDensityMasses[ 1 ] ] );
+    this.positionMassesRight( [ this.sameDensityMasses[ 2 ], this.sameDensityMasses[ 3 ] ] );
   }
 
   /**
@@ -200,9 +142,11 @@ class DensityCompareModel extends DensityBuoyancyModel {
   reset() {
     this.modeProperty.reset();
 
+    Mode.VALUES.forEach( mode => this.modeToMassesMap[ mode ].forEach( mass => mass.reset() ) );
+
     super.reset();
 
-    this.setup();
+    this.applyInitialPositions();
   }
 }
 

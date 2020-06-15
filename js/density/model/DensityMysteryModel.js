@@ -75,12 +75,12 @@ class DensityMysteryModel extends DensityBuoyancyModal( DensityBuoyancyModel, Mo
             } ), Vector2.ZERO, 0.00338, { tag: Mass.MassTag.ONE_D } ),
 
             Cuboid.createWithVolume( model.engine, Material.createCustomMaterial( {
-              density: 640,
+              density: Material.GASOLINE.density,
               customColor: DensityBuoyancyCommonColorProfile.comparingBlueProperty
             } ), Vector2.ZERO, 0.001, { tag: Mass.MassTag.ONE_B } ),
 
             Cuboid.createWithVolume( model.engine, Material.createCustomMaterial( {
-              density: 700,
+              density: Material.GASOLINE.density,
               customColor: DensityBuoyancyCommonColorProfile.comparingGreenProperty
             } ), Vector2.ZERO, 0.00583, { tag: Mass.MassTag.ONE_E } ),
 
@@ -106,10 +106,10 @@ class DensityMysteryModel extends DensityBuoyancyModal( DensityBuoyancyModel, Mo
               customColor: DensityBuoyancyCommonColorProfile.mysteryOrangeProperty
             } ), Vector2.ZERO, 18, { tag: Mass.MassTag.TWO_A } ),
 
-            Cuboid.createWithMass( model.engine, Material.createCustomMaterial( {
+            Cuboid.createWithVolume( model.engine, Material.createCustomMaterial( {
               density: 8890,
               customColor: DensityBuoyancyCommonColorProfile.mysteryLightPurpleProperty
-            } ), Vector2.ZERO, 44.45, { tag: Mass.MassTag.TWO_E } ),
+            } ), Vector2.ZERO, 0.005, { tag: Mass.MassTag.TWO_E } ),
 
             Cuboid.createWithMass( model.engine, Material.createCustomMaterial( {
               density: 2700,

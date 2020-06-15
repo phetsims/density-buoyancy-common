@@ -110,30 +110,30 @@ class DensityMysteryModel extends DensityBuoyancyModel {
    */
   setupSet1() {
     const masses = [
-      Cuboid.createWithMass( this.engine, Material.createCustomMaterial( {
+      Cuboid.createWithVolume( this.engine, Material.createCustomMaterial( {
         density: 19320,
         customColor: DensityBuoyancyCommonColorProfile.comparingYellowProperty
-      } ), Vector2.ZERO, 65.3, { tag: Mass.MassTag.ONE_D } ),
+      } ), Vector2.ZERO, 0.00338, { tag: Mass.MassTag.ONE_D } ),
 
-      Cuboid.createWithMass( this.engine, Material.createCustomMaterial( {
+      Cuboid.createWithVolume( this.engine, Material.createCustomMaterial( {
         density: 640,
         customColor: DensityBuoyancyCommonColorProfile.comparingBlueProperty
-      } ), Vector2.ZERO, 0.64, { tag: Mass.MassTag.ONE_B } ),
+      } ), Vector2.ZERO, 0.001, { tag: Mass.MassTag.ONE_B } ),
 
-      Cuboid.createWithMass( this.engine, Material.createCustomMaterial( {
+      Cuboid.createWithVolume( this.engine, Material.createCustomMaterial( {
         density: 700,
         customColor: DensityBuoyancyCommonColorProfile.comparingGreenProperty
-      } ), Vector2.ZERO, 4.08, { tag: Mass.MassTag.ONE_E } ),
+      } ), Vector2.ZERO, 0.00583, { tag: Mass.MassTag.ONE_E } ),
 
-      Cuboid.createWithMass( this.engine, Material.createCustomMaterial( {
+      Cuboid.createWithVolume( this.engine, Material.createCustomMaterial( {
         density: 920,
         customColor: DensityBuoyancyCommonColorProfile.comparingRedProperty
-      } ), Vector2.ZERO, 3.10, { tag: Mass.MassTag.ONE_C } ),
+      } ), Vector2.ZERO, 0.00338, { tag: Mass.MassTag.ONE_C } ),
 
-      Cuboid.createWithMass( this.engine, Material.createCustomMaterial( {
+      Cuboid.createWithVolume( this.engine, Material.createCustomMaterial( {
         density: 3530,
         customColor: DensityBuoyancyCommonColorProfile.comparingPurpleProperty
-      } ), Vector2.ZERO, 3.53, { tag: Mass.MassTag.ONE_A } ),
+      } ), Vector2.ZERO, 0.001, { tag: Mass.MassTag.ONE_A } ),
 
       this.scale
     ];

@@ -131,7 +131,7 @@ class DensityMysteryModel extends DensityBuoyancyModel {
       } ), Vector2.ZERO, 0.00338, { tag: Mass.MassTag.ONE_C } ),
 
       Cuboid.createWithVolume( this.engine, Material.createCustomMaterial( {
-        density: 3530,
+        density: Material.DIAMOND.density,
         customColor: DensityBuoyancyCommonColorProfile.comparingPurpleProperty
       } ), Vector2.ZERO, 0.001, { tag: Mass.MassTag.ONE_A } ),
 

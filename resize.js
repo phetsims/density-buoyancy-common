@@ -1,5 +1,7 @@
 // Copyright 2019, University of Colorado Boulder
 
+/* eslint-env node */
+
 const grunt = require( 'grunt' );
 const jimp = require( 'jimp' );
 

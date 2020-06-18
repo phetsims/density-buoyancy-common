@@ -107,7 +107,7 @@ class DensityMysteryModel extends DensityBuoyancyModal( DensityBuoyancyModel, Mo
             } ), Vector2.ZERO, 18, { tag: Mass.MassTag.TWO_A } ),
 
             Cuboid.createWithVolume( model.engine, Material.createCustomMaterial( {
-              density: 8890,
+              density: Material.COPPER.density,
               customColor: DensityBuoyancyCommonColorProfile.mysteryLightPurpleProperty
             } ), Vector2.ZERO, 0.005, { tag: Mass.MassTag.TWO_E } ),
 

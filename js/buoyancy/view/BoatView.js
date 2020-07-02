@@ -17,10 +17,12 @@ class BoatView extends MassView {
   /**
    * @param {Boat} boat
    * @param {Property.<number>} liquidYInterpolatedProperty
+   * @param {THREE.Texture} reflectedTexture
+   * @param {THREE.Texture} refractedTexture
    */
-  constructor( boat, liquidYInterpolatedProperty ) {
+  constructor( boat, liquidYInterpolatedProperty, reflectedTexture, refractedTexture ) {
 
-    super( boat, new THREE.Geometry() );
+    super( boat, new THREE.Geometry(), reflectedTexture, refractedTexture );
 
     const boatOneLiterGeometry = BoatDesign.getPrimaryGeometry( 1 );
 

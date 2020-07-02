@@ -45,8 +45,10 @@ const blockStringMap = {
 class CuboidView extends MassView {
   /**
    * @param {Cuboid} cuboid
+   * @param {THREE.Texture} reflectedTexture
+   * @param {THREE.Texture} refractedTexture
    */
-  constructor( cuboid ) {
+  constructor( cuboid, reflectedTexture, refractedTexture ) {
     const size = cuboid.sizeProperty.value;
 
     const positionArray = new Float32Array( numElements * 3 );
@@ -60,7 +62,7 @@ class CuboidView extends MassView {
     boxGeometry.addAttribute( 'normal', new THREE.BufferAttribute( normalArray, 3 ) );
     boxGeometry.addAttribute( 'uv', new THREE.BufferAttribute( uvArray, 2 ) );
 
-    super( cuboid, boxGeometry );
+    super( cuboid, boxGeometry, reflectedTexture, refractedTexture );
 
     // @public {Cuboid}
     this.cuboid = cuboid;

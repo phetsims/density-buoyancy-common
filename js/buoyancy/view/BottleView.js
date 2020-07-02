@@ -16,12 +16,14 @@ class BottleView extends MassView {
   /**
    * @param {Bottle} bottle
    * @param {Property.<number>} liquidYInterpolatedProperty
+   * @param {THREE.Texture} reflectedTexture
+   * @param {THREE.Texture} refractedTexture
    */
-  constructor( bottle, liquidYInterpolatedProperty ) {
+  constructor( bottle, liquidYInterpolatedProperty, reflectedTexture, refractedTexture ) {
 
     const primaryGeometry = Bottle.getPrimaryGeometry();
 
-    super( bottle, new THREE.Geometry() );
+    super( bottle, new THREE.Geometry(), reflectedTexture, refractedTexture );
 
     const bottomClipPlane = new THREE.Plane( new THREE.Vector3( 0, -1, 0 ), 0 );
     const topClipPlane = new THREE.Plane( new THREE.Vector3( 0, 1, 0 ), 0 );

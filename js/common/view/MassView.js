@@ -13,9 +13,11 @@ class MassView extends THREE.Mesh {
   /**
    * @param {Mass} mass
    * @param {THREE.Geometry} initialGeometry
+   * @param {THREE.Texture} reflectedTexture
+   * @param {THREE.Texture} refractedTexture
    */
-  constructor( mass, initialGeometry ) {
-    const materialView = DensityMaterials.getMaterialView( mass.materialProperty.value );
+  constructor( mass, initialGeometry, reflectedTexture, refractedTexture ) {
+    const materialView = DensityMaterials.getMaterialView( reflectedTexture, refractedTexture, mass.materialProperty.value );
 
     super( initialGeometry, materialView.material );
 
@@ -30,7 +32,7 @@ class MassView extends THREE.Mesh {
 
     mass.materialProperty.lazyLink( material => {
       this.materialView.dispose();
-      this.materialView = DensityMaterials.getMaterialView( material );
+      this.materialView = DensityMaterials.getMaterialView( reflectedTexture, refractedTexture, material );
       this.material = this.materialView.material;
     } );
 
@@ -44,17 +46,6 @@ class MassView extends THREE.Mesh {
 
     this.mass.transformedEmitter.addListener( this.positionListener );
     this.positionListener();
-  }
-
-  /**
-   * Updates the mass's view before main rendering
-   * @public
-   *
-   * @param {THREE.Scene} scene
-   * @param {THREE.Renderer} renderer
-   */
-  update( scene, renderer ) {
-    this.materialView.update( this, scene, renderer );
   }
 
   /**

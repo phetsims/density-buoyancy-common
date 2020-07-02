@@ -35,7 +35,6 @@ import Wood26NrmImage from '../../../images/Wood26_nrm_jpg.js';
 import Wood26RghImage from '../../../images/Wood26_rgh_jpg.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import Material from '../model/Material.js';
-import CameraMaterialView from './CameraMaterialView.js';
 import MaterialView from './MaterialView.js';
 
 // constants
@@ -75,9 +74,13 @@ const woodColorTexture = toWrappedTexture( Wood26ColImage );
 const woodNormalTexture = toWrappedTexture( Wood26NrmImage );
 const woodRoughnessTexture = toWrappedTexture( Wood26RghImage );
 
-class AluminumMaterialView extends CameraMaterialView {
-  constructor() {
-    super();
+class AluminumMaterialView extends MaterialView {
+  /**
+   * @param {THREE.Texture} reflectedTexture
+   * @param {THREE.Texture} refractedTexture
+   */
+  constructor( reflectedTexture, refractedTexture ) {
+    super( reflectedTexture, refractedTexture );
 
     this.material = new THREE.MeshStandardMaterial( {
       map: aluminumColorTexture,
@@ -85,14 +88,18 @@ class AluminumMaterialView extends CameraMaterialView {
       normalScale: new THREE.Vector2( 1, -1 ),
       roughnessMap: aluminumRoughnessTexture,
       metalnessMap: aluminumMetalnessTexture,
-      envMap: this.getTexture()
+      envMap: reflectedTexture
     } );
   }
 }
 
-class BrickMaterialView extends CameraMaterialView {
-  constructor() {
-    super();
+class BrickMaterialView extends MaterialView {
+  /**
+   * @param {THREE.Texture} reflectedTexture
+   * @param {THREE.Texture} refractedTexture
+   */
+  constructor( reflectedTexture, refractedTexture ) {
+    super( reflectedTexture, refractedTexture );
 
     this.material = new THREE.MeshStandardMaterial( {
       map: brickColorTexture,
@@ -101,14 +108,18 @@ class BrickMaterialView extends CameraMaterialView {
       normalScale: new THREE.Vector2( 0.5, -0.5 ),
       roughness: 1,
       metalness: 0,
-      envMap: this.getTexture()
+      envMap: reflectedTexture
     } );
   }
 }
 
-class CopperMaterialView extends CameraMaterialView {
-  constructor() {
-    super();
+class CopperMaterialView extends MaterialView {
+  /**
+   * @param {THREE.Texture} reflectedTexture
+   * @param {THREE.Texture} refractedTexture
+   */
+  constructor( reflectedTexture, refractedTexture ) {
+    super( reflectedTexture, refractedTexture );
 
     this.material = new THREE.MeshStandardMaterial( {
       map: copperColorTexture,
@@ -116,19 +127,18 @@ class CopperMaterialView extends CameraMaterialView {
       normalScale: new THREE.Vector2( 1, -1 ),
       roughnessMap: copperRoughnessTexture,
       metalnessMap: copperMetalnessTexture,
-      envMap: this.getTexture()
+      envMap: reflectedTexture
     } );
   }
 }
 
-class IceMaterialView extends CameraMaterialView {
-  constructor() {
-    super();
-
-    const texture = this.getTexture();
-
-    texture.mapping = THREE.CubeRefractionMapping;
-    texture.needsUpdate = true;
+class IceMaterialView extends MaterialView {
+  /**
+   * @param {THREE.Texture} reflectedTexture
+   * @param {THREE.Texture} refractedTexture
+   */
+  constructor( reflectedTexture, refractedTexture ) {
+    super( reflectedTexture, refractedTexture );
 
     this.material = new THREE.MeshPhysicalMaterial( {
       map: iceColorTexture,
@@ -140,19 +150,24 @@ class IceMaterialView extends CameraMaterialView {
       metalness: 0.4,
       clearCoat: 1,
       reflectivity: 1,
-      envMap: texture,
       envMapIntensity: 2, // is this too much cheating?
 
       transparent: true,
-      side: THREE.DoubleSide
+      side: THREE.DoubleSide,
+
+      envMap: refractedTexture
     } );
   }
 }
 
 // We just use aluminum
-class PlatinumMaterialView extends CameraMaterialView {
-  constructor() {
-    super();
+class PlatinumMaterialView extends MaterialView {
+  /**
+   * @param {THREE.Texture} reflectedTexture
+   * @param {THREE.Texture} refractedTexture
+   */
+  constructor( reflectedTexture, refractedTexture ) {
+    super( reflectedTexture, refractedTexture );
 
     this.material = new THREE.MeshStandardMaterial( {
       map: platinumColorTexture,
@@ -160,17 +175,21 @@ class PlatinumMaterialView extends CameraMaterialView {
       normalScale: new THREE.Vector2( 1, -1 ),
       roughnessMap: aluminumRoughnessTexture,
       metalnessMap: aluminumMetalnessTexture,
-      envMap: this.getTexture(),
       envMapIntensity: 0.5,
       emissive: 0xffffff,
-      emissiveIntensity: 0.5
+      emissiveIntensity: 0.5,
+      envMap: reflectedTexture
     } );
   }
 }
 
-class SteelMaterialView extends CameraMaterialView {
-  constructor() {
-    super();
+class SteelMaterialView extends MaterialView {
+  /**
+   * @param {THREE.Texture} reflectedTexture
+   * @param {THREE.Texture} refractedTexture
+   */
+  constructor( reflectedTexture, refractedTexture ) {
+    super( reflectedTexture, refractedTexture );
 
     this.material = new THREE.MeshStandardMaterial( {
       map: steelColorTexture,
@@ -178,14 +197,18 @@ class SteelMaterialView extends CameraMaterialView {
       normalScale: new THREE.Vector2( 1, -1 ),
       roughnessMap: steelRoughnessTexture,
       metalnessMap: steelMetalnessTexture,
-      envMap: this.getTexture()
+      envMap: reflectedTexture
     } );
   }
 }
 
-class StyrofoamMaterialView extends CameraMaterialView {
-  constructor() {
-    super();
+class StyrofoamMaterialView extends MaterialView {
+  /**
+   * @param {THREE.Texture} reflectedTexture
+   * @param {THREE.Texture} refractedTexture
+   */
+  constructor( reflectedTexture, refractedTexture ) {
+    super( reflectedTexture, refractedTexture );
 
     this.material = new THREE.MeshStandardMaterial( {
       map: styrofoamColorTexture,
@@ -194,14 +217,18 @@ class StyrofoamMaterialView extends CameraMaterialView {
       normalScale: new THREE.Vector2( 1, 1 ),
       roughnessMap: styrofoamRoughnessTexture,
       metalness: 0,
-      envMap: this.getTexture()
+      envMap: reflectedTexture
     } );
   }
 }
 
-class WoodMaterialView extends CameraMaterialView {
-  constructor() {
-    super();
+class WoodMaterialView extends MaterialView {
+  /**
+   * @param {THREE.Texture} reflectedTexture
+   * @param {THREE.Texture} refractedTexture
+   */
+  constructor( reflectedTexture, refractedTexture ) {
+    super( reflectedTexture, refractedTexture );
 
     this.material = new THREE.MeshStandardMaterial( {
       map: woodColorTexture,
@@ -209,17 +236,19 @@ class WoodMaterialView extends CameraMaterialView {
       normalScale: new THREE.Vector2( 1, -1 ),
       roughnessMap: woodRoughnessTexture,
       metalness: 0,
-      envMap: this.getTexture()
+      envMap: reflectedTexture
     } );
   }
 }
 
 class CustomMaterialView extends MaterialView {
   /**
+   * @param {THREE.Texture} reflectedTexture
+   * @param {THREE.Texture} refractedTexture
    * @param {number} density
    */
-  constructor( density ) {
-    super();
+  constructor( reflectedTexture, refractedTexture, density ) {
+    super( reflectedTexture, refractedTexture );
 
     const lightness = Material.getCustomLightness( density );
     const color = lightness + lightness * 0x100 + lightness * 0x10000;
@@ -232,10 +261,12 @@ class CustomMaterialView extends MaterialView {
 
 class CustomColoredMaterialView extends MaterialView {
   /**
+   * @param {THREE.Texture} reflectedTexture
+   * @param {THREE.Texture} refractedTexture
    * @param {Property.<Color>} colorProperty
    */
-  constructor( colorProperty ) {
-    super();
+  constructor( reflectedTexture, refractedTexture, colorProperty ) {
+    super( reflectedTexture, refractedTexture );
 
     this.material = new THREE.MeshLambertMaterial();
 
@@ -261,8 +292,12 @@ class CustomColoredMaterialView extends MaterialView {
 }
 
 class DebugMaterialView extends MaterialView {
-  constructor() {
-    super();
+  /**
+   * @param {THREE.Texture} reflectedTexture
+   * @param {THREE.Texture} refractedTexture
+   */
+  constructor( reflectedTexture, refractedTexture ) {
+    super( reflectedTexture, refractedTexture );
 
     this.material = new THREE.MeshLambertMaterial( {
       color: 0xffaa44
@@ -275,44 +310,46 @@ class DensityMaterials {
    * Returns a view for the given Material.
    * @public
    *
+   * @param {THREE.Texture} reflectedTexture
+   * @param {THREE.Texture} refractedTexture
    * @param {Material} material
    * @returns {MaterialView}
    */
-  static getMaterialView( material ) {
+  static getMaterialView( reflectedTexture, refractedTexture, material ) {
     if ( material === Material.ALUMINUM ) {
-      return new AluminumMaterialView();
+      return new AluminumMaterialView( reflectedTexture, refractedTexture );
     }
     else if ( material === Material.BRICK ) {
-      return new BrickMaterialView();
+      return new BrickMaterialView( reflectedTexture, refractedTexture );
     }
     else if ( material === Material.COPPER ) {
-      return new CopperMaterialView();
+      return new CopperMaterialView( reflectedTexture, refractedTexture );
     }
     else if ( material === Material.ICE ) {
-      return new IceMaterialView();
+      return new IceMaterialView( reflectedTexture, refractedTexture );
     }
     else if ( material === Material.PLATINUM ) {
-      return new PlatinumMaterialView();
+      return new PlatinumMaterialView( reflectedTexture, refractedTexture );
     }
     else if ( material === Material.STEEL ) {
-      return new SteelMaterialView();
+      return new SteelMaterialView( reflectedTexture, refractedTexture );
     }
     else if ( material === Material.STYROFOAM ) {
-      return new StyrofoamMaterialView();
+      return new StyrofoamMaterialView( reflectedTexture, refractedTexture );
     }
     else if ( material === Material.WOOD ) {
-      return new WoodMaterialView();
+      return new WoodMaterialView( reflectedTexture, refractedTexture );
     }
     else if ( material.custom ) {
       if ( material.customColor === null ) {
-        return new CustomMaterialView( material.density );
+        return new CustomMaterialView( reflectedTexture, refractedTexture, material.density );
       }
       else {
-        return new CustomColoredMaterialView( material.customColor );
+        return new CustomColoredMaterialView( reflectedTexture, refractedTexture, material.customColor );
       }
     }
     else {
-      return new DebugMaterialView();
+      return new DebugMaterialView( reflectedTexture, refractedTexture );
     }
   }
 }

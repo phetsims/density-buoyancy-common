@@ -464,32 +464,53 @@ class DensityBuoyancyScreenView extends ScreenView {
       waterGeometry.computeBoundingSphere();
     } );
 
+    const getEnvironmentTexture = () => {
+      const camera = new THREE.CubeCamera( 0.01, 50, 512 );
+
+      const texture = camera.renderTarget.texture;
+
+      this.sceneNode.stage.threeScene.add( camera );
+      this.sceneNode.stage.threeScene.background = ThreeUtils.colorToThree( DensityBuoyancyCommonColorProfile.skyBottomProperty.value );
+      camera.position.set( 0, 0, 0 );
+      camera.update( this.sceneNode.stage.threeRenderer, this.sceneNode.stage.threeScene );
+      this.sceneNode.stage.threeScene.background = null;
+      this.sceneNode.stage.threeScene.remove( camera );
+
+      return texture;
+    };
+
+    const reflectionTexture = getEnvironmentTexture();
+    const refractionTexture = getEnvironmentTexture();
+
+    refractionTexture.mapping = THREE.CubeRefractionMapping;
+    refractionTexture.needsUpdate = true;
+
     const onMassAdded = mass => {
       let massView = null;
 
       if ( mass instanceof Cuboid ) {
-        massView = new CuboidView( mass );
+        massView = new CuboidView( mass, reflectionTexture, refractionTexture );
       }
       else if ( mass instanceof Scale ) {
-        massView = new ScaleView( mass );
+        massView = new ScaleView( mass, reflectionTexture, refractionTexture );
       }
       else if ( mass instanceof Cone ) {
-        massView = new ConeView( mass );
+        massView = new ConeView( mass, reflectionTexture, refractionTexture );
       }
       else if ( mass instanceof Ellipsoid ) {
-        massView = new EllipsoidView( mass );
+        massView = new EllipsoidView( mass, reflectionTexture, refractionTexture );
       }
       else if ( mass instanceof HorizontalCylinder ) {
-        massView = new HorizontalCylinderView( mass );
+        massView = new HorizontalCylinderView( mass, reflectionTexture, refractionTexture );
       }
       else if ( mass instanceof VerticalCylinder ) {
-        massView = new VerticalCylinderView( mass );
+        massView = new VerticalCylinderView( mass, reflectionTexture, refractionTexture );
       }
       else if ( mass instanceof Bottle ) {
-        massView = new BottleView( mass, model.pool.liquidYInterpolatedProperty );
+        massView = new BottleView( mass, model.pool.liquidYInterpolatedProperty, reflectionTexture, refractionTexture );
       }
       else if ( mass instanceof Boat ) {
-        massView = new BoatView( mass, model.pool.liquidYInterpolatedProperty );
+        massView = new BoatView( mass, model.pool.liquidYInterpolatedProperty, reflectionTexture, refractionTexture );
       }
 
       if ( massView ) {
@@ -651,9 +672,6 @@ class DensityBuoyancyScreenView extends ScreenView {
     if ( !this.sceneNode ) {
       return;
     }
-
-    // Update the views
-    this.massViews.forEach( massView => massView.update( this.sceneNode.stage.threeScene, this.sceneNode.stage.threeRenderer ) );
 
     this.sceneNode.render( undefined );
 

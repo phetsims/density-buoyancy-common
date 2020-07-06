@@ -129,6 +129,7 @@ class Boat extends Mass {
 
     // boatInternalArea
     // boatInternalBottom
+
     // boatMinX or boatMaxX --- How to determine if a block is in the boat
 
     this.stepVolume = this.displacementVolumeProperty.value;

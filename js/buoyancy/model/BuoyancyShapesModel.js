@@ -140,7 +140,7 @@ class BuoyancyShapesModel extends DensityBuoyancyModel {
         newMass.matrix.set( oldMass.matrix );
         newMass.writeData();
 
-        if ( this.masses.contains( oldMass ) ) {
+        if ( this.masses.includes( oldMass ) ) {
           this.masses.remove( oldMass );
           this.masses.add( newMass );
         }

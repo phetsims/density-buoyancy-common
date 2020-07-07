@@ -197,7 +197,7 @@ class DensityBuoyancyModel {
    * @param {boolean} visible
    */
   setMassVisible( mass, visible ) {
-    const contains = this.masses.contains( mass );
+    const contains = this.masses.includes( mass );
     if ( visible && !contains ) {
       this.masses.add( mass );
     }

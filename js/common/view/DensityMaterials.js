@@ -145,7 +145,8 @@ class IceMaterialView extends MaterialView {
       alphaMap: iceAlphaTexture,
       normalMap: iceNormalTexture,
       normalScale: new THREE.Vector2( 1, -1 ),
-      roughness: 0.1,
+      roughness: 0.7,
+      clearcoatRoughness: 0.7,
       refractionRatio: 1 / 1.309,
       metalness: 0.4,
       clearCoat: 1,
@@ -215,6 +216,7 @@ class StyrofoamMaterialView extends MaterialView {
       aoMap: styrofoamAmbientOcclusionTexture,
       normalMap: styrofoamNormalTexture,
       normalScale: new THREE.Vector2( 1, 1 ),
+      roughness: 1.5,
       roughnessMap: styrofoamRoughnessTexture,
       metalness: 0,
       envMap: reflectedTexture
@@ -234,6 +236,7 @@ class WoodMaterialView extends MaterialView {
       map: woodColorTexture,
       normalMap: woodNormalTexture,
       normalScale: new THREE.Vector2( 1, -1 ),
+      roughness: 0.8,
       roughnessMap: woodRoughnessTexture,
       metalness: 0,
       envMap: reflectedTexture

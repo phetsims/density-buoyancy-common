@@ -51,6 +51,7 @@ class MaterialMassVolumeControlNode extends VBox {
 
       // {number}
       minMass: 0.1,
+      minCustomMass: 0.5,
       maxCustomMass: 10,
       maxMass: 27,
       minVolumeLiters: 1,
@@ -143,7 +144,7 @@ class MaterialMassVolumeControlNode extends VBox {
 
     const enabledMassRangeProperty = new DerivedProperty( [ materialProperty ], material => {
       if ( material.custom ) {
-        return new Range( options.minMass, options.maxCustomMass );
+        return new Range( options.minCustomMass, options.maxCustomMass );
       }
       else {
         const density = material.density;

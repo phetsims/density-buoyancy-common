@@ -52,7 +52,7 @@ const DensityBuoyancyCommonQueryParameters = QueryStringMachine.getAll( {
   // Amount of iterations used to compute friction
   p2FrictionIterations: {
     type: 'number',
-    defaultValue: 10
+    defaultValue: 500
   },
 
   // When the amount of error goes below this amount, further iterations are not done
@@ -70,14 +70,14 @@ const DensityBuoyancyCommonQueryParameters = QueryStringMachine.getAll( {
   // An amount of force applied to all pointer-mass interactions (e.g. when you grab it with the mouse)
   p2PointerBaseForce: {
     type: 'number',
-    defaultValue: 0
+    defaultValue: 2500
   },
 
   // Adds to the amount of force applied to all pointer-mass interactions (e.g. when you grab it with the mouse), but
   // is this value TIMES the mass's mass value.
   p2PointerMassForce: {
     type: 'number',
-    defaultValue: 5000
+    defaultValue: 0
   },
 
   // Stiffness:

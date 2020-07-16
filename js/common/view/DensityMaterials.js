@@ -175,6 +175,7 @@ class PlatinumMaterialView extends MaterialView {
       normalMap: aluminumNormalTexture,
       normalScale: new THREE.Vector2( 1, -1 ),
       roughnessMap: aluminumRoughnessTexture,
+      roughness: 4,
       metalnessMap: aluminumMetalnessTexture,
       envMapIntensity: 0.5,
       emissive: 0xffffff,

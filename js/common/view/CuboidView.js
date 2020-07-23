@@ -91,6 +91,7 @@ class CuboidView extends MassView {
 
     if ( tagMesh ) {
       this.add( tagMesh );
+      tagMesh.renderOrder = 1;
     }
 
     const positionTag = () => {

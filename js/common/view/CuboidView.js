@@ -67,22 +67,26 @@ class CuboidView extends MassView {
     // @public {Cuboid}
     this.cuboid = cuboid;
 
+    // @private {NodeTexture}
+    this.tagNodeTexture = null;
     let tagMesh = null;
     let tagHeight = null;
     if ( cuboid.tag === Mass.MassTag.PRIMARY ) {
-      tagMesh = new TextureQuad( MassLabelNode.getPrimaryTexture(), TAG_SIZE, TAG_SIZE );
+      this.tagNodeTexture = MassLabelNode.getPrimaryTexture();
+      tagMesh = new TextureQuad( this.tagNodeTexture, TAG_SIZE, TAG_SIZE );
       tagHeight = TAG_SIZE;
     }
     else if ( cuboid.tag === Mass.MassTag.SECONDARY ) {
-      tagMesh = new TextureQuad( MassLabelNode.getSecondaryTexture(), TAG_SIZE, TAG_SIZE );
+      this.tagNodeTexture = MassLabelNode.getSecondaryTexture();
+      tagMesh = new TextureQuad( this.tagNodeTexture, TAG_SIZE, TAG_SIZE );
       tagHeight = TAG_SIZE;
     }
     else if ( cuboid.tag !== Mass.MassTag.NONE ) {
       const string = blockStringMap[ cuboid.tag.name ];
-      const texture = MassLabelNode.getBasicLabelTexture( string );
+      this.tagNodeTexture = MassLabelNode.getBasicLabelTexture( string );
 
-      tagMesh = new TextureQuad( texture, TAG_SCALE * texture._width, TAG_SCALE * texture._height );
-      tagHeight = TAG_SCALE * texture._height;
+      tagMesh = new TextureQuad( this.tagNodeTexture, TAG_SCALE * this.tagNodeTexture._width, TAG_SCALE * this.tagNodeTexture._height );
+      tagHeight = TAG_SCALE * this.tagNodeTexture._height;
     }
 
     if ( tagMesh ) {
@@ -114,6 +118,7 @@ class CuboidView extends MassView {
    */
   dispose() {
     this.cuboid.sizeProperty.unlink( this.updateListener );
+    this.tagNodeTexture && this.tagNodeTexture.dispose();
 
     super.dispose();
   }

@@ -70,24 +70,24 @@ class DensityMysteryModel extends DensityBuoyancyModal( DensityBuoyancyModel, Mo
         case Mode.SET_1:
           return [
             Cuboid.createWithVolume( model.engine, Material.createCustomMaterial( {
-              density: 19320,
-              customColor: DensityBuoyancyCommonColorProfile.comparingYellowProperty
-            } ), Vector2.ZERO, 0.00338, { tag: Mass.MassTag.ONE_D } ),
+              density: 920,
+              customColor: DensityBuoyancyCommonColorProfile.comparingRedProperty
+            } ), Vector2.ZERO, 0.004, { tag: Mass.MassTag.ONE_C } ),
 
             Cuboid.createWithVolume( model.engine, Material.createCustomMaterial( {
               density: Material.GASOLINE.density,
               customColor: DensityBuoyancyCommonColorProfile.comparingBlueProperty
-            } ), Vector2.ZERO, 0.001, { tag: Mass.MassTag.ONE_B } ),
+            } ), Vector2.ZERO, 0.004, { tag: Mass.MassTag.ONE_B } ),
 
             Cuboid.createWithVolume( model.engine, Material.createCustomMaterial( {
               density: Material.GASOLINE.density,
               customColor: DensityBuoyancyCommonColorProfile.comparingGreenProperty
-            } ), Vector2.ZERO, 0.00583, { tag: Mass.MassTag.ONE_E } ),
+            } ), Vector2.ZERO, 0.00516, { tag: Mass.MassTag.ONE_E } ),
 
             Cuboid.createWithVolume( model.engine, Material.createCustomMaterial( {
-              density: 920,
-              customColor: DensityBuoyancyCommonColorProfile.comparingRedProperty
-            } ), Vector2.ZERO, 0.00338, { tag: Mass.MassTag.ONE_C } ),
+              density: 19320,
+              customColor: DensityBuoyancyCommonColorProfile.comparingYellowProperty
+            } ), Vector2.ZERO, 0.001, { tag: Mass.MassTag.ONE_D } ),
 
             Cuboid.createWithVolume( model.engine, Material.createCustomMaterial( {
               density: Material.DIAMOND.density,

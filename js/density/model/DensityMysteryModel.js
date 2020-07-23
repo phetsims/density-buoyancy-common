@@ -72,7 +72,7 @@ class DensityMysteryModel extends DensityBuoyancyModal( DensityBuoyancyModel, Mo
             Cuboid.createWithVolume( model.engine, Material.createCustomMaterial( {
               density: 920,
               customColor: DensityBuoyancyCommonColorProfile.comparingRedProperty
-            } ), Vector2.ZERO, 0.004, { tag: Mass.MassTag.ONE_C } ),
+            } ), Vector2.ZERO, 0.004, { tag: Mass.MassTag.ONE_D } ),
 
             Cuboid.createWithVolume( model.engine, Material.createCustomMaterial( {
               density: Material.GASOLINE.density,
@@ -87,7 +87,7 @@ class DensityMysteryModel extends DensityBuoyancyModal( DensityBuoyancyModel, Mo
             Cuboid.createWithVolume( model.engine, Material.createCustomMaterial( {
               density: 19320,
               customColor: DensityBuoyancyCommonColorProfile.comparingYellowProperty
-            } ), Vector2.ZERO, 0.001, { tag: Mass.MassTag.ONE_D } ),
+            } ), Vector2.ZERO, 0.001, { tag: Mass.MassTag.ONE_C } ),
 
             Cuboid.createWithVolume( model.engine, Material.createCustomMaterial( {
               density: Material.DIAMOND.density,

@@ -732,10 +732,6 @@ class DensityBuoyancyScreenView extends ScreenView {
     stage.threeCamera.lookAt( ThreeUtils.vectorToThree( lookAt ) );
     stage.threeCamera.updateProjectionMatrix();
 
-    // const fullWidth = width * 3;
-    // const fullHeight = height * 3;
-    // stage.threeCamera.setViewOffset( fullWidth, fullHeight, 0.1 * width, 1.0 * height, width, height );
-
     setupScene( stage.threeScene, stage.threeRenderer );
 
     stage.threeCamera.fov = 50;
@@ -748,8 +744,10 @@ class DensityBuoyancyScreenView extends ScreenView {
 
     stage.dispose();
 
-    const image = new Image( canvas, {
-      mipmap: true
+    const image = new Image( canvas.toDataURL(), {
+      mipmap: true,
+      initialWidth: canvas.width,
+      initialHeight: canvas.height
     } );
     image.setScaleMagnitude( 1, -1 );
     image.left = 0;

@@ -138,8 +138,10 @@ class SecondMassVisibleControl extends RadioButtonGroup {
 
     stage.dispose();
 
-    const image = new Image( canvas, {
-      mipmap: true
+    const image = new Image( canvas.toDataURL(), {
+      mipmap: true,
+      initialWidth: canvas.width,
+      initialHeight: canvas.height
     } );
     image.setScaleMagnitude( 0.2, -0.2 );
     return image;

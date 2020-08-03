@@ -291,6 +291,7 @@ class CustomColoredMaterialView extends MaterialView {
    */
   dispose() {
     this.colorProperty.unlink( this.listener );
+
     super.dispose();
   }
 }

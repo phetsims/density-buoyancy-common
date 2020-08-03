@@ -30,11 +30,13 @@ class MassView extends THREE.Mesh {
     // @private {Material}
     this.material = materialView.material;
 
-    mass.materialProperty.lazyLink( material => {
+    // @private {function}
+    this.materialListener = material => {
       this.materialView.dispose();
       this.materialView = DensityMaterials.getMaterialView( reflectedTexture, refractedTexture, material );
       this.material = this.materialView.material;
-    } );
+    };
+    this.mass.materialProperty.lazyLink( this.materialListener );
 
     // @private {function}
     this.positionListener = () => {
@@ -55,6 +57,9 @@ class MassView extends THREE.Mesh {
    */
   dispose() {
     this.mass.transformedEmitter.removeListener( this.positionListener );
+    this.mass.materialProperty.unlink( this.materialListener );
+
+    this.materialView.dispose();
   }
 }
 

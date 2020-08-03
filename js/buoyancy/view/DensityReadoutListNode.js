@@ -29,6 +29,7 @@ class DensityReadoutListNode extends VBox {
     this.children = materialProperties.map( materialProperty => {
       const text = new Text( '', { font: new PhetFont( 14 ), maxWidth: 200 } );
 
+      // Exists for the lifetime of a sim, so disposal patterns not needed.
       materialProperty.link( material => {
         text.text = StringUtils.fillIn( densityBuoyancyCommonStrings.densityReadoutPattern, {
           material: material.name,

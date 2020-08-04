@@ -38,6 +38,9 @@ class VerticalCylinderView extends MassView {
     // @public {VerticalCylinder}
     this.verticalCylinder = verticalCylinder;
 
+    // @private {THREE.BufferGeometry}
+    this.verticalCylinderGeometry = verticalCylinderGeometry;
+
     // @private {function}
     this.updateListener = size => {
       VerticalCylinderView.updateArrays( verticalCylinderGeometry.attributes.position.array, null, verticalCylinderGeometry.attributes.uv.array, verticalCylinder.radiusProperty.value, verticalCylinder.heightProperty.value );
@@ -57,6 +60,7 @@ class VerticalCylinderView extends MassView {
   dispose() {
     this.verticalCylinder.radiusProperty.unlink( this.updateListener );
     this.verticalCylinder.heightProperty.unlink( this.updateListener );
+    this.verticalCylinderGeometry.dispose();
 
     super.dispose();
   }

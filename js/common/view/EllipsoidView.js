@@ -25,6 +25,9 @@ class EllipsoidView extends MassView {
     // @public {Ellipsod}
     this.ellipsoid = ellipsoid;
 
+    // @private {THREE.Sphere}
+    this.ellipsoidGeometry = ellipsoidGeometry;
+
     // @private {function}
     this.updateListener = ( newSize, oldSize ) => {
       ellipsoidGeometry.applyMatrix( new THREE.Matrix4().makeScale(
@@ -46,6 +49,7 @@ class EllipsoidView extends MassView {
    */
   dispose() {
     this.ellipsoid.sizeProperty.unlink( this.updateListener );
+    this.ellipsoidGeometry.dispose();
 
     super.dispose();
   }

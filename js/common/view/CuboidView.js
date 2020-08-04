@@ -57,59 +57,64 @@ class CuboidView extends MassView {
 
     CuboidView.updateArrays( positionArray, normalArray, uvArray, size );
 
-    const boxGeometry = new THREE.BufferGeometry();
-    boxGeometry.addAttribute( 'position', new THREE.BufferAttribute( positionArray, 3 ) );
-    boxGeometry.addAttribute( 'normal', new THREE.BufferAttribute( normalArray, 3 ) );
-    boxGeometry.addAttribute( 'uv', new THREE.BufferAttribute( uvArray, 2 ) );
+    const cuboidGeometry = new THREE.BufferGeometry();
+    cuboidGeometry.addAttribute( 'position', new THREE.BufferAttribute( positionArray, 3 ) );
+    cuboidGeometry.addAttribute( 'normal', new THREE.BufferAttribute( normalArray, 3 ) );
+    cuboidGeometry.addAttribute( 'uv', new THREE.BufferAttribute( uvArray, 2 ) );
 
-    super( cuboid, boxGeometry, reflectedTexture, refractedTexture );
+    super( cuboid, cuboidGeometry, reflectedTexture, refractedTexture );
 
     // @public {Cuboid}
     this.cuboid = cuboid;
 
+    // @private {THREE.BufferGeometry}
+    this.cuboidGeometry = cuboidGeometry;
+
     // @private {NodeTexture}
     this.tagNodeTexture = null;
-    let tagMesh = null;
+
+    // @private {TextureQuad|null}
+    this.tagMesh = null;
+
     let tagHeight = null;
     if ( cuboid.tag === Mass.MassTag.PRIMARY ) {
       this.tagNodeTexture = MassLabelNode.getPrimaryTexture();
-      tagMesh = new TextureQuad( this.tagNodeTexture, TAG_SIZE, TAG_SIZE );
+      this.tagMesh = new TextureQuad( this.tagNodeTexture, TAG_SIZE, TAG_SIZE );
       tagHeight = TAG_SIZE;
     }
     else if ( cuboid.tag === Mass.MassTag.SECONDARY ) {
       this.tagNodeTexture = MassLabelNode.getSecondaryTexture();
-      tagMesh = new TextureQuad( this.tagNodeTexture, TAG_SIZE, TAG_SIZE );
+      this.tagMesh = new TextureQuad( this.tagNodeTexture, TAG_SIZE, TAG_SIZE );
       tagHeight = TAG_SIZE;
     }
     else if ( cuboid.tag !== Mass.MassTag.NONE ) {
       const string = blockStringMap[ cuboid.tag.name ];
       this.tagNodeTexture = MassLabelNode.getBasicLabelTexture( string );
 
-      tagMesh = new TextureQuad( this.tagNodeTexture, TAG_SCALE * this.tagNodeTexture._width, TAG_SCALE * this.tagNodeTexture._height );
+      this.tagMesh = new TextureQuad( this.tagNodeTexture, TAG_SCALE * this.tagNodeTexture._width, TAG_SCALE * this.tagNodeTexture._height );
       tagHeight = TAG_SCALE * this.tagNodeTexture._height;
     }
 
-    if ( tagMesh ) {
-      this.add( tagMesh );
-      tagMesh.renderOrder = 1;
+    if ( this.tagMesh ) {
+      this.add( this.tagMesh );
+      this.tagMesh.renderOrder = 1;
     }
 
     const positionTag = () => {
       const size = cuboid.sizeProperty.value;
-      tagMesh && tagMesh.position.set( size.minX + TAG_OFFSET, size.maxY - tagHeight - TAG_OFFSET, size.maxZ + 0.0001 );
+      this.tagMesh && this.tagMesh.position.set( size.minX + TAG_OFFSET, size.maxY - tagHeight - TAG_OFFSET, size.maxZ + 0.0001 );
     };
     positionTag();
 
     // @private {function}
     this.updateListener = size => {
       positionTag();
-      CuboidView.updateArrays( boxGeometry.attributes.position.array, null, boxGeometry.attributes.uv.array, size );
-      boxGeometry.attributes.position.needsUpdate = true;
-      boxGeometry.attributes.uv.needsUpdate = true;
-      boxGeometry.computeBoundingSphere();
+      CuboidView.updateArrays( cuboidGeometry.attributes.position.array, null, cuboidGeometry.attributes.uv.array, size );
+      cuboidGeometry.attributes.position.needsUpdate = true;
+      cuboidGeometry.attributes.uv.needsUpdate = true;
+      cuboidGeometry.computeBoundingSphere();
     };
     this.cuboid.sizeProperty.lazyLink( this.updateListener );
-
   }
 
   /**
@@ -120,6 +125,9 @@ class CuboidView extends MassView {
   dispose() {
     this.cuboid.sizeProperty.unlink( this.updateListener );
     this.tagNodeTexture && this.tagNodeTexture.dispose();
+    this.tagMesh && this.tagMesh.dispose();
+
+    this.cuboidGeometry.dispose();
 
     super.dispose();
   }

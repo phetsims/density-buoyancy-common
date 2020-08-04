@@ -21,10 +21,15 @@ class ScaleView extends MassView {
    */
   constructor( mass, reflectedTexture, refractedTexture ) {
 
-    super( mass, ScaleView.getScaleGeometry(), reflectedTexture, refractedTexture );
+    const scaleGeometry = ScaleView.getScaleGeometry();
+
+    super( mass, scaleGeometry, reflectedTexture, refractedTexture );
 
     // @public {Scale}
     this.mass = mass;
+
+    // @private {THREE.BufferGeometry}
+    this.scaleGeometry = scaleGeometry;
   }
 
   /**
@@ -33,6 +38,8 @@ class ScaleView extends MassView {
    * @override
    */
   dispose() {
+    this.scaleGeometry.dispose();
+
     super.dispose();
   }
 

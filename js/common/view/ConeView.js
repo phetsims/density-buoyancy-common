@@ -38,6 +38,9 @@ class ConeView extends MassView {
     // @public {Cone}
     this.cone = cone;
 
+    // @private {THREE.BufferGeometry}
+    this.coneGeometry = coneGeometry;
+
     // @private {function}
     this.updateListener = size => {
       ConeView.updateArrays( coneGeometry.attributes.position.array, coneGeometry.attributes.normal.array, null, cone.radiusProperty.value, cone.heightProperty.value, cone.isVertexUp );
@@ -57,6 +60,7 @@ class ConeView extends MassView {
   dispose() {
     this.cone.radiusProperty.unlink( this.updateListener );
     this.cone.heightProperty.unlink( this.updateListener );
+    this.coneGeometry.dispose();
 
     super.dispose();
   }

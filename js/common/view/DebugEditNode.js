@@ -144,7 +144,8 @@ class DebugEditNode extends VBox {
       },
       numberDisplayOptions: {
         decimalPlaces: 2,
-        valuePattern: '{{value}} m'
+        valuePattern: '{{value}} m',
+        useFullHeight: true
       },
       layoutFunction: NumberControl.createLayoutFunction1( {
         arrowButtonsXSpacing: 5

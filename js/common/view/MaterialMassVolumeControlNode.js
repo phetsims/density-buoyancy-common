@@ -186,7 +186,8 @@ class MaterialMassVolumeControlNode extends VBox {
       numberDisplayOptions: {
         valuePattern: StringUtils.fillIn( densityBuoyancyCommonStrings.kilogramsPattern, {
           kilograms: '{{value}}'
-        } )
+        } ),
+        useFullHeight: true
       },
       enabledRangeProperty: enabledMassRangeProperty
     }, MaterialMassVolumeControlNode.getNumberControlOptions() ) );
@@ -202,7 +203,8 @@ class MaterialMassVolumeControlNode extends VBox {
       numberDisplayOptions: {
         valuePattern: StringUtils.fillIn( densityBuoyancyCommonStrings.litersPattern, {
           liters: '{{value}}'
-        } )
+        } ),
+        useFullHeight: true
       }
     }, MaterialMassVolumeControlNode.getNumberControlOptions() ) );
 
@@ -240,7 +242,8 @@ class MaterialMassVolumeControlNode extends VBox {
         font: new PhetFont( 14 ),
         textOptions: {
           maxWidth: 60
-        }
+        },
+        useFullHeight: true
       },
       layoutFunction: NumberControl.createLayoutFunction4(),
       titleNodeOptions: {

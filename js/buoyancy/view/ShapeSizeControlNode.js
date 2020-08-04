@@ -79,7 +79,8 @@ class ShapeSizeControlNode extends VBox {
         decimalPlaces: 2,
         textOptions: {
           font: DensityBuoyancyCommonConstants.READOUT_FONT
-        }
+        },
+        useFullHeight: true
       },
       layoutFunction: NumberControl.createLayoutFunction4( {
         hasReadoutProperty: new BooleanProperty( false )

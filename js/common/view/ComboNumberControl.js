@@ -74,7 +74,8 @@ class ComboNumberControl extends VBox {
           valuePattern: StringUtils.fillIn( config.valuePattern, { value: SunConstants.VALUE_NUMBERED_PLACEHOLDER } ),
           maxWidth: 100,
           decimalPlaces: 2,
-          useRichText: true
+          useRichText: true,
+          useFullHeight: true
         },
         arrowButtonOptions: { scale: 0.56 },
 

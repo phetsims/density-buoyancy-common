@@ -155,7 +155,8 @@ class BuoyancyApplicationsScreenView extends DensityBuoyancyScreenView {
             textOptions: {
               font: DensityBuoyancyCommonConstants.READOUT_FONT,
               maxWidth: 120
-            }
+            },
+            useFullHeight: true
           }
         }, MaterialMassVolumeControlNode.getNumberControlOptions() ) )
       ]

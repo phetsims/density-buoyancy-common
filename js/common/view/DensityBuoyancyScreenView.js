@@ -78,7 +78,9 @@ class DensityBuoyancyScreenView extends ScreenView {
       cameraLookAt: new Vector3( 0, -0.1, 0 )
     }, options );
 
-    super();
+    super( {
+      preventFit: true
+    } );
 
     // @protected {boolean} - If we detect that we can't use WebGL, we'll set this to false so we can bail out.
     this.enabled = true;

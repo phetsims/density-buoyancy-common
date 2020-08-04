@@ -8,18 +8,17 @@
 
 import Utils from '../../../../dot/js/Utils.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
-import NodeTexture from '../../../../mobius/js/NodeTexture.js';
 import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import Node from '../../../../scenery/js/nodes/Node.js';
 import Rectangle from '../../../../scenery/js/nodes/Rectangle.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
-import SceneryUtils from '../../../../scenery/js/util/Utils.js';
 import Panel from '../../../../sun/js/Panel.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import densityBuoyancyCommonStrings from '../../densityBuoyancyCommonStrings.js';
 import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
 import DensityBuoyancyCommonColorProfile from './DensityBuoyancyCommonColorProfile.js';
+import LabelTexture from './LabelTexture.js';
 
 // constants
 const MASS_LABEL_SIZE = 32;
@@ -98,30 +97,13 @@ class MassLabelNode extends Node {
   }
 
   /**
-   * Returns a NodeTexture for a given label node.
-   * @private
-   *
-   * @param {Node} labelNode
-   * @returns {NodeTexture}
-   */
-  static getLabelTexture( labelNode ) {
-    const scaledNode = new Node( {
-      children: [ labelNode ],
-      scale: 2
-    } );
-    const width = SceneryUtils.toPowerOf2( Math.ceil( scaledNode.width ) );
-    const height = SceneryUtils.toPowerOf2( Math.ceil( scaledNode.height ) );
-    return new NodeTexture( scaledNode, width, height );
-  }
-
-  /**
    * Returns a NodeTexture for the primary.
    * @public
    *
    * @returns {NodeTexture}
    */
   static getPrimaryTexture() {
-    return MassLabelNode.getLabelTexture( PRIMARY_LABEL );
+    return new LabelTexture( PRIMARY_LABEL );
   }
 
   /**
@@ -131,7 +113,7 @@ class MassLabelNode extends Node {
    * @returns {NodeTexture}
    */
   static getSecondaryTexture() {
-    return MassLabelNode.getLabelTexture( SECONDARY_LABEL );
+    return new LabelTexture( SECONDARY_LABEL );
   }
 
   /**
@@ -153,7 +135,7 @@ class MassLabelNode extends Node {
     label.center = rectangle.center;
     rectangle.addChild( label );
 
-    return MassLabelNode.getLabelTexture( rectangle );
+    return new LabelTexture( rectangle );
   }
 }
 

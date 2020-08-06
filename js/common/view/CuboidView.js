@@ -79,19 +79,25 @@ class CuboidView extends MassView {
     let tagHeight = null;
     if ( cuboid.tag === Mass.MassTag.PRIMARY ) {
       this.tagNodeTexture = MassLabelNode.getPrimaryTexture();
-      this.tagMesh = new TextureQuad( this.tagNodeTexture, TAG_SIZE, TAG_SIZE );
+      this.tagMesh = new TextureQuad( this.tagNodeTexture, TAG_SIZE, TAG_SIZE, {
+        depthTest: true
+      } );
       tagHeight = TAG_SIZE;
     }
     else if ( cuboid.tag === Mass.MassTag.SECONDARY ) {
       this.tagNodeTexture = MassLabelNode.getSecondaryTexture();
-      this.tagMesh = new TextureQuad( this.tagNodeTexture, TAG_SIZE, TAG_SIZE );
+      this.tagMesh = new TextureQuad( this.tagNodeTexture, TAG_SIZE, TAG_SIZE, {
+        depthTest: true
+      } );
       tagHeight = TAG_SIZE;
     }
     else if ( cuboid.tag !== Mass.MassTag.NONE ) {
       const string = blockStringMap[ cuboid.tag.name ];
       this.tagNodeTexture = MassLabelNode.getBasicLabelTexture( string );
 
-      this.tagMesh = new TextureQuad( this.tagNodeTexture, TAG_SCALE * this.tagNodeTexture._width, TAG_SCALE * this.tagNodeTexture._height );
+      this.tagMesh = new TextureQuad( this.tagNodeTexture, TAG_SCALE * this.tagNodeTexture._width, TAG_SCALE * this.tagNodeTexture._height, {
+        depthTest: true
+      } );
       tagHeight = TAG_SCALE * this.tagNodeTexture._height;
     }
 

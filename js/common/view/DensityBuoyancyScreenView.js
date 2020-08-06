@@ -434,7 +434,8 @@ class DensityBuoyancyScreenView extends ScreenView {
       0, 1, 0
     ] ), 3 ) );
     const waterMaterial = new THREE.MeshLambertMaterial( {
-      transparent: true
+      transparent: true,
+      depthWrite: false
     } );
     new DynamicProperty( model.liquidMaterialProperty, {
       derive: 'liquidColor'

@@ -8,7 +8,7 @@
 
 import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
-import ObservableArray from '../../../../axon/js/ObservableArray.js';
+import createObservableArray from '../../../../axon/js/createObservableArray.js';
 import Property from '../../../../axon/js/Property.js';
 import Bounds3 from '../../../../dot/js/Bounds3.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
@@ -129,7 +129,7 @@ class DensityBuoyancyModel {
     this.engine.addBody( this.barrierBody );
 
     // @public {ObservableArray.<Mass>}
-    this.masses = new ObservableArray();
+    this.masses = createObservableArray();
     this.masses.addItemAddedListener( mass => {
       this.engine.addBody( mass.body );
     } );

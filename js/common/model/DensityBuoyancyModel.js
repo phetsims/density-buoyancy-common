@@ -128,7 +128,7 @@ class DensityBuoyancyModel {
     this.barrierBody = this.engine.createBarrier( this.barrierPoints );
     this.engine.addBody( this.barrierBody );
 
-    // @public {ObservableArray.<Mass>}
+    // @public {ObservableArrayDef.<Mass>}
     this.masses = createObservableArray();
     this.masses.addItemAddedListener( mass => {
       this.engine.addBody( mass.body );

@@ -24,7 +24,7 @@ import VBox from '../../../../scenery/js/nodes/VBox.js';
 import AccordionBox from '../../../../sun/js/AccordionBox.js';
 import HSeparator from '../../../../sun/js/HSeparator.js';
 import Panel from '../../../../sun/js/Panel.js';
-import RadioButtonGroup from '../../../../sun/js/buttons/RadioButtonGroup.js';
+import RectangularRadioButtonGroup from '../../../../sun/js/buttons/RectangularRadioButtonGroup.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 import Cuboid from '../../common/model/Cuboid.js';
 import Material from '../../common/model/Material.js';
@@ -223,7 +223,7 @@ class BuoyancyApplicationsScreenView extends DensityBuoyancyScreenView {
       bottom: this.layoutBounds.bottom - MARGIN
     } ) );
 
-    this.addChild( new RadioButtonGroup( model.sceneProperty, [
+    this.addChild( new RectangularRadioButtonGroup( model.sceneProperty, [
       {
         value: BuoyancyApplicationsModel.Scene.BOTTLE,
         node: new Text( '(bottle)' )

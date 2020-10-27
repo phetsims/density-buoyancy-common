@@ -10,7 +10,7 @@ import Vector3 from '../../../../dot/js/Vector3.js';
 import ThreeStage from '../../../../mobius/js/ThreeStage.js';
 import ThreeUtils from '../../../../mobius/js/ThreeUtils.js';
 import Image from '../../../../scenery/js/nodes/Image.js';
-import RadioButtonGroup from '../../../../sun/js/buttons/RadioButtonGroup.js';
+import RectangularRadioButtonGroup from '../../../../sun/js/buttons/RectangularRadioButtonGroup.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonColorProfile from './DensityBuoyancyCommonColorProfile.js';
 
@@ -24,7 +24,7 @@ DensityBuoyancyCommonColorProfile.labelBProperty.link( labelColor => {
   bMaterial.color = ThreeUtils.colorToThree( labelColor );
 } );
 
-class SecondMassVisibleControl extends RadioButtonGroup {
+class SecondMassVisibleControl extends RectangularRadioButtonGroup {
   /**
    * @param {Property.<boolean>} secondaryMassVisibleProperty
    */

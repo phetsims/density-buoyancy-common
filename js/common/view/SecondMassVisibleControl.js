@@ -41,7 +41,6 @@ class SecondMassVisibleControl extends RectangularRadioButtonGroup {
     ], {
       orientation: 'horizontal',
       baseColor: 'rgb( 230, 231, 232 )',
-      disabledBaseColor: 'rgb( 230, 231, 232 )',
       // buttonContentXMargin: 3,
       // buttonContentYMargin: 3,
       touchAreaXDilation: 5,

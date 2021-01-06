@@ -110,7 +110,16 @@ class MaterialMassVolumeControlNode extends VBox {
       if ( !userVolumeChanging ) {
         modelVolumeChanging = true;
 
-        numberControlVolumeProperty.value = cubicMeters * LITERS_IN_CUBIC_METER;
+        // If the value is close to min/max, massage it to the exact value, see https://github.com/phetsims/density/issues/46
+        let volumeLiters = cubicMeters * LITERS_IN_CUBIC_METER;
+        if ( volumeLiters > options.minVolumeLiters && volumeLiters < options.minVolumeLiters + 1e-10 ) {
+          volumeLiters = options.minVolumeLiters;
+        }
+        if ( volumeLiters < options.maxVolumeLiters && volumeLiters > options.maxVolumeLiters - 1e-10 ) {
+          volumeLiters = options.maxVolumeLiters;
+        }
+
+        numberControlVolumeProperty.value = volumeLiters;
 
         modelVolumeChanging = false;
       }
@@ -136,7 +145,18 @@ class MaterialMassVolumeControlNode extends VBox {
       if ( !userMassChanging ) {
         modelMassChanging = true;
 
-        massNumberProperty.value = mass;
+        // If the value is close to min/max, massage it to the exact value, see https://github.com/phetsims/density/issues/46
+        let adjustedMass = mass;
+        const min = enabledMassRangeProperty.value.min;
+        const max = enabledMassRangeProperty.value.max;
+        if ( adjustedMass > min && adjustedMass < min + 1e-10 ) {
+          adjustedMass = min;
+        }
+        if ( adjustedMass < max && adjustedMass > max - 1e-10 ) {
+          adjustedMass = max;
+        }
+
+        massNumberProperty.value = adjustedMass;
 
         modelMassChanging = false;
       }

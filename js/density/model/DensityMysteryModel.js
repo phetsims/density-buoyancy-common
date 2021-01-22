@@ -7,6 +7,7 @@
  */
 
 import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
+import dotRandom from '../../../../dot/js/dotRandom.js';
 import Matrix3 from '../../../../dot/js/Matrix3.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import Enumeration from '../../../../phet-core/js/Enumeration.js';
@@ -150,11 +151,11 @@ class DensityMysteryModel extends DensityBuoyancyModal( DensityBuoyancyModel, Mo
           ];
         case Mode.RANDOM:
           {
-            const densities = phet.joist.random.shuffle( randomMaterials ).slice( 0, 5 ).map( material => material.density );
-            const colors = phet.joist.random.shuffle( randomColors ).slice( 0, 5 );
+            const densities = dotRandom.shuffle( randomMaterials ).slice( 0, 5 ).map( material => material.density );
+            const colors = dotRandom.shuffle( randomColors ).slice( 0, 5 );
             const volumes = [
-              ...phet.joist.random.shuffle( [ 1, 2, 3, 4, 5, 6 ].map( n => n / 1000 ) ).slice( 0, 3 ),
-              ...phet.joist.random.shuffle( [ 7, 8, 9, 10 ].map( n => n / 1000 ) ).slice( 0, 2 )
+              ...dotRandom.shuffle( [ 1, 2, 3, 4, 5, 6 ].map( n => n / 1000 ) ).slice( 0, 3 ),
+              ...dotRandom.shuffle( [ 7, 8, 9, 10 ].map( n => n / 1000 ) ).slice( 0, 2 )
             ].sort();
 
             const tags = [

@@ -161,12 +161,13 @@ class DensityBuoyancyScreenView extends ScreenView {
       down: ( event, trail ) => {
         if ( !event.canStartPress() ) { return; }
 
-        const isTouch = !( event.pointer instanceof Mouse );
-        const mass = this.getMassUnderPointer( event.pointer, isTouch );
+        const pointer = event.pointer;
+        const isTouch = !( pointer instanceof Mouse );
+        const mass = this.getMassUnderPointer( pointer, isTouch );
 
         if ( mass && mass.canMove && !mass.userControlledProperty.value ) {
 
-          const initialRay = this.sceneNode.getRayFromScreenPoint( event.pointer.point );
+          const initialRay = this.sceneNode.getRayFromScreenPoint( pointer.point );
           const initialT = mass.intersect( initialRay, isTouch );
           const initialPosition = initialRay.pointAtDistance( initialT );
           const initialPlane = new Plane3( Vector3.Z_UNIT, initialPosition.z );
@@ -174,10 +175,10 @@ class DensityBuoyancyScreenView extends ScreenView {
           mass.startDrag( initialPosition.toVector2() );
           this.currentMassProperty.value = mass;
 
-          event.pointer.cursor = 'pointer';
-          const endDrag = event => {
-            event.pointer.removeInputListener( listener, true );
-            event.pointer.cursor = null;
+          pointer.cursor = 'pointer';
+          const endDrag = () => {
+            pointer.removeInputListener( listener, true );
+            pointer.cursor = null;
 
             mass.endDrag();
           };
@@ -185,15 +186,16 @@ class DensityBuoyancyScreenView extends ScreenView {
             // end drag on either up or cancel (not supporting full cancel behavior)
             up: endDrag,
             cancel: endDrag,
+            interrupt: endDrag,
 
             move: ( event, trail ) => {
-              const ray = this.sceneNode.getRayFromScreenPoint( event.pointer.point );
+              const ray = this.sceneNode.getRayFromScreenPoint( pointer.point );
               const position = initialPlane.intersectWithRay( ray );
 
               mass.updateDrag( position.toVector2() );
             }
           };
-          event.pointer.addInputListener( listener, true );
+          pointer.addInputListener( listener, true );
         }
       }
     } );

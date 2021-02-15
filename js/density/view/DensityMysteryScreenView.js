@@ -73,7 +73,10 @@ class DensityMysteryScreenView extends DensityBuoyancyScreenView {
       spacing: 8
     } );
     const modeRefreshButton = new RefreshButton( {
-      listener: () => model.regenerate( DensityMysteryModel.Mode.RANDOM ),
+      listener: () => {
+        this.interruptSubtreeInput();
+        model.regenerate( DensityMysteryModel.Mode.RANDOM );
+      },
       iconScale: 0.5
     } );
     const modeContent = new VBox( {

@@ -28,7 +28,7 @@ class DensityCompareModel extends DensityBuoyancyModal( DensityBuoyancyModel, Mo
    */
   constructor( tandem ) {
     const createMasses = ( model, mode ) => {
-      switch ( mode ) {
+      switch( mode ) {
         case Mode.SAME_MASS:
           return [
             Cuboid.createWithMass( model.engine, Material.createCustomMaterial( {
@@ -101,7 +101,7 @@ class DensityCompareModel extends DensityBuoyancyModal( DensityBuoyancyModel, Mo
     };
 
     const positionMasses = ( model, mode, masses ) => {
-      switch ( mode ) {
+      switch( mode ) {
         case Mode.SAME_MASS:
           model.positionMassesLeft( [ masses[ 0 ], masses[ 1 ] ] );
           model.positionMassesRight( [ masses[ 2 ], masses[ 3 ] ] );

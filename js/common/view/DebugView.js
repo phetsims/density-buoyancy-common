@@ -128,7 +128,8 @@ class DebugView extends Node {
           const multiplier = Math.pow( mass.displacementVolumeProperty.value / 0.001, 1 / 3 );
           poolShape = poolShape.shapeDifference( mass.basin.oneLiterShape.transformed( Matrix3.scaling( multiplier ) ).transformed( mass.matrix ) );
         }
-      } catch ( e ) {
+      }
+      catch( e ) {
         console.log( e );
       }
     } );
@@ -263,7 +264,8 @@ class DebugMassNode extends Node {
                 const otherShape = otherMass.shapeProperty.value.transformed( otherMass.matrix ).transformed( invertedMatrix );
                 waterShape = waterShape.shapeDifference( otherShape );
               }
-            } catch ( e ) {
+            }
+            catch( e ) {
               console.log( e );
             }
           } );

@@ -67,7 +67,7 @@ class DensityMysteryModel extends DensityBuoyancyModal( DensityBuoyancyModel, Mo
   constructor( tandem ) {
 
     const createMasses = ( model, mode ) => {
-      switch ( mode ) {
+      switch( mode ) {
         case Mode.SET_1:
           return [
             Cuboid.createWithVolume( model.engine, Material.createCustomMaterial( {
@@ -149,35 +149,34 @@ class DensityMysteryModel extends DensityBuoyancyModal( DensityBuoyancyModel, Mo
               customColor: DensityBuoyancyCommonColorProfile.mysteryMaroonProperty
             } ), Vector2.ZERO, 2.85, { tag: Mass.MassTag.THREE_A } )
           ];
-        case Mode.RANDOM:
-          {
-            const densities = dotRandom.shuffle( randomMaterials ).slice( 0, 5 ).map( material => material.density );
-            const colors = dotRandom.shuffle( randomColors ).slice( 0, 5 );
-            const volumes = [
-              ...dotRandom.shuffle( [ 1, 2, 3, 4, 5, 6 ].map( n => n / 1000 ) ).slice( 0, 3 ),
-              ...dotRandom.shuffle( [ 7, 8, 9, 10 ].map( n => n / 1000 ) ).slice( 0, 2 )
-            ].sort();
+        case Mode.RANDOM: {
+          const densities = dotRandom.shuffle( randomMaterials ).slice( 0, 5 ).map( material => material.density );
+          const colors = dotRandom.shuffle( randomColors ).slice( 0, 5 );
+          const volumes = [
+            ...dotRandom.shuffle( [ 1, 2, 3, 4, 5, 6 ].map( n => n / 1000 ) ).slice( 0, 3 ),
+            ...dotRandom.shuffle( [ 7, 8, 9, 10 ].map( n => n / 1000 ) ).slice( 0, 2 )
+          ].sort();
 
-            const tags = [
-              Mass.MassTag.C,
-              Mass.MassTag.D,
-              Mass.MassTag.E,
-              Mass.MassTag.A,
-              Mass.MassTag.B
-            ];
+          const tags = [
+            Mass.MassTag.C,
+            Mass.MassTag.D,
+            Mass.MassTag.E,
+            Mass.MassTag.A,
+            Mass.MassTag.B
+          ];
 
-            return _.sortBy( _.range( 0, 5 ).map( i => Cuboid.createWithVolume( model.engine, Material.createCustomMaterial( {
-              density: densities[ i ],
-              customColor: colors[ i ]
-            } ), Vector2.ZERO, volumes[ i ], { tag: tags[ i ] } ) ), mass => mass.volumeProperty.value );
-          }
+          return _.sortBy( _.range( 0, 5 ).map( i => Cuboid.createWithVolume( model.engine, Material.createCustomMaterial( {
+            density: densities[ i ],
+            customColor: colors[ i ]
+          } ), Vector2.ZERO, volumes[ i ], { tag: tags[ i ] } ) ), mass => mass.volumeProperty.value );
+        }
         default:
           throw new Error( `unknown mode: ${mode}` );
       }
     };
 
     const positionMasses = ( model, mode, masses ) => {
-      switch ( mode ) {
+      switch( mode ) {
         case Mode.SET_1:
           model.positionStackLeft( [ masses[ 1 ], masses[ 4 ] ] );
           model.positionStackRight( [ masses[ 2 ], masses[ 3 ], masses[ 0 ] ] );

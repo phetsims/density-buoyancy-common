@@ -29,7 +29,7 @@ class BuoyancyIntroModel extends DensityBuoyancyModal( DensityBuoyancyModel, Mod
    */
   constructor( tandem ) {
     const createMasses = ( model, mode ) => {
-      switch ( mode ) {
+      switch( mode ) {
         case Mode.SAME_MASS:
           return [
             Cuboid.createWithMass( model.engine, Material.WOOD, Vector2.ZERO, 5 ),
@@ -51,7 +51,7 @@ class BuoyancyIntroModel extends DensityBuoyancyModal( DensityBuoyancyModel, Mod
     };
 
     const positionMasses = ( model, mode, masses ) => {
-      switch ( mode ) {
+      switch( mode ) {
         case Mode.SAME_MASS:
           model.positionMassesLeft( [ masses[ 0 ] ] );
           model.positionMassesRight( [ masses[ 1 ] ] );

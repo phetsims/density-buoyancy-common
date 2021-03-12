@@ -1313,8 +1313,8 @@ const FLAT_INTERSECTION_VERTICES = [ ${flatIntersectionVertices.map( v => `new V
     const pixelRatio = window.devicePixelRatio || 1;
     canvas.width = width * pixelRatio;
     canvas.height = height * pixelRatio;
-    canvas.style.width = width + 'px';
-    canvas.style.height = height + 'px';
+    canvas.style.width = `${width}px`;
+    canvas.style.height = `${height}px`;
     context.scale( pixelRatio, pixelRatio );
 
     const scale = width / 5;

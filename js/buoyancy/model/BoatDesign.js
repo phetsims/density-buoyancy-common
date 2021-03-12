@@ -674,8 +674,8 @@ BoatDesign.ONE_LITER_HULL_VOLUME = BoatDesign.DESIGN_HULL_VOLUME * BoatDesign.ON
     const pixelRatio = window.devicePixelRatio || 1;
     canvas.width = width * pixelRatio;
     canvas.height = height * pixelRatio;
-    canvas.style.width = width + 'px';
-    canvas.style.height = height + 'px';
+    canvas.style.width = `${width}px`;
+    canvas.style.height = `${height}px`;
     context.scale( pixelRatio, pixelRatio );
 
     const scale = width / 210;

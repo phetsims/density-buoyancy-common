@@ -34,7 +34,7 @@ names.forEach( name => {
 
   console.log( new jimp( `assets/${name}`, function() {
     this.quality( 95 );
-    this.resize( 256, 256 ).getBuffer( jimp.MIME_JPEG, function( error, buffer ) {
+    this.resize( 256, 256 ).getBuffer( jimp.MIME_JPEG, ( error, buffer ) => {
       if ( error ) {
         throw error;
       }

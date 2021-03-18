@@ -120,7 +120,7 @@ class SecondMassVisibleControl extends RectangularRadioButtonGroup {
     moonLight.position.set( 2.0, -1.0, 1.0 );
     stage.threeScene.add( moonLight );
 
-    stage.threeCamera.position.copy( ThreeUtils.vectorToThree( new Vector3( -0.4, 0.4, 1 ) ) );
+    stage.threeCamera.position.copy( ThreeUtils.vectorToThree( new Vector3( 0, 0.3, 1 ) ) );
     stage.threeCamera.zoom = zoom;
     stage.threeCamera.lookAt( ThreeUtils.vectorToThree( new Vector3( 0, 0, 0 ) ) );
     stage.threeCamera.updateProjectionMatrix();
@@ -130,6 +130,7 @@ class SecondMassVisibleControl extends RectangularRadioButtonGroup {
     stage.threeCamera.fov = 50;
     stage.threeCamera.aspect = 1;
     stage.setDimensions( 256, 256 );
+    stage.threeCamera.near = 0.03;
     stage.threeCamera.updateProjectionMatrix();
     stage.render( undefined );
 
@@ -165,9 +166,9 @@ class SecondMassVisibleControl extends RectangularRadioButtonGroup {
    * @returns {Node}
    */
   static getDoubleCuboidIcon() {
-    return SecondMassVisibleControl.getIcon( 4.5, scene => {
-      scene.add( SecondMassVisibleControl.createBox( aMaterial, new Vector3( -0.01, 0, -0.07 ) ) );
-      scene.add( SecondMassVisibleControl.createBox( bMaterial, new Vector3( 0.01, 0, 0.07 ) ) );
+    return SecondMassVisibleControl.getIcon( 4, scene => {
+      scene.add( SecondMassVisibleControl.createBox( aMaterial, new Vector3( -0.03, 0.01, -0.07 ) ) );
+      scene.add( SecondMassVisibleControl.createBox( bMaterial, new Vector3( 0.03, -0.01, 0.07 ) ) );
     } );
   }
 }

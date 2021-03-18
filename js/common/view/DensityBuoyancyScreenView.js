@@ -866,14 +866,14 @@ class DensityBuoyancyScreenView extends ScreenView {
       return DensityBuoyancyScreenView.getFallbackIcon();
     }
 
-    return DensityBuoyancyScreenView.getAngledIcon( 4, new Vector3( -0.2, -0.01, 0 ), scene => {
+    return DensityBuoyancyScreenView.getAngledIcon( 4, new Vector3( 0, -0.01, 0 ), scene => {
 
       const boxGeometry = new THREE.BoxGeometry( 0.1, 0.1, 0.1 );
 
       const box = new THREE.Mesh( boxGeometry, new THREE.MeshLambertMaterial( {
         color: 0x00ff00
       } ) );
-      box.position.copy( ThreeUtils.vectorToThree( new Vector3( -0.2, 0.03, 0 ) ) );
+      box.position.copy( ThreeUtils.vectorToThree( new Vector3( 0, 0.03, 0 ) ) );
 
       scene.add( box );
 
@@ -885,7 +885,7 @@ class DensityBuoyancyScreenView extends ScreenView {
         center: new Vector2( 128, 128 )
       } ), 256, 256 ), labelSize, labelSize );
 
-      label.position.copy( ThreeUtils.vectorToThree( new Vector3( -0.2 - labelSize * 0.29, 0.03, 0.15 ) ) );
+      label.position.copy( ThreeUtils.vectorToThree( new Vector3( 0 - labelSize * 0.15, 0.03, 0.15 ) ) );
 
       scene.add( label );
 
@@ -898,7 +898,7 @@ class DensityBuoyancyScreenView extends ScreenView {
         emissive: 0x666666
       } ) );
 
-      scale.position.copy( ThreeUtils.vectorToThree( new Vector3( -0.2, -0.03, 0 ) ) );
+      scale.position.copy( ThreeUtils.vectorToThree( new Vector3( 0, -0.03, 0 ) ) );
       scene.add( scale );
     } );
   }

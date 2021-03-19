@@ -122,7 +122,7 @@ class SecondMassVisibleControl extends RectangularRadioButtonGroup {
 
     stage.threeCamera.position.copy( ThreeUtils.vectorToThree( new Vector3( 0, 0.3, 1 ) ) );
     stage.threeCamera.zoom = zoom;
-    stage.threeCamera.lookAt( ThreeUtils.vectorToThree( new Vector3( 0, 0, 0 ) ) );
+    stage.threeCamera.lookAt( ThreeUtils.vectorToThree( new Vector3( 0, -0.003, 0 ) ) );
     stage.threeCamera.updateProjectionMatrix();
 
     setupScene( stage.threeScene );
@@ -167,8 +167,8 @@ class SecondMassVisibleControl extends RectangularRadioButtonGroup {
    */
   static getDoubleCuboidIcon() {
     return SecondMassVisibleControl.getIcon( 4, scene => {
-      scene.add( SecondMassVisibleControl.createBox( aMaterial, new Vector3( -0.03, 0.01, -0.07 ) ) );
-      scene.add( SecondMassVisibleControl.createBox( bMaterial, new Vector3( 0.03, -0.01, 0.07 ) ) );
+      scene.add( SecondMassVisibleControl.createBox( aMaterial, new Vector3( -0.039, 0.015, -0.07 ) ) );
+      scene.add( SecondMassVisibleControl.createBox( bMaterial, new Vector3( 0.03, -0.005, 0.07 ) ) );
     } );
   }
 }

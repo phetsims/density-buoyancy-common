@@ -885,7 +885,7 @@ class DensityBuoyancyScreenView extends ScreenView {
         center: new Vector2( 128, 128 )
       } ), 256, 256 ), labelSize, labelSize );
 
-      label.position.copy( ThreeUtils.vectorToThree( new Vector3( 0 - labelSize * 0.15, 0.03, 0.15 ) ) );
+      label.position.copy( ThreeUtils.vectorToThree( new Vector3( 0 - labelSize * 0.5, 0.03, 0.15 ) ) );
 
       scene.add( label );
 

@@ -100,7 +100,6 @@ const DensityBuoyancyModal = ( type, Mode, initialMode ) => {
     regenerate( mode ) {
       if ( this.modeProperty.value === mode ) {
         this.removeMasses( mode );
-        this.modeToMassesMap[ mode ].forEach( mass => this.masses.remove( mass ) );
       }
 
       this.createMasses( mode );

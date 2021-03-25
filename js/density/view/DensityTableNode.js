@@ -6,6 +6,7 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
+import Utils from '../../../../dot/js/Utils.js';
 import Shape from '../../../../kite/js/Shape.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import Node from '../../../../scenery/js/nodes/Node.js';
@@ -47,7 +48,7 @@ class DensityTableNode extends Node {
       font: bodyFont,
       maxWidth: 200
     } ) );
-    const densityNodes = materials.map( material => new Text( ( material.density / 1000 ).toFixed( 2 ), {
+    const densityNodes = materials.map( material => new Text( Utils.toFixed( material.density / 1000, 2 ), {
       font: bodyFont,
       maxWidth: 150
     } ) );

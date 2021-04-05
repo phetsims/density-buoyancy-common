@@ -1161,8 +1161,8 @@ const FLAT_INTERSECTION_VERTICES = [ ${flatIntersectionVertices.map( v => `new V
       } );
     } );
 
-    _.range( 0, radialSegments ).map( iRadial => {
-      _.range( 0, baseSegments ).map( iBase => {
+    _.range( 0, radialSegments ).forEach( iRadial => {
+      _.range( 0, baseSegments ).forEach( iBase => {
         const radial0 = iRadial;
         const radial1 = Utils.moduloBetweenDown( iRadial + 1, 0, radialSegments );
         const base0 = iBase;

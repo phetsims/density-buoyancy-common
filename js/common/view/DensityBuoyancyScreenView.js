@@ -587,6 +587,7 @@ class DensityBuoyancyScreenView extends ScreenView {
     const resetAllButton = new ResetAllButton( {
       listener: () => {
         model.reset();
+        this.interruptSubtreeInput();
       },
       right: this.layoutBounds.right - MARGIN,
       bottom: this.layoutBounds.bottom - MARGIN,

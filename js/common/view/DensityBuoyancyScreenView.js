@@ -755,6 +755,9 @@ class DensityBuoyancyScreenView extends ScreenView {
 
     stage.dispose();
 
+    // Yes, we log this so we can regenerate them if we have changes
+    console.log( canvas.toDataURL() );
+
     const image = new Image( canvas.toDataURL(), {
       mipmap: true,
       initialWidth: canvas.width,

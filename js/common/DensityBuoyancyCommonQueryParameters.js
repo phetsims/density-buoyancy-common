@@ -17,6 +17,12 @@ const DensityBuoyancyCommonQueryParameters = QueryStringMachine.getAll( {
     type: 'flag'
   },
 
+  // Whether icons should be generated with 3d views. Usually this should not happen, and the stored images should be
+  // loaded for better performance and fewer resources used.
+  generateIconImages: {
+    type: 'flag'
+  },
+
   // Length (in seconds) of each internal p2 timestep. Ran into weird behavior when we had only 60 a second.
   p2FixedTimeStep: {
     type: 'number',

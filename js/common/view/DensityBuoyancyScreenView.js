@@ -26,6 +26,7 @@ import merge from '../../../../phet-core/js/merge.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import ResetAllButton from '../../../../scenery-phet/js/buttons/ResetAllButton.js';
 import Mouse from '../../../../scenery/js/input/Mouse.js';
+import animatedPanZoomSingleton from '../../../../scenery/js/listeners/animatedPanZoomSingleton.js';
 import Image from '../../../../scenery/js/nodes/Image.js';
 import Node from '../../../../scenery/js/nodes/Node.js';
 import Rectangle from '../../../../scenery/js/nodes/Rectangle.js';
@@ -118,6 +119,7 @@ class DensityBuoyancyScreenView extends ScreenView {
 
     // @private {ThreeIsometricNode}
     this.sceneNode = new ThreeIsometricNode( this.layoutBounds, {
+      parentMatrixProperty: animatedPanZoomSingleton.listener.matrixProperty,
       cameraPosition: options.cameraPosition
     } );
     this.addChild( this.sceneNode );
@@ -151,6 +153,7 @@ class DensityBuoyancyScreenView extends ScreenView {
     this.sceneNode.stage.threeCamera.up = new THREE.Vector3( 0, 0, -1 );
     this.sceneNode.stage.threeCamera.lookAt( ThreeUtils.vectorToThree( options.cameraLookAt ) );
 
+    // TODO: How can we invalidate this on zooms?
     this.sceneNode.backgroundEventTarget.addInputListener( {
       mousemove: event => {
         this.sceneNode.backgroundEventTarget.cursor = this.getMassUnderPointer( event.pointer, false ) ? 'pointer' : null;
@@ -195,6 +198,7 @@ class DensityBuoyancyScreenView extends ScreenView {
               mass.updateDrag( position.toVector2() );
             }
           };
+          pointer.reserveForDrag();
           pointer.addInputListener( listener, true );
         }
       }
@@ -614,7 +618,8 @@ class DensityBuoyancyScreenView extends ScreenView {
    * @returns {Vector2}
    */
   modelToViewPoint( point ) {
-    return this.parentToLocalPoint( this.sceneNode.projectPoint( point ) );
+    // We'll want to transform global coordinates into screen coordinates here
+    return this.parentToLocalPoint( animatedPanZoomSingleton.listener.matrixProperty.value.inverted().timesVector2( this.sceneNode.projectPoint( point ) ) );
   }
 
   /**

@@ -11,7 +11,10 @@ import ThreeStage from '../../../../mobius/js/ThreeStage.js';
 import ThreeUtils from '../../../../mobius/js/ThreeUtils.js';
 import Image from '../../../../scenery/js/nodes/Image.js';
 import RectangularRadioButtonGroup from '../../../../sun/js/buttons/RectangularRadioButtonGroup.js';
+import doubleCuboidIcon from '../../../mipmaps/double-cuboid-icon_png.js';
+import singleCuboidIcon from '../../../mipmaps/single-cuboid-icon_png.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
+import DensityBuoyancyCommonQueryParameters from '../DensityBuoyancyCommonQueryParameters.js';
 import DensityBuoyancyCommonColorProfile from './DensityBuoyancyCommonColorProfile.js';
 
 const aMaterial = new THREE.MeshLambertMaterial();
@@ -138,6 +141,8 @@ class SecondMassVisibleControl extends RectangularRadioButtonGroup {
 
     stage.dispose();
 
+    console.log( canvas.toDataURL() );
+
     const image = new Image( canvas.toDataURL(), {
       mipmap: true,
       initialWidth: canvas.width,
@@ -154,9 +159,14 @@ class SecondMassVisibleControl extends RectangularRadioButtonGroup {
    * @returns {Node}
    */
   static getSingleCuboidIcon() {
-    return SecondMassVisibleControl.getIcon( 5.5, scene => {
-      scene.add( SecondMassVisibleControl.createBox( aMaterial, new Vector3( 0, 0, 0 ) ) );
-    } );
+    if ( DensityBuoyancyCommonQueryParameters.generateIconImages ) {
+      return SecondMassVisibleControl.getIcon( 5.5, scene => {
+        scene.add( SecondMassVisibleControl.createBox( aMaterial, new Vector3( 0, 0, 0 ) ) );
+      } );
+    }
+    else {
+      return new Image( singleCuboidIcon, { scale: 0.2 } );
+    }
   }
 
   /**
@@ -166,10 +176,15 @@ class SecondMassVisibleControl extends RectangularRadioButtonGroup {
    * @returns {Node}
    */
   static getDoubleCuboidIcon() {
-    return SecondMassVisibleControl.getIcon( 4, scene => {
-      scene.add( SecondMassVisibleControl.createBox( aMaterial, new Vector3( -0.039, 0.015, -0.07 ) ) );
-      scene.add( SecondMassVisibleControl.createBox( bMaterial, new Vector3( 0.03, -0.005, 0.07 ) ) );
-    } );
+    if ( DensityBuoyancyCommonQueryParameters.generateIconImages ) {
+      return SecondMassVisibleControl.getIcon( 4, scene => {
+        scene.add( SecondMassVisibleControl.createBox( aMaterial, new Vector3( -0.039, 0.015, -0.07 ) ) );
+        scene.add( SecondMassVisibleControl.createBox( bMaterial, new Vector3( 0.03, -0.005, 0.07 ) ) );
+      } );
+    }
+    else {
+      return new Image( doubleCuboidIcon, { scale: 0.2 } );
+    }
   }
 }
 

@@ -59,6 +59,12 @@ class Cuboid extends Mass {
   updateSize( size ) {
     // Don't update our model if it's no-volume, we'll have ourselves removed anyway
     if ( size.width && size.height ) {
+
+      // Shift it vertically to keep the same bottom, see https://github.com/phetsims/density/issues/24
+      const oldSize = this.sizeProperty.value;
+      this.matrix.multiplyMatrix( Matrix3.translation( 0, ( size.height - oldSize.height ) / 2 ) );
+      this.writeData();
+
       this.engine.updateBox( this.body, size.width, size.height );
       this.sizeProperty.value = size;
       this.shapeProperty.value = Shape.rect( size.minX, size.minY, size.width, size.height );

@@ -41,11 +41,11 @@ class DensityBuoyancyModel {
     }, options );
 
     // @public {Property.<boolean>}
-    this.showGravityForceProperty = new BooleanProperty( false );
-    this.showBuoyancyForceProperty = new BooleanProperty( false );
-    this.showContactForceProperty = new BooleanProperty( false );
-    this.showMassesProperty = new BooleanProperty( options.showMassesDefault );
-    this.showForceValuesProperty = new BooleanProperty( false );
+    this.showGravityForceProperty = new BooleanProperty( false, { tandem: tandem.createTandem( 'showGravityForceProperty' ) } );
+    this.showBuoyancyForceProperty = new BooleanProperty( false, { tandem: tandem.createTandem( 'showBuoyancyForceProperty' ) } );
+    this.showContactForceProperty = new BooleanProperty( false, { tandem: tandem.createTandem( 'showContactForceProperty' ) } );
+    this.showMassesProperty = new BooleanProperty( options.showMassesDefault, { tandem: tandem.createTandem( 'showMassesProperty' ) } );
+    this.showForceValuesProperty = new BooleanProperty( false, { tandem: tandem.createTandem( 'showForceValuesProperty' ) } );
 
     // @public {Property.<Gravity>}
     this.gravityProperty = new Property( Gravity.EARTH );

@@ -116,7 +116,8 @@ const DensityBuoyancyCommonQueryParameters = QueryStringMachine.getAll( {
   // Relaxation to use for ground-mass interactions
   p2GroundRelaxation: {
     type: 'number',
-    defaultValue: 1 // reduction results in less ground penetration when a mass is sitting on the ground
+    // Slightly increased for https://github.com/phetsims/density/issues/53
+    defaultValue: 2.5 // reduction results in less ground penetration when a mass is sitting on the ground
   },
 
   // Relaxation to use for barrier-mass interactions

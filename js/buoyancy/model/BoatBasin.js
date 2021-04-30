@@ -46,9 +46,8 @@ class BoatBasin extends Basin {
     const oneLiterBottomPoint = new Vector2( mass.stepX, mass.stepBottom ).minus( this.boat.matrix.translation ).timesScalar( 1 / this.boat.stepMultiplier );
     oneLiterBottomPoint.y += slip;
 
-    if ( this.oneLiterShape.bounds.containsPoint( oneLiterBottomPoint ) && this.oneLiterShape.containsPoint( oneLiterBottomPoint ) ) {
-      return true;
-    }
+    return this.oneLiterShape.bounds.containsPoint( oneLiterBottomPoint ) &&
+           this.oneLiterShape.containsPoint( oneLiterBottomPoint );
   }
 
   /**

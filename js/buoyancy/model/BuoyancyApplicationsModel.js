@@ -68,6 +68,10 @@ class BuoyancyApplicationsModel extends DensityBuoyancyModel {
     } );
     this.masses.push( this.poolScale );
 
+    // Adjust pool volume so that it's at the desired value WITH the pool scale inside.
+    this.pool.liquidVolumeProperty.value -= this.poolScale.volumeProperty.value;
+    this.pool.liquidVolumeProperty.setInitialValue( this.pool.liquidVolumeProperty.value );
+
     this.sceneProperty.link( scene => {
       this.setMassVisible( this.bottle, scene === Scene.BOTTLE );
       this.setMassVisible( this.boat, scene === Scene.BOAT );

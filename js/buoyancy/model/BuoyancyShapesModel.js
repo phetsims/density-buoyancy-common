@@ -62,6 +62,10 @@ class BuoyancyShapesModel extends DensityBuoyancyModel {
     } );
     this.masses.push( this.poolScale );
 
+    // Adjust pool volume so that it's at the desired value WITH the pool scale inside.
+    this.pool.liquidVolumeProperty.value -= this.poolScale.volumeProperty.value;
+    this.pool.liquidVolumeProperty.setInitialValue( this.pool.liquidVolumeProperty.value );
+
     // @public {Property.<MassShape>}
     this.primaryShapeProperty = new EnumerationProperty( MassShape, MassShape.BLOCK );
     this.secondaryShapeProperty = new EnumerationProperty( MassShape, MassShape.INVERTED_CONE );

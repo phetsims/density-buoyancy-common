@@ -79,11 +79,16 @@ class BuoyancyIntroModel extends DensityBuoyancyModal( DensityBuoyancyModel, Mod
     } ) );
 
     // Pool scale
-    this.masses.push( new Scale( this.engine, {
+    const poolScale = new Scale( this.engine, {
       matrix: Matrix3.translation( 0.25, -Scale.SCALE_BASE_BOUNDS.minY + this.poolBounds.minY ),
       displayType: Scale.DisplayType.NEWTONS,
       canMove: false
-    } ) );
+    } );
+    this.masses.push( poolScale );
+
+    // Adjust pool volume so that it's at the desired value WITH the pool scale inside.
+    this.pool.liquidVolumeProperty.value -= poolScale.volumeProperty.value;
+    this.pool.liquidVolumeProperty.setInitialValue( this.pool.liquidVolumeProperty.value );
   }
 }
 

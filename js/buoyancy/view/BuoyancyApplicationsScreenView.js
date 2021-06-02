@@ -134,7 +134,12 @@ class BuoyancyApplicationsScreenView extends DensityBuoyancyScreenView {
       Material.SILVER,
       Material.TANTALUM,
       Material.GOLD,
-      Material.PLATINUM
+      Material.PLATINUM,
+      Material.STYROFOAM,
+      Material.WOOD,
+      Material.ICE,
+      Material.BRICK,
+      Material.ALUMINUM
     ], cubicMeters => model.block.updateSize( Cuboid.boundsFromVolume( cubicMeters ) ), this.popupLayer );
 
     const boatBox = new VBox( {

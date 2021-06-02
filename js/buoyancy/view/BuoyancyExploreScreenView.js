@@ -85,6 +85,11 @@ class BuoyancyExploreScreenView extends SecondaryMassScreenView {
     // horizontal alignment
     densityAText.x = densityBText.x = Math.max( labelAText.width, labelBText.width ) + 5;
 
+    model.secondaryMassVisibleProperty.link( visible => {
+      labelBText.visible = visible;
+      densityBText.visible = visible;
+    } );
+
     const densityContainer = new Node( {
       children: [
         labelAText, labelBText,

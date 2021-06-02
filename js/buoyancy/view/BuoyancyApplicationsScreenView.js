@@ -128,7 +128,7 @@ class BuoyancyApplicationsScreenView extends DensityBuoyancyScreenView {
       yMargin: 60
     } );
 
-    const blockControlNode = new MaterialMassVolumeControlNode( model.block.materialProperty, model.block.massProperty, model.block.volumeProperty, [
+    const blockControlNode = new MaterialMassVolumeControlNode( model.block.materialProperty, model.block.massProperty, model.block.volumeProperty, _.sortBy( [
       Material.PYRITE,
       Material.STEEL,
       Material.SILVER,
@@ -140,7 +140,7 @@ class BuoyancyApplicationsScreenView extends DensityBuoyancyScreenView {
       Material.ICE,
       Material.BRICK,
       Material.ALUMINUM
-    ], cubicMeters => model.block.updateSize( Cuboid.boundsFromVolume( cubicMeters ) ), this.popupLayer );
+    ], material => material.density ), cubicMeters => model.block.updateSize( Cuboid.boundsFromVolume( cubicMeters ) ), this.popupLayer );
 
     const boatBox = new VBox( {
       spacing: 10,

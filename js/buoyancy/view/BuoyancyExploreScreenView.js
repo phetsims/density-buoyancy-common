@@ -11,6 +11,7 @@ import Vector3 from '../../../../dot/js/Vector3.js';
 import merge from '../../../../phet-core/js/merge.js';
 import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
+import GridBox from '../../../../scenery/js/layout/GridBox.js';
 import AlignBox from '../../../../scenery/js/nodes/AlignBox.js';
 import HStrut from '../../../../scenery/js/nodes/HStrut.js';
 import Node from '../../../../scenery/js/nodes/Node.js';
@@ -53,12 +54,14 @@ class BuoyancyExploreScreenView extends SecondaryMassScreenView {
     const densityAText = new Text( '', {
       maxWidth: 120,
       font: new PhetFont( { size: 14, weight: 'bold' } ),
-      fill: DensityBuoyancyCommonColorProfile.labelAProperty
+      fill: DensityBuoyancyCommonColorProfile.labelAProperty,
+      layoutOptions: { x: 1, y: 0 }
     } );
     const densityBText = new Text( '', {
       maxWidth: 120,
       font: new PhetFont( { size: 14, weight: 'bold' } ),
-      fill: DensityBuoyancyCommonColorProfile.labelBProperty
+      fill: DensityBuoyancyCommonColorProfile.labelBProperty,
+      layoutOptions: { x: 1, y: 1 }
     } );
 
     model.primaryMass.materialProperty.link( material => {
@@ -74,26 +77,20 @@ class BuoyancyExploreScreenView extends SecondaryMassScreenView {
     } );
 
     // TODO: handle maxWidths here nicely
-    const labelAText = new Text( densityBuoyancyCommonStrings.blockA, { font: new PhetFont( 14 ), maxWidth: 200 } );
-    const labelBText = new Text( densityBuoyancyCommonStrings.blockB, { font: new PhetFont( 14 ), maxWidth: 200 } );
+    const labelAText = new Text( densityBuoyancyCommonStrings.blockA, { font: new PhetFont( 14 ), maxWidth: 200, layoutOptions: { x: 0, y: 0 } } );
+    const labelBText = new Text( densityBuoyancyCommonStrings.blockB, { font: new PhetFont( 14 ), maxWidth: 200, layoutOptions: { x: 0, y: 1 } } );
 
-    // vertical alignment
-    densityBText.top = densityAText.bottom + 3;
-    labelAText.centerY = densityAText.centerY;
-    labelBText.centerY = densityBText.centerY;
-
-    // horizontal alignment
-    densityAText.x = densityBText.x = Math.max( labelAText.width, labelBText.width ) + 5;
-
-    model.secondaryMassVisibleProperty.link( visible => {
-      labelBText.visible = visible;
-      densityBText.visible = visible;
+    const densityReadoutBox = new GridBox( {
+      children: [ densityAText, densityBText, labelAText, labelBText ],
+      xMargin: 5,
+      yMargin: 3,
+      xAlign: 'left',
+      yAlign: 'center'
     } );
 
     const densityContainer = new Node( {
       children: [
-        labelAText, labelBText,
-        densityAText, densityBText,
+        densityReadoutBox,
         new HStrut( displayOptionsNode.width - 10 ) // Same internal size as displayOptionsNode
       ]
     } );
@@ -103,18 +100,31 @@ class BuoyancyExploreScreenView extends SecondaryMassScreenView {
         font: DensityBuoyancyCommonConstants.TITLE_FONT,
         maxWidth: 160
       } ),
-      expandedProperty: model.densityReadoutExpandedProperty
+      expandedProperty: model.densityReadoutExpandedProperty,
+      resize: true
     }, DensityBuoyancyCommonConstants.ACCORDION_BOX_OPTIONS ) );
 
     this.addChild( new VBox( {
       spacing: 10,
       children: [
-        densityBox,
+        // Keep the density box at the top of its possible location, even if it reduces in size due to the second mass
+        // not being visible.
+        new AlignBox( densityBox, {
+          alignBounds: densityBox.bounds.copy(),
+          localBounds: densityBox.bounds.copy(),
+          yAlign: 'top'
+        } ),
         new Panel( displayOptionsNode, DensityBuoyancyCommonConstants.PANEL_OPTIONS )
       ],
       left: this.layoutBounds.left + MARGIN,
       bottom: this.layoutBounds.bottom - MARGIN
     } ) );
+
+    // Adjust the visibility after, since we want to size the box's location for its "full" bounds
+    model.secondaryMassVisibleProperty.link( visible => {
+      labelBText.visible = visible;
+      densityBText.visible = visible;
+    } );
 
     this.addChild( new Panel( new DensityControlNode( model.liquidMaterialProperty, [
       Material.AIR,

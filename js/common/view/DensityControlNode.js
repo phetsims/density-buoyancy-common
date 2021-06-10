@@ -7,6 +7,7 @@
  */
 
 import Range from '../../../../dot/js/Range.js';
+import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
 import ComboBoxItem from '../../../../sun/js/ComboBoxItem.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
@@ -50,6 +51,16 @@ class DensityControlNode extends ComboNumberControl {
       },
       comboBoxOptions: {
         listPosition: 'above'
+      },
+      getFallbackNode: material => {
+        if ( material.hidden ) {
+          return new Text( densityBuoyancyCommonStrings.whatIsTheValueOfTheFluidDensity, {
+            font: new PhetFont( 14 )
+          } );
+        }
+        else {
+          return null;
+        }
       }
     } );
   }

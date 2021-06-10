@@ -310,5 +310,11 @@
   },
   "densityReadoutPattern": {
     "value": "{{material}}: {{density}} kg/L"
+  },
+  "whatIsTheValueOfTheFluidDensity": {
+    "value": "What is the value of the fluid density?"
+  },
+  "whatIsTheValueOfGravity": {
+    "value": "What is the value of gravity?"
   }
 }

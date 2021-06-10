@@ -6,6 +6,7 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
+import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
 import NumberProperty from '../../../../axon/js/NumberProperty.js';
 import Property from '../../../../axon/js/Property.js';
 import Dimension2 from '../../../../dot/js/Dimension2.js';
@@ -27,6 +28,9 @@ class ComboNumberControl extends VBox {
    * @param {Object} config
    */
   constructor( config ) {
+
+    const disposalCallbacks = [];
+    const numberDisplayVisibleProperty = new BooleanProperty( true );
 
     config = merge( {
       // {string} - required
@@ -59,10 +63,45 @@ class ComboNumberControl extends VBox {
       // {*} - The token value in items that is the designated custom value
       customValue: null,
 
+      // {function(*):Node|null}
+      getFallbackNode: () => null,
+
       // {Object} Options for the number control
       numberControlOptions: {
-        layoutFunction: NumberControl.createLayoutFunction4(),
+        layoutFunction: NumberControl.createLayoutFunction4( {
+          createBottomContent: bottomBox => {
 
+            const fallbackContainer = new Node();
+
+            // Supports Pendulum Lab's questionText where a question is substituted for the slider
+            const bottomContent = new Node( {
+              children: [
+                bottomBox,
+                fallbackContainer
+              ]
+            } );
+
+            const listener = value => {
+              const fallbackNode = config.getFallbackNode( value );
+              const hasFallback = fallbackNode !== null;
+
+              bottomBox.visible = !hasFallback;
+              numberDisplayVisibleProperty.value = !hasFallback;
+              fallbackContainer.removeAllChildren();
+
+              if ( fallbackNode !== null ) {
+                fallbackContainer.addChild( fallbackNode );
+                fallbackNode.maxWidth = bottomBox.width;
+                fallbackNode.center = bottomBox.center;
+              }
+            };
+
+            this.property.link( listener );
+            disposalCallbacks.push( () => this.property.unlink( listener ) );
+
+            return bottomContent;
+          }
+        } ),
         titleNodeOptions: {
           font: DensityBuoyancyCommonConstants.TITLE_FONT,
           maxWidth: 80
@@ -75,7 +114,8 @@ class ComboNumberControl extends VBox {
           maxWidth: 100,
           decimalPlaces: 2,
           useRichText: true,
-          useFullHeight: true
+          useFullHeight: true,
+          visibleProperty: numberDisplayVisibleProperty
         },
         arrowButtonOptions: { scale: 0.56 },
 
@@ -134,6 +174,9 @@ class ComboNumberControl extends VBox {
 
     // @private {Property.<*>}
     this.comboProperty = new Property( getComboValue( this.property.value ) );
+
+    // @private {Array.<function()>}
+    this.disposalCallbacks = disposalCallbacks;
 
     let locked = false;
 
@@ -194,6 +237,8 @@ class ComboNumberControl extends VBox {
 
     this.numberProperty.dispose();
     this.comboProperty.dispose();
+
+    this.disposalCallbacks.forEach( callback => callback() );
 
     super.dispose();
   }

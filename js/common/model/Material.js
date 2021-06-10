@@ -33,6 +33,9 @@ class Material {
       // {boolean} - optional
       custom: false,
 
+      // {boolean} - optional
+      hidden: false,
+
       // {Property.<Color>|null} - optional
       customColor: null,
 
@@ -51,6 +54,9 @@ class Material {
 
     // @public {boolean}
     this.custom = config.custom;
+
+    // @public {boolean}
+    this.hidden = config.hidden;
 
     // @public {Property.<Color>|null}
     this.customColor = config.customColor;
@@ -236,32 +242,38 @@ Material.AIR = new Material( {
 Material.DENSITY_P = new Material( {
   name: densityBuoyancyCommonStrings.material.densityP,
   density: 200,
-  liquidColor: DensityBuoyancyCommonColorProfile.materialDensityPProperty
+  liquidColor: DensityBuoyancyCommonColorProfile.materialDensityPProperty,
+  hidden: true
 } );
 Material.DENSITY_Q = new Material( {
   name: densityBuoyancyCommonStrings.material.densityQ,
   density: 4000,
-  liquidColor: DensityBuoyancyCommonColorProfile.materialDensityQProperty
+  liquidColor: DensityBuoyancyCommonColorProfile.materialDensityQProperty,
+  hidden: true
 } );
 Material.DENSITY_R = new Material( {
   name: densityBuoyancyCommonStrings.material.densityR,
   density: 200,
-  liquidColor: DensityBuoyancyCommonColorProfile.materialDensityRProperty
+  liquidColor: DensityBuoyancyCommonColorProfile.materialDensityRProperty,
+  hidden: true
 } );
 Material.DENSITY_S = new Material( {
   name: densityBuoyancyCommonStrings.material.densityS,
   density: 4000,
-  liquidColor: DensityBuoyancyCommonColorProfile.materialDensitySProperty
+  liquidColor: DensityBuoyancyCommonColorProfile.materialDensitySProperty,
+  hidden: true
 } );
 Material.DENSITY_X = new Material( {
   name: densityBuoyancyCommonStrings.material.densityX,
   density: 500,
-  liquidColor: DensityBuoyancyCommonColorProfile.materialDensityXProperty
+  liquidColor: DensityBuoyancyCommonColorProfile.materialDensityXProperty,
+  hidden: true
 } );
 Material.DENSITY_Y = new Material( {
   name: densityBuoyancyCommonStrings.material.densityY,
   density: 5000,
-  liquidColor: DensityBuoyancyCommonColorProfile.materialDensityYProperty
+  liquidColor: DensityBuoyancyCommonColorProfile.materialDensityYProperty,
+  hidden: true
 } );
 Material.GASOLINE = new Material( {
   name: densityBuoyancyCommonStrings.material.gasoline,

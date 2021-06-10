@@ -24,7 +24,10 @@ class Gravity {
       value: 1,
 
       // {boolean} - optional
-      custom: false
+      custom: false,
+
+      // {boolean} - optional
+      hidden: false
     }, config );
 
     // @public {string}
@@ -35,6 +38,9 @@ class Gravity {
 
     // @public {boolean}
     this.custom = config.custom;
+
+    // @public {boolean}
+    this.hidden = config.hidden;
   }
 
   /**
@@ -68,7 +74,8 @@ Gravity.MOON = new Gravity( {
 } );
 Gravity.PLANET_X = new Gravity( {
   name: densityBuoyancyCommonStrings.gravity.planetX,
-  value: 19.6
+  value: 19.6,
+  hidden: true
 } );
 
 // @public {Array.<Gravity>}

@@ -7,6 +7,7 @@
  */
 
 import Range from '../../../../dot/js/Range.js';
+import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
 import ComboBoxItem from '../../../../sun/js/ComboBoxItem.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
@@ -49,6 +50,16 @@ class GravityControlNode extends ComboNumberControl {
       },
       comboBoxOptions: {
         listPosition: 'above'
+      },
+      getFallbackNode: gravity => {
+        if ( gravity.hidden ) {
+          return new Text( densityBuoyancyCommonStrings.whatIsTheValueOfGravity, {
+            font: new PhetFont( 14 )
+          } );
+        }
+        else {
+          return null;
+        }
       }
     } );
   }

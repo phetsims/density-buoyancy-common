@@ -1,7 +1,14 @@
 // Copyright 2020-2021, University of Colorado Boulder
 
 /**
- * The main shape and mathematics for the boat's shape.
+ * The main shape and mathematics for the boat's shape. Due to its variable size in the sim, we normalize it so that
+ * we export a "one-liter" version (in maximum displacement) for the simulation to resize.
+ *
+ * Coordinate frames:
+ *
+ * Vertical:
+ * - heightRatio: 0 (bottom) to 1 (top)
+ * - Design: -BoatDesign.DESIGN_BOAT_HEIGHT (bottom) to 0 (top)
  *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */

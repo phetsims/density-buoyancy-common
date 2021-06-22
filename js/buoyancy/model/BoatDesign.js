@@ -10,6 +10,13 @@
  * - heightRatio: 0 (bottom) to 1 (top)
  * - Design: -BoatDesign.DESIGN_BOAT_HEIGHT (bottom) to 0 (top)
  *
+ * At each height, we define 4 control points to determine a cubic bezier curve for the shape of the cross-section of
+ * the boat (both inside and outside).
+ *
+ * Additionally, we'll need to compute different "intersection" geometries for a given block size. It's possible to
+ * compute a shape (for a given block size) such that in 2D it "acts" as the proper 3d shape. This is mainly due to
+ * the block corners pressing against the inside of the boat's hull.
+ *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
@@ -147,7 +154,7 @@ class BoatDesign {
   }
 
   /**
-   * Returns the XY model coordinates for intersection with a cuboid block with the given half-width.
+   * Returns the XY model coordinates for the interior cross-section of the boat (the section of air underneath the top)
    * @public
    *
    * @returns {Array.<Vector2>}

@@ -7,6 +7,10 @@
  */
 
 import merge from '../../../../phet-core/js/merge.js';
+import BooleanIO from '../../../../tandem/js/types/BooleanIO.js';
+import IOType from '../../../../tandem/js/types/IOType.js';
+import NumberIO from '../../../../tandem/js/types/NumberIO.js';
+import StringIO from '../../../../tandem/js/types/StringIO.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import densityBuoyancyCommonStrings from '../../densityBuoyancyCommonStrings.js';
 
@@ -85,6 +89,33 @@ Gravity.GRAVITIES = [
   Gravity.MOON,
   Gravity.PLANET_X
 ];
+
+Gravity.GravityIO = new IOType( 'GravityIO', {
+  valueType: Gravity,
+  documentation: 'Represents a specific value of gravity',
+  toStateObject: gravity => {
+    return {
+      name: gravity.name,
+      value: gravity.value,
+      custom: gravity.custom,
+      hidden: gravity.hidden
+    };
+  },
+  fromStateObject: stateObject => {
+    if ( stateObject.custom ) {
+      return new Gravity( stateObject );
+    }
+    else {
+      return _.find( Gravity.GRAVITIES, gravity => gravity.value === stateObject.value );
+    }
+  },
+  stateSchema: {
+    name: StringIO,
+    value: NumberIO,
+    custom: BooleanIO,
+    hidden: BooleanIO
+  }
+} );
 
 densityBuoyancyCommon.register( 'Gravity', Gravity );
 export default Gravity;

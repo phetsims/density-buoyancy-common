@@ -51,7 +51,10 @@ class DensityBuoyancyModel {
     this.showForceValuesProperty = new BooleanProperty( false, { tandem: tandem.createTandem( 'showForceValuesProperty' ) } );
 
     // @public {Property.<Gravity>}
-    this.gravityProperty = new Property( Gravity.EARTH );
+    this.gravityProperty = new Property( Gravity.EARTH, {
+      phetioType: Property.PropertyIO( Gravity.GravityIO ),
+      tandem: tandem.createTandem( 'gravityProperty' )
+    } );
 
     // @public {Property.<Material>}
     this.liquidMaterialProperty = new Property( Material.WATER );

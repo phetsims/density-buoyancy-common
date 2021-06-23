@@ -50,12 +50,6 @@ class DebugView extends Node {
     } );
     this.addChild( this.poolPath );
 
-    // // @private {Path}
-    // this.boatWaterPath = new Path( null, {
-    //   fill: 'rgba(0,128,255,0.3)'
-    // } );
-    // this.addChild( this.boatWaterPath );
-
     const modelPoolShape = Shape.polygon( model.groundPoints );
     const viewPoolShape = this.modelViewTransform.modelToViewShape( modelPoolShape );
 

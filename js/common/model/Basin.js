@@ -24,7 +24,8 @@ class Basin {
     // @public {Property.<number>} - in m^3
     this.liquidVolumeProperty = new NumberProperty( options.initialVolume );
 
-    // @public {Property.<number>} - The y coordinate of the liquid level
+    // @public {Property.<number>} - The y coordinate of the liquid level (absolute in the model, NOT relative to
+    // anything)
     this.liquidYInterpolatedProperty = new InterpolatedProperty( options.initialY, {
       interpolate: InterpolatedProperty.interpolateNumber
     } );

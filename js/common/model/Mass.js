@@ -90,7 +90,7 @@ class Mass {
     // @public {Engine.Body}
     this.body = config.body;
 
-    // @public {Property.<Shape>}
+    // @public {Property.<Shape>} - Without the matrix applied (effectively in "local" model coordinates)
     this.shapeProperty = new Property( config.shape );
 
     // @public {Property.<boolean>}
@@ -307,6 +307,10 @@ class Mass {
    */
   updateStepInformation() {
     this.engine.bodyGetStepMatrixTransform( this.body, this.stepMatrix );
+
+    // Apply the body offset
+    this.stepMatrix.set02( this.stepMatrix.m02() + this.bodyOffsetProperty.value.x );
+    this.stepMatrix.set12( this.stepMatrix.m12() + this.bodyOffsetProperty.value.y );
   }
 
   /**

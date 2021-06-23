@@ -23,7 +23,10 @@ import Scale from './Scale.js';
 
 // constants
 const BLOCK_SPACING = 0.01;
-const POOL_HEIGHT = 0.15 / 0.9 / 0.4; // Computed for 150L
+const POOL_VOLUME = 0.15;
+const POOL_WIDTH = 0.9;
+const POOL_DEPTH = 0.4;
+const POOL_HEIGHT = POOL_VOLUME / POOL_WIDTH / POOL_DEPTH;
 
 class DensityBuoyancyModel {
 
@@ -61,14 +64,14 @@ class DensityBuoyancyModel {
 
     // @public {Bounds3}
     this.poolBounds = new Bounds3(
-      -0.45, -POOL_HEIGHT, -0.2,
-      0.45, 0, 0.2
+      -POOL_WIDTH / 2, -POOL_HEIGHT, -POOL_DEPTH / 2,
+      POOL_WIDTH / 2, 0, POOL_DEPTH / 2
     );
 
     // @public {Bounds3}
     this.groundBounds = new Bounds3(
       -10, -10, -2,
-      10, 0, 0.2
+      10, 0, POOL_DEPTH / 2
     );
 
     // @public {Bounds3} - We'll keep blocks within these bounds, to generally stay in-screen
@@ -79,7 +82,7 @@ class DensityBuoyancyModel {
 
     if ( DensityBuoyancyCommonQueryParameters.poolWidthMultiplier !== 1 ) {
       const halfX = DensityBuoyancyCommonQueryParameters.poolWidthMultiplier * 0.45;
-      const halfZ = 0.15 / ( 2 * halfX * POOL_HEIGHT * 2 );
+      const halfZ = POOL_VOLUME / ( 2 * halfX * POOL_HEIGHT * 2 );
       this.poolBounds = new Bounds3(
         -halfX, -POOL_HEIGHT, -halfZ,
         halfX, 0, halfZ

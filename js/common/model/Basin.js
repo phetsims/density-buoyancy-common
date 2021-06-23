@@ -111,6 +111,8 @@ class Basin {
       assert && assert( !isNaN( volume ) );
     } );
 
+    assert && assert( this !== this.childBasin );
+
     // Don't double-count things, since we're counting the full displacement of the child basin's container
     if ( this.childBasin ) {
       volume -= this.childBasin.getDisplacedVolume( Math.min( y, this.childBasin.stepTop ) );

@@ -169,7 +169,8 @@ class DensityBuoyancyModel {
           mass.scaleForceInterpolatedProperty.setNextValue( scaleForce );
         }
 
-        const submergedVolume = mass.getDisplacedVolume( this.pool.liquidYInterpolatedProperty.currentValue );
+        const basin = mass.containingBasin;
+        const submergedVolume = basin ? mass.getDisplacedVolume( basin.liquidYInterpolatedProperty.currentValue ) : 0;
         if ( submergedVolume ) {
           const displacedMass = submergedVolume * this.liquidDensityProperty.value;
           const buoyantForce = new Vector2( 0, displacedMass * gravity );
@@ -271,12 +272,22 @@ class DensityBuoyancyModel {
     // Check to see if water "spilled" out of the pool, and set the finalized liquid volume
     this.pool.liquidVolumeProperty.value = Math.min( poolLiquidVolume, this.pool.getEmptyVolume( this.poolBounds.maxY ) );
 
-    // TODO: check to see if one basin contains another -- mainly assign basins to each mass, so we can handle viscosity
-    // and moving boats in general - NOTE: This is a TODO for the BUOYANCY work!
-
     this.pool.computeY();
     if ( boat ) {
       boat.basin.computeY();
+    }
+
+    // If we have a boat that is NOT underwater, we'll assign masses into the boat's basin where relevant. Otherwise
+    // anything will go just into the pool's basin.
+    if ( boat && this.pool.liquidYInterpolatedProperty.currentValue < boat.basin.stepTop - 1e-7 ) {
+      this.masses.forEach( mass => {
+        mass.containingBasin = boat.basin.isMassInside( mass ) ? boat.basin : ( this.pool.isMassInside( mass ) ? this.pool : null );
+      } );
+    }
+    else {
+      this.masses.forEach( mass => {
+        mass.containingBasin = this.pool.isMassInside( mass ) ? this.pool : null;
+      } );
     }
   }
 

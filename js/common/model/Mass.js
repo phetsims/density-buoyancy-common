@@ -166,6 +166,9 @@ class Mass {
     // @public {MassTag}
     this.tag = config.tag;
 
+    // @public {Basin|null} - Set by the model
+    this.containingBasin = null;
+
     // @public {Property.<Vector2>}
     this.velocityProperty = new Vector2Property( Vector2.ZERO );
 

@@ -655,18 +655,17 @@ class DensityBuoyancyScreenView extends ScreenView {
   /**
    * @public
    * @override
-   * @param {number} width
-   * @param {number} height
+   * @param {Bounds2} viewBounds
    */
-  layout( width, height ) {
-    super.layout( width, height );
+  layout( viewBounds ) {
+    super.layout( viewBounds );
 
     // If the simulation was not able to load for WebGL, bail out
     if ( !this.sceneNode ) {
       return;
     }
 
-    this.sceneNode.layout( width, height );
+    this.sceneNode.layout( viewBounds.width, viewBounds.height );
 
     // We need to do an initial render for certain layout-based code to work
     this.sceneNode.render( undefined );

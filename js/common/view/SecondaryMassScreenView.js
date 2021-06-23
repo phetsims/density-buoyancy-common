@@ -44,11 +44,10 @@ class SecondaryMassScreenView extends DensityBuoyancyScreenView {
   /**
    * @public
    * @override
-   * @param {number} width
-   * @param {number} height
+   * @param {Bounds2} viewBounds
    */
-  layout( width, height ) {
-    super.layout( width, height );
+  layout( viewBounds ) {
+    super.layout( viewBounds );
 
     // If the simulation was not able to load for WebGL, bail out
     if ( !this.sceneNode ) {

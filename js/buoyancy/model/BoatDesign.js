@@ -292,7 +292,7 @@ class BoatDesign {
     const designY = y / scale + BoatDesign.DESIGN_CENTROID.y;
 
     // If we have a low enough value, just zero things out (won't show anything)
-    if ( designY < insideBottomY ) {
+    if ( designY < insideBottomY || scale === 0 ) {
       for ( let i = 0; i < positionArray.length; i++ ) {
         positionArray[ i ] = 0;
       }

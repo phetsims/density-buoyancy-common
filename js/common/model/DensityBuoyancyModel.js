@@ -150,6 +150,8 @@ class DensityBuoyancyModel {
       // {number}
       const gravity = this.gravityProperty.value.value;
 
+      const boat = this.getBoat();
+
       // Will set the force Properties for all of the masses
       this.masses.forEach( mass => {
         const contactForce = this.engine.bodyGetContactForces( mass.body );
@@ -178,6 +180,11 @@ class DensityBuoyancyModel {
           mass.buoyancyForceInterpolatedProperty.setNextValue( buoyantForce );
 
           const velocity = this.engine.bodyGetVelocity( mass.body );
+          // If the boat is moving, assume the liquid moves with it, and apply viscosity due to the movement of our mass
+          // inside the boat's liquid.
+          if ( boat && basin === boat.basin ) {
+            velocity.subtract( this.engine.bodyGetVelocity( boat.body ) );
+          }
 
           // Increase the generally-visible viscosity effect
           const hackedViscosity = this.liquidViscosityProperty.value ? 0.03 * Math.pow( this.liquidViscosityProperty.value / 0.03, 0.8 ) : 0;

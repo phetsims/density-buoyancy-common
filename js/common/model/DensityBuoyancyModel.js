@@ -175,7 +175,9 @@ class DensityBuoyancyModel {
         const submergedVolume = basin ? mass.getDisplacedVolume( basin.liquidYInterpolatedProperty.currentValue ) : 0;
         if ( submergedVolume ) {
           const displacedMass = submergedVolume * this.liquidDensityProperty.value;
-          const buoyantForce = new Vector2( 0, displacedMass * gravity );
+          // Vertical acceleration of the boat will change the buoyant force.
+          const acceleration = gravity + ( ( boat && basin === boat.basin ) ? boat.accelerationProperty.value.y : 0 );
+          const buoyantForce = new Vector2( 0, displacedMass * acceleration );
           this.engine.bodyApplyForce( mass.body, buoyantForce );
           mass.buoyancyForceInterpolatedProperty.setNextValue( buoyantForce );
 

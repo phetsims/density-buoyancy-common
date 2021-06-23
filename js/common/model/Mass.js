@@ -172,6 +172,9 @@ class Mass {
     // @public {Property.<Vector2>}
     this.velocityProperty = new Vector2Property( Vector2.ZERO );
 
+    // @public {Property.<Vector2>}
+    this.accelerationProperty = new Vector2Property( Vector2.ZERO );
+
     // @public {Property.<number>}
     this.angularVelocityProperty = new NumberProperty( 0 );
 
@@ -324,11 +327,15 @@ class Mass {
    * Steps forward in time.
    * @public
    *
-   * @param {number} dt
+   * @param {number} dt - In seconds
    * @param {number} interpolationRatio
    */
   step( dt, interpolationRatio ) {
+    const oldVelocity = this.velocityProperty.value;
     this.readData();
+
+    // Estimate the acceleration, backward difference formula used so it's responsive.
+    this.accelerationProperty.value = this.velocityProperty.value.minus( oldVelocity ).dividedScalar( dt );
 
     this.transformedEmitter.emit();
 

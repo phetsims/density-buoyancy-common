@@ -30,7 +30,7 @@ const names = [
 ];
 
 names.forEach( name => {
-  'use strict';
+  
 
   console.log( new jimp( `assets/${name}`, function() {
     this.quality( 95 );

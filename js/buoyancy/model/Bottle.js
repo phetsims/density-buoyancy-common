@@ -538,6 +538,7 @@ class Bottle extends Mass {
         }
       }
     }
+    throw new Error( 'unsupported volume' );
   }
 
   /**

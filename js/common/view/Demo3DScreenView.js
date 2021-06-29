@@ -32,7 +32,7 @@ class Demo3DScreenView extends DensityBuoyancyScreenView {
     super( model, tandem );
 
     if ( !this.enabled ) {
-      return this;
+      return;
     }
 
     this.addChild( new Panel( new DisplayOptionsNode( model ), merge( {

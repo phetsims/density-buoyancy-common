@@ -43,7 +43,7 @@ class DensityMysteryScreenView extends DensityBuoyancyScreenView {
     } );
 
     if ( !this.enabled ) {
-      return this;
+      return;
     }
 
     const densityBox = new AccordionBox( new DensityTableNode(), merge( {

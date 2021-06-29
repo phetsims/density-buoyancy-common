@@ -89,7 +89,7 @@ class DensityBuoyancyScreenView extends ScreenView {
     if ( !ThreeUtils.isWebGLEnabled() ) {
       ThreeUtils.showWebGLWarning( this );
       this.enabled = false;
-      return this;
+      return;
     }
 
     // @protected {DensityBuoyancyModel}

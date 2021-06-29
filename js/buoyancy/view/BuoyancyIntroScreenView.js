@@ -42,7 +42,7 @@ class BuoyancyIntroScreenView extends DensityBuoyancyScreenView {
     super( model, tandem );
 
     if ( !this.enabled ) {
-      return this;
+      return;
     }
 
     const modeControl = new VerticalAquaRadioButtonGroup( model.modeProperty, BuoyancyIntroModel.Mode.VALUES.map( mode => {

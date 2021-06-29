@@ -34,7 +34,7 @@ class DensityIntroScreenView extends SecondaryMassScreenView {
     } );
 
     if ( !this.enabled ) {
-      return this;
+      return;
     }
 
     // @private {Node}

@@ -46,7 +46,7 @@ class BuoyancyExploreScreenView extends SecondaryMassScreenView {
     } );
 
     if ( !this.enabled ) {
-      return this;
+      return;
     }
 
     const displayOptionsNode = new DisplayOptionsNode( model );

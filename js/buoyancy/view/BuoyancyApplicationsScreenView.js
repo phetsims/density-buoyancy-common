@@ -54,7 +54,7 @@ class BuoyancyApplicationsScreenView extends DensityBuoyancyScreenView {
     } );
 
     if ( !this.enabled ) {
-      return this;
+      return;
     }
 
     // For clipping planes in BottleView

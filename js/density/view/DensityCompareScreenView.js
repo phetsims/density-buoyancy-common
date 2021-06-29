@@ -38,7 +38,7 @@ class DensityCompareScreenView extends DensityBuoyancyScreenView {
     } );
 
     if ( !this.enabled ) {
-      return this;
+      return;
     }
 
     const modeControl = new VerticalAquaRadioButtonGroup( model.modeProperty, DensityCompareModel.Mode.VALUES.map( mode => {

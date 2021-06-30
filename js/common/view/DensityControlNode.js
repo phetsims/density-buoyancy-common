@@ -31,7 +31,7 @@ class DensityControlNode extends ComboNumberControl {
       title: densityBuoyancyCommonStrings.fluidDensity,
       valuePattern: densityBuoyancyCommonStrings.kilogramsPerLiterPattern,
       property: liquidMaterialProperty,
-      range: new Range( 0, 15 ),
+      range: new Range( 0.5, 15 ),
       toNumericValue: material => material.density / 1000,
       createCustomValue: density => Material.createCustomLiquidMaterial( {
         density: density * 1000
@@ -47,7 +47,7 @@ class DensityControlNode extends ComboNumberControl {
       } ), material ) ),
       customValue: customValue,
       numberControlOptions: {
-        delta: 0.1
+        delta: 0.01
       },
       comboBoxOptions: {
         listPosition: 'above'

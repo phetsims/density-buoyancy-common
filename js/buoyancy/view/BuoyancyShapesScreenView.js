@@ -47,7 +47,6 @@ class BuoyancyShapesScreenView extends SecondaryMassScreenView {
     }
 
     const densityControlPanel = new Panel( new DensityControlNode( model.liquidMaterialProperty, [
-      Material.AIR,
       Material.GASOLINE,
       Material.WATER,
       Material.SEAWATER,

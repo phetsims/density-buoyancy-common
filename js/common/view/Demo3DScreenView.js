@@ -41,7 +41,6 @@ class Demo3DScreenView extends DensityBuoyancyScreenView {
     }, DensityBuoyancyCommonConstants.PANEL_OPTIONS ) ) );
 
     this.addChild( new Panel( new DensityControlNode( model.liquidMaterialProperty, [
-      Material.AIR,
       Material.GASOLINE,
       Material.WATER,
       Material.SEAWATER,

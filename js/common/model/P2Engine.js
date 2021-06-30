@@ -6,6 +6,7 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
+import TinyEmitter from '../../../../axon/js/TinyEmitter.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import merge from '../../../../phet-core/js/merge.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
@@ -61,6 +62,13 @@ class P2Engine extends Engine {
       stiffness: DensityBuoyancyCommonQueryParameters.p2BarrierStiffness,
       relaxation: DensityBuoyancyCommonQueryParameters.p2BarrierRelaxation
     } ) );
+
+    // @private {TinyEmitter}
+    this.internalStepEmitter = new TinyEmitter();
+
+    this.world.on( 'postStep', () => {
+      this.internalStepEmitter.emit( this.world.lastTimeStep );
+    } );
   }
 
   /**
@@ -434,10 +442,10 @@ class P2Engine extends Engine {
    * @public
    * @override
    *
-   * @param {function} listener
+   * @param {function(number)} listener
    */
   addPostStepListener( listener ) {
-    this.world.on( 'postStep', listener );
+    this.internalStepEmitter.addListener( listener );
   }
 
   /**
@@ -445,10 +453,10 @@ class P2Engine extends Engine {
    * @public
    * @override
    *
-   * @param {function} listener
+   * @param {function(number)} listener
    */
   removePostStepListener( listener ) {
-    this.world.off( 'postStep', listener );
+    this.internalStepEmitter.removeListener( listener );
   }
 
   /**

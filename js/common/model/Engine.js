@@ -269,7 +269,7 @@ class Engine {
    * Adds a listener to be called after each internal step.
    * @public
    *
-   * @param {function} listener
+   * @param {function(number)} listener
    */
   addPostStepListener( listener ) {
     throw new Error( 'unimplemented' );
@@ -279,7 +279,7 @@ class Engine {
    * Removes a listener to be called after each internal step.
    * @public
    *
-   * @param {function} listener
+   * @param {function(number)} listener
    */
   removePostStepListener( listener ) {
     throw new Error( 'unimplemented' );

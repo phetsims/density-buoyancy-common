@@ -14,7 +14,6 @@ import Property from '../../../../axon/js/Property.js';
 import Matrix3 from '../../../../dot/js/Matrix3.js';
 import Utils from '../../../../dot/js/Utils.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
-import Vector2Property from '../../../../dot/js/Vector2Property.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
 import Enumeration from '../../../../phet-core/js/Enumeration.js';
 import merge from '../../../../phet-core/js/merge.js';
@@ -169,15 +168,6 @@ class Mass {
     // @public {Basin|null} - Set by the model
     this.containingBasin = null;
 
-    // @public {Property.<Vector2>}
-    this.velocityProperty = new Vector2Property( Vector2.ZERO );
-
-    // @public {Property.<Vector2>}
-    this.accelerationProperty = new Vector2Property( Vector2.ZERO );
-
-    // @public {Property.<number>}
-    this.angularVelocityProperty = new NumberProperty( 0 );
-
     // @private {Matrix3}
     this.originalMatrix = this.matrix.copy();
 
@@ -241,9 +231,6 @@ class Mass {
     // Apply the body offset
     this.matrix.set02( this.matrix.m02() + this.bodyOffsetProperty.value.x );
     this.matrix.set12( this.matrix.m12() + this.bodyOffsetProperty.value.y );
-
-    this.angularVelocityProperty.value = this.engine.bodyGetAngularVelocity( this.body );
-    this.velocityProperty.value = this.engine.bodyGetVelocity( this.body );
   }
 
   /**
@@ -253,8 +240,6 @@ class Mass {
   writeData() {
     this.engine.bodySetPosition( this.body, this.matrix.translation.minus( this.bodyOffsetProperty.value ) );
     this.engine.bodySetRotation( this.body, this.matrix.rotation );
-    this.engine.bodySetAngularVelocity( this.body, this.angularVelocityProperty.value );
-    this.engine.bodySetVelocity( this.body, this.velocityProperty.value );
   }
 
   /**
@@ -335,11 +320,7 @@ class Mass {
    * @param {number} interpolationRatio
    */
   step( dt, interpolationRatio ) {
-    const oldVelocity = this.velocityProperty.value;
     this.readData();
-
-    // Estimate the acceleration, backward difference formula used so it's responsive.
-    this.accelerationProperty.value = this.velocityProperty.value.minus( oldVelocity ).dividedScalar( dt );
 
     this.transformedEmitter.emit();
 
@@ -357,8 +338,6 @@ class Mass {
     this.materialProperty.reset();
     this.volumeProperty.reset();
     this.containedMassProperty.reset();
-    this.velocityProperty.reset();
-    this.angularVelocityProperty.reset();
     this.userControlledProperty.reset();
 
     this.gravityForceInterpolatedProperty.reset();

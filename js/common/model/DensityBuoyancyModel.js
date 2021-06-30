@@ -143,7 +143,10 @@ class DensityBuoyancyModel {
       this.engine.removeBody( mass.body );
     } );
 
-    this.engine.addPostStepListener( () => {
+    let boatVerticalVelocity = 0;
+    let boatVerticalAcceleration = 0;
+
+    this.engine.addPostStepListener( dt => {
 
       this.updateLiquid();
 
@@ -151,6 +154,12 @@ class DensityBuoyancyModel {
       const gravity = this.gravityProperty.value.value;
 
       const boat = this.getBoat();
+
+      if ( boat && dt ) {
+        const nextBoatVerticalVelocity = this.engine.bodyGetVelocity( boat.body ).y;
+        boatVerticalAcceleration = ( nextBoatVerticalVelocity - boatVerticalVelocity ) / dt;
+        boatVerticalVelocity = nextBoatVerticalVelocity;
+      }
 
       // Will set the force Properties for all of the masses
       this.masses.forEach( mass => {
@@ -176,7 +185,7 @@ class DensityBuoyancyModel {
         if ( submergedVolume ) {
           const displacedMass = submergedVolume * this.liquidDensityProperty.value;
           // Vertical acceleration of the boat will change the buoyant force.
-          const acceleration = gravity + ( ( boat && basin === boat.basin ) ? boat.accelerationProperty.value.y : 0 );
+          const acceleration = gravity + ( ( boat && basin === boat.basin ) ? boatVerticalAcceleration : 0 );
           const buoyantForce = new Vector2( 0, displacedMass * acceleration );
           this.engine.bodyApplyForce( mass.body, buoyantForce );
           mass.buoyancyForceInterpolatedProperty.setNextValue( buoyantForce );

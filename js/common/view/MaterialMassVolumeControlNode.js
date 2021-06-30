@@ -209,6 +209,9 @@ class MaterialMassVolumeControlNode extends VBox {
         } ),
         useFullHeight: true
       },
+      arrowButtonOptions: {
+        enabledEpsilon: 1e-7
+      },
       enabledRangeProperty: enabledMassRangeProperty
     }, MaterialMassVolumeControlNode.getNumberControlOptions() ) );
 
@@ -225,6 +228,9 @@ class MaterialMassVolumeControlNode extends VBox {
           liters: '{{value}}'
         } ),
         useFullHeight: true
+      },
+      arrowButtonOptions: {
+        enabledEpsilon: 1e-7
       }
     }, MaterialMassVolumeControlNode.getNumberControlOptions() ) );
 

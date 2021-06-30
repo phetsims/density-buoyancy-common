@@ -57,14 +57,16 @@ class BuoyancyApplicationsModel extends DensityBuoyancyModel {
     // @public {Scale}
     this.leftScale = new Scale( this.engine, {
       matrix: Matrix3.translation( -0.7, -Scale.SCALE_BASE_BOUNDS.minY ),
-      displayType: Scale.DisplayType.NEWTONS
+      displayType: Scale.DisplayType.NEWTONS,
+      canMove: false
     } );
     this.masses.push( this.leftScale );
 
     // @public {Scale}
     this.poolScale = new Scale( this.engine, {
       matrix: Matrix3.translation( 0.25, -Scale.SCALE_BASE_BOUNDS.minY + this.poolBounds.minY ),
-      displayType: Scale.DisplayType.NEWTONS
+      displayType: Scale.DisplayType.NEWTONS,
+      canMove: false
     } );
     this.masses.push( this.poolScale );
 

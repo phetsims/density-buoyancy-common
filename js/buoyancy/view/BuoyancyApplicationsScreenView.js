@@ -10,6 +10,7 @@ import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import DynamicProperty from '../../../../axon/js/DynamicProperty.js';
 import Property from '../../../../axon/js/Property.js';
 import Range from '../../../../dot/js/Range.js';
+import Utils from '../../../../dot/js/Utils.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
 import merge from '../../../../phet-core/js/merge.js';
 import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
@@ -142,6 +143,7 @@ class BuoyancyApplicationsScreenView extends DensityBuoyancyScreenView {
       Material.ALUMINUM
     ], material => material.density ), cubicMeters => model.block.updateSize( Cuboid.boundsFromVolume( cubicMeters ) ), this.popupLayer );
 
+    const boatVolumeRange = new Range( 1, 20 );
     const boatBox = new VBox( {
       spacing: 10,
       align: 'left',
@@ -152,7 +154,7 @@ class BuoyancyApplicationsScreenView extends DensityBuoyancyScreenView {
           map: cubicMeters => 1000 * cubicMeters,
           inverseMap: liters => liters / 1000,
           bidirectional: true
-        } ), new Range( 0, 20 ), merge( {
+        } ), boatVolumeRange, merge( {
           numberDisplayOptions: {
             valuePattern: StringUtils.fillIn( densityBuoyancyCommonStrings.litersPattern, {
               liters: '{{value}}'
@@ -162,6 +164,11 @@ class BuoyancyApplicationsScreenView extends DensityBuoyancyScreenView {
               maxWidth: 120
             },
             useFullHeight: true
+          },
+          sliderOptions: {
+            constrainValue: value => {
+              return boatVolumeRange.constrainValue( Utils.roundToInterval( value, 1 ) );
+            }
           }
         }, MaterialMassVolumeControlNode.getNumberControlOptions() ) )
       ]

@@ -6,6 +6,7 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
+import merge from '../../../../phet-core/js/merge.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import BlockControlNode from './BlockControlNode.js';
 import DensityBuoyancyCommonColorProfile from './DensityBuoyancyCommonColorProfile.js';
@@ -18,17 +19,18 @@ class PrimarySecondaryControlsNode extends PrimarySecondaryPanelsNode {
    * @param {Mass} secondaryMass
    * @param {Property.<boolean>} secondaryMassVisibleProperty
    * @param {Node} popupLayer
+   * @param {Object} [options]
    */
-  constructor( primaryMass, secondaryMass, secondaryMassVisibleProperty, popupLayer ) {
+  constructor( primaryMass, secondaryMass, secondaryMassVisibleProperty, popupLayer, options ) {
     super(
-      new BlockControlNode( primaryMass, popupLayer, {
+      new BlockControlNode( primaryMass, popupLayer, merge( {
         labelNode: PrimarySecondaryPanelsNode.getPrimaryLabelNode(),
         color: DensityBuoyancyCommonColorProfile.labelAProperty
-      } ),
-      new BlockControlNode( secondaryMass, popupLayer, {
+      }, options ) ),
+      new BlockControlNode( secondaryMass, popupLayer, merge( {
         labelNode: PrimarySecondaryPanelsNode.getSecondaryLabelNode(),
         color: DensityBuoyancyCommonColorProfile.labelBProperty
-      } ),
+      }, options ) ),
       secondaryMassVisibleProperty
     );
   }

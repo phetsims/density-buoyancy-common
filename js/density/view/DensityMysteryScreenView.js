@@ -77,7 +77,7 @@ class DensityMysteryScreenView extends DensityBuoyancyScreenView {
         this.interruptSubtreeInput();
         model.regenerate( DensityMysteryModel.Mode.RANDOM );
       },
-      iconScale: 0.5
+      iconHeight: 20
     } );
     const modeContent = new VBox( {
       spacing: 10

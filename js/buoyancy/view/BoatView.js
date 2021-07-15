@@ -74,9 +74,9 @@ class BoatView extends MassView {
     interiorSurfaceGeometry.addAttribute( 'position', new THREE.BufferAttribute( crossSectionPositionArray, 3 ) );
     interiorSurfaceGeometry.addAttribute( 'normal', new THREE.BufferAttribute( crossSectionNormalArray, 3 ) );
 
-    // TODO: unlink
-    Property.multilink( [ boat.basin.liquidYInterpolatedProperty, boat.basin.liquidVolumeProperty ], ( y, volume ) => {
-      BoatDesign.fillCrossSectionVertexArray( y - boat.matrix.translation.y, boat.displacementVolumeProperty.value / 0.001, crossSectionPositionArray );
+    // @private {Multilink}
+    this.liquidMultilink = Property.multilink( [ boat.basin.liquidYInterpolatedProperty, boat.displacementVolumeProperty ], ( y, volume ) => {
+      BoatDesign.fillCrossSectionVertexArray( y - boat.matrix.translation.y, volume / 0.001, crossSectionPositionArray );
       interiorSurfaceGeometry.attributes.position.needsUpdate = true;
       interiorSurfaceGeometry.computeBoundingSphere();
     } );
@@ -123,7 +123,7 @@ class BoatView extends MassView {
    * @override
    */
   dispose() {
-    // TODO: hook up disposal
+    this.liquidMultilink.dispose();
 
     super.dispose();
   }

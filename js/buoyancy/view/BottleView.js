@@ -139,13 +139,18 @@ class BottleView extends MassView {
 
     this.add( interiorSurface );
 
-    backTop.renderOrder = -7;
-    backBottom.renderOrder = -6;
-    frontBottom.renderOrder = -5;
-    frontBottomForDepth.renderOrder = -4;
-    interiorSurface.renderOrder = -3;
-    frontTop.renderOrder = -2;
-    frontTopForDepth.renderOrder = -1;
+    // Set render order for all elements
+    [
+      frontTopForDepth,
+      frontTop,
+      interiorSurface,
+      frontBottomForDepth,
+      frontBottom,
+      backBottom,
+      backTop
+    ].forEach( ( view, index ) => {
+      view.renderOrder = -( index + 1 );
+    } );
 
     new DynamicProperty( bottle.interiorMaterialProperty, {
       derive: 'liquidColor'

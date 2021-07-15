@@ -102,6 +102,17 @@ class BoatView extends MassView {
 
     this.add( interiorSurface );
 
+    // Set render order for all elements
+    [
+      top,
+      interiorSurface,
+      frontForDepth,
+      front,
+      back
+    ].forEach( ( view, index ) => {
+      view.renderOrder = -( index + 1 );
+    } );
+
     // @public {Boat}
     this.boat = boat;
   }

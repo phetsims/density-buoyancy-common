@@ -12,7 +12,7 @@ import Cuboid from '../../common/model/Cuboid.js';
 import DensityBuoyancyModal from '../../common/model/DensityBuoyancyModal.js';
 import DensityBuoyancyModel from '../../common/model/DensityBuoyancyModel.js';
 import Material from '../../common/model/Material.js';
-import DensityBuoyancyCommonColorProfile from '../../common/view/densityBuoyancyCommonColorProfile.js';
+import densityBuoyancyCommonColorProfile from '../../common/view/densityBuoyancyCommonColorProfile.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 
 // constants
@@ -33,66 +33,66 @@ class DensityCompareModel extends DensityBuoyancyModal( DensityBuoyancyModel, Mo
           return [
             Cuboid.createWithMass( model.engine, Material.createCustomMaterial( {
               density: 500,
-              customColor: DensityBuoyancyCommonColorProfile.comparingYellowProperty
+              customColor: densityBuoyancyCommonColorProfile.comparingYellowProperty
             } ), Vector2.ZERO, 5 ),
 
             Cuboid.createWithMass( model.engine, Material.createCustomMaterial( {
               density: 1000,
-              customColor: DensityBuoyancyCommonColorProfile.comparingBlueProperty
+              customColor: densityBuoyancyCommonColorProfile.comparingBlueProperty
             } ), Vector2.ZERO, 5 ),
 
             Cuboid.createWithMass( model.engine, Material.createCustomMaterial( {
               density: 2000,
-              customColor: DensityBuoyancyCommonColorProfile.comparingGreenProperty
+              customColor: densityBuoyancyCommonColorProfile.comparingGreenProperty
             } ), Vector2.ZERO, 5 ),
 
             Cuboid.createWithMass( model.engine, Material.createCustomMaterial( {
               density: 4000,
-              customColor: DensityBuoyancyCommonColorProfile.comparingRedProperty
+              customColor: densityBuoyancyCommonColorProfile.comparingRedProperty
             } ), Vector2.ZERO, 5 )
           ];
         case Mode.SAME_VOLUME:
           return [
             Cuboid.createWithMass( model.engine, Material.createCustomMaterial( {
               density: 1600,
-              customColor: DensityBuoyancyCommonColorProfile.comparingYellowProperty
+              customColor: densityBuoyancyCommonColorProfile.comparingYellowProperty
             } ), Vector2.ZERO, 8 ),
 
             Cuboid.createWithMass( model.engine, Material.createCustomMaterial( {
               density: 1200,
-              customColor: DensityBuoyancyCommonColorProfile.comparingBlueProperty
+              customColor: densityBuoyancyCommonColorProfile.comparingBlueProperty
             } ), Vector2.ZERO, 6 ),
 
             Cuboid.createWithMass( model.engine, Material.createCustomMaterial( {
               density: 800,
-              customColor: DensityBuoyancyCommonColorProfile.comparingGreenProperty
+              customColor: densityBuoyancyCommonColorProfile.comparingGreenProperty
             } ), Vector2.ZERO, 4 ),
 
             Cuboid.createWithMass( model.engine, Material.createCustomMaterial( {
               density: 400,
-              customColor: DensityBuoyancyCommonColorProfile.comparingRedProperty
+              customColor: densityBuoyancyCommonColorProfile.comparingRedProperty
             } ), Vector2.ZERO, 2 )
           ];
         case Mode.SAME_DENSITY:
           return [
             Cuboid.createWithMass( model.engine, Material.createCustomMaterial( {
               density: 800,
-              customColor: DensityBuoyancyCommonColorProfile.comparingYellowProperty
+              customColor: densityBuoyancyCommonColorProfile.comparingYellowProperty
             } ), Vector2.ZERO, 4 ),
 
             Cuboid.createWithMass( model.engine, Material.createCustomMaterial( {
               density: 800,
-              customColor: DensityBuoyancyCommonColorProfile.comparingBlueProperty
+              customColor: densityBuoyancyCommonColorProfile.comparingBlueProperty
             } ), Vector2.ZERO, 3 ),
 
             Cuboid.createWithMass( model.engine, Material.createCustomMaterial( {
               density: 800,
-              customColor: DensityBuoyancyCommonColorProfile.comparingGreenProperty
+              customColor: densityBuoyancyCommonColorProfile.comparingGreenProperty
             } ), Vector2.ZERO, 2 ),
 
             Cuboid.createWithMass( model.engine, Material.createCustomMaterial( {
               density: 800,
-              customColor: DensityBuoyancyCommonColorProfile.comparingRedProperty
+              customColor: densityBuoyancyCommonColorProfile.comparingRedProperty
             } ), Vector2.ZERO, 1 )
           ];
         default:

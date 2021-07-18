@@ -17,7 +17,7 @@ import Panel from '../../../../sun/js/Panel.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import densityBuoyancyCommonStrings from '../../densityBuoyancyCommonStrings.js';
 import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
-import DensityBuoyancyCommonColorProfile from './densityBuoyancyCommonColorProfile.js';
+import densityBuoyancyCommonColorProfile from './densityBuoyancyCommonColorProfile.js';
 import LabelTexture from './LabelTexture.js';
 
 // constants
@@ -36,8 +36,8 @@ const createMassLabel = ( string, fill ) => {
   rectangle.addChild( label );
   return rectangle;
 };
-const PRIMARY_LABEL = createMassLabel( densityBuoyancyCommonStrings.massLabel.primary, DensityBuoyancyCommonColorProfile.labelAProperty );
-const SECONDARY_LABEL = createMassLabel( densityBuoyancyCommonStrings.massLabel.secondary, DensityBuoyancyCommonColorProfile.labelBProperty );
+const PRIMARY_LABEL = createMassLabel( densityBuoyancyCommonStrings.massLabel.primary, densityBuoyancyCommonColorProfile.labelAProperty );
+const SECONDARY_LABEL = createMassLabel( densityBuoyancyCommonStrings.massLabel.secondary, densityBuoyancyCommonColorProfile.labelBProperty );
 
 class MassLabelNode extends Node {
   /**

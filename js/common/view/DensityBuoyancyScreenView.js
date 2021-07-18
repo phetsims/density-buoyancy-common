@@ -49,7 +49,7 @@ import VerticalCylinder from '../model/VerticalCylinder.js';
 import ConeView from './ConeView.js';
 import CuboidView from './CuboidView.js';
 import DebugView from './DebugView.js';
-import DensityBuoyancyCommonColorProfile from './densityBuoyancyCommonColorProfile.js';
+import densityBuoyancyCommonColorProfile from './densityBuoyancyCommonColorProfile.js';
 import DensityMaterials from './DensityMaterials.js';
 import EllipsoidView from './EllipsoidView.js';
 import ForceDiagramNode from './ForceDiagramNode.js';
@@ -104,8 +104,8 @@ class DensityBuoyancyScreenView extends ScreenView {
     // @private {Rectangle} - The sky background, in a unit 0-to-1 rectangle (so we can scale it to match)
     this.backgroundNode = new Rectangle( 0, 0, 1, 1, {
       fill: new LinearGradient( 0, 0, 0, 1 )
-        .addColorStop( 0, DensityBuoyancyCommonColorProfile.skyTopProperty )
-        .addColorStop( 1, DensityBuoyancyCommonColorProfile.skyBottomProperty )
+        .addColorStop( 0, densityBuoyancyCommonColorProfile.skyTopProperty )
+        .addColorStop( 1, densityBuoyancyCommonColorProfile.skyBottomProperty )
     } );
     this.visibleBoundsProperty.link( visibleBounds => {
       this.backgroundNode.translation = visibleBounds.leftTop;
@@ -237,7 +237,7 @@ class DensityBuoyancyScreenView extends ScreenView {
       ), model.groundBounds.maxZ )
     ] ), 3 ) );
     const groundMaterial = new THREE.MeshBasicMaterial();
-    DensityBuoyancyCommonColorProfile.groundProperty.link( groundColor => {
+    densityBuoyancyCommonColorProfile.groundProperty.link( groundColor => {
       groundMaterial.color = ThreeUtils.colorToThree( groundColor );
     } );
 
@@ -316,7 +316,7 @@ class DensityBuoyancyScreenView extends ScreenView {
       0, 1, 1
     ] );
     topGeometry.addAttribute( 'color', new THREE.BufferAttribute( topColorArray, 3 ) );
-    DensityBuoyancyCommonColorProfile.grassCloseProperty.link( grassCloseColor => {
+    densityBuoyancyCommonColorProfile.grassCloseProperty.link( grassCloseColor => {
       for ( let i = 0; i < 12; i++ ) {
         topColorArray[ i * 3 + 0 ] = grassCloseColor.r / 255;
         topColorArray[ i * 3 + 1 ] = grassCloseColor.g / 255;
@@ -328,7 +328,7 @@ class DensityBuoyancyScreenView extends ScreenView {
       topColorArray[ offset + 2 ] = topColorArray[ offset + 5 ] = topColorArray[ offset + 14 ] = grassCloseColor.b / 255;
       topGeometry.attributes.color.needsUpdate = true;
     } );
-    DensityBuoyancyCommonColorProfile.grassFarProperty.link( grassFarColor => {
+    densityBuoyancyCommonColorProfile.grassFarProperty.link( grassFarColor => {
       const offset = 3 * 2 * 6;
       topColorArray[ offset + 6 ] = topColorArray[ offset + 9 ] = topColorArray[ offset + 15 ] = grassFarColor.r / 255;
       topColorArray[ offset + 7 ] = topColorArray[ offset + 10 ] = topColorArray[ offset + 16 ] = grassFarColor.g / 255;
@@ -400,7 +400,7 @@ class DensityBuoyancyScreenView extends ScreenView {
       -1, 0, 0
     ] ), 3 ) );
     const poolMaterial = new THREE.MeshLambertMaterial();
-    DensityBuoyancyCommonColorProfile.poolSurfaceProperty.link( poolSurfaceColor => {
+    densityBuoyancyCommonColorProfile.poolSurfaceProperty.link( poolSurfaceColor => {
       poolMaterial.color = ThreeUtils.colorToThree( poolSurfaceColor );
     } );
 
@@ -479,7 +479,7 @@ class DensityBuoyancyScreenView extends ScreenView {
       const texture = camera.renderTarget.texture;
 
       this.sceneNode.stage.threeScene.add( camera );
-      this.sceneNode.stage.threeScene.background = ThreeUtils.colorToThree( DensityBuoyancyCommonColorProfile.skyBottomProperty.value );
+      this.sceneNode.stage.threeScene.background = ThreeUtils.colorToThree( densityBuoyancyCommonColorProfile.skyBottomProperty.value );
       camera.position.set( 0, 0, 0 );
       camera.update( this.sceneNode.stage.threeRenderer, this.sceneNode.stage.threeScene );
       this.sceneNode.stage.threeScene.background = null;
@@ -809,7 +809,7 @@ class DensityBuoyancyScreenView extends ScreenView {
       const waterMaterial = new THREE.MeshLambertMaterial( {
         transparent: true
       } );
-      const waterColor = DensityBuoyancyCommonColorProfile.materialWaterProperty.value;
+      const waterColor = densityBuoyancyCommonColorProfile.materialWaterProperty.value;
       waterMaterial.color = ThreeUtils.colorToThree( waterColor );
       waterMaterial.opacity = waterColor.alpha;
 
@@ -851,7 +851,7 @@ class DensityBuoyancyScreenView extends ScreenView {
       const waterMaterial = new THREE.MeshLambertMaterial( {
         transparent: true
       } );
-      const waterColor = DensityBuoyancyCommonColorProfile.materialWaterProperty.value;
+      const waterColor = densityBuoyancyCommonColorProfile.materialWaterProperty.value;
       waterMaterial.color = ThreeUtils.colorToThree( waterColor );
       waterMaterial.opacity = waterColor.alpha;
 

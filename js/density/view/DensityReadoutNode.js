@@ -18,7 +18,7 @@ import Node from '../../../../scenery/js/nodes/Node.js';
 import Rectangle from '../../../../scenery/js/nodes/Rectangle.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
 import Material from '../../common/model/Material.js';
-import DensityBuoyancyCommonColorProfile from '../../common/view/densityBuoyancyCommonColorProfile.js';
+import densityBuoyancyCommonColorProfile from '../../common/view/densityBuoyancyCommonColorProfile.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import densityBuoyancyCommonStrings from '../../densityBuoyancyCommonStrings.js';
 
@@ -98,10 +98,10 @@ class DensityReadoutNode extends Node {
     };
 
     const primaryArrow = new ArrowNode( 0, -7, 0, 0, merge( {
-      fill: DensityBuoyancyCommonColorProfile.labelAProperty
+      fill: densityBuoyancyCommonColorProfile.labelAProperty
     }, arrowOptions ) );
     const primaryLabel = new Text( '', merge( {
-      fill: DensityBuoyancyCommonColorProfile.labelAProperty
+      fill: densityBuoyancyCommonColorProfile.labelAProperty
     }, labelOptions ) );
     const primaryMarker = new Node( {
       children: [
@@ -112,10 +112,10 @@ class DensityReadoutNode extends Node {
     this.addChild( primaryMarker );
 
     const secondaryArrow = new ArrowNode( 0, 7, 0, 0, merge( {
-      fill: DensityBuoyancyCommonColorProfile.labelBProperty
+      fill: densityBuoyancyCommonColorProfile.labelBProperty
     }, arrowOptions ) );
     const secondaryLabel = new Text( '', merge( {
-      fill: DensityBuoyancyCommonColorProfile.labelBProperty
+      fill: densityBuoyancyCommonColorProfile.labelBProperty
     }, labelOptions ) );
     const secondaryMarker = new Node( {
       children: [

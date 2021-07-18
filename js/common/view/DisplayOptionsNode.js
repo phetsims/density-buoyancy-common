@@ -19,7 +19,7 @@ import Checkbox from '../../../../sun/js/Checkbox.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import densityBuoyancyCommonStrings from '../../densityBuoyancyCommonStrings.js';
 import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
-import DensityBuoyancyCommonColorProfile from './densityBuoyancyCommonColorProfile.js';
+import densityBuoyancyCommonColorProfile from './densityBuoyancyCommonColorProfile.js';
 
 // constants
 const arrowSpacing = 15;
@@ -65,7 +65,7 @@ class DisplayOptionsNode extends VBox {
           xAlign: 'left'
         } ),
         new ArrowNode( 0, 0, arrowLength, 0, merge( {
-          fill: DensityBuoyancyCommonColorProfile.gravityForceProperty
+          fill: densityBuoyancyCommonColorProfile.gravityForceProperty
         }, arrowOptions ) )
       ]
     } );
@@ -78,7 +78,7 @@ class DisplayOptionsNode extends VBox {
           xAlign: 'left'
         } ),
         new ArrowNode( 0, 0, arrowLength, 0, merge( {
-          fill: DensityBuoyancyCommonColorProfile.buoyancyForceProperty
+          fill: densityBuoyancyCommonColorProfile.buoyancyForceProperty
         }, arrowOptions ) )
       ]
     } );
@@ -91,7 +91,7 @@ class DisplayOptionsNode extends VBox {
           xAlign: 'left'
         } ),
         new ArrowNode( 0, 0, arrowLength, 0, merge( {
-          fill: DensityBuoyancyCommonColorProfile.contactForceProperty
+          fill: densityBuoyancyCommonColorProfile.contactForceProperty
         }, arrowOptions ) )
       ]
     } );

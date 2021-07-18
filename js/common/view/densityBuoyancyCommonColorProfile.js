@@ -13,7 +13,7 @@ import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 
 // Initial colors for each profile, by string key. Only profile currently is default (still helpful for making color
 // tweaks with the top-level files)
-const DensityBuoyancyCommonColorProfile = new ColorProfile( [ 'default' ], {
+const densityBuoyancyCommonColorProfile = new ColorProfile( [ 'default' ], {
   // Color recommended in https://github.com/phetsims/density/issues/6#issuecomment-600911868
   panelBackground: { default: new Color( 240, 240, 240 ) },
 
@@ -77,6 +77,6 @@ const DensityBuoyancyCommonColorProfile = new ColorProfile( [ 'default' ], {
   materialWater: { default: new Color( 0, 128, 255, 0.4 ) }
 } );
 
-densityBuoyancyCommon.register( 'DensityBuoyancyCommonColorProfile', DensityBuoyancyCommonColorProfile );
+densityBuoyancyCommon.register( 'densityBuoyancyCommonColorProfile', densityBuoyancyCommonColorProfile );
 
-export default DensityBuoyancyCommonColorProfile;
+export default densityBuoyancyCommonColorProfile;

@@ -17,7 +17,7 @@ import Text from '../../../../scenery/js/nodes/Text.js';
 import Panel from '../../../../sun/js/Panel.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import densityBuoyancyCommonStrings from '../../densityBuoyancyCommonStrings.js';
-import DensityBuoyancyCommonColorProfile from './DensityBuoyancyCommonColorProfile.js';
+import DensityBuoyancyCommonColorProfile from './densityBuoyancyCommonColorProfile.js';
 
 // constants
 const arrowOptions = {

@@ -12,7 +12,7 @@ import merge from '../../../../phet-core/js/merge.js';
 import Color from '../../../../scenery/js/util/Color.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import densityBuoyancyCommonStrings from '../../densityBuoyancyCommonStrings.js';
-import DensityBuoyancyCommonColorProfile from '../view/DensityBuoyancyCommonColorProfile.js';
+import DensityBuoyancyCommonColorProfile from '../view/densityBuoyancyCommonColorProfile.js';
 
 class Material {
   /**

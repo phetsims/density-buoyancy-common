@@ -12,7 +12,7 @@ import Cuboid from '../../common/model/Cuboid.js';
 import DensityBuoyancyModal from '../../common/model/DensityBuoyancyModal.js';
 import DensityBuoyancyModel from '../../common/model/DensityBuoyancyModel.js';
 import Material from '../../common/model/Material.js';
-import DensityBuoyancyCommonColorProfile from '../../common/view/DensityBuoyancyCommonColorProfile.js';
+import DensityBuoyancyCommonColorProfile from '../../common/view/densityBuoyancyCommonColorProfile.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 
 // constants

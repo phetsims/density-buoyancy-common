@@ -9,7 +9,7 @@
 import merge from '../../../../phet-core/js/merge.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import BlockControlNode from './BlockControlNode.js';
-import DensityBuoyancyCommonColorProfile from './DensityBuoyancyCommonColorProfile.js';
+import DensityBuoyancyCommonColorProfile from './densityBuoyancyCommonColorProfile.js';
 import PrimarySecondaryPanelsNode from './PrimarySecondaryPanelsNode.js';
 
 class PrimarySecondaryControlsNode extends PrimarySecondaryPanelsNode {

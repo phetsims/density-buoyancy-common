@@ -19,7 +19,7 @@ import Checkbox from '../../../../sun/js/Checkbox.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import densityBuoyancyCommonStrings from '../../densityBuoyancyCommonStrings.js';
 import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
-import DensityBuoyancyCommonColorProfile from './DensityBuoyancyCommonColorProfile.js';
+import DensityBuoyancyCommonColorProfile from './densityBuoyancyCommonColorProfile.js';
 
 // constants
 const arrowSpacing = 15;

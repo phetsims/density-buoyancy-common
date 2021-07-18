@@ -17,7 +17,7 @@ import Panel from '../../../../sun/js/Panel.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import densityBuoyancyCommonStrings from '../../densityBuoyancyCommonStrings.js';
 import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
-import DensityBuoyancyCommonColorProfile from './DensityBuoyancyCommonColorProfile.js';
+import DensityBuoyancyCommonColorProfile from './densityBuoyancyCommonColorProfile.js';
 import LabelTexture from './LabelTexture.js';
 
 // constants

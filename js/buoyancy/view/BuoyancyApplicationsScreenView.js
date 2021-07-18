@@ -29,7 +29,7 @@ import RectangularRadioButtonGroup from '../../../../sun/js/buttons/RectangularR
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 import Cuboid from '../../common/model/Cuboid.js';
 import Material from '../../common/model/Material.js';
-import DensityBuoyancyCommonColorProfile from '../../common/view/DensityBuoyancyCommonColorProfile.js';
+import DensityBuoyancyCommonColorProfile from '../../common/view/densityBuoyancyCommonColorProfile.js';
 import DensityBuoyancyScreenView from '../../common/view/DensityBuoyancyScreenView.js';
 import DensityControlNode from '../../common/view/DensityControlNode.js';
 import DisplayOptionsNode from '../../common/view/DisplayOptionsNode.js';

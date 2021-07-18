@@ -49,7 +49,7 @@ import VerticalCylinder from '../model/VerticalCylinder.js';
 import ConeView from './ConeView.js';
 import CuboidView from './CuboidView.js';
 import DebugView from './DebugView.js';
-import DensityBuoyancyCommonColorProfile from './DensityBuoyancyCommonColorProfile.js';
+import DensityBuoyancyCommonColorProfile from './densityBuoyancyCommonColorProfile.js';
 import DensityMaterials from './DensityMaterials.js';
 import EllipsoidView from './EllipsoidView.js';
 import ForceDiagramNode from './ForceDiagramNode.js';

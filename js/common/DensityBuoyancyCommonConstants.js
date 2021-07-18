@@ -8,7 +8,7 @@
 
 import PhetFont from '../../../scenery-phet/js/PhetFont.js';
 import densityBuoyancyCommon from '../densityBuoyancyCommon.js';
-import DensityBuoyancyCommonColorProfile from './view/DensityBuoyancyCommonColorProfile.js';
+import DensityBuoyancyCommonColorProfile from './view/densityBuoyancyCommonColorProfile.js';
 
 const CORNER_RADIUS = 5;
 

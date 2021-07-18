@@ -17,7 +17,7 @@ import DensityBuoyancyModel from '../../common/model/DensityBuoyancyModel.js';
 import Mass from '../../common/model/Mass.js';
 import Material from '../../common/model/Material.js';
 import Scale from '../../common/model/Scale.js';
-import DensityBuoyancyCommonColorProfile from '../../common/view/DensityBuoyancyCommonColorProfile.js';
+import DensityBuoyancyCommonColorProfile from '../../common/view/densityBuoyancyCommonColorProfile.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 
 // constants

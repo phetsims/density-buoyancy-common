@@ -15,7 +15,7 @@ import doubleCuboidIcon from '../../../mipmaps/double-cuboid-icon_png.js';
 import singleCuboidIcon from '../../../mipmaps/single-cuboid-icon_png.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonQueryParameters from '../DensityBuoyancyCommonQueryParameters.js';
-import DensityBuoyancyCommonColorProfile from './DensityBuoyancyCommonColorProfile.js';
+import DensityBuoyancyCommonColorProfile from './densityBuoyancyCommonColorProfile.js';
 
 const aMaterial = new THREE.MeshLambertMaterial();
 const bMaterial = new THREE.MeshLambertMaterial();

@@ -80,7 +80,10 @@ class BoatView extends MassView {
       boat.displacementVolumeProperty,
       boat.basin.liquidVolumeProperty
     ], ( y, boatDisplacement, boatLiquidVolume ) => {
-      if ( boatLiquidVolume > 0 ) {
+      const maximumVolume = boat.getBasinVolume( Number.POSITIVE_INFINITY );
+      const volume = boat.basin.liquidVolumeProperty.value;
+      const isFull = volume >= maximumVolume - 1e-7;
+      if ( boatLiquidVolume > 0 && ( !isFull || BoatDesign.shouldBoatWaterDisplayIfFull( liquidYInterpolatedProperty.value - boat.matrix.translation.y, boatDisplacement / 0.001 ) ) ) {
         BoatDesign.fillCrossSectionVertexArray( y - boat.matrix.translation.y, boatDisplacement / 0.001, crossSectionPositionArray );
       }
       else {

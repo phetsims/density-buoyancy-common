@@ -298,6 +298,20 @@ class BoatDesign {
   }
 
   /**
+   * @public
+   *
+   * @param {number} boatY
+   * @param {number} liters
+   * @returns {boolean}
+   */
+  static shouldBoatWaterDisplayIfFull( boatY, liters ) {
+    const scale = Math.pow( liters, 1 / 3 ) * BoatDesign.ONE_LITER_SCALE_MULTIPLIER;
+    const designY = boatY / scale + BoatDesign.DESIGN_CENTROID.y;
+
+    return designY <= 1e-3 && scale > 0;
+  }
+
+  /**
    * Fills the positionArray with a X,Z cross section of the water around a boat at a given y value (for a given liters
    * value).
    * @public
@@ -313,7 +327,7 @@ class BoatDesign {
    */
   static fillWaterVertexArray( waterY, boatX, boatY, liters, poolBounds, positionArray, wasFilled ) {
     // TODO: reduce duplication with below
-    const insideBottomY = -BoatDesign.DESIGN_BOAT_HEIGHT + BoatDesign.DESIGN_WALL_THICKNESS;
+    const outsideBottomY = -BoatDesign.DESIGN_BOAT_HEIGHT;
     const scale = Math.pow( liters, 1 / 3 ) * BoatDesign.ONE_LITER_SCALE_MULTIPLIER;
     const designY = boatY / scale + BoatDesign.DESIGN_CENTROID.y;
 
@@ -326,7 +340,7 @@ class BoatDesign {
     ), poolBounds.maxZ );
 
     // If we have a low enough value, just zero things out (won't show anything)
-    const isFilled = designY < insideBottomY || designY > 1e-3 || scale === 0;
+    const isFilled = designY < outsideBottomY || designY > 1e-3 || scale === 0;
     if ( isFilled ) {
 
       // Top

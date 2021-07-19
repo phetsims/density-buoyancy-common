@@ -24,6 +24,9 @@ class BoatView extends MassView {
 
     super( boat, new THREE.Geometry(), reflectedTexture, refractedTexture );
 
+    const bottomClipPlane = new THREE.Plane( new THREE.Vector3( 0, -1, 0 ), 0 );
+    const topClipPlane = new THREE.Plane( new THREE.Vector3( 0, 1, 0 ), 0 );
+
     const boatOneLiterGeometry = BoatDesign.getPrimaryGeometry( 1 );
 
     const boatGroup = new THREE.Group();
@@ -36,25 +39,49 @@ class BoatView extends MassView {
       boatGroup.scale.z = scale;
     } );
 
-    const backMaterial = new THREE.MeshPhongMaterial( {
+    const backTopMaterial = new THREE.MeshPhongMaterial( {
       color: 0xffffff,
       opacity: 0.4,
       transparent: true,
       side: THREE.BackSide,
-      depthWrite: false
+      depthWrite: false,
+      clippingPlanes: [ topClipPlane ]
     } );
-    const back = new THREE.Mesh( boatOneLiterGeometry, backMaterial );
-    boatGroup.add( back );
+    const backTop = new THREE.Mesh( boatOneLiterGeometry, backTopMaterial );
+    boatGroup.add( backTop );
 
-    const frontMaterial = new THREE.MeshPhongMaterial( {
+    const backBottomMaterial = new THREE.MeshPhongMaterial( {
+      color: 0x33FF33,
+      opacity: 0.8,
+      transparent: true,
+      side: THREE.BackSide,
+      depthWrite: false,
+      clippingPlanes: [ bottomClipPlane ]
+    } );
+    const backBottom = new THREE.Mesh( boatOneLiterGeometry, backBottomMaterial );
+    boatGroup.add( backBottom );
+
+    const frontTopMaterial = new THREE.MeshPhongMaterial( {
       color: 0xffffff,
       opacity: 0.4,
       transparent: true,
       side: THREE.FrontSide,
-      depthWrite: false
+      depthWrite: false,
+      clippingPlanes: [ topClipPlane ]
     } );
-    const front = new THREE.Mesh( boatOneLiterGeometry, frontMaterial );
-    boatGroup.add( front );
+    const frontTop = new THREE.Mesh( boatOneLiterGeometry, frontTopMaterial );
+    boatGroup.add( frontTop );
+
+    const frontBottomMaterial = new THREE.MeshPhongMaterial( {
+      color: 0x33FF33,
+      opacity: 0.8,
+      transparent: true,
+      side: THREE.FrontSide,
+      depthWrite: false,
+      clippingPlanes: [ bottomClipPlane ]
+    } );
+    const frontBottom = new THREE.Mesh( boatOneLiterGeometry, frontBottomMaterial );
+    boatGroup.add( frontBottom );
 
     const frontForDepth = new THREE.Mesh( boatOneLiterGeometry, new THREE.MeshPhongMaterial( {
       color: 0xFF0000,
@@ -91,6 +118,9 @@ class BoatView extends MassView {
       }
       interiorSurfaceGeometry.attributes.position.needsUpdate = true;
       interiorSurfaceGeometry.computeBoundingSphere();
+
+      bottomClipPlane.constant = boat.basin.liquidYInterpolatedProperty.value;
+      topClipPlane.constant = -boat.basin.liquidYInterpolatedProperty.value;
     } );
 
     const interiorSurfaceMaterial = new THREE.MeshPhongMaterial( {
@@ -109,6 +139,10 @@ class BoatView extends MassView {
 
       interiorSurfaceMaterial.color = threeColor;
       interiorSurfaceMaterial.opacity = alpha;
+      backBottomMaterial.color = threeColor;
+      frontBottomMaterial.color = threeColor;
+      backBottomMaterial.opacity = alpha;
+      frontBottomMaterial.opacity = alpha;
     } );
 
     this.add( interiorSurface );
@@ -117,8 +151,10 @@ class BoatView extends MassView {
     [
       frontForDepth,
       interiorSurface,
-      front,
-      back
+      frontBottom,
+      frontTop,
+      backBottom,
+      backTop
     ].forEach( ( view, index ) => {
       view.renderOrder = -( index + 1 );
     } );

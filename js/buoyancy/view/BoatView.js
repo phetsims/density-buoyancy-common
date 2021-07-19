@@ -27,6 +27,9 @@ class BoatView extends MassView {
     const bottomClipPlane = new THREE.Plane( new THREE.Vector3( 0, -1, 0 ), 0 );
     const topClipPlane = new THREE.Plane( new THREE.Vector3( 0, 1, 0 ), 0 );
 
+    const boatOneLiterInteriorGeometry = BoatDesign.getPrimaryGeometry( 1, false, false, true );
+    const boatOneLiterExteriorGeometry = BoatDesign.getPrimaryGeometry( 1, true, true, false );
+
     const boatOneLiterGeometry = BoatDesign.getPrimaryGeometry( 1 );
 
     const boatGroup = new THREE.Group();
@@ -39,6 +42,16 @@ class BoatView extends MassView {
       boatGroup.scale.z = scale;
     } );
 
+    const backExteriorMaterial = new THREE.MeshPhongMaterial( {
+      color: 0xffffff,
+      opacity: 0.4,
+      transparent: true,
+      side: THREE.BackSide,
+      depthWrite: false
+    } );
+    const backExterior = new THREE.Mesh( boatOneLiterExteriorGeometry, backExteriorMaterial );
+    boatGroup.add( backExterior );
+
     const backTopMaterial = new THREE.MeshPhongMaterial( {
       color: 0xffffff,
       opacity: 0.4,
@@ -47,7 +60,7 @@ class BoatView extends MassView {
       depthWrite: false,
       clippingPlanes: [ topClipPlane ]
     } );
-    const backTop = new THREE.Mesh( boatOneLiterGeometry, backTopMaterial );
+    const backTop = new THREE.Mesh( boatOneLiterInteriorGeometry, backTopMaterial );
     boatGroup.add( backTop );
 
     const backBottomMaterial = new THREE.MeshPhongMaterial( {
@@ -58,8 +71,18 @@ class BoatView extends MassView {
       depthWrite: false,
       clippingPlanes: [ bottomClipPlane ]
     } );
-    const backBottom = new THREE.Mesh( boatOneLiterGeometry, backBottomMaterial );
+    const backBottom = new THREE.Mesh( boatOneLiterInteriorGeometry, backBottomMaterial );
     boatGroup.add( backBottom );
+
+    const frontExteriorMaterial = new THREE.MeshPhongMaterial( {
+      color: 0xffffff,
+      opacity: 0.4,
+      transparent: true,
+      side: THREE.FrontSide,
+      depthWrite: false
+    } );
+    const frontExterior = new THREE.Mesh( boatOneLiterExteriorGeometry, frontExteriorMaterial );
+    boatGroup.add( frontExterior );
 
     const frontTopMaterial = new THREE.MeshPhongMaterial( {
       color: 0xffffff,
@@ -69,7 +92,7 @@ class BoatView extends MassView {
       depthWrite: false,
       clippingPlanes: [ topClipPlane ]
     } );
-    const frontTop = new THREE.Mesh( boatOneLiterGeometry, frontTopMaterial );
+    const frontTop = new THREE.Mesh( boatOneLiterInteriorGeometry, frontTopMaterial );
     boatGroup.add( frontTop );
 
     const frontBottomMaterial = new THREE.MeshPhongMaterial( {
@@ -80,7 +103,7 @@ class BoatView extends MassView {
       depthWrite: false,
       clippingPlanes: [ bottomClipPlane ]
     } );
-    const frontBottom = new THREE.Mesh( boatOneLiterGeometry, frontBottomMaterial );
+    const frontBottom = new THREE.Mesh( boatOneLiterInteriorGeometry, frontBottomMaterial );
     boatGroup.add( frontBottom );
 
     const frontForDepth = new THREE.Mesh( boatOneLiterGeometry, new THREE.MeshPhongMaterial( {
@@ -119,8 +142,14 @@ class BoatView extends MassView {
       interiorSurfaceGeometry.attributes.position.needsUpdate = true;
       interiorSurfaceGeometry.computeBoundingSphere();
 
-      bottomClipPlane.constant = boat.basin.liquidYInterpolatedProperty.value;
-      topClipPlane.constant = -boat.basin.liquidYInterpolatedProperty.value;
+      if ( boat.basin.liquidVolumeProperty.value > 1e-7 ) {
+        bottomClipPlane.constant = boat.basin.liquidYInterpolatedProperty.value;
+        topClipPlane.constant = -boat.basin.liquidYInterpolatedProperty.value;
+      }
+      else {
+        bottomClipPlane.constant = -1000;
+        topClipPlane.constant = 1000;
+      }
     } );
 
     const interiorSurfaceMaterial = new THREE.MeshPhongMaterial( {
@@ -153,8 +182,10 @@ class BoatView extends MassView {
       interiorSurface,
       frontBottom,
       frontTop,
+      frontExterior,
       backBottom,
-      backTop
+      backTop,
+      backExterior
     ].forEach( ( view, index ) => {
       view.renderOrder = -( index + 1 );
     } );

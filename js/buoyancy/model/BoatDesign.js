@@ -471,9 +471,12 @@ class BoatDesign {
    * @public
    *
    * @param {number} [liters]
+   * @param {boolean} [includeExterior]
+   * @param {boolean} [includeGunwale]
+   * @param {boolean} [includeInterior]
    * @returns {THREE.BufferGeometry}
    */
-  static getPrimaryGeometry( liters = 1 ) {
+  static getPrimaryGeometry( liters = 1, includeExterior = true, includeGunwale = true, includeInterior = true ) {
     const positions = [];
     const normals = [];
     const uvs = [];
@@ -636,43 +639,43 @@ class BoatDesign {
     const interiorNormalRows = normalizeRows( interiorRows ); // TODO: we'll presumably need to reverse these
 
     // Z+ exterior side
-    writeGrid( exteriorRows, negateRows( exteriorNormalRows ), true );
+    includeExterior && writeGrid( exteriorRows, negateRows( exteriorNormalRows ), true );
 
     // Z+ interior side
-    writeGrid( interiorRows, interiorNormalRows, false );
+    includeInterior && writeGrid( interiorRows, interiorNormalRows, false );
 
     // Z- exterior side
-    writeGrid( flipRows( exteriorRows ), flipRows( negateRows( exteriorNormalRows ) ), false );
+    includeExterior && writeGrid( flipRows( exteriorRows ), flipRows( negateRows( exteriorNormalRows ) ), false );
 
     // Z- interior side
-    writeGrid( flipRows( interiorRows ), flipRows( interiorNormalRows ), true );
+    includeInterior && writeGrid( flipRows( interiorRows ), flipRows( interiorNormalRows ), true );
 
     // Top of the boat bottom
-    writeFlat( interiorRows[ interiorRows.length - 1 ], flipRow( interiorRows[ interiorRows.length - 1 ] ), new Vector3( 0, 1, 0 ) );
+    includeInterior && writeFlat( interiorRows[ interiorRows.length - 1 ], flipRow( interiorRows[ interiorRows.length - 1 ] ), new Vector3( 0, 1, 0 ) );
 
     // Bottom of the boat bottom
-    writeFlat( flipRow( exteriorRows[ exteriorRows.length - 1 ] ), exteriorRows[ exteriorRows.length - 1 ], new Vector3( 0, -1, 0 ) );
+    includeExterior && writeFlat( flipRow( exteriorRows[ exteriorRows.length - 1 ] ), exteriorRows[ exteriorRows.length - 1 ], new Vector3( 0, -1, 0 ) );
 
     // Z+ gunwale
-    writeFlat( exteriorRows[ 0 ], interiorRows[ 0 ], new Vector3( 0, 1, 0 ) );
+    includeGunwale && writeFlat( exteriorRows[ 0 ], interiorRows[ 0 ], new Vector3( 0, 1, 0 ) );
 
     // Z- gunwale
-    writeFlat( flipRow( interiorRows[ 0 ] ), flipRow( exteriorRows[ 0 ] ), new Vector3( 0, 1, 0 ) );
+    includeGunwale && writeFlat( flipRow( interiorRows[ 0 ] ), flipRow( exteriorRows[ 0 ] ), new Vector3( 0, 1, 0 ) );
 
     // Stern gunwale
     const sternGunwaleRow = [
       interiorRows[ 0 ][ interiorRows[ 0 ].length - 1 ],
       exteriorRows[ 0 ][ exteriorRows[ 0 ].length - 1 ]
     ];
-    writeFlat( sternGunwaleRow, flipRow( sternGunwaleRow ), new Vector3( 0, 1, 0 ) );
+    includeGunwale && writeFlat( sternGunwaleRow, flipRow( sternGunwaleRow ), new Vector3( 0, 1, 0 ) );
 
     // Stern interior
     const sternInteriorRow = interiorRows.map( row => row[ row.length - 1 ] );
-    writeFlat( flipRow( sternInteriorRow ), sternInteriorRow, new Vector3( -1, 0, 0 ) );
+    includeInterior && writeFlat( flipRow( sternInteriorRow ), sternInteriorRow, new Vector3( -1, 0, 0 ) );
 
     // Stern exterior
     const sternExteriorRow = exteriorRows.map( row => row[ row.length - 1 ] );
-    writeFlat( sternExteriorRow, flipRow( sternExteriorRow ), new Vector3( 1, 0, 0 ) );
+    includeExterior && writeFlat( sternExteriorRow, flipRow( sternExteriorRow ), new Vector3( 1, 0, 0 ) );
 
     const boatGeometry = new THREE.BufferGeometry();
     boatGeometry.addAttribute( 'position', new THREE.BufferAttribute( new Float32Array( positions ), 3 ) );

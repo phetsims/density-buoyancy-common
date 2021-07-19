@@ -20,12 +20,14 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
+import Bounds2 from '../../../../dot/js/Bounds2.js';
 import Bounds3 from '../../../../dot/js/Bounds3.js';
 import Utils from '../../../../dot/js/Utils.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
 import Cubic from '../../../../kite/js/segments/Cubic.js';
 import Line from '../../../../kite/js/segments/Line.js';
+import ThreeUtils from '../../../../mobius/js/ThreeUtils.js';
 import Color from '../../../../scenery/js/util/Color.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 
@@ -269,13 +271,139 @@ class BoatDesign {
   }
 
   /**
+   * Creates a coordinate float array to be used with fillWaterVertexArray, for three.js purposes.
+   * @public
+   *
+   * @returns {Float32Array}
+   */
+  static createWaterVertexArray() {
+    return new Float32Array( ( CROSS_SECTION_SAMPLES + 1.5 ) * 3 * 3 * 4 );
+  }
+
+  /**
+   * Creates a coordinate float array to be used with fillWaterVertexArray, for three.js purposes.
+   * @public
+   *
+   * @returns {Float32Array}
+   */
+  static createWaterNormalArray() {
+    const array = BoatDesign.createWaterVertexArray();
+
+    for ( let i = 0; i < array.length / 3; i++ ) {
+      // The first 6 normals should be 0,0,1 (front). After that, 0,1,0 (up)
+      array[ i * 3 + ( i < 6 ? 2 : 1 ) ] = 1;
+    }
+
+    return array;
+  }
+
+  /**
+   * Fills the positionArray with a X,Z cross section of the water around a boat at a given y value (for a given liters
+   * value).
+   * @public
+   *
+   * @param {number} waterY
+   * @param {number} boatX
+   * @param {number} boatY
+   * @param {number} liters
+   * @param {Bounds3} poolBounds
+   * @param {Float32Array} positionArray
+   * @param {boolean} wasFilled
+   * @returns {boolean} - Whether the water is completely filled
+   */
+  static fillWaterVertexArray( waterY, boatX, boatY, liters, poolBounds, positionArray, wasFilled ) {
+    // TODO: reduce duplication with below
+    const insideBottomY = -BoatDesign.DESIGN_BOAT_HEIGHT + BoatDesign.DESIGN_WALL_THICKNESS;
+    const scale = Math.pow( liters, 1 / 3 ) * BoatDesign.ONE_LITER_SCALE_MULTIPLIER;
+    const designY = boatY / scale + BoatDesign.DESIGN_CENTROID.y;
+
+    let index = 0;
+
+    // Front
+    index = ThreeUtils.writeFrontVertices( positionArray, index, new Bounds2(
+      poolBounds.minX, poolBounds.minY,
+      poolBounds.maxX, waterY
+    ), poolBounds.maxZ );
+
+    // If we have a low enough value, just zero things out (won't show anything)
+    const isFilled = designY < insideBottomY || designY > 1e-3 || scale === 0;
+    if ( isFilled ) {
+
+      // Top
+      index = ThreeUtils.writeTopVertices( positionArray, index, new Bounds2(
+        poolBounds.minX, poolBounds.minZ,
+        poolBounds.maxX, poolBounds.maxZ
+      ), waterY );
+    }
+    else {
+      const controlPoints = BoatDesign.getControlPoints( BoatDesign.getHeightRatioFromDesignY( designY ), false );
+      const cubic = new Cubic( ...controlPoints );
+
+      const x0 = ( cubic.positionAt( 0 ).x - BoatDesign.DESIGN_CENTROID.x ) * scale + boatX;
+      const x1 = ( cubic.positionAt( 1 ).x - BoatDesign.DESIGN_CENTROID.x ) * scale + boatX;
+
+      // TODO: reduce these allocations?
+
+      // Left top
+      index = ThreeUtils.writeTopVertices( positionArray, index, new Bounds2(
+        poolBounds.minX, poolBounds.minZ,
+        x0, poolBounds.maxZ
+      ), waterY );
+
+      // Right top
+      index = ThreeUtils.writeTopVertices( positionArray, index, new Bounds2(
+        x1, poolBounds.minZ,
+        poolBounds.maxX, poolBounds.maxZ
+      ), waterY );
+
+      for ( let i = 0; i < CROSS_SECTION_SAMPLES; i++ ) {
+        const t0 = i / CROSS_SECTION_SAMPLES;
+        const t1 = ( i + 1 ) / CROSS_SECTION_SAMPLES;
+
+        const p0 = cubic.positionAt( t0 );
+        const p1 = cubic.positionAt( t1 );
+
+        const p0x = ( p0.x - BoatDesign.DESIGN_CENTROID.x ) * scale + boatX;
+        const p0z = p0.y * scale;
+        const p1x = ( p1.x - BoatDesign.DESIGN_CENTROID.x ) * scale + boatX;
+        const p1z = p1.y * scale;
+
+        // Behind the boat
+        index = ThreeUtils.writeQuad(
+          positionArray, index,
+          p0x, waterY, poolBounds.minZ,
+          p0x, waterY, -p0z,
+          p1x, waterY, -p1z,
+          p1x, waterY, poolBounds.minZ
+        );
+
+        // In front of the boat
+        index = ThreeUtils.writeQuad(
+          positionArray, index,
+          p1x, waterY, poolBounds.maxZ,
+          p1x, waterY, p1z,
+          p0x, waterY, p0z,
+          p0x, waterY, poolBounds.maxZ
+        );
+      }
+    }
+
+    // If we were not filled before, we'll zero out the rest of the buffer
+    if ( !wasFilled || !isFilled ) {
+      positionArray.fill( 0, index );
+    }
+
+    return isFilled;
+  }
+
+  /**
    * Creates a coordinate float array to be used with fillCrossSectionVertexArray, for three.js purposes.
    * @public
    *
    * @returns {Float32Array}
    */
   static createCrossSectionVertexArray() {
-    return new Float32Array( CROSS_SECTION_SAMPLES * 6 * 3 );
+    return new Float32Array( CROSS_SECTION_SAMPLES * 3 * 3 * 2 );
   }
 
   /**
@@ -314,26 +442,13 @@ class BoatDesign {
       const p1x = ( p1.x - BoatDesign.DESIGN_CENTROID.x ) * scale;
       const p1z = p1.y * scale;
 
-      const index = 6 * 3 * i;
-
-      positionArray[ index + 0 ] = p0x;
-      positionArray[ index + 1 ] = y;
-      positionArray[ index + 2 ] = p0z;
-      positionArray[ index + 3 ] = p1x;
-      positionArray[ index + 4 ] = y;
-      positionArray[ index + 5 ] = p1z;
-      positionArray[ index + 6 ] = p1x;
-      positionArray[ index + 7 ] = y;
-      positionArray[ index + 8 ] = -p1z;
-      positionArray[ index + 9 ] = p0x;
-      positionArray[ index + 10 ] = y;
-      positionArray[ index + 11 ] = p0z;
-      positionArray[ index + 12 ] = p1x;
-      positionArray[ index + 13 ] = y;
-      positionArray[ index + 14 ] = -p1z;
-      positionArray[ index + 15 ] = p0x;
-      positionArray[ index + 16 ] = y;
-      positionArray[ index + 17 ] = -p0z;
+      ThreeUtils.writeQuad(
+        positionArray, 6 * 3 * i,
+        p0x, y, p0z,
+        p1x, y, p1z,
+        p1x, y, -p1z,
+        p0x, y, -p0z
+      );
     }
   }
 

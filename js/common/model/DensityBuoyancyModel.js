@@ -123,6 +123,9 @@ class DensityBuoyancyModel {
     // @public {Pool}
     this.pool = new Pool( this.poolBounds );
 
+    // @public {Boat|null} - We need to hook into a boat (if it exists) for displaying the water.
+    this.boat = null;
+
     // @public {Engine}
     this.engine = new P2Engine();
 

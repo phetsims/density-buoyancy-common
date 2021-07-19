@@ -75,8 +75,17 @@ class BoatView extends MassView {
     interiorSurfaceGeometry.addAttribute( 'normal', new THREE.BufferAttribute( crossSectionNormalArray, 3 ) );
 
     // @private {Multilink}
-    this.liquidMultilink = Property.multilink( [ boat.basin.liquidYInterpolatedProperty, boat.displacementVolumeProperty ], ( y, volume ) => {
-      BoatDesign.fillCrossSectionVertexArray( y - boat.matrix.translation.y, volume / 0.001, crossSectionPositionArray );
+    this.liquidMultilink = Property.multilink( [
+      boat.basin.liquidYInterpolatedProperty,
+      boat.displacementVolumeProperty,
+      boat.basin.liquidVolumeProperty
+    ], ( y, boatDisplacement, boatLiquidVolume ) => {
+      if ( boatLiquidVolume > 0 ) {
+        BoatDesign.fillCrossSectionVertexArray( y - boat.matrix.translation.y, boatDisplacement / 0.001, crossSectionPositionArray );
+      }
+      else {
+        crossSectionPositionArray.fill( 0 );
+      }
       interiorSurfaceGeometry.attributes.position.needsUpdate = true;
       interiorSurfaceGeometry.computeBoundingSphere();
     } );
@@ -85,8 +94,7 @@ class BoatView extends MassView {
       color: 0x33FF33,
       opacity: 0.8,
       transparent: true,
-      depthWrite: false,
-      side: THREE.DoubleSide
+      depthWrite: false
     } );
     const interiorSurface = new THREE.Mesh( interiorSurfaceGeometry, interiorSurfaceMaterial );
 
@@ -104,9 +112,8 @@ class BoatView extends MassView {
 
     // Set render order for all elements
     [
-      top,
-      interiorSurface,
       frontForDepth,
+      interiorSurface,
       front,
       back
     ].forEach( ( view, index ) => {

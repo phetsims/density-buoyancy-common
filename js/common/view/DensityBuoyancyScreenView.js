@@ -34,6 +34,7 @@ import Text from '../../../../scenery/js/nodes/Text.js';
 import LinearGradient from '../../../../scenery/js/util/LinearGradient.js';
 import Checkbox from '../../../../sun/js/Checkbox.js';
 import Boat from '../../buoyancy/model/Boat.js';
+import BoatDesign from '../../buoyancy/model/BoatDesign.js';
 import Bottle from '../../buoyancy/model/Bottle.js';
 import BoatView from '../../buoyancy/view/BoatView.js';
 import BottleView from '../../buoyancy/view/BottleView.js';
@@ -49,7 +50,6 @@ import VerticalCylinder from '../model/VerticalCylinder.js';
 import ConeView from './ConeView.js';
 import CuboidView from './CuboidView.js';
 import DebugView from './DebugView.js';
-import densityBuoyancyCommonColorProfile from './densityBuoyancyCommonColorProfile.js';
 import DensityMaterials from './DensityMaterials.js';
 import EllipsoidView from './EllipsoidView.js';
 import ForceDiagramNode from './ForceDiagramNode.js';
@@ -59,6 +59,7 @@ import ScaleReadoutNode from './ScaleReadoutNode.js';
 import ScaleView from './ScaleView.js';
 import VerticalCylinderView from './VerticalCylinderView.js';
 import WaterLevelIndicator from './WaterLevelIndicator.js';
+import densityBuoyancyCommonColorProfile from './densityBuoyancyCommonColorProfile.js';
 
 // constants
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
@@ -409,36 +410,9 @@ class DensityBuoyancyScreenView extends ScreenView {
 
     // Water
     const waterGeometry = new THREE.BufferGeometry();
-    waterGeometry.addAttribute( 'position', new THREE.BufferAttribute( new Float32Array( [
-      // Front
-      ...ThreeUtils.frontVertices( new Bounds2(
-        model.poolBounds.minX, model.poolBounds.minY,
-        model.poolBounds.maxX, model.poolBounds.maxY
-      ), model.poolBounds.maxZ ),
-
-      // Top
-      ...ThreeUtils.topVertices( new Bounds2(
-        model.poolBounds.minX, model.poolBounds.minZ,
-        model.poolBounds.maxX, model.poolBounds.maxZ
-      ), model.poolBounds.maxY )
-    ] ), 3 ) );
-    waterGeometry.addAttribute( 'normal', new THREE.BufferAttribute( new Float32Array( [
-      // Front
-      0, 0, 1,
-      0, 0, 1,
-      0, 0, 1,
-      0, 0, 1,
-      0, 0, 1,
-      0, 0, 1,
-
-      // Top
-      0, 1, 0,
-      0, 1, 0,
-      0, 1, 0,
-      0, 1, 0,
-      0, 1, 0,
-      0, 1, 0
-    ] ), 3 ) );
+    const waterPositionArray = BoatDesign.createWaterVertexArray();
+    waterGeometry.addAttribute( 'position', new THREE.BufferAttribute( waterPositionArray, 3 ) );
+    waterGeometry.addAttribute( 'normal', new THREE.BufferAttribute( BoatDesign.createWaterNormalArray(), 3 ) );
     const waterMaterial = new THREE.MeshLambertMaterial( {
       transparent: true,
       depthWrite: false
@@ -452,23 +426,15 @@ class DensityBuoyancyScreenView extends ScreenView {
     const waterMesh = new THREE.Mesh( waterGeometry, waterMaterial );
     this.sceneNode.stage.threeScene.add( waterMesh );
 
+    let wasFilled = false;
     model.pool.liquidYInterpolatedProperty.link( y => {
-      const vertices = [
-        // Front
-        ...ThreeUtils.frontVertices( new Bounds2(
-          model.poolBounds.minX, model.poolBounds.minY,
-          model.poolBounds.maxX, y
-        ), model.poolBounds.maxZ ),
-
-        // Top
-        ...ThreeUtils.topVertices( new Bounds2(
-          model.poolBounds.minX, model.poolBounds.minZ,
-          model.poolBounds.maxX, model.poolBounds.maxZ
-        ), y )
-      ];
-      for ( let i = 0; i < vertices.length; i++ ) {
-        waterGeometry.attributes.position.array[ i ] = vertices[ i ];
-      }
+      const boat = model.getBoat();
+      wasFilled = BoatDesign.fillWaterVertexArray(
+        y,
+        boat ? boat.matrix.translation.x : 0,
+        boat ? y - boat.matrix.translation.y : 0,
+        boat ? boat.displacementVolumeProperty.value / 0.001 : 0,
+        model.poolBounds, waterPositionArray, wasFilled );
       waterGeometry.attributes.position.needsUpdate = true;
       waterGeometry.computeBoundingSphere();
     } );

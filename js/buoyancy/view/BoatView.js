@@ -148,7 +148,7 @@ class BoatView extends MassView {
 
       const relativeBoatLiquidY = boatLiquidY - boat.matrix.translation.y;
 
-      const maximumVolume = boat.getBasinVolume( Number.POSITIVE_INFINITY );
+      const maximumVolume = boat.basin.getEmptyVolume( Number.POSITIVE_INFINITY );
       const volume = boat.basin.liquidVolumeProperty.value;
       const isFull = volume >= maximumVolume - 1e-7;
       if ( boatLiquidVolume > 0 && ( !isFull || BoatDesign.shouldBoatWaterDisplayIfFull( liquidYInterpolatedProperty.value - boat.matrix.translation.y, liters ) ) ) {

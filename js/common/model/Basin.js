@@ -168,11 +168,16 @@ class Basin {
       return;
     }
 
+    // Due to shapes used, there is no analytical solution.
     this.liquidYInterpolatedProperty.setNextValue( Basin.findRoot(
       this.stepBottom,
       this.stepTop,
       1e-7,
+
+      // We're finding the root (zero), so that's where the empty volume equals the liquid volume
       yTest => this.getEmptyVolume( yTest ) - liquidVolume,
+
+      // The derivative (change of volume) happens to be the area at that section
       yTest => this.getEmptyArea( yTest )
     ) );
   }
@@ -187,7 +192,7 @@ class Basin {
   }
 
   /**
-   * Hybrid root-finding given our constraints.
+   * Hybrid root-finding given our constraints (guaranteed interval, value/derivative). Combines Newton's and bisection.
    * @private
    *
    * @param {number} minX

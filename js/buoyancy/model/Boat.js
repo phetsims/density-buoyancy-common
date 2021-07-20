@@ -76,8 +76,8 @@ class Boat extends Mass {
       this.containedMassProperty.value = material.density * volume;
     } );
 
-    // @private {number} - Amount of volume displaced by the boat in the step
-    this.stepVolume = 0;
+    // @private {number} - Amount of volume contained in the basin
+    this.stepInternalVolume = 0;
 
     // @private {number} - How to multiply our one-liter size up to the model coordinates
     this.stepMultiplier = 0;
@@ -127,13 +127,9 @@ class Boat extends Mass {
     const xOffset = this.stepMatrix.m02();
     const yOffset = this.stepMatrix.m12();
 
-    // boatInternalArea
-    // boatInternalBottom
-
-    // boatMinX or boatMaxX --- How to determine if a block is in the boat
-
-    this.stepVolume = this.displacementVolumeProperty.value;
-    this.stepMultiplier = Math.pow( this.stepVolume / 0.001, 1 / 3 );
+    const displacedVolume = this.displacementVolumeProperty.value;
+    this.stepMultiplier = Math.pow( displacedVolume / 0.001, 1 / 3 );
+    this.stepInternalVolume = BoatDesign.ONE_LITER_INTERNAL_VOLUMES[ BoatDesign.ONE_LITER_INTERNAL_VOLUMES.length - 1 ] * this.stepMultiplier * this.stepMultiplier * this.stepMultiplier;
 
     this.stepX = xOffset;
     this.stepBottom = yOffset + this.stepMultiplier * BoatDesign.ONE_LITER_BOUNDS.minY;
@@ -259,7 +255,7 @@ class Boat extends Mass {
       return 0;
     }
     else if ( liquidLevel >= top ) {
-      return this.stepVolume;
+      return this.stepInternalVolume;
     }
     else {
       const ratio = ( liquidLevel - bottom ) / ( top - bottom );

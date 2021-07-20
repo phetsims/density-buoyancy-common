@@ -237,6 +237,25 @@ class DebugMassNode extends Node {
       } );
       this.addChild( waterPath );
 
+      const hitPath = new Path( null, {
+        stroke: 'red',
+        pickable: false
+      } );
+      this.addChild( hitPath );
+
+      mass.displacementVolumeProperty.link( volume => {
+        const matrix = scratchMatrix.set( modelViewTransform.getMatrix() );
+
+        // Zero out the translation
+        matrix.set02( 0 );
+        matrix.set12( 0 );
+
+        const multiplier = Math.pow( volume / 0.001, 1 / 3 );
+        const basinShape = mass.basin.oneLiterShape.transformed( Matrix3.scaling( multiplier ) );
+
+        hitPath.shape = basinShape.transformed( matrix );
+      } );
+
       const block = model.block;
       const liquidListener = () => {
         const y = mass.basin.liquidYInterpolatedProperty.value;

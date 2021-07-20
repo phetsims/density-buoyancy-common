@@ -1,43 +1,52 @@
 // Copyright 2020-2021, University of Colorado Boulder
 
 /**
- * Represents a basin that a liquid can reside in at a specific level.
+ * Represents a basin that a liquid can reside in at a specific level. This is used for the pool and liquid in the boat.
  *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
 import NumberProperty from '../../../../axon/js/NumberProperty.js';
+import Property from '../../../../axon/js/Property.js';
 import merge from '../../../../phet-core/js/merge.js';
+import NumberIO from '../../../../tandem/js/types/NumberIO.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import InterpolatedProperty from './InterpolatedProperty.js';
 
 class Basin {
   /**
+   * @param {Tandem} tandem
    * @param {Object} [options]
    */
-  constructor( options ) {
+  constructor( tandem, options ) {
     options = merge( {
       initialVolume: 0,
       initialY: 0
     }, options );
 
-    // @public {Property.<number>} - in m^3
-    this.liquidVolumeProperty = new NumberProperty( options.initialVolume );
+    // @public {Property.<number>} - in m^3, the volume of liquid contained in this basin
+    this.liquidVolumeProperty = new NumberProperty( options.initialVolume, {
+      tandem: tandem.createTandem( 'liquidVolumeProperty' )
+    } );
 
     // @public {Property.<number>} - The y coordinate of the liquid level (absolute in the model, NOT relative to
     // anything)
     this.liquidYInterpolatedProperty = new InterpolatedProperty( options.initialY, {
-      interpolate: InterpolatedProperty.interpolateNumber
+      interpolate: InterpolatedProperty.interpolateNumber,
+      phetioType: Property.PropertyIO( NumberIO ),
+      tandem: tandem.createTandem( 'liquidYInterpolatedProperty' )
     } );
 
-    // @public {number}
+    // @public {number} - The bottom and top of the basin's area of containment (absolute model coordinates), set during
+    // physics engine steps.
     this.stepBottom = 0;
     this.stepTop = 0;
 
-    // @public {Array.<Mass>}
+    // @public {Array.<Mass>} - The masses contained in this basin, set during the physics engine steps.
     this.stepMasses = [];
 
-    // @public {Basin|null} - NOTE: only one guaranteed
+    // @public {Basin|null} - A basin that may be contained in this one (boat basin in the pool) NOTE: only one
+    // guaranteed
     this.childBasin = null;
   }
 

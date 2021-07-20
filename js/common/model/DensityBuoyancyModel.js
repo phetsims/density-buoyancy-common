@@ -121,7 +121,7 @@ class DensityBuoyancyModel {
     ];
 
     // @public {Pool}
-    this.pool = new Pool( this.poolBounds );
+    this.pool = new Pool( this.poolBounds, tandem.createTandem( 'pool' ) );
 
     // @public {Boat|null} - We need to hook into a boat (if it exists) for displaying the water.
     this.boat = null;

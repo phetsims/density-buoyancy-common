@@ -12,12 +12,13 @@ import Basin from './Basin.js';
 class Pool extends Basin {
   /**
    * @param {Bounds3} bounds
+   * @param {Tandem} tandem
    */
-  constructor( bounds ) {
+  constructor( bounds, tandem ) {
 
     const initialVolume = 0.1;
 
-    super( {
+    super( tandem, {
       initialVolume: initialVolume,
       initialY: bounds.minY + initialVolume / ( bounds.width * bounds.depth )
     } );

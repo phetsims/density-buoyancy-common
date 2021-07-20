@@ -8,6 +8,7 @@
 
 import Vector2 from '../../../../dot/js/Vector2.js';
 import Shape from '../../../../kite/js/Shape.js';
+import Tandem from '../../../../tandem/js/Tandem.js';
 import Basin from '../../common/model/Basin.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import BoatDesign from './BoatDesign.js';
@@ -17,7 +18,8 @@ class BoatBasin extends Basin {
    * @param {Boat} boat
    */
   constructor( boat ) {
-    super( {
+    // TODO: tandem here
+    super( Tandem.OPT_OUT, {
       initialVolume: 0,
       initialY: 0
     } );

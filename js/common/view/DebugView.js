@@ -237,7 +237,10 @@ class DebugMassNode extends Node {
       } );
       this.addChild( waterPath );
 
-      const liquidListener = y => {
+      const block = model.block;
+      const liquidListener = () => {
+        const y = mass.basin.liquidYInterpolatedProperty.value;
+
         if ( mass.basin.liquidVolumeProperty.value > 0 ) {
           const matrix = scratchMatrix.set( modelViewTransform.getMatrix() );
 
@@ -252,17 +255,15 @@ class DebugMassNode extends Node {
           const rectangleShape = Shape.bounds( new Bounds2( -10, -10, 10, y ) ).transformed( invertedMatrix );
 
           let waterShape = rectangleShape.shapeIntersection( basinShape );
-          model.masses.forEach( otherMass => {
-            try {
-              if ( !( otherMass instanceof Boat ) ) {
-                const otherShape = otherMass.shapeProperty.value.transformed( otherMass.matrix ).transformed( invertedMatrix );
-                waterShape = waterShape.shapeDifference( otherShape );
-              }
-            }
-            catch( e ) {
-              console.log( e );
-            }
-          } );
+
+          // assume BuoyancyApplicationsModel
+          try {
+            const blockShape = block.shapeProperty.value.transformed( block.matrix ).transformed( invertedMatrix );
+            waterShape = waterShape.shapeDifference( blockShape );
+          }
+          catch( e ) {
+            console.log( e );
+          }
 
           waterPath.shape = waterShape.transformed( matrix );
         }
@@ -271,8 +272,12 @@ class DebugMassNode extends Node {
         }
       };
       mass.basin.liquidYInterpolatedProperty.link( liquidListener );
+      block.shapeProperty.lazyLink( liquidListener );
+      block.transformedEmitter.addListener( liquidListener );
       this.disposeEmitter.addListener( () => {
         mass.basin.liquidYInterpolatedProperty.unlink( liquidListener );
+        block.shapeProperty.unlink( liquidListener );
+        block.transformedEmitter.removeListener( liquidListener );
       } );
     }
 

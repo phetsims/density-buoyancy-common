@@ -474,9 +474,10 @@ class BoatDesign {
    * @param {boolean} [includeExterior]
    * @param {boolean} [includeGunwale]
    * @param {boolean} [includeInterior]
+   * @param {boolean} [invertNormals]
    * @returns {THREE.BufferGeometry}
    */
-  static getPrimaryGeometry( liters = 1, includeExterior = true, includeGunwale = true, includeInterior = true ) {
+  static getPrimaryGeometry( liters = 1, includeExterior = true, includeGunwale = true, includeInterior = true, invertNormals = false ) {
     const positions = [];
     const normals = [];
     const uvs = [];
@@ -679,7 +680,7 @@ class BoatDesign {
 
     const boatGeometry = new THREE.BufferGeometry();
     boatGeometry.addAttribute( 'position', new THREE.BufferAttribute( new Float32Array( positions ), 3 ) );
-    boatGeometry.addAttribute( 'normal', new THREE.BufferAttribute( new Float32Array( normals ), 3 ) );
+    boatGeometry.addAttribute( 'normal', new THREE.BufferAttribute( new Float32Array( invertNormals ? normals.map( n => -n ) : normals ), 3 ) );
     boatGeometry.addAttribute( 'uv', new THREE.BufferAttribute( new Float32Array( uvs ), 2 ) );
     return boatGeometry;
   }

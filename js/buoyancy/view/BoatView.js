@@ -24,11 +24,16 @@ class BoatView extends MassView {
 
     super( boat, new THREE.Geometry(), reflectedTexture, refractedTexture );
 
-    const bottomClipPlane = new THREE.Plane( new THREE.Vector3( 0, -1, 0 ), 0 );
-    const topClipPlane = new THREE.Plane( new THREE.Vector3( 0, 1, 0 ), 0 );
+    // Clip planes at the boat's water level
+    const bottomBoatClipPlane = new THREE.Plane( new THREE.Vector3( 0, -1, 0 ), 0 );
+    const topBoatClipPlane = new THREE.Plane( new THREE.Vector3( 0, 1, 0 ), 0 );
 
-    const boatOneLiterInteriorGeometry = BoatDesign.getPrimaryGeometry( 1, false, false, true );
-    const boatOneLiterExteriorGeometry = BoatDesign.getPrimaryGeometry( 1, true, true, false );
+    // Clip planes at the pool's water level
+    const bottomPoolClipPlane = new THREE.Plane( new THREE.Vector3( 0, -1, 0 ), 0 );
+    const topPoolClipPlane = new THREE.Plane( new THREE.Vector3( 0, 1, 0 ), 0 );
+
+    const boatOneLiterInteriorGeometry = BoatDesign.getPrimaryGeometry( 1, false, false, true, false );
+    const boatOneLiterExteriorGeometry = BoatDesign.getPrimaryGeometry( 1, true, true, false, false );
 
     const boatOneLiterGeometry = BoatDesign.getPrimaryGeometry( 1 );
 
@@ -58,18 +63,29 @@ class BoatView extends MassView {
       transparent: true,
       side: THREE.BackSide,
       depthWrite: false,
-      clippingPlanes: [ topClipPlane ]
+      clippingPlanes: [ topBoatClipPlane ]
     } );
     const backTop = new THREE.Mesh( boatOneLiterInteriorGeometry, backTopMaterial );
     boatGroup.add( backTop );
 
-    const backBottomMaterial = new THREE.MeshPhongMaterial( {
-      color: 0x33FF33,
+    const backMiddleMaterial = new THREE.MeshBasicMaterial( {
+      color: 0x33FF33, // will be replaced with liquid color below
       opacity: 0.8,
+      transparent: true,
+      side: THREE.BackSide, // better appearance with this
+      depthWrite: false,
+      clippingPlanes: [ bottomBoatClipPlane, topPoolClipPlane ]
+    } );
+    const backMiddle = new THREE.Mesh( boatOneLiterInteriorGeometry, backMiddleMaterial );
+    boatGroup.add( backMiddle );
+
+    const backBottomMaterial = new THREE.MeshPhongMaterial( {
+      color: 0xffffff,
+      opacity: 0.4,
       transparent: true,
       side: THREE.BackSide,
       depthWrite: false,
-      clippingPlanes: [ bottomClipPlane ]
+      clippingPlanes: [ bottomBoatClipPlane, bottomPoolClipPlane ]
     } );
     const backBottom = new THREE.Mesh( boatOneLiterInteriorGeometry, backBottomMaterial );
     boatGroup.add( backBottom );
@@ -90,21 +106,10 @@ class BoatView extends MassView {
       transparent: true,
       side: THREE.FrontSide,
       depthWrite: false,
-      clippingPlanes: [ topClipPlane ]
+      clippingPlanes: [ topBoatClipPlane ]
     } );
     const frontTop = new THREE.Mesh( boatOneLiterInteriorGeometry, frontTopMaterial );
     boatGroup.add( frontTop );
-
-    const frontBottomMaterial = new THREE.MeshPhongMaterial( {
-      color: 0x33FF33,
-      opacity: 0.8,
-      transparent: true,
-      side: THREE.FrontSide,
-      depthWrite: false,
-      clippingPlanes: [ bottomClipPlane ]
-    } );
-    const frontBottom = new THREE.Mesh( boatOneLiterInteriorGeometry, frontBottomMaterial );
-    boatGroup.add( frontBottom );
 
     const frontForDepth = new THREE.Mesh( boatOneLiterGeometry, new THREE.MeshPhongMaterial( {
       color: 0xFF0000,
@@ -114,51 +119,58 @@ class BoatView extends MassView {
     } ) );
     boatGroup.add( frontForDepth );
 
-    const crossSectionPositionArray = BoatDesign.createCrossSectionVertexArray();
-    const crossSectionNormalArray = new Float32Array( crossSectionPositionArray.length );
-    for ( let i = 1; i < crossSectionNormalArray.length; i += 3 ) {
-      crossSectionNormalArray[ i ] = 1; // normals should all be 0,1,0
+    const topLiquidPositionArray = BoatDesign.createCrossSectionVertexArray();
+    const topLiquidNormalArray = new Float32Array( topLiquidPositionArray.length );
+    for ( let i = 1; i < topLiquidNormalArray.length; i += 3 ) {
+      topLiquidNormalArray[ i ] = 1; // normals should all be 0,1,0
     }
+    const topLiquidGeometry = new THREE.BufferGeometry();
+    topLiquidGeometry.addAttribute( 'position', new THREE.BufferAttribute( topLiquidPositionArray, 3 ) );
+    topLiquidGeometry.addAttribute( 'normal', new THREE.BufferAttribute( topLiquidNormalArray, 3 ) );
 
-    const interiorSurfaceGeometry = new THREE.BufferGeometry();
-    interiorSurfaceGeometry.addAttribute( 'position', new THREE.BufferAttribute( crossSectionPositionArray, 3 ) );
-    interiorSurfaceGeometry.addAttribute( 'normal', new THREE.BufferAttribute( crossSectionNormalArray, 3 ) );
+    const topLiquidMaterial = new THREE.MeshPhongMaterial( {
+      color: 0x33FF33, // will be replaced with liquid color below
+      opacity: 0.8,
+      transparent: true,
+      depthWrite: false
+    } );
+    const topLiquid = new THREE.Mesh( topLiquidGeometry, topLiquidMaterial );
+    this.add( topLiquid );
 
     // @private {Multilink}
     this.liquidMultilink = Property.multilink( [
       boat.basin.liquidYInterpolatedProperty,
       boat.displacementVolumeProperty,
       boat.basin.liquidVolumeProperty
-    ], ( y, boatDisplacement, boatLiquidVolume ) => {
+    ], ( boatLiquidY, boatDisplacement, boatLiquidVolume ) => {
+      const poolLiquidY = liquidYInterpolatedProperty.value;
+      const liters = boatDisplacement / 0.001;
+
+      const relativeBoatLiquidY = boatLiquidY - boat.matrix.translation.y;
+
       const maximumVolume = boat.getBasinVolume( Number.POSITIVE_INFINITY );
       const volume = boat.basin.liquidVolumeProperty.value;
       const isFull = volume >= maximumVolume - 1e-7;
-      if ( boatLiquidVolume > 0 && ( !isFull || BoatDesign.shouldBoatWaterDisplayIfFull( liquidYInterpolatedProperty.value - boat.matrix.translation.y, boatDisplacement / 0.001 ) ) ) {
-        BoatDesign.fillCrossSectionVertexArray( y - boat.matrix.translation.y, boatDisplacement / 0.001, crossSectionPositionArray );
+      if ( boatLiquidVolume > 0 && ( !isFull || BoatDesign.shouldBoatWaterDisplayIfFull( liquidYInterpolatedProperty.value - boat.matrix.translation.y, liters ) ) ) {
+        BoatDesign.fillCrossSectionVertexArray( relativeBoatLiquidY, liters, topLiquidPositionArray );
       }
       else {
-        crossSectionPositionArray.fill( 0 );
+        topLiquidPositionArray.fill( 0 );
       }
-      interiorSurfaceGeometry.attributes.position.needsUpdate = true;
-      interiorSurfaceGeometry.computeBoundingSphere();
+      topLiquidGeometry.attributes.position.needsUpdate = true;
+      topLiquidGeometry.computeBoundingSphere();
 
       if ( boat.basin.liquidVolumeProperty.value > 1e-7 ) {
-        bottomClipPlane.constant = boat.basin.liquidYInterpolatedProperty.value;
-        topClipPlane.constant = -boat.basin.liquidYInterpolatedProperty.value;
+        bottomBoatClipPlane.constant = boatLiquidY;
+        topBoatClipPlane.constant = -boatLiquidY;
       }
       else {
-        bottomClipPlane.constant = -1000;
-        topClipPlane.constant = 1000;
+        bottomBoatClipPlane.constant = -1000;
+        topBoatClipPlane.constant = 1000;
       }
+      bottomPoolClipPlane.constant = poolLiquidY;
+      topPoolClipPlane.constant = -poolLiquidY;
     } );
-
-    const interiorSurfaceMaterial = new THREE.MeshPhongMaterial( {
-      color: 0x33FF33,
-      opacity: 0.8,
-      transparent: true,
-      depthWrite: false
-    } );
-    const interiorSurface = new THREE.Mesh( interiorSurfaceGeometry, interiorSurfaceMaterial );
 
     new DynamicProperty( boat.liquidMaterialProperty, {
       derive: 'liquidColor'
@@ -166,24 +178,20 @@ class BoatView extends MassView {
       const threeColor = ThreeUtils.colorToThree( color );
       const alpha = color.alpha;
 
-      interiorSurfaceMaterial.color = threeColor;
-      interiorSurfaceMaterial.opacity = alpha;
-      backBottomMaterial.color = threeColor;
-      frontBottomMaterial.color = threeColor;
-      backBottomMaterial.opacity = alpha;
-      frontBottomMaterial.opacity = alpha;
+      topLiquidMaterial.color = threeColor;
+      backMiddleMaterial.color = threeColor;
+      topLiquidMaterial.opacity = alpha;
+      backMiddleMaterial.opacity = alpha;
     } );
-
-    this.add( interiorSurface );
 
     // Set render order for all elements
     [
       frontForDepth,
-      interiorSurface,
-      frontBottom,
+      topLiquid,
       frontTop,
       frontExterior,
       backBottom,
+      backMiddle,
       backTop,
       backExterior
     ].forEach( ( view, index ) => {

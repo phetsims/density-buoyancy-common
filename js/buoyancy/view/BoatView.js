@@ -184,19 +184,15 @@ class BoatView extends MassView {
       backMiddleMaterial.opacity = alpha;
     } );
 
-    // Set render order for all elements
-    [
-      frontForDepth,
-      topLiquid,
-      frontTop,
-      frontExterior,
-      backBottom,
-      backMiddle,
-      backTop,
-      backExterior
-    ].forEach( ( view, index ) => {
-      view.renderOrder = -( index + 1 );
-    } );
+    frontForDepth.renderOrder = 4;
+    topLiquid.renderOrder = 3;
+    frontTop.renderOrder = 2;
+    frontExterior.renderOrder = 1;
+
+    backBottom.renderOrder = -1;
+    backMiddle.renderOrder = -1;
+    backTop.renderOrder = -1;
+    backExterior.renderOrder = -2;
 
     // @public {Boat}
     this.boat = boat;

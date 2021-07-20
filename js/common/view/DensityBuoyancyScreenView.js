@@ -425,6 +425,7 @@ class DensityBuoyancyScreenView extends ScreenView {
     } );
     const waterMesh = new THREE.Mesh( waterGeometry, waterMaterial );
     this.sceneNode.stage.threeScene.add( waterMesh );
+    waterMesh.renderOrder = 10;
 
     let wasFilled = false;
     model.pool.liquidYInterpolatedProperty.link( y => {

@@ -26,6 +26,7 @@ class Pool extends Basin {
     // @public {Bounds3}
     this.bounds = bounds;
 
+    // These won't change over the life of the pool.
     this.stepBottom = bounds.minY;
     this.stepTop = bounds.maxY;
   }

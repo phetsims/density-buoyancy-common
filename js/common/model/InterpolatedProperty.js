@@ -125,16 +125,16 @@ InterpolatedProperty.InterpolatedPropertyIO = parameterType => {
   assert && assert( parameterType, 'InterpolatedPropertyIO needs parameterType' );
 
   if ( !cache.has( parameterType ) ) {
-    const supertype = Property.PropertyIO( parameterType );
+    const PropertyIOImpl = Property.PropertyIO( parameterType );
 
     const ioType = new IOType( `InterpolatedPropertyIO<${parameterType.typeName}>`, {
       valueType: InterpolatedProperty,
-      supertype: supertype,
+      supertype: PropertyIOImpl,
       parameterTypes: [ parameterType ],
       documentation: 'Extends PropertyIO to interpolation (with a current/previous value, and a ratio between the two)',
       toStateObject: interpolatedProperty => {
 
-        const parentStateObject = supertype.toStateObject( interpolatedProperty );
+        const parentStateObject = PropertyIOImpl.toStateObject( interpolatedProperty );
 
         parentStateObject.currentValue = parameterType.toStateObject( interpolatedProperty.currentValue );
         parentStateObject.previousValue = parameterType.toStateObject( interpolatedProperty.previousValue );
@@ -143,7 +143,7 @@ InterpolatedProperty.InterpolatedPropertyIO = parameterType => {
         return parentStateObject;
       },
       applyState: ( interpolatedProperty, stateObject ) => {
-        supertype.applyState( interpolatedProperty, stateObject );
+        PropertyIOImpl.applyState( interpolatedProperty, stateObject );
         interpolatedProperty.currentValue = parameterType.fromStateObject( stateObject.currentValue );
         interpolatedProperty.previousValue = parameterType.fromStateObject( stateObject.previousValue );
         interpolatedProperty.ratio = NumberIO.fromStateObject( stateObject.ratio );

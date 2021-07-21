@@ -150,7 +150,7 @@ class Mass {
     // @public {Matrix3}
     this.matrix = config.matrix;
 
-    // @public {Matrix}
+    // @public {Matrix3}
     this.stepMatrix = new Matrix3();
 
     // @public {Emitter}

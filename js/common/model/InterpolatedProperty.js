@@ -8,6 +8,8 @@
 
 import Property from '../../../../axon/js/Property.js';
 import merge from '../../../../phet-core/js/merge.js';
+import IOType from '../../../../tandem/js/types/IOType.js';
+import NumberIO from '../../../../tandem/js/types/NumberIO.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 
 class InterpolatedProperty extends Property {
@@ -110,6 +112,54 @@ class InterpolatedProperty extends Property {
     return a.blend( b, ratio );
   }
 }
+
+// {Map.<IOType, IOType>} - Cache each parameterized PropertyIO based on
+// the parameter type, so that it is only created once
+const cache = new Map();
+
+/**
+ * @param {IOType} parameterType
+ * @returns {IOType}
+ */
+InterpolatedProperty.InterpolatedPropertyIO = parameterType => {
+  assert && assert( parameterType, 'InterpolatedPropertyIO needs parameterType' );
+
+  if ( !cache.has( parameterType ) ) {
+    const supertype = Property.PropertyIO( parameterType );
+
+    const ioType = new IOType( `InterpolatedPropertyIO<${parameterType.typeName}>`, {
+      valueType: InterpolatedProperty,
+      supertype: supertype,
+      parameterTypes: [ parameterType ],
+      documentation: 'Extends PropertyIO to interpolation (with a current/previous value, and a ratio between the two)',
+      toStateObject: interpolatedProperty => {
+
+        const parentStateObject = supertype.toStateObject( interpolatedProperty );
+
+        parentStateObject.currentValue = parameterType.toStateObject( interpolatedProperty.currentValue );
+        parentStateObject.previousValue = parameterType.toStateObject( interpolatedProperty.previousValue );
+        parentStateObject.ratio = NumberIO.toStateObject( interpolatedProperty.ratio );
+
+        return parentStateObject;
+      },
+      applyState: ( interpolatedProperty, stateObject ) => {
+        supertype.applyState( interpolatedProperty, stateObject );
+        interpolatedProperty.currentValue = parameterType.fromStateObject( stateObject.currentValue );
+        interpolatedProperty.previousValue = parameterType.fromStateObject( stateObject.previousValue );
+        interpolatedProperty.ratio = NumberIO.fromStateObject( stateObject.ratio );
+      },
+      stateSchema: {
+        currentValue: parameterType,
+        previousValue: parameterType,
+        ratio: NumberIO
+      }
+    } );
+
+    cache.set( parameterType, ioType );
+  }
+
+  return cache.get( parameterType );
+};
 
 densityBuoyancyCommon.register( 'InterpolatedProperty', InterpolatedProperty );
 export default InterpolatedProperty;

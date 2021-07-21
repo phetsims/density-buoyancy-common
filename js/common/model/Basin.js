@@ -7,7 +7,6 @@
  */
 
 import NumberProperty from '../../../../axon/js/NumberProperty.js';
-import Property from '../../../../axon/js/Property.js';
 import merge from '../../../../phet-core/js/merge.js';
 import NumberIO from '../../../../tandem/js/types/NumberIO.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
@@ -33,7 +32,7 @@ class Basin {
     // anything)
     this.liquidYInterpolatedProperty = new InterpolatedProperty( options.initialY, {
       interpolate: InterpolatedProperty.interpolateNumber,
-      phetioType: Property.PropertyIO( NumberIO ),
+      phetioType: InterpolatedProperty.InterpolatedPropertyIO( NumberIO ),
       tandem: tandem.createTandem( 'liquidYInterpolatedProperty' )
     } );
 

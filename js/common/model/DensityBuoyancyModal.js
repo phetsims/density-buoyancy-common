@@ -1,7 +1,7 @@
 // Copyright 2020-2021, University of Colorado Boulder
 
 /**
- * The main model for the Compare screen of the Density simulation.
+ * Mix-in for modal Density/Buoyancy models
  *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
@@ -21,15 +21,18 @@ const DensityBuoyancyModal = ( type, Mode, initialMode ) => {
 
   return class extends type {
     /**
+     * @param {Tandem} tandem
      * @param {function(Mode):Array.<Mass>} createMassesCallback
      * @param {function(Mode,Array.<Mass>)} positionMassesCallback
      * @param {*} ...args
      */
-    constructor( createMassesCallback, positionMassesCallback, ...args ) {
+    constructor( tandem, createMassesCallback, positionMassesCallback, ...args ) {
       super( ...args );
 
       // @public {Property.<Mode>}
-      this.modeProperty = new EnumerationProperty( Mode, initialMode );
+      this.modeProperty = new EnumerationProperty( Mode, initialMode, {
+        tandem: tandem.createTandem( 'modeProperty' )
+      } );
 
       // @private
       this.createMassesCallback = createMassesCallback;

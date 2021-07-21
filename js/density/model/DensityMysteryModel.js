@@ -198,7 +198,7 @@ class DensityMysteryModel extends DensityBuoyancyModal( DensityBuoyancyModel, Mo
       }
     };
 
-    super( createMasses, positionMasses, tandem );
+    super( tandem, createMasses, positionMasses, tandem );
 
     // @public {Property.<boolean>}
     this.densityTableExpandedProperty = new BooleanProperty( false );

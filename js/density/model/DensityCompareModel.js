@@ -119,7 +119,7 @@ class DensityCompareModel extends DensityBuoyancyModal( DensityBuoyancyModel, Mo
       }
     };
 
-    super( createMasses, positionMasses, tandem, {
+    super( tandem, createMasses, positionMasses, tandem, {
       showMassesDefault: true
     } );
   }

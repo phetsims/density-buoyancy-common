@@ -69,7 +69,7 @@ class BuoyancyIntroModel extends DensityBuoyancyModal( DensityBuoyancyModel, Mod
       }
     };
 
-    super( createMasses, positionMasses, tandem );
+    super( tandem, createMasses, positionMasses, tandem );
 
     // Left scale
     this.masses.push( new Scale( this.engine, {

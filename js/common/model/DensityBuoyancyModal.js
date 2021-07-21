@@ -1,7 +1,7 @@
 // Copyright 2020-2021, University of Colorado Boulder
 
 /**
- * Mix-in for modal Density/Buoyancy models
+ * Mix-in for modal Density/Buoyancy models, where callbacks will create/position masses for each mode.
  *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
@@ -22,8 +22,8 @@ const DensityBuoyancyModal = ( type, Mode, initialMode ) => {
   return class extends type {
     /**
      * @param {Tandem} tandem
-     * @param {function(Mode):Array.<Mass>} createMassesCallback
-     * @param {function(Mode,Array.<Mass>)} positionMassesCallback
+     * @param {function(Mode):Array.<Mass>} createMassesCallback - Creates masses (when given a mode)
+     * @param {function(Mode,Array.<Mass>)} positionMassesCallback - Positions masses (for a given mode)
      * @param {*} ...args
      */
     constructor( tandem, createMassesCallback, positionMassesCallback, ...args ) {
@@ -41,6 +41,7 @@ const DensityBuoyancyModal = ( type, Mode, initialMode ) => {
       // @private {Object.<Mode,Array.<Mass>>}
       this.modeToMassesMap = {};
 
+      // Create and position masses on startup
       Mode.VALUES.forEach( mode => {
         this.createMasses( mode );
         this.positionMasses( mode );
@@ -121,10 +122,12 @@ const DensityBuoyancyModal = ( type, Mode, initialMode ) => {
     reset() {
       this.modeProperty.reset();
 
+      // Reset every available mass.
       Mode.VALUES.forEach( mode => this.modeToMassesMap[ mode ].forEach( mass => mass.reset() ) );
 
       super.reset();
 
+      // Reposition AFTER the reset
       Mode.VALUES.forEach( mode => this.positionMasses( mode ) );
     }
   };

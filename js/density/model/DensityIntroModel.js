@@ -26,14 +26,18 @@ class DensityIntroModel extends DensityBuoyancyModel {
     } );
 
     // @public {Property.<boolean>}
-    this.secondaryMassVisibleProperty = new BooleanProperty( false );
+    this.secondaryMassVisibleProperty = new BooleanProperty( false, {
+      tandem: tandem.createTandem( 'secondaryMassVisibleProperty' )
+    } );
 
     // @public {Mass}
     this.primaryMass = Cuboid.createWithMass( this.engine, Material.WOOD, new Vector2( -0.2, 0.2 ), 2, {
-      tag: Mass.MassTag.PRIMARY
+      tag: Mass.MassTag.PRIMARY,
+      tandem: tandem.createTandem( 'primaryMass' )
     } );
     this.secondaryMass = Cuboid.createWithMass( this.engine, Material.ALUMINUM, new Vector2( -0.2, 0.35 ), 13.5, {
-      tag: Mass.MassTag.SECONDARY
+      tag: Mass.MassTag.SECONDARY,
+      tandem: tandem.createTandem( 'secondaryMass' )
     } );
 
     this.masses.push( this.primaryMass );
@@ -48,7 +52,9 @@ class DensityIntroModel extends DensityBuoyancyModel {
     } );
 
     // @public {Property.<boolean>}
-    this.densityReadoutExpandedProperty = new BooleanProperty( false );
+    this.densityReadoutExpandedProperty = new BooleanProperty( false, {
+      tandem: tandem.createTandem( 'densityReadoutExpandedProperty' )
+    } );
   }
 
   /**

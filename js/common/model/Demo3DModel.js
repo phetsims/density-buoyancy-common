@@ -8,6 +8,7 @@
 
 import Bounds3 from '../../../../dot/js/Bounds3.js';
 import Matrix3 from '../../../../dot/js/Matrix3.js';
+import Tandem from '../../../../tandem/js/Tandem.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import Cone from './Cone.js';
 import Cuboid from './Cuboid.js';
@@ -28,46 +29,55 @@ class Demo3DModel extends DensityBuoyancyModel {
 
     this.masses.push( new Cuboid( this.engine, new Bounds3( -0.06, -0.06, -0.06, 0.06, 0.06, 0.06 ), {
       matrix: Matrix3.translation( -0.15, -0.2 ),
-      material: Material.BRICK
+      material: Material.BRICK,
+      tandem: Tandem.OPT_OUT
     } ) );
 
     this.masses.push( new Cuboid( this.engine, new Bounds3( -0.05, -0.05, -0.05, 0.05, 0.05, 0.05 ), {
       matrix: Matrix3.translation( -0.5, 0.2 ),
-      material: Material.STEEL
+      material: Material.STEEL,
+      tandem: Tandem.OPT_OUT
     } ) );
 
     this.masses.push( new Cuboid( this.engine, new Bounds3( -0.05, -0.05, -0.05, 0.05, 0.05, 0.05 ), {
       matrix: Matrix3.translation( 0, 0.05 ),
-      material: Material.ICE
+      material: Material.ICE,
+      tandem: Tandem.OPT_OUT
     } ) );
 
     this.masses.push( new Scale( this.engine, {
-      matrix: Matrix3.translation( 0.5, 0.2 )
+      matrix: Matrix3.translation( 0.5, 0.2 ),
+      tandem: Tandem.OPT_OUT
     } ) );
 
     this.masses.push( new Cone( this.engine, 0.05, 0.1, true, {
       matrix: Matrix3.translation( 0.3, 0.3 ),
-      material: Material.WOOD
+      material: Material.WOOD,
+      tandem: Tandem.OPT_OUT
     } ) );
 
     this.masses.push( new Ellipsoid( this.engine, new Bounds3( -0.08, -0.05, -0.08, 0.08, 0.05, 0.08 ), {
       matrix: Matrix3.translation( -0.1, 0.4 ),
-      material: Material.WOOD
+      material: Material.WOOD,
+      tandem: Tandem.OPT_OUT
     } ) );
 
     this.masses.push( new VerticalCylinder( this.engine, 0.05, 0.1, {
       matrix: Matrix3.translation( -0.1, 1.0 ),
-      material: Material.WOOD
+      material: Material.WOOD,
+      tandem: Tandem.OPT_OUT
     } ) );
 
     this.masses.push( new HorizontalCylinder( this.engine, 0.05, 0.1, {
       matrix: Matrix3.translation( 0.2, 1.5 ),
-      material: Material.WOOD
+      material: Material.WOOD,
+      tandem: Tandem.OPT_OUT
     } ) );
 
     this.masses.push( new Ellipsoid( this.engine, new Bounds3( -0.07, -0.07, -0.07, 0.07, 0.07, 0.07 ), {
       matrix: Matrix3.translation( 0.5, 0.6 ),
-      material: Material.COPPER
+      material: Material.COPPER,
+      tandem: Tandem.OPT_OUT
     } ) );
   }
 }

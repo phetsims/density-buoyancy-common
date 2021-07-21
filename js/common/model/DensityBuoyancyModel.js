@@ -66,13 +66,15 @@ class DensityBuoyancyModel {
     // @public {Property.<number>}
     this.liquidDensityProperty = new DerivedProperty( [ this.liquidMaterialProperty ], liquidMaterial => liquidMaterial.density, {
       tandem: tandem.createTandem( 'liquidDensityProperty' ),
-      phetioType: DerivedProperty.DerivedPropertyIO( NumberIO )
+      phetioType: DerivedProperty.DerivedPropertyIO( NumberIO ),
+      units: 'kg/m^3'
     } );
 
     // @public {Property.<number>}
     this.liquidViscosityProperty = new DerivedProperty( [ this.liquidMaterialProperty ], liquidMaterial => liquidMaterial.viscosity, {
       tandem: tandem.createTandem( 'liquidViscosityProperty' ),
       phetioType: DerivedProperty.DerivedPropertyIO( NumberIO )
+      // TODO: add units, ask about N·s/m^2 or Pa·s
     } );
 
     // @public {Bounds3}

@@ -16,9 +16,16 @@ import Utils from '../../../../dot/js/Utils.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
 import Enumeration from '../../../../phet-core/js/Enumeration.js';
+import EnumerationIO from '../../../../phet-core/js/EnumerationIO.js';
 import merge from '../../../../phet-core/js/merge.js';
+import PhetioObject from '../../../../tandem/js/PhetioObject.js';
+import Tandem from '../../../../tandem/js/Tandem.js';
+import BooleanIO from '../../../../tandem/js/types/BooleanIO.js';
+import IOType from '../../../../tandem/js/types/IOType.js';
+import NumberIO from '../../../../tandem/js/types/NumberIO.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import InterpolatedProperty from './InterpolatedProperty.js';
+import Material from './Material.js';
 
 // constants
 const MassTag = Enumeration.byKeys( [
@@ -47,7 +54,7 @@ const MassTag = Enumeration.byKeys( [
   'E'
 ] );
 
-class Mass {
+class Mass extends PhetioObject {
   /**
    * @param {Engine} engine
    * @param {Object} config
@@ -80,8 +87,14 @@ class Mass {
       tag: MassTag.NONE,
 
       // {Tandem}
-      tandem: null
+      tandem: Tandem.OPTIONAL,
+
+      phetioType: Mass.MassIO
     }, config );
+
+    super( config );
+
+    const tandem = config.tandem;
 
     // @public {Engine}
     this.engine = engine;
@@ -93,22 +106,33 @@ class Mass {
     this.shapeProperty = new Property( config.shape );
 
     // @public {Property.<boolean>}
-    this.userControlledProperty = new BooleanProperty( false );
+    this.userControlledProperty = new BooleanProperty( false, {
+      tandem: tandem.createTandem( 'userControlledProperty' )
+    } );
 
     // @public {Property.<Material>}
     this.materialProperty = new Property( config.material, {
-      reentrant: true
+      reentrant: true,
+      tandem: tandem.createTandem( 'materialProperty' ),
+      phetioType: Property.PropertyIO( Material.MaterialIO )
     } );
 
     // @public {Property.<number>} - In m^3 (cubic meters)
-    this.volumeProperty = new NumberProperty( config.volume );
+    this.volumeProperty = new NumberProperty( config.volume, {
+      tandem: tandem.createTandem( 'volumeProperty' )
+    } );
 
     // @public {Property.<number>} - In kg (kilograms), added to the normal mass (computed from density and volume)
-    this.containedMassProperty = new NumberProperty( 0 );
+    this.containedMassProperty = new NumberProperty( 0, {
+      tandem: Tandem.OPT_OUT
+    } );
 
     // @public {Property.<number>} - In kg (kilograms)
     this.massProperty = new DerivedProperty( [ this.materialProperty, this.volumeProperty, this.containedMassProperty ], ( material, volume, containedMass ) => {
       return material.density * volume + containedMass;
+    }, {
+      tandem: tandem.createTandem( 'massProperty' ),
+      phetioType: DerivedProperty.DerivedPropertyIO( NumberIO )
     } );
 
     // @public {Property.<Vector2>} - The following offset will be added onto the body's position to determine ours.
@@ -117,34 +141,43 @@ class Mass {
     // @public {Property.<Vector2>}
     this.gravityForceInterpolatedProperty = new InterpolatedProperty( Vector2.ZERO, {
       interpolate: InterpolatedProperty.interpolateVector2,
-      useDeepEquality: true
+      useDeepEquality: true,
+      tandem: tandem.createTandem( 'gravityForceInterpolatedProperty' ),
+      phetioType: InterpolatedProperty.InterpolatedPropertyIO( Vector2.Vector2IO )
     } );
 
     // @public {Property.<Vector2>}
     this.buoyancyForceInterpolatedProperty = new InterpolatedProperty( Vector2.ZERO, {
       interpolate: InterpolatedProperty.interpolateVector2,
-      useDeepEquality: true
+      useDeepEquality: true,
+      tandem: tandem.createTandem( 'buoyancyForceInterpolatedProperty' ),
+      phetioType: InterpolatedProperty.InterpolatedPropertyIO( Vector2.Vector2IO )
     } );
 
     // @public {Property.<Vector2>}
     this.contactForceInterpolatedProperty = new InterpolatedProperty( Vector2.ZERO, {
       interpolate: InterpolatedProperty.interpolateVector2,
-      useDeepEquality: true
+      useDeepEquality: true,
+      tandem: tandem.createTandem( 'contactForceInterpolatedProperty' ),
+      phetioType: InterpolatedProperty.InterpolatedPropertyIO( Vector2.Vector2IO )
     } );
 
     // @public {Property.<Vector3>}
     this.forceOffsetProperty = new Property( Vector3.ZERO, {
-      useDeepEquality: true
+      useDeepEquality: true,
+      tandem: Tandem.OPT_OUT
     } );
 
     // @public {Property.<Vector3>}
     this.massOffsetProperty = new Property( Vector3.ZERO, {
-      useDeepEquality: true
+      useDeepEquality: true,
+      tandem: Tandem.OPT_OUT
     } );
 
     // @public {Property.<Vector3>} - Orientation multiplied by 1/2 width,height for an offset in view space
     this.massOffsetOrientationProperty = new Property( Vector2.ZERO, {
-      useDeepEquality: true
+      useDeepEquality: true,
+      tandem: Tandem.OPT_OUT
     } );
 
     // @public {Matrix3}
@@ -373,6 +406,39 @@ class Mass {
     }
   }
 }
+
+// @public {IOType}
+Mass.MassIO = new IOType( 'MassIO', {
+  valueType: Mass,
+  documentation: 'Represents a mass that interacts in the scene, and can potentially float or displace liquid.',
+  stateSchema: {
+    matrix: Matrix3.Matrix3IO,
+    stepMatrix: Matrix3.Matrix3IO,
+    canRotate: BooleanIO,
+    canMove: BooleanIO,
+    tag: EnumerationIO( MassTag )
+  },
+  toStateObject( mass ) {
+    mass.readData();
+
+    return {
+      matrix: Matrix3.toStateObject( mass.matrix ),
+      stepMatrix: Matrix3.toStateObject( mass.stepMatrix ),
+      canRotate: BooleanIO.toStateObject( mass.canRotate ),
+      canMove: BooleanIO.toStateObject( mass.canMove ),
+      tag: EnumerationIO( MassTag ).toStateObject( mass.tag )
+    };
+  },
+  applyState( mass, obj ) {
+    mass.matrix.set( Matrix3.fromStateObject( obj.matrix ) );
+    mass.stepMatrix.set( Matrix3.fromStateObject( obj.stepMatrix ) );
+    mass.canRotate = BooleanIO.fromStateObject( obj.canRotate );
+    mass.canMove = BooleanIO.fromStateObject( obj.canMove );
+    mass.tag = EnumerationIO( MassTag ).fromStateObject( obj.tag );
+
+    mass.writeData();
+  }
+} );
 
 // @public {Enumeration}
 Mass.MassTag = MassTag;

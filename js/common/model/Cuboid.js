@@ -13,6 +13,8 @@ import Vector2 from '../../../../dot/js/Vector2.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
 import Shape from '../../../../kite/js/Shape.js';
 import merge from '../../../../phet-core/js/merge.js';
+import Tandem from '../../../../tandem/js/Tandem.js';
+import IOType from '../../../../tandem/js/types/IOType.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import Mass from './Mass.js';
 
@@ -27,9 +29,9 @@ class Cuboid extends Mass {
       body: engine.createBox( size.width, size.height ),
       shape: Shape.rect( size.minX, size.minY, size.width, size.height ),
       volume: size.width * size.height * size.depth,
-      canRotate: false
+      canRotate: false,
 
-      // material
+      tandem: Tandem.OPTIONAL
     }, config );
 
     assert && assert( !config.canRotate );
@@ -38,7 +40,9 @@ class Cuboid extends Mass {
 
     // @public {Property.<Bounds3>}
     this.sizeProperty = new Property( size, {
-      useDeepEquality: true
+      useDeepEquality: true,
+      tandem: config.tandem.createTandem( 'sizeProperty' ),
+      phetioType: Property.PropertyIO( Bounds3.Bounds3IO )
     } );
 
     // @private {number} - Step information
@@ -291,6 +295,13 @@ class Cuboid extends Mass {
     return Cuboid.createWithVolume( engine, material, position, mass / material.density, options );
   }
 }
+
+// @public {IOType}
+Cuboid.CuboidIO = new IOType( 'CuboidIO', {
+  valueType: Cuboid,
+  supertype: Mass.MassIO,
+  documentation: 'Represents an axis-aligned cuboid mass'
+} );
 
 densityBuoyancyCommon.register( 'Cuboid', Cuboid );
 export default Cuboid;

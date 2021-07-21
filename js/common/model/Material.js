@@ -396,7 +396,9 @@ Material.MATERIALS = [
 ];
 
 const NullableColorPropertyReferenceType = NullableIO( ReferenceIO( Property.PropertyIO( Color.ColorIO ) ) );
-const MaterialIO = new IOType( 'MaterialIO', {
+
+// @public {IOType}
+Material.MaterialIO = new IOType( 'MaterialIO', {
   valueType: Material,
   documentation: 'Represents different materials that solids/liquids in the simulations can take, including density/viscosity/color.',
   stateSchema: {
@@ -451,7 +453,6 @@ const MaterialIO = new IOType( 'MaterialIO', {
     }
   }
 } );
-Material.MaterialIO = MaterialIO;
 
 densityBuoyancyCommon.register( 'Material', Material );
 export default Material;

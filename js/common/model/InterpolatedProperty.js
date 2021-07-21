@@ -118,6 +118,7 @@ class InterpolatedProperty extends Property {
 const cache = new Map();
 
 /**
+ * @public
  * @param {IOType} parameterType
  * @returns {IOType}
  */

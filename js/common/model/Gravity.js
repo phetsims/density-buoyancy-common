@@ -90,6 +90,7 @@ Gravity.GRAVITIES = [
   Gravity.PLANET_X
 ];
 
+// @public {IOType}
 Gravity.GravityIO = new IOType( 'GravityIO', {
   valueType: Gravity,
   documentation: 'Represents a specific value of gravity',

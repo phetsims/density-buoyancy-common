@@ -70,60 +70,96 @@ const densityBuoyancyCommonColorProfile = {
 
   comparingYellowProperty: new ProfileColorProperty( 'comparingYellow', {
     default: new Color( 252, 246, 80 )
+  }, {
+    tandem: tandem.createTandem( 'comparingYellowProperty' )
   } ),
   comparingBlueProperty: new ProfileColorProperty( 'comparingBlue', {
     default: new Color( 46, 88, 166 )
+  }, {
+    tandem: tandem.createTandem( 'comparingBlueProperty' )
   } ),
   comparingGreenProperty: new ProfileColorProperty( 'comparingGreen', {
     default: new Color( 125, 195, 52 )
+  }, {
+    tandem: tandem.createTandem( 'comparingGreenProperty' )
   } ),
   comparingRedProperty: new ProfileColorProperty( 'comparingRed', {
     default: new Color( 233, 55, 50 )
+  }, {
+    tandem: tandem.createTandem( 'comparingRedProperty' )
   } ),
   comparingPurpleProperty: new ProfileColorProperty( 'comparingPurple', {
     default: new Color( 131, 43, 126 )
+  }, {
+    tandem: tandem.createTandem( 'comparingPurpleProperty' )
   } ),
 
   mysteryPinkProperty: new ProfileColorProperty( 'mysteryPink', {
     default: new Color( 255, 192, 203 )
+  }, {
+    tandem: tandem.createTandem( 'mysteryPinkProperty' )
   } ),
   mysteryOrangeProperty: new ProfileColorProperty( 'mysteryOrange', {
     default: new Color( 255, 127, 0 )
+  }, {
+    tandem: tandem.createTandem( 'mysteryOrangeProperty' )
   } ),
   mysteryLightPurpleProperty: new ProfileColorProperty( 'mysteryLightPurple', {
     default: new Color( 177, 156, 217 )
+  }, {
+    tandem: tandem.createTandem( 'mysteryLightPurpleProperty' )
   } ),
   mysteryLightGreenProperty: new ProfileColorProperty( 'mysteryLightGreen', {
     default: new Color( 144, 238, 144 )
+  }, {
+    tandem: tandem.createTandem( 'mysteryLightGreenProperty' )
   } ),
   mysteryBrownProperty: new ProfileColorProperty( 'mysteryBrown', {
     default: new Color( 150, 75, 0 )
+  }, {
+    tandem: tandem.createTandem( 'mysteryBrownProperty' )
   } ),
   mysteryWhiteProperty: new ProfileColorProperty( 'mysteryWhite', {
     default: new Color( 255, 255, 255 )
+  }, {
+    tandem: tandem.createTandem( 'mysteryWhiteProperty' )
   } ),
   mysteryGrayProperty: new ProfileColorProperty( 'mysteryGray', {
     default: new Color( 140, 140, 140 )
+  }, {
+    tandem: tandem.createTandem( 'mysteryGrayProperty' )
   } ),
   mysteryMustardProperty: new ProfileColorProperty( 'mysteryMustard', {
     default: new Color( 225, 173, 0 )
+  }, {
+    tandem: tandem.createTandem( 'mysteryMustardProperty' )
   } ),
   mysteryPeachProperty: new ProfileColorProperty( 'mysteryPeach', {
     default: new Color( 255, 229, 180 )
+  }, {
+    tandem: tandem.createTandem( 'mysteryPeachProperty' )
   } ),
   mysteryMaroonProperty: new ProfileColorProperty( 'mysteryMaroon', {
     default: new Color( 128, 0, 0 )
+  }, {
+    tandem: tandem.createTandem( 'mysteryMaroonProperty' )
   } ),
 
   chartHeaderProperty: new ProfileColorProperty( 'chartHeader', {
     default: new Color( 230, 230, 230 )
+  }, {
+    tandem: tandem.createTandem( 'chartHeaderProperty' )
   } ),
 
   radioBorderProperty: new ProfileColorProperty( 'radioBorder', {
     default: PhetColorScheme.BUTTON_YELLOW
+  }, {
+    tandem: tandem.createTandem( 'radioBorderProperty' )
   } ),
   radioBackgroundProperty: new ProfileColorProperty( 'radioBackground', {
     default: Color.WHITE
+  }, {
+    tandem: tandem.createTandem( 'radioBackgroundProperty' )
   } ),
 
   // "liquid" material colors

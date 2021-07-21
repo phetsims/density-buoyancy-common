@@ -8,11 +8,12 @@
 
 import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
-import createObservableArray from '../../../../axon/js/createObservableArray.js';
 import Property from '../../../../axon/js/Property.js';
+import createObservableArray from '../../../../axon/js/createObservableArray.js';
 import Bounds3 from '../../../../dot/js/Bounds3.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import merge from '../../../../phet-core/js/merge.js';
+import NumberIO from '../../../../tandem/js/types/NumberIO.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonQueryParameters from '../DensityBuoyancyCommonQueryParameters.js';
 import Gravity from './Gravity.js';
@@ -57,13 +58,22 @@ class DensityBuoyancyModel {
     } );
 
     // @public {Property.<Material>}
-    this.liquidMaterialProperty = new Property( Material.WATER );
+    this.liquidMaterialProperty = new Property( Material.WATER, {
+      phetioType: Property.PropertyIO( Material.MaterialIO ),
+      tandem: tandem.createTandem( 'liquidMaterialProperty' )
+    } );
 
     // @public {Property.<number>}
-    this.liquidDensityProperty = new DerivedProperty( [ this.liquidMaterialProperty ], liquidMaterial => liquidMaterial.density );
+    this.liquidDensityProperty = new DerivedProperty( [ this.liquidMaterialProperty ], liquidMaterial => liquidMaterial.density, {
+      tandem: tandem.createTandem( 'liquidDensityProperty' ),
+      phetioType: DerivedProperty.DerivedPropertyIO( NumberIO )
+    } );
 
     // @public {Property.<number>}
-    this.liquidViscosityProperty = new DerivedProperty( [ this.liquidMaterialProperty ], liquidMaterial => liquidMaterial.viscosity );
+    this.liquidViscosityProperty = new DerivedProperty( [ this.liquidMaterialProperty ], liquidMaterial => liquidMaterial.viscosity, {
+      tandem: tandem.createTandem( 'liquidViscosityProperty' ),
+      phetioType: DerivedProperty.DerivedPropertyIO( NumberIO )
+    } );
 
     // @public {Bounds3}
     this.poolBounds = new Bounds3(

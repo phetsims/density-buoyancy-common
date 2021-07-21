@@ -10,6 +10,12 @@ import Property from '../../../../axon/js/Property.js';
 import Utils from '../../../../dot/js/Utils.js';
 import merge from '../../../../phet-core/js/merge.js';
 import Color from '../../../../scenery/js/util/Color.js';
+import BooleanIO from '../../../../tandem/js/types/BooleanIO.js';
+import IOType from '../../../../tandem/js/types/IOType.js';
+import NullableIO from '../../../../tandem/js/types/NullableIO.js';
+import NumberIO from '../../../../tandem/js/types/NumberIO.js';
+import ReferenceIO from '../../../../tandem/js/types/ReferenceIO.js';
+import StringIO from '../../../../tandem/js/types/StringIO.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import densityBuoyancyCommonStrings from '../../densityBuoyancyCommonStrings.js';
 import densityBuoyancyCommonColorProfile from '../view/densityBuoyancyCommonColorProfile.js';
@@ -23,6 +29,9 @@ class Material {
     config = merge( {
       // {string}
       name: 'unknown',
+
+      // {string|null} - If set, this material will be available at Material[ identifier ] as a global
+      identifier: null,
 
       // {number} - in SI (kg/m^3)
       density: 1,
@@ -46,6 +55,9 @@ class Material {
     // @public {string}
     this.name = config.name;
 
+    // @public {string|null}
+    this.identifier = config.identifier;
+
     // @public {number}
     this.density = config.density;
 
@@ -63,9 +75,6 @@ class Material {
 
     // @public {Property.<Color>|null}
     this.liquidColor = config.liquidColor;
-
-    // @public {number}
-    this.liquidOpacity = config.liquidOpacity;
   }
 
   /**
@@ -352,6 +361,64 @@ Material.MATERIALS = [
   Material.WATER,
   Material.WOOD
 ];
+
+const NullableColorPropertyReferenceType = NullableIO( ReferenceIO( Property.PropertyIO( Color.ColorIO ) ) );
+const MaterialIO = new IOType( 'MaterialIO', {
+  valueType: Material,
+  documentation: 'Represents different materials that solids/liquids in the simulations can take, including density/viscosity/color.',
+  stateSchema: {
+    name: StringIO,
+    identifier: NullableIO( StringIO ),
+    density: NumberIO,
+    viscosity: NumberIO,
+    custom: BooleanIO,
+    hidden: BooleanIO,
+    staticCustomColor: NullableIO( Color.ColorIO ),
+    customColor: NullableColorPropertyReferenceType,
+    staticLiquidColor: NullableIO( Color.ColorIO ),
+    liquidColor: NullableColorPropertyReferenceType
+  },
+  toStateObject( material ) {
+
+    const isCustomColorUninstrumented = material.customColor && !material.customColor.isPhetioInstrumented();
+    const isLiquidColorUninstrumented = material.liquidColor && !material.liquidColor.isPhetioInstrumented();
+
+    return {
+      name: StringIO.toStateObject( material.name ),
+      identifier: NullableIO( StringIO ).toStateObject( material.identifier ),
+      density: NumberIO.toStateObject( material.density ),
+      viscosity: NumberIO.toStateObject( material.viscosity ),
+      custom: BooleanIO.toStateObject( material.custom ),
+      hidden: BooleanIO.toStateObject( material.hidden ),
+      staticCustomColor: NullableIO( Color.ColorIO ).toStateObject( isCustomColorUninstrumented ? material.customColor.value : null ),
+      customColor: NullableColorPropertyReferenceType.toStateObject( isCustomColorUninstrumented ? null : material.customColor ),
+      staticLiquidColor: NullableIO( Color.ColorIO ).toStateObject( isLiquidColorUninstrumented ? material.liquidColor.value : null ),
+      liquidColor: NullableColorPropertyReferenceType.toStateObject( isLiquidColorUninstrumented ? null : material.liquidColor )
+    };
+  },
+  fromStateObject( obj ) {
+    if ( obj.identifier ) {
+      const material = Material[ obj.identifier ];
+      assert && assert( material, `Unkonwn material: ${obj.identifier}` );
+      return material;
+    }
+    else {
+      const staticCustomColor = NullableIO( Color.ColorIO ).fromStateObject( obj.staticCustomColor );
+      const staticLiquidColor = NullableIO( Color.ColorIO ).fromStateObject( obj.staticLiquidColor );
+      return new Material( {
+        name: StringIO.fromStateObject( obj.name ),
+        identifier: NullableIO( StringIO ).fromStateObject( obj.identifier ),
+        density: NumberIO.fromStateObject( obj.density ),
+        viscosity: NumberIO.fromStateObject( obj.viscosity ),
+        custom: BooleanIO.fromStateObject( obj.custom ),
+        hidden: BooleanIO.fromStateObject( obj.hidden ),
+        customColor: staticCustomColor ? new Property( staticCustomColor ) : NullableColorPropertyReferenceType.fromStateObject( obj.customColor ),
+        liquidColor: staticLiquidColor ? new Property( staticLiquidColor ) : NullableColorPropertyReferenceType.fromStateObject( obj.liquidColor )
+      } );
+    }
+  }
+} );
+Material.MaterialIO = MaterialIO;
 
 densityBuoyancyCommon.register( 'Material', Material );
 export default Material;

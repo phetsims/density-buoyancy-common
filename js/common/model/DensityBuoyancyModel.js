@@ -225,6 +225,10 @@ class DensityBuoyancyModel {
         const gravityForce = new Vector2( 0, -mass.massProperty.value * gravity );
         this.engine.bodyApplyForce( mass.body, gravityForce );
         mass.gravityForceInterpolatedProperty.setNextValue( gravityForce );
+
+        if ( mass.shapeProperty.value.bounds.minX + mass.matrix.m02() < this.constraintBounds.minX ) {
+          this.engine.bodyApplyForce( mass.body, new Vector2( 2 * mass.massProperty.value, 0 ) );
+        }
       } );
     } );
   }

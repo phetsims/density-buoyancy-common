@@ -69,6 +69,14 @@ class P2Engine extends Engine {
     this.world.on( 'postStep', () => {
       this.internalStepEmitter.emit( this.world.lastTimeStep );
     } );
+
+    // Kill vertical-only friction to avoid edge cases, see https://github.com/phetsims/density/issues/65
+    // and https://github.com/phetsims/density/issues/66
+    this.world.on( 'preSolve', preSolveEvent => {
+      preSolveEvent.frictionEquations.forEach( equation => {
+        equation.enabled = equation.t[ 0 ] !== 0;
+      } );
+    } );
   }
 
   /**

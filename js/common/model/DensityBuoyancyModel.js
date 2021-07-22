@@ -225,12 +225,6 @@ class DensityBuoyancyModel {
         const gravityForce = new Vector2( 0, -mass.massProperty.value * gravity );
         this.engine.bodyApplyForce( mass.body, gravityForce );
         mass.gravityForceInterpolatedProperty.setNextValue( gravityForce );
-
-        // Barrier left-side force, so things don't push up right against the scale, see
-        // https://github.com/phetsims/density/issues/65
-        if ( mass.shapeProperty.value.bounds.minX + mass.matrix.m02() < this.constraintBounds.minX ) {
-          this.engine.bodyApplyForce( mass.body, new Vector2( 2 * mass.massProperty.value, 0 ) );
-        }
       } );
     } );
   }

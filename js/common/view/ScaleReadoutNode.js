@@ -32,7 +32,7 @@ class ScaleReadoutNode extends Node {
         size: 16,
         weight: 'bold'
       } ),
-      maxWidth: 200
+      maxWidth: 85
     } );
     const readoutPanel = new Panel( readoutText, {
       cornerRadius: DensityBuoyancyCommonConstants.CORNER_RADIUS,

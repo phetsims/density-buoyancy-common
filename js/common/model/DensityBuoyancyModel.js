@@ -213,8 +213,12 @@ class DensityBuoyancyModel {
           }
 
           // Increase the generally-visible viscosity effect
+          const ratioSubmerged =
+            ( 1 - DensityBuoyancyCommonQueryParameters.viscositySubmergedRatio ) +
+            DensityBuoyancyCommonQueryParameters.viscositySubmergedRatio * submergedVolume / mass.volumeProperty.value;
           const hackedViscosity = this.liquidViscosityProperty.value ? 0.03 * Math.pow( this.liquidViscosityProperty.value / 0.03, 0.8 ) : 0;
-          const viscousForce = velocity.times( -hackedViscosity * Math.max( 2, mass.massProperty.value ) * 3000 );
+          const viscosityMass = Math.max( DensityBuoyancyCommonQueryParameters.viscosityMassCutoff, mass.massProperty.value );
+          const viscousForce = velocity.times( -hackedViscosity * viscosityMass * ratioSubmerged * 3000 * DensityBuoyancyCommonQueryParameters.viscosityMultiplier );
           this.engine.bodyApplyForce( mass.body, viscousForce );
         }
         else {

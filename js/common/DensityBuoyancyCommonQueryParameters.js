@@ -130,6 +130,25 @@ const DensityBuoyancyCommonQueryParameters = QueryStringMachine.getAll( {
   p2DynamicRelaxation: {
     type: 'number',
     defaultValue: 4
+  },
+
+  // Controls the proportional amount of overall result viscosity forces applied
+  viscosityMultiplier: {
+    type: 'number',
+    defaultValue: 1
+  },
+
+  // A mix between 0: Full viscosity is applied when any part of a mass is in the liquid, 1: The viscosity effect is
+  // multiplied times the proportion of the mass submerged (lowering viscosity when partially submerged).
+  viscositySubmergedRatio: {
+    type: 'number',
+    defaultValue: 0
+  },
+
+  // Viscosity for masses larger than this will be reduced to the force for this viscosity (somewhat of a hacK)
+  viscosityMassCutoff: {
+    type: 'number',
+    defaultValue: 2
   }
 } );
 

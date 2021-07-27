@@ -318,22 +318,22 @@ class DensityBuoyancyScreenView extends ScreenView {
     ] );
     topGeometry.addAttribute( 'color', new THREE.BufferAttribute( topColorArray, 3 ) );
     densityBuoyancyCommonColorProfile.grassCloseProperty.link( grassCloseColor => {
-      for ( let i = 0; i < 12; i++ ) {
+      for ( let i = 0; i < 18; i++ ) {
         topColorArray[ i * 3 + 0 ] = grassCloseColor.r / 255;
         topColorArray[ i * 3 + 1 ] = grassCloseColor.g / 255;
         topColorArray[ i * 3 + 2 ] = grassCloseColor.b / 255;
       }
       const offset = 3 * 2 * 6;
-      topColorArray[ offset + 0 ] = topColorArray[ offset + 3 ] = topColorArray[ offset + 12 ] = grassCloseColor.r / 255;
-      topColorArray[ offset + 1 ] = topColorArray[ offset + 4 ] = topColorArray[ offset + 13 ] = grassCloseColor.g / 255;
-      topColorArray[ offset + 2 ] = topColorArray[ offset + 5 ] = topColorArray[ offset + 14 ] = grassCloseColor.b / 255;
+      topColorArray[ offset + 0 ] = topColorArray[ offset + 3 ] = topColorArray[ offset + 9 ] = grassCloseColor.r / 255;
+      topColorArray[ offset + 1 ] = topColorArray[ offset + 4 ] = topColorArray[ offset + 10 ] = grassCloseColor.g / 255;
+      topColorArray[ offset + 2 ] = topColorArray[ offset + 5 ] = topColorArray[ offset + 11 ] = grassCloseColor.b / 255;
       topGeometry.attributes.color.needsUpdate = true;
     } );
     densityBuoyancyCommonColorProfile.grassFarProperty.link( grassFarColor => {
       const offset = 3 * 2 * 6;
-      topColorArray[ offset + 6 ] = topColorArray[ offset + 9 ] = topColorArray[ offset + 15 ] = grassFarColor.r / 255;
-      topColorArray[ offset + 7 ] = topColorArray[ offset + 10 ] = topColorArray[ offset + 16 ] = grassFarColor.g / 255;
-      topColorArray[ offset + 8 ] = topColorArray[ offset + 11 ] = topColorArray[ offset + 17 ] = grassFarColor.b / 255;
+      topColorArray[ offset + 6 ] = topColorArray[ offset + 12 ] = topColorArray[ offset + 15 ] = grassFarColor.r / 255;
+      topColorArray[ offset + 7 ] = topColorArray[ offset + 13 ] = topColorArray[ offset + 16 ] = grassFarColor.g / 255;
+      topColorArray[ offset + 8 ] = topColorArray[ offset + 14 ] = topColorArray[ offset + 17 ] = grassFarColor.b / 255;
       topGeometry.attributes.color.needsUpdate = true;
     } );
     const topMaterial = new THREE.MeshBasicMaterial( { vertexColors: THREE.VertexColors } );

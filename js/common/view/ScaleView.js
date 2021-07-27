@@ -16,14 +16,12 @@ import VerticalCylinderView from './VerticalCylinderView.js';
 class ScaleView extends MassView {
   /**
    * @param {Scale} mass
-   * @param {THREE.Texture} reflectedTexture
-   * @param {THREE.Texture} refractedTexture
    */
-  constructor( mass, reflectedTexture, refractedTexture ) {
+  constructor( mass ) {
 
     const scaleGeometry = ScaleView.getScaleGeometry();
 
-    super( mass, scaleGeometry, reflectedTexture, refractedTexture );
+    super( mass, scaleGeometry );
 
     // @public {Scale}
     this.mass = mass;

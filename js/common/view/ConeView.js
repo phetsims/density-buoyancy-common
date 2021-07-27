@@ -17,10 +17,8 @@ const numElements = 6 * segments;
 class ConeView extends MassView {
   /**
    * @param {Cone} cone
-   * @param {THREE.Texture} reflectedTexture
-   * @param {THREE.Texture} refractedTexture
    */
-  constructor( cone, reflectedTexture, refractedTexture ) {
+  constructor( cone ) {
 
     const positionArray = new Float32Array( numElements * 3 );
     const normalArray = new Float32Array( numElements * 3 );
@@ -33,7 +31,7 @@ class ConeView extends MassView {
     coneGeometry.addAttribute( 'normal', new THREE.BufferAttribute( normalArray, 3 ) );
     coneGeometry.addAttribute( 'uv', new THREE.BufferAttribute( uvArray, 2 ) );
 
-    super( cone, coneGeometry, reflectedTexture, refractedTexture );
+    super( cone, coneGeometry );
 
     // @public {Cone}
     this.cone = cone;

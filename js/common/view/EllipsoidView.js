@@ -13,14 +13,12 @@ import MassView from './MassView.js';
 class EllipsoidView extends MassView {
   /**
    * @param {Ellipsod} ellipsoid
-   * @param {THREE.Texture} reflectedTexture
-   * @param {THREE.Texture} refractedTexture
    */
-  constructor( ellipsoid, reflectedTexture, refractedTexture ) {
+  constructor( ellipsoid ) {
 
     const ellipsoidGeometry = new THREE.SphereGeometry( 1, 30, 24 );
 
-    super( ellipsoid, ellipsoidGeometry, reflectedTexture, refractedTexture );
+    super( ellipsoid, ellipsoidGeometry );
 
     // @public {Ellipsod}
     this.ellipsoid = ellipsoid;

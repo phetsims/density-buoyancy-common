@@ -9,11 +9,7 @@
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 
 class MaterialView {
-  /**
-   * @param {THREE.Texture} reflectedTexture
-   * @param {THREE.Texture} refractedTexture
-   */
-  constructor( reflectedTexture, refractedTexture ) {
+  constructor() {
     // @public {THREE.Material} - defined by subtypes usually
     this.material = null;
   }

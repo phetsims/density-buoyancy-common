@@ -17,10 +17,8 @@ const numElements = 12 * segments;
 class HorizontalCylinderView extends MassView {
   /**
    * @param {VerticalCylinder} verticalCylinder
-   * @param {THREE.Texture} reflectedTexture
-   * @param {THREE.Texture} refractedTexture
    */
-  constructor( verticalCylinder, reflectedTexture, refractedTexture ) {
+  constructor( verticalCylinder ) {
 
     const positionArray = new Float32Array( numElements * 3 );
     const normalArray = new Float32Array( numElements * 3 );
@@ -33,7 +31,7 @@ class HorizontalCylinderView extends MassView {
     verticalCylinderGeometry.addAttribute( 'normal', new THREE.BufferAttribute( normalArray, 3 ) );
     verticalCylinderGeometry.addAttribute( 'uv', new THREE.BufferAttribute( uvArray, 2 ) );
 
-    super( verticalCylinder, verticalCylinderGeometry, reflectedTexture, refractedTexture );
+    super( verticalCylinder, verticalCylinderGeometry );
 
     // @public {VerticalCylinder}
     this.verticalCylinder = verticalCylinder;

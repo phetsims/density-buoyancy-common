@@ -440,53 +440,32 @@ class DensityBuoyancyScreenView extends ScreenView {
       waterGeometry.computeBoundingSphere();
     } );
 
-    const getEnvironmentTexture = () => {
-      const camera = new THREE.CubeCamera( 0.01, 50, 512 );
-
-      const texture = camera.renderTarget.texture;
-
-      this.sceneNode.stage.threeScene.add( camera );
-      this.sceneNode.stage.threeScene.background = ThreeUtils.colorToThree( densityBuoyancyCommonColorProfile.skyBottomProperty.value );
-      camera.position.set( 0, 0, 0 );
-      camera.update( this.sceneNode.stage.threeRenderer, this.sceneNode.stage.threeScene );
-      this.sceneNode.stage.threeScene.background = null;
-      this.sceneNode.stage.threeScene.remove( camera );
-
-      return texture;
-    };
-
-    const reflectionTexture = getEnvironmentTexture();
-    const refractionTexture = getEnvironmentTexture();
-
-    refractionTexture.mapping = THREE.CubeRefractionMapping;
-    refractionTexture.needsUpdate = true;
-
     const onMassAdded = mass => {
       let massView = null;
 
       if ( mass instanceof Cuboid ) {
-        massView = new CuboidView( mass, reflectionTexture, refractionTexture );
+        massView = new CuboidView( mass );
       }
       else if ( mass instanceof Scale ) {
-        massView = new ScaleView( mass, reflectionTexture, refractionTexture );
+        massView = new ScaleView( mass );
       }
       else if ( mass instanceof Cone ) {
-        massView = new ConeView( mass, reflectionTexture, refractionTexture );
+        massView = new ConeView( mass );
       }
       else if ( mass instanceof Ellipsoid ) {
-        massView = new EllipsoidView( mass, reflectionTexture, refractionTexture );
+        massView = new EllipsoidView( mass );
       }
       else if ( mass instanceof HorizontalCylinder ) {
-        massView = new HorizontalCylinderView( mass, reflectionTexture, refractionTexture );
+        massView = new HorizontalCylinderView( mass );
       }
       else if ( mass instanceof VerticalCylinder ) {
-        massView = new VerticalCylinderView( mass, reflectionTexture, refractionTexture );
+        massView = new VerticalCylinderView( mass );
       }
       else if ( mass instanceof Bottle ) {
-        massView = new BottleView( mass, model.pool.liquidYInterpolatedProperty, reflectionTexture, refractionTexture );
+        massView = new BottleView( mass, model.pool.liquidYInterpolatedProperty );
       }
       else if ( mass instanceof Boat ) {
-        massView = new BoatView( mass, model.pool.liquidYInterpolatedProperty, reflectionTexture, refractionTexture );
+        massView = new BoatView( mass, model.pool.liquidYInterpolatedProperty );
       }
 
       if ( massView ) {

@@ -11,6 +11,7 @@ import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import DynamicProperty from '../../../../axon/js/DynamicProperty.js';
 import Property from '../../../../axon/js/Property.js';
 import Bounds2 from '../../../../dot/js/Bounds2.js';
+import Matrix3 from '../../../../dot/js/Matrix3.js';
 import Plane3 from '../../../../dot/js/Plane3.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
@@ -639,7 +640,16 @@ class DensityBuoyancyScreenView extends ScreenView {
       forceDiagramNode.update();
 
       const mass = forceDiagramNode.mass;
-      forceDiagramNode.translation = this.modelToViewPoint( mass.matrix.translation.toVector3().plus( mass.forceOffsetProperty.value ) );
+      const originPoint = this.modelToViewPoint( mass.matrix.translation.toVector3().plus( mass.forceOffsetProperty.value ) );
+      const upOffsetPoint = this.modelToViewPoint( mass.matrix.translation.toVector3().plus( mass.forceOffsetProperty.value ).plusXYZ( 0, 1, 0 ) );
+
+      // Shear the force diagram so that it aligns with the perspective at the point, see
+      // https://github.com/phetsims/buoyancy/issues/12
+      forceDiagramNode.matrix = Matrix3.rowMajor(
+        1, ( upOffsetPoint.x - originPoint.x ) / ( upOffsetPoint.y - originPoint.y ), originPoint.x,
+        0, 1, originPoint.y,
+        0, 0, 1
+      );
     } );
 
     this.massLabelNodes.forEach( massLabelNode => {

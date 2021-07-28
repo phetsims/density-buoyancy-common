@@ -215,6 +215,7 @@ class Mass extends PhetioObject {
     } );
 
     this.writeData();
+    this.engine.bodySynchronizePrevious( this.body );
 
     // @public {number}
     this.stepX = 0;
@@ -367,6 +368,8 @@ class Mass extends PhetioObject {
    * @public
    */
   reset() {
+    this.engine.bodyResetHidden( this.body );
+
     this.shapeProperty.reset();
     this.materialProperty.reset();
     this.volumeProperty.reset();
@@ -384,6 +387,8 @@ class Mass extends PhetioObject {
     this.writeData();
 
     this.transformedEmitter.emit();
+
+    this.engine.bodySynchronizePrevious( this.body );
   }
 
   /**
@@ -416,18 +421,23 @@ Mass.MassIO = new IOType( 'MassIO', {
     stepMatrix: Matrix3.Matrix3IO,
     canRotate: BooleanIO,
     canMove: BooleanIO,
-    tag: EnumerationIO( MassTag )
+    tag: EnumerationIO( MassTag ),
+
+    // engine.bodyToStateObject
+    position: Vector2.Vector2IO,
+    velocity: Vector2.Vector2IO,
+    force: Vector2.Vector2IO
   },
   toStateObject( mass ) {
     mass.readData();
 
-    return {
+    return merge( {
       matrix: Matrix3.toStateObject( mass.matrix ),
       stepMatrix: Matrix3.toStateObject( mass.stepMatrix ),
       canRotate: BooleanIO.toStateObject( mass.canRotate ),
       canMove: BooleanIO.toStateObject( mass.canMove ),
       tag: EnumerationIO( MassTag ).toStateObject( mass.tag )
-    };
+    }, mass.engine.bodyToStateObject( mass.body ) );
   },
   applyState( mass, obj ) {
     mass.matrix.set( Matrix3.fromStateObject( obj.matrix ) );
@@ -435,8 +445,7 @@ Mass.MassIO = new IOType( 'MassIO', {
     mass.canRotate = BooleanIO.fromStateObject( obj.canRotate );
     mass.canMove = BooleanIO.fromStateObject( obj.canMove );
     mass.tag = EnumerationIO( MassTag ).fromStateObject( obj.tag );
-
-    mass.writeData();
+    mass.engine.bodyApplyState( mass.body, obj );
   }
 } );
 

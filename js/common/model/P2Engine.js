@@ -187,30 +187,6 @@ class P2Engine extends Engine {
   }
 
   /**
-   * Returns the angular velocity of a body.
-   * @public
-   * @override
-   *
-   * @param {Engine.Body} body
-   * @returns {number}
-   */
-  bodyGetAngularVelocity( body ) {
-    return body.angularVelocity;
-  }
-
-  /**
-   * Sets the angular velocity of a body.
-   * @public
-   * @override
-   *
-   * @param {Engine.Body} body
-   * @param {number} angularVelocity
-   */
-  bodySetAngularVelocity( body, angularVelocity ) {
-    body.angularVelocity = angularVelocity;
-  }
-
-  /**
    * Returns the velocity of a body.
    * @public
    * @override
@@ -302,6 +278,70 @@ class P2Engine extends Engine {
   resetContactForces( body ) {
     body.vlambda[ 0 ] = 0;
     body.vlambda[ 1 ] = 0;
+  }
+
+  /**
+   * Returns a serialized form of a body
+   * @public
+   * @override
+   *
+   * @param {Engine.Body} body
+   * @returns {Object}
+   */
+  bodyToStateObject( body ) {
+    return {
+      position: P2Engine.p2ToVector( body.position ).toStateObject(),
+      velocity: P2Engine.p2ToVector( body.velocity ).toStateObject(),
+      force: P2Engine.p2ToVector( body.force ).toStateObject() // we applied forces after the step
+    };
+  }
+
+  /**
+   * Applies a given state object to a body.
+   * @public
+   * @override
+   *
+   * @param {Engine.Body} body
+   * @param {Object} obj
+   */
+  bodyApplyState( body, obj ) {
+    body.position[ 0 ] = obj.position.x * SIZE_SCALE;
+    body.position[ 1 ] = obj.position.y * SIZE_SCALE;
+    body.previousPosition[ 0 ] = obj.position.x * SIZE_SCALE;
+    body.previousPosition[ 1 ] = obj.position.y * SIZE_SCALE;
+    body.velocity[ 0 ] = obj.velocity.x * SIZE_SCALE;
+    body.velocity[ 1 ] = obj.velocity.y * SIZE_SCALE;
+    body.force[ 0 ] = obj.force.x * SIZE_SCALE;
+    body.force[ 1 ] = obj.force.y * SIZE_SCALE;
+  }
+
+  /**
+   * Returns a serialized form of a body
+   * @public
+   * @override
+   *
+   * @param {Engine.Body} body
+   * @returns {Object}
+   */
+  bodyResetHidden( body ) {
+    // Bodies don't start with velocity/force applied
+    body.velocity[ 0 ] = 0;
+    body.velocity[ 1 ] = 0;
+    body.force[ 0 ] = 0;
+    body.force[ 1 ] = 0;
+  }
+
+  /**
+   * Sets the previous position of a body to the current position
+   * @public
+   * @override
+   *
+   * @param {Engine.Body} body
+   * @returns {Object}
+   */
+  bodySynchronizePrevious( body ) {
+    body.previousPosition[ 0 ] = body.position[ 0 ];
+    body.previousPosition[ 1 ] = body.position[ 1 ];
   }
 
   /**

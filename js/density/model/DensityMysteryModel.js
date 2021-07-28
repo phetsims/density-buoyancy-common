@@ -226,13 +226,16 @@ class DensityMysteryModel extends DensityBuoyancyModal( DensityBuoyancyModel, Mo
     super( tandem, createMasses, regenerateMasses, positionMasses, tandem );
 
     // @public {Property.<boolean>}
-    this.densityTableExpandedProperty = new BooleanProperty( false );
+    this.densityTableExpandedProperty = new BooleanProperty( false, {
+      tandem: tandem.createTandem( 'densityTableExpandedProperty' )
+    } );
 
     // @public {Scale}
     this.scale = new Scale( this.engine, {
       matrix: Matrix3.translation( -0.75, -Scale.SCALE_BASE_BOUNDS.minY ),
       displayType: Scale.DisplayType.KILOGRAMS,
-      canMove: false
+      canMove: false,
+      tandem: tandem.createTandem( 'scale' )
     } );
     this.masses.push( this.scale );
   }

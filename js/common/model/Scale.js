@@ -12,6 +12,7 @@ import Shape from '../../../../kite/js/Shape.js';
 import Enumeration from '../../../../phet-core/js/Enumeration.js';
 import merge from '../../../../phet-core/js/merge.js';
 import IOType from '../../../../tandem/js/types/IOType.js';
+import NumberIO from '../../../../tandem/js/types/NumberIO.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import Cuboid from './Cuboid.js';
 import InterpolatedProperty from './InterpolatedProperty.js';
@@ -70,7 +71,9 @@ class Scale extends Mass {
 
     // @public {Property.<number>} - In Newtons.
     this.scaleForceInterpolatedProperty = new InterpolatedProperty( 0, {
-      interpolate: InterpolatedProperty.interpolateNumber
+      interpolate: InterpolatedProperty.interpolateNumber,
+      phetioType: InterpolatedProperty.InterpolatedPropertyIO( NumberIO ),
+      tandem: config.tandem.createTandem( 'scaleForceInterpolatedProperty' )
     } );
 
     // @public {DisplayType}

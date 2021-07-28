@@ -28,9 +28,9 @@ class Ellipsoid extends Mass {
       body: engine.createFromVertices( Ellipsoid.getEllipsoidVertices( size.width, size.height ), false ),
       shape: Ellipsoid.getEllipsoidShape( size.width, size.height ),
       volume: Ellipsoid.getVolume( size ),
-      canRotate: false
+      canRotate: false,
 
-      // material
+      phetioType: Ellipsoid.EllipsoidIO
     }, config );
 
     assert && assert( !config.canRotate );

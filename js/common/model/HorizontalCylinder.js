@@ -27,9 +27,9 @@ class HorizontalCylinder extends Mass {
       body: engine.createBox( length, radius * 2 ),
       shape: HorizontalCylinder.getHorizontalCylinderShape( radius, length ),
       volume: HorizontalCylinder.getVolume( radius, length ),
-      canRotate: false
+      canRotate: false,
 
-      // material
+      phetioType: HorizontalCylinder.HorizontalCylinderIO
     }, config );
 
     assert && assert( !config.canRotate );

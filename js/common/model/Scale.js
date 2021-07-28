@@ -61,7 +61,9 @@ class Scale extends Mass {
       displayType: DisplayType.NEWTONS,
 
       // material
-      material: Material.PLATINUM
+      material: Material.PLATINUM,
+
+      phetioType: Scale.ScaleIO
     }, config );
 
     super( engine, config );

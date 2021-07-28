@@ -31,7 +31,8 @@ class Cuboid extends Mass {
       volume: size.width * size.height * size.depth,
       canRotate: false,
 
-      tandem: Tandem.OPTIONAL
+      tandem: Tandem.OPTIONAL,
+      phetioType: Cuboid.CuboidIO
     }, config );
 
     assert && assert( !config.canRotate );

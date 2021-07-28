@@ -23,10 +23,11 @@ const DensityBuoyancyModal = ( type, Mode, initialMode ) => {
     /**
      * @param {Tandem} tandem
      * @param {function(Mode):Array.<Mass>} createMassesCallback - Creates masses (when given a mode)
+     * @param {function(Mode):Array.<Mass>} regenerateMassesCallback - Regenerate masses (when given a mode)
      * @param {function(Mode,Array.<Mass>)} positionMassesCallback - Positions masses (for a given mode)
      * @param {*} ...args
      */
-    constructor( tandem, createMassesCallback, positionMassesCallback, ...args ) {
+    constructor( tandem, createMassesCallback, regenerateMassesCallback, positionMassesCallback, ...args ) {
       super( ...args );
 
       // @public {Property.<Mode>}
@@ -36,6 +37,7 @@ const DensityBuoyancyModal = ( type, Mode, initialMode ) => {
 
       // @private
       this.createMassesCallback = createMassesCallback;
+      this.regenerateMassesCallback = regenerateMassesCallback;
       this.positionMassesCallback = positionMassesCallback;
 
       // @private {Object.<Mode,Array.<Mass>>}
@@ -102,16 +104,8 @@ const DensityBuoyancyModal = ( type, Mode, initialMode ) => {
      * @param {Mode} mode
      */
     regenerate( mode ) {
-      if ( this.modeProperty.value === mode ) {
-        this.removeMasses( mode );
-      }
-
-      this.createMasses( mode );
+      this.regenerateMassesCallback( this, mode, this.modeToMassesMap[ mode ] );
       this.positionMasses( mode );
-
-      if ( this.modeProperty.value === mode ) {
-        this.addMasses( mode );
-      }
     }
 
     /**

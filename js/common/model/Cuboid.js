@@ -301,7 +301,22 @@ class Cuboid extends Mass {
 Cuboid.CuboidIO = new IOType( 'CuboidIO', {
   valueType: Cuboid,
   supertype: Mass.MassIO,
-  documentation: 'Represents an axis-aligned cuboid mass'
+  documentation: 'Represents an axis-aligned cuboid mass',
+  stateSchema: {
+    size: Bounds3.Bounds3IO
+  },
+
+  toStateObject: cuboid => {
+    const parentStateObject = Mass.MassIO.toStateObject( cuboid );
+    parentStateObject.size = Bounds3.Bounds3IO.toStateObject( cuboid.sizeProperty.value );
+    return parentStateObject;
+  },
+  applyState: ( cuboid, stateObject ) => {
+
+    // Apply size update first, and with the very specific update method
+    cuboid.updateSize( Bounds3.Bounds3IO.fromStateObject( stateObject.size ) );
+    Mass.MassIO.applyState( cuboid, stateObject );
+  }
 } );
 
 densityBuoyancyCommon.register( 'Cuboid', Cuboid );

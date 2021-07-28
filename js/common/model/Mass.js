@@ -412,6 +412,9 @@ class Mass extends PhetioObject {
   }
 }
 
+// @public {Enumeration}
+Mass.MassTag = MassTag;
+
 // @public {IOType}
 Mass.MassIO = new IOType( 'MassIO', {
   valueType: Mass,
@@ -421,7 +424,7 @@ Mass.MassIO = new IOType( 'MassIO', {
     stepMatrix: Matrix3.Matrix3IO,
     canRotate: BooleanIO,
     canMove: BooleanIO,
-    tag: EnumerationIO( MassTag ),
+    tag: EnumerationIO( Mass.MassTag ),
 
     // engine.bodyToStateObject
     position: Vector2.Vector2IO,
@@ -448,9 +451,6 @@ Mass.MassIO = new IOType( 'MassIO', {
     mass.engine.bodyApplyState( mass.body, obj );
   }
 } );
-
-// @public {Enumeration}
-Mass.MassTag = MassTag;
 
 densityBuoyancyCommon.register( 'Mass', Mass );
 export default Mass;

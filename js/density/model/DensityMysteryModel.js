@@ -65,23 +65,21 @@ class DensityMysteryModel extends DensityBuoyancyModal( DensityBuoyancyModel, Mo
    * @param {Tandem} tandem
    */
   constructor( tandem ) {
+    const createMysteryMaterials = () => {
+      const densities = dotRandom.shuffle( randomMaterials ).slice( 0, 5 ).map( material => material.density );
+      const colors = dotRandom.shuffle( randomColors ).slice( 0, 5 );
 
-    // const mysteryCuboidGroup = new PhetioGroup( ( tandem, options ) => {
-    //   return Cuboid.createWithMass( model.engine, options.material, options.position, options.mass );
-    // }, {}, {
-    //   tandem: tandem.createTandem( 'mysteryCuboidGroup' ),
-    //   phetioType: PhetioGroup.PhetioGroupIO( Cuboid.CuboidIO ),
-    //   phetioDocumentation: 'manages dynamic PhET-iO elements for cuboids in the mystery group'
-    // } );
-
-
-    // mysteryCuboidGroup.elementCreatedEmitter.addListener( bunny => {
-
-    // } );
-
-    // mysteryCuboidGroup.elementDisposedEmitter.addListener( bunny => {
-
-    // } );
+      return _.range( 0, 5 ).map( i => Material.createCustomMaterial( {
+        density: densities[ i ],
+        customColor: colors[ i ]
+      } ) );
+    };
+    const createMysteryVolumes = () => {
+      return [
+        ...dotRandom.shuffle( [ 1, 2, 3, 4, 5, 6 ].map( n => n / 1000 ) ).slice( 0, 3 ),
+        ...dotRandom.shuffle( [ 7, 8, 9, 10 ].map( n => n / 1000 ) ).slice( 0, 2 )
+      ].sort();
+    };
 
     const createMasses = ( model, mode ) => {
       switch( mode ) {
@@ -167,13 +165,6 @@ class DensityMysteryModel extends DensityBuoyancyModal( DensityBuoyancyModel, Mo
             } ), Vector2.ZERO, 2.85, { tag: Mass.MassTag.THREE_A, tandem: tandem.createTandem( '3A' ) } )
           ];
         case Mode.RANDOM: {
-          const densities = dotRandom.shuffle( randomMaterials ).slice( 0, 5 ).map( material => material.density );
-          const colors = dotRandom.shuffle( randomColors ).slice( 0, 5 );
-          const volumes = [
-            ...dotRandom.shuffle( [ 1, 2, 3, 4, 5, 6 ].map( n => n / 1000 ) ).slice( 0, 3 ),
-            ...dotRandom.shuffle( [ 7, 8, 9, 10 ].map( n => n / 1000 ) ).slice( 0, 2 )
-          ].sort();
-
           const tags = [
             Mass.MassTag.C,
             Mass.MassTag.D,
@@ -182,13 +173,30 @@ class DensityMysteryModel extends DensityBuoyancyModal( DensityBuoyancyModel, Mo
             Mass.MassTag.B
           ];
 
-          return _.sortBy( _.range( 0, 5 ).map( i => Cuboid.createWithVolume( model.engine, Material.createCustomMaterial( {
-            density: densities[ i ],
-            customColor: colors[ i ]
-          } ), Vector2.ZERO, volumes[ i ], { tag: tags[ i ] } ) ), mass => mass.volumeProperty.value );
+          const mysteryMaterials = createMysteryMaterials();
+          const mysteryVolumes = createMysteryVolumes();
+
+          return _.range( 0, 5 ).map( i => {
+            return Cuboid.createWithVolume( model.engine, mysteryMaterials[ i ], Vector2.ZERO, mysteryVolumes[ i ], {
+              tag: tags[ i ],
+              tandem: tandem.createTandem( tags[ i ].name )
+            } );
+          } );
         }
         default:
           throw new Error( `unknown mode: ${mode}` );
+      }
+    };
+
+    const regenerateMasses = ( model, mode, masses ) => {
+      if ( mode === Mode.RANDOM ) {
+        const mysteryMaterials = createMysteryMaterials();
+        const mysteryVolumes = createMysteryVolumes();
+
+        masses.forEach( ( mass, i ) => {
+          mass.materialProperty.value = mysteryMaterials[ i ];
+          mass.updateSize( Cuboid.boundsFromVolume( mysteryVolumes[ i ] ) );
+        } );
       }
     };
 
@@ -215,7 +223,7 @@ class DensityMysteryModel extends DensityBuoyancyModal( DensityBuoyancyModel, Mo
       }
     };
 
-    super( tandem, createMasses, positionMasses, tandem );
+    super( tandem, createMasses, regenerateMasses, positionMasses, tandem );
 
     // @public {Property.<boolean>}
     this.densityTableExpandedProperty = new BooleanProperty( false );

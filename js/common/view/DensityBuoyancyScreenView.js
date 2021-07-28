@@ -765,7 +765,7 @@ class DensityBuoyancyScreenView extends ScreenView {
       const waterMaterial = new THREE.MeshLambertMaterial( {
         transparent: true
       } );
-      const waterColor = densityBuoyancyCommonColorProfile.materialWaterProperty.value;
+      const waterColor = densityBuoyancyCommonColorProfile.materialWaterColorProperty.value;
       waterMaterial.color = ThreeUtils.colorToThree( waterColor );
       waterMaterial.opacity = waterColor.alpha;
 
@@ -807,7 +807,7 @@ class DensityBuoyancyScreenView extends ScreenView {
       const waterMaterial = new THREE.MeshLambertMaterial( {
         transparent: true
       } );
-      const waterColor = densityBuoyancyCommonColorProfile.materialWaterProperty.value;
+      const waterColor = densityBuoyancyCommonColorProfile.materialWaterColorProperty.value;
       waterMaterial.color = ThreeUtils.colorToThree( waterColor );
       waterMaterial.opacity = waterColor.alpha;
 

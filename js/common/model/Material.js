@@ -178,13 +178,13 @@ Material.CEMENT = new Material( {
   name: densityBuoyancyCommonStrings.material.cement,
   identifier: 'CEMENT',
   density: 3150,
-  liquidColor: densityBuoyancyCommonColorProfile.materialCementProperty
+  liquidColor: densityBuoyancyCommonColorProfile.materialCementColorProperty
 } );
 Material.COPPER = new Material( {
   name: densityBuoyancyCommonStrings.material.copper,
   identifier: 'COPPER',
   density: 8960,
-  liquidColor: densityBuoyancyCommonColorProfile.materialCopperProperty
+  liquidColor: densityBuoyancyCommonColorProfile.materialCopperColorProperty
 } );
 Material.DIAMOND = new Material( {
   name: densityBuoyancyCommonStrings.material.diamond,
@@ -215,7 +215,7 @@ Material.LEAD = new Material( {
   name: densityBuoyancyCommonStrings.material.lead,
   identifier: 'LEAD',
   density: 11342,
-  liquidColor: densityBuoyancyCommonColorProfile.materialLeadProperty
+  liquidColor: densityBuoyancyCommonColorProfile.materialLeadColorProperty
 } );
 Material.PLATINUM = new Material( {
   name: densityBuoyancyCommonStrings.material.platinum,
@@ -266,48 +266,48 @@ Material.AIR = new Material( {
   identifier: 'AIR',
   density: 1.2,
   viscosity: 0,
-  liquidColor: densityBuoyancyCommonColorProfile.materialAirProperty
+  liquidColor: densityBuoyancyCommonColorProfile.materialAirColorProperty
 } );
 Material.DENSITY_P = new Material( {
   name: densityBuoyancyCommonStrings.material.densityP,
   identifier: 'DENSITY_P',
   density: 200,
-  liquidColor: densityBuoyancyCommonColorProfile.materialDensityPProperty,
+  liquidColor: densityBuoyancyCommonColorProfile.materialDensityPColorProperty,
   hidden: true
 } );
 Material.DENSITY_Q = new Material( {
   name: densityBuoyancyCommonStrings.material.densityQ,
   identifier: 'DENSITY_Q',
   density: 4000,
-  liquidColor: densityBuoyancyCommonColorProfile.materialDensityQProperty,
+  liquidColor: densityBuoyancyCommonColorProfile.materialDensityQColorProperty,
   hidden: true
 } );
 Material.DENSITY_R = new Material( {
   name: densityBuoyancyCommonStrings.material.densityR,
   identifier: 'DENSITY_R',
   density: 200,
-  liquidColor: densityBuoyancyCommonColorProfile.materialDensityRProperty,
+  liquidColor: densityBuoyancyCommonColorProfile.materialDensityRColorProperty,
   hidden: true
 } );
 Material.DENSITY_S = new Material( {
   name: densityBuoyancyCommonStrings.material.densityS,
   identifier: 'DENSITY_S',
   density: 4000,
-  liquidColor: densityBuoyancyCommonColorProfile.materialDensitySProperty,
+  liquidColor: densityBuoyancyCommonColorProfile.materialDensitySColorProperty,
   hidden: true
 } );
 Material.DENSITY_X = new Material( {
   name: densityBuoyancyCommonStrings.material.densityX,
   identifier: 'DENSITY_X',
   density: 500,
-  liquidColor: densityBuoyancyCommonColorProfile.materialDensityXProperty,
+  liquidColor: densityBuoyancyCommonColorProfile.materialDensityXColorProperty,
   hidden: true
 } );
 Material.DENSITY_Y = new Material( {
   name: densityBuoyancyCommonStrings.material.densityY,
   identifier: 'DENSITY_Y',
   density: 5000,
-  liquidColor: densityBuoyancyCommonColorProfile.materialDensityYProperty,
+  liquidColor: densityBuoyancyCommonColorProfile.materialDensityYColorProperty,
   hidden: true
 } );
 Material.GASOLINE = new Material( {
@@ -315,49 +315,49 @@ Material.GASOLINE = new Material( {
   identifier: 'GASOLINE',
   density: 680,
   viscosity: 6e-4,
-  liquidColor: densityBuoyancyCommonColorProfile.materialGasolineProperty
+  liquidColor: densityBuoyancyCommonColorProfile.materialGasolineColorProperty
 } );
 Material.HONEY = new Material( {
   name: densityBuoyancyCommonStrings.material.honey,
   identifier: 'HONEY',
   density: 1440,
   viscosity: 0.03, // NOTE: actual value around 2.5, but we can get away with this for animation
-  liquidColor: densityBuoyancyCommonColorProfile.materialHoneyProperty
+  liquidColor: densityBuoyancyCommonColorProfile.materialHoneyColorProperty
 } );
 Material.MERCURY = new Material( {
   name: densityBuoyancyCommonStrings.material.mercury,
   identifier: 'MERCURY',
   density: 13593,
   viscosity: 1.53e-3,
-  liquidColor: densityBuoyancyCommonColorProfile.materialMercuryProperty
+  liquidColor: densityBuoyancyCommonColorProfile.materialMercuryColorProperty
 } );
 Material.OIL = new Material( {
   name: densityBuoyancyCommonStrings.material.oil,
   identifier: 'OIL',
   density: 920,
   viscosity: 0.02, // Too much bigger and it won't work, not particularly physical
-  liquidColor: densityBuoyancyCommonColorProfile.materialOilProperty
+  liquidColor: densityBuoyancyCommonColorProfile.materialOilColorProperty
 } );
 Material.SAND = new Material( {
   name: densityBuoyancyCommonStrings.material.sand,
   identifier: 'SAND',
   density: 1442,
   viscosity: 0.03, // Too much bigger and it won't work, not particularly physical
-  liquidColor: densityBuoyancyCommonColorProfile.materialSandProperty
+  liquidColor: densityBuoyancyCommonColorProfile.materialSandColorProperty
 } );
 Material.SEAWATER = new Material( {
   name: densityBuoyancyCommonStrings.material.seawater,
   identifier: 'SEAWATER',
   density: 1029,
   viscosity: 1.88e-3,
-  liquidColor: densityBuoyancyCommonColorProfile.materialSeawaterProperty
+  liquidColor: densityBuoyancyCommonColorProfile.materialSeawaterColorProperty
 } );
 Material.WATER = new Material( {
   name: densityBuoyancyCommonStrings.material.water,
   identifier: 'WATER',
   density: 1000,
   viscosity: 8.9e-4,
-  liquidColor: densityBuoyancyCommonColorProfile.materialWaterProperty
+  liquidColor: densityBuoyancyCommonColorProfile.materialWaterColorProperty
 } );
 
 // @public {Array.<Material>}

@@ -105,7 +105,7 @@ class DensityTableNode extends Node {
       fill: 'white'
     } );
     const highlightBackground = new Rectangle( 0, 0, fullWidth, headerCellHeight, {
-      fill: densityBuoyancyCommonColorProfile.chartHeaderProperty
+      fill: densityBuoyancyCommonColorProfile.chartHeaderColorProperty
     } );
 
     this.children = [

@@ -251,8 +251,8 @@ class BuoyancyApplicationsScreenView extends DensityBuoyancyScreenView {
       deselectedLineWidth: 1.5,
       touchAreaXDilation: 6,
       touchAreaYDilation: 6,
-      selectedStroke: densityBuoyancyCommonColorProfile.radioBorderProperty,
-      baseColor: densityBuoyancyCommonColorProfile.radioBackgroundProperty,
+      selectedStroke: densityBuoyancyCommonColorProfile.radioBorderColorProperty,
+      baseColor: densityBuoyancyCommonColorProfile.radioBackgroundColorProperty,
 
       bottom: this.layoutBounds.bottom - MARGIN,
       left: densityControlPanel.right + MARGIN

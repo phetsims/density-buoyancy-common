@@ -33,66 +33,66 @@ class DensityCompareModel extends DensityBuoyancyModal( DensityBuoyancyModel, Mo
           return [
             Cuboid.createWithMass( model.engine, Material.createCustomMaterial( {
               density: 500,
-              customColor: densityBuoyancyCommonColorProfile.comparingYellowProperty
+              customColor: densityBuoyancyCommonColorProfile.comparingYellowColorProperty
             } ), Vector2.ZERO, 5 ),
 
             Cuboid.createWithMass( model.engine, Material.createCustomMaterial( {
               density: 1000,
-              customColor: densityBuoyancyCommonColorProfile.comparingBlueProperty
+              customColor: densityBuoyancyCommonColorProfile.comparingBlueColorProperty
             } ), Vector2.ZERO, 5 ),
 
             Cuboid.createWithMass( model.engine, Material.createCustomMaterial( {
               density: 2000,
-              customColor: densityBuoyancyCommonColorProfile.comparingGreenProperty
+              customColor: densityBuoyancyCommonColorProfile.comparingGreenColorProperty
             } ), Vector2.ZERO, 5 ),
 
             Cuboid.createWithMass( model.engine, Material.createCustomMaterial( {
               density: 4000,
-              customColor: densityBuoyancyCommonColorProfile.comparingRedProperty
+              customColor: densityBuoyancyCommonColorProfile.comparingRedColorProperty
             } ), Vector2.ZERO, 5 )
           ];
         case Mode.SAME_VOLUME:
           return [
             Cuboid.createWithMass( model.engine, Material.createCustomMaterial( {
               density: 1600,
-              customColor: densityBuoyancyCommonColorProfile.comparingYellowProperty
+              customColor: densityBuoyancyCommonColorProfile.comparingYellowColorProperty
             } ), Vector2.ZERO, 8 ),
 
             Cuboid.createWithMass( model.engine, Material.createCustomMaterial( {
               density: 1200,
-              customColor: densityBuoyancyCommonColorProfile.comparingBlueProperty
+              customColor: densityBuoyancyCommonColorProfile.comparingBlueColorProperty
             } ), Vector2.ZERO, 6 ),
 
             Cuboid.createWithMass( model.engine, Material.createCustomMaterial( {
               density: 800,
-              customColor: densityBuoyancyCommonColorProfile.comparingGreenProperty
+              customColor: densityBuoyancyCommonColorProfile.comparingGreenColorProperty
             } ), Vector2.ZERO, 4 ),
 
             Cuboid.createWithMass( model.engine, Material.createCustomMaterial( {
               density: 400,
-              customColor: densityBuoyancyCommonColorProfile.comparingRedProperty
+              customColor: densityBuoyancyCommonColorProfile.comparingRedColorProperty
             } ), Vector2.ZERO, 2 )
           ];
         case Mode.SAME_DENSITY:
           return [
             Cuboid.createWithMass( model.engine, Material.createCustomMaterial( {
               density: 800,
-              customColor: densityBuoyancyCommonColorProfile.comparingYellowProperty
+              customColor: densityBuoyancyCommonColorProfile.comparingYellowColorProperty
             } ), Vector2.ZERO, 4 ),
 
             Cuboid.createWithMass( model.engine, Material.createCustomMaterial( {
               density: 800,
-              customColor: densityBuoyancyCommonColorProfile.comparingBlueProperty
+              customColor: densityBuoyancyCommonColorProfile.comparingBlueColorProperty
             } ), Vector2.ZERO, 3 ),
 
             Cuboid.createWithMass( model.engine, Material.createCustomMaterial( {
               density: 800,
-              customColor: densityBuoyancyCommonColorProfile.comparingGreenProperty
+              customColor: densityBuoyancyCommonColorProfile.comparingGreenColorProperty
             } ), Vector2.ZERO, 2 ),
 
             Cuboid.createWithMass( model.engine, Material.createCustomMaterial( {
               density: 800,
-              customColor: densityBuoyancyCommonColorProfile.comparingRedProperty
+              customColor: densityBuoyancyCommonColorProfile.comparingRedColorProperty
             } ), Vector2.ZERO, 1 )
           ];
         default:

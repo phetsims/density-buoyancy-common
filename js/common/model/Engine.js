@@ -108,28 +108,6 @@ class Engine {
   }
 
   /**
-   * Returns the angular velocity of a body.
-   * @public
-   *
-   * @param {Engine.Body} body
-   * @returns {number}
-   */
-  bodyGetAngularVelocity( body ) {
-    throw new Error( 'unimplemented' );
-  }
-
-  /**
-   * Sets the angular velocity of a body.
-   * @public
-   *
-   * @param {Engine.Body} body
-   * @param {number} angularVelocity
-   */
-  bodySetAngularVelocity( body, angularVelocity ) {
-    throw new Error( 'unimplemented' );
-  }
-
-  /**
    * Returns the velocity of a body.
    * @public
    *
@@ -192,6 +170,50 @@ class Engine {
    * @param {Engine.Body} body
    */
   resetContactForces( body ) {
+    throw new Error( 'unimplemented' );
+  }
+
+  /**
+   * Returns a serialized form of a body
+   * @public
+   *
+   * @param {Engine.Body} body
+   * @returns {Object}
+   */
+  bodyToStateObject( body ) {
+    throw new Error( 'unimplemented' );
+  }
+
+  /**
+   * Applies a given state object to a body.
+   * @public
+   *
+   * @param {Engine.Body} body
+   * @param {Object} obj
+   */
+  bodyApplyState( body, obj ) {
+    throw new Error( 'unimplemented' );
+  }
+
+  /**
+   * Returns a serialized form of a body
+   * @public
+   *
+   * @param {Engine.Body} body
+   * @returns {Object}
+   */
+  bodyResetHidden( body ) {
+    throw new Error( 'unimplemented' );
+  }
+
+  /**
+   * Sets the previous position of a body to the current position
+   * @public
+   *
+   * @param {Engine.Body} body
+   * @returns {Object}
+   */
+  bodySynchronizePrevious( body ) {
     throw new Error( 'unimplemented' );
   }
 

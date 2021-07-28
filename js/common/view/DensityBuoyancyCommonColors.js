@@ -18,7 +18,7 @@ const tandem = Tandem.GLOBAL_VIEW.createTandem( 'colorProfile' );
 
 // Initial colors for each profile, by string key. Only profile currently is default (still helpful for making color
 // tweaks with the top-level files)
-const densityBuoyancyCommonColorProfile = {
+const DensityBuoyancyCommonColors = {
   // Color recommended in https://github.com/phetsims/density/issues/6#issuecomment-600911868
   panelBackgroundProperty: new ProfileColorProperty( 'panelBackground', {
     default: new Color( 240, 240, 240 )
@@ -250,6 +250,6 @@ const densityBuoyancyCommonColorProfile = {
   } )
 };
 
-densityBuoyancyCommon.register( 'densityBuoyancyCommonColorProfile', densityBuoyancyCommonColorProfile );
+densityBuoyancyCommon.register( 'DensityBuoyancyCommonColors', DensityBuoyancyCommonColors );
 
-export default densityBuoyancyCommonColorProfile;
+export default DensityBuoyancyCommonColors;

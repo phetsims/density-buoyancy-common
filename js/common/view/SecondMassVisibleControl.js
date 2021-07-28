@@ -15,15 +15,15 @@ import doubleCuboidIcon from '../../../mipmaps/double-cuboid-icon_png.js';
 import singleCuboidIcon from '../../../mipmaps/single-cuboid-icon_png.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonQueryParameters from '../DensityBuoyancyCommonQueryParameters.js';
-import densityBuoyancyCommonColorProfile from './densityBuoyancyCommonColorProfile.js';
+import DensityBuoyancyCommonColors from './DensityBuoyancyCommonColors.js';
 
 const aMaterial = new THREE.MeshLambertMaterial();
 const bMaterial = new THREE.MeshLambertMaterial();
 
-densityBuoyancyCommonColorProfile.labelAProperty.link( labelColor => {
+DensityBuoyancyCommonColors.labelAProperty.link( labelColor => {
   aMaterial.color = ThreeUtils.colorToThree( labelColor );
 } );
-densityBuoyancyCommonColorProfile.labelBProperty.link( labelColor => {
+DensityBuoyancyCommonColors.labelBProperty.link( labelColor => {
   bMaterial.color = ThreeUtils.colorToThree( labelColor );
 } );
 

@@ -60,7 +60,7 @@ import ScaleReadoutNode from './ScaleReadoutNode.js';
 import ScaleView from './ScaleView.js';
 import VerticalCylinderView from './VerticalCylinderView.js';
 import WaterLevelIndicator from './WaterLevelIndicator.js';
-import densityBuoyancyCommonColorProfile from './densityBuoyancyCommonColorProfile.js';
+import DensityBuoyancyCommonColors from './DensityBuoyancyCommonColors.js';
 
 // constants
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
@@ -106,8 +106,8 @@ class DensityBuoyancyScreenView extends ScreenView {
     // @private {Rectangle} - The sky background, in a unit 0-to-1 rectangle (so we can scale it to match)
     this.backgroundNode = new Rectangle( 0, 0, 1, 1, {
       fill: new LinearGradient( 0, 0, 0, 1 )
-        .addColorStop( 0, densityBuoyancyCommonColorProfile.skyTopProperty )
-        .addColorStop( 1, densityBuoyancyCommonColorProfile.skyBottomProperty )
+        .addColorStop( 0, DensityBuoyancyCommonColors.skyTopProperty )
+        .addColorStop( 1, DensityBuoyancyCommonColors.skyBottomProperty )
     } );
     this.visibleBoundsProperty.link( visibleBounds => {
       this.backgroundNode.translation = visibleBounds.leftTop;
@@ -239,7 +239,7 @@ class DensityBuoyancyScreenView extends ScreenView {
       ), model.groundBounds.maxZ )
     ] ), 3 ) );
     const groundMaterial = new THREE.MeshBasicMaterial();
-    densityBuoyancyCommonColorProfile.groundProperty.link( groundColor => {
+    DensityBuoyancyCommonColors.groundProperty.link( groundColor => {
       groundMaterial.color = ThreeUtils.colorToThree( groundColor );
     } );
 
@@ -318,7 +318,7 @@ class DensityBuoyancyScreenView extends ScreenView {
       0, 1, 1
     ] );
     topGeometry.addAttribute( 'color', new THREE.BufferAttribute( topColorArray, 3 ) );
-    densityBuoyancyCommonColorProfile.grassCloseProperty.link( grassCloseColor => {
+    DensityBuoyancyCommonColors.grassCloseProperty.link( grassCloseColor => {
       for ( let i = 0; i < 18; i++ ) {
         topColorArray[ i * 3 + 0 ] = grassCloseColor.r / 255;
         topColorArray[ i * 3 + 1 ] = grassCloseColor.g / 255;
@@ -330,7 +330,7 @@ class DensityBuoyancyScreenView extends ScreenView {
       topColorArray[ offset + 2 ] = topColorArray[ offset + 5 ] = topColorArray[ offset + 11 ] = grassCloseColor.b / 255;
       topGeometry.attributes.color.needsUpdate = true;
     } );
-    densityBuoyancyCommonColorProfile.grassFarProperty.link( grassFarColor => {
+    DensityBuoyancyCommonColors.grassFarProperty.link( grassFarColor => {
       const offset = 3 * 2 * 6;
       topColorArray[ offset + 6 ] = topColorArray[ offset + 12 ] = topColorArray[ offset + 15 ] = grassFarColor.r / 255;
       topColorArray[ offset + 7 ] = topColorArray[ offset + 13 ] = topColorArray[ offset + 16 ] = grassFarColor.g / 255;
@@ -402,7 +402,7 @@ class DensityBuoyancyScreenView extends ScreenView {
       -1, 0, 0
     ] ), 3 ) );
     const poolMaterial = new THREE.MeshLambertMaterial();
-    densityBuoyancyCommonColorProfile.poolSurfaceProperty.link( poolSurfaceColor => {
+    DensityBuoyancyCommonColors.poolSurfaceProperty.link( poolSurfaceColor => {
       poolMaterial.color = ThreeUtils.colorToThree( poolSurfaceColor );
     } );
 
@@ -765,7 +765,7 @@ class DensityBuoyancyScreenView extends ScreenView {
       const waterMaterial = new THREE.MeshLambertMaterial( {
         transparent: true
       } );
-      const waterColor = densityBuoyancyCommonColorProfile.materialWaterColorProperty.value;
+      const waterColor = DensityBuoyancyCommonColors.materialWaterColorProperty.value;
       waterMaterial.color = ThreeUtils.colorToThree( waterColor );
       waterMaterial.opacity = waterColor.alpha;
 
@@ -807,7 +807,7 @@ class DensityBuoyancyScreenView extends ScreenView {
       const waterMaterial = new THREE.MeshLambertMaterial( {
         transparent: true
       } );
-      const waterColor = densityBuoyancyCommonColorProfile.materialWaterColorProperty.value;
+      const waterColor = DensityBuoyancyCommonColors.materialWaterColorProperty.value;
       waterMaterial.color = ThreeUtils.colorToThree( waterColor );
       waterMaterial.opacity = waterColor.alpha;
 

@@ -17,7 +17,7 @@ import DensityBuoyancyModel from '../../common/model/DensityBuoyancyModel.js';
 import Mass from '../../common/model/Mass.js';
 import Material from '../../common/model/Material.js';
 import Scale from '../../common/model/Scale.js';
-import densityBuoyancyCommonColorProfile from '../../common/view/densityBuoyancyCommonColorProfile.js';
+import DensityBuoyancyCommonColors from '../../common/view/DensityBuoyancyCommonColors.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 
 // constants
@@ -37,21 +37,21 @@ const randomMaterials = [
   Material.GOLD
 ];
 const randomColors = [
-  densityBuoyancyCommonColorProfile.comparingYellowColorProperty,
-  densityBuoyancyCommonColorProfile.comparingBlueColorProperty,
-  densityBuoyancyCommonColorProfile.comparingGreenColorProperty,
-  densityBuoyancyCommonColorProfile.comparingRedColorProperty,
-  densityBuoyancyCommonColorProfile.comparingPurpleColorProperty,
-  densityBuoyancyCommonColorProfile.mysteryPinkColorProperty,
-  densityBuoyancyCommonColorProfile.mysteryOrangeColorProperty,
-  densityBuoyancyCommonColorProfile.mysteryLightPurpleColorProperty,
-  densityBuoyancyCommonColorProfile.mysteryLightGreenColorProperty,
-  densityBuoyancyCommonColorProfile.mysteryBrownColorProperty,
-  densityBuoyancyCommonColorProfile.mysteryWhiteColorProperty,
-  densityBuoyancyCommonColorProfile.mysteryGrayColorProperty,
-  densityBuoyancyCommonColorProfile.mysteryMustardColorProperty,
-  densityBuoyancyCommonColorProfile.mysteryPeachColorProperty,
-  densityBuoyancyCommonColorProfile.mysteryMaroonColorProperty
+  DensityBuoyancyCommonColors.comparingYellowColorProperty,
+  DensityBuoyancyCommonColors.comparingBlueColorProperty,
+  DensityBuoyancyCommonColors.comparingGreenColorProperty,
+  DensityBuoyancyCommonColors.comparingRedColorProperty,
+  DensityBuoyancyCommonColors.comparingPurpleColorProperty,
+  DensityBuoyancyCommonColors.mysteryPinkColorProperty,
+  DensityBuoyancyCommonColors.mysteryOrangeColorProperty,
+  DensityBuoyancyCommonColors.mysteryLightPurpleColorProperty,
+  DensityBuoyancyCommonColors.mysteryLightGreenColorProperty,
+  DensityBuoyancyCommonColors.mysteryBrownColorProperty,
+  DensityBuoyancyCommonColors.mysteryWhiteColorProperty,
+  DensityBuoyancyCommonColors.mysteryGrayColorProperty,
+  DensityBuoyancyCommonColors.mysteryMustardColorProperty,
+  DensityBuoyancyCommonColors.mysteryPeachColorProperty,
+  DensityBuoyancyCommonColors.mysteryMaroonColorProperty
 ];
 const Mode = Enumeration.byKeys( [
   'SET_1',
@@ -72,81 +72,81 @@ class DensityMysteryModel extends DensityBuoyancyModal( DensityBuoyancyModel, Mo
           return [
             Cuboid.createWithVolume( model.engine, Material.createCustomMaterial( {
               density: 920,
-              customColor: densityBuoyancyCommonColorProfile.comparingRedColorProperty
+              customColor: DensityBuoyancyCommonColors.comparingRedColorProperty
             } ), Vector2.ZERO, 0.004, { tag: Mass.MassTag.ONE_D } ),
 
             Cuboid.createWithVolume( model.engine, Material.createCustomMaterial( {
               density: Material.GASOLINE.density,
-              customColor: densityBuoyancyCommonColorProfile.comparingBlueColorProperty
+              customColor: DensityBuoyancyCommonColors.comparingBlueColorProperty
             } ), Vector2.ZERO, 0.004, { tag: Mass.MassTag.ONE_B } ),
 
             Cuboid.createWithVolume( model.engine, Material.createCustomMaterial( {
               density: Material.GASOLINE.density,
-              customColor: densityBuoyancyCommonColorProfile.comparingGreenColorProperty
+              customColor: DensityBuoyancyCommonColors.comparingGreenColorProperty
             } ), Vector2.ZERO, 0.00516, { tag: Mass.MassTag.ONE_E } ),
 
             Cuboid.createWithVolume( model.engine, Material.createCustomMaterial( {
               density: 19320,
-              customColor: densityBuoyancyCommonColorProfile.comparingYellowColorProperty
+              customColor: DensityBuoyancyCommonColors.comparingYellowColorProperty
             } ), Vector2.ZERO, 0.001, { tag: Mass.MassTag.ONE_C } ),
 
             Cuboid.createWithVolume( model.engine, Material.createCustomMaterial( {
               density: Material.DIAMOND.density,
-              customColor: densityBuoyancyCommonColorProfile.comparingPurpleColorProperty
+              customColor: DensityBuoyancyCommonColors.comparingPurpleColorProperty
             } ), Vector2.ZERO, 0.001, { tag: Mass.MassTag.ONE_A } )
           ];
         case Mode.SET_2:
           return [
             Cuboid.createWithMass( model.engine, Material.createCustomMaterial( {
               density: 4500,
-              customColor: densityBuoyancyCommonColorProfile.mysteryPinkColorProperty
+              customColor: DensityBuoyancyCommonColors.mysteryPinkColorProperty
             } ), Vector2.ZERO, 18, { tag: Mass.MassTag.TWO_D } ),
 
             Cuboid.createWithMass( model.engine, Material.createCustomMaterial( {
               density: 11340,
-              customColor: densityBuoyancyCommonColorProfile.mysteryOrangeColorProperty
+              customColor: DensityBuoyancyCommonColors.mysteryOrangeColorProperty
             } ), Vector2.ZERO, 18, { tag: Mass.MassTag.TWO_A } ),
 
             Cuboid.createWithVolume( model.engine, Material.createCustomMaterial( {
               density: Material.COPPER.density,
-              customColor: densityBuoyancyCommonColorProfile.mysteryLightPurpleColorProperty
+              customColor: DensityBuoyancyCommonColors.mysteryLightPurpleColorProperty
             } ), Vector2.ZERO, 0.005, { tag: Mass.MassTag.TWO_E } ),
 
             Cuboid.createWithMass( model.engine, Material.createCustomMaterial( {
               density: 2700,
-              customColor: densityBuoyancyCommonColorProfile.mysteryLightGreenColorProperty
+              customColor: DensityBuoyancyCommonColors.mysteryLightGreenColorProperty
             } ), Vector2.ZERO, 2.7, { tag: Mass.MassTag.TWO_C } ),
 
             Cuboid.createWithMass( model.engine, Material.createCustomMaterial( {
               density: 2700,
-              customColor: densityBuoyancyCommonColorProfile.mysteryBrownColorProperty
+              customColor: DensityBuoyancyCommonColors.mysteryBrownColorProperty
             } ), Vector2.ZERO, 10.8, { tag: Mass.MassTag.TWO_B } )
           ];
         case Mode.SET_3:
           return [
             Cuboid.createWithMass( model.engine, Material.createCustomMaterial( {
               density: 950,
-              customColor: densityBuoyancyCommonColorProfile.mysteryWhiteColorProperty
+              customColor: DensityBuoyancyCommonColors.mysteryWhiteColorProperty
             } ), Vector2.ZERO, 6, { tag: Mass.MassTag.THREE_E } ),
 
             Cuboid.createWithMass( model.engine, Material.createCustomMaterial( {
               density: 1000,
-              customColor: densityBuoyancyCommonColorProfile.mysteryGrayColorProperty
+              customColor: DensityBuoyancyCommonColors.mysteryGrayColorProperty
             } ), Vector2.ZERO, 6, { tag: Mass.MassTag.THREE_B } ),
 
             Cuboid.createWithMass( model.engine, Material.createCustomMaterial( {
               density: 400,
-              customColor: densityBuoyancyCommonColorProfile.mysteryMustardColorProperty
+              customColor: DensityBuoyancyCommonColors.mysteryMustardColorProperty
             } ), Vector2.ZERO, 2, { tag: Mass.MassTag.THREE_D } ),
 
             Cuboid.createWithMass( model.engine, Material.createCustomMaterial( {
               density: 7800,
-              customColor: densityBuoyancyCommonColorProfile.mysteryPeachColorProperty
+              customColor: DensityBuoyancyCommonColors.mysteryPeachColorProperty
             } ), Vector2.ZERO, 23.4, { tag: Mass.MassTag.THREE_C } ),
 
             Cuboid.createWithMass( model.engine, Material.createCustomMaterial( {
               density: 950,
-              customColor: densityBuoyancyCommonColorProfile.mysteryMaroonColorProperty
+              customColor: DensityBuoyancyCommonColors.mysteryMaroonColorProperty
             } ), Vector2.ZERO, 2.85, { tag: Mass.MassTag.THREE_A } )
           ];
         case Mode.RANDOM: {

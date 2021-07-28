@@ -17,7 +17,7 @@ import Text from '../../../../scenery/js/nodes/Text.js';
 import Panel from '../../../../sun/js/Panel.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import densityBuoyancyCommonStrings from '../../densityBuoyancyCommonStrings.js';
-import densityBuoyancyCommonColorProfile from './densityBuoyancyCommonColorProfile.js';
+import DensityBuoyancyCommonColors from './DensityBuoyancyCommonColors.js';
 
 // constants
 const arrowOptions = {
@@ -52,35 +52,35 @@ class ForceDiagramNode extends Node {
 
     // @private {ArrowNode}
     this.gravityArrowNode = new ArrowNode( 0, 0, 0, 0, merge( {
-      fill: densityBuoyancyCommonColorProfile.gravityForceProperty
+      fill: DensityBuoyancyCommonColors.gravityForceProperty
     }, arrowOptions ) );
     this.buoyancyArrowNode = new ArrowNode( 0, 0, 0, 0, merge( {
-      fill: densityBuoyancyCommonColorProfile.buoyancyForceProperty
+      fill: DensityBuoyancyCommonColors.buoyancyForceProperty
     }, arrowOptions ) );
     this.contactArrowNode = new ArrowNode( 0, 0, 0, 0, merge( {
-      fill: densityBuoyancyCommonColorProfile.contactForceProperty
+      fill: DensityBuoyancyCommonColors.contactForceProperty
     }, arrowOptions ) );
 
     // @private {Text}
     this.gravityLabelText = new Text( '', {
       font: labelFont,
-      fill: densityBuoyancyCommonColorProfile.gravityForceProperty,
+      fill: DensityBuoyancyCommonColors.gravityForceProperty,
       maxWidth: 200
     } );
     this.buoyancyLabelText = new Text( '', {
       font: labelFont,
-      fill: densityBuoyancyCommonColorProfile.buoyancyForceProperty,
+      fill: DensityBuoyancyCommonColors.buoyancyForceProperty,
       maxWidth: 200
     } );
     this.contactLabelText = new Text( '', {
       font: labelFont,
-      fill: densityBuoyancyCommonColorProfile.contactForceProperty,
+      fill: DensityBuoyancyCommonColors.contactForceProperty,
       maxWidth: 200
     } );
 
     const panelOptions = {
       stroke: null,
-      fill: densityBuoyancyCommonColorProfile.massLabelBackgroundProperty,
+      fill: DensityBuoyancyCommonColors.massLabelBackgroundProperty,
       cornerRadius: 0,
       xMargin: 2,
       yMargin: 1

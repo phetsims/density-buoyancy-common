@@ -14,7 +14,7 @@ import Path from '../../../../scenery/js/nodes/Path.js';
 import Rectangle from '../../../../scenery/js/nodes/Rectangle.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
 import Material from '../../common/model/Material.js';
-import densityBuoyancyCommonColorProfile from '../../common/view/densityBuoyancyCommonColorProfile.js';
+import DensityBuoyancyCommonColors from '../../common/view/DensityBuoyancyCommonColors.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import densityBuoyancyCommonStrings from '../../densityBuoyancyCommonStrings.js';
 
@@ -105,7 +105,7 @@ class DensityTableNode extends Node {
       fill: 'white'
     } );
     const highlightBackground = new Rectangle( 0, 0, fullWidth, headerCellHeight, {
-      fill: densityBuoyancyCommonColorProfile.chartHeaderColorProperty
+      fill: DensityBuoyancyCommonColors.chartHeaderColorProperty
     } );
 
     this.children = [

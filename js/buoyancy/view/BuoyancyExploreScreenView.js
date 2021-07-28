@@ -21,7 +21,7 @@ import AccordionBox from '../../../../sun/js/AccordionBox.js';
 import Panel from '../../../../sun/js/Panel.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 import Material from '../../common/model/Material.js';
-import densityBuoyancyCommonColorProfile from '../../common/view/densityBuoyancyCommonColorProfile.js';
+import DensityBuoyancyCommonColors from '../../common/view/DensityBuoyancyCommonColors.js';
 import DensityControlNode from '../../common/view/DensityControlNode.js';
 import DisplayOptionsNode from '../../common/view/DisplayOptionsNode.js';
 import GravityControlNode from '../../common/view/GravityControlNode.js';
@@ -54,13 +54,13 @@ class BuoyancyExploreScreenView extends SecondaryMassScreenView {
     const densityAText = new Text( '', {
       maxWidth: 120,
       font: new PhetFont( { size: 14, weight: 'bold' } ),
-      fill: densityBuoyancyCommonColorProfile.labelAProperty,
+      fill: DensityBuoyancyCommonColors.labelAProperty,
       layoutOptions: { x: 1, y: 0 }
     } );
     const densityBText = new Text( '', {
       maxWidth: 120,
       font: new PhetFont( { size: 14, weight: 'bold' } ),
-      fill: densityBuoyancyCommonColorProfile.labelBProperty,
+      fill: DensityBuoyancyCommonColors.labelBProperty,
       layoutOptions: { x: 1, y: 1 }
     } );
 

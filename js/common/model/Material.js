@@ -18,7 +18,7 @@ import ReferenceIO from '../../../../tandem/js/types/ReferenceIO.js';
 import StringIO from '../../../../tandem/js/types/StringIO.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import densityBuoyancyCommonStrings from '../../densityBuoyancyCommonStrings.js';
-import densityBuoyancyCommonColorProfile from '../view/densityBuoyancyCommonColorProfile.js';
+import DensityBuoyancyCommonColors from '../view/DensityBuoyancyCommonColors.js';
 
 class Material {
   /**
@@ -178,13 +178,13 @@ Material.CEMENT = new Material( {
   name: densityBuoyancyCommonStrings.material.cement,
   identifier: 'CEMENT',
   density: 3150,
-  liquidColor: densityBuoyancyCommonColorProfile.materialCementColorProperty
+  liquidColor: DensityBuoyancyCommonColors.materialCementColorProperty
 } );
 Material.COPPER = new Material( {
   name: densityBuoyancyCommonStrings.material.copper,
   identifier: 'COPPER',
   density: 8960,
-  liquidColor: densityBuoyancyCommonColorProfile.materialCopperColorProperty
+  liquidColor: DensityBuoyancyCommonColors.materialCopperColorProperty
 } );
 Material.DIAMOND = new Material( {
   name: densityBuoyancyCommonStrings.material.diamond,
@@ -215,7 +215,7 @@ Material.LEAD = new Material( {
   name: densityBuoyancyCommonStrings.material.lead,
   identifier: 'LEAD',
   density: 11342,
-  liquidColor: densityBuoyancyCommonColorProfile.materialLeadColorProperty
+  liquidColor: DensityBuoyancyCommonColors.materialLeadColorProperty
 } );
 Material.PLATINUM = new Material( {
   name: densityBuoyancyCommonStrings.material.platinum,
@@ -266,48 +266,48 @@ Material.AIR = new Material( {
   identifier: 'AIR',
   density: 1.2,
   viscosity: 0,
-  liquidColor: densityBuoyancyCommonColorProfile.materialAirColorProperty
+  liquidColor: DensityBuoyancyCommonColors.materialAirColorProperty
 } );
 Material.DENSITY_P = new Material( {
   name: densityBuoyancyCommonStrings.material.densityP,
   identifier: 'DENSITY_P',
   density: 200,
-  liquidColor: densityBuoyancyCommonColorProfile.materialDensityPColorProperty,
+  liquidColor: DensityBuoyancyCommonColors.materialDensityPColorProperty,
   hidden: true
 } );
 Material.DENSITY_Q = new Material( {
   name: densityBuoyancyCommonStrings.material.densityQ,
   identifier: 'DENSITY_Q',
   density: 4000,
-  liquidColor: densityBuoyancyCommonColorProfile.materialDensityQColorProperty,
+  liquidColor: DensityBuoyancyCommonColors.materialDensityQColorProperty,
   hidden: true
 } );
 Material.DENSITY_R = new Material( {
   name: densityBuoyancyCommonStrings.material.densityR,
   identifier: 'DENSITY_R',
   density: 200,
-  liquidColor: densityBuoyancyCommonColorProfile.materialDensityRColorProperty,
+  liquidColor: DensityBuoyancyCommonColors.materialDensityRColorProperty,
   hidden: true
 } );
 Material.DENSITY_S = new Material( {
   name: densityBuoyancyCommonStrings.material.densityS,
   identifier: 'DENSITY_S',
   density: 4000,
-  liquidColor: densityBuoyancyCommonColorProfile.materialDensitySColorProperty,
+  liquidColor: DensityBuoyancyCommonColors.materialDensitySColorProperty,
   hidden: true
 } );
 Material.DENSITY_X = new Material( {
   name: densityBuoyancyCommonStrings.material.densityX,
   identifier: 'DENSITY_X',
   density: 500,
-  liquidColor: densityBuoyancyCommonColorProfile.materialDensityXColorProperty,
+  liquidColor: DensityBuoyancyCommonColors.materialDensityXColorProperty,
   hidden: true
 } );
 Material.DENSITY_Y = new Material( {
   name: densityBuoyancyCommonStrings.material.densityY,
   identifier: 'DENSITY_Y',
   density: 5000,
-  liquidColor: densityBuoyancyCommonColorProfile.materialDensityYColorProperty,
+  liquidColor: DensityBuoyancyCommonColors.materialDensityYColorProperty,
   hidden: true
 } );
 Material.GASOLINE = new Material( {
@@ -315,49 +315,49 @@ Material.GASOLINE = new Material( {
   identifier: 'GASOLINE',
   density: 680,
   viscosity: 6e-4,
-  liquidColor: densityBuoyancyCommonColorProfile.materialGasolineColorProperty
+  liquidColor: DensityBuoyancyCommonColors.materialGasolineColorProperty
 } );
 Material.HONEY = new Material( {
   name: densityBuoyancyCommonStrings.material.honey,
   identifier: 'HONEY',
   density: 1440,
   viscosity: 0.03, // NOTE: actual value around 2.5, but we can get away with this for animation
-  liquidColor: densityBuoyancyCommonColorProfile.materialHoneyColorProperty
+  liquidColor: DensityBuoyancyCommonColors.materialHoneyColorProperty
 } );
 Material.MERCURY = new Material( {
   name: densityBuoyancyCommonStrings.material.mercury,
   identifier: 'MERCURY',
   density: 13593,
   viscosity: 1.53e-3,
-  liquidColor: densityBuoyancyCommonColorProfile.materialMercuryColorProperty
+  liquidColor: DensityBuoyancyCommonColors.materialMercuryColorProperty
 } );
 Material.OIL = new Material( {
   name: densityBuoyancyCommonStrings.material.oil,
   identifier: 'OIL',
   density: 920,
   viscosity: 0.02, // Too much bigger and it won't work, not particularly physical
-  liquidColor: densityBuoyancyCommonColorProfile.materialOilColorProperty
+  liquidColor: DensityBuoyancyCommonColors.materialOilColorProperty
 } );
 Material.SAND = new Material( {
   name: densityBuoyancyCommonStrings.material.sand,
   identifier: 'SAND',
   density: 1442,
   viscosity: 0.03, // Too much bigger and it won't work, not particularly physical
-  liquidColor: densityBuoyancyCommonColorProfile.materialSandColorProperty
+  liquidColor: DensityBuoyancyCommonColors.materialSandColorProperty
 } );
 Material.SEAWATER = new Material( {
   name: densityBuoyancyCommonStrings.material.seawater,
   identifier: 'SEAWATER',
   density: 1029,
   viscosity: 1.88e-3,
-  liquidColor: densityBuoyancyCommonColorProfile.materialSeawaterColorProperty
+  liquidColor: DensityBuoyancyCommonColors.materialSeawaterColorProperty
 } );
 Material.WATER = new Material( {
   name: densityBuoyancyCommonStrings.material.water,
   identifier: 'WATER',
   density: 1000,
   viscosity: 8.9e-4,
-  liquidColor: densityBuoyancyCommonColorProfile.materialWaterColorProperty
+  liquidColor: DensityBuoyancyCommonColors.materialWaterColorProperty
 } );
 
 // @public {Array.<Material>}

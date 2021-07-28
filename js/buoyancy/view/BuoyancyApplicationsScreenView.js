@@ -29,7 +29,7 @@ import RectangularRadioButtonGroup from '../../../../sun/js/buttons/RectangularR
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 import Cuboid from '../../common/model/Cuboid.js';
 import Material from '../../common/model/Material.js';
-import densityBuoyancyCommonColorProfile from '../../common/view/densityBuoyancyCommonColorProfile.js';
+import DensityBuoyancyCommonColors from '../../common/view/DensityBuoyancyCommonColors.js';
 import DensityBuoyancyScreenView from '../../common/view/DensityBuoyancyScreenView.js';
 import DensityControlNode from '../../common/view/DensityControlNode.js';
 import DisplayOptionsNode from '../../common/view/DisplayOptionsNode.js';
@@ -251,8 +251,8 @@ class BuoyancyApplicationsScreenView extends DensityBuoyancyScreenView {
       deselectedLineWidth: 1.5,
       touchAreaXDilation: 6,
       touchAreaYDilation: 6,
-      selectedStroke: densityBuoyancyCommonColorProfile.radioBorderColorProperty,
-      baseColor: densityBuoyancyCommonColorProfile.radioBackgroundColorProperty,
+      selectedStroke: DensityBuoyancyCommonColors.radioBorderColorProperty,
+      baseColor: DensityBuoyancyCommonColors.radioBackgroundColorProperty,
 
       bottom: this.layoutBounds.bottom - MARGIN,
       left: densityControlPanel.right + MARGIN

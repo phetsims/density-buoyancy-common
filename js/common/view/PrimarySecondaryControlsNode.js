@@ -9,7 +9,7 @@
 import merge from '../../../../phet-core/js/merge.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import BlockControlNode from './BlockControlNode.js';
-import densityBuoyancyCommonColorProfile from './densityBuoyancyCommonColorProfile.js';
+import DensityBuoyancyCommonColors from './DensityBuoyancyCommonColors.js';
 import PrimarySecondaryPanelsNode from './PrimarySecondaryPanelsNode.js';
 
 class PrimarySecondaryControlsNode extends PrimarySecondaryPanelsNode {
@@ -25,11 +25,11 @@ class PrimarySecondaryControlsNode extends PrimarySecondaryPanelsNode {
     super(
       new BlockControlNode( primaryMass, popupLayer, merge( {
         labelNode: PrimarySecondaryPanelsNode.getPrimaryLabelNode(),
-        color: densityBuoyancyCommonColorProfile.labelAProperty
+        color: DensityBuoyancyCommonColors.labelAProperty
       }, options ) ),
       new BlockControlNode( secondaryMass, popupLayer, merge( {
         labelNode: PrimarySecondaryPanelsNode.getSecondaryLabelNode(),
-        color: densityBuoyancyCommonColorProfile.labelBProperty
+        color: DensityBuoyancyCommonColors.labelBProperty
       }, options ) ),
       secondaryMassVisibleProperty
     );

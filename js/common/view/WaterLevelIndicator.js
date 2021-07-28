@@ -17,7 +17,7 @@ import Panel from '../../../../sun/js/Panel.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import densityBuoyancyCommonStrings from '../../densityBuoyancyCommonStrings.js';
 import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
-import densityBuoyancyCommonColorProfile from './densityBuoyancyCommonColorProfile.js';
+import DensityBuoyancyCommonColors from './DensityBuoyancyCommonColors.js';
 
 class WaterLevelIndicator extends Node {
   /**
@@ -28,7 +28,7 @@ class WaterLevelIndicator extends Node {
 
     const highlightShape = new Shape().moveTo( 0, 0 ).lineTo( -20, -10 ).lineTo( -20, 10 ).close();
     const highlightPath = new Path( highlightShape, {
-      fill: densityBuoyancyCommonColorProfile.waterIndicatorHighlightProperty
+      fill: DensityBuoyancyCommonColors.waterIndicatorHighlightProperty
     } );
     this.addChild( highlightPath );
 

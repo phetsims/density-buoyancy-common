@@ -8,7 +8,7 @@
 
 import PhetFont from '../../../scenery-phet/js/PhetFont.js';
 import densityBuoyancyCommon from '../densityBuoyancyCommon.js';
-import densityBuoyancyCommonColorProfile from './view/densityBuoyancyCommonColorProfile.js';
+import DensityBuoyancyCommonColors from './view/DensityBuoyancyCommonColors.js';
 
 const CORNER_RADIUS = 5;
 
@@ -35,7 +35,7 @@ const DensityBuoyancyCommonConstants = {
   // @public {Object}
   PANEL_OPTIONS: {
     cornerRadius: CORNER_RADIUS,
-    fill: densityBuoyancyCommonColorProfile.panelBackgroundProperty,
+    fill: DensityBuoyancyCommonColors.panelBackgroundProperty,
     xMargin: 10,
     yMargin: 10
   },
@@ -46,7 +46,7 @@ const DensityBuoyancyCommonConstants = {
     titleYMargin: 5,
     buttonXMargin: 5,
     titleAlignX: 'left',
-    fill: densityBuoyancyCommonColorProfile.panelBackgroundProperty
+    fill: DensityBuoyancyCommonColors.panelBackgroundProperty
   }
 };
 

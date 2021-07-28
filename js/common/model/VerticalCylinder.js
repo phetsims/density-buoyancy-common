@@ -12,6 +12,7 @@ import Vector2 from '../../../../dot/js/Vector2.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
 import Shape from '../../../../kite/js/Shape.js';
 import merge from '../../../../phet-core/js/merge.js';
+import IOType from '../../../../tandem/js/types/IOType.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import Mass from './Mass.js';
 
@@ -269,6 +270,13 @@ class VerticalCylinder extends Mass {
     }
   }
 }
+
+// @public {IOType}
+VerticalCylinder.VerticalCylinderIO = new IOType( 'VerticalCylinderIO', {
+  valueType: VerticalCylinder,
+  supertype: Mass.MassIO,
+  documentation: 'Represents a cylinder laying on its end'
+} );
 
 densityBuoyancyCommon.register( 'VerticalCylinder', VerticalCylinder );
 export default VerticalCylinder;

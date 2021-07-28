@@ -12,6 +12,7 @@ import Vector2 from '../../../../dot/js/Vector2.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
 import Shape from '../../../../kite/js/Shape.js';
 import merge from '../../../../phet-core/js/merge.js';
+import IOType from '../../../../tandem/js/types/IOType.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import Mass from './Mass.js';
 
@@ -293,6 +294,13 @@ class Cone extends Mass {
     return Math.PI * radius * radius * height / 3;
   }
 }
+
+// @public {IOType}
+Cone.ConeIO = new IOType( 'ConeIO', {
+  valueType: Cone,
+  supertype: Mass.MassIO,
+  documentation: 'Represents an up/down cone'
+} );
 
 densityBuoyancyCommon.register( 'Cone', Cone );
 export default Cone;

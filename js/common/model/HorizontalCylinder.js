@@ -11,6 +11,7 @@ import Utils from '../../../../dot/js/Utils.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
 import Shape from '../../../../kite/js/Shape.js';
 import merge from '../../../../phet-core/js/merge.js';
+import IOType from '../../../../tandem/js/types/IOType.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import Mass from './Mass.js';
 
@@ -254,6 +255,13 @@ class HorizontalCylinder extends Mass {
     return Math.PI * radius * radius * length;
   }
 }
+
+// @public {IOType}
+HorizontalCylinder.HorizontalCylinderIO = new IOType( 'HorizontalCylinderIO', {
+  valueType: HorizontalCylinder,
+  supertype: Mass.MassIO,
+  documentation: 'Represents a cylinder laying on its side'
+} );
 
 densityBuoyancyCommon.register( 'HorizontalCylinder', HorizontalCylinder );
 export default HorizontalCylinder;

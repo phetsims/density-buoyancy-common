@@ -11,6 +11,7 @@ import Vector3 from '../../../../dot/js/Vector3.js';
 import Shape from '../../../../kite/js/Shape.js';
 import Enumeration from '../../../../phet-core/js/Enumeration.js';
 import merge from '../../../../phet-core/js/merge.js';
+import IOType from '../../../../tandem/js/types/IOType.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import Cuboid from './Cuboid.js';
 import InterpolatedProperty from './InterpolatedProperty.js';
@@ -197,6 +198,13 @@ Scale.SCALE_FRONT_OFFSET = SCALE_FRONT_OFFSET;
 
 // @public {Enumeration}
 Scale.DisplayType = DisplayType;
+
+// @public {IOType}
+Scale.ScaleIO = new IOType( 'ScaleIO', {
+  valueType: Scale,
+  supertype: Mass.MassIO,
+  documentation: 'Represents scale used for measuring mass/weight'
+} );
 
 densityBuoyancyCommon.register( 'Scale', Scale );
 export default Scale;

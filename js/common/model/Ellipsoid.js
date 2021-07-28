@@ -13,6 +13,7 @@ import Vector2 from '../../../../dot/js/Vector2.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
 import Shape from '../../../../kite/js/Shape.js';
 import merge from '../../../../phet-core/js/merge.js';
+import IOType from '../../../../tandem/js/types/IOType.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import Mass from './Mass.js';
 
@@ -246,6 +247,13 @@ class Ellipsoid extends Mass {
     return Math.PI * size.width * size.height * size.depth / 6;
   }
 }
+
+// @public {IOType}
+Ellipsoid.EllipsoidIO = new IOType( 'EllipsoidIO', {
+  valueType: Ellipsoid,
+  supertype: Mass.MassIO,
+  documentation: 'Represents an ellipsoid'
+} );
 
 densityBuoyancyCommon.register( 'Ellipsoid', Ellipsoid );
 export default Ellipsoid;

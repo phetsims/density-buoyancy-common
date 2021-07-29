@@ -34,6 +34,7 @@ import Rectangle from '../../../../scenery/js/nodes/Rectangle.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
 import LinearGradient from '../../../../scenery/js/util/LinearGradient.js';
 import Checkbox from '../../../../sun/js/Checkbox.js';
+import Tandem from '../../../../tandem/js/Tandem.js';
 import Boat from '../../buoyancy/model/Boat.js';
 import BoatDesign from '../../buoyancy/model/BoatDesign.js';
 import Bottle from '../../buoyancy/model/Bottle.js';
@@ -51,6 +52,7 @@ import VerticalCylinder from '../model/VerticalCylinder.js';
 import ConeView from './ConeView.js';
 import CuboidView from './CuboidView.js';
 import DebugView from './DebugView.js';
+import DensityBuoyancyCommonColors from './DensityBuoyancyCommonColors.js';
 import DensityMaterials from './DensityMaterials.js';
 import EllipsoidView from './EllipsoidView.js';
 import ForceDiagramNode from './ForceDiagramNode.js';
@@ -60,14 +62,12 @@ import ScaleReadoutNode from './ScaleReadoutNode.js';
 import ScaleView from './ScaleView.js';
 import VerticalCylinderView from './VerticalCylinderView.js';
 import WaterLevelIndicator from './WaterLevelIndicator.js';
-import DensityBuoyancyCommonColors from './DensityBuoyancyCommonColors.js';
 
 // constants
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
 const scratchVector2 = new Vector2( 0, 0 );
 
 class DensityBuoyancyScreenView extends ScreenView {
-
   /**
    * @param {DensityBuoyancyModel} model
    * @param {Tandem} tandem
@@ -101,7 +101,9 @@ class DensityBuoyancyScreenView extends ScreenView {
     this.popupLayer = new Node();
 
     // @protected {Property.<Mass|null>} - Support controlling or changing the latest-touched mass in certain demos.
-    this.currentMassProperty = new Property( model.masses.length > 0 ? model.masses.get( 0 ) : null );
+    this.currentMassProperty = new Property( model.masses.length > 0 ? model.masses.get( 0 ) : null, {
+      tandem: Tandem.OPT_OUT
+    } );
 
     // @private {Rectangle} - The sky background, in a unit 0-to-1 rectangle (so we can scale it to match)
     this.backgroundNode = new Rectangle( 0, 0, 1, 1, {

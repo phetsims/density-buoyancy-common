@@ -447,7 +447,9 @@ class DensityBuoyancyScreenView extends ScreenView {
       let massView = null;
 
       if ( mass instanceof Cuboid ) {
-        massView = new CuboidView( mass );
+        massView = new CuboidView( mass, {
+          tandem: tandem.createTandem( mass.tandem.name )
+        } );
       }
       else if ( mass instanceof Scale ) {
         massView = new ScaleView( mass );

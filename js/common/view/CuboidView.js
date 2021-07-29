@@ -45,8 +45,9 @@ const blockStringMap = {
 class CuboidView extends MassView {
   /**
    * @param {Cuboid} cuboid
+   * @param {Object} [options]
    */
-  constructor( cuboid ) {
+  constructor( cuboid, options ) {
     const size = cuboid.sizeProperty.value;
 
     const positionArray = new Float32Array( numElements * 3 );
@@ -60,7 +61,7 @@ class CuboidView extends MassView {
     cuboidGeometry.addAttribute( 'normal', new THREE.BufferAttribute( normalArray, 3 ) );
     cuboidGeometry.addAttribute( 'uv', new THREE.BufferAttribute( uvArray, 2 ) );
 
-    super( cuboid, cuboidGeometry );
+    super( cuboid, cuboidGeometry, options );
 
     // @public {Cuboid}
     this.cuboid = cuboid;

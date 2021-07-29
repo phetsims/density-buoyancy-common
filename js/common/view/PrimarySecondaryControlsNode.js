@@ -19,15 +19,16 @@ class PrimarySecondaryControlsNode extends PrimarySecondaryPanelsNode {
    * @param {Mass} secondaryMass
    * @param {Property.<boolean>} secondaryMassVisibleProperty
    * @param {Node} popupLayer
+   * @param {Tandem} tandem
    * @param {Object} [options]
    */
-  constructor( primaryMass, secondaryMass, secondaryMassVisibleProperty, popupLayer, options ) {
+  constructor( primaryMass, secondaryMass, secondaryMassVisibleProperty, popupLayer, tandem, options ) {
     super(
-      new BlockControlNode( primaryMass, popupLayer, merge( {
+      new BlockControlNode( primaryMass, popupLayer, tandem.createTandem( 'primaryBlockControlNode' ), merge( {
         labelNode: PrimarySecondaryPanelsNode.getPrimaryLabelNode(),
         color: DensityBuoyancyCommonColors.labelAProperty
       }, options ) ),
-      new BlockControlNode( secondaryMass, popupLayer, merge( {
+      new BlockControlNode( secondaryMass, popupLayer, tandem.createTandem( 'secondaryBlockControlNode' ), merge( {
         labelNode: PrimarySecondaryPanelsNode.getSecondaryLabelNode(),
         color: DensityBuoyancyCommonColors.labelBProperty
       }, options ) ),

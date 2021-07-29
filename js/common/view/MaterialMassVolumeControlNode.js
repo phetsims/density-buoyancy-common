@@ -41,9 +41,10 @@ class MaterialMassVolumeControlNode extends VBox {
    * @param {Array.<Material>} materials
    * @param {function} setVolume
    * @param {Node} listParent
+   * @param {Tandem} tandem
    * @param {Object} [options]
    */
-  constructor( materialProperty, massProperty, volumeProperty, materials, setVolume, listParent, options ) {
+  constructor( materialProperty, massProperty, volumeProperty, materials, setVolume, listParent, tandem, options ) {
 
     options = merge( {
       // {Node|null}
@@ -58,7 +59,9 @@ class MaterialMassVolumeControlNode extends VBox {
       maxVolumeLiters: 10,
 
       // {PaintDef}
-      color: null
+      color: null,
+
+      tandem: tandem
     }, options );
 
     super( {
@@ -192,7 +195,8 @@ class MaterialMassVolumeControlNode extends VBox {
       } ), CUSTOM_MATERIAL_PLACEHOLDER )
     ], comboBoxMaterialProperty, listParent, {
       xMargin: 8,
-      yMargin: 4
+      yMargin: 4,
+      tandem: tandem.createTandem( 'comboBox' )
     } );
 
     const massNumberControl = new NumberControl( densityBuoyancyCommonStrings.mass, massNumberProperty, new Range( options.minMass, options.maxMass ), merge( {
@@ -212,7 +216,8 @@ class MaterialMassVolumeControlNode extends VBox {
       arrowButtonOptions: {
         enabledEpsilon: 1e-7
       },
-      enabledRangeProperty: enabledMassRangeProperty
+      enabledRangeProperty: enabledMassRangeProperty,
+      tandem: tandem.createTandem( 'massNumberControl' )
     }, MaterialMassVolumeControlNode.getNumberControlOptions() ) );
 
     const volumeNumberControl = new NumberControl( densityBuoyancyCommonStrings.volume, numberControlVolumeProperty, new Range( options.minVolumeLiters, options.maxVolumeLiters ), merge( {
@@ -231,7 +236,8 @@ class MaterialMassVolumeControlNode extends VBox {
       },
       arrowButtonOptions: {
         enabledEpsilon: 1e-7
-      }
+      },
+      tandem: tandem.createTandem( 'volumeNumberControl' )
     }, MaterialMassVolumeControlNode.getNumberControlOptions() ) );
 
     const topRow = options.labelNode ? new HBox( {

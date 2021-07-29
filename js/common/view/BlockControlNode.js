@@ -15,16 +15,17 @@ class BlockControlNode extends MaterialMassVolumeControlNode {
   /**
    * @param {Cuboid} cuboid
    * @param {Node} listParent
+   * @param {Tandem} tandem
    * @param {Object} [options]
    */
-  constructor( cuboid, listParent, options ) {
+  constructor( cuboid, listParent, tandem, options ) {
     super( cuboid.materialProperty, cuboid.massProperty, cuboid.volumeProperty, [
       Material.STYROFOAM,
       Material.WOOD,
       Material.ICE,
       Material.BRICK,
       Material.ALUMINUM
-    ], cubicMeters => cuboid.updateSize( Cuboid.boundsFromVolume( cubicMeters ) ), listParent, options );
+    ], cubicMeters => cuboid.updateSize( Cuboid.boundsFromVolume( cubicMeters ) ), listParent, tandem, options );
   }
 }
 

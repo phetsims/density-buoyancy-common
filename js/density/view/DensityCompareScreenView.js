@@ -41,16 +41,24 @@ class DensityCompareScreenView extends DensityBuoyancyScreenView {
       return;
     }
 
-    const modeControl = new VerticalAquaRadioButtonGroup( model.modeProperty, DensityCompareModel.Mode.VALUES.map( mode => {
+    const modeTandemMap = {
+      [ DensityCompareModel.Mode.SAME_MASS ]: 'sameMass',
+      [ DensityCompareModel.Mode.SAME_VOLUME ]: 'sameVolume',
+      [ DensityCompareModel.Mode.SAME_DENSITY ]: 'sameDensity'
+    };
+
+    const modeRadioButtonGroup = new VerticalAquaRadioButtonGroup( model.modeProperty, DensityCompareModel.Mode.VALUES.map( mode => {
       return {
         node: new Text( modeStringMap[ mode.name ], {
           font: DensityBuoyancyCommonConstants.RADIO_BUTTON_FONT,
           maxWidth: 160
         } ),
-        value: mode
+        value: mode,
+        tandemName: `${modeTandemMap[ mode ]}RadioButton`
       };
     } ), {
-      spacing: 8
+      spacing: 8,
+      tandem: tandem.createTandem( 'modeRadioButtonGroup' )
     } );
     const modePanel = new Panel( new VBox( {
       children: [
@@ -58,7 +66,7 @@ class DensityCompareScreenView extends DensityBuoyancyScreenView {
           font: DensityBuoyancyCommonConstants.TITLE_FONT,
           maxWidth: 160
         } ),
-        modeControl
+        modeRadioButtonGroup
       ],
       spacing: 10,
       align: 'left'

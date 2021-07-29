@@ -61,7 +61,7 @@ class BuoyancyApplicationsScreenView extends DensityBuoyancyScreenView {
     // For clipping planes in BottleView
     this.sceneNode.stage.threeRenderer.localClippingEnabled = true;
 
-    const bottleControl = new MaterialMassVolumeControlNode( model.bottle.interiorMaterialProperty, model.bottle.interiorMassProperty, model.bottle.interiorVolumeProperty, [
+    const bottleControlNode = new MaterialMassVolumeControlNode( model.bottle.interiorMaterialProperty, model.bottle.interiorMassProperty, model.bottle.interiorVolumeProperty, [
       Material.GASOLINE,
       Material.OIL,
       Material.WATER,
@@ -70,7 +70,7 @@ class BuoyancyApplicationsScreenView extends DensityBuoyancyScreenView {
       Material.COPPER,
       Material.LEAD,
       Material.MERCURY
-    ], volume => model.bottle.interiorVolumeProperty.set( volume ), this.popupLayer, {
+    ], volume => model.bottle.interiorVolumeProperty.set( volume ), this.popupLayer, tandem.createTandem( 'bottleControlNode' ), {
       minMass: 0,
       maxCustomMass: 100,
       maxMass: Material.MERCURY.density * 0.01,
@@ -97,8 +97,8 @@ class BuoyancyApplicationsScreenView extends DensityBuoyancyScreenView {
           font: DensityBuoyancyCommonConstants.TITLE_FONT,
           maxWidth: 160
         } ),
-        bottleControl,
-        new HSeparator( bottleControl.width ),
+        bottleControlNode,
+        new HSeparator( bottleControlNode.width ),
         new Node( {
           children: [
             airVolumeLabel,
@@ -112,7 +112,7 @@ class BuoyancyApplicationsScreenView extends DensityBuoyancyScreenView {
                 maxWidth: 120
               }
             } ), {
-              alignBounds: airVolumeLabel.bounds.withMaxX( bottleControl.width ),
+              alignBounds: airVolumeLabel.bounds.withMaxX( bottleControlNode.width ),
               xAlign: 'right',
               yAlign: 'center'
             } )
@@ -141,7 +141,7 @@ class BuoyancyApplicationsScreenView extends DensityBuoyancyScreenView {
       Material.ICE,
       Material.BRICK,
       Material.ALUMINUM
-    ], material => material.density ), cubicMeters => model.block.updateSize( Cuboid.boundsFromVolume( cubicMeters ) ), this.popupLayer );
+    ], material => material.density ), cubicMeters => model.block.updateSize( Cuboid.boundsFromVolume( cubicMeters ) ), this.popupLayer, tandem.createTandem( 'blockControlNode' ) );
 
     const boatVolumeRange = new Range( 1, 20 );
     const boatBox = new VBox( {

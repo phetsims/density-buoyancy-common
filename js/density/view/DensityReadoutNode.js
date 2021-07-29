@@ -47,9 +47,12 @@ class DensityReadoutNode extends Node {
    * @param {Property.<number>} densityAProperty
    * @param {Property.<number>} densityBProperty
    * @param {Property.<boolean>} secondaryMassVisibleProperty
+   * @param {Tandem} tandem
    */
-  constructor( densityAProperty, densityBProperty, secondaryMassVisibleProperty ) {
-    super();
+  constructor( densityAProperty, densityBProperty, secondaryMassVisibleProperty, tandem ) {
+    super( {
+      tandem: tandem
+    } );
 
     const background = new Rectangle( 0, 0, WIDTH, HEIGHT, {
       fill: 'white',

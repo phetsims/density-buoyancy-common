@@ -42,20 +42,24 @@ class DensityIntroScreenView extends SecondaryMassScreenView {
       model.primaryMass,
       model.secondaryMass,
       model.secondaryMassVisibleProperty,
-      this.popupLayer
+      this.popupLayer,
+      tandem
     );
 
+    const accordionTandem = tandem.createTandem( 'densityReadoutBox' );
     const densityReadoutBox = new AccordionBox( new DensityReadoutNode(
       new DerivedProperty( [ model.primaryMass.materialProperty ], material => material.density ),
       new DerivedProperty( [ model.secondaryMass.materialProperty ], material => material.density ),
-      model.secondaryMassVisibleProperty
+      model.secondaryMassVisibleProperty,
+      accordionTandem.createTandem( 'densityReadout' )
     ), merge( {
       titleNode: new Text( densityBuoyancyCommonStrings.densityReadout, {
         font: DensityBuoyancyCommonConstants.TITLE_FONT,
         maxWidth: 200
       } ),
       expandedProperty: model.densityReadoutExpandedProperty,
-      buttonAlign: 'left'
+      buttonAlign: 'left',
+      tandem: accordionTandem
     }, DensityBuoyancyCommonConstants.ACCORDION_BOX_OPTIONS ) );
 
     this.addChild( new AlignBox( densityReadoutBox, {

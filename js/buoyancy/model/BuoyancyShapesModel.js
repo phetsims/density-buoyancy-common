@@ -51,14 +51,16 @@ class BuoyancyShapesModel extends DensityBuoyancyModel {
     // @public {Scale}
     this.leftScale = new Scale( this.engine, {
       matrix: Matrix3.translation( -0.7, -Scale.SCALE_BASE_BOUNDS.minY ),
-      displayType: Scale.DisplayType.NEWTONS
+      displayType: Scale.DisplayType.NEWTONS,
+      tandem: tandem.createTandem( 'leftScale' )
     } );
     this.masses.push( this.leftScale );
 
     // @public {Scale}
     this.poolScale = new Scale( this.engine, {
       matrix: Matrix3.translation( 0.25, -Scale.SCALE_BASE_BOUNDS.minY + this.poolBounds.minY ),
-      displayType: Scale.DisplayType.NEWTONS
+      displayType: Scale.DisplayType.NEWTONS,
+      tandem: tandem.createTandem( 'poolScale' )
     } );
     this.masses.push( this.poolScale );
 
@@ -78,29 +80,29 @@ class BuoyancyShapesModel extends DensityBuoyancyModel {
     this.primaryHeightRatioProperty = new NumberProperty( 0.75 );
     this.secondaryHeightRatioProperty = new NumberProperty( 0.75 );
 
-    const createMass = ( shape, widthRatio, heightRatio ) => {
+    const createMass = ( shape, widthRatio, heightRatio, tandem ) => {
       switch( shape ) {
         case MassShape.BLOCK:
           return new Cuboid( this.engine, Cuboid.getSizeFromRatios( widthRatio, heightRatio ), {
-            material: MATERIAL
+            material: MATERIAL, tandem: tandem
           } );
         case MassShape.ELLIPSOID:
           return new Ellipsoid( this.engine, Ellipsoid.getSizeFromRatios( widthRatio, heightRatio ), {
-            material: MATERIAL
+            material: MATERIAL, tandem: tandem
           } );
         case MassShape.VERTICAL_CYLINDER:
           return new VerticalCylinder(
             this.engine,
             VerticalCylinder.getRadiusFromRatio( widthRatio ),
             VerticalCylinder.getHeightFromRatio( heightRatio ),
-            { material: MATERIAL }
+            { material: MATERIAL, tandem: tandem }
           );
         case MassShape.HORIZONTAL_CYLINDER:
           return new HorizontalCylinder(
             this.engine,
             HorizontalCylinder.getRadiusFromRatio( heightRatio ),
             HorizontalCylinder.getLengthFromRatio( widthRatio ),
-            { material: MATERIAL }
+            { material: MATERIAL, tandem: tandem }
           );
         case MassShape.CONE:
           return new Cone(
@@ -108,7 +110,7 @@ class BuoyancyShapesModel extends DensityBuoyancyModel {
             Cone.getRadiusFromRatio( widthRatio ),
             Cone.getHeightFromRatio( heightRatio ),
             true,
-            { material: MATERIAL }
+            { material: MATERIAL, tandem: tandem }
           );
         case MassShape.INVERTED_CONE:
           return new Cone(
@@ -116,19 +118,22 @@ class BuoyancyShapesModel extends DensityBuoyancyModel {
             Cone.getRadiusFromRatio( widthRatio ),
             Cone.getHeightFromRatio( heightRatio ),
             false,
-            { material: MATERIAL }
+            { material: MATERIAL, tandem: tandem }
           );
         default:
           throw new Error( `shape not recognized: ${shape}` );
       }
     };
 
+    const primaryMassTandem = tandem.createTandem( 'primaryMass' );
+    const secondaryMassTandem = tandem.createTandem( 'secondaryMass' );
+
     // @public {Property.<Mass>}
     this.primaryMassProperty = new DerivedProperty( [ this.primaryShapeProperty ], shape => {
-      return createMass( shape, this.primaryWidthRatioProperty.value, this.primaryHeightRatioProperty.value );
+      return createMass( shape, this.primaryWidthRatioProperty.value, this.primaryHeightRatioProperty.value, primaryMassTandem );
     } );
     this.secondaryMassProperty = new DerivedProperty( [ this.secondaryShapeProperty ], shape => {
-      return createMass( shape, this.secondaryWidthRatioProperty.value, this.secondaryHeightRatioProperty.value );
+      return createMass( shape, this.secondaryWidthRatioProperty.value, this.secondaryHeightRatioProperty.value, secondaryMassTandem );
     } );
 
     Property.lazyMultilink( [ this.primaryWidthRatioProperty, this.primaryHeightRatioProperty ], ( widthRatio, heightRatio ) => {
@@ -148,6 +153,8 @@ class BuoyancyShapesModel extends DensityBuoyancyModel {
           this.masses.remove( oldMass );
           this.masses.add( newMass );
         }
+
+        oldMass.dispose();
       } );
     } );
 

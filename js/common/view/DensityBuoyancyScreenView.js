@@ -82,7 +82,8 @@ class DensityBuoyancyScreenView extends ScreenView {
     }, options );
 
     super( {
-      preventFit: true
+      preventFit: true,
+      tandem: tandem
     } );
 
     // @protected {boolean} - If we detect that we can't use WebGL, we'll set this to false so we can bail out.
@@ -452,25 +453,39 @@ class DensityBuoyancyScreenView extends ScreenView {
         } );
       }
       else if ( mass instanceof Scale ) {
-        massView = new ScaleView( mass );
+        massView = new ScaleView( mass, {
+          tandem: tandem.createTandem( mass.tandem.name )
+        } );
       }
       else if ( mass instanceof Cone ) {
-        massView = new ConeView( mass );
+        massView = new ConeView( mass, {
+          tandem: tandem.createTandem( mass.tandem.name )
+        } );
       }
       else if ( mass instanceof Ellipsoid ) {
-        massView = new EllipsoidView( mass );
+        massView = new EllipsoidView( mass, {
+          tandem: tandem.createTandem( mass.tandem.name )
+        } );
       }
       else if ( mass instanceof HorizontalCylinder ) {
-        massView = new HorizontalCylinderView( mass );
+        massView = new HorizontalCylinderView( mass, {
+          tandem: tandem.createTandem( mass.tandem.name )
+        } );
       }
       else if ( mass instanceof VerticalCylinder ) {
-        massView = new VerticalCylinderView( mass );
+        massView = new VerticalCylinderView( mass, {
+          tandem: tandem.createTandem( mass.tandem.name )
+        } );
       }
       else if ( mass instanceof Bottle ) {
-        massView = new BottleView( mass, model.pool.liquidYInterpolatedProperty );
+        massView = new BottleView( mass, model.pool.liquidYInterpolatedProperty, {
+          tandem: tandem.createTandem( mass.tandem.name )
+        } );
       }
       else if ( mass instanceof Boat ) {
-        massView = new BoatView( mass, model.pool.liquidYInterpolatedProperty );
+        massView = new BoatView( mass, model.pool.liquidYInterpolatedProperty, {
+          tandem: tandem.createTandem( mass.tandem.name )
+        } );
       }
 
       if ( massView ) {

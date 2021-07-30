@@ -202,6 +202,17 @@ class Cuboid extends Mass {
   }
 
   /**
+   * Releases references
+   * @public
+   * @override
+   */
+  dispose() {
+    this.sizeProperty.dispose();
+
+    super.dispose();
+  }
+
+  /**
    * Returns a (quick) closest ray intersection with a cuboid (defined by the given Bounds3 and translation).
    * @public
    *

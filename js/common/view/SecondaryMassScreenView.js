@@ -19,7 +19,7 @@ class SecondaryMassScreenView extends DensityBuoyancyScreenView {
   addSecondMassControl() {
 
     // @private {Node}
-    this.secondMassVisibleControl = new SecondMassVisibleControl( this.model.secondaryMassVisibleProperty );
+    this.secondMassVisibleControl = new SecondMassVisibleControl( this.model.secondaryMassVisibleProperty, this.tandem.createTandem( 'secondMassVisibleControl' ) );
 
     this.addChild( this.secondMassVisibleControl );
 

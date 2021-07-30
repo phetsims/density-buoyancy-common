@@ -42,23 +42,25 @@ class BuoyancyApplicationsModel extends DensityBuoyancyModel {
 
     // @public {Bottle}
     this.bottle = new Bottle( this.engine, {
-      matrix: Matrix3.translation( 0, 0 )
+      matrix: Matrix3.translation( 0, 0 ),
+      tandem: tandem.createTandem( 'bottle' )
     } );
-
 
     // @public {Cuboid}
     this.block = Cuboid.createWithVolume( this.engine, Material.STEEL, new Vector2( 0.5, 0.5 ), 0.005 );
 
     // @public {Boat|null}
     this.boat = new Boat( this.engine, new DerivedProperty( [ this.block.sizeProperty ], size => size.depth ), this.liquidMaterialProperty, {
-      matrix: Matrix3.translation( 0, -0.1 )
+      matrix: Matrix3.translation( 0, -0.1 ),
+      tandem: tandem.createTandem( 'boat' )
     } );
 
     // @public {Scale}
     this.leftScale = new Scale( this.engine, {
       matrix: Matrix3.translation( -0.7, -Scale.SCALE_BASE_BOUNDS.minY ),
       displayType: Scale.DisplayType.NEWTONS,
-      canMove: false
+      canMove: false,
+      tandem: tandem.createTandem( 'leftScale' )
     } );
     this.masses.push( this.leftScale );
 
@@ -66,7 +68,8 @@ class BuoyancyApplicationsModel extends DensityBuoyancyModel {
     this.poolScale = new Scale( this.engine, {
       matrix: Matrix3.translation( 0.25, -Scale.SCALE_BASE_BOUNDS.minY + this.poolBounds.minY ),
       displayType: Scale.DisplayType.NEWTONS,
-      canMove: false
+      canMove: false,
+      tandem: tandem.createTandem( 'poolScale' )
     } );
     this.masses.push( this.poolScale );
 

@@ -29,10 +29,12 @@ class BuoyancyExploreModel extends DensityBuoyancyModel {
 
     // @public {Mass}
     this.primaryMass = Cuboid.createWithMass( this.engine, Material.WOOD, new Vector2( -0.2, 0.2 ), 2, {
-      tag: Mass.MassTag.PRIMARY
+      tag: Mass.MassTag.PRIMARY,
+      tandem: tandem.createTandem( 'primaryMass' )
     } );
     this.secondaryMass = Cuboid.createWithMass( this.engine, Material.ALUMINUM, new Vector2( -0.2, 0.35 ), 13.5, {
-      tag: Mass.MassTag.SECONDARY
+      tag: Mass.MassTag.SECONDARY,
+      tandem: tandem.createTandem( 'secondaryMass' )
     } );
 
     this.masses.push( this.primaryMass );
@@ -49,13 +51,15 @@ class BuoyancyExploreModel extends DensityBuoyancyModel {
     // Left scale
     this.masses.push( new Scale( this.engine, {
       matrix: Matrix3.translation( -0.65, -Scale.SCALE_BASE_BOUNDS.minY ),
-      displayType: Scale.DisplayType.NEWTONS
+      displayType: Scale.DisplayType.NEWTONS,
+      tandem: tandem.createTandem( 'leftScale' )
     } ) );
 
     // Pool scale
     const poolScale = new Scale( this.engine, {
       matrix: Matrix3.translation( 0.25, -Scale.SCALE_BASE_BOUNDS.minY + this.poolBounds.minY ),
-      displayType: Scale.DisplayType.NEWTONS
+      displayType: Scale.DisplayType.NEWTONS,
+      tandem: tandem.createTandem( 'poolScale' )
     } );
     this.masses.push( poolScale );
 

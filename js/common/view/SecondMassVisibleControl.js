@@ -30,16 +30,19 @@ DensityBuoyancyCommonColors.labelBProperty.link( labelColor => {
 class SecondMassVisibleControl extends RectangularRadioButtonGroup {
   /**
    * @param {Property.<boolean>} secondaryMassVisibleProperty
+   * @param {Tandem} tandem
    */
-  constructor( secondaryMassVisibleProperty ) {
+  constructor( secondaryMassVisibleProperty, tandem ) {
     super( secondaryMassVisibleProperty, [
       {
         value: false,
-        node: SecondMassVisibleControl.getSingleCuboidIcon()
+        node: SecondMassVisibleControl.getSingleCuboidIcon(),
+        tandemName: 'oneBlockRadioButton'
       },
       {
         value: true,
-        node: SecondMassVisibleControl.getDoubleCuboidIcon()
+        node: SecondMassVisibleControl.getDoubleCuboidIcon(),
+        tandemName: 'twoBlocksRadioButton'
       }
     ], {
       orientation: 'horizontal',
@@ -47,7 +50,8 @@ class SecondMassVisibleControl extends RectangularRadioButtonGroup {
       // buttonContentXMargin: 3,
       // buttonContentYMargin: 3,
       touchAreaXDilation: 5,
-      touchAreaYDilation: 5
+      touchAreaYDilation: 5,
+      tandem: tandem
     } );
   }
 

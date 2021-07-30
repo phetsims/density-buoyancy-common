@@ -199,10 +199,12 @@ class MaterialMassVolumeControlNode extends VBox {
       tandem: tandem.createTandem( 'comboBox' )
     } );
 
+    const massNumberControlTandem = tandem.createTandem( 'massNumberControl' );
     const massNumberControl = new NumberControl( densityBuoyancyCommonStrings.mass, massNumberProperty, new Range( options.minMass, options.maxMass ), merge( {
       sliderOptions: {
         thumbNode: new PrecisionSliderThumb( {
-          thumbFill: options.color
+          thumbFill: options.color,
+          tandem: massNumberControlTandem.createTandem( 'slider' ).createTandem( 'thumbNode' )
         } ),
         thumbYOffset: new PrecisionSliderThumb().height / 2 - TRACK_HEIGHT / 2,
         constrainValue: value => Utils.toFixedNumber( value, 1 )
@@ -217,13 +219,15 @@ class MaterialMassVolumeControlNode extends VBox {
         enabledEpsilon: 1e-7
       },
       enabledRangeProperty: enabledMassRangeProperty,
-      tandem: tandem.createTandem( 'massNumberControl' )
+      tandem: massNumberControlTandem
     }, MaterialMassVolumeControlNode.getNumberControlOptions() ) );
 
+    const volumeNumberControlTandem = tandem.createTandem( 'volumeNumberControl' );
     const volumeNumberControl = new NumberControl( densityBuoyancyCommonStrings.volume, numberControlVolumeProperty, new Range( options.minVolumeLiters, options.maxVolumeLiters ), merge( {
       sliderOptions: {
         thumbNode: new PrecisionSliderThumb( {
-          thumbFill: options.color
+          thumbFill: options.color,
+          tandem: volumeNumberControlTandem.createTandem( 'slider' ).createTandem( 'thumbNode' )
         } ),
         thumbYOffset: new PrecisionSliderThumb().height / 2 - TRACK_HEIGHT / 2,
         constrainValue: value => Utils.roundSymmetric( value * 2 ) / 2
@@ -237,7 +241,7 @@ class MaterialMassVolumeControlNode extends VBox {
       arrowButtonOptions: {
         enabledEpsilon: 1e-7
       },
-      tandem: tandem.createTandem( 'volumeNumberControl' )
+      tandem: volumeNumberControlTandem
     }, MaterialMassVolumeControlNode.getNumberControlOptions() ) );
 
     const topRow = options.labelNode ? new HBox( {

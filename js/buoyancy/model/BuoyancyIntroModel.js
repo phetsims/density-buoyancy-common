@@ -32,18 +32,18 @@ class BuoyancyIntroModel extends DensityBuoyancyModal( DensityBuoyancyModel, Mod
       switch( mode ) {
         case Mode.SAME_MASS:
           return [
-            Cuboid.createWithMass( model.engine, Material.WOOD, Vector2.ZERO, 5 ),
-            Cuboid.createWithMass( model.engine, Material.BRICK, Vector2.ZERO, 5 )
+            Cuboid.createWithMass( model.engine, Material.WOOD, Vector2.ZERO, 5, { tandem: tandem.createTandem( 'sameMassWood' ) } ),
+            Cuboid.createWithMass( model.engine, Material.BRICK, Vector2.ZERO, 5, { tandem: tandem.createTandem( 'sameMassBrick' ) } )
           ];
         case Mode.SAME_VOLUME:
           return [
-            Cuboid.createWithVolume( model.engine, Material.WOOD, Vector2.ZERO, 0.005 ),
-            Cuboid.createWithVolume( model.engine, Material.BRICK, Vector2.ZERO, 0.005 )
+            Cuboid.createWithVolume( model.engine, Material.WOOD, Vector2.ZERO, 0.005, { tandem: tandem.createTandem( 'sameVolumeWood' ) } ),
+            Cuboid.createWithVolume( model.engine, Material.BRICK, Vector2.ZERO, 0.005, { tandem: tandem.createTandem( 'sameVolumeBrick' ) } )
           ];
         case Mode.SAME_DENSITY:
           return [
-            Cuboid.createWithMass( model.engine, Material.WOOD, Vector2.ZERO, 2 ),
-            Cuboid.createWithMass( model.engine, Material.WOOD, Vector2.ZERO, 4 )
+            Cuboid.createWithMass( model.engine, Material.WOOD, Vector2.ZERO, 2, { tandem: tandem.createTandem( 'sameDensitySmall' ) } ),
+            Cuboid.createWithMass( model.engine, Material.WOOD, Vector2.ZERO, 4, { tandem: tandem.createTandem( 'sameDensityLarge' ) } )
           ];
         default:
           throw new Error( `unknown mode: ${mode}` );
@@ -75,14 +75,16 @@ class BuoyancyIntroModel extends DensityBuoyancyModal( DensityBuoyancyModel, Mod
     this.masses.push( new Scale( this.engine, {
       matrix: Matrix3.translation( -0.8, -Scale.SCALE_BASE_BOUNDS.minY ),
       displayType: Scale.DisplayType.NEWTONS,
-      canMove: false
+      canMove: false,
+      tandem: tandem.createTandem( 'leftScale' )
     } ) );
 
     // Pool scale
     const poolScale = new Scale( this.engine, {
       matrix: Matrix3.translation( 0.25, -Scale.SCALE_BASE_BOUNDS.minY + this.poolBounds.minY ),
       displayType: Scale.DisplayType.NEWTONS,
-      canMove: false
+      canMove: false,
+      tandem: tandem.createTandem( 'poolScale' )
     } );
     this.masses.push( poolScale );
 

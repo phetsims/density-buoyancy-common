@@ -17,10 +17,11 @@ class BoatView extends MassView {
   /**
    * @param {Boat} boat
    * @param {Property.<number>} liquidYInterpolatedProperty
+   * @param {Object} [options]
    */
-  constructor( boat, liquidYInterpolatedProperty ) {
+  constructor( boat, liquidYInterpolatedProperty, options ) {
 
-    super( boat, new THREE.Geometry() );
+    super( boat, new THREE.Geometry(), options );
 
     // Clip planes at the boat's water level
     const bottomBoatClipPlane = new THREE.Plane( new THREE.Vector3( 0, -1, 0 ), 0 );

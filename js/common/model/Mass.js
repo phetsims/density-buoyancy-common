@@ -136,7 +136,9 @@ class Mass extends PhetioObject {
     } );
 
     // @public {Property.<Vector2>} - The following offset will be added onto the body's position to determine ours.
-    this.bodyOffsetProperty = new Property( Vector2.ZERO );
+    this.bodyOffsetProperty = new Property( Vector2.ZERO, {
+      tandem: Tandem.OPT_OUT
+    } );
 
     // @public {Property.<Vector2>}
     this.gravityForceInterpolatedProperty = new InterpolatedProperty( Vector2.ZERO, {
@@ -389,6 +391,23 @@ class Mass extends PhetioObject {
     this.transformedEmitter.emit();
 
     this.engine.bodySynchronizePrevious( this.body );
+  }
+
+  /**
+   * Releases references
+   * @public
+   * @override
+   */
+  dispose() {
+    this.userControlledProperty.dispose();
+    this.materialProperty.dispose();
+    this.volumeProperty.dispose();
+    this.massProperty.dispose();
+    this.gravityForceInterpolatedProperty.dispose();
+    this.buoyancyForceInterpolatedProperty.dispose();
+    this.contactForceInterpolatedProperty.dispose();
+
+    super.dispose();
   }
 
   /**

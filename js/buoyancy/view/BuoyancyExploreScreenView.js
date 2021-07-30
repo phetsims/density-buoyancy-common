@@ -149,11 +149,12 @@ class BuoyancyExploreScreenView extends SecondaryMassScreenView {
       model.primaryMass,
       model.secondaryMass,
       model.secondaryMassVisibleProperty,
-      this.popupLayer, {
+      this.popupLayer,
+      tandem,
+      {
         minCustomMass: 0.1,
         maxCustomMass: 27
-      },
-      tandem
+      }
     );
 
     this.addChild( new AlignBox( this.rightBox, {

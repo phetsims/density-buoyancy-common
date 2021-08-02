@@ -6,12 +6,11 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
-import ThreeInstrumentable from '../../../../mobius/js/ThreeInstrumentable.js';
 import merge from '../../../../phet-core/js/merge.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityMaterials from './DensityMaterials.js';
 
-class MassView extends ThreeInstrumentable( THREE.Mesh ) {
+class MassView extends THREE.Mesh {
   /**
    * @param {Mass} mass
    * @param {THREE.Geometry} initialGeometry
@@ -66,7 +65,7 @@ class MassView extends ThreeInstrumentable( THREE.Mesh ) {
 
     this.materialView.dispose();
 
-    super.dispose();
+    super.dispose && super.dispose();
   }
 }
 

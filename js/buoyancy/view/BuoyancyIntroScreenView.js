@@ -7,7 +7,7 @@
  */
 
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
-import AlignBox from '../../../../scenery/js/nodes/AlignBox.js';
+import AlignPropertyBox from '../../../../scenery/js/layout/AlignPropertyBox.js';
 import HBox from '../../../../scenery/js/nodes/HBox.js';
 import Node from '../../../../scenery/js/nodes/Node.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
@@ -55,22 +55,18 @@ class BuoyancyIntroScreenView extends DensityBuoyancyScreenView {
     } ) );
     const modePanel = new Panel( modeControl, DensityBuoyancyCommonConstants.PANEL_OPTIONS );
 
-    const upperRightBox = new AlignBox( modePanel, {
+    this.addChild( new AlignPropertyBox( modePanel, this.visibleBoundsProperty, {
       xAlign: 'right',
       yAlign: 'top',
       margin: MARGIN
-    } );
-    this.visibleBoundsProperty.link( bounds => { upperRightBox.alignBounds = bounds; } );
-    this.addChild( upperRightBox );
+    } ) );
 
     const displayOptionsPanel = new Panel( new DisplayOptionsNode( model ), DensityBuoyancyCommonConstants.PANEL_OPTIONS );
-    const bottomLeftBox = new AlignBox( displayOptionsPanel, {
+    this.addChild( new AlignPropertyBox( displayOptionsPanel, this.visibleBoundsProperty, {
       xAlign: 'left',
       yAlign: 'bottom',
       margin: MARGIN
-    } );
-    this.visibleBoundsProperty.link( bounds => { bottomLeftBox.alignBounds = bounds; } );
-    this.addChild( bottomLeftBox );
+    } ) );
 
     const radioButtonLabelOptions = {
       font: new PhetFont( 14 ),
@@ -94,13 +90,11 @@ class BuoyancyIntroScreenView extends DensityBuoyancyScreenView {
       children: [ fluidTitle, fluidBox ]
     } ), DensityBuoyancyCommonConstants.PANEL_OPTIONS );
 
-    const bottomBox = new AlignBox( fluidPanel, {
+    this.addChild( new AlignPropertyBox( fluidPanel, this.visibleBoundsProperty, {
       xAlign: 'center',
       yAlign: 'bottom',
       margin: MARGIN
-    } );
-    this.visibleBoundsProperty.link( bounds => { bottomBox.alignBounds = bounds; } );
-    this.addChild( bottomBox );
+    } ) );
 
     this.addChild( this.popupLayer );
   }

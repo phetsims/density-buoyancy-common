@@ -17,6 +17,7 @@ import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
 import NumberControl from '../../../../scenery-phet/js/NumberControl.js';
 import NumberDisplay from '../../../../scenery-phet/js/NumberDisplay.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
+import AlignPropertyBox from '../../../../scenery/js/layout/AlignPropertyBox.js';
 import ManualConstraint from '../../../../scenery/js/layout/ManualConstraint.js';
 import AlignBox from '../../../../scenery/js/nodes/AlignBox.js';
 import HStrut from '../../../../scenery/js/nodes/HStrut.js';
@@ -122,14 +123,12 @@ class BuoyancyApplicationsScreenView extends DensityBuoyancyScreenView {
       ]
     } );
 
-    const rightBottleContent = new AlignBox( new Panel( bottleBox, DensityBuoyancyCommonConstants.PANEL_OPTIONS ), {
-      alignBounds: this.layoutBounds,
+    const rightBottleContent = new AlignPropertyBox( new Panel( bottleBox, DensityBuoyancyCommonConstants.PANEL_OPTIONS ), this.visibleBoundsProperty, {
       xAlign: 'right',
       yAlign: 'bottom',
       xMargin: 10,
       yMargin: 60
     } );
-    this.visibleBoundsProperty.link( bounds => { rightBottleContent.alignBounds = bounds; } );
 
     const blockControlNode = new MaterialMassVolumeControlNode( model.block.materialProperty, model.block.massProperty, model.block.volumeProperty, _.sortBy( [
       Material.PYRITE,
@@ -176,14 +175,12 @@ class BuoyancyApplicationsScreenView extends DensityBuoyancyScreenView {
       ]
     } );
 
-    const rightBoatContent = new AlignBox( new Panel( boatBox, DensityBuoyancyCommonConstants.PANEL_OPTIONS ), {
-      alignBounds: this.layoutBounds,
+    const rightBoatContent = new AlignPropertyBox( new Panel( boatBox, DensityBuoyancyCommonConstants.PANEL_OPTIONS ), this.visibleBoundsProperty, {
       xAlign: 'right',
       yAlign: 'bottom',
       xMargin: 10,
       yMargin: 60
     } );
-    this.visibleBoundsProperty.link( bounds => { rightBoatContent.alignBounds = bounds; } );
 
     this.addChild( rightBottleContent );
     this.addChild( rightBoatContent );
@@ -202,14 +199,11 @@ class BuoyancyApplicationsScreenView extends DensityBuoyancyScreenView {
       Material.DENSITY_Q
     ], this.popupLayer ), DensityBuoyancyCommonConstants.PANEL_OPTIONS );
 
-    const bottomBox = new AlignBox( densityControlPanel, {
+    this.addChild( new AlignPropertyBox( densityControlPanel, this.visibleBoundsProperty, {
       xAlign: 'center',
       yAlign: 'bottom',
-      xMargin: MARGIN,
-      yMargin: MARGIN
-    } );
-    this.visibleBoundsProperty.link( bounds => { bottomBox.alignBounds = bounds; } );
-    this.addChild( bottomBox );
+      margin: MARGIN
+    } ) );
 
     const displayOptionsNode = new DisplayOptionsNode( model );
 
@@ -232,19 +226,17 @@ class BuoyancyApplicationsScreenView extends DensityBuoyancyScreenView {
       expandedProperty: model.densityReadoutExpandedProperty
     }, DensityBuoyancyCommonConstants.ACCORDION_BOX_OPTIONS ) );
 
-    const bottomLeftBox = new AlignBox( new VBox( {
+    this.addChild( new AlignPropertyBox( new VBox( {
       spacing: 10,
       children: [
         densityBox,
         new Panel( displayOptionsNode, DensityBuoyancyCommonConstants.PANEL_OPTIONS )
       ]
-    } ), {
+    } ), this.visibleBoundsProperty, {
       xAlign: 'left',
       yAlign: 'bottom',
       margin: MARGIN
-    } );
-    this.visibleBoundsProperty.link( bounds => { bottomLeftBox.alignBounds = bounds; } );
-    this.addChild( bottomLeftBox );
+    } ) );
 
     const bottleBoatSelectionNode = new RectangularRadioButtonGroup( model.sceneProperty, [
       {
@@ -264,10 +256,7 @@ class BuoyancyApplicationsScreenView extends DensityBuoyancyScreenView {
       touchAreaXDilation: 6,
       touchAreaYDilation: 6,
       selectedStroke: DensityBuoyancyCommonColors.radioBorderColorProperty,
-      baseColor: DensityBuoyancyCommonColors.radioBackgroundColorProperty,
-
-      bottom: this.layoutBounds.bottom - MARGIN,
-      left: densityControlPanel.right + MARGIN
+      baseColor: DensityBuoyancyCommonColors.radioBackgroundColorProperty
     } );
     this.addChild( bottleBoatSelectionNode );
 

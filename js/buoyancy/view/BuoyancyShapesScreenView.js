@@ -10,7 +10,7 @@ import DynamicProperty from '../../../../axon/js/DynamicProperty.js';
 import Property from '../../../../axon/js/Property.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
 import merge from '../../../../phet-core/js/merge.js';
-import AlignBox from '../../../../scenery/js/nodes/AlignBox.js';
+import AlignPropertyBox from '../../../../scenery/js/layout/AlignPropertyBox.js';
 import HStrut from '../../../../scenery/js/nodes/HStrut.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
 import VBox from '../../../../scenery/js/nodes/VBox.js';
@@ -54,18 +54,13 @@ class BuoyancyShapesScreenView extends SecondaryMassScreenView {
       Material.MERCURY,
       Material.DENSITY_R,
       Material.DENSITY_S
-    ], this.popupLayer ), merge( {
-      centerX: this.layoutBounds.centerX,
-      bottom: this.layoutBounds.bottom - MARGIN
-    }, DensityBuoyancyCommonConstants.PANEL_OPTIONS ) );
+    ], this.popupLayer ), DensityBuoyancyCommonConstants.PANEL_OPTIONS );
 
-    const bottomBox = new AlignBox( densityControlPanel, {
+    this.addChild( new AlignPropertyBox( densityControlPanel, this.visibleBoundsProperty, {
       xAlign: 'center',
       yAlign: 'bottom',
       margin: MARGIN
-    } );
-    this.visibleBoundsProperty.link( bounds => { bottomBox.alignBounds = bounds; } );
-    this.addChild( bottomBox );
+    } ) );
 
     const displayOptionsNode = new DisplayOptionsNode( model );
 
@@ -86,19 +81,17 @@ class BuoyancyShapesScreenView extends SecondaryMassScreenView {
       expandedProperty: model.densityReadoutExpandedProperty
     }, DensityBuoyancyCommonConstants.ACCORDION_BOX_OPTIONS ) );
 
-    const bottomLeftBox = new AlignBox( new VBox( {
+    this.addChild( new AlignPropertyBox( new VBox( {
       spacing: 10,
       children: [
         densityBox,
         new Panel( displayOptionsNode, DensityBuoyancyCommonConstants.PANEL_OPTIONS )
       ]
-    } ), {
+    } ), this.visibleBoundsProperty, {
       xAlign: 'left',
       yAlign: 'bottom',
       margin: MARGIN
-    } );
-    this.visibleBoundsProperty.link( bounds => { bottomLeftBox.alignBounds = bounds; } );
-    this.addChild( bottomLeftBox );
+    } ) );
 
     // @private {Node}
     this.rightBox = new PrimarySecondaryPanelsNode(
@@ -125,13 +118,11 @@ class BuoyancyShapesScreenView extends SecondaryMassScreenView {
       model.secondaryMassVisibleProperty
     );
 
-    const rightBox = new AlignBox( this.rightBox, {
+    this.addChild( new AlignPropertyBox( this.rightBox, this.visibleBoundsProperty, {
       xAlign: 'right',
       yAlign: 'top',
       margin: MARGIN
-    } );
-    this.visibleBoundsProperty.link( bounds => { rightBox.alignBounds = bounds; } );
-    this.addChild( rightBox );
+    } ) );
 
     this.addSecondMassControl();
 

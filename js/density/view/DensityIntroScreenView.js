@@ -65,14 +65,13 @@ class DensityIntroScreenView extends SecondaryMassScreenView {
     this.addChild( new AlignPropertyBox( densityReadoutBox, this.visibleBoundsProperty, {
       xAlign: 'center',
       yAlign: 'top',
-      yMargin: MARGIN
+      margin: MARGIN
     } ) );
 
     this.addChild( new AlignPropertyBox( this.rightBox, this.visibleBoundsProperty, {
       xAlign: 'right',
       yAlign: 'top',
-      xMargin: MARGIN,
-      yMargin: MARGIN
+      margin: MARGIN
     } ) );
 
     this.addSecondMassControl();

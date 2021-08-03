@@ -58,7 +58,7 @@ class DensityMysteryScreenView extends DensityBuoyancyScreenView {
     this.addChild( new AlignPropertyBox( densityTableBox, this.visibleBoundsProperty, {
       xAlign: 'center',
       yAlign: 'top',
-      yMargin: MARGIN
+      margin: MARGIN
     } ) );
 
     const modeTandemMap = {

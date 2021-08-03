@@ -28,8 +28,8 @@ import merge from '../../../../phet-core/js/merge.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import ResetAllButton from '../../../../scenery-phet/js/buttons/ResetAllButton.js';
 import Mouse from '../../../../scenery/js/input/Mouse.js';
+import AlignPropertyBox from '../../../../scenery/js/layout/AlignPropertyBox.js';
 import animatedPanZoomSingleton from '../../../../scenery/js/listeners/animatedPanZoomSingleton.js';
-import AlignBox from '../../../../scenery/js/nodes/AlignBox.js';
 import Image from '../../../../scenery/js/nodes/Image.js';
 import Node from '../../../../scenery/js/nodes/Node.js';
 import Rectangle from '../../../../scenery/js/nodes/Rectangle.js';
@@ -597,14 +597,11 @@ class DensityBuoyancyScreenView extends ScreenView {
       },
       tandem: tandem.createTandem( 'resetAllButton' )
     } );
-    const bottomRightBox = new AlignBox( resetAllButton, {
+    this.addChild( new AlignPropertyBox( resetAllButton, this.visibleBoundsProperty, {
       xAlign: 'right',
       yAlign: 'bottom',
-      xMargin: MARGIN,
-      yMargin: MARGIN
-    } );
-    this.visibleBoundsProperty.link( bounds => { bottomRightBox.alignBounds = bounds; } );
-    this.addChild( bottomRightBox );
+      margin: MARGIN
+    } ) );
 
     if ( DensityBuoyancyCommonQueryParameters.showDebug ) {
       const debugVisibleProperty = new BooleanProperty( true );

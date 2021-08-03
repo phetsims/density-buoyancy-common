@@ -6,6 +6,7 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
+import Action from '../../../../axon/js/Action.js';
 import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import DynamicProperty from '../../../../axon/js/DynamicProperty.js';
@@ -34,6 +35,7 @@ import Rectangle from '../../../../scenery/js/nodes/Rectangle.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
 import LinearGradient from '../../../../scenery/js/util/LinearGradient.js';
 import Checkbox from '../../../../sun/js/Checkbox.js';
+import EventType from '../../../../tandem/js/EventType.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
 import Boat from '../../buoyancy/model/Boat.js';
 import BoatDesign from '../../buoyancy/model/BoatDesign.js';
@@ -47,6 +49,7 @@ import Cone from '../model/Cone.js';
 import Cuboid from '../model/Cuboid.js';
 import Ellipsoid from '../model/Ellipsoid.js';
 import HorizontalCylinder from '../model/HorizontalCylinder.js';
+import Mass from '../model/Mass.js';
 import Scale from '../model/Scale.js';
 import VerticalCylinder from '../model/VerticalCylinder.js';
 import ConeView from './ConeView.js';
@@ -165,6 +168,54 @@ class DensityBuoyancyScreenView extends ScreenView {
       }
     } );
 
+    // @private {Action}
+    this.startDragAction = new Action( ( mass, position ) => {
+      mass.startDrag( position );
+    }, {
+      tandem: tandem.createTandem( 'startDragAction' ),
+      phetioDocumentation: 'Starts the dragging of a mass',
+      phetioReadOnly: true,
+      phetioEventType: EventType.USER,
+      parameters: [ {
+        name: 'mass',
+        phetioType: Mass.MassIO
+      }, {
+        name: 'position',
+        phetioType: Vector2.Vector2IO
+      } ]
+    } );
+
+    // @private {Action}
+    this.updateDragAction = new Action( ( mass, position ) => {
+      mass.updateDrag( position );
+    }, {
+      tandem: tandem.createTandem( 'updateDragAction' ),
+      phetioDocumentation: 'Continues the dragging of a mass',
+      phetioReadOnly: true,
+      phetioEventType: EventType.USER,
+      parameters: [ {
+        name: 'mass',
+        phetioType: Mass.MassIO
+      }, {
+        name: 'position',
+        phetioType: Vector2.Vector2IO
+      } ]
+    } );
+
+    // @private {Action}
+    this.endDragAction = new Action( mass => {
+      mass.endDrag();
+    }, {
+      tandem: tandem.createTandem( 'endDragAction' ),
+      phetioDocumentation: 'Continues the dragging of a mass',
+      phetioReadOnly: true,
+      phetioEventType: EventType.USER,
+      parameters: [ {
+        name: 'mass',
+        phetioType: Mass.MassIO
+      } ]
+    } );
+
     this.sceneNode.backgroundEventTarget.addInputListener( {
       down: ( event, trail ) => {
         if ( !event.canStartPress() ) { return; }
@@ -180,15 +231,15 @@ class DensityBuoyancyScreenView extends ScreenView {
           const initialPosition = initialRay.pointAtDistance( initialT );
           const initialPlane = new Plane3( Vector3.Z_UNIT, initialPosition.z );
 
-          mass.startDrag( initialPosition.toVector2() );
+          this.startDragAction.execute( mass, initialPosition.toVector2() );
           this.currentMassProperty.value = mass;
-
           pointer.cursor = 'pointer';
+
           const endDrag = () => {
             pointer.removeInputListener( listener, true );
             pointer.cursor = null;
 
-            mass.endDrag();
+            this.endDragAction.execute( mass );
           };
           const listener = {
             // end drag on either up or cancel (not supporting full cancel behavior)
@@ -200,7 +251,7 @@ class DensityBuoyancyScreenView extends ScreenView {
               const ray = this.sceneNode.getRayFromScreenPoint( pointer.point );
               const position = initialPlane.intersectWithRay( ray );
 
-              mass.updateDrag( position.toVector2() );
+              this.updateDragAction.execute( mass, position.toVector2() );
             }
           };
           pointer.reserveForDrag();

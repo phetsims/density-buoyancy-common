@@ -27,6 +27,10 @@ class DensityCompareModel extends DensityBuoyancyModal( DensityBuoyancyModel, Mo
    * @param {Tandem} tandem
    */
   constructor( tandem ) {
+    const sameMassTandem = tandem.createTandem( 'sameMass' );
+    const sameVolumeTandem = tandem.createTandem( 'sameVolume' );
+    const sameDensityTandem = tandem.createTandem( 'sameDensity' );
+
     const createMasses = ( model, mode ) => {
       switch( mode ) {
         case Mode.SAME_MASS:
@@ -34,66 +38,66 @@ class DensityCompareModel extends DensityBuoyancyModal( DensityBuoyancyModel, Mo
             Cuboid.createWithMass( model.engine, Material.createCustomMaterial( {
               density: 500,
               customColor: DensityBuoyancyCommonColors.comparingYellowColorProperty
-            } ), Vector2.ZERO, 5, { tandem: tandem.createTandem( 'sameMassYellow' ) } ),
+            } ), Vector2.ZERO, 5, { tandem: sameMassTandem.createTandem( 'yellowMass' ) } ),
 
             Cuboid.createWithMass( model.engine, Material.createCustomMaterial( {
               density: 1000,
               customColor: DensityBuoyancyCommonColors.comparingBlueColorProperty
-            } ), Vector2.ZERO, 5, { tandem: tandem.createTandem( 'sameMassBlue' ) } ),
+            } ), Vector2.ZERO, 5, { tandem: sameMassTandem.createTandem( 'blueMass' ) } ),
 
             Cuboid.createWithMass( model.engine, Material.createCustomMaterial( {
               density: 2000,
               customColor: DensityBuoyancyCommonColors.comparingGreenColorProperty
-            } ), Vector2.ZERO, 5, { tandem: tandem.createTandem( 'sameMassGreen' ) } ),
+            } ), Vector2.ZERO, 5, { tandem: sameMassTandem.createTandem( 'greenMass' ) } ),
 
             Cuboid.createWithMass( model.engine, Material.createCustomMaterial( {
               density: 4000,
               customColor: DensityBuoyancyCommonColors.comparingRedColorProperty
-            } ), Vector2.ZERO, 5, { tandem: tandem.createTandem( 'sameMassRed' ) } )
+            } ), Vector2.ZERO, 5, { tandem: sameMassTandem.createTandem( 'redMass' ) } )
           ];
         case Mode.SAME_VOLUME:
           return [
             Cuboid.createWithMass( model.engine, Material.createCustomMaterial( {
               density: 1600,
               customColor: DensityBuoyancyCommonColors.comparingYellowColorProperty
-            } ), Vector2.ZERO, 8, { tandem: tandem.createTandem( 'sameVolumeYellow' ) } ),
+            } ), Vector2.ZERO, 8, { tandem: sameVolumeTandem.createTandem( 'yellowMass' ) } ),
 
             Cuboid.createWithMass( model.engine, Material.createCustomMaterial( {
               density: 1200,
               customColor: DensityBuoyancyCommonColors.comparingBlueColorProperty
-            } ), Vector2.ZERO, 6, { tandem: tandem.createTandem( 'sameVolumeBlue' ) } ),
+            } ), Vector2.ZERO, 6, { tandem: sameVolumeTandem.createTandem( 'blueMass' ) } ),
 
             Cuboid.createWithMass( model.engine, Material.createCustomMaterial( {
               density: 800,
               customColor: DensityBuoyancyCommonColors.comparingGreenColorProperty
-            } ), Vector2.ZERO, 4, { tandem: tandem.createTandem( 'sameVolumeGreen' ) } ),
+            } ), Vector2.ZERO, 4, { tandem: sameVolumeTandem.createTandem( 'greenMass' ) } ),
 
             Cuboid.createWithMass( model.engine, Material.createCustomMaterial( {
               density: 400,
               customColor: DensityBuoyancyCommonColors.comparingRedColorProperty
-            } ), Vector2.ZERO, 2, { tandem: tandem.createTandem( 'sameVolumeRed' ) } )
+            } ), Vector2.ZERO, 2, { tandem: sameVolumeTandem.createTandem( 'redMass' ) } )
           ];
         case Mode.SAME_DENSITY:
           return [
             Cuboid.createWithMass( model.engine, Material.createCustomMaterial( {
               density: 800,
               customColor: DensityBuoyancyCommonColors.comparingYellowColorProperty
-            } ), Vector2.ZERO, 4, { tandem: tandem.createTandem( 'sameDensityYellow' ) } ),
+            } ), Vector2.ZERO, 4, { tandem: sameDensityTandem.createTandem( 'yellowMass' ) } ),
 
             Cuboid.createWithMass( model.engine, Material.createCustomMaterial( {
               density: 800,
               customColor: DensityBuoyancyCommonColors.comparingBlueColorProperty
-            } ), Vector2.ZERO, 3, { tandem: tandem.createTandem( 'sameDensityBlue' ) } ),
+            } ), Vector2.ZERO, 3, { tandem: sameDensityTandem.createTandem( 'blueMass' ) } ),
 
             Cuboid.createWithMass( model.engine, Material.createCustomMaterial( {
               density: 800,
               customColor: DensityBuoyancyCommonColors.comparingGreenColorProperty
-            } ), Vector2.ZERO, 2, { tandem: tandem.createTandem( 'sameDensityGreen' ) } ),
+            } ), Vector2.ZERO, 2, { tandem: sameDensityTandem.createTandem( 'greenMass' ) } ),
 
             Cuboid.createWithMass( model.engine, Material.createCustomMaterial( {
               density: 800,
               customColor: DensityBuoyancyCommonColors.comparingRedColorProperty
-            } ), Vector2.ZERO, 1, { tandem: tandem.createTandem( 'sameDensityRed' ) } )
+            } ), Vector2.ZERO, 1, { tandem: sameDensityTandem.createTandem( 'redMass' ) } )
           ];
         default:
           throw new Error( `unknown mode: ${mode}` );

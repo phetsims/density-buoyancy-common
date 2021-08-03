@@ -225,6 +225,14 @@ class DensityBuoyancyModel {
           mass.scaleForceInterpolatedProperty.setNextValue( scaleForce );
         }
 
+        const velocity = this.engine.bodyGetVelocity( mass.body );
+
+        // Limit velocity, so things converge faster.
+        if ( velocity.magnitude > 5 ) {
+          velocity.setMagnitude( 5 );
+          this.engine.bodySetVelocity( mass.body, velocity );
+        }
+
         const basin = mass.containingBasin;
         const submergedVolume = basin ? mass.getDisplacedVolume( basin.liquidYInterpolatedProperty.currentValue ) : 0;
         if ( submergedVolume ) {
@@ -235,7 +243,6 @@ class DensityBuoyancyModel {
           this.engine.bodyApplyForce( mass.body, buoyantForce );
           mass.buoyancyForceInterpolatedProperty.setNextValue( buoyantForce );
 
-          const velocity = this.engine.bodyGetVelocity( mass.body );
           // If the boat is moving, assume the liquid moves with it, and apply viscosity due to the movement of our mass
           // inside the boat's liquid.
           if ( boat && basin === boat.basin ) {

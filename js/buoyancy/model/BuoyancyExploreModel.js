@@ -39,7 +39,7 @@ class BuoyancyExploreModel extends DensityBuoyancyModel {
     } );
     this.availableMasses.push( this.secondaryMass );
 
-    this.secondaryMassVisibleProperty.lazyLink( secondaryMassVisible => {
+    this.secondaryMassVisibleProperty.link( secondaryMassVisible => {
       this.secondaryMass.visibleProperty.value = secondaryMassVisible;
     } );
 

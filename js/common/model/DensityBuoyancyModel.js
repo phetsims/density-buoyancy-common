@@ -150,6 +150,36 @@ class DensityBuoyancyModel {
     this.engine.addBody( this.barrierBody );
 
     // @public {ObservableArrayDef.<Mass>}
+    this.availableMasses = createObservableArray();
+
+    // Control masses by visibility, so that this.masses will be the subset of this.availableMasses that is visible
+    const visibilityListenerMap = new Map();
+    this.availableMasses.addItemAddedListener( mass => {
+      const visibilityListener = visible => {
+        if ( visible ) {
+          this.masses.push( mass );
+        }
+        else {
+          this.masses.remove( mass );
+        }
+      };
+      visibilityListenerMap[ mass ] = visibilityListener;
+      mass.visibleProperty.lazyLink( visibilityListener );
+
+      if ( mass.visibleProperty.value ) {
+        this.masses.push( mass );
+      }
+    } );
+    this.availableMasses.addItemRemovedListener( mass => {
+      mass.visibleProperty.unlink( visibilityListenerMap[ mass ] );
+      visibilityListenerMap.delete( mass );
+
+      if ( mass.visibleProperty.value ) {
+        this.masses.remove( mass );
+      }
+    } );
+
+    // @public {ObservableArrayDef.<Mass>}
     this.masses = createObservableArray();
     this.masses.addItemAddedListener( mass => {
       this.engine.addBody( mass.body );

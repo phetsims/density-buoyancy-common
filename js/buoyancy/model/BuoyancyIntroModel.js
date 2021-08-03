@@ -72,7 +72,7 @@ class BuoyancyIntroModel extends DensityBuoyancyModal( DensityBuoyancyModel, Mod
     super( tandem, createMasses, () => {}, positionMasses, tandem );
 
     // Left scale
-    this.masses.push( new Scale( this.engine, {
+    this.availableMasses.push( new Scale( this.engine, {
       matrix: Matrix3.translation( -0.8, -Scale.SCALE_BASE_BOUNDS.minY ),
       displayType: Scale.DisplayType.NEWTONS,
       canMove: false,
@@ -86,7 +86,7 @@ class BuoyancyIntroModel extends DensityBuoyancyModal( DensityBuoyancyModel, Mod
       canMove: false,
       tandem: tandem.createTandem( 'poolScale' )
     } );
-    this.masses.push( poolScale );
+    this.availableMasses.push( poolScale );
 
     // Adjust pool volume so that it's at the desired value WITH the pool scale inside.
     this.pool.liquidVolumeProperty.value -= poolScale.volumeProperty.value;

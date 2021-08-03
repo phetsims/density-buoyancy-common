@@ -237,7 +237,7 @@ class DensityMysteryModel extends DensityBuoyancyModal( DensityBuoyancyModel, Mo
       canMove: false,
       tandem: tandem.createTandem( 'scale' )
     } );
-    this.masses.push( this.scale );
+    this.availableMasses.push( this.scale );
   }
 
   /**

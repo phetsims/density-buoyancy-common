@@ -35,20 +35,15 @@ class DensityIntroModel extends DensityBuoyancyModel {
       tag: Mass.MassTag.PRIMARY,
       tandem: tandem.createTandem( 'primaryMass' )
     } );
+    this.availableMasses.push( this.primaryMass );
     this.secondaryMass = Cuboid.createWithMass( this.engine, Material.ALUMINUM, new Vector2( -0.2, 0.35 ), 13.5, {
       tag: Mass.MassTag.SECONDARY,
       tandem: tandem.createTandem( 'secondaryMass' )
     } );
+    this.availableMasses.push( this.secondaryMass );
 
-    this.masses.push( this.primaryMass );
-
-    this.secondaryMassVisibleProperty.lazyLink( secondaryMassVisible => {
-      if ( secondaryMassVisible ) {
-        this.masses.push( this.secondaryMass );
-      }
-      else {
-        this.masses.remove( this.secondaryMass );
-      }
+    this.secondaryMassVisibleProperty.link( secondaryMassVisible => {
+      this.secondaryMass.visibleProperty.value = secondaryMassVisible;
     } );
 
     // @public {Property.<boolean>}

@@ -45,46 +45,27 @@ const DensityBuoyancyModal = ( type, Mode, initialMode ) => {
 
       // Create and position masses on startup
       Mode.VALUES.forEach( mode => {
-        this.createMasses( mode );
+        this.modeToMassesMap[ mode ] = this.createMassesCallback( this, mode );
+
+        // Make them invisible by default, they will be made visible when their mode is up
+        this.modeToMassesMap[ mode ].forEach( mass => {
+          mass.visibleProperty.value = false;
+          this.availableMasses.push( mass );
+        } );
+
         this.positionMasses( mode );
       } );
 
       this.modeProperty.link( ( mode, oldMode ) => {
         if ( oldMode ) {
-          this.removeMasses( oldMode );
+          this.modeToMassesMap[ oldMode ].forEach( mass => {
+            mass.visibleProperty.value = false;
+          } );
         }
-        this.addMasses( mode );
+        this.modeToMassesMap[ mode ].forEach( mass => {
+          mass.visibleProperty.value = true;
+        } );
       } );
-    }
-
-    /**
-     * Adds masses.
-     * @private
-     *
-     * @param {Mode} mode
-     */
-    addMasses( mode ) {
-      this.modeToMassesMap[ mode ].forEach( mass => this.masses.push( mass ) );
-    }
-
-    /**
-     * Removes masses.
-     * @private
-     *
-     * @param {Mode} mode
-     */
-    removeMasses( mode ) {
-      this.modeToMassesMap[ mode ].forEach( mass => this.masses.remove( mass ) );
-    }
-
-    /**
-     * Creates masses.
-     * @private
-     *
-     * @param {Mode} mode
-     */
-    createMasses( mode ) {
-      this.modeToMassesMap[ mode ] = this.createMassesCallback( this, mode );
     }
 
     /**

@@ -54,7 +54,7 @@ class BuoyancyShapesModel extends DensityBuoyancyModel {
       displayType: Scale.DisplayType.NEWTONS,
       tandem: tandem.createTandem( 'leftScale' )
     } );
-    this.masses.push( this.leftScale );
+    this.availableMasses.push( this.leftScale );
 
     // @public {Scale}
     this.poolScale = new Scale( this.engine, {
@@ -62,7 +62,7 @@ class BuoyancyShapesModel extends DensityBuoyancyModel {
       displayType: Scale.DisplayType.NEWTONS,
       tandem: tandem.createTandem( 'poolScale' )
     } );
-    this.masses.push( this.poolScale );
+    this.availableMasses.push( this.poolScale );
 
     // Adjust pool volume so that it's at the desired value WITH the pool scale inside.
     this.pool.liquidVolumeProperty.value -= this.poolScale.volumeProperty.value;

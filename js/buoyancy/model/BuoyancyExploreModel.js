@@ -32,24 +32,19 @@ class BuoyancyExploreModel extends DensityBuoyancyModel {
       tag: Mass.MassTag.PRIMARY,
       tandem: tandem.createTandem( 'primaryMass' )
     } );
+    this.availableMasses.push( this.primaryMass );
     this.secondaryMass = Cuboid.createWithMass( this.engine, Material.ALUMINUM, new Vector2( -0.2, 0.35 ), 13.5, {
       tag: Mass.MassTag.SECONDARY,
       tandem: tandem.createTandem( 'secondaryMass' )
     } );
-
-    this.masses.push( this.primaryMass );
+    this.availableMasses.push( this.secondaryMass );
 
     this.secondaryMassVisibleProperty.lazyLink( secondaryMassVisible => {
-      if ( secondaryMassVisible ) {
-        this.masses.push( this.secondaryMass );
-      }
-      else {
-        this.masses.remove( this.secondaryMass );
-      }
+      this.secondaryMass.visibleProperty.value = secondaryMassVisible;
     } );
 
     // Left scale
-    this.masses.push( new Scale( this.engine, {
+    this.availableMasses.push( new Scale( this.engine, {
       matrix: Matrix3.translation( -0.65, -Scale.SCALE_BASE_BOUNDS.minY ),
       displayType: Scale.DisplayType.NEWTONS,
       tandem: tandem.createTandem( 'leftScale' )
@@ -61,7 +56,7 @@ class BuoyancyExploreModel extends DensityBuoyancyModel {
       displayType: Scale.DisplayType.NEWTONS,
       tandem: tandem.createTandem( 'poolScale' )
     } );
-    this.masses.push( poolScale );
+    this.availableMasses.push( poolScale );
 
     // Adjust pool volume so that it's at the desired value WITH the pool scale inside.
     this.pool.liquidVolumeProperty.value -= poolScale.volumeProperty.value;

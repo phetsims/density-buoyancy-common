@@ -62,20 +62,22 @@ class DensityIntroScreenView extends SecondaryMassScreenView {
       tandem: accordionTandem
     }, DensityBuoyancyCommonConstants.ACCORDION_BOX_OPTIONS ) );
 
-    this.addChild( new AlignBox( densityReadoutBox, {
-      alignBounds: this.layoutBounds,
+    const topBox = new AlignBox( densityReadoutBox, {
       xAlign: 'center',
       yAlign: 'top',
       yMargin: MARGIN
-    } ) );
+    } );
+    this.visibleBoundsProperty.link( bounds => { topBox.alignBounds = bounds; } );
+    this.addChild( topBox );
 
-    this.addChild( new AlignBox( this.rightBox, {
-      alignBounds: this.layoutBounds,
+    const upperRightBox = new AlignBox( this.rightBox, {
       xAlign: 'right',
       yAlign: 'top',
       xMargin: MARGIN,
       yMargin: MARGIN
-    } ) );
+    } );
+    this.visibleBoundsProperty.link( bounds => { upperRightBox.alignBounds = bounds; } );
+    this.addChild( upperRightBox );
 
     this.addSecondMassControl();
 

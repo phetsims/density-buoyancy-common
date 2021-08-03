@@ -72,12 +72,13 @@ class DensityCompareScreenView extends DensityBuoyancyScreenView {
       align: 'left'
     } ), DensityBuoyancyCommonConstants.PANEL_OPTIONS );
 
-    this.addChild( new AlignBox( modePanel, {
-      alignBounds: this.layoutBounds,
+    const upperRightBox = new AlignBox( modePanel, {
       xAlign: 'right',
       yAlign: 'top',
       margin: MARGIN
-    } ) );
+    } );
+    this.visibleBoundsProperty.link( bounds => { upperRightBox.alignBounds = bounds; } );
+    this.addChild( upperRightBox );
 
     this.addChild( this.popupLayer );
   }

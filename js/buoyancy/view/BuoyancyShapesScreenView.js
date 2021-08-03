@@ -58,7 +58,14 @@ class BuoyancyShapesScreenView extends SecondaryMassScreenView {
       centerX: this.layoutBounds.centerX,
       bottom: this.layoutBounds.bottom - MARGIN
     }, DensityBuoyancyCommonConstants.PANEL_OPTIONS ) );
-    this.addChild( densityControlPanel );
+
+    const bottomBox = new AlignBox( densityControlPanel, {
+      xAlign: 'center',
+      yAlign: 'bottom',
+      margin: MARGIN
+    } );
+    this.visibleBoundsProperty.link( bounds => { bottomBox.alignBounds = bounds; } );
+    this.addChild( bottomBox );
 
     const displayOptionsNode = new DisplayOptionsNode( model );
 
@@ -79,15 +86,19 @@ class BuoyancyShapesScreenView extends SecondaryMassScreenView {
       expandedProperty: model.densityReadoutExpandedProperty
     }, DensityBuoyancyCommonConstants.ACCORDION_BOX_OPTIONS ) );
 
-    this.addChild( new VBox( {
+    const bottomLeftBox = new AlignBox( new VBox( {
       spacing: 10,
       children: [
         densityBox,
         new Panel( displayOptionsNode, DensityBuoyancyCommonConstants.PANEL_OPTIONS )
-      ],
-      left: this.layoutBounds.left + MARGIN,
-      bottom: this.layoutBounds.bottom - MARGIN
-    } ) );
+      ]
+    } ), {
+      xAlign: 'left',
+      yAlign: 'bottom',
+      margin: MARGIN
+    } );
+    this.visibleBoundsProperty.link( bounds => { bottomLeftBox.alignBounds = bounds; } );
+    this.addChild( bottomLeftBox );
 
     // @private {Node}
     this.rightBox = new PrimarySecondaryPanelsNode(
@@ -114,12 +125,13 @@ class BuoyancyShapesScreenView extends SecondaryMassScreenView {
       model.secondaryMassVisibleProperty
     );
 
-    this.addChild( new AlignBox( this.rightBox, {
-      alignBounds: this.layoutBounds,
+    const rightBox = new AlignBox( this.rightBox, {
       xAlign: 'right',
       yAlign: 'top',
       margin: MARGIN
-    } ) );
+    } );
+    this.visibleBoundsProperty.link( bounds => { rightBox.alignBounds = bounds; } );
+    this.addChild( rightBox );
 
     this.addSecondMassControl();
 

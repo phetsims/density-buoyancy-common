@@ -55,12 +55,13 @@ class DensityMysteryScreenView extends DensityBuoyancyScreenView {
       tandem: tandem.createTandem( 'densityTableBox' )
     }, DensityBuoyancyCommonConstants.ACCORDION_BOX_OPTIONS ) );
 
-    this.addChild( new AlignBox( densityTableBox, {
-      alignBounds: this.layoutBounds,
+    const topBox = new AlignBox( densityTableBox, {
       xAlign: 'center',
       yAlign: 'top',
-      margin: MARGIN
-    } ) );
+      yMargin: MARGIN
+    } );
+    this.visibleBoundsProperty.link( bounds => { topBox.alignBounds = bounds; } );
+    this.addChild( topBox );
 
     const modeTandemMap = {
       [ DensityMysteryModel.Mode.SET_1 ]: 'set1',
@@ -113,12 +114,13 @@ class DensityMysteryScreenView extends DensityBuoyancyScreenView {
       align: 'left'
     } ), DensityBuoyancyCommonConstants.PANEL_OPTIONS );
 
-    this.addChild( new AlignBox( modePanel, {
-      alignBounds: this.layoutBounds,
+    const upperRightBox = new AlignBox( modePanel, {
       xAlign: 'right',
       yAlign: 'top',
       margin: MARGIN
-    } ) );
+    } );
+    this.visibleBoundsProperty.link( bounds => { upperRightBox.alignBounds = bounds; } );
+    this.addChild( upperRightBox );
 
     this.addChild( this.popupLayer );
   }

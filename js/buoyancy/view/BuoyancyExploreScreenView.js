@@ -13,6 +13,7 @@ import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import GridBox from '../../../../scenery/js/layout/GridBox.js';
 import AlignBox from '../../../../scenery/js/nodes/AlignBox.js';
+import HBox from '../../../../scenery/js/nodes/HBox.js';
 import HStrut from '../../../../scenery/js/nodes/HStrut.js';
 import Node from '../../../../scenery/js/nodes/Node.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
@@ -104,7 +105,7 @@ class BuoyancyExploreScreenView extends SecondaryMassScreenView {
       resize: true
     }, DensityBuoyancyCommonConstants.ACCORDION_BOX_OPTIONS ) );
 
-    this.addChild( new VBox( {
+    const bottomLeftBox = new AlignBox( new VBox( {
       spacing: 10,
       children: [
         // Keep the density box at the top of its possible location, even if it reduces in size due to the second mass
@@ -115,10 +116,14 @@ class BuoyancyExploreScreenView extends SecondaryMassScreenView {
           yAlign: 'top'
         } ),
         new Panel( displayOptionsNode, DensityBuoyancyCommonConstants.PANEL_OPTIONS )
-      ],
-      left: this.layoutBounds.left + MARGIN,
-      bottom: this.layoutBounds.bottom - MARGIN
-    } ) );
+      ]
+    } ), {
+      xAlign: 'left',
+      yAlign: 'bottom',
+      margin: MARGIN
+    } );
+    this.visibleBoundsProperty.link( bounds => { bottomLeftBox.alignBounds = bounds; } );
+    this.addChild( bottomLeftBox );
 
     // Adjust the visibility after, since we want to size the box's location for its "full" bounds
     model.secondaryMassVisibleProperty.link( visible => {
@@ -126,25 +131,31 @@ class BuoyancyExploreScreenView extends SecondaryMassScreenView {
       densityBText.visible = visible;
     } );
 
-    this.addChild( new Panel( new DensityControlNode( model.liquidMaterialProperty, [
-      Material.GASOLINE,
-      Material.WATER,
-      Material.SEAWATER,
-      Material.HONEY,
-      Material.MERCURY,
-      Material.DENSITY_X,
-      Material.DENSITY_Y
-    ], this.popupLayer ), merge( {
-      right: this.layoutBounds.centerX - MARGIN,
-      bottom: this.layoutBounds.bottom - MARGIN
-    }, DensityBuoyancyCommonConstants.PANEL_OPTIONS ) ) );
+    const bottomNode = new HBox( {
+      spacing: 2 * MARGIN,
+      children: [
+        new Panel( new DensityControlNode( model.liquidMaterialProperty, [
+          Material.GASOLINE,
+          Material.WATER,
+          Material.SEAWATER,
+          Material.HONEY,
+          Material.MERCURY,
+          Material.DENSITY_X,
+          Material.DENSITY_Y
+        ], this.popupLayer ), DensityBuoyancyCommonConstants.PANEL_OPTIONS ),
+        new Panel( new GravityControlNode( model.gravityProperty, this.popupLayer ), DensityBuoyancyCommonConstants.PANEL_OPTIONS )
+      ]
+    } );
 
-    this.addChild( new Panel( new GravityControlNode( model.gravityProperty, this.popupLayer ), merge( {
-      left: this.layoutBounds.centerX + MARGIN,
-      bottom: this.layoutBounds.bottom - MARGIN
-    }, DensityBuoyancyCommonConstants.PANEL_OPTIONS ) ) );
+    const bottomBox = new AlignBox( bottomNode, {
+      xAlign: 'center',
+      yAlign: 'bottom',
+      margin: MARGIN
+    } );
+    this.visibleBoundsProperty.link( bounds => { bottomBox.alignBounds = bounds; } );
+    this.addChild( bottomBox );
 
-    // @private {Node}
+    // @protected {Node} - Used by supertype
     this.rightBox = new PrimarySecondaryControlsNode(
       model.primaryMass,
       model.secondaryMass,
@@ -157,13 +168,13 @@ class BuoyancyExploreScreenView extends SecondaryMassScreenView {
       }
     );
 
-    this.addChild( new AlignBox( this.rightBox, {
-      alignBounds: this.layoutBounds,
+    const rightBox = new AlignBox( this.rightBox, {
       xAlign: 'right',
       yAlign: 'top',
-      xMargin: 10,
-      yMargin: 10
-    } ) );
+      margin: MARGIN
+    } );
+    this.visibleBoundsProperty.link( bounds => { rightBox.alignBounds = bounds; } );
+    this.addChild( rightBox );
 
     this.addSecondMassControl();
 

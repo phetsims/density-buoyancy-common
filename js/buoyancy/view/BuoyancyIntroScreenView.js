@@ -6,7 +6,6 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
-import merge from '../../../../phet-core/js/merge.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import AlignBox from '../../../../scenery/js/nodes/AlignBox.js';
 import HBox from '../../../../scenery/js/nodes/HBox.js';
@@ -54,18 +53,24 @@ class BuoyancyIntroScreenView extends DensityBuoyancyScreenView {
         value: mode
       };
     } ) );
+    const modePanel = new Panel( modeControl, DensityBuoyancyCommonConstants.PANEL_OPTIONS );
 
-    this.addChild( new AlignBox( new Panel( modeControl, DensityBuoyancyCommonConstants.PANEL_OPTIONS ), {
-      alignBounds: this.layoutBounds,
+    const upperRightBox = new AlignBox( modePanel, {
       xAlign: 'right',
       yAlign: 'top',
-      margin: 10
-    } ) );
+      margin: MARGIN
+    } );
+    this.visibleBoundsProperty.link( bounds => { upperRightBox.alignBounds = bounds; } );
+    this.addChild( upperRightBox );
 
-    this.addChild( new Panel( new DisplayOptionsNode( model ), merge( {
-      left: this.layoutBounds.left + MARGIN,
-      bottom: this.layoutBounds.bottom - MARGIN
-    }, DensityBuoyancyCommonConstants.PANEL_OPTIONS ) ) );
+    const displayOptionsPanel = new Panel( new DisplayOptionsNode( model ), DensityBuoyancyCommonConstants.PANEL_OPTIONS );
+    const bottomLeftBox = new AlignBox( displayOptionsPanel, {
+      xAlign: 'left',
+      yAlign: 'bottom',
+      margin: MARGIN
+    } );
+    this.visibleBoundsProperty.link( bounds => { bottomLeftBox.alignBounds = bounds; } );
+    this.addChild( bottomLeftBox );
 
     const radioButtonLabelOptions = {
       font: new PhetFont( 14 ),
@@ -85,12 +90,17 @@ class BuoyancyIntroScreenView extends DensityBuoyancyScreenView {
       bottom: fluidBox.top - 3,
       maxWidth: 160
     } );
-    this.addChild( new Panel( new Node( {
+    const fluidPanel = new Panel( new Node( {
       children: [ fluidTitle, fluidBox ]
-    } ), merge( {
-      centerX: this.layoutBounds.centerX,
-      bottom: this.layoutBounds.bottom - MARGIN
-    }, DensityBuoyancyCommonConstants.PANEL_OPTIONS ) ) );
+    } ), DensityBuoyancyCommonConstants.PANEL_OPTIONS );
+
+    const bottomBox = new AlignBox( fluidPanel, {
+      xAlign: 'center',
+      yAlign: 'bottom',
+      margin: MARGIN
+    } );
+    this.visibleBoundsProperty.link( bounds => { bottomBox.alignBounds = bounds; } );
+    this.addChild( bottomBox );
 
     this.addChild( this.popupLayer );
   }

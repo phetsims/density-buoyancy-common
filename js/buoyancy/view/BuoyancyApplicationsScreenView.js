@@ -17,6 +17,7 @@ import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
 import NumberControl from '../../../../scenery-phet/js/NumberControl.js';
 import NumberDisplay from '../../../../scenery-phet/js/NumberDisplay.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
+import ManualConstraint from '../../../../scenery/js/layout/ManualConstraint.js';
 import AlignBox from '../../../../scenery/js/nodes/AlignBox.js';
 import HStrut from '../../../../scenery/js/nodes/HStrut.js';
 import Node from '../../../../scenery/js/nodes/Node.js';
@@ -128,6 +129,7 @@ class BuoyancyApplicationsScreenView extends DensityBuoyancyScreenView {
       xMargin: 10,
       yMargin: 60
     } );
+    this.visibleBoundsProperty.link( bounds => { rightBottleContent.alignBounds = bounds; } );
 
     const blockControlNode = new MaterialMassVolumeControlNode( model.block.materialProperty, model.block.massProperty, model.block.volumeProperty, _.sortBy( [
       Material.PYRITE,
@@ -181,6 +183,7 @@ class BuoyancyApplicationsScreenView extends DensityBuoyancyScreenView {
       xMargin: 10,
       yMargin: 60
     } );
+    this.visibleBoundsProperty.link( bounds => { rightBoatContent.alignBounds = bounds; } );
 
     this.addChild( rightBottleContent );
     this.addChild( rightBoatContent );
@@ -197,11 +200,16 @@ class BuoyancyApplicationsScreenView extends DensityBuoyancyScreenView {
       Material.MERCURY,
       Material.DENSITY_P,
       Material.DENSITY_Q
-    ], this.popupLayer ), merge( {
-      centerX: this.layoutBounds.centerX,
-      bottom: this.layoutBounds.bottom - MARGIN
-    }, DensityBuoyancyCommonConstants.PANEL_OPTIONS ) );
-    this.addChild( densityControlPanel );
+    ], this.popupLayer ), DensityBuoyancyCommonConstants.PANEL_OPTIONS );
+
+    const bottomBox = new AlignBox( densityControlPanel, {
+      xAlign: 'center',
+      yAlign: 'bottom',
+      xMargin: MARGIN,
+      yMargin: MARGIN
+    } );
+    this.visibleBoundsProperty.link( bounds => { bottomBox.alignBounds = bounds; } );
+    this.addChild( bottomBox );
 
     const displayOptionsNode = new DisplayOptionsNode( model );
 
@@ -224,17 +232,21 @@ class BuoyancyApplicationsScreenView extends DensityBuoyancyScreenView {
       expandedProperty: model.densityReadoutExpandedProperty
     }, DensityBuoyancyCommonConstants.ACCORDION_BOX_OPTIONS ) );
 
-    this.addChild( new VBox( {
+    const bottomLeftBox = new AlignBox( new VBox( {
       spacing: 10,
       children: [
         densityBox,
         new Panel( displayOptionsNode, DensityBuoyancyCommonConstants.PANEL_OPTIONS )
-      ],
-      left: this.layoutBounds.left + MARGIN,
-      bottom: this.layoutBounds.bottom - MARGIN
-    } ) );
+      ]
+    } ), {
+      xAlign: 'left',
+      yAlign: 'bottom',
+      margin: MARGIN
+    } );
+    this.visibleBoundsProperty.link( bounds => { bottomLeftBox.alignBounds = bounds; } );
+    this.addChild( bottomLeftBox );
 
-    this.addChild( new RectangularRadioButtonGroup( model.sceneProperty, [
+    const bottleBoatSelectionNode = new RectangularRadioButtonGroup( model.sceneProperty, [
       {
         value: BuoyancyApplicationsModel.Scene.BOTTLE,
         node: new Text( '(bottle)' )
@@ -256,7 +268,13 @@ class BuoyancyApplicationsScreenView extends DensityBuoyancyScreenView {
 
       bottom: this.layoutBounds.bottom - MARGIN,
       left: densityControlPanel.right + MARGIN
-    } ) );
+    } );
+    this.addChild( bottleBoatSelectionNode );
+
+    ManualConstraint.create( this, [ densityControlPanel, bottleBoatSelectionNode ], ( panelWrapper, selectionWrapper ) => {
+      selectionWrapper.bottom = panelWrapper.bottom;
+      selectionWrapper.left = panelWrapper.right + MARGIN;
+    } );
 
     this.addChild( this.popupLayer );
   }

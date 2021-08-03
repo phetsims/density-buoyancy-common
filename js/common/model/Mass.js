@@ -110,6 +110,11 @@ class Mass extends PhetioObject {
       tandem: tandem.createTandem( 'userControlledProperty' )
     } );
 
+    // @public {Property.<boolean>}
+    this.inputEnabledProperty = new BooleanProperty( true, {
+      tandem: tandem.createTandem( 'inputEnabledProperty' )
+    } );
+
     // @public {Property.<Material>}
     this.materialProperty = new Property( config.material, {
       reentrant: true,

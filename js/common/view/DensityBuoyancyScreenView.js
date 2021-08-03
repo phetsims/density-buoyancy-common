@@ -603,7 +603,7 @@ class DensityBuoyancyScreenView extends ScreenView {
     let closestMass = null;
 
     this.model.masses.forEach( mass => {
-      if ( !mass.canMove ) {
+      if ( !mass.canMove || !mass.inputEnabledProperty.value ) {
         return;
       }
 

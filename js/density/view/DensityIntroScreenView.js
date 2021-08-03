@@ -9,7 +9,7 @@
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
 import merge from '../../../../phet-core/js/merge.js';
-import AlignBox from '../../../../scenery/js/nodes/AlignBox.js';
+import AlignPropertyBox from '../../../../scenery/js/layout/AlignPropertyBox.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
 import AccordionBox from '../../../../sun/js/AccordionBox.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
@@ -37,7 +37,7 @@ class DensityIntroScreenView extends SecondaryMassScreenView {
       return;
     }
 
-    // @private {Node}
+    // @protected {Node} - Used in the super
     this.rightBox = new PrimarySecondaryControlsNode(
       model.primaryMass,
       model.secondaryMass,
@@ -62,22 +62,18 @@ class DensityIntroScreenView extends SecondaryMassScreenView {
       tandem: accordionTandem
     }, DensityBuoyancyCommonConstants.ACCORDION_BOX_OPTIONS ) );
 
-    const topBox = new AlignBox( densityReadoutBox, {
+    this.addChild( new AlignPropertyBox( densityReadoutBox, this.visibleBoundsProperty, {
       xAlign: 'center',
       yAlign: 'top',
       yMargin: MARGIN
-    } );
-    this.visibleBoundsProperty.link( bounds => { topBox.alignBounds = bounds; } );
-    this.addChild( topBox );
+    } ) );
 
-    const upperRightBox = new AlignBox( this.rightBox, {
+    this.addChild( new AlignPropertyBox( this.rightBox, this.visibleBoundsProperty, {
       xAlign: 'right',
       yAlign: 'top',
       xMargin: MARGIN,
       yMargin: MARGIN
-    } );
-    this.visibleBoundsProperty.link( bounds => { upperRightBox.alignBounds = bounds; } );
-    this.addChild( upperRightBox );
+    } ) );
 
     this.addSecondMassControl();
 

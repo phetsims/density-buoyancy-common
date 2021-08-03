@@ -9,7 +9,7 @@
 import Vector3 from '../../../../dot/js/Vector3.js';
 import merge from '../../../../phet-core/js/merge.js';
 import RefreshButton from '../../../../scenery-phet/js/buttons/RefreshButton.js';
-import AlignBox from '../../../../scenery/js/nodes/AlignBox.js';
+import AlignPropertyBox from '../../../../scenery/js/layout/AlignPropertyBox.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
 import VBox from '../../../../scenery/js/nodes/VBox.js';
 import AccordionBox from '../../../../sun/js/AccordionBox.js';
@@ -55,13 +55,11 @@ class DensityMysteryScreenView extends DensityBuoyancyScreenView {
       tandem: tandem.createTandem( 'densityTableBox' )
     }, DensityBuoyancyCommonConstants.ACCORDION_BOX_OPTIONS ) );
 
-    const topBox = new AlignBox( densityTableBox, {
+    this.addChild( new AlignPropertyBox( densityTableBox, this.visibleBoundsProperty, {
       xAlign: 'center',
       yAlign: 'top',
       yMargin: MARGIN
-    } );
-    this.visibleBoundsProperty.link( bounds => { topBox.alignBounds = bounds; } );
-    this.addChild( topBox );
+    } ) );
 
     const modeTandemMap = {
       [ DensityMysteryModel.Mode.SET_1 ]: 'set1',
@@ -114,13 +112,11 @@ class DensityMysteryScreenView extends DensityBuoyancyScreenView {
       align: 'left'
     } ), DensityBuoyancyCommonConstants.PANEL_OPTIONS );
 
-    const upperRightBox = new AlignBox( modePanel, {
+    this.addChild( new AlignPropertyBox( modePanel, this.visibleBoundsProperty, {
       xAlign: 'right',
       yAlign: 'top',
       margin: MARGIN
-    } );
-    this.visibleBoundsProperty.link( bounds => { upperRightBox.alignBounds = bounds; } );
-    this.addChild( upperRightBox );
+    } ) );
 
     this.addChild( this.popupLayer );
   }

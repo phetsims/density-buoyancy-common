@@ -7,7 +7,7 @@
  */
 
 import Vector3 from '../../../../dot/js/Vector3.js';
-import AlignBox from '../../../../scenery/js/nodes/AlignBox.js';
+import AlignPropertyBox from '../../../../scenery/js/layout/AlignPropertyBox.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
 import VBox from '../../../../scenery/js/nodes/VBox.js';
 import Panel from '../../../../sun/js/Panel.js';
@@ -72,13 +72,11 @@ class DensityCompareScreenView extends DensityBuoyancyScreenView {
       align: 'left'
     } ), DensityBuoyancyCommonConstants.PANEL_OPTIONS );
 
-    const upperRightBox = new AlignBox( modePanel, {
+    this.addChild( new AlignPropertyBox( modePanel, this.visibleBoundsProperty, {
       xAlign: 'right',
       yAlign: 'top',
       margin: MARGIN
-    } );
-    this.visibleBoundsProperty.link( bounds => { upperRightBox.alignBounds = bounds; } );
-    this.addChild( upperRightBox );
+    } ) );
 
     this.addChild( this.popupLayer );
   }

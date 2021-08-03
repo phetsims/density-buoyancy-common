@@ -499,44 +499,28 @@ class DensityBuoyancyScreenView extends ScreenView {
       let massView = null;
 
       if ( mass instanceof Cuboid ) {
-        massView = new CuboidView( mass, {
-          tandem: tandem.createTandem( mass.tandem.name )
-        } );
+        massView = new CuboidView( mass );
       }
       else if ( mass instanceof Scale ) {
-        massView = new ScaleView( mass, {
-          tandem: tandem.createTandem( mass.tandem.name )
-        } );
+        massView = new ScaleView( mass );
       }
       else if ( mass instanceof Cone ) {
-        massView = new ConeView( mass, {
-          tandem: tandem.createTandem( mass.tandem.name )
-        } );
+        massView = new ConeView( mass );
       }
       else if ( mass instanceof Ellipsoid ) {
-        massView = new EllipsoidView( mass, {
-          tandem: tandem.createTandem( mass.tandem.name )
-        } );
+        massView = new EllipsoidView( mass );
       }
       else if ( mass instanceof HorizontalCylinder ) {
-        massView = new HorizontalCylinderView( mass, {
-          tandem: tandem.createTandem( mass.tandem.name )
-        } );
+        massView = new HorizontalCylinderView( mass );
       }
       else if ( mass instanceof VerticalCylinder ) {
-        massView = new VerticalCylinderView( mass, {
-          tandem: tandem.createTandem( mass.tandem.name )
-        } );
+        massView = new VerticalCylinderView( mass );
       }
       else if ( mass instanceof Bottle ) {
-        massView = new BottleView( mass, model.pool.liquidYInterpolatedProperty, {
-          tandem: tandem.createTandem( mass.tandem.name )
-        } );
+        massView = new BottleView( mass, model.pool.liquidYInterpolatedProperty );
       }
       else if ( mass instanceof Boat ) {
-        massView = new BoatView( mass, model.pool.liquidYInterpolatedProperty, {
-          tandem: tandem.createTandem( mass.tandem.name )
-        } );
+        massView = new BoatView( mass, model.pool.liquidYInterpolatedProperty );
       }
 
       if ( massView ) {

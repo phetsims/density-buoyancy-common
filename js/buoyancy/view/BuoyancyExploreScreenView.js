@@ -47,6 +47,7 @@ class BuoyancyExploreScreenView extends SecondaryMassScreenView {
       cameraLookAt: new Vector3( 0, -0.18, 0 )
     } );
 
+    // Don't create the majority of the view if three.js isn't usable (e.g. no WebGL)
     if ( !this.enabled ) {
       return;
     }

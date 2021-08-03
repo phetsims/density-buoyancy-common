@@ -31,6 +31,7 @@ class Demo3DScreenView extends DensityBuoyancyScreenView {
 
     super( model, tandem );
 
+    // Don't create the majority of the view if three.js isn't usable (e.g. no WebGL)
     if ( !this.enabled ) {
       return;
     }

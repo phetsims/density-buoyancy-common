@@ -76,6 +76,7 @@ class DensityMysteryModel extends DensityBuoyancyModal( DensityBuoyancyModel, Mo
     };
     const createMysteryVolumes = () => {
       return [
+        // we will want 3 smaller masses on the right, then 2 larger masses on the left
         ...dotRandom.shuffle( [ 1, 2, 3, 4, 5, 6 ].map( n => n / 1000 ) ).slice( 0, 3 ),
         ...dotRandom.shuffle( [ 7, 8, 9, 10 ].map( n => n / 1000 ) ).slice( 0, 2 )
       ].sort();

@@ -9,10 +9,14 @@
 import densityBuoyancyCommon from '../densityBuoyancyCommon.js';
 
 const DensityBuoyancyCommonQueryParameters = QueryStringMachine.getAll( {
+
+  // Changes the "aspect ratio" of the pool, for internal testing/development
   poolWidthMultiplier: {
     type: 'number',
     defaultValue: 1
   },
+
+  // Shows a debug layer on-top (that is interactive) for a cross-sectional view
   showDebug: {
     type: 'flag'
   },

@@ -106,7 +106,9 @@ class BuoyancyShapesScreenView extends SecondaryMassScreenView {
           derive: 'volumeProperty'
         } ),
         this.popupLayer,
-        { labelNode: PrimarySecondaryPanelsNode.getPrimaryLabelNode() }
+        {
+          labelNode: PrimarySecondaryPanelsNode.getPrimaryLabelNode()
+        }
       ),
       new ShapeSizeControlNode(
         model.secondaryShapeProperty,
@@ -116,9 +118,11 @@ class BuoyancyShapesScreenView extends SecondaryMassScreenView {
           derive: 'volumeProperty'
         } ),
         this.popupLayer,
-        { labelNode: PrimarySecondaryPanelsNode.getSecondaryLabelNode() }
-      ),
-      model.secondaryMassVisibleProperty
+        {
+          labelNode: PrimarySecondaryPanelsNode.getSecondaryLabelNode(),
+          visibleProperty: model.secondaryMassVisibleProperty
+        }
+      )
     );
 
     this.addChild( new AlignPropertyBox( this.rightBox, this.visibleBoundsProperty, {

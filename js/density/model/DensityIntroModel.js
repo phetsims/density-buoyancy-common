@@ -21,7 +21,6 @@ class DensityIntroModel extends DensityBuoyancyModel {
   constructor( tandem ) {
 
     super( tandem, {
-      constraintMaxX: 0.45,
       showMassesDefault: true
     } );
 

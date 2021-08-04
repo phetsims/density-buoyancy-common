@@ -6,7 +6,9 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
+import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import Utils from '../../../../dot/js/Utils.js';
+import Vector2 from '../../../../dot/js/Vector2.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
 import merge from '../../../../phet-core/js/merge.js';
 import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
@@ -171,6 +173,10 @@ class BuoyancyExploreScreenView extends SecondaryMassScreenView {
       yAlign: 'top',
       margin: MARGIN
     } ) );
+
+    this.rightBarrierViewPointProperty.value = new DerivedProperty( [ this.rightBox.boundsProperty, this.visibleBoundsProperty ], ( boxBounds, visibleBounds ) => {
+      return new Vector2( boxBounds.left, visibleBounds.centerY );
+    } );
 
     this.addSecondMassControl();
 

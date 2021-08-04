@@ -38,10 +38,7 @@ class DensityBuoyancyModel {
   constructor( tandem, options ) {
     options = merge( {
       // {boolean}
-      showMassesDefault: false,
-
-      constraintMinX: -0.875,
-      constraintMaxX: 0.875
+      showMassesDefault: false
     }, options );
 
     // @public {Property.<boolean>}
@@ -89,11 +86,28 @@ class DensityBuoyancyModel {
       10, 0, POOL_DEPTH / 2
     );
 
-    // @public {Bounds3} - We'll keep blocks within these bounds, to generally stay in-screen
-    this.constraintBounds = new Bounds3(
-      options.constraintMinX, 0, 0,
-      options.constraintMaxX, 4, 0
-    );
+    // @public {Property.<Bounds3>} - We'll keep blocks within these bounds, to generally stay in-screen
+    this.invisibleBarrierBoundsProperty = new Property( new Bounds3(
+      -0.875, -4, -POOL_DEPTH / 2,
+      0.875, 4, POOL_DEPTH / 2
+    ), {
+      phetioType: Property.PropertyIO( Bounds3.Bounds3IO ),
+      tandem: tandem.createTandem( 'invisibleBarrierBoundsProperty' ),
+      useDeepEquality: true
+    } );
+
+    const barrierPointsProperty = new DerivedProperty( [ this.invisibleBarrierBoundsProperty ], bounds => {
+      return [
+        new Vector2( bounds.maxX, bounds.minY ),
+        new Vector2( bounds.maxX + 2, bounds.minY ),
+        new Vector2( bounds.maxX + 2, bounds.maxY + 2 ),
+        new Vector2( bounds.minX - 2, bounds.maxY + 2 ),
+        new Vector2( bounds.minX - 2, bounds.minY ),
+        new Vector2( bounds.minX, bounds.minY ),
+        new Vector2( bounds.minX, bounds.maxY ),
+        new Vector2( bounds.maxX, bounds.maxY )
+      ];
+    } );
 
     if ( DensityBuoyancyCommonQueryParameters.poolWidthMultiplier !== 1 ) {
       const halfX = DensityBuoyancyCommonQueryParameters.poolWidthMultiplier * 0.45;
@@ -120,18 +134,6 @@ class DensityBuoyancyModel {
       new Vector2( this.groundBounds.minX, this.groundBounds.maxY )
     ];
 
-    // @public {Array.<Vector2>}
-    this.barrierPoints = [
-      new Vector2( this.constraintBounds.maxX, this.constraintBounds.minY ),
-      new Vector2( this.constraintBounds.maxX + 1, this.constraintBounds.minY ),
-      new Vector2( this.constraintBounds.maxX + 1, this.constraintBounds.maxY + 1 ),
-      new Vector2( this.constraintBounds.minX - 1, this.constraintBounds.maxY + 1 ),
-      new Vector2( this.constraintBounds.minX - 1, this.constraintBounds.minY ),
-      new Vector2( this.constraintBounds.minX, this.constraintBounds.minY ),
-      new Vector2( this.constraintBounds.minX, this.constraintBounds.maxY ),
-      new Vector2( this.constraintBounds.maxX, this.constraintBounds.maxY )
-    ];
-
     // @public {Pool}
     this.pool = new Pool( this.poolBounds, tandem.createTandem( 'pool' ) );
 
@@ -146,8 +148,15 @@ class DensityBuoyancyModel {
     this.engine.addBody( this.groundBody );
 
     // @public {Engine.Body}
-    this.barrierBody = this.engine.createBarrier( this.barrierPoints );
+    this.barrierBody = this.engine.createBarrier( barrierPointsProperty.value );
     this.engine.addBody( this.barrierBody );
+
+    // Update the barrier shape as needed (full recreation for now)
+    barrierPointsProperty.lazyLink( points => {
+      this.engine.removeBody( this.barrierBody );
+      this.barrierBody = this.engine.createBarrier( points );
+      this.engine.addBody( this.barrierBody );
+    } );
 
     // @public {ObservableArrayDef.<Mass>}
     this.availableMasses = createObservableArray();

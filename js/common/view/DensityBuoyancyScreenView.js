@@ -11,6 +11,7 @@ import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import DynamicProperty from '../../../../axon/js/DynamicProperty.js';
 import Property from '../../../../axon/js/Property.js';
+import TinyEmitter from '../../../../axon/js/TinyEmitter.js';
 import Bounds2 from '../../../../dot/js/Bounds2.js';
 import Matrix3 from '../../../../dot/js/Matrix3.js';
 import Plane3 from '../../../../dot/js/Plane3.js';
@@ -101,6 +102,9 @@ class DensityBuoyancyScreenView extends ScreenView {
 
     // @protected {DensityBuoyancyModel}
     this.model = model;
+
+    // @private {TinyEmitter}
+    this.postLayoutEmitter = new TinyEmitter();
 
     // @protected {Node}
     this.popupLayer = new Node();
@@ -464,6 +468,49 @@ class DensityBuoyancyScreenView extends ScreenView {
     const poolMesh = new THREE.Mesh( poolGeometry, poolMaterial );
     this.sceneNode.stage.threeScene.add( poolMesh );
 
+    // Debug barrier
+    if ( DensityBuoyancyCommonQueryParameters.showBarrier ) {
+      const barrierGeometry = new THREE.BufferGeometry();
+      const barrierPositionArray = new Float32Array( 18 * 2 );
+
+      barrierGeometry.addAttribute( 'position', new THREE.BufferAttribute( barrierPositionArray, 3 ) );
+      barrierGeometry.addAttribute( 'normal', new THREE.BufferAttribute( new Float32Array( [
+        // Left
+        1, 0, 0,
+        1, 0, 0,
+        1, 0, 0,
+        1, 0, 0,
+        1, 0, 0,
+        1, 0, 0,
+
+        // Right
+        -1, 0, 0,
+        -1, 0, 0,
+        -1, 0, 0,
+        -1, 0, 0,
+        -1, 0, 0,
+        -1, 0, 0
+      ] ), 3 ) );
+      const barrierMaterial = new THREE.MeshLambertMaterial( {
+        color: 0xff0000,
+        transparent: true,
+        opacity: 0.5
+      } );
+
+      model.invisibleBarrierBoundsProperty.link( bounds => {
+        let index = 0;
+        const zyBounds = new Bounds2( bounds.minZ, bounds.minY, bounds.maxZ, bounds.maxY );
+        index = ThreeUtils.writeRightVertices( barrierPositionArray, index, zyBounds, bounds.minX );
+        ThreeUtils.writeLeftVertices( barrierPositionArray, index, zyBounds, bounds.maxX );
+
+        barrierGeometry.attributes.position.needsUpdate = true;
+        barrierGeometry.computeBoundingSphere();
+      } );
+
+      const barrierMesh = new THREE.Mesh( barrierGeometry, barrierMaterial );
+      this.sceneNode.stage.threeScene.add( barrierMesh );
+    }
+
     // Water
     const waterGeometry = new THREE.BufferGeometry();
     const waterPositionArray = BoatDesign.createWaterVertexArray();
@@ -612,6 +659,28 @@ class DensityBuoyancyScreenView extends ScreenView {
       this.popupLayer.addChild( this.debugView );
       this.addChild( new Checkbox( new Text( 'Debug', { font: new PhetFont( 12 ) } ), debugVisibleProperty ) );
     }
+
+    // @protected {Property.<Property.<Vector2>>} - Subtypes can provide their own values to control the barrier sizing
+    this.leftBarrierViewPointProperty = new Property( new DerivedProperty( [ this.visibleBoundsProperty ], visibleBounds => visibleBounds.leftCenter ), {
+      tandem: Tandem.OPT_OUT
+    } );
+    this.rightBarrierViewPointProperty = new Property( new DerivedProperty( [ this.visibleBoundsProperty ], visibleBounds => visibleBounds.rightCenter ), {
+      tandem: Tandem.OPT_OUT
+    } );
+
+    const resizeBarrier = () => {
+      const stage = this.sceneNode.stage;
+      if ( stage.canvasWidth && stage.canvasHeight ) {
+        const leftRay = this.sceneNode.getRayFromScreenPoint( this.localToGlobalPoint( this.leftBarrierViewPointProperty.value.value ) );
+        const rightRay = this.sceneNode.getRayFromScreenPoint( this.localToGlobalPoint( this.rightBarrierViewPointProperty.value.value ) );
+        const leftPoint = new Plane3( Vector3.Z_UNIT, 0.09 ).intersectWithRay( leftRay );
+        const rightPoint = new Plane3( Vector3.Z_UNIT, 0.09 ).intersectWithRay( rightRay );
+        model.invisibleBarrierBoundsProperty.value = model.invisibleBarrierBoundsProperty.value.withMinX( leftPoint.x + 0.01 ).withMaxX( rightPoint.x - 0.01 );
+      }
+    };
+    new DynamicProperty( this.leftBarrierViewPointProperty ).lazyLink( resizeBarrier );
+    new DynamicProperty( this.rightBarrierViewPointProperty ).lazyLink( resizeBarrier );
+    this.postLayoutEmitter.addListener( resizeBarrier ); // We need to wait for the layout AND render
   }
 
   /**
@@ -673,6 +742,8 @@ class DensityBuoyancyScreenView extends ScreenView {
 
     // We need to do an initial render for certain layout-based code to work
     this.sceneNode.render( undefined );
+
+    this.postLayoutEmitter.emit();
   }
 
   /**

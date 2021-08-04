@@ -21,6 +21,11 @@ const DensityBuoyancyCommonQueryParameters = QueryStringMachine.getAll( {
     type: 'flag'
   },
 
+  // Shows the invisible barrier
+  showBarrier: {
+    type: 'flag'
+  },
+
   // Whether icons should be generated with 3d views. Usually this should not happen, and the stored images should be
   // loaded for better performance and fewer resources used.
   generateIconImages: {

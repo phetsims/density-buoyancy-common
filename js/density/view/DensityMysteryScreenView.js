@@ -93,6 +93,8 @@ class DensityMysteryScreenView extends DensityBuoyancyScreenView {
     const modeContent = new VBox( {
       spacing: 10
     } );
+
+    // Include the refresh button when in random mode.
     model.modeProperty.link( mode => {
       modeContent.children = mode === DensityMysteryModel.Mode.RANDOM ? [
         modeRadioButtonGroup,
@@ -101,6 +103,7 @@ class DensityMysteryScreenView extends DensityBuoyancyScreenView {
         modeRadioButtonGroup
       ];
     } );
+
     const modePanel = new Panel( new VBox( {
       children: [
         new Text( densityBuoyancyCommonStrings.blocks, {

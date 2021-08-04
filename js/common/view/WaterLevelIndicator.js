@@ -1,7 +1,7 @@
 // Copyright 2019-2021, University of Colorado Boulder
 
 /**
- * Shows the water level numerically next to the top-left of the pool's water.
+ * Shows the water level numerically next to the top-left of the pool's water. Lives for the lifetime of the sim.
  *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
@@ -10,6 +10,7 @@ import Utils from '../../../../dot/js/Utils.js';
 import Shape from '../../../../kite/js/Shape.js';
 import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
+import ManualConstraint from '../../../../scenery/js/layout/ManualConstraint.js';
 import Node from '../../../../scenery/js/nodes/Node.js';
 import Path from '../../../../scenery/js/nodes/Path.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
@@ -33,25 +34,25 @@ class WaterLevelIndicator extends Node {
     this.addChild( highlightPath );
 
     const readoutText = new Text( '', {
-      font: new PhetFont( {
-        size: 18
-      } ),
+      font: new PhetFont( { size: 18 } ),
       maxWidth: 200
     } );
 
     const readoutPanel = new Panel( readoutText, {
+      // Not using the typical margins for UI panels in this sim
       cornerRadius: DensityBuoyancyCommonConstants.CORNER_RADIUS
     } );
     this.addChild( readoutPanel );
 
+    // Can't use Text.textProperty, see https://github.com/phetsims/scenery/issues/1187
     volumeProperty.link( volume => {
-      const liters = 1000 * volume;
-
       readoutText.text = StringUtils.fillIn( densityBuoyancyCommonStrings.litersPattern, {
-        liters: Utils.toFixed( liters, 2 )
+        liters: Utils.toFixed( 1000 * volume, 2 )
       } );
+    } );
 
-      readoutPanel.rightCenter = highlightPath.leftCenter;
+    ManualConstraint.create( this, [ readoutPanel, highlightPath ], ( readoutWrapper, highlightWrapper ) => {
+      readoutWrapper.rightCenter = highlightWrapper.leftCenter;
     } );
   }
 }

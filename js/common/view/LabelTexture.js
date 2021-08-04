@@ -8,7 +8,7 @@
 
 import NodeTexture from '../../../../mobius/js/NodeTexture.js';
 import Node from '../../../../scenery/js/nodes/Node.js';
-import SceneryUtils from '../../../../scenery/js/util/Utils.js';
+import Utils from '../../../../scenery/js/util/Utils.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 
 class LabelTexture extends NodeTexture {
@@ -20,8 +20,8 @@ class LabelTexture extends NodeTexture {
       children: [ labelNode ],
       scale: 2
     } );
-    const width = SceneryUtils.toPowerOf2( Math.ceil( containerNode.width ) );
-    const height = SceneryUtils.toPowerOf2( Math.ceil( containerNode.height ) );
+    const width = Utils.toPowerOf2( Math.ceil( containerNode.width ) );
+    const height = Utils.toPowerOf2( Math.ceil( containerNode.height ) );
 
     super( containerNode, width, height );
 

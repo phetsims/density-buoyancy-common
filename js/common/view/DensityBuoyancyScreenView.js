@@ -803,7 +803,7 @@ class DensityBuoyancyScreenView extends ScreenView {
     const width = Screen.MINIMUM_HOME_SCREEN_ICON_SIZE.width;
     const height = Screen.MINIMUM_HOME_SCREEN_ICON_SIZE.height;
 
-    const stage = new ThreeStage( { fov: 50 } );
+    const stage = new ThreeStage();
 
     stage.threeCamera.near = 0.5;
 

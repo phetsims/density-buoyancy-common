@@ -20,7 +20,7 @@ class PrimarySecondaryControlsNode extends PrimarySecondaryPanelsNode {
    * @param {Property.<boolean>} secondaryMassVisibleProperty
    * @param {Node} popupLayer
    * @param {Tandem} tandem
-   * @param {Object} [options]
+   * @param {Object} [options] - Applied to each BlockControlNode
    */
   constructor( primaryMass, secondaryMass, secondaryMassVisibleProperty, popupLayer, tandem, options ) {
     super(

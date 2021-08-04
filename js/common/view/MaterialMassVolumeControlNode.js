@@ -82,14 +82,16 @@ class MaterialMassVolumeControlNode extends VBox {
       reentrant: true
     } );
 
+    // We need to use "locks" since our behavior is different based on whether the model or user is changing the value
     let modelMassChanging = false;
     let userMassChanging = false;
     let modelVolumeChanging = false;
     let userVolumeChanging = false;
 
+    // passed to the NumberControl
     const massNumberProperty = new NumberProperty( massProperty.value );
 
-    // liters from m^3
+    // passed to the NumberControl - liters from m^3
     const numberControlVolumeProperty = new NumberProperty( volumeProperty.value * LITERS_IN_CUBIC_METER );
 
     numberControlVolumeProperty.lazyLink( liters => {
@@ -109,6 +111,7 @@ class MaterialMassVolumeControlNode extends VBox {
         userVolumeChanging = false;
       }
     } );
+
     volumeProperty.lazyLink( cubicMeters => {
       if ( !userVolumeChanging ) {
         modelVolumeChanging = true;
@@ -144,6 +147,7 @@ class MaterialMassVolumeControlNode extends VBox {
         userMassChanging = false;
       }
     } );
+
     massProperty.lazyLink( mass => {
       if ( !userMassChanging ) {
         modelMassChanging = true;
@@ -244,16 +248,14 @@ class MaterialMassVolumeControlNode extends VBox {
       tandem: volumeNumberControlTandem
     }, MaterialMassVolumeControlNode.getNumberControlOptions() ) );
 
-    const topRow = options.labelNode ? new HBox( {
-      children: [
-        comboBox,
-        options.labelNode
-      ],
-      spacing: 5
-    } ) : comboBox;
-
     this.children = [
-      topRow,
+      new HBox( {
+        spacing: 5,
+        children: [
+          comboBox,
+          ...[ options.labelNode ].filter( _.identity )
+        ]
+      } ),
       massNumberControl,
       volumeNumberControl
     ];

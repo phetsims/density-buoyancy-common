@@ -3,6 +3,8 @@
 /**
  * A container for a three.js material and various associated functions/data that are needed to update it.
  *
+ * Still used for subtyping the disposal, as we need a wrapper to store additional information.
+ *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 

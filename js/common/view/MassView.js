@@ -46,6 +46,7 @@ class MassView extends THREE.Mesh {
     this.positionListener = () => {
       const position = mass.matrix.translation;
 
+      // LHS is NOT a Vector2, don't try to simplify this
       this.position.x = position.x;
       this.position.y = position.y;
     };

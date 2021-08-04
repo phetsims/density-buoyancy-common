@@ -9,10 +9,11 @@
 import merge from '../../../../phet-core/js/merge.js';
 import ArrowNode from '../../../../scenery-phet/js/ArrowNode.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
+import FlowBox from '../../../../scenery/js/layout/FlowBox.js';
+import VDivider from '../../../../scenery/js/layout/VDivider.js';
 import AlignBox from '../../../../scenery/js/nodes/AlignBox.js';
 import AlignGroup from '../../../../scenery/js/nodes/AlignGroup.js';
 import HBox from '../../../../scenery/js/nodes/HBox.js';
-import Line from '../../../../scenery/js/nodes/Line.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
 import VBox from '../../../../scenery/js/nodes/VBox.js';
 import Checkbox from '../../../../sun/js/Checkbox.js';
@@ -99,20 +100,10 @@ class DisplayOptionsNode extends VBox {
     const massesNode = new Checkbox( new Text( densityBuoyancyCommonStrings.masses, labelOptions ), model.showMassesProperty, checkboxOptions );
     const forceValuesNode = new Checkbox( new Text( densityBuoyancyCommonStrings.forceValues, labelOptions ), model.showForceValuesProperty, checkboxOptions );
 
-    const separator = new Line( 0, 0, Math.max(
-      forcesText.width,
-      gravityNode.width,
-      buoyancyNode.width,
-      contactNode.width,
-      massesNode.width,
-      forceValuesNode.width
-    ), 0, {
-      stroke: 'gray'
-    } );
-
     options.children = [
       forcesText,
-      new VBox( {
+      new FlowBox( {
+        orientation: 'vertical',
         spacing: 8,
         align: 'left',
         children: [
@@ -125,7 +116,7 @@ class DisplayOptionsNode extends VBox {
               contactNode
             ]
           } ),
-          separator,
+          new VDivider(),
           new VBox( {
             spacing: checkboxSpacing,
             align: 'left',

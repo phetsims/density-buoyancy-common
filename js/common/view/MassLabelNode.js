@@ -10,6 +10,7 @@ import Utils from '../../../../dot/js/Utils.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
+import ManualConstraint from '../../../../scenery/js/layout/ManualConstraint.js';
 import Node from '../../../../scenery/js/nodes/Node.js';
 import Rectangle from '../../../../scenery/js/nodes/Rectangle.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
@@ -72,8 +73,12 @@ class MassLabelNode extends Node {
       readoutText.text = StringUtils.fillIn( densityBuoyancyCommonStrings.kilogramsPattern, {
         kilograms: Utils.toFixed( mass, 2 )
       } );
-      readoutPanel.center = Vector2.ZERO;
     };
+
+    // Keep it centered
+    ManualConstraint.create( this, [ readoutPanel ], readoutWrapper => {
+      readoutWrapper.center = Vector2.ZERO;
+    } );
 
     // @private {function(boolean)}
     this.showMassesListener = shown => {

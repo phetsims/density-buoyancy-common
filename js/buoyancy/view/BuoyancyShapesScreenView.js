@@ -75,7 +75,6 @@ class BuoyancyShapesScreenView extends SecondaryMassScreenView {
       ]
     } );
 
-    // TODO: check common accordion box styles
     const densityBox = new AccordionBox( densityContainer, merge( {
       titleNode: new Text( densityBuoyancyCommonStrings.density, {
         font: DensityBuoyancyCommonConstants.TITLE_FONT,

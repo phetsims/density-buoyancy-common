@@ -77,8 +77,6 @@ class BuoyancyApplicationsScreenView extends DensityBuoyancyScreenView {
       minMass: 0,
       maxCustomMass: 100,
       maxMass: Material.MERCURY.density * 0.01,
-
-      // TODO: better units?
       minVolumeLiters: 0,
       maxVolumeLiters: 10
     } );

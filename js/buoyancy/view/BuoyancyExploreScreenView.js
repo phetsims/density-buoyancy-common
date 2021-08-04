@@ -70,7 +70,6 @@ class BuoyancyExploreScreenView extends SecondaryMassScreenView {
     } );
 
     model.primaryMass.materialProperty.link( material => {
-      // TODO: that string utils fill-in or to-fixed density conversion
       densityAText.text = StringUtils.fillIn( densityBuoyancyCommonStrings.kilogramsPerLiterPattern, {
         value: Utils.toFixed( material.density / 1000, 2 )
       } );
@@ -81,7 +80,6 @@ class BuoyancyExploreScreenView extends SecondaryMassScreenView {
       } );
     } );
 
-    // TODO: handle maxWidths here nicely
     const labelAText = new Text( densityBuoyancyCommonStrings.blockA, { font: new PhetFont( 14 ), maxWidth: 200, layoutOptions: { x: 0, y: 0 } } );
     const labelBText = new Text( densityBuoyancyCommonStrings.blockB, { font: new PhetFont( 14 ), maxWidth: 200, layoutOptions: { x: 0, y: 1 } } );
 

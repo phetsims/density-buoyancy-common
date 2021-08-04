@@ -15,14 +15,12 @@ import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
 import NumberControl from '../../../../scenery-phet/js/NumberControl.js';
 import NumberDisplay from '../../../../scenery-phet/js/NumberDisplay.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
-import AlignBox from '../../../../scenery/js/nodes/AlignBox.js';
+import FlowBox from '../../../../scenery/js/layout/FlowBox.js';
+import VDivider from '../../../../scenery/js/layout/VDivider.js';
 import HBox from '../../../../scenery/js/nodes/HBox.js';
-import Node from '../../../../scenery/js/nodes/Node.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
-import VBox from '../../../../scenery/js/nodes/VBox.js';
 import ComboBox from '../../../../sun/js/ComboBox.js';
 import ComboBoxItem from '../../../../sun/js/ComboBoxItem.js';
-import HSeparator from '../../../../sun/js/HSeparator.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import densityBuoyancyCommonStrings from '../../densityBuoyancyCommonStrings.js';
@@ -38,7 +36,7 @@ const shapeStringMap = {
   [ BuoyancyShapesModel.MassShape.INVERTED_CONE ]: densityBuoyancyCommonStrings.shape.invertedCone
 };
 
-class ShapeSizeControlNode extends VBox {
+class ShapeSizeControlNode extends FlowBox {
   /**
    * @param {Property.<BuoyancyShapesModel.MassShape>} massShapeProperty
    * @param {Property.<number>} widthRatioProperty
@@ -56,6 +54,7 @@ class ShapeSizeControlNode extends VBox {
 
     super( {
       spacing: 5,
+      orientation: 'vertical',
       align: 'left'
     } );
 
@@ -84,7 +83,6 @@ class ShapeSizeControlNode extends VBox {
       },
       layoutFunction: NumberControl.createLayoutFunction4( {
         hasReadoutProperty: new BooleanProperty( false )
-        // TODO: createBottomContent for custom? or no?
       } ),
       titleNodeOptions: {
         maxWidth: 160
@@ -94,33 +92,33 @@ class ShapeSizeControlNode extends VBox {
     const widthNumberControl = new NumberControl( densityBuoyancyCommonStrings.width, widthRatioProperty, new Range( 0, 1 ), numberControlOptions );
     const heightNumberControl = new NumberControl( densityBuoyancyCommonStrings.height, heightRatioProperty, new Range( 0, 1 ), numberControlOptions );
 
-    // TODO: ensure maxWidth for combo box contents so this isn't an issue. How do we want to do layout?
-    const topRow = options.labelNode ? new HBox( {
-      children: [
-        comboBox,
-        options.labelNode
-      ],
-      spacing: 5
-    } ) : comboBox;
-
-    const volumeLabel = new Text( densityBuoyancyCommonStrings.volume, {
-      font: new PhetFont( 12 ),
-      maxWidth: 120
-    } );
-
     const litersProperty = new DerivedProperty( [ volumeProperty ], volume => {
       return volume * 1000;
     } );
 
     this.children = [
-      topRow,
+      // TODO: ensure maxWidth for combo box contents so this isn't an issue. How do we want to do layout?
+      new HBox( {
+        spacing: 5,
+        children: [
+          comboBox,
+          options.labelNode
+        ].filter( _.identity )
+      } ),
       heightNumberControl,
       widthNumberControl,
-      new HSeparator( heightNumberControl.width ),
-      new Node( {
+      new VDivider(),
+      new FlowBox( {
+        layoutOptions: { align: 'stretch' },
+        orientation: 'horizontal',
+        align: 'center',
+        justify: 'spaceBetween',
         children: [
-          volumeLabel,
-          new AlignBox( new NumberDisplay( litersProperty, new Range( 0, 10 ), { // TODO: is 10 the most?
+          new Text( densityBuoyancyCommonStrings.volume, {
+            font: new PhetFont( 12 ),
+            maxWidth: 120
+          } ),
+          new NumberDisplay( litersProperty, new Range( 0, 10 ), { // TODO: is 10 the most?
             valuePattern: StringUtils.fillIn( densityBuoyancyCommonStrings.litersPattern, {
               liters: '{{value}}'
             } ),
@@ -129,10 +127,6 @@ class ShapeSizeControlNode extends VBox {
               font: DensityBuoyancyCommonConstants.READOUT_FONT,
               maxWidth: 160
             }
-          } ), {
-            alignBounds: volumeLabel.bounds.withMaxX( heightNumberControl.width ),
-            xAlign: 'right',
-            yAlign: 'center'
           } )
         ]
       } )

@@ -22,7 +22,6 @@ import GravityControlNode from './GravityControlNode.js';
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
 
 class Demo3DScreenView extends DensityBuoyancyScreenView {
-
   /**
    * @param {DensityBuoyancyModel} model
    * @param {Tandem} tandem

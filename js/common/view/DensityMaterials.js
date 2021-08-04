@@ -48,6 +48,7 @@ function toWrappedTexture( image ) {
   return texture;
 }
 
+// Simplified environment map to give a nice reflective appearance. We compute it per-pixel
 let envMapTexture = null;
 function getEnvironmentTexture() {
   const size = 32;
@@ -59,19 +60,25 @@ function getEnvironmentTexture() {
 
     const imageData = context.getImageData( 0, 0, size, size );
 
+    // For each pixel
     for ( let i = 0; i < 32 * 32; i++ ) {
       const index = i * 4;
 
+      // Determine spherical coordinates for the equirectangular mapping
       const theta = ( i % size ) / size * Math.PI * 2;
       const phi = Math.PI * ( 0.5 - Math.floor( i / size ) / ( size - 1 ) );
 
+      // Get a euclidean vector
       const v = new Vector3(
         -Math.cos( phi ) * Math.cos( theta ),
         Math.sin( phi ),
         Math.cos( phi ) * Math.sin( theta )
       );
+
+      // Our light direction
       const light = new Vector3( -1 / 2, 1.5, 0.8 / 2 );
 
+      // Front/top lighting + light
       const value = v.y > 0 || v.z < 0 ? 1 : v.dot( light ) / 2;
 
       imageData.data[ index + 0 ] = Utils.clamp( Math.floor( value * 255 + 127 ), 0, 255 );

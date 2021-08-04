@@ -117,24 +117,20 @@ const woodRoughnessTexture = toWrappedTexture( Wood26RghImage );
 
 class AluminumMaterialView extends MaterialView {
   constructor() {
-    super();
-
-    this.material = new THREE.MeshStandardMaterial( {
+    super( new THREE.MeshStandardMaterial( {
       map: aluminumColorTexture,
       normalMap: aluminumNormalTexture,
       normalScale: new THREE.Vector2( 1, -1 ),
       roughnessMap: aluminumRoughnessTexture,
       metalnessMap: aluminumMetalnessTexture,
       envMap: getEnvironmentTexture()
-    } );
+    } ) );
   }
 }
 
 class BrickMaterialView extends MaterialView {
   constructor() {
-    super();
-
-    this.material = new THREE.MeshStandardMaterial( {
+    super( new THREE.MeshStandardMaterial( {
       map: brickColorTexture,
       aoMap: brickAmbientOcclusionTexture,
       normalMap: brickNormalTexture,
@@ -142,30 +138,26 @@ class BrickMaterialView extends MaterialView {
       roughness: 1,
       metalness: 0,
       envMap: getEnvironmentTexture()
-    } );
+    } ) );
   }
 }
 
 class CopperMaterialView extends MaterialView {
   constructor() {
-    super();
-
-    this.material = new THREE.MeshStandardMaterial( {
+    super( new THREE.MeshStandardMaterial( {
       map: copperColorTexture,
       normalMap: copperNormalTexture,
       normalScale: new THREE.Vector2( 1, -1 ),
       roughnessMap: copperRoughnessTexture,
       metalnessMap: copperMetalnessTexture,
       envMap: getEnvironmentTexture()
-    } );
+    } ) );
   }
 }
 
 class IceMaterialView extends MaterialView {
   constructor() {
-    super();
-
-    this.material = new THREE.MeshPhysicalMaterial( {
+    super( new THREE.MeshPhysicalMaterial( {
       map: iceColorTexture,
       alphaMap: iceAlphaTexture,
       normalMap: iceNormalTexture,
@@ -182,16 +174,14 @@ class IceMaterialView extends MaterialView {
       side: THREE.DoubleSide,
 
       envMap: getEnvironmentTexture()
-    } );
+    } ) );
   }
 }
 
 // We just use aluminum
 class PlatinumMaterialView extends MaterialView {
   constructor() {
-    super();
-
-    this.material = new THREE.MeshStandardMaterial( {
+    super( new THREE.MeshStandardMaterial( {
       map: platinumColorTexture,
       normalMap: aluminumNormalTexture,
       normalScale: new THREE.Vector2( 1, -1 ),
@@ -202,30 +192,26 @@ class PlatinumMaterialView extends MaterialView {
       emissive: 0xffffff,
       emissiveIntensity: 0.5,
       envMap: getEnvironmentTexture()
-    } );
+    } ) );
   }
 }
 
 class SteelMaterialView extends MaterialView {
   constructor() {
-    super();
-
-    this.material = new THREE.MeshStandardMaterial( {
+    super( new THREE.MeshStandardMaterial( {
       map: steelColorTexture,
       normalMap: steelNormalTexture,
       normalScale: new THREE.Vector2( 1, -1 ),
       roughnessMap: steelRoughnessTexture,
       metalnessMap: steelMetalnessTexture,
       envMap: getEnvironmentTexture()
-    } );
+    } ) );
   }
 }
 
 class StyrofoamMaterialView extends MaterialView {
   constructor() {
-    super();
-
-    this.material = new THREE.MeshStandardMaterial( {
+    super( new THREE.MeshStandardMaterial( {
       map: styrofoamColorTexture,
       aoMap: styrofoamAmbientOcclusionTexture,
       normalMap: styrofoamNormalTexture,
@@ -234,15 +220,13 @@ class StyrofoamMaterialView extends MaterialView {
       roughnessMap: styrofoamRoughnessTexture,
       metalness: 0,
       envMap: getEnvironmentTexture()
-    } );
+    } ) );
   }
 }
 
 class WoodMaterialView extends MaterialView {
   constructor() {
-    super();
-
-    this.material = new THREE.MeshStandardMaterial( {
+    super( new THREE.MeshStandardMaterial( {
       map: woodColorTexture,
       normalMap: woodNormalTexture,
       normalScale: new THREE.Vector2( 1, -1 ),
@@ -250,7 +234,7 @@ class WoodMaterialView extends MaterialView {
       roughnessMap: woodRoughnessTexture,
       metalness: 0,
       envMap: getEnvironmentTexture()
-    } );
+    } ) );
   }
 }
 
@@ -259,14 +243,12 @@ class CustomMaterialView extends MaterialView {
    * @param {number} density
    */
   constructor( density ) {
-    super();
-
     const lightness = Material.getCustomLightness( density );
     const color = lightness + lightness * 0x100 + lightness * 0x10000;
 
-    this.material = new THREE.MeshLambertMaterial( {
+    super( new THREE.MeshLambertMaterial( {
       color: color
-    } );
+    } ) );
   }
 }
 
@@ -275,9 +257,7 @@ class CustomColoredMaterialView extends MaterialView {
    * @param {Property.<Color>} colorProperty
    */
   constructor( colorProperty ) {
-    super();
-
-    this.material = new THREE.MeshLambertMaterial();
+    super( new THREE.MeshLambertMaterial() );
 
     // @private
     this.colorProperty = colorProperty;
@@ -303,11 +283,9 @@ class CustomColoredMaterialView extends MaterialView {
 
 class DebugMaterialView extends MaterialView {
   constructor() {
-    super();
-
-    this.material = new THREE.MeshLambertMaterial( {
+    super( new THREE.MeshLambertMaterial( {
       color: 0xffaa44
-    } );
+    } ) );
   }
 }
 

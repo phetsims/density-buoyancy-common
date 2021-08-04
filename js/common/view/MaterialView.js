@@ -11,9 +11,12 @@
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 
 class MaterialView {
-  constructor() {
-    // @public {THREE.Material} - defined by subtypes usually
-    this.material = null;
+  /**
+   * @param {THREE.Material} material
+   */
+  constructor( material ) {
+    // @public {THREE.Material}
+    this.material = material;
   }
 
   /**

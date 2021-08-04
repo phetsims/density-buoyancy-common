@@ -200,8 +200,8 @@ class DensityBuoyancyModel {
     let boatVerticalVelocity = 0;
     let boatVerticalAcceleration = 0;
 
+    // The main engine post-step actions, that will determine the net forces applied on each mass.
     this.engine.addPostStepListener( dt => {
-
       this.updateLiquid();
 
       // {number}

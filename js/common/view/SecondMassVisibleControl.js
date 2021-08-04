@@ -17,6 +17,7 @@ import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonQueryParameters from '../DensityBuoyancyCommonQueryParameters.js';
 import DensityBuoyancyCommonColors from './DensityBuoyancyCommonColors.js';
 
+// constants
 const aMaterial = new THREE.MeshLambertMaterial();
 const bMaterial = new THREE.MeshLambertMaterial();
 
@@ -47,8 +48,6 @@ class SecondMassVisibleControl extends RectangularRadioButtonGroup {
     ], {
       orientation: 'horizontal',
       baseColor: 'rgb( 230, 231, 232 )',
-      // buttonContentXMargin: 3,
-      // buttonContentYMargin: 3,
       touchAreaXDilation: 5,
       touchAreaYDilation: 5,
       tandem: tandem
@@ -69,6 +68,7 @@ class SecondMassVisibleControl extends RectangularRadioButtonGroup {
     const box = new THREE.Mesh( boxGeometry, material );
     box.position.copy( ThreeUtils.vectorToThree( position ) );
 
+    // Create outlines around the box with cylinders (like stroking the edges)
     const connect = ( a, b ) => {
       const delta = b.minus( a );
 
@@ -114,7 +114,7 @@ class SecondMassVisibleControl extends RectangularRadioButtonGroup {
    * @returns {Node}
    */
   static getIcon( zoom, setupScene ) {
-    const stage = new ThreeStage( { fov: 50 } );
+    const stage = new ThreeStage();
 
     const ambientLight = new THREE.AmbientLight( 0x333333 );
     stage.threeScene.add( ambientLight );

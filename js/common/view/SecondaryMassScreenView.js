@@ -17,6 +17,7 @@ class SecondaryMassScreenView extends DensityBuoyancyScreenView {
    * @protected
    */
   addSecondMassControl() {
+    assert && assert( this.rightBox, 'SecondaryMassScreenView requires a this.rightBox be defined to add this control' );
 
     // @private {Node}
     this.secondMassVisibleControl = new SecondMassVisibleControl( this.model.secondaryMassVisibleProperty, this.tandem.createTandem( 'secondMassVisibleControl' ) );
@@ -32,12 +33,11 @@ class SecondaryMassScreenView extends DensityBuoyancyScreenView {
    * @private
    */
   positionSecondMassControl() {
-    const point3 = new Vector3(
+    this.secondMassVisibleControl.bottom = this.modelToViewPoint( new Vector3(
       0,
       this.model.poolBounds.minY,
       this.model.poolBounds.maxZ
-    );
-    this.secondMassVisibleControl.bottom = this.modelToViewPoint( point3 ).y;
+    ) ).y;
     this.secondMassVisibleControl.left = this.rightBox.left;
   }
 

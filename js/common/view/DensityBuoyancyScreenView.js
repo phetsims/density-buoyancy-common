@@ -166,12 +166,21 @@ class DensityBuoyancyScreenView extends ScreenView {
     this.sceneNode.stage.threeCamera.up = new THREE.Vector3( 0, 0, -1 );
     this.sceneNode.stage.threeCamera.lookAt( ThreeUtils.vectorToThree( options.cameraLookAt ) );
 
-    // TODO: How can we invalidate this on zooms?
+    let mouse = null;
+    const updateCursor = () => {
+      if ( mouse ) {
+        this.sceneNode.backgroundEventTarget.cursor = this.getMassUnderPointer( mouse, false ) ? 'pointer' : null;
+      }
+    };
     this.sceneNode.backgroundEventTarget.addInputListener( {
       mousemove: event => {
-        this.sceneNode.backgroundEventTarget.cursor = this.getMassUnderPointer( event.pointer, false ) ? 'pointer' : null;
+        mouse = event.pointer;
+        updateCursor();
       }
     } );
+    // On re-layout or zoom, update the cursor also
+    this.transformEmitter.addListener( updateCursor );
+    animatedPanZoomSingleton.listener.matrixProperty.lazyLink( updateCursor );
 
     // @private {Action}
     this.startDragAction = new Action( ( mass, position ) => {

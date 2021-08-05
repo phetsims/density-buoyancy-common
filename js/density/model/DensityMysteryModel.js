@@ -92,29 +92,29 @@ class DensityMysteryModel extends DensityBuoyancyModal( DensityBuoyancyModel, Mo
         case Mode.SET_1:
           return [
             Cuboid.createWithVolume( model.engine, Material.createCustomMaterial( {
-              density: 920,
+              density: Material.WATER.density,
               customColor: DensityBuoyancyCommonColors.comparingRedColorProperty
-            } ), Vector2.ZERO, 0.004, { tag: Mass.MassTag.ONE_D, tandem: set1Tandem.createTandem( '1D' ) } ),
+            } ), Vector2.ZERO, 0.005, { tag: Mass.MassTag.ONE_D, tandem: set1Tandem.createTandem( '1D' ) } ),
 
             Cuboid.createWithVolume( model.engine, Material.createCustomMaterial( {
-              density: Material.GASOLINE.density,
+              density: Material.WOOD.density,
               customColor: DensityBuoyancyCommonColors.comparingBlueColorProperty
-            } ), Vector2.ZERO, 0.004, { tag: Mass.MassTag.ONE_B, tandem: set1Tandem.createTandem( '1B' ) } ),
+            } ), Vector2.ZERO, 0.001, { tag: Mass.MassTag.ONE_B, tandem: set1Tandem.createTandem( '1B' ) } ),
 
             Cuboid.createWithVolume( model.engine, Material.createCustomMaterial( {
-              density: Material.GASOLINE.density,
+              density: Material.WOOD.density,
               customColor: DensityBuoyancyCommonColors.comparingGreenColorProperty
-            } ), Vector2.ZERO, 0.00516, { tag: Mass.MassTag.ONE_E, tandem: set1Tandem.createTandem( '1E' ) } ),
+            } ), Vector2.ZERO, 0.007, { tag: Mass.MassTag.ONE_E, tandem: set1Tandem.createTandem( '1E' ) } ),
 
             Cuboid.createWithVolume( model.engine, Material.createCustomMaterial( {
-              density: 19320,
+              density: Material.GOLD.density,
               customColor: DensityBuoyancyCommonColors.comparingYellowColorProperty
             } ), Vector2.ZERO, 0.001, { tag: Mass.MassTag.ONE_C, tandem: set1Tandem.createTandem( '1C' ) } ),
 
             Cuboid.createWithVolume( model.engine, Material.createCustomMaterial( {
               density: Material.DIAMOND.density,
               customColor: DensityBuoyancyCommonColors.comparingPurpleColorProperty
-            } ), Vector2.ZERO, 0.001, { tag: Mass.MassTag.ONE_A, tandem: set1Tandem.createTandem( '1A' ) } )
+            } ), Vector2.ZERO, 0.0055, { tag: Mass.MassTag.ONE_A, tandem: set1Tandem.createTandem( '1A' ) } )
           ];
         case Mode.SET_2:
           return [

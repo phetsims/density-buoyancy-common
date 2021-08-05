@@ -407,6 +407,14 @@ class DensityBuoyancyModel {
   }
 
   /**
+   * Moves masses' previous positions to their current positions.
+   * @public
+   */
+  uninterpolateMasses() {
+    this.masses.forEach( mass => this.engine.bodySynchronizePrevious( mass.body ) );
+  }
+
+  /**
    * Positions masses from the left of the pool outward, with padding
    * @private
    *

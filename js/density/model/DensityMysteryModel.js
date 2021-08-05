@@ -244,6 +244,17 @@ class DensityMysteryModel extends DensityBuoyancyModal( DensityBuoyancyModel, Mo
       tandem: tandem.createTandem( 'scale' )
     } );
     this.availableMasses.push( this.scale );
+
+    // Move the scale with the barrier, see https://github.com/phetsims/density/issues/73
+    this.invisibleBarrierBoundsProperty.lazyLink( ( newBounds, oldBounds ) => {
+      this.scale.matrix.set02( this.scale.matrix.m02() + newBounds.minX - oldBounds.minX );
+      this.scale.writeData();
+
+      // Adjust its previous position also
+      this.engine.bodySynchronizePrevious( this.scale.body );
+    } );
+
+    this.uninterpolateMasses();
   }
 
   /**
@@ -258,6 +269,8 @@ class DensityMysteryModel extends DensityBuoyancyModal( DensityBuoyancyModel, Mo
 
     // Make sure to create new random masses on a reset
     this.regenerate( Mode.RANDOM );
+
+    this.uninterpolateMasses();
   }
 }
 

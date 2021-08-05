@@ -126,6 +126,8 @@ class DensityCompareModel extends DensityBuoyancyModal( DensityBuoyancyModel, Mo
     super( tandem, createMasses, () => {}, positionMasses, tandem, {
       showMassesDefault: true
     } );
+
+    this.uninterpolateMasses();
   }
 }
 

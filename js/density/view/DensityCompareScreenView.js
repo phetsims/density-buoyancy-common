@@ -6,8 +6,12 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
+import DynamicProperty from '../../../../axon/js/DynamicProperty.js';
+import Property from '../../../../axon/js/Property.js';
+import Range from '../../../../dot/js/Range.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
 import AlignPropertyBox from '../../../../scenery/js/layout/AlignPropertyBox.js';
+import Node from '../../../../scenery/js/nodes/Node.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
 import VBox from '../../../../scenery/js/nodes/VBox.js';
 import Panel from '../../../../sun/js/Panel.js';
@@ -17,6 +21,7 @@ import DensityBuoyancyScreenView from '../../common/view/DensityBuoyancyScreenVi
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import densityBuoyancyCommonStrings from '../../densityBuoyancyCommonStrings.js';
 import DensityCompareModel from '../model/DensityCompareModel.js';
+import ComparisonNumberControl from './ComparisonNumberControl.js';
 
 // constants
 const modeStringMap = {
@@ -78,7 +83,70 @@ class DensityCompareScreenView extends DensityBuoyancyScreenView {
       margin: MARGIN
     } ) );
 
+    // For unit conversion
+    const volumeProperty = new DynamicProperty( new Property( model.volumeProperty ), {
+      map: cubicMeters => 1000 * cubicMeters,
+      inverseMap: liters => liters / 1000,
+      bidirectional: true
+    } );
+    volumeProperty.range = new Range( model.volumeProperty.range.min * 1000, model.volumeProperty.range.max * 1000 );
+
+    // For unit conversion
+    const densityProperty = new DynamicProperty( new Property( model.densityProperty ), {
+      map: kilogramsPerCubicMeter => kilogramsPerCubicMeter / 1000,
+      inverseMap: kilogramsPerLiter => kilogramsPerLiter * 1000,
+      bidirectional: true
+    } );
+    densityProperty.range = new Range( model.densityProperty.range.min / 1000, model.densityProperty.range.max / 1000 );
+
+    const massNumberControl = new ComparisonNumberControl( model.massProperty, densityBuoyancyCommonStrings.mass, densityBuoyancyCommonStrings.kilogramsPattern, 'kilograms' );
+    const volumeNumberControl = new ComparisonNumberControl( volumeProperty, densityBuoyancyCommonStrings.volume, densityBuoyancyCommonStrings.litersPattern, 'liters' );
+    const densityNumberControl = new ComparisonNumberControl( densityProperty, densityBuoyancyCommonStrings.density, densityBuoyancyCommonStrings.kilogramsPerLiterPattern, 'value' );
+
+    model.modeProperty.link( mode => {
+      massNumberControl.visible = mode === DensityCompareModel.Mode.SAME_MASS;
+      volumeNumberControl.visible = mode === DensityCompareModel.Mode.SAME_VOLUME;
+      densityNumberControl.visible = mode === DensityCompareModel.Mode.SAME_DENSITY;
+    } );
+
+    const numberControlPanel = new Panel( new Node( {
+      children: [
+        massNumberControl,
+        volumeNumberControl,
+        densityNumberControl
+      ]
+    } ), DensityBuoyancyCommonConstants.PANEL_OPTIONS );
+    this.addChild( numberControlPanel );
+
+    // @private {function}
+    this.positionPanel = () => {
+      // We should be MARGIN below where the edge of the ground exists
+      const groundFrontPoint = this.modelToViewPoint( new Vector3( 0, 0, model.groundBounds.maxZ ) );
+      numberControlPanel.top = groundFrontPoint.y + MARGIN;
+      numberControlPanel.right = this.visibleBoundsProperty.value.maxX - 10;
+    };
+
+    this.positionPanel();
+    this.transformEmitter.addListener( this.positionPanel );
+    this.visibleBoundsProperty.lazyLink( this.positionPanel );
+
     this.addChild( this.popupLayer );
+  }
+
+  /**
+   * @public
+   * @override
+   * @param {Bounds2} viewBounds
+   */
+  layout( viewBounds ) {
+    super.layout( viewBounds );
+
+    // If the simulation was not able to load for WebGL, bail out
+    if ( !this.sceneNode ) {
+      return;
+    }
+
+    this.positionPanel();
   }
 }
 

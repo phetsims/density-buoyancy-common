@@ -157,7 +157,7 @@ const DensityBuoyancyCommonQueryParameters = QueryStringMachine.getAll( {
   // Viscosity for masses larger than this will be reduced to the force for this viscosity (somewhat of a hacK)
   viscosityMassCutoff: {
     type: 'number',
-    defaultValue: 2
+    defaultValue: 0.5
   }
 } );
 

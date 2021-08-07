@@ -6,6 +6,8 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
+import NumberProperty from '../../../../axon/js/NumberProperty.js';
+import Range from '../../../../dot/js/Range.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import Enumeration from '../../../../phet-core/js/Enumeration.js';
 import Cuboid from '../../common/model/Cuboid.js';
@@ -31,10 +33,26 @@ class DensityCompareModel extends DensityBuoyancyModal( DensityBuoyancyModel, Mo
     const sameVolumeTandem = tandem.createTandem( 'sameVolume' );
     const sameDensityTandem = tandem.createTandem( 'sameDensity' );
 
+    const massProperty = new NumberProperty( 5, {
+      range: new Range( 1, 10 ),
+      tandem: tandem.createTandem( 'massProperty' )
+    } );
+
+    const volumeProperty = new NumberProperty( 0.005, {
+      range: new Range( 0.001, 0.01 ),
+      tandem: tandem.createTandem( 'volumeProperty' )
+    } );
+
+    const densityProperty = new NumberProperty( 800, {
+      range: new Range( 100, 10000 ),
+      tandem: tandem.createTandem( 'densityProperty' )
+    } );
+
     const createMasses = ( model, mode ) => {
+      let masses;
       switch( mode ) {
         case Mode.SAME_MASS:
-          return [
+          masses = [
             Cuboid.createWithMass( model.engine, Material.createCustomMaterial( {
               density: 500,
               customColor: DensityBuoyancyCommonColors.comparingYellowColorProperty
@@ -55,8 +73,18 @@ class DensityCompareModel extends DensityBuoyancyModal( DensityBuoyancyModel, Mo
               customColor: DensityBuoyancyCommonColors.comparingRedColorProperty
             } ), Vector2.ZERO, 5, { tandem: sameMassTandem.createTandem( 'redMass' ) } )
           ];
+
+          massProperty.lazyLink( massValue => {
+            masses.forEach( mass => {
+              mass.materialProperty.value = Material.createCustomMaterial( {
+                density: massValue / mass.volumeProperty.value,
+                customColor: mass.materialProperty.value.customColor
+              } );
+            } );
+          } );
+          break;
         case Mode.SAME_VOLUME:
-          return [
+          masses = [
             Cuboid.createWithMass( model.engine, Material.createCustomMaterial( {
               density: 1600,
               customColor: DensityBuoyancyCommonColors.comparingYellowColorProperty
@@ -77,8 +105,21 @@ class DensityCompareModel extends DensityBuoyancyModal( DensityBuoyancyModel, Mo
               customColor: DensityBuoyancyCommonColors.comparingRedColorProperty
             } ), Vector2.ZERO, 2, { tandem: sameVolumeTandem.createTandem( 'redMass' ) } )
           ];
+
+          volumeProperty.lazyLink( volume => {
+            masses.forEach( mass => {
+              const massValue = mass.massProperty.value;
+
+              mass.updateSize( Cuboid.boundsFromVolume( volume ) );
+              mass.materialProperty.value = Material.createCustomMaterial( {
+                density: massValue / volume,
+                customColor: mass.materialProperty.value.customColor
+              } );
+            } );
+          } );
+          break;
         case Mode.SAME_DENSITY:
-          return [
+          masses = [
             Cuboid.createWithMass( model.engine, Material.createCustomMaterial( {
               density: 800,
               customColor: DensityBuoyancyCommonColors.comparingYellowColorProperty
@@ -99,9 +140,21 @@ class DensityCompareModel extends DensityBuoyancyModal( DensityBuoyancyModel, Mo
               customColor: DensityBuoyancyCommonColors.comparingRedColorProperty
             } ), Vector2.ZERO, 1, { tandem: sameDensityTandem.createTandem( 'redMass' ) } )
           ];
+
+          densityProperty.lazyLink( density => {
+            masses.forEach( mass => {
+              mass.materialProperty.value = Material.createCustomMaterial( {
+                density: density,
+                customColor: mass.materialProperty.value.customColor
+              } );
+            } );
+          } );
+          break;
         default:
           throw new Error( `unknown mode: ${mode}` );
       }
+
+      return masses;
     };
 
     const positionMasses = ( model, mode, masses ) => {
@@ -126,6 +179,11 @@ class DensityCompareModel extends DensityBuoyancyModal( DensityBuoyancyModel, Mo
     super( tandem, createMasses, () => {}, positionMasses, tandem, {
       showMassesDefault: true
     } );
+
+    // @public {Property.<number>}
+    this.massProperty = massProperty;
+    this.volumeProperty = volumeProperty;
+    this.densityProperty = densityProperty;
 
     this.uninterpolateMasses();
   }

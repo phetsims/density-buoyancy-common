@@ -1,7 +1,7 @@
 // Copyright 2019-2021, University of Colorado Boulder
 
 /**
- * The main view for the Intro screen of the Density simulation.
+ * The main view for the Explore screen of the Density simulation.
  *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
@@ -23,9 +23,9 @@ import DensityReadoutNode from './DensityReadoutNode.js';
 // constants
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
 
-class DensityIntroScreenView extends SecondaryMassScreenView {
+class DensityExploreScreenView extends SecondaryMassScreenView {
   /**
-   * @param {DensityIntroModel} model
+   * @param {DensityExploreModel} model
    * @param {Tandem} tandem
    */
   constructor( model, tandem ) {
@@ -86,5 +86,5 @@ class DensityIntroScreenView extends SecondaryMassScreenView {
   }
 }
 
-densityBuoyancyCommon.register( 'DensityIntroScreenView', DensityIntroScreenView );
-export default DensityIntroScreenView;
+densityBuoyancyCommon.register( 'DensityExploreScreenView', DensityExploreScreenView );
+export default DensityExploreScreenView;

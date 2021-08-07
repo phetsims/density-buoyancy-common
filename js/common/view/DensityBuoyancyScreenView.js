@@ -878,7 +878,7 @@ class DensityBuoyancyScreenView extends ScreenView {
    *
    * @returns {Node}
    */
-  static getDensityIntroIcon() {
+  static getDensityExploreIcon() {
     if ( !ThreeUtils.isWebGLEnabled() ) {
       return DensityBuoyancyScreenView.getFallbackIcon();
     }

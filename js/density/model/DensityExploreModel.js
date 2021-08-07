@@ -1,7 +1,7 @@
 // Copyright 2019-2021, University of Colorado Boulder
 
 /**
- * The main model for the Intro screen of the Density simulation.
+ * The main model for the Explore screen of the Density simulation.
  *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
@@ -14,7 +14,7 @@ import Mass from '../../common/model/Mass.js';
 import Material from '../../common/model/Material.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 
-class DensityIntroModel extends DensityBuoyancyModel {
+class DensityExploreModel extends DensityBuoyancyModel {
   /**
    * @param {Tandem} tandem
    */
@@ -68,5 +68,5 @@ class DensityIntroModel extends DensityBuoyancyModel {
   }
 }
 
-densityBuoyancyCommon.register( 'DensityIntroModel', DensityIntroModel );
-export default DensityIntroModel;
+densityBuoyancyCommon.register( 'DensityExploreModel', DensityExploreModel );
+export default DensityExploreModel;

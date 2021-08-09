@@ -170,7 +170,6 @@ class IceMaterialView extends MaterialView {
       normalMap: iceNormalTexture,
       normalScale: new THREE.Vector2( 1, -1 ),
       roughness: 0.7,
-      clearcoatRoughness: 0.7,
       refractionRatio: 1 / 1.309,
       metalness: 0.4,
       clearCoat: 1,

@@ -19,7 +19,7 @@ class ComparisonNumberControl extends NumberControl {
   /**
    * @param {Property.<number>} property
    * @param {string} title
-   * @param {string} valuePatterm
+   * @param {string} valuePattern
    * @param {string} valueName
    */
   constructor( property, title, valuePattern, valueName ) {

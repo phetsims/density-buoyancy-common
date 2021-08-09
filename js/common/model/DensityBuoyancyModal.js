@@ -25,7 +25,7 @@ const DensityBuoyancyModal = ( type, Mode, initialMode ) => {
      * @param {function(Mode):Array.<Mass>} createMassesCallback - Creates masses (when given a mode)
      * @param {function(Mode):Array.<Mass>} regenerateMassesCallback - Regenerate masses (when given a mode)
      * @param {function(Mode,Array.<Mass>)} positionMassesCallback - Positions masses (for a given mode)
-     * @param {*} ...args
+     * @param {*} args
      */
     constructor( tandem, createMassesCallback, regenerateMassesCallback, positionMassesCallback, ...args ) {
       super( ...args );

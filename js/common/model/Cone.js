@@ -16,6 +16,9 @@ import IOType from '../../../../tandem/js/types/IOType.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import Mass from './Mass.js';
 
+const BOTTOM_FROM_CENTER_RATIO = 0.25; // center of mass to the bottom is 1/4 of the height of the cone
+const TOP_FROM_CENTER_RATIO = 0.75; // center of mass to the tip is 3/4 of the height of the cone
+
 class Cone extends Mass {
   /**
    * @param {Engine} engine
@@ -91,6 +94,7 @@ class Cone extends Mass {
    * @returns {number}
    */
   static getRadiusFromRatio( widthRatio ) {
+    // Left independent from getHeightFromRatio since these should be not tied together
     return 0.01 + widthRatio * 0.09;
   }
 
@@ -103,6 +107,7 @@ class Cone extends Mass {
    * @returns {number}
    */
   static getHeightFromRatio( heightRatio ) {
+    // Left independent from getRadiusFromRatio since these should be not tied together
     return 2 * ( 0.01 + heightRatio * 0.09 );
   }
 
@@ -136,8 +141,8 @@ class Cone extends Mass {
     const yOffset = this.stepMatrix.m12();
 
     this.stepX = xOffset;
-    this.stepBottom = yOffset - this.heightProperty.value * ( this.isVertexUp ? 0.25 : 0.75 );
-    this.stepTop = yOffset + this.heightProperty.value * ( this.isVertexUp ? 0.75 : 0.25 );
+    this.stepBottom = yOffset - this.heightProperty.value * ( this.isVertexUp ? BOTTOM_FROM_CENTER_RATIO : TOP_FROM_CENTER_RATIO );
+    this.stepTop = yOffset + this.heightProperty.value * ( this.isVertexUp ? TOP_FROM_CENTER_RATIO : BOTTOM_FROM_CENTER_RATIO );
 
     this.stepRadius = this.radiusProperty.value;
     this.stepHeight = this.heightProperty.value;
@@ -161,8 +166,8 @@ class Cone extends Mass {
     const height = this.heightProperty.value;
     const radius = this.radiusProperty.value;
 
-    const tipY = translation.y + this.vertexSign * height * 0.75;
-    const baseY = translation.y - this.vertexSign * height * 0.25;
+    const tipY = translation.y + this.vertexSign * height * TOP_FROM_CENTER_RATIO;
+    const baseY = translation.y - this.vertexSign * height * BOTTOM_FROM_CENTER_RATIO;
     const cos = radius / height;
     const cosSquared = cos * cos;
     const cosSquaredInverse = 1 / cosSquared;
@@ -276,9 +281,9 @@ class Cone extends Mass {
     const vertexSign = isVertexUp ? 1 : -1;
 
     return [
-      new Vector2( 0, 0.75 * vertexSign * height ),
-      new Vector2( -vertexSign * radius, -0.25 * vertexSign * height ),
-      new Vector2( vertexSign * radius, -0.25 * vertexSign * height )
+      new Vector2( 0, TOP_FROM_CENTER_RATIO * vertexSign * height ),
+      new Vector2( -vertexSign * radius, -BOTTOM_FROM_CENTER_RATIO * vertexSign * height ),
+      new Vector2( vertexSign * radius, -BOTTOM_FROM_CENTER_RATIO * vertexSign * height )
     ];
   }
 

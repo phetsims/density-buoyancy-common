@@ -45,7 +45,7 @@ class Material {
       // {boolean} - optional - if true, don't show the density in number pickers/readouts
       hidden: false,
 
-      // {Property.<Color>|null} - optional, uses the color for a solid materia's color
+      // {Property.<Color>|null} - optional, uses the color for a solid material's color
       customColor: null,
 
       // {Property.<Color>|null} - optional, uses the alpha channel for opacity

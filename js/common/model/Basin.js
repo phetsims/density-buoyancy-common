@@ -25,7 +25,8 @@ class Basin {
 
     // @public {Property.<number>} - in m^3, the volume of liquid contained in this basin
     this.liquidVolumeProperty = new NumberProperty( options.initialVolume, {
-      tandem: tandem.createTandem( 'liquidVolumeProperty' )
+      tandem: tandem.createTandem( 'liquidVolumeProperty' ),
+      phetioReadOnly: true
     } );
 
     // @public {Property.<number>} - The y coordinate of the liquid level (absolute in the model, NOT relative to
@@ -33,7 +34,8 @@ class Basin {
     this.liquidYInterpolatedProperty = new InterpolatedProperty( options.initialY, {
       interpolate: InterpolatedProperty.interpolateNumber,
       phetioType: InterpolatedProperty.InterpolatedPropertyIO( NumberIO ),
-      tandem: tandem.createTandem( 'liquidYInterpolatedProperty' )
+      tandem: tandem.createTandem( 'liquidYInterpolatedProperty' ),
+      phetioReadOnly: true
     } );
 
     // @public {number} - The bottom and top of the basin's area of containment (absolute model coordinates), set during

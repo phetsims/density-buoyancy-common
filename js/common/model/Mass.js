@@ -114,7 +114,8 @@ class Mass extends PhetioObject {
 
     // @public {Property.<boolean>}
     this.userControlledProperty = new BooleanProperty( false, {
-      tandem: tandem.createTandem( 'userControlledProperty' )
+      tandem: tandem.createTandem( 'userControlledProperty' ),
+      phetioReadOnly: true
     } );
 
     // @public {Property.<boolean>}
@@ -162,7 +163,8 @@ class Mass extends PhetioObject {
       interpolate: InterpolatedProperty.interpolateVector2,
       useDeepEquality: true,
       tandem: tandem.createTandem( 'gravityForceInterpolatedProperty' ),
-      phetioType: InterpolatedProperty.InterpolatedPropertyIO( Vector2.Vector2IO )
+      phetioType: InterpolatedProperty.InterpolatedPropertyIO( Vector2.Vector2IO ),
+      phetioReadOnly: true
     } );
 
     // @public {Property.<Vector2>}
@@ -170,7 +172,8 @@ class Mass extends PhetioObject {
       interpolate: InterpolatedProperty.interpolateVector2,
       useDeepEquality: true,
       tandem: tandem.createTandem( 'buoyancyForceInterpolatedProperty' ),
-      phetioType: InterpolatedProperty.InterpolatedPropertyIO( Vector2.Vector2IO )
+      phetioType: InterpolatedProperty.InterpolatedPropertyIO( Vector2.Vector2IO ),
+      phetioReadOnly: true
     } );
 
     // @public {Property.<Vector2>}
@@ -178,7 +181,8 @@ class Mass extends PhetioObject {
       interpolate: InterpolatedProperty.interpolateVector2,
       useDeepEquality: true,
       tandem: tandem.createTandem( 'contactForceInterpolatedProperty' ),
-      phetioType: InterpolatedProperty.InterpolatedPropertyIO( Vector2.Vector2IO )
+      phetioType: InterpolatedProperty.InterpolatedPropertyIO( Vector2.Vector2IO ),
+      phetioReadOnly: true
     } );
 
     // @public {Property.<Vector3>}

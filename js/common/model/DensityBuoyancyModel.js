@@ -53,13 +53,15 @@ class DensityBuoyancyModel {
     // @public {Property.<Gravity>}
     this.gravityProperty = new Property( Gravity.EARTH, {
       phetioType: Property.PropertyIO( Gravity.GravityIO ),
-      tandem: tandem.createTandem( 'gravityProperty' )
+      tandem: tandem.createTandem( 'gravityProperty' ),
+      phetioReadOnly: true
     } );
 
     // @public {Property.<Material>}
     this.liquidMaterialProperty = new Property( Material.WATER, {
       phetioType: Property.PropertyIO( Material.MaterialIO ),
-      tandem: tandem.createTandem( 'liquidMaterialProperty' )
+      tandem: tandem.createTandem( 'liquidMaterialProperty' ),
+      phetioReadOnly: true
     } );
 
     // @public {Property.<number>}

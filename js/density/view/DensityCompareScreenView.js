@@ -99,9 +99,27 @@ class DensityCompareScreenView extends DensityBuoyancyScreenView {
     } );
     densityProperty.range = new Range( model.densityProperty.range.min / 1000, model.densityProperty.range.max / 1000 );
 
-    const massNumberControl = new ComparisonNumberControl( model.massProperty, densityBuoyancyCommonStrings.mass, densityBuoyancyCommonStrings.kilogramsPattern, 'kilograms' );
-    const volumeNumberControl = new ComparisonNumberControl( volumeProperty, densityBuoyancyCommonStrings.volume, densityBuoyancyCommonStrings.litersPattern, 'liters' );
-    const densityNumberControl = new ComparisonNumberControl( densityProperty, densityBuoyancyCommonStrings.density, densityBuoyancyCommonStrings.kilogramsPerLiterPattern, 'value' );
+    const massNumberControl = new ComparisonNumberControl(
+      model.massProperty,
+      densityBuoyancyCommonStrings.mass,
+      densityBuoyancyCommonStrings.kilogramsPattern,
+      'kilograms',
+      tandem.createTandem( 'massNumberControl' )
+     );
+    const volumeNumberControl = new ComparisonNumberControl(
+      volumeProperty,
+      densityBuoyancyCommonStrings.volume,
+      densityBuoyancyCommonStrings.litersPattern,
+      'liters',
+      tandem.createTandem( 'volumeNumberControl' )
+    );
+    const densityNumberControl = new ComparisonNumberControl(
+      densityProperty,
+      densityBuoyancyCommonStrings.density,
+      densityBuoyancyCommonStrings.kilogramsPerLiterPattern,
+      'value',
+      tandem.createTandem( 'densityNumberControl' )
+    );
 
     model.modeProperty.link( mode => {
       massNumberControl.visible = mode === DensityCompareModel.Mode.SAME_MASS;

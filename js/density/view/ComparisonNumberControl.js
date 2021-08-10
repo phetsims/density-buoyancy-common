@@ -21,8 +21,9 @@ class ComparisonNumberControl extends NumberControl {
    * @param {string} title
    * @param {string} valuePattern
    * @param {string} valueName
+   * @param {Tandem} tandem
    */
-  constructor( property, title, valuePattern, valueName ) {
+  constructor( property, title, valuePattern, valueName, tandem ) {
     super( title, property, property.range, {
       layoutFunction: NumberControl.createLayoutFunction4(),
       delta: 0.01,
@@ -56,7 +57,9 @@ class ComparisonNumberControl extends NumberControl {
           label: new Text( property.range.max, { font: new PhetFont( 12 ), maxWidth: 50 } )
         } ],
         trackSize: new Dimension2( 120, 0.5 )
-      }
+      },
+
+      tandem: tandem
     } );
   }
 }

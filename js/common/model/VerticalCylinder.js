@@ -28,7 +28,6 @@ class VerticalCylinder extends Mass {
       body: engine.createBox( 2 * radius, height ),
       shape: VerticalCylinder.getVerticalCylinderShape( radius, height ),
       volume: VerticalCylinder.getVolume( radius, height ),
-      canRotate: false,
 
       phetioType: VerticalCylinder.VerticalCylinderIO
     }, config );

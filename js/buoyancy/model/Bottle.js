@@ -175,7 +175,6 @@ class Bottle extends Mass {
       body: engine.createFromVertices( vertices, true ),
       shape: Shape.polygon( vertices ),
       volume: BOTTLE_VOLUME,
-      canRotate: false,
       material: Material.createCustomMaterial( {
         density: ( BOTTLE_MASS + BOTTLE_INITIAL_INTERIOR_MATERIAL.density * BOTTLE_INITIAL_INTERIOR_VOLUME ) / BOTTLE_VOLUME
       } )

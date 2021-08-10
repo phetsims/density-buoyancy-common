@@ -29,7 +29,6 @@ class Cuboid extends Mass {
       body: engine.createBox( size.width, size.height ),
       shape: Shape.rect( size.minX, size.minY, size.width, size.height ),
       volume: size.width * size.height * size.depth,
-      canRotate: false,
 
       tandem: Tandem.OPTIONAL,
       phetioType: Cuboid.CuboidIO

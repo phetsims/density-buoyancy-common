@@ -44,7 +44,7 @@ class DensityCompareModel extends DensityBuoyancyModal( DensityBuoyancyModel, Mo
     } );
 
     const densityProperty = new NumberProperty( 800, {
-      range: new Range( 100, 10000 ),
+      range: new Range( 100, 2000 ),
       tandem: tandem.createTandem( 'densityProperty' )
     } );
 

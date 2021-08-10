@@ -15,6 +15,7 @@ import Matrix3 from '../../../../dot/js/Matrix3.js';
 import Utils from '../../../../dot/js/Utils.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
+import Shape from '../../../../kite/js/Shape.js';
 import Enumeration from '../../../../phet-core/js/Enumeration.js';
 import EnumerationIO from '../../../../phet-core/js/EnumerationIO.js';
 import merge from '../../../../phet-core/js/merge.js';
@@ -92,6 +93,11 @@ class Mass extends PhetioObject {
       // {IOType} - optional
       phetioType: Mass.MassIO
     }, config );
+
+    assert && assert( config.body, 'config.body required' );
+    assert && assert( config.shape instanceof Shape, 'config.shape required as a Shape' );
+    assert && assert( config.material instanceof Material, 'config.material required as a Material' );
+    assert && assert( config.volume > 0, 'non-zero config.volume required' );
 
     super( config );
 

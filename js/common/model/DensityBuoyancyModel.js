@@ -28,6 +28,8 @@ const POOL_VOLUME = 0.15;
 const POOL_WIDTH = 0.9;
 const POOL_DEPTH = 0.4;
 const POOL_HEIGHT = POOL_VOLUME / POOL_WIDTH / POOL_DEPTH;
+const GROUND_FRONT_Z = POOL_DEPTH / 2;
+const POOL_BACK_Z = -POOL_DEPTH / 2;
 
 class DensityBuoyancyModel {
 
@@ -75,20 +77,22 @@ class DensityBuoyancyModel {
 
     // @public {Bounds3}
     this.poolBounds = new Bounds3(
-      -POOL_WIDTH / 2, -POOL_HEIGHT, -POOL_DEPTH / 2,
-      POOL_WIDTH / 2, 0, POOL_DEPTH / 2
+      -POOL_WIDTH / 2, -POOL_HEIGHT, POOL_BACK_Z,
+      POOL_WIDTH / 2, 0, GROUND_FRONT_Z
     );
 
     // @public {Bounds3}
     this.groundBounds = new Bounds3(
       -10, -10, -2,
-      10, 0, POOL_DEPTH / 2
+      10, 0, GROUND_FRONT_Z
     );
 
-    // @public {Property.<Bounds3>} - We'll keep blocks within these bounds, to generally stay in-screen
+    // @public {Property.<Bounds3>} - We'll keep blocks within these bounds, to generally stay in-screen. This may be
+    // adjusted by the screen based on the visibleBoundsProperty. These are sensible defaults, with the minX and minY
+    // somewhat meant to be adjusted.
     this.invisibleBarrierBoundsProperty = new Property( new Bounds3(
-      -0.875, -4, -POOL_DEPTH / 2,
-      0.875, 4, POOL_DEPTH / 2
+      -0.875, -4, POOL_BACK_Z,
+      0.875, 4, GROUND_FRONT_Z
     ), {
       phetioType: Property.PropertyIO( Bounds3.Bounds3IO ),
       tandem: tandem.createTandem( 'invisibleBarrierBoundsProperty' ),

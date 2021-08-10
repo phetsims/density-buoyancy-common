@@ -43,7 +43,7 @@ class P2Engine extends Engine {
     this.nullBodyMap = {};
 
     // restitution - no bounce is 0, default is 0
-    // stiffness default 1e6, Number.POSITIVE_INFINITy maybe?
+    // stiffness default 1e6, Number.POSITIVE_INFINITY maybe?
     //  Saw comment "We need infinite stiffness to get exact restitution" online
     // relaxation default is 4
 

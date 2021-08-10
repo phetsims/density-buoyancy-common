@@ -109,7 +109,7 @@ class HorizontalCylinder extends Mass {
   }
 
   /**
-   * Called after a engine-physics-model step once before doing other operations (like computing buoyanct forces,
+   * Called after a engine-physics-model step once before doing other operations (like computing buoyant forces,
    * displacement, etc.) so that it can set high-performance flags used for this purpose.
    * @public
    * @override

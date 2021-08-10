@@ -218,7 +218,7 @@ class Bottle extends Mass {
   }
 
   /**
-   * Called after a engine-physics-model step once before doing other operations (like computing buoyanct forces,
+   * Called after a engine-physics-model step once before doing other operations (like computing buoyant forces,
    * displacement, etc.) so that it can set high-performance flags used for this purpose.
    * @public
    * @override
@@ -322,7 +322,7 @@ class Bottle extends Mass {
   /**
    * @public
    *
-   * @param {Array.<Vector2>} - Four points for a cubic
+   * @param {Array.<Vector2>} controlPoints - Four points for a cubic
    * @param {number} t
    * @returns {Vector2}
    */
@@ -348,7 +348,7 @@ class Bottle extends Mass {
   /**
    * @public
    *
-   * @param {Array.<Vector2>} - Four points for a cubic
+   * @param {Array.<Vector2>} controlPoints - Four points for a cubic
    * @param {number} t
    * @returns {Vector2}
    */
@@ -445,7 +445,7 @@ class Bottle extends Mass {
   /**
    * @private
    *
-   * @param {number} t
+   * @param {number} r
    * @returns {number}
    */
   static getTaperParametricFromRadius( r ) {
@@ -455,7 +455,7 @@ class Bottle extends Mass {
   /**
    * @private
    *
-   * @param {number} t
+   * @param {number} r
    * @returns {number}
    */
   static getBaseFirstTipParametricFromRadius( r ) {
@@ -465,7 +465,7 @@ class Bottle extends Mass {
   /**
    * @private
    *
-   * @param {number} t
+   * @param {number} r
    * @returns {number}
    */
   static getBaseSecondTipParametricFromRadius( r ) {
@@ -475,7 +475,7 @@ class Bottle extends Mass {
   /**
    * @private
    *
-   * @param {number} t
+   * @param {number} r
    * @returns {number}
    */
   static getBaseSaddleParametricFromRadius( r ) {
@@ -703,7 +703,7 @@ class Bottle extends Mass {
    * Returns the cross-sectional area taken up by a selection of triangles in 2d.
    * @public
    *
-   * @param {Array.<Vector2>} - Every section of three vertices represents a 2d triangle
+   * @param {Array.<Vector2>} triangles - Every section of three vertices represents a 2d triangle
    * @returns {number}
    */
   static getCrossSectionArea( triangles ) {

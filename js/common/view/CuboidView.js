@@ -147,7 +147,7 @@ class CuboidView extends MassView {
    * @param {Bounds3} size
    * @param {number} offset - How many vertices have been specified so far?
    * @param {Vector3} offsetPosition - How to transform all of the points
-   * @returns {number} - The offset after the specified verticies have been written
+   * @returns {number} - The offset after the specified vertices have been written
    */
   static updateArrays( positionArray, normalArray, uvArray, size, offset = 0, offsetPosition = Vector3.ZERO ) {
     let positionIndex = offset * 3;

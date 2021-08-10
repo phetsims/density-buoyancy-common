@@ -12,7 +12,7 @@ import MassView from './MassView.js';
 
 class EllipsoidView extends MassView {
   /**
-   * @param {Ellipsod} ellipsoid
+   * @param {Ellipsoid} ellipsoid
    * @param {Object} [options]
    */
   constructor( ellipsoid, options ) {
@@ -21,7 +21,7 @@ class EllipsoidView extends MassView {
 
     super( ellipsoid, ellipsoidGeometry, options );
 
-    // @public {Ellipsod}
+    // @public {Ellipsoid}
     this.ellipsoid = ellipsoid;
 
     // @private {THREE.Sphere}

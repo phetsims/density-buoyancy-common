@@ -75,7 +75,7 @@ class VerticalCylinderView extends MassView {
    * @param {number} height
    * @param {number} offset - How many vertices have been specified so far?
    * @param {Vector3} offsetPosition - How to transform all of the points
-   * @returns {number} - The offset after the specified verticies have been written
+   * @returns {number} - The offset after the specified vertices have been written
    */
   static updateArrays( positionArray, normalArray, uvArray, radius, height, offset = 0, offsetPosition = Vector3.ZERO ) {
     const baseY = -height / 2;

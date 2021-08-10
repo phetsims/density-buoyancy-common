@@ -66,7 +66,7 @@ class ConeView extends MassView {
 
   /**
    * Updates provided geometry arrays given the specific size.
-   * @private
+   * @public
    *
    * @param {Float32Array|null} positionArray
    * @param {Float32Array|null} normalArray

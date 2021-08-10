@@ -7,6 +7,7 @@
  */
 
 import Dimension2 from '../../../../dot/js/Dimension2.js';
+import Utils from '../../../../dot/js/Utils.js';
 import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
 import NumberControl from '../../../../scenery-phet/js/NumberControl.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
@@ -45,6 +46,10 @@ class ComparisonNumberControl extends NumberControl {
       arrowButtonOptions: { scale: 0.56 },
 
       sliderOptions: {
+        // Constrain to 0.1 consistently, see https://github.com/phetsims/density/issues/75#issuecomment-896341332
+        constrainValue: value => {
+          return property.range.constrainValue( Utils.roundToInterval( value, 0.1 ) );
+        },
         majorTickLength: 5,
         thumbSize: new Dimension2( 13, 22 ),
         thumbTouchAreaXDilation: 5,

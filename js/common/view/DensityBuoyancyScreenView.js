@@ -687,6 +687,9 @@ class DensityBuoyancyScreenView extends ScreenView {
         model.invisibleBarrierBoundsProperty.value = model.invisibleBarrierBoundsProperty.value.withMinX( leftPoint.x + 0.01 ).withMaxX( rightPoint.x - 0.01 );
       }
     };
+
+    // leftBarrierViewPointProperty and rightBarrierViewPointProperty are Property<Property>, and we need to listen
+    // to when the value.value changes
     new DynamicProperty( this.leftBarrierViewPointProperty ).lazyLink( resizeBarrier );
     new DynamicProperty( this.rightBarrierViewPointProperty ).lazyLink( resizeBarrier );
     this.postLayoutEmitter.addListener( resizeBarrier ); // We need to wait for the layout AND render

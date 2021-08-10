@@ -56,7 +56,6 @@ class Scale extends Mass {
       body: engine.createBox( SCALE_WIDTH, SCALE_HEIGHT, config.canMove === false ),
       shape: Shape.rect( -SCALE_WIDTH / 2, -SCALE_HEIGHT / 2, SCALE_WIDTH, SCALE_HEIGHT ),
       volume: SCALE_VOLUME,
-      canRotate: false,
 
       // {DisplayType}
       displayType: DisplayType.NEWTONS,

@@ -35,7 +35,6 @@ class Cone extends Mass {
       body: engine.createFromVertices( initialVertices, false ),
       shape: Shape.polygon( initialVertices ),
       volume: Cone.getVolume( radius, height ),
-      canRotate: false,
 
       phetioType: Cone.ConeIO
     }, config );

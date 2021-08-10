@@ -36,7 +36,6 @@ class Boat extends Mass {
       body: engine.createFromVertices( boatIntersectionVertices, true ),
       shape: Shape.polygon( boatIntersectionVertices ),
       volume: volume,
-      canRotate: false,
 
       // material
       material: Material.ALUMINUM

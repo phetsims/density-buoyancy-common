@@ -62,16 +62,16 @@ class Mass extends PhetioObject {
   constructor( engine, config ) {
 
     config = merge( {
-      // {Engine.Body}
+      // {Engine.Body} - required
       body: null,
 
-      // {Shape}
+      // {Shape} - required
       shape: null,
 
-      // {Material}
+      // {Material} - required
       material: null,
 
-      // {number}
+      // {number} - required
       volume: 0,
 
       // {Matrix3} - optional
@@ -86,9 +86,10 @@ class Mass extends PhetioObject {
       // {MassTag} - optional
       tag: MassTag.NONE,
 
-      // {Tandem}
+      // {Tandem} - optional
       tandem: Tandem.OPTIONAL,
 
+      // {IOType} - optional
       phetioType: Mass.MassIO
     }, config );
 

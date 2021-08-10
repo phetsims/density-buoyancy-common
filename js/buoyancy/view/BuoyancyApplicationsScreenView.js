@@ -11,7 +11,6 @@ import DynamicProperty from '../../../../axon/js/DynamicProperty.js';
 import Property from '../../../../axon/js/Property.js';
 import Range from '../../../../dot/js/Range.js';
 import Utils from '../../../../dot/js/Utils.js';
-import Vector3 from '../../../../dot/js/Vector3.js';
 import merge from '../../../../phet-core/js/merge.js';
 import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
 import NumberControl from '../../../../scenery-phet/js/NumberControl.js';
@@ -53,7 +52,7 @@ class BuoyancyApplicationsScreenView extends DensityBuoyancyScreenView {
   constructor( model, tandem ) {
 
     super( model, tandem, {
-      cameraLookAt: new Vector3( 0, -0.18, 0 )
+      cameraLookAt: DensityBuoyancyCommonConstants.BUOYANCY_CAMERA_LOOK_AT
     } );
 
     // Don't create the majority of the view if three.js isn't usable (e.g. no WebGL)

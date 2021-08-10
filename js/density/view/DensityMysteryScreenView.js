@@ -6,7 +6,6 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
-import Vector3 from '../../../../dot/js/Vector3.js';
 import merge from '../../../../phet-core/js/merge.js';
 import RefreshButton from '../../../../scenery-phet/js/buttons/RefreshButton.js';
 import AlignPropertyBox from '../../../../scenery/js/layout/AlignPropertyBox.js';
@@ -39,7 +38,7 @@ class DensityMysteryScreenView extends DensityBuoyancyScreenView {
   constructor( model, tandem ) {
 
     super( model, tandem, {
-      cameraLookAt: new Vector3( 0, 0, 0 )
+      cameraLookAt: DensityBuoyancyCommonConstants.DENSITY_CAMERA_LOOK_AT
     } );
 
     // Don't create the majority of the view if three.js isn't usable (e.g. no WebGL)

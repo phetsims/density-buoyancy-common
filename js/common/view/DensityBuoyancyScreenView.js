@@ -83,7 +83,7 @@ class DensityBuoyancyScreenView extends ScreenView {
     options = merge( {
       cameraPosition: new Vector3( 0, 0.4, 2 ),
       cameraZoom: 1.7,
-      cameraLookAt: new Vector3( 0, -0.1, 0 )
+      cameraLookAt: Vector3.ZERO
     }, options );
 
     super( {

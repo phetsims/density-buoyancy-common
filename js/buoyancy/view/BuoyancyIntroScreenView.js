@@ -6,6 +6,7 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
+import Vector3 from '../../../../dot/js/Vector3.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import AlignPropertyBox from '../../../../scenery/js/layout/AlignPropertyBox.js';
 import HBox from '../../../../scenery/js/nodes/HBox.js';
@@ -38,7 +39,10 @@ class BuoyancyIntroScreenView extends DensityBuoyancyScreenView {
    */
   constructor( model, tandem ) {
 
-    super( model, tandem );
+    super( model, tandem, {
+      // Custom just for this screen
+      cameraLookAt: new Vector3( 0, -0.1, 0 )
+    } );
 
     // Don't create the majority of the view if three.js isn't usable (e.g. no WebGL)
     if ( !this.enabled ) {

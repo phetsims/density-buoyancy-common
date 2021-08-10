@@ -39,7 +39,7 @@ class DensityCompareScreenView extends DensityBuoyancyScreenView {
   constructor( model, tandem ) {
 
     super( model, tandem, {
-      cameraLookAt: new Vector3( 0, 0, 0 )
+      cameraLookAt: DensityBuoyancyCommonConstants.DENSITY_CAMERA_LOOK_AT
     } );
 
     // Don't create the majority of the view if three.js isn't usable (e.g. no WebGL)

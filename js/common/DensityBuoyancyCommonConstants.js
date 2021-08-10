@@ -6,6 +6,7 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
+import Vector3 from '../../../dot/js/Vector3.js';
 import PhetFont from '../../../scenery-phet/js/PhetFont.js';
 import densityBuoyancyCommon from '../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonColors from './view/DensityBuoyancyCommonColors.js';
@@ -47,7 +48,11 @@ const DensityBuoyancyCommonConstants = {
     buttonXMargin: 5,
     titleAlignX: 'left',
     fill: DensityBuoyancyCommonColors.panelBackgroundProperty
-  }
+  },
+
+  // {Vector3} cameraLookAt locations
+  DENSITY_CAMERA_LOOK_AT: Vector3.ZERO,
+  BUOYANCY_CAMERA_LOOK_AT: new Vector3( 0, -0.18, 0 )
 };
 
 densityBuoyancyCommon.register( 'DensityBuoyancyCommonConstants', DensityBuoyancyCommonConstants );

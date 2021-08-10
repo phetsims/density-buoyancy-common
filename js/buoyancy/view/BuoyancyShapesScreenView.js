@@ -10,7 +10,6 @@ import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import DynamicProperty from '../../../../axon/js/DynamicProperty.js';
 import Property from '../../../../axon/js/Property.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
-import Vector3 from '../../../../dot/js/Vector3.js';
 import merge from '../../../../phet-core/js/merge.js';
 import AlignPropertyBox from '../../../../scenery/js/layout/AlignPropertyBox.js';
 import HStrut from '../../../../scenery/js/nodes/HStrut.js';
@@ -41,7 +40,7 @@ class BuoyancyShapesScreenView extends SecondaryMassScreenView {
   constructor( model, tandem ) {
 
     super( model, tandem, {
-      cameraLookAt: new Vector3( 0, -0.18, 0 )
+      cameraLookAt: DensityBuoyancyCommonConstants.BUOYANCY_CAMERA_LOOK_AT
     } );
 
     // Don't create the majority of the view if three.js isn't usable (e.g. no WebGL)

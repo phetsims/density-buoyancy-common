@@ -9,7 +9,6 @@
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import Utils from '../../../../dot/js/Utils.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
-import Vector3 from '../../../../dot/js/Vector3.js';
 import merge from '../../../../phet-core/js/merge.js';
 import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
@@ -46,7 +45,7 @@ class BuoyancyExploreScreenView extends SecondaryMassScreenView {
   constructor( model, tandem ) {
 
     super( model, tandem, {
-      cameraLookAt: new Vector3( 0, -0.18, 0 )
+      cameraLookAt: DensityBuoyancyCommonConstants.BUOYANCY_CAMERA_LOOK_AT
     } );
 
     // Don't create the majority of the view if three.js isn't usable (e.g. no WebGL)

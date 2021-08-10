@@ -44,8 +44,7 @@ class DensityTableNode extends Node {
 
     const layoutOptions = {
       xMargin: 5,
-      yMargin: 2,
-      xAlign: 'left'
+      yMargin: 2
     };
 
     const gridBox = new GridBox( {
@@ -53,22 +52,22 @@ class DensityTableNode extends Node {
         new Text( densityBuoyancyCommonStrings.material.name, {
           font: headerFont,
           maxWidth: 160,
-          layoutOptions: merge( { x: 0, y: 0 }, layoutOptions )
+          layoutOptions: merge( { x: 0, y: 0, xAlign: 'left' }, layoutOptions )
         } ),
         new Text( densityBuoyancyCommonStrings.densityKgL, {
           font: headerFont,
           maxWidth: 160,
-          layoutOptions: merge( { x: 1, y: 0 }, layoutOptions )
+          layoutOptions: merge( { x: 1, y: 0, xAlign: 'right' }, layoutOptions )
         } ),
         ...materials.map( ( material, index ) => new Text( material.name, {
           font: bodyFont,
           maxWidth: 200,
-          layoutOptions: merge( { x: 0, y: index + 1 }, layoutOptions )
+          layoutOptions: merge( { x: 0, y: index + 1, xAlign: 'left' }, layoutOptions )
         } ) ),
         ...materials.map( ( material, index ) => new Text( Utils.toFixed( material.density / 1000, 2 ), {
           font: bodyFont,
           maxWidth: 150,
-          layoutOptions: merge( { x: 1, y: index + 1 }, layoutOptions )
+          layoutOptions: merge( { x: 1, y: index + 1, xAlign: 'right' }, layoutOptions )
         } ) )
       ]
     } );

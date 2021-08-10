@@ -21,7 +21,8 @@ class DensityExploreModel extends DensityBuoyancyModel {
   constructor( tandem ) {
 
     super( tandem, {
-      showMassesDefault: true
+      showMassesDefault: true,
+      canShowForces: false
     } );
 
     // @public {Property.<boolean>}

@@ -13,6 +13,7 @@ import createObservableArray from '../../../../axon/js/createObservableArray.js'
 import Bounds3 from '../../../../dot/js/Bounds3.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import merge from '../../../../phet-core/js/merge.js';
+import Tandem from '../../../../tandem/js/Tandem.js';
 import NumberIO from '../../../../tandem/js/types/NumberIO.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonQueryParameters from '../DensityBuoyancyCommonQueryParameters.js';
@@ -40,15 +41,26 @@ class DensityBuoyancyModel {
   constructor( tandem, options ) {
     options = merge( {
       // {boolean}
-      showMassesDefault: false
+      showMassesDefault: false,
+
+      // {boolean}
+      canShowForces: true
     }, options );
 
     // @public {Property.<boolean>}
-    this.showGravityForceProperty = new BooleanProperty( false, { tandem: tandem.createTandem( 'showGravityForceProperty' ) } );
-    this.showBuoyancyForceProperty = new BooleanProperty( false, { tandem: tandem.createTandem( 'showBuoyancyForceProperty' ) } );
-    this.showContactForceProperty = new BooleanProperty( false, { tandem: tandem.createTandem( 'showContactForceProperty' ) } );
+    this.showGravityForceProperty = new BooleanProperty( false, {
+      tandem: options.canShowForces ? tandem.createTandem( 'showGravityForceProperty' ) : Tandem.OPT_OUT
+    } );
+    this.showBuoyancyForceProperty = new BooleanProperty( false, {
+      tandem: options.canShowForces ? tandem.createTandem( 'showBuoyancyForceProperty' ) : Tandem.OPT_OUT
+    } );
+    this.showContactForceProperty = new BooleanProperty( false, {
+      tandem: options.canShowForces ? tandem.createTandem( 'showContactForceProperty' ) : Tandem.OPT_OUT
+    } );
+    this.showForceValuesProperty = new BooleanProperty( false, {
+      tandem: options.canShowForces ? tandem.createTandem( 'showForceValuesProperty' ) : Tandem.OPT_OUT
+    } );
     this.showMassesProperty = new BooleanProperty( options.showMassesDefault, { tandem: tandem.createTandem( 'showMassesProperty' ) } );
-    this.showForceValuesProperty = new BooleanProperty( false, { tandem: tandem.createTandem( 'showForceValuesProperty' ) } );
 
     // @public {Property.<Gravity>}
     this.gravityProperty = new Property( Gravity.EARTH, {

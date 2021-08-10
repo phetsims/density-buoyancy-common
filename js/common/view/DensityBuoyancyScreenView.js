@@ -835,7 +835,7 @@ class DensityBuoyancyScreenView extends ScreenView {
     stage.threeCamera.lookAt( ThreeUtils.vectorToThree( lookAt ) );
     stage.threeCamera.updateProjectionMatrix();
 
-    setupScene( stage.threeScene, stage.threeRenderer );
+    setupScene( stage.threeScene );
 
     stage.threeCamera.fov = 50;
     stage.threeCamera.aspect = width / height;
@@ -883,7 +883,7 @@ class DensityBuoyancyScreenView extends ScreenView {
       return DensityBuoyancyScreenView.getFallbackIcon();
     }
 
-    return DensityBuoyancyScreenView.getAngledIcon( 5.5, new Vector3( 0, 0, 0 ), ( scene, renderer ) => {
+    return DensityBuoyancyScreenView.getAngledIcon( 5.5, new Vector3( 0, 0, 0 ), scene => {
 
       const boxGeometry = new THREE.BoxGeometry( 0.1, 0.1, 0.1 );
 

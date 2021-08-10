@@ -216,7 +216,6 @@ class Boat extends Mass {
   /**
    * Returns the internal basin area of this object up to a given y level, assuming a y value for the given liquid level.
    * @public
-   * @override
    *
    * Assumes step information was updated.
    *

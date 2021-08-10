@@ -22,9 +22,9 @@ const DensityBuoyancyModal = ( type, Mode, initialMode ) => {
   return class extends type {
     /**
      * @param {Tandem} tandem
-     * @param {function(Mode):Array.<Mass>} createMassesCallback - Creates masses (when given a mode)
-     * @param {function(Mode):Array.<Mass>} regenerateMassesCallback - Regenerate masses (when given a mode)
-     * @param {function(Mode,Array.<Mass>)} positionMassesCallback - Positions masses (for a given mode)
+     * @param {function(DensityBuoyancyModel,Mode):Array.<Mass>} createMassesCallback - Creates masses (when given a mode)
+     * @param {function(DensityBuoyancyModel,Mode,Array.<Mass>)} regenerateMassesCallback - Regenerate masses (when given a mode)
+     * @param {function(DensityBuoyancyModel,Mode,Array.<Mass>)} positionMassesCallback - Positions masses (for a given mode)
      * @param {*} args
      */
     constructor( tandem, createMassesCallback, regenerateMassesCallback, positionMassesCallback, ...args ) {

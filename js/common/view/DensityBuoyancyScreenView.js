@@ -287,7 +287,7 @@ class DensityBuoyancyScreenView extends ScreenView {
 
     // Front ground
     const frontGeometry = new THREE.BufferGeometry();
-    frontGeometry.addAttribute( 'position', new THREE.BufferAttribute( new Float32Array( [
+    frontGeometry.setAttribute( 'position', new THREE.BufferAttribute( new Float32Array( [
       // Left side
       ...ThreeUtils.frontVertices( new Bounds2(
         model.groundBounds.minX, model.groundBounds.minY,
@@ -316,7 +316,7 @@ class DensityBuoyancyScreenView extends ScreenView {
 
     // Top ground
     const topGeometry = new THREE.BufferGeometry();
-    topGeometry.addAttribute( 'position', new THREE.BufferAttribute( new Float32Array( [
+    topGeometry.setAttribute( 'position', new THREE.BufferAttribute( new Float32Array( [
       // Left side
       ...ThreeUtils.topVertices( new Bounds2(
         model.groundBounds.minX, model.poolBounds.minZ,
@@ -335,7 +335,7 @@ class DensityBuoyancyScreenView extends ScreenView {
         model.groundBounds.maxX, model.poolBounds.minZ
       ), model.groundBounds.maxY )
     ] ), 3 ) );
-    topGeometry.addAttribute( 'normal', new THREE.BufferAttribute( new Float32Array( [
+    topGeometry.setAttribute( 'normal', new THREE.BufferAttribute( new Float32Array( [
       // Left
       0, 1, 0,
       0, 1, 0,
@@ -385,7 +385,7 @@ class DensityBuoyancyScreenView extends ScreenView {
       1, 1, 0,
       0, 1, 1
     ] );
-    topGeometry.addAttribute( 'color', new THREE.BufferAttribute( topColorArray, 3 ) );
+    topGeometry.setAttribute( 'color', new THREE.BufferAttribute( topColorArray, 3 ) );
     DensityBuoyancyCommonColors.grassCloseProperty.link( grassCloseColor => {
       for ( let i = 0; i < 18; i++ ) {
         topColorArray[ i * 3 + 0 ] = grassCloseColor.r / 255;
@@ -411,7 +411,7 @@ class DensityBuoyancyScreenView extends ScreenView {
 
     // Pool interior
     const poolGeometry = new THREE.BufferGeometry();
-    poolGeometry.addAttribute( 'position', new THREE.BufferAttribute( new Float32Array( [
+    poolGeometry.setAttribute( 'position', new THREE.BufferAttribute( new Float32Array( [
       // Bottom
       ...ThreeUtils.topVertices( new Bounds2(
         model.poolBounds.minX, model.poolBounds.minZ,
@@ -436,7 +436,7 @@ class DensityBuoyancyScreenView extends ScreenView {
         model.poolBounds.maxZ, model.poolBounds.maxY
       ), model.poolBounds.maxX )
     ] ), 3 ) );
-    poolGeometry.addAttribute( 'normal', new THREE.BufferAttribute( new Float32Array( [
+    poolGeometry.setAttribute( 'normal', new THREE.BufferAttribute( new Float32Array( [
       // Bottom
       0, 1, 0,
       0, 1, 0,
@@ -482,8 +482,8 @@ class DensityBuoyancyScreenView extends ScreenView {
       const barrierGeometry = new THREE.BufferGeometry();
       const barrierPositionArray = new Float32Array( 18 * 2 );
 
-      barrierGeometry.addAttribute( 'position', new THREE.BufferAttribute( barrierPositionArray, 3 ) );
-      barrierGeometry.addAttribute( 'normal', new THREE.BufferAttribute( new Float32Array( [
+      barrierGeometry.setAttribute( 'position', new THREE.BufferAttribute( barrierPositionArray, 3 ) );
+      barrierGeometry.setAttribute( 'normal', new THREE.BufferAttribute( new Float32Array( [
         // Left
         1, 0, 0,
         1, 0, 0,
@@ -523,8 +523,8 @@ class DensityBuoyancyScreenView extends ScreenView {
     // Water
     const waterGeometry = new THREE.BufferGeometry();
     const waterPositionArray = BoatDesign.createWaterVertexArray();
-    waterGeometry.addAttribute( 'position', new THREE.BufferAttribute( waterPositionArray, 3 ) );
-    waterGeometry.addAttribute( 'normal', new THREE.BufferAttribute( BoatDesign.createWaterNormalArray(), 3 ) );
+    waterGeometry.setAttribute( 'position', new THREE.BufferAttribute( waterPositionArray, 3 ) );
+    waterGeometry.setAttribute( 'normal', new THREE.BufferAttribute( BoatDesign.createWaterNormalArray(), 3 ) );
     const waterMaterial = new THREE.MeshLambertMaterial( {
       transparent: true,
       depthWrite: false

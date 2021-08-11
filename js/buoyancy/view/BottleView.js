@@ -22,7 +22,7 @@ class BottleView extends MassView {
 
     const primaryGeometry = Bottle.getPrimaryGeometry();
 
-    super( bottle, new THREE.Geometry(), options );
+    super( bottle, new THREE.BufferGeometry(), options );
 
     const bottomClipPlane = new THREE.Plane( new THREE.Vector3( 0, -1, 0 ), 0 );
     const topClipPlane = new THREE.Plane( new THREE.Vector3( 0, 1, 0 ), 0 );
@@ -103,8 +103,8 @@ class BottleView extends MassView {
     }
 
     const interiorSurfaceGeometry = new THREE.BufferGeometry();
-    interiorSurfaceGeometry.addAttribute( 'position', new THREE.BufferAttribute( crossSectionPositionArray, 3 ) );
-    interiorSurfaceGeometry.addAttribute( 'normal', new THREE.BufferAttribute( crossSectionNormalArray, 3 ) );
+    interiorSurfaceGeometry.setAttribute( 'position', new THREE.BufferAttribute( crossSectionPositionArray, 3 ) );
+    interiorSurfaceGeometry.setAttribute( 'normal', new THREE.BufferAttribute( crossSectionNormalArray, 3 ) );
 
     const setCrossSectionRelativeY = y => {
       Bottle.fillCrossSectionVertexArray( y, crossSectionPositionArray );

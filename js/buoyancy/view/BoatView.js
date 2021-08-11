@@ -21,7 +21,7 @@ class BoatView extends MassView {
    */
   constructor( boat, liquidYInterpolatedProperty, options ) {
 
-    super( boat, new THREE.Geometry(), options );
+    super( boat, new THREE.BufferGeometry(), options );
 
     // Clip planes at the boat's water level
     const bottomBoatClipPlane = new THREE.Plane( new THREE.Vector3( 0, -1, 0 ), 0 );
@@ -124,8 +124,8 @@ class BoatView extends MassView {
       topLiquidNormalArray[ i ] = 1; // normals should all be 0,1,0
     }
     const topLiquidGeometry = new THREE.BufferGeometry();
-    topLiquidGeometry.addAttribute( 'position', new THREE.BufferAttribute( topLiquidPositionArray, 3 ) );
-    topLiquidGeometry.addAttribute( 'normal', new THREE.BufferAttribute( topLiquidNormalArray, 3 ) );
+    topLiquidGeometry.setAttribute( 'position', new THREE.BufferAttribute( topLiquidPositionArray, 3 ) );
+    topLiquidGeometry.setAttribute( 'normal', new THREE.BufferAttribute( topLiquidNormalArray, 3 ) );
 
     const topLiquidMaterial = new THREE.MeshPhongMaterial( {
       color: 0x33FF33, // will be replaced with liquid color below

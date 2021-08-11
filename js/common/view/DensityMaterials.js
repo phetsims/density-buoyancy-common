@@ -89,7 +89,7 @@ function getEnvironmentTexture() {
 
     context.putImageData( imageData, 0, 0 );
 
-    envMapTexture = new THREE.CanvasTexture( canvas, THREE.EquirectangularReflectionMapping, THREE.RepeatWrapping, THREE.RepeatWrapping );
+    envMapTexture = new THREE.CanvasTexture( canvas, THREE.EquirectangularReflectionMapping, THREE.RepeatWrapping, THREE.RepeatWrapping, THREE.LinearFilter, THREE.LinearMipmapLinearFilter, THREE.RGBEFormat );
   }
   return envMapTexture;
 }
@@ -172,7 +172,7 @@ class IceMaterialView extends MaterialView {
       roughness: 0.7,
       refractionRatio: 1 / 1.309,
       metalness: 0.4,
-      clearCoat: 1,
+      clearcoat: 1,
       reflectivity: 1,
       envMapIntensity: 2, // is this too much cheating?
 

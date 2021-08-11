@@ -57,9 +57,9 @@ class CuboidView extends MassView {
     CuboidView.updateArrays( positionArray, normalArray, uvArray, size );
 
     const cuboidGeometry = new THREE.BufferGeometry();
-    cuboidGeometry.addAttribute( 'position', new THREE.BufferAttribute( positionArray, 3 ) );
-    cuboidGeometry.addAttribute( 'normal', new THREE.BufferAttribute( normalArray, 3 ) );
-    cuboidGeometry.addAttribute( 'uv', new THREE.BufferAttribute( uvArray, 2 ) );
+    cuboidGeometry.setAttribute( 'position', new THREE.BufferAttribute( positionArray, 3 ) );
+    cuboidGeometry.setAttribute( 'normal', new THREE.BufferAttribute( normalArray, 3 ) );
+    cuboidGeometry.setAttribute( 'uv', new THREE.BufferAttribute( uvArray, 2 ) );
 
     super( cuboid, cuboidGeometry, options );
 

@@ -679,9 +679,9 @@ class BoatDesign {
     includeExterior && writeFlat( sternExteriorRow, flipRow( sternExteriorRow ), new Vector3( 1, 0, 0 ) );
 
     const boatGeometry = new THREE.BufferGeometry();
-    boatGeometry.addAttribute( 'position', new THREE.BufferAttribute( new Float32Array( positions ), 3 ) );
-    boatGeometry.addAttribute( 'normal', new THREE.BufferAttribute( new Float32Array( invertNormals ? normals.map( n => -n ) : normals ), 3 ) );
-    boatGeometry.addAttribute( 'uv', new THREE.BufferAttribute( new Float32Array( uvs ), 2 ) );
+    boatGeometry.setAttribute( 'position', new THREE.BufferAttribute( new Float32Array( positions ), 3 ) );
+    boatGeometry.setAttribute( 'normal', new THREE.BufferAttribute( new Float32Array( invertNormals ? normals.map( n => -n ) : normals ), 3 ) );
+    boatGeometry.setAttribute( 'uv', new THREE.BufferAttribute( new Float32Array( uvs ), 2 ) );
     return boatGeometry;
   }
 

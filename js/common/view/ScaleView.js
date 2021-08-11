@@ -67,9 +67,9 @@ class ScaleView extends MassView {
     VerticalCylinderView.updateArrays( positionArray, normalArray, uvArray, Scale.SCALE_WIDTH / 2, Scale.SCALE_TOP_HEIGHT, cuboidElements, topOffset );
 
     const scaleGeometry = new THREE.BufferGeometry();
-    scaleGeometry.addAttribute( 'position', new THREE.BufferAttribute( positionArray, 3 ) );
-    scaleGeometry.addAttribute( 'normal', new THREE.BufferAttribute( normalArray, 3 ) );
-    scaleGeometry.addAttribute( 'uv', new THREE.BufferAttribute( uvArray, 2 ) );
+    scaleGeometry.setAttribute( 'position', new THREE.BufferAttribute( positionArray, 3 ) );
+    scaleGeometry.setAttribute( 'normal', new THREE.BufferAttribute( normalArray, 3 ) );
+    scaleGeometry.setAttribute( 'uv', new THREE.BufferAttribute( uvArray, 2 ) );
 
     return scaleGeometry;
   }

@@ -1208,9 +1208,9 @@ const FLAT_INTERSECTION_VERTICES = [ ${flatIntersectionVertices.map( v => `new V
     } );
 
     const bottleGeometry = new THREE.BufferGeometry();
-    bottleGeometry.addAttribute( 'position', new THREE.BufferAttribute( new Float32Array( positions.map( Bottle.positionArrayMap ) ), 3 ) );
-    bottleGeometry.addAttribute( 'normal', new THREE.BufferAttribute( new Float32Array( normals ), 3 ) );
-    bottleGeometry.addAttribute( 'uv', new THREE.BufferAttribute( new Float32Array( uvs ), 2 ) );
+    bottleGeometry.setAttribute( 'position', new THREE.BufferAttribute( new Float32Array( positions.map( Bottle.positionArrayMap ) ), 3 ) );
+    bottleGeometry.setAttribute( 'normal', new THREE.BufferAttribute( new Float32Array( normals ), 3 ) );
+    bottleGeometry.setAttribute( 'uv', new THREE.BufferAttribute( new Float32Array( uvs ), 2 ) );
     return bottleGeometry;
   }
 
@@ -1281,9 +1281,9 @@ const FLAT_INTERSECTION_VERTICES = [ ${flatIntersectionVertices.map( v => `new V
     );
 
     const capGeometry = new THREE.BufferGeometry();
-    capGeometry.addAttribute( 'position', new THREE.BufferAttribute( new Float32Array( positions.map( Bottle.positionArrayMap ) ), 3 ) );
-    capGeometry.addAttribute( 'normal', new THREE.BufferAttribute( new Float32Array( normals ), 3 ) );
-    capGeometry.addAttribute( 'uv', new THREE.BufferAttribute( new Float32Array( uvs ), 2 ) );
+    capGeometry.setAttribute( 'position', new THREE.BufferAttribute( new Float32Array( positions.map( Bottle.positionArrayMap ) ), 3 ) );
+    capGeometry.setAttribute( 'normal', new THREE.BufferAttribute( new Float32Array( normals ), 3 ) );
+    capGeometry.setAttribute( 'uv', new THREE.BufferAttribute( new Float32Array( uvs ), 2 ) );
     return capGeometry;
   }
 

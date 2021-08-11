@@ -28,9 +28,9 @@ class ConeView extends MassView {
     ConeView.updateArrays( positionArray, normalArray, uvArray, cone.radiusProperty.value, cone.heightProperty.value, cone.isVertexUp );
 
     const coneGeometry = new THREE.BufferGeometry();
-    coneGeometry.addAttribute( 'position', new THREE.BufferAttribute( positionArray, 3 ) );
-    coneGeometry.addAttribute( 'normal', new THREE.BufferAttribute( normalArray, 3 ) );
-    coneGeometry.addAttribute( 'uv', new THREE.BufferAttribute( uvArray, 2 ) );
+    coneGeometry.setAttribute( 'position', new THREE.BufferAttribute( positionArray, 3 ) );
+    coneGeometry.setAttribute( 'normal', new THREE.BufferAttribute( normalArray, 3 ) );
+    coneGeometry.setAttribute( 'uv', new THREE.BufferAttribute( uvArray, 2 ) );
 
     super( cone, coneGeometry, options );
 

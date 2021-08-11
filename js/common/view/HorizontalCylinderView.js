@@ -28,9 +28,9 @@ class HorizontalCylinderView extends MassView {
     HorizontalCylinderView.updateArrays( positionArray, normalArray, uvArray, verticalCylinder.radiusProperty.value, verticalCylinder.lengthProperty.value );
 
     const verticalCylinderGeometry = new THREE.BufferGeometry();
-    verticalCylinderGeometry.addAttribute( 'position', new THREE.BufferAttribute( positionArray, 3 ) );
-    verticalCylinderGeometry.addAttribute( 'normal', new THREE.BufferAttribute( normalArray, 3 ) );
-    verticalCylinderGeometry.addAttribute( 'uv', new THREE.BufferAttribute( uvArray, 2 ) );
+    verticalCylinderGeometry.setAttribute( 'position', new THREE.BufferAttribute( positionArray, 3 ) );
+    verticalCylinderGeometry.setAttribute( 'normal', new THREE.BufferAttribute( normalArray, 3 ) );
+    verticalCylinderGeometry.setAttribute( 'uv', new THREE.BufferAttribute( uvArray, 2 ) );
 
     super( verticalCylinder, verticalCylinderGeometry, options );
 

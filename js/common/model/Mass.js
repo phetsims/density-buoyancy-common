@@ -272,6 +272,7 @@ class Mass extends PhetioObject {
   /**
    * Returns the cross-sectional area of this object at a given y level.
    * @public
+   * @abstract
    *
    * @param {number} liquidLevel
    * @returns {number}
@@ -283,6 +284,7 @@ class Mass extends PhetioObject {
   /**
    * Returns the cumulative displaced volume of this object up to a given y level.
    * @public
+   * @abstract
    *
    * @param {number} liquidLevel
    * @returns {number}
@@ -345,6 +347,7 @@ class Mass extends PhetioObject {
   /**
    * Sets the general size of the mass based on a general size scale.
    * @public
+   * @abstract
    *
    * @param {number} widthRatio
    * @param {number} heightRatio

@@ -19,6 +19,7 @@ class Engine {
   /**
    * Steps forward in time.
    * @public
+   * @abstract
    *
    * @param {number} dt
    */
@@ -29,6 +30,7 @@ class Engine {
   /**
    * Adds a body into the engine, so that it will be tracked during the step.
    * @public
+   * @abstract
    *
    * @param {Engine.Body} body
    */
@@ -39,6 +41,7 @@ class Engine {
   /**
    * Removes a body from the engine, so that it will not be tracked during the step anymore.
    * @public
+   * @abstract
    *
    * @param {Engine.Body} body
    */
@@ -49,6 +52,7 @@ class Engine {
   /**
    * Sets the mass of a body (and whether it can rotate, which for some engines needs to be set at the same time).
    * @public
+   * @abstract
    *
    * @param {Engine.Body} body
    * @param {number} mass
@@ -66,6 +70,7 @@ class Engine {
   /**
    * Sets the provided matrix to the current transformation matrix of the body (to reduce allocations)
    * @public
+   * @abstract
    *
    * @param {Engine.Body} body
    * @param {Matrix3} matrix
@@ -77,6 +82,7 @@ class Engine {
   /**
    * Sets the provided matrix to the current transformation matrix of the body (to reduce allocations)
    * @public
+   * @abstract
    *
    * @param {Engine.Body} body
    * @param {Matrix3} matrix
@@ -88,6 +94,7 @@ class Engine {
   /**
    * Sets the position of a body.
    * @public
+   * @abstract
    *
    * @param {Engine.Body} body
    * @param {Vector2} position
@@ -99,6 +106,7 @@ class Engine {
   /**
    * Sets the rotation of a body.
    * @public
+   * @abstract
    *
    * @param {Engine.Body} body
    * @param {number} rotation
@@ -110,6 +118,7 @@ class Engine {
   /**
    * Returns the velocity of a body.
    * @public
+   * @abstract
    *
    * @param {Engine.Body} body
    * @returns {Vector2}
@@ -121,6 +130,7 @@ class Engine {
   /**
    * Sets the velocity of a body.
    * @public
+   * @abstract
    *
    * @param {Engine.Body} body
    * @param {Vector2} velocity
@@ -132,6 +142,7 @@ class Engine {
   /**
    * Applies a given force to a body (should be in the post-step listener ideally)
    * @public
+   * @abstract
    *
    * @param {Engine.Body} body
    * @param {Vector2} force
@@ -143,6 +154,7 @@ class Engine {
   /**
    * Returns the applied contact force computed in the last step.
    * @public
+   * @abstract
    *
    * @param {Engine.Body} body
    * @returns {Vector2}
@@ -154,6 +166,7 @@ class Engine {
   /**
    * Returns the applied contact force computed in the last step (as a force on A from B).
    * @public
+   * @abstract
    *
    * @param {Engine.Body} bodyA
    * @param {Engine.Body} bodyB
@@ -166,6 +179,7 @@ class Engine {
   /**
    * Resets the contact forces that have happened on a body to 0 after measurement.
    * @public
+   * @abstract
    *
    * @param {Engine.Body} body
    */
@@ -176,6 +190,7 @@ class Engine {
   /**
    * Returns a serialized form of a body
    * @public
+   * @abstract
    *
    * @param {Engine.Body} body
    * @returns {Object}
@@ -187,6 +202,7 @@ class Engine {
   /**
    * Applies a given state object to a body.
    * @public
+   * @abstract
    *
    * @param {Engine.Body} body
    * @param {Object} obj
@@ -198,6 +214,7 @@ class Engine {
   /**
    * Returns a serialized form of a body
    * @public
+   * @abstract
    *
    * @param {Engine.Body} body
    * @returns {Object}
@@ -209,6 +226,7 @@ class Engine {
   /**
    * Sets the previous position of a body to the current position
    * @public
+   * @abstract
    *
    * @param {Engine.Body} body
    * @returns {Object}
@@ -220,6 +238,7 @@ class Engine {
   /**
    * Creates a (static) ground body with the given vertices.
    * @public
+   * @abstract
    *
    * @param {Array.<Vector2>} vertices
    * @returns {Engine.Body}
@@ -231,16 +250,19 @@ class Engine {
   /**
    * Creates a (static) barrier body with the given vertices.
    * @public
+   * @abstract
    *
    * @param {Array.<Vector2>} vertices
    * @returns {Engine.Body}
    */
   createBarrier( vertices ) {
+     throw new Error( 'unimplemented' );
   }
 
   /**
    * Creates a (dynamic) box body, with the origin at the center of the box.
    * @public
+   * @abstract
    *
    * @param {number} width
    * @param {number} height
@@ -254,6 +276,7 @@ class Engine {
   /**
    * Updates the width/height of a box body.
    * @public
+   * @abstract
    *
    * @param {Engine.Body} body
    * @param {number} width
@@ -266,6 +289,7 @@ class Engine {
   /**
    * Creates a (dynamic) body, with the origin at the centroid.
    * @public
+   * @abstract
    *
    * @param {Array.<Vector2>} vertices
    * @param {boolean} workaround
@@ -278,6 +302,7 @@ class Engine {
   /**
    * Updates the vertices of a dynamic vertex-based body.
    * @public
+   * @abstract
    *
    * @param {Engine.Body} body
    * @param {Array.<Vector2>} vertices
@@ -290,6 +315,7 @@ class Engine {
   /**
    * Adds a listener to be called after each internal step.
    * @public
+   * @abstract
    *
    * @param {function(number)} listener
    */
@@ -300,6 +326,7 @@ class Engine {
   /**
    * Removes a listener to be called after each internal step.
    * @public
+   * @abstract
    *
    * @param {function(number)} listener
    */
@@ -311,6 +338,7 @@ class Engine {
    * Adds in a pointer constraint so that the body's current point at the position will stay at the position
    * (if the body is getting dragged).
    * @public
+   * @abstract
    *
    * @param {Engine.Body} body
    * @param {Vector2} position
@@ -322,6 +350,7 @@ class Engine {
   /**
    * Updates a pointer constraint so that the body will essentially be dragged to the new position.
    * @public
+   * @abstract
    *
    * @param {Engine.Body} body
    * @param {Vector2} position
@@ -333,6 +362,7 @@ class Engine {
   /**
    * Removes a pointer constraint.
    * @public
+   * @abstract
    *
    * @param {Engine.Body} body
    */

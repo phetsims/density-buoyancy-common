@@ -243,7 +243,7 @@ class DebugMassNode extends Node {
       } );
       this.addChild( hitPath );
 
-      mass.displacementVolumeProperty.link( volume => {
+      const displacementListener = volume => {
         const matrix = scratchMatrix.set( modelViewTransform.getMatrix() );
 
         // Zero out the translation
@@ -254,6 +254,10 @@ class DebugMassNode extends Node {
         const basinShape = mass.basin.oneLiterShape.transformed( Matrix3.scaling( multiplier ) );
 
         hitPath.shape = basinShape.transformed( matrix );
+      };
+      mass.displacementVolumeProperty.link( displacementListener );
+      this.disposeEmitter.addListener( () => {
+        mass.displacementVolumeProperty.unlink( displacementListener );
       } );
 
       const block = model.block;

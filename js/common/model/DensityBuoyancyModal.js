@@ -56,6 +56,7 @@ const DensityBuoyancyModal = ( type, Mode, initialMode ) => {
         this.positionMasses( mode );
       } );
 
+      // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
       this.modeProperty.link( ( mode, oldMode ) => {
         if ( oldMode ) {
           this.modeToMassesMap[ oldMode ].forEach( mass => {

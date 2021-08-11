@@ -50,6 +50,7 @@ class BuoyancyApplicationsModel extends DensityBuoyancyModel {
     this.block = Cuboid.createWithVolume( this.engine, Material.STEEL, new Vector2( 0.5, 0.5 ), 0.005 );
 
     // @public {Boat|null}
+    // DerivedProperty doesn't need disposal, since everything here lives for the lifetime of the simulation
     this.boat = new Boat( this.engine, new DerivedProperty( [ this.block.sizeProperty ], size => size.depth ), this.liquidMaterialProperty, {
       matrix: Matrix3.translation( 0, -0.1 ),
       tandem: tandem.createTandem( 'boat' )
@@ -77,6 +78,7 @@ class BuoyancyApplicationsModel extends DensityBuoyancyModel {
     this.pool.liquidVolumeProperty.value -= this.poolScale.volumeProperty.value;
     this.pool.liquidVolumeProperty.setInitialValue( this.pool.liquidVolumeProperty.value );
 
+    // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
     this.sceneProperty.link( scene => {
       this.setMassVisible( this.bottle, scene === Scene.BOTTLE );
       this.setMassVisible( this.boat, scene === Scene.BOAT );

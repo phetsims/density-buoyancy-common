@@ -96,6 +96,7 @@ class ComboNumberControl extends VBox {
               }
             };
 
+            // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
             this.property.link( listener );
             disposalCallbacks.push( () => this.property.unlink( listener ) );
 
@@ -180,6 +181,7 @@ class ComboNumberControl extends VBox {
 
     let locked = false;
 
+    // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
     this.property.lazyLink( value => {
       if ( !locked ) {
         locked = true;
@@ -190,6 +192,7 @@ class ComboNumberControl extends VBox {
         locked = false;
       }
     } );
+    // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
     this.numberProperty.lazyLink( value => {
       if ( !locked ) {
         locked = true;
@@ -200,6 +203,7 @@ class ComboNumberControl extends VBox {
         locked = false;
       }
     } );
+    // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
     this.comboProperty.lazyLink( value => {
       if ( !locked ) {
         locked = true;

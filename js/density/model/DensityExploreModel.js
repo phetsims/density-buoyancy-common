@@ -42,6 +42,7 @@ class DensityExploreModel extends DensityBuoyancyModel {
     } );
     this.availableMasses.push( this.secondaryMass );
 
+    // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
     this.secondaryMassVisibleProperty.link( secondaryMassVisible => {
       this.secondaryMass.visibleProperty.value = secondaryMassVisible;
     } );

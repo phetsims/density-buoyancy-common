@@ -85,6 +85,7 @@ class BuoyancyApplicationsScreenView extends DensityBuoyancyScreenView {
       maxWidth: 160
     } );
 
+    // DerivedProperty doesn't need disposal, since everything here lives for the lifetime of the simulation
     const airLitersProperty = new DerivedProperty( [ model.bottle.interiorVolumeProperty ], volume => {
       return ( 0.01 - volume ) * 1000;
     } );
@@ -182,6 +183,8 @@ class BuoyancyApplicationsScreenView extends DensityBuoyancyScreenView {
 
     this.addChild( rightBottleContent );
     this.addChild( rightBoatContent );
+
+    // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
     model.sceneProperty.link( scene => {
       rightBottleContent.visible = scene === BuoyancyApplicationsModel.Scene.BOTTLE;
       rightBoatContent.visible = scene === BuoyancyApplicationsModel.Scene.BOAT;

@@ -49,6 +49,7 @@ class DensityExploreScreenView extends SecondaryMassScreenView {
 
     const accordionTandem = tandem.createTandem( 'densityReadoutBox' );
     const densityReadoutBox = new AccordionBox( new DensityReadoutNode(
+      // DerivedProperty doesn't need disposal, since everything here lives for the lifetime of the simulation
       new DerivedProperty( [ model.primaryMass.materialProperty ], material => material.density ),
       new DerivedProperty( [ model.secondaryMass.materialProperty ], material => material.density ),
       model.secondaryMassVisibleProperty,
@@ -75,6 +76,7 @@ class DensityExploreScreenView extends SecondaryMassScreenView {
       margin: MARGIN
     } ) );
 
+    // DerivedProperty doesn't need disposal, since everything here lives for the lifetime of the simulation
     this.rightBarrierViewPointProperty.value = new DerivedProperty( [ this.rightBox.boundsProperty, this.visibleBoundsProperty ], ( boxBounds, visibleBounds ) => {
       return new Vector2( boxBounds.left, visibleBounds.centerY );
     } );

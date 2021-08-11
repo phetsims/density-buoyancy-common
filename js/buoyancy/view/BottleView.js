@@ -175,7 +175,7 @@ class BottleView extends MassView {
    * @override
    */
   dispose() {
-    // TODO: hook up disposal
+    // TODO: dispose everything from above
 
     super.dispose();
   }

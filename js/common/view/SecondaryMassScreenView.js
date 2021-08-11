@@ -24,6 +24,7 @@ class SecondaryMassScreenView extends DensityBuoyancyScreenView {
 
     this.addChild( this.secondMassVisibleControl );
 
+    // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
     this.rightBox.transformEmitter.addListener( () => this.positionSecondMassControl() );
     this.transformEmitter.addListener( () => this.positionSecondMassControl() );
   }

@@ -130,6 +130,7 @@ class DensityReadoutNode extends Node {
     this.addChild( secondaryMarker );
 
     // Density links
+    // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
     densityAProperty.link( density => {
       primaryMarker.x = mvt( density );
       primaryLabel.text = StringUtils.fillIn( densityBuoyancyCommonStrings.kilogramsPerLiterPattern, {
@@ -137,6 +138,7 @@ class DensityReadoutNode extends Node {
       } );
       primaryLabel.centerBottom = primaryArrow.centerTop;
     } );
+    // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
     densityBProperty.link( density => {
       secondaryMarker.x = mvt( density );
       secondaryLabel.text = StringUtils.fillIn( densityBuoyancyCommonStrings.kilogramsPerLiterPattern, {
@@ -145,6 +147,7 @@ class DensityReadoutNode extends Node {
       secondaryLabel.centerTop = secondaryArrow.centerBottom;
     } );
 
+    // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
     densityAProperty.link( density => {
       primaryMarker.visible = density < MAX_DENSITY + 1e-5; // Allow rounding error
     } );

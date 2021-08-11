@@ -74,6 +74,7 @@ class DensityCompareModel extends DensityBuoyancyModal( DensityBuoyancyModel, Mo
             } ), Vector2.ZERO, 5, { tandem: sameMassTandem.createTandem( 'redMass' ) } )
           ];
 
+          // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
           massProperty.lazyLink( massValue => {
             masses.forEach( mass => {
               mass.materialProperty.value = Material.createCustomMaterial( {
@@ -106,6 +107,7 @@ class DensityCompareModel extends DensityBuoyancyModal( DensityBuoyancyModel, Mo
             } ), Vector2.ZERO, 2, { tandem: sameVolumeTandem.createTandem( 'redMass' ) } )
           ];
 
+          // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
           volumeProperty.lazyLink( volume => {
             masses.forEach( mass => {
               const massValue = mass.massProperty.value;
@@ -141,6 +143,7 @@ class DensityCompareModel extends DensityBuoyancyModal( DensityBuoyancyModel, Mo
             } ), Vector2.ZERO, 1, { tandem: sameDensityTandem.createTandem( 'redMass' ) } )
           ];
 
+          // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
           densityProperty.lazyLink( density => {
             masses.forEach( mass => {
               mass.materialProperty.value = Material.createCustomMaterial( {

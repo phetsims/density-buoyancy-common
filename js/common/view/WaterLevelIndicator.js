@@ -45,6 +45,7 @@ class WaterLevelIndicator extends Node {
     this.addChild( readoutPanel );
 
     // Can't use Text.textProperty, see https://github.com/phetsims/scenery/issues/1187
+    // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
     volumeProperty.link( volume => {
       readoutText.text = StringUtils.fillIn( densityBuoyancyCommonStrings.litersPattern, {
         liters: Utils.toFixed( 1000 * volume, 2 )

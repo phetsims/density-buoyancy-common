@@ -68,11 +68,13 @@ class BuoyancyExploreScreenView extends SecondaryMassScreenView {
       layoutOptions: { x: 1, y: 1 }
     } );
 
+    // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
     model.primaryMass.materialProperty.link( material => {
       densityAText.text = StringUtils.fillIn( densityBuoyancyCommonStrings.kilogramsPerLiterPattern, {
         value: Utils.toFixed( material.density / 1000, 2 )
       } );
     } );
+    // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
     model.secondaryMass.materialProperty.link( material => {
       densityBText.text = StringUtils.fillIn( densityBuoyancyCommonStrings.kilogramsPerLiterPattern, {
         value: Utils.toFixed( material.density / 1000, 2 )
@@ -125,6 +127,7 @@ class BuoyancyExploreScreenView extends SecondaryMassScreenView {
     } ) );
 
     // Adjust the visibility after, since we want to size the box's location for its "full" bounds
+    // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
     model.secondaryMassVisibleProperty.link( visible => {
       labelBText.visible = visible;
       densityBText.visible = visible;
@@ -171,6 +174,7 @@ class BuoyancyExploreScreenView extends SecondaryMassScreenView {
       margin: MARGIN
     } ) );
 
+    // DerivedProperty doesn't need disposal, since everything here lives for the lifetime of the simulation
     this.rightBarrierViewPointProperty.value = new DerivedProperty( [ this.rightBox.boundsProperty, this.visibleBoundsProperty ], ( boxBounds, visibleBounds ) => {
       return new Vector2( boxBounds.left, visibleBounds.centerY );
     } );

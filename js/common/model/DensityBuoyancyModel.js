@@ -77,6 +77,7 @@ class DensityBuoyancyModel {
     } );
 
     // @public {Property.<number>}
+    // DerivedProperty doesn't need disposal, since everything here lives for the lifetime of the simulation
     this.liquidDensityProperty = new DerivedProperty( [ this.liquidMaterialProperty ], liquidMaterial => liquidMaterial.density, {
       tandem: tandem.createTandem( 'liquidDensityProperty' ),
       phetioType: DerivedProperty.DerivedPropertyIO( NumberIO ),
@@ -84,6 +85,7 @@ class DensityBuoyancyModel {
     } );
 
     // @public {Property.<number>}
+    // DerivedProperty doesn't need disposal, since everything here lives for the lifetime of the simulation
     this.liquidViscosityProperty = new DerivedProperty( [ this.liquidMaterialProperty ], liquidMaterial => liquidMaterial.viscosity, {
       tandem: tandem.createTandem( 'liquidViscosityProperty' ),
       phetioType: DerivedProperty.DerivedPropertyIO( NumberIO )
@@ -113,6 +115,7 @@ class DensityBuoyancyModel {
       useDeepEquality: true
     } );
 
+    // DerivedProperty doesn't need disposal, since everything here lives for the lifetime of the simulation
     const barrierPointsProperty = new DerivedProperty( [ this.invisibleBarrierBoundsProperty ], bounds => {
       return [
         new Vector2( bounds.maxX, bounds.minY ),
@@ -218,6 +221,7 @@ class DensityBuoyancyModel {
     let boatVerticalAcceleration = 0;
 
     // The main engine post-step actions, that will determine the net forces applied on each mass.
+    // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
     this.engine.addPostStepListener( dt => {
       this.updateLiquid();
 

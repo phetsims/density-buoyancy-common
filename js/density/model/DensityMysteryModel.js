@@ -248,6 +248,7 @@ class DensityMysteryModel extends DensityBuoyancyModal( DensityBuoyancyModel, Mo
     this.availableMasses.push( this.scale );
 
     // Move the scale with the barrier, see https://github.com/phetsims/density/issues/73
+    // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
     this.invisibleBarrierBoundsProperty.lazyLink( ( newBounds, oldBounds ) => {
       this.scale.matrix.set02( this.scale.matrix.m02() + newBounds.minX - oldBounds.minX );
       this.scale.writeData();

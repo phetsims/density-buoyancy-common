@@ -94,6 +94,7 @@ class MaterialMassVolumeControlNode extends VBox {
     // passed to the NumberControl - liters from m^3
     const numberControlVolumeProperty = new NumberProperty( volumeProperty.value * LITERS_IN_CUBIC_METER );
 
+    // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
     numberControlVolumeProperty.lazyLink( liters => {
       if ( !modelVolumeChanging && !userMassChanging ) {
         const cubicMeters = liters / LITERS_IN_CUBIC_METER;
@@ -112,6 +113,7 @@ class MaterialMassVolumeControlNode extends VBox {
       }
     } );
 
+    // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
     volumeProperty.lazyLink( cubicMeters => {
       if ( !userVolumeChanging ) {
         modelVolumeChanging = true;
@@ -131,6 +133,7 @@ class MaterialMassVolumeControlNode extends VBox {
       }
     } );
 
+    // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
     massNumberProperty.lazyLink( mass => {
       if ( !modelMassChanging && !userVolumeChanging ) {
         userMassChanging = true;
@@ -148,6 +151,7 @@ class MaterialMassVolumeControlNode extends VBox {
       }
     } );
 
+    // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
     massProperty.lazyLink( mass => {
       if ( !userMassChanging ) {
         modelMassChanging = true;
@@ -169,6 +173,7 @@ class MaterialMassVolumeControlNode extends VBox {
       }
     } );
 
+    // DerivedProperty doesn't need disposal, since everything here lives for the lifetime of the simulation
     const enabledMassRangeProperty = new DerivedProperty( [ materialProperty ], material => {
       if ( material.custom ) {
         return new Range( options.minCustomMass, options.maxCustomMass );

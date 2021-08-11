@@ -92,6 +92,7 @@ class ShapeSizeControlNode extends FlowBox {
     const widthNumberControl = new NumberControl( densityBuoyancyCommonStrings.width, widthRatioProperty, new Range( 0, 1 ), numberControlOptions );
     const heightNumberControl = new NumberControl( densityBuoyancyCommonStrings.height, heightRatioProperty, new Range( 0, 1 ), numberControlOptions );
 
+    // DerivedProperty doesn't need disposal, since everything here lives for the lifetime of the simulation
     const litersProperty = new DerivedProperty( [ volumeProperty ], volume => {
       return volume * 1000;
     } );

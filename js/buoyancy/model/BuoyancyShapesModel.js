@@ -129,9 +129,11 @@ class BuoyancyShapesModel extends DensityBuoyancyModel {
     const secondaryMassTandem = tandem.createTandem( 'secondaryMass' );
 
     // @public {Property.<Mass>}
+    // DerivedProperty doesn't need disposal, since everything here lives for the lifetime of the simulation
     this.primaryMassProperty = new DerivedProperty( [ this.primaryShapeProperty ], shape => {
       return createMass( shape, this.primaryWidthRatioProperty.value, this.primaryHeightRatioProperty.value, primaryMassTandem );
     } );
+    // DerivedProperty doesn't need disposal, since everything here lives for the lifetime of the simulation
     this.secondaryMassProperty = new DerivedProperty( [ this.secondaryShapeProperty ], shape => {
       return createMass( shape, this.secondaryWidthRatioProperty.value, this.secondaryHeightRatioProperty.value, secondaryMassTandem );
     } );
@@ -145,6 +147,7 @@ class BuoyancyShapesModel extends DensityBuoyancyModel {
 
     // When a new mass is created, set up its position to be that of the old mass
     [ this.primaryMassProperty, this.secondaryMassProperty ].forEach( massProperty => {
+      // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
       massProperty.lazyLink( ( newMass, oldMass ) => {
         newMass.matrix.set( oldMass.matrix );
         newMass.writeData();
@@ -160,6 +163,7 @@ class BuoyancyShapesModel extends DensityBuoyancyModel {
 
     this.masses.add( this.primaryMassProperty.value );
 
+    // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
     this.secondaryMassVisibleProperty.lazyLink( secondaryMassVisible => {
       if ( secondaryMassVisible ) {
         this.masses.push( this.secondaryMassProperty.value );

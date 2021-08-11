@@ -129,6 +129,7 @@ class BuoyancyShapesScreenView extends SecondaryMassScreenView {
       margin: MARGIN
     } ) );
 
+    // DerivedProperty doesn't need disposal, since everything here lives for the lifetime of the simulation
     this.rightBarrierViewPointProperty.value = new DerivedProperty( [ this.rightBox.boundsProperty, this.visibleBoundsProperty ], ( boxBounds, visibleBounds ) => {
       return new Vector2( boxBounds.left, visibleBounds.centerY );
     } );

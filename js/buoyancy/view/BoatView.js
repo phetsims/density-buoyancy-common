@@ -204,6 +204,8 @@ class BoatView extends MassView {
    * @override
    */
   dispose() {
+    // TODO: dispose everything from above
+
     this.liquidMultilink.dispose();
 
     super.dispose();

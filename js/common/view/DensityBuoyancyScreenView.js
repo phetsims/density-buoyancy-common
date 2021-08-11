@@ -120,6 +120,7 @@ class DensityBuoyancyScreenView extends ScreenView {
         .addColorStop( 0, DensityBuoyancyCommonColors.skyTopProperty )
         .addColorStop( 1, DensityBuoyancyCommonColors.skyBottomProperty )
     } );
+    // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
     this.visibleBoundsProperty.link( visibleBounds => {
       this.backgroundNode.translation = visibleBounds.leftTop;
       this.backgroundNode.setScaleMagnitude( visibleBounds.width, visibleBounds.height / 2 );
@@ -179,6 +180,7 @@ class DensityBuoyancyScreenView extends ScreenView {
       }
     } );
     // On re-layout or zoom, update the cursor also
+    // This instance lives for the lifetime of the simulation, so we don't need to remove these listeners
     this.transformEmitter.addListener( updateCursor );
     animatedPanZoomSingleton.listener.matrixProperty.lazyLink( updateCursor );
 
@@ -307,6 +309,7 @@ class DensityBuoyancyScreenView extends ScreenView {
       ), model.groundBounds.maxZ )
     ] ), 3 ) );
     const groundMaterial = new THREE.MeshBasicMaterial();
+    // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
     DensityBuoyancyCommonColors.groundProperty.link( groundColor => {
       groundMaterial.color = ThreeUtils.colorToThree( groundColor );
     } );
@@ -386,6 +389,7 @@ class DensityBuoyancyScreenView extends ScreenView {
       0, 1, 1
     ] );
     topGeometry.addAttribute( 'color', new THREE.BufferAttribute( topColorArray, 3 ) );
+    // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
     DensityBuoyancyCommonColors.grassCloseProperty.link( grassCloseColor => {
       for ( let i = 0; i < 18; i++ ) {
         topColorArray[ i * 3 + 0 ] = grassCloseColor.r / 255;
@@ -398,6 +402,7 @@ class DensityBuoyancyScreenView extends ScreenView {
       topColorArray[ offset + 2 ] = topColorArray[ offset + 5 ] = topColorArray[ offset + 11 ] = grassCloseColor.b / 255;
       topGeometry.attributes.color.needsUpdate = true;
     } );
+    // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
     DensityBuoyancyCommonColors.grassFarProperty.link( grassFarColor => {
       const offset = 3 * 2 * 6;
       topColorArray[ offset + 6 ] = topColorArray[ offset + 12 ] = topColorArray[ offset + 15 ] = grassFarColor.r / 255;
@@ -470,6 +475,7 @@ class DensityBuoyancyScreenView extends ScreenView {
       -1, 0, 0
     ] ), 3 ) );
     const poolMaterial = new THREE.MeshLambertMaterial();
+    // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
     DensityBuoyancyCommonColors.poolSurfaceProperty.link( poolSurfaceColor => {
       poolMaterial.color = ThreeUtils.colorToThree( poolSurfaceColor );
     } );
@@ -506,6 +512,7 @@ class DensityBuoyancyScreenView extends ScreenView {
         opacity: 0.5
       } );
 
+      // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
       model.invisibleBarrierBoundsProperty.link( bounds => {
         let index = 0;
         const zyBounds = new Bounds2( bounds.minZ, bounds.minY, bounds.maxZ, bounds.maxY );
@@ -529,6 +536,7 @@ class DensityBuoyancyScreenView extends ScreenView {
       transparent: true,
       depthWrite: false
     } );
+    // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
     new DynamicProperty( model.liquidMaterialProperty, {
       derive: 'liquidColor'
     } ).link( color => {
@@ -540,6 +548,7 @@ class DensityBuoyancyScreenView extends ScreenView {
     waterMesh.renderOrder = 10;
 
     let wasFilled = false;
+    // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
     model.pool.liquidYInterpolatedProperty.link( y => {
       const boat = model.getBoat();
       wasFilled = BoatDesign.fillWaterVertexArray(
@@ -637,10 +646,12 @@ class DensityBuoyancyScreenView extends ScreenView {
     };
     model.masses.addItemRemovedListener( onMassRemoved );
 
+    // DerivedProperty doesn't need disposal, since everything here lives for the lifetime of the simulation
     const waterLevelIndicator = new WaterLevelIndicator( new DerivedProperty( [ model.pool.liquidYInterpolatedProperty ], liquidY => {
       return model.poolBounds.width * model.poolBounds.depth * ( liquidY - model.poolBounds.minY );
     } ) );
     this.addChild( waterLevelIndicator );
+    // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
     model.pool.liquidYInterpolatedProperty.link( liquidY => {
       const modelPoint = new Vector3( model.poolBounds.minX, liquidY, model.poolBounds.maxZ );
       waterLevelIndicator.translation = this.modelToViewPoint( modelPoint );
@@ -670,9 +681,11 @@ class DensityBuoyancyScreenView extends ScreenView {
     }
 
     // @protected {Property.<Property.<Vector2>>} - Subtypes can provide their own values to control the barrier sizing
+    // DerivedProperty doesn't need disposal, since everything here lives for the lifetime of the simulation
     this.leftBarrierViewPointProperty = new Property( new DerivedProperty( [ this.visibleBoundsProperty ], visibleBounds => visibleBounds.leftCenter ), {
       tandem: Tandem.OPT_OUT
     } );
+    // DerivedProperty doesn't need disposal, since everything here lives for the lifetime of the simulation
     this.rightBarrierViewPointProperty = new Property( new DerivedProperty( [ this.visibleBoundsProperty ], visibleBounds => visibleBounds.rightCenter ), {
       tandem: Tandem.OPT_OUT
     } );
@@ -690,6 +703,7 @@ class DensityBuoyancyScreenView extends ScreenView {
 
     // leftBarrierViewPointProperty and rightBarrierViewPointProperty are Property<Property>, and we need to listen
     // to when the value.value changes
+    // This instance lives for the lifetime of the simulation, so we don't need to remove these listeners
     new DynamicProperty( this.leftBarrierViewPointProperty ).lazyLink( resizeBarrier );
     new DynamicProperty( this.rightBarrierViewPointProperty ).lazyLink( resizeBarrier );
     this.postLayoutEmitter.addListener( resizeBarrier ); // We need to wait for the layout AND render

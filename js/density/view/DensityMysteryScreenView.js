@@ -94,6 +94,7 @@ class DensityMysteryScreenView extends DensityBuoyancyScreenView {
     } );
 
     // Include the refresh button when in random mode.
+    // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
     model.modeProperty.link( mode => {
       modeContent.children = mode === DensityMysteryModel.Mode.RANDOM ? [
         modeRadioButtonGroup,

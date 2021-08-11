@@ -121,6 +121,7 @@ class DensityCompareScreenView extends DensityBuoyancyScreenView {
       tandem.createTandem( 'densityNumberControl' )
     );
 
+    // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
     model.modeProperty.link( mode => {
       massNumberControl.visible = mode === DensityCompareModel.Mode.SAME_MASS;
       volumeNumberControl.visible = mode === DensityCompareModel.Mode.SAME_VOLUME;
@@ -145,6 +146,7 @@ class DensityCompareScreenView extends DensityBuoyancyScreenView {
     };
 
     this.positionPanel();
+    // This instance lives for the lifetime of the simulation, so we don't need to remove these listeners
     this.transformEmitter.addListener( this.positionPanel );
     this.visibleBoundsProperty.lazyLink( this.positionPanel );
 

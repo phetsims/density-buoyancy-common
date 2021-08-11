@@ -37,7 +37,7 @@ class ComparisonNumberControl extends NumberControl {
           font: DensityBuoyancyCommonConstants.READOUT_FONT
         },
         // Backward compatibility
-        valuePattern: StringUtils.fillIn( valuePattern, { [ valueName ]: SunConstants.VALUE_NUMBERED_PLACEHOLDER } ),
+        valuePattern: StringUtils.fillIn( valuePattern, { [ valueName ]: SunConstants.VALUE_NAMED_PLACEHOLDER } ),
         maxWidth: 100,
         decimalPlaces: 2,
         useRichText: true,

@@ -110,7 +110,7 @@ class ComboNumberControl extends VBox {
           textOptions: {
             font: DensityBuoyancyCommonConstants.READOUT_FONT
           },
-          valuePattern: StringUtils.fillIn( config.valuePattern, { value: SunConstants.VALUE_NUMBERED_PLACEHOLDER } ),
+          valuePattern: StringUtils.fillIn( config.valuePattern, { value: SunConstants.VALUE_NAMED_PLACEHOLDER } ),
           maxWidth: 100,
           decimalPlaces: 2,
           useRichText: true,

@@ -6,7 +6,6 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
-import merge from '../../../../phet-core/js/merge.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 
 class Engine {
@@ -56,14 +55,9 @@ class Engine {
    *
    * @param {Engine.Body} body
    * @param {number} mass
-   * @param {Object} [options]
+   * @param {Object} [options] - {canRotate:boolean}
    */
   bodySetMass( body, mass, options ) {
-    options = merge( {
-      // {boolean} - optional
-      canRotate: false
-    }, options );
-
     throw new Error( 'unimplemented' );
   }
 

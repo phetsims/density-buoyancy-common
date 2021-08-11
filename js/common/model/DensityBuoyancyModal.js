@@ -105,6 +105,9 @@ const DensityBuoyancyModal = ( type, Mode, initialMode ) => {
 
       // Reposition AFTER the reset
       Mode.VALUES.forEach( mode => this.positionMasses( mode ) );
+
+      // Rehandle visibility, since we reset them
+      Mode.VALUES.forEach( mode => this.modeToMassesMap[ mode ].forEach( mass => { mass.visibleProperty.value = mode === this.modeProperty.value; } ) );
     }
   };
 };

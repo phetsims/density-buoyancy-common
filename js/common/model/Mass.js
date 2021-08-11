@@ -76,6 +76,9 @@ class Mass extends PhetioObject {
       // {number} - required
       volume: 0,
 
+      // {boolean} - optional
+      visible: true,
+
       // {Matrix3} - optional
       matrix: new Matrix3(),
 
@@ -125,7 +128,7 @@ class Mass extends PhetioObject {
     } );
 
     // @public {Property.<boolean>}
-    this.visibleProperty = new BooleanProperty( true, {
+    this.visibleProperty = new BooleanProperty( config.visible, {
       tandem: tandem.createTandem( 'visibleProperty' )
     } );
 
@@ -394,6 +397,7 @@ class Mass extends PhetioObject {
   reset() {
     this.engine.bodyResetHidden( this.body );
 
+    this.visibleProperty.reset();
     this.shapeProperty.reset();
     this.materialProperty.reset();
     this.volumeProperty.reset();

@@ -15,12 +15,14 @@ class SecondaryMassScreenView extends DensityBuoyancyScreenView {
   /**
    * Adding the second-mass control.
    * @protected
+   *
+   * @param {Property.<boolean>} secondaryMassVisibleProperty
    */
-  addSecondMassControl() {
+  addSecondMassControl( secondaryMassVisibleProperty ) {
     assert && assert( this.rightBox, 'SecondaryMassScreenView requires a this.rightBox be defined to add this control' );
 
     // @private {Node}
-    this.secondMassVisibleControl = new SecondMassVisibleControl( this.model.secondaryMassVisibleProperty, this.tandem.createTandem( 'secondMassVisibleControl' ) );
+    this.secondMassVisibleControl = new SecondMassVisibleControl( secondaryMassVisibleProperty, this.tandem.createTandem( 'secondMassVisibleControl' ) );
 
     this.addChild( this.secondMassVisibleControl );
 

@@ -42,7 +42,6 @@ class DensityExploreScreenView extends SecondaryMassScreenView {
     this.rightBox = new PrimarySecondaryControlsNode(
       model.primaryMass,
       model.secondaryMass,
-      model.secondaryMassVisibleProperty,
       this.popupLayer,
       tandem
     );
@@ -52,7 +51,7 @@ class DensityExploreScreenView extends SecondaryMassScreenView {
       // DerivedProperty doesn't need disposal, since everything here lives for the lifetime of the simulation
       new DerivedProperty( [ model.primaryMass.materialProperty ], material => material.density ),
       new DerivedProperty( [ model.secondaryMass.materialProperty ], material => material.density ),
-      model.secondaryMassVisibleProperty,
+      model.secondaryMass.visibleProperty,
       accordionTandem.createTandem( 'densityReadout' )
     ), merge( {
       titleNode: new Text( densityBuoyancyCommonStrings.densityReadout, {
@@ -81,7 +80,7 @@ class DensityExploreScreenView extends SecondaryMassScreenView {
       return new Vector2( boxBounds.left, visibleBounds.centerY );
     } );
 
-    this.addSecondMassControl();
+    this.addSecondMassControl( model.secondaryMass.visibleProperty );
 
     this.addChild( this.popupLayer );
   }

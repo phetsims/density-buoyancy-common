@@ -25,11 +25,6 @@ class DensityExploreModel extends DensityBuoyancyModel {
       canShowForces: false
     } );
 
-    // @public {Property.<boolean>}
-    this.secondaryMassVisibleProperty = new BooleanProperty( false, {
-      tandem: tandem.createTandem( 'secondaryMassVisibleProperty' )
-    } );
-
     // @public {Mass}
     this.primaryMass = Cuboid.createWithMass( this.engine, Material.WOOD, new Vector2( -0.2, 0.2 ), 2, {
       tag: Mass.MassTag.PRIMARY,
@@ -38,14 +33,10 @@ class DensityExploreModel extends DensityBuoyancyModel {
     this.availableMasses.push( this.primaryMass );
     this.secondaryMass = Cuboid.createWithMass( this.engine, Material.ALUMINUM, new Vector2( -0.2, 0.35 ), 13.5, {
       tag: Mass.MassTag.SECONDARY,
-      tandem: tandem.createTandem( 'secondaryMass' )
+      tandem: tandem.createTandem( 'secondaryMass' ),
+      visible: false
     } );
     this.availableMasses.push( this.secondaryMass );
-
-    // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
-    this.secondaryMassVisibleProperty.link( secondaryMassVisible => {
-      this.secondaryMass.visibleProperty.value = secondaryMassVisible;
-    } );
 
     // @public {Property.<boolean>}
     this.densityReadoutExpandedProperty = new BooleanProperty( false, {
@@ -59,8 +50,6 @@ class DensityExploreModel extends DensityBuoyancyModel {
    * @override
    */
   reset() {
-    this.secondaryMassVisibleProperty.reset();
-
     this.primaryMass.reset();
     this.secondaryMass.reset();
 

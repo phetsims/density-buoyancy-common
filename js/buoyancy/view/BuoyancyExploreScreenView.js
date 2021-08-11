@@ -128,7 +128,7 @@ class BuoyancyExploreScreenView extends SecondaryMassScreenView {
 
     // Adjust the visibility after, since we want to size the box's location for its "full" bounds
     // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
-    model.secondaryMassVisibleProperty.link( visible => {
+    model.secondaryMass.visibleProperty.link( visible => {
       labelBText.visible = visible;
       densityBText.visible = visible;
     } );
@@ -159,7 +159,6 @@ class BuoyancyExploreScreenView extends SecondaryMassScreenView {
     this.rightBox = new PrimarySecondaryControlsNode(
       model.primaryMass,
       model.secondaryMass,
-      model.secondaryMassVisibleProperty,
       this.popupLayer,
       tandem,
       {
@@ -179,7 +178,7 @@ class BuoyancyExploreScreenView extends SecondaryMassScreenView {
       return new Vector2( boxBounds.left, visibleBounds.centerY );
     } );
 
-    this.addSecondMassControl();
+    this.addSecondMassControl( model.secondaryMass.visibleProperty );
 
     this.addChild( this.popupLayer );
   }

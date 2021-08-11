@@ -62,6 +62,7 @@ const Mode = Enumeration.byKeys( [
 
 class DensityMysteryModel extends DensityBuoyancyModal( DensityBuoyancyModel, Mode, Mode.SET_1 ) {
   /**
+   * @mixes DensityBuoyancyModal
    * @param {Tandem} tandem
    */
   constructor( tandem ) {

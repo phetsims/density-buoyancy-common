@@ -25,6 +25,7 @@ const Mode = Enumeration.byKeys( [
 
 class BuoyancyIntroModel extends DensityBuoyancyModal( DensityBuoyancyModel, Mode, Mode.SAME_MASS ) {
   /**
+   * @mixes DensityBuoyancyModal
    * @param {Tandem} tandem
    */
   constructor( tandem ) {

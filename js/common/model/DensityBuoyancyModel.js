@@ -64,6 +64,7 @@ class DensityBuoyancyModel {
 
     // @public {Property.<Gravity>}
     this.gravityProperty = new Property( Gravity.EARTH, {
+      valueType: Gravity,
       phetioType: Property.PropertyIO( Gravity.GravityIO ),
       tandem: tandem.createTandem( 'gravityProperty' ),
       phetioReadOnly: true
@@ -71,6 +72,7 @@ class DensityBuoyancyModel {
 
     // @public {Property.<Material>}
     this.liquidMaterialProperty = new Property( Material.WATER, {
+      valueType: Material,
       phetioType: Property.PropertyIO( Material.MaterialIO ),
       tandem: tandem.createTandem( 'liquidMaterialProperty' ),
       phetioReadOnly: true
@@ -110,6 +112,7 @@ class DensityBuoyancyModel {
       -0.875, -4, POOL_BACK_Z,
       0.875, 4, GROUND_FRONT_Z
     ), {
+      valueType: Bounds3,
       phetioType: Property.PropertyIO( Bounds3.Bounds3IO ),
       tandem: tandem.createTandem( 'invisibleBarrierBoundsProperty' ),
       useDeepEquality: true

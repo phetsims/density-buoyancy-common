@@ -189,10 +189,16 @@ class Bottle extends Mass {
     Bottle.getFlatIntersectionVertices().forEach( p => this.bottleBounds.addPoint( p ) );
 
     // @public {Property.<Material>}
-    this.interiorMaterialProperty = new Property( BOTTLE_INITIAL_INTERIOR_MATERIAL );
+    this.interiorMaterialProperty = new Property( BOTTLE_INITIAL_INTERIOR_MATERIAL, {
+      valueType: Material,
+      tandem: config.tandem.createTandem( 'interiorMaterialProperty' ),
+      phetioType: Property.PropertyIO( Material.MaterialIO )
+    } );
 
     // @public {Property.<number>}
-    this.interiorVolumeProperty = new NumberProperty( BOTTLE_INITIAL_INTERIOR_VOLUME );
+    this.interiorVolumeProperty = new NumberProperty( BOTTLE_INITIAL_INTERIOR_VOLUME, {
+      tandem: config.tandem.createTandem( 'interiorVolumeProperty' )
+    } );
 
     // @public {Property.<number>} - In kg (kilograms)
     this.interiorMassProperty = new DerivedProperty( [ this.interiorMaterialProperty, this.interiorVolumeProperty ], ( material, volume ) => {

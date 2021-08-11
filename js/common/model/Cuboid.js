@@ -40,6 +40,7 @@ class Cuboid extends Mass {
 
     // @public {Property.<Bounds3>}
     this.sizeProperty = new Property( size, {
+      valueType: Bounds3,
       useDeepEquality: true,
       tandem: config.tandem.createTandem( 'sizeProperty' ),
       phetioType: Property.PropertyIO( Bounds3.Bounds3IO ),

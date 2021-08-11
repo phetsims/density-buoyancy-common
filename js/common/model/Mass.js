@@ -114,7 +114,9 @@ class Mass extends PhetioObject {
     this.body = config.body;
 
     // @public {Property.<Shape>} - Without the matrix applied (effectively in "local" model coordinates)
-    this.shapeProperty = new Property( config.shape );
+    this.shapeProperty = new Property( config.shape, {
+      valueType: Shape
+    } );
 
     // @public {Property.<boolean>}
     this.userControlledProperty = new BooleanProperty( false, {
@@ -134,6 +136,7 @@ class Mass extends PhetioObject {
 
     // @public {Property.<Material>}
     this.materialProperty = new Property( config.material, {
+      valueType: Material,
       reentrant: true,
       tandem: tandem.createTandem( 'materialProperty' ),
       phetioType: Property.PropertyIO( Material.MaterialIO )
@@ -191,12 +194,14 @@ class Mass extends PhetioObject {
 
     // @public {Property.<Vector3>}
     this.forceOffsetProperty = new Property( Vector3.ZERO, {
+      valueType: Vector3,
       useDeepEquality: true,
       tandem: Tandem.OPT_OUT
     } );
 
     // @public {Property.<Vector3>}
     this.massOffsetProperty = new Property( Vector3.ZERO, {
+      valueType: Vector3,
       useDeepEquality: true,
       tandem: Tandem.OPT_OUT
     } );

@@ -17,6 +17,7 @@ import Text from '../../../../scenery/js/nodes/Text.js';
 import VBox from '../../../../scenery/js/nodes/VBox.js';
 import AccordionBox from '../../../../sun/js/AccordionBox.js';
 import Panel from '../../../../sun/js/Panel.js';
+import Tandem from '../../../../tandem/js/Tandem.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 import Material from '../../common/model/Material.js';
 import DensityControlNode from '../../common/view/DensityControlNode.js';
@@ -70,7 +71,9 @@ class BuoyancyShapesScreenView extends SecondaryMassScreenView {
       spacing: 0,
       children: [
         new HStrut( displayOptionsNode.width - 10 ), // Same internal size as displayOptionsNode
-        new DensityReadoutListNode( [ new Property( Material.WOOD ) ] )
+        new DensityReadoutListNode( [ new Property( Material.WOOD, {
+          tandem: Tandem.OPT_OUT
+        } ) ] )
       ]
     } );
 

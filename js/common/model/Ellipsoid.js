@@ -37,7 +37,11 @@ class Ellipsoid extends Mass {
     super( engine, config );
 
     // @public {Property.<Bounds3>}
-    this.sizeProperty = new Property( size );
+    this.sizeProperty = new Property( size, {
+      valueType: Bounds3,
+      tandem: config.tandem.createTandem( 'sizeProperty' ),
+      phetioType: Property.PropertyIO( Bounds3.Bounds3IO )
+    } );
 
     // @private {number} - Step information
     this.stepMaximumArea = 0;

@@ -10,6 +10,7 @@ import Property from '../../../../axon/js/Property.js';
 import Utils from '../../../../dot/js/Utils.js';
 import merge from '../../../../phet-core/js/merge.js';
 import Color from '../../../../scenery/js/util/Color.js';
+import ColorProperty from '../../../../scenery/js/util/ColorProperty.js';
 import BooleanIO from '../../../../tandem/js/types/BooleanIO.js';
 import IOType from '../../../../tandem/js/types/IOType.js';
 import NullableIO from '../../../../tandem/js/types/NullableIO.js';
@@ -139,7 +140,7 @@ class Material {
   static getCustomLiquidColor( density ) {
     const lightness = Material.getCustomLightness( density );
 
-    return new Property( new Color( lightness, lightness, lightness, 0.8 * ( 1 - lightness / 255 ) ) );
+    return new ColorProperty( new Color( lightness, lightness, lightness, 0.8 * ( 1 - lightness / 255 ) ) );
   }
 
   /**
@@ -152,7 +153,7 @@ class Material {
   static getCustomSolidColor( density ) {
     const lightness = Material.getCustomLightness( density );
 
-    return new Property( new Color( lightness, lightness, lightness ) );
+    return new ColorProperty( new Color( lightness, lightness, lightness ) );
   }
 }
 
@@ -447,8 +448,8 @@ Material.MaterialIO = new IOType( 'MaterialIO', {
         viscosity: NumberIO.fromStateObject( obj.viscosity ),
         custom: BooleanIO.fromStateObject( obj.custom ),
         hidden: BooleanIO.fromStateObject( obj.hidden ),
-        customColor: staticCustomColor ? new Property( staticCustomColor ) : NullableColorPropertyReferenceType.fromStateObject( obj.customColor ),
-        liquidColor: staticLiquidColor ? new Property( staticLiquidColor ) : NullableColorPropertyReferenceType.fromStateObject( obj.liquidColor )
+        customColor: staticCustomColor ? new ColorProperty( staticCustomColor ) : NullableColorPropertyReferenceType.fromStateObject( obj.customColor ),
+        liquidColor: staticLiquidColor ? new ColorProperty( staticLiquidColor ) : NullableColorPropertyReferenceType.fromStateObject( obj.liquidColor )
       } );
     }
   }

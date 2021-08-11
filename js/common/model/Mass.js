@@ -14,6 +14,7 @@ import Property from '../../../../axon/js/Property.js';
 import Matrix3 from '../../../../dot/js/Matrix3.js';
 import Utils from '../../../../dot/js/Utils.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
+import Vector2Property from '../../../../dot/js/Vector2Property.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
 import Shape from '../../../../kite/js/Shape.js';
 import Enumeration from '../../../../phet-core/js/Enumeration.js';
@@ -154,7 +155,7 @@ class Mass extends PhetioObject {
     } );
 
     // @public {Property.<Vector2>} - The following offset will be added onto the body's position to determine ours.
-    this.bodyOffsetProperty = new Property( Vector2.ZERO, {
+    this.bodyOffsetProperty = new Vector2Property( Vector2.ZERO, {
       tandem: Tandem.OPT_OUT
     } );
 
@@ -198,7 +199,7 @@ class Mass extends PhetioObject {
     } );
 
     // @public {Property.<Vector3>} - Orientation multiplied by 1/2 width,height for an offset in view space
-    this.massOffsetOrientationProperty = new Property( Vector2.ZERO, {
+    this.massOffsetOrientationProperty = new Vector2Property( Vector2.ZERO, {
       useDeepEquality: true,
       tandem: Tandem.OPT_OUT
     } );

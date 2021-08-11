@@ -5,7 +5,7 @@
     ],
     "projectURL": "http://phet.colorado.edu",
     "license": "contact phethelp@colorado.edu",
-    "notes": "created by the simulation code"
+    "notes": "created by the simulation code, see SecondMassVisibleControl.getSingleCuboidIcon() with ?generateIconImages"
   },
   "double-cuboid-icon.png": {
     "text": [
@@ -13,6 +13,6 @@
     ],
     "projectURL": "http://phet.colorado.edu",
     "license": "contact phethelp@colorado.edu",
-    "notes": "created by the simulation code"
+    "notes": "created by the simulation code, see SecondMassVisibleControl.getDoubleCuboidIcon() with ?generateIconImages"
   }
 }

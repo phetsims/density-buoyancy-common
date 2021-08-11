@@ -120,7 +120,6 @@ class BoatDesign {
       const x = BoatDesign.getControlPoints( BoatDesign.getHeightRatioFromDesignY( y ), false )[ 0 ].x;
       points.push( new Vector2( x, y ) );
     } );
-    // points.push( new Vector2( insideTopPoints[ 0 ].x, 0 ) );
 
     const interiorPoints = [];
 

@@ -68,6 +68,7 @@ import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import NumberProperty from '../../../../axon/js/NumberProperty.js';
 import Property from '../../../../axon/js/Property.js';
 import Bounds2 from '../../../../dot/js/Bounds2.js';
+import Range from '../../../../dot/js/Range.js';
 import Utils from '../../../../dot/js/Utils.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
@@ -197,7 +198,8 @@ class Bottle extends Mass {
 
     // @public {Property.<number>}
     this.interiorVolumeProperty = new NumberProperty( BOTTLE_INITIAL_INTERIOR_VOLUME, {
-      tandem: config.tandem.createTandem( 'interiorVolumeProperty' )
+      tandem: config.tandem.createTandem( 'interiorVolumeProperty' ),
+      range: new Range( 0, Number.POSITIVE_INFINITY )
     } );
 
     // @public {Property.<number>} - In kg (kilograms)

@@ -7,6 +7,7 @@
  */
 
 import NumberProperty from '../../../../axon/js/NumberProperty.js';
+import Range from '../../../../dot/js/Range.js';
 import Utils from '../../../../dot/js/Utils.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
@@ -44,8 +45,14 @@ class Cone extends Mass {
     super( engine, config );
 
     // @public {Property.<number>}
-    this.radiusProperty = new NumberProperty( radius );
-    this.heightProperty = new NumberProperty( height );
+    this.radiusProperty = new NumberProperty( radius, {
+      tandem: config.tandem.createTandem( 'radiusProperty' ),
+      range: new Range( 0, Number.POSITIVE_INFINITY )
+    } );
+    this.heightProperty = new NumberProperty( height, {
+      tandem: config.tandem.createTandem( 'heightProperty' ),
+      range: new Range( 0, Number.POSITIVE_INFINITY )
+    } );
 
     // @public {boolean}
     this.isVertexUp = isVertexUp;

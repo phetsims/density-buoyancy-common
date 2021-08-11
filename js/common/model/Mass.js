@@ -12,6 +12,7 @@ import Emitter from '../../../../axon/js/Emitter.js';
 import NumberProperty from '../../../../axon/js/NumberProperty.js';
 import Property from '../../../../axon/js/Property.js';
 import Matrix3 from '../../../../dot/js/Matrix3.js';
+import Range from '../../../../dot/js/Range.js';
 import Utils from '../../../../dot/js/Utils.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import Vector2Property from '../../../../dot/js/Vector2Property.js';
@@ -144,11 +145,14 @@ class Mass extends PhetioObject {
 
     // @public {Property.<number>} - In m^3 (cubic meters)
     this.volumeProperty = new NumberProperty( config.volume, {
-      tandem: tandem.createTandem( 'volumeProperty' )
+      tandem: tandem.createTandem( 'volumeProperty' ),
+      range: new Range( 0, Number.POSITIVE_INFINITY ),
+      phetioReadOnly: true
     } );
 
     // @public {Property.<number>} - In kg (kilograms), added to the normal mass (computed from density and volume)
     this.containedMassProperty = new NumberProperty( 0, {
+      range: new Range( 0, Number.POSITIVE_INFINITY ),
       tandem: Tandem.OPT_OUT
     } );
 

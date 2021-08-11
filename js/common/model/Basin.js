@@ -7,6 +7,7 @@
  */
 
 import NumberProperty from '../../../../axon/js/NumberProperty.js';
+import Range from '../../../../dot/js/Range.js';
 import merge from '../../../../phet-core/js/merge.js';
 import NumberIO from '../../../../tandem/js/types/NumberIO.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
@@ -26,7 +27,8 @@ class Basin {
     // @public {Property.<number>} - in m^3, the volume of liquid contained in this basin
     this.liquidVolumeProperty = new NumberProperty( options.initialVolume, {
       tandem: tandem.createTandem( 'liquidVolumeProperty' ),
-      phetioReadOnly: true
+      phetioReadOnly: true,
+      range: new Range( 0, Number.POSITIVE_INFINITY )
     } );
 
     // @public {Property.<number>} - The y coordinate of the liquid level (absolute in the model, NOT relative to

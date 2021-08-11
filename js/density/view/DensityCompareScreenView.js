@@ -105,7 +105,7 @@ class DensityCompareScreenView extends DensityBuoyancyScreenView {
       densityBuoyancyCommonStrings.kilogramsPattern,
       'kilograms',
       tandem.createTandem( 'massNumberControl' )
-     );
+    );
     const volumeNumberControl = new ComparisonNumberControl(
       volumeProperty,
       densityBuoyancyCommonStrings.volume,

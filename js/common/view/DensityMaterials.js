@@ -50,6 +50,7 @@ function toWrappedTexture( image ) {
 
 // Simplified environment map to give a nice reflective appearance. We compute it per-pixel
 let envMapTexture = null;
+
 function getEnvironmentTexture() {
   const size = 32;
   if ( !envMapTexture ) {

@@ -192,6 +192,19 @@ class DensityCompareModel extends DensityBuoyancyModal( DensityBuoyancyModel, Mo
 
     this.uninterpolateMasses();
   }
+
+  /**
+   * Resets values to their original state
+   * @public
+   * @override
+   */
+  reset() {
+    this.massProperty.reset();
+    this.volumeProperty.reset();
+    this.densityProperty.reset();
+
+    super.reset();
+  }
 }
 
 // @public (read-only) {Enumeration}

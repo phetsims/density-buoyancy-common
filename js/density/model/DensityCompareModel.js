@@ -194,7 +194,7 @@ class DensityCompareModel extends DensityBuoyancyModal( DensityBuoyancyModel, Mo
   }
 }
 
-// @public {Enumeration}
+// @public (read-only) {Enumeration}
 DensityCompareModel.Mode = Mode;
 
 densityBuoyancyCommon.register( 'DensityCompareModel', DensityCompareModel );

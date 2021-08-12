@@ -156,7 +156,7 @@ class Mass extends PhetioObject {
       tandem: Tandem.OPT_OUT
     } );
 
-    // @public {Property.<number>} - In kg (kilograms)
+    // @public (read-only) {Property.<number>} - In kg (kilograms)
     this.massProperty = new DerivedProperty( [ this.materialProperty, this.volumeProperty, this.containedMassProperty ], ( material, volume, containedMass ) => {
       return material.density * volume + containedMass;
     }, {
@@ -222,16 +222,16 @@ class Mass extends PhetioObject {
     // @public {Matrix3}
     this.stepMatrix = new Matrix3();
 
-    // @public {Emitter}
+    // @public (read-only) {Emitter}
     this.transformedEmitter = new Emitter();
 
-    // @public {boolean}
+    // @public (read-only) {boolean}
     this.canRotate = config.canRotate;
 
-    // @public {boolean}
+    // @public (read-only) {boolean}
     this.canMove = config.canMove;
 
-    // @public {MassTag}
+    // @public (read-only) {MassTag}
     this.tag = config.tag;
 
     // @public {Basin|null} - Set by the model
@@ -253,7 +253,7 @@ class Mass extends PhetioObject {
     this.writeData();
     this.engine.bodySynchronizePrevious( this.body );
 
-    // @public {number}
+    // @public (read-only) {number}
     this.stepX = 0;
     this.stepBottom = 0;
     this.stepTop = 0;
@@ -469,10 +469,10 @@ class Mass extends PhetioObject {
   }
 }
 
-// @public {Enumeration}
+// @public (read-only) {Enumeration}
 Mass.MassTag = MassTag;
 
-// @public {IOType}
+// @public (read-only) {IOType}
 Mass.MassIO = new IOType( 'MassIO', {
   valueType: Mass,
   documentation: 'Represents a mass that interacts in the scene, and can potentially float or displace liquid.',

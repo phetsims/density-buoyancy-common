@@ -34,16 +34,16 @@ class Gravity {
       hidden: false
     }, config );
 
-    // @public {string}
+    // @public (read-only) {string}
     this.name = config.name;
 
-    // @public {number}
+    // @public (read-only) {number}
     this.value = config.value;
 
-    // @public {boolean}
+    // @public (read-only) {boolean}
     this.custom = config.custom;
 
-    // @public {boolean}
+    // @public (read-only) {boolean}
     this.hidden = config.hidden;
   }
 
@@ -63,7 +63,7 @@ class Gravity {
   }
 }
 
-// @public {Gravity}
+// @public (read-only) {Gravity}
 Gravity.EARTH = new Gravity( {
   name: densityBuoyancyCommonStrings.gravity.earth,
   value: 9.8
@@ -82,7 +82,7 @@ Gravity.PLANET_X = new Gravity( {
   hidden: true
 } );
 
-// @public {Array.<Gravity>}
+// @public (read-only) {Array.<Gravity>}
 Gravity.GRAVITIES = [
   Gravity.EARTH,
   Gravity.JUPITER,
@@ -90,7 +90,7 @@ Gravity.GRAVITIES = [
   Gravity.PLANET_X
 ];
 
-// @public {IOType}
+// @public (read-only) {IOType}
 Gravity.GravityIO = new IOType( 'GravityIO', {
   valueType: Gravity,
   documentation: 'Represents a specific value of gravity',

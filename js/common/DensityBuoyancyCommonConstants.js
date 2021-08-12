@@ -14,13 +14,13 @@ import DensityBuoyancyCommonColors from './view/DensityBuoyancyCommonColors.js';
 const CORNER_RADIUS = 5;
 
 const DensityBuoyancyCommonConstants = {
-  // @public {number} - Used for margins from the offset of screens or between panels/boxes
+  // @public (read-only) {number} - Used for margins from the offset of screens or between panels/boxes
   MARGIN: 10,
 
-  // @public {number} - Used for panels/boxes by default
+  // @public (read-only) {number} - Used for panels/boxes by default
   CORNER_RADIUS: CORNER_RADIUS,
 
-  // @public {Font}
+  // @public (read-only) {Font}
   TITLE_FONT: new PhetFont( {
     size: 16,
     weight: 'bold'
@@ -33,7 +33,7 @@ const DensityBuoyancyCommonConstants = {
   } ),
   READOUT_FONT: new PhetFont( 14 ),
 
-  // @public {Object}
+  // @public (read-only) {Object}
   PANEL_OPTIONS: {
     cornerRadius: CORNER_RADIUS,
     fill: DensityBuoyancyCommonColors.panelBackgroundProperty,
@@ -41,7 +41,7 @@ const DensityBuoyancyCommonConstants = {
     yMargin: 10
   },
 
-  // @public {Object}
+  // @public (read-only) {Object}
   ACCORDION_BOX_OPTIONS: {
     cornerRadius: CORNER_RADIUS,
     titleYMargin: 5,
@@ -50,7 +50,7 @@ const DensityBuoyancyCommonConstants = {
     fill: DensityBuoyancyCommonColors.panelBackgroundProperty
   },
 
-  // {Vector3} cameraLookAt locations
+  // @public (read-only) {Vector3} cameraLookAt locations
   DENSITY_CAMERA_LOOK_AT: Vector3.ZERO,
   BUOYANCY_CAMERA_LOOK_AT: new Vector3( 0, -0.18, 0 )
 };

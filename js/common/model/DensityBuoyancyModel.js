@@ -78,7 +78,7 @@ class DensityBuoyancyModel {
       phetioReadOnly: true
     } );
 
-    // @public {Property.<number>}
+    // @public (read-only) {Property.<number>}
     // DerivedProperty doesn't need disposal, since everything here lives for the lifetime of the simulation
     this.liquidDensityProperty = new DerivedProperty( [ this.liquidMaterialProperty ], liquidMaterial => liquidMaterial.density, {
       tandem: tandem.createTandem( 'liquidDensityProperty' ),
@@ -86,20 +86,20 @@ class DensityBuoyancyModel {
       units: 'kg/m^3'
     } );
 
-    // @public {Property.<number>}
+    // @public (read-only) {Property.<number>}
     // DerivedProperty doesn't need disposal, since everything here lives for the lifetime of the simulation
     this.liquidViscosityProperty = new DerivedProperty( [ this.liquidMaterialProperty ], liquidMaterial => liquidMaterial.viscosity, {
       tandem: tandem.createTandem( 'liquidViscosityProperty' ),
       phetioType: DerivedProperty.DerivedPropertyIO( NumberIO )
     } );
 
-    // @public {Bounds3}
+    // @public  (read-only){Bounds3}
     this.poolBounds = new Bounds3(
       -POOL_WIDTH / 2, -POOL_HEIGHT, POOL_BACK_Z,
       POOL_WIDTH / 2, 0, GROUND_FRONT_Z
     );
 
-    // @public {Bounds3}
+    // @public  (read-only){Bounds3}
     this.groundBounds = new Bounds3(
       -10, -10, -2,
       10, 0, GROUND_FRONT_Z
@@ -145,7 +145,7 @@ class DensityBuoyancyModel {
       );
     }
 
-    // @public {Array.<Vector2>}
+    // @public (read-only) {Array.<Vector2>}
     this.groundPoints = [
       new Vector2( this.groundBounds.minX, this.groundBounds.minY ),
       new Vector2( this.groundBounds.maxX, this.groundBounds.minY ),
@@ -157,20 +157,20 @@ class DensityBuoyancyModel {
       new Vector2( this.groundBounds.minX, this.groundBounds.maxY )
     ];
 
-    // @public {Pool}
+    // @public (read-only) {Pool}
     this.pool = new Pool( this.poolBounds, tandem.createTandem( 'pool' ) );
 
-    // @public {Boat|null} - We need to hook into a boat (if it exists) for displaying the water.
+    // @public (read-only) {Boat|null} - We need to hook into a boat (if it exists) for displaying the water.
     this.boat = null;
 
-    // @public {Engine}
+    // @public (read-only) {Engine}
     this.engine = new P2Engine();
 
-    // @public {Engine.Body}
+    // @public (read-only) {Engine.Body}
     this.groundBody = this.engine.createGround( this.groundPoints );
     this.engine.addBody( this.groundBody );
 
-    // @public {Engine.Body}
+    // @public (read-only) {Engine.Body}
     this.barrierBody = this.engine.createBarrier( barrierPointsProperty.value );
     this.engine.addBody( this.barrierBody );
 
@@ -211,7 +211,7 @@ class DensityBuoyancyModel {
       }
     } );
 
-    // @public {ObservableArrayDef.<Mass>}
+    // @public (read-only) {ObservableArrayDef.<Mass>}
     this.masses = createObservableArray();
     this.masses.addItemAddedListener( mass => {
       this.engine.addBody( mass.body );

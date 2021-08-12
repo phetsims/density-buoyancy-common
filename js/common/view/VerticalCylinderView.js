@@ -34,7 +34,7 @@ class VerticalCylinderView extends MassView {
 
     super( verticalCylinder, verticalCylinderGeometry, options );
 
-    // @public {VerticalCylinder}
+    // @public (read-only) {VerticalCylinder}
     this.verticalCylinder = verticalCylinder;
 
     // @private {THREE.BufferGeometry}

@@ -309,7 +309,7 @@ class Cuboid extends Mass {
   }
 }
 
-// @public {IOType}
+// @public (read-only) {IOType}
 Cuboid.CuboidIO = new IOType( 'CuboidIO', {
   valueType: Cuboid,
   supertype: Mass.MassIO,

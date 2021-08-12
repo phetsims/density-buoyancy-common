@@ -251,7 +251,7 @@ class Ellipsoid extends Mass {
   }
 }
 
-// @public {IOType}
+// @public (read-only) {IOType}
 Ellipsoid.EllipsoidIO = new IOType( 'EllipsoidIO', {
   valueType: Ellipsoid,
   supertype: Mass.MassIO,

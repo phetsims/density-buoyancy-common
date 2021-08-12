@@ -799,7 +799,7 @@ BoatDesign.DESIGN_BOUNDS = new Bounds3( ${designBounds.minX}, ${designBounds.min
 BoatDesign.ONE_LITER_BOUNDS = new Bounds3( ${oneLiterBounds.minX}, ${oneLiterBounds.minY}, ${oneLiterBounds.minZ}, ${oneLiterBounds.maxX}, ${oneLiterBounds.maxY}, ${oneLiterBounds.maxZ} );
 BoatDesign.ONE_LITER_INTERIOR_BOTTOM = ${oneLiterInteriorBottom};
 
-// @public {number}
+// @public (read-only) {number}
 BoatDesign.ONE_LITER_HULL_VOLUME = BoatDesign.DESIGN_HULL_VOLUME * BoatDesign.ONE_LITER_SCALE_MULTIPLIER * BoatDesign.ONE_LITER_SCALE_MULTIPLIER * BoatDesign.ONE_LITER_SCALE_MULTIPLIER;
 `;
   }
@@ -920,7 +920,7 @@ BoatDesign.DESIGN_BOUNDS = new Bounds3( -4.199999999999999, -50, -53, 203, 0, 53
 BoatDesign.ONE_LITER_BOUNDS = new Bounds3( -0.15111232427247423, -0.02196667952007725, -0.06109859698706928, 0.08774860583546452, 0.03567350631678056, 0.06109859698706928 );
 BoatDesign.ONE_LITER_INTERIOR_BOTTOM = -0.01850826836986578;
 
-// @public {number}
+// @public (read-only) {number}
 BoatDesign.ONE_LITER_HULL_VOLUME = BoatDesign.DESIGN_HULL_VOLUME * BoatDesign.ONE_LITER_SCALE_MULTIPLIER * BoatDesign.ONE_LITER_SCALE_MULTIPLIER * BoatDesign.ONE_LITER_SCALE_MULTIPLIER;
 
 densityBuoyancyCommon.register( 'BoatDesign', BoatDesign );

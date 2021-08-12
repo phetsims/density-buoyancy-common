@@ -95,7 +95,7 @@ class BuoyancyIntroModel extends DensityBuoyancyModal( DensityBuoyancyModel, Mod
   }
 }
 
-// @public {Enumeration}
+// @public (read-only) {Enumeration}
 BuoyancyIntroModel.Mode = Mode;
 
 densityBuoyancyCommon.register( 'BuoyancyIntroModel', BuoyancyIntroModel );

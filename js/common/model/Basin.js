@@ -40,16 +40,16 @@ class Basin {
       phetioReadOnly: true
     } );
 
-    // @public {number} - The bottom and top of the basin's area of containment (absolute model coordinates), set during
-    // physics engine steps.
+    // @public (read-only) {number} - The bottom and top of the basin's area of containment (absolute model
+    // coordinates), set during physics engine steps.
     this.stepBottom = 0;
     this.stepTop = 0;
 
     // @public {Array.<Mass>} - The masses contained in this basin, set during the physics engine steps.
     this.stepMasses = [];
 
-    // @public {Basin|null} - A basin that may be contained in this one (boat basin in the pool) NOTE: only one
-    // guaranteed
+    // @public (read-only) {Basin|null} - A basin that may be contained in this one (boat basin in the pool) NOTE: only
+    // one guaranteed
     this.childBasin = null;
   }
 

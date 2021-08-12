@@ -343,7 +343,7 @@ class DensityMaterials {
   }
 }
 
-// @public {THREE.Texture}
+// @public (read-only) {THREE.Texture}
 DensityMaterials.woodColorTexture = woodColorTexture;
 DensityMaterials.woodNormalTexture = woodNormalTexture;
 DensityMaterials.woodRoughnessTexture = woodRoughnessTexture;

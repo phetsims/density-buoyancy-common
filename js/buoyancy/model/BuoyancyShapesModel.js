@@ -48,7 +48,7 @@ class BuoyancyShapesModel extends DensityBuoyancyModel {
     // @public {Property.<boolean>}
     this.densityReadoutExpandedProperty = new BooleanProperty( false );
 
-    // @public {Scale}
+    // @public (read-only) {Scale}
     this.leftScale = new Scale( this.engine, {
       matrix: Matrix3.translation( -0.7, -Scale.SCALE_BASE_BOUNDS.minY ),
       displayType: Scale.DisplayType.NEWTONS,
@@ -56,7 +56,7 @@ class BuoyancyShapesModel extends DensityBuoyancyModel {
     } );
     this.availableMasses.push( this.leftScale );
 
-    // @public {Scale}
+    // @public (read-only) {Scale}
     this.poolScale = new Scale( this.engine, {
       matrix: Matrix3.translation( 0.25, -Scale.SCALE_BASE_BOUNDS.minY + this.poolBounds.minY ),
       displayType: Scale.DisplayType.NEWTONS,
@@ -128,7 +128,7 @@ class BuoyancyShapesModel extends DensityBuoyancyModel {
     const primaryMassTandem = tandem.createTandem( 'primaryMass' );
     const secondaryMassTandem = tandem.createTandem( 'secondaryMass' );
 
-    // @public {Property.<Mass>}
+    // @public (read-only) {Property.<Mass>}
     // DerivedProperty doesn't need disposal, since everything here lives for the lifetime of the simulation
     this.primaryMassProperty = new DerivedProperty( [ this.primaryShapeProperty ], shape => {
       return createMass( shape, this.primaryWidthRatioProperty.value, this.primaryHeightRatioProperty.value, primaryMassTandem );
@@ -210,7 +210,7 @@ class BuoyancyShapesModel extends DensityBuoyancyModel {
   }
 }
 
-// @public {Enumeration}
+// @public (read-only) {Enumeration}
 BuoyancyShapesModel.MassShape = MassShape;
 
 densityBuoyancyCommon.register( 'BuoyancyShapesModel', BuoyancyShapesModel );

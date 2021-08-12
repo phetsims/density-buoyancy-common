@@ -24,7 +24,7 @@ class ScaleView extends MassView {
 
     super( mass, scaleGeometry, options );
 
-    // @public {Scale}
+    // @public (read-only) {Scale}
     this.mass = mass;
 
     // @private {THREE.BufferGeometry}

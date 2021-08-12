@@ -25,7 +25,7 @@ class MassView extends THREE.Mesh {
 
     super( initialGeometry, materialView.material, options );
 
-    // @public {Mass}
+    // @public (read-only) {Mass}
     this.mass = mass;
 
     // @private {MaterialView}

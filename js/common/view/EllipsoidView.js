@@ -21,7 +21,7 @@ class EllipsoidView extends MassView {
 
     super( ellipsoid, ellipsoidGeometry, options );
 
-    // @public {Ellipsoid}
+    // @public (read-only) {Ellipsoid}
     this.ellipsoid = ellipsoid;
 
     // @private {THREE.Sphere}

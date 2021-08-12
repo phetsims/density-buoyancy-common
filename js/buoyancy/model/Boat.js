@@ -69,7 +69,7 @@ class Boat extends Mass {
     // @public {Property.<Material>}
     this.liquidMaterialProperty = liquidMaterialProperty;
 
-    // @public {Basin}
+    // @public (read-only) {Basin}
     this.basin = new BoatBasin( this );
 
     Property.multilink( [ this.liquidMaterialProperty, this.basin.liquidVolumeProperty ], ( material, volume ) => {

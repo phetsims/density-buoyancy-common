@@ -53,28 +53,28 @@ class Material {
       liquidColor: null
     }, config );
 
-    // @public {string}
+    // @public (read-only) {string}
     this.name = config.name;
 
-    // @public {string|null}
+    // @public (read-only) {string|null}
     this.identifier = config.identifier;
 
-    // @public {number}
+    // @public (read-only) {number}
     this.density = config.density;
 
-    // @public {number}
+    // @public (read-only) {number}
     this.viscosity = config.viscosity;
 
-    // @public {boolean}
+    // @public (read-only) {boolean}
     this.custom = config.custom;
 
-    // @public {boolean}
+    // @public (read-only) {boolean}
     this.hidden = config.hidden;
 
-    // @public {Property.<Color>|null}
+    // @public (read-only) {Property.<Color>|null}
     this.customColor = config.customColor;
 
-    // @public {Property.<Color>|null}
+    // @public (read-only) {Property.<Color>|null}
     this.liquidColor = config.liquidColor;
   }
 
@@ -157,7 +157,7 @@ class Material {
   }
 }
 
-// @public {Material} - "Solids"
+// @public (read-only) {Material} - "Solids"
 Material.ALUMINUM = new Material( {
   name: densityBuoyancyCommonStrings.material.aluminum,
   identifier: 'ALUMINUM',
@@ -261,7 +261,7 @@ Material.WOOD = new Material( {
   density: 400
 } );
 
-// @public {Material} - "Liquids".
+// @public (read-only) {Material} - "Liquids".
 Material.AIR = new Material( {
   name: densityBuoyancyCommonStrings.material.air,
   identifier: 'AIR',
@@ -361,7 +361,7 @@ Material.WATER = new Material( {
   liquidColor: DensityBuoyancyCommonColors.materialWaterColorProperty
 } );
 
-// @public {Array.<Material>}
+// @public (read-only) {Array.<Material>}
 Material.MATERIALS = [
   Material.AIR,
   Material.ALUMINUM,
@@ -398,7 +398,7 @@ Material.MATERIALS = [
 
 const NullableColorPropertyReferenceType = NullableIO( ReferenceIO( Property.PropertyIO( Color.ColorIO ) ) );
 
-// @public {IOType}
+// @public (read-only) {IOType}
 Material.MaterialIO = new IOType( 'MaterialIO', {
   valueType: Material,
   documentation: 'Represents different materials that solids/liquids in the simulations can take, including density/viscosity/color.',

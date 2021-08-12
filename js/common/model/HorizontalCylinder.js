@@ -262,7 +262,7 @@ class HorizontalCylinder extends Mass {
   }
 }
 
-// @public {IOType}
+// @public (read-only) {IOType}
 HorizontalCylinder.HorizontalCylinderIO = new IOType( 'HorizontalCylinderIO', {
   valueType: HorizontalCylinder,
   supertype: Mass.MassIO,

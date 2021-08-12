@@ -191,7 +191,7 @@ class DebugMassNode extends Node {
     } );
     this.addChild( intersectionPath );
 
-    // @public {Mass}
+    // @public (read-only) {Mass}
     this.mass = mass;
 
     // @private {Emitter}
@@ -304,7 +304,7 @@ class DebugMassNode extends Node {
       } );
     }
 
-    // @public {DragListener}
+    // @public (read-only) {DragListener}
     this.dragListener = new DragListener( {
       transform: modelViewTransform,
       applyOffset: false,

@@ -277,7 +277,7 @@ class VerticalCylinder extends Mass {
   }
 }
 
-// @public {IOType}
+// @public (read-only) {IOType}
 VerticalCylinder.VerticalCylinderIO = new IOType( 'VerticalCylinderIO', {
   valueType: VerticalCylinder,
   supertype: Mass.MassIO,

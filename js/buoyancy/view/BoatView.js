@@ -194,7 +194,7 @@ class BoatView extends MassView {
     backTop.renderOrder = -1;
     backExterior.renderOrder = -2;
 
-    // @public {Boat}
+    // @public (read-only) {Boat}
     this.boat = boat;
   }
 

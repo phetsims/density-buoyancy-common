@@ -165,7 +165,7 @@ class BottleView extends MassView {
       frontBottomMaterial.opacity = alpha;
     } );
 
-    // @public {Bottle}
+    // @public (read-only) {Bottle}
     this.bottle = bottle;
   }
 

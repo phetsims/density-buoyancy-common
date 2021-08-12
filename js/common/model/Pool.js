@@ -23,7 +23,7 @@ class Pool extends Basin {
       initialY: bounds.minY + initialVolume / ( bounds.width * bounds.depth )
     } );
 
-    // @public {Bounds3}
+    // @public (read-only) {Bounds3}
     this.bounds = bounds;
 
     // These won't change over the life of the pool.

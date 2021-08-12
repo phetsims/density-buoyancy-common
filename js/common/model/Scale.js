@@ -75,7 +75,7 @@ class Scale extends Mass {
       tandem: config.tandem.createTandem( 'scaleForceInterpolatedProperty' )
     } );
 
-    // @public {DisplayType}
+    // @public (read-only) {DisplayType}
     this.displayType = config.displayType;
   }
 
@@ -185,7 +185,7 @@ class Scale extends Mass {
   }
 }
 
-// @public {number}
+// @public (read-only) {number}
 Scale.SCALE_WIDTH = SCALE_WIDTH;
 Scale.SCALE_HEIGHT = SCALE_HEIGHT;
 Scale.SCALE_DEPTH = SCALE_DEPTH;
@@ -194,16 +194,16 @@ Scale.SCALE_TOP_HEIGHT = SCALE_TOP_HEIGHT;
 Scale.SCALE_AREA = SCALE_AREA;
 Scale.SCALE_VOLUME = SCALE_VOLUME;
 
-// @public {Bounds3}
+// @public (read-only) {Bounds3}
 Scale.SCALE_BASE_BOUNDS = SCALE_BASE_BOUNDS;
 
-// @public {Vector3}
+// @public (read-only) {Vector3}
 Scale.SCALE_FRONT_OFFSET = SCALE_FRONT_OFFSET;
 
-// @public {Enumeration}
+// @public (read-only) {Enumeration}
 Scale.DisplayType = DisplayType;
 
-// @public {IOType}
+// @public (read-only) {IOType}
 Scale.ScaleIO = new IOType( 'ScaleIO', {
   valueType: Scale,
   supertype: Mass.MassIO,

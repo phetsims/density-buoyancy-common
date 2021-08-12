@@ -29,11 +29,11 @@ class InterpolatedProperty extends Property {
     // @private {function(a:number, b:number, ratio:number)}
     this.interpolate = config.interpolate;
 
-    // @public {*}
+    // @public (read-only) {*}
     this.currentValue = value;
     this.previousValue = value;
 
-    // @public {number}
+    // @public (read-only) {number}
     this.ratio = 0;
   }
 

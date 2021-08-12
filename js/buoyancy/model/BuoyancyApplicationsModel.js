@@ -40,23 +40,23 @@ class BuoyancyApplicationsModel extends DensityBuoyancyModel {
     // @public {Property.<boolean>}
     this.densityReadoutExpandedProperty = new BooleanProperty( false );
 
-    // @public {Bottle}
+    // @public (read-only) {Bottle}
     this.bottle = new Bottle( this.engine, {
       matrix: Matrix3.translation( 0, 0 ),
       tandem: tandem.createTandem( 'bottle' )
     } );
 
-    // @public {Cuboid}
+    // @public (read-only) {Cuboid}
     this.block = Cuboid.createWithVolume( this.engine, Material.STEEL, new Vector2( 0.5, 0.5 ), 0.005 );
 
-    // @public {Boat|null}
+    // @public (read-only) {Boat|null}
     // DerivedProperty doesn't need disposal, since everything here lives for the lifetime of the simulation
     this.boat = new Boat( this.engine, new DerivedProperty( [ this.block.sizeProperty ], size => size.depth ), this.liquidMaterialProperty, {
       matrix: Matrix3.translation( 0, -0.1 ),
       tandem: tandem.createTandem( 'boat' )
     } );
 
-    // @public {Scale}
+    // @public (read-only) {Scale}
     this.leftScale = new Scale( this.engine, {
       matrix: Matrix3.translation( -0.7, -Scale.SCALE_BASE_BOUNDS.minY ),
       displayType: Scale.DisplayType.NEWTONS,
@@ -65,7 +65,7 @@ class BuoyancyApplicationsModel extends DensityBuoyancyModel {
     } );
     this.availableMasses.push( this.leftScale );
 
-    // @public {Scale}
+    // @public (read-only) {Scale}
     this.poolScale = new Scale( this.engine, {
       matrix: Matrix3.translation( 0.25, -Scale.SCALE_BASE_BOUNDS.minY + this.poolBounds.minY ),
       displayType: Scale.DisplayType.NEWTONS,
@@ -104,7 +104,7 @@ class BuoyancyApplicationsModel extends DensityBuoyancyModel {
   }
 }
 
-// @public {Enumeration}
+// @public (read-only) {Enumeration}
 BuoyancyApplicationsModel.Scene = Scene;
 
 densityBuoyancyCommon.register( 'BuoyancyApplicationsModel', BuoyancyApplicationsModel );

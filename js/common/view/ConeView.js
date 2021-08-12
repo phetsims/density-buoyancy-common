@@ -34,7 +34,7 @@ class ConeView extends MassView {
 
     super( cone, coneGeometry, options );
 
-    // @public {Cone}
+    // @public (read-only) {Cone}
     this.cone = cone;
 
     // @private {THREE.BufferGeometry}

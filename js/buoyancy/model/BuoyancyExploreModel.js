@@ -24,7 +24,7 @@ class BuoyancyExploreModel extends DensityBuoyancyModel {
 
     super( tandem );
 
-    // @public {Mass}
+    // @public (read-only) {Mass}
     this.primaryMass = Cuboid.createWithMass( this.engine, Material.WOOD, new Vector2( -0.2, 0.2 ), 2, {
       tag: Mass.MassTag.PRIMARY,
       tandem: tandem.createTandem( 'primaryMass' )

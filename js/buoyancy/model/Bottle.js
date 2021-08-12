@@ -202,7 +202,7 @@ class Bottle extends Mass {
       range: new Range( 0, Number.POSITIVE_INFINITY )
     } );
 
-    // @public {Property.<number>} - In kg (kilograms)
+    // @public (read-only) {Property.<number>} - In kg (kilograms)
     this.interiorMassProperty = new DerivedProperty( [ this.interiorMaterialProperty, this.interiorVolumeProperty ], ( material, volume ) => {
       return material.density * volume;
     } );
@@ -214,11 +214,11 @@ class Bottle extends Mass {
       } );
     } );
 
-    // @public {THREE.BufferGeometry}
+    // @public (read-only) {THREE.BufferGeometry}
     this.primaryGeometry = Bottle.getPrimaryGeometry();
     this.capGeometry = Bottle.getCapGeometry();
 
-    // @public {THREE.Group}
+    // @public (read-only) {THREE.Group}
     this.intersectionGroup = new THREE.Group();
     this.intersectionGroup.add( new THREE.Mesh( this.primaryGeometry, new THREE.MeshLambertMaterial() ) );
     this.intersectionGroup.add( new THREE.Mesh( this.capGeometry, new THREE.MeshLambertMaterial() ) );
@@ -1401,20 +1401,20 @@ const FLAT_INTERSECTION_VERTICES = [ ${flatIntersectionVertices.map( v => `new V
   }
 }
 
-// @public {number} - The number to scale the original values by to get a 10L-volume bottle
+// @public (read-only) {number} - The number to scale the original values by to get a 10L-volume bottle
 Bottle.TEN_LITER_SCALE_MULTIPLIER = TEN_LITER_SCALE_MULTIPLIER;
 
-// @public {number} - The maximum bounding radius for the 10L-volume bottle
+// @public (read-only) {number} - The maximum bounding radius for the 10L-volume bottle
 Bottle.MAX_RADIUS = FULL_RADIUS * TEN_LITER_SCALE_MULTIPLIER;
 
-// @public {number} - The maximum length for the 10L-volume bottle
+// @public (read-only) {number} - The maximum length for the 10L-volume bottle
 Bottle.MAX_LENGTH = BASE_TIP * TEN_LITER_SCALE_MULTIPLIER;
 
-// @public {Array.<number>} - From the bottom to top, cross-sectional area and cumulative (displaced) volume
+// @public (read-only) {Array.<number>} - From the bottom to top, cross-sectional area and cumulative (displaced) volume
 Bottle.TEN_LITER_DISPLACED_AREAS = TEN_LITER_DISPLACED_AREAS;
 Bottle.TEN_LITER_DISPLACED_VOLUMES = TEN_LITER_DISPLACED_VOLUMES;
 
-// @public {Array.<Vector2>}
+// @public (read-only) {Array.<Vector2>}
 Bottle.FLAT_INTERSECTION_VERTICES = FLAT_INTERSECTION_VERTICES;
 
 densityBuoyancyCommon.register( 'Bottle', Bottle );

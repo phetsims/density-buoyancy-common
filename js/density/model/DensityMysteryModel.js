@@ -239,7 +239,7 @@ class DensityMysteryModel extends DensityBuoyancyModal( DensityBuoyancyModel, Mo
       tandem: tandem.createTandem( 'densityTableExpandedProperty' )
     } );
 
-    // @public {Scale}
+    // @public (read-only) {Scale}
     this.scale = new Scale( this.engine, {
       matrix: Matrix3.translation( -0.75, -Scale.SCALE_BASE_BOUNDS.minY ),
       displayType: Scale.DisplayType.KILOGRAMS,

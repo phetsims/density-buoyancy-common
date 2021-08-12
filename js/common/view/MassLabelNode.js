@@ -144,7 +144,7 @@ class MassLabelNode extends Node {
   }
 }
 
-// @public {Node}
+// @public (read-only) {Node}
 MassLabelNode.PRIMARY_LABEL = PRIMARY_LABEL;
 MassLabelNode.SECONDARY_LABEL = SECONDARY_LABEL;
 

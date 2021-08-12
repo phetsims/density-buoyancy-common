@@ -54,7 +54,7 @@ class Cone extends Mass {
       range: new Range( 0, Number.POSITIVE_INFINITY )
     } );
 
-    // @public {boolean}
+    // @public (read-only) {boolean}
     this.isVertexUp = isVertexUp;
 
     // @private {number}
@@ -306,7 +306,7 @@ class Cone extends Mass {
   }
 }
 
-// @public {IOType}
+// @public (read-only) {IOType}
 Cone.ConeIO = new IOType( 'ConeIO', {
   valueType: Cone,
   supertype: Mass.MassIO,

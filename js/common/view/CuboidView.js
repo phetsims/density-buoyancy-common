@@ -63,7 +63,7 @@ class CuboidView extends MassView {
 
     super( cuboid, cuboidGeometry, options );
 
-    // @public {Cuboid}
+    // @public (read-only) {Cuboid}
     this.cuboid = cuboid;
 
     // @private {THREE.BufferGeometry}

@@ -41,7 +41,7 @@ class ForceDiagramNode extends Node {
   constructor( mass, showGravityForceProperty, showBuoyancyForceProperty, showContactForceProperty, showForceValuesProperty ) {
     super();
 
-    // @public {Mass}
+    // @public (read-only) {Mass}
     this.mass = mass;
 
     // @private {Property.<boolean>}

@@ -15,7 +15,7 @@ class MaterialView {
    * @param {THREE.Material} material
    */
   constructor( material ) {
-    // @public {THREE.Material}
+    // @public (read-only) {THREE.Material}
     this.material = material;
   }
 

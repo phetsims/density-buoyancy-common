@@ -75,25 +75,25 @@ class DebugView extends Node {
       massNode.dispose();
     } );
 
-    // @private {Path}
+    // @private {Path} - proportional to the area at that level that is displaced in the pool
     this.poolAreaPath = new Path( null, {
       stroke: 'red'
     } );
     this.addChild( this.poolAreaPath );
 
-    // @private {Path}
+    // @private {Path} - proportional to the volume up to that level that is displaced in the pool
     this.poolVolumePath = new Path( null, {
       stroke: 'green'
     } );
     this.addChild( this.poolVolumePath );
 
-    // @private {Path}
+    // @private {Path} - proportional to the area at that level that is displaced in the boat
     this.boatAreaPath = new Path( null, {
       stroke: 'red'
     } );
     this.addChild( this.boatAreaPath );
 
-    // @private {Path}
+    // @private {Path} - proportional to the volume up to that level that is displaced in the boat
     this.boatVolumePath = new Path( null, {
       stroke: 'green'
     } );

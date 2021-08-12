@@ -196,12 +196,13 @@ class MaterialMassVolumeControlNode extends VBox {
         return new ComboBoxItem( new Text( material.name, {
           font: DensityBuoyancyCommonConstants.COMBO_BOX_ITEM_FONT,
           maxWidth: comboMaxWidth
-        } ), material );
+        } ), material, { tandemName: `${material.tandemName}Item` } );
       } ),
       new ComboBoxItem( new Text( densityBuoyancyCommonStrings.material.custom, {
         font: DensityBuoyancyCommonConstants.COMBO_BOX_ITEM_FONT,
-        maxWidth: comboMaxWidth
-      } ), CUSTOM_MATERIAL_PLACEHOLDER )
+        maxWidth: comboMaxWidth,
+        tandemName: 'custom'
+      } ), CUSTOM_MATERIAL_PLACEHOLDER, { tandemName: 'customItem' } )
     ], comboBoxMaterialProperty, listParent, {
       xMargin: 8,
       yMargin: 4,

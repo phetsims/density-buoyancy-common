@@ -35,6 +35,14 @@ const shapeStringMap = {
   [ BuoyancyShapesModel.MassShape.CONE ]: densityBuoyancyCommonStrings.shape.cone,
   [ BuoyancyShapesModel.MassShape.INVERTED_CONE ]: densityBuoyancyCommonStrings.shape.invertedCone
 };
+const tandemNameMap = {
+  [ BuoyancyShapesModel.MassShape.BLOCK ]: 'block',
+  [ BuoyancyShapesModel.MassShape.ELLIPSOID ]: 'ellipsoid',
+  [ BuoyancyShapesModel.MassShape.VERTICAL_CYLINDER ]: 'verticalCylinder',
+  [ BuoyancyShapesModel.MassShape.HORIZONTAL_CYLINDER ]: 'horizontalCylinder',
+  [ BuoyancyShapesModel.MassShape.CONE ]: 'cone',
+  [ BuoyancyShapesModel.MassShape.INVERTED_CONE ]: 'invertedCone'
+};
 
 class ShapeSizeControlNode extends FlowBox {
   /**
@@ -62,7 +70,7 @@ class ShapeSizeControlNode extends FlowBox {
       return new ComboBoxItem( new Text( shapeStringMap[ massShape ], {
         font: DensityBuoyancyCommonConstants.COMBO_BOX_ITEM_FONT,
         maxWidth: 160
-      } ), massShape );
+      } ), massShape, { tandemName: `${tandemNameMap[ massShape ]}Item` } );
     } ), massShapeProperty, listParent, {
       xMargin: 8,
       yMargin: 4

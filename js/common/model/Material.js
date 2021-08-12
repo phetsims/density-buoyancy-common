@@ -34,6 +34,9 @@ class Material {
       // {string|null} - If set, this material will be available at Material[ identifier ] as a global
       identifier: null,
 
+      // {string|null} - Used for tandems
+      tandemName: null,
+
       // {number} - in SI (kg/m^3)
       density: 1,
 
@@ -58,6 +61,9 @@ class Material {
 
     // @public (read-only) {string|null}
     this.identifier = config.identifier;
+
+    // @public (read-only) {string|null}
+    this.tandemName = config.tandemName;
 
     // @public (read-only) {number}
     this.density = config.density;
@@ -88,6 +94,7 @@ class Material {
   static createCustomMaterial( config ) {
     return new Material( merge( {
       name: densityBuoyancyCommonStrings.material.custom,
+      tandemName: 'custom',
       custom: true
     }, config ) );
   }
@@ -160,11 +167,13 @@ class Material {
 // @public (read-only) {Material} - "Solids"
 Material.ALUMINUM = new Material( {
   name: densityBuoyancyCommonStrings.material.aluminum,
+  tandemName: 'aluminum',
   identifier: 'ALUMINUM',
   density: 2700
 } );
 Material.APPLE = new Material( {
   name: densityBuoyancyCommonStrings.material.apple,
+  tandemName: 'apple',
   identifier: 'APPLE',
   // "Some Physical Properties of Apple" - Averaged the two cultivars' densities for this
   // http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.548.1131&rep=rep1&type=pdf
@@ -172,74 +181,88 @@ Material.APPLE = new Material( {
 } );
 Material.BRICK = new Material( {
   name: densityBuoyancyCommonStrings.material.brick,
+  tandemName: 'brick',
   identifier: 'BRICK',
   density: 2000
 } );
 Material.CEMENT = new Material( {
   name: densityBuoyancyCommonStrings.material.cement,
+  tandemName: 'cement',
   identifier: 'CEMENT',
   density: 3150,
   liquidColor: DensityBuoyancyCommonColors.materialCementColorProperty
 } );
 Material.COPPER = new Material( {
   name: densityBuoyancyCommonStrings.material.copper,
+  tandemName: 'copper',
   identifier: 'COPPER',
   density: 8960,
   liquidColor: DensityBuoyancyCommonColors.materialCopperColorProperty
 } );
 Material.DIAMOND = new Material( {
   name: densityBuoyancyCommonStrings.material.diamond,
+  tandemName: 'diamond',
   identifier: 'DIAMOND',
   density: 3510
 } );
 Material.GLASS = new Material( {
   name: densityBuoyancyCommonStrings.material.glass,
+  tandemName: 'glass',
   identifier: 'GLASS',
   density: 2700
 } );
 Material.GOLD = new Material( {
   name: densityBuoyancyCommonStrings.material.gold,
+  tandemName: 'gold',
   identifier: 'GOLD',
   density: 19320
 } );
 Material.HUMAN = new Material( {
   name: densityBuoyancyCommonStrings.material.human,
+  tandemName: 'human',
   identifier: 'HUMAN',
   density: 950
 } );
 Material.ICE = new Material( {
   name: densityBuoyancyCommonStrings.material.ice,
+  tandemName: 'ice',
   identifier: 'ICE',
   density: 919
 } );
 Material.LEAD = new Material( {
   name: densityBuoyancyCommonStrings.material.lead,
+  tandemName: 'lead',
   identifier: 'LEAD',
   density: 11342,
   liquidColor: DensityBuoyancyCommonColors.materialLeadColorProperty
 } );
 Material.PLATINUM = new Material( {
   name: densityBuoyancyCommonStrings.material.platinum,
+  tandemName: 'platinum',
   identifier: 'PLATINUM',
   density: 21450
 } );
 Material.PYRITE = new Material( {
   name: densityBuoyancyCommonStrings.material.pyrite,
+  tandemName: 'pyrite',
   identifier: 'PYRITE',
   density: 5010
 } );
 Material.SILVER = new Material( {
   name: densityBuoyancyCommonStrings.material.silver,
+  tandemName: 'silver',
   identifier: 'SILVER',
   density: 10490
 } );
 Material.STEEL = new Material( {
   name: densityBuoyancyCommonStrings.material.steel,
+  tandemName: 'steel',
   identifier: 'STEEL',
   density: 7800
 } );
 Material.STYROFOAM = new Material( {
   name: densityBuoyancyCommonStrings.material.styrofoam,
+  tandemName: 'styrofoam',
   identifier: 'STYROFOAM',
   // From Flash version: between 25 and 200 according to http://wiki.answers.com/Q/What_is_the_density_of_styrofoam;
   // chose 150 so it isn't too low to show on slider, but not 200 so it's not half of wood
@@ -247,16 +270,19 @@ Material.STYROFOAM = new Material( {
 } );
 Material.TANTALUM = new Material( {
   name: densityBuoyancyCommonStrings.material.tantalum,
+  tandemName: 'tantalum',
   identifier: 'TANTALUM',
   density: 16650
 } );
 Material.TITANIUM = new Material( {
   name: densityBuoyancyCommonStrings.material.titanium,
+  tandemName: 'titanium',
   identifier: 'TITANIUM',
   density: 4500
 } );
 Material.WOOD = new Material( {
   name: densityBuoyancyCommonStrings.material.wood,
+  tandemName: 'wood',
   identifier: 'WOOD',
   density: 400
 } );
@@ -264,6 +290,7 @@ Material.WOOD = new Material( {
 // @public (read-only) {Material} - "Liquids".
 Material.AIR = new Material( {
   name: densityBuoyancyCommonStrings.material.air,
+  tandemName: 'air',
   identifier: 'AIR',
   density: 1.2,
   viscosity: 0,
@@ -271,6 +298,7 @@ Material.AIR = new Material( {
 } );
 Material.DENSITY_P = new Material( {
   name: densityBuoyancyCommonStrings.material.densityP,
+  tandemName: 'densityP',
   identifier: 'DENSITY_P',
   density: 200,
   liquidColor: DensityBuoyancyCommonColors.materialDensityPColorProperty,
@@ -278,6 +306,7 @@ Material.DENSITY_P = new Material( {
 } );
 Material.DENSITY_Q = new Material( {
   name: densityBuoyancyCommonStrings.material.densityQ,
+  tandemName: 'densityQ',
   identifier: 'DENSITY_Q',
   density: 4000,
   liquidColor: DensityBuoyancyCommonColors.materialDensityQColorProperty,
@@ -285,6 +314,7 @@ Material.DENSITY_Q = new Material( {
 } );
 Material.DENSITY_R = new Material( {
   name: densityBuoyancyCommonStrings.material.densityR,
+  tandemName: 'densityR',
   identifier: 'DENSITY_R',
   density: 200,
   liquidColor: DensityBuoyancyCommonColors.materialDensityRColorProperty,
@@ -292,6 +322,7 @@ Material.DENSITY_R = new Material( {
 } );
 Material.DENSITY_S = new Material( {
   name: densityBuoyancyCommonStrings.material.densityS,
+  tandemName: 'densityS',
   identifier: 'DENSITY_S',
   density: 4000,
   liquidColor: DensityBuoyancyCommonColors.materialDensitySColorProperty,
@@ -299,6 +330,7 @@ Material.DENSITY_S = new Material( {
 } );
 Material.DENSITY_X = new Material( {
   name: densityBuoyancyCommonStrings.material.densityX,
+  tandemName: 'densityX',
   identifier: 'DENSITY_X',
   density: 500,
   liquidColor: DensityBuoyancyCommonColors.materialDensityXColorProperty,
@@ -306,6 +338,7 @@ Material.DENSITY_X = new Material( {
 } );
 Material.DENSITY_Y = new Material( {
   name: densityBuoyancyCommonStrings.material.densityY,
+  tandemName: 'densityY',
   identifier: 'DENSITY_Y',
   density: 5000,
   liquidColor: DensityBuoyancyCommonColors.materialDensityYColorProperty,
@@ -313,6 +346,7 @@ Material.DENSITY_Y = new Material( {
 } );
 Material.GASOLINE = new Material( {
   name: densityBuoyancyCommonStrings.material.gasoline,
+  tandemName: 'gasoline',
   identifier: 'GASOLINE',
   density: 680,
   viscosity: 6e-4,
@@ -320,6 +354,7 @@ Material.GASOLINE = new Material( {
 } );
 Material.HONEY = new Material( {
   name: densityBuoyancyCommonStrings.material.honey,
+  tandemName: 'honey',
   identifier: 'HONEY',
   density: 1440,
   viscosity: 0.03, // NOTE: actual value around 2.5, but we can get away with this for animation
@@ -327,6 +362,7 @@ Material.HONEY = new Material( {
 } );
 Material.MERCURY = new Material( {
   name: densityBuoyancyCommonStrings.material.mercury,
+  tandemName: 'mercury',
   identifier: 'MERCURY',
   density: 13593,
   viscosity: 1.53e-3,
@@ -334,6 +370,7 @@ Material.MERCURY = new Material( {
 } );
 Material.OIL = new Material( {
   name: densityBuoyancyCommonStrings.material.oil,
+  tandemName: 'oil',
   identifier: 'OIL',
   density: 920,
   viscosity: 0.02, // Too much bigger and it won't work, not particularly physical
@@ -341,6 +378,7 @@ Material.OIL = new Material( {
 } );
 Material.SAND = new Material( {
   name: densityBuoyancyCommonStrings.material.sand,
+  tandemName: 'sand',
   identifier: 'SAND',
   density: 1442,
   viscosity: 0.03, // Too much bigger and it won't work, not particularly physical
@@ -348,6 +386,7 @@ Material.SAND = new Material( {
 } );
 Material.SEAWATER = new Material( {
   name: densityBuoyancyCommonStrings.material.seawater,
+  tandemName: 'seawater',
   identifier: 'SEAWATER',
   density: 1029,
   viscosity: 1.88e-3,
@@ -355,6 +394,7 @@ Material.SEAWATER = new Material( {
 } );
 Material.WATER = new Material( {
   name: densityBuoyancyCommonStrings.material.water,
+  tandemName: 'water',
   identifier: 'WATER',
   density: 1000,
   viscosity: 8.9e-4,
@@ -405,6 +445,7 @@ Material.MaterialIO = new IOType( 'MaterialIO', {
   stateSchema: {
     name: StringIO,
     identifier: NullableIO( StringIO ),
+    tandemName: NullableIO( StringIO ),
     density: NumberIO,
     viscosity: NumberIO,
     custom: BooleanIO,
@@ -422,6 +463,7 @@ Material.MaterialIO = new IOType( 'MaterialIO', {
     return {
       name: StringIO.toStateObject( material.name ),
       identifier: NullableIO( StringIO ).toStateObject( material.identifier ),
+      tandemName: NullableIO( StringIO ).toStateObject( material.tandemName ),
       density: NumberIO.toStateObject( material.density ),
       viscosity: NumberIO.toStateObject( material.viscosity ),
       custom: BooleanIO.toStateObject( material.custom ),
@@ -444,6 +486,7 @@ Material.MaterialIO = new IOType( 'MaterialIO', {
       return new Material( {
         name: StringIO.fromStateObject( obj.name ),
         identifier: NullableIO( StringIO ).fromStateObject( obj.identifier ),
+        tandemName: NullableIO( StringIO ).fromStateObject( obj.tandemName ),
         density: NumberIO.fromStateObject( obj.density ),
         viscosity: NumberIO.fromStateObject( obj.viscosity ),
         custom: BooleanIO.fromStateObject( obj.custom ),

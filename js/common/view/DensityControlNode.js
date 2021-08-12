@@ -44,7 +44,7 @@ class DensityControlNode extends ComboNumberControl {
       ].map( material => new ComboBoxItem( new Text( material.name, {
         font: DensityBuoyancyCommonConstants.COMBO_BOX_ITEM_FONT,
         maxWidth: 160
-      } ), material ) ),
+      } ), material, { tandemName: `${material.tandemName}Item` } ) ),
       customValue: customValue,
       numberControlOptions: {
         delta: 0.01

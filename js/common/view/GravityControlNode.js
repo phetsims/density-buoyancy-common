@@ -43,7 +43,7 @@ class GravityControlNode extends ComboNumberControl {
       ].map( gravity => new ComboBoxItem( new Text( gravity.name, {
         font: DensityBuoyancyCommonConstants.COMBO_BOX_ITEM_FONT,
         maxWidth: 160
-      } ), gravity ) ),
+      } ), gravity, { tandemName: `${gravity.tandemName}Item` } ) ),
       customValue: customValue,
       numberControlOptions: {
         delta: 0.1

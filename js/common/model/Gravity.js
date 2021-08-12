@@ -9,6 +9,7 @@
 import merge from '../../../../phet-core/js/merge.js';
 import BooleanIO from '../../../../tandem/js/types/BooleanIO.js';
 import IOType from '../../../../tandem/js/types/IOType.js';
+import NullableIO from '../../../../tandem/js/types/NullableIO.js';
 import NumberIO from '../../../../tandem/js/types/NumberIO.js';
 import StringIO from '../../../../tandem/js/types/StringIO.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
@@ -24,6 +25,9 @@ class Gravity {
       // {string}
       name: 'unknown',
 
+      // {string|null}
+      tandemName: null,
+
       // {number} - m/s^2
       value: 1,
 
@@ -36,6 +40,9 @@ class Gravity {
 
     // @public (read-only) {string}
     this.name = config.name;
+
+    // @public (read-only) {string}
+    this.tandemName = config.tandemName;
 
     // @public (read-only) {number}
     this.value = config.value;
@@ -57,6 +64,7 @@ class Gravity {
   static createCustomGravity( value ) {
     return new Gravity( {
       name: densityBuoyancyCommonStrings.gravity.custom,
+      tandemName: 'custom',
       value: value,
       custom: true
     } );
@@ -66,18 +74,22 @@ class Gravity {
 // @public (read-only) {Gravity}
 Gravity.EARTH = new Gravity( {
   name: densityBuoyancyCommonStrings.gravity.earth,
+  tandemName: 'earth',
   value: 9.8
 } );
 Gravity.JUPITER = new Gravity( {
   name: densityBuoyancyCommonStrings.gravity.jupiter,
+  tandemName: 'jupiter',
   value: 24.8
 } );
 Gravity.MOON = new Gravity( {
   name: densityBuoyancyCommonStrings.gravity.moon,
+  tandemName: 'moon',
   value: 1.6
 } );
 Gravity.PLANET_X = new Gravity( {
   name: densityBuoyancyCommonStrings.gravity.planetX,
+  tandemName: 'planetX',
   value: 19.6,
   hidden: true
 } );
@@ -97,6 +109,7 @@ Gravity.GravityIO = new IOType( 'GravityIO', {
   toStateObject: gravity => {
     return {
       name: gravity.name,
+      tandemName: gravity.tandemName,
       value: gravity.value,
       custom: gravity.custom,
       hidden: gravity.hidden
@@ -112,6 +125,7 @@ Gravity.GravityIO = new IOType( 'GravityIO', {
   },
   stateSchema: {
     name: StringIO,
+    tandemName: NullableIO( StringIO ),
     value: NumberIO,
     custom: BooleanIO,
     hidden: BooleanIO

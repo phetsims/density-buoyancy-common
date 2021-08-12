@@ -137,7 +137,7 @@ class DensityCompareScreenView extends DensityBuoyancyScreenView {
     } ), DensityBuoyancyCommonConstants.PANEL_OPTIONS );
     this.addChild( numberControlPanel );
 
-    // @private {function}
+    // @private {function()}
     this.positionPanel = () => {
       // We should be MARGIN below where the edge of the ground exists
       const groundFrontPoint = this.modelToViewPoint( new Vector3( 0, 0, model.groundBounds.maxZ ) );

@@ -111,7 +111,7 @@ class CuboidView extends MassView {
     };
     positionTag();
 
-    // @private {function}
+    // @private {function(number)}
     this.updateListener = size => {
       positionTag();
       CuboidView.updateArrays( cuboidGeometry.attributes.position.array, null, cuboidGeometry.attributes.uv.array, size );

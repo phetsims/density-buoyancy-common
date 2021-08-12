@@ -201,8 +201,8 @@ class Basin {
    * @param {number} minX
    * @param {number} maxX
    * @param {number} tolerance
-   * @param {function} valueFunction
-   * @param {function} derivativeFunction
+   * @param {function(number):number} valueFunction
+   * @param {function(number):number} derivativeFunction
    * @returns {number}
    */
   static findRoot( minX, maxX, tolerance, valueFunction, derivativeFunction ) {

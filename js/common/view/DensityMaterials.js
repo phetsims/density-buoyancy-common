@@ -269,7 +269,7 @@ class CustomColoredMaterialView extends MaterialView {
     // @private
     this.colorProperty = colorProperty;
 
-    // @private {function}
+    // @private {function(Color)}
     this.listener = color => {
       this.material.color = ThreeUtils.colorToThree( color );
     };

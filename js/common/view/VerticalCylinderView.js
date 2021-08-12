@@ -40,7 +40,7 @@ class VerticalCylinderView extends MassView {
     // @private {THREE.BufferGeometry}
     this.verticalCylinderGeometry = verticalCylinderGeometry;
 
-    // @private {function}
+    // @private {function(Bounds3)}
     this.updateListener = size => {
       VerticalCylinderView.updateArrays( verticalCylinderGeometry.attributes.position.array, null, verticalCylinderGeometry.attributes.uv.array, verticalCylinder.radiusProperty.value, verticalCylinder.heightProperty.value );
       verticalCylinderGeometry.attributes.position.needsUpdate = true;

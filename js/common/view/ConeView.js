@@ -40,7 +40,7 @@ class ConeView extends MassView {
     // @private {THREE.BufferGeometry}
     this.coneGeometry = coneGeometry;
 
-    // @private {function}
+    // @private {function(number)}
     this.updateListener = size => {
       ConeView.updateArrays( coneGeometry.attributes.position.array, coneGeometry.attributes.normal.array, null, cone.radiusProperty.value, cone.heightProperty.value, cone.isVertexUp );
       coneGeometry.attributes.position.needsUpdate = true;

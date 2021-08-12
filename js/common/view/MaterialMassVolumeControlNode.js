@@ -39,7 +39,7 @@ class MaterialMassVolumeControlNode extends VBox {
    * @param {Property.<number>} massProperty
    * @param {Property.<number>} volumeProperty
    * @param {Array.<Material>} materials
-   * @param {function} setVolume
+   * @param {function(number)} setVolume
    * @param {Node} listParent
    * @param {Tandem} tandem
    * @param {Object} [options]

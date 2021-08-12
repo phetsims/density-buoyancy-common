@@ -45,13 +45,13 @@ class ComboNumberControl extends VBox {
       // {Range} - required
       range: null,
 
-      // {function} - Converts the Property values into numeric values
+      // {function(*):number} - Converts the Property values into numeric values
       toNumericValue: null,
 
-      // {function} - Given a numeric value, creates the corresponding rich object
+      // {function(number):*} - Given a numeric value, creates the corresponding rich object
       createCustomValue: null,
 
-      // {function} - Given a main value, returns whether it is a custom value or not
+      // {function(*):boolean} - Given a main value, returns whether it is a custom value or not
       isCustomValue: null,
 
       // {Node} - required

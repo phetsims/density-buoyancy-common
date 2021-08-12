@@ -34,7 +34,7 @@ class MassView extends THREE.Mesh {
     // @private {Material}
     this.material = materialView.material;
 
-    // @private {function}
+    // @private {function(Material)}
     this.materialListener = material => {
       this.materialView.dispose();
       this.materialView = DensityMaterials.getMaterialView( material );
@@ -42,7 +42,7 @@ class MassView extends THREE.Mesh {
     };
     this.mass.materialProperty.lazyLink( this.materialListener );
 
-    // @private {function}
+    // @private {function()}
     this.positionListener = () => {
       const position = mass.matrix.translation;
 

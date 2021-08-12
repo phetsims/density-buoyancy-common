@@ -27,7 +27,7 @@ class EllipsoidView extends MassView {
     // @private {THREE.Sphere}
     this.ellipsoidGeometry = ellipsoidGeometry;
 
-    // @private {function}
+    // @private {function(Bounds3,Bounds3)}
     this.updateListener = ( newSize, oldSize ) => {
       ellipsoidGeometry.applyMatrix( new THREE.Matrix4().makeScale(
         newSize.width / oldSize.width,

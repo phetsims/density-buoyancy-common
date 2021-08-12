@@ -20,13 +20,13 @@ class InterpolatedProperty extends Property {
   constructor( value, config ) {
 
     config = merge( {
-      // {function} - function( a, b, ratio ), to interpolate
+      // {function(a:number, b:number, ratio:number)} - to interpolate
       interpolate: null
     }, config );
 
     super( value, config );
 
-    // @private {function}
+    // @private {function(a:number, b:number, ratio:number)}
     this.interpolate = config.interpolate;
 
     // @public {*}

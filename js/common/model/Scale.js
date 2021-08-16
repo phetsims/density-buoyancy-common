@@ -48,7 +48,7 @@ const DisplayType = Enumeration.byKeys( [
 
 class Scale extends Mass {
   /**
-   * @param {Engine} engine
+   * @param {PhysicsEngine} engine
    * @param {Object} config
    */
   constructor( engine, config ) {

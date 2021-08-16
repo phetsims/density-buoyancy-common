@@ -21,7 +21,7 @@ import BoatDesign from './BoatDesign.js';
 
 class Boat extends Mass {
   /**
-   * @param {Engine} engine
+   * @param {PhysicsEngine} engine
    * @param {Property.<number>} blockWidthProperty
    * @param {Property.<Material>} liquidMaterialProperty
    * @param {Object} config

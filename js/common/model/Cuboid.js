@@ -20,7 +20,7 @@ import Mass from './Mass.js';
 
 class Cuboid extends Mass {
   /**
-   * @param {Engine} engine
+   * @param {PhysicsEngine} engine
    * @param {Bounds3} size
    * @param {Object} config
    */
@@ -279,7 +279,7 @@ class Cuboid extends Mass {
    * Creates a Cuboid with a defined volume (cubical by default).
    * @public
    *
-   * @param {Engine} engine
+   * @param {PhysicsEngine} engine
    * @param {Material} material
    * @param {Vector2} position
    * @param {number} volume - m^3
@@ -297,7 +297,7 @@ class Cuboid extends Mass {
    * Creates a Cuboid with a defined volume (cubical by default).
    * @public
    *
-   * @param {Engine} engine
+   * @param {PhysicsEngine} engine
    * @param {Material} material
    * @param {Vector2} position
    * @param {number} mass - kg

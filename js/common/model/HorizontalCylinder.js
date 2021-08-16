@@ -18,7 +18,7 @@ import Mass from './Mass.js';
 
 class HorizontalCylinder extends Mass {
   /**
-   * @param {Engine} engine
+   * @param {PhysicsEngine} engine
    * @param {number} radius
    * @param {number} length
    * @param {Object} config

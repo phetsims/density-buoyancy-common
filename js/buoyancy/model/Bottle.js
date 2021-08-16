@@ -165,7 +165,7 @@ const BOTTLE_INITIAL_INTERIOR_MATERIAL = Material.WATER;
 
 class Bottle extends Mass {
   /**
-   * @param {Engine} engine
+   * @param {PhysicsEngine} engine
    * @param {Object} config
    */
   constructor( engine, config ) {

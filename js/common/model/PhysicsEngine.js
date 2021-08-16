@@ -3,12 +3,15 @@
 /**
  * Abstract base type for handling physics engines
  *
+ * PhysicsEngine.Body represents an opaque object reference type that is specific to the engine it was created from.
+ * These can be created with the create* methods, and are passed in to many methods.
+ *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 
-class Engine {
+class PhysicsEngine {
   constructor() {
     // @public {number} - Engines typically work in fixed-time steps, this is how far we are in the
     // display from the "previous" step (0) to the "next" step (1).
@@ -31,7 +34,7 @@ class Engine {
    * @public
    * @abstract
    *
-   * @param {Engine.Body} body
+   * @param {PhysicsEngine.Body} body
    */
   addBody( body ) {
     throw new Error( 'unimplemented' );
@@ -42,7 +45,7 @@ class Engine {
    * @public
    * @abstract
    *
-   * @param {Engine.Body} body
+   * @param {PhysicsEngine.Body} body
    */
   removeBody( body ) {
     throw new Error( 'unimplemented' );
@@ -53,7 +56,7 @@ class Engine {
    * @public
    * @abstract
    *
-   * @param {Engine.Body} body
+   * @param {PhysicsEngine.Body} body
    * @param {number} mass
    * @param {Object} [options] - {canRotate:boolean}
    */
@@ -66,7 +69,7 @@ class Engine {
    * @public
    * @abstract
    *
-   * @param {Engine.Body} body
+   * @param {PhysicsEngine.Body} body
    * @param {Matrix3} matrix
    */
   bodyGetMatrixTransform( body, matrix ) {
@@ -78,7 +81,7 @@ class Engine {
    * @public
    * @abstract
    *
-   * @param {Engine.Body} body
+   * @param {PhysicsEngine.Body} body
    * @param {Matrix3} matrix
    */
   bodyGetStepMatrixTransform( body, matrix ) {
@@ -90,7 +93,7 @@ class Engine {
    * @public
    * @abstract
    *
-   * @param {Engine.Body} body
+   * @param {PhysicsEngine.Body} body
    * @param {Vector2} position
    */
   bodySetPosition( body, position ) {
@@ -102,7 +105,7 @@ class Engine {
    * @public
    * @abstract
    *
-   * @param {Engine.Body} body
+   * @param {PhysicsEngine.Body} body
    * @param {number} rotation
    */
   bodySetRotation( body, rotation ) {
@@ -114,7 +117,7 @@ class Engine {
    * @public
    * @abstract
    *
-   * @param {Engine.Body} body
+   * @param {PhysicsEngine.Body} body
    * @returns {Vector2}
    */
   bodyGetVelocity( body ) {
@@ -126,7 +129,7 @@ class Engine {
    * @public
    * @abstract
    *
-   * @param {Engine.Body} body
+   * @param {PhysicsEngine.Body} body
    * @param {Vector2} velocity
    */
   bodySetVelocity( body, velocity ) {
@@ -138,7 +141,7 @@ class Engine {
    * @public
    * @abstract
    *
-   * @param {Engine.Body} body
+   * @param {PhysicsEngine.Body} body
    * @param {Vector2} force
    */
   bodyApplyForce( body, force ) {
@@ -150,7 +153,7 @@ class Engine {
    * @public
    * @abstract
    *
-   * @param {Engine.Body} body
+   * @param {PhysicsEngine.Body} body
    * @returns {Vector2}
    */
   bodyGetContactForces( body ) {
@@ -162,8 +165,8 @@ class Engine {
    * @public
    * @abstract
    *
-   * @param {Engine.Body} bodyA
-   * @param {Engine.Body} bodyB
+   * @param {PhysicsEngine.Body} bodyA
+   * @param {PhysicsEngine.Body} bodyB
    * @returns {Vector2}
    */
   bodyGetContactForceBetween( bodyA, bodyB ) {
@@ -175,7 +178,7 @@ class Engine {
    * @public
    * @abstract
    *
-   * @param {Engine.Body} body
+   * @param {PhysicsEngine.Body} body
    */
   resetContactForces( body ) {
     throw new Error( 'unimplemented' );
@@ -186,7 +189,7 @@ class Engine {
    * @public
    * @abstract
    *
-   * @param {Engine.Body} body
+   * @param {PhysicsEngine.Body} body
    * @returns {Object}
    */
   bodyToStateObject( body ) {
@@ -198,7 +201,7 @@ class Engine {
    * @public
    * @abstract
    *
-   * @param {Engine.Body} body
+   * @param {PhysicsEngine.Body} body
    * @param {Object} obj
    */
   bodyApplyState( body, obj ) {
@@ -210,7 +213,7 @@ class Engine {
    * @public
    * @abstract
    *
-   * @param {Engine.Body} body
+   * @param {PhysicsEngine.Body} body
    * @returns {Object}
    */
   bodyResetHidden( body ) {
@@ -222,7 +225,7 @@ class Engine {
    * @public
    * @abstract
    *
-   * @param {Engine.Body} body
+   * @param {PhysicsEngine.Body} body
    * @returns {Object}
    */
   bodySynchronizePrevious( body ) {
@@ -235,7 +238,7 @@ class Engine {
    * @abstract
    *
    * @param {Array.<Vector2>} vertices
-   * @returns {Engine.Body}
+   * @returns {PhysicsEngine.Body}
    */
   createGround( vertices ) {
     throw new Error( 'unimplemented' );
@@ -247,7 +250,7 @@ class Engine {
    * @abstract
    *
    * @param {Array.<Vector2>} vertices
-   * @returns {Engine.Body}
+   * @returns {PhysicsEngine.Body}
    */
   createBarrier( vertices ) {
      throw new Error( 'unimplemented' );
@@ -261,7 +264,7 @@ class Engine {
    * @param {number} width
    * @param {number} height
    * @param {boolean} [isStatic]
-   * @returns {Engine.Body}
+   * @returns {PhysicsEngine.Body}
    */
   createBox( width, height, isStatic ) {
     throw new Error( 'unimplemented' );
@@ -272,7 +275,7 @@ class Engine {
    * @public
    * @abstract
    *
-   * @param {Engine.Body} body
+   * @param {PhysicsEngine.Body} body
    * @param {number} width
    * @param {number} height
    */
@@ -287,7 +290,7 @@ class Engine {
    *
    * @param {Array.<Vector2>} vertices
    * @param {boolean} workaround
-   * @returns {Engine.Body}
+   * @returns {PhysicsEngine.Body}
    */
   createFromVertices( vertices, workaround ) {
     throw new Error( 'unimplemented' );
@@ -298,7 +301,7 @@ class Engine {
    * @public
    * @abstract
    *
-   * @param {Engine.Body} body
+   * @param {PhysicsEngine.Body} body
    * @param {Array.<Vector2>} vertices
    * @param {boolean} workaround
    */
@@ -334,7 +337,7 @@ class Engine {
    * @public
    * @abstract
    *
-   * @param {Engine.Body} body
+   * @param {PhysicsEngine.Body} body
    * @param {Vector2} position
    */
   addPointerConstraint( body, position ) {
@@ -346,7 +349,7 @@ class Engine {
    * @public
    * @abstract
    *
-   * @param {Engine.Body} body
+   * @param {PhysicsEngine.Body} body
    * @param {Vector2} position
    */
   updatePointerConstraint( body, position ) {
@@ -358,12 +361,12 @@ class Engine {
    * @public
    * @abstract
    *
-   * @param {Engine.Body} body
+   * @param {PhysicsEngine.Body} body
    */
   removePointerConstraint( body ) {
     throw new Error( 'unimplemented' );
   }
 }
 
-densityBuoyancyCommon.register( 'Engine', Engine );
-export default Engine;
+densityBuoyancyCommon.register( 'PhysicsEngine', PhysicsEngine );
+export default PhysicsEngine;

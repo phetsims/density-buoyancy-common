@@ -22,7 +22,7 @@ const TOP_FROM_CENTER_RATIO = 0.75; // center of mass to the tip is 3/4 of the h
 
 class Cone extends Mass {
   /**
-   * @param {Engine} engine
+   * @param {PhysicsEngine} engine
    * @param {number} radius
    * @param {number} height
    * @param {boolean} isVertexUp

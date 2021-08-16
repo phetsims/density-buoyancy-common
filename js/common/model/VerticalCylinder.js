@@ -19,7 +19,7 @@ import Mass from './Mass.js';
 
 class VerticalCylinder extends Mass {
   /**
-   * @param {Engine} engine
+   * @param {PhysicsEngine} engine
    * @param {number} radius
    * @param {number} height
    * @param {Object} config

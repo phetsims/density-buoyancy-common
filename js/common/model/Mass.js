@@ -59,13 +59,13 @@ const MassTag = Enumeration.byKeys( [
 
 class Mass extends PhetioObject {
   /**
-   * @param {Engine} engine
+   * @param {PhysicsEngine} engine
    * @param {Object} config
    */
   constructor( engine, config ) {
 
     config = merge( {
-      // {Engine.Body} - required
+      // {PhysicsEngine.Body} - required
       body: null,
 
       // {Shape} - required
@@ -108,10 +108,10 @@ class Mass extends PhetioObject {
 
     const tandem = config.tandem;
 
-    // @public {Engine}
+    // @public {PhysicsEngine}
     this.engine = engine;
 
-    // @public {Engine.Body}
+    // @public {PhysicsEngine.Body}
     this.body = config.body;
 
     // @public {Property.<Shape>} - Without the matrix applied (effectively in "local" model coordinates)

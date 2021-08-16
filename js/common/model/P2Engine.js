@@ -11,7 +11,7 @@ import Vector2 from '../../../../dot/js/Vector2.js';
 import merge from '../../../../phet-core/js/merge.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonQueryParameters from '../DensityBuoyancyCommonQueryParameters.js';
-import Engine from './Engine.js';
+import PhysicsEngine from './PhysicsEngine.js';
 
 // constants
 const FIXED_TIME_STEP = DensityBuoyancyCommonQueryParameters.p2FixedTimeStep;
@@ -23,7 +23,7 @@ const groundMaterial = new p2.Material();
 const barrierMaterial = new p2.Material();
 const dynamicMaterial = new p2.Material();
 
-class P2Engine extends Engine {
+class P2Engine extends PhysicsEngine {
   constructor() {
     super();
 
@@ -96,7 +96,7 @@ class P2Engine extends Engine {
    * @public
    * @override
    *
-   * @param {Engine.Body} body
+   * @param {PhysicsEngine.Body} body
    */
   addBody( body ) {
     this.world.addBody( body );
@@ -107,7 +107,7 @@ class P2Engine extends Engine {
    * @public
    * @override
    *
-   * @param {Engine.Body} body
+   * @param {PhysicsEngine.Body} body
    */
   removeBody( body ) {
     this.world.removeBody( body );
@@ -118,7 +118,7 @@ class P2Engine extends Engine {
    * @public
    * @override
    *
-   * @param {Engine.Body} body
+   * @param {PhysicsEngine.Body} body
    * @param {number} mass
    * @param {Object} [options]
    */
@@ -142,7 +142,7 @@ class P2Engine extends Engine {
    * @public
    * @override
    *
-   * @param {Engine.Body} body
+   * @param {PhysicsEngine.Body} body
    * @param {Matrix3} matrix
    */
   bodyGetMatrixTransform( body, matrix ) {
@@ -154,7 +154,7 @@ class P2Engine extends Engine {
    * @public
    * @override
    *
-   * @param {Engine.Body} body
+   * @param {PhysicsEngine.Body} body
    * @param {Matrix3} matrix
    */
   bodyGetStepMatrixTransform( body, matrix ) {
@@ -166,7 +166,7 @@ class P2Engine extends Engine {
    * @public
    * @override
    *
-   * @param {Engine.Body} body
+   * @param {PhysicsEngine.Body} body
    * @param {Vector2} position
    */
   bodySetPosition( body, position ) {
@@ -179,7 +179,7 @@ class P2Engine extends Engine {
    * @public
    * @override
    *
-   * @param {Engine.Body} body
+   * @param {PhysicsEngine.Body} body
    * @param {number} rotation
    */
   bodySetRotation( body, rotation ) {
@@ -191,7 +191,7 @@ class P2Engine extends Engine {
    * @public
    * @override
    *
-   * @param {Engine.Body} body
+   * @param {PhysicsEngine.Body} body
    * @returns {Vector2}
    */
   bodyGetVelocity( body ) {
@@ -203,7 +203,7 @@ class P2Engine extends Engine {
    * @public
    * @override
    *
-   * @param {Engine.Body} body
+   * @param {PhysicsEngine.Body} body
    * @param {Vector2} velocity
    */
   bodySetVelocity( body, velocity ) {
@@ -216,7 +216,7 @@ class P2Engine extends Engine {
    * @public
    * @override
    *
-   * @param {Engine.Body} body
+   * @param {PhysicsEngine.Body} body
    * @param {Vector2} force
    */
   bodyApplyForce( body, force ) {
@@ -229,7 +229,7 @@ class P2Engine extends Engine {
    * @public
    * @override
    *
-   * @param {Engine.Body} body
+   * @param {PhysicsEngine.Body} body
    * @returns {Vector2}
    */
   bodyGetContactForces( body ) {
@@ -241,8 +241,8 @@ class P2Engine extends Engine {
    * @public
    * @override
    *
-   * @param {Engine.Body} bodyA
-   * @param {Engine.Body} bodyB
+   * @param {PhysicsEngine.Body} bodyA
+   * @param {PhysicsEngine.Body} bodyB
    * @returns {Vector2}
    */
   bodyGetContactForceBetween( bodyA, bodyB ) {
@@ -273,7 +273,7 @@ class P2Engine extends Engine {
    * @public
    * @override
    *
-   * @param {Engine.Body} body
+   * @param {PhysicsEngine.Body} body
    */
   resetContactForces( body ) {
     body.vlambda[ 0 ] = 0;
@@ -285,7 +285,7 @@ class P2Engine extends Engine {
    * @public
    * @override
    *
-   * @param {Engine.Body} body
+   * @param {PhysicsEngine.Body} body
    * @returns {Object}
    */
   bodyToStateObject( body ) {
@@ -301,7 +301,7 @@ class P2Engine extends Engine {
    * @public
    * @override
    *
-   * @param {Engine.Body} body
+   * @param {PhysicsEngine.Body} body
    * @param {Object} obj
    */
   bodyApplyState( body, obj ) {
@@ -320,7 +320,7 @@ class P2Engine extends Engine {
    * @public
    * @override
    *
-   * @param {Engine.Body} body
+   * @param {PhysicsEngine.Body} body
    * @returns {Object}
    */
   bodyResetHidden( body ) {
@@ -336,7 +336,7 @@ class P2Engine extends Engine {
    * @public
    * @override
    *
-   * @param {Engine.Body} body
+   * @param {PhysicsEngine.Body} body
    * @returns {Object}
    */
   bodySynchronizePrevious( body ) {
@@ -350,7 +350,7 @@ class P2Engine extends Engine {
    * @override
    *
    * @param {Array.<Vector2>} vertices
-   * @returns {Engine.Body}
+   * @returns {PhysicsEngine.Body}
    */
   createGround( vertices ) {
     const body = new p2.Body( {
@@ -374,7 +374,7 @@ class P2Engine extends Engine {
    * @override
    *
    * @param {Array.<Vector2>} vertices
-   * @returns {Engine.Body}
+   * @returns {PhysicsEngine.Body}
    */
   createBarrier( vertices ) {
     const body = new p2.Body( {
@@ -400,7 +400,7 @@ class P2Engine extends Engine {
    * @param {number} width
    * @param {number} height
    * @param {boolean} [isStatic]
-   * @returns {Engine.Body}
+   * @returns {PhysicsEngine.Body}
    */
   createBox( width, height, isStatic ) {
     const body = new p2.Body( {
@@ -418,7 +418,7 @@ class P2Engine extends Engine {
    * @public
    * @override
    *
-   * @param {Engine.Body} body
+   * @param {PhysicsEngine.Body} body
    * @param {number} width
    * @param {number} height
    */
@@ -441,7 +441,7 @@ class P2Engine extends Engine {
    *
    * @param {Array.<Vector2>} vertices
    * @param {boolean} workaround
-   * @returns {Engine.Body}
+   * @returns {PhysicsEngine.Body}
    */
   createFromVertices( vertices, workaround ) {
     const body = new p2.Body( {
@@ -459,7 +459,7 @@ class P2Engine extends Engine {
    * @public
    * @override
    *
-   * @param {Engine.Body} body
+   * @param {PhysicsEngine.Body} body
    * @param {Array.<Vector2>} vertices
    * @param {boolean} workaround
    */
@@ -513,7 +513,7 @@ class P2Engine extends Engine {
    * @public
    * @override
    *
-   * @param {Engine.Body} body
+   * @param {PhysicsEngine.Body} body
    * @param {Vector2} position
    */
   addPointerConstraint( body, position ) {
@@ -541,7 +541,7 @@ class P2Engine extends Engine {
    * @public
    * @override
    *
-   * @param {Engine.Body} body
+   * @param {PhysicsEngine.Body} body
    * @param {Vector2} position
    */
   updatePointerConstraint( body, position ) {
@@ -558,7 +558,7 @@ class P2Engine extends Engine {
    * @public
    * @override
    *
-   * @param {Engine.Body} body
+   * @param {PhysicsEngine.Body} body
    */
   removePointerConstraint( body ) {
     const nullBody = this.nullBodyMap[ body.id ];
@@ -597,7 +597,7 @@ class P2Engine extends Engine {
    * Helper method that removes all shapes from a given body.
    * @private
    *
-   * @param {Engine.Body} body
+   * @param {PhysicsEngine.Body} body
    */
   static removeShapes( body ) {
     while ( body.shapes.length ) {

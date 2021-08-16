@@ -19,7 +19,7 @@ import Mass from './Mass.js';
 
 class Ellipsoid extends Mass {
   /**
-   * @param {Engine} engine
+   * @param {PhysicsEngine} engine
    * @param {Bounds3} size
    * @param {Object} config
    */

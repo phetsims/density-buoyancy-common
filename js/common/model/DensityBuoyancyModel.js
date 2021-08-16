@@ -163,14 +163,14 @@ class DensityBuoyancyModel {
     // @public (read-only) {Boat|null} - We need to hook into a boat (if it exists) for displaying the water.
     this.boat = null;
 
-    // @public (read-only) {Engine}
+    // @public (read-only) {PhysicsEngine}
     this.engine = new P2Engine();
 
-    // @public (read-only) {Engine.Body}
+    // @public (read-only) {PhysicsEngine.Body}
     this.groundBody = this.engine.createGround( this.groundPoints );
     this.engine.addBody( this.groundBody );
 
-    // @public (read-only) {Engine.Body}
+    // @public (read-only) {PhysicsEngine.Body}
     this.barrierBody = this.engine.createBarrier( barrierPointsProperty.value );
     this.engine.addBody( this.barrierBody );
 

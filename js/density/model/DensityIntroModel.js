@@ -44,7 +44,7 @@ class DensityIntroModel extends DensityBuoyancyModal( DensityBuoyancyModel, Mode
       tandem: tandem.createTandem( 'volumeProperty' )
     } );
 
-    const densityProperty = new NumberProperty( 800, {
+    const densityProperty = new NumberProperty( 500, {
       range: new Range( 100, 2000 ),
       tandem: tandem.createTandem( 'densityProperty' )
     } );
@@ -124,24 +124,24 @@ class DensityIntroModel extends DensityBuoyancyModal( DensityBuoyancyModel, Mode
         case Mode.SAME_DENSITY:
           masses = [
             Cuboid.createWithMass( model.engine, Material.createCustomMaterial( {
-              density: 800,
+              density: 500,
               customColor: DensityBuoyancyCommonColors.comparingYellowColorProperty
-            } ), Vector2.ZERO, 4, { tandem: sameDensityTandem.createTandem( 'yellowMass' ) } ),
+            } ), Vector2.ZERO, 3, { tandem: sameDensityTandem.createTandem( 'yellowMass' ) } ),
 
             Cuboid.createWithMass( model.engine, Material.createCustomMaterial( {
-              density: 800,
+              density: 500,
               customColor: DensityBuoyancyCommonColors.comparingBlueColorProperty
-            } ), Vector2.ZERO, 3, { tandem: sameDensityTandem.createTandem( 'blueMass' ) } ),
+            } ), Vector2.ZERO, 2, { tandem: sameDensityTandem.createTandem( 'blueMass' ) } ),
 
             Cuboid.createWithMass( model.engine, Material.createCustomMaterial( {
-              density: 800,
+              density: 500,
               customColor: DensityBuoyancyCommonColors.comparingGreenColorProperty
-            } ), Vector2.ZERO, 2, { tandem: sameDensityTandem.createTandem( 'greenMass' ) } ),
+            } ), Vector2.ZERO, 1, { tandem: sameDensityTandem.createTandem( 'greenMass' ) } ),
 
             Cuboid.createWithMass( model.engine, Material.createCustomMaterial( {
-              density: 800,
+              density: 500,
               customColor: DensityBuoyancyCommonColors.comparingRedColorProperty
-            } ), Vector2.ZERO, 1, { tandem: sameDensityTandem.createTandem( 'redMass' ) } )
+            } ), Vector2.ZERO, 0.5, { tandem: sameDensityTandem.createTandem( 'redMass' ) } )
           ];
 
           // This instance lives for the lifetime of the simulation, so we don't need to remove this listener

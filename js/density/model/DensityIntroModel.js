@@ -1,7 +1,7 @@
 // Copyright 2019-2021, University of Colorado Boulder
 
 /**
- * The main model for the Compare screen of the Density simulation.
+ * The main model for the Intro screen of the Density simulation.
  *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
@@ -24,7 +24,7 @@ const Mode = Enumeration.byKeys( [
   'SAME_DENSITY'
 ] );
 
-class DensityCompareModel extends DensityBuoyancyModal( DensityBuoyancyModel, Mode, Mode.SAME_MASS ) {
+class DensityIntroModel extends DensityBuoyancyModal( DensityBuoyancyModel, Mode, Mode.SAME_MASS ) {
   /**
    * @mixes DensityBuoyancyModal
    * @param {Tandem} tandem
@@ -208,7 +208,7 @@ class DensityCompareModel extends DensityBuoyancyModal( DensityBuoyancyModel, Mo
 }
 
 // @public (read-only) {Enumeration}
-DensityCompareModel.Mode = Mode;
+DensityIntroModel.Mode = Mode;
 
-densityBuoyancyCommon.register( 'DensityCompareModel', DensityCompareModel );
-export default DensityCompareModel;
+densityBuoyancyCommon.register( 'DensityIntroModel', DensityIntroModel );
+export default DensityIntroModel;

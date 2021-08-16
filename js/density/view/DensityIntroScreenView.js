@@ -1,7 +1,7 @@
 // Copyright 2019-2021, University of Colorado Boulder
 
 /**
- * The main view for the Compare screen of the Density simulation.
+ * The main view for the Intro screen of the Density simulation.
  *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
@@ -20,20 +20,20 @@ import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonCo
 import DensityBuoyancyScreenView from '../../common/view/DensityBuoyancyScreenView.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import densityBuoyancyCommonStrings from '../../densityBuoyancyCommonStrings.js';
-import DensityCompareModel from '../model/DensityCompareModel.js';
+import DensityIntroModel from '../model/DensityIntroModel.js';
 import ComparisonNumberControl from './ComparisonNumberControl.js';
 
 // constants
 const modeStringMap = {
-  [ DensityCompareModel.Mode.SAME_MASS.name ]: densityBuoyancyCommonStrings.mode.sameMass,
-  [ DensityCompareModel.Mode.SAME_VOLUME.name ]: densityBuoyancyCommonStrings.mode.sameVolume,
-  [ DensityCompareModel.Mode.SAME_DENSITY.name ]: densityBuoyancyCommonStrings.mode.sameDensity
+  [ DensityIntroModel.Mode.SAME_MASS.name ]: densityBuoyancyCommonStrings.mode.sameMass,
+  [ DensityIntroModel.Mode.SAME_VOLUME.name ]: densityBuoyancyCommonStrings.mode.sameVolume,
+  [ DensityIntroModel.Mode.SAME_DENSITY.name ]: densityBuoyancyCommonStrings.mode.sameDensity
 };
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
 
-class DensityCompareScreenView extends DensityBuoyancyScreenView {
+class DensityIntroScreenView extends DensityBuoyancyScreenView {
   /**
-   * @param {DensityCompareModel} model
+   * @param {DensityIntroModel} model
    * @param {Tandem} tandem
    */
   constructor( model, tandem ) {
@@ -48,9 +48,9 @@ class DensityCompareScreenView extends DensityBuoyancyScreenView {
     }
 
     const modeTandemMap = {
-      [ DensityCompareModel.Mode.SAME_MASS ]: 'sameMass',
-      [ DensityCompareModel.Mode.SAME_VOLUME ]: 'sameVolume',
-      [ DensityCompareModel.Mode.SAME_DENSITY ]: 'sameDensity'
+      [ DensityIntroModel.Mode.SAME_MASS ]: 'sameMass',
+      [ DensityIntroModel.Mode.SAME_VOLUME ]: 'sameVolume',
+      [ DensityIntroModel.Mode.SAME_DENSITY ]: 'sameDensity'
     };
 
     const modePanel = new Panel( new VBox( {
@@ -59,7 +59,7 @@ class DensityCompareScreenView extends DensityBuoyancyScreenView {
           font: DensityBuoyancyCommonConstants.TITLE_FONT,
           maxWidth: 160
         } ),
-        new VerticalAquaRadioButtonGroup( model.modeProperty, DensityCompareModel.Mode.VALUES.map( mode => {
+        new VerticalAquaRadioButtonGroup( model.modeProperty, DensityIntroModel.Mode.VALUES.map( mode => {
           return {
             node: new Text( modeStringMap[ mode.name ], {
               font: DensityBuoyancyCommonConstants.RADIO_BUTTON_FONT,
@@ -123,9 +123,9 @@ class DensityCompareScreenView extends DensityBuoyancyScreenView {
 
     // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
     model.modeProperty.link( mode => {
-      massNumberControl.visible = mode === DensityCompareModel.Mode.SAME_MASS;
-      volumeNumberControl.visible = mode === DensityCompareModel.Mode.SAME_VOLUME;
-      densityNumberControl.visible = mode === DensityCompareModel.Mode.SAME_DENSITY;
+      massNumberControl.visible = mode === DensityIntroModel.Mode.SAME_MASS;
+      volumeNumberControl.visible = mode === DensityIntroModel.Mode.SAME_VOLUME;
+      densityNumberControl.visible = mode === DensityIntroModel.Mode.SAME_DENSITY;
     } );
 
     const numberControlPanel = new Panel( new Node( {
@@ -170,5 +170,5 @@ class DensityCompareScreenView extends DensityBuoyancyScreenView {
   }
 }
 
-densityBuoyancyCommon.register( 'DensityCompareScreenView', DensityCompareScreenView );
-export default DensityCompareScreenView;
+densityBuoyancyCommon.register( 'DensityIntroScreenView', DensityIntroScreenView );
+export default DensityIntroScreenView;

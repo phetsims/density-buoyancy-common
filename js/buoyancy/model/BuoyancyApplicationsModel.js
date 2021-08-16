@@ -47,7 +47,7 @@ class BuoyancyApplicationsModel extends DensityBuoyancyModel {
     } );
 
     // @public (read-only) {Cuboid}
-    this.block = Cuboid.createWithVolume( this.engine, Material.STEEL, new Vector2( 0.5, 0.5 ), 0.005 );
+    this.block = Cuboid.createWithVolume( this.engine, Material.PYRITE, new Vector2( 0.5, 0.5 ), 0.001 );
 
     // @public (read-only) {Boat|null}
     // DerivedProperty doesn't need disposal, since everything here lives for the lifetime of the simulation

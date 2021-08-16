@@ -28,7 +28,7 @@ class Boat extends Mass {
    */
   constructor( engine, blockWidthProperty, liquidMaterialProperty, config ) {
 
-    const displacementVolumeProperty = new NumberProperty( 0.005 );
+    const displacementVolumeProperty = new NumberProperty( 0.01 );
 
     const boatIntersectionVertices = BoatDesign.getIntersectionVertices( blockWidthProperty.value / 2, displacementVolumeProperty.value * 1000 );
     const volume = BoatDesign.ONE_LITER_HULL_VOLUME * displacementVolumeProperty.value * 1000;

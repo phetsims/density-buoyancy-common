@@ -72,7 +72,7 @@ class DensityMysteryScreenView extends DensityBuoyancyScreenView {
       return {
         node: new Text( modeStringMap[ mode.name ], {
           font: DensityBuoyancyCommonConstants.RADIO_BUTTON_FONT,
-          maxWidth: 160
+          maxWidth: 65
         } ),
         value: mode,
         tandemName: `${modeTandemMap[ mode ]}RadioButton`
@@ -108,7 +108,7 @@ class DensityMysteryScreenView extends DensityBuoyancyScreenView {
       children: [
         new Text( densityBuoyancyCommonStrings.blocks, {
           font: DensityBuoyancyCommonConstants.TITLE_FONT,
-          maxWidth: 160
+          maxWidth: 85
         } ),
         modeContent
       ],

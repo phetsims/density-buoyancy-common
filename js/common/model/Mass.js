@@ -203,7 +203,9 @@ class Mass extends PhetioObject {
       tandem: Tandem.OPT_OUT
     } );
 
-    // @public {Property.<Vector3>}
+    // @public {Property.<Vector3>} - The 3D offset from the center-of-mass where the mass-label should be shown from.
+    // The mass label will use this position (plus the masses' position) to determine a view point, then will use the
+    // massOffsetOrientationProperty to position based on that point.
     this.massOffsetProperty = new Property( Vector3.ZERO, {
       valueType: Vector3,
       useDeepEquality: true,
@@ -216,10 +218,12 @@ class Mass extends PhetioObject {
       tandem: Tandem.OPT_OUT
     } );
 
-    // @public {Matrix3}
+    // @public {Matrix3} - Transform matrix set before/after the physics engine steps, to be used to adjust/read the
+    // mass's position/transform.
     this.matrix = config.matrix;
 
-    // @public {Matrix3}
+    // @public {Matrix3} - Transform matrix set in the internal physics engine steps, used by masses to determine their
+    // per-step information.
     this.stepMatrix = new Matrix3();
 
     // @public (read-only) {Emitter}
@@ -253,10 +257,13 @@ class Mass extends PhetioObject {
     this.writeData();
     this.engine.bodySynchronizePrevious( this.body );
 
-    // @public (read-only) {number}
-    this.stepX = 0;
-    this.stepBottom = 0;
-    this.stepTop = 0;
+    // @public (read-only) {number} - Required internal-physics-step properties that should be set by subtypes in
+    // updateStepInformation(). There may exist more set by the subtype (that will be used for e.g. volume/area
+    // calculations). These are updated more often than simulation steps. These specific values will be used by external
+    // code for determining liquid height.
+    this.stepX = 0; // x-value of the position
+    this.stepBottom = 0; // minimum y value of the mass
+    this.stepTop = 0; // maxmimum y value of the mass
   }
 
   /**
@@ -361,7 +368,8 @@ class Mass extends PhetioObject {
    * displacement, etc.) so that it can set high-performance flags used for this purpose.
    * @public
    *
-   * Type-specific values are likely to be set, but this should set at least stepX/stepBottom/stepTop
+   * Type-specific values are likely to be set, but this should set at least stepX/stepBottom/stepTop (as those are
+   * used for determining basin volumes and cross sections)
    */
   updateStepInformation() {
     this.engine.bodyGetStepMatrixTransform( this.body, this.stepMatrix );

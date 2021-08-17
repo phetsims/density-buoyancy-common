@@ -52,7 +52,7 @@ class MassLabelNode extends Node {
       font: new PhetFont( {
         size: 18
       } ),
-      maxWidth: 200
+      maxWidth: 70
     } );
     const readoutPanel = new Panel( readoutText, {
       cornerRadius: DensityBuoyancyCommonConstants.CORNER_RADIUS,

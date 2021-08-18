@@ -162,8 +162,8 @@ class BuoyancyExploreScreenView extends SecondaryMassScreenView {
       model.primaryMass,
       model.secondaryMass,
       this.popupLayer,
-      tandem,
       {
+        tandem: tandem,
         minCustomMass: 0.1,
         maxCustomMass: 27
       }

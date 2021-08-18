@@ -74,12 +74,13 @@ class BuoyancyApplicationsScreenView extends DensityBuoyancyScreenView {
       Material.COPPER,
       Material.LEAD,
       Material.MERCURY
-    ], volume => model.bottle.interiorVolumeProperty.set( volume ), this.popupLayer, tandem.createTandem( 'bottleControlNode' ), {
+    ], volume => model.bottle.interiorVolumeProperty.set( volume ), this.popupLayer, {
       minMass: 0,
       maxCustomMass: 100,
       maxMass: Material.MERCURY.density * 0.01,
       minVolumeLiters: 0,
-      maxVolumeLiters: 10
+      maxVolumeLiters: 10,
+      tandem: tandem.createTandem( 'bottleControlNode' )
     } );
 
     const airVolumeLabel = new Text( densityBuoyancyCommonStrings.airVolume, {
@@ -143,7 +144,9 @@ class BuoyancyApplicationsScreenView extends DensityBuoyancyScreenView {
       Material.ICE,
       Material.BRICK,
       Material.ALUMINUM
-    ], material => material.density ), cubicMeters => model.block.updateSize( Cuboid.boundsFromVolume( cubicMeters ) ), this.popupLayer, tandem.createTandem( 'blockControlNode' ) );
+    ], material => material.density ), cubicMeters => model.block.updateSize( Cuboid.boundsFromVolume( cubicMeters ) ), this.popupLayer, {
+      tandem: tandem.createTandem( 'blockControlNode' )
+    } );
 
     const boatVolumeRange = new Range( 1, 20 );
     const boatBox = new VBox( {

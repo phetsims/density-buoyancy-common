@@ -47,12 +47,10 @@ class DensityReadoutNode extends Node {
    * @param {Property.<number>} densityAProperty
    * @param {Property.<number>} densityBProperty
    * @param {Property.<boolean>} secondaryMassVisibleProperty
-   * @param {Tandem} tandem
+   * @param {Object} [options]
    */
-  constructor( densityAProperty, densityBProperty, secondaryMassVisibleProperty, tandem ) {
-    super( {
-      tandem: tandem
-    } );
+  constructor( densityAProperty, densityBProperty, secondaryMassVisibleProperty, options ) {
+    super();
 
     const background = new Rectangle( 0, 0, WIDTH, HEIGHT, {
       fill: 'white',
@@ -154,6 +152,8 @@ class DensityReadoutNode extends Node {
     Property.multilink( [ secondaryMassVisibleProperty, densityBProperty ], ( visible, density ) => {
       secondaryMarker.visible = visible && density < MAX_DENSITY + 1e-5; // Allow rounding error
     } );
+
+    this.mutate( options );
   }
 }
 

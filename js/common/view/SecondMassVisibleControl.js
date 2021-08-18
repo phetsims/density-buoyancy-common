@@ -9,6 +9,7 @@
 import Vector3 from '../../../../dot/js/Vector3.js';
 import ThreeStage from '../../../../mobius/js/ThreeStage.js';
 import ThreeUtils from '../../../../mobius/js/ThreeUtils.js';
+import merge from '../../../../phet-core/js/merge.js';
 import Image from '../../../../scenery/js/nodes/Image.js';
 import RectangularRadioButtonGroup from '../../../../sun/js/buttons/RectangularRadioButtonGroup.js';
 import doubleCuboidIcon from '../../../mipmaps/double-cuboid-icon_png.js';
@@ -32,9 +33,9 @@ DensityBuoyancyCommonColors.labelBProperty.link( labelColor => {
 class SecondMassVisibleControl extends RectangularRadioButtonGroup {
   /**
    * @param {Property.<boolean>} secondaryMassVisibleProperty
-   * @param {Tandem} tandem
+   * @param {Object} [options]
    */
-  constructor( secondaryMassVisibleProperty, tandem ) {
+  constructor( secondaryMassVisibleProperty, options ) {
     super( secondaryMassVisibleProperty, [
       {
         value: false,
@@ -46,13 +47,12 @@ class SecondMassVisibleControl extends RectangularRadioButtonGroup {
         node: SecondMassVisibleControl.getDoubleCuboidIcon(),
         tandemName: 'twoBlocksRadioButton'
       }
-    ], {
+    ], merge( {
       orientation: 'horizontal',
       baseColor: 'rgb( 230, 231, 232 )',
       touchAreaXDilation: 5,
-      touchAreaYDilation: 5,
-      tandem: tandem
-    } );
+      touchAreaYDilation: 5
+    }, options ) );
   }
 
   /**

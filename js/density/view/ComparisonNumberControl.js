@@ -8,6 +8,7 @@
 
 import Dimension2 from '../../../../dot/js/Dimension2.js';
 import Utils from '../../../../dot/js/Utils.js';
+import merge from '../../../../phet-core/js/merge.js';
 import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
 import NumberControl from '../../../../scenery-phet/js/NumberControl.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
@@ -22,10 +23,10 @@ class ComparisonNumberControl extends NumberControl {
    * @param {string} title
    * @param {string} valuePattern
    * @param {string} valueName
-   * @param {Tandem} tandem
+   * @param {Object} [options]
    */
-  constructor( property, title, valuePattern, valueName, tandem ) {
-    super( title, property, property.range, {
+  constructor( property, title, valuePattern, valueName, options ) {
+    super( title, property, property.range, merge( {
       layoutFunction: NumberControl.createLayoutFunction4(),
       delta: 0.01,
       titleNodeOptions: {
@@ -62,10 +63,8 @@ class ComparisonNumberControl extends NumberControl {
           label: new Text( property.range.max, { font: new PhetFont( 12 ), maxWidth: 50 } )
         } ],
         trackSize: new Dimension2( 120, 0.5 )
-      },
-
-      tandem: tandem
-    } );
+      }
+    }, options ) );
   }
 }
 

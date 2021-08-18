@@ -41,10 +41,9 @@ class MaterialMassVolumeControlNode extends VBox {
    * @param {Array.<Material>} materials
    * @param {function(number)} setVolume
    * @param {Node} listParent
-   * @param {Tandem} tandem
    * @param {Object} [options]
    */
-  constructor( materialProperty, massProperty, volumeProperty, materials, setVolume, listParent, tandem, options ) {
+  constructor( materialProperty, massProperty, volumeProperty, materials, setVolume, listParent, options ) {
 
     options = merge( {
       // {Node|null}
@@ -59,10 +58,10 @@ class MaterialMassVolumeControlNode extends VBox {
       maxVolumeLiters: 10,
 
       // {PaintDef}
-      color: null,
-
-      tandem: tandem
+      color: null
     }, options );
+
+    const tandem = options.tandem;
 
     super( {
       spacing: 15,

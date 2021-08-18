@@ -45,7 +45,7 @@ class DensityExploreScreenView extends SecondaryMassScreenView {
       model.primaryMass,
       model.secondaryMass,
       this.popupLayer,
-      tandem
+      { tandem: tandem }
     );
 
     const accordionTandem = tandem.createTandem( 'densityReadoutBox' );
@@ -54,7 +54,7 @@ class DensityExploreScreenView extends SecondaryMassScreenView {
       new DerivedProperty( [ model.primaryMass.materialProperty ], material => material.density ),
       new DerivedProperty( [ model.secondaryMass.materialProperty ], material => material.density ),
       model.secondaryMass.visibleProperty,
-      accordionTandem.createTandem( 'densityReadout' )
+      { tandem: accordionTandem.createTandem( 'densityReadout' ) }
     ), merge( {
       titleNode: new Text( densityBuoyancyCommonStrings.densityReadout, {
         font: DensityBuoyancyCommonConstants.TITLE_FONT,

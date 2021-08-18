@@ -49,7 +49,7 @@ const DensityBuoyancyCommonColors = {
     default: new Color( 234, 150, 62 )
   } ),
   gravityForceProperty: new ProfileColorProperty( 'gravityForce', {
-    default: new Color( 41, 59, 139 )
+    default: PhetColorScheme.GRAVITATIONAL_FORCE
   } ),
   buoyancyForceProperty: new ProfileColorProperty( 'buoyancyForce', {
     default: new Color( 218, 51, 138 )

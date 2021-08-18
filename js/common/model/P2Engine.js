@@ -39,7 +39,8 @@ class P2Engine extends PhysicsEngine {
     // @private {Object} - Maps {number} body.id => {p2.RevoluteConstraint}
     this.pointerConstraintMap = {};
 
-    // @private {Object} - Maps {number} body.id => {p2.Body}
+    // @private {Object} - Maps {number} body.id => {p2.Body}. Contains bodies that are empty, and specifically used for
+    // pointer constraints (so they can be positioned to where the pointer is).
     this.nullBodyMap = {};
 
     // restitution - no bounce is 0, default is 0
@@ -517,6 +518,8 @@ class P2Engine extends PhysicsEngine {
    * @param {Vector2} position
    */
   addPointerConstraint( body, position ) {
+    // Create an empty body used for the constraint (we don't want it intersecting). It will just be used for applying
+    // the effects of this constraint.
     const nullBody = new p2.Body();
     this.nullBodyMap[ body.id ] = nullBody;
 

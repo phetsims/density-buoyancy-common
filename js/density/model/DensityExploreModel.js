@@ -8,6 +8,7 @@
 
 import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
+import merge from '../../../../phet-core/js/merge.js';
 import Cuboid from '../../common/model/Cuboid.js';
 import DensityBuoyancyModel from '../../common/model/DensityBuoyancyModel.js';
 import Mass from '../../common/model/Mass.js';
@@ -16,14 +17,16 @@ import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 
 class DensityExploreModel extends DensityBuoyancyModel {
   /**
-   * @param {Tandem} tandem
+   * @param {Object} [options]
    */
-  constructor( tandem ) {
+  constructor( options ) {
 
-    super( tandem, {
+    const tandem = options.tandem;
+
+    super( merge( {
       showMassesDefault: true,
       canShowForces: false
-    } );
+    }, options ) );
 
     // @public (read-only) {Mass}
     this.primaryMass = Cuboid.createWithMass( this.engine, Material.WOOD, new Vector2( -0.2, 0.2 ), 2, {

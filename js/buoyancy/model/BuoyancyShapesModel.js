@@ -36,11 +36,13 @@ const MATERIAL = Material.WOOD;
 
 class BuoyancyShapesModel extends DensityBuoyancyModel {
   /**
-   * @param {Tandem} tandem
+   * @param {Object} [options]
    */
-  constructor( tandem ) {
+  constructor( options ) {
 
-    super( tandem );
+    const tandem = options.tandem;
+
+    super( options );
 
     // @public {Property.<boolean>}
     this.secondaryMassVisibleProperty = new BooleanProperty( false );

@@ -28,11 +28,13 @@ const Scene = Enumeration.byKeys( [
 
 class BuoyancyApplicationsModel extends DensityBuoyancyModel {
   /**
-   * @param {Tandem} tandem
+   * @param {Object} [options]
    */
-  constructor( tandem ) {
+  constructor( options ) {
 
-    super( tandem );
+    const tandem = options.tandem;
+
+    super( options );
 
     // @public {Property.<Scene>}
     this.sceneProperty = new EnumerationProperty( Scene, Scene.BOTTLE );

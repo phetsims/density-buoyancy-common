@@ -26,9 +26,11 @@ const Mode = Enumeration.byKeys( [
 class BuoyancyIntroModel extends DensityBuoyancyModal( DensityBuoyancyModel, Mode, Mode.SAME_MASS ) {
   /**
    * @mixes DensityBuoyancyModal
-   * @param {Tandem} tandem
+   * @param {Object} [options]
    */
-  constructor( tandem ) {
+  constructor( options ) {
+    const tandem = options.tandem;
+
     const createMasses = ( model, mode ) => {
       switch( mode ) {
         case Mode.SAME_MASS:
@@ -70,7 +72,7 @@ class BuoyancyIntroModel extends DensityBuoyancyModal( DensityBuoyancyModel, Mod
       }
     };
 
-    super( tandem, createMasses, () => {}, positionMasses, tandem );
+    super( tandem, createMasses, () => {}, positionMasses, options );
 
     // Left scale
     this.availableMasses.push( new Scale( this.engine, {

@@ -6,22 +6,23 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
+import merge from '../../../../phet-core/js/merge.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import Basin from './Basin.js';
 
 class Pool extends Basin {
   /**
    * @param {Bounds3} bounds
-   * @param {Tandem} tandem
+   * @param {Object} [options]
    */
-  constructor( bounds, tandem ) {
+  constructor( bounds, options ) {
 
     const initialVolume = 0.1;
 
-    super( tandem, {
+    super( merge( {
       initialVolume: initialVolume,
       initialY: bounds.minY + initialVolume / ( bounds.width * bounds.depth )
-    } );
+    }, options ) );
 
     // @public (read-only) {Bounds3}
     this.bounds = bounds;

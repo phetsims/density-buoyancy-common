@@ -10,6 +10,7 @@ import NumberProperty from '../../../../axon/js/NumberProperty.js';
 import Range from '../../../../dot/js/Range.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import Enumeration from '../../../../phet-core/js/Enumeration.js';
+import merge from '../../../../phet-core/js/merge.js';
 import Cuboid from '../../common/model/Cuboid.js';
 import DensityBuoyancyModal from '../../common/model/DensityBuoyancyModal.js';
 import DensityBuoyancyModel from '../../common/model/DensityBuoyancyModel.js';
@@ -27,9 +28,12 @@ const Mode = Enumeration.byKeys( [
 class DensityIntroModel extends DensityBuoyancyModal( DensityBuoyancyModel, Mode, Mode.SAME_MASS ) {
   /**
    * @mixes DensityBuoyancyModal
-   * @param {Tandem} tandem
+   * @param {Object} [options]
    */
-  constructor( tandem ) {
+  constructor( options ) {
+
+    const tandem = options.tandem;
+
     const sameMassTandem = tandem.createTandem( 'sameMass' );
     const sameVolumeTandem = tandem.createTandem( 'sameVolume' );
     const sameDensityTandem = tandem.createTandem( 'sameDensity' );
@@ -180,10 +184,10 @@ class DensityIntroModel extends DensityBuoyancyModal( DensityBuoyancyModel, Mode
       }
     };
 
-    super( tandem, createMasses, () => {}, positionMasses, tandem, {
+    super( tandem, createMasses, () => {}, positionMasses, merge( {
       showMassesDefault: true,
       canShowForces: false
-    } );
+    }, options ) );
 
     // @public {Property.<number>}
     this.massProperty = massProperty;

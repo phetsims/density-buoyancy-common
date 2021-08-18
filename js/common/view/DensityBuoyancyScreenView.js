@@ -75,21 +75,22 @@ const scratchVector2 = new Vector2( 0, 0 );
 class DensityBuoyancyScreenView extends ScreenView {
   /**
    * @param {DensityBuoyancyModel} model
-   * @param {Tandem} tandem
    * @param {Object} [options]
    */
-  constructor( model, tandem, options ) {
+  constructor( model, options ) {
 
     options = merge( {
       cameraPosition: new Vector3( 0, 0.4, 2 ),
       cameraZoom: 1.7,
-      cameraLookAt: Vector3.ZERO
+      cameraLookAt: Vector3.ZERO,
+      tandem: Tandem.REQUIRED,
+
+      preventFit: true
     }, options );
 
-    super( {
-      preventFit: true,
-      tandem: tandem
-    } );
+    const tandem = options.tandem;
+
+    super( options );
 
     // @protected {boolean} - If we detect that we can't use WebGL, we'll set this to false so we can bail out.
     this.enabled = true;

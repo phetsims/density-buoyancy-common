@@ -18,11 +18,13 @@ import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 
 class BuoyancyExploreModel extends DensityBuoyancyModel {
   /**
-   * @param {Tandem} tandem
+   * @param {Object} [options]
    */
-  constructor( tandem ) {
+  constructor( options ) {
 
-    super( tandem );
+    const tandem = options.tandem;
+
+    super( options );
 
     // @public (read-only) {Mass}
     this.primaryMass = Cuboid.createWithMass( this.engine, Material.WOOD, new Vector2( -0.2, 0.2 ), 2, {

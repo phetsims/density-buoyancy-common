@@ -9,20 +9,23 @@
 import NumberProperty from '../../../../axon/js/NumberProperty.js';
 import Range from '../../../../dot/js/Range.js';
 import merge from '../../../../phet-core/js/merge.js';
+import Tandem from '../../../../tandem/js/Tandem.js';
 import NumberIO from '../../../../tandem/js/types/NumberIO.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import InterpolatedProperty from './InterpolatedProperty.js';
 
 class Basin {
   /**
-   * @param {Tandem} tandem
    * @param {Object} [options]
    */
-  constructor( tandem, options ) {
+  constructor( options ) {
     options = merge( {
       initialVolume: 0,
-      initialY: 0
+      initialY: 0,
+      tandem: Tandem.REQUIRED
     }, options );
+
+    const tandem = options.tandem;
 
     // @public {Property.<number>} - in m^3, the volume of liquid contained in this basin
     this.liquidVolumeProperty = new NumberProperty( options.initialVolume, {

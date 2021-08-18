@@ -18,10 +18,11 @@ class BoatBasin extends Basin {
    * @param {Boat} boat
    */
   constructor( boat ) {
-    // TODO: tandem here
-    super( Tandem.OPT_OUT, {
+    super( {
       initialVolume: 0,
-      initialY: 0
+      initialY: 0,
+      // TODO: tandem here
+      tandem: Tandem.OPT_OUT
     } );
 
     // @private {Boat}

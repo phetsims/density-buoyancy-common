@@ -7,10 +7,11 @@
  */
 
 import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
-import dotRandom from '../../../../dot/js/dotRandom.js';
 import Matrix3 from '../../../../dot/js/Matrix3.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
+import dotRandom from '../../../../dot/js/dotRandom.js';
 import Enumeration from '../../../../phet-core/js/Enumeration.js';
+import merge from '../../../../phet-core/js/merge.js';
 import Cuboid from '../../common/model/Cuboid.js';
 import DensityBuoyancyModal from '../../common/model/DensityBuoyancyModal.js';
 import DensityBuoyancyModel from '../../common/model/DensityBuoyancyModel.js';
@@ -63,9 +64,12 @@ const Mode = Enumeration.byKeys( [
 class DensityMysteryModel extends DensityBuoyancyModal( DensityBuoyancyModel, Mode, Mode.SET_1 ) {
   /**
    * @mixes DensityBuoyancyModal
-   * @param {Tandem} tandem
+   * @param {Object} [options]
    */
-  constructor( tandem ) {
+  constructor( options ) {
+
+    const tandem = options.tandem;
+
     const createMysteryMaterials = () => {
       const densities = dotRandom.shuffle( randomMaterials ).slice( 0, 5 ).map( material => material.density );
       const colors = dotRandom.shuffle( randomColors ).slice( 0, 5 );
@@ -230,9 +234,9 @@ class DensityMysteryModel extends DensityBuoyancyModal( DensityBuoyancyModel, Mo
       }
     };
 
-    super( tandem, createMasses, regenerateMasses, positionMasses, tandem, {
+    super( tandem, createMasses, regenerateMasses, positionMasses, merge( {
       canShowForces: false
-    } );
+    }, options ) );
 
     // @public {Property.<boolean>}
     this.densityTableExpandedProperty = new BooleanProperty( false, {

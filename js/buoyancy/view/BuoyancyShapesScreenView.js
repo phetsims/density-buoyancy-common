@@ -36,13 +36,13 @@ class BuoyancyShapesScreenView extends SecondaryMassScreenView {
 
   /**
    * @param {BuoyancyIntroModel} model
-   * @param {Tandem} tandem
+   * @param {Object} [options]
    */
-  constructor( model, tandem ) {
+  constructor( model, options ) {
 
-    super( model, tandem, {
+    super( model, merge( {
       cameraLookAt: DensityBuoyancyCommonConstants.BUOYANCY_CAMERA_LOOK_AT
-    } );
+    }, options ) );
 
     // Don't create the majority of the view if three.js isn't usable (e.g. no WebGL)
     if ( !this.enabled ) {

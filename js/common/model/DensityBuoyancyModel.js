@@ -33,12 +33,10 @@ const GROUND_FRONT_Z = POOL_DEPTH / 2;
 const POOL_BACK_Z = -POOL_DEPTH / 2;
 
 class DensityBuoyancyModel {
-
   /**
-   * @param {Tandem} tandem
    * @param {Object} [options]
    */
-  constructor( tandem, options ) {
+  constructor( options ) {
     options = merge( {
       // {boolean}
       showMassesDefault: false,
@@ -46,6 +44,8 @@ class DensityBuoyancyModel {
       // {boolean}
       canShowForces: true
     }, options );
+
+    const tandem = options.tandem;
 
     // @public {Property.<boolean>}
     this.showGravityForceProperty = new BooleanProperty( false, {
@@ -158,7 +158,9 @@ class DensityBuoyancyModel {
     ];
 
     // @public (read-only) {Pool}
-    this.pool = new Pool( this.poolBounds, tandem.createTandem( 'pool' ) );
+    this.pool = new Pool( this.poolBounds, {
+      tandem: tandem.createTandem( 'pool' )
+    } );
 
     // @public (read-only) {Boat|null} - We need to hook into a boat (if it exists) for displaying the water.
     this.boat = null;

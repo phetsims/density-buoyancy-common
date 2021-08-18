@@ -10,6 +10,7 @@ import DynamicProperty from '../../../../axon/js/DynamicProperty.js';
 import Property from '../../../../axon/js/Property.js';
 import Range from '../../../../dot/js/Range.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
+import merge from '../../../../phet-core/js/merge.js';
 import AlignPropertyBox from '../../../../scenery/js/layout/AlignPropertyBox.js';
 import Node from '../../../../scenery/js/nodes/Node.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
@@ -34,13 +35,15 @@ const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
 class DensityIntroScreenView extends DensityBuoyancyScreenView {
   /**
    * @param {DensityIntroModel} model
-   * @param {Tandem} tandem
+   * @param {Object} [options]
    */
-  constructor( model, tandem ) {
+  constructor( model, options ) {
 
-    super( model, tandem, {
+    const tandem = options.tandem;
+
+    super( model, merge( {
       cameraLookAt: DensityBuoyancyCommonConstants.DENSITY_CAMERA_LOOK_AT
-    } );
+    }, options ) );
 
     // Don't create the majority of the view if three.js isn't usable (e.g. no WebGL)
     if ( !this.enabled ) {

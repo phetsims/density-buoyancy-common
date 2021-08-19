@@ -36,7 +36,9 @@ const labelOptions = {
   font: new PhetFont( 14 ),
   maxWidth: maxWidth
 };
-const checkboxOptions = {};
+const checkboxOptions = {
+  boxWidth: 17
+};
 const checkboxSpacing = 5;
 
 class DisplayOptionsNode extends VBox {

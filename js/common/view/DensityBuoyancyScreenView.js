@@ -79,10 +79,11 @@ class DensityBuoyancyScreenView extends ScreenView {
    */
   constructor( model, options ) {
 
+    const scaleIncrease = 3.5;
     options = merge( {
-      cameraPosition: new Vector3( 0, 0.4, 2 ),
-      cameraZoom: 1.7,
-      cameraLookAt: Vector3.ZERO,
+      cameraLookAt: DensityBuoyancyCommonConstants.BUOYANCY_CAMERA_LOOK_AT,
+      cameraPosition: new Vector3( 0, 0.2, 2 ).timesScalar( scaleIncrease ),
+      cameraZoom: 1.75 * scaleIncrease,
       tandem: Tandem.REQUIRED,
 
       preventFit: true
@@ -281,7 +282,7 @@ class DensityBuoyancyScreenView extends ScreenView {
     this.sceneNode.stage.threeScene.add( ambientLight );
 
     const sunLight = new THREE.DirectionalLight( 0xffffff, 1 );
-    sunLight.position.set( -1, 1.5, 0.8 );
+    sunLight.position.set( -0.7, 1.5, 0.8 );
     this.sceneNode.stage.threeScene.add( sunLight );
 
     const moonLight = new THREE.DirectionalLight( 0xffffff, 0.2 );
@@ -796,12 +797,9 @@ class DensityBuoyancyScreenView extends ScreenView {
 
       const mass = forceDiagramNode.mass;
       const originPoint = this.modelToViewPoint( mass.matrix.translation.toVector3().plus( mass.forceOffsetProperty.value ) );
-      const upOffsetPoint = this.modelToViewPoint( mass.matrix.translation.toVector3().plus( mass.forceOffsetProperty.value ).plusXYZ( 0, 1, 0 ) );
 
-      // Shear the force diagram so that it aligns with the perspective at the point, see
-      // https://github.com/phetsims/buoyancy/issues/12
       forceDiagramNode.matrix = Matrix3.rowMajor(
-        1, ( upOffsetPoint.x - originPoint.x ) / ( upOffsetPoint.y - originPoint.y ), originPoint.x,
+        1, 0, originPoint.x,
         0, 1, originPoint.y,
         0, 0, 1
       );

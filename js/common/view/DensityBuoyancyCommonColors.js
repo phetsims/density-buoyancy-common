@@ -145,19 +145,13 @@ const DensityBuoyancyCommonColors = {
 
   chartHeaderColorProperty: new ProfileColorProperty( densityBuoyancyCommon, 'chartHeader', {
     default: new Color( 230, 230, 230 )
-  }, {
-    tandem: tandem.createTandem( 'chartHeaderColorProperty' )
   } ),
 
   radioBorderColorProperty: new ProfileColorProperty( densityBuoyancyCommon, 'radioBorder', {
     default: PhetColorScheme.BUTTON_YELLOW
-  }, {
-    tandem: tandem.createTandem( 'radioBorderColorProperty' )
   } ),
   radioBackgroundColorProperty: new ProfileColorProperty( densityBuoyancyCommon, 'radioBackground', {
     default: Color.WHITE
-  }, {
-    tandem: tandem.createTandem( 'radioBackgroundColorProperty' )
   } ),
 
   // "liquid" material colors

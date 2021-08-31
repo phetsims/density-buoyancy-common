@@ -48,7 +48,7 @@ class BuoyancyShapesModel extends DensityBuoyancyModel {
     this.secondaryMassVisibleProperty = new BooleanProperty( false );
 
     // @public {Property.<boolean>}
-    this.densityReadoutExpandedProperty = new BooleanProperty( false );
+    this.densityExpandedProperty = new BooleanProperty( false );
 
     // @public (read-only) {Scale}
     this.leftScale = new Scale( this.engine, {
@@ -197,7 +197,7 @@ class BuoyancyShapesModel extends DensityBuoyancyModel {
    */
   reset() {
     this.secondaryMassVisibleProperty.reset();
-    this.densityReadoutExpandedProperty.reset();
+    this.densityExpandedProperty.reset();
 
     this.primaryShapeProperty.reset();
     this.secondaryShapeProperty.reset();

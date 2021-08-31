@@ -59,7 +59,7 @@ class BuoyancyExploreModel extends DensityBuoyancyModel {
     this.pool.liquidVolumeProperty.setInitialValue( this.pool.liquidVolumeProperty.value );
 
     // @public {Property.<boolean>}
-    this.densityReadoutExpandedProperty = new BooleanProperty( false );
+    this.densityExpandedProperty = new BooleanProperty( false );
   }
 
   /**
@@ -71,7 +71,7 @@ class BuoyancyExploreModel extends DensityBuoyancyModel {
     this.primaryMass.reset();
     this.secondaryMass.reset();
 
-    this.densityReadoutExpandedProperty.reset();
+    this.densityExpandedProperty.reset();
 
     super.reset();
   }

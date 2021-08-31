@@ -40,7 +40,7 @@ class BuoyancyApplicationsModel extends DensityBuoyancyModel {
     this.sceneProperty = new EnumerationProperty( Scene, Scene.BOTTLE );
 
     // @public {Property.<boolean>}
-    this.densityReadoutExpandedProperty = new BooleanProperty( false );
+    this.densityExpandedProperty = new BooleanProperty( false );
 
     // @public (read-only) {Bottle}
     this.bottle = new Bottle( this.engine, {
@@ -94,7 +94,7 @@ class BuoyancyApplicationsModel extends DensityBuoyancyModel {
    * @override
    */
   reset() {
-    this.densityReadoutExpandedProperty.reset();
+    this.densityExpandedProperty.reset();
 
     this.sceneProperty.reset();
 

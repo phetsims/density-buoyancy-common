@@ -229,7 +229,7 @@ class BuoyancyApplicationsScreenView extends DensityBuoyancyScreenView {
         maxWidth: 160,
         font: DensityBuoyancyCommonConstants.TITLE_FONT
       } ),
-      expandedProperty: model.densityReadoutExpandedProperty
+      expandedProperty: model.densityExpandedProperty
     }, DensityBuoyancyCommonConstants.ACCORDION_BOX_OPTIONS ) );
 
     this.addChild( new AlignPropertyBox( new VBox( {

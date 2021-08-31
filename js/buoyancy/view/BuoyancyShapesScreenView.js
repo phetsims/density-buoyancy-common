@@ -82,7 +82,7 @@ class BuoyancyShapesScreenView extends SecondaryMassScreenView {
         font: DensityBuoyancyCommonConstants.TITLE_FONT,
         maxWidth: 160
       } ),
-      expandedProperty: model.densityReadoutExpandedProperty
+      expandedProperty: model.densityExpandedProperty
     }, DensityBuoyancyCommonConstants.ACCORDION_BOX_OPTIONS ) );
 
     this.addChild( new AlignPropertyBox( new VBox( {

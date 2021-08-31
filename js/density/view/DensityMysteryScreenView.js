@@ -48,16 +48,16 @@ class DensityMysteryScreenView extends DensityBuoyancyScreenView {
       return;
     }
 
-    const densityTableBox = new AccordionBox( new DensityTableNode(), merge( {
+    const densityTableAccordionBox = new AccordionBox( new DensityTableNode(), merge( {
       titleNode: new Text( densityBuoyancyCommonStrings.densityTable, {
         font: DensityBuoyancyCommonConstants.TITLE_FONT,
         maxWidth: 200
       } ),
       expandedProperty: model.densityTableExpandedProperty,
-      tandem: tandem.createTandem( 'densityTableBox' )
+      tandem: tandem.createTandem( 'densityTableAccordionBox' )
     }, DensityBuoyancyCommonConstants.ACCORDION_BOX_OPTIONS ) );
 
-    this.addChild( new AlignPropertyBox( densityTableBox, this.visibleBoundsProperty, {
+    this.addChild( new AlignPropertyBox( densityTableAccordionBox, this.visibleBoundsProperty, {
       xAlign: 'center',
       yAlign: 'top',
       margin: MARGIN

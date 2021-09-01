@@ -62,7 +62,7 @@ class DensityBuoyancyModel {
     } );
     this.showMassesProperty = new BooleanProperty( options.showMassesDefault, {
       tandem: tandem.createTandem( 'showMassesProperty' ),
-      phetioDocumentation: 'Displays a mass readout on each block'
+      phetioDocumentation: 'Displays a mass readout on each object'
     } );
 
     // @public {Property.<Gravity>}

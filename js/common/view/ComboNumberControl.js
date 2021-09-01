@@ -218,7 +218,11 @@ class ComboNumberControl extends VBox {
     } );
 
     // @private {NumberControl}
-    this.numberControl = new NumberControl( config.title, this.numberProperty, config.range, config.numberControlOptions );
+    this.numberControl = new NumberControl( config.title, this.numberProperty, config.range, merge( {
+      sliderOptions: {
+        phetioLinkedProperty: this.property
+      }
+    }, config.numberControlOptions ) );
 
     // @private {ComboBox}
     this.comboBox = new ComboBox( config.comboItems, this.comboProperty, config.listParent, config.comboBoxOptions );

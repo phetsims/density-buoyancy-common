@@ -216,7 +216,8 @@ class MaterialMassVolumeControlNode extends VBox {
           tandem: massNumberControlTandem.createTandem( 'slider' ).createTandem( 'thumbNode' )
         } ),
         thumbYOffset: new PrecisionSliderThumb().height / 2 - TRACK_HEIGHT / 2,
-        constrainValue: value => Utils.toFixedNumber( value, 1 )
+        constrainValue: value => Utils.toFixedNumber( value, 1 ),
+        phetioLinkedProperty: massProperty
       },
       numberDisplayOptions: {
         valuePattern: StringUtils.fillIn( densityBuoyancyCommonStrings.kilogramsPattern, {
@@ -239,7 +240,8 @@ class MaterialMassVolumeControlNode extends VBox {
           tandem: volumeNumberControlTandem.createTandem( 'slider' ).createTandem( 'thumbNode' )
         } ),
         thumbYOffset: new PrecisionSliderThumb().height / 2 - TRACK_HEIGHT / 2,
-        constrainValue: value => Utils.roundSymmetric( value * 2 ) / 2
+        constrainValue: value => Utils.roundSymmetric( value * 2 ) / 2,
+        phetioLinkedProperty: volumeProperty
       },
       numberDisplayOptions: {
         valuePattern: StringUtils.fillIn( densityBuoyancyCommonStrings.litersPattern, {

@@ -107,21 +107,36 @@ class DensityIntroScreenView extends DensityBuoyancyScreenView {
       densityBuoyancyCommonStrings.mass,
       densityBuoyancyCommonStrings.kilogramsPattern,
       'kilograms',
-      { tandem: tandem.createTandem( 'massNumberControl' ) }
+      {
+        tandem: tandem.createTandem( 'massNumberControl' ),
+        sliderOptions: {
+          phetioLinkedProperty: model.massProperty
+        }
+      }
     );
     const volumeNumberControl = new ComparisonNumberControl(
       volumeProperty,
       densityBuoyancyCommonStrings.volume,
       densityBuoyancyCommonStrings.litersPattern,
       'liters',
-      { tandem: tandem.createTandem( 'volumeNumberControl' ) }
+      {
+        tandem: tandem.createTandem( 'volumeNumberControl' ),
+        sliderOptions: {
+          phetioLinkedProperty: model.volumeProperty
+        }
+      }
     );
     const densityNumberControl = new ComparisonNumberControl(
       densityProperty,
       densityBuoyancyCommonStrings.density,
       densityBuoyancyCommonStrings.kilogramsPerLiterPattern,
       'value',
-      { tandem: tandem.createTandem( 'densityNumberControl' ) }
+      {
+        tandem: tandem.createTandem( 'densityNumberControl' ),
+        sliderOptions: {
+          phetioLinkedProperty: model.densityProperty
+        }
+      }
     );
 
     // This instance lives for the lifetime of the simulation, so we don't need to remove this listener

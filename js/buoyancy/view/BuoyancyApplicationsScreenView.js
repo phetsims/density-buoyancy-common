@@ -173,7 +173,8 @@ class BuoyancyApplicationsScreenView extends DensityBuoyancyScreenView {
           sliderOptions: {
             constrainValue: value => {
               return boatVolumeRange.constrainValue( Utils.roundToInterval( value, 0.1 ) );
-            }
+            },
+            phetioLinkedProperty: model.boat.displacementVolumeProperty
           }
         }, MaterialMassVolumeControlNode.getNumberControlOptions() ) )
       ]

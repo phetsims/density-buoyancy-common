@@ -127,7 +127,8 @@ class Mass extends PhetioObject {
 
     // @public {Property.<boolean>}
     this.inputEnabledProperty = new BooleanProperty( true, {
-      tandem: tandem.createTandem( 'inputEnabledProperty' )
+      tandem: tandem.createTandem( 'inputEnabledProperty' ),
+      phetioDocumenation: 'Sets whether the element will have input enabled, and hence be interactive'
     } );
 
     // @public {Property.<boolean>}
@@ -147,7 +148,8 @@ class Mass extends PhetioObject {
     this.volumeProperty = new NumberProperty( config.volume, {
       tandem: tandem.createTandem( 'volumeProperty' ),
       range: new Range( 0, Number.POSITIVE_INFINITY ),
-      phetioReadOnly: true
+      phetioReadOnly: true,
+      units: 'm^3'
     } );
 
     // @public {Property.<number>} - In kg (kilograms), added to the normal mass (computed from density and volume)
@@ -161,7 +163,8 @@ class Mass extends PhetioObject {
       return material.density * volume + containedMass;
     }, {
       tandem: tandem.createTandem( 'massProperty' ),
-      phetioType: DerivedProperty.DerivedPropertyIO( NumberIO )
+      phetioType: DerivedProperty.DerivedPropertyIO( NumberIO ),
+      units: 'kg'
     } );
 
     // @public {Property.<Vector2>} - The following offset will be added onto the body's position to determine ours.
@@ -175,7 +178,9 @@ class Mass extends PhetioObject {
       useDeepEquality: true,
       tandem: tandem.createTandem( 'gravityForceInterpolatedProperty' ),
       phetioType: InterpolatedProperty.InterpolatedPropertyIO( Vector2.Vector2IO ),
-      phetioReadOnly: true
+      phetioReadOnly: true,
+      units: 'N',
+      phetioHighFrequency: true
     } );
 
     // @public {Property.<Vector2>}
@@ -184,7 +189,9 @@ class Mass extends PhetioObject {
       useDeepEquality: true,
       tandem: tandem.createTandem( 'buoyancyForceInterpolatedProperty' ),
       phetioType: InterpolatedProperty.InterpolatedPropertyIO( Vector2.Vector2IO ),
-      phetioReadOnly: true
+      phetioReadOnly: true,
+      units: 'N',
+      phetioHighFrequency: true
     } );
 
     // @public {Property.<Vector2>}
@@ -193,7 +200,9 @@ class Mass extends PhetioObject {
       useDeepEquality: true,
       tandem: tandem.createTandem( 'contactForceInterpolatedProperty' ),
       phetioType: InterpolatedProperty.InterpolatedPropertyIO( Vector2.Vector2IO ),
-      phetioReadOnly: true
+      phetioReadOnly: true,
+      units: 'N',
+      phetioHighFrequency: true
     } );
 
     // @public {Property.<Vector3>}

@@ -40,17 +40,20 @@ class DensityIntroModel extends DensityBuoyancyModal( DensityBuoyancyModel, Mode
 
     const massProperty = new NumberProperty( 5, {
       range: new Range( 1, 10 ),
-      tandem: tandem.createTandem( 'massProperty' )
+      tandem: tandem.createTandem( 'massProperty' ),
+      units: 'kg'
     } );
 
     const volumeProperty = new NumberProperty( 0.005, {
       range: new Range( 0.001, 0.01 ),
-      tandem: tandem.createTandem( 'volumeProperty' )
+      tandem: tandem.createTandem( 'volumeProperty' ),
+      units: 'm^3'
     } );
 
     const densityProperty = new NumberProperty( 500, {
       range: new Range( 100, 2000 ),
-      tandem: tandem.createTandem( 'densityProperty' )
+      tandem: tandem.createTandem( 'densityProperty' ),
+      units: 'kg/m^3'
     } );
 
     const createMasses = ( model, mode ) => {

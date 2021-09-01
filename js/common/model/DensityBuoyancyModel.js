@@ -60,7 +60,10 @@ class DensityBuoyancyModel {
     this.showForceValuesProperty = new BooleanProperty( false, {
       tandem: options.canShowForces ? tandem.createTandem( 'showForceValuesProperty' ) : Tandem.OPT_OUT
     } );
-    this.showMassesProperty = new BooleanProperty( options.showMassesDefault, { tandem: tandem.createTandem( 'showMassesProperty' ) } );
+    this.showMassesProperty = new BooleanProperty( options.showMassesDefault, {
+      tandem: tandem.createTandem( 'showMassesProperty' ),
+      phetioDocumentation: 'Displays a mass readout on each block'
+    } );
 
     // @public {Property.<Gravity>}
     this.gravityProperty = new Property( Gravity.EARTH, {
@@ -92,7 +95,8 @@ class DensityBuoyancyModel {
     // DerivedProperty doesn't need disposal, since everything here lives for the lifetime of the simulation
     this.liquidViscosityProperty = new DerivedProperty( [ this.liquidMaterialProperty ], liquidMaterial => liquidMaterial.viscosity, {
       tandem: tandem.createTandem( 'liquidViscosityProperty' ),
-      phetioType: DerivedProperty.DerivedPropertyIO( NumberIO )
+      phetioType: DerivedProperty.DerivedPropertyIO( NumberIO ),
+      units: 'Pa\u00b7s'
     } );
 
     // @public  (read-only){Bounds3}
@@ -117,6 +121,8 @@ class DensityBuoyancyModel {
       valueType: Bounds3,
       phetioType: Property.PropertyIO( Bounds3.Bounds3IO ),
       tandem: tandem.createTandem( 'invisibleBarrierBoundsProperty' ),
+      phetioReadOnly: true,
+      phetioDocumentation: 'We keep masses within these bounds, generally to stay in-screen',
       useDeepEquality: true
     } );
 

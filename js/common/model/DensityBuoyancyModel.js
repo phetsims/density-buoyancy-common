@@ -67,7 +67,8 @@ class DensityBuoyancyModel {
       valueType: Gravity,
       phetioType: Property.PropertyIO( Gravity.GravityIO ),
       tandem: tandem.createTandem( 'gravityProperty' ),
-      phetioReadOnly: true
+      phetioReadOnly: true,
+      phetioDocumentation: 'The acceleration due to gravity applied to all masses, (may be potentially custom or hidden from view)'
     } );
 
     // @public {Property.<Material>}
@@ -75,7 +76,8 @@ class DensityBuoyancyModel {
       valueType: Material,
       phetioType: Property.PropertyIO( Material.MaterialIO ),
       tandem: tandem.createTandem( 'liquidMaterialProperty' ),
-      phetioReadOnly: true
+      phetioReadOnly: true,
+      phetioDocumentation: 'The material of the liquid in the pool'
     } );
 
     // @public (read-only) {Property.<number>}

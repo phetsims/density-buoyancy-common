@@ -441,7 +441,7 @@ const NullableColorPropertyReferenceType = NullableIO( ReferenceIO( Property.Pro
 // @public (read-only) {IOType}
 Material.MaterialIO = new IOType( 'MaterialIO', {
   valueType: Material,
-  documentation: 'Represents different materials that solids/liquids in the simulations can take, including density/viscosity/color.',
+  documentation: 'Represents different materials that solids/liquids in the simulations can take, including density (kg/m^3), viscosity (Pa * s), and color.',
   stateSchema: {
     name: StringIO,
     identifier: NullableIO( StringIO ),

@@ -105,7 +105,7 @@ Gravity.GRAVITIES = [
 // @public (read-only) {IOType}
 Gravity.GravityIO = new IOType( 'GravityIO', {
   valueType: Gravity,
-  documentation: 'Represents a specific value of gravity',
+  documentation: 'Represents a specific value of gravity (m/s^2)',
   toStateObject: gravity => {
     return {
       name: gravity.name,

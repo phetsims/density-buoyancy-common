@@ -72,7 +72,8 @@ class Scale extends Mass {
     this.scaleForceInterpolatedProperty = new InterpolatedProperty( 0, {
       interpolate: InterpolatedProperty.interpolateNumber,
       phetioType: InterpolatedProperty.InterpolatedPropertyIO( NumberIO ),
-      tandem: config.tandem.createTandem( 'scaleForceInterpolatedProperty' )
+      tandem: config.tandem.createTandem( 'scaleForceInterpolatedProperty' ),
+      units: 'N'
     } );
 
     // @public (read-only) {DisplayType}

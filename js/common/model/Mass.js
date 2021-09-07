@@ -96,7 +96,11 @@ class Mass extends PhetioObject {
       tandem: Tandem.OPTIONAL,
 
       // {IOType} - optional
-      phetioType: Mass.MassIO
+      phetioType: Mass.MassIO,
+
+      // optional
+      inputEnabledPropertyOptions: {},
+      materialPropertyOptions: {}
     }, config );
 
     assert && assert( config.body, 'config.body required' );
@@ -126,10 +130,10 @@ class Mass extends PhetioObject {
     } );
 
     // @public {Property.<boolean>}
-    this.inputEnabledProperty = new BooleanProperty( true, {
+    this.inputEnabledProperty = new BooleanProperty( true, merge( {
       tandem: tandem.createTandem( 'inputEnabledProperty' ),
       phetioDocumenation: 'Sets whether the element will have input enabled, and hence be interactive'
-    } );
+    }, config.inputEnabledPropertyOptions ) );
 
     // @public {Property.<boolean>}
     this.visibleProperty = new BooleanProperty( config.visible, {
@@ -137,12 +141,12 @@ class Mass extends PhetioObject {
     } );
 
     // @public {Property.<Material>}
-    this.materialProperty = new Property( config.material, {
+    this.materialProperty = new Property( config.material, merge( {
       valueType: Material,
       reentrant: true,
       tandem: tandem.createTandem( 'materialProperty' ),
       phetioType: Property.PropertyIO( Material.MaterialIO )
-    } );
+    }, config.materialPropertyOptions ) );
 
     // @public {Property.<number>} - In m^3 (cubic meters)
     this.volumeProperty = new NumberProperty( config.volume, {

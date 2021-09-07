@@ -65,7 +65,14 @@ class Scale extends Mass {
       // material
       material: Material.PLATINUM,
 
-      phetioType: Scale.ScaleIO
+      phetioType: Scale.ScaleIO,
+
+      inputEnabledPropertyOptions: {
+        phetioReadOnly: true
+      },
+      materialPropertyOptions: {
+        phetioReadOnly: true
+      }
     }, config );
 
     super( engine, config );
@@ -75,7 +82,8 @@ class Scale extends Mass {
       interpolate: InterpolatedProperty.interpolateNumber,
       phetioType: InterpolatedProperty.InterpolatedPropertyIO( NumberIO ),
       tandem: config.tandem.createTandem( 'scaleForceInterpolatedProperty' ),
-      units: 'N'
+      units: 'N',
+      phetioReadOnly: true
     } );
 
     // @private {Property.<number>} - Just exist for phet-io, see https://github.com/phetsims/density/issues/97

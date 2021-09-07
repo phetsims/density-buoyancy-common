@@ -85,13 +85,13 @@ class DensityMysteryScreenView extends DensityBuoyancyScreenView {
       spacing: 8,
       tandem: blocksPanelTandem.createTandem( 'blocksRadioButtonGroup' )
     } );
-    const blockSetRefreshButton = new RefreshButton( {
+    const randomBlocksRefreshButton = new RefreshButton( {
       listener: () => {
         this.interruptSubtreeInput();
         model.regenerate( DensityMysteryModel.BlockSet.RANDOM );
       },
       iconHeight: 20,
-      tandem: blocksPanelTandem.createTandem( 'blockSetRefreshButton' )
+      tandem: blocksPanelTandem.createTandem( 'randomBlocksRefreshButton' )
     } );
     const blockSetContent = new VBox( {
       spacing: 10
@@ -102,7 +102,7 @@ class DensityMysteryScreenView extends DensityBuoyancyScreenView {
     model.blockSetProperty.link( blockSet => {
       blockSetContent.children = blockSet === DensityMysteryModel.BlockSet.RANDOM ? [
         blocksRadioButtonGroup,
-        blockSetRefreshButton
+        randomBlocksRefreshButton
       ] : [
         blocksRadioButtonGroup
       ];

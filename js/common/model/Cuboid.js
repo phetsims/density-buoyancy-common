@@ -187,6 +187,7 @@ class Cuboid extends Mass {
       return this.stepMaximumVolume;
     }
     else {
+      // This is identical to VerticalCylinder's getDisplacedVolume formula, see there if this needs to change.
       return this.stepMaximumVolume * ( liquidLevel - bottom ) / ( top - bottom );
     }
   }

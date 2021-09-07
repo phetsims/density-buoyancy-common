@@ -7,6 +7,7 @@
  */
 
 import Vector3 from '../../../../dot/js/Vector3.js';
+import TriangleArrayWriter from '../../../../mobius/js/TriangleArrayWriter.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import MassView from './MassView.js';
 
@@ -77,41 +78,10 @@ class HorizontalCylinderView extends MassView {
    * @returns {number} - The offset after the specified vertices have been written
    */
   static updateArrays( positionArray, normalArray, uvArray, radius, length, offset = 0, offsetPosition = Vector3.ZERO ) {
+    const writer = new TriangleArrayWriter( positionArray, normalArray, uvArray, offset, offsetPosition );
+
     const leftX = -length / 2;
     const rightX = length / 2;
-
-    let positionIndex = offset * 3;
-    let normalIndex = offset * 3;
-    let uvIndex = offset * 2;
-
-    const offsetX = offsetPosition.x;
-    const offsetY = offsetPosition.y;
-    const offsetZ = offsetPosition.z;
-
-    function position( x, y, z ) {
-      if ( positionArray ) {
-        positionArray[ positionIndex++ ] = x + offsetX;
-        positionArray[ positionIndex++ ] = y + offsetY;
-        positionArray[ positionIndex++ ] = z + offsetZ;
-      }
-
-      offset++;
-    }
-
-    function normal( x, y, z ) {
-      if ( normalArray ) {
-        normalArray[ normalIndex++ ] = x;
-        normalArray[ normalIndex++ ] = y;
-        normalArray[ normalIndex++ ] = z;
-      }
-    }
-
-    function uv( u, v ) {
-      if ( uvArray ) {
-        uvArray[ uvIndex++ ] = u;
-        uvArray[ uvIndex++ ] = v;
-      }
-    }
 
     const du = 2.5 * length;
     const dv = 5 * 2 * Math.PI * radius;
@@ -143,49 +113,49 @@ class HorizontalCylinderView extends MassView {
       const z1 = radius * nz1;
 
       // Left cap
-      position( leftX, 0, 0 );
-      position( leftX, y1, z1 );
-      position( leftX, y0, z0 );
-      normal( -1, 0, 0 );
-      normal( -1, 0, 0 );
-      normal( -1, 0, 0 );
-      uv( uCapMax, 0.5 );
-      uv( uCapMin, dv * ( ratio1 - 0.5 ) );
-      uv( uCapMin, dv * ( ratio0 - 0.5 ) );
+      writer.position( leftX, 0, 0 );
+      writer.position( leftX, y1, z1 );
+      writer.position( leftX, y0, z0 );
+      writer.normal( -1, 0, 0 );
+      writer.normal( -1, 0, 0 );
+      writer.normal( -1, 0, 0 );
+      writer.uv( uCapMax, 0.5 );
+      writer.uv( uCapMin, dv * ( ratio1 - 0.5 ) );
+      writer.uv( uCapMin, dv * ( ratio0 - 0.5 ) );
 
       // Side
-      position( leftX, y0, z0 );
-      position( leftX, y1, z1 );
-      position( rightX, y0, z0 );
-      position( rightX, y0, z0 );
-      position( leftX, y1, z1 );
-      position( rightX, y1, z1 );
-      normal( 0, ny0, nz0 );
-      normal( 0, ny0, nz0 );
-      normal( 0, ny1, nz1 );
-      normal( 0, ny0, nz0 );
-      normal( 0, ny1, nz1 );
-      normal( 0, ny1, nz1 );
-      uv( uMax, dv * ( ratio0 - 0.5 ) );
-      uv( uMin, dv * ( ratio0 - 0.5 ) );
-      uv( uMin, dv * ( ratio1 - 0.5 ) );
-      uv( uMax, dv * ( ratio0 - 0.5 ) );
-      uv( uMin, dv * ( ratio1 - 0.5 ) );
-      uv( uMax, dv * ( ratio1 - 0.5 ) );
+      writer.position( leftX, y0, z0 );
+      writer.position( leftX, y1, z1 );
+      writer.position( rightX, y0, z0 );
+      writer.position( rightX, y0, z0 );
+      writer.position( leftX, y1, z1 );
+      writer.position( rightX, y1, z1 );
+      writer.normal( 0, ny0, nz0 );
+      writer.normal( 0, ny0, nz0 );
+      writer.normal( 0, ny1, nz1 );
+      writer.normal( 0, ny0, nz0 );
+      writer.normal( 0, ny1, nz1 );
+      writer.normal( 0, ny1, nz1 );
+      writer.uv( uMax, dv * ( ratio0 - 0.5 ) );
+      writer.uv( uMin, dv * ( ratio0 - 0.5 ) );
+      writer.uv( uMin, dv * ( ratio1 - 0.5 ) );
+      writer.uv( uMax, dv * ( ratio0 - 0.5 ) );
+      writer.uv( uMin, dv * ( ratio1 - 0.5 ) );
+      writer.uv( uMax, dv * ( ratio1 - 0.5 ) );
 
       // Right cap
-      position( rightX, 0, 0 );
-      position( rightX, y0, z0 );
-      position( rightX, y1, z1 );
-      normal( 1, 0, 0 );
-      normal( 1, 0, 0 );
-      normal( 1, 0, 0 );
-      uv( uCapMax, 0.5 );
-      uv( uCapMin, dv * ( ratio0 - 0.5 ) );
-      uv( uCapMin, dv * ( ratio1 - 0.5 ) );
+      writer.position( rightX, 0, 0 );
+      writer.position( rightX, y0, z0 );
+      writer.position( rightX, y1, z1 );
+      writer.normal( 1, 0, 0 );
+      writer.normal( 1, 0, 0 );
+      writer.normal( 1, 0, 0 );
+      writer.uv( uCapMax, 0.5 );
+      writer.uv( uCapMin, dv * ( ratio0 - 0.5 ) );
+      writer.uv( uCapMin, dv * ( ratio1 - 0.5 ) );
     }
 
-    return offset;
+    return writer.getOffset();
   }
 }
 

@@ -7,6 +7,7 @@
  */
 
 import Vector3 from '../../../../dot/js/Vector3.js';
+import TriangleArrayWriter from '../../../../mobius/js/TriangleArrayWriter.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import MassView from './MassView.js';
 
@@ -79,42 +80,11 @@ class ConeView extends MassView {
    * @returns {number} - The offset after the specified vertices have been written
    */
   static updateArrays( positionArray, normalArray, uvArray, radius, height, isVertexUp, offset = 0, offsetPosition = Vector3.ZERO ) {
+    const writer = new TriangleArrayWriter( positionArray, normalArray, uvArray, offset, offsetPosition );
+
     const vertexSign = isVertexUp ? 1 : -1;
     const vertexY = vertexSign * 0.75 * height;
     const baseY = -vertexSign * 0.25 * height;
-
-    let positionIndex = offset * 3;
-    let normalIndex = offset * 3;
-    let uvIndex = offset * 2;
-
-    const offsetX = offsetPosition.x;
-    const offsetY = offsetPosition.y;
-    const offsetZ = offsetPosition.z;
-
-    function position( x, y, z ) {
-      if ( positionArray ) {
-        positionArray[ positionIndex++ ] = x + offsetX;
-        positionArray[ positionIndex++ ] = y + offsetY;
-        positionArray[ positionIndex++ ] = z + offsetZ;
-      }
-
-      offset++;
-    }
-
-    function normal( x, y, z ) {
-      if ( normalArray ) {
-        normalArray[ normalIndex++ ] = x;
-        normalArray[ normalIndex++ ] = y;
-        normalArray[ normalIndex++ ] = z;
-      }
-    }
-
-    function uv( u, v ) {
-      if ( uvArray ) {
-        uvArray[ uvIndex++ ] = u;
-        uvArray[ uvIndex++ ] = v;
-      }
-    }
 
     const TWO_PI = 2 * Math.PI;
     const HALF_PI = 0.5 * Math.PI;
@@ -143,26 +113,26 @@ class ConeView extends MassView {
 
       // Side
       for ( let j = 0; j < vertices.length; j++ ) {
-        position( vertices[ j ].x, vertices[ j ].y, vertices[ j ].z );
-        normal( normalVector.x, normalVector.y, normalVector.z );
+        writer.position( vertices[ j ].x, vertices[ j ].y, vertices[ j ].z );
+        writer.normal( normalVector.x, normalVector.y, normalVector.z );
       }
-      uv( 0.5, 0 );
-      uv( ( isVertexUp ? theta1 : theta0 ) / TWO_PI, 1 );
-      uv( ( isVertexUp ? theta0 : theta1 ) / TWO_PI, 1 );
+      writer.uv( 0.5, 0 );
+      writer.uv( ( isVertexUp ? theta1 : theta0 ) / TWO_PI, 1 );
+      writer.uv( ( isVertexUp ? theta0 : theta1 ) / TWO_PI, 1 );
 
       // Top/Bottom
-      position( 0, baseY, 0 );
-      position( vertices[ 2 ].x, vertices[ 2 ].y, vertices[ 2 ].z );
-      position( vertices[ 1 ].x, vertices[ 1 ].y, vertices[ 1 ].z );
-      normal( 0, 0, -vertexSign );
-      normal( 0, 0, -vertexSign );
-      normal( 0, 0, -vertexSign );
-      uv( 0.5, 0 );
-      uv( ( isVertexUp ? theta0 : theta1 ) / TWO_PI, 1 );
-      uv( ( isVertexUp ? theta1 : theta0 ) / TWO_PI, 1 );
+      writer.position( 0, baseY, 0 );
+      writer.position( vertices[ 2 ].x, vertices[ 2 ].y, vertices[ 2 ].z );
+      writer.position( vertices[ 1 ].x, vertices[ 1 ].y, vertices[ 1 ].z );
+      writer.normal( 0, 0, -vertexSign );
+      writer.normal( 0, 0, -vertexSign );
+      writer.normal( 0, 0, -vertexSign );
+      writer.uv( 0.5, 0 );
+      writer.uv( ( isVertexUp ? theta0 : theta1 ) / TWO_PI, 1 );
+      writer.uv( ( isVertexUp ? theta1 : theta0 ) / TWO_PI, 1 );
     }
 
-    return offset;
+    return writer.getOffset();
   }
 }
 

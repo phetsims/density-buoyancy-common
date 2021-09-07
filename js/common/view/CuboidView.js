@@ -8,6 +8,7 @@
 
 import Vector3 from '../../../../dot/js/Vector3.js';
 import TextureQuad from '../../../../mobius/js/TextureQuad.js';
+import TriangleArrayWriter from '../../../../mobius/js/TriangleArrayWriter.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import densityBuoyancyCommonStrings from '../../densityBuoyancyCommonStrings.js';
 import Mass from '../model/Mass.js';
@@ -150,47 +151,16 @@ class CuboidView extends MassView {
    * @returns {number} - The offset after the specified vertices have been written
    */
   static updateArrays( positionArray, normalArray, uvArray, size, offset = 0, offsetPosition = Vector3.ZERO ) {
-    let positionIndex = offset * 3;
-    let normalIndex = offset * 3;
-    let uvIndex = offset * 2;
-
-    const offsetX = offsetPosition.x;
-    const offsetY = offsetPosition.y;
-    const offsetZ = offsetPosition.z;
-
-    function position( x, y, z ) {
-      if ( positionArray ) {
-        positionArray[ positionIndex++ ] = x + offsetX;
-        positionArray[ positionIndex++ ] = y + offsetY;
-        positionArray[ positionIndex++ ] = z + offsetZ;
-      }
-    }
-
-    function normal( x, y, z ) {
-      if ( normalArray ) {
-        for ( let i = 0; i < 6; i++ ) {
-          normalArray[ normalIndex++ ] = x;
-          normalArray[ normalIndex++ ] = y;
-          normalArray[ normalIndex++ ] = z;
-        }
-      }
-    }
-
-    function uv( u, v ) {
-      if ( uvArray ) {
-        uvArray[ uvIndex++ ] = u;
-        uvArray[ uvIndex++ ] = v;
-      }
-    }
+    const writer = new TriangleArrayWriter( positionArray, normalArray, uvArray, offset, offsetPosition );
 
     function quad( p0x, p0y, p0z, p1x, p1y, p1z, p2x, p2y, p2z, p3x, p3y, p3z ) {
-      position( p0x, p0y, p0z );
-      position( p1x, p1y, p1z );
-      position( p2x, p2y, p2z );
+      writer.position( p0x, p0y, p0z );
+      writer.position( p1x, p1y, p1z );
+      writer.position( p2x, p2y, p2z );
 
-      position( p0x, p0y, p0z );
-      position( p2x, p2y, p2z );
-      position( p3x, p3y, p3z );
+      writer.position( p0x, p0y, p0z );
+      writer.position( p2x, p2y, p2z );
+      writer.position( p3x, p3y, p3z );
 
       const du = 2.5 * ( Math.abs( p1x - p0x ) + Math.abs( p1y - p0y ) + Math.abs( p1z - p0z ) );
       const dv = 2.5 * ( Math.abs( p1x - p2x ) + Math.abs( p1y - p2y ) + Math.abs( p1z - p2z ) );
@@ -199,15 +169,13 @@ class CuboidView extends MassView {
       const vMin = 0.5 - dv;
       const vMax = 0.5 + dv;
 
-      uv( uMax, vMin );
-      uv( uMin, vMin );
-      uv( uMin, vMax );
+      writer.uv( uMax, vMin );
+      writer.uv( uMin, vMin );
+      writer.uv( uMin, vMax );
 
-      uv( uMax, vMin );
-      uv( uMin, vMax );
-      uv( uMax, vMax );
-
-      offset += 6;
+      writer.uv( uMax, vMin );
+      writer.uv( uMin, vMax );
+      writer.uv( uMax, vMax );
     }
 
     // Bottom
@@ -217,7 +185,7 @@ class CuboidView extends MassView {
       size.maxX, size.minY, size.maxZ,
       size.minX, size.minY, size.maxZ
     );
-    normal( 0, -1, 0 );
+    for ( let i = 0; i < 6; i++ ) { writer.normal( 0, -1, 0 ); }
 
     // Top
     quad(
@@ -226,7 +194,7 @@ class CuboidView extends MassView {
       size.maxX, size.maxY, size.maxZ,
       size.maxX, size.maxY, size.minZ
     );
-    normal( 0, 1, 0 );
+    for ( let i = 0; i < 6; i++ ) { writer.normal( 0, 1, 0 ); }
 
     // Left
     quad(
@@ -235,7 +203,7 @@ class CuboidView extends MassView {
       size.minX, size.maxY, size.maxZ,
       size.minX, size.maxY, size.minZ
     );
-    normal( -1, 0, 0 );
+    for ( let i = 0; i < 6; i++ ) { writer.normal( -1, 0, 0 ); }
 
     // Right
     quad(
@@ -244,7 +212,7 @@ class CuboidView extends MassView {
       size.maxX, size.maxY, size.maxZ,
       size.maxX, size.minY, size.maxZ
     );
-    normal( 1, 0, 0 );
+    for ( let i = 0; i < 6; i++ ) { writer.normal( 1, 0, 0 ); }
 
     // Back
     quad(
@@ -253,7 +221,7 @@ class CuboidView extends MassView {
       size.maxX, size.maxY, size.minZ,
       size.maxX, size.minY, size.minZ
     );
-    normal( 0, 0, -1 );
+    for ( let i = 0; i < 6; i++ ) { writer.normal( 0, 0, -1 ); }
 
     // Front
     quad(
@@ -262,9 +230,9 @@ class CuboidView extends MassView {
       size.maxX, size.maxY, size.maxZ,
       size.minX, size.maxY, size.maxZ
     );
-    normal( 0, 0, 1 );
+    for ( let i = 0; i < 6; i++ ) { writer.normal( 0, 0, 1 ); }
 
-    return offset;
+    return writer.getOffset();
   }
 }
 

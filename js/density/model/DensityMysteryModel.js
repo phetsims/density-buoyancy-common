@@ -12,6 +12,7 @@ import Vector2 from '../../../../dot/js/Vector2.js';
 import dotRandom from '../../../../dot/js/dotRandom.js';
 import Enumeration from '../../../../phet-core/js/Enumeration.js';
 import merge from '../../../../phet-core/js/merge.js';
+import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 import BlockSetModel from '../../common/model/BlockSetModel.js';
 import Cuboid from '../../common/model/Cuboid.js';
 import DensityBuoyancyModel from '../../common/model/DensityBuoyancyModel.js';
@@ -22,21 +23,7 @@ import DensityBuoyancyCommonColors from '../../common/view/DensityBuoyancyCommon
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 
 // constants
-const randomMaterials = [
-  Material.WOOD,
-  Material.GASOLINE,
-  Material.APPLE,
-  Material.ICE,
-  Material.HUMAN,
-  Material.WATER,
-  Material.GLASS,
-  Material.DIAMOND,
-  Material.TITANIUM,
-  Material.STEEL,
-  Material.COPPER,
-  Material.LEAD,
-  Material.GOLD
-];
+const randomMaterials = DensityBuoyancyCommonConstants.DENSITY_MYSTERY_MATERIALS;
 const randomColors = [
   DensityBuoyancyCommonColors.comparingYellowColorProperty,
   DensityBuoyancyCommonColors.comparingBlueColorProperty,

@@ -14,7 +14,7 @@ import GridBox from '../../../../scenery/js/layout/GridBox.js';
 import Node from '../../../../scenery/js/nodes/Node.js';
 import Rectangle from '../../../../scenery/js/nodes/Rectangle.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
-import Material from '../../common/model/Material.js';
+import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 import DensityBuoyancyCommonColors from '../../common/view/DensityBuoyancyCommonColors.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import densityBuoyancyCommonStrings from '../../densityBuoyancyCommonStrings.js';
@@ -22,21 +22,7 @@ import densityBuoyancyCommonStrings from '../../densityBuoyancyCommonStrings.js'
 // constants
 const headerFont = new PhetFont( { size: 12, weight: 'bold' } );
 const bodyFont = new PhetFont( { size: 12 } );
-const materials = _.sortBy( [
-  Material.WOOD,
-  Material.GASOLINE,
-  Material.APPLE,
-  Material.ICE,
-  Material.HUMAN,
-  Material.WATER,
-  Material.GLASS,
-  Material.DIAMOND,
-  Material.TITANIUM,
-  Material.STEEL,
-  Material.COPPER,
-  Material.LEAD,
-  Material.GOLD
-], material => material.density );
+const materials = _.sortBy( DensityBuoyancyCommonConstants.DENSITY_MYSTERY_MATERIALS, material => material.density );
 
 class DensityTableNode extends Node {
   constructor() {

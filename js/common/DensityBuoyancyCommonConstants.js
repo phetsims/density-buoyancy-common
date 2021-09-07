@@ -9,6 +9,7 @@
 import Vector3 from '../../../dot/js/Vector3.js';
 import PhetFont from '../../../scenery-phet/js/PhetFont.js';
 import densityBuoyancyCommon from '../densityBuoyancyCommon.js';
+import Material from './model/Material.js';
 import DensityBuoyancyCommonColors from './view/DensityBuoyancyCommonColors.js';
 
 const CORNER_RADIUS = 5;
@@ -52,7 +53,24 @@ const DensityBuoyancyCommonConstants = {
 
   // @public (read-only) {Vector3} cameraLookAt locations
   DENSITY_CAMERA_LOOK_AT: Vector3.ZERO,
-  BUOYANCY_CAMERA_LOOK_AT: new Vector3( 0, -0.18, 0 )
+  BUOYANCY_CAMERA_LOOK_AT: new Vector3( 0, -0.18, 0 ),
+
+  // @public {Array.<Material>}
+  DENSITY_MYSTERY_MATERIALS: [
+    Material.WOOD,
+    Material.GASOLINE,
+    Material.APPLE,
+    Material.ICE,
+    Material.HUMAN,
+    Material.WATER,
+    Material.GLASS,
+    Material.DIAMOND,
+    Material.TITANIUM,
+    Material.STEEL,
+    Material.COPPER,
+    Material.LEAD,
+    Material.GOLD
+  ]
 };
 
 densityBuoyancyCommon.register( 'DensityBuoyancyCommonConstants', DensityBuoyancyCommonConstants );

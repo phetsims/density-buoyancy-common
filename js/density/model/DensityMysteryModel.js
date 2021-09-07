@@ -12,8 +12,8 @@ import Vector2 from '../../../../dot/js/Vector2.js';
 import dotRandom from '../../../../dot/js/dotRandom.js';
 import Enumeration from '../../../../phet-core/js/Enumeration.js';
 import merge from '../../../../phet-core/js/merge.js';
+import BlockSetModel from '../../common/model/BlockSetModel.js';
 import Cuboid from '../../common/model/Cuboid.js';
-import DensityBuoyancyModal from '../../common/model/DensityBuoyancyModal.js';
 import DensityBuoyancyModel from '../../common/model/DensityBuoyancyModel.js';
 import Mass from '../../common/model/Mass.js';
 import Material from '../../common/model/Material.js';
@@ -54,16 +54,16 @@ const randomColors = [
   DensityBuoyancyCommonColors.mysteryPeachColorProperty,
   DensityBuoyancyCommonColors.mysteryMaroonColorProperty
 ];
-const Mode = Enumeration.byKeys( [
+const BlockSet = Enumeration.byKeys( [
   'SET_1',
   'SET_2',
   'SET_3',
   'RANDOM'
 ] );
 
-class DensityMysteryModel extends DensityBuoyancyModal( DensityBuoyancyModel, Mode, Mode.SET_1 ) {
+class DensityMysteryModel extends BlockSetModel( DensityBuoyancyModel, BlockSet, BlockSet.SET_1 ) {
   /**
-   * @mixes DensityBuoyancyModal
+   * @mixes BlockSet
    * @param {Object} [options]
    */
   constructor( options ) {
@@ -92,9 +92,9 @@ class DensityMysteryModel extends DensityBuoyancyModal( DensityBuoyancyModel, Mo
     const set3Tandem = tandem.createTandem( 'set3' );
     const randomTandem = tandem.createTandem( 'random' );
 
-    const createMasses = ( model, mode ) => {
-      switch( mode ) {
-        case Mode.SET_1:
+    const createMasses = ( model, blockSet ) => {
+      switch( blockSet ) {
+        case BlockSet.SET_1:
           return [
             Cuboid.createWithVolume( model.engine, Material.createCustomMaterial( {
               density: Material.WATER.density,
@@ -121,7 +121,7 @@ class DensityMysteryModel extends DensityBuoyancyModal( DensityBuoyancyModel, Mo
               customColor: DensityBuoyancyCommonColors.comparingPurpleColorProperty
             } ), Vector2.ZERO, 0.0055, { tag: Mass.MassTag.ONE_A, tandem: set1Tandem.createTandem( '1A' ) } )
           ];
-        case Mode.SET_2:
+        case BlockSet.SET_2:
           return [
             Cuboid.createWithMass( model.engine, Material.createCustomMaterial( {
               density: 4500,
@@ -148,7 +148,7 @@ class DensityMysteryModel extends DensityBuoyancyModal( DensityBuoyancyModel, Mo
               customColor: DensityBuoyancyCommonColors.mysteryBrownColorProperty
             } ), Vector2.ZERO, 10.8, { tag: Mass.MassTag.TWO_B, tandem: set2Tandem.createTandem( '2B' ) } )
           ];
-        case Mode.SET_3:
+        case BlockSet.SET_3:
           return [
             Cuboid.createWithMass( model.engine, Material.createCustomMaterial( {
               density: 950,
@@ -175,7 +175,7 @@ class DensityMysteryModel extends DensityBuoyancyModal( DensityBuoyancyModel, Mo
               customColor: DensityBuoyancyCommonColors.mysteryMaroonColorProperty
             } ), Vector2.ZERO, 2.85, { tag: Mass.MassTag.THREE_A, tandem: set3Tandem.createTandem( '3A' ) } )
           ];
-        case Mode.RANDOM: {
+        case BlockSet.RANDOM: {
           const tags = [
             Mass.MassTag.C,
             Mass.MassTag.D,
@@ -195,12 +195,12 @@ class DensityMysteryModel extends DensityBuoyancyModal( DensityBuoyancyModel, Mo
           } );
         }
         default:
-          throw new Error( `unknown mode: ${mode}` );
+          throw new Error( `unknown blockSet: ${blockSet}` );
       }
     };
 
-    const regenerateMasses = ( model, mode, masses ) => {
-      if ( mode === Mode.RANDOM ) {
+    const regenerateMasses = ( model, blockSet, masses ) => {
+      if ( blockSet === BlockSet.RANDOM ) {
         const mysteryMaterials = createMysteryMaterials();
         const mysteryVolumes = createMysteryVolumes();
 
@@ -211,26 +211,26 @@ class DensityMysteryModel extends DensityBuoyancyModal( DensityBuoyancyModel, Mo
       }
     };
 
-    const positionMasses = ( model, mode, masses ) => {
-      switch( mode ) {
-        case Mode.SET_1:
+    const positionMasses = ( model, blockSet, masses ) => {
+      switch( blockSet ) {
+        case BlockSet.SET_1:
           model.positionStackLeft( [ masses[ 1 ], masses[ 4 ] ] );
           model.positionStackRight( [ masses[ 2 ], masses[ 3 ], masses[ 0 ] ] );
           break;
-        case Mode.SET_2:
+        case BlockSet.SET_2:
           model.positionStackLeft( [ masses[ 1 ], masses[ 4 ] ] );
           model.positionStackRight( [ masses[ 2 ], masses[ 3 ], masses[ 0 ] ] );
           break;
-        case Mode.SET_3:
+        case BlockSet.SET_3:
           model.positionStackLeft( [ masses[ 1 ], masses[ 4 ] ] );
           model.positionStackRight( [ masses[ 2 ], masses[ 3 ], masses[ 0 ] ] );
           break;
-        case Mode.RANDOM:
+        case BlockSet.RANDOM:
           model.positionStackLeft( [ masses[ 3 ], masses[ 4 ] ] );
           model.positionStackRight( [ masses[ 0 ], masses[ 1 ], masses[ 2 ] ] );
           break;
         default:
-          throw new Error( `unknown mode: ${mode}` );
+          throw new Error( `unknown blockSet: ${blockSet}` );
       }
     };
 
@@ -276,14 +276,14 @@ class DensityMysteryModel extends DensityBuoyancyModal( DensityBuoyancyModel, Mo
     super.reset();
 
     // Make sure to create new random masses on a reset
-    this.regenerate( Mode.RANDOM );
+    this.regenerate( BlockSet.RANDOM );
 
     this.uninterpolateMasses();
   }
 }
 
 // @public {Enumeration}
-DensityMysteryModel.Mode = Mode;
+DensityMysteryModel.BlockSet = BlockSet;
 
 densityBuoyancyCommon.register( 'DensityMysteryModel', DensityMysteryModel );
 export default DensityMysteryModel;

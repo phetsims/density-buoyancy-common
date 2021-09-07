@@ -269,25 +269,25 @@
   "blocks": {
     "value": "Blocks"
   },
-  "mode.sameMass": {
+  "blockSet.sameMass": {
     "value": "Same Mass"
   },
-  "mode.sameVolume": {
+  "blockSet.sameVolume": {
     "value": "Same Volume"
   },
-  "mode.sameDensity": {
+  "blockSet.sameDensity": {
     "value": "Same Density"
   },
-  "mode.set1": {
+  "blockSet.set1": {
     "value": "Set 1"
   },
-  "mode.set2": {
+  "blockSet.set2": {
     "value": "Set 2"
   },
-  "mode.set3": {
+  "blockSet.set3": {
     "value": "Set 3"
   },
-  "mode.random": {
+  "blockSet.random": {
     "value": "Random"
   },
   "densityTable": {

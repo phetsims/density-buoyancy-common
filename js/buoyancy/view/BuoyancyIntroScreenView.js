@@ -25,10 +25,10 @@ import densityBuoyancyCommonStrings from '../../densityBuoyancyCommonStrings.js'
 import BuoyancyIntroModel from '../model/BuoyancyIntroModel.js';
 
 // constants
-const modeStringMap = {
-  [ BuoyancyIntroModel.Mode.SAME_MASS.name ]: densityBuoyancyCommonStrings.mode.sameMass,
-  [ BuoyancyIntroModel.Mode.SAME_VOLUME.name ]: densityBuoyancyCommonStrings.mode.sameVolume,
-  [ BuoyancyIntroModel.Mode.SAME_DENSITY.name ]: densityBuoyancyCommonStrings.mode.sameDensity
+const blockSetStringMap = {
+  [ BuoyancyIntroModel.BlockSet.SAME_MASS.name ]: densityBuoyancyCommonStrings.blockSet.sameMass,
+  [ BuoyancyIntroModel.BlockSet.SAME_VOLUME.name ]: densityBuoyancyCommonStrings.blockSet.sameVolume,
+  [ BuoyancyIntroModel.BlockSet.SAME_DENSITY.name ]: densityBuoyancyCommonStrings.blockSet.sameDensity
 };
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
 
@@ -50,18 +50,18 @@ class BuoyancyIntroScreenView extends DensityBuoyancyScreenView {
       return;
     }
 
-    const modeControl = new VerticalAquaRadioButtonGroup( model.modeProperty, BuoyancyIntroModel.Mode.VALUES.map( mode => {
+    const blockSetControl = new VerticalAquaRadioButtonGroup( model.blockSetProperty, BuoyancyIntroModel.BlockSet.VALUES.map( blockSet => {
       return {
-        node: new Text( modeStringMap[ mode.name ], {
+        node: new Text( blockSetStringMap[ blockSet.name ], {
           font: DensityBuoyancyCommonConstants.RADIO_BUTTON_FONT,
           maxWidth: 160
         } ),
-        value: mode
+        value: blockSet
       };
     } ) );
-    const modePanel = new Panel( modeControl, DensityBuoyancyCommonConstants.PANEL_OPTIONS );
+    const blockSetPanel = new Panel( blockSetControl, DensityBuoyancyCommonConstants.PANEL_OPTIONS );
 
-    this.addChild( new AlignPropertyBox( modePanel, this.visibleBoundsProperty, {
+    this.addChild( new AlignPropertyBox( blockSetPanel, this.visibleBoundsProperty, {
       xAlign: 'right',
       yAlign: 'top',
       margin: MARGIN

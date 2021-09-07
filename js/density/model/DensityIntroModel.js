@@ -11,23 +11,23 @@ import Range from '../../../../dot/js/Range.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import Enumeration from '../../../../phet-core/js/Enumeration.js';
 import merge from '../../../../phet-core/js/merge.js';
+import BlockSetModel from '../../common/model/BlockSetModel.js';
 import Cuboid from '../../common/model/Cuboid.js';
-import DensityBuoyancyModal from '../../common/model/DensityBuoyancyModal.js';
 import DensityBuoyancyModel from '../../common/model/DensityBuoyancyModel.js';
 import Material from '../../common/model/Material.js';
 import DensityBuoyancyCommonColors from '../../common/view/DensityBuoyancyCommonColors.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 
 // constants
-const Mode = Enumeration.byKeys( [
+const BlockSet = Enumeration.byKeys( [
   'SAME_MASS',
   'SAME_VOLUME',
   'SAME_DENSITY'
 ] );
 
-class DensityIntroModel extends DensityBuoyancyModal( DensityBuoyancyModel, Mode, Mode.SAME_MASS ) {
+class DensityIntroModel extends BlockSetModel( DensityBuoyancyModel, BlockSet, BlockSet.SAME_MASS ) {
   /**
-   * @mixes DensityBuoyancyModal
+   * @mixes BlockSet
    * @param {Object} [options]
    */
   constructor( options ) {
@@ -56,10 +56,10 @@ class DensityIntroModel extends DensityBuoyancyModal( DensityBuoyancyModel, Mode
       units: 'kg/m^3'
     } );
 
-    const createMasses = ( model, mode ) => {
+    const createMasses = ( model, blockSet ) => {
       let masses;
-      switch( mode ) {
-        case Mode.SAME_MASS:
+      switch( blockSet ) {
+        case BlockSet.SAME_MASS:
           masses = [
             Cuboid.createWithMass( model.engine, Material.createCustomMaterial( {
               density: 500,
@@ -92,7 +92,7 @@ class DensityIntroModel extends DensityBuoyancyModal( DensityBuoyancyModel, Mode
             } );
           } );
           break;
-        case Mode.SAME_VOLUME:
+        case BlockSet.SAME_VOLUME:
           masses = [
             Cuboid.createWithMass( model.engine, Material.createCustomMaterial( {
               density: 1600,
@@ -128,7 +128,7 @@ class DensityIntroModel extends DensityBuoyancyModal( DensityBuoyancyModel, Mode
             } );
           } );
           break;
-        case Mode.SAME_DENSITY:
+        case BlockSet.SAME_DENSITY:
           masses = [
             Cuboid.createWithMass( model.engine, Material.createCustomMaterial( {
               density: 500,
@@ -162,28 +162,28 @@ class DensityIntroModel extends DensityBuoyancyModal( DensityBuoyancyModel, Mode
           } );
           break;
         default:
-          throw new Error( `unknown mode: ${mode}` );
+          throw new Error( `unknown blockSet: ${blockSet}` );
       }
 
       return masses;
     };
 
-    const positionMasses = ( model, mode, masses ) => {
-      switch( mode ) {
-        case Mode.SAME_MASS:
+    const positionMasses = ( model, blockSet, masses ) => {
+      switch( blockSet ) {
+        case BlockSet.SAME_MASS:
           model.positionMassesLeft( [ masses[ 0 ], masses[ 1 ] ] );
           model.positionMassesRight( [ masses[ 2 ], masses[ 3 ] ] );
           break;
-        case Mode.SAME_VOLUME:
+        case BlockSet.SAME_VOLUME:
           model.positionMassesLeft( [ masses[ 3 ], masses[ 0 ] ] );
           model.positionMassesRight( [ masses[ 1 ], masses[ 2 ] ] );
           break;
-        case Mode.SAME_DENSITY:
+        case BlockSet.SAME_DENSITY:
           model.positionMassesLeft( [ masses[ 0 ], masses[ 1 ] ] );
           model.positionMassesRight( [ masses[ 2 ], masses[ 3 ] ] );
           break;
         default:
-          throw new Error( `unknown mode: ${mode}` );
+          throw new Error( `unknown blockSet: ${blockSet}` );
       }
     };
 
@@ -215,7 +215,7 @@ class DensityIntroModel extends DensityBuoyancyModal( DensityBuoyancyModel, Mode
 }
 
 // @public (read-only) {Enumeration}
-DensityIntroModel.Mode = Mode;
+DensityIntroModel.BlockSet = BlockSet;
 
 densityBuoyancyCommon.register( 'DensityIntroModel', DensityIntroModel );
 export default DensityIntroModel;

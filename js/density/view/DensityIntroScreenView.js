@@ -25,10 +25,10 @@ import DensityIntroModel from '../model/DensityIntroModel.js';
 import ComparisonNumberControl from './ComparisonNumberControl.js';
 
 // constants
-const modeStringMap = {
-  [ DensityIntroModel.Mode.SAME_MASS.name ]: densityBuoyancyCommonStrings.mode.sameMass,
-  [ DensityIntroModel.Mode.SAME_VOLUME.name ]: densityBuoyancyCommonStrings.mode.sameVolume,
-  [ DensityIntroModel.Mode.SAME_DENSITY.name ]: densityBuoyancyCommonStrings.mode.sameDensity
+const blockSetStringMap = {
+  [ DensityIntroModel.BlockSet.SAME_MASS.name ]: densityBuoyancyCommonStrings.blockSet.sameMass,
+  [ DensityIntroModel.BlockSet.SAME_VOLUME.name ]: densityBuoyancyCommonStrings.blockSet.sameVolume,
+  [ DensityIntroModel.BlockSet.SAME_DENSITY.name ]: densityBuoyancyCommonStrings.blockSet.sameDensity
 };
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
 
@@ -50,10 +50,10 @@ class DensityIntroScreenView extends DensityBuoyancyScreenView {
       return;
     }
 
-    const modeTandemMap = {
-      [ DensityIntroModel.Mode.SAME_MASS ]: 'sameMass',
-      [ DensityIntroModel.Mode.SAME_VOLUME ]: 'sameVolume',
-      [ DensityIntroModel.Mode.SAME_DENSITY ]: 'sameDensity'
+    const blockSetTandemMap = {
+      [ DensityIntroModel.BlockSet.SAME_MASS ]: 'sameMass',
+      [ DensityIntroModel.BlockSet.SAME_VOLUME ]: 'sameVolume',
+      [ DensityIntroModel.BlockSet.SAME_DENSITY ]: 'sameDensity'
     };
 
     const blocksPanelTandem = tandem.createTandem( 'blocksPanel' );
@@ -63,18 +63,18 @@ class DensityIntroScreenView extends DensityBuoyancyScreenView {
           font: DensityBuoyancyCommonConstants.TITLE_FONT,
           maxWidth: 160
         } ),
-        new VerticalAquaRadioButtonGroup( model.modeProperty, DensityIntroModel.Mode.VALUES.map( mode => {
+        new VerticalAquaRadioButtonGroup( model.blockSetProperty, DensityIntroModel.BlockSet.VALUES.map( blockSet => {
           return {
-            node: new Text( modeStringMap[ mode.name ], {
+            node: new Text( blockSetStringMap[ blockSet.name ], {
               font: DensityBuoyancyCommonConstants.RADIO_BUTTON_FONT,
               maxWidth: 160
             } ),
-            value: mode,
-            tandemName: `${modeTandemMap[ mode ]}RadioButton`
+            value: blockSet,
+            tandemName: `${blockSetTandemMap[ blockSet ]}RadioButton`
           };
         } ), {
           spacing: 8,
-          tandem: blocksPanelTandem.createTandem( 'modeRadioButtonGroup' )
+          tandem: blocksPanelTandem.createTandem( 'blocksRadioButtonGroup' )
         } )
       ],
       spacing: 10,
@@ -143,10 +143,10 @@ class DensityIntroScreenView extends DensityBuoyancyScreenView {
     );
 
     // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
-    model.modeProperty.link( mode => {
-      massNumberControl.visible = mode === DensityIntroModel.Mode.SAME_MASS;
-      volumeNumberControl.visible = mode === DensityIntroModel.Mode.SAME_VOLUME;
-      densityNumberControl.visible = mode === DensityIntroModel.Mode.SAME_DENSITY;
+    model.blockSetProperty.link( blockSet => {
+      massNumberControl.visible = blockSet === DensityIntroModel.BlockSet.SAME_MASS;
+      volumeNumberControl.visible = blockSet === DensityIntroModel.BlockSet.SAME_VOLUME;
+      densityNumberControl.visible = blockSet === DensityIntroModel.BlockSet.SAME_DENSITY;
     } );
 
     const numberControlPanel = new Panel( new Node( {

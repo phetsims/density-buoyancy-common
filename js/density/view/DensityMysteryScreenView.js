@@ -22,11 +22,11 @@ import DensityMysteryModel from '../model/DensityMysteryModel.js';
 import DensityTableNode from './DensityTableNode.js';
 
 // constants
-const modeStringMap = {
-  [ DensityMysteryModel.Mode.SET_1.name ]: densityBuoyancyCommonStrings.mode.set1,
-  [ DensityMysteryModel.Mode.SET_2.name ]: densityBuoyancyCommonStrings.mode.set2,
-  [ DensityMysteryModel.Mode.SET_3.name ]: densityBuoyancyCommonStrings.mode.set3,
-  [ DensityMysteryModel.Mode.RANDOM.name ]: densityBuoyancyCommonStrings.mode.random
+const blockSetStringMap = {
+  [ DensityMysteryModel.BlockSet.SET_1.name ]: densityBuoyancyCommonStrings.blockSet.set1,
+  [ DensityMysteryModel.BlockSet.SET_2.name ]: densityBuoyancyCommonStrings.blockSet.set2,
+  [ DensityMysteryModel.BlockSet.SET_3.name ]: densityBuoyancyCommonStrings.blockSet.set3,
+  [ DensityMysteryModel.BlockSet.RANDOM.name ]: densityBuoyancyCommonStrings.blockSet.random
 };
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
 
@@ -63,58 +63,58 @@ class DensityMysteryScreenView extends DensityBuoyancyScreenView {
       margin: MARGIN
     } ) );
 
-    const modeTandemMap = {
-      [ DensityMysteryModel.Mode.SET_1 ]: 'set1',
-      [ DensityMysteryModel.Mode.SET_2 ]: 'set2',
-      [ DensityMysteryModel.Mode.SET_3 ]: 'set3',
-      [ DensityMysteryModel.Mode.RANDOM ]: 'random'
+    const blockSetTandemMap = {
+      [ DensityMysteryModel.BlockSet.SET_1 ]: 'set1',
+      [ DensityMysteryModel.BlockSet.SET_2 ]: 'set2',
+      [ DensityMysteryModel.BlockSet.SET_3 ]: 'set3',
+      [ DensityMysteryModel.BlockSet.RANDOM ]: 'random'
     };
 
     const blocksPanelTandem = tandem.createTandem( 'blocksPanel' );
 
-    const modeRadioButtonGroup = new VerticalAquaRadioButtonGroup( model.modeProperty, DensityMysteryModel.Mode.VALUES.map( mode => {
+    const blocksRadioButtonGroup = new VerticalAquaRadioButtonGroup( model.blockSetProperty, DensityMysteryModel.BlockSet.VALUES.map( blockSet => {
       return {
-        node: new Text( modeStringMap[ mode.name ], {
+        node: new Text( blockSetStringMap[ blockSet.name ], {
           font: DensityBuoyancyCommonConstants.RADIO_BUTTON_FONT,
           maxWidth: 65
         } ),
-        value: mode,
-        tandemName: `${modeTandemMap[ mode ]}RadioButton`
+        value: blockSet,
+        tandemName: `${blockSetTandemMap[ blockSet ]}RadioButton`
       };
     } ), {
       spacing: 8,
-      tandem: blocksPanelTandem.createTandem( 'modeRadioButtonGroup' )
+      tandem: blocksPanelTandem.createTandem( 'blocksRadioButtonGroup' )
     } );
-    const modeRefreshButton = new RefreshButton( {
+    const blockSetRefreshButton = new RefreshButton( {
       listener: () => {
         this.interruptSubtreeInput();
-        model.regenerate( DensityMysteryModel.Mode.RANDOM );
+        model.regenerate( DensityMysteryModel.BlockSet.RANDOM );
       },
       iconHeight: 20,
-      tandem: blocksPanelTandem.createTandem( 'modeRefreshButton' )
+      tandem: blocksPanelTandem.createTandem( 'blockSetRefreshButton' )
     } );
-    const modeContent = new VBox( {
+    const blockSetContent = new VBox( {
       spacing: 10
     } );
 
-    // Include the refresh button when in random mode.
+    // Include the refresh button when in random blockSet.
     // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
-    model.modeProperty.link( mode => {
-      modeContent.children = mode === DensityMysteryModel.Mode.RANDOM ? [
-        modeRadioButtonGroup,
-        modeRefreshButton
+    model.blockSetProperty.link( blockSet => {
+      blockSetContent.children = blockSet === DensityMysteryModel.BlockSet.RANDOM ? [
+        blocksRadioButtonGroup,
+        blockSetRefreshButton
       ] : [
-        modeRadioButtonGroup
+        blocksRadioButtonGroup
       ];
     } );
 
-    const modePanel = new Panel( new VBox( {
+    const blockSetPanel = new Panel( new VBox( {
       children: [
         new Text( densityBuoyancyCommonStrings.blocks, {
           font: DensityBuoyancyCommonConstants.TITLE_FONT,
           maxWidth: 85
         } ),
-        modeContent
+        blockSetContent
       ],
       spacing: 10,
       align: 'left'
@@ -122,7 +122,7 @@ class DensityMysteryScreenView extends DensityBuoyancyScreenView {
       tandem: blocksPanelTandem
     }, DensityBuoyancyCommonConstants.PANEL_OPTIONS ) );
 
-    this.addChild( new AlignPropertyBox( modePanel, this.visibleBoundsProperty, {
+    this.addChild( new AlignPropertyBox( blockSetPanel, this.visibleBoundsProperty, {
       xAlign: 'right',
       yAlign: 'top',
       margin: MARGIN

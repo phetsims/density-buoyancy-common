@@ -64,22 +64,22 @@ class DensityIntroModel extends BlockSetModel( DensityBuoyancyModel, BlockSet, B
           masses = [
             Cuboid.createWithMass( model.engine, Material.createCustomMaterial( {
               density: 500,
-              customColor: DensityBuoyancyCommonColors.comparingYellowColorProperty
+              customColor: DensityBuoyancyCommonColors.introYellowColorProperty
             } ), Vector2.ZERO, 5, { tandem: sameMassTandem.createTandem( 'yellowBlock' ) } ),
 
             Cuboid.createWithMass( model.engine, Material.createCustomMaterial( {
               density: 1000,
-              customColor: DensityBuoyancyCommonColors.comparingBlueColorProperty
+              customColor: DensityBuoyancyCommonColors.introBlueColorProperty
             } ), Vector2.ZERO, 5, { tandem: sameMassTandem.createTandem( 'blueBlock' ) } ),
 
             Cuboid.createWithMass( model.engine, Material.createCustomMaterial( {
               density: 2000,
-              customColor: DensityBuoyancyCommonColors.comparingGreenColorProperty
+              customColor: DensityBuoyancyCommonColors.introGreenColorProperty
             } ), Vector2.ZERO, 5, { tandem: sameMassTandem.createTandem( 'greenBlock' ) } ),
 
             Cuboid.createWithMass( model.engine, Material.createCustomMaterial( {
               density: 4000,
-              customColor: DensityBuoyancyCommonColors.comparingRedColorProperty
+              customColor: DensityBuoyancyCommonColors.introRedColorProperty
             } ), Vector2.ZERO, 5, { tandem: sameMassTandem.createTandem( 'redBlock' ) } )
           ];
 
@@ -97,22 +97,22 @@ class DensityIntroModel extends BlockSetModel( DensityBuoyancyModel, BlockSet, B
           masses = [
             Cuboid.createWithMass( model.engine, Material.createCustomMaterial( {
               density: 1600,
-              customColor: DensityBuoyancyCommonColors.comparingYellowColorProperty
+              customColor: DensityBuoyancyCommonColors.introYellowColorProperty
             } ), Vector2.ZERO, 8, { tandem: sameVolumeTandem.createTandem( 'yellowBlock' ) } ),
 
             Cuboid.createWithMass( model.engine, Material.createCustomMaterial( {
               density: 1200,
-              customColor: DensityBuoyancyCommonColors.comparingBlueColorProperty
+              customColor: DensityBuoyancyCommonColors.introBlueColorProperty
             } ), Vector2.ZERO, 6, { tandem: sameVolumeTandem.createTandem( 'blueBlock' ) } ),
 
             Cuboid.createWithMass( model.engine, Material.createCustomMaterial( {
               density: 800,
-              customColor: DensityBuoyancyCommonColors.comparingGreenColorProperty
+              customColor: DensityBuoyancyCommonColors.introGreenColorProperty
             } ), Vector2.ZERO, 4, { tandem: sameVolumeTandem.createTandem( 'greenBlock' ) } ),
 
             Cuboid.createWithMass( model.engine, Material.createCustomMaterial( {
               density: 400,
-              customColor: DensityBuoyancyCommonColors.comparingRedColorProperty
+              customColor: DensityBuoyancyCommonColors.introRedColorProperty
             } ), Vector2.ZERO, 2, { tandem: sameVolumeTandem.createTandem( 'redBlock' ) } )
           ];
 
@@ -133,22 +133,22 @@ class DensityIntroModel extends BlockSetModel( DensityBuoyancyModel, BlockSet, B
           masses = [
             Cuboid.createWithMass( model.engine, Material.createCustomMaterial( {
               density: 500,
-              customColor: DensityBuoyancyCommonColors.comparingYellowColorProperty
+              customColor: DensityBuoyancyCommonColors.introYellowColorProperty
             } ), Vector2.ZERO, 3, { tandem: sameDensityTandem.createTandem( 'yellowBlock' ) } ),
 
             Cuboid.createWithMass( model.engine, Material.createCustomMaterial( {
               density: 500,
-              customColor: DensityBuoyancyCommonColors.comparingBlueColorProperty
+              customColor: DensityBuoyancyCommonColors.introBlueColorProperty
             } ), Vector2.ZERO, 2, { tandem: sameDensityTandem.createTandem( 'blueBlock' ) } ),
 
             Cuboid.createWithMass( model.engine, Material.createCustomMaterial( {
               density: 500,
-              customColor: DensityBuoyancyCommonColors.comparingGreenColorProperty
+              customColor: DensityBuoyancyCommonColors.introGreenColorProperty
             } ), Vector2.ZERO, 1, { tandem: sameDensityTandem.createTandem( 'greenBlock' ) } ),
 
             Cuboid.createWithMass( model.engine, Material.createCustomMaterial( {
               density: 500,
-              customColor: DensityBuoyancyCommonColors.comparingRedColorProperty
+              customColor: DensityBuoyancyCommonColors.introRedColorProperty
             } ), Vector2.ZERO, 0.5, { tandem: sameDensityTandem.createTandem( 'redBlock' ) } )
           ];
 

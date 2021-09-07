@@ -25,11 +25,11 @@ import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 // constants
 const randomMaterials = DensityBuoyancyCommonConstants.DENSITY_MYSTERY_MATERIALS;
 const randomColors = [
-  DensityBuoyancyCommonColors.comparingYellowColorProperty,
-  DensityBuoyancyCommonColors.comparingBlueColorProperty,
-  DensityBuoyancyCommonColors.comparingGreenColorProperty,
-  DensityBuoyancyCommonColors.comparingRedColorProperty,
-  DensityBuoyancyCommonColors.comparingPurpleColorProperty,
+  DensityBuoyancyCommonColors.introYellowColorProperty,
+  DensityBuoyancyCommonColors.introBlueColorProperty,
+  DensityBuoyancyCommonColors.introGreenColorProperty,
+  DensityBuoyancyCommonColors.introRedColorProperty,
+  DensityBuoyancyCommonColors.introPurpleColorProperty,
   DensityBuoyancyCommonColors.mysteryPinkColorProperty,
   DensityBuoyancyCommonColors.mysteryOrangeColorProperty,
   DensityBuoyancyCommonColors.mysteryLightPurpleColorProperty,
@@ -86,27 +86,27 @@ class DensityMysteryModel extends BlockSetModel( DensityBuoyancyModel, BlockSet,
           return [
             Cuboid.createWithVolume( model.engine, Material.createCustomMaterial( {
               density: Material.WATER.density,
-              customColor: DensityBuoyancyCommonColors.comparingRedColorProperty
+              customColor: DensityBuoyancyCommonColors.introRedColorProperty
             } ), Vector2.ZERO, 0.005, { tag: Mass.MassTag.ONE_D, tandem: set1Tandem.createTandem( 'block1D' ) } ),
 
             Cuboid.createWithVolume( model.engine, Material.createCustomMaterial( {
               density: Material.WOOD.density,
-              customColor: DensityBuoyancyCommonColors.comparingBlueColorProperty
+              customColor: DensityBuoyancyCommonColors.introBlueColorProperty
             } ), Vector2.ZERO, 0.001, { tag: Mass.MassTag.ONE_B, tandem: set1Tandem.createTandem( 'block1B' ) } ),
 
             Cuboid.createWithVolume( model.engine, Material.createCustomMaterial( {
               density: Material.WOOD.density,
-              customColor: DensityBuoyancyCommonColors.comparingGreenColorProperty
+              customColor: DensityBuoyancyCommonColors.introGreenColorProperty
             } ), Vector2.ZERO, 0.007, { tag: Mass.MassTag.ONE_E, tandem: set1Tandem.createTandem( 'block1E' ) } ),
 
             Cuboid.createWithVolume( model.engine, Material.createCustomMaterial( {
               density: Material.GOLD.density,
-              customColor: DensityBuoyancyCommonColors.comparingYellowColorProperty
+              customColor: DensityBuoyancyCommonColors.introYellowColorProperty
             } ), Vector2.ZERO, 0.001, { tag: Mass.MassTag.ONE_C, tandem: set1Tandem.createTandem( 'block1C' ) } ),
 
             Cuboid.createWithVolume( model.engine, Material.createCustomMaterial( {
               density: Material.DIAMOND.density,
-              customColor: DensityBuoyancyCommonColors.comparingPurpleColorProperty
+              customColor: DensityBuoyancyCommonColors.introPurpleColorProperty
             } ), Vector2.ZERO, 0.0055, { tag: Mass.MassTag.ONE_A, tandem: set1Tandem.createTandem( 'block1A' ) } )
           ];
         case BlockSet.SET_2:

@@ -56,7 +56,8 @@ class DensityIntroScreenView extends DensityBuoyancyScreenView {
       [ DensityIntroModel.Mode.SAME_DENSITY ]: 'sameDensity'
     };
 
-    const modePanel = new Panel( new VBox( {
+    const blocksPanelTandem = tandem.createTandem( 'blocksPanel' );
+    const blocksPanel = new Panel( new VBox( {
       children: [
         new Text( densityBuoyancyCommonStrings.blocks, {
           font: DensityBuoyancyCommonConstants.TITLE_FONT,
@@ -73,14 +74,16 @@ class DensityIntroScreenView extends DensityBuoyancyScreenView {
           };
         } ), {
           spacing: 8,
-          tandem: tandem.createTandem( 'modeRadioButtonGroup' )
+          tandem: blocksPanelTandem.createTandem( 'modeRadioButtonGroup' )
         } )
       ],
       spacing: 10,
       align: 'left'
-    } ), DensityBuoyancyCommonConstants.PANEL_OPTIONS );
+    } ), merge( {
+      tandem: blocksPanelTandem
+    }, DensityBuoyancyCommonConstants.PANEL_OPTIONS ) );
 
-    this.addChild( new AlignPropertyBox( modePanel, this.visibleBoundsProperty, {
+    this.addChild( new AlignPropertyBox( blocksPanel, this.visibleBoundsProperty, {
       xAlign: 'right',
       yAlign: 'top',
       margin: MARGIN

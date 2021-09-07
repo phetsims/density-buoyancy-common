@@ -70,6 +70,8 @@ class DensityMysteryScreenView extends DensityBuoyancyScreenView {
       [ DensityMysteryModel.Mode.RANDOM ]: 'random'
     };
 
+    const blocksPanelTandem = tandem.createTandem( 'blocksPanel' );
+
     const modeRadioButtonGroup = new VerticalAquaRadioButtonGroup( model.modeProperty, DensityMysteryModel.Mode.VALUES.map( mode => {
       return {
         node: new Text( modeStringMap[ mode.name ], {
@@ -81,7 +83,7 @@ class DensityMysteryScreenView extends DensityBuoyancyScreenView {
       };
     } ), {
       spacing: 8,
-      tandem: tandem.createTandem( 'modeRadioButtonGroup' )
+      tandem: blocksPanelTandem.createTandem( 'modeRadioButtonGroup' )
     } );
     const modeRefreshButton = new RefreshButton( {
       listener: () => {
@@ -89,7 +91,7 @@ class DensityMysteryScreenView extends DensityBuoyancyScreenView {
         model.regenerate( DensityMysteryModel.Mode.RANDOM );
       },
       iconHeight: 20,
-      tandem: tandem.createTandem( 'modeRefreshButton' )
+      tandem: blocksPanelTandem.createTandem( 'modeRefreshButton' )
     } );
     const modeContent = new VBox( {
       spacing: 10
@@ -116,7 +118,9 @@ class DensityMysteryScreenView extends DensityBuoyancyScreenView {
       ],
       spacing: 10,
       align: 'left'
-    } ), DensityBuoyancyCommonConstants.PANEL_OPTIONS );
+    } ), merge( {
+      tandem: blocksPanelTandem
+    }, DensityBuoyancyCommonConstants.PANEL_OPTIONS ) );
 
     this.addChild( new AlignPropertyBox( modePanel, this.visibleBoundsProperty, {
       xAlign: 'right',

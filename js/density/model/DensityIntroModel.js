@@ -34,9 +34,10 @@ class DensityIntroModel extends BlockSetModel( DensityBuoyancyModel, BlockSet, B
 
     const tandem = options.tandem;
 
-    const sameMassTandem = tandem.createTandem( 'sameMass' );
-    const sameVolumeTandem = tandem.createTandem( 'sameVolume' );
-    const sameDensityTandem = tandem.createTandem( 'sameDensity' );
+    const blockSetsTandem = tandem.createTandem( 'blockSets' );
+    const sameMassTandem = blockSetsTandem.createTandem( 'sameMass' );
+    const sameVolumeTandem = blockSetsTandem.createTandem( 'sameVolume' );
+    const sameDensityTandem = blockSetsTandem.createTandem( 'sameDensity' );
 
     const massProperty = new NumberProperty( 5, {
       range: new Range( 1, 10 ),
@@ -64,22 +65,22 @@ class DensityIntroModel extends BlockSetModel( DensityBuoyancyModel, BlockSet, B
             Cuboid.createWithMass( model.engine, Material.createCustomMaterial( {
               density: 500,
               customColor: DensityBuoyancyCommonColors.comparingYellowColorProperty
-            } ), Vector2.ZERO, 5, { tandem: sameMassTandem.createTandem( 'yellowMass' ) } ),
+            } ), Vector2.ZERO, 5, { tandem: sameMassTandem.createTandem( 'yellowBlock' ) } ),
 
             Cuboid.createWithMass( model.engine, Material.createCustomMaterial( {
               density: 1000,
               customColor: DensityBuoyancyCommonColors.comparingBlueColorProperty
-            } ), Vector2.ZERO, 5, { tandem: sameMassTandem.createTandem( 'blueMass' ) } ),
+            } ), Vector2.ZERO, 5, { tandem: sameMassTandem.createTandem( 'blueBlock' ) } ),
 
             Cuboid.createWithMass( model.engine, Material.createCustomMaterial( {
               density: 2000,
               customColor: DensityBuoyancyCommonColors.comparingGreenColorProperty
-            } ), Vector2.ZERO, 5, { tandem: sameMassTandem.createTandem( 'greenMass' ) } ),
+            } ), Vector2.ZERO, 5, { tandem: sameMassTandem.createTandem( 'greenBlock' ) } ),
 
             Cuboid.createWithMass( model.engine, Material.createCustomMaterial( {
               density: 4000,
               customColor: DensityBuoyancyCommonColors.comparingRedColorProperty
-            } ), Vector2.ZERO, 5, { tandem: sameMassTandem.createTandem( 'redMass' ) } )
+            } ), Vector2.ZERO, 5, { tandem: sameMassTandem.createTandem( 'redBlock' ) } )
           ];
 
           // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
@@ -97,22 +98,22 @@ class DensityIntroModel extends BlockSetModel( DensityBuoyancyModel, BlockSet, B
             Cuboid.createWithMass( model.engine, Material.createCustomMaterial( {
               density: 1600,
               customColor: DensityBuoyancyCommonColors.comparingYellowColorProperty
-            } ), Vector2.ZERO, 8, { tandem: sameVolumeTandem.createTandem( 'yellowMass' ) } ),
+            } ), Vector2.ZERO, 8, { tandem: sameVolumeTandem.createTandem( 'yellowBlock' ) } ),
 
             Cuboid.createWithMass( model.engine, Material.createCustomMaterial( {
               density: 1200,
               customColor: DensityBuoyancyCommonColors.comparingBlueColorProperty
-            } ), Vector2.ZERO, 6, { tandem: sameVolumeTandem.createTandem( 'blueMass' ) } ),
+            } ), Vector2.ZERO, 6, { tandem: sameVolumeTandem.createTandem( 'blueBlock' ) } ),
 
             Cuboid.createWithMass( model.engine, Material.createCustomMaterial( {
               density: 800,
               customColor: DensityBuoyancyCommonColors.comparingGreenColorProperty
-            } ), Vector2.ZERO, 4, { tandem: sameVolumeTandem.createTandem( 'greenMass' ) } ),
+            } ), Vector2.ZERO, 4, { tandem: sameVolumeTandem.createTandem( 'greenBlock' ) } ),
 
             Cuboid.createWithMass( model.engine, Material.createCustomMaterial( {
               density: 400,
               customColor: DensityBuoyancyCommonColors.comparingRedColorProperty
-            } ), Vector2.ZERO, 2, { tandem: sameVolumeTandem.createTandem( 'redMass' ) } )
+            } ), Vector2.ZERO, 2, { tandem: sameVolumeTandem.createTandem( 'redBlock' ) } )
           ];
 
           // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
@@ -133,22 +134,22 @@ class DensityIntroModel extends BlockSetModel( DensityBuoyancyModel, BlockSet, B
             Cuboid.createWithMass( model.engine, Material.createCustomMaterial( {
               density: 500,
               customColor: DensityBuoyancyCommonColors.comparingYellowColorProperty
-            } ), Vector2.ZERO, 3, { tandem: sameDensityTandem.createTandem( 'yellowMass' ) } ),
+            } ), Vector2.ZERO, 3, { tandem: sameDensityTandem.createTandem( 'yellowBlock' ) } ),
 
             Cuboid.createWithMass( model.engine, Material.createCustomMaterial( {
               density: 500,
               customColor: DensityBuoyancyCommonColors.comparingBlueColorProperty
-            } ), Vector2.ZERO, 2, { tandem: sameDensityTandem.createTandem( 'blueMass' ) } ),
+            } ), Vector2.ZERO, 2, { tandem: sameDensityTandem.createTandem( 'blueBlock' ) } ),
 
             Cuboid.createWithMass( model.engine, Material.createCustomMaterial( {
               density: 500,
               customColor: DensityBuoyancyCommonColors.comparingGreenColorProperty
-            } ), Vector2.ZERO, 1, { tandem: sameDensityTandem.createTandem( 'greenMass' ) } ),
+            } ), Vector2.ZERO, 1, { tandem: sameDensityTandem.createTandem( 'greenBlock' ) } ),
 
             Cuboid.createWithMass( model.engine, Material.createCustomMaterial( {
               density: 500,
               customColor: DensityBuoyancyCommonColors.comparingRedColorProperty
-            } ), Vector2.ZERO, 0.5, { tandem: sameDensityTandem.createTandem( 'redMass' ) } )
+            } ), Vector2.ZERO, 0.5, { tandem: sameDensityTandem.createTandem( 'redBlock' ) } )
           ];
 
           // This instance lives for the lifetime of the simulation, so we don't need to remove this listener

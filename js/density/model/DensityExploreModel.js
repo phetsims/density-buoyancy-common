@@ -28,15 +28,17 @@ class DensityExploreModel extends DensityBuoyancyModel {
       canShowForces: false
     }, options ) );
 
+    const blocksTandem = tandem.createTandem( 'blocks' );
+
     // @public (read-only) {Mass}
     this.primaryMass = Cuboid.createWithMass( this.engine, Material.WOOD, new Vector2( -0.2, 0.2 ), 2, {
       tag: Mass.MassTag.PRIMARY,
-      tandem: tandem.createTandem( 'primaryMass' )
+      tandem: blocksTandem.createTandem( 'blockA' )
     } );
     this.availableMasses.push( this.primaryMass );
     this.secondaryMass = Cuboid.createWithMass( this.engine, Material.ALUMINUM, new Vector2( -0.2, 0.35 ), 13.5, {
       tag: Mass.MassTag.SECONDARY,
-      tandem: tandem.createTandem( 'secondaryMass' ),
+      tandem: blocksTandem.createTandem( 'blockB' ),
       visible: false
     } );
     this.availableMasses.push( this.secondaryMass );

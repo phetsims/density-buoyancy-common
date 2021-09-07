@@ -30,13 +30,13 @@ class PrimarySecondaryControlsNode extends PrimarySecondaryPanelsNode {
         labelNode: PrimarySecondaryPanelsNode.getPrimaryLabelNode(),
         color: DensityBuoyancyCommonColors.labelAProperty,
         visibleProperty: primaryMass.visibleProperty,
-        tandem: tandem.createTandem( 'primaryBlockControlNode' )
+        tandem: tandem.createTandem( 'blockAControlPanel' )
       }, omittedOptions ) ),
       new BlockControlNode( secondaryMass, popupLayer, merge( {
         labelNode: PrimarySecondaryPanelsNode.getSecondaryLabelNode(),
         color: DensityBuoyancyCommonColors.labelBProperty,
         visibleProperty: secondaryMass.visibleProperty,
-        tandem: tandem.createTandem( 'secondaryBlockControlNode' )
+        tandem: tandem.createTandem( 'blockBControlPanel' )
       }, omittedOptions ) )
     );
   }

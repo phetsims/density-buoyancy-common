@@ -30,7 +30,7 @@ DensityBuoyancyCommonColors.labelBProperty.link( labelColor => {
   bMaterial.color = ThreeUtils.colorToThree( labelColor );
 } );
 
-class SecondMassVisibleControl extends RectangularRadioButtonGroup {
+class BlocksRadioButtonGroup extends RectangularRadioButtonGroup {
   /**
    * @param {Property.<boolean>} secondaryMassVisibleProperty
    * @param {Object} [options]
@@ -39,12 +39,12 @@ class SecondMassVisibleControl extends RectangularRadioButtonGroup {
     super( secondaryMassVisibleProperty, [
       {
         value: false,
-        node: SecondMassVisibleControl.getSingleCuboidIcon(),
+        node: BlocksRadioButtonGroup.getSingleCuboidIcon(),
         tandemName: 'oneBlockRadioButton'
       },
       {
         value: true,
-        node: SecondMassVisibleControl.getDoubleCuboidIcon(),
+        node: BlocksRadioButtonGroup.getDoubleCuboidIcon(),
         tandemName: 'twoBlocksRadioButton'
       }
     ], merge( {
@@ -165,8 +165,8 @@ class SecondMassVisibleControl extends RectangularRadioButtonGroup {
    */
   static getSingleCuboidIcon() {
     if ( DensityBuoyancyCommonQueryParameters.generateIconImages ) {
-      return SecondMassVisibleControl.getIcon( 5.5, scene => {
-        scene.add( SecondMassVisibleControl.createBox( aMaterial, new Vector3( 0, 0, 0 ) ) );
+      return BlocksRadioButtonGroup.getIcon( 5.5, scene => {
+        scene.add( BlocksRadioButtonGroup.createBox( aMaterial, new Vector3( 0, 0, 0 ) ) );
       } );
     }
     else {
@@ -182,9 +182,9 @@ class SecondMassVisibleControl extends RectangularRadioButtonGroup {
    */
   static getDoubleCuboidIcon() {
     if ( DensityBuoyancyCommonQueryParameters.generateIconImages ) {
-      return SecondMassVisibleControl.getIcon( 4, scene => {
-        scene.add( SecondMassVisibleControl.createBox( aMaterial, new Vector3( -0.039, 0.015, -0.07 ) ) );
-        scene.add( SecondMassVisibleControl.createBox( bMaterial, new Vector3( 0.03, -0.005, 0.07 ) ) );
+      return BlocksRadioButtonGroup.getIcon( 4, scene => {
+        scene.add( BlocksRadioButtonGroup.createBox( aMaterial, new Vector3( -0.039, 0.015, -0.07 ) ) );
+        scene.add( BlocksRadioButtonGroup.createBox( bMaterial, new Vector3( 0.03, -0.005, 0.07 ) ) );
       } );
     }
     else {
@@ -193,5 +193,5 @@ class SecondMassVisibleControl extends RectangularRadioButtonGroup {
   }
 }
 
-densityBuoyancyCommon.register( 'SecondMassVisibleControl', SecondMassVisibleControl );
-export default SecondMassVisibleControl;
+densityBuoyancyCommon.register( 'BlocksRadioButtonGroup', BlocksRadioButtonGroup );
+export default BlocksRadioButtonGroup;

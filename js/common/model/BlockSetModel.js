@@ -32,7 +32,7 @@ const BlockSetModel = ( type, BlockSet, initialMode ) => {
 
       // @public {Property.<BlockSet>}
       this.blockSetProperty = new EnumerationProperty( BlockSet, initialMode, {
-        tandem: tandem.createTandem( 'blockSetProperty' )
+        tandem: tandem.createTandem( 'blockSets' ).createTandem( 'blockSetProperty' )
       } );
 
       // @private

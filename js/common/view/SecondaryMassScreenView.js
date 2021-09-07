@@ -8,8 +8,8 @@
 
 import Vector3 from '../../../../dot/js/Vector3.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
+import BlocksRadioButtonGroup from './BlocksRadioButtonGroup.js';
 import DensityBuoyancyScreenView from './DensityBuoyancyScreenView.js';
-import SecondMassVisibleControl from './SecondMassVisibleControl.js';
 
 class SecondaryMassScreenView extends DensityBuoyancyScreenView {
   /**
@@ -22,11 +22,11 @@ class SecondaryMassScreenView extends DensityBuoyancyScreenView {
     assert && assert( this.rightBox, 'SecondaryMassScreenView requires a this.rightBox be defined to add this control' );
 
     // @private {Node}
-    this.secondMassVisibleControl = new SecondMassVisibleControl( secondaryMassVisibleProperty, {
-      tandem: this.tandem.createTandem( 'secondMassVisibleControl' )
+    this.blocksRadioButtonGroup = new BlocksRadioButtonGroup( secondaryMassVisibleProperty, {
+      tandem: this.tandem.createTandem( 'blocksRadioButtonGroup' )
     } );
 
-    this.addChild( this.secondMassVisibleControl );
+    this.addChild( this.blocksRadioButtonGroup );
 
     // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
     this.rightBox.transformEmitter.addListener( () => this.positionSecondMassControl() );
@@ -38,12 +38,12 @@ class SecondaryMassScreenView extends DensityBuoyancyScreenView {
    * @private
    */
   positionSecondMassControl() {
-    this.secondMassVisibleControl.bottom = this.modelToViewPoint( new Vector3(
+    this.blocksRadioButtonGroup.bottom = this.modelToViewPoint( new Vector3(
       0,
       this.model.poolBounds.minY,
       this.model.poolBounds.maxZ
     ) ).y;
-    this.secondMassVisibleControl.left = this.rightBox.left;
+    this.blocksRadioButtonGroup.left = this.rightBox.left;
   }
 
   /**

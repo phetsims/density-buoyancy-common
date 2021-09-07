@@ -40,14 +40,14 @@ class BuoyancyExploreModel extends DensityBuoyancyModel {
     this.availableMasses.push( this.secondaryMass );
 
     // Left scale
-    this.availableMasses.push( new Scale( this.engine, {
+    this.availableMasses.push( new Scale( this.engine, this.gravityProperty, {
       matrix: Matrix3.translation( -0.65, -Scale.SCALE_BASE_BOUNDS.minY ),
       displayType: Scale.DisplayType.NEWTONS,
       tandem: tandem.createTandem( 'leftScale' )
     } ) );
 
     // Pool scale
-    const poolScale = new Scale( this.engine, {
+    const poolScale = new Scale( this.engine, this.gravityProperty, {
       matrix: Matrix3.translation( 0.25, -Scale.SCALE_BASE_BOUNDS.minY + this.poolBounds.minY ),
       displayType: Scale.DisplayType.NEWTONS,
       tandem: tandem.createTandem( 'poolScale' )

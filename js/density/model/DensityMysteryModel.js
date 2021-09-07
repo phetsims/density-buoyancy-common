@@ -244,7 +244,7 @@ class DensityMysteryModel extends BlockSetModel( DensityBuoyancyModel, BlockSet,
     } );
 
     // @public (read-only) {Scale}
-    this.scale = new Scale( this.engine, {
+    this.scale = new Scale( this.engine, this.gravityProperty, {
       matrix: Matrix3.translation( -0.75, -Scale.SCALE_BASE_BOUNDS.minY ),
       displayType: Scale.DisplayType.KILOGRAMS,
       canMove: false,

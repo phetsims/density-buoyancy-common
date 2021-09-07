@@ -6,6 +6,7 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
+import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import Bounds3 from '../../../../dot/js/Bounds3.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
 import Shape from '../../../../kite/js/Shape.js';
@@ -49,9 +50,10 @@ const DisplayType = Enumeration.byKeys( [
 class Scale extends Mass {
   /**
    * @param {PhysicsEngine} engine
+   * @param {Property.<Gravity>} gravityProperty
    * @param {Object} config
    */
-  constructor( engine, config ) {
+  constructor( engine, gravityProperty, config ) {
     config = merge( {
       body: engine.createBox( SCALE_WIDTH, SCALE_HEIGHT, config.canMove === false ),
       shape: Shape.rect( -SCALE_WIDTH / 2, -SCALE_HEIGHT / 2, SCALE_WIDTH, SCALE_HEIGHT ),
@@ -74,6 +76,16 @@ class Scale extends Mass {
       phetioType: InterpolatedProperty.InterpolatedPropertyIO( NumberIO ),
       tandem: config.tandem.createTandem( 'scaleForceInterpolatedProperty' ),
       units: 'N'
+    } );
+
+    // @private {Property.<number>} - Just exist for phet-io, see https://github.com/phetsims/density/issues/97
+    this.scaleMeasuredMassProperty = new DerivedProperty( [ this.scaleForceInterpolatedProperty, gravityProperty ], ( force, gravity ) => {
+      return force / gravity.value;
+    }, {
+      phetioType: DerivedProperty.DerivedPropertyIO( NumberIO ),
+      tandem: config.tandem.createTandem( 'scaleMeasuredMassProperty' ),
+      units: 'kg',
+      phetioReadOnly: true
     } );
 
     // @public (read-only) {DisplayType}

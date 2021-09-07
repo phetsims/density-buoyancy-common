@@ -75,7 +75,7 @@ class BuoyancyIntroModel extends BlockSetModel( DensityBuoyancyModel, BlockSet, 
     super( tandem, createMasses, () => {}, positionMasses, options );
 
     // Left scale
-    this.availableMasses.push( new Scale( this.engine, {
+    this.availableMasses.push( new Scale( this.engine, this.gravityProperty, {
       matrix: Matrix3.translation( -0.8, -Scale.SCALE_BASE_BOUNDS.minY ),
       displayType: Scale.DisplayType.NEWTONS,
       canMove: false,
@@ -83,7 +83,7 @@ class BuoyancyIntroModel extends BlockSetModel( DensityBuoyancyModel, BlockSet, 
     } ) );
 
     // Pool scale
-    const poolScale = new Scale( this.engine, {
+    const poolScale = new Scale( this.engine, this.gravityProperty, {
       matrix: Matrix3.translation( 0.25, -Scale.SCALE_BASE_BOUNDS.minY + this.poolBounds.minY ),
       displayType: Scale.DisplayType.NEWTONS,
       canMove: false,

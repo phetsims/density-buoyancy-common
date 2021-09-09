@@ -66,35 +66,35 @@ const DensityBuoyancyCommonColors = {
     default: new Color( 48, 89, 166 )
   } ),
 
-  introYellowColorProperty: new ProfileColorProperty( densityBuoyancyCommon, 'introYellow', {
+  compareYellowColorProperty: new ProfileColorProperty( densityBuoyancyCommon, 'compareYellow', {
     default: new Color( 252, 246, 80 )
   }, {
     phetioReadOnly: true,
-    tandem: tandem.createTandem( 'introYellowColorProperty' )
+    tandem: tandem.createTandem( 'compareYellowColorProperty' )
   } ),
-  introBlueColorProperty: new ProfileColorProperty( densityBuoyancyCommon, 'introBlue', {
+  compareBlueColorProperty: new ProfileColorProperty( densityBuoyancyCommon, 'compareBlue', {
     default: new Color( 46, 88, 166 )
   }, {
     phetioReadOnly: true,
-    tandem: tandem.createTandem( 'introBlueColorProperty' )
+    tandem: tandem.createTandem( 'compareBlueColorProperty' )
   } ),
-  introGreenColorProperty: new ProfileColorProperty( densityBuoyancyCommon, 'introGreen', {
+  compareGreenColorProperty: new ProfileColorProperty( densityBuoyancyCommon, 'compareGreen', {
     default: new Color( 125, 195, 52 )
   }, {
     phetioReadOnly: true,
-    tandem: tandem.createTandem( 'introGreenColorProperty' )
+    tandem: tandem.createTandem( 'compareGreenColorProperty' )
   } ),
-  introRedColorProperty: new ProfileColorProperty( densityBuoyancyCommon, 'introRed', {
+  compareRedColorProperty: new ProfileColorProperty( densityBuoyancyCommon, 'compareRed', {
     default: new Color( 233, 55, 50 )
   }, {
     phetioReadOnly: true,
-    tandem: tandem.createTandem( 'introRedColorProperty' )
+    tandem: tandem.createTandem( 'compareRedColorProperty' )
   } ),
-  introPurpleColorProperty: new ProfileColorProperty( densityBuoyancyCommon, 'introPurple', {
+  comparePurpleColorProperty: new ProfileColorProperty( densityBuoyancyCommon, 'comparePurple', {
     default: new Color( 131, 43, 126 )
   }, {
     phetioReadOnly: true,
-    tandem: tandem.createTandem( 'introPurpleColorProperty' )
+    tandem: tandem.createTandem( 'comparePurpleColorProperty' )
   } ),
 
   mysteryPinkColorProperty: new ProfileColorProperty( densityBuoyancyCommon, 'mysteryPink', {

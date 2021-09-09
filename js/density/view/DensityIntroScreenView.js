@@ -6,33 +6,23 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
-import DynamicProperty from '../../../../axon/js/DynamicProperty.js';
-import Property from '../../../../axon/js/Property.js';
-import Range from '../../../../dot/js/Range.js';
-import Vector3 from '../../../../dot/js/Vector3.js';
+import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
+import Vector2 from '../../../../dot/js/Vector2.js';
 import merge from '../../../../phet-core/js/merge.js';
 import AlignPropertyBox from '../../../../scenery/js/layout/AlignPropertyBox.js';
-import Node from '../../../../scenery/js/nodes/Node.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
-import VBox from '../../../../scenery/js/nodes/VBox.js';
-import Panel from '../../../../sun/js/Panel.js';
-import VerticalAquaRadioButtonGroup from '../../../../sun/js/VerticalAquaRadioButtonGroup.js';
+import AccordionBox from '../../../../sun/js/AccordionBox.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
-import DensityBuoyancyScreenView from '../../common/view/DensityBuoyancyScreenView.js';
+import PrimarySecondaryControlsNode from '../../common/view/PrimarySecondaryControlsNode.js';
+import SecondaryMassScreenView from '../../common/view/SecondaryMassScreenView.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import densityBuoyancyCommonStrings from '../../densityBuoyancyCommonStrings.js';
-import DensityIntroModel from '../model/DensityIntroModel.js';
-import ComparisonNumberControl from './ComparisonNumberControl.js';
+import DensityReadoutNode from './DensityReadoutNode.js';
 
 // constants
-const blockSetStringMap = {
-  [ DensityIntroModel.BlockSet.SAME_MASS.name ]: densityBuoyancyCommonStrings.blockSet.sameMass,
-  [ DensityIntroModel.BlockSet.SAME_VOLUME.name ]: densityBuoyancyCommonStrings.blockSet.sameVolume,
-  [ DensityIntroModel.BlockSet.SAME_DENSITY.name ]: densityBuoyancyCommonStrings.blockSet.sameDensity
-};
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
 
-class DensityIntroScreenView extends DensityBuoyancyScreenView {
+class DensityIntroScreenView extends SecondaryMassScreenView {
   /**
    * @param {DensityIntroModel} model
    * @param {Object} [options]
@@ -50,144 +40,51 @@ class DensityIntroScreenView extends DensityBuoyancyScreenView {
       return;
     }
 
-    const blockSetTandemMap = {
-      [ DensityIntroModel.BlockSet.SAME_MASS ]: 'sameMass',
-      [ DensityIntroModel.BlockSet.SAME_VOLUME ]: 'sameVolume',
-      [ DensityIntroModel.BlockSet.SAME_DENSITY ]: 'sameDensity'
-    };
+    // @protected {Node} - Used in the super
+    this.rightBox = new PrimarySecondaryControlsNode(
+      model.primaryMass,
+      model.secondaryMass,
+      this.popupLayer,
+      { tandem: tandem }
+    );
 
-    const blocksPanelTandem = tandem.createTandem( 'blocksPanel' );
-    const blocksPanel = new Panel( new VBox( {
-      children: [
-        new Text( densityBuoyancyCommonStrings.blocks, {
-          font: DensityBuoyancyCommonConstants.TITLE_FONT,
-          maxWidth: 160
-        } ),
-        new VerticalAquaRadioButtonGroup( model.blockSetProperty, DensityIntroModel.BlockSet.VALUES.map( blockSet => {
-          return {
-            node: new Text( blockSetStringMap[ blockSet.name ], {
-              font: DensityBuoyancyCommonConstants.RADIO_BUTTON_FONT,
-              maxWidth: 160
-            } ),
-            value: blockSet,
-            tandemName: `${blockSetTandemMap[ blockSet ]}RadioButton`
-          };
-        } ), {
-          spacing: 8,
-          tandem: blocksPanelTandem.createTandem( 'blocksRadioButtonGroup' )
-        } )
-      ],
-      spacing: 10,
-      align: 'left'
-    } ), merge( {
-      tandem: blocksPanelTandem
-    }, DensityBuoyancyCommonConstants.PANEL_OPTIONS ) );
+    const accordionTandem = tandem.createTandem( 'densityReadoutAccordionBox' );
+    const densityReadoutAccordionBox = new AccordionBox( new DensityReadoutNode(
+      // DerivedProperty doesn't need disposal, since everything here lives for the lifetime of the simulation
+      new DerivedProperty( [ model.primaryMass.materialProperty ], material => material.density ),
+      new DerivedProperty( [ model.secondaryMass.materialProperty ], material => material.density ),
+      model.secondaryMass.visibleProperty,
+      { tandem: accordionTandem.createTandem( 'densityReadout' ) }
+    ), merge( {
+      titleNode: new Text( densityBuoyancyCommonStrings.densityReadout, {
+        font: DensityBuoyancyCommonConstants.TITLE_FONT,
+        maxWidth: 200
+      } ),
+      expandedProperty: model.densityExpandedProperty,
+      buttonAlign: 'left',
+      tandem: accordionTandem
+    }, DensityBuoyancyCommonConstants.ACCORDION_BOX_OPTIONS ) );
 
-    this.addChild( new AlignPropertyBox( blocksPanel, this.visibleBoundsProperty, {
+    this.addChild( new AlignPropertyBox( densityReadoutAccordionBox, this.visibleBoundsProperty, {
+      xAlign: 'center',
+      yAlign: 'top',
+      margin: MARGIN
+    } ) );
+
+    this.addChild( new AlignPropertyBox( this.rightBox, this.visibleBoundsProperty, {
       xAlign: 'right',
       yAlign: 'top',
       margin: MARGIN
     } ) );
 
-    // For unit conversion
-    const volumeProperty = new DynamicProperty( new Property( model.volumeProperty ), {
-      map: cubicMeters => 1000 * cubicMeters,
-      inverseMap: liters => liters / 1000,
-      bidirectional: true
-    } );
-    volumeProperty.range = new Range( model.volumeProperty.range.min * 1000, model.volumeProperty.range.max * 1000 );
-
-    // For unit conversion
-    const densityProperty = new DynamicProperty( new Property( model.densityProperty ), {
-      map: kilogramsPerCubicMeter => kilogramsPerCubicMeter / 1000,
-      inverseMap: kilogramsPerLiter => kilogramsPerLiter * 1000,
-      bidirectional: true
-    } );
-    densityProperty.range = new Range( model.densityProperty.range.min / 1000, model.densityProperty.range.max / 1000 );
-
-    const massNumberControl = new ComparisonNumberControl(
-      model.massProperty,
-      densityBuoyancyCommonStrings.mass,
-      densityBuoyancyCommonStrings.kilogramsPattern,
-      'kilograms',
-      {
-        tandem: tandem.createTandem( 'massNumberControl' ),
-        sliderOptions: {
-          phetioLinkedProperty: model.massProperty
-        }
-      }
-    );
-    const volumeNumberControl = new ComparisonNumberControl(
-      volumeProperty,
-      densityBuoyancyCommonStrings.volume,
-      densityBuoyancyCommonStrings.litersPattern,
-      'liters',
-      {
-        tandem: tandem.createTandem( 'volumeNumberControl' ),
-        sliderOptions: {
-          phetioLinkedProperty: model.volumeProperty
-        }
-      }
-    );
-    const densityNumberControl = new ComparisonNumberControl(
-      densityProperty,
-      densityBuoyancyCommonStrings.density,
-      densityBuoyancyCommonStrings.kilogramsPerLiterPattern,
-      'value',
-      {
-        tandem: tandem.createTandem( 'densityNumberControl' ),
-        sliderOptions: {
-          phetioLinkedProperty: model.densityProperty
-        }
-      }
-    );
-
-    // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
-    model.blockSetProperty.link( blockSet => {
-      massNumberControl.visible = blockSet === DensityIntroModel.BlockSet.SAME_MASS;
-      volumeNumberControl.visible = blockSet === DensityIntroModel.BlockSet.SAME_VOLUME;
-      densityNumberControl.visible = blockSet === DensityIntroModel.BlockSet.SAME_DENSITY;
+    // DerivedProperty doesn't need disposal, since everything here lives for the lifetime of the simulation
+    this.rightBarrierViewPointProperty.value = new DerivedProperty( [ this.rightBox.boundsProperty, this.visibleBoundsProperty ], ( boxBounds, visibleBounds ) => {
+      return new Vector2( boxBounds.left, visibleBounds.centerY );
     } );
 
-    const numberControlPanel = new Panel( new Node( {
-      children: [
-        massNumberControl,
-        volumeNumberControl,
-        densityNumberControl
-      ]
-    } ), DensityBuoyancyCommonConstants.PANEL_OPTIONS );
-    this.addChild( numberControlPanel );
-
-    // @private {function()}
-    this.positionPanel = () => {
-      // We should be MARGIN below where the edge of the ground exists
-      const groundFrontPoint = this.modelToViewPoint( new Vector3( 0, 0, model.groundBounds.maxZ ) );
-      numberControlPanel.top = groundFrontPoint.y + MARGIN;
-      numberControlPanel.right = this.visibleBoundsProperty.value.maxX - 10;
-    };
-
-    this.positionPanel();
-    // This instance lives for the lifetime of the simulation, so we don't need to remove these listeners
-    this.transformEmitter.addListener( this.positionPanel );
-    this.visibleBoundsProperty.lazyLink( this.positionPanel );
+    this.addSecondMassControl( model.secondaryMass.visibleProperty );
 
     this.addChild( this.popupLayer );
-  }
-
-  /**
-   * @public
-   * @override
-   * @param {Bounds2} viewBounds
-   */
-  layout( viewBounds ) {
-    super.layout( viewBounds );
-
-    // If the simulation was not able to load for WebGL, bail out
-    if ( !this.sceneNode ) {
-      return;
-    }
-
-    this.positionPanel();
   }
 }
 

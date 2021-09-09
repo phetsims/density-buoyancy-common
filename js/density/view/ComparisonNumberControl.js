@@ -1,7 +1,7 @@
 // Copyright 2021, University of Colorado Boulder
 
 /**
- * Supertype for the NumberControls in the Intro screen
+ * Supertype for the NumberControls in the Compare screen
  *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */

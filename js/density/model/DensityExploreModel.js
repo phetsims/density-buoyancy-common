@@ -44,7 +44,7 @@ class DensityExploreModel extends DensityBuoyancyModel {
     this.availableMasses.push( this.secondaryMass );
 
     // @public {Property.<boolean>}
-    this.densityExpandedProperty = new BooleanProperty( false, {
+    this.densityExpandedProperty = new BooleanProperty( true, {
       tandem: tandem.createTandem( 'densityExpandedProperty' )
     } );
   }

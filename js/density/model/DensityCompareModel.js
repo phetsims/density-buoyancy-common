@@ -6,11 +6,14 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
+import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import NumberProperty from '../../../../axon/js/NumberProperty.js';
+import Property from '../../../../axon/js/Property.js';
 import Range from '../../../../dot/js/Range.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import Enumeration from '../../../../phet-core/js/Enumeration.js';
 import merge from '../../../../phet-core/js/merge.js';
+import Tandem from '../../../../tandem/js/Tandem.js';
 import BlockSetModel from '../../common/model/BlockSetModel.js';
 import Cuboid from '../../common/model/Cuboid.js';
 import DensityBuoyancyModel from '../../common/model/DensityBuoyancyModel.js';
@@ -57,110 +60,136 @@ class DensityCompareModel extends BlockSetModel( DensityBuoyancyModel, BlockSet,
       units: 'kg/m^3'
     } );
 
+    const createMaterialProperty = ( colorProperty, densityProperty ) => {
+      return new DerivedProperty( [ colorProperty, densityProperty ], ( color, density ) => {
+        const lightness = Material.getCustomLightness( density ); // 0-255
+
+        const modifier = 0.1;
+        const rawValue = ( lightness / 128 - 1 ) * ( 1 - modifier ) + modifier;
+        const power = 0.7;
+        const modifiedColor = color.colorUtilsBrightness( Math.sign( rawValue ) * Math.pow( Math.abs( rawValue ), power ) );
+
+        return Material.createCustomMaterial( {
+          density: density,
+          customColor: new Property( modifiedColor, { tandem: Tandem.OPT_OUT } )
+        } );
+      }, {
+        tandem: Tandem.OPT_OUT
+      } );
+    };
+
+    const sameMassYellowDensityProperty = new NumberProperty( 500, { tandem: Tandem.OPT_OUT } );
+    const sameMassBlueDensityProperty = new NumberProperty( 1000, { tandem: Tandem.OPT_OUT } );
+    const sameMassGreenDensityProperty = new NumberProperty( 2000, { tandem: Tandem.OPT_OUT } );
+    const sameMassRedDensityProperty = new NumberProperty( 4000, { tandem: Tandem.OPT_OUT } );
+
+    const sameVolumeYellowDensityProperty = new NumberProperty( 1600, { tandem: Tandem.OPT_OUT } );
+    const sameVolumeBlueDensityProperty = new NumberProperty( 1200, { tandem: Tandem.OPT_OUT } );
+    const sameVolumeGreenDensityProperty = new NumberProperty( 800, { tandem: Tandem.OPT_OUT } );
+    const sameVolumeRedDensityProperty = new NumberProperty( 400, { tandem: Tandem.OPT_OUT } );
+
+    const sameDensityYellowDensityProperty = new NumberProperty( 500, { tandem: Tandem.OPT_OUT } );
+    const sameDensityBlueDensityProperty = new NumberProperty( 500, { tandem: Tandem.OPT_OUT } );
+    const sameDensityGreenDensityProperty = new NumberProperty( 500, { tandem: Tandem.OPT_OUT } );
+    const sameDensityRedDensityProperty = new NumberProperty( 500, { tandem: Tandem.OPT_OUT } );
+
+    const sameMassYellowMaterialProperty = createMaterialProperty( DensityBuoyancyCommonColors.compareYellowColorProperty, sameMassYellowDensityProperty );
+    const sameMassBlueMaterialProperty = createMaterialProperty( DensityBuoyancyCommonColors.compareBlueColorProperty, sameMassBlueDensityProperty );
+    const sameMassGreenMaterialProperty = createMaterialProperty( DensityBuoyancyCommonColors.compareGreenColorProperty, sameMassGreenDensityProperty );
+    const sameMassRedMaterialProperty = createMaterialProperty( DensityBuoyancyCommonColors.compareRedColorProperty, sameMassRedDensityProperty );
+
+    const sameVolumeYellowMaterialProperty = createMaterialProperty( DensityBuoyancyCommonColors.compareYellowColorProperty, sameVolumeYellowDensityProperty );
+    const sameVolumeBlueMaterialProperty = createMaterialProperty( DensityBuoyancyCommonColors.compareBlueColorProperty, sameVolumeBlueDensityProperty );
+    const sameVolumeGreenMaterialProperty = createMaterialProperty( DensityBuoyancyCommonColors.compareGreenColorProperty, sameVolumeGreenDensityProperty );
+    const sameVolumeRedMaterialProperty = createMaterialProperty( DensityBuoyancyCommonColors.compareRedColorProperty, sameVolumeRedDensityProperty );
+
+    const sameDensityYellowMaterialProperty = createMaterialProperty( DensityBuoyancyCommonColors.compareYellowColorProperty, sameDensityYellowDensityProperty );
+    const sameDensityBlueMaterialProperty = createMaterialProperty( DensityBuoyancyCommonColors.compareBlueColorProperty, sameDensityBlueDensityProperty );
+    const sameDensityGreenMaterialProperty = createMaterialProperty( DensityBuoyancyCommonColors.compareGreenColorProperty, sameDensityGreenDensityProperty );
+    const sameDensityRedMaterialProperty = createMaterialProperty( DensityBuoyancyCommonColors.compareRedColorProperty, sameDensityRedDensityProperty );
+
     const createMasses = ( model, blockSet ) => {
       let masses;
       switch( blockSet ) {
         case BlockSet.SAME_MASS:
-          masses = [
-            Cuboid.createWithMass( model.engine, Material.createCustomMaterial( {
-              density: 500,
-              customColor: DensityBuoyancyCommonColors.compareYellowColorProperty
-            } ), Vector2.ZERO, 5, { tandem: sameMassTandem.createTandem( 'yellowBlock' ) } ),
+          {
+            const sameMassYellowMass = Cuboid.createWithMass( model.engine, sameMassYellowMaterialProperty.value, Vector2.ZERO, 5, { tandem: sameMassTandem.createTandem( 'yellowBlock' ) } );
+            const sameMassBlueMass = Cuboid.createWithMass( model.engine, sameMassBlueMaterialProperty.value, Vector2.ZERO, 5, { tandem: sameMassTandem.createTandem( 'blueBlock' ) } );
+            const sameMassGreenMass = Cuboid.createWithMass( model.engine, sameMassGreenMaterialProperty.value, Vector2.ZERO, 5, { tandem: sameMassTandem.createTandem( 'greenBlock' ) } );
+            const sameMassRedMass = Cuboid.createWithMass( model.engine, sameMassRedMaterialProperty.value, Vector2.ZERO, 5, { tandem: sameMassTandem.createTandem( 'redBlock' ) } );
 
-            Cuboid.createWithMass( model.engine, Material.createCustomMaterial( {
-              density: 1000,
-              customColor: DensityBuoyancyCommonColors.compareBlueColorProperty
-            } ), Vector2.ZERO, 5, { tandem: sameMassTandem.createTandem( 'blueBlock' ) } ),
+            sameMassYellowMaterialProperty.link( material => { sameMassYellowMass.materialProperty.value = material; } );
+            sameMassBlueMaterialProperty.link( material => { sameMassBlueMass.materialProperty.value = material; } );
+            sameMassGreenMaterialProperty.link( material => { sameMassGreenMass.materialProperty.value = material; } );
+            sameMassRedMaterialProperty.link( material => { sameMassRedMass.materialProperty.value = material; } );
 
-            Cuboid.createWithMass( model.engine, Material.createCustomMaterial( {
-              density: 2000,
-              customColor: DensityBuoyancyCommonColors.compareGreenColorProperty
-            } ), Vector2.ZERO, 5, { tandem: sameMassTandem.createTandem( 'greenBlock' ) } ),
+            masses = [ sameMassYellowMass, sameMassBlueMass, sameMassGreenMass, sameMassRedMass ];
 
-            Cuboid.createWithMass( model.engine, Material.createCustomMaterial( {
-              density: 4000,
-              customColor: DensityBuoyancyCommonColors.compareRedColorProperty
-            } ), Vector2.ZERO, 5, { tandem: sameMassTandem.createTandem( 'redBlock' ) } )
-          ];
-
-          // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
-          massProperty.lazyLink( massValue => {
-            masses.forEach( mass => {
-              mass.materialProperty.value = Material.createCustomMaterial( {
-                density: massValue / mass.volumeProperty.value,
-                customColor: mass.materialProperty.value.customColor
-              } );
+            // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
+            massProperty.lazyLink( massValue => {
+              sameMassYellowDensityProperty.value = massValue / sameMassYellowMass.volumeProperty.value;
+              sameMassBlueDensityProperty.value = massValue / sameMassBlueMass.volumeProperty.value;
+              sameMassGreenDensityProperty.value = massValue / sameMassGreenMass.volumeProperty.value;
+              sameMassRedDensityProperty.value = massValue / sameMassRedMass.volumeProperty.value;
             } );
-          } );
+          }
           break;
         case BlockSet.SAME_VOLUME:
-          masses = [
-            Cuboid.createWithMass( model.engine, Material.createCustomMaterial( {
-              density: 1600,
-              customColor: DensityBuoyancyCommonColors.compareYellowColorProperty
-            } ), Vector2.ZERO, 8, { tandem: sameVolumeTandem.createTandem( 'yellowBlock' ) } ),
+          {
+            const sameVolumeYellowMass = Cuboid.createWithMass( model.engine, sameVolumeYellowMaterialProperty.value, Vector2.ZERO, 8, { tandem: sameVolumeTandem.createTandem( 'yellowBlock' ) } );
+            const sameVolumeBlueMass = Cuboid.createWithMass( model.engine, sameVolumeBlueMaterialProperty.value, Vector2.ZERO, 6, { tandem: sameVolumeTandem.createTandem( 'blueBlock' ) } );
+            const sameVolumeGreenMass = Cuboid.createWithMass( model.engine, sameVolumeGreenMaterialProperty.value, Vector2.ZERO, 4, { tandem: sameVolumeTandem.createTandem( 'greenBlock' ) } );
+            const sameVolumeRedMass = Cuboid.createWithMass( model.engine, sameVolumeRedMaterialProperty.value, Vector2.ZERO, 2, { tandem: sameVolumeTandem.createTandem( 'redBlock' ) } );
 
-            Cuboid.createWithMass( model.engine, Material.createCustomMaterial( {
-              density: 1200,
-              customColor: DensityBuoyancyCommonColors.compareBlueColorProperty
-            } ), Vector2.ZERO, 6, { tandem: sameVolumeTandem.createTandem( 'blueBlock' ) } ),
+            sameVolumeYellowMaterialProperty.link( material => { sameVolumeYellowMass.materialProperty.value = material; } );
+            sameVolumeBlueMaterialProperty.link( material => { sameVolumeBlueMass.materialProperty.value = material; } );
+            sameVolumeGreenMaterialProperty.link( material => { sameVolumeGreenMass.materialProperty.value = material; } );
+            sameVolumeRedMaterialProperty.link( material => { sameVolumeRedMass.materialProperty.value = material; } );
 
-            Cuboid.createWithMass( model.engine, Material.createCustomMaterial( {
-              density: 800,
-              customColor: DensityBuoyancyCommonColors.compareGreenColorProperty
-            } ), Vector2.ZERO, 4, { tandem: sameVolumeTandem.createTandem( 'greenBlock' ) } ),
+            masses = [ sameVolumeYellowMass, sameVolumeBlueMass, sameVolumeGreenMass, sameVolumeRedMass ];
 
-            Cuboid.createWithMass( model.engine, Material.createCustomMaterial( {
-              density: 400,
-              customColor: DensityBuoyancyCommonColors.compareRedColorProperty
-            } ), Vector2.ZERO, 2, { tandem: sameVolumeTandem.createTandem( 'redBlock' ) } )
-          ];
+            // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
+            volumeProperty.lazyLink( volume => {
+              const yellowMass = sameVolumeYellowMass.massProperty.value;
+              const blueMass = sameVolumeBlueMass.massProperty.value;
+              const greenMass = sameVolumeGreenMass.massProperty.value;
+              const redMass = sameVolumeRedMass.massProperty.value;
 
-          // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
-          volumeProperty.lazyLink( volume => {
-            masses.forEach( mass => {
-              const massValue = mass.massProperty.value;
+              const size = Cuboid.boundsFromVolume( volume );
+              sameVolumeYellowMass.updateSize( size );
+              sameVolumeBlueMass.updateSize( size );
+              sameVolumeGreenMass.updateSize( size );
+              sameVolumeRedMass.updateSize( size );
 
-              mass.updateSize( Cuboid.boundsFromVolume( volume ) );
-              mass.materialProperty.value = Material.createCustomMaterial( {
-                density: massValue / volume,
-                customColor: mass.materialProperty.value.customColor
-              } );
+              sameVolumeYellowDensityProperty.value = yellowMass / volume;
+              sameVolumeBlueDensityProperty.value = blueMass / volume;
+              sameVolumeGreenDensityProperty.value = greenMass / volume;
+              sameVolumeRedDensityProperty.value = redMass / volume;
             } );
-          } );
+          }
           break;
         case BlockSet.SAME_DENSITY:
-          masses = [
-            Cuboid.createWithMass( model.engine, Material.createCustomMaterial( {
-              density: 500,
-              customColor: DensityBuoyancyCommonColors.compareYellowColorProperty
-            } ), Vector2.ZERO, 3, { tandem: sameDensityTandem.createTandem( 'yellowBlock' ) } ),
+          {
+            const sameDensityYellowMass = Cuboid.createWithMass( model.engine, sameDensityYellowMaterialProperty.value, Vector2.ZERO, 3, { tandem: sameDensityTandem.createTandem( 'yellowBlock' ) } );
+            const sameDensityBlueMass = Cuboid.createWithMass( model.engine, sameDensityBlueMaterialProperty.value, Vector2.ZERO, 2, { tandem: sameDensityTandem.createTandem( 'blueBlock' ) } );
+            const sameDensityGreenMass = Cuboid.createWithMass( model.engine, sameDensityGreenMaterialProperty.value, Vector2.ZERO, 1, { tandem: sameDensityTandem.createTandem( 'greenBlock' ) } );
+            const sameDensityRedMass = Cuboid.createWithMass( model.engine, sameDensityRedMaterialProperty.value, Vector2.ZERO, 0.5, { tandem: sameDensityTandem.createTandem( 'redBlock' ) } );
 
-            Cuboid.createWithMass( model.engine, Material.createCustomMaterial( {
-              density: 500,
-              customColor: DensityBuoyancyCommonColors.compareBlueColorProperty
-            } ), Vector2.ZERO, 2, { tandem: sameDensityTandem.createTandem( 'blueBlock' ) } ),
+            sameDensityYellowMaterialProperty.link( material => { sameDensityYellowMass.materialProperty.value = material; } );
+            sameDensityBlueMaterialProperty.link( material => { sameDensityBlueMass.materialProperty.value = material; } );
+            sameDensityGreenMaterialProperty.link( material => { sameDensityGreenMass.materialProperty.value = material; } );
+            sameDensityRedMaterialProperty.link( material => { sameDensityRedMass.materialProperty.value = material; } );
 
-            Cuboid.createWithMass( model.engine, Material.createCustomMaterial( {
-              density: 500,
-              customColor: DensityBuoyancyCommonColors.compareGreenColorProperty
-            } ), Vector2.ZERO, 1, { tandem: sameDensityTandem.createTandem( 'greenBlock' ) } ),
+            masses = [ sameDensityYellowMass, sameDensityBlueMass, sameDensityGreenMass, sameDensityRedMass ];
 
-            Cuboid.createWithMass( model.engine, Material.createCustomMaterial( {
-              density: 500,
-              customColor: DensityBuoyancyCommonColors.compareRedColorProperty
-            } ), Vector2.ZERO, 0.5, { tandem: sameDensityTandem.createTandem( 'redBlock' ) } )
-          ];
-
-          // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
-          densityProperty.lazyLink( density => {
-            masses.forEach( mass => {
-              mass.materialProperty.value = Material.createCustomMaterial( {
-                density: density,
-                customColor: mass.materialProperty.value.customColor
-              } );
+            // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
+            densityProperty.lazyLink( density => {
+              sameDensityYellowDensityProperty.value = density;
+              sameDensityBlueDensityProperty.value = density;
+              sameDensityGreenDensityProperty.value = density;
+              sameDensityRedDensityProperty.value = density;
             } );
-          } );
+          }
           break;
         default:
           throw new Error( `unknown blockSet: ${blockSet}` );

@@ -251,7 +251,13 @@ class DensityBuoyancyModel {
 
       // Will set the force Properties for all of the masses
       this.masses.forEach( mass => {
-        const contactForce = this.engine.bodyGetContactForces( mass.body );
+        let contactForce = this.engine.bodyGetContactForces( mass.body );
+
+        // p2.js will report bad forces for static scales, so we need to zero these out
+        if ( !contactForce.isFinite() ) {
+          contactForce = Vector2.ZERO;
+        }
+
         this.engine.resetContactForces( mass.body );
         mass.contactForceInterpolatedProperty.setNextValue( contactForce );
 

@@ -196,14 +196,6 @@ class Scale extends Mass {
 
     this.scaleForceInterpolatedProperty.setRatio( interpolationRatio );
   }
-
-  /**
-   * Resets things to their original values.
-   * @public
-   */
-  reset() {
-    super.reset();
-  }
 }
 
 // @public (read-only) {number}

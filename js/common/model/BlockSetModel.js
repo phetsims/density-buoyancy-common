@@ -106,6 +106,9 @@ const BlockSetModel = ( type, BlockSet, initialMode ) => {
       // Reposition AFTER the reset
       BlockSet.VALUES.forEach( blockSet => this.positionMasses( blockSet ) );
 
+      // Reset the previous positions on masses
+      BlockSet.VALUES.forEach( blockSet => this.blockSetToMassesMap[ blockSet ].forEach( mass => this.engine.bodySynchronizePrevious( mass.body ) ) );
+
       // Rehandle visibility, since we reset them
       BlockSet.VALUES.forEach( blockSet => this.blockSetToMassesMap[ blockSet ].forEach( mass => { mass.visibleProperty.value = blockSet === this.blockSetProperty.value; } ) );
     }

@@ -249,6 +249,7 @@ class DensityMysteryModel extends BlockSetModel( DensityBuoyancyModel, BlockSet,
     // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
     scalePositionProperty.lazyLink( position => {
       this.scale.matrix.set02( position.x );
+      this.scale.matrix.set12( position.y );
       this.scale.writeData();
 
       // When we reset-all, we'll want it to move back to here

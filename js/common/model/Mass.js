@@ -314,6 +314,14 @@ class Mass extends PhetioObject {
   }
 
   /**
+   * Sets the current location to be the proper position for the mass when it is reset.
+   * @public
+   */
+  setResetLocation() {
+    this.originalMatrix = this.matrix.copy();
+  }
+
+  /**
    * Reads transform/velocity from the physics model engine.
    * @private
    */

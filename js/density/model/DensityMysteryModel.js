@@ -7,6 +7,7 @@
  */
 
 import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
+import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import Matrix3 from '../../../../dot/js/Matrix3.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import dotRandom from '../../../../dot/js/dotRandom.js';
@@ -231,9 +232,13 @@ class DensityMysteryModel extends BlockSetModel( DensityBuoyancyModel, BlockSet,
       tandem: tandem.createTandem( 'densityTableExpandedProperty' )
     } );
 
+    const scalePositionProperty = new DerivedProperty( [ this.invisibleBarrierBoundsProperty ], bounds => {
+      return new Vector2( -0.75 + bounds.minX + 0.875, -Scale.SCALE_BASE_BOUNDS.minY );
+    } );
+
     // @public (read-only) {Scale}
     this.scale = new Scale( this.engine, this.gravityProperty, {
-      matrix: Matrix3.translation( -0.75, -Scale.SCALE_BASE_BOUNDS.minY ),
+      matrix: Matrix3.translationFromVector( scalePositionProperty.value ),
       displayType: Scale.DisplayType.KILOGRAMS,
       canMove: false,
       tandem: tandem.createTandem( 'scale' )
@@ -242,9 +247,12 @@ class DensityMysteryModel extends BlockSetModel( DensityBuoyancyModel, BlockSet,
 
     // Move the scale with the barrier, see https://github.com/phetsims/density/issues/73
     // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
-    this.invisibleBarrierBoundsProperty.lazyLink( ( newBounds, oldBounds ) => {
-      this.scale.matrix.set02( this.scale.matrix.m02() + newBounds.minX - oldBounds.minX );
+    scalePositionProperty.lazyLink( position => {
+      this.scale.matrix.set02( position.x );
       this.scale.writeData();
+
+      // When we reset-all, we'll want it to move back to here
+      this.scale.setResetLocation();
 
       // Adjust its previous position also
       this.engine.bodySynchronizePrevious( this.scale.body );

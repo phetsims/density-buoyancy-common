@@ -508,6 +508,7 @@ Mass.MassIO = new IOType( 'MassIO', {
   stateSchema: {
     matrix: Matrix3.Matrix3IO,
     stepMatrix: Matrix3.Matrix3IO,
+    originalMatrix: Matrix3.Matrix3IO,
     canRotate: BooleanIO,
     canMove: BooleanIO,
     tag: EnumerationIO( Mass.MassTag ),
@@ -523,6 +524,7 @@ Mass.MassIO = new IOType( 'MassIO', {
     return merge( {
       matrix: Matrix3.toStateObject( mass.matrix ),
       stepMatrix: Matrix3.toStateObject( mass.stepMatrix ),
+      originalMatrix: Matrix3.toStateObject( mass.originalMatrix ),
       canRotate: BooleanIO.toStateObject( mass.canRotate ),
       canMove: BooleanIO.toStateObject( mass.canMove ),
       tag: EnumerationIO( MassTag ).toStateObject( mass.tag )
@@ -531,6 +533,7 @@ Mass.MassIO = new IOType( 'MassIO', {
   applyState( mass, obj ) {
     mass.matrix.set( Matrix3.fromStateObject( obj.matrix ) );
     mass.stepMatrix.set( Matrix3.fromStateObject( obj.stepMatrix ) );
+    mass.originalMatrix.set( Matrix3.fromStateObject( obj.originalMatrix ) );
     mass.canRotate = BooleanIO.fromStateObject( obj.canRotate );
     mass.canMove = BooleanIO.fromStateObject( obj.canMove );
     mass.tag = EnumerationIO( MassTag ).fromStateObject( obj.tag );

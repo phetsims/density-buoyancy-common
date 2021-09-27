@@ -72,12 +72,12 @@ class MaterialMassVolumeControlNode extends VBox {
       align: 'left'
     } );
 
-    const MaterialEnumeration = Enumeration.byKeys( [ ...materials.map( material => material.tandemName.toUpperCase() ), 'CUSTOM' ] );
+    const MaterialEnumeration = Enumeration.byKeys( [ ...materials.map( material => material.identifier ), 'CUSTOM' ] );
 
     const comboBoxMaterialProperty = new DynamicProperty( new Property( materialProperty ), {
       bidirectional: true,
       map: material => {
-        return material.custom ? MaterialEnumeration.CUSTOM : MaterialEnumeration[ material.tandemName.toUpperCase() ];
+        return material.custom ? MaterialEnumeration.CUSTOM : MaterialEnumeration[ material.identifier ];
       },
       inverseMap: materialEnum => {
         if ( materialEnum === MaterialEnumeration.CUSTOM ) {
@@ -86,7 +86,7 @@ class MaterialMassVolumeControlNode extends VBox {
           } );
         }
         else {
-           return _.find( materials, material => material.tandemName.toUpperCase() === materialEnum.name );
+           return Material[ materialEnum.name ];
         }
       },
       reentrant: true,
@@ -223,7 +223,7 @@ class MaterialMassVolumeControlNode extends VBox {
         return new ComboBoxItem( new Text( material.name, {
           font: DensityBuoyancyCommonConstants.COMBO_BOX_ITEM_FONT,
           maxWidth: comboMaxWidth
-        } ), MaterialEnumeration[ material.tandemName.toUpperCase() ], { tandemName: `${material.tandemName}Item` } );
+        } ), MaterialEnumeration[ material.identifier ], { tandemName: `${material.tandemName}Item` } );
       } ),
       new ComboBoxItem( new Text( densityBuoyancyCommonStrings.material.custom, {
         font: DensityBuoyancyCommonConstants.COMBO_BOX_ITEM_FONT,

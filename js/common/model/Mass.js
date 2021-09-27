@@ -9,6 +9,7 @@
 import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import Emitter from '../../../../axon/js/Emitter.js';
+import EnumerationProperty from '../../../../axon/js/EnumerationProperty.js';
 import NumberProperty from '../../../../axon/js/NumberProperty.js';
 import Property from '../../../../axon/js/Property.js';
 import StringProperty from '../../../../axon/js/StringProperty.js';
@@ -22,6 +23,8 @@ import Shape from '../../../../kite/js/Shape.js';
 import Enumeration from '../../../../phet-core/js/Enumeration.js';
 import EnumerationIO from '../../../../phet-core/js/EnumerationIO.js';
 import merge from '../../../../phet-core/js/merge.js';
+import Color from '../../../../scenery/js/util/Color.js';
+import ColorProperty from '../../../../scenery/js/util/ColorProperty.js';
 import PhetioObject from '../../../../tandem/js/PhetioObject.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
 import BooleanIO from '../../../../tandem/js/types/BooleanIO.js';
@@ -82,6 +85,20 @@ const blockStringMap = {
   [ MassTag.E.name ]: densityBuoyancyCommonStrings.massLabel.e
 };
 
+const MaterialEnumeration = Enumeration.byKeys( [
+  'ALUMINUM',
+  'BRICK',
+  'COPPER',
+  'ICE',
+  'PLATINUM',
+  'STEEL',
+  'STYROFOAM',
+  'WOOD',
+
+  'CUSTOM'
+] );
+const materialToEnum = material => MaterialEnumeration[ material.identifier || 'CUSTOM' ];
+
 class Mass extends PhetioObject {
   /**
    * @param {PhysicsEngine} engine
@@ -113,6 +130,9 @@ class Mass extends PhetioObject {
 
       // {boolean} - optional
       canMove: true,
+
+      // {boolean} - optional
+      adjustableMaterial: false,
 
       // {MassTag} - optional
       tag: MassTag.NONE,
@@ -172,6 +192,76 @@ class Mass extends PhetioObject {
       tandem: tandem.createTandem( 'materialProperty' ),
       phetioType: Property.PropertyIO( Material.MaterialIO )
     }, config.materialPropertyOptions ) );
+
+    if ( config.adjustableMaterial ) {
+
+      // @public {Property.<MaterialEnumeration>} -- for phet-io support (to control the materialProperty)
+      this.materialEnumProperty = new EnumerationProperty( MaterialEnumeration, materialToEnum( config.material ), {
+        tandem: tandem.createTandem( 'materialEnumProperty' ),
+        phetioState: false
+      } );
+      // @public {Property.<number>} -- for phet-io support (to control the materialProperty)
+      this.customDensityProperty = new NumberProperty( config.material.density, {
+        tandem: tandem.createTandem( 'customDensityProperty' ),
+        phetioState: false,
+        range: new Range( 50, 30000 )
+      } );
+      // @public {Property.<Color>} -- for phet-io support (to control the materialProperty)
+      this.customColorProperty = new ColorProperty( config.material.customColor ? config.material.customColor.value : Color.WHITE, {
+        tandem: tandem.createTandem( 'customColorProperty' ),
+        phetioState: false
+      } );
+
+      // Hook up phet-io Properties for interoperation with the normal ones
+      let enumLock = false;
+      let densityLock = false;
+      let colorLock = false;
+      const colorListener = color => {
+        if ( !colorLock ) {
+          colorLock = true;
+           this.customColorProperty.value = color;
+          colorLock = false;
+        }
+      };
+      this.materialProperty.link( ( material, oldMaterial ) => {
+        if ( !enumLock ) {
+          enumLock = true;
+          this.materialEnumProperty.value = materialToEnum( material );
+          enumLock = false;
+        }
+        if ( !densityLock ) {
+          densityLock = true;
+          this.customDensityProperty.value = material.density;
+          densityLock = false;
+        }
+        if ( oldMaterial && oldMaterial.customColor ) {
+          oldMaterial.customColor.unlink( colorListener );
+        }
+        if ( material && material.customColor ) {
+          material.customColor.link( colorListener );
+        }
+      } );
+      Property.lazyMultilink( [ this.materialEnumProperty, this.customDensityProperty, this.customColorProperty ], ( materialEnum, density, color ) => {
+        // See if it's an external change
+        if ( !enumLock && !densityLock && !colorLock ) {
+          enumLock = true;
+          densityLock = true;
+          colorLock = true;
+          if ( materialEnum === MaterialEnumeration.CUSTOM ) {
+            this.materialProperty.value = Material.createCustomSolidMaterial( {
+              density: this.customDensityProperty.value,
+              customColor: this.customColorProperty
+            } );
+          }
+          else {
+            this.materialProperty.value = Material[ materialEnum.name ];
+          }
+          enumLock = false;
+          densityLock = false;
+          colorLock = false;
+        }
+      } );
+    }
 
     // @public {Property.<number>} - In m^3 (cubic meters)
     this.volumeProperty = new NumberProperty( config.volume, {

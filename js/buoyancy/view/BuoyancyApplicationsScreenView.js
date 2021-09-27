@@ -28,7 +28,7 @@ import HSeparator from '../../../../sun/js/HSeparator.js';
 import Panel from '../../../../sun/js/Panel.js';
 import RectangularRadioButtonGroup from '../../../../sun/js/buttons/RectangularRadioButtonGroup.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
-import Cuboid from '../../common/model/Cuboid.js';
+import Cube from '../../common/model/Cube.js';
 import Material from '../../common/model/Material.js';
 import DensityBuoyancyCommonColors from '../../common/view/DensityBuoyancyCommonColors.js';
 import DensityBuoyancyScreenView from '../../common/view/DensityBuoyancyScreenView.js';
@@ -144,7 +144,7 @@ class BuoyancyApplicationsScreenView extends DensityBuoyancyScreenView {
       Material.ICE,
       Material.BRICK,
       Material.ALUMINUM
-    ], material => material.density ), cubicMeters => model.block.updateSize( Cuboid.boundsFromVolume( cubicMeters ) ), this.popupLayer, {
+    ], material => material.density ), cubicMeters => model.block.updateSize( Cube.boundsFromVolume( cubicMeters ) ), this.popupLayer, {
       tandem: tandem.createTandem( 'blockControlNode' )
     } );
 

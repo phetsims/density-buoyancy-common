@@ -10,7 +10,7 @@ import Matrix3 from '../../../../dot/js/Matrix3.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import Enumeration from '../../../../phet-core/js/Enumeration.js';
 import BlockSetModel from '../../common/model/BlockSetModel.js';
-import Cuboid from '../../common/model/Cuboid.js';
+import Cube from '../../common/model/Cube.js';
 import DensityBuoyancyModel from '../../common/model/DensityBuoyancyModel.js';
 import Material from '../../common/model/Material.js';
 import Scale from '../../common/model/Scale.js';
@@ -35,18 +35,18 @@ class BuoyancyIntroModel extends BlockSetModel( DensityBuoyancyModel, BlockSet, 
       switch( blockSet ) {
         case BlockSet.SAME_MASS:
           return [
-            Cuboid.createWithMass( model.engine, Material.WOOD, Vector2.ZERO, 5, { tandem: tandem.createTandem( 'sameMassWood' ) } ),
-            Cuboid.createWithMass( model.engine, Material.BRICK, Vector2.ZERO, 5, { tandem: tandem.createTandem( 'sameMassBrick' ) } )
+            Cube.createWithMass( model.engine, Material.WOOD, Vector2.ZERO, 5, { tandem: tandem.createTandem( 'sameMassWood' ) } ),
+            Cube.createWithMass( model.engine, Material.BRICK, Vector2.ZERO, 5, { tandem: tandem.createTandem( 'sameMassBrick' ) } )
           ];
         case BlockSet.SAME_VOLUME:
           return [
-            Cuboid.createWithVolume( model.engine, Material.WOOD, Vector2.ZERO, 0.005, { tandem: tandem.createTandem( 'sameVolumeWood' ) } ),
-            Cuboid.createWithVolume( model.engine, Material.BRICK, Vector2.ZERO, 0.005, { tandem: tandem.createTandem( 'sameVolumeBrick' ) } )
+            Cube.createWithVolume( model.engine, Material.WOOD, Vector2.ZERO, 0.005, { tandem: tandem.createTandem( 'sameVolumeWood' ) } ),
+            Cube.createWithVolume( model.engine, Material.BRICK, Vector2.ZERO, 0.005, { tandem: tandem.createTandem( 'sameVolumeBrick' ) } )
           ];
         case BlockSet.SAME_DENSITY:
           return [
-            Cuboid.createWithMass( model.engine, Material.WOOD, Vector2.ZERO, 2, { tandem: tandem.createTandem( 'sameDensitySmall' ) } ),
-            Cuboid.createWithMass( model.engine, Material.WOOD, Vector2.ZERO, 4, { tandem: tandem.createTandem( 'sameDensityLarge' ) } )
+            Cube.createWithMass( model.engine, Material.WOOD, Vector2.ZERO, 2, { tandem: tandem.createTandem( 'sameDensitySmall' ) } ),
+            Cube.createWithMass( model.engine, Material.WOOD, Vector2.ZERO, 4, { tandem: tandem.createTandem( 'sameDensityLarge' ) } )
           ];
         default:
           throw new Error( `unknown blockSet: ${blockSet}` );

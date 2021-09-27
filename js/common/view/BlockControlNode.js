@@ -7,7 +7,7 @@
  */
 
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
-import Cuboid from '../model/Cuboid.js';
+import Cube from '../model/Cube.js';
 import Material from '../model/Material.js';
 import MaterialMassVolumeControlNode from './MaterialMassVolumeControlNode.js';
 
@@ -24,7 +24,7 @@ class BlockControlNode extends MaterialMassVolumeControlNode {
       Material.ICE,
       Material.BRICK,
       Material.ALUMINUM
-    ], cubicMeters => cuboid.updateSize( Cuboid.boundsFromVolume( cubicMeters ) ), listParent, options );
+    ], cubicMeters => cuboid.updateSize( Cube.boundsFromVolume( cubicMeters ) ), listParent, options );
   }
 }
 

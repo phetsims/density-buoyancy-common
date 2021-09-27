@@ -15,7 +15,7 @@ import Enumeration from '../../../../phet-core/js/Enumeration.js';
 import merge from '../../../../phet-core/js/merge.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 import BlockSetModel from '../../common/model/BlockSetModel.js';
-import Cuboid from '../../common/model/Cuboid.js';
+import Cube from '../../common/model/Cube.js';
 import DensityBuoyancyModel from '../../common/model/DensityBuoyancyModel.js';
 import Mass from '../../common/model/Mass.js';
 import Material from '../../common/model/Material.js';
@@ -85,81 +85,81 @@ class DensityMysteryModel extends BlockSetModel( DensityBuoyancyModel, BlockSet,
       switch( blockSet ) {
         case BlockSet.SET_1:
           return [
-            Cuboid.createWithVolume( model.engine, Material.createCustomMaterial( {
+            Cube.createWithVolume( model.engine, Material.createCustomMaterial( {
               density: Material.WATER.density,
               customColor: DensityBuoyancyCommonColors.compareRedColorProperty
             } ), Vector2.ZERO, 0.005, { adjustableMaterial: true, tag: Mass.MassTag.ONE_D, tandem: set1Tandem.createTandem( 'block1D' ) } ),
 
-            Cuboid.createWithVolume( model.engine, Material.createCustomMaterial( {
+            Cube.createWithVolume( model.engine, Material.createCustomMaterial( {
               density: Material.WOOD.density,
               customColor: DensityBuoyancyCommonColors.compareBlueColorProperty
             } ), Vector2.ZERO, 0.001, { adjustableMaterial: true, tag: Mass.MassTag.ONE_B, tandem: set1Tandem.createTandem( 'block1B' ) } ),
 
-            Cuboid.createWithVolume( model.engine, Material.createCustomMaterial( {
+            Cube.createWithVolume( model.engine, Material.createCustomMaterial( {
               density: Material.WOOD.density,
               customColor: DensityBuoyancyCommonColors.compareGreenColorProperty
             } ), Vector2.ZERO, 0.007, { adjustableMaterial: true, tag: Mass.MassTag.ONE_E, tandem: set1Tandem.createTandem( 'block1E' ) } ),
 
-            Cuboid.createWithVolume( model.engine, Material.createCustomMaterial( {
+            Cube.createWithVolume( model.engine, Material.createCustomMaterial( {
               density: Material.GOLD.density,
               customColor: DensityBuoyancyCommonColors.compareYellowColorProperty
             } ), Vector2.ZERO, 0.001, { adjustableMaterial: true, tag: Mass.MassTag.ONE_C, tandem: set1Tandem.createTandem( 'block1C' ) } ),
 
-            Cuboid.createWithVolume( model.engine, Material.createCustomMaterial( {
+            Cube.createWithVolume( model.engine, Material.createCustomMaterial( {
               density: Material.DIAMOND.density,
               customColor: DensityBuoyancyCommonColors.comparePurpleColorProperty
             } ), Vector2.ZERO, 0.0055, { adjustableMaterial: true, tag: Mass.MassTag.ONE_A, tandem: set1Tandem.createTandem( 'block1A' ) } )
           ];
         case BlockSet.SET_2:
           return [
-            Cuboid.createWithMass( model.engine, Material.createCustomMaterial( {
+            Cube.createWithMass( model.engine, Material.createCustomMaterial( {
               density: 4500,
               customColor: DensityBuoyancyCommonColors.mysteryPinkColorProperty
             } ), Vector2.ZERO, 18, { adjustableMaterial: true, tag: Mass.MassTag.TWO_D, tandem: set2Tandem.createTandem( 'block2D' ) } ),
 
-            Cuboid.createWithMass( model.engine, Material.createCustomMaterial( {
+            Cube.createWithMass( model.engine, Material.createCustomMaterial( {
               density: 11340,
               customColor: DensityBuoyancyCommonColors.mysteryOrangeColorProperty
             } ), Vector2.ZERO, 18, { adjustableMaterial: true, tag: Mass.MassTag.TWO_A, tandem: set2Tandem.createTandem( 'block2A' ) } ),
 
-            Cuboid.createWithVolume( model.engine, Material.createCustomMaterial( {
+            Cube.createWithVolume( model.engine, Material.createCustomMaterial( {
               density: Material.COPPER.density,
               customColor: DensityBuoyancyCommonColors.mysteryLightPurpleColorProperty
             } ), Vector2.ZERO, 0.005, { adjustableMaterial: true, tag: Mass.MassTag.TWO_E, tandem: set2Tandem.createTandem( 'block2E' ) } ),
 
-            Cuboid.createWithMass( model.engine, Material.createCustomMaterial( {
+            Cube.createWithMass( model.engine, Material.createCustomMaterial( {
               density: 2700,
               customColor: DensityBuoyancyCommonColors.mysteryLightGreenColorProperty
             } ), Vector2.ZERO, 2.7, { adjustableMaterial: true, tag: Mass.MassTag.TWO_C, tandem: set2Tandem.createTandem( 'block2C' ) } ),
 
-            Cuboid.createWithMass( model.engine, Material.createCustomMaterial( {
+            Cube.createWithMass( model.engine, Material.createCustomMaterial( {
               density: 2700,
               customColor: DensityBuoyancyCommonColors.mysteryBrownColorProperty
             } ), Vector2.ZERO, 10.8, { adjustableMaterial: true, tag: Mass.MassTag.TWO_B, tandem: set2Tandem.createTandem( 'block2B' ) } )
           ];
         case BlockSet.SET_3:
           return [
-            Cuboid.createWithMass( model.engine, Material.createCustomMaterial( {
+            Cube.createWithMass( model.engine, Material.createCustomMaterial( {
               density: 950,
               customColor: DensityBuoyancyCommonColors.mysteryWhiteColorProperty
             } ), Vector2.ZERO, 6, { adjustableMaterial: true, tag: Mass.MassTag.THREE_E, tandem: set3Tandem.createTandem( 'block3E' ) } ),
 
-            Cuboid.createWithMass( model.engine, Material.createCustomMaterial( {
+            Cube.createWithMass( model.engine, Material.createCustomMaterial( {
               density: 1000,
               customColor: DensityBuoyancyCommonColors.mysteryGrayColorProperty
             } ), Vector2.ZERO, 6, { adjustableMaterial: true, tag: Mass.MassTag.THREE_B, tandem: set3Tandem.createTandem( 'block3B' ) } ),
 
-            Cuboid.createWithMass( model.engine, Material.createCustomMaterial( {
+            Cube.createWithMass( model.engine, Material.createCustomMaterial( {
               density: 400,
               customColor: DensityBuoyancyCommonColors.mysteryMustardColorProperty
             } ), Vector2.ZERO, 2, { adjustableMaterial: true, tag: Mass.MassTag.THREE_D, tandem: set3Tandem.createTandem( 'block3D' ) } ),
 
-            Cuboid.createWithMass( model.engine, Material.createCustomMaterial( {
+            Cube.createWithMass( model.engine, Material.createCustomMaterial( {
               density: 7800,
               customColor: DensityBuoyancyCommonColors.mysteryPeachColorProperty
             } ), Vector2.ZERO, 23.4, { adjustableMaterial: true, tag: Mass.MassTag.THREE_C, tandem: set3Tandem.createTandem( 'block3C' ) } ),
 
-            Cuboid.createWithMass( model.engine, Material.createCustomMaterial( {
+            Cube.createWithMass( model.engine, Material.createCustomMaterial( {
               density: 950,
               customColor: DensityBuoyancyCommonColors.mysteryMaroonColorProperty
             } ), Vector2.ZERO, 2.85, { adjustableMaterial: true, tag: Mass.MassTag.THREE_A, tandem: set3Tandem.createTandem( 'block3A' ) } )
@@ -177,7 +177,7 @@ class DensityMysteryModel extends BlockSetModel( DensityBuoyancyModel, BlockSet,
           const mysteryVolumes = createMysteryVolumes();
 
           return _.range( 0, 5 ).map( i => {
-            return Cuboid.createWithVolume( model.engine, mysteryMaterials[ i ], Vector2.ZERO, mysteryVolumes[ i ], {
+            return Cube.createWithVolume( model.engine, mysteryMaterials[ i ], Vector2.ZERO, mysteryVolumes[ i ], {
               adjustableMaterial: true,
               tag: tags[ i ],
               tandem: randomTandem.createTandem( `block${tags[ i ].name}` )
@@ -196,7 +196,7 @@ class DensityMysteryModel extends BlockSetModel( DensityBuoyancyModel, BlockSet,
 
         masses.forEach( ( mass, i ) => {
           mass.materialProperty.value = mysteryMaterials[ i ];
-          mass.updateSize( Cuboid.boundsFromVolume( mysteryVolumes[ i ] ) );
+          mass.updateSize( Cube.boundsFromVolume( mysteryVolumes[ i ] ) );
         } );
       }
     };

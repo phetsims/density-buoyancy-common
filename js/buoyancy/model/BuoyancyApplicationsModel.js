@@ -12,7 +12,7 @@ import EnumerationProperty from '../../../../axon/js/EnumerationProperty.js';
 import Matrix3 from '../../../../dot/js/Matrix3.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import Enumeration from '../../../../phet-core/js/Enumeration.js';
-import Cuboid from '../../common/model/Cuboid.js';
+import Cube from '../../common/model/Cube.js';
 import DensityBuoyancyModel from '../../common/model/DensityBuoyancyModel.js';
 import Material from '../../common/model/Material.js';
 import Scale from '../../common/model/Scale.js';
@@ -48,8 +48,8 @@ class BuoyancyApplicationsModel extends DensityBuoyancyModel {
       tandem: tandem.createTandem( 'bottle' )
     } );
 
-    // @public (read-only) {Cuboid}
-    this.block = Cuboid.createWithVolume( this.engine, Material.PYRITE, new Vector2( 0.5, 0.5 ), 0.001 );
+    // @public (read-only) {Cube}
+    this.block = Cube.createWithVolume( this.engine, Material.PYRITE, new Vector2( 0.5, 0.5 ), 0.001 );
 
     // @public (read-only) {Boat|null}
     // DerivedProperty doesn't need disposal, since everything here lives for the lifetime of the simulation

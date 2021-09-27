@@ -256,58 +256,6 @@ class Cuboid extends Mass {
 
     return ( tNear >= tFar ) ? null : ( tNear >= 0 ? tNear : ( isFinite( tFar ) && tFar >= 0 ? tFar : null ) );
   }
-
-  /**
-   * Returns the Bounds3 for a Cuboid that would be used for a specific volume (cubical).
-   * @public
-   *
-   * @param {number} volume
-   * @returns {Bounds3}
-   */
-  static boundsFromVolume( volume ) {
-    const halfSideLength = Math.pow( volume, 1 / 3 ) / 2;
-    return new Bounds3(
-      -halfSideLength,
-      -halfSideLength,
-      -halfSideLength,
-      halfSideLength,
-      halfSideLength,
-      halfSideLength
-    );
-  }
-
-  /**
-   * Creates a Cuboid with a defined volume (cubical by default).
-   * @public
-   *
-   * @param {PhysicsEngine} engine
-   * @param {Material} material
-   * @param {Vector2} position
-   * @param {number} volume - m^3
-   * @param {Object} [options]
-   * @returns {Cuboid}
-   */
-  static createWithVolume( engine, material, position, volume, options ) {
-    return new Cuboid( engine, Cuboid.boundsFromVolume( volume ), merge( {
-      matrix: Matrix3.translation( position.x, position.y ),
-      material: material
-    }, options ) );
-  }
-
-  /**
-   * Creates a Cuboid with a defined volume (cubical by default).
-   * @public
-   *
-   * @param {PhysicsEngine} engine
-   * @param {Material} material
-   * @param {Vector2} position
-   * @param {number} mass - kg
-   * @param {Object} [options]
-   * @returns {Cuboid}
-   */
-  static createWithMass( engine, material, position, mass, options ) {
-    return Cuboid.createWithVolume( engine, material, position, mass / material.density, options );
-  }
 }
 
 // @public (read-only) {IOType}

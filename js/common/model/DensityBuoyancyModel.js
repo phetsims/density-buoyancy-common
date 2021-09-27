@@ -533,6 +533,7 @@ class DensityBuoyancyModel {
       mass.matrix.setToTranslation( x, position + mass.sizeProperty.value.height / 2 );
       position += mass.sizeProperty.value.height;
       mass.writeData();
+      this.engine.bodySynchronizePrevious( mass.body );
     } );
   }
 }

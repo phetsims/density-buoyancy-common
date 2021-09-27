@@ -45,19 +45,22 @@ class DensityCompareModel extends BlockSetModel( DensityBuoyancyModel, BlockSet,
     const massProperty = new NumberProperty( 5, {
       range: new Range( 1, 10 ),
       tandem: tandem.createTandem( 'massProperty' ),
-      units: 'kg'
+      units: 'kg',
+      phetioStudioControl: false
     } );
 
     const volumeProperty = new NumberProperty( 0.005, {
       range: new Range( 0.001, 0.01 ),
       tandem: tandem.createTandem( 'volumeProperty' ),
-      units: 'm^3'
+      units: 'm^3',
+      phetioStudioControl: false
     } );
 
     const densityProperty = new NumberProperty( 500, {
       range: new Range( 100, 2000 ),
       tandem: tandem.createTandem( 'densityProperty' ),
-      units: 'kg/m^3'
+      units: 'kg/m^3',
+      phetioStudioControl: false
     } );
 
     const createMaterialProperty = ( colorProperty, densityProperty ) => {

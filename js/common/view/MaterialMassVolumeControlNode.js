@@ -13,6 +13,8 @@ import Property from '../../../../axon/js/Property.js';
 import Dimension2 from '../../../../dot/js/Dimension2.js';
 import Range from '../../../../dot/js/Range.js';
 import Utils from '../../../../dot/js/Utils.js';
+import Enumeration from '../../../../phet-core/js/Enumeration.js';
+import EnumerationIO from '../../../../phet-core/js/EnumerationIO.js';
 import merge from '../../../../phet-core/js/merge.js';
 import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
 import NumberControl from '../../../../scenery-phet/js/NumberControl.js';
@@ -30,7 +32,6 @@ import PrecisionSliderThumb from './PrecisionSliderThumb.js';
 
 // constants
 const LITERS_IN_CUBIC_METER = 1000;
-const CUSTOM_MATERIAL_PLACEHOLDER = null;
 const TRACK_HEIGHT = 3;
 
 class MaterialMassVolumeControlNode extends VBox {
@@ -63,22 +64,36 @@ class MaterialMassVolumeControlNode extends VBox {
 
     const tandem = options.tandem;
 
+    const massNumberControlTandem = tandem.createTandem( 'massNumberControl' );
+    const volumeNumberControlTandem = tandem.createTandem( 'volumeNumberControl' );
+
     super( {
       spacing: 15,
       align: 'left'
     } );
 
+    const MaterialEnumeration = Enumeration.byKeys( [ ...materials.map( material => material.tandemName.toUpperCase() ), 'CUSTOM' ] );
+
     const comboBoxMaterialProperty = new DynamicProperty( new Property( materialProperty ), {
       bidirectional: true,
       map: material => {
-        return material.custom ? CUSTOM_MATERIAL_PLACEHOLDER : material;
+        return material.custom ? MaterialEnumeration.CUSTOM : MaterialEnumeration[ material.tandemName.toUpperCase() ];
       },
-      inverseMap: material => {
-        return material || Material.createCustomSolidMaterial( {
-          density: materialProperty.value.density
-        } );
+      inverseMap: materialEnum => {
+        if ( materialEnum === MaterialEnumeration.CUSTOM ) {
+          return Material.createCustomSolidMaterial( {
+            density: materialProperty.value.density
+          } );
+        }
+        else {
+           return _.find( materials, material => material.tandemName.toUpperCase() === materialEnum.name );
+        }
       },
-      reentrant: true
+      reentrant: true,
+      phetioState: false,
+      tandem: options.tandem.createTandem( 'comboBoxMaterialProperty' ),
+      validValues: MaterialEnumeration.VALUES,
+      phetioType: Property.PropertyIO( EnumerationIO( MaterialEnumeration ) )
     } );
 
     // We need to use "locks" since our behavior is different based on whether the model or user is changing the value
@@ -87,11 +102,41 @@ class MaterialMassVolumeControlNode extends VBox {
     let modelVolumeChanging = false;
     let userVolumeChanging = false;
 
+    // DerivedProperty doesn't need disposal, since everything here lives for the lifetime of the simulation
+    const enabledMassRangeProperty = new DerivedProperty( [ materialProperty ], material => {
+      if ( material.custom ) {
+        return new Range( options.minCustomMass, options.maxCustomMass );
+      }
+      else {
+        const density = material.density;
+
+        const minMass = Utils.clamp( density * options.minVolumeLiters / LITERS_IN_CUBIC_METER, options.minMass, options.maxMass );
+        const maxMass = Utils.clamp( density * options.maxVolumeLiters / LITERS_IN_CUBIC_METER, options.minMass, options.maxMass );
+
+        return new Range( minMass, maxMass );
+      }
+    }, {
+      reentrant: true,
+      phetioState: false,
+      phetioType: DerivedProperty.DerivedPropertyIO( Range.RangeIO ),
+      tandem: massNumberControlTandem.createTandem( 'enabledMassRangeProperty' )
+    } );
+
     // passed to the NumberControl
-    const massNumberProperty = new NumberProperty( massProperty.value );
+    const massNumberProperty = new NumberProperty( massProperty.value, {
+      tandem: massNumberControlTandem.createTandem( 'massNumberProperty' ),
+      phetioState: false,
+      range: enabledMassRangeProperty,
+      phetioStudioControl: false
+    } );
 
     // passed to the NumberControl - liters from m^3
-    const numberControlVolumeProperty = new NumberProperty( volumeProperty.value * LITERS_IN_CUBIC_METER );
+    const numberControlVolumeProperty = new NumberProperty( volumeProperty.value * LITERS_IN_CUBIC_METER, {
+      range: new Range( options.minVolumeLiters, options.maxVolumeLiters ),
+      tandem: volumeNumberControlTandem.createTandem( 'numberControlVolumeProperty' ),
+      phetioState: false,
+      phetioStudioControl: false
+    } );
 
     // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
     numberControlVolumeProperty.lazyLink( liters => {
@@ -126,7 +171,7 @@ class MaterialMassVolumeControlNode extends VBox {
           volumeLiters = options.maxVolumeLiters;
         }
 
-        numberControlVolumeProperty.value = volumeLiters;
+        numberControlVolumeProperty.value = Utils.clamp( volumeLiters, options.minVolumeLiters, options.maxVolumeLiters );
 
         modelVolumeChanging = false;
       }
@@ -166,27 +211,10 @@ class MaterialMassVolumeControlNode extends VBox {
           adjustedMass = max;
         }
 
-        massNumberProperty.value = adjustedMass;
+        massNumberProperty.value = Utils.clamp( adjustedMass, min, max );
 
         modelMassChanging = false;
       }
-    } );
-
-    // DerivedProperty doesn't need disposal, since everything here lives for the lifetime of the simulation
-    const enabledMassRangeProperty = new DerivedProperty( [ materialProperty ], material => {
-      if ( material.custom ) {
-        return new Range( options.minCustomMass, options.maxCustomMass );
-      }
-      else {
-        const density = material.density;
-
-        const minMass = Utils.clamp( density * options.minVolumeLiters / LITERS_IN_CUBIC_METER, options.minMass, options.maxMass );
-        const maxMass = Utils.clamp( density * options.maxVolumeLiters / LITERS_IN_CUBIC_METER, options.minMass, options.maxMass );
-
-        return new Range( minMass, maxMass );
-      }
-    }, {
-      reentrant: true
     } );
 
     const comboMaxWidth = options.labelNode ? 110 : 160;
@@ -195,20 +223,19 @@ class MaterialMassVolumeControlNode extends VBox {
         return new ComboBoxItem( new Text( material.name, {
           font: DensityBuoyancyCommonConstants.COMBO_BOX_ITEM_FONT,
           maxWidth: comboMaxWidth
-        } ), material, { tandemName: `${material.tandemName}Item` } );
+        } ), MaterialEnumeration[ material.tandemName.toUpperCase() ], { tandemName: `${material.tandemName}Item` } );
       } ),
       new ComboBoxItem( new Text( densityBuoyancyCommonStrings.material.custom, {
         font: DensityBuoyancyCommonConstants.COMBO_BOX_ITEM_FONT,
         maxWidth: comboMaxWidth,
         tandemName: 'custom'
-      } ), CUSTOM_MATERIAL_PLACEHOLDER, { tandemName: 'customItem' } )
+      } ), MaterialEnumeration.CUSTOM, { tandemName: 'customItem' } )
     ], comboBoxMaterialProperty, listParent, {
       xMargin: 8,
       yMargin: 4,
       tandem: tandem.createTandem( 'comboBox' )
     } );
 
-    const massNumberControlTandem = tandem.createTandem( 'massNumberControl' );
     const massNumberControl = new NumberControl( densityBuoyancyCommonStrings.mass, massNumberProperty, new Range( options.minMass, options.maxMass ), merge( {
       sliderOptions: {
         thumbNode: new PrecisionSliderThumb( {
@@ -216,7 +243,7 @@ class MaterialMassVolumeControlNode extends VBox {
           tandem: massNumberControlTandem.createTandem( 'slider' ).createTandem( 'thumbNode' )
         } ),
         thumbYOffset: new PrecisionSliderThumb().height / 2 - TRACK_HEIGHT / 2,
-        constrainValue: value => Utils.toFixedNumber( value, 1 ),
+        constrainValue: value => enabledMassRangeProperty.value.constrainValue( Utils.toFixedNumber( value, 1 ) ),
         phetioLinkedProperty: massProperty
       },
       numberDisplayOptions: {
@@ -232,7 +259,6 @@ class MaterialMassVolumeControlNode extends VBox {
       tandem: massNumberControlTandem
     }, MaterialMassVolumeControlNode.getNumberControlOptions() ) );
 
-    const volumeNumberControlTandem = tandem.createTandem( 'volumeNumberControl' );
     const volumeNumberControl = new NumberControl( densityBuoyancyCommonStrings.volume, numberControlVolumeProperty, new Range( options.minVolumeLiters, options.maxVolumeLiters ), merge( {
       sliderOptions: {
         thumbNode: new PrecisionSliderThumb( {

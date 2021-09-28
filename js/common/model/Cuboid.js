@@ -74,7 +74,11 @@ class Cuboid extends Mass {
       this.engine.updateBox( this.body, size.width, size.height );
       this.sizeProperty.value = size;
       this.shapeProperty.value = Shape.rect( size.minX, size.minY, size.width, size.height );
+
+      this.volumeLock = true;
       this.volumeProperty.value = size.width * size.height * size.depth;
+      this.volumeLock = false;
+
       this.forceOffsetProperty.value = new Vector3( 0, 0, size.maxZ );
       this.massOffsetProperty.value = new Vector3( size.minX, size.minY, size.maxZ );
     }

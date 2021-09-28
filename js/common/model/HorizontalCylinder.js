@@ -69,7 +69,10 @@ class HorizontalCylinder extends Mass {
     this.lengthProperty.value = length;
 
     this.shapeProperty.value = HorizontalCylinder.getHorizontalCylinderShape( radius, length );
+
+    this.volumeLock = true;
     this.volumeProperty.value = HorizontalCylinder.getVolume( radius, length );
+    this.volumeLock = false;
 
     this.forceOffsetProperty.value = new Vector3( 0, 0, radius );
     this.massOffsetProperty.value = new Vector3( 0, -radius * 0.5, radius * 0.7 );

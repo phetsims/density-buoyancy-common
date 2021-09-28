@@ -57,7 +57,10 @@ class Boat extends Mass {
 
       engine.updateFromVertices( this.body, vertices, true );
       this.shapeProperty.value = Shape.polygon( vertices ); // TODO: remove shapeProperty for perf?
+
+      this.volumeLock = true;
       this.volumeProperty.value = volume;
+      this.volumeLock = false;
 
       this.bodyOffsetProperty.value = Utils.centroidOfPolygon( vertices ).negated();
       this.writeData();

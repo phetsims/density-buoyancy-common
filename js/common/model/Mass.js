@@ -145,7 +145,8 @@ class Mass extends PhetioObject {
 
       // optional
       inputEnabledPropertyOptions: {},
-      materialPropertyOptions: {}
+      materialPropertyOptions: {},
+      volumePropertyOptions: {}
     }, config );
 
     assert && assert( config.body, 'config.body required' );
@@ -263,19 +264,26 @@ class Mass extends PhetioObject {
       } );
     }
 
+    // @protected {boolean} - Whether we are modifying the volumeProperty directly
+    this.volumeLock = false;
+
     // @public {Property.<number>} - In m^3 (cubic meters)
-    this.volumeProperty = new NumberProperty( config.volume, {
+    this.volumeProperty = new NumberProperty( config.volume, merge( {
       tandem: tandem.createTandem( 'volumeProperty' ),
-      range: new Range( 0, Number.POSITIVE_INFINITY ),
+      range: new Range( 0, 0.1 ),
       phetioReadOnly: true,
-      units: 'm^3'
-    } );
+      units: 'm^3',
+      reentrant: true
+    }, config.volumePropertyOptions ) );
 
     // @public {Property.<number>} - In kg (kilograms), added to the normal mass (computed from density and volume)
     this.containedMassProperty = new NumberProperty( 0, {
       range: new Range( 0, Number.POSITIVE_INFINITY ),
       tandem: Tandem.OPT_OUT
     } );
+
+    // @protected {boolean} - Whether we are modifying the massProperty directly
+    this.massLock = false;
 
     // @public (read-only) {Property.<number>} - In kg (kilograms)
     this.massProperty = new DerivedProperty( [ this.materialProperty, this.volumeProperty, this.containedMassProperty ], ( material, volume, containedMass ) => {

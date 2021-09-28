@@ -19,7 +19,20 @@ class Cube extends Cuboid {
    * @param {Object} config
    */
   constructor( engine, volume, config ) {
+
+    config = merge( {
+      volumePropertyOptions: {
+        phetioReadOnly: false
+      }
+    }, config );
+
     super( engine, Cube.boundsFromVolume( volume ), config );
+
+    this.volumeProperty.lazyLink( volume => {
+      if ( !this.volumeLock ) {
+        this.updateSize( Cube.boundsFromVolume( volume ) );
+      }
+    } );
   }
 
   /**

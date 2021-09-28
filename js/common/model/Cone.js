@@ -85,7 +85,10 @@ class Cone extends Mass {
     this.heightProperty.value = height;
 
     this.shapeProperty.value = Shape.polygon( vertices );
+
+    this.volumeLock = true;
     this.volumeProperty.value = Cone.getVolume( radius, height );
+    this.volumeLock = false;
 
     this.forceOffsetProperty.value = new Vector3( 0, 0, 0 );
     this.massOffsetProperty.value = new Vector3( 0, -this.heightProperty.value * ( this.isVertexUp ? 0.1 : 0.6 ), radius * 0.7 );

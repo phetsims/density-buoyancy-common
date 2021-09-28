@@ -60,7 +60,11 @@ class Ellipsoid extends Mass {
     this.engine.updateFromVertices( this.body, Ellipsoid.getEllipsoidVertices( size.width, size.height ), false );
     this.sizeProperty.value = size;
     this.shapeProperty.value = Ellipsoid.getEllipsoidShape( size.width, size.height );
+
+    this.volumeLock = true;
     this.volumeProperty.value = Ellipsoid.getVolume( size );
+    this.volumeLock = false;
+
     this.forceOffsetProperty.value = new Vector3( 0, 0, size.maxZ );
     this.massOffsetProperty.value = new Vector3( 0, size.minY * 0.5, size.maxZ * 0.7 );
   }

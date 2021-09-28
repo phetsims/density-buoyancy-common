@@ -21,18 +21,38 @@ class Cube extends Cuboid {
   constructor( engine, volume, config ) {
 
     config = merge( {
+      adjustMassWithVolume: false,
+
       volumePropertyOptions: {
         phetioReadOnly: false
       }
     }, config );
 
+    if ( config.adjustMassWithVolume ) {
+      config = merge( {
+        massPropertyOptions: {
+          phetioReadOnly: false
+        }
+      }, config );
+    }
+
     super( engine, Cube.boundsFromVolume( volume ), config );
 
+    // Hook volumeProperty to adjust the size
     this.volumeProperty.lazyLink( volume => {
       if ( !this.volumeLock ) {
         this.updateSize( Cube.boundsFromVolume( volume ) );
       }
     } );
+
+    if ( config.adjustMassWithVolume ) {
+      // Hook massProperty to adjust the size
+      this.massProperty.lazyLink( mass => {
+        if ( !this.massLock ) {
+          this.updateSize( Cube.boundsFromVolume( mass / this.materialProperty.value.density ) );
+        }
+      } );
+    }
   }
 
   /**

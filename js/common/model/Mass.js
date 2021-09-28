@@ -7,7 +7,6 @@
  */
 
 import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
-import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import Emitter from '../../../../axon/js/Emitter.js';
 import EnumerationProperty from '../../../../axon/js/EnumerationProperty.js';
 import NumberProperty from '../../../../axon/js/NumberProperty.js';
@@ -29,7 +28,6 @@ import PhetioObject from '../../../../tandem/js/PhetioObject.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
 import BooleanIO from '../../../../tandem/js/types/BooleanIO.js';
 import IOType from '../../../../tandem/js/types/IOType.js';
-import NumberIO from '../../../../tandem/js/types/NumberIO.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import densityBuoyancyCommonStrings from '../../densityBuoyancyCommonStrings.js';
 import InterpolatedProperty from './InterpolatedProperty.js';
@@ -146,7 +144,8 @@ class Mass extends PhetioObject {
       // optional
       inputEnabledPropertyOptions: {},
       materialPropertyOptions: {},
-      volumePropertyOptions: {}
+      volumePropertyOptions: {},
+      massPropertyOptions: {}
     }, config );
 
     assert && assert( config.body, 'config.body required' );
@@ -286,12 +285,19 @@ class Mass extends PhetioObject {
     this.massLock = false;
 
     // @public (read-only) {Property.<number>} - In kg (kilograms)
-    this.massProperty = new DerivedProperty( [ this.materialProperty, this.volumeProperty, this.containedMassProperty ], ( material, volume, containedMass ) => {
-      return material.density * volume + containedMass;
-    }, {
+    this.massProperty = new NumberProperty( this.materialProperty.value.density * this.volumeProperty.value + this.containedMassProperty.value, merge( {
       tandem: tandem.createTandem( 'massProperty' ),
-      phetioType: DerivedProperty.DerivedPropertyIO( NumberIO ),
-      units: 'kg'
+      phetioReadOnly: true,
+      phetioState: false,
+      units: 'kg',
+      reentrant: true,
+      range: new Range( 0.1, 100 )
+    }, config.massPropertyOptions ) );
+
+    Property.multilink( [ this.materialProperty, this.volumeProperty, this.containedMassProperty ], ( material, volume, containedMass ) => {
+      this.massLock = true;
+      this.massProperty.value = material.density * volume + containedMass;
+      this.massLock = false;
     } );
 
     // @public {Property.<Vector2>} - The following offset will be added onto the body's position to determine ours.

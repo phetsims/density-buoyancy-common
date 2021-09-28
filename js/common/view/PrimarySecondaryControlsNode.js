@@ -6,7 +6,9 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
+import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import merge from '../../../../phet-core/js/merge.js';
+import Node from '../../../../scenery/js/nodes/Node.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import BlockControlNode from './BlockControlNode.js';
 import DensityBuoyancyCommonColors from './DensityBuoyancyCommonColors.js';
@@ -25,19 +27,27 @@ class PrimarySecondaryControlsNode extends PrimarySecondaryPanelsNode {
     const tandem = options.tandem;
     const omittedOptions = _.omit( options, [ 'tandem' ] );
 
+    const primaryControlNode = new BlockControlNode( primaryMass, popupLayer, merge( {
+      labelNode: PrimarySecondaryPanelsNode.getPrimaryLabelNode(),
+      color: DensityBuoyancyCommonColors.labelAProperty,
+      tandem: tandem.createTandem( 'blockAControlPanel' )
+    }, omittedOptions ) );
+
+    const secondaryControlNode = new BlockControlNode( secondaryMass, popupLayer, merge( {
+      labelNode: PrimarySecondaryPanelsNode.getSecondaryLabelNode(),
+      color: DensityBuoyancyCommonColors.labelBProperty,
+      tandem: tandem.createTandem( 'blockBControlPanel' )
+    }, omittedOptions ) );
+
     super(
-      new BlockControlNode( primaryMass, popupLayer, merge( {
-        labelNode: PrimarySecondaryPanelsNode.getPrimaryLabelNode(),
-        color: DensityBuoyancyCommonColors.labelAProperty,
-        visibleProperty: primaryMass.visibleProperty,
-        tandem: tandem.createTandem( 'blockAControlPanel' )
-      }, omittedOptions ) ),
-      new BlockControlNode( secondaryMass, popupLayer, merge( {
-        labelNode: PrimarySecondaryPanelsNode.getSecondaryLabelNode(),
-        color: DensityBuoyancyCommonColors.labelBProperty,
-        visibleProperty: secondaryMass.visibleProperty,
-        tandem: tandem.createTandem( 'blockBControlPanel' )
-      }, omittedOptions ) )
+      new Node( {
+        children: [ primaryControlNode ],
+        visibleProperty: DerivedProperty.and( [ primaryMass.visibleProperty, primaryControlNode.visibleProperty ] )
+      } ),
+      new Node( {
+        children: [ secondaryControlNode ],
+        visibleProperty: DerivedProperty.and( [ secondaryMass.visibleProperty, secondaryControlNode.visibleProperty ] )
+      } )
     );
   }
 }

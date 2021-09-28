@@ -1,4 +1,4 @@
-// Copyright 2019-2021, University of Colorado Boulder
+// Copyright 2021, University of Colorado Boulder
 
 /**
  * A cuboid with the same dimension in all directions (allows adjusting volume on the fly)

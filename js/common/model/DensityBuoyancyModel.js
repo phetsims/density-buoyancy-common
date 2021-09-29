@@ -534,6 +534,7 @@ class DensityBuoyancyModel {
       position += mass.sizeProperty.value.height;
       mass.writeData();
       this.engine.bodySynchronizePrevious( mass.body );
+      mass.transformedEmitter.emit();
     } );
   }
 }

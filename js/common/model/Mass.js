@@ -653,8 +653,6 @@ Mass.MassIO = new IOType( 'MassIO', {
     force: Vector2.Vector2IO
   },
   toStateObject( mass ) {
-    mass.readData();
-
     return merge( {
       matrix: Matrix3.toStateObject( mass.matrix ),
       stepMatrix: Matrix3.toStateObject( mass.stepMatrix ),

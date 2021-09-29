@@ -153,6 +153,7 @@ class BuoyancyShapesModel extends DensityBuoyancyModel {
       massProperty.lazyLink( ( newMass, oldMass ) => {
         newMass.matrix.set( oldMass.matrix );
         newMass.writeData();
+        newMass.transformedEmitter.emit();
 
         if ( this.masses.includes( oldMass ) ) {
           this.masses.remove( oldMass );
@@ -185,9 +186,11 @@ class BuoyancyShapesModel extends DensityBuoyancyModel {
   setInitialPositions() {
     this.primaryMassProperty.value.matrix.setToTranslation( -0.3, 0 );
     this.primaryMassProperty.value.writeData();
+    this.primaryMassProperty.value.transformedEmitter.emit();
 
     this.secondaryMassProperty.value.matrix.setToTranslation( 0.3, 0 );
     this.secondaryMassProperty.value.writeData();
+    this.secondaryMassProperty.value.transformedEmitter.emit();
   }
 
   /**

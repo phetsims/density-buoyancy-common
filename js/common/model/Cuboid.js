@@ -81,6 +81,8 @@ class Cuboid extends Mass {
 
       this.forceOffsetProperty.value = new Vector3( 0, 0, size.maxZ );
       this.massOffsetProperty.value = new Vector3( size.minX, size.minY, size.maxZ );
+
+      this.transformedEmitter.emit();
     }
   }
 

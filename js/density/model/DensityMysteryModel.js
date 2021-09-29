@@ -259,6 +259,8 @@ class DensityMysteryModel extends BlockSetModel( DensityBuoyancyModel, BlockSet,
 
       // Adjust its previous position also
       this.engine.bodySynchronizePrevious( this.scale.body );
+
+      this.scale.transformedEmitter.emit();
     } );
 
     this.uninterpolateMasses();

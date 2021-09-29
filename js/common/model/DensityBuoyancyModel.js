@@ -471,6 +471,7 @@ class DensityBuoyancyModel {
       );
       position -= BLOCK_SPACING + mass.sizeProperty.value.width;
       mass.writeData();
+      mass.transformedEmitter.emit();
     } );
   }
 
@@ -490,6 +491,7 @@ class DensityBuoyancyModel {
       );
       position += BLOCK_SPACING + mass.sizeProperty.value.width;
       mass.writeData();
+      mass.transformedEmitter.emit();
     } );
   }
 

@@ -465,6 +465,8 @@ class Mass extends PhetioObject {
     // Apply the body offset
     this.matrix.set02( this.matrix.m02() + this.bodyOffsetProperty.value.x );
     this.matrix.set12( this.matrix.m12() + this.bodyOffsetProperty.value.y );
+
+    this.transformedEmitter.emit();
   }
 
   /**
@@ -588,10 +590,8 @@ class Mass extends PhetioObject {
 
     this.matrix.set( this.originalMatrix );
     this.writeData();
-
-    this.transformedEmitter.emit();
-
     this.engine.bodySynchronizePrevious( this.body );
+    this.transformedEmitter.emit();
   }
 
   /**
@@ -672,6 +672,7 @@ Mass.MassIO = new IOType( 'MassIO', {
     mass.canMove = BooleanIO.fromStateObject( obj.canMove );
     mass.tag = EnumerationIO( MassTag ).fromStateObject( obj.tag );
     mass.engine.bodyApplyState( mass.body, obj );
+    mass.transformedEmitter.emit();
   }
 } );
 

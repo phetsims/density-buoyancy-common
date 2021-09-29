@@ -786,6 +786,10 @@ class DensityBuoyancyScreenView extends ScreenView {
       return;
     }
 
+    assert && this.massViews.forEach( massView => {
+      assert( massView.position.x === massView.mass.matrix.translation.x );
+    } );
+
     this.sceneNode.render( undefined );
 
     this.scaleReadoutNodes.forEach( scaleReadoutNode => {

@@ -48,8 +48,8 @@ class DensityIntroScreenView extends SecondaryMassScreenView {
       { tandem: tandem }
     );
 
-    const accordionTandem = tandem.createTandem( 'densityReadoutAccordionBox' );
-    const densityReadoutAccordionBox = new AccordionBox( new DensityReadoutNode(
+    const accordionTandem = tandem.createTandem( 'densityAccordionBox' );
+    const densityAccordionBox = new AccordionBox( new DensityReadoutNode(
       // DerivedProperty doesn't need disposal, since everything here lives for the lifetime of the simulation
       new DerivedProperty( [ model.primaryMass.materialProperty ], material => material.density ),
       new DerivedProperty( [ model.secondaryMass.materialProperty ], material => material.density ),
@@ -65,7 +65,7 @@ class DensityIntroScreenView extends SecondaryMassScreenView {
       tandem: accordionTandem
     }, DensityBuoyancyCommonConstants.ACCORDION_BOX_OPTIONS ) );
 
-    this.addChild( new AlignPropertyBox( densityReadoutAccordionBox, this.visibleBoundsProperty, {
+    this.addChild( new AlignPropertyBox( densityAccordionBox, this.visibleBoundsProperty, {
       xAlign: 'center',
       yAlign: 'top',
       margin: MARGIN

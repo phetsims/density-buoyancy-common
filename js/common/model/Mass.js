@@ -291,7 +291,7 @@ class Mass extends PhetioObject {
       phetioState: false,
       units: 'kg',
       reentrant: true,
-      range: new Range( 0.1, 500 )
+      range: new Range( Number.MIN_VALUE, 500 )
     }, config.massPropertyOptions ) );
 
     Property.multilink( [ this.materialProperty, this.volumeProperty, this.containedMassProperty ], ( material, volume, containedMass ) => {

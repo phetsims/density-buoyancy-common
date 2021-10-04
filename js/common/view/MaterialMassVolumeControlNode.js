@@ -82,7 +82,7 @@ class MaterialMassVolumeControlNode extends VBox {
       inverseMap: materialEnum => {
         if ( materialEnum === MaterialEnumeration.CUSTOM ) {
           return Material.createCustomSolidMaterial( {
-            density: materialProperty.value.density
+            density: Utils.clamp( materialProperty.value.density, options.minCustomMass / volumeProperty.value, options.maxCustomMass / volumeProperty.value )
           } );
         }
         else {

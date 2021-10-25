@@ -204,7 +204,8 @@ class Mass extends PhetioObject {
       this.customDensityProperty = new NumberProperty( config.material.density, {
         tandem: tandem.createTandem( 'customDensityProperty' ),
         phetioState: false,
-        range: new Range( 50, 30000 )
+        range: new Range( Number.MIN_VALUE, Number.POSITIVE_INFINITY ),
+        phetioStudioControl: false
       } );
       // @public {Property.<Color>} -- for phet-io support (to control the materialProperty)
       this.customColorProperty = new ColorProperty( config.material.customColor ? config.material.customColor.value : Color.WHITE, {
@@ -269,10 +270,11 @@ class Mass extends PhetioObject {
     // @public {Property.<number>} - In m^3 (cubic meters)
     this.volumeProperty = new NumberProperty( config.volume, merge( {
       tandem: tandem.createTandem( 'volumeProperty' ),
-      range: new Range( 0, 0.1 ),
+      range: new Range( 0, Number.POSITIVE_INFINITY ),
       phetioReadOnly: true,
       units: 'm^3',
-      reentrant: true
+      reentrant: true,
+      phetioStudioControl: false
     }, config.volumePropertyOptions ) );
 
     // @public {Property.<number>} - In kg (kilograms), added to the normal mass (computed from density and volume)
@@ -291,7 +293,8 @@ class Mass extends PhetioObject {
       phetioState: false,
       units: 'kg',
       reentrant: true,
-      range: new Range( Number.MIN_VALUE, 500 )
+      range: new Range( Number.MIN_VALUE, Number.POSITIVE_INFINITY ),
+      phetioStudioControl: false
     }, config.massPropertyOptions ) );
 
     Property.multilink( [ this.materialProperty, this.volumeProperty, this.containedMassProperty ], ( material, volume, containedMass ) => {

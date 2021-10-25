@@ -199,7 +199,8 @@ class Bottle extends Mass {
     // @public {Property.<number>}
     this.interiorVolumeProperty = new NumberProperty( BOTTLE_INITIAL_INTERIOR_VOLUME, {
       tandem: config.tandem.createTandem( 'interiorVolumeProperty' ),
-      range: new Range( 0, Number.POSITIVE_INFINITY )
+      range: new Range( 0, Number.POSITIVE_INFINITY ),
+      phetioStudioControl: false
     } );
 
     // @public (read-only) {Property.<number>} - In kg (kilograms)

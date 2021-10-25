@@ -33,7 +33,8 @@ class Basin {
       phetioReadOnly: true,
       range: new Range( 0, Number.POSITIVE_INFINITY ),
       phetioDocumentation: 'The volume of liquid contained in the basin',
-      units: 'm^3'
+      units: 'm^3',
+      phetioStudioControl: false
     } );
 
     // @public {Property.<number>} - The y coordinate of the liquid level (absolute in the model, NOT relative to

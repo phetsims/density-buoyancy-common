@@ -6,6 +6,7 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
+import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import DynamicProperty from '../../../../axon/js/DynamicProperty.js';
 import Property from '../../../../axon/js/Property.js';
 import Range from '../../../../dot/js/Range.js';
@@ -155,7 +156,9 @@ class DensityCompareScreenView extends DensityBuoyancyScreenView {
         volumeNumberControl,
         densityNumberControl
       ]
-    } ), DensityBuoyancyCommonConstants.PANEL_OPTIONS );
+    } ), merge( {
+      visibleProperty: DerivedProperty.or( [ massNumberControl.visibleProperty, volumeNumberControl.visibleProperty, densityNumberControl.visibleProperty ] )
+    }, DensityBuoyancyCommonConstants.PANEL_OPTIONS ) );
     this.addChild( numberControlPanel );
 
     // @private {function()}

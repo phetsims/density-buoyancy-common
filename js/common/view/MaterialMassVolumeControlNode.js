@@ -256,7 +256,12 @@ class MaterialMassVolumeControlNode extends VBox {
         enabledEpsilon: 1e-7
       },
       enabledRangeProperty: enabledMassRangeProperty,
-      tandem: massNumberControlTandem
+      tandem: massNumberControlTandem,
+      titleNodeOptions: {
+        visiblePropertyOptions: {
+          phetioReadOnly: true
+        }
+      }
     }, MaterialMassVolumeControlNode.getNumberControlOptions() ) );
 
     const volumeNumberControl = new NumberControl( densityBuoyancyCommonStrings.volume, numberControlVolumeProperty, new Range( options.minVolumeLiters, options.maxVolumeLiters ), merge( {
@@ -278,7 +283,12 @@ class MaterialMassVolumeControlNode extends VBox {
       arrowButtonOptions: {
         enabledEpsilon: 1e-7
       },
-      tandem: volumeNumberControlTandem
+      tandem: volumeNumberControlTandem,
+      titleNodeOptions: {
+        visiblePropertyOptions: {
+          phetioReadOnly: true
+        }
+      }
     }, MaterialMassVolumeControlNode.getNumberControlOptions() ) );
 
     this.children = [

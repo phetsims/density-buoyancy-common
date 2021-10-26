@@ -54,11 +54,19 @@ class DensityIntroScreenView extends SecondaryMassScreenView {
       new DerivedProperty( [ model.primaryMass.materialProperty ], material => material.density ),
       new DerivedProperty( [ model.secondaryMass.materialProperty ], material => material.density ),
       model.secondaryMass.visibleProperty,
-      { tandem: accordionTandem.createTandem( 'densityReadout' ) }
+      {
+        tandem: accordionTandem.createTandem( 'densityReadout' ),
+        visiblePropertyOptions: {
+          phetioReadOnly: true
+        }
+      }
     ), merge( {
       titleNode: new Text( densityBuoyancyCommonStrings.densityReadout, {
         font: DensityBuoyancyCommonConstants.TITLE_FONT,
-        maxWidth: 200
+        maxWidth: 200,
+        visiblePropertyOptions: {
+          phetioReadOnly: true
+        }
       } ),
       expandedProperty: model.densityExpandedProperty,
       buttonAlign: 'left',

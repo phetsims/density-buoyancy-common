@@ -31,7 +31,10 @@ class ComparisonNumberControl extends NumberControl {
       delta: 0.01,
       titleNodeOptions: {
         font: DensityBuoyancyCommonConstants.TITLE_FONT,
-        maxWidth: 80
+        maxWidth: 80,
+        visiblePropertyOptions: {
+          phetioReadOnly: true
+        }
       },
       numberDisplayOptions: {
         textOptions: {

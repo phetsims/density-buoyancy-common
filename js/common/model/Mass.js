@@ -385,7 +385,8 @@ class Mass extends PhetioObject {
 
     // @public {StringProperty}
     this.nameProperty = new StringProperty( blockStringMap[ config.tag ] || '', {
-      tandem: config.tandem.createTandem( 'nameProperty' )
+      tandem: config.tandem.createTandem( 'nameProperty' ),
+      phetioReadOnly: true
     } );
 
     // @public {Basin|null} - Set by the model

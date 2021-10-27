@@ -155,7 +155,8 @@ class DensityCompareScreenView extends DensityBuoyancyScreenView {
         massNumberControl,
         volumeNumberControl,
         densityNumberControl
-      ]
+      ],
+      excludeInvisibleChildrenFromBounds: true
     } ), merge( {
       visibleProperty: DerivedProperty.or( [ massNumberControl.visibleProperty, volumeNumberControl.visibleProperty, densityNumberControl.visibleProperty ] )
     }, DensityBuoyancyCommonConstants.PANEL_OPTIONS ) );

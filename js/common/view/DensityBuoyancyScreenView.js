@@ -93,15 +93,6 @@ class DensityBuoyancyScreenView extends ScreenView {
 
     super( options );
 
-    // @protected {boolean} - If we detect that we can't use WebGL, we'll set this to false so we can bail out.
-    this.enabled = true;
-
-    if ( !ThreeUtils.isWebGLEnabled() ) {
-      ThreeUtils.showWebGLWarning( this );
-      this.enabled = false;
-      return;
-    }
-
     // @protected {DensityBuoyancyModel}
     this.model = model;
 
@@ -709,6 +700,10 @@ class DensityBuoyancyScreenView extends ScreenView {
     new DynamicProperty( this.leftBarrierViewPointProperty ).lazyLink( resizeBarrier );
     new DynamicProperty( this.rightBarrierViewPointProperty ).lazyLink( resizeBarrier );
     this.postLayoutEmitter.addListener( resizeBarrier ); // We need to wait for the layout AND render
+
+    if ( !ThreeUtils.isWebGLEnabled() ) {
+      ThreeUtils.showWebGLWarning( this );
+    }
   }
 
   /**

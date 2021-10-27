@@ -44,11 +44,6 @@ class BuoyancyShapesScreenView extends SecondaryMassScreenView {
       cameraLookAt: DensityBuoyancyCommonConstants.BUOYANCY_CAMERA_LOOK_AT
     }, options ) );
 
-    // Don't create the majority of the view if three.js isn't usable (e.g. no WebGL)
-    if ( !this.enabled ) {
-      return;
-    }
-
     const densityControlPanel = new Panel( new DensityControlNode( model.liquidMaterialProperty, [
       Material.GASOLINE,
       Material.WATER,

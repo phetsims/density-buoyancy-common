@@ -45,11 +45,6 @@ class BuoyancyIntroScreenView extends DensityBuoyancyScreenView {
       cameraLookAt: new Vector3( 0, -0.1, 0 )
     }, options ) );
 
-    // Don't create the majority of the view if three.js isn't usable (e.g. no WebGL)
-    if ( !this.enabled ) {
-      return;
-    }
-
     const blockSetControl = new VerticalAquaRadioButtonGroup( model.blockSetProperty, BuoyancyIntroModel.BlockSet.VALUES.map( blockSet => {
       return {
         node: new Text( blockSetStringMap[ blockSet.name ], {

@@ -57,13 +57,10 @@ class BuoyancyApplicationsScreenView extends DensityBuoyancyScreenView {
       cameraLookAt: DensityBuoyancyCommonConstants.BUOYANCY_CAMERA_LOOK_AT
     }, options ) );
 
-    // Don't create the majority of the view if three.js isn't usable (e.g. no WebGL)
-    if ( !this.enabled ) {
-      return;
-    }
-
     // For clipping planes in BottleView
-    this.sceneNode.stage.threeRenderer.localClippingEnabled = true;
+    if ( this.sceneNode.stage.threeRenderer ) {
+      this.sceneNode.stage.threeRenderer.localClippingEnabled = true;
+    }
 
     const bottleControlNode = new MaterialMassVolumeControlNode( model.bottle.interiorMaterialProperty, model.bottle.interiorMassProperty, model.bottle.interiorVolumeProperty, [
       Material.GASOLINE,

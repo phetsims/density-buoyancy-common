@@ -46,11 +46,6 @@ class DensityCompareScreenView extends DensityBuoyancyScreenView {
       cameraLookAt: DensityBuoyancyCommonConstants.DENSITY_CAMERA_LOOK_AT
     }, options ) );
 
-    // Don't create the majority of the view if three.js isn't usable (e.g. no WebGL)
-    if ( !this.enabled ) {
-      return;
-    }
-
     const blockSetTandemMap = {
       [ DensityCompareModel.BlockSet.SAME_MASS ]: 'sameMass',
       [ DensityCompareModel.BlockSet.SAME_VOLUME ]: 'sameVolume',

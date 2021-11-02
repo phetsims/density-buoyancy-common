@@ -34,6 +34,19 @@ import PrecisionSliderThumb from './PrecisionSliderThumb.js';
 const LITERS_IN_CUBIC_METER = 1000;
 const TRACK_HEIGHT = 3;
 
+// A workaround for changing a DerivedProperty range Property to a NumberProperty, where the new range AND value will
+// not overlap with the previous one.
+class WorkaroundRange extends Range {
+  /**
+   * @public
+   * @override
+   *
+   * @param {number} value
+   * @returns {boolean}
+   */
+  contains( value ) { return true; }
+}
+
 class MaterialMassVolumeControlNode extends VBox {
   /**
    * @param {Property.<Material>} materialProperty
@@ -113,7 +126,7 @@ class MaterialMassVolumeControlNode extends VBox {
         const minMass = Utils.clamp( density * options.minVolumeLiters / LITERS_IN_CUBIC_METER, options.minMass, options.maxMass );
         const maxMass = Utils.clamp( density * options.maxVolumeLiters / LITERS_IN_CUBIC_METER, options.minMass, options.maxMass );
 
-        return new Range( minMass, maxMass );
+        return new WorkaroundRange( minMass, maxMass );
       }
     }, {
       reentrant: true,

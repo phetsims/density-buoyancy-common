@@ -246,6 +246,7 @@ class DensityBuoyancyScreenView extends ScreenView {
 
           const endDrag = () => {
             pointer.removeInputListener( listener, true );
+            mass.interruptedEmitter.removeListener( endDrag );
             pointer.cursor = null;
 
             this.endDragAction.execute( mass );
@@ -265,6 +266,8 @@ class DensityBuoyancyScreenView extends ScreenView {
           };
           pointer.reserveForDrag();
           pointer.addInputListener( listener, true );
+
+          mass.interruptedEmitter.addListener( endDrag );
         }
       }
     } );

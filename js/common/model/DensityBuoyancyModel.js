@@ -228,6 +228,7 @@ class DensityBuoyancyModel {
     } );
     this.masses.addItemRemovedListener( mass => {
       this.engine.removeBody( mass.body );
+      mass.interruptedEmitter.emit();
     } );
 
     let boatVerticalVelocity = 0;

@@ -374,6 +374,9 @@ class Mass extends PhetioObject {
     // @public (read-only) {Emitter}
     this.transformedEmitter = new Emitter();
 
+    // @public (read-only) {Emitter} - Fired when this mass's input (drag) should be interrupted.
+    this.interruptedEmitter = new Emitter();
+
     // @public (read-only) {boolean}
     this.canRotate = config.canRotate;
 

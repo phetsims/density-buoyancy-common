@@ -8,6 +8,7 @@
 
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import DynamicProperty from '../../../../axon/js/DynamicProperty.js';
+import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
 import Property from '../../../../axon/js/Property.js';
 import Range from '../../../../dot/js/Range.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
@@ -101,49 +102,71 @@ class DensityCompareScreenView extends DensityBuoyancyScreenView {
     } );
     densityProperty.range = new Range( model.densityProperty.range.min / 1000, model.densityProperty.range.max / 1000 );
 
+    const massNumberControlTandem = tandem.createTandem( 'massNumberControl' );
     const massNumberControl = new ComparisonNumberControl(
       model.massProperty,
       densityBuoyancyCommonStrings.mass,
       densityBuoyancyCommonStrings.kilogramsPattern,
       'kilograms',
       {
-        tandem: tandem.createTandem( 'massNumberControl' ),
+        tandem: massNumberControlTandem,
+        visibleProperty: new DerivedProperty( [
+          model.blockSetProperty,
+          new BooleanProperty( true, {
+            tandem: massNumberControlTandem.createTandem( 'visibleProperty' )
+          } )
+        ], ( blockSet, showMassNumberControl ) => {
+          return showMassNumberControl && blockSet === DensityCompareModel.BlockSet.SAME_MASS;
+        } ),
         sliderOptions: {
           phetioLinkedProperty: model.massProperty
         }
       }
     );
+
+    const volumeNumberControlTandem = tandem.createTandem( 'volumeNumberControl' );
     const volumeNumberControl = new ComparisonNumberControl(
       volumeProperty,
       densityBuoyancyCommonStrings.volume,
       densityBuoyancyCommonStrings.litersPattern,
       'liters',
       {
-        tandem: tandem.createTandem( 'volumeNumberControl' ),
+        tandem: volumeNumberControlTandem,
+        visibleProperty: new DerivedProperty( [
+          model.blockSetProperty,
+          new BooleanProperty( true, {
+            tandem: volumeNumberControlTandem.createTandem( 'visibleProperty' )
+          } )
+        ], ( blockSet, showMassNumberControl ) => {
+          return showMassNumberControl && blockSet === DensityCompareModel.BlockSet.SAME_VOLUME;
+        } ),
         sliderOptions: {
           phetioLinkedProperty: model.volumeProperty
         }
       }
     );
+
+    const densityNumberControlTandem = tandem.createTandem( 'densityNumberControl' );
     const densityNumberControl = new ComparisonNumberControl(
       densityProperty,
       densityBuoyancyCommonStrings.density,
       densityBuoyancyCommonStrings.kilogramsPerLiterPattern,
       'value',
       {
-        tandem: tandem.createTandem( 'densityNumberControl' ),
+        tandem: densityNumberControlTandem,
+        visibleProperty: new DerivedProperty( [
+          model.blockSetProperty,
+          new BooleanProperty( true, {
+            tandem: densityNumberControlTandem.createTandem( 'visibleProperty' )
+          } )
+        ], ( blockSet, showMassNumberControl ) => {
+          return showMassNumberControl && blockSet === DensityCompareModel.BlockSet.SAME_DENSITY;
+        } ),
         sliderOptions: {
           phetioLinkedProperty: model.densityProperty
         }
       }
     );
-
-    // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
-    model.blockSetProperty.link( blockSet => {
-      massNumberControl.visible = blockSet === DensityCompareModel.BlockSet.SAME_MASS;
-      volumeNumberControl.visible = blockSet === DensityCompareModel.BlockSet.SAME_VOLUME;
-      densityNumberControl.visible = blockSet === DensityCompareModel.BlockSet.SAME_DENSITY;
-    } );
 
     const numberControlPanel = new Panel( new Node( {
       children: [

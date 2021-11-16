@@ -36,7 +36,7 @@ class DensityIntroModel extends DensityBuoyancyModel {
       tandem: blocksTandem.createTandem( 'blockA' )
     } );
     this.availableMasses.push( this.primaryMass );
-    this.secondaryMass = Cube.createWithMass( this.engine, Material.ALUMINUM, new Vector2( -0.2, 0.35 ), 13.5, {
+    this.secondaryMass = Cube.createWithMass( this.engine, Material.ALUMINUM, new Vector2( 0.2, 0.2 ), 13.5, {
       tag: Mass.MassTag.SECONDARY,
       tandem: blocksTandem.createTandem( 'blockB' ),
       visible: false

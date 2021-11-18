@@ -139,10 +139,19 @@ class DensityCompareModel extends BlockSetModel( DensityBuoyancyModel, BlockSet,
           break;
         case BlockSet.SAME_VOLUME:
           {
-            const sameVolumeYellowMass = Cube.createWithMass( model.engine, sameVolumeYellowMaterialProperty.value, Vector2.ZERO, 8, { tandem: sameVolumeTandem.createTandem( 'yellowBlock' ) } );
-            const sameVolumeBlueMass = Cube.createWithMass( model.engine, sameVolumeBlueMaterialProperty.value, Vector2.ZERO, 6, { tandem: sameVolumeTandem.createTandem( 'blueBlock' ) } );
-            const sameVolumeGreenMass = Cube.createWithMass( model.engine, sameVolumeGreenMaterialProperty.value, Vector2.ZERO, 4, { tandem: sameVolumeTandem.createTandem( 'greenBlock' ) } );
-            const sameVolumeRedMass = Cube.createWithMass( model.engine, sameVolumeRedMaterialProperty.value, Vector2.ZERO, 2, { tandem: sameVolumeTandem.createTandem( 'redBlock' ) } );
+            // Our volume listener is triggered AFTER the cubes have phet-io applyState run, so we can't rely on
+            // inspecting their mass at that time (and instead need an external reference).
+            // See https://github.com/phetsims/density/issues/111
+            const massValues = {
+              yellow: 8,
+              blue: 6,
+              green: 4,
+              red: 2
+            };
+            const sameVolumeYellowMass = Cube.createWithMass( model.engine, sameVolumeYellowMaterialProperty.value, Vector2.ZERO, massValues.yellow, { tandem: sameVolumeTandem.createTandem( 'yellowBlock' ) } );
+            const sameVolumeBlueMass = Cube.createWithMass( model.engine, sameVolumeBlueMaterialProperty.value, Vector2.ZERO, massValues.blue, { tandem: sameVolumeTandem.createTandem( 'blueBlock' ) } );
+            const sameVolumeGreenMass = Cube.createWithMass( model.engine, sameVolumeGreenMaterialProperty.value, Vector2.ZERO, massValues.green, { tandem: sameVolumeTandem.createTandem( 'greenBlock' ) } );
+            const sameVolumeRedMass = Cube.createWithMass( model.engine, sameVolumeRedMaterialProperty.value, Vector2.ZERO, massValues.red, { tandem: sameVolumeTandem.createTandem( 'redBlock' ) } );
 
             sameVolumeYellowMaterialProperty.link( material => { sameVolumeYellowMass.materialProperty.value = material; } );
             sameVolumeBlueMaterialProperty.link( material => { sameVolumeBlueMass.materialProperty.value = material; } );
@@ -153,21 +162,16 @@ class DensityCompareModel extends BlockSetModel( DensityBuoyancyModel, BlockSet,
 
             // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
             volumeProperty.lazyLink( volume => {
-              const yellowMass = sameVolumeYellowMass.massProperty.value;
-              const blueMass = sameVolumeBlueMass.massProperty.value;
-              const greenMass = sameVolumeGreenMass.massProperty.value;
-              const redMass = sameVolumeRedMass.massProperty.value;
-
               const size = Cube.boundsFromVolume( volume );
               sameVolumeYellowMass.updateSize( size );
               sameVolumeBlueMass.updateSize( size );
               sameVolumeGreenMass.updateSize( size );
               sameVolumeRedMass.updateSize( size );
 
-              sameVolumeYellowDensityProperty.value = yellowMass / volume;
-              sameVolumeBlueDensityProperty.value = blueMass / volume;
-              sameVolumeGreenDensityProperty.value = greenMass / volume;
-              sameVolumeRedDensityProperty.value = redMass / volume;
+              sameVolumeYellowDensityProperty.value = massValues.yellow / volume;
+              sameVolumeBlueDensityProperty.value = massValues.blue / volume;
+              sameVolumeGreenDensityProperty.value = massValues.green / volume;
+              sameVolumeRedDensityProperty.value = massValues.red / volume;
             } );
           }
           break;

@@ -85,7 +85,7 @@ class DensityIntroScreenView extends SecondaryMassScreenView {
       return new Vector2( boxBounds.left, visibleBounds.centerY );
     } );
 
-    this.addSecondMassControl( model.secondaryMass.visibleProperty );
+    this.addSecondMassControl( model.secondaryMass.internalVisibleProperty );
 
     this.addChild( this.popupLayer );
   }

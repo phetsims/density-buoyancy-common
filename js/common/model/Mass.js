@@ -7,6 +7,7 @@
  */
 
 import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
+import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import Emitter from '../../../../axon/js/Emitter.js';
 import EnumerationProperty from '../../../../axon/js/EnumerationProperty.js';
 import NumberProperty from '../../../../axon/js/NumberProperty.js';
@@ -177,12 +178,23 @@ class Mass extends PhetioObject {
     // @public {Property.<boolean>}
     this.inputEnabledProperty = new BooleanProperty( true, merge( {
       tandem: tandem.createTandem( 'inputEnabledProperty' ),
-      phetioDocumenation: 'Sets whether the element will have input enabled, and hence be interactive'
+      phetioDocumentation: 'Sets whether the element will have input enabled, and hence be interactive'
     }, config.inputEnabledPropertyOptions ) );
 
     // @public {Property.<boolean>}
-    this.visibleProperty = new BooleanProperty( config.visible, {
+    this.internalVisibleProperty = new BooleanProperty( config.visible, {
+      tandem: Tandem.OPT_OUT
+    } );
+
+    // @public {Property.<boolean>} - Here just for instrumentation, see https://github.com/phetsims/density/issues/112
+    // This can only hide it, but won't make it visible.
+    this.studioVisibleProperty = new BooleanProperty( true, {
       tandem: tandem.createTandem( 'visibleProperty' )
+    } );
+
+    // @public {Property.<boolean>}
+    this.visibleProperty = DerivedProperty.and( [ this.internalVisibleProperty, this.studioVisibleProperty ], {
+      tandem: Tandem.OPT_OUT
     } );
 
     // @public {Property.<Material>}
@@ -580,7 +592,7 @@ class Mass extends PhetioObject {
   reset() {
     this.engine.bodyResetHidden( this.body );
 
-    this.visibleProperty.reset();
+    this.internalVisibleProperty.reset();
     this.shapeProperty.reset();
     this.materialProperty.reset();
     this.volumeProperty.reset();

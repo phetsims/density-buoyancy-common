@@ -7,13 +7,20 @@
  */
 
 import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
+import EnumerationProperty from '../../../../axon/js/EnumerationProperty.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
+import Enumeration from '../../../../phet-core/js/Enumeration.js';
 import merge from '../../../../phet-core/js/merge.js';
 import Cube from '../../common/model/Cube.js';
 import DensityBuoyancyModel from '../../common/model/DensityBuoyancyModel.js';
 import Mass from '../../common/model/Mass.js';
 import Material from '../../common/model/Material.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
+
+const Mode = Enumeration.byKeys( [
+  'ONE_BLOCK',
+  'TWO_BLOCKS'
+] );
 
 class DensityIntroModel extends DensityBuoyancyModel {
   /**
@@ -27,6 +34,11 @@ class DensityIntroModel extends DensityBuoyancyModel {
       showMassesDefault: true,
       canShowForces: false
     }, options ) );
+    
+    // @public {Property.<Mode>}
+    this.modeProperty = new EnumerationProperty( Mode, Mode.ONE_BLOCK, {
+      tandem: tandem.createTandem( 'modeProperty' )
+    } );
 
     const blocksTandem = tandem.createTandem( 'blocks' );
 
@@ -42,6 +54,10 @@ class DensityIntroModel extends DensityBuoyancyModel {
       visible: false
     } );
     this.availableMasses.push( this.secondaryMass );
+
+    this.modeProperty.link( mode => {
+      this.secondaryMass.internalVisibleProperty.value = mode === Mode.TWO_BLOCKS;
+    } );
 
     // @public {Property.<boolean>}
     this.densityExpandedProperty = new BooleanProperty( true, {

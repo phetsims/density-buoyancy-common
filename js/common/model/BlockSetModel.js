@@ -49,7 +49,7 @@ const BlockSetModel = ( type, BlockSet, initialMode ) => {
 
         // Make them invisible by default, they will be made visible when their blockSet is up
         this.blockSetToMassesMap[ blockSet ].forEach( mass => {
-          mass.visibleProperty.value = false;
+          mass.internalVisibleProperty.value = false;
           this.availableMasses.push( mass );
         } );
 
@@ -60,11 +60,11 @@ const BlockSetModel = ( type, BlockSet, initialMode ) => {
       this.blockSetProperty.link( ( blockSet, oldBlockSet ) => {
         if ( oldBlockSet ) {
           this.blockSetToMassesMap[ oldBlockSet ].forEach( mass => {
-            mass.visibleProperty.value = false;
+            mass.internalVisibleProperty.value = false;
           } );
         }
         this.blockSetToMassesMap[ blockSet ].forEach( mass => {
-          mass.visibleProperty.value = true;
+          mass.internalVisibleProperty.value = true;
         } );
       } );
     }
@@ -110,7 +110,7 @@ const BlockSetModel = ( type, BlockSet, initialMode ) => {
       BlockSet.VALUES.forEach( blockSet => this.blockSetToMassesMap[ blockSet ].forEach( mass => this.engine.bodySynchronizePrevious( mass.body ) ) );
 
       // Rehandle visibility, since we reset them
-      BlockSet.VALUES.forEach( blockSet => this.blockSetToMassesMap[ blockSet ].forEach( mass => { mass.visibleProperty.value = blockSet === this.blockSetProperty.value; } ) );
+      BlockSet.VALUES.forEach( blockSet => this.blockSetToMassesMap[ blockSet ].forEach( mass => { mass.internalVisibleProperty.value = blockSet === this.blockSetProperty.value; } ) );
     }
   };
 };

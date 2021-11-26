@@ -1,4 +1,4 @@
-// Copyright 2020, University of Colorado Boulder
+// Copyright 2020-2021, University of Colorado Boulder
 
 /**
  * A custom slider thumb (that appears like our wavelength sliders) with a thin line on the actual slider track.

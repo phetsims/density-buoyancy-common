@@ -7,8 +7,8 @@
  */
 
 import NodeTexture from '../../../../mobius/js/NodeTexture.js';
-import Node from '../../../../scenery/js/nodes/Node.js';
-import Utils from '../../../../scenery/js/util/Utils.js';
+import { Node } from '../../../../scenery/js/imports.js';
+import { Utils } from '../../../../scenery/js/imports.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 
 class LabelTexture extends NodeTexture {

@@ -9,8 +9,8 @@
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import merge from '../../../../phet-core/js/merge.js';
-import AlignPropertyBox from '../../../../scenery/js/layout/AlignPropertyBox.js';
-import Text from '../../../../scenery/js/nodes/Text.js';
+import { AlignPropertyBox } from '../../../../scenery/js/imports.js';
+import { Text } from '../../../../scenery/js/imports.js';
 import AccordionBox from '../../../../sun/js/AccordionBox.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 import PrimarySecondaryControlsNode from '../../common/view/PrimarySecondaryControlsNode.js';

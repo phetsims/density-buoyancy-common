@@ -10,7 +10,7 @@ import Vector3 from '../../../../dot/js/Vector3.js';
 import ThreeStage from '../../../../mobius/js/ThreeStage.js';
 import ThreeUtils from '../../../../mobius/js/ThreeUtils.js';
 import merge from '../../../../phet-core/js/merge.js';
-import Image from '../../../../scenery/js/nodes/Image.js';
+import { Image } from '../../../../scenery/js/imports.js';
 import RectangularRadioButtonGroup from '../../../../sun/js/buttons/RectangularRadioButtonGroup.js';
 import doubleCuboidIcon from '../../../mipmaps/double-cuboid-icon_png.js';
 import singleCuboidIcon from '../../../mipmaps/single-cuboid-icon_png.js';

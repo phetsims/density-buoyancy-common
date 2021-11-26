@@ -28,7 +28,7 @@ import Vector3 from '../../../../dot/js/Vector3.js';
 import Cubic from '../../../../kite/js/segments/Cubic.js';
 import Line from '../../../../kite/js/segments/Line.js';
 import ThreeUtils from '../../../../mobius/js/ThreeUtils.js';
-import Color from '../../../../scenery/js/util/Color.js';
+import { Color } from '../../../../scenery/js/imports.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 
 // constants

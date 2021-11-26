@@ -8,9 +8,9 @@
 
 import merge from '../../../../phet-core/js/merge.js';
 import RefreshButton from '../../../../scenery-phet/js/buttons/RefreshButton.js';
-import AlignPropertyBox from '../../../../scenery/js/layout/AlignPropertyBox.js';
-import Text from '../../../../scenery/js/nodes/Text.js';
-import VBox from '../../../../scenery/js/nodes/VBox.js';
+import { AlignPropertyBox } from '../../../../scenery/js/imports.js';
+import { Text } from '../../../../scenery/js/imports.js';
+import { VBox } from '../../../../scenery/js/imports.js';
 import AccordionBox from '../../../../sun/js/AccordionBox.js';
 import Panel from '../../../../sun/js/Panel.js';
 import VerticalAquaRadioButtonGroup from '../../../../sun/js/VerticalAquaRadioButtonGroup.js';

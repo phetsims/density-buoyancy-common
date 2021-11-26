@@ -7,9 +7,9 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
-import FlowBox from '../../../../scenery/js/layout/FlowBox.js';
-import VDivider from '../../../../scenery/js/layout/VDivider.js';
-import Node from '../../../../scenery/js/nodes/Node.js';
+import { FlowBox } from '../../../../scenery/js/imports.js';
+import { VDivider } from '../../../../scenery/js/imports.js';
+import { Node } from '../../../../scenery/js/imports.js';
 import Panel from '../../../../sun/js/Panel.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';

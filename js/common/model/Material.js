@@ -9,8 +9,8 @@
 import Property from '../../../../axon/js/Property.js';
 import Utils from '../../../../dot/js/Utils.js';
 import merge from '../../../../phet-core/js/merge.js';
-import Color from '../../../../scenery/js/util/Color.js';
-import ColorProperty from '../../../../scenery/js/util/ColorProperty.js';
+import { Color } from '../../../../scenery/js/imports.js';
+import { ColorProperty } from '../../../../scenery/js/imports.js';
 import BooleanIO from '../../../../tandem/js/types/BooleanIO.js';
 import IOType from '../../../../tandem/js/types/IOType.js';
 import NullableIO from '../../../../tandem/js/types/NullableIO.js';

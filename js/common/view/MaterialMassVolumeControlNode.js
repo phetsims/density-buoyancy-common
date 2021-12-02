@@ -213,6 +213,8 @@ class MaterialMassVolumeControlNode extends VBox {
       if ( !userMassChanging ) {
         modelMassChanging = true;
 
+        enabledMassRangeProperty.recomputeDerivation();
+
         // If the value is close to min/max, massage it to the exact value, see https://github.com/phetsims/density/issues/46
         let adjustedMass = mass;
         const min = enabledMassRangeProperty.value.min;

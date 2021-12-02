@@ -730,7 +730,11 @@ class DensityBuoyancyScreenView extends ScreenView {
    * @returns {Mass|null}
    */
   getMassUnderPointer( pointer, isTouch ) {
-    const ray = this.sceneNode.getRayFromScreenPoint( pointer.point );
+    const point = pointer.point;
+    if ( point === null ) {
+      return null;
+    }
+    const ray = this.sceneNode.getRayFromScreenPoint( point );
 
     let closestT = Number.POSITIVE_INFINITY;
     let closestMass = null;

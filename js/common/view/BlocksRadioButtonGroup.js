@@ -16,6 +16,7 @@ import doubleCuboidIcon from '../../../mipmaps/double-cuboid-icon_png.js';
 import singleCuboidIcon from '../../../mipmaps/single-cuboid-icon_png.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonQueryParameters from '../DensityBuoyancyCommonQueryParameters.js';
+import TwoBlockMode from '../model/TwoBlockMode.js';
 import DensityBuoyancyCommonColors from './DensityBuoyancyCommonColors.js';
 
 // constants
@@ -32,18 +33,18 @@ DensityBuoyancyCommonColors.labelBProperty.link( labelColor => {
 
 class BlocksRadioButtonGroup extends RectangularRadioButtonGroup {
   /**
-   * @param {Property.<boolean>} secondaryMassVisibleProperty
+   * @param {Property.<TwoBlockMode>} modeProperty
    * @param {Object} [options]
    */
-  constructor( secondaryMassVisibleProperty, options ) {
-    super( secondaryMassVisibleProperty, [
+  constructor( modeProperty, options ) {
+    super( modeProperty, [
       {
-        value: false,
+        value: TwoBlockMode.ONE_BLOCK,
         node: BlocksRadioButtonGroup.getSingleCuboidIcon(),
         tandemName: 'oneBlockRadioButton'
       },
       {
-        value: true,
+        value: TwoBlockMode.TWO_BLOCKS,
         node: BlocksRadioButtonGroup.getDoubleCuboidIcon(),
         tandemName: 'twoBlocksRadioButton'
       }

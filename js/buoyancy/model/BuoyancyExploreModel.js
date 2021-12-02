@@ -7,6 +7,7 @@
  */
 
 import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
+import EnumerationProperty from '../../../../axon/js/EnumerationProperty.js';
 import Matrix3 from '../../../../dot/js/Matrix3.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import Cube from '../../common/model/Cube.js';
@@ -14,6 +15,7 @@ import DensityBuoyancyModel from '../../common/model/DensityBuoyancyModel.js';
 import Mass from '../../common/model/Mass.js';
 import Material from '../../common/model/Material.js';
 import Scale from '../../common/model/Scale.js';
+import TwoBlockMode from '../../common/model/TwoBlockMode.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 
 class BuoyancyExploreModel extends DensityBuoyancyModel {
@@ -25,6 +27,11 @@ class BuoyancyExploreModel extends DensityBuoyancyModel {
     const tandem = options.tandem;
 
     super( options );
+
+    // @public {Property.<Mode>}
+    this.modeProperty = new EnumerationProperty( TwoBlockMode, TwoBlockMode.ONE_BLOCK, {
+      tandem: tandem.createTandem( 'modeProperty' )
+    } );
 
     // @public (read-only) {Mass}
     this.primaryMass = Cube.createWithMass( this.engine, Material.WOOD, new Vector2( -0.2, 0.2 ), 2, {
@@ -38,6 +45,10 @@ class BuoyancyExploreModel extends DensityBuoyancyModel {
       visible: false
     } );
     this.availableMasses.push( this.secondaryMass );
+
+    this.modeProperty.link( mode => {
+      this.secondaryMass.internalVisibleProperty.value = mode === TwoBlockMode.TWO_BLOCKS;
+    } );
 
     // Left scale
     this.availableMasses.push( new Scale( this.engine, this.gravityProperty, {

@@ -175,7 +175,7 @@ class BuoyancyExploreScreenView extends SecondaryMassScreenView {
       return new Vector2( boxBounds.left, visibleBounds.centerY );
     } );
 
-    this.addSecondMassControl( model.secondaryMass.internalVisibleProperty );
+    this.addSecondMassControl( model.modeProperty );
 
     this.addChild( this.popupLayer );
   }

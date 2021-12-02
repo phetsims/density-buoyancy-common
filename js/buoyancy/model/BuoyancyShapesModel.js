@@ -20,6 +20,7 @@ import Ellipsoid from '../../common/model/Ellipsoid.js';
 import HorizontalCylinder from '../../common/model/HorizontalCylinder.js';
 import Material from '../../common/model/Material.js';
 import Scale from '../../common/model/Scale.js';
+import TwoBlockMode from '../../common/model/TwoBlockMode.js';
 import VerticalCylinder from '../../common/model/VerticalCylinder.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 
@@ -43,6 +44,11 @@ class BuoyancyShapesModel extends DensityBuoyancyModel {
     const tandem = options.tandem;
 
     super( options );
+
+    // @public {Property.<Mode>}
+    this.modeProperty = new EnumerationProperty( TwoBlockMode, TwoBlockMode.ONE_BLOCK, {
+      tandem: tandem.createTandem( 'modeProperty' )
+    } );
 
     // @public {Property.<boolean>}
     this.secondaryMassVisibleProperty = new BooleanProperty( false );
@@ -166,14 +172,8 @@ class BuoyancyShapesModel extends DensityBuoyancyModel {
 
     this.masses.add( this.primaryMassProperty.value );
 
-    // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
-    this.secondaryMassVisibleProperty.lazyLink( secondaryMassVisible => {
-      if ( secondaryMassVisible ) {
-        this.masses.push( this.secondaryMassProperty.value );
-      }
-      else {
-        this.masses.remove( this.secondaryMassProperty.value );
-      }
+    this.modeProperty.link( mode => {
+      this.secondaryMassProperty.value.internalVisibleProperty.value = mode === TwoBlockMode.TWO_BLOCKS;
     } );
 
     this.setInitialPositions();

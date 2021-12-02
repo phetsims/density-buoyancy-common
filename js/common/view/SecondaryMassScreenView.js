@@ -16,13 +16,13 @@ class SecondaryMassScreenView extends DensityBuoyancyScreenView {
    * Adding the second-mass control.
    * @protected
    *
-   * @param {Property.<boolean>} secondaryMassVisibleProperty
+   * @param {Property.<TwoBlockMode>} modeProperty
    */
-  addSecondMassControl( secondaryMassVisibleProperty ) {
+  addSecondMassControl( modeProperty ) {
     assert && assert( this.rightBox, 'SecondaryMassScreenView requires a this.rightBox be defined to add this control' );
 
     // @private {Node}
-    this.blocksRadioButtonGroup = new BlocksRadioButtonGroup( secondaryMassVisibleProperty, {
+    this.blocksRadioButtonGroup = new BlocksRadioButtonGroup( modeProperty, {
       tandem: this.tandem.createTandem( 'blocksRadioButtonGroup' )
     } );
 

@@ -172,7 +172,8 @@ class BuoyancyExploreScreenView extends SecondaryMassScreenView {
 
     // DerivedProperty doesn't need disposal, since everything here lives for the lifetime of the simulation
     this.rightBarrierViewPointProperty.value = new DerivedProperty( [ this.rightBox.boundsProperty, this.visibleBoundsProperty ], ( boxBounds, visibleBounds ) => {
-      return new Vector2( boxBounds.left, visibleBounds.centerY );
+      // We might not have a box, see https://github.com/phetsims/density/issues/110
+      return new Vector2( isFinite( boxBounds.left ) ? boxBounds.left : visibleBounds.right, visibleBounds.centerY );
     } );
 
     this.addSecondMassControl( model.modeProperty );

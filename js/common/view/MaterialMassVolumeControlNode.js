@@ -139,7 +139,6 @@ class MaterialMassVolumeControlNode extends VBox {
     const massNumberProperty = new NumberProperty( massProperty.value, {
       tandem: massNumberControlTandem.createTandem( 'massNumberProperty' ),
       phetioState: false,
-      range: enabledMassRangeProperty,
       phetioStudioControl: false
     } );
 

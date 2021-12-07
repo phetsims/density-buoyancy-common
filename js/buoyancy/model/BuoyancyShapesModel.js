@@ -199,6 +199,8 @@ class BuoyancyShapesModel extends DensityBuoyancyModel {
    * @override
    */
   reset() {
+    this.modeProperty.reset();
+
     this.secondaryMassVisibleProperty.reset();
     this.densityExpandedProperty.reset();
 

@@ -8,6 +8,7 @@
 
 import Utils from '../../../../dot/js/Utils.js';
 import merge from '../../../../phet-core/js/merge.js';
+import Orientation from '../../../../phet-core/js/Orientation.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import { GridBackgroundNode } from '../../../../scenery/js/imports.js';
 import { GridBox } from '../../../../scenery/js/imports.js';
@@ -61,7 +62,7 @@ class DensityTableNode extends Node {
     const gridBackground = new GridBackgroundNode( gridBox.constraint, {
       createCellBackground: cell => {
         return Rectangle.bounds( cell.lastAvailableBounds, {
-          fill: cell.position.vertical === 0 ? DensityBuoyancyCommonColors.chartHeaderColorProperty : 'white',
+          fill: cell.position.get( Orientation.VERTICAL ) === 0 ? DensityBuoyancyCommonColors.chartHeaderColorProperty : 'white',
           stroke: 'black'
         } );
       }

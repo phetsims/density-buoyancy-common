@@ -81,7 +81,7 @@ class CuboidView extends MassView {
       cuboid.nameProperty.lazyLink( string => {
         this.tagNodeTexture.dispose();
         this.tagNodeTexture = MassLabelNode.getBasicLabelTexture( string );
-        this.tagMesh.updateTexture( this.tagNodeTexture );
+        this.tagMesh.updateTexture( this.tagNodeTexture, TAG_SCALE * this.tagNodeTexture._width, TAG_SCALE * this.tagNodeTexture._height );
       } );
     }
 

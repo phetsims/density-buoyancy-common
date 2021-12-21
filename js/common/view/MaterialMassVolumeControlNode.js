@@ -105,6 +105,7 @@ class MaterialMassVolumeControlNode extends VBox {
       reentrant: true,
       phetioState: false,
       tandem: options.tandem.createTandem( 'comboBoxMaterialProperty' ),
+      phetioDocumentation: 'Current material of the block. Changing the material will result in changes to the mass, but the volume will remain the same.',
       validValues: MaterialEnumeration.VALUES,
       phetioType: Property.PropertyIO( EnumerationIO( MaterialEnumeration ) )
     } );

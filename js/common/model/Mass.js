@@ -210,12 +210,14 @@ class Mass extends PhetioObject {
       // @public {Property.<MaterialEnumeration>} -- for phet-io support (to control the materialProperty)
       this.materialEnumProperty = new EnumerationProperty( MaterialEnumeration, materialToEnum( config.material ), {
         tandem: tandem.createTandem( 'materialEnumProperty' ),
+        phetioDocumentation: 'Current material of the block. Changing the material will result in changes to the mass, but the volume will remain the same.',
         phetioState: false
       } );
       // @public {Property.<number>} -- for phet-io support (to control the materialProperty)
       this.customDensityProperty = new NumberProperty( config.material.density, {
         tandem: tandem.createTandem( 'customDensityProperty' ),
         phetioState: false,
+        phetioDocumentation: 'Density of the block when the material is set to “CUSTOM”.',
         range: new Range( Number.MIN_VALUE, Number.POSITIVE_INFINITY ),
         phetioStudioControl: false
       } );
@@ -284,6 +286,7 @@ class Mass extends PhetioObject {
       tandem: tandem.createTandem( 'volumeProperty' ),
       range: new Range( 0, Number.POSITIVE_INFINITY ),
       phetioReadOnly: true,
+      phetioDocumentation: 'Current volume of the block. Changing the volume will result in changes to the mass, but will not change the material or density.',
       units: 'm^3',
       reentrant: true,
       phetioStudioControl: false
@@ -303,6 +306,7 @@ class Mass extends PhetioObject {
       tandem: tandem.createTandem( 'massProperty' ),
       phetioReadOnly: true,
       phetioState: false,
+      phetioDocumentation: 'Current mass of the block. Changing the mass will result in changes to the material (and therefore density), but the volume will remain the same.',
       units: 'kg',
       reentrant: true,
       range: new Range( Number.MIN_VALUE, Number.POSITIVE_INFINITY ),

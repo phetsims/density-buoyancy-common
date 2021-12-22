@@ -12,6 +12,7 @@ import Vector3 from '../../../../dot/js/Vector3.js';
 import Shape from '../../../../kite/js/Shape.js';
 import Enumeration from '../../../../phet-core/js/Enumeration.js';
 import merge from '../../../../phet-core/js/merge.js';
+import PhetioObject from '../../../../tandem/js/PhetioObject.js';
 import IOType from '../../../../tandem/js/types/IOType.js';
 import NumberIO from '../../../../tandem/js/types/NumberIO.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
@@ -72,6 +73,12 @@ class Scale extends Mass {
       },
       materialPropertyOptions: {
         phetioReadOnly: true
+      },
+      massPropertyOptions: {
+        phetioDocumentation: PhetioObject.DEFAULT_OPTIONS.phetioDocumentation
+      },
+      volumePropertyOptions: {
+        phetioDocumentation: PhetioObject.DEFAULT_OPTIONS.phetioDocumentation
       }
     }, config );
 

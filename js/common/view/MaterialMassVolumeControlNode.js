@@ -258,7 +258,19 @@ class MaterialMassVolumeControlNode extends VBox {
           tandem: massNumberControlTandem.createTandem( 'slider' ).createTandem( 'thumbNode' )
         } ),
         thumbYOffset: new PrecisionSliderThumb().height / 2 - TRACK_HEIGHT / 2,
-        constrainValue: value => enabledMassRangeProperty.value.constrainValue( Utils.toFixedNumber( value, 1 ) ),
+        constrainValue: value => {
+          const range = enabledMassRangeProperty.value;
+
+          // Don't snap before ranges, since this doesn't work for Styrofoam case, see
+          // https://github.com/phetsims/density/issues/46
+          if ( value <= range.min ) {
+            return range.min;
+          }
+          if ( value >= range.max ) {
+            return range.max;
+          }
+          return enabledMassRangeProperty.value.constrainValue( Utils.toFixedNumber( value, 1 ) );
+        },
         phetioLinkedProperty: massProperty
       },
       numberDisplayOptions: {

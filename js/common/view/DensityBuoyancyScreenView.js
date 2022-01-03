@@ -655,8 +655,8 @@ class DensityBuoyancyScreenView extends ScreenView {
 
     const resetAllButton = new ResetAllButton( {
       listener: () => {
-        model.reset();
         this.interruptSubtreeInput();
+        model.reset();
       },
       tandem: tandem.createTandem( 'resetAllButton' )
     } );

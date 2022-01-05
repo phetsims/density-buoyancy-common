@@ -209,13 +209,11 @@ class Mass extends PhetioObject {
       // @public {Property.<MaterialEnumeration>} -- for phet-io support (to control the materialProperty)
       this.materialEnumProperty = new EnumerationProperty( MaterialEnumeration, materialToEnum( config.material ), {
         tandem: tandem.createTandem( 'materialEnumProperty' ),
-        phetioDocumentation: 'Current material of the block. Changing the material will result in changes to the mass, but the volume will remain the same.',
-        phetioState: false
+        phetioDocumentation: 'Current material of the block. Changing the material will result in changes to the mass, but the volume will remain the same.'
       } );
       // @public {Property.<number>} -- for phet-io support (to control the materialProperty)
       this.customDensityProperty = new NumberProperty( config.material.density, {
         tandem: tandem.createTandem( 'customDensityProperty' ),
-        phetioState: false,
         phetioDocumentation: 'Density of the block when the material is set to “CUSTOM”.',
         range: new Range( Number.MIN_VALUE, Number.POSITIVE_INFINITY ),
         phetioStudioControl: false
@@ -224,6 +222,8 @@ class Mass extends PhetioObject {
       this.customColorProperty = new ColorProperty( config.material.customColor ? config.material.customColor.value : Color.WHITE, {
         tandem: tandem.createTandem( 'customColorProperty' )
       } );
+
+      this.materialProperty.addPhetioStateDependencies( [ this.materialEnumProperty, this.customDensityProperty, this.customColorProperty ] );
 
       // Hook up phet-io Properties for interoperation with the normal ones
       let enumLock = false;

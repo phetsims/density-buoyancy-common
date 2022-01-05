@@ -23,8 +23,7 @@ import Shape from '../../../../kite/js/Shape.js';
 import Enumeration from '../../../../phet-core/js/Enumeration.js';
 import EnumerationIO from '../../../../phet-core/js/EnumerationIO.js';
 import merge from '../../../../phet-core/js/merge.js';
-import { Color } from '../../../../scenery/js/imports.js';
-import { ColorProperty } from '../../../../scenery/js/imports.js';
+import { Color, ColorProperty } from '../../../../scenery/js/imports.js';
 import PhetioObject from '../../../../tandem/js/PhetioObject.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
 import BooleanIO from '../../../../tandem/js/types/BooleanIO.js';
@@ -223,8 +222,7 @@ class Mass extends PhetioObject {
       } );
       // @public {Property.<Color>} -- for phet-io support (to control the materialProperty)
       this.customColorProperty = new ColorProperty( config.material.customColor ? config.material.customColor.value : Color.WHITE, {
-        tandem: tandem.createTandem( 'customColorProperty' ),
-        phetioState: false
+        tandem: tandem.createTandem( 'customColorProperty' )
       } );
 
       // Hook up phet-io Properties for interoperation with the normal ones

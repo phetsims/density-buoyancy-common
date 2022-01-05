@@ -78,11 +78,13 @@ class CuboidView extends MassView {
       } );
       tagHeight = TAG_SCALE * this.tagNodeTexture._height;
 
-      cuboid.nameProperty.lazyLink( string => {
+      // @private
+      this.cuboidNameListener = string => {
         this.tagNodeTexture.dispose();
         this.tagNodeTexture = MassLabelNode.getBasicLabelTexture( string );
         this.tagMesh.updateTexture( this.tagNodeTexture, TAG_SCALE * this.tagNodeTexture._width, TAG_SCALE * this.tagNodeTexture._height );
-      } );
+      };
+      this.cuboid.nameProperty.lazyLink( this.cuboidNameListener );
     }
 
     if ( this.tagMesh ) {
@@ -113,6 +115,10 @@ class CuboidView extends MassView {
    * @override
    */
   dispose() {
+    if ( this.cuboidNameListener ) {
+      this.cuboid.nameProperty.unlink( this.cuboidNameListener );
+    }
+
     this.cuboid.sizeProperty.unlink( this.updateListener );
     this.tagNodeTexture && this.tagNodeTexture.dispose();
     this.tagMesh && this.tagMesh.dispose();

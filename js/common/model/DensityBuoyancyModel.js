@@ -126,14 +126,17 @@ class DensityBuoyancyModel {
       useDeepEquality: true
     } );
 
+    // How many units the barrier extends out to
+    const barrierSize = 5;
+
     // DerivedProperty doesn't need disposal, since everything here lives for the lifetime of the simulation
     const barrierPointsProperty = new DerivedProperty( [ this.invisibleBarrierBoundsProperty ], bounds => {
       return [
         new Vector2( bounds.maxX, bounds.minY ),
-        new Vector2( bounds.maxX + 2, bounds.minY ),
-        new Vector2( bounds.maxX + 2, bounds.maxY + 2 ),
-        new Vector2( bounds.minX - 2, bounds.maxY + 2 ),
-        new Vector2( bounds.minX - 2, bounds.minY ),
+        new Vector2( bounds.maxX + barrierSize, bounds.minY ),
+        new Vector2( bounds.maxX + barrierSize, bounds.maxY + barrierSize ),
+        new Vector2( bounds.minX - barrierSize, bounds.maxY + barrierSize ),
+        new Vector2( bounds.minX - barrierSize, bounds.minY ),
         new Vector2( bounds.minX, bounds.minY ),
         new Vector2( bounds.minX, bounds.maxY ),
         new Vector2( bounds.maxX, bounds.maxY )

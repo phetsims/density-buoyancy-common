@@ -225,6 +225,8 @@ class DensityBuoyancyScreenView extends ScreenView {
       } ]
     } );
 
+    const draggedMasses = [];
+
     this.sceneNode.backgroundEventTarget.addInputListener( {
       down: ( event, trail ) => {
         if ( !event.canStartPress() ) { return; }
@@ -246,6 +248,7 @@ class DensityBuoyancyScreenView extends ScreenView {
 
           const endDrag = () => {
             pointer.removeInputListener( listener, true );
+            arrayRemove( draggedMasses, mass );
             mass.interruptedEmitter.removeListener( endDrag );
             pointer.cursor = null;
 
@@ -266,9 +269,15 @@ class DensityBuoyancyScreenView extends ScreenView {
           };
           pointer.reserveForDrag();
           pointer.addInputListener( listener, true );
+          draggedMasses.push( mass );
 
           mass.interruptedEmitter.addListener( endDrag );
         }
+      },
+
+      // Support interruption by subtree
+      interrupt: () => {
+        draggedMasses.slice().forEach( mass => mass.interruptedEmitter.emit() );
       }
     } );
 

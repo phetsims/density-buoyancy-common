@@ -13,7 +13,7 @@ import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 
 /**
  * @param {constructor} type - Should be a DensityBuoyancyModel-based type
- * @param {Enumeration} BlockSet - A blockSet Enumeration
+ * @param {EnumerationDeprecated} BlockSet - A blockSet Enumeration
  * @param {BlockSet} initialMode - The initial BlockSet
  */
 const BlockSetModel = ( type, BlockSet, initialMode ) => {

@@ -20,7 +20,7 @@ import Vector2 from '../../../../dot/js/Vector2.js';
 import Vector2Property from '../../../../dot/js/Vector2Property.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
 import Shape from '../../../../kite/js/Shape.js';
-import Enumeration from '../../../../phet-core/js/Enumeration.js';
+import EnumerationDeprecated from '../../../../phet-core/js/EnumerationDeprecated.js';
 import EnumerationIO from '../../../../phet-core/js/EnumerationIO.js';
 import merge from '../../../../phet-core/js/merge.js';
 import { Color, ColorProperty } from '../../../../scenery/js/imports.js';
@@ -34,7 +34,7 @@ import InterpolatedProperty from './InterpolatedProperty.js';
 import Material from './Material.js';
 
 // constants
-const MassTag = Enumeration.byKeys( [
+const MassTag = EnumerationDeprecated.byKeys( [
   'PRIMARY',
   'SECONDARY',
   'NONE',
@@ -83,7 +83,7 @@ const blockStringMap = {
   [ MassTag.E.name ]: densityBuoyancyCommonStrings.massLabel.e
 };
 
-const MaterialEnumeration = Enumeration.byKeys( [
+const MaterialEnumeration = EnumerationDeprecated.byKeys( [
   'ALUMINUM',
   'BRICK',
   'COPPER',
@@ -652,7 +652,7 @@ class Mass extends PhetioObject {
   }
 }
 
-// @public (read-only) {Enumeration}
+// @public (read-only) {EnumerationDeprecated}
 Mass.MassTag = MassTag;
 
 // @public (read-only) {IOType}

@@ -6,10 +6,10 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
-import Enumeration from '../../../../phet-core/js/Enumeration.js';
+import EnumerationDeprecated from '../../../../phet-core/js/EnumerationDeprecated.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 
-const TwoBlockMode = Enumeration.byKeys( [
+const TwoBlockMode = EnumerationDeprecated.byKeys( [
   'ONE_BLOCK',
   'TWO_BLOCKS'
 ] );

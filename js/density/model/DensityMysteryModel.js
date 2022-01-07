@@ -11,7 +11,7 @@ import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import Matrix3 from '../../../../dot/js/Matrix3.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import dotRandom from '../../../../dot/js/dotRandom.js';
-import Enumeration from '../../../../phet-core/js/Enumeration.js';
+import EnumerationDeprecated from '../../../../phet-core/js/EnumerationDeprecated.js';
 import merge from '../../../../phet-core/js/merge.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 import BlockSetModel from '../../common/model/BlockSetModel.js';
@@ -42,7 +42,7 @@ const randomColors = [
   DensityBuoyancyCommonColors.mysteryPeachColorProperty,
   DensityBuoyancyCommonColors.mysteryMaroonColorProperty
 ];
-const BlockSet = Enumeration.byKeys( [
+const BlockSet = EnumerationDeprecated.byKeys( [
   'SET_1',
   'SET_2',
   'SET_3',
@@ -283,7 +283,7 @@ class DensityMysteryModel extends BlockSetModel( DensityBuoyancyModel, BlockSet,
   }
 }
 
-// @public {Enumeration}
+// @public {EnumerationDeprecated}
 DensityMysteryModel.BlockSet = BlockSet;
 
 densityBuoyancyCommon.register( 'DensityMysteryModel', DensityMysteryModel );

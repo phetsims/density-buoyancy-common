@@ -8,7 +8,7 @@
 
 import Matrix3 from '../../../../dot/js/Matrix3.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
-import Enumeration from '../../../../phet-core/js/Enumeration.js';
+import EnumerationDeprecated from '../../../../phet-core/js/EnumerationDeprecated.js';
 import BlockSetModel from '../../common/model/BlockSetModel.js';
 import Cube from '../../common/model/Cube.js';
 import DensityBuoyancyModel from '../../common/model/DensityBuoyancyModel.js';
@@ -17,7 +17,7 @@ import Scale from '../../common/model/Scale.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 
 // constants
-const BlockSet = Enumeration.byKeys( [
+const BlockSet = EnumerationDeprecated.byKeys( [
   'SAME_MASS',
   'SAME_VOLUME',
   'SAME_DENSITY'
@@ -97,7 +97,7 @@ class BuoyancyIntroModel extends BlockSetModel( DensityBuoyancyModel, BlockSet, 
   }
 }
 
-// @public (read-only) {Enumeration}
+// @public (read-only) {EnumerationDeprecated}
 BuoyancyIntroModel.BlockSet = BlockSet;
 
 densityBuoyancyCommon.register( 'BuoyancyIntroModel', BuoyancyIntroModel );

@@ -10,7 +10,7 @@ import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import Bounds3 from '../../../../dot/js/Bounds3.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
 import Shape from '../../../../kite/js/Shape.js';
-import Enumeration from '../../../../phet-core/js/Enumeration.js';
+import EnumerationDeprecated from '../../../../phet-core/js/EnumerationDeprecated.js';
 import merge from '../../../../phet-core/js/merge.js';
 import PhetioObject from '../../../../tandem/js/PhetioObject.js';
 import IOType from '../../../../tandem/js/types/IOType.js';
@@ -43,7 +43,7 @@ const SCALE_FRONT_OFFSET = new Vector3(
   SCALE_BASE_BOUNDS.centerY,
   SCALE_BASE_BOUNDS.maxZ
 );
-const DisplayType = Enumeration.byKeys( [
+const DisplayType = EnumerationDeprecated.byKeys( [
   'NEWTONS',
   'KILOGRAMS'
 ] );
@@ -220,7 +220,7 @@ Scale.SCALE_BASE_BOUNDS = SCALE_BASE_BOUNDS;
 // @public (read-only) {Vector3}
 Scale.SCALE_FRONT_OFFSET = SCALE_FRONT_OFFSET;
 
-// @public (read-only) {Enumeration}
+// @public (read-only) {EnumerationDeprecated}
 Scale.DisplayType = DisplayType;
 
 // @public (read-only) {IOType}

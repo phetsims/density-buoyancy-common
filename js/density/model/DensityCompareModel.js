@@ -11,7 +11,7 @@ import NumberProperty from '../../../../axon/js/NumberProperty.js';
 import Property from '../../../../axon/js/Property.js';
 import Range from '../../../../dot/js/Range.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
-import Enumeration from '../../../../phet-core/js/Enumeration.js';
+import EnumerationDeprecated from '../../../../phet-core/js/EnumerationDeprecated.js';
 import merge from '../../../../phet-core/js/merge.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
 import BlockSetModel from '../../common/model/BlockSetModel.js';
@@ -22,7 +22,7 @@ import DensityBuoyancyCommonColors from '../../common/view/DensityBuoyancyCommon
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 
 // constants
-const BlockSet = Enumeration.byKeys( [
+const BlockSet = EnumerationDeprecated.byKeys( [
   'SAME_MASS',
   'SAME_VOLUME',
   'SAME_DENSITY'
@@ -251,7 +251,7 @@ class DensityCompareModel extends BlockSetModel( DensityBuoyancyModel, BlockSet,
   }
 }
 
-// @public (read-only) {Enumeration}
+// @public (read-only) {EnumerationDeprecated}
 DensityCompareModel.BlockSet = BlockSet;
 
 densityBuoyancyCommon.register( 'DensityCompareModel', DensityCompareModel );

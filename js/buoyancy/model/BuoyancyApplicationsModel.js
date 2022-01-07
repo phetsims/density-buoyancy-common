@@ -11,7 +11,7 @@ import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import EnumerationProperty from '../../../../axon/js/EnumerationProperty.js';
 import Matrix3 from '../../../../dot/js/Matrix3.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
-import Enumeration from '../../../../phet-core/js/Enumeration.js';
+import EnumerationDeprecated from '../../../../phet-core/js/EnumerationDeprecated.js';
 import Cube from '../../common/model/Cube.js';
 import DensityBuoyancyModel from '../../common/model/DensityBuoyancyModel.js';
 import Material from '../../common/model/Material.js';
@@ -21,7 +21,7 @@ import Boat from './Boat.js';
 import Bottle from './Bottle.js';
 
 // constants
-const Scene = Enumeration.byKeys( [
+const Scene = EnumerationDeprecated.byKeys( [
   'BOTTLE',
   'BOAT'
 ] );
@@ -106,7 +106,7 @@ class BuoyancyApplicationsModel extends DensityBuoyancyModel {
   }
 }
 
-// @public (read-only) {Enumeration}
+// @public (read-only) {EnumerationDeprecated}
 BuoyancyApplicationsModel.Scene = Scene;
 
 densityBuoyancyCommon.register( 'BuoyancyApplicationsModel', BuoyancyApplicationsModel );

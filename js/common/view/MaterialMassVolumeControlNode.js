@@ -13,7 +13,7 @@ import Property from '../../../../axon/js/Property.js';
 import Dimension2 from '../../../../dot/js/Dimension2.js';
 import Range from '../../../../dot/js/Range.js';
 import Utils from '../../../../dot/js/Utils.js';
-import Enumeration from '../../../../phet-core/js/Enumeration.js';
+import EnumerationDeprecated from '../../../../phet-core/js/EnumerationDeprecated.js';
 import EnumerationIO from '../../../../phet-core/js/EnumerationIO.js';
 import merge from '../../../../phet-core/js/merge.js';
 import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
@@ -85,7 +85,7 @@ class MaterialMassVolumeControlNode extends VBox {
       align: 'left'
     } );
 
-    const MaterialEnumeration = Enumeration.byKeys( [ ...materials.map( material => material.identifier ), 'CUSTOM' ] );
+    const MaterialEnumeration = EnumerationDeprecated.byKeys( [ ...materials.map( material => material.identifier ), 'CUSTOM' ] );
 
     const comboBoxMaterialProperty = new DynamicProperty( new Property( materialProperty ), {
       bidirectional: true,

@@ -12,7 +12,7 @@ import EnumerationProperty from '../../../../axon/js/EnumerationProperty.js';
 import NumberProperty from '../../../../axon/js/NumberProperty.js';
 import Property from '../../../../axon/js/Property.js';
 import Matrix3 from '../../../../dot/js/Matrix3.js';
-import Enumeration from '../../../../phet-core/js/Enumeration.js';
+import EnumerationDeprecated from '../../../../phet-core/js/EnumerationDeprecated.js';
 import Cone from '../../common/model/Cone.js';
 import Cuboid from '../../common/model/Cuboid.js';
 import DensityBuoyancyModel from '../../common/model/DensityBuoyancyModel.js';
@@ -25,7 +25,7 @@ import VerticalCylinder from '../../common/model/VerticalCylinder.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 
 // constants
-const MassShape = Enumeration.byKeys( [
+const MassShape = EnumerationDeprecated.byKeys( [
   'BLOCK',
   'ELLIPSOID',
   'VERTICAL_CYLINDER',
@@ -217,7 +217,7 @@ class BuoyancyShapesModel extends DensityBuoyancyModel {
   }
 }
 
-// @public (read-only) {Enumeration}
+// @public (read-only) {EnumerationDeprecated}
 BuoyancyShapesModel.MassShape = MassShape;
 
 densityBuoyancyCommon.register( 'BuoyancyShapesModel', BuoyancyShapesModel );

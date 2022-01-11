@@ -9,7 +9,7 @@
 import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import Emitter from '../../../../axon/js/Emitter.js';
-import EnumerationProperty from '../../../../axon/js/EnumerationProperty.js';
+import EnumerationDeprecatedProperty from '../../../../axon/js/EnumerationDeprecatedProperty.js';
 import NumberProperty from '../../../../axon/js/NumberProperty.js';
 import Property from '../../../../axon/js/Property.js';
 import StringProperty from '../../../../axon/js/StringProperty.js';
@@ -207,7 +207,7 @@ class Mass extends PhetioObject {
     if ( config.adjustableMaterial ) {
 
       // @public {Property.<MaterialEnumeration>} -- for phet-io support (to control the materialProperty)
-      this.materialEnumProperty = new EnumerationProperty( MaterialEnumeration, materialToEnum( config.material ), {
+      this.materialEnumProperty = new EnumerationDeprecatedProperty( MaterialEnumeration, materialToEnum( config.material ), {
         tandem: tandem.createTandem( 'materialEnumProperty' ),
         phetioDocumentation: 'Current material of the block. Changing the material will result in changes to the mass, but the volume will remain the same.'
       } );

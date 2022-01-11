@@ -8,7 +8,7 @@
 
 import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
-import EnumerationProperty from '../../../../axon/js/EnumerationProperty.js';
+import EnumerationDeprecatedProperty from '../../../../axon/js/EnumerationDeprecatedProperty.js';
 import NumberProperty from '../../../../axon/js/NumberProperty.js';
 import Property from '../../../../axon/js/Property.js';
 import Matrix3 from '../../../../dot/js/Matrix3.js';
@@ -46,7 +46,7 @@ class BuoyancyShapesModel extends DensityBuoyancyModel {
     super( options );
 
     // @public {Property.<Mode>}
-    this.modeProperty = new EnumerationProperty( TwoBlockMode, TwoBlockMode.ONE_BLOCK, {
+    this.modeProperty = new EnumerationDeprecatedProperty( TwoBlockMode, TwoBlockMode.ONE_BLOCK, {
       tandem: tandem.createTandem( 'modeProperty' )
     } );
 
@@ -77,8 +77,8 @@ class BuoyancyShapesModel extends DensityBuoyancyModel {
     this.pool.liquidVolumeProperty.setInitialValue( this.pool.liquidVolumeProperty.value );
 
     // @public {Property.<MassShape>}
-    this.primaryShapeProperty = new EnumerationProperty( MassShape, MassShape.BLOCK );
-    this.secondaryShapeProperty = new EnumerationProperty( MassShape, MassShape.INVERTED_CONE );
+    this.primaryShapeProperty = new EnumerationDeprecatedProperty( MassShape, MassShape.BLOCK );
+    this.secondaryShapeProperty = new EnumerationDeprecatedProperty( MassShape, MassShape.INVERTED_CONE );
 
     // @public {Property.<number>}
     this.primaryWidthRatioProperty = new NumberProperty( 0.25 );

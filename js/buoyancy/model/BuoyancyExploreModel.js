@@ -7,7 +7,7 @@
  */
 
 import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
-import EnumerationProperty from '../../../../axon/js/EnumerationProperty.js';
+import EnumerationDeprecatedProperty from '../../../../axon/js/EnumerationDeprecatedProperty.js';
 import Matrix3 from '../../../../dot/js/Matrix3.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import Cube from '../../common/model/Cube.js';
@@ -29,7 +29,7 @@ class BuoyancyExploreModel extends DensityBuoyancyModel {
     super( options );
 
     // @public {Property.<Mode>}
-    this.modeProperty = new EnumerationProperty( TwoBlockMode, TwoBlockMode.ONE_BLOCK, {
+    this.modeProperty = new EnumerationDeprecatedProperty( TwoBlockMode, TwoBlockMode.ONE_BLOCK, {
       tandem: tandem.createTandem( 'modeProperty' )
     } );
 

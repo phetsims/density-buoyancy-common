@@ -6,7 +6,7 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
-import EnumerationProperty from '../../../../axon/js/EnumerationProperty.js';
+import EnumerationDeprecatedProperty from '../../../../axon/js/EnumerationDeprecatedProperty.js';
 import inheritance from '../../../../phet-core/js/inheritance.js';
 import DensityBuoyancyModel from '../../common/model/DensityBuoyancyModel.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
@@ -31,7 +31,7 @@ const BlockSetModel = ( type, BlockSet, initialMode ) => {
       super( ...args );
 
       // @public {Property.<BlockSet>}
-      this.blockSetProperty = new EnumerationProperty( BlockSet, initialMode, {
+      this.blockSetProperty = new EnumerationDeprecatedProperty( BlockSet, initialMode, {
         tandem: tandem.createTandem( 'blockSets' ).createTandem( 'blockSetProperty' )
       } );
 

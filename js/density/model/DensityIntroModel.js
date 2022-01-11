@@ -7,7 +7,7 @@
  */
 
 import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
-import EnumerationProperty from '../../../../axon/js/EnumerationProperty.js';
+import EnumerationDeprecatedProperty from '../../../../axon/js/EnumerationDeprecatedProperty.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import merge from '../../../../phet-core/js/merge.js';
 import Cube from '../../common/model/Cube.js';
@@ -31,7 +31,7 @@ class DensityIntroModel extends DensityBuoyancyModel {
     }, options ) );
     
     // @public {Property.<Mode>}
-    this.modeProperty = new EnumerationProperty( TwoBlockMode, TwoBlockMode.ONE_BLOCK, {
+    this.modeProperty = new EnumerationDeprecatedProperty( TwoBlockMode, TwoBlockMode.ONE_BLOCK, {
       tandem: tandem.createTandem( 'modeProperty' )
     } );
 

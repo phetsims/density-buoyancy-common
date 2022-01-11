@@ -8,7 +8,7 @@
 
 import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
-import EnumerationProperty from '../../../../axon/js/EnumerationProperty.js';
+import EnumerationDeprecatedProperty from '../../../../axon/js/EnumerationDeprecatedProperty.js';
 import Matrix3 from '../../../../dot/js/Matrix3.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import EnumerationDeprecated from '../../../../phet-core/js/EnumerationDeprecated.js';
@@ -37,7 +37,7 @@ class BuoyancyApplicationsModel extends DensityBuoyancyModel {
     super( options );
 
     // @public {Property.<Scene>}
-    this.sceneProperty = new EnumerationProperty( Scene, Scene.BOTTLE );
+    this.sceneProperty = new EnumerationDeprecatedProperty( Scene, Scene.BOTTLE );
 
     // @public {Property.<boolean>}
     this.densityExpandedProperty = new BooleanProperty( false );

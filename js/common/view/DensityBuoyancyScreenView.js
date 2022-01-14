@@ -109,6 +109,7 @@ class DensityBuoyancyScreenView extends ScreenView {
 
     // @private {Rectangle} - The sky background, in a unit 0-to-1 rectangle (so we can scale it to match)
     this.backgroundNode = new Rectangle( 0, 0, 1, 1, {
+      pickable: false,
       fill: new LinearGradient( 0, 0, 0, 1 )
         .addColorStop( 0, DensityBuoyancyCommonColors.skyTopProperty )
         .addColorStop( 1, DensityBuoyancyCommonColors.skyBottomProperty )
@@ -127,7 +128,10 @@ class DensityBuoyancyScreenView extends ScreenView {
     // @private {ThreeIsometricNode}
     this.sceneNode = new ThreeIsometricNode( this.layoutBounds, {
       parentMatrixProperty: animatedPanZoomSingleton.listener.matrixProperty,
-      cameraPosition: options.cameraPosition
+      cameraPosition: options.cameraPosition,
+      getPhetioMouseHit: point => {
+        return this.getMassUnderPoint( this.localToGlobalPoint( point ), false );
+      }
     } );
     this.addChild( this.sceneNode );
 
@@ -743,6 +747,18 @@ class DensityBuoyancyScreenView extends ScreenView {
     if ( point === null ) {
       return null;
     }
+    return this.getMassUnderPoint( point );
+  }
+
+  /**
+   * Returns the closest grab-able mass under the point
+   * @public
+   *
+   * @param {Vector2} point
+   * @param {boolean} isTouch
+   * @returns {Mass|null}
+   */
+  getMassUnderPoint( point, isTouch ) {
     const ray = this.sceneNode.getRayFromScreenPoint( point );
 
     let closestT = Number.POSITIVE_INFINITY;

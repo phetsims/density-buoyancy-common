@@ -1,5 +1,5 @@
 {
-  "single-cuboid-icon.png": {
+  "singleCuboidIcon.png": {
     "text": [
       "Copyright 2021 University of Colorado Boulder"
     ],
@@ -7,7 +7,7 @@
     "license": "contact phethelp@colorado.edu",
     "notes": "created by the simulation code, see SecondMassVisibleControl.getSingleCuboidIcon() with ?generateIconImages"
   },
-  "double-cuboid-icon.png": {
+  "doubleCuboidIcon.png": {
     "text": [
       "Copyright 2021 University of Colorado Boulder"
     ],

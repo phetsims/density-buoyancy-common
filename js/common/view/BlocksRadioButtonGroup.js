@@ -12,8 +12,8 @@ import ThreeUtils from '../../../../mobius/js/ThreeUtils.js';
 import merge from '../../../../phet-core/js/merge.js';
 import { Image } from '../../../../scenery/js/imports.js';
 import RectangularRadioButtonGroup from '../../../../sun/js/buttons/RectangularRadioButtonGroup.js';
-import doubleCuboidIcon from '../../../mipmaps/double-cuboid-icon_png.js';
-import singleCuboidIcon from '../../../mipmaps/single-cuboid-icon_png.js';
+import doubleCuboidIcon_png from '../../../mipmaps/doubleCuboidIcon_png.js';
+import singleCuboidIcon_png from '../../../mipmaps/singleCuboidIcon_png.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonQueryParameters from '../DensityBuoyancyCommonQueryParameters.js';
 import TwoBlockMode from '../model/TwoBlockMode.js';
@@ -171,7 +171,7 @@ class BlocksRadioButtonGroup extends RectangularRadioButtonGroup {
       } );
     }
     else {
-      return new Image( singleCuboidIcon, { scale: 0.2 } );
+      return new Image( singleCuboidIcon_png, { scale: 0.2 } );
     }
   }
 
@@ -189,7 +189,7 @@ class BlocksRadioButtonGroup extends RectangularRadioButtonGroup {
       } );
     }
     else {
-      return new Image( doubleCuboidIcon, { scale: 0.2 } );
+      return new Image( doubleCuboidIcon_png, { scale: 0.2 } );
     }
   }
 }

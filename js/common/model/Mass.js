@@ -215,8 +215,7 @@ class Mass extends PhetioObject {
       this.customDensityProperty = new NumberProperty( config.material.density, {
         tandem: tandem.createTandem( 'customDensityProperty' ),
         phetioDocumentation: 'Density of the block when the material is set to “CUSTOM”.',
-        range: new Range( Number.MIN_VALUE, Number.POSITIVE_INFINITY ),
-        phetioStudioControl: false
+        range: new Range( Number.MIN_VALUE, Number.POSITIVE_INFINITY )
       } );
       // @public {Property.<Color>} -- for phet-io support (to control the materialProperty)
       this.customColorProperty = new ColorProperty( config.material.customColor ? config.material.customColor.value : Color.WHITE, {
@@ -286,8 +285,7 @@ class Mass extends PhetioObject {
       phetioReadOnly: true,
       phetioDocumentation: 'Current volume of the block. Changing the volume will result in changes to the mass, but will not change the material or density.',
       units: 'm^3',
-      reentrant: true,
-      phetioStudioControl: false
+      reentrant: true
     }, config.volumePropertyOptions ) );
 
     // @public {Property.<number>} - In kg (kilograms), added to the normal mass (computed from density and volume)
@@ -307,8 +305,7 @@ class Mass extends PhetioObject {
       phetioDocumentation: 'Current mass of the block. Changing the mass will result in changes to the material (and therefore density), but the volume will remain the same.',
       units: 'kg',
       reentrant: true,
-      range: new Range( Number.MIN_VALUE, Number.POSITIVE_INFINITY ),
-      phetioStudioControl: false
+      range: new Range( Number.MIN_VALUE, Number.POSITIVE_INFINITY )
     }, config.massPropertyOptions ) );
 
     Property.multilink( [ this.materialProperty, this.volumeProperty, this.containedMassProperty ], ( material, volume, containedMass ) => {

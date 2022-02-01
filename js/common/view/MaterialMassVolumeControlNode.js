@@ -99,7 +99,7 @@ class MaterialMassVolumeControlNode extends VBox {
           } );
         }
         else {
-           return Material[ materialEnum.name ];
+          return Material[ materialEnum.name ];
         }
       },
       reentrant: true,
@@ -140,7 +140,7 @@ class MaterialMassVolumeControlNode extends VBox {
     const massNumberProperty = new NumberProperty( massProperty.value, {
       tandem: massNumberControlTandem.createTandem( 'massNumberProperty' ),
       phetioState: false,
-      phetioStudioControl: false
+      phetioReadOnly: true
     } );
 
     // passed to the NumberControl - liters from m^3
@@ -148,7 +148,7 @@ class MaterialMassVolumeControlNode extends VBox {
       range: new Range( options.minVolumeLiters, options.maxVolumeLiters ),
       tandem: volumeNumberControlTandem.createTandem( 'numberControlVolumeProperty' ),
       phetioState: false,
-      phetioStudioControl: false
+      phetioReadOnly: true
     } );
 
     // This instance lives for the lifetime of the simulation, so we don't need to remove this listener

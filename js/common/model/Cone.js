@@ -47,13 +47,11 @@ class Cone extends Mass {
     // @public {Property.<number>}
     this.radiusProperty = new NumberProperty( radius, {
       tandem: config.tandem.createTandem( 'radiusProperty' ),
-      range: new Range( 0, Number.POSITIVE_INFINITY ),
-      phetioStudioControl: false
+      range: new Range( 0, Number.POSITIVE_INFINITY )
     } );
     this.heightProperty = new NumberProperty( height, {
       tandem: config.tandem.createTandem( 'heightProperty' ),
-      range: new Range( 0, Number.POSITIVE_INFINITY ),
-      phetioStudioControl: false
+      range: new Range( 0, Number.POSITIVE_INFINITY )
     } );
 
     // @public (read-only) {boolean}

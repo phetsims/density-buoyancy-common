@@ -39,13 +39,11 @@ class HorizontalCylinder extends Mass {
     // @public {Property.<number>}
     this.radiusProperty = new NumberProperty( radius, {
       tandem: config.tandem.createTandem( 'radiusProperty' ),
-      range: new Range( 0, Number.POSITIVE_INFINITY ),
-      phetioStudioControl: false
+      range: new Range( 0, Number.POSITIVE_INFINITY )
     } );
     this.lengthProperty = new NumberProperty( length, {
       tandem: config.tandem.createTandem( 'lengthProperty' ),
-      range: new Range( 0, Number.POSITIVE_INFINITY ),
-      phetioStudioControl: false
+      range: new Range( 0, Number.POSITIVE_INFINITY )
     } );
 
     // @private {number} - Step information

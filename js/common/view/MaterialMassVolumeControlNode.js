@@ -70,6 +70,7 @@ class MaterialMassVolumeControlNode extends VBox {
       maxMass: 27,
       minVolumeLiters: 1,
       maxVolumeLiters: 10,
+      minCustomVolumeLiters: 1,
 
       // {PaintDef}
       color: null
@@ -94,8 +95,10 @@ class MaterialMassVolumeControlNode extends VBox {
       },
       inverseMap: materialEnum => {
         if ( materialEnum === MaterialEnumeration.CUSTOM ) {
+          // Handle our minimum volume if we're switched to custom (if needed)
+          const volume = Math.max( volumeProperty.value, options.minCustomVolumeLiters );
           return Material.createCustomSolidMaterial( {
-            density: Utils.clamp( materialProperty.value.density, options.minCustomMass / volumeProperty.value, options.maxCustomMass / volumeProperty.value )
+            density: Utils.clamp( materialProperty.value.density, options.minCustomMass / volume, options.maxCustomMass / volume )
           } );
         }
         else {
@@ -134,6 +137,13 @@ class MaterialMassVolumeControlNode extends VBox {
       phetioState: false,
       phetioType: DerivedProperty.DerivedPropertyIO( Range.RangeIO ),
       tandem: massNumberControlTandem.createTandem( 'enabledMassRangeProperty' )
+    } );
+
+    const enabledVolumeRangeProperty = new DerivedProperty( [ materialProperty ], material => {
+      return new WorkaroundRange(
+        material.custom ? Math.max( options.minVolumeLiters, options.minCustomVolumeLiters ) : options.minVolumeLiters,
+        options.maxVolumeLiters
+      );
     } );
 
     // passed to the NumberControl
@@ -196,6 +206,10 @@ class MaterialMassVolumeControlNode extends VBox {
         userMassChanging = true;
 
         if ( materialProperty.value.custom ) {
+          // Handle our minimum volume if we're switched to custom (if needed)
+          if ( volumeProperty.value < options.minCustomVolumeLiters ) {
+            setVolume( options.minCustomVolumeLiters / LITERS_IN_CUBIC_METER );
+          }
           materialProperty.value = Material.createCustomSolidMaterial( {
             density: mass / volumeProperty.value
           } );
@@ -310,6 +324,7 @@ class MaterialMassVolumeControlNode extends VBox {
       arrowButtonOptions: {
         enabledEpsilon: 1e-7
       },
+      enabledRangeProperty: enabledVolumeRangeProperty,
       tandem: volumeNumberControlTandem,
       titleNodeOptions: {
         visiblePropertyOptions: {

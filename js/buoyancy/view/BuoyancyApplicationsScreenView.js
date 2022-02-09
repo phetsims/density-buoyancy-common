@@ -77,6 +77,7 @@ class BuoyancyApplicationsScreenView extends DensityBuoyancyScreenView {
       maxMass: Material.MERCURY.density * 0.01,
       minVolumeLiters: 0,
       maxVolumeLiters: 10,
+      minCustomVolumeLiters: 0.5,
       tandem: tandem.createTandem( 'bottleControlNode' )
     } );
 

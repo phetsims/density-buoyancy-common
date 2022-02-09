@@ -56,6 +56,8 @@ class Material {
       liquidColor: null
     }, config );
 
+    assert && assert( isFinite( config.density ) );
+
     // @public (read-only) {string}
     this.name = config.name;
 

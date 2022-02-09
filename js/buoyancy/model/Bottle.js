@@ -192,6 +192,7 @@ class Bottle extends Mass {
     // @public {Property.<Material>}
     this.interiorMaterialProperty = new Property( BOTTLE_INITIAL_INTERIOR_MATERIAL, {
       valueType: Material,
+      reentrant: 'true',
       tandem: config.tandem.createTandem( 'interiorMaterialProperty' ),
       phetioType: Property.PropertyIO( Material.MaterialIO )
     } );

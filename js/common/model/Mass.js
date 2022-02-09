@@ -585,6 +585,17 @@ class Mass extends PhetioObject {
   }
 
   /**
+   * Moves the mass to its initial position
+   * @public
+   */
+  resetPosition() {
+    this.matrix.set( this.originalMatrix );
+    this.writeData();
+    this.engine.bodySynchronizePrevious( this.body );
+    this.transformedEmitter.emit();
+  }
+
+  /**
    * Resets things to their original values.
    * @public
    */
@@ -605,10 +616,7 @@ class Mass extends PhetioObject {
     // NOTE: NOT resetting bodyOffsetProperty/forceOffsetProperty/massOffsetProperty/massOffsetOrientationProperty on
     // purpose, it will be adjusted by subtypes whenever necessary, and a reset may break things here.
 
-    this.matrix.set( this.originalMatrix );
-    this.writeData();
-    this.engine.bodySynchronizePrevious( this.body );
-    this.transformedEmitter.emit();
+    this.resetPosition();
   }
 
   /**

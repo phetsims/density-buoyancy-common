@@ -89,6 +89,20 @@ class BuoyancyApplicationsModel extends DensityBuoyancyModel {
   }
 
   /**
+   * Moves the boat and block to their initial locations (see https://github.com/phetsims/buoyancy/issues/25)
+   * @public
+   */
+  resetBoatScene() {
+    // Reset the basin levels (clear the liquid out of the boat)
+    this.boat.basin.reset();
+    this.pool.reset();
+
+    // Move things to the initial position
+    this.boat.resetPosition();
+    this.block.resetPosition();
+  }
+
+  /**
    * Resets things to their original values.
    * @public
    * @override

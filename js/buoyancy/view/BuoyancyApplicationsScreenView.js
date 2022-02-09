@@ -11,22 +11,19 @@ import DynamicProperty from '../../../../axon/js/DynamicProperty.js';
 import Property from '../../../../axon/js/Property.js';
 import Range from '../../../../dot/js/Range.js';
 import Utils from '../../../../dot/js/Utils.js';
+import Vector3 from '../../../../dot/js/Vector3.js';
 import merge from '../../../../phet-core/js/merge.js';
 import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
+import resetArrow_png from '../../../../scenery-phet/images/resetArrow_png.js';
 import NumberControl from '../../../../scenery-phet/js/NumberControl.js';
 import NumberDisplay from '../../../../scenery-phet/js/NumberDisplay.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
-import { AlignPropertyBox } from '../../../../scenery/js/imports.js';
-import { ManualConstraint } from '../../../../scenery/js/imports.js';
-import { AlignBox } from '../../../../scenery/js/imports.js';
-import { HStrut } from '../../../../scenery/js/imports.js';
-import { Node } from '../../../../scenery/js/imports.js';
-import { Text } from '../../../../scenery/js/imports.js';
-import { VBox } from '../../../../scenery/js/imports.js';
+import { AlignBox, AlignPropertyBox, Color, HStrut, Image, ManualConstraint, Node, Text, VBox } from '../../../../scenery/js/imports.js';
 import AccordionBox from '../../../../sun/js/AccordionBox.js';
+import RectangularRadioButtonGroup from '../../../../sun/js/buttons/RectangularRadioButtonGroup.js';
 import HSeparator from '../../../../sun/js/HSeparator.js';
 import Panel from '../../../../sun/js/Panel.js';
-import RectangularRadioButtonGroup from '../../../../sun/js/buttons/RectangularRadioButtonGroup.js';
+import RectangularPushButton from '../../../../sun/js/buttons/RectangularPushButton.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 import Cube from '../../common/model/Cube.js';
 import Material from '../../common/model/Material.js';
@@ -145,6 +142,33 @@ class BuoyancyApplicationsScreenView extends DensityBuoyancyScreenView {
     ], material => material.density ), cubicMeters => model.block.updateSize( Cube.boundsFromVolume( cubicMeters ) ), this.popupLayer, {
       tandem: tandem.createTandem( 'blockControlNode' )
     } );
+
+    const resetSceneButton = new RectangularPushButton( {
+      content: new Node( {
+        children: [
+          new Image( resetArrow_png, { scale: 0.3 } )
+        ]
+      } ),
+      xMargin: 5,
+      yMargin: 3,
+      baseColor: new Color( 220, 220, 220 ),
+      listener: () => {
+        model.resetBoatScene();
+      },
+      visibleProperty: new DerivedProperty( [ model.sceneProperty ], scene => scene === BuoyancyApplicationsModel.Scene.BOAT )
+    } );
+    this.addChild( resetSceneButton );
+
+    // @private {function}
+    this.positionResetSceneButton = () => {
+      resetSceneButton.rightTop = this.modelToViewPoint( new Vector3(
+        this.model.poolBounds.maxX,
+        this.model.poolBounds.minY,
+        this.model.poolBounds.maxZ
+      ) ).plusXY( 0, 5 );
+    };
+    this.transformEmitter.addListener( this.positionResetSceneButton );
+    this.positionResetSceneButton();
 
     const boatVolumeRange = new Range( 1, 20 );
     const boatBox = new VBox( {
@@ -271,6 +295,17 @@ class BuoyancyApplicationsScreenView extends DensityBuoyancyScreenView {
     } );
 
     this.addChild( this.popupLayer );
+  }
+
+  /**
+   * @public
+   * @override
+   * @param {number} dt
+   */
+  step( dt ) {
+    super.step( dt );
+
+    this.positionResetSceneButton();
   }
 }
 

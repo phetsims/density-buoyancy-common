@@ -7,27 +7,48 @@
  */
 
 import NumberProperty from '../../../../axon/js/NumberProperty.js';
+import Property from '../../../../axon/js/Property.js';
 import Range from '../../../../dot/js/Range.js';
-import merge from '../../../../phet-core/js/merge.js';
+import optionize from '../../../../phet-core/js/optionize.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
 import NumberIO from '../../../../tandem/js/types/NumberIO.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import InterpolatedProperty from './InterpolatedProperty.js';
+import Mass from './Mass.js';
 
-class Basin {
-  /**
-   * @param {Object} [options]
-   */
-  constructor( options ) {
-    options = merge( {
+type BasinOptions = {
+  initialVolume?: number;
+  initialY?: number;
+  tandem?: Tandem;
+};
+
+abstract class Basin {
+
+  // In m^3, the volume of liquid contained in this basin
+  liquidVolumeProperty: Property<number>;
+
+  // The y coordinate of the liquid level (absolute in the model, NOT relative to anything)
+  liquidYInterpolatedProperty: InterpolatedProperty<number>;
+
+  // The bottom and top of the basin's area of containment (absolute model coordinates), set during physics engine steps.
+  stepBottom: number;
+  stepTop: number;
+
+  // The masses contained in this basin, set during the physics engine steps.
+  stepMasses: Mass[];
+
+  // A basin that may be contained in this one (boat basin in the pool) NOTE: only one guaranteed
+  childBasin: Basin | null;
+
+  constructor( providedOptions?: BasinOptions ) {
+    const options = optionize<BasinOptions, BasinOptions>( {
       initialVolume: 0,
       initialY: 0,
       tandem: Tandem.REQUIRED
-    }, options );
+    }, providedOptions );
 
     const tandem = options.tandem;
 
-    // @public {Property.<number>} - in m^3, the volume of liquid contained in this basin
     this.liquidVolumeProperty = new NumberProperty( options.initialVolume, {
       tandem: tandem.createTandem( 'liquidVolumeProperty' ),
       phetioReadOnly: true,
@@ -36,8 +57,6 @@ class Basin {
       units: 'm^3'
     } );
 
-    // @public {Property.<number>} - The y coordinate of the liquid level (absolute in the model, NOT relative to
-    // anything)
     this.liquidYInterpolatedProperty = new InterpolatedProperty( options.initialY, {
       interpolate: InterpolatedProperty.interpolateNumber,
       phetioType: InterpolatedProperty.InterpolatedPropertyIO( NumberIO ),
@@ -46,63 +65,32 @@ class Basin {
       phetioDocumentation: 'The y-value of the liquid in model coordinates (where 0 is the top of the pool)'
     } );
 
-    // @public (read-only) {number} - The bottom and top of the basin's area of containment (absolute model
-    // coordinates), set during physics engine steps.
     this.stepBottom = 0;
     this.stepTop = 0;
-
-    // @public {Array.<Mass>} - The masses contained in this basin, set during the physics engine steps.
     this.stepMasses = [];
-
-    // @public (read-only) {Basin|null} - A basin that may be contained in this one (boat basin in the pool) NOTE: only
-    // one guaranteed
     this.childBasin = null;
   }
 
   /**
    * Returns whether a given mass is inside this basin (e.g. if filled with liquid, would it be displacing any
    * liquid).
-   * @public
-   * @abstract
-   *
-   * @param {Mass} mass
-   * @returns {boolean}
    */
-  isMassInside( mass ) {
-    throw new Error( 'abstract method' );
-  }
+  abstract isMassInside( mass: Mass ): boolean;
 
   /**
    * Returns the maximum area that could be contained with liquid at a given y value.
-   * @public
-   * @abstract
-   *
-   * @param {number} y
-   * @returns {number}
    */
-  getMaximumArea( y ) {
-    throw new Error( 'abstract method' );
-  }
+  abstract getMaximumArea( y: number ): number;
 
   /**
    * Returns the maximum volume that could be contained with liquid up to a given y value.
-   * @public
-   * @abstract
-   *
-   * @param {number} y
-   * @returns {number}
    */
-  getMaximumVolume( y ) {
-    throw new Error( 'abstract method' );
-  }
+  abstract getMaximumVolume( y: number ): number;
 
   /**
    * Returns the filled area in the basin (i.e. things that aren't air or water) at the given y value
-   * @public
-   *
-   * @param {number} y
    */
-  getDisplacedArea( y ) {
+  getDisplacedArea( y: number ): number {
     let area = 0;
     this.stepMasses.forEach( mass => {
       area += mass.getDisplacedArea( y );
@@ -119,11 +107,8 @@ class Basin {
 
   /**
    * Returns the filled volume in the basin (i.e. things that aren't air or water) that is below the given y value.
-   * @public
-   *
-   * @param {number} y
    */
-  getDisplacedVolume( y ) {
+  getDisplacedVolume( y: number ): number {
     let volume = 0;
     this.stepMasses.forEach( mass => {
       volume += mass.getDisplacedVolume( y );
@@ -142,27 +127,20 @@ class Basin {
 
   /**
    * Returns the empty area in the basin (i.e. air, that isn't a solid object) at the given y value.
-   * @private
-   *
-   * @param {number} y
    */
-  getEmptyArea( y ) {
+  private getEmptyArea( y: number ): number {
     return this.getMaximumArea( y ) - this.getDisplacedArea( y );
   }
 
   /**
    * Returns the empty volume in the basin (i.e. air, that isn't a solid object) that is below the given y value.
-   * @private
-   *
-   * @param {number} y
    */
-  getEmptyVolume( y ) {
+  private getEmptyVolume( y: number ): number {
     return this.getMaximumVolume( y ) - this.getDisplacedVolume( y );
   }
 
   /**
    * Computes the liquid's y coordinate, given the current volume
-   * @public
    */
   computeY() {
     const liquidVolume = this.liquidVolumeProperty.value;
@@ -193,7 +171,6 @@ class Basin {
 
   /**
    * Resets to an initial state.
-   * @public
    */
   reset() {
     this.liquidVolumeProperty.reset();
@@ -202,16 +179,8 @@ class Basin {
 
   /**
    * Hybrid root-finding given our constraints (guaranteed interval, value/derivative). Combines Newton's and bisection.
-   * @private
-   *
-   * @param {number} minX
-   * @param {number} maxX
-   * @param {number} tolerance
-   * @param {function(number):number} valueFunction
-   * @param {function(number):number} derivativeFunction
-   * @returns {number}
    */
-  static findRoot( minX, maxX, tolerance, valueFunction, derivativeFunction ) {
+  private static findRoot( minX: number, maxX: number, tolerance: number, valueFunction: ( n: number ) => number, derivativeFunction: ( n: number ) => number ): number {
     let x = ( minX + maxX ) / 2;
 
     let y;
@@ -247,3 +216,4 @@ class Basin {
 
 densityBuoyancyCommon.register( 'Basin', Basin );
 export default Basin;
+export type { BasinOptions };

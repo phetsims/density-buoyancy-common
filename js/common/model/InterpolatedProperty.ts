@@ -6,55 +6,55 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
-import Property from '../../../../axon/js/Property.js';
-import merge from '../../../../phet-core/js/merge.js';
+import Property, { PropertyOptions } from '../../../../axon/js/Property.js';
+import Vector2 from '../../../../dot/js/Vector2.js';
+import Vector3 from '../../../../dot/js/Vector3.js';
+import optionize from '../../../../phet-core/js/optionize.js';
 import IOType from '../../../../tandem/js/types/IOType.js';
 import NumberIO from '../../../../tandem/js/types/NumberIO.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 
-class InterpolatedProperty extends Property {
-  /**
-   * @param {*} value - The initial value of the property
-   * @param {Object} config - config
-   */
-  constructor( value, config ) {
+type Interpolate<T> = ( a: T, b: T, ratio: number ) => T;
+type InterpolatedPropertySelfOptions<T> = {
+  interpolate: Interpolate<T>
+};
+type InterpolatedPropertyOptions<T> = InterpolatedPropertySelfOptions<T> & PropertyOptions<T>;
 
-    config = merge( {
-      // {function(a:number, b:number, ratio:number)} - to interpolate
-      interpolate: null
-    }, config );
+class InterpolatedProperty<T> extends Property<T> {
 
-    super( value, config );
+  // publicly read-only
+  currentValue: T;
+  previousValue: T;
+  ratio: number;
 
-    // @private {function(a:number, b:number, ratio:number)}
+  private interpolate: Interpolate<T>;
+
+  constructor( initialValue: T, providedConfig: InterpolatedPropertyOptions<T> ) {
+
+    const config = optionize<InterpolatedPropertyOptions<T>, InterpolatedPropertySelfOptions<T>, PropertyOptions<T>>( {}, providedConfig );
+
+    super( initialValue, config );
+
     this.interpolate = config.interpolate;
 
-    // @public (read-only) {*}
-    this.currentValue = value;
-    this.previousValue = value;
+    this.currentValue = initialValue;
+    this.previousValue = initialValue;
 
-    // @public (read-only) {number}
     this.ratio = 0;
   }
 
   /**
    * Sets the next value to be used (will NOT change the value of this Property).
-   * @public
-   *
-   * @param {*} value
    */
-  setNextValue( value ) {
+  setNextValue( value: T ) {
     this.previousValue = this.currentValue;
     this.currentValue = value;
   }
 
   /**
    * Sets the ratio to use for interpolated values (WILL change the value of this Property generally).
-   * @public
-   *
-   * @param {number} ratio
    */
-  setRatio( ratio ) {
+  setRatio( ratio: number ) {
     this.ratio = ratio;
 
     this.value = this.interpolate( this.previousValue, this.currentValue, this.ratio );
@@ -62,8 +62,6 @@ class InterpolatedProperty extends Property {
 
   /**
    * Resets the Property to its initial state.
-   * @public
-   * @override
    */
   reset() {
     super.reset();
@@ -75,53 +73,32 @@ class InterpolatedProperty extends Property {
 
   /**
    * Interpolation for numbers.
-   * @public
-   *
-   * @param {number} a
-   * @param {number} b
-   * @param {number} ratio
-   * @returns {number}
    */
-  static interpolateNumber( a, b, ratio ) {
+  static interpolateNumber( a: number, b: number, ratio: number ): number {
     return a + ( b - a ) * ratio;
   }
 
   /**
    * Interpolation for Vector2.
-   * @public
-   *
-   * @param {Vector2} a
-   * @param {Vector2} b
-   * @param {number} ratio
-   * @returns {Vector2}
    */
-  static interpolateVector2( a, b, ratio ) {
+  static interpolateVector2( a: Vector2, b: Vector2, ratio: number ): Vector2 {
     return a.blend( b, ratio );
   }
 
   /**
    * Interpolation for Vector3.
-   * @public
-   *
-   * @param {Vector3} a
-   * @param {Vector3} b
-   * @param {number} ratio
-   * @returns {Vector3}
    */
-  static interpolateVector3( a, b, ratio ) {
+  static interpolateVector3( a: Vector3, b: Vector3, ratio: number ): Vector3 {
     return a.blend( b, ratio );
   }
+
+  static InterpolatedPropertyIO: ( parameterType: IOType ) => IOType;
 }
 
 // {Map.<IOType, IOType>} - Cache each parameterized PropertyIO based on
 // the parameter type, so that it is only created once
-const cache = new Map();
+const cache = new Map<IOType, IOType>();
 
-/**
- * @public
- * @param {IOType} parameterType
- * @returns {IOType}
- */
 InterpolatedProperty.InterpolatedPropertyIO = parameterType => {
   assert && assert( parameterType, 'InterpolatedPropertyIO needs parameterType' );
 
@@ -133,7 +110,7 @@ InterpolatedProperty.InterpolatedPropertyIO = parameterType => {
       supertype: PropertyIOImpl,
       parameterTypes: [ parameterType ],
       documentation: 'Extends PropertyIO to interpolation (with a current/previous value, and a ratio between the two)',
-      toStateObject: interpolatedProperty => {
+      toStateObject: ( interpolatedProperty: InterpolatedProperty<any> ) => {
 
         const parentStateObject = PropertyIOImpl.toStateObject( interpolatedProperty );
 
@@ -143,7 +120,7 @@ InterpolatedProperty.InterpolatedPropertyIO = parameterType => {
 
         return parentStateObject;
       },
-      applyState: ( interpolatedProperty, stateObject ) => {
+      applyState: ( interpolatedProperty: InterpolatedProperty<any>, stateObject: any ) => {
         PropertyIOImpl.applyState( interpolatedProperty, stateObject );
         interpolatedProperty.currentValue = parameterType.fromStateObject( stateObject.currentValue );
         interpolatedProperty.previousValue = parameterType.fromStateObject( stateObject.previousValue );
@@ -159,8 +136,9 @@ InterpolatedProperty.InterpolatedPropertyIO = parameterType => {
     cache.set( parameterType, ioType );
   }
 
-  return cache.get( parameterType );
+  return cache.get( parameterType )!;
 };
 
 densityBuoyancyCommon.register( 'InterpolatedProperty', InterpolatedProperty );
 export default InterpolatedProperty;
+export type { InterpolatedPropertySelfOptions };

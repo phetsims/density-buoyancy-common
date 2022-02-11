@@ -10,23 +10,28 @@ import Bounds3 from '../../../../dot/js/Bounds3.js';
 import Matrix3 from '../../../../dot/js/Matrix3.js';
 import merge from '../../../../phet-core/js/merge.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
-import Cuboid from './Cuboid.js';
+import Cuboid, { CuboidOptions } from './Cuboid.js';
+import PhysicsEngine from './PhysicsEngine.js';
+import optionize from '../../../../phet-core/js/optionize.js';
+import Material from './Material.js';
+import Vector2 from '../../../../dot/js/Vector2.js';
+
+type CubeSelfOptions = {
+  adjustMassWithVolume?: boolean
+};
+
+type CubeOptions = CubeSelfOptions & CuboidOptions;
 
 class Cube extends Cuboid {
-  /**
-   * @param {PhysicsEngine} engine
-   * @param {number} volume
-   * @param {Object} config
-   */
-  constructor( engine, volume, config ) {
+  constructor( engine: PhysicsEngine, volume: number, providedConfig: CubeOptions ) {
 
-    config = merge( {
+    let config = optionize<CubeOptions, CubeSelfOptions, CuboidOptions>( {
       adjustMassWithVolume: false,
 
       volumePropertyOptions: {
         phetioReadOnly: false
       }
-    }, config );
+    }, providedConfig );
 
     if ( config.adjustMassWithVolume ) {
       config = merge( {
@@ -57,12 +62,8 @@ class Cube extends Cuboid {
 
   /**
    * Returns the Bounds3 for a Cube that would be used for a specific volume (cubical).
-   * @public
-   *
-   * @param {number} volume
-   * @returns {Bounds3}
    */
-  static boundsFromVolume( volume ) {
+  static boundsFromVolume( volume: number ): Bounds3 {
     const halfSideLength = Math.pow( volume, 1 / 3 ) / 2;
     return new Bounds3(
       -halfSideLength,
@@ -76,16 +77,8 @@ class Cube extends Cuboid {
 
   /**
    * Creates a Cube with a defined volume
-   * @public
-   *
-   * @param {PhysicsEngine} engine
-   * @param {Material} material
-   * @param {Vector2} position
-   * @param {number} volume - m^3
-   * @param {Object} [options]
-   * @returns {Cube}
    */
-  static createWithVolume( engine, material, position, volume, options ) {
+  static createWithVolume( engine: PhysicsEngine, material: Material, position: Vector2, volume: number, options: CubeOptions ): Cube {
     return new Cube( engine, volume, merge( {
       matrix: Matrix3.translation( position.x, position.y ),
       material: material
@@ -94,19 +87,12 @@ class Cube extends Cuboid {
 
   /**
    * Creates a Cube with a defined volume
-   * @public
-   *
-   * @param {PhysicsEngine} engine
-   * @param {Material} material
-   * @param {Vector2} position
-   * @param {number} mass - kg
-   * @param {Object} [options]
-   * @returns {Cube}
    */
-  static createWithMass( engine, material, position, mass, options ) {
+  static createWithMass( engine: PhysicsEngine, material: Material, position: Vector2, mass: number, options: CubeOptions ) {
     return Cube.createWithVolume( engine, material, position, mass / material.density, options );
   }
 }
 
 densityBuoyancyCommon.register( 'Cube', Cube );
 export default Cube;
+export type { CubeOptions };

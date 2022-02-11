@@ -7,30 +7,40 @@
  */
 
 import NumberProperty from '../../../../axon/js/NumberProperty.js';
+import Property from '../../../../axon/js/Property.js';
 import Range from '../../../../dot/js/Range.js';
+import Ray3 from '../../../../dot/js/Ray3.js';
 import Utils from '../../../../dot/js/Utils.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
 import Shape from '../../../../kite/js/Shape.js';
-import merge from '../../../../phet-core/js/merge.js';
+import optionize from '../../../../phet-core/js/optionize.js';
 import IOType from '../../../../tandem/js/types/IOType.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
-import Mass from './Mass.js';
+import Mass, { InstrumentedMassOptions } from './Mass.js';
+import PhysicsEngine from './PhysicsEngine.js';
+
+type HorizontalCylinderOptions = InstrumentedMassOptions;
 
 class HorizontalCylinder extends Mass {
-  /**
-   * @param {PhysicsEngine} engine
-   * @param {number} radius
-   * @param {number} length
-   * @param {Object} config
-   */
-  constructor( engine, radius, length, config ) {
-    config = merge( {
+
+  radiusProperty: Property<number>;
+  lengthProperty: Property<number>;
+
+  // Step information
+  stepRadius: number;
+  stepHeight: number;
+  stepArea: number;
+  stepMaximumVolume: number;
+  stepMaximumArea: number;
+
+  constructor( engine: PhysicsEngine, radius: number, length: number, providedConfig: HorizontalCylinderOptions ) {
+    const config = optionize<HorizontalCylinderOptions, {}, InstrumentedMassOptions>( {
       body: engine.createBox( length, radius * 2 ),
       shape: HorizontalCylinder.getHorizontalCylinderShape( radius, length ),
       volume: HorizontalCylinder.getVolume( radius, length ),
 
       phetioType: HorizontalCylinder.HorizontalCylinderIO
-    }, config );
+    }, providedConfig );
 
     assert && assert( !config.canRotate );
 
@@ -46,23 +56,19 @@ class HorizontalCylinder extends Mass {
       range: new Range( 0, Number.POSITIVE_INFINITY )
     } );
 
-    // @private {number} - Step information
     this.stepRadius = 0;
     this.stepHeight = 0;
     this.stepArea = 0;
     this.stepMaximumVolume = 0;
+    this.stepMaximumArea = 0;
 
     this.updateSize( radius, length );
   }
 
   /**
    * Updates the size of the cone.
-   * @public
-   *
-   * @param {number} radius
-   * @param {number} length
    */
-  updateSize( radius, length ) {
+  updateSize( radius: number, length: number ) {
     this.engine.updateBox( this.body, length, radius * 2 );
 
     this.radiusProperty.value = radius;
@@ -80,37 +86,22 @@ class HorizontalCylinder extends Mass {
 
   /**
    * Returns the radius from a general size scale
-   * @public
-   * @override
-   *
-   * @param {number} heightRatio
-   * @returns {number}
    */
-  static getRadiusFromRatio( heightRatio ) {
+  static getRadiusFromRatio( heightRatio: number ): number {
     return 0.01 + heightRatio * 0.09;
   }
 
   /**
    * Returns the length from a general size scale
-   * @public
-   * @override
-   *
-   * @param {number} widthRatio
-   * @returns {number}
    */
-  static getLengthFromRatio( widthRatio ) {
+  static getLengthFromRatio( widthRatio: number ): number {
     return 2 * ( 0.01 + widthRatio * 0.09 );
   }
 
   /**
    * Sets the general size of the mass based on a general size scale.
-   * @public
-   * @override
-   *
-   * @param {number} widthRatio
-   * @param {number} heightRatio
    */
-  setRatios( widthRatio, heightRatio ) {
+  setRatios( widthRatio: number, heightRatio: number ) {
     this.updateSize(
       HorizontalCylinder.getRadiusFromRatio( heightRatio ),
       HorizontalCylinder.getLengthFromRatio( widthRatio )
@@ -120,8 +111,6 @@ class HorizontalCylinder extends Mass {
   /**
    * Called after a engine-physics-model step once before doing other operations (like computing buoyant forces,
    * displacement, etc.) so that it can set high-performance flags used for this purpose.
-   * @public
-   * @override
    *
    * Type-specific values are likely to be set, but this should set at least stepX/stepBottom/stepTop
    */
@@ -145,14 +134,8 @@ class HorizontalCylinder extends Mass {
    * If there is an intersection with the ray and this mass, the t-value (distance the ray would need to travel to
    * reach the intersection, e.g. ray.position + ray.distance * t === intersectionPoint) will be returned. Otherwise
    * if there is no intersection, null will be returned.
-   * @public
-   * @override
-   *
-   * @param {Ray3} ray
-   * @param {boolean} isTouch
-   * @returns {number|null}
    */
-  intersect( ray, isTouch ) {
+  intersect( ray: Ray3, isTouch: boolean ): number | null {
     const translation = this.matrix.getTranslation().toVector3();
     const radius = this.radiusProperty.value;
     const length = this.lengthProperty.value;
@@ -165,7 +148,7 @@ class HorizontalCylinder extends Mass {
     const b = 2 * ( yp * relativePosition.y * ray.direction.y + zp * relativePosition.z * ray.direction.z );
     const c = -1 + yp * relativePosition.y * relativePosition.y + zp * relativePosition.z * relativePosition.z;
 
-    const tValues = Utils.solveQuadraticRootsReal( a, b, c ).filter( t => {
+    const tValues = Utils.solveQuadraticRootsReal( a, b, c )!.filter( t => {
       if ( t <= 0 ) {
         return false;
       }
@@ -184,15 +167,10 @@ class HorizontalCylinder extends Mass {
 
   /**
    * Returns the cumulative displaced volume of this object up to a given y level.
-   * @public
-   * @override
    *
    * Assumes step information was updated.
-   *
-   * @param {number} liquidLevel
-   * @returns {number}
    */
-  getDisplacedArea( liquidLevel ) {
+  getDisplacedArea( liquidLevel: number ): number {
     if ( liquidLevel < this.stepBottom || liquidLevel > this.stepTop ) {
       return 0;
     }
@@ -205,15 +183,10 @@ class HorizontalCylinder extends Mass {
 
   /**
    * Returns the displaced volume of this object up to a given y level, assuming a y value for the given liquid level.
-   * @public
-   * @override
    *
    * Assumes step information was updated.
-   *
-   * @param {number} liquidLevel
-   * @returns {number}
    */
-  getDisplacedVolume( liquidLevel ) {
+  getDisplacedVolume( liquidLevel: number ): number {
     if ( liquidLevel <= this.stepBottom ) {
       return 0;
     }
@@ -231,7 +204,6 @@ class HorizontalCylinder extends Mass {
 
   /**
    * Resets things to their original values.
-   * @public
    */
   reset() {
     this.radiusProperty.reset();
@@ -243,29 +215,21 @@ class HorizontalCylinder extends Mass {
 
   /**
    * Returns a horizontal cylinder shape for a given radius/length.
-   * @public
-   *
-   * @param {number} radius
-   * @param {number} length
    */
-  static getHorizontalCylinderShape( radius, length ) {
+  static getHorizontalCylinderShape( radius: number, length: number ) {
     return Shape.rect( -length / 2, -radius, length, 2 * radius );
   }
 
   /**
    * Returns the volume of a horizontal cylinder with the given radius and length.
-   * @public
-   *
-   * @param {number} radius
-   * @param {number} length
-   * @returns {number}
    */
-  static getVolume( radius, length ) {
+  static getVolume( radius: number, length: number ): number {
     return Math.PI * radius * radius * length;
   }
+
+  static HorizontalCylinderIO: IOType;
 }
 
-// @public (read-only) {IOType}
 HorizontalCylinder.HorizontalCylinderIO = new IOType( 'HorizontalCylinderIO', {
   valueType: HorizontalCylinder,
   supertype: Mass.MassIO,
@@ -274,3 +238,4 @@ HorizontalCylinder.HorizontalCylinderIO = new IOType( 'HorizontalCylinderIO', {
 
 densityBuoyancyCommon.register( 'HorizontalCylinder', HorizontalCylinder );
 export default HorizontalCylinder;
+export type { HorizontalCylinderOptions };

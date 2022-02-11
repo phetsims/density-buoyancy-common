@@ -14,7 +14,7 @@ import Cube from '../../common/model/Cube.js';
 import DensityBuoyancyModel from '../../common/model/DensityBuoyancyModel.js';
 import { MassTag } from '../../common/model/Mass.js';
 import Material from '../../common/model/Material.js';
-import Scale from '../../common/model/Scale.js';
+import Scale, { DisplayType } from '../../common/model/Scale.js';
 import TwoBlockMode from '../../common/model/TwoBlockMode.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 
@@ -53,14 +53,14 @@ class BuoyancyExploreModel extends DensityBuoyancyModel {
     // Left scale
     this.availableMasses.push( new Scale( this.engine, this.gravityProperty, {
       matrix: Matrix3.translation( -0.65, -Scale.SCALE_BASE_BOUNDS.minY ),
-      displayType: Scale.DisplayType.NEWTONS,
+      displayType: DisplayType.NEWTONS,
       tandem: tandem.createTandem( 'leftScale' )
     } ) );
 
     // Pool scale
     const poolScale = new Scale( this.engine, this.gravityProperty, {
       matrix: Matrix3.translation( 0.25, -Scale.SCALE_BASE_BOUNDS.minY + this.poolBounds.minY ),
-      displayType: Scale.DisplayType.NEWTONS,
+      displayType: DisplayType.NEWTONS,
       tandem: tandem.createTandem( 'poolScale' )
     } );
     this.availableMasses.push( poolScale );

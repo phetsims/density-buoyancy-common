@@ -19,7 +19,7 @@ import Cube from '../../common/model/Cube.js';
 import DensityBuoyancyModel from '../../common/model/DensityBuoyancyModel.js';
 import { MassTag } from '../../common/model/Mass.js';
 import Material from '../../common/model/Material.js';
-import Scale from '../../common/model/Scale.js';
+import Scale, { DisplayType } from '../../common/model/Scale.js';
 import DensityBuoyancyCommonColors from '../../common/view/DensityBuoyancyCommonColors.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 
@@ -241,7 +241,7 @@ class DensityMysteryModel extends BlockSetModel( DensityBuoyancyModel, BlockSet,
     // @public (read-only) {Scale}
     this.scale = new Scale( this.engine, this.gravityProperty, {
       matrix: Matrix3.translationFromVector( scalePositionProperty.value ),
-      displayType: Scale.DisplayType.KILOGRAMS,
+      displayType: DisplayType.KILOGRAMS,
       canMove: false,
       tandem: tandem.createTandem( 'scale' )
     } );

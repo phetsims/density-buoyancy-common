@@ -7,44 +7,53 @@
  */
 
 import NumberProperty from '../../../../axon/js/NumberProperty.js';
+import Property from '../../../../axon/js/Property.js';
 import Range from '../../../../dot/js/Range.js';
+import Ray3 from '../../../../dot/js/Ray3.js';
 import Utils from '../../../../dot/js/Utils.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
 import Shape from '../../../../kite/js/Shape.js';
-import merge from '../../../../phet-core/js/merge.js';
+import optionize from '../../../../phet-core/js/optionize.js';
 import IOType from '../../../../tandem/js/types/IOType.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
-import Mass from './Mass.js';
+import Mass, { InstrumentedMassOptions, MassOptions } from './Mass.js';
+import PhysicsEngine from './PhysicsEngine.js';
 
 const BOTTOM_FROM_CENTER_RATIO = 0.25; // center of mass to the bottom is 1/4 of the height of the cone
 const TOP_FROM_CENTER_RATIO = 0.75; // center of mass to the tip is 3/4 of the height of the cone
 
+type ConeOptions = InstrumentedMassOptions;
+
 class Cone extends Mass {
-  /**
-   * @param {PhysicsEngine} engine
-   * @param {number} radius
-   * @param {number} height
-   * @param {boolean} isVertexUp
-   * @param {Object} config
-   */
-  constructor( engine, radius, height, isVertexUp, config ) {
+
+  radiusProperty: Property<number>;
+  heightProperty: Property<number>;
+  isVertexUp: boolean;
+  vertexSign: number;
+
+  // Step information
+  stepRadius: number;
+  stepHeight: number;
+  stepArea: number;
+  stepMaximumVolume: number;
+
+  constructor( engine: PhysicsEngine, radius: number, height: number, isVertexUp: boolean, providedConfig: ConeOptions ) {
 
     const initialVertices = Cone.getConeVertices( radius, height, isVertexUp );
 
-    config = merge( {
+    const config = optionize<ConeOptions, {}, MassOptions>( {
       body: engine.createFromVertices( initialVertices, false ),
       shape: Shape.polygon( initialVertices ),
       volume: Cone.getVolume( radius, height ),
 
       phetioType: Cone.ConeIO
-    }, config );
+    }, providedConfig );
 
     assert && assert( !config.canRotate );
 
     super( engine, config );
 
-    // @public {Property.<number>}
     this.radiusProperty = new NumberProperty( radius, {
       tandem: config.tandem.createTandem( 'radiusProperty' ),
       range: new Range( 0, Number.POSITIVE_INFINITY )
@@ -54,13 +63,8 @@ class Cone extends Mass {
       range: new Range( 0, Number.POSITIVE_INFINITY )
     } );
 
-    // @public (read-only) {boolean}
     this.isVertexUp = isVertexUp;
-
-    // @private {number}
     this.vertexSign = isVertexUp ? 1 : -1;
-
-    // @private {number} - Step information
     this.stepRadius = 0;
     this.stepHeight = 0;
     this.stepArea = 0;
@@ -71,12 +75,8 @@ class Cone extends Mass {
 
   /**
    * Updates the size of the cone.
-   * @public
-   *
-   * @param {number} radius
-   * @param {number} height
    */
-  updateSize( radius, height ) {
+  updateSize( radius: number, height: number ) {
     const vertices = Cone.getConeVertices( radius, height, this.isVertexUp );
 
     this.engine.updateFromVertices( this.body, vertices, false );
@@ -96,39 +96,24 @@ class Cone extends Mass {
 
   /**
    * Returns the radius from a general size scale
-   * @public
-   * @override
-   *
-   * @param {number} widthRatio
-   * @returns {number}
    */
-  static getRadiusFromRatio( widthRatio ) {
+  static getRadiusFromRatio( widthRatio: number ): number {
     // Left independent from getHeightFromRatio since these should be not tied together
     return 0.01 + widthRatio * 0.09;
   }
 
   /**
    * Returns the height from a general size scale
-   * @public
-   * @override
-   *
-   * @param {number} heightRatio
-   * @returns {number}
    */
-  static getHeightFromRatio( heightRatio ) {
+  static getHeightFromRatio( heightRatio: number ): number {
     // Left independent from getRadiusFromRatio since these should be not tied together
     return 2 * ( 0.01 + heightRatio * 0.09 );
   }
 
   /**
    * Sets the general size of the mass based on a general size scale.
-   * @public
-   * @override
-   *
-   * @param {number} widthRatio
-   * @param {number} heightRatio
    */
-  setRatios( widthRatio, heightRatio ) {
+  setRatios( widthRatio: number, heightRatio: number ) {
     this.updateSize(
       Cone.getRadiusFromRatio( widthRatio ),
       Cone.getHeightFromRatio( heightRatio )
@@ -138,8 +123,6 @@ class Cone extends Mass {
   /**
    * Called after a engine-physics-model step once before doing other operations (like computing buoyant forces,
    * displacement, etc.) so that it can set high-performance flags used for this purpose.
-   * @public
-   * @override
    *
    * Type-specific values are likely to be set, but this should set at least stepX/stepBottom/stepTop
    */
@@ -163,14 +146,8 @@ class Cone extends Mass {
    * If there is an intersection with the ray and this mass, the t-value (distance the ray would need to travel to
    * reach the intersection, e.g. ray.position + ray.distance * t === intersectionPoint) will be returned. Otherwise
    * if there is no intersection, null will be returned.
-   * @public
-   * @override
-   *
-   * @param {Ray3} ray
-   * @param {boolean} isTouch
-   * @returns {number|null}
    */
-  intersect( ray, isTouch ) {
+  intersect( ray: Ray3, isTouch: boolean ): number | null {
     const translation = this.matrix.getTranslation().toVector3();
     const height = this.heightProperty.value;
     const radius = this.radiusProperty.value;
@@ -187,7 +164,7 @@ class Cone extends Mass {
     const b = cosSquaredInverse * 2 * ( relativePosition.x * ray.direction.x + relativePosition.z * ray.direction.z ) - 2 * relativePosition.y * ray.direction.y;
     const c = cosSquaredInverse * ( relativePosition.x * relativePosition.x + relativePosition.z * relativePosition.z ) - relativePosition.y * relativePosition.y;
 
-    const tValues = Utils.solveQuadraticRootsReal( a, b, c ).filter( t => {
+    const tValues = Utils.solveQuadraticRootsReal( a, b, c )!.filter( t => {
       if ( t <= 0 ) {
         return false;
       }
@@ -210,15 +187,10 @@ class Cone extends Mass {
 
   /**
    * Returns the cumulative displaced volume of this object up to a given y level.
-   * @public
-   * @override
    *
    * Assumes step information was updated.
-   *
-   * @param {number} liquidLevel
-   * @returns {number}
    */
-  getDisplacedArea( liquidLevel ) {
+  getDisplacedArea( liquidLevel: number ): number {
     if ( liquidLevel < this.stepBottom || liquidLevel > this.stepTop ) {
       return 0;
     }
@@ -234,15 +206,10 @@ class Cone extends Mass {
 
   /**
    * Returns the displaced volume of this object up to a given y level, assuming a y value for the given liquid level.
-   * @public
-   * @override
    *
    * Assumes step information was updated.
-   *
-   * @param {number} liquidLevel
-   * @returns {number}
    */
-  getDisplacedVolume( liquidLevel ) {
+  getDisplacedVolume( liquidLevel: number ): number {
     if ( liquidLevel <= this.stepBottom ) {
       return 0;
     }
@@ -267,7 +234,6 @@ class Cone extends Mass {
 
   /**
    * Resets things to their original values.
-   * @public
    */
   reset() {
     this.radiusProperty.reset();
@@ -279,14 +245,8 @@ class Cone extends Mass {
 
   /**
    * Returns an array of vertices for the 2d physics model
-   * @public
-   *
-   * @param {number} radius
-   * @param {number} height
-   * @param {boolean} isVertexUp
-   * @returns {Array.<Vector2>}
    */
-  static getConeVertices( radius, height, isVertexUp ) {
+  static getConeVertices( radius: number, height: number, isVertexUp: boolean ): Vector2[] {
     const vertexSign = isVertexUp ? 1 : -1;
 
     return [
@@ -298,18 +258,14 @@ class Cone extends Mass {
 
   /**
    * Returns the volume of a cone with the given radius and height.
-   * @public
-   *
-   * @param {number} radius
-   * @param {number} height
-   * @returns {number}
    */
-  static getVolume( radius, height ) {
+  static getVolume( radius: number, height: number ): number {
     return Math.PI * radius * radius * height / 3;
   }
+
+  static ConeIO: IOType;
 }
 
-// @public (read-only) {IOType}
 Cone.ConeIO = new IOType( 'ConeIO', {
   valueType: Cone,
   supertype: Mass.MassIO,

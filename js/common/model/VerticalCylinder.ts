@@ -7,31 +7,40 @@
  */
 
 import NumberProperty from '../../../../axon/js/NumberProperty.js';
+import Property from '../../../../axon/js/Property.js';
 import Range from '../../../../dot/js/Range.js';
+import Ray3 from '../../../../dot/js/Ray3.js';
 import Utils from '../../../../dot/js/Utils.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
 import Shape from '../../../../kite/js/Shape.js';
-import merge from '../../../../phet-core/js/merge.js';
+import optionize from '../../../../phet-core/js/optionize.js';
 import IOType from '../../../../tandem/js/types/IOType.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
-import Mass from './Mass.js';
+import Mass, { InstrumentedMassOptions } from './Mass.js';
+import PhysicsEngine from './PhysicsEngine.js';
+
+type VerticalCylinderOptions = InstrumentedMassOptions;
 
 class VerticalCylinder extends Mass {
-  /**
-   * @param {PhysicsEngine} engine
-   * @param {number} radius
-   * @param {number} height
-   * @param {Object} config
-   */
-  constructor( engine, radius, height, config ) {
-    config = merge( {
+
+  radiusProperty: Property<number>;
+  heightProperty: Property<number>;
+
+  // Step information
+  stepRadius: number;
+  stepHeight: number;
+  stepArea: number;
+  stepMaximumVolume: number;
+
+  constructor( engine: PhysicsEngine, radius: number, height: number, providedConfig: VerticalCylinderOptions ) {
+    const config = optionize<VerticalCylinderOptions, {}, InstrumentedMassOptions>( {
       body: engine.createBox( 2 * radius, height ),
       shape: VerticalCylinder.getVerticalCylinderShape( radius, height ),
       volume: VerticalCylinder.getVolume( radius, height ),
 
       phetioType: VerticalCylinder.VerticalCylinderIO
-    }, config );
+    }, providedConfig );
 
     assert && assert( !config.canRotate );
 
@@ -47,7 +56,6 @@ class VerticalCylinder extends Mass {
       range: new Range( 0, Number.POSITIVE_INFINITY )
     } );
 
-    // @private {number} - Step information
     this.stepRadius = 0;
     this.stepHeight = 0;
     this.stepArea = 0;
@@ -60,12 +68,8 @@ class VerticalCylinder extends Mass {
 
   /**
    * Updates the size of the cone.
-   * @public
-   *
-   * @param {number} radius
-   * @param {number} height
    */
-  updateSize( radius, height ) {
+  updateSize( radius: number, height: number ) {
     this.engine.updateBox( this.body, 2 * radius, height );
 
     this.radiusProperty.value = radius;
@@ -83,37 +87,22 @@ class VerticalCylinder extends Mass {
 
   /**
    * Returns the radius from a general size scale
-   * @public
-   * @override
-   *
-   * @param {number} widthRatio
-   * @returns {number}
    */
-  static getRadiusFromRatio( widthRatio ) {
+  static getRadiusFromRatio( widthRatio: number ): number {
     return 0.01 + widthRatio * 0.09;
   }
 
   /**
    * Returns the height from a general size scale
-   * @public
-   * @override
-   *
-   * @param {number} heightRatio
-   * @returns {number}
    */
-  static getHeightFromRatio( heightRatio ) {
+  static getHeightFromRatio( heightRatio: number ): number {
     return 2 * ( 0.01 + heightRatio * 0.09 );
   }
 
   /**
    * Sets the general size of the mass based on a general size scale.
-   * @public
-   * @override
-   *
-   * @param {number} widthRatio
-   * @param {number} heightRatio
    */
-  setRatios( widthRatio, heightRatio ) {
+  setRatios( widthRatio: number, heightRatio: number ) {
     this.updateSize(
       VerticalCylinder.getRadiusFromRatio( widthRatio ),
       VerticalCylinder.getHeightFromRatio( heightRatio )
@@ -123,8 +112,6 @@ class VerticalCylinder extends Mass {
   /**
    * Called after a engine-physics-model step once before doing other operations (like computing buoyant forces,
    * displacement, etc.) so that it can set high-performance flags used for this purpose.
-   * @public
-   * @override
    *
    * Type-specific values are likely to be set, but this should set at least stepX/stepBottom/stepTop
    */
@@ -148,28 +135,17 @@ class VerticalCylinder extends Mass {
    * If there is an intersection with the ray and this mass, the t-value (distance the ray would need to travel to
    * reach the intersection, e.g. ray.position + ray.distance * t === intersectionPoint) will be returned. Otherwise
    * if there is no intersection, null will be returned.
-   * @public
-   * @override
-   *
-   * @param {Ray3} ray
-   * @param {boolean} isTouch
-   * @returns {number|null}
    */
-  intersect( ray, isTouch ) {
+  intersect( ray: Ray3, isTouch: boolean ): number | null {
     return VerticalCylinder.intersect( ray, isTouch, this.matrix.getTranslation().toVector3(), this.radiusProperty.value, this.heightProperty.value );
   }
 
   /**
    * Returns the cumulative displaced volume of this object up to a given y level.
-   * @public
-   * @override
    *
    * Assumes step information was updated.
-   *
-   * @param {number} liquidLevel
-   * @returns {number}
    */
-  getDisplacedArea( liquidLevel ) {
+  getDisplacedArea( liquidLevel: number ): number {
     if ( liquidLevel < this.stepBottom || liquidLevel > this.stepTop ) {
       return 0;
     }
@@ -180,15 +156,10 @@ class VerticalCylinder extends Mass {
 
   /**
    * Returns the displaced volume of this object up to a given y level, assuming a y value for the given liquid level.
-   * @public
-   * @override
    *
    * Assumes step information was updated.
-   *
-   * @param {number} liquidLevel
-   * @returns {number}
    */
-  getDisplacedVolume( liquidLevel ) {
+  getDisplacedVolume( liquidLevel: number ): number {
     const bottom = this.stepBottom;
     const top = this.stepTop;
 
@@ -206,7 +177,6 @@ class VerticalCylinder extends Mass {
 
   /**
    * Resets things to their original values.
-   * @public
    */
   reset() {
     this.radiusProperty.reset();
@@ -218,24 +188,15 @@ class VerticalCylinder extends Mass {
 
   /**
    * Returns a vertical cylinder shape for a given radius/height.
-   * @public
-   *
-   * @param {number} radius
-   * @param {number} height
    */
-  static getVerticalCylinderShape( radius, height ) {
+  static getVerticalCylinderShape( radius: number, height: number ) {
     return Shape.rect( -radius, -height / 2, 2 * radius, height );
   }
 
   /**
    * Returns the volume of a vertical cylinder with the given radius and height.
-   * @public
-   *
-   * @param {number} radius
-   * @param {number} height
-   * @returns {number}
    */
-  static getVolume( radius, height ) {
+  static getVolume( radius: number, height: number ): number {
     return Math.PI * radius * radius * height;
   }
 
@@ -243,17 +204,8 @@ class VerticalCylinder extends Mass {
    * If there is an intersection with the ray and the cone, the t-value (distance the ray would need to travel to
    * reach the intersection, e.g. ray.position + ray.distance * t === intersectionPoint) will be returned. Otherwise
    * if there is no intersection, null will be returned.
-   * @public
-   * @override
-   *
-   * @param {Ray3} ray
-   * @param {boolean} isTouch
-   * @param {Vector3} translation
-   * @param {number} radius
-   * @param {number} height
-   * @returns {number|null}
    */
-  static intersect( ray, isTouch, translation, radius, height ) {
+  static intersect( ray: Ray3, isTouch: boolean, translation: Vector3, radius: number, height: number ): number | null {
     const relativePosition = ray.position.minusXYZ( translation.x, translation.y, translation.z );
 
     const xp = 4 / ( radius * radius );
@@ -263,7 +215,7 @@ class VerticalCylinder extends Mass {
     const b = 2 * ( xp * relativePosition.x * ray.direction.x + zp * relativePosition.z * ray.direction.z );
     const c = -1 + xp * relativePosition.x * relativePosition.x + zp * relativePosition.z * relativePosition.z;
 
-    const tValues = Utils.solveQuadraticRootsReal( a, b, c ).filter( t => {
+    const tValues = Utils.solveQuadraticRootsReal( a, b, c )!.filter( t => {
       if ( t <= 0 ) {
         return false;
       }
@@ -279,9 +231,10 @@ class VerticalCylinder extends Mass {
       return null;
     }
   }
+
+  static VerticalCylinderIO: IOType;
 }
 
-// @public (read-only) {IOType}
 VerticalCylinder.VerticalCylinderIO = new IOType( 'VerticalCylinderIO', {
   valueType: VerticalCylinder,
   supertype: Mass.MassIO,
@@ -290,3 +243,4 @@ VerticalCylinder.VerticalCylinderIO = new IOType( 'VerticalCylinderIO', {
 
 densityBuoyancyCommon.register( 'VerticalCylinder', VerticalCylinder );
 export default VerticalCylinder;
+export type { VerticalCylinderOptions };

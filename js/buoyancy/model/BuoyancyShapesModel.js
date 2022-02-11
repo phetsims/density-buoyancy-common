@@ -19,7 +19,7 @@ import DensityBuoyancyModel from '../../common/model/DensityBuoyancyModel.js';
 import Ellipsoid from '../../common/model/Ellipsoid.js';
 import HorizontalCylinder from '../../common/model/HorizontalCylinder.js';
 import Material from '../../common/model/Material.js';
-import Scale from '../../common/model/Scale.js';
+import Scale, { DisplayType } from '../../common/model/Scale.js';
 import TwoBlockMode from '../../common/model/TwoBlockMode.js';
 import VerticalCylinder from '../../common/model/VerticalCylinder.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
@@ -59,7 +59,7 @@ class BuoyancyShapesModel extends DensityBuoyancyModel {
     // @public (read-only) {Scale}
     this.leftScale = new Scale( this.engine, this.gravityProperty, {
       matrix: Matrix3.translation( -0.7, -Scale.SCALE_BASE_BOUNDS.minY ),
-      displayType: Scale.DisplayType.NEWTONS,
+      displayType: DisplayType.NEWTONS,
       tandem: tandem.createTandem( 'leftScale' )
     } );
     this.availableMasses.push( this.leftScale );
@@ -67,7 +67,7 @@ class BuoyancyShapesModel extends DensityBuoyancyModel {
     // @public (read-only) {Scale}
     this.poolScale = new Scale( this.engine, this.gravityProperty, {
       matrix: Matrix3.translation( 0.25, -Scale.SCALE_BASE_BOUNDS.minY + this.poolBounds.minY ),
-      displayType: Scale.DisplayType.NEWTONS,
+      displayType: DisplayType.NEWTONS,
       tandem: tandem.createTandem( 'poolScale' )
     } );
     this.availableMasses.push( this.poolScale );

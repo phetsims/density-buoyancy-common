@@ -10,17 +10,23 @@ import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import Bounds3 from '../../../../dot/js/Bounds3.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
 import Shape from '../../../../kite/js/Shape.js';
-import EnumerationDeprecated from '../../../../phet-core/js/EnumerationDeprecated.js';
-import merge from '../../../../phet-core/js/merge.js';
+import Enumeration from '../../../../phet-core/js/Enumeration.js';
+import EnumerationValue from '../../../../phet-core/js/EnumerationValue.js';
+import optionize from '../../../../phet-core/js/optionize.js';
 import PhetioObject from '../../../../tandem/js/PhetioObject.js';
 import IOType from '../../../../tandem/js/types/IOType.js';
 import NumberIO from '../../../../tandem/js/types/NumberIO.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import Cuboid from './Cuboid.js';
 import InterpolatedProperty from './InterpolatedProperty.js';
-import Mass from './Mass.js';
+import Mass, { InstrumentedMassOptions } from './Mass.js';
 import Material from './Material.js';
 import VerticalCylinder from './VerticalCylinder.js';
+import PhysicsEngine from './PhysicsEngine.js';
+import Gravity from './Gravity.js';
+import IProperty from '../../../../axon/js/IProperty.js';
+import Property from '../../../../axon/js/Property.js';
+import Ray3 from '../../../../dot/js/Ray3.js';
 
 // constants
 const SCALE_WIDTH = 0.15;
@@ -43,20 +49,40 @@ const SCALE_FRONT_OFFSET = new Vector3(
   SCALE_BASE_BOUNDS.centerY,
   SCALE_BASE_BOUNDS.maxZ
 );
-const DisplayType = EnumerationDeprecated.byKeys( [
-  'NEWTONS',
-  'KILOGRAMS'
-] );
+
+class DisplayType extends EnumerationValue {
+  static NEWTONS = new DisplayType();
+  static KILOGRAMS = new DisplayType();
+
+  static enumeration = new Enumeration( DisplayType, {
+    phetioDocumentation: 'Units for the scale readout'
+  } );
+}
+
+type ScaleSelfOptions = {
+  displayType?: DisplayType;
+};
+
+type ScaleOptions = ScaleSelfOptions & InstrumentedMassOptions;
 
 class Scale extends Mass {
+
+  // In Newtons.
+  scaleForceInterpolatedProperty: InterpolatedProperty<number>;
+
+  // Just exist for phet-io, see https://github.com/phetsims/density/issues/97
+  private scaleMeasuredMassProperty: Property<number>;
+
+  readonly displayType: DisplayType;
+
   /**
    * @param {PhysicsEngine} engine
    * @param {Property.<Gravity>} gravityProperty
    * @param {Object} config
    */
-  constructor( engine, gravityProperty, config ) {
-    config = merge( {
-      body: engine.createBox( SCALE_WIDTH, SCALE_HEIGHT, config.canMove === false ),
+  constructor( engine: PhysicsEngine, gravityProperty: IProperty<Gravity>, providedOptions: ScaleOptions ) {
+    const config = optionize<ScaleOptions, ScaleSelfOptions, InstrumentedMassOptions>( {
+      body: engine.createBox( SCALE_WIDTH, SCALE_HEIGHT, providedOptions.canMove === false ),
       shape: Shape.rect( -SCALE_WIDTH / 2, -SCALE_HEIGHT / 2, SCALE_WIDTH, SCALE_HEIGHT ),
       volume: SCALE_VOLUME,
 
@@ -80,11 +106,10 @@ class Scale extends Mass {
       volumePropertyOptions: {
         phetioDocumentation: PhetioObject.DEFAULT_OPTIONS.phetioDocumentation
       }
-    }, config );
+    }, providedOptions );
 
     super( engine, config );
 
-    // @public {Property.<number>} - In Newtons.
     this.scaleForceInterpolatedProperty = new InterpolatedProperty( 0, {
       interpolate: InterpolatedProperty.interpolateNumber,
       phetioType: InterpolatedProperty.InterpolatedPropertyIO( NumberIO ),
@@ -93,8 +118,7 @@ class Scale extends Mass {
       phetioReadOnly: true
     } );
 
-    // @private {Property.<number>} - Just exist for phet-io, see https://github.com/phetsims/density/issues/97
-    this.scaleMeasuredMassProperty = new DerivedProperty( [ this.scaleForceInterpolatedProperty, gravityProperty ], ( force, gravity ) => {
+    this.scaleMeasuredMassProperty = new DerivedProperty( [ this.scaleForceInterpolatedProperty, gravityProperty ], ( force: number, gravity: Gravity ) => {
       return force / gravity.value;
     }, {
       phetioType: DerivedProperty.DerivedPropertyIO( NumberIO ),
@@ -110,8 +134,6 @@ class Scale extends Mass {
   /**
    * Called after a engine-physics-model step once before doing other operations (like computing buoyant forces,
    * displacement, etc.) so that it can set high-performance flags used for this purpose.
-   * @public
-   * @override
    *
    * Type-specific values are likely to be set, but this should set at least stepX/stepBottom/stepTop
    */
@@ -130,16 +152,10 @@ class Scale extends Mass {
    * If there is an intersection with the ray and this mass, the t-value (distance the ray would need to travel to
    * reach the intersection, e.g. ray.position + ray.distance * t === intersectionPoint) will be returned. Otherwise
    * if there is no intersection, null will be returned.
-   * @public
-   * @override
-   *
-   * @param {Ray3} ray
-   * @param {boolean} isTouch
-   * @returns {number|null}
    */
-  intersect( ray, isTouch ) {
+  intersect( ray: Ray3, isTouch: boolean ): number | null {
     const translation = this.matrix.getTranslation().toVector3();
-    const topOffsetTranslation = translation.plusXYZ( SCALE_HEIGHT / 2 - SCALE_TOP_HEIGHT / 2 );
+    const topOffsetTranslation = translation.plusXYZ( 0, SCALE_HEIGHT / 2 - SCALE_TOP_HEIGHT / 2, 0 );
 
     const baseIntersection = Cuboid.intersect( SCALE_BASE_BOUNDS, translation, ray );
     const topIntersection = VerticalCylinder.intersect( ray, isTouch, topOffsetTranslation, SCALE_WIDTH / 2, SCALE_TOP_HEIGHT );
@@ -149,15 +165,10 @@ class Scale extends Mass {
 
   /**
    * Returns the cumulative displaced volume of this object up to a given y level.
-   * @public
-   * @override
    *
    * Assumes step information was updated.
-   *
-   * @param {number} liquidLevel
-   * @returns {number}
    */
-  getDisplacedArea( liquidLevel ) {
+  getDisplacedArea( liquidLevel: number ): number {
     if ( liquidLevel < this.stepBottom || liquidLevel > this.stepTop ) {
       return 0;
     }
@@ -168,15 +179,10 @@ class Scale extends Mass {
 
   /**
    * Returns the displaced volume of this object up to a given y level, assuming a y value for the given liquid level.
-   * @public
-   * @override
    *
    * Assumes step information was updated.
-   *
-   * @param {number} liquidLevel
-   * @returns {number}
    */
-  getDisplacedVolume( liquidLevel ) {
+  getDisplacedVolume( liquidLevel: number ): number {
     const bottom = this.stepBottom;
     const top = this.stepTop;
 
@@ -191,21 +197,30 @@ class Scale extends Mass {
     }
   }
 
+  setRatios( widthRatio: number, heightRatio: number ) {}
+
   /**
    * Steps forward in time.
-   * @public
-   *
-   * @param {number} dt
-   * @param {number} interpolationRatio
    */
-  step( dt, interpolationRatio ) {
+  step( dt: number, interpolationRatio: number ) {
     super.step( dt, interpolationRatio );
 
     this.scaleForceInterpolatedProperty.setRatio( interpolationRatio );
   }
+
+  static ScaleIO: IOType;
+
+  static SCALE_WIDTH: number;
+  static SCALE_HEIGHT: number;
+  static SCALE_DEPTH: number;
+  static SCALE_BASE_HEIGHT: number;
+  static SCALE_TOP_HEIGHT: number;
+  static SCALE_AREA: number;
+  static SCALE_VOLUME: number;
+  static SCALE_BASE_BOUNDS: Bounds3;
+  static SCALE_FRONT_OFFSET: Vector3;
 }
 
-// @public (read-only) {number}
 Scale.SCALE_WIDTH = SCALE_WIDTH;
 Scale.SCALE_HEIGHT = SCALE_HEIGHT;
 Scale.SCALE_DEPTH = SCALE_DEPTH;
@@ -213,17 +228,9 @@ Scale.SCALE_BASE_HEIGHT = SCALE_BASE_HEIGHT;
 Scale.SCALE_TOP_HEIGHT = SCALE_TOP_HEIGHT;
 Scale.SCALE_AREA = SCALE_AREA;
 Scale.SCALE_VOLUME = SCALE_VOLUME;
-
-// @public (read-only) {Bounds3}
 Scale.SCALE_BASE_BOUNDS = SCALE_BASE_BOUNDS;
-
-// @public (read-only) {Vector3}
 Scale.SCALE_FRONT_OFFSET = SCALE_FRONT_OFFSET;
 
-// @public (read-only) {EnumerationDeprecated}
-Scale.DisplayType = DisplayType;
-
-// @public (read-only) {IOType}
 Scale.ScaleIO = new IOType( 'ScaleIO', {
   valueType: Scale,
   supertype: Mass.MassIO,
@@ -232,3 +239,5 @@ Scale.ScaleIO = new IOType( 'ScaleIO', {
 
 densityBuoyancyCommon.register( 'Scale', Scale );
 export default Scale;
+export { DisplayType };
+export type { ScaleOptions };

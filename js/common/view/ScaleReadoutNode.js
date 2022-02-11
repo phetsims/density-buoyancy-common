@@ -11,13 +11,12 @@ import Utils from '../../../../dot/js/Utils.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
-import { Node } from '../../../../scenery/js/imports.js';
-import { Text } from '../../../../scenery/js/imports.js';
+import { Node, Text } from '../../../../scenery/js/imports.js';
 import Panel from '../../../../sun/js/Panel.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import densityBuoyancyCommonStrings from '../../densityBuoyancyCommonStrings.js';
 import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
-import Scale from '../model/Scale.js';
+import { DisplayType } from '../model/Scale.js';
 
 class ScaleReadoutNode extends Node {
   /**
@@ -49,7 +48,7 @@ class ScaleReadoutNode extends Node {
 
     // @private {Multilink}
     this.scaleForceMultilink = Property.multilink( [ mass.scaleForceInterpolatedProperty, gravityProperty ], ( scaleForce, gravity ) => {
-      if ( mass.displayType === Scale.DisplayType.NEWTONS ) {
+      if ( mass.displayType === DisplayType.NEWTONS ) {
         readoutText.text = StringUtils.fillIn( densityBuoyancyCommonStrings.newtonsPattern, {
           newtons: Utils.toFixed( scaleForce, 2 )
         } );

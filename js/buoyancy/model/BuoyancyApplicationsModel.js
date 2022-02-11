@@ -15,7 +15,7 @@ import EnumerationDeprecated from '../../../../phet-core/js/EnumerationDeprecate
 import Cube from '../../common/model/Cube.js';
 import DensityBuoyancyModel from '../../common/model/DensityBuoyancyModel.js';
 import Material from '../../common/model/Material.js';
-import Scale from '../../common/model/Scale.js';
+import Scale, { DisplayType } from '../../common/model/Scale.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import Boat from './Boat.js';
 import Bottle from './Bottle.js';
@@ -61,7 +61,7 @@ class BuoyancyApplicationsModel extends DensityBuoyancyModel {
     // @public (read-only) {Scale}
     this.leftScale = new Scale( this.engine, this.gravityProperty, {
       matrix: Matrix3.translation( -0.7, -Scale.SCALE_BASE_BOUNDS.minY ),
-      displayType: Scale.DisplayType.NEWTONS,
+      displayType: DisplayType.NEWTONS,
       canMove: false,
       tandem: tandem.createTandem( 'leftScale' )
     } );
@@ -70,7 +70,7 @@ class BuoyancyApplicationsModel extends DensityBuoyancyModel {
     // @public (read-only) {Scale}
     this.poolScale = new Scale( this.engine, this.gravityProperty, {
       matrix: Matrix3.translation( 0.25, -Scale.SCALE_BASE_BOUNDS.minY + this.poolBounds.minY ),
-      displayType: Scale.DisplayType.NEWTONS,
+      displayType: DisplayType.NEWTONS,
       canMove: false,
       tandem: tandem.createTandem( 'poolScale' )
     } );

@@ -134,6 +134,7 @@ type MassSelfOptions = {
 };
 
 type MassOptions = MassSelfOptions & PhetioObjectOptions;
+type InstrumentedMassOptions = MassOptions & { tandem: Tandem };
 
 abstract class Mass extends PhetioObject {
 
@@ -701,4 +702,4 @@ Mass.MassIO = new IOType( 'MassIO', {
 densityBuoyancyCommon.register( 'Mass', Mass );
 export default Mass;
 export { MassTag };
-export type { MassOptions };
+export type { MassOptions, InstrumentedMassOptions };

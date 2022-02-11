@@ -13,7 +13,7 @@ import BlockSetModel from '../../common/model/BlockSetModel.js';
 import Cube from '../../common/model/Cube.js';
 import DensityBuoyancyModel from '../../common/model/DensityBuoyancyModel.js';
 import Material from '../../common/model/Material.js';
-import Scale from '../../common/model/Scale.js';
+import Scale, { DisplayType } from '../../common/model/Scale.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 
 // constants
@@ -77,7 +77,7 @@ class BuoyancyIntroModel extends BlockSetModel( DensityBuoyancyModel, BlockSet, 
     // Left scale
     this.availableMasses.push( new Scale( this.engine, this.gravityProperty, {
       matrix: Matrix3.translation( -0.8, -Scale.SCALE_BASE_BOUNDS.minY ),
-      displayType: Scale.DisplayType.NEWTONS,
+      displayType: DisplayType.NEWTONS,
       canMove: false,
       tandem: tandem.createTandem( 'leftScale' )
     } ) );
@@ -85,7 +85,7 @@ class BuoyancyIntroModel extends BlockSetModel( DensityBuoyancyModel, BlockSet, 
     // Pool scale
     const poolScale = new Scale( this.engine, this.gravityProperty, {
       matrix: Matrix3.translation( 0.25, -Scale.SCALE_BASE_BOUNDS.minY + this.poolBounds.minY ),
-      displayType: Scale.DisplayType.NEWTONS,
+      displayType: DisplayType.NEWTONS,
       canMove: false,
       tandem: tandem.createTandem( 'poolScale' )
     } );

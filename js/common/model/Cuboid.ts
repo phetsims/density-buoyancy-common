@@ -9,6 +9,7 @@
 import Property from '../../../../axon/js/Property.js';
 import Bounds3 from '../../../../dot/js/Bounds3.js';
 import Matrix3 from '../../../../dot/js/Matrix3.js';
+import Ray3 from '../../../../dot/js/Ray3.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
 import Shape from '../../../../kite/js/Shape.js';
@@ -16,29 +17,33 @@ import merge from '../../../../phet-core/js/merge.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
 import IOType from '../../../../tandem/js/types/IOType.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
-import Mass from './Mass.js';
+import Mass, { InstrumentedMassOptions } from './Mass.js';
+import PhysicsEngine from './PhysicsEngine.js';
+
+type CuboidOptions = InstrumentedMassOptions;
 
 class Cuboid extends Mass {
-  /**
-   * @param {PhysicsEngine} engine
-   * @param {Bounds3} size
-   * @param {Object} config
-   */
-  constructor( engine, size, config ) {
-    config = merge( {
+
+  sizeProperty: Property<Bounds3>;
+
+  // Step information
+  stepArea: number;
+  stepMaximumVolume: number;
+
+  constructor( engine: PhysicsEngine, size: Bounds3, providedConfig: CuboidOptions ) {
+    const config = merge( {
       body: engine.createBox( size.width, size.height ),
       shape: Shape.rect( size.minX, size.minY, size.width, size.height ),
       volume: size.width * size.height * size.depth,
 
       tandem: Tandem.OPTIONAL,
       phetioType: Cuboid.CuboidIO
-    }, config );
+    }, providedConfig );
 
     assert && assert( !config.canRotate );
 
     super( engine, config );
 
-    // @public {Property.<Bounds3>}
     this.sizeProperty = new Property( size, {
       valueType: Bounds3,
       useDeepEquality: true,
@@ -47,10 +52,8 @@ class Cuboid extends Mass {
       phetioReadOnly: true
     } );
 
-    // @private {number} - Step information
     this.stepArea = 0;
     this.stepMaximumVolume = 0;
-
     this.massOffsetOrientationProperty.value = new Vector2( 1, -1 );
 
     this.updateSize( size );
@@ -58,11 +61,8 @@ class Cuboid extends Mass {
 
   /**
    * Updates the size of the cuboid.
-   * @public
-   *
-   * @param {Bounds3} size
    */
-  updateSize( size ) {
+  updateSize( size: Bounds3 ) {
     // Don't update our model if it's no-volume, we'll have ourselves removed anyway
     if ( size.width && size.height ) {
 
@@ -88,14 +88,8 @@ class Cuboid extends Mass {
 
   /**
    * Returns the general size of the mass based on a general size scale.
-   * @public
-   * @override
-   *
-   * @param {number} widthRatio
-   * @param {number} heightRatio
-   * @returns {Bounds3}
    */
-  static getSizeFromRatios( widthRatio, heightRatio ) {
+  static getSizeFromRatios( widthRatio: number, heightRatio: number ): Bounds3 {
     const x = 0.01 + widthRatio * 0.09;
     const y = 0.01 + heightRatio * 0.09;
     return new Bounds3( -x, -y, -x, x, y, x );
@@ -103,21 +97,14 @@ class Cuboid extends Mass {
 
   /**
    * Sets the general size of the mass based on a general size scale.
-   * @public
-   * @override
-   *
-   * @param {number} widthRatio
-   * @param {number} heightRatio
    */
-  setRatios( widthRatio, heightRatio ) {
+  setRatios( widthRatio: number, heightRatio: number ) {
     this.updateSize( Cuboid.getSizeFromRatios( widthRatio, heightRatio ) );
   }
 
   /**
-   * Called after a engine-physics-model step once before doing other operations (like computing buoyant forces,
+   * Called after an engine-physics-model step once before doing other operations (like computing buoyant forces,
    * displacement, etc.) so that it can set high-performance flags used for this purpose.
-   * @public
-   * @override
    *
    * Type-specific values are likely to be set, but this should set at least stepX/stepBottom/stepTop
    */
@@ -139,14 +126,8 @@ class Cuboid extends Mass {
    * If there is an intersection with the ray and this mass, the t-value (distance the ray would need to travel to
    * reach the intersection, e.g. ray.position + ray.distance * t === intersectionPoint) will be returned. Otherwise
    * if there is no intersection, null will be returned.
-   * @public
-   * @override
-   *
-   * @param {Ray3} ray
-   * @param {boolean} isTouch
-   * @returns {number|null}
    */
-  intersect( ray, isTouch ) {
+  intersect( ray: Ray3, isTouch: boolean ): number | null {
     const size = this.sizeProperty.value;
     const translation = this.matrix.getTranslation().toVector3();
 
@@ -155,15 +136,10 @@ class Cuboid extends Mass {
 
   /**
    * Returns the cumulative displaced volume of this object up to a given y level.
-   * @public
-   * @override
    *
    * Assumes step information was updated.
-   *
-   * @param {number} liquidLevel
-   * @returns {number}
    */
-  getDisplacedArea( liquidLevel ) {
+  getDisplacedArea( liquidLevel: number ): number {
     if ( liquidLevel < this.stepBottom || liquidLevel > this.stepTop ) {
       return 0;
     }
@@ -174,15 +150,10 @@ class Cuboid extends Mass {
 
   /**
    * Returns the displaced volume of this object up to a given y level, assuming a y value for the given liquid level.
-   * @public
-   * @override
    *
    * Assumes step information was updated.
-   *
-   * @param {number} liquidLevel
-   * @returns {number}
    */
-  getDisplacedVolume( liquidLevel ) {
+  getDisplacedVolume( liquidLevel: number ): number {
     const bottom = this.stepBottom;
     const top = this.stepTop;
 
@@ -200,7 +171,6 @@ class Cuboid extends Mass {
 
   /**
    * Resets things to their original values.
-   * @public
    */
   reset() {
     this.sizeProperty.reset();
@@ -211,8 +181,6 @@ class Cuboid extends Mass {
 
   /**
    * Releases references
-   * @public
-   * @override
    */
   dispose() {
     this.sizeProperty.dispose();
@@ -222,14 +190,8 @@ class Cuboid extends Mass {
 
   /**
    * Returns a (quick) closest ray intersection with a cuboid (defined by the given Bounds3 and translation).
-   * @public
-   *
-   * @param {Bounds3} bounds
-   * @param {Vector3} translation
-   * @param {Ray3} ray
-   * @returns {number|null}
    */
-  static intersect( bounds, translation, ray ) {
+  static intersect( bounds: Bounds3, translation: Vector3, ray: Ray3 ): number | null {
     let tNear = Number.NEGATIVE_INFINITY;
     let tFar = Number.POSITIVE_INFINITY;
 
@@ -262,9 +224,10 @@ class Cuboid extends Mass {
 
     return ( tNear >= tFar ) ? null : ( tNear >= 0 ? tNear : ( isFinite( tFar ) && tFar >= 0 ? tFar : null ) );
   }
+
+  static CuboidIO: IOType;
 }
 
-// @public (read-only) {IOType}
 Cuboid.CuboidIO = new IOType( 'CuboidIO', {
   valueType: Cuboid,
   supertype: Mass.MassIO,
@@ -273,12 +236,12 @@ Cuboid.CuboidIO = new IOType( 'CuboidIO', {
     size: Bounds3.Bounds3IO
   },
 
-  toStateObject: cuboid => {
+  toStateObject: ( cuboid: Cuboid ) => {
     const parentStateObject = Mass.MassIO.toStateObject( cuboid );
     parentStateObject.size = Bounds3.Bounds3IO.toStateObject( cuboid.sizeProperty.value );
     return parentStateObject;
   },
-  applyState: ( cuboid, stateObject ) => {
+  applyState: ( cuboid: Cuboid, stateObject: any ) => {
 
     // Apply size update first, and with the very specific update method
     cuboid.updateSize( Bounds3.Bounds3IO.fromStateObject( stateObject.size ) );
@@ -288,3 +251,4 @@ Cuboid.CuboidIO = new IOType( 'CuboidIO', {
 
 densityBuoyancyCommon.register( 'Cuboid', Cuboid );
 export default Cuboid;
+export type { CuboidOptions };

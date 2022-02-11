@@ -8,42 +8,46 @@
 
 import Property from '../../../../axon/js/Property.js';
 import Bounds3 from '../../../../dot/js/Bounds3.js';
+import Ray3 from '../../../../dot/js/Ray3.js';
 import Utils from '../../../../dot/js/Utils.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
 import Shape from '../../../../kite/js/Shape.js';
-import merge from '../../../../phet-core/js/merge.js';
+import optionize from '../../../../phet-core/js/optionize.js';
 import IOType from '../../../../tandem/js/types/IOType.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
-import Mass from './Mass.js';
+import Mass, { InstrumentedMassOptions } from './Mass.js';
+import PhysicsEngine from './PhysicsEngine.js';
+
+type EllipsoidOptions = InstrumentedMassOptions;
 
 class Ellipsoid extends Mass {
-  /**
-   * @param {PhysicsEngine} engine
-   * @param {Bounds3} size
-   * @param {Object} config
-   */
-  constructor( engine, size, config ) {
-    config = merge( {
+
+  sizeProperty: Property<Bounds3>;
+
+  // Step information
+  stepMaximumArea: number;
+  stepMaximumVolume: number;
+
+  constructor( engine: PhysicsEngine, size: Bounds3, providedConfig: EllipsoidOptions ) {
+    const config = optionize<EllipsoidOptions, {}, InstrumentedMassOptions>( {
       body: engine.createFromVertices( Ellipsoid.getEllipsoidVertices( size.width, size.height ), false ),
       shape: Ellipsoid.getEllipsoidShape( size.width, size.height ),
       volume: Ellipsoid.getVolume( size ),
 
       phetioType: Ellipsoid.EllipsoidIO
-    }, config );
+    }, providedConfig );
 
     assert && assert( !config.canRotate );
 
     super( engine, config );
 
-    // @public {Property.<Bounds3>}
     this.sizeProperty = new Property( size, {
       valueType: Bounds3,
       tandem: config.tandem.createTandem( 'sizeProperty' ),
       phetioType: Property.PropertyIO( Bounds3.Bounds3IO )
     } );
 
-    // @private {number} - Step information
     this.stepMaximumArea = 0;
     this.stepMaximumVolume = 0;
 
@@ -52,11 +56,8 @@ class Ellipsoid extends Mass {
 
   /**
    * Updates the size of the ellipsoid.
-   * @public
-   *
-   * @param {Bounds3} size
    */
-  updateSize( size ) {
+  updateSize( size: Bounds3 ) {
     this.engine.updateFromVertices( this.body, Ellipsoid.getEllipsoidVertices( size.width, size.height ), false );
     this.sizeProperty.value = size;
     this.shapeProperty.value = Ellipsoid.getEllipsoidShape( size.width, size.height );
@@ -71,14 +72,8 @@ class Ellipsoid extends Mass {
 
   /**
    * Returns the general size of the mass based on a general size scale.
-   * @public
-   * @override
-   *
-   * @param {number} widthRatio
-   * @param {number} heightRatio
-   * @returns {Bounds3}
    */
-  static getSizeFromRatios( widthRatio, heightRatio ) {
+  static getSizeFromRatios( widthRatio: number, heightRatio: number ): Bounds3 {
     const x = 0.01 + widthRatio * 0.09;
     const y = 0.01 + heightRatio * 0.09;
     return new Bounds3( -x, -y, -x, x, y, x );
@@ -86,21 +81,14 @@ class Ellipsoid extends Mass {
 
   /**
    * Sets the general size of the mass based on a general size scale.
-   * @public
-   * @override
-   *
-   * @param {number} widthRatio
-   * @param {number} heightRatio
    */
-  setRatios( widthRatio, heightRatio ) {
+  setRatios( widthRatio: number, heightRatio: number ) {
     this.updateSize( Ellipsoid.getSizeFromRatios( widthRatio, heightRatio ) );
   }
 
   /**
    * Called after a engine-physics-model step once before doing other operations (like computing buoyant forces,
    * displacement, etc.) so that it can set high-performance flags used for this purpose.
-   * @public
-   * @override
    *
    * Type-specific values are likely to be set, but this should set at least stepX/stepBottom/stepTop
    */
@@ -125,14 +113,8 @@ class Ellipsoid extends Mass {
    * If there is an intersection with the ray and this mass, the t-value (distance the ray would need to travel to
    * reach the intersection, e.g. ray.position + ray.distance * t === intersectionPoint) will be returned. Otherwise
    * if there is no intersection, null will be returned.
-   * @public
-   * @override
-   *
-   * @param {Ray3} ray
-   * @param {boolean} isTouch
-   * @returns {number|null}
    */
-  intersect( ray, isTouch ) {
+  intersect( ray: Ray3, isTouch: boolean ): number | null {
     const translation = this.matrix.getTranslation().toVector3();
     const size = this.sizeProperty.value;
     const relativePosition = ray.position.minusXYZ( translation.x, translation.y, translation.z );
@@ -145,7 +127,7 @@ class Ellipsoid extends Mass {
     const b = 2 * ( xp * relativePosition.x * ray.direction.x + yp * relativePosition.y * ray.direction.y + zp * relativePosition.z * ray.direction.z );
     const c = -1 + xp * relativePosition.x * relativePosition.x + yp * relativePosition.y * relativePosition.y + zp * relativePosition.z * relativePosition.z;
 
-    const tValues = Utils.solveQuadraticRootsReal( a, b, c ).filter( t => t > 0 );
+    const tValues = Utils.solveQuadraticRootsReal( a, b, c )!.filter( t => t > 0 );
 
     if ( tValues.length ) {
       return tValues[ 0 ];
@@ -157,15 +139,10 @@ class Ellipsoid extends Mass {
 
   /**
    * Returns the cumulative displaced volume of this object up to a given y level.
-   * @public
-   * @override
    *
    * Assumes step information was updated.
-   *
-   * @param {number} liquidLevel
-   * @returns {number}
    */
-  getDisplacedArea( liquidLevel ) {
+  getDisplacedArea( liquidLevel: number ): number {
     if ( liquidLevel < this.stepBottom || liquidLevel > this.stepTop ) {
       return 0;
     }
@@ -178,15 +155,10 @@ class Ellipsoid extends Mass {
 
   /**
    * Returns the displaced volume of this object up to a given y level, assuming a y value for the given liquid level.
-   * @public
-   * @override
    *
    * Assumes step information was updated.
-   *
-   * @param {number} liquidLevel
-   * @returns {number}
    */
-  getDisplacedVolume( liquidLevel ) {
+  getDisplacedVolume( liquidLevel: number ): number {
     if ( liquidLevel <= this.stepBottom ) {
       return 0;
     }
@@ -202,7 +174,6 @@ class Ellipsoid extends Mass {
 
   /**
    * Resets things to their original values.
-   * @public
    */
   reset() {
     this.sizeProperty.reset();
@@ -213,25 +184,15 @@ class Ellipsoid extends Mass {
 
   /**
    * Returns an ellipsoid shape
-   * @public
-   *
-   * @param {number} width
-   * @param {number} height
-   * @returns {Shape}
    */
-  static getEllipsoidShape( width, height ) {
+  static getEllipsoidShape( width: number, height: number ): Shape {
     return Shape.ellipse( 0, 0, width / 2, height / 2, 0 );
   }
 
   /**
    * Returns vertices for an ellipsoid
-   * @public
-   *
-   * @param {number} width
-   * @param {number} height
-   * @returns {Array.<Vector2>}
    */
-  static getEllipsoidVertices( width, height ) {
+  static getEllipsoidVertices( width: number, height: number ): Vector2[] {
     const segments = 80;
     const vertices = [];
     for ( let i = 0; i < segments; i++ ) {
@@ -245,17 +206,14 @@ class Ellipsoid extends Mass {
 
   /**
    * Returns the volume of an ellipsoid with the given axis-aligned bounding box.
-   * @public
-   *
-   * @param {Bounds3} size
-   * @returns {number}
    */
-  static getVolume( size ) {
+  static getVolume( size: Bounds3 ): number {
     return Math.PI * size.width * size.height * size.depth / 6;
   }
+
+  static EllipsoidIO: IOType;
 }
 
-// @public (read-only) {IOType}
 Ellipsoid.EllipsoidIO = new IOType( 'EllipsoidIO', {
   valueType: Ellipsoid,
   supertype: Mass.MassIO,
@@ -264,3 +222,4 @@ Ellipsoid.EllipsoidIO = new IOType( 'EllipsoidIO', {
 
 densityBuoyancyCommon.register( 'Ellipsoid', Ellipsoid );
 export default Ellipsoid;
+export type { EllipsoidOptions };

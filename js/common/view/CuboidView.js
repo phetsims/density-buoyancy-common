@@ -10,7 +10,7 @@ import Vector3 from '../../../../dot/js/Vector3.js';
 import TextureQuad from '../../../../mobius/js/TextureQuad.js';
 import TriangleArrayWriter from '../../../../mobius/js/TriangleArrayWriter.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
-import Mass from '../model/Mass.js';
+import { MassTag } from '../model/Mass.js';
 import MassLabelNode from './MassLabelNode.js';
 import MassView from './MassView.js';
 
@@ -54,21 +54,21 @@ class CuboidView extends MassView {
     this.tagMesh = null;
 
     let tagHeight = null;
-    if ( cuboid.tag === Mass.MassTag.PRIMARY ) {
+    if ( cuboid.tag === MassTag.PRIMARY ) {
       this.tagNodeTexture = MassLabelNode.getPrimaryTexture();
       this.tagMesh = new TextureQuad( this.tagNodeTexture, TAG_SIZE, TAG_SIZE, {
         depthTest: true
       } );
       tagHeight = TAG_SIZE;
     }
-    else if ( cuboid.tag === Mass.MassTag.SECONDARY ) {
+    else if ( cuboid.tag === MassTag.SECONDARY ) {
       this.tagNodeTexture = MassLabelNode.getSecondaryTexture();
       this.tagMesh = new TextureQuad( this.tagNodeTexture, TAG_SIZE, TAG_SIZE, {
         depthTest: true
       } );
       tagHeight = TAG_SIZE;
     }
-    else if ( cuboid.tag !== Mass.MassTag.NONE ) {
+    else if ( cuboid.tag !== MassTag.NONE ) {
 
       const string = cuboid.nameProperty.value;
       this.tagNodeTexture = MassLabelNode.getBasicLabelTexture( string );

@@ -6,12 +6,12 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
-import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
+import BooleanProperty, { BooleanPropertyOptions } from '../../../../axon/js/BooleanProperty.js';
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import Emitter from '../../../../axon/js/Emitter.js';
-import EnumerationDeprecatedProperty from '../../../../axon/js/EnumerationDeprecatedProperty.js';
-import NumberProperty from '../../../../axon/js/NumberProperty.js';
-import Property from '../../../../axon/js/Property.js';
+import EnumerationProperty from '../../../../axon/js/EnumerationProperty.js';
+import NumberProperty, { NumberPropertyOptions } from '../../../../axon/js/NumberProperty.js';
+import Property, { PropertyOptions } from '../../../../axon/js/Property.js';
 import StringProperty from '../../../../axon/js/StringProperty.js';
 import Matrix3 from '../../../../dot/js/Matrix3.js';
 import Range from '../../../../dot/js/Range.js';
@@ -20,11 +20,11 @@ import Vector2 from '../../../../dot/js/Vector2.js';
 import Vector2Property from '../../../../dot/js/Vector2Property.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
 import Shape from '../../../../kite/js/Shape.js';
-import EnumerationDeprecated from '../../../../phet-core/js/EnumerationDeprecated.js';
 import EnumerationIO from '../../../../tandem/js/types/EnumerationIO.js';
 import merge from '../../../../phet-core/js/merge.js';
+import optionize from '../../../../phet-core/js/optionize.js';
 import { Color, ColorProperty } from '../../../../scenery/js/imports.js';
-import PhetioObject from '../../../../tandem/js/PhetioObject.js';
+import PhetioObject, { PhetioObjectOptions } from '../../../../tandem/js/PhetioObject.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
 import BooleanIO from '../../../../tandem/js/types/BooleanIO.js';
 import IOType from '../../../../tandem/js/types/IOType.js';
@@ -32,121 +32,215 @@ import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import densityBuoyancyCommonStrings from '../../densityBuoyancyCommonStrings.js';
 import InterpolatedProperty from './InterpolatedProperty.js';
 import Material from './Material.js';
+import EnumerationValue from '../../../../phet-core/js/EnumerationValue.js';
+import Enumeration from '../../../../phet-core/js/Enumeration.js';
+import PhysicsEngine, { PhysicsEngineBody } from './PhysicsEngine.js';
+import Basin from './Basin.js';
+import Ray3 from '../../../../dot/js/Ray3.js';
 
 // constants
-const MassTag = EnumerationDeprecated.byKeys( [
-  'PRIMARY',
-  'SECONDARY',
-  'NONE',
-  'ONE_A',
-  'ONE_B',
-  'ONE_C',
-  'ONE_D',
-  'ONE_E',
-  'TWO_A',
-  'TWO_B',
-  'TWO_C',
-  'TWO_D',
-  'TWO_E',
-  'THREE_A',
-  'THREE_B',
-  'THREE_C',
-  'THREE_D',
-  'THREE_E',
-  'A',
-  'B',
-  'C',
-  'D',
-  'E'
-] );
+class MassTag extends EnumerationValue {
+  static PRIMARY = new MassTag();
+  static SECONDARY = new MassTag();
+  static NONE = new MassTag();
+  static ONE_A = new MassTag();
+  static ONE_B = new MassTag();
+  static ONE_C = new MassTag();
+  static ONE_D = new MassTag();
+  static ONE_E = new MassTag();
+  static TWO_A = new MassTag();
+  static TWO_B = new MassTag();
+  static TWO_C = new MassTag();
+  static TWO_D = new MassTag();
+  static TWO_E = new MassTag();
+  static THREE_A = new MassTag();
+  static THREE_B = new MassTag();
+  static THREE_C = new MassTag();
+  static THREE_D = new MassTag();
+  static THREE_E = new MassTag();
+  static A = new MassTag();
+  static B = new MassTag();
+  static C = new MassTag();
+  static D = new MassTag();
+  static E = new MassTag();
+
+  static enumeration = new Enumeration( MassTag, {
+    phetioDocumentation: 'Label for a mass'
+  } );
+}
 
 const blockStringMap = {
-  [ MassTag.ONE_A.name ]: densityBuoyancyCommonStrings.massLabel[ '1a' ],
-  [ MassTag.ONE_B.name ]: densityBuoyancyCommonStrings.massLabel[ '1b' ],
-  [ MassTag.ONE_C.name ]: densityBuoyancyCommonStrings.massLabel[ '1c' ],
-  [ MassTag.ONE_D.name ]: densityBuoyancyCommonStrings.massLabel[ '1d' ],
-  [ MassTag.ONE_E.name ]: densityBuoyancyCommonStrings.massLabel[ '1e' ],
-  [ MassTag.TWO_A.name ]: densityBuoyancyCommonStrings.massLabel[ '2a' ],
-  [ MassTag.TWO_B.name ]: densityBuoyancyCommonStrings.massLabel[ '2b' ],
-  [ MassTag.TWO_C.name ]: densityBuoyancyCommonStrings.massLabel[ '2c' ],
-  [ MassTag.TWO_D.name ]: densityBuoyancyCommonStrings.massLabel[ '2d' ],
-  [ MassTag.TWO_E.name ]: densityBuoyancyCommonStrings.massLabel[ '2e' ],
-  [ MassTag.THREE_A.name ]: densityBuoyancyCommonStrings.massLabel[ '3a' ],
-  [ MassTag.THREE_B.name ]: densityBuoyancyCommonStrings.massLabel[ '3b' ],
-  [ MassTag.THREE_C.name ]: densityBuoyancyCommonStrings.massLabel[ '3c' ],
-  [ MassTag.THREE_D.name ]: densityBuoyancyCommonStrings.massLabel[ '3d' ],
-  [ MassTag.THREE_E.name ]: densityBuoyancyCommonStrings.massLabel[ '3e' ],
-  [ MassTag.A.name ]: densityBuoyancyCommonStrings.massLabel.a,
-  [ MassTag.B.name ]: densityBuoyancyCommonStrings.massLabel.b,
-  [ MassTag.C.name ]: densityBuoyancyCommonStrings.massLabel.c,
-  [ MassTag.D.name ]: densityBuoyancyCommonStrings.massLabel.d,
-  [ MassTag.E.name ]: densityBuoyancyCommonStrings.massLabel.e
+  [ MassTag.ONE_A.name! ]: densityBuoyancyCommonStrings.massLabel[ '1a' ],
+  [ MassTag.ONE_B.name! ]: densityBuoyancyCommonStrings.massLabel[ '1b' ],
+  [ MassTag.ONE_C.name! ]: densityBuoyancyCommonStrings.massLabel[ '1c' ],
+  [ MassTag.ONE_D.name! ]: densityBuoyancyCommonStrings.massLabel[ '1d' ],
+  [ MassTag.ONE_E.name! ]: densityBuoyancyCommonStrings.massLabel[ '1e' ],
+  [ MassTag.TWO_A.name! ]: densityBuoyancyCommonStrings.massLabel[ '2a' ],
+  [ MassTag.TWO_B.name! ]: densityBuoyancyCommonStrings.massLabel[ '2b' ],
+  [ MassTag.TWO_C.name! ]: densityBuoyancyCommonStrings.massLabel[ '2c' ],
+  [ MassTag.TWO_D.name! ]: densityBuoyancyCommonStrings.massLabel[ '2d' ],
+  [ MassTag.TWO_E.name! ]: densityBuoyancyCommonStrings.massLabel[ '2e' ],
+  [ MassTag.THREE_A.name! ]: densityBuoyancyCommonStrings.massLabel[ '3a' ],
+  [ MassTag.THREE_B.name! ]: densityBuoyancyCommonStrings.massLabel[ '3b' ],
+  [ MassTag.THREE_C.name! ]: densityBuoyancyCommonStrings.massLabel[ '3c' ],
+  [ MassTag.THREE_D.name! ]: densityBuoyancyCommonStrings.massLabel[ '3d' ],
+  [ MassTag.THREE_E.name! ]: densityBuoyancyCommonStrings.massLabel[ '3e' ],
+  [ MassTag.A.name! ]: densityBuoyancyCommonStrings.massLabel.a,
+  [ MassTag.B.name! ]: densityBuoyancyCommonStrings.massLabel.b,
+  [ MassTag.C.name! ]: densityBuoyancyCommonStrings.massLabel.c,
+  [ MassTag.D.name! ]: densityBuoyancyCommonStrings.massLabel.d,
+  [ MassTag.E.name! ]: densityBuoyancyCommonStrings.massLabel.e
 };
 
-const MaterialEnumeration = EnumerationDeprecated.byKeys( [
-  'ALUMINUM',
-  'BRICK',
-  'COPPER',
-  'ICE',
-  'PLATINUM',
-  'STEEL',
-  'STYROFOAM',
-  'WOOD',
+class MaterialEnumeration extends EnumerationValue {
+  static ALUMINUM = new MaterialEnumeration();
+  static BRICK = new MaterialEnumeration();
+  static COPPER = new MaterialEnumeration();
+  static ICE = new MaterialEnumeration();
+  static PLATINUM = new MaterialEnumeration();
+  static STEEL = new MaterialEnumeration();
+  static STYROFOAM = new MaterialEnumeration();
+  static WOOD = new MaterialEnumeration();
+  static CUSTOM = new MaterialEnumeration();
 
-  'CUSTOM'
-] );
-const materialToEnum = material => MaterialEnumeration[ material.identifier || 'CUSTOM' ];
+  static enumeration = new Enumeration( MaterialEnumeration, {
+    phetioDocumentation: 'Material values'
+  } );
+}
+type MaterialNonCustomIdentifier = 'ALUMINUM' | 'BRICK' | 'COPPER' | 'ICE' | 'PLATINUM' | 'STEEL' | 'STYROFOAM' | 'WOOD';
+type MaterialIdentifier = MaterialNonCustomIdentifier | 'CUSTOM';
 
-class Mass extends PhetioObject {
-  /**
-   * @param {PhysicsEngine} engine
-   * @param {Object} config
-   */
-  constructor( engine, config ) {
+const materialToEnum = ( material: Material ): MaterialEnumeration => MaterialEnumeration[ ( ( material.identifier as MaterialIdentifier | null ) || 'CUSTOM' ) ];
 
-    config = merge( {
-      // {PhysicsEngine.Body} - required
-      body: null,
+type MassSelfOptions = {
+  // Required
+  body: PhysicsEngineBody;
+  shape: Shape;
+  material: Material;
+  volume: number;
 
-      // {Shape} - required
-      shape: null,
+  visible?: boolean;
+  matrix?: Matrix3;
+  canRotate?: boolean;
+  canMove?: boolean;
+  adjustableMaterial?: boolean;
+  tag?: MassTag;
+  tandem?: Tandem;
+  phetioType?: IOType;
+  inputEnabledPropertyOptions?: BooleanPropertyOptions;
+  materialPropertyOptions?: PropertyOptions<Material>;
+  volumePropertyOptions?: NumberPropertyOptions;
+  massPropertyOptions?: NumberPropertyOptions;
+};
 
-      // {Material} - required
-      material: null,
+type MassOptions = MassSelfOptions & PhetioObjectOptions;
 
-      // {number} - required
-      volume: 0,
+abstract class Mass extends PhetioObject {
 
-      // {boolean} - optional
+  engine: PhysicsEngine;
+  body: PhysicsEngineBody;
+
+  // Without the matrix applied (effectively in "local" model coordinates)
+  shapeProperty: Property<Shape>;
+
+  userControlledProperty: Property<boolean>;
+  inputEnabledProperty: Property<boolean>;
+  visibleProperty: Property<boolean>;
+  internalVisibleProperty: Property<boolean>;
+
+  // Here just for instrumentation, see https://github.com/phetsims/density/issues/112
+  // This can only hide it, but won't make it visible.
+  studioVisibleProperty: Property<boolean>;
+
+  materialProperty: Property<Material>;
+
+  // for phet-io support (to control the materialProperty)
+  materialEnumProperty?: Property<MaterialEnumeration>;
+
+  // for phet-io support (to control the materialProperty)
+  customDensityProperty?: Property<number>;
+
+  // for phet-io support (to control the materialProperty)
+  customColorProperty?: Property<Color>;
+
+  // Whether we are modifying the volumeProperty directly
+  protected volumeLock: boolean;
+
+  // Whether we are modifying the massProperty directly
+  protected massLock: boolean;
+
+  // In m^3 (cubic meters)
+  volumeProperty: Property<number>;
+
+  // In kg (kilograms), added to the normal mass (computed from density and volume)
+  containedMassProperty: Property<number>;
+
+  // (read-only) In kg (kilograms) - written to by other processes
+  massProperty: Property<number>;
+
+  // The following offset will be added onto the body's position to determine ours.
+  bodyOffsetProperty: Property<Vector2>;
+
+  gravityForceInterpolatedProperty: InterpolatedProperty<Vector2>;
+  buoyancyForceInterpolatedProperty: InterpolatedProperty<Vector2>;
+  contactForceInterpolatedProperty: InterpolatedProperty<Vector2>;
+
+  forceOffsetProperty: Property<Vector3>;
+
+  // The 3D offset from the center-of-mass where the mass-label should be shown from.
+  // The mass label will use this position (plus the masses' position) to determine a view point, then will use the
+  // massOffsetOrientationProperty to position based on that point.
+  massOffsetProperty: Property<Vector3>;
+
+  // Orientation multiplied by 1/2 width,height for an offset in view space
+  massOffsetOrientationProperty: Property<Vector2>;
+
+  // Transform matrix set before/after the physics engine steps, to be used to adjust/read the mass's position/transform.
+  matrix: Matrix3;
+
+  // Transform matrix set in the internal physics engine steps, used by masses to determine their per-step information.
+  stepMatrix: Matrix3;
+
+  transformedEmitter: Emitter<[]>;
+
+  // Fired when this mass's input (drag) should be interrupted.
+  interruptedEmitter: Emitter<[]>;
+
+  canRotate: boolean;
+  canMove: boolean;
+  tag: MassTag;
+
+  nameProperty: Property<string>;
+
+  // Set by the model
+  containingBasin: Basin | null;
+
+  originalMatrix: Matrix3;
+
+  // Required internal-physics-step properties that should be set by subtypes in
+  // updateStepInformation(). There may exist more set by the subtype (that will be used for e.g. volume/area
+  // calculations). These are updated more often than simulation steps. These specific values will be used by external
+  // code for determining liquid height.
+  stepX: number; // x-value of the position
+  stepBottom: number; // minimum y value of the mass
+  stepTop: number; // maximum y value of the mass
+
+  constructor( engine: PhysicsEngine, providedConfig: MassOptions ) {
+
+    const config = optionize<MassOptions, MassSelfOptions, PhetioObjectOptions>( {
       visible: true,
-
-      // {Matrix3} - optional
       matrix: new Matrix3(),
-
-      // {boolean} - optional
       canRotate: false,
-
-      // {boolean} - optional
       canMove: true,
-
-      // {boolean} - optional
       adjustableMaterial: false,
-
-      // {MassTag} - optional
       tag: MassTag.NONE,
-
-      // {Tandem} - optional
       tandem: Tandem.OPTIONAL,
-
-      // {IOType} - optional
       phetioType: Mass.MassIO,
-
-      // optional
       inputEnabledPropertyOptions: {},
       materialPropertyOptions: {},
       volumePropertyOptions: {},
       massPropertyOptions: {}
-    }, config );
+    }, providedConfig );
 
     assert && assert( config.body, 'config.body required' );
     assert && assert( config.shape instanceof Shape, 'config.shape required as a Shape' );
@@ -157,46 +251,35 @@ class Mass extends PhetioObject {
 
     const tandem = config.tandem;
 
-    // @public {PhysicsEngine}
     this.engine = engine;
-
-    // @public {PhysicsEngine.Body}
     this.body = config.body;
 
-    // @public {Property.<Shape>} - Without the matrix applied (effectively in "local" model coordinates)
     this.shapeProperty = new Property( config.shape, {
       valueType: Shape
     } );
 
-    // @public {Property.<boolean>}
     this.userControlledProperty = new BooleanProperty( false, {
       tandem: tandem.createTandem( 'userControlledProperty' ),
       phetioReadOnly: true
     } );
 
-    // @public {Property.<boolean>}
     this.inputEnabledProperty = new BooleanProperty( true, merge( {
       tandem: tandem.createTandem( 'inputEnabledProperty' ),
       phetioDocumentation: 'Sets whether the element will have input enabled, and hence be interactive'
     }, config.inputEnabledPropertyOptions ) );
 
-    // @public {Property.<boolean>}
     this.internalVisibleProperty = new BooleanProperty( config.visible, {
       tandem: Tandem.OPT_OUT
     } );
 
-    // @public {Property.<boolean>} - Here just for instrumentation, see https://github.com/phetsims/density/issues/112
-    // This can only hide it, but won't make it visible.
     this.studioVisibleProperty = new BooleanProperty( true, {
       tandem: tandem.createTandem( 'visibleProperty' )
     } );
 
-    // @public {Property.<boolean>}
     this.visibleProperty = DerivedProperty.and( [ this.internalVisibleProperty, this.studioVisibleProperty ], {
       tandem: Tandem.OPT_OUT
     } );
 
-    // @public {Property.<Material>}
     this.materialProperty = new Property( config.material, merge( {
       valueType: Material,
       reentrant: true,
@@ -205,19 +288,15 @@ class Mass extends PhetioObject {
     }, config.materialPropertyOptions ) );
 
     if ( config.adjustableMaterial ) {
-
-      // @public {Property.<MaterialEnumeration>} -- for phet-io support (to control the materialProperty)
-      this.materialEnumProperty = new EnumerationDeprecatedProperty( MaterialEnumeration, materialToEnum( config.material ), {
+      this.materialEnumProperty = new EnumerationProperty( materialToEnum( config.material ), {
         tandem: tandem.createTandem( 'materialEnumProperty' ),
         phetioDocumentation: 'Current material of the block. Changing the material will result in changes to the mass, but the volume will remain the same.'
       } );
-      // @public {Property.<number>} -- for phet-io support (to control the materialProperty)
       this.customDensityProperty = new NumberProperty( config.material.density, {
         tandem: tandem.createTandem( 'customDensityProperty' ),
         phetioDocumentation: 'Density of the block when the material is set to “CUSTOM”.',
         range: new Range( Number.MIN_VALUE, Number.POSITIVE_INFINITY )
       } );
-      // @public {Property.<Color>} -- for phet-io support (to control the materialProperty)
       this.customColorProperty = new ColorProperty( config.material.customColor ? config.material.customColor.value : Color.WHITE, {
         tandem: tandem.createTandem( 'customColorProperty' )
       } );
@@ -228,22 +307,22 @@ class Mass extends PhetioObject {
       let enumLock = false;
       let densityLock = false;
       let colorLock = false;
-      const colorListener = color => {
+      const colorListener = ( color: Color ) => {
         if ( !colorLock ) {
           colorLock = true;
-           this.customColorProperty.value = color;
+           this.customColorProperty!.value = color;
           colorLock = false;
         }
       };
       this.materialProperty.link( ( material, oldMaterial ) => {
         if ( !enumLock ) {
           enumLock = true;
-          this.materialEnumProperty.value = materialToEnum( material );
+          this.materialEnumProperty!.value = materialToEnum( material );
           enumLock = false;
         }
         if ( !densityLock ) {
           densityLock = true;
-          this.customDensityProperty.value = material.density;
+          this.customDensityProperty!.value = material.density;
           densityLock = false;
         }
         if ( oldMaterial && oldMaterial.customColor ) {
@@ -253,7 +332,7 @@ class Mass extends PhetioObject {
           material.customColor.link( colorListener );
         }
       } );
-      Property.lazyMultilink( [ this.materialEnumProperty, this.customDensityProperty, this.customColorProperty ], ( materialEnum, density, color ) => {
+      Property.lazyMultilink<[ MaterialEnumeration, number, Color ]>( [ this.materialEnumProperty, this.customDensityProperty, this.customColorProperty ], ( materialEnum, density, color ) => {
         // See if it's an external change
         if ( !enumLock && !densityLock && !colorLock ) {
           enumLock = true;
@@ -261,12 +340,12 @@ class Mass extends PhetioObject {
           colorLock = true;
           if ( materialEnum === MaterialEnumeration.CUSTOM ) {
             this.materialProperty.value = Material.createCustomSolidMaterial( {
-              density: this.customDensityProperty.value,
+              density: this.customDensityProperty!.value,
               customColor: this.customColorProperty
             } );
           }
           else {
-            this.materialProperty.value = Material[ materialEnum.name ];
+            this.materialProperty.value = Material[ materialEnum.name as MaterialNonCustomIdentifier ];
           }
           enumLock = false;
           densityLock = false;
@@ -275,10 +354,8 @@ class Mass extends PhetioObject {
       } );
     }
 
-    // @protected {boolean} - Whether we are modifying the volumeProperty directly
     this.volumeLock = false;
 
-    // @public {Property.<number>} - In m^3 (cubic meters)
     this.volumeProperty = new NumberProperty( config.volume, merge( {
       tandem: tandem.createTandem( 'volumeProperty' ),
       range: new Range( 0, Number.POSITIVE_INFINITY ),
@@ -288,16 +365,13 @@ class Mass extends PhetioObject {
       reentrant: true
     }, config.volumePropertyOptions ) );
 
-    // @public {Property.<number>} - In kg (kilograms), added to the normal mass (computed from density and volume)
     this.containedMassProperty = new NumberProperty( 0, {
       range: new Range( 0, Number.POSITIVE_INFINITY ),
       tandem: Tandem.OPT_OUT
     } );
 
-    // @protected {boolean} - Whether we are modifying the massProperty directly
     this.massLock = false;
 
-    // @public (read-only) {Property.<number>} - In kg (kilograms)
     this.massProperty = new NumberProperty( this.materialProperty.value.density * this.volumeProperty.value + this.containedMassProperty.value, merge( {
       tandem: tandem.createTandem( 'massProperty' ),
       phetioReadOnly: true,
@@ -308,18 +382,16 @@ class Mass extends PhetioObject {
       range: new Range( Number.MIN_VALUE, Number.POSITIVE_INFINITY )
     }, config.massPropertyOptions ) );
 
-    Property.multilink( [ this.materialProperty, this.volumeProperty, this.containedMassProperty ], ( material, volume, containedMass ) => {
+    Property.multilink<[Material, number, number]>( [ this.materialProperty, this.volumeProperty, this.containedMassProperty ], ( material, volume, containedMass ) => {
       this.massLock = true;
       this.massProperty.value = material.density * volume + containedMass;
       this.massLock = false;
     } );
 
-    // @public {Property.<Vector2>} - The following offset will be added onto the body's position to determine ours.
     this.bodyOffsetProperty = new Vector2Property( Vector2.ZERO, {
       tandem: Tandem.OPT_OUT
     } );
 
-    // @public {Property.<Vector2>}
     this.gravityForceInterpolatedProperty = new InterpolatedProperty( Vector2.ZERO, {
       interpolate: InterpolatedProperty.interpolateVector2,
       useDeepEquality: true,
@@ -330,7 +402,6 @@ class Mass extends PhetioObject {
       phetioHighFrequency: true
     } );
 
-    // @public {Property.<Vector2>}
     this.buoyancyForceInterpolatedProperty = new InterpolatedProperty( Vector2.ZERO, {
       interpolate: InterpolatedProperty.interpolateVector2,
       useDeepEquality: true,
@@ -341,7 +412,6 @@ class Mass extends PhetioObject {
       phetioHighFrequency: true
     } );
 
-    // @public {Property.<Vector2>}
     this.contactForceInterpolatedProperty = new InterpolatedProperty( Vector2.ZERO, {
       interpolate: InterpolatedProperty.interpolateVector2,
       useDeepEquality: true,
@@ -352,63 +422,42 @@ class Mass extends PhetioObject {
       phetioHighFrequency: true
     } );
 
-    // @public {Property.<Vector3>}
     this.forceOffsetProperty = new Property( Vector3.ZERO, {
       valueType: Vector3,
       useDeepEquality: true,
       tandem: Tandem.OPT_OUT
     } );
 
-    // @public {Property.<Vector3>} - The 3D offset from the center-of-mass where the mass-label should be shown from.
-    // The mass label will use this position (plus the masses' position) to determine a view point, then will use the
-    // massOffsetOrientationProperty to position based on that point.
     this.massOffsetProperty = new Property( Vector3.ZERO, {
       valueType: Vector3,
       useDeepEquality: true,
       tandem: Tandem.OPT_OUT
     } );
 
-    // @public {Property.<Vector3>} - Orientation multiplied by 1/2 width,height for an offset in view space
     this.massOffsetOrientationProperty = new Vector2Property( Vector2.ZERO, {
       useDeepEquality: true,
       tandem: Tandem.OPT_OUT
     } );
 
-    // @public {Matrix3} - Transform matrix set before/after the physics engine steps, to be used to adjust/read the
-    // mass's position/transform.
     this.matrix = config.matrix;
-
-    // @public {Matrix3} - Transform matrix set in the internal physics engine steps, used by masses to determine their
-    // per-step information.
     this.stepMatrix = new Matrix3();
 
-    // @public (read-only) {Emitter}
     this.transformedEmitter = new Emitter();
-
-    // @public (read-only) {Emitter} - Fired when this mass's input (drag) should be interrupted.
     this.interruptedEmitter = new Emitter();
 
-    // @public (read-only) {boolean}
     this.canRotate = config.canRotate;
-
-    // @public (read-only) {boolean}
     this.canMove = config.canMove;
-
-    // @public (read-only) {MassTag}
     this.tag = config.tag;
 
-    // @public {StringProperty}
-    this.nameProperty = new StringProperty( blockStringMap[ config.tag ] || '', {
+    this.nameProperty = new StringProperty( blockStringMap[ config.tag.name! ] || '', {
       tandem: config.tandem.createTandem( 'nameProperty' )
     } );
 
-    // @public {Basin|null} - Set by the model
     this.containingBasin = null;
 
-    // @private {Matrix3}
     this.originalMatrix = this.matrix.copy();
 
-    Property.multilink( [
+    Property.multilink<[Shape, number]>( [
       this.shapeProperty,
       this.massProperty
     ], () => {
@@ -432,41 +481,23 @@ class Mass extends PhetioObject {
 
   /**
    * Returns whether this is a boat (as more complicated handling is needed in this case).
-   * @public
-   *
-   * @returns {boolean}
    */
-  isBoat() {
+  isBoat(): boolean {
     return false;
   }
 
   /**
    * Returns the cross-sectional area of this object at a given y level.
-   * @public
-   * @abstract
-   *
-   * @param {number} liquidLevel
-   * @returns {number}
    */
-  getDisplacedArea( liquidLevel ) {
-    throw new Error( 'unimplemented' );
-  }
+  abstract getDisplacedArea( liquidLevel: number ): number;
 
   /**
    * Returns the cumulative displaced volume of this object up to a given y level.
-   * @public
-   * @abstract
-   *
-   * @param {number} liquidLevel
-   * @returns {number}
    */
-  getDisplacedVolume( liquidLevel ) {
-    throw new Error( 'unimplemented' );
-  }
+  abstract getDisplacedVolume( liquidLevel: number ): number;
 
   /**
    * Sets the current location to be the proper position for the mass when it is reset.
-   * @public
    */
   setResetLocation() {
     this.originalMatrix = this.matrix.copy();
@@ -474,9 +505,8 @@ class Mass extends PhetioObject {
 
   /**
    * Reads transform/velocity from the physics model engine.
-   * @private
    */
-  readData() {
+  private readData() {
     this.engine.bodyGetMatrixTransform( this.body, this.matrix );
 
     // Apply the body offset
@@ -488,7 +518,6 @@ class Mass extends PhetioObject {
 
   /**
    * Writes position/velocity/etc. to the physics model engine.
-   * @public
    */
   writeData() {
     this.engine.bodySetPosition( this.body, this.matrix.translation.minus( this.bodyOffsetProperty.value ) );
@@ -497,28 +526,21 @@ class Mass extends PhetioObject {
 
   /**
    * Starts a physics model engine drag at the given 2d (x,y) model position.
-   * @public
-   *
-   * @param {Vector2} position
    */
-  startDrag( position ) {
+  startDrag( position: Vector2 ) {
     this.userControlledProperty.value = true;
     this.engine.addPointerConstraint( this.body, position );
   }
 
   /**
    * Updates a current drag with a new 2d (x,y) model position.
-   * @public
-   *
-   * @param {Vector2} position
    */
-  updateDrag( position ) {
+  updateDrag( position: Vector2 ) {
     this.engine.updatePointerConstraint( this.body, position );
   }
 
   /**
    * Ends a physics model engine drag.
-   * @public
    */
   endDrag() {
     this.engine.removePointerConstraint( this.body );
@@ -527,20 +549,12 @@ class Mass extends PhetioObject {
 
   /**
    * Sets the general size of the mass based on a general size scale.
-   * @public
-   * @abstract
-   *
-   * @param {number} widthRatio
-   * @param {number} heightRatio
    */
-  setRatios( widthRatio, heightRatio ) {
-    throw new Error( 'unimplemented' );
-  }
+  abstract setRatios( widthRatio: number, heightRatio: number ): void;
 
   /**
    * Called after a engine-physics-model step once before doing other operations (like computing buoyant forces,
    * displacement, etc.) so that it can set high-performance flags used for this purpose.
-   * @public
    *
    * Type-specific values are likely to be set, but this should set at least stepX/stepBottom/stepTop (as those are
    * used for determining basin volumes and cross sections)
@@ -557,24 +571,19 @@ class Mass extends PhetioObject {
    * If there is an intersection with the ray and this mass, the t-value (distance the ray would need to travel to
    * reach the intersection, e.g. ray.position + ray.distance * t === intersectionPoint) will be returned. Otherwise
    * if there is no intersection, null will be returned.
-   * @public
-   *
-   * @param {Ray3} ray
-   * @param {boolean} isTouch
-   * @returns {number|null}
    */
-  intersect( ray, isTouch ) {
+  intersect( ray: Ray3, isTouch: boolean ): number | null {
+    // TODO: should this be abstract
     return null;
   }
 
   /**
    * Steps forward in time.
-   * @public
    *
-   * @param {number} dt - In seconds
-   * @param {number} interpolationRatio
+   * @param dt - In seconds
+   * @param interpolationRatio
    */
-  step( dt, interpolationRatio ) {
+  step( dt: number, interpolationRatio: number ) {
     this.readData();
 
     this.transformedEmitter.emit();
@@ -586,7 +595,6 @@ class Mass extends PhetioObject {
 
   /**
    * Moves the mass to its initial position
-   * @public
    */
   resetPosition() {
     this.matrix.set( this.originalMatrix );
@@ -597,7 +605,6 @@ class Mass extends PhetioObject {
 
   /**
    * Resets things to their original values.
-   * @public
    */
   reset() {
     this.engine.bodyResetHidden( this.body );
@@ -621,8 +628,6 @@ class Mass extends PhetioObject {
 
   /**
    * Releases references
-   * @public
-   * @override
    */
   dispose() {
     this.userControlledProperty.dispose();
@@ -638,13 +643,8 @@ class Mass extends PhetioObject {
 
   /**
    * Given a list of values and a ratio from 0 (the start) to 1 (the end), return an interpolated value.
-   * @public
-   *
-   * @param {Array.<number>} values
-   * @param {number} ratio
-   * @returns {number}
    */
-  static evaluatePiecewiseLinear( values, ratio ) {
+  static evaluatePiecewiseLinear( values: number[], ratio: number ): number {
     const logicalIndex = ratio * ( values.length - 1 );
     if ( logicalIndex % 1 === 0 ) {
       return values[ logicalIndex ];
@@ -655,10 +655,9 @@ class Mass extends PhetioObject {
       return Utils.linear( Math.floor( logicalIndex ), Math.ceil( logicalIndex ), a, b, logicalIndex );
     }
   }
-}
 
-// @public (read-only) {EnumerationDeprecated}
-Mass.MassTag = MassTag;
+  static MassIO: IOType;
+}
 
 // @public (read-only) {IOType}
 Mass.MassIO = new IOType( 'MassIO', {
@@ -670,14 +669,14 @@ Mass.MassIO = new IOType( 'MassIO', {
     originalMatrix: Matrix3.Matrix3IO,
     canRotate: BooleanIO,
     canMove: BooleanIO,
-    tag: EnumerationIO( Mass.MassTag ),
+    tag: EnumerationIO( MassTag ),
 
     // engine.bodyToStateObject
     position: Vector2.Vector2IO,
     velocity: Vector2.Vector2IO,
     force: Vector2.Vector2IO
   },
-  toStateObject( mass ) {
+  toStateObject( mass: Mass ) {
     return merge( {
       matrix: Matrix3.toStateObject( mass.matrix ),
       stepMatrix: Matrix3.toStateObject( mass.stepMatrix ),
@@ -687,7 +686,7 @@ Mass.MassIO = new IOType( 'MassIO', {
       tag: EnumerationIO( MassTag ).toStateObject( mass.tag )
     }, mass.engine.bodyToStateObject( mass.body ) );
   },
-  applyState( mass, obj ) {
+  applyState( mass: Mass, obj: any ) {
     mass.matrix.set( Matrix3.fromStateObject( obj.matrix ) );
     mass.stepMatrix.set( Matrix3.fromStateObject( obj.stepMatrix ) );
     mass.originalMatrix.set( Matrix3.fromStateObject( obj.originalMatrix ) );
@@ -701,3 +700,5 @@ Mass.MassIO = new IOType( 'MassIO', {
 
 densityBuoyancyCommon.register( 'Mass', Mass );
 export default Mass;
+export { MassTag };
+export type { MassOptions };

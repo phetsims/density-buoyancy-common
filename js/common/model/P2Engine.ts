@@ -7,11 +7,12 @@
  */
 
 import TinyEmitter from '../../../../axon/js/TinyEmitter.js';
+import Matrix3 from '../../../../dot/js/Matrix3.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import merge from '../../../../phet-core/js/merge.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonQueryParameters from '../DensityBuoyancyCommonQueryParameters.js';
-import PhysicsEngine from './PhysicsEngine.js';
+import PhysicsEngine, { PhysicsEngineBody } from './PhysicsEngine.js';
 
 // constants
 const FIXED_TIME_STEP = DensityBuoyancyCommonQueryParameters.p2FixedTimeStep;
@@ -24,6 +25,18 @@ const barrierMaterial = new p2.Material();
 const dynamicMaterial = new p2.Material();
 
 class P2Engine extends PhysicsEngine {
+
+  private world: p2.World;
+
+  // Maps {number} body.id => {p2.RevoluteConstraint}
+  private pointerConstraintMap: { [ key: number ]: p2.RevoluteConstraint };
+
+  // Maps {number} body.id => {p2.Body}. Contains bodies that are empty, and specifically used for
+  // pointer constraints (so they can be positioned to where the pointer is).
+  private nullBodyMap: { [ key: number ]: p2.Body };
+
+  private internalStepEmitter: TinyEmitter<[ number ]>;
+
   constructor() {
     super();
 
@@ -32,15 +45,12 @@ class P2Engine extends PhysicsEngine {
 
     this.world.applyGravity = false;
 
-    this.world.solver.iterations = DensityBuoyancyCommonQueryParameters.p2Iterations;
-    this.world.solver.frictionIterations = DensityBuoyancyCommonQueryParameters.p2FrictionIterations;
-    this.world.solver.tolerance = DensityBuoyancyCommonQueryParameters.p2Tolerance;
+    const solver = this.world.solver as p2.GSSolver;
+    solver.iterations = DensityBuoyancyCommonQueryParameters.p2Iterations;
+    solver.frictionIterations = DensityBuoyancyCommonQueryParameters.p2FrictionIterations;
+    solver.tolerance = DensityBuoyancyCommonQueryParameters.p2Tolerance;
 
-    // @private {Object} - Maps {number} body.id => {p2.RevoluteConstraint}
     this.pointerConstraintMap = {};
-
-    // @private {Object} - Maps {number} body.id => {p2.Body}. Contains bodies that are empty, and specifically used for
-    // pointer constraints (so they can be positioned to where the pointer is).
     this.nullBodyMap = {};
 
     // restitution - no bounce is 0, default is 0
@@ -64,7 +74,6 @@ class P2Engine extends PhysicsEngine {
       relaxation: DensityBuoyancyCommonQueryParameters.p2BarrierRelaxation
     } ) );
 
-    // @private {TinyEmitter}
     this.internalStepEmitter = new TinyEmitter();
 
     this.world.on( 'postStep', () => {
@@ -73,7 +82,7 @@ class P2Engine extends PhysicsEngine {
 
     // Kill vertical-only friction to avoid edge cases, see https://github.com/phetsims/density/issues/65
     // and https://github.com/phetsims/density/issues/66
-    this.world.on( 'preSolve', preSolveEvent => {
+    this.world.on( 'preSolve', ( preSolveEvent: p2.PreSolveEvent ) => {
       preSolveEvent.frictionEquations.forEach( equation => {
         equation.enabled = equation.t[ 0 ] !== 0;
       } );
@@ -82,48 +91,30 @@ class P2Engine extends PhysicsEngine {
 
   /**
    * Steps forward in time.
-   * @public
-   * @override
-   *
-   * @param {number} dt
    */
-  step( dt ) {
+  step( dt: number ) {
     this.world.step( FIXED_TIME_STEP, dt, MAX_SUB_STEPS );
     this.interpolationRatio = ( this.world.accumulator % FIXED_TIME_STEP ) / FIXED_TIME_STEP;
   }
 
   /**
    * Adds a body into the engine, so that it will be tracked during the step.
-   * @public
-   * @override
-   *
-   * @param {PhysicsEngine.Body} body
    */
-  addBody( body ) {
+  addBody( body: PhysicsEngineBody ) {
     this.world.addBody( body );
   }
 
   /**
    * Removes a body from the engine, so that it will not be tracked during the step anymore.
-   * @public
-   * @override
-   *
-   * @param {PhysicsEngine.Body} body
    */
-  removeBody( body ) {
+  removeBody( body: PhysicsEngineBody ) {
     this.world.removeBody( body );
   }
 
   /**
    * Sets the mass of a body (and whether it can rotate, which for some engines needs to be set at the same time).
-   * @public
-   * @override
-   *
-   * @param {PhysicsEngine.Body} body
-   * @param {number} mass
-   * @param {Object} [options]
    */
-  bodySetMass( body, mass, options ) {
+  bodySetMass( body: PhysicsEngineBody, mass: number, options?: { canRotate?: boolean } ) {
     options = merge( {
       // {boolean} - optional
       canRotate: false
@@ -140,113 +131,67 @@ class P2Engine extends PhysicsEngine {
 
   /**
    * Sets the provided matrix to the current transformation matrix of the body (to reduce allocations)
-   * @public
-   * @override
-   *
-   * @param {PhysicsEngine.Body} body
-   * @param {Matrix3} matrix
    */
-  bodyGetMatrixTransform( body, matrix ) {
+  bodyGetMatrixTransform( body: PhysicsEngineBody, matrix: Matrix3 ): Matrix3 {
     return matrix.setToTranslationRotation( body.interpolatedPosition[ 0 ] / SIZE_SCALE, body.interpolatedPosition[ 1 ] / SIZE_SCALE, body.interpolatedAngle );
   }
 
   /**
    * Sets the provided matrix to the current transformation matrix of the body (to reduce allocations)
-   * @public
-   * @override
-   *
-   * @param {PhysicsEngine.Body} body
-   * @param {Matrix3} matrix
    */
-  bodyGetStepMatrixTransform( body, matrix ) {
+  bodyGetStepMatrixTransform( body: PhysicsEngineBody, matrix: Matrix3 ): Matrix3 {
     return matrix.setToTranslationRotation( body.position[ 0 ] / SIZE_SCALE, body.position[ 1 ] / SIZE_SCALE, body.angle );
   }
 
   /**
    * Sets the position of a body.
-   * @public
-   * @override
-   *
-   * @param {PhysicsEngine.Body} body
-   * @param {Vector2} position
    */
-  bodySetPosition( body, position ) {
+  bodySetPosition( body: PhysicsEngineBody, position: Vector2 ) {
     body.position[ 0 ] = position.x * SIZE_SCALE;
     body.position[ 1 ] = position.y * SIZE_SCALE;
   }
 
   /**
    * Sets the rotation of a body.
-   * @public
-   * @override
-   *
-   * @param {PhysicsEngine.Body} body
-   * @param {number} rotation
    */
-  bodySetRotation( body, rotation ) {
+  bodySetRotation( body: PhysicsEngineBody, rotation: number ) {
     body.angle = rotation;
   }
 
   /**
    * Returns the velocity of a body.
-   * @public
-   * @override
-   *
-   * @param {PhysicsEngine.Body} body
-   * @returns {Vector2}
    */
-  bodyGetVelocity( body ) {
+  bodyGetVelocity( body: PhysicsEngineBody ): Vector2 {
     return P2Engine.p2ToVector( body.velocity );
   }
 
   /**
    * Sets the velocity of a body.
-   * @public
-   * @override
-   *
-   * @param {PhysicsEngine.Body} body
-   * @param {Vector2} velocity
    */
-  bodySetVelocity( body, velocity ) {
+  bodySetVelocity( body: PhysicsEngineBody, velocity: Vector2 ) {
     body.velocity[ 0 ] = velocity.x * SIZE_SCALE;
     body.velocity[ 1 ] = velocity.y * SIZE_SCALE;
   }
 
   /**
    * Applies a given force to a body (should be in the post-step listener ideally)
-   * @public
-   * @override
-   *
-   * @param {PhysicsEngine.Body} body
-   * @param {Vector2} force
    */
-  bodyApplyForce( body, force ) {
+  bodyApplyForce( body: PhysicsEngineBody, force: Vector2 ) {
     body.force[ 0 ] += force.x * SIZE_SCALE * MASS_SCALE;
     body.force[ 1 ] += force.y * SIZE_SCALE * MASS_SCALE;
   }
 
   /**
    * Returns the applied contact force computed in the last step.
-   * @public
-   * @override
-   *
-   * @param {PhysicsEngine.Body} body
-   * @returns {Vector2}
    */
-  bodyGetContactForces( body ) {
+  bodyGetContactForces( body: PhysicsEngineBody ): Vector2 {
     return P2Engine.p2ToVector( body.vlambda ).timesScalar( body.mass / FIXED_TIME_STEP / MASS_SCALE );
   }
 
   /**
    * Returns the applied contact force computed in the last step (as a force on A from B).
-   * @public
-   * @override
-   *
-   * @param {PhysicsEngine.Body} bodyA
-   * @param {PhysicsEngine.Body} bodyB
-   * @returns {Vector2}
    */
-  bodyGetContactForceBetween( bodyA, bodyB ) {
+  bodyGetContactForceBetween( bodyA: PhysicsEngineBody, bodyB: PhysicsEngineBody ): Vector2 {
     const result = Vector2.ZERO.copy();
     const equations = this.world.narrowphase.contactEquations;
 
@@ -271,25 +216,16 @@ class P2Engine extends PhysicsEngine {
 
   /**
    * Resets the contact forces that have happened on a body to 0 after measurement.
-   * @public
-   * @override
-   *
-   * @param {PhysicsEngine.Body} body
    */
-  resetContactForces( body ) {
+  resetContactForces( body: PhysicsEngineBody ) {
     body.vlambda[ 0 ] = 0;
     body.vlambda[ 1 ] = 0;
   }
 
   /**
    * Returns a serialized form of a body
-   * @public
-   * @override
-   *
-   * @param {PhysicsEngine.Body} body
-   * @returns {Object}
    */
-  bodyToStateObject( body ) {
+  bodyToStateObject( body: PhysicsEngineBody ): any {
     return {
       position: P2Engine.p2ToVector( body.position ).toStateObject(),
       velocity: P2Engine.p2ToVector( body.velocity ).toStateObject(),
@@ -299,13 +235,8 @@ class P2Engine extends PhysicsEngine {
 
   /**
    * Applies a given state object to a body.
-   * @public
-   * @override
-   *
-   * @param {PhysicsEngine.Body} body
-   * @param {Object} obj
    */
-  bodyApplyState( body, obj ) {
+  bodyApplyState( body: PhysicsEngineBody, obj: any ) {
     body.position[ 0 ] = obj.position.x * SIZE_SCALE;
     body.position[ 1 ] = obj.position.y * SIZE_SCALE;
     body.previousPosition[ 0 ] = obj.position.x * SIZE_SCALE;
@@ -318,13 +249,8 @@ class P2Engine extends PhysicsEngine {
 
   /**
    * Returns a serialized form of a body
-   * @public
-   * @override
-   *
-   * @param {PhysicsEngine.Body} body
-   * @returns {Object}
    */
-  bodyResetHidden( body ) {
+  bodyResetHidden( body: PhysicsEngineBody ) {
     // Bodies don't start with velocity/force applied
     body.velocity[ 0 ] = 0;
     body.velocity[ 1 ] = 0;
@@ -334,26 +260,16 @@ class P2Engine extends PhysicsEngine {
 
   /**
    * Sets the previous position of a body to the current position
-   * @public
-   * @override
-   *
-   * @param {PhysicsEngine.Body} body
-   * @returns {Object}
    */
-  bodySynchronizePrevious( body ) {
+  bodySynchronizePrevious( body: PhysicsEngineBody ) {
     body.previousPosition[ 0 ] = body.position[ 0 ];
     body.previousPosition[ 1 ] = body.position[ 1 ];
   }
 
   /**
    * Creates a (static) ground body with the given vertices.
-   * @public
-   * @override
-   *
-   * @param {Array.<Vector2>} vertices
-   * @returns {PhysicsEngine.Body}
    */
-  createGround( vertices ) {
+  createGround( vertices: Vector2[] ): PhysicsEngineBody {
     const body = new p2.Body( {
       type: p2.Body.STATIC,
       mass: 0
@@ -371,13 +287,8 @@ class P2Engine extends PhysicsEngine {
 
   /**
    * Creates a (static) barrier body with the given vertices.
-   * @public
-   * @override
-   *
-   * @param {Array.<Vector2>} vertices
-   * @returns {PhysicsEngine.Body}
    */
-  createBarrier( vertices ) {
+  createBarrier( vertices: Vector2[] ): PhysicsEngineBody {
     const body = new p2.Body( {
       type: p2.Body.STATIC,
       mass: 0
@@ -395,15 +306,8 @@ class P2Engine extends PhysicsEngine {
 
   /**
    * Creates a (dynamic) box body, with the origin at the center of the box.
-   * @public
-   * @override
-   *
-   * @param {number} width
-   * @param {number} height
-   * @param {boolean} [isStatic]
-   * @returns {PhysicsEngine.Body}
    */
-  createBox( width, height, isStatic ) {
+  createBox( width: number, height: number, isStatic?: boolean ): PhysicsEngineBody {
     const body = new p2.Body( {
       type: isStatic ? p2.Body.STATIC : p2.Body.DYNAMIC,
       fixedRotation: true
@@ -416,19 +320,14 @@ class P2Engine extends PhysicsEngine {
 
   /**
    * Updates the width/height of a box body.
-   * @public
-   * @override
-   *
-   * @param {PhysicsEngine.Body} body
-   * @param {number} width
-   * @param {number} height
    */
-  updateBox( body, width, height ) {
+  updateBox( body: PhysicsEngineBody, width: number, height: number ) {
     P2Engine.removeShapes( body );
 
     const box = new p2.Box( {
       width: width * SIZE_SCALE,
       height: height * SIZE_SCALE,
+      // @ts-ignore -- material SHOULD be in ShapeOptions
       material: dynamicMaterial
     } );
 
@@ -437,14 +336,8 @@ class P2Engine extends PhysicsEngine {
 
   /**
    * Creates a (dynamic) body, with the origin at the centroid.
-   * @public
-   * @override
-   *
-   * @param {Array.<Vector2>} vertices
-   * @param {boolean} workaround
-   * @returns {PhysicsEngine.Body}
    */
-  createFromVertices( vertices, workaround ) {
+  createFromVertices( vertices: Vector2[], workaround: boolean ): PhysicsEngineBody {
     const body = new p2.Body( {
       type: p2.Body.DYNAMIC,
       fixedRotation: true
@@ -457,14 +350,8 @@ class P2Engine extends PhysicsEngine {
 
   /**
    * Updates the vertices of a dynamic vertex-based body.
-   * @public
-   * @override
-   *
-   * @param {PhysicsEngine.Body} body
-   * @param {Array.<Vector2>} vertices
-   * @param {boolean} workaround
    */
-  updateFromVertices( body, vertices, workaround ) {
+  updateFromVertices( body: PhysicsEngineBody, vertices: Vector2[], workaround: boolean ) {
     P2Engine.removeShapes( body );
 
     if ( workaround ) {
@@ -488,36 +375,23 @@ class P2Engine extends PhysicsEngine {
 
   /**
    * Adds a listener to be called after each internal step.
-   * @public
-   * @override
-   *
-   * @param {function(number)} listener
    */
-  addPostStepListener( listener ) {
+  addPostStepListener( listener: ( dt: number ) => void ) {
     this.internalStepEmitter.addListener( listener );
   }
 
   /**
    * Removes a listener to be called after each internal step.
-   * @public
-   * @override
-   *
-   * @param {function(number)} listener
    */
-  removePostStepListener( listener ) {
+  removePostStepListener( listener: ( dt: number ) => void ) {
     this.internalStepEmitter.removeListener( listener );
   }
 
   /**
    * Adds in a pointer constraint so that the body's current point at the position will stay at the position
    * (if the body is getting dragged).
-   * @public
-   * @override
-   *
-   * @param {PhysicsEngine.Body} body
-   * @param {Vector2} position
    */
-  addPointerConstraint( body, position ) {
+  addPointerConstraint( body: PhysicsEngineBody, position: Vector2 ) {
     // Create an empty body used for the constraint (we don't want it intersecting). It will just be used for applying
     // the effects of this constraint.
     const nullBody = new p2.Body();
@@ -541,16 +415,12 @@ class P2Engine extends PhysicsEngine {
 
   /**
    * Updates a pointer constraint so that the body will essentially be dragged to the new position.
-   * @public
-   * @override
-   *
-   * @param {PhysicsEngine.Body} body
-   * @param {Vector2} position
    */
-  updatePointerConstraint( body, position ) {
+  updatePointerConstraint( body: PhysicsEngineBody, position: Vector2 ) {
     const pointerConstraint = this.pointerConstraintMap[ body.id ];
     assert && assert( pointerConstraint );
 
+    // @ts-ignore it should have pivotA...
     p2.vec2.copy( pointerConstraint.pivotA, P2Engine.vectorToP2( position ) );
     pointerConstraint.bodyA.wakeUp();
     pointerConstraint.bodyB.wakeUp();
@@ -558,12 +428,8 @@ class P2Engine extends PhysicsEngine {
 
   /**
    * Removes a pointer constraint.
-   * @public
-   * @override
-   *
-   * @param {PhysicsEngine.Body} body
    */
-  removePointerConstraint( body ) {
+  removePointerConstraint( body: PhysicsEngineBody ) {
     const nullBody = this.nullBodyMap[ body.id ];
     const pointerConstraint = this.pointerConstraintMap[ body.id ];
 
@@ -576,33 +442,22 @@ class P2Engine extends PhysicsEngine {
 
   /**
    * Converts a Vector2 to a p2.vec2, for use with p2.js
-   * @private
-   *
-   * @param {Vector2} vector
-   * @returns {p2.vec2}
    */
-  static vectorToP2( vector ) {
+  private static vectorToP2( vector: Vector2 ): [number, number] {
     return p2.vec2.fromValues( vector.x * SIZE_SCALE, vector.y * SIZE_SCALE );
   }
 
   /**
    * Converts a p2.vec2 to a Vector2
-   * @private
-   *
-   * @param {p2.vec2} vector
-   * @returns {Vector2}
    */
-  static p2ToVector( vector ) {
+  private static p2ToVector( vector: [number, number] ): Vector2 {
     return new Vector2( vector[ 0 ] / SIZE_SCALE, vector[ 1 ] / SIZE_SCALE );
   }
 
   /**
    * Helper method that removes all shapes from a given body.
-   * @private
-   *
-   * @param {PhysicsEngine.Body} body
    */
-  static removeShapes( body ) {
+  private static removeShapes( body: PhysicsEngineBody ) {
     while ( body.shapes.length ) {
       body.removeShape( body.shapes[ body.shapes.length - 1 ] );
     }

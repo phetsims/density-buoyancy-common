@@ -12,7 +12,7 @@ import Matrix3 from '../../../../dot/js/Matrix3.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import Cube from '../../common/model/Cube.js';
 import DensityBuoyancyModel from '../../common/model/DensityBuoyancyModel.js';
-import Mass from '../../common/model/Mass.js';
+import { MassTag } from '../../common/model/Mass.js';
 import Material from '../../common/model/Material.js';
 import Scale from '../../common/model/Scale.js';
 import TwoBlockMode from '../../common/model/TwoBlockMode.js';
@@ -35,12 +35,12 @@ class BuoyancyExploreModel extends DensityBuoyancyModel {
 
     // @public (read-only) {Mass}
     this.primaryMass = Cube.createWithMass( this.engine, Material.WOOD, new Vector2( -0.2, 0.2 ), 2, {
-      tag: Mass.MassTag.PRIMARY,
+      tag: MassTag.PRIMARY,
       tandem: tandem.createTandem( 'primaryMass' )
     } );
     this.availableMasses.push( this.primaryMass );
     this.secondaryMass = Cube.createWithMass( this.engine, Material.ALUMINUM, new Vector2( -0.2, 0.35 ), 13.5, {
-      tag: Mass.MassTag.SECONDARY,
+      tag: MassTag.SECONDARY,
       tandem: tandem.createTandem( 'secondaryMass' ),
       visible: false
     } );

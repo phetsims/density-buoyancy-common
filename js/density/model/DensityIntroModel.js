@@ -12,7 +12,7 @@ import Vector2 from '../../../../dot/js/Vector2.js';
 import merge from '../../../../phet-core/js/merge.js';
 import Cube from '../../common/model/Cube.js';
 import DensityBuoyancyModel from '../../common/model/DensityBuoyancyModel.js';
-import Mass from '../../common/model/Mass.js';
+import { MassTag } from '../../common/model/Mass.js';
 import Material from '../../common/model/Material.js';
 import TwoBlockMode from '../../common/model/TwoBlockMode.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
@@ -39,12 +39,12 @@ class DensityIntroModel extends DensityBuoyancyModel {
 
     // @public (read-only) {Mass}
     this.primaryMass = Cube.createWithMass( this.engine, Material.WOOD, new Vector2( -0.2, 0.2 ), 2, {
-      tag: Mass.MassTag.PRIMARY,
+      tag: MassTag.PRIMARY,
       tandem: blocksTandem.createTandem( 'blockA' )
     } );
     this.availableMasses.push( this.primaryMass );
     this.secondaryMass = Cube.createWithMass( this.engine, Material.ALUMINUM, new Vector2( 0.2, 0.2 ), 13.5, {
-      tag: Mass.MassTag.SECONDARY,
+      tag: MassTag.SECONDARY,
       tandem: blocksTandem.createTandem( 'blockB' ),
       visible: false
     } );

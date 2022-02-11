@@ -9,10 +9,9 @@
 import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import Property from '../../../../axon/js/Property.js';
-import createObservableArray from '../../../../axon/js/createObservableArray.js';
+import createObservableArray, { ObservableArray } from '../../../../axon/js/createObservableArray.js';
 import Bounds3 from '../../../../dot/js/Bounds3.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
-import merge from '../../../../phet-core/js/merge.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
 import NumberIO from '../../../../tandem/js/types/NumberIO.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
@@ -22,6 +21,12 @@ import Material from './Material.js';
 import P2Engine from './P2Engine.js';
 import Pool from './Pool.js';
 import Scale from './Scale.js';
+import optionize from '../../../../phet-core/js/optionize.js';
+import Boat from '../../buoyancy/model/Boat.js';
+import PhysicsEngine, { PhysicsEngineBody } from './PhysicsEngine.js';
+import Mass from './Mass.js';
+import Basin from './Basin.js';
+import Cuboid from './Cuboid.js';
 
 // constants
 const BLOCK_SPACING = 0.01;
@@ -32,22 +37,51 @@ const POOL_HEIGHT = POOL_VOLUME / POOL_WIDTH / POOL_DEPTH;
 const GROUND_FRONT_Z = POOL_DEPTH / 2;
 const POOL_BACK_Z = -POOL_DEPTH / 2;
 
-class DensityBuoyancyModel {
-  /**
-   * @param {Object} [options]
-   */
-  constructor( options ) {
-    options = merge( {
-      // {boolean}
-      showMassesDefault: false,
+type DensityBuoyancyModelOptions = {
+  showMassesDefault?: boolean;
+  canShowForces?: boolean;
+  tandem: Tandem;
+};
 
-      // {boolean}
+class DensityBuoyancyModel {
+
+  showGravityForceProperty: Property<boolean>;
+  showBuoyancyForceProperty: Property<boolean>;
+  showContactForceProperty: Property<boolean>;
+  showForceValuesProperty: Property<boolean>;
+  showMassesProperty: Property<boolean>;
+  gravityProperty: Property<Gravity>;
+  liquidMaterialProperty: Property<Material>;
+  liquidDensityProperty: Property<number>;
+  liquidViscosityProperty: Property<number>;
+
+  poolBounds: Bounds3;
+  groundBounds: Bounds3;
+  groundPoints: Vector2[];
+
+  // We'll keep blocks within these bounds, to generally stay in-screen. This may be
+  // adjusted by the screen based on the visibleBoundsProperty. These are sensible defaults, with the minX and minY
+  // somewhat meant to be adjusted.
+  invisibleBarrierBoundsProperty: Property<Bounds3>;
+
+  masses: ObservableArray<Mass>;
+  pool: Pool;
+  engine: PhysicsEngine;
+  groundBody: PhysicsEngineBody;
+  barrierBody: PhysicsEngineBody;
+  availableMasses: ObservableArray<Mass>;
+
+  // We need to hook into a boat (if it exists) for displaying the water.
+  boat: Boat | null;
+
+  constructor( providedOptions?: DensityBuoyancyModelOptions ) {
+    const options = optionize<DensityBuoyancyModelOptions, DensityBuoyancyModelOptions>( {
+      showMassesDefault: false,
       canShowForces: true
-    }, options );
+    }, providedOptions );
 
     const tandem = options.tandem;
 
-    // @public {Property.<boolean>}
     this.showGravityForceProperty = new BooleanProperty( false, {
       tandem: options.canShowForces ? tandem.createTandem( 'showGravityForceProperty' ) : Tandem.OPT_OUT
     } );
@@ -65,7 +99,6 @@ class DensityBuoyancyModel {
       phetioDocumentation: 'Displays a mass readout on each object'
     } );
 
-    // @public {Property.<Gravity>}
     this.gravityProperty = new Property( Gravity.EARTH, {
       valueType: Gravity,
       phetioType: Property.PropertyIO( Gravity.GravityIO ),
@@ -74,7 +107,6 @@ class DensityBuoyancyModel {
       phetioDocumentation: 'The acceleration due to gravity applied to all masses, (may be potentially custom or hidden from view)'
     } );
 
-    // @public {Property.<Material>}
     this.liquidMaterialProperty = new Property( Material.WATER, {
       valueType: Material,
       phetioType: Property.PropertyIO( Material.MaterialIO ),
@@ -83,7 +115,6 @@ class DensityBuoyancyModel {
       phetioDocumentation: 'The material of the liquid in the pool'
     } );
 
-    // @public (read-only) {Property.<number>}
     // DerivedProperty doesn't need disposal, since everything here lives for the lifetime of the simulation
     this.liquidDensityProperty = new DerivedProperty( [ this.liquidMaterialProperty ], liquidMaterial => liquidMaterial.density, {
       tandem: tandem.createTandem( 'liquidDensityProperty' ),
@@ -91,7 +122,6 @@ class DensityBuoyancyModel {
       units: 'kg/m^3'
     } );
 
-    // @public (read-only) {Property.<number>}
     // DerivedProperty doesn't need disposal, since everything here lives for the lifetime of the simulation
     this.liquidViscosityProperty = new DerivedProperty( [ this.liquidMaterialProperty ], liquidMaterial => liquidMaterial.viscosity, {
       tandem: tandem.createTandem( 'liquidViscosityProperty' ),
@@ -99,21 +129,15 @@ class DensityBuoyancyModel {
       units: 'Pa\u00b7s'
     } );
 
-    // @public  (read-only){Bounds3}
     this.poolBounds = new Bounds3(
       -POOL_WIDTH / 2, -POOL_HEIGHT, POOL_BACK_Z,
       POOL_WIDTH / 2, 0, GROUND_FRONT_Z
     );
-
-    // @public  (read-only){Bounds3}
     this.groundBounds = new Bounds3(
       -10, -10, -2,
       10, 0, GROUND_FRONT_Z
     );
 
-    // @public {Property.<Bounds3>} - We'll keep blocks within these bounds, to generally stay in-screen. This may be
-    // adjusted by the screen based on the visibleBoundsProperty. These are sensible defaults, with the minX and minY
-    // somewhat meant to be adjusted.
     this.invisibleBarrierBoundsProperty = new Property( new Bounds3(
       -0.875, -4, POOL_BACK_Z,
       0.875, 4, GROUND_FRONT_Z
@@ -156,7 +180,6 @@ class DensityBuoyancyModel {
       );
     }
 
-    // @public (read-only) {Array.<Vector2>}
     this.groundPoints = [
       new Vector2( this.groundBounds.minX, this.groundBounds.minY ),
       new Vector2( this.groundBounds.maxX, this.groundBounds.minY ),
@@ -168,22 +191,16 @@ class DensityBuoyancyModel {
       new Vector2( this.groundBounds.minX, this.groundBounds.maxY )
     ];
 
-    // @public (read-only) {Pool}
     this.pool = new Pool( this.poolBounds, {
       tandem: tandem.createTandem( 'pool' )
     } );
 
-    // @public (read-only) {Boat|null} - We need to hook into a boat (if it exists) for displaying the water.
     this.boat = null;
-
-    // @public (read-only) {PhysicsEngine}
     this.engine = new P2Engine();
 
-    // @public (read-only) {PhysicsEngine.Body}
     this.groundBody = this.engine.createGround( this.groundPoints );
     this.engine.addBody( this.groundBody );
 
-    // @public (read-only) {PhysicsEngine.Body}
     this.barrierBody = this.engine.createBarrier( barrierPointsProperty.value );
     this.engine.addBody( this.barrierBody );
 
@@ -194,13 +211,12 @@ class DensityBuoyancyModel {
       this.engine.addBody( this.barrierBody );
     } );
 
-    // @public {ObservableArrayDef.<Mass>}
     this.availableMasses = createObservableArray();
 
     // Control masses by visibility, so that this.masses will be the subset of this.availableMasses that is visible
-    const visibilityListenerMap = new Map();
+    const visibilityListenerMap = new Map<Mass, ( visible: boolean ) => void>(); // eslint-disable-line
     this.availableMasses.addItemAddedListener( mass => {
-      const visibilityListener = visible => {
+      const visibilityListener = ( visible: boolean ) => {
         if ( visible ) {
           this.masses.push( mass );
         }
@@ -208,7 +224,7 @@ class DensityBuoyancyModel {
           this.masses.remove( mass );
         }
       };
-      visibilityListenerMap[ mass ] = visibilityListener;
+      visibilityListenerMap.set( mass, visibilityListener );
       mass.visibleProperty.lazyLink( visibilityListener );
 
       if ( mass.visibleProperty.value ) {
@@ -216,7 +232,7 @@ class DensityBuoyancyModel {
       }
     } );
     this.availableMasses.addItemRemovedListener( mass => {
-      mass.visibleProperty.unlink( visibilityListenerMap[ mass ] );
+      mass.visibleProperty.unlink( visibilityListenerMap.get( mass )! );
       visibilityListenerMap.delete( mass );
 
       if ( mass.visibleProperty.value ) {
@@ -224,7 +240,6 @@ class DensityBuoyancyModel {
       }
     } );
 
-    // @public (read-only) {ObservableArrayDef.<Mass>}
     this.masses = createObservableArray();
     this.masses.addItemAddedListener( mass => {
       this.engine.addBody( mass.body );
@@ -325,12 +340,8 @@ class DensityBuoyancyModel {
 
   /**
    * Sets whether a mass is visible in the scene.
-   * @public
-   *
-   * @param {Mass} mass
-   * @param {boolean} visible
    */
-  setMassVisible( mass, visible ) {
+  setMassVisible( mass: Mass, visible: boolean ) {
     const contains = this.masses.includes( mass );
     if ( visible && !contains ) {
       this.masses.add( mass );
@@ -342,22 +353,18 @@ class DensityBuoyancyModel {
 
   /**
    * Returns the boat (if there is one)
-   * @public
-   *
-   * @returns {Boat|null}
    */
-  getBoat() {
-    return this.masses.find( mass => mass.isBoat() ) || null;
+  getBoat(): Boat | null {
+    return this.boat;
   }
 
   /**
    * Computes the heights of the main pool liquid (and optionally that of the boat)
-   * @private
    */
-  updateLiquid() {
+  private updateLiquid() {
     const boat = this.getBoat();
 
-    const basins = [ this.pool ];
+    const basins: Basin[] = [ this.pool ];
     if ( boat ) {
       basins.push( boat.basin );
       this.pool.childBasin = boat.basin;
@@ -420,7 +427,6 @@ class DensityBuoyancyModel {
 
   /**
    * Resets things to their original values.
-   * @public
    */
   reset() {
     this.showGravityForceProperty.reset();
@@ -437,11 +443,8 @@ class DensityBuoyancyModel {
 
   /**
    * Steps forward in time.
-   * @public
-   *
-   * @param {number} dt
    */
-  step( dt ) {
+  step( dt: number ) {
     this.engine.step( dt );
 
     this.masses.forEach( mass => {
@@ -453,7 +456,6 @@ class DensityBuoyancyModel {
 
   /**
    * Moves masses' previous positions to their current positions.
-   * @public
    */
   uninterpolateMasses() {
     this.masses.forEach( mass => this.engine.bodySynchronizePrevious( mass.body ) );
@@ -461,11 +463,8 @@ class DensityBuoyancyModel {
 
   /**
    * Positions masses from the left of the pool outward, with padding
-   * @private
-   *
-   * @param {Array.<Cuboid>} masses
    */
-  positionMassesLeft( masses ) {
+  protected positionMassesLeft( masses: Cuboid[] ) {
     let position = this.poolBounds.minX;
 
     masses.forEach( mass => {
@@ -481,11 +480,8 @@ class DensityBuoyancyModel {
 
   /**
    * Positions masses from the right of the pool outward, with padding
-   * @private
-   *
-   * @param {Array.<Cuboid>} masses
    */
-  positionMassesRight( masses ) {
+  protected positionMassesRight( masses: Cuboid[] ) {
     let position = this.poolBounds.maxX;
 
     masses.forEach( mass => {
@@ -501,11 +497,8 @@ class DensityBuoyancyModel {
 
   /**
    * Positions masses from the left of the pool up
-   * @private
-   *
-   * @param {Array.<Cuboid>} masses
    */
-  positionStackLeft( masses ) {
+  protected positionStackLeft( masses: Cuboid[] ) {
     const x = this.poolBounds.minX - BLOCK_SPACING - Math.max( ...masses.map( mass => mass.sizeProperty.value.width ) ) / 2;
 
     this.positionStack( masses, x );
@@ -513,11 +506,8 @@ class DensityBuoyancyModel {
 
   /**
    * Positions masses from the right of the pool up
-   * @private
-   *
-   * @param {Array.<Cuboid>} masses
    */
-  positionStackRight( masses ) {
+  protected positionStackRight( masses: Cuboid[] ) {
     const x = this.poolBounds.maxX + BLOCK_SPACING + Math.max( ...masses.map( mass => mass.sizeProperty.value.width ) ) / 2;
 
     this.positionStack( masses, x );
@@ -525,12 +515,8 @@ class DensityBuoyancyModel {
 
   /**
    * Position a stack of masses at a given center x.
-   * @private
-   *
-   * @param {Array.<Cuboid>} masses
-   * @param {number} x
    */
-  positionStack( masses, x ) {
+  protected positionStack( masses: Cuboid[], x: number ) {
     let position = 0;
 
     masses = _.sortBy( masses, mass => -mass.volumeProperty.value );

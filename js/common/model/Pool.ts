@@ -6,25 +6,27 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
-import merge from '../../../../phet-core/js/merge.js';
+import Bounds3 from '../../../../dot/js/Bounds3.js';
+import optionize from '../../../../phet-core/js/optionize.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
-import Basin from './Basin.js';
+import Basin, { BasinOptions } from './Basin.js';
+import Mass from './Mass.js';
+
+type PoolOptions = BasinOptions;
 
 class Pool extends Basin {
-  /**
-   * @param {Bounds3} bounds
-   * @param {Object} [options]
-   */
-  constructor( bounds, options ) {
+
+  bounds: Bounds3;
+
+  constructor( bounds: Bounds3, options?: PoolOptions ) {
 
     const initialVolume = 0.1;
 
-    super( merge( {
+    super( optionize<PoolOptions, {}, BasinOptions>( {
       initialVolume: initialVolume,
       initialY: bounds.minY + initialVolume / ( bounds.width * bounds.depth )
     }, options ) );
 
-    // @public (read-only) {Bounds3}
     this.bounds = bounds;
 
     // These won't change over the life of the pool.
@@ -35,25 +37,15 @@ class Pool extends Basin {
   /**
    * Returns whether a given mass is inside this basin (e.g. if filled with liquid, would it be displacing any
    * liquid).
-   * @public
-   * @override
-   *
-   * @param {Mass} mass
-   * @returns {boolean}
    */
-  isMassInside( mass ) {
+  isMassInside( mass: Mass ): boolean {
     return mass.stepBottom < this.stepTop;
   }
 
   /**
    * Returns the maximum area that could be contained with liquid at a given y value.
-   * @public
-   * @override
-   *
-   * @param {number} y
-   * @returns {number}
    */
-  getMaximumArea( y ) {
+  getMaximumArea( y: number ): number {
     if ( y < this.bounds.minY || y > this.bounds.maxY ) {
       return 0;
     }
@@ -64,13 +56,8 @@ class Pool extends Basin {
 
   /**
    * Returns the maximum volume that could be contained with liquid up to a given y value.
-   * @public
-   * @override
-   *
-   * @param {number} y
-   * @returns {number}
    */
-  getMaximumVolume( y ) {
+  getMaximumVolume( y: number ): number {
     if ( y <= this.bounds.minY ) {
       return 0;
     }
@@ -85,3 +72,4 @@ class Pool extends Basin {
 
 densityBuoyancyCommon.register( 'Pool', Pool );
 export default Pool;
+export type { PoolOptions };

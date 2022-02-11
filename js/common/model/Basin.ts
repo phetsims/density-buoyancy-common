@@ -128,14 +128,14 @@ abstract class Basin {
   /**
    * Returns the empty area in the basin (i.e. air, that isn't a solid object) at the given y value.
    */
-  private getEmptyArea( y: number ): number {
+  getEmptyArea( y: number ): number {
     return this.getMaximumArea( y ) - this.getDisplacedArea( y );
   }
 
   /**
    * Returns the empty volume in the basin (i.e. air, that isn't a solid object) that is below the given y value.
    */
-  private getEmptyVolume( y: number ): number {
+  getEmptyVolume( y: number ): number {
     return this.getMaximumVolume( y ) - this.getDisplacedVolume( y );
   }
 

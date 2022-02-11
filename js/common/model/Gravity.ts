@@ -6,7 +6,7 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
-import merge from '../../../../phet-core/js/merge.js';
+import optionize from '../../../../phet-core/js/optionize.js';
 import BooleanIO from '../../../../tandem/js/types/BooleanIO.js';
 import IOType from '../../../../tandem/js/types/IOType.js';
 import NullableIO from '../../../../tandem/js/types/NullableIO.js';
@@ -15,53 +15,43 @@ import StringIO from '../../../../tandem/js/types/StringIO.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import densityBuoyancyCommonStrings from '../../densityBuoyancyCommonStrings.js';
 
+type GravityOptions = {
+  name: string;
+  tandemName: string;
+
+  // m/s^2
+  value: number;
+
+  custom?: boolean;
+  hidden?: boolean;
+};
+
 class Gravity {
-  /**
-   * @param {Object} config
-   */
-  constructor( config ) {
 
-    config = merge( {
-      // {string}
-      name: 'unknown',
+  public name: string;
+  public tandemName: string;
+  public value: number;
+  public custom: boolean;
+  public hidden: boolean;
 
-      // {string|null}
-      tandemName: null,
+  constructor( providedConfig: GravityOptions ) {
 
-      // {number} - m/s^2
-      value: 1,
-
-      // {boolean} - optional
+    const config = optionize<GravityOptions, GravityOptions>( {
       custom: false,
-
-      // {boolean} - optional
       hidden: false
-    }, config );
+    }, providedConfig );
 
-    // @public (read-only) {string}
     this.name = config.name;
-
-    // @public (read-only) {string}
     this.tandemName = config.tandemName;
-
-    // @public (read-only) {number}
     this.value = config.value;
-
-    // @public (read-only) {boolean}
     this.custom = config.custom;
-
-    // @public (read-only) {boolean}
     this.hidden = config.hidden;
   }
 
   /**
    * Returns a custom material that can be modified at will.
-   * @public
-   *
-   * @param {number} value
-   * @returns {Gravity}
    */
-  static createCustomGravity( value ) {
+  static createCustomGravity( value: number ): Gravity {
     return new Gravity( {
       name: densityBuoyancyCommonStrings.gravity.custom,
       tandemName: 'custom',
@@ -69,32 +59,37 @@ class Gravity {
       custom: true
     } );
   }
+
+
+  static EARTH = new Gravity( {
+    name: densityBuoyancyCommonStrings.gravity.earth,
+    tandemName: 'earth',
+    value: 9.8
+  } );
+
+  static JUPITER = new Gravity( {
+    name: densityBuoyancyCommonStrings.gravity.jupiter,
+    tandemName: 'jupiter',
+    value: 24.8
+  } );
+
+  static MOON = new Gravity( {
+    name: densityBuoyancyCommonStrings.gravity.moon,
+    tandemName: 'moon',
+    value: 1.6
+  } );
+
+  static PLANET_X = new Gravity( {
+    name: densityBuoyancyCommonStrings.gravity.planetX,
+    tandemName: 'planetX',
+    value: 19.6,
+    hidden: true
+  } );
+
+  static GRAVITIES: Gravity[];
+  static GravityIO: IOType;
 }
 
-// @public (read-only) {Gravity}
-Gravity.EARTH = new Gravity( {
-  name: densityBuoyancyCommonStrings.gravity.earth,
-  tandemName: 'earth',
-  value: 9.8
-} );
-Gravity.JUPITER = new Gravity( {
-  name: densityBuoyancyCommonStrings.gravity.jupiter,
-  tandemName: 'jupiter',
-  value: 24.8
-} );
-Gravity.MOON = new Gravity( {
-  name: densityBuoyancyCommonStrings.gravity.moon,
-  tandemName: 'moon',
-  value: 1.6
-} );
-Gravity.PLANET_X = new Gravity( {
-  name: densityBuoyancyCommonStrings.gravity.planetX,
-  tandemName: 'planetX',
-  value: 19.6,
-  hidden: true
-} );
-
-// @public (read-only) {Array.<Gravity>}
 Gravity.GRAVITIES = [
   Gravity.EARTH,
   Gravity.JUPITER,
@@ -102,11 +97,10 @@ Gravity.GRAVITIES = [
   Gravity.PLANET_X
 ];
 
-// @public (read-only) {IOType}
 Gravity.GravityIO = new IOType( 'GravityIO', {
   valueType: Gravity,
   documentation: 'Represents a specific value of gravity (m/s^2)',
-  toStateObject: gravity => {
+  toStateObject: ( gravity: Gravity ) => {
     return {
       name: gravity.name,
       tandemName: gravity.tandemName,
@@ -115,7 +109,7 @@ Gravity.GravityIO = new IOType( 'GravityIO', {
       hidden: gravity.hidden
     };
   },
-  fromStateObject: stateObject => {
+  fromStateObject: ( stateObject: any ) => {
     if ( stateObject.custom ) {
       return new Gravity( stateObject );
     }

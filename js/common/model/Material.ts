@@ -1,4 +1,4 @@
-// Copyright 2019-2022, University of Colorado Boulder
+// Copyright 2022, University of Colorado Boulder
 
 /**
  * Represents different materials that solids/liquids in the simulations can take, including density/viscosity/color.

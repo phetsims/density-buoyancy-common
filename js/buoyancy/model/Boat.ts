@@ -13,20 +13,33 @@ import Utils from '../../../../dot/js/Utils.js';
 import Shape from '../../../../kite/js/Shape.js';
 import ThreeUtils from '../../../../mobius/js/ThreeUtils.js';
 import merge from '../../../../phet-core/js/merge.js';
-import Mass from '../../common/model/Mass.js';
+import Mass, { InstrumentedMassOptions } from '../../common/model/Mass.js';
 import Material from '../../common/model/Material.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import BoatBasin from './BoatBasin.js';
 import BoatDesign from './BoatDesign.js';
+import PhysicsEngine from '../../common/model/PhysicsEngine.js';
+import IProperty from '../../../../axon/js/IProperty.js';
+import Basin from '../../common/model/Basin.js';
+import Ray3 from '../../../../dot/js/Ray3.js';
+
+type BoatOptions = Omit<InstrumentedMassOptions, 'body' | 'shape' | 'volume' | 'material'>;
 
 class Boat extends Mass {
-  /**
-   * @param {PhysicsEngine} engine
-   * @param {Property.<number>} blockWidthProperty
-   * @param {Property.<Material>} liquidMaterialProperty
-   * @param {Object} config
-   */
-  constructor( engine, blockWidthProperty, liquidMaterialProperty, config ) {
+
+  displacementVolumeProperty: Property<number>;
+  liquidMaterialProperty: IProperty<Material>;
+  basin: Basin;
+
+  // Amount of volume contained in the basin
+  private stepInternalVolume: number;
+
+  // How to multiply our one-liter size up to the model coordinates
+  private stepMultiplier: number;
+
+  intersectionGroup: THREE.Group;
+
+  constructor( engine: PhysicsEngine, blockWidthProperty: IProperty<number>, liquidMaterialProperty: IProperty<Material>, config: BoatOptions ) {
 
     const displacementVolumeProperty = new NumberProperty( 0.01 );
 
@@ -44,7 +57,8 @@ class Boat extends Mass {
 
     assert && assert( !config.canRotate );
 
-    super( engine, config );
+    // TODO: Ask MK about why the parent options seem to be made optional, this cast shouldn't be needed
+    super( engine, config as InstrumentedMassOptions );
 
     // Update the shape when the block width or displacement changes
     Property.multilink( [ blockWidthProperty, displacementVolumeProperty ], ( blockWidth, displacementVolume ) => {
@@ -66,26 +80,18 @@ class Boat extends Mass {
       this.writeData();
     } );
 
-    // @public {Property.<number>}
     this.displacementVolumeProperty = displacementVolumeProperty;
-
-    // @public {Property.<Material>}
     this.liquidMaterialProperty = liquidMaterialProperty;
 
-    // @public (read-only) {Basin}
     this.basin = new BoatBasin( this );
 
-    Property.multilink( [ this.liquidMaterialProperty, this.basin.liquidVolumeProperty ], ( material, volume ) => {
+    Property.multilink( [ this.liquidMaterialProperty, this.basin.liquidVolumeProperty ], ( material: Material, volume: number ) => {
       this.containedMassProperty.value = material.density * volume;
     } );
 
-    // @private {number} - Amount of volume contained in the basin
     this.stepInternalVolume = 0;
-
-    // @private {number} - How to multiply our one-liter size up to the model coordinates
     this.stepMultiplier = 0;
 
-    // @public {THREE.Group}
     this.intersectionGroup = new THREE.Group();
     const intersectionMesh = new THREE.Mesh( BoatDesign.getPrimaryGeometry( 1 ), new THREE.MeshLambertMaterial() );
     this.intersectionGroup.add( intersectionMesh );
@@ -93,13 +99,8 @@ class Boat extends Mass {
 
   /**
    * Steps forward in time.
-   * @public
-   * @override
-   *
-   * @param {number} dt
-   * @param {number} interpolationRatio
    */
-  step( dt, interpolationRatio ) {
+  step( dt: number, interpolationRatio: number ) {
     super.step( dt, interpolationRatio );
 
     this.basin.liquidYInterpolatedProperty.setRatio( interpolationRatio );
@@ -107,20 +108,14 @@ class Boat extends Mass {
 
   /**
    * Returns whether this is a boat (as more complicated handling is needed in this case).
-   * @public
-   * @override
-   *
-   * @returns {boolean}
    */
-  isBoat() {
+  isBoat(): boolean {
     return true;
   }
 
   /**
    * Called after a engine-physics-model step once before doing other operations (like computing buoyant forces,
    * displacement, etc.) so that it can set high-performance flags used for this purpose.
-   * @public
-   * @override
    *
    * Type-specific values are likely to be set, but this should set at least stepX/stepBottom/stepTop
    */
@@ -146,21 +141,15 @@ class Boat extends Mass {
    * If there is an intersection with the ray and this mass, the t-value (distance the ray would need to travel to
    * reach the intersection, e.g. ray.position + ray.distance * t === intersectionPoint) will be returned. Otherwise
    * if there is no intersection, null will be returned.
-   * @public
-   * @override
-   *
-   * @param {Ray3} ray
-   * @param {boolean} isTouch
-   * @returns {number|null}
    */
-  intersect( ray, isTouch ) {
+  intersect( ray: Ray3, isTouch: boolean ): number | null {
     const scale = Math.pow( this.displacementVolumeProperty.value / 0.001, 1 / 3 );
     // TODO: somewhat borrowed with Bottle, let's combine
     const translation = this.matrix.translation;
     const adjustedPosition = ray.position.minusXYZ( translation.x, translation.y, 0 ).dividedScalar( scale );
 
     const raycaster = new THREE.Raycaster( ThreeUtils.vectorToThree( adjustedPosition ), ThreeUtils.vectorToThree( ray.direction ) );
-    const intersections = [];
+    const intersections: THREE.Intersection<THREE.Group>[] = [];
     raycaster.intersectObject( this.intersectionGroup, true, intersections );
 
     return intersections.length ? intersections[ 0 ].distance * scale : null;
@@ -168,15 +157,10 @@ class Boat extends Mass {
 
   /**
    * Returns the displayed area of this object at a given y level
-   * @public
-   * @override
    *
    * Assumes step information was updated.
-   *
-   * @param {number} liquidLevel
-   * @returns {number}
    */
-  getDisplacedArea( liquidLevel ) {
+  getDisplacedArea( liquidLevel: number ): number {
     const bottom = this.stepBottom;
     const top = this.stepTop;
 
@@ -191,15 +175,10 @@ class Boat extends Mass {
 
   /**
    * Returns the displaced volume of this object up to a given y level, assuming a y value for the given liquid level.
-   * @public
-   * @override
    *
    * Assumes step information was updated.
-   *
-   * @param {number} liquidLevel
-   * @returns {number}
    */
-  getDisplacedVolume( liquidLevel ) {
+  getDisplacedVolume( liquidLevel: number ): number {
     const bottom = this.stepBottom;
     const top = this.stepTop;
 
@@ -218,14 +197,10 @@ class Boat extends Mass {
 
   /**
    * Returns the internal basin area of this object up to a given y level, assuming a y value for the given liquid level.
-   * @public
    *
    * Assumes step information was updated.
-   *
-   * @param {number} liquidLevel
-   * @returns {number}
    */
-  getBasinArea( liquidLevel ) {
+  getBasinArea( liquidLevel: number ): number {
     const bottom = this.stepBottom;
     const top = this.stepTop;
 
@@ -241,15 +216,10 @@ class Boat extends Mass {
 
   /**
    * Returns the displaced volume of this object up to a given y level, assuming a y value for the given liquid level.
-   * @public
-   * @override
    *
    * Assumes step information was updated.
-   *
-   * @param {number} liquidLevel
-   * @returns {number}
    */
-  getBasinVolume( liquidLevel ) {
+  getBasinVolume( liquidLevel: number ): number {
     const bottom = this.stepBottom;
     const top = this.stepTop;
 
@@ -266,9 +236,10 @@ class Boat extends Mass {
     }
   }
 
+  setRatios( widthRatio: number, heightRatio: number ) {}
+
   /**
    * Resets values to their original state
-   * @public
    */
   reset() {
     this.displacementVolumeProperty.reset();
@@ -281,3 +252,4 @@ class Boat extends Mass {
 
 densityBuoyancyCommon.register( 'Boat', Boat );
 export default Boat;
+export type { BoatOptions };

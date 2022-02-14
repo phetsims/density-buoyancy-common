@@ -74,11 +74,13 @@ import Vector2 from '../../../../dot/js/Vector2.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
 import Shape from '../../../../kite/js/Shape.js';
 import ThreeUtils from '../../../../mobius/js/ThreeUtils.js';
-import merge from '../../../../phet-core/js/merge.js';
-import Mass from '../../common/model/Mass.js';
+import optionize from '../../../../phet-core/js/optionize.js';
+import Mass, { InstrumentedMassOptions } from '../../common/model/Mass.js';
 import Material from '../../common/model/Material.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import densityBuoyancyCommonStrings from '../../densityBuoyancyCommonStrings.js';
+import PhysicsEngine from '../../common/model/PhysicsEngine.js';
+import Ray3 from '../../../../dot/js/Ray3.js';
 
 // constants (in logical coordinates)
 const BODY_CORNER_RADIUS = 0.02; // Used both between the taper/body and between the body/base
@@ -163,64 +165,71 @@ const BOTTLE_INITIAL_INTERIOR_VOLUME = 0.004;
 // {Material}
 const BOTTLE_INITIAL_INTERIOR_MATERIAL = Material.WATER;
 
+type BottleOptions = Omit<InstrumentedMassOptions, 'body' | 'shape' | 'volume' | 'material'>;
+
 class Bottle extends Mass {
-  /**
-   * @param {PhysicsEngine} engine
-   * @param {Object} config
-   */
-  constructor( engine, config ) {
+
+  // model-coordinate bounds in x,y
+  private bottleBounds: Bounds2;
+
+  interiorMaterialProperty: Property<Material>;
+  interiorVolumeProperty: Property<number>;
+
+  // In kg (kilograms)
+  interiorMassProperty: Property<number>;
+
+  primaryGeometry: THREE.BufferGeometry;
+  capGeometry: THREE.BufferGeometry;
+  intersectionGroup: THREE.Group;
+
+  constructor( engine: PhysicsEngine, providedConfig: BottleOptions ) {
 
     const vertices = Bottle.getFlatIntersectionVertices();
 
-    config = merge( {
+    const config = optionize<BottleOptions, {}, InstrumentedMassOptions>( {
       body: engine.createFromVertices( vertices, true ),
       shape: Shape.polygon( vertices ),
       volume: BOTTLE_VOLUME,
       material: Material.createCustomMaterial( {
         density: ( BOTTLE_MASS + BOTTLE_INITIAL_INTERIOR_MATERIAL.density * BOTTLE_INITIAL_INTERIOR_VOLUME ) / BOTTLE_VOLUME
       } )
-    }, config );
+    }, providedConfig );
 
     assert && assert( !config.canRotate );
 
-    super( engine, config );
+    // TODO: Ask MK about why the parent options seem to be made optional, this cast shouldn't be needed
+    super( engine, config as InstrumentedMassOptions );
 
-    // @private {Bounds2} - model-coordinate bounds in x,y
     this.bottleBounds = Bounds2.NOTHING.copy();
     Bottle.getFlatIntersectionVertices().forEach( p => this.bottleBounds.addPoint( p ) );
 
-    // @public {Property.<Material>}
     this.interiorMaterialProperty = new Property( BOTTLE_INITIAL_INTERIOR_MATERIAL, {
       valueType: Material,
-      reentrant: 'true',
+      reentrant: true,
       tandem: config.tandem.createTandem( 'interiorMaterialProperty' ),
       phetioType: Property.PropertyIO( Material.MaterialIO )
     } );
 
-    // @public {Property.<number>}
     this.interiorVolumeProperty = new NumberProperty( BOTTLE_INITIAL_INTERIOR_VOLUME, {
       tandem: config.tandem.createTandem( 'interiorVolumeProperty' ),
       range: new Range( 0, Number.POSITIVE_INFINITY ),
       phetioReadOnly: true
     } );
 
-    // @public (read-only) {Property.<number>} - In kg (kilograms)
-    this.interiorMassProperty = new DerivedProperty( [ this.interiorMaterialProperty, this.interiorVolumeProperty ], ( material, volume ) => {
+    this.interiorMassProperty = new DerivedProperty( [ this.interiorMaterialProperty, this.interiorVolumeProperty ], ( material: Material, volume: number ) => {
       return material.density * volume;
     } );
 
-    Property.multilink( [ this.interiorMaterialProperty, this.interiorVolumeProperty ], ( material, volume ) => {
+    Property.multilink( [ this.interiorMaterialProperty, this.interiorVolumeProperty ], ( material: Material, volume: number ) => {
       this.materialProperty.value = Material.createCustomMaterial( {
         name: densityBuoyancyCommonStrings.average,
         density: ( BOTTLE_MASS + material.density * volume ) / BOTTLE_VOLUME
       } );
     } );
 
-    // @public (read-only) {THREE.BufferGeometry}
     this.primaryGeometry = Bottle.getPrimaryGeometry();
     this.capGeometry = Bottle.getCapGeometry();
 
-    // @public (read-only) {THREE.Group}
     this.intersectionGroup = new THREE.Group();
     this.intersectionGroup.add( new THREE.Mesh( this.primaryGeometry, new THREE.MeshLambertMaterial() ) );
     this.intersectionGroup.add( new THREE.Mesh( this.capGeometry, new THREE.MeshLambertMaterial() ) );
@@ -229,8 +238,6 @@ class Bottle extends Mass {
   /**
    * Called after a engine-physics-model step once before doing other operations (like computing buoyant forces,
    * displacement, etc.) so that it can set high-performance flags used for this purpose.
-   * @public
-   * @override
    *
    * Type-specific values are likely to be set, but this should set at least stepX/stepBottom/stepTop
    */
@@ -249,19 +256,13 @@ class Bottle extends Mass {
    * If there is an intersection with the ray and this mass, the t-value (distance the ray would need to travel to
    * reach the intersection, e.g. ray.position + ray.distance * t === intersectionPoint) will be returned. Otherwise
    * if there is no intersection, null will be returned.
-   * @public
-   * @override
-   *
-   * @param {Ray3} ray
-   * @param {boolean} isTouch
-   * @returns {number|null}
    */
-  intersect( ray, isTouch ) {
+  intersect( ray: Ray3, isTouch: boolean ): number | null {
     const translation = this.matrix.translation;
     const adjustedPosition = ray.position.minusXYZ( translation.x, translation.y, 0 );
 
     const raycaster = new THREE.Raycaster( ThreeUtils.vectorToThree( adjustedPosition ), ThreeUtils.vectorToThree( ray.direction ) );
-    const intersections = [];
+    const intersections: THREE.Intersection<THREE.Group>[] = [];
     raycaster.intersectObject( this.intersectionGroup, true, intersections );
 
     return intersections.length ? intersections[ 0 ].distance : null;
@@ -269,15 +270,10 @@ class Bottle extends Mass {
 
   /**
    * Returns the cumulative displaced volume of this object up to a given y level.
-   * @public
-   * @override
    *
    * Assumes step information was updated.
-   *
-   * @param {number} liquidLevel
-   * @returns {number}
    */
-  getDisplacedArea( liquidLevel ) {
+  getDisplacedArea( liquidLevel: number ): number {
     const bottom = this.stepBottom;
     const top = this.stepTop;
 
@@ -292,15 +288,10 @@ class Bottle extends Mass {
 
   /**
    * Returns the displaced volume of this object up to a given y level, assuming a y value for the given liquid level.
-   * @public
-   * @override
    *
    * Assumes step information was updated.
-   *
-   * @param {number} liquidLevel
-   * @returns {number}
    */
-  getDisplacedVolume( liquidLevel ) {
+  getDisplacedVolume( liquidLevel: number ): number {
     const bottom = this.stepBottom;
     const top = this.stepTop;
 
@@ -319,7 +310,6 @@ class Bottle extends Mass {
 
   /**
    * Resets values to their original state
-   * @public
    */
   reset() {
     this.interiorMaterialProperty.reset();
@@ -329,13 +319,10 @@ class Bottle extends Mass {
   }
 
   /**
-   * @public
-   *
-   * @param {Array.<Vector2>} controlPoints - Four points for a cubic
-   * @param {number} t
-   * @returns {Vector2}
+   * @param controlPoints - Four points for a cubic
+   * @param t
    */
-  static evaluateCubic( controlPoints, t ) {
+  static evaluateCubic( controlPoints: Vector2[], t: number ): Vector2 {
     const mt = 1 - t;
     const mmm = mt * mt * mt;
     const mmt = 3 * mt * mt * t;
@@ -355,13 +342,10 @@ class Bottle extends Mass {
   }
 
   /**
-   * @public
-   *
-   * @param {Array.<Vector2>} controlPoints - Four points for a cubic
-   * @param {number} t
-   * @returns {Vector2}
+   * @param controlPoints - Four points for a cubic
+   * @param t
    */
-  static evaluateCubicDerivative( controlPoints, t ) {
+  static evaluateCubicDerivative( controlPoints: Vector2[], t: number ): Vector2 {
     const mt = 1 - t;
 
     return new Vector2(
@@ -379,13 +363,8 @@ class Bottle extends Mass {
   /**
    * Given control points for a parametric cubic bezier, finds the parametric value for the curve that will have the
    * defined radius.
-   * @public
-   *
-   * @param {Array.<Vector2>} controlPoints
-   * @param {number} r
-   * @returns {number}
    */
-  static getParametricFromRadius( controlPoints, r ) {
+  static getParametricFromRadius( controlPoints: Vector2[], r: number ): number {
     const r0 = controlPoints[ 0 ].y;
     const r1 = controlPoints[ 1 ].y;
     const r2 = controlPoints[ 2 ].y;
@@ -396,109 +375,48 @@ class Bottle extends Mass {
       3 * r0 - 6 * r1 + 3 * r2,
       -3 * r0 + 3 * r1,
       r0 - r
-    ).filter( t => t >= 0 && t <= 1 );
+    )!.filter( t => t >= 0 && t <= 1 );
 
     return roots[ 0 ];
   }
 
-  /**
-   * @private
-   *
-   * @param {number} t
-   * @returns {Vector2}
-   */
-  static getTaperParametricProfilePoint( t ) {
+  private static getTaperParametricProfilePoint( t: number ): Vector2 {
     return Bottle.evaluateCubic( TAPER_CONTROL_POINTS, t );
   }
 
-  /**
-   * @private
-   *
-   * @param {number} t
-   * @returns {Vector2}
-   */
-  static getTaperParametricDerivative( t ) {
+  private static getTaperParametricDerivative( t: number ): Vector2 {
     return Bottle.evaluateCubicDerivative( TAPER_CONTROL_POINTS, t );
   }
 
-  /**
-   * @private
-   *
-   * @param {number} t
-   * @returns {Vector2}
-   */
-  static getBaseFirstTipParametricProfilePoint( t ) {
+  private static getBaseFirstTipParametricProfilePoint( t: number ): Vector2 {
     return Bottle.evaluateCubic( BASE_FIRST_TIP_CONTROL_POINTS, t );
   }
 
-  /**
-   * @private
-   *
-   * @param {number} t
-   * @returns {Vector2}
-   */
-  static getBaseSecondTipParametricProfilePoint( t ) {
+  private static getBaseSecondTipParametricProfilePoint( t: number ): Vector2 {
     return Bottle.evaluateCubic( BASE_SECOND_TIP_CONTROL_POINTS, t );
   }
 
-  /**
-   * @private
-   *
-   * @param {number} t
-   * @returns {Vector2}
-   */
-  static getBaseSaddleParametricProfilePoint( t ) {
+  private static getBaseSaddleParametricProfilePoint( t: number ): Vector2 {
     return Bottle.evaluateCubic( BASE_SADDLE_CONTROL_POINTS, t );
   }
 
-  /**
-   * @private
-   *
-   * @param {number} r
-   * @returns {number}
-   */
-  static getTaperParametricFromRadius( r ) {
+  private static getTaperParametricFromRadius( r: number ): number {
     return Bottle.getParametricFromRadius( TAPER_CONTROL_POINTS, r );
   }
 
-  /**
-   * @private
-   *
-   * @param {number} r
-   * @returns {number}
-   */
-  static getBaseFirstTipParametricFromRadius( r ) {
+  private static getBaseFirstTipParametricFromRadius( r: number ): number {
     return Bottle.getParametricFromRadius( BASE_FIRST_TIP_CONTROL_POINTS, r );
   }
 
-  /**
-   * @private
-   *
-   * @param {number} r
-   * @returns {number}
-   */
-  static getBaseSecondTipParametricFromRadius( r ) {
+  private static getBaseSecondTipParametricFromRadius( r: number ): number {
     return Bottle.getParametricFromRadius( BASE_SECOND_TIP_CONTROL_POINTS, r );
   }
 
-  /**
-   * @private
-   *
-   * @param {number} r
-   * @returns {number}
-   */
-  static getBaseSaddleParametricFromRadius( r ) {
+  private static getBaseSaddleParametricFromRadius( r: number ): number {
     return Bottle.getParametricFromRadius( BASE_SADDLE_CONTROL_POINTS, r );
   }
 
-  /**
-   * @private
-   *
-   * @param {number} y
-   * @param {number} z
-   * @returns {Vector3}
-   */
-  static getBasePoint( y, z ) {
+  private static getBasePoint( y: number, z: number ): Vector3 {
     const r = Math.sqrt( y * y + z * z );
     const theta = Math.atan2( z, y ); // angled so we're symmetric?
 
@@ -518,13 +436,7 @@ class Bottle extends Mass {
     );
   }
 
-  /**
-   * @public
-   *
-   * @param {number} volume
-   * @returns {number}
-   */
-  static getYFromVolume( volume ) {
+  static getYFromVolume( volume: number ): number {
     const min = -FULL_RADIUS * TEN_LITER_SCALE_MULTIPLIER;
     const max = FULL_RADIUS * TEN_LITER_SCALE_MULTIPLIER;
 
@@ -550,19 +462,12 @@ class Bottle extends Mass {
     throw new Error( 'unsupported volume' );
   }
 
-  /**
-   * @private
-   *
-   * @param {number} y
-   * @param {number} [precisionMultiplier]
-   * @returns {Array.<Vector2>}
-   */
-  static getMainBottleCrossSectionTriangles( y, precisionMultiplier = 1 ) {
-    const triangles = [];
+  private static getMainBottleCrossSectionTriangles( y: number, precisionMultiplier: number = 1 ): Vector2[] {
+    const triangles: Vector2[] = [];
     const absY = Math.abs( y );
 
-    const radial = r => r * Math.sqrt( 1 - Math.pow( y / r, 2 ) );
-    const mirroredQuad = ( x0, z0, x1, z1 ) => {
+    const radial = ( r: number ) => r * Math.sqrt( 1 - Math.pow( y / r, 2 ) );
+    const mirroredQuad = ( x0: number, z0: number, x1: number, z1: number ) => {
       const a = new Vector2( x0, z0 );
       const b = new Vector2( x1, z1 );
       const c = new Vector2( x1, -z1 );
@@ -573,7 +478,7 @@ class Bottle extends Mass {
         a, c, d
       );
     };
-    const approximateProfile = profileVectors => {
+    const approximateProfile = ( profileVectors: Vector2[] ) => {
       _.range( 0, profileVectors.length - 1 ).forEach( i => {
         const a = profileVectors[ i ];
         const b = profileVectors[ i + 1 ];
@@ -677,22 +582,11 @@ class Bottle extends Mass {
     return triangles;
   }
 
-  /**
-   * @public
-   *
-   * @returns {Float32Array}
-   */
-  static createCrossSectionVertexArray() {
+  static createCrossSectionVertexArray(): Float32Array {
     return new Float32Array( MAX_CROSS_SECTION_VERTEX_COUNT * 3 );
   }
 
-  /**
-   * @public
-   *
-   * @param {number} y
-   * @param {Float32Array} positionArray
-   */
-  static fillCrossSectionVertexArray( y, positionArray ) {
+  static fillCrossSectionVertexArray( y: number, positionArray: Float32Array ) {
     const triangleXZs = Bottle.getMainBottleCrossSectionTriangles( y / TEN_LITER_SCALE_MULTIPLIER + TEN_LITER_INTERSECTION_CENTROID.y, CROSS_SECTION_PRECISION );
     for ( let i = 0; i < triangleXZs.length; i++ ) {
       const triangleVertex = triangleXZs[ i ];
@@ -710,12 +604,10 @@ class Bottle extends Mass {
 
   /**
    * Returns the cross-sectional area taken up by a selection of triangles in 2d.
-   * @public
    *
-   * @param {Array.<Vector2>} triangles - Every section of three vertices represents a 2d triangle
-   * @returns {number}
+   * @param triangles - Every section of three vertices represents a 2d triangle
    */
-  static getCrossSectionArea( triangles ) {
+  static getCrossSectionArea( triangles: Vector2[] ): number {
     let area = 0;
     _.range( 0, triangles.length, 3 ).forEach( i => {
       area += Utils.triangleArea(
@@ -727,19 +619,12 @@ class Bottle extends Mass {
     return area;
   }
 
-  /**
-   * @public
-   *
-   * @param {number} [samples]
-   * @param {number} [accuracyMultiplier]
-   * @returns {string}
-   */
-  static computeBottleData( samples = 1000, accuracyMultiplier = 100 ) {
+  static computeBottleData( samples: number = 1000, accuracyMultiplier: number = 100 ): string {
     const desiredVolume = 0.01;
 
     const multiplier = FULL_RADIUS * 2;
     let sum = 0;
-    const sliceAreas = [];
+    const sliceAreas: number[] = [];
     _.range( 0, samples ).forEach( i => {
       // unit area times the multiplier
       const y = ( i / ( samples - 1 ) - 0.5 ) * multiplier;
@@ -751,7 +636,7 @@ class Bottle extends Mass {
     const tenLiterMultiplier = Math.pow( originalVolume / desiredVolume, -1 / 3 );
 
     const actualAreas = sliceAreas.map( area => tenLiterMultiplier * tenLiterMultiplier * area );
-    const actualCumulativeAreas = [];
+    const actualCumulativeAreas: number[] = [];
     let cumulativeArea = 0;
     actualAreas.forEach( area => {
       cumulativeArea += area / samples * multiplier * tenLiterMultiplier;
@@ -831,11 +716,8 @@ const FLAT_INTERSECTION_VERTICES = [ ${flatIntersectionVertices.map( v => `new V
 
   /**
    * Returns a list of points in (x,r) that is the cross-section profile of the cap.
-   * @public
-   *
-   * @returns {Array.<Vector2>}
    */
-  static getCapProfile() {
+  static getCapProfile(): Vector2[] {
     return [
       new Vector2( 0, 0 ),
       ..._.range( 0, CORNER_SEGMENTS ).map( i => {
@@ -851,12 +733,7 @@ const FLAT_INTERSECTION_VERTICES = [ ${flatIntersectionVertices.map( v => `new V
     ];
   }
 
-  /**
-   * @private
-   *
-   * @returns {Array.<Vector2>}
-   */
-  static getLipToBodyProfile() {
+  private static getLipToBodyProfile(): Vector2[] {
     return [
       new Vector2( CAP_CORNER_RADIUS + CAP_BODY_LENGTH + GAP_LENGTH, NECK_RADIUS ),
       ..._.range( 0, CORNER_SEGMENTS * 2 ).map( i => {
@@ -890,23 +767,15 @@ const FLAT_INTERSECTION_VERTICES = [ ${flatIntersectionVertices.map( v => `new V
 
   /**
    * Returns a list of points in (x,r) that is the cross-section profile of the non-base portion of the bottle.
-   * @public
-   *
-   * @returns {Array.<Vector2>}
    */
-  static getMainBottleProfile() {
+  static getMainBottleProfile(): Vector2[] {
     return [
       new Vector2( CAP_CORNER_RADIUS, NECK_RADIUS ),
       ...Bottle.getLipToBodyProfile()
     ];
   }
 
-  /**
-   * @public
-   *
-   * @returns {Array.<Vector2>}
-   */
-  static getMainFlatIntersectionProfile() {
+  static getMainFlatIntersectionProfile(): Vector2[] {
     return [
       ...Bottle.getCapProfile(),
       ...Bottle.getLipToBodyProfile()
@@ -915,45 +784,21 @@ const FLAT_INTERSECTION_VERTICES = [ ${flatIntersectionVertices.map( v => `new V
 
   /**
    * For UV-mapping
-   * @private
-   *
-   * @param {number} x
-   * @returns {number}
    */
-  static xToU( x ) {
+  private static xToU( x: number ): number {
     return x / BASE_TIP;
   }
 
   /**
    * For UV-mapping
-   * @private
    *
    * TODO: What is the most efficient to have the value of V?
-   *
-   * @param {number} y
-   * @returns {number}
    */
-  static yToV( y ) {
+  private static yToV( y: number ): number {
     return y / ( 2 * FULL_RADIUS ) + 0.5;
   }
 
-  /**
-   * @private
-   *
-   * @param {Array.<number>} positions
-   * @param {Array.<number>} normals
-   * @param {Array.<number>} uvs
-   * @param {number} radialSegments
-   * @param {number} x0
-   * @param {number} r0
-   * @param {number} x1
-   * @param {number} r1
-   * @param {number} nx0
-   * @param {number} nr0
-   * @param {number} nx1
-   * @param {number} nr1
-   */
-  static quadRing( positions, normals, uvs, radialSegments, x0, r0, x1, r1, nx0, nr0, nx1, nr1 ) {
+  private static quadRing( positions: number[], normals: number[], uvs: number[], radialSegments: number, x0: number, r0: number, x1: number, r1: number, nx0: number, nr0: number, nx1: number, nr1: number ) {
     _.range( 0, radialSegments ).forEach( i => {
       const theta0 = 2 * Math.PI * i / radialSegments;
       const theta1 = 2 * Math.PI * ( i + 1 ) / radialSegments;
@@ -992,21 +837,7 @@ const FLAT_INTERSECTION_VERTICES = [ ${flatIntersectionVertices.map( v => `new V
     } );
   }
 
-  /**
-   * @private
-   *
-   * @param {Array.<number>} positions
-   * @param {Array.<number>} normals
-   * @param {Array.<number>} uvs
-   * @param {number} radialSegments
-   * @param {number} cornerSegments
-   * @param {number} startTheta
-   * @param {number} endTheta
-   * @param {number} x
-   * @param {number} r
-   * @param {number} cornerRadius
-   */
-  static roundedCornerRing( positions, normals, uvs, radialSegments, cornerSegments, startTheta, endTheta, x, r, cornerRadius ) {
+  private static roundedCornerRing( positions: number[], normals: number[], uvs: number[], radialSegments: number, cornerSegments: number, startTheta: number, endTheta: number, x: number, r: number, cornerRadius: number ) {
     _.range( 0, cornerSegments ).forEach( i => {
       const theta0 = startTheta + ( i / cornerSegments ) * ( endTheta - startTheta );
       const theta1 = startTheta + ( ( i + 1 ) / cornerSegments ) * ( endTheta - startTheta );
@@ -1027,13 +858,8 @@ const FLAT_INTERSECTION_VERTICES = [ ${flatIntersectionVertices.map( v => `new V
   /**
    * Meant for mapping a raw number-based array of x,y,z position data from the construction coordinates to model
    * coordinates.
-   * @private
-   *
-   * @param {number} point
-   * @param {number} index
-   * @returns {number}
    */
-  static positionArrayMap( point, index ) {
+  private static positionArrayMap( point: number, index: number ): number {
     const mod = index % 3;
 
     // x
@@ -1052,19 +878,16 @@ const FLAT_INTERSECTION_VERTICES = [ ${flatIntersectionVertices.map( v => `new V
   /**
    * Returns the model-coordinate main geometry for the bulk of the bottle (meant for use with the clear plastic
    * looking material).
-   * @public
-   *
-   * @returns {THREE.BufferGeometry}
    */
-  static getPrimaryGeometry() {
+  static getPrimaryGeometry(): THREE.BufferGeometry {
     const radialSegments = 64;
     const cornerSegments = 6;
     const taperSegments = 30;
     const baseSegments = 40;
 
-    const positions = [];
-    const normals = [];
-    const uvs = []; // x / CAP_LENGTH, theta/2pi (approximately) in case we want to texture the cap
+    const positions: number[] = [];
+    const normals: number[] = [];
+    const uvs: number[] = []; // x / CAP_LENGTH, theta/2pi (approximately) in case we want to texture the cap
 
     // the under-cap portion
     Bottle.quadRing(
@@ -1226,17 +1049,14 @@ const FLAT_INTERSECTION_VERTICES = [ ${flatIntersectionVertices.map( v => `new V
 
   /**
    * Returns the model-coordinate THREE.BufferGeometry representing the bottle cap.
-   * @public
-   *
-   * @returns {THREE.BufferGeometry}
    */
-  static getCapGeometry() {
+  static getCapGeometry(): THREE.BufferGeometry {
     const radialSegments = 64;
     const cornerSegments = 6;
 
-    const positions = [];
-    const normals = [];
-    const uvs = []; // x / CAP_LENGTH, theta/2pi (approximately) in case we want to texture the cap
+    const positions: number[] = [];
+    const normals: number[] = [];
+    const uvs: number[] = []; // x / CAP_LENGTH, theta/2pi (approximately) in case we want to texture the cap
 
     // The top of the cap
     _.range( 0, radialSegments ).forEach( i => {
@@ -1315,7 +1135,7 @@ const FLAT_INTERSECTION_VERTICES = [ ${flatIntersectionVertices.map( v => `new V
    */
   static getDebugCanvas() {
     const canvas = document.createElement( 'canvas' );
-    const context = canvas.getContext( '2d' );
+    const context = canvas.getContext( '2d' )!;
 
     const width = 800;
     const height = 400;
@@ -1329,8 +1149,8 @@ const FLAT_INTERSECTION_VERTICES = [ ${flatIntersectionVertices.map( v => `new V
 
     const scale = width / 5;
 
-    const mapX = x => ( x + 0.07 ) * scale;
-    const mapY = y => -y * scale + height / 2;
+    const mapX = ( x : number ) => ( x + 0.07 ) * scale;
+    const mapY = ( y: number ) => -y * scale + height / 2;
 
     context.strokeStyle = 'red';
     context.beginPath();
@@ -1401,22 +1221,30 @@ const FLAT_INTERSECTION_VERTICES = [ ${flatIntersectionVertices.map( v => `new V
 
     return canvas;
   }
+
+  setRatios( widthRatio: number, heightRatio: number ) {}
+
+  // The number to scale the original values by to get a 10L-volume bottle
+  static TEN_LITER_SCALE_MULTIPLIER: number;
+
+  // The maximum bounding radius for the 10L-volume bottle
+  static MAX_RADIUS: number;
+
+  // The maximum length for the 10L-volume bottle
+  static MAX_LENGTH: number;
+
+  // From the bottom to top, cross-sectional area and cumulative (displaced) volume
+  static TEN_LITER_DISPLACED_AREAS: number[];
+  static TEN_LITER_DISPLACED_VOLUMES: number[];
+
+  static FLAT_INTERSECTION_VERTICES: Vector2[];
 }
 
-// @public (read-only) {number} - The number to scale the original values by to get a 10L-volume bottle
 Bottle.TEN_LITER_SCALE_MULTIPLIER = TEN_LITER_SCALE_MULTIPLIER;
-
-// @public (read-only) {number} - The maximum bounding radius for the 10L-volume bottle
 Bottle.MAX_RADIUS = FULL_RADIUS * TEN_LITER_SCALE_MULTIPLIER;
-
-// @public (read-only) {number} - The maximum length for the 10L-volume bottle
 Bottle.MAX_LENGTH = BASE_TIP * TEN_LITER_SCALE_MULTIPLIER;
-
-// @public (read-only) {Array.<number>} - From the bottom to top, cross-sectional area and cumulative (displaced) volume
 Bottle.TEN_LITER_DISPLACED_AREAS = TEN_LITER_DISPLACED_AREAS;
 Bottle.TEN_LITER_DISPLACED_VOLUMES = TEN_LITER_DISPLACED_VOLUMES;
-
-// @public (read-only) {Array.<Vector2>}
 Bottle.FLAT_INTERSECTION_VERTICES = FLAT_INTERSECTION_VERTICES;
 
 densityBuoyancyCommon.register( 'Bottle', Bottle );

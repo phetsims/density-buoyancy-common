@@ -15,6 +15,7 @@
     "images/**/*",
     "../chipper/phet-types.d.ts",
     "../chipper/node_modules/@types/lodash/index.d.ts",
-    "../chipper/node_modules/@types/p2/index.d.ts"
+    "../chipper/node_modules/@types/p2/index.d.ts",
+    "../chipper/node_modules/@types/three/index.d.ts"
   ]
 }

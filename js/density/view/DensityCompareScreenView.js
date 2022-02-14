@@ -12,25 +12,21 @@ import Property from '../../../../axon/js/Property.js';
 import Range from '../../../../dot/js/Range.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
 import merge from '../../../../phet-core/js/merge.js';
-import { AlignPropertyBox } from '../../../../scenery/js/imports.js';
-import { Node } from '../../../../scenery/js/imports.js';
-import { Text } from '../../../../scenery/js/imports.js';
-import { VBox } from '../../../../scenery/js/imports.js';
-import { PhetioControlledVisibilityProperty } from '../../../../scenery/js/imports.js';
+import { AlignPropertyBox, Node, PhetioControlledVisibilityProperty, Text, VBox } from '../../../../scenery/js/imports.js';
 import Panel from '../../../../sun/js/Panel.js';
 import VerticalAquaRadioButtonGroup from '../../../../sun/js/VerticalAquaRadioButtonGroup.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 import DensityBuoyancyScreenView from '../../common/view/DensityBuoyancyScreenView.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import densityBuoyancyCommonStrings from '../../densityBuoyancyCommonStrings.js';
-import DensityCompareModel from '../model/DensityCompareModel.js';
+import { BlockSet } from '../model/DensityCompareModel.js';
 import ComparisonNumberControl from './ComparisonNumberControl.js';
 
 // constants
 const blockSetStringMap = {
-  [ DensityCompareModel.BlockSet.SAME_MASS.name ]: densityBuoyancyCommonStrings.blockSet.sameMass,
-  [ DensityCompareModel.BlockSet.SAME_VOLUME.name ]: densityBuoyancyCommonStrings.blockSet.sameVolume,
-  [ DensityCompareModel.BlockSet.SAME_DENSITY.name ]: densityBuoyancyCommonStrings.blockSet.sameDensity
+  [ BlockSet.SAME_MASS.name ]: densityBuoyancyCommonStrings.blockSet.sameMass,
+  [ BlockSet.SAME_VOLUME.name ]: densityBuoyancyCommonStrings.blockSet.sameVolume,
+  [ BlockSet.SAME_DENSITY.name ]: densityBuoyancyCommonStrings.blockSet.sameDensity
 };
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
 
@@ -48,9 +44,9 @@ class DensityCompareScreenView extends DensityBuoyancyScreenView {
     }, options ) );
 
     const blockSetTandemMap = {
-      [ DensityCompareModel.BlockSet.SAME_MASS ]: 'sameMass',
-      [ DensityCompareModel.BlockSet.SAME_VOLUME ]: 'sameVolume',
-      [ DensityCompareModel.BlockSet.SAME_DENSITY ]: 'sameDensity'
+      [ BlockSet.SAME_MASS ]: 'sameMass',
+      [ BlockSet.SAME_VOLUME ]: 'sameVolume',
+      [ BlockSet.SAME_DENSITY ]: 'sameDensity'
     };
 
     const blocksPanelTandem = tandem.createTandem( 'blocksPanel' );
@@ -60,7 +56,7 @@ class DensityCompareScreenView extends DensityBuoyancyScreenView {
           font: DensityBuoyancyCommonConstants.TITLE_FONT,
           maxWidth: 160
         } ),
-        new VerticalAquaRadioButtonGroup( model.blockSetProperty, DensityCompareModel.BlockSet.VALUES.map( blockSet => {
+        new VerticalAquaRadioButtonGroup( model.blockSetProperty, BlockSet.enumeration.values.map( blockSet => {
           return {
             node: new Text( blockSetStringMap[ blockSet.name ], {
               font: DensityBuoyancyCommonConstants.RADIO_BUTTON_FONT,
@@ -110,7 +106,7 @@ class DensityCompareScreenView extends DensityBuoyancyScreenView {
       'kilograms',
       {
         tandem: massNumberControlTandem,
-        visibleProperty: new PhetioControlledVisibilityProperty( [ model.blockSetProperty ], blockSet => blockSet === DensityCompareModel.BlockSet.SAME_MASS, {
+        visibleProperty: new PhetioControlledVisibilityProperty( [ model.blockSetProperty ], blockSet => blockSet === BlockSet.SAME_MASS, {
           nodeTandem: massNumberControlTandem
         } ),
         sliderOptions: {
@@ -127,7 +123,7 @@ class DensityCompareScreenView extends DensityBuoyancyScreenView {
       'liters',
       {
         tandem: volumeNumberControlTandem,
-        visibleProperty: new PhetioControlledVisibilityProperty( [ model.blockSetProperty ], blockSet => blockSet === DensityCompareModel.BlockSet.SAME_VOLUME, {
+        visibleProperty: new PhetioControlledVisibilityProperty( [ model.blockSetProperty ], blockSet => blockSet === BlockSet.SAME_VOLUME, {
           nodeTandem: volumeNumberControlTandem
         } ),
         sliderOptions: {
@@ -144,7 +140,7 @@ class DensityCompareScreenView extends DensityBuoyancyScreenView {
       'value',
       {
         tandem: densityNumberControlTandem,
-        visibleProperty: new PhetioControlledVisibilityProperty( [ model.blockSetProperty ], blockSet => blockSet === DensityCompareModel.BlockSet.SAME_DENSITY, {
+        visibleProperty: new PhetioControlledVisibilityProperty( [ model.blockSetProperty ], blockSet => blockSet === BlockSet.SAME_DENSITY, {
           nodeTandem: densityNumberControlTandem
         } ),
         sliderOptions: {

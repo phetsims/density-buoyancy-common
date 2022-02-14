@@ -18,15 +18,15 @@ import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonCo
 import DensityBuoyancyScreenView from '../../common/view/DensityBuoyancyScreenView.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import densityBuoyancyCommonStrings from '../../densityBuoyancyCommonStrings.js';
-import DensityMysteryModel from '../model/DensityMysteryModel.js';
+import { BlockSet } from '../model/DensityMysteryModel.js';
 import DensityTableNode from './DensityTableNode.js';
 
 // constants
 const blockSetStringMap = {
-  [ DensityMysteryModel.BlockSet.SET_1.name ]: densityBuoyancyCommonStrings.blockSet.set1,
-  [ DensityMysteryModel.BlockSet.SET_2.name ]: densityBuoyancyCommonStrings.blockSet.set2,
-  [ DensityMysteryModel.BlockSet.SET_3.name ]: densityBuoyancyCommonStrings.blockSet.set3,
-  [ DensityMysteryModel.BlockSet.RANDOM.name ]: densityBuoyancyCommonStrings.blockSet.random
+  [ BlockSet.SET_1.name ]: densityBuoyancyCommonStrings.blockSet.set1,
+  [ BlockSet.SET_2.name ]: densityBuoyancyCommonStrings.blockSet.set2,
+  [ BlockSet.SET_3.name ]: densityBuoyancyCommonStrings.blockSet.set3,
+  [ BlockSet.RANDOM.name ]: densityBuoyancyCommonStrings.blockSet.random
 };
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
 
@@ -59,15 +59,15 @@ class DensityMysteryScreenView extends DensityBuoyancyScreenView {
     } ) );
 
     const blockSetTandemMap = {
-      [ DensityMysteryModel.BlockSet.SET_1 ]: 'set1',
-      [ DensityMysteryModel.BlockSet.SET_2 ]: 'set2',
-      [ DensityMysteryModel.BlockSet.SET_3 ]: 'set3',
-      [ DensityMysteryModel.BlockSet.RANDOM ]: 'random'
+      [ BlockSet.SET_1 ]: 'set1',
+      [ BlockSet.SET_2 ]: 'set2',
+      [ BlockSet.SET_3 ]: 'set3',
+      [ BlockSet.RANDOM ]: 'random'
     };
 
     const blocksPanelTandem = tandem.createTandem( 'blocksPanel' );
 
-    const blocksRadioButtonGroup = new VerticalAquaRadioButtonGroup( model.blockSetProperty, DensityMysteryModel.BlockSet.VALUES.map( blockSet => {
+    const blocksRadioButtonGroup = new VerticalAquaRadioButtonGroup( model.blockSetProperty, BlockSet.enumeration.values.map( blockSet => {
       return {
         node: new Text( blockSetStringMap[ blockSet.name ], {
           font: DensityBuoyancyCommonConstants.RADIO_BUTTON_FONT,
@@ -83,7 +83,7 @@ class DensityMysteryScreenView extends DensityBuoyancyScreenView {
     const randomBlocksRefreshButton = new RefreshButton( {
       listener: () => {
         this.interruptSubtreeInput();
-        model.regenerate( DensityMysteryModel.BlockSet.RANDOM );
+        model.regenerate( BlockSet.RANDOM );
       },
       iconHeight: 20,
       tandem: blocksPanelTandem.createTandem( 'randomBlocksRefreshButton' )
@@ -95,7 +95,7 @@ class DensityMysteryScreenView extends DensityBuoyancyScreenView {
     // Include the refresh button when in random blockSet.
     // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
     model.blockSetProperty.link( blockSet => {
-      blockSetContent.children = blockSet === DensityMysteryModel.BlockSet.RANDOM ? [
+      blockSetContent.children = blockSet === BlockSet.RANDOM ? [
         blocksRadioButtonGroup,
         randomBlocksRefreshButton
       ] : [

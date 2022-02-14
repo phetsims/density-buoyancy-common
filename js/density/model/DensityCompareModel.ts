@@ -7,35 +7,44 @@
  */
 
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
+import IProperty from '../../../../axon/js/IProperty.js';
 import NumberProperty from '../../../../axon/js/NumberProperty.js';
 import Property from '../../../../axon/js/Property.js';
 import Range from '../../../../dot/js/Range.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
-import EnumerationDeprecated from '../../../../phet-core/js/EnumerationDeprecated.js';
-import merge from '../../../../phet-core/js/merge.js';
+import Enumeration from '../../../../phet-core/js/Enumeration.js';
+import EnumerationValue from '../../../../phet-core/js/EnumerationValue.js';
+import optionize from '../../../../phet-core/js/optionize.js';
+import { Color } from '../../../../scenery/js/imports.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
-import BlockSetModel from '../../common/model/BlockSetModel.js';
+import BlockSetModel, { BlockSetModelOptions } from '../../common/model/BlockSetModel.js';
 import Cube from '../../common/model/Cube.js';
-import DensityBuoyancyModel from '../../common/model/DensityBuoyancyModel.js';
+import Cuboid from '../../common/model/Cuboid.js';
 import Material from '../../common/model/Material.js';
 import DensityBuoyancyCommonColors from '../../common/view/DensityBuoyancyCommonColors.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
+import DensityBuoyancyModel from '../../common/model/DensityBuoyancyModel.js';
 
-// constants
-const BlockSet = EnumerationDeprecated.byKeys( [
-  'SAME_MASS',
-  'SAME_VOLUME',
-  'SAME_DENSITY'
-] );
+class BlockSet extends EnumerationValue {
+  static SAME_MASS = new BlockSet();
+  static SAME_VOLUME = new BlockSet();
+  static SAME_DENSITY = new BlockSet();
 
-class DensityCompareModel extends BlockSetModel( DensityBuoyancyModel, BlockSet, BlockSet.SAME_MASS ) {
-  /**
-   * @mixes BlockSet
-   * @param {Object} [options]
-   */
-  constructor( options ) {
+  static enumeration = new Enumeration( BlockSet, {
+    phetioDocumentation: 'Block set'
+  } );
+}
 
-    const tandem = options.tandem;
+type DensityCompareModelOptions = BlockSetModelOptions<BlockSet>;
+
+class DensityCompareModel extends BlockSetModel<BlockSet> {
+
+  massProperty: Property<number>;
+  volumeProperty: Property<number>;
+  densityProperty: Property<number>;
+
+  constructor( providedOptions: DensityCompareModelOptions ) {
+    const tandem = providedOptions.tandem;
 
     const blockSetsTandem = tandem.createTandem( 'blockSets' );
     const sameMassTandem = blockSetsTandem.createTandem( 'sameMass' );
@@ -60,8 +69,8 @@ class DensityCompareModel extends BlockSetModel( DensityBuoyancyModel, BlockSet,
       units: 'kg/m^3'
     } );
 
-    const createMaterialProperty = ( colorProperty, densityProperty ) => {
-      return new DerivedProperty( [ colorProperty, densityProperty ], ( color, density ) => {
+    const createMaterialProperty = ( colorProperty: IProperty<Color>, densityProperty: IProperty<number> ) => {
+      return new DerivedProperty( [ colorProperty, densityProperty ], ( color: Color, density: number ) => {
         const lightness = Material.getCustomLightness( density ); // 0-255
 
         const modifier = 0.1;
@@ -108,7 +117,7 @@ class DensityCompareModel extends BlockSetModel( DensityBuoyancyModel, BlockSet,
     const sameDensityGreenMaterialProperty = createMaterialProperty( DensityBuoyancyCommonColors.compareGreenColorProperty, sameDensityGreenDensityProperty );
     const sameDensityRedMaterialProperty = createMaterialProperty( DensityBuoyancyCommonColors.compareRedColorProperty, sameDensityRedDensityProperty );
 
-    const createMasses = ( model, blockSet ) => {
+    const createMasses = ( model: DensityBuoyancyModel, blockSet: BlockSet ) => {
       let masses;
       switch( blockSet ) {
         case BlockSet.SAME_MASS:
@@ -202,7 +211,7 @@ class DensityCompareModel extends BlockSetModel( DensityBuoyancyModel, BlockSet,
       return masses;
     };
 
-    const positionMasses = ( model, blockSet, masses ) => {
+    const positionMasses = ( model: DensityBuoyancyModel, blockSet: BlockSet, masses: Cuboid[] ) => {
       switch( blockSet ) {
         case BlockSet.SAME_MASS:
           model.positionMassesLeft( [ masses[ 0 ], masses[ 1 ] ] );
@@ -221,10 +230,17 @@ class DensityCompareModel extends BlockSetModel( DensityBuoyancyModel, BlockSet,
       }
     };
 
-    super( tandem, createMasses, () => {}, positionMasses, merge( {
+    const options = optionize<DensityCompareModelOptions, {}, BlockSetModelOptions<BlockSet>>( {
+      initialMode: BlockSet.SAME_MASS,
+      BlockSet: BlockSet.enumeration,
       showMassesDefault: true,
-      canShowForces: false
-    }, options ) );
+      canShowForces: false,
+      createMassesCallback: createMasses,
+      regenerateMassesCallback: () => {},
+      positionMassesCallback: positionMasses
+    }, providedOptions );
+
+    super( options );
 
     // @public {Property.<number>}
     this.massProperty = massProperty;
@@ -236,8 +252,6 @@ class DensityCompareModel extends BlockSetModel( DensityBuoyancyModel, BlockSet,
 
   /**
    * Resets values to their original state
-   * @public
-   * @override
    */
   reset() {
     this.massProperty.reset();
@@ -248,8 +262,7 @@ class DensityCompareModel extends BlockSetModel( DensityBuoyancyModel, BlockSet,
   }
 }
 
-// @public (read-only) {EnumerationDeprecated}
-DensityCompareModel.BlockSet = BlockSet;
-
 densityBuoyancyCommon.register( 'DensityCompareModel', DensityCompareModel );
 export default DensityCompareModel;
+export { BlockSet };
+export type { DensityCompareModelOptions };

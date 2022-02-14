@@ -13,14 +13,14 @@ import Ray3 from '../../../../dot/js/Ray3.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
 import Shape from '../../../../kite/js/Shape.js';
-import merge from '../../../../phet-core/js/merge.js';
+import optionize from '../../../../phet-core/js/optionize.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
 import IOType from '../../../../tandem/js/types/IOType.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import Mass, { InstrumentedMassOptions } from './Mass.js';
 import PhysicsEngine from './PhysicsEngine.js';
 
-type CuboidOptions = InstrumentedMassOptions;
+type CuboidOptions = Omit<InstrumentedMassOptions, 'body' | 'shape' | 'volume' | 'phetioType'>;
 
 class Cuboid extends Mass {
 
@@ -31,7 +31,7 @@ class Cuboid extends Mass {
   stepMaximumVolume: number;
 
   constructor( engine: PhysicsEngine, size: Bounds3, providedConfig: CuboidOptions ) {
-    const config = merge( {
+    const config = optionize<CuboidOptions, {}, InstrumentedMassOptions>( {
       body: engine.createBox( size.width, size.height ),
       shape: Shape.rect( size.minX, size.minY, size.width, size.height ),
       volume: size.width * size.height * size.depth,
@@ -42,7 +42,8 @@ class Cuboid extends Mass {
 
     assert && assert( !config.canRotate );
 
-    super( engine, config );
+    // TODO: Ask MK about why the parent options seem to be made optional, this cast shouldn't be needed
+    super( engine, config as InstrumentedMassOptions );
 
     this.sizeProperty = new Property( size, {
       valueType: Bounds3,

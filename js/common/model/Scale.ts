@@ -63,7 +63,7 @@ type ScaleSelfOptions = {
   displayType?: DisplayType;
 };
 
-type ScaleOptions = ScaleSelfOptions & InstrumentedMassOptions;
+type ScaleOptions = ScaleSelfOptions & Omit<InstrumentedMassOptions, 'body' | 'shape' | 'volume' | 'material' | 'phetioType'>;
 
 class Scale extends Mass {
 
@@ -108,7 +108,8 @@ class Scale extends Mass {
       }
     }, providedOptions );
 
-    super( engine, config );
+    // TODO: Ask MK about why the parent options seem to be made optional, this cast shouldn't be needed
+    super( engine, config as InstrumentedMassOptions );
 
     this.scaleForceInterpolatedProperty = new InterpolatedProperty( 0, {
       interpolate: InterpolatedProperty.interpolateNumber,

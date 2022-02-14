@@ -11,17 +11,20 @@ import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import dotRandom from '../../../../dot/js/dotRandom.js';
 import Matrix3 from '../../../../dot/js/Matrix3.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
-import EnumerationDeprecated from '../../../../phet-core/js/EnumerationDeprecated.js';
-import merge from '../../../../phet-core/js/merge.js';
+import Enumeration from '../../../../phet-core/js/Enumeration.js';
+import EnumerationValue from '../../../../phet-core/js/EnumerationValue.js';
+import optionize from '../../../../phet-core/js/optionize.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
-import BlockSetModel from '../../common/model/BlockSetModel.js';
+import BlockSetModel, { BlockSetModelOptions } from '../../common/model/BlockSetModel.js';
 import Cube from '../../common/model/Cube.js';
-import DensityBuoyancyModel from '../../common/model/DensityBuoyancyModel.js';
 import { MassTag } from '../../common/model/Mass.js';
 import Material from '../../common/model/Material.js';
 import Scale, { DisplayType } from '../../common/model/Scale.js';
 import DensityBuoyancyCommonColors from '../../common/view/DensityBuoyancyCommonColors.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
+import DensityBuoyancyModel from '../../common/model/DensityBuoyancyModel.js';
+import Cuboid from '../../common/model/Cuboid.js';
+import Property from '../../../../axon/js/Property.js';
 
 // constants
 const randomMaterials = DensityBuoyancyCommonConstants.DENSITY_MYSTERY_MATERIALS;
@@ -42,21 +45,28 @@ const randomColors = [
   DensityBuoyancyCommonColors.mysteryPeachColorProperty,
   DensityBuoyancyCommonColors.mysteryMaroonColorProperty
 ];
-const BlockSet = EnumerationDeprecated.byKeys( [
-  'SET_1',
-  'SET_2',
-  'SET_3',
-  'RANDOM'
-] );
 
-class DensityMysteryModel extends BlockSetModel( DensityBuoyancyModel, BlockSet, BlockSet.SET_1 ) {
-  /**
-   * @mixes BlockSet
-   * @param {Object} [options]
-   */
-  constructor( options ) {
+class BlockSet extends EnumerationValue {
+  static SET_1 = new BlockSet();
+  static SET_2 = new BlockSet();
+  static SET_3 = new BlockSet();
+  static RANDOM = new BlockSet();
 
-    const tandem = options.tandem;
+  static enumeration = new Enumeration( BlockSet, {
+    phetioDocumentation: 'Block set'
+  } );
+}
+
+type DensityMysteryModelOptions = BlockSetModelOptions<BlockSet>;
+
+class DensityMysteryModel extends BlockSetModel<BlockSet> {
+
+  densityTableExpandedProperty: Property<boolean>;
+  scale: Scale;
+
+  constructor( providedOptions: DensityMysteryModelOptions ) {
+
+    const tandem = providedOptions.tandem;
 
     const createMysteryMaterials = () => {
       const densities = dotRandom.shuffle( randomMaterials ).slice( 0, 5 ).map( material => material.density );
@@ -81,7 +91,7 @@ class DensityMysteryModel extends BlockSetModel( DensityBuoyancyModel, BlockSet,
     const set3Tandem = blockSetsTandem.createTandem( 'set3' );
     const randomTandem = blockSetsTandem.createTandem( 'random' );
 
-    const createMasses = ( model, blockSet ) => {
+    const createMasses = ( model: DensityBuoyancyModel, blockSet: BlockSet ) => {
       switch( blockSet ) {
         case BlockSet.SET_1:
           return [
@@ -190,7 +200,7 @@ class DensityMysteryModel extends BlockSetModel( DensityBuoyancyModel, BlockSet,
       }
     };
 
-    const regenerateMasses = ( model, blockSet, masses ) => {
+    const regenerateMasses = ( model: DensityBuoyancyModel, blockSet: BlockSet, masses: Cuboid[] ) => {
       if ( blockSet === BlockSet.RANDOM ) {
         const mysteryMaterials = createMysteryMaterials();
         const mysteryVolumes = createMysteryVolumes();
@@ -202,7 +212,7 @@ class DensityMysteryModel extends BlockSetModel( DensityBuoyancyModel, BlockSet,
       }
     };
 
-    const positionMasses = ( model, blockSet, masses ) => {
+    const positionMasses = ( model: DensityBuoyancyModel, blockSet: BlockSet, masses: Cuboid[] ) => {
       switch( blockSet ) {
         case BlockSet.SET_1:
           model.positionStackLeft( [ masses[ 1 ], masses[ 4 ] ] );
@@ -225,11 +235,19 @@ class DensityMysteryModel extends BlockSetModel( DensityBuoyancyModel, BlockSet,
       }
     };
 
-    super( tandem, createMasses, regenerateMasses, positionMasses, merge( {
-      canShowForces: false
-    }, options ) );
+    super( optionize<DensityMysteryModelOptions, {}, BlockSetModelOptions<BlockSet>>( {
+      canShowForces: false,
 
-    // @public {Property.<boolean>}
+      // TODO: How can this type-check if I leave these out?!? --- oh we're expecting them in our providedOptions?
+      initialMode: BlockSet.SET_1,
+      BlockSet: BlockSet.enumeration,
+
+      // TODO: overridden (abstract) methods instead
+      createMassesCallback: createMasses,
+      regenerateMassesCallback: regenerateMasses,
+      positionMassesCallback: positionMasses
+    }, providedOptions ) );
+
     this.densityTableExpandedProperty = new BooleanProperty( false, {
       tandem: tandem.createTandem( 'densityTableExpandedProperty' )
     } );
@@ -238,7 +256,6 @@ class DensityMysteryModel extends BlockSetModel( DensityBuoyancyModel, BlockSet,
       return new Vector2( -0.75 + bounds.minX + 0.875, -Scale.SCALE_BASE_BOUNDS.minY );
     } );
 
-    // @public (read-only) {Scale}
     this.scale = new Scale( this.engine, this.gravityProperty, {
       matrix: Matrix3.translationFromVector( scalePositionProperty.value ),
       displayType: DisplayType.KILOGRAMS,
@@ -268,8 +285,6 @@ class DensityMysteryModel extends BlockSetModel( DensityBuoyancyModel, BlockSet,
 
   /**
    * Resets things to their original values.
-   * @public
-   * @override
    */
   reset() {
     this.densityTableExpandedProperty.reset();
@@ -283,8 +298,7 @@ class DensityMysteryModel extends BlockSetModel( DensityBuoyancyModel, BlockSet,
   }
 }
 
-// @public {EnumerationDeprecated}
-DensityMysteryModel.BlockSet = BlockSet;
-
 densityBuoyancyCommon.register( 'DensityMysteryModel', DensityMysteryModel );
 export default DensityMysteryModel;
+export { BlockSet };
+export type { DensityMysteryModelOptions };

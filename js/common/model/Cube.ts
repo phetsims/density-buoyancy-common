@@ -78,7 +78,7 @@ class Cube extends Cuboid {
   /**
    * Creates a Cube with a defined volume
    */
-  static createWithVolume( engine: PhysicsEngine, material: Material, position: Vector2, volume: number, options: CubeOptions ): Cube {
+  static createWithVolume( engine: PhysicsEngine, material: Material, position: Vector2, volume: number, options: Omit<CubeOptions, 'matrix' | 'material'> ): Cube {
     return new Cube( engine, volume, merge( {
       matrix: Matrix3.translation( position.x, position.y ),
       material: material
@@ -88,7 +88,7 @@ class Cube extends Cuboid {
   /**
    * Creates a Cube with a defined volume
    */
-  static createWithMass( engine: PhysicsEngine, material: Material, position: Vector2, mass: number, options: CubeOptions ) {
+  static createWithMass( engine: PhysicsEngine, material: Material, position: Vector2, mass: number, options: Omit<CubeOptions, 'matrix' | 'material'> ) {
     return Cube.createWithVolume( engine, material, position, mass / material.density, options );
   }
 }

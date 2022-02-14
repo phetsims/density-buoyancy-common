@@ -8,20 +8,26 @@
 
 import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
 import EnumerationProperty from '../../../../axon/js/EnumerationProperty.js';
+import Property from '../../../../axon/js/Property.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import merge from '../../../../phet-core/js/merge.js';
 import Cube from '../../common/model/Cube.js';
-import DensityBuoyancyModel from '../../common/model/DensityBuoyancyModel.js';
-import { MassTag } from '../../common/model/Mass.js';
+import DensityBuoyancyModel, { DensityBuoyancyModelOptions } from '../../common/model/DensityBuoyancyModel.js';
+import Mass, { MassTag } from '../../common/model/Mass.js';
 import Material from '../../common/model/Material.js';
 import TwoBlockMode from '../../common/model/TwoBlockMode.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 
+type DensityIntroModelOptions = DensityBuoyancyModelOptions;
+
 class DensityIntroModel extends DensityBuoyancyModel {
-  /**
-   * @param {Object} [options]
-   */
-  constructor( options ) {
+
+  modeProperty: Property<TwoBlockMode>;
+  readonly primaryMass: Mass;
+  readonly secondaryMass: Mass;
+  densityExpandedProperty: Property<boolean>;
+
+  constructor( options: DensityIntroModelOptions ) {
 
     const tandem = options.tandem;
 
@@ -30,7 +36,6 @@ class DensityIntroModel extends DensityBuoyancyModel {
       canShowForces: false
     }, options ) );
     
-    // @public {Property.<Mode>}
     this.modeProperty = new EnumerationProperty( TwoBlockMode.ONE_BLOCK, {
       tandem: tandem.createTandem( 'modeProperty' )
     } );
@@ -54,7 +59,6 @@ class DensityIntroModel extends DensityBuoyancyModel {
       this.secondaryMass.internalVisibleProperty.value = mode === TwoBlockMode.TWO_BLOCKS;
     } );
 
-    // @public {Property.<boolean>}
     this.densityExpandedProperty = new BooleanProperty( true, {
       tandem: tandem.createTandem( 'densityExpandedProperty' )
     } );
@@ -62,8 +66,6 @@ class DensityIntroModel extends DensityBuoyancyModel {
 
   /**
    * Resets things to their original values.
-   * @public
-   * @override
    */
   reset() {
     this.modeProperty.reset();

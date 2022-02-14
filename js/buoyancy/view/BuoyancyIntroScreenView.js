@@ -9,10 +9,7 @@
 import Vector3 from '../../../../dot/js/Vector3.js';
 import merge from '../../../../phet-core/js/merge.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
-import { AlignPropertyBox } from '../../../../scenery/js/imports.js';
-import { HBox } from '../../../../scenery/js/imports.js';
-import { Node } from '../../../../scenery/js/imports.js';
-import { Text } from '../../../../scenery/js/imports.js';
+import { AlignPropertyBox, HBox, Node, Text } from '../../../../scenery/js/imports.js';
 import AquaRadioButton from '../../../../sun/js/AquaRadioButton.js';
 import Panel from '../../../../sun/js/Panel.js';
 import VerticalAquaRadioButtonGroup from '../../../../sun/js/VerticalAquaRadioButtonGroup.js';
@@ -22,13 +19,13 @@ import DensityBuoyancyScreenView from '../../common/view/DensityBuoyancyScreenVi
 import DisplayOptionsNode from '../../common/view/DisplayOptionsNode.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import densityBuoyancyCommonStrings from '../../densityBuoyancyCommonStrings.js';
-import BuoyancyIntroModel from '../model/BuoyancyIntroModel.js';
+import { BlockSet } from '../model/BuoyancyIntroModel.js';
 
 // constants
 const blockSetStringMap = {
-  [ BuoyancyIntroModel.BlockSet.SAME_MASS.name ]: densityBuoyancyCommonStrings.blockSet.sameMass,
-  [ BuoyancyIntroModel.BlockSet.SAME_VOLUME.name ]: densityBuoyancyCommonStrings.blockSet.sameVolume,
-  [ BuoyancyIntroModel.BlockSet.SAME_DENSITY.name ]: densityBuoyancyCommonStrings.blockSet.sameDensity
+  [ BlockSet.SAME_MASS.name ]: densityBuoyancyCommonStrings.blockSet.sameMass,
+  [ BlockSet.SAME_VOLUME.name ]: densityBuoyancyCommonStrings.blockSet.sameVolume,
+  [ BlockSet.SAME_DENSITY.name ]: densityBuoyancyCommonStrings.blockSet.sameDensity
 };
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
 
@@ -45,7 +42,7 @@ class BuoyancyIntroScreenView extends DensityBuoyancyScreenView {
       cameraLookAt: new Vector3( 0, -0.1, 0 )
     }, options ) );
 
-    const blockSetControl = new VerticalAquaRadioButtonGroup( model.blockSetProperty, BuoyancyIntroModel.BlockSet.VALUES.map( blockSet => {
+    const blockSetControl = new VerticalAquaRadioButtonGroup( model.blockSetProperty, BlockSet.enumeration.values.map( blockSet => {
       return {
         node: new Text( blockSetStringMap[ blockSet.name ], {
           font: DensityBuoyancyCommonConstants.RADIO_BUTTON_FONT,

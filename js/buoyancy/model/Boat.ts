@@ -32,10 +32,10 @@ class Boat extends Mass {
   basin: Basin;
 
   // Amount of volume contained in the basin
-  private stepInternalVolume: number;
+  stepInternalVolume: number;
 
   // How to multiply our one-liter size up to the model coordinates
-  private stepMultiplier: number;
+  stepMultiplier: number;
 
   intersectionGroup: THREE.Group;
 

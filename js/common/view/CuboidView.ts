@@ -13,6 +13,9 @@ import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import { MassTag } from '../model/Mass.js';
 import MassLabelNode from './MassLabelNode.js';
 import MassView from './MassView.js';
+import Cuboid from '../model/Cuboid.js';
+import NodeTexture from '../../../../mobius/js/NodeTexture.js';
+import Bounds3 from '../../../../dot/js/Bounds3.js';
 
 // constants
 const numElements = 18 * 3;
@@ -21,11 +24,15 @@ const TAG_OFFSET = 0.005;
 const TAG_SCALE = 0.0005;
 
 class CuboidView extends MassView {
-  /**
-   * @param {Cuboid} cuboid
-   * @param {Object} [options]
-   */
-  constructor( cuboid, options ) {
+
+  cuboid: Cuboid;
+  private cuboidGeometry: THREE.BufferGeometry;
+  private tagNodeTexture: NodeTexture | null;
+  private tagMesh: TextureQuad | null;
+  private cuboidNameListener?: ( string: string ) => void;
+  private updateListener: ( size: Bounds3 ) => void;
+
+  constructor( cuboid: Cuboid ) {
     const size = cuboid.sizeProperty.value;
 
     const positionArray = new Float32Array( numElements * 3 );
@@ -39,31 +46,24 @@ class CuboidView extends MassView {
     cuboidGeometry.addAttribute( 'normal', new THREE.BufferAttribute( normalArray, 3 ) );
     cuboidGeometry.addAttribute( 'uv', new THREE.BufferAttribute( uvArray, 2 ) );
 
-    super( cuboid, cuboidGeometry, options );
+    super( cuboid, cuboidGeometry );
 
-    // @public (read-only) {Cuboid}
     this.cuboid = cuboid;
-
-    // @private {THREE.BufferGeometry}
     this.cuboidGeometry = cuboidGeometry;
-
-    // @private {NodeTexture}
     this.tagNodeTexture = null;
-
-    // @private {TextureQuad|null}
     this.tagMesh = null;
 
-    let tagHeight = null;
+    let tagHeight: number | null = null;
     if ( cuboid.tag === MassTag.PRIMARY ) {
       this.tagNodeTexture = MassLabelNode.getPrimaryTexture();
-      this.tagMesh = new TextureQuad( this.tagNodeTexture, TAG_SIZE, TAG_SIZE, {
+      this.tagMesh = new TextureQuad( this.tagNodeTexture!, TAG_SIZE, TAG_SIZE, {
         depthTest: true
       } );
       tagHeight = TAG_SIZE;
     }
     else if ( cuboid.tag === MassTag.SECONDARY ) {
       this.tagNodeTexture = MassLabelNode.getSecondaryTexture();
-      this.tagMesh = new TextureQuad( this.tagNodeTexture, TAG_SIZE, TAG_SIZE, {
+      this.tagMesh = new TextureQuad( this.tagNodeTexture!, TAG_SIZE, TAG_SIZE, {
         depthTest: true
       } );
       tagHeight = TAG_SIZE;
@@ -73,16 +73,15 @@ class CuboidView extends MassView {
       const string = cuboid.nameProperty.value;
       this.tagNodeTexture = MassLabelNode.getBasicLabelTexture( string );
 
-      this.tagMesh = new TextureQuad( this.tagNodeTexture, TAG_SCALE * this.tagNodeTexture._width, TAG_SCALE * this.tagNodeTexture._height, {
+      this.tagMesh = new TextureQuad( this.tagNodeTexture!, TAG_SCALE * this.tagNodeTexture!._width, TAG_SCALE * this.tagNodeTexture!._height, {
         depthTest: true
       } );
-      tagHeight = TAG_SCALE * this.tagNodeTexture._height;
+      tagHeight = TAG_SCALE * this.tagNodeTexture!._height;
 
-      // @private
       this.cuboidNameListener = string => {
-        this.tagNodeTexture.dispose();
+        this.tagNodeTexture!.dispose();
         this.tagNodeTexture = MassLabelNode.getBasicLabelTexture( string );
-        this.tagMesh.updateTexture( this.tagNodeTexture, TAG_SCALE * this.tagNodeTexture._width, TAG_SCALE * this.tagNodeTexture._height );
+        this.tagMesh!.updateTexture( this.tagNodeTexture!, TAG_SCALE * this.tagNodeTexture!._width, TAG_SCALE * this.tagNodeTexture!._height );
       };
       this.cuboid.nameProperty.lazyLink( this.cuboidNameListener );
     }
@@ -94,14 +93,13 @@ class CuboidView extends MassView {
 
     const positionTag = () => {
       const size = cuboid.sizeProperty.value;
-      this.tagMesh && this.tagMesh.position.set( size.minX + TAG_OFFSET, size.maxY - tagHeight - TAG_OFFSET, size.maxZ + 0.0001 );
+      this.tagMesh && this.tagMesh.position.set( size.minX + TAG_OFFSET, size.maxY - tagHeight! - TAG_OFFSET, size.maxZ + 0.0001 );
     };
     positionTag();
 
-    // @private {function(number)}
-    this.updateListener = size => {
+    this.updateListener = ( size: Bounds3 ) => {
       positionTag();
-      CuboidView.updateArrays( cuboidGeometry.attributes.position.array, null, cuboidGeometry.attributes.uv.array, size );
+      CuboidView.updateArrays( cuboidGeometry.attributes.position.array as Float32Array, null, cuboidGeometry.attributes.uv.array as Float32Array, size );
       cuboidGeometry.attributes.position.needsUpdate = true;
       cuboidGeometry.attributes.uv.needsUpdate = true;
       cuboidGeometry.computeBoundingSphere();
@@ -111,8 +109,6 @@ class CuboidView extends MassView {
 
   /**
    * Releases references.
-   * @public
-   * @override
    */
   dispose() {
     if ( this.cuboidNameListener ) {
@@ -130,20 +126,19 @@ class CuboidView extends MassView {
 
   /**
    * Updates provided geometry arrays given the specific size.
-   * @public
    *
-   * @param {Float32Array|null} positionArray
-   * @param {Float32Array|null} normalArray
-   * @param {Float32Array|null} uvArray
-   * @param {Bounds3} size
-   * @param {number} offset - How many vertices have been specified so far?
-   * @param {Vector3} offsetPosition - How to transform all of the points
-   * @returns {number} - The offset after the specified vertices have been written
+   * @param positionArray
+   * @param normalArray
+   * @param uvArray
+   * @param size
+   * @param offset - How many vertices have been specified so far?
+   * @param offsetPosition - How to transform all of the points
+   * @returns - The offset after the specified vertices have been written
    */
-  static updateArrays( positionArray, normalArray, uvArray, size, offset = 0, offsetPosition = Vector3.ZERO ) {
+  static updateArrays( positionArray: Float32Array | null, normalArray: Float32Array | null, uvArray: Float32Array | null, size: Bounds3, offset: number = 0, offsetPosition: Vector3 = Vector3.ZERO ): number {
     const writer = new TriangleArrayWriter( positionArray, normalArray, uvArray, offset, offsetPosition );
 
-    function quad( p0x, p0y, p0z, p1x, p1y, p1z, p2x, p2y, p2z, p3x, p3y, p3z ) {
+    function quad( p0x: number, p0y: number, p0z: number, p1x: number, p1y: number, p1z: number, p2x: number, p2y: number, p2z: number, p3x: number, p3y: number, p3z: number ) {
       writer.position( p0x, p0y, p0z );
       writer.position( p1x, p1y, p1z );
       writer.position( p2x, p2y, p2z );

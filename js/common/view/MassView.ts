@@ -6,35 +6,29 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
-import merge from '../../../../phet-core/js/merge.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
+import Mass from '../model/Mass.js';
+import Material from '../model/Material.js';
 import DensityMaterials from './DensityMaterials.js';
+import MaterialView from './MaterialView.js';
 
-class MassView extends THREE.Mesh {
-  /**
-   * @param {Mass} mass
-   * @param {THREE.Geometry} initialGeometry
-   * @param {Object} [options]
-   */
-  constructor( mass, initialGeometry, options ) {
+abstract class MassView extends THREE.Mesh {
+
+  mass: Mass;
+  materialView: MaterialView;
+  private materialListener: ( material: Material ) => void;
+  private positionListener: () => void;
+
+  constructor( mass: Mass, initialGeometry: THREE.BufferGeometry ) {
     const materialView = DensityMaterials.getMaterialView( mass.materialProperty.value );
 
-    options = merge( {
-      phetioState: false
-    }, options );
+    super( initialGeometry, materialView.material );
 
-    super( initialGeometry, materialView.material, options );
-
-    // @public (read-only) {Mass}
     this.mass = mass;
-
-    // @private {MaterialView}
     this.materialView = materialView;
 
-    // @private {Material}
     this.material = materialView.material;
 
-    // @private {function(Material)}
     this.materialListener = material => {
       this.materialView.dispose();
       this.materialView = DensityMaterials.getMaterialView( material );
@@ -42,7 +36,6 @@ class MassView extends THREE.Mesh {
     };
     this.mass.materialProperty.lazyLink( this.materialListener );
 
-    // @private {function()}
     this.positionListener = () => {
       const position = mass.matrix.translation;
 
@@ -57,8 +50,6 @@ class MassView extends THREE.Mesh {
 
   /**
    * Releases references.
-   * @public
-   * @override
    */
   dispose() {
     this.mass.transformedEmitter.removeListener( this.positionListener );
@@ -66,6 +57,7 @@ class MassView extends THREE.Mesh {
 
     this.materialView.dispose();
 
+    // @ts-ignore
     super.dispose && super.dispose();
   }
 }

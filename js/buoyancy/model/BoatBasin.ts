@@ -10,14 +10,19 @@ import Vector2 from '../../../../dot/js/Vector2.js';
 import Shape from '../../../../kite/js/Shape.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
 import Basin from '../../common/model/Basin.js';
+import Mass from '../../common/model/Mass.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
+import Boat from './Boat.js';
 import BoatDesign from './BoatDesign.js';
 
 class BoatBasin extends Basin {
-  /**
-   * @param {Boat} boat
-   */
-  constructor( boat ) {
+
+  private boat: Boat;
+
+  // Used for intersection
+  private oneLiterShape: Shape;
+
+  constructor( boat: Boat ) {
     super( {
       initialVolume: 0,
       initialY: 0,
@@ -25,23 +30,15 @@ class BoatBasin extends Basin {
       tandem: Tandem.OPT_OUT
     } );
 
-    // @private {Boat}
     this.boat = boat;
-
-    // @private {Shape} - Used for intersection
     this.oneLiterShape = Shape.polygon( BoatDesign.getBasinOneLiterVertices() );
   }
 
   /**
    * Returns whether a given mass is inside this basin (e.g. if filled with liquid, would it be displacing any
    * liquid).
-   * @public
-   * @override
-   *
-   * @param {Mass} mass
-   * @returns {boolean}
    */
-  isMassInside( mass ) {
+  isMassInside( mass: Mass ): boolean {
     const slip = 1e-2;
     if ( mass === this.boat || mass.stepBottom >= this.stepTop || mass.stepTop <= this.stepBottom - slip ) {
       return false;
@@ -56,25 +53,15 @@ class BoatBasin extends Basin {
 
   /**
    * Returns the maximum area that could be contained with liquid at a given y value.
-   * @public
-   * @override
-   *
-   * @param {number} y
-   * @returns {number}
    */
-  getMaximumArea( y ) {
+  getMaximumArea( y: number ): number {
     return this.boat.getBasinArea( y );
   }
 
   /**
    * Returns the maximum volume that could be contained with liquid up to a given y value.
-   * @public
-   * @override
-   *
-   * @param {number} y
-   * @returns {number}
    */
-  getMaximumVolume( y ) {
+  getMaximumVolume( y: number ): number {
     return this.boat.getBasinVolume( y );
   }
 }

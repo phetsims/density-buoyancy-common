@@ -27,6 +27,7 @@ import Vector2 from '../../../../dot/js/Vector2.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
 import Cubic from '../../../../kite/js/segments/Cubic.js';
 import Line from '../../../../kite/js/segments/Line.js';
+import Segment from '../../../../kite/js/segments/Segment.js';
 import ThreeUtils from '../../../../mobius/js/ThreeUtils.js';
 import { Color } from '../../../../scenery/js/imports.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
@@ -37,25 +38,16 @@ const CROSS_SECTION_SAMPLES = 30;
 class BoatDesign {
   /**
    * Given a design y-value, returns the height ratio (0 being the bottom of the boat, 1 being the top)
-   * @private
-   *
-   * @param {number} y
-   * @returns {number}
    */
-  static getHeightRatioFromDesignY( y ) {
+  private static getHeightRatioFromDesignY( y: number ): number {
     return Utils.linear( -BoatDesign.DESIGN_BOAT_HEIGHT, 0, 0, 1, y );
   }
 
   /**
    * Returns the control point net for a cubic bezier curve for a given height ratio (0=top, 1=bottom) and whether it
    * is on the inside or outside surface of the boat.
-   * @private
-   *
-   * @param {number} heightRatio
-   * @param {boolean} isInside
-   * @returns {Array.<Vector2>}
    */
-  static getControlPoints( heightRatio, isInside ) {
+  private static getControlPoints( heightRatio: number, isInside: boolean ): [Vector2, Vector2, Vector2, Vector2] {
     const v0 = new Vector2( 0, 0 );
     const v1 = new Vector2( 50, 50 );
     const v2 = new Vector2( 150, 50 );
@@ -88,13 +80,11 @@ class BoatDesign {
 
   /**
    * Returns the XY model coordinates for intersection with a cuboid block with the given half-width.
-   * @public
    *
-   * @param {number} blockHalfWidth - in model coordinates
-   * @param {number} liters - the number of liters of the boat's displacement
-   * @returns {Array.<Vector2>}
+   * @param blockHalfWidth - in model coordinates
+   * @param liters - the number of liters of the boat's displacement
    */
-  static getIntersectionVertices( blockHalfWidth = 0, liters = 1 ) {
+  static getIntersectionVertices( blockHalfWidth: number = 0, liters: number = 1 ): Vector2[] {
     const scale = Math.pow( liters, 1 / 3 ) * BoatDesign.ONE_LITER_SCALE_MULTIPLIER;
     const frontSamples = 30;
     const insideSamples = 40;
@@ -121,7 +111,7 @@ class BoatDesign {
       points.push( new Vector2( x, y ) );
     } );
 
-    const interiorPoints = [];
+    const interiorPoints: Vector2[] = [];
 
     _.range( 0, insideSamples ).forEach( sample => {
       const y = ( -BoatDesign.DESIGN_BOAT_HEIGHT + BoatDesign.DESIGN_WALL_THICKNESS ) * sample / ( insideSamples - 1 );
@@ -140,7 +130,7 @@ class BoatDesign {
       const d = p0.y - blockHalfWidth / scale;
 
       const ts = phet.dot.Utils.solveCubicRootsReal( a, b, c, d );
-      ts.forEach( t => {
+      ts.forEach( ( t: number ) => {
         if ( t >= 0 && t <= 1 ) {
           const xz = cubic.positionAt( t );
           interiorPoints.push( new Vector2( xz.x, y ) );
@@ -156,11 +146,8 @@ class BoatDesign {
 
   /**
    * Returns the XY model coordinates for the interior cross-section of the boat (the section of air underneath the top)
-   * @public
-   *
-   * @returns {Array.<Vector2>}
    */
-  static getBasinOneLiterVertices() {
+  static getBasinOneLiterVertices(): Vector2[] {
 
     const insideBottomY = -BoatDesign.DESIGN_BOAT_HEIGHT + BoatDesign.DESIGN_WALL_THICKNESS;
 
@@ -185,41 +172,32 @@ class BoatDesign {
   /**
    * Given a net of control points, this returns the segments necessary to describe the y-slice of a boat in the X,Z
    * plane.
-   * @private
-   *
-   * @param {Array.<Vector2>} points
-   * @returns {Array.<Segment>}
    */
-  static getSegmentsFromControlPoints( points ) {
-    const flip = p => p.componentTimes( new Vector2( 1, -1 ) );
+  private static getSegmentsFromControlPoints( points: Vector2[] ): Segment[] {
+    assert && assert( points.length === 4 );
+
+    const flip = ( p: Vector2 ) => p.componentTimes( new Vector2( 1, -1 ) );
 
     return [
+      // @ts-ignore See assertion above, even if we tuple-type it, the below one with the reverse and map won't typecheck
       new Cubic( ...points ),
       new Line( points[ 3 ], flip( points[ 3 ] ) ),
+      // @ts-ignore
       new Cubic( ...points.slice().reverse().map( flip ) )
     ];
   }
 
   /**
-   * Returns the area contained in a given X,Z cross section of the boat defined by the given control points.
-   * @private
-   *
-   * @param {Array.<Vector2>} points
-   * @returns {number}
+   * Returns the area contained in a given X,Z cross-section of the boat defined by the given control points.
    */
-  static getAreaFromControlPoints( points ) {
+  private static getAreaFromControlPoints( points: Vector2[] ): number {
     return Math.abs( _.sum( BoatDesign.getSegmentsFromControlPoints( points ).map( segment => segment.getSignedAreaFragment() ) ) );
   }
 
   /**
-   * Returns a discretized form of the cross section defined by the control points.
-   * @private
-   *
-   * @param {Array.<Vector2>} points
-   * @param {number} quantity
-   * @returns {Array.<Vector2>}
+   * Returns a discretized form of the cross-section defined by the control points.
    */
-  static getDiscretizationFromControlPoints( points, quantity ) {
+  private static getDiscretizationFromControlPoints( points: Vector2[], quantity: number ): Vector2[] {
     return _.flatten( BoatDesign.getSegmentsFromControlPoints( points ).map( segment => {
       return (
         segment instanceof Line ? [ 0 ] : _.range( 0, quantity ).map( n => n / quantity )
@@ -230,13 +208,8 @@ class BoatDesign {
   /**
    * Meant for mapping a raw number-based array of x,y,z position data from the construction coordinates to model
    * coordinates.
-   * @private
-   *
-   * @param {number} point
-   * @param {number} index
-   * @returns {number}
    */
-  static positionArrayMap( point, index ) {
+  private static positionArrayMap( point: number, index: number ): number {
     const mod = index % 3;
 
     // x
@@ -254,13 +227,8 @@ class BoatDesign {
 
   /**
    * Returns the model-space local coordinate for the boat, given a design-space point and number of liters.
-   * @private
-   *
-   * @param {Vector3} point
-   * @param {number} [liters]
-   * @returns {Vector3}
    */
-  static designToModel( point, liters = 1 ) {
+  private static designToModel( point: Vector3, liters: number = 1 ): Vector3 {
     const scale = Math.pow( liters, 1 / 3 ) * BoatDesign.ONE_LITER_SCALE_MULTIPLIER;
     return new Vector3(
       ( point.x - BoatDesign.DESIGN_CENTROID.x ) * scale,
@@ -271,21 +239,15 @@ class BoatDesign {
 
   /**
    * Creates a coordinate float array to be used with fillWaterVertexArray, for three.js purposes.
-   * @public
-   *
-   * @returns {Float32Array}
    */
-  static createWaterVertexArray() {
+  static createWaterVertexArray(): Float32Array {
     return new Float32Array( ( CROSS_SECTION_SAMPLES + 1.5 ) * 3 * 3 * 4 );
   }
 
   /**
    * Creates a coordinate float array to be used with fillWaterVertexArray, for three.js purposes.
-   * @public
-   *
-   * @returns {Float32Array}
    */
-  static createWaterNormalArray() {
+  static createWaterNormalArray(): Float32Array {
     const array = BoatDesign.createWaterVertexArray();
 
     for ( let i = 0; i < array.length / 3; i++ ) {
@@ -296,14 +258,7 @@ class BoatDesign {
     return array;
   }
 
-  /**
-   * @public
-   *
-   * @param {number} boatY
-   * @param {number} liters
-   * @returns {boolean}
-   */
-  static shouldBoatWaterDisplayIfFull( boatY, liters ) {
+  static shouldBoatWaterDisplayIfFull( boatY: number, liters: number ): boolean {
     const scale = Math.pow( liters, 1 / 3 ) * BoatDesign.ONE_LITER_SCALE_MULTIPLIER;
     const designY = boatY / scale + BoatDesign.DESIGN_CENTROID.y;
 
@@ -311,20 +266,12 @@ class BoatDesign {
   }
 
   /**
-   * Fills the positionArray with a X,Z cross section of the water around a boat at a given y value (for a given liters
+   * Fills the positionArray with a X,Z cross-section of the water around a boat at a given y value (for a given liters
    * value).
-   * @public
    *
-   * @param {number} waterY
-   * @param {number} boatX
-   * @param {number} boatY
-   * @param {number} liters
-   * @param {Bounds3} poolBounds
-   * @param {Float32Array} positionArray
-   * @param {boolean} wasFilled
-   * @returns {boolean} - Whether the water is completely filled
+   * @returns - Whether the water is completely filled
    */
-  static fillWaterVertexArray( waterY, boatX, boatY, liters, poolBounds, positionArray, wasFilled ) {
+  static fillWaterVertexArray( waterY: number, boatX: number, boatY: number, liters: number, poolBounds: Bounds3, positionArray: Float32Array, wasFilled: boolean ): boolean {
     // TODO: reduce duplication with below
     const outsideBottomY = -BoatDesign.DESIGN_BOAT_HEIGHT;
     const scale = Math.pow( liters, 1 / 3 ) * BoatDesign.ONE_LITER_SCALE_MULTIPLIER;
@@ -411,23 +358,15 @@ class BoatDesign {
 
   /**
    * Creates a coordinate float array to be used with fillCrossSectionVertexArray, for three.js purposes.
-   * @public
-   *
-   * @returns {Float32Array}
    */
-  static createCrossSectionVertexArray() {
+  static createCrossSectionVertexArray(): Float32Array {
     return new Float32Array( CROSS_SECTION_SAMPLES * 3 * 3 * 2 );
   }
 
   /**
-   * Fills the positionArray with a X,Z cross section of the boat at a given y value (for a given liters value).
-   * @public
-   *
-   * @param {number} y
-   * @param {number} liters
-   * @param {Float32Array} positionArray
+   * Fills the positionArray with a X,Z cross-section of the boat at a given y value (for a given liters value).
    */
-  static fillCrossSectionVertexArray( y, liters, positionArray ) {
+  static fillCrossSectionVertexArray( y: number, liters: number, positionArray: Float32Array ) {
     const insideBottomY = -BoatDesign.DESIGN_BOAT_HEIGHT + BoatDesign.DESIGN_WALL_THICKNESS;
     const scale = Math.pow( liters, 1 / 3 ) * BoatDesign.ONE_LITER_SCALE_MULTIPLIER;
     const designY = y / scale + BoatDesign.DESIGN_CENTROID.y;
@@ -467,24 +406,16 @@ class BoatDesign {
 
   /**
    * Returns the one-liter model-coordinate main geometry for the bulk of the boat.
-   * @public
-   *
-   * @param {number} [liters]
-   * @param {boolean} [includeExterior]
-   * @param {boolean} [includeGunwale]
-   * @param {boolean} [includeInterior]
-   * @param {boolean} [invertNormals]
-   * @returns {THREE.BufferGeometry}
    */
-  static getPrimaryGeometry( liters = 1, includeExterior = true, includeGunwale = true, includeInterior = true, invertNormals = false ) {
-    const positions = [];
-    const normals = [];
-    const uvs = [];
+  static getPrimaryGeometry( liters: number = 1, includeExterior: boolean = true, includeGunwale: boolean = true, includeInterior: boolean = true, invertNormals: boolean = false ): THREE.BufferGeometry {
+    const positions: number[] = [];
+    const normals: number[] = [];
+    const uvs: number[] = [];
 
     const parametricSamples = 50;
     const heightSamples = 30;
 
-    const getRows = isInside => _.range( 0, heightSamples ).map( sample => {
+    const getRows = ( isInside: boolean ): Vector3[][] => _.range( 0, heightSamples ).map( sample => {
       const designY = ( -BoatDesign.DESIGN_BOAT_HEIGHT + ( isInside ? BoatDesign.DESIGN_WALL_THICKNESS : 0 ) ) * sample / ( heightSamples - 1 );
       const controlPoints = BoatDesign.getControlPoints( BoatDesign.getHeightRatioFromDesignY( designY ), isInside );
       const cubic = new Cubic( ...controlPoints );
@@ -497,7 +428,7 @@ class BoatDesign {
     const exteriorRows = getRows( false );
     const interiorRows = getRows( true );
 
-    const normalizeRows = rows => rows.map( ( row, i ) => row.map( ( position, j ) => {
+    const normalizeRows = ( rows: Vector3[][] ) => rows.map( ( row, i ) => row.map( ( position, j ) => {
       // these will be null if they are not available
       const west = j > 0 ? row[ j - 1 ].minus( position ) : null;
       const east = j < row.length - 1 ? row[ j + 1 ].minus( position ) : null;
@@ -513,7 +444,7 @@ class BoatDesign {
       return cumulativeNormal;
     } ) );
 
-    const writeFlat = ( frontCurve, backCurve, normal ) => {
+    const writeFlat = ( frontCurve: Vector3[], backCurve: Vector3[], normal: Vector3 ) => {
       assert && assert( frontCurve.length === backCurve.length );
 
       for ( let i = 0; i < frontCurve.length - 1; i++ ) {
@@ -556,7 +487,7 @@ class BoatDesign {
       }
     };
 
-    const writeGrid = ( rows, normalRows, reverse ) => _.range( 0, rows.length - 1 ).forEach( i => _.range( 0, rows[ i ].length - 1 ).forEach( j => {
+    const writeGrid = ( rows: Vector3[][], normalRows: Vector3[][], reverse: boolean ) => _.range( 0, rows.length - 1 ).forEach( i => _.range( 0, rows[ i ].length - 1 ).forEach( j => {
       // Positions for our quad
       const pA = rows[ i ][ j ];
       const pB = rows[ i + 1 ][ j ];
@@ -631,9 +562,9 @@ class BoatDesign {
     } ) );
 
     const flipZVector = new Vector3( 1, 1, -1 );
-    const flipRow = row => row.map( v => v.componentTimes( flipZVector ) );
-    const negateRows = rows => rows.map( row => row.map( v => v.negated() ) );
-    const flipRows = rows => rows.map( flipRow );
+    const flipRow = ( row: Vector3[] ) => row.map( v => v.componentTimes( flipZVector ) );
+    const negateRows = ( rows: Vector3[][] ) => rows.map( row => row.map( v => v.negated() ) );
+    const flipRows = ( rows: Vector3[][] ) => rows.map( flipRow );
 
     const exteriorNormalRows = normalizeRows( exteriorRows );
     const interiorNormalRows = normalizeRows( interiorRows ); // TODO: we'll presumably need to reverse these
@@ -686,12 +617,8 @@ class BoatDesign {
 
   /**
    * Returns a string that should be placed below in BoatDesign.js.
-   * @public
-   *
-   * @param {number} [samples]
-   * @returns {string}
    */
-  static computeBoatData( samples = 1000 ) {
+  static computeBoatData( samples: number = 1000 ): string {
     const desiredVolume = 0.001; // one liter
 
     const discretizationPoints = 1000;
@@ -699,9 +626,9 @@ class BoatDesign {
     let externalAreaSum = 0;
     let areaSum = 0;
     let weightedCentroidSum = new Vector3( 0, 0, 0 );
-    const sliceAreas = [];
-    const externalSliceAreas = [];
-    const internalSliceAreas = [];
+    const sliceAreas: number[] = [];
+    const externalSliceAreas: number[] = [];
+    const internalSliceAreas: number[] = [];
     const designBounds = Bounds3.NOTHING;
     const designInteriorBottom = -BoatDesign.DESIGN_BOAT_HEIGHT + BoatDesign.DESIGN_WALL_THICKNESS;
     _.range( 0, samples ).forEach( i => {
@@ -764,8 +691,8 @@ class BoatDesign {
 
     const oneLiterDisplacedAreas = externalSliceAreas.map( designArea => designArea * oneLiterMultiplier * oneLiterMultiplier );
     const oneLiterInternalAreas = internalSliceAreas.map( designArea => designArea * oneLiterMultiplier * oneLiterMultiplier );
-    const oneLiterDisplacedCumulativeVolumes = [];
-    const oneLiterInternalCumulativeVolumes = [];
+    const oneLiterDisplacedCumulativeVolumes: number[] = [];
+    const oneLiterInternalCumulativeVolumes: number[] = [];
     let cumulativeDisplacedArea = 0;
     oneLiterDisplacedAreas.forEach( area => {
       cumulativeDisplacedArea += area * oneLiterHeight / samples;
@@ -781,13 +708,8 @@ class BoatDesign {
 // NOTE: machine generated by copy( phet.densityBuoyancyCommon.BoatDesign.computeBoatData() );
 // If any parameters about the bottle shape changes, this should be recomputed.
 
-// @private {number} - Multiplying the design coordinates by this value will result in a boat whose displaced volume
-// is equal to one liter.
 BoatDesign.ONE_LITER_SCALE_MULTIPLIER = ${oneLiterMultiplier};
-
-// @private {Vector3} - The centroid of the hull of the boat, in design coordinates
 BoatDesign.DESIGN_CENTROID = new Vector3( ${centroid.x}, ${centroid.y}, ${centroid.z} );
-
 BoatDesign.DESIGN_DISPLACED_VOLUME = ${displacedVolume};
 BoatDesign.DESIGN_HULL_VOLUME = ${actualVolume};
 BoatDesign.ONE_LITER_HEIGHT = ${oneLiterHeight};
@@ -798,21 +720,18 @@ BoatDesign.ONE_LITER_INTERNAL_VOLUMES = [ ${oneLiterInternalCumulativeVolumes.jo
 BoatDesign.DESIGN_BOUNDS = new Bounds3( ${designBounds.minX}, ${designBounds.minY}, ${designBounds.minZ}, ${designBounds.maxX}, ${designBounds.maxY}, ${designBounds.maxZ} );
 BoatDesign.ONE_LITER_BOUNDS = new Bounds3( ${oneLiterBounds.minX}, ${oneLiterBounds.minY}, ${oneLiterBounds.minZ}, ${oneLiterBounds.maxX}, ${oneLiterBounds.maxY}, ${oneLiterBounds.maxZ} );
 BoatDesign.ONE_LITER_INTERIOR_BOTTOM = ${oneLiterInteriorBottom};
-
-// @public (read-only) {number}
 BoatDesign.ONE_LITER_HULL_VOLUME = BoatDesign.DESIGN_HULL_VOLUME * BoatDesign.ONE_LITER_SCALE_MULTIPLIER * BoatDesign.ONE_LITER_SCALE_MULTIPLIER * BoatDesign.ONE_LITER_SCALE_MULTIPLIER;
 `;
   }
 
   /**
    * Replaces the main page with a debug view of the bottle, for debugging various curves and properties.
-   * @public
    *
    * phet.densityBuoyancyCommon.BoatDesign.getDebugCanvas()
    */
   static getDebugCanvas() {
     const canvas = document.createElement( 'canvas' );
-    const context = canvas.getContext( '2d' );
+    const context = canvas.getContext( '2d' )!;
 
     const width = 800;
     const height = 400;
@@ -826,10 +745,10 @@ BoatDesign.ONE_LITER_HULL_VOLUME = BoatDesign.DESIGN_HULL_VOLUME * BoatDesign.ON
 
     const scale = width / 210;
 
-    const mapX = x => ( x + 5 ) * scale;
-    const mapY = y => -y * scale + height / 2;
+    const mapX = ( x: number ) => ( x + 5 ) * scale;
+    const mapY = ( y: number ) => -y * scale + height / 2;
 
-    const cubic = points => {
+    const cubic = ( points: Vector2[] ) => {
       context.moveTo( mapX( points[ 0 ].x ), mapY( points[ 0 ].y ) );
       context.bezierCurveTo(
         mapX( points[ 1 ].x ), mapY( points[ 1 ].y ),
@@ -844,7 +763,7 @@ BoatDesign.ONE_LITER_HULL_VOLUME = BoatDesign.DESIGN_HULL_VOLUME * BoatDesign.ON
       );
     };
 
-    const boatProfile = points => {
+    const boatProfile = ( points: Vector2[] ) => {
       cubic( points );
       context.moveTo( mapX( points[ 3 ].x ), mapY( points[ 3 ].y ) );
       context.lineTo( mapX( points[ 3 ].x ), mapY( -points[ 3 ].y ) );
@@ -893,22 +812,39 @@ BoatDesign.ONE_LITER_HULL_VOLUME = BoatDesign.DESIGN_HULL_VOLUME * BoatDesign.ON
 
     return canvas;
   }
+
+  static DESIGN_WALL_THICKNESS: number;
+  static DESIGN_BOAT_HEIGHT: number;
+
+  // Multiplying the design coordinates by this value will result in a boat whose displaced volume
+  // is equal to one liter.
+  static ONE_LITER_SCALE_MULTIPLIER: number;
+
+  // The centroid of the hull of the boat, in design coordinates
+  static DESIGN_CENTROID: Vector3;
+
+  static DESIGN_DISPLACED_VOLUME: number;
+  static DESIGN_HULL_VOLUME: number;
+  static ONE_LITER_HEIGHT: number;
+  static ONE_LITER_DISPLACED_AREAS: number[];
+  static ONE_LITER_DISPLACED_VOLUMES: number[];
+  static ONE_LITER_INTERNAL_AREAS: number[];
+  static ONE_LITER_INTERNAL_VOLUMES: number[];
+  static DESIGN_BOUNDS: Bounds3;
+  static ONE_LITER_BOUNDS: Bounds3;
+  static ONE_LITER_INTERIOR_BOTTOM: number;
+  static ONE_LITER_HULL_VOLUME: number;
+
 }
 
-// @private {number}
 BoatDesign.DESIGN_WALL_THICKNESS = 3;
 BoatDesign.DESIGN_BOAT_HEIGHT = 50;
 
 // NOTE: machine generated by copy( phet.densityBuoyancyCommon.BoatDesign.computeBoatData() );
 // If any parameters about the bottle shape changes, this should be recomputed.
 
-// @private {number} - Multiplying the design coordinates by this value will result in a boat whose displaced volume
-// is equal to one liter.
 BoatDesign.ONE_LITER_SCALE_MULTIPLIER = 0.0011528037167371562;
-
-// @private {Vector3} - The centroid of the hull of the boat, in design coordinates
 BoatDesign.DESIGN_CENTROID = new Vector3( 126.88244020948837, -30.94499592502117, 0 );
-
 BoatDesign.DESIGN_DISPLACED_VOLUME = 652730.4843871365;
 BoatDesign.DESIGN_HULL_VOLUME = 89480.00833710891;
 BoatDesign.ONE_LITER_HEIGHT = 0.05764018583685781;
@@ -919,8 +855,6 @@ BoatDesign.ONE_LITER_INTERNAL_VOLUMES = [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 BoatDesign.DESIGN_BOUNDS = new Bounds3( -4.199999999999999, -50, -53, 203, 0, 53 );
 BoatDesign.ONE_LITER_BOUNDS = new Bounds3( -0.15111232427247423, -0.02196667952007725, -0.06109859698706928, 0.08774860583546452, 0.03567350631678056, 0.06109859698706928 );
 BoatDesign.ONE_LITER_INTERIOR_BOTTOM = -0.01850826836986578;
-
-// @public (read-only) {number}
 BoatDesign.ONE_LITER_HULL_VOLUME = BoatDesign.DESIGN_HULL_VOLUME * BoatDesign.ONE_LITER_SCALE_MULTIPLIER * BoatDesign.ONE_LITER_SCALE_MULTIPLIER * BoatDesign.ONE_LITER_SCALE_MULTIPLIER;
 
 densityBuoyancyCommon.register( 'BoatDesign', BoatDesign );

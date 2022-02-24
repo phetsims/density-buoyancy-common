@@ -6,20 +6,18 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
+import IReadOnlyProperty from '../../../../axon/js/IReadOnlyProperty.js';
 import Utils from '../../../../dot/js/Utils.js';
 import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import { Text } from '../../../../scenery/js/imports.js';
 import { VBox } from '../../../../scenery/js/imports.js';
+import Material from '../../common/model/Material.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import densityBuoyancyCommonStrings from '../../densityBuoyancyCommonStrings.js';
 
 class DensityReadoutListNode extends VBox {
-
-  /**
-   * @param {Array.<Property.<Material>>} materialProperties
-   */
-  constructor( materialProperties ) {
+  constructor( materialProperties: IReadOnlyProperty<Material>[] ) {
 
     super( {
       spacing: 5,

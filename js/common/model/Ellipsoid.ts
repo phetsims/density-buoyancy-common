@@ -19,7 +19,7 @@ import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import Mass, { InstrumentedMassOptions } from './Mass.js';
 import PhysicsEngine from './PhysicsEngine.js';
 
-type EllipsoidOptions = InstrumentedMassOptions;
+type EllipsoidOptions = Omit<InstrumentedMassOptions, 'body' | 'shape' | 'volume' | 'phetioType'>;
 
 class Ellipsoid extends Mass {
 
@@ -40,7 +40,7 @@ class Ellipsoid extends Mass {
 
     assert && assert( !config.canRotate );
 
-    super( engine, config );
+    super( engine, config as InstrumentedMassOptions );
 
     this.sizeProperty = new Property( size, {
       valueType: Bounds3,

@@ -20,10 +20,10 @@ import NumberDisplay from '../../../../scenery-phet/js/NumberDisplay.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import { AlignBox, AlignPropertyBox, Color, HStrut, Image, ManualConstraint, Node, Text, VBox } from '../../../../scenery/js/imports.js';
 import AccordionBox from '../../../../sun/js/AccordionBox.js';
+import RectangularPushButton from '../../../../sun/js/buttons/RectangularPushButton.js';
 import RectangularRadioButtonGroup from '../../../../sun/js/buttons/RectangularRadioButtonGroup.js';
 import HSeparator from '../../../../sun/js/HSeparator.js';
 import Panel from '../../../../sun/js/Panel.js';
-import RectangularPushButton from '../../../../sun/js/buttons/RectangularPushButton.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 import Cube from '../../common/model/Cube.js';
 import Material from '../../common/model/Material.js';
@@ -34,7 +34,7 @@ import DisplayOptionsNode from '../../common/view/DisplayOptionsNode.js';
 import MaterialMassVolumeControlNode from '../../common/view/MaterialMassVolumeControlNode.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import densityBuoyancyCommonStrings from '../../densityBuoyancyCommonStrings.js';
-import BuoyancyApplicationsModel from '../model/BuoyancyApplicationsModel.js';
+import { Scene } from '../model/BuoyancyApplicationsModel.js';
 import DensityReadoutListNode from './DensityReadoutListNode.js';
 
 // constants
@@ -155,7 +155,7 @@ class BuoyancyApplicationsScreenView extends DensityBuoyancyScreenView {
       listener: () => {
         model.resetBoatScene();
       },
-      visibleProperty: new DerivedProperty( [ model.sceneProperty ], scene => scene === BuoyancyApplicationsModel.Scene.BOAT )
+      visibleProperty: new DerivedProperty( [ model.sceneProperty ], scene => scene === Scene.BOAT )
     } );
     this.addChild( resetSceneButton );
 
@@ -214,8 +214,8 @@ class BuoyancyApplicationsScreenView extends DensityBuoyancyScreenView {
 
     // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
     model.sceneProperty.link( scene => {
-      rightBottleContent.visible = scene === BuoyancyApplicationsModel.Scene.BOTTLE;
-      rightBoatContent.visible = scene === BuoyancyApplicationsModel.Scene.BOAT;
+      rightBottleContent.visible = scene === Scene.BOTTLE;
+      rightBoatContent.visible = scene === Scene.BOAT;
     } );
 
     const densityControlPanel = new Panel( new DensityControlNode( model.liquidMaterialProperty, [
@@ -269,11 +269,11 @@ class BuoyancyApplicationsScreenView extends DensityBuoyancyScreenView {
 
     const bottleBoatSelectionNode = new RectangularRadioButtonGroup( model.sceneProperty, [
       {
-        value: BuoyancyApplicationsModel.Scene.BOTTLE,
+        value: Scene.BOTTLE,
         node: new Text( '(bottle)' )
       },
       {
-        value: BuoyancyApplicationsModel.Scene.BOAT,
+        value: Scene.BOAT,
         node: new Text( '(boat)' )
       }
     ], {

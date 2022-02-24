@@ -15,38 +15,35 @@ import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
 import NumberControl from '../../../../scenery-phet/js/NumberControl.js';
 import NumberDisplay from '../../../../scenery-phet/js/NumberDisplay.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
-import { FlowBox } from '../../../../scenery/js/imports.js';
-import { VDivider } from '../../../../scenery/js/imports.js';
-import { HBox } from '../../../../scenery/js/imports.js';
-import { Text } from '../../../../scenery/js/imports.js';
+import { FlowBox, HBox, Text, VDivider } from '../../../../scenery/js/imports.js';
 import ComboBox from '../../../../sun/js/ComboBox.js';
 import ComboBoxItem from '../../../../sun/js/ComboBoxItem.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import densityBuoyancyCommonStrings from '../../densityBuoyancyCommonStrings.js';
-import BuoyancyShapesModel from '../model/BuoyancyShapesModel.js';
+import { MassShape } from '../model/BuoyancyShapesModel.js';
 
 // constants
 const shapeStringMap = {
-  [ BuoyancyShapesModel.MassShape.BLOCK ]: densityBuoyancyCommonStrings.shape.block,
-  [ BuoyancyShapesModel.MassShape.ELLIPSOID ]: densityBuoyancyCommonStrings.shape.ellipsoid,
-  [ BuoyancyShapesModel.MassShape.VERTICAL_CYLINDER ]: densityBuoyancyCommonStrings.shape.verticalCylinder,
-  [ BuoyancyShapesModel.MassShape.HORIZONTAL_CYLINDER ]: densityBuoyancyCommonStrings.shape.horizontalCylinder,
-  [ BuoyancyShapesModel.MassShape.CONE ]: densityBuoyancyCommonStrings.shape.cone,
-  [ BuoyancyShapesModel.MassShape.INVERTED_CONE ]: densityBuoyancyCommonStrings.shape.invertedCone
+  [ MassShape.BLOCK ]: densityBuoyancyCommonStrings.shape.block,
+  [ MassShape.ELLIPSOID ]: densityBuoyancyCommonStrings.shape.ellipsoid,
+  [ MassShape.VERTICAL_CYLINDER ]: densityBuoyancyCommonStrings.shape.verticalCylinder,
+  [ MassShape.HORIZONTAL_CYLINDER ]: densityBuoyancyCommonStrings.shape.horizontalCylinder,
+  [ MassShape.CONE ]: densityBuoyancyCommonStrings.shape.cone,
+  [ MassShape.INVERTED_CONE ]: densityBuoyancyCommonStrings.shape.invertedCone
 };
 const tandemNameMap = {
-  [ BuoyancyShapesModel.MassShape.BLOCK ]: 'block',
-  [ BuoyancyShapesModel.MassShape.ELLIPSOID ]: 'ellipsoid',
-  [ BuoyancyShapesModel.MassShape.VERTICAL_CYLINDER ]: 'verticalCylinder',
-  [ BuoyancyShapesModel.MassShape.HORIZONTAL_CYLINDER ]: 'horizontalCylinder',
-  [ BuoyancyShapesModel.MassShape.CONE ]: 'cone',
-  [ BuoyancyShapesModel.MassShape.INVERTED_CONE ]: 'invertedCone'
+  [ MassShape.BLOCK ]: 'block',
+  [ MassShape.ELLIPSOID ]: 'ellipsoid',
+  [ MassShape.VERTICAL_CYLINDER ]: 'verticalCylinder',
+  [ MassShape.HORIZONTAL_CYLINDER ]: 'horizontalCylinder',
+  [ MassShape.CONE ]: 'cone',
+  [ MassShape.INVERTED_CONE ]: 'invertedCone'
 };
 
 class ShapeSizeControlNode extends FlowBox {
   /**
-   * @param {Property.<BuoyancyShapesModel.MassShape>} massShapeProperty
+   * @param {Property.<MassShape>} massShapeProperty
    * @param {Property.<number>} widthRatioProperty
    * @param {Property.<number>} heightRatioProperty
    * @param {Property.<number>} volumeProperty
@@ -66,7 +63,7 @@ class ShapeSizeControlNode extends FlowBox {
       align: 'left'
     } );
 
-    const comboBox = new ComboBox( BuoyancyShapesModel.MassShape.VALUES.map( massShape => {
+    const comboBox = new ComboBox( MassShape.enumeration.values.map( massShape => {
       return new ComboBoxItem( new Text( shapeStringMap[ massShape ], {
         font: DensityBuoyancyCommonConstants.COMBO_BOX_ITEM_FONT,
         maxWidth: 160

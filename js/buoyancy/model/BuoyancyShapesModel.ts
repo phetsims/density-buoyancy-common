@@ -8,56 +8,70 @@
 
 import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
-import EnumerationDeprecatedProperty from '../../../../axon/js/EnumerationDeprecatedProperty.js';
 import EnumerationProperty from '../../../../axon/js/EnumerationProperty.js';
 import NumberProperty from '../../../../axon/js/NumberProperty.js';
 import Property from '../../../../axon/js/Property.js';
 import Matrix3 from '../../../../dot/js/Matrix3.js';
-import EnumerationDeprecated from '../../../../phet-core/js/EnumerationDeprecated.js';
+import Enumeration from '../../../../phet-core/js/Enumeration.js';
+import EnumerationValue from '../../../../phet-core/js/EnumerationValue.js';
+import Tandem from '../../../../tandem/js/Tandem.js';
 import Cone from '../../common/model/Cone.js';
 import Cuboid from '../../common/model/Cuboid.js';
-import DensityBuoyancyModel from '../../common/model/DensityBuoyancyModel.js';
+import DensityBuoyancyModel, { DensityBuoyancyModelOptions } from '../../common/model/DensityBuoyancyModel.js';
 import Ellipsoid from '../../common/model/Ellipsoid.js';
 import HorizontalCylinder from '../../common/model/HorizontalCylinder.js';
+import Mass from '../../common/model/Mass.js';
 import Material from '../../common/model/Material.js';
 import Scale, { DisplayType } from '../../common/model/Scale.js';
 import TwoBlockMode from '../../common/model/TwoBlockMode.js';
 import VerticalCylinder from '../../common/model/VerticalCylinder.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 
-// constants
-const MassShape = EnumerationDeprecated.byKeys( [
-  'BLOCK',
-  'ELLIPSOID',
-  'VERTICAL_CYLINDER',
-  'HORIZONTAL_CYLINDER',
-  'CONE',
-  'INVERTED_CONE'
-] );
-const MATERIAL = Material.WOOD;
+export class MassShape extends EnumerationValue {
+  static BLOCK = new MassShape();
+  static ELLIPSOID = new MassShape();
+  static VERTICAL_CYLINDER = new MassShape();
+  static HORIZONTAL_CYLINDER = new MassShape();
+  static CONE = new MassShape();
+  static INVERTED_CONE = new MassShape();
 
-class BuoyancyShapesModel extends DensityBuoyancyModel {
-  /**
-   * @param {Object} [options]
-   */
-  constructor( options ) {
+  static enumeration = new Enumeration( MassShape, {
+    phetioDocumentation: 'Shape of the mass'
+  } );
+}
+const MATERIAL = Material.WOOD;
+export type BuoyancyShapesModelOptions = DensityBuoyancyModelOptions;
+
+export default class BuoyancyShapesModel extends DensityBuoyancyModel {
+
+  modeProperty: Property<TwoBlockMode>;
+  secondaryMassVisibleProperty: Property<boolean>;
+  densityExpandedProperty: Property<boolean>;
+  leftScale: Scale;
+  poolScale: Scale;
+  primaryShapeProperty: Property<MassShape>;
+  secondaryShapeProperty: Property<MassShape>;
+  primaryWidthRatioProperty: Property<number>;
+  secondaryWidthRatioProperty: Property<number>;
+  primaryHeightRatioProperty: Property<number>;
+  secondaryHeightRatioProperty: Property<number>;
+
+  primaryMassProperty: Property<Mass>;
+  secondaryMassProperty: Property<Mass>;
+
+  constructor( options: BuoyancyShapesModelOptions ) {
 
     const tandem = options.tandem;
 
     super( options );
 
-    // @public {Property.<Mode>}
     this.modeProperty = new EnumerationProperty( TwoBlockMode.ONE_BLOCK, {
       tandem: tandem.createTandem( 'modeProperty' )
     } );
 
-    // @public {Property.<boolean>}
     this.secondaryMassVisibleProperty = new BooleanProperty( false );
-
-    // @public {Property.<boolean>}
     this.densityExpandedProperty = new BooleanProperty( false );
 
-    // @public (read-only) {Scale}
     this.leftScale = new Scale( this.engine, this.gravityProperty, {
       matrix: Matrix3.translation( -0.7, -Scale.SCALE_BASE_BOUNDS.minY ),
       displayType: DisplayType.NEWTONS,
@@ -65,7 +79,6 @@ class BuoyancyShapesModel extends DensityBuoyancyModel {
     } );
     this.availableMasses.push( this.leftScale );
 
-    // @public (read-only) {Scale}
     this.poolScale = new Scale( this.engine, this.gravityProperty, {
       matrix: Matrix3.translation( 0.25, -Scale.SCALE_BASE_BOUNDS.minY + this.poolBounds.minY ),
       displayType: DisplayType.NEWTONS,
@@ -77,19 +90,16 @@ class BuoyancyShapesModel extends DensityBuoyancyModel {
     this.pool.liquidVolumeProperty.value -= this.poolScale.volumeProperty.value;
     this.pool.liquidVolumeProperty.setInitialValue( this.pool.liquidVolumeProperty.value );
 
-    // @public {Property.<MassShape>}
-    this.primaryShapeProperty = new EnumerationDeprecatedProperty( MassShape, MassShape.BLOCK );
-    this.secondaryShapeProperty = new EnumerationDeprecatedProperty( MassShape, MassShape.INVERTED_CONE );
+    this.primaryShapeProperty = new EnumerationProperty( MassShape.BLOCK );
+    this.secondaryShapeProperty = new EnumerationProperty( MassShape.INVERTED_CONE );
 
-    // @public {Property.<number>}
     this.primaryWidthRatioProperty = new NumberProperty( 0.25 );
     this.secondaryWidthRatioProperty = new NumberProperty( 0.25 );
 
-    // @public {Property.<number>}
     this.primaryHeightRatioProperty = new NumberProperty( 0.75 );
     this.secondaryHeightRatioProperty = new NumberProperty( 0.75 );
 
-    const createMass = ( shape, widthRatio, heightRatio, tandem ) => {
+    const createMass = ( shape: MassShape, widthRatio: number, heightRatio: number, tandem: Tandem ): Mass => {
       switch( shape ) {
         case MassShape.BLOCK:
           return new Cuboid( this.engine, Cuboid.getSizeFromRatios( widthRatio, heightRatio ), {
@@ -137,7 +147,6 @@ class BuoyancyShapesModel extends DensityBuoyancyModel {
     const primaryMassTandem = tandem.createTandem( 'primaryMass' );
     const secondaryMassTandem = tandem.createTandem( 'secondaryMass' );
 
-    // @public (read-only) {Property.<Mass>}
     // DerivedProperty doesn't need disposal, since everything here lives for the lifetime of the simulation
     this.primaryMassProperty = new DerivedProperty( [ this.primaryShapeProperty ], shape => {
       return createMass( shape, this.primaryWidthRatioProperty.value, this.primaryHeightRatioProperty.value, primaryMassTandem );
@@ -182,9 +191,8 @@ class BuoyancyShapesModel extends DensityBuoyancyModel {
 
   /**
    * Sets up the initial positions of the masses (since some resets may not change the mass).
-   * @private
    */
-  setInitialPositions() {
+  private setInitialPositions() {
     this.primaryMassProperty.value.matrix.setToTranslation( -0.3, 0 );
     this.primaryMassProperty.value.writeData();
     this.primaryMassProperty.value.transformedEmitter.emit();
@@ -196,8 +204,6 @@ class BuoyancyShapesModel extends DensityBuoyancyModel {
 
   /**
    * Resets things to their original values.
-   * @public
-   * @override
    */
   reset() {
     this.modeProperty.reset();
@@ -218,8 +224,4 @@ class BuoyancyShapesModel extends DensityBuoyancyModel {
   }
 }
 
-// @public (read-only) {EnumerationDeprecated}
-BuoyancyShapesModel.MassShape = MassShape;
-
 densityBuoyancyCommon.register( 'BuoyancyShapesModel', BuoyancyShapesModel );
-export default BuoyancyShapesModel;

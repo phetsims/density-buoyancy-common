@@ -8,12 +8,14 @@
 
 import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
-import EnumerationDeprecatedProperty from '../../../../axon/js/EnumerationDeprecatedProperty.js';
+import EnumerationProperty from '../../../../axon/js/EnumerationProperty.js';
+import Property from '../../../../axon/js/Property.js';
 import Matrix3 from '../../../../dot/js/Matrix3.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
-import EnumerationDeprecated from '../../../../phet-core/js/EnumerationDeprecated.js';
+import Enumeration from '../../../../phet-core/js/Enumeration.js';
+import EnumerationValue from '../../../../phet-core/js/EnumerationValue.js';
 import Cube from '../../common/model/Cube.js';
-import DensityBuoyancyModel from '../../common/model/DensityBuoyancyModel.js';
+import DensityBuoyancyModel, { DensityBuoyancyModelOptions } from '../../common/model/DensityBuoyancyModel.js';
 import Material from '../../common/model/Material.js';
 import Scale, { DisplayType } from '../../common/model/Scale.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
@@ -21,44 +23,50 @@ import Boat from './Boat.js';
 import Bottle from './Bottle.js';
 
 // constants
-const Scene = EnumerationDeprecated.byKeys( [
-  'BOTTLE',
-  'BOAT'
-] );
+export class Scene extends EnumerationValue {
+  static BOTTLE = new Scene();
+  static BOAT = new Scene();
+
+  static enumeration = new Enumeration( Scene, {
+    phetioDocumentation: 'Bottle or boat scene'
+  } );
+}
+
+type BuoyancyApplicationsModelOptions = DensityBuoyancyModelOptions;
 
 class BuoyancyApplicationsModel extends DensityBuoyancyModel {
-  /**
-   * @param {Object} [options]
-   */
-  constructor( options ) {
+
+  sceneProperty: Property<Scene>;
+  densityExpandedProperty: Property<boolean>;
+
+  bottle: Bottle;
+  block: Cube;
+  boat: Boat;
+  leftScale: Scale;
+  poolScale: Scale;
+
+  constructor( options: BuoyancyApplicationsModelOptions ) {
 
     const tandem = options.tandem;
 
     super( options );
 
-    // @public {Property.<Scene>}
-    this.sceneProperty = new EnumerationDeprecatedProperty( Scene, Scene.BOTTLE );
-
-    // @public {Property.<boolean>}
+    this.sceneProperty = new EnumerationProperty( Scene.BOTTLE );
     this.densityExpandedProperty = new BooleanProperty( false );
 
-    // @public (read-only) {Bottle}
     this.bottle = new Bottle( this.engine, {
       matrix: Matrix3.translation( 0, 0 ),
       tandem: tandem.createTandem( 'bottle' )
     } );
 
-    // @public (read-only) {Cube}
     this.block = Cube.createWithVolume( this.engine, Material.BRICK, new Vector2( 0.5, 0.5 ), 0.001 );
 
-    // @public (read-only) {Boat|null}
     // DerivedProperty doesn't need disposal, since everything here lives for the lifetime of the simulation
     this.boat = new Boat( this.engine, new DerivedProperty( [ this.block.sizeProperty ], size => size.depth ), this.liquidMaterialProperty, {
       matrix: Matrix3.translation( 0, -0.1 ),
       tandem: tandem.createTandem( 'boat' )
     } );
 
-    // @public (read-only) {Scale}
     this.leftScale = new Scale( this.engine, this.gravityProperty, {
       matrix: Matrix3.translation( -0.7, -Scale.SCALE_BASE_BOUNDS.minY ),
       displayType: DisplayType.NEWTONS,
@@ -67,7 +75,6 @@ class BuoyancyApplicationsModel extends DensityBuoyancyModel {
     } );
     this.availableMasses.push( this.leftScale );
 
-    // @public (read-only) {Scale}
     this.poolScale = new Scale( this.engine, this.gravityProperty, {
       matrix: Matrix3.translation( 0.25, -Scale.SCALE_BASE_BOUNDS.minY + this.poolBounds.minY ),
       displayType: DisplayType.NEWTONS,
@@ -90,7 +97,6 @@ class BuoyancyApplicationsModel extends DensityBuoyancyModel {
 
   /**
    * Moves the boat and block to their initial locations (see https://github.com/phetsims/buoyancy/issues/25)
-   * @public
    */
   resetBoatScene() {
     // Reset the basin levels (clear the liquid out of the boat)
@@ -104,8 +110,6 @@ class BuoyancyApplicationsModel extends DensityBuoyancyModel {
 
   /**
    * Resets things to their original values.
-   * @public
-   * @override
    */
   reset() {
     this.densityExpandedProperty.reset();
@@ -119,9 +123,6 @@ class BuoyancyApplicationsModel extends DensityBuoyancyModel {
     super.reset();
   }
 }
-
-// @public (read-only) {EnumerationDeprecated}
-BuoyancyApplicationsModel.Scene = Scene;
 
 densityBuoyancyCommon.register( 'BuoyancyApplicationsModel', BuoyancyApplicationsModel );
 export default BuoyancyApplicationsModel;

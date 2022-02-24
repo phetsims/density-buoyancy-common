@@ -19,7 +19,7 @@ import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import Mass, { InstrumentedMassOptions } from './Mass.js';
 import PhysicsEngine from './PhysicsEngine.js';
 
-type HorizontalCylinderOptions = InstrumentedMassOptions;
+type HorizontalCylinderOptions = Omit<InstrumentedMassOptions, 'body' | 'shape' | 'volume' | 'phetioType'>;
 
 class HorizontalCylinder extends Mass {
 
@@ -44,7 +44,7 @@ class HorizontalCylinder extends Mass {
 
     assert && assert( !config.canRotate );
 
-    super( engine, config );
+    super( engine, config as InstrumentedMassOptions );
 
     // @public {Property.<number>}
     this.radiusProperty = new NumberProperty( radius, {

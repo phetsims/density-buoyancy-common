@@ -8,32 +8,36 @@
 
 import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
 import EnumerationProperty from '../../../../axon/js/EnumerationProperty.js';
+import Property from '../../../../axon/js/Property.js';
 import Matrix3 from '../../../../dot/js/Matrix3.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import Cube from '../../common/model/Cube.js';
-import DensityBuoyancyModel from '../../common/model/DensityBuoyancyModel.js';
+import DensityBuoyancyModel, { DensityBuoyancyModelOptions } from '../../common/model/DensityBuoyancyModel.js';
 import { MassTag } from '../../common/model/Mass.js';
 import Material from '../../common/model/Material.js';
 import Scale, { DisplayType } from '../../common/model/Scale.js';
 import TwoBlockMode from '../../common/model/TwoBlockMode.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 
+type BuoyancyExploreModelOptions = DensityBuoyancyModelOptions;
+
 class BuoyancyExploreModel extends DensityBuoyancyModel {
-  /**
-   * @param {Object} [options]
-   */
-  constructor( options ) {
+
+  modeProperty: Property<TwoBlockMode>;
+  primaryMass: Cube;
+  secondaryMass: Cube;
+  densityExpandedProperty: Property<boolean>;
+
+  constructor( options: BuoyancyExploreModelOptions ) {
 
     const tandem = options.tandem;
 
     super( options );
 
-    // @public {Property.<Mode>}
     this.modeProperty = new EnumerationProperty( TwoBlockMode.ONE_BLOCK, {
       tandem: tandem.createTandem( 'modeProperty' )
     } );
 
-    // @public (read-only) {Mass}
     this.primaryMass = Cube.createWithMass( this.engine, Material.WOOD, new Vector2( -0.2, 0.2 ), 2, {
       tag: MassTag.PRIMARY,
       tandem: tandem.createTandem( 'primaryMass' )
@@ -69,14 +73,11 @@ class BuoyancyExploreModel extends DensityBuoyancyModel {
     this.pool.liquidVolumeProperty.value -= poolScale.volumeProperty.value;
     this.pool.liquidVolumeProperty.setInitialValue( this.pool.liquidVolumeProperty.value );
 
-    // @public {Property.<boolean>}
     this.densityExpandedProperty = new BooleanProperty( false );
   }
 
   /**
    * Resets things to their original values.
-   * @public
-   * @override
    */
   reset() {
     this.modeProperty.reset();
@@ -92,3 +93,4 @@ class BuoyancyExploreModel extends DensityBuoyancyModel {
 
 densityBuoyancyCommon.register( 'BuoyancyExploreModel', BuoyancyExploreModel );
 export default BuoyancyExploreModel;
+export type { BuoyancyExploreModelOptions };

@@ -18,32 +18,42 @@ import { Path } from '../../../../scenery/js/imports.js';
 import { Rectangle } from '../../../../scenery/js/imports.js';
 import Boat from '../../buoyancy/model/Boat.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
+import DensityBuoyancyModel from '../model/DensityBuoyancyModel.js';
+import Mass from '../model/Mass.js';
 
 // constants
 const scratchMatrix = new Matrix3();
 
 class DebugView extends Node {
-  /**
-   * @param {DensityBuoyancyModel} model
-   * @param {Bounds2} layoutBounds
-   */
-  constructor( model, layoutBounds ) {
+
+  private model: DensityBuoyancyModel;
+  private layoutBounds: Bounds2;
+  private modelViewTransform: ModelViewTransform2;
+  private poolPath: Path;
+  private massNodes: DebugMassNode[];
+
+  // proportional to the area at that level that is displaced in the pool
+  private poolAreaPath: Path;
+
+  // proportional to the volume up to that level that is displaced in the pool
+  private poolVolumePath: Path;
+
+  // proportional to the area at that level that is displaced in the boat
+  private boatAreaPath: Path;
+
+  // proportional to the volume up to that level that is displaced in the boat
+  private boatVolumePath: Path;
+
+  constructor( model: DensityBuoyancyModel, layoutBounds: Bounds2 ) {
     super();
 
-    // @private {DensityBuoyancyModel}
     this.model = model;
-
-    // @private {Bounds2}
     this.layoutBounds = layoutBounds;
-
-    // @private {ModelViewTransform2}
     this.modelViewTransform = ModelViewTransform2.createSinglePointScaleInvertedYMapping( Vector2.ZERO, this.layoutBounds.center, 600 );
 
     this.addChild( Rectangle.bounds( layoutBounds, {
       fill: 'rgba(255,255,255,0.5)'
     } ) );
-
-    // @private {Path}
     this.poolPath = new Path( null, {
       fill: 'rgba(0,128,255,0.5)',
       stroke: 'black'
@@ -58,10 +68,9 @@ class DebugView extends Node {
       stroke: 'black'
     } ) );
 
-    // @private {Array.<DebugMassNode>}
     this.massNodes = [];
 
-    const onMassAdded = mass => {
+    const onMassAdded = ( mass: Mass ) => {
       const massNode = new DebugMassNode( model, mass, this.modelViewTransform );
       this.addChild( massNode );
       this.massNodes.push( massNode );
@@ -70,30 +79,26 @@ class DebugView extends Node {
     model.masses.forEach( onMassAdded );
 
     model.masses.addItemRemovedListener( mass => {
-      const massNode = _.find( this.massNodes, massNode => massNode.mass === mass );
+      const massNode = _.find( this.massNodes, massNode => massNode.mass === mass )!;
       this.removeChild( massNode );
       massNode.dispose();
     } );
 
-    // @private {Path} - proportional to the area at that level that is displaced in the pool
     this.poolAreaPath = new Path( null, {
       stroke: 'red'
     } );
     this.addChild( this.poolAreaPath );
 
-    // @private {Path} - proportional to the volume up to that level that is displaced in the pool
     this.poolVolumePath = new Path( null, {
       stroke: 'green'
     } );
     this.addChild( this.poolVolumePath );
 
-    // @private {Path} - proportional to the area at that level that is displaced in the boat
     this.boatAreaPath = new Path( null, {
       stroke: 'red'
     } );
     this.addChild( this.boatAreaPath );
 
-    // @private {Path} - proportional to the volume up to that level that is displaced in the boat
     this.boatVolumePath = new Path( null, {
       stroke: 'green'
     } );
@@ -102,11 +107,8 @@ class DebugView extends Node {
 
   /**
    * Steps forward in time.
-   * @public
-   *
-   * @param {number} dt
    */
-  step( dt ) {
+  step( dt: number ) {
     if ( !this.visible ) {
       return;
     }
@@ -145,10 +147,10 @@ class DebugView extends Node {
     this.poolVolumePath.shape = poolVolumeShape;
 
     const boat = this.model.masses.find( mass => mass.isBoat() );
-    if ( boat ) {
+    if ( boat instanceof Boat ) {
       const boatYValues = _.range( boat.stepBottom, boat.stepTop, 0.002 );
 
-      const boatNode = _.find( this.massNodes, massNode => massNode.mass === boat );
+      const boatNode = _.find( this.massNodes, massNode => massNode.mass === boat )!;
 
       const boatAreaShape = new Shape();
       boatYValues.map( y => new Vector2( boat.basin.getDisplacedArea( y ), y ) ).forEach( point => {
@@ -170,12 +172,12 @@ class DebugView extends Node {
 }
 
 class DebugMassNode extends Node {
-  /**
-   * @param {DensityBuoyancyModel} model
-   * @param {Mass} mass
-   * @param {ModelViewTransform2} modelViewTransform
-   */
-  constructor( model, mass, modelViewTransform ) {
+
+  readonly mass: Mass;
+  private disposeEmitter: Emitter;
+  readonly dragListener: DragListener;
+
+  constructor( model: DensityBuoyancyModel, mass: Mass, modelViewTransform: ModelViewTransform2 ) {
     super( {
       cursor: 'pointer'
     } );
@@ -191,13 +193,10 @@ class DebugMassNode extends Node {
     } );
     this.addChild( intersectionPath );
 
-    // @public (read-only) {Mass}
     this.mass = mass;
-
-    // @private {Emitter}
     this.disposeEmitter = new Emitter();
 
-    const shapeListener = shape => {
+    const shapeListener = ( shape: Shape ) => {
       const matrix = scratchMatrix.set( modelViewTransform.getMatrix() );
 
       // Zero out the translation
@@ -243,7 +242,7 @@ class DebugMassNode extends Node {
       } );
       this.addChild( hitPath );
 
-      const displacementListener = volume => {
+      const displacementListener = ( volume: number ) => {
         const matrix = scratchMatrix.set( modelViewTransform.getMatrix() );
 
         // Zero out the translation
@@ -260,6 +259,7 @@ class DebugMassNode extends Node {
         mass.displacementVolumeProperty.unlink( displacementListener );
       } );
 
+      // @ts-ignore
       const block = model.block;
       const liquidListener = () => {
         const y = mass.basin.liquidYInterpolatedProperty.value;
@@ -304,7 +304,6 @@ class DebugMassNode extends Node {
       } );
     }
 
-    // @public (read-only) {DragListener}
     this.dragListener = new DragListener( {
       transform: modelViewTransform,
       applyOffset: false,
@@ -314,7 +313,7 @@ class DebugMassNode extends Node {
       drag: ( event, listener ) => {
         mass.updateDrag( listener.modelPoint );
       },
-      end: ( event, listener ) => {
+      end: () => {
         mass.endDrag();
       }
     } );
@@ -323,8 +322,6 @@ class DebugMassNode extends Node {
 
   /**
    * Releases references.
-   * @public
-   * @override
    */
   dispose() {
     this.disposeEmitter.emit();

@@ -20,7 +20,7 @@ class BoatBasin extends Basin {
   private boat: Boat;
 
   // Used for intersection
-  private oneLiterShape: Shape;
+  oneLiterShape: Shape;
 
   constructor( boat: Boat ) {
     super( {

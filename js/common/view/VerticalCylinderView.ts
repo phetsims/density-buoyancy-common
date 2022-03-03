@@ -9,6 +9,7 @@
 import Vector3 from '../../../../dot/js/Vector3.js';
 import TriangleArrayWriter from '../../../../mobius/js/TriangleArrayWriter.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
+import VerticalCylinder from '../model/VerticalCylinder.js';
 import MassView from './MassView.js';
 
 // constants
@@ -16,11 +17,12 @@ const segments = 64;
 const numElements = 12 * segments;
 
 class VerticalCylinderView extends MassView {
-  /**
-   * @param {VerticalCylinder} verticalCylinder
-   * @param {Object} [options]
-   */
-  constructor( verticalCylinder, options ) {
+
+  readonly verticalCylinder: VerticalCylinder;
+  private verticalCylinderGeometry: THREE.BufferGeometry;
+  private updateListener: () => void;
+
+  constructor( verticalCylinder: VerticalCylinder ) {
 
     const positionArray = new Float32Array( numElements * 3 );
     const normalArray = new Float32Array( numElements * 3 );
@@ -33,17 +35,12 @@ class VerticalCylinderView extends MassView {
     verticalCylinderGeometry.addAttribute( 'normal', new THREE.BufferAttribute( normalArray, 3 ) );
     verticalCylinderGeometry.addAttribute( 'uv', new THREE.BufferAttribute( uvArray, 2 ) );
 
-    super( verticalCylinder, verticalCylinderGeometry, options );
+    super( verticalCylinder, verticalCylinderGeometry );
 
-    // @public (read-only) {VerticalCylinder}
     this.verticalCylinder = verticalCylinder;
-
-    // @private {THREE.BufferGeometry}
     this.verticalCylinderGeometry = verticalCylinderGeometry;
-
-    // @private {function(Bounds3)}
-    this.updateListener = size => {
-      VerticalCylinderView.updateArrays( verticalCylinderGeometry.attributes.position.array, null, verticalCylinderGeometry.attributes.uv.array, verticalCylinder.radiusProperty.value, verticalCylinder.heightProperty.value );
+    this.updateListener = () => {
+      VerticalCylinderView.updateArrays( verticalCylinderGeometry.attributes.position.array as Float32Array, null, verticalCylinderGeometry.attributes.uv.array as Float32Array, verticalCylinder.radiusProperty.value, verticalCylinder.heightProperty.value );
       verticalCylinderGeometry.attributes.position.needsUpdate = true;
       verticalCylinderGeometry.attributes.uv.needsUpdate = true;
       verticalCylinderGeometry.computeBoundingSphere();
@@ -54,8 +51,6 @@ class VerticalCylinderView extends MassView {
 
   /**
    * Releases references.
-   * @public
-   * @override
    */
   dispose() {
     this.verticalCylinder.radiusProperty.unlink( this.updateListener );
@@ -67,18 +62,17 @@ class VerticalCylinderView extends MassView {
 
   /**
    * Updates provided geometry arrays given the specific size.
-   * @public
    *
-   * @param {Float32Array|null} positionArray
-   * @param {Float32Array|null} normalArray
-   * @param {Float32Array|null} uvArray
-   * @param {number} radius
-   * @param {number} height
-   * @param {number} offset - How many vertices have been specified so far?
-   * @param {Vector3} offsetPosition - How to transform all of the points
-   * @returns {number} - The offset after the specified vertices have been written
+   * @param positionArray
+   * @param normalArray
+   * @param uvArray
+   * @param radius
+   * @param height
+   * @param offset - How many vertices have been specified so far?
+   * @param offsetPosition - How to transform all of the points
+   * @returns - The offset after the specified vertices have been written
    */
-  static updateArrays( positionArray, normalArray, uvArray, radius, height, offset = 0, offsetPosition = Vector3.ZERO ) {
+  static updateArrays( positionArray: Float32Array | null, normalArray: Float32Array | null, uvArray: Float32Array | null, radius: number, height: number, offset: number = 0, offsetPosition: Vector3 = Vector3.ZERO ) {
     const writer = new TriangleArrayWriter( positionArray, normalArray, uvArray, offset, offsetPosition );
 
     const baseY = -height / 2;

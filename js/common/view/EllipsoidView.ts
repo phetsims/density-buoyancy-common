@@ -8,27 +8,26 @@
 
 import Bounds3 from '../../../../dot/js/Bounds3.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
+import Ellipsoid from '../model/Ellipsoid.js';
 import MassView from './MassView.js';
 
 class EllipsoidView extends MassView {
-  /**
-   * @param {Ellipsoid} ellipsoid
-   * @param {Object} [options]
-   */
-  constructor( ellipsoid, options ) {
+
+  readonly ellipsoid: Ellipsoid;
+  private ellipsoidGeometry: THREE.SphereGeometry;
+  private updateListener: ( newSize: Bounds3, oldSize: Bounds3 ) => void;
+
+  constructor( ellipsoid: Ellipsoid ) {
 
     const ellipsoidGeometry = new THREE.SphereGeometry( 1, 30, 24 );
 
-    super( ellipsoid, ellipsoidGeometry, options );
+    super( ellipsoid, ellipsoidGeometry );
 
-    // @public (read-only) {Ellipsoid}
     this.ellipsoid = ellipsoid;
-
-    // @private {THREE.Sphere}
     this.ellipsoidGeometry = ellipsoidGeometry;
 
-    // @private {function(Bounds3,Bounds3)}
-    this.updateListener = ( newSize, oldSize ) => {
+    this.updateListener = ( newSize: Bounds3, oldSize: Bounds3 ) => {
+      // @ts-ignore OLD version possibly?
       ellipsoidGeometry.applyMatrix( new THREE.Matrix4().makeScale(
         newSize.width / oldSize.width,
         newSize.height / oldSize.height,
@@ -43,8 +42,6 @@ class EllipsoidView extends MassView {
 
   /**
    * Releases references.
-   * @public
-   * @override
    */
   dispose() {
     this.ellipsoid.sizeProperty.unlink( this.updateListener );

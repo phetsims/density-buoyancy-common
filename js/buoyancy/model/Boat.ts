@@ -20,7 +20,6 @@ import BoatBasin from './BoatBasin.js';
 import BoatDesign from './BoatDesign.js';
 import PhysicsEngine from '../../common/model/PhysicsEngine.js';
 import IProperty from '../../../../axon/js/IProperty.js';
-import Basin from '../../common/model/Basin.js';
 import Ray3 from '../../../../dot/js/Ray3.js';
 
 type BoatOptions = Omit<InstrumentedMassOptions, 'body' | 'shape' | 'volume' | 'material'>;
@@ -29,7 +28,7 @@ class Boat extends Mass {
 
   displacementVolumeProperty: Property<number>;
   liquidMaterialProperty: IProperty<Material>;
-  basin: Basin;
+  basin: BoatBasin;
 
   // Amount of volume contained in the basin
   stepInternalVolume: number;

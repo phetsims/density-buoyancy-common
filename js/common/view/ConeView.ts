@@ -9,6 +9,7 @@
 import Vector3 from '../../../../dot/js/Vector3.js';
 import TriangleArrayWriter from '../../../../mobius/js/TriangleArrayWriter.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
+import Cone from '../model/Cone.js';
 import MassView from './MassView.js';
 
 // constants
@@ -16,11 +17,12 @@ const segments = 64;
 const numElements = 6 * segments;
 
 class ConeView extends MassView {
-  /**
-   * @param {Cone} cone
-   * @param {Object} [options]
-   */
-  constructor( cone, options ) {
+
+  readonly cone: Cone;
+  private coneGeometry: THREE.BufferGeometry;
+  private updateListener: () => void;
+
+  constructor( cone: Cone ) {
 
     const positionArray = new Float32Array( numElements * 3 );
     const normalArray = new Float32Array( numElements * 3 );
@@ -33,17 +35,13 @@ class ConeView extends MassView {
     coneGeometry.addAttribute( 'normal', new THREE.BufferAttribute( normalArray, 3 ) );
     coneGeometry.addAttribute( 'uv', new THREE.BufferAttribute( uvArray, 2 ) );
 
-    super( cone, coneGeometry, options );
+    super( cone, coneGeometry );
 
-    // @public (read-only) {Cone}
     this.cone = cone;
-
-    // @private {THREE.BufferGeometry}
     this.coneGeometry = coneGeometry;
 
-    // @private {function(number)}
-    this.updateListener = size => {
-      ConeView.updateArrays( coneGeometry.attributes.position.array, coneGeometry.attributes.normal.array, null, cone.radiusProperty.value, cone.heightProperty.value, cone.isVertexUp );
+    this.updateListener = () => {
+      ConeView.updateArrays( coneGeometry.attributes.position.array as Float32Array, coneGeometry.attributes.normal.array as Float32Array, null, cone.radiusProperty.value, cone.heightProperty.value, cone.isVertexUp );
       coneGeometry.attributes.position.needsUpdate = true;
       coneGeometry.attributes.normal.needsUpdate = true;
       coneGeometry.computeBoundingSphere();
@@ -54,8 +52,6 @@ class ConeView extends MassView {
 
   /**
    * Releases references.
-   * @public
-   * @override
    */
   dispose() {
     this.cone.radiusProperty.unlink( this.updateListener );
@@ -67,19 +63,18 @@ class ConeView extends MassView {
 
   /**
    * Updates provided geometry arrays given the specific size.
-   * @public
    *
-   * @param {Float32Array|null} positionArray
-   * @param {Float32Array|null} normalArray
-   * @param {Float32Array|null} uvArray
-   * @param {number} radius
-   * @param {number} height
-   * @param {boolean} isVertexUp
-   * @param {number} offset - How many vertices have been specified so far?
-   * @param {Vector3} offsetPosition - How to transform all of the points
-   * @returns {number} - The offset after the specified vertices have been written
+   * @param positionArray
+   * @param normalArray
+   * @param uvArray
+   * @param radius
+   * @param height
+   * @param isVertexUp
+   * @param offset - How many vertices have been specified so far?
+   * @param offsetPosition - How to transform all of the points
+   * @returns - The offset after the specified vertices have been written
    */
-  static updateArrays( positionArray, normalArray, uvArray, radius, height, isVertexUp, offset = 0, offsetPosition = Vector3.ZERO ) {
+  static updateArrays( positionArray: Float32Array | null, normalArray: Float32Array | null, uvArray: Float32Array | null, radius: number, height: number, isVertexUp: boolean, offset: number = 0, offsetPosition: Vector3 = Vector3.ZERO ) {
     const writer = new TriangleArrayWriter( positionArray, normalArray, uvArray, offset, offsetPosition );
 
     const vertexSign = isVertexUp ? 1 : -1;

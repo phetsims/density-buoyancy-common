@@ -12,10 +12,10 @@ import { Utils } from '../../../../scenery/js/imports.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 
 class LabelTexture extends NodeTexture {
-  /**
-   * @param {Node} labelNode
-   */
-  constructor( labelNode ) {
+
+  private containerNode: Node;
+
+  constructor( labelNode: Node ) {
     const containerNode = new Node( {
       children: [ labelNode ],
       scale: 2
@@ -25,14 +25,11 @@ class LabelTexture extends NodeTexture {
 
     super( containerNode, width, height );
 
-    // @private {Node}
     this.containerNode = containerNode;
   }
 
   /**
    * Releases references
-   * @public
-   * @override
    */
   dispose() {
     this.containerNode.dispose();

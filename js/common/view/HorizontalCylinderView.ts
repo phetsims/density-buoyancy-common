@@ -10,74 +10,68 @@ import Vector3 from '../../../../dot/js/Vector3.js';
 import TriangleArrayWriter from '../../../../mobius/js/TriangleArrayWriter.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import MassView from './MassView.js';
+import HorizontalCylinder from '../model/HorizontalCylinder.js';
 
 // constants
 const segments = 64;
 const numElements = 12 * segments;
 
 class HorizontalCylinderView extends MassView {
-  /**
-   * @param {VerticalCylinder} verticalCylinder
-   * @param {Object} [options]
-   */
-  constructor( verticalCylinder, options ) {
+
+  readonly horizontalCylinder: HorizontalCylinder;
+  private horizontalCylinderGeometry: THREE.BufferGeometry;
+  private updateListener: () => void;
+
+  constructor( horizontalCylinder: HorizontalCylinder ) {
 
     const positionArray = new Float32Array( numElements * 3 );
     const normalArray = new Float32Array( numElements * 3 );
     const uvArray = new Float32Array( numElements * 2 );
 
-    HorizontalCylinderView.updateArrays( positionArray, normalArray, uvArray, verticalCylinder.radiusProperty.value, verticalCylinder.lengthProperty.value );
+    HorizontalCylinderView.updateArrays( positionArray, normalArray, uvArray, horizontalCylinder.radiusProperty.value, horizontalCylinder.lengthProperty.value );
 
-    const verticalCylinderGeometry = new THREE.BufferGeometry();
-    verticalCylinderGeometry.addAttribute( 'position', new THREE.BufferAttribute( positionArray, 3 ) );
-    verticalCylinderGeometry.addAttribute( 'normal', new THREE.BufferAttribute( normalArray, 3 ) );
-    verticalCylinderGeometry.addAttribute( 'uv', new THREE.BufferAttribute( uvArray, 2 ) );
+    const horizontalCylinderGeometry = new THREE.BufferGeometry();
+    horizontalCylinderGeometry.addAttribute( 'position', new THREE.BufferAttribute( positionArray, 3 ) );
+    horizontalCylinderGeometry.addAttribute( 'normal', new THREE.BufferAttribute( normalArray, 3 ) );
+    horizontalCylinderGeometry.addAttribute( 'uv', new THREE.BufferAttribute( uvArray, 2 ) );
 
-    super( verticalCylinder, verticalCylinderGeometry, options );
+    super( horizontalCylinder, horizontalCylinderGeometry );
 
-    // @public (read-only) {VerticalCylinder}
-    this.verticalCylinder = verticalCylinder;
-
-    // @private {THREE.BufferGeometry}
-    this.verticalCylinderGeometry = verticalCylinderGeometry;
-
-    // @private {function(Bounds3)}
-    this.updateListener = size => {
-      HorizontalCylinderView.updateArrays( verticalCylinderGeometry.attributes.position.array, null, null, verticalCylinder.radiusProperty.value, verticalCylinder.lengthProperty.value );
-      verticalCylinderGeometry.attributes.position.needsUpdate = true;
-      verticalCylinderGeometry.computeBoundingSphere();
+    this.horizontalCylinder = horizontalCylinder;
+    this.horizontalCylinderGeometry = horizontalCylinderGeometry;
+    this.updateListener = () => {
+      HorizontalCylinderView.updateArrays( horizontalCylinderGeometry.attributes.position.array as Float32Array, null, null, horizontalCylinder.radiusProperty.value, horizontalCylinder.lengthProperty.value );
+      horizontalCylinderGeometry.attributes.position.needsUpdate = true;
+      horizontalCylinderGeometry.computeBoundingSphere();
     };
-    this.verticalCylinder.radiusProperty.lazyLink( this.updateListener );
-    this.verticalCylinder.lengthProperty.lazyLink( this.updateListener );
+    this.horizontalCylinder.radiusProperty.lazyLink( this.updateListener );
+    this.horizontalCylinder.lengthProperty.lazyLink( this.updateListener );
   }
 
   /**
    * Releases references.
-   * @public
-   * @override
    */
   dispose() {
-    this.verticalCylinder.radiusProperty.unlink( this.updateListener );
-    this.verticalCylinder.lengthProperty.unlink( this.updateListener );
-    this.verticalCylinderGeometry.dispose();
+    this.horizontalCylinder.radiusProperty.unlink( this.updateListener );
+    this.horizontalCylinder.lengthProperty.unlink( this.updateListener );
+    this.horizontalCylinderGeometry.dispose();
 
     super.dispose();
   }
 
   /**
    * Updates provided geometry arrays given the specific size.
-   * @public
    *
-   * @param {Float32Array|null} positionArray
-   * @param {Float32Array|null} normalArray
-   * @param {Float32Array|null} uvArray
-   * @param {number} radius
-   * @param {number} length
-   * @param {number} offset - How many vertices have been specified so far?
-   * @param {Vector3} offsetPosition - How to transform all of the points
-   * @returns {number} - The offset after the specified vertices have been written
+   * @param positionArray
+   * @param normalArray
+   * @param uvArray
+   * @param radius
+   * @param length
+   * @param offset - How many vertices have been specified so far?
+   * @param offsetPosition - How to transform all of the points
+   * @returns - The offset after the specified vertices have been written
    */
-  static updateArrays( positionArray, normalArray, uvArray, radius, length, offset = 0, offsetPosition = Vector3.ZERO ) {
+  static updateArrays( positionArray: Float32Array | null, normalArray: Float32Array | null, uvArray: Float32Array | null, radius: number, length: number, offset: number = 0, offsetPosition: Vector3 = Vector3.ZERO ) {
     const writer = new TriangleArrayWriter( positionArray, normalArray, uvArray, offset, offsetPosition );
 
     const leftX = -length / 2;

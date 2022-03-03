@@ -6,6 +6,7 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
+import IReadOnlyProperty from '../../../../axon/js/IReadOnlyProperty.js';
 import Utils from '../../../../dot/js/Utils.js';
 import Shape from '../../../../kite/js/Shape.js';
 import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
@@ -21,10 +22,7 @@ import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js
 import DensityBuoyancyCommonColors from './DensityBuoyancyCommonColors.js';
 
 class WaterLevelIndicator extends Node {
-  /**
-   * @param {Property.<number>} volumeProperty
-   */
-  constructor( volumeProperty ) {
+  constructor( volumeProperty: IReadOnlyProperty<number> ) {
     super();
 
     const highlightShape = new Shape().moveTo( 0, 0 ).lineTo( -20, -10 ).lineTo( -20, 10 ).close();

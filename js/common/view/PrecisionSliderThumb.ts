@@ -7,30 +7,37 @@
  */
 
 import Shape from '../../../../kite/js/Shape.js';
-import merge from '../../../../phet-core/js/merge.js';
-import { Line } from '../../../../scenery/js/imports.js';
+import optionize from '../../../../phet-core/js/optionize.js';
+import { IPaint, Line, NodeOptions } from '../../../../scenery/js/imports.js';
 import { Node } from '../../../../scenery/js/imports.js';
 import { Path } from '../../../../scenery/js/imports.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 
+type SelfOptions = {
+  thumbFill?: IPaint;
+  thumbStroke?: IPaint;
+
+  mainHeight?: number;
+  taperHeight?: number;
+  thumbWidth?: number;
+  lineHeight?: number;
+  touchXDilation?: number;
+  touchYDilation?: number;
+};
+export type PrecisionSliderThumbOptions = NodeOptions & SelfOptions;
+
 class PrecisionSliderThumb extends Node {
-  /**
-   * @param {Object} [options]
-   */
-  constructor( options ) {
-    options = merge( {
-      // {PaintDef}
+  constructor( providedOptions?: PrecisionSliderThumbOptions ) {
+    const options = optionize<PrecisionSliderThumbOptions, SelfOptions, NodeOptions>( {
       thumbFill: '#eee',
       thumbStroke: '#000',
-
-      // {number}
       mainHeight: 15,
       taperHeight: 5,
       thumbWidth: 15,
       lineHeight: 5,
       touchXDilation: 5,
       touchYDilation: 10
-    }, options );
+    }, providedOptions );
 
     const precisionLine = new Line( 0, -options.lineHeight / 2, 0, options.lineHeight / 2, {
       stroke: options.thumbStroke

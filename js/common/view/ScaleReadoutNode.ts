@@ -16,14 +16,17 @@ import Panel from '../../../../sun/js/Panel.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import densityBuoyancyCommonStrings from '../../densityBuoyancyCommonStrings.js';
 import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
-import { DisplayType } from '../model/Scale.js';
+import Scale, { DisplayType } from '../model/Scale.js';
+import Gravity from '../model/Gravity.js';
+import IReadOnlyProperty from '../../../../axon/js/IReadOnlyProperty.js';
+import Multilink from '../../../../axon/js/Multilink.js';
 
 class ScaleReadoutNode extends Node {
-  /**
-   * @param {Scale} mass
-   * @param {Property.<Gravity>} gravityProperty
-   */
-  constructor( mass, gravityProperty ) {
+
+  private mass: Scale;
+  private scaleForceMultilink: Multilink<[number, Gravity]>;
+
+  constructor( mass: Scale, gravityProperty: IReadOnlyProperty<Gravity> ) {
     super();
 
     const readoutText = new Text( '', {
@@ -43,11 +46,9 @@ class ScaleReadoutNode extends Node {
 
     this.addChild( readoutPanel );
 
-    // @private {Scale}
     this.mass = mass;
 
-    // @private {Multilink}
-    this.scaleForceMultilink = Property.multilink( [ mass.scaleForceInterpolatedProperty, gravityProperty ], ( scaleForce, gravity ) => {
+    this.scaleForceMultilink = Property.multilink( [ mass.scaleForceInterpolatedProperty, gravityProperty ], ( scaleForce: number, gravity: Gravity ) => {
       if ( mass.displayType === DisplayType.NEWTONS ) {
         readoutText.text = StringUtils.fillIn( densityBuoyancyCommonStrings.newtonsPattern, {
           newtons: Utils.toFixed( scaleForce, 2 )

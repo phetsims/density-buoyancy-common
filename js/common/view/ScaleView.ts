@@ -14,27 +14,20 @@ import MassView from './MassView.js';
 import VerticalCylinderView from './VerticalCylinderView.js';
 
 class ScaleView extends MassView {
-  /**
-   * @param {Scale} mass
-   * @param {Object} [options]
-   */
-  constructor( mass, options ) {
+
+  private scaleGeometry: THREE.BufferGeometry;
+
+  constructor( mass: Scale ) {
 
     const scaleGeometry = ScaleView.getScaleGeometry();
 
-    super( mass, scaleGeometry, options );
+    super( mass, scaleGeometry );
 
-    // @public (read-only) {Scale}
-    this.mass = mass;
-
-    // @private {THREE.BufferGeometry}
     this.scaleGeometry = scaleGeometry;
   }
 
   /**
    * Releases references.
-   * @public
-   * @override
    */
   dispose() {
     this.scaleGeometry.dispose();
@@ -44,11 +37,8 @@ class ScaleView extends MassView {
 
   /**
    * Returns the geometry used for the scale
-   * @public
-   *
-   * @returns {THREE.Geometry}
    */
-  static getScaleGeometry() {
+  static getScaleGeometry(): THREE.BufferGeometry {
     const cuboidElements = 18 * 3;
     const cylinderElements = 12 * 64;
     const numElements = cuboidElements + cylinderElements;

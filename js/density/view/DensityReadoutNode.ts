@@ -6,6 +6,7 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
+import IReadOnlyProperty from '../../../../axon/js/IReadOnlyProperty.js';
 import Property from '../../../../axon/js/Property.js';
 import Bounds2 from '../../../../dot/js/Bounds2.js';
 import Utils from '../../../../dot/js/Utils.js';
@@ -13,7 +14,7 @@ import merge from '../../../../phet-core/js/merge.js';
 import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
 import ArrowNode from '../../../../scenery-phet/js/ArrowNode.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
-import { Line } from '../../../../scenery/js/imports.js';
+import { Line, NodeOptions } from '../../../../scenery/js/imports.js';
 import { Node } from '../../../../scenery/js/imports.js';
 import { Rectangle } from '../../../../scenery/js/imports.js';
 import { Text } from '../../../../scenery/js/imports.js';
@@ -38,18 +39,12 @@ const WIDTH = 400;
 const HEIGHT = 22;
 const MAX_DENSITY = 10000;
 const LINE_PADDING = 2;
-const mvt = density => WIDTH * Math.min( density, MAX_DENSITY ) / MAX_DENSITY;
+const mvt = ( density: number ) => WIDTH * Math.min( density, MAX_DENSITY ) / MAX_DENSITY;
 const MAX_LABEL_WIDTH = 80;
 
 class DensityReadoutNode extends Node {
 
-  /**
-   * @param {Property.<number>} densityAProperty
-   * @param {Property.<number>} densityBProperty
-   * @param {Property.<boolean>} secondaryMassVisibleProperty
-   * @param {Object} [options]
-   */
-  constructor( densityAProperty, densityBProperty, secondaryMassVisibleProperty, options ) {
+  constructor( densityAProperty: IReadOnlyProperty<number>, densityBProperty: IReadOnlyProperty<number>, secondaryMassVisibleProperty: IReadOnlyProperty<boolean>, options?: NodeOptions ) {
     super();
 
     const background = new Rectangle( 0, 0, WIDTH, HEIGHT, {
@@ -149,7 +144,7 @@ class DensityReadoutNode extends Node {
     densityAProperty.link( density => {
       primaryMarker.visible = density < MAX_DENSITY + 1e-5; // Allow rounding error
     } );
-    Property.multilink( [ secondaryMassVisibleProperty, densityBProperty ], ( visible, density ) => {
+    Property.multilink( [ secondaryMassVisibleProperty, densityBProperty ], ( visible: boolean, density: number ) => {
       secondaryMarker.visible = visible && density < MAX_DENSITY + 1e-5; // Allow rounding error
     } );
 

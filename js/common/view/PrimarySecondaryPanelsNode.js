@@ -7,13 +7,11 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
-import { FlowBox } from '../../../../scenery/js/imports.js';
-import { VDivider } from '../../../../scenery/js/imports.js';
-import { Node } from '../../../../scenery/js/imports.js';
+import { FlowBox, Node, VDivider } from '../../../../scenery/js/imports.js';
 import Panel from '../../../../sun/js/Panel.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
-import MassLabelNode from './MassLabelNode.js';
+import { PRIMARY_LABEL, SECONDARY_LABEL } from './MassLabelNode.js';
 
 class PrimarySecondaryPanelsNode extends Panel {
   /**
@@ -41,7 +39,7 @@ class PrimarySecondaryPanelsNode extends Panel {
    */
   static getPrimaryLabelNode() {
     return new Node( {
-      children: [ MassLabelNode.PRIMARY_LABEL ],
+      children: [ PRIMARY_LABEL ],
       scale: 0.7
     } );
   }
@@ -54,7 +52,7 @@ class PrimarySecondaryPanelsNode extends Panel {
    */
   static getSecondaryLabelNode() {
     return new Node( {
-      children: [ MassLabelNode.SECONDARY_LABEL ],
+      children: [ SECONDARY_LABEL ],
       scale: 0.7
     } );
   }

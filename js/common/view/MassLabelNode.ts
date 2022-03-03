@@ -6,11 +6,13 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
+import IReadOnlyProperty from '../../../../axon/js/IReadOnlyProperty.js';
 import Utils from '../../../../dot/js/Utils.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
+import NodeTexture from '../../../../mobius/js/NodeTexture.js';
 import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
-import { ManualConstraint } from '../../../../scenery/js/imports.js';
+import { IPaint, ManualConstraint } from '../../../../scenery/js/imports.js';
 import { Node } from '../../../../scenery/js/imports.js';
 import { Rectangle } from '../../../../scenery/js/imports.js';
 import { Text } from '../../../../scenery/js/imports.js';
@@ -18,12 +20,13 @@ import Panel from '../../../../sun/js/Panel.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import densityBuoyancyCommonStrings from '../../densityBuoyancyCommonStrings.js';
 import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
+import Mass from '../model/Mass.js';
 import DensityBuoyancyCommonColors from './DensityBuoyancyCommonColors.js';
 import LabelTexture from './LabelTexture.js';
 
 // constants
 const MASS_LABEL_SIZE = 32;
-const createMassLabel = ( string, fill ) => {
+const createMassLabel = ( string: string, fill: IPaint ) => {
   const rectangle = new Rectangle( 0, 0, MASS_LABEL_SIZE, MASS_LABEL_SIZE, {
     cornerRadius: DensityBuoyancyCommonConstants.CORNER_RADIUS,
     fill: fill
@@ -41,11 +44,13 @@ const PRIMARY_LABEL = createMassLabel( densityBuoyancyCommonStrings.massLabel.pr
 const SECONDARY_LABEL = createMassLabel( densityBuoyancyCommonStrings.massLabel.secondary, DensityBuoyancyCommonColors.labelBProperty );
 
 class MassLabelNode extends Node {
-  /**
-   * @param {Mass} mass
-   * @param {Property.<boolean>} showMassesProperty
-   */
-  constructor( mass, showMassesProperty ) {
+
+  private mass: Mass;
+  private showMassesProperty: IReadOnlyProperty<boolean>;
+  private massListener: ( n: number ) => void;
+  private showMassesListener: ( n: boolean ) => void;
+
+  constructor( mass: Mass, showMassesProperty: IReadOnlyProperty<boolean> ) {
     super();
 
     const readoutText = new Text( '', {
@@ -62,13 +67,9 @@ class MassLabelNode extends Node {
 
     this.addChild( readoutPanel );
 
-    // @private {Mass}
     this.mass = mass;
-
-    // @private {Property.<boolean>}
     this.showMassesProperty = showMassesProperty;
 
-    // @private {function(number)}
     this.massListener = mass => {
       readoutText.text = StringUtils.fillIn( densityBuoyancyCommonStrings.kilogramsPattern, {
         kilograms: Utils.toFixed( mass, 2 )
@@ -80,7 +81,6 @@ class MassLabelNode extends Node {
       readoutWrapper.center = Vector2.ZERO;
     } );
 
-    // @private {function(boolean)}
     this.showMassesListener = shown => {
       readoutPanel.visible = shown;
     };
@@ -91,8 +91,6 @@ class MassLabelNode extends Node {
 
   /**
    * Releases references.
-   * @public
-   * @override
    */
   dispose() {
     this.showMassesProperty.unlink( this.showMassesListener );
@@ -103,32 +101,22 @@ class MassLabelNode extends Node {
 
   /**
    * Returns a NodeTexture for the primary.
-   * @public
-   *
-   * @returns {NodeTexture}
    */
-  static getPrimaryTexture() {
+  static getPrimaryTexture(): NodeTexture {
     return new LabelTexture( PRIMARY_LABEL );
   }
 
   /**
    * Returns a NodeTexture for the secondary.
-   * @public
-   *
-   * @returns {NodeTexture}
    */
-  static getSecondaryTexture() {
+  static getSecondaryTexture(): NodeTexture {
     return new LabelTexture( SECONDARY_LABEL );
   }
 
   /**
    * Returns a basic texture for a given (short) string label.
-   * @public
-   *
-   * @param {string} string
-   * @returns {NodeTexture}
    */
-  static getBasicLabelTexture( string ) {
+  static getBasicLabelTexture( string: string ): NodeTexture {
     const label = new Text( string, {
       font: new PhetFont( { size: 24, weight: 'bold' } ),
       maxWidth: 100
@@ -144,9 +132,6 @@ class MassLabelNode extends Node {
   }
 }
 
-// @public (read-only) {Node}
-MassLabelNode.PRIMARY_LABEL = PRIMARY_LABEL;
-MassLabelNode.SECONDARY_LABEL = SECONDARY_LABEL;
-
 densityBuoyancyCommon.register( 'MassLabelNode', MassLabelNode );
 export default MassLabelNode;
+export { PRIMARY_LABEL, SECONDARY_LABEL };

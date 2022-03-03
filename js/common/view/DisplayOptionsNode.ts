@@ -9,7 +9,7 @@
 import merge from '../../../../phet-core/js/merge.js';
 import ArrowNode from '../../../../scenery-phet/js/ArrowNode.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
-import { FlowBox } from '../../../../scenery/js/imports.js';
+import { FlowBox, VBoxOptions } from '../../../../scenery/js/imports.js';
 import { VDivider } from '../../../../scenery/js/imports.js';
 import { AlignBox } from '../../../../scenery/js/imports.js';
 import { AlignGroup } from '../../../../scenery/js/imports.js';
@@ -21,6 +21,7 @@ import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import densityBuoyancyCommonStrings from '../../densityBuoyancyCommonStrings.js';
 import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
 import DensityBuoyancyCommonColors from './DensityBuoyancyCommonColors.js';
+import DensityBuoyancyModel from '../model/DensityBuoyancyModel.js';
 
 // constants
 const arrowSpacing = 15;
@@ -42,11 +43,7 @@ const checkboxOptions = {
 const checkboxSpacing = 5;
 
 class DisplayOptionsNode extends VBox {
-  /**
-   * @param {DensityBuoyancyModel} model
-   * @param {Object} [options]
-   */
-  constructor( model, options ) {
+  constructor( model: DensityBuoyancyModel, options?: VBoxOptions ) {
 
     options = merge( {
       spacing: 10,

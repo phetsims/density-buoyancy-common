@@ -72,7 +72,7 @@ import Range from '../../../../dot/js/Range.js';
 import Utils from '../../../../dot/js/Utils.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
-import Shape from '../../../../kite/js/Shape.js';
+import { Shape } from '../../../../kite/js/imports.js';
 import ThreeUtils from '../../../../mobius/js/ThreeUtils.js';
 import optionize from '../../../../phet-core/js/optionize.js';
 import Mass, { InstrumentedMassOptions } from '../../common/model/Mass.js';

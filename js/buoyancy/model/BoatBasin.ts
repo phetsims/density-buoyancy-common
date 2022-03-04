@@ -7,7 +7,7 @@
  */
 
 import Vector2 from '../../../../dot/js/Vector2.js';
-import Shape from '../../../../kite/js/Shape.js';
+import { Shape } from '../../../../kite/js/imports.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
 import Basin from '../../common/model/Basin.js';
 import Mass from '../../common/model/Mass.js';

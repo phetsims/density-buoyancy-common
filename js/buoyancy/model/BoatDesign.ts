@@ -25,9 +25,7 @@ import Bounds3 from '../../../../dot/js/Bounds3.js';
 import Utils from '../../../../dot/js/Utils.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
-import Cubic from '../../../../kite/js/segments/Cubic.js';
-import Line from '../../../../kite/js/segments/Line.js';
-import Segment from '../../../../kite/js/segments/Segment.js';
+import { Line, Cubic, Segment } from '../../../../kite/js/imports.js';
 import ThreeUtils from '../../../../mobius/js/ThreeUtils.js';
 import { Color } from '../../../../scenery/js/imports.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
@@ -47,7 +45,7 @@ class BoatDesign {
    * Returns the control point net for a cubic bezier curve for a given height ratio (0=top, 1=bottom) and whether it
    * is on the inside or outside surface of the boat.
    */
-  private static getControlPoints( heightRatio: number, isInside: boolean ): [Vector2, Vector2, Vector2, Vector2] {
+  private static getControlPoints( heightRatio: number, isInside: boolean ): [ Vector2, Vector2, Vector2, Vector2 ] {
     const v0 = new Vector2( 0, 0 );
     const v1 = new Vector2( 50, 50 );
     const v2 = new Vector2( 150, 50 );

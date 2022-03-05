@@ -12,58 +12,64 @@ import Property from '../../../../axon/js/Property.js';
 import Dimension2 from '../../../../dot/js/Dimension2.js';
 import Range from '../../../../dot/js/Range.js';
 import merge from '../../../../phet-core/js/merge.js';
+import optionize from '../../../../phet-core/js/optionize.js';
 import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
-import NumberControl from '../../../../scenery-phet/js/NumberControl.js';
+import NumberControl, { NumberControlOptions } from '../../../../scenery-phet/js/NumberControl.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
-import { Node } from '../../../../scenery/js/imports.js';
+import { Node, VBoxOptions } from '../../../../scenery/js/imports.js';
 import { Text } from '../../../../scenery/js/imports.js';
 import { VBox } from '../../../../scenery/js/imports.js';
-import ComboBox from '../../../../sun/js/ComboBox.js';
+import ComboBox, { ComboBoxOptions } from '../../../../sun/js/ComboBox.js';
+import ComboBoxItem from '../../../../sun/js/ComboBoxItem.js';
 import SunConstants from '../../../../sun/js/SunConstants.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
 
-class ComboNumberControl extends VBox {
-  /**
-   * @param {Object} config
-   */
-  constructor( config ) {
+type SelfOptions<T> = {
+  title: string;
+  valuePattern: string; // with {{value}} placeholder
+  property: Property<T>;
+  range: Range;
 
-    const disposalCallbacks = [];
+  // Converts the Property values into numeric values
+  toNumericValue: ( t: T ) => number;
+
+  // Given a numeric value, creates the corresponding rich object
+  createCustomValue: ( n: number ) => T;
+
+  // Given a main value, returns whether it is a custom value or not
+  isCustomValue: ( t: T ) => boolean;
+
+  listParent: Node;
+
+  comboItems: ComboBoxItem<T>[];
+
+  // The token value in items that is the designated custom value
+  customValue: T;
+
+  getFallbackNode?: ( t: T ) => Node | null;
+
+  numberControlOptions?: NumberControlOptions;
+  comboBoxOptions?: ComboBoxOptions;
+};
+
+export type ComboNumberControlOptions<T> = SelfOptions<T> & VBoxOptions;
+
+class ComboNumberControl<T> extends VBox {
+
+  private property: Property<T>;
+  private numberProperty: Property<number>;
+  private comboProperty: Property<T>;
+  private disposalCallbacks: ( () => void )[];
+  private numberControl: NumberControl;
+  private comboBox: ComboBox<T>;
+
+  constructor( providedConfig: SelfOptions<T> ) {
+
+    const disposalCallbacks: ( () => void )[] = [];
     const numberDisplayVisibleProperty = new BooleanProperty( true );
 
-    config = merge( {
-      // {string} - required
-      title: null,
-
-      // {string} - required, with {{value}} placeholder
-      valuePattern: null,
-
-      // {Property.<*>} - required
-      property: null,
-
-      // {Range} - required
-      range: null,
-
-      // {function(*):number} - Converts the Property values into numeric values
-      toNumericValue: null,
-
-      // {function(number):*} - Given a numeric value, creates the corresponding rich object
-      createCustomValue: null,
-
-      // {function(*):boolean} - Given a main value, returns whether it is a custom value or not
-      isCustomValue: null,
-
-      // {Node} - required
-      listParent: null,
-
-      // {Array.<Object>} - See ComboBox's items
-      comboItems: null,
-
-      // {*} - The token value in items that is the designated custom value
-      customValue: null,
-
-      // {function(*):Node|null}
+    const config = optionize<ComboNumberControlOptions<T>, SelfOptions<T>, VBoxOptions>( {
       getFallbackNode: () => null,
 
       // {Object} Options for the number control
@@ -81,8 +87,8 @@ class ComboNumberControl extends VBox {
               ]
             } );
 
-            const listener = value => {
-              const fallbackNode = config.getFallbackNode( value );
+            const listener = ( value: T ) => {
+              const fallbackNode = getFallbackNode( value );
               const hasFallback = fallbackNode !== null;
 
               bottomBox.visible = !hasFallback;
@@ -111,7 +117,7 @@ class ComboNumberControl extends VBox {
           textOptions: {
             font: DensityBuoyancyCommonConstants.READOUT_FONT
           },
-          valuePattern: StringUtils.fillIn( config.valuePattern, { value: SunConstants.VALUE_NAMED_PLACEHOLDER } ),
+          valuePattern: StringUtils.fillIn( providedConfig.valuePattern, { value: SunConstants.VALUE_NAMED_PLACEHOLDER } ),
           maxWidth: 100,
           decimalPlaces: 2,
           useRichText: true,
@@ -126,18 +132,15 @@ class ComboNumberControl extends VBox {
           thumbTouchAreaXDilation: 5,
           thumbTouchAreaYDilation: 4,
           majorTicks: [ {
-            value: config.range.min,
-            label: new Text( config.range.min, { font: new PhetFont( 12 ), maxWidth: 50 } )
+            value: providedConfig.range.min,
+            label: new Text( providedConfig.range.min, { font: new PhetFont( 12 ), maxWidth: 50 } )
           }, {
-            value: config.range.max,
-            label: new Text( config.range.max, { font: new PhetFont( 12 ), maxWidth: 50 } )
+            value: providedConfig.range.max,
+            label: new Text( providedConfig.range.max, { font: new PhetFont( 12 ), maxWidth: 50 } )
           } ],
           trackSize: new Dimension2( 120, 0.5 )
         }
       },
-
-      // {Object} Options for the number control
-      numberControlLayoutOptions: null,
 
       // {Object} Options for the combo box
       comboBoxOptions: {
@@ -149,7 +152,7 @@ class ComboNumberControl extends VBox {
       // VBox options
       spacing: 10,
       align: 'center'
-    }, config );
+    }, providedConfig );
 
     assert && assert( !config.children, 'Children should not be specified for ComboNumberControl' );
     assert && assert( typeof config.title === 'string' );
@@ -162,21 +165,16 @@ class ComboNumberControl extends VBox {
     assert && assert( Array.isArray( config.comboItems ) );
     assert && assert( config.customValue );
 
+    const getFallbackNode = config.getFallbackNode;
+
     super();
 
-    const getNumericValue = value => config.toNumericValue( value );
-    const getComboValue = value => config.isCustomValue( value ) ? config.customValue : value;
+    const getNumericValue = ( value: T ) => config.toNumericValue( value );
+    const getComboValue = ( value: T ) => config.isCustomValue( value ) ? config.customValue : value;
 
-    // @private {Property.<*>}
     this.property = config.property;
-
-    // @private {Property.<number>}
     this.numberProperty = new NumberProperty( getNumericValue( this.property.value ) );
-
-    // @private {Property.<*>}
     this.comboProperty = new Property( getComboValue( this.property.value ) );
-
-    // @private {Array.<function()>}
     this.disposalCallbacks = disposalCallbacks;
 
     let locked = false;
@@ -217,14 +215,12 @@ class ComboNumberControl extends VBox {
       }
     } );
 
-    // @private {NumberControl}
     this.numberControl = new NumberControl( config.title, this.numberProperty, config.range, merge( {
       sliderOptions: {
         phetioLinkedProperty: this.property
       }
     }, config.numberControlOptions ) );
 
-    // @private {ComboBox}
     this.comboBox = new ComboBox( config.comboItems, this.comboProperty, config.listParent, config.comboBoxOptions );
 
     config.children = [
@@ -237,7 +233,6 @@ class ComboNumberControl extends VBox {
 
   /**
    * Releases references.
-   * @public
    */
   dispose() {
     this.numberControl.dispose();

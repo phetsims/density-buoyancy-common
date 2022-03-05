@@ -14,16 +14,16 @@ import Dimension2 from '../../../../dot/js/Dimension2.js';
 import Range from '../../../../dot/js/Range.js';
 import Utils from '../../../../dot/js/Utils.js';
 import EnumerationDeprecated from '../../../../phet-core/js/EnumerationDeprecated.js';
-import EnumerationIO from '../../../../tandem/js/types/EnumerationIO.js';
 import merge from '../../../../phet-core/js/merge.js';
+import optionize from '../../../../phet-core/js/optionize.js';
 import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
 import NumberControl from '../../../../scenery-phet/js/NumberControl.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
-import { HBox } from '../../../../scenery/js/imports.js';
-import { Text } from '../../../../scenery/js/imports.js';
-import { VBox } from '../../../../scenery/js/imports.js';
+import { HBox, IPaint, Text, VBox, VBoxOptions, Node } from '../../../../scenery/js/imports.js';
 import ComboBox from '../../../../sun/js/ComboBox.js';
 import ComboBoxItem from '../../../../sun/js/ComboBoxItem.js';
+import Tandem from '../../../../tandem/js/Tandem.js';
+import EnumerationIO from '../../../../tandem/js/types/EnumerationIO.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import densityBuoyancyCommonStrings from '../../densityBuoyancyCommonStrings.js';
 import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
@@ -37,33 +37,35 @@ const TRACK_HEIGHT = 3;
 // A workaround for changing a DerivedProperty range Property to a NumberProperty, where the new range AND value will
 // not overlap with the previous one.
 class WorkaroundRange extends Range {
-  /**
-   * @public
-   * @override
-   *
-   * @param {number} value
-   * @returns {boolean}
-   */
-  contains( value ) { return true; }
+  contains( value: number ): boolean { return true; }
 }
 
-class MaterialMassVolumeControlNode extends VBox {
-  /**
-   * @param {Property.<Material>} materialProperty
-   * @param {Property.<number>} massProperty
-   * @param {Property.<number>} volumeProperty
-   * @param {Array.<Material>} materials
-   * @param {function(number)} setVolume
-   * @param {Node} listParent
-   * @param {Object} [options]
-   */
-  constructor( materialProperty, massProperty, volumeProperty, materials, setVolume, listParent, options ) {
+type SelfOptions = {
+  labelNode?: Node | null,
 
-    options = merge( {
-      // {Node|null}
+  minMass?: number;
+  minCustomMass?: number;
+  maxCustomMass?: number;
+  maxMass?: number;
+  minVolumeLiters?: number;
+  maxVolumeLiters?: number;
+  minCustomVolumeLiters?: number;
+
+  color?: IPaint;
+
+  // Require the tandem
+  tandem: Tandem;
+};
+
+export type MaterialMassVolumeControlNodeOptions = SelfOptions & VBoxOptions;
+
+class MaterialMassVolumeControlNode extends VBox {
+
+  constructor( materialProperty: Property<Material>, massProperty: Property<number>, volumeProperty: Property<number>, materials: Material[], setVolume: ( volume: number ) => void, listParent: Node, providedOptions?: MaterialMassVolumeControlNodeOptions ) {
+
+    const options = optionize<MaterialMassVolumeControlNodeOptions, SelfOptions, VBoxOptions>( {
       labelNode: null,
 
-      // {number}
       minMass: 0.1,
       minCustomMass: 0.5,
       maxCustomMass: 10,
@@ -72,9 +74,8 @@ class MaterialMassVolumeControlNode extends VBox {
       maxVolumeLiters: 10,
       minCustomVolumeLiters: 1,
 
-      // {PaintDef}
       color: null
-    }, options );
+    }, providedOptions );
 
     const tandem = options.tandem;
 
@@ -86,14 +87,18 @@ class MaterialMassVolumeControlNode extends VBox {
       align: 'left'
     } );
 
-    const MaterialEnumeration = EnumerationDeprecated.byKeys( [ ...materials.map( material => material.identifier ), 'CUSTOM' ] );
+    type MaterialEnumValue = { name: 'CUSTOM' | keyof Material };
+    type MaterialEnum = {
+      [ key: string ]: MaterialEnumValue
+    };
+    const MaterialEnumeration: MaterialEnum = EnumerationDeprecated.byKeys( [ ...materials.map( material => material.identifier! ), 'CUSTOM' ] ) as unknown as MaterialEnum;
 
     const comboBoxMaterialProperty = new DynamicProperty( new Property( materialProperty ), {
       bidirectional: true,
-      map: material => {
-        return material.custom ? MaterialEnumeration.CUSTOM : MaterialEnumeration[ material.identifier ];
+      map: ( material: Material ) => {
+        return material.custom ? MaterialEnumeration.CUSTOM : MaterialEnumeration[ material.identifier! ];
       },
-      inverseMap: materialEnum => {
+      inverseMap: ( materialEnum: MaterialEnumValue ): Material => {
         if ( materialEnum === MaterialEnumeration.CUSTOM ) {
           // Handle our minimum volume if we're switched to custom (if needed)
           const volume = Math.max( volumeProperty.value, options.minCustomVolumeLiters );
@@ -102,7 +107,7 @@ class MaterialMassVolumeControlNode extends VBox {
           } );
         }
         else {
-          return Material[ materialEnum.name ];
+          return Material[ materialEnum.name as unknown as keyof ( typeof Material ) ] as Material;
         }
       },
       reentrant: true,
@@ -110,6 +115,7 @@ class MaterialMassVolumeControlNode extends VBox {
       tandem: options.tandem.createTandem( 'comboBoxMaterialProperty' ),
       phetioDocumentation: 'Current material of the block. Changing the material will result in changes to the mass, but the volume will remain the same.',
       validValues: MaterialEnumeration.VALUES,
+      // @ts-ignore
       phetioType: Property.PropertyIO( EnumerationIO( MaterialEnumeration ) )
     } );
 
@@ -252,12 +258,11 @@ class MaterialMassVolumeControlNode extends VBox {
         return new ComboBoxItem( new Text( material.name, {
           font: DensityBuoyancyCommonConstants.COMBO_BOX_ITEM_FONT,
           maxWidth: comboMaxWidth
-        } ), MaterialEnumeration[ material.identifier ], { tandemName: `${material.tandemName}Item` } );
+        } ), MaterialEnumeration[ material.identifier! ], { tandemName: `${material.tandemName}Item` } );
       } ),
       new ComboBoxItem( new Text( densityBuoyancyCommonStrings.material.custom, {
         font: DensityBuoyancyCommonConstants.COMBO_BOX_ITEM_FONT,
-        maxWidth: comboMaxWidth,
-        tandemName: 'custom'
+        maxWidth: comboMaxWidth
       } ), MaterialEnumeration.CUSTOM, { tandemName: 'customItem' } )
     ], comboBoxMaterialProperty, listParent, {
       xMargin: 8,
@@ -272,7 +277,7 @@ class MaterialMassVolumeControlNode extends VBox {
           tandem: massNumberControlTandem.createTandem( 'slider' ).createTandem( 'thumbNode' )
         } ),
         thumbYOffset: new PrecisionSliderThumb().height / 2 - TRACK_HEIGHT / 2,
-        constrainValue: value => {
+        constrainValue: ( value: number ) => {
           const range = enabledMassRangeProperty.value;
 
           // Don't snap before ranges, since this doesn't work for Styrofoam case, see
@@ -312,7 +317,7 @@ class MaterialMassVolumeControlNode extends VBox {
           tandem: volumeNumberControlTandem.createTandem( 'slider' ).createTandem( 'thumbNode' )
         } ),
         thumbYOffset: new PrecisionSliderThumb().height / 2 - TRACK_HEIGHT / 2,
-        constrainValue: value => Utils.roundSymmetric( value * 2 ) / 2,
+        constrainValue: ( value: number ) => Utils.roundSymmetric( value * 2 ) / 2,
         phetioLinkedProperty: volumeProperty
       },
       numberDisplayOptions: {
@@ -338,7 +343,7 @@ class MaterialMassVolumeControlNode extends VBox {
         spacing: 5,
         children: [
           comboBox,
-          ...[ options.labelNode ].filter( _.identity )
+          ...( [ options.labelNode ].filter( _.identity ) as Node[] )
         ]
       } ),
       massNumberControl,

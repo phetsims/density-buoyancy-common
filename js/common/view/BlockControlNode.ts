@@ -6,18 +6,17 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
+import { Node } from '../../../../scenery/js/imports.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import Cube from '../model/Cube.js';
+import Cuboid from '../model/Cuboid.js';
 import Material from '../model/Material.js';
-import MaterialMassVolumeControlNode from './MaterialMassVolumeControlNode.js';
+import MaterialMassVolumeControlNode, { MaterialMassVolumeControlNodeOptions } from './MaterialMassVolumeControlNode.js';
+
+export type BlockControlNodeOptions = MaterialMassVolumeControlNodeOptions;
 
 class BlockControlNode extends MaterialMassVolumeControlNode {
-  /**
-   * @param {Cuboid} cuboid
-   * @param {Node} listParent
-   * @param {Object} [options]
-   */
-  constructor( cuboid, listParent, options ) {
+  constructor( cuboid: Cuboid, listParent: Node, options?: BlockControlNodeOptions ) {
     super( cuboid.materialProperty, cuboid.massProperty, cuboid.volumeProperty, [
       Material.STYROFOAM,
       Material.WOOD,

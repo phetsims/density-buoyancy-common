@@ -9,20 +9,24 @@
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import merge from '../../../../phet-core/js/merge.js';
 import { Node } from '../../../../scenery/js/imports.js';
+import Tandem from '../../../../tandem/js/Tandem.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
-import BlockControlNode from './BlockControlNode.js';
+import Cuboid from '../model/Cuboid.js';
+import BlockControlNode, { BlockControlNodeOptions } from './BlockControlNode.js';
 import DensityBuoyancyCommonColors from './DensityBuoyancyCommonColors.js';
 import PrimarySecondaryPanelsNode from './PrimarySecondaryPanelsNode.js';
+
+type PrimarySecondaryControlsNodeOptions = BlockControlNodeOptions & { tandem: Tandem };
 
 class PrimarySecondaryControlsNode extends PrimarySecondaryPanelsNode {
 
   /**
-   * @param {Mass} primaryMass
-   * @param {Mass} secondaryMass
-   * @param {Node} popupLayer
-   * @param {Object} [options] - Applied to each BlockControlNode
+   * @param primaryMass
+   * @param secondaryMass
+   * @param popupLayer
+   * @param options - Applied to each BlockControlNode
    */
-  constructor( primaryMass, secondaryMass, popupLayer, options ) {
+  constructor( primaryMass: Cuboid, secondaryMass: Cuboid, popupLayer: Node, options: PrimarySecondaryControlsNodeOptions ) {
 
     const tandem = options.tandem;
     const omittedOptions = _.omit( options, [ 'tandem' ] );

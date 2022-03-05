@@ -14,11 +14,8 @@ import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js
 import { PRIMARY_LABEL, SECONDARY_LABEL } from './MassLabelNode.js';
 
 class PrimarySecondaryPanelsNode extends Panel {
-  /**
-   * @param {Node} primaryNode
-   * @param {Node} secondaryNode
-   */
-  constructor( primaryNode, secondaryNode ) {
+
+  constructor( primaryNode: Node, secondaryNode: Node ) {
     super( new FlowBox( {
       spacing: 10,
       orientation: 'vertical',
@@ -33,11 +30,8 @@ class PrimarySecondaryPanelsNode extends Panel {
 
   /**
    * Returns a Node that displays the "primary mass" label.
-   * @public
-   *
-   * @returns {Node}
    */
-  static getPrimaryLabelNode() {
+  static getPrimaryLabelNode(): Node {
     return new Node( {
       children: [ PRIMARY_LABEL ],
       scale: 0.7
@@ -46,11 +40,8 @@ class PrimarySecondaryPanelsNode extends Panel {
 
   /**
    * Returns a Node that displays the "secondary mass" label.
-   * @public
-   *
-   * @returns {Node}
    */
-  static getSecondaryLabelNode() {
+  static getSecondaryLabelNode(): Node {
     return new Node( {
       children: [ SECONDARY_LABEL ],
       scale: 0.7

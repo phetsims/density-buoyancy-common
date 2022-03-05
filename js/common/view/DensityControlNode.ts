@@ -6,9 +6,10 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
+import Property from '../../../../axon/js/Property.js';
 import Range from '../../../../dot/js/Range.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
-import { Text } from '../../../../scenery/js/imports.js';
+import { Node, Text } from '../../../../scenery/js/imports.js';
 import ComboBoxItem from '../../../../sun/js/ComboBoxItem.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import densityBuoyancyCommonStrings from '../../densityBuoyancyCommonStrings.js';
@@ -16,13 +17,8 @@ import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js
 import Material from '../model/Material.js';
 import ComboNumberControl from './ComboNumberControl.js';
 
-class DensityControlNode extends ComboNumberControl {
-  /**
-   * @param {Property.<Material>} liquidMaterialProperty
-   * @param {Array.<Material>} materials
-   * @param {Node} listParent
-   */
-  constructor( liquidMaterialProperty, materials, listParent ) {
+class DensityControlNode extends ComboNumberControl<Material> {
+  constructor( liquidMaterialProperty: Property<Material>, materials: Material[], listParent: Node ) {
     const customValue = Material.createCustomLiquidMaterial( {
       density: 1000
     } );

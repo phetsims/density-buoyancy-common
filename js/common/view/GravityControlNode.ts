@@ -6,9 +6,10 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
+import Property from '../../../../axon/js/Property.js';
 import Range from '../../../../dot/js/Range.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
-import { Text } from '../../../../scenery/js/imports.js';
+import { Text, Node } from '../../../../scenery/js/imports.js';
 import ComboBoxItem from '../../../../sun/js/ComboBoxItem.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import densityBuoyancyCommonStrings from '../../densityBuoyancyCommonStrings.js';
@@ -16,12 +17,8 @@ import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js
 import Gravity from '../model/Gravity.js';
 import ComboNumberControl from './ComboNumberControl.js';
 
-class GravityControlNode extends ComboNumberControl {
-  /**
-   * @param {Property.<Gravity>} gravityProperty
-   * @param {Node} listParent
-   */
-  constructor( gravityProperty, listParent ) {
+class GravityControlNode extends ComboNumberControl<Gravity> {
+  constructor( gravityProperty: Property<Gravity>, listParent: Node ) {
 
     const customValue = Gravity.createCustomGravity( 9.8 );
 

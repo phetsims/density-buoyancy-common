@@ -6,12 +6,13 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
+import Property from '../../../../axon/js/Property.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
 import ThreeStage from '../../../../mobius/js/ThreeStage.js';
 import ThreeUtils from '../../../../mobius/js/ThreeUtils.js';
 import merge from '../../../../phet-core/js/merge.js';
-import { Image } from '../../../../scenery/js/imports.js';
-import RectangularRadioButtonGroup from '../../../../sun/js/buttons/RectangularRadioButtonGroup.js';
+import { Image, Node } from '../../../../scenery/js/imports.js';
+import RectangularRadioButtonGroup, { RectangularRadioButtonGroupOptions } from '../../../../sun/js/buttons/RectangularRadioButtonGroup.js';
 import doubleCuboidIcon_png from '../../../mipmaps/doubleCuboidIcon_png.js';
 import singleCuboidIcon_png from '../../../mipmaps/singleCuboidIcon_png.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
@@ -31,12 +32,10 @@ DensityBuoyancyCommonColors.labelBProperty.link( labelColor => {
   bMaterial.color = ThreeUtils.colorToThree( labelColor );
 } );
 
-class BlocksRadioButtonGroup extends RectangularRadioButtonGroup {
-  /**
-   * @param {Property.<TwoBlockMode>} modeProperty
-   * @param {Object} [options]
-   */
-  constructor( modeProperty, options ) {
+type BlocksRadioButtonGroupOptions = RectangularRadioButtonGroupOptions;
+
+class BlocksRadioButtonGroup extends RectangularRadioButtonGroup<TwoBlockMode> {
+  constructor( modeProperty: Property<TwoBlockMode>, options?: BlocksRadioButtonGroupOptions ) {
     super( modeProperty, [
       {
         value: TwoBlockMode.ONE_BLOCK,
@@ -58,20 +57,15 @@ class BlocksRadioButtonGroup extends RectangularRadioButtonGroup {
 
   /**
    * Creates a box mesh for use in icons.
-   * @private
-   *
-   * @param {THREE.Material} material
-   * @param {Vector3} position
-   * @returns {THREE.Mesh}
    */
-  static createBox( material, position ) {
+  private static createBox( material: THREE.Material, position: Vector3 ): THREE.Mesh {
     const boxGeometry = new THREE.BoxGeometry( 0.1, 0.1, 0.1 );
 
     const box = new THREE.Mesh( boxGeometry, material );
     box.position.copy( ThreeUtils.vectorToThree( position ) );
 
     // Create outlines around the box with cylinders (like stroking the edges)
-    const connect = ( a, b ) => {
+    const connect = ( a: Vector3, b: Vector3 ) => {
       const delta = b.minus( a );
 
       const edgeGeometry = new THREE.CylinderGeometry( 0.002, 0.002, delta.magnitude, 8, 1 );
@@ -109,13 +103,8 @@ class BlocksRadioButtonGroup extends RectangularRadioButtonGroup {
 
   /**
    * Returns an icon for selection, given a scene setup callback.
-   * @private
-   *
-   * @param {number} zoom
-   * @param {function(THREE.Scene)} setupScene
-   * @returns {Node}
    */
-  static getIcon( zoom, setupScene ) {
+  private static getIcon( zoom: number, setupScene: ( scene: THREE.Scene ) => void ): Node {
     const stage = new ThreeStage();
 
     const ambientLight = new THREE.AmbientLight( 0x333333 );

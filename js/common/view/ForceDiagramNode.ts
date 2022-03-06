@@ -6,18 +6,20 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
+import Property from '../../../../axon/js/Property.js';
 import Utils from '../../../../dot/js/Utils.js';
 import merge from '../../../../phet-core/js/merge.js';
 import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
 import ArrowNode from '../../../../scenery-phet/js/ArrowNode.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
-import { Line } from '../../../../scenery/js/imports.js';
-import { Node } from '../../../../scenery/js/imports.js';
-import { Text } from '../../../../scenery/js/imports.js';
+import { Line, Node, Text } from '../../../../scenery/js/imports.js';
 import Panel from '../../../../sun/js/Panel.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import densityBuoyancyCommonStrings from '../../densityBuoyancyCommonStrings.js';
+import Mass from '../model/Mass.js';
 import DensityBuoyancyCommonColors from './DensityBuoyancyCommonColors.js';
+import InterpolatedProperty from '../model/InterpolatedProperty.js';
+import Vector2 from '../../../../dot/js/Vector2.js';
 
 // constants
 const arrowOptions = {
@@ -31,26 +33,39 @@ const arrowSpacing = arrowOptions.headWidth + 3;
 const labelFont = new PhetFont( { size: 12, weight: 'bold' } );
 
 class ForceDiagramNode extends Node {
-  /**
-   * @param {Mass} mass
-   * @param {Property.<boolean>} showGravityForceProperty
-   * @param {Property.<boolean>} showBuoyancyForceProperty
-   * @param {Property.<boolean>} showContactForceProperty
-   * @param {Property.<boolean>} showForceValuesProperty
-   */
-  constructor( mass, showGravityForceProperty, showBuoyancyForceProperty, showContactForceProperty, showForceValuesProperty ) {
+
+  readonly mass: Mass;
+  private showGravityForceProperty: Property<boolean>;
+  private showBuoyancyForceProperty: Property<boolean>;
+  private showContactForceProperty: Property<boolean>;
+  private showForceValuesProperty: Property<boolean>;
+
+  private gravityArrowNode: ArrowNode;
+  private buoyancyArrowNode: ArrowNode;
+  private contactArrowNode: ArrowNode;
+
+  private gravityLabelText: Text;
+  private buoyancyLabelText: Text;
+  private contactLabelText: Text;
+
+  private gravityLabelNode: Node;
+  private buoyancyLabelNode: Node;
+  private contactLabelNode: Node;
+
+  private arrowMap: Map<ArrowNode, Node>;
+
+  private axisNode: Line;
+
+  constructor( mass: Mass, showGravityForceProperty: Property<boolean>, showBuoyancyForceProperty: Property<boolean>, showContactForceProperty: Property<boolean>, showForceValuesProperty: Property<boolean> ) {
     super();
 
-    // @public (read-only) {Mass}
     this.mass = mass;
 
-    // @private {Property.<boolean>}
     this.showGravityForceProperty = showGravityForceProperty;
     this.showBuoyancyForceProperty = showBuoyancyForceProperty;
     this.showContactForceProperty = showContactForceProperty;
     this.showForceValuesProperty = showForceValuesProperty;
 
-    // @private {ArrowNode}
     this.gravityArrowNode = new ArrowNode( 0, 0, 0, 0, merge( {
       fill: DensityBuoyancyCommonColors.gravityForceProperty
     }, arrowOptions ) );
@@ -61,7 +76,6 @@ class ForceDiagramNode extends Node {
       fill: DensityBuoyancyCommonColors.contactForceProperty
     }, arrowOptions ) );
 
-    // @private {Text}
     this.gravityLabelText = new Text( '', {
       font: labelFont,
       fill: DensityBuoyancyCommonColors.gravityForceProperty,
@@ -86,17 +100,15 @@ class ForceDiagramNode extends Node {
       yMargin: 1
     };
 
-    // @private {Node}
     this.gravityLabelNode = new Panel( this.gravityLabelText, panelOptions );
     this.buoyancyLabelNode = new Panel( this.buoyancyLabelText, panelOptions );
     this.contactLabelNode = new Panel( this.contactLabelText, panelOptions );
 
-    // Set up references
-    this.gravityArrowNode.label = this.gravityLabelNode;
-    this.buoyancyArrowNode.label = this.buoyancyLabelNode;
-    this.contactArrowNode.label = this.contactLabelNode;
+    this.arrowMap = new Map();
+    this.arrowMap.set( this.gravityArrowNode, this.gravityLabelNode );
+    this.arrowMap.set( this.buoyancyArrowNode, this.buoyancyLabelNode );
+    this.arrowMap.set( this.contactArrowNode, this.contactLabelNode );
 
-    // @private {Line}
     this.axisNode = new Line( {
       stroke: 'black'
     } );
@@ -107,11 +119,11 @@ class ForceDiagramNode extends Node {
    * @public
    */
   update() {
-    const upwardArrows = [];
-    const downwardArrows = [];
-    const labels = [];
+    const upwardArrows: ArrowNode[] = [];
+    const downwardArrows: ArrowNode[] = [];
+    const labels: Node[] = [];
 
-    const updateArrow = ( forceProperty, showForceProperty, arrowNode, textNode, labelNode ) => {
+    const updateArrow = ( forceProperty: InterpolatedProperty<Vector2>, showForceProperty: Property<boolean>, arrowNode: ArrowNode, textNode: Text, labelNode: Node ) => {
       const y = forceProperty.value.y;
       if ( showForceProperty.value && Math.abs( y ) > 1e-5 ) {
         arrowNode.setTip( 0, -y * forceScale );
@@ -138,21 +150,22 @@ class ForceDiagramNode extends Node {
       ...labels
     ];
 
-    const positionArrow = ( array, index, isUp ) => {
+    const positionArrow = ( array: ArrowNode[], index: number, isUp: boolean ) => {
       const arrow = array[ index ];
       arrow.x = ( index - ( array.length - 1 ) / 2 ) * arrowSpacing;
       if ( this.showForceValuesProperty.value ) {
+        const label = this.arrowMap.get( arrow )!;
         if ( isUp ) {
-          arrow.label.bottom = -2;
+          label.bottom = -2;
         }
         else {
-          arrow.label.top = 2;
+          label.top = 2;
         }
         if ( index + 1 < array.length ) {
-          arrow.label.right = arrow.left - 2;
+          label.right = arrow.left - 2;
         }
         else {
-          arrow.label.left = arrow.right + 2;
+          label.left = arrow.right + 2;
         }
       }
     };

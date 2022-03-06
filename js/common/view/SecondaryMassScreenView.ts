@@ -10,18 +10,22 @@ import Vector3 from '../../../../dot/js/Vector3.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import BlocksRadioButtonGroup from './BlocksRadioButtonGroup.js';
 import DensityBuoyancyScreenView from './DensityBuoyancyScreenView.js';
+import TwoBlockMode from '../model/TwoBlockMode.js';
+import Property from '../../../../axon/js/Property.js';
+import Bounds2 from '../../../../dot/js/Bounds2.js';
+import { Node } from '../../../../scenery/js/imports.js';
 
-class SecondaryMassScreenView extends DensityBuoyancyScreenView {
+abstract class SecondaryMassScreenView extends DensityBuoyancyScreenView {
+
+  abstract rightBox: Node;
+  private blocksRadioButtonGroup?: Node;
+
   /**
    * Adding the second-mass control.
-   * @protected
-   *
-   * @param {Property.<TwoBlockMode>} modeProperty
    */
-  addSecondMassControl( modeProperty ) {
+  protected addSecondMassControl( modeProperty: Property<TwoBlockMode> ) {
     assert && assert( this.rightBox, 'SecondaryMassScreenView requires a this.rightBox be defined to add this control' );
 
-    // @private {Node}
     this.blocksRadioButtonGroup = new BlocksRadioButtonGroup( modeProperty, {
       tandem: this.tandem.createTandem( 'blocksRadioButtonGroup' )
     } );
@@ -35,23 +39,17 @@ class SecondaryMassScreenView extends DensityBuoyancyScreenView {
 
   /**
    * Positions the second-mass control.
-   * @private
    */
-  positionSecondMassControl() {
-    this.blocksRadioButtonGroup.bottom = this.modelToViewPoint( new Vector3(
+  private positionSecondMassControl() {
+    this.blocksRadioButtonGroup!.bottom = this.modelToViewPoint( new Vector3(
       0,
       this.model.poolBounds.minY,
       this.model.poolBounds.maxZ
     ) ).y;
-    this.blocksRadioButtonGroup.left = this.rightBox.left;
+    this.blocksRadioButtonGroup!.left = this.rightBox.left;
   }
 
-  /**
-   * @public
-   * @override
-   * @param {Bounds2} viewBounds
-   */
-  layout( viewBounds ) {
+  layout( viewBounds: Bounds2 ) {
     super.layout( viewBounds );
 
     // If the simulation was not able to load for WebGL, bail out

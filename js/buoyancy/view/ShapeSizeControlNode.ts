@@ -8,14 +8,15 @@
 
 import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
+import Property from '../../../../axon/js/Property.js';
 import Dimension2 from '../../../../dot/js/Dimension2.js';
 import Range from '../../../../dot/js/Range.js';
-import merge from '../../../../phet-core/js/merge.js';
+import optionize from '../../../../phet-core/js/optionize.js';
 import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
 import NumberControl from '../../../../scenery-phet/js/NumberControl.js';
 import NumberDisplay from '../../../../scenery-phet/js/NumberDisplay.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
-import { FlowBox, HBox, Text, VDivider } from '../../../../scenery/js/imports.js';
+import { FlowBox, FlowBoxOptions, HBox, Text, VDivider, Node } from '../../../../scenery/js/imports.js';
 import ComboBox from '../../../../sun/js/ComboBox.js';
 import ComboBoxItem from '../../../../sun/js/ComboBoxItem.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
@@ -25,37 +26,34 @@ import { MassShape } from '../model/BuoyancyShapesModel.js';
 
 // constants
 const shapeStringMap = {
-  [ MassShape.BLOCK ]: densityBuoyancyCommonStrings.shape.block,
-  [ MassShape.ELLIPSOID ]: densityBuoyancyCommonStrings.shape.ellipsoid,
-  [ MassShape.VERTICAL_CYLINDER ]: densityBuoyancyCommonStrings.shape.verticalCylinder,
-  [ MassShape.HORIZONTAL_CYLINDER ]: densityBuoyancyCommonStrings.shape.horizontalCylinder,
-  [ MassShape.CONE ]: densityBuoyancyCommonStrings.shape.cone,
-  [ MassShape.INVERTED_CONE ]: densityBuoyancyCommonStrings.shape.invertedCone
+  [ MassShape.BLOCK.name ]: densityBuoyancyCommonStrings.shape.block,
+  [ MassShape.ELLIPSOID.name ]: densityBuoyancyCommonStrings.shape.ellipsoid,
+  [ MassShape.VERTICAL_CYLINDER.name ]: densityBuoyancyCommonStrings.shape.verticalCylinder,
+  [ MassShape.HORIZONTAL_CYLINDER.name ]: densityBuoyancyCommonStrings.shape.horizontalCylinder,
+  [ MassShape.CONE.name ]: densityBuoyancyCommonStrings.shape.cone,
+  [ MassShape.INVERTED_CONE.name ]: densityBuoyancyCommonStrings.shape.invertedCone
 };
 const tandemNameMap = {
-  [ MassShape.BLOCK ]: 'block',
-  [ MassShape.ELLIPSOID ]: 'ellipsoid',
-  [ MassShape.VERTICAL_CYLINDER ]: 'verticalCylinder',
-  [ MassShape.HORIZONTAL_CYLINDER ]: 'horizontalCylinder',
-  [ MassShape.CONE ]: 'cone',
-  [ MassShape.INVERTED_CONE ]: 'invertedCone'
+  [ MassShape.BLOCK.name ]: 'block',
+  [ MassShape.ELLIPSOID.name ]: 'ellipsoid',
+  [ MassShape.VERTICAL_CYLINDER.name ]: 'verticalCylinder',
+  [ MassShape.HORIZONTAL_CYLINDER.name ]: 'horizontalCylinder',
+  [ MassShape.CONE.name ]: 'cone',
+  [ MassShape.INVERTED_CONE.name ]: 'invertedCone'
 };
 
-class ShapeSizeControlNode extends FlowBox {
-  /**
-   * @param {Property.<MassShape>} massShapeProperty
-   * @param {Property.<number>} widthRatioProperty
-   * @param {Property.<number>} heightRatioProperty
-   * @param {Property.<number>} volumeProperty
-   * @param {Node} listParent
-   * @param {Object} [options]
-   */
-  constructor( massShapeProperty, widthRatioProperty, heightRatioProperty, volumeProperty, listParent, options ) {
+type SelfOptions = {
+  labelNode?: Node | null;
+};
 
-    options = merge( {
-      // {Node|null}
+export type ShapeSizeControlNodeOptions = SelfOptions & FlowBoxOptions;
+
+class ShapeSizeControlNode extends FlowBox {
+  constructor( massShapeProperty: Property<MassShape>, widthRatioProperty: Property<number>, heightRatioProperty: Property<number>, volumeProperty: Property<number>, listParent: Node, providedOptions?: ShapeSizeControlNodeOptions ) {
+
+    const options = optionize<ShapeSizeControlNodeOptions, SelfOptions, FlowBoxOptions>( {
       labelNode: null
-    }, options );
+    }, providedOptions );
 
     super( {
       spacing: 5,
@@ -64,10 +62,10 @@ class ShapeSizeControlNode extends FlowBox {
     } );
 
     const comboBox = new ComboBox( MassShape.enumeration.values.map( massShape => {
-      return new ComboBoxItem( new Text( shapeStringMap[ massShape ], {
+      return new ComboBoxItem( new Text( shapeStringMap[ massShape.name ], {
         font: DensityBuoyancyCommonConstants.COMBO_BOX_ITEM_FONT,
         maxWidth: 160
-      } ), massShape, { tandemName: `${tandemNameMap[ massShape ]}Item` } );
+      } ), massShape, { tandemName: `${tandemNameMap[ massShape.name ]}Item` } );
     } ), massShapeProperty, listParent, {
       xMargin: 8,
       yMargin: 4
@@ -109,7 +107,7 @@ class ShapeSizeControlNode extends FlowBox {
         children: [
           comboBox,
           options.labelNode
-        ].filter( _.identity )
+        ].filter( _.identity ) as Node[]
       } ),
       heightNumberControl,
       widthNumberControl,

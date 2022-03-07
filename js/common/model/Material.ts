@@ -6,13 +6,12 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
-import IReadOnlyProperty from '../../../../axon/js/IReadOnlyProperty.js';
+import IProperty from '../../../../axon/js/IProperty.js';
 import Property from '../../../../axon/js/Property.js';
 import Utils from '../../../../dot/js/Utils.js';
 import merge from '../../../../phet-core/js/merge.js';
 import optionize from '../../../../phet-core/js/optionize.js';
-import { Color, IColor } from '../../../../scenery/js/imports.js';
-import { ColorProperty } from '../../../../scenery/js/imports.js';
+import { Color, ColorProperty, IColor } from '../../../../scenery/js/imports.js';
 import BooleanIO from '../../../../tandem/js/types/BooleanIO.js';
 import IOType from '../../../../tandem/js/types/IOType.js';
 import NullableIO from '../../../../tandem/js/types/NullableIO.js';
@@ -44,10 +43,10 @@ type MaterialOptions = {
   hidden?: boolean;
 
   // Uses the color for a solid material's color
-  customColor?: IReadOnlyProperty<Color> | null;
+  customColor?: IProperty<Color> | null;
 
   // Uses the alpha channel for opacity
-  liquidColor?: IReadOnlyProperty<Color> | null;
+  liquidColor?: IProperty<Color> | null;
 };
 
 class Material {
@@ -59,8 +58,8 @@ class Material {
   readonly viscosity: number;
   readonly custom: boolean;
   readonly hidden: boolean;
-  readonly customColor: IReadOnlyProperty<Color> | null;
-  readonly liquidColor: IReadOnlyProperty<Color> | null;
+  readonly customColor: IProperty<Color> | null;
+  readonly liquidColor: IProperty<Color> | null;
 
   constructor( providedConfig: MaterialOptions ) {
 

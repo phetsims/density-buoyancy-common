@@ -592,7 +592,7 @@ class DensityBuoyancyScreenView extends ScreenView {
         massView = new VerticalCylinderView( mass );
       }
       else if ( mass instanceof Bottle ) {
-        massView = new BottleView( mass, model.pool.liquidYInterpolatedProperty );
+        massView = new BottleView( mass );
       }
       else if ( mass instanceof Boat ) {
         massView = new BoatView( mass, model.pool.liquidYInterpolatedProperty );

@@ -8,21 +8,22 @@
 
 import DynamicProperty from '../../../../axon/js/DynamicProperty.js';
 import ThreeUtils from '../../../../mobius/js/ThreeUtils.js';
+import { Color } from '../../../../scenery/js/imports.js';
 import MassView from '../../common/view/MassView.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import Bottle from '../model/Bottle.js';
+import Material from '../../common/model/Material.js';
 
 class BottleView extends MassView {
-  /**
-   * @param {Bottle} bottle
-   * @param {Property.<number>} liquidYInterpolatedProperty
-   * @param {Object} [options]
-   */
-  constructor( bottle, liquidYInterpolatedProperty, options ) {
+
+  bottle: Bottle;
+
+  constructor( bottle: Bottle ) {
 
     const primaryGeometry = Bottle.getPrimaryGeometry();
 
-    super( bottle, new THREE.Geometry(), options );
+    // @ts-ignore
+    super( bottle, new THREE.Geometry() );
 
     const bottomClipPlane = new THREE.Plane( new THREE.Vector3( 0, -1, 0 ), 0 );
     const topClipPlane = new THREE.Plane( new THREE.Vector3( 0, 1, 0 ), 0 );
@@ -106,7 +107,7 @@ class BottleView extends MassView {
     interiorSurfaceGeometry.addAttribute( 'position', new THREE.BufferAttribute( crossSectionPositionArray, 3 ) );
     interiorSurfaceGeometry.addAttribute( 'normal', new THREE.BufferAttribute( crossSectionNormalArray, 3 ) );
 
-    const setCrossSectionRelativeY = y => {
+    const setCrossSectionRelativeY = ( y: number ) => {
       Bottle.fillCrossSectionVertexArray( y, crossSectionPositionArray );
       interiorSurfaceGeometry.attributes.position.needsUpdate = true;
       interiorSurfaceGeometry.computeBoundingSphere();
@@ -151,9 +152,13 @@ class BottleView extends MassView {
       view.renderOrder = -( index + 1 );
     } );
 
-    new DynamicProperty( bottle.interiorMaterialProperty, {
-      derive: 'liquidColor'
-    } ).link( color => {
+    new DynamicProperty<Color, Color, Material>( bottle.interiorMaterialProperty, {
+      derive: material => {
+        assert && assert( material.liquidColor );
+
+        return material.liquidColor!;
+      }
+    } ).link( ( color: Color ) => {
       const threeColor = ThreeUtils.colorToThree( color );
       const alpha = color.alpha;
 
@@ -165,14 +170,11 @@ class BottleView extends MassView {
       frontBottomMaterial.opacity = alpha;
     } );
 
-    // @public (read-only) {Bottle}
     this.bottle = bottle;
   }
 
   /**
    * Releases references.
-   * @public
-   * @override
    */
   dispose() {
     // TODO: dispose everything from above

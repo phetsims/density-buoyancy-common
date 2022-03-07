@@ -6,7 +6,7 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
-import Action from '../../../../axon/js/Action.js';
+import PhetioAction from '../../../../tandem/js/PhetioAction.js';
 import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import DynamicProperty from '../../../../axon/js/DynamicProperty.js';
@@ -182,7 +182,7 @@ class DensityBuoyancyScreenView extends ScreenView {
     animatedPanZoomSingleton.listener.matrixProperty.lazyLink( updateCursor );
 
     // @private {Action}
-    this.startDragAction = new Action( ( mass, position ) => {
+    this.startDragAction = new PhetioAction( ( mass, position ) => {
       mass.startDrag( position );
     }, {
       tandem: tandem.createTandem( 'startDragAction' ),
@@ -199,7 +199,7 @@ class DensityBuoyancyScreenView extends ScreenView {
     } );
 
     // @private {Action}
-    this.updateDragAction = new Action( ( mass, position ) => {
+    this.updateDragAction = new PhetioAction( ( mass, position ) => {
       mass.updateDrag( position );
     }, {
       tandem: tandem.createTandem( 'updateDragAction' ),
@@ -216,7 +216,7 @@ class DensityBuoyancyScreenView extends ScreenView {
     } );
 
     // @private {Action}
-    this.endDragAction = new Action( mass => {
+    this.endDragAction = new PhetioAction( mass => {
       mass.endDrag();
     }, {
       tandem: tandem.createTandem( 'endDragAction' ),

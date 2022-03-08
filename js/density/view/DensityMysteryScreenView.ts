@@ -18,8 +18,9 @@ import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonCo
 import DensityBuoyancyScreenView from '../../common/view/DensityBuoyancyScreenView.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import densityBuoyancyCommonStrings from '../../densityBuoyancyCommonStrings.js';
-import { BlockSet } from '../model/DensityMysteryModel.js';
+import DensityMysteryModel, { BlockSet } from '../model/DensityMysteryModel.js';
 import DensityTableNode from './DensityTableNode.js';
+import { DensityBuoyancyModelOptions } from '../../common/model/DensityBuoyancyModel.js';
 
 // constants
 const blockSetStringMap = {
@@ -30,12 +31,8 @@ const blockSetStringMap = {
 };
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
 
-class DensityMysteryScreenView extends DensityBuoyancyScreenView {
-  /**
-   * @param {DensityMysteryModel} model
-   * @param {Object} [options]
-   */
-  constructor( model, options ) {
+class DensityMysteryScreenView extends DensityBuoyancyScreenView<DensityMysteryModel> {
+  constructor( model: DensityMysteryModel, options: DensityBuoyancyModelOptions ) {
 
     const tandem = options.tandem;
 
@@ -59,10 +56,10 @@ class DensityMysteryScreenView extends DensityBuoyancyScreenView {
     } ) );
 
     const blockSetTandemMap = {
-      [ BlockSet.SET_1 ]: 'set1',
-      [ BlockSet.SET_2 ]: 'set2',
-      [ BlockSet.SET_3 ]: 'set3',
-      [ BlockSet.RANDOM ]: 'random'
+      [ BlockSet.SET_1.name ]: 'set1',
+      [ BlockSet.SET_2.name ]: 'set2',
+      [ BlockSet.SET_3.name ]: 'set3',
+      [ BlockSet.RANDOM.name ]: 'random'
     };
 
     const blocksPanelTandem = tandem.createTandem( 'blocksPanel' );
@@ -74,7 +71,7 @@ class DensityMysteryScreenView extends DensityBuoyancyScreenView {
           maxWidth: 65
         } ),
         value: blockSet,
-        tandemName: `${blockSetTandemMap[ blockSet ]}RadioButton`
+        tandemName: `${blockSetTandemMap[ blockSet.name ]}RadioButton`
       };
     } ), {
       spacing: 8,

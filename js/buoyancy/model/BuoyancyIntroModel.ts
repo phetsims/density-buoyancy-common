@@ -27,7 +27,7 @@ class BlockSet extends EnumerationValue {
   } );
 }
 
-type BuoyancyIntroModelOptions = BlockSetModelOptions<BlockSet>;
+type BuoyancyIntroModelOptions = Omit<BlockSetModelOptions<BlockSet>, 'initialMode' | 'BlockSet' | 'createMassesCallback' | 'regenerateMassesCallback' | 'positionMassesCallback'>;
 
 class BuoyancyIntroModel extends BlockSetModel<BlockSet> {
   constructor( providedOptions: BuoyancyIntroModelOptions ) {
@@ -79,6 +79,7 @@ class BuoyancyIntroModel extends BlockSetModel<BlockSet> {
       }
     }, providedOptions );
 
+    // @ts-ignore
     super( options );
 
     // Left scale

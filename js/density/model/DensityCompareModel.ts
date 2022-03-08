@@ -35,7 +35,7 @@ class BlockSet extends EnumerationValue {
   } );
 }
 
-type DensityCompareModelOptions = BlockSetModelOptions<BlockSet>;
+type DensityCompareModelOptions = Omit<BlockSetModelOptions<BlockSet>, 'initialMode' | 'BlockSet' | 'createMassesCallback' | 'regenerateMassesCallback' | 'positionMassesCallback'>;
 
 class DensityCompareModel extends BlockSetModel<BlockSet> {
 
@@ -240,6 +240,7 @@ class DensityCompareModel extends BlockSetModel<BlockSet> {
       positionMassesCallback: positionMasses
     }, providedOptions );
 
+    // @ts-ignore
     super( options );
 
     // @public {Property.<number>}

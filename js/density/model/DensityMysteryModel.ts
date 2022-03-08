@@ -57,7 +57,7 @@ class BlockSet extends EnumerationValue {
   } );
 }
 
-type DensityMysteryModelOptions = BlockSetModelOptions<BlockSet>;
+type DensityMysteryModelOptions = Omit<BlockSetModelOptions<BlockSet>, 'initialMode' | 'BlockSet' | 'createMassesCallback' | 'regenerateMassesCallback' | 'positionMassesCallback'>;
 
 class DensityMysteryModel extends BlockSetModel<BlockSet> {
 
@@ -235,6 +235,7 @@ class DensityMysteryModel extends BlockSetModel<BlockSet> {
       }
     };
 
+    // @ts-ignore
     super( optionize<DensityMysteryModelOptions, {}, BlockSetModelOptions<BlockSet>>( {
       canShowForces: false,
 

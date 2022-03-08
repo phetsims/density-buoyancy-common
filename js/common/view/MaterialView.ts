@@ -10,11 +10,11 @@
 
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 
-class MaterialView {
+class MaterialView<T extends THREE.Material = THREE.Material> {
 
-  readonly material: THREE.Material;
+  readonly material: T;
 
-  constructor( material: THREE.Material ) {
+  constructor( material: T ) {
     this.material = material;
   }
 

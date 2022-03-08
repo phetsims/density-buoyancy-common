@@ -12,8 +12,9 @@ import Property from '../../../../axon/js/Property.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import merge from '../../../../phet-core/js/merge.js';
 import Cube from '../../common/model/Cube.js';
+import Cuboid from '../../common/model/Cuboid.js';
 import DensityBuoyancyModel, { DensityBuoyancyModelOptions } from '../../common/model/DensityBuoyancyModel.js';
-import Mass, { MassTag } from '../../common/model/Mass.js';
+import { MassTag } from '../../common/model/Mass.js';
 import Material from '../../common/model/Material.js';
 import TwoBlockMode from '../../common/model/TwoBlockMode.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
@@ -23,8 +24,8 @@ type DensityIntroModelOptions = DensityBuoyancyModelOptions;
 class DensityIntroModel extends DensityBuoyancyModel {
 
   modeProperty: Property<TwoBlockMode>;
-  readonly primaryMass: Mass;
-  readonly secondaryMass: Mass;
+  readonly primaryMass: Cuboid;
+  readonly secondaryMass: Cuboid;
   densityExpandedProperty: Property<boolean>;
 
   constructor( options: DensityIntroModelOptions ) {

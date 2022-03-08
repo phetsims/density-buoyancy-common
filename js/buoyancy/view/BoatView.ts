@@ -7,21 +7,26 @@
  */
 
 import DynamicProperty from '../../../../axon/js/DynamicProperty.js';
+import IReadOnlyProperty from '../../../../axon/js/IReadOnlyProperty.js';
+import Multilink from '../../../../axon/js/Multilink.js';
 import Property from '../../../../axon/js/Property.js';
 import ThreeUtils from '../../../../mobius/js/ThreeUtils.js';
+import { Color } from '../../../../scenery/js/imports.js';
+import Material from '../../common/model/Material.js';
 import MassView from '../../common/view/MassView.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
+import Boat from '../model/Boat.js';
 import BoatDesign from '../model/BoatDesign.js';
 
 class BoatView extends MassView {
-  /**
-   * @param {Boat} boat
-   * @param {Property.<number>} liquidYInterpolatedProperty
-   * @param {Object} [options]
-   */
-  constructor( boat, liquidYInterpolatedProperty, options ) {
+  private liquidMultilink: Multilink<[number, number, number]>;
 
-    super( boat, new THREE.Geometry(), options );
+  boat: Boat;
+
+  constructor( boat: Boat, liquidYInterpolatedProperty: IReadOnlyProperty<number> ) {
+
+    // @ts-ignore
+    super( boat, new THREE.Geometry() );
 
     // Clip planes at the boat's water level
     const bottomBoatClipPlane = new THREE.Plane( new THREE.Vector3( 0, -1, 0 ), 0 );
@@ -136,7 +141,6 @@ class BoatView extends MassView {
     const topLiquid = new THREE.Mesh( topLiquidGeometry, topLiquidMaterial );
     this.add( topLiquid );
 
-    // @private {Multilink}
     this.liquidMultilink = Property.multilink( [
       boat.basin.liquidYInterpolatedProperty,
       boat.displacementVolumeProperty,
@@ -171,17 +175,8 @@ class BoatView extends MassView {
       topPoolClipPlane.constant = -poolLiquidY;
     } );
 
-    new DynamicProperty( boat.liquidMaterialProperty, {
-      derive: 'liquidColor'
-    } ).link( color => {
-      const threeColor = ThreeUtils.colorToThree( color );
-      const alpha = color.alpha;
-
-      topLiquidMaterial.color = threeColor;
-      backMiddleMaterial.color = threeColor;
-      topLiquidMaterial.opacity = alpha;
-      backMiddleMaterial.opacity = alpha;
-    } );
+    Material.linkLiquidColor( boat.liquidMaterialProperty, topLiquidMaterial );
+    Material.linkLiquidColor( boat.liquidMaterialProperty, backMiddleMaterial );
 
     // pool liquid will be at a higher value
     frontForDepth.renderOrder = 4;
@@ -194,14 +189,11 @@ class BoatView extends MassView {
     backTop.renderOrder = -1;
     backExterior.renderOrder = -2;
 
-    // @public (read-only) {Boat}
     this.boat = boat;
   }
 
   /**
    * Releases references.
-   * @public
-   * @override
    */
   dispose() {
     // TODO: dispose everything from above

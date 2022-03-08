@@ -45,7 +45,7 @@ const SECONDARY_LABEL = createMassLabel( densityBuoyancyCommonStrings.massLabel.
 
 class MassLabelNode extends Node {
 
-  private mass: Mass;
+  mass: Mass;
   private showMassesProperty: IReadOnlyProperty<boolean>;
   private massListener: ( n: number ) => void;
   private showMassesListener: ( n: boolean ) => void;

@@ -7,8 +7,8 @@
  */
 
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
-import DynamicProperty from '../../../../axon/js/DynamicProperty.js';
-import Property from '../../../../axon/js/Property.js';
+import RangedMappedProperty from '../../../../axon/js/RangedMappedProperty.js';
+import UnitConversionProperty from '../../../../axon/js/UnitConversionProperty.js';
 import Range from '../../../../dot/js/Range.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
 import merge from '../../../../phet-core/js/merge.js';
@@ -19,8 +19,10 @@ import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonCo
 import DensityBuoyancyScreenView from '../../common/view/DensityBuoyancyScreenView.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import densityBuoyancyCommonStrings from '../../densityBuoyancyCommonStrings.js';
-import { BlockSet } from '../model/DensityCompareModel.js';
+import DensityCompareModel, { BlockSet } from '../model/DensityCompareModel.js';
 import ComparisonNumberControl from './ComparisonNumberControl.js';
+import { DensityBuoyancyModelOptions } from '../../common/model/DensityBuoyancyModel.js';
+import Bounds2 from '../../../../dot/js/Bounds2.js';
 
 // constants
 const blockSetStringMap = {
@@ -30,12 +32,11 @@ const blockSetStringMap = {
 };
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
 
-class DensityCompareScreenView extends DensityBuoyancyScreenView {
-  /**
-   * @param {DensityCompareModel} model
-   * @param {Object} [options]
-   */
-  constructor( model, options ) {
+class DensityCompareScreenView extends DensityBuoyancyScreenView<DensityCompareModel> {
+
+  private positionPanel: () => void;
+
+  constructor( model: DensityCompareModel, options: DensityBuoyancyModelOptions ) {
 
     const tandem = options.tandem;
 
@@ -44,9 +45,9 @@ class DensityCompareScreenView extends DensityBuoyancyScreenView {
     }, options ) );
 
     const blockSetTandemMap = {
-      [ BlockSet.SAME_MASS ]: 'sameMass',
-      [ BlockSet.SAME_VOLUME ]: 'sameVolume',
-      [ BlockSet.SAME_DENSITY ]: 'sameDensity'
+      [ BlockSet.SAME_MASS.name ]: 'sameMass',
+      [ BlockSet.SAME_VOLUME.name ]: 'sameVolume',
+      [ BlockSet.SAME_DENSITY.name ]: 'sameDensity'
     };
 
     const blocksPanelTandem = tandem.createTandem( 'blocksPanel' );
@@ -63,7 +64,7 @@ class DensityCompareScreenView extends DensityBuoyancyScreenView {
               maxWidth: 160
             } ),
             value: blockSet,
-            tandemName: `${blockSetTandemMap[ blockSet ]}RadioButton`
+            tandemName: `${blockSetTandemMap[ blockSet.name ]}RadioButton`
           };
         } ), {
           spacing: 8,
@@ -82,21 +83,15 @@ class DensityCompareScreenView extends DensityBuoyancyScreenView {
       margin: MARGIN
     } ) );
 
-    // For unit conversion
-    const volumeProperty = new DynamicProperty( new Property( model.volumeProperty ), {
-      map: cubicMeters => 1000 * cubicMeters,
-      inverseMap: liters => liters / 1000,
-      bidirectional: true
-    } );
-    volumeProperty.range = new Range( model.volumeProperty.range.min * 1000, model.volumeProperty.range.max * 1000 );
+    // For unit conversion, cubic meters => liters
+    const volumeProperty = new UnitConversionProperty( model.volumeProperty, {
+      factor: 1000
+    } ).asRanged();
 
-    // For unit conversion
-    const densityProperty = new DynamicProperty( new Property( model.densityProperty ), {
-      map: kilogramsPerCubicMeter => kilogramsPerCubicMeter / 1000,
-      inverseMap: kilogramsPerLiter => kilogramsPerLiter * 1000,
-      bidirectional: true
-    } );
-    densityProperty.range = new Range( model.densityProperty.range.min / 1000, model.densityProperty.range.max / 1000 );
+    // For unit conversion, kg/cubic meter => kg/liter
+    const densityProperty = new UnitConversionProperty( model.densityProperty, {
+      factor: 1 / 1000
+    } ).asRanged();
 
     const massNumberControlTandem = tandem.createTandem( 'massNumberControl' );
     const massNumberControl = new ComparisonNumberControl(
@@ -161,7 +156,6 @@ class DensityCompareScreenView extends DensityBuoyancyScreenView {
     }, DensityBuoyancyCommonConstants.PANEL_OPTIONS ) );
     this.addChild( numberControlPanel );
 
-    // @private {function()}
     this.positionPanel = () => {
       // We should be MARGIN below where the edge of the ground exists
       const groundFrontPoint = this.modelToViewPoint( new Vector3( 0, 0, model.groundBounds.maxZ ) );
@@ -177,12 +171,7 @@ class DensityCompareScreenView extends DensityBuoyancyScreenView {
     this.addChild( this.popupLayer );
   }
 
-  /**
-   * @public
-   * @override
-   * @param {Bounds2} viewBounds
-   */
-  layout( viewBounds ) {
+  layout( viewBounds: Bounds2 ) {
     super.layout( viewBounds );
 
     // If the simulation was not able to load for WebGL, bail out

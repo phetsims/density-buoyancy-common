@@ -14,10 +14,11 @@ import TwoBlockMode from '../model/TwoBlockMode.js';
 import Property from '../../../../axon/js/Property.js';
 import Bounds2 from '../../../../dot/js/Bounds2.js';
 import { Node } from '../../../../scenery/js/imports.js';
+import DensityBuoyancyModel from '../model/DensityBuoyancyModel.js';
 
-abstract class SecondaryMassScreenView extends DensityBuoyancyScreenView {
+abstract class SecondaryMassScreenView<Model extends DensityBuoyancyModel> extends DensityBuoyancyScreenView<Model> {
 
-  abstract rightBox: Node;
+  protected abstract rightBox: Node;
   private blocksRadioButtonGroup?: Node;
 
   /**

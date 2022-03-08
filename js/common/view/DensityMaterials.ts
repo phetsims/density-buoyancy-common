@@ -6,9 +6,11 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
+import Property from '../../../../axon/js/Property.js';
 import Utils from '../../../../dot/js/Utils.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
 import ThreeUtils from '../../../../mobius/js/ThreeUtils.js';
+import { Color } from '../../../../scenery/js/imports.js';
 import Bricks25_AO_jpg from '../../../images/Bricks25_AO_jpg.js';
 import Bricks25_col_jpg from '../../../images/Bricks25_col_jpg.js';
 import Bricks25_nrm_jpg from '../../../images/Bricks25_nrm_jpg.js';
@@ -41,7 +43,7 @@ import MaterialView from './MaterialView.js';
 
 // constants
 
-function toWrappedTexture( image ) {
+function toWrappedTexture( image: HTMLImageElement ) {
   const texture = ThreeUtils.imageToTexture( image, true );
   texture.wrapS = THREE.RepeatWrapping;
   texture.wrapT = THREE.RepeatWrapping;
@@ -49,7 +51,7 @@ function toWrappedTexture( image ) {
 }
 
 // Simplified environment map to give a nice reflective appearance. We compute it per-pixel
-let envMapTexture = null;
+let envMapTexture: THREE.CanvasTexture | null = null;
 
 function getEnvironmentTexture() {
   const size = 32;
@@ -57,7 +59,7 @@ function getEnvironmentTexture() {
     const canvas = document.createElement( 'canvas' );
     canvas.width = size;
     canvas.height = size;
-    const context = canvas.getContext( '2d' );
+    const context = canvas.getContext( '2d' )!;
 
     const imageData = context.getImageData( 0, 0, size, size );
 
@@ -173,6 +175,7 @@ class IceMaterialView extends MaterialView {
       roughness: 0.7,
       refractionRatio: 1 / 1.309,
       metalness: 0.4,
+      // @ts-ignore they capitalized this
       clearCoat: 1,
       reflectivity: 1,
       envMapIntensity: 2, // is this too much cheating?
@@ -246,10 +249,7 @@ class WoodMaterialView extends MaterialView {
 }
 
 class CustomMaterialView extends MaterialView {
-  /**
-   * @param {number} density
-   */
-  constructor( density ) {
+  constructor( density: number ) {
     const lightness = Material.getCustomLightness( density );
     const color = lightness + lightness * 0x100 + lightness * 0x10000;
 
@@ -259,14 +259,14 @@ class CustomMaterialView extends MaterialView {
   }
 }
 
-class CustomColoredMaterialView extends MaterialView {
-  /**
-   * @param {Property.<Color>} colorProperty
-   */
-  constructor( colorProperty ) {
+class CustomColoredMaterialView extends MaterialView<THREE.MeshLambertMaterial> {
+
+  private colorProperty: Property<Color>;
+  private listener: ( color: Color ) => void;
+
+  constructor( colorProperty: Property<Color> ) {
     super( new THREE.MeshLambertMaterial() );
 
-    // @private
     this.colorProperty = colorProperty;
 
     // @private {function(Color)}
@@ -278,8 +278,6 @@ class CustomColoredMaterialView extends MaterialView {
 
   /**
    * Releases references
-   * @public
-   * @override
    */
   dispose() {
     this.colorProperty.unlink( this.listener );
@@ -299,12 +297,8 @@ class DebugMaterialView extends MaterialView {
 class DensityMaterials {
   /**
    * Returns a view for the given Material.
-   * @public
-   *
-   * @param {Material} material
-   * @returns {MaterialView}
    */
-  static getMaterialView( material ) {
+  static getMaterialView( material: Material ): MaterialView {
     if ( material === Material.ALUMINUM ) {
       return new AluminumMaterialView();
     }
@@ -334,19 +328,19 @@ class DensityMaterials {
         return new CustomMaterialView( material.density );
       }
       else {
-        return new CustomColoredMaterialView( material.customColor );
+        return new CustomColoredMaterialView( material.customColor! );
       }
     }
     else {
       return new DebugMaterialView();
     }
   }
+
+  static woodColorTexture = woodColorTexture;
+  static woodNormalTexture = woodNormalTexture;
+  static woodRoughnessTexture = woodRoughnessTexture;
 }
 
-// @public (read-only) {THREE.Texture}
-DensityMaterials.woodColorTexture = woodColorTexture;
-DensityMaterials.woodNormalTexture = woodNormalTexture;
-DensityMaterials.woodRoughnessTexture = woodRoughnessTexture;
 
 densityBuoyancyCommon.register( 'DensityMaterials', DensityMaterials );
 export default DensityMaterials;

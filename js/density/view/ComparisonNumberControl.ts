@@ -6,7 +6,7 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
-import NumberProperty from '../../../../axon/js/NumberProperty.js';
+import { RangedProperty } from '../../../../axon/js/NumberProperty.js';
 import Dimension2 from '../../../../dot/js/Dimension2.js';
 import Utils from '../../../../dot/js/Utils.js';
 import merge from '../../../../phet-core/js/merge.js';
@@ -21,10 +21,8 @@ import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 export type ComparisonNumberControlOptions = NumberControlOptions;
 
 class ComparisonNumberControl extends NumberControl {
-  constructor( property: NumberProperty, title: string, valuePattern: string, valueName: string, options?: ComparisonNumberControlOptions ) {
-    assert && assert( property.range );
-
-    super( title, property, property.range!, merge( {
+  constructor( property: RangedProperty, title: string, valuePattern: string, valueName: string, options?: ComparisonNumberControlOptions ) {
+    super( title, property, property.range, merge( {
       layoutFunction: NumberControl.createLayoutFunction4(),
       delta: 0.01,
       titleNodeOptions: {
@@ -50,18 +48,18 @@ class ComparisonNumberControl extends NumberControl {
       sliderOptions: {
         // Constrain to 0.1 consistently, see https://github.com/phetsims/density/issues/75#issuecomment-896341332
         constrainValue: ( value: number ) => {
-          return property.range!.constrainValue( Utils.roundToInterval( value, 0.1 ) );
+          return property.range.constrainValue( Utils.roundToInterval( value, 0.1 ) );
         },
         majorTickLength: 5,
         thumbSize: new Dimension2( 13, 22 ),
         thumbTouchAreaXDilation: 5,
         thumbTouchAreaYDilation: 4,
         majorTicks: [ {
-          value: property.range!.min,
-          label: new Text( property.range!.min, { font: new PhetFont( 12 ), maxWidth: 50 } )
+          value: property.range.min,
+          label: new Text( property.range.min, { font: new PhetFont( 12 ), maxWidth: 50 } )
         }, {
-          value: property.range!.max,
-          label: new Text( property.range!.max, { font: new PhetFont( 12 ), maxWidth: 50 } )
+          value: property.range.max,
+          label: new Text( property.range.max, { font: new PhetFont( 12 ), maxWidth: 50 } )
         } ],
         trackSize: new Dimension2( 120, 0.5 )
       }

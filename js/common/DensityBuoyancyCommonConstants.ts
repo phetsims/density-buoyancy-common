@@ -49,7 +49,7 @@ const DensityBuoyancyCommonConstants = {
     buttonXMargin: 5,
     titleAlignX: 'left',
     fill: DensityBuoyancyCommonColors.panelBackgroundProperty
-  },
+  } as const,
 
   // @public (read-only) {Vector3} cameraLookAt locations
   DENSITY_CAMERA_LOOK_AT: Vector3.ZERO,

@@ -8,7 +8,7 @@
 
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import IProperty from '../../../../axon/js/IProperty.js';
-import NumberProperty from '../../../../axon/js/NumberProperty.js';
+import NumberProperty, { RangedProperty } from '../../../../axon/js/NumberProperty.js';
 import Property from '../../../../axon/js/Property.js';
 import Range from '../../../../dot/js/Range.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
@@ -39,9 +39,9 @@ type DensityCompareModelOptions = BlockSetModelOptions<BlockSet>;
 
 class DensityCompareModel extends BlockSetModel<BlockSet> {
 
-  massProperty: Property<number>;
-  volumeProperty: Property<number>;
-  densityProperty: Property<number>;
+  massProperty: RangedProperty;
+  volumeProperty: RangedProperty;
+  densityProperty: RangedProperty;
 
   constructor( providedOptions: DensityCompareModelOptions ) {
     const tandem = providedOptions.tandem;
@@ -55,19 +55,19 @@ class DensityCompareModel extends BlockSetModel<BlockSet> {
       range: new Range( 1, 10 ),
       tandem: tandem.createTandem( 'massProperty' ),
       units: 'kg'
-    } );
+    } ).asRanged();
 
     const volumeProperty = new NumberProperty( 0.005, {
       range: new Range( 0.001, 0.01 ),
       tandem: tandem.createTandem( 'volumeProperty' ),
       units: 'm^3'
-    } );
+    } ).asRanged();
 
     const densityProperty = new NumberProperty( 500, {
       range: new Range( 100, 2000 ),
       tandem: tandem.createTandem( 'densityProperty' ),
       units: 'kg/m^3'
-    } );
+    } ).asRanged();
 
     const createMaterialProperty = ( colorProperty: IProperty<Color>, densityProperty: IProperty<number> ) => {
       return new DerivedProperty( [ colorProperty, densityProperty ], ( color: Color, density: number ) => {

@@ -6,9 +6,6 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
-import DynamicProperty from '../../../../axon/js/DynamicProperty.js';
-import ThreeUtils from '../../../../mobius/js/ThreeUtils.js';
-import { Color } from '../../../../scenery/js/imports.js';
 import MassView from '../../common/view/MassView.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import Bottle from '../model/Bottle.js';
@@ -152,23 +149,9 @@ class BottleView extends MassView {
       view.renderOrder = -( index + 1 );
     } );
 
-    new DynamicProperty<Color, Color, Material>( bottle.interiorMaterialProperty, {
-      derive: material => {
-        assert && assert( material.liquidColor );
-
-        return material.liquidColor!;
-      }
-    } ).link( ( color: Color ) => {
-      const threeColor = ThreeUtils.colorToThree( color );
-      const alpha = color.alpha;
-
-      interiorSurfaceMaterial.color = threeColor;
-      backBottomMaterial.color = threeColor;
-      frontBottomMaterial.color = threeColor;
-      interiorSurfaceMaterial.opacity = alpha;
-      backBottomMaterial.opacity = alpha;
-      frontBottomMaterial.opacity = alpha;
-    } );
+    Material.linkLiquidColor( bottle.interiorMaterialProperty, interiorSurfaceMaterial );
+    Material.linkLiquidColor( bottle.interiorMaterialProperty, backBottomMaterial );
+    Material.linkLiquidColor( bottle.interiorMaterialProperty, frontBottomMaterial );
 
     this.bottle = bottle;
   }

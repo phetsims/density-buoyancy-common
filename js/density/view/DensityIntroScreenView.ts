@@ -10,7 +10,7 @@ import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import merge from '../../../../phet-core/js/merge.js';
 import { AlignPropertyBox } from '../../../../scenery/js/imports.js';
-import { Text } from '../../../../scenery/js/imports.js';
+import { Text, Node } from '../../../../scenery/js/imports.js';
 import AccordionBox from '../../../../sun/js/AccordionBox.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 import PrimarySecondaryControlsNode from '../../common/view/PrimarySecondaryControlsNode.js';
@@ -18,16 +18,17 @@ import SecondaryMassScreenView from '../../common/view/SecondaryMassScreenView.j
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import densityBuoyancyCommonStrings from '../../densityBuoyancyCommonStrings.js';
 import DensityReadoutNode from './DensityReadoutNode.js';
+import DensityIntroModel from '../model/DensityIntroModel.js';
+import { DensityBuoyancyModelOptions } from '../../common/model/DensityBuoyancyModel.js';
 
 // constants
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
 
-class DensityIntroScreenView extends SecondaryMassScreenView {
-  /**
-   * @param {DensityIntroModel} model
-   * @param {Object} [options]
-   */
-  constructor( model, options ) {
+class DensityIntroScreenView extends SecondaryMassScreenView<DensityIntroModel> {
+
+  protected rightBox: Node;
+
+  constructor( model: DensityIntroModel, options: DensityBuoyancyModelOptions ) {
 
     const tandem = options.tandem;
 
@@ -35,7 +36,6 @@ class DensityIntroScreenView extends SecondaryMassScreenView {
       cameraLookAt: DensityBuoyancyCommonConstants.DENSITY_CAMERA_LOOK_AT
     }, options ) );
 
-    // @protected {Node} - Used in the super
     this.rightBox = new PrimarySecondaryControlsNode(
       model.primaryMass,
       model.secondaryMass,
@@ -64,7 +64,7 @@ class DensityIntroScreenView extends SecondaryMassScreenView {
         }
       } ),
       expandedProperty: model.densityExpandedProperty,
-      buttonAlign: 'left',
+      buttonAlign: 'left' as const,
       tandem: accordionTandem
     }, DensityBuoyancyCommonConstants.ACCORDION_BOX_OPTIONS ) );
 

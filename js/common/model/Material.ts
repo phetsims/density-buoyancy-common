@@ -6,9 +6,12 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
+import DynamicProperty from '../../../../axon/js/DynamicProperty.js';
 import IProperty from '../../../../axon/js/IProperty.js';
+import IReadOnlyProperty from '../../../../axon/js/IReadOnlyProperty.js';
 import Property from '../../../../axon/js/Property.js';
 import Utils from '../../../../dot/js/Utils.js';
+import ThreeUtils from '../../../../mobius/js/ThreeUtils.js';
 import merge from '../../../../phet-core/js/merge.js';
 import optionize from '../../../../phet-core/js/optionize.js';
 import { Color, ColorProperty, IColor } from '../../../../scenery/js/imports.js';
@@ -43,10 +46,10 @@ type MaterialOptions = {
   hidden?: boolean;
 
   // Uses the color for a solid material's color
-  customColor?: IProperty<Color> | null;
+  customColor?: Property<Color> | null;
 
   // Uses the alpha channel for opacity
-  liquidColor?: IProperty<Color> | null;
+  liquidColor?: Property<Color> | null;
 };
 
 class Material {
@@ -58,8 +61,8 @@ class Material {
   readonly viscosity: number;
   readonly custom: boolean;
   readonly hidden: boolean;
-  readonly customColor: IProperty<Color> | null;
-  readonly liquidColor: IProperty<Color> | null;
+  readonly customColor: Property<Color> | null;
+  readonly liquidColor: Property<Color> | null;
 
   constructor( providedConfig: MaterialOptions ) {
 
@@ -141,6 +144,24 @@ class Material {
     const lightness = Material.getCustomLightness( density );
 
     return new ColorProperty( new Color( lightness, lightness, lightness ) );
+  }
+
+  /**
+   * Keep a material's color and opacity to match the liquid color from a given Property<Material>
+   *
+   * NOTE: Only call this for things that exist for the lifetime of this simulation (otherwise it would leak memory)
+   */
+  static linkLiquidColor( property: IProperty<Material>, threeMaterial: THREE.MeshPhongMaterial | THREE.MeshLambertMaterial | THREE.MeshBasicMaterial ) {
+    new DynamicProperty<Color, Color, Material>( property, {
+      derive: material => {
+        assert && assert( material.liquidColor );
+
+        return material.liquidColor!;
+      }
+    } ).link( ( color: Color ) => {
+      threeMaterial.color = ThreeUtils.colorToThree( color );
+      threeMaterial.opacity = color.alpha;
+    } );
   }
 
   // @public (read-only) {Material} - "Solids"

@@ -23,7 +23,7 @@ import Multilink from '../../../../axon/js/Multilink.js';
 
 class ScaleReadoutNode extends Node {
 
-  private mass: Scale;
+  mass: Scale;
   private scaleForceMultilink: Multilink<[number, Gravity]>;
 
   constructor( mass: Scale, gravityProperty: IReadOnlyProperty<Gravity> ) {

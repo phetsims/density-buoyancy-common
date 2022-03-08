@@ -7,9 +7,7 @@
  */
 
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
-import RangedMappedProperty from '../../../../axon/js/RangedMappedProperty.js';
 import UnitConversionProperty from '../../../../axon/js/UnitConversionProperty.js';
-import Range from '../../../../dot/js/Range.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
 import merge from '../../../../phet-core/js/merge.js';
 import { AlignPropertyBox, Node, PhetioControlledVisibilityProperty, Text, VBox } from '../../../../scenery/js/imports.js';

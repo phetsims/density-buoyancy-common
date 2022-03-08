@@ -6,12 +6,9 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
-import DynamicProperty from '../../../../axon/js/DynamicProperty.js';
 import IReadOnlyProperty from '../../../../axon/js/IReadOnlyProperty.js';
 import Multilink from '../../../../axon/js/Multilink.js';
 import Property from '../../../../axon/js/Property.js';
-import ThreeUtils from '../../../../mobius/js/ThreeUtils.js';
-import { Color } from '../../../../scenery/js/imports.js';
 import Material from '../../common/model/Material.js';
 import MassView from '../../common/view/MassView.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';

@@ -8,7 +8,6 @@
 
 import DynamicProperty from '../../../../axon/js/DynamicProperty.js';
 import IProperty from '../../../../axon/js/IProperty.js';
-import IReadOnlyProperty from '../../../../axon/js/IReadOnlyProperty.js';
 import Property from '../../../../axon/js/Property.js';
 import Utils from '../../../../dot/js/Utils.js';
 import ThreeUtils from '../../../../mobius/js/ThreeUtils.js';

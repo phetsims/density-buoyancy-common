@@ -25,6 +25,7 @@ import Panel from '../../../../sun/js/Panel.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 import Material from '../../common/model/Material.js';
 import DensityBuoyancyCommonColors from '../../common/view/DensityBuoyancyCommonColors.js';
+import { DensityBuoyancyScreenViewOptions } from '../../common/view/DensityBuoyancyScreenView.js';
 import DensityControlNode from '../../common/view/DensityControlNode.js';
 import DisplayOptionsNode from '../../common/view/DisplayOptionsNode.js';
 import GravityControlNode from '../../common/view/GravityControlNode.js';
@@ -32,17 +33,16 @@ import PrimarySecondaryControlsNode from '../../common/view/PrimarySecondaryCont
 import SecondaryMassScreenView from '../../common/view/SecondaryMassScreenView.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import densityBuoyancyCommonStrings from '../../densityBuoyancyCommonStrings.js';
+import BuoyancyExploreModel from '../model/BuoyancyExploreModel.js';
 
 // constants
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
 
-class BuoyancyExploreScreenView extends SecondaryMassScreenView {
+class BuoyancyExploreScreenView extends SecondaryMassScreenView<BuoyancyExploreModel> {
 
-  /**
-   * @param {BuoyancyExploreModel} model
-   * @param {Object} [options]
-   */
-  constructor( model, options ) {
+  protected rightBox: Node;
+
+  constructor( model: BuoyancyExploreModel, options: DensityBuoyancyScreenViewOptions ) {
 
     const tandem = options.tandem;
 
@@ -152,7 +152,6 @@ class BuoyancyExploreScreenView extends SecondaryMassScreenView {
       margin: MARGIN
     } ) );
 
-    // @protected {Node} - Used by supertype
     this.rightBox = new PrimarySecondaryControlsNode(
       model.primaryMass,
       model.secondaryMass,

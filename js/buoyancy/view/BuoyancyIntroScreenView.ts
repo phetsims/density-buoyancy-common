@@ -15,11 +15,11 @@ import Panel from '../../../../sun/js/Panel.js';
 import VerticalAquaRadioButtonGroup from '../../../../sun/js/VerticalAquaRadioButtonGroup.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 import Material from '../../common/model/Material.js';
-import DensityBuoyancyScreenView from '../../common/view/DensityBuoyancyScreenView.js';
+import DensityBuoyancyScreenView, { DensityBuoyancyScreenViewOptions } from '../../common/view/DensityBuoyancyScreenView.js';
 import DisplayOptionsNode from '../../common/view/DisplayOptionsNode.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import densityBuoyancyCommonStrings from '../../densityBuoyancyCommonStrings.js';
-import { BlockSet } from '../model/BuoyancyIntroModel.js';
+import BuoyancyIntroModel, { BlockSet } from '../model/BuoyancyIntroModel.js';
 
 // constants
 const blockSetStringMap = {
@@ -29,13 +29,9 @@ const blockSetStringMap = {
 };
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
 
-class BuoyancyIntroScreenView extends DensityBuoyancyScreenView {
+class BuoyancyIntroScreenView extends DensityBuoyancyScreenView<BuoyancyIntroModel> {
 
-  /**
-   * @param {BuoyancyIntroModel} model
-   * @param {Object} [options]
-   */
-  constructor( model, options ) {
+  constructor( model: BuoyancyIntroModel, options: DensityBuoyancyScreenViewOptions ) {
 
     super( model, merge( {
       // Custom just for this screen

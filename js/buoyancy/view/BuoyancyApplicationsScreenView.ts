@@ -7,8 +7,7 @@
  */
 
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
-import DynamicProperty from '../../../../axon/js/DynamicProperty.js';
-import Property from '../../../../axon/js/Property.js';
+import UnitConversionProperty from '../../../../axon/js/UnitConversionProperty.js';
 import Range from '../../../../dot/js/Range.js';
 import Utils from '../../../../dot/js/Utils.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
@@ -28,25 +27,23 @@ import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonCo
 import Cube from '../../common/model/Cube.js';
 import Material from '../../common/model/Material.js';
 import DensityBuoyancyCommonColors from '../../common/view/DensityBuoyancyCommonColors.js';
-import DensityBuoyancyScreenView from '../../common/view/DensityBuoyancyScreenView.js';
+import DensityBuoyancyScreenView, { DensityBuoyancyScreenViewOptions } from '../../common/view/DensityBuoyancyScreenView.js';
 import DensityControlNode from '../../common/view/DensityControlNode.js';
 import DisplayOptionsNode from '../../common/view/DisplayOptionsNode.js';
 import MaterialMassVolumeControlNode from '../../common/view/MaterialMassVolumeControlNode.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import densityBuoyancyCommonStrings from '../../densityBuoyancyCommonStrings.js';
-import { Scene } from '../model/BuoyancyApplicationsModel.js';
+import BuoyancyApplicationsModel, { Scene } from '../model/BuoyancyApplicationsModel.js';
 import DensityReadoutListNode from './DensityReadoutListNode.js';
 
 // constants
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
 
-class BuoyancyApplicationsScreenView extends DensityBuoyancyScreenView {
+class BuoyancyApplicationsScreenView extends DensityBuoyancyScreenView<BuoyancyApplicationsModel> {
 
-  /**
-   * @param {BuoyancyIntroModel} model
-   * @param {Object} [options]
-   */
-  constructor( model, options ) {
+  private positionResetSceneButton: () => void;
+
+  constructor( model: BuoyancyApplicationsModel, options: DensityBuoyancyScreenViewOptions ) {
 
     const tandem = options.tandem;
 
@@ -159,7 +156,6 @@ class BuoyancyApplicationsScreenView extends DensityBuoyancyScreenView {
     } );
     this.addChild( resetSceneButton );
 
-    // @private {function}
     this.positionResetSceneButton = () => {
       resetSceneButton.rightTop = this.modelToViewPoint( new Vector3(
         this.model.poolBounds.maxX,
@@ -177,10 +173,9 @@ class BuoyancyApplicationsScreenView extends DensityBuoyancyScreenView {
       children: [
         blockControlNode,
         new HSeparator( blockControlNode.width ),
-        new NumberControl( densityBuoyancyCommonStrings.boatVolume, new DynamicProperty( new Property( model.boat.displacementVolumeProperty ), {
-          map: cubicMeters => 1000 * cubicMeters,
-          inverseMap: liters => liters / 1000,
-          bidirectional: true
+        // Convert cubic meters => liters
+        new NumberControl( densityBuoyancyCommonStrings.boatVolume, new UnitConversionProperty( model.boat.displacementVolumeProperty, {
+          factor: 1000
         } ), boatVolumeRange, merge( {
           numberDisplayOptions: {
             valuePattern: StringUtils.fillIn( densityBuoyancyCommonStrings.litersPattern, {
@@ -193,7 +188,7 @@ class BuoyancyApplicationsScreenView extends DensityBuoyancyScreenView {
             useFullHeight: true
           },
           sliderOptions: {
-            constrainValue: value => {
+            constrainValue: ( value: number ) => {
               return boatVolumeRange.constrainValue( Utils.roundToInterval( value, 0.1 ) );
             },
             phetioLinkedProperty: model.boat.displacementVolumeProperty
@@ -297,12 +292,7 @@ class BuoyancyApplicationsScreenView extends DensityBuoyancyScreenView {
     this.addChild( this.popupLayer );
   }
 
-  /**
-   * @public
-   * @override
-   * @param {number} dt
-   */
-  step( dt ) {
+  step( dt: number ) {
     super.step( dt );
 
     this.positionResetSceneButton();

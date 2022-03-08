@@ -11,10 +11,7 @@ import DynamicProperty from '../../../../axon/js/DynamicProperty.js';
 import Property from '../../../../axon/js/Property.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import merge from '../../../../phet-core/js/merge.js';
-import { AlignPropertyBox } from '../../../../scenery/js/imports.js';
-import { HStrut } from '../../../../scenery/js/imports.js';
-import { Text } from '../../../../scenery/js/imports.js';
-import { VBox } from '../../../../scenery/js/imports.js';
+import { AlignPropertyBox, HStrut, Node, Text, VBox } from '../../../../scenery/js/imports.js';
 import AccordionBox from '../../../../sun/js/AccordionBox.js';
 import Panel from '../../../../sun/js/Panel.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
@@ -28,17 +25,17 @@ import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import densityBuoyancyCommonStrings from '../../densityBuoyancyCommonStrings.js';
 import DensityReadoutListNode from './DensityReadoutListNode.js';
 import ShapeSizeControlNode from './ShapeSizeControlNode.js';
+import BuoyancyShapesModel from '../model/BuoyancyShapesModel.js';
+import { DensityBuoyancyScreenViewOptions } from '../../common/view/DensityBuoyancyScreenView.js';
 
 // constants
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
 
-class BuoyancyShapesScreenView extends SecondaryMassScreenView {
+class BuoyancyShapesScreenView extends SecondaryMassScreenView<BuoyancyShapesModel> {
 
-  /**
-   * @param {BuoyancyIntroModel} model
-   * @param {Object} [options]
-   */
-  constructor( model, options ) {
+  protected rightBox: Node;
+
+  constructor( model: BuoyancyShapesModel, options: DensityBuoyancyScreenViewOptions ) {
 
     super( model, merge( {
       cameraLookAt: DensityBuoyancyCommonConstants.BUOYANCY_CAMERA_LOOK_AT
@@ -92,7 +89,6 @@ class BuoyancyShapesScreenView extends SecondaryMassScreenView {
       margin: MARGIN
     } ) );
 
-    // @private {Node}
     this.rightBox = new PrimarySecondaryPanelsNode(
       new ShapeSizeControlNode(
         model.primaryShapeProperty,

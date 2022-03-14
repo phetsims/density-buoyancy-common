@@ -16,13 +16,13 @@ import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import InterpolatedProperty from './InterpolatedProperty.js';
 import Mass from './Mass.js';
 
-type BasinOptions = {
+export type BasinOptions = {
   initialVolume?: number;
   initialY?: number;
   tandem?: Tandem;
 };
 
-abstract class Basin {
+export default abstract class Basin {
 
   // In m^3, the volume of liquid contained in this basin
   liquidVolumeProperty: Property<number>;
@@ -215,5 +215,3 @@ abstract class Basin {
 }
 
 densityBuoyancyCommon.register( 'Basin', Basin );
-export default Basin;
-export type { BasinOptions };

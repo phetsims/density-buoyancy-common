@@ -15,7 +15,7 @@ import MaterialMassVolumeControlNode, { MaterialMassVolumeControlNodeOptions } f
 
 export type BlockControlNodeOptions = MaterialMassVolumeControlNodeOptions;
 
-class BlockControlNode extends MaterialMassVolumeControlNode {
+export default class BlockControlNode extends MaterialMassVolumeControlNode {
   constructor( cuboid: Cuboid, listParent: Node, options?: BlockControlNodeOptions ) {
     super( cuboid.materialProperty, cuboid.massProperty, cuboid.volumeProperty, [
       Material.STYROFOAM,
@@ -28,4 +28,3 @@ class BlockControlNode extends MaterialMassVolumeControlNode {
 }
 
 densityBuoyancyCommon.register( 'BlockControlNode', BlockControlNode );
-export default BlockControlNode;

@@ -11,7 +11,7 @@ import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import Ellipsoid from '../model/Ellipsoid.js';
 import MassView from './MassView.js';
 
-class EllipsoidView extends MassView {
+export default class EllipsoidView extends MassView {
 
   readonly ellipsoid: Ellipsoid;
   private ellipsoidGeometry: THREE.SphereGeometry;
@@ -52,4 +52,3 @@ class EllipsoidView extends MassView {
 }
 
 densityBuoyancyCommon.register( 'EllipsoidView', EllipsoidView );
-export default EllipsoidView;

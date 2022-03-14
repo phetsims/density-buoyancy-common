@@ -29,7 +29,7 @@ const blockSetStringMap = {
 };
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
 
-class BuoyancyIntroScreenView extends DensityBuoyancyScreenView<BuoyancyIntroModel> {
+export default class BuoyancyIntroScreenView extends DensityBuoyancyScreenView<BuoyancyIntroModel> {
 
   constructor( model: BuoyancyIntroModel, options: DensityBuoyancyScreenViewOptions ) {
 
@@ -95,4 +95,3 @@ class BuoyancyIntroScreenView extends DensityBuoyancyScreenView<BuoyancyIntroMod
 }
 
 densityBuoyancyCommon.register( 'BuoyancyIntroScreenView', BuoyancyIntroScreenView );
-export default BuoyancyIntroScreenView;

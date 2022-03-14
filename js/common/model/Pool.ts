@@ -12,9 +12,9 @@ import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import Basin, { BasinOptions } from './Basin.js';
 import Mass from './Mass.js';
 
-type PoolOptions = BasinOptions;
+export type PoolOptions = BasinOptions;
 
-class Pool extends Basin {
+export default class Pool extends Basin {
 
   bounds: Bounds3;
 
@@ -71,5 +71,3 @@ class Pool extends Basin {
 }
 
 densityBuoyancyCommon.register( 'Pool', Pool );
-export default Pool;
-export type { PoolOptions };

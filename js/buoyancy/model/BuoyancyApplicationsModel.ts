@@ -32,9 +32,9 @@ export class Scene extends EnumerationValue {
   } );
 }
 
-type BuoyancyApplicationsModelOptions = DensityBuoyancyModelOptions;
+export type BuoyancyApplicationsModelOptions = DensityBuoyancyModelOptions;
 
-class BuoyancyApplicationsModel extends DensityBuoyancyModel {
+export default class BuoyancyApplicationsModel extends DensityBuoyancyModel {
 
   sceneProperty: Property<Scene>;
   densityExpandedProperty: Property<boolean>;
@@ -125,4 +125,3 @@ class BuoyancyApplicationsModel extends DensityBuoyancyModel {
 }
 
 densityBuoyancyCommon.register( 'BuoyancyApplicationsModel', BuoyancyApplicationsModel );
-export default BuoyancyApplicationsModel;

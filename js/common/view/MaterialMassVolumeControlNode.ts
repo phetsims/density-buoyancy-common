@@ -59,7 +59,7 @@ type SelfOptions = {
 
 export type MaterialMassVolumeControlNodeOptions = SelfOptions & VBoxOptions;
 
-class MaterialMassVolumeControlNode extends VBox {
+export default class MaterialMassVolumeControlNode extends VBox {
 
   constructor( materialProperty: Property<Material>, massProperty: Property<number>, volumeProperty: Property<number>, materials: Material[], setVolume: ( volume: number ) => void, listParent: Node, providedOptions?: MaterialMassVolumeControlNodeOptions ) {
 
@@ -383,4 +383,3 @@ class MaterialMassVolumeControlNode extends VBox {
 }
 
 densityBuoyancyCommon.register( 'MaterialMassVolumeControlNode', MaterialMassVolumeControlNode );
-export default MaterialMassVolumeControlNode;

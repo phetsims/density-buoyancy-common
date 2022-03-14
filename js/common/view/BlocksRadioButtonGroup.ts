@@ -32,9 +32,9 @@ DensityBuoyancyCommonColors.labelBProperty.link( labelColor => {
   bMaterial.color = ThreeUtils.colorToThree( labelColor );
 } );
 
-type BlocksRadioButtonGroupOptions = RectangularRadioButtonGroupOptions;
+export type BlocksRadioButtonGroupOptions = RectangularRadioButtonGroupOptions;
 
-class BlocksRadioButtonGroup extends RectangularRadioButtonGroup<TwoBlockMode> {
+export default class BlocksRadioButtonGroup extends RectangularRadioButtonGroup<TwoBlockMode> {
   constructor( modeProperty: Property<TwoBlockMode>, options?: BlocksRadioButtonGroupOptions ) {
     super( modeProperty, [
       {
@@ -184,4 +184,3 @@ class BlocksRadioButtonGroup extends RectangularRadioButtonGroup<TwoBlockMode> {
 }
 
 densityBuoyancyCommon.register( 'BlocksRadioButtonGroup', BlocksRadioButtonGroup );
-export default BlocksRadioButtonGroup;

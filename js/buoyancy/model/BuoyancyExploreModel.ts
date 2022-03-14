@@ -19,9 +19,9 @@ import Scale, { DisplayType } from '../../common/model/Scale.js';
 import TwoBlockMode from '../../common/model/TwoBlockMode.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 
-type BuoyancyExploreModelOptions = DensityBuoyancyModelOptions;
+export type BuoyancyExploreModelOptions = DensityBuoyancyModelOptions;
 
-class BuoyancyExploreModel extends DensityBuoyancyModel {
+export default class BuoyancyExploreModel extends DensityBuoyancyModel {
 
   modeProperty: Property<TwoBlockMode>;
   primaryMass: Cube;
@@ -92,5 +92,3 @@ class BuoyancyExploreModel extends DensityBuoyancyModel {
 }
 
 densityBuoyancyCommon.register( 'BuoyancyExploreModel', BuoyancyExploreModel );
-export default BuoyancyExploreModel;
-export type { BuoyancyExploreModelOptions };

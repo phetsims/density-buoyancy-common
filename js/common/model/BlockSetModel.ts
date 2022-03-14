@@ -18,7 +18,7 @@ type CreateMassesCallback<BlockSetValue extends EnumerationValue> = ( model: Den
 type RegenerateMassesCallback<BlockSetValue extends EnumerationValue> = ( model: DensityBuoyancyModel, blockSet: BlockSetValue, masses: Cuboid[] ) => void;
 type PositionMassesCallback<BlockSetValue extends EnumerationValue> = ( model: DensityBuoyancyModel, blockSet: BlockSetValue, masses: Cuboid[] ) => void;
 
-type BlockSetModelSelfOptions<BlockSetValue extends EnumerationValue> = {
+type SelfOptions<BlockSetValue extends EnumerationValue> = {
   // Creates masses (when given a blockSet)
   createMassesCallback: CreateMassesCallback<BlockSetValue>;
 
@@ -32,9 +32,9 @@ type BlockSetModelSelfOptions<BlockSetValue extends EnumerationValue> = {
   BlockSet: Enumeration<BlockSetValue>;
 };
 
-type BlockSetModelOptions<BlockSetValue extends EnumerationValue> = BlockSetModelSelfOptions<BlockSetValue> & DensityBuoyancyModelOptions;
+export type BlockSetModelOptions<BlockSetValue extends EnumerationValue> = SelfOptions<BlockSetValue> & DensityBuoyancyModelOptions;
 
-class BlockSetModel<BlockSetValue extends EnumerationValue> extends DensityBuoyancyModel {
+export default class BlockSetModel<BlockSetValue extends EnumerationValue> extends DensityBuoyancyModel {
 
   BlockSet: Enumeration<BlockSetValue>;
   blockSetProperty: Property<BlockSetValue>;
@@ -130,5 +130,3 @@ class BlockSetModel<BlockSetValue extends EnumerationValue> extends DensityBuoya
 }
 
 densityBuoyancyCommon.register( 'BlockSetModel', BlockSetModel );
-export default BlockSetModel;
-export type { BlockSetModelOptions };

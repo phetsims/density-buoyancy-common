@@ -20,9 +20,9 @@ import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import Mass, { InstrumentedMassOptions } from './Mass.js';
 import PhysicsEngine from './PhysicsEngine.js';
 
-type CuboidOptions = Omit<InstrumentedMassOptions, 'body' | 'shape' | 'volume' | 'phetioType'>;
+export type CuboidOptions = Omit<InstrumentedMassOptions, 'body' | 'shape' | 'volume' | 'phetioType'>;
 
-class Cuboid extends Mass {
+export default class Cuboid extends Mass {
 
   sizeProperty: Property<Bounds3>;
 
@@ -251,5 +251,3 @@ Cuboid.CuboidIO = new IOType( 'CuboidIO', {
 } );
 
 densityBuoyancyCommon.register( 'Cuboid', Cuboid );
-export default Cuboid;
-export type { CuboidOptions };

@@ -15,7 +15,7 @@ import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import Boat from '../model/Boat.js';
 import BoatDesign from '../model/BoatDesign.js';
 
-class BoatView extends MassView {
+export default class BoatView extends MassView {
   private liquidMultilink: Multilink<[number, number, number]>;
 
   boat: Boat;
@@ -202,4 +202,3 @@ class BoatView extends MassView {
 }
 
 densityBuoyancyCommon.register( 'BoatView', BoatView );
-export default BoatView;

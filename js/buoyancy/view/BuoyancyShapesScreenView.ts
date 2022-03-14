@@ -31,7 +31,7 @@ import { DensityBuoyancyScreenViewOptions } from '../../common/view/DensityBuoya
 // constants
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
 
-class BuoyancyShapesScreenView extends SecondaryMassScreenView<BuoyancyShapesModel> {
+export default class BuoyancyShapesScreenView extends SecondaryMassScreenView<BuoyancyShapesModel> {
 
   protected rightBox: Node;
 
@@ -136,4 +136,3 @@ class BuoyancyShapesScreenView extends SecondaryMassScreenView<BuoyancyShapesMod
 }
 
 densityBuoyancyCommon.register( 'BuoyancyShapesScreenView', BuoyancyShapesScreenView );
-export default BuoyancyShapesScreenView;

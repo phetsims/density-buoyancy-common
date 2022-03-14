@@ -13,7 +13,7 @@ import CuboidView from './CuboidView.js';
 import MassView from './MassView.js';
 import VerticalCylinderView from './VerticalCylinderView.js';
 
-class ScaleView extends MassView {
+export default class ScaleView extends MassView {
 
   private scaleGeometry: THREE.BufferGeometry;
 
@@ -66,4 +66,3 @@ class ScaleView extends MassView {
 }
 
 densityBuoyancyCommon.register( 'ScaleView', ScaleView );
-export default ScaleView;

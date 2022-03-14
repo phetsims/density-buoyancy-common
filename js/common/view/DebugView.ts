@@ -24,7 +24,7 @@ import Mass from '../model/Mass.js';
 // constants
 const scratchMatrix = new Matrix3();
 
-class DebugView extends Node {
+export default class DebugView extends Node {
 
   private model: DensityBuoyancyModel;
   private layoutBounds: Bounds2;
@@ -331,4 +331,3 @@ class DebugMassNode extends Node {
 }
 
 densityBuoyancyCommon.register( 'DebugView', DebugView );
-export default DebugView;

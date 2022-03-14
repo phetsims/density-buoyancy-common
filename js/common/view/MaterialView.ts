@@ -10,7 +10,7 @@
 
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 
-class MaterialView<T extends THREE.Material = THREE.Material> {
+export default class MaterialView<T extends THREE.Material = THREE.Material> {
 
   readonly material: T;
 
@@ -27,4 +27,3 @@ class MaterialView<T extends THREE.Material = THREE.Material> {
 }
 
 densityBuoyancyCommon.register( 'MaterialView', MaterialView );
-export default MaterialView;

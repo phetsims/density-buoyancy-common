@@ -43,7 +43,7 @@ const createMassLabel = ( string: string, fill: IPaint ) => {
 const PRIMARY_LABEL = createMassLabel( densityBuoyancyCommonStrings.massLabel.primary, DensityBuoyancyCommonColors.labelAProperty );
 const SECONDARY_LABEL = createMassLabel( densityBuoyancyCommonStrings.massLabel.secondary, DensityBuoyancyCommonColors.labelBProperty );
 
-class MassLabelNode extends Node {
+export default class MassLabelNode extends Node {
 
   mass: Mass;
   private showMassesProperty: IReadOnlyProperty<boolean>;
@@ -133,5 +133,4 @@ class MassLabelNode extends Node {
 }
 
 densityBuoyancyCommon.register( 'MassLabelNode', MassLabelNode );
-export default MassLabelNode;
 export { PRIMARY_LABEL, SECONDARY_LABEL };

@@ -25,7 +25,7 @@ const headerFont = new PhetFont( { size: 12, weight: 'bold' } );
 const bodyFont = new PhetFont( { size: 12 } );
 const materials = _.sortBy( DensityBuoyancyCommonConstants.DENSITY_MYSTERY_MATERIALS, material => material.density );
 
-class DensityTableNode extends Node {
+export default class DensityTableNode extends Node {
   constructor() {
     super();
 
@@ -76,4 +76,3 @@ class DensityTableNode extends Node {
 }
 
 densityBuoyancyCommon.register( 'DensityTableNode', DensityTableNode );
-export default DensityTableNode;

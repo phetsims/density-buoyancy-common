@@ -25,7 +25,7 @@ import DensityBuoyancyCommonColors from '../../common/view/DensityBuoyancyCommon
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyModel from '../../common/model/DensityBuoyancyModel.js';
 
-class BlockSet extends EnumerationValue {
+export class BlockSet extends EnumerationValue {
   static SAME_MASS = new BlockSet();
   static SAME_VOLUME = new BlockSet();
   static SAME_DENSITY = new BlockSet();
@@ -35,9 +35,9 @@ class BlockSet extends EnumerationValue {
   } );
 }
 
-type DensityCompareModelOptions = Omit<BlockSetModelOptions<BlockSet>, 'initialMode' | 'BlockSet' | 'createMassesCallback' | 'regenerateMassesCallback' | 'positionMassesCallback'>;
+export type DensityCompareModelOptions = Omit<BlockSetModelOptions<BlockSet>, 'initialMode' | 'BlockSet' | 'createMassesCallback' | 'regenerateMassesCallback' | 'positionMassesCallback'>;
 
-class DensityCompareModel extends BlockSetModel<BlockSet> {
+export default class DensityCompareModel extends BlockSetModel<BlockSet> {
 
   massProperty: RangedProperty;
   volumeProperty: RangedProperty;
@@ -264,6 +264,3 @@ class DensityCompareModel extends BlockSetModel<BlockSet> {
 }
 
 densityBuoyancyCommon.register( 'DensityCompareModel', DensityCompareModel );
-export default DensityCompareModel;
-export { BlockSet };
-export type { DensityCompareModelOptions };

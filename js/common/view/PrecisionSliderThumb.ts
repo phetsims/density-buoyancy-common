@@ -26,7 +26,7 @@ type SelfOptions = {
 };
 export type PrecisionSliderThumbOptions = NodeOptions & SelfOptions;
 
-class PrecisionSliderThumb extends Node {
+export default class PrecisionSliderThumb extends Node {
   constructor( providedOptions?: PrecisionSliderThumbOptions ) {
     const options = optionize<PrecisionSliderThumbOptions, SelfOptions, NodeOptions>( {
       thumbFill: '#eee',
@@ -67,4 +67,3 @@ class PrecisionSliderThumb extends Node {
 }
 
 densityBuoyancyCommon.register( 'PrecisionSliderThumb', PrecisionSliderThumb );
-export default PrecisionSliderThumb;

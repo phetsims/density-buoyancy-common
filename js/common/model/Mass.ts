@@ -39,7 +39,7 @@ import Basin from './Basin.js';
 import Ray3 from '../../../../dot/js/Ray3.js';
 
 // constants
-class MassTag extends EnumerationValue {
+export class MassTag extends EnumerationValue {
   static PRIMARY = new MassTag();
   static SECONDARY = new MassTag();
   static NONE = new MassTag();
@@ -112,7 +112,7 @@ type MaterialIdentifier = MaterialNonCustomIdentifier | 'CUSTOM';
 
 const materialToEnum = ( material: Material ): MaterialEnumeration => MaterialEnumeration[ ( ( material.identifier as MaterialIdentifier | null ) || 'CUSTOM' ) ];
 
-type MassSelfOptions = {
+type SelfOptions = {
   // Required
   body: PhysicsEngineBody;
   shape: Shape;
@@ -133,10 +133,10 @@ type MassSelfOptions = {
   massPropertyOptions?: NumberPropertyOptions;
 };
 
-type MassOptions = MassSelfOptions & PhetioObjectOptions;
-type InstrumentedMassOptions = MassOptions & { tandem: Tandem };
+export type MassOptions = SelfOptions & PhetioObjectOptions;
+export type InstrumentedMassOptions = MassOptions & { tandem: Tandem };
 
-abstract class Mass extends PhetioObject {
+export default abstract class Mass extends PhetioObject {
 
   engine: PhysicsEngine;
   body: PhysicsEngineBody;
@@ -228,7 +228,7 @@ abstract class Mass extends PhetioObject {
 
   constructor( engine: PhysicsEngine, providedConfig: MassOptions ) {
 
-    const config = optionize<MassOptions, MassSelfOptions, PhetioObjectOptions>( {
+    const config = optionize<MassOptions, SelfOptions, PhetioObjectOptions>( {
       visible: true,
       matrix: new Matrix3(),
       canRotate: false,
@@ -700,6 +700,3 @@ Mass.MassIO = new IOType( 'MassIO', {
 } );
 
 densityBuoyancyCommon.register( 'Mass', Mass );
-export default Mass;
-export { MassTag };
-export type { MassOptions, InstrumentedMassOptions };

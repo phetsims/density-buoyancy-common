@@ -80,7 +80,7 @@ type SelfOptions = {
 
 export type DensityBuoyancyScreenViewOptions = SelfOptions & ScreenViewOptions;
 
-class DensityBuoyancyScreenView<Model extends DensityBuoyancyModel> extends ScreenView {
+export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyModel> extends ScreenView {
 
   protected model: Model;
   protected popupLayer: Node;
@@ -1031,4 +1031,3 @@ class DensityBuoyancyScreenView<Model extends DensityBuoyancyModel> extends Scre
 }
 
 densityBuoyancyCommon.register( 'DensityBuoyancyScreenView', DensityBuoyancyScreenView );
-export default DensityBuoyancyScreenView;

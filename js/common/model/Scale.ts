@@ -50,7 +50,7 @@ const SCALE_FRONT_OFFSET = new Vector3(
   SCALE_BASE_BOUNDS.maxZ
 );
 
-class DisplayType extends EnumerationValue {
+export class DisplayType extends EnumerationValue {
   static NEWTONS = new DisplayType();
   static KILOGRAMS = new DisplayType();
 
@@ -59,13 +59,13 @@ class DisplayType extends EnumerationValue {
   } );
 }
 
-type ScaleSelfOptions = {
+type SelfOptions = {
   displayType?: DisplayType;
 };
 
-type ScaleOptions = ScaleSelfOptions & Omit<InstrumentedMassOptions, 'body' | 'shape' | 'volume' | 'material' | 'phetioType'>;
+export type ScaleOptions = SelfOptions & Omit<InstrumentedMassOptions, 'body' | 'shape' | 'volume' | 'material' | 'phetioType'>;
 
-class Scale extends Mass {
+export default class Scale extends Mass {
 
   // In Newtons.
   scaleForceInterpolatedProperty: InterpolatedProperty<number>;
@@ -81,7 +81,7 @@ class Scale extends Mass {
    * @param {Object} config
    */
   constructor( engine: PhysicsEngine, gravityProperty: IProperty<Gravity>, providedOptions: ScaleOptions ) {
-    const config = optionize<ScaleOptions, ScaleSelfOptions, InstrumentedMassOptions>( {
+    const config = optionize<ScaleOptions, SelfOptions, InstrumentedMassOptions>( {
       body: engine.createBox( SCALE_WIDTH, SCALE_HEIGHT, providedOptions.canMove === false ),
       shape: Shape.rect( -SCALE_WIDTH / 2, -SCALE_HEIGHT / 2, SCALE_WIDTH, SCALE_HEIGHT ),
       volume: SCALE_VOLUME,
@@ -239,6 +239,3 @@ Scale.ScaleIO = new IOType( 'ScaleIO', {
 } );
 
 densityBuoyancyCommon.register( 'Scale', Scale );
-export default Scale;
-export { DisplayType };
-export type { ScaleOptions };

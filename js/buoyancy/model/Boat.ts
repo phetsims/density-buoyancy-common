@@ -22,9 +22,9 @@ import PhysicsEngine from '../../common/model/PhysicsEngine.js';
 import IProperty from '../../../../axon/js/IProperty.js';
 import Ray3 from '../../../../dot/js/Ray3.js';
 
-type BoatOptions = Omit<InstrumentedMassOptions, 'body' | 'shape' | 'volume' | 'material'>;
+export type BoatOptions = Omit<InstrumentedMassOptions, 'body' | 'shape' | 'volume' | 'material'>;
 
-class Boat extends Mass {
+export default class Boat extends Mass {
 
   displacementVolumeProperty: Property<number>;
   liquidMaterialProperty: IProperty<Material>;
@@ -250,5 +250,3 @@ class Boat extends Mass {
 }
 
 densityBuoyancyCommon.register( 'Boat', Boat );
-export default Boat;
-export type { BoatOptions };

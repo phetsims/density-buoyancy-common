@@ -16,9 +16,9 @@ import BlockControlNode, { BlockControlNodeOptions } from './BlockControlNode.js
 import DensityBuoyancyCommonColors from './DensityBuoyancyCommonColors.js';
 import PrimarySecondaryPanelsNode from './PrimarySecondaryPanelsNode.js';
 
-type PrimarySecondaryControlsNodeOptions = BlockControlNodeOptions & { tandem: Tandem };
+export type PrimarySecondaryControlsNodeOptions = BlockControlNodeOptions & { tandem: Tandem };
 
-class PrimarySecondaryControlsNode extends PrimarySecondaryPanelsNode {
+export default class PrimarySecondaryControlsNode extends PrimarySecondaryPanelsNode {
 
   /**
    * @param primaryMass
@@ -57,4 +57,3 @@ class PrimarySecondaryControlsNode extends PrimarySecondaryPanelsNode {
 }
 
 densityBuoyancyCommon.register( 'PrimarySecondaryControlsNode', PrimarySecondaryControlsNode );
-export default PrimarySecondaryControlsNode;

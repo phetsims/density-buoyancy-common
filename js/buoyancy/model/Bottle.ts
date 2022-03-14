@@ -165,9 +165,9 @@ const BOTTLE_INITIAL_INTERIOR_VOLUME = 0.004;
 // {Material}
 const BOTTLE_INITIAL_INTERIOR_MATERIAL = Material.WATER;
 
-type BottleOptions = Omit<InstrumentedMassOptions, 'body' | 'shape' | 'volume' | 'material'>;
+export type BottleOptions = Omit<InstrumentedMassOptions, 'body' | 'shape' | 'volume' | 'material'>;
 
-class Bottle extends Mass {
+export default class Bottle extends Mass {
 
   // model-coordinate bounds in x,y
   private bottleBounds: Bounds2;
@@ -1248,4 +1248,3 @@ Bottle.TEN_LITER_DISPLACED_VOLUMES = TEN_LITER_DISPLACED_VOLUMES;
 Bottle.FLAT_INTERSECTION_VERTICES = FLAT_INTERSECTION_VERTICES;
 
 densityBuoyancyCommon.register( 'Bottle', Bottle );
-export default Bottle;

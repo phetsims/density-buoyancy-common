@@ -19,9 +19,9 @@ import Material from '../../common/model/Material.js';
 import TwoBlockMode from '../../common/model/TwoBlockMode.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 
-type DensityIntroModelOptions = DensityBuoyancyModelOptions;
+export type DensityIntroModelOptions = DensityBuoyancyModelOptions;
 
-class DensityIntroModel extends DensityBuoyancyModel {
+export default class DensityIntroModel extends DensityBuoyancyModel {
 
   modeProperty: Property<TwoBlockMode>;
   readonly primaryMass: Cuboid;
@@ -81,4 +81,3 @@ class DensityIntroModel extends DensityBuoyancyModel {
 }
 
 densityBuoyancyCommon.register( 'DensityIntroModel', DensityIntroModel );
-export default DensityIntroModel;

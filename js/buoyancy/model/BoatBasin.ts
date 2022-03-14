@@ -15,7 +15,7 @@ import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import Boat from './Boat.js';
 import BoatDesign from './BoatDesign.js';
 
-class BoatBasin extends Basin {
+export default class BoatBasin extends Basin {
 
   private boat: Boat;
 
@@ -67,4 +67,3 @@ class BoatBasin extends Basin {
 }
 
 densityBuoyancyCommon.register( 'BoatBasin', BoatBasin );
-export default BoatBasin;

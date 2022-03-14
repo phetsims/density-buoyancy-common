@@ -48,7 +48,7 @@ type SelfOptions = {
 
 export type ShapeSizeControlNodeOptions = SelfOptions & FlowBoxOptions;
 
-class ShapeSizeControlNode extends FlowBox {
+export default class ShapeSizeControlNode extends FlowBox {
   constructor( massShapeProperty: Property<MassShape>, widthRatioProperty: Property<number>, heightRatioProperty: Property<number>, volumeProperty: Property<number>, listParent: Node, providedOptions?: ShapeSizeControlNodeOptions ) {
 
     const options = optionize<ShapeSizeControlNodeOptions, SelfOptions, FlowBoxOptions>( {
@@ -141,4 +141,3 @@ class ShapeSizeControlNode extends FlowBox {
 }
 
 densityBuoyancyCommon.register( 'ShapeSizeControlNode', ShapeSizeControlNode );
-export default ShapeSizeControlNode;

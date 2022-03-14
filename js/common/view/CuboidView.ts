@@ -23,7 +23,7 @@ const TAG_SIZE = 0.03;
 const TAG_OFFSET = 0.005;
 const TAG_SCALE = 0.0005;
 
-class CuboidView extends MassView {
+export default class CuboidView extends MassView {
 
   cuboid: Cuboid;
   private cuboidGeometry: THREE.BufferGeometry;
@@ -222,4 +222,3 @@ class CuboidView extends MassView {
 }
 
 densityBuoyancyCommon.register( 'CuboidView', CuboidView );
-export default CuboidView;

@@ -55,7 +55,7 @@ type SelfOptions<T> = {
 
 export type ComboNumberControlOptions<T> = SelfOptions<T> & VBoxOptions;
 
-class ComboNumberControl<T> extends VBox {
+export default class ComboNumberControl<T> extends VBox {
 
   private property: Property<T>;
   private numberProperty: Property<number>;
@@ -248,4 +248,3 @@ class ComboNumberControl<T> extends VBox {
 }
 
 densityBuoyancyCommon.register( 'ComboNumberControl', ComboNumberControl );
-export default ComboNumberControl;

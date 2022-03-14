@@ -30,7 +30,7 @@ const blockSetStringMap = {
 };
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
 
-class DensityCompareScreenView extends DensityBuoyancyScreenView<DensityCompareModel> {
+export default class DensityCompareScreenView extends DensityBuoyancyScreenView<DensityCompareModel> {
 
   private positionPanel: () => void;
 
@@ -182,4 +182,3 @@ class DensityCompareScreenView extends DensityBuoyancyScreenView<DensityCompareM
 }
 
 densityBuoyancyCommon.register( 'DensityCompareScreenView', DensityCompareScreenView );
-export default DensityCompareScreenView;

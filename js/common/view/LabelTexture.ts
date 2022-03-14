@@ -11,7 +11,7 @@ import { Node } from '../../../../scenery/js/imports.js';
 import { Utils } from '../../../../scenery/js/imports.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 
-class LabelTexture extends NodeTexture {
+export default class LabelTexture extends NodeTexture {
 
   private containerNode: Node;
 
@@ -39,4 +39,3 @@ class LabelTexture extends NodeTexture {
 }
 
 densityBuoyancyCommon.register( 'LabelTexture', LabelTexture );
-export default LabelTexture;

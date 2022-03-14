@@ -19,9 +19,9 @@ import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import Mass, { InstrumentedMassOptions } from './Mass.js';
 import PhysicsEngine from './PhysicsEngine.js';
 
-type EllipsoidOptions = Omit<InstrumentedMassOptions, 'body' | 'shape' | 'volume' | 'phetioType'>;
+export type EllipsoidOptions = Omit<InstrumentedMassOptions, 'body' | 'shape' | 'volume' | 'phetioType'>;
 
-class Ellipsoid extends Mass {
+export default class Ellipsoid extends Mass {
 
   sizeProperty: Property<Bounds3>;
 
@@ -221,5 +221,3 @@ Ellipsoid.EllipsoidIO = new IOType( 'EllipsoidIO', {
 } );
 
 densityBuoyancyCommon.register( 'Ellipsoid', Ellipsoid );
-export default Ellipsoid;
-export type { EllipsoidOptions };

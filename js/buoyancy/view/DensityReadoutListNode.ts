@@ -16,7 +16,7 @@ import Material from '../../common/model/Material.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import densityBuoyancyCommonStrings from '../../densityBuoyancyCommonStrings.js';
 
-class DensityReadoutListNode extends VBox {
+export default class DensityReadoutListNode extends VBox {
   constructor( materialProperties: IReadOnlyProperty<Material>[] ) {
 
     super( {
@@ -41,4 +41,3 @@ class DensityReadoutListNode extends VBox {
 }
 
 densityBuoyancyCommon.register( 'DensityReadoutListNode', DensityReadoutListNode );
-export default DensityReadoutListNode;

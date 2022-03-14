@@ -16,7 +16,7 @@ import HorizontalCylinder from '../model/HorizontalCylinder.js';
 const segments = 64;
 const numElements = 12 * segments;
 
-class HorizontalCylinderView extends MassView {
+export default class HorizontalCylinderView extends MassView {
 
   readonly horizontalCylinder: HorizontalCylinder;
   private horizontalCylinderGeometry: THREE.BufferGeometry;
@@ -154,4 +154,3 @@ class HorizontalCylinderView extends MassView {
 }
 
 densityBuoyancyCommon.register( 'HorizontalCylinderView', HorizontalCylinderView );
-export default HorizontalCylinderView;

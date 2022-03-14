@@ -10,7 +10,7 @@ import Enumeration from '../../../../phet-core/js/Enumeration.js';
 import EnumerationValue from '../../../../phet-core/js/EnumerationValue.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 
-class TwoBlockMode extends EnumerationValue {
+export default class TwoBlockMode extends EnumerationValue {
   static ONE_BLOCK = new TwoBlockMode();
   static TWO_BLOCKS = new TwoBlockMode();
 
@@ -20,4 +20,3 @@ class TwoBlockMode extends EnumerationValue {
 }
 
 densityBuoyancyCommon.register( 'TwoBlockMode', TwoBlockMode );
-export default TwoBlockMode;

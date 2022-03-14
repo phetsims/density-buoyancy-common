@@ -16,16 +16,16 @@ import optionize from '../../../../phet-core/js/optionize.js';
 import Material from './Material.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 
-type CubeSelfOptions = {
+type SelfOptions = {
   adjustMassWithVolume?: boolean
 };
 
-type CubeOptions = CubeSelfOptions & CuboidOptions;
+export type CubeOptions = SelfOptions & CuboidOptions;
 
-class Cube extends Cuboid {
+export default class Cube extends Cuboid {
   constructor( engine: PhysicsEngine, volume: number, providedConfig: CubeOptions ) {
 
-    let config = optionize<CubeOptions, CubeSelfOptions, CuboidOptions>( {
+    let config = optionize<CubeOptions, SelfOptions, CuboidOptions>( {
       adjustMassWithVolume: false,
 
       volumePropertyOptions: {
@@ -94,5 +94,3 @@ class Cube extends Cuboid {
 }
 
 densityBuoyancyCommon.register( 'Cube', Cube );
-export default Cube;
-export type { CubeOptions };

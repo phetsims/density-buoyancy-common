@@ -32,7 +32,7 @@ const forceScale = 7;
 const arrowSpacing = arrowOptions.headWidth + 3;
 const labelFont = new PhetFont( { size: 12, weight: 'bold' } );
 
-class ForceDiagramNode extends Node {
+export default class ForceDiagramNode extends Node {
 
   readonly mass: Mass;
   private showGravityForceProperty: Property<boolean>;
@@ -185,4 +185,3 @@ class ForceDiagramNode extends Node {
 }
 
 densityBuoyancyCommon.register( 'ForceDiagramNode', ForceDiagramNode );
-export default ForceDiagramNode;

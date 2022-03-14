@@ -11,7 +11,7 @@ import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import Bottle from '../model/Bottle.js';
 import Material from '../../common/model/Material.js';
 
-class BottleView extends MassView {
+export default class BottleView extends MassView {
 
   bottle: Bottle;
 
@@ -167,4 +167,3 @@ class BottleView extends MassView {
 }
 
 densityBuoyancyCommon.register( 'BottleView', BottleView );
-export default BottleView;

@@ -294,7 +294,7 @@ class DebugMaterialView extends MaterialView {
   }
 }
 
-class DensityMaterials {
+export default class DensityMaterials {
   /**
    * Returns a view for the given Material.
    */
@@ -343,4 +343,3 @@ class DensityMaterials {
 
 
 densityBuoyancyCommon.register( 'DensityMaterials', DensityMaterials );
-export default DensityMaterials;

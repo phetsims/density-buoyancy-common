@@ -21,7 +21,7 @@ import densityBuoyancyCommonStrings from '../../densityBuoyancyCommonStrings.js'
 import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
 import DensityBuoyancyCommonColors from './DensityBuoyancyCommonColors.js';
 
-class WaterLevelIndicator extends Node {
+export default class WaterLevelIndicator extends Node {
   constructor( volumeProperty: IReadOnlyProperty<number> ) {
     super();
 
@@ -57,4 +57,3 @@ class WaterLevelIndicator extends Node {
 }
 
 densityBuoyancyCommon.register( 'WaterLevelIndicator', WaterLevelIndicator );
-export default WaterLevelIndicator;

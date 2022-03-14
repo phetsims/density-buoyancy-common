@@ -42,7 +42,7 @@ const checkboxOptions = {
 };
 const checkboxSpacing = 5;
 
-class DisplayOptionsNode extends VBox {
+export default class DisplayOptionsNode extends VBox {
   constructor( model: DensityBuoyancyModel, options?: VBoxOptions ) {
 
     options = merge( {
@@ -133,4 +133,3 @@ class DisplayOptionsNode extends VBox {
 }
 
 densityBuoyancyCommon.register( 'DisplayOptionsNode', DisplayOptionsNode );
-export default DisplayOptionsNode;

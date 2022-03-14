@@ -38,7 +38,7 @@ import BuoyancyExploreModel from '../model/BuoyancyExploreModel.js';
 // constants
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
 
-class BuoyancyExploreScreenView extends SecondaryMassScreenView<BuoyancyExploreModel> {
+export default class BuoyancyExploreScreenView extends SecondaryMassScreenView<BuoyancyExploreModel> {
 
   protected rightBox: Node;
 
@@ -182,4 +182,3 @@ class BuoyancyExploreScreenView extends SecondaryMassScreenView<BuoyancyExploreM
 }
 
 densityBuoyancyCommon.register( 'BuoyancyExploreScreenView', BuoyancyExploreScreenView );
-export default BuoyancyExploreScreenView;

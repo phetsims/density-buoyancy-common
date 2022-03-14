@@ -17,7 +17,7 @@ import Material from '../../common/model/Material.js';
 import Scale, { DisplayType } from '../../common/model/Scale.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 
-class BlockSet extends EnumerationValue {
+export class BlockSet extends EnumerationValue {
   static SAME_MASS = new BlockSet();
   static SAME_VOLUME = new BlockSet();
   static SAME_DENSITY = new BlockSet();
@@ -27,9 +27,9 @@ class BlockSet extends EnumerationValue {
   } );
 }
 
-type BuoyancyIntroModelOptions = Omit<BlockSetModelOptions<BlockSet>, 'initialMode' | 'BlockSet' | 'createMassesCallback' | 'regenerateMassesCallback' | 'positionMassesCallback'>;
+export type BuoyancyIntroModelOptions = Omit<BlockSetModelOptions<BlockSet>, 'initialMode' | 'BlockSet' | 'createMassesCallback' | 'regenerateMassesCallback' | 'positionMassesCallback'>;
 
-class BuoyancyIntroModel extends BlockSetModel<BlockSet> {
+export default class BuoyancyIntroModel extends BlockSetModel<BlockSet> {
   constructor( providedOptions: BuoyancyIntroModelOptions ) {
     const options = optionize<BuoyancyIntroModelOptions, {}, BlockSetModelOptions<BlockSet>>( {
       initialMode: BlockSet.SAME_MASS,
@@ -106,6 +106,3 @@ class BuoyancyIntroModel extends BlockSetModel<BlockSet> {
 }
 
 densityBuoyancyCommon.register( 'BuoyancyIntroModel', BuoyancyIntroModel );
-export default BuoyancyIntroModel;
-export { BlockSet };
-export type { BuoyancyIntroModelOptions };

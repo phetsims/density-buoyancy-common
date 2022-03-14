@@ -33,7 +33,7 @@ import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 // constants
 const CROSS_SECTION_SAMPLES = 30;
 
-class BoatDesign {
+export default class BoatDesign {
   /**
    * Given a design y-value, returns the height ratio (0 being the bottom of the boat, 1 being the top)
    */
@@ -856,4 +856,3 @@ BoatDesign.ONE_LITER_INTERIOR_BOTTOM = -0.01850826836986578;
 BoatDesign.ONE_LITER_HULL_VOLUME = BoatDesign.DESIGN_HULL_VOLUME * BoatDesign.ONE_LITER_SCALE_MULTIPLIER * BoatDesign.ONE_LITER_SCALE_MULTIPLIER * BoatDesign.ONE_LITER_SCALE_MULTIPLIER;
 
 densityBuoyancyCommon.register( 'BoatDesign', BoatDesign );
-export default BoatDesign;

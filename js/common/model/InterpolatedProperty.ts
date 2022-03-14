@@ -15,12 +15,12 @@ import NumberIO from '../../../../tandem/js/types/NumberIO.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 
 type Interpolate<T> = ( a: T, b: T, ratio: number ) => T;
-type InterpolatedPropertySelfOptions<T> = {
+type SelfOptions<T> = {
   interpolate: Interpolate<T>
 };
-type InterpolatedPropertyOptions<T> = InterpolatedPropertySelfOptions<T> & PropertyOptions<T>;
+export type InterpolatedPropertyOptions<T> = SelfOptions<T> & PropertyOptions<T>;
 
-class InterpolatedProperty<T> extends Property<T> {
+export default class InterpolatedProperty<T> extends Property<T> {
 
   // publicly read-only
   currentValue: T;
@@ -31,7 +31,7 @@ class InterpolatedProperty<T> extends Property<T> {
 
   constructor( initialValue: T, providedConfig: InterpolatedPropertyOptions<T> ) {
 
-    const config = optionize<InterpolatedPropertyOptions<T>, InterpolatedPropertySelfOptions<T>, PropertyOptions<T>>( {}, providedConfig );
+    const config = optionize<InterpolatedPropertyOptions<T>, SelfOptions<T>, PropertyOptions<T>>( {}, providedConfig );
 
     super( initialValue, config );
 
@@ -140,5 +140,3 @@ InterpolatedProperty.InterpolatedPropertyIO = parameterType => {
 };
 
 densityBuoyancyCommon.register( 'InterpolatedProperty', InterpolatedProperty );
-export default InterpolatedProperty;
-export type { InterpolatedPropertySelfOptions };

@@ -21,7 +21,7 @@ import Gravity from '../model/Gravity.js';
 import IReadOnlyProperty from '../../../../axon/js/IReadOnlyProperty.js';
 import Multilink from '../../../../axon/js/Multilink.js';
 
-class ScaleReadoutNode extends Node {
+export default class ScaleReadoutNode extends Node {
 
   mass: Scale;
   private scaleForceMultilink: Multilink<[number, Gravity]>;
@@ -65,8 +65,6 @@ class ScaleReadoutNode extends Node {
 
   /**
    * Releases references.
-   * @public
-   * @override
    */
   dispose() {
     this.scaleForceMultilink.dispose();
@@ -76,4 +74,3 @@ class ScaleReadoutNode extends Node {
 }
 
 densityBuoyancyCommon.register( 'ScaleReadoutNode', ScaleReadoutNode );
-export default ScaleReadoutNode;

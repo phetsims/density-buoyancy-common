@@ -16,7 +16,7 @@ import MassView from './MassView.js';
 const segments = 64;
 const numElements = 12 * segments;
 
-class VerticalCylinderView extends MassView {
+export default class VerticalCylinderView extends MassView {
 
   readonly verticalCylinder: VerticalCylinder;
   private verticalCylinderGeometry: THREE.BufferGeometry;
@@ -155,4 +155,3 @@ class VerticalCylinderView extends MassView {
 }
 
 densityBuoyancyCommon.register( 'VerticalCylinderView', VerticalCylinderView );
-export default VerticalCylinderView;

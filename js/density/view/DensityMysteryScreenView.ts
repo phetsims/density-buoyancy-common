@@ -31,7 +31,7 @@ const blockSetStringMap = {
 };
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
 
-class DensityMysteryScreenView extends DensityBuoyancyScreenView<DensityMysteryModel> {
+export default class DensityMysteryScreenView extends DensityBuoyancyScreenView<DensityMysteryModel> {
   constructor( model: DensityMysteryModel, options: DensityBuoyancyModelOptions ) {
 
     const tandem = options.tandem;
@@ -125,4 +125,3 @@ class DensityMysteryScreenView extends DensityBuoyancyScreenView<DensityMysteryM
 }
 
 densityBuoyancyCommon.register( 'DensityMysteryScreenView', DensityMysteryScreenView );
-export default DensityMysteryScreenView;

@@ -20,9 +20,9 @@ import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import Mass, { InstrumentedMassOptions } from './Mass.js';
 import PhysicsEngine from './PhysicsEngine.js';
 
-type VerticalCylinderOptions = Omit<InstrumentedMassOptions, 'body' | 'shape' | 'volume' | 'phetioType'>;
+export type VerticalCylinderOptions = Omit<InstrumentedMassOptions, 'body' | 'shape' | 'volume' | 'phetioType'>;
 
-class VerticalCylinder extends Mass {
+export default class VerticalCylinder extends Mass {
 
   radiusProperty: Property<number>;
   heightProperty: Property<number>;
@@ -242,5 +242,3 @@ VerticalCylinder.VerticalCylinderIO = new IOType( 'VerticalCylinderIO', {
 } );
 
 densityBuoyancyCommon.register( 'VerticalCylinder', VerticalCylinder );
-export default VerticalCylinder;
-export type { VerticalCylinderOptions };

@@ -15,7 +15,7 @@ import StringIO from '../../../../tandem/js/types/StringIO.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import densityBuoyancyCommonStrings from '../../densityBuoyancyCommonStrings.js';
 
-type GravityOptions = {
+export type GravityOptions = {
   name: string;
   tandemName: string;
 
@@ -26,7 +26,7 @@ type GravityOptions = {
   hidden?: boolean;
 };
 
-class Gravity {
+export default class Gravity {
 
   public name: string;
   public tandemName: string;
@@ -127,4 +127,3 @@ Gravity.GravityIO = new IOType( 'GravityIO', {
 } );
 
 densityBuoyancyCommon.register( 'Gravity', Gravity );
-export default Gravity;

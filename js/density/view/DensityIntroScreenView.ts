@@ -24,7 +24,7 @@ import { DensityBuoyancyModelOptions } from '../../common/model/DensityBuoyancyM
 // constants
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
 
-class DensityIntroScreenView extends SecondaryMassScreenView<DensityIntroModel> {
+export default class DensityIntroScreenView extends SecondaryMassScreenView<DensityIntroModel> {
 
   protected rightBox: Node;
 
@@ -93,4 +93,3 @@ class DensityIntroScreenView extends SecondaryMassScreenView<DensityIntroModel> 
 }
 
 densityBuoyancyCommon.register( 'DensityIntroScreenView', DensityIntroScreenView );
-export default DensityIntroScreenView;

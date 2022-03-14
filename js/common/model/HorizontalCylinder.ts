@@ -19,9 +19,9 @@ import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import Mass, { InstrumentedMassOptions } from './Mass.js';
 import PhysicsEngine from './PhysicsEngine.js';
 
-type HorizontalCylinderOptions = Omit<InstrumentedMassOptions, 'body' | 'shape' | 'volume' | 'phetioType'>;
+export type HorizontalCylinderOptions = Omit<InstrumentedMassOptions, 'body' | 'shape' | 'volume' | 'phetioType'>;
 
-class HorizontalCylinder extends Mass {
+export default class HorizontalCylinder extends Mass {
 
   radiusProperty: Property<number>;
   lengthProperty: Property<number>;
@@ -237,5 +237,3 @@ HorizontalCylinder.HorizontalCylinderIO = new IOType( 'HorizontalCylinderIO', {
 } );
 
 densityBuoyancyCommon.register( 'HorizontalCylinder', HorizontalCylinder );
-export default HorizontalCylinder;
-export type { HorizontalCylinderOptions };

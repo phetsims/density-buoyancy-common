@@ -24,7 +24,7 @@ const groundMaterial = new p2.Material();
 const barrierMaterial = new p2.Material();
 const dynamicMaterial = new p2.Material();
 
-class P2Engine extends PhysicsEngine {
+export default class P2Engine extends PhysicsEngine {
 
   private world: p2.World;
 
@@ -465,4 +465,3 @@ class P2Engine extends PhysicsEngine {
 }
 
 densityBuoyancyCommon.register( 'P2Engine', P2Engine );
-export default P2Engine;

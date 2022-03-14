@@ -17,7 +17,7 @@ import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js
 import Gravity from '../model/Gravity.js';
 import ComboNumberControl from './ComboNumberControl.js';
 
-class GravityControlNode extends ComboNumberControl<Gravity> {
+export default class GravityControlNode extends ComboNumberControl<Gravity> {
   constructor( gravityProperty: Property<Gravity>, listParent: Node ) {
 
     const customValue = Gravity.createCustomGravity( 9.8 );
@@ -63,4 +63,3 @@ class GravityControlNode extends ComboNumberControl<Gravity> {
 }
 
 densityBuoyancyCommon.register( 'GravityControlNode', GravityControlNode );
-export default GravityControlNode;

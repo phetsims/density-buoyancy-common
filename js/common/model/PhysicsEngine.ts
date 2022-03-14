@@ -13,7 +13,7 @@ import Matrix3 from '../../../../dot/js/Matrix3.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 
-abstract class PhysicsEngine {
+export default abstract class PhysicsEngine {
 
   // Engines typically work in fixed-time steps, this is how far we are in the
   // display from the "previous" step (0) to the "next" step (1).
@@ -171,8 +171,6 @@ abstract class PhysicsEngine {
 }
 
 // NOTE: if we're using something other than P2, we'll need to improve this typing
-type PhysicsEngineBody = p2.Body;
+export type PhysicsEngineBody = p2.Body;
 
 densityBuoyancyCommon.register( 'PhysicsEngine', PhysicsEngine );
-export default PhysicsEngine;
-export type { PhysicsEngineBody };

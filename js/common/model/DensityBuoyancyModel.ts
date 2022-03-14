@@ -37,13 +37,13 @@ const POOL_HEIGHT = POOL_VOLUME / POOL_WIDTH / POOL_DEPTH;
 const GROUND_FRONT_Z = POOL_DEPTH / 2;
 const POOL_BACK_Z = -POOL_DEPTH / 2;
 
-type DensityBuoyancyModelOptions = {
+export type DensityBuoyancyModelOptions = {
   showMassesDefault?: boolean;
   canShowForces?: boolean;
   tandem: Tandem;
 };
 
-class DensityBuoyancyModel {
+export default class DensityBuoyancyModel {
 
   showGravityForceProperty: Property<boolean>;
   showBuoyancyForceProperty: Property<boolean>;
@@ -532,5 +532,3 @@ class DensityBuoyancyModel {
 }
 
 densityBuoyancyCommon.register( 'DensityBuoyancyModel', DensityBuoyancyModel );
-export default DensityBuoyancyModel;
-export type { DensityBuoyancyModelOptions };

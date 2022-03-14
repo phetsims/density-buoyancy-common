@@ -39,7 +39,7 @@ import DensityReadoutListNode from './DensityReadoutListNode.js';
 // constants
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
 
-class BuoyancyApplicationsScreenView extends DensityBuoyancyScreenView<BuoyancyApplicationsModel> {
+export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScreenView<BuoyancyApplicationsModel> {
 
   private positionResetSceneButton: () => void;
 
@@ -300,4 +300,3 @@ class BuoyancyApplicationsScreenView extends DensityBuoyancyScreenView<BuoyancyA
 }
 
 densityBuoyancyCommon.register( 'BuoyancyApplicationsScreenView', BuoyancyApplicationsScreenView );
-export default BuoyancyApplicationsScreenView;

@@ -16,7 +16,7 @@ import MassView from './MassView.js';
 const segments = 64;
 const numElements = 6 * segments;
 
-class ConeView extends MassView {
+export default class ConeView extends MassView {
 
   readonly cone: Cone;
   private coneGeometry: THREE.BufferGeometry;
@@ -132,4 +132,3 @@ class ConeView extends MassView {
 }
 
 densityBuoyancyCommon.register( 'ConeView', ConeView );
-export default ConeView;

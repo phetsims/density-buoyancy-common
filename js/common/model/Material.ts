@@ -24,7 +24,7 @@ import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import densityBuoyancyCommonStrings from '../../densityBuoyancyCommonStrings.js';
 import DensityBuoyancyCommonColors from '../view/DensityBuoyancyCommonColors.js';
 
-type MaterialOptions = {
+export type MaterialOptions = {
   name?: string;
 
   // If set, this material will be available at Material[ identifier ] as a global
@@ -51,7 +51,7 @@ type MaterialOptions = {
   liquidColor?: Property<Color> | null;
 };
 
-class Material {
+export default class Material {
 
   readonly name: string;
   readonly identifier: string | null;
@@ -534,5 +534,3 @@ Material.MaterialIO = new IOType( 'MaterialIO', {
 } );
 
 densityBuoyancyCommon.register( 'Material', Material );
-export default Material;
-export type { MaterialOptions };

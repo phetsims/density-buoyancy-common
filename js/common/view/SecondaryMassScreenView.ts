@@ -16,7 +16,7 @@ import Bounds2 from '../../../../dot/js/Bounds2.js';
 import { Node } from '../../../../scenery/js/imports.js';
 import DensityBuoyancyModel from '../model/DensityBuoyancyModel.js';
 
-abstract class SecondaryMassScreenView<Model extends DensityBuoyancyModel> extends DensityBuoyancyScreenView<Model> {
+export default abstract class SecondaryMassScreenView<Model extends DensityBuoyancyModel> extends DensityBuoyancyScreenView<Model> {
 
   protected abstract rightBox: Node;
   private blocksRadioButtonGroup?: Node;
@@ -63,4 +63,3 @@ abstract class SecondaryMassScreenView<Model extends DensityBuoyancyModel> exten
 }
 
 densityBuoyancyCommon.register( 'SecondaryMassScreenView', SecondaryMassScreenView );
-export default SecondaryMassScreenView;

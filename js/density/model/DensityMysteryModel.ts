@@ -46,7 +46,7 @@ const randomColors = [
   DensityBuoyancyCommonColors.mysteryMaroonColorProperty
 ];
 
-class BlockSet extends EnumerationValue {
+export class BlockSet extends EnumerationValue {
   static SET_1 = new BlockSet();
   static SET_2 = new BlockSet();
   static SET_3 = new BlockSet();
@@ -57,9 +57,9 @@ class BlockSet extends EnumerationValue {
   } );
 }
 
-type DensityMysteryModelOptions = Omit<BlockSetModelOptions<BlockSet>, 'initialMode' | 'BlockSet' | 'createMassesCallback' | 'regenerateMassesCallback' | 'positionMassesCallback'>;
+export type DensityMysteryModelOptions = Omit<BlockSetModelOptions<BlockSet>, 'initialMode' | 'BlockSet' | 'createMassesCallback' | 'regenerateMassesCallback' | 'positionMassesCallback'>;
 
-class DensityMysteryModel extends BlockSetModel<BlockSet> {
+export default class DensityMysteryModel extends BlockSetModel<BlockSet> {
 
   densityTableExpandedProperty: Property<boolean>;
   scale: Scale;
@@ -300,6 +300,3 @@ class DensityMysteryModel extends BlockSetModel<BlockSet> {
 }
 
 densityBuoyancyCommon.register( 'DensityMysteryModel', DensityMysteryModel );
-export default DensityMysteryModel;
-export { BlockSet };
-export type { DensityMysteryModelOptions };

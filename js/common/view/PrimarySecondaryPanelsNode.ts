@@ -13,7 +13,7 @@ import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
 import { PRIMARY_LABEL, SECONDARY_LABEL } from './MassLabelNode.js';
 
-class PrimarySecondaryPanelsNode extends Panel {
+export default class PrimarySecondaryPanelsNode extends Panel {
 
   constructor( primaryNode: Node, secondaryNode: Node ) {
     super( new FlowBox( {
@@ -50,4 +50,3 @@ class PrimarySecondaryPanelsNode extends Panel {
 }
 
 densityBuoyancyCommon.register( 'PrimarySecondaryPanelsNode', PrimarySecondaryPanelsNode );
-export default PrimarySecondaryPanelsNode;

@@ -12,7 +12,7 @@ import Material from '../model/Material.js';
 import DensityMaterials from './DensityMaterials.js';
 import MaterialView from './MaterialView.js';
 
-abstract class MassView extends THREE.Mesh {
+export default abstract class MassView extends THREE.Mesh {
 
   mass: Mass;
   materialView: MaterialView;
@@ -63,4 +63,3 @@ abstract class MassView extends THREE.Mesh {
 }
 
 densityBuoyancyCommon.register( 'MassView', MassView );
-export default MassView;

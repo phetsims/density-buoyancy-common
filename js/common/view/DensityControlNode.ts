@@ -17,7 +17,7 @@ import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js
 import Material from '../model/Material.js';
 import ComboNumberControl from './ComboNumberControl.js';
 
-class DensityControlNode extends ComboNumberControl<Material> {
+export default class DensityControlNode extends ComboNumberControl<Material> {
   constructor( liquidMaterialProperty: Property<Material>, materials: Material[], listParent: Node ) {
     const customValue = Material.createCustomLiquidMaterial( {
       density: 1000
@@ -63,4 +63,3 @@ class DensityControlNode extends ComboNumberControl<Material> {
 }
 
 densityBuoyancyCommon.register( 'DensityControlNode', DensityControlNode );
-export default DensityControlNode;

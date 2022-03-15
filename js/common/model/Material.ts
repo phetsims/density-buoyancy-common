@@ -131,7 +131,7 @@ export default class Material {
    * Similar to getCustomLightness, but returns the generated color, with an included alpha effect.
    */
   static getCustomLiquidColor( density: number ): IColor {
-    const lightness = Material.getCustomLightness( density );
+    const lightness = Material.getCustomLightness( density * 0.25 );
 
     return new ColorProperty( new Color( lightness, lightness, lightness, 0.8 * ( 1 - lightness / 255 ) ) );
   }

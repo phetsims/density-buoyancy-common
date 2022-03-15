@@ -42,7 +42,7 @@ export default class BuoyancyApplicationsModel extends DensityBuoyancyModel {
   bottle: Bottle;
   block: Cube;
   boat: Boat;
-  leftScale: Scale;
+  rightScale: Scale;
   poolScale: Scale;
 
   constructor( options: BuoyancyApplicationsModelOptions ) {
@@ -67,16 +67,16 @@ export default class BuoyancyApplicationsModel extends DensityBuoyancyModel {
       tandem: tandem.createTandem( 'boat' )
     } );
 
-    this.leftScale = new Scale( this.engine, this.gravityProperty, {
-      matrix: Matrix3.translation( -0.7, -Scale.SCALE_BASE_BOUNDS.minY ),
+    this.rightScale = new Scale( this.engine, this.gravityProperty, {
+      matrix: Matrix3.translation( 0.77, -Scale.SCALE_BASE_BOUNDS.minY ),
       displayType: DisplayType.NEWTONS,
       canMove: false,
-      tandem: tandem.createTandem( 'leftScale' )
+      tandem: tandem.createTandem( 'rightScale' )
     } );
-    this.availableMasses.push( this.leftScale );
+    this.availableMasses.push( this.rightScale );
 
     this.poolScale = new Scale( this.engine, this.gravityProperty, {
-      matrix: Matrix3.translation( 0.25, -Scale.SCALE_BASE_BOUNDS.minY + this.poolBounds.minY ),
+      matrix: Matrix3.translation( 0.3, -Scale.SCALE_BASE_BOUNDS.minY + this.poolBounds.minY ),
       displayType: DisplayType.NEWTONS,
       canMove: false,
       tandem: tandem.createTandem( 'poolScale' )

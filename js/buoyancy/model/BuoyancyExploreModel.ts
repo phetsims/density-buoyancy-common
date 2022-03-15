@@ -58,14 +58,16 @@ export default class BuoyancyExploreModel extends DensityBuoyancyModel {
     this.availableMasses.push( new Scale( this.engine, this.gravityProperty, {
       matrix: Matrix3.translation( -0.65, -Scale.SCALE_BASE_BOUNDS.minY ),
       displayType: DisplayType.NEWTONS,
-      tandem: tandem.createTandem( 'leftScale' )
+      tandem: tandem.createTandem( 'leftScale' ),
+      canMove: true
     } ) );
 
     // Pool scale
     const poolScale = new Scale( this.engine, this.gravityProperty, {
-      matrix: Matrix3.translation( 0.25, -Scale.SCALE_BASE_BOUNDS.minY + this.poolBounds.minY ),
+      matrix: Matrix3.translation( 0.3, -Scale.SCALE_BASE_BOUNDS.minY + this.poolBounds.minY ),
       displayType: DisplayType.NEWTONS,
-      tandem: tandem.createTandem( 'poolScale' )
+      tandem: tandem.createTandem( 'poolScale' ),
+      canMove: true
     } );
     this.availableMasses.push( poolScale );
 

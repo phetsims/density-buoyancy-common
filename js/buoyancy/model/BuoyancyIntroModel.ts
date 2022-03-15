@@ -84,17 +84,17 @@ export default class BuoyancyIntroModel extends BlockSetModel<BlockSet> {
 
     // Left scale
     this.availableMasses.push( new Scale( this.engine, this.gravityProperty, {
-      matrix: Matrix3.translation( -0.8, -Scale.SCALE_BASE_BOUNDS.minY ),
+      matrix: Matrix3.translation( -0.77, -Scale.SCALE_BASE_BOUNDS.minY ),
       displayType: DisplayType.NEWTONS,
-      canMove: false,
+      canMove: true,
       tandem: providedOptions.tandem.createTandem( 'leftScale' )
     } ) );
 
     // Pool scale
     const poolScale = new Scale( this.engine, this.gravityProperty, {
-      matrix: Matrix3.translation( 0.25, -Scale.SCALE_BASE_BOUNDS.minY + this.poolBounds.minY ),
+      matrix: Matrix3.translation( 0.3, -Scale.SCALE_BASE_BOUNDS.minY + this.poolBounds.minY ),
       displayType: DisplayType.NEWTONS,
-      canMove: false,
+      canMove: true,
       tandem: providedOptions.tandem.createTandem( 'poolScale' )
     } );
     this.availableMasses.push( poolScale );

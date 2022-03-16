@@ -166,7 +166,7 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
     this.transformEmitter.addListener( this.positionResetSceneButton );
     this.positionResetSceneButton();
 
-    const boatVolumeRange = new Range( 1, 20 );
+    const boatVolumeRange = new Range( 5, 30 );
     const boatBox = new VBox( {
       spacing: 10,
       align: 'left',

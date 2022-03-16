@@ -111,7 +111,7 @@ export default class ComboNumberControl<T> extends VBox {
         } ),
         titleNodeOptions: {
           font: DensityBuoyancyCommonConstants.TITLE_FONT,
-          maxWidth: 80
+          maxWidth: 120
         },
         numberDisplayOptions: {
           textOptions: {

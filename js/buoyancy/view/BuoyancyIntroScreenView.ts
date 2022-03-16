@@ -75,7 +75,7 @@ export default class BuoyancyIntroScreenView extends DensityBuoyancyScreenView<B
       ]
     } );
     const fluidTitle = new Text( densityBuoyancyCommonStrings.fluid, {
-      font: new PhetFont( { size: 14, weight: 'bold' } ),
+      font: DensityBuoyancyCommonConstants.TITLE_FONT,
       right: fluidBox.left,
       bottom: fluidBox.top - 3,
       maxWidth: 160

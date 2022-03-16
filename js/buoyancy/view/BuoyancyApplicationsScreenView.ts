@@ -8,6 +8,7 @@
 
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import UnitConversionProperty from '../../../../axon/js/UnitConversionProperty.js';
+import Dimension2 from '../../../../dot/js/Dimension2.js';
 import Range from '../../../../dot/js/Range.js';
 import Utils from '../../../../dot/js/Utils.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
@@ -188,6 +189,8 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
             useFullHeight: true
           },
           sliderOptions: {
+            trackSize: new Dimension2( 120, 0.5 ),
+            thumbSize: new Dimension2( 8, 20 ),
             constrainValue: ( value: number ) => {
               return boatVolumeRange.constrainValue( Utils.roundToInterval( value, 0.1 ) );
             },

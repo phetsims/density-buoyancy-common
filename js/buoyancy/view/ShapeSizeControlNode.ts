@@ -88,6 +88,7 @@ export default class ShapeSizeControlNode extends FlowBox {
         hasReadoutProperty: new BooleanProperty( false )
       } ),
       titleNodeOptions: {
+        font: DensityBuoyancyCommonConstants.TITLE_FONT,
         maxWidth: 160
       }
     };

@@ -7,6 +7,7 @@
  */
 
 import Property from '../../../../axon/js/Property.js';
+import Dimension2 from '../../../../dot/js/Dimension2.js';
 import Range from '../../../../dot/js/Range.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import { Node, Text } from '../../../../scenery/js/imports.js';
@@ -43,7 +44,11 @@ export default class DensityControlNode extends ComboNumberControl<Material> {
       } ), material, { tandemName: `${material.tandemName}Item` } ) ),
       customValue: customValue,
       numberControlOptions: {
-        delta: 0.01
+        delta: 0.01,
+        sliderOptions: {
+          // Slightly longer, see https://github.com/phetsims/buoyancy/issues/33
+          trackSize: new Dimension2( 130, 0.5 )
+        }
       },
       comboBoxOptions: {
         listPosition: 'above'

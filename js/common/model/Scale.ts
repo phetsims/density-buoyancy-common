@@ -120,7 +120,12 @@ export default class Scale extends Mass {
     } );
 
     this.scaleMeasuredMassProperty = new DerivedProperty( [ this.scaleForceInterpolatedProperty, gravityProperty ], ( force: number, gravity: Gravity ) => {
-      return force / gravity.value;
+      if ( gravity.value !== 0 ) {
+        return force / gravity.value;
+      }
+      else {
+        return 0;
+      }
     }, {
       phetioType: DerivedProperty.DerivedPropertyIO( NumberIO ),
       tandem: config.tandem.createTandem( 'scaleMeasuredMassProperty' ),

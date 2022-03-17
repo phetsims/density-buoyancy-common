@@ -136,7 +136,9 @@ export default abstract class Basin {
    * Returns the empty volume in the basin (i.e. air, that isn't a solid object) that is below the given y value.
    */
   getEmptyVolume( y: number ): number {
-    return this.getMaximumVolume( y ) - this.getDisplacedVolume( y );
+    const emptyVolume = this.getMaximumVolume( y ) - this.getDisplacedVolume( y );
+    assert && assert( emptyVolume >= -1e-11, 'empty volume should be non-negative' );
+    return emptyVolume;
   }
 
   /**

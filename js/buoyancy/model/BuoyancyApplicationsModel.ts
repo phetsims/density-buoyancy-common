@@ -56,16 +56,24 @@ export default class BuoyancyApplicationsModel extends DensityBuoyancyModel {
 
     this.bottle = new Bottle( this.engine, {
       matrix: Matrix3.translation( 0, 0 ),
-      tandem: tandem.createTandem( 'bottle' )
+      tandem: tandem.createTandem( 'bottle' ),
+      visible: true
     } );
+    this.availableMasses.push( this.bottle );
 
-    this.block = Cube.createWithVolume( this.engine, Material.BRICK, new Vector2( 0.5, 0.5 ), 0.001 );
+    this.block = Cube.createWithVolume( this.engine, Material.BRICK, new Vector2( 0.5, 0.5 ), 0.001, {
+      visible: false,
+      tandem: tandem.createTandem( 'block' )
+    } );
+    this.availableMasses.push( this.block );
 
     // DerivedProperty doesn't need disposal, since everything here lives for the lifetime of the simulation
     this.boat = new Boat( this.engine, new DerivedProperty( [ this.block.sizeProperty ], size => size.depth ), this.liquidMaterialProperty, {
       matrix: Matrix3.translation( 0, -0.1 ),
-      tandem: tandem.createTandem( 'boat' )
+      tandem: tandem.createTandem( 'boat' ),
+      visible: false
     } );
+    this.availableMasses.push( this.boat );
 
     this.rightScale = new Scale( this.engine, this.gravityProperty, {
       matrix: Matrix3.translation( 0.77, -Scale.SCALE_BASE_BOUNDS.minY ),
@@ -89,10 +97,20 @@ export default class BuoyancyApplicationsModel extends DensityBuoyancyModel {
 
     // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
     this.sceneProperty.link( scene => {
-      this.setMassVisible( this.bottle, scene === Scene.BOTTLE );
-      this.setMassVisible( this.boat, scene === Scene.BOAT );
-      this.setMassVisible( this.block, scene === Scene.BOAT );
+      this.bottle.internalVisibleProperty.value = scene === Scene.BOTTLE;
+      this.boat.internalVisibleProperty.value = scene === Scene.BOAT;
+      this.block.internalVisibleProperty.value = scene === Scene.BOAT;
+
+      assert && assert( !this.boat.visibleProperty.value || !this.bottle.visibleProperty.value,
+        'Boat and bottle should not be visible at the same time' );
     } );
+  }
+
+  step( dt: number ) {
+    assert && assert( !this.boat.visibleProperty.value || !this.bottle.visibleProperty.value,
+      'Boat and bottle should not be visible at the same time' );
+
+    super.step( dt );
   }
 
   /**
@@ -114,13 +132,16 @@ export default class BuoyancyApplicationsModel extends DensityBuoyancyModel {
   reset() {
     this.densityExpandedProperty.reset();
 
-    this.sceneProperty.reset();
-
     this.bottle.reset();
     this.block.reset();
     this.boat.reset();
 
     super.reset();
+
+    this.sceneProperty.reset();
+
+    assert && assert( !this.boat.visibleProperty.value || !this.bottle.visibleProperty.value,
+      'Boat and bottle should not be visible at the same time' );
   }
 }
 

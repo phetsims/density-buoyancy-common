@@ -584,11 +584,12 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
     // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
     model.pool.liquidYInterpolatedProperty.link( y => {
       const boat = model.getBoat();
+      const hasVisibleBoat = boat && boat.visibleProperty.value;
       wasFilled = BoatDesign.fillWaterVertexArray(
         y,
-        boat ? boat.matrix.translation.x : 0,
-        boat ? y - boat.matrix.translation.y : 0,
-        boat ? boat.displacementVolumeProperty.value / 0.001 : 0,
+        hasVisibleBoat ? boat.matrix.translation.x : 0,
+        hasVisibleBoat ? y - boat.matrix.translation.y : 0,
+        hasVisibleBoat ? boat.displacementVolumeProperty.value / 0.001 : 0,
         model.poolBounds, waterPositionArray, wasFilled );
       waterGeometry.attributes.position.needsUpdate = true;
       waterGeometry.computeBoundingSphere();

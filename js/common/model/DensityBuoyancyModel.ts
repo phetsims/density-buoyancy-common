@@ -339,19 +339,6 @@ export default class DensityBuoyancyModel {
   }
 
   /**
-   * Sets whether a mass is visible in the scene.
-   */
-  setMassVisible( mass: Mass, visible: boolean ) {
-    const contains = this.masses.includes( mass );
-    if ( visible && !contains ) {
-      this.masses.add( mass );
-    }
-    if ( !visible && contains ) {
-      this.masses.remove( mass );
-    }
-  }
-
-  /**
    * Returns the boat (if there is one)
    */
   getBoat(): Boat | null {
@@ -365,7 +352,7 @@ export default class DensityBuoyancyModel {
     const boat = this.getBoat();
 
     const basins: Basin[] = [ this.pool ];
-    if ( boat ) {
+    if ( boat && boat.visibleProperty.value ) {
       basins.push( boat.basin );
       this.pool.childBasin = boat.basin;
     }
@@ -382,25 +369,30 @@ export default class DensityBuoyancyModel {
 
     // May need to adjust volumes between the boat/pool if there is a boat
     if ( boat ) {
-      let boatLiquidVolume = boat.basin.liquidVolumeProperty.value;
+      if ( boat.visibleProperty.value ) {
+        let boatLiquidVolume = boat.basin.liquidVolumeProperty.value;
 
-      const poolEmptyVolumeToBoatTop = this.pool.getEmptyVolume( Math.min( boat.stepTop, this.poolBounds.maxY ) );
-      const boatEmptyVolumeToBoatTop = boat.basin.getEmptyVolume( boat.stepTop );
+        const poolEmptyVolumeToBoatTop = this.pool.getEmptyVolume( Math.min( boat.stepTop, this.poolBounds.maxY ) );
+        const boatEmptyVolumeToBoatTop = boat.basin.getEmptyVolume( boat.stepTop );
 
-      const poolExcess = poolLiquidVolume - poolEmptyVolumeToBoatTop;
-      const boatExcess = boatLiquidVolume - boatEmptyVolumeToBoatTop;
+        const poolExcess = poolLiquidVolume - poolEmptyVolumeToBoatTop;
+        const boatExcess = boatLiquidVolume - boatEmptyVolumeToBoatTop;
 
-      if ( poolExcess > 0 && boatExcess < 0 ) {
-        const transferVolume = Math.min( poolExcess, -boatExcess );
-        poolLiquidVolume -= transferVolume;
-        boatLiquidVolume += transferVolume;
+        if ( poolExcess > 0 && boatExcess < 0 ) {
+          const transferVolume = Math.min( poolExcess, -boatExcess );
+          poolLiquidVolume -= transferVolume;
+          boatLiquidVolume += transferVolume;
+        }
+        else if ( boatExcess > 0 ) {
+          // If the boat overflows, just dump the rest in the pool
+          poolLiquidVolume += boatExcess;
+          boatLiquidVolume -= boatExcess;
+        }
+        boat.basin.liquidVolumeProperty.value = boatLiquidVolume;
       }
-      else if ( boatExcess > 0 ) {
-        // If the boat overflows, just dump the rest in the pool
-        poolLiquidVolume += boatExcess;
-        boatLiquidVolume -= boatExcess;
+      else {
+        boat.basin.liquidVolumeProperty.value = 0;
       }
-      boat.basin.liquidVolumeProperty.value = boatLiquidVolume;
     }
 
     // Check to see if water "spilled" out of the pool, and set the finalized liquid volume

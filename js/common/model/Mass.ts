@@ -632,9 +632,12 @@ export default abstract class Mass extends PhetioObject {
    */
   dispose() {
     this.userControlledProperty.dispose();
+    this.inputEnabledProperty.dispose();
+    this.studioVisibleProperty.dispose();
     this.materialProperty.dispose();
     this.volumeProperty.dispose();
     this.massProperty.dispose();
+    this.nameProperty.dispose();
     this.gravityForceInterpolatedProperty.dispose();
     this.buoyancyForceInterpolatedProperty.dispose();
     this.contactForceInterpolatedProperty.dispose();

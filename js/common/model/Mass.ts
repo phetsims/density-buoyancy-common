@@ -631,6 +631,9 @@ export default abstract class Mass extends PhetioObject {
    * Releases references
    */
   dispose() {
+
+    assert && assert( !this.isDisposed );
+
     this.userControlledProperty.dispose();
     this.inputEnabledProperty.dispose();
     this.studioVisibleProperty.dispose();

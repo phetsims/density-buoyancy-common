@@ -297,6 +297,27 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
               const position = initialPlane.intersectWithRay( ray );
 
               this.updateDragAction.execute( mass, position.toVector2() );
+            },
+
+            createPanTargetBounds: () => {
+              return draggedMasses.reduce( ( bounds: Bounds2, mass: Mass ): Bounds2 => {
+                const massView = _.find( this.massViews, massView => massView.mass === mass )!;
+                const bbox = new THREE.Box3().setFromObject( massView );
+
+                // Include all 8 corners of the bounding box
+                bounds = bounds.withPoint( this.localToGlobalPoint( this.modelToViewPoint( new Vector3( bbox.min.x, bbox.min.y, bbox.min.z ) ) ) );
+                bounds = bounds.withPoint( this.localToGlobalPoint( this.modelToViewPoint( new Vector3( bbox.min.x, bbox.min.y, bbox.max.z ) ) ) );
+                bounds = bounds.withPoint( this.localToGlobalPoint( this.modelToViewPoint( new Vector3( bbox.min.x, bbox.max.y, bbox.min.z ) ) ) );
+                bounds = bounds.withPoint( this.localToGlobalPoint( this.modelToViewPoint( new Vector3( bbox.min.x, bbox.max.y, bbox.max.z ) ) ) );
+                bounds = bounds.withPoint( this.localToGlobalPoint( this.modelToViewPoint( new Vector3( bbox.max.x, bbox.min.y, bbox.min.z ) ) ) );
+                bounds = bounds.withPoint( this.localToGlobalPoint( this.modelToViewPoint( new Vector3( bbox.max.x, bbox.min.y, bbox.max.z ) ) ) );
+                bounds = bounds.withPoint( this.localToGlobalPoint( this.modelToViewPoint( new Vector3( bbox.max.x, bbox.max.y, bbox.min.z ) ) ) );
+                bounds = bounds.withPoint( this.localToGlobalPoint( this.modelToViewPoint( new Vector3( bbox.max.x, bbox.max.y, bbox.max.z ) ) ) );
+
+                console.log( bounds.toString() );
+
+                return bounds;
+              }, Bounds2.NOTHING );
             }
           };
           pointer.reserveForDrag();

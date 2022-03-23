@@ -17,7 +17,7 @@ import Material from './Material.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 
 type SelfOptions = {
-  adjustMassWithVolume?: boolean
+  adjustMassWithVolume?: boolean;
 };
 
 export type CubeOptions = SelfOptions & CuboidOptions;

@@ -41,7 +41,7 @@ class WorkaroundRange extends Range {
 }
 
 type SelfOptions = {
-  labelNode?: Node | null,
+  labelNode?: Node | null;
 
   minMass?: number;
   minCustomMass?: number;
@@ -89,7 +89,7 @@ export default class MaterialMassVolumeControlNode extends VBox {
 
     type MaterialEnumValue = { name: 'CUSTOM' | keyof Material };
     type MaterialEnum = {
-      [ key: string ]: MaterialEnumValue
+      [ key: string ]: MaterialEnumValue;
     };
     const MaterialEnumeration: MaterialEnum = EnumerationDeprecated.byKeys( [ ...materials.map( material => material.identifier! ), 'CUSTOM' ] ) as unknown as MaterialEnum;
 

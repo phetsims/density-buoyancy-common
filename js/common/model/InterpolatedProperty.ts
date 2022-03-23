@@ -16,7 +16,7 @@ import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 
 type Interpolate<T> = ( a: T, b: T, ratio: number ) => T;
 type SelfOptions<T> = {
-  interpolate: Interpolate<T>
+  interpolate: Interpolate<T>;
 };
 export type InterpolatedPropertyOptions<T> = SelfOptions<T> & PropertyOptions<T>;
 

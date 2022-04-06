@@ -10,6 +10,13 @@ import densityBuoyancyCommon from '../densityBuoyancyCommon.js';
 
 const DensityBuoyancyCommonQueryParameters = QueryStringMachine.getAll( {
 
+  gEarth: {
+    type: 'number',
+    defaultValue: 9.8,
+    public: true,
+    isValidValue: ( value: number ) => value >= 9 && value <= 10
+  },
+
   // Changes the "aspect ratio" of the pool, for internal testing/development
   poolWidthMultiplier: {
     type: 'number',

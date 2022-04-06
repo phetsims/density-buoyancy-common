@@ -14,6 +14,7 @@ import NumberIO from '../../../../tandem/js/types/NumberIO.js';
 import StringIO from '../../../../tandem/js/types/StringIO.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import densityBuoyancyCommonStrings from '../../densityBuoyancyCommonStrings.js';
+import DensityBuoyancyCommonQueryParameters from '../DensityBuoyancyCommonQueryParameters.js';
 
 export type GravityOptions = {
   name: string;
@@ -64,7 +65,7 @@ export default class Gravity {
   static EARTH = new Gravity( {
     name: densityBuoyancyCommonStrings.gravity.earth,
     tandemName: 'earth',
-    value: 9.8
+    value: DensityBuoyancyCommonQueryParameters.gEarth
   } );
 
   static JUPITER = new Gravity( {

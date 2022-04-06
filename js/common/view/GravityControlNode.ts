@@ -16,11 +16,12 @@ import densityBuoyancyCommonStrings from '../../densityBuoyancyCommonStrings.js'
 import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
 import Gravity from '../model/Gravity.js';
 import ComboNumberControl from './ComboNumberControl.js';
+import DensityBuoyancyCommonQueryParameters from '../DensityBuoyancyCommonQueryParameters.js';
 
 export default class GravityControlNode extends ComboNumberControl<Gravity> {
   constructor( gravityProperty: Property<Gravity>, listParent: Node ) {
 
-    const customValue = Gravity.createCustomGravity( 9.8 );
+    const customValue = Gravity.createCustomGravity( DensityBuoyancyCommonQueryParameters.gEarth );
 
     super( {
       title: densityBuoyancyCommonStrings.gravity.name,

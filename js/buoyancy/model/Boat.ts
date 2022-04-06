@@ -99,7 +99,7 @@ export default class Boat extends Mass {
   /**
    * Steps forward in time.
    */
-  step( dt: number, interpolationRatio: number ) {
+  override step( dt: number, interpolationRatio: number ) {
     super.step( dt, interpolationRatio );
 
     this.basin.liquidYInterpolatedProperty.setRatio( interpolationRatio );
@@ -108,7 +108,7 @@ export default class Boat extends Mass {
   /**
    * Returns whether this is a boat (as more complicated handling is needed in this case).
    */
-  isBoat(): boolean {
+  override isBoat(): boolean {
     return true;
   }
 
@@ -118,7 +118,7 @@ export default class Boat extends Mass {
    *
    * Type-specific values are likely to be set, but this should set at least stepX/stepBottom/stepTop
    */
-  updateStepInformation() {
+  override updateStepInformation() {
     super.updateStepInformation();
 
     const xOffset = this.stepMatrix.m02();
@@ -141,7 +141,7 @@ export default class Boat extends Mass {
    * reach the intersection, e.g. ray.position + ray.distance * t === intersectionPoint) will be returned. Otherwise
    * if there is no intersection, null will be returned.
    */
-  intersect( ray: Ray3, isTouch: boolean ): number | null {
+  override intersect( ray: Ray3, isTouch: boolean ): number | null {
     const scale = Math.pow( this.displacementVolumeProperty.value / 0.001, 1 / 3 );
     // TODO: somewhat borrowed with Bottle, let's combine
     const translation = this.matrix.translation;
@@ -240,7 +240,7 @@ export default class Boat extends Mass {
   /**
    * Resets values to their original state
    */
-  reset() {
+  override reset() {
     this.displacementVolumeProperty.reset();
 
     this.basin.reset();

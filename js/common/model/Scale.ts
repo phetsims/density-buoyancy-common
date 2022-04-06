@@ -143,7 +143,7 @@ export default class Scale extends Mass {
    *
    * Type-specific values are likely to be set, but this should set at least stepX/stepBottom/stepTop
    */
-  updateStepInformation() {
+  override updateStepInformation() {
     super.updateStepInformation();
 
     const xOffset = this.stepMatrix.m02();
@@ -159,7 +159,7 @@ export default class Scale extends Mass {
    * reach the intersection, e.g. ray.position + ray.distance * t === intersectionPoint) will be returned. Otherwise
    * if there is no intersection, null will be returned.
    */
-  intersect( ray: Ray3, isTouch: boolean ): number | null {
+  override intersect( ray: Ray3, isTouch: boolean ): number | null {
     const translation = this.matrix.getTranslation().toVector3();
     const topOffsetTranslation = translation.plusXYZ( 0, SCALE_HEIGHT / 2 - SCALE_TOP_HEIGHT / 2, 0 );
 
@@ -208,7 +208,7 @@ export default class Scale extends Mass {
   /**
    * Steps forward in time.
    */
-  step( dt: number, interpolationRatio: number ) {
+  override step( dt: number, interpolationRatio: number ) {
     super.step( dt, interpolationRatio );
 
     this.scaleForceInterpolatedProperty.setRatio( interpolationRatio );

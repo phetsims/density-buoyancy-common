@@ -106,7 +106,7 @@ export default class BlockSetModel<BlockSetValue extends EnumerationValue> exten
   /**
    * Resets values to their original state
    */
-  reset() {
+  override reset() {
     this.blockSetProperty.reset();
 
     // Reset every available mass.

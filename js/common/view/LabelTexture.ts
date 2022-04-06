@@ -31,7 +31,7 @@ export default class LabelTexture extends NodeTexture {
   /**
    * Releases references
    */
-  dispose() {
+  override dispose() {
     this.containerNode.dispose();
 
     super.dispose();

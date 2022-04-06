@@ -279,7 +279,7 @@ class CustomColoredMaterialView extends MaterialView<THREE.MeshLambertMaterial> 
   /**
    * Releases references
    */
-  dispose() {
+  override dispose() {
     this.colorProperty.unlink( this.listener );
 
     super.dispose();

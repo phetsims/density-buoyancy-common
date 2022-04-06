@@ -63,7 +63,7 @@ export default class InterpolatedProperty<T> extends Property<T> {
   /**
    * Resets the Property to its initial state.
    */
-  reset() {
+  override reset() {
     super.reset();
 
     this.currentValue = this.value;

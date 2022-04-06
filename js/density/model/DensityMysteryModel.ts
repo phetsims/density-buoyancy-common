@@ -287,7 +287,7 @@ export default class DensityMysteryModel extends BlockSetModel<BlockSet> {
   /**
    * Resets things to their original values.
    */
-  reset() {
+  override reset() {
     this.densityTableExpandedProperty.reset();
 
     super.reset();

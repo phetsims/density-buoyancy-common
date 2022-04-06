@@ -109,7 +109,7 @@ export default class Cuboid extends Mass {
    *
    * Type-specific values are likely to be set, but this should set at least stepX/stepBottom/stepTop
    */
-  updateStepInformation() {
+  override updateStepInformation() {
     super.updateStepInformation();
 
     const xOffset = this.stepMatrix.m02();
@@ -128,7 +128,7 @@ export default class Cuboid extends Mass {
    * reach the intersection, e.g. ray.position + ray.distance * t === intersectionPoint) will be returned. Otherwise
    * if there is no intersection, null will be returned.
    */
-  intersect( ray: Ray3, isTouch: boolean ): number | null {
+  override intersect( ray: Ray3, isTouch: boolean ): number | null {
     const size = this.sizeProperty.value;
     const translation = this.matrix.getTranslation().toVector3();
 
@@ -173,7 +173,7 @@ export default class Cuboid extends Mass {
   /**
    * Resets things to their original values.
    */
-  reset() {
+  override reset() {
     this.sizeProperty.reset();
     this.updateSize( this.sizeProperty.value );
 
@@ -183,7 +183,7 @@ export default class Cuboid extends Mass {
   /**
    * Releases references
    */
-  dispose() {
+  override dispose() {
     this.sizeProperty.dispose();
 
     super.dispose();

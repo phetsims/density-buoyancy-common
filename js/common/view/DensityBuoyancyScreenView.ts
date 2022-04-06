@@ -812,7 +812,7 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
     return closestMass;
   }
 
-  layout( viewBounds: Bounds2 ) {
+  override layout( viewBounds: Bounds2 ) {
     super.layout( viewBounds );
 
     // If the simulation was not able to load for WebGL, bail out

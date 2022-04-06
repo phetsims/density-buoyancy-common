@@ -37,7 +37,7 @@ const TRACK_HEIGHT = 3;
 // A workaround for changing a DerivedProperty range Property to a NumberProperty, where the new range AND value will
 // not overlap with the previous one.
 class WorkaroundRange extends Range {
-  contains( value: number ): boolean { return true; }
+  override contains( value: number ): boolean { return true; }
 }
 
 type SelfOptions = {

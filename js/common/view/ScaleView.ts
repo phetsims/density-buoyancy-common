@@ -29,7 +29,7 @@ export default class ScaleView extends MassView {
   /**
    * Releases references.
    */
-  dispose() {
+  override dispose() {
     this.scaleGeometry.dispose();
 
     super.dispose();

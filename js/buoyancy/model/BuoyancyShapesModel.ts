@@ -207,7 +207,7 @@ export default class BuoyancyShapesModel extends DensityBuoyancyModel {
   /**
    * Resets things to their original values.
    */
-  reset() {
+  override reset() {
     this.modeProperty.reset();
 
     this.secondaryMassVisibleProperty.reset();

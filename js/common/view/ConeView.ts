@@ -53,7 +53,7 @@ export default class ConeView extends MassView {
   /**
    * Releases references.
    */
-  dispose() {
+  override dispose() {
     this.cone.radiusProperty.unlink( this.updateListener );
     this.cone.heightProperty.unlink( this.updateListener );
     this.coneGeometry.dispose();

@@ -41,7 +41,7 @@ export default class BuoyancyApplicationsModel extends DensityBuoyancyModel {
 
   bottle: Bottle;
   block: Cube;
-  boat: Boat;
+  override boat: Boat;
   rightScale: Scale;
   poolScale: Scale;
 
@@ -106,7 +106,7 @@ export default class BuoyancyApplicationsModel extends DensityBuoyancyModel {
     } );
   }
 
-  step( dt: number ) {
+  override step( dt: number ) {
     assert && assert( !this.boat.visibleProperty.value || !this.bottle.visibleProperty.value,
       'Boat and bottle should not be visible at the same time' );
 
@@ -129,7 +129,7 @@ export default class BuoyancyApplicationsModel extends DensityBuoyancyModel {
   /**
    * Resets things to their original values.
    */
-  reset() {
+  override reset() {
     this.densityExpandedProperty.reset();
 
     this.bottle.reset();

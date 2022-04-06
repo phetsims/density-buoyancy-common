@@ -110,7 +110,7 @@ export default class CuboidView extends MassView {
   /**
    * Releases references.
    */
-  dispose() {
+  override dispose() {
     if ( this.cuboidNameListener ) {
       this.cuboid.nameProperty.unlink( this.cuboidNameListener );
     }

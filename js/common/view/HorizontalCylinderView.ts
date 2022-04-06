@@ -51,7 +51,7 @@ export default class HorizontalCylinderView extends MassView {
   /**
    * Releases references.
    */
-  dispose() {
+  override dispose() {
     this.horizontalCylinder.radiusProperty.unlink( this.updateListener );
     this.horizontalCylinder.lengthProperty.unlink( this.updateListener );
     this.horizontalCylinderGeometry.dispose();

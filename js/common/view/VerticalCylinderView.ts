@@ -52,7 +52,7 @@ export default class VerticalCylinderView extends MassView {
   /**
    * Releases references.
    */
-  dispose() {
+  override dispose() {
     this.verticalCylinder.radiusProperty.unlink( this.updateListener );
     this.verticalCylinder.heightProperty.unlink( this.updateListener );
     this.verticalCylinderGeometry.dispose();

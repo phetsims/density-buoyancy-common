@@ -68,7 +68,7 @@ export default class DensityIntroModel extends DensityBuoyancyModel {
   /**
    * Resets things to their original values.
    */
-  reset() {
+  override reset() {
     this.modeProperty.reset();
 
     this.primaryMass.reset();

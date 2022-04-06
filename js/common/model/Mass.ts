@@ -630,7 +630,7 @@ export default abstract class Mass extends PhetioObject {
   /**
    * Releases references
    */
-  dispose() {
+  override dispose() {
 
     assert && assert( !this.isDisposed );
 

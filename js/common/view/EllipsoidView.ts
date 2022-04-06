@@ -43,7 +43,7 @@ export default class EllipsoidView extends MassView {
   /**
    * Releases references.
    */
-  dispose() {
+  override dispose() {
     this.ellipsoid.sizeProperty.unlink( this.updateListener );
     this.ellipsoidGeometry.dispose();
 

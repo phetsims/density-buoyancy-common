@@ -323,7 +323,7 @@ class DebugMassNode extends Node {
   /**
    * Releases references.
    */
-  dispose() {
+  override dispose() {
     this.disposeEmitter.emit();
 
     super.dispose();

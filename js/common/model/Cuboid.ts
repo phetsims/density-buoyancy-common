@@ -91,8 +91,11 @@ export default class Cuboid extends Mass {
    * Returns the general size of the mass based on a general size scale.
    */
   static getSizeFromRatios( widthRatio: number, heightRatio: number ): Bounds3 {
-    const x = 0.02 + widthRatio * 0.08;
-    const y = 0.02 + heightRatio * 0.08;
+    const minDimension = 0.1; // 10cm => 1L square
+    const maxDimension = Math.pow( 0.01, 1 / 3 ); // 10L square
+
+    const x = ( minDimension + widthRatio * ( maxDimension - minDimension ) ) / 2;
+    const y = ( minDimension + heightRatio * ( maxDimension - minDimension ) ) / 2;
     return new Bounds3( -x, -y, -x, x, y, x );
   }
 

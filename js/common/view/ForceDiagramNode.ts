@@ -28,7 +28,6 @@ const arrowOptions = {
   headWidth: 15,
   headHeight: 12
 };
-const forceScale = 7;
 const arrowSpacing = arrowOptions.headWidth + 3;
 const labelFont = new PhetFont( { size: 12, weight: 'bold' } );
 
@@ -39,6 +38,7 @@ export default class ForceDiagramNode extends Node {
   private showBuoyancyForceProperty: Property<boolean>;
   private showContactForceProperty: Property<boolean>;
   private showForceValuesProperty: Property<boolean>;
+  private forceScaleProperty: Property<number>;
 
   private gravityArrowNode: ArrowNode;
   private buoyancyArrowNode: ArrowNode;
@@ -56,7 +56,7 @@ export default class ForceDiagramNode extends Node {
 
   private axisNode: Line;
 
-  constructor( mass: Mass, showGravityForceProperty: Property<boolean>, showBuoyancyForceProperty: Property<boolean>, showContactForceProperty: Property<boolean>, showForceValuesProperty: Property<boolean> ) {
+  constructor( mass: Mass, showGravityForceProperty: Property<boolean>, showBuoyancyForceProperty: Property<boolean>, showContactForceProperty: Property<boolean>, showForceValuesProperty: Property<boolean>, forceScaleProperty: Property<number> ) {
     super();
 
     this.mass = mass;
@@ -65,6 +65,7 @@ export default class ForceDiagramNode extends Node {
     this.showBuoyancyForceProperty = showBuoyancyForceProperty;
     this.showContactForceProperty = showContactForceProperty;
     this.showForceValuesProperty = showForceValuesProperty;
+    this.forceScaleProperty = forceScaleProperty;
 
     this.gravityArrowNode = new ArrowNode( 0, 0, 0, 0, merge( {
       fill: DensityBuoyancyCommonColors.gravityForceProperty
@@ -116,7 +117,6 @@ export default class ForceDiagramNode extends Node {
 
   /**
    * Updates the displayed view.
-   * @public
    */
   update() {
     const upwardArrows: ArrowNode[] = [];
@@ -126,7 +126,7 @@ export default class ForceDiagramNode extends Node {
     const updateArrow = ( forceProperty: InterpolatedProperty<Vector2>, showForceProperty: Property<boolean>, arrowNode: ArrowNode, textNode: Text, labelNode: Node ) => {
       const y = forceProperty.value.y;
       if ( showForceProperty.value && Math.abs( y ) > 1e-5 ) {
-        arrowNode.setTip( 0, -y * forceScale );
+        arrowNode.setTip( 0, -y * this.forceScaleProperty.value * 20 ); // Default zoom is 20 units per Newton
         ( y > 0 ? upwardArrows : downwardArrows ).push( arrowNode );
 
         if ( this.showForceValuesProperty.value ) {

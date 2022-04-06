@@ -17,7 +17,7 @@ import EnumerationDeprecated from '../../../../phet-core/js/EnumerationDeprecate
 import merge from '../../../../phet-core/js/merge.js';
 import optionize from '../../../../phet-core/js/optionize.js';
 import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
-import NumberControl from '../../../../scenery-phet/js/NumberControl.js';
+import NumberControl, { NumberControlOptions } from '../../../../scenery-phet/js/NumberControl.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import { HBox, IPaint, Text, VBox, VBoxOptions, Node } from '../../../../scenery/js/imports.js';
 import ComboBox from '../../../../sun/js/ComboBox.js';
@@ -355,11 +355,8 @@ export default class MaterialMassVolumeControlNode extends VBox {
 
   /**
    * Returns the default NumberControl options used by this component.
-   * @public
-   *
-   * @returns {Object}
    */
-  static getNumberControlOptions() {
+  static getNumberControlOptions(): NumberControlOptions {
     return {
       delta: 0.01,
       sliderOptions: {
@@ -367,7 +364,6 @@ export default class MaterialMassVolumeControlNode extends VBox {
       },
       numberDisplayOptions: {
         decimalPlaces: 2,
-        font: new PhetFont( 14 ),
         textOptions: {
           maxWidth: 60
         },

@@ -124,6 +124,7 @@ const densityBuoyancyCommonStrings = getStringModule( 'DENSITY_BUOYANCY_COMMON' 
   densityReadoutPattern: string;
   whatIsTheValueOfTheFluidDensity: string;
   whatIsTheValueOfGravity: string;
+  vectorScale: string;
 };
 
 densityBuoyancyCommon.register( 'densityBuoyancyCommonStrings', densityBuoyancyCommonStrings );

@@ -9,13 +9,8 @@
 import merge from '../../../../phet-core/js/merge.js';
 import ArrowNode from '../../../../scenery-phet/js/ArrowNode.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
-import { FlowBox, VBoxOptions } from '../../../../scenery/js/imports.js';
-import { VDivider } from '../../../../scenery/js/imports.js';
-import { AlignBox } from '../../../../scenery/js/imports.js';
-import { AlignGroup } from '../../../../scenery/js/imports.js';
-import { HBox } from '../../../../scenery/js/imports.js';
-import { Text } from '../../../../scenery/js/imports.js';
-import { VBox } from '../../../../scenery/js/imports.js';
+import PlusMinusZoomButtonGroup from '../../../../scenery-phet/js/PlusMinusZoomButtonGroup.js';
+import { FlowBox, GridBox, Text, VBox, VBoxOptions, VDivider } from '../../../../scenery/js/imports.js';
 import Checkbox from '../../../../sun/js/Checkbox.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import densityBuoyancyCommonStrings from '../../densityBuoyancyCommonStrings.js';
@@ -45,90 +40,77 @@ const checkboxSpacing = 5;
 export default class DisplayOptionsNode extends VBox {
   constructor( model: DensityBuoyancyModel, options?: VBoxOptions ) {
 
-    options = merge( {
+    super( merge( {
       spacing: 10,
-      align: 'left'
-    }, options );
-
-    const forceAlignGroup = new AlignGroup();
-
-    const forcesText = new Text( densityBuoyancyCommonStrings.forces, {
-      font: DensityBuoyancyCommonConstants.TITLE_FONT,
-      maxWidth: maxWidth
-    } );
-
-    const gravityNode = new HBox( {
-      spacing: arrowSpacing,
+      align: 'left',
       children: [
-        new AlignBox( new Checkbox( new Text( densityBuoyancyCommonStrings.gravity.name, labelOptions ), model.showGravityForceProperty, checkboxOptions ), {
-          group: forceAlignGroup,
-          xAlign: 'left'
+        new Text( densityBuoyancyCommonStrings.forces, {
+          font: DensityBuoyancyCommonConstants.TITLE_FONT,
+          maxWidth: maxWidth
         } ),
-        new ArrowNode( 0, 0, arrowLength, 0, merge( {
-          fill: DensityBuoyancyCommonColors.gravityForceProperty
-        }, arrowOptions ) )
+        new FlowBox( {
+          orientation: 'vertical',
+          spacing: 8,
+          align: 'left',
+          children: [
+            new GridBox( {
+              xSpacing: arrowSpacing,
+              ySpacing: 10,
+              xAlign: 'left',
+              children: [
+
+                // Gravity
+                new Checkbox( new Text( densityBuoyancyCommonStrings.gravity.name, labelOptions ), model.showGravityForceProperty, merge( {
+                  layoutOptions: { x: 0, y: 0 }
+                }, checkboxOptions ) ),
+                new ArrowNode( 0, 0, arrowLength, 0, merge( {
+                  layoutOptions: { x: 1, y: 0 },
+                  fill: DensityBuoyancyCommonColors.gravityForceProperty
+                }, arrowOptions ) ),
+
+                // Buoyancy
+                new Checkbox( new Text( densityBuoyancyCommonStrings.buoyancy, labelOptions ), model.showBuoyancyForceProperty, merge( {
+                  layoutOptions: { x: 0, y: 1 }
+                }, checkboxOptions ) ),
+                new ArrowNode( 0, 0, arrowLength, 0, merge( {
+                  layoutOptions: { x: 1, y: 1 },
+                  fill: DensityBuoyancyCommonColors.buoyancyForceProperty
+                }, arrowOptions ) ),
+
+                // Contact
+                new Checkbox( new Text( densityBuoyancyCommonStrings.contact, labelOptions ), model.showContactForceProperty, merge( {
+                  layoutOptions: { x: 0, y: 2 }
+                }, checkboxOptions ) ),
+                new ArrowNode( 0, 0, arrowLength, 0, merge( {
+                  layoutOptions: { x: 1, y: 2 },
+                  fill: DensityBuoyancyCommonColors.contactForceProperty
+                }, arrowOptions ) ),
+
+                // Vector scale
+                new Text( densityBuoyancyCommonStrings.vectorScale, merge( {
+                  layoutOptions: { x: 0, y: 3 }
+                }, labelOptions ) ),
+                new PlusMinusZoomButtonGroup( model.forceScaleProperty, {
+                  layoutOptions: { x: 1, y: 3, xAlign: 'center' },
+                  orientation: 'horizontal',
+                  applyZoomIn: ( scale: number ) => scale * 2,
+                  applyZoomOut: ( scale: number ) => scale / 2
+                } )
+              ]
+            } ),
+            new VDivider(),
+            new VBox( {
+              spacing: checkboxSpacing,
+              align: 'left',
+              children: [
+                new Checkbox( new Text( densityBuoyancyCommonStrings.masses, labelOptions ), model.showMassesProperty, checkboxOptions ),
+                new Checkbox( new Text( densityBuoyancyCommonStrings.forceValues, labelOptions ), model.showForceValuesProperty, checkboxOptions )
+              ]
+            } )
+          ]
+        } )
       ]
-    } );
-
-    const buoyancyNode = new HBox( {
-      spacing: arrowSpacing,
-      children: [
-        new AlignBox( new Checkbox( new Text( densityBuoyancyCommonStrings.buoyancy, labelOptions ), model.showBuoyancyForceProperty, checkboxOptions ), {
-          group: forceAlignGroup,
-          xAlign: 'left'
-        } ),
-        new ArrowNode( 0, 0, arrowLength, 0, merge( {
-          fill: DensityBuoyancyCommonColors.buoyancyForceProperty
-        }, arrowOptions ) )
-      ]
-    } );
-
-    const contactNode = new HBox( {
-      spacing: arrowSpacing,
-      children: [
-        new AlignBox( new Checkbox( new Text( densityBuoyancyCommonStrings.contact, labelOptions ), model.showContactForceProperty, checkboxOptions ), {
-          group: forceAlignGroup,
-          xAlign: 'left'
-        } ),
-        new ArrowNode( 0, 0, arrowLength, 0, merge( {
-          fill: DensityBuoyancyCommonColors.contactForceProperty
-        }, arrowOptions ) )
-      ]
-    } );
-
-    const massesNode = new Checkbox( new Text( densityBuoyancyCommonStrings.masses, labelOptions ), model.showMassesProperty, checkboxOptions );
-    const forceValuesNode = new Checkbox( new Text( densityBuoyancyCommonStrings.forceValues, labelOptions ), model.showForceValuesProperty, checkboxOptions );
-
-    options.children = [
-      forcesText,
-      new FlowBox( {
-        orientation: 'vertical',
-        spacing: 8,
-        align: 'left',
-        children: [
-          new VBox( {
-            spacing: checkboxSpacing,
-            align: 'left',
-            children: [
-              gravityNode,
-              buoyancyNode,
-              contactNode
-            ]
-          } ),
-          new VDivider(),
-          new VBox( {
-            spacing: checkboxSpacing,
-            align: 'left',
-            children: [
-              massesNode,
-              forceValuesNode
-            ]
-          } )
-        ]
-      } )
-    ];
-
-    super( options );
+    }, options ) );
   }
 }
 

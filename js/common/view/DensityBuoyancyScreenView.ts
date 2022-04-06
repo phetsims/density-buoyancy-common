@@ -661,7 +661,8 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
             model.showGravityForceProperty,
             model.showBuoyancyForceProperty,
             model.showContactForceProperty,
-            model.showForceValuesProperty
+            model.showForceValuesProperty,
+            model.forceScaleProperty
           );
           this.forceDiagramLayer.addChild( forceDiagramNode );
           this.forceDiagramNodes.push( forceDiagramNode );

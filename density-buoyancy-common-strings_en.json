@@ -316,5 +316,8 @@
   },
   "whatIsTheValueOfGravity": {
     "value": "What is the value of gravity?"
+  },
+  "vectorScale": {
+    "value": "Vector Scale"
   }
 }

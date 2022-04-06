@@ -11,6 +11,7 @@ import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import Property from '../../../../axon/js/Property.js';
 import createObservableArray, { ObservableArray } from '../../../../axon/js/createObservableArray.js';
 import Bounds3 from '../../../../dot/js/Bounds3.js';
+import Range from '../../../../dot/js/Range.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
 import NumberIO from '../../../../tandem/js/types/NumberIO.js';
@@ -27,6 +28,7 @@ import PhysicsEngine, { PhysicsEngineBody } from './PhysicsEngine.js';
 import Mass from './Mass.js';
 import Basin from './Basin.js';
 import Cuboid from './Cuboid.js';
+import NumberProperty, { RangedProperty } from '../../../../axon/js/NumberProperty.js';
 
 // constants
 const BLOCK_SPACING = 0.01;
@@ -40,6 +42,7 @@ const POOL_BACK_Z = -POOL_DEPTH / 2;
 export type DensityBuoyancyModelOptions = {
   showMassesDefault?: boolean;
   canShowForces?: boolean;
+  initialForceScale?: number;
   tandem: Tandem;
 };
 
@@ -49,6 +52,7 @@ export default class DensityBuoyancyModel {
   showBuoyancyForceProperty: Property<boolean>;
   showContactForceProperty: Property<boolean>;
   showForceValuesProperty: Property<boolean>;
+  forceScaleProperty: RangedProperty;
   showMassesProperty: Property<boolean>;
   gravityProperty: Property<Gravity>;
   liquidMaterialProperty: Property<Material>;
@@ -77,7 +81,8 @@ export default class DensityBuoyancyModel {
   constructor( providedOptions?: DensityBuoyancyModelOptions ) {
     const options = optionize<DensityBuoyancyModelOptions, DensityBuoyancyModelOptions>( {
       showMassesDefault: false,
-      canShowForces: true
+      canShowForces: true,
+      initialForceScale: 1 / 16
     }, providedOptions );
 
     const tandem = options.tandem;
@@ -98,6 +103,10 @@ export default class DensityBuoyancyModel {
       tandem: tandem.createTandem( 'showMassesProperty' ),
       phetioDocumentation: 'Displays a mass readout on each object'
     } );
+    this.forceScaleProperty = new NumberProperty( options.initialForceScale, {
+      tandem: options.canShowForces ? tandem.createTandem( 'forceScaleProperty' ) : Tandem.OPT_OUT,
+      range: new Range( Math.pow( 0.5, 9 ), 1 )
+    } ).asRanged();
 
     this.gravityProperty = new Property( Gravity.EARTH, {
       valueType: Gravity,

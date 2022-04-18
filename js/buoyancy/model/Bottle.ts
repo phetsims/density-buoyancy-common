@@ -462,7 +462,7 @@ export default class Bottle extends Mass {
     throw new Error( 'unsupported volume' );
   }
 
-  private static getMainBottleCrossSectionTriangles( y: number, precisionMultiplier: number = 1 ): Vector2[] {
+  private static getMainBottleCrossSectionTriangles( y: number, precisionMultiplier = 1 ): Vector2[] {
     const triangles: Vector2[] = [];
     const absY = Math.abs( y );
 
@@ -619,7 +619,7 @@ export default class Bottle extends Mass {
     return area;
   }
 
-  static computeBottleData( samples: number = 1000, accuracyMultiplier: number = 100 ): string {
+  static computeBottleData( samples = 1000, accuracyMultiplier = 100 ): string {
     const desiredVolume = 0.01;
 
     const multiplier = FULL_RADIUS * 2;

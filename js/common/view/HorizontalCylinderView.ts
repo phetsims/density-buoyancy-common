@@ -71,7 +71,7 @@ export default class HorizontalCylinderView extends MassView {
    * @param offsetPosition - How to transform all of the points
    * @returns - The offset after the specified vertices have been written
    */
-  static updateArrays( positionArray: Float32Array | null, normalArray: Float32Array | null, uvArray: Float32Array | null, radius: number, length: number, offset: number = 0, offsetPosition: Vector3 = Vector3.ZERO ) {
+  static updateArrays( positionArray: Float32Array | null, normalArray: Float32Array | null, uvArray: Float32Array | null, radius: number, length: number, offset = 0, offsetPosition: Vector3 = Vector3.ZERO ) {
     const writer = new TriangleArrayWriter( positionArray, normalArray, uvArray, offset, offsetPosition );
 
     const leftX = -length / 2;

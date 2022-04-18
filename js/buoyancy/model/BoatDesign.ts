@@ -82,7 +82,7 @@ export default class BoatDesign {
    * @param blockHalfWidth - in model coordinates
    * @param liters - the number of liters of the boat's displacement
    */
-  static getIntersectionVertices( blockHalfWidth: number = 0, liters: number = 1 ): Vector2[] {
+  static getIntersectionVertices( blockHalfWidth = 0, liters = 1 ): Vector2[] {
     const scale = Math.pow( liters, 1 / 3 ) * BoatDesign.ONE_LITER_SCALE_MULTIPLIER;
     const frontSamples = 30;
     const insideSamples = 40;
@@ -226,7 +226,7 @@ export default class BoatDesign {
   /**
    * Returns the model-space local coordinate for the boat, given a design-space point and number of liters.
    */
-  private static designToModel( point: Vector3, liters: number = 1 ): Vector3 {
+  private static designToModel( point: Vector3, liters = 1 ): Vector3 {
     const scale = Math.pow( liters, 1 / 3 ) * BoatDesign.ONE_LITER_SCALE_MULTIPLIER;
     return new Vector3(
       ( point.x - BoatDesign.DESIGN_CENTROID.x ) * scale,
@@ -405,7 +405,7 @@ export default class BoatDesign {
   /**
    * Returns the one-liter model-coordinate main geometry for the bulk of the boat.
    */
-  static getPrimaryGeometry( liters: number = 1, includeExterior: boolean = true, includeGunwale: boolean = true, includeInterior: boolean = true, invertNormals: boolean = false ): THREE.BufferGeometry {
+  static getPrimaryGeometry( liters = 1, includeExterior = true, includeGunwale = true, includeInterior = true, invertNormals = false ): THREE.BufferGeometry {
     const positions: number[] = [];
     const normals: number[] = [];
     const uvs: number[] = [];
@@ -616,7 +616,7 @@ export default class BoatDesign {
   /**
    * Returns a string that should be placed below in BoatDesign.js.
    */
-  static computeBoatData( samples: number = 1000 ): string {
+  static computeBoatData( samples = 1000 ): string {
     const desiredVolume = 0.001; // one liter
 
     const discretizationPoints = 1000;

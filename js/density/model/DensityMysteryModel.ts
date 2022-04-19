@@ -235,8 +235,7 @@ export default class DensityMysteryModel extends BlockSetModel<BlockSet> {
       }
     };
 
-    // @ts-ignore
-    super( optionize<DensityMysteryModelOptions, {}, BlockSetModelOptions<BlockSet>>( {
+    super( optionize<DensityMysteryModelOptions, {}, BlockSetModelOptions<BlockSet>>()( {
       canShowForces: false,
 
       // TODO: How can this type-check if I leave these out?!? --- oh we're expecting them in our providedOptions?

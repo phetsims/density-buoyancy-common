@@ -34,7 +34,7 @@ export default class HorizontalCylinder extends Mass {
   stepMaximumArea: number;
 
   constructor( engine: PhysicsEngine, radius: number, length: number, providedConfig: HorizontalCylinderOptions ) {
-    const config = optionize<HorizontalCylinderOptions, {}, InstrumentedMassOptions>( {
+    const config = optionize<HorizontalCylinderOptions, {}, InstrumentedMassOptions>()( {
       body: engine.createBox( length, radius * 2 ),
       shape: HorizontalCylinder.getHorizontalCylinderShape( radius, length ),
       volume: HorizontalCylinder.getVolume( radius, length ),

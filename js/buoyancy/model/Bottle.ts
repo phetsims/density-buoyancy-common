@@ -186,7 +186,7 @@ export default class Bottle extends Mass {
 
     const vertices = Bottle.getFlatIntersectionVertices();
 
-    const config = optionize<BottleOptions, {}, InstrumentedMassOptions>( {
+    const config = optionize<BottleOptions, {}, InstrumentedMassOptions>()( {
       body: engine.createFromVertices( vertices, true ),
       shape: Shape.polygon( vertices ),
       volume: BOTTLE_VOLUME,

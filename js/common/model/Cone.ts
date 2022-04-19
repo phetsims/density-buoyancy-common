@@ -42,7 +42,7 @@ export default class Cone extends Mass {
 
     const initialVertices = Cone.getConeVertices( radius, height, isVertexUp );
 
-    const config = optionize<ConeOptions, {}, MassOptions>( {
+    const config = optionize<ConeOptions, {}, MassOptions>()( {
       body: engine.createFromVertices( initialVertices, false ),
       shape: Shape.polygon( initialVertices ),
       volume: Cone.getVolume( radius, height ),

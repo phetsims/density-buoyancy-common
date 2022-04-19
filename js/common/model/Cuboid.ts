@@ -31,7 +31,7 @@ export default class Cuboid extends Mass {
   stepMaximumVolume: number;
 
   constructor( engine: PhysicsEngine, size: Bounds3, providedConfig: CuboidOptions ) {
-    const config = optionize<CuboidOptions, {}, InstrumentedMassOptions>( {
+    const config = optionize<CuboidOptions, {}, InstrumentedMassOptions>()( {
       body: engine.createBox( size.width, size.height ),
       shape: Shape.rect( size.minX, size.minY, size.width, size.height ),
       volume: size.width * size.height * size.depth,

@@ -65,7 +65,7 @@ export default class Material {
 
   constructor( providedConfig: MaterialOptions ) {
 
-    const config = optionize<MaterialOptions, MaterialOptions>( {
+    const config = optionize<MaterialOptions, MaterialOptions>()( {
       name: 'unknown',
       identifier: null,
       tandemName: null,

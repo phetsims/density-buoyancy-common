@@ -51,7 +51,7 @@ export type ShapeSizeControlNodeOptions = SelfOptions & FlowBoxOptions;
 export default class ShapeSizeControlNode extends FlowBox {
   constructor( massShapeProperty: Property<MassShape>, widthRatioProperty: Property<number>, heightRatioProperty: Property<number>, volumeProperty: Property<number>, listParent: Node, providedOptions?: ShapeSizeControlNodeOptions ) {
 
-    const options = optionize<ShapeSizeControlNodeOptions, SelfOptions, FlowBoxOptions>( {
+    const options = optionize<ShapeSizeControlNodeOptions, SelfOptions, FlowBoxOptions>()( {
       labelNode: null
     }, providedOptions );
 

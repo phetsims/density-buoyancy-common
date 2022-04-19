@@ -9,7 +9,7 @@
 import Property, { PropertyOptions } from '../../../../axon/js/Property.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
-import optionize from '../../../../phet-core/js/optionize.js';
+import { optionize3 } from '../../../../phet-core/js/optionize.js';
 import IOType from '../../../../tandem/js/types/IOType.js';
 import NumberIO from '../../../../tandem/js/types/NumberIO.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
@@ -31,7 +31,7 @@ export default class InterpolatedProperty<T> extends Property<T> {
 
   constructor( initialValue: T, providedConfig: InterpolatedPropertyOptions<T> ) {
 
-    const config = optionize<InterpolatedPropertyOptions<T>, SelfOptions<T>, PropertyOptions<T>>( {}, providedConfig );
+    const config = optionize3<InterpolatedPropertyOptions<T>, SelfOptions<T>, PropertyOptions<T>>()( {}, providedConfig );
 
     super( initialValue, config );
 

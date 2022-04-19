@@ -25,7 +25,7 @@ export type CubeOptions = SelfOptions & CuboidOptions;
 export default class Cube extends Cuboid {
   constructor( engine: PhysicsEngine, volume: number, providedConfig: CubeOptions ) {
 
-    let config = optionize<CubeOptions, SelfOptions, CuboidOptions>( {
+    let config = optionize<CubeOptions, SelfOptions, CuboidOptions>()( {
       adjustMassWithVolume: false,
 
       volumePropertyOptions: {

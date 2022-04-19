@@ -230,7 +230,7 @@ export default class DensityCompareModel extends BlockSetModel<BlockSet> {
       }
     };
 
-    const options = optionize<DensityCompareModelOptions, {}, BlockSetModelOptions<BlockSet>>( {
+    const options = optionize<DensityCompareModelOptions, {}, BlockSetModelOptions<BlockSet>>()( {
       initialMode: BlockSet.SAME_MASS,
       BlockSet: BlockSet.enumeration,
       showMassesDefault: true,

@@ -28,7 +28,7 @@ export type PrecisionSliderThumbOptions = NodeOptions & SelfOptions;
 
 export default class PrecisionSliderThumb extends Node {
   constructor( providedOptions?: PrecisionSliderThumbOptions ) {
-    const options = optionize<PrecisionSliderThumbOptions, SelfOptions, NodeOptions>( {
+    const options = optionize<PrecisionSliderThumbOptions, SelfOptions, NodeOptions>()( {
       thumbFill: '#eee',
       thumbStroke: '#000',
       mainHeight: 15,

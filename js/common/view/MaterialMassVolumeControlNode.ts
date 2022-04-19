@@ -63,7 +63,7 @@ export default class MaterialMassVolumeControlNode extends VBox {
 
   constructor( materialProperty: Property<Material>, massProperty: Property<number>, volumeProperty: Property<number>, materials: Material[], setVolume: ( volume: number ) => void, listParent: Node, providedOptions?: MaterialMassVolumeControlNodeOptions ) {
 
-    const options = optionize<MaterialMassVolumeControlNodeOptions, SelfOptions, VBoxOptions>( {
+    const options = optionize<MaterialMassVolumeControlNodeOptions, SelfOptions, VBoxOptions>()( {
       labelNode: null,
 
       minMass: 0.1,

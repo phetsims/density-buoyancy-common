@@ -228,7 +228,7 @@ export default abstract class Mass extends PhetioObject {
 
   constructor( engine: PhysicsEngine, providedConfig: MassOptions ) {
 
-    const config = optionize<MassOptions, SelfOptions, PhetioObjectOptions>( {
+    const config = optionize<MassOptions, SelfOptions, PhetioObjectOptions>()( {
       visible: true,
       matrix: new Matrix3(),
       canRotate: false,

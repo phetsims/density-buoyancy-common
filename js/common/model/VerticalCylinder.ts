@@ -34,7 +34,7 @@ export default class VerticalCylinder extends Mass {
   stepMaximumVolume: number;
 
   constructor( engine: PhysicsEngine, radius: number, height: number, providedConfig: VerticalCylinderOptions ) {
-    const config = optionize<VerticalCylinderOptions, {}, InstrumentedMassOptions>( {
+    const config = optionize<VerticalCylinderOptions, {}, InstrumentedMassOptions>()( {
       body: engine.createBox( 2 * radius, height ),
       shape: VerticalCylinder.getVerticalCylinderShape( radius, height ),
       volume: VerticalCylinder.getVolume( radius, height ),

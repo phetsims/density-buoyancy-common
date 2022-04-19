@@ -69,7 +69,7 @@ export default class ComboNumberControl<T> extends VBox {
     const disposalCallbacks: ( () => void )[] = [];
     const numberDisplayVisibleProperty = new BooleanProperty( true );
 
-    const config = optionize<ComboNumberControlOptions<T>, SelfOptions<T>, VBoxOptions>( {
+    const config = optionize<ComboNumberControlOptions<T>, SelfOptions<T>, VBoxOptions>()( {
       getFallbackNode: () => null,
 
       // {Object} Options for the number control

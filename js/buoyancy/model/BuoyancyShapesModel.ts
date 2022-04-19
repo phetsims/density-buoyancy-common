@@ -61,7 +61,7 @@ export default class BuoyancyShapesModel extends DensityBuoyancyModel {
   secondaryMassProperty: Property<Mass>;
 
   constructor( providedOptions: BuoyancyShapesModelOptions ) {
-    const options = optionize<DensityBuoyancyModelOptions, {}>( {
+    const options = optionize<DensityBuoyancyModelOptions, {}>()( {
       initialForceScale: 1 / 4
     }, providedOptions );
 

@@ -118,7 +118,7 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
   constructor( model: Model, providedOptions: SelfOptions ) {
 
     const scaleIncrease = 3.5;
-    const options = optionize<DensityBuoyancyScreenViewOptions, SelfOptions, ScreenView>( {
+    const options = optionize<DensityBuoyancyScreenViewOptions, SelfOptions, ScreenView>()( {
       cameraLookAt: DensityBuoyancyCommonConstants.BUOYANCY_CAMERA_LOOK_AT,
       cameraPosition: new Vector3( 0, 0.2, 2 ).timesScalar( scaleIncrease ),
       cameraZoom: 1.75 * scaleIncrease,

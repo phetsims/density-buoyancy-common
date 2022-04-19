@@ -30,7 +30,7 @@ export default class Ellipsoid extends Mass {
   stepMaximumVolume: number;
 
   constructor( engine: PhysicsEngine, size: Bounds3, providedConfig: EllipsoidOptions ) {
-    const config = optionize<EllipsoidOptions, {}, InstrumentedMassOptions>( {
+    const config = optionize<EllipsoidOptions, {}, InstrumentedMassOptions>()( {
       body: engine.createFromVertices( Ellipsoid.getEllipsoidVertices( size.width, size.height ), false ),
       shape: Ellipsoid.getEllipsoidShape( size.width, size.height ),
       volume: Ellipsoid.getVolume( size ),

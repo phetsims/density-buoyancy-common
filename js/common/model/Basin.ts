@@ -41,7 +41,7 @@ export default abstract class Basin {
   childBasin: Basin | null;
 
   constructor( providedOptions?: BasinOptions ) {
-    const options = optionize<BasinOptions, BasinOptions>( {
+    const options = optionize<BasinOptions, BasinOptions>()( {
       initialVolume: 0,
       initialY: 0,
       tandem: Tandem.REQUIRED

@@ -37,7 +37,7 @@ export default class Gravity {
 
   constructor( providedConfig: GravityOptions ) {
 
-    const config = optionize<GravityOptions, GravityOptions>( {
+    const config = optionize<GravityOptions, GravityOptions>()( {
       custom: false,
       hidden: false
     }, providedConfig );

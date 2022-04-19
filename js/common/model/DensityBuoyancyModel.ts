@@ -79,7 +79,7 @@ export default class DensityBuoyancyModel {
   boat: Boat | null;
 
   constructor( providedOptions?: DensityBuoyancyModelOptions ) {
-    const options = optionize<DensityBuoyancyModelOptions, DensityBuoyancyModelOptions>( {
+    const options = optionize<DensityBuoyancyModelOptions, DensityBuoyancyModelOptions>()( {
       showMassesDefault: false,
       canShowForces: true,
       initialForceScale: 1 / 16

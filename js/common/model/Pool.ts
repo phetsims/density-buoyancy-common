@@ -22,7 +22,7 @@ export default class Pool extends Basin {
 
     const initialVolume = 0.1;
 
-    super( optionize<PoolOptions, {}, BasinOptions>( {
+    super( optionize<PoolOptions, {}, BasinOptions>()( {
       initialVolume: initialVolume,
       initialY: bounds.minY + initialVolume / ( bounds.width * bounds.depth )
     }, options ) );

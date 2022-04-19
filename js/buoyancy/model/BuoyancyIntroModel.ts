@@ -31,7 +31,7 @@ export type BuoyancyIntroModelOptions = Omit<BlockSetModelOptions<BlockSet>, 'in
 
 export default class BuoyancyIntroModel extends BlockSetModel<BlockSet> {
   constructor( providedOptions: BuoyancyIntroModelOptions ) {
-    const options = optionize<BuoyancyIntroModelOptions, {}, BlockSetModelOptions<BlockSet>>( {
+    const options = optionize<BuoyancyIntroModelOptions, {}, BlockSetModelOptions<BlockSet>>()( {
       initialMode: BlockSet.SAME_MASS,
       BlockSet: BlockSet.enumeration,
 

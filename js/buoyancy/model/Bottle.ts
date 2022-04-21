@@ -1119,7 +1119,6 @@ const FLAT_INTERSECTION_VERTICES = [ ${flatIntersectionVertices.map( v => `new V
 
   /**
    * Returns a list of model-space x,y coordinates for the intersection profile of the bottle.
-   * @public
    *
    * @returns {Array.<Vector2>}
    */
@@ -1131,7 +1130,6 @@ const FLAT_INTERSECTION_VERTICES = [ ${flatIntersectionVertices.map( v => `new V
 
   /**
    * Replaces the main page with a debug view of the bottle, for debugging various curves and properties.
-   * @public
    */
   static getDebugCanvas() {
     const canvas = document.createElement( 'canvas' );

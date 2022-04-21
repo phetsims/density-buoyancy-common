@@ -149,7 +149,6 @@ export default class BlocksRadioButtonGroup extends RectangularRadioButtonGroup<
 
   /**
    * Returns an icon that shows a single cuboid.
-   * @public
    *
    * @returns {Node}
    */
@@ -166,7 +165,6 @@ export default class BlocksRadioButtonGroup extends RectangularRadioButtonGroup<
 
   /**
    * Returns an icon that shows a single cuboid.
-   * @public
    *
    * @returns {Node}
    */

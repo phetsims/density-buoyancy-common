@@ -46,7 +46,7 @@ export default class HorizontalCylinder extends Mass {
 
     super( engine, config as InstrumentedMassOptions );
 
-    // @public {Property.<number>}
+    // {Property.<number>}
     this.radiusProperty = new NumberProperty( radius, {
       tandem: config.tandem.createTandem( 'radiusProperty' ),
       range: new Range( 0, Number.POSITIVE_INFINITY )

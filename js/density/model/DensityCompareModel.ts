@@ -243,7 +243,7 @@ export default class DensityCompareModel extends BlockSetModel<BlockSet> {
     // @ts-ignore
     super( options );
 
-    // @public {Property.<number>}
+    // {Property.<number>}
     this.massProperty = massProperty;
     this.volumeProperty = volumeProperty;
     this.densityProperty = densityProperty;

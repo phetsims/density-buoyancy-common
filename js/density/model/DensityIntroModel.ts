@@ -43,7 +43,7 @@ export default class DensityIntroModel extends DensityBuoyancyModel {
 
     const blocksTandem = tandem.createTandem( 'blocks' );
 
-    // @public (read-only) {Mass}
+    // (read-only) {Mass}
     this.primaryMass = Cube.createWithMass( this.engine, Material.WOOD, new Vector2( -0.2, 0.2 ), 2, {
       tag: MassTag.PRIMARY,
       tandem: blocksTandem.createTandem( 'blockA' )

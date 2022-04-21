@@ -471,7 +471,7 @@ export default abstract class Mass extends PhetioObject {
     this.writeData();
     this.engine.bodySynchronizePrevious( this.body );
 
-    // @public (read-only) {number} - Required internal-physics-step properties that should be set by subtypes in
+    // (read-only) {number} - Required internal-physics-step properties that should be set by subtypes in
     // updateStepInformation(). There may exist more set by the subtype (that will be used for e.g. volume/area
     // calculations). These are updated more often than simulation steps. These specific values will be used by external
     // code for determining liquid height.
@@ -666,7 +666,7 @@ export default abstract class Mass extends PhetioObject {
   static MassIO: IOType;
 }
 
-// @public (read-only) {IOType}
+// (read-only) {IOType}
 Mass.MassIO = new IOType( 'MassIO', {
   valueType: Mass,
   documentation: 'Represents a mass that interacts in the scene, and can potentially float or displace liquid.',

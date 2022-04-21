@@ -133,7 +133,7 @@ export default class Scale extends Mass {
       phetioReadOnly: true
     } );
 
-    // @public (read-only) {DisplayType}
+    // (read-only) {DisplayType}
     this.displayType = config.displayType;
   }
 

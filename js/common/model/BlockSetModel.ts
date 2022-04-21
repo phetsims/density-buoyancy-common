@@ -51,7 +51,7 @@ export default class BlockSetModel<BlockSetValue extends EnumerationValue> exten
 
     const tandem = options.tandem;
 
-    // @public {Property.<BlockSet>}
+    // {Property.<BlockSet>}
     this.blockSetProperty = new EnumerationProperty( options.initialMode, {
       tandem: tandem.createTandem( 'blockSets' ).createTandem( 'blockSetProperty' )
     } );

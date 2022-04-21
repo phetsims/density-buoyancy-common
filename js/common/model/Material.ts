@@ -163,7 +163,7 @@ export default class Material {
     } );
   }
 
-  // @public (read-only) {Material} - "Solids"
+  // (read-only) {Material} - "Solids"
 
   static ALUMINUM = new Material( {
     name: densityBuoyancyCommonStrings.material.aluminum,
@@ -305,7 +305,7 @@ export default class Material {
     density: 400
   } );
 
-  // @public (read-only) {Material} - "Liquids".
+  // (read-only) {Material} - "Liquids".
 
   static AIR = new Material( {
     name: densityBuoyancyCommonStrings.material.air,
@@ -473,7 +473,7 @@ Material.MATERIALS = [
 
 const NullableColorPropertyReferenceType = NullableIO( ReferenceIO( Property.PropertyIO( Color.ColorIO ) ) );
 
-// @public (read-only) {IOType}
+// (read-only) {IOType}
 Material.MaterialIO = new IOType( 'MaterialIO', {
   valueType: Material,
   documentation: 'Represents different materials that solids/liquids in the simulations can take, including density (kg/m^3), viscosity (Pa * s), and color.',

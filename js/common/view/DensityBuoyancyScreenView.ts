@@ -832,7 +832,7 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
   /**
    * Steps forward in time.
    */
-  step( dt: number ) {
+  override step( dt: number ) {
     // If the simulation was not able to load for WebGL, bail out
     if ( !this.sceneNode ) {
       return;

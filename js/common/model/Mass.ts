@@ -37,6 +37,7 @@ import Enumeration from '../../../../phet-core/js/Enumeration.js';
 import PhysicsEngine, { PhysicsEngineBody } from './PhysicsEngine.js';
 import Basin from './Basin.js';
 import Ray3 from '../../../../dot/js/Ray3.js';
+import IReadOnlyProperty from '../../../../axon/js/IReadOnlyProperty.js';
 
 // constants
 export class MassTag extends EnumerationValue {
@@ -146,7 +147,7 @@ export default abstract class Mass extends PhetioObject {
 
   userControlledProperty: Property<boolean>;
   inputEnabledProperty: Property<boolean>;
-  visibleProperty: Property<boolean>;
+  visibleProperty: IReadOnlyProperty<boolean>;
   internalVisibleProperty: Property<boolean>;
 
   // Here just for instrumentation, see https://github.com/phetsims/density/issues/112

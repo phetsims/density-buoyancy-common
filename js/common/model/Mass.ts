@@ -668,7 +668,9 @@ export default abstract class Mass extends PhetioObject {
 }
 
 // (read-only) {IOType}
-Mass.MassIO = new IOType( 'MassIO', {
+Mass.MassIO = new IOType<Mass>( 'MassIO', {
+
+  // @ts-ignore https://github.com/phetsims/tandem/issues/261
   valueType: Mass,
   documentation: 'Represents a mass that interacts in the scene, and can potentially float or displace liquid.',
   stateSchema: {

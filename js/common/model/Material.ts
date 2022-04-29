@@ -150,7 +150,7 @@ export default class Material {
    *
    * NOTE: Only call this for things that exist for the lifetime of this simulation (otherwise it would leak memory)
    */
-  static linkLiquidColor( property: IProperty<Material>, threeMaterial: THREE.MeshPhongMaterial | THREE.MeshLambertMaterial | THREE.MeshBasicMaterial ) {
+  static linkLiquidColor( property: IProperty<Material>, threeMaterial: THREE.MeshPhongMaterial | THREE.MeshLambertMaterial | THREE.MeshBasicMaterial ): void {
     new DynamicProperty<Color, Color, Material>( property, {
       derive: material => {
         assert && assert( material.liquidColor );

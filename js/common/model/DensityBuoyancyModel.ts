@@ -357,7 +357,7 @@ export default class DensityBuoyancyModel {
   /**
    * Computes the heights of the main pool liquid (and optionally that of the boat)
    */
-  private updateLiquid() {
+  private updateLiquid(): void {
     const boat = this.getBoat();
 
     const basins: Basin[] = [ this.pool ];
@@ -429,7 +429,7 @@ export default class DensityBuoyancyModel {
   /**
    * Resets things to their original values.
    */
-  reset() {
+  reset(): void {
     this.showGravityForceProperty.reset();
     this.showBuoyancyForceProperty.reset();
     this.showContactForceProperty.reset();
@@ -445,7 +445,7 @@ export default class DensityBuoyancyModel {
   /**
    * Steps forward in time.
    */
-  step( dt: number ) {
+  step( dt: number ): void {
     this.engine.step( dt );
 
     this.masses.forEach( mass => {
@@ -458,14 +458,14 @@ export default class DensityBuoyancyModel {
   /**
    * Moves masses' previous positions to their current positions.
    */
-  uninterpolateMasses() {
+  uninterpolateMasses(): void {
     this.masses.forEach( mass => this.engine.bodySynchronizePrevious( mass.body ) );
   }
 
   /**
    * Positions masses from the left of the pool outward, with padding
    */
-  positionMassesLeft( masses: Cuboid[] ) {
+  positionMassesLeft( masses: Cuboid[] ): void {
     let position = this.poolBounds.minX;
 
     masses.forEach( mass => {
@@ -482,7 +482,7 @@ export default class DensityBuoyancyModel {
   /**
    * Positions masses from the right of the pool outward, with padding
    */
-  positionMassesRight( masses: Cuboid[] ) {
+  positionMassesRight( masses: Cuboid[] ): void {
     let position = this.poolBounds.maxX;
 
     masses.forEach( mass => {
@@ -499,7 +499,7 @@ export default class DensityBuoyancyModel {
   /**
    * Positions masses from the left of the pool up
    */
-  positionStackLeft( masses: Cuboid[] ) {
+  positionStackLeft( masses: Cuboid[] ): void {
     const x = this.poolBounds.minX - BLOCK_SPACING - Math.max( ...masses.map( mass => mass.sizeProperty.value.width ) ) / 2;
 
     this.positionStack( masses, x );
@@ -508,7 +508,7 @@ export default class DensityBuoyancyModel {
   /**
    * Positions masses from the right of the pool up
    */
-  positionStackRight( masses: Cuboid[] ) {
+  positionStackRight( masses: Cuboid[] ): void {
     const x = this.poolBounds.maxX + BLOCK_SPACING + Math.max( ...masses.map( mass => mass.sizeProperty.value.width ) ) / 2;
 
     this.positionStack( masses, x );
@@ -517,7 +517,7 @@ export default class DensityBuoyancyModel {
   /**
    * Position a stack of masses at a given center x.
    */
-  protected positionStack( masses: Cuboid[], x: number ) {
+  protected positionStack( masses: Cuboid[], x: number ): void {
     let position = 0;
 
     masses = _.sortBy( masses, mass => -mass.volumeProperty.value );

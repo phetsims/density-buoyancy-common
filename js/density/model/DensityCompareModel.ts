@@ -254,7 +254,7 @@ export default class DensityCompareModel extends BlockSetModel<BlockSet> {
   /**
    * Resets values to their original state
    */
-  override reset() {
+  override reset(): void {
     this.massProperty.reset();
     this.volumeProperty.reset();
     this.densityProperty.reset();

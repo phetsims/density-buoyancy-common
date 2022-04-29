@@ -46,7 +46,7 @@ export default class InterpolatedProperty<T> extends Property<T> {
   /**
    * Sets the next value to be used (will NOT change the value of this Property).
    */
-  setNextValue( value: T ) {
+  setNextValue( value: T ): void {
     this.previousValue = this.currentValue;
     this.currentValue = value;
   }
@@ -54,7 +54,7 @@ export default class InterpolatedProperty<T> extends Property<T> {
   /**
    * Sets the ratio to use for interpolated values (WILL change the value of this Property generally).
    */
-  setRatio( ratio: number ) {
+  setRatio( ratio: number ): void {
     this.ratio = ratio;
 
     this.value = this.interpolate( this.previousValue, this.currentValue, this.ratio );
@@ -63,7 +63,7 @@ export default class InterpolatedProperty<T> extends Property<T> {
   /**
    * Resets the Property to its initial state.
    */
-  override reset() {
+  override reset(): void {
     super.reset();
 
     this.currentValue = this.value;

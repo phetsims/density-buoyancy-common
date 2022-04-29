@@ -51,7 +51,7 @@ export default abstract class MassView extends THREE.Mesh {
   /**
    * Releases references.
    */
-  dispose() {
+  dispose(): void {
     this.mass.transformedEmitter.removeListener( this.positionListener );
     this.mass.materialProperty.unlink( this.materialListener );
 

@@ -241,7 +241,7 @@ export default class Bottle extends Mass {
    *
    * Type-specific values are likely to be set, but this should set at least stepX/stepBottom/stepTop
    */
-  override updateStepInformation() {
+  override updateStepInformation(): void {
     super.updateStepInformation();
 
     const xOffset = this.stepMatrix.m02();
@@ -311,7 +311,7 @@ export default class Bottle extends Mass {
   /**
    * Resets values to their original state
    */
-  override reset() {
+  override reset(): void {
     this.interiorMaterialProperty.reset();
     this.interiorVolumeProperty.reset();
 
@@ -586,7 +586,7 @@ export default class Bottle extends Mass {
     return new Float32Array( MAX_CROSS_SECTION_VERTEX_COUNT * 3 );
   }
 
-  static fillCrossSectionVertexArray( y: number, positionArray: Float32Array ) {
+  static fillCrossSectionVertexArray( y: number, positionArray: Float32Array ): void {
     const triangleXZs = Bottle.getMainBottleCrossSectionTriangles( y / TEN_LITER_SCALE_MULTIPLIER + TEN_LITER_INTERSECTION_CENTROID.y, CROSS_SECTION_PRECISION );
     for ( let i = 0; i < triangleXZs.length; i++ ) {
       const triangleVertex = triangleXZs[ i ];
@@ -798,7 +798,7 @@ const FLAT_INTERSECTION_VERTICES = [ ${flatIntersectionVertices.map( v => `new V
     return y / ( 2 * FULL_RADIUS ) + 0.5;
   }
 
-  private static quadRing( positions: number[], normals: number[], uvs: number[], radialSegments: number, x0: number, r0: number, x1: number, r1: number, nx0: number, nr0: number, nx1: number, nr1: number ) {
+  private static quadRing( positions: number[], normals: number[], uvs: number[], radialSegments: number, x0: number, r0: number, x1: number, r1: number, nx0: number, nr0: number, nx1: number, nr1: number ): void {
     _.range( 0, radialSegments ).forEach( i => {
       const theta0 = 2 * Math.PI * i / radialSegments;
       const theta1 = 2 * Math.PI * ( i + 1 ) / radialSegments;
@@ -837,7 +837,7 @@ const FLAT_INTERSECTION_VERTICES = [ ${flatIntersectionVertices.map( v => `new V
     } );
   }
 
-  private static roundedCornerRing( positions: number[], normals: number[], uvs: number[], radialSegments: number, cornerSegments: number, startTheta: number, endTheta: number, x: number, r: number, cornerRadius: number ) {
+  private static roundedCornerRing( positions: number[], normals: number[], uvs: number[], radialSegments: number, cornerSegments: number, startTheta: number, endTheta: number, x: number, r: number, cornerRadius: number ): void {
     _.range( 0, cornerSegments ).forEach( i => {
       const theta0 = startTheta + ( i / cornerSegments ) * ( endTheta - startTheta );
       const theta1 = startTheta + ( ( i + 1 ) / cornerSegments ) * ( endTheta - startTheta );
@@ -1122,7 +1122,7 @@ const FLAT_INTERSECTION_VERTICES = [ ${flatIntersectionVertices.map( v => `new V
    *
    * @returns {Array.<Vector2>}
    */
-  static getFlatIntersectionVertices() {
+  static getFlatIntersectionVertices(): Vector2[] {
     return FLAT_INTERSECTION_VERTICES.map( v => {
       return v.minusXY( TEN_LITER_INTERSECTION_CENTROID.x, TEN_LITER_INTERSECTION_CENTROID.y ).timesScalar( TEN_LITER_SCALE_MULTIPLIER );
     } );
@@ -1131,7 +1131,7 @@ const FLAT_INTERSECTION_VERTICES = [ ${flatIntersectionVertices.map( v => `new V
   /**
    * Replaces the main page with a debug view of the bottle, for debugging various curves and properties.
    */
-  static getDebugCanvas() {
+  static getDebugCanvas(): HTMLCanvasElement {
     const canvas = document.createElement( 'canvas' );
     const context = canvas.getContext( '2d' )!;
 
@@ -1220,7 +1220,7 @@ const FLAT_INTERSECTION_VERTICES = [ ${flatIntersectionVertices.map( v => `new V
     return canvas;
   }
 
-  setRatios( widthRatio: number, heightRatio: number ) {}
+  setRatios( widthRatio: number, heightRatio: number ): void {}
 
   // The number to scale the original values by to get a 10L-volume bottle
   static TEN_LITER_SCALE_MULTIPLIER: number;

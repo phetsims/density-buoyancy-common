@@ -234,7 +234,7 @@ export default class ComboNumberControl<T> extends VBox {
   /**
    * Releases references.
    */
-  override dispose() {
+  override dispose(): void {
     this.numberControl.dispose();
     this.comboBox.dispose();
 

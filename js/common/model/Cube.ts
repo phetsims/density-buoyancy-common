@@ -88,7 +88,7 @@ export default class Cube extends Cuboid {
   /**
    * Creates a Cube with a defined volume
    */
-  static createWithMass( engine: PhysicsEngine, material: Material, position: Vector2, mass: number, options?: Omit<CubeOptions, 'matrix' | 'material'> ) {
+  static createWithMass( engine: PhysicsEngine, material: Material, position: Vector2, mass: number, options?: Omit<CubeOptions, 'matrix' | 'material'> ): Cube {
     return Cube.createWithVolume( engine, material, position, mass / material.density, options );
   }
 }

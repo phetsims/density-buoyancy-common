@@ -144,7 +144,7 @@ export default abstract class Basin {
   /**
    * Computes the liquid's y coordinate, given the current volume
    */
-  computeY() {
+  computeY(): void {
     const liquidVolume = this.liquidVolumeProperty.value;
     if ( liquidVolume === 0 ) {
       this.liquidYInterpolatedProperty.setNextValue( this.stepBottom );
@@ -174,7 +174,7 @@ export default abstract class Basin {
   /**
    * Resets to an initial state.
    */
-  reset() {
+  reset(): void {
     this.liquidVolumeProperty.reset();
     this.liquidYInterpolatedProperty.reset();
   }

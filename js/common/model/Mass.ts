@@ -501,14 +501,14 @@ export default abstract class Mass extends PhetioObject {
   /**
    * Sets the current location to be the proper position for the mass when it is reset.
    */
-  setResetLocation() {
+  setResetLocation(): void {
     this.originalMatrix = this.matrix.copy();
   }
 
   /**
    * Reads transform/velocity from the physics model engine.
    */
-  private readData() {
+  private readData(): void {
     this.engine.bodyGetMatrixTransform( this.body, this.matrix );
 
     // Apply the body offset
@@ -521,7 +521,7 @@ export default abstract class Mass extends PhetioObject {
   /**
    * Writes position/velocity/etc. to the physics model engine.
    */
-  writeData() {
+  writeData(): void {
     this.engine.bodySetPosition( this.body, this.matrix.translation.minus( this.bodyOffsetProperty.value ) );
     this.engine.bodySetRotation( this.body, this.matrix.rotation );
   }
@@ -529,7 +529,7 @@ export default abstract class Mass extends PhetioObject {
   /**
    * Starts a physics model engine drag at the given 2d (x,y) model position.
    */
-  startDrag( position: Vector2 ) {
+  startDrag( position: Vector2 ): void {
     this.userControlledProperty.value = true;
     this.engine.addPointerConstraint( this.body, position );
   }
@@ -537,14 +537,14 @@ export default abstract class Mass extends PhetioObject {
   /**
    * Updates a current drag with a new 2d (x,y) model position.
    */
-  updateDrag( position: Vector2 ) {
+  updateDrag( position: Vector2 ): void {
     this.engine.updatePointerConstraint( this.body, position );
   }
 
   /**
    * Ends a physics model engine drag.
    */
-  endDrag() {
+  endDrag(): void {
     this.engine.removePointerConstraint( this.body );
     this.userControlledProperty.value = false;
   }
@@ -561,7 +561,7 @@ export default abstract class Mass extends PhetioObject {
    * Type-specific values are likely to be set, but this should set at least stepX/stepBottom/stepTop (as those are
    * used for determining basin volumes and cross sections)
    */
-  updateStepInformation() {
+  updateStepInformation(): void {
     this.engine.bodyGetStepMatrixTransform( this.body, this.stepMatrix );
 
     // Apply the body offset
@@ -585,7 +585,7 @@ export default abstract class Mass extends PhetioObject {
    * @param dt - In seconds
    * @param interpolationRatio
    */
-  step( dt: number, interpolationRatio: number ) {
+  step( dt: number, interpolationRatio: number ): void {
     this.readData();
 
     this.transformedEmitter.emit();
@@ -598,7 +598,7 @@ export default abstract class Mass extends PhetioObject {
   /**
    * Moves the mass to its initial position
    */
-  resetPosition() {
+  resetPosition(): void {
     this.matrix.set( this.originalMatrix );
     this.writeData();
     this.engine.bodySynchronizePrevious( this.body );
@@ -608,7 +608,7 @@ export default abstract class Mass extends PhetioObject {
   /**
    * Resets things to their original values.
    */
-  reset() {
+  reset(): void {
     this.engine.bodyResetHidden( this.body );
 
     this.internalVisibleProperty.reset();
@@ -631,7 +631,7 @@ export default abstract class Mass extends PhetioObject {
   /**
    * Releases references
    */
-  override dispose() {
+  override dispose(): void {
 
     assert && assert( !this.isDisposed );
 

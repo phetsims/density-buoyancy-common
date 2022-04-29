@@ -92,7 +92,7 @@ export default class MassLabelNode extends Node {
   /**
    * Releases references.
    */
-  override dispose() {
+  override dispose(): void {
     this.showMassesProperty.unlink( this.showMassesListener );
     this.mass.massProperty.unlink( this.massListener );
 

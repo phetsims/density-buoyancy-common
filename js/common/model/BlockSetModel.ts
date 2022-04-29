@@ -91,14 +91,14 @@ export default class BlockSetModel<BlockSetValue extends EnumerationValue> exten
   /**
    * Positions masses.
    */
-  private positionMasses( blockSet: BlockSetValue ) {
+  private positionMasses( blockSet: BlockSetValue ): void {
     this.positionMassesCallback( this, blockSet, this.blockSetToMassesMap.get( blockSet )! );
   }
 
   /**
    * Regenerates the masses for a specific blockSet.
    */
-  regenerate( blockSet: BlockSetValue ) {
+  regenerate( blockSet: BlockSetValue ): void {
     this.regenerateMassesCallback( this, blockSet, this.blockSetToMassesMap.get( blockSet )! );
     this.positionMasses( blockSet );
   }
@@ -106,7 +106,7 @@ export default class BlockSetModel<BlockSetValue extends EnumerationValue> exten
   /**
    * Resets values to their original state
    */
-  override reset() {
+  override reset(): void {
     this.blockSetProperty.reset();
 
     // Reset every available mass.

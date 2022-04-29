@@ -24,7 +24,7 @@ export default abstract class SecondaryMassScreenView<Model extends DensityBuoya
   /**
    * Adding the second-mass control.
    */
-  protected addSecondMassControl( modeProperty: Property<TwoBlockMode> ) {
+  protected addSecondMassControl( modeProperty: Property<TwoBlockMode> ): void {
     assert && assert( this.rightBox, 'SecondaryMassScreenView requires a this.rightBox be defined to add this control' );
 
     this.blocksRadioButtonGroup = new BlocksRadioButtonGroup( modeProperty, {
@@ -41,7 +41,7 @@ export default abstract class SecondaryMassScreenView<Model extends DensityBuoya
   /**
    * Positions the second-mass control.
    */
-  private positionSecondMassControl() {
+  private positionSecondMassControl(): void {
     this.blocksRadioButtonGroup!.bottom = this.modelToViewPoint( new Vector3(
       0,
       this.model.poolBounds.minY,
@@ -50,7 +50,7 @@ export default abstract class SecondaryMassScreenView<Model extends DensityBuoya
     this.blocksRadioButtonGroup!.left = this.rightBox.left;
   }
 
-  override layout( viewBounds: Bounds2 ) {
+  override layout( viewBounds: Bounds2 ): void {
     super.layout( viewBounds );
 
     // If the simulation was not able to load for WebGL, bail out

@@ -143,7 +143,7 @@ export default class Scale extends Mass {
    *
    * Type-specific values are likely to be set, but this should set at least stepX/stepBottom/stepTop
    */
-  override updateStepInformation() {
+  override updateStepInformation(): void {
     super.updateStepInformation();
 
     const xOffset = this.stepMatrix.m02();
@@ -203,12 +203,12 @@ export default class Scale extends Mass {
     }
   }
 
-  setRatios( widthRatio: number, heightRatio: number ) {}
+  setRatios( widthRatio: number, heightRatio: number ): void {}
 
   /**
    * Steps forward in time.
    */
-  override step( dt: number, interpolationRatio: number ) {
+  override step( dt: number, interpolationRatio: number ): void {
     super.step( dt, interpolationRatio );
 
     this.scaleForceInterpolatedProperty.setRatio( interpolationRatio );

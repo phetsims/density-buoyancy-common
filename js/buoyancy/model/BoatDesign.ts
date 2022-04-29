@@ -364,7 +364,7 @@ export default class BoatDesign {
   /**
    * Fills the positionArray with a X,Z cross-section of the boat at a given y value (for a given liters value).
    */
-  static fillCrossSectionVertexArray( y: number, liters: number, positionArray: Float32Array ) {
+  static fillCrossSectionVertexArray( y: number, liters: number, positionArray: Float32Array ): void {
     const insideBottomY = -BoatDesign.DESIGN_BOAT_HEIGHT + BoatDesign.DESIGN_WALL_THICKNESS;
     const scale = Math.pow( liters, 1 / 3 ) * BoatDesign.ONE_LITER_SCALE_MULTIPLIER;
     const designY = y / scale + BoatDesign.DESIGN_CENTROID.y;
@@ -727,7 +727,7 @@ BoatDesign.ONE_LITER_HULL_VOLUME = BoatDesign.DESIGN_HULL_VOLUME * BoatDesign.ON
    *
    * phet.densityBuoyancyCommon.BoatDesign.getDebugCanvas()
    */
-  static getDebugCanvas() {
+  static getDebugCanvas(): HTMLCanvasElement {
     const canvas = document.createElement( 'canvas' );
     const context = canvas.getContext( '2d' )!;
 

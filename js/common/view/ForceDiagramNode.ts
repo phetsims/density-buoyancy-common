@@ -118,7 +118,7 @@ export default class ForceDiagramNode extends Node {
   /**
    * Updates the displayed view.
    */
-  update() {
+  update(): void {
     const upwardArrows: ArrowNode[] = [];
     const downwardArrows: ArrowNode[] = [];
     const labels: Node[] = [];

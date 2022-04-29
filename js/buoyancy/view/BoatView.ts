@@ -192,7 +192,7 @@ export default class BoatView extends MassView {
   /**
    * Releases references.
    */
-  override dispose() {
+  override dispose(): void {
     // TODO: dispose everything from above
 
     this.liquidMultilink.dispose();

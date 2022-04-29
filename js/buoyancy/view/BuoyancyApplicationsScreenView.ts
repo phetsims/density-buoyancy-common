@@ -295,7 +295,7 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
     this.addChild( this.popupLayer );
   }
 
-  override step( dt: number ) {
+  override step( dt: number ): void {
     super.step( dt );
 
     this.positionResetSceneButton();

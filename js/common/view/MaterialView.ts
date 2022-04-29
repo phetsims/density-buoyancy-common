@@ -21,7 +21,7 @@ export default class MaterialView<T extends THREE.Material = THREE.Material> {
   /**
    * Releases references
    */
-  dispose() {
+  dispose(): void {
     this.material.dispose();
   }
 }

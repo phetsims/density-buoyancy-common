@@ -105,7 +105,7 @@ export default class DebugView extends Node {
   /**
    * Steps forward in time.
    */
-  step( dt: number ) {
+  step( dt: number ): void {
     if ( !this.visible ) {
       return;
     }
@@ -320,7 +320,7 @@ class DebugMassNode extends Node {
   /**
    * Releases references.
    */
-  override dispose() {
+  override dispose(): void {
     this.disposeEmitter.emit();
 
     super.dispose();

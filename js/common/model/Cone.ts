@@ -76,7 +76,7 @@ export default class Cone extends Mass {
   /**
    * Updates the size of the cone.
    */
-  updateSize( radius: number, height: number ) {
+  updateSize( radius: number, height: number ): void {
     const vertices = Cone.getConeVertices( radius, height, this.isVertexUp );
 
     this.engine.updateFromVertices( this.body, vertices, false );
@@ -113,7 +113,7 @@ export default class Cone extends Mass {
   /**
    * Sets the general size of the mass based on a general size scale.
    */
-  setRatios( widthRatio: number, heightRatio: number ) {
+  setRatios( widthRatio: number, heightRatio: number ): void {
     this.updateSize(
       Cone.getRadiusFromRatio( widthRatio ),
       Cone.getHeightFromRatio( heightRatio )
@@ -126,7 +126,7 @@ export default class Cone extends Mass {
    *
    * Type-specific values are likely to be set, but this should set at least stepX/stepBottom/stepTop
    */
-  override updateStepInformation() {
+  override updateStepInformation(): void {
     super.updateStepInformation();
 
     const xOffset = this.stepMatrix.m02();
@@ -235,7 +235,7 @@ export default class Cone extends Mass {
   /**
    * Resets things to their original values.
    */
-  override reset() {
+  override reset(): void {
     this.radiusProperty.reset();
     this.heightProperty.reset();
     this.updateSize( this.radiusProperty.value, this.heightProperty.value );

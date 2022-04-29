@@ -198,7 +198,7 @@ export default class BuoyancyShapesModel extends DensityBuoyancyModel {
   /**
    * Sets up the initial positions of the masses (since some resets may not change the mass).
    */
-  private setInitialPositions() {
+  private setInitialPositions(): void {
     this.primaryMassProperty.value.matrix.setToTranslation( -0.3, 0 );
     this.primaryMassProperty.value.writeData();
     this.primaryMassProperty.value.transformedEmitter.emit();
@@ -211,7 +211,7 @@ export default class BuoyancyShapesModel extends DensityBuoyancyModel {
   /**
    * Resets things to their original values.
    */
-  override reset() {
+  override reset(): void {
     this.modeProperty.reset();
 
     this.secondaryMassVisibleProperty.reset();

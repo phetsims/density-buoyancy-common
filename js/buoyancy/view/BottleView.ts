@@ -159,7 +159,7 @@ export default class BottleView extends MassView {
   /**
    * Releases references.
    */
-  override dispose() {
+  override dispose(): void {
     // TODO: dispose everything from above
 
     super.dispose();

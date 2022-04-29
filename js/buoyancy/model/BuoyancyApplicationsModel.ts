@@ -106,7 +106,7 @@ export default class BuoyancyApplicationsModel extends DensityBuoyancyModel {
     } );
   }
 
-  override step( dt: number ) {
+  override step( dt: number ): void {
     assert && assert( !this.boat.visibleProperty.value || !this.bottle.visibleProperty.value,
       'Boat and bottle should not be visible at the same time' );
 
@@ -116,7 +116,7 @@ export default class BuoyancyApplicationsModel extends DensityBuoyancyModel {
   /**
    * Moves the boat and block to their initial locations (see https://github.com/phetsims/buoyancy/issues/25)
    */
-  resetBoatScene() {
+  resetBoatScene(): void {
     // Reset the basin levels (clear the liquid out of the boat)
     this.boat.basin.reset();
     this.pool.reset();
@@ -129,7 +129,7 @@ export default class BuoyancyApplicationsModel extends DensityBuoyancyModel {
   /**
    * Resets things to their original values.
    */
-  override reset() {
+  override reset(): void {
     this.densityExpandedProperty.reset();
 
     this.bottle.reset();

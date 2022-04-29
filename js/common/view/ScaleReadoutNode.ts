@@ -66,7 +66,7 @@ export default class ScaleReadoutNode extends Node {
   /**
    * Releases references.
    */
-  override dispose() {
+  override dispose(): void {
     this.scaleForceMultilink.dispose();
 
     super.dispose();

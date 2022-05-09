@@ -7,14 +7,10 @@
  */
 
 import Utils from '../../../../dot/js/Utils.js';
-import merge from '../../../../phet-core/js/merge.js';
+import optionize from '../../../../phet-core/js/optionize.js';
 import Orientation from '../../../../phet-core/js/Orientation.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
-import { GridBackgroundNode } from '../../../../scenery/js/imports.js';
-import { GridBox } from '../../../../scenery/js/imports.js';
-import { Node } from '../../../../scenery/js/imports.js';
-import { Rectangle } from '../../../../scenery/js/imports.js';
-import { Text } from '../../../../scenery/js/imports.js';
+import { GridBackgroundNode, GridBox, ILayoutOptions, Node, Rectangle, Text } from '../../../../scenery/js/imports.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 import DensityBuoyancyCommonColors from '../../common/view/DensityBuoyancyCommonColors.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
@@ -39,22 +35,22 @@ export default class DensityTableNode extends Node {
         new Text( densityBuoyancyCommonStrings.material.name, {
           font: headerFont,
           maxWidth: 160,
-          layoutOptions: merge( { x: 0, y: 0, xAlign: 'left' }, layoutOptions )
+          layoutOptions: optionize<ILayoutOptions, {}, ILayoutOptions>()( { x: 0, y: 0, xAlign: 'left' }, layoutOptions )
         } ),
         new Text( densityBuoyancyCommonStrings.densityKgL, {
           font: headerFont,
           maxWidth: 160,
-          layoutOptions: merge( { x: 1, y: 0, xAlign: 'right' }, layoutOptions )
+          layoutOptions: optionize<ILayoutOptions, {}, ILayoutOptions>()( { x: 1, y: 0, xAlign: 'right' }, layoutOptions )
         } ),
         ...materials.map( ( material, index ) => new Text( material.name, {
           font: bodyFont,
           maxWidth: 200,
-          layoutOptions: merge( { x: 0, y: index + 1, xAlign: 'left' }, layoutOptions )
+          layoutOptions: optionize<ILayoutOptions, {}, ILayoutOptions>()( { x: 0, y: index + 1, xAlign: 'left' }, layoutOptions )
         } ) ),
         ...materials.map( ( material, index ) => new Text( Utils.toFixed( material.density / 1000, 2 ), {
           font: bodyFont,
           maxWidth: 150,
-          layoutOptions: merge( { x: 1, y: index + 1, xAlign: 'right' }, layoutOptions )
+          layoutOptions: optionize<ILayoutOptions, {}, ILayoutOptions>()( { x: 1, y: index + 1, xAlign: 'right' }, layoutOptions )
         } ) )
       ]
     } );

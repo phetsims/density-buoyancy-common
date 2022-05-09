@@ -114,7 +114,7 @@ export default class ShapeSizeControlNode extends FlowBox {
       widthNumberControl,
       new VDivider(),
       new FlowBox( {
-        layoutOptions: { align: 'stretch' },
+        layoutOptions: { stretch: true },
         orientation: 'horizontal',
         align: 'center',
         justify: 'spaceBetween',

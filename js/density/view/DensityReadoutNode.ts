@@ -144,7 +144,7 @@ export default class DensityReadoutNode extends Node {
     densityAProperty.link( density => {
       primaryMarker.visible = density < MAX_DENSITY + 1e-5; // Allow rounding error
     } );
-    Property.multilink( [ secondaryMassVisibleProperty, densityBProperty ], ( visible: boolean, density: number ) => {
+    Property.multilink( [ secondaryMassVisibleProperty, densityBProperty ], ( visible, density ) => {
       secondaryMarker.visible = visible && density < MAX_DENSITY + 1e-5; // Allow rounding error
     } );
 

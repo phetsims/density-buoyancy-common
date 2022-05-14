@@ -220,7 +220,7 @@ export default class Bottle extends Mass {
       return material.density * volume;
     } );
 
-    Property.multilink( [ this.interiorMaterialProperty, this.interiorVolumeProperty ], ( material: Material, volume: number ) => {
+    Property.multilink( [ this.interiorMaterialProperty, this.interiorVolumeProperty ], ( material, volume ) => {
       this.materialProperty.value = Material.createCustomMaterial( {
         name: densityBuoyancyCommonStrings.average,
         density: ( BOTTLE_MASS + material.density * volume ) / BOTTLE_VOLUME

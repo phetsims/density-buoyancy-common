@@ -312,7 +312,7 @@ export default abstract class Mass extends PhetioObject {
       const colorListener = ( color: Color ) => {
         if ( !colorLock ) {
           colorLock = true;
-           this.customColorProperty!.value = color;
+          this.customColorProperty!.value = color;
           colorLock = false;
         }
       };
@@ -334,7 +334,7 @@ export default abstract class Mass extends PhetioObject {
           material.customColor.link( colorListener );
         }
       } );
-      Property.lazyMultilink<[ MaterialEnumeration, number, Color ]>( [ this.materialEnumProperty, this.customDensityProperty, this.customColorProperty ], ( materialEnum, density, color ) => {
+      Property.lazyMultilink( [ this.materialEnumProperty, this.customDensityProperty, this.customColorProperty ], ( materialEnum, density, color ) => {
         // See if it's an external change
         if ( !enumLock && !densityLock && !colorLock ) {
           enumLock = true;
@@ -384,7 +384,7 @@ export default abstract class Mass extends PhetioObject {
       range: new Range( Number.MIN_VALUE, Number.POSITIVE_INFINITY )
     }, config.massPropertyOptions ) );
 
-    Property.multilink<[Material, number, number]>( [ this.materialProperty, this.volumeProperty, this.containedMassProperty ], ( material, volume, containedMass ) => {
+    Property.multilink( [ this.materialProperty, this.volumeProperty, this.containedMassProperty ], ( material, volume, containedMass ) => {
       this.massLock = true;
       this.massProperty.value = material.density * volume + containedMass;
       this.massLock = false;
@@ -459,7 +459,7 @@ export default abstract class Mass extends PhetioObject {
 
     this.originalMatrix = this.matrix.copy();
 
-    Property.multilink<[Shape, number]>( [
+    Property.multilink( [
       this.shapeProperty,
       this.massProperty
     ], () => {

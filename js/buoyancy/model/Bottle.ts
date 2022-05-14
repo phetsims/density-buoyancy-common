@@ -216,7 +216,7 @@ export default class Bottle extends Mass {
       phetioReadOnly: true
     } );
 
-    this.interiorMassProperty = new DerivedProperty( [ this.interiorMaterialProperty, this.interiorVolumeProperty ], ( material: Material, volume: number ) => {
+    this.interiorMassProperty = new DerivedProperty( [ this.interiorMaterialProperty, this.interiorVolumeProperty ], ( material, volume ) => {
       return material.density * volume;
     } );
 
@@ -1147,7 +1147,7 @@ const FLAT_INTERSECTION_VERTICES = [ ${flatIntersectionVertices.map( v => `new V
 
     const scale = width / 5;
 
-    const mapX = ( x : number ) => ( x + 0.07 ) * scale;
+    const mapX = ( x: number ) => ( x + 0.07 ) * scale;
     const mapY = ( y: number ) => -y * scale + height / 2;
 
     context.strokeStyle = 'red';

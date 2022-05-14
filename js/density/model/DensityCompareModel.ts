@@ -70,7 +70,7 @@ export default class DensityCompareModel extends BlockSetModel<BlockSet> {
     } ).asRanged();
 
     const createMaterialProperty = ( colorProperty: IProperty<Color>, densityProperty: IProperty<number> ) => {
-      return new DerivedProperty( [ colorProperty, densityProperty ], ( color: Color, density: number ) => {
+      return new DerivedProperty( [ colorProperty, densityProperty ], ( color, density ) => {
         const lightness = Material.getCustomLightness( density ); // 0-255
 
         const modifier = 0.1;

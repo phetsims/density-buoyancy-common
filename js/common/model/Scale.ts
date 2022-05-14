@@ -119,7 +119,7 @@ export default class Scale extends Mass {
       phetioReadOnly: true
     } );
 
-    this.scaleMeasuredMassProperty = new DerivedProperty( [ this.scaleForceInterpolatedProperty, gravityProperty ], ( force: number, gravity: Gravity ) => {
+    this.scaleMeasuredMassProperty = new DerivedProperty( [ this.scaleForceInterpolatedProperty, gravityProperty ], ( force, gravity ) => {
       if ( gravity.value !== 0 ) {
         return force / gravity.value;
       }

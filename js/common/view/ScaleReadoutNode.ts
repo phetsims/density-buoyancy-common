@@ -6,7 +6,6 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
-import Property from '../../../../axon/js/Property.js';
 import Utils from '../../../../dot/js/Utils.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
@@ -19,7 +18,7 @@ import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js
 import Scale, { DisplayType } from '../model/Scale.js';
 import Gravity from '../model/Gravity.js';
 import IReadOnlyProperty from '../../../../axon/js/IReadOnlyProperty.js';
-import { UnknownMultilink } from '../../../../axon/js/Multilink.js';
+import Multilink, { UnknownMultilink } from '../../../../axon/js/Multilink.js';
 
 export default class ScaleReadoutNode extends Node {
 
@@ -49,7 +48,7 @@ export default class ScaleReadoutNode extends Node {
 
     this.mass = mass;
 
-    this.scaleForceMultilink = Property.multilink( [ mass.scaleForceInterpolatedProperty, gravityProperty ], ( scaleForce, gravity ) => {
+    this.scaleForceMultilink = Multilink.multilink( [ mass.scaleForceInterpolatedProperty, gravityProperty ], ( scaleForce, gravity ) => {
       if ( mass.displayType === DisplayType.NEWTONS ) {
         readoutText.text = StringUtils.fillIn( densityBuoyancyCommonStrings.newtonsPattern, {
           newtons: Utils.toFixed( scaleForce, 2 )

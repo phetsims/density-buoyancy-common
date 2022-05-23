@@ -38,6 +38,7 @@ import PhysicsEngine, { PhysicsEngineBody } from './PhysicsEngine.js';
 import Basin from './Basin.js';
 import Ray3 from '../../../../dot/js/Ray3.js';
 import IReadOnlyProperty from '../../../../axon/js/IReadOnlyProperty.js';
+import Multilink from '../../../../axon/js/Multilink.js';
 
 // constants
 export class MassTag extends EnumerationValue {
@@ -334,7 +335,7 @@ export default abstract class Mass extends PhetioObject {
           material.customColor.link( colorListener );
         }
       } );
-      Property.lazyMultilink( [ this.materialEnumProperty, this.customDensityProperty, this.customColorProperty ], ( materialEnum, density, color ) => {
+      Multilink.lazyMultilink( [ this.materialEnumProperty, this.customDensityProperty, this.customColorProperty ], ( materialEnum, density, color ) => {
         // See if it's an external change
         if ( !enumLock && !densityLock && !colorLock ) {
           enumLock = true;
@@ -384,7 +385,7 @@ export default abstract class Mass extends PhetioObject {
       range: new Range( Number.MIN_VALUE, Number.POSITIVE_INFINITY )
     }, config.massPropertyOptions ) );
 
-    Property.multilink( [ this.materialProperty, this.volumeProperty, this.containedMassProperty ], ( material, volume, containedMass ) => {
+    Multilink.multilink( [ this.materialProperty, this.volumeProperty, this.containedMassProperty ], ( material, volume, containedMass ) => {
       this.massLock = true;
       this.massProperty.value = material.density * volume + containedMass;
       this.massLock = false;
@@ -459,7 +460,7 @@ export default abstract class Mass extends PhetioObject {
 
     this.originalMatrix = this.matrix.copy();
 
-    Property.multilink( [
+    Multilink.multilink( [
       this.shapeProperty,
       this.massProperty
     ], () => {

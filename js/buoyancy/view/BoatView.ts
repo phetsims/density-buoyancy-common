@@ -7,8 +7,7 @@
  */
 
 import IReadOnlyProperty from '../../../../axon/js/IReadOnlyProperty.js';
-import { UnknownMultilink } from '../../../../axon/js/Multilink.js';
-import Property from '../../../../axon/js/Property.js';
+import Multilink, { UnknownMultilink } from '../../../../axon/js/Multilink.js';
 import Material from '../../common/model/Material.js';
 import MassView from '../../common/view/MassView.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
@@ -138,7 +137,7 @@ export default class BoatView extends MassView {
     const topLiquid = new THREE.Mesh( topLiquidGeometry, topLiquidMaterial );
     this.add( topLiquid );
 
-    this.liquidMultilink = Property.multilink( [
+    this.liquidMultilink = Multilink.multilink( [
       boat.basin.liquidYInterpolatedProperty,
       boat.displacementVolumeProperty,
       boat.basin.liquidVolumeProperty

@@ -21,6 +21,7 @@ import BoatDesign from './BoatDesign.js';
 import PhysicsEngine from '../../common/model/PhysicsEngine.js';
 import IProperty from '../../../../axon/js/IProperty.js';
 import Ray3 from '../../../../dot/js/Ray3.js';
+import Multilink from '../../../../axon/js/Multilink.js';
 
 export type BoatOptions = Omit<InstrumentedMassOptions, 'body' | 'shape' | 'volume' | 'material'>;
 
@@ -60,7 +61,7 @@ export default class Boat extends Mass {
     super( engine, config as InstrumentedMassOptions );
 
     // Update the shape when the block width or displacement changes
-    Property.multilink( [ blockWidthProperty, displacementVolumeProperty ], ( blockWidth, displacementVolume ) => {
+    Multilink.multilink( [ blockWidthProperty, displacementVolumeProperty ], ( blockWidth, displacementVolume ) => {
       if ( displacementVolume === 0 ) {
         return;
       }
@@ -84,7 +85,7 @@ export default class Boat extends Mass {
 
     this.basin = new BoatBasin( this );
 
-    Property.multilink( [ this.liquidMaterialProperty, this.basin.liquidVolumeProperty ], ( material, volume ) => {
+    Multilink.multilink( [ this.liquidMaterialProperty, this.basin.liquidVolumeProperty ], ( material, volume ) => {
       this.containedMassProperty.value = material.density * volume;
     } );
 

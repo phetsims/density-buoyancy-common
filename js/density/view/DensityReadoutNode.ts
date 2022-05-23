@@ -7,7 +7,7 @@
  */
 
 import IReadOnlyProperty from '../../../../axon/js/IReadOnlyProperty.js';
-import Property from '../../../../axon/js/Property.js';
+import Multilink from '../../../../axon/js/Multilink.js';
 import Bounds2 from '../../../../dot/js/Bounds2.js';
 import Utils from '../../../../dot/js/Utils.js';
 import merge from '../../../../phet-core/js/merge.js';
@@ -144,7 +144,7 @@ export default class DensityReadoutNode extends Node {
     densityAProperty.link( density => {
       primaryMarker.visible = density < MAX_DENSITY + 1e-5; // Allow rounding error
     } );
-    Property.multilink( [ secondaryMassVisibleProperty, densityBProperty ], ( visible, density ) => {
+    Multilink.multilink( [ secondaryMassVisibleProperty, densityBProperty ], ( visible, density ) => {
       secondaryMarker.visible = visible && density < MAX_DENSITY + 1e-5; // Allow rounding error
     } );
 

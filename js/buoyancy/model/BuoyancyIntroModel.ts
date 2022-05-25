@@ -16,6 +16,7 @@ import Cube from '../../common/model/Cube.js';
 import Material from '../../common/model/Material.js';
 import Scale, { DisplayType } from '../../common/model/Scale.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
+import { MassTag } from '../../common/model/Mass.js';
 
 export class BlockSet extends EnumerationValue {
   static SAME_MASS = new BlockSet();
@@ -39,18 +40,36 @@ export default class BuoyancyIntroModel extends BlockSetModel<BlockSet> {
         switch( blockSet ) {
           case BlockSet.SAME_MASS:
             return [
-              Cube.createWithMass( model.engine, Material.WOOD, Vector2.ZERO, 5, { tandem: providedOptions.tandem.createTandem( 'sameMassWood' ) } ),
-              Cube.createWithMass( model.engine, Material.BRICK, Vector2.ZERO, 5, { tandem: providedOptions.tandem.createTandem( 'sameMassBrick' ) } )
+              Cube.createWithMass( model.engine, Material.WOOD, Vector2.ZERO, 5, {
+                tandem: providedOptions.tandem.createTandem( 'sameMassWood' ),
+                tag: MassTag.ONE_A
+              } ),
+              Cube.createWithMass( model.engine, Material.BRICK, Vector2.ZERO, 5, {
+                tandem: providedOptions.tandem.createTandem( 'sameMassBrick' ),
+                tag: MassTag.ONE_B
+              } )
             ];
           case BlockSet.SAME_VOLUME:
             return [
-              Cube.createWithVolume( model.engine, Material.WOOD, Vector2.ZERO, 0.005, { tandem: providedOptions.tandem.createTandem( 'sameVolumeWood' ) } ),
-              Cube.createWithVolume( model.engine, Material.BRICK, Vector2.ZERO, 0.005, { tandem: providedOptions.tandem.createTandem( 'sameVolumeBrick' ) } )
+              Cube.createWithVolume( model.engine, Material.WOOD, Vector2.ZERO, 0.005, {
+                tandem: providedOptions.tandem.createTandem( 'sameVolumeWood' ),
+                tag: MassTag.TWO_A
+              } ),
+              Cube.createWithVolume( model.engine, Material.BRICK, Vector2.ZERO, 0.005, {
+                tandem: providedOptions.tandem.createTandem( 'sameVolumeBrick' ),
+                tag: MassTag.TWO_B
+              } )
             ];
           case BlockSet.SAME_DENSITY:
             return [
-              Cube.createWithMass( model.engine, Material.WOOD, Vector2.ZERO, 2, { tandem: providedOptions.tandem.createTandem( 'sameDensitySmall' ) } ),
-              Cube.createWithMass( model.engine, Material.WOOD, Vector2.ZERO, 4, { tandem: providedOptions.tandem.createTandem( 'sameDensityLarge' ) } )
+              Cube.createWithMass( model.engine, Material.WOOD, Vector2.ZERO, 2, {
+                tandem: providedOptions.tandem.createTandem( 'sameDensitySmall' ),
+                tag: MassTag.THREE_A
+              } ),
+              Cube.createWithMass( model.engine, Material.WOOD, Vector2.ZERO, 4, {
+                tandem: providedOptions.tandem.createTandem( 'sameDensityLarge' ),
+                tag: MassTag.THREE_B
+              } )
             ];
           default:
             throw new Error( `unknown blockSet: ${blockSet}` );

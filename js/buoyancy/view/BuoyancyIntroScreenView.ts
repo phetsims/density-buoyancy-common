@@ -27,6 +27,11 @@ const blockSetStringMap = {
   [ BlockSet.SAME_VOLUME.name ]: densityBuoyancyCommonStrings.blockSet.sameVolume,
   [ BlockSet.SAME_DENSITY.name ]: densityBuoyancyCommonStrings.blockSet.sameDensity
 };
+const blockSetTandemNameMap = {
+  [ BlockSet.SAME_MASS.name ]: 'sameMassLabel',
+  [ BlockSet.SAME_VOLUME.name ]: 'sameVolumeLabel',
+  [ BlockSet.SAME_DENSITY.name ]: 'sameDensityLabel'
+};
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
 
 export default class BuoyancyIntroScreenView extends DensityBuoyancyScreenView<BuoyancyIntroModel> {
@@ -38,15 +43,20 @@ export default class BuoyancyIntroScreenView extends DensityBuoyancyScreenView<B
       cameraLookAt: new Vector3( 0, -0.1, 0 )
     }, options ) );
 
+    const blockSetControlTandem = options.tandem.createTandem( 'blockSetControl' );
+
     const blockSetControl = new VerticalAquaRadioButtonGroup( model.blockSetProperty, BlockSet.enumeration.values.map( blockSet => {
       return {
         node: new Text( blockSetStringMap[ blockSet.name ], {
           font: DensityBuoyancyCommonConstants.RADIO_BUTTON_FONT,
+          tandem: blockSetControlTandem.createTandem( blockSetTandemNameMap[ blockSet.name ] ),
           maxWidth: 160
         } ),
         value: blockSet
       };
-    } ) );
+    } ), {
+      tandem: blockSetControlTandem
+    } );
     const blockSetPanel = new Panel( blockSetControl, DensityBuoyancyCommonConstants.PANEL_OPTIONS );
 
     this.addChild( new AlignPropertyBox( blockSetPanel, this.visibleBoundsProperty, {

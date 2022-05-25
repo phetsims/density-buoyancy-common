@@ -42,10 +42,12 @@ export default class BuoyancyIntroModel extends BlockSetModel<BlockSet> {
             return [
               Cube.createWithMass( model.engine, Material.WOOD, Vector2.ZERO, 5, {
                 tandem: providedOptions.tandem.createTandem( 'sameMassWood' ),
+                adjustableMaterial: true,
                 tag: MassTag.ONE_A
               } ),
               Cube.createWithMass( model.engine, Material.BRICK, Vector2.ZERO, 5, {
                 tandem: providedOptions.tandem.createTandem( 'sameMassBrick' ),
+                adjustableMaterial: true,
                 tag: MassTag.ONE_B
               } )
             ];
@@ -53,10 +55,12 @@ export default class BuoyancyIntroModel extends BlockSetModel<BlockSet> {
             return [
               Cube.createWithVolume( model.engine, Material.WOOD, Vector2.ZERO, 0.005, {
                 tandem: providedOptions.tandem.createTandem( 'sameVolumeWood' ),
+                adjustableMaterial: true,
                 tag: MassTag.TWO_A
               } ),
               Cube.createWithVolume( model.engine, Material.BRICK, Vector2.ZERO, 0.005, {
                 tandem: providedOptions.tandem.createTandem( 'sameVolumeBrick' ),
+                adjustableMaterial: true,
                 tag: MassTag.TWO_B
               } )
             ];
@@ -64,10 +68,12 @@ export default class BuoyancyIntroModel extends BlockSetModel<BlockSet> {
             return [
               Cube.createWithMass( model.engine, Material.WOOD, Vector2.ZERO, 2, {
                 tandem: providedOptions.tandem.createTandem( 'sameDensitySmall' ),
+                adjustableMaterial: true,
                 tag: MassTag.THREE_A
               } ),
               Cube.createWithMass( model.engine, Material.WOOD, Vector2.ZERO, 4, {
                 tandem: providedOptions.tandem.createTandem( 'sameDensityLarge' ),
+                adjustableMaterial: true,
                 tag: MassTag.THREE_B
               } )
             ];

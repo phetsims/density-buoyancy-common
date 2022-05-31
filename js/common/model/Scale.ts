@@ -7,6 +7,7 @@
  */
 
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
+import OmitStrict from '../../../../phet-core/js/types/OmitStrict.js';
 import Bounds3 from '../../../../dot/js/Bounds3.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
 import { Shape } from '../../../../kite/js/imports.js';
@@ -63,7 +64,7 @@ type SelfOptions = {
   displayType?: DisplayType;
 };
 
-export type ScaleOptions = SelfOptions & Omit<InstrumentedMassOptions, 'body' | 'shape' | 'volume' | 'material' | 'phetioType'>;
+export type ScaleOptions = SelfOptions & OmitStrict<InstrumentedMassOptions, 'body' | 'shape' | 'volume' | 'material' | 'phetioType'>;
 
 export default class Scale extends Mass {
 

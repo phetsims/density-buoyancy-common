@@ -7,6 +7,7 @@
  */
 
 import NumberProperty from '../../../../axon/js/NumberProperty.js';
+import OmitStrict from '../../../../phet-core/js/types/OmitStrict.js';
 import Property from '../../../../axon/js/Property.js';
 import Range from '../../../../dot/js/Range.js';
 import Ray3 from '../../../../dot/js/Ray3.js';
@@ -19,7 +20,7 @@ import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import Mass, { InstrumentedMassOptions } from './Mass.js';
 import PhysicsEngine from './PhysicsEngine.js';
 
-export type HorizontalCylinderOptions = Omit<InstrumentedMassOptions, 'body' | 'shape' | 'volume' | 'phetioType'>;
+export type HorizontalCylinderOptions = OmitStrict<InstrumentedMassOptions, 'body' | 'shape' | 'volume' | 'phetioType'>;
 
 export default class HorizontalCylinder extends Mass {
 

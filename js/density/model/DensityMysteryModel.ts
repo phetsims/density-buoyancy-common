@@ -7,6 +7,7 @@
  */
 
 import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
+import OmitStrict from '../../../../phet-core/js/types/OmitStrict.js';
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import dotRandom from '../../../../dot/js/dotRandom.js';
 import Matrix3 from '../../../../dot/js/Matrix3.js';
@@ -57,7 +58,7 @@ export class BlockSet extends EnumerationValue {
   } );
 }
 
-export type DensityMysteryModelOptions = Omit<BlockSetModelOptions<BlockSet>, 'initialMode' | 'BlockSet' | 'createMassesCallback' | 'regenerateMassesCallback' | 'positionMassesCallback'>;
+export type DensityMysteryModelOptions = OmitStrict<BlockSetModelOptions<BlockSet>, 'initialMode' | 'BlockSet' | 'createMassesCallback' | 'regenerateMassesCallback' | 'positionMassesCallback'>;
 
 export default class DensityMysteryModel extends BlockSetModel<BlockSet> {
 

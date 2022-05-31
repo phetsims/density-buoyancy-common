@@ -7,6 +7,7 @@
  */
 
 import NumberProperty from '../../../../axon/js/NumberProperty.js';
+import OmitStrict from '../../../../phet-core/js/types/OmitStrict.js';
 import Property from '../../../../axon/js/Property.js';
 import Range from '../../../../dot/js/Range.js';
 import Ray3 from '../../../../dot/js/Ray3.js';
@@ -23,7 +24,7 @@ import PhysicsEngine from './PhysicsEngine.js';
 const BOTTOM_FROM_CENTER_RATIO = 0.25; // center of mass to the bottom is 1/4 of the height of the cone
 const TOP_FROM_CENTER_RATIO = 0.75; // center of mass to the tip is 3/4 of the height of the cone
 
-export type ConeOptions = Omit<InstrumentedMassOptions, 'body' | 'shape' | 'volume' | 'phetioType'>;
+export type ConeOptions = OmitStrict<InstrumentedMassOptions, 'body' | 'shape' | 'volume' | 'phetioType'>;
 
 export default class Cone extends Mass {
 

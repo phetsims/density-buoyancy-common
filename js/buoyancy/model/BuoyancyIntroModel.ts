@@ -7,7 +7,7 @@
  */
 
 import Matrix3 from '../../../../dot/js/Matrix3.js';
-import OmitStrict from '../../../../phet-core/js/types/OmitStrict.js';
+import StrictOmit from '../../../../phet-core/js/types/StrictOmit.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import Enumeration from '../../../../phet-core/js/Enumeration.js';
 import EnumerationValue from '../../../../phet-core/js/EnumerationValue.js';
@@ -29,7 +29,7 @@ export class BlockSet extends EnumerationValue {
   } );
 }
 
-export type BuoyancyIntroModelOptions = OmitStrict<BlockSetModelOptions<BlockSet>, 'initialMode' | 'BlockSet' | 'createMassesCallback' | 'regenerateMassesCallback' | 'positionMassesCallback'>;
+export type BuoyancyIntroModelOptions = StrictOmit<BlockSetModelOptions<BlockSet>, 'initialMode' | 'BlockSet' | 'createMassesCallback' | 'regenerateMassesCallback' | 'positionMassesCallback'>;
 
 export default class BuoyancyIntroModel extends BlockSetModel<BlockSet> {
   constructor( providedOptions: BuoyancyIntroModelOptions ) {

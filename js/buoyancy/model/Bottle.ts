@@ -65,7 +65,7 @@
  */
 
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
-import OmitStrict from '../../../../phet-core/js/types/OmitStrict.js';
+import StrictOmit from '../../../../phet-core/js/types/StrictOmit.js';
 import NumberProperty from '../../../../axon/js/NumberProperty.js';
 import Property from '../../../../axon/js/Property.js';
 import Bounds2 from '../../../../dot/js/Bounds2.js';
@@ -167,7 +167,7 @@ const BOTTLE_INITIAL_INTERIOR_VOLUME = 0.004;
 // {Material}
 const BOTTLE_INITIAL_INTERIOR_MATERIAL = Material.WATER;
 
-export type BottleOptions = OmitStrict<InstrumentedMassOptions, 'body' | 'shape' | 'volume' | 'material'>;
+export type BottleOptions = StrictOmit<InstrumentedMassOptions, 'body' | 'shape' | 'volume' | 'material'>;
 
 export default class Bottle extends Mass {
 

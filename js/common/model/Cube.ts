@@ -7,7 +7,7 @@
  */
 
 import Bounds3 from '../../../../dot/js/Bounds3.js';
-import OmitStrict from '../../../../phet-core/js/types/OmitStrict.js';
+import StrictOmit from '../../../../phet-core/js/types/StrictOmit.js';
 import Matrix3 from '../../../../dot/js/Matrix3.js';
 import merge from '../../../../phet-core/js/merge.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
@@ -79,7 +79,7 @@ export default class Cube extends Cuboid {
   /**
    * Creates a Cube with a defined volume
    */
-  static createWithVolume( engine: PhysicsEngine, material: Material, position: Vector2, volume: number, options?: OmitStrict<CubeOptions, 'matrix' | 'material'> ): Cube {
+  static createWithVolume( engine: PhysicsEngine, material: Material, position: Vector2, volume: number, options?: StrictOmit<CubeOptions, 'matrix' | 'material'> ): Cube {
     return new Cube( engine, volume, merge( {
       matrix: Matrix3.translation( position.x, position.y ),
       material: material
@@ -89,7 +89,7 @@ export default class Cube extends Cuboid {
   /**
    * Creates a Cube with a defined volume
    */
-  static createWithMass( engine: PhysicsEngine, material: Material, position: Vector2, mass: number, options?: OmitStrict<CubeOptions, 'matrix' | 'material'> ): Cube {
+  static createWithMass( engine: PhysicsEngine, material: Material, position: Vector2, mass: number, options?: StrictOmit<CubeOptions, 'matrix' | 'material'> ): Cube {
     return Cube.createWithVolume( engine, material, position, mass / material.density, options );
   }
 }

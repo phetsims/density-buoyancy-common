@@ -8,7 +8,7 @@
  */
 
 import NumberProperty from '../../../../axon/js/NumberProperty.js';
-import OmitStrict from '../../../../phet-core/js/types/OmitStrict.js';
+import StrictOmit from '../../../../phet-core/js/types/StrictOmit.js';
 import Property from '../../../../axon/js/Property.js';
 import Utils from '../../../../dot/js/Utils.js';
 import { Shape } from '../../../../kite/js/imports.js';
@@ -24,7 +24,7 @@ import IProperty from '../../../../axon/js/IProperty.js';
 import Ray3 from '../../../../dot/js/Ray3.js';
 import Multilink from '../../../../axon/js/Multilink.js';
 
-export type BoatOptions = OmitStrict<InstrumentedMassOptions, 'body' | 'shape' | 'volume' | 'material'>;
+export type BoatOptions = StrictOmit<InstrumentedMassOptions, 'body' | 'shape' | 'volume' | 'material'>;
 
 export default class Boat extends Mass {
 

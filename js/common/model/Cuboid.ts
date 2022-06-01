@@ -7,7 +7,7 @@
  */
 
 import Property from '../../../../axon/js/Property.js';
-import OmitStrict from '../../../../phet-core/js/types/OmitStrict.js';
+import StrictOmit from '../../../../phet-core/js/types/StrictOmit.js';
 import Bounds3 from '../../../../dot/js/Bounds3.js';
 import Matrix3 from '../../../../dot/js/Matrix3.js';
 import Ray3 from '../../../../dot/js/Ray3.js';
@@ -21,7 +21,7 @@ import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import Mass, { InstrumentedMassOptions } from './Mass.js';
 import PhysicsEngine from './PhysicsEngine.js';
 
-export type CuboidOptions = OmitStrict<InstrumentedMassOptions, 'body' | 'shape' | 'volume' | 'phetioType'>;
+export type CuboidOptions = StrictOmit<InstrumentedMassOptions, 'body' | 'shape' | 'volume' | 'phetioType'>;
 
 export default class Cuboid extends Mass {
 

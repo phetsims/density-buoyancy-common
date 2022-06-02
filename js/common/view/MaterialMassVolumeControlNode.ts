@@ -8,6 +8,7 @@
 
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import DynamicProperty from '../../../../axon/js/DynamicProperty.js';
+import IReadOnlyProperty from '../../../../axon/js/IReadOnlyProperty.js';
 import NumberProperty from '../../../../axon/js/NumberProperty.js';
 import Property from '../../../../axon/js/Property.js';
 import Dimension2 from '../../../../dot/js/Dimension2.js';
@@ -61,7 +62,7 @@ export type MaterialMassVolumeControlNodeOptions = SelfOptions & VBoxOptions;
 
 export default class MaterialMassVolumeControlNode extends VBox {
 
-  constructor( materialProperty: Property<Material>, massProperty: Property<number>, volumeProperty: Property<number>, materials: Material[], setVolume: ( volume: number ) => void, listParent: Node, providedOptions?: MaterialMassVolumeControlNodeOptions ) {
+  constructor( materialProperty: Property<Material>, massProperty: IReadOnlyProperty<number>, volumeProperty: Property<number>, materials: Material[], setVolume: ( volume: number ) => void, listParent: Node, providedOptions?: MaterialMassVolumeControlNodeOptions ) {
 
     const options = optionize<MaterialMassVolumeControlNodeOptions, SelfOptions, VBoxOptions>()( {
       labelNode: null,

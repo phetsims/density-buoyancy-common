@@ -23,6 +23,7 @@ import PhysicsEngine from '../../common/model/PhysicsEngine.js';
 import IProperty from '../../../../axon/js/IProperty.js';
 import Ray3 from '../../../../dot/js/Ray3.js';
 import Multilink from '../../../../axon/js/Multilink.js';
+import IReadOnlyProperty from '../../../../axon/js/IReadOnlyProperty.js';
 
 export type BoatOptions = StrictOmit<InstrumentedMassOptions, 'body' | 'shape' | 'volume' | 'material'>;
 
@@ -40,7 +41,7 @@ export default class Boat extends Mass {
 
   intersectionGroup: THREE.Group;
 
-  constructor( engine: PhysicsEngine, blockWidthProperty: IProperty<number>, liquidMaterialProperty: IProperty<Material>, config: BoatOptions ) {
+  constructor( engine: PhysicsEngine, blockWidthProperty: IReadOnlyProperty<number>, liquidMaterialProperty: IProperty<Material>, config: BoatOptions ) {
 
     const displacementVolumeProperty = new NumberProperty( 0.01 );
 

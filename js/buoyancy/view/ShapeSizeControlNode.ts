@@ -8,6 +8,7 @@
 
 import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
+import IReadOnlyProperty from '../../../../axon/js/IReadOnlyProperty.js';
 import Property from '../../../../axon/js/Property.js';
 import Dimension2 from '../../../../dot/js/Dimension2.js';
 import Range from '../../../../dot/js/Range.js';
@@ -49,7 +50,7 @@ type SelfOptions = {
 export type ShapeSizeControlNodeOptions = SelfOptions & FlowBoxOptions;
 
 export default class ShapeSizeControlNode extends FlowBox {
-  constructor( massShapeProperty: Property<MassShape>, widthRatioProperty: Property<number>, heightRatioProperty: Property<number>, volumeProperty: Property<number>, listParent: Node, providedOptions?: ShapeSizeControlNodeOptions ) {
+  constructor( massShapeProperty: Property<MassShape>, widthRatioProperty: Property<number>, heightRatioProperty: Property<number>, volumeProperty: IReadOnlyProperty<number>, listParent: Node, providedOptions?: ShapeSizeControlNodeOptions ) {
 
     const options = optionize<ShapeSizeControlNodeOptions, SelfOptions, FlowBoxOptions>()( {
       labelNode: null

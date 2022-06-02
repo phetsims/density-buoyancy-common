@@ -29,6 +29,7 @@ import Mass from './Mass.js';
 import Basin from './Basin.js';
 import Cuboid from './Cuboid.js';
 import NumberProperty, { RangedProperty } from '../../../../axon/js/NumberProperty.js';
+import IReadOnlyProperty from '../../../../axon/js/IReadOnlyProperty.js';
 
 // constants
 const BLOCK_SPACING = 0.01;
@@ -56,8 +57,8 @@ export default class DensityBuoyancyModel {
   showMassesProperty: Property<boolean>;
   gravityProperty: Property<Gravity>;
   liquidMaterialProperty: Property<Material>;
-  liquidDensityProperty: Property<number>;
-  liquidViscosityProperty: Property<number>;
+  liquidDensityProperty: IReadOnlyProperty<number>;
+  liquidViscosityProperty: IReadOnlyProperty<number>;
 
   poolBounds: Bounds3;
   groundBounds: Bounds3;

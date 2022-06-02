@@ -83,6 +83,7 @@ import densityBuoyancyCommonStrings from '../../densityBuoyancyCommonStrings.js'
 import PhysicsEngine from '../../common/model/PhysicsEngine.js';
 import Ray3 from '../../../../dot/js/Ray3.js';
 import Multilink from '../../../../axon/js/Multilink.js';
+import IReadOnlyProperty from '../../../../axon/js/IReadOnlyProperty.js';
 
 // constants (in logical coordinates)
 const BODY_CORNER_RADIUS = 0.02; // Used both between the taper/body and between the body/base
@@ -178,7 +179,7 @@ export default class Bottle extends Mass {
   interiorVolumeProperty: Property<number>;
 
   // In kg (kilograms)
-  interiorMassProperty: Property<number>;
+  interiorMassProperty: IReadOnlyProperty<number>;
 
   primaryGeometry: THREE.BufferGeometry;
   capGeometry: THREE.BufferGeometry;

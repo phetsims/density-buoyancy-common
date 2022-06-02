@@ -26,21 +26,20 @@ const dynamicMaterial = new p2.Material();
 
 export default class P2Engine extends PhysicsEngine {
 
-  private world: p2.World;
+  private readonly world: p2.World;
 
   // Maps {number} body.id => {p2.RevoluteConstraint}
-  private pointerConstraintMap: { [ key: number ]: p2.RevoluteConstraint };
+  private readonly pointerConstraintMap: { [ key: number ]: p2.RevoluteConstraint };
 
   // Maps {number} body.id => {p2.Body}. Contains bodies that are empty, and specifically used for
   // pointer constraints (so they can be positioned to where the pointer is).
-  private nullBodyMap: { [ key: number ]: p2.Body };
+  private readonly nullBodyMap: { [ key: number ]: p2.Body };
 
-  private internalStepEmitter: TinyEmitter<[ number ]>;
+  private readonly internalStepEmitter: TinyEmitter<[ number ]>;
 
   constructor() {
     super();
 
-    // @private {p2.World}
     this.world = new p2.World( {} );
 
     this.world.applyGravity = false;

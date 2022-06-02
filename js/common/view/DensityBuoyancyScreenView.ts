@@ -162,28 +162,21 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
     } );
     this.addChild( this.sceneNode );
 
-    // @private {Node}
     this.scaleReadoutLayer = new Node();
     this.addChild( this.scaleReadoutLayer );
 
-    // @private {Node}
     this.massLabelLayer = new Node();
     this.addChild( this.massLabelLayer );
 
-    // @private {Node}
     this.forceDiagramLayer = new Node();
     this.addChild( this.forceDiagramLayer );
 
-    // @private {Array.<MassView>}
     this.massViews = [];
 
-    // @private {Array.<ScaleReadoutNode>}
     this.scaleReadoutNodes = [];
 
-    // @private {Array.<ForceDiagramNode>}
     this.forceDiagramNodes = [];
 
-    // @private {Array.<MassLabelNode>}
     this.massLabelNodes = [];
 
     this.sceneNode.stage.threeCamera.zoom = options.cameraZoom;

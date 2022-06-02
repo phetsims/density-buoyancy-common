@@ -261,15 +261,14 @@ class CustomMaterialView extends MaterialView {
 
 class CustomColoredMaterialView extends MaterialView<THREE.MeshLambertMaterial> {
 
-  private colorProperty: Property<Color>;
-  private listener: ( color: Color ) => void;
+  private readonly colorProperty: Property<Color>;
+  private readonly listener: ( color: Color ) => void;
 
   constructor( colorProperty: Property<Color> ) {
     super( new THREE.MeshLambertMaterial() );
 
     this.colorProperty = colorProperty;
 
-    // @private {function(Color)}
     this.listener = color => {
       this.material.color = ThreeUtils.colorToThree( color );
     };

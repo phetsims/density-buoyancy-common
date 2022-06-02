@@ -76,11 +76,6 @@ export default class Scale extends Mass {
 
   readonly displayType: DisplayType;
 
-  /**
-   * @param {PhysicsEngine} engine
-   * @param {Property.<Gravity>} gravityProperty
-   * @param {Object} config
-   */
   constructor( engine: PhysicsEngine, gravityProperty: IProperty<Gravity>, providedOptions: ScaleOptions ) {
     const config = optionize<ScaleOptions, SelfOptions, InstrumentedMassOptions>()( {
       body: engine.createBox( SCALE_WIDTH, SCALE_HEIGHT, providedOptions.canMove === false ),

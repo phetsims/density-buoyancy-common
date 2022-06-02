@@ -1123,7 +1123,6 @@ const FLAT_INTERSECTION_VERTICES = [ ${flatIntersectionVertices.map( v => `new V
   /**
    * Returns a list of model-space x,y coordinates for the intersection profile of the bottle.
    *
-   * @returns {Array.<Vector2>}
    */
   static getFlatIntersectionVertices(): Vector2[] {
     return FLAT_INTERSECTION_VERTICES.map( v => {

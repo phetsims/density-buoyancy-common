@@ -16,9 +16,7 @@ import optionize from '../../../../phet-core/js/optionize.js';
 import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
 import NumberControl, { NumberControlOptions } from '../../../../scenery-phet/js/NumberControl.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
-import { Node, VBoxOptions } from '../../../../scenery/js/imports.js';
-import { Text } from '../../../../scenery/js/imports.js';
-import { VBox } from '../../../../scenery/js/imports.js';
+import { Node, Text, VBox, VBoxOptions } from '../../../../scenery/js/imports.js';
 import ComboBox, { ComboBoxOptions } from '../../../../sun/js/ComboBox.js';
 import ComboBoxItem from '../../../../sun/js/ComboBoxItem.js';
 import SunConstants from '../../../../sun/js/SunConstants.js';
@@ -39,6 +37,9 @@ type SelfOptions<T> = {
 
   // Given a main value, returns whether it is a custom value or not
   isCustomValue: ( t: T ) => boolean;
+
+  // Given a main value, returns whether it is a hidden value or not
+  isHiddenValue: ( t: T ) => boolean;
 
   listParent: Node;
 
@@ -177,6 +178,16 @@ export default class ComboNumberControl<T> extends VBox {
     this.comboProperty = new Property( getComboValue( this.property.value ) );
     this.disposalCallbacks = disposalCallbacks;
 
+    // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
+    // Track the last non-hidden value, so that if we go to CUSTOM, we'll use this (and not just show the hidden value,
+    // see https://github.com/phetsims/buoyancy/issues/54
+    let lastNonHiddenValue = this.property.value;
+    this.property.link( value => {
+      if ( !config.isHiddenValue( value ) ) {
+        lastNonHiddenValue = value;
+      }
+    } );
+
     let locked = false;
 
     // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
@@ -206,8 +217,16 @@ export default class ComboNumberControl<T> extends VBox {
       if ( !locked ) {
         locked = true;
 
-        this.property.value = config.isCustomValue( value ) ? config.createCustomValue( this.numberProperty.value ) : value;
-        if ( !config.isCustomValue( value ) ) {
+        if ( config.isCustomValue( value ) ) {
+          // We'll swap to the last non-hidden value (and make it custom). This is so that we don't immediately show a
+          // "hidden" previous value (e.g. DENSITY_A) and the students have to guess it.
+          // See https://github.com/phetsims/buoyancy/issues/54
+          const newValue = getNumericValue( lastNonHiddenValue );
+          this.property.value = config.createCustomValue( newValue );
+          this.numberProperty.value = newValue;
+        }
+        else {
+          this.property.value = value;
           this.numberProperty.value = getNumericValue( value );
         }
 

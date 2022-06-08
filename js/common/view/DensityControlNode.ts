@@ -34,6 +34,7 @@ export default class DensityControlNode extends ComboNumberControl<Material> {
         density: density * 1000
       } ),
       isCustomValue: material => material.custom,
+      isHiddenValue: material => material.hidden,
       listParent: listParent,
       comboItems: [
         ...materials,

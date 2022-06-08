@@ -31,6 +31,7 @@ export default class GravityControlNode extends ComboNumberControl<Gravity> {
       toNumericValue: gravity => gravity.value,
       createCustomValue: Gravity.createCustomGravity,
       isCustomValue: gravity => gravity.custom,
+      isHiddenValue: gravity => gravity.hidden,
       listParent: listParent,
       comboItems: [
         Gravity.MOON,

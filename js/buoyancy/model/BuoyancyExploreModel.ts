@@ -43,7 +43,7 @@ export default class BuoyancyExploreModel extends DensityBuoyancyModel {
       tandem: tandem.createTandem( 'primaryMass' )
     } );
     this.availableMasses.push( this.primaryMass );
-    this.secondaryMass = Cube.createWithMass( this.engine, Material.ALUMINUM, new Vector2( -0.2, 0.35 ), 13.5, {
+    this.secondaryMass = Cube.createWithMass( this.engine, Material.ALUMINUM, new Vector2( 0.05, 0.35 ), 13.5, {
       tag: MassTag.SECONDARY,
       tandem: tandem.createTandem( 'secondaryMass' ),
       visible: false

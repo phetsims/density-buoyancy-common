@@ -218,12 +218,13 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
 
     const densityControlPanel = new Panel( new DensityControlNode( model.liquidMaterialProperty, [
       Material.GASOLINE,
+      Material.OIL,
       Material.WATER,
       Material.SEAWATER,
       Material.HONEY,
       Material.MERCURY,
-      Material.DENSITY_P,
-      Material.DENSITY_Q
+      Material.DENSITY_E,
+      Material.DENSITY_F
     ], this.popupLayer ), DensityBuoyancyCommonConstants.PANEL_OPTIONS );
 
     this.addChild( new AlignPropertyBox( densityControlPanel, this.visibleBoundsProperty, {

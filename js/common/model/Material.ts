@@ -316,57 +316,57 @@ export default class Material {
     liquidColor: DensityBuoyancyCommonColors.materialAirColorProperty
   } );
 
-  static DENSITY_P = new Material( {
-    name: densityBuoyancyCommonStrings.material.densityP,
-    tandemName: 'densityP',
-    identifier: 'DENSITY_P',
-    density: 200,
-    liquidColor: DensityBuoyancyCommonColors.materialDensityPColorProperty,
+  static DENSITY_A = new Material( {
+    name: densityBuoyancyCommonStrings.material.densityA,
+    tandemName: 'densityA',
+    identifier: 'DENSITY_A',
+    density: 3100,
+    liquidColor: DensityBuoyancyCommonColors.materialDensityAColorProperty,
     hidden: true
   } );
 
-  static DENSITY_Q = new Material( {
-    name: densityBuoyancyCommonStrings.material.densityQ,
-    tandemName: 'densityQ',
-    identifier: 'DENSITY_Q',
-    density: 4000,
-    liquidColor: DensityBuoyancyCommonColors.materialDensityQColorProperty,
+  static DENSITY_B = new Material( {
+    name: densityBuoyancyCommonStrings.material.densityB,
+    tandemName: 'densityB',
+    identifier: 'DENSITY_B',
+    density: 790,
+    liquidColor: DensityBuoyancyCommonColors.materialDensityBColorProperty,
     hidden: true
   } );
 
-  static DENSITY_R = new Material( {
-    name: densityBuoyancyCommonStrings.material.densityR,
-    tandemName: 'densityR',
-    identifier: 'DENSITY_R',
-    density: 200,
-    liquidColor: DensityBuoyancyCommonColors.materialDensityRColorProperty,
+  static DENSITY_C = new Material( {
+    name: densityBuoyancyCommonStrings.material.densityC,
+    tandemName: 'densityC',
+    identifier: 'DENSITY_C',
+    density: 490,
+    liquidColor: DensityBuoyancyCommonColors.materialDensityCColorProperty,
     hidden: true
   } );
 
-  static DENSITY_S = new Material( {
-    name: densityBuoyancyCommonStrings.material.densityS,
-    tandemName: 'densityS',
-    identifier: 'DENSITY_S',
-    density: 4000,
-    liquidColor: DensityBuoyancyCommonColors.materialDensitySColorProperty,
+  static DENSITY_D = new Material( {
+    name: densityBuoyancyCommonStrings.material.densityD,
+    tandemName: 'densityD',
+    identifier: 'DENSITY_D',
+    density: 2890,
+    liquidColor: DensityBuoyancyCommonColors.materialDensityDColorProperty,
     hidden: true
   } );
 
-  static DENSITY_X = new Material( {
-    name: densityBuoyancyCommonStrings.material.densityX,
-    tandemName: 'densityX',
-    identifier: 'DENSITY_X',
-    density: 500,
-    liquidColor: DensityBuoyancyCommonColors.materialDensityXColorProperty,
+  static DENSITY_E = new Material( {
+    name: densityBuoyancyCommonStrings.material.densityE,
+    tandemName: 'densityE',
+    identifier: 'DENSITY_E',
+    density: 1260,
+    liquidColor: DensityBuoyancyCommonColors.materialDensityEColorProperty,
     hidden: true
   } );
 
-  static DENSITY_Y = new Material( {
-    name: densityBuoyancyCommonStrings.material.densityY,
-    tandemName: 'densityY',
-    identifier: 'DENSITY_Y',
-    density: 5000,
-    liquidColor: DensityBuoyancyCommonColors.materialDensityYColorProperty,
+  static DENSITY_F = new Material( {
+    name: densityBuoyancyCommonStrings.material.densityF,
+    tandemName: 'densityF',
+    identifier: 'DENSITY_F',
+    density: 6440,
+    liquidColor: DensityBuoyancyCommonColors.materialDensityFColorProperty,
     hidden: true
   } );
 
@@ -444,10 +444,10 @@ Material.MATERIALS = [
   Material.BRICK,
   Material.CEMENT,
   Material.COPPER,
-  Material.DENSITY_P,
-  Material.DENSITY_Q,
-  Material.DENSITY_X,
-  Material.DENSITY_Y,
+  Material.DENSITY_E,
+  Material.DENSITY_F,
+  Material.DENSITY_A,
+  Material.DENSITY_B,
   Material.DIAMOND,
   Material.GASOLINE,
   Material.GLASS,

@@ -55,7 +55,7 @@ export default class DensityControlNode extends ComboNumberControl<Material> {
       },
       getFallbackNode: material => {
         if ( material.hidden ) {
-          return new Text( densityBuoyancyCommonStrings.whatIsTheValueOfTheFluidDensity, {
+          return new Text( densityBuoyancyCommonStrings.whatIsTheFluidDensity, {
             font: new PhetFont( 14 )
           } );
         }

@@ -43,12 +43,13 @@ export default class BuoyancyShapesScreenView extends SecondaryMassScreenView<Bu
 
     const densityControlPanel = new Panel( new DensityControlNode( model.liquidMaterialProperty, [
       Material.GASOLINE,
+      Material.OIL,
       Material.WATER,
       Material.SEAWATER,
       Material.HONEY,
       Material.MERCURY,
-      Material.DENSITY_R,
-      Material.DENSITY_S
+      Material.DENSITY_C,
+      Material.DENSITY_D
     ], this.popupLayer ), DensityBuoyancyCommonConstants.PANEL_OPTIONS );
 
     this.addChild( new AlignPropertyBox( densityControlPanel, this.visibleBoundsProperty, {

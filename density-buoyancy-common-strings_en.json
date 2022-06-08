@@ -35,23 +35,23 @@
   "material.custom": {
     "value": "Custom"
   },
-  "material.densityP": {
-    "value": "Density P"
+  "material.densityA": {
+    "value": "Density A"
   },
-  "material.densityQ": {
-    "value": "Density Q"
+  "material.densityB": {
+    "value": "Density B"
   },
-  "material.densityR": {
-    "value": "Density R"
+  "material.densityC": {
+    "value": "Density C"
   },
-  "material.densityS": {
-    "value": "Density S"
+  "material.densityD": {
+    "value": "Density D"
   },
-  "material.densityX": {
-    "value": "Density X"
+  "material.densityE": {
+    "value": "Density E"
   },
-  "material.densityY": {
-    "value": "Density Y"
+  "material.densityF": {
+    "value": "Density F"
   },
   "material.diamond": {
     "value": "Diamond"
@@ -311,8 +311,8 @@
   "densityReadoutPattern": {
     "value": "{{material}}: {{density}} kg/L"
   },
-  "whatIsTheValueOfTheFluidDensity": {
-    "value": "What is the value of the fluid density?"
+  "whatIsTheFluidDensity": {
+    "value": "What is the fluid density?"
   },
   "whatIsTheValueOfGravity": {
     "value": "What is the value of gravity?"

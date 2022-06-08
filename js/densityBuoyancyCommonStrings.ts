@@ -24,12 +24,12 @@ type StringsType = {
     'cement': string;
     'copper': string;
     'custom': string;
-    'densityP': string;
-    'densityQ': string;
-    'densityR': string;
-    'densityS': string;
-    'densityX': string;
-    'densityY': string;
+    'densityA': string;
+    'densityB': string;
+    'densityC': string;
+    'densityD': string;
+    'densityE': string;
+    'densityF': string;
     'diamond': string;
     'gasoline': string;
     'glass': string;
@@ -122,7 +122,7 @@ type StringsType = {
   'height': string;
   'average': string;
   'densityReadoutPattern': string;
-  'whatIsTheValueOfTheFluidDensity': string;
+  'whatIsTheFluidDensity': string;
   'whatIsTheValueOfGravity': string;
   'vectorScale': string;
 };

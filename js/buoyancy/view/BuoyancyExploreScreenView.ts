@@ -135,12 +135,13 @@ export default class BuoyancyExploreScreenView extends SecondaryMassScreenView<B
       children: [
         new Panel( new DensityControlNode( model.liquidMaterialProperty, [
           Material.GASOLINE,
+          Material.OIL,
           Material.WATER,
           Material.SEAWATER,
           Material.HONEY,
           Material.MERCURY,
-          Material.DENSITY_X,
-          Material.DENSITY_Y
+          Material.DENSITY_A,
+          Material.DENSITY_B
         ], this.popupLayer ), DensityBuoyancyCommonConstants.PANEL_OPTIONS ),
         new Panel( new GravityControlNode( model.gravityProperty, this.popupLayer ), DensityBuoyancyCommonConstants.PANEL_OPTIONS )
       ]

@@ -188,41 +188,41 @@ const DensityBuoyancyCommonColors = {
     phetioReadOnly: true,
     tandem: phet.chipper.packageObject.name === 'density' ? Tandem.OPT_OUT : tandem.createTandem( 'materialCopperColorProperty' )
   } ),
-  materialDensityPColorProperty: new ProfileColorProperty( densityBuoyancyCommon, 'materialDensityP', {
-    default: new Color( 255, 128, 128, 0.6 )
-  }, {
-    phetioReadOnly: true,
-    tandem: phet.chipper.packageObject.name === 'density' ? Tandem.OPT_OUT : tandem.createTandem( 'materialDensityPColorProperty' )
-  } ),
-  materialDensityQColorProperty: new ProfileColorProperty( densityBuoyancyCommon, 'materialDensityQ', {
-    default: new Color( 128, 255, 128, 0.6 )
-  }, {
-    phetioReadOnly: true,
-    tandem: phet.chipper.packageObject.name === 'density' ? Tandem.OPT_OUT : tandem.createTandem( 'materialDensityQColorProperty' )
-  } ),
-  materialDensityRColorProperty: new ProfileColorProperty( densityBuoyancyCommon, 'materialDensityR', {
-    default: new Color( 255, 128, 255, 0.6 )
-  }, {
-    phetioReadOnly: true,
-    tandem: phet.chipper.packageObject.name === 'density' ? Tandem.OPT_OUT : tandem.createTandem( 'materialDensityRColorProperty' )
-  } ),
-  materialDensitySColorProperty: new ProfileColorProperty( densityBuoyancyCommon, 'materialDensityS', {
-    default: new Color( 128, 255, 255, 0.6 )
-  }, {
-    phetioReadOnly: true,
-    tandem: phet.chipper.packageObject.name === 'density' ? Tandem.OPT_OUT : tandem.createTandem( 'materialDensitySColorProperty' )
-  } ),
-  materialDensityXColorProperty: new ProfileColorProperty( densityBuoyancyCommon, 'materialDensityX', {
+  materialDensityAColorProperty: new ProfileColorProperty( densityBuoyancyCommon, 'materialDensityA', {
     default: new Color( 255, 255, 80, 0.6 )
   }, {
     phetioReadOnly: true,
-    tandem: phet.chipper.packageObject.name === 'density' ? Tandem.OPT_OUT : tandem.createTandem( 'materialDensityXColorProperty' )
+    tandem: phet.chipper.packageObject.name === 'density' ? Tandem.OPT_OUT : tandem.createTandem( 'materialDensityAColorProperty' )
   } ),
-  materialDensityYColorProperty: new ProfileColorProperty( densityBuoyancyCommon, 'materialDensityY', {
+  materialDensityBColorProperty: new ProfileColorProperty( densityBuoyancyCommon, 'materialDensityB', {
     default: new Color( 80, 255, 255, 0.6 )
   }, {
     phetioReadOnly: true,
-    tandem: phet.chipper.packageObject.name === 'density' ? Tandem.OPT_OUT : tandem.createTandem( 'materialDensityYColorProperty' )
+    tandem: phet.chipper.packageObject.name === 'density' ? Tandem.OPT_OUT : tandem.createTandem( 'materialDensityBColorProperty' )
+  } ),
+  materialDensityCColorProperty: new ProfileColorProperty( densityBuoyancyCommon, 'materialDensityC', {
+    default: new Color( 255, 128, 255, 0.6 )
+  }, {
+    phetioReadOnly: true,
+    tandem: phet.chipper.packageObject.name === 'density' ? Tandem.OPT_OUT : tandem.createTandem( 'materialDensityCColorProperty' )
+  } ),
+  materialDensityDColorProperty: new ProfileColorProperty( densityBuoyancyCommon, 'materialDensityD', {
+    default: new Color( 128, 255, 255, 0.6 )
+  }, {
+    phetioReadOnly: true,
+    tandem: phet.chipper.packageObject.name === 'density' ? Tandem.OPT_OUT : tandem.createTandem( 'materialDensityDColorProperty' )
+  } ),
+  materialDensityEColorProperty: new ProfileColorProperty( densityBuoyancyCommon, 'materialDensityE', {
+    default: new Color( 255, 128, 128, 0.6 )
+  }, {
+    phetioReadOnly: true,
+    tandem: phet.chipper.packageObject.name === 'density' ? Tandem.OPT_OUT : tandem.createTandem( 'materialDensityEColorProperty' )
+  } ),
+  materialDensityFColorProperty: new ProfileColorProperty( densityBuoyancyCommon, 'materialDensityF', {
+    default: new Color( 128, 255, 128, 0.6 )
+  }, {
+    phetioReadOnly: true,
+    tandem: phet.chipper.packageObject.name === 'density' ? Tandem.OPT_OUT : tandem.createTandem( 'materialDensityFColorProperty' )
   } ),
   materialGasolineColorProperty: new ProfileColorProperty( densityBuoyancyCommon, 'materialGasoline', {
     default: new Color( 230, 255, 0, 0.4 )

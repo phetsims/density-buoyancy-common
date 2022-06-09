@@ -265,7 +265,10 @@ export default class MaterialMassVolumeControlNode extends VBox {
         font: DensityBuoyancyCommonConstants.COMBO_BOX_ITEM_FONT,
         maxWidth: comboMaxWidth
       } ), MaterialEnumeration.CUSTOM, { tandemName: 'customItem' } )
-    ], comboBoxMaterialProperty, listParent, {
+    ],
+
+      // @ts-ignore see https://github.com/phetsims/axon/issues/382
+      comboBoxMaterialProperty, listParent, {
       xMargin: 8,
       yMargin: 4,
       tandem: tandem.createTandem( 'comboBox' )

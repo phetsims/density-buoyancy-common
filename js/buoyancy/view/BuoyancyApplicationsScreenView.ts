@@ -175,6 +175,7 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
         blockControlNode,
         new HSeparator( blockControlNode.width ),
         // Convert cubic meters => liters
+        // @ts-ignore see https://github.com/phetsims/axon/issues/382
         new NumberControl( densityBuoyancyCommonStrings.boatVolume, new UnitConversionProperty( model.boat.displacementVolumeProperty, {
           factor: 1000
         } ), boatVolumeRange, merge( {

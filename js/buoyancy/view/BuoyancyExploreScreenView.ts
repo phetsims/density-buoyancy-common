@@ -56,13 +56,13 @@ export default class BuoyancyExploreScreenView extends SecondaryMassScreenView<B
       maxWidth: 120,
       font: new PhetFont( { size: 14, weight: 'bold' } ),
       fill: DensityBuoyancyCommonColors.labelAProperty,
-      layoutOptions: { x: 1, y: 0 }
+      layoutOptions: { column: 1, row: 0 }
     } );
     const densityBText = new Text( '', {
       maxWidth: 120,
       font: new PhetFont( { size: 14, weight: 'bold' } ),
       fill: DensityBuoyancyCommonColors.labelBProperty,
-      layoutOptions: { x: 1, y: 1 }
+      layoutOptions: { column: 1, row: 1 }
     } );
 
     // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
@@ -78,8 +78,8 @@ export default class BuoyancyExploreScreenView extends SecondaryMassScreenView<B
       } );
     } );
 
-    const labelAText = new Text( densityBuoyancyCommonStrings.blockA, { font: new PhetFont( 14 ), maxWidth: 200, layoutOptions: { x: 0, y: 0 } } );
-    const labelBText = new Text( densityBuoyancyCommonStrings.blockB, { font: new PhetFont( 14 ), maxWidth: 200, layoutOptions: { x: 0, y: 1 } } );
+    const labelAText = new Text( densityBuoyancyCommonStrings.blockA, { font: new PhetFont( 14 ), maxWidth: 200, layoutOptions: { column: 0, row: 0 } } );
+    const labelBText = new Text( densityBuoyancyCommonStrings.blockB, { font: new PhetFont( 14 ), maxWidth: 200, layoutOptions: { column: 0, row: 1 } } );
 
     const densityReadoutBox = new GridBox( {
       children: [ densityAText, densityBText, labelAText, labelBText ],

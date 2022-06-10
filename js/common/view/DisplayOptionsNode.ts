@@ -61,37 +61,37 @@ export default class DisplayOptionsNode extends VBox {
 
                 // Gravity
                 new Checkbox( new Text( densityBuoyancyCommonStrings.gravity.name, labelOptions ), model.showGravityForceProperty, merge( {
-                  layoutOptions: { x: 0, y: 0 }
+                  layoutOptions: { column: 0, row: 0 }
                 }, checkboxOptions ) ),
                 new ArrowNode( 0, 0, arrowLength, 0, merge( {
-                  layoutOptions: { x: 1, y: 0 },
+                  layoutOptions: { column: 1, row: 0 },
                   fill: DensityBuoyancyCommonColors.gravityForceProperty
                 }, arrowOptions ) ),
 
                 // Buoyancy
                 new Checkbox( new Text( densityBuoyancyCommonStrings.buoyancy, labelOptions ), model.showBuoyancyForceProperty, merge( {
-                  layoutOptions: { x: 0, y: 1 }
+                  layoutOptions: { column: 0, row: 1 }
                 }, checkboxOptions ) ),
                 new ArrowNode( 0, 0, arrowLength, 0, merge( {
-                  layoutOptions: { x: 1, y: 1 },
+                  layoutOptions: { column: 1, row: 1 },
                   fill: DensityBuoyancyCommonColors.buoyancyForceProperty
                 }, arrowOptions ) ),
 
                 // Contact
                 new Checkbox( new Text( densityBuoyancyCommonStrings.contact, labelOptions ), model.showContactForceProperty, merge( {
-                  layoutOptions: { x: 0, y: 2 }
+                  layoutOptions: { column: 0, row: 2 }
                 }, checkboxOptions ) ),
                 new ArrowNode( 0, 0, arrowLength, 0, merge( {
-                  layoutOptions: { x: 1, y: 2 },
+                  layoutOptions: { column: 1, row: 2 },
                   fill: DensityBuoyancyCommonColors.contactForceProperty
                 }, arrowOptions ) ),
 
                 // Vector scale
                 new Text( densityBuoyancyCommonStrings.vectorScale, merge( {
-                  layoutOptions: { x: 0, y: 3 }
+                  layoutOptions: { column: 0, row: 3 }
                 }, labelOptions ) ),
                 new PlusMinusZoomButtonGroup( model.forceScaleProperty, {
-                  layoutOptions: { x: 1, y: 3, xAlign: 'center' },
+                  layoutOptions: { column: 1, row: 3, xAlign: 'center' },
                   orientation: 'horizontal',
                   applyZoomIn: ( scale: number ) => scale * 2,
                   applyZoomOut: ( scale: number ) => scale / 2

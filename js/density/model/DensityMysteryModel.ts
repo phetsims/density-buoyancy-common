@@ -15,6 +15,7 @@ import Vector2 from '../../../../dot/js/Vector2.js';
 import Enumeration from '../../../../phet-core/js/Enumeration.js';
 import EnumerationValue from '../../../../phet-core/js/EnumerationValue.js';
 import optionize from '../../../../phet-core/js/optionize.js';
+import EmptyObjectType from '../../../../phet-core/js/types/EmptyObjectType.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 import BlockSetModel, { BlockSetModelOptions } from '../../common/model/BlockSetModel.js';
 import Cube from '../../common/model/Cube.js';
@@ -236,7 +237,7 @@ export default class DensityMysteryModel extends BlockSetModel<BlockSet> {
       }
     };
 
-    super( optionize<DensityMysteryModelOptions, {}, BlockSetModelOptions<BlockSet>>()( {
+    super( optionize<DensityMysteryModelOptions, EmptyObjectType, BlockSetModelOptions<BlockSet>>()( {
       canShowForces: false,
 
       // TODO: How can this type-check if I leave these out?!? --- oh we're expecting them in our providedOptions?

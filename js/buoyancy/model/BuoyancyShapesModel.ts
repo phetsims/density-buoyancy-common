@@ -17,6 +17,7 @@ import Matrix3 from '../../../../dot/js/Matrix3.js';
 import Enumeration from '../../../../phet-core/js/Enumeration.js';
 import EnumerationValue from '../../../../phet-core/js/EnumerationValue.js';
 import optionize from '../../../../phet-core/js/optionize.js';
+import EmptyObjectType from '../../../../phet-core/js/types/EmptyObjectType.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
 import Cone from '../../common/model/Cone.js';
 import Cuboid from '../../common/model/Cuboid.js';
@@ -63,7 +64,7 @@ export default class BuoyancyShapesModel extends DensityBuoyancyModel {
   secondaryMassProperty: IReadOnlyProperty<Mass>;
 
   constructor( providedOptions: BuoyancyShapesModelOptions ) {
-    const options = optionize<DensityBuoyancyModelOptions, {}>()( {
+    const options = optionize<DensityBuoyancyModelOptions, EmptyObjectType>()( {
       initialForceScale: 1 / 4
     }, providedOptions );
 

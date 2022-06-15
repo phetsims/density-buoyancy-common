@@ -15,6 +15,7 @@ import Vector2 from '../../../../dot/js/Vector2.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
 import { Shape } from '../../../../kite/js/imports.js';
 import optionize from '../../../../phet-core/js/optionize.js';
+import EmptyObjectType from '../../../../phet-core/js/types/EmptyObjectType.js';
 import IOType from '../../../../tandem/js/types/IOType.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import Mass, { InstrumentedMassOptions } from './Mass.js';
@@ -31,7 +32,7 @@ export default class Ellipsoid extends Mass {
   stepMaximumVolume: number;
 
   constructor( engine: PhysicsEngine, size: Bounds3, providedConfig: EllipsoidOptions ) {
-    const config = optionize<EllipsoidOptions, {}, InstrumentedMassOptions>()( {
+    const config = optionize<EllipsoidOptions, EmptyObjectType, InstrumentedMassOptions>()( {
       body: engine.createFromVertices( Ellipsoid.getEllipsoidVertices( size.width, size.height ), false ),
       shape: Ellipsoid.getEllipsoidShape( size.width, size.height ),
       volume: Ellipsoid.getVolume( size ),

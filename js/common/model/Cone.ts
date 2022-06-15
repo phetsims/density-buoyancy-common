@@ -16,6 +16,7 @@ import Vector2 from '../../../../dot/js/Vector2.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
 import { Shape } from '../../../../kite/js/imports.js';
 import optionize from '../../../../phet-core/js/optionize.js';
+import EmptyObjectType from '../../../../phet-core/js/types/EmptyObjectType.js';
 import IOType from '../../../../tandem/js/types/IOType.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import Mass, { InstrumentedMassOptions, MassOptions } from './Mass.js';
@@ -43,7 +44,7 @@ export default class Cone extends Mass {
 
     const initialVertices = Cone.getConeVertices( radius, height, isVertexUp );
 
-    const config = optionize<ConeOptions, {}, MassOptions>()( {
+    const config = optionize<ConeOptions, EmptyObjectType, MassOptions>()( {
       body: engine.createFromVertices( initialVertices, false ),
       shape: Shape.polygon( initialVertices ),
       volume: Cone.getVolume( radius, height ),

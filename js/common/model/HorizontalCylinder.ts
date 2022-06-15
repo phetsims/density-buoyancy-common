@@ -15,6 +15,7 @@ import Utils from '../../../../dot/js/Utils.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
 import { Shape } from '../../../../kite/js/imports.js';
 import optionize from '../../../../phet-core/js/optionize.js';
+import EmptyObjectType from '../../../../phet-core/js/types/EmptyObjectType.js';
 import IOType from '../../../../tandem/js/types/IOType.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import Mass, { InstrumentedMassOptions } from './Mass.js';
@@ -35,7 +36,7 @@ export default class HorizontalCylinder extends Mass {
   stepMaximumArea: number;
 
   constructor( engine: PhysicsEngine, radius: number, length: number, providedConfig: HorizontalCylinderOptions ) {
-    const config = optionize<HorizontalCylinderOptions, {}, InstrumentedMassOptions>()( {
+    const config = optionize<HorizontalCylinderOptions, EmptyObjectType, InstrumentedMassOptions>()( {
       body: engine.createBox( length, radius * 2 ),
       shape: HorizontalCylinder.getHorizontalCylinderShape( radius, length ),
       volume: HorizontalCylinder.getVolume( radius, length ),

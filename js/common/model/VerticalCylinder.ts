@@ -16,6 +16,7 @@ import Vector2 from '../../../../dot/js/Vector2.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
 import { Shape } from '../../../../kite/js/imports.js';
 import optionize from '../../../../phet-core/js/optionize.js';
+import EmptyObjectType from '../../../../phet-core/js/types/EmptyObjectType.js';
 import IOType from '../../../../tandem/js/types/IOType.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import Mass, { InstrumentedMassOptions } from './Mass.js';
@@ -35,7 +36,7 @@ export default class VerticalCylinder extends Mass {
   stepMaximumVolume: number;
 
   constructor( engine: PhysicsEngine, radius: number, height: number, providedConfig: VerticalCylinderOptions ) {
-    const config = optionize<VerticalCylinderOptions, {}, InstrumentedMassOptions>()( {
+    const config = optionize<VerticalCylinderOptions, EmptyObjectType, InstrumentedMassOptions>()( {
       body: engine.createBox( 2 * radius, height ),
       shape: VerticalCylinder.getVerticalCylinderShape( radius, height ),
       volume: VerticalCylinder.getVolume( radius, height ),

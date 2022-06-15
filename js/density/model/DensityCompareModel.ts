@@ -16,6 +16,7 @@ import Vector2 from '../../../../dot/js/Vector2.js';
 import Enumeration from '../../../../phet-core/js/Enumeration.js';
 import EnumerationValue from '../../../../phet-core/js/EnumerationValue.js';
 import optionize from '../../../../phet-core/js/optionize.js';
+import EmptyObjectType from '../../../../phet-core/js/types/EmptyObjectType.js';
 import { Color } from '../../../../scenery/js/imports.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
 import BlockSetModel, { BlockSetModelOptions } from '../../common/model/BlockSetModel.js';
@@ -231,7 +232,7 @@ export default class DensityCompareModel extends BlockSetModel<BlockSet> {
       }
     };
 
-    const options = optionize<DensityCompareModelOptions, {}, BlockSetModelOptions<BlockSet>>()( {
+    const options = optionize<DensityCompareModelOptions, EmptyObjectType, BlockSetModelOptions<BlockSet>>()( {
       initialMode: BlockSet.SAME_MASS,
       BlockSet: BlockSet.enumeration,
       showMassesDefault: true,

@@ -98,10 +98,18 @@ Gravity.GRAVITIES = [
   Gravity.PLANET_X
 ];
 
-Gravity.GravityIO = new IOType( 'GravityIO', {
+type GravityState = {
+  name: string;
+  tandemName: string;
+  value: number;
+  custom: boolean;
+  hidden: boolean;
+};
+
+Gravity.GravityIO = new IOType<Gravity, GravityState>( 'GravityIO', {
   valueType: Gravity,
   documentation: 'Represents a specific value of gravity (m/s^2)',
-  toStateObject: ( gravity: Gravity ) => {
+  toStateObject: function( gravity: Gravity ): GravityState {
     return {
       name: gravity.name,
       tandemName: gravity.tandemName,
@@ -110,12 +118,12 @@ Gravity.GravityIO = new IOType( 'GravityIO', {
       hidden: gravity.hidden
     };
   },
-  fromStateObject: ( stateObject: any ) => {
+  fromStateObject: ( stateObject: GravityState ) => {
     if ( stateObject.custom ) {
       return new Gravity( stateObject );
     }
     else {
-      return _.find( Gravity.GRAVITIES, gravity => gravity.value === stateObject.value );
+      return _.find( Gravity.GRAVITIES, gravity => gravity.value === stateObject.value ) as Gravity;
     }
   },
   stateSchema: {

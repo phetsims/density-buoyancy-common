@@ -13,7 +13,7 @@ import Utils from '../../../../dot/js/Utils.js';
 import ThreeUtils from '../../../../mobius/js/ThreeUtils.js';
 import merge from '../../../../phet-core/js/merge.js';
 import optionize from '../../../../phet-core/js/optionize.js';
-import { Color, ColorProperty, IColor } from '../../../../scenery/js/imports.js';
+import { Color, ColorProperty, IColor, ColorState } from '../../../../scenery/js/imports.js';
 import BooleanIO from '../../../../tandem/js/types/BooleanIO.js';
 import IOType from '../../../../tandem/js/types/IOType.js';
 import NullableIO from '../../../../tandem/js/types/NullableIO.js';
@@ -473,8 +473,22 @@ Material.MATERIALS = [
 
 const NullableColorPropertyReferenceType = NullableIO( ReferenceIO( Property.PropertyIO( Color.ColorIO ) ) );
 
+type MaterialState = {
+  identifier: null | string;
+  name: string;
+  tandemName: string | null;
+  density: number;
+  viscosity: number;
+  custom: boolean;
+  hidden: boolean;
+  staticCustomColor: null | ColorState;
+  customColor: null | ColorState;
+  staticLiquidColor: null | ColorState;
+  liquidColor: null | ColorState;
+};
+
 // (read-only) {IOType}
-Material.MaterialIO = new IOType( 'MaterialIO', {
+Material.MaterialIO = new IOType<Material, MaterialState>( 'MaterialIO', {
   valueType: Material,
   documentation: 'Represents different materials that solids/liquids in the simulations can take, including density (kg/m^3), viscosity (Pa * s), and color.',
   stateSchema: {
@@ -490,7 +504,7 @@ Material.MaterialIO = new IOType( 'MaterialIO', {
     staticLiquidColor: NullableIO( Color.ColorIO ),
     liquidColor: NullableColorPropertyReferenceType
   },
-  toStateObject( material: Material ) {
+  toStateObject( material: Material ): MaterialState {
 
     const isCustomColorUninstrumented = material.customColor && !material.customColor.isPhetioInstrumented();
     const isLiquidColorUninstrumented = material.liquidColor && !material.liquidColor.isPhetioInstrumented();
@@ -509,11 +523,11 @@ Material.MaterialIO = new IOType( 'MaterialIO', {
       liquidColor: NullableColorPropertyReferenceType.toStateObject( isLiquidColorUninstrumented ? null : material.liquidColor )
     };
   },
-  fromStateObject( obj: any ) {
+  fromStateObject( obj: MaterialState ): Material {
     if ( obj.identifier ) {
       const material = Material[ obj.identifier as keyof typeof Material ];
-      assert && assert( material, `Unkonwn material: ${obj.identifier}` );
-      return material;
+      assert && assert( material, `Unknown material: ${obj.identifier}` );
+      return material as Material;
     }
     else {
       const staticCustomColor = NullableIO( Color.ColorIO ).fromStateObject( obj.staticCustomColor );

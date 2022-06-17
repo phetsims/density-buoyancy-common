@@ -238,7 +238,9 @@ export default class Boat extends Mass {
     }
   }
 
-  setRatios( widthRatio: number, heightRatio: number ): void {}
+  setRatios( widthRatio: number, heightRatio: number ): void {
+    // See subclass for implementation
+  }
 
   /**
    * Resets values to their original state

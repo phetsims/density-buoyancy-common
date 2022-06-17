@@ -199,7 +199,9 @@ export default class Scale extends Mass {
     }
   }
 
-  setRatios( widthRatio: number, heightRatio: number ): void {}
+  setRatios( widthRatio: number, heightRatio: number ): void {
+    // See subclass for implementation
+  }
 
   /**
    * Steps forward in time.

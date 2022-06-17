@@ -1223,7 +1223,9 @@ const FLAT_INTERSECTION_VERTICES = [ ${flatIntersectionVertices.map( v => `new V
     return canvas;
   }
 
-  setRatios( widthRatio: number, heightRatio: number ): void {}
+  setRatios( widthRatio: number, heightRatio: number ): void {
+    // See subclass for implementation
+  }
 
   // The number to scale the original values by to get a 10L-volume bottle
   static TEN_LITER_SCALE_MULTIPLIER: number;

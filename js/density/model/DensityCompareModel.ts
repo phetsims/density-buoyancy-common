@@ -238,7 +238,7 @@ export default class DensityCompareModel extends BlockSetModel<BlockSet> {
       showMassesDefault: true,
       canShowForces: false,
       createMassesCallback: createMasses,
-      regenerateMassesCallback: () => {},
+      regenerateMassesCallback: _.noop,
       positionMassesCallback: positionMasses
     }, providedOptions );
 

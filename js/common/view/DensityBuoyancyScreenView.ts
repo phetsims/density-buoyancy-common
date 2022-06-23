@@ -729,7 +729,7 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
       this.debugView = new DebugView( model, this.layoutBounds );
       this.debugView.visibleProperty = debugVisibleProperty;
       this.popupLayer.addChild( this.debugView );
-      this.addChild( new Checkbox( new Text( 'Debug', { font: new PhetFont( 12 ) } ), debugVisibleProperty ) );
+      this.addChild( new Checkbox( debugVisibleProperty, new Text( 'Debug', { font: new PhetFont( 12 ) } ) ) );
     }
 
     // DerivedProperty doesn't need disposal, since everything here lives for the lifetime of the simulation

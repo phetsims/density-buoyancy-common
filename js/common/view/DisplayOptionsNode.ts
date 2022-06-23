@@ -60,7 +60,7 @@ export default class DisplayOptionsNode extends VBox {
               children: [
 
                 // Gravity
-                new Checkbox( new Text( densityBuoyancyCommonStrings.gravity.name, labelOptions ), model.showGravityForceProperty, merge( {
+                new Checkbox( model.showGravityForceProperty, new Text( densityBuoyancyCommonStrings.gravity.name, labelOptions ), merge( {
                   layoutOptions: { column: 0, row: 0 }
                 }, checkboxOptions ) ),
                 new ArrowNode( 0, 0, arrowLength, 0, merge( {
@@ -69,7 +69,7 @@ export default class DisplayOptionsNode extends VBox {
                 }, arrowOptions ) ),
 
                 // Buoyancy
-                new Checkbox( new Text( densityBuoyancyCommonStrings.buoyancy, labelOptions ), model.showBuoyancyForceProperty, merge( {
+                new Checkbox( model.showBuoyancyForceProperty, new Text( densityBuoyancyCommonStrings.buoyancy, labelOptions ), merge( {
                   layoutOptions: { column: 0, row: 1 }
                 }, checkboxOptions ) ),
                 new ArrowNode( 0, 0, arrowLength, 0, merge( {
@@ -78,7 +78,7 @@ export default class DisplayOptionsNode extends VBox {
                 }, arrowOptions ) ),
 
                 // Contact
-                new Checkbox( new Text( densityBuoyancyCommonStrings.contact, labelOptions ), model.showContactForceProperty, merge( {
+                new Checkbox( model.showContactForceProperty, new Text( densityBuoyancyCommonStrings.contact, labelOptions ), merge( {
                   layoutOptions: { column: 0, row: 2 }
                 }, checkboxOptions ) ),
                 new ArrowNode( 0, 0, arrowLength, 0, merge( {
@@ -103,8 +103,8 @@ export default class DisplayOptionsNode extends VBox {
               spacing: checkboxSpacing,
               align: 'left',
               children: [
-                new Checkbox( new Text( densityBuoyancyCommonStrings.masses, labelOptions ), model.showMassesProperty, checkboxOptions ),
-                new Checkbox( new Text( densityBuoyancyCommonStrings.forceValues, labelOptions ), model.showForceValuesProperty, checkboxOptions )
+                new Checkbox( model.showMassesProperty, new Text( densityBuoyancyCommonStrings.masses, labelOptions ), checkboxOptions ),
+                new Checkbox( model.showForceValuesProperty, new Text( densityBuoyancyCommonStrings.forceValues, labelOptions ), checkboxOptions )
               ]
             } )
           ]

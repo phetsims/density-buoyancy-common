@@ -642,6 +642,8 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
         this.massViews.push( massView );
 
         if ( massView instanceof ScaleView ) {
+
+          // eslint-disable-next-line no-simple-type-checking-assertions
           assert && assert( mass instanceof Scale );
 
           const scaleReadoutNode = new ScaleReadoutNode( mass as Scale, model.gravityProperty );

@@ -254,7 +254,8 @@ export default class MaterialMassVolumeControlNode extends VBox {
     } );
 
     const comboMaxWidth = options.labelNode ? 110 : 160;
-    const comboBox = new ComboBox( [
+    // @ts-ignore TS2345: Argument of type 'DynamicProperty<MaterialEnumValue, Material, Property<Material>>' is not assignable to parameter of type 'Property<MaterialEnumValue>'.
+    const comboBox = new ComboBox( comboBoxMaterialProperty, [
       ...materials.map( material => {
         return new ComboBoxItem( new Text( material.name, {
           font: DensityBuoyancyCommonConstants.COMBO_BOX_ITEM_FONT,
@@ -265,10 +266,7 @@ export default class MaterialMassVolumeControlNode extends VBox {
         font: DensityBuoyancyCommonConstants.COMBO_BOX_ITEM_FONT,
         maxWidth: comboMaxWidth
       } ), MaterialEnumeration.CUSTOM, { tandemName: 'customItem' } )
-    ],
-
-      // @ts-ignore see https://github.com/phetsims/axon/issues/382
-      comboBoxMaterialProperty, listParent, {
+    ], listParent, {
       xMargin: 8,
       yMargin: 4,
       tandem: tandem.createTandem( 'comboBox' )

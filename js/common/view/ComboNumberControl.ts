@@ -240,7 +240,7 @@ export default class ComboNumberControl<T> extends VBox {
       }
     }, config.numberControlOptions ) );
 
-    this.comboBox = new ComboBox( config.comboItems, this.comboProperty, config.listParent, config.comboBoxOptions );
+    this.comboBox = new ComboBox( this.comboProperty, config.comboItems, config.listParent, config.comboBoxOptions );
 
     config.children = [
       this.numberControl,

@@ -62,12 +62,12 @@ export default class ShapeSizeControlNode extends FlowBox {
       align: 'left'
     } );
 
-    const comboBox = new ComboBox( MassShape.enumeration.values.map( massShape => {
+    const comboBox = new ComboBox( massShapeProperty, MassShape.enumeration.values.map( massShape => {
       return new ComboBoxItem( new Text( shapeStringMap[ massShape.name ], {
         font: DensityBuoyancyCommonConstants.COMBO_BOX_ITEM_FONT,
         maxWidth: 160
       } ), massShape, { tandemName: `${tandemNameMap[ massShape.name ]}Item` } );
-    } ), massShapeProperty, listParent, {
+    } ), listParent, {
       xMargin: 8,
       yMargin: 4
     } );

@@ -20,9 +20,8 @@ import optionize from '../../../../phet-core/js/optionize.js';
 import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
 import NumberControl, { NumberControlOptions } from '../../../../scenery-phet/js/NumberControl.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
-import { HBox, IPaint, Text, VBox, VBoxOptions, Node } from '../../../../scenery/js/imports.js';
+import { HBox, IPaint, Node, Text, VBox, VBoxOptions } from '../../../../scenery/js/imports.js';
 import ComboBox from '../../../../sun/js/ComboBox.js';
-import ComboBoxItem from '../../../../sun/js/ComboBoxItem.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
 import EnumerationIO from '../../../../tandem/js/types/EnumerationIO.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
@@ -258,15 +257,23 @@ export default class MaterialMassVolumeControlNode extends VBox {
     // @ts-ignore TS2345: Argument of type 'DynamicProperty<MaterialEnumValue, Material, Property<Material>>' is not assignable to parameter of type 'Property<MaterialEnumValue>'.
     const comboBox = new ComboBox( comboBoxMaterialProperty, [
       ...materials.map( material => {
-        return new ComboBoxItem( new Text( material.name, {
+        return {
+          value: MaterialEnumeration[ material.identifier! ],
+          node: new Text( material.name, {
+            font: DensityBuoyancyCommonConstants.COMBO_BOX_ITEM_FONT,
+            maxWidth: comboMaxWidth
+          } ),
+          tandemName: `${material.tandemName}${ComboBox.ITEM_TANDEM_NAME_SUFFIX}`
+        };
+      } ),
+      {
+        value: MaterialEnumeration.CUSTOM,
+        node: new Text( densityBuoyancyCommonStrings.material.custom, {
           font: DensityBuoyancyCommonConstants.COMBO_BOX_ITEM_FONT,
           maxWidth: comboMaxWidth
-        } ), MaterialEnumeration[ material.identifier! ], { tandemName: `${material.tandemName}Item` } );
-      } ),
-      new ComboBoxItem( new Text( densityBuoyancyCommonStrings.material.custom, {
-        font: DensityBuoyancyCommonConstants.COMBO_BOX_ITEM_FONT,
-        maxWidth: comboMaxWidth
-      } ), MaterialEnumeration.CUSTOM, { tandemName: 'customItem' } )
+        } ),
+        tandemName: `custom${ComboBox.ITEM_TANDEM_NAME_SUFFIX}`
+      }
     ], listParent, {
       xMargin: 8,
       yMargin: 4,

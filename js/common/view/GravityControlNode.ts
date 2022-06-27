@@ -9,14 +9,14 @@
 import Property from '../../../../axon/js/Property.js';
 import Range from '../../../../dot/js/Range.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
-import { Text, Node } from '../../../../scenery/js/imports.js';
-import ComboBoxItem from '../../../../sun/js/ComboBoxItem.js';
+import { Node, Text } from '../../../../scenery/js/imports.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import densityBuoyancyCommonStrings from '../../densityBuoyancyCommonStrings.js';
 import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
 import Gravity from '../model/Gravity.js';
 import ComboNumberControl from './ComboNumberControl.js';
 import DensityBuoyancyCommonQueryParameters from '../DensityBuoyancyCommonQueryParameters.js';
+import ComboBox from '../../../../sun/js/ComboBox.js';
 
 export default class GravityControlNode extends ComboNumberControl<Gravity> {
   constructor( gravityProperty: Property<Gravity>, listParent: Node ) {
@@ -39,10 +39,16 @@ export default class GravityControlNode extends ComboNumberControl<Gravity> {
         Gravity.JUPITER,
         Gravity.PLANET_X,
         customValue
-      ].map( gravity => new ComboBoxItem( new Text( gravity.name, {
-        font: DensityBuoyancyCommonConstants.COMBO_BOX_ITEM_FONT,
-        maxWidth: 160
-      } ), gravity, { tandemName: `${gravity.tandemName}Item` } ) ),
+      ].map( gravity => {
+        return {
+          value: gravity,
+          node: new Text( gravity.name, {
+            font: DensityBuoyancyCommonConstants.COMBO_BOX_ITEM_FONT,
+            maxWidth: 160
+          } ),
+          tandemName: `${gravity.tandemName}${ComboBox.ITEM_TANDEM_NAME_SUFFIX}`
+        };
+      } ),
       customValue: customValue,
       numberControlOptions: {
         delta: 0.1

@@ -11,7 +11,6 @@ import Dimension2 from '../../../../dot/js/Dimension2.js';
 import Range from '../../../../dot/js/Range.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import { Node, Text } from '../../../../scenery/js/imports.js';
-import ComboBoxItem from '../../../../sun/js/ComboBoxItem.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import densityBuoyancyCommonStrings from '../../densityBuoyancyCommonStrings.js';
 import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
@@ -39,10 +38,16 @@ export default class DensityControlNode extends ComboNumberControl<Material> {
       comboItems: [
         ...materials,
         customValue
-      ].map( material => new ComboBoxItem( new Text( material.name, {
-        font: DensityBuoyancyCommonConstants.COMBO_BOX_ITEM_FONT,
-        maxWidth: 160
-      } ), material, { tandemName: `${material.tandemName}Item` } ) ),
+      ].map( material => {
+        return {
+          value: material,
+          node: new Text( material.name, {
+            font: DensityBuoyancyCommonConstants.COMBO_BOX_ITEM_FONT,
+            maxWidth: 160
+          } ),
+          tandemName: `${material.tandemName}Item`
+        };
+      } ),
       customValue: customValue,
       numberControlOptions: {
         delta: 0.01,

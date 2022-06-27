@@ -19,7 +19,6 @@ import NumberDisplay from '../../../../scenery-phet/js/NumberDisplay.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import { FlowBox, FlowBoxOptions, HBox, Text, VDivider, Node } from '../../../../scenery/js/imports.js';
 import ComboBox from '../../../../sun/js/ComboBox.js';
-import ComboBoxItem from '../../../../sun/js/ComboBoxItem.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import densityBuoyancyCommonStrings from '../../densityBuoyancyCommonStrings.js';
@@ -63,10 +62,14 @@ export default class ShapeSizeControlNode extends FlowBox {
     } );
 
     const comboBox = new ComboBox( massShapeProperty, MassShape.enumeration.values.map( massShape => {
-      return new ComboBoxItem( new Text( shapeStringMap[ massShape.name ], {
-        font: DensityBuoyancyCommonConstants.COMBO_BOX_ITEM_FONT,
-        maxWidth: 160
-      } ), massShape, { tandemName: `${tandemNameMap[ massShape.name ]}Item` } );
+      return {
+        value: massShape,
+        node: new Text( shapeStringMap[ massShape.name ], {
+          font: DensityBuoyancyCommonConstants.COMBO_BOX_ITEM_FONT,
+          maxWidth: 160
+        } ),
+        tandemName: `${tandemNameMap[ massShape.name ]}${ComboBox.ITEM_TANDEM_NAME_SUFFIX}`
+      };
     } ), listParent, {
       xMargin: 8,
       yMargin: 4

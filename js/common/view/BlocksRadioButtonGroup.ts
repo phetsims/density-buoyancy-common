@@ -10,7 +10,8 @@ import Property from '../../../../axon/js/Property.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
 import ThreeStage from '../../../../mobius/js/ThreeStage.js';
 import ThreeUtils from '../../../../mobius/js/ThreeUtils.js';
-import merge from '../../../../phet-core/js/merge.js';
+import optionize from '../../../../phet-core/js/optionize.js';
+import EmptyObjectType from '../../../../phet-core/js/types/EmptyObjectType.js';
 import { Image, Node } from '../../../../scenery/js/imports.js';
 import RectangularRadioButtonGroup, { RectangularRadioButtonGroupOptions } from '../../../../sun/js/buttons/RectangularRadioButtonGroup.js';
 import doubleCuboidIcon_png from '../../../mipmaps/doubleCuboidIcon_png.js';
@@ -47,11 +48,13 @@ export default class BlocksRadioButtonGroup extends RectangularRadioButtonGroup<
         node: BlocksRadioButtonGroup.getDoubleCuboidIcon(),
         tandemName: 'twoBlocksRadioButton'
       }
-    ], merge( {
+    ], optionize<BlocksRadioButtonGroupOptions, EmptyObjectType, RectangularRadioButtonGroupOptions>()( {
       orientation: 'horizontal',
-      baseColor: 'rgb( 230, 231, 232 )',
       touchAreaXDilation: 5,
-      touchAreaYDilation: 5
+      touchAreaYDilation: 5,
+      radioButtonOptions: {
+        baseColor: 'rgb( 230, 231, 232 )'
+      }
     }, options ) );
   }
 

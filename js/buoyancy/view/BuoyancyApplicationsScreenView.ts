@@ -278,14 +278,16 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
       }
     ], {
       orientation: 'horizontal',
-      buttonContentXMargin: 10,
-      buttonContentYMargin: 10,
-      selectedLineWidth: 2,
-      deselectedLineWidth: 1.5,
       touchAreaXDilation: 6,
       touchAreaYDilation: 6,
-      selectedStroke: DensityBuoyancyCommonColors.radioBorderColorProperty,
-      baseColor: DensityBuoyancyCommonColors.radioBackgroundColorProperty
+      radioButtonOptions: {
+        xMargin: 10,
+        yMargin: 10,
+        selectedLineWidth: 2,
+        deselectedLineWidth: 1.5,
+        selectedStroke: DensityBuoyancyCommonColors.radioBorderColorProperty,
+        baseColor: DensityBuoyancyCommonColors.radioBackgroundColorProperty
+      }
     } );
     this.addChild( bottleBoatSelectionNode );
 

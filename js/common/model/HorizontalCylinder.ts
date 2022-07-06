@@ -216,6 +216,16 @@ export default class HorizontalCylinder extends Mass {
   }
 
   /**
+   * Releases references
+   */
+  override dispose(): void {
+    this.radiusProperty.dispose();
+    this.lengthProperty.dispose();
+
+    super.dispose();
+  }
+
+  /**
    * Returns a horizontal cylinder shape for a given radius/length.
    */
   static getHorizontalCylinderShape( radius: number, length: number ): Shape {

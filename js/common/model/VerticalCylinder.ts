@@ -189,6 +189,16 @@ export default class VerticalCylinder extends Mass {
   }
 
   /**
+   * Releases references
+   */
+  override dispose(): void {
+    this.radiusProperty.dispose();
+    this.heightProperty.dispose();
+
+    super.dispose();
+  }
+
+  /**
    * Returns a vertical cylinder shape for a given radius/height.
    */
   static getVerticalCylinderShape( radius: number, height: number ): Shape {

@@ -246,6 +246,16 @@ export default class Cone extends Mass {
   }
 
   /**
+   * Releases references
+   */
+  override dispose(): void {
+    this.radiusProperty.dispose();
+    this.heightProperty.dispose();
+
+    super.dispose();
+  }
+
+  /**
    * Returns an array of vertices for the 2d physics model
    */
   static getConeVertices( radius: number, height: number, isVertexUp: boolean ): Vector2[] {

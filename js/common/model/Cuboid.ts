@@ -21,8 +21,9 @@ import IOType from '../../../../tandem/js/types/IOType.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import Mass, { InstrumentedMassOptions } from './Mass.js';
 import PhysicsEngine from './PhysicsEngine.js';
+import { MassShape } from './MassShape.js';
 
-export type CuboidOptions = StrictOmit<InstrumentedMassOptions, 'body' | 'shape' | 'volume' | 'phetioType'>;
+export type CuboidOptions = StrictOmit<InstrumentedMassOptions, 'body' | 'shape' | 'volume' | 'massShape'>;
 
 export default class Cuboid extends Mass {
 
@@ -37,6 +38,7 @@ export default class Cuboid extends Mass {
       body: engine.createBox( size.width, size.height ),
       shape: Shape.rect( size.minX, size.minY, size.width, size.height ),
       volume: size.width * size.height * size.depth,
+      massShape: MassShape.BLOCK,
 
       tandem: Tandem.OPTIONAL,
       phetioType: Cuboid.CuboidIO

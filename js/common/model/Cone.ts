@@ -21,11 +21,12 @@ import IOType from '../../../../tandem/js/types/IOType.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import Mass, { InstrumentedMassOptions, MassOptions } from './Mass.js';
 import PhysicsEngine from './PhysicsEngine.js';
+import { MassShape } from './MassShape.js';
 
 const BOTTOM_FROM_CENTER_RATIO = 0.25; // center of mass to the bottom is 1/4 of the height of the cone
 const TOP_FROM_CENTER_RATIO = 0.75; // center of mass to the tip is 3/4 of the height of the cone
 
-export type ConeOptions = StrictOmit<InstrumentedMassOptions, 'body' | 'shape' | 'volume' | 'phetioType'>;
+export type ConeOptions = StrictOmit<InstrumentedMassOptions, 'body' | 'shape' | 'volume' | 'massShape'>;
 
 export default class Cone extends Mass {
 
@@ -48,6 +49,7 @@ export default class Cone extends Mass {
       body: engine.createFromVertices( initialVertices, false ),
       shape: Shape.polygon( initialVertices ),
       volume: Cone.getVolume( radius, height ),
+      massShape: isVertexUp ? MassShape.CONE : MassShape.INVERTED_CONE,
 
       phetioType: Cone.ConeIO
     }, providedConfig );

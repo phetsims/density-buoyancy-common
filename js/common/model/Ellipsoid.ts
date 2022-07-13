@@ -20,8 +20,9 @@ import IOType from '../../../../tandem/js/types/IOType.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import Mass, { InstrumentedMassOptions } from './Mass.js';
 import PhysicsEngine from './PhysicsEngine.js';
+import { MassShape } from './MassShape.js';
 
-export type EllipsoidOptions = StrictOmit<InstrumentedMassOptions, 'body' | 'shape' | 'volume' | 'phetioType'>;
+export type EllipsoidOptions = StrictOmit<InstrumentedMassOptions, 'body' | 'shape' | 'volume' | 'massShape'>;
 
 export default class Ellipsoid extends Mass {
 
@@ -36,6 +37,7 @@ export default class Ellipsoid extends Mass {
       body: engine.createFromVertices( Ellipsoid.getEllipsoidVertices( size.width, size.height ), false ),
       shape: Ellipsoid.getEllipsoidShape( size.width, size.height ),
       volume: Ellipsoid.getVolume( size ),
+      massShape: MassShape.ELLIPSOID,
 
       phetioType: Ellipsoid.EllipsoidIO
     }, providedConfig );
@@ -182,6 +184,15 @@ export default class Ellipsoid extends Mass {
     this.updateSize( this.sizeProperty.value );
 
     super.reset();
+  }
+
+  /**
+   * Releases references
+   */
+  override dispose(): void {
+    this.sizeProperty.dispose();
+
+    super.dispose();
   }
 
   /**

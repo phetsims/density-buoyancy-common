@@ -24,8 +24,10 @@ import IProperty from '../../../../axon/js/IProperty.js';
 import Ray3 from '../../../../dot/js/Ray3.js';
 import Multilink from '../../../../axon/js/Multilink.js';
 import IReadOnlyProperty from '../../../../axon/js/IReadOnlyProperty.js';
+import IOType from '../../../../tandem/js/types/IOType.js';
+import { MassShape } from '../../common/model/MassShape.js';
 
-export type BoatOptions = StrictOmit<InstrumentedMassOptions, 'body' | 'shape' | 'volume' | 'material'>;
+export type BoatOptions = StrictOmit<InstrumentedMassOptions, 'body' | 'shape' | 'volume' | 'material' | 'massShape'>;
 
 export default class Boat extends Mass {
 
@@ -52,6 +54,7 @@ export default class Boat extends Mass {
       body: engine.createFromVertices( boatIntersectionVertices, true ),
       shape: Shape.polygon( boatIntersectionVertices ),
       volume: volume,
+      massShape: MassShape.BLOCK,
 
       // material
       material: Material.ALUMINUM
@@ -252,6 +255,15 @@ export default class Boat extends Mass {
 
     super.reset();
   }
+
+  static BoatIO: IOType;
 }
+
+Boat.BoatIO = new IOType( 'BoatIO', {
+  valueType: Boat,
+  supertype: Mass.MassIO,
+  documentation: 'Represents a boat'
+} );
+
 
 densityBuoyancyCommon.register( 'Boat', Boat );

@@ -49,10 +49,10 @@ export default class BuoyancyIntroScreenView extends DensityBuoyancyScreenView<B
       return {
         node: new Text( blockSetStringMap[ blockSet.name ], {
           font: DensityBuoyancyCommonConstants.RADIO_BUTTON_FONT,
-          tandem: blockSetControlTandem.createTandem( blockSetTandemNameMap[ blockSet.name ] ),
           maxWidth: 160
         } ),
-        value: blockSet
+        value: blockSet,
+        tandemName: `${blockSetTandemNameMap[ blockSet.name ]}RadioButton`
       };
     } ), {
       tandem: blockSetControlTandem

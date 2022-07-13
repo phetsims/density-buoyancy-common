@@ -28,6 +28,7 @@ import Gravity from './Gravity.js';
 import IProperty from '../../../../axon/js/IProperty.js';
 import IReadOnlyProperty from '../../../../axon/js/IReadOnlyProperty.js';
 import Ray3 from '../../../../dot/js/Ray3.js';
+import { MassShape } from './MassShape.js';
 
 // constants
 const SCALE_WIDTH = 0.15;
@@ -64,7 +65,7 @@ type SelfOptions = {
   displayType?: DisplayType;
 };
 
-export type ScaleOptions = SelfOptions & StrictOmit<InstrumentedMassOptions, 'body' | 'shape' | 'volume' | 'material' | 'phetioType'>;
+export type ScaleOptions = SelfOptions & StrictOmit<InstrumentedMassOptions, 'body' | 'shape' | 'volume' | 'material' | 'massShape'>;
 
 export default class Scale extends Mass {
 
@@ -81,6 +82,7 @@ export default class Scale extends Mass {
       body: engine.createBox( SCALE_WIDTH, SCALE_HEIGHT, providedOptions.canMove === false ),
       shape: Shape.rect( -SCALE_WIDTH / 2, -SCALE_HEIGHT / 2, SCALE_WIDTH, SCALE_HEIGHT ),
       volume: SCALE_VOLUME,
+      massShape: MassShape.BLOCK,
 
       // {DisplayType}
       displayType: DisplayType.NEWTONS,

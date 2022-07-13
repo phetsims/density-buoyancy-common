@@ -21,8 +21,9 @@ import IOType from '../../../../tandem/js/types/IOType.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import Mass, { InstrumentedMassOptions } from './Mass.js';
 import PhysicsEngine from './PhysicsEngine.js';
+import { MassShape } from './MassShape.js';
 
-export type VerticalCylinderOptions = StrictOmit<InstrumentedMassOptions, 'body' | 'shape' | 'volume' | 'phetioType'>;
+export type VerticalCylinderOptions = StrictOmit<InstrumentedMassOptions, 'body' | 'shape' | 'volume' | 'massShape'>;
 
 export default class VerticalCylinder extends Mass {
 
@@ -40,6 +41,7 @@ export default class VerticalCylinder extends Mass {
       body: engine.createBox( 2 * radius, height ),
       shape: VerticalCylinder.getVerticalCylinderShape( radius, height ),
       volume: VerticalCylinder.getVolume( radius, height ),
+      massShape: MassShape.VERTICAL_CYLINDER,
 
       phetioType: VerticalCylinder.VerticalCylinderIO
     }, providedConfig );

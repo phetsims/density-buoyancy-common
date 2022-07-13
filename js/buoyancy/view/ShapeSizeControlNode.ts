@@ -20,9 +20,9 @@ import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import { FlowBox, FlowBoxOptions, HBox, Text, VDivider, Node } from '../../../../scenery/js/imports.js';
 import ComboBox from '../../../../sun/js/ComboBox.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
+import { MassShape } from '../../common/model/MassShape.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import densityBuoyancyCommonStrings from '../../densityBuoyancyCommonStrings.js';
-import { MassShape } from '../model/BuoyancyShapesModel.js';
 
 // constants
 const shapeStringMap = {

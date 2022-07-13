@@ -85,6 +85,8 @@ import PhysicsEngine from '../../common/model/PhysicsEngine.js';
 import Ray3 from '../../../../dot/js/Ray3.js';
 import Multilink from '../../../../axon/js/Multilink.js';
 import IReadOnlyProperty from '../../../../axon/js/IReadOnlyProperty.js';
+import IOType from '../../../../tandem/js/types/IOType.js';
+import { MassShape } from '../../common/model/MassShape.js';
 
 // constants (in logical coordinates)
 const BODY_CORNER_RADIUS = 0.02; // Used both between the taper/body and between the body/base
@@ -169,7 +171,7 @@ const BOTTLE_INITIAL_INTERIOR_VOLUME = 0.004;
 // {Material}
 const BOTTLE_INITIAL_INTERIOR_MATERIAL = Material.WATER;
 
-export type BottleOptions = StrictOmit<InstrumentedMassOptions, 'body' | 'shape' | 'volume' | 'material'>;
+export type BottleOptions = StrictOmit<InstrumentedMassOptions, 'body' | 'shape' | 'volume' | 'material' | 'massShape'>;
 
 export default class Bottle extends Mass {
 
@@ -196,7 +198,8 @@ export default class Bottle extends Mass {
       volume: BOTTLE_VOLUME,
       material: Material.createCustomMaterial( {
         density: ( BOTTLE_MASS + BOTTLE_INITIAL_INTERIOR_MATERIAL.density * BOTTLE_INITIAL_INTERIOR_VOLUME ) / BOTTLE_VOLUME
-      } )
+      } ),
+      massShape: MassShape.BLOCK
     }, providedConfig );
 
     assert && assert( !config.canRotate );
@@ -1241,7 +1244,15 @@ const FLAT_INTERSECTION_VERTICES = [ ${flatIntersectionVertices.map( v => `new V
   static TEN_LITER_DISPLACED_VOLUMES: number[];
 
   static FLAT_INTERSECTION_VERTICES: Vector2[];
+
+  static BottleIO: IOType;
 }
+
+Bottle.BottleIO = new IOType( 'BottleIO', {
+  valueType: Bottle,
+  supertype: Mass.MassIO,
+  documentation: 'Represents a bottle'
+} );
 
 Bottle.TEN_LITER_SCALE_MULTIPLIER = TEN_LITER_SCALE_MULTIPLIER;
 Bottle.MAX_RADIUS = FULL_RADIUS * TEN_LITER_SCALE_MULTIPLIER;

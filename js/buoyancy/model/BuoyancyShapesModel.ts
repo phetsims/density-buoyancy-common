@@ -7,18 +7,15 @@
  */
 
 import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
-import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import EnumerationProperty from '../../../../axon/js/EnumerationProperty.js';
-import IReadOnlyProperty from '../../../../axon/js/IReadOnlyProperty.js';
 import Multilink from '../../../../axon/js/Multilink.js';
 import NumberProperty from '../../../../axon/js/NumberProperty.js';
 import Property from '../../../../axon/js/Property.js';
 import Matrix3 from '../../../../dot/js/Matrix3.js';
-import Enumeration from '../../../../phet-core/js/Enumeration.js';
-import EnumerationValue from '../../../../phet-core/js/EnumerationValue.js';
 import optionize from '../../../../phet-core/js/optionize.js';
 import EmptyObjectType from '../../../../phet-core/js/types/EmptyObjectType.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
+import PhetioCapsule from '../../../../tandem/js/PhetioCapsule.js';
 import Cone from '../../common/model/Cone.js';
 import Cuboid from '../../common/model/Cuboid.js';
 import DensityBuoyancyModel, { DensityBuoyancyModelOptions } from '../../common/model/DensityBuoyancyModel.js';
@@ -30,19 +27,9 @@ import Scale, { DisplayType } from '../../common/model/Scale.js';
 import TwoBlockMode from '../../common/model/TwoBlockMode.js';
 import VerticalCylinder from '../../common/model/VerticalCylinder.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
+import { MassShape } from '../../common/model/MassShape.js';
+import IProperty from '../../../../axon/js/IProperty.js';
 
-export class MassShape extends EnumerationValue {
-  static BLOCK = new MassShape();
-  static ELLIPSOID = new MassShape();
-  static VERTICAL_CYLINDER = new MassShape();
-  static HORIZONTAL_CYLINDER = new MassShape();
-  static CONE = new MassShape();
-  static INVERTED_CONE = new MassShape();
-
-  static enumeration = new Enumeration( MassShape, {
-    phetioDocumentation: 'Shape of the mass'
-  } );
-}
 const MATERIAL = Material.WOOD;
 export type BuoyancyShapesModelOptions = DensityBuoyancyModelOptions;
 
@@ -60,8 +47,8 @@ export default class BuoyancyShapesModel extends DensityBuoyancyModel {
   primaryHeightRatioProperty: Property<number>;
   secondaryHeightRatioProperty: Property<number>;
 
-  primaryMassProperty: IReadOnlyProperty<Mass>;
-  secondaryMassProperty: IReadOnlyProperty<Mass>;
+  primaryMassProperty: IProperty<Mass>;
+  secondaryMassProperty: IProperty<Mass>;
 
   constructor( providedOptions: BuoyancyShapesModelOptions ) {
     const options = optionize<DensityBuoyancyModelOptions, EmptyObjectType>()( {
@@ -99,8 +86,12 @@ export default class BuoyancyShapesModel extends DensityBuoyancyModel {
     this.pool.liquidVolumeProperty.value -= this.poolScale.volumeProperty.value;
     this.pool.liquidVolumeProperty.setInitialValue( this.pool.liquidVolumeProperty.value );
 
-    this.primaryShapeProperty = new EnumerationProperty( MassShape.BLOCK );
-    this.secondaryShapeProperty = new EnumerationProperty( MassShape.INVERTED_CONE );
+    this.primaryShapeProperty = new EnumerationProperty( MassShape.BLOCK, {
+      tandem: tandem.createTandem( 'primaryShapeProperty' )
+    } );
+    this.secondaryShapeProperty = new EnumerationProperty( MassShape.INVERTED_CONE, {
+      tandem: tandem.createTandem( 'secondaryShapeProperty' )
+    } );
 
     this.primaryWidthRatioProperty = new NumberProperty( 0.25 );
     this.secondaryWidthRatioProperty = new NumberProperty( 0.25 );
@@ -108,7 +99,7 @@ export default class BuoyancyShapesModel extends DensityBuoyancyModel {
     this.primaryHeightRatioProperty = new NumberProperty( 0.75 );
     this.secondaryHeightRatioProperty = new NumberProperty( 0.75 );
 
-    const createMass = ( shape: MassShape, widthRatio: number, heightRatio: number, tandem: Tandem ): Mass => {
+    const createMass = ( tandem: Tandem, shape: MassShape, widthRatio: number, heightRatio: number ): Mass => {
       switch( shape ) {
         case MassShape.BLOCK:
           return new Cuboid( this.engine, Cuboid.getSizeFromRatios( widthRatio, heightRatio ), {
@@ -153,16 +144,42 @@ export default class BuoyancyShapesModel extends DensityBuoyancyModel {
       }
     };
 
-    const primaryMassTandem = tandem.createTandem( 'primaryMass' );
-    const secondaryMassTandem = tandem.createTandem( 'secondaryMass' );
+    const primaryMassCapsule = new PhetioCapsule(
+      ( tandem: Tandem, shape: MassShape ) => createMass( tandem, shape, this.primaryWidthRatioProperty.value, this.primaryHeightRatioProperty.value ),
+      [ this.primaryShapeProperty.initialValue ], {
+        tandem: tandem.createTandem( 'primaryMassCapsule' ),
+        phetioType: PhetioCapsule.PhetioCapsuleIO( Mass.MassIO )
+      } );
 
-    // DerivedProperty doesn't need disposal, since everything here lives for the lifetime of the simulation
-    this.primaryMassProperty = new DerivedProperty( [ this.primaryShapeProperty ], shape => {
-      return createMass( shape, this.primaryWidthRatioProperty.value, this.primaryHeightRatioProperty.value, primaryMassTandem );
+    const secondaryMassCapsule = new PhetioCapsule(
+      ( tandem: Tandem, shape: MassShape ) => createMass( tandem, shape, this.secondaryWidthRatioProperty.value, this.secondaryHeightRatioProperty.value ),
+      [ this.secondaryShapeProperty.initialValue ], {
+        tandem: tandem.createTandem( 'secondaryMassCapsule' ),
+        phetioType: PhetioCapsule.PhetioCapsuleIO( Mass.MassIO )
+      } );
+
+    // Property doesn't need disposal, since everything here lives for the lifetime of the simulation
+    this.primaryMassProperty = new Property( primaryMassCapsule.getElement( this.primaryShapeProperty.value ) );
+    this.primaryShapeProperty.lazyLink( ( massShape: MassShape ) => {
+      if ( primaryMassCapsule.hasElement() && !phet.joist.sim.isSettingPhetioStateProperty.value ) {
+        primaryMassCapsule.disposeElement();
+      }
+      this.primaryMassProperty.value = primaryMassCapsule.getElement( massShape );
     } );
-    // DerivedProperty doesn't need disposal, since everything here lives for the lifetime of the simulation
-    this.secondaryMassProperty = new DerivedProperty( [ this.secondaryShapeProperty ], shape => {
-      return createMass( shape, this.secondaryWidthRatioProperty.value, this.secondaryHeightRatioProperty.value, secondaryMassTandem );
+    primaryMassCapsule.elementCreatedEmitter.addListener( element => {
+      this.primaryMassProperty.value = element;
+    } );
+
+    // Property doesn't need disposal, since everything here lives for the lifetime of the simulation
+    this.secondaryMassProperty = new Property( secondaryMassCapsule.getElement( this.secondaryShapeProperty.value ) );
+    this.secondaryShapeProperty.lazyLink( ( massShape: MassShape ) => {
+      if ( secondaryMassCapsule.hasElement() && !phet.joist.sim.isSettingPhetioStateProperty.value ) {
+        secondaryMassCapsule.disposeElement();
+      }
+      this.secondaryMassProperty.value = secondaryMassCapsule.getElement( massShape );
+    } );
+    secondaryMassCapsule.elementCreatedEmitter.addListener( element => {
+      this.secondaryMassProperty.value = element;
     } );
 
     Multilink.lazyMultilink( [ this.primaryWidthRatioProperty, this.primaryHeightRatioProperty ], ( widthRatio, heightRatio ) => {
@@ -176,7 +193,9 @@ export default class BuoyancyShapesModel extends DensityBuoyancyModel {
     [ this.primaryMassProperty, this.secondaryMassProperty ].forEach( massProperty => {
       // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
       massProperty.lazyLink( ( newMass, oldMass ) => {
-        newMass.matrix.set( oldMass.matrix );
+        if ( !phet.joist.sim.isSettingPhetioStateProperty.value ) {
+          newMass.matrix.set( oldMass.matrix );
+        }
         newMass.writeData();
         newMass.transformedEmitter.emit();
 
@@ -184,8 +203,6 @@ export default class BuoyancyShapesModel extends DensityBuoyancyModel {
           this.masses.remove( oldMass );
           this.masses.add( newMass );
         }
-
-        oldMass.dispose();
       } );
     } );
 

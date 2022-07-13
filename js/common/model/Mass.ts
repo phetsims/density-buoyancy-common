@@ -39,6 +39,8 @@ import Basin from './Basin.js';
 import Ray3 from '../../../../dot/js/Ray3.js';
 import IReadOnlyProperty from '../../../../axon/js/IReadOnlyProperty.js';
 import Multilink from '../../../../axon/js/Multilink.js';
+import PickRequired from '../../../../phet-core/js/types/PickRequired.js';
+import { MassShape } from './MassShape.js';
 
 // constants
 export class MassTag extends EnumerationValue {
@@ -120,6 +122,7 @@ type SelfOptions = {
   shape: Shape;
   material: Material;
   volume: number;
+  massShape: MassShape;
 
   visible?: boolean;
   matrix?: Matrix3;
@@ -136,12 +139,14 @@ type SelfOptions = {
 };
 
 export type MassOptions = SelfOptions & PhetioObjectOptions;
-export type InstrumentedMassOptions = MassOptions & { tandem: Tandem };
+export type InstrumentedMassOptions = MassOptions & PickRequired<MassOptions, 'tandem'>;
 
 export default abstract class Mass extends PhetioObject {
 
   engine: PhysicsEngine;
   body: PhysicsEngineBody;
+
+  massShape: MassShape;
 
   // Without the matrix applied (effectively in "local" model coordinates)
   shapeProperty: Property<Shape>;
@@ -256,6 +261,7 @@ export default abstract class Mass extends PhetioObject {
 
     this.engine = engine;
     this.body = config.body;
+    this.massShape = config.massShape;
 
     this.shapeProperty = new Property( config.shape, {
       valueType: Shape
@@ -681,6 +687,7 @@ Mass.MassIO = new IOType<Mass>( 'MassIO', {
     canRotate: BooleanIO,
     canMove: BooleanIO,
     tag: EnumerationIO( MassTag ),
+    massShape: EnumerationIO( MassShape ),
 
     // engine.bodyToStateObject
     position: Vector2.Vector2IO,
@@ -694,7 +701,8 @@ Mass.MassIO = new IOType<Mass>( 'MassIO', {
       originalMatrix: Matrix3.toStateObject( mass.originalMatrix ),
       canRotate: BooleanIO.toStateObject( mass.canRotate ),
       canMove: BooleanIO.toStateObject( mass.canMove ),
-      tag: EnumerationIO( MassTag ).toStateObject( mass.tag )
+      tag: EnumerationIO( MassTag ).toStateObject( mass.tag ),
+      massShape: EnumerationIO( MassShape ).toStateObject( mass.massShape )
     }, mass.engine.bodyToStateObject( mass.body ) );
   },
   applyState( mass: Mass, obj: any ) {
@@ -706,7 +714,8 @@ Mass.MassIO = new IOType<Mass>( 'MassIO', {
     mass.tag = EnumerationIO( MassTag ).fromStateObject( obj.tag );
     mass.engine.bodyApplyState( mass.body, obj );
     mass.transformedEmitter.emit();
-  }
+  },
+  stateToArgsForConstructor: ( stateObject: any ) => [ EnumerationIO( MassShape ).fromStateObject( stateObject.massShape ) ]
 } );
 
 densityBuoyancyCommon.register( 'Mass', Mass );

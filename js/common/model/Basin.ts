@@ -61,6 +61,7 @@ export default abstract class Basin {
       interpolate: InterpolatedProperty.interpolateNumber,
       phetioType: InterpolatedProperty.InterpolatedPropertyIO( NumberIO ),
       tandem: tandem.createTandem( 'liquidYInterpolatedProperty' ),
+      phetioHighFrequency: true,
       phetioReadOnly: true,
       phetioDocumentation: 'The y-value of the liquid in model coordinates (where 0 is the top of the pool)'
     } );

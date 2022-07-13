@@ -29,11 +29,11 @@ export default class P2Engine extends PhysicsEngine {
   private readonly world: p2.World;
 
   // Maps {number} body.id => {p2.RevoluteConstraint}
-  private readonly pointerConstraintMap: { [ key: number ]: p2.RevoluteConstraint };
+  private readonly pointerConstraintMap: Record<number, p2.RevoluteConstraint>;
 
   // Maps {number} body.id => {p2.Body}. Contains bodies that are empty, and specifically used for
   // pointer constraints (so they can be positioned to where the pointer is).
-  private readonly nullBodyMap: { [ key: number ]: p2.Body };
+  private readonly nullBodyMap: Record<number, p2.Body>;
 
   private readonly internalStepEmitter: TinyEmitter<[ number ]>;
 
@@ -442,14 +442,14 @@ export default class P2Engine extends PhysicsEngine {
   /**
    * Converts a Vector2 to a p2.vec2, for use with p2.js
    */
-  private static vectorToP2( vector: Vector2 ): [number, number] {
+  private static vectorToP2( vector: Vector2 ): [ number, number ] {
     return p2.vec2.fromValues( vector.x * SIZE_SCALE, vector.y * SIZE_SCALE );
   }
 
   /**
    * Converts a p2.vec2 to a Vector2
    */
-  private static p2ToVector( vector: [number, number] ): Vector2 {
+  private static p2ToVector( vector: [ number, number ] ): Vector2 {
     return new Vector2( vector[ 0 ] / SIZE_SCALE, vector[ 1 ] / SIZE_SCALE );
   }
 

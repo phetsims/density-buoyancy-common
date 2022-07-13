@@ -88,9 +88,7 @@ export default class MaterialMassVolumeControlNode extends VBox {
     } );
 
     type MaterialEnumValue = { name: 'CUSTOM' | keyof Material };
-    type MaterialEnum = {
-      [ key: string ]: MaterialEnumValue;
-    };
+    type MaterialEnum = Record<string, MaterialEnumValue>;
     const MaterialEnumeration: MaterialEnum = EnumerationDeprecated.byKeys( [ ...materials.map( material => material.identifier! ), 'CUSTOM' ] ) as unknown as MaterialEnum;
 
     const comboBoxMaterialProperty = new DynamicProperty( new Property( materialProperty ), {

@@ -105,9 +105,9 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
   private forceDiagramNodes: ForceDiagramNode[];
   private massLabelNodes: MassLabelNode[];
 
-  private startDragAction: PhetioAction<[Mass, Vector2]>;
-  private updateDragAction: PhetioAction<[Mass, Vector2]>;
-  private endDragAction: PhetioAction<[Mass]>;
+  private startDragAction: PhetioAction<[ Mass, Vector2 ]>;
+  private updateDragAction: PhetioAction<[ Mass, Vector2 ]>;
+  private endDragAction: PhetioAction<[ Mass ]>;
 
   private debugView?: DebugView;
 
@@ -249,7 +249,7 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
 
     const draggedMasses: Mass[] = [];
 
-    this.sceneNode.backgroundEventTarget.addInputListener( <IInputListener>{
+    this.sceneNode.backgroundEventTarget.addInputListener( {
       down: ( event: SceneryEvent<MouseEvent | TouchEvent | PointerEvent> ) => {
         if ( !event.canStartPress() ) { return; }
 
@@ -325,7 +325,7 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
       interrupt: () => {
         draggedMasses.slice().forEach( mass => mass.interruptedEmitter.emit() );
       }
-    } );
+    } as IInputListener );
 
     const ambientLight = new THREE.AmbientLight( 0x333333 );
     this.sceneNode.stage.threeScene.add( ambientLight );

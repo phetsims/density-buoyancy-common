@@ -105,7 +105,7 @@ export default class DensityBuoyancyModel {
       phetioDocumentation: 'Displays a mass readout on each object'
     } );
     this.forceScaleProperty = new NumberProperty( options.initialForceScale, {
-      tandem: options.canShowForces ? tandem.createTandem( 'forceScaleProperty' ) : Tandem.OPT_OUT,
+      tandem: options.canShowForces ? tandem.createTandem( 'vectorScaleProperty' ) : Tandem.OPT_OUT,
       range: new Range( Math.pow( 0.5, 9 ), 1 )
     } ).asRanged();
 

@@ -116,6 +116,11 @@ type MaterialIdentifier = MaterialNonCustomIdentifier | 'CUSTOM';
 
 const materialToEnum = ( material: Material ): MaterialEnumeration => MaterialEnumeration[ ( ( material.identifier as MaterialIdentifier | null ) || 'CUSTOM' ) ];
 
+// For the Buoyancy Shapes screen, but needed here because setRatios is included in each core type
+// See https://github.com/phetsims/buoyancy/issues/29
+export const MASS_MIN_SHAPES_DIMENSION = 0.1; // 10cm => 1L square
+export const MASS_MAX_SHAPES_DIMENSION = Math.pow( 0.01, 1 / 3 ); // 10L square
+
 type SelfOptions = {
   // Required
   body: PhysicsEngineBody;

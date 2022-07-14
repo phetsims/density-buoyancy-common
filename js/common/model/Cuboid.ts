@@ -19,7 +19,7 @@ import EmptyObjectType from '../../../../phet-core/js/types/EmptyObjectType.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
 import IOType from '../../../../tandem/js/types/IOType.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
-import Mass, { InstrumentedMassOptions } from './Mass.js';
+import Mass, { InstrumentedMassOptions, MASS_MAX_SHAPES_DIMENSION, MASS_MIN_SHAPES_DIMENSION } from './Mass.js';
 import PhysicsEngine from './PhysicsEngine.js';
 import { MassShape } from './MassShape.js';
 
@@ -95,11 +95,8 @@ export default class Cuboid extends Mass {
    * Returns the general size of the mass based on a general size scale.
    */
   static getSizeFromRatios( widthRatio: number, heightRatio: number ): Bounds3 {
-    const minDimension = 0.1; // 10cm => 1L square
-    const maxDimension = Math.pow( 0.01, 1 / 3 ); // 10L square
-
-    const x = ( minDimension + widthRatio * ( maxDimension - minDimension ) ) / 2;
-    const y = ( minDimension + heightRatio * ( maxDimension - minDimension ) ) / 2;
+    const x = ( MASS_MIN_SHAPES_DIMENSION + widthRatio * ( MASS_MAX_SHAPES_DIMENSION - MASS_MIN_SHAPES_DIMENSION ) ) / 2;
+    const y = ( MASS_MIN_SHAPES_DIMENSION + heightRatio * ( MASS_MAX_SHAPES_DIMENSION - MASS_MIN_SHAPES_DIMENSION ) ) / 2;
     return new Bounds3( -x, -y, -x, x, y, x );
   }
 

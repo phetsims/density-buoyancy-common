@@ -43,11 +43,11 @@ export default class BuoyancyIntroScreenView extends DensityBuoyancyScreenView<B
       cameraLookAt: new Vector3( 0, -0.1, 0 )
     }, options ) );
 
-    const blockSetControlTandem = options.tandem.createTandem( 'blockSetControl' );
+    const blocksRadioButtonGroupTandem = options.tandem.createTandem( 'blocksRadioButtonGroup' );
 
-    const blockSetControl = new VerticalAquaRadioButtonGroup( model.blockSetProperty, BlockSet.enumeration.values.map( blockSet => {
+    const blocksRadioButtonGroup = new VerticalAquaRadioButtonGroup( model.blockSetProperty, BlockSet.enumeration.values.map( blockSet => {
       const tandemName = `${blockSetTandemNameMap[ blockSet.name ]}RadioButton`;
-      const tandem = blockSetControlTandem.createTandem( tandemName );
+      const tandem = blocksRadioButtonGroupTandem.createTandem( tandemName );
       return {
         node: new Text( blockSetStringMap[ blockSet.name ], {
           font: DensityBuoyancyCommonConstants.RADIO_BUTTON_FONT,
@@ -59,9 +59,9 @@ export default class BuoyancyIntroScreenView extends DensityBuoyancyScreenView<B
       };
     } ), {
       align: 'left',
-      tandem: blockSetControlTandem
+      tandem: blocksRadioButtonGroupTandem
     } );
-    const blockSetPanel = new Panel( blockSetControl, DensityBuoyancyCommonConstants.PANEL_OPTIONS );
+    const blockSetPanel = new Panel( blocksRadioButtonGroup, DensityBuoyancyCommonConstants.PANEL_OPTIONS );
 
     this.addChild( new AlignPropertyBox( blockSetPanel, this.visibleBoundsProperty, {
       xAlign: 'right',

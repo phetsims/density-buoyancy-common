@@ -34,6 +34,13 @@ export type BuoyancyIntroModelOptions = StrictOmit<BlockSetModelOptions<BlockSet
 
 export default class BuoyancyIntroModel extends BlockSetModel<BlockSet> {
   constructor( providedOptions: BuoyancyIntroModelOptions ) {
+    const tandem = providedOptions.tandem;
+
+    const blockSetsTandem = tandem.createTandem( 'blockSets' );
+    const sameMassTandem = blockSetsTandem.createTandem( 'sameMass' );
+    const sameVolumeTandem = blockSetsTandem.createTandem( 'sameVolume' );
+    const sameDensityTandem = blockSetsTandem.createTandem( 'sameDensity' );
+
     const options = optionize<BuoyancyIntroModelOptions, EmptyObjectType, BlockSetModelOptions<BlockSet>>()( {
       initialMode: BlockSet.SAME_MASS,
       BlockSet: BlockSet.enumeration,
@@ -43,12 +50,12 @@ export default class BuoyancyIntroModel extends BlockSetModel<BlockSet> {
           case BlockSet.SAME_MASS:
             return [
               Cube.createWithMass( model.engine, Material.WOOD, Vector2.ZERO, 5, {
-                tandem: providedOptions.tandem.createTandem( 'sameMassWood' ),
+                tandem: sameMassTandem.createTandem( 'blockA' ),
                 adjustableMaterial: true,
                 tag: MassTag.ONE_A
               } ),
               Cube.createWithMass( model.engine, Material.BRICK, Vector2.ZERO, 5, {
-                tandem: providedOptions.tandem.createTandem( 'sameMassBrick' ),
+                tandem: sameMassTandem.createTandem( 'blockB' ),
                 adjustableMaterial: true,
                 tag: MassTag.ONE_B
               } )
@@ -56,12 +63,12 @@ export default class BuoyancyIntroModel extends BlockSetModel<BlockSet> {
           case BlockSet.SAME_VOLUME:
             return [
               Cube.createWithVolume( model.engine, Material.WOOD, Vector2.ZERO, 0.005, {
-                tandem: providedOptions.tandem.createTandem( 'sameVolumeWood' ),
+                tandem: sameVolumeTandem.createTandem( 'blockA' ),
                 adjustableMaterial: true,
                 tag: MassTag.TWO_A
               } ),
               Cube.createWithVolume( model.engine, Material.BRICK, Vector2.ZERO, 0.005, {
-                tandem: providedOptions.tandem.createTandem( 'sameVolumeBrick' ),
+                tandem: sameVolumeTandem.createTandem( 'blockB' ),
                 adjustableMaterial: true,
                 tag: MassTag.TWO_B
               } )
@@ -69,12 +76,12 @@ export default class BuoyancyIntroModel extends BlockSetModel<BlockSet> {
           case BlockSet.SAME_DENSITY:
             return [
               Cube.createWithMass( model.engine, Material.WOOD, Vector2.ZERO, 2, {
-                tandem: providedOptions.tandem.createTandem( 'sameDensitySmall' ),
+                tandem: sameDensityTandem.createTandem( 'blockA' ),
                 adjustableMaterial: true,
                 tag: MassTag.THREE_A
               } ),
               Cube.createWithMass( model.engine, Material.WOOD, Vector2.ZERO, 4, {
-                tandem: providedOptions.tandem.createTandem( 'sameDensityLarge' ),
+                tandem: sameDensityTandem.createTandem( 'blockB' ),
                 adjustableMaterial: true,
                 tag: MassTag.THREE_B
               } )

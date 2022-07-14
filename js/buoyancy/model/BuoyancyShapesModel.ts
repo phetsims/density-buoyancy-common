@@ -147,14 +147,14 @@ export default class BuoyancyShapesModel extends DensityBuoyancyModel {
     const primaryMassCapsule = new PhetioCapsule(
       ( tandem: Tandem, shape: MassShape ) => createMass( tandem, shape, this.primaryWidthRatioProperty.value, this.primaryHeightRatioProperty.value ),
       [ this.primaryShapeProperty.initialValue ], {
-        tandem: tandem.createTandem( 'primaryMassCapsule' ),
+        tandem: tandem.createTandem( 'objectACapsule' ),
         phetioType: PhetioCapsule.PhetioCapsuleIO( Mass.MassIO )
       } );
 
     const secondaryMassCapsule = new PhetioCapsule(
       ( tandem: Tandem, shape: MassShape ) => createMass( tandem, shape, this.secondaryWidthRatioProperty.value, this.secondaryHeightRatioProperty.value ),
       [ this.secondaryShapeProperty.initialValue ], {
-        tandem: tandem.createTandem( 'secondaryMassCapsule' ),
+        tandem: tandem.createTandem( 'objectBCapsule' ),
         phetioType: PhetioCapsule.PhetioCapsuleIO( Mass.MassIO )
       } );
 

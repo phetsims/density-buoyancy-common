@@ -113,7 +113,7 @@ export default class BuoyancyShapesScreenView extends SecondaryMassScreenView<Bu
         this.popupLayer,
         {
           labelNode: PrimarySecondaryPanelsNode.getSecondaryLabelNode(),
-          visibleProperty: model.secondaryMassVisibleProperty
+          visibleProperty: new DynamicProperty( model.secondaryMassProperty, { derive: 'internalVisibleProperty' } )
         }
       )
     );

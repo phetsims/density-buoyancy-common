@@ -199,14 +199,15 @@ export default class BuoyancyShapesModel extends DensityBuoyancyModel {
         newMass.writeData();
         newMass.transformedEmitter.emit();
 
-        if ( this.masses.includes( oldMass ) ) {
-          this.masses.remove( oldMass );
-          this.masses.add( newMass );
+        if ( this.availableMasses.includes( oldMass ) ) {
+          this.availableMasses.remove( oldMass );
+          this.availableMasses.add( newMass );
         }
       } );
     } );
 
-    this.masses.add( this.primaryMassProperty.value );
+    this.availableMasses.add( this.primaryMassProperty.value );
+    this.availableMasses.add( this.secondaryMassProperty.value );
 
     this.modeProperty.link( mode => {
       this.secondaryMassProperty.value.internalVisibleProperty.value = mode === TwoBlockMode.TWO_BLOCKS;

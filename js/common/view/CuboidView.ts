@@ -56,14 +56,14 @@ export default class CuboidView extends MassView {
     let tagHeight: number | null = null;
     if ( cuboid.tag === MassTag.PRIMARY ) {
       this.tagNodeTexture = MassLabelNode.getPrimaryTexture();
-      this.tagMesh = new TextureQuad( this.tagNodeTexture!, TAG_SIZE, TAG_SIZE, {
+      this.tagMesh = new TextureQuad( this.tagNodeTexture, TAG_SIZE, TAG_SIZE, {
         depthTest: true
       } );
       tagHeight = TAG_SIZE;
     }
     else if ( cuboid.tag === MassTag.SECONDARY ) {
       this.tagNodeTexture = MassLabelNode.getSecondaryTexture();
-      this.tagMesh = new TextureQuad( this.tagNodeTexture!, TAG_SIZE, TAG_SIZE, {
+      this.tagMesh = new TextureQuad( this.tagNodeTexture, TAG_SIZE, TAG_SIZE, {
         depthTest: true
       } );
       tagHeight = TAG_SIZE;
@@ -73,15 +73,15 @@ export default class CuboidView extends MassView {
       const string = cuboid.nameProperty.value;
       this.tagNodeTexture = MassLabelNode.getBasicLabelTexture( string );
 
-      this.tagMesh = new TextureQuad( this.tagNodeTexture!, TAG_SCALE * this.tagNodeTexture!._width, TAG_SCALE * this.tagNodeTexture!._height, {
+      this.tagMesh = new TextureQuad( this.tagNodeTexture, TAG_SCALE * this.tagNodeTexture._width, TAG_SCALE * this.tagNodeTexture._height, {
         depthTest: true
       } );
-      tagHeight = TAG_SCALE * this.tagNodeTexture!._height;
+      tagHeight = TAG_SCALE * this.tagNodeTexture._height;
 
       this.cuboidNameListener = string => {
         this.tagNodeTexture!.dispose();
         this.tagNodeTexture = MassLabelNode.getBasicLabelTexture( string );
-        this.tagMesh!.updateTexture( this.tagNodeTexture!, TAG_SCALE * this.tagNodeTexture!._width, TAG_SCALE * this.tagNodeTexture!._height );
+        this.tagMesh!.updateTexture( this.tagNodeTexture, TAG_SCALE * this.tagNodeTexture._width, TAG_SCALE * this.tagNodeTexture._height );
         this.tagMesh!.visible = string !== '';
       };
       this.cuboid.nameProperty.lazyLink( this.cuboidNameListener );

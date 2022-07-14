@@ -327,7 +327,7 @@ export default class DensityMaterials {
         return new CustomMaterialView( material.density );
       }
       else {
-        return new CustomColoredMaterialView( material.customColor! );
+        return new CustomColoredMaterialView( material.customColor );
       }
     }
     else {

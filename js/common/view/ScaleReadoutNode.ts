@@ -27,7 +27,9 @@ export default class ScaleReadoutNode extends Node {
   private scaleForceMultilink: UnknownMultilink;
 
   constructor( mass: Scale, gravityProperty: IReadOnlyProperty<Gravity> ) {
-    super();
+    super( {
+      pickable: false
+    } );
 
     const readoutText = new Text( '', {
       font: new PhetFont( {

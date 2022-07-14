@@ -7,9 +7,10 @@
  */
 
 import Bounds3 from '../../../../dot/js/Bounds3.js';
+import Vector3 from '../../../../dot/js/Vector3.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import Ellipsoid from '../model/Ellipsoid.js';
-import MassView from './MassView.js';
+import MassView, { TAG_OFFSET } from './MassView.js';
 
 export default class EllipsoidView extends MassView {
 
@@ -26,7 +27,14 @@ export default class EllipsoidView extends MassView {
     this.ellipsoid = ellipsoid;
     this.ellipsoidGeometry = ellipsoidGeometry;
 
+    const positionTag = () => {
+      const size = ellipsoid.sizeProperty.value;
+      this.tagOffsetProperty.value = new Vector3( size.minX + TAG_OFFSET, size.maxY - this.tagHeight! - TAG_OFFSET, size.maxZ );
+    };
+    positionTag();
+
     this.updateListener = ( newSize: Bounds3, oldSize: Bounds3 ) => {
+      positionTag();
       // @ts-ignore OLD version possibly?
       ellipsoidGeometry.applyMatrix( new THREE.Matrix4().makeScale(
         newSize.width / oldSize.width,

@@ -10,7 +10,7 @@ import Vector3 from '../../../../dot/js/Vector3.js';
 import TriangleArrayWriter from '../../../../mobius/js/TriangleArrayWriter.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import Cone from '../model/Cone.js';
-import MassView from './MassView.js';
+import MassView, { TAG_OFFSET } from './MassView.js';
 
 // constants
 const segments = 64;
@@ -40,7 +40,20 @@ export default class ConeView extends MassView {
     this.cone = cone;
     this.coneGeometry = coneGeometry;
 
+    const positionTag = () => {
+      const radius = cone.radiusProperty.value;
+      const height = cone.heightProperty.value;
+      const vertexSign = cone.isVertexUp ? 1 : -1;
+      const vertexY = vertexSign * 0.75 * height;
+      const baseY = -vertexSign * 0.25 * height;
+      const topY = Math.max( vertexY, baseY );
+
+      this.tagOffsetProperty.value = new Vector3( -radius + TAG_OFFSET, topY - this.tagHeight! - TAG_OFFSET, radius );
+    };
+    positionTag();
+
     this.updateListener = () => {
+      positionTag();
       ConeView.updateArrays( coneGeometry.attributes.position.array as Float32Array, coneGeometry.attributes.normal.array as Float32Array, null, cone.radiusProperty.value, cone.heightProperty.value, cone.isVertexUp );
       coneGeometry.attributes.position.needsUpdate = true;
       coneGeometry.attributes.normal.needsUpdate = true;

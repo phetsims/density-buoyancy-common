@@ -10,7 +10,7 @@ import Vector3 from '../../../../dot/js/Vector3.js';
 import TriangleArrayWriter from '../../../../mobius/js/TriangleArrayWriter.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import VerticalCylinder from '../model/VerticalCylinder.js';
-import MassView from './MassView.js';
+import MassView, { TAG_OFFSET } from './MassView.js';
 
 // constants
 const segments = 64;
@@ -37,9 +37,17 @@ export default class VerticalCylinderView extends MassView {
 
     super( verticalCylinder, verticalCylinderGeometry );
 
+    const positionTag = () => {
+      const radius = verticalCylinder.radiusProperty.value;
+      const height = verticalCylinder.heightProperty.value;
+      this.tagOffsetProperty.value = new Vector3( -radius + TAG_OFFSET, height / 2 - this.tagHeight! - TAG_OFFSET, radius );
+    };
+    positionTag();
+
     this.verticalCylinder = verticalCylinder;
     this.verticalCylinderGeometry = verticalCylinderGeometry;
     this.updateListener = () => {
+      positionTag();
       VerticalCylinderView.updateArrays( verticalCylinderGeometry.attributes.position.array as Float32Array, null, verticalCylinderGeometry.attributes.uv.array as Float32Array, verticalCylinder.radiusProperty.value, verticalCylinder.heightProperty.value );
       verticalCylinderGeometry.attributes.position.needsUpdate = true;
       verticalCylinderGeometry.attributes.uv.needsUpdate = true;

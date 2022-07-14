@@ -6,11 +6,20 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
+import Property from '../../../../axon/js/Property.js';
+import Vector3 from '../../../../dot/js/Vector3.js';
+import NodeTexture from '../../../../mobius/js/NodeTexture.js';
+import TextureQuad from '../../../../mobius/js/TextureQuad.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
-import Mass from '../model/Mass.js';
+import Mass, { MassTag } from '../model/Mass.js';
 import Material from '../model/Material.js';
 import DensityMaterials from './DensityMaterials.js';
+import MassLabelNode from './MassLabelNode.js';
 import MaterialView from './MaterialView.js';
+
+const TAG_SIZE = 0.03;
+export const TAG_OFFSET = 0.005;
+const TAG_SCALE = 0.0005;
 
 export default abstract class MassView extends THREE.Mesh {
 
@@ -18,6 +27,13 @@ export default abstract class MassView extends THREE.Mesh {
   materialView: MaterialView;
   private materialListener: ( material: Material ) => void;
   private positionListener: () => void;
+
+  private tagNodeTexture: NodeTexture | null;
+  private tagMesh: TextureQuad | null;
+  private massNameListener?: ( string: string ) => void;
+
+  protected tagHeight: number | null = null;
+  protected tagOffsetProperty: Property<Vector3> = new Property<Vector3>( Vector3.ZERO );
 
   constructor( mass: Mass, initialGeometry: THREE.BufferGeometry ) {
     const materialView = DensityMaterials.getMaterialView( mass.materialProperty.value );
@@ -46,6 +62,51 @@ export default abstract class MassView extends THREE.Mesh {
 
     this.mass.transformedEmitter.addListener( this.positionListener );
     this.positionListener();
+
+    this.tagNodeTexture = null;
+    this.tagMesh = null;
+
+    if ( mass.tag === MassTag.PRIMARY ) {
+      this.tagNodeTexture = MassLabelNode.getPrimaryTexture();
+      this.tagMesh = new TextureQuad( this.tagNodeTexture, TAG_SIZE, TAG_SIZE, {
+        depthTest: true
+      } );
+      this.tagHeight = TAG_SIZE;
+    }
+    else if ( mass.tag === MassTag.SECONDARY ) {
+      this.tagNodeTexture = MassLabelNode.getSecondaryTexture();
+      this.tagMesh = new TextureQuad( this.tagNodeTexture, TAG_SIZE, TAG_SIZE, {
+        depthTest: true
+      } );
+      this.tagHeight = TAG_SIZE;
+    }
+    else if ( mass.tag !== MassTag.NONE ) {
+
+      const string = mass.nameProperty.value;
+      this.tagNodeTexture = MassLabelNode.getBasicLabelTexture( string );
+
+      this.tagMesh = new TextureQuad( this.tagNodeTexture, TAG_SCALE * this.tagNodeTexture._width, TAG_SCALE * this.tagNodeTexture._height, {
+        depthTest: true
+      } );
+      this.tagHeight = TAG_SCALE * this.tagNodeTexture._height;
+
+      this.massNameListener = string => {
+        this.tagNodeTexture!.dispose();
+        this.tagNodeTexture = MassLabelNode.getBasicLabelTexture( string );
+        this.tagMesh!.updateTexture( this.tagNodeTexture, TAG_SCALE * this.tagNodeTexture._width, TAG_SCALE * this.tagNodeTexture._height );
+        this.tagMesh!.visible = string !== '';
+      };
+      this.mass.nameProperty.lazyLink( this.massNameListener );
+    }
+
+    if ( this.tagMesh ) {
+      this.add( this.tagMesh );
+      this.tagMesh.renderOrder = 1;
+
+      this.tagOffsetProperty.link( offset => {
+        this.tagMesh!.position.set( offset.x, offset.y, offset.z + 0.0001 );
+      } );
+    }
   }
 
   /**
@@ -56,6 +117,13 @@ export default abstract class MassView extends THREE.Mesh {
     this.mass.materialProperty.unlink( this.materialListener );
 
     this.materialView.dispose();
+
+    if ( this.massNameListener ) {
+      this.mass.nameProperty.unlink( this.massNameListener );
+    }
+
+    this.tagNodeTexture && this.tagNodeTexture.dispose();
+    this.tagMesh && this.tagMesh.dispose();
 
     // @ts-ignore
     super.dispose && super.dispose();

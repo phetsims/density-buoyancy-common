@@ -21,7 +21,7 @@ import Cuboid from '../../common/model/Cuboid.js';
 import DensityBuoyancyModel, { DensityBuoyancyModelOptions } from '../../common/model/DensityBuoyancyModel.js';
 import Ellipsoid from '../../common/model/Ellipsoid.js';
 import HorizontalCylinder from '../../common/model/HorizontalCylinder.js';
-import Mass from '../../common/model/Mass.js';
+import Mass, { MassTag } from '../../common/model/Mass.js';
 import Material from '../../common/model/Material.js';
 import Scale, { DisplayType } from '../../common/model/Scale.js';
 import TwoBlockMode from '../../common/model/TwoBlockMode.js';
@@ -99,29 +99,30 @@ export default class BuoyancyShapesModel extends DensityBuoyancyModel {
     this.primaryHeightRatioProperty = new NumberProperty( 0.75 );
     this.secondaryHeightRatioProperty = new NumberProperty( 0.75 );
 
-    const createMass = ( tandem: Tandem, shape: MassShape, widthRatio: number, heightRatio: number ): Mass => {
+    const createMass = ( tandem: Tandem, shape: MassShape, widthRatio: number, heightRatio: number, tag: MassTag ): Mass => {
+      const massOptions = {
+        material: MATERIAL,
+        tandem: tandem,
+        tag: tag
+      };
       switch( shape ) {
         case MassShape.BLOCK:
-          return new Cuboid( this.engine, Cuboid.getSizeFromRatios( widthRatio, heightRatio ), {
-            material: MATERIAL, tandem: tandem
-          } );
+          return new Cuboid( this.engine, Cuboid.getSizeFromRatios( widthRatio, heightRatio ), massOptions );
         case MassShape.ELLIPSOID:
-          return new Ellipsoid( this.engine, Ellipsoid.getSizeFromRatios( widthRatio, heightRatio ), {
-            material: MATERIAL, tandem: tandem
-          } );
+          return new Ellipsoid( this.engine, Ellipsoid.getSizeFromRatios( widthRatio, heightRatio ), massOptions );
         case MassShape.VERTICAL_CYLINDER:
           return new VerticalCylinder(
             this.engine,
             VerticalCylinder.getRadiusFromRatio( widthRatio ),
             VerticalCylinder.getHeightFromRatio( heightRatio ),
-            { material: MATERIAL, tandem: tandem }
+            massOptions
           );
         case MassShape.HORIZONTAL_CYLINDER:
           return new HorizontalCylinder(
             this.engine,
             HorizontalCylinder.getRadiusFromRatio( heightRatio ),
             HorizontalCylinder.getLengthFromRatio( widthRatio ),
-            { material: MATERIAL, tandem: tandem }
+            massOptions
           );
         case MassShape.CONE:
           return new Cone(
@@ -129,7 +130,7 @@ export default class BuoyancyShapesModel extends DensityBuoyancyModel {
             Cone.getRadiusFromRatio( widthRatio ),
             Cone.getHeightFromRatio( heightRatio ),
             true,
-            { material: MATERIAL, tandem: tandem }
+            massOptions
           );
         case MassShape.INVERTED_CONE:
           return new Cone(
@@ -137,7 +138,7 @@ export default class BuoyancyShapesModel extends DensityBuoyancyModel {
             Cone.getRadiusFromRatio( widthRatio ),
             Cone.getHeightFromRatio( heightRatio ),
             false,
-            { material: MATERIAL, tandem: tandem }
+            massOptions
           );
         default:
           throw new Error( `shape not recognized: ${shape}` );
@@ -145,14 +146,14 @@ export default class BuoyancyShapesModel extends DensityBuoyancyModel {
     };
 
     const primaryMassCapsule = new PhetioCapsule(
-      ( tandem: Tandem, shape: MassShape ) => createMass( tandem, shape, this.primaryWidthRatioProperty.value, this.primaryHeightRatioProperty.value ),
+      ( tandem: Tandem, shape: MassShape ) => createMass( tandem, shape, this.primaryWidthRatioProperty.value, this.primaryHeightRatioProperty.value, MassTag.PRIMARY ),
       [ this.primaryShapeProperty.initialValue ], {
         tandem: tandem.createTandem( 'objectACapsule' ),
         phetioType: PhetioCapsule.PhetioCapsuleIO( Mass.MassIO )
       } );
 
     const secondaryMassCapsule = new PhetioCapsule(
-      ( tandem: Tandem, shape: MassShape ) => createMass( tandem, shape, this.secondaryWidthRatioProperty.value, this.secondaryHeightRatioProperty.value ),
+      ( tandem: Tandem, shape: MassShape ) => createMass( tandem, shape, this.secondaryWidthRatioProperty.value, this.secondaryHeightRatioProperty.value, MassTag.SECONDARY ),
       [ this.secondaryShapeProperty.initialValue ], {
         tandem: tandem.createTandem( 'objectBCapsule' ),
         phetioType: PhetioCapsule.PhetioCapsuleIO( Mass.MassIO )

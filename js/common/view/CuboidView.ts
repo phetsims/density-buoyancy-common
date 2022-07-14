@@ -7,29 +7,19 @@
  */
 
 import Vector3 from '../../../../dot/js/Vector3.js';
-import TextureQuad from '../../../../mobius/js/TextureQuad.js';
 import TriangleArrayWriter from '../../../../mobius/js/TriangleArrayWriter.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
-import { MassTag } from '../model/Mass.js';
-import MassLabelNode from './MassLabelNode.js';
-import MassView from './MassView.js';
+import MassView, { TAG_OFFSET } from './MassView.js';
 import Cuboid from '../model/Cuboid.js';
-import NodeTexture from '../../../../mobius/js/NodeTexture.js';
 import Bounds3 from '../../../../dot/js/Bounds3.js';
 
 // constants
 const numElements = 18 * 3;
-const TAG_SIZE = 0.03;
-const TAG_OFFSET = 0.005;
-const TAG_SCALE = 0.0005;
 
 export default class CuboidView extends MassView {
 
   cuboid: Cuboid;
   private cuboidGeometry: THREE.BufferGeometry;
-  private tagNodeTexture: NodeTexture | null;
-  private tagMesh: TextureQuad | null;
-  private cuboidNameListener?: ( string: string ) => void;
   private updateListener: ( size: Bounds3 ) => void;
 
   constructor( cuboid: Cuboid ) {
@@ -50,51 +40,10 @@ export default class CuboidView extends MassView {
 
     this.cuboid = cuboid;
     this.cuboidGeometry = cuboidGeometry;
-    this.tagNodeTexture = null;
-    this.tagMesh = null;
-
-    let tagHeight: number | null = null;
-    if ( cuboid.tag === MassTag.PRIMARY ) {
-      this.tagNodeTexture = MassLabelNode.getPrimaryTexture();
-      this.tagMesh = new TextureQuad( this.tagNodeTexture, TAG_SIZE, TAG_SIZE, {
-        depthTest: true
-      } );
-      tagHeight = TAG_SIZE;
-    }
-    else if ( cuboid.tag === MassTag.SECONDARY ) {
-      this.tagNodeTexture = MassLabelNode.getSecondaryTexture();
-      this.tagMesh = new TextureQuad( this.tagNodeTexture, TAG_SIZE, TAG_SIZE, {
-        depthTest: true
-      } );
-      tagHeight = TAG_SIZE;
-    }
-    else if ( cuboid.tag !== MassTag.NONE ) {
-
-      const string = cuboid.nameProperty.value;
-      this.tagNodeTexture = MassLabelNode.getBasicLabelTexture( string );
-
-      this.tagMesh = new TextureQuad( this.tagNodeTexture, TAG_SCALE * this.tagNodeTexture._width, TAG_SCALE * this.tagNodeTexture._height, {
-        depthTest: true
-      } );
-      tagHeight = TAG_SCALE * this.tagNodeTexture._height;
-
-      this.cuboidNameListener = string => {
-        this.tagNodeTexture!.dispose();
-        this.tagNodeTexture = MassLabelNode.getBasicLabelTexture( string );
-        this.tagMesh!.updateTexture( this.tagNodeTexture, TAG_SCALE * this.tagNodeTexture._width, TAG_SCALE * this.tagNodeTexture._height );
-        this.tagMesh!.visible = string !== '';
-      };
-      this.cuboid.nameProperty.lazyLink( this.cuboidNameListener );
-    }
-
-    if ( this.tagMesh ) {
-      this.add( this.tagMesh );
-      this.tagMesh.renderOrder = 1;
-    }
 
     const positionTag = () => {
       const size = cuboid.sizeProperty.value;
-      this.tagMesh && this.tagMesh.position.set( size.minX + TAG_OFFSET, size.maxY - tagHeight! - TAG_OFFSET, size.maxZ + 0.0001 );
+      this.tagOffsetProperty.value = new Vector3( size.minX + TAG_OFFSET, size.maxY - this.tagHeight! - TAG_OFFSET, size.maxZ );
     };
     positionTag();
 
@@ -112,13 +61,7 @@ export default class CuboidView extends MassView {
    * Releases references.
    */
   override dispose(): void {
-    if ( this.cuboidNameListener ) {
-      this.cuboid.nameProperty.unlink( this.cuboidNameListener );
-    }
-
     this.cuboid.sizeProperty.unlink( this.updateListener );
-    this.tagNodeTexture && this.tagNodeTexture.dispose();
-    this.tagMesh && this.tagMesh.dispose();
 
     this.cuboidGeometry.dispose();
 

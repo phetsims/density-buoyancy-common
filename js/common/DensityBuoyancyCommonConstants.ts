@@ -6,6 +6,7 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
+import Dimension2 from '../../../dot/js/Dimension2.js';
 import Vector3 from '../../../dot/js/Vector3.js';
 import PhetFont from '../../../scenery-phet/js/PhetFont.js';
 import densityBuoyancyCommon from '../densityBuoyancyCommon.js';
@@ -26,6 +27,10 @@ const DensityBuoyancyCommonConstants = {
     size: 16,
     weight: 'bold'
   } ),
+  ITEM_FONT: new PhetFont( {
+    size: 14,
+    weight: 'bold'
+  } ),
   RADIO_BUTTON_FONT: new PhetFont( {
     size: 16
   } ),
@@ -33,6 +38,8 @@ const DensityBuoyancyCommonConstants = {
     size: 14
   } ),
   READOUT_FONT: new PhetFont( 14 ),
+
+  THUMB_SIZE: new Dimension2( 13, 22 ),
 
   // (read-only) {Object}
   PANEL_OPTIONS: {

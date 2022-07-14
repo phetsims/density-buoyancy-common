@@ -18,6 +18,7 @@ import { Line, NodeOptions } from '../../../../scenery/js/imports.js';
 import { Node } from '../../../../scenery/js/imports.js';
 import { Rectangle } from '../../../../scenery/js/imports.js';
 import { Text } from '../../../../scenery/js/imports.js';
+import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 import Material from '../../common/model/Material.js';
 import DensityBuoyancyCommonColors from '../../common/view/DensityBuoyancyCommonColors.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
@@ -73,13 +74,13 @@ export default class DensityReadoutNode extends Node {
     this.addChild( new Text( '0', {
       right: -10,
       centerY: background.centerY,
-      font: new PhetFont( { size: 14, weight: 'bold' } )
+      font: DensityBuoyancyCommonConstants.ITEM_FONT
     } ) );
 
     this.addChild( new Text( '10', {
       left: WIDTH + 10,
       centerY: background.centerY,
-      font: new PhetFont( { size: 14, weight: 'bold' } )
+      font: DensityBuoyancyCommonConstants.ITEM_FONT
     } ) );
 
     const arrowOptions = {

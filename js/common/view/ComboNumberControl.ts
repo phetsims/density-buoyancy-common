@@ -128,7 +128,7 @@ export default class ComboNumberControl<T> extends VBox {
 
         sliderOptions: {
           majorTickLength: 5,
-          thumbSize: new Dimension2( 13, 22 ),
+          thumbSize: DensityBuoyancyCommonConstants.THUMB_SIZE,
           thumbTouchAreaXDilation: 5,
           thumbTouchAreaYDilation: 4,
           majorTicks: [ {

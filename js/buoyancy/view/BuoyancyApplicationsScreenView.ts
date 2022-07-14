@@ -191,7 +191,7 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
           },
           sliderOptions: {
             trackSize: new Dimension2( 120, 0.5 ),
-            thumbSize: new Dimension2( 8, 20 ),
+            thumbSize: DensityBuoyancyCommonConstants.THUMB_SIZE,
             constrainValue: ( value: number ) => {
               return boatVolumeRange.constrainValue( Utils.roundToInterval( value, 0.1 ) );
             },

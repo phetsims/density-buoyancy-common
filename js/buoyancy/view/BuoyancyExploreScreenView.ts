@@ -54,13 +54,13 @@ export default class BuoyancyExploreScreenView extends SecondaryMassScreenView<B
 
     const densityAText = new Text( '', {
       maxWidth: 120,
-      font: new PhetFont( { size: 14, weight: 'bold' } ),
+      font: DensityBuoyancyCommonConstants.ITEM_FONT,
       fill: DensityBuoyancyCommonColors.labelAProperty,
       layoutOptions: { column: 1, row: 0 }
     } );
     const densityBText = new Text( '', {
       maxWidth: 120,
-      font: new PhetFont( { size: 14, weight: 'bold' } ),
+      font: DensityBuoyancyCommonConstants.ITEM_FONT,
       fill: DensityBuoyancyCommonColors.labelBProperty,
       layoutOptions: { column: 1, row: 1 }
     } );

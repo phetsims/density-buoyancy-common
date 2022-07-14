@@ -17,7 +17,7 @@ import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
 import NumberControl from '../../../../scenery-phet/js/NumberControl.js';
 import NumberDisplay from '../../../../scenery-phet/js/NumberDisplay.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
-import { FlowBox, FlowBoxOptions, HBox, Text, VDivider, Node } from '../../../../scenery/js/imports.js';
+import { FlowBox, FlowBoxOptions, HBox, Node, Text, VDivider } from '../../../../scenery/js/imports.js';
 import ComboBox from '../../../../sun/js/ComboBox.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 import { MassShape } from '../../common/model/MassShape.js';
@@ -79,7 +79,7 @@ export default class ShapeSizeControlNode extends FlowBox {
       delta: 0.01,
       sliderOptions: {
         trackSize: new Dimension2( 120, 3 ),
-        thumbSize: new Dimension2( 8, 20 )
+        thumbSize: DensityBuoyancyCommonConstants.THUMB_SIZE
       },
       numberDisplayOptions: {
         decimalPlaces: 2,
@@ -92,7 +92,7 @@ export default class ShapeSizeControlNode extends FlowBox {
         hasReadoutProperty: new BooleanProperty( false )
       } ),
       titleNodeOptions: {
-        font: DensityBuoyancyCommonConstants.TITLE_FONT,
+        font: DensityBuoyancyCommonConstants.ITEM_FONT,
         maxWidth: 160
       }
     };

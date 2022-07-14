@@ -19,7 +19,6 @@ import merge from '../../../../phet-core/js/merge.js';
 import optionize from '../../../../phet-core/js/optionize.js';
 import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
 import NumberControl, { NumberControlOptions } from '../../../../scenery-phet/js/NumberControl.js';
-import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import { HBox, IPaint, Node, Text, VBox, VBoxOptions } from '../../../../scenery/js/imports.js';
 import ComboBox from '../../../../sun/js/ComboBox.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
@@ -379,7 +378,7 @@ export default class MaterialMassVolumeControlNode extends VBox {
       },
       layoutFunction: NumberControl.createLayoutFunction4(),
       titleNodeOptions: {
-        font: new PhetFont( { size: 14, weight: 'bold' } ),
+        font: DensityBuoyancyCommonConstants.ITEM_FONT,
         maxWidth: 90
       }
     };

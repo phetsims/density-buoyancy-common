@@ -18,7 +18,7 @@ import optionize from '../../../../phet-core/js/optionize.js';
 import EmptyObjectType from '../../../../phet-core/js/types/EmptyObjectType.js';
 import IOType from '../../../../tandem/js/types/IOType.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
-import Mass, { InstrumentedMassOptions } from './Mass.js';
+import Mass, { InstrumentedMassOptions, MASS_MAX_SHAPES_DIMENSION, MASS_MIN_SHAPES_DIMENSION } from './Mass.js';
 import PhysicsEngine from './PhysicsEngine.js';
 import { MassShape } from './MassShape.js';
 
@@ -78,8 +78,8 @@ export default class Ellipsoid extends Mass {
    * Returns the general size of the mass based on a general size scale.
    */
   static getSizeFromRatios( widthRatio: number, heightRatio: number ): Bounds3 {
-    const x = 0.01 + widthRatio * 0.09;
-    const y = 0.01 + heightRatio * 0.09;
+    const x = ( MASS_MIN_SHAPES_DIMENSION + widthRatio * ( MASS_MAX_SHAPES_DIMENSION - MASS_MIN_SHAPES_DIMENSION ) ) / 2;
+    const y = ( MASS_MIN_SHAPES_DIMENSION + heightRatio * ( MASS_MAX_SHAPES_DIMENSION - MASS_MIN_SHAPES_DIMENSION ) ) / 2;
     return new Bounds3( -x, -y, -x, x, y, x );
   }
 

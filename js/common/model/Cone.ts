@@ -19,7 +19,7 @@ import optionize from '../../../../phet-core/js/optionize.js';
 import EmptyObjectType from '../../../../phet-core/js/types/EmptyObjectType.js';
 import IOType from '../../../../tandem/js/types/IOType.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
-import Mass, { InstrumentedMassOptions, MassOptions } from './Mass.js';
+import Mass, { InstrumentedMassOptions, MassOptions, MASS_MAX_SHAPES_DIMENSION, MASS_MIN_SHAPES_DIMENSION } from './Mass.js';
 import PhysicsEngine from './PhysicsEngine.js';
 import { MassShape } from './MassShape.js';
 
@@ -103,7 +103,7 @@ export default class Cone extends Mass {
    */
   static getRadiusFromRatio( widthRatio: number ): number {
     // Left independent from getHeightFromRatio since these should be not tied together
-    return 0.01 + widthRatio * 0.09;
+    return ( MASS_MIN_SHAPES_DIMENSION + widthRatio * ( MASS_MAX_SHAPES_DIMENSION - MASS_MIN_SHAPES_DIMENSION ) ) / 2;
   }
 
   /**
@@ -111,7 +111,7 @@ export default class Cone extends Mass {
    */
   static getHeightFromRatio( heightRatio: number ): number {
     // Left independent from getRadiusFromRatio since these should be not tied together
-    return 2 * ( 0.01 + heightRatio * 0.09 );
+    return ( MASS_MIN_SHAPES_DIMENSION + heightRatio * ( MASS_MAX_SHAPES_DIMENSION - MASS_MIN_SHAPES_DIMENSION ) );
   }
 
   /**

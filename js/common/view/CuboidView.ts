@@ -82,6 +82,7 @@ export default class CuboidView extends MassView {
         this.tagNodeTexture!.dispose();
         this.tagNodeTexture = MassLabelNode.getBasicLabelTexture( string );
         this.tagMesh!.updateTexture( this.tagNodeTexture!, TAG_SCALE * this.tagNodeTexture!._width, TAG_SCALE * this.tagNodeTexture!._height );
+        this.tagMesh!.visible = string !== '';
       };
       this.cuboid.nameProperty.lazyLink( this.cuboidNameListener );
     }

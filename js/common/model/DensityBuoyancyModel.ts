@@ -49,37 +49,37 @@ export type DensityBuoyancyModelOptions = {
 
 export default class DensityBuoyancyModel {
 
-  showGravityForceProperty: Property<boolean>;
-  showBuoyancyForceProperty: Property<boolean>;
-  showContactForceProperty: Property<boolean>;
-  showForceValuesProperty: Property<boolean>;
-  forceScaleProperty: RangedProperty;
-  showMassesProperty: Property<boolean>;
-  gravityProperty: Property<Gravity>;
-  liquidMaterialProperty: Property<Material>;
-  liquidDensityProperty: IReadOnlyProperty<number>;
-  liquidViscosityProperty: IReadOnlyProperty<number>;
+  public readonly showGravityForceProperty: Property<boolean>;
+  public readonly showBuoyancyForceProperty: Property<boolean>;
+  public readonly showContactForceProperty: Property<boolean>;
+  public readonly showForceValuesProperty: Property<boolean>;
+  public readonly forceScaleProperty: RangedProperty;
+  public readonly showMassesProperty: Property<boolean>;
+  public readonly gravityProperty: Property<Gravity>;
+  public readonly liquidMaterialProperty: Property<Material>;
+  public readonly liquidDensityProperty: IReadOnlyProperty<number>;
+  public readonly liquidViscosityProperty: IReadOnlyProperty<number>;
 
-  poolBounds: Bounds3;
-  groundBounds: Bounds3;
-  groundPoints: Vector2[];
+  public readonly poolBounds: Bounds3;
+  public readonly groundBounds: Bounds3;
+  public readonly groundPoints: Vector2[];
 
   // We'll keep blocks within these bounds, to generally stay in-screen. This may be
   // adjusted by the screen based on the visibleBoundsProperty. These are sensible defaults, with the minX and minY
   // somewhat meant to be adjusted.
-  invisibleBarrierBoundsProperty: Property<Bounds3>;
+  public readonly invisibleBarrierBoundsProperty: Property<Bounds3>;
 
-  masses: ObservableArray<Mass>;
-  pool: Pool;
-  engine: PhysicsEngine;
-  groundBody: PhysicsEngineBody;
-  barrierBody: PhysicsEngineBody;
-  availableMasses: ObservableArray<Mass>;
+  public readonly masses: ObservableArray<Mass>;
+  public readonly pool: Pool;
+  public readonly engine: PhysicsEngine;
+  public readonly groundBody: PhysicsEngineBody;
+  public barrierBody: PhysicsEngineBody;
+  public readonly availableMasses: ObservableArray<Mass>;
 
   // We need to hook into a boat (if it exists) for displaying the water.
-  boat: Boat | null;
+  public boat: Boat | null;
 
-  constructor( providedOptions?: DensityBuoyancyModelOptions ) {
+  public constructor( providedOptions?: DensityBuoyancyModelOptions ) {
     const options = optionize<DensityBuoyancyModelOptions, DensityBuoyancyModelOptions>()( {
       showMassesDefault: false,
       canShowForces: true,
@@ -351,7 +351,7 @@ export default class DensityBuoyancyModel {
   /**
    * Returns the boat (if there is one)
    */
-  getBoat(): Boat | null {
+  public getBoat(): Boat | null {
     return this.boat;
   }
 
@@ -430,7 +430,7 @@ export default class DensityBuoyancyModel {
   /**
    * Resets things to their original values.
    */
-  reset(): void {
+  public reset(): void {
     this.showGravityForceProperty.reset();
     this.showBuoyancyForceProperty.reset();
     this.showContactForceProperty.reset();
@@ -446,7 +446,7 @@ export default class DensityBuoyancyModel {
   /**
    * Steps forward in time.
    */
-  step( dt: number ): void {
+  public step( dt: number ): void {
     this.engine.step( dt );
 
     this.masses.forEach( mass => {
@@ -459,14 +459,14 @@ export default class DensityBuoyancyModel {
   /**
    * Moves masses' previous positions to their current positions.
    */
-  uninterpolateMasses(): void {
+  public uninterpolateMasses(): void {
     this.masses.forEach( mass => this.engine.bodySynchronizePrevious( mass.body ) );
   }
 
   /**
    * Positions masses from the left of the pool outward, with padding
    */
-  positionMassesLeft( masses: Cuboid[] ): void {
+  public positionMassesLeft( masses: Cuboid[] ): void {
     let position = this.poolBounds.minX;
 
     masses.forEach( mass => {
@@ -483,7 +483,7 @@ export default class DensityBuoyancyModel {
   /**
    * Positions masses from the right of the pool outward, with padding
    */
-  positionMassesRight( masses: Cuboid[] ): void {
+  public positionMassesRight( masses: Cuboid[] ): void {
     let position = this.poolBounds.maxX;
 
     masses.forEach( mass => {
@@ -500,7 +500,7 @@ export default class DensityBuoyancyModel {
   /**
    * Positions masses from the left of the pool up
    */
-  positionStackLeft( masses: Cuboid[] ): void {
+  public positionStackLeft( masses: Cuboid[] ): void {
     const x = this.poolBounds.minX - BLOCK_SPACING - Math.max( ...masses.map( mass => mass.sizeProperty.value.width ) ) / 2;
 
     this.positionStack( masses, x );
@@ -509,7 +509,7 @@ export default class DensityBuoyancyModel {
   /**
    * Positions masses from the right of the pool up
    */
-  positionStackRight( masses: Cuboid[] ): void {
+  public positionStackRight( masses: Cuboid[] ): void {
     const x = this.poolBounds.maxX + BLOCK_SPACING + Math.max( ...masses.map( mass => mass.sizeProperty.value.width ) ) / 2;
 
     this.positionStack( masses, x );

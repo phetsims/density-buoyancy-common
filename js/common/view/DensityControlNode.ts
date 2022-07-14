@@ -19,7 +19,7 @@ import Material from '../model/Material.js';
 import ComboNumberControl from './ComboNumberControl.js';
 
 export default class DensityControlNode extends ComboNumberControl<Material> {
-  constructor( liquidMaterialProperty: Property<Material>, materials: Material[], listParent: Node, tandem: Tandem ) {
+  public constructor( liquidMaterialProperty: Property<Material>, materials: Material[], listParent: Node, tandem: Tandem ) {
     const customValue = Material.createCustomLiquidMaterial( {
       density: 1000
     } );

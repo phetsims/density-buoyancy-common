@@ -13,9 +13,9 @@ import Material from '../../common/model/Material.js';
 
 export default class BottleView extends MassView {
 
-  bottle: Bottle;
+  public readonly bottle: Bottle;
 
-  constructor( bottle: Bottle ) {
+  public constructor( bottle: Bottle ) {
 
     const primaryGeometry = Bottle.getPrimaryGeometry();
 
@@ -159,7 +159,7 @@ export default class BottleView extends MassView {
   /**
    * Releases references.
    */
-  override dispose(): void {
+  public override dispose(): void {
     // TODO: dispose everything from above
 
     super.dispose();

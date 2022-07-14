@@ -36,7 +36,7 @@ const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
 
 export default class BuoyancyIntroScreenView extends DensityBuoyancyScreenView<BuoyancyIntroModel> {
 
-  constructor( model: BuoyancyIntroModel, options: DensityBuoyancyScreenViewOptions ) {
+  public constructor( model: BuoyancyIntroModel, options: DensityBuoyancyScreenViewOptions ) {
 
     super( model, combineOptions<DensityBuoyancyScreenViewOptions>( {
       // Custom just for this screen

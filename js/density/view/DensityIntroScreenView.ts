@@ -27,7 +27,7 @@ export default class DensityIntroScreenView extends SecondaryMassScreenView<Dens
 
   protected rightBox: Node;
 
-  constructor( model: DensityIntroModel, options: DensityBuoyancyScreenViewOptions ) {
+  public constructor( model: DensityIntroModel, options: DensityBuoyancyScreenViewOptions ) {
 
     const tandem = options.tandem;
 

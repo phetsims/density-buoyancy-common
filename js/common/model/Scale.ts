@@ -53,10 +53,10 @@ const SCALE_FRONT_OFFSET = new Vector3(
 );
 
 export class DisplayType extends EnumerationValue {
-  static NEWTONS = new DisplayType();
-  static KILOGRAMS = new DisplayType();
+  public static NEWTONS = new DisplayType();
+  public static KILOGRAMS = new DisplayType();
 
-  static enumeration = new Enumeration( DisplayType, {
+  public static enumeration = new Enumeration( DisplayType, {
     phetioDocumentation: 'Units for the scale readout'
   } );
 }
@@ -70,14 +70,14 @@ export type ScaleOptions = SelfOptions & StrictOmit<InstrumentedMassOptions, 'bo
 export default class Scale extends Mass {
 
   // In Newtons.
-  scaleForceInterpolatedProperty: InterpolatedProperty<number>;
+  public readonly scaleForceInterpolatedProperty: InterpolatedProperty<number>;
 
   // Just exist for phet-io, see https://github.com/phetsims/density/issues/97
-  private scaleMeasuredMassProperty: IReadOnlyProperty<number>;
+  private readonly scaleMeasuredMassProperty: IReadOnlyProperty<number>;
 
-  readonly displayType: DisplayType;
+  public readonly displayType: DisplayType;
 
-  constructor( engine: PhysicsEngine, gravityProperty: IProperty<Gravity>, providedOptions: ScaleOptions ) {
+  public constructor( engine: PhysicsEngine, gravityProperty: IProperty<Gravity>, providedOptions: ScaleOptions ) {
     const config = optionize<ScaleOptions, SelfOptions, InstrumentedMassOptions>()( {
       body: engine.createBox( SCALE_WIDTH, SCALE_HEIGHT, providedOptions.canMove === false ),
       shape: Shape.rect( -SCALE_WIDTH / 2, -SCALE_HEIGHT / 2, SCALE_WIDTH, SCALE_HEIGHT ),
@@ -141,7 +141,7 @@ export default class Scale extends Mass {
    *
    * Type-specific values are likely to be set, but this should set at least stepX/stepBottom/stepTop
    */
-  override updateStepInformation(): void {
+  public override updateStepInformation(): void {
     super.updateStepInformation();
 
     const xOffset = this.stepMatrix.m02();
@@ -157,7 +157,7 @@ export default class Scale extends Mass {
    * reach the intersection, e.g. ray.position + ray.distance * t === intersectionPoint) will be returned. Otherwise
    * if there is no intersection, null will be returned.
    */
-  override intersect( ray: Ray3, isTouch: boolean ): number | null {
+  public override intersect( ray: Ray3, isTouch: boolean ): number | null {
     const translation = this.matrix.getTranslation().toVector3();
     const topOffsetTranslation = translation.plusXYZ( 0, SCALE_HEIGHT / 2 - SCALE_TOP_HEIGHT / 2, 0 );
 
@@ -172,7 +172,7 @@ export default class Scale extends Mass {
    *
    * Assumes step information was updated.
    */
-  getDisplacedArea( liquidLevel: number ): number {
+  public getDisplacedArea( liquidLevel: number ): number {
     if ( liquidLevel < this.stepBottom || liquidLevel > this.stepTop ) {
       return 0;
     }
@@ -186,7 +186,7 @@ export default class Scale extends Mass {
    *
    * Assumes step information was updated.
    */
-  getDisplacedVolume( liquidLevel: number ): number {
+  public getDisplacedVolume( liquidLevel: number ): number {
     const bottom = this.stepBottom;
     const top = this.stepTop;
 
@@ -201,30 +201,30 @@ export default class Scale extends Mass {
     }
   }
 
-  setRatios( widthRatio: number, heightRatio: number ): void {
+  public setRatios( widthRatio: number, heightRatio: number ): void {
     // See subclass for implementation
   }
 
   /**
    * Steps forward in time.
    */
-  override step( dt: number, interpolationRatio: number ): void {
+  public override step( dt: number, interpolationRatio: number ): void {
     super.step( dt, interpolationRatio );
 
     this.scaleForceInterpolatedProperty.setRatio( interpolationRatio );
   }
 
-  static ScaleIO: IOType;
+  public static ScaleIO: IOType;
 
-  static SCALE_WIDTH: number;
-  static SCALE_HEIGHT: number;
-  static SCALE_DEPTH: number;
-  static SCALE_BASE_HEIGHT: number;
-  static SCALE_TOP_HEIGHT: number;
-  static SCALE_AREA: number;
-  static SCALE_VOLUME: number;
-  static SCALE_BASE_BOUNDS: Bounds3;
-  static SCALE_FRONT_OFFSET: Vector3;
+  public static SCALE_WIDTH: number;
+  public static SCALE_HEIGHT: number;
+  public static SCALE_DEPTH: number;
+  public static SCALE_BASE_HEIGHT: number;
+  public static SCALE_TOP_HEIGHT: number;
+  public static SCALE_AREA: number;
+  public static SCALE_VOLUME: number;
+  public static SCALE_BASE_BOUNDS: Bounds3;
+  public static SCALE_FRONT_OFFSET: Vector3;
 }
 
 Scale.SCALE_WIDTH = SCALE_WIDTH;

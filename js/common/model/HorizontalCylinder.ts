@@ -26,17 +26,17 @@ export type HorizontalCylinderOptions = StrictOmit<InstrumentedMassOptions, 'bod
 
 export default class HorizontalCylinder extends Mass {
 
-  radiusProperty: Property<number>;
-  lengthProperty: Property<number>;
+  public readonly radiusProperty: Property<number>;
+  public readonly lengthProperty: Property<number>;
 
   // Step information
-  stepRadius: number;
-  stepHeight: number;
-  stepArea: number;
-  stepMaximumVolume: number;
-  stepMaximumArea: number;
+  public stepRadius: number;
+  public stepHeight: number;
+  public stepArea: number;
+  public stepMaximumVolume: number;
+  public stepMaximumArea: number;
 
-  constructor( engine: PhysicsEngine, radius: number, length: number, providedConfig: HorizontalCylinderOptions ) {
+  public constructor( engine: PhysicsEngine, radius: number, length: number, providedConfig: HorizontalCylinderOptions ) {
     const config = optionize<HorizontalCylinderOptions, EmptyObjectType, InstrumentedMassOptions>()( {
       body: engine.createBox( length, radius * 2 ),
       shape: HorizontalCylinder.getHorizontalCylinderShape( radius, length ),
@@ -72,7 +72,7 @@ export default class HorizontalCylinder extends Mass {
   /**
    * Updates the size of the cone.
    */
-  updateSize( radius: number, length: number ): void {
+  public updateSize( radius: number, length: number ): void {
     this.engine.updateBox( this.body, length, radius * 2 );
 
     this.radiusProperty.value = radius;
@@ -91,21 +91,21 @@ export default class HorizontalCylinder extends Mass {
   /**
    * Returns the radius from a general size scale
    */
-  static getRadiusFromRatio( heightRatio: number ): number {
+  public static getRadiusFromRatio( heightRatio: number ): number {
     return ( MASS_MIN_SHAPES_DIMENSION + heightRatio * ( MASS_MAX_SHAPES_DIMENSION - MASS_MIN_SHAPES_DIMENSION ) ) / 2;
   }
 
   /**
    * Returns the length from a general size scale
    */
-  static getLengthFromRatio( widthRatio: number ): number {
+  public static getLengthFromRatio( widthRatio: number ): number {
     return ( MASS_MIN_SHAPES_DIMENSION + widthRatio * ( MASS_MAX_SHAPES_DIMENSION - MASS_MIN_SHAPES_DIMENSION ) );
   }
 
   /**
    * Sets the general size of the mass based on a general size scale.
    */
-  setRatios( widthRatio: number, heightRatio: number ): void {
+  public setRatios( widthRatio: number, heightRatio: number ): void {
     this.updateSize(
       HorizontalCylinder.getRadiusFromRatio( heightRatio ),
       HorizontalCylinder.getLengthFromRatio( widthRatio )
@@ -118,7 +118,7 @@ export default class HorizontalCylinder extends Mass {
    *
    * Type-specific values are likely to be set, but this should set at least stepX/stepBottom/stepTop
    */
-  override updateStepInformation(): void {
+  public override updateStepInformation(): void {
     super.updateStepInformation();
 
     const xOffset = this.stepMatrix.m02();
@@ -139,7 +139,7 @@ export default class HorizontalCylinder extends Mass {
    * reach the intersection, e.g. ray.position + ray.distance * t === intersectionPoint) will be returned. Otherwise
    * if there is no intersection, null will be returned.
    */
-  override intersect( ray: Ray3, isTouch: boolean ): number | null {
+  public override intersect( ray: Ray3, isTouch: boolean ): number | null {
     const translation = this.matrix.getTranslation().toVector3();
     const radius = this.radiusProperty.value;
     const length = this.lengthProperty.value;
@@ -174,7 +174,7 @@ export default class HorizontalCylinder extends Mass {
    *
    * Assumes step information was updated.
    */
-  getDisplacedArea( liquidLevel: number ): number {
+  public getDisplacedArea( liquidLevel: number ): number {
     if ( liquidLevel < this.stepBottom || liquidLevel > this.stepTop ) {
       return 0;
     }
@@ -190,7 +190,7 @@ export default class HorizontalCylinder extends Mass {
    *
    * Assumes step information was updated.
    */
-  getDisplacedVolume( liquidLevel: number ): number {
+  public getDisplacedVolume( liquidLevel: number ): number {
     if ( liquidLevel <= this.stepBottom ) {
       return 0;
     }
@@ -209,7 +209,7 @@ export default class HorizontalCylinder extends Mass {
   /**
    * Resets things to their original values.
    */
-  override reset(): void {
+  public override reset(): void {
     this.radiusProperty.reset();
     this.lengthProperty.reset();
     this.updateSize( this.radiusProperty.value, this.lengthProperty.value );
@@ -220,7 +220,7 @@ export default class HorizontalCylinder extends Mass {
   /**
    * Releases references
    */
-  override dispose(): void {
+  public override dispose(): void {
     this.radiusProperty.dispose();
     this.lengthProperty.dispose();
 
@@ -230,18 +230,18 @@ export default class HorizontalCylinder extends Mass {
   /**
    * Returns a horizontal cylinder shape for a given radius/length.
    */
-  static getHorizontalCylinderShape( radius: number, length: number ): Shape {
+  public static getHorizontalCylinderShape( radius: number, length: number ): Shape {
     return Shape.rect( -length / 2, -radius, length, 2 * radius );
   }
 
   /**
    * Returns the volume of a horizontal cylinder with the given radius and length.
    */
-  static getVolume( radius: number, length: number ): number {
+  public static getVolume( radius: number, length: number ): number {
     return Math.PI * radius * radius * length;
   }
 
-  static HorizontalCylinderIO: IOType;
+  public static HorizontalCylinderIO: IOType;
 }
 
 HorizontalCylinder.HorizontalCylinderIO = new IOType( 'HorizontalCylinderIO', {

@@ -35,7 +35,7 @@ export default class Gravity {
   public custom: boolean;
   public hidden: boolean;
 
-  constructor( providedConfig: GravityOptions ) {
+  public constructor( providedConfig: GravityOptions ) {
 
     const config = optionize<GravityOptions, GravityOptions>()( {
       custom: false,
@@ -52,7 +52,7 @@ export default class Gravity {
   /**
    * Returns a custom material that can be modified at will.
    */
-  static createCustomGravity( value: number ): Gravity {
+  public static createCustomGravity( value: number ): Gravity {
     return new Gravity( {
       name: densityBuoyancyCommonStrings.gravity.custom,
       tandemName: 'custom',
@@ -62,33 +62,33 @@ export default class Gravity {
   }
 
 
-  static EARTH = new Gravity( {
+  public static EARTH = new Gravity( {
     name: densityBuoyancyCommonStrings.gravity.earth,
     tandemName: 'earth',
     value: DensityBuoyancyCommonQueryParameters.gEarth
   } );
 
-  static JUPITER = new Gravity( {
+  public static JUPITER = new Gravity( {
     name: densityBuoyancyCommonStrings.gravity.jupiter,
     tandemName: 'jupiter',
     value: 24.8
   } );
 
-  static MOON = new Gravity( {
+  public static MOON = new Gravity( {
     name: densityBuoyancyCommonStrings.gravity.moon,
     tandemName: 'moon',
     value: 1.6
   } );
 
-  static PLANET_X = new Gravity( {
+  public static PLANET_X = new Gravity( {
     name: densityBuoyancyCommonStrings.gravity.planetX,
     tandemName: 'planetX',
     value: 19.6,
     hidden: true
   } );
 
-  static GRAVITIES: Gravity[];
-  static GravityIO: IOType;
+  public static GRAVITIES: Gravity[];
+  public static GravityIO: IOType;
 }
 
 Gravity.GRAVITIES = [

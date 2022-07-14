@@ -35,22 +35,22 @@ export type BuoyancyShapesModelOptions = DensityBuoyancyModelOptions;
 
 export default class BuoyancyShapesModel extends DensityBuoyancyModel {
 
-  modeProperty: Property<TwoBlockMode>;
-  secondaryMassVisibleProperty: Property<boolean>;
-  densityExpandedProperty: Property<boolean>;
-  leftScale: Scale;
-  poolScale: Scale;
-  primaryShapeProperty: Property<MassShape>;
-  secondaryShapeProperty: Property<MassShape>;
-  primaryWidthRatioProperty: Property<number>;
-  secondaryWidthRatioProperty: Property<number>;
-  primaryHeightRatioProperty: Property<number>;
-  secondaryHeightRatioProperty: Property<number>;
+  public readonly modeProperty: Property<TwoBlockMode>;
+  public readonly secondaryMassVisibleProperty: Property<boolean>;
+  public readonly densityExpandedProperty: Property<boolean>;
+  public readonly leftScale: Scale;
+  public readonly poolScale: Scale;
+  public readonly primaryShapeProperty: Property<MassShape>;
+  public readonly secondaryShapeProperty: Property<MassShape>;
+  public readonly primaryWidthRatioProperty: Property<number>;
+  public readonly secondaryWidthRatioProperty: Property<number>;
+  public readonly primaryHeightRatioProperty: Property<number>;
+  public readonly secondaryHeightRatioProperty: Property<number>;
 
-  primaryMassProperty: IProperty<Mass>;
-  secondaryMassProperty: IProperty<Mass>;
+  public readonly primaryMassProperty: IProperty<Mass>;
+  public readonly secondaryMassProperty: IProperty<Mass>;
 
-  constructor( providedOptions: BuoyancyShapesModelOptions ) {
+  public constructor( providedOptions: BuoyancyShapesModelOptions ) {
     const options = optionize<DensityBuoyancyModelOptions, EmptyObjectType>()( {
       initialForceScale: 1 / 4
     }, providedOptions );
@@ -233,7 +233,7 @@ export default class BuoyancyShapesModel extends DensityBuoyancyModel {
   /**
    * Resets things to their original values.
    */
-  override reset(): void {
+  public override reset(): void {
     this.modeProperty.reset();
 
     this.secondaryMassVisibleProperty.reset();

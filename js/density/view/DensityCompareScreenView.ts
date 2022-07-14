@@ -33,7 +33,7 @@ export default class DensityCompareScreenView extends DensityBuoyancyScreenView<
 
   private positionPanel: () => void;
 
-  constructor( model: DensityCompareModel, options: DensityBuoyancyScreenViewOptions ) {
+  public constructor( model: DensityCompareModel, options: DensityBuoyancyScreenViewOptions ) {
 
     const tandem = options.tandem;
 
@@ -173,7 +173,7 @@ export default class DensityCompareScreenView extends DensityBuoyancyScreenView<
     this.addChild( this.popupLayer );
   }
 
-  override layout( viewBounds: Bounds2 ): void {
+  public override layout( viewBounds: Bounds2 ): void {
     super.layout( viewBounds );
 
     // If the simulation was not able to load for WebGL, bail out

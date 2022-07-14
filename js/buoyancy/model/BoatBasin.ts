@@ -17,12 +17,12 @@ import BoatDesign from './BoatDesign.js';
 
 export default class BoatBasin extends Basin {
 
-  private boat: Boat;
+  private readonly boat: Boat;
 
   // Used for intersection
-  oneLiterShape: Shape;
+  public readonly oneLiterShape: Shape;
 
-  constructor( boat: Boat ) {
+  public constructor( boat: Boat ) {
     super( {
       initialVolume: 0,
       initialY: 0,
@@ -38,7 +38,7 @@ export default class BoatBasin extends Basin {
    * Returns whether a given mass is inside this basin (e.g. if filled with liquid, would it be displacing any
    * liquid).
    */
-  isMassInside( mass: Mass ): boolean {
+  public isMassInside( mass: Mass ): boolean {
     const slip = 1e-2;
     if ( mass === this.boat || mass.stepBottom >= this.stepTop || mass.stepTop <= this.stepBottom - slip ) {
       return false;
@@ -54,14 +54,14 @@ export default class BoatBasin extends Basin {
   /**
    * Returns the maximum area that could be contained with liquid at a given y value.
    */
-  getMaximumArea( y: number ): number {
+  public getMaximumArea( y: number ): number {
     return this.boat.getBasinArea( y );
   }
 
   /**
    * Returns the maximum volume that could be contained with liquid up to a given y value.
    */
-  getMaximumVolume( y: number ): number {
+  public getMaximumVolume( y: number ): number {
     return this.boat.getBasinVolume( y );
   }
 }

@@ -50,7 +50,7 @@ export default abstract class SecondaryMassScreenView<Model extends DensityBuoya
     this.blocksRadioButtonGroup!.left = this.rightBox.left;
   }
 
-  override layout( viewBounds: Bounds2 ): void {
+  public override layout( viewBounds: Bounds2 ): void {
     super.layout( viewBounds );
 
     // If the simulation was not able to load for WebGL, bail out

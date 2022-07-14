@@ -38,7 +38,7 @@ const checkboxOptions = {
 const checkboxSpacing = 5;
 
 export default class DisplayOptionsNode extends VBox {
-  constructor( model: DensityBuoyancyModel, options?: VBoxOptions ) {
+  public constructor( model: DensityBuoyancyModel, options?: VBoxOptions ) {
 
     super( combineOptions<VBoxOptions>( {
       spacing: 10,

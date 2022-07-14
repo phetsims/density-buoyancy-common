@@ -26,13 +26,13 @@ export type EllipsoidOptions = StrictOmit<InstrumentedMassOptions, 'body' | 'sha
 
 export default class Ellipsoid extends Mass {
 
-  sizeProperty: Property<Bounds3>;
+  public readonly sizeProperty: Property<Bounds3>;
 
   // Step information
-  stepMaximumArea: number;
-  stepMaximumVolume: number;
+  public stepMaximumArea: number;
+  public stepMaximumVolume: number;
 
-  constructor( engine: PhysicsEngine, size: Bounds3, providedConfig: EllipsoidOptions ) {
+  public constructor( engine: PhysicsEngine, size: Bounds3, providedConfig: EllipsoidOptions ) {
     const config = optionize<EllipsoidOptions, EmptyObjectType, InstrumentedMassOptions>()( {
       body: engine.createFromVertices( Ellipsoid.getEllipsoidVertices( size.width, size.height ), false ),
       shape: Ellipsoid.getEllipsoidShape( size.width, size.height ),
@@ -61,7 +61,7 @@ export default class Ellipsoid extends Mass {
   /**
    * Updates the size of the ellipsoid.
    */
-  updateSize( size: Bounds3 ): void {
+  public updateSize( size: Bounds3 ): void {
     this.engine.updateFromVertices( this.body, Ellipsoid.getEllipsoidVertices( size.width, size.height ), false );
     this.sizeProperty.value = size;
     this.shapeProperty.value = Ellipsoid.getEllipsoidShape( size.width, size.height );
@@ -77,7 +77,7 @@ export default class Ellipsoid extends Mass {
   /**
    * Returns the general size of the mass based on a general size scale.
    */
-  static getSizeFromRatios( widthRatio: number, heightRatio: number ): Bounds3 {
+  public static getSizeFromRatios( widthRatio: number, heightRatio: number ): Bounds3 {
     const x = ( MASS_MIN_SHAPES_DIMENSION + widthRatio * ( MASS_MAX_SHAPES_DIMENSION - MASS_MIN_SHAPES_DIMENSION ) ) / 2;
     const y = ( MASS_MIN_SHAPES_DIMENSION + heightRatio * ( MASS_MAX_SHAPES_DIMENSION - MASS_MIN_SHAPES_DIMENSION ) ) / 2;
     return new Bounds3( -x, -y, -x, x, y, x );
@@ -86,7 +86,7 @@ export default class Ellipsoid extends Mass {
   /**
    * Sets the general size of the mass based on a general size scale.
    */
-  setRatios( widthRatio: number, heightRatio: number ): void {
+  public setRatios( widthRatio: number, heightRatio: number ): void {
     this.updateSize( Ellipsoid.getSizeFromRatios( widthRatio, heightRatio ) );
   }
 
@@ -96,7 +96,7 @@ export default class Ellipsoid extends Mass {
    *
    * Type-specific values are likely to be set, but this should set at least stepX/stepBottom/stepTop
    */
-  override updateStepInformation(): void {
+  public override updateStepInformation(): void {
     super.updateStepInformation();
 
     const xOffset = this.stepMatrix.m02();
@@ -118,7 +118,7 @@ export default class Ellipsoid extends Mass {
    * reach the intersection, e.g. ray.position + ray.distance * t === intersectionPoint) will be returned. Otherwise
    * if there is no intersection, null will be returned.
    */
-  override intersect( ray: Ray3, isTouch: boolean ): number | null {
+  public override intersect( ray: Ray3, isTouch: boolean ): number | null {
     const translation = this.matrix.getTranslation().toVector3();
     const size = this.sizeProperty.value;
     const relativePosition = ray.position.minusXYZ( translation.x, translation.y, translation.z );
@@ -146,7 +146,7 @@ export default class Ellipsoid extends Mass {
    *
    * Assumes step information was updated.
    */
-  getDisplacedArea( liquidLevel: number ): number {
+  public getDisplacedArea( liquidLevel: number ): number {
     if ( liquidLevel < this.stepBottom || liquidLevel > this.stepTop ) {
       return 0;
     }
@@ -162,7 +162,7 @@ export default class Ellipsoid extends Mass {
    *
    * Assumes step information was updated.
    */
-  getDisplacedVolume( liquidLevel: number ): number {
+  public getDisplacedVolume( liquidLevel: number ): number {
     if ( liquidLevel <= this.stepBottom ) {
       return 0;
     }
@@ -179,7 +179,7 @@ export default class Ellipsoid extends Mass {
   /**
    * Resets things to their original values.
    */
-  override reset(): void {
+  public override reset(): void {
     this.sizeProperty.reset();
     this.updateSize( this.sizeProperty.value );
 
@@ -189,7 +189,7 @@ export default class Ellipsoid extends Mass {
   /**
    * Releases references
    */
-  override dispose(): void {
+  public override dispose(): void {
     this.sizeProperty.dispose();
 
     super.dispose();
@@ -198,14 +198,14 @@ export default class Ellipsoid extends Mass {
   /**
    * Returns an ellipsoid shape
    */
-  static getEllipsoidShape( width: number, height: number ): Shape {
+  public static getEllipsoidShape( width: number, height: number ): Shape {
     return Shape.ellipse( 0, 0, width / 2, height / 2, 0 );
   }
 
   /**
    * Returns vertices for an ellipsoid
    */
-  static getEllipsoidVertices( width: number, height: number ): Vector2[] {
+  public static getEllipsoidVertices( width: number, height: number ): Vector2[] {
     const segments = 80;
     const vertices = [];
     for ( let i = 0; i < segments; i++ ) {
@@ -220,11 +220,11 @@ export default class Ellipsoid extends Mass {
   /**
    * Returns the volume of an ellipsoid with the given axis-aligned bounding box.
    */
-  static getVolume( size: Bounds3 ): number {
+  public static getVolume( size: Bounds3 ): number {
     return Math.PI * size.width * size.height * size.depth / 6;
   }
 
-  static EllipsoidIO: IOType;
+  public static EllipsoidIO: IOType;
 }
 
 Ellipsoid.EllipsoidIO = new IOType( 'EllipsoidIO', {

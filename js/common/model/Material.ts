@@ -52,17 +52,17 @@ export type MaterialOptions = {
 
 export default class Material {
 
-  readonly name: string;
-  readonly identifier: string | null;
-  readonly tandemName: string | null;
-  readonly density: number;
-  readonly viscosity: number;
-  readonly custom: boolean;
-  readonly hidden: boolean;
-  readonly customColor: Property<Color> | null;
-  readonly liquidColor: Property<Color> | null;
+  public readonly name: string;
+  public readonly identifier: string | null;
+  public readonly tandemName: string | null;
+  public readonly density: number;
+  public readonly viscosity: number;
+  public readonly custom: boolean;
+  public readonly hidden: boolean;
+  public readonly customColor: Property<Color> | null;
+  public readonly liquidColor: Property<Color> | null;
 
-  constructor( providedConfig: MaterialOptions ) {
+  public constructor( providedConfig: MaterialOptions ) {
 
     const config = optionize<MaterialOptions, MaterialOptions>()( {
       name: 'unknown',
@@ -92,7 +92,7 @@ export default class Material {
   /**
    * Returns a custom material that can be modified at will.
    */
-  static createCustomMaterial( config: MaterialOptions ): Material {
+  public static createCustomMaterial( config: MaterialOptions ): Material {
     return new Material( combineOptions<MaterialOptions>( {
       name: densityBuoyancyCommonStrings.material.custom,
       tandemName: 'custom',
@@ -103,7 +103,7 @@ export default class Material {
   /**
    * Returns a custom material that can be modified at will, but with a liquid color specified.
    */
-  static createCustomLiquidMaterial( config: MaterialOptions & Required<Pick<MaterialOptions, 'density'>> ): Material {
+  public static createCustomLiquidMaterial( config: MaterialOptions & Required<Pick<MaterialOptions, 'density'>> ): Material {
     return Material.createCustomMaterial( combineOptions<MaterialOptions>( {
       liquidColor: Material.getCustomLiquidColor( config.density )
     }, config ) );
@@ -112,7 +112,7 @@ export default class Material {
   /**
    * Returns a custom material that can be modified at will, but with a solid color specified
    */
-  static createCustomSolidMaterial( config: MaterialOptions & Required<Pick<MaterialOptions, 'density'>> ): Material {
+  public static createCustomSolidMaterial( config: MaterialOptions & Required<Pick<MaterialOptions, 'density'>> ): Material {
     return Material.createCustomMaterial( combineOptions<MaterialOptions>( {
       liquidColor: Material.getCustomSolidColor( config.density )
     }, config ) );
@@ -122,14 +122,14 @@ export default class Material {
    * Returns a value suitable for use in colors (0-255 value) that should be used as a grayscale value for
    * a material of a given density.
    */
-  static getCustomLightness( density: number ): number {
+  public static getCustomLightness( density: number ): number {
     return Utils.roundSymmetric( Utils.clamp( Utils.linear( 1, -2, 0, 255, Utils.log10( density / 1000 ) ), 0, 255 ) );
   }
 
   /**
    * Similar to getCustomLightness, but returns the generated color, with an included alpha effect.
    */
-  static getCustomLiquidColor( density: number ): ColorProperty {
+  public static getCustomLiquidColor( density: number ): ColorProperty {
     const lightness = Material.getCustomLightness( density * 0.25 );
 
     return new ColorProperty( new Color( lightness, lightness, lightness, 0.8 * ( 1 - lightness / 255 ) ) );
@@ -138,7 +138,7 @@ export default class Material {
   /**
    * Similar to getCustomLightness, but returns the generated color
    */
-  static getCustomSolidColor( density: number ): ColorProperty {
+  public static getCustomSolidColor( density: number ): ColorProperty {
     const lightness = Material.getCustomLightness( density );
 
     return new ColorProperty( new Color( lightness, lightness, lightness ) );
@@ -149,7 +149,7 @@ export default class Material {
    *
    * NOTE: Only call this for things that exist for the lifetime of this simulation (otherwise it would leak memory)
    */
-  static linkLiquidColor( property: IProperty<Material>, threeMaterial: THREE.MeshPhongMaterial | THREE.MeshLambertMaterial | THREE.MeshBasicMaterial ): void {
+  public static linkLiquidColor( property: IProperty<Material>, threeMaterial: THREE.MeshPhongMaterial | THREE.MeshLambertMaterial | THREE.MeshBasicMaterial ): void {
     new DynamicProperty<Color, Color, Material>( property, {
       derive: material => {
         assert && assert( material.liquidColor );
@@ -164,14 +164,14 @@ export default class Material {
 
   // (read-only) {Material} - "Solids"
 
-  static ALUMINUM = new Material( {
+  public static ALUMINUM = new Material( {
     name: densityBuoyancyCommonStrings.material.aluminum,
     tandemName: 'aluminum',
     identifier: 'ALUMINUM',
     density: 2700
   } );
 
-  static APPLE = new Material( {
+  public static APPLE = new Material( {
     name: densityBuoyancyCommonStrings.material.apple,
     tandemName: 'apple',
     identifier: 'APPLE',
@@ -180,14 +180,14 @@ export default class Material {
     density: 832
   } );
 
-  static BRICK = new Material( {
+  public static BRICK = new Material( {
     name: densityBuoyancyCommonStrings.material.brick,
     tandemName: 'brick',
     identifier: 'BRICK',
     density: 2000
   } );
 
-  static CEMENT = new Material( {
+  public static CEMENT = new Material( {
     name: densityBuoyancyCommonStrings.material.cement,
     tandemName: 'cement',
     identifier: 'CEMENT',
@@ -195,7 +195,7 @@ export default class Material {
     liquidColor: DensityBuoyancyCommonColors.materialCementColorProperty
   } );
 
-  static COPPER = new Material( {
+  public static COPPER = new Material( {
     name: densityBuoyancyCommonStrings.material.copper,
     tandemName: 'copper',
     identifier: 'COPPER',
@@ -203,42 +203,42 @@ export default class Material {
     liquidColor: DensityBuoyancyCommonColors.materialCopperColorProperty
   } );
 
-  static DIAMOND = new Material( {
+  public static DIAMOND = new Material( {
     name: densityBuoyancyCommonStrings.material.diamond,
     tandemName: 'diamond',
     identifier: 'DIAMOND',
     density: 3510
   } );
 
-  static GLASS = new Material( {
+  public static GLASS = new Material( {
     name: densityBuoyancyCommonStrings.material.glass,
     tandemName: 'glass',
     identifier: 'GLASS',
     density: 2700
   } );
 
-  static GOLD = new Material( {
+  public static GOLD = new Material( {
     name: densityBuoyancyCommonStrings.material.gold,
     tandemName: 'gold',
     identifier: 'GOLD',
     density: 19320
   } );
 
-  static HUMAN = new Material( {
+  public static HUMAN = new Material( {
     name: densityBuoyancyCommonStrings.material.human,
     tandemName: 'human',
     identifier: 'HUMAN',
     density: 950
   } );
 
-  static ICE = new Material( {
+  public static ICE = new Material( {
     name: densityBuoyancyCommonStrings.material.ice,
     tandemName: 'ice',
     identifier: 'ICE',
     density: 919
   } );
 
-  static LEAD = new Material( {
+  public static LEAD = new Material( {
     name: densityBuoyancyCommonStrings.material.lead,
     tandemName: 'lead',
     identifier: 'LEAD',
@@ -246,35 +246,35 @@ export default class Material {
     liquidColor: DensityBuoyancyCommonColors.materialLeadColorProperty
   } );
 
-  static PLATINUM = new Material( {
+  public static PLATINUM = new Material( {
     name: densityBuoyancyCommonStrings.material.platinum,
     tandemName: 'platinum',
     identifier: 'PLATINUM',
     density: 21450
   } );
 
-  static PYRITE = new Material( {
+  public static PYRITE = new Material( {
     name: densityBuoyancyCommonStrings.material.pyrite,
     tandemName: 'pyrite',
     identifier: 'PYRITE',
     density: 5010
   } );
 
-  static SILVER = new Material( {
+  public static SILVER = new Material( {
     name: densityBuoyancyCommonStrings.material.silver,
     tandemName: 'silver',
     identifier: 'SILVER',
     density: 10490
   } );
 
-  static STEEL = new Material( {
+  public static STEEL = new Material( {
     name: densityBuoyancyCommonStrings.material.steel,
     tandemName: 'steel',
     identifier: 'STEEL',
     density: 7800
   } );
 
-  static STYROFOAM = new Material( {
+  public static STYROFOAM = new Material( {
     name: densityBuoyancyCommonStrings.material.styrofoam,
     tandemName: 'styrofoam',
     identifier: 'STYROFOAM',
@@ -283,21 +283,21 @@ export default class Material {
     density: 150
   } );
 
-  static TANTALUM = new Material( {
+  public static TANTALUM = new Material( {
     name: densityBuoyancyCommonStrings.material.tantalum,
     tandemName: 'tantalum',
     identifier: 'TANTALUM',
     density: 16650
   } );
 
-  static TITANIUM = new Material( {
+  public static TITANIUM = new Material( {
     name: densityBuoyancyCommonStrings.material.titanium,
     tandemName: 'titanium',
     identifier: 'TITANIUM',
     density: 4500
   } );
 
-  static WOOD = new Material( {
+  public static WOOD = new Material( {
     name: densityBuoyancyCommonStrings.material.wood,
     tandemName: 'wood',
     identifier: 'WOOD',
@@ -306,7 +306,7 @@ export default class Material {
 
   // (read-only) {Material} - "Liquids".
 
-  static AIR = new Material( {
+  public static AIR = new Material( {
     name: densityBuoyancyCommonStrings.material.air,
     tandemName: 'air',
     identifier: 'AIR',
@@ -315,7 +315,7 @@ export default class Material {
     liquidColor: DensityBuoyancyCommonColors.materialAirColorProperty
   } );
 
-  static DENSITY_A = new Material( {
+  public static DENSITY_A = new Material( {
     name: densityBuoyancyCommonStrings.material.densityA,
     tandemName: 'densityA',
     identifier: 'DENSITY_A',
@@ -324,7 +324,7 @@ export default class Material {
     hidden: true
   } );
 
-  static DENSITY_B = new Material( {
+  public static DENSITY_B = new Material( {
     name: densityBuoyancyCommonStrings.material.densityB,
     tandemName: 'densityB',
     identifier: 'DENSITY_B',
@@ -333,7 +333,7 @@ export default class Material {
     hidden: true
   } );
 
-  static DENSITY_C = new Material( {
+  public static DENSITY_C = new Material( {
     name: densityBuoyancyCommonStrings.material.densityC,
     tandemName: 'densityC',
     identifier: 'DENSITY_C',
@@ -342,7 +342,7 @@ export default class Material {
     hidden: true
   } );
 
-  static DENSITY_D = new Material( {
+  public static DENSITY_D = new Material( {
     name: densityBuoyancyCommonStrings.material.densityD,
     tandemName: 'densityD',
     identifier: 'DENSITY_D',
@@ -351,7 +351,7 @@ export default class Material {
     hidden: true
   } );
 
-  static DENSITY_E = new Material( {
+  public static DENSITY_E = new Material( {
     name: densityBuoyancyCommonStrings.material.densityE,
     tandemName: 'densityE',
     identifier: 'DENSITY_E',
@@ -360,7 +360,7 @@ export default class Material {
     hidden: true
   } );
 
-  static DENSITY_F = new Material( {
+  public static DENSITY_F = new Material( {
     name: densityBuoyancyCommonStrings.material.densityF,
     tandemName: 'densityF',
     identifier: 'DENSITY_F',
@@ -369,7 +369,7 @@ export default class Material {
     hidden: true
   } );
 
-  static GASOLINE = new Material( {
+  public static GASOLINE = new Material( {
     name: densityBuoyancyCommonStrings.material.gasoline,
     tandemName: 'gasoline',
     identifier: 'GASOLINE',
@@ -378,7 +378,7 @@ export default class Material {
     liquidColor: DensityBuoyancyCommonColors.materialGasolineColorProperty
   } );
 
-  static HONEY = new Material( {
+  public static HONEY = new Material( {
     name: densityBuoyancyCommonStrings.material.honey,
     tandemName: 'honey',
     identifier: 'HONEY',
@@ -387,7 +387,7 @@ export default class Material {
     liquidColor: DensityBuoyancyCommonColors.materialHoneyColorProperty
   } );
 
-  static MERCURY = new Material( {
+  public static MERCURY = new Material( {
     name: densityBuoyancyCommonStrings.material.mercury,
     tandemName: 'mercury',
     identifier: 'MERCURY',
@@ -396,7 +396,7 @@ export default class Material {
     liquidColor: DensityBuoyancyCommonColors.materialMercuryColorProperty
   } );
 
-  static OIL = new Material( {
+  public static OIL = new Material( {
     name: densityBuoyancyCommonStrings.material.oil,
     tandemName: 'oil',
     identifier: 'OIL',
@@ -405,7 +405,7 @@ export default class Material {
     liquidColor: DensityBuoyancyCommonColors.materialOilColorProperty
   } );
 
-  static SAND = new Material( {
+  public static SAND = new Material( {
     name: densityBuoyancyCommonStrings.material.sand,
     tandemName: 'sand',
     identifier: 'SAND',
@@ -414,7 +414,7 @@ export default class Material {
     liquidColor: DensityBuoyancyCommonColors.materialSandColorProperty
   } );
 
-  static SEAWATER = new Material( {
+  public static SEAWATER = new Material( {
     name: densityBuoyancyCommonStrings.material.seawater,
     tandemName: 'seawater',
     identifier: 'SEAWATER',
@@ -423,7 +423,7 @@ export default class Material {
     liquidColor: DensityBuoyancyCommonColors.materialSeawaterColorProperty
   } );
 
-  static WATER = new Material( {
+  public static WATER = new Material( {
     name: densityBuoyancyCommonStrings.material.water,
     tandemName: 'water',
     identifier: 'WATER',
@@ -432,8 +432,8 @@ export default class Material {
     liquidColor: DensityBuoyancyCommonColors.materialWaterColorProperty
   } );
 
-  static MATERIALS: Material[];
-  static MaterialIO: IOType;
+  public static MATERIALS: Material[];
+  public static MaterialIO: IOType;
 }
 
 Material.MATERIALS = [
@@ -512,7 +512,9 @@ Material.MaterialIO = new IOType<Material, MaterialState>( 'MaterialIO', {
       name: StringIO.toStateObject( material.name ),
       identifier: NullableIO( StringIO ).toStateObject( material.identifier ),
       tandemName: NullableIO( StringIO ).toStateObject( material.tandemName ),
+      // @ts-ignore TS2322: Type 'NumberStateObject' is not assignable to type 'number'.
       density: NumberIO.toStateObject( material.density ),
+      // @ts-ignore TS2322: Type 'NumberStateObject' is not assignable to type 'number'.
       viscosity: NumberIO.toStateObject( material.viscosity ),
       custom: BooleanIO.toStateObject( material.custom ),
       hidden: BooleanIO.toStateObject( material.hidden ),

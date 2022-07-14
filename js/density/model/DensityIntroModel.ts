@@ -23,12 +23,12 @@ export type DensityIntroModelOptions = DensityBuoyancyModelOptions;
 
 export default class DensityIntroModel extends DensityBuoyancyModel {
 
-  modeProperty: Property<TwoBlockMode>;
-  readonly primaryMass: Cuboid;
-  readonly secondaryMass: Cuboid;
-  densityExpandedProperty: Property<boolean>;
+  public readonly modeProperty: Property<TwoBlockMode>;
+  public readonly primaryMass: Cuboid;
+  public readonly secondaryMass: Cuboid;
+  public readonly densityExpandedProperty: Property<boolean>;
 
-  constructor( options: DensityIntroModelOptions ) {
+  public constructor( options: DensityIntroModelOptions ) {
 
     const tandem = options.tandem;
 
@@ -36,7 +36,7 @@ export default class DensityIntroModel extends DensityBuoyancyModel {
       showMassesDefault: true,
       canShowForces: false
     }, options ) );
-    
+
     this.modeProperty = new EnumerationProperty( TwoBlockMode.ONE_BLOCK, {
       tandem: tandem.createTandem( 'modeProperty' )
     } );
@@ -68,7 +68,7 @@ export default class DensityIntroModel extends DensityBuoyancyModel {
   /**
    * Resets things to their original values.
    */
-  override reset(): void {
+  public override reset(): void {
     this.modeProperty.reset();
 
     this.primaryMass.reset();

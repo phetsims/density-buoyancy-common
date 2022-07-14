@@ -22,14 +22,13 @@ export type InterpolatedPropertyOptions<T> = SelfOptions<T> & PropertyOptions<T>
 
 export default class InterpolatedProperty<T> extends Property<T> {
 
-  // publicly read-only
-  currentValue: T;
-  previousValue: T;
-  ratio: number;
+  public currentValue: T;
+  public previousValue: T;
+  public ratio: number;
 
-  private interpolate: Interpolate<T>;
+  private readonly interpolate: Interpolate<T>;
 
-  constructor( initialValue: T, providedConfig: InterpolatedPropertyOptions<T> ) {
+  public constructor( initialValue: T, providedConfig: InterpolatedPropertyOptions<T> ) {
 
     const config = optionize3<InterpolatedPropertyOptions<T>, SelfOptions<T>, PropertyOptions<T>>()( {}, providedConfig );
 
@@ -46,7 +45,7 @@ export default class InterpolatedProperty<T> extends Property<T> {
   /**
    * Sets the next value to be used (will NOT change the value of this Property).
    */
-  setNextValue( value: T ): void {
+  public setNextValue( value: T ): void {
     this.previousValue = this.currentValue;
     this.currentValue = value;
   }
@@ -54,7 +53,7 @@ export default class InterpolatedProperty<T> extends Property<T> {
   /**
    * Sets the ratio to use for interpolated values (WILL change the value of this Property generally).
    */
-  setRatio( ratio: number ): void {
+  public setRatio( ratio: number ): void {
     this.ratio = ratio;
 
     this.value = this.interpolate( this.previousValue, this.currentValue, this.ratio );
@@ -63,7 +62,7 @@ export default class InterpolatedProperty<T> extends Property<T> {
   /**
    * Resets the Property to its initial state.
    */
-  override reset(): void {
+  public override reset(): void {
     super.reset();
 
     this.currentValue = this.value;
@@ -74,25 +73,25 @@ export default class InterpolatedProperty<T> extends Property<T> {
   /**
    * Interpolation for numbers.
    */
-  static interpolateNumber( a: number, b: number, ratio: number ): number {
+  public static interpolateNumber( a: number, b: number, ratio: number ): number {
     return a + ( b - a ) * ratio;
   }
 
   /**
    * Interpolation for Vector2.
    */
-  static interpolateVector2( a: Vector2, b: Vector2, ratio: number ): Vector2 {
+  public static interpolateVector2( a: Vector2, b: Vector2, ratio: number ): Vector2 {
     return a.blend( b, ratio );
   }
 
   /**
    * Interpolation for Vector3.
    */
-  static interpolateVector3( a: Vector3, b: Vector3, ratio: number ): Vector3 {
+  public static interpolateVector3( a: Vector3, b: Vector3, ratio: number ): Vector3 {
     return a.blend( b, ratio );
   }
 
-  static InterpolatedPropertyIO: ( parameterType: IOType ) => IOType;
+  public static InterpolatedPropertyIO: ( parameterType: IOType ) => IOType;
 }
 
 // {Map.<IOType, IOType>} - Cache each parameterized PropertyIO based on

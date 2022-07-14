@@ -22,7 +22,7 @@ import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js
 import DensityBuoyancyCommonColors from './DensityBuoyancyCommonColors.js';
 
 export default class WaterLevelIndicator extends Node {
-  constructor( volumeProperty: IReadOnlyProperty<number> ) {
+  public constructor( volumeProperty: IReadOnlyProperty<number> ) {
     super();
 
     const highlightShape = new Shape().moveTo( 0, 0 ).lineTo( -20, -10 ).lineTo( -20, 10 ).close();

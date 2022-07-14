@@ -33,30 +33,30 @@ const labelFont = new PhetFont( { size: 12, weight: 'bold' } );
 
 export default class ForceDiagramNode extends Node {
 
-  readonly mass: Mass;
-  private showGravityForceProperty: Property<boolean>;
-  private showBuoyancyForceProperty: Property<boolean>;
-  private showContactForceProperty: Property<boolean>;
-  private showForceValuesProperty: Property<boolean>;
-  private forceScaleProperty: Property<number>;
+  public readonly mass: Mass;
+  private readonly showGravityForceProperty: Property<boolean>;
+  private readonly showBuoyancyForceProperty: Property<boolean>;
+  private readonly showContactForceProperty: Property<boolean>;
+  private readonly showForceValuesProperty: Property<boolean>;
+  private readonly forceScaleProperty: Property<number>;
 
-  private gravityArrowNode: ArrowNode;
-  private buoyancyArrowNode: ArrowNode;
-  private contactArrowNode: ArrowNode;
+  private readonly gravityArrowNode: ArrowNode;
+  private readonly buoyancyArrowNode: ArrowNode;
+  private readonly contactArrowNode: ArrowNode;
 
-  private gravityLabelText: Text;
-  private buoyancyLabelText: Text;
-  private contactLabelText: Text;
+  private readonly gravityLabelText: Text;
+  private readonly buoyancyLabelText: Text;
+  private readonly contactLabelText: Text;
 
-  private gravityLabelNode: Node;
-  private buoyancyLabelNode: Node;
-  private contactLabelNode: Node;
+  private readonly gravityLabelNode: Node;
+  private readonly buoyancyLabelNode: Node;
+  private readonly contactLabelNode: Node;
 
-  private arrowMap: Map<ArrowNode, Node>;
+  private readonly arrowMap: Map<ArrowNode, Node>;
 
-  private axisNode: Line;
+  private readonly axisNode: Line;
 
-  constructor( mass: Mass, showGravityForceProperty: Property<boolean>, showBuoyancyForceProperty: Property<boolean>, showContactForceProperty: Property<boolean>, showForceValuesProperty: Property<boolean>, forceScaleProperty: Property<number> ) {
+  public constructor( mass: Mass, showGravityForceProperty: Property<boolean>, showBuoyancyForceProperty: Property<boolean>, showContactForceProperty: Property<boolean>, showForceValuesProperty: Property<boolean>, forceScaleProperty: Property<number> ) {
     super();
 
     this.mass = mass;
@@ -118,7 +118,7 @@ export default class ForceDiagramNode extends Node {
   /**
    * Updates the displayed view.
    */
-  update(): void {
+  public update(): void {
     const upwardArrows: ArrowNode[] = [];
     const downwardArrows: ArrowNode[] = [];
     const labels: Node[] = [];

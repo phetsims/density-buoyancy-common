@@ -49,12 +49,12 @@ const randomColors = [
 ];
 
 export class BlockSet extends EnumerationValue {
-  static SET_1 = new BlockSet();
-  static SET_2 = new BlockSet();
-  static SET_3 = new BlockSet();
-  static RANDOM = new BlockSet();
+  public static SET_1 = new BlockSet();
+  public static SET_2 = new BlockSet();
+  public static SET_3 = new BlockSet();
+  public static RANDOM = new BlockSet();
 
-  static enumeration = new Enumeration( BlockSet, {
+  public static enumeration = new Enumeration( BlockSet, {
     phetioDocumentation: 'Block set'
   } );
 }
@@ -63,10 +63,10 @@ export type DensityMysteryModelOptions = StrictOmit<BlockSetModelOptions<BlockSe
 
 export default class DensityMysteryModel extends BlockSetModel<BlockSet> {
 
-  densityTableExpandedProperty: Property<boolean>;
-  scale: Scale;
+  public readonly densityTableExpandedProperty: Property<boolean>;
+  private readonly scale: Scale;
 
-  constructor( providedOptions: DensityMysteryModelOptions ) {
+  public constructor( providedOptions: DensityMysteryModelOptions ) {
 
     const tandem = providedOptions.tandem;
 
@@ -288,7 +288,7 @@ export default class DensityMysteryModel extends BlockSetModel<BlockSet> {
   /**
    * Resets things to their original values.
    */
-  override reset(): void {
+  public override reset(): void {
     this.densityTableExpandedProperty.reset();
 
     super.reset();

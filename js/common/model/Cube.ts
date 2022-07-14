@@ -23,7 +23,7 @@ type SelfOptions = {
 export type CubeOptions = SelfOptions & CuboidOptions;
 
 export default class Cube extends Cuboid {
-  constructor( engine: PhysicsEngine, volume: number, providedConfig: CubeOptions ) {
+  public constructor( engine: PhysicsEngine, volume: number, providedConfig: CubeOptions ) {
 
     let config = optionize<CubeOptions, SelfOptions, CuboidOptions>()( {
       adjustMassWithVolume: false,
@@ -63,7 +63,7 @@ export default class Cube extends Cuboid {
   /**
    * Returns the Bounds3 for a Cube that would be used for a specific volume (cubical).
    */
-  static boundsFromVolume( volume: number ): Bounds3 {
+  public static boundsFromVolume( volume: number ): Bounds3 {
     const halfSideLength = Math.pow( volume, 1 / 3 ) / 2;
     return new Bounds3(
       -halfSideLength,
@@ -78,7 +78,7 @@ export default class Cube extends Cuboid {
   /**
    * Creates a Cube with a defined volume
    */
-  static createWithVolume( engine: PhysicsEngine, material: Material, position: Vector2, volume: number, options?: StrictOmit<CubeOptions, 'matrix' | 'material'> ): Cube {
+  public static createWithVolume( engine: PhysicsEngine, material: Material, position: Vector2, volume: number, options?: StrictOmit<CubeOptions, 'matrix' | 'material'> ): Cube {
     return new Cube( engine, volume, combineOptions<CubeOptions>( {
       matrix: Matrix3.translation( position.x, position.y ),
       material: material
@@ -88,7 +88,7 @@ export default class Cube extends Cuboid {
   /**
    * Creates a Cube with a defined volume
    */
-  static createWithMass( engine: PhysicsEngine, material: Material, position: Vector2, mass: number, options?: StrictOmit<CubeOptions, 'matrix' | 'material'> ): Cube {
+  public static createWithMass( engine: PhysicsEngine, material: Material, position: Vector2, mass: number, options?: StrictOmit<CubeOptions, 'matrix' | 'material'> ): Cube {
     return Cube.createWithVolume( engine, material, position, mass / material.density, options );
   }
 }

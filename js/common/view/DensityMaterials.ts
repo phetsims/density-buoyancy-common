@@ -126,7 +126,7 @@ const woodNormalTexture = toWrappedTexture( Wood26_nrm_jpg );
 const woodRoughnessTexture = toWrappedTexture( Wood26_rgh_jpg );
 
 class AluminumMaterialView extends MaterialView {
-  constructor() {
+  public constructor() {
     super( new THREE.MeshStandardMaterial( {
       map: aluminumColorTexture,
       normalMap: aluminumNormalTexture,
@@ -139,7 +139,7 @@ class AluminumMaterialView extends MaterialView {
 }
 
 class BrickMaterialView extends MaterialView {
-  constructor() {
+  public constructor() {
     super( new THREE.MeshStandardMaterial( {
       map: brickColorTexture,
       aoMap: brickAmbientOcclusionTexture,
@@ -153,7 +153,7 @@ class BrickMaterialView extends MaterialView {
 }
 
 class CopperMaterialView extends MaterialView {
-  constructor() {
+  public constructor() {
     super( new THREE.MeshStandardMaterial( {
       map: copperColorTexture,
       normalMap: copperNormalTexture,
@@ -166,7 +166,7 @@ class CopperMaterialView extends MaterialView {
 }
 
 class IceMaterialView extends MaterialView {
-  constructor() {
+  public constructor() {
     super( new THREE.MeshPhysicalMaterial( {
       map: iceColorTexture,
       alphaMap: iceAlphaTexture,
@@ -190,7 +190,7 @@ class IceMaterialView extends MaterialView {
 
 // We just use aluminum
 class PlatinumMaterialView extends MaterialView {
-  constructor() {
+  public constructor() {
     super( new THREE.MeshStandardMaterial( {
       map: platinumColorTexture,
       normalMap: aluminumNormalTexture,
@@ -207,7 +207,7 @@ class PlatinumMaterialView extends MaterialView {
 }
 
 class SteelMaterialView extends MaterialView {
-  constructor() {
+  public constructor() {
     super( new THREE.MeshStandardMaterial( {
       map: steelColorTexture,
       normalMap: steelNormalTexture,
@@ -220,7 +220,7 @@ class SteelMaterialView extends MaterialView {
 }
 
 class StyrofoamMaterialView extends MaterialView {
-  constructor() {
+  public constructor() {
     super( new THREE.MeshStandardMaterial( {
       map: styrofoamColorTexture,
       aoMap: styrofoamAmbientOcclusionTexture,
@@ -235,7 +235,7 @@ class StyrofoamMaterialView extends MaterialView {
 }
 
 class WoodMaterialView extends MaterialView {
-  constructor() {
+  public constructor() {
     super( new THREE.MeshStandardMaterial( {
       map: woodColorTexture,
       normalMap: woodNormalTexture,
@@ -249,7 +249,7 @@ class WoodMaterialView extends MaterialView {
 }
 
 class CustomMaterialView extends MaterialView {
-  constructor( density: number ) {
+  public constructor( density: number ) {
     const lightness = Material.getCustomLightness( density );
     const color = lightness + lightness * 0x100 + lightness * 0x10000;
 
@@ -264,7 +264,7 @@ class CustomColoredMaterialView extends MaterialView<THREE.MeshLambertMaterial> 
   private readonly colorProperty: Property<Color>;
   private readonly listener: ( color: Color ) => void;
 
-  constructor( colorProperty: Property<Color> ) {
+  public constructor( colorProperty: Property<Color> ) {
     super( new THREE.MeshLambertMaterial() );
 
     this.colorProperty = colorProperty;
@@ -278,7 +278,7 @@ class CustomColoredMaterialView extends MaterialView<THREE.MeshLambertMaterial> 
   /**
    * Releases references
    */
-  override dispose(): void {
+  public override dispose(): void {
     this.colorProperty.unlink( this.listener );
 
     super.dispose();
@@ -286,7 +286,7 @@ class CustomColoredMaterialView extends MaterialView<THREE.MeshLambertMaterial> 
 }
 
 class DebugMaterialView extends MaterialView {
-  constructor() {
+  public constructor() {
     super( new THREE.MeshLambertMaterial( {
       color: 0xffaa44
     } ) );
@@ -297,7 +297,7 @@ export default class DensityMaterials {
   /**
    * Returns a view for the given Material.
    */
-  static getMaterialView( material: Material ): MaterialView {
+  public static getMaterialView( material: Material ): MaterialView {
     if ( material === Material.ALUMINUM ) {
       return new AluminumMaterialView();
     }
@@ -335,9 +335,9 @@ export default class DensityMaterials {
     }
   }
 
-  static woodColorTexture = woodColorTexture;
-  static woodNormalTexture = woodNormalTexture;
-  static woodRoughnessTexture = woodRoughnessTexture;
+  public static woodColorTexture = woodColorTexture;
+  public static woodNormalTexture = woodNormalTexture;
+  public static woodRoughnessTexture = woodRoughnessTexture;
 }
 
 

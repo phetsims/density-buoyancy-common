@@ -28,11 +28,11 @@ import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyModel from '../../common/model/DensityBuoyancyModel.js';
 
 export class BlockSet extends EnumerationValue {
-  static SAME_MASS = new BlockSet();
-  static SAME_VOLUME = new BlockSet();
-  static SAME_DENSITY = new BlockSet();
+  public static SAME_MASS = new BlockSet();
+  public static SAME_VOLUME = new BlockSet();
+  public static SAME_DENSITY = new BlockSet();
 
-  static enumeration = new Enumeration( BlockSet, {
+  public static enumeration = new Enumeration( BlockSet, {
     phetioDocumentation: 'Block set'
   } );
 }
@@ -41,11 +41,11 @@ export type DensityCompareModelOptions = StrictOmit<BlockSetModelOptions<BlockSe
 
 export default class DensityCompareModel extends BlockSetModel<BlockSet> {
 
-  massProperty: RangedProperty;
-  volumeProperty: RangedProperty;
-  densityProperty: RangedProperty;
+  public readonly massProperty: RangedProperty;
+  public readonly volumeProperty: RangedProperty;
+  public readonly densityProperty: RangedProperty;
 
-  constructor( providedOptions: DensityCompareModelOptions ) {
+  public constructor( providedOptions: DensityCompareModelOptions ) {
     const tandem = providedOptions.tandem;
 
     const blockSetsTandem = tandem.createTandem( 'blockSets' );
@@ -256,7 +256,7 @@ export default class DensityCompareModel extends BlockSetModel<BlockSet> {
   /**
    * Resets values to their original state
    */
-  override reset(): void {
+  public override reset(): void {
     this.massProperty.reset();
     this.volumeProperty.reset();
     this.densityProperty.reset();

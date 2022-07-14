@@ -12,16 +12,16 @@ import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 
 export default class MaterialView<T extends THREE.Material = THREE.Material> {
 
-  readonly material: T;
+  public readonly material: T;
 
-  constructor( material: T ) {
+  public constructor( material: T ) {
     this.material = material;
   }
 
   /**
    * Releases references
    */
-  dispose(): void {
+  public dispose(): void {
     this.material.dispose();
   }
 }

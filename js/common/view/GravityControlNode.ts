@@ -20,7 +20,7 @@ import ComboBox from '../../../../sun/js/ComboBox.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
 
 export default class GravityControlNode extends ComboNumberControl<Gravity> {
-  constructor( gravityProperty: Property<Gravity>, listParent: Node, tandem: Tandem ) {
+  public constructor( gravityProperty: Property<Gravity>, listParent: Node, tandem: Tandem ) {
 
     const customValue = Gravity.createCustomGravity( DensityBuoyancyCommonQueryParameters.gEarth );
 

@@ -22,11 +22,11 @@ import Multilink, { UnknownMultilink } from '../../../../axon/js/Multilink.js';
 
 export default class ScaleReadoutNode extends Node {
 
-  mass: Scale;
+  public readonly mass: Scale;
 
-  private scaleForceMultilink: UnknownMultilink;
+  private readonly scaleForceMultilink: UnknownMultilink;
 
-  constructor( mass: Scale, gravityProperty: IReadOnlyProperty<Gravity> ) {
+  public constructor( mass: Scale, gravityProperty: IReadOnlyProperty<Gravity> ) {
     super( {
       pickable: false
     } );
@@ -68,7 +68,7 @@ export default class ScaleReadoutNode extends Node {
   /**
    * Releases references.
    */
-  override dispose(): void {
+  public override dispose(): void {
     this.scaleForceMultilink.dispose();
 
     super.dispose();

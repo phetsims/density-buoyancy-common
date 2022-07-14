@@ -14,11 +14,11 @@ import MassView, { TAG_OFFSET } from './MassView.js';
 
 export default class EllipsoidView extends MassView {
 
-  readonly ellipsoid: Ellipsoid;
-  private ellipsoidGeometry: THREE.SphereGeometry;
-  private updateListener: ( newSize: Bounds3, oldSize: Bounds3 ) => void;
+  public readonly ellipsoid: Ellipsoid;
+  private readonly ellipsoidGeometry: THREE.SphereGeometry;
+  private readonly updateListener: ( newSize: Bounds3, oldSize: Bounds3 ) => void;
 
-  constructor( ellipsoid: Ellipsoid ) {
+  public constructor( ellipsoid: Ellipsoid ) {
 
     const ellipsoidGeometry = new THREE.SphereGeometry( 1, 30, 24 );
 
@@ -51,7 +51,7 @@ export default class EllipsoidView extends MassView {
   /**
    * Releases references.
    */
-  override dispose(): void {
+  public override dispose(): void {
     this.ellipsoid.sizeProperty.unlink( this.updateListener );
     this.ellipsoidGeometry.dispose();
 

@@ -18,11 +18,11 @@ const numElements = 18 * 3;
 
 export default class CuboidView extends MassView {
 
-  cuboid: Cuboid;
-  private cuboidGeometry: THREE.BufferGeometry;
-  private updateListener: ( size: Bounds3 ) => void;
+  public readonly cuboid: Cuboid;
+  private readonly cuboidGeometry: THREE.BufferGeometry;
+  private readonly updateListener: ( size: Bounds3 ) => void;
 
-  constructor( cuboid: Cuboid ) {
+  public constructor( cuboid: Cuboid ) {
     const size = cuboid.sizeProperty.value;
 
     const positionArray = new Float32Array( numElements * 3 );
@@ -60,7 +60,7 @@ export default class CuboidView extends MassView {
   /**
    * Releases references.
    */
-  override dispose(): void {
+  public override dispose(): void {
     this.cuboid.sizeProperty.unlink( this.updateListener );
 
     this.cuboidGeometry.dispose();
@@ -79,7 +79,7 @@ export default class CuboidView extends MassView {
    * @param offsetPosition - How to transform all of the points
    * @returns - The offset after the specified vertices have been written
    */
-  static updateArrays( positionArray: Float32Array | null, normalArray: Float32Array | null, uvArray: Float32Array | null, size: Bounds3, offset = 0, offsetPosition: Vector3 = Vector3.ZERO ): number {
+  public static updateArrays( positionArray: Float32Array | null, normalArray: Float32Array | null, uvArray: Float32Array | null, size: Bounds3, offset = 0, offsetPosition: Vector3 = Vector3.ZERO ): number {
     const writer = new TriangleArrayWriter( positionArray, normalArray, uvArray, offset, offsetPosition );
 
     function quad( p0x: number, p0y: number, p0z: number, p1x: number, p1y: number, p1z: number, p2x: number, p2y: number, p2z: number, p3x: number, p3y: number, p3z: number ) {

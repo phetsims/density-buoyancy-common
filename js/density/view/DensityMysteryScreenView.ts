@@ -29,7 +29,7 @@ const blockSetStringMap = {
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
 
 export default class DensityMysteryScreenView extends DensityBuoyancyScreenView<DensityMysteryModel> {
-  constructor( model: DensityMysteryModel, options: DensityBuoyancyScreenViewOptions ) {
+  public constructor( model: DensityMysteryModel, options: DensityBuoyancyScreenViewOptions ) {
 
     const tandem = options.tandem;
 

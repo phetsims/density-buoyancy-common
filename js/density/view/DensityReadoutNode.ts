@@ -42,7 +42,7 @@ const MAX_LABEL_WIDTH = 80;
 
 export default class DensityReadoutNode extends Node {
 
-  constructor( densityAProperty: IReadOnlyProperty<number>, densityBProperty: IReadOnlyProperty<number>, secondaryMassVisibleProperty: IReadOnlyProperty<boolean>, options?: NodeOptions ) {
+  public constructor( densityAProperty: IReadOnlyProperty<number>, densityBProperty: IReadOnlyProperty<number>, secondaryMassVisibleProperty: IReadOnlyProperty<boolean>, options?: NodeOptions ) {
     super();
 
     const background = new Rectangle( 0, 0, WIDTH, HEIGHT, {

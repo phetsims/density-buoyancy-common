@@ -25,22 +25,22 @@ export type BasinOptions = {
 export default abstract class Basin {
 
   // In m^3, the volume of liquid contained in this basin
-  liquidVolumeProperty: Property<number>;
+  public readonly liquidVolumeProperty: Property<number>;
 
   // The y coordinate of the liquid level (absolute in the model, NOT relative to anything)
-  liquidYInterpolatedProperty: InterpolatedProperty<number>;
+  public readonly liquidYInterpolatedProperty: InterpolatedProperty<number>;
 
   // The bottom and top of the basin's area of containment (absolute model coordinates), set during physics engine steps.
-  stepBottom: number;
-  stepTop: number;
+  public stepBottom: number;
+  public stepTop: number;
 
   // The masses contained in this basin, set during the physics engine steps.
-  stepMasses: Mass[];
+  public stepMasses: Mass[];
 
   // A basin that may be contained in this one (boat basin in the pool) NOTE: only one guaranteed
-  childBasin: Basin | null;
+  public childBasin: Basin | null;
 
-  constructor( providedOptions?: BasinOptions ) {
+  protected constructor( providedOptions?: BasinOptions ) {
     const options = optionize<BasinOptions, BasinOptions>()( {
       initialVolume: 0,
       initialY: 0,
@@ -76,22 +76,22 @@ export default abstract class Basin {
    * Returns whether a given mass is inside this basin (e.g. if filled with liquid, would it be displacing any
    * liquid).
    */
-  abstract isMassInside( mass: Mass ): boolean;
+  public abstract isMassInside( mass: Mass ): boolean;
 
   /**
    * Returns the maximum area that could be contained with liquid at a given y value.
    */
-  abstract getMaximumArea( y: number ): number;
+  public abstract getMaximumArea( y: number ): number;
 
   /**
    * Returns the maximum volume that could be contained with liquid up to a given y value.
    */
-  abstract getMaximumVolume( y: number ): number;
+  public abstract getMaximumVolume( y: number ): number;
 
   /**
    * Returns the filled area in the basin (i.e. things that aren't air or water) at the given y value
    */
-  getDisplacedArea( y: number ): number {
+  public getDisplacedArea( y: number ): number {
     let area = 0;
     this.stepMasses.forEach( mass => {
       area += mass.getDisplacedArea( y );
@@ -109,7 +109,7 @@ export default abstract class Basin {
   /**
    * Returns the filled volume in the basin (i.e. things that aren't air or water) that is below the given y value.
    */
-  getDisplacedVolume( y: number ): number {
+  public getDisplacedVolume( y: number ): number {
     let volume = 0;
     this.stepMasses.forEach( mass => {
       volume += mass.getDisplacedVolume( y );
@@ -129,14 +129,14 @@ export default abstract class Basin {
   /**
    * Returns the empty area in the basin (i.e. air, that isn't a solid object) at the given y value.
    */
-  getEmptyArea( y: number ): number {
+  public getEmptyArea( y: number ): number {
     return this.getMaximumArea( y ) - this.getDisplacedArea( y );
   }
 
   /**
    * Returns the empty volume in the basin (i.e. air, that isn't a solid object) that is below the given y value.
    */
-  getEmptyVolume( y: number ): number {
+  public getEmptyVolume( y: number ): number {
     const emptyVolume = this.getMaximumVolume( y ) - this.getDisplacedVolume( y );
     assert && assert( emptyVolume >= -1e-11, 'empty volume should be non-negative' );
     return emptyVolume;
@@ -145,7 +145,7 @@ export default abstract class Basin {
   /**
    * Computes the liquid's y coordinate, given the current volume
    */
-  computeY(): void {
+  public computeY(): void {
     const liquidVolume = this.liquidVolumeProperty.value;
     if ( liquidVolume === 0 ) {
       this.liquidYInterpolatedProperty.setNextValue( this.stepBottom );
@@ -175,7 +175,7 @@ export default abstract class Basin {
   /**
    * Resets to an initial state.
    */
-  reset(): void {
+  public reset(): void {
     this.liquidVolumeProperty.reset();
     this.liquidYInterpolatedProperty.reset();
   }

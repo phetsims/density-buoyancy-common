@@ -23,12 +23,12 @@ export type BuoyancyExploreModelOptions = DensityBuoyancyModelOptions;
 
 export default class BuoyancyExploreModel extends DensityBuoyancyModel {
 
-  modeProperty: Property<TwoBlockMode>;
-  primaryMass: Cube;
-  secondaryMass: Cube;
-  densityExpandedProperty: Property<boolean>;
+  public readonly modeProperty: Property<TwoBlockMode>;
+  public readonly primaryMass: Cube;
+  public readonly secondaryMass: Cube;
+  public readonly densityExpandedProperty: Property<boolean>;
 
-  constructor( options: BuoyancyExploreModelOptions ) {
+  public constructor( options: BuoyancyExploreModelOptions ) {
 
     const tandem = options.tandem;
 
@@ -83,7 +83,7 @@ export default class BuoyancyExploreModel extends DensityBuoyancyModel {
   /**
    * Resets things to their original values.
    */
-  override reset(): void {
+  public override reset(): void {
     this.modeProperty.reset();
 
     this.primaryMass.reset();

@@ -41,7 +41,7 @@ export default class DebugView extends Node {
   // proportional to the volume up to that level that is displaced in the boat
   private boatVolumePath: Path;
 
-  constructor( model: DensityBuoyancyModel, layoutBounds: Bounds2 ) {
+  public constructor( model: DensityBuoyancyModel, layoutBounds: Bounds2 ) {
     super();
 
     this.model = model;
@@ -105,7 +105,7 @@ export default class DebugView extends Node {
   /**
    * Steps forward in time.
    */
-  step( dt: number ): void {
+  public step( dt: number ): void {
     if ( !this.visible ) {
       return;
     }
@@ -170,11 +170,11 @@ export default class DebugView extends Node {
 
 class DebugMassNode extends Node {
 
-  readonly mass: Mass;
-  private disposeEmitter: Emitter;
-  readonly dragListener: DragListener;
+  public readonly mass: Mass;
+  private readonly disposeEmitter: Emitter;
+  private readonly dragListener: DragListener;
 
-  constructor( model: DensityBuoyancyModel, mass: Mass, modelViewTransform: ModelViewTransform2 ) {
+  public constructor( model: DensityBuoyancyModel, mass: Mass, modelViewTransform: ModelViewTransform2 ) {
     super( {
       cursor: 'pointer'
     } );
@@ -320,7 +320,7 @@ class DebugMassNode extends Node {
   /**
    * Releases references.
    */
-  override dispose(): void {
+  public override dispose(): void {
     this.disposeEmitter.emit();
 
     super.dispose();

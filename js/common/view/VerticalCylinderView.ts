@@ -18,11 +18,11 @@ const numElements = 12 * segments;
 
 export default class VerticalCylinderView extends MassView {
 
-  readonly verticalCylinder: VerticalCylinder;
-  private verticalCylinderGeometry: THREE.BufferGeometry;
-  private updateListener: () => void;
+  public readonly verticalCylinder: VerticalCylinder;
+  private readonly verticalCylinderGeometry: THREE.BufferGeometry;
+  private readonly updateListener: () => void;
 
-  constructor( verticalCylinder: VerticalCylinder ) {
+  public constructor( verticalCylinder: VerticalCylinder ) {
 
     const positionArray = new Float32Array( numElements * 3 );
     const normalArray = new Float32Array( numElements * 3 );
@@ -60,7 +60,7 @@ export default class VerticalCylinderView extends MassView {
   /**
    * Releases references.
    */
-  override dispose(): void {
+  public override dispose(): void {
     this.verticalCylinder.radiusProperty.unlink( this.updateListener );
     this.verticalCylinder.heightProperty.unlink( this.updateListener );
     this.verticalCylinderGeometry.dispose();
@@ -80,7 +80,7 @@ export default class VerticalCylinderView extends MassView {
    * @param offsetPosition - How to transform all of the points
    * @returns - The offset after the specified vertices have been written
    */
-  static updateArrays( positionArray: Float32Array | null, normalArray: Float32Array | null, uvArray: Float32Array | null, radius: number, height: number, offset = 0, offsetPosition: Vector3 = Vector3.ZERO ): number {
+  public static updateArrays( positionArray: Float32Array | null, normalArray: Float32Array | null, uvArray: Float32Array | null, radius: number, height: number, offset = 0, offsetPosition: Vector3 = Vector3.ZERO ): number {
     const writer = new TriangleArrayWriter( positionArray, normalArray, uvArray, offset, offsetPosition );
 
     const baseY = -height / 2;

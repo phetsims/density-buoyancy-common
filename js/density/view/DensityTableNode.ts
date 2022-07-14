@@ -7,8 +7,7 @@
  */
 
 import Utils from '../../../../dot/js/Utils.js';
-import optionize from '../../../../phet-core/js/optionize.js';
-import EmptyObjectType from '../../../../phet-core/js/types/EmptyObjectType.js';
+import { combineOptions } from '../../../../phet-core/js/optionize.js';
 import Orientation from '../../../../phet-core/js/Orientation.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import { GridBackgroundNode, GridBox, ILayoutOptions, Node, Rectangle, Text } from '../../../../scenery/js/imports.js';
@@ -36,22 +35,22 @@ export default class DensityTableNode extends Node {
         new Text( densityBuoyancyCommonStrings.material.name, {
           font: headerFont,
           maxWidth: 160,
-          layoutOptions: optionize<ILayoutOptions, EmptyObjectType, ILayoutOptions>()( { column: 0, row: 0, xAlign: 'left' }, layoutOptions )
+          layoutOptions: combineOptions<ILayoutOptions>( { column: 0, row: 0, xAlign: 'left' }, layoutOptions )
         } ),
         new Text( densityBuoyancyCommonStrings.densityKgL, {
           font: headerFont,
           maxWidth: 160,
-          layoutOptions: optionize<ILayoutOptions, EmptyObjectType, ILayoutOptions>()( { column: 1, row: 0, xAlign: 'right' }, layoutOptions )
+          layoutOptions: combineOptions<ILayoutOptions>( { column: 1, row: 0, xAlign: 'right' }, layoutOptions )
         } ),
         ...materials.map( ( material, index ) => new Text( material.name, {
           font: bodyFont,
           maxWidth: 200,
-          layoutOptions: optionize<ILayoutOptions, EmptyObjectType, ILayoutOptions>()( { column: 0, row: index + 1, xAlign: 'left' }, layoutOptions )
+          layoutOptions: combineOptions<ILayoutOptions>( { column: 0, row: index + 1, xAlign: 'left' }, layoutOptions )
         } ) ),
         ...materials.map( ( material, index ) => new Text( Utils.toFixed( material.density / 1000, 2 ), {
           font: bodyFont,
           maxWidth: 150,
-          layoutOptions: optionize<ILayoutOptions, EmptyObjectType, ILayoutOptions>()( { column: 1, row: index + 1, xAlign: 'right' }, layoutOptions )
+          layoutOptions: combineOptions<ILayoutOptions>( { column: 1, row: index + 1, xAlign: 'right' }, layoutOptions )
         } ) )
       ]
     } );

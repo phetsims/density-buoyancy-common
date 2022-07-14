@@ -11,9 +11,8 @@ import IProperty from '../../../../axon/js/IProperty.js';
 import Property from '../../../../axon/js/Property.js';
 import Utils from '../../../../dot/js/Utils.js';
 import ThreeUtils from '../../../../mobius/js/ThreeUtils.js';
-import merge from '../../../../phet-core/js/merge.js';
-import optionize from '../../../../phet-core/js/optionize.js';
-import { Color, ColorProperty, IColor, ColorState } from '../../../../scenery/js/imports.js';
+import optionize, { combineOptions } from '../../../../phet-core/js/optionize.js';
+import { Color, ColorProperty, ColorState } from '../../../../scenery/js/imports.js';
 import BooleanIO from '../../../../tandem/js/types/BooleanIO.js';
 import IOType from '../../../../tandem/js/types/IOType.js';
 import NullableIO from '../../../../tandem/js/types/NullableIO.js';
@@ -94,7 +93,7 @@ export default class Material {
    * Returns a custom material that can be modified at will.
    */
   static createCustomMaterial( config: MaterialOptions ): Material {
-    return new Material( merge( {
+    return new Material( combineOptions<MaterialOptions>( {
       name: densityBuoyancyCommonStrings.material.custom,
       tandemName: 'custom',
       custom: true
@@ -105,7 +104,7 @@ export default class Material {
    * Returns a custom material that can be modified at will, but with a liquid color specified.
    */
   static createCustomLiquidMaterial( config: MaterialOptions & Required<Pick<MaterialOptions, 'density'>> ): Material {
-    return Material.createCustomMaterial( merge( {
+    return Material.createCustomMaterial( combineOptions<MaterialOptions>( {
       liquidColor: Material.getCustomLiquidColor( config.density )
     }, config ) );
   }
@@ -114,7 +113,7 @@ export default class Material {
    * Returns a custom material that can be modified at will, but with a solid color specified
    */
   static createCustomSolidMaterial( config: MaterialOptions & Required<Pick<MaterialOptions, 'density'>> ): Material {
-    return Material.createCustomMaterial( merge( {
+    return Material.createCustomMaterial( combineOptions<MaterialOptions>( {
       liquidColor: Material.getCustomSolidColor( config.density )
     }, config ) );
   }
@@ -130,7 +129,7 @@ export default class Material {
   /**
    * Similar to getCustomLightness, but returns the generated color, with an included alpha effect.
    */
-  static getCustomLiquidColor( density: number ): IColor {
+  static getCustomLiquidColor( density: number ): ColorProperty {
     const lightness = Material.getCustomLightness( density * 0.25 );
 
     return new ColorProperty( new Color( lightness, lightness, lightness, 0.8 * ( 1 - lightness / 255 ) ) );
@@ -139,7 +138,7 @@ export default class Material {
   /**
    * Similar to getCustomLightness, but returns the generated color
    */
-  static getCustomSolidColor( density: number ): IColor {
+  static getCustomSolidColor( density: number ): ColorProperty {
     const lightness = Material.getCustomLightness( density );
 
     return new ColorProperty( new Color( lightness, lightness, lightness ) );

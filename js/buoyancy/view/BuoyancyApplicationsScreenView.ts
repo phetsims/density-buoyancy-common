@@ -12,14 +12,14 @@ import Dimension2 from '../../../../dot/js/Dimension2.js';
 import Range from '../../../../dot/js/Range.js';
 import Utils from '../../../../dot/js/Utils.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
-import merge from '../../../../phet-core/js/merge.js';
+import { combineOptions } from '../../../../phet-core/js/optionize.js';
 import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
 import resetArrow_png from '../../../../scenery-phet/images/resetArrow_png.js';
-import NumberControl from '../../../../scenery-phet/js/NumberControl.js';
+import NumberControl, { NumberControlOptions } from '../../../../scenery-phet/js/NumberControl.js';
 import NumberDisplay from '../../../../scenery-phet/js/NumberDisplay.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import { AlignBox, AlignPropertyBox, Color, HStrut, Image, ManualConstraint, Node, Text, VBox } from '../../../../scenery/js/imports.js';
-import AccordionBox from '../../../../sun/js/AccordionBox.js';
+import AccordionBox, { AccordionBoxOptions } from '../../../../sun/js/AccordionBox.js';
 import RectangularPushButton from '../../../../sun/js/buttons/RectangularPushButton.js';
 import RectangularRadioButtonGroup from '../../../../sun/js/buttons/RectangularRadioButtonGroup.js';
 import HSeparator from '../../../../sun/js/HSeparator.js';
@@ -48,7 +48,7 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
 
     const tandem = options.tandem;
 
-    super( model, merge( {
+    super( model, combineOptions<DensityBuoyancyScreenViewOptions>( {
       cameraLookAt: DensityBuoyancyCommonConstants.BUOYANCY_CAMERA_LOOK_AT
     }, options ) );
 
@@ -178,7 +178,7 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
         // @ts-ignore see https://github.com/phetsims/axon/issues/382
         new NumberControl( densityBuoyancyCommonStrings.boatVolume, new UnitConversionProperty( model.boat.displacementVolumeProperty, {
           factor: 1000
-        } ), boatVolumeRange, merge( {
+        } ), boatVolumeRange, combineOptions<NumberControlOptions>( {
           numberDisplayOptions: {
             valuePattern: StringUtils.fillIn( densityBuoyancyCommonStrings.litersPattern, {
               liters: '{{value}}'
@@ -247,7 +247,7 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
       ]
     } );
 
-    const densityBox = new AccordionBox( densityContainer, merge( {
+    const densityBox = new AccordionBox( densityContainer, combineOptions<AccordionBoxOptions>( {
       titleNode: new Text( densityBuoyancyCommonStrings.density, {
         maxWidth: 160,
         font: DensityBuoyancyCommonConstants.TITLE_FONT

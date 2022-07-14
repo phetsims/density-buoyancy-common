@@ -7,7 +7,7 @@
  */
 
 import Vector3 from '../../../../dot/js/Vector3.js';
-import merge from '../../../../phet-core/js/merge.js';
+import { combineOptions } from '../../../../phet-core/js/optionize.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import { AlignPropertyBox, HBox, Node, Text } from '../../../../scenery/js/imports.js';
 import AquaRadioButton from '../../../../sun/js/AquaRadioButton.js';
@@ -38,7 +38,7 @@ export default class BuoyancyIntroScreenView extends DensityBuoyancyScreenView<B
 
   constructor( model: BuoyancyIntroModel, options: DensityBuoyancyScreenViewOptions ) {
 
-    super( model, merge( {
+    super( model, combineOptions<DensityBuoyancyScreenViewOptions>( {
       // Custom just for this screen
       cameraLookAt: new Vector3( 0, -0.1, 0 )
     }, options ) );

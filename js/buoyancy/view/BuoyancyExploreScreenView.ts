@@ -9,18 +9,11 @@
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import Utils from '../../../../dot/js/Utils.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
-import merge from '../../../../phet-core/js/merge.js';
+import { combineOptions } from '../../../../phet-core/js/optionize.js';
 import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
-import { AlignPropertyBox } from '../../../../scenery/js/imports.js';
-import { GridBox } from '../../../../scenery/js/imports.js';
-import { AlignBox } from '../../../../scenery/js/imports.js';
-import { HBox } from '../../../../scenery/js/imports.js';
-import { HStrut } from '../../../../scenery/js/imports.js';
-import { Node } from '../../../../scenery/js/imports.js';
-import { Text } from '../../../../scenery/js/imports.js';
-import { VBox } from '../../../../scenery/js/imports.js';
-import AccordionBox from '../../../../sun/js/AccordionBox.js';
+import { AlignBox, AlignPropertyBox, GridBox, HBox, HStrut, Node, Text, VBox } from '../../../../scenery/js/imports.js';
+import AccordionBox, { AccordionBoxOptions } from '../../../../sun/js/AccordionBox.js';
 import Panel from '../../../../sun/js/Panel.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 import Material from '../../common/model/Material.js';
@@ -46,7 +39,7 @@ export default class BuoyancyExploreScreenView extends SecondaryMassScreenView<B
 
     const tandem = options.tandem;
 
-    super( model, merge( {
+    super( model, combineOptions<DensityBuoyancyScreenViewOptions>( {
       cameraLookAt: DensityBuoyancyCommonConstants.BUOYANCY_CAMERA_LOOK_AT
     }, options ) );
 
@@ -96,7 +89,7 @@ export default class BuoyancyExploreScreenView extends SecondaryMassScreenView<B
       ]
     } );
 
-    const densityBox = new AccordionBox( densityContainer, merge( {
+    const densityBox = new AccordionBox( densityContainer, combineOptions<AccordionBoxOptions>( {
       titleNode: new Text( densityBuoyancyCommonStrings.density, {
         font: DensityBuoyancyCommonConstants.TITLE_FONT,
         maxWidth: 160

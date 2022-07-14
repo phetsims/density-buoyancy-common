@@ -9,11 +9,10 @@
 import Bounds3 from '../../../../dot/js/Bounds3.js';
 import StrictOmit from '../../../../phet-core/js/types/StrictOmit.js';
 import Matrix3 from '../../../../dot/js/Matrix3.js';
-import merge from '../../../../phet-core/js/merge.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import Cuboid, { CuboidOptions } from './Cuboid.js';
 import PhysicsEngine from './PhysicsEngine.js';
-import optionize from '../../../../phet-core/js/optionize.js';
+import optionize, { combineOptions } from '../../../../phet-core/js/optionize.js';
 import Material from './Material.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 
@@ -35,7 +34,7 @@ export default class Cube extends Cuboid {
     }, providedConfig );
 
     if ( config.adjustMassWithVolume ) {
-      config = merge( {
+      config = combineOptions<typeof config>( {
         massPropertyOptions: {
           phetioReadOnly: false
         }
@@ -80,7 +79,7 @@ export default class Cube extends Cuboid {
    * Creates a Cube with a defined volume
    */
   static createWithVolume( engine: PhysicsEngine, material: Material, position: Vector2, volume: number, options?: StrictOmit<CubeOptions, 'matrix' | 'material'> ): Cube {
-    return new Cube( engine, volume, merge( {
+    return new Cube( engine, volume, combineOptions<CubeOptions>( {
       matrix: Matrix3.translation( position.x, position.y ),
       material: material
     }, options ) );

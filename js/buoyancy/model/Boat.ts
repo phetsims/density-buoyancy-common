@@ -13,8 +13,7 @@ import Property from '../../../../axon/js/Property.js';
 import Utils from '../../../../dot/js/Utils.js';
 import { Shape } from '../../../../kite/js/imports.js';
 import ThreeUtils from '../../../../mobius/js/ThreeUtils.js';
-import merge from '../../../../phet-core/js/merge.js';
-import Mass, { InstrumentedMassOptions } from '../../common/model/Mass.js';
+import Mass, { InstrumentedMassOptions, MassOptions } from '../../common/model/Mass.js';
 import Material from '../../common/model/Material.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import BoatBasin from './BoatBasin.js';
@@ -26,6 +25,8 @@ import Multilink from '../../../../axon/js/Multilink.js';
 import IReadOnlyProperty from '../../../../axon/js/IReadOnlyProperty.js';
 import IOType from '../../../../tandem/js/types/IOType.js';
 import { MassShape } from '../../common/model/MassShape.js';
+import optionize from '../../../../phet-core/js/optionize.js';
+import EmptyObjectType from '../../../../phet-core/js/types/EmptyObjectType.js';
 
 export type BoatOptions = StrictOmit<InstrumentedMassOptions, 'body' | 'shape' | 'volume' | 'material' | 'massShape'>;
 
@@ -43,14 +44,14 @@ export default class Boat extends Mass {
 
   intersectionGroup: THREE.Group;
 
-  constructor( engine: PhysicsEngine, blockWidthProperty: IReadOnlyProperty<number>, liquidMaterialProperty: IProperty<Material>, config: BoatOptions ) {
+  constructor( engine: PhysicsEngine, blockWidthProperty: IReadOnlyProperty<number>, liquidMaterialProperty: IProperty<Material>, providedConfig: BoatOptions ) {
 
     const displacementVolumeProperty = new NumberProperty( 0.01 );
 
     const boatIntersectionVertices = BoatDesign.getIntersectionVertices( blockWidthProperty.value / 2, displacementVolumeProperty.value * 1000 );
     const volume = BoatDesign.ONE_LITER_HULL_VOLUME * displacementVolumeProperty.value * 1000;
 
-    config = merge( {
+    const config = optionize<BoatOptions, EmptyObjectType, MassOptions>()( {
       body: engine.createFromVertices( boatIntersectionVertices, true ),
       shape: Shape.polygon( boatIntersectionVertices ),
       volume: volume,
@@ -58,7 +59,7 @@ export default class Boat extends Mass {
 
       // material
       material: Material.ALUMINUM
-    }, config );
+    }, providedConfig );
 
     assert && assert( !config.canRotate );
 

@@ -13,7 +13,7 @@ import EnumerationProperty from '../../../../axon/js/EnumerationProperty.js';
 import NumberProperty, { NumberPropertyOptions } from '../../../../axon/js/NumberProperty.js';
 import Property, { PropertyOptions } from '../../../../axon/js/Property.js';
 import StringProperty from '../../../../axon/js/StringProperty.js';
-import Matrix3 from '../../../../dot/js/Matrix3.js';
+import Matrix3, { Matrix3StateObject } from '../../../../dot/js/Matrix3.js';
 import Range from '../../../../dot/js/Range.js';
 import Utils from '../../../../dot/js/Utils.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
@@ -22,7 +22,7 @@ import Vector3 from '../../../../dot/js/Vector3.js';
 import { Shape } from '../../../../kite/js/imports.js';
 import EnumerationIO from '../../../../tandem/js/types/EnumerationIO.js';
 import merge from '../../../../phet-core/js/merge.js';
-import optionize from '../../../../phet-core/js/optionize.js';
+import optionize, { combineOptions } from '../../../../phet-core/js/optionize.js';
 import { Color, ColorProperty } from '../../../../scenery/js/imports.js';
 import PhetioObject, { PhetioObjectOptions } from '../../../../tandem/js/PhetioObject.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
@@ -277,7 +277,7 @@ export default abstract class Mass extends PhetioObject {
       phetioReadOnly: true
     } );
 
-    this.inputEnabledProperty = new BooleanProperty( true, merge( {
+    this.inputEnabledProperty = new BooleanProperty( true, combineOptions<BooleanPropertyOptions>( {
       tandem: tandem.createTandem( 'inputEnabledProperty' ),
       phetioDocumentation: 'Sets whether the element will have input enabled, and hence be interactive'
     }, config.inputEnabledPropertyOptions ) );
@@ -294,7 +294,7 @@ export default abstract class Mass extends PhetioObject {
       tandem: Tandem.OPT_OUT
     } );
 
-    this.materialProperty = new Property( config.material, merge( {
+    this.materialProperty = new Property( config.material, combineOptions<PropertyOptions<Material>>( {
       valueType: Material,
       reentrant: true,
       tandem: tandem.createTandem( 'materialProperty' ),
@@ -370,7 +370,7 @@ export default abstract class Mass extends PhetioObject {
 
     this.volumeLock = false;
 
-    this.volumeProperty = new NumberProperty( config.volume, merge( {
+    this.volumeProperty = new NumberProperty( config.volume, combineOptions<NumberPropertyOptions>( {
       tandem: tandem.createTandem( 'volumeProperty' ),
       range: new Range( 0, Number.POSITIVE_INFINITY ),
       phetioReadOnly: true,
@@ -386,7 +386,7 @@ export default abstract class Mass extends PhetioObject {
 
     this.massLock = false;
 
-    this.massProperty = new NumberProperty( this.materialProperty.value.density * this.volumeProperty.value + this.containedMassProperty.value, merge( {
+    this.massProperty = new NumberProperty( this.materialProperty.value.density * this.volumeProperty.value + this.containedMassProperty.value, combineOptions<NumberPropertyOptions>( {
       tandem: tandem.createTandem( 'massProperty' ),
       phetioReadOnly: true,
       phetioState: false,
@@ -679,8 +679,18 @@ export default abstract class Mass extends PhetioObject {
   static MassIO: IOType;
 }
 
+type MassIOStateObject = {
+  matrix: Matrix3StateObject;
+  stepMatrix: Matrix3StateObject;
+  originalMatrix: Matrix3StateObject;
+  canRotate: boolean;
+  canMove: boolean;
+  tag: string;
+  massShape: string;
+};
+
 // (read-only) {IOType}
-Mass.MassIO = new IOType<Mass>( 'MassIO', {
+Mass.MassIO = new IOType<Mass, MassIOStateObject>( 'MassIO', {
 
   // @ts-ignore https://github.com/phetsims/tandem/issues/261
   valueType: Mass,
@@ -699,8 +709,8 @@ Mass.MassIO = new IOType<Mass>( 'MassIO', {
     velocity: Vector2.Vector2IO,
     force: Vector2.Vector2IO
   },
-  toStateObject( mass: Mass ) {
-    return merge( {
+  toStateObject( mass: Mass ): MassIOStateObject {
+    return combineOptions<MassIOStateObject>( {
       matrix: Matrix3.toStateObject( mass.matrix ),
       stepMatrix: Matrix3.toStateObject( mass.stepMatrix ),
       originalMatrix: Matrix3.toStateObject( mass.originalMatrix ),
@@ -710,7 +720,7 @@ Mass.MassIO = new IOType<Mass>( 'MassIO', {
       massShape: EnumerationIO( MassShape ).toStateObject( mass.massShape )
     }, mass.engine.bodyToStateObject( mass.body ) );
   },
-  applyState( mass: Mass, obj: any ) {
+  applyState( mass: Mass, obj: MassIOStateObject ) {
     mass.matrix.set( Matrix3.fromStateObject( obj.matrix ) );
     mass.stepMatrix.set( Matrix3.fromStateObject( obj.stepMatrix ) );
     mass.originalMatrix.set( Matrix3.fromStateObject( obj.originalMatrix ) );
@@ -720,7 +730,7 @@ Mass.MassIO = new IOType<Mass>( 'MassIO', {
     mass.engine.bodyApplyState( mass.body, obj );
     mass.transformedEmitter.emit();
   },
-  stateToArgsForConstructor: ( stateObject: any ) => [ EnumerationIO( MassShape ).fromStateObject( stateObject.massShape ) ]
+  stateToArgsForConstructor: ( stateObject: MassIOStateObject ) => [ EnumerationIO( MassShape ).fromStateObject( stateObject.massShape ) ]
 } );
 
 densityBuoyancyCommon.register( 'Mass', Mass );

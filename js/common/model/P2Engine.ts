@@ -9,7 +9,7 @@
 import TinyEmitter from '../../../../axon/js/TinyEmitter.js';
 import Matrix3 from '../../../../dot/js/Matrix3.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
-import merge from '../../../../phet-core/js/merge.js';
+import optionize from '../../../../phet-core/js/optionize.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonQueryParameters from '../DensityBuoyancyCommonQueryParameters.js';
 import PhysicsEngine, { PhysicsEngineBody } from './PhysicsEngine.js';
@@ -23,6 +23,8 @@ const MASS_SCALE = DensityBuoyancyCommonQueryParameters.p2MassScale;
 const groundMaterial = new p2.Material();
 const barrierMaterial = new p2.Material();
 const dynamicMaterial = new p2.Material();
+
+type BodySetMassOptions = { canRotate?: boolean };
 
 export default class P2Engine extends PhysicsEngine {
 
@@ -113,11 +115,11 @@ export default class P2Engine extends PhysicsEngine {
   /**
    * Sets the mass of a body (and whether it can rotate, which for some engines needs to be set at the same time).
    */
-  bodySetMass( body: PhysicsEngineBody, mass: number, options?: { canRotate?: boolean } ): void {
-    options = merge( {
+  bodySetMass( body: PhysicsEngineBody, mass: number, providedOptions?: BodySetMassOptions ): void {
+    const options = optionize<BodySetMassOptions>()( {
       // {boolean} - optional
       canRotate: false
-    }, options );
+    }, providedOptions );
 
     body.mass = mass * MASS_SCALE;
 

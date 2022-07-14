@@ -17,7 +17,7 @@ import { Color, ColorProperty, IColor, ColorState } from '../../../../scenery/js
 import BooleanIO from '../../../../tandem/js/types/BooleanIO.js';
 import IOType from '../../../../tandem/js/types/IOType.js';
 import NullableIO from '../../../../tandem/js/types/NullableIO.js';
-import NumberIO from '../../../../tandem/js/types/NumberIO.js';
+import NumberIO, { NumberStateObject } from '../../../../tandem/js/types/NumberIO.js';
 import ReferenceIO from '../../../../tandem/js/types/ReferenceIO.js';
 import StringIO from '../../../../tandem/js/types/StringIO.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
@@ -477,8 +477,8 @@ type MaterialState = {
   identifier: null | string;
   name: string;
   tandemName: string | null;
-  density: number;
-  viscosity: number;
+  density: NumberStateObject;
+  viscosity: NumberStateObject;
   custom: boolean;
   hidden: boolean;
   staticCustomColor: null | ColorState;

@@ -21,11 +21,11 @@ import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import { MassTag } from '../../common/model/Mass.js';
 
 export class BlockSet extends EnumerationValue {
-  static SAME_MASS = new BlockSet();
-  static SAME_VOLUME = new BlockSet();
-  static SAME_DENSITY = new BlockSet();
+  public static SAME_MASS = new BlockSet();
+  public static SAME_VOLUME = new BlockSet();
+  public static SAME_DENSITY = new BlockSet();
 
-  static enumeration = new Enumeration( BlockSet, {
+  public static enumeration = new Enumeration( BlockSet, {
     phetioDocumentation: 'Block set'
   } );
 }
@@ -33,7 +33,7 @@ export class BlockSet extends EnumerationValue {
 export type BuoyancyIntroModelOptions = StrictOmit<BlockSetModelOptions<BlockSet>, 'initialMode' | 'BlockSet' | 'createMassesCallback' | 'regenerateMassesCallback' | 'positionMassesCallback'>;
 
 export default class BuoyancyIntroModel extends BlockSetModel<BlockSet> {
-  constructor( providedOptions: BuoyancyIntroModelOptions ) {
+  public constructor( providedOptions: BuoyancyIntroModelOptions ) {
     const tandem = providedOptions.tandem;
 
     const blockSetsTandem = tandem.createTandem( 'blockSets' );

@@ -21,7 +21,7 @@ import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 export type ComparisonNumberControlOptions = NumberControlOptions;
 
 export default class ComparisonNumberControl extends NumberControl {
-  constructor( property: RangedProperty, title: string, valuePattern: string, valueName: string, options?: ComparisonNumberControlOptions ) {
+  public constructor( property: RangedProperty, title: string, valuePattern: string, valueName: string, options?: ComparisonNumberControlOptions ) {
     super( title, property, property.range, merge( {
       layoutFunction: NumberControl.createLayoutFunction4(),
       delta: 0.01,

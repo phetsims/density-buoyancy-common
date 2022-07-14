@@ -36,15 +36,15 @@ export type BlockSetModelOptions<BlockSetValue extends EnumerationValue> = SelfO
 
 export default class BlockSetModel<BlockSetValue extends EnumerationValue> extends DensityBuoyancyModel {
 
-  BlockSet: Enumeration<BlockSetValue>;
-  blockSetProperty: Property<BlockSetValue>;
+  public readonly BlockSet: Enumeration<BlockSetValue>;
+  public readonly blockSetProperty: Property<BlockSetValue>;
   private readonly createMassesCallback: CreateMassesCallback<BlockSetValue>;
   private readonly regenerateMassesCallback: RegenerateMassesCallback<BlockSetValue>;
   private readonly positionMassesCallback: PositionMassesCallback<BlockSetValue>;
 
   private blockSetToMassesMap: Map<BlockSetValue, Cuboid[]>;
 
-  constructor( options: BlockSetModelOptions<BlockSetValue> ) {
+  public constructor( options: BlockSetModelOptions<BlockSetValue> ) {
     super( options );
 
     this.BlockSet = options.BlockSet;
@@ -98,7 +98,7 @@ export default class BlockSetModel<BlockSetValue extends EnumerationValue> exten
   /**
    * Regenerates the masses for a specific blockSet.
    */
-  regenerate( blockSet: BlockSetValue ): void {
+  public regenerate( blockSet: BlockSetValue ): void {
     this.regenerateMassesCallback( this, blockSet, this.blockSetToMassesMap.get( blockSet )! );
     this.positionMasses( blockSet );
   }
@@ -106,7 +106,7 @@ export default class BlockSetModel<BlockSetValue extends EnumerationValue> exten
   /**
    * Resets values to their original state
    */
-  override reset(): void {
+  public override reset(): void {
     this.blockSetProperty.reset();
 
     // Reset every available mass.

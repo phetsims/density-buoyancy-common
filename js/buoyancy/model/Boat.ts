@@ -31,19 +31,19 @@ export type BoatOptions = StrictOmit<InstrumentedMassOptions, 'body' | 'shape' |
 
 export default class Boat extends Mass {
 
-  displacementVolumeProperty: Property<number>;
-  liquidMaterialProperty: IProperty<Material>;
-  basin: BoatBasin;
+  public readonly displacementVolumeProperty: Property<number>;
+  public readonly liquidMaterialProperty: IProperty<Material>;
+  public readonly basin: BoatBasin;
 
   // Amount of volume contained in the basin
-  stepInternalVolume: number;
+  public stepInternalVolume: number;
 
   // How to multiply our one-liter size up to the model coordinates
-  stepMultiplier: number;
+  public stepMultiplier: number;
 
-  intersectionGroup: THREE.Group;
+  public readonly intersectionGroup: THREE.Group;
 
-  constructor( engine: PhysicsEngine, blockWidthProperty: IReadOnlyProperty<number>, liquidMaterialProperty: IProperty<Material>, config: BoatOptions ) {
+  public constructor( engine: PhysicsEngine, blockWidthProperty: IReadOnlyProperty<number>, liquidMaterialProperty: IProperty<Material>, config: BoatOptions ) {
 
     const displacementVolumeProperty = new NumberProperty( 0.01 );
 
@@ -105,7 +105,7 @@ export default class Boat extends Mass {
   /**
    * Steps forward in time.
    */
-  override step( dt: number, interpolationRatio: number ): void {
+  public override step( dt: number, interpolationRatio: number ): void {
     super.step( dt, interpolationRatio );
 
     this.basin.liquidYInterpolatedProperty.setRatio( interpolationRatio );
@@ -114,7 +114,7 @@ export default class Boat extends Mass {
   /**
    * Returns whether this is a boat (as more complicated handling is needed in this case).
    */
-  override isBoat(): boolean {
+  public override isBoat(): boolean {
     return true;
   }
 
@@ -124,7 +124,7 @@ export default class Boat extends Mass {
    *
    * Type-specific values are likely to be set, but this should set at least stepX/stepBottom/stepTop
    */
-  override updateStepInformation(): void {
+  public override updateStepInformation(): void {
     super.updateStepInformation();
 
     const xOffset = this.stepMatrix.m02();
@@ -147,7 +147,7 @@ export default class Boat extends Mass {
    * reach the intersection, e.g. ray.position + ray.distance * t === intersectionPoint) will be returned. Otherwise
    * if there is no intersection, null will be returned.
    */
-  override intersect( ray: Ray3, isTouch: boolean ): number | null {
+  public override intersect( ray: Ray3, isTouch: boolean ): number | null {
     const scale = Math.pow( this.displacementVolumeProperty.value / 0.001, 1 / 3 );
     // TODO: somewhat borrowed with Bottle, let's combine
     const translation = this.matrix.translation;
@@ -165,7 +165,7 @@ export default class Boat extends Mass {
    *
    * Assumes step information was updated.
    */
-  getDisplacedArea( liquidLevel: number ): number {
+  public getDisplacedArea( liquidLevel: number ): number {
     const bottom = this.stepBottom;
     const top = this.stepTop;
 
@@ -183,7 +183,7 @@ export default class Boat extends Mass {
    *
    * Assumes step information was updated.
    */
-  getDisplacedVolume( liquidLevel: number ): number {
+  public getDisplacedVolume( liquidLevel: number ): number {
     const bottom = this.stepBottom;
     const top = this.stepTop;
 
@@ -205,7 +205,7 @@ export default class Boat extends Mass {
    *
    * Assumes step information was updated.
    */
-  getBasinArea( liquidLevel: number ): number {
+  public getBasinArea( liquidLevel: number ): number {
     const bottom = this.stepBottom;
     const top = this.stepTop;
 
@@ -224,7 +224,7 @@ export default class Boat extends Mass {
    *
    * Assumes step information was updated.
    */
-  getBasinVolume( liquidLevel: number ): number {
+  public getBasinVolume( liquidLevel: number ): number {
     const bottom = this.stepBottom;
     const top = this.stepTop;
 
@@ -241,14 +241,14 @@ export default class Boat extends Mass {
     }
   }
 
-  setRatios( widthRatio: number, heightRatio: number ): void {
+  public setRatios( widthRatio: number, heightRatio: number ): void {
     // See subclass for implementation
   }
 
   /**
    * Resets values to their original state
    */
-  override reset(): void {
+  public override reset(): void {
     this.displacementVolumeProperty.reset();
 
     this.basin.reset();
@@ -256,7 +256,7 @@ export default class Boat extends Mass {
     super.reset();
   }
 
-  static BoatIO: IOType;
+  public static BoatIO: IOType;
 }
 
 Boat.BoatIO = new IOType( 'BoatIO', {

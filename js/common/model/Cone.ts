@@ -30,18 +30,18 @@ export type ConeOptions = StrictOmit<InstrumentedMassOptions, 'body' | 'shape' |
 
 export default class Cone extends Mass {
 
-  radiusProperty: Property<number>;
-  heightProperty: Property<number>;
-  isVertexUp: boolean;
-  vertexSign: number;
+  public readonly radiusProperty: Property<number>;
+  public readonly heightProperty: Property<number>;
+  public readonly isVertexUp: boolean;
+  public readonly vertexSign: number;
 
   // Step information
-  stepRadius: number;
-  stepHeight: number;
-  stepArea: number;
-  stepMaximumVolume: number;
+  public stepRadius: number;
+  public stepHeight: number;
+  public stepArea: number;
+  public stepMaximumVolume: number;
 
-  constructor( engine: PhysicsEngine, radius: number, height: number, isVertexUp: boolean, providedConfig: ConeOptions ) {
+  public constructor( engine: PhysicsEngine, radius: number, height: number, isVertexUp: boolean, providedConfig: ConeOptions ) {
 
     const initialVertices = Cone.getConeVertices( radius, height, isVertexUp );
 
@@ -80,7 +80,7 @@ export default class Cone extends Mass {
   /**
    * Updates the size of the cone.
    */
-  updateSize( radius: number, height: number ): void {
+  public updateSize( radius: number, height: number ): void {
     const vertices = Cone.getConeVertices( radius, height, this.isVertexUp );
 
     this.engine.updateFromVertices( this.body, vertices, false );
@@ -101,7 +101,7 @@ export default class Cone extends Mass {
   /**
    * Returns the radius from a general size scale
    */
-  static getRadiusFromRatio( widthRatio: number ): number {
+  public static getRadiusFromRatio( widthRatio: number ): number {
     // Left independent from getHeightFromRatio since these should be not tied together
     return ( MASS_MIN_SHAPES_DIMENSION + widthRatio * ( MASS_MAX_SHAPES_DIMENSION - MASS_MIN_SHAPES_DIMENSION ) ) / 2;
   }
@@ -109,7 +109,7 @@ export default class Cone extends Mass {
   /**
    * Returns the height from a general size scale
    */
-  static getHeightFromRatio( heightRatio: number ): number {
+  public static getHeightFromRatio( heightRatio: number ): number {
     // Left independent from getRadiusFromRatio since these should be not tied together
     return ( MASS_MIN_SHAPES_DIMENSION + heightRatio * ( MASS_MAX_SHAPES_DIMENSION - MASS_MIN_SHAPES_DIMENSION ) );
   }
@@ -117,7 +117,7 @@ export default class Cone extends Mass {
   /**
    * Sets the general size of the mass based on a general size scale.
    */
-  setRatios( widthRatio: number, heightRatio: number ): void {
+  public setRatios( widthRatio: number, heightRatio: number ): void {
     this.updateSize(
       Cone.getRadiusFromRatio( widthRatio ),
       Cone.getHeightFromRatio( heightRatio )
@@ -130,7 +130,7 @@ export default class Cone extends Mass {
    *
    * Type-specific values are likely to be set, but this should set at least stepX/stepBottom/stepTop
    */
-  override updateStepInformation(): void {
+  public override updateStepInformation(): void {
     super.updateStepInformation();
 
     const xOffset = this.stepMatrix.m02();
@@ -151,7 +151,7 @@ export default class Cone extends Mass {
    * reach the intersection, e.g. ray.position + ray.distance * t === intersectionPoint) will be returned. Otherwise
    * if there is no intersection, null will be returned.
    */
-  override intersect( ray: Ray3, isTouch: boolean ): number | null {
+  public override intersect( ray: Ray3, isTouch: boolean ): number | null {
     const translation = this.matrix.getTranslation().toVector3();
     const height = this.heightProperty.value;
     const radius = this.radiusProperty.value;
@@ -194,7 +194,7 @@ export default class Cone extends Mass {
    *
    * Assumes step information was updated.
    */
-  getDisplacedArea( liquidLevel: number ): number {
+  public getDisplacedArea( liquidLevel: number ): number {
     if ( liquidLevel < this.stepBottom || liquidLevel > this.stepTop ) {
       return 0;
     }
@@ -213,7 +213,7 @@ export default class Cone extends Mass {
    *
    * Assumes step information was updated.
    */
-  getDisplacedVolume( liquidLevel: number ): number {
+  public getDisplacedVolume( liquidLevel: number ): number {
     if ( liquidLevel <= this.stepBottom ) {
       return 0;
     }
@@ -239,7 +239,7 @@ export default class Cone extends Mass {
   /**
    * Resets things to their original values.
    */
-  override reset(): void {
+  public override reset(): void {
     this.radiusProperty.reset();
     this.heightProperty.reset();
     this.updateSize( this.radiusProperty.value, this.heightProperty.value );
@@ -250,7 +250,7 @@ export default class Cone extends Mass {
   /**
    * Releases references
    */
-  override dispose(): void {
+  public override dispose(): void {
     this.radiusProperty.dispose();
     this.heightProperty.dispose();
 
@@ -260,7 +260,7 @@ export default class Cone extends Mass {
   /**
    * Returns an array of vertices for the 2d physics model
    */
-  static getConeVertices( radius: number, height: number, isVertexUp: boolean ): Vector2[] {
+  public static getConeVertices( radius: number, height: number, isVertexUp: boolean ): Vector2[] {
     const vertexSign = isVertexUp ? 1 : -1;
 
     return [
@@ -273,11 +273,11 @@ export default class Cone extends Mass {
   /**
    * Returns the volume of a cone with the given radius and height.
    */
-  static getVolume( radius: number, height: number ): number {
+  public static getVolume( radius: number, height: number ): number {
     return Math.PI * radius * radius * height / 3;
   }
 
-  static ConeIO: IOType;
+  public static ConeIO: IOType;
 }
 
 Cone.ConeIO = new IOType( 'ConeIO', {

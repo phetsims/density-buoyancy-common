@@ -27,13 +27,13 @@ export type CuboidOptions = StrictOmit<InstrumentedMassOptions, 'body' | 'shape'
 
 export default class Cuboid extends Mass {
 
-  sizeProperty: Property<Bounds3>;
+  public readonly sizeProperty: Property<Bounds3>;
 
   // Step information
-  stepArea: number;
-  stepMaximumVolume: number;
+  public stepArea: number;
+  public stepMaximumVolume: number;
 
-  constructor( engine: PhysicsEngine, size: Bounds3, providedConfig: CuboidOptions ) {
+  public constructor( engine: PhysicsEngine, size: Bounds3, providedConfig: CuboidOptions ) {
     const config = optionize<CuboidOptions, EmptyObjectType, InstrumentedMassOptions>()( {
       body: engine.createBox( size.width, size.height ),
       shape: Shape.rect( size.minX, size.minY, size.width, size.height ),
@@ -67,7 +67,7 @@ export default class Cuboid extends Mass {
   /**
    * Updates the size of the cuboid.
    */
-  updateSize( size: Bounds3 ): void {
+  public updateSize( size: Bounds3 ): void {
     // Don't update our model if it's no-volume, we'll have ourselves removed anyway
     if ( size.width && size.height ) {
 
@@ -94,7 +94,7 @@ export default class Cuboid extends Mass {
   /**
    * Returns the general size of the mass based on a general size scale.
    */
-  static getSizeFromRatios( widthRatio: number, heightRatio: number ): Bounds3 {
+  public static getSizeFromRatios( widthRatio: number, heightRatio: number ): Bounds3 {
     const x = ( MASS_MIN_SHAPES_DIMENSION + widthRatio * ( MASS_MAX_SHAPES_DIMENSION - MASS_MIN_SHAPES_DIMENSION ) ) / 2;
     const y = ( MASS_MIN_SHAPES_DIMENSION + heightRatio * ( MASS_MAX_SHAPES_DIMENSION - MASS_MIN_SHAPES_DIMENSION ) ) / 2;
     return new Bounds3( -x, -y, -x, x, y, x );
@@ -103,7 +103,7 @@ export default class Cuboid extends Mass {
   /**
    * Sets the general size of the mass based on a general size scale.
    */
-  setRatios( widthRatio: number, heightRatio: number ): void {
+  public setRatios( widthRatio: number, heightRatio: number ): void {
     this.updateSize( Cuboid.getSizeFromRatios( widthRatio, heightRatio ) );
   }
 
@@ -113,7 +113,7 @@ export default class Cuboid extends Mass {
    *
    * Type-specific values are likely to be set, but this should set at least stepX/stepBottom/stepTop
    */
-  override updateStepInformation(): void {
+  public override updateStepInformation(): void {
     super.updateStepInformation();
 
     const xOffset = this.stepMatrix.m02();
@@ -132,7 +132,7 @@ export default class Cuboid extends Mass {
    * reach the intersection, e.g. ray.position + ray.distance * t === intersectionPoint) will be returned. Otherwise
    * if there is no intersection, null will be returned.
    */
-  override intersect( ray: Ray3, isTouch: boolean ): number | null {
+  public override intersect( ray: Ray3, isTouch: boolean ): number | null {
     const size = this.sizeProperty.value;
     const translation = this.matrix.getTranslation().toVector3();
 
@@ -144,7 +144,7 @@ export default class Cuboid extends Mass {
    *
    * Assumes step information was updated.
    */
-  getDisplacedArea( liquidLevel: number ): number {
+  public getDisplacedArea( liquidLevel: number ): number {
     if ( liquidLevel < this.stepBottom || liquidLevel > this.stepTop ) {
       return 0;
     }
@@ -158,7 +158,7 @@ export default class Cuboid extends Mass {
    *
    * Assumes step information was updated.
    */
-  getDisplacedVolume( liquidLevel: number ): number {
+  public getDisplacedVolume( liquidLevel: number ): number {
     const bottom = this.stepBottom;
     const top = this.stepTop;
 
@@ -177,7 +177,7 @@ export default class Cuboid extends Mass {
   /**
    * Resets things to their original values.
    */
-  override reset(): void {
+  public override reset(): void {
     this.sizeProperty.reset();
     this.updateSize( this.sizeProperty.value );
 
@@ -187,7 +187,7 @@ export default class Cuboid extends Mass {
   /**
    * Releases references
    */
-  override dispose(): void {
+  public override dispose(): void {
     this.sizeProperty.dispose();
 
     super.dispose();
@@ -196,7 +196,7 @@ export default class Cuboid extends Mass {
   /**
    * Returns a (quick) closest ray intersection with a cuboid (defined by the given Bounds3 and translation).
    */
-  static intersect( bounds: Bounds3, translation: Vector3, ray: Ray3 ): number | null {
+  public static intersect( bounds: Bounds3, translation: Vector3, ray: Ray3 ): number | null {
     let tNear = Number.NEGATIVE_INFINITY;
     let tFar = Number.POSITIVE_INFINITY;
 
@@ -230,7 +230,7 @@ export default class Cuboid extends Mass {
     return ( tNear >= tFar ) ? null : ( tNear >= 0 ? tNear : ( isFinite( tFar ) && tFar >= 0 ? tFar : null ) );
   }
 
-  static CuboidIO: IOType;
+  public static CuboidIO: IOType;
 }
 
 Cuboid.CuboidIO = new IOType( 'CuboidIO', {

@@ -26,7 +26,7 @@ export default class PrimarySecondaryControlsNode extends PrimarySecondaryPanels
    * @param popupLayer
    * @param options - Applied to each BlockControlNode
    */
-  constructor( primaryMass: Cuboid, secondaryMass: Cuboid, popupLayer: Node, options: PrimarySecondaryControlsNodeOptions ) {
+  public constructor( primaryMass: Cuboid, secondaryMass: Cuboid, popupLayer: Node, options: PrimarySecondaryControlsNodeOptions ) {
 
     const tandem = options.tandem;
     const omittedOptions = _.omit( options, [ 'tandem' ] );

@@ -36,7 +36,7 @@ DensityBuoyancyCommonColors.labelBProperty.link( labelColor => {
 export type BlocksRadioButtonGroupOptions = RectangularRadioButtonGroupOptions;
 
 export default class BlocksRadioButtonGroup extends RectangularRadioButtonGroup<TwoBlockMode> {
-  constructor( modeProperty: Property<TwoBlockMode>, options?: BlocksRadioButtonGroupOptions ) {
+  public constructor( modeProperty: Property<TwoBlockMode>, options?: BlocksRadioButtonGroupOptions ) {
     super( modeProperty, [
       {
         value: TwoBlockMode.ONE_BLOCK,
@@ -153,7 +153,7 @@ export default class BlocksRadioButtonGroup extends RectangularRadioButtonGroup<
   /**
    * Returns an icon that shows a single cuboid.
    */
-  static getSingleCuboidIcon(): Node {
+  public static getSingleCuboidIcon(): Node {
     if ( DensityBuoyancyCommonQueryParameters.generateIconImages ) {
       return BlocksRadioButtonGroup.getIcon( 5.5, scene => {
         scene.add( BlocksRadioButtonGroup.createBox( aMaterial, new Vector3( 0, 0, 0 ) ) );
@@ -167,7 +167,7 @@ export default class BlocksRadioButtonGroup extends RectangularRadioButtonGroup<
   /**
    * Returns an icon that shows a single cuboid.
    */
-  static getDoubleCuboidIcon(): Node {
+  public static getDoubleCuboidIcon(): Node {
     if ( DensityBuoyancyCommonQueryParameters.generateIconImages ) {
       return BlocksRadioButtonGroup.getIcon( 4, scene => {
         scene.add( BlocksRadioButtonGroup.createBox( aMaterial, new Vector3( -0.039, 0.015, -0.07 ) ) );

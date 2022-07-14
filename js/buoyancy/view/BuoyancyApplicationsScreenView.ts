@@ -44,7 +44,7 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
 
   private positionResetSceneButton: () => void;
 
-  constructor( model: BuoyancyApplicationsModel, options: DensityBuoyancyScreenViewOptions ) {
+  public constructor( model: BuoyancyApplicationsModel, options: DensityBuoyancyScreenViewOptions ) {
 
     const tandem = options.tandem;
 
@@ -299,7 +299,7 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
     this.addChild( this.popupLayer );
   }
 
-  override step( dt: number ): void {
+  public override step( dt: number ): void {
     super.step( dt );
 
     this.positionResetSceneButton();

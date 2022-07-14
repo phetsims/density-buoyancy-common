@@ -11,10 +11,10 @@ import EnumerationValue from '../../../../phet-core/js/EnumerationValue.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 
 export default class TwoBlockMode extends EnumerationValue {
-  static ONE_BLOCK = new TwoBlockMode();
-  static TWO_BLOCKS = new TwoBlockMode();
+  public static ONE_BLOCK = new TwoBlockMode();
+  public static TWO_BLOCKS = new TwoBlockMode();
 
-  static enumeration = new Enumeration( TwoBlockMode, {
+  public static enumeration = new Enumeration( TwoBlockMode, {
     phetioDocumentation: 'Whether one or two blocks are visible'
   } );
 }

@@ -35,7 +35,7 @@ export default class BuoyancyShapesScreenView extends SecondaryMassScreenView<Bu
 
   protected rightBox: Node;
 
-  constructor( model: BuoyancyShapesModel, options: DensityBuoyancyScreenViewOptions ) {
+  public constructor( model: BuoyancyShapesModel, options: DensityBuoyancyScreenViewOptions ) {
 
     super( model, merge( {
       cameraLookAt: DensityBuoyancyCommonConstants.BUOYANCY_CAMERA_LOOK_AT

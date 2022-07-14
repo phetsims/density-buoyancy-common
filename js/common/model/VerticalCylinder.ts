@@ -27,16 +27,16 @@ export type VerticalCylinderOptions = StrictOmit<InstrumentedMassOptions, 'body'
 
 export default class VerticalCylinder extends Mass {
 
-  radiusProperty: Property<number>;
-  heightProperty: Property<number>;
+  public readonly radiusProperty: Property<number>;
+  public readonly heightProperty: Property<number>;
 
   // Step information
-  stepRadius: number;
-  stepHeight: number;
-  stepArea: number;
-  stepMaximumVolume: number;
+  public stepRadius: number;
+  public stepHeight: number;
+  public stepArea: number;
+  public stepMaximumVolume: number;
 
-  constructor( engine: PhysicsEngine, radius: number, height: number, providedConfig: VerticalCylinderOptions ) {
+  public constructor( engine: PhysicsEngine, radius: number, height: number, providedConfig: VerticalCylinderOptions ) {
     const config = optionize<VerticalCylinderOptions, EmptyObjectType, InstrumentedMassOptions>()( {
       body: engine.createBox( 2 * radius, height ),
       shape: VerticalCylinder.getVerticalCylinderShape( radius, height ),
@@ -73,7 +73,7 @@ export default class VerticalCylinder extends Mass {
   /**
    * Updates the size of the cone.
    */
-  updateSize( radius: number, height: number ): void {
+  public updateSize( radius: number, height: number ): void {
     this.engine.updateBox( this.body, 2 * radius, height );
 
     this.radiusProperty.value = radius;
@@ -92,21 +92,21 @@ export default class VerticalCylinder extends Mass {
   /**
    * Returns the radius from a general size scale
    */
-  static getRadiusFromRatio( widthRatio: number ): number {
+  public static getRadiusFromRatio( widthRatio: number ): number {
     return ( MASS_MIN_SHAPES_DIMENSION + widthRatio * ( MASS_MAX_SHAPES_DIMENSION - MASS_MIN_SHAPES_DIMENSION ) ) / 2;
   }
 
   /**
    * Returns the height from a general size scale
    */
-  static getHeightFromRatio( heightRatio: number ): number {
+  public static getHeightFromRatio( heightRatio: number ): number {
     return ( MASS_MIN_SHAPES_DIMENSION + heightRatio * ( MASS_MAX_SHAPES_DIMENSION - MASS_MIN_SHAPES_DIMENSION ) );
   }
 
   /**
    * Sets the general size of the mass based on a general size scale.
    */
-  setRatios( widthRatio: number, heightRatio: number ): void {
+  public setRatios( widthRatio: number, heightRatio: number ): void {
     this.updateSize(
       VerticalCylinder.getRadiusFromRatio( widthRatio ),
       VerticalCylinder.getHeightFromRatio( heightRatio )
@@ -119,7 +119,7 @@ export default class VerticalCylinder extends Mass {
    *
    * Type-specific values are likely to be set, but this should set at least stepX/stepBottom/stepTop
    */
-  override updateStepInformation(): void {
+  public override updateStepInformation(): void {
     super.updateStepInformation();
 
     const xOffset = this.stepMatrix.m02();
@@ -140,7 +140,7 @@ export default class VerticalCylinder extends Mass {
    * reach the intersection, e.g. ray.position + ray.distance * t === intersectionPoint) will be returned. Otherwise
    * if there is no intersection, null will be returned.
    */
-  override intersect( ray: Ray3, isTouch: boolean ): number | null {
+  public override intersect( ray: Ray3, isTouch: boolean ): number | null {
     return VerticalCylinder.intersect( ray, isTouch, this.matrix.getTranslation().toVector3(), this.radiusProperty.value, this.heightProperty.value );
   }
 
@@ -149,7 +149,7 @@ export default class VerticalCylinder extends Mass {
    *
    * Assumes step information was updated.
    */
-  getDisplacedArea( liquidLevel: number ): number {
+  public getDisplacedArea( liquidLevel: number ): number {
     if ( liquidLevel < this.stepBottom || liquidLevel > this.stepTop ) {
       return 0;
     }
@@ -163,7 +163,7 @@ export default class VerticalCylinder extends Mass {
    *
    * Assumes step information was updated.
    */
-  getDisplacedVolume( liquidLevel: number ): number {
+  public getDisplacedVolume( liquidLevel: number ): number {
     const bottom = this.stepBottom;
     const top = this.stepTop;
 
@@ -182,7 +182,7 @@ export default class VerticalCylinder extends Mass {
   /**
    * Resets things to their original values.
    */
-  override reset(): void {
+  public override reset(): void {
     this.radiusProperty.reset();
     this.heightProperty.reset();
     this.updateSize( this.radiusProperty.value, this.heightProperty.value );
@@ -193,7 +193,7 @@ export default class VerticalCylinder extends Mass {
   /**
    * Releases references
    */
-  override dispose(): void {
+  public override dispose(): void {
     this.radiusProperty.dispose();
     this.heightProperty.dispose();
 
@@ -203,14 +203,14 @@ export default class VerticalCylinder extends Mass {
   /**
    * Returns a vertical cylinder shape for a given radius/height.
    */
-  static getVerticalCylinderShape( radius: number, height: number ): Shape {
+  public static getVerticalCylinderShape( radius: number, height: number ): Shape {
     return Shape.rect( -radius, -height / 2, 2 * radius, height );
   }
 
   /**
    * Returns the volume of a vertical cylinder with the given radius and height.
    */
-  static getVolume( radius: number, height: number ): number {
+  public static getVolume( radius: number, height: number ): number {
     return Math.PI * radius * radius * height;
   }
 
@@ -219,7 +219,7 @@ export default class VerticalCylinder extends Mass {
    * reach the intersection, e.g. ray.position + ray.distance * t === intersectionPoint) will be returned. Otherwise
    * if there is no intersection, null will be returned.
    */
-  static intersect( ray: Ray3, isTouch: boolean, translation: Vector3, radius: number, height: number ): number | null {
+  public static intersect( ray: Ray3, isTouch: boolean, translation: Vector3, radius: number, height: number ): number | null {
     const relativePosition = ray.position.minusXYZ( translation.x, translation.y, translation.z );
 
     const xp = 4 / ( radius * radius );
@@ -246,7 +246,7 @@ export default class VerticalCylinder extends Mass {
     }
   }
 
-  static VerticalCylinderIO: IOType;
+  public static VerticalCylinderIO: IOType;
 }
 
 VerticalCylinder.VerticalCylinderIO = new IOType( 'VerticalCylinderIO', {

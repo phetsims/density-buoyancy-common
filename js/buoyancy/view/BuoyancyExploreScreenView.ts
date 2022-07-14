@@ -42,7 +42,7 @@ export default class BuoyancyExploreScreenView extends SecondaryMassScreenView<B
 
   protected rightBox: Node;
 
-  constructor( model: BuoyancyExploreModel, options: DensityBuoyancyScreenViewOptions ) {
+  public constructor( model: BuoyancyExploreModel, options: DensityBuoyancyScreenViewOptions ) {
 
     const tandem = options.tandem;
 

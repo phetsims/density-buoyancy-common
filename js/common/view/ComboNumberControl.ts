@@ -57,14 +57,14 @@ export type ComboNumberControlOptions<T> = SelfOptions<T> & VBoxOptions;
 
 export default class ComboNumberControl<T> extends VBox {
 
-  private property: Property<T>;
-  private numberProperty: Property<number>;
-  private comboProperty: Property<T>;
-  private disposalCallbacks: ( () => void )[];
-  private numberControl: NumberControl;
-  private comboBox: ComboBox<T>;
+  private readonly property: Property<T>;
+  private readonly numberProperty: Property<number>;
+  private readonly comboProperty: Property<T>;
+  private readonly disposalCallbacks: ( () => void )[];
+  private readonly numberControl: NumberControl;
+  private readonly comboBox: ComboBox<T>;
 
-  constructor( providedConfig: SelfOptions<T> ) {
+  public constructor( providedConfig: SelfOptions<T> ) {
 
     const disposalCallbacks: ( () => void )[] = [];
     const numberDisplayVisibleProperty = new BooleanProperty( true );
@@ -252,7 +252,7 @@ export default class ComboNumberControl<T> extends VBox {
   /**
    * Releases references.
    */
-  override dispose(): void {
+  public override dispose(): void {
     this.numberControl.dispose();
     this.comboBox.dispose();
 

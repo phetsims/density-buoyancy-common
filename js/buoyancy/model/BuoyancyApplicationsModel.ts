@@ -24,10 +24,10 @@ import Bottle from './Bottle.js';
 
 // constants
 export class Scene extends EnumerationValue {
-  static BOTTLE = new Scene();
-  static BOAT = new Scene();
+  public static BOTTLE = new Scene();
+  public static BOAT = new Scene();
 
-  static enumeration = new Enumeration( Scene, {
+  public static enumeration = new Enumeration( Scene, {
     phetioDocumentation: 'Bottle or boat scene'
   } );
 }
@@ -36,16 +36,16 @@ export type BuoyancyApplicationsModelOptions = DensityBuoyancyModelOptions;
 
 export default class BuoyancyApplicationsModel extends DensityBuoyancyModel {
 
-  sceneProperty: Property<Scene>;
-  densityExpandedProperty: Property<boolean>;
+  public readonly sceneProperty: Property<Scene>;
+  public readonly densityExpandedProperty: Property<boolean>;
 
-  bottle: Bottle;
-  block: Cube;
-  override boat: Boat;
-  rightScale: Scale;
-  poolScale: Scale;
+  public readonly bottle: Bottle;
+  public readonly block: Cube;
+  public override boat: Boat;
+  public readonly rightScale: Scale;
+  public readonly poolScale: Scale;
 
-  constructor( options: BuoyancyApplicationsModelOptions ) {
+  public constructor( options: BuoyancyApplicationsModelOptions ) {
 
     const tandem = options.tandem;
 
@@ -106,7 +106,7 @@ export default class BuoyancyApplicationsModel extends DensityBuoyancyModel {
     } );
   }
 
-  override step( dt: number ): void {
+  public override step( dt: number ): void {
     assert && assert( !this.boat.visibleProperty.value || !this.bottle.visibleProperty.value,
       'Boat and bottle should not be visible at the same time' );
 
@@ -116,7 +116,7 @@ export default class BuoyancyApplicationsModel extends DensityBuoyancyModel {
   /**
    * Moves the boat and block to their initial locations (see https://github.com/phetsims/buoyancy/issues/25)
    */
-  resetBoatScene(): void {
+  public resetBoatScene(): void {
     // Reset the basin levels (clear the liquid out of the boat)
     this.boat.basin.reset();
     this.pool.reset();
@@ -129,7 +129,7 @@ export default class BuoyancyApplicationsModel extends DensityBuoyancyModel {
   /**
    * Resets things to their original values.
    */
-  override reset(): void {
+  public override reset(): void {
     this.densityExpandedProperty.reset();
 
     this.bottle.reset();

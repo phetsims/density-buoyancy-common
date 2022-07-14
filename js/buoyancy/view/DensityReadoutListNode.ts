@@ -17,7 +17,7 @@ import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import densityBuoyancyCommonStrings from '../../densityBuoyancyCommonStrings.js';
 
 export default class DensityReadoutListNode extends VBox {
-  constructor( materialProperties: IReadOnlyProperty<Material>[] ) {
+  public constructor( materialProperties: IReadOnlyProperty<Material>[] ) {
 
     super( {
       spacing: 5,

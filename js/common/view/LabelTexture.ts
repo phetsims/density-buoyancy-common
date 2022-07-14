@@ -13,9 +13,9 @@ import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 
 export default class LabelTexture extends NodeTexture {
 
-  private containerNode: Node;
+  private readonly containerNode: Node;
 
-  constructor( labelNode: Node ) {
+  public constructor( labelNode: Node ) {
     const containerNode = new Node( {
       children: [ labelNode ],
       scale: 2
@@ -31,7 +31,7 @@ export default class LabelTexture extends NodeTexture {
   /**
    * Releases references
    */
-  override dispose(): void {
+  public override dispose(): void {
     this.containerNode.dispose();
 
     super.dispose();

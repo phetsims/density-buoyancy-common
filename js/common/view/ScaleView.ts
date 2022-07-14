@@ -15,9 +15,9 @@ import VerticalCylinderView from './VerticalCylinderView.js';
 
 export default class ScaleView extends MassView {
 
-  private scaleGeometry: THREE.BufferGeometry;
+  private readonly scaleGeometry: THREE.BufferGeometry;
 
-  constructor( mass: Scale ) {
+  public constructor( mass: Scale ) {
 
     const scaleGeometry = ScaleView.getScaleGeometry();
 
@@ -29,7 +29,7 @@ export default class ScaleView extends MassView {
   /**
    * Releases references.
    */
-  override dispose(): void {
+  public override dispose(): void {
     this.scaleGeometry.dispose();
 
     super.dispose();
@@ -38,7 +38,7 @@ export default class ScaleView extends MassView {
   /**
    * Returns the geometry used for the scale
    */
-  static getScaleGeometry(): THREE.BufferGeometry {
+  public static getScaleGeometry(): THREE.BufferGeometry {
     const cuboidElements = 18 * 3;
     const cylinderElements = 12 * 64;
     const numElements = cuboidElements + cylinderElements;

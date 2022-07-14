@@ -36,7 +36,7 @@ const TRACK_HEIGHT = 3;
 // A workaround for changing a DerivedProperty range Property to a NumberProperty, where the new range AND value will
 // not overlap with the previous one.
 class WorkaroundRange extends Range {
-  override contains( value: number ): boolean { return true; }
+  public override contains( value: number ): boolean { return true; }
 }
 
 type SelfOptions = {
@@ -60,7 +60,7 @@ export type MaterialMassVolumeControlNodeOptions = SelfOptions & VBoxOptions;
 
 export default class MaterialMassVolumeControlNode extends VBox {
 
-  constructor( materialProperty: Property<Material>, massProperty: IReadOnlyProperty<number>, volumeProperty: Property<number>, materials: Material[], setVolume: ( volume: number ) => void, listParent: Node, providedOptions?: MaterialMassVolumeControlNodeOptions ) {
+  public constructor( materialProperty: Property<Material>, massProperty: IReadOnlyProperty<number>, volumeProperty: Property<number>, materials: Material[], setVolume: ( volume: number ) => void, listParent: Node, providedOptions?: MaterialMassVolumeControlNodeOptions ) {
 
     const options = optionize<MaterialMassVolumeControlNodeOptions, SelfOptions, VBoxOptions>()( {
       labelNode: null,
@@ -363,7 +363,7 @@ export default class MaterialMassVolumeControlNode extends VBox {
   /**
    * Returns the default NumberControl options used by this component.
    */
-  static getNumberControlOptions(): NumberControlOptions {
+  public static getNumberControlOptions(): NumberControlOptions {
     return {
       delta: 0.01,
       sliderOptions: {

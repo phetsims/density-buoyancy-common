@@ -19,7 +19,7 @@ import DensityBuoyancyCommonQueryParameters from '../DensityBuoyancyCommonQueryP
 import ComboBox from '../../../../sun/js/ComboBox.js';
 
 export default class GravityControlNode extends ComboNumberControl<Gravity> {
-  constructor( gravityProperty: Property<Gravity>, listParent: Node ) {
+  public constructor( gravityProperty: Property<Gravity>, listParent: Node ) {
 
     const customValue = Gravity.createCustomGravity( DensityBuoyancyCommonQueryParameters.gEarth );
 

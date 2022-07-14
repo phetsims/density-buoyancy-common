@@ -15,11 +15,11 @@ import Boat from '../model/Boat.js';
 import BoatDesign from '../model/BoatDesign.js';
 
 export default class BoatView extends MassView {
-  private liquidMultilink: UnknownMultilink;
+  private readonly liquidMultilink: UnknownMultilink;
 
-  boat: Boat;
+  public readonly boat: Boat;
 
-  constructor( boat: Boat, liquidYInterpolatedProperty: IReadOnlyProperty<number> ) {
+  public constructor( boat: Boat, liquidYInterpolatedProperty: IReadOnlyProperty<number> ) {
 
     // @ts-ignore
     super( boat, new THREE.Geometry() );
@@ -191,7 +191,7 @@ export default class BoatView extends MassView {
   /**
    * Releases references.
    */
-  override dispose(): void {
+  public override dispose(): void {
     // TODO: dispose everything from above
 
     this.liquidMultilink.dispose();

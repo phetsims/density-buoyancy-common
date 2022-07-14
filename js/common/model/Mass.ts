@@ -44,31 +44,31 @@ import { MassShape } from './MassShape.js';
 
 // constants
 export class MassTag extends EnumerationValue {
-  static PRIMARY = new MassTag();
-  static SECONDARY = new MassTag();
-  static NONE = new MassTag();
-  static ONE_A = new MassTag();
-  static ONE_B = new MassTag();
-  static ONE_C = new MassTag();
-  static ONE_D = new MassTag();
-  static ONE_E = new MassTag();
-  static TWO_A = new MassTag();
-  static TWO_B = new MassTag();
-  static TWO_C = new MassTag();
-  static TWO_D = new MassTag();
-  static TWO_E = new MassTag();
-  static THREE_A = new MassTag();
-  static THREE_B = new MassTag();
-  static THREE_C = new MassTag();
-  static THREE_D = new MassTag();
-  static THREE_E = new MassTag();
-  static A = new MassTag();
-  static B = new MassTag();
-  static C = new MassTag();
-  static D = new MassTag();
-  static E = new MassTag();
+  public static PRIMARY = new MassTag();
+  public static SECONDARY = new MassTag();
+  public static NONE = new MassTag();
+  public static ONE_A = new MassTag();
+  public static ONE_B = new MassTag();
+  public static ONE_C = new MassTag();
+  public static ONE_D = new MassTag();
+  public static ONE_E = new MassTag();
+  public static TWO_A = new MassTag();
+  public static TWO_B = new MassTag();
+  public static TWO_C = new MassTag();
+  public static TWO_D = new MassTag();
+  public static TWO_E = new MassTag();
+  public static THREE_A = new MassTag();
+  public static THREE_B = new MassTag();
+  public static THREE_C = new MassTag();
+  public static THREE_D = new MassTag();
+  public static THREE_E = new MassTag();
+  public static A = new MassTag();
+  public static B = new MassTag();
+  public static C = new MassTag();
+  public static D = new MassTag();
+  public static E = new MassTag();
 
-  static enumeration = new Enumeration( MassTag, {
+  public static enumeration = new Enumeration( MassTag, {
     phetioDocumentation: 'Label for a mass'
   } );
 }
@@ -97,17 +97,17 @@ const blockStringMap = {
 };
 
 class MaterialEnumeration extends EnumerationValue {
-  static ALUMINUM = new MaterialEnumeration();
-  static BRICK = new MaterialEnumeration();
-  static COPPER = new MaterialEnumeration();
-  static ICE = new MaterialEnumeration();
-  static PLATINUM = new MaterialEnumeration();
-  static STEEL = new MaterialEnumeration();
-  static STYROFOAM = new MaterialEnumeration();
-  static WOOD = new MaterialEnumeration();
-  static CUSTOM = new MaterialEnumeration();
+  public static ALUMINUM = new MaterialEnumeration();
+  public static BRICK = new MaterialEnumeration();
+  public static COPPER = new MaterialEnumeration();
+  public static ICE = new MaterialEnumeration();
+  public static PLATINUM = new MaterialEnumeration();
+  public static STEEL = new MaterialEnumeration();
+  public static STYROFOAM = new MaterialEnumeration();
+  public static WOOD = new MaterialEnumeration();
+  public static CUSTOM = new MaterialEnumeration();
 
-  static enumeration = new Enumeration( MaterialEnumeration, {
+  public static enumeration = new Enumeration( MaterialEnumeration, {
     phetioDocumentation: 'Material values'
   } );
 }
@@ -148,33 +148,33 @@ export type InstrumentedMassOptions = MassOptions & PickRequired<MassOptions, 't
 
 export default abstract class Mass extends PhetioObject {
 
-  engine: PhysicsEngine;
-  body: PhysicsEngineBody;
+  public readonly engine: PhysicsEngine;
+  public readonly body: PhysicsEngineBody;
 
-  massShape: MassShape;
+  public readonly massShape: MassShape;
 
   // Without the matrix applied (effectively in "local" model coordinates)
-  shapeProperty: Property<Shape>;
+  public readonly shapeProperty: Property<Shape>;
 
-  userControlledProperty: Property<boolean>;
-  inputEnabledProperty: Property<boolean>;
-  visibleProperty: IReadOnlyProperty<boolean>;
-  internalVisibleProperty: Property<boolean>;
+  public readonly userControlledProperty: Property<boolean>;
+  public readonly inputEnabledProperty: Property<boolean>;
+  public readonly visibleProperty: IReadOnlyProperty<boolean>;
+  public readonly internalVisibleProperty: Property<boolean>;
 
   // Here just for instrumentation, see https://github.com/phetsims/density/issues/112
   // This can only hide it, but won't make it visible.
-  studioVisibleProperty: Property<boolean>;
+  public readonly studioVisibleProperty: Property<boolean>;
 
-  materialProperty: Property<Material>;
-
-  // for phet-io support (to control the materialProperty)
-  materialEnumProperty?: Property<MaterialEnumeration>;
+  public readonly materialProperty: Property<Material>;
 
   // for phet-io support (to control the materialProperty)
-  customDensityProperty?: Property<number>;
+  public readonly materialEnumProperty?: Property<MaterialEnumeration>;
 
   // for phet-io support (to control the materialProperty)
-  customColorProperty?: Property<Color>;
+  public readonly customDensityProperty?: Property<number>;
+
+  // for phet-io support (to control the materialProperty)
+  public readonly customColorProperty?: Property<Color>;
 
   // Whether we are modifying the volumeProperty directly
   protected volumeLock: boolean;
@@ -183,62 +183,62 @@ export default abstract class Mass extends PhetioObject {
   protected massLock: boolean;
 
   // In m^3 (cubic meters)
-  volumeProperty: Property<number>;
+  public readonly volumeProperty: Property<number>;
 
   // In kg (kilograms), added to the normal mass (computed from density and volume)
-  containedMassProperty: Property<number>;
+  public readonly containedMassProperty: Property<number>;
 
   // (read-only) In kg (kilograms) - written to by other processes
-  massProperty: Property<number>;
+  public readonly massProperty: Property<number>;
 
   // The following offset will be added onto the body's position to determine ours.
-  bodyOffsetProperty: Property<Vector2>;
+  public readonly bodyOffsetProperty: Property<Vector2>;
 
-  gravityForceInterpolatedProperty: InterpolatedProperty<Vector2>;
-  buoyancyForceInterpolatedProperty: InterpolatedProperty<Vector2>;
-  contactForceInterpolatedProperty: InterpolatedProperty<Vector2>;
+  public readonly gravityForceInterpolatedProperty: InterpolatedProperty<Vector2>;
+  public readonly buoyancyForceInterpolatedProperty: InterpolatedProperty<Vector2>;
+  public readonly contactForceInterpolatedProperty: InterpolatedProperty<Vector2>;
 
-  forceOffsetProperty: Property<Vector3>;
+  public readonly forceOffsetProperty: Property<Vector3>;
 
   // The 3D offset from the center-of-mass where the mass-label should be shown from.
   // The mass label will use this position (plus the masses' position) to determine a view point, then will use the
   // massOffsetOrientationProperty to position based on that point.
-  massOffsetProperty: Property<Vector3>;
+  public readonly massOffsetProperty: Property<Vector3>;
 
   // Orientation multiplied by 1/2 width,height for an offset in view space
-  massOffsetOrientationProperty: Property<Vector2>;
+  public readonly massOffsetOrientationProperty: Property<Vector2>;
 
   // Transform matrix set before/after the physics engine steps, to be used to adjust/read the mass's position/transform.
-  matrix: Matrix3;
+  public readonly matrix: Matrix3;
 
   // Transform matrix set in the internal physics engine steps, used by masses to determine their per-step information.
-  stepMatrix: Matrix3;
+  public readonly stepMatrix: Matrix3;
 
-  transformedEmitter: Emitter<[]>;
+  public readonly transformedEmitter: Emitter<[]>;
 
   // Fired when this mass's input (drag) should be interrupted.
-  interruptedEmitter: Emitter<[]>;
+  public readonly interruptedEmitter: Emitter<[]>;
 
-  canRotate: boolean;
-  canMove: boolean;
-  tag: MassTag;
+  public canRotate: boolean;
+  public canMove: boolean;
+  public tag: MassTag;
 
-  nameProperty: Property<string>;
+  public readonly nameProperty: Property<string>;
 
   // Set by the model
-  containingBasin: Basin | null;
+  public containingBasin: Basin | null;
 
-  originalMatrix: Matrix3;
+  public originalMatrix: Matrix3;
 
   // Required internal-physics-step properties that should be set by subtypes in
   // updateStepInformation(). There may exist more set by the subtype (that will be used for e.g. volume/area
   // calculations). These are updated more often than simulation steps. These specific values will be used by external
   // code for determining liquid height.
-  stepX: number; // x-value of the position
-  stepBottom: number; // minimum y value of the mass
-  stepTop: number; // maximum y value of the mass
+  public stepX: number; // x-value of the position
+  public stepBottom: number; // minimum y value of the mass
+  public stepTop: number; // maximum y value of the mass
 
-  constructor( engine: PhysicsEngine, providedConfig: MassOptions ) {
+  protected constructor( engine: PhysicsEngine, providedConfig: MassOptions ) {
 
     const config = optionize<MassOptions, SelfOptions, PhetioObjectOptions>()( {
       visible: true,
@@ -496,24 +496,24 @@ export default abstract class Mass extends PhetioObject {
   /**
    * Returns whether this is a boat (as more complicated handling is needed in this case).
    */
-  isBoat(): boolean {
+  public isBoat(): boolean {
     return false;
   }
 
   /**
    * Returns the cross-sectional area of this object at a given y level.
    */
-  abstract getDisplacedArea( liquidLevel: number ): number;
+  public abstract getDisplacedArea( liquidLevel: number ): number;
 
   /**
    * Returns the cumulative displaced volume of this object up to a given y level.
    */
-  abstract getDisplacedVolume( liquidLevel: number ): number;
+  public abstract getDisplacedVolume( liquidLevel: number ): number;
 
   /**
    * Sets the current location to be the proper position for the mass when it is reset.
    */
-  setResetLocation(): void {
+  public setResetLocation(): void {
     this.originalMatrix = this.matrix.copy();
   }
 
@@ -533,7 +533,7 @@ export default abstract class Mass extends PhetioObject {
   /**
    * Writes position/velocity/etc. to the physics model engine.
    */
-  writeData(): void {
+  public writeData(): void {
     this.engine.bodySetPosition( this.body, this.matrix.translation.minus( this.bodyOffsetProperty.value ) );
     this.engine.bodySetRotation( this.body, this.matrix.rotation );
   }
@@ -541,7 +541,7 @@ export default abstract class Mass extends PhetioObject {
   /**
    * Starts a physics model engine drag at the given 2d (x,y) model position.
    */
-  startDrag( position: Vector2 ): void {
+  public startDrag( position: Vector2 ): void {
     this.userControlledProperty.value = true;
     this.engine.addPointerConstraint( this.body, position );
   }
@@ -549,14 +549,14 @@ export default abstract class Mass extends PhetioObject {
   /**
    * Updates a current drag with a new 2d (x,y) model position.
    */
-  updateDrag( position: Vector2 ): void {
+  public updateDrag( position: Vector2 ): void {
     this.engine.updatePointerConstraint( this.body, position );
   }
 
   /**
    * Ends a physics model engine drag.
    */
-  endDrag(): void {
+  public endDrag(): void {
     this.engine.removePointerConstraint( this.body );
     this.userControlledProperty.value = false;
   }
@@ -564,7 +564,7 @@ export default abstract class Mass extends PhetioObject {
   /**
    * Sets the general size of the mass based on a general size scale.
    */
-  abstract setRatios( widthRatio: number, heightRatio: number ): void;
+  public abstract setRatios( widthRatio: number, heightRatio: number ): void;
 
   /**
    * Called after a engine-physics-model step once before doing other operations (like computing buoyant forces,
@@ -573,7 +573,7 @@ export default abstract class Mass extends PhetioObject {
    * Type-specific values are likely to be set, but this should set at least stepX/stepBottom/stepTop (as those are
    * used for determining basin volumes and cross sections)
    */
-  updateStepInformation(): void {
+  public updateStepInformation(): void {
     this.engine.bodyGetStepMatrixTransform( this.body, this.stepMatrix );
 
     // Apply the body offset
@@ -586,7 +586,7 @@ export default abstract class Mass extends PhetioObject {
    * reach the intersection, e.g. ray.position + ray.distance * t === intersectionPoint) will be returned. Otherwise
    * if there is no intersection, null will be returned.
    */
-  intersect( ray: Ray3, isTouch: boolean ): number | null {
+  public intersect( ray: Ray3, isTouch: boolean ): number | null {
     // TODO: should this be abstract
     return null;
   }
@@ -597,7 +597,7 @@ export default abstract class Mass extends PhetioObject {
    * @param dt - In seconds
    * @param interpolationRatio
    */
-  step( dt: number, interpolationRatio: number ): void {
+  public step( dt: number, interpolationRatio: number ): void {
     this.readData();
 
     this.transformedEmitter.emit();
@@ -610,7 +610,7 @@ export default abstract class Mass extends PhetioObject {
   /**
    * Moves the mass to its initial position
    */
-  resetPosition(): void {
+  public resetPosition(): void {
     this.matrix.set( this.originalMatrix );
     this.writeData();
     this.engine.bodySynchronizePrevious( this.body );
@@ -620,7 +620,7 @@ export default abstract class Mass extends PhetioObject {
   /**
    * Resets things to their original values.
    */
-  reset(): void {
+  public reset(): void {
     this.engine.bodyResetHidden( this.body );
 
     this.internalVisibleProperty.reset();
@@ -643,7 +643,7 @@ export default abstract class Mass extends PhetioObject {
   /**
    * Releases references
    */
-  override dispose(): void {
+  public override dispose(): void {
 
     assert && assert( !this.isDisposed );
 
@@ -664,7 +664,7 @@ export default abstract class Mass extends PhetioObject {
   /**
    * Given a list of values and a ratio from 0 (the start) to 1 (the end), return an interpolated value.
    */
-  static evaluatePiecewiseLinear( values: number[], ratio: number ): number {
+  public static evaluatePiecewiseLinear( values: number[], ratio: number ): number {
     const logicalIndex = ratio * ( values.length - 1 );
     if ( logicalIndex % 1 === 0 ) {
       return values[ logicalIndex ];
@@ -676,7 +676,7 @@ export default abstract class Mass extends PhetioObject {
     }
   }
 
-  static MassIO: IOType;
+  public static MassIO: IOType;
 }
 
 // (read-only) {IOType}

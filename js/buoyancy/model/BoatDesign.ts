@@ -82,7 +82,7 @@ export default class BoatDesign {
    * @param blockHalfWidth - in model coordinates
    * @param liters - the number of liters of the boat's displacement
    */
-  static getIntersectionVertices( blockHalfWidth = 0, liters = 1 ): Vector2[] {
+  public static getIntersectionVertices( blockHalfWidth = 0, liters = 1 ): Vector2[] {
     const scale = Math.pow( liters, 1 / 3 ) * BoatDesign.ONE_LITER_SCALE_MULTIPLIER;
     const frontSamples = 30;
     const insideSamples = 40;
@@ -145,7 +145,7 @@ export default class BoatDesign {
   /**
    * Returns the XY model coordinates for the interior cross-section of the boat (the section of air underneath the top)
    */
-  static getBasinOneLiterVertices(): Vector2[] {
+  public static getBasinOneLiterVertices(): Vector2[] {
 
     const insideBottomY = -BoatDesign.DESIGN_BOAT_HEIGHT + BoatDesign.DESIGN_WALL_THICKNESS;
 
@@ -238,14 +238,14 @@ export default class BoatDesign {
   /**
    * Creates a coordinate float array to be used with fillWaterVertexArray, for three.js purposes.
    */
-  static createWaterVertexArray(): Float32Array {
+  public static createWaterVertexArray(): Float32Array {
     return new Float32Array( ( CROSS_SECTION_SAMPLES + 1.5 ) * 3 * 3 * 4 );
   }
 
   /**
    * Creates a coordinate float array to be used with fillWaterVertexArray, for three.js purposes.
    */
-  static createWaterNormalArray(): Float32Array {
+  public static createWaterNormalArray(): Float32Array {
     const array = BoatDesign.createWaterVertexArray();
 
     for ( let i = 0; i < array.length / 3; i++ ) {
@@ -256,7 +256,7 @@ export default class BoatDesign {
     return array;
   }
 
-  static shouldBoatWaterDisplayIfFull( boatY: number, liters: number ): boolean {
+  public static shouldBoatWaterDisplayIfFull( boatY: number, liters: number ): boolean {
     const scale = Math.pow( liters, 1 / 3 ) * BoatDesign.ONE_LITER_SCALE_MULTIPLIER;
     const designY = boatY / scale + BoatDesign.DESIGN_CENTROID.y;
 
@@ -269,7 +269,7 @@ export default class BoatDesign {
    *
    * @returns - Whether the water is completely filled
    */
-  static fillWaterVertexArray( waterY: number, boatX: number, boatY: number, liters: number, poolBounds: Bounds3, positionArray: Float32Array, wasFilled: boolean ): boolean {
+  public static fillWaterVertexArray( waterY: number, boatX: number, boatY: number, liters: number, poolBounds: Bounds3, positionArray: Float32Array, wasFilled: boolean ): boolean {
     // TODO: reduce duplication with below
     const outsideBottomY = -BoatDesign.DESIGN_BOAT_HEIGHT;
     const scale = Math.pow( liters, 1 / 3 ) * BoatDesign.ONE_LITER_SCALE_MULTIPLIER;
@@ -357,14 +357,14 @@ export default class BoatDesign {
   /**
    * Creates a coordinate float array to be used with fillCrossSectionVertexArray, for three.js purposes.
    */
-  static createCrossSectionVertexArray(): Float32Array {
+  public static createCrossSectionVertexArray(): Float32Array {
     return new Float32Array( CROSS_SECTION_SAMPLES * 3 * 3 * 2 );
   }
 
   /**
    * Fills the positionArray with a X,Z cross-section of the boat at a given y value (for a given liters value).
    */
-  static fillCrossSectionVertexArray( y: number, liters: number, positionArray: Float32Array ): void {
+  public static fillCrossSectionVertexArray( y: number, liters: number, positionArray: Float32Array ): void {
     const insideBottomY = -BoatDesign.DESIGN_BOAT_HEIGHT + BoatDesign.DESIGN_WALL_THICKNESS;
     const scale = Math.pow( liters, 1 / 3 ) * BoatDesign.ONE_LITER_SCALE_MULTIPLIER;
     const designY = y / scale + BoatDesign.DESIGN_CENTROID.y;
@@ -405,7 +405,7 @@ export default class BoatDesign {
   /**
    * Returns the one-liter model-coordinate main geometry for the bulk of the boat.
    */
-  static getPrimaryGeometry( liters = 1, includeExterior = true, includeGunwale = true, includeInterior = true, invertNormals = false ): THREE.BufferGeometry {
+  public static getPrimaryGeometry( liters = 1, includeExterior = true, includeGunwale = true, includeInterior = true, invertNormals = false ): THREE.BufferGeometry {
     const positions: number[] = [];
     const normals: number[] = [];
     const uvs: number[] = [];
@@ -616,7 +616,7 @@ export default class BoatDesign {
   /**
    * Returns a string that should be placed below in BoatDesign.js.
    */
-  static computeBoatData( samples = 1000 ): string {
+  public static computeBoatData( samples = 1000 ): string {
     const desiredVolume = 0.001; // one liter
 
     const discretizationPoints = 1000;
@@ -727,7 +727,7 @@ BoatDesign.ONE_LITER_HULL_VOLUME = BoatDesign.DESIGN_HULL_VOLUME * BoatDesign.ON
    *
    * phet.densityBuoyancyCommon.BoatDesign.getDebugCanvas()
    */
-  static getDebugCanvas(): HTMLCanvasElement {
+  public static getDebugCanvas(): HTMLCanvasElement {
     const canvas = document.createElement( 'canvas' );
     const context = canvas.getContext( '2d' )!;
 
@@ -811,27 +811,27 @@ BoatDesign.ONE_LITER_HULL_VOLUME = BoatDesign.DESIGN_HULL_VOLUME * BoatDesign.ON
     return canvas;
   }
 
-  static DESIGN_WALL_THICKNESS: number;
-  static DESIGN_BOAT_HEIGHT: number;
+  public static DESIGN_WALL_THICKNESS: number;
+  public static DESIGN_BOAT_HEIGHT: number;
 
   // Multiplying the design coordinates by this value will result in a boat whose displaced volume
   // is equal to one liter.
-  static ONE_LITER_SCALE_MULTIPLIER: number;
+  public static ONE_LITER_SCALE_MULTIPLIER: number;
 
   // The centroid of the hull of the boat, in design coordinates
-  static DESIGN_CENTROID: Vector3;
+  public static DESIGN_CENTROID: Vector3;
 
-  static DESIGN_DISPLACED_VOLUME: number;
-  static DESIGN_HULL_VOLUME: number;
-  static ONE_LITER_HEIGHT: number;
-  static ONE_LITER_DISPLACED_AREAS: number[];
-  static ONE_LITER_DISPLACED_VOLUMES: number[];
-  static ONE_LITER_INTERNAL_AREAS: number[];
-  static ONE_LITER_INTERNAL_VOLUMES: number[];
-  static DESIGN_BOUNDS: Bounds3;
-  static ONE_LITER_BOUNDS: Bounds3;
-  static ONE_LITER_INTERIOR_BOTTOM: number;
-  static ONE_LITER_HULL_VOLUME: number;
+  public static DESIGN_DISPLACED_VOLUME: number;
+  public static DESIGN_HULL_VOLUME: number;
+  public static ONE_LITER_HEIGHT: number;
+  public static ONE_LITER_DISPLACED_AREAS: number[];
+  public static ONE_LITER_DISPLACED_VOLUMES: number[];
+  public static ONE_LITER_INTERNAL_AREAS: number[];
+  public static ONE_LITER_INTERNAL_VOLUMES: number[];
+  public static DESIGN_BOUNDS: Bounds3;
+  public static ONE_LITER_BOUNDS: Bounds3;
+  public static ONE_LITER_INTERIOR_BOTTOM: number;
+  public static ONE_LITER_HULL_VOLUME: number;
 
 }
 

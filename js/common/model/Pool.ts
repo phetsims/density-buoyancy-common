@@ -17,9 +17,9 @@ export type PoolOptions = BasinOptions;
 
 export default class Pool extends Basin {
 
-  bounds: Bounds3;
+  public readonly bounds: Bounds3;
 
-  constructor( bounds: Bounds3, options?: PoolOptions ) {
+  public constructor( bounds: Bounds3, options?: PoolOptions ) {
 
     const initialVolume = 0.1;
 
@@ -39,14 +39,14 @@ export default class Pool extends Basin {
    * Returns whether a given mass is inside this basin (e.g. if filled with liquid, would it be displacing any
    * liquid).
    */
-  isMassInside( mass: Mass ): boolean {
+  public isMassInside( mass: Mass ): boolean {
     return mass.stepBottom < this.stepTop;
   }
 
   /**
    * Returns the maximum area that could be contained with liquid at a given y value.
    */
-  getMaximumArea( y: number ): number {
+  public getMaximumArea( y: number ): number {
     if ( y < this.bounds.minY || y > this.bounds.maxY ) {
       return 0;
     }
@@ -58,7 +58,7 @@ export default class Pool extends Basin {
   /**
    * Returns the maximum volume that could be contained with liquid up to a given y value.
    */
-  getMaximumVolume( y: number ): number {
+  public getMaximumVolume( y: number ): number {
     if ( y <= this.bounds.minY ) {
       return 0;
     }

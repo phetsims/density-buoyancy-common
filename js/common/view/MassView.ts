@@ -23,19 +23,19 @@ const TAG_SCALE = 0.0005;
 
 export default abstract class MassView extends THREE.Mesh {
 
-  mass: Mass;
-  materialView: MaterialView;
-  private materialListener: ( material: Material ) => void;
-  private positionListener: () => void;
+  public readonly mass: Mass;
+  public materialView: MaterialView;
+  private readonly materialListener: ( material: Material ) => void;
+  private readonly positionListener: () => void;
 
   private tagNodeTexture: NodeTexture | null;
-  private tagMesh: TextureQuad | null;
-  private massNameListener?: ( string: string ) => void;
+  private readonly tagMesh: TextureQuad | null;
+  private readonly massNameListener?: ( string: string ) => void;
 
-  protected tagHeight: number | null = null;
-  protected tagOffsetProperty: Property<Vector3> = new Property<Vector3>( Vector3.ZERO );
+  protected readonly tagHeight: number | null = null;
+  protected readonly tagOffsetProperty: Property<Vector3> = new Property<Vector3>( Vector3.ZERO );
 
-  constructor( mass: Mass, initialGeometry: THREE.BufferGeometry ) {
+  protected constructor( mass: Mass, initialGeometry: THREE.BufferGeometry ) {
     const materialView = DensityMaterials.getMaterialView( mass.materialProperty.value );
 
     super( initialGeometry, materialView.material );
@@ -112,7 +112,7 @@ export default abstract class MassView extends THREE.Mesh {
   /**
    * Releases references.
    */
-  dispose(): void {
+  public dispose(): void {
     this.mass.transformedEmitter.removeListener( this.positionListener );
     this.mass.materialProperty.unlink( this.materialListener );
 

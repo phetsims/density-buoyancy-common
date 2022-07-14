@@ -14,7 +14,7 @@ import { PRIMARY_LABEL, SECONDARY_LABEL } from './MassLabelNode.js';
 
 export default class PrimarySecondaryPanelsNode extends Panel {
 
-  constructor( primaryNode: Node, secondaryNode: Node ) {
+  public constructor( primaryNode: Node, secondaryNode: Node ) {
     super( new FlowBox( {
       spacing: 10,
       orientation: 'vertical',
@@ -30,7 +30,7 @@ export default class PrimarySecondaryPanelsNode extends Panel {
   /**
    * Returns a Node that displays the "primary mass" label.
    */
-  static getPrimaryLabelNode(): Node {
+  public static getPrimaryLabelNode(): Node {
     return new Node( {
       children: [ PRIMARY_LABEL ],
       scale: 0.7
@@ -40,7 +40,7 @@ export default class PrimarySecondaryPanelsNode extends Panel {
   /**
    * Returns a Node that displays the "secondary mass" label.
    */
-  static getSecondaryLabelNode(): Node {
+  public static getSecondaryLabelNode(): Node {
     return new Node( {
       children: [ SECONDARY_LABEL ],
       scale: 0.7

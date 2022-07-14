@@ -45,12 +45,12 @@ const SECONDARY_LABEL = createMassLabel( densityBuoyancyCommonStrings.massLabel.
 
 export default class MassLabelNode extends Node {
 
-  mass: Mass;
-  private showMassesProperty: IReadOnlyProperty<boolean>;
-  private massListener: ( n: number ) => void;
-  private showMassesListener: ( n: boolean ) => void;
+  public readonly mass: Mass;
+  private readonly showMassesProperty: IReadOnlyProperty<boolean>;
+  private readonly massListener: ( n: number ) => void;
+  private readonly showMassesListener: ( n: boolean ) => void;
 
-  constructor( mass: Mass, showMassesProperty: IReadOnlyProperty<boolean> ) {
+  public constructor( mass: Mass, showMassesProperty: IReadOnlyProperty<boolean> ) {
     super();
 
     const readoutText = new Text( '', {
@@ -92,7 +92,7 @@ export default class MassLabelNode extends Node {
   /**
    * Releases references.
    */
-  override dispose(): void {
+  public override dispose(): void {
     this.showMassesProperty.unlink( this.showMassesListener );
     this.mass.massProperty.unlink( this.massListener );
 
@@ -102,21 +102,21 @@ export default class MassLabelNode extends Node {
   /**
    * Returns a NodeTexture for the primary.
    */
-  static getPrimaryTexture(): NodeTexture {
+  public static getPrimaryTexture(): NodeTexture {
     return new LabelTexture( PRIMARY_LABEL );
   }
 
   /**
    * Returns a NodeTexture for the secondary.
    */
-  static getSecondaryTexture(): NodeTexture {
+  public static getSecondaryTexture(): NodeTexture {
     return new LabelTexture( SECONDARY_LABEL );
   }
 
   /**
    * Returns a basic texture for a given (short) string label.
    */
-  static getBasicLabelTexture( string: string ): NodeTexture {
+  public static getBasicLabelTexture( string: string ): NodeTexture {
     const label = new Text( string, {
       font: new PhetFont( { size: 24, weight: 'bold' } ),
       maxWidth: 100

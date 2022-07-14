@@ -82,40 +82,40 @@ export type DensityBuoyancyScreenViewOptions = SelfOptions & ScreenViewOptions;
 
 export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyModel> extends ScreenView {
 
-  protected model: Model;
-  protected popupLayer: Node;
-  protected backgroundLayer: Node;
+  protected readonly model: Model;
+  protected readonly popupLayer: Node;
+  protected readonly backgroundLayer: Node;
 
   // Support controlling or changing the latest-touched mass in certain demos.
-  protected currentMassProperty: Property<Mass | null>;
+  protected readonly currentMassProperty: Property<Mass | null>;
 
-  private postLayoutEmitter: TinyEmitter;
+  private readonly postLayoutEmitter: TinyEmitter;
 
   // The sky background, in a unit 0-to-1 rectangle (so we can scale it to match)
-  private backgroundNode: Rectangle;
+  private readonly backgroundNode: Rectangle;
 
-  sceneNode: ThreeIsometricNode;
+  public readonly sceneNode: ThreeIsometricNode;
 
-  private scaleReadoutLayer: Node;
-  private massLabelLayer: Node;
-  private forceDiagramLayer: Node;
+  private readonly scaleReadoutLayer: Node;
+  private readonly massLabelLayer: Node;
+  private readonly forceDiagramLayer: Node;
 
-  private massViews: MassView[];
-  private scaleReadoutNodes: ScaleReadoutNode[];
-  private forceDiagramNodes: ForceDiagramNode[];
-  private massLabelNodes: MassLabelNode[];
+  private readonly massViews: MassView[];
+  private readonly scaleReadoutNodes: ScaleReadoutNode[];
+  private readonly forceDiagramNodes: ForceDiagramNode[];
+  private readonly massLabelNodes: MassLabelNode[];
 
-  private startDragAction: PhetioAction<[ Mass, Vector2 ]>;
-  private updateDragAction: PhetioAction<[ Mass, Vector2 ]>;
-  private endDragAction: PhetioAction<[ Mass ]>;
+  private readonly startDragAction: PhetioAction<[ Mass, Vector2 ]>;
+  private readonly updateDragAction: PhetioAction<[ Mass, Vector2 ]>;
+  private readonly endDragAction: PhetioAction<[ Mass ]>;
 
-  private debugView?: DebugView;
+  private readonly debugView?: DebugView;
 
   // Subtypes can provide their own values to control the barrier sizing
   protected leftBarrierViewPointProperty: Property<IReadOnlyProperty<Vector2>>;
   protected rightBarrierViewPointProperty: Property<IReadOnlyProperty<Vector2>>;
 
-  constructor( model: Model, providedOptions: SelfOptions ) {
+  public constructor( model: Model, providedOptions: SelfOptions ) {
 
     const scaleIncrease = 3.5;
     const options = optionize<DensityBuoyancyScreenViewOptions, SelfOptions, ScreenView>()( {
@@ -767,7 +767,7 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
   /**
    * Projects a 3d model point to a 2d view point (in the screen view's coordinate frame).
    */
-  modelToViewPoint( point: Vector3 ): Vector2 {
+  public modelToViewPoint( point: Vector3 ): Vector2 {
     // We'll want to transform global coordinates into screen coordinates here
     return this.parentToLocalPoint( animatedPanZoomSingleton.listener!.matrixProperty.value.inverted().timesVector2( this.sceneNode.projectPoint( point ) ) );
   }
@@ -775,7 +775,7 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
   /**
    * Returns the closest grab-able mass under the pointer/
    */
-  getMassUnderPointer( pointer: Pointer, isTouch: boolean ): Mass | null {
+  public getMassUnderPointer( pointer: Pointer, isTouch: boolean ): Mass | null {
     const point = pointer.point;
     if ( point === null ) {
       return null;
@@ -786,7 +786,7 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
   /**
    * Returns the closest grab-able mass under the point
    */
-  getMassUnderPoint( point: Vector2, isTouch: boolean ): Mass | null {
+  public getMassUnderPoint( point: Vector2, isTouch: boolean ): Mass | null {
     const ray = this.sceneNode.getRayFromScreenPoint( point );
 
     let closestT = Number.POSITIVE_INFINITY;
@@ -808,7 +808,7 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
     return closestMass;
   }
 
-  override layout( viewBounds: Bounds2 ): void {
+  public override layout( viewBounds: Bounds2 ): void {
     super.layout( viewBounds );
 
     // If the simulation was not able to load for WebGL, bail out
@@ -827,7 +827,7 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
   /**
    * Steps forward in time.
    */
-  override step( dt: number ): void {
+  public override step( dt: number ): void {
     // If the simulation was not able to load for WebGL, bail out
     if ( !this.sceneNode ) {
       return;
@@ -931,7 +931,7 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
     } );
   }
 
-  static getDensityIntroIcon(): Node {
+  public static getDensityIntroIcon(): Node {
     if ( !ThreeUtils.isWebGLEnabled() ) {
       return DensityBuoyancyScreenView.getFallbackIcon();
     }
@@ -968,7 +968,7 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
     } );
   }
 
-  static getDensityCompareIcon(): Node {
+  public static getDensityCompareIcon(): Node {
     if ( !ThreeUtils.isWebGLEnabled() ) {
       return DensityBuoyancyScreenView.getFallbackIcon();
     }
@@ -1005,7 +1005,7 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
     } );
   }
 
-  static getDensityMysteryIcon(): Node {
+  public static getDensityMysteryIcon(): Node {
     if ( !ThreeUtils.isWebGLEnabled() ) {
       return DensityBuoyancyScreenView.getFallbackIcon();
     }

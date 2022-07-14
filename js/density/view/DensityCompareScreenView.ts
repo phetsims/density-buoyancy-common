@@ -9,18 +9,17 @@
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import UnitConversionProperty from '../../../../axon/js/UnitConversionProperty.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
-import merge from '../../../../phet-core/js/merge.js';
 import { AlignPropertyBox, Node, PhetioControlledVisibilityProperty, Text, VBox } from '../../../../scenery/js/imports.js';
-import Panel from '../../../../sun/js/Panel.js';
+import Panel, { PanelOptions } from '../../../../sun/js/Panel.js';
 import VerticalAquaRadioButtonGroup from '../../../../sun/js/VerticalAquaRadioButtonGroup.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
-import DensityBuoyancyScreenView from '../../common/view/DensityBuoyancyScreenView.js';
+import DensityBuoyancyScreenView, { DensityBuoyancyScreenViewOptions } from '../../common/view/DensityBuoyancyScreenView.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import densityBuoyancyCommonStrings from '../../densityBuoyancyCommonStrings.js';
 import DensityCompareModel, { BlockSet } from '../model/DensityCompareModel.js';
 import ComparisonNumberControl from './ComparisonNumberControl.js';
-import { DensityBuoyancyModelOptions } from '../../common/model/DensityBuoyancyModel.js';
 import Bounds2 from '../../../../dot/js/Bounds2.js';
+import { combineOptions } from '../../../../phet-core/js/optionize.js';
 
 // constants
 const blockSetStringMap = {
@@ -34,11 +33,11 @@ export default class DensityCompareScreenView extends DensityBuoyancyScreenView<
 
   private positionPanel: () => void;
 
-  constructor( model: DensityCompareModel, options: DensityBuoyancyModelOptions ) {
+  constructor( model: DensityCompareModel, options: DensityBuoyancyScreenViewOptions ) {
 
     const tandem = options.tandem;
 
-    super( model, merge( {
+    super( model, combineOptions<DensityBuoyancyScreenViewOptions>( {
       cameraLookAt: DensityBuoyancyCommonConstants.DENSITY_CAMERA_LOOK_AT
     }, options ) );
 
@@ -76,7 +75,7 @@ export default class DensityCompareScreenView extends DensityBuoyancyScreenView<
       ],
       spacing: 10,
       align: 'left'
-    } ), merge( {
+    } ), combineOptions<PanelOptions>( {
       tandem: blocksPanelTandem
     }, DensityBuoyancyCommonConstants.PANEL_OPTIONS ) );
 
@@ -154,7 +153,7 @@ export default class DensityCompareScreenView extends DensityBuoyancyScreenView<
         densityNumberControl
       ],
       excludeInvisibleChildrenFromBounds: true
-    } ), merge( {
+    } ), combineOptions<PanelOptions>( {
       visibleProperty: DerivedProperty.or( [ massNumberControl.visibleProperty, volumeNumberControl.visibleProperty, densityNumberControl.visibleProperty ] )
     }, DensityBuoyancyCommonConstants.PANEL_OPTIONS ) );
     this.addChild( numberControlPanel );

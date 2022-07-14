@@ -7,7 +7,7 @@
  */
 
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
-import merge from '../../../../phet-core/js/merge.js';
+import { combineOptions } from '../../../../phet-core/js/optionize.js';
 import { Node } from '../../../../scenery/js/imports.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
@@ -31,13 +31,13 @@ export default class PrimarySecondaryControlsNode extends PrimarySecondaryPanels
     const tandem = options.tandem;
     const omittedOptions = _.omit( options, [ 'tandem' ] );
 
-    const primaryControlNode = new BlockControlNode( primaryMass, popupLayer, merge( {
+    const primaryControlNode = new BlockControlNode( primaryMass, popupLayer, combineOptions<BlockControlNodeOptions>( {
       labelNode: PrimarySecondaryPanelsNode.getPrimaryLabelNode(),
       color: DensityBuoyancyCommonColors.labelAProperty,
       tandem: tandem.createTandem( 'blockAControlPanel' )
     }, omittedOptions ) );
 
-    const secondaryControlNode = new BlockControlNode( secondaryMass, popupLayer, merge( {
+    const secondaryControlNode = new BlockControlNode( secondaryMass, popupLayer, combineOptions<BlockControlNodeOptions>( {
       labelNode: PrimarySecondaryPanelsNode.getSecondaryLabelNode(),
       color: DensityBuoyancyCommonColors.labelBProperty,
       tandem: tandem.createTandem( 'blockBControlPanel' )

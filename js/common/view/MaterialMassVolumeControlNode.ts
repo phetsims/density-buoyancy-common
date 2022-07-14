@@ -8,15 +8,14 @@
 
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import DynamicProperty from '../../../../axon/js/DynamicProperty.js';
-import IReadOnlyProperty from '../../../../axon/js/IReadOnlyProperty.js';
 import NumberProperty from '../../../../axon/js/NumberProperty.js';
 import Property from '../../../../axon/js/Property.js';
+import ReadOnlyProperty from '../../../../axon/js/ReadOnlyProperty.js';
 import Dimension2 from '../../../../dot/js/Dimension2.js';
 import Range from '../../../../dot/js/Range.js';
 import Utils from '../../../../dot/js/Utils.js';
 import EnumerationDeprecated from '../../../../phet-core/js/EnumerationDeprecated.js';
-import merge from '../../../../phet-core/js/merge.js';
-import optionize from '../../../../phet-core/js/optionize.js';
+import optionize, { combineOptions } from '../../../../phet-core/js/optionize.js';
 import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
 import NumberControl, { NumberControlOptions } from '../../../../scenery-phet/js/NumberControl.js';
 import { HBox, IPaint, Node, Text, VBox, VBoxOptions } from '../../../../scenery/js/imports.js';
@@ -60,7 +59,7 @@ export type MaterialMassVolumeControlNodeOptions = SelfOptions & VBoxOptions;
 
 export default class MaterialMassVolumeControlNode extends VBox {
 
-  constructor( materialProperty: Property<Material>, massProperty: IReadOnlyProperty<number>, volumeProperty: Property<number>, materials: Material[], setVolume: ( volume: number ) => void, listParent: Node, providedOptions?: MaterialMassVolumeControlNodeOptions ) {
+  constructor( materialProperty: Property<Material>, massProperty: ReadOnlyProperty<number>, volumeProperty: Property<number>, materials: Material[], setVolume: ( volume: number ) => void, listParent: Node, providedOptions?: MaterialMassVolumeControlNodeOptions ) {
 
     const options = optionize<MaterialMassVolumeControlNodeOptions, SelfOptions, VBoxOptions>()( {
       labelNode: null,
@@ -277,7 +276,7 @@ export default class MaterialMassVolumeControlNode extends VBox {
       tandem: tandem.createTandem( 'comboBox' )
     } );
 
-    const massNumberControl = new NumberControl( densityBuoyancyCommonStrings.mass, massNumberProperty, new Range( options.minMass, options.maxMass ), merge( {
+    const massNumberControl = new NumberControl( densityBuoyancyCommonStrings.mass, massNumberProperty, new Range( options.minMass, options.maxMass ), combineOptions<NumberControlOptions>( {
       sliderOptions: {
         thumbNode: new PrecisionSliderThumb( {
           thumbFill: options.color,
@@ -317,7 +316,7 @@ export default class MaterialMassVolumeControlNode extends VBox {
       }
     }, MaterialMassVolumeControlNode.getNumberControlOptions() ) );
 
-    const volumeNumberControl = new NumberControl( densityBuoyancyCommonStrings.volume, numberControlVolumeProperty, new Range( options.minVolumeLiters, options.maxVolumeLiters ), merge( {
+    const volumeNumberControl = new NumberControl( densityBuoyancyCommonStrings.volume, numberControlVolumeProperty, new Range( options.minVolumeLiters, options.maxVolumeLiters ), combineOptions<NumberControlOptions>( {
       sliderOptions: {
         thumbNode: new PrecisionSliderThumb( {
           thumbFill: options.color,

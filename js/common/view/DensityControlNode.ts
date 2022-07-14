@@ -11,6 +11,7 @@ import Dimension2 from '../../../../dot/js/Dimension2.js';
 import Range from '../../../../dot/js/Range.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import { Node, Text } from '../../../../scenery/js/imports.js';
+import Tandem from '../../../../tandem/js/Tandem.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import densityBuoyancyCommonStrings from '../../densityBuoyancyCommonStrings.js';
 import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
@@ -18,12 +19,13 @@ import Material from '../model/Material.js';
 import ComboNumberControl from './ComboNumberControl.js';
 
 export default class DensityControlNode extends ComboNumberControl<Material> {
-  constructor( liquidMaterialProperty: Property<Material>, materials: Material[], listParent: Node ) {
+  constructor( liquidMaterialProperty: Property<Material>, materials: Material[], listParent: Node, tandem: Tandem ) {
     const customValue = Material.createCustomLiquidMaterial( {
       density: 1000
     } );
 
     super( {
+      tandem: tandem,
       title: densityBuoyancyCommonStrings.fluidDensity,
       valuePattern: densityBuoyancyCommonStrings.kilogramsPerLiterPattern,
       property: liquidMaterialProperty,

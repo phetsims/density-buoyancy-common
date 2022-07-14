@@ -135,8 +135,8 @@ export default class BuoyancyExploreScreenView extends SecondaryMassScreenView<B
           Material.MERCURY,
           Material.DENSITY_A,
           Material.DENSITY_B
-        ], this.popupLayer ), DensityBuoyancyCommonConstants.PANEL_OPTIONS ),
-        new Panel( new GravityControlNode( model.gravityProperty, this.popupLayer ), DensityBuoyancyCommonConstants.PANEL_OPTIONS )
+        ], this.popupLayer, tandem.createTandem( 'densityControlNode' ) ), DensityBuoyancyCommonConstants.PANEL_OPTIONS ),
+        new Panel( new GravityControlNode( model.gravityProperty, this.popupLayer, tandem.createTandem( 'gravityControlNode' ) ), DensityBuoyancyCommonConstants.PANEL_OPTIONS )
       ]
     } );
 

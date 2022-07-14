@@ -10,14 +10,11 @@ import IReadOnlyProperty from '../../../../axon/js/IReadOnlyProperty.js';
 import Multilink from '../../../../axon/js/Multilink.js';
 import Bounds2 from '../../../../dot/js/Bounds2.js';
 import Utils from '../../../../dot/js/Utils.js';
-import merge from '../../../../phet-core/js/merge.js';
+import { combineOptions } from '../../../../phet-core/js/optionize.js';
 import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
-import ArrowNode from '../../../../scenery-phet/js/ArrowNode.js';
+import ArrowNode, { ArrowNodeOptions } from '../../../../scenery-phet/js/ArrowNode.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
-import { Line, NodeOptions } from '../../../../scenery/js/imports.js';
-import { Node } from '../../../../scenery/js/imports.js';
-import { Rectangle } from '../../../../scenery/js/imports.js';
-import { Text } from '../../../../scenery/js/imports.js';
+import { Line, Node, NodeOptions, Rectangle, Text, TextOptions } from '../../../../scenery/js/imports.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 import Material from '../../common/model/Material.js';
 import DensityBuoyancyCommonColors from '../../common/view/DensityBuoyancyCommonColors.js';
@@ -94,10 +91,10 @@ export default class DensityReadoutNode extends Node {
       maxWidth: MAX_LABEL_WIDTH
     };
 
-    const primaryArrow = new ArrowNode( 0, -7, 0, 0, merge( {
+    const primaryArrow = new ArrowNode( 0, -7, 0, 0, combineOptions<ArrowNodeOptions>( {
       fill: DensityBuoyancyCommonColors.labelAProperty
     }, arrowOptions ) );
-    const primaryLabel = new Text( '', merge( {
+    const primaryLabel = new Text( '', combineOptions<TextOptions>( {
       fill: DensityBuoyancyCommonColors.labelAProperty
     }, labelOptions ) );
     const primaryMarker = new Node( {
@@ -108,10 +105,10 @@ export default class DensityReadoutNode extends Node {
     } );
     this.addChild( primaryMarker );
 
-    const secondaryArrow = new ArrowNode( 0, 7, 0, 0, merge( {
+    const secondaryArrow = new ArrowNode( 0, 7, 0, 0, combineOptions<ArrowNodeOptions>( {
       fill: DensityBuoyancyCommonColors.labelBProperty
     }, arrowOptions ) );
-    const secondaryLabel = new Text( '', merge( {
+    const secondaryLabel = new Text( '', combineOptions<TextOptions>( {
       fill: DensityBuoyancyCommonColors.labelBProperty
     }, labelOptions ) );
     const secondaryMarker = new Node( {

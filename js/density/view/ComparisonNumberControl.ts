@@ -9,7 +9,7 @@
 import { RangedProperty } from '../../../../axon/js/NumberProperty.js';
 import Dimension2 from '../../../../dot/js/Dimension2.js';
 import Utils from '../../../../dot/js/Utils.js';
-import merge from '../../../../phet-core/js/merge.js';
+import { combineOptions } from '../../../../phet-core/js/optionize.js';
 import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
 import NumberControl, { NumberControlOptions } from '../../../../scenery-phet/js/NumberControl.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
@@ -22,7 +22,7 @@ export type ComparisonNumberControlOptions = NumberControlOptions;
 
 export default class ComparisonNumberControl extends NumberControl {
   constructor( property: RangedProperty, title: string, valuePattern: string, valueName: string, options?: ComparisonNumberControlOptions ) {
-    super( title, property, property.range, merge( {
+    super( title, property, property.range, combineOptions<NumberControlOptions>( {
       layoutFunction: NumberControl.createLayoutFunction4(),
       delta: 0.01,
       titleNodeOptions: {

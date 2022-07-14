@@ -8,10 +8,8 @@
 
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
-import merge from '../../../../phet-core/js/merge.js';
-import { AlignPropertyBox } from '../../../../scenery/js/imports.js';
-import { Text, Node } from '../../../../scenery/js/imports.js';
-import AccordionBox from '../../../../sun/js/AccordionBox.js';
+import { AlignPropertyBox, Node, Text } from '../../../../scenery/js/imports.js';
+import AccordionBox, { AccordionBoxOptions } from '../../../../sun/js/AccordionBox.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 import PrimarySecondaryControlsNode from '../../common/view/PrimarySecondaryControlsNode.js';
 import SecondaryMassScreenView from '../../common/view/SecondaryMassScreenView.js';
@@ -19,7 +17,8 @@ import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import densityBuoyancyCommonStrings from '../../densityBuoyancyCommonStrings.js';
 import DensityReadoutNode from './DensityReadoutNode.js';
 import DensityIntroModel from '../model/DensityIntroModel.js';
-import { DensityBuoyancyModelOptions } from '../../common/model/DensityBuoyancyModel.js';
+import { DensityBuoyancyScreenViewOptions } from '../../common/view/DensityBuoyancyScreenView.js';
+import { combineOptions } from '../../../../phet-core/js/optionize.js';
 
 // constants
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
@@ -28,11 +27,11 @@ export default class DensityIntroScreenView extends SecondaryMassScreenView<Dens
 
   protected rightBox: Node;
 
-  constructor( model: DensityIntroModel, options: DensityBuoyancyModelOptions ) {
+  constructor( model: DensityIntroModel, options: DensityBuoyancyScreenViewOptions ) {
 
     const tandem = options.tandem;
 
-    super( model, merge( {
+    super( model, combineOptions<DensityBuoyancyScreenViewOptions>( {
       cameraLookAt: DensityBuoyancyCommonConstants.DENSITY_CAMERA_LOOK_AT
     }, options ) );
 
@@ -55,7 +54,7 @@ export default class DensityIntroScreenView extends SecondaryMassScreenView<Dens
           phetioReadOnly: true
         }
       }
-    ), merge( {
+    ), combineOptions<AccordionBoxOptions>( {
       titleNode: new Text( densityBuoyancyCommonStrings.densityReadout, {
         font: DensityBuoyancyCommonConstants.TITLE_FONT,
         maxWidth: 200,

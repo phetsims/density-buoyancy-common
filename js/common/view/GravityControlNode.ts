@@ -17,13 +17,15 @@ import Gravity from '../model/Gravity.js';
 import ComboNumberControl from './ComboNumberControl.js';
 import DensityBuoyancyCommonQueryParameters from '../DensityBuoyancyCommonQueryParameters.js';
 import ComboBox from '../../../../sun/js/ComboBox.js';
+import Tandem from '../../../../tandem/js/Tandem.js';
 
 export default class GravityControlNode extends ComboNumberControl<Gravity> {
-  constructor( gravityProperty: Property<Gravity>, listParent: Node ) {
+  constructor( gravityProperty: Property<Gravity>, listParent: Node, tandem: Tandem ) {
 
     const customValue = Gravity.createCustomGravity( DensityBuoyancyCommonQueryParameters.gEarth );
 
     super( {
+      tandem: tandem,
       title: densityBuoyancyCommonStrings.gravity.name,
       valuePattern: densityBuoyancyCommonStrings.metersPerSecondSquaredPattern,
       property: gravityProperty,

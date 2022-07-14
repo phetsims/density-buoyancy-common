@@ -226,7 +226,7 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
       Material.MERCURY,
       Material.DENSITY_E,
       Material.DENSITY_F
-    ], this.popupLayer ), DensityBuoyancyCommonConstants.PANEL_OPTIONS );
+    ], this.popupLayer, tandem.createTandem( 'densityControlNode' ) ), DensityBuoyancyCommonConstants.PANEL_OPTIONS );
 
     this.addChild( new AlignPropertyBox( densityControlPanel, this.visibleBoundsProperty, {
       xAlign: 'center',

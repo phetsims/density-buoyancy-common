@@ -37,6 +37,8 @@ export default class BuoyancyShapesScreenView extends SecondaryMassScreenView<Bu
 
   constructor( model: BuoyancyShapesModel, options: DensityBuoyancyScreenViewOptions ) {
 
+    const tandem = options.tandem;
+
     super( model, combineOptions<DensityBuoyancyScreenViewOptions>( {
       cameraLookAt: DensityBuoyancyCommonConstants.BUOYANCY_CAMERA_LOOK_AT
     }, options ) );
@@ -50,7 +52,7 @@ export default class BuoyancyShapesScreenView extends SecondaryMassScreenView<Bu
       Material.MERCURY,
       Material.DENSITY_C,
       Material.DENSITY_D
-    ], this.popupLayer ), DensityBuoyancyCommonConstants.PANEL_OPTIONS );
+    ], this.popupLayer, tandem.createTandem( 'densityControlNode' ) ), DensityBuoyancyCommonConstants.PANEL_OPTIONS );
 
     this.addChild( new AlignPropertyBox( densityControlPanel, this.visibleBoundsProperty, {
       xAlign: 'center',

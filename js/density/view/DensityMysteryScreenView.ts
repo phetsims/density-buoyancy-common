@@ -6,21 +6,18 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
-import merge from '../../../../phet-core/js/merge.js';
 import RefreshButton from '../../../../scenery-phet/js/buttons/RefreshButton.js';
-import { AlignPropertyBox } from '../../../../scenery/js/imports.js';
-import { Text } from '../../../../scenery/js/imports.js';
-import { VBox } from '../../../../scenery/js/imports.js';
-import AccordionBox from '../../../../sun/js/AccordionBox.js';
-import Panel from '../../../../sun/js/Panel.js';
+import { AlignPropertyBox, Text, VBox } from '../../../../scenery/js/imports.js';
+import AccordionBox, { AccordionBoxOptions } from '../../../../sun/js/AccordionBox.js';
+import Panel, { PanelOptions } from '../../../../sun/js/Panel.js';
 import VerticalAquaRadioButtonGroup from '../../../../sun/js/VerticalAquaRadioButtonGroup.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
-import DensityBuoyancyScreenView from '../../common/view/DensityBuoyancyScreenView.js';
+import DensityBuoyancyScreenView, { DensityBuoyancyScreenViewOptions } from '../../common/view/DensityBuoyancyScreenView.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import densityBuoyancyCommonStrings from '../../densityBuoyancyCommonStrings.js';
 import DensityMysteryModel, { BlockSet } from '../model/DensityMysteryModel.js';
 import DensityTableNode from './DensityTableNode.js';
-import { DensityBuoyancyModelOptions } from '../../common/model/DensityBuoyancyModel.js';
+import { combineOptions } from '../../../../phet-core/js/optionize.js';
 
 // constants
 const blockSetStringMap = {
@@ -32,15 +29,15 @@ const blockSetStringMap = {
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
 
 export default class DensityMysteryScreenView extends DensityBuoyancyScreenView<DensityMysteryModel> {
-  constructor( model: DensityMysteryModel, options: DensityBuoyancyModelOptions ) {
+  constructor( model: DensityMysteryModel, options: DensityBuoyancyScreenViewOptions ) {
 
     const tandem = options.tandem;
 
-    super( model, merge( {
+    super( model, combineOptions<DensityBuoyancyScreenViewOptions>( {
       cameraLookAt: DensityBuoyancyCommonConstants.DENSITY_CAMERA_LOOK_AT
     }, options ) );
 
-    const densityTableAccordionBox = new AccordionBox( new DensityTableNode(), merge( {
+    const densityTableAccordionBox = new AccordionBox( new DensityTableNode(), combineOptions<AccordionBoxOptions>( {
       titleNode: new Text( densityBuoyancyCommonStrings.densityTable, {
         font: DensityBuoyancyCommonConstants.TITLE_FONT,
         maxWidth: 200
@@ -115,7 +112,7 @@ export default class DensityMysteryScreenView extends DensityBuoyancyScreenView<
       ],
       spacing: 10,
       align: 'left'
-    } ), merge( {
+    } ), combineOptions<PanelOptions>( {
       tandem: blocksPanelTandem
     }, DensityBuoyancyCommonConstants.PANEL_OPTIONS ) );
 

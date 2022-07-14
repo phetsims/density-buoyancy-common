@@ -10,7 +10,7 @@ import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
 import EnumerationProperty from '../../../../axon/js/EnumerationProperty.js';
 import Property from '../../../../axon/js/Property.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
-import merge from '../../../../phet-core/js/merge.js';
+import { combineOptions } from '../../../../phet-core/js/optionize.js';
 import Cube from '../../common/model/Cube.js';
 import Cuboid from '../../common/model/Cuboid.js';
 import DensityBuoyancyModel, { DensityBuoyancyModelOptions } from '../../common/model/DensityBuoyancyModel.js';
@@ -32,7 +32,7 @@ export default class DensityIntroModel extends DensityBuoyancyModel {
 
     const tandem = options.tandem;
 
-    super( merge( {
+    super( combineOptions<DensityIntroModelOptions>( {
       showMassesDefault: true,
       canShowForces: false
     }, options ) );

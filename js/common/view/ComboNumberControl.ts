@@ -11,7 +11,6 @@ import NumberProperty from '../../../../axon/js/NumberProperty.js';
 import Property from '../../../../axon/js/Property.js';
 import Dimension2 from '../../../../dot/js/Dimension2.js';
 import Range from '../../../../dot/js/Range.js';
-import merge from '../../../../phet-core/js/merge.js';
 import optionize, { combineOptions } from '../../../../phet-core/js/optionize.js';
 import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
 import NumberControl, { NumberControlOptions } from '../../../../scenery-phet/js/NumberControl.js';
@@ -19,6 +18,7 @@ import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import { Node, Text, VBox, VBoxOptions } from '../../../../scenery/js/imports.js';
 import ComboBox, { ComboBoxItem, ComboBoxOptions } from '../../../../sun/js/ComboBox.js';
 import SunConstants from '../../../../sun/js/SunConstants.js';
+import Tandem from '../../../../tandem/js/Tandem.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
 
@@ -51,6 +51,8 @@ type SelfOptions<T> = {
 
   numberControlOptions?: NumberControlOptions;
   comboBoxOptions?: ComboBoxOptions;
+
+  tandem: Tandem;
 };
 
 export type ComboNumberControlOptions<T> = SelfOptions<T> & VBoxOptions;
@@ -233,11 +235,13 @@ export default class ComboNumberControl<T> extends VBox {
       }
     } );
 
-    this.numberControl = new NumberControl( config.title, this.numberProperty, config.range, merge( {
-      sliderOptions: {
-        phetioLinkedProperty: this.property
-      }
+    const numberControlTandem = config.tandem.createTandem( 'numberControl' );
+    this.numberControl = new NumberControl( config.title, this.numberProperty, config.range, combineOptions<NumberControlOptions>( {
+      tandem: numberControlTandem
     }, config.numberControlOptions ) );
+    this.numberControl.addLinkedElement( this.property, {
+      tandem: numberControlTandem.createTandem( 'valueProperty' )
+    } );
 
     this.comboBox = new ComboBox( this.comboProperty, config.comboItems, config.listParent, config.comboBoxOptions );
 

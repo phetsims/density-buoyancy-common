@@ -8,9 +8,8 @@
 
 import Property from '../../../../axon/js/Property.js';
 import Utils from '../../../../dot/js/Utils.js';
-import merge from '../../../../phet-core/js/merge.js';
 import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
-import ArrowNode from '../../../../scenery-phet/js/ArrowNode.js';
+import ArrowNode, { ArrowNodeOptions } from '../../../../scenery-phet/js/ArrowNode.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import { Line, Node, Text } from '../../../../scenery/js/imports.js';
 import Panel from '../../../../sun/js/Panel.js';
@@ -20,6 +19,7 @@ import Mass from '../model/Mass.js';
 import DensityBuoyancyCommonColors from './DensityBuoyancyCommonColors.js';
 import InterpolatedProperty from '../model/InterpolatedProperty.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
+import { combineOptions } from '../../../../phet-core/js/optionize.js';
 
 // constants
 const arrowOptions = {
@@ -67,13 +67,13 @@ export default class ForceDiagramNode extends Node {
     this.showForceValuesProperty = showForceValuesProperty;
     this.forceScaleProperty = forceScaleProperty;
 
-    this.gravityArrowNode = new ArrowNode( 0, 0, 0, 0, merge( {
+    this.gravityArrowNode = new ArrowNode( 0, 0, 0, 0, combineOptions<ArrowNodeOptions>( {
       fill: DensityBuoyancyCommonColors.gravityForceProperty
     }, arrowOptions ) );
-    this.buoyancyArrowNode = new ArrowNode( 0, 0, 0, 0, merge( {
+    this.buoyancyArrowNode = new ArrowNode( 0, 0, 0, 0, combineOptions<ArrowNodeOptions>( {
       fill: DensityBuoyancyCommonColors.buoyancyForceProperty
     }, arrowOptions ) );
-    this.contactArrowNode = new ArrowNode( 0, 0, 0, 0, merge( {
+    this.contactArrowNode = new ArrowNode( 0, 0, 0, 0, combineOptions<ArrowNodeOptions>( {
       fill: DensityBuoyancyCommonColors.contactForceProperty
     }, arrowOptions ) );
 

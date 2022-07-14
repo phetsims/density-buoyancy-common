@@ -6,17 +6,17 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
-import merge from '../../../../phet-core/js/merge.js';
-import ArrowNode from '../../../../scenery-phet/js/ArrowNode.js';
+import ArrowNode, { ArrowNodeOptions } from '../../../../scenery-phet/js/ArrowNode.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import PlusMinusZoomButtonGroup from '../../../../scenery-phet/js/PlusMinusZoomButtonGroup.js';
-import { FlowBox, GridBox, Text, VBox, VBoxOptions, VDivider } from '../../../../scenery/js/imports.js';
-import Checkbox from '../../../../sun/js/Checkbox.js';
+import { FlowBox, GridBox, Text, TextOptions, VBox, VBoxOptions, VDivider } from '../../../../scenery/js/imports.js';
+import Checkbox, { CheckboxOptions } from '../../../../sun/js/Checkbox.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import densityBuoyancyCommonStrings from '../../densityBuoyancyCommonStrings.js';
 import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
 import DensityBuoyancyCommonColors from './DensityBuoyancyCommonColors.js';
 import DensityBuoyancyModel from '../model/DensityBuoyancyModel.js';
+import { combineOptions } from '../../../../phet-core/js/optionize.js';
 
 // constants
 const arrowSpacing = 15;
@@ -40,7 +40,7 @@ const checkboxSpacing = 5;
 export default class DisplayOptionsNode extends VBox {
   constructor( model: DensityBuoyancyModel, options?: VBoxOptions ) {
 
-    super( merge( {
+    super( combineOptions<VBoxOptions>( {
       spacing: 10,
       align: 'left',
       children: [
@@ -60,34 +60,34 @@ export default class DisplayOptionsNode extends VBox {
               children: [
 
                 // Gravity
-                new Checkbox( model.showGravityForceProperty, new Text( densityBuoyancyCommonStrings.gravity.name, labelOptions ), merge( {
+                new Checkbox( model.showGravityForceProperty, new Text( densityBuoyancyCommonStrings.gravity.name, labelOptions ), combineOptions<CheckboxOptions>( {
                   layoutOptions: { column: 0, row: 0 }
                 }, checkboxOptions ) ),
-                new ArrowNode( 0, 0, arrowLength, 0, merge( {
+                new ArrowNode( 0, 0, arrowLength, 0, combineOptions<ArrowNodeOptions>( {
                   layoutOptions: { column: 1, row: 0 },
                   fill: DensityBuoyancyCommonColors.gravityForceProperty
                 }, arrowOptions ) ),
 
                 // Buoyancy
-                new Checkbox( model.showBuoyancyForceProperty, new Text( densityBuoyancyCommonStrings.buoyancy, labelOptions ), merge( {
+                new Checkbox( model.showBuoyancyForceProperty, new Text( densityBuoyancyCommonStrings.buoyancy, labelOptions ), combineOptions<CheckboxOptions>( {
                   layoutOptions: { column: 0, row: 1 }
                 }, checkboxOptions ) ),
-                new ArrowNode( 0, 0, arrowLength, 0, merge( {
+                new ArrowNode( 0, 0, arrowLength, 0, combineOptions<ArrowNodeOptions>( {
                   layoutOptions: { column: 1, row: 1 },
                   fill: DensityBuoyancyCommonColors.buoyancyForceProperty
                 }, arrowOptions ) ),
 
                 // Contact
-                new Checkbox( model.showContactForceProperty, new Text( densityBuoyancyCommonStrings.contact, labelOptions ), merge( {
+                new Checkbox( model.showContactForceProperty, new Text( densityBuoyancyCommonStrings.contact, labelOptions ), combineOptions<CheckboxOptions>( {
                   layoutOptions: { column: 0, row: 2 }
                 }, checkboxOptions ) ),
-                new ArrowNode( 0, 0, arrowLength, 0, merge( {
+                new ArrowNode( 0, 0, arrowLength, 0, combineOptions<ArrowNodeOptions>( {
                   layoutOptions: { column: 1, row: 2 },
                   fill: DensityBuoyancyCommonColors.contactForceProperty
                 }, arrowOptions ) ),
 
                 // Vector scale
-                new Text( densityBuoyancyCommonStrings.vectorScale, merge( {
+                new Text( densityBuoyancyCommonStrings.vectorScale, combineOptions<TextOptions>( {
                   layoutOptions: { column: 0, row: 3 }
                 }, labelOptions ) ),
                 new PlusMinusZoomButtonGroup( model.forceScaleProperty, {

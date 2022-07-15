@@ -24,6 +24,16 @@
       "p2": "readonly",
       "THREE": "readonly",
       "decomp": "readonly"
-    }
+    },
+    "overrides": [
+      {
+        "files": [
+          "**/*.ts"
+        ],
+        "rules": {
+          "@typescript-eslint/no-explicit-any": "error"
+        }
+      }
+    ]
   }
 }

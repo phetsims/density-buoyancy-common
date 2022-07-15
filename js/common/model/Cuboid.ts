@@ -19,7 +19,7 @@ import EmptyObjectType from '../../../../phet-core/js/types/EmptyObjectType.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
 import IOType from '../../../../tandem/js/types/IOType.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
-import Mass, { InstrumentedMassOptions, MASS_MAX_SHAPES_DIMENSION, MASS_MIN_SHAPES_DIMENSION } from './Mass.js';
+import Mass, { InstrumentedMassOptions, MASS_MAX_SHAPES_DIMENSION, MASS_MIN_SHAPES_DIMENSION, MassIOStateObject } from './Mass.js';
 import PhysicsEngine from './PhysicsEngine.js';
 import { MassShape } from './MassShape.js';
 
@@ -233,7 +233,18 @@ export default class Cuboid extends Mass {
   public static CuboidIO: IOType;
 }
 
-Cuboid.CuboidIO = new IOType( 'CuboidIO', {
+export type CuboidIOStateObject = MassIOStateObject & {
+  size: {
+    minX: number;
+    minY: number;
+    minZ: number;
+    maxX: number;
+    maxY: number;
+    maxZ: number;
+  };
+};
+
+Cuboid.CuboidIO = new IOType<Cuboid, CuboidIOStateObject>( 'CuboidIO', {
   valueType: Cuboid,
   supertype: Mass.MassIO,
   documentation: 'Represents an axis-aligned cuboid mass',
@@ -241,12 +252,12 @@ Cuboid.CuboidIO = new IOType( 'CuboidIO', {
     size: Bounds3.Bounds3IO
   },
 
-  toStateObject: ( cuboid: Cuboid ) => {
+  toStateObject: ( cuboid: Cuboid ): CuboidIOStateObject => {
     const parentStateObject = Mass.MassIO.toStateObject( cuboid );
     parentStateObject.size = Bounds3.Bounds3IO.toStateObject( cuboid.sizeProperty.value );
     return parentStateObject;
   },
-  applyState: ( cuboid: Cuboid, stateObject: any ) => {
+  applyState: ( cuboid: Cuboid, stateObject: CuboidIOStateObject ) => {
 
     // Apply size update first, and with the very specific update method
     cuboid.updateSize( Bounds3.Bounds3IO.fromStateObject( stateObject.size ) );

@@ -7,11 +7,13 @@
  */
 
 import Property, { PropertyOptions } from '../../../../axon/js/Property.js';
+import { ReadOnlyPropertyState } from '../../../../axon/js/ReadOnlyProperty.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
 import { optionize3 } from '../../../../phet-core/js/optionize.js';
+import IntentionalAny from '../../../../phet-core/js/types/IntentionalAny.js';
 import IOType from '../../../../tandem/js/types/IOType.js';
-import NumberIO from '../../../../tandem/js/types/NumberIO.js';
+import NumberIO, { NumberStateObject } from '../../../../tandem/js/types/NumberIO.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 
 type Interpolate<T> = ( a: T, b: T, ratio: number ) => T;
@@ -98,6 +100,12 @@ export default class InterpolatedProperty<T> extends Property<T> {
 // the parameter type, so that it is only created once
 const cache = new Map<IOType, IOType>();
 
+export type InterpolatedPropertyIOStateObject = ReadOnlyPropertyState<IntentionalAny> & {
+  currentValue: IntentionalAny;
+  previousValue: IntentionalAny;
+  ratio: NumberStateObject;
+};
+
 InterpolatedProperty.InterpolatedPropertyIO = parameterType => {
   assert && assert( parameterType, 'InterpolatedPropertyIO needs parameterType' );
 
@@ -109,7 +117,7 @@ InterpolatedProperty.InterpolatedPropertyIO = parameterType => {
       supertype: PropertyIOImpl,
       parameterTypes: [ parameterType ],
       documentation: 'Extends PropertyIO to interpolation (with a current/previous value, and a ratio between the two)',
-      toStateObject: ( interpolatedProperty: InterpolatedProperty<any> ) => {
+      toStateObject: ( interpolatedProperty: InterpolatedProperty<IntentionalAny> ): InterpolatedPropertyIOStateObject => {
 
         const parentStateObject = PropertyIOImpl.toStateObject( interpolatedProperty );
 
@@ -119,7 +127,7 @@ InterpolatedProperty.InterpolatedPropertyIO = parameterType => {
 
         return parentStateObject;
       },
-      applyState: ( interpolatedProperty: InterpolatedProperty<any>, stateObject: any ) => {
+      applyState: ( interpolatedProperty: InterpolatedProperty<IntentionalAny>, stateObject: InterpolatedPropertyIOStateObject ) => {
         PropertyIOImpl.applyState( interpolatedProperty, stateObject );
         interpolatedProperty.currentValue = parameterType.fromStateObject( stateObject.currentValue );
         interpolatedProperty.previousValue = parameterType.fromStateObject( stateObject.previousValue );

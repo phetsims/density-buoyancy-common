@@ -40,6 +40,7 @@ import IReadOnlyProperty from '../../../../axon/js/IReadOnlyProperty.js';
 import Multilink from '../../../../axon/js/Multilink.js';
 import PickRequired from '../../../../phet-core/js/types/PickRequired.js';
 import { MassShape } from './MassShape.js';
+import { BodyStateObject } from './P2Engine.js';
 
 // constants
 export class MassTag extends EnumerationValue {
@@ -678,7 +679,7 @@ export default abstract class Mass extends PhetioObject {
   public static MassIO: IOType;
 }
 
-type MassIOStateObject = {
+export type MassIOStateObject = {
   matrix: Matrix3StateObject;
   stepMatrix: Matrix3StateObject;
   originalMatrix: Matrix3StateObject;
@@ -686,7 +687,7 @@ type MassIOStateObject = {
   canMove: boolean;
   tag: string;
   massShape: string;
-};
+} & BodyStateObject;
 
 // (read-only) {IOType}
 Mass.MassIO = new IOType<Mass, MassIOStateObject>( 'MassIO', {

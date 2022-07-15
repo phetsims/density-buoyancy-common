@@ -8,7 +8,7 @@
 
 import TinyEmitter from '../../../../axon/js/TinyEmitter.js';
 import Matrix3 from '../../../../dot/js/Matrix3.js';
-import Vector2 from '../../../../dot/js/Vector2.js';
+import Vector2, { Vector2StateObject } from '../../../../dot/js/Vector2.js';
 import optionize from '../../../../phet-core/js/optionize.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonQueryParameters from '../DensityBuoyancyCommonQueryParameters.js';
@@ -25,6 +25,12 @@ const barrierMaterial = new p2.Material();
 const dynamicMaterial = new p2.Material();
 
 type BodySetMassOptions = { canRotate?: boolean };
+
+export type BodyStateObject = {
+  position: Vector2StateObject;
+  velocity: Vector2StateObject;
+  force: Vector2StateObject;
+};
 
 export default class P2Engine extends PhysicsEngine {
 
@@ -226,7 +232,7 @@ export default class P2Engine extends PhysicsEngine {
   /**
    * Returns a serialized form of a body
    */
-  public bodyToStateObject( body: PhysicsEngineBody ): any {
+  public bodyToStateObject( body: PhysicsEngineBody ): BodyStateObject {
     return {
       position: P2Engine.p2ToVector( body.position ).toStateObject(),
       velocity: P2Engine.p2ToVector( body.velocity ).toStateObject(),
@@ -237,15 +243,16 @@ export default class P2Engine extends PhysicsEngine {
   /**
    * Applies a given state object to a body.
    */
-  public bodyApplyState( body: PhysicsEngineBody, obj: any ): void {
-    body.position[ 0 ] = obj.position.x * SIZE_SCALE;
-    body.position[ 1 ] = obj.position.y * SIZE_SCALE;
-    body.previousPosition[ 0 ] = obj.position.x * SIZE_SCALE;
-    body.previousPosition[ 1 ] = obj.position.y * SIZE_SCALE;
-    body.velocity[ 0 ] = obj.velocity.x * SIZE_SCALE;
-    body.velocity[ 1 ] = obj.velocity.y * SIZE_SCALE;
-    body.force[ 0 ] = obj.force.x * SIZE_SCALE;
-    body.force[ 1 ] = obj.force.y * SIZE_SCALE;
+  public bodyApplyState( body: PhysicsEngineBody, obj: BodyStateObject ): void {
+    // We will ignore infinities
+    body.position[ 0 ] = obj.position.x as number * SIZE_SCALE;
+    body.position[ 1 ] = obj.position.y as number * SIZE_SCALE;
+    body.previousPosition[ 0 ] = obj.position.x as number * SIZE_SCALE;
+    body.previousPosition[ 1 ] = obj.position.y as number * SIZE_SCALE;
+    body.velocity[ 0 ] = obj.velocity.x as number * SIZE_SCALE;
+    body.velocity[ 1 ] = obj.velocity.y as number * SIZE_SCALE;
+    body.force[ 0 ] = obj.force.x as number * SIZE_SCALE;
+    body.force[ 1 ] = obj.force.y as number * SIZE_SCALE;
   }
 
   /**

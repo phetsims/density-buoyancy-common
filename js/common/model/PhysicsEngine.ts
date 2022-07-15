@@ -12,6 +12,7 @@
 import Matrix3 from '../../../../dot/js/Matrix3.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
+import { BodyStateObject } from './P2Engine.js';
 
 export default abstract class PhysicsEngine {
 
@@ -96,12 +97,12 @@ export default abstract class PhysicsEngine {
   /**
    * Returns a serialized form of a body
    */
-  public abstract bodyToStateObject( body: PhysicsEngineBody ): any;
+  public abstract bodyToStateObject( body: PhysicsEngineBody ): BodyStateObject;
 
   /**
    * Applies a given state object to a body.
    */
-  public abstract bodyApplyState( body: PhysicsEngineBody, obj: any ): void;
+  public abstract bodyApplyState( body: PhysicsEngineBody, obj: BodyStateObject ): void;
 
   /**
    * Returns a serialized form of a body

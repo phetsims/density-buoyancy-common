@@ -123,7 +123,7 @@ Gravity.GravityIO = new IOType<Gravity, GravityState>( 'GravityIO', {
       return new Gravity( stateObject );
     }
     else {
-      return _.find( Gravity.GRAVITIES, gravity => gravity.value === stateObject.value ) as Gravity;
+      return _.find( Gravity.GRAVITIES, gravity => gravity.value === stateObject.value )!;
     }
   },
   stateSchema: {

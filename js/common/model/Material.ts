@@ -512,9 +512,7 @@ Material.MaterialIO = new IOType<Material, MaterialState>( 'MaterialIO', {
       name: StringIO.toStateObject( material.name ),
       identifier: NullableIO( StringIO ).toStateObject( material.identifier ),
       tandemName: NullableIO( StringIO ).toStateObject( material.tandemName ),
-      // @ts-ignore TS2322: Type 'NumberStateObject' is not assignable to type 'number'.
       density: NumberIO.toStateObject( material.density ),
-      // @ts-ignore TS2322: Type 'NumberStateObject' is not assignable to type 'number'.
       viscosity: NumberIO.toStateObject( material.viscosity ),
       custom: BooleanIO.toStateObject( material.custom ),
       hidden: BooleanIO.toStateObject( material.hidden ),

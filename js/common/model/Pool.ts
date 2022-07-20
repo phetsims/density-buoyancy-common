@@ -8,7 +8,7 @@
 
 import Bounds3 from '../../../../dot/js/Bounds3.js';
 import optionize from '../../../../phet-core/js/optionize.js';
-import EmptyObjectType from '../../../../phet-core/js/types/EmptyObjectType.js';
+import { EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import Basin, { BasinOptions } from './Basin.js';
 import Mass from './Mass.js';
@@ -23,7 +23,7 @@ export default class Pool extends Basin {
 
     const initialVolume = 0.1;
 
-    super( optionize<PoolOptions, EmptyObjectType, BasinOptions>()( {
+    super( optionize<PoolOptions, EmptySelfOptions, BasinOptions>()( {
       initialVolume: initialVolume,
       initialY: bounds.minY + initialVolume / ( bounds.width * bounds.depth )
     }, options ) );

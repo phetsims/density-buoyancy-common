@@ -11,7 +11,7 @@ import Vector3 from '../../../../dot/js/Vector3.js';
 import ThreeStage from '../../../../mobius/js/ThreeStage.js';
 import ThreeUtils from '../../../../mobius/js/ThreeUtils.js';
 import optionize from '../../../../phet-core/js/optionize.js';
-import EmptyObjectType from '../../../../phet-core/js/types/EmptyObjectType.js';
+import { EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
 import { Image, Node } from '../../../../scenery/js/imports.js';
 import RectangularRadioButtonGroup, { RectangularRadioButtonGroupOptions } from '../../../../sun/js/buttons/RectangularRadioButtonGroup.js';
 import doubleCuboidIcon_png from '../../../mipmaps/doubleCuboidIcon_png.js';
@@ -48,7 +48,7 @@ export default class BlocksRadioButtonGroup extends RectangularRadioButtonGroup<
         node: BlocksRadioButtonGroup.getDoubleCuboidIcon(),
         tandemName: 'twoBlocksRadioButton'
       }
-    ], optionize<BlocksRadioButtonGroupOptions, EmptyObjectType, RectangularRadioButtonGroupOptions>()( {
+    ], optionize<BlocksRadioButtonGroupOptions, EmptySelfOptions, RectangularRadioButtonGroupOptions>()( {
       orientation: 'horizontal',
       touchAreaXDilation: 5,
       touchAreaYDilation: 5,

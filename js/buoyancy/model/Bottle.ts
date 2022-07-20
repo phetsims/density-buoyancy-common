@@ -76,7 +76,7 @@ import Vector3 from '../../../../dot/js/Vector3.js';
 import { Shape } from '../../../../kite/js/imports.js';
 import ThreeUtils from '../../../../mobius/js/ThreeUtils.js';
 import optionize from '../../../../phet-core/js/optionize.js';
-import EmptyObjectType from '../../../../phet-core/js/types/EmptyObjectType.js';
+import { EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
 import Mass, { InstrumentedMassOptions } from '../../common/model/Mass.js';
 import Material from '../../common/model/Material.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
@@ -192,7 +192,7 @@ export default class Bottle extends Mass {
 
     const vertices = Bottle.getFlatIntersectionVertices();
 
-    const config = optionize<BottleOptions, EmptyObjectType, InstrumentedMassOptions>()( {
+    const config = optionize<BottleOptions, EmptySelfOptions, InstrumentedMassOptions>()( {
       body: engine.createFromVertices( vertices, true ),
       shape: Shape.polygon( vertices ),
       volume: BOTTLE_VOLUME,

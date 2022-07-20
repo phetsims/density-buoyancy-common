@@ -13,7 +13,7 @@ import NumberProperty from '../../../../axon/js/NumberProperty.js';
 import Property from '../../../../axon/js/Property.js';
 import Matrix3 from '../../../../dot/js/Matrix3.js';
 import optionize from '../../../../phet-core/js/optionize.js';
-import EmptyObjectType from '../../../../phet-core/js/types/EmptyObjectType.js';
+import { EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
 import PhetioCapsule from '../../../../tandem/js/PhetioCapsule.js';
 import Cone from '../../common/model/Cone.js';
@@ -51,7 +51,7 @@ export default class BuoyancyShapesModel extends DensityBuoyancyModel {
   public readonly secondaryMassProperty: IProperty<Mass>;
 
   public constructor( providedOptions: BuoyancyShapesModelOptions ) {
-    const options = optionize<DensityBuoyancyModelOptions, EmptyObjectType>()( {
+    const options = optionize<DensityBuoyancyModelOptions, EmptySelfOptions>()( {
       initialForceScale: 1 / 4
     }, providedOptions );
 

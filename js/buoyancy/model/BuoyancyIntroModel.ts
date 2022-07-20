@@ -12,7 +12,7 @@ import Vector2 from '../../../../dot/js/Vector2.js';
 import Enumeration from '../../../../phet-core/js/Enumeration.js';
 import EnumerationValue from '../../../../phet-core/js/EnumerationValue.js';
 import optionize from '../../../../phet-core/js/optionize.js';
-import EmptyObjectType from '../../../../phet-core/js/types/EmptyObjectType.js';
+import { EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
 import BlockSetModel, { BlockSetModelOptions } from '../../common/model/BlockSetModel.js';
 import Cube from '../../common/model/Cube.js';
 import Material from '../../common/model/Material.js';
@@ -41,7 +41,7 @@ export default class BuoyancyIntroModel extends BlockSetModel<BlockSet> {
     const sameVolumeTandem = blockSetsTandem.createTandem( 'sameVolume' );
     const sameDensityTandem = blockSetsTandem.createTandem( 'sameDensity' );
 
-    const options = optionize<BuoyancyIntroModelOptions, EmptyObjectType, BlockSetModelOptions<BlockSet>>()( {
+    const options = optionize<BuoyancyIntroModelOptions, EmptySelfOptions, BlockSetModelOptions<BlockSet>>()( {
       initialMode: BlockSet.SAME_MASS,
       BlockSet: BlockSet.enumeration,
 

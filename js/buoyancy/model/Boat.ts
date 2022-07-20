@@ -26,7 +26,7 @@ import IReadOnlyProperty from '../../../../axon/js/IReadOnlyProperty.js';
 import IOType from '../../../../tandem/js/types/IOType.js';
 import { MassShape } from '../../common/model/MassShape.js';
 import optionize from '../../../../phet-core/js/optionize.js';
-import EmptyObjectType from '../../../../phet-core/js/types/EmptyObjectType.js';
+import { EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
 
 export type BoatOptions = StrictOmit<InstrumentedMassOptions, 'body' | 'shape' | 'volume' | 'material' | 'massShape'>;
 
@@ -51,7 +51,7 @@ export default class Boat extends Mass {
     const boatIntersectionVertices = BoatDesign.getIntersectionVertices( blockWidthProperty.value / 2, displacementVolumeProperty.value * 1000 );
     const volume = BoatDesign.ONE_LITER_HULL_VOLUME * displacementVolumeProperty.value * 1000;
 
-    const config = optionize<BoatOptions, EmptyObjectType, MassOptions>()( {
+    const config = optionize<BoatOptions, EmptySelfOptions, MassOptions>()( {
       body: engine.createFromVertices( boatIntersectionVertices, true ),
       shape: Shape.polygon( boatIntersectionVertices ),
       volume: volume,

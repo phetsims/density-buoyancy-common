@@ -7,8 +7,7 @@
  */
 
 import Bounds3 from '../../../../dot/js/Bounds3.js';
-import optionize from '../../../../phet-core/js/optionize.js';
-import { EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
+import optionize, { EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import Basin, { BasinOptions } from './Basin.js';
 import Mass from './Mass.js';

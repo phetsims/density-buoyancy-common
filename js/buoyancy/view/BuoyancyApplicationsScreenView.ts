@@ -281,12 +281,14 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
       touchAreaXDilation: 6,
       touchAreaYDilation: 6,
       radioButtonOptions: {
+        baseColor: DensityBuoyancyCommonColors.radioBackgroundColorProperty,
         xMargin: 10,
         yMargin: 10,
-        selectedLineWidth: 2,
-        deselectedLineWidth: 1.5,
-        selectedStroke: DensityBuoyancyCommonColors.radioBorderColorProperty,
-        baseColor: DensityBuoyancyCommonColors.radioBackgroundColorProperty
+        buttonAppearanceStrategyOptions: {
+          selectedLineWidth: 2,
+          deselectedLineWidth: 1.5,
+          selectedStroke: DensityBuoyancyCommonColors.radioBorderColorProperty
+        }
       }
     } );
     this.addChild( bottleBoatSelectionNode );

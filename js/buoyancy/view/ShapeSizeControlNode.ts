@@ -78,7 +78,7 @@ export default class ShapeSizeControlNode extends FlowBox {
     const numberControlOptions = {
       delta: 0.01,
       sliderOptions: {
-        trackSize: new Dimension2( 120, 3 ),
+        trackSize: new Dimension2( 120, 0.5 ),
         thumbSize: DensityBuoyancyCommonConstants.THUMB_SIZE
       },
       numberDisplayOptions: {

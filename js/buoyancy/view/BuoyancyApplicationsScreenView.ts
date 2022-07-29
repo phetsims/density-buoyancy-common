@@ -188,16 +188,25 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
               maxWidth: 120
             },
             useFullHeight: true
-          },
+          }
+        }, MaterialMassVolumeControlNode.getNumberControlOptions(), {
           sliderOptions: {
             trackSize: new Dimension2( 120, 0.5 ),
             thumbSize: DensityBuoyancyCommonConstants.THUMB_SIZE,
             constrainValue: ( value: number ) => {
               return boatVolumeRange.constrainValue( Utils.roundToInterval( value, 0.1 ) );
             },
-            phetioLinkedProperty: model.boat.displacementVolumeProperty
+            phetioLinkedProperty: model.boat.displacementVolumeProperty,
+            majorTickLength: 5,
+            majorTicks: [ {
+              value: boatVolumeRange.min,
+              label: new Text( boatVolumeRange.min, { font: new PhetFont( 12 ), maxWidth: 50 } )
+            }, {
+              value: boatVolumeRange.max,
+              label: new Text( boatVolumeRange.max, { font: new PhetFont( 12 ), maxWidth: 50 } )
+            } ]
           }
-        }, MaterialMassVolumeControlNode.getNumberControlOptions() ) )
+        } ) )
       ]
     } );
 

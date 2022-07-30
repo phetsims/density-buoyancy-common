@@ -169,6 +169,7 @@ export default class DensityCompareScreenView extends DensityBuoyancyScreenView<
     // This instance lives for the lifetime of the simulation, so we don't need to remove these listeners
     this.transformEmitter.addListener( this.positionPanel );
     this.visibleBoundsProperty.lazyLink( this.positionPanel );
+    numberControlPanel.localBoundsProperty.lazyLink( this.positionPanel );
 
     this.addChild( this.popupLayer );
   }

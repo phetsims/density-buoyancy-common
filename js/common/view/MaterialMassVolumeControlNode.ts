@@ -208,10 +208,6 @@ export default class MaterialMassVolumeControlNode extends VBox {
         userMassChanging = true;
 
         if ( materialProperty.value.custom ) {
-          // Handle our minimum volume if we're switched to custom (if needed)
-          if ( volumeProperty.value < options.minCustomVolumeLiters ) {
-            setVolume( options.minCustomVolumeLiters / LITERS_IN_CUBIC_METER );
-          }
           materialProperty.value = Material.createCustomSolidMaterial( {
             density: mass / volumeProperty.value
           } );

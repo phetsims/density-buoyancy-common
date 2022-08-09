@@ -17,7 +17,7 @@ import densityBuoyancyCommonStrings from '../../densityBuoyancyCommonStrings.js'
 import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
 import Scale, { DisplayType } from '../model/Scale.js';
 import Gravity from '../model/Gravity.js';
-import IReadOnlyProperty from '../../../../axon/js/IReadOnlyProperty.js';
+import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import Multilink, { UnknownMultilink } from '../../../../axon/js/Multilink.js';
 
 export default class ScaleReadoutNode extends Node {
@@ -26,7 +26,7 @@ export default class ScaleReadoutNode extends Node {
 
   private readonly scaleForceMultilink: UnknownMultilink;
 
-  public constructor( mass: Scale, gravityProperty: IReadOnlyProperty<Gravity> ) {
+  public constructor( mass: Scale, gravityProperty: TReadOnlyProperty<Gravity> ) {
     super( {
       pickable: false
     } );

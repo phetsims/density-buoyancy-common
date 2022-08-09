@@ -6,7 +6,7 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
-import IReadOnlyProperty from '../../../../axon/js/IReadOnlyProperty.js';
+import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import Utils from '../../../../dot/js/Utils.js';
 import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
@@ -16,7 +16,7 @@ import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import densityBuoyancyCommonStrings from '../../densityBuoyancyCommonStrings.js';
 
 export default class DensityReadoutListNode extends VBox {
-  public constructor( materialProperties: IReadOnlyProperty<Material>[] ) {
+  public constructor( materialProperties: TReadOnlyProperty<Material>[] ) {
 
     super( {
       spacing: 5,

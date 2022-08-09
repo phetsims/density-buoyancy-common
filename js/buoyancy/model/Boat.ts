@@ -22,7 +22,7 @@ import PhysicsEngine from '../../common/model/PhysicsEngine.js';
 import IProperty from '../../../../axon/js/IProperty.js';
 import Ray3 from '../../../../dot/js/Ray3.js';
 import Multilink from '../../../../axon/js/Multilink.js';
-import IReadOnlyProperty from '../../../../axon/js/IReadOnlyProperty.js';
+import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import IOType from '../../../../tandem/js/types/IOType.js';
 import { MassShape } from '../../common/model/MassShape.js';
 import optionize, { EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
@@ -43,7 +43,7 @@ export default class Boat extends Mass {
 
   public readonly intersectionGroup: THREE.Group;
 
-  public constructor( engine: PhysicsEngine, blockWidthProperty: IReadOnlyProperty<number>, liquidMaterialProperty: IProperty<Material>, providedConfig: BoatOptions ) {
+  public constructor( engine: PhysicsEngine, blockWidthProperty: TReadOnlyProperty<number>, liquidMaterialProperty: IProperty<Material>, providedConfig: BoatOptions ) {
 
     const displacementVolumeProperty = new NumberProperty( 0.01 );
 

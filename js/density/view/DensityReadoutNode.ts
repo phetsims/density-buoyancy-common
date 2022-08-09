@@ -6,7 +6,7 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
-import IReadOnlyProperty from '../../../../axon/js/IReadOnlyProperty.js';
+import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import Multilink from '../../../../axon/js/Multilink.js';
 import Bounds2 from '../../../../dot/js/Bounds2.js';
 import Utils from '../../../../dot/js/Utils.js';
@@ -42,7 +42,7 @@ const MAX_LABEL_WIDTH = 80;
 
 export default class DensityReadoutNode extends Node {
 
-  public constructor( densityAProperty: IReadOnlyProperty<number>, densityBProperty: IReadOnlyProperty<number>, secondaryMassVisibleProperty: IReadOnlyProperty<boolean>, options?: NodeOptions ) {
+  public constructor( densityAProperty: TReadOnlyProperty<number>, densityBProperty: TReadOnlyProperty<number>, secondaryMassVisibleProperty: TReadOnlyProperty<boolean>, options?: NodeOptions ) {
     super();
 
     const background = new Rectangle( 0, 0, WIDTH, HEIGHT, {

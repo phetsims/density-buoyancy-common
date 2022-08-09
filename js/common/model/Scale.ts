@@ -26,7 +26,7 @@ import VerticalCylinder from './VerticalCylinder.js';
 import PhysicsEngine from './PhysicsEngine.js';
 import Gravity from './Gravity.js';
 import IProperty from '../../../../axon/js/IProperty.js';
-import IReadOnlyProperty from '../../../../axon/js/IReadOnlyProperty.js';
+import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import Ray3 from '../../../../dot/js/Ray3.js';
 import { MassShape } from './MassShape.js';
 
@@ -73,7 +73,7 @@ export default class Scale extends Mass {
   public readonly scaleForceInterpolatedProperty: InterpolatedProperty<number>;
 
   // Just exist for phet-io, see https://github.com/phetsims/density/issues/97
-  private readonly scaleMeasuredMassProperty: IReadOnlyProperty<number>;
+  private readonly scaleMeasuredMassProperty: TReadOnlyProperty<number>;
 
   public readonly displayType: DisplayType;
 

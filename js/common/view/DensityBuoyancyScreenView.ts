@@ -62,7 +62,7 @@ import VerticalCylinderView from './VerticalCylinderView.js';
 import WaterLevelIndicator from './WaterLevelIndicator.js';
 import DensityBuoyancyModel from '../model/DensityBuoyancyModel.js';
 import MassView from './MassView.js';
-import IReadOnlyProperty from '../../../../axon/js/IReadOnlyProperty.js';
+import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import Material from '../model/Material.js';
 import IEmitter from '../../../../axon/js/IEmitter.js';
 
@@ -113,8 +113,8 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
   private readonly debugView?: DebugView;
 
   // Subtypes can provide their own values to control the barrier sizing
-  protected leftBarrierViewPointProperty: Property<IReadOnlyProperty<Vector2>>;
-  protected rightBarrierViewPointProperty: Property<IReadOnlyProperty<Vector2>>;
+  protected leftBarrierViewPointProperty: Property<TReadOnlyProperty<Vector2>>;
+  protected rightBarrierViewPointProperty: Property<TReadOnlyProperty<Vector2>>;
 
   public constructor( model: Model, providedOptions: SelfOptions ) {
 
@@ -734,11 +734,11 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
     }
 
     // DerivedProperty doesn't need disposal, since everything here lives for the lifetime of the simulation
-    this.leftBarrierViewPointProperty = new Property<IReadOnlyProperty<Vector2>>( new DerivedProperty( [ this.visibleBoundsProperty ], visibleBounds => visibleBounds.leftCenter ), {
+    this.leftBarrierViewPointProperty = new Property<TReadOnlyProperty<Vector2>>( new DerivedProperty( [ this.visibleBoundsProperty ], visibleBounds => visibleBounds.leftCenter ), {
       tandem: Tandem.OPT_OUT
     } );
     // DerivedProperty doesn't need disposal, since everything here lives for the lifetime of the simulation
-    this.rightBarrierViewPointProperty = new Property<IReadOnlyProperty<Vector2>>( new DerivedProperty( [ this.visibleBoundsProperty ], visibleBounds => visibleBounds.rightCenter ), {
+    this.rightBarrierViewPointProperty = new Property<TReadOnlyProperty<Vector2>>( new DerivedProperty( [ this.visibleBoundsProperty ], visibleBounds => visibleBounds.rightCenter ), {
       tandem: Tandem.OPT_OUT
     } );
 

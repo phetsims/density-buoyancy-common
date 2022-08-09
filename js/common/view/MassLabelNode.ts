@@ -6,7 +6,7 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
-import IReadOnlyProperty from '../../../../axon/js/IReadOnlyProperty.js';
+import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import Utils from '../../../../dot/js/Utils.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import NodeTexture from '../../../../mobius/js/NodeTexture.js';
@@ -43,11 +43,11 @@ const SECONDARY_LABEL = createMassLabel( densityBuoyancyCommonStrings.massLabel.
 export default class MassLabelNode extends Node {
 
   public readonly mass: Mass;
-  private readonly showMassesProperty: IReadOnlyProperty<boolean>;
+  private readonly showMassesProperty: TReadOnlyProperty<boolean>;
   private readonly massListener: ( n: number ) => void;
   private readonly showMassesListener: ( n: boolean ) => void;
 
-  public constructor( mass: Mass, showMassesProperty: IReadOnlyProperty<boolean> ) {
+  public constructor( mass: Mass, showMassesProperty: TReadOnlyProperty<boolean> ) {
     super();
 
     const readoutText = new Text( '', {

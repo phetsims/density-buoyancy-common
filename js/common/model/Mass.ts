@@ -36,7 +36,7 @@ import Enumeration from '../../../../phet-core/js/Enumeration.js';
 import PhysicsEngine, { PhysicsEngineBody } from './PhysicsEngine.js';
 import Basin from './Basin.js';
 import Ray3 from '../../../../dot/js/Ray3.js';
-import IReadOnlyProperty from '../../../../axon/js/IReadOnlyProperty.js';
+import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import Multilink from '../../../../axon/js/Multilink.js';
 import PickRequired from '../../../../phet-core/js/types/PickRequired.js';
 import { MassShape } from './MassShape.js';
@@ -159,7 +159,7 @@ export default abstract class Mass extends PhetioObject {
 
   public readonly userControlledProperty: Property<boolean>;
   public readonly inputEnabledProperty: Property<boolean>;
-  public readonly visibleProperty: IReadOnlyProperty<boolean>;
+  public readonly visibleProperty: TReadOnlyProperty<boolean>;
   public readonly internalVisibleProperty: Property<boolean>;
 
   // Here just for instrumentation, see https://github.com/phetsims/density/issues/112

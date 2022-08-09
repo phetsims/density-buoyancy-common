@@ -6,7 +6,7 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
-import IReadOnlyProperty from '../../../../axon/js/IReadOnlyProperty.js';
+import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import Multilink, { UnknownMultilink } from '../../../../axon/js/Multilink.js';
 import Material from '../../common/model/Material.js';
 import MassView from '../../common/view/MassView.js';
@@ -19,7 +19,7 @@ export default class BoatView extends MassView {
 
   public readonly boat: Boat;
 
-  public constructor( boat: Boat, liquidYInterpolatedProperty: IReadOnlyProperty<number> ) {
+  public constructor( boat: Boat, liquidYInterpolatedProperty: TReadOnlyProperty<number> ) {
 
     // @ts-ignore
     super( boat, new THREE.Geometry() );

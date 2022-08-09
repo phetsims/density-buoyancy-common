@@ -12,7 +12,7 @@ import Vector2 from '../../../../dot/js/Vector2.js';
 import NodeTexture from '../../../../mobius/js/NodeTexture.js';
 import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
-import { IPaint, ManualConstraint, Node, Rectangle, Text } from '../../../../scenery/js/imports.js';
+import { TPaint, ManualConstraint, Node, Rectangle, Text } from '../../../../scenery/js/imports.js';
 import Panel from '../../../../sun/js/Panel.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import densityBuoyancyCommonStrings from '../../densityBuoyancyCommonStrings.js';
@@ -23,7 +23,7 @@ import LabelTexture from './LabelTexture.js';
 
 // constants
 const MASS_LABEL_SIZE = 32;
-const createMassLabel = ( string: string, fill: IPaint ) => {
+const createMassLabel = ( string: string, fill: TPaint ) => {
   const rectangle = new Rectangle( 0, 0, MASS_LABEL_SIZE, MASS_LABEL_SIZE, {
     cornerRadius: DensityBuoyancyCommonConstants.CORNER_RADIUS,
     fill: fill

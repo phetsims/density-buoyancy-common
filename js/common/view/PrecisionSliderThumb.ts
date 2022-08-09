@@ -8,12 +8,12 @@
 
 import { Shape } from '../../../../kite/js/imports.js';
 import optionize from '../../../../phet-core/js/optionize.js';
-import { IPaint, Line, Node, NodeOptions, Path } from '../../../../scenery/js/imports.js';
+import { TPaint, Line, Node, NodeOptions, Path } from '../../../../scenery/js/imports.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 
 type SelfOptions = {
-  thumbFill?: IPaint;
-  thumbStroke?: IPaint;
+  thumbFill?: TPaint;
+  thumbStroke?: TPaint;
 
   mainHeight?: number;
   taperHeight?: number;

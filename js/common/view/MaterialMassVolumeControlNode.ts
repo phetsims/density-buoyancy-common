@@ -18,7 +18,7 @@ import EnumerationDeprecated from '../../../../phet-core/js/EnumerationDeprecate
 import optionize, { combineOptions } from '../../../../phet-core/js/optionize.js';
 import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
 import NumberControl, { NumberControlOptions } from '../../../../scenery-phet/js/NumberControl.js';
-import { HBox, IPaint, Node, Text, VBox, VBoxOptions } from '../../../../scenery/js/imports.js';
+import { HBox, TPaint, Node, Text, VBox, VBoxOptions } from '../../../../scenery/js/imports.js';
 import ComboBox from '../../../../sun/js/ComboBox.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
 import EnumerationIO from '../../../../tandem/js/types/EnumerationIO.js';
@@ -49,7 +49,7 @@ type SelfOptions = {
   maxVolumeLiters?: number;
   minCustomVolumeLiters?: number;
 
-  color?: IPaint;
+  color?: TPaint;
 
   // Require the tandem
   tandem: Tandem;

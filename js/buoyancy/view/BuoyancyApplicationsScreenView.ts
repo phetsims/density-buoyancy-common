@@ -77,7 +77,7 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
     } );
 
     const airVolumeLabel = new Text( densityBuoyancyCommonStrings.airVolume, {
-      font: new PhetFont( 12 ),
+      font: DensityBuoyancyCommonConstants.READOUT_FONT,
       maxWidth: 160
     } );
 

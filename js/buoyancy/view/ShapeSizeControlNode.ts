@@ -16,7 +16,6 @@ import optionize from '../../../../phet-core/js/optionize.js';
 import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
 import NumberControl from '../../../../scenery-phet/js/NumberControl.js';
 import NumberDisplay from '../../../../scenery-phet/js/NumberDisplay.js';
-import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import { FlowBox, FlowBoxOptions, HBox, Node, Text, VDivider } from '../../../../scenery/js/imports.js';
 import ComboBox from '../../../../sun/js/ComboBox.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
@@ -124,7 +123,7 @@ export default class ShapeSizeControlNode extends FlowBox {
         justify: 'spaceBetween',
         children: [
           new Text( densityBuoyancyCommonStrings.volume, {
-            font: new PhetFont( 12 ),
+            font: DensityBuoyancyCommonConstants.READOUT_FONT,
             maxWidth: 120
           } ),
           new NumberDisplay( litersProperty, new Range( 0, 10 ), { // TODO: is 10 the most?

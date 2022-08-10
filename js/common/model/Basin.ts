@@ -59,7 +59,8 @@ export default abstract class Basin {
 
     this.liquidYInterpolatedProperty = new InterpolatedProperty( options.initialY, {
       interpolate: InterpolatedProperty.interpolateNumber,
-      phetioType: InterpolatedProperty.InterpolatedPropertyIO( NumberIO ),
+      phetioOuterType: InterpolatedProperty.InterpolatedPropertyIO,
+      phetioValueType: NumberIO,
       tandem: tandem.createTandem( 'liquidYInterpolatedProperty' ),
       phetioHighFrequency: true,
       phetioReadOnly: true,

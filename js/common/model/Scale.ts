@@ -111,7 +111,7 @@ export default class Scale extends Mass {
 
     this.scaleForceInterpolatedProperty = new InterpolatedProperty( 0, {
       interpolate: InterpolatedProperty.interpolateNumber,
-      phetioType: InterpolatedProperty.InterpolatedPropertyIO( NumberIO ),
+      phetioValueType: NumberIO,
       tandem: config.tandem.createTandem( 'scaleForceInterpolatedProperty' ),
       units: 'N',
       phetioReadOnly: true
@@ -125,7 +125,7 @@ export default class Scale extends Mass {
         return 0;
       }
     }, {
-      phetioType: DerivedProperty.DerivedPropertyIO( NumberIO ),
+      phetioValueType: NumberIO,
       tandem: config.tandem.createTandem( 'scaleMeasuredMassProperty' ),
       units: 'kg',
       phetioReadOnly: true

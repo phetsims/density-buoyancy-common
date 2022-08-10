@@ -32,7 +32,9 @@ export default class InterpolatedProperty<T> extends Property<T> {
 
   public constructor( initialValue: T, providedConfig: InterpolatedPropertyOptions<T> ) {
 
-    const config = optionize<InterpolatedPropertyOptions<T>, SelfOptions<T>, PropertyOptions<T>>()( {}, providedConfig );
+    const config = optionize<InterpolatedPropertyOptions<T>, SelfOptions<T>, PropertyOptions<T>>()( {
+      phetioOuterType: InterpolatedProperty.InterpolatedPropertyIO
+    }, providedConfig );
 
     super( initialValue, config );
 

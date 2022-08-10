@@ -112,6 +112,7 @@ class MaterialEnumeration extends EnumerationValue {
     phetioDocumentation: 'Material values'
   } );
 }
+
 type MaterialNonCustomIdentifier = 'ALUMINUM' | 'BRICK' | 'COPPER' | 'ICE' | 'PLATINUM' | 'STEEL' | 'STYROFOAM' | 'WOOD';
 type MaterialIdentifier = MaterialNonCustomIdentifier | 'CUSTOM';
 
@@ -299,7 +300,7 @@ export default abstract class Mass extends PhetioObject {
       valueType: Material,
       reentrant: true,
       tandem: tandem.createTandem( 'materialProperty' ),
-      phetioType: Property.PropertyIO( Material.MaterialIO )
+      phetioValueType: Material.MaterialIO
     }, config.materialPropertyOptions ) );
 
     if ( config.adjustableMaterial ) {
@@ -411,7 +412,7 @@ export default abstract class Mass extends PhetioObject {
       interpolate: InterpolatedProperty.interpolateVector2,
       useDeepEquality: true,
       tandem: tandem.createTandem( 'gravityForceInterpolatedProperty' ),
-      phetioType: InterpolatedProperty.InterpolatedPropertyIO( Vector2.Vector2IO ),
+      phetioValueType: Vector2.Vector2IO,
       phetioReadOnly: true,
       units: 'N',
       phetioHighFrequency: true
@@ -421,7 +422,7 @@ export default abstract class Mass extends PhetioObject {
       interpolate: InterpolatedProperty.interpolateVector2,
       useDeepEquality: true,
       tandem: tandem.createTandem( 'buoyancyForceInterpolatedProperty' ),
-      phetioType: InterpolatedProperty.InterpolatedPropertyIO( Vector2.Vector2IO ),
+      phetioValueType: Vector2.Vector2IO,
       phetioReadOnly: true,
       units: 'N',
       phetioHighFrequency: true
@@ -431,7 +432,7 @@ export default abstract class Mass extends PhetioObject {
       interpolate: InterpolatedProperty.interpolateVector2,
       useDeepEquality: true,
       tandem: tandem.createTandem( 'contactForceInterpolatedProperty' ),
-      phetioType: InterpolatedProperty.InterpolatedPropertyIO( Vector2.Vector2IO ),
+      phetioValueType: Vector2.Vector2IO,
       phetioReadOnly: true,
       units: 'N',
       phetioHighFrequency: true

@@ -112,7 +112,7 @@ export default class MaterialMassVolumeControlNode extends VBox {
       phetioDocumentation: 'Current material of the block. Changing the material will result in changes to the mass, but the volume will remain the same.',
       validValues: MaterialEnumeration.VALUES as unknown as MaterialEnumValue[],
       // @ts-ignore
-      phetioType: Property.PropertyIO( EnumerationIO( MaterialEnumeration ) )
+      phetioValueType: EnumerationIO( MaterialEnumeration )
     } );
 
     // We need to use "locks" since our behavior is different based on whether the model or user is changing the value
@@ -137,7 +137,7 @@ export default class MaterialMassVolumeControlNode extends VBox {
     }, {
       reentrant: true,
       phetioState: false,
-      phetioType: DerivedProperty.DerivedPropertyIO( Range.RangeIO ),
+      phetioValueType: Range.RangeIO,
       tandem: massNumberControlTandem.createTandem( 'enabledMassRangeProperty' )
     } );
 

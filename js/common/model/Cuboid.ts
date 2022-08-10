@@ -52,7 +52,7 @@ export default class Cuboid extends Mass {
       valueType: Bounds3,
       useDeepEquality: true,
       tandem: config.tandem.createTandem( 'sizeProperty' ),
-      phetioType: Property.PropertyIO( Bounds3.Bounds3IO ),
+      phetioValueType: Bounds3.Bounds3IO,
       phetioReadOnly: true
     } );
 

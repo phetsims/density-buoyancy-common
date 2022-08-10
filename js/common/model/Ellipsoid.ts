@@ -48,7 +48,7 @@ export default class Ellipsoid extends Mass {
     this.sizeProperty = new Property( size, {
       valueType: Bounds3,
       tandem: config.tandem.createTandem( 'sizeProperty' ),
-      phetioType: Property.PropertyIO( Bounds3.Bounds3IO )
+      phetioValueType: Bounds3.Bounds3IO
     } );
 
     this.stepMaximumArea = 0;

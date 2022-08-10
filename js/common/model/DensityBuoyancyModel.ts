@@ -111,7 +111,7 @@ export default class DensityBuoyancyModel {
 
     this.gravityProperty = new Property( Gravity.EARTH, {
       valueType: Gravity,
-      phetioType: Property.PropertyIO( Gravity.GravityIO ),
+      phetioValueType: Gravity.GravityIO,
       tandem: tandem.createTandem( 'gravityProperty' ),
       phetioReadOnly: true,
       phetioDocumentation: 'The acceleration due to gravity applied to all masses, (may be potentially custom or hidden from view)'
@@ -119,7 +119,7 @@ export default class DensityBuoyancyModel {
 
     this.liquidMaterialProperty = new Property( Material.WATER, {
       valueType: Material,
-      phetioType: Property.PropertyIO( Material.MaterialIO ),
+      phetioValueType: Material.MaterialIO,
       tandem: tandem.createTandem( 'liquidMaterialProperty' ),
       phetioReadOnly: true,
       phetioDocumentation: 'The material of the liquid in the pool'
@@ -128,14 +128,14 @@ export default class DensityBuoyancyModel {
     // DerivedProperty doesn't need disposal, since everything here lives for the lifetime of the simulation
     this.liquidDensityProperty = new DerivedProperty( [ this.liquidMaterialProperty ], liquidMaterial => liquidMaterial.density, {
       tandem: tandem.createTandem( 'liquidDensityProperty' ),
-      phetioType: DerivedProperty.DerivedPropertyIO( NumberIO ),
+      phetioValueType: NumberIO,
       units: 'kg/m^3'
     } );
 
     // DerivedProperty doesn't need disposal, since everything here lives for the lifetime of the simulation
     this.liquidViscosityProperty = new DerivedProperty( [ this.liquidMaterialProperty ], liquidMaterial => liquidMaterial.viscosity, {
       tandem: tandem.createTandem( 'liquidViscosityProperty' ),
-      phetioType: DerivedProperty.DerivedPropertyIO( NumberIO ),
+      phetioValueType: NumberIO,
       units: 'Pa\u00b7s'
     } );
 
@@ -153,7 +153,7 @@ export default class DensityBuoyancyModel {
       0.875, 4, GROUND_FRONT_Z
     ), {
       valueType: Bounds3,
-      phetioType: Property.PropertyIO( Bounds3.Bounds3IO ),
+      phetioValueType: Bounds3.Bounds3IO,
       tandem: tandem.createTandem( 'invisibleBarrierBoundsProperty' ),
       phetioReadOnly: true,
       phetioDocumentation: 'We keep masses within these bounds, generally to stay in-screen',

@@ -43,16 +43,24 @@ export default class DensityIntroModel extends DensityBuoyancyModel {
 
     const blocksTandem = tandem.createTandem( 'blocks' );
 
-    // (read-only) {Mass}
+    const minScreenVolume = 0.001 - 1e-7;
+    const maxScreenVolume = 0.01 + 1e-7;
+
     this.primaryMass = Cube.createWithMass( this.engine, Material.WOOD, new Vector2( -0.2, 0.2 ), 2, {
       tag: MassTag.PRIMARY,
-      tandem: blocksTandem.createTandem( 'blockA' )
+      tandem: blocksTandem.createTandem( 'blockA' ),
+
+      minVolume: minScreenVolume,
+      maxVolume: maxScreenVolume
     } );
     this.availableMasses.push( this.primaryMass );
     this.secondaryMass = Cube.createWithMass( this.engine, Material.ALUMINUM, new Vector2( 0.2, 0.2 ), 13.5, {
       tag: MassTag.SECONDARY,
       tandem: blocksTandem.createTandem( 'blockB' ),
-      visible: false
+      visible: false,
+
+      minVolume: minScreenVolume,
+      maxVolume: maxScreenVolume
     } );
     this.availableMasses.push( this.secondaryMass );
 

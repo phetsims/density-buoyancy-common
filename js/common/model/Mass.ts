@@ -143,6 +143,9 @@ type SelfOptions = {
   materialPropertyOptions?: PropertyOptions<Material>;
   volumePropertyOptions?: NumberPropertyOptions;
   massPropertyOptions?: NumberPropertyOptions;
+
+  minVolume?: number;
+  maxVolume?: number;
 };
 
 export type MassOptions = SelfOptions & PhetioObjectOptions;
@@ -254,7 +257,10 @@ export default abstract class Mass extends PhetioObject {
       inputEnabledPropertyOptions: {},
       materialPropertyOptions: {},
       volumePropertyOptions: {},
-      massPropertyOptions: {}
+      massPropertyOptions: {},
+
+      minVolume: 0,
+      maxVolume: Number.POSITIVE_INFINITY
     }, providedConfig );
 
     assert && assert( config.body, 'config.body required' );
@@ -374,7 +380,7 @@ export default abstract class Mass extends PhetioObject {
 
     this.volumeProperty = new NumberProperty( config.volume, combineOptions<NumberPropertyOptions>( {
       tandem: tandem.createTandem( 'volumeProperty' ),
-      range: new Range( 0, Number.POSITIVE_INFINITY ),
+      range: new Range( config.minVolume, config.maxVolume ),
       phetioReadOnly: true,
       phetioDocumentation: 'Current volume of the block. Changing the volume will result in changes to the mass, but will not change the material or density.',
       units: 'm^3',

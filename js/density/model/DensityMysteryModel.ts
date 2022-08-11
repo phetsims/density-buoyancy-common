@@ -14,10 +14,10 @@ import Matrix3 from '../../../../dot/js/Matrix3.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import Enumeration from '../../../../phet-core/js/Enumeration.js';
 import EnumerationValue from '../../../../phet-core/js/EnumerationValue.js';
-import optionize, { EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
+import optionize, { combineOptions, EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 import BlockSetModel, { BlockSetModelOptions } from '../../common/model/BlockSetModel.js';
-import Cube from '../../common/model/Cube.js';
+import Cube, { CubeOptions } from '../../common/model/Cube.js';
 import { MassTag } from '../../common/model/Mass.js';
 import Material from '../../common/model/Material.js';
 import Scale, { DisplayType } from '../../common/model/Scale.js';
@@ -69,6 +69,16 @@ export default class DensityMysteryModel extends BlockSetModel<BlockSet> {
 
     const tandem = providedOptions.tandem;
 
+    const minScreenVolume = 0.001 - 1e-7;
+    const maxScreenVolume = 0.01 + 1e-7;
+
+    const commonCubeOptions = {
+      minVolume: minScreenVolume,
+      maxVolume: maxScreenVolume,
+      adjustMassWithVolume: true,
+      adjustableMaterial: true
+    };
+
     const createMysteryMaterials = () => {
       const densities = dotRandom.shuffle( randomMaterials ).slice( 0, 5 ).map( material => material.density );
       const colors = dotRandom.shuffle( randomColors ).slice( 0, 5 );
@@ -96,84 +106,174 @@ export default class DensityMysteryModel extends BlockSetModel<BlockSet> {
       switch( blockSet ) {
         case BlockSet.SET_1:
           return [
-            Cube.createWithVolume( model.engine, Material.createCustomMaterial( {
-              density: Material.WATER.density,
-              customColor: DensityBuoyancyCommonColors.compareRedColorProperty
-            } ), Vector2.ZERO, 0.005, { adjustMassWithVolume: true, adjustableMaterial: true, tag: MassTag.ONE_D, tandem: set1Tandem.createTandem( 'block1D' ) } ),
+            Cube.createWithVolume(
+              model.engine,
+              Material.createCustomMaterial( {
+                density: Material.WATER.density,
+                customColor: DensityBuoyancyCommonColors.compareRedColorProperty
+              } ),
+              Vector2.ZERO,
+              0.005,
+              combineOptions<CubeOptions>( {}, commonCubeOptions, { tag: MassTag.ONE_D, tandem: set1Tandem.createTandem( 'block1D' ) } )
+            ),
 
-            Cube.createWithVolume( model.engine, Material.createCustomMaterial( {
-              density: Material.WOOD.density,
-              customColor: DensityBuoyancyCommonColors.compareBlueColorProperty
-            } ), Vector2.ZERO, 0.001, { adjustMassWithVolume: true, adjustableMaterial: true, tag: MassTag.ONE_B, tandem: set1Tandem.createTandem( 'block1B' ) } ),
+            Cube.createWithVolume(
+              model.engine,
+              Material.createCustomMaterial( {
+                density: Material.WOOD.density,
+                customColor: DensityBuoyancyCommonColors.compareBlueColorProperty
+              } ),
+              Vector2.ZERO,
+              0.001,
+              combineOptions<CubeOptions>( {}, commonCubeOptions, { tag: MassTag.ONE_B, tandem: set1Tandem.createTandem( 'block1B' ) } )
+            ),
 
-            Cube.createWithVolume( model.engine, Material.createCustomMaterial( {
-              density: Material.WOOD.density,
-              customColor: DensityBuoyancyCommonColors.compareGreenColorProperty
-            } ), Vector2.ZERO, 0.007, { adjustMassWithVolume: true, adjustableMaterial: true, tag: MassTag.ONE_E, tandem: set1Tandem.createTandem( 'block1E' ) } ),
+            Cube.createWithVolume(
+              model.engine,
+              Material.createCustomMaterial( {
+                density: Material.WOOD.density,
+                customColor: DensityBuoyancyCommonColors.compareGreenColorProperty
+              } ),
+              Vector2.ZERO,
+              0.007,
+              combineOptions<CubeOptions>( {}, commonCubeOptions, { tag: MassTag.ONE_E, tandem: set1Tandem.createTandem( 'block1E' ) } )
+            ),
 
-            Cube.createWithVolume( model.engine, Material.createCustomMaterial( {
-              density: Material.GOLD.density,
-              customColor: DensityBuoyancyCommonColors.compareYellowColorProperty
-            } ), Vector2.ZERO, 0.001, { adjustMassWithVolume: true, adjustableMaterial: true, tag: MassTag.ONE_C, tandem: set1Tandem.createTandem( 'block1C' ) } ),
+            Cube.createWithVolume(
+              model.engine,
+              Material.createCustomMaterial( {
+                density: Material.GOLD.density,
+                customColor: DensityBuoyancyCommonColors.compareYellowColorProperty
+              } ),
+              Vector2.ZERO,
+              0.001,
+              combineOptions<CubeOptions>( {}, commonCubeOptions, { tag: MassTag.ONE_C, tandem: set1Tandem.createTandem( 'block1C' ) } )
+            ),
 
-            Cube.createWithVolume( model.engine, Material.createCustomMaterial( {
-              density: Material.DIAMOND.density,
-              customColor: DensityBuoyancyCommonColors.comparePurpleColorProperty
-            } ), Vector2.ZERO, 0.0055, { adjustMassWithVolume: true, adjustableMaterial: true, tag: MassTag.ONE_A, tandem: set1Tandem.createTandem( 'block1A' ) } )
+            Cube.createWithVolume(
+              model.engine,
+              Material.createCustomMaterial( {
+                density: Material.DIAMOND.density,
+                customColor: DensityBuoyancyCommonColors.comparePurpleColorProperty
+              } ),
+              Vector2.ZERO,
+              0.0055,
+              combineOptions<CubeOptions>( {}, commonCubeOptions, { tag: MassTag.ONE_A, tandem: set1Tandem.createTandem( 'block1A' ) } )
+            )
           ];
         case BlockSet.SET_2:
           return [
-            Cube.createWithMass( model.engine, Material.createCustomMaterial( {
-              density: 4500,
-              customColor: DensityBuoyancyCommonColors.mysteryPinkColorProperty
-            } ), Vector2.ZERO, 18, { adjustMassWithVolume: true, adjustableMaterial: true, tag: MassTag.TWO_D, tandem: set2Tandem.createTandem( 'block2D' ) } ),
+            Cube.createWithMass(
+              model.engine,
+              Material.createCustomMaterial( {
+                density: 4500,
+                customColor: DensityBuoyancyCommonColors.mysteryPinkColorProperty
+              } ),
+              Vector2.ZERO,
+              18,
+              combineOptions<CubeOptions>( {}, commonCubeOptions, { tag: MassTag.TWO_D, tandem: set2Tandem.createTandem( 'block2D' ) } )
+            ),
 
-            Cube.createWithMass( model.engine, Material.createCustomMaterial( {
-              density: 11340,
-              customColor: DensityBuoyancyCommonColors.mysteryOrangeColorProperty
-            } ), Vector2.ZERO, 18, { adjustMassWithVolume: true, adjustableMaterial: true, tag: MassTag.TWO_A, tandem: set2Tandem.createTandem( 'block2A' ) } ),
+            Cube.createWithMass(
+              model.engine,
+              Material.createCustomMaterial( {
+                density: 11340,
+                customColor: DensityBuoyancyCommonColors.mysteryOrangeColorProperty
+              } ),
+              Vector2.ZERO,
+              18,
+              combineOptions<CubeOptions>( {}, commonCubeOptions, { tag: MassTag.TWO_A, tandem: set2Tandem.createTandem( 'block2A' ) } )
+            ),
 
-            Cube.createWithVolume( model.engine, Material.createCustomMaterial( {
-              density: Material.COPPER.density,
-              customColor: DensityBuoyancyCommonColors.mysteryLightPurpleColorProperty
-            } ), Vector2.ZERO, 0.005, { adjustMassWithVolume: true, adjustableMaterial: true, tag: MassTag.TWO_E, tandem: set2Tandem.createTandem( 'block2E' ) } ),
+            Cube.createWithVolume(
+              model.engine,
+              Material.createCustomMaterial( {
+                density: Material.COPPER.density,
+                customColor: DensityBuoyancyCommonColors.mysteryLightPurpleColorProperty
+              } ),
+              Vector2.ZERO,
+              0.005,
+              combineOptions<CubeOptions>( {}, commonCubeOptions, { tag: MassTag.TWO_E, tandem: set2Tandem.createTandem( 'block2E' ) } )
+            ),
 
-            Cube.createWithMass( model.engine, Material.createCustomMaterial( {
-              density: 2700,
-              customColor: DensityBuoyancyCommonColors.mysteryLightGreenColorProperty
-            } ), Vector2.ZERO, 2.7, { adjustMassWithVolume: true, adjustableMaterial: true, tag: MassTag.TWO_C, tandem: set2Tandem.createTandem( 'block2C' ) } ),
+            Cube.createWithMass(
+              model.engine,
+              Material.createCustomMaterial( {
+                density: 2700,
+                customColor: DensityBuoyancyCommonColors.mysteryLightGreenColorProperty
+              } ),
+              Vector2.ZERO,
+              2.7,
+              combineOptions<CubeOptions>( {}, commonCubeOptions, { tag: MassTag.TWO_C, tandem: set2Tandem.createTandem( 'block2C' ) } )
+            ),
 
-            Cube.createWithMass( model.engine, Material.createCustomMaterial( {
-              density: 2700,
-              customColor: DensityBuoyancyCommonColors.mysteryBrownColorProperty
-            } ), Vector2.ZERO, 10.8, { adjustMassWithVolume: true, adjustableMaterial: true, tag: MassTag.TWO_B, tandem: set2Tandem.createTandem( 'block2B' ) } )
+            Cube.createWithMass(
+              model.engine,
+              Material.createCustomMaterial( {
+                density: 2700,
+                customColor: DensityBuoyancyCommonColors.mysteryBrownColorProperty
+              } ),
+              Vector2.ZERO,
+              10.8,
+              combineOptions<CubeOptions>( {}, commonCubeOptions, { tag: MassTag.TWO_B, tandem: set2Tandem.createTandem( 'block2B' ) } )
+            )
           ];
         case BlockSet.SET_3:
           return [
-            Cube.createWithMass( model.engine, Material.createCustomMaterial( {
-              density: 950,
-              customColor: DensityBuoyancyCommonColors.mysteryWhiteColorProperty
-            } ), Vector2.ZERO, 6, { adjustMassWithVolume: true, adjustableMaterial: true, tag: MassTag.THREE_E, tandem: set3Tandem.createTandem( 'block3E' ) } ),
+            Cube.createWithMass(
+              model.engine,
+              Material.createCustomMaterial( {
+                density: 950,
+                customColor: DensityBuoyancyCommonColors.mysteryWhiteColorProperty
+              } ),
+              Vector2.ZERO,
+              6,
+              combineOptions<CubeOptions>( {}, commonCubeOptions, { tag: MassTag.THREE_E, tandem: set3Tandem.createTandem( 'block3E' ) } )
+            ),
 
-            Cube.createWithMass( model.engine, Material.createCustomMaterial( {
-              density: 1000,
-              customColor: DensityBuoyancyCommonColors.mysteryGrayColorProperty
-            } ), Vector2.ZERO, 6, { adjustMassWithVolume: true, adjustableMaterial: true, tag: MassTag.THREE_B, tandem: set3Tandem.createTandem( 'block3B' ) } ),
+            Cube.createWithMass(
+              model.engine,
+              Material.createCustomMaterial( {
+                density: 1000,
+                customColor: DensityBuoyancyCommonColors.mysteryGrayColorProperty
+              } ),
+              Vector2.ZERO,
+              6,
+              combineOptions<CubeOptions>( {}, commonCubeOptions, { tag: MassTag.THREE_B, tandem: set3Tandem.createTandem( 'block3B' ) } )
+            ),
 
-            Cube.createWithMass( model.engine, Material.createCustomMaterial( {
-              density: 400,
-              customColor: DensityBuoyancyCommonColors.mysteryMustardColorProperty
-            } ), Vector2.ZERO, 2, { adjustMassWithVolume: true, adjustableMaterial: true, tag: MassTag.THREE_D, tandem: set3Tandem.createTandem( 'block3D' ) } ),
+            Cube.createWithMass(
+              model.engine,
+              Material.createCustomMaterial( {
+                density: 400,
+                customColor: DensityBuoyancyCommonColors.mysteryMustardColorProperty
+              } ),
+              Vector2.ZERO,
+              2,
+              combineOptions<CubeOptions>( {}, commonCubeOptions, { tag: MassTag.THREE_D, tandem: set3Tandem.createTandem( 'block3D' ) } )
+            ),
 
-            Cube.createWithMass( model.engine, Material.createCustomMaterial( {
-              density: 7800,
-              customColor: DensityBuoyancyCommonColors.mysteryPeachColorProperty
-            } ), Vector2.ZERO, 23.4, { adjustMassWithVolume: true, adjustableMaterial: true, tag: MassTag.THREE_C, tandem: set3Tandem.createTandem( 'block3C' ) } ),
+            Cube.createWithMass(
+              model.engine,
+              Material.createCustomMaterial( {
+                density: 7800,
+                customColor: DensityBuoyancyCommonColors.mysteryPeachColorProperty
+              } ),
+              Vector2.ZERO,
+              23.4,
+              combineOptions<CubeOptions>( {}, commonCubeOptions, { tag: MassTag.THREE_C, tandem: set3Tandem.createTandem( 'block3C' ) } )
+            ),
 
-            Cube.createWithMass( model.engine, Material.createCustomMaterial( {
-              density: 950,
-              customColor: DensityBuoyancyCommonColors.mysteryMaroonColorProperty
-            } ), Vector2.ZERO, 2.85, { adjustMassWithVolume: true, adjustableMaterial: true, tag: MassTag.THREE_A, tandem: set3Tandem.createTandem( 'block3A' ) } )
+            Cube.createWithMass(
+              model.engine,
+              Material.createCustomMaterial( {
+                density: 950,
+                customColor: DensityBuoyancyCommonColors.mysteryMaroonColorProperty
+              } ),
+              Vector2.ZERO,
+              2.85,
+              combineOptions<CubeOptions>( {}, commonCubeOptions, { tag: MassTag.THREE_A, tandem: set3Tandem.createTandem( 'block3A' ) } )
+            )
           ];
         case BlockSet.RANDOM: {
           const tags = [

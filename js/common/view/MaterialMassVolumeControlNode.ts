@@ -97,7 +97,7 @@ export default class MaterialMassVolumeControlNode extends VBox {
       inverseMap: ( materialEnum: MaterialEnumValue ): Material => {
         if ( materialEnum === MaterialEnumeration.CUSTOM ) {
           // Handle our minimum volume if we're switched to custom (if needed)
-          const volume = Math.max( volumeProperty.value, options.minCustomVolumeLiters );
+          const volume = Math.max( volumeProperty.value, options.minCustomVolumeLiters / LITERS_IN_CUBIC_METER );
           return Material.createCustomSolidMaterial( {
             density: Utils.clamp( materialProperty.value.density, options.minCustomMass / volume, options.maxCustomMass / volume )
           } );

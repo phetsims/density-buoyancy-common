@@ -245,8 +245,6 @@ export default class MaterialMassVolumeControlNode extends VBox {
     } );
 
     const comboMaxWidth = options.labelNode ? 110 : 160;
-    //TODO see https://github.com/phetsims/density-buoyancy-common/issues/74
-    // @ts-ignore TS2345: Argument of type 'DynamicProperty<MaterialEnumValue, Material, Property<Material>>' is not assignable to parameter of type 'Property<MaterialEnumValue>'.
     const comboBox = new ComboBox( comboBoxMaterialProperty, [
       ...materials.map( material => {
         return {

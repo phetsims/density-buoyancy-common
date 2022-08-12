@@ -7,7 +7,7 @@
  */
 
 import Emitter from '../../../../axon/js/Emitter.js';
-import IEmitter from '../../../../axon/js/IEmitter.js';
+import TEmitter from '../../../../axon/js/TEmitter.js';
 import Bounds2 from '../../../../dot/js/Bounds2.js';
 import Matrix3 from '../../../../dot/js/Matrix3.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
@@ -172,7 +172,7 @@ export default class DebugView extends Node {
 class DebugMassNode extends Node {
 
   public readonly mass: Mass;
-  private readonly disposeEmitter: IEmitter;
+  private readonly disposeEmitter: TEmitter;
   private readonly dragListener: DragListener;
 
   public constructor( model: DensityBuoyancyModel, mass: Mass, modelViewTransform: ModelViewTransform2 ) {

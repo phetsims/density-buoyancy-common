@@ -64,7 +64,7 @@ import DensityBuoyancyModel from '../model/DensityBuoyancyModel.js';
 import MassView from './MassView.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import Material from '../model/Material.js';
-import IEmitter from '../../../../axon/js/IEmitter.js';
+import TEmitter from '../../../../axon/js/TEmitter.js';
 
 // constants
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
@@ -90,7 +90,7 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
   // Support controlling or changing the latest-touched mass in certain demos.
   protected readonly currentMassProperty: Property<Mass | null>;
 
-  private readonly postLayoutEmitter: IEmitter;
+  private readonly postLayoutEmitter: TEmitter;
 
   // The sky background, in a unit 0-to-1 rectangle (so we can scale it to match)
   private readonly backgroundNode: Rectangle;

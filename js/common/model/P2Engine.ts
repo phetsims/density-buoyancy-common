@@ -6,7 +6,7 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
-import IEmitter from '../../../../axon/js/IEmitter.js';
+import TEmitter from '../../../../axon/js/TEmitter.js';
 import TinyEmitter from '../../../../axon/js/TinyEmitter.js';
 import Matrix3 from '../../../../dot/js/Matrix3.js';
 import Vector2, { Vector2StateObject } from '../../../../dot/js/Vector2.js';
@@ -44,7 +44,7 @@ export default class P2Engine extends PhysicsEngine {
   // pointer constraints (so they can be positioned to where the pointer is).
   private readonly nullBodyMap: Record<number, p2.Body>;
 
-  private readonly internalStepEmitter: IEmitter<[ number ]>;
+  private readonly internalStepEmitter: TEmitter<[ number ]>;
 
   public constructor() {
     super();

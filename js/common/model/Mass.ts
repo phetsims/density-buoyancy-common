@@ -41,7 +41,7 @@ import Multilink from '../../../../axon/js/Multilink.js';
 import PickRequired from '../../../../phet-core/js/types/PickRequired.js';
 import { MassShape } from './MassShape.js';
 import { BodyStateObject } from './P2Engine.js';
-import IEmitter from '../../../../axon/js/IEmitter.js';
+import TEmitter from '../../../../axon/js/TEmitter.js';
 
 // constants
 export class MassTag extends EnumerationValue {
@@ -219,10 +219,10 @@ export default abstract class Mass extends PhetioObject {
   // Transform matrix set in the internal physics engine steps, used by masses to determine their per-step information.
   public readonly stepMatrix: Matrix3;
 
-  public readonly transformedEmitter: IEmitter;
+  public readonly transformedEmitter: TEmitter;
 
   // Fired when this mass's input (drag) should be interrupted.
-  public readonly interruptedEmitter: IEmitter;
+  public readonly interruptedEmitter: TEmitter;
 
   public canRotate: boolean;
   public canMove: boolean;

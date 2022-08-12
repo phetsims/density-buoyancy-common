@@ -43,7 +43,7 @@ import MaterialView from './MaterialView.js';
 
 // constants
 
-function toWrappedTexture( image: HTMLImageElement ) {
+function toWrappedTexture( image: HTMLImageElement ): THREE.Texture {
   const texture = ThreeUtils.imageToTexture( image, true );
   texture.wrapS = THREE.RepeatWrapping;
   texture.wrapT = THREE.RepeatWrapping;
@@ -53,7 +53,7 @@ function toWrappedTexture( image: HTMLImageElement ) {
 // Simplified environment map to give a nice reflective appearance. We compute it per-pixel
 let envMapTexture: THREE.CanvasTexture | null = null;
 
-function getEnvironmentTexture() {
+function getEnvironmentTexture(): THREE.CanvasTexture {
   const size = 32;
   if ( !envMapTexture ) {
     const canvas = document.createElement( 'canvas' );

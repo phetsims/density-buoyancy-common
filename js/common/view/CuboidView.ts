@@ -82,7 +82,7 @@ export default class CuboidView extends MassView {
   public static updateArrays( positionArray: Float32Array | null, normalArray: Float32Array | null, uvArray: Float32Array | null, size: Bounds3, offset = 0, offsetPosition: Vector3 = Vector3.ZERO ): number {
     const writer = new TriangleArrayWriter( positionArray, normalArray, uvArray, offset, offsetPosition );
 
-    function quad( p0x: number, p0y: number, p0z: number, p1x: number, p1y: number, p1z: number, p2x: number, p2y: number, p2z: number, p3x: number, p3y: number, p3z: number ) {
+    function quad( p0x: number, p0y: number, p0z: number, p1x: number, p1y: number, p1z: number, p2x: number, p2y: number, p2z: number, p3x: number, p3y: number, p3z: number ): void {
       writer.position( p0x, p0y, p0z );
       writer.position( p1x, p1y, p1z );
       writer.position( p2x, p2y, p2z );

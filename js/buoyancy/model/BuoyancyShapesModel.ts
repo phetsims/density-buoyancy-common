@@ -27,7 +27,7 @@ import TwoBlockMode from '../../common/model/TwoBlockMode.js';
 import VerticalCylinder from '../../common/model/VerticalCylinder.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import { MassShape } from '../../common/model/MassShape.js';
-import IProperty from '../../../../axon/js/IProperty.js';
+import TProperty from '../../../../axon/js/TProperty.js';
 
 const MATERIAL = Material.WOOD;
 export type BuoyancyShapesModelOptions = DensityBuoyancyModelOptions;
@@ -46,8 +46,8 @@ export default class BuoyancyShapesModel extends DensityBuoyancyModel {
   public readonly primaryHeightRatioProperty: Property<number>;
   public readonly secondaryHeightRatioProperty: Property<number>;
 
-  public readonly primaryMassProperty: IProperty<Mass>;
-  public readonly secondaryMassProperty: IProperty<Mass>;
+  public readonly primaryMassProperty: TProperty<Mass>;
+  public readonly secondaryMassProperty: TProperty<Mass>;
 
   public constructor( providedOptions: BuoyancyShapesModelOptions ) {
     const options = optionize<DensityBuoyancyModelOptions, EmptySelfOptions>()( {

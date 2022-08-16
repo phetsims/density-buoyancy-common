@@ -8,7 +8,7 @@
 
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import StrictOmit from '../../../../phet-core/js/types/StrictOmit.js';
-import IProperty from '../../../../axon/js/IProperty.js';
+import TProperty from '../../../../axon/js/TProperty.js';
 import NumberProperty, { RangedProperty } from '../../../../axon/js/NumberProperty.js';
 import Property from '../../../../axon/js/Property.js';
 import Range from '../../../../dot/js/Range.js';
@@ -70,7 +70,7 @@ export default class DensityCompareModel extends BlockSetModel<BlockSet> {
       units: 'kg/m^3'
     } ).asRanged();
 
-    const createMaterialProperty = ( colorProperty: IProperty<Color>, densityProperty: IProperty<number> ) => {
+    const createMaterialProperty = ( colorProperty: TProperty<Color>, densityProperty: TProperty<number> ) => {
       return new DerivedProperty( [ colorProperty, densityProperty ], ( color, density ) => {
         const lightness = Material.getCustomLightness( density ); // 0-255
 

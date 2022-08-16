@@ -19,7 +19,7 @@ import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import BoatBasin from './BoatBasin.js';
 import BoatDesign from './BoatDesign.js';
 import PhysicsEngine from '../../common/model/PhysicsEngine.js';
-import IProperty from '../../../../axon/js/IProperty.js';
+import TProperty from '../../../../axon/js/TProperty.js';
 import Ray3 from '../../../../dot/js/Ray3.js';
 import Multilink from '../../../../axon/js/Multilink.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
@@ -32,7 +32,7 @@ export type BoatOptions = StrictOmit<InstrumentedMassOptions, 'body' | 'shape' |
 export default class Boat extends Mass {
 
   public readonly displacementVolumeProperty: Property<number>;
-  public readonly liquidMaterialProperty: IProperty<Material>;
+  public readonly liquidMaterialProperty: TProperty<Material>;
   public readonly basin: BoatBasin;
 
   // Amount of volume contained in the basin
@@ -43,7 +43,7 @@ export default class Boat extends Mass {
 
   public readonly intersectionGroup: THREE.Group;
 
-  public constructor( engine: PhysicsEngine, blockWidthProperty: TReadOnlyProperty<number>, liquidMaterialProperty: IProperty<Material>, providedConfig: BoatOptions ) {
+  public constructor( engine: PhysicsEngine, blockWidthProperty: TReadOnlyProperty<number>, liquidMaterialProperty: TProperty<Material>, providedConfig: BoatOptions ) {
 
     const displacementVolumeProperty = new NumberProperty( 0.01 );
 

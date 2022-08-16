@@ -25,7 +25,7 @@ import Material from './Material.js';
 import VerticalCylinder from './VerticalCylinder.js';
 import PhysicsEngine from './PhysicsEngine.js';
 import Gravity from './Gravity.js';
-import IProperty from '../../../../axon/js/IProperty.js';
+import TProperty from '../../../../axon/js/TProperty.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import Ray3 from '../../../../dot/js/Ray3.js';
 import { MassShape } from './MassShape.js';
@@ -77,7 +77,7 @@ export default class Scale extends Mass {
 
   public readonly displayType: DisplayType;
 
-  public constructor( engine: PhysicsEngine, gravityProperty: IProperty<Gravity>, providedOptions: ScaleOptions ) {
+  public constructor( engine: PhysicsEngine, gravityProperty: TProperty<Gravity>, providedOptions: ScaleOptions ) {
     const config = optionize<ScaleOptions, SelfOptions, InstrumentedMassOptions>()( {
       body: engine.createBox( SCALE_WIDTH, SCALE_HEIGHT, providedOptions.canMove === false ),
       shape: Shape.rect( -SCALE_WIDTH / 2, -SCALE_HEIGHT / 2, SCALE_WIDTH, SCALE_HEIGHT ),

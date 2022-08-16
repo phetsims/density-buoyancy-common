@@ -7,7 +7,7 @@
  */
 
 import DynamicProperty from '../../../../axon/js/DynamicProperty.js';
-import IProperty from '../../../../axon/js/IProperty.js';
+import TProperty from '../../../../axon/js/TProperty.js';
 import Property from '../../../../axon/js/Property.js';
 import Utils from '../../../../dot/js/Utils.js';
 import ThreeUtils from '../../../../mobius/js/ThreeUtils.js';
@@ -149,7 +149,7 @@ export default class Material {
    *
    * NOTE: Only call this for things that exist for the lifetime of this simulation (otherwise it would leak memory)
    */
-  public static linkLiquidColor( property: IProperty<Material>, threeMaterial: THREE.MeshPhongMaterial | THREE.MeshLambertMaterial | THREE.MeshBasicMaterial ): void {
+  public static linkLiquidColor( property: TProperty<Material>, threeMaterial: THREE.MeshPhongMaterial | THREE.MeshLambertMaterial | THREE.MeshBasicMaterial ): void {
     new DynamicProperty<Color, Color, Material>( property, {
       derive: material => {
         assert && assert( material.liquidColor );

@@ -109,7 +109,8 @@ export default class ComboNumberControl<T> extends VBox {
             disposalCallbacks.push( () => this.property.unlink( listener ) );
 
             return bottomContent;
-          }
+          },
+          sliderPadding: 5
         } ),
         titleNodeOptions: {
           font: DensityBuoyancyCommonConstants.TITLE_FONT,

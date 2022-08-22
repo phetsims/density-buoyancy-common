@@ -88,7 +88,8 @@ export default class ShapeSizeControlNode extends FlowBox {
         useFullHeight: true
       },
       layoutFunction: NumberControl.createLayoutFunction4( {
-        hasReadoutProperty: new BooleanProperty( false )
+        hasReadoutProperty: new BooleanProperty( false ),
+        sliderPadding: 5
       } ),
       titleNodeOptions: {
         font: DensityBuoyancyCommonConstants.ITEM_FONT,

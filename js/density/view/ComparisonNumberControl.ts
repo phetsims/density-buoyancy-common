@@ -23,7 +23,9 @@ export type ComparisonNumberControlOptions = NumberControlOptions;
 export default class ComparisonNumberControl extends NumberControl {
   public constructor( property: RangedProperty, title: string, valuePattern: string, valueName: string, options?: ComparisonNumberControlOptions ) {
     super( title, property, property.range, combineOptions<NumberControlOptions>( {
-      layoutFunction: NumberControl.createLayoutFunction4(),
+      layoutFunction: NumberControl.createLayoutFunction4( {
+        sliderPadding: 5
+      } ),
       delta: 0.01,
       titleNodeOptions: {
         font: DensityBuoyancyCommonConstants.TITLE_FONT,

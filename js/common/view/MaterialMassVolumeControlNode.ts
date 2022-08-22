@@ -369,7 +369,9 @@ export default class MaterialMassVolumeControlNode extends VBox {
         },
         useFullHeight: true
       },
-      layoutFunction: NumberControl.createLayoutFunction4(),
+      layoutFunction: NumberControl.createLayoutFunction4( {
+        sliderPadding: 5
+      } ),
       titleNodeOptions: {
         font: DensityBuoyancyCommonConstants.ITEM_FONT,
         maxWidth: 90

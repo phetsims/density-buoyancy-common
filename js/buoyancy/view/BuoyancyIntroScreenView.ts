@@ -23,9 +23,9 @@ import BuoyancyIntroModel, { BlockSet } from '../model/BuoyancyIntroModel.js';
 
 // constants
 const blockSetStringMap = {
-  [ BlockSet.SAME_MASS.name ]: densityBuoyancyCommonStrings.blockSet.sameMass,
-  [ BlockSet.SAME_VOLUME.name ]: densityBuoyancyCommonStrings.blockSet.sameVolume,
-  [ BlockSet.SAME_DENSITY.name ]: densityBuoyancyCommonStrings.blockSet.sameDensity
+  [ BlockSet.SAME_MASS.name ]: densityBuoyancyCommonStrings.blockSet.sameMassProperty,
+  [ BlockSet.SAME_VOLUME.name ]: densityBuoyancyCommonStrings.blockSet.sameVolumeProperty,
+  [ BlockSet.SAME_DENSITY.name ]: densityBuoyancyCommonStrings.blockSet.sameDensityProperty
 };
 const blockSetTandemNameMap = {
   [ BlockSet.SAME_MASS.name ]: 'sameMassLabel',

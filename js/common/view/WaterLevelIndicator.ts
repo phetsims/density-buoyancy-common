@@ -6,6 +6,7 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
+import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import Utils from '../../../../dot/js/Utils.js';
 import { Shape } from '../../../../kite/js/imports.js';
@@ -28,7 +29,15 @@ export default class WaterLevelIndicator extends Node {
     } );
     this.addChild( highlightPath );
 
-    const readoutText = new Text( '', {
+    // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
+    const readoutText = new Text( new DerivedProperty( [
+      volumeProperty,
+      densityBuoyancyCommonStrings.litersPatternProperty
+    ], ( volume, litersPattern ) => {
+      return StringUtils.fillIn( litersPattern, {
+        liters: Utils.toFixed( 1000 * volume, 2 )
+      } );
+    } ), {
       font: new PhetFont( { size: 18 } ),
       maxWidth: 200
     } );
@@ -38,14 +47,6 @@ export default class WaterLevelIndicator extends Node {
       cornerRadius: DensityBuoyancyCommonConstants.CORNER_RADIUS
     } );
     this.addChild( readoutPanel );
-
-    // Can't use Text.textProperty, see https://github.com/phetsims/scenery/issues/1187
-    // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
-    volumeProperty.link( volume => {
-      readoutText.text = StringUtils.fillIn( densityBuoyancyCommonStrings.litersPattern, {
-        liters: Utils.toFixed( 1000 * volume, 2 )
-      } );
-    } );
 
     ManualConstraint.create( this, [ readoutPanel, highlightPath ], ( readoutWrapper, highlightWrapper ) => {
       readoutWrapper.rightCenter = highlightWrapper.leftCenter;

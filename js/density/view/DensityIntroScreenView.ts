@@ -55,7 +55,7 @@ export default class DensityIntroScreenView extends SecondaryMassScreenView<Dens
         }
       }
     ), combineOptions<AccordionBoxOptions>( {
-      titleNode: new Text( densityBuoyancyCommonStrings.densityReadout, {
+      titleNode: new Text( densityBuoyancyCommonStrings.densityReadoutProperty, {
         font: DensityBuoyancyCommonConstants.TITLE_FONT,
         maxWidth: 200,
         visiblePropertyOptions: {

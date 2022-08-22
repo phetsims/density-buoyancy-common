@@ -6,18 +6,21 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
+import ReadOnlyProperty from '../../../../axon/js/ReadOnlyProperty.js';
+import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import optionize from '../../../../phet-core/js/optionize.js';
 import BooleanIO from '../../../../tandem/js/types/BooleanIO.js';
 import IOType from '../../../../tandem/js/types/IOType.js';
 import NullableIO from '../../../../tandem/js/types/NullableIO.js';
 import NumberIO from '../../../../tandem/js/types/NumberIO.js';
+import ReferenceIO, { ReferenceIOState } from '../../../../tandem/js/types/ReferenceIO.js';
 import StringIO from '../../../../tandem/js/types/StringIO.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import densityBuoyancyCommonStrings from '../../densityBuoyancyCommonStrings.js';
 import DensityBuoyancyCommonQueryParameters from '../DensityBuoyancyCommonQueryParameters.js';
 
 export type GravityOptions = {
-  name: string;
+  name: TReadOnlyProperty<string>;
   tandemName: string;
 
   // m/s^2
@@ -29,7 +32,7 @@ export type GravityOptions = {
 
 export default class Gravity {
 
-  public name: string;
+  public name: TReadOnlyProperty<string>;
   public tandemName: string;
   public value: number;
   public custom: boolean;
@@ -54,7 +57,7 @@ export default class Gravity {
    */
   public static createCustomGravity( value: number ): Gravity {
     return new Gravity( {
-      name: densityBuoyancyCommonStrings.gravity.custom,
+      name: densityBuoyancyCommonStrings.gravity.customProperty,
       tandemName: 'custom',
       value: value,
       custom: true
@@ -63,25 +66,25 @@ export default class Gravity {
 
 
   public static EARTH = new Gravity( {
-    name: densityBuoyancyCommonStrings.gravity.earth,
+    name: densityBuoyancyCommonStrings.gravity.earthProperty,
     tandemName: 'earth',
     value: DensityBuoyancyCommonQueryParameters.gEarth
   } );
 
   public static JUPITER = new Gravity( {
-    name: densityBuoyancyCommonStrings.gravity.jupiter,
+    name: densityBuoyancyCommonStrings.gravity.jupiterProperty,
     tandemName: 'jupiter',
     value: 24.8
   } );
 
   public static MOON = new Gravity( {
-    name: densityBuoyancyCommonStrings.gravity.moon,
+    name: densityBuoyancyCommonStrings.gravity.moonProperty,
     tandemName: 'moon',
     value: 1.6
   } );
 
   public static PLANET_X = new Gravity( {
-    name: densityBuoyancyCommonStrings.gravity.planetX,
+    name: densityBuoyancyCommonStrings.gravity.planetXProperty,
     tandemName: 'planetX',
     value: 19.6,
     hidden: true
@@ -99,7 +102,7 @@ Gravity.GRAVITIES = [
 ];
 
 type GravityState = {
-  name: string;
+  name: ReferenceIOState;
   tandemName: string;
   value: number;
   custom: boolean;
@@ -111,7 +114,7 @@ Gravity.GravityIO = new IOType<Gravity, GravityState>( 'GravityIO', {
   documentation: 'Represents a specific value of gravity (m/s^2)',
   toStateObject: function( gravity: Gravity ): GravityState {
     return {
-      name: gravity.name,
+      name: ReferenceIO( ReadOnlyProperty.PropertyIO( StringIO ) ).toStateObject( gravity.name ),
       tandemName: gravity.tandemName,
       value: gravity.value,
       custom: gravity.custom,
@@ -120,14 +123,16 @@ Gravity.GravityIO = new IOType<Gravity, GravityState>( 'GravityIO', {
   },
   fromStateObject: ( stateObject: GravityState ) => {
     if ( stateObject.custom ) {
-      return new Gravity( stateObject );
+      stateObject.name = ReferenceIO( ReadOnlyProperty.PropertyIO( StringIO ) ).fromStateObject( stateObject.name );
+
+      return new Gravity( stateObject as unknown as GravityOptions );
     }
     else {
       return _.find( Gravity.GRAVITIES, gravity => gravity.value === stateObject.value )!;
     }
   },
   stateSchema: {
-    name: StringIO,
+    name: ReferenceIO( ReadOnlyProperty.PropertyIO( StringIO ) ),
     tandemName: NullableIO( StringIO ),
     value: NumberIO,
     custom: BooleanIO,

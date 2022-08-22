@@ -25,12 +25,12 @@ import densityBuoyancyCommonStrings from '../../densityBuoyancyCommonStrings.js'
 
 // constants
 const shapeStringMap = {
-  [ MassShape.BLOCK.name ]: densityBuoyancyCommonStrings.shape.block,
-  [ MassShape.ELLIPSOID.name ]: densityBuoyancyCommonStrings.shape.ellipsoid,
-  [ MassShape.VERTICAL_CYLINDER.name ]: densityBuoyancyCommonStrings.shape.verticalCylinder,
-  [ MassShape.HORIZONTAL_CYLINDER.name ]: densityBuoyancyCommonStrings.shape.horizontalCylinder,
-  [ MassShape.CONE.name ]: densityBuoyancyCommonStrings.shape.cone,
-  [ MassShape.INVERTED_CONE.name ]: densityBuoyancyCommonStrings.shape.invertedCone
+  [ MassShape.BLOCK.name ]: densityBuoyancyCommonStrings.shape.blockProperty,
+  [ MassShape.ELLIPSOID.name ]: densityBuoyancyCommonStrings.shape.ellipsoidProperty,
+  [ MassShape.VERTICAL_CYLINDER.name ]: densityBuoyancyCommonStrings.shape.verticalCylinderProperty,
+  [ MassShape.HORIZONTAL_CYLINDER.name ]: densityBuoyancyCommonStrings.shape.horizontalCylinderProperty,
+  [ MassShape.CONE.name ]: densityBuoyancyCommonStrings.shape.coneProperty,
+  [ MassShape.INVERTED_CONE.name ]: densityBuoyancyCommonStrings.shape.invertedConeProperty
 };
 const tandemNameMap = {
   [ MassShape.BLOCK.name ]: 'block',
@@ -122,7 +122,7 @@ export default class ShapeSizeControlNode extends FlowBox {
         align: 'center',
         justify: 'spaceBetween',
         children: [
-          new Text( densityBuoyancyCommonStrings.volume, {
+          new Text( densityBuoyancyCommonStrings.volumeProperty, {
             font: DensityBuoyancyCommonConstants.READOUT_FONT,
             maxWidth: 120
           } ),

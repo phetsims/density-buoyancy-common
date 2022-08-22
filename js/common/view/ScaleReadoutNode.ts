@@ -18,26 +18,45 @@ import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js
 import Scale, { DisplayType } from '../model/Scale.js';
 import Gravity from '../model/Gravity.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
-import Multilink, { UnknownMultilink } from '../../../../axon/js/Multilink.js';
+import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 
 export default class ScaleReadoutNode extends Node {
 
   public readonly mass: Scale;
 
-  private readonly scaleForceMultilink: UnknownMultilink;
+  private readonly textProperty: TReadOnlyProperty<string>;
 
   public constructor( mass: Scale, gravityProperty: TReadOnlyProperty<Gravity> ) {
     super( {
       pickable: false
     } );
 
-    const readoutText = new Text( '', {
+    this.textProperty = new DerivedProperty( [
+      mass.scaleForceInterpolatedProperty,
+      gravityProperty,
+      densityBuoyancyCommonStrings.newtonsPatternProperty,
+      densityBuoyancyCommonStrings.kilogramsPatternProperty
+    ], ( scaleForce, gravity, newtonsPattern, kilogramsPattern ) => {
+      if ( mass.displayType === DisplayType.NEWTONS ) {
+        return StringUtils.fillIn( newtonsPattern, {
+          newtons: Utils.toFixed( scaleForce, 2 )
+        } );
+      }
+      else {
+        return StringUtils.fillIn( kilogramsPattern, {
+          kilograms: gravity.value > 0 ? Utils.toFixed( scaleForce / gravity.value, 2 ) : '-'
+        } );
+      }
+    } );
+
+    const readoutText = new Text( this.textProperty, {
       font: new PhetFont( {
         size: 16,
         weight: 'bold'
       } ),
       maxWidth: 85
     } );
+
     const readoutPanel = new Panel( readoutText, {
       cornerRadius: DensityBuoyancyCommonConstants.CORNER_RADIUS,
       xMargin: 2,
@@ -46,30 +65,20 @@ export default class ScaleReadoutNode extends Node {
       stroke: null
     } );
 
+    readoutPanel.localBoundsProperty.link( () => {
+      readoutPanel.center = Vector2.ZERO;
+    } );
+
     this.addChild( readoutPanel );
 
     this.mass = mass;
-
-    this.scaleForceMultilink = Multilink.multilink( [ mass.scaleForceInterpolatedProperty, gravityProperty ], ( scaleForce, gravity ) => {
-      if ( mass.displayType === DisplayType.NEWTONS ) {
-        readoutText.text = StringUtils.fillIn( densityBuoyancyCommonStrings.newtonsPattern, {
-          newtons: Utils.toFixed( scaleForce, 2 )
-        } );
-      }
-      else {
-        readoutText.text = StringUtils.fillIn( densityBuoyancyCommonStrings.kilogramsPattern, {
-          kilograms: gravity.value > 0 ? Utils.toFixed( scaleForce / gravity.value, 2 ) : '-'
-        } );
-      }
-      readoutPanel.center = Vector2.ZERO;
-    } );
   }
 
   /**
    * Releases references.
    */
   public override dispose(): void {
-    this.scaleForceMultilink.dispose();
+    this.textProperty.dispose();
 
     super.dispose();
   }

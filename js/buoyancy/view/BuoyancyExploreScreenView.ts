@@ -45,34 +45,30 @@ export default class BuoyancyExploreScreenView extends SecondaryMassScreenView<B
 
     const displayOptionsNode = new DisplayOptionsNode( model );
 
-    const densityAText = new Text( '', {
+    // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
+    const densityAText = new Text( new DerivedProperty( [ model.primaryMass.materialProperty, densityBuoyancyCommonStrings.kilogramsPerLiterPatternProperty ], ( material, pattern ) => {
+      return StringUtils.fillIn( pattern, {
+        value: Utils.toFixed( material.density / 1000, 2 )
+      } );
+    } ), {
       maxWidth: 120,
       font: DensityBuoyancyCommonConstants.ITEM_FONT,
       fill: DensityBuoyancyCommonColors.labelAProperty,
       layoutOptions: { column: 1, row: 0 }
     } );
-    const densityBText = new Text( '', {
+    const densityBText = new Text( new DerivedProperty( [ model.secondaryMass.materialProperty, densityBuoyancyCommonStrings.kilogramsPerLiterPatternProperty ], ( material, pattern ) => {
+      return StringUtils.fillIn( pattern, {
+        value: Utils.toFixed( material.density / 1000, 2 )
+      } );
+    } ), {
       maxWidth: 120,
       font: DensityBuoyancyCommonConstants.ITEM_FONT,
       fill: DensityBuoyancyCommonColors.labelBProperty,
       layoutOptions: { column: 1, row: 1 }
     } );
 
-    // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
-    model.primaryMass.materialProperty.link( material => {
-      densityAText.text = StringUtils.fillIn( densityBuoyancyCommonStrings.kilogramsPerLiterPattern, {
-        value: Utils.toFixed( material.density / 1000, 2 )
-      } );
-    } );
-    // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
-    model.secondaryMass.materialProperty.link( material => {
-      densityBText.text = StringUtils.fillIn( densityBuoyancyCommonStrings.kilogramsPerLiterPattern, {
-        value: Utils.toFixed( material.density / 1000, 2 )
-      } );
-    } );
-
-    const labelAText = new Text( densityBuoyancyCommonStrings.blockA, { font: new PhetFont( 14 ), maxWidth: 200, layoutOptions: { column: 0, row: 0 } } );
-    const labelBText = new Text( densityBuoyancyCommonStrings.blockB, { font: new PhetFont( 14 ), maxWidth: 200, layoutOptions: { column: 0, row: 1 } } );
+    const labelAText = new Text( densityBuoyancyCommonStrings.blockAProperty, { font: new PhetFont( 14 ), maxWidth: 200, layoutOptions: { column: 0, row: 0 } } );
+    const labelBText = new Text( densityBuoyancyCommonStrings.blockBProperty, { font: new PhetFont( 14 ), maxWidth: 200, layoutOptions: { column: 0, row: 1 } } );
 
     const densityReadoutBox = new GridBox( {
       children: [ densityAText, densityBText, labelAText, labelBText ],
@@ -90,7 +86,7 @@ export default class BuoyancyExploreScreenView extends SecondaryMassScreenView<B
     } );
 
     const densityBox = new AccordionBox( densityContainer, combineOptions<AccordionBoxOptions>( {
-      titleNode: new Text( densityBuoyancyCommonStrings.density, {
+      titleNode: new Text( densityBuoyancyCommonStrings.densityProperty, {
         font: DensityBuoyancyCommonConstants.TITLE_FONT,
         maxWidth: 160
       } ),

@@ -113,6 +113,8 @@ export default class ForceDiagramNode extends Node {
     this.axisNode = new Line( {
       stroke: 'black'
     } );
+
+    densityBuoyancyCommonStrings.newtonsPatternProperty.lazyLink( this.update.bind( this ) );
   }
 
   /**
@@ -130,7 +132,8 @@ export default class ForceDiagramNode extends Node {
         ( y > 0 ? upwardArrows : downwardArrows ).push( arrowNode );
 
         if ( this.showForceValuesProperty.value ) {
-          textNode.text = StringUtils.fillIn( densityBuoyancyCommonStrings.newtonsPattern, {
+          // We have a listener to the string that will call update
+          textNode.text = StringUtils.fillIn( densityBuoyancyCommonStrings.newtonsPatternProperty.value, {
             newtons: Utils.toFixed( forceProperty.value.magnitude, 2 )
           } );
           labels.push( labelNode );

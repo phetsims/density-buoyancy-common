@@ -21,10 +21,10 @@ import { combineOptions } from '../../../../phet-core/js/optionize.js';
 
 // constants
 const blockSetStringMap = {
-  [ BlockSet.SET_1.name ]: densityBuoyancyCommonStrings.blockSet.set1,
-  [ BlockSet.SET_2.name ]: densityBuoyancyCommonStrings.blockSet.set2,
-  [ BlockSet.SET_3.name ]: densityBuoyancyCommonStrings.blockSet.set3,
-  [ BlockSet.RANDOM.name ]: densityBuoyancyCommonStrings.blockSet.random
+  [ BlockSet.SET_1.name ]: densityBuoyancyCommonStrings.blockSet.set1Property,
+  [ BlockSet.SET_2.name ]: densityBuoyancyCommonStrings.blockSet.set2Property,
+  [ BlockSet.SET_3.name ]: densityBuoyancyCommonStrings.blockSet.set3Property,
+  [ BlockSet.RANDOM.name ]: densityBuoyancyCommonStrings.blockSet.randomProperty
 };
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
 
@@ -38,12 +38,13 @@ export default class DensityMysteryScreenView extends DensityBuoyancyScreenView<
     }, options ) );
 
     const densityTableAccordionBox = new AccordionBox( new DensityTableNode(), combineOptions<AccordionBoxOptions>( {
-      titleNode: new Text( densityBuoyancyCommonStrings.densityTable, {
+      titleNode: new Text( densityBuoyancyCommonStrings.densityTableProperty, {
         font: DensityBuoyancyCommonConstants.TITLE_FONT,
         maxWidth: 200
       } ),
       expandedProperty: model.densityTableExpandedProperty,
-      tandem: tandem.createTandem( 'densityTableAccordionBox' )
+      tandem: tandem.createTandem( 'densityTableAccordionBox' ),
+      resize: true
     }, DensityBuoyancyCommonConstants.ACCORDION_BOX_OPTIONS ) );
 
     this.addChild( new AlignPropertyBox( densityTableAccordionBox, this.visibleBoundsProperty, {
@@ -104,7 +105,7 @@ export default class DensityMysteryScreenView extends DensityBuoyancyScreenView<
 
     const blockSetPanel = new Panel( new VBox( {
       children: [
-        new Text( densityBuoyancyCommonStrings.blocks, {
+        new Text( densityBuoyancyCommonStrings.blocksProperty, {
           font: DensityBuoyancyCommonConstants.TITLE_FONT,
           maxWidth: 85
         } ),

@@ -12,7 +12,6 @@ import Emitter from '../../../../axon/js/Emitter.js';
 import EnumerationProperty from '../../../../axon/js/EnumerationProperty.js';
 import NumberProperty, { NumberPropertyOptions } from '../../../../axon/js/NumberProperty.js';
 import Property, { PropertyOptions } from '../../../../axon/js/Property.js';
-import StringProperty from '../../../../axon/js/StringProperty.js';
 import Matrix3, { Matrix3StateObject } from '../../../../dot/js/Matrix3.js';
 import Range from '../../../../dot/js/Range.js';
 import Utils from '../../../../dot/js/Utils.js';
@@ -42,6 +41,8 @@ import PickRequired from '../../../../phet-core/js/types/PickRequired.js';
 import { MassShape } from './MassShape.js';
 import { BodyStateObject } from './P2Engine.js';
 import TEmitter from '../../../../axon/js/TEmitter.js';
+import ReadOnlyProperty from '../../../../axon/js/ReadOnlyProperty.js';
+import TinyProperty from '../../../../axon/js/TinyProperty.js';
 
 // constants
 export class MassTag extends EnumerationValue {
@@ -75,26 +76,26 @@ export class MassTag extends EnumerationValue {
 }
 
 const blockStringMap = {
-  [ MassTag.ONE_A.name ]: densityBuoyancyCommonStrings.massLabel[ '1a' ],
-  [ MassTag.ONE_B.name ]: densityBuoyancyCommonStrings.massLabel[ '1b' ],
-  [ MassTag.ONE_C.name ]: densityBuoyancyCommonStrings.massLabel[ '1c' ],
-  [ MassTag.ONE_D.name ]: densityBuoyancyCommonStrings.massLabel[ '1d' ],
-  [ MassTag.ONE_E.name ]: densityBuoyancyCommonStrings.massLabel[ '1e' ],
-  [ MassTag.TWO_A.name ]: densityBuoyancyCommonStrings.massLabel[ '2a' ],
-  [ MassTag.TWO_B.name ]: densityBuoyancyCommonStrings.massLabel[ '2b' ],
-  [ MassTag.TWO_C.name ]: densityBuoyancyCommonStrings.massLabel[ '2c' ],
-  [ MassTag.TWO_D.name ]: densityBuoyancyCommonStrings.massLabel[ '2d' ],
-  [ MassTag.TWO_E.name ]: densityBuoyancyCommonStrings.massLabel[ '2e' ],
-  [ MassTag.THREE_A.name ]: densityBuoyancyCommonStrings.massLabel[ '3a' ],
-  [ MassTag.THREE_B.name ]: densityBuoyancyCommonStrings.massLabel[ '3b' ],
-  [ MassTag.THREE_C.name ]: densityBuoyancyCommonStrings.massLabel[ '3c' ],
-  [ MassTag.THREE_D.name ]: densityBuoyancyCommonStrings.massLabel[ '3d' ],
-  [ MassTag.THREE_E.name ]: densityBuoyancyCommonStrings.massLabel[ '3e' ],
-  [ MassTag.A.name ]: densityBuoyancyCommonStrings.massLabel.a,
-  [ MassTag.B.name ]: densityBuoyancyCommonStrings.massLabel.b,
-  [ MassTag.C.name ]: densityBuoyancyCommonStrings.massLabel.c,
-  [ MassTag.D.name ]: densityBuoyancyCommonStrings.massLabel.d,
-  [ MassTag.E.name ]: densityBuoyancyCommonStrings.massLabel.e
+  [ MassTag.ONE_A.name ]: densityBuoyancyCommonStrings.massLabel[ '1aProperty' ],
+  [ MassTag.ONE_B.name ]: densityBuoyancyCommonStrings.massLabel[ '1bProperty' ],
+  [ MassTag.ONE_C.name ]: densityBuoyancyCommonStrings.massLabel[ '1cProperty' ],
+  [ MassTag.ONE_D.name ]: densityBuoyancyCommonStrings.massLabel[ '1dProperty' ],
+  [ MassTag.ONE_E.name ]: densityBuoyancyCommonStrings.massLabel[ '1eProperty' ],
+  [ MassTag.TWO_A.name ]: densityBuoyancyCommonStrings.massLabel[ '2aProperty' ],
+  [ MassTag.TWO_B.name ]: densityBuoyancyCommonStrings.massLabel[ '2bProperty' ],
+  [ MassTag.TWO_C.name ]: densityBuoyancyCommonStrings.massLabel[ '2cProperty' ],
+  [ MassTag.TWO_D.name ]: densityBuoyancyCommonStrings.massLabel[ '2dProperty' ],
+  [ MassTag.TWO_E.name ]: densityBuoyancyCommonStrings.massLabel[ '2eProperty' ],
+  [ MassTag.THREE_A.name ]: densityBuoyancyCommonStrings.massLabel[ '3aProperty' ],
+  [ MassTag.THREE_B.name ]: densityBuoyancyCommonStrings.massLabel[ '3bProperty' ],
+  [ MassTag.THREE_C.name ]: densityBuoyancyCommonStrings.massLabel[ '3cProperty' ],
+  [ MassTag.THREE_D.name ]: densityBuoyancyCommonStrings.massLabel[ '3dProperty' ],
+  [ MassTag.THREE_E.name ]: densityBuoyancyCommonStrings.massLabel[ '3eProperty' ],
+  [ MassTag.A.name ]: densityBuoyancyCommonStrings.massLabel.aProperty,
+  [ MassTag.B.name ]: densityBuoyancyCommonStrings.massLabel.bProperty,
+  [ MassTag.C.name ]: densityBuoyancyCommonStrings.massLabel.cProperty,
+  [ MassTag.D.name ]: densityBuoyancyCommonStrings.massLabel.dProperty,
+  [ MassTag.E.name ]: densityBuoyancyCommonStrings.massLabel.eProperty
 };
 
 class MaterialEnumeration extends EnumerationValue {
@@ -228,7 +229,7 @@ export default abstract class Mass extends PhetioObject {
   public canMove: boolean;
   public tag: MassTag;
 
-  public readonly nameProperty: Property<string>;
+  public readonly nameProperty: TReadOnlyProperty<string>;
 
   // Set by the model
   public containingBasin: Basin | null;
@@ -471,9 +472,12 @@ export default abstract class Mass extends PhetioObject {
     this.canMove = config.canMove;
     this.tag = config.tag;
 
-    this.nameProperty = new StringProperty( blockStringMap[ config.tag.name ] || '', {
-      tandem: config.tandem.createTandem( 'nameProperty' )
-    } );
+    this.nameProperty = blockStringMap[ config.tag.name ] || new TinyProperty( '' );
+    if ( blockStringMap[ config.tag.name ] ) {
+      this.addLinkedElement( this.nameProperty as ReadOnlyProperty<string>, {
+        tandem: config.tandem.createTandem( 'nameProperty' )
+      } );
+    }
 
     this.containingBasin = null;
 

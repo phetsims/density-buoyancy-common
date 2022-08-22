@@ -73,7 +73,7 @@ export default class BuoyancyShapesScreenView extends SecondaryMassScreenView<Bu
     } );
 
     const densityBox = new AccordionBox( densityContainer, combineOptions<AccordionBoxOptions>( {
-      titleNode: new Text( densityBuoyancyCommonStrings.density, {
+      titleNode: new Text( densityBuoyancyCommonStrings.densityProperty, {
         font: DensityBuoyancyCommonConstants.TITLE_FONT,
         maxWidth: 160
       } ),

@@ -76,7 +76,7 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
       tandem: tandem.createTandem( 'bottleControlNode' )
     } );
 
-    const airVolumeLabel = new Text( densityBuoyancyCommonStrings.airVolume, {
+    const airVolumeLabel = new Text( densityBuoyancyCommonStrings.airVolumeProperty, {
       font: DensityBuoyancyCommonConstants.READOUT_FONT,
       maxWidth: 160
     } );
@@ -90,7 +90,7 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
       spacing: 10,
       align: 'left',
       children: [
-        new Text( densityBuoyancyCommonStrings.materialInside, {
+        new Text( densityBuoyancyCommonStrings.materialInsideProperty, {
           font: DensityBuoyancyCommonConstants.TITLE_FONT,
           maxWidth: 160
         } ),
@@ -100,6 +100,7 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
           children: [
             airVolumeLabel,
             new AlignBox( new NumberDisplay( airLitersProperty, new Range( 0, 10 ), {
+              // TODO
               valuePattern: StringUtils.fillIn( densityBuoyancyCommonStrings.litersPattern, {
                 liters: '{{value}}'
               } ),

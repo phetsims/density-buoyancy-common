@@ -6,6 +6,7 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
+import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import Utils from '../../../../dot/js/Utils.js';
 import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
@@ -24,17 +25,13 @@ export default class DensityReadoutListNode extends VBox {
     } );
 
     this.children = materialProperties.map( materialProperty => {
-      const text = new Text( '', { font: new PhetFont( 14 ), maxWidth: 200 } );
-
       // Exists for the lifetime of a sim, so disposal patterns not needed.
-      materialProperty.link( material => {
-        text.text = StringUtils.fillIn( densityBuoyancyCommonStrings.densityReadoutPattern, {
+      return new Text( new DerivedProperty( [ materialProperty, densityBuoyancyCommonStrings.densityReadoutPatternProperty ], ( material, pattern ) => {
+        return StringUtils.fillIn( pattern, {
           material: material.name,
           density: Utils.toFixed( material.density / 1000, 2 )
         } );
-      } );
-
-      return text;
+      } ), { font: new PhetFont( 14 ), maxWidth: 200 } );
     } );
   }
 }

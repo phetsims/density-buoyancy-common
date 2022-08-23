@@ -267,6 +267,7 @@ export default class MaterialMassVolumeControlNode extends VBox {
     ], listParent, {
       xMargin: 8,
       yMargin: 4,
+      widthSizable: true,
       tandem: tandem.createTandem( 'comboBox' )
     } );
 

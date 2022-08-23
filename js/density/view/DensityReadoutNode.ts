@@ -14,12 +14,13 @@ import { combineOptions } from '../../../../phet-core/js/optionize.js';
 import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
 import ArrowNode, { ArrowNodeOptions } from '../../../../scenery-phet/js/ArrowNode.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
-import { Line, Node, NodeOptions, Rectangle, Text, TextOptions } from '../../../../scenery/js/imports.js';
+import { Line, ManualConstraint, Node, NodeOptions, Rectangle, Text, TextOptions } from '../../../../scenery/js/imports.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 import Material from '../../common/model/Material.js';
 import DensityBuoyancyCommonColors from '../../common/view/DensityBuoyancyCommonColors.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import densityBuoyancyCommonStrings from '../../densityBuoyancyCommonStrings.js';
+import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 
 // constants
 const materials = [
@@ -94,7 +95,14 @@ export default class DensityReadoutNode extends Node {
     const primaryArrow = new ArrowNode( 0, -7, 0, 0, combineOptions<ArrowNodeOptions>( {
       fill: DensityBuoyancyCommonColors.labelAProperty
     }, arrowOptions ) );
-    const primaryLabel = new Text( '', combineOptions<TextOptions>( {
+    const primaryLabel = new Text( new DerivedProperty( [
+      densityAProperty,
+      densityBuoyancyCommonStrings.kilogramsPerLiterPatternProperty
+    ], ( density, pattern ) => {
+      return StringUtils.fillIn( pattern, {
+        value: Utils.toFixed( density / 1000, 2 )
+      } );
+    } ), combineOptions<TextOptions>( {
       fill: DensityBuoyancyCommonColors.labelAProperty
     }, labelOptions ) );
     const primaryMarker = new Node( {
@@ -108,7 +116,14 @@ export default class DensityReadoutNode extends Node {
     const secondaryArrow = new ArrowNode( 0, 7, 0, 0, combineOptions<ArrowNodeOptions>( {
       fill: DensityBuoyancyCommonColors.labelBProperty
     }, arrowOptions ) );
-    const secondaryLabel = new Text( '', combineOptions<TextOptions>( {
+    const secondaryLabel = new Text( new DerivedProperty( [
+      densityBProperty,
+      densityBuoyancyCommonStrings.kilogramsPerLiterPatternProperty
+    ], ( density, pattern ) => {
+      return StringUtils.fillIn( pattern, {
+        value: Utils.toFixed( density / 1000, 2 )
+      } );
+    } ), combineOptions<TextOptions>( {
       fill: DensityBuoyancyCommonColors.labelBProperty
     }, labelOptions ) );
     const secondaryMarker = new Node( {
@@ -124,18 +139,17 @@ export default class DensityReadoutNode extends Node {
     // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
     densityAProperty.link( density => {
       primaryMarker.x = mvt( density );
-      primaryLabel.text = StringUtils.fillIn( densityBuoyancyCommonStrings.kilogramsPerLiterPattern, {
-        value: Utils.toFixed( density / 1000, 2 )
-      } );
-      primaryLabel.centerBottom = primaryArrow.centerTop;
     } );
+    ManualConstraint.create( this, [ primaryLabel, primaryArrow ], ( primaryLabelProxy, primaryArrowProxy ) => {
+      primaryLabelProxy.centerBottom = primaryArrowProxy.centerTop;
+    } );
+
     // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
     densityBProperty.link( density => {
       secondaryMarker.x = mvt( density );
-      secondaryLabel.text = StringUtils.fillIn( densityBuoyancyCommonStrings.kilogramsPerLiterPattern, {
-        value: Utils.toFixed( density / 1000, 2 )
-      } );
-      secondaryLabel.centerTop = secondaryArrow.centerBottom;
+    } );
+    ManualConstraint.create( this, [ secondaryLabel, secondaryArrow ], ( secondaryLabelProxy, secondaryArrowProxy ) => {
+      secondaryLabelProxy.centerTop = secondaryArrowProxy.centerBottom;
     } );
 
     // This instance lives for the lifetime of the simulation, so we don't need to remove this listener

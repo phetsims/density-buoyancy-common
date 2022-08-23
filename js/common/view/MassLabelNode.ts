@@ -6,6 +6,7 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
+import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import Utils from '../../../../dot/js/Utils.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
@@ -23,7 +24,7 @@ import LabelTexture from './LabelTexture.js';
 
 // constants
 const MASS_LABEL_SIZE = 32;
-const createMassLabel = ( string: string, fill: TPaint ) => {
+const createMassLabel = ( string: TReadOnlyProperty<string>, fill: TPaint ) => {
   const rectangle = new Rectangle( 0, 0, MASS_LABEL_SIZE, MASS_LABEL_SIZE, {
     cornerRadius: DensityBuoyancyCommonConstants.CORNER_RADIUS,
     fill: fill
@@ -34,23 +35,35 @@ const createMassLabel = ( string: string, fill: TPaint ) => {
     center: rectangle.center,
     maxWidth: 30
   } );
+  label.localBoundsProperty.link( () => {
+    label.center = rectangle.center;
+  } );
   rectangle.addChild( label );
   return rectangle;
 };
-const PRIMARY_LABEL = createMassLabel( densityBuoyancyCommonStrings.massLabel.primary, DensityBuoyancyCommonColors.labelAProperty );
-const SECONDARY_LABEL = createMassLabel( densityBuoyancyCommonStrings.massLabel.secondary, DensityBuoyancyCommonColors.labelBProperty );
+const PRIMARY_LABEL = createMassLabel( densityBuoyancyCommonStrings.massLabel.primaryProperty, DensityBuoyancyCommonColors.labelAProperty );
+const SECONDARY_LABEL = createMassLabel( densityBuoyancyCommonStrings.massLabel.secondaryProperty, DensityBuoyancyCommonColors.labelBProperty );
 
 export default class MassLabelNode extends Node {
 
   public readonly mass: Mass;
   private readonly showMassesProperty: TReadOnlyProperty<boolean>;
-  private readonly massListener: ( n: number ) => void;
   private readonly showMassesListener: ( n: boolean ) => void;
+  private readonly readoutTextProperty: TReadOnlyProperty<string>;
 
   public constructor( mass: Mass, showMassesProperty: TReadOnlyProperty<boolean> ) {
     super();
 
-    const readoutText = new Text( '', {
+    this.readoutTextProperty = new DerivedProperty( [
+      mass.massProperty,
+      densityBuoyancyCommonStrings.kilogramsPatternProperty
+    ], ( mass, pattern ) => {
+      return StringUtils.fillIn( pattern, {
+        kilograms: Utils.toFixed( mass, 2 )
+      } );
+    } );
+
+    const readoutText = new Text( this.readoutTextProperty, {
       font: new PhetFont( {
         size: 18
       } ),
@@ -67,12 +80,6 @@ export default class MassLabelNode extends Node {
     this.mass = mass;
     this.showMassesProperty = showMassesProperty;
 
-    this.massListener = mass => {
-      readoutText.text = StringUtils.fillIn( densityBuoyancyCommonStrings.kilogramsPattern, {
-        kilograms: Utils.toFixed( mass, 2 )
-      } );
-    };
-
     // Keep it centered
     ManualConstraint.create( this, [ readoutPanel ], readoutWrapper => {
       readoutWrapper.center = Vector2.ZERO;
@@ -82,7 +89,6 @@ export default class MassLabelNode extends Node {
       readoutPanel.visible = shown;
     };
 
-    this.mass.massProperty.link( this.massListener );
     this.showMassesProperty.link( this.showMassesListener );
   }
 
@@ -91,7 +97,7 @@ export default class MassLabelNode extends Node {
    */
   public override dispose(): void {
     this.showMassesProperty.unlink( this.showMassesListener );
-    this.mass.massProperty.unlink( this.massListener );
+    this.readoutTextProperty.dispose();
 
     super.dispose();
   }

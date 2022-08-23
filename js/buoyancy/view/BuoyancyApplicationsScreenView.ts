@@ -18,7 +18,7 @@ import resetArrow_png from '../../../../scenery-phet/images/resetArrow_png.js';
 import NumberControl, { NumberControlOptions } from '../../../../scenery-phet/js/NumberControl.js';
 import NumberDisplay from '../../../../scenery-phet/js/NumberDisplay.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
-import { AlignBox, AlignPropertyBox, Color, HStrut, Image, ManualConstraint, Node, Text, VBox } from '../../../../scenery/js/imports.js';
+import { AlignPropertyBox, Color, HBox, HStrut, Image, ManualConstraint, Node, Text, VBox, VDivider } from '../../../../scenery/js/imports.js';
 import AccordionBox, { AccordionBoxOptions } from '../../../../sun/js/AccordionBox.js';
 import RectangularPushButton from '../../../../sun/js/buttons/RectangularPushButton.js';
 import RectangularRadioButtonGroup from '../../../../sun/js/buttons/RectangularRadioButtonGroup.js';
@@ -89,30 +89,29 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
     const bottleBox = new VBox( {
       spacing: 10,
       align: 'left',
+      stretch: true,
       children: [
         new Text( densityBuoyancyCommonStrings.materialInsideProperty, {
           font: DensityBuoyancyCommonConstants.TITLE_FONT,
           maxWidth: 160
         } ),
         bottleControlNode,
-        new HSeparator( bottleControlNode.width ),
-        new Node( {
+        new VDivider(),
+        new HBox( {
+          spacing: 5,
           children: [
             airVolumeLabel,
-            new AlignBox( new NumberDisplay( airLitersProperty, new Range( 0, 10 ), {
-              // TODO
-              valuePattern: StringUtils.fillIn( densityBuoyancyCommonStrings.litersPattern, {
-                liters: '{{value}}'
+            new NumberDisplay( airLitersProperty, new Range( 0, 10 ), {
+              valuePattern: new DerivedProperty( [ densityBuoyancyCommonStrings.litersPatternProperty ], litersPattern => {
+                return StringUtils.fillIn( litersPattern, {
+                  liters: '{{value}}'
+                } );
               } ),
               decimalPlaces: 2,
               textOptions: {
                 font: new PhetFont( 12 ),
                 maxWidth: 120
               }
-            } ), {
-              alignBounds: airVolumeLabel.bounds.withMaxX( bottleControlNode.width ),
-              xAlign: 'right',
-              yAlign: 'center'
             } )
           ]
         } )
@@ -177,12 +176,14 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
         new HSeparator( blockControlNode.width ),
         // Convert cubic meters => liters
         // @ts-ignore see https://github.com/phetsims/axon/issues/382
-        new NumberControl( densityBuoyancyCommonStrings.boatVolume, new UnitConversionProperty( model.boat.displacementVolumeProperty, {
+        new NumberControl( densityBuoyancyCommonStrings.boatVolumeProperty, new UnitConversionProperty( model.boat.displacementVolumeProperty, {
           factor: 1000
         } ), boatVolumeRange, combineOptions<NumberControlOptions>( {
           numberDisplayOptions: {
-            valuePattern: StringUtils.fillIn( densityBuoyancyCommonStrings.litersPattern, {
-              liters: '{{value}}'
+            valuePattern: new DerivedProperty( [ densityBuoyancyCommonStrings.litersPatternProperty ], litersPattern => {
+              return StringUtils.fillIn( litersPattern, {
+                liters: '{{value}}'
+              } );
             } ),
             textOptions: {
               font: DensityBuoyancyCommonConstants.READOUT_FONT,
@@ -258,7 +259,7 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
     } );
 
     const densityBox = new AccordionBox( densityContainer, combineOptions<AccordionBoxOptions>( {
-      titleNode: new Text( densityBuoyancyCommonStrings.density, {
+      titleNode: new Text( densityBuoyancyCommonStrings.densityProperty, {
         maxWidth: 160,
         font: DensityBuoyancyCommonConstants.TITLE_FONT
       } ),

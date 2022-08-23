@@ -26,8 +26,8 @@ export default class GravityControlNode extends ComboNumberControl<Gravity> {
 
     super( {
       tandem: tandem,
-      title: densityBuoyancyCommonStrings.gravity.name,
-      valuePattern: densityBuoyancyCommonStrings.metersPerSecondSquaredPattern,
+      title: densityBuoyancyCommonStrings.gravity.nameProperty,
+      valuePattern: densityBuoyancyCommonStrings.metersPerSecondSquaredPatternProperty,
       property: gravityProperty,
       range: new Range( 0, 25 ),
       toNumericValue: gravity => gravity.value,
@@ -60,7 +60,7 @@ export default class GravityControlNode extends ComboNumberControl<Gravity> {
       },
       getFallbackNode: gravity => {
         if ( gravity.hidden ) {
-          return new Text( densityBuoyancyCommonStrings.whatIsTheValueOfGravity, {
+          return new Text( densityBuoyancyCommonStrings.whatIsTheValueOfGravityProperty, {
             font: new PhetFont( 14 )
           } );
         }

@@ -6,7 +6,9 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
+import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import { RangedProperty } from '../../../../axon/js/NumberProperty.js';
+import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import Dimension2 from '../../../../dot/js/Dimension2.js';
 import Utils from '../../../../dot/js/Utils.js';
 import { combineOptions } from '../../../../phet-core/js/optionize.js';
@@ -21,7 +23,7 @@ import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 export type ComparisonNumberControlOptions = NumberControlOptions;
 
 export default class ComparisonNumberControl extends NumberControl {
-  public constructor( property: RangedProperty, title: string, valuePattern: string, valueName: string, options?: ComparisonNumberControlOptions ) {
+  public constructor( property: RangedProperty, title: TReadOnlyProperty<string>, valuePattern: TReadOnlyProperty<string>, valueName: string, options?: ComparisonNumberControlOptions ) {
     super( title, property, property.range, combineOptions<NumberControlOptions>( {
       layoutFunction: NumberControl.createLayoutFunction4( {
         sliderPadding: 5
@@ -39,7 +41,9 @@ export default class ComparisonNumberControl extends NumberControl {
           font: DensityBuoyancyCommonConstants.READOUT_FONT
         },
         // Backward compatibility
-        valuePattern: StringUtils.fillIn( valuePattern, { [ valueName ]: SunConstants.VALUE_NAMED_PLACEHOLDER } ),
+        valuePattern: new DerivedProperty( [ valuePattern ], pattern => {
+          return StringUtils.fillIn( pattern, { [ valueName ]: SunConstants.VALUE_NAMED_PLACEHOLDER } );
+        } ),
         maxWidth: 100,
         decimalPlaces: 2,
         useRichText: true,

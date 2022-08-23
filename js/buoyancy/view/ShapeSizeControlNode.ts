@@ -97,8 +97,8 @@ export default class ShapeSizeControlNode extends FlowBox {
       }
     };
 
-    const widthNumberControl = new NumberControl( densityBuoyancyCommonStrings.width, widthRatioProperty, new Range( 0, 1 ), numberControlOptions );
-    const heightNumberControl = new NumberControl( densityBuoyancyCommonStrings.height, heightRatioProperty, new Range( 0, 1 ), numberControlOptions );
+    const widthNumberControl = new NumberControl( densityBuoyancyCommonStrings.widthProperty, widthRatioProperty, new Range( 0, 1 ), numberControlOptions );
+    const heightNumberControl = new NumberControl( densityBuoyancyCommonStrings.heightProperty, heightRatioProperty, new Range( 0, 1 ), numberControlOptions );
 
     // DerivedProperty doesn't need disposal, since everything here lives for the lifetime of the simulation
     const litersProperty = new DerivedProperty( [ volumeProperty ], volume => {
@@ -128,9 +128,11 @@ export default class ShapeSizeControlNode extends FlowBox {
             maxWidth: 120
           } ),
           new NumberDisplay( litersProperty, new Range( 0, 10 ), { // TODO: is 10 the most?
-            valuePattern: StringUtils.fillIn( densityBuoyancyCommonStrings.litersPattern, {
+            valuePattern: new DerivedProperty( [
+              densityBuoyancyCommonStrings.litersPatternProperty
+            ], pattern => StringUtils.fillIn( pattern, {
               liters: '{{value}}'
-            } ),
+            } ) ),
             decimalPlaces: 2,
             textOptions: {
               font: DensityBuoyancyCommonConstants.READOUT_FONT,

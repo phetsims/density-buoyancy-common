@@ -7,8 +7,10 @@
  */
 
 import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
+import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import NumberProperty from '../../../../axon/js/NumberProperty.js';
 import Property from '../../../../axon/js/Property.js';
+import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import Dimension2 from '../../../../dot/js/Dimension2.js';
 import Range from '../../../../dot/js/Range.js';
 import optionize, { combineOptions } from '../../../../phet-core/js/optionize.js';
@@ -23,8 +25,8 @@ import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
 
 type SelfOptions<T> = {
-  title: string;
-  valuePattern: string; // with {{value}} placeholder
+  title: TReadOnlyProperty<string>;
+  valuePattern: TReadOnlyProperty<string>; // with {{value}} placeholder
   property: Property<T>;
   range: Range;
 
@@ -120,7 +122,9 @@ export default class ComboNumberControl<T> extends VBox {
           textOptions: {
             font: DensityBuoyancyCommonConstants.READOUT_FONT
           },
-          valuePattern: StringUtils.fillIn( providedConfig.valuePattern, { value: SunConstants.VALUE_NAMED_PLACEHOLDER } ),
+          valuePattern: new DerivedProperty( [ providedConfig.valuePattern ], valuePattern => {
+            return StringUtils.fillIn( valuePattern, { value: SunConstants.VALUE_NAMED_PLACEHOLDER } );
+          } ),
           maxWidth: 100,
           decimalPlaces: 2,
           useRichText: true,
@@ -158,7 +162,6 @@ export default class ComboNumberControl<T> extends VBox {
     }, providedConfig );
 
     assert && assert( !config.children, 'Children should not be specified for ComboNumberControl' );
-    assert && assert( typeof config.title === 'string' );
     assert && assert( config.property instanceof Property );
     assert && assert( config.range instanceof Range );
     assert && assert( typeof config.toNumericValue === 'function' );

@@ -270,7 +270,7 @@ export default class MaterialMassVolumeControlNode extends VBox {
       tandem: tandem.createTandem( 'comboBox' )
     } );
 
-    const massNumberControl = new NumberControl( densityBuoyancyCommonStrings.mass, massNumberProperty, new Range( options.minMass, options.maxMass ), combineOptions<NumberControlOptions>( {
+    const massNumberControl = new NumberControl( densityBuoyancyCommonStrings.massProperty, massNumberProperty, new Range( options.minMass, options.maxMass ), combineOptions<NumberControlOptions>( {
       sliderOptions: {
         thumbNode: new PrecisionSliderThumb( {
           thumbFill: options.color,
@@ -293,8 +293,10 @@ export default class MaterialMassVolumeControlNode extends VBox {
         phetioLinkedProperty: massProperty
       },
       numberDisplayOptions: {
-        valuePattern: StringUtils.fillIn( densityBuoyancyCommonStrings.kilogramsPattern, {
-          kilograms: '{{value}}'
+        valuePattern: new DerivedProperty( [ densityBuoyancyCommonStrings.kilogramsPatternProperty ], kilogramsPattern => {
+          return StringUtils.fillIn( kilogramsPattern, {
+            kilograms: '{{value}}'
+          } );
         } ),
         useFullHeight: true
       },
@@ -310,7 +312,7 @@ export default class MaterialMassVolumeControlNode extends VBox {
       }
     }, MaterialMassVolumeControlNode.getNumberControlOptions() ) );
 
-    const volumeNumberControl = new NumberControl( densityBuoyancyCommonStrings.volume, numberControlVolumeProperty, new Range( options.minVolumeLiters, options.maxVolumeLiters ), combineOptions<NumberControlOptions>( {
+    const volumeNumberControl = new NumberControl( densityBuoyancyCommonStrings.volumeProperty, numberControlVolumeProperty, new Range( options.minVolumeLiters, options.maxVolumeLiters ), combineOptions<NumberControlOptions>( {
       sliderOptions: {
         thumbNode: new PrecisionSliderThumb( {
           thumbFill: options.color,
@@ -321,8 +323,10 @@ export default class MaterialMassVolumeControlNode extends VBox {
         phetioLinkedProperty: volumeProperty
       },
       numberDisplayOptions: {
-        valuePattern: StringUtils.fillIn( densityBuoyancyCommonStrings.litersPattern, {
-          liters: '{{value}}'
+        valuePattern: new DerivedProperty( [ densityBuoyancyCommonStrings.litersPatternProperty ], litersPattern => {
+          return StringUtils.fillIn( litersPattern, {
+            liters: '{{value}}'
+          } );
         } ),
         useFullHeight: true
       },

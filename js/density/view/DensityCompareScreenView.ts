@@ -98,8 +98,8 @@ export default class DensityCompareScreenView extends DensityBuoyancyScreenView<
     const massNumberControlTandem = tandem.createTandem( 'massNumberControl' );
     const massNumberControl = new ComparisonNumberControl(
       model.massProperty,
-      densityBuoyancyCommonStrings.mass,
-      densityBuoyancyCommonStrings.kilogramsPattern,
+      densityBuoyancyCommonStrings.massProperty,
+      densityBuoyancyCommonStrings.kilogramsPatternProperty,
       'kilograms',
       {
         tandem: massNumberControlTandem,
@@ -115,8 +115,8 @@ export default class DensityCompareScreenView extends DensityBuoyancyScreenView<
     const volumeNumberControlTandem = tandem.createTandem( 'volumeNumberControl' );
     const volumeNumberControl = new ComparisonNumberControl(
       volumeProperty,
-      densityBuoyancyCommonStrings.volume,
-      densityBuoyancyCommonStrings.litersPattern,
+      densityBuoyancyCommonStrings.volumeProperty,
+      densityBuoyancyCommonStrings.litersPatternProperty,
       'liters',
       {
         tandem: volumeNumberControlTandem,
@@ -132,8 +132,8 @@ export default class DensityCompareScreenView extends DensityBuoyancyScreenView<
     const densityNumberControlTandem = tandem.createTandem( 'densityNumberControl' );
     const densityNumberControl = new ComparisonNumberControl(
       densityProperty,
-      densityBuoyancyCommonStrings.density,
-      densityBuoyancyCommonStrings.kilogramsPerLiterPattern,
+      densityBuoyancyCommonStrings.densityProperty,
+      densityBuoyancyCommonStrings.kilogramsPerLiterPatternProperty,
       'value',
       {
         tandem: densityNumberControlTandem,

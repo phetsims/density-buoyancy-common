@@ -114,7 +114,8 @@ export default class ForceDiagramNode extends Node {
       stroke: 'black'
     } );
 
-    densityBuoyancyCommonStrings.newtonsPatternProperty.lazyLink( this.update.bind( this ) );
+    const newtonsPatternProperty = densityBuoyancyCommonStrings.newtonsPatternProperty;
+    newtonsPatternProperty.lazyLink( this.update.bind( this ) );
   }
 
   /**
@@ -133,7 +134,7 @@ export default class ForceDiagramNode extends Node {
 
         if ( this.showForceValuesProperty.value ) {
           // We have a listener to the string that will call update
-          textNode.text = StringUtils.fillIn( densityBuoyancyCommonStrings.newtonsPatternProperty.value, {
+          textNode.text = StringUtils.fillIn( densityBuoyancyCommonStrings.newtonsPattern, {
             newtons: Utils.toFixed( forceProperty.value.magnitude, 2 )
           } );
           labels.push( labelNode );

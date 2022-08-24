@@ -7,6 +7,7 @@
  */
 
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
+import Multilink from '../../../../axon/js/Multilink.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import Utils from '../../../../dot/js/Utils.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
@@ -41,6 +42,10 @@ const createMassLabel = ( string: TReadOnlyProperty<string>, fill: TPaint ) => {
   rectangle.addChild( label );
   return rectangle;
 };
+
+const PRIMARY_LABEL_DEPENDENCIES = [ densityBuoyancyCommonStrings.massLabel.primaryProperty, DensityBuoyancyCommonColors.labelAProperty ];
+const SECONDARY_LABEL_DEPENDENCIES = [ densityBuoyancyCommonStrings.massLabel.secondaryProperty, DensityBuoyancyCommonColors.labelBProperty ];
+
 const PRIMARY_LABEL = createMassLabel( densityBuoyancyCommonStrings.massLabel.primaryProperty, DensityBuoyancyCommonColors.labelAProperty );
 const SECONDARY_LABEL = createMassLabel( densityBuoyancyCommonStrings.massLabel.secondaryProperty, DensityBuoyancyCommonColors.labelBProperty );
 
@@ -106,14 +111,24 @@ export default class MassLabelNode extends Node {
    * Returns a NodeTexture for the primary.
    */
   public static getPrimaryTexture(): NodeTexture {
-    return new LabelTexture( PRIMARY_LABEL );
+    const texture = new LabelTexture( PRIMARY_LABEL );
+
+    // @ts-ignore
+    Multilink.multilink( PRIMARY_LABEL_DEPENDENCIES, () => texture.update() );
+
+    return texture;
   }
 
   /**
    * Returns a NodeTexture for the secondary.
    */
   public static getSecondaryTexture(): NodeTexture {
-    return new LabelTexture( SECONDARY_LABEL );
+    const texture = new LabelTexture( SECONDARY_LABEL );
+
+    // @ts-ignore
+    Multilink.multilink( SECONDARY_LABEL_DEPENDENCIES, () => texture.update() );
+
+    return texture;
   }
 
   /**

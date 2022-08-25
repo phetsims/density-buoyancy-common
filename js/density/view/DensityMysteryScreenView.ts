@@ -43,8 +43,7 @@ export default class DensityMysteryScreenView extends DensityBuoyancyScreenView<
         maxWidth: 200
       } ),
       expandedProperty: model.densityTableExpandedProperty,
-      tandem: tandem.createTandem( 'densityTableAccordionBox' ),
-      resize: true
+      tandem: tandem.createTandem( 'densityTableAccordionBox' )
     }, DensityBuoyancyCommonConstants.ACCORDION_BOX_OPTIONS ) );
 
     this.addChild( new AlignPropertyBox( densityTableAccordionBox, this.visibleBoundsProperty, {

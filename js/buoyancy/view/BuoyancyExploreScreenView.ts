@@ -90,8 +90,7 @@ export default class BuoyancyExploreScreenView extends SecondaryMassScreenView<B
         font: DensityBuoyancyCommonConstants.TITLE_FONT,
         maxWidth: 160
       } ),
-      expandedProperty: model.densityExpandedProperty,
-      resize: true
+      expandedProperty: model.densityExpandedProperty
     }, DensityBuoyancyCommonConstants.ACCORDION_BOX_OPTIONS ) );
 
     this.addChild( new AlignPropertyBox( new VBox( {

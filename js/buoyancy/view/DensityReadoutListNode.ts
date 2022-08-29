@@ -7,9 +7,9 @@
  */
 
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
+import DynamicProperty from '../../../../axon/js/DynamicProperty.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
-import Utils from '../../../../dot/js/Utils.js';
-import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
+import PatternStringProperty from '../../../../phetcommon/js/util/PatternStringProperty.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import { Text, VBox } from '../../../../scenery/js/imports.js';
 import Material from '../../common/model/Material.js';
@@ -26,11 +26,11 @@ export default class DensityReadoutListNode extends VBox {
 
     this.children = materialProperties.map( materialProperty => {
       // Exists for the lifetime of a sim, so disposal patterns not needed.
-      return new Text( new DerivedProperty( [ materialProperty, densityBuoyancyCommonStrings.densityReadoutPatternStringProperty ], ( material, pattern ) => {
-        return StringUtils.fillIn( pattern, {
-          material: material.name,
-          density: Utils.toFixed( material.density / 1000, 2 )
-        } );
+      return new Text( new PatternStringProperty( densityBuoyancyCommonStrings.densityReadoutPatternStringProperty, {
+        material: new DynamicProperty<string, string, Material>( materialProperty, { derive: material => material.name } ),
+        density: new DerivedProperty( [ materialProperty ], material => material.density / 1000 )
+      }, {
+        decimalPlaces: 2
       } ), { font: new PhetFont( 14 ), maxWidth: 200 } );
     } );
   }

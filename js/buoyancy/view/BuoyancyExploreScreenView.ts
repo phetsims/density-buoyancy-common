@@ -7,10 +7,10 @@
  */
 
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
-import Utils from '../../../../dot/js/Utils.js';
+import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import { combineOptions } from '../../../../phet-core/js/optionize.js';
-import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
+import PatternStringProperty from '../../../../phetcommon/js/util/PatternStringProperty.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import { AlignBox, AlignPropertyBox, GridBox, HBox, HStrut, Node, Text, VBox } from '../../../../scenery/js/imports.js';
 import AccordionBox, { AccordionBoxOptions } from '../../../../sun/js/AccordionBox.js';
@@ -45,22 +45,23 @@ export default class BuoyancyExploreScreenView extends SecondaryMassScreenView<B
 
     const displayOptionsNode = new DisplayOptionsNode( model );
 
+    const getMaterialReadoutStringProperty = ( materialProperty: TReadOnlyProperty<Material> ) => new PatternStringProperty( densityBuoyancyCommonStrings.kilogramsPerLiterPatternStringProperty, {
+      value: materialProperty
+    }, {
+      maps: {
+        value: material => material.density / 1000
+      },
+      decimalPlaces: 2
+    } );
+
     // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
-    const densityAText = new Text( new DerivedProperty( [ model.primaryMass.materialProperty, densityBuoyancyCommonStrings.kilogramsPerLiterPatternStringProperty ], ( material, pattern ) => {
-      return StringUtils.fillIn( pattern, {
-        value: Utils.toFixed( material.density / 1000, 2 )
-      } );
-    } ), {
+    const densityAText = new Text( getMaterialReadoutStringProperty( model.primaryMass.materialProperty ), {
       maxWidth: 120,
       font: DensityBuoyancyCommonConstants.ITEM_FONT,
       fill: DensityBuoyancyCommonColors.labelAProperty,
       layoutOptions: { column: 1, row: 0 }
     } );
-    const densityBText = new Text( new DerivedProperty( [ model.secondaryMass.materialProperty, densityBuoyancyCommonStrings.kilogramsPerLiterPatternStringProperty ], ( material, pattern ) => {
-      return StringUtils.fillIn( pattern, {
-        value: Utils.toFixed( material.density / 1000, 2 )
-      } );
-    } ), {
+    const densityBText = new Text( getMaterialReadoutStringProperty( model.secondaryMass.materialProperty ), {
       maxWidth: 120,
       font: DensityBuoyancyCommonConstants.ITEM_FONT,
       fill: DensityBuoyancyCommonColors.labelBProperty,

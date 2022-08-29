@@ -7,14 +7,13 @@
  */
 
 import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
-import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import NumberProperty from '../../../../axon/js/NumberProperty.js';
 import Property from '../../../../axon/js/Property.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import Dimension2 from '../../../../dot/js/Dimension2.js';
 import Range from '../../../../dot/js/Range.js';
 import optionize, { combineOptions } from '../../../../phet-core/js/optionize.js';
-import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
+import PatternStringProperty from '../../../../phetcommon/js/util/PatternStringProperty.js';
 import NumberControl, { NumberControlOptions } from '../../../../scenery-phet/js/NumberControl.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import { Node, Text, VBox, VBoxOptions } from '../../../../scenery/js/imports.js';
@@ -122,8 +121,8 @@ export default class ComboNumberControl<T> extends VBox {
           textOptions: {
             font: DensityBuoyancyCommonConstants.READOUT_FONT
           },
-          valuePattern: new DerivedProperty( [ providedConfig.valuePattern ], valuePattern => {
-            return StringUtils.fillIn( valuePattern, { value: SunConstants.VALUE_NAMED_PLACEHOLDER } );
+          valuePattern: new PatternStringProperty( providedConfig.valuePattern, {
+            value: SunConstants.VALUE_NAMED_PLACEHOLDER
           } ),
           maxWidth: 100,
           decimalPlaces: 2,

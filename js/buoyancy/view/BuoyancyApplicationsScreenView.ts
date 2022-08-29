@@ -13,7 +13,6 @@ import Range from '../../../../dot/js/Range.js';
 import Utils from '../../../../dot/js/Utils.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
 import { combineOptions } from '../../../../phet-core/js/optionize.js';
-import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
 import resetArrow_png from '../../../../scenery-phet/images/resetArrow_png.js';
 import NumberControl, { NumberControlOptions } from '../../../../scenery-phet/js/NumberControl.js';
 import NumberDisplay from '../../../../scenery-phet/js/NumberDisplay.js';
@@ -102,11 +101,7 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
           children: [
             airVolumeLabel,
             new NumberDisplay( airLitersProperty, new Range( 0, 10 ), {
-              valuePattern: new DerivedProperty( [ densityBuoyancyCommonStrings.litersPatternStringProperty ], litersPattern => {
-                return StringUtils.fillIn( litersPattern, {
-                  liters: '{{value}}'
-                } );
-              } ),
+              valuePattern: DensityBuoyancyCommonConstants.LITERS_PATTERN_STRING_PROPERTY,
               decimalPlaces: 2,
               textOptions: {
                 font: new PhetFont( 12 ),
@@ -180,11 +175,7 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
           factor: 1000
         } ), boatVolumeRange, combineOptions<NumberControlOptions>( {
           numberDisplayOptions: {
-            valuePattern: new DerivedProperty( [ densityBuoyancyCommonStrings.litersPatternStringProperty ], litersPattern => {
-              return StringUtils.fillIn( litersPattern, {
-                liters: '{{value}}'
-              } );
-            } ),
+            valuePattern: DensityBuoyancyCommonConstants.LITERS_PATTERN_STRING_PROPERTY,
             textOptions: {
               font: DensityBuoyancyCommonConstants.READOUT_FONT,
               maxWidth: 120

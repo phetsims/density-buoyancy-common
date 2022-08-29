@@ -9,9 +9,7 @@
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import Multilink from '../../../../axon/js/Multilink.js';
 import Bounds2 from '../../../../dot/js/Bounds2.js';
-import Utils from '../../../../dot/js/Utils.js';
 import { combineOptions } from '../../../../phet-core/js/optionize.js';
-import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
 import ArrowNode, { ArrowNodeOptions } from '../../../../scenery-phet/js/ArrowNode.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import { Line, ManualConstraint, Node, NodeOptions, Rectangle, Text, TextOptions } from '../../../../scenery/js/imports.js';
@@ -20,7 +18,7 @@ import Material from '../../common/model/Material.js';
 import DensityBuoyancyCommonColors from '../../common/view/DensityBuoyancyCommonColors.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import densityBuoyancyCommonStrings from '../../densityBuoyancyCommonStrings.js';
-import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
+import PatternStringProperty from '../../../../phetcommon/js/util/PatternStringProperty.js';
 
 // constants
 const materials = [
@@ -95,14 +93,17 @@ export default class DensityReadoutNode extends Node {
     const primaryArrow = new ArrowNode( 0, -7, 0, 0, combineOptions<ArrowNodeOptions>( {
       fill: DensityBuoyancyCommonColors.labelAProperty
     }, arrowOptions ) );
-    const primaryLabel = new Text( new DerivedProperty( [
-      densityAProperty,
-      densityBuoyancyCommonStrings.kilogramsPerLiterPatternStringProperty
-    ], ( density, pattern ) => {
-      return StringUtils.fillIn( pattern, {
-        value: Utils.toFixed( density / 1000, 2 )
-      } );
-    } ), combineOptions<TextOptions>( {
+
+    const createDensityStringProperty = ( densityProperty: TReadOnlyProperty<number> ) => new PatternStringProperty( densityBuoyancyCommonStrings.kilogramsPerLiterPatternStringProperty, {
+      value: densityProperty
+    }, {
+      maps: {
+        value: ( density: number ) => density / 1000
+      },
+      decimalPlaces: 2
+    } );
+
+    const primaryLabel = new Text( createDensityStringProperty( densityAProperty ), combineOptions<TextOptions>( {
       fill: DensityBuoyancyCommonColors.labelAProperty
     }, labelOptions ) );
     const primaryMarker = new Node( {
@@ -116,14 +117,7 @@ export default class DensityReadoutNode extends Node {
     const secondaryArrow = new ArrowNode( 0, 7, 0, 0, combineOptions<ArrowNodeOptions>( {
       fill: DensityBuoyancyCommonColors.labelBProperty
     }, arrowOptions ) );
-    const secondaryLabel = new Text( new DerivedProperty( [
-      densityBProperty,
-      densityBuoyancyCommonStrings.kilogramsPerLiterPatternStringProperty
-    ], ( density, pattern ) => {
-      return StringUtils.fillIn( pattern, {
-        value: Utils.toFixed( density / 1000, 2 )
-      } );
-    } ), combineOptions<TextOptions>( {
+    const secondaryLabel = new Text( createDensityStringProperty( densityBProperty ), combineOptions<TextOptions>( {
       fill: DensityBuoyancyCommonColors.labelBProperty
     }, labelOptions ) );
     const secondaryMarker = new Node( {

@@ -8,8 +8,10 @@
 
 import Dimension2 from '../../../dot/js/Dimension2.js';
 import Vector3 from '../../../dot/js/Vector3.js';
+import PatternStringProperty from '../../../phetcommon/js/util/PatternStringProperty.js';
 import PhetFont from '../../../scenery-phet/js/PhetFont.js';
 import densityBuoyancyCommon from '../densityBuoyancyCommon.js';
+import densityBuoyancyCommonStrings from '../densityBuoyancyCommonStrings.js';
 import Material from './model/Material.js';
 import DensityBuoyancyCommonColors from './view/DensityBuoyancyCommonColors.js';
 
@@ -77,7 +79,14 @@ const DensityBuoyancyCommonConstants = {
     Material.COPPER,
     Material.LEAD,
     Material.GOLD
-  ]
+  ],
+
+  LITERS_PATTERN_STRING_PROPERTY: new PatternStringProperty( densityBuoyancyCommonStrings.litersPatternStringProperty, {
+    liters: '{{value}}'
+  } ),
+  KILOGRAMS_PATTERN_STRING_PROPERTY: new PatternStringProperty( densityBuoyancyCommonStrings.kilogramsPatternStringProperty, {
+    kilograms: '{{value}}'
+  } )
 };
 
 densityBuoyancyCommon.register( 'DensityBuoyancyCommonConstants', DensityBuoyancyCommonConstants );

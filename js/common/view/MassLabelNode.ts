@@ -6,15 +6,13 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
-import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import Multilink from '../../../../axon/js/Multilink.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
-import Utils from '../../../../dot/js/Utils.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import NodeTexture from '../../../../mobius/js/NodeTexture.js';
-import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
+import PatternStringProperty from '../../../../phetcommon/js/util/PatternStringProperty.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
-import { TPaint, ManualConstraint, Node, Rectangle, Text } from '../../../../scenery/js/imports.js';
+import { ManualConstraint, Node, Rectangle, Text, TPaint } from '../../../../scenery/js/imports.js';
 import Panel from '../../../../sun/js/Panel.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import densityBuoyancyCommonStrings from '../../densityBuoyancyCommonStrings.js';
@@ -59,13 +57,10 @@ export default class MassLabelNode extends Node {
   public constructor( mass: Mass, showMassesProperty: TReadOnlyProperty<boolean> ) {
     super();
 
-    this.readoutTextProperty = new DerivedProperty( [
-      mass.massProperty,
-      densityBuoyancyCommonStrings.kilogramsPatternStringProperty
-    ], ( mass, pattern ) => {
-      return StringUtils.fillIn( pattern, {
-        kilograms: Utils.toFixed( mass, 2 )
-      } );
+    this.readoutTextProperty = new PatternStringProperty( densityBuoyancyCommonStrings.kilogramsPatternStringProperty, {
+      kilograms: mass.massProperty
+    }, {
+      decimalPlaces: 2
     } );
 
     const readoutText = new Text( this.readoutTextProperty, {

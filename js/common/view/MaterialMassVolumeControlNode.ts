@@ -16,9 +16,8 @@ import Range from '../../../../dot/js/Range.js';
 import Utils from '../../../../dot/js/Utils.js';
 import EnumerationDeprecated from '../../../../phet-core/js/EnumerationDeprecated.js';
 import optionize, { combineOptions } from '../../../../phet-core/js/optionize.js';
-import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
 import NumberControl, { NumberControlOptions } from '../../../../scenery-phet/js/NumberControl.js';
-import { HBox, TPaint, Node, Text, VBox, VBoxOptions } from '../../../../scenery/js/imports.js';
+import { HBox, Node, Text, TPaint, VBox, VBoxOptions } from '../../../../scenery/js/imports.js';
 import ComboBox from '../../../../sun/js/ComboBox.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
 import EnumerationIO from '../../../../tandem/js/types/EnumerationIO.js';
@@ -293,11 +292,7 @@ export default class MaterialMassVolumeControlNode extends VBox {
         phetioLinkedProperty: massProperty
       },
       numberDisplayOptions: {
-        valuePattern: new DerivedProperty( [ densityBuoyancyCommonStrings.kilogramsPatternStringProperty ], kilogramsPattern => {
-          return StringUtils.fillIn( kilogramsPattern, {
-            kilograms: '{{value}}'
-          } );
-        } ),
+        valuePattern: DensityBuoyancyCommonConstants.KILOGRAMS_PATTERN_STRING_PROPERTY,
         useFullHeight: true
       },
       arrowButtonOptions: {
@@ -323,11 +318,7 @@ export default class MaterialMassVolumeControlNode extends VBox {
         phetioLinkedProperty: volumeProperty
       },
       numberDisplayOptions: {
-        valuePattern: new DerivedProperty( [ densityBuoyancyCommonStrings.litersPatternStringProperty ], litersPattern => {
-          return StringUtils.fillIn( litersPattern, {
-            liters: '{{value}}'
-          } );
-        } ),
+        valuePattern: DensityBuoyancyCommonConstants.LITERS_PATTERN_STRING_PROPERTY,
         useFullHeight: true
       },
       arrowButtonOptions: {

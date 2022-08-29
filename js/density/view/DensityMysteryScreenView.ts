@@ -21,10 +21,10 @@ import { combineOptions } from '../../../../phet-core/js/optionize.js';
 
 // constants
 const blockSetStringMap = {
-  [ BlockSet.SET_1.name ]: densityBuoyancyCommonStrings.blockSet.set1Property,
-  [ BlockSet.SET_2.name ]: densityBuoyancyCommonStrings.blockSet.set2Property,
-  [ BlockSet.SET_3.name ]: densityBuoyancyCommonStrings.blockSet.set3Property,
-  [ BlockSet.RANDOM.name ]: densityBuoyancyCommonStrings.blockSet.randomProperty
+  [ BlockSet.SET_1.name ]: densityBuoyancyCommonStrings.blockSet.set1StringProperty,
+  [ BlockSet.SET_2.name ]: densityBuoyancyCommonStrings.blockSet.set2StringProperty,
+  [ BlockSet.SET_3.name ]: densityBuoyancyCommonStrings.blockSet.set3StringProperty,
+  [ BlockSet.RANDOM.name ]: densityBuoyancyCommonStrings.blockSet.randomStringProperty
 };
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
 
@@ -38,7 +38,7 @@ export default class DensityMysteryScreenView extends DensityBuoyancyScreenView<
     }, options ) );
 
     const densityTableAccordionBox = new AccordionBox( new DensityTableNode(), combineOptions<AccordionBoxOptions>( {
-      titleNode: new Text( densityBuoyancyCommonStrings.densityTableProperty, {
+      titleNode: new Text( densityBuoyancyCommonStrings.densityTableStringProperty, {
         font: DensityBuoyancyCommonConstants.TITLE_FONT,
         maxWidth: 200
       } ),
@@ -104,7 +104,7 @@ export default class DensityMysteryScreenView extends DensityBuoyancyScreenView<
 
     const blockSetPanel = new Panel( new VBox( {
       children: [
-        new Text( densityBuoyancyCommonStrings.blocksProperty, {
+        new Text( densityBuoyancyCommonStrings.blocksStringProperty, {
           font: DensityBuoyancyCommonConstants.TITLE_FONT,
           maxWidth: 85
         } ),

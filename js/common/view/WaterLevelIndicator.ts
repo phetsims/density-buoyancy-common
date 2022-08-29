@@ -32,7 +32,7 @@ export default class WaterLevelIndicator extends Node {
     // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
     const readoutText = new Text( new DerivedProperty( [
       volumeProperty,
-      densityBuoyancyCommonStrings.litersPatternProperty
+      densityBuoyancyCommonStrings.litersPatternStringProperty
     ], ( volume, litersPattern ) => {
       return StringUtils.fillIn( litersPattern, {
         liters: Utils.toFixed( 1000 * volume, 2 )

@@ -76,7 +76,7 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
       tandem: tandem.createTandem( 'bottleControlNode' )
     } );
 
-    const airVolumeLabel = new Text( densityBuoyancyCommonStrings.airVolumeProperty, {
+    const airVolumeLabel = new Text( densityBuoyancyCommonStrings.airVolumeStringProperty, {
       font: DensityBuoyancyCommonConstants.READOUT_FONT,
       maxWidth: 160
     } );
@@ -91,7 +91,7 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
       align: 'left',
       stretch: true,
       children: [
-        new Text( densityBuoyancyCommonStrings.materialInsideProperty, {
+        new Text( densityBuoyancyCommonStrings.materialInsideStringProperty, {
           font: DensityBuoyancyCommonConstants.TITLE_FONT,
           maxWidth: 160
         } ),
@@ -102,7 +102,7 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
           children: [
             airVolumeLabel,
             new NumberDisplay( airLitersProperty, new Range( 0, 10 ), {
-              valuePattern: new DerivedProperty( [ densityBuoyancyCommonStrings.litersPatternProperty ], litersPattern => {
+              valuePattern: new DerivedProperty( [ densityBuoyancyCommonStrings.litersPatternStringProperty ], litersPattern => {
                 return StringUtils.fillIn( litersPattern, {
                   liters: '{{value}}'
                 } );
@@ -176,11 +176,11 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
         new HSeparator( blockControlNode.width ),
         // Convert cubic meters => liters
         // @ts-ignore see https://github.com/phetsims/axon/issues/382
-        new NumberControl( densityBuoyancyCommonStrings.boatVolumeProperty, new UnitConversionProperty( model.boat.displacementVolumeProperty, {
+        new NumberControl( densityBuoyancyCommonStrings.boatVolumeStringProperty, new UnitConversionProperty( model.boat.displacementVolumeProperty, {
           factor: 1000
         } ), boatVolumeRange, combineOptions<NumberControlOptions>( {
           numberDisplayOptions: {
-            valuePattern: new DerivedProperty( [ densityBuoyancyCommonStrings.litersPatternProperty ], litersPattern => {
+            valuePattern: new DerivedProperty( [ densityBuoyancyCommonStrings.litersPatternStringProperty ], litersPattern => {
               return StringUtils.fillIn( litersPattern, {
                 liters: '{{value}}'
               } );
@@ -259,7 +259,7 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
     } );
 
     const densityBox = new AccordionBox( densityContainer, combineOptions<AccordionBoxOptions>( {
-      titleNode: new Text( densityBuoyancyCommonStrings.densityProperty, {
+      titleNode: new Text( densityBuoyancyCommonStrings.densityStringProperty, {
         maxWidth: 160,
         font: DensityBuoyancyCommonConstants.TITLE_FONT
       } ),

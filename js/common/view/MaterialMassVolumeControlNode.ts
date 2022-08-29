@@ -258,7 +258,7 @@ export default class MaterialMassVolumeControlNode extends VBox {
       } ),
       {
         value: MaterialEnumeration.CUSTOM,
-        node: new Text( densityBuoyancyCommonStrings.material.customProperty, {
+        node: new Text( densityBuoyancyCommonStrings.material.customStringProperty, {
           font: DensityBuoyancyCommonConstants.COMBO_BOX_ITEM_FONT,
           maxWidth: comboMaxWidth
         } ),
@@ -270,7 +270,7 @@ export default class MaterialMassVolumeControlNode extends VBox {
       tandem: tandem.createTandem( 'comboBox' )
     } );
 
-    const massNumberControl = new NumberControl( densityBuoyancyCommonStrings.massProperty, massNumberProperty, new Range( options.minMass, options.maxMass ), combineOptions<NumberControlOptions>( {
+    const massNumberControl = new NumberControl( densityBuoyancyCommonStrings.massStringProperty, massNumberProperty, new Range( options.minMass, options.maxMass ), combineOptions<NumberControlOptions>( {
       sliderOptions: {
         thumbNode: new PrecisionSliderThumb( {
           thumbFill: options.color,
@@ -293,7 +293,7 @@ export default class MaterialMassVolumeControlNode extends VBox {
         phetioLinkedProperty: massProperty
       },
       numberDisplayOptions: {
-        valuePattern: new DerivedProperty( [ densityBuoyancyCommonStrings.kilogramsPatternProperty ], kilogramsPattern => {
+        valuePattern: new DerivedProperty( [ densityBuoyancyCommonStrings.kilogramsPatternStringProperty ], kilogramsPattern => {
           return StringUtils.fillIn( kilogramsPattern, {
             kilograms: '{{value}}'
           } );
@@ -312,7 +312,7 @@ export default class MaterialMassVolumeControlNode extends VBox {
       }
     }, MaterialMassVolumeControlNode.getNumberControlOptions() ) );
 
-    const volumeNumberControl = new NumberControl( densityBuoyancyCommonStrings.volumeProperty, numberControlVolumeProperty, new Range( options.minVolumeLiters, options.maxVolumeLiters ), combineOptions<NumberControlOptions>( {
+    const volumeNumberControl = new NumberControl( densityBuoyancyCommonStrings.volumeStringProperty, numberControlVolumeProperty, new Range( options.minVolumeLiters, options.maxVolumeLiters ), combineOptions<NumberControlOptions>( {
       sliderOptions: {
         thumbNode: new PrecisionSliderThumb( {
           thumbFill: options.color,
@@ -323,7 +323,7 @@ export default class MaterialMassVolumeControlNode extends VBox {
         phetioLinkedProperty: volumeProperty
       },
       numberDisplayOptions: {
-        valuePattern: new DerivedProperty( [ densityBuoyancyCommonStrings.litersPatternProperty ], litersPattern => {
+        valuePattern: new DerivedProperty( [ densityBuoyancyCommonStrings.litersPatternStringProperty ], litersPattern => {
           return StringUtils.fillIn( litersPattern, {
             liters: '{{value}}'
           } );

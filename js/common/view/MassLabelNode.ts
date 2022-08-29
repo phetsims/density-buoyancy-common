@@ -43,11 +43,11 @@ const createMassLabel = ( string: TReadOnlyProperty<string>, fill: TPaint ) => {
   return rectangle;
 };
 
-const PRIMARY_LABEL_DEPENDENCIES = [ densityBuoyancyCommonStrings.massLabel.primaryProperty, DensityBuoyancyCommonColors.labelAProperty ];
-const SECONDARY_LABEL_DEPENDENCIES = [ densityBuoyancyCommonStrings.massLabel.secondaryProperty, DensityBuoyancyCommonColors.labelBProperty ];
+const PRIMARY_LABEL_DEPENDENCIES = [ densityBuoyancyCommonStrings.massLabel.primaryStringProperty, DensityBuoyancyCommonColors.labelAProperty ];
+const SECONDARY_LABEL_DEPENDENCIES = [ densityBuoyancyCommonStrings.massLabel.secondaryStringProperty, DensityBuoyancyCommonColors.labelBProperty ];
 
-const PRIMARY_LABEL = createMassLabel( densityBuoyancyCommonStrings.massLabel.primaryProperty, DensityBuoyancyCommonColors.labelAProperty );
-const SECONDARY_LABEL = createMassLabel( densityBuoyancyCommonStrings.massLabel.secondaryProperty, DensityBuoyancyCommonColors.labelBProperty );
+const PRIMARY_LABEL = createMassLabel( densityBuoyancyCommonStrings.massLabel.primaryStringProperty, DensityBuoyancyCommonColors.labelAProperty );
+const SECONDARY_LABEL = createMassLabel( densityBuoyancyCommonStrings.massLabel.secondaryStringProperty, DensityBuoyancyCommonColors.labelBProperty );
 
 export default class MassLabelNode extends Node {
 
@@ -61,7 +61,7 @@ export default class MassLabelNode extends Node {
 
     this.readoutTextProperty = new DerivedProperty( [
       mass.massProperty,
-      densityBuoyancyCommonStrings.kilogramsPatternProperty
+      densityBuoyancyCommonStrings.kilogramsPatternStringProperty
     ], ( mass, pattern ) => {
       return StringUtils.fillIn( pattern, {
         kilograms: Utils.toFixed( mass, 2 )

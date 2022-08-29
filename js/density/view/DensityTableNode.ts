@@ -32,12 +32,12 @@ export default class DensityTableNode extends Node {
 
     const gridBox = new GridBox( {
       children: [
-        new Text( densityBuoyancyCommonStrings.material.nameProperty, {
+        new Text( densityBuoyancyCommonStrings.material.nameStringProperty, {
           font: headerFont,
           maxWidth: 160,
           layoutOptions: combineOptions<TLayoutOptions>( { column: 0, row: 0, xAlign: 'left' }, layoutOptions )
         } ),
-        new Text( densityBuoyancyCommonStrings.densityKgLProperty, {
+        new Text( densityBuoyancyCommonStrings.densityKgLStringProperty, {
           font: headerFont,
           maxWidth: 160,
           layoutOptions: combineOptions<TLayoutOptions>( { column: 1, row: 0, xAlign: 'right' }, layoutOptions )

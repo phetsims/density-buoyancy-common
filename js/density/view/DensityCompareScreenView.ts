@@ -23,9 +23,9 @@ import { combineOptions } from '../../../../phet-core/js/optionize.js';
 
 // constants
 const blockSetStringMap = {
-  [ BlockSet.SAME_MASS.name ]: densityBuoyancyCommonStrings.blockSet.sameMassProperty,
-  [ BlockSet.SAME_VOLUME.name ]: densityBuoyancyCommonStrings.blockSet.sameVolumeProperty,
-  [ BlockSet.SAME_DENSITY.name ]: densityBuoyancyCommonStrings.blockSet.sameDensityProperty
+  [ BlockSet.SAME_MASS.name ]: densityBuoyancyCommonStrings.blockSet.sameMassStringProperty,
+  [ BlockSet.SAME_VOLUME.name ]: densityBuoyancyCommonStrings.blockSet.sameVolumeStringProperty,
+  [ BlockSet.SAME_DENSITY.name ]: densityBuoyancyCommonStrings.blockSet.sameDensityStringProperty
 };
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
 
@@ -51,7 +51,7 @@ export default class DensityCompareScreenView extends DensityBuoyancyScreenView<
     const blocksRadioButtonGroupTandem = blocksPanelTandem.createTandem( 'blocksRadioButtonGroup' );
     const blocksPanel = new Panel( new VBox( {
       children: [
-        new Text( densityBuoyancyCommonStrings.blocksProperty, {
+        new Text( densityBuoyancyCommonStrings.blocksStringProperty, {
           font: DensityBuoyancyCommonConstants.TITLE_FONT,
           maxWidth: 160
         } ),
@@ -98,8 +98,8 @@ export default class DensityCompareScreenView extends DensityBuoyancyScreenView<
     const massNumberControlTandem = tandem.createTandem( 'massNumberControl' );
     const massNumberControl = new ComparisonNumberControl(
       model.massProperty,
-      densityBuoyancyCommonStrings.massProperty,
-      densityBuoyancyCommonStrings.kilogramsPatternProperty,
+      densityBuoyancyCommonStrings.massStringProperty,
+      densityBuoyancyCommonStrings.kilogramsPatternStringProperty,
       'kilograms',
       {
         tandem: massNumberControlTandem,
@@ -115,8 +115,8 @@ export default class DensityCompareScreenView extends DensityBuoyancyScreenView<
     const volumeNumberControlTandem = tandem.createTandem( 'volumeNumberControl' );
     const volumeNumberControl = new ComparisonNumberControl(
       volumeProperty,
-      densityBuoyancyCommonStrings.volumeProperty,
-      densityBuoyancyCommonStrings.litersPatternProperty,
+      densityBuoyancyCommonStrings.volumeStringProperty,
+      densityBuoyancyCommonStrings.litersPatternStringProperty,
       'liters',
       {
         tandem: volumeNumberControlTandem,
@@ -132,8 +132,8 @@ export default class DensityCompareScreenView extends DensityBuoyancyScreenView<
     const densityNumberControlTandem = tandem.createTandem( 'densityNumberControl' );
     const densityNumberControl = new ComparisonNumberControl(
       densityProperty,
-      densityBuoyancyCommonStrings.densityProperty,
-      densityBuoyancyCommonStrings.kilogramsPerLiterPatternProperty,
+      densityBuoyancyCommonStrings.densityStringProperty,
+      densityBuoyancyCommonStrings.kilogramsPerLiterPatternStringProperty,
       'value',
       {
         tandem: densityNumberControlTandem,

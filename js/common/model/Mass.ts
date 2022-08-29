@@ -91,11 +91,11 @@ const blockStringMap = {
   [ MassTag.THREE_C.name ]: densityBuoyancyCommonStrings.massLabel[ '3cProperty' ],
   [ MassTag.THREE_D.name ]: densityBuoyancyCommonStrings.massLabel[ '3dProperty' ],
   [ MassTag.THREE_E.name ]: densityBuoyancyCommonStrings.massLabel[ '3eProperty' ],
-  [ MassTag.A.name ]: densityBuoyancyCommonStrings.massLabel.aProperty,
-  [ MassTag.B.name ]: densityBuoyancyCommonStrings.massLabel.bProperty,
-  [ MassTag.C.name ]: densityBuoyancyCommonStrings.massLabel.cProperty,
-  [ MassTag.D.name ]: densityBuoyancyCommonStrings.massLabel.dProperty,
-  [ MassTag.E.name ]: densityBuoyancyCommonStrings.massLabel.eProperty
+  [ MassTag.A.name ]: densityBuoyancyCommonStrings.massLabel.aStringProperty,
+  [ MassTag.B.name ]: densityBuoyancyCommonStrings.massLabel.bStringProperty,
+  [ MassTag.C.name ]: densityBuoyancyCommonStrings.massLabel.cStringProperty,
+  [ MassTag.D.name ]: densityBuoyancyCommonStrings.massLabel.dStringProperty,
+  [ MassTag.E.name ]: densityBuoyancyCommonStrings.massLabel.eStringProperty
 };
 
 class MaterialEnumeration extends EnumerationValue {

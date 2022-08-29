@@ -34,8 +34,8 @@ export default class ScaleReadoutNode extends Node {
     this.textProperty = new DerivedProperty( [
       mass.scaleForceInterpolatedProperty,
       gravityProperty,
-      densityBuoyancyCommonStrings.newtonsPatternProperty,
-      densityBuoyancyCommonStrings.kilogramsPatternProperty
+      densityBuoyancyCommonStrings.newtonsPatternStringProperty,
+      densityBuoyancyCommonStrings.kilogramsPatternStringProperty
     ], ( scaleForce, gravity, newtonsPattern, kilogramsPattern ) => {
       if ( mass.displayType === DisplayType.NEWTONS ) {
         return StringUtils.fillIn( newtonsPattern, {

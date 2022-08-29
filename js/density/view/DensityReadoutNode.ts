@@ -97,7 +97,7 @@ export default class DensityReadoutNode extends Node {
     }, arrowOptions ) );
     const primaryLabel = new Text( new DerivedProperty( [
       densityAProperty,
-      densityBuoyancyCommonStrings.kilogramsPerLiterPatternProperty
+      densityBuoyancyCommonStrings.kilogramsPerLiterPatternStringProperty
     ], ( density, pattern ) => {
       return StringUtils.fillIn( pattern, {
         value: Utils.toFixed( density / 1000, 2 )
@@ -118,7 +118,7 @@ export default class DensityReadoutNode extends Node {
     }, arrowOptions ) );
     const secondaryLabel = new Text( new DerivedProperty( [
       densityBProperty,
-      densityBuoyancyCommonStrings.kilogramsPerLiterPatternProperty
+      densityBuoyancyCommonStrings.kilogramsPerLiterPatternStringProperty
     ], ( density, pattern ) => {
       return StringUtils.fillIn( pattern, {
         value: Utils.toFixed( density / 1000, 2 )

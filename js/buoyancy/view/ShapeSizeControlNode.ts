@@ -25,12 +25,12 @@ import densityBuoyancyCommonStrings from '../../densityBuoyancyCommonStrings.js'
 
 // constants
 const shapeStringMap = {
-  [ MassShape.BLOCK.name ]: densityBuoyancyCommonStrings.shape.blockProperty,
-  [ MassShape.ELLIPSOID.name ]: densityBuoyancyCommonStrings.shape.ellipsoidProperty,
-  [ MassShape.VERTICAL_CYLINDER.name ]: densityBuoyancyCommonStrings.shape.verticalCylinderProperty,
-  [ MassShape.HORIZONTAL_CYLINDER.name ]: densityBuoyancyCommonStrings.shape.horizontalCylinderProperty,
-  [ MassShape.CONE.name ]: densityBuoyancyCommonStrings.shape.coneProperty,
-  [ MassShape.INVERTED_CONE.name ]: densityBuoyancyCommonStrings.shape.invertedConeProperty
+  [ MassShape.BLOCK.name ]: densityBuoyancyCommonStrings.shape.blockStringProperty,
+  [ MassShape.ELLIPSOID.name ]: densityBuoyancyCommonStrings.shape.ellipsoidStringProperty,
+  [ MassShape.VERTICAL_CYLINDER.name ]: densityBuoyancyCommonStrings.shape.verticalCylinderStringProperty,
+  [ MassShape.HORIZONTAL_CYLINDER.name ]: densityBuoyancyCommonStrings.shape.horizontalCylinderStringProperty,
+  [ MassShape.CONE.name ]: densityBuoyancyCommonStrings.shape.coneStringProperty,
+  [ MassShape.INVERTED_CONE.name ]: densityBuoyancyCommonStrings.shape.invertedConeStringProperty
 };
 const tandemNameMap = {
   [ MassShape.BLOCK.name ]: 'block',
@@ -97,8 +97,8 @@ export default class ShapeSizeControlNode extends FlowBox {
       }
     };
 
-    const widthNumberControl = new NumberControl( densityBuoyancyCommonStrings.widthProperty, widthRatioProperty, new Range( 0, 1 ), numberControlOptions );
-    const heightNumberControl = new NumberControl( densityBuoyancyCommonStrings.heightProperty, heightRatioProperty, new Range( 0, 1 ), numberControlOptions );
+    const widthNumberControl = new NumberControl( densityBuoyancyCommonStrings.widthStringProperty, widthRatioProperty, new Range( 0, 1 ), numberControlOptions );
+    const heightNumberControl = new NumberControl( densityBuoyancyCommonStrings.heightStringProperty, heightRatioProperty, new Range( 0, 1 ), numberControlOptions );
 
     // DerivedProperty doesn't need disposal, since everything here lives for the lifetime of the simulation
     const litersProperty = new DerivedProperty( [ volumeProperty ], volume => {
@@ -123,13 +123,13 @@ export default class ShapeSizeControlNode extends FlowBox {
         align: 'center',
         justify: 'spaceBetween',
         children: [
-          new Text( densityBuoyancyCommonStrings.volumeProperty, {
+          new Text( densityBuoyancyCommonStrings.volumeStringProperty, {
             font: DensityBuoyancyCommonConstants.READOUT_FONT,
             maxWidth: 120
           } ),
           new NumberDisplay( litersProperty, new Range( 0, 10 ), { // TODO: is 10 the most?
             valuePattern: new DerivedProperty( [
-              densityBuoyancyCommonStrings.litersPatternProperty
+              densityBuoyancyCommonStrings.litersPatternStringProperty
             ], pattern => StringUtils.fillIn( pattern, {
               liters: '{{value}}'
             } ) ),

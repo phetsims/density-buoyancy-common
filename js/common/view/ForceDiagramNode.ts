@@ -114,7 +114,7 @@ export default class ForceDiagramNode extends Node {
       stroke: 'black'
     } );
 
-    const newtonsPatternProperty = densityBuoyancyCommonStrings.newtonsPatternProperty;
+    const newtonsPatternProperty = densityBuoyancyCommonStrings.newtonsPatternStringProperty;
     newtonsPatternProperty.lazyLink( this.update.bind( this ) );
   }
 

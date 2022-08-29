@@ -26,7 +26,7 @@ export default class DensityReadoutListNode extends VBox {
 
     this.children = materialProperties.map( materialProperty => {
       // Exists for the lifetime of a sim, so disposal patterns not needed.
-      return new Text( new DerivedProperty( [ materialProperty, densityBuoyancyCommonStrings.densityReadoutPatternProperty ], ( material, pattern ) => {
+      return new Text( new DerivedProperty( [ materialProperty, densityBuoyancyCommonStrings.densityReadoutPatternStringProperty ], ( material, pattern ) => {
         return StringUtils.fillIn( pattern, {
           material: material.name,
           density: Utils.toFixed( material.density / 1000, 2 )

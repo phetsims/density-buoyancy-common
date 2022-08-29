@@ -26,8 +26,8 @@ export default class DensityControlNode extends ComboNumberControl<Material> {
 
     super( {
       tandem: tandem,
-      title: densityBuoyancyCommonStrings.fluidDensityProperty,
-      valuePattern: densityBuoyancyCommonStrings.kilogramsPerLiterPatternProperty,
+      title: densityBuoyancyCommonStrings.fluidDensityStringProperty,
+      valuePattern: densityBuoyancyCommonStrings.kilogramsPerLiterPatternStringProperty,
       property: liquidMaterialProperty,
       range: new Range( 0.5, 15 ),
       toNumericValue: material => material.density / 1000,
@@ -63,7 +63,7 @@ export default class DensityControlNode extends ComboNumberControl<Material> {
       },
       getFallbackNode: material => {
         if ( material.hidden ) {
-          return new Text( densityBuoyancyCommonStrings.whatIsTheFluidDensityProperty, {
+          return new Text( densityBuoyancyCommonStrings.whatIsTheFluidDensityStringProperty, {
             font: new PhetFont( 14 )
           } );
         }

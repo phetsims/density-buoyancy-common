@@ -57,7 +57,7 @@ export default class Gravity {
    */
   public static createCustomGravity( value: number ): Gravity {
     return new Gravity( {
-      name: densityBuoyancyCommonStrings.gravity.customProperty,
+      name: densityBuoyancyCommonStrings.gravity.customStringProperty,
       tandemName: 'custom',
       value: value,
       custom: true
@@ -66,25 +66,25 @@ export default class Gravity {
 
 
   public static EARTH = new Gravity( {
-    name: densityBuoyancyCommonStrings.gravity.earthProperty,
+    name: densityBuoyancyCommonStrings.gravity.earthStringProperty,
     tandemName: 'earth',
     value: DensityBuoyancyCommonQueryParameters.gEarth
   } );
 
   public static JUPITER = new Gravity( {
-    name: densityBuoyancyCommonStrings.gravity.jupiterProperty,
+    name: densityBuoyancyCommonStrings.gravity.jupiterStringProperty,
     tandemName: 'jupiter',
     value: 24.8
   } );
 
   public static MOON = new Gravity( {
-    name: densityBuoyancyCommonStrings.gravity.moonProperty,
+    name: densityBuoyancyCommonStrings.gravity.moonStringProperty,
     tandemName: 'moon',
     value: 1.6
   } );
 
   public static PLANET_X = new Gravity( {
-    name: densityBuoyancyCommonStrings.gravity.planetXProperty,
+    name: densityBuoyancyCommonStrings.gravity.planetXStringProperty,
     tandemName: 'planetX',
     value: 19.6,
     hidden: true

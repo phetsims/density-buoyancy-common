@@ -46,16 +46,14 @@ export default class BuoyancyIntroScreenView extends DensityBuoyancyScreenView<B
     const blocksRadioButtonGroupTandem = options.tandem.createTandem( 'blocksRadioButtonGroup' );
 
     const blocksRadioButtonGroup = new VerticalAquaRadioButtonGroup( model.blockSetProperty, BlockSet.enumeration.values.map( blockSet => {
-      const tandemName = `${blockSetTandemNameMap[ blockSet.name ]}RadioButton`;
-      const tandem = blocksRadioButtonGroupTandem.createTandem( tandemName );
       return {
-        node: new Text( blockSetStringMap[ blockSet.name ], {
+        createNode: tandem => new Text( blockSetStringMap[ blockSet.name ], {
           font: DensityBuoyancyCommonConstants.RADIO_BUTTON_FONT,
           maxWidth: 160,
           tandem: tandem.createTandem( 'label' )
         } ),
         value: blockSet,
-        tandemName: tandemName
+        tandemName: `${blockSetTandemNameMap[ blockSet.name ]}RadioButton`
       };
     } ), {
       align: 'left',

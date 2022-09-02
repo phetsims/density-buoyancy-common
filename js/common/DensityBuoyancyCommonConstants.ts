@@ -8,7 +8,7 @@
 
 import Dimension2 from '../../../dot/js/Dimension2.js';
 import Vector3 from '../../../dot/js/Vector3.js';
-import PatternStringProperty from '../../../phetcommon/js/util/PatternStringProperty.js';
+import PatternStringProperty from '../../../axon/js/PatternStringProperty.js';
 import PhetFont from '../../../scenery-phet/js/PhetFont.js';
 import densityBuoyancyCommon from '../densityBuoyancyCommon.js';
 import densityBuoyancyCommonStrings from '../densityBuoyancyCommonStrings.js';

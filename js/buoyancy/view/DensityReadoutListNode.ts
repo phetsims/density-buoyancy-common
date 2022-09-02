@@ -9,7 +9,7 @@
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import DynamicProperty from '../../../../axon/js/DynamicProperty.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
-import PatternStringProperty from '../../../../phetcommon/js/util/PatternStringProperty.js';
+import PatternStringProperty from '../../../../axon/js/PatternStringProperty.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import { Text, VBox } from '../../../../scenery/js/imports.js';
 import Material from '../../common/model/Material.js';

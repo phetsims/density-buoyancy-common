@@ -10,7 +10,7 @@ import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import { combineOptions } from '../../../../phet-core/js/optionize.js';
-import PatternStringProperty from '../../../../phetcommon/js/util/PatternStringProperty.js';
+import PatternStringProperty from '../../../../axon/js/PatternStringProperty.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import { AlignBox, AlignPropertyBox, GridBox, HBox, HStrut, Node, Text, VBox } from '../../../../scenery/js/imports.js';
 import AccordionBox, { AccordionBoxOptions } from '../../../../sun/js/AccordionBox.js';

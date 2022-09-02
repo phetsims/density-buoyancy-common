@@ -10,7 +10,7 @@ import Multilink from '../../../../axon/js/Multilink.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import NodeTexture from '../../../../mobius/js/NodeTexture.js';
-import PatternStringProperty from '../../../../phetcommon/js/util/PatternStringProperty.js';
+import PatternStringProperty from '../../../../axon/js/PatternStringProperty.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import { ManualConstraint, Node, Rectangle, Text, TPaint } from '../../../../scenery/js/imports.js';
 import Panel from '../../../../sun/js/Panel.js';

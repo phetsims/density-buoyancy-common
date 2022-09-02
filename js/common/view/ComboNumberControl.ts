@@ -13,7 +13,7 @@ import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import Dimension2 from '../../../../dot/js/Dimension2.js';
 import Range from '../../../../dot/js/Range.js';
 import optionize, { combineOptions } from '../../../../phet-core/js/optionize.js';
-import PatternStringProperty from '../../../../phetcommon/js/util/PatternStringProperty.js';
+import PatternStringProperty from '../../../../axon/js/PatternStringProperty.js';
 import NumberControl, { NumberControlOptions } from '../../../../scenery-phet/js/NumberControl.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import { Node, Text, VBox, VBoxOptions } from '../../../../scenery/js/imports.js';

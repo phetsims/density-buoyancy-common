@@ -18,7 +18,7 @@ import Material from '../../common/model/Material.js';
 import DensityBuoyancyCommonColors from '../../common/view/DensityBuoyancyCommonColors.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import densityBuoyancyCommonStrings from '../../densityBuoyancyCommonStrings.js';
-import PatternStringProperty from '../../../../phetcommon/js/util/PatternStringProperty.js';
+import PatternStringProperty from '../../../../axon/js/PatternStringProperty.js';
 
 // constants
 const materials = [

@@ -56,6 +56,11 @@ type SelfOptions = {
 
 export type MaterialMassVolumeControlNodeOptions = SelfOptions & VBoxOptions;
 
+type MaterialEnumValue = { name: 'CUSTOM' | keyof Material };
+type MaterialEnum = Record<string, MaterialEnumValue>;
+
+const enumerationCache = new Map<string, MaterialEnum>();
+
 export default class MaterialMassVolumeControlNode extends VBox {
 
   public constructor( materialProperty: Property<Material>, massProperty: ReadOnlyProperty<number>, volumeProperty: Property<number>, materials: Material[], setVolume: ( volume: number ) => void, listParent: Node, providedOptions?: MaterialMassVolumeControlNodeOptions ) {
@@ -84,9 +89,13 @@ export default class MaterialMassVolumeControlNode extends VBox {
       align: 'left'
     } );
 
-    type MaterialEnumValue = { name: 'CUSTOM' | keyof Material };
-    type MaterialEnum = Record<string, MaterialEnumValue>;
-    const MaterialEnumeration: MaterialEnum = EnumerationDeprecated.byKeys( [ ...materials.map( material => material.identifier! ), 'CUSTOM' ] ) as unknown as MaterialEnum;
+    const keys = [ ...materials.map( material => material.identifier! ), 'CUSTOM' ];
+    const keyJoin = keys.join( '|' );
+
+    if ( !enumerationCache.has( keyJoin ) ) {
+      enumerationCache.set( keyJoin, EnumerationDeprecated.byKeys( keys ) as unknown as MaterialEnum );
+    }
+    const MaterialEnumeration: MaterialEnum = enumerationCache.get( keyJoin )!;
 
     const comboBoxMaterialProperty = new DynamicProperty( new Property( materialProperty ), {
       bidirectional: true,

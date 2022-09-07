@@ -15,7 +15,7 @@ import VerticalAquaRadioButtonGroup from '../../../../sun/js/VerticalAquaRadioBu
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 import DensityBuoyancyScreenView, { DensityBuoyancyScreenViewOptions } from '../../common/view/DensityBuoyancyScreenView.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
-import densityBuoyancyCommonStrings from '../../densityBuoyancyCommonStrings.js';
+import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import DensityCompareModel, { BlockSet } from '../model/DensityCompareModel.js';
 import ComparisonNumberControl from './ComparisonNumberControl.js';
 import Bounds2 from '../../../../dot/js/Bounds2.js';
@@ -23,9 +23,9 @@ import { combineOptions } from '../../../../phet-core/js/optionize.js';
 
 // constants
 const blockSetStringMap = {
-  [ BlockSet.SAME_MASS.name ]: densityBuoyancyCommonStrings.blockSet.sameMassStringProperty,
-  [ BlockSet.SAME_VOLUME.name ]: densityBuoyancyCommonStrings.blockSet.sameVolumeStringProperty,
-  [ BlockSet.SAME_DENSITY.name ]: densityBuoyancyCommonStrings.blockSet.sameDensityStringProperty
+  [ BlockSet.SAME_MASS.name ]: DensityBuoyancyCommonStrings.blockSet.sameMassStringProperty,
+  [ BlockSet.SAME_VOLUME.name ]: DensityBuoyancyCommonStrings.blockSet.sameVolumeStringProperty,
+  [ BlockSet.SAME_DENSITY.name ]: DensityBuoyancyCommonStrings.blockSet.sameDensityStringProperty
 };
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
 
@@ -51,7 +51,7 @@ export default class DensityCompareScreenView extends DensityBuoyancyScreenView<
     const blocksRadioButtonGroupTandem = blocksPanelTandem.createTandem( 'blocksRadioButtonGroup' );
     const blocksPanel = new Panel( new VBox( {
       children: [
-        new Text( densityBuoyancyCommonStrings.blocksStringProperty, {
+        new Text( DensityBuoyancyCommonStrings.blocksStringProperty, {
           font: DensityBuoyancyCommonConstants.TITLE_FONT,
           maxWidth: 160
         } ),
@@ -96,8 +96,8 @@ export default class DensityCompareScreenView extends DensityBuoyancyScreenView<
     const massNumberControlTandem = tandem.createTandem( 'massNumberControl' );
     const massNumberControl = new ComparisonNumberControl(
       model.massProperty,
-      densityBuoyancyCommonStrings.massStringProperty,
-      densityBuoyancyCommonStrings.kilogramsPatternStringProperty,
+      DensityBuoyancyCommonStrings.massStringProperty,
+      DensityBuoyancyCommonStrings.kilogramsPatternStringProperty,
       'kilograms',
       {
         tandem: massNumberControlTandem,
@@ -113,8 +113,8 @@ export default class DensityCompareScreenView extends DensityBuoyancyScreenView<
     const volumeNumberControlTandem = tandem.createTandem( 'volumeNumberControl' );
     const volumeNumberControl = new ComparisonNumberControl(
       volumeProperty,
-      densityBuoyancyCommonStrings.volumeStringProperty,
-      densityBuoyancyCommonStrings.litersPatternStringProperty,
+      DensityBuoyancyCommonStrings.volumeStringProperty,
+      DensityBuoyancyCommonStrings.litersPatternStringProperty,
       'liters',
       {
         tandem: volumeNumberControlTandem,
@@ -130,8 +130,8 @@ export default class DensityCompareScreenView extends DensityBuoyancyScreenView<
     const densityNumberControlTandem = tandem.createTandem( 'densityNumberControl' );
     const densityNumberControl = new ComparisonNumberControl(
       densityProperty,
-      densityBuoyancyCommonStrings.densityStringProperty,
-      densityBuoyancyCommonStrings.kilogramsPerLiterPatternStringProperty,
+      DensityBuoyancyCommonStrings.densityStringProperty,
+      DensityBuoyancyCommonStrings.kilogramsPerLiterPatternStringProperty,
       'value',
       {
         tandem: densityNumberControlTandem,

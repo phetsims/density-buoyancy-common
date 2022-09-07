@@ -16,7 +16,7 @@ import NumberIO from '../../../../tandem/js/types/NumberIO.js';
 import ReferenceIO, { ReferenceIOState } from '../../../../tandem/js/types/ReferenceIO.js';
 import StringIO from '../../../../tandem/js/types/StringIO.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
-import densityBuoyancyCommonStrings from '../../densityBuoyancyCommonStrings.js';
+import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import DensityBuoyancyCommonQueryParameters from '../DensityBuoyancyCommonQueryParameters.js';
 
 export type GravityOptions = {
@@ -57,7 +57,7 @@ export default class Gravity {
    */
   public static createCustomGravity( value: number ): Gravity {
     return new Gravity( {
-      name: densityBuoyancyCommonStrings.gravity.customStringProperty,
+      name: DensityBuoyancyCommonStrings.gravity.customStringProperty,
       tandemName: 'custom',
       value: value,
       custom: true
@@ -66,25 +66,25 @@ export default class Gravity {
 
 
   public static EARTH = new Gravity( {
-    name: densityBuoyancyCommonStrings.gravity.earthStringProperty,
+    name: DensityBuoyancyCommonStrings.gravity.earthStringProperty,
     tandemName: 'earth',
     value: DensityBuoyancyCommonQueryParameters.gEarth
   } );
 
   public static JUPITER = new Gravity( {
-    name: densityBuoyancyCommonStrings.gravity.jupiterStringProperty,
+    name: DensityBuoyancyCommonStrings.gravity.jupiterStringProperty,
     tandemName: 'jupiter',
     value: 24.8
   } );
 
   public static MOON = new Gravity( {
-    name: densityBuoyancyCommonStrings.gravity.moonStringProperty,
+    name: DensityBuoyancyCommonStrings.gravity.moonStringProperty,
     tandemName: 'moon',
     value: 1.6
   } );
 
   public static PLANET_X = new Gravity( {
-    name: densityBuoyancyCommonStrings.gravity.planetXStringProperty,
+    name: DensityBuoyancyCommonStrings.gravity.planetXStringProperty,
     tandemName: 'planetX',
     value: 19.6,
     hidden: true

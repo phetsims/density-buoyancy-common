@@ -21,7 +21,7 @@ import DisplayOptionsNode from '../../common/view/DisplayOptionsNode.js';
 import PrimarySecondaryPanelsNode from '../../common/view/PrimarySecondaryPanelsNode.js';
 import SecondaryMassScreenView from '../../common/view/SecondaryMassScreenView.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
-import densityBuoyancyCommonStrings from '../../densityBuoyancyCommonStrings.js';
+import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import DensityReadoutListNode from './DensityReadoutListNode.js';
 import ShapeSizeControlNode from './ShapeSizeControlNode.js';
 import BuoyancyShapesModel from '../model/BuoyancyShapesModel.js';
@@ -73,7 +73,7 @@ export default class BuoyancyShapesScreenView extends SecondaryMassScreenView<Bu
     } );
 
     const densityBox = new AccordionBox( densityContainer, combineOptions<AccordionBoxOptions>( {
-      titleNode: new Text( densityBuoyancyCommonStrings.densityStringProperty, {
+      titleNode: new Text( DensityBuoyancyCommonStrings.densityStringProperty, {
         font: DensityBuoyancyCommonConstants.TITLE_FONT,
         maxWidth: 160
       } ),

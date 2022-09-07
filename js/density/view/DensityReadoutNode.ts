@@ -17,7 +17,7 @@ import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonCo
 import Material from '../../common/model/Material.js';
 import DensityBuoyancyCommonColors from '../../common/view/DensityBuoyancyCommonColors.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
-import densityBuoyancyCommonStrings from '../../densityBuoyancyCommonStrings.js';
+import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import PatternStringProperty from '../../../../axon/js/PatternStringProperty.js';
 
 // constants
@@ -94,7 +94,7 @@ export default class DensityReadoutNode extends Node {
       fill: DensityBuoyancyCommonColors.labelAProperty
     }, arrowOptions ) );
 
-    const createDensityStringProperty = ( densityProperty: TReadOnlyProperty<number> ) => new PatternStringProperty( densityBuoyancyCommonStrings.kilogramsPerLiterPatternStringProperty, {
+    const createDensityStringProperty = ( densityProperty: TReadOnlyProperty<number> ) => new PatternStringProperty( DensityBuoyancyCommonStrings.kilogramsPerLiterPatternStringProperty, {
       value: densityProperty
     }, {
       maps: {

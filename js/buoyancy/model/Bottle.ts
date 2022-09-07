@@ -79,7 +79,7 @@ import optionize, { EmptySelfOptions } from '../../../../phet-core/js/optionize.
 import Mass, { InstrumentedMassOptions } from '../../common/model/Mass.js';
 import Material from '../../common/model/Material.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
-import densityBuoyancyCommonStrings from '../../densityBuoyancyCommonStrings.js';
+import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import PhysicsEngine from '../../common/model/PhysicsEngine.js';
 import Ray3 from '../../../../dot/js/Ray3.js';
 import Multilink from '../../../../axon/js/Multilink.js';
@@ -228,7 +228,7 @@ export default class Bottle extends Mass {
 
     Multilink.multilink( [ this.interiorMaterialProperty, this.interiorVolumeProperty ], ( material, volume ) => {
       this.materialProperty.value = Material.createCustomMaterial( {
-        name: densityBuoyancyCommonStrings.averageStringProperty,
+        name: DensityBuoyancyCommonStrings.averageStringProperty,
         density: ( BOTTLE_MASS + material.density * volume ) / BOTTLE_VOLUME
       } );
     } );

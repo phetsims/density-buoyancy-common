@@ -18,14 +18,14 @@ import Material from '../../common/model/Material.js';
 import DensityBuoyancyScreenView, { DensityBuoyancyScreenViewOptions } from '../../common/view/DensityBuoyancyScreenView.js';
 import DisplayOptionsNode from '../../common/view/DisplayOptionsNode.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
-import densityBuoyancyCommonStrings from '../../densityBuoyancyCommonStrings.js';
+import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import BuoyancyIntroModel, { BlockSet } from '../model/BuoyancyIntroModel.js';
 
 // constants
 const blockSetStringMap = {
-  [ BlockSet.SAME_MASS.name ]: densityBuoyancyCommonStrings.blockSet.sameMassStringProperty,
-  [ BlockSet.SAME_VOLUME.name ]: densityBuoyancyCommonStrings.blockSet.sameVolumeStringProperty,
-  [ BlockSet.SAME_DENSITY.name ]: densityBuoyancyCommonStrings.blockSet.sameDensityStringProperty
+  [ BlockSet.SAME_MASS.name ]: DensityBuoyancyCommonStrings.blockSet.sameMassStringProperty,
+  [ BlockSet.SAME_VOLUME.name ]: DensityBuoyancyCommonStrings.blockSet.sameVolumeStringProperty,
+  [ BlockSet.SAME_DENSITY.name ]: DensityBuoyancyCommonStrings.blockSet.sameDensityStringProperty
 };
 const blockSetTandemNameMap = {
   [ BlockSet.SAME_MASS.name ]: 'sameMassLabel',
@@ -87,7 +87,7 @@ export default class BuoyancyIntroScreenView extends DensityBuoyancyScreenView<B
         new AquaRadioButton( model.liquidMaterialProperty, Material.HONEY, new Text( Material.HONEY.name, radioButtonLabelOptions ) )
       ]
     } );
-    const fluidTitle = new Text( densityBuoyancyCommonStrings.fluid, {
+    const fluidTitle = new Text( DensityBuoyancyCommonStrings.fluid, {
       font: DensityBuoyancyCommonConstants.TITLE_FONT,
       right: fluidBox.left,
       bottom: fluidBox.top - 3,

@@ -11,7 +11,7 @@ import Range from '../../../../dot/js/Range.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import { Node, Text } from '../../../../scenery/js/imports.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
-import densityBuoyancyCommonStrings from '../../densityBuoyancyCommonStrings.js';
+import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
 import Gravity from '../model/Gravity.js';
 import ComboNumberControl from './ComboNumberControl.js';
@@ -26,8 +26,8 @@ export default class GravityControlNode extends ComboNumberControl<Gravity> {
 
     super( {
       tandem: tandem,
-      title: densityBuoyancyCommonStrings.gravity.nameStringProperty,
-      valuePattern: densityBuoyancyCommonStrings.metersPerSecondSquaredPatternStringProperty,
+      title: DensityBuoyancyCommonStrings.gravity.nameStringProperty,
+      valuePattern: DensityBuoyancyCommonStrings.metersPerSecondSquaredPatternStringProperty,
       property: gravityProperty,
       range: new Range( 0, 25 ),
       toNumericValue: gravity => gravity.value,
@@ -60,7 +60,7 @@ export default class GravityControlNode extends ComboNumberControl<Gravity> {
       },
       getFallbackNode: gravity => {
         if ( gravity.hidden ) {
-          return new Text( densityBuoyancyCommonStrings.whatIsTheValueOfGravityStringProperty, {
+          return new Text( DensityBuoyancyCommonStrings.whatIsTheValueOfGravityStringProperty, {
             font: new PhetFont( 14 )
           } );
         }

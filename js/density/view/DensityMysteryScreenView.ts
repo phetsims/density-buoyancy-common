@@ -14,17 +14,17 @@ import VerticalAquaRadioButtonGroup from '../../../../sun/js/VerticalAquaRadioBu
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 import DensityBuoyancyScreenView, { DensityBuoyancyScreenViewOptions } from '../../common/view/DensityBuoyancyScreenView.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
-import densityBuoyancyCommonStrings from '../../densityBuoyancyCommonStrings.js';
+import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import DensityMysteryModel, { BlockSet } from '../model/DensityMysteryModel.js';
 import DensityTableNode from './DensityTableNode.js';
 import { combineOptions } from '../../../../phet-core/js/optionize.js';
 
 // constants
 const blockSetStringMap = {
-  [ BlockSet.SET_1.name ]: densityBuoyancyCommonStrings.blockSet.set1StringProperty,
-  [ BlockSet.SET_2.name ]: densityBuoyancyCommonStrings.blockSet.set2StringProperty,
-  [ BlockSet.SET_3.name ]: densityBuoyancyCommonStrings.blockSet.set3StringProperty,
-  [ BlockSet.RANDOM.name ]: densityBuoyancyCommonStrings.blockSet.randomStringProperty
+  [ BlockSet.SET_1.name ]: DensityBuoyancyCommonStrings.blockSet.set1StringProperty,
+  [ BlockSet.SET_2.name ]: DensityBuoyancyCommonStrings.blockSet.set2StringProperty,
+  [ BlockSet.SET_3.name ]: DensityBuoyancyCommonStrings.blockSet.set3StringProperty,
+  [ BlockSet.RANDOM.name ]: DensityBuoyancyCommonStrings.blockSet.randomStringProperty
 };
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
 
@@ -38,7 +38,7 @@ export default class DensityMysteryScreenView extends DensityBuoyancyScreenView<
     }, options ) );
 
     const densityTableAccordionBox = new AccordionBox( new DensityTableNode(), combineOptions<AccordionBoxOptions>( {
-      titleNode: new Text( densityBuoyancyCommonStrings.densityTableStringProperty, {
+      titleNode: new Text( DensityBuoyancyCommonStrings.densityTableStringProperty, {
         font: DensityBuoyancyCommonConstants.TITLE_FONT,
         maxWidth: 200
       } ),
@@ -102,7 +102,7 @@ export default class DensityMysteryScreenView extends DensityBuoyancyScreenView<
 
     const blockSetPanel = new Panel( new VBox( {
       children: [
-        new Text( densityBuoyancyCommonStrings.blocksStringProperty, {
+        new Text( DensityBuoyancyCommonStrings.blocksStringProperty, {
           font: DensityBuoyancyCommonConstants.TITLE_FONT,
           maxWidth: 85
         } ),

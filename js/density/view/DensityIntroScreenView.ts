@@ -14,7 +14,7 @@ import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonCo
 import PrimarySecondaryControlsNode from '../../common/view/PrimarySecondaryControlsNode.js';
 import SecondaryMassScreenView from '../../common/view/SecondaryMassScreenView.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
-import densityBuoyancyCommonStrings from '../../densityBuoyancyCommonStrings.js';
+import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import DensityReadoutNode from './DensityReadoutNode.js';
 import DensityIntroModel from '../model/DensityIntroModel.js';
 import { DensityBuoyancyScreenViewOptions } from '../../common/view/DensityBuoyancyScreenView.js';
@@ -55,7 +55,7 @@ export default class DensityIntroScreenView extends SecondaryMassScreenView<Dens
         }
       }
     ), combineOptions<AccordionBoxOptions>( {
-      titleNode: new Text( densityBuoyancyCommonStrings.densityReadoutStringProperty, {
+      titleNode: new Text( DensityBuoyancyCommonStrings.densityReadoutStringProperty, {
         font: DensityBuoyancyCommonConstants.TITLE_FONT,
         maxWidth: 200,
         visiblePropertyOptions: {

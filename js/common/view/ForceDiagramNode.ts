@@ -14,7 +14,7 @@ import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import { Line, Node, Text } from '../../../../scenery/js/imports.js';
 import Panel from '../../../../sun/js/Panel.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
-import densityBuoyancyCommonStrings from '../../densityBuoyancyCommonStrings.js';
+import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import Mass from '../model/Mass.js';
 import DensityBuoyancyCommonColors from './DensityBuoyancyCommonColors.js';
 import InterpolatedProperty from '../model/InterpolatedProperty.js';
@@ -114,7 +114,7 @@ export default class ForceDiagramNode extends Node {
       stroke: 'black'
     } );
 
-    const newtonsPatternProperty = densityBuoyancyCommonStrings.newtonsPatternStringProperty;
+    const newtonsPatternProperty = DensityBuoyancyCommonStrings.newtonsPatternStringProperty;
     newtonsPatternProperty.lazyLink( this.update.bind( this ) );
   }
 
@@ -134,7 +134,7 @@ export default class ForceDiagramNode extends Node {
 
         if ( this.showForceValuesProperty.value ) {
           // We have a listener to the string that will call update
-          textNode.text = StringUtils.fillIn( densityBuoyancyCommonStrings.newtonsPattern, {
+          textNode.text = StringUtils.fillIn( DensityBuoyancyCommonStrings.newtonsPattern, {
             newtons: Utils.toFixed( forceProperty.value.magnitude, 2 )
           } );
           labels.push( labelNode );

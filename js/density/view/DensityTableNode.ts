@@ -14,7 +14,7 @@ import { GridBackgroundNode, GridBox, TLayoutOptions, Node, Rectangle, Text } fr
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 import DensityBuoyancyCommonColors from '../../common/view/DensityBuoyancyCommonColors.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
-import densityBuoyancyCommonStrings from '../../densityBuoyancyCommonStrings.js';
+import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 
 // constants
 const headerFont = new PhetFont( { size: 12, weight: 'bold' } );
@@ -32,12 +32,12 @@ export default class DensityTableNode extends Node {
 
     const gridBox = new GridBox( {
       children: [
-        new Text( densityBuoyancyCommonStrings.material.nameStringProperty, {
+        new Text( DensityBuoyancyCommonStrings.material.nameStringProperty, {
           font: headerFont,
           maxWidth: 160,
           layoutOptions: combineOptions<TLayoutOptions>( { column: 0, row: 0, xAlign: 'left' }, layoutOptions )
         } ),
-        new Text( densityBuoyancyCommonStrings.densityKgLStringProperty, {
+        new Text( DensityBuoyancyCommonStrings.densityKgLStringProperty, {
           font: headerFont,
           maxWidth: 160,
           layoutOptions: combineOptions<TLayoutOptions>( { column: 1, row: 0, xAlign: 'right' }, layoutOptions )

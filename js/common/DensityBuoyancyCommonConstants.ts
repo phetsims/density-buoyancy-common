@@ -11,7 +11,7 @@ import Vector3 from '../../../dot/js/Vector3.js';
 import PatternStringProperty from '../../../axon/js/PatternStringProperty.js';
 import PhetFont from '../../../scenery-phet/js/PhetFont.js';
 import densityBuoyancyCommon from '../densityBuoyancyCommon.js';
-import densityBuoyancyCommonStrings from '../densityBuoyancyCommonStrings.js';
+import DensityBuoyancyCommonStrings from '../DensityBuoyancyCommonStrings.js';
 import Material from './model/Material.js';
 import DensityBuoyancyCommonColors from './view/DensityBuoyancyCommonColors.js';
 
@@ -81,10 +81,10 @@ const DensityBuoyancyCommonConstants = {
     Material.GOLD
   ],
 
-  LITERS_PATTERN_STRING_PROPERTY: new PatternStringProperty( densityBuoyancyCommonStrings.litersPatternStringProperty, {
+  LITERS_PATTERN_STRING_PROPERTY: new PatternStringProperty( DensityBuoyancyCommonStrings.litersPatternStringProperty, {
     liters: '{{value}}'
   } ),
-  KILOGRAMS_PATTERN_STRING_PROPERTY: new PatternStringProperty( densityBuoyancyCommonStrings.kilogramsPatternStringProperty, {
+  KILOGRAMS_PATTERN_STRING_PROPERTY: new PatternStringProperty( DensityBuoyancyCommonStrings.kilogramsPatternStringProperty, {
     kilograms: '{{value}}'
   } )
 };

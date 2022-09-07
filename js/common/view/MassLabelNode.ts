@@ -15,7 +15,7 @@ import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import { ManualConstraint, Node, Rectangle, Text, TPaint } from '../../../../scenery/js/imports.js';
 import Panel from '../../../../sun/js/Panel.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
-import densityBuoyancyCommonStrings from '../../densityBuoyancyCommonStrings.js';
+import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
 import Mass from '../model/Mass.js';
 import DensityBuoyancyCommonColors from './DensityBuoyancyCommonColors.js';
@@ -41,11 +41,11 @@ const createMassLabel = ( string: TReadOnlyProperty<string>, fill: TPaint ) => {
   return rectangle;
 };
 
-const PRIMARY_LABEL_DEPENDENCIES = [ densityBuoyancyCommonStrings.massLabel.primaryStringProperty, DensityBuoyancyCommonColors.labelAProperty ];
-const SECONDARY_LABEL_DEPENDENCIES = [ densityBuoyancyCommonStrings.massLabel.secondaryStringProperty, DensityBuoyancyCommonColors.labelBProperty ];
+const PRIMARY_LABEL_DEPENDENCIES = [ DensityBuoyancyCommonStrings.massLabel.primaryStringProperty, DensityBuoyancyCommonColors.labelAProperty ];
+const SECONDARY_LABEL_DEPENDENCIES = [ DensityBuoyancyCommonStrings.massLabel.secondaryStringProperty, DensityBuoyancyCommonColors.labelBProperty ];
 
-const PRIMARY_LABEL = createMassLabel( densityBuoyancyCommonStrings.massLabel.primaryStringProperty, DensityBuoyancyCommonColors.labelAProperty );
-const SECONDARY_LABEL = createMassLabel( densityBuoyancyCommonStrings.massLabel.secondaryStringProperty, DensityBuoyancyCommonColors.labelBProperty );
+const PRIMARY_LABEL = createMassLabel( DensityBuoyancyCommonStrings.massLabel.primaryStringProperty, DensityBuoyancyCommonColors.labelAProperty );
+const SECONDARY_LABEL = createMassLabel( DensityBuoyancyCommonStrings.massLabel.secondaryStringProperty, DensityBuoyancyCommonColors.labelBProperty );
 
 export default class MassLabelNode extends Node {
 
@@ -57,7 +57,7 @@ export default class MassLabelNode extends Node {
   public constructor( mass: Mass, showMassesProperty: TReadOnlyProperty<boolean> ) {
     super();
 
-    this.readoutTextProperty = new PatternStringProperty( densityBuoyancyCommonStrings.kilogramsPatternStringProperty, {
+    this.readoutTextProperty = new PatternStringProperty( DensityBuoyancyCommonStrings.kilogramsPatternStringProperty, {
       kilograms: mass.massProperty
     }, {
       decimalPlaces: 2

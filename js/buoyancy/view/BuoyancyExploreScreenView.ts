@@ -25,7 +25,7 @@ import GravityControlNode from '../../common/view/GravityControlNode.js';
 import PrimarySecondaryControlsNode from '../../common/view/PrimarySecondaryControlsNode.js';
 import SecondaryMassScreenView from '../../common/view/SecondaryMassScreenView.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
-import densityBuoyancyCommonStrings from '../../densityBuoyancyCommonStrings.js';
+import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import BuoyancyExploreModel from '../model/BuoyancyExploreModel.js';
 
 // constants
@@ -45,7 +45,7 @@ export default class BuoyancyExploreScreenView extends SecondaryMassScreenView<B
 
     const displayOptionsNode = new DisplayOptionsNode( model );
 
-    const getMaterialReadoutStringProperty = ( materialProperty: TReadOnlyProperty<Material> ) => new PatternStringProperty( densityBuoyancyCommonStrings.kilogramsPerLiterPatternStringProperty, {
+    const getMaterialReadoutStringProperty = ( materialProperty: TReadOnlyProperty<Material> ) => new PatternStringProperty( DensityBuoyancyCommonStrings.kilogramsPerLiterPatternStringProperty, {
       value: materialProperty
     }, {
       maps: {
@@ -68,8 +68,8 @@ export default class BuoyancyExploreScreenView extends SecondaryMassScreenView<B
       layoutOptions: { column: 1, row: 1 }
     } );
 
-    const labelAText = new Text( densityBuoyancyCommonStrings.blockAStringProperty, { font: new PhetFont( 14 ), maxWidth: 200, layoutOptions: { column: 0, row: 0 } } );
-    const labelBText = new Text( densityBuoyancyCommonStrings.blockBStringProperty, { font: new PhetFont( 14 ), maxWidth: 200, layoutOptions: { column: 0, row: 1 } } );
+    const labelAText = new Text( DensityBuoyancyCommonStrings.blockAStringProperty, { font: new PhetFont( 14 ), maxWidth: 200, layoutOptions: { column: 0, row: 0 } } );
+    const labelBText = new Text( DensityBuoyancyCommonStrings.blockBStringProperty, { font: new PhetFont( 14 ), maxWidth: 200, layoutOptions: { column: 0, row: 1 } } );
 
     const densityReadoutBox = new GridBox( {
       children: [ densityAText, densityBText, labelAText, labelBText ],
@@ -87,7 +87,7 @@ export default class BuoyancyExploreScreenView extends SecondaryMassScreenView<B
     } );
 
     const densityBox = new AccordionBox( densityContainer, combineOptions<AccordionBoxOptions>( {
-      titleNode: new Text( densityBuoyancyCommonStrings.densityStringProperty, {
+      titleNode: new Text( DensityBuoyancyCommonStrings.densityStringProperty, {
         font: DensityBuoyancyCommonConstants.TITLE_FONT,
         maxWidth: 160
       } ),

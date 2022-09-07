@@ -13,7 +13,7 @@ import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import { Node, Text } from '../../../../scenery/js/imports.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
-import densityBuoyancyCommonStrings from '../../densityBuoyancyCommonStrings.js';
+import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
 import Material from '../model/Material.js';
 import ComboNumberControl from './ComboNumberControl.js';
@@ -26,8 +26,8 @@ export default class DensityControlNode extends ComboNumberControl<Material> {
 
     super( {
       tandem: tandem,
-      title: densityBuoyancyCommonStrings.fluidDensityStringProperty,
-      valuePattern: densityBuoyancyCommonStrings.kilogramsPerLiterPatternStringProperty,
+      title: DensityBuoyancyCommonStrings.fluidDensityStringProperty,
+      valuePattern: DensityBuoyancyCommonStrings.kilogramsPerLiterPatternStringProperty,
       property: liquidMaterialProperty,
       range: new Range( 0.5, 15 ),
       toNumericValue: material => material.density / 1000,
@@ -63,7 +63,7 @@ export default class DensityControlNode extends ComboNumberControl<Material> {
       },
       getFallbackNode: material => {
         if ( material.hidden ) {
-          return new Text( densityBuoyancyCommonStrings.whatIsTheFluidDensityStringProperty, {
+          return new Text( DensityBuoyancyCommonStrings.whatIsTheFluidDensityStringProperty, {
             font: new PhetFont( 14 )
           } );
         }

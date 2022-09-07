@@ -13,7 +13,7 @@ import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import { Node, Text } from '../../../../scenery/js/imports.js';
 import Panel from '../../../../sun/js/Panel.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
-import densityBuoyancyCommonStrings from '../../densityBuoyancyCommonStrings.js';
+import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
 import Scale, { DisplayType } from '../model/Scale.js';
 import Gravity from '../model/Gravity.js';
@@ -34,8 +34,8 @@ export default class ScaleReadoutNode extends Node {
     this.textProperty = new DerivedProperty( [
       mass.scaleForceInterpolatedProperty,
       gravityProperty,
-      densityBuoyancyCommonStrings.newtonsPatternStringProperty,
-      densityBuoyancyCommonStrings.kilogramsPatternStringProperty
+      DensityBuoyancyCommonStrings.newtonsPatternStringProperty,
+      DensityBuoyancyCommonStrings.kilogramsPatternStringProperty
     ], ( scaleForce, gravity, newtonsPattern, kilogramsPattern ) => {
       if ( mass.displayType === DisplayType.NEWTONS ) {
         return StringUtils.fillIn( newtonsPattern, {

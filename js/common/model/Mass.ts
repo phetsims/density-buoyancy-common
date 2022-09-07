@@ -27,7 +27,7 @@ import Tandem from '../../../../tandem/js/Tandem.js';
 import BooleanIO from '../../../../tandem/js/types/BooleanIO.js';
 import IOType from '../../../../tandem/js/types/IOType.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
-import densityBuoyancyCommonStrings from '../../densityBuoyancyCommonStrings.js';
+import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import InterpolatedProperty from './InterpolatedProperty.js';
 import Material from './Material.js';
 import EnumerationValue from '../../../../phet-core/js/EnumerationValue.js';
@@ -76,26 +76,26 @@ export class MassTag extends EnumerationValue {
 }
 
 const blockStringMap = {
-  [ MassTag.ONE_A.name ]: densityBuoyancyCommonStrings.massLabel[ '1aStringProperty' ],
-  [ MassTag.ONE_B.name ]: densityBuoyancyCommonStrings.massLabel[ '1bStringProperty' ],
-  [ MassTag.ONE_C.name ]: densityBuoyancyCommonStrings.massLabel[ '1cStringProperty' ],
-  [ MassTag.ONE_D.name ]: densityBuoyancyCommonStrings.massLabel[ '1dStringProperty' ],
-  [ MassTag.ONE_E.name ]: densityBuoyancyCommonStrings.massLabel[ '1eStringProperty' ],
-  [ MassTag.TWO_A.name ]: densityBuoyancyCommonStrings.massLabel[ '2aStringProperty' ],
-  [ MassTag.TWO_B.name ]: densityBuoyancyCommonStrings.massLabel[ '2bStringProperty' ],
-  [ MassTag.TWO_C.name ]: densityBuoyancyCommonStrings.massLabel[ '2cStringProperty' ],
-  [ MassTag.TWO_D.name ]: densityBuoyancyCommonStrings.massLabel[ '2dStringProperty' ],
-  [ MassTag.TWO_E.name ]: densityBuoyancyCommonStrings.massLabel[ '2eStringProperty' ],
-  [ MassTag.THREE_A.name ]: densityBuoyancyCommonStrings.massLabel[ '3aStringProperty' ],
-  [ MassTag.THREE_B.name ]: densityBuoyancyCommonStrings.massLabel[ '3bStringProperty' ],
-  [ MassTag.THREE_C.name ]: densityBuoyancyCommonStrings.massLabel[ '3cStringProperty' ],
-  [ MassTag.THREE_D.name ]: densityBuoyancyCommonStrings.massLabel[ '3dStringProperty' ],
-  [ MassTag.THREE_E.name ]: densityBuoyancyCommonStrings.massLabel[ '3eStringProperty' ],
-  [ MassTag.A.name ]: densityBuoyancyCommonStrings.massLabel.aStringProperty,
-  [ MassTag.B.name ]: densityBuoyancyCommonStrings.massLabel.bStringProperty,
-  [ MassTag.C.name ]: densityBuoyancyCommonStrings.massLabel.cStringProperty,
-  [ MassTag.D.name ]: densityBuoyancyCommonStrings.massLabel.dStringProperty,
-  [ MassTag.E.name ]: densityBuoyancyCommonStrings.massLabel.eStringProperty
+  [ MassTag.ONE_A.name ]: DensityBuoyancyCommonStrings.massLabel[ '1aStringProperty' ],
+  [ MassTag.ONE_B.name ]: DensityBuoyancyCommonStrings.massLabel[ '1bStringProperty' ],
+  [ MassTag.ONE_C.name ]: DensityBuoyancyCommonStrings.massLabel[ '1cStringProperty' ],
+  [ MassTag.ONE_D.name ]: DensityBuoyancyCommonStrings.massLabel[ '1dStringProperty' ],
+  [ MassTag.ONE_E.name ]: DensityBuoyancyCommonStrings.massLabel[ '1eStringProperty' ],
+  [ MassTag.TWO_A.name ]: DensityBuoyancyCommonStrings.massLabel[ '2aStringProperty' ],
+  [ MassTag.TWO_B.name ]: DensityBuoyancyCommonStrings.massLabel[ '2bStringProperty' ],
+  [ MassTag.TWO_C.name ]: DensityBuoyancyCommonStrings.massLabel[ '2cStringProperty' ],
+  [ MassTag.TWO_D.name ]: DensityBuoyancyCommonStrings.massLabel[ '2dStringProperty' ],
+  [ MassTag.TWO_E.name ]: DensityBuoyancyCommonStrings.massLabel[ '2eStringProperty' ],
+  [ MassTag.THREE_A.name ]: DensityBuoyancyCommonStrings.massLabel[ '3aStringProperty' ],
+  [ MassTag.THREE_B.name ]: DensityBuoyancyCommonStrings.massLabel[ '3bStringProperty' ],
+  [ MassTag.THREE_C.name ]: DensityBuoyancyCommonStrings.massLabel[ '3cStringProperty' ],
+  [ MassTag.THREE_D.name ]: DensityBuoyancyCommonStrings.massLabel[ '3dStringProperty' ],
+  [ MassTag.THREE_E.name ]: DensityBuoyancyCommonStrings.massLabel[ '3eStringProperty' ],
+  [ MassTag.A.name ]: DensityBuoyancyCommonStrings.massLabel.aStringProperty,
+  [ MassTag.B.name ]: DensityBuoyancyCommonStrings.massLabel.bStringProperty,
+  [ MassTag.C.name ]: DensityBuoyancyCommonStrings.massLabel.cStringProperty,
+  [ MassTag.D.name ]: DensityBuoyancyCommonStrings.massLabel.dStringProperty,
+  [ MassTag.E.name ]: DensityBuoyancyCommonStrings.massLabel.eStringProperty
 };
 
 class MaterialEnumeration extends EnumerationValue {

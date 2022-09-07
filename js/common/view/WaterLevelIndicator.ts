@@ -13,7 +13,7 @@ import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import { ManualConstraint, Node, Path, Text } from '../../../../scenery/js/imports.js';
 import Panel from '../../../../sun/js/Panel.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
-import densityBuoyancyCommonStrings from '../../densityBuoyancyCommonStrings.js';
+import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
 import DensityBuoyancyCommonColors from './DensityBuoyancyCommonColors.js';
 
@@ -28,7 +28,7 @@ export default class WaterLevelIndicator extends Node {
     this.addChild( highlightPath );
 
     // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
-    const readoutText = new Text( new PatternStringProperty( densityBuoyancyCommonStrings.litersPatternStringProperty, {
+    const readoutText = new Text( new PatternStringProperty( DensityBuoyancyCommonStrings.litersPatternStringProperty, {
       liters: volumeProperty
     }, {
       maps: {

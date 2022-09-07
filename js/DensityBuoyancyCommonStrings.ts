@@ -235,8 +235,8 @@ type StringsType = {
   'vectorScaleStringProperty': TReadOnlyProperty<string>;
 };
 
-const densityBuoyancyCommonStrings = getStringModule( 'DENSITY_BUOYANCY_COMMON' ) as StringsType;
+const DensityBuoyancyCommonStrings = getStringModule( 'DENSITY_BUOYANCY_COMMON' ) as StringsType;
 
-densityBuoyancyCommon.register( 'densityBuoyancyCommonStrings', densityBuoyancyCommonStrings );
+densityBuoyancyCommon.register( 'DensityBuoyancyCommonStrings', DensityBuoyancyCommonStrings );
 
-export default densityBuoyancyCommonStrings;
+export default DensityBuoyancyCommonStrings;

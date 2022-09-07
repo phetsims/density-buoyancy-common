@@ -22,7 +22,7 @@ import ComboBox from '../../../../sun/js/ComboBox.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
 import EnumerationIO from '../../../../tandem/js/types/EnumerationIO.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
-import densityBuoyancyCommonStrings from '../../densityBuoyancyCommonStrings.js';
+import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
 import Material from '../model/Material.js';
 import PrecisionSliderThumb from './PrecisionSliderThumb.js';
@@ -266,7 +266,7 @@ export default class MaterialMassVolumeControlNode extends VBox {
       } ),
       {
         value: MaterialEnumeration.CUSTOM,
-        node: new Text( densityBuoyancyCommonStrings.material.customStringProperty, {
+        node: new Text( DensityBuoyancyCommonStrings.material.customStringProperty, {
           font: DensityBuoyancyCommonConstants.COMBO_BOX_ITEM_FONT,
           maxWidth: comboMaxWidth
         } ),
@@ -278,7 +278,7 @@ export default class MaterialMassVolumeControlNode extends VBox {
       tandem: tandem.createTandem( 'comboBox' )
     } );
 
-    const massNumberControl = new NumberControl( densityBuoyancyCommonStrings.massStringProperty, massNumberProperty, new Range( options.minMass, options.maxMass ), combineOptions<NumberControlOptions>( {
+    const massNumberControl = new NumberControl( DensityBuoyancyCommonStrings.massStringProperty, massNumberProperty, new Range( options.minMass, options.maxMass ), combineOptions<NumberControlOptions>( {
       sliderOptions: {
         thumbNode: new PrecisionSliderThumb( {
           thumbFill: options.color,
@@ -316,7 +316,7 @@ export default class MaterialMassVolumeControlNode extends VBox {
       }
     }, MaterialMassVolumeControlNode.getNumberControlOptions() ) );
 
-    const volumeNumberControl = new NumberControl( densityBuoyancyCommonStrings.volumeStringProperty, numberControlVolumeProperty, new Range( options.minVolumeLiters, options.maxVolumeLiters ), combineOptions<NumberControlOptions>( {
+    const volumeNumberControl = new NumberControl( DensityBuoyancyCommonStrings.volumeStringProperty, numberControlVolumeProperty, new Range( options.minVolumeLiters, options.maxVolumeLiters ), combineOptions<NumberControlOptions>( {
       sliderOptions: {
         thumbNode: new PrecisionSliderThumb( {
           thumbFill: options.color,

@@ -32,7 +32,7 @@ import DensityControlNode from '../../common/view/DensityControlNode.js';
 import DisplayOptionsNode from '../../common/view/DisplayOptionsNode.js';
 import MaterialMassVolumeControlNode from '../../common/view/MaterialMassVolumeControlNode.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
-import densityBuoyancyCommonStrings from '../../densityBuoyancyCommonStrings.js';
+import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import BuoyancyApplicationsModel, { Scene } from '../model/BuoyancyApplicationsModel.js';
 import DensityReadoutListNode from './DensityReadoutListNode.js';
 
@@ -75,7 +75,7 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
       tandem: tandem.createTandem( 'bottleControlNode' )
     } );
 
-    const airVolumeLabel = new Text( densityBuoyancyCommonStrings.airVolumeStringProperty, {
+    const airVolumeLabel = new Text( DensityBuoyancyCommonStrings.airVolumeStringProperty, {
       font: DensityBuoyancyCommonConstants.READOUT_FONT,
       maxWidth: 160
     } );
@@ -90,7 +90,7 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
       align: 'left',
       stretch: true,
       children: [
-        new Text( densityBuoyancyCommonStrings.materialInsideStringProperty, {
+        new Text( DensityBuoyancyCommonStrings.materialInsideStringProperty, {
           font: DensityBuoyancyCommonConstants.TITLE_FONT,
           maxWidth: 160
         } ),
@@ -171,7 +171,7 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
         new HSeparator( blockControlNode.width ),
         // Convert cubic meters => liters
         // @ts-ignore see https://github.com/phetsims/axon/issues/382
-        new NumberControl( densityBuoyancyCommonStrings.boatVolumeStringProperty, new UnitConversionProperty( model.boat.displacementVolumeProperty, {
+        new NumberControl( DensityBuoyancyCommonStrings.boatVolumeStringProperty, new UnitConversionProperty( model.boat.displacementVolumeProperty, {
           factor: 1000
         } ), boatVolumeRange, combineOptions<NumberControlOptions>( {
           numberDisplayOptions: {
@@ -250,7 +250,7 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
     } );
 
     const densityBox = new AccordionBox( densityContainer, combineOptions<AccordionBoxOptions>( {
-      titleNode: new Text( densityBuoyancyCommonStrings.densityStringProperty, {
+      titleNode: new Text( DensityBuoyancyCommonStrings.densityStringProperty, {
         maxWidth: 160,
         font: DensityBuoyancyCommonConstants.TITLE_FONT
       } ),

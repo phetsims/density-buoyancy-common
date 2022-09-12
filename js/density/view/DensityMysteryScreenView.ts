@@ -67,7 +67,7 @@ export default class DensityMysteryScreenView extends DensityBuoyancyScreenView<
         createNode: tandem => new Text( blockSetStringMap[ blockSet.name ], {
           font: DensityBuoyancyCommonConstants.RADIO_BUTTON_FONT,
           maxWidth: 65,
-          tandem: tandem.createTandem( 'label' )
+          tandem: tandem.createTandem( 'labelText' )
         } ),
         value: blockSet,
         tandemName: `${blockSetTandemMap[ blockSet.name ]}RadioButton`

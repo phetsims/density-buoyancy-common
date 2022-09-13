@@ -15,7 +15,7 @@ import Range from '../../../../dot/js/Range.js';
 import optionize from '../../../../phet-core/js/optionize.js';
 import NumberControl from '../../../../scenery-phet/js/NumberControl.js';
 import NumberDisplay from '../../../../scenery-phet/js/NumberDisplay.js';
-import { FlowBox, FlowBoxOptions, HBox, Node, Text, VDivider } from '../../../../scenery/js/imports.js';
+import { FlowBox, FlowBoxOptions, HBox, Node, Text, HSeparator } from '../../../../scenery/js/imports.js';
 import ComboBox from '../../../../sun/js/ComboBox.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 import { MassShape } from '../../common/model/MassShape.js';
@@ -115,7 +115,7 @@ export default class ShapeSizeControlNode extends FlowBox {
       } ),
       heightNumberControl,
       widthNumberControl,
-      new VDivider(),
+      new HSeparator(),
       new FlowBox( {
         layoutOptions: { stretch: true },
         orientation: 'horizontal',

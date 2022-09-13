@@ -9,7 +9,7 @@
 import ArrowNode, { ArrowNodeOptions } from '../../../../scenery-phet/js/ArrowNode.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import PlusMinusZoomButtonGroup from '../../../../scenery-phet/js/PlusMinusZoomButtonGroup.js';
-import { FlowBox, GridBox, Text, TextOptions, VBox, VBoxOptions, VDivider } from '../../../../scenery/js/imports.js';
+import { FlowBox, GridBox, Text, TextOptions, VBox, VBoxOptions, HSeparator } from '../../../../scenery/js/imports.js';
 import Checkbox, { CheckboxOptions } from '../../../../sun/js/Checkbox.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
@@ -98,7 +98,7 @@ export default class DisplayOptionsNode extends VBox {
                 } )
               ]
             } ),
-            new VDivider(),
+            new HSeparator(),
             new VBox( {
               spacing: checkboxSpacing,
               align: 'left',

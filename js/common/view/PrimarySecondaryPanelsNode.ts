@@ -6,7 +6,7 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
-import { FlowBox, Node, VDivider } from '../../../../scenery/js/imports.js';
+import { FlowBox, Node, HSeparator } from '../../../../scenery/js/imports.js';
 import Panel from '../../../../sun/js/Panel.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
@@ -21,7 +21,7 @@ export default class PrimarySecondaryPanelsNode extends Panel {
       align: 'left',
       children: [
         primaryNode,
-        new VDivider(),
+        new HSeparator(),
         secondaryNode
       ]
     } ), DensityBuoyancyCommonConstants.PANEL_OPTIONS );

@@ -17,11 +17,11 @@ import resetArrow_png from '../../../../scenery-phet/images/resetArrow_png.js';
 import NumberControl, { NumberControlOptions } from '../../../../scenery-phet/js/NumberControl.js';
 import NumberDisplay from '../../../../scenery-phet/js/NumberDisplay.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
-import { AlignPropertyBox, Color, HBox, HStrut, Image, ManualConstraint, Node, Text, VBox, VDivider } from '../../../../scenery/js/imports.js';
+import { AlignPropertyBox, Color, HBox, HStrut, Image, ManualConstraint, Node, Text, VBox, HSeparator } from '../../../../scenery/js/imports.js';
 import AccordionBox, { AccordionBoxOptions } from '../../../../sun/js/AccordionBox.js';
 import RectangularPushButton from '../../../../sun/js/buttons/RectangularPushButton.js';
 import RectangularRadioButtonGroup from '../../../../sun/js/buttons/RectangularRadioButtonGroup.js';
-import HSeparator from '../../../../sun/js/HSeparator.js';
+import HSeparatorDeprecated from '../../../../sun/js/HSeparatorDeprecated.js';
 import Panel from '../../../../sun/js/Panel.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 import Cube from '../../common/model/Cube.js';
@@ -95,7 +95,7 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
           maxWidth: 160
         } ),
         bottleControlNode,
-        new VDivider(),
+        new HSeparator(),
         new HBox( {
           spacing: 5,
           children: [
@@ -168,7 +168,7 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
       align: 'left',
       children: [
         blockControlNode,
-        new HSeparator( blockControlNode.width ),
+        new HSeparatorDeprecated( blockControlNode.width ),
         // Convert cubic meters => liters
         new NumberControl( DensityBuoyancyCommonStrings.boatVolumeStringProperty, new UnitConversionProperty( model.boat.displacementVolumeProperty, {
           factor: 1000

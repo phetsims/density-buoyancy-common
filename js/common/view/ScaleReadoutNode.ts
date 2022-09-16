@@ -24,14 +24,14 @@ export default class ScaleReadoutNode extends Node {
 
   public readonly mass: Scale;
 
-  private readonly textProperty: TReadOnlyProperty<string>;
+  private readonly stringProperty: TReadOnlyProperty<string>;
 
   public constructor( mass: Scale, gravityProperty: TReadOnlyProperty<Gravity> ) {
     super( {
       pickable: false
     } );
 
-    this.textProperty = new DerivedProperty( [
+    this.stringProperty = new DerivedProperty( [
       mass.scaleForceInterpolatedProperty,
       gravityProperty,
       DensityBuoyancyCommonStrings.newtonsPatternStringProperty,
@@ -49,7 +49,7 @@ export default class ScaleReadoutNode extends Node {
       }
     } );
 
-    const readoutText = new Text( this.textProperty, {
+    const readoutText = new Text( this.stringProperty, {
       font: new PhetFont( {
         size: 16,
         weight: 'bold'
@@ -78,7 +78,7 @@ export default class ScaleReadoutNode extends Node {
    * Releases references.
    */
   public override dispose(): void {
-    this.textProperty.dispose();
+    this.stringProperty.dispose();
 
     super.dispose();
   }

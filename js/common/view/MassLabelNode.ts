@@ -52,18 +52,18 @@ export default class MassLabelNode extends Node {
   public readonly mass: Mass;
   private readonly showMassesProperty: TReadOnlyProperty<boolean>;
   private readonly showMassesListener: ( n: boolean ) => void;
-  private readonly readoutTextProperty: TReadOnlyProperty<string>;
+  private readonly readoutStringProperty: TReadOnlyProperty<string>;
 
   public constructor( mass: Mass, showMassesProperty: TReadOnlyProperty<boolean> ) {
     super();
 
-    this.readoutTextProperty = new PatternStringProperty( DensityBuoyancyCommonStrings.kilogramsPatternStringProperty, {
+    this.readoutStringProperty = new PatternStringProperty( DensityBuoyancyCommonStrings.kilogramsPatternStringProperty, {
       kilograms: mass.massProperty
     }, {
       decimalPlaces: 2
     } );
 
-    const readoutText = new Text( this.readoutTextProperty, {
+    const readoutText = new Text( this.readoutStringProperty, {
       font: new PhetFont( {
         size: 18
       } ),
@@ -97,7 +97,7 @@ export default class MassLabelNode extends Node {
    */
   public override dispose(): void {
     this.showMassesProperty.unlink( this.showMassesListener );
-    this.readoutTextProperty.dispose();
+    this.readoutStringProperty.dispose();
 
     super.dispose();
   }

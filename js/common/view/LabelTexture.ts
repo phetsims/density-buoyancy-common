@@ -6,11 +6,14 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
+import TinyEmitter from '../../../../axon/js/TinyEmitter.js';
 import NodeTexture from '../../../../mobius/js/NodeTexture.js';
 import { Node, Utils } from '../../../../scenery/js/imports.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 
 export default class LabelTexture extends NodeTexture {
+
+  public readonly disposedEmitter = new TinyEmitter();
 
   private readonly containerNode: Node;
 
@@ -34,6 +37,8 @@ export default class LabelTexture extends NodeTexture {
     this.containerNode.dispose();
 
     super.dispose();
+
+    this.disposedEmitter.emit();
   }
 }
 

@@ -109,7 +109,8 @@ export default class MassLabelNode extends Node {
     const texture = new LabelTexture( PRIMARY_LABEL );
 
     // @ts-ignore
-    Multilink.multilink( PRIMARY_LABEL_DEPENDENCIES, () => texture.update() );
+    const multilink = Multilink.multilink( PRIMARY_LABEL_DEPENDENCIES, () => texture.update() );
+    texture.disposedEmitter.addListener( () => multilink.dispose() );
 
     return texture;
   }
@@ -121,7 +122,8 @@ export default class MassLabelNode extends Node {
     const texture = new LabelTexture( SECONDARY_LABEL );
 
     // @ts-ignore
-    Multilink.multilink( SECONDARY_LABEL_DEPENDENCIES, () => texture.update() );
+    const multilink = Multilink.multilink( SECONDARY_LABEL_DEPENDENCIES, () => texture.update() );
+    texture.disposedEmitter.addListener( () => multilink.dispose() );
 
     return texture;
   }

@@ -39,12 +39,12 @@ export default class BlocksRadioButtonGroup extends RectangularRadioButtonGroup<
     super( modeProperty, [
       {
         value: TwoBlockMode.ONE_BLOCK,
-        node: BlocksRadioButtonGroup.getSingleCuboidIcon(),
+        createNode: tandem => BlocksRadioButtonGroup.getSingleCuboidIcon(),
         tandemName: 'oneBlockRadioButton'
       },
       {
         value: TwoBlockMode.TWO_BLOCKS,
-        node: BlocksRadioButtonGroup.getDoubleCuboidIcon(),
+        createNode: tandem => BlocksRadioButtonGroup.getDoubleCuboidIcon(),
         tandemName: 'twoBlocksRadioButton'
       }
     ], optionize<BlocksRadioButtonGroupOptions, EmptySelfOptions, RectangularRadioButtonGroupOptions>()( {

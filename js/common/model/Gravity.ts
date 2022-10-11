@@ -32,7 +32,7 @@ export type GravityOptions = {
 
 export default class Gravity {
 
-  public name: TReadOnlyProperty<string>;
+  public nameProperty: TReadOnlyProperty<string>;
   public tandemName: string;
   public value: number;
   public custom: boolean;
@@ -45,7 +45,7 @@ export default class Gravity {
       hidden: false
     }, providedConfig );
 
-    this.name = config.name;
+    this.nameProperty = config.name;
     this.tandemName = config.tandemName;
     this.value = config.value;
     this.custom = config.custom;
@@ -114,7 +114,7 @@ Gravity.GravityIO = new IOType<Gravity, GravityState>( 'GravityIO', {
   documentation: 'Represents a specific value of gravity (m/s^2)',
   toStateObject: function( gravity: Gravity ): GravityState {
     return {
-      name: ReferenceIO( ReadOnlyProperty.PropertyIO( StringIO ) ).toStateObject( gravity.name ),
+      name: ReferenceIO( ReadOnlyProperty.PropertyIO( StringIO ) ).toStateObject( gravity.nameProperty ),
       tandemName: gravity.tandemName,
       value: gravity.value,
       custom: gravity.custom,

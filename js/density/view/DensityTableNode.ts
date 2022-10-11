@@ -42,7 +42,7 @@ export default class DensityTableNode extends Node {
           maxWidth: 160,
           layoutOptions: combineOptions<TLayoutOptions>( { column: 1, row: 0, xAlign: 'right' }, layoutOptions )
         } ),
-        ...materials.map( ( material, index ) => new Text( material.name, {
+        ...materials.map( ( material, index ) => new Text( material.nameProperty, {
           font: bodyFont,
           maxWidth: 200,
           layoutOptions: combineOptions<TLayoutOptions>( { column: 0, row: index + 1, xAlign: 'left' }, layoutOptions )

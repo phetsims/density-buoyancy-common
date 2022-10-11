@@ -55,7 +55,7 @@ export type MaterialOptions = {
 
 export default class Material {
 
-  public readonly name: TReadOnlyProperty<string>;
+  public readonly nameProperty: TReadOnlyProperty<string>;
   public readonly identifier: string | null;
   public readonly tandemName: string | null;
   public readonly density: number;
@@ -81,7 +81,7 @@ export default class Material {
 
     assert && assert( isFinite( config.density ) );
 
-    this.name = config.name;
+    this.nameProperty = config.name;
     this.identifier = config.identifier;
     this.tandemName = config.tandemName;
     this.density = config.density;
@@ -512,7 +512,7 @@ Material.MaterialIO = new IOType<Material, MaterialState>( 'MaterialIO', {
     const isLiquidColorUninstrumented = material.liquidColor && !material.liquidColor.isPhetioInstrumented();
 
     return {
-      name: ReferenceIO( ReadOnlyProperty.PropertyIO( StringIO ) ).toStateObject( material.name ),
+      name: ReferenceIO( ReadOnlyProperty.PropertyIO( StringIO ) ).toStateObject( material.nameProperty ),
       identifier: NullableIO( StringIO ).toStateObject( material.identifier ),
       tandemName: NullableIO( StringIO ).toStateObject( material.tandemName ),
       density: NumberIO.toStateObject( material.density ),

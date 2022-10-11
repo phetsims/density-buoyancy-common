@@ -44,7 +44,7 @@ export default class GravityControlNode extends ComboNumberControl<Gravity> {
       ].map( gravity => {
         return {
           value: gravity,
-          node: new Text( gravity.name, {
+          node: new Text( gravity.nameProperty, {
             font: DensityBuoyancyCommonConstants.COMBO_BOX_ITEM_FONT,
             maxWidth: 160
           } ),

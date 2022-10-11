@@ -81,10 +81,10 @@ export default class BuoyancyIntroScreenView extends DensityBuoyancyScreenView<B
     const fluidBox = new HBox( {
       spacing: 20,
       children: [
-        new AquaRadioButton( model.liquidMaterialProperty, Material.GASOLINE, new Text( Material.GASOLINE.name, radioButtonLabelOptions ) ),
-        new AquaRadioButton( model.liquidMaterialProperty, Material.WATER, new Text( Material.WATER.name, radioButtonLabelOptions ) ),
-        new AquaRadioButton( model.liquidMaterialProperty, Material.SEAWATER, new Text( Material.SEAWATER.name, radioButtonLabelOptions ) ),
-        new AquaRadioButton( model.liquidMaterialProperty, Material.HONEY, new Text( Material.HONEY.name, radioButtonLabelOptions ) )
+        new AquaRadioButton( model.liquidMaterialProperty, Material.GASOLINE, new Text( Material.GASOLINE.nameProperty, radioButtonLabelOptions ) ),
+        new AquaRadioButton( model.liquidMaterialProperty, Material.WATER, new Text( Material.WATER.nameProperty, radioButtonLabelOptions ) ),
+        new AquaRadioButton( model.liquidMaterialProperty, Material.SEAWATER, new Text( Material.SEAWATER.nameProperty, radioButtonLabelOptions ) ),
+        new AquaRadioButton( model.liquidMaterialProperty, Material.HONEY, new Text( Material.HONEY.nameProperty, radioButtonLabelOptions ) )
       ]
     } );
     const fluidTitle = new Text( DensityBuoyancyCommonStrings.fluid, {

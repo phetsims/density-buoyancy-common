@@ -56,7 +56,7 @@ export default class DensityReadoutNode extends Node {
     const lineOptions = { stroke: 'black' };
     materials.forEach( ( material, index ) => {
       const x = mvt( material.density );
-      const label = new Text( material.name, {
+      const label = new Text( material.nameProperty, {
         font: new PhetFont( 12 ),
         centerX: x,
         centerY: HEIGHT / 2,

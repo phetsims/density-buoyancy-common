@@ -15,7 +15,7 @@ import Range from '../../../../dot/js/Range.js';
 import optionize from '../../../../phet-core/js/optionize.js';
 import NumberControl from '../../../../scenery-phet/js/NumberControl.js';
 import NumberDisplay from '../../../../scenery-phet/js/NumberDisplay.js';
-import { FlowBox, FlowBoxOptions, HBox, Node, Text, HSeparator } from '../../../../scenery/js/imports.js';
+import { FlowBox, FlowBoxOptions, HBox, HSeparator, Node, Text, VBox } from '../../../../scenery/js/imports.js';
 import ComboBox from '../../../../sun/js/ComboBox.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 import { MassShape } from '../../common/model/MassShape.js';
@@ -46,7 +46,7 @@ type SelfOptions = {
 
 export type ShapeSizeControlNodeOptions = SelfOptions & FlowBoxOptions;
 
-export default class ShapeSizeControlNode extends FlowBox {
+export default class ShapeSizeControlNode extends VBox {
   public constructor( massShapeProperty: Property<MassShape>, widthRatioProperty: Property<number>, heightRatioProperty: Property<number>, volumeProperty: TReadOnlyProperty<number>, listParent: Node, providedOptions?: ShapeSizeControlNodeOptions ) {
 
     const options = optionize<ShapeSizeControlNodeOptions, SelfOptions, FlowBoxOptions>()( {
@@ -55,7 +55,6 @@ export default class ShapeSizeControlNode extends FlowBox {
 
     super( {
       spacing: 5,
-      orientation: 'vertical',
       align: 'left'
     } );
 

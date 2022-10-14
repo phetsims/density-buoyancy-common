@@ -24,8 +24,8 @@ import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
 
 type SelfOptions<T> = {
-  title: TReadOnlyProperty<string>;
-  valuePattern: TReadOnlyProperty<string>; // with {{value}} placeholder
+  titleProperty: TReadOnlyProperty<string>;
+  valuePatternProperty: TReadOnlyProperty<string>; // with {{value}} placeholder
   property: Property<T>;
   range: Range;
 
@@ -121,7 +121,7 @@ export default class ComboNumberControl<T> extends VBox {
           textOptions: {
             font: DensityBuoyancyCommonConstants.READOUT_FONT
           },
-          valuePattern: new PatternStringProperty( providedConfig.valuePattern, {
+          valuePattern: new PatternStringProperty( providedConfig.valuePatternProperty, {
             value: SunConstants.VALUE_NAMED_PLACEHOLDER
           } ),
           maxWidth: 100,
@@ -239,7 +239,7 @@ export default class ComboNumberControl<T> extends VBox {
     } );
 
     const numberControlTandem = config.tandem.createTandem( 'numberControl' );
-    this.numberControl = new NumberControl( config.title, this.numberProperty, config.range, combineOptions<NumberControlOptions>( {
+    this.numberControl = new NumberControl( config.titleProperty, this.numberProperty, config.range, combineOptions<NumberControlOptions>( {
       tandem: numberControlTandem
     }, config.numberControlOptions ) );
     this.numberControl.addLinkedElement( this.property, {

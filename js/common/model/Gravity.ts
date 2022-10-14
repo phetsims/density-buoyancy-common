@@ -20,7 +20,7 @@ import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js'
 import DensityBuoyancyCommonQueryParameters from '../DensityBuoyancyCommonQueryParameters.js';
 
 export type GravityOptions = {
-  name: TReadOnlyProperty<string>;
+  nameProperty: TReadOnlyProperty<string>;
   tandemName: string;
 
   // m/s^2
@@ -45,7 +45,7 @@ export default class Gravity {
       hidden: false
     }, providedConfig );
 
-    this.nameProperty = config.name;
+    this.nameProperty = config.nameProperty;
     this.tandemName = config.tandemName;
     this.value = config.value;
     this.custom = config.custom;
@@ -57,7 +57,7 @@ export default class Gravity {
    */
   public static createCustomGravity( value: number ): Gravity {
     return new Gravity( {
-      name: DensityBuoyancyCommonStrings.gravity.customStringProperty,
+      nameProperty: DensityBuoyancyCommonStrings.gravity.customStringProperty,
       tandemName: 'custom',
       value: value,
       custom: true
@@ -66,25 +66,25 @@ export default class Gravity {
 
 
   public static EARTH = new Gravity( {
-    name: DensityBuoyancyCommonStrings.gravity.earthStringProperty,
+    nameProperty: DensityBuoyancyCommonStrings.gravity.earthStringProperty,
     tandemName: 'earth',
     value: DensityBuoyancyCommonQueryParameters.gEarth
   } );
 
   public static JUPITER = new Gravity( {
-    name: DensityBuoyancyCommonStrings.gravity.jupiterStringProperty,
+    nameProperty: DensityBuoyancyCommonStrings.gravity.jupiterStringProperty,
     tandemName: 'jupiter',
     value: 24.8
   } );
 
   public static MOON = new Gravity( {
-    name: DensityBuoyancyCommonStrings.gravity.moonStringProperty,
+    nameProperty: DensityBuoyancyCommonStrings.gravity.moonStringProperty,
     tandemName: 'moon',
     value: 1.6
   } );
 
   public static PLANET_X = new Gravity( {
-    name: DensityBuoyancyCommonStrings.gravity.planetXStringProperty,
+    nameProperty: DensityBuoyancyCommonStrings.gravity.planetXStringProperty,
     tandemName: 'planetX',
     value: 19.6,
     hidden: true

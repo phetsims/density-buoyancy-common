@@ -27,7 +27,7 @@ import TinyProperty from '../../../../axon/js/TinyProperty.js';
 import ReadOnlyProperty from '../../../../axon/js/ReadOnlyProperty.js';
 
 export type MaterialOptions = {
-  name?: TReadOnlyProperty<string>;
+  nameProperty?: TReadOnlyProperty<string>;
 
   // If set, this material will be available at Material[ identifier ] as a global
   identifier?: string | null;
@@ -68,7 +68,7 @@ export default class Material {
   public constructor( providedConfig: MaterialOptions ) {
 
     const config = optionize<MaterialOptions, MaterialOptions>()( {
-      name: new TinyProperty( 'unknown' ),
+      nameProperty: new TinyProperty( 'unknown' ),
       identifier: null,
       tandemName: null,
       density: 1,
@@ -81,7 +81,7 @@ export default class Material {
 
     assert && assert( isFinite( config.density ) );
 
-    this.nameProperty = config.name;
+    this.nameProperty = config.nameProperty;
     this.identifier = config.identifier;
     this.tandemName = config.tandemName;
     this.density = config.density;
@@ -97,7 +97,7 @@ export default class Material {
    */
   public static createCustomMaterial( config: MaterialOptions ): Material {
     return new Material( combineOptions<MaterialOptions>( {
-      name: DensityBuoyancyCommonStrings.material.customStringProperty,
+      nameProperty: DensityBuoyancyCommonStrings.material.customStringProperty,
       tandemName: 'custom',
       custom: true
     }, config ) );
@@ -168,14 +168,14 @@ export default class Material {
   // (read-only) {Material} - "Solids"
 
   public static ALUMINUM = new Material( {
-    name: DensityBuoyancyCommonStrings.material.aluminumStringProperty,
+    nameProperty: DensityBuoyancyCommonStrings.material.aluminumStringProperty,
     tandemName: 'aluminum',
     identifier: 'ALUMINUM',
     density: 2700
   } );
 
   public static APPLE = new Material( {
-    name: DensityBuoyancyCommonStrings.material.appleStringProperty,
+    nameProperty: DensityBuoyancyCommonStrings.material.appleStringProperty,
     tandemName: 'apple',
     identifier: 'APPLE',
     // "Some Physical Properties of Apple" - Averaged the two cultivars' densities for this
@@ -184,14 +184,14 @@ export default class Material {
   } );
 
   public static BRICK = new Material( {
-    name: DensityBuoyancyCommonStrings.material.brickStringProperty,
+    nameProperty: DensityBuoyancyCommonStrings.material.brickStringProperty,
     tandemName: 'brick',
     identifier: 'BRICK',
     density: 2000
   } );
 
   public static CEMENT = new Material( {
-    name: DensityBuoyancyCommonStrings.material.cementStringProperty,
+    nameProperty: DensityBuoyancyCommonStrings.material.cementStringProperty,
     tandemName: 'cement',
     identifier: 'CEMENT',
     density: 3150,
@@ -199,7 +199,7 @@ export default class Material {
   } );
 
   public static COPPER = new Material( {
-    name: DensityBuoyancyCommonStrings.material.copperStringProperty,
+    nameProperty: DensityBuoyancyCommonStrings.material.copperStringProperty,
     tandemName: 'copper',
     identifier: 'COPPER',
     density: 8960,
@@ -207,42 +207,42 @@ export default class Material {
   } );
 
   public static DIAMOND = new Material( {
-    name: DensityBuoyancyCommonStrings.material.diamondStringProperty,
+    nameProperty: DensityBuoyancyCommonStrings.material.diamondStringProperty,
     tandemName: 'diamond',
     identifier: 'DIAMOND',
     density: 3510
   } );
 
   public static GLASS = new Material( {
-    name: DensityBuoyancyCommonStrings.material.glassStringProperty,
+    nameProperty: DensityBuoyancyCommonStrings.material.glassStringProperty,
     tandemName: 'glass',
     identifier: 'GLASS',
     density: 2700
   } );
 
   public static GOLD = new Material( {
-    name: DensityBuoyancyCommonStrings.material.goldStringProperty,
+    nameProperty: DensityBuoyancyCommonStrings.material.goldStringProperty,
     tandemName: 'gold',
     identifier: 'GOLD',
     density: 19320
   } );
 
   public static HUMAN = new Material( {
-    name: DensityBuoyancyCommonStrings.material.humanStringProperty,
+    nameProperty: DensityBuoyancyCommonStrings.material.humanStringProperty,
     tandemName: 'human',
     identifier: 'HUMAN',
     density: 950
   } );
 
   public static ICE = new Material( {
-    name: DensityBuoyancyCommonStrings.material.iceStringProperty,
+    nameProperty: DensityBuoyancyCommonStrings.material.iceStringProperty,
     tandemName: 'ice',
     identifier: 'ICE',
     density: 919
   } );
 
   public static LEAD = new Material( {
-    name: DensityBuoyancyCommonStrings.material.leadStringProperty,
+    nameProperty: DensityBuoyancyCommonStrings.material.leadStringProperty,
     tandemName: 'lead',
     identifier: 'LEAD',
     density: 11342,
@@ -250,35 +250,35 @@ export default class Material {
   } );
 
   public static PLATINUM = new Material( {
-    name: DensityBuoyancyCommonStrings.material.platinumStringProperty,
+    nameProperty: DensityBuoyancyCommonStrings.material.platinumStringProperty,
     tandemName: 'platinum',
     identifier: 'PLATINUM',
     density: 21450
   } );
 
   public static PYRITE = new Material( {
-    name: DensityBuoyancyCommonStrings.material.pyriteStringProperty,
+    nameProperty: DensityBuoyancyCommonStrings.material.pyriteStringProperty,
     tandemName: 'pyrite',
     identifier: 'PYRITE',
     density: 5010
   } );
 
   public static SILVER = new Material( {
-    name: DensityBuoyancyCommonStrings.material.silverStringProperty,
+    nameProperty: DensityBuoyancyCommonStrings.material.silverStringProperty,
     tandemName: 'silver',
     identifier: 'SILVER',
     density: 10490
   } );
 
   public static STEEL = new Material( {
-    name: DensityBuoyancyCommonStrings.material.steelStringProperty,
+    nameProperty: DensityBuoyancyCommonStrings.material.steelStringProperty,
     tandemName: 'steel',
     identifier: 'STEEL',
     density: 7800
   } );
 
   public static STYROFOAM = new Material( {
-    name: DensityBuoyancyCommonStrings.material.styrofoamStringProperty,
+    nameProperty: DensityBuoyancyCommonStrings.material.styrofoamStringProperty,
     tandemName: 'styrofoam',
     identifier: 'STYROFOAM',
     // From Flash version: between 25 and 200 according to http://wiki.answers.com/Q/What_is_the_density_of_styrofoam;
@@ -287,21 +287,21 @@ export default class Material {
   } );
 
   public static TANTALUM = new Material( {
-    name: DensityBuoyancyCommonStrings.material.tantalumStringProperty,
+    nameProperty: DensityBuoyancyCommonStrings.material.tantalumStringProperty,
     tandemName: 'tantalum',
     identifier: 'TANTALUM',
     density: 16650
   } );
 
   public static TITANIUM = new Material( {
-    name: DensityBuoyancyCommonStrings.material.titaniumStringProperty,
+    nameProperty: DensityBuoyancyCommonStrings.material.titaniumStringProperty,
     tandemName: 'titanium',
     identifier: 'TITANIUM',
     density: 4500
   } );
 
   public static WOOD = new Material( {
-    name: DensityBuoyancyCommonStrings.material.woodStringProperty,
+    nameProperty: DensityBuoyancyCommonStrings.material.woodStringProperty,
     tandemName: 'wood',
     identifier: 'WOOD',
     density: 400
@@ -310,7 +310,7 @@ export default class Material {
   // (read-only) {Material} - "Liquids".
 
   public static AIR = new Material( {
-    name: DensityBuoyancyCommonStrings.material.airStringProperty,
+    nameProperty: DensityBuoyancyCommonStrings.material.airStringProperty,
     tandemName: 'air',
     identifier: 'AIR',
     density: 1.2,
@@ -319,7 +319,7 @@ export default class Material {
   } );
 
   public static DENSITY_A = new Material( {
-    name: DensityBuoyancyCommonStrings.material.densityAStringProperty,
+    nameProperty: DensityBuoyancyCommonStrings.material.densityAStringProperty,
     tandemName: 'densityA',
     identifier: 'DENSITY_A',
     density: 3100,
@@ -328,7 +328,7 @@ export default class Material {
   } );
 
   public static DENSITY_B = new Material( {
-    name: DensityBuoyancyCommonStrings.material.densityBStringProperty,
+    nameProperty: DensityBuoyancyCommonStrings.material.densityBStringProperty,
     tandemName: 'densityB',
     identifier: 'DENSITY_B',
     density: 790,
@@ -337,7 +337,7 @@ export default class Material {
   } );
 
   public static DENSITY_C = new Material( {
-    name: DensityBuoyancyCommonStrings.material.densityCStringProperty,
+    nameProperty: DensityBuoyancyCommonStrings.material.densityCStringProperty,
     tandemName: 'densityC',
     identifier: 'DENSITY_C',
     density: 490,
@@ -346,7 +346,7 @@ export default class Material {
   } );
 
   public static DENSITY_D = new Material( {
-    name: DensityBuoyancyCommonStrings.material.densityDStringProperty,
+    nameProperty: DensityBuoyancyCommonStrings.material.densityDStringProperty,
     tandemName: 'densityD',
     identifier: 'DENSITY_D',
     density: 2890,
@@ -355,7 +355,7 @@ export default class Material {
   } );
 
   public static DENSITY_E = new Material( {
-    name: DensityBuoyancyCommonStrings.material.densityEStringProperty,
+    nameProperty: DensityBuoyancyCommonStrings.material.densityEStringProperty,
     tandemName: 'densityE',
     identifier: 'DENSITY_E',
     density: 1260,
@@ -364,7 +364,7 @@ export default class Material {
   } );
 
   public static DENSITY_F = new Material( {
-    name: DensityBuoyancyCommonStrings.material.densityFStringProperty,
+    nameProperty: DensityBuoyancyCommonStrings.material.densityFStringProperty,
     tandemName: 'densityF',
     identifier: 'DENSITY_F',
     density: 6440,
@@ -373,7 +373,7 @@ export default class Material {
   } );
 
   public static GASOLINE = new Material( {
-    name: DensityBuoyancyCommonStrings.material.gasolineStringProperty,
+    nameProperty: DensityBuoyancyCommonStrings.material.gasolineStringProperty,
     tandemName: 'gasoline',
     identifier: 'GASOLINE',
     density: 680,
@@ -382,7 +382,7 @@ export default class Material {
   } );
 
   public static HONEY = new Material( {
-    name: DensityBuoyancyCommonStrings.material.honeyStringProperty,
+    nameProperty: DensityBuoyancyCommonStrings.material.honeyStringProperty,
     tandemName: 'honey',
     identifier: 'HONEY',
     density: 1440,
@@ -391,7 +391,7 @@ export default class Material {
   } );
 
   public static MERCURY = new Material( {
-    name: DensityBuoyancyCommonStrings.material.mercuryStringProperty,
+    nameProperty: DensityBuoyancyCommonStrings.material.mercuryStringProperty,
     tandemName: 'mercury',
     identifier: 'MERCURY',
     density: 13593,
@@ -400,7 +400,7 @@ export default class Material {
   } );
 
   public static OIL = new Material( {
-    name: DensityBuoyancyCommonStrings.material.oilStringProperty,
+    nameProperty: DensityBuoyancyCommonStrings.material.oilStringProperty,
     tandemName: 'oil',
     identifier: 'OIL',
     density: 920,
@@ -409,7 +409,7 @@ export default class Material {
   } );
 
   public static SAND = new Material( {
-    name: DensityBuoyancyCommonStrings.material.sandStringProperty,
+    nameProperty: DensityBuoyancyCommonStrings.material.sandStringProperty,
     tandemName: 'sand',
     identifier: 'SAND',
     density: 1442,
@@ -418,7 +418,7 @@ export default class Material {
   } );
 
   public static SEAWATER = new Material( {
-    name: DensityBuoyancyCommonStrings.material.seawaterStringProperty,
+    nameProperty: DensityBuoyancyCommonStrings.material.seawaterStringProperty,
     tandemName: 'seawater',
     identifier: 'SEAWATER',
     density: 1029,
@@ -427,7 +427,7 @@ export default class Material {
   } );
 
   public static WATER = new Material( {
-    name: DensityBuoyancyCommonStrings.material.waterStringProperty,
+    nameProperty: DensityBuoyancyCommonStrings.material.waterStringProperty,
     tandemName: 'water',
     identifier: 'WATER',
     density: 1000,
@@ -535,7 +535,7 @@ Material.MaterialIO = new IOType<Material, MaterialState>( 'MaterialIO', {
       const staticCustomColor = NullableIO( Color.ColorIO ).fromStateObject( obj.staticCustomColor );
       const staticLiquidColor = NullableIO( Color.ColorIO ).fromStateObject( obj.staticLiquidColor );
       return new Material( {
-        name: ReferenceIO( ReadOnlyProperty.PropertyIO( StringIO ) ).fromStateObject( obj.name ),
+        nameProperty: ReferenceIO( ReadOnlyProperty.PropertyIO( StringIO ) ).fromStateObject( obj.name ),
         identifier: NullableIO( StringIO ).fromStateObject( obj.identifier ),
         tandemName: NullableIO( StringIO ).fromStateObject( obj.tandemName ),
         density: NumberIO.fromStateObject( obj.density ),

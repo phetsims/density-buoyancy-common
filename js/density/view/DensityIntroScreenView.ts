@@ -8,7 +8,7 @@
 
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
-import { AlignPropertyBox, Node, Text } from '../../../../scenery/js/imports.js';
+import { AlignBox, Node, Text } from '../../../../scenery/js/imports.js';
 import AccordionBox, { AccordionBoxOptions } from '../../../../sun/js/AccordionBox.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 import PrimarySecondaryControlsNode from '../../common/view/PrimarySecondaryControlsNode.js';
@@ -67,13 +67,15 @@ export default class DensityIntroScreenView extends SecondaryMassScreenView<Dens
       tandem: accordionTandem
     }, DensityBuoyancyCommonConstants.ACCORDION_BOX_OPTIONS ) );
 
-    this.addChild( new AlignPropertyBox( densityAccordionBox, this.visibleBoundsProperty, {
+    this.addChild( new AlignBox( densityAccordionBox, {
+      alignBoundsProperty: this.visibleBoundsProperty,
       xAlign: 'center',
       yAlign: 'top',
       margin: MARGIN
     } ) );
 
-    this.addChild( new AlignPropertyBox( this.rightBox, this.visibleBoundsProperty, {
+    this.addChild( new AlignBox( this.rightBox, {
+      alignBoundsProperty: this.visibleBoundsProperty,
       xAlign: 'right',
       yAlign: 'top',
       margin: MARGIN

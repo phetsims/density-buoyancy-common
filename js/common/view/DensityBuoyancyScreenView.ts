@@ -28,7 +28,7 @@ import arrayRemove from '../../../../phet-core/js/arrayRemove.js';
 import optionize from '../../../../phet-core/js/optionize.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import ResetAllButton from '../../../../scenery-phet/js/buttons/ResetAllButton.js';
-import { AlignPropertyBox, animatedPanZoomSingleton, TInputListener, Image, LinearGradient, Mouse, Node, Pointer, Rectangle, SceneryEvent, Text } from '../../../../scenery/js/imports.js';
+import { AlignBox, animatedPanZoomSingleton, TInputListener, Image, LinearGradient, Mouse, Node, Pointer, Rectangle, SceneryEvent, Text } from '../../../../scenery/js/imports.js';
 import Checkbox from '../../../../sun/js/Checkbox.js';
 import EventType from '../../../../tandem/js/EventType.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
@@ -718,7 +718,8 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
       },
       tandem: tandem.createTandem( 'resetAllButton' )
     } );
-    this.addChild( new AlignPropertyBox( resetAllButton, this.visibleBoundsProperty, {
+    this.addChild( new AlignBox( resetAllButton, {
+      alignBoundsProperty: this.visibleBoundsProperty,
       xAlign: 'right',
       yAlign: 'bottom',
       margin: MARGIN

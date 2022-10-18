@@ -9,7 +9,7 @@
 import Vector3 from '../../../../dot/js/Vector3.js';
 import { combineOptions } from '../../../../phet-core/js/optionize.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
-import { AlignPropertyBox, HBox, Node, Text } from '../../../../scenery/js/imports.js';
+import { AlignBox, HBox, Node, Text } from '../../../../scenery/js/imports.js';
 import AquaRadioButton from '../../../../sun/js/AquaRadioButton.js';
 import Panel from '../../../../sun/js/Panel.js';
 import VerticalAquaRadioButtonGroup from '../../../../sun/js/VerticalAquaRadioButtonGroup.js';
@@ -61,14 +61,16 @@ export default class BuoyancyIntroScreenView extends DensityBuoyancyScreenView<B
     } );
     const blockSetPanel = new Panel( blocksRadioButtonGroup, DensityBuoyancyCommonConstants.PANEL_OPTIONS );
 
-    this.addChild( new AlignPropertyBox( blockSetPanel, this.visibleBoundsProperty, {
+    this.addChild( new AlignBox( blockSetPanel, {
+      alignBoundsProperty: this.visibleBoundsProperty,
       xAlign: 'right',
       yAlign: 'top',
       margin: MARGIN
     } ) );
 
     const displayOptionsPanel = new Panel( new DisplayOptionsNode( model ), DensityBuoyancyCommonConstants.PANEL_OPTIONS );
-    this.addChild( new AlignPropertyBox( displayOptionsPanel, this.visibleBoundsProperty, {
+    this.addChild( new AlignBox( displayOptionsPanel, {
+      alignBoundsProperty: this.visibleBoundsProperty,
       xAlign: 'left',
       yAlign: 'bottom',
       margin: MARGIN
@@ -97,7 +99,8 @@ export default class BuoyancyIntroScreenView extends DensityBuoyancyScreenView<B
       children: [ fluidTitle, fluidBox ]
     } ), DensityBuoyancyCommonConstants.PANEL_OPTIONS );
 
-    this.addChild( new AlignPropertyBox( fluidPanel, this.visibleBoundsProperty, {
+    this.addChild( new AlignBox( fluidPanel, {
+      alignBoundsProperty: this.visibleBoundsProperty,
       xAlign: 'center',
       yAlign: 'bottom',
       margin: MARGIN

@@ -7,7 +7,7 @@
  */
 
 import RefreshButton from '../../../../scenery-phet/js/buttons/RefreshButton.js';
-import { AlignPropertyBox, Text, VBox } from '../../../../scenery/js/imports.js';
+import { AlignBox, Text, VBox } from '../../../../scenery/js/imports.js';
 import AccordionBox, { AccordionBoxOptions } from '../../../../sun/js/AccordionBox.js';
 import Panel, { PanelOptions } from '../../../../sun/js/Panel.js';
 import VerticalAquaRadioButtonGroup from '../../../../sun/js/VerticalAquaRadioButtonGroup.js';
@@ -46,7 +46,8 @@ export default class DensityMysteryScreenView extends DensityBuoyancyScreenView<
       tandem: tandem.createTandem( 'densityTableAccordionBox' )
     }, DensityBuoyancyCommonConstants.ACCORDION_BOX_OPTIONS ) );
 
-    this.addChild( new AlignPropertyBox( densityTableAccordionBox, this.visibleBoundsProperty, {
+    this.addChild( new AlignBox( densityTableAccordionBox, {
+      alignBoundsProperty: this.visibleBoundsProperty,
       xAlign: 'center',
       yAlign: 'top',
       margin: MARGIN
@@ -114,7 +115,8 @@ export default class DensityMysteryScreenView extends DensityBuoyancyScreenView<
       tandem: blocksPanelTandem
     }, DensityBuoyancyCommonConstants.PANEL_OPTIONS ) );
 
-    this.addChild( new AlignPropertyBox( blockSetPanel, this.visibleBoundsProperty, {
+    this.addChild( new AlignBox( blockSetPanel, {
+      alignBoundsProperty: this.visibleBoundsProperty,
       xAlign: 'right',
       yAlign: 'top',
       margin: MARGIN

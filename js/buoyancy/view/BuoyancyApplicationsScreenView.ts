@@ -17,7 +17,7 @@ import resetArrow_png from '../../../../scenery-phet/images/resetArrow_png.js';
 import NumberControl, { NumberControlOptions } from '../../../../scenery-phet/js/NumberControl.js';
 import NumberDisplay from '../../../../scenery-phet/js/NumberDisplay.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
-import { AlignPropertyBox, Color, HBox, HStrut, Image, ManualConstraint, Node, Text, VBox, HSeparator } from '../../../../scenery/js/imports.js';
+import { AlignBox, Color, HBox, HSeparator, HStrut, Image, ManualConstraint, Node, Text, VBox } from '../../../../scenery/js/imports.js';
 import AccordionBox, { AccordionBoxOptions } from '../../../../sun/js/AccordionBox.js';
 import RectangularPushButton from '../../../../sun/js/buttons/RectangularPushButton.js';
 import RectangularRadioButtonGroup from '../../../../sun/js/buttons/RectangularRadioButtonGroup.js';
@@ -113,7 +113,8 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
       ]
     } );
 
-    const rightBottleContent = new AlignPropertyBox( new Panel( bottleBox, DensityBuoyancyCommonConstants.PANEL_OPTIONS ), this.visibleBoundsProperty, {
+    const rightBottleContent = new AlignBox( new Panel( bottleBox, DensityBuoyancyCommonConstants.PANEL_OPTIONS ), {
+      alignBoundsProperty: this.visibleBoundsProperty,
       xAlign: 'right',
       yAlign: 'bottom',
       xMargin: 10,
@@ -202,7 +203,8 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
       ]
     } );
 
-    const rightBoatContent = new AlignPropertyBox( new Panel( boatBox, DensityBuoyancyCommonConstants.PANEL_OPTIONS ), this.visibleBoundsProperty, {
+    const rightBoatContent = new AlignBox( new Panel( boatBox, DensityBuoyancyCommonConstants.PANEL_OPTIONS ), {
+      alignBoundsProperty: this.visibleBoundsProperty,
       xAlign: 'right',
       yAlign: 'bottom',
       xMargin: 10,
@@ -229,7 +231,8 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
       Material.DENSITY_F
     ], this.popupLayer, tandem.createTandem( 'densityControlNode' ) ), DensityBuoyancyCommonConstants.PANEL_OPTIONS );
 
-    this.addChild( new AlignPropertyBox( densityControlPanel, this.visibleBoundsProperty, {
+    this.addChild( new AlignBox( densityControlPanel, {
+      alignBoundsProperty: this.visibleBoundsProperty,
       xAlign: 'center',
       yAlign: 'bottom',
       margin: MARGIN
@@ -256,13 +259,14 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
       expandedProperty: model.densityExpandedProperty
     }, DensityBuoyancyCommonConstants.ACCORDION_BOX_OPTIONS ) );
 
-    this.addChild( new AlignPropertyBox( new VBox( {
+    this.addChild( new AlignBox( new VBox( {
       spacing: 10,
       children: [
         densityBox,
         new Panel( displayOptionsNode, DensityBuoyancyCommonConstants.PANEL_OPTIONS )
       ]
-    } ), this.visibleBoundsProperty, {
+    } ), {
+      alignBoundsProperty: this.visibleBoundsProperty,
       xAlign: 'left',
       yAlign: 'bottom',
       margin: MARGIN

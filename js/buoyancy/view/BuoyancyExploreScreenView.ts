@@ -12,7 +12,7 @@ import Vector2 from '../../../../dot/js/Vector2.js';
 import { combineOptions } from '../../../../phet-core/js/optionize.js';
 import PatternStringProperty from '../../../../axon/js/PatternStringProperty.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
-import { AlignBox, AlignPropertyBox, GridBox, HBox, HStrut, Node, Text, VBox } from '../../../../scenery/js/imports.js';
+import { AlignBox, GridBox, HBox, HStrut, Node, Text, VBox } from '../../../../scenery/js/imports.js';
 import AccordionBox, { AccordionBoxOptions } from '../../../../sun/js/AccordionBox.js';
 import Panel from '../../../../sun/js/Panel.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
@@ -68,8 +68,16 @@ export default class BuoyancyExploreScreenView extends SecondaryMassScreenView<B
       layoutOptions: { column: 1, row: 1 }
     } );
 
-    const labelAText = new Text( DensityBuoyancyCommonStrings.blockAStringProperty, { font: new PhetFont( 14 ), maxWidth: 200, layoutOptions: { column: 0, row: 0 } } );
-    const labelBText = new Text( DensityBuoyancyCommonStrings.blockBStringProperty, { font: new PhetFont( 14 ), maxWidth: 200, layoutOptions: { column: 0, row: 1 } } );
+    const labelAText = new Text( DensityBuoyancyCommonStrings.blockAStringProperty, {
+      font: new PhetFont( 14 ),
+      maxWidth: 200,
+      layoutOptions: { column: 0, row: 0 }
+    } );
+    const labelBText = new Text( DensityBuoyancyCommonStrings.blockBStringProperty, {
+      font: new PhetFont( 14 ),
+      maxWidth: 200,
+      layoutOptions: { column: 0, row: 1 }
+    } );
 
     const densityReadoutBox = new GridBox( {
       children: [ densityAText, densityBText, labelAText, labelBText ],
@@ -94,7 +102,7 @@ export default class BuoyancyExploreScreenView extends SecondaryMassScreenView<B
       expandedProperty: model.densityExpandedProperty
     }, DensityBuoyancyCommonConstants.ACCORDION_BOX_OPTIONS ) );
 
-    this.addChild( new AlignPropertyBox( new VBox( {
+    this.addChild( new AlignBox( new VBox( {
       spacing: 10,
       children: [
         // Keep the density box at the top of its possible location, even if it reduces in size due to the second mass
@@ -106,7 +114,8 @@ export default class BuoyancyExploreScreenView extends SecondaryMassScreenView<B
         } ),
         new Panel( displayOptionsNode, DensityBuoyancyCommonConstants.PANEL_OPTIONS )
       ]
-    } ), this.visibleBoundsProperty, {
+    } ), {
+      alignBoundsProperty: this.visibleBoundsProperty,
       xAlign: 'left',
       yAlign: 'bottom',
       margin: MARGIN
@@ -136,7 +145,8 @@ export default class BuoyancyExploreScreenView extends SecondaryMassScreenView<B
       ]
     } );
 
-    this.addChild( new AlignPropertyBox( bottomNode, this.visibleBoundsProperty, {
+    this.addChild( new AlignBox( bottomNode, {
+      alignBoundsProperty: this.visibleBoundsProperty,
       xAlign: 'center',
       yAlign: 'bottom',
       margin: MARGIN
@@ -153,7 +163,8 @@ export default class BuoyancyExploreScreenView extends SecondaryMassScreenView<B
       }
     );
 
-    this.addChild( new AlignPropertyBox( this.rightBox, this.visibleBoundsProperty, {
+    this.addChild( new AlignBox( this.rightBox, {
+      alignBoundsProperty: this.visibleBoundsProperty,
       xAlign: 'right',
       yAlign: 'top',
       margin: MARGIN

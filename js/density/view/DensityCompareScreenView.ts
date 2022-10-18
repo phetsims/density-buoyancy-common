@@ -9,7 +9,7 @@
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import UnitConversionProperty from '../../../../axon/js/UnitConversionProperty.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
-import { AlignPropertyBox, Node, PhetioControlledVisibilityProperty, Text, VBox } from '../../../../scenery/js/imports.js';
+import { AlignBox, Node, PhetioControlledVisibilityProperty, Text, VBox } from '../../../../scenery/js/imports.js';
 import Panel, { PanelOptions } from '../../../../sun/js/Panel.js';
 import VerticalAquaRadioButtonGroup from '../../../../sun/js/VerticalAquaRadioButtonGroup.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
@@ -77,7 +77,8 @@ export default class DensityCompareScreenView extends DensityBuoyancyScreenView<
       tandem: blocksPanelTandem
     }, DensityBuoyancyCommonConstants.PANEL_OPTIONS ) );
 
-    this.addChild( new AlignPropertyBox( blocksPanel, this.visibleBoundsProperty, {
+    this.addChild( new AlignBox( blocksPanel, {
+      alignBoundsProperty: this.visibleBoundsProperty,
       xAlign: 'right',
       yAlign: 'top',
       margin: MARGIN

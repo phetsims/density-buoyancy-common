@@ -10,7 +10,7 @@ import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import DynamicProperty from '../../../../axon/js/DynamicProperty.js';
 import Property from '../../../../axon/js/Property.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
-import { AlignPropertyBox, HStrut, Node, Text, VBox } from '../../../../scenery/js/imports.js';
+import { AlignBox, HStrut, Node, Text, VBox } from '../../../../scenery/js/imports.js';
 import AccordionBox, { AccordionBoxOptions } from '../../../../sun/js/AccordionBox.js';
 import Panel from '../../../../sun/js/Panel.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
@@ -54,7 +54,8 @@ export default class BuoyancyShapesScreenView extends SecondaryMassScreenView<Bu
       Material.DENSITY_D
     ], this.popupLayer, tandem.createTandem( 'densityControlNode' ) ), DensityBuoyancyCommonConstants.PANEL_OPTIONS );
 
-    this.addChild( new AlignPropertyBox( densityControlPanel, this.visibleBoundsProperty, {
+    this.addChild( new AlignBox( densityControlPanel, {
+      alignBoundsProperty: this.visibleBoundsProperty,
       xAlign: 'center',
       yAlign: 'bottom',
       margin: MARGIN
@@ -80,13 +81,14 @@ export default class BuoyancyShapesScreenView extends SecondaryMassScreenView<Bu
       expandedProperty: model.densityExpandedProperty
     }, DensityBuoyancyCommonConstants.ACCORDION_BOX_OPTIONS ) );
 
-    this.addChild( new AlignPropertyBox( new VBox( {
+    this.addChild( new AlignBox( new VBox( {
       spacing: 10,
       children: [
         densityBox,
         new Panel( displayOptionsNode, DensityBuoyancyCommonConstants.PANEL_OPTIONS )
       ]
-    } ), this.visibleBoundsProperty, {
+    } ), {
+      alignBoundsProperty: this.visibleBoundsProperty,
       xAlign: 'left',
       yAlign: 'bottom',
       margin: MARGIN
@@ -120,7 +122,8 @@ export default class BuoyancyShapesScreenView extends SecondaryMassScreenView<Bu
       )
     );
 
-    this.addChild( new AlignPropertyBox( this.rightBox, this.visibleBoundsProperty, {
+    this.addChild( new AlignBox( this.rightBox, {
+      alignBoundsProperty: this.visibleBoundsProperty,
       xAlign: 'right',
       yAlign: 'top',
       margin: MARGIN

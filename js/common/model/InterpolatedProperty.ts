@@ -13,7 +13,7 @@ import Vector3 from '../../../../dot/js/Vector3.js';
 import optionize from '../../../../phet-core/js/optionize.js';
 import IntentionalAny from '../../../../phet-core/js/types/IntentionalAny.js';
 import IOType from '../../../../tandem/js/types/IOType.js';
-import NumberIO, { NumberStateObject } from '../../../../tandem/js/types/NumberIO.js';
+import NumberIO from '../../../../tandem/js/types/NumberIO.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 
 type Interpolate<T> = ( a: T, b: T, ratio: number ) => T;
@@ -105,7 +105,7 @@ const cache = new Map<IOType, IOType>();
 export type InterpolatedPropertyIOStateObject = ReadOnlyPropertyState<IntentionalAny> & {
   currentValue: IntentionalAny;
   previousValue: IntentionalAny;
-  ratio: NumberStateObject;
+  ratio: number;
 };
 
 InterpolatedProperty.InterpolatedPropertyIO = parameterType => {
@@ -125,7 +125,7 @@ InterpolatedProperty.InterpolatedPropertyIO = parameterType => {
 
         parentStateObject.currentValue = parameterType.toStateObject( interpolatedProperty.currentValue );
         parentStateObject.previousValue = parameterType.toStateObject( interpolatedProperty.previousValue );
-        parentStateObject.ratio = NumberIO.toStateObject( interpolatedProperty.ratio );
+        parentStateObject.ratio = interpolatedProperty.ratio;
 
         return parentStateObject;
       },
@@ -133,7 +133,7 @@ InterpolatedProperty.InterpolatedPropertyIO = parameterType => {
         PropertyIOImpl.applyState( interpolatedProperty, stateObject );
         interpolatedProperty.currentValue = parameterType.fromStateObject( stateObject.currentValue );
         interpolatedProperty.previousValue = parameterType.fromStateObject( stateObject.previousValue );
-        interpolatedProperty.ratio = NumberIO.fromStateObject( stateObject.ratio );
+        interpolatedProperty.ratio = stateObject.ratio;
       },
       stateSchema: {
         currentValue: parameterType,

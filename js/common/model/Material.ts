@@ -16,7 +16,7 @@ import { Color, ColorProperty, ColorState } from '../../../../scenery/js/imports
 import BooleanIO from '../../../../tandem/js/types/BooleanIO.js';
 import IOType from '../../../../tandem/js/types/IOType.js';
 import NullableIO from '../../../../tandem/js/types/NullableIO.js';
-import NumberIO, { NumberStateObject } from '../../../../tandem/js/types/NumberIO.js';
+import NumberIO from '../../../../tandem/js/types/NumberIO.js';
 import ReferenceIO, { ReferenceIOState } from '../../../../tandem/js/types/ReferenceIO.js';
 import StringIO from '../../../../tandem/js/types/StringIO.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
@@ -479,8 +479,8 @@ type MaterialState = {
   identifier: null | string;
   name: ReferenceIOState;
   tandemName: string | null;
-  density: NumberStateObject;
-  viscosity: NumberStateObject;
+  density: number;
+  viscosity: number;
   custom: boolean;
   hidden: boolean;
   staticCustomColor: null | ColorState;
@@ -515,10 +515,10 @@ Material.MaterialIO = new IOType<Material, MaterialState>( 'MaterialIO', {
       name: ReferenceIO( ReadOnlyProperty.PropertyIO( StringIO ) ).toStateObject( material.nameProperty ),
       identifier: NullableIO( StringIO ).toStateObject( material.identifier ),
       tandemName: NullableIO( StringIO ).toStateObject( material.tandemName ),
-      density: NumberIO.toStateObject( material.density ),
-      viscosity: NumberIO.toStateObject( material.viscosity ),
-      custom: BooleanIO.toStateObject( material.custom ),
-      hidden: BooleanIO.toStateObject( material.hidden ),
+      density: material.density,
+      viscosity: material.viscosity,
+      custom: material.custom,
+      hidden: material.hidden,
       staticCustomColor: NullableIO( Color.ColorIO ).toStateObject( isCustomColorUninstrumented ? material.customColor.value : null ),
       customColor: NullableColorPropertyReferenceType.toStateObject( isCustomColorUninstrumented ? null : material.customColor ),
       staticLiquidColor: NullableIO( Color.ColorIO ).toStateObject( isLiquidColorUninstrumented ? material.liquidColor.value : null ),
@@ -538,10 +538,10 @@ Material.MaterialIO = new IOType<Material, MaterialState>( 'MaterialIO', {
         nameProperty: ReferenceIO( ReadOnlyProperty.PropertyIO( StringIO ) ).fromStateObject( obj.name ),
         identifier: NullableIO( StringIO ).fromStateObject( obj.identifier ),
         tandemName: NullableIO( StringIO ).fromStateObject( obj.tandemName ),
-        density: NumberIO.fromStateObject( obj.density ),
-        viscosity: NumberIO.fromStateObject( obj.viscosity ),
-        custom: BooleanIO.fromStateObject( obj.custom ),
-        hidden: BooleanIO.fromStateObject( obj.hidden ),
+        density: obj.density,
+        viscosity: obj.viscosity,
+        custom: obj.custom,
+        hidden: obj.hidden,
         customColor: staticCustomColor ? new ColorProperty( staticCustomColor ) : NullableColorPropertyReferenceType.fromStateObject( obj.customColor ),
         liquidColor: staticLiquidColor ? new ColorProperty( staticLiquidColor ) : NullableColorPropertyReferenceType.fromStateObject( obj.liquidColor )
       } );

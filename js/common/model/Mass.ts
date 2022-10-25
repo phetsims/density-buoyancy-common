@@ -726,8 +726,8 @@ Mass.MassIO = new IOType<Mass, MassIOStateObject>( 'MassIO', {
       matrix: Matrix3.toStateObject( mass.matrix ),
       stepMatrix: Matrix3.toStateObject( mass.stepMatrix ),
       originalMatrix: Matrix3.toStateObject( mass.originalMatrix ),
-      canRotate: BooleanIO.toStateObject( mass.canRotate ),
-      canMove: BooleanIO.toStateObject( mass.canMove ),
+      canRotate: mass.canRotate,
+      canMove: mass.canMove,
       tag: EnumerationIO( MassTag ).toStateObject( mass.tag ),
       massShape: EnumerationIO( MassShape ).toStateObject( mass.massShape )
     }, mass.engine.bodyToStateObject( mass.body ) );
@@ -736,8 +736,8 @@ Mass.MassIO = new IOType<Mass, MassIOStateObject>( 'MassIO', {
     mass.matrix.set( Matrix3.fromStateObject( obj.matrix ) );
     mass.stepMatrix.set( Matrix3.fromStateObject( obj.stepMatrix ) );
     mass.originalMatrix.set( Matrix3.fromStateObject( obj.originalMatrix ) );
-    mass.canRotate = BooleanIO.fromStateObject( obj.canRotate );
-    mass.canMove = BooleanIO.fromStateObject( obj.canMove );
+    mass.canRotate = obj.canRotate;
+    mass.canMove = obj.canMove;
     mass.tag = EnumerationIO( MassTag ).fromStateObject( obj.tag );
     mass.engine.bodyApplyState( mass.body, obj );
     mass.transformedEmitter.emit();

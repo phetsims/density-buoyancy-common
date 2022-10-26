@@ -245,15 +245,16 @@ export default class P2Engine extends PhysicsEngine {
    * Applies a given state object to a body.
    */
   public bodyApplyState( body: PhysicsEngineBody, obj: BodyStateObject ): void {
+
     // We will ignore infinities
-    body.position[ 0 ] = obj.position.x as number * SIZE_SCALE;
-    body.position[ 1 ] = obj.position.y as number * SIZE_SCALE;
-    body.previousPosition[ 0 ] = obj.position.x as number * SIZE_SCALE;
-    body.previousPosition[ 1 ] = obj.position.y as number * SIZE_SCALE;
-    body.velocity[ 0 ] = obj.velocity.x as number * SIZE_SCALE;
-    body.velocity[ 1 ] = obj.velocity.y as number * SIZE_SCALE;
-    body.force[ 0 ] = obj.force.x as number * SIZE_SCALE;
-    body.force[ 1 ] = obj.force.y as number * SIZE_SCALE;
+    body.position[ 0 ] = obj.position.x * SIZE_SCALE;
+    body.position[ 1 ] = obj.position.y * SIZE_SCALE;
+    body.previousPosition[ 0 ] = obj.position.x * SIZE_SCALE;
+    body.previousPosition[ 1 ] = obj.position.y * SIZE_SCALE;
+    body.velocity[ 0 ] = obj.velocity.x * SIZE_SCALE;
+    body.velocity[ 1 ] = obj.velocity.y * SIZE_SCALE;
+    body.force[ 0 ] = obj.force.x * SIZE_SCALE;
+    body.force[ 1 ] = obj.force.y * SIZE_SCALE;
   }
 
   /**

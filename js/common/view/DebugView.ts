@@ -6,8 +6,6 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
-import Emitter from '../../../../axon/js/Emitter.js';
-import TEmitter from '../../../../axon/js/TEmitter.js';
 import Bounds2 from '../../../../dot/js/Bounds2.js';
 import Matrix3 from '../../../../dot/js/Matrix3.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
@@ -172,7 +170,6 @@ export default class DebugView extends Node {
 class DebugMassNode extends Node {
 
   public readonly mass: Mass;
-  private readonly disposeEmitter: TEmitter;
   private readonly dragListener: DragListener;
 
   public constructor( model: DensityBuoyancyModel, mass: Mass, modelViewTransform: ModelViewTransform2 ) {
@@ -192,7 +189,6 @@ class DebugMassNode extends Node {
     this.addChild( intersectionPath );
 
     this.mass = mass;
-    this.disposeEmitter = new Emitter();
 
     const shapeListener = ( shape: Shape ) => {
       const matrix = scratchMatrix.set( modelViewTransform.getMatrix() );
@@ -316,15 +312,6 @@ class DebugMassNode extends Node {
       }
     } );
     this.addInputListener( this.dragListener );
-  }
-
-  /**
-   * Releases references.
-   */
-  public override dispose(): void {
-    this.disposeEmitter.emit();
-
-    super.dispose();
   }
 }
 

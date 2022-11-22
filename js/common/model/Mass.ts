@@ -688,48 +688,7 @@ export default abstract class Mass extends PhetioObject {
     }
   }
 
-  public static readonly MassIO = new IOType<Mass, MassIOStateObject>( 'MassIO', {
-
-    // @ts-ignore https://github.com/phetsims/tandem/issues/261
-    valueType: Mass,
-    documentation: 'Represents a mass that interacts in the scene, and can potentially float or displace liquid.',
-    stateSchema: {
-      matrix: Matrix3.Matrix3IO,
-      stepMatrix: Matrix3.Matrix3IO,
-      originalMatrix: Matrix3.Matrix3IO,
-      canRotate: BooleanIO,
-      canMove: BooleanIO,
-      tag: EnumerationIO( MassTag ),
-      massShape: EnumerationIO( MassShape ),
-
-      // engine.bodyToStateObject
-      position: Vector2.Vector2IO,
-      velocity: Vector2.Vector2IO,
-      force: Vector2.Vector2IO
-    },
-    toStateObject( mass: Mass ): MassIOStateObject {
-      return combineOptions<MassIOStateObject>( {
-        matrix: Matrix3.toStateObject( mass.matrix ),
-        stepMatrix: Matrix3.toStateObject( mass.stepMatrix ),
-        originalMatrix: Matrix3.toStateObject( mass.originalMatrix ),
-        canRotate: mass.canRotate,
-        canMove: mass.canMove,
-        tag: EnumerationIO( MassTag ).toStateObject( mass.tag ),
-        massShape: EnumerationIO( MassShape ).toStateObject( mass.massShape )
-      }, mass.engine.bodyToStateObject( mass.body ) );
-    },
-    applyState( mass: Mass, obj: MassIOStateObject ) {
-      mass.matrix.set( Matrix3.fromStateObject( obj.matrix ) );
-      mass.stepMatrix.set( Matrix3.fromStateObject( obj.stepMatrix ) );
-      mass.originalMatrix.set( Matrix3.fromStateObject( obj.originalMatrix ) );
-      mass.canRotate = obj.canRotate;
-      mass.canMove = obj.canMove;
-      mass.tag = EnumerationIO( MassTag ).fromStateObject( obj.tag );
-      mass.engine.bodyApplyState( mass.body, obj );
-      mass.transformedEmitter.emit();
-    },
-    stateToArgsForConstructor: ( stateObject: MassIOStateObject ) => [ EnumerationIO( MassShape ).fromStateObject( stateObject.massShape ) ]
-  } );
+  public static MassIO: IOType;
 }
 
 export type MassIOStateObject = {
@@ -741,5 +700,49 @@ export type MassIOStateObject = {
   tag: string;
   massShape: string;
 } & BodyStateObject;
+
+// (read-only) {IOType}
+Mass.MassIO = new IOType<Mass, MassIOStateObject>( 'MassIO', {
+
+  // @ts-ignore https://github.com/phetsims/tandem/issues/261
+  valueType: Mass,
+  documentation: 'Represents a mass that interacts in the scene, and can potentially float or displace liquid.',
+  stateSchema: {
+    matrix: Matrix3.Matrix3IO,
+    stepMatrix: Matrix3.Matrix3IO,
+    originalMatrix: Matrix3.Matrix3IO,
+    canRotate: BooleanIO,
+    canMove: BooleanIO,
+    tag: EnumerationIO( MassTag ),
+    massShape: EnumerationIO( MassShape ),
+
+    // engine.bodyToStateObject
+    position: Vector2.Vector2IO,
+    velocity: Vector2.Vector2IO,
+    force: Vector2.Vector2IO
+  },
+  toStateObject( mass: Mass ): MassIOStateObject {
+    return combineOptions<MassIOStateObject>( {
+      matrix: Matrix3.toStateObject( mass.matrix ),
+      stepMatrix: Matrix3.toStateObject( mass.stepMatrix ),
+      originalMatrix: Matrix3.toStateObject( mass.originalMatrix ),
+      canRotate: mass.canRotate,
+      canMove: mass.canMove,
+      tag: EnumerationIO( MassTag ).toStateObject( mass.tag ),
+      massShape: EnumerationIO( MassShape ).toStateObject( mass.massShape )
+    }, mass.engine.bodyToStateObject( mass.body ) );
+  },
+  applyState( mass: Mass, obj: MassIOStateObject ) {
+    mass.matrix.set( Matrix3.fromStateObject( obj.matrix ) );
+    mass.stepMatrix.set( Matrix3.fromStateObject( obj.stepMatrix ) );
+    mass.originalMatrix.set( Matrix3.fromStateObject( obj.originalMatrix ) );
+    mass.canRotate = obj.canRotate;
+    mass.canMove = obj.canMove;
+    mass.tag = EnumerationIO( MassTag ).fromStateObject( obj.tag );
+    mass.engine.bodyApplyState( mass.body, obj );
+    mass.transformedEmitter.emit();
+  },
+  stateToArgsForConstructor: ( stateObject: MassIOStateObject ) => [ EnumerationIO( MassShape ).fromStateObject( stateObject.massShape ) ]
+} );
 
 densityBuoyancyCommon.register( 'Mass', Mass );

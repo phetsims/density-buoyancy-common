@@ -223,13 +223,11 @@ export default class Ellipsoid extends Mass {
     return Math.PI * size.width * size.height * size.depth / 6;
   }
 
-  public static EllipsoidIO: IOType;
+  public static EllipsoidIO = new IOType( 'EllipsoidIO', {
+    valueType: Ellipsoid,
+    supertype: Mass.MassIO,
+    documentation: 'Represents an ellipsoid'
+  } );
 }
-
-Ellipsoid.EllipsoidIO = new IOType( 'EllipsoidIO', {
-  valueType: Ellipsoid,
-  supertype: Mass.MassIO,
-  documentation: 'Represents an ellipsoid'
-} );
 
 densityBuoyancyCommon.register( 'Ellipsoid', Ellipsoid );

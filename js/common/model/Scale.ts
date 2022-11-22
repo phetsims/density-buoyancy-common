@@ -214,33 +214,21 @@ export default class Scale extends Mass {
     this.scaleForceInterpolatedProperty.setRatio( interpolationRatio );
   }
 
-  public static ScaleIO: IOType;
+  public static readonly ScaleIO = new IOType( 'ScaleIO', {
+    valueType: Scale,
+    supertype: Mass.MassIO,
+    documentation: 'Represents scale used for measuring mass/weight'
+  } );
 
-  public static SCALE_WIDTH: number;
-  public static SCALE_HEIGHT: number;
-  public static SCALE_DEPTH: number;
-  public static SCALE_BASE_HEIGHT: number;
-  public static SCALE_TOP_HEIGHT: number;
-  public static SCALE_AREA: number;
-  public static SCALE_VOLUME: number;
-  public static SCALE_BASE_BOUNDS: Bounds3;
-  public static SCALE_FRONT_OFFSET: Vector3;
+  public static readonly SCALE_WIDTH = SCALE_WIDTH;
+  public static readonly SCALE_HEIGHT = SCALE_HEIGHT;
+  public static readonly SCALE_DEPTH = SCALE_DEPTH;
+  public static readonly SCALE_BASE_HEIGHT = SCALE_BASE_HEIGHT;
+  public static readonly SCALE_TOP_HEIGHT = SCALE_TOP_HEIGHT;
+  public static readonly SCALE_AREA = SCALE_AREA;
+  public static readonly SCALE_VOLUME = SCALE_VOLUME;
+  public static readonly SCALE_BASE_BOUNDS = SCALE_BASE_BOUNDS;
+  public static readonly SCALE_FRONT_OFFSET = SCALE_FRONT_OFFSET;
 }
-
-Scale.SCALE_WIDTH = SCALE_WIDTH;
-Scale.SCALE_HEIGHT = SCALE_HEIGHT;
-Scale.SCALE_DEPTH = SCALE_DEPTH;
-Scale.SCALE_BASE_HEIGHT = SCALE_BASE_HEIGHT;
-Scale.SCALE_TOP_HEIGHT = SCALE_TOP_HEIGHT;
-Scale.SCALE_AREA = SCALE_AREA;
-Scale.SCALE_VOLUME = SCALE_VOLUME;
-Scale.SCALE_BASE_BOUNDS = SCALE_BASE_BOUNDS;
-Scale.SCALE_FRONT_OFFSET = SCALE_FRONT_OFFSET;
-
-Scale.ScaleIO = new IOType( 'ScaleIO', {
-  valueType: Scale,
-  supertype: Mass.MassIO,
-  documentation: 'Represents scale used for measuring mass/weight'
-} );
 
 densityBuoyancyCommon.register( 'Scale', Scale );

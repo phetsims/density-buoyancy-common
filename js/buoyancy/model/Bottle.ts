@@ -1230,34 +1230,25 @@ const FLAT_INTERSECTION_VERTICES = [ ${flatIntersectionVertices.map( v => `new V
   }
 
   // The number to scale the original values by to get a 10L-volume bottle
-  public static TEN_LITER_SCALE_MULTIPLIER: number;
+  public static readonly TEN_LITER_SCALE_MULTIPLIER = TEN_LITER_SCALE_MULTIPLIER;
 
   // The maximum bounding radius for the 10L-volume bottle
-  public static MAX_RADIUS: number;
+  public static readonly MAX_RADIUS = FULL_RADIUS * TEN_LITER_SCALE_MULTIPLIER;
 
   // The maximum length for the 10L-volume bottle
-  public static MAX_LENGTH: number;
+  public static readonly MAX_LENGTH = BASE_TIP * TEN_LITER_SCALE_MULTIPLIER;
 
   // From the bottom to top, cross-sectional area and cumulative (displaced) volume
-  public static TEN_LITER_DISPLACED_AREAS: number[];
-  public static TEN_LITER_DISPLACED_VOLUMES: number[];
+  public static readonly TEN_LITER_DISPLACED_AREAS = TEN_LITER_DISPLACED_AREAS;
+  public static readonly TEN_LITER_DISPLACED_VOLUMES = TEN_LITER_DISPLACED_VOLUMES;
 
-  public static FLAT_INTERSECTION_VERTICES: Vector2[];
+  public static readonly FLAT_INTERSECTION_VERTICES = FLAT_INTERSECTION_VERTICES;
 
-  public static BottleIO: IOType;
+  public static readonly BottleIO = new IOType( 'BottleIO', {
+    valueType: Bottle,
+    supertype: Mass.MassIO,
+    documentation: 'Represents a bottle'
+  } );
 }
-
-Bottle.BottleIO = new IOType( 'BottleIO', {
-  valueType: Bottle,
-  supertype: Mass.MassIO,
-  documentation: 'Represents a bottle'
-} );
-
-Bottle.TEN_LITER_SCALE_MULTIPLIER = TEN_LITER_SCALE_MULTIPLIER;
-Bottle.MAX_RADIUS = FULL_RADIUS * TEN_LITER_SCALE_MULTIPLIER;
-Bottle.MAX_LENGTH = BASE_TIP * TEN_LITER_SCALE_MULTIPLIER;
-Bottle.TEN_LITER_DISPLACED_AREAS = TEN_LITER_DISPLACED_AREAS;
-Bottle.TEN_LITER_DISPLACED_VOLUMES = TEN_LITER_DISPLACED_VOLUMES;
-Bottle.FLAT_INTERSECTION_VERTICES = FLAT_INTERSECTION_VERTICES;
 
 densityBuoyancyCommon.register( 'Bottle', Bottle );

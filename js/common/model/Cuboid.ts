@@ -229,7 +229,26 @@ export default class Cuboid extends Mass {
     return ( tNear >= tFar ) ? null : ( tNear >= 0 ? tNear : ( isFinite( tFar ) && tFar >= 0 ? tFar : null ) );
   }
 
-  public static CuboidIO: IOType;
+  public static readonly CuboidIO = new IOType<Cuboid, CuboidIOStateObject>( 'CuboidIO', {
+    valueType: Cuboid,
+    supertype: Mass.MassIO,
+    documentation: 'Represents an axis-aligned cuboid mass',
+    stateSchema: {
+      size: Bounds3.Bounds3IO
+    },
+
+    toStateObject: ( cuboid: Cuboid ): CuboidIOStateObject => {
+      const parentStateObject = Mass.MassIO.toStateObject( cuboid );
+      parentStateObject.size = Bounds3.Bounds3IO.toStateObject( cuboid.sizeProperty.value );
+      return parentStateObject;
+    },
+    applyState: ( cuboid: Cuboid, stateObject: CuboidIOStateObject ) => {
+
+      // Apply size update first, and with the very specific update method
+      cuboid.updateSize( Bounds3.Bounds3IO.fromStateObject( stateObject.size ) );
+      Mass.MassIO.applyState( cuboid, stateObject );
+    }
+  } );
 }
 
 export type CuboidIOStateObject = MassIOStateObject & {
@@ -242,26 +261,5 @@ export type CuboidIOStateObject = MassIOStateObject & {
     maxZ: number;
   };
 };
-
-Cuboid.CuboidIO = new IOType<Cuboid, CuboidIOStateObject>( 'CuboidIO', {
-  valueType: Cuboid,
-  supertype: Mass.MassIO,
-  documentation: 'Represents an axis-aligned cuboid mass',
-  stateSchema: {
-    size: Bounds3.Bounds3IO
-  },
-
-  toStateObject: ( cuboid: Cuboid ): CuboidIOStateObject => {
-    const parentStateObject = Mass.MassIO.toStateObject( cuboid );
-    parentStateObject.size = Bounds3.Bounds3IO.toStateObject( cuboid.sizeProperty.value );
-    return parentStateObject;
-  },
-  applyState: ( cuboid: Cuboid, stateObject: CuboidIOStateObject ) => {
-
-    // Apply size update first, and with the very specific update method
-    cuboid.updateSize( Bounds3.Bounds3IO.fromStateObject( stateObject.size ) );
-    Mass.MassIO.applyState( cuboid, stateObject );
-  }
-} );
 
 densityBuoyancyCommon.register( 'Cuboid', Cuboid );

@@ -240,13 +240,11 @@ export default class HorizontalCylinder extends Mass {
     return Math.PI * radius * radius * length;
   }
 
-  public static HorizontalCylinderIO: IOType;
+  public static readonly HorizontalCylinderIO = new IOType( 'HorizontalCylinderIO', {
+    valueType: HorizontalCylinder,
+    supertype: Mass.MassIO,
+    documentation: 'Represents a cylinder laying on its side'
+  } );
 }
-
-HorizontalCylinder.HorizontalCylinderIO = new IOType( 'HorizontalCylinderIO', {
-  valueType: HorizontalCylinder,
-  supertype: Mass.MassIO,
-  documentation: 'Represents a cylinder laying on its side'
-} );
 
 densityBuoyancyCommon.register( 'HorizontalCylinder', HorizontalCylinder );

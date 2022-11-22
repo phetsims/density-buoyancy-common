@@ -245,13 +245,11 @@ export default class VerticalCylinder extends Mass {
     }
   }
 
-  public static VerticalCylinderIO: IOType;
+  public static readonly VerticalCylinderIO = new IOType( 'VerticalCylinderIO', {
+    valueType: VerticalCylinder,
+    supertype: Mass.MassIO,
+    documentation: 'Represents a cylinder laying on its end'
+  } );
 }
-
-VerticalCylinder.VerticalCylinderIO = new IOType( 'VerticalCylinderIO', {
-  valueType: VerticalCylinder,
-  supertype: Mass.MassIO,
-  documentation: 'Represents a cylinder laying on its end'
-} );
 
 densityBuoyancyCommon.register( 'VerticalCylinder', VerticalCylinder );

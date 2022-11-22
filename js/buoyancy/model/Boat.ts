@@ -256,14 +256,11 @@ export default class Boat extends Mass {
     super.reset();
   }
 
-  public static BoatIO: IOType;
+  public static readonly BoatIO = new IOType( 'BoatIO', {
+    valueType: Boat,
+    supertype: Mass.MassIO,
+    documentation: 'Represents a boat'
+  } );
 }
-
-Boat.BoatIO = new IOType( 'BoatIO', {
-  valueType: Boat,
-  supertype: Mass.MassIO,
-  documentation: 'Represents a boat'
-} );
-
 
 densityBuoyancyCommon.register( 'Boat', Boat );

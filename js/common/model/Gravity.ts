@@ -90,16 +90,43 @@ export default class Gravity {
     hidden: true
   } );
 
-  public static GRAVITIES: Gravity[];
-  public static GravityIO: IOType;
-}
+  public static readonly GRAVITIES = [
+    Gravity.EARTH,
+    Gravity.JUPITER,
+    Gravity.MOON,
+    Gravity.PLANET_X
+  ];
+  public static readonly GravityIO = new IOType<Gravity, GravityState>( 'GravityIO', {
+    valueType: Gravity,
+    documentation: 'Represents a specific value of gravity (m/s^2)',
+    toStateObject: function( gravity: Gravity ): GravityState {
+      return {
+        name: ReferenceIO( ReadOnlyProperty.PropertyIO( StringIO ) ).toStateObject( gravity.nameProperty ),
+        tandemName: gravity.tandemName,
+        value: gravity.value,
+        custom: gravity.custom,
+        hidden: gravity.hidden
+      };
+    },
+    fromStateObject: ( stateObject: GravityState ) => {
+      if ( stateObject.custom ) {
+        stateObject.name = ReferenceIO( ReadOnlyProperty.PropertyIO( StringIO ) ).fromStateObject( stateObject.name );
 
-Gravity.GRAVITIES = [
-  Gravity.EARTH,
-  Gravity.JUPITER,
-  Gravity.MOON,
-  Gravity.PLANET_X
-];
+        return new Gravity( stateObject as unknown as GravityOptions );
+      }
+      else {
+        return _.find( Gravity.GRAVITIES, gravity => gravity.value === stateObject.value )!;
+      }
+    },
+    stateSchema: {
+      name: ReferenceIO( ReadOnlyProperty.PropertyIO( StringIO ) ),
+      tandemName: NullableIO( StringIO ),
+      value: NumberIO,
+      custom: BooleanIO,
+      hidden: BooleanIO
+    }
+  } );
+}
 
 type GravityState = {
   name: ReferenceIOState;
@@ -108,36 +135,5 @@ type GravityState = {
   custom: boolean;
   hidden: boolean;
 };
-
-Gravity.GravityIO = new IOType<Gravity, GravityState>( 'GravityIO', {
-  valueType: Gravity,
-  documentation: 'Represents a specific value of gravity (m/s^2)',
-  toStateObject: function( gravity: Gravity ): GravityState {
-    return {
-      name: ReferenceIO( ReadOnlyProperty.PropertyIO( StringIO ) ).toStateObject( gravity.nameProperty ),
-      tandemName: gravity.tandemName,
-      value: gravity.value,
-      custom: gravity.custom,
-      hidden: gravity.hidden
-    };
-  },
-  fromStateObject: ( stateObject: GravityState ) => {
-    if ( stateObject.custom ) {
-      stateObject.name = ReferenceIO( ReadOnlyProperty.PropertyIO( StringIO ) ).fromStateObject( stateObject.name );
-
-      return new Gravity( stateObject as unknown as GravityOptions );
-    }
-    else {
-      return _.find( Gravity.GRAVITIES, gravity => gravity.value === stateObject.value )!;
-    }
-  },
-  stateSchema: {
-    name: ReferenceIO( ReadOnlyProperty.PropertyIO( StringIO ) ),
-    tandemName: NullableIO( StringIO ),
-    value: NumberIO,
-    custom: BooleanIO,
-    hidden: BooleanIO
-  }
-} );
 
 densityBuoyancyCommon.register( 'Gravity', Gravity );

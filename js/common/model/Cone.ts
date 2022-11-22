@@ -276,13 +276,11 @@ export default class Cone extends Mass {
     return Math.PI * radius * radius * height / 3;
   }
 
-  public static ConeIO: IOType;
+  public static readonly ConeIO = new IOType( 'ConeIO', {
+    valueType: Cone,
+    supertype: Mass.MassIO,
+    documentation: 'Represents an up/down cone'
+  } );
 }
-
-Cone.ConeIO = new IOType( 'ConeIO', {
-  valueType: Cone,
-  supertype: Mass.MassIO,
-  documentation: 'Represents an up/down cone'
-} );
 
 densityBuoyancyCommon.register( 'Cone', Cone );

@@ -95,7 +95,45 @@ export default class InterpolatedProperty<T> extends Property<T> {
     return a.blend( b, ratio );
   }
 
-  public static InterpolatedPropertyIO: ( parameterType: IOType ) => IOType;
+  public static readonly InterpolatedPropertyIO = ( parameterType: IOType ): IOType => {
+    assert && assert( parameterType, 'InterpolatedPropertyIO needs parameterType' );
+
+    if ( !cache.has( parameterType ) ) {
+      const PropertyIOImpl = Property.PropertyIO( parameterType );
+
+      const ioType = new IOType( `InterpolatedPropertyIO<${parameterType.typeName}>`, {
+        valueType: InterpolatedProperty,
+        supertype: PropertyIOImpl,
+        parameterTypes: [ parameterType ],
+        documentation: 'Extends PropertyIO to interpolation (with a current/previous value, and a ratio between the two)',
+        toStateObject: ( interpolatedProperty: InterpolatedProperty<IntentionalAny> ): InterpolatedPropertyIOStateObject => {
+
+          const parentStateObject = PropertyIOImpl.toStateObject( interpolatedProperty );
+
+          parentStateObject.currentValue = parameterType.toStateObject( interpolatedProperty.currentValue );
+          parentStateObject.previousValue = parameterType.toStateObject( interpolatedProperty.previousValue );
+          parentStateObject.ratio = interpolatedProperty.ratio;
+
+          return parentStateObject;
+        },
+        applyState: ( interpolatedProperty: InterpolatedProperty<IntentionalAny>, stateObject: InterpolatedPropertyIOStateObject ) => {
+          PropertyIOImpl.applyState( interpolatedProperty, stateObject );
+          interpolatedProperty.currentValue = parameterType.fromStateObject( stateObject.currentValue );
+          interpolatedProperty.previousValue = parameterType.fromStateObject( stateObject.previousValue );
+          interpolatedProperty.ratio = stateObject.ratio;
+        },
+        stateSchema: {
+          currentValue: parameterType,
+          previousValue: parameterType,
+          ratio: NumberIO
+        }
+      } );
+
+      cache.set( parameterType, ioType );
+    }
+
+    return cache.get( parameterType )!;
+  };
 }
 
 // {Map.<IOType, IOType>} - Cache each parameterized PropertyIO based on
@@ -106,46 +144,6 @@ export type InterpolatedPropertyIOStateObject = ReadOnlyPropertyState<Intentiona
   currentValue: IntentionalAny;
   previousValue: IntentionalAny;
   ratio: number;
-};
-
-InterpolatedProperty.InterpolatedPropertyIO = parameterType => {
-  assert && assert( parameterType, 'InterpolatedPropertyIO needs parameterType' );
-
-  if ( !cache.has( parameterType ) ) {
-    const PropertyIOImpl = Property.PropertyIO( parameterType );
-
-    const ioType = new IOType( `InterpolatedPropertyIO<${parameterType.typeName}>`, {
-      valueType: InterpolatedProperty,
-      supertype: PropertyIOImpl,
-      parameterTypes: [ parameterType ],
-      documentation: 'Extends PropertyIO to interpolation (with a current/previous value, and a ratio between the two)',
-      toStateObject: ( interpolatedProperty: InterpolatedProperty<IntentionalAny> ): InterpolatedPropertyIOStateObject => {
-
-        const parentStateObject = PropertyIOImpl.toStateObject( interpolatedProperty );
-
-        parentStateObject.currentValue = parameterType.toStateObject( interpolatedProperty.currentValue );
-        parentStateObject.previousValue = parameterType.toStateObject( interpolatedProperty.previousValue );
-        parentStateObject.ratio = interpolatedProperty.ratio;
-
-        return parentStateObject;
-      },
-      applyState: ( interpolatedProperty: InterpolatedProperty<IntentionalAny>, stateObject: InterpolatedPropertyIOStateObject ) => {
-        PropertyIOImpl.applyState( interpolatedProperty, stateObject );
-        interpolatedProperty.currentValue = parameterType.fromStateObject( stateObject.currentValue );
-        interpolatedProperty.previousValue = parameterType.fromStateObject( stateObject.previousValue );
-        interpolatedProperty.ratio = stateObject.ratio;
-      },
-      stateSchema: {
-        currentValue: parameterType,
-        previousValue: parameterType,
-        ratio: NumberIO
-      }
-    } );
-
-    cache.set( parameterType, ioType );
-  }
-
-  return cache.get( parameterType )!;
 };
 
 densityBuoyancyCommon.register( 'InterpolatedProperty', InterpolatedProperty );

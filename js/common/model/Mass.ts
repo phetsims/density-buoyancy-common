@@ -46,31 +46,31 @@ import TinyProperty from '../../../../axon/js/TinyProperty.js';
 
 // constants
 export class MassTag extends EnumerationValue {
-  public static PRIMARY = new MassTag();
-  public static SECONDARY = new MassTag();
-  public static NONE = new MassTag();
-  public static ONE_A = new MassTag();
-  public static ONE_B = new MassTag();
-  public static ONE_C = new MassTag();
-  public static ONE_D = new MassTag();
-  public static ONE_E = new MassTag();
-  public static TWO_A = new MassTag();
-  public static TWO_B = new MassTag();
-  public static TWO_C = new MassTag();
-  public static TWO_D = new MassTag();
-  public static TWO_E = new MassTag();
-  public static THREE_A = new MassTag();
-  public static THREE_B = new MassTag();
-  public static THREE_C = new MassTag();
-  public static THREE_D = new MassTag();
-  public static THREE_E = new MassTag();
-  public static A = new MassTag();
-  public static B = new MassTag();
-  public static C = new MassTag();
-  public static D = new MassTag();
-  public static E = new MassTag();
+  public static readonly PRIMARY = new MassTag();
+  public static readonly SECONDARY = new MassTag();
+  public static readonly NONE = new MassTag();
+  public static readonly ONE_A = new MassTag();
+  public static readonly ONE_B = new MassTag();
+  public static readonly ONE_C = new MassTag();
+  public static readonly ONE_D = new MassTag();
+  public static readonly ONE_E = new MassTag();
+  public static readonly TWO_A = new MassTag();
+  public static readonly TWO_B = new MassTag();
+  public static readonly TWO_C = new MassTag();
+  public static readonly TWO_D = new MassTag();
+  public static readonly TWO_E = new MassTag();
+  public static readonly THREE_A = new MassTag();
+  public static readonly THREE_B = new MassTag();
+  public static readonly THREE_C = new MassTag();
+  public static readonly THREE_D = new MassTag();
+  public static readonly THREE_E = new MassTag();
+  public static readonly A = new MassTag();
+  public static readonly B = new MassTag();
+  public static readonly C = new MassTag();
+  public static readonly D = new MassTag();
+  public static readonly E = new MassTag();
 
-  public static enumeration = new Enumeration( MassTag, {
+  public static readonly enumeration = new Enumeration( MassTag, {
     phetioDocumentation: 'Label for a mass'
   } );
 }
@@ -99,17 +99,17 @@ const blockStringMap = {
 };
 
 class MaterialEnumeration extends EnumerationValue {
-  public static ALUMINUM = new MaterialEnumeration();
-  public static BRICK = new MaterialEnumeration();
-  public static COPPER = new MaterialEnumeration();
-  public static ICE = new MaterialEnumeration();
-  public static PLATINUM = new MaterialEnumeration();
-  public static STEEL = new MaterialEnumeration();
-  public static STYROFOAM = new MaterialEnumeration();
-  public static WOOD = new MaterialEnumeration();
-  public static CUSTOM = new MaterialEnumeration();
+  public static readonly ALUMINUM = new MaterialEnumeration();
+  public static readonly BRICK = new MaterialEnumeration();
+  public static readonly COPPER = new MaterialEnumeration();
+  public static readonly ICE = new MaterialEnumeration();
+  public static readonly PLATINUM = new MaterialEnumeration();
+  public static readonly STEEL = new MaterialEnumeration();
+  public static readonly STYROFOAM = new MaterialEnumeration();
+  public static readonly WOOD = new MaterialEnumeration();
+  public static readonly CUSTOM = new MaterialEnumeration();
 
-  public static enumeration = new Enumeration( MaterialEnumeration, {
+  public static readonly enumeration = new Enumeration( MaterialEnumeration, {
     phetioDocumentation: 'Material values'
   } );
 }
@@ -151,6 +151,16 @@ type SelfOptions = {
 
 export type MassOptions = SelfOptions & PhetioObjectOptions;
 export type InstrumentedMassOptions = MassOptions & PickRequired<MassOptions, 'tandem'>;
+
+export type MassIOStateObject = {
+  matrix: Matrix3StateObject;
+  stepMatrix: Matrix3StateObject;
+  originalMatrix: Matrix3StateObject;
+  canRotate: boolean;
+  canMove: boolean;
+  tag: string;
+  massShape: string;
+} & BodyStateObject;
 
 export default abstract class Mass extends PhetioObject {
 
@@ -688,61 +698,46 @@ export default abstract class Mass extends PhetioObject {
     }
   }
 
-  public static MassIO: IOType;
+  public static readonly MassIO = new IOType<Mass, MassIOStateObject>( 'MassIO', {
+    valueType: Mass,
+    documentation: 'Represents a mass that interacts in the scene, and can potentially float or displace liquid.',
+    stateSchema: {
+      matrix: Matrix3.Matrix3IO,
+      stepMatrix: Matrix3.Matrix3IO,
+      originalMatrix: Matrix3.Matrix3IO,
+      canRotate: BooleanIO,
+      canMove: BooleanIO,
+      tag: EnumerationIO( MassTag ),
+      massShape: EnumerationIO( MassShape ),
+
+      // engine.bodyToStateObject
+      position: Vector2.Vector2IO,
+      velocity: Vector2.Vector2IO,
+      force: Vector2.Vector2IO
+    },
+    toStateObject( mass: Mass ): MassIOStateObject {
+      return combineOptions<MassIOStateObject>( {
+        matrix: Matrix3.toStateObject( mass.matrix ),
+        stepMatrix: Matrix3.toStateObject( mass.stepMatrix ),
+        originalMatrix: Matrix3.toStateObject( mass.originalMatrix ),
+        canRotate: mass.canRotate,
+        canMove: mass.canMove,
+        tag: EnumerationIO( MassTag ).toStateObject( mass.tag ),
+        massShape: EnumerationIO( MassShape ).toStateObject( mass.massShape )
+      }, mass.engine.bodyToStateObject( mass.body ) );
+    },
+    applyState( mass: Mass, obj: MassIOStateObject ) {
+      mass.matrix.set( Matrix3.fromStateObject( obj.matrix ) );
+      mass.stepMatrix.set( Matrix3.fromStateObject( obj.stepMatrix ) );
+      mass.originalMatrix.set( Matrix3.fromStateObject( obj.originalMatrix ) );
+      mass.canRotate = obj.canRotate;
+      mass.canMove = obj.canMove;
+      mass.tag = EnumerationIO( MassTag ).fromStateObject( obj.tag );
+      mass.engine.bodyApplyState( mass.body, obj );
+      mass.transformedEmitter.emit();
+    },
+    stateToArgsForConstructor: ( stateObject: MassIOStateObject ) => [ EnumerationIO( MassShape ).fromStateObject( stateObject.massShape ) ]
+  } );
 }
-
-export type MassIOStateObject = {
-  matrix: Matrix3StateObject;
-  stepMatrix: Matrix3StateObject;
-  originalMatrix: Matrix3StateObject;
-  canRotate: boolean;
-  canMove: boolean;
-  tag: string;
-  massShape: string;
-} & BodyStateObject;
-
-// (read-only) {IOType}
-Mass.MassIO = new IOType<Mass, MassIOStateObject>( 'MassIO', {
-
-  // @ts-ignore https://github.com/phetsims/tandem/issues/261
-  valueType: Mass,
-  documentation: 'Represents a mass that interacts in the scene, and can potentially float or displace liquid.',
-  stateSchema: {
-    matrix: Matrix3.Matrix3IO,
-    stepMatrix: Matrix3.Matrix3IO,
-    originalMatrix: Matrix3.Matrix3IO,
-    canRotate: BooleanIO,
-    canMove: BooleanIO,
-    tag: EnumerationIO( MassTag ),
-    massShape: EnumerationIO( MassShape ),
-
-    // engine.bodyToStateObject
-    position: Vector2.Vector2IO,
-    velocity: Vector2.Vector2IO,
-    force: Vector2.Vector2IO
-  },
-  toStateObject( mass: Mass ): MassIOStateObject {
-    return combineOptions<MassIOStateObject>( {
-      matrix: Matrix3.toStateObject( mass.matrix ),
-      stepMatrix: Matrix3.toStateObject( mass.stepMatrix ),
-      originalMatrix: Matrix3.toStateObject( mass.originalMatrix ),
-      canRotate: mass.canRotate,
-      canMove: mass.canMove,
-      tag: EnumerationIO( MassTag ).toStateObject( mass.tag ),
-      massShape: EnumerationIO( MassShape ).toStateObject( mass.massShape )
-    }, mass.engine.bodyToStateObject( mass.body ) );
-  },
-  applyState( mass: Mass, obj: MassIOStateObject ) {
-    mass.matrix.set( Matrix3.fromStateObject( obj.matrix ) );
-    mass.stepMatrix.set( Matrix3.fromStateObject( obj.stepMatrix ) );
-    mass.originalMatrix.set( Matrix3.fromStateObject( obj.originalMatrix ) );
-    mass.canRotate = obj.canRotate;
-    mass.canMove = obj.canMove;
-    mass.tag = EnumerationIO( MassTag ).fromStateObject( obj.tag );
-    mass.engine.bodyApplyState( mass.body, obj );
-    mass.transformedEmitter.emit();
-  },
-  stateToArgsForConstructor: ( stateObject: MassIOStateObject ) => [ EnumerationIO( MassShape ).fromStateObject( stateObject.massShape ) ]
-} );
 
 densityBuoyancyCommon.register( 'Mass', Mass );

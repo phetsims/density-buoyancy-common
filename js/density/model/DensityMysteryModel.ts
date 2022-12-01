@@ -48,12 +48,12 @@ const randomColors = [
 ];
 
 export class BlockSet extends EnumerationValue {
-  public static SET_1 = new BlockSet();
-  public static SET_2 = new BlockSet();
-  public static SET_3 = new BlockSet();
-  public static RANDOM = new BlockSet();
+  public static readonly SET_1 = new BlockSet();
+  public static readonly SET_2 = new BlockSet();
+  public static readonly SET_3 = new BlockSet();
+  public static readonly RANDOM = new BlockSet();
 
-  public static enumeration = new Enumeration( BlockSet, {
+  public static readonly enumeration = new Enumeration( BlockSet, {
     phetioDocumentation: 'Block set'
   } );
 }

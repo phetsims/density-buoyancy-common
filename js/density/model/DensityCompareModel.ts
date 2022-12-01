@@ -27,11 +27,11 @@ import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyModel from '../../common/model/DensityBuoyancyModel.js';
 
 export class BlockSet extends EnumerationValue {
-  public static SAME_MASS = new BlockSet();
-  public static SAME_VOLUME = new BlockSet();
-  public static SAME_DENSITY = new BlockSet();
+  public static readonly SAME_MASS = new BlockSet();
+  public static readonly SAME_VOLUME = new BlockSet();
+  public static readonly SAME_DENSITY = new BlockSet();
 
-  public static enumeration = new Enumeration( BlockSet, {
+  public static readonly enumeration = new Enumeration( BlockSet, {
     phetioDocumentation: 'Block set'
   } );
 }

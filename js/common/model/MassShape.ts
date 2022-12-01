@@ -11,14 +11,14 @@ import EnumerationValue from '../../../../phet-core/js/EnumerationValue.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 
 export class MassShape extends EnumerationValue {
-  public static BLOCK = new MassShape();
-  public static ELLIPSOID = new MassShape();
-  public static VERTICAL_CYLINDER = new MassShape();
-  public static HORIZONTAL_CYLINDER = new MassShape();
-  public static CONE = new MassShape();
-  public static INVERTED_CONE = new MassShape();
+  public static readonly BLOCK = new MassShape();
+  public static readonly ELLIPSOID = new MassShape();
+  public static readonly VERTICAL_CYLINDER = new MassShape();
+  public static readonly HORIZONTAL_CYLINDER = new MassShape();
+  public static readonly CONE = new MassShape();
+  public static readonly INVERTED_CONE = new MassShape();
 
-  public static enumeration = new Enumeration( MassShape, {
+  public static readonly enumeration = new Enumeration( MassShape, {
     phetioDocumentation: 'Shape of the mass'
   } );
 }

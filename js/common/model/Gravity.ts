@@ -65,25 +65,25 @@ export default class Gravity {
   }
 
 
-  public static EARTH = new Gravity( {
+  public static readonly EARTH = new Gravity( {
     nameProperty: DensityBuoyancyCommonStrings.gravity.earthStringProperty,
     tandemName: 'earth',
     value: DensityBuoyancyCommonQueryParameters.gEarth
   } );
 
-  public static JUPITER = new Gravity( {
+  public static readonly JUPITER = new Gravity( {
     nameProperty: DensityBuoyancyCommonStrings.gravity.jupiterStringProperty,
     tandemName: 'jupiter',
     value: 24.8
   } );
 
-  public static MOON = new Gravity( {
+  public static readonly MOON = new Gravity( {
     nameProperty: DensityBuoyancyCommonStrings.gravity.moonStringProperty,
     tandemName: 'moon',
     value: 1.6
   } );
 
-  public static PLANET_X = new Gravity( {
+  public static readonly PLANET_X = new Gravity( {
     nameProperty: DensityBuoyancyCommonStrings.gravity.planetXStringProperty,
     tandemName: 'planetX',
     value: 19.6,

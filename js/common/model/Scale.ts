@@ -53,10 +53,10 @@ const SCALE_FRONT_OFFSET = new Vector3(
 );
 
 export class DisplayType extends EnumerationValue {
-  public static NEWTONS = new DisplayType();
-  public static KILOGRAMS = new DisplayType();
+  public static readonly NEWTONS = new DisplayType();
+  public static readonly KILOGRAMS = new DisplayType();
 
-  public static enumeration = new Enumeration( DisplayType, {
+  public static readonly enumeration = new Enumeration( DisplayType, {
     phetioDocumentation: 'Units for the scale readout'
   } );
 }

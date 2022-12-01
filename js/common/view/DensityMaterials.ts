@@ -335,9 +335,9 @@ export default class DensityMaterials {
     }
   }
 
-  public static woodColorTexture = woodColorTexture;
-  public static woodNormalTexture = woodNormalTexture;
-  public static woodRoughnessTexture = woodRoughnessTexture;
+  public static readonly woodColorTexture = woodColorTexture;
+  public static readonly woodNormalTexture = woodNormalTexture;
+  public static readonly woodRoughnessTexture = woodRoughnessTexture;
 }
 
 

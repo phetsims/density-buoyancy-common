@@ -24,10 +24,10 @@ import Bottle from './Bottle.js';
 
 // constants
 export class Scene extends EnumerationValue {
-  public static BOTTLE = new Scene();
-  public static BOAT = new Scene();
+  public static readonly BOTTLE = new Scene();
+  public static readonly BOAT = new Scene();
 
-  public static enumeration = new Enumeration( Scene, {
+  public static readonly enumeration = new Enumeration( Scene, {
     phetioDocumentation: 'Bottle or boat scene'
   } );
 }

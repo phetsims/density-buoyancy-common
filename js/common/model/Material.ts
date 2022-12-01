@@ -184,14 +184,14 @@ export default class Material {
 
   // (read-only) {Material} - "Solids"
 
-  public static ALUMINUM = new Material( {
+  public static readonly ALUMINUM = new Material( {
     nameProperty: DensityBuoyancyCommonStrings.material.aluminumStringProperty,
     tandemName: 'aluminum',
     identifier: 'ALUMINUM',
     density: 2700
   } );
 
-  public static APPLE = new Material( {
+  public static readonly APPLE = new Material( {
     nameProperty: DensityBuoyancyCommonStrings.material.appleStringProperty,
     tandemName: 'apple',
     identifier: 'APPLE',
@@ -200,14 +200,14 @@ export default class Material {
     density: 832
   } );
 
-  public static BRICK = new Material( {
+  public static readonly BRICK = new Material( {
     nameProperty: DensityBuoyancyCommonStrings.material.brickStringProperty,
     tandemName: 'brick',
     identifier: 'BRICK',
     density: 2000
   } );
 
-  public static CEMENT = new Material( {
+  public static readonly CEMENT = new Material( {
     nameProperty: DensityBuoyancyCommonStrings.material.cementStringProperty,
     tandemName: 'cement',
     identifier: 'CEMENT',
@@ -215,7 +215,7 @@ export default class Material {
     liquidColor: DensityBuoyancyCommonColors.materialCementColorProperty
   } );
 
-  public static COPPER = new Material( {
+  public static readonly COPPER = new Material( {
     nameProperty: DensityBuoyancyCommonStrings.material.copperStringProperty,
     tandemName: 'copper',
     identifier: 'COPPER',
@@ -223,42 +223,42 @@ export default class Material {
     liquidColor: DensityBuoyancyCommonColors.materialCopperColorProperty
   } );
 
-  public static DIAMOND = new Material( {
+  public static readonly DIAMOND = new Material( {
     nameProperty: DensityBuoyancyCommonStrings.material.diamondStringProperty,
     tandemName: 'diamond',
     identifier: 'DIAMOND',
     density: 3510
   } );
 
-  public static GLASS = new Material( {
+  public static readonly GLASS = new Material( {
     nameProperty: DensityBuoyancyCommonStrings.material.glassStringProperty,
     tandemName: 'glass',
     identifier: 'GLASS',
     density: 2700
   } );
 
-  public static GOLD = new Material( {
+  public static readonly GOLD = new Material( {
     nameProperty: DensityBuoyancyCommonStrings.material.goldStringProperty,
     tandemName: 'gold',
     identifier: 'GOLD',
     density: 19320
   } );
 
-  public static HUMAN = new Material( {
+  public static readonly HUMAN = new Material( {
     nameProperty: DensityBuoyancyCommonStrings.material.humanStringProperty,
     tandemName: 'human',
     identifier: 'HUMAN',
     density: 950
   } );
 
-  public static ICE = new Material( {
+  public static readonly ICE = new Material( {
     nameProperty: DensityBuoyancyCommonStrings.material.iceStringProperty,
     tandemName: 'ice',
     identifier: 'ICE',
     density: 919
   } );
 
-  public static LEAD = new Material( {
+  public static readonly LEAD = new Material( {
     nameProperty: DensityBuoyancyCommonStrings.material.leadStringProperty,
     tandemName: 'lead',
     identifier: 'LEAD',
@@ -266,35 +266,35 @@ export default class Material {
     liquidColor: DensityBuoyancyCommonColors.materialLeadColorProperty
   } );
 
-  public static PLATINUM = new Material( {
+  public static readonly PLATINUM = new Material( {
     nameProperty: DensityBuoyancyCommonStrings.material.platinumStringProperty,
     tandemName: 'platinum',
     identifier: 'PLATINUM',
     density: 21450
   } );
 
-  public static PYRITE = new Material( {
+  public static readonly PYRITE = new Material( {
     nameProperty: DensityBuoyancyCommonStrings.material.pyriteStringProperty,
     tandemName: 'pyrite',
     identifier: 'PYRITE',
     density: 5010
   } );
 
-  public static SILVER = new Material( {
+  public static readonly SILVER = new Material( {
     nameProperty: DensityBuoyancyCommonStrings.material.silverStringProperty,
     tandemName: 'silver',
     identifier: 'SILVER',
     density: 10490
   } );
 
-  public static STEEL = new Material( {
+  public static readonly STEEL = new Material( {
     nameProperty: DensityBuoyancyCommonStrings.material.steelStringProperty,
     tandemName: 'steel',
     identifier: 'STEEL',
     density: 7800
   } );
 
-  public static STYROFOAM = new Material( {
+  public static readonly STYROFOAM = new Material( {
     nameProperty: DensityBuoyancyCommonStrings.material.styrofoamStringProperty,
     tandemName: 'styrofoam',
     identifier: 'STYROFOAM',
@@ -303,21 +303,21 @@ export default class Material {
     density: 150
   } );
 
-  public static TANTALUM = new Material( {
+  public static readonly TANTALUM = new Material( {
     nameProperty: DensityBuoyancyCommonStrings.material.tantalumStringProperty,
     tandemName: 'tantalum',
     identifier: 'TANTALUM',
     density: 16650
   } );
 
-  public static TITANIUM = new Material( {
+  public static readonly TITANIUM = new Material( {
     nameProperty: DensityBuoyancyCommonStrings.material.titaniumStringProperty,
     tandemName: 'titanium',
     identifier: 'TITANIUM',
     density: 4500
   } );
 
-  public static WOOD = new Material( {
+  public static readonly WOOD = new Material( {
     nameProperty: DensityBuoyancyCommonStrings.material.woodStringProperty,
     tandemName: 'wood',
     identifier: 'WOOD',
@@ -326,7 +326,7 @@ export default class Material {
 
   // (read-only) {Material} - "Liquids".
 
-  public static AIR = new Material( {
+  public static readonly AIR = new Material( {
     nameProperty: DensityBuoyancyCommonStrings.material.airStringProperty,
     tandemName: 'air',
     identifier: 'AIR',
@@ -335,7 +335,7 @@ export default class Material {
     liquidColor: DensityBuoyancyCommonColors.materialAirColorProperty
   } );
 
-  public static DENSITY_A = new Material( {
+  public static readonly DENSITY_A = new Material( {
     nameProperty: DensityBuoyancyCommonStrings.material.densityAStringProperty,
     tandemName: 'densityA',
     identifier: 'DENSITY_A',
@@ -344,7 +344,7 @@ export default class Material {
     hidden: true
   } );
 
-  public static DENSITY_B = new Material( {
+  public static readonly DENSITY_B = new Material( {
     nameProperty: DensityBuoyancyCommonStrings.material.densityBStringProperty,
     tandemName: 'densityB',
     identifier: 'DENSITY_B',
@@ -353,7 +353,7 @@ export default class Material {
     hidden: true
   } );
 
-  public static DENSITY_C = new Material( {
+  public static readonly DENSITY_C = new Material( {
     nameProperty: DensityBuoyancyCommonStrings.material.densityCStringProperty,
     tandemName: 'densityC',
     identifier: 'DENSITY_C',
@@ -362,7 +362,7 @@ export default class Material {
     hidden: true
   } );
 
-  public static DENSITY_D = new Material( {
+  public static readonly DENSITY_D = new Material( {
     nameProperty: DensityBuoyancyCommonStrings.material.densityDStringProperty,
     tandemName: 'densityD',
     identifier: 'DENSITY_D',
@@ -371,7 +371,7 @@ export default class Material {
     hidden: true
   } );
 
-  public static DENSITY_E = new Material( {
+  public static readonly DENSITY_E = new Material( {
     nameProperty: DensityBuoyancyCommonStrings.material.densityEStringProperty,
     tandemName: 'densityE',
     identifier: 'DENSITY_E',
@@ -380,7 +380,7 @@ export default class Material {
     hidden: true
   } );
 
-  public static DENSITY_F = new Material( {
+  public static readonly DENSITY_F = new Material( {
     nameProperty: DensityBuoyancyCommonStrings.material.densityFStringProperty,
     tandemName: 'densityF',
     identifier: 'DENSITY_F',
@@ -389,7 +389,7 @@ export default class Material {
     hidden: true
   } );
 
-  public static GASOLINE = new Material( {
+  public static readonly GASOLINE = new Material( {
     nameProperty: DensityBuoyancyCommonStrings.material.gasolineStringProperty,
     tandemName: 'gasoline',
     identifier: 'GASOLINE',
@@ -398,7 +398,7 @@ export default class Material {
     liquidColor: DensityBuoyancyCommonColors.materialGasolineColorProperty
   } );
 
-  public static HONEY = new Material( {
+  public static readonly HONEY = new Material( {
     nameProperty: DensityBuoyancyCommonStrings.material.honeyStringProperty,
     tandemName: 'honey',
     identifier: 'HONEY',
@@ -407,7 +407,7 @@ export default class Material {
     liquidColor: DensityBuoyancyCommonColors.materialHoneyColorProperty
   } );
 
-  public static MERCURY = new Material( {
+  public static readonly MERCURY = new Material( {
     nameProperty: DensityBuoyancyCommonStrings.material.mercuryStringProperty,
     tandemName: 'mercury',
     identifier: 'MERCURY',
@@ -416,7 +416,7 @@ export default class Material {
     liquidColor: DensityBuoyancyCommonColors.materialMercuryColorProperty
   } );
 
-  public static OIL = new Material( {
+  public static readonly OIL = new Material( {
     nameProperty: DensityBuoyancyCommonStrings.material.oilStringProperty,
     tandemName: 'oil',
     identifier: 'OIL',
@@ -425,7 +425,7 @@ export default class Material {
     liquidColor: DensityBuoyancyCommonColors.materialOilColorProperty
   } );
 
-  public static SAND = new Material( {
+  public static readonly SAND = new Material( {
     nameProperty: DensityBuoyancyCommonStrings.material.sandStringProperty,
     tandemName: 'sand',
     identifier: 'SAND',
@@ -434,7 +434,7 @@ export default class Material {
     liquidColor: DensityBuoyancyCommonColors.materialSandColorProperty
   } );
 
-  public static SEAWATER = new Material( {
+  public static readonly SEAWATER = new Material( {
     nameProperty: DensityBuoyancyCommonStrings.material.seawaterStringProperty,
     tandemName: 'seawater',
     identifier: 'SEAWATER',
@@ -443,7 +443,7 @@ export default class Material {
     liquidColor: DensityBuoyancyCommonColors.materialSeawaterColorProperty
   } );
 
-  public static WATER = new Material( {
+  public static readonly WATER = new Material( {
     nameProperty: DensityBuoyancyCommonStrings.material.waterStringProperty,
     tandemName: 'water',
     identifier: 'WATER',

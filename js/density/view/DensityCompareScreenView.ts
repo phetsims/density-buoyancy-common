@@ -87,12 +87,12 @@ export default class DensityCompareScreenView extends DensityBuoyancyScreenView<
     // For unit conversion, cubic meters => liters
     const volumeProperty = new UnitConversionProperty( model.volumeProperty, {
       factor: 1000
-    } ).asRanged();
+    } );
 
     // For unit conversion, kg/cubic meter => kg/liter
     const densityProperty = new UnitConversionProperty( model.densityProperty, {
       factor: 1 / 1000
-    } ).asRanged();
+    } );
 
     const massNumberControlTandem = tandem.createTandem( 'massNumberControl' );
     const massNumberControl = new ComparisonNumberControl(

@@ -107,7 +107,7 @@ export default class DensityBuoyancyModel {
     this.forceScaleProperty = new NumberProperty( options.initialForceScale, {
       tandem: options.canShowForces ? tandem.createTandem( 'vectorScaleProperty' ) : Tandem.OPT_OUT,
       range: new Range( Math.pow( 0.5, 9 ), 1 )
-    } ).asRanged();
+    } );
 
     this.gravityProperty = new Property( Gravity.EARTH, {
       valueType: Gravity,

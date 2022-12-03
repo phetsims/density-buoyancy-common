@@ -20,6 +20,7 @@ import DensityBuoyancyCommonColors from './DensityBuoyancyCommonColors.js';
 import InterpolatedProperty from '../model/InterpolatedProperty.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import { combineOptions } from '../../../../phet-core/js/optionize.js';
+import TProperty from '../../../../axon/js/TProperty.js';
 
 // constants
 const arrowOptions = {
@@ -38,7 +39,7 @@ export default class ForceDiagramNode extends Node {
   private readonly showBuoyancyForceProperty: Property<boolean>;
   private readonly showContactForceProperty: Property<boolean>;
   private readonly showForceValuesProperty: Property<boolean>;
-  private readonly forceScaleProperty: Property<number>;
+  private readonly forceScaleProperty: TProperty<number>;
 
   private readonly gravityArrowNode: ArrowNode;
   private readonly buoyancyArrowNode: ArrowNode;
@@ -56,7 +57,7 @@ export default class ForceDiagramNode extends Node {
 
   private readonly axisNode: Line;
 
-  public constructor( mass: Mass, showGravityForceProperty: Property<boolean>, showBuoyancyForceProperty: Property<boolean>, showContactForceProperty: Property<boolean>, showForceValuesProperty: Property<boolean>, forceScaleProperty: Property<number> ) {
+  public constructor( mass: Mass, showGravityForceProperty: Property<boolean>, showBuoyancyForceProperty: Property<boolean>, showContactForceProperty: Property<boolean>, showForceValuesProperty: Property<boolean>, forceScaleProperty: TProperty<number> ) {
     super();
 
     this.mass = mass;

@@ -239,10 +239,10 @@ export default class Cuboid extends Mass {
 
     toStateObject: ( cuboid: Cuboid ): CuboidIOStateObject => {
       const parentStateObject = Mass.MassIO.toStateObject( cuboid );
-      // @ts-ignore parentStateObject has type MassIOStateObject, which has no size field
-      parentStateObject.size = Bounds3.Bounds3IO.toStateObject( cuboid.sizeProperty.value );
-      // @ts-ignore parentStateObject has type MassIOStateObject, which is not the return type of this method
-      return parentStateObject;
+      return {
+        ...parentStateObject,
+        size: Bounds3.Bounds3IO.toStateObject( cuboid.sizeProperty.value )
+      };
     },
     applyState: ( cuboid: Cuboid, stateObject: CuboidIOStateObject ) => {
 

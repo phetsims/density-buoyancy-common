@@ -177,10 +177,10 @@ export default class BoatDesign {
     const flip = ( p: Vector2 ) => p.componentTimes( new Vector2( 1, -1 ) );
 
     return [
-      // @ts-ignore See assertion above, even if we tuple-type it, the below one with the reverse and map won't typecheck
+      // @ts-expect-error See assertion above, even if we tuple-type it, the below one with the reverse and map won't typecheck
       new Cubic( ...points ),
       new Line( points[ 3 ], flip( points[ 3 ] ) ),
-      // @ts-ignore
+      // @ts-expect-error
       new Cubic( ...points.slice().reverse().map( flip ) )
     ];
   }

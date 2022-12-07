@@ -337,7 +337,7 @@ export default class P2Engine extends PhysicsEngine {
     const box = new p2.Box( {
       width: width * SIZE_SCALE,
       height: height * SIZE_SCALE,
-      // @ts-ignore -- material SHOULD be in ShapeOptions
+      // @ts-expect-error -- material SHOULD be in ShapeOptions
       material: dynamicMaterial
     } );
 
@@ -430,7 +430,7 @@ export default class P2Engine extends PhysicsEngine {
     const pointerConstraint = this.pointerConstraintMap[ body.id ];
     assert && assert( pointerConstraint );
 
-    // @ts-ignore it should have pivotA...
+    // @ts-expect-error it should have pivotA...
     p2.vec2.copy( pointerConstraint.pivotA, P2Engine.vectorToP2( position ) );
     pointerConstraint.bodyA.wakeUp();
     pointerConstraint.bodyB.wakeUp();

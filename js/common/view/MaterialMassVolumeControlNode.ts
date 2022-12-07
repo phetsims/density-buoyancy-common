@@ -119,7 +119,7 @@ export default class MaterialMassVolumeControlNode extends VBox {
       tandem: options.tandem.createTandem( 'comboBoxMaterialProperty' ),
       phetioDocumentation: 'Current material of the block. Changing the material will result in changes to the mass, but the volume will remain the same.',
       validValues: MaterialEnumeration.VALUES as unknown as MaterialEnumValue[],
-      // @ts-ignore
+      // @ts-expect-error
       phetioValueType: EnumerationIO( MaterialEnumeration )
     } );
 

@@ -175,7 +175,7 @@ class IceMaterialView extends MaterialView {
       roughness: 0.7,
       refractionRatio: 1 / 1.309,
       metalness: 0.4,
-      // @ts-ignore they capitalized this
+      // @ts-expect-error they capitalized this
       clearCoat: 1,
       reflectivity: 1,
       envMapIntensity: 2, // is this too much cheating?

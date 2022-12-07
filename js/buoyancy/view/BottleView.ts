@@ -19,7 +19,7 @@ export default class BottleView extends MassView {
 
     const primaryGeometry = Bottle.getPrimaryGeometry();
 
-    // @ts-ignore
+    // @ts-expect-error
     super( bottle, new THREE.Geometry() );
 
     const bottomClipPlane = new THREE.Plane( new THREE.Vector3( 0, -1, 0 ), 0 );

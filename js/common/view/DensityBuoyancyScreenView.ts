@@ -462,7 +462,7 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
       topColorArray[ offset + 8 ] = topColorArray[ offset + 14 ] = topColorArray[ offset + 17 ] = grassFarColor.b / 255;
       topGeometry.attributes.color.needsUpdate = true;
     } );
-    // @ts-ignore - THREE.js version incompat?
+    // @ts-expect-error - THREE.js version incompat?
     const topMaterial = new THREE.MeshBasicMaterial( { vertexColors: THREE.VertexColors } );
     const topMesh = new THREE.Mesh( topGeometry, topMaterial );
     this.sceneNode.stage.threeScene.add( topMesh );

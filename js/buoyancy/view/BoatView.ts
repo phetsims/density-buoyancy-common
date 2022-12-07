@@ -21,7 +21,7 @@ export default class BoatView extends MassView {
 
   public constructor( boat: Boat, liquidYInterpolatedProperty: TReadOnlyProperty<number> ) {
 
-    // @ts-ignore
+    // @ts-expect-error
     super( boat, new THREE.Geometry() );
 
     // Clip planes at the boat's water level

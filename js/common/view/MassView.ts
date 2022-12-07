@@ -125,7 +125,7 @@ export default abstract class MassView extends THREE.Mesh {
     this.tagNodeTexture && this.tagNodeTexture.dispose();
     this.tagMesh && this.tagMesh.dispose();
 
-    // @ts-ignore
+    // @ts-expect-error
     super.dispose && super.dispose();
   }
 }

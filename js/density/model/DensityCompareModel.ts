@@ -321,7 +321,6 @@ export default class DensityCompareModel extends BlockSetModel<BlockSet> {
       positionMassesCallback: positionMasses
     }, providedOptions );
 
-    // @ts-ignore
     super( options );
 
     // {Property.<number>}

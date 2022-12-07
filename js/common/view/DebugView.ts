@@ -253,7 +253,7 @@ class DebugMassNode extends Node {
         mass.displacementVolumeProperty.unlink( displacementListener );
       } );
 
-      // @ts-ignore
+      // @ts-expect-error
       const block = model.block;
       const liquidListener = () => {
         const y = mass.basin.liquidYInterpolatedProperty.value;

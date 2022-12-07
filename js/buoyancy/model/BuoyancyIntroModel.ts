@@ -114,7 +114,6 @@ export default class BuoyancyIntroModel extends BlockSetModel<BlockSet> {
       }
     }, providedOptions );
 
-    // @ts-ignore
     super( options );
 
     // Left scale

@@ -35,7 +35,7 @@ export default class EllipsoidView extends MassView {
 
     this.updateListener = ( newSize: Bounds3, oldSize: Bounds3 ) => {
       positionTag();
-      // @ts-ignore OLD version possibly?
+      // @ts-expect-error OLD version possibly?
       ellipsoidGeometry.applyMatrix( new THREE.Matrix4().makeScale(
         newSize.width / oldSize.width,
         newSize.height / oldSize.height,

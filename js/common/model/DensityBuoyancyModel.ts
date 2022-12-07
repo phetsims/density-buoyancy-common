@@ -224,7 +224,7 @@ export default class DensityBuoyancyModel {
     this.availableMasses = createObservableArray();
 
     // Control masses by visibility, so that this.masses will be the subset of this.availableMasses that is visible
-    const visibilityListenerMap = new Map<Mass, ( visible: boolean ) => void>(); // eslint-disable-line
+    const visibilityListenerMap = new Map<Mass, ( visible: boolean ) => void>(); // eslint-disable-line no-spaced-func
     this.availableMasses.addItemAddedListener( mass => {
       const visibilityListener = ( visible: boolean ) => {
         if ( visible ) {

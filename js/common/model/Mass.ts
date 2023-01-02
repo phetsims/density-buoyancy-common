@@ -736,7 +736,7 @@ export default abstract class Mass extends PhetioObject {
       mass.engine.bodyApplyState( mass.body, obj );
       mass.transformedEmitter.emit();
     },
-    stateToArgsForConstructor: ( stateObject: MassIOStateObject ) => [ EnumerationIO( MassShape ).fromStateObject( stateObject.massShape ) ]
+    stateObjectToCreateElementArguments: ( stateObject: MassIOStateObject ) => [ EnumerationIO( MassShape ).fromStateObject( stateObject.massShape ) ]
   } );
 }
 

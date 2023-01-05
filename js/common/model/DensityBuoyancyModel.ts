@@ -28,8 +28,9 @@ import PhysicsEngine, { PhysicsEngineBody } from './PhysicsEngine.js';
 import Mass from './Mass.js';
 import Basin from './Basin.js';
 import Cuboid from './Cuboid.js';
-import NumberProperty, { RangedProperty } from '../../../../axon/js/NumberProperty.js';
+import NumberProperty from '../../../../axon/js/NumberProperty.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
+import TRangedProperty from '../../../../axon/js/TRangedProperty.js';
 
 // constants
 const BLOCK_SPACING = 0.01;
@@ -53,7 +54,7 @@ export default class DensityBuoyancyModel {
   public readonly showBuoyancyForceProperty: Property<boolean>;
   public readonly showContactForceProperty: Property<boolean>;
   public readonly showForceValuesProperty: Property<boolean>;
-  public readonly forceScaleProperty: RangedProperty;
+  public readonly forceScaleProperty: TRangedProperty;
   public readonly showMassesProperty: Property<boolean>;
   public readonly gravityProperty: Property<Gravity>;
   public readonly liquidMaterialProperty: Property<Material>;

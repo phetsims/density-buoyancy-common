@@ -6,7 +6,6 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
-import { RangedProperty } from '../../../../axon/js/NumberProperty.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import Dimension2 from '../../../../dot/js/Dimension2.js';
 import Utils from '../../../../dot/js/Utils.js';
@@ -18,12 +17,13 @@ import { Text } from '../../../../scenery/js/imports.js';
 import SunConstants from '../../../../sun/js/SunConstants.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
+import TRangedProperty from '../../../../axon/js/TRangedProperty.js';
 
 export type ComparisonNumberControlOptions = NumberControlOptions;
 
 export default class ComparisonNumberControl extends NumberControl {
   public constructor(
-    property: RangedProperty,
+    property: TRangedProperty,
     titleStringProperty: TReadOnlyProperty<string>,
     valuePatternStringProperty: TReadOnlyProperty<string>,
     valueName: string,

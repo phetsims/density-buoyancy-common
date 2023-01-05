@@ -9,7 +9,6 @@
 
 import NumberProperty from '../../../../axon/js/NumberProperty.js';
 import StrictOmit from '../../../../phet-core/js/types/StrictOmit.js';
-import Property from '../../../../axon/js/Property.js';
 import Utils from '../../../../dot/js/Utils.js';
 import { Shape } from '../../../../kite/js/imports.js';
 import ThreeUtils from '../../../../mobius/js/ThreeUtils.js';
@@ -31,7 +30,7 @@ export type BoatOptions = StrictOmit<InstrumentedMassOptions, 'body' | 'shape' |
 
 export default class Boat extends Mass {
 
-  public readonly displacementVolumeProperty: Property<number>;
+  public readonly displacementVolumeProperty: NumberProperty;
   public readonly liquidMaterialProperty: TProperty<Material>;
   public readonly basin: BoatBasin;
 

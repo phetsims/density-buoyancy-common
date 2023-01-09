@@ -28,7 +28,7 @@ import arrayRemove from '../../../../phet-core/js/arrayRemove.js';
 import optionize from '../../../../phet-core/js/optionize.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import ResetAllButton from '../../../../scenery-phet/js/buttons/ResetAllButton.js';
-import { AlignBox, animatedPanZoomSingleton, TInputListener, Image, LinearGradient, Mouse, Node, Pointer, Rectangle, SceneryEvent, Text } from '../../../../scenery/js/imports.js';
+import { AlignBox, animatedPanZoomSingleton, Image, LinearGradient, Mouse, Node, Pointer, Rectangle, SceneryEvent, Text, TInputListener } from '../../../../scenery/js/imports.js';
 import Checkbox from '../../../../sun/js/Checkbox.js';
 import EventType from '../../../../tandem/js/EventType.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
@@ -123,7 +123,6 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
       cameraLookAt: DensityBuoyancyCommonConstants.BUOYANCY_CAMERA_LOOK_AT,
       cameraPosition: new Vector3( 0, 0.2, 2 ).timesScalar( scaleIncrease ),
       cameraZoom: 1.75 * scaleIncrease,
-      tandem: Tandem.REQUIRED,
 
       preventFit: true
     }, providedOptions );

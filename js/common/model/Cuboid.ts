@@ -15,7 +15,6 @@ import Vector2 from '../../../../dot/js/Vector2.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
 import { Shape } from '../../../../kite/js/imports.js';
 import optionize, { EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
-import Tandem from '../../../../tandem/js/Tandem.js';
 import IOType from '../../../../tandem/js/types/IOType.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import Mass, { InstrumentedMassOptions, MASS_MAX_SHAPES_DIMENSION, MASS_MIN_SHAPES_DIMENSION, MassIOStateObject } from './Mass.js';
@@ -38,8 +37,6 @@ export default class Cuboid extends Mass {
       shape: Shape.rect( size.minX, size.minY, size.width, size.height ),
       volume: size.width * size.height * size.depth,
       massShape: MassShape.BLOCK,
-
-      tandem: Tandem.OPTIONAL,
       phetioType: Cuboid.CuboidIO
     }, providedConfig );
 

@@ -51,6 +51,7 @@ export default class BuoyancyShapesModel extends DensityBuoyancyModel {
 
   public constructor( providedOptions: BuoyancyShapesModelOptions ) {
     const options = optionize<DensityBuoyancyModelOptions, EmptySelfOptions>()( {
+      // @ts-expect-error TODO JO: this looks like a typescript bug, and not a runtime problem, https://github.com/phetsims/chipper/issues/1360
       initialForceScale: 1 / 4
     }, providedOptions );
 

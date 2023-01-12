@@ -257,7 +257,7 @@ export default class MaterialMassVolumeControlNode extends VBox {
       ...materials.map( material => {
         return {
           value: MaterialEnumeration[ material.identifier! ],
-          node: new Text( material.nameProperty, {
+          createNode: () => new Text( material.nameProperty, {
             font: DensityBuoyancyCommonConstants.COMBO_BOX_ITEM_FONT,
             maxWidth: comboMaxWidth
           } ),
@@ -266,7 +266,7 @@ export default class MaterialMassVolumeControlNode extends VBox {
       } ),
       {
         value: MaterialEnumeration.CUSTOM,
-        node: new Text( DensityBuoyancyCommonStrings.material.customStringProperty, {
+        createNode: tandem => new Text( DensityBuoyancyCommonStrings.material.customStringProperty, {
           font: DensityBuoyancyCommonConstants.COMBO_BOX_ITEM_FONT,
           maxWidth: comboMaxWidth
         } ),

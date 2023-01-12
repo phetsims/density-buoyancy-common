@@ -43,7 +43,7 @@ export default class DensityControlNode extends ComboNumberControl<Material> {
       ].map( material => {
         return {
           value: material,
-          node: new Text( material.nameProperty, {
+          createNode: () => new Text( material.nameProperty, {
             font: DensityBuoyancyCommonConstants.COMBO_BOX_ITEM_FONT,
             maxWidth: 160
           } ),

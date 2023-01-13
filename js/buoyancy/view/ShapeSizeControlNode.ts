@@ -61,7 +61,7 @@ export default class ShapeSizeControlNode extends VBox {
     const comboBox = new ComboBox( massShapeProperty, MassShape.enumeration.values.map( massShape => {
       return {
         value: massShape,
-        createNode: tandem => new Text( shapeStringMap[ massShape.name ], {
+        createNode: () => new Text( shapeStringMap[ massShape.name ], {
           font: DensityBuoyancyCommonConstants.COMBO_BOX_ITEM_FONT,
           maxWidth: 160
         } ),

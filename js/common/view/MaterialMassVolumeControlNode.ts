@@ -266,7 +266,7 @@ export default class MaterialMassVolumeControlNode extends VBox {
       } ),
       {
         value: MaterialEnumeration.CUSTOM,
-        createNode: tandem => new Text( DensityBuoyancyCommonStrings.material.customStringProperty, {
+        createNode: () => new Text( DensityBuoyancyCommonStrings.material.customStringProperty, {
           font: DensityBuoyancyCommonConstants.COMBO_BOX_ITEM_FONT,
           maxWidth: comboMaxWidth
         } ),

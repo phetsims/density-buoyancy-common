@@ -275,11 +275,11 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
     const bottleBoatSelectionNode = new RectangularRadioButtonGroup( model.sceneProperty, [
       {
         value: Scene.BOTTLE,
-        createNode: tandem => new Text( '(bottle)' )
+        createNode: () => new Text( '(bottle)' )
       },
       {
         value: Scene.BOAT,
-        createNode: tandem => new Text( '(boat)' )
+        createNode: () => new Text( '(boat)' )
       }
     ], {
       orientation: 'horizontal',

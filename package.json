@@ -24,6 +24,9 @@
       "p2": "readonly",
       "THREE": "readonly",
       "decomp": "readonly"
+    },
+    "rules": {
+      "todo-should-have-issue": "off"
     }
   }
 }

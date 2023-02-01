@@ -158,7 +158,7 @@ export default class DensityBuoyancyModel {
       tandem: tandem.createTandem( 'invisibleBarrierBoundsProperty' ),
       phetioReadOnly: true,
       phetioDocumentation: 'We keep masses within these bounds, generally to stay in-screen',
-      useDeepEquality: true
+      valueComparisonStrategy: 'equalsFunction'
     } );
 
     // How many units the barrier extends out to

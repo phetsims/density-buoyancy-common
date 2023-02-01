@@ -47,7 +47,7 @@ export default class Cuboid extends Mass {
 
     this.sizeProperty = new Property( size, {
       valueType: Bounds3,
-      useDeepEquality: true,
+      valueComparisonStrategy: 'equalsFunction',
       tandem: config.tandem.createTandem( 'sizeProperty' ),
       phetioValueType: Bounds3.Bounds3IO,
       phetioReadOnly: true

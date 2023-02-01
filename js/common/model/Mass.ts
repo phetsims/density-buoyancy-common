@@ -427,7 +427,7 @@ export default abstract class Mass extends PhetioObject {
 
     this.gravityForceInterpolatedProperty = new InterpolatedProperty( Vector2.ZERO, {
       interpolate: InterpolatedProperty.interpolateVector2,
-      useDeepEquality: true,
+      valueComparisonStrategy: 'equalsFunction',
       tandem: tandem.createTandem( 'gravityForceInterpolatedProperty' ),
       phetioValueType: Vector2.Vector2IO,
       phetioReadOnly: true,
@@ -437,7 +437,7 @@ export default abstract class Mass extends PhetioObject {
 
     this.buoyancyForceInterpolatedProperty = new InterpolatedProperty( Vector2.ZERO, {
       interpolate: InterpolatedProperty.interpolateVector2,
-      useDeepEquality: true,
+      valueComparisonStrategy: 'equalsFunction',
       tandem: tandem.createTandem( 'buoyancyForceInterpolatedProperty' ),
       phetioValueType: Vector2.Vector2IO,
       phetioReadOnly: true,
@@ -447,7 +447,7 @@ export default abstract class Mass extends PhetioObject {
 
     this.contactForceInterpolatedProperty = new InterpolatedProperty( Vector2.ZERO, {
       interpolate: InterpolatedProperty.interpolateVector2,
-      useDeepEquality: true,
+      valueComparisonStrategy: 'equalsFunction',
       tandem: tandem.createTandem( 'contactForceInterpolatedProperty' ),
       phetioValueType: Vector2.Vector2IO,
       phetioReadOnly: true,
@@ -457,18 +457,18 @@ export default abstract class Mass extends PhetioObject {
 
     this.forceOffsetProperty = new Property( Vector3.ZERO, {
       valueType: Vector3,
-      useDeepEquality: true,
+      valueComparisonStrategy: 'equalsFunction',
       tandem: Tandem.OPT_OUT
     } );
 
     this.massOffsetProperty = new Property( Vector3.ZERO, {
       valueType: Vector3,
-      useDeepEquality: true,
+      valueComparisonStrategy: 'equalsFunction',
       tandem: Tandem.OPT_OUT
     } );
 
     this.massOffsetOrientationProperty = new Vector2Property( Vector2.ZERO, {
-      useDeepEquality: true,
+      valueComparisonStrategy: 'equalsFunction',
       tandem: Tandem.OPT_OUT
     } );
 

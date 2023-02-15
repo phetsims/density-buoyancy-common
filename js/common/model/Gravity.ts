@@ -6,7 +6,7 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
-import { PropertyIO } from '../../../../axon/js/ReadOnlyProperty.js';
+import ReadOnlyProperty from '../../../../axon/js/ReadOnlyProperty.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import optionize from '../../../../phet-core/js/optionize.js';
 import BooleanIO from '../../../../tandem/js/types/BooleanIO.js';
@@ -101,7 +101,7 @@ export default class Gravity {
     documentation: 'Represents a specific value of gravity (m/s^2)',
     toStateObject: function( gravity: Gravity ): GravityState {
       return {
-        name: ReferenceIO( PropertyIO( StringIO ) ).toStateObject( gravity.nameProperty ),
+        name: ReferenceIO( ReadOnlyProperty.PropertyIO( StringIO ) ).toStateObject( gravity.nameProperty ),
         tandemName: gravity.tandemName,
         value: gravity.value,
         custom: gravity.custom,
@@ -110,7 +110,7 @@ export default class Gravity {
     },
     fromStateObject: ( stateObject: GravityState ) => {
       if ( stateObject.custom ) {
-        stateObject.name = ReferenceIO( PropertyIO( StringIO ) ).fromStateObject( stateObject.name );
+        stateObject.name = ReferenceIO( ReadOnlyProperty.PropertyIO( StringIO ) ).fromStateObject( stateObject.name );
 
         return new Gravity( stateObject as unknown as GravityOptions );
       }
@@ -119,7 +119,7 @@ export default class Gravity {
       }
     },
     stateSchema: {
-      name: ReferenceIO( PropertyIO( StringIO ) ),
+      name: ReferenceIO( ReadOnlyProperty.PropertyIO( StringIO ) ),
       tandemName: NullableIO( StringIO ),
       value: NumberIO,
       custom: BooleanIO,

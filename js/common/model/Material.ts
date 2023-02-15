@@ -24,10 +24,10 @@ import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js'
 import DensityBuoyancyCommonColors from '../view/DensityBuoyancyCommonColors.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import TinyProperty from '../../../../axon/js/TinyProperty.js';
-import { PropertyIO } from '../../../../axon/js/ReadOnlyProperty.js';
+import ReadOnlyProperty from '../../../../axon/js/ReadOnlyProperty.js';
 
 
-const NullableColorPropertyReferenceType = NullableIO( ReferenceIO( PropertyIO( Color.ColorIO ) ) );
+const NullableColorPropertyReferenceType = NullableIO( ReferenceIO( Property.PropertyIO( Color.ColorIO ) ) );
 
 type MaterialState = {
   identifier: null | string;
@@ -489,7 +489,7 @@ export default class Material {
     valueType: Material,
     documentation: 'Represents different materials that solids/liquids in the simulations can take, including density (kg/m^3), viscosity (Pa * s), and color.',
     stateSchema: {
-      name: ReferenceIO( PropertyIO( StringIO ) ),
+      name: ReferenceIO( ReadOnlyProperty.PropertyIO( StringIO ) ),
       identifier: NullableIO( StringIO ),
       tandemName: NullableIO( StringIO ),
       density: NumberIO,
@@ -507,7 +507,7 @@ export default class Material {
       const isLiquidColorUninstrumented = material.liquidColor && !material.liquidColor.isPhetioInstrumented();
 
       return {
-        name: ReferenceIO( PropertyIO( StringIO ) ).toStateObject( material.nameProperty ),
+        name: ReferenceIO( ReadOnlyProperty.PropertyIO( StringIO ) ).toStateObject( material.nameProperty ),
         identifier: NullableIO( StringIO ).toStateObject( material.identifier ),
         tandemName: NullableIO( StringIO ).toStateObject( material.tandemName ),
         density: material.density,
@@ -530,7 +530,7 @@ export default class Material {
         const staticCustomColor = NullableIO( Color.ColorIO ).fromStateObject( obj.staticCustomColor );
         const staticLiquidColor = NullableIO( Color.ColorIO ).fromStateObject( obj.staticLiquidColor );
         return new Material( {
-          nameProperty: ReferenceIO( PropertyIO( StringIO ) ).fromStateObject( obj.name ),
+          nameProperty: ReferenceIO( ReadOnlyProperty.PropertyIO( StringIO ) ).fromStateObject( obj.name ),
           identifier: NullableIO( StringIO ).fromStateObject( obj.identifier ),
           tandemName: NullableIO( StringIO ).fromStateObject( obj.tandemName ),
           density: obj.density,

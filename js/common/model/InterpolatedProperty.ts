@@ -7,7 +7,7 @@
  */
 
 import Property, { PropertyOptions } from '../../../../axon/js/Property.js';
-import { PropertyIO, ReadOnlyPropertyState } from '../../../../axon/js/ReadOnlyProperty.js';
+import { ReadOnlyPropertyState } from '../../../../axon/js/ReadOnlyProperty.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
 import optionize from '../../../../phet-core/js/optionize.js';
@@ -99,7 +99,7 @@ export default class InterpolatedProperty<T> extends Property<T> {
     assert && assert( parameterType, 'InterpolatedPropertyIO needs parameterType' );
 
     if ( !cache.has( parameterType ) ) {
-      const PropertyIOImpl = PropertyIO( parameterType );
+      const PropertyIOImpl = Property.PropertyIO( parameterType );
 
       const ioType = new IOType( `InterpolatedPropertyIO<${parameterType.typeName}>`, {
         valueType: InterpolatedProperty,

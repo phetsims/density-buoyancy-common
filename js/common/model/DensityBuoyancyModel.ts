@@ -31,6 +31,7 @@ import Cuboid from './Cuboid.js';
 import NumberProperty from '../../../../axon/js/NumberProperty.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import TRangedProperty from '../../../../axon/js/TRangedProperty.js';
+import TModel from '../../../../joist/js/TModel.js';
 
 // constants
 const BLOCK_SPACING = 0.01;
@@ -48,7 +49,7 @@ export type DensityBuoyancyModelOptions = {
   tandem: Tandem;
 };
 
-export default class DensityBuoyancyModel {
+export default class DensityBuoyancyModel implements TModel {
 
   public readonly showGravityForceProperty: Property<boolean>;
   public readonly showBuoyancyForceProperty: Property<boolean>;

@@ -21,7 +21,6 @@ import { AlignBox, Color, HBox, HSeparator, HStrut, Image, ManualConstraint, Nod
 import AccordionBox, { AccordionBoxOptions } from '../../../../sun/js/AccordionBox.js';
 import RectangularPushButton from '../../../../sun/js/buttons/RectangularPushButton.js';
 import RectangularRadioButtonGroup from '../../../../sun/js/buttons/RectangularRadioButtonGroup.js';
-import HSeparatorDeprecated from '../../../../sun/js/HSeparatorDeprecated.js';
 import Panel from '../../../../sun/js/Panel.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 import Cube from '../../common/model/Cube.js';
@@ -169,7 +168,7 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
       align: 'left',
       children: [
         blockControlNode,
-        new HSeparatorDeprecated( blockControlNode.width ),
+        new HSeparator(),
         // Convert cubic meters => liters
         new NumberControl( DensityBuoyancyCommonStrings.boatVolumeStringProperty, new UnitConversionProperty( model.boat.displacementVolumeProperty, {
           factor: 1000

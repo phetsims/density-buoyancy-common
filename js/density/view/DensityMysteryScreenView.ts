@@ -37,13 +37,15 @@ export default class DensityMysteryScreenView extends DensityBuoyancyScreenView<
       cameraLookAt: DensityBuoyancyCommonConstants.DENSITY_CAMERA_LOOK_AT
     }, options ) );
 
+    const densityTableAccordionBoxTandem = tandem.createTandem( 'densityTableAccordionBox' );
     const densityTableAccordionBox = new AccordionBox( new DensityTableNode(), combineOptions<AccordionBoxOptions>( {
       titleNode: new Text( DensityBuoyancyCommonStrings.densityTableStringProperty, {
         font: DensityBuoyancyCommonConstants.TITLE_FONT,
-        maxWidth: 200
+        maxWidth: 200,
+        tandem: densityTableAccordionBoxTandem.createTandem( 'titleText' )
       } ),
       expandedProperty: model.densityTableExpandedProperty,
-      tandem: tandem.createTandem( 'densityTableAccordionBox' )
+      tandem: densityTableAccordionBoxTandem
     }, DensityBuoyancyCommonConstants.ACCORDION_BOX_OPTIONS ) );
 
     this.addChild( new AlignBox( densityTableAccordionBox, {

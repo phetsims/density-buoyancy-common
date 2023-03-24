@@ -60,7 +60,8 @@ export default class DensityIntroScreenView extends SecondaryMassScreenView<Dens
         maxWidth: 200,
         visiblePropertyOptions: {
           phetioReadOnly: true
-        }
+        },
+        tandem: accordionTandem.createTandem( 'titleText' )
       } ),
       expandedProperty: model.densityExpandedProperty,
       buttonAlign: 'left' as const,

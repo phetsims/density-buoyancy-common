@@ -53,7 +53,8 @@ export default class DensityCompareScreenView extends DensityBuoyancyScreenView<
       children: [
         new Text( DensityBuoyancyCommonStrings.blocksStringProperty, {
           font: DensityBuoyancyCommonConstants.TITLE_FONT,
-          maxWidth: 160
+          maxWidth: 160,
+          tandem: blocksPanelTandem.createTandem( 'titleText' )
         } ),
         new VerticalAquaRadioButtonGroup( model.blockSetProperty, BlockSet.enumeration.values.map( blockSet => {
           return {

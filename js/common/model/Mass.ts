@@ -409,7 +409,7 @@ export default abstract class Mass extends PhetioObject {
       tandem: tandem.createTandem( 'massProperty' ),
       phetioReadOnly: true,
       phetioState: false,
-      phetioDocumentation: 'Current mass of the block. Changing the mass will result in changes to the material (and therefore density), but the volume will remain the same.',
+      phetioDocumentation: 'Current mass of the block. Changing the mass will result in changes to the volume (Intro and Mystery Screens) or density (Compare Screen).',
       units: 'kg',
       reentrant: true,
       range: new Range( Number.MIN_VALUE, Number.POSITIVE_INFINITY )

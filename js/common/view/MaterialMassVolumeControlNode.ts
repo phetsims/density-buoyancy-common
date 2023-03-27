@@ -160,7 +160,8 @@ export default class MaterialMassVolumeControlNode extends VBox {
     const massNumberProperty = new NumberProperty( massProperty.value, {
       tandem: massNumberControlTandem.createTandem( 'massNumberProperty' ),
       phetioState: false,
-      phetioReadOnly: true
+      phetioReadOnly: true,
+      units: 'kg'
     } );
 
     // passed to the NumberControl - liters from m^3
@@ -168,7 +169,8 @@ export default class MaterialMassVolumeControlNode extends VBox {
       range: new Range( options.minVolumeLiters, options.maxVolumeLiters ),
       tandem: volumeNumberControlTandem.createTandem( 'numberControlVolumeProperty' ),
       phetioState: false,
-      phetioReadOnly: true
+      phetioReadOnly: true,
+      units: 'L'
     } );
 
     // This instance lives for the lifetime of the simulation, so we don't need to remove this listener

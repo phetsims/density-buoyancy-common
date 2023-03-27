@@ -158,7 +158,7 @@ export default class MaterialMassVolumeControlNode extends VBox {
 
     // passed to the NumberControl
     const massNumberProperty = new NumberProperty( massProperty.value, {
-      tandem: massNumberControlTandem.createTandem( 'massNumberProperty' ),
+      tandem: massNumberControlTandem.createTandem( 'numberControlMassProperty' ),
       phetioState: false,
       phetioReadOnly: true,
       units: 'kg'

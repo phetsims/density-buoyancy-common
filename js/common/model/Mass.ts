@@ -328,7 +328,8 @@ export default abstract class Mass extends PhetioObject {
       this.customDensityProperty = new NumberProperty( config.material.density, {
         tandem: tandem.createTandem( 'customDensityProperty' ),
         phetioDocumentation: 'Density of the block when the material is set to “CUSTOM”.',
-        range: new Range( Number.MIN_VALUE, Number.POSITIVE_INFINITY )
+        range: new Range( Number.MIN_VALUE, Number.POSITIVE_INFINITY ),
+        units: 'kg/m^3'
       } );
       this.customColorProperty = new ColorProperty( config.material.customColor ? config.material.customColor.value : Color.WHITE, {
         tandem: tandem.createTandem( 'customColorProperty' )

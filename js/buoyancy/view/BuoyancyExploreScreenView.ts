@@ -12,7 +12,7 @@ import Vector2 from '../../../../dot/js/Vector2.js';
 import { combineOptions } from '../../../../phet-core/js/optionize.js';
 import PatternStringProperty from '../../../../axon/js/PatternStringProperty.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
-import { AlignBox, GridBox, HBox, HStrut, Node, Text, VBox } from '../../../../scenery/js/imports.js';
+import { AlignBox, GridBox, HBox, HStrut, Node, RichText, Text, VBox } from '../../../../scenery/js/imports.js';
 import AccordionBox, { AccordionBoxOptions } from '../../../../sun/js/AccordionBox.js';
 import Panel from '../../../../sun/js/Panel.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
@@ -45,7 +45,7 @@ export default class BuoyancyExploreScreenView extends SecondaryMassScreenView<B
 
     const displayOptionsNode = new DisplayOptionsNode( model );
 
-    const getMaterialReadoutStringProperty = ( materialProperty: TReadOnlyProperty<Material> ) => new PatternStringProperty( DensityBuoyancyCommonStrings.kilogramsPerLiterPatternStringProperty, {
+    const getMaterialReadoutStringProperty = ( materialProperty: TReadOnlyProperty<Material> ) => new PatternStringProperty( DensityBuoyancyCommonConstants.KILOGRAMS_PER_VOLUME_PATTERN_STRING_PROPERTY, {
       value: materialProperty
     }, {
       maps: {
@@ -55,13 +55,13 @@ export default class BuoyancyExploreScreenView extends SecondaryMassScreenView<B
     } );
 
     // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
-    const densityAText = new Text( getMaterialReadoutStringProperty( model.primaryMass.materialProperty ), {
+    const densityAText = new RichText( getMaterialReadoutStringProperty( model.primaryMass.materialProperty ), {
       maxWidth: 120,
       font: DensityBuoyancyCommonConstants.ITEM_FONT,
       fill: DensityBuoyancyCommonColors.labelAProperty,
       layoutOptions: { column: 1, row: 0 }
     } );
-    const densityBText = new Text( getMaterialReadoutStringProperty( model.secondaryMass.materialProperty ), {
+    const densityBText = new RichText( getMaterialReadoutStringProperty( model.secondaryMass.materialProperty ), {
       maxWidth: 120,
       font: DensityBuoyancyCommonConstants.ITEM_FONT,
       fill: DensityBuoyancyCommonColors.labelBProperty,

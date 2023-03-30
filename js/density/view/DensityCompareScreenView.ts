@@ -116,8 +116,8 @@ export default class DensityCompareScreenView extends DensityBuoyancyScreenView<
     const volumeNumberControl = new ComparisonNumberControl(
       volumeProperty,
       DensityBuoyancyCommonStrings.volumeStringProperty,
-      DensityBuoyancyCommonStrings.litersPatternStringProperty,
-      'liters',
+      DensityBuoyancyCommonConstants.VOLUME_PATTERN_STRING_PROPERTY,
+      'value',
       {
         tandem: volumeNumberControlTandem,
         visibleProperty: new PhetioControlledVisibilityProperty( [ model.blockSetProperty ], blockSet => blockSet === BlockSet.SAME_VOLUME, {
@@ -133,7 +133,7 @@ export default class DensityCompareScreenView extends DensityBuoyancyScreenView<
     const densityNumberControl = new ComparisonNumberControl(
       densityProperty,
       DensityBuoyancyCommonStrings.densityStringProperty,
-      DensityBuoyancyCommonStrings.kilogramsPerLiterPatternStringProperty,
+      DensityBuoyancyCommonConstants.KILOGRAMS_PER_VOLUME_PATTERN_STRING_PROPERTY,
       'value',
       {
         tandem: densityNumberControlTandem,

@@ -329,7 +329,8 @@ export default class MaterialMassVolumeControlNode extends VBox {
         phetioLinkedProperty: volumeProperty
       },
       numberDisplayOptions: {
-        valuePattern: DensityBuoyancyCommonConstants.LITERS_PATTERN_STRING_PROPERTY,
+        valuePattern: DensityBuoyancyCommonConstants.VOLUME_PATTERN_STRING_PROPERTY,
+        useRichText: true,
         useFullHeight: true
       },
       arrowButtonOptions: {

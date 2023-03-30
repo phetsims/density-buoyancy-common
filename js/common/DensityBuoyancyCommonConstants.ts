@@ -14,8 +14,17 @@ import densityBuoyancyCommon from '../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../DensityBuoyancyCommonStrings.js';
 import Material from './model/Material.js';
 import DensityBuoyancyCommonColors from './view/DensityBuoyancyCommonColors.js';
+import DerivedProperty from '../../../axon/js/DerivedProperty.js';
+import DensityBuoyancyCommonPreferences from './model/DensityBuoyancyCommonPreferences.js';
+import { VolumeUnits } from './DensityBuoyancyCommonQueryParameters.js';
 
 const CORNER_RADIUS = 5;
+const litersPatternStringProperty = new PatternStringProperty( DensityBuoyancyCommonStrings.litersPatternStringProperty, {
+  liters: '{{value}}'
+} );
+const decimetersCubedPatternStringProperty = new PatternStringProperty( DensityBuoyancyCommonStrings.decimetersCubedPatternStringProperty, {
+  decimetersCubed: '{{value}}'
+} );
 
 const DensityBuoyancyCommonConstants = {
   // (read-only) {number} - Used for margins from the offset of screens or between panels/boxes
@@ -81,8 +90,19 @@ const DensityBuoyancyCommonConstants = {
     Material.GOLD
   ],
 
-  LITERS_PATTERN_STRING_PROPERTY: new PatternStringProperty( DensityBuoyancyCommonStrings.litersPatternStringProperty, {
-    liters: '{{value}}'
+  VOLUME_PATTERN_STRING_PROPERTY: new DerivedProperty( [
+    DensityBuoyancyCommonPreferences.volumeUnitsProperty,
+    litersPatternStringProperty,
+    decimetersCubedPatternStringProperty
+  ], ( units: VolumeUnits, litersPatternString, decimetersCubedPatternString ) => {
+    return units === 'liters' ? litersPatternString : decimetersCubedPatternString;
+  } ),
+  KILOGRAMS_PER_VOLUME_PATTERN_STRING_PROPERTY: new DerivedProperty( [
+    DensityBuoyancyCommonPreferences.volumeUnitsProperty,
+    DensityBuoyancyCommonStrings.kilogramsPerLiterPatternStringProperty,
+    DensityBuoyancyCommonStrings.kilogramsPerDecimeterCubedPatternStringProperty
+  ], ( units: VolumeUnits, kilogramsPerLiterPatternString, kilogramsPerDecimeterCubedPatternString ) => {
+    return units === 'liters' ? kilogramsPerLiterPatternString : kilogramsPerDecimeterCubedPatternString;
   } ),
   KILOGRAMS_PATTERN_STRING_PROPERTY: new PatternStringProperty( DensityBuoyancyCommonStrings.kilogramsPatternStringProperty, {
     kilograms: '{{value}}'

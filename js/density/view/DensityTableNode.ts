@@ -6,12 +6,14 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
+import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import Utils from '../../../../dot/js/Utils.js';
 import { combineOptions } from '../../../../phet-core/js/optionize.js';
 import Orientation from '../../../../phet-core/js/Orientation.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
-import { GridBackgroundNode, GridBox, TLayoutOptions, Node, Rectangle, Text } from '../../../../scenery/js/imports.js';
+import { GridBackgroundNode, GridBox, TLayoutOptions, Node, Rectangle, Text, RichText } from '../../../../scenery/js/imports.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
+import DensityBuoyancyCommonPreferences from '../../common/model/DensityBuoyancyCommonPreferences.js';
 import DensityBuoyancyCommonColors from '../../common/view/DensityBuoyancyCommonColors.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
@@ -37,7 +39,14 @@ export default class DensityTableNode extends Node {
           maxWidth: 160,
           layoutOptions: combineOptions<TLayoutOptions>( { column: 0, row: 0, xAlign: 'left' }, layoutOptions )
         } ),
-        new Text( DensityBuoyancyCommonStrings.densityKgLStringProperty, {
+
+        new RichText( new DerivedProperty( [
+          DensityBuoyancyCommonPreferences.volumeUnitsProperty,
+          DensityBuoyancyCommonStrings.densityKgLStringProperty,
+          DensityBuoyancyCommonStrings.densityKgdm3StringProperty
+        ], ( units, litersString, decimetersCubedString ) => {
+          return units === 'liters' ? litersString : decimetersCubedString;
+        } ), {
           font: headerFont,
           maxWidth: 160,
           layoutOptions: combineOptions<TLayoutOptions>( { column: 1, row: 0, xAlign: 'right' }, layoutOptions )

@@ -12,12 +12,11 @@ import Bounds2 from '../../../../dot/js/Bounds2.js';
 import { combineOptions } from '../../../../phet-core/js/optionize.js';
 import ArrowNode, { ArrowNodeOptions } from '../../../../scenery-phet/js/ArrowNode.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
-import { Line, ManualConstraint, Node, NodeOptions, Rectangle, Text, TextOptions } from '../../../../scenery/js/imports.js';
+import { Line, ManualConstraint, Node, NodeOptions, Rectangle, RichText, Text, TextOptions } from '../../../../scenery/js/imports.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 import Material from '../../common/model/Material.js';
 import DensityBuoyancyCommonColors from '../../common/view/DensityBuoyancyCommonColors.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
-import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import PatternStringProperty from '../../../../axon/js/PatternStringProperty.js';
 
 // constants
@@ -94,7 +93,7 @@ export default class DensityReadoutNode extends Node {
       fill: DensityBuoyancyCommonColors.labelAProperty
     }, arrowOptions ) );
 
-    const createDensityStringProperty = ( densityProperty: TReadOnlyProperty<number> ) => new PatternStringProperty( DensityBuoyancyCommonStrings.kilogramsPerLiterPatternStringProperty, {
+    const createDensityStringProperty = ( densityProperty: TReadOnlyProperty<number> ) => new PatternStringProperty( DensityBuoyancyCommonConstants.KILOGRAMS_PER_VOLUME_PATTERN_STRING_PROPERTY, {
       value: densityProperty
     }, {
       maps: {
@@ -103,7 +102,7 @@ export default class DensityReadoutNode extends Node {
       decimalPlaces: 2
     } );
 
-    const primaryLabel = new Text( createDensityStringProperty( densityAProperty ), combineOptions<TextOptions>( {
+    const primaryLabel = new RichText( createDensityStringProperty( densityAProperty ), combineOptions<TextOptions>( {
       fill: DensityBuoyancyCommonColors.labelAProperty
     }, labelOptions ) );
     const primaryMarker = new Node( {
@@ -117,7 +116,7 @@ export default class DensityReadoutNode extends Node {
     const secondaryArrow = new ArrowNode( 0, 7, 0, 0, combineOptions<ArrowNodeOptions>( {
       fill: DensityBuoyancyCommonColors.labelBProperty
     }, arrowOptions ) );
-    const secondaryLabel = new Text( createDensityStringProperty( densityBProperty ), combineOptions<TextOptions>( {
+    const secondaryLabel = new RichText( createDensityStringProperty( densityBProperty ), combineOptions<TextOptions>( {
       fill: DensityBuoyancyCommonColors.labelBProperty
     }, labelOptions ) );
     const secondaryMarker = new Node( {

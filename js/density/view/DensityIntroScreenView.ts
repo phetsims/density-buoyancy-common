@@ -8,7 +8,7 @@
 
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
-import { AlignBox, Node, Text } from '../../../../scenery/js/imports.js';
+import { AlignBox, Node, RichText } from '../../../../scenery/js/imports.js';
 import AccordionBox, { AccordionBoxOptions } from '../../../../sun/js/AccordionBox.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 import PrimarySecondaryControlsNode from '../../common/view/PrimarySecondaryControlsNode.js';
@@ -19,6 +19,7 @@ import DensityReadoutNode from './DensityReadoutNode.js';
 import DensityIntroModel from '../model/DensityIntroModel.js';
 import { DensityBuoyancyScreenViewOptions } from '../../common/view/DensityBuoyancyScreenView.js';
 import { combineOptions } from '../../../../phet-core/js/optionize.js';
+import DensityBuoyancyCommonPreferences from '../../common/model/DensityBuoyancyCommonPreferences.js';
 
 // constants
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
@@ -55,7 +56,13 @@ export default class DensityIntroScreenView extends SecondaryMassScreenView<Dens
         }
       }
     ), combineOptions<AccordionBoxOptions>( {
-      titleNode: new Text( DensityBuoyancyCommonStrings.densityReadoutStringProperty, {
+      titleNode: new RichText( new DerivedProperty( [
+        DensityBuoyancyCommonPreferences.volumeUnitsProperty,
+        DensityBuoyancyCommonStrings.densityReadoutStringProperty,
+        DensityBuoyancyCommonStrings.densityReadoutDecimetersCubedStringProperty
+      ], ( units, litersReadout, decimetersCubedReadout ) => {
+        return units === 'liters' ? litersReadout : decimetersCubedReadout;
+      } ), {
         font: DensityBuoyancyCommonConstants.TITLE_FONT,
         maxWidth: 200,
         visiblePropertyOptions: {

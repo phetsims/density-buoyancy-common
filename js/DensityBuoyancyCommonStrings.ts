@@ -119,6 +119,8 @@ type StringsType = {
   'kilogramsPatternStringProperty': LinkableProperty<string>;
   'litersPattern': string;
   'litersPatternStringProperty': LinkableProperty<string>;
+  'decimetersCubedPattern': string;
+  'decimetersCubedPatternStringProperty': LinkableProperty<string>;
   'newtonsPattern': string;
   'newtonsPatternStringProperty': LinkableProperty<string>;
   'forces': string;
@@ -137,6 +139,8 @@ type StringsType = {
   'forceValuesStringProperty': LinkableProperty<string>;
   'kilogramsPerLiterPattern': string;
   'kilogramsPerLiterPatternStringProperty': LinkableProperty<string>;
+  'kilogramsPerDecimeterCubedPattern': string;
+  'kilogramsPerDecimeterCubedPatternStringProperty': LinkableProperty<string>;
   'metersPerSecondSquaredPattern': string;
   'metersPerSecondSquaredPatternStringProperty': LinkableProperty<string>;
   'fluid': string;
@@ -147,6 +151,8 @@ type StringsType = {
   'densityStringProperty': LinkableProperty<string>;
   'densityReadout': string;
   'densityReadoutStringProperty': LinkableProperty<string>;
+  'densityReadoutDecimetersCubed': string;
+  'densityReadoutDecimetersCubedStringProperty': LinkableProperty<string>;
   'massLabel': {
     'primary': string;
     'primaryStringProperty': LinkableProperty<string>;
@@ -219,6 +225,8 @@ type StringsType = {
   'densityTableStringProperty': LinkableProperty<string>;
   'densityKgL': string;
   'densityKgLStringProperty': LinkableProperty<string>;
+  'densityKgdm3': string;
+  'densityKgdm3StringProperty': LinkableProperty<string>;
   'width': string;
   'widthStringProperty': LinkableProperty<string>;
   'height': string;
@@ -227,12 +235,20 @@ type StringsType = {
   'averageStringProperty': LinkableProperty<string>;
   'densityReadoutPattern': string;
   'densityReadoutPatternStringProperty': LinkableProperty<string>;
+  'densityReadoutDecimetersCubedPattern': string;
+  'densityReadoutDecimetersCubedPatternStringProperty': LinkableProperty<string>;
   'whatIsTheFluidDensity': string;
   'whatIsTheFluidDensityStringProperty': LinkableProperty<string>;
   'whatIsTheValueOfGravity': string;
   'whatIsTheValueOfGravityStringProperty': LinkableProperty<string>;
   'vectorScale': string;
   'vectorScaleStringProperty': LinkableProperty<string>;
+  'volumeUnits': string;
+  'volumeUnitsStringProperty': LinkableProperty<string>;
+  'liters': string;
+  'litersStringProperty': LinkableProperty<string>;
+  'decimetersCubed': string;
+  'decimetersCubedStringProperty': LinkableProperty<string>;
 };
 
 const DensityBuoyancyCommonStrings = getStringModule( 'DENSITY_BUOYANCY_COMMON' ) as StringsType;

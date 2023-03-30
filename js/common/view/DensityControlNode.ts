@@ -27,7 +27,7 @@ export default class DensityControlNode extends ComboNumberControl<Material> {
     super( {
       tandem: tandem,
       titleProperty: DensityBuoyancyCommonStrings.fluidDensityStringProperty,
-      valuePatternProperty: DensityBuoyancyCommonStrings.kilogramsPerLiterPatternStringProperty,
+      valuePatternProperty: DensityBuoyancyCommonConstants.KILOGRAMS_PER_VOLUME_PATTERN_STRING_PROPERTY,
       property: liquidMaterialProperty,
       range: new Range( 0.5, 15 ),
       toNumericValue: material => material.density / 1000,

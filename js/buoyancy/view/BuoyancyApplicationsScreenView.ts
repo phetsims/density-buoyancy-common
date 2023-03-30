@@ -100,7 +100,8 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
           children: [
             airVolumeLabel,
             new NumberDisplay( airLitersProperty, new Range( 0, 10 ), {
-              valuePattern: DensityBuoyancyCommonConstants.LITERS_PATTERN_STRING_PROPERTY,
+              valuePattern: DensityBuoyancyCommonConstants.VOLUME_PATTERN_STRING_PROPERTY,
+              useRichText: true,
               decimalPlaces: 2,
               textOptions: {
                 font: new PhetFont( 12 ),
@@ -174,7 +175,8 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
           factor: 1000
         } ), boatVolumeRange, combineOptions<NumberControlOptions>( {
           numberDisplayOptions: {
-            valuePattern: DensityBuoyancyCommonConstants.LITERS_PATTERN_STRING_PROPERTY,
+            valuePattern: DensityBuoyancyCommonConstants.VOLUME_PATTERN_STRING_PROPERTY,
+            useRichText: true,
             textOptions: {
               font: DensityBuoyancyCommonConstants.READOUT_FONT,
               maxWidth: 120

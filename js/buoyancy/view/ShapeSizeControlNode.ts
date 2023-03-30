@@ -126,7 +126,8 @@ export default class ShapeSizeControlNode extends VBox {
             maxWidth: 120
           } ),
           new NumberDisplay( litersProperty, new Range( 0, 10 ), { // TODO: is 10 the most?
-            valuePattern: DensityBuoyancyCommonConstants.LITERS_PATTERN_STRING_PROPERTY,
+            valuePattern: DensityBuoyancyCommonConstants.VOLUME_PATTERN_STRING_PROPERTY,
+            useRichText: true,
             decimalPlaces: 2,
             textOptions: {
               font: DensityBuoyancyCommonConstants.READOUT_FONT,

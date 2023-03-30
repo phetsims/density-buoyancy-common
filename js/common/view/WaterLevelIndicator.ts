@@ -10,10 +10,9 @@ import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import { Shape } from '../../../../kite/js/imports.js';
 import PatternStringProperty from '../../../../axon/js/PatternStringProperty.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
-import { ManualConstraint, Node, Path, Text } from '../../../../scenery/js/imports.js';
+import { ManualConstraint, Node, Path, RichText } from '../../../../scenery/js/imports.js';
 import Panel from '../../../../sun/js/Panel.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
-import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
 import DensityBuoyancyCommonColors from './DensityBuoyancyCommonColors.js';
 
@@ -28,11 +27,11 @@ export default class WaterLevelIndicator extends Node {
     this.addChild( highlightPath );
 
     // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
-    const readoutText = new Text( new PatternStringProperty( DensityBuoyancyCommonStrings.litersPatternStringProperty, {
-      liters: volumeProperty
+    const readoutText = new RichText( new PatternStringProperty( DensityBuoyancyCommonConstants.VOLUME_PATTERN_STRING_PROPERTY, {
+      value: volumeProperty
     }, {
       maps: {
-        liters: ( volume: number ) => 1000 * volume
+        value: ( volume: number ) => 1000 * volume
       },
       decimalPlaces: 2
     } ), {

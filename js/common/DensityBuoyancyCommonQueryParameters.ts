@@ -8,6 +8,9 @@
 
 import densityBuoyancyCommon from '../densityBuoyancyCommon.js';
 
+export const VolumeUnitsValues = [ 'liters', 'decimetersCubed' ] as const;
+export type VolumeUnits = ( typeof VolumeUnitsValues )[number];
+
 const DensityBuoyancyCommonQueryParameters = QueryStringMachine.getAll( {
 
   gEarth: {
@@ -15,6 +18,14 @@ const DensityBuoyancyCommonQueryParameters = QueryStringMachine.getAll( {
     defaultValue: 9.8,
     public: true,
     isValidValue: ( value: number ) => value >= 9 && value <= 10
+  },
+
+  // See https://github.com/phetsims/density/issues/147
+  volumeUnits: {
+    type: 'string',
+    validValues: VolumeUnitsValues,
+    defaultValue: 'liters',
+    public: true
   },
 
   // Changes the "aspect ratio" of the pool, for internal testing/development

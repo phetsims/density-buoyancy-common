@@ -292,7 +292,9 @@ export default class DensityMysteryModel extends BlockSetModel<BlockSet> {
               adjustMassWithVolume: true,
               adjustableMaterial: true,
               tag: tags[ i ],
-              tandem: randomTandem.createTandem( `block${tags[ i ].name}` )
+              tandem: randomTandem.createTandem( `block${tags[ i ].name}` ),
+              minVolume: minScreenVolume,
+              maxVolume: maxScreenVolume
             } );
           } );
         }

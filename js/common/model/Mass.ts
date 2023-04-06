@@ -43,6 +43,9 @@ import { BodyStateObject } from './P2Engine.js';
 import TEmitter from '../../../../axon/js/TEmitter.js';
 import ReadOnlyProperty from '../../../../axon/js/ReadOnlyProperty.js';
 import TinyProperty from '../../../../axon/js/TinyProperty.js';
+import NullableIO from '../../../../tandem/js/types/NullableIO.js';
+import StringIO from '../../../../tandem/js/types/StringIO.js';
+import NumberIO from '../../../../tandem/js/types/NumberIO.js';
 
 // constants
 export class MassTag extends EnumerationValue {
@@ -113,6 +116,38 @@ class MaterialEnumeration extends EnumerationValue {
     phetioDocumentation: 'Material values'
   } );
 }
+
+type GuardedNumberPropertyOptions = NumberPropertyOptions & { getPhetioSpecificValidationError: ( value: number ) => string | null };
+
+class GuardedNumberProperty extends NumberProperty {
+  public readonly getPhetioSpecificValidationError: ( number: number ) => string | null;
+
+  public constructor( value: number, options: GuardedNumberPropertyOptions ) {
+    super( value, {
+      phetioOuterType: () => GuardedNumberPropertyIO,
+      ...options
+    } );
+
+    this.getPhetioSpecificValidationError = options.getPhetioSpecificValidationError;
+  }
+}
+
+const GuardedNumberPropertyIO = new IOType( 'GuardedNumberPropertyIO', {
+  supertype: NumberProperty.NumberPropertyIO,
+  parameterTypes: [ NumberIO ],
+  methods: {
+    getValidationError: {
+      returnType: NullableIO( StringIO ),
+      parameterTypes: [ NumberIO ],
+      implementation: function( this: GuardedNumberProperty, value: number ) {
+
+        // Fails early on the first error, checking the superclass validation first
+        return this.getValidationError( value ) || this.getPhetioSpecificValidationError( value );
+      },
+      documentation: 'Checks to see if a proposed value is valid. Returns the first validation error, or null if the value is valid.'
+    }
+  }
+} );
 
 type MaterialNonCustomIdentifier = 'ALUMINUM' | 'BRICK' | 'COPPER' | 'ICE' | 'PLATINUM' | 'STEEL' | 'STYROFOAM' | 'WOOD';
 type MaterialIdentifier = MaterialNonCustomIdentifier | 'CUSTOM';
@@ -199,7 +234,7 @@ export default abstract class Mass extends PhetioObject {
   protected massLock: boolean;
 
   // In m^3 (cubic meters)
-  public readonly volumeProperty: Property<number>;
+  public readonly volumeProperty: NumberProperty;
 
   // In kg (kilograms), added to the normal mass (computed from density and volume)
   public readonly containedMassProperty: Property<number>;
@@ -406,14 +441,29 @@ export default abstract class Mass extends PhetioObject {
 
     this.massLock = false;
 
-    this.massProperty = new NumberProperty( this.materialProperty.value.density * this.volumeProperty.value + this.containedMassProperty.value, combineOptions<NumberPropertyOptions>( {
+    this.massProperty = new GuardedNumberProperty( this.materialProperty.value.density * this.volumeProperty.value + this.containedMassProperty.value, combineOptions<GuardedNumberPropertyOptions>( {
       tandem: tandem.createTandem( 'massProperty' ),
       phetioReadOnly: true,
       phetioState: false,
-      phetioDocumentation: 'Current mass of the block. Changing the mass will result in changes to the volume (Intro and Mystery Screens) or density (Compare Screen).',
+      phetioDocumentation: 'Current mass of the block. Changing the mass will result in changes to the volume (Intro and ' +
+                           'Mystery Screens) or density (Compare Screen). Since the volume is computed as a function of ' +
+                           'the mass, you can only set a mass that will keep the volume in range.',
       units: 'kg',
       reentrant: true,
-      range: new Range( Number.MIN_VALUE, Number.POSITIVE_INFINITY )
+      range: new Range( Number.MIN_VALUE, Number.POSITIVE_INFINITY ),
+
+      getPhetioSpecificValidationError: proposedMass => {
+
+        // density = mass/ volume
+        const proposedVolume = proposedMass / this.materialProperty.value.density;
+        const isProposedVolumeInRange = this.volumeProperty.range.contains( proposedVolume );
+
+        const maxAllowedMass = this.materialProperty.value.density * this.volumeProperty.range.max;
+        const minAllowedMass = this.materialProperty.value.density * this.volumeProperty.range.min;
+
+        return isProposedVolumeInRange ? null :
+               `The proposed mass ${proposedMass} kg would result in a volume ${proposedVolume} m^3 that is out of range. At the current density, the allowed max range is (${minAllowedMass},${maxAllowedMass}) kg.`;
+      }
     }, config.massPropertyOptions ) );
 
     Multilink.multilink( [ this.materialProperty, this.volumeProperty, this.containedMassProperty ], ( material, volume, containedMass ) => {

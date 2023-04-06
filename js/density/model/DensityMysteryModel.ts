@@ -75,7 +75,7 @@ export default class DensityMysteryModel extends BlockSetModel<BlockSet> {
     const commonCubeOptions = {
       minVolume: minScreenVolume,
       maxVolume: maxScreenVolume,
-      adjustMassWithVolume: true,
+      adjustVolumeOnMassChanged: true,
       adjustableMaterial: true
     };
 
@@ -289,7 +289,7 @@ export default class DensityMysteryModel extends BlockSetModel<BlockSet> {
 
           return _.range( 0, 5 ).map( i => {
             return Cube.createWithVolume( model.engine, mysteryMaterials[ i ], Vector2.ZERO, mysteryVolumes[ i ], {
-              adjustMassWithVolume: true,
+              adjustVolumeOnMassChanged: true,
               adjustableMaterial: true,
               tag: tags[ i ],
               tandem: randomTandem.createTandem( `block${tags[ i ].name}` ),

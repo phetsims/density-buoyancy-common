@@ -17,7 +17,7 @@ import Material from './Material.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 
 type SelfOptions = {
-  adjustMassWithVolume?: boolean;
+  adjustVolumeOnMassChanged?: boolean;
 };
 
 export type CubeOptions = SelfOptions & CuboidOptions;
@@ -26,14 +26,14 @@ export default class Cube extends Cuboid {
   public constructor( engine: PhysicsEngine, volume: number, providedConfig: CubeOptions ) {
 
     let config = optionize<CubeOptions, SelfOptions, CuboidOptions>()( {
-      adjustMassWithVolume: false,
+      adjustVolumeOnMassChanged: false,
 
       volumePropertyOptions: {
         phetioReadOnly: false
       }
     }, providedConfig );
 
-    if ( config.adjustMassWithVolume ) {
+    if ( config.adjustVolumeOnMassChanged ) {
       config = combineOptions<typeof config>( {
         massPropertyOptions: {
           phetioReadOnly: false
@@ -50,7 +50,7 @@ export default class Cube extends Cuboid {
       }
     } );
 
-    if ( config.adjustMassWithVolume ) {
+    if ( config.adjustVolumeOnMassChanged ) {
       // Hook massProperty to adjust the size
       this.massProperty.lazyLink( mass => {
         if ( !this.massLock ) {

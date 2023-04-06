@@ -462,7 +462,7 @@ export default abstract class Mass extends PhetioObject {
         const minAllowedMass = this.materialProperty.value.density * this.volumeProperty.range.min;
 
         return isProposedVolumeInRange ? null :
-               `The proposed mass ${proposedMass} kg would result in a volume ${proposedVolume} m^3 that is out of range. At the current density, the allowed max range is (${minAllowedMass},${maxAllowedMass}) kg.`;
+               `The proposed mass ${proposedMass} kg would result in a volume ${proposedVolume} m^3 that is out of range. At the current density, the allowed range is [${minAllowedMass}, ${maxAllowedMass}] kg.`;
       }
     }, config.massPropertyOptions ) );
 

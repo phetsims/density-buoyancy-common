@@ -14,17 +14,16 @@ import ReadOnlyProperty from '../../../../axon/js/ReadOnlyProperty.js';
 import Dimension2 from '../../../../dot/js/Dimension2.js';
 import Range from '../../../../dot/js/Range.js';
 import Utils from '../../../../dot/js/Utils.js';
-import EnumerationDeprecated from '../../../../phet-core/js/EnumerationDeprecated.js';
 import optionize, { combineOptions } from '../../../../phet-core/js/optionize.js';
 import NumberControl, { NumberControlOptions } from '../../../../scenery-phet/js/NumberControl.js';
 import { HBox, Node, Text, TPaint, VBox, VBoxOptions } from '../../../../scenery/js/imports.js';
 import ComboBox from '../../../../sun/js/ComboBox.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
-import EnumerationIO from '../../../../tandem/js/types/EnumerationIO.js';
+import StringIO from '../../../../tandem/js/types/StringIO.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
-import Material from '../model/Material.js';
+import Material, { MaterialName } from '../model/Material.js';
 import PrecisionSliderThumb from './PrecisionSliderThumb.js';
 
 // constants
@@ -56,11 +55,6 @@ type SelfOptions = {
 
 export type MaterialMassVolumeControlNodeOptions = SelfOptions & VBoxOptions;
 
-type MaterialEnumValue = { name: 'CUSTOM' | keyof Material };
-type MaterialEnum = Record<string, MaterialEnumValue>;
-
-const enumerationCache = new Map<string, MaterialEnum>();
-
 export default class MaterialMassVolumeControlNode extends VBox {
 
   public constructor( materialProperty: Property<Material>, massProperty: ReadOnlyProperty<number>, volumeProperty: Property<number>, materials: Material[], setVolume: ( volume: number ) => void, listParent: Node, providedOptions?: MaterialMassVolumeControlNodeOptions ) {
@@ -89,21 +83,15 @@ export default class MaterialMassVolumeControlNode extends VBox {
       align: 'left'
     } );
 
-    const keys = [ ...materials.map( material => material.identifier! ), 'CUSTOM' ];
-    const keyJoin = keys.join( '|' );
-
-    if ( !enumerationCache.has( keyJoin ) ) {
-      enumerationCache.set( keyJoin, EnumerationDeprecated.byKeys( keys ) as unknown as MaterialEnum );
-    }
-    const MaterialEnumeration: MaterialEnum = enumerationCache.get( keyJoin )!;
+    const materialNames: MaterialName[] = [ ...materials.map( material => material.identifier! ), 'CUSTOM' ];
 
     const comboBoxMaterialProperty = new DynamicProperty( new Property( materialProperty ), {
       bidirectional: true,
       map: ( material: Material ) => {
-        return material.custom ? MaterialEnumeration.CUSTOM : MaterialEnumeration[ material.identifier! ];
+        return material.custom ? 'CUSTOM' : material.identifier!;
       },
-      inverseMap: ( materialEnum: MaterialEnumValue ): Material => {
-        if ( materialEnum === MaterialEnumeration.CUSTOM ) {
+      inverseMap: ( materialName: MaterialName ): Material => {
+        if ( materialName === 'CUSTOM' ) {
           // Handle our minimum volume if we're switched to custom (if needed)
           const volume = Math.max( volumeProperty.value, options.minCustomVolumeLiters / LITERS_IN_CUBIC_METER );
           return Material.createCustomSolidMaterial( {
@@ -111,16 +99,15 @@ export default class MaterialMassVolumeControlNode extends VBox {
           } );
         }
         else {
-          return Material[ materialEnum.name as unknown as keyof ( typeof Material ) ] as Material;
+          return Material[ materialName ] as Material;
         }
       },
       reentrant: true,
       phetioState: false,
       tandem: options.tandem.createTandem( 'comboBoxMaterialProperty' ),
       phetioDocumentation: 'Current material of the block. Changing the material will result in changes to the mass, but the volume will remain the same.',
-      validValues: MaterialEnumeration.VALUES as unknown as MaterialEnumValue[],
-      // @ts-expect-error
-      phetioValueType: EnumerationIO( MaterialEnumeration )
+      validValues: materialNames,
+      phetioValueType: StringIO
     } );
 
     // We need to use "locks" since our behavior is different based on whether the model or user is changing the value
@@ -258,7 +245,7 @@ export default class MaterialMassVolumeControlNode extends VBox {
     const comboBox = new ComboBox( comboBoxMaterialProperty, [
       ...materials.map( material => {
         return {
-          value: MaterialEnumeration[ material.identifier! ],
+          value: material.identifier!,
           createNode: () => new Text( material.nameProperty, {
             font: DensityBuoyancyCommonConstants.COMBO_BOX_ITEM_FONT,
             maxWidth: comboMaxWidth
@@ -267,7 +254,7 @@ export default class MaterialMassVolumeControlNode extends VBox {
         };
       } ),
       {
-        value: MaterialEnumeration.CUSTOM,
+        value: 'CUSTOM',
         createNode: () => new Text( DensityBuoyancyCommonStrings.material.customStringProperty, {
           font: DensityBuoyancyCommonConstants.COMBO_BOX_ITEM_FONT,
           maxWidth: comboMaxWidth

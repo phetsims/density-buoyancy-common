@@ -43,11 +43,13 @@ type MaterialState = {
   liquidColor: null | ColorState;
 };
 
+export type MaterialName = keyof ( typeof Material ) | 'CUSTOM';
+
 export type MaterialOptions = {
   nameProperty?: TReadOnlyProperty<string>;
 
   // If set, this material will be available at Material[ identifier ] as a global
-  identifier?: string | null;
+  identifier?: MaterialName | null;
 
   // Used for tandems
   tandemName?: string | null;
@@ -73,7 +75,7 @@ export type MaterialOptions = {
 export default class Material {
 
   public readonly nameProperty: TReadOnlyProperty<string>;
-  public readonly identifier: string | null;
+  public readonly identifier: MaterialName | null;
   public readonly tandemName: string | null;
   public readonly density: number;
   public readonly viscosity: number;

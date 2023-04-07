@@ -154,11 +154,6 @@ export default class DensityBuoyancyModel implements TModel {
       -0.875, -4, POOL_BACK_Z,
       0.875, 4, GROUND_FRONT_Z
     ), {
-      valueType: Bounds3,
-      phetioValueType: Bounds3.Bounds3IO,
-      tandem: tandem.createTandem( 'invisibleBarrierBoundsProperty' ),
-      phetioReadOnly: true,
-      phetioDocumentation: 'We keep masses within these bounds, generally to stay in-screen',
       valueComparisonStrategy: 'equalsFunction'
     } );
 

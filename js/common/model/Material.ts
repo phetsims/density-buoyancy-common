@@ -30,7 +30,7 @@ import ReadOnlyProperty from '../../../../axon/js/ReadOnlyProperty.js';
 const NullableColorPropertyReferenceType = NullableIO( ReferenceIO( Property.PropertyIO( Color.ColorIO ) ) );
 
 type MaterialState = {
-  identifier: null | string;
+  identifier: null | keyof typeof Material;
   name: ReferenceIOState;
   tandemName: string | null;
   density: number;
@@ -524,7 +524,7 @@ export default class Material {
     },
     fromStateObject( obj: MaterialState ): Material {
       if ( obj.identifier ) {
-        const material = Material[ obj.identifier as keyof typeof Material ];
+        const material = Material[ obj.identifier ];
         assert && assert( material, `Unknown material: ${obj.identifier}` );
         return material as Material;
       }

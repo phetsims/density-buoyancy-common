@@ -57,9 +57,11 @@ export default class DensityReadoutNode extends Node {
       const x = mvt( material.density );
       const label = new Text( material.nameProperty, {
         font: new PhetFont( 12 ),
-        centerX: x,
-        centerY: HEIGHT / 2,
         maxWidth: materialsMaxWidths[ index ]
+      } );
+      ManualConstraint.create( this, [ label ], labelProxy => {
+        labelProxy.centerX = x;
+        labelProxy.centerY = HEIGHT / 2;
       } );
       this.addChild( label );
       this.addChild( new Line( x, 0, x, label.top - LINE_PADDING, lineOptions ) );

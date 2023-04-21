@@ -119,6 +119,8 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
   public constructor( model: Model, providedOptions: SelfOptions ) {
 
     const scaleIncrease = 3.5;
+
+    // @ts-expect-error - chip away for https://github.com/phetsims/center-and-variability/issues/142
     const options = optionize<DensityBuoyancyScreenViewOptions, SelfOptions, ScreenView>()( {
       cameraLookAt: DensityBuoyancyCommonConstants.BUOYANCY_CAMERA_LOOK_AT,
       cameraPosition: new Vector3( 0, 0.2, 2 ).timesScalar( scaleIncrease ),

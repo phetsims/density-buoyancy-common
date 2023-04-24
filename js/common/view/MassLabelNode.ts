@@ -55,7 +55,9 @@ export default class MassLabelNode extends Node {
   private readonly readoutStringProperty: TReadOnlyProperty<string>;
 
   public constructor( mass: Mass, showMassesProperty: TReadOnlyProperty<boolean> ) {
-    super();
+    super( {
+      pickable: false
+    } );
 
     this.readoutStringProperty = new PatternStringProperty( DensityBuoyancyCommonStrings.kilogramsPatternStringProperty, {
       kilograms: mass.massProperty

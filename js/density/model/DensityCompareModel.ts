@@ -25,6 +25,7 @@ import Material from '../../common/model/Material.js';
 import DensityBuoyancyCommonColors from '../../common/view/DensityBuoyancyCommonColors.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyModel from '../../common/model/DensityBuoyancyModel.js';
+import { MassTag } from '../../common/model/Mass.js';
 
 export class BlockSet extends EnumerationValue {
   public static readonly SAME_MASS = new BlockSet();
@@ -136,28 +137,28 @@ export default class DensityCompareModel extends BlockSetModel<BlockSet> {
               sameMassYellowMaterialProperty.value,
               Vector2.ZERO,
               5,
-              combineOptions<CubeOptions>( {}, commonCubeOptions, { tandem: sameMassTandem.createTandem( 'yellowBlock' ) } )
+              combineOptions<CubeOptions>( {}, commonCubeOptions, { tag: MassTag.B, tandem: sameMassTandem.createTandem( 'yellowBlock' ) } )
             );
             const sameMassBlueMass = Cube.createWithMass(
               model.engine,
               sameMassBlueMaterialProperty.value,
               Vector2.ZERO,
               5,
-              combineOptions<CubeOptions>( {}, commonCubeOptions, { tandem: sameMassTandem.createTandem( 'blueBlock' ) } )
+              combineOptions<CubeOptions>( {}, commonCubeOptions, { tag: MassTag.A, tandem: sameMassTandem.createTandem( 'blueBlock' ) } )
             );
             const sameMassGreenMass = Cube.createWithMass(
               model.engine,
               sameMassGreenMaterialProperty.value,
               Vector2.ZERO,
               5,
-              combineOptions<CubeOptions>( {}, commonCubeOptions, { tandem: sameMassTandem.createTandem( 'greenBlock' ) } )
+              combineOptions<CubeOptions>( {}, commonCubeOptions, { tag: MassTag.C, tandem: sameMassTandem.createTandem( 'greenBlock' ) } )
             );
             const sameMassRedMass = Cube.createWithMass(
               model.engine,
               sameMassRedMaterialProperty.value,
               Vector2.ZERO,
               5,
-              combineOptions<CubeOptions>( {}, commonCubeOptions, { tandem: sameMassTandem.createTandem( 'redBlock' ) } )
+              combineOptions<CubeOptions>( {}, commonCubeOptions, { tag: MassTag.D, tandem: sameMassTandem.createTandem( 'redBlock' ) } )
             );
 
             sameMassYellowMaterialProperty.link( material => { sameMassYellowMass.materialProperty.value = material; } );
@@ -192,28 +193,28 @@ export default class DensityCompareModel extends BlockSetModel<BlockSet> {
               sameVolumeYellowMaterialProperty.value,
               Vector2.ZERO,
               massValues.yellow,
-              combineOptions<CubeOptions>( {}, commonCubeOptions, { tandem: sameVolumeTandem.createTandem( 'yellowBlock' ) } )
+              combineOptions<CubeOptions>( {}, commonCubeOptions, { tag: MassTag.A, tandem: sameVolumeTandem.createTandem( 'yellowBlock' ) } )
             );
             const sameVolumeBlueMass = Cube.createWithMass(
               model.engine,
               sameVolumeBlueMaterialProperty.value,
               Vector2.ZERO,
               massValues.blue,
-              combineOptions<CubeOptions>( {}, commonCubeOptions, { tandem: sameVolumeTandem.createTandem( 'blueBlock' ) } )
+              combineOptions<CubeOptions>( {}, commonCubeOptions, { tag: MassTag.C, tandem: sameVolumeTandem.createTandem( 'blueBlock' ) } )
             );
             const sameVolumeGreenMass = Cube.createWithMass(
               model.engine,
               sameVolumeGreenMaterialProperty.value,
               Vector2.ZERO,
               massValues.green,
-              combineOptions<CubeOptions>( {}, commonCubeOptions, { tandem: sameVolumeTandem.createTandem( 'greenBlock' ) } )
+              combineOptions<CubeOptions>( {}, commonCubeOptions, { tag: MassTag.D, tandem: sameVolumeTandem.createTandem( 'greenBlock' ) } )
             );
             const sameVolumeRedMass = Cube.createWithMass(
               model.engine,
               sameVolumeRedMaterialProperty.value,
               Vector2.ZERO,
               massValues.red,
-              combineOptions<CubeOptions>( {}, commonCubeOptions, { tandem: sameVolumeTandem.createTandem( 'redBlock' ) } )
+              combineOptions<CubeOptions>( {}, commonCubeOptions, { tag: MassTag.B, tandem: sameVolumeTandem.createTandem( 'redBlock' ) } )
             );
 
             sameVolumeYellowMaterialProperty.link( material => { sameVolumeYellowMass.materialProperty.value = material; } );
@@ -245,28 +246,28 @@ export default class DensityCompareModel extends BlockSetModel<BlockSet> {
               sameDensityYellowMaterialProperty.value,
               Vector2.ZERO,
               3,
-              combineOptions<CubeOptions>( {}, commonCubeOptions, { tandem: sameDensityTandem.createTandem( 'yellowBlock' ) } )
+              combineOptions<CubeOptions>( {}, commonCubeOptions, { tag: MassTag.B, tandem: sameDensityTandem.createTandem( 'yellowBlock' ) } )
             );
             const sameDensityBlueMass = Cube.createWithMass(
               model.engine,
               sameDensityBlueMaterialProperty.value,
               Vector2.ZERO,
               2,
-              combineOptions<CubeOptions>( {}, commonCubeOptions, { tandem: sameDensityTandem.createTandem( 'blueBlock' ) } )
+              combineOptions<CubeOptions>( {}, commonCubeOptions, { tag: MassTag.A, tandem: sameDensityTandem.createTandem( 'blueBlock' ) } )
             );
             const sameDensityGreenMass = Cube.createWithMass(
               model.engine,
               sameDensityGreenMaterialProperty.value,
               Vector2.ZERO,
               1,
-              combineOptions<CubeOptions>( {}, commonCubeOptions, { tandem: sameDensityTandem.createTandem( 'greenBlock' ) } )
+              combineOptions<CubeOptions>( {}, commonCubeOptions, { tag: MassTag.C, tandem: sameDensityTandem.createTandem( 'greenBlock' ) } )
             );
             const sameDensityRedMass = Cube.createWithMass(
               model.engine,
               sameDensityRedMaterialProperty.value,
               Vector2.ZERO,
               0.5,
-              combineOptions<CubeOptions>( {}, commonCubeOptions, { tandem: sameDensityTandem.createTandem( 'redBlock' ) } )
+              combineOptions<CubeOptions>( {}, commonCubeOptions, { tag: MassTag.D, tandem: sameDensityTandem.createTandem( 'redBlock' ) } )
             );
 
             sameDensityYellowMaterialProperty.link( material => { sameDensityYellowMass.materialProperty.value = material; } );

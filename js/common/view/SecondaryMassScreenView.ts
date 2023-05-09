@@ -42,12 +42,13 @@ export default abstract class SecondaryMassScreenView<Model extends DensityBuoya
    * Positions the second-mass control.
    */
   private positionSecondMassControl(): void {
-    this.blocksRadioButtonGroup!.bottom = this.modelToViewPoint( new Vector3(
-      0,
+    const bottomRightPoolPoint = this.modelToViewPoint( new Vector3(
+      this.model.poolBounds.maxX,
       this.model.poolBounds.minY,
       this.model.poolBounds.maxZ
-    ) ).y;
-    this.blocksRadioButtonGroup!.left = this.rightBox.left;
+    ) );
+    this.blocksRadioButtonGroup!.bottom = bottomRightPoolPoint.y;
+    this.blocksRadioButtonGroup!.left = bottomRightPoolPoint.x + 10;
   }
 
   public override layout( viewBounds: Bounds2 ): void {

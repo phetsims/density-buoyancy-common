@@ -34,7 +34,7 @@ export default class DensityBuoyancyCommonPreferencesNode extends VBox {
     }, providedOptions );
 
     const beakerUnitsControl = new VolumeUnitsControl( DensityBuoyancyCommonPreferences.volumeUnitsProperty, {
-      tandem: options.tandem.createTandem( 'beakerUnitsControl' )
+      tandem: options.tandem.createTandem( 'volumeUnitsControl' )
     } );
 
     options.children = [

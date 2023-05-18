@@ -37,7 +37,7 @@ const DensityBuoyancyCommonColors = {
     default: new Color( 107, 165, 75 ).colorUtilsDarker( 0.7 )
   } ),
   poolSurfaceProperty: new ProfileColorProperty( densityBuoyancyCommon, 'poolSurface', {
-    default: new Color( 170, 170, 170 )
+    default: new Color( 183, 159, 159 )
   } ),
 
   waterIndicatorHighlightProperty: new ProfileColorProperty( densityBuoyancyCommon, 'waterIndicatorHighlight', {

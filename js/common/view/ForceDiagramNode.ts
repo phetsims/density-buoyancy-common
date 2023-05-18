@@ -116,7 +116,10 @@ export default class ForceDiagramNode extends Node {
     } );
 
     const newtonsPatternProperty = DensityBuoyancyCommonStrings.newtonsPatternStringProperty;
-    newtonsPatternProperty.lazyLink( this.update.bind( this ) );
+
+    const stringListener = this.update.bind( this );
+    newtonsPatternProperty.lazyLink( stringListener );
+    this.disposeEmitter.addListener( () => newtonsPatternProperty.unlink( stringListener ) );
   }
 
   /**

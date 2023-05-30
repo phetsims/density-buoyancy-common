@@ -158,7 +158,8 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
       parentMatrixProperty: animatedPanZoomSingleton.listener!.matrixProperty,
       cameraPosition: options.cameraPosition,
       getPhetioMouseHit: point => {
-        return this.getMassUnderPoint( this.localToGlobalPoint( point ), false );
+        const mass = this.getMassUnderPoint( this.localToGlobalPoint( point ), false );
+        return mass ? mass.getPhetioMouseHitTarget() : mass;
       }
     } );
     this.addChild( this.sceneNode );

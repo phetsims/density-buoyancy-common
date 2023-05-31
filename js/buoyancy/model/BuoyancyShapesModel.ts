@@ -28,6 +28,7 @@ import VerticalCylinder from '../../common/model/VerticalCylinder.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import { MassShape } from '../../common/model/MassShape.js';
 import TProperty from '../../../../axon/js/TProperty.js';
+import isSettingPhetioStateProperty from '../../../../tandem/js/isSettingPhetioStateProperty.js';
 
 const MATERIAL = Material.WOOD;
 export type BuoyancyShapesModelOptions = DensityBuoyancyModelOptions;
@@ -161,7 +162,7 @@ export default class BuoyancyShapesModel extends DensityBuoyancyModel {
     // Property doesn't need disposal, since everything here lives for the lifetime of the simulation
     this.primaryMassProperty = new Property( primaryMassCapsule.getElement( this.primaryShapeProperty.value ) );
     this.primaryShapeProperty.lazyLink( ( massShape: MassShape ) => {
-      if ( primaryMassCapsule.hasElement() && !phet.joist.sim.isSettingPhetioStateProperty.value ) {
+      if ( primaryMassCapsule.hasElement() && !isSettingPhetioStateProperty.value ) {
         primaryMassCapsule.disposeElement();
       }
       this.primaryMassProperty.value = primaryMassCapsule.getElement( massShape );
@@ -173,7 +174,7 @@ export default class BuoyancyShapesModel extends DensityBuoyancyModel {
     // Property doesn't need disposal, since everything here lives for the lifetime of the simulation
     this.secondaryMassProperty = new Property( secondaryMassCapsule.getElement( this.secondaryShapeProperty.value ) );
     this.secondaryShapeProperty.lazyLink( ( massShape: MassShape ) => {
-      if ( secondaryMassCapsule.hasElement() && !phet.joist.sim.isSettingPhetioStateProperty.value ) {
+      if ( secondaryMassCapsule.hasElement() && !isSettingPhetioStateProperty.value ) {
         secondaryMassCapsule.disposeElement();
       }
       this.secondaryMassProperty.value = secondaryMassCapsule.getElement( massShape );
@@ -193,7 +194,7 @@ export default class BuoyancyShapesModel extends DensityBuoyancyModel {
     [ this.primaryMassProperty, this.secondaryMassProperty ].forEach( massProperty => {
       // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
       massProperty.lazyLink( ( newMass, oldMass ) => {
-        if ( !phet.joist.sim.isSettingPhetioStateProperty.value ) {
+        if ( !isSettingPhetioStateProperty.value ) {
           newMass.matrix.set( oldMass.matrix );
         }
         newMass.writeData();

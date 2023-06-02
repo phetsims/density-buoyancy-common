@@ -18,6 +18,7 @@ import Material from '../../common/model/Material.js';
 import DensityBuoyancyCommonColors from '../../common/view/DensityBuoyancyCommonColors.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import PatternStringProperty from '../../../../axon/js/PatternStringProperty.js';
+import Tandem from '../../../../tandem/js/Tandem.js';
 
 // constants
 const materials = [
@@ -101,6 +102,7 @@ export default class DensityReadoutNode extends Node {
       maps: {
         value: ( density: number ) => density / 1000
       },
+      tandem: Tandem.OPT_OUT,
       decimalPlaces: 2
     } );
 

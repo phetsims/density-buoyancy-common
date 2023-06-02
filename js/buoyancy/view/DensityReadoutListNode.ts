@@ -16,6 +16,7 @@ import Material from '../../common/model/Material.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import DensityBuoyancyCommonPreferences from '../../common/model/DensityBuoyancyCommonPreferences.js';
+import Tandem from '../../../../tandem/js/Tandem.js';
 
 export default class DensityReadoutListNode extends VBox {
   public constructor( materialProperties: TReadOnlyProperty<Material>[] ) {
@@ -37,6 +38,7 @@ export default class DensityReadoutListNode extends VBox {
         material: new DynamicProperty<string, string, Material>( materialProperty, { derive: material => material.nameProperty } ),
         density: new DerivedProperty( [ materialProperty ], material => material.density / 1000 )
       }, {
+        tandem: Tandem.OPT_OUT,
         decimalPlaces: 2
       } ), { font: new PhetFont( 14 ), maxWidth: 200 } );
     } );

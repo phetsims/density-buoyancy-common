@@ -15,6 +15,7 @@ import Panel from '../../../../sun/js/Panel.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
 import DensityBuoyancyCommonColors from './DensityBuoyancyCommonColors.js';
+import Tandem from '../../../../tandem/js/Tandem.js';
 
 export default class WaterLevelIndicator extends Node {
   public constructor( volumeProperty: TReadOnlyProperty<number> ) {
@@ -33,6 +34,7 @@ export default class WaterLevelIndicator extends Node {
       maps: {
         value: ( volume: number ) => 1000 * volume
       },
+      tandem: Tandem.OPT_OUT,
       decimalPlaces: 2
     } ), {
       font: new PhetFont( { size: 18 } ),

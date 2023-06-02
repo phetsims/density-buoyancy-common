@@ -18,6 +18,7 @@ import SunConstants from '../../../../sun/js/SunConstants.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import TRangedProperty from '../../../../axon/js/TRangedProperty.js';
+import Tandem from '../../../../tandem/js/Tandem.js';
 
 export type ComparisonNumberControlOptions = NumberControlOptions;
 
@@ -48,7 +49,7 @@ export default class ComparisonNumberControl extends NumberControl {
         // Backward compatibility
         valuePattern: new PatternStringProperty( valuePatternStringProperty, {
           [ valueName ]: SunConstants.VALUE_NAMED_PLACEHOLDER
-        } ),
+        }, { tandem: Tandem.OPT_OUT } ),
         maxWidth: 100,
         decimalPlaces: 2,
         useRichText: true,

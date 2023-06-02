@@ -17,14 +17,15 @@ import DensityBuoyancyCommonColors from './view/DensityBuoyancyCommonColors.js';
 import DerivedProperty from '../../../axon/js/DerivedProperty.js';
 import DensityBuoyancyCommonPreferences from './model/DensityBuoyancyCommonPreferences.js';
 import { VolumeUnits } from './DensityBuoyancyCommonQueryParameters.js';
+import Tandem from '../../../tandem/js/Tandem.js';
 
 const CORNER_RADIUS = 5;
 const litersPatternStringProperty = new PatternStringProperty( DensityBuoyancyCommonStrings.litersPatternStringProperty, {
   liters: '{{value}}'
-} );
+}, { tandem: Tandem.OPT_OUT } );
 const decimetersCubedPatternStringProperty = new PatternStringProperty( DensityBuoyancyCommonStrings.decimetersCubedPatternStringProperty, {
   decimetersCubed: '{{value}}'
-} );
+}, { tandem: Tandem.OPT_OUT } );
 
 const DensityBuoyancyCommonConstants = {
   // (read-only) {number} - Used for margins from the offset of screens or between panels/boxes
@@ -106,7 +107,7 @@ const DensityBuoyancyCommonConstants = {
   } ),
   KILOGRAMS_PATTERN_STRING_PROPERTY: new PatternStringProperty( DensityBuoyancyCommonStrings.kilogramsPatternStringProperty, {
     kilograms: '{{value}}'
-  } )
+  }, { tandem: Tandem.OPT_OUT } )
 };
 
 densityBuoyancyCommon.register( 'DensityBuoyancyCommonConstants', DensityBuoyancyCommonConstants );

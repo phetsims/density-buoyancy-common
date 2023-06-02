@@ -20,6 +20,7 @@ import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js
 import Mass from '../model/Mass.js';
 import DensityBuoyancyCommonColors from './DensityBuoyancyCommonColors.js';
 import LabelTexture from './LabelTexture.js';
+import Tandem from '../../../../tandem/js/Tandem.js';
 
 // constants
 const MASS_LABEL_SIZE = 32;
@@ -62,6 +63,7 @@ export default class MassLabelNode extends Node {
     this.readoutStringProperty = new PatternStringProperty( DensityBuoyancyCommonStrings.kilogramsPatternStringProperty, {
       kilograms: mass.massProperty
     }, {
+      tandem: Tandem.OPT_OUT,
       decimalPlaces: 2
     } );
 

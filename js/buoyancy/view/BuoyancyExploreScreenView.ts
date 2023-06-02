@@ -27,6 +27,7 @@ import SecondaryMassScreenView from '../../common/view/SecondaryMassScreenView.j
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import BuoyancyExploreModel from '../model/BuoyancyExploreModel.js';
+import Tandem from '../../../../tandem/js/Tandem.js';
 
 // constants
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
@@ -48,6 +49,7 @@ export default class BuoyancyExploreScreenView extends SecondaryMassScreenView<B
     const getMaterialReadoutStringProperty = ( materialProperty: TReadOnlyProperty<Material> ) => new PatternStringProperty( DensityBuoyancyCommonConstants.KILOGRAMS_PER_VOLUME_PATTERN_STRING_PROPERTY, {
       value: materialProperty
     }, {
+      tandem: Tandem.OPT_OUT,
       maps: {
         value: material => material.density / 1000
       },

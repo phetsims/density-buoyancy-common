@@ -123,7 +123,7 @@ export default class ComboNumberControl<T> extends VBox {
           },
           valuePattern: new PatternStringProperty( providedConfig.valuePatternProperty, {
             value: SunConstants.VALUE_NAMED_PLACEHOLDER
-          } ),
+          }, { tandem: Tandem.OPT_OUT } ),
           maxWidth: 100,
           decimalPlaces: 2,
           useRichText: true,

@@ -23,8 +23,6 @@ export type DensityBuoyancyCommonPreferencesNodeOptions = SelfOptions & PickRequ
 
 export default class DensityBuoyancyCommonPreferencesNode extends VBox {
 
-  private readonly disposeDensityBuoyancyCommonPreferencesNode: () => void;
-
   public constructor( providedOptions: DensityBuoyancyCommonPreferencesNodeOptions ) {
 
     const options = optionize<DensityBuoyancyCommonPreferencesNodeOptions, SelfOptions, VBoxOptions>()( {
@@ -42,15 +40,6 @@ export default class DensityBuoyancyCommonPreferencesNode extends VBox {
     ];
 
     super( options );
-
-    this.disposeDensityBuoyancyCommonPreferencesNode = () => {
-      beakerUnitsControl.dispose();
-    };
-  }
-
-  public override dispose(): void {
-    this.disposeDensityBuoyancyCommonPreferencesNode();
-    super.dispose();
   }
 }
 

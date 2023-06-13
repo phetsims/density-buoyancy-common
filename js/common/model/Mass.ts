@@ -20,7 +20,7 @@ import Vector2Property from '../../../../dot/js/Vector2Property.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
 import { Shape } from '../../../../kite/js/imports.js';
 import EnumerationIO from '../../../../tandem/js/types/EnumerationIO.js';
-import optionize, { combineOptions } from '../../../../phet-core/js/optionize.js';
+import optionize, { combineOptions, EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
 import { Color, ColorProperty } from '../../../../scenery/js/imports.js';
 import PhetioObject, { PhetioObjectOptions } from '../../../../tandem/js/PhetioObject.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
@@ -122,11 +122,11 @@ type GuardedNumberPropertyOptions = NumberPropertyOptions & { getPhetioSpecificV
 class GuardedNumberProperty extends NumberProperty {
   public readonly getPhetioSpecificValidationError: ( number: number ) => string | null;
 
-  public constructor( value: number, options: GuardedNumberPropertyOptions ) {
-    super( value, {
-      phetioOuterType: () => GuardedNumberPropertyIO,
-      ...options
-    } );
+  public constructor( value: number, providedOptions: GuardedNumberPropertyOptions ) {
+    const options = optionize<GuardedNumberPropertyOptions, EmptySelfOptions, NumberPropertyOptions>()( {
+      phetioOuterType: () => GuardedNumberPropertyIO
+    }, providedOptions );
+    super( value, options );
 
     this.getPhetioSpecificValidationError = options.getPhetioSpecificValidationError;
   }

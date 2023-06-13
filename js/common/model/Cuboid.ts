@@ -236,10 +236,9 @@ export default class Cuboid extends Mass {
 
     toStateObject: ( cuboid: Cuboid ): CuboidIOStateObject => {
       const parentStateObject = Mass.MassIO.toStateObject( cuboid );
-      return {
-        ...parentStateObject,
+      return _.merge<CubiodSelfState, MassIOStateObject>( {
         size: Bounds3.Bounds3IO.toStateObject( cuboid.sizeProperty.value )
-      };
+      }, parentStateObject );
     },
     applyState: ( cuboid: Cuboid, stateObject: CuboidIOStateObject ) => {
 
@@ -250,7 +249,7 @@ export default class Cuboid extends Mass {
   } );
 }
 
-export type CuboidIOStateObject = MassIOStateObject & {
+type CubiodSelfState = {
   size: {
     minX: number;
     minY: number;
@@ -260,5 +259,6 @@ export type CuboidIOStateObject = MassIOStateObject & {
     maxZ: number;
   };
 };
+export type CuboidIOStateObject = MassIOStateObject & CubiodSelfState;
 
 densityBuoyancyCommon.register( 'Cuboid', Cuboid );

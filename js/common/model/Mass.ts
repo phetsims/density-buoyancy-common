@@ -536,7 +536,7 @@ export default abstract class Mass extends PhetioObject {
     this.nameProperty = blockStringMap[ config.tag.name ] || new TinyProperty( '' );
     if ( blockStringMap[ config.tag.name ] ) {
       this.addLinkedElement( this.nameProperty as ReadOnlyProperty<string>, {
-        tandem: config.tandem.createTandem( 'nameProperty' )
+        tandemName: 'nameProperty'
       } );
     }
 

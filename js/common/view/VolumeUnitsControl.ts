@@ -45,9 +45,7 @@ export default class VolumeUnitsControl extends HBox {
 
     super( options );
 
-    this.addLinkedElement( beakerUnitsProperty, {
-      tandem: options.tandem.createTandem( beakerUnitsProperty.tandem.name )
-    } );
+    this.addLinkedElement( beakerUnitsProperty );
 
     this.disposeVolumeUnitsControl = (): void => {
       labelText.dispose();

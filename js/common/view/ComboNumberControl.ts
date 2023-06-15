@@ -238,12 +238,11 @@ export default class ComboNumberControl<T> extends VBox {
       }
     } );
 
-    const numberControlTandem = config.tandem.createTandem( 'numberControl' );
     this.numberControl = new NumberControl( config.titleProperty, this.numberProperty, config.range, combineOptions<NumberControlOptions>( {
-      tandem: numberControlTandem
+      tandem: config.tandem.createTandem( 'numberControl' )
     }, config.numberControlOptions ) );
     this.numberControl.addLinkedElement( this.property, {
-      tandem: numberControlTandem.createTandem( 'valueProperty' )
+      tandemName: 'valueProperty'
     } );
 
     this.comboBox = new ComboBox( this.comboProperty, config.comboItems, config.listParent, config.comboBoxOptions );

@@ -173,7 +173,6 @@ type SelfOptions = {
   canMove?: boolean;
   adjustableMaterial?: boolean;
   tag?: MassTag;
-  tandem?: Tandem;
   phetioType?: IOType;
   inputEnabledPropertyOptions?: BooleanPropertyOptions;
   materialPropertyOptions?: PropertyOptions<Material>;
@@ -298,7 +297,6 @@ export default abstract class Mass extends PhetioObject {
       canMove: true,
       adjustableMaterial: false,
       tag: MassTag.NONE,
-      tandem: Tandem.OPTIONAL,
       phetioType: Mass.MassIO,
       inputEnabledPropertyOptions: {},
       materialPropertyOptions: {},
@@ -327,12 +325,12 @@ export default abstract class Mass extends PhetioObject {
     } );
 
     this.userControlledProperty = new BooleanProperty( false, {
-      tandem: tandem.createTandem( 'userControlledProperty' ),
+      tandem: tandem?.createTandem( 'userControlledProperty' ),
       phetioReadOnly: true
     } );
 
     this.inputEnabledProperty = new BooleanProperty( true, combineOptions<BooleanPropertyOptions>( {
-      tandem: tandem.createTandem( 'inputEnabledProperty' ),
+      tandem: tandem?.createTandem( 'inputEnabledProperty' ),
       phetioDocumentation: 'Sets whether the element will have input enabled, and hence be interactive'
     }, config.inputEnabledPropertyOptions ) );
 
@@ -341,7 +339,7 @@ export default abstract class Mass extends PhetioObject {
     } );
 
     this.studioVisibleProperty = new BooleanProperty( true, {
-      tandem: tandem.createTandem( 'visibleProperty' )
+      tandem: tandem?.createTandem( 'visibleProperty' )
     } );
 
     this.visibleProperty = DerivedProperty.and( [ this.internalVisibleProperty, this.studioVisibleProperty ], {
@@ -351,23 +349,23 @@ export default abstract class Mass extends PhetioObject {
     this.materialProperty = new Property( config.material, combineOptions<PropertyOptions<Material>>( {
       valueType: Material,
       reentrant: true,
-      tandem: tandem.createTandem( 'materialProperty' ),
+      tandem: tandem?.createTandem( 'materialProperty' ),
       phetioValueType: Material.MaterialIO
     }, config.materialPropertyOptions ) );
 
     if ( config.adjustableMaterial ) {
       this.materialEnumProperty = new EnumerationProperty( materialToEnum( config.material ), {
-        tandem: tandem.createTandem( 'materialEnumProperty' ),
+        tandem: tandem?.createTandem( 'materialEnumProperty' ),
         phetioDocumentation: 'Current material of the block. Changing the material will result in changes to the mass, but the volume will remain the same.'
       } );
       this.customDensityProperty = new NumberProperty( config.material.density, {
-        tandem: tandem.createTandem( 'customDensityProperty' ),
+        tandem: tandem?.createTandem( 'customDensityProperty' ),
         phetioDocumentation: 'Density of the block when the material is set to “CUSTOM”.',
         range: new Range( 150, 23000 ),
         units: 'kg/m^3'
       } );
       this.customColorProperty = new ColorProperty( config.material.customColor ? config.material.customColor.value : Color.WHITE, {
-        tandem: tandem.createTandem( 'customColorProperty' )
+        tandem: tandem?.createTandem( 'customColorProperty' )
       } );
 
       this.materialProperty.addPhetioStateDependencies( [ this.materialEnumProperty, this.customDensityProperty, this.customColorProperty ] );
@@ -426,7 +424,7 @@ export default abstract class Mass extends PhetioObject {
     this.volumeLock = false;
 
     this.volumeProperty = new NumberProperty( config.volume, combineOptions<NumberPropertyOptions>( {
-      tandem: tandem.createTandem( 'volumeProperty' ),
+      tandem: tandem?.createTandem( 'volumeProperty' ),
       range: new Range( config.minVolume, config.maxVolume ),
       phetioReadOnly: true,
       phetioDocumentation: 'Current volume of the block. Changing the volume will result in changes to the mass, but will not change the material or density.',
@@ -442,7 +440,7 @@ export default abstract class Mass extends PhetioObject {
     this.massLock = false;
 
     this.massProperty = new GuardedNumberProperty( this.materialProperty.value.density * this.volumeProperty.value + this.containedMassProperty.value, combineOptions<GuardedNumberPropertyOptions>( {
-      tandem: tandem.createTandem( 'massProperty' ),
+      tandem: tandem?.createTandem( 'massProperty' ),
       phetioReadOnly: true,
       phetioState: false,
       phetioDocumentation: 'Current mass of the block. Changing the mass will result in changes to the volume (Intro and ' +
@@ -479,7 +477,7 @@ export default abstract class Mass extends PhetioObject {
     this.gravityForceInterpolatedProperty = new InterpolatedProperty( Vector2.ZERO, {
       interpolate: InterpolatedProperty.interpolateVector2,
       valueComparisonStrategy: 'equalsFunction',
-      tandem: tandem.createTandem( 'gravityForceInterpolatedProperty' ),
+      tandem: tandem?.createTandem( 'gravityForceInterpolatedProperty' ),
       phetioValueType: Vector2.Vector2IO,
       phetioReadOnly: true,
       units: 'N',
@@ -489,7 +487,7 @@ export default abstract class Mass extends PhetioObject {
     this.buoyancyForceInterpolatedProperty = new InterpolatedProperty( Vector2.ZERO, {
       interpolate: InterpolatedProperty.interpolateVector2,
       valueComparisonStrategy: 'equalsFunction',
-      tandem: tandem.createTandem( 'buoyancyForceInterpolatedProperty' ),
+      tandem: tandem?.createTandem( 'buoyancyForceInterpolatedProperty' ),
       phetioValueType: Vector2.Vector2IO,
       phetioReadOnly: true,
       units: 'N',
@@ -499,7 +497,7 @@ export default abstract class Mass extends PhetioObject {
     this.contactForceInterpolatedProperty = new InterpolatedProperty( Vector2.ZERO, {
       interpolate: InterpolatedProperty.interpolateVector2,
       valueComparisonStrategy: 'equalsFunction',
-      tandem: tandem.createTandem( 'contactForceInterpolatedProperty' ),
+      tandem: tandem?.createTandem( 'contactForceInterpolatedProperty' ),
       phetioValueType: Vector2.Vector2IO,
       phetioReadOnly: true,
       units: 'N',

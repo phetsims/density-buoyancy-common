@@ -65,6 +65,8 @@ import MassView from './MassView.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import Material from '../model/Material.js';
 import TEmitter from '../../../../axon/js/TEmitter.js';
+import PickRequired from '../../../../phet-core/js/types/PickRequired.js';
+import { PhetioObjectOptions } from '../../../../tandem/js/PhetioObject.js';
 
 // constants
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
@@ -75,9 +77,7 @@ type SelfOptions = {
   cameraPosition?: Vector3;
   cameraZoom?: number;
   preventFit?: boolean;
-
-  tandem: Tandem;
-};
+} & PickRequired<PhetioObjectOptions, 'tandem'>;
 
 export type DensityBuoyancyScreenViewOptions = SelfOptions & ScreenViewOptions;
 

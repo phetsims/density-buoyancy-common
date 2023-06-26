@@ -32,6 +32,8 @@ import NumberProperty from '../../../../axon/js/NumberProperty.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import TRangedProperty from '../../../../axon/js/TRangedProperty.js';
 import TModel from '../../../../joist/js/TModel.js';
+import { PhetioObjectOptions } from '../../../../tandem/js/PhetioObject.js';
+import PickRequired from '../../../../phet-core/js/types/PickRequired.js';
 
 // constants
 const BLOCK_SPACING = 0.01;
@@ -46,8 +48,7 @@ export type DensityBuoyancyModelOptions = {
   showMassesDefault?: boolean;
   canShowForces?: boolean;
   initialForceScale?: number;
-  tandem: Tandem;
-};
+} & PickRequired<PhetioObjectOptions, 'tandem'>;
 
 export default class DensityBuoyancyModel implements TModel {
 

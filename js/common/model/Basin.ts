@@ -15,12 +15,12 @@ import NumberIO from '../../../../tandem/js/types/NumberIO.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import InterpolatedProperty from './InterpolatedProperty.js';
 import Mass from './Mass.js';
+import { PhetioObjectOptions } from '../../../../tandem/js/PhetioObject.js';
 
 export type BasinOptions = {
   initialVolume?: number;
   initialY?: number;
-  tandem?: Tandem;
-};
+} & Pick<PhetioObjectOptions, 'tandem'>;
 
 export default abstract class Basin {
 
@@ -41,7 +41,7 @@ export default abstract class Basin {
   public childBasin: Basin | null;
 
   protected constructor( providedOptions?: BasinOptions ) {
-    const options = optionize<BasinOptions, BasinOptions>()( {
+    const options = optionize<BasinOptions>()( {
       initialVolume: 0,
       initialY: 0,
       tandem: Tandem.REQUIRED

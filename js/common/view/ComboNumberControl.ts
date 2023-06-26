@@ -22,6 +22,8 @@ import SunConstants from '../../../../sun/js/SunConstants.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
+import PickRequired from '../../../../phet-core/js/types/PickRequired.js';
+import { PhetioObjectOptions } from '../../../../tandem/js/PhetioObject.js';
 
 type SelfOptions<T> = {
   titleProperty: TReadOnlyProperty<string>;
@@ -52,9 +54,7 @@ type SelfOptions<T> = {
 
   numberControlOptions?: NumberControlOptions;
   comboBoxOptions?: ComboBoxOptions;
-
-  tandem: Tandem;
-};
+} & PickRequired<PhetioObjectOptions, 'tandem'>;
 
 export type ComboNumberControlOptions<T> = SelfOptions<T> & VBoxOptions;
 

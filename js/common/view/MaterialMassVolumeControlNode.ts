@@ -18,13 +18,14 @@ import optionize, { combineOptions } from '../../../../phet-core/js/optionize.js
 import NumberControl, { NumberControlOptions } from '../../../../scenery-phet/js/NumberControl.js';
 import { HBox, Node, Text, TPaint, VBox, VBoxOptions } from '../../../../scenery/js/imports.js';
 import ComboBox from '../../../../sun/js/ComboBox.js';
-import Tandem from '../../../../tandem/js/Tandem.js';
 import StringIO from '../../../../tandem/js/types/StringIO.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
 import Material, { MaterialName } from '../model/Material.js';
 import PrecisionSliderThumb from './PrecisionSliderThumb.js';
+import { PhetioObjectOptions } from '../../../../tandem/js/PhetioObject.js';
+import PickRequired from '../../../../phet-core/js/types/PickRequired.js';
 
 // constants
 const LITERS_IN_CUBIC_METER = 1000;
@@ -48,10 +49,7 @@ type SelfOptions = {
   minCustomVolumeLiters?: number;
 
   color?: TPaint;
-
-  // Require the tandem
-  tandem: Tandem;
-};
+} & PickRequired<PhetioObjectOptions, 'tandem'>;
 
 export type MaterialMassVolumeControlNodeOptions = SelfOptions & VBoxOptions;
 

@@ -145,14 +145,14 @@ export default class BuoyancyShapesModel extends DensityBuoyancyModel {
       }
     };
 
-    const primaryMassCapsule = new PhetioCapsule(
+    const objectACapsule = new PhetioCapsule(
       ( tandem: Tandem, shape: MassShape ) => createMass( tandem, shape, this.primaryWidthRatioProperty.value, this.primaryHeightRatioProperty.value, MassTag.PRIMARY ),
       [ this.primaryShapeProperty.initialValue ], {
         tandem: tandem.createTandem( 'objectACapsule' ),
         phetioType: PhetioCapsule.PhetioCapsuleIO( Mass.MassIO )
       } );
 
-    const secondaryMassCapsule = new PhetioCapsule(
+    const objectBCapsule = new PhetioCapsule(
       ( tandem: Tandem, shape: MassShape ) => createMass( tandem, shape, this.secondaryWidthRatioProperty.value, this.secondaryHeightRatioProperty.value, MassTag.SECONDARY ),
       [ this.secondaryShapeProperty.initialValue ], {
         tandem: tandem.createTandem( 'objectBCapsule' ),
@@ -160,26 +160,26 @@ export default class BuoyancyShapesModel extends DensityBuoyancyModel {
       } );
 
     // Property doesn't need disposal, since everything here lives for the lifetime of the simulation
-    this.primaryMassProperty = new Property( primaryMassCapsule.getElement( this.primaryShapeProperty.value ) );
+    this.primaryMassProperty = new Property( objectACapsule.getElement( this.primaryShapeProperty.value ) );
     this.primaryShapeProperty.lazyLink( ( massShape: MassShape ) => {
-      if ( primaryMassCapsule.hasElement() && !isSettingPhetioStateProperty.value ) {
-        primaryMassCapsule.disposeElement();
+      if ( objectACapsule.hasElement() && !isSettingPhetioStateProperty.value ) {
+        objectACapsule.disposeElement();
       }
-      this.primaryMassProperty.value = primaryMassCapsule.getElement( massShape );
+      this.primaryMassProperty.value = objectACapsule.getElement( massShape );
     } );
-    primaryMassCapsule.elementCreatedEmitter.addListener( element => {
+    objectACapsule.elementCreatedEmitter.addListener( element => {
       this.primaryMassProperty.value = element;
     } );
 
     // Property doesn't need disposal, since everything here lives for the lifetime of the simulation
-    this.secondaryMassProperty = new Property( secondaryMassCapsule.getElement( this.secondaryShapeProperty.value ) );
+    this.secondaryMassProperty = new Property( objectBCapsule.getElement( this.secondaryShapeProperty.value ) );
     this.secondaryShapeProperty.lazyLink( ( massShape: MassShape ) => {
-      if ( secondaryMassCapsule.hasElement() && !isSettingPhetioStateProperty.value ) {
-        secondaryMassCapsule.disposeElement();
+      if ( objectBCapsule.hasElement() && !isSettingPhetioStateProperty.value ) {
+        objectBCapsule.disposeElement();
       }
-      this.secondaryMassProperty.value = secondaryMassCapsule.getElement( massShape );
+      this.secondaryMassProperty.value = objectBCapsule.getElement( massShape );
     } );
-    secondaryMassCapsule.elementCreatedEmitter.addListener( element => {
+    objectBCapsule.elementCreatedEmitter.addListener( element => {
       this.secondaryMassProperty.value = element;
     } );
 

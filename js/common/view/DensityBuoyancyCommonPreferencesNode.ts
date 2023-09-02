@@ -31,12 +31,12 @@ export default class DensityBuoyancyCommonPreferencesNode extends VBox {
       phetioVisiblePropertyInstrumented: false
     }, providedOptions );
 
-    const beakerUnitsControl = new VolumeUnitsControl( DensityBuoyancyCommonPreferences.volumeUnitsProperty, {
+    const volumeUnitsControl = new VolumeUnitsControl( DensityBuoyancyCommonPreferences.volumeUnitsProperty, {
       tandem: options.tandem.createTandem( 'volumeUnitsControl' )
     } );
 
     options.children = [
-      beakerUnitsControl
+      volumeUnitsControl
     ];
 
     super( options );

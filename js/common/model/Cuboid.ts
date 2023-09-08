@@ -226,7 +226,7 @@ export default class Cuboid extends Mass {
     return ( tNear >= tFar ) ? null : ( tNear >= 0 ? tNear : ( isFinite( tFar ) && tFar >= 0 ? tFar : null ) );
   }
 
-  public static CuboidIO = new IOType<Cuboid, CuboidIOStateObject>( 'CuboidIO', {
+  public static CuboidIO = new IOType<Cuboid, CuboidIOStateObject, CubiodSelfState>( 'CuboidIO', {
     valueType: Cuboid,
     supertype: Mass.MassIO,
     documentation: 'Represents an axis-aligned cuboid mass',

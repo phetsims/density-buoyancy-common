@@ -11,7 +11,7 @@ import { Color, ProfileColorProperty } from '../../../../scenery/js/imports.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 
-const tandem = Tandem.GLOBAL_VIEW.createTandem( 'colorProfile' );
+const tandem = Tandem.COLORS;
 
 // Initial colors for each profile, by string key. Only profile currently is default (still helpful for making color
 // tweaks with the top-level files)

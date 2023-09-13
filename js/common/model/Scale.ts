@@ -106,7 +106,7 @@ export default class Scale extends Mass {
       }
     }, providedOptions );
 
-    // TODO: Ask MK about why the parent options seem to be made optional, this cast shouldn't be needed
+    // TODO: Ask MK about why the parent options seem to be made optional, this cast shouldn't be needed https://github.com/phetsims/tasks/issues/1129
     super( engine, config as InstrumentedMassOptions );
 
     this.scaleForceInterpolatedProperty = new InterpolatedProperty( 0, {

@@ -63,13 +63,13 @@ export default class BottleView extends MassView {
       opacity: 0.8,
       transparent: true,
       side: THREE.FrontSide,
-      // depthWrite: false, // TODO: hmmm?
+      // depthWrite: false, // TODO: hmmm? https://github.com/phetsims/tasks/issues/1129
       clippingPlanes: [ bottomClipPlane ]
     } );
     const frontBottom = new THREE.Mesh( primaryGeometry, frontBottomMaterial );
     this.add( frontBottom );
 
-    // TODO: optimize
+    // TODO: optimize https://github.com/phetsims/tasks/issues/1129
     const frontBottomForDepth = new THREE.Mesh( primaryGeometry, new THREE.MeshPhongMaterial( {
       color: 0xFF0000,
       opacity: 0,
@@ -109,12 +109,12 @@ export default class BottleView extends MassView {
       interiorSurfaceGeometry.attributes.position.needsUpdate = true;
       interiorSurfaceGeometry.computeBoundingSphere();
     };
-    // TODO: unlink
+    // TODO: unlink https://github.com/phetsims/tasks/issues/1129
     bottle.interiorVolumeProperty.link( volume => {
       setCrossSectionRelativeY( Bottle.getYFromVolume( volume ) );
     } );
 
-    // TODO: unlink
+    // TODO: unlink https://github.com/phetsims/tasks/issues/1129
     const adjustClipPlanes = () => {
       const modelY = bottle.matrix.translation.y + Bottle.getYFromVolume( bottle.interiorVolumeProperty.value );
 
@@ -160,7 +160,7 @@ export default class BottleView extends MassView {
    * Releases references.
    */
   public override dispose(): void {
-    // TODO: dispose everything from above
+    // TODO: dispose everything from above https://github.com/phetsims/tasks/issues/1129
 
     super.dispose();
   }

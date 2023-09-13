@@ -61,7 +61,7 @@ export default class Boat extends Mass {
 
     assert && assert( !config.canRotate );
 
-    // TODO: Ask MK about why the parent options seem to be made optional, this cast shouldn't be needed
+    // TODO: Ask MK about why the parent options seem to be made optional, this cast shouldn't be needed https://github.com/phetsims/tasks/issues/1129
     super( engine, config as InstrumentedMassOptions );
 
     // Update the shape when the block width or displacement changes
@@ -74,7 +74,7 @@ export default class Boat extends Mass {
       const volume = BoatDesign.ONE_LITER_HULL_VOLUME * displacementVolume * 1000;
 
       engine.updateFromVertices( this.body, vertices, true );
-      this.shapeProperty.value = Shape.polygon( vertices ); // TODO: remove shapeProperty for perf?
+      this.shapeProperty.value = Shape.polygon( vertices ); // TODO: remove shapeProperty for perf? https://github.com/phetsims/tasks/issues/1129
 
       this.volumeLock = true;
       this.volumeProperty.value = volume;
@@ -148,7 +148,7 @@ export default class Boat extends Mass {
    */
   public override intersect( ray: Ray3, isTouch: boolean ): number | null {
     const scale = Math.pow( this.displacementVolumeProperty.value / 0.001, 1 / 3 );
-    // TODO: somewhat borrowed with Bottle, let's combine
+    // TODO: somewhat borrowed with Bottle, let's combine https://github.com/phetsims/tasks/issues/1129
     const translation = this.matrix.translation;
     const adjustedPosition = ray.position.minusXYZ( translation.x, translation.y, 0 ).dividedScalar( scale );
 

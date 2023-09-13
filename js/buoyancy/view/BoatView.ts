@@ -192,7 +192,7 @@ export default class BoatView extends MassView {
    * Releases references.
    */
   public override dispose(): void {
-    // TODO: dispose everything from above
+    // TODO: dispose everything from above https://github.com/phetsims/tasks/issues/1129
 
     this.liquidMultilink.dispose();
 

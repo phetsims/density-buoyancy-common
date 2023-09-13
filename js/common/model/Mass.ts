@@ -658,7 +658,7 @@ export default abstract class Mass extends PhetioObject {
    * if there is no intersection, null will be returned.
    */
   public intersect( ray: Ray3, isTouch: boolean ): number | null {
-    // TODO: should this be abstract
+    // TODO: should this be abstract https://github.com/phetsims/tasks/issues/1129
     return null;
   }
 

@@ -1,4 +1,4 @@
-// Copyright 2020-2022, University of Colorado Boulder
+// Copyright 2020-2023, University of Colorado Boulder
 
 /**
  * The main shape and mathematics for the boat's shape. Due to its variable size in the sim, we normalize it so that

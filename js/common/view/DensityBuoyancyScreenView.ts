@@ -155,7 +155,7 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
     this.addChild( this.backgroundLayer );
 
     this.sceneNode = new ThreeIsometricNode( this.layoutBounds, {
-      parentMatrixProperty: animatedPanZoomSingleton.listener!.matrixProperty,
+      parentMatrixProperty: animatedPanZoomSingleton.listener.matrixProperty,
       cameraPosition: options.cameraPosition,
       getPhetioMouseHit: point => {
         const mass = this.getMassUnderPoint( this.localToGlobalPoint( point ), false );
@@ -202,7 +202,7 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
     // On re-layout or zoom, update the cursor also
     // This instance lives for the lifetime of the simulation, so we don't need to remove these listeners
     this.transformEmitter.addListener( updateCursor );
-    animatedPanZoomSingleton.listener!.matrixProperty.lazyLink( updateCursor );
+    animatedPanZoomSingleton.listener.matrixProperty.lazyLink( updateCursor );
 
     this.startDragAction = new PhetioAction( ( mass: Mass, position: Vector2 ) => {
       mass.startDrag( position );
@@ -772,7 +772,7 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
    */
   public modelToViewPoint( point: Vector3 ): Vector2 {
     // We'll want to transform global coordinates into screen coordinates here
-    return this.parentToLocalPoint( animatedPanZoomSingleton.listener!.matrixProperty.value.inverted().timesVector2( this.sceneNode.projectPoint( point ) ) );
+    return this.parentToLocalPoint( animatedPanZoomSingleton.listener.matrixProperty.value.inverted().timesVector2( this.sceneNode.projectPoint( point ) ) );
   }
 
   /**

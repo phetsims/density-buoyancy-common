@@ -98,7 +98,7 @@ export default class Material {
       liquidColor: null
     }, providedConfig );
 
-    assert && assert( isFinite( config.density ) );
+    assert && assert( isFinite( config.density ), 'density should be finite, but it was: ' + config.density );
 
     this.nameProperty = config.nameProperty;
     this.identifier = config.identifier;

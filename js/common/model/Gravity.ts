@@ -6,18 +6,18 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
-import ReadOnlyProperty from '../../../../axon/js/ReadOnlyProperty.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
-import optionize from '../../../../phet-core/js/optionize.js';
+import optionize, { combineOptions } from '../../../../phet-core/js/optionize.js';
 import BooleanIO from '../../../../tandem/js/types/BooleanIO.js';
 import IOType from '../../../../tandem/js/types/IOType.js';
 import NullableIO from '../../../../tandem/js/types/NullableIO.js';
 import NumberIO from '../../../../tandem/js/types/NumberIO.js';
-import ReferenceIO, { ReferenceIOState } from '../../../../tandem/js/types/ReferenceIO.js';
 import StringIO from '../../../../tandem/js/types/StringIO.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import DensityBuoyancyCommonQueryParameters from '../DensityBuoyancyCommonQueryParameters.js';
+
+const customStringProperty = DensityBuoyancyCommonStrings.gravity.customStringProperty;
 
 export type GravityOptions = {
   nameProperty: TReadOnlyProperty<string>;
@@ -57,7 +57,7 @@ export default class Gravity {
    */
   public static createCustomGravity( value: number ): Gravity {
     return new Gravity( {
-      nameProperty: DensityBuoyancyCommonStrings.gravity.customStringProperty,
+      nameProperty: customStringProperty,
       tandemName: 'custom',
       value: value,
       custom: true
@@ -101,7 +101,6 @@ export default class Gravity {
     documentation: 'Represents a specific value of gravity (m/s^2)',
     toStateObject: function( gravity: Gravity ): GravityState {
       return {
-        name: ReferenceIO( ReadOnlyProperty.PropertyIO( StringIO ) ).toStateObject( gravity.nameProperty ),
         tandemName: gravity.tandemName,
         value: gravity.value,
         custom: gravity.custom,
@@ -109,17 +108,17 @@ export default class Gravity {
       };
     },
     fromStateObject: ( stateObject: GravityState ) => {
-      if ( stateObject.custom ) {
-        stateObject.name = ReferenceIO( ReadOnlyProperty.PropertyIO( StringIO ) ).fromStateObject( stateObject.name );
 
-        return new Gravity( stateObject as unknown as GravityOptions );
+      if ( stateObject.custom ) {
+        return new Gravity( combineOptions<GravityOptions>( {
+          nameProperty: customStringProperty
+        }, stateObject as unknown as GravityOptions ) );
       }
       else {
         return _.find( Gravity.GRAVITIES, gravity => gravity.value === stateObject.value )!;
       }
     },
     stateSchema: {
-      name: ReferenceIO( ReadOnlyProperty.PropertyIO( StringIO ) ),
       tandemName: NullableIO( StringIO ),
       value: NumberIO,
       custom: BooleanIO,
@@ -129,7 +128,6 @@ export default class Gravity {
 }
 
 type GravityState = {
-  name: ReferenceIOState;
   tandemName: string;
   value: number;
   custom: boolean;

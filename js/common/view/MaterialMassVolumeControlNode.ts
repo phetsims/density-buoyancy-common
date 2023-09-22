@@ -202,7 +202,8 @@ export default class MaterialMassVolumeControlNode extends VBox {
       if ( !modelMassChanging && !userVolumeChanging ) {
         userMassChanging = true;
 
-        if ( materialProperty.value.custom ) {
+        // It is possible for the volumeProperty to be 0, so avoid the infinte density case, see https://github.com/phetsims/density-buoyancy-common/issues/78
+        if ( materialProperty.value.custom && volumeProperty.value > 0 ) {
           materialProperty.value = Material.createCustomSolidMaterial( {
             density: mass / volumeProperty.value
           } );

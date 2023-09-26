@@ -131,7 +131,8 @@ export default class MaterialMassVolumeControlNode extends VBox {
       reentrant: true,
       phetioState: false,
       phetioValueType: Range.RangeIO,
-      tandem: massNumberControlTandem.createTandem( 'enabledMassRangeProperty' )
+      tandem: massNumberControlTandem.createTandem( 'enabledMassRangeProperty' ),
+      valueComparisonStrategy: 'equalsFunction'
     } );
 
     const enabledVolumeRangeProperty = new DerivedProperty( [ materialProperty ], material => {
@@ -139,6 +140,8 @@ export default class MaterialMassVolumeControlNode extends VBox {
         material.custom ? Math.max( options.minVolumeLiters, options.minCustomVolumeLiters ) : options.minVolumeLiters,
         options.maxVolumeLiters
       );
+    }, {
+      valueComparisonStrategy: 'equalsFunction'
     } );
 
     // passed to the NumberControl

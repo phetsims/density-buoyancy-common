@@ -113,7 +113,9 @@ export default abstract class Basin {
   public getDisplacedVolume( y: number ): number {
     let volume = 0;
     this.stepMasses.forEach( mass => {
-      volume += mass.getDisplacedVolume( y );
+
+      // Don't count volume that is above the basin's top
+      volume += mass.getDisplacedVolume( Math.min( y, this.stepTop ) );
       assert && assert( !isNaN( volume ) );
     } );
 

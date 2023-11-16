@@ -15,7 +15,7 @@ import IntentionalAny from '../../../../phet-core/js/types/IntentionalAny.js';
 import IOType from '../../../../tandem/js/types/IOType.js';
 import NumberIO from '../../../../tandem/js/types/NumberIO.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
-import ioTypeCaches from '../../../../tandem/js/ioTypeCaches.js';
+import IOTypeCache from '../../../../tandem/js/IOTypeCache.js';
 
 type Interpolate<T> = ( a: T, b: T, ratio: number ) => T;
 type SelfOptions<T> = {
@@ -139,8 +139,7 @@ export default class InterpolatedProperty<T> extends Property<T> {
 
 // {Map.<IOType, IOType>} - Cache each parameterized PropertyIO based on
 // the parameter type, so that it is only created once
-const cache = new Map<IOType, IOType>();
-ioTypeCaches.register( cache );
+const cache = new IOTypeCache();
 
 export type InterpolatedPropertyIOStateObject = ReadOnlyPropertyState<IntentionalAny> & {
   currentValue: IntentionalAny;

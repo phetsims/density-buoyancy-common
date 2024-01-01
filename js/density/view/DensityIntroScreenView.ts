@@ -94,7 +94,7 @@ export default class DensityIntroScreenView extends SecondaryMassScreenView<Dens
       // We might not have a box, see https://github.com/phetsims/density/issues/110
       return new Vector2( isFinite( boxBounds.left ) ? boxBounds.left : visibleBounds.right, visibleBounds.centerY );
     }, {
-      accessNonDependencies: true
+      strictAxonDependencies: false
     } );
 
     this.addSecondMassControl( model.modeProperty );

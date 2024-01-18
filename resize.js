@@ -1,5 +1,7 @@
 // Copyright 2019, University of Colorado Boulder
 
+// @author Jonathan Olson <jonathan.olson@colorado.edu>
+
 /* eslint-env node */
 
 const grunt = require( 'grunt' );

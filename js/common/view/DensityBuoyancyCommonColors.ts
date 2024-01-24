@@ -10,8 +10,10 @@ import PhetColorScheme from '../../../../scenery-phet/js/PhetColorScheme.js';
 import { Color, ProfileColorProperty } from '../../../../scenery/js/imports.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
+import packageJSON from '../../../../joist/js/packageJSON.js';
 
 const tandem = Tandem.COLORS;
+const packageName = packageJSON.name;
 
 // Initial colors for each profile, by string key. Only profile currently is default (still helpful for making color
 // tweaks with the top-level files)
@@ -173,97 +175,97 @@ const DensityBuoyancyCommonColors = {
     default: new Color( 0, 0, 0, 0 )
   }, {
     phetioReadOnly: true,
-    tandem: phet.chipper.packageObject.name === 'density' ? Tandem.OPT_OUT : tandem.createTandem( 'materialAirColorProperty' )
+    tandem: packageName === 'density' ? Tandem.OPT_OUT : tandem.createTandem( 'materialAirColorProperty' )
   } ),
   materialCementColorProperty: new ProfileColorProperty( densityBuoyancyCommon, 'materialCement', {
     default: new Color( 128, 130, 133 )
   }, {
     phetioReadOnly: true,
-    tandem: phet.chipper.packageObject.name === 'density' ? Tandem.OPT_OUT : tandem.createTandem( 'materialCementColorProperty' )
+    tandem: packageName === 'density' ? Tandem.OPT_OUT : tandem.createTandem( 'materialCementColorProperty' )
   } ),
   materialCopperColorProperty: new ProfileColorProperty( densityBuoyancyCommon, 'materialCopper', {
     default: new Color( 184, 115, 51 )
   }, {
     phetioReadOnly: true,
-    tandem: phet.chipper.packageObject.name === 'density' ? Tandem.OPT_OUT : tandem.createTandem( 'materialCopperColorProperty' )
+    tandem: packageName === 'density' ? Tandem.OPT_OUT : tandem.createTandem( 'materialCopperColorProperty' )
   } ),
   materialDensityAColorProperty: new ProfileColorProperty( densityBuoyancyCommon, 'materialDensityA', {
     default: new Color( 255, 255, 80, 0.6 )
   }, {
     phetioReadOnly: true,
-    tandem: phet.chipper.packageObject.name === 'density' ? Tandem.OPT_OUT : tandem.createTandem( 'materialDensityAColorProperty' )
+    tandem: packageName === 'density' ? Tandem.OPT_OUT : tandem.createTandem( 'materialDensityAColorProperty' )
   } ),
   materialDensityBColorProperty: new ProfileColorProperty( densityBuoyancyCommon, 'materialDensityB', {
     default: new Color( 80, 255, 255, 0.6 )
   }, {
     phetioReadOnly: true,
-    tandem: phet.chipper.packageObject.name === 'density' ? Tandem.OPT_OUT : tandem.createTandem( 'materialDensityBColorProperty' )
+    tandem: packageName === 'density' ? Tandem.OPT_OUT : tandem.createTandem( 'materialDensityBColorProperty' )
   } ),
   materialDensityCColorProperty: new ProfileColorProperty( densityBuoyancyCommon, 'materialDensityC', {
     default: new Color( 255, 128, 255, 0.6 )
   }, {
     phetioReadOnly: true,
-    tandem: phet.chipper.packageObject.name === 'density' ? Tandem.OPT_OUT : tandem.createTandem( 'materialDensityCColorProperty' )
+    tandem: packageName === 'density' ? Tandem.OPT_OUT : tandem.createTandem( 'materialDensityCColorProperty' )
   } ),
   materialDensityDColorProperty: new ProfileColorProperty( densityBuoyancyCommon, 'materialDensityD', {
     default: new Color( 128, 255, 255, 0.6 )
   }, {
     phetioReadOnly: true,
-    tandem: phet.chipper.packageObject.name === 'density' ? Tandem.OPT_OUT : tandem.createTandem( 'materialDensityDColorProperty' )
+    tandem: packageName === 'density' ? Tandem.OPT_OUT : tandem.createTandem( 'materialDensityDColorProperty' )
   } ),
   materialDensityEColorProperty: new ProfileColorProperty( densityBuoyancyCommon, 'materialDensityE', {
     default: new Color( 255, 128, 128, 0.6 )
   }, {
     phetioReadOnly: true,
-    tandem: phet.chipper.packageObject.name === 'density' ? Tandem.OPT_OUT : tandem.createTandem( 'materialDensityEColorProperty' )
+    tandem: packageName === 'density' ? Tandem.OPT_OUT : tandem.createTandem( 'materialDensityEColorProperty' )
   } ),
   materialDensityFColorProperty: new ProfileColorProperty( densityBuoyancyCommon, 'materialDensityF', {
     default: new Color( 128, 255, 128, 0.6 )
   }, {
     phetioReadOnly: true,
-    tandem: phet.chipper.packageObject.name === 'density' ? Tandem.OPT_OUT : tandem.createTandem( 'materialDensityFColorProperty' )
+    tandem: packageName === 'density' ? Tandem.OPT_OUT : tandem.createTandem( 'materialDensityFColorProperty' )
   } ),
   materialGasolineColorProperty: new ProfileColorProperty( densityBuoyancyCommon, 'materialGasoline', {
     default: new Color( 230, 255, 0, 0.4 )
   }, {
     phetioReadOnly: true,
-    tandem: phet.chipper.packageObject.name === 'density' ? Tandem.OPT_OUT : tandem.createTandem( 'materialGasolineColorProperty' )
+    tandem: packageName === 'density' ? Tandem.OPT_OUT : tandem.createTandem( 'materialGasolineColorProperty' )
   } ),
   materialHoneyColorProperty: new ProfileColorProperty( densityBuoyancyCommon, 'materialHoney', {
     default: new Color( 238, 170, 0, 0.65 )
   }, {
     phetioReadOnly: true,
-    tandem: phet.chipper.packageObject.name === 'density' ? Tandem.OPT_OUT : tandem.createTandem( 'materialHoneyColorProperty' )
+    tandem: packageName === 'density' ? Tandem.OPT_OUT : tandem.createTandem( 'materialHoneyColorProperty' )
   } ),
   materialLeadColorProperty: new ProfileColorProperty( densityBuoyancyCommon, 'materialLead', {
     default: new Color( 80, 85, 90 )
   }, {
     phetioReadOnly: true,
-    tandem: phet.chipper.packageObject.name === 'density' ? Tandem.OPT_OUT : tandem.createTandem( 'materialLeadColorProperty' )
+    tandem: packageName === 'density' ? Tandem.OPT_OUT : tandem.createTandem( 'materialLeadColorProperty' )
   } ),
   materialMercuryColorProperty: new ProfileColorProperty( densityBuoyancyCommon, 'materialMercury', {
     default: new Color( 219, 206, 202, 0.8 )
   }, {
     phetioReadOnly: true,
-    tandem: phet.chipper.packageObject.name === 'density' ? Tandem.OPT_OUT : tandem.createTandem( 'materialMercuryColorProperty' )
+    tandem: packageName === 'density' ? Tandem.OPT_OUT : tandem.createTandem( 'materialMercuryColorProperty' )
   } ),
   materialOilColorProperty: new ProfileColorProperty( densityBuoyancyCommon, 'materialOil', {
     default: new Color( 180, 230, 20, 0.4 )
   }, {
     phetioReadOnly: true,
-    tandem: phet.chipper.packageObject.name === 'density' ? Tandem.OPT_OUT : tandem.createTandem( 'materialOilColorProperty' )
+    tandem: packageName === 'density' ? Tandem.OPT_OUT : tandem.createTandem( 'materialOilColorProperty' )
   } ),
   materialSandColorProperty: new ProfileColorProperty( densityBuoyancyCommon, 'materialSand', {
     default: new Color( 194, 178, 128 )
   }, {
     phetioReadOnly: true,
-    tandem: phet.chipper.packageObject.name === 'density' ? Tandem.OPT_OUT : tandem.createTandem( 'materialSandColorProperty' )
+    tandem: packageName === 'density' ? Tandem.OPT_OUT : tandem.createTandem( 'materialSandColorProperty' )
   } ),
   materialSeawaterColorProperty: new ProfileColorProperty( densityBuoyancyCommon, 'materialSeawater', {
     default: new Color( 0, 150, 255, 0.4 )
   }, {
     phetioReadOnly: true,
-    tandem: phet.chipper.packageObject.name === 'density' ? Tandem.OPT_OUT : tandem.createTandem( 'materialSeawaterColorProperty' )
+    tandem: packageName === 'density' ? Tandem.OPT_OUT : tandem.createTandem( 'materialSeawaterColorProperty' )
   } ),
   materialWaterColorProperty: new ProfileColorProperty( densityBuoyancyCommon, 'materialWater', {
     default: new Color( 0, 128, 255, 0.4 )

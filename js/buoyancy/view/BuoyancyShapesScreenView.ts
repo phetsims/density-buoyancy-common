@@ -133,6 +133,8 @@ export default class BuoyancyShapesScreenView extends SecondaryMassScreenView<Bu
     this.rightBarrierViewPointProperty.value = new DerivedProperty( [ this.rightBox.boundsProperty, this.visibleBoundsProperty ], ( boxBounds, visibleBounds ) => {
       // We might not have a box, see https://github.com/phetsims/density/issues/110
       return new Vector2( isFinite( boxBounds.left ) ? boxBounds.left : visibleBounds.right, visibleBounds.centerY );
+    }, {
+      strictAxonDependencies: false //TODO https://github.com/phetsims/density-buoyancy-common/issues/85
     } );
 
     this.addSecondMassControl( model.modeProperty );

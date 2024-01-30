@@ -32,8 +32,8 @@ type StringsType = {
     'appleStringProperty': LocalizedStringProperty;
     'brick': string;
     'brickStringProperty': LocalizedStringProperty;
-    'cement': string;
-    'cementStringProperty': LocalizedStringProperty;
+    'concrete': string;
+    'concreteStringProperty': LocalizedStringProperty;
     'copper': string;
     'copperStringProperty': LocalizedStringProperty;
     'custom': string;

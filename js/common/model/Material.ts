@@ -209,12 +209,12 @@ export default class Material {
     density: 2000
   } );
 
-  public static readonly CEMENT = new Material( {
-    nameProperty: DensityBuoyancyCommonStrings.material.cementStringProperty,
-    tandemName: 'cement',
-    identifier: 'CEMENT',
+  public static readonly CONCRETE = new Material( {
+    nameProperty: DensityBuoyancyCommonStrings.material.concreteStringProperty,
+    tandemName: 'concrete',
+    identifier: 'CONCRETE',
     density: 3150,
-    liquidColor: DensityBuoyancyCommonColors.materialCementColorProperty
+    liquidColor: DensityBuoyancyCommonColors.materialConcreteColorProperty
   } );
 
   public static readonly COPPER = new Material( {
@@ -459,7 +459,7 @@ export default class Material {
     Material.ALUMINUM,
     Material.APPLE,
     Material.BRICK,
-    Material.CEMENT,
+    Material.CONCRETE,
     Material.COPPER,
     Material.DENSITY_E,
     Material.DENSITY_F,

@@ -177,11 +177,11 @@ const DensityBuoyancyCommonColors = {
     phetioReadOnly: true,
     tandem: packageName === 'density' ? Tandem.OPT_OUT : tandem.createTandem( 'materialAirColorProperty' )
   } ),
-  materialCementColorProperty: new ProfileColorProperty( densityBuoyancyCommon, 'materialCement', {
+  materialConcreteColorProperty: new ProfileColorProperty( densityBuoyancyCommon, 'materialConcrete', {
     default: new Color( 128, 130, 133 )
   }, {
     phetioReadOnly: true,
-    tandem: packageName === 'density' ? Tandem.OPT_OUT : tandem.createTandem( 'materialCementColorProperty' )
+    tandem: packageName === 'density' ? Tandem.OPT_OUT : tandem.createTandem( 'materialConcreteColorProperty' )
   } ),
   materialCopperColorProperty: new ProfileColorProperty( densityBuoyancyCommon, 'materialCopper', {
     default: new Color( 184, 115, 51 )

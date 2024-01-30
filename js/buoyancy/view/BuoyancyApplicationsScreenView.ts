@@ -60,7 +60,7 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
       Material.OIL,
       Material.WATER,
       Material.SAND,
-      Material.CEMENT,
+      Material.CONCRETE,
       Material.COPPER,
       Material.LEAD,
       Material.MERCURY

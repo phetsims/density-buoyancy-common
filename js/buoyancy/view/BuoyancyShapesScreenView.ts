@@ -28,6 +28,7 @@ import BuoyancyShapesModel from '../model/BuoyancyShapesModel.js';
 import { DensityBuoyancyScreenViewOptions } from '../../common/view/DensityBuoyancyScreenView.js';
 import { combineOptions } from '../../../../phet-core/js/optionize.js';
 import MaterialControlNode from '../../common/view/MaterialControlNode.js';
+import MultiSectionPanelsNode from '../../common/view/MultiSectionPanelsNode.js';
 
 // constants
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
@@ -95,8 +96,8 @@ export default class BuoyancyShapesScreenView extends SecondaryMassScreenView<Bu
       margin: MARGIN
     } ) );
 
-    this.rightBox = new PrimarySecondaryPanelsNode(
-      new MaterialControlNode( this.model.materialProperty, new Property( 1 ), [
+    this.rightBox = new MultiSectionPanelsNode(
+      [ new MaterialControlNode( this.model.materialProperty, new Property( 1 ), [
         // TODO: Factor out materials somewhere? https://github.com/phetsims/buoyancy/issues/43
         Material.STYROFOAM,
         Material.WOOD,
@@ -107,32 +108,31 @@ export default class BuoyancyShapesScreenView extends SecondaryMassScreenView<Bu
         supportCustomMaterial: false,
         tandem: options.tandem.createTandem( 'materialComboBox' )
       } ),
-
-      new ShapeSizeControlNode(
-        model.primaryShapeProperty,
-        model.primaryWidthRatioProperty,
-        model.primaryHeightRatioProperty,
-        new DynamicProperty( model.primaryMassProperty, {
-          derive: 'volumeProperty'
-        } ),
-        this.popupLayer,
-        {
-          labelNode: PrimarySecondaryPanelsNode.getPrimaryLabelNode()
-        }
-      ),
-      new ShapeSizeControlNode(
-        model.secondaryShapeProperty,
-        model.secondaryWidthRatioProperty,
-        model.secondaryHeightRatioProperty,
-        new DynamicProperty( model.secondaryMassProperty, {
-          derive: 'volumeProperty'
-        } ),
-        this.popupLayer,
-        {
-          labelNode: PrimarySecondaryPanelsNode.getSecondaryLabelNode(),
-          visibleProperty: new DynamicProperty( model.secondaryMassProperty, { derive: 'internalVisibleProperty' } )
-        }
-      )
+        new ShapeSizeControlNode(
+          model.primaryShapeProperty,
+          model.primaryWidthRatioProperty,
+          model.primaryHeightRatioProperty,
+          new DynamicProperty( model.primaryMassProperty, {
+            derive: 'volumeProperty'
+          } ),
+          this.popupLayer,
+          {
+            labelNode: PrimarySecondaryPanelsNode.getPrimaryLabelNode()
+          }
+        ),
+        new ShapeSizeControlNode(
+          model.secondaryShapeProperty,
+          model.secondaryWidthRatioProperty,
+          model.secondaryHeightRatioProperty,
+          new DynamicProperty( model.secondaryMassProperty, {
+            derive: 'volumeProperty'
+          } ),
+          this.popupLayer,
+          {
+            labelNode: PrimarySecondaryPanelsNode.getSecondaryLabelNode(),
+            visibleProperty: new DynamicProperty( model.secondaryMassProperty, { derive: 'internalVisibleProperty' } )
+          }
+        ) ]
     );
 
     this.addChild( new AlignBox( this.rightBox, {

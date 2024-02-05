@@ -18,14 +18,20 @@ import StringIO from '../../../../tandem/js/types/StringIO.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
-import Material, { MaterialName } from '../model/Material.js';
+import Material, { CUSTOM_MATERIAL_NAME, MaterialName } from '../model/Material.js';
 import { PhetioObjectOptions } from '../../../../tandem/js/PhetioObject.js';
 import PickRequired from '../../../../phet-core/js/types/PickRequired.js';
 
 const LITERS_IN_CUBIC_METER = 1000;
 
 type SelfMaterialControlNodeOptions = {
+
+  // A label, if provided to be placed to the right of the ComboBox
   labelNode?: Node | null;
+
+  // If a custom material should be added to the ComboBox
+  supportCustomMaterial?: boolean;
+
   minCustomMass?: number;
   maxCustomMass?: number;
   minCustomVolumeLiters?: number;
@@ -43,6 +49,7 @@ export default class MaterialControlNode extends VBox {
 
     const options = optionize<MaterialControlNodeOptions, SelfMaterialControlNodeOptions, VBoxOptions>()( {
       labelNode: null,
+      supportCustomMaterial: true,
       minCustomMass: 0.5,
       maxCustomMass: 10,
       minCustomVolumeLiters: 1
@@ -53,15 +60,14 @@ export default class MaterialControlNode extends VBox {
       align: 'left'
     } );
 
-    const materialNames: MaterialName[] = [ ...materials.map( material => material.identifier! ), 'CUSTOM' ];
+    const materialNames: MaterialName[] = [ ...materials.map( material => material.identifier! ) ];
+    options.supportCustomMaterial && materialNames.push( CUSTOM_MATERIAL_NAME );
 
     const comboBoxMaterialProperty = new DynamicProperty( new Property( materialProperty ), {
       bidirectional: true,
-      map: ( material: Material ) => {
-        return material.custom ? 'CUSTOM' : material.identifier!;
-      },
+      map: ( material: Material ) => material.custom ? CUSTOM_MATERIAL_NAME : material.identifier!,
       inverseMap: ( materialName: MaterialName ): Material => {
-        if ( materialName === 'CUSTOM' ) {
+        if ( materialName === CUSTOM_MATERIAL_NAME ) {
           // Handle our minimum volume if we're switched to custom (if needed)
           const volume = Math.max( volumeProperty.value, options.minCustomVolumeLiters / LITERS_IN_CUBIC_METER );
           return Material.createCustomSolidMaterial( {
@@ -92,14 +98,15 @@ export default class MaterialControlNode extends VBox {
           tandemName: `${material.tandemName}${ComboBox.ITEM_TANDEM_NAME_SUFFIX}`
         };
       } ),
-      {
-        value: 'CUSTOM',
+      ...( options.supportCustomMaterial ? [ {
+        value: CUSTOM_MATERIAL_NAME,
         createNode: () => new Text( DensityBuoyancyCommonStrings.material.customStringProperty, {
           font: DensityBuoyancyCommonConstants.COMBO_BOX_ITEM_FONT,
           maxWidth: comboMaxWidth
         } ),
         tandemName: `custom${ComboBox.ITEM_TANDEM_NAME_SUFFIX}`
       }
+      ] : [] )
     ], listParent, {
       xMargin: 8,
       yMargin: 4,

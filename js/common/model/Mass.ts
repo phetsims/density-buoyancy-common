@@ -29,7 +29,7 @@ import IOType from '../../../../tandem/js/types/IOType.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import InterpolatedProperty from './InterpolatedProperty.js';
-import Material from './Material.js';
+import Material, { CUSTOM_MATERIAL_NAME, CustomMaterialName } from './Material.js';
 import EnumerationValue from '../../../../phet-core/js/EnumerationValue.js';
 import Enumeration from '../../../../phet-core/js/Enumeration.js';
 import PhysicsEngine, { PhysicsEngineBody } from './PhysicsEngine.js';
@@ -150,9 +150,9 @@ const GuardedNumberPropertyIO = new IOType( 'GuardedNumberPropertyIO', {
 } );
 
 type MaterialNonCustomIdentifier = 'ALUMINUM' | 'BRICK' | 'COPPER' | 'ICE' | 'PLATINUM' | 'STEEL' | 'STYROFOAM' | 'WOOD';
-type MaterialIdentifier = MaterialNonCustomIdentifier | 'CUSTOM';
+type MaterialIdentifier = MaterialNonCustomIdentifier | CustomMaterialName;
 
-const materialToEnum = ( material: Material ): MaterialEnumeration => MaterialEnumeration[ ( ( material.identifier as MaterialIdentifier | null ) || 'CUSTOM' ) ];
+const materialToEnum = ( material: Material ): MaterialEnumeration => MaterialEnumeration[ ( ( material.identifier as MaterialIdentifier | null ) || CUSTOM_MATERIAL_NAME ) ];
 
 // For the Buoyancy Shapes screen, but needed here because setRatios is included in each core type
 // See https://github.com/phetsims/buoyancy/issues/29
@@ -412,6 +412,7 @@ export default abstract class Mass extends PhetioObject {
             } );
           }
           else {
+            // TODO: does this need an assertion just in case? https://github.com/phetsims/density-buoyancy-common/issues/86
             this.materialProperty.value = Material[ materialEnum.name as MaterialNonCustomIdentifier ];
           }
           enumLock = false;

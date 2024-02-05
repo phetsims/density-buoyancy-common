@@ -97,12 +97,14 @@ export default class BuoyancyShapesScreenView extends SecondaryMassScreenView<Bu
 
     this.rightBox = new PrimarySecondaryPanelsNode(
       new MaterialControlNode( this.model.materialProperty, new Property( 1 ), [
-          // TODO: Factor out materials somewhere? https://github.com/phetsims/buoyancy/issues/43
+        // TODO: Factor out materials somewhere? https://github.com/phetsims/buoyancy/issues/43
         Material.STYROFOAM,
         Material.WOOD,
         Material.ICE,
         Material.BRICK,
-        Material.ALUMINUM ], this.popupLayer, {
+        Material.ALUMINUM
+      ], this.popupLayer, {
+        supportCustomMaterial: false,
         tandem: options.tandem.createTandem( 'materialComboBox' )
       } ),
 

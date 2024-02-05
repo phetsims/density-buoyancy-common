@@ -43,7 +43,9 @@ type MaterialState = {
   liquidColor: null | ColorState;
 };
 
-export type MaterialName = keyof ( typeof Material ) | 'CUSTOM';
+export const CUSTOM_MATERIAL_NAME = 'CUSTOM';
+export type CustomMaterialName = typeof CUSTOM_MATERIAL_NAME;
+export type MaterialName = keyof ( typeof Material ) | CustomMaterialName;
 
 export type MaterialOptions = {
   nameProperty?: TReadOnlyProperty<string>;

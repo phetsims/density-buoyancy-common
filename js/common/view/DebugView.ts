@@ -16,6 +16,7 @@ import Boat from '../../buoyancy/model/Boat.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyModel from '../model/DensityBuoyancyModel.js';
 import Mass from '../model/Mass.js';
+import arrayRemove from '../../../../phet-core/js/arrayRemove.js';
 
 // constants
 const scratchMatrix = new Matrix3();
@@ -76,6 +77,7 @@ export default class DebugView extends Node {
 
     model.masses.addItemRemovedListener( mass => {
       const massNode = _.find( this.massNodes, massNode => massNode.mass === mass )!;
+      arrayRemove( this.massNodes, massNode );
       this.removeChild( massNode );
       massNode.dispose();
     } );

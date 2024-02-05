@@ -27,7 +27,7 @@ import ShapeSizeControlNode from './ShapeSizeControlNode.js';
 import BuoyancyShapesModel from '../model/BuoyancyShapesModel.js';
 import { DensityBuoyancyScreenViewOptions } from '../../common/view/DensityBuoyancyScreenView.js';
 import { combineOptions } from '../../../../phet-core/js/optionize.js';
-import { MaterialControlNode } from '../../common/view/MaterialMassVolumeControlNode.js';
+import MaterialControlNode from '../../common/view/MaterialControlNode.js';
 
 // constants
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
@@ -97,7 +97,7 @@ export default class BuoyancyShapesScreenView extends SecondaryMassScreenView<Bu
 
     this.rightBox = new PrimarySecondaryPanelsNode(
       new MaterialControlNode( this.model.materialProperty, new Property( 1 ), [
-          // TODO: Factor out materials somewhere?
+          // TODO: Factor out materials somewhere? https://github.com/phetsims/buoyancy/issues/43
         Material.STYROFOAM,
         Material.WOOD,
         Material.ICE,

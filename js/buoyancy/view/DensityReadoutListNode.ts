@@ -17,8 +17,12 @@ import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import DensityBuoyancyCommonPreferences from '../../common/model/DensityBuoyancyCommonPreferences.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
+import TinyEmitter from '../../../../axon/js/TinyEmitter.js';
+import DerivedStringProperty from '../../../../axon/js/DerivedStringProperty.js';
 
 export default class DensityReadoutListNode extends VBox {
+  private cleanupEmitter = new TinyEmitter();
+
   public constructor( materialProperties: TReadOnlyProperty<Material>[] ) {
 
     super( {
@@ -26,22 +30,57 @@ export default class DensityReadoutListNode extends VBox {
       align: 'center'
     } );
 
+    this.setMaterials( materialProperties );
+  }
+
+  /**
+   * Overwrite the displayed densities with a new set of materialProperties.
+   */
+  public setMaterials( materialProperties: TReadOnlyProperty<Material>[] ): void {
+
+    // Clear the previous materials that may have been created.
+    this.cleanupEmitter.emit();
+    this.cleanupEmitter.removeAllListeners();
+
     this.children = materialProperties.map( materialProperty => {
-      // Exists for the lifetime of a sim, so disposal patterns not needed.
-      return new RichText( new PatternStringProperty( new DerivedProperty( [
+
+      // Handle units changing
+      const derivedProperty = new DerivedStringProperty( [
         DensityBuoyancyCommonPreferences.volumeUnitsProperty,
         DensityBuoyancyCommonStrings.densityReadoutPatternStringProperty,
         DensityBuoyancyCommonStrings.densityReadoutDecimetersCubedPatternStringProperty
       ], ( units, litersString, decimetersCubedString ) => {
         return units === 'liters' ? litersString : decimetersCubedString;
-      } ), {
-        material: new DynamicProperty<string, string, Material>( materialProperty, { derive: material => material.nameProperty } ),
+      } );
+
+      // Handle updates to the material or density
+      const patternStringProperty = new PatternStringProperty( derivedProperty, {
+        material: new DynamicProperty<string, string, Material>( materialProperty, {
+          derive: material => material.nameProperty
+        } ),
         density: new DerivedProperty( [ materialProperty ], material => material.density / 1000 )
       }, {
         tandem: Tandem.OPT_OUT,
         decimalPlaces: 2
-      } ), { font: new PhetFont( 14 ), maxWidth: 200 } );
+      } );
+
+      // Render as a Node
+      const richText = new RichText( patternStringProperty, {
+        font: new PhetFont( 14 ),
+        maxWidth: 200
+      } );
+      this.cleanupEmitter.addListener( () => {
+        richText.dispose();
+        patternStringProperty.dispose();
+        derivedProperty.dispose();
+      } );
+      return richText;
     } );
+  }
+
+  public override dispose(): void {
+    this.cleanupEmitter.emit();
+    super.dispose();
   }
 }
 

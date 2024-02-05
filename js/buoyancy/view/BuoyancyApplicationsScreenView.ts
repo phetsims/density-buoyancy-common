@@ -241,15 +241,25 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
 
     const displayOptionsNode = new DisplayOptionsNode( model );
 
+    const densityReadout = new DensityReadoutListNode( [] );
     const densityContainer = new VBox( {
       spacing: 0,
       children: [
         new HStrut( displayOptionsNode.width - 10 ), // Same internal size as displayOptionsNode
-        new DensityReadoutListNode( [
-          model.bottle.interiorMaterialProperty,
-          model.bottle.materialProperty
-        ] )
+        densityReadout
       ]
+    } );
+
+    model.sceneProperty.link( scene => {
+      const materials = scene === Scene.BOTTLE ? [
+        model.bottle.interiorMaterialProperty,
+        model.bottle.materialProperty
+      ] : scene === Scene.BOAT ? [
+        model.block.materialProperty,
+        model.boat.materialProperty
+      ] : [];
+      assert && assert( materials.length > 0, 'unsupported Scene', scene );
+      densityReadout.setMaterials( materials );
     } );
 
     const densityBox = new AccordionBox( densityContainer, combineOptions<AccordionBoxOptions>( {

@@ -29,8 +29,8 @@ import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import { MassShape } from '../../common/model/MassShape.js';
 import TProperty from '../../../../axon/js/TProperty.js';
 import isSettingPhetioStateProperty from '../../../../tandem/js/isSettingPhetioStateProperty.js';
+import ReferenceIO from '../../../../tandem/js/types/ReferenceIO.js';
 
-const MATERIAL = Material.WOOD;
 export type BuoyancyShapesModelOptions = DensityBuoyancyModelOptions;
 
 export default class BuoyancyShapesModel extends DensityBuoyancyModel {
@@ -47,6 +47,8 @@ export default class BuoyancyShapesModel extends DensityBuoyancyModel {
   public readonly primaryHeightRatioProperty: Property<number>;
   public readonly secondaryHeightRatioProperty: Property<number>;
 
+  public readonly materialProperty: Property<Material>;
+
   public readonly primaryMassProperty: TProperty<Mass>;
   public readonly secondaryMassProperty: TProperty<Mass>;
 
@@ -61,6 +63,11 @@ export default class BuoyancyShapesModel extends DensityBuoyancyModel {
 
     this.modeProperty = new EnumerationProperty( TwoBlockMode.ONE_BLOCK, {
       tandem: tandem.createTandem( 'modeProperty' )
+    } );
+
+    this.materialProperty = new Property( Material.WOOD, {
+      tandem: tandem.createTandem( 'materialProperty' ),
+      phetioValueType: ReferenceIO( Material.MaterialIO )
     } );
 
     this.secondaryMassVisibleProperty = new BooleanProperty( false );
@@ -101,48 +108,61 @@ export default class BuoyancyShapesModel extends DensityBuoyancyModel {
 
     const createMass = ( tandem: Tandem, shape: MassShape, widthRatio: number, heightRatio: number, tag: MassTag ): Mass => {
       const massOptions = {
-        material: MATERIAL,
+        material: this.materialProperty.value,
         tandem: tandem,
         tag: tag
       };
+
+      let mass: Mass;
       switch( shape ) {
         case MassShape.BLOCK:
-          return new Cuboid( this.engine, Cuboid.getSizeFromRatios( widthRatio, heightRatio ), massOptions );
+          mass = new Cuboid( this.engine, Cuboid.getSizeFromRatios( widthRatio, heightRatio ), massOptions );
+          break;
         case MassShape.ELLIPSOID:
-          return new Ellipsoid( this.engine, Ellipsoid.getSizeFromRatios( widthRatio, heightRatio ), massOptions );
+          mass = new Ellipsoid( this.engine, Ellipsoid.getSizeFromRatios( widthRatio, heightRatio ), massOptions );
+          break;
         case MassShape.VERTICAL_CYLINDER:
-          return new VerticalCylinder(
+          mass = new VerticalCylinder(
             this.engine,
             VerticalCylinder.getRadiusFromRatio( widthRatio ),
             VerticalCylinder.getHeightFromRatio( heightRatio ),
             massOptions
           );
+          break;
         case MassShape.HORIZONTAL_CYLINDER:
-          return new HorizontalCylinder(
+          mass = new HorizontalCylinder(
             this.engine,
             HorizontalCylinder.getRadiusFromRatio( heightRatio ),
             HorizontalCylinder.getLengthFromRatio( widthRatio ),
             massOptions
           );
+          break;
         case MassShape.CONE:
-          return new Cone(
+          mass = new Cone(
             this.engine,
             Cone.getRadiusFromRatio( widthRatio ),
             Cone.getHeightFromRatio( heightRatio ),
             true,
             massOptions
           );
+          break;
         case MassShape.INVERTED_CONE:
-          return new Cone(
+          mass = new Cone(
             this.engine,
             Cone.getRadiusFromRatio( widthRatio ),
             Cone.getHeightFromRatio( heightRatio ),
             false,
             massOptions
           );
+          break;
         default:
           throw new Error( `shape not recognized: ${shape}` );
       }
+
+      this.materialProperty.lazyLink( material => {
+        mass.materialProperty.value = material;
+      } );
+      return mass;
     };
 
     const objectACapsule = new PhetioCapsule(

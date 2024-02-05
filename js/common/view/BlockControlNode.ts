@@ -16,7 +16,7 @@ import MaterialMassVolumeControlNode, { MaterialMassVolumeControlNodeOptions } f
 export type BlockControlNodeOptions = MaterialMassVolumeControlNodeOptions;
 
 export default class BlockControlNode extends MaterialMassVolumeControlNode {
-  public constructor( cuboid: Cuboid, listParent: Node, options?: BlockControlNodeOptions ) {
+  public constructor( cuboid: Cuboid, listParent: Node, options: BlockControlNodeOptions ) {
     super( cuboid.materialProperty, cuboid.massProperty, cuboid.volumeProperty, [
       Material.STYROFOAM,
       Material.WOOD,

@@ -6,7 +6,7 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
-import { FlowBox, Node, HSeparator } from '../../../../scenery/js/imports.js';
+import { FlowBox, HSeparator, Node } from '../../../../scenery/js/imports.js';
 import Panel from '../../../../sun/js/Panel.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
@@ -14,7 +14,7 @@ import { PRIMARY_LABEL, SECONDARY_LABEL } from './MassLabelNode.js';
 
 export default class PrimarySecondaryPanelsNode extends Panel {
 
-  public constructor( primaryNode: Node, secondaryNode: Node ) {
+  public constructor( primaryNode: Node, secondaryNode: Node, thirdNode?: Node ) {
     super( new FlowBox( {
       spacing: 10,
       orientation: 'vertical',
@@ -22,7 +22,8 @@ export default class PrimarySecondaryPanelsNode extends Panel {
       children: [
         primaryNode,
         new HSeparator(),
-        secondaryNode
+        secondaryNode,
+        ...( thirdNode ? [ new HSeparator(), thirdNode ] : [] )
       ]
     } ), DensityBuoyancyCommonConstants.PANEL_OPTIONS );
   }

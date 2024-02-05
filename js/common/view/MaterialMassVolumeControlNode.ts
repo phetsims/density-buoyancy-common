@@ -38,43 +38,37 @@ class WorkaroundRange extends Range {
 }
 
 type SelfOptions = {
-  labelNode?: Node | null;
-
   minMass?: number;
-  minCustomMass?: number;
-  maxCustomMass?: number;
   maxMass?: number;
   minVolumeLiters?: number;
   maxVolumeLiters?: number;
-  minCustomVolumeLiters?: number;
-
   color?: TPaint;
+};
+
+type SelfMaterialControlNodeOptions = {
+  labelNode?: Node | null;
+  minCustomMass?: number;
+  maxCustomMass?: number;
+  minCustomVolumeLiters?: number;
 } & PickRequired<PhetioObjectOptions, 'tandem'>;
 
-export type MaterialMassVolumeControlNodeOptions = SelfOptions & VBoxOptions;
+type MaterialControlNodeOptions = SelfMaterialControlNodeOptions & VBoxOptions;
+export type MaterialMassVolumeControlNodeOptions = SelfOptions & MaterialControlNodeOptions;
 
-export default class MaterialMassVolumeControlNode extends VBox {
+export class MaterialControlNode extends VBox {
+  public constructor( materialProperty: Property<Material>,
+                      volumeProperty: Property<number>,
+                      materials: Material[],
+                      listParent: Node,
+                      providedOptions: MaterialControlNodeOptions ) {
 
-  public constructor( materialProperty: Property<Material>, massProperty: ReadOnlyProperty<number>, volumeProperty: Property<number>, materials: Material[], setVolume: ( volume: number ) => void, listParent: Node, providedOptions?: MaterialMassVolumeControlNodeOptions ) {
 
-    const options = optionize<MaterialMassVolumeControlNodeOptions, SelfOptions, VBoxOptions>()( {
+    const options = optionize<MaterialControlNodeOptions, SelfMaterialControlNodeOptions, VBoxOptions>()( {
       labelNode: null,
-
-      minMass: 0.1,
       minCustomMass: 0.5,
       maxCustomMass: 10,
-      maxMass: 27,
-      minVolumeLiters: 1,
-      maxVolumeLiters: 10,
-      minCustomVolumeLiters: 1,
-
-      color: null
+      minCustomVolumeLiters: 1
     }, providedOptions );
-
-    const tandem = options.tandem;
-
-    const massNumberControlTandem = tandem.createTandem( 'massNumberControl' );
-    const volumeNumberControlTandem = tandem.createTandem( 'volumeNumberControl' );
 
     super( {
       spacing: 15,
@@ -107,6 +101,70 @@ export default class MaterialMassVolumeControlNode extends VBox {
       validValues: materialNames,
       phetioValueType: StringIO
     } );
+
+    const comboMaxWidth = options.labelNode ? 110 : 160;
+    const comboBox = new ComboBox( comboBoxMaterialProperty, [
+      ...materials.map( material => {
+        return {
+          value: material.identifier!,
+          createNode: () => new Text( material.nameProperty, {
+            font: DensityBuoyancyCommonConstants.COMBO_BOX_ITEM_FONT,
+            maxWidth: comboMaxWidth
+          } ),
+          tandemName: `${material.tandemName}${ComboBox.ITEM_TANDEM_NAME_SUFFIX}`
+        };
+      } ),
+      {
+        value: 'CUSTOM',
+        createNode: () => new Text( DensityBuoyancyCommonStrings.material.customStringProperty, {
+          font: DensityBuoyancyCommonConstants.COMBO_BOX_ITEM_FONT,
+          maxWidth: comboMaxWidth
+        } ),
+        tandemName: `custom${ComboBox.ITEM_TANDEM_NAME_SUFFIX}`
+      }
+    ], listParent, {
+      xMargin: 8,
+      yMargin: 4,
+      tandem: options.tandem.createTandem( 'comboBox' )
+    } );
+
+    this.children = [
+      new HBox( {
+        spacing: 5,
+        children: [
+          comboBox,
+          ...( [ options.labelNode ].filter( _.identity ) as Node[] )
+        ]
+      } )
+    ];
+  }
+}
+
+export default class MaterialMassVolumeControlNode extends MaterialControlNode {
+
+  public constructor( materialProperty: Property<Material>,
+                      massProperty: ReadOnlyProperty<number>,
+                      volumeProperty: Property<number>,
+                      materials: Material[],
+                      setVolume: ( volume: number ) => void,
+                      listParent: Node,
+                      providedOptions: MaterialMassVolumeControlNodeOptions ) {
+
+    const options = optionize<MaterialMassVolumeControlNodeOptions, SelfOptions, MaterialControlNodeOptions>()( {
+      minMass: 0.1,
+      maxMass: 27,
+      minVolumeLiters: 1,
+      maxVolumeLiters: 10,
+      minCustomMass: 0.5,
+      maxCustomMass: 10,
+      minCustomVolumeLiters: 1,
+      color: null
+    }, providedOptions );
+
+    const massNumberControlTandem = options.tandem.createTandem( 'massNumberControl' );
+    const volumeNumberControlTandem = options.tandem.createTandem( 'volumeNumberControl' );
+
+    super( materialProperty, volumeProperty, materials, listParent, options );
 
     // We need to use "locks" since our behavior is different based on whether the model or user is changing the value
     let modelMassChanging = false;
@@ -243,32 +301,6 @@ export default class MaterialMassVolumeControlNode extends VBox {
       }
     } );
 
-    const comboMaxWidth = options.labelNode ? 110 : 160;
-    const comboBox = new ComboBox( comboBoxMaterialProperty, [
-      ...materials.map( material => {
-        return {
-          value: material.identifier!,
-          createNode: () => new Text( material.nameProperty, {
-            font: DensityBuoyancyCommonConstants.COMBO_BOX_ITEM_FONT,
-            maxWidth: comboMaxWidth
-          } ),
-          tandemName: `${material.tandemName}${ComboBox.ITEM_TANDEM_NAME_SUFFIX}`
-        };
-      } ),
-      {
-        value: 'CUSTOM',
-        createNode: () => new Text( DensityBuoyancyCommonStrings.material.customStringProperty, {
-          font: DensityBuoyancyCommonConstants.COMBO_BOX_ITEM_FONT,
-          maxWidth: comboMaxWidth
-        } ),
-        tandemName: `custom${ComboBox.ITEM_TANDEM_NAME_SUFFIX}`
-      }
-    ], listParent, {
-      xMargin: 8,
-      yMargin: 4,
-      tandem: tandem.createTandem( 'comboBox' )
-    } );
-
     const massNumberControl = new NumberControl( DensityBuoyancyCommonStrings.massStringProperty, massNumberProperty, new Range( options.minMass, options.maxMass ), combineOptions<NumberControlOptions>( {
       sliderOptions: {
         thumbNode: new PrecisionSliderThumb( {
@@ -334,17 +366,8 @@ export default class MaterialMassVolumeControlNode extends VBox {
       }
     }, MaterialMassVolumeControlNode.getNumberControlOptions() ) );
 
-    this.children = [
-      new HBox( {
-        spacing: 5,
-        children: [
-          comboBox,
-          ...( [ options.labelNode ].filter( _.identity ) as Node[] )
-        ]
-      } ),
-      massNumberControl,
-      volumeNumberControl
-    ];
+    this.addChild( massNumberControl );
+    this.addChild( volumeNumberControl );
 
     this.mutate( options );
   }

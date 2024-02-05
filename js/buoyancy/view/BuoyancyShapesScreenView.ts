@@ -27,6 +27,7 @@ import ShapeSizeControlNode from './ShapeSizeControlNode.js';
 import BuoyancyShapesModel from '../model/BuoyancyShapesModel.js';
 import { DensityBuoyancyScreenViewOptions } from '../../common/view/DensityBuoyancyScreenView.js';
 import { combineOptions } from '../../../../phet-core/js/optionize.js';
+import { MaterialControlNode } from '../../common/view/MaterialMassVolumeControlNode.js';
 
 // constants
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
@@ -95,6 +96,16 @@ export default class BuoyancyShapesScreenView extends SecondaryMassScreenView<Bu
     } ) );
 
     this.rightBox = new PrimarySecondaryPanelsNode(
+      new MaterialControlNode( this.model.materialProperty, new Property( 1 ), [
+          // TODO: Factor out materials somewhere?
+        Material.STYROFOAM,
+        Material.WOOD,
+        Material.ICE,
+        Material.BRICK,
+        Material.ALUMINUM ], this.popupLayer, {
+        tandem: options.tandem.createTandem( 'materialComboBox' )
+      } ),
+
       new ShapeSizeControlNode(
         model.primaryShapeProperty,
         model.primaryWidthRatioProperty,

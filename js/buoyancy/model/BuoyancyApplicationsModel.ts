@@ -51,8 +51,12 @@ export default class BuoyancyApplicationsModel extends DensityBuoyancyModel {
 
     super( options );
 
-    this.sceneProperty = new EnumerationProperty( Scene.BOTTLE );
-    this.densityExpandedProperty = new BooleanProperty( false );
+    this.sceneProperty = new EnumerationProperty( Scene.BOTTLE, {
+      tandem: options.tandem.createTandem( 'sceneProperty' )
+    } );
+    this.densityExpandedProperty = new BooleanProperty( false, {
+      tandem: tandem.createTandem( 'densityExpandedProperty' )
+    } );
 
     this.bottle = new Bottle( this.engine, {
       matrix: Matrix3.translation( 0, 0 ),

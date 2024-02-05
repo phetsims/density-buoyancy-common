@@ -20,6 +20,7 @@ import DisplayOptionsNode from '../../common/view/DisplayOptionsNode.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import BuoyancyIntroModel, { BlockSet } from '../model/BuoyancyIntroModel.js';
+import ReadOnlyProperty from '../../../../axon/js/ReadOnlyProperty.js';
 
 // constants
 const blockSetStringMap = {
@@ -33,6 +34,15 @@ const blockSetTandemNameMap = {
   [ BlockSet.SAME_DENSITY.name ]: 'sameDensityLabel'
 };
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
+
+// Any others are invisible in the radio buttons, and are only available through PhET-iO if a client decides
+// to show them, https://github.com/phetsims/buoyancy/issues/58
+const VISIBLE_FLUIDS = [
+  Material.GASOLINE,
+  Material.WATER,
+  Material.SEAWATER,
+  Material.HONEY
+];
 
 export default class BuoyancyIntroScreenView extends DensityBuoyancyScreenView<BuoyancyIntroModel> {
 
@@ -80,14 +90,21 @@ export default class BuoyancyIntroScreenView extends DensityBuoyancyScreenView<B
       font: new PhetFont( 14 ),
       maxWidth: 120
     };
+    const radioButtonGroupTandem = options.tandem.createTandem( 'liquidMaterialRadioButtonGroup' );
+
+    model.liquidMaterialProperty instanceof ReadOnlyProperty && this.addLinkedElement( model.liquidMaterialProperty, {
+      tandem: radioButtonGroupTandem.createTandem( 'property' )
+    } );
+
     const fluidBox = new HBox( {
       spacing: 20,
-      children: [
-        new AquaRadioButton( model.liquidMaterialProperty, Material.GASOLINE, new Text( Material.GASOLINE.nameProperty, radioButtonLabelOptions ) ),
-        new AquaRadioButton( model.liquidMaterialProperty, Material.WATER, new Text( Material.WATER.nameProperty, radioButtonLabelOptions ) ),
-        new AquaRadioButton( model.liquidMaterialProperty, Material.SEAWATER, new Text( Material.SEAWATER.nameProperty, radioButtonLabelOptions ) ),
-        new AquaRadioButton( model.liquidMaterialProperty, Material.HONEY, new Text( Material.HONEY.nameProperty, radioButtonLabelOptions ) )
-      ]
+      children: DensityBuoyancyCommonConstants.BUOYANCY_FLUID_MATERIALS.map( material => {
+        return new AquaRadioButton( model.liquidMaterialProperty, material,
+          new Text( material.nameProperty, radioButtonLabelOptions ), {
+            tandem: radioButtonGroupTandem.createTandem( `${material.tandemName}RadioButton` ),
+            visible: VISIBLE_FLUIDS.includes( material )
+          } );
+      } )
     } );
     const fluidTitle = new Text( DensityBuoyancyCommonStrings.fluid, {
       font: DensityBuoyancyCommonConstants.TITLE_FONT,

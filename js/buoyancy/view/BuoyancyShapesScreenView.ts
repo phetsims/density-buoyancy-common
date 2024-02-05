@@ -45,12 +45,7 @@ export default class BuoyancyShapesScreenView extends SecondaryMassScreenView<Bu
     }, options ) );
 
     const densityControlPanel = new Panel( new DensityControlNode( model.liquidMaterialProperty, [
-      Material.GASOLINE,
-      Material.OIL,
-      Material.WATER,
-      Material.SEAWATER,
-      Material.HONEY,
-      Material.MERCURY,
+      ...DensityBuoyancyCommonConstants.BUOYANCY_FLUID_MATERIALS,
       Material.DENSITY_C,
       Material.DENSITY_D
     ], this.popupLayer, tandem.createTandem( 'densityControlNode' ) ), DensityBuoyancyCommonConstants.PANEL_OPTIONS );

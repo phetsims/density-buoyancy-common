@@ -91,6 +91,23 @@ const DensityBuoyancyCommonConstants = {
     Material.GOLD
   ],
 
+  BUOYANCY_FLUID_MATERIALS: [
+    Material.GASOLINE,
+    Material.OIL,
+    Material.WATER,
+    Material.SEAWATER,
+    Material.HONEY,
+    Material.MERCURY
+  ],
+
+  BUOYANCY_FLUID_MYSTERY_MATERIALS: [
+    Material.DENSITY_A,
+    Material.DENSITY_B,
+    Material.DENSITY_C,
+    Material.DENSITY_D,
+    Material.DENSITY_E,
+    Material.DENSITY_F
+  ],
   VOLUME_PATTERN_STRING_PROPERTY: new DerivedProperty( [
     DensityBuoyancyCommonPreferences.volumeUnitsProperty,
     litersPatternStringProperty,

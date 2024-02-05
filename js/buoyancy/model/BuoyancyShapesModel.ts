@@ -29,7 +29,6 @@ import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import { MassShape } from '../../common/model/MassShape.js';
 import TProperty from '../../../../axon/js/TProperty.js';
 import isSettingPhetioStateProperty from '../../../../tandem/js/isSettingPhetioStateProperty.js';
-import ReferenceIO from '../../../../tandem/js/types/ReferenceIO.js';
 
 export type BuoyancyShapesModelOptions = DensityBuoyancyModelOptions;
 
@@ -67,7 +66,7 @@ export default class BuoyancyShapesModel extends DensityBuoyancyModel {
 
     this.materialProperty = new Property( Material.WOOD, {
       tandem: tandem.createTandem( 'materialProperty' ),
-      phetioValueType: ReferenceIO( Material.MaterialIO )
+      phetioValueType: Material.MaterialIO
     } );
 
     this.secondaryMassVisibleProperty = new BooleanProperty( false );

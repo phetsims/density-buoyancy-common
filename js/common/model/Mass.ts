@@ -213,6 +213,7 @@ export default abstract class Mass extends PhetioObject {
 
   // Here just for instrumentation, see https://github.com/phetsims/density/issues/112
   // This can only hide it, but won't make it visible.
+  // TODO: Definitely name it for "phet-io" and not "studio", https://github.com/phetsims/buoyancy/issues/51
   public readonly studioVisibleProperty: Property<boolean>;
 
   public readonly materialProperty: Property<Material>;
@@ -335,7 +336,11 @@ export default abstract class Mass extends PhetioObject {
     }, config.inputEnabledPropertyOptions ) );
 
     this.internalVisibleProperty = new BooleanProperty( config.visible, {
-      tandem: Tandem.OPT_OUT
+      phetioDocumentation: 'For internal use only',
+
+      // instrumentation is needed for PhET-iO State only, not customizable.
+      tandem: tandem?.createTandem( 'internalVisibleProperty' ),
+      phetioReadOnly: true
     } );
 
     this.studioVisibleProperty = new BooleanProperty( true, {
@@ -729,7 +734,7 @@ export default abstract class Mass extends PhetioObject {
     this.gravityForceInterpolatedProperty.dispose();
     this.buoyancyForceInterpolatedProperty.dispose();
     this.contactForceInterpolatedProperty.dispose();
-
+    this.internalVisibleProperty.dispose();
     super.dispose();
   }
 

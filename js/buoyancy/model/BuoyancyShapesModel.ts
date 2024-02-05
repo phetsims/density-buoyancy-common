@@ -35,7 +35,6 @@ export type BuoyancyShapesModelOptions = DensityBuoyancyModelOptions;
 export default class BuoyancyShapesModel extends DensityBuoyancyModel {
 
   public readonly modeProperty: Property<TwoBlockMode>;
-  public readonly secondaryMassVisibleProperty: Property<boolean>;
   public readonly densityExpandedProperty: Property<boolean>;
   public readonly leftScale: Scale;
   public readonly poolScale: Scale;
@@ -69,7 +68,6 @@ export default class BuoyancyShapesModel extends DensityBuoyancyModel {
       phetioValueType: Material.MaterialIO
     } );
 
-    this.secondaryMassVisibleProperty = new BooleanProperty( false );
     this.densityExpandedProperty = new BooleanProperty( false );
 
     this.leftScale = new Scale( this.engine, this.gravityProperty, {
@@ -257,7 +255,6 @@ export default class BuoyancyShapesModel extends DensityBuoyancyModel {
   public override reset(): void {
     this.modeProperty.reset();
 
-    this.secondaryMassVisibleProperty.reset();
     this.densityExpandedProperty.reset();
 
     this.primaryShapeProperty.reset();

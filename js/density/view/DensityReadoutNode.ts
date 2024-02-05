@@ -41,7 +41,8 @@ const MAX_LABEL_WIDTH = 80;
 
 export default class DensityReadoutNode extends Node {
 
-  public constructor( densityAProperty: TReadOnlyProperty<number>, densityBProperty: TReadOnlyProperty<number>, secondaryMassVisibleProperty: TReadOnlyProperty<boolean>, options?: NodeOptions ) {
+  public constructor( densityAProperty: TReadOnlyProperty<number>, densityBProperty: TReadOnlyProperty<number>,
+                      secondaryMassVisibleProperty: TReadOnlyProperty<boolean>, options?: NodeOptions ) {
     super();
 
     const background = new Rectangle( 0, 0, WIDTH, HEIGHT, {

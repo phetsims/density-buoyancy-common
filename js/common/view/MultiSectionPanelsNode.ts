@@ -1,4 +1,4 @@
-// Copyright 2019-2022, University of Colorado Boulder
+// Copyright 2024, University of Colorado Boulder
 
 /**
  * A Panel with nodes that are separated by an HSeparator. When nodes are hidden, so will any HSeparators that are

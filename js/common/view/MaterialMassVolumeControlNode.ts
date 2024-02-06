@@ -1,4 +1,4 @@
-// Copyright 2019-2023, University of Colorado Boulder
+// Copyright 2019-2024, University of Colorado Boulder
 
 /**
  * A control that allows modification of the mass and volume (which can be linked, or unlinked for custom materials).

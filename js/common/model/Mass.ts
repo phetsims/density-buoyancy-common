@@ -417,7 +417,7 @@ export default abstract class Mass extends PhetioObject {
             } );
           }
           else {
-            // TODO: does this need an assertion just in case? https://github.com/phetsims/density-buoyancy-common/issues/86
+            // TODO: does this need an assertion just in case? https://github.com/phetsims/density-buoyancy-common/issues/93
             this.materialProperty.value = Material[ materialEnum.name as MaterialNonCustomIdentifier ];
           }
           enumLock = false;

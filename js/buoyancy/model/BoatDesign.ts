@@ -270,7 +270,7 @@ export default class BoatDesign {
    * @returns - Whether the water is completely filled
    */
   public static fillWaterVertexArray( waterY: number, boatX: number, boatY: number, liters: number, poolBounds: Bounds3, positionArray: Float32Array, wasFilled: boolean ): boolean {
-    // TODO: reduce duplication with below https://github.com/phetsims/density-buoyancy-common/issues/86
+    // TODO: reduce duplication with below https://github.com/phetsims/density-buoyancy-common/issues/91
     const outsideBottomY = -BoatDesign.DESIGN_BOAT_HEIGHT;
     const scale = Math.pow( liters, 1 / 3 ) * BoatDesign.ONE_LITER_SCALE_MULTIPLIER;
     const designY = boatY / scale + BoatDesign.DESIGN_CENTROID.y;

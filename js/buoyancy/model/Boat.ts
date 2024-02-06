@@ -148,7 +148,7 @@ export default class Boat extends Mass {
    */
   public override intersect( ray: Ray3, isTouch: boolean ): number | null {
     const scale = Math.pow( this.displacementVolumeProperty.value / 0.001, 1 / 3 );
-    // TODO: somewhat borrowed with Bottle, let's combine https://github.com/phetsims/density-buoyancy-common/issues/86
+    // TODO: somewhat borrowed with Bottle, let's combine https://github.com/phetsims/density-buoyancy-common/issues/91
     const translation = this.matrix.translation;
     const adjustedPosition = ray.position.minusXYZ( translation.x, translation.y, 0 ).dividedScalar( scale );
 

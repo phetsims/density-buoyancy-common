@@ -28,6 +28,7 @@ import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import BuoyancyExploreModel from '../model/BuoyancyExploreModel.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
+import arrayRemove from '../../../../phet-core/js/arrayRemove.js';
 
 // constants
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
@@ -130,14 +131,24 @@ export default class BuoyancyExploreScreenView extends SecondaryMassScreenView<B
       densityBText.visible = visible;
     } );
 
+    const displayedMysteryMaterials = [
+      Material.DENSITY_A,
+      Material.DENSITY_B
+    ];
+
+    const invisibleMaterials = [ ...DensityBuoyancyCommonConstants.BUOYANCY_FLUID_MYSTERY_MATERIALS ];
+    displayedMysteryMaterials.forEach( displayed => arrayRemove( invisibleMaterials, displayed ) );
+
     const bottomNode = new HBox( {
       spacing: 2 * MARGIN,
       children: [
         new Panel( new DensityControlNode( model.liquidMaterialProperty, [
           ...DensityBuoyancyCommonConstants.BUOYANCY_FLUID_MATERIALS,
-          Material.DENSITY_A,
-          Material.DENSITY_B
-        ], this.popupLayer, tandem.createTandem( 'densityControlNode' ) ), DensityBuoyancyCommonConstants.PANEL_OPTIONS ),
+          ...DensityBuoyancyCommonConstants.BUOYANCY_FLUID_MYSTERY_MATERIALS
+        ], this.popupLayer, {
+          invisibleMaterials: invisibleMaterials,
+          tandem: tandem.createTandem( 'densityControlNode' )
+        } ), DensityBuoyancyCommonConstants.PANEL_OPTIONS ),
         new Panel( new GravityControlNode( model.gravityProperty, this.popupLayer, tandem.createTandem( 'gravityControlNode' ) ), DensityBuoyancyCommonConstants.PANEL_OPTIONS )
       ]
     } );

@@ -28,6 +28,7 @@ import { DensityBuoyancyScreenViewOptions } from '../../common/view/DensityBuoya
 import { combineOptions } from '../../../../phet-core/js/optionize.js';
 import MaterialControlNode from '../../common/view/MaterialControlNode.js';
 import MultiSectionPanelsNode from '../../common/view/MultiSectionPanelsNode.js';
+import arrayRemove from '../../../../phet-core/js/arrayRemove.js';
 
 // constants
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
@@ -44,11 +45,20 @@ export default class BuoyancyShapesScreenView extends SecondaryMassScreenView<Bu
       cameraLookAt: DensityBuoyancyCommonConstants.BUOYANCY_CAMERA_LOOK_AT
     }, options ) );
 
-    const densityControlPanel = new Panel( new DensityControlNode( model.liquidMaterialProperty, [
-      ...DensityBuoyancyCommonConstants.BUOYANCY_FLUID_MATERIALS,
+    const displayedMysteryMaterials = [
       Material.DENSITY_C,
       Material.DENSITY_D
-    ], this.popupLayer, tandem.createTandem( 'densityControlNode' ) ), DensityBuoyancyCommonConstants.PANEL_OPTIONS );
+    ];
+    const invisibleMaterials = [ ...DensityBuoyancyCommonConstants.BUOYANCY_FLUID_MYSTERY_MATERIALS ];
+    displayedMysteryMaterials.forEach( displayed => arrayRemove( invisibleMaterials, displayed ) );
+
+    const densityControlPanel = new Panel( new DensityControlNode( model.liquidMaterialProperty, [
+      ...DensityBuoyancyCommonConstants.BUOYANCY_FLUID_MATERIALS,
+      ...DensityBuoyancyCommonConstants.BUOYANCY_FLUID_MYSTERY_MATERIALS
+    ], this.popupLayer, {
+      invisibleMaterials: invisibleMaterials,
+      tandem: tandem.createTandem( 'densityControlNode' )
+    } ), DensityBuoyancyCommonConstants.PANEL_OPTIONS );
 
     this.addChild( new AlignBox( densityControlPanel, {
       alignBoundsProperty: this.visibleBoundsProperty,

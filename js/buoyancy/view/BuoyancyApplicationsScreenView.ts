@@ -34,6 +34,7 @@ import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import BuoyancyApplicationsModel, { Scene } from '../model/BuoyancyApplicationsModel.js';
 import DensityReadoutListNode from './DensityReadoutListNode.js';
+import arrayRemove from '../../../../phet-core/js/arrayRemove.js';
 
 // constants
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
@@ -221,11 +222,21 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
       rightBoatContent.visible = scene === Scene.BOAT;
     } );
 
-    const densityControlPanel = new Panel( new DensityControlNode( model.liquidMaterialProperty, [
-      ...DensityBuoyancyCommonConstants.BUOYANCY_FLUID_MATERIALS,
+    const displayedMysteryMaterials = [
       Material.DENSITY_E,
       Material.DENSITY_F
-    ], this.popupLayer, tandem.createTandem( 'densityControlNode' ) ), DensityBuoyancyCommonConstants.PANEL_OPTIONS );
+    ];
+
+    const invisibleMaterials = [ ...DensityBuoyancyCommonConstants.BUOYANCY_FLUID_MYSTERY_MATERIALS ];
+    displayedMysteryMaterials.forEach( displayed => arrayRemove( invisibleMaterials, displayed ) );
+
+    const densityControlPanel = new Panel( new DensityControlNode( model.liquidMaterialProperty, [
+      ...DensityBuoyancyCommonConstants.BUOYANCY_FLUID_MATERIALS,
+      ...DensityBuoyancyCommonConstants.BUOYANCY_FLUID_MYSTERY_MATERIALS
+    ], this.popupLayer, {
+      invisibleMaterials: invisibleMaterials,
+      tandem: tandem.createTandem( 'densityControlNode' )
+    } ), DensityBuoyancyCommonConstants.PANEL_OPTIONS );
 
     this.addChild( new AlignBox( densityControlPanel, {
       alignBoundsProperty: this.visibleBoundsProperty,

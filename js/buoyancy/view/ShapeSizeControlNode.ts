@@ -106,7 +106,7 @@ export default class ShapeSizeControlNode extends VBox {
     } );
 
     this.children = [
-      // TODO: ensure maxWidth for combo box contents so this isn't an issue. How do we want to do layout? https://github.com/phetsims/tasks/issues/1129
+      // TODO: ensure maxWidth for combo box contents so this isn't an issue. How do we want to do layout? https://github.com/phetsims/density-buoyancy-common/issues/86
       new HBox( {
         spacing: 5,
         children: [
@@ -127,7 +127,7 @@ export default class ShapeSizeControlNode extends VBox {
             font: DensityBuoyancyCommonConstants.READOUT_FONT,
             maxWidth: 120
           } ),
-          new NumberDisplay( litersProperty, new Range( 0, 10 ), { // TODO: is 10 the most? https://github.com/phetsims/tasks/issues/1129
+          new NumberDisplay( litersProperty, new Range( 0, 10 ), { // TODO: is 10 the most? https://github.com/phetsims/density-buoyancy-common/issues/86
             valuePattern: DensityBuoyancyCommonConstants.VOLUME_PATTERN_STRING_PROPERTY,
             useRichText: true,
             decimalPlaces: 2,

@@ -341,11 +341,11 @@ export default class DensityMysteryModel extends BlockSetModel<BlockSet> {
     super( optionize<DensityMysteryModelOptions, EmptySelfOptions, BlockSetModelOptions<BlockSet>>()( {
       canShowForces: false,
 
-      // TODO: How can this type-check if I leave these out?!? --- oh we're expecting them in our providedOptions? https://github.com/phetsims/tasks/issues/1129
+      // TODO: How can this type-check if I leave these out?!? --- oh we're expecting them in our providedOptions? https://github.com/phetsims/density-buoyancy-common/issues/86
       initialMode: BlockSet.SET_1,
       BlockSet: BlockSet.enumeration,
 
-      // TODO: overridden (abstract) methods instead https://github.com/phetsims/tasks/issues/1129
+      // TODO: overridden (abstract) methods instead https://github.com/phetsims/density-buoyancy-common/issues/86
       createMassesCallback: createMasses,
       regenerateMassesCallback: regenerateMasses,
       positionMassesCallback: positionMasses

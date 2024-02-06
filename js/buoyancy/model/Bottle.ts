@@ -203,8 +203,7 @@ export default class Bottle extends Mass {
 
     assert && assert( !config.canRotate );
 
-    // TODO: Ask MK about why the parent options seem to be made optional, this cast shouldn't be needed https://github.com/phetsims/density-buoyancy-common/issues/86
-    super( engine, config as InstrumentedMassOptions );
+    super( engine, config );
 
     this.bottleBounds = Bounds2.NOTHING.copy();
     Bottle.getFlatIntersectionVertices().forEach( p => this.bottleBounds.addPoint( p ) );

@@ -42,8 +42,7 @@ export default class Cuboid extends Mass {
 
     assert && assert( !config.canRotate );
 
-    // TODO: Ask MK about why the parent options seem to be made optional, this cast shouldn't be needed https://github.com/phetsims/density-buoyancy-common/issues/86
-    super( engine, config as InstrumentedMassOptions );
+    super( engine, config );
 
     this.sizeProperty = new Property( size, {
       valueType: Bounds3,

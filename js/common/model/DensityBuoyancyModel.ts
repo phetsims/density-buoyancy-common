@@ -413,7 +413,7 @@ export default class DensityBuoyancyModel implements TModel {
 
     // If we have a boat that is NOT underwater, we'll assign masses into the boat's basin where relevant. Otherwise
     // anything will go just into the pool's basin.
-    if ( boat && boat.internalVisibleProperty.value && this.pool.liquidYInterpolatedProperty.currentValue < boat.basin.stepTop + 1e-7 ) {
+    if ( boat && boat.visibleProperty.value && this.pool.liquidYInterpolatedProperty.currentValue < boat.basin.stepTop + 1e-7 ) {
       this.masses.forEach( mass => {
         mass.containingBasin = boat.basin.isMassInside( mass ) ? boat.basin : ( this.pool.isMassInside( mass ) ? this.pool : null );
       } );

@@ -872,7 +872,7 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
   /**
    * Returns an icon for selection, given a scene setup callback.
    */
-  private static getAngledIcon( zoom: number, lookAt: Vector3, setupScene: ( scene: THREE.Scene ) => void ): Node {
+  protected static getAngledIcon( zoom: number, lookAt: Vector3, setupScene: ( scene: THREE.Scene ) => void, background: THREE.Color | null = new THREE.Color( 0xffffff ) ): Node {
     const width = Screen.MINIMUM_HOME_SCREEN_ICON_SIZE.width;
     const height = Screen.MINIMUM_HOME_SCREEN_ICON_SIZE.height;
 
@@ -891,8 +891,7 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
     moonLight.position.set( 2.0, -1.0, 1.0 );
     stage.threeScene.add( moonLight );
 
-    stage.threeScene.background = new THREE.Color( 0xffffff );
-
+    stage.threeScene.background = background;
 
     stage.threeCamera.position.copy( ThreeUtils.vectorToThree( new Vector3( 0, 0.4, 1 ) ) );
     stage.threeCamera.zoom = zoom;
@@ -928,7 +927,7 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
   /**
    * Returns an icon meant to be used as a fallback in case webgl is not available.
    */
-  private static getFallbackIcon(): Node {
+  protected static getFallbackIcon(): Node {
     return new Rectangle( 0, 0, Screen.MINIMUM_HOME_SCREEN_ICON_SIZE.width, Screen.MINIMUM_HOME_SCREEN_ICON_SIZE.height, {
       fill: 'gray'
     } );

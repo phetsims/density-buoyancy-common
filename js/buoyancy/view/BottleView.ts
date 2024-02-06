@@ -11,13 +11,18 @@ import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import Bottle from '../model/Bottle.js';
 import Material from '../../common/model/Material.js';
 
+type BottleDrawingData = {
+  group: THREE.Group;
+  backBottomMaterial: THREE.MeshBasicMaterial;
+  frontBottomMaterial: THREE.MeshBasicMaterial;
+};
+
+
 export default class BottleView extends MassView {
 
   public readonly bottle: Bottle;
 
   public constructor( bottle: Bottle ) {
-
-    const primaryGeometry = Bottle.getPrimaryGeometry();
 
     // @ts-expect-error
     super( bottle, new THREE.Geometry() );
@@ -25,74 +30,10 @@ export default class BottleView extends MassView {
     const bottomClipPlane = new THREE.Plane( new THREE.Vector3( 0, -1, 0 ), 0 );
     const topClipPlane = new THREE.Plane( new THREE.Vector3( 0, 1, 0 ), 0 );
 
-    const backTopMaterial = new THREE.MeshPhongMaterial( {
-      color: 0xffffff,
-      opacity: 0.4,
-      transparent: true,
-      side: THREE.BackSide,
-      depthWrite: false,
-      clippingPlanes: [ topClipPlane ]
-    } );
-    const backTop = new THREE.Mesh( primaryGeometry, backTopMaterial );
-    this.add( backTop );
+    const bottleDrawingData = BottleView.getBottleDrawingData( bottomClipPlane, topClipPlane );
 
-    const backBottomMaterial = new THREE.MeshPhongMaterial( {
-      color: 0x33FF33,
-      opacity: 0.8,
-      transparent: true,
-      side: THREE.BackSide,
-      depthWrite: false,
-      clippingPlanes: [ bottomClipPlane ]
-    } );
-    const backBottom = new THREE.Mesh( primaryGeometry, backBottomMaterial );
-    this.add( backBottom );
-
-    const frontTopMaterial = new THREE.MeshPhongMaterial( {
-      color: 0xffffff,
-      opacity: 0.4,
-      transparent: true,
-      side: THREE.FrontSide,
-      depthWrite: false,
-      clippingPlanes: [ topClipPlane ]
-    } );
-    const frontTop = new THREE.Mesh( primaryGeometry, frontTopMaterial );
-    this.add( frontTop );
-
-    const frontBottomMaterial = new THREE.MeshPhongMaterial( {
-      color: 0x33FF33,
-      opacity: 0.8,
-      transparent: true,
-      side: THREE.FrontSide,
-      // depthWrite: false, // TODO: hmmm? https://github.com/phetsims/density-buoyancy-common/issues/86
-      clippingPlanes: [ bottomClipPlane ]
-    } );
-    const frontBottom = new THREE.Mesh( primaryGeometry, frontBottomMaterial );
-    this.add( frontBottom );
-
-    // TODO: optimize https://github.com/phetsims/density-buoyancy-common/issues/86
-    const frontBottomForDepth = new THREE.Mesh( primaryGeometry, new THREE.MeshPhongMaterial( {
-      color: 0xFF0000,
-      opacity: 0,
-      transparent: true,
-      side: THREE.FrontSide,
-      clippingPlanes: [ bottomClipPlane ]
-    } ) );
-    this.add( frontBottomForDepth );
-
-    const frontTopForDepth = new THREE.Mesh( primaryGeometry, new THREE.MeshPhongMaterial( {
-      color: 0xFF0000,
-      opacity: 0,
-      transparent: true,
-      side: THREE.FrontSide,
-      clippingPlanes: [ topClipPlane ]
-    } ) );
-    this.add( frontTopForDepth );
-
-    const cap = new THREE.Mesh( Bottle.getCapGeometry(), new THREE.MeshPhongMaterial( {
-      color: 0xFF3333,
-      side: THREE.DoubleSide
-    } ) );
-    this.add( cap );
+    const bottleGroup = bottleDrawingData.group;
+    this.add( bottleGroup );
 
     const crossSectionPositionArray = Bottle.createCrossSectionVertexArray();
     const crossSectionNormalArray = new Float32Array( crossSectionPositionArray.length );
@@ -134,24 +75,13 @@ export default class BottleView extends MassView {
     } );
     const interiorSurface = new THREE.Mesh( interiorSurfaceGeometry, interiorSurfaceMaterial );
 
-    this.add( interiorSurface );
+    bottleGroup.add( interiorSurface );
 
-    // Set render order for all elements
-    [
-      frontTopForDepth,
-      frontTop,
-      interiorSurface,
-      frontBottomForDepth,
-      frontBottom,
-      backBottom,
-      backTop
-    ].forEach( ( view, index ) => {
-      view.renderOrder = -( index + 1 );
-    } );
+    interiorSurface.renderOrder = 2;
 
     Material.linkLiquidColor( bottle.interiorMaterialProperty, interiorSurfaceMaterial );
-    Material.linkLiquidColor( bottle.interiorMaterialProperty, backBottomMaterial );
-    Material.linkLiquidColor( bottle.interiorMaterialProperty, frontBottomMaterial );
+    Material.linkLiquidColor( bottle.interiorMaterialProperty, bottleDrawingData.backBottomMaterial );
+    Material.linkLiquidColor( bottle.interiorMaterialProperty, bottleDrawingData.frontBottomMaterial );
 
     this.bottle = bottle;
   }
@@ -163,6 +93,109 @@ export default class BottleView extends MassView {
     // TODO: dispose everything from above https://github.com/phetsims/density-buoyancy-common/issues/86
 
     super.dispose();
+  }
+
+  /**
+   * Factored out way to get the view object of the bottle. (mostly for use as an icon)
+   */
+  public static getBottleDrawingData(
+    bottomClipPlane: THREE.Plane = new THREE.Plane( new THREE.Vector3( 0, -1, 0 ), 0 ),
+    topClipPlane: THREE.Plane = new THREE.Plane( new THREE.Vector3( 0, 1, 0 ), 0 )
+  ): BottleDrawingData {
+
+    const primaryGeometry = Bottle.getPrimaryGeometry();
+
+    const bottleGroup = new THREE.Group();
+
+    const backTopMaterial = new THREE.MeshPhongMaterial( {
+      color: 0xffffff,
+      opacity: 0.4,
+      transparent: true,
+      side: THREE.BackSide,
+      depthWrite: false,
+      clippingPlanes: [ topClipPlane ]
+    } );
+    const backTop = new THREE.Mesh( primaryGeometry, backTopMaterial );
+    bottleGroup.add( backTop );
+
+    const backBottomMaterial = new THREE.MeshPhongMaterial( {
+      color: 0xFFFFFF,
+      opacity: 0.8,
+      transparent: true,
+      side: THREE.BackSide,
+      depthWrite: false,
+      clippingPlanes: [ bottomClipPlane ]
+    } );
+    const backBottom = new THREE.Mesh( primaryGeometry, backBottomMaterial );
+    bottleGroup.add( backBottom );
+
+    const frontTopMaterial = new THREE.MeshPhongMaterial( {
+      color: 0xffffff,
+      opacity: 0.4,
+      transparent: true,
+      side: THREE.FrontSide,
+      depthWrite: false,
+      clippingPlanes: [ topClipPlane ]
+    } );
+    const frontTop = new THREE.Mesh( primaryGeometry, frontTopMaterial );
+    bottleGroup.add( frontTop );
+
+    const frontBottomMaterial = new THREE.MeshPhongMaterial( {
+      color: Material.WATER.liquidColor!.value.toHexString(),
+      opacity: 0.5,
+      transparent: true,
+      side: THREE.FrontSide,
+      // depthWrite: false, // TODO: hmmm? https://github.com/phetsims/density-buoyancy-common/issues/86
+      clippingPlanes: [ bottomClipPlane ]
+    } );
+    const frontBottom = new THREE.Mesh( primaryGeometry, frontBottomMaterial );
+    bottleGroup.add( frontBottom );
+
+    // TODO: optimize https://github.com/phetsims/density-buoyancy-common/issues/86
+    const frontBottomForDepth = new THREE.Mesh( primaryGeometry, new THREE.MeshPhongMaterial( {
+      color: 0xFF0000,
+      opacity: 0,
+      transparent: true,
+      side: THREE.FrontSide,
+      clippingPlanes: [ bottomClipPlane ]
+    } ) );
+    bottleGroup.add( frontBottomForDepth );
+
+    const frontTopForDepth = new THREE.Mesh( primaryGeometry, new THREE.MeshPhongMaterial( {
+      color: 0xFF0000,
+      opacity: 0,
+      transparent: true,
+      side: THREE.FrontSide,
+      clippingPlanes: [ topClipPlane ]
+    } ) );
+    bottleGroup.add( frontTopForDepth );
+
+    const cap = new THREE.Mesh( Bottle.getCapGeometry(), new THREE.MeshPhongMaterial( {
+      color: 0xFF3333,
+      side: THREE.DoubleSide
+    } ) );
+    bottleGroup.add( cap );
+
+    // Set render order for all elements
+    [
+      frontTopForDepth,
+      frontTop,
+      null, // renderOrder place holder for interiorSurface
+      frontBottomForDepth,
+      frontBottom,
+      backBottom,
+      backTop
+    ].forEach( ( view, index ) => {
+      if ( view ) {
+        view.renderOrder = -( index + 1 );
+      }
+    } );
+
+    return {
+      group: bottleGroup,
+      backBottomMaterial: backBottomMaterial,
+      frontBottomMaterial: frontBottomMaterial
+    };
   }
 }
 

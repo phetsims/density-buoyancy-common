@@ -35,6 +35,9 @@ import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js'
 import BuoyancyApplicationsModel, { Scene } from '../model/BuoyancyApplicationsModel.js';
 import DensityReadoutListNode from './DensityReadoutListNode.js';
 import arrayRemove from '../../../../phet-core/js/arrayRemove.js';
+import ThreeUtils from '../../../../mobius/js/ThreeUtils.js';
+import BoatView from './BoatView.js';
+import BottleView from './BottleView.js';
 
 // constants
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
@@ -292,11 +295,11 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
     const bottleBoatSelectionNode = new RectangularRadioButtonGroup( model.sceneProperty, [
       {
         value: Scene.BOTTLE,
-        createNode: () => new Text( '(bottle)' )
+        createNode: () => BuoyancyApplicationsScreenView.getBottleIcon()
       },
       {
         value: Scene.BOAT,
-        createNode: () => new Text( '(boat)' )
+        createNode: () => BuoyancyApplicationsScreenView.getBoatIcon()
       }
     ], {
       orientation: 'horizontal',
@@ -327,6 +330,36 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
     super.step( dt );
 
     this.positionResetSceneButton();
+  }
+
+  public static getBoatIcon(): Node {
+    if ( !ThreeUtils.isWebGLEnabled() ) {
+      return DensityBuoyancyScreenView.getFallbackIcon();
+    }
+
+    // Hard coded zoom and view-port vector help to center the icon.
+    const angledIcon = DensityBuoyancyScreenView.getAngledIcon( 6, new Vector3( -0.03, 0, 0 ), scene => {
+      scene.add( BoatView.getBoatDrawingData().group );
+    }, null );
+
+    angledIcon.setScaleMagnitude( 0.1 );
+
+    return angledIcon;
+  }
+
+  public static getBottleIcon(): Node {
+    if ( !ThreeUtils.isWebGLEnabled() ) {
+      return DensityBuoyancyScreenView.getFallbackIcon();
+    }
+
+    // Hard coded zoom and view-port vector help to center the icon.
+    const angledIcon = DensityBuoyancyScreenView.getAngledIcon( 3.4, new Vector3( -0.02, 0, 0 ), scene => {
+      scene.add( BottleView.getBottleDrawingData().group );
+    }, null );
+
+    angledIcon.setScaleMagnitude( 0.1 );
+
+    return angledIcon;
   }
 }
 

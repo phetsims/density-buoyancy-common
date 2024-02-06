@@ -14,6 +14,12 @@ import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import Boat from '../model/Boat.js';
 import BoatDesign from '../model/BoatDesign.js';
 
+type BoatDrawingData = {
+  backMiddleMaterial: THREE.MeshBasicMaterial;
+  group: THREE.Group;
+};
+
+
 export default class BoatView extends MassView {
   private readonly liquidMultilink: UnknownMultilink;
 
@@ -25,19 +31,21 @@ export default class BoatView extends MassView {
     super( boat, new THREE.Geometry() );
 
     // Clip planes at the boat's water level
-    const bottomBoatClipPlane = new THREE.Plane( new THREE.Vector3( 0, -1, 0 ), 0 );
     const topBoatClipPlane = new THREE.Plane( new THREE.Vector3( 0, 1, 0 ), 0 );
+    const bottomBoatClipPlane = new THREE.Plane( new THREE.Vector3( 0, -1, 0 ), 0 );
 
     // Clip planes at the pool's water level
-    const bottomPoolClipPlane = new THREE.Plane( new THREE.Vector3( 0, -1, 0 ), 0 );
     const topPoolClipPlane = new THREE.Plane( new THREE.Vector3( 0, 1, 0 ), 0 );
+    const bottomPoolClipPlane = new THREE.Plane( new THREE.Vector3( 0, -1, 0 ), 0 );
 
-    const boatOneLiterInteriorGeometry = BoatDesign.getPrimaryGeometry( 1, false, false, true, false );
-    const boatOneLiterExteriorGeometry = BoatDesign.getPrimaryGeometry( 1, true, true, false, false );
+    const boatDrawingData = BoatView.getBoatDrawingData(
+      topBoatClipPlane,
+      bottomBoatClipPlane,
+      topPoolClipPlane,
+      bottomPoolClipPlane
+    );
 
-    const boatOneLiterGeometry = BoatDesign.getPrimaryGeometry( 1 );
-
-    const boatGroup = new THREE.Group();
+    const boatGroup = boatDrawingData.group;
     this.add( boatGroup );
 
     boat.displacementVolumeProperty.link( volume => {
@@ -46,78 +54,6 @@ export default class BoatView extends MassView {
       boatGroup.scale.y = scale;
       boatGroup.scale.z = scale;
     } );
-
-    const backExteriorMaterial = new THREE.MeshPhongMaterial( {
-      color: 0xffffff,
-      opacity: 0.4,
-      transparent: true,
-      side: THREE.BackSide,
-      depthWrite: false
-    } );
-    const backExterior = new THREE.Mesh( boatOneLiterExteriorGeometry, backExteriorMaterial );
-    boatGroup.add( backExterior );
-
-    const backTopMaterial = new THREE.MeshPhongMaterial( {
-      color: 0xffffff,
-      opacity: 0.4,
-      transparent: true,
-      side: THREE.BackSide,
-      depthWrite: false,
-      clippingPlanes: [ topBoatClipPlane ]
-    } );
-    const backTop = new THREE.Mesh( boatOneLiterInteriorGeometry, backTopMaterial );
-    boatGroup.add( backTop );
-
-    const backMiddleMaterial = new THREE.MeshBasicMaterial( {
-      color: 0x33FF33, // will be replaced with liquid color below
-      opacity: 0.8,
-      transparent: true,
-      side: THREE.BackSide, // better appearance with this
-      depthWrite: false,
-      clippingPlanes: [ bottomBoatClipPlane, topPoolClipPlane ]
-    } );
-    const backMiddle = new THREE.Mesh( boatOneLiterInteriorGeometry, backMiddleMaterial );
-    boatGroup.add( backMiddle );
-
-    const backBottomMaterial = new THREE.MeshPhongMaterial( {
-      color: 0xffffff,
-      opacity: 0.4,
-      transparent: true,
-      side: THREE.BackSide,
-      depthWrite: false,
-      clippingPlanes: [ bottomBoatClipPlane, bottomPoolClipPlane ]
-    } );
-    const backBottom = new THREE.Mesh( boatOneLiterInteriorGeometry, backBottomMaterial );
-    boatGroup.add( backBottom );
-
-    const frontExteriorMaterial = new THREE.MeshPhongMaterial( {
-      color: 0xffffff,
-      opacity: 0.4,
-      transparent: true,
-      side: THREE.FrontSide,
-      depthWrite: false
-    } );
-    const frontExterior = new THREE.Mesh( boatOneLiterExteriorGeometry, frontExteriorMaterial );
-    boatGroup.add( frontExterior );
-
-    const frontTopMaterial = new THREE.MeshPhongMaterial( {
-      color: 0xffffff,
-      opacity: 0.4,
-      transparent: true,
-      side: THREE.FrontSide,
-      depthWrite: false,
-      clippingPlanes: [ topBoatClipPlane ]
-    } );
-    const frontTop = new THREE.Mesh( boatOneLiterInteriorGeometry, frontTopMaterial );
-    boatGroup.add( frontTop );
-
-    const frontForDepth = new THREE.Mesh( boatOneLiterGeometry, new THREE.MeshPhongMaterial( {
-      color: 0xFF0000,
-      opacity: 0,
-      transparent: true,
-      side: THREE.FrontSide
-    } ) );
-    boatGroup.add( frontForDepth );
 
     const topLiquidPositionArray = BoatDesign.createCrossSectionVertexArray();
     const topLiquidNormalArray = new Float32Array( topLiquidPositionArray.length );
@@ -172,18 +108,10 @@ export default class BoatView extends MassView {
     } );
 
     Material.linkLiquidColor( boat.liquidMaterialProperty, topLiquidMaterial );
-    Material.linkLiquidColor( boat.liquidMaterialProperty, backMiddleMaterial );
+    Material.linkLiquidColor( boat.liquidMaterialProperty, boatDrawingData.backMiddleMaterial );
 
-    // pool liquid will be at a higher value
-    frontForDepth.renderOrder = 4;
+    // see the static function for the rest of render orders
     topLiquid.renderOrder = 3;
-    frontTop.renderOrder = 2;
-    frontExterior.renderOrder = 1;
-    // block will be at 0
-    backBottom.renderOrder = -1;
-    backMiddle.renderOrder = -1;
-    backTop.renderOrder = -1;
-    backExterior.renderOrder = -2;
 
     this.boat = boat;
   }
@@ -197,6 +125,112 @@ export default class BoatView extends MassView {
     this.liquidMultilink.dispose();
 
     super.dispose();
+  }
+
+  /**
+   * Factored out way to get the view object of the boat. (mostly for use as an icon)
+   */
+  public static getBoatDrawingData(
+    topBoatClipPlane: THREE.Plane = new THREE.Plane( new THREE.Vector3( 0, 1, 0 ), 0 ),
+    bottomBoatClipPlane: THREE.Plane = new THREE.Plane( new THREE.Vector3( 0, -1, 0 ), 0 ),
+    topPoolClipPlane: THREE.Plane = new THREE.Plane( new THREE.Vector3( 0, 1, 0 ), 0 ),
+    bottomPoolClipPlane: THREE.Plane = new THREE.Plane( new THREE.Vector3( 0, -1, 0 ), 0 )
+  ): BoatDrawingData {
+
+    const boatOneLiterInteriorGeometry = BoatDesign.getPrimaryGeometry( 1, false, false, true, false );
+    const boatOneLiterExteriorGeometry = BoatDesign.getPrimaryGeometry( 1, true, true, false, false );
+
+    const boatOneLiterGeometry = BoatDesign.getPrimaryGeometry( 1 );
+
+    const boatGroup = new THREE.Group();
+
+    const backExteriorMaterial = new THREE.MeshPhongMaterial( {
+      color: 0xffffff,
+      opacity: 0.4,
+      transparent: true,
+      side: THREE.BackSide,
+      depthWrite: false
+    } );
+    const backExterior = new THREE.Mesh( boatOneLiterExteriorGeometry, backExteriorMaterial );
+    boatGroup.add( backExterior );
+
+    const backTopMaterial = new THREE.MeshPhongMaterial( {
+      color: 0xffffff,
+      opacity: 0.4,
+      transparent: true,
+      side: THREE.BackSide,
+      depthWrite: false,
+      clippingPlanes: [ topBoatClipPlane ]
+    } );
+    const backTop = new THREE.Mesh( boatOneLiterInteriorGeometry, backTopMaterial );
+    boatGroup.add( backTop );
+
+    const backMiddleMaterial = new THREE.MeshBasicMaterial( {
+      color: 0xffffff, // will be replaced with liquid color from Property updates
+      opacity: 0.8,
+      transparent: true,
+      side: THREE.BackSide, // better appearance with this
+      depthWrite: false,
+      clippingPlanes: [ bottomBoatClipPlane, topPoolClipPlane ]
+    } );
+
+    const backMiddle = new THREE.Mesh( boatOneLiterInteriorGeometry, backMiddleMaterial );
+    boatGroup.add( backMiddle );
+
+    const backBottomMaterial = new THREE.MeshPhongMaterial( {
+      color: 0xffffff,
+      opacity: 0.4,
+      transparent: true,
+      side: THREE.BackSide,
+      depthWrite: false,
+      clippingPlanes: [ bottomBoatClipPlane, bottomPoolClipPlane ]
+    } );
+    const backBottom = new THREE.Mesh( boatOneLiterInteriorGeometry, backBottomMaterial );
+    boatGroup.add( backBottom );
+
+    const frontExteriorMaterial = new THREE.MeshPhongMaterial( {
+      color: 0xffffff,
+      opacity: 0.4,
+      transparent: true,
+      side: THREE.FrontSide,
+      depthWrite: false
+    } );
+    const frontExterior = new THREE.Mesh( boatOneLiterExteriorGeometry, frontExteriorMaterial );
+    boatGroup.add( frontExterior );
+
+    const frontTopMaterial = new THREE.MeshPhongMaterial( {
+      color: 0xffffff,
+      opacity: 0.4,
+      transparent: true,
+      side: THREE.FrontSide,
+      depthWrite: false,
+      clippingPlanes: [ topBoatClipPlane ]
+    } );
+    const frontTop = new THREE.Mesh( boatOneLiterInteriorGeometry, frontTopMaterial );
+    boatGroup.add( frontTop );
+
+    const frontForDepth = new THREE.Mesh( boatOneLiterGeometry, new THREE.MeshPhongMaterial( {
+      color: 0xFF0000,
+      opacity: 0,
+      transparent: true,
+      side: THREE.FrontSide
+    } ) );
+    boatGroup.add( frontForDepth );
+
+    // pool liquid will be at a higher value
+    frontForDepth.renderOrder = 4;
+    frontTop.renderOrder = 2;
+    frontExterior.renderOrder = 1;
+    // block will be at 0
+    backBottom.renderOrder = -1;
+    backMiddle.renderOrder = -1;
+    backTop.renderOrder = -1;
+    backExterior.renderOrder = -2;
+
+    return {
+      group: boatGroup,
+      backMiddleMaterial: backMiddleMaterial
+    };
   }
 }
 

@@ -20,6 +20,8 @@ import DensityCompareModel, { BlockSet } from '../model/DensityCompareModel.js';
 import ComparisonNumberControl from './ComparisonNumberControl.js';
 import Bounds2 from '../../../../dot/js/Bounds2.js';
 import { combineOptions } from '../../../../phet-core/js/optionize.js';
+import ThreeUtils from '../../../../mobius/js/ThreeUtils.js';
+import DensityBuoyancyCommonColors from '../../common/view/DensityBuoyancyCommonColors.js';
 
 // constants
 const blockSetStringMap = {
@@ -183,6 +185,43 @@ export default class DensityCompareScreenView extends DensityBuoyancyScreenView<
     }
 
     this.positionPanel();
+  }
+
+  public static getDensityCompareIcon(): Node {
+    if ( !ThreeUtils.isWebGLEnabled() ) {
+      return DensityBuoyancyScreenView.getFallbackIcon();
+    }
+
+    return DensityBuoyancyScreenView.getAngledIcon( 4.6, new Vector3( 0, -0.02, 0 ), scene => {
+
+      const boxGeometry = new THREE.BoxGeometry( 0.1, 0.1, 0.1 );
+
+      const leftBox = new THREE.Mesh( boxGeometry, new THREE.MeshLambertMaterial( {
+        color: 0xffff00
+      } ) );
+      leftBox.position.copy( ThreeUtils.vectorToThree( new Vector3( -0.07, 0, 0 ) ) );
+      scene.add( leftBox );
+
+      const rightBox = new THREE.Mesh( boxGeometry, new THREE.MeshLambertMaterial( {
+        color: 0xff0000
+      } ) );
+      rightBox.position.copy( ThreeUtils.vectorToThree( new Vector3( 0.07, -0.06, 0 ) ) );
+      scene.add( rightBox );
+
+      const waterMaterial = new THREE.MeshLambertMaterial( {
+        transparent: true
+      } );
+      const waterColor = DensityBuoyancyCommonColors.materialWaterColorProperty.value;
+      waterMaterial.color = ThreeUtils.colorToThree( waterColor );
+      waterMaterial.opacity = waterColor.alpha;
+
+      // Fake it!
+      const waterGeometry = new THREE.BoxGeometry( 1, 1, 0.12 );
+
+      const water = new THREE.Mesh( waterGeometry, waterMaterial );
+      water.position.copy( ThreeUtils.vectorToThree( new Vector3( 0, -0.5, 0 ) ) );
+      scene.add( water );
+    } );
   }
 }
 

@@ -19,8 +19,6 @@ import Vector2 from '../../../../dot/js/Vector2.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
 import Screen from '../../../../joist/js/Screen.js';
 import ScreenView, { ScreenViewOptions } from '../../../../joist/js/ScreenView.js';
-import NodeTexture from '../../../../mobius/js/NodeTexture.js';
-import TextureQuad from '../../../../mobius/js/TextureQuad.js';
 import ThreeIsometricNode from '../../../../mobius/js/ThreeIsometricNode.js';
 import ThreeStage from '../../../../mobius/js/ThreeStage.js';
 import ThreeUtils from '../../../../mobius/js/ThreeUtils.js';
@@ -51,7 +49,6 @@ import ConeView from './ConeView.js';
 import CuboidView from './CuboidView.js';
 import DebugView from './DebugView.js';
 import DensityBuoyancyCommonColors from './DensityBuoyancyCommonColors.js';
-import DensityMaterials from './DensityMaterials.js';
 import EllipsoidView from './EllipsoidView.js';
 import ForceDiagramNode from './ForceDiagramNode.js';
 import HorizontalCylinderView from './HorizontalCylinderView.js';
@@ -930,122 +927,6 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
   protected static getFallbackIcon(): Node {
     return new Rectangle( 0, 0, Screen.MINIMUM_HOME_SCREEN_ICON_SIZE.width, Screen.MINIMUM_HOME_SCREEN_ICON_SIZE.height, {
       fill: 'gray'
-    } );
-  }
-
-  public static getDensityIntroIcon(): Node {
-    if ( !ThreeUtils.isWebGLEnabled() ) {
-      return DensityBuoyancyScreenView.getFallbackIcon();
-    }
-
-    return DensityBuoyancyScreenView.getAngledIcon( 5.5, new Vector3( 0, 0, 0 ), scene => {
-
-      const boxGeometry = new THREE.BoxGeometry( 0.1, 0.1, 0.1 );
-
-      const box = new THREE.Mesh( boxGeometry, new THREE.MeshStandardMaterial( {
-        map: DensityMaterials.woodColorTexture,
-        normalMap: DensityMaterials.woodNormalTexture,
-        normalScale: new THREE.Vector2( 1, -1 ),
-        roughnessMap: DensityMaterials.woodRoughnessTexture,
-        metalness: 0
-        // NOTE: Removed the environment map for now
-      } ) );
-      box.position.copy( ThreeUtils.vectorToThree( new Vector3( 0, 0, 0 ) ) );
-
-      scene.add( box );
-
-      const waterMaterial = new THREE.MeshLambertMaterial( {
-        transparent: true
-      } );
-      const waterColor = DensityBuoyancyCommonColors.materialWaterColorProperty.value;
-      waterMaterial.color = ThreeUtils.colorToThree( waterColor );
-      waterMaterial.opacity = waterColor.alpha;
-
-      // Fake it!
-      const waterGeometry = new THREE.BoxGeometry( 1, 1, 0.12 );
-
-      const water = new THREE.Mesh( waterGeometry, waterMaterial );
-      water.position.copy( ThreeUtils.vectorToThree( new Vector3( 0, -0.5, 0 ) ) );
-      scene.add( water );
-    } );
-  }
-
-  public static getDensityCompareIcon(): Node {
-    if ( !ThreeUtils.isWebGLEnabled() ) {
-      return DensityBuoyancyScreenView.getFallbackIcon();
-    }
-
-    return DensityBuoyancyScreenView.getAngledIcon( 4.6, new Vector3( 0, -0.02, 0 ), scene => {
-
-      const boxGeometry = new THREE.BoxGeometry( 0.1, 0.1, 0.1 );
-
-      const leftBox = new THREE.Mesh( boxGeometry, new THREE.MeshLambertMaterial( {
-        color: 0xffff00
-      } ) );
-      leftBox.position.copy( ThreeUtils.vectorToThree( new Vector3( -0.07, 0, 0 ) ) );
-      scene.add( leftBox );
-
-      const rightBox = new THREE.Mesh( boxGeometry, new THREE.MeshLambertMaterial( {
-        color: 0xff0000
-      } ) );
-      rightBox.position.copy( ThreeUtils.vectorToThree( new Vector3( 0.07, -0.06, 0 ) ) );
-      scene.add( rightBox );
-
-      const waterMaterial = new THREE.MeshLambertMaterial( {
-        transparent: true
-      } );
-      const waterColor = DensityBuoyancyCommonColors.materialWaterColorProperty.value;
-      waterMaterial.color = ThreeUtils.colorToThree( waterColor );
-      waterMaterial.opacity = waterColor.alpha;
-
-      // Fake it!
-      const waterGeometry = new THREE.BoxGeometry( 1, 1, 0.12 );
-
-      const water = new THREE.Mesh( waterGeometry, waterMaterial );
-      water.position.copy( ThreeUtils.vectorToThree( new Vector3( 0, -0.5, 0 ) ) );
-      scene.add( water );
-    } );
-  }
-
-  public static getDensityMysteryIcon(): Node {
-    if ( !ThreeUtils.isWebGLEnabled() ) {
-      return DensityBuoyancyScreenView.getFallbackIcon();
-    }
-
-    return DensityBuoyancyScreenView.getAngledIcon( 4, new Vector3( 0, -0.01, 0 ), scene => {
-
-      const boxGeometry = new THREE.BoxGeometry( 0.1, 0.1, 0.1 );
-
-      const box = new THREE.Mesh( boxGeometry, new THREE.MeshLambertMaterial( {
-        color: 0x00ff00
-      } ) );
-      box.position.copy( ThreeUtils.vectorToThree( new Vector3( 0, 0.03, 0 ) ) );
-
-      scene.add( box );
-
-      const labelSize = 0.1;
-      const label = new TextureQuad( new NodeTexture( new Text( '?', {
-        font: new PhetFont( {
-          size: 120
-        } ),
-        center: new Vector2( 128, 128 )
-      } ), 256, 256 ), labelSize, labelSize );
-
-      label.position.copy( ThreeUtils.vectorToThree( new Vector3( 0 - labelSize * 0.5, 0.03, 0.15 ) ) );
-
-      scene.add( label );
-
-      const scaleGeometry = ScaleView.getScaleGeometry();
-
-      const scale = new THREE.Mesh( scaleGeometry, new THREE.MeshStandardMaterial( {
-        color: 0xffffff,
-        roughness: 0.2,
-        metalness: 0.7,
-        emissive: 0x666666
-      } ) );
-
-      scale.position.copy( ThreeUtils.vectorToThree( new Vector3( 0, -0.03, 0 ) ) );
-      scene.add( scale );
     } );
   }
 }

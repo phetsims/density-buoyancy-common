@@ -17,9 +17,13 @@ import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import DensityReadoutNode from './DensityReadoutNode.js';
 import DensityIntroModel from '../model/DensityIntroModel.js';
-import { DensityBuoyancyScreenViewOptions } from '../../common/view/DensityBuoyancyScreenView.js';
+import DensityBuoyancyScreenView, { DensityBuoyancyScreenViewOptions } from '../../common/view/DensityBuoyancyScreenView.js';
 import { combineOptions } from '../../../../phet-core/js/optionize.js';
 import DensityBuoyancyCommonPreferences from '../../common/model/DensityBuoyancyCommonPreferences.js';
+import ThreeUtils from '../../../../mobius/js/ThreeUtils.js';
+import DensityMaterials from '../../common/view/DensityMaterials.js';
+import Vector3 from '../../../../dot/js/Vector3.js';
+import DensityBuoyancyCommonColors from '../../common/view/DensityBuoyancyCommonColors.js';
 
 // constants
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
@@ -100,6 +104,43 @@ export default class DensityIntroScreenView extends SecondaryMassScreenView<Dens
     this.addSecondMassControl( model.modeProperty );
 
     this.addChild( this.popupLayer );
+  }
+
+  public static getDensityIntroIcon(): Node {
+    if ( !ThreeUtils.isWebGLEnabled() ) {
+      return DensityBuoyancyScreenView.getFallbackIcon();
+    }
+
+    return DensityBuoyancyScreenView.getAngledIcon( 5.5, new Vector3( 0, 0, 0 ), scene => {
+
+      const boxGeometry = new THREE.BoxGeometry( 0.1, 0.1, 0.1 );
+
+      const box = new THREE.Mesh( boxGeometry, new THREE.MeshStandardMaterial( {
+        map: DensityMaterials.woodColorTexture,
+        normalMap: DensityMaterials.woodNormalTexture,
+        normalScale: new THREE.Vector2( 1, -1 ),
+        roughnessMap: DensityMaterials.woodRoughnessTexture,
+        metalness: 0
+        // NOTE: Removed the environment map for now
+      } ) );
+      box.position.copy( ThreeUtils.vectorToThree( new Vector3( 0, 0, 0 ) ) );
+
+      scene.add( box );
+
+      const waterMaterial = new THREE.MeshLambertMaterial( {
+        transparent: true
+      } );
+      const waterColor = DensityBuoyancyCommonColors.materialWaterColorProperty.value;
+      waterMaterial.color = ThreeUtils.colorToThree( waterColor );
+      waterMaterial.opacity = waterColor.alpha;
+
+      // Fake it!
+      const waterGeometry = new THREE.BoxGeometry( 1, 1, 0.12 );
+
+      const water = new THREE.Mesh( waterGeometry, waterMaterial );
+      water.position.copy( ThreeUtils.vectorToThree( new Vector3( 0, -0.5, 0 ) ) );
+      scene.add( water );
+    } );
   }
 }
 

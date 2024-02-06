@@ -7,7 +7,7 @@
  */
 
 import RefreshButton from '../../../../scenery-phet/js/buttons/RefreshButton.js';
-import { AlignBox, Text, VBox } from '../../../../scenery/js/imports.js';
+import { AlignBox, Node, Text, VBox } from '../../../../scenery/js/imports.js';
 import AccordionBox, { AccordionBoxOptions } from '../../../../sun/js/AccordionBox.js';
 import Panel, { PanelOptions } from '../../../../sun/js/Panel.js';
 import VerticalAquaRadioButtonGroup from '../../../../sun/js/VerticalAquaRadioButtonGroup.js';
@@ -18,6 +18,13 @@ import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js'
 import DensityMysteryModel, { BlockSet } from '../model/DensityMysteryModel.js';
 import DensityTableNode from './DensityTableNode.js';
 import { combineOptions } from '../../../../phet-core/js/optionize.js';
+import ThreeUtils from '../../../../mobius/js/ThreeUtils.js';
+import Vector3 from '../../../../dot/js/Vector3.js';
+import TextureQuad from '../../../../mobius/js/TextureQuad.js';
+import NodeTexture from '../../../../mobius/js/NodeTexture.js';
+import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
+import Vector2 from '../../../../dot/js/Vector2.js';
+import ScaleView from '../../common/view/ScaleView.js';
 
 // constants
 const blockSetStringMap = {
@@ -126,6 +133,48 @@ export default class DensityMysteryScreenView extends DensityBuoyancyScreenView<
     } ) );
 
     this.addChild( this.popupLayer );
+  }
+
+  public static getDensityMysteryIcon(): Node {
+    if ( !ThreeUtils.isWebGLEnabled() ) {
+      return DensityBuoyancyScreenView.getFallbackIcon();
+    }
+
+    return DensityBuoyancyScreenView.getAngledIcon( 4, new Vector3( 0, -0.01, 0 ), scene => {
+
+      const boxGeometry = new THREE.BoxGeometry( 0.1, 0.1, 0.1 );
+
+      const box = new THREE.Mesh( boxGeometry, new THREE.MeshLambertMaterial( {
+        color: 0x00ff00
+      } ) );
+      box.position.copy( ThreeUtils.vectorToThree( new Vector3( 0, 0.03, 0 ) ) );
+
+      scene.add( box );
+
+      const labelSize = 0.1;
+      const label = new TextureQuad( new NodeTexture( new Text( '?', {
+        font: new PhetFont( {
+          size: 120
+        } ),
+        center: new Vector2( 128, 128 )
+      } ), 256, 256 ), labelSize, labelSize );
+
+      label.position.copy( ThreeUtils.vectorToThree( new Vector3( 0 - labelSize * 0.5, 0.03, 0.15 ) ) );
+
+      scene.add( label );
+
+      const scaleGeometry = ScaleView.getScaleGeometry();
+
+      const scale = new THREE.Mesh( scaleGeometry, new THREE.MeshStandardMaterial( {
+        color: 0xffffff,
+        roughness: 0.2,
+        metalness: 0.7,
+        emissive: 0x666666
+      } ) );
+
+      scale.position.copy( ThreeUtils.vectorToThree( new Vector3( 0, -0.03, 0 ) ) );
+      scene.add( scale );
+    } );
   }
 }
 

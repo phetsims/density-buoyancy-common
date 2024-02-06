@@ -38,9 +38,16 @@ import arrayRemove from '../../../../phet-core/js/arrayRemove.js';
 import ThreeUtils from '../../../../mobius/js/ThreeUtils.js';
 import BoatView from './BoatView.js';
 import BottleView from './BottleView.js';
+import DensityBuoyancyCommonQueryParameters from '../../common/DensityBuoyancyCommonQueryParameters.js';
+import bottle_icon_png from '../../../images/bottle_icon_png.js';
+import boat_icon_png from '../../../images/boat_icon_png.js';
+import Vector2 from '../../../../dot/js/Vector2.js';
 
 // constants
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
+const ICON_SCALE = 0.1;
+const ICON_IMAGE_SCALE = new Vector2( ICON_SCALE, -ICON_SCALE );
+
 
 export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScreenView<BuoyancyApplicationsModel> {
 
@@ -295,11 +302,13 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
     const bottleBoatSelectionNode = new RectangularRadioButtonGroup( model.sceneProperty, [
       {
         value: Scene.BOTTLE,
-        createNode: () => BuoyancyApplicationsScreenView.getBottleIcon()
+        createNode: () => DensityBuoyancyCommonQueryParameters.generateIconImages ?
+                          BuoyancyApplicationsScreenView.getBottleIcon() : new Image( bottle_icon_png, { scale: ICON_IMAGE_SCALE } )
       },
       {
         value: Scene.BOAT,
-        createNode: () => BuoyancyApplicationsScreenView.getBoatIcon()
+        createNode: () => DensityBuoyancyCommonQueryParameters.generateIconImages ?
+                          BuoyancyApplicationsScreenView.getBoatIcon() : new Image( boat_icon_png, { scale: ICON_IMAGE_SCALE } )
       }
     ], {
       orientation: 'horizontal',
@@ -342,7 +351,7 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
       scene.add( BoatView.getBoatDrawingData().group );
     }, null );
 
-    angledIcon.setScaleMagnitude( 0.1 );
+    angledIcon.setScaleMagnitude( ICON_SCALE );
 
     return angledIcon;
   }
@@ -357,7 +366,7 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
       scene.add( BottleView.getBottleDrawingData().group );
     }, null );
 
-    angledIcon.setScaleMagnitude( 0.1 );
+    angledIcon.setScaleMagnitude( ICON_SCALE );
 
     return angledIcon;
   }

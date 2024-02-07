@@ -25,11 +25,14 @@ import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import IOType from '../../../../tandem/js/types/IOType.js';
 import { MassShape } from '../../common/model/MassShape.js';
 import optionize, { EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
+import Vector2 from '../../../../dot/js/Vector2.js';
+import Vector3 from '../../../../dot/js/Vector3.js';
 
 export type BoatOptions = StrictOmit<InstrumentedMassOptions, 'body' | 'shape' | 'volume' | 'material' | 'massShape'>;
 
 export default class Boat extends Mass {
 
+  // The volume that the boat can hold inside it.
   public readonly displacementVolumeProperty: NumberProperty;
   public readonly liquidMaterialProperty: TProperty<Material>;
   public readonly basin: BoatBasin;
@@ -63,6 +66,8 @@ export default class Boat extends Mass {
 
     super( engine, config );
 
+    const massLabelOffsetVector3 = new Vector3( 0, 0, 0 );
+
     // Update the shape when the block width or displacement changes
     Multilink.multilink( [ blockWidthProperty, displacementVolumeProperty ], ( blockWidth, displacementVolume ) => {
       if ( displacementVolume === 0 ) {
@@ -75,6 +80,10 @@ export default class Boat extends Mass {
       engine.updateFromVertices( this.body, vertices, true );
       this.shapeProperty.value = Shape.polygon( vertices ); // TODO: remove shapeProperty for perf? https://github.com/phetsims/density-buoyancy-common/issues/86
 
+      // Mass label on the bottom left of the boat, top because the shape is flipped.
+      const bounds = this.shapeProperty.value.getBounds();
+      massLabelOffsetVector3.setXYZ( bounds.left, bounds.top, 0 );
+
       this.volumeLock = true;
       this.volumeProperty.value = volume;
       this.volumeLock = false;
@@ -85,6 +94,8 @@ export default class Boat extends Mass {
 
     this.displacementVolumeProperty = displacementVolumeProperty;
     this.liquidMaterialProperty = liquidMaterialProperty;
+    this.massOffsetOrientationProperty.value = new Vector2( 1, -1 / 2 );
+    this.massOffsetProperty.value = massLabelOffsetVector3;
 
     this.basin = new BoatBasin( this );
 

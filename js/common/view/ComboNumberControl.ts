@@ -245,7 +245,9 @@ export default class ComboNumberControl<T> extends VBox {
       tandemName: 'valueProperty'
     } );
 
-    this.comboBox = new ComboBox( this.comboProperty, config.comboItems, config.listParent, config.comboBoxOptions );
+    this.comboBox = new ComboBox( this.comboProperty, config.comboItems, config.listParent, combineOptions<ComboBoxOptions>( {
+      tandem: config.tandem.createTandem( 'comboBox' )
+    }, config.comboBoxOptions ) );
 
     config.children = [
       this.numberControl,

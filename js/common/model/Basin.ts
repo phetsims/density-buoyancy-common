@@ -16,6 +16,7 @@ import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import InterpolatedProperty from './InterpolatedProperty.js';
 import Mass from './Mass.js';
 import { PhetioObjectOptions } from '../../../../tandem/js/PhetioObject.js';
+import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
 
 export type BasinOptions = {
   initialVolume?: number;
@@ -165,7 +166,7 @@ export default abstract class Basin {
     this.liquidYInterpolatedProperty.setNextValue( Basin.findRoot(
       this.stepBottom,
       this.stepTop,
-      1e-7,
+      DensityBuoyancyCommonConstants.TOLERANCE,
 
       // We're finding the root (zero), so that's where the empty volume equals the liquid volume
       yTest => this.getEmptyVolume( yTest ) - liquidVolume,

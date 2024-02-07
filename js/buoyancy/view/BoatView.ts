@@ -13,11 +13,14 @@ import MassView from '../../common/view/MassView.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import Boat from '../model/Boat.js';
 import BoatDesign from '../model/BoatDesign.js';
+import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 
 type BoatDrawingData = {
   backMiddleMaterial: THREE.MeshBasicMaterial;
   group: THREE.Group;
 };
+
+const VOLUME_TOLERANCE = DensityBuoyancyCommonConstants.TOLERANCE;
 
 
 export default class BoatView extends MassView {
@@ -85,7 +88,7 @@ export default class BoatView extends MassView {
 
       const maximumVolume = boat.basin.getEmptyVolume( Number.POSITIVE_INFINITY );
       const volume = boat.basin.liquidVolumeProperty.value;
-      const isFull = volume >= maximumVolume - 1e-7;
+      const isFull = volume >= maximumVolume - VOLUME_TOLERANCE;
       if ( boatLiquidVolume > 0 && ( !isFull || BoatDesign.shouldBoatWaterDisplayIfFull( liquidYInterpolatedProperty.value - boat.matrix.translation.y, liters ) ) ) {
         BoatDesign.fillCrossSectionVertexArray( relativeBoatLiquidY, liters, topLiquidPositionArray );
       }
@@ -95,7 +98,7 @@ export default class BoatView extends MassView {
       topLiquidGeometry.attributes.position.needsUpdate = true;
       topLiquidGeometry.computeBoundingSphere();
 
-      if ( boat.basin.liquidVolumeProperty.value > 1e-7 ) {
+      if ( boat.basin.liquidVolumeProperty.value > VOLUME_TOLERANCE ) {
         bottomBoatClipPlane.constant = boatLiquidY;
         topBoatClipPlane.constant = -boatLiquidY;
       }

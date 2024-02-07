@@ -27,6 +27,10 @@ const decimetersCubedPatternStringProperty = new PatternStringProperty( DensityB
   decimetersCubed: '{{value}}'
 }, { tandem: Tandem.OPT_OUT } );
 
+
+// A value applied across the code to prevent unexpected rounding errors.
+const TOLERANCE = 1e-7;
+
 const DensityBuoyancyCommonConstants = {
   // (read-only) {number} - Used for margins from the offset of screens or between panels/boxes
   MARGIN: 10,
@@ -52,6 +56,10 @@ const DensityBuoyancyCommonConstants = {
   READOUT_FONT: new PhetFont( 14 ),
 
   THUMB_SIZE: new Dimension2( 13, 22 ),
+
+  TOLERANCE: TOLERANCE,
+  DENSITY_MIN_SCREEN_VOLUME: 0.001 - TOLERANCE,
+  DENSITY_MAX_SCREEN_VOLUME: 0.01 + TOLERANCE,
 
   // (read-only) {Object}
   PANEL_OPTIONS: {

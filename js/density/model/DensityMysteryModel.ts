@@ -69,8 +69,8 @@ export default class DensityMysteryModel extends BlockSetModel<BlockSet> {
 
     const tandem = providedOptions.tandem;
 
-    const minScreenVolume = 0.001 - 1e-7;
-    const maxScreenVolume = 0.01 + 1e-7;
+    const minScreenVolume = DensityBuoyancyCommonConstants.DENSITY_MIN_SCREEN_VOLUME;
+    const maxScreenVolume = DensityBuoyancyCommonConstants.DENSITY_MAX_SCREEN_VOLUME;
 
     const commonCubeOptions = {
       minVolume: minScreenVolume,

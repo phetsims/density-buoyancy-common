@@ -26,6 +26,7 @@ import DensityBuoyancyCommonColors from '../../common/view/DensityBuoyancyCommon
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyModel from '../../common/model/DensityBuoyancyModel.js';
 import { MassTag } from '../../common/model/Mass.js';
+import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 
 export class BlockSet extends EnumerationValue {
   public static readonly SAME_MASS = new BlockSet();
@@ -89,8 +90,8 @@ export default class DensityCompareModel extends BlockSetModel<BlockSet> {
       } );
     };
 
-    const minScreenVolume = 0.001 - 1e-7;
-    const maxScreenVolume = 0.01 + 1e-7;
+    const minScreenVolume = DensityBuoyancyCommonConstants.DENSITY_MIN_SCREEN_VOLUME;
+    const maxScreenVolume = DensityBuoyancyCommonConstants.DENSITY_MAX_SCREEN_VOLUME;
 
     const commonCubeOptions = {
       minVolume: minScreenVolume,
@@ -130,161 +131,158 @@ export default class DensityCompareModel extends BlockSetModel<BlockSet> {
     const createMasses = ( model: DensityBuoyancyModel, blockSet: BlockSet ) => {
       let masses;
       switch( blockSet ) {
-        case BlockSet.SAME_MASS:
-          {
-            const sameMassYellowMass = Cube.createWithMass(
-              model.engine,
-              sameMassYellowMaterialProperty.value,
-              Vector2.ZERO,
-              5,
-              combineOptions<CubeOptions>( {}, commonCubeOptions, { tag: MassTag.B, tandem: sameMassTandem.createTandem( 'yellowBlock' ) } )
-            );
-            const sameMassBlueMass = Cube.createWithMass(
-              model.engine,
-              sameMassBlueMaterialProperty.value,
-              Vector2.ZERO,
-              5,
-              combineOptions<CubeOptions>( {}, commonCubeOptions, { tag: MassTag.A, tandem: sameMassTandem.createTandem( 'blueBlock' ) } )
-            );
-            const sameMassGreenMass = Cube.createWithMass(
-              model.engine,
-              sameMassGreenMaterialProperty.value,
-              Vector2.ZERO,
-              5,
-              combineOptions<CubeOptions>( {}, commonCubeOptions, { tag: MassTag.C, tandem: sameMassTandem.createTandem( 'greenBlock' ) } )
-            );
-            const sameMassRedMass = Cube.createWithMass(
-              model.engine,
-              sameMassRedMaterialProperty.value,
-              Vector2.ZERO,
-              5,
-              combineOptions<CubeOptions>( {}, commonCubeOptions, { tag: MassTag.D, tandem: sameMassTandem.createTandem( 'redBlock' ) } )
-            );
+        case BlockSet.SAME_MASS: {
+          const sameMassYellowMass = Cube.createWithMass(
+            model.engine,
+            sameMassYellowMaterialProperty.value,
+            Vector2.ZERO,
+            5,
+            combineOptions<CubeOptions>( {}, commonCubeOptions, { tag: MassTag.B, tandem: sameMassTandem.createTandem( 'yellowBlock' ) } )
+          );
+          const sameMassBlueMass = Cube.createWithMass(
+            model.engine,
+            sameMassBlueMaterialProperty.value,
+            Vector2.ZERO,
+            5,
+            combineOptions<CubeOptions>( {}, commonCubeOptions, { tag: MassTag.A, tandem: sameMassTandem.createTandem( 'blueBlock' ) } )
+          );
+          const sameMassGreenMass = Cube.createWithMass(
+            model.engine,
+            sameMassGreenMaterialProperty.value,
+            Vector2.ZERO,
+            5,
+            combineOptions<CubeOptions>( {}, commonCubeOptions, { tag: MassTag.C, tandem: sameMassTandem.createTandem( 'greenBlock' ) } )
+          );
+          const sameMassRedMass = Cube.createWithMass(
+            model.engine,
+            sameMassRedMaterialProperty.value,
+            Vector2.ZERO,
+            5,
+            combineOptions<CubeOptions>( {}, commonCubeOptions, { tag: MassTag.D, tandem: sameMassTandem.createTandem( 'redBlock' ) } )
+          );
 
-            sameMassYellowMaterialProperty.link( material => { sameMassYellowMass.materialProperty.value = material; } );
-            sameMassBlueMaterialProperty.link( material => { sameMassBlueMass.materialProperty.value = material; } );
-            sameMassGreenMaterialProperty.link( material => { sameMassGreenMass.materialProperty.value = material; } );
-            sameMassRedMaterialProperty.link( material => { sameMassRedMass.materialProperty.value = material; } );
+          sameMassYellowMaterialProperty.link( material => { sameMassYellowMass.materialProperty.value = material; } );
+          sameMassBlueMaterialProperty.link( material => { sameMassBlueMass.materialProperty.value = material; } );
+          sameMassGreenMaterialProperty.link( material => { sameMassGreenMass.materialProperty.value = material; } );
+          sameMassRedMaterialProperty.link( material => { sameMassRedMass.materialProperty.value = material; } );
 
-            masses = [ sameMassYellowMass, sameMassBlueMass, sameMassGreenMass, sameMassRedMass ];
+          masses = [ sameMassYellowMass, sameMassBlueMass, sameMassGreenMass, sameMassRedMass ];
 
-            // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
-            massProperty.lazyLink( massValue => {
-              sameMassYellowDensityProperty.value = massValue / sameMassYellowMass.volumeProperty.value;
-              sameMassBlueDensityProperty.value = massValue / sameMassBlueMass.volumeProperty.value;
-              sameMassGreenDensityProperty.value = massValue / sameMassGreenMass.volumeProperty.value;
-              sameMassRedDensityProperty.value = massValue / sameMassRedMass.volumeProperty.value;
-            } );
-          }
+          // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
+          massProperty.lazyLink( massValue => {
+            sameMassYellowDensityProperty.value = massValue / sameMassYellowMass.volumeProperty.value;
+            sameMassBlueDensityProperty.value = massValue / sameMassBlueMass.volumeProperty.value;
+            sameMassGreenDensityProperty.value = massValue / sameMassGreenMass.volumeProperty.value;
+            sameMassRedDensityProperty.value = massValue / sameMassRedMass.volumeProperty.value;
+          } );
+        }
           break;
-        case BlockSet.SAME_VOLUME:
-          {
-            // Our volume listener is triggered AFTER the cubes have phet-io applyState run, so we can't rely on
-            // inspecting their mass at that time (and instead need an external reference).
-            // See https://github.com/phetsims/density/issues/111
-            const massValues = {
-              yellow: 8,
-              blue: 6,
-              green: 4,
-              red: 2
-            };
-            const sameVolumeYellowMass = Cube.createWithMass(
-              model.engine,
-              sameVolumeYellowMaterialProperty.value,
-              Vector2.ZERO,
-              massValues.yellow,
-              combineOptions<CubeOptions>( {}, commonCubeOptions, { tag: MassTag.A, tandem: sameVolumeTandem.createTandem( 'yellowBlock' ) } )
-            );
-            const sameVolumeBlueMass = Cube.createWithMass(
-              model.engine,
-              sameVolumeBlueMaterialProperty.value,
-              Vector2.ZERO,
-              massValues.blue,
-              combineOptions<CubeOptions>( {}, commonCubeOptions, { tag: MassTag.C, tandem: sameVolumeTandem.createTandem( 'blueBlock' ) } )
-            );
-            const sameVolumeGreenMass = Cube.createWithMass(
-              model.engine,
-              sameVolumeGreenMaterialProperty.value,
-              Vector2.ZERO,
-              massValues.green,
-              combineOptions<CubeOptions>( {}, commonCubeOptions, { tag: MassTag.D, tandem: sameVolumeTandem.createTandem( 'greenBlock' ) } )
-            );
-            const sameVolumeRedMass = Cube.createWithMass(
-              model.engine,
-              sameVolumeRedMaterialProperty.value,
-              Vector2.ZERO,
-              massValues.red,
-              combineOptions<CubeOptions>( {}, commonCubeOptions, { tag: MassTag.B, tandem: sameVolumeTandem.createTandem( 'redBlock' ) } )
-            );
+        case BlockSet.SAME_VOLUME: {
+          // Our volume listener is triggered AFTER the cubes have phet-io applyState run, so we can't rely on
+          // inspecting their mass at that time (and instead need an external reference).
+          // See https://github.com/phetsims/density/issues/111
+          const massValues = {
+            yellow: 8,
+            blue: 6,
+            green: 4,
+            red: 2
+          };
+          const sameVolumeYellowMass = Cube.createWithMass(
+            model.engine,
+            sameVolumeYellowMaterialProperty.value,
+            Vector2.ZERO,
+            massValues.yellow,
+            combineOptions<CubeOptions>( {}, commonCubeOptions, { tag: MassTag.A, tandem: sameVolumeTandem.createTandem( 'yellowBlock' ) } )
+          );
+          const sameVolumeBlueMass = Cube.createWithMass(
+            model.engine,
+            sameVolumeBlueMaterialProperty.value,
+            Vector2.ZERO,
+            massValues.blue,
+            combineOptions<CubeOptions>( {}, commonCubeOptions, { tag: MassTag.C, tandem: sameVolumeTandem.createTandem( 'blueBlock' ) } )
+          );
+          const sameVolumeGreenMass = Cube.createWithMass(
+            model.engine,
+            sameVolumeGreenMaterialProperty.value,
+            Vector2.ZERO,
+            massValues.green,
+            combineOptions<CubeOptions>( {}, commonCubeOptions, { tag: MassTag.D, tandem: sameVolumeTandem.createTandem( 'greenBlock' ) } )
+          );
+          const sameVolumeRedMass = Cube.createWithMass(
+            model.engine,
+            sameVolumeRedMaterialProperty.value,
+            Vector2.ZERO,
+            massValues.red,
+            combineOptions<CubeOptions>( {}, commonCubeOptions, { tag: MassTag.B, tandem: sameVolumeTandem.createTandem( 'redBlock' ) } )
+          );
 
-            sameVolumeYellowMaterialProperty.link( material => { sameVolumeYellowMass.materialProperty.value = material; } );
-            sameVolumeBlueMaterialProperty.link( material => { sameVolumeBlueMass.materialProperty.value = material; } );
-            sameVolumeGreenMaterialProperty.link( material => { sameVolumeGreenMass.materialProperty.value = material; } );
-            sameVolumeRedMaterialProperty.link( material => { sameVolumeRedMass.materialProperty.value = material; } );
+          sameVolumeYellowMaterialProperty.link( material => { sameVolumeYellowMass.materialProperty.value = material; } );
+          sameVolumeBlueMaterialProperty.link( material => { sameVolumeBlueMass.materialProperty.value = material; } );
+          sameVolumeGreenMaterialProperty.link( material => { sameVolumeGreenMass.materialProperty.value = material; } );
+          sameVolumeRedMaterialProperty.link( material => { sameVolumeRedMass.materialProperty.value = material; } );
 
-            masses = [ sameVolumeYellowMass, sameVolumeBlueMass, sameVolumeGreenMass, sameVolumeRedMass ];
+          masses = [ sameVolumeYellowMass, sameVolumeBlueMass, sameVolumeGreenMass, sameVolumeRedMass ];
 
-            // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
-            volumeProperty.lazyLink( volume => {
-              const size = Cube.boundsFromVolume( volume );
-              sameVolumeYellowMass.updateSize( size );
-              sameVolumeBlueMass.updateSize( size );
-              sameVolumeGreenMass.updateSize( size );
-              sameVolumeRedMass.updateSize( size );
+          // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
+          volumeProperty.lazyLink( volume => {
+            const size = Cube.boundsFromVolume( volume );
+            sameVolumeYellowMass.updateSize( size );
+            sameVolumeBlueMass.updateSize( size );
+            sameVolumeGreenMass.updateSize( size );
+            sameVolumeRedMass.updateSize( size );
 
-              sameVolumeYellowDensityProperty.value = massValues.yellow / volume;
-              sameVolumeBlueDensityProperty.value = massValues.blue / volume;
-              sameVolumeGreenDensityProperty.value = massValues.green / volume;
-              sameVolumeRedDensityProperty.value = massValues.red / volume;
-            } );
-          }
+            sameVolumeYellowDensityProperty.value = massValues.yellow / volume;
+            sameVolumeBlueDensityProperty.value = massValues.blue / volume;
+            sameVolumeGreenDensityProperty.value = massValues.green / volume;
+            sameVolumeRedDensityProperty.value = massValues.red / volume;
+          } );
+        }
           break;
-        case BlockSet.SAME_DENSITY:
-          {
-            const sameDensityYellowMass = Cube.createWithMass(
-              model.engine,
-              sameDensityYellowMaterialProperty.value,
-              Vector2.ZERO,
-              3,
-              combineOptions<CubeOptions>( {}, commonCubeOptions, { tag: MassTag.B, tandem: sameDensityTandem.createTandem( 'yellowBlock' ) } )
-            );
-            const sameDensityBlueMass = Cube.createWithMass(
-              model.engine,
-              sameDensityBlueMaterialProperty.value,
-              Vector2.ZERO,
-              2,
-              combineOptions<CubeOptions>( {}, commonCubeOptions, { tag: MassTag.A, tandem: sameDensityTandem.createTandem( 'blueBlock' ) } )
-            );
-            const sameDensityGreenMass = Cube.createWithMass(
-              model.engine,
-              sameDensityGreenMaterialProperty.value,
-              Vector2.ZERO,
-              1,
-              combineOptions<CubeOptions>( {}, commonCubeOptions, { tag: MassTag.C, tandem: sameDensityTandem.createTandem( 'greenBlock' ) } )
-            );
-            const sameDensityRedMass = Cube.createWithMass(
-              model.engine,
-              sameDensityRedMaterialProperty.value,
-              Vector2.ZERO,
-              0.5,
-              combineOptions<CubeOptions>( {}, commonCubeOptions, { tag: MassTag.D, tandem: sameDensityTandem.createTandem( 'redBlock' ) } )
-            );
+        case BlockSet.SAME_DENSITY: {
+          const sameDensityYellowMass = Cube.createWithMass(
+            model.engine,
+            sameDensityYellowMaterialProperty.value,
+            Vector2.ZERO,
+            3,
+            combineOptions<CubeOptions>( {}, commonCubeOptions, { tag: MassTag.B, tandem: sameDensityTandem.createTandem( 'yellowBlock' ) } )
+          );
+          const sameDensityBlueMass = Cube.createWithMass(
+            model.engine,
+            sameDensityBlueMaterialProperty.value,
+            Vector2.ZERO,
+            2,
+            combineOptions<CubeOptions>( {}, commonCubeOptions, { tag: MassTag.A, tandem: sameDensityTandem.createTandem( 'blueBlock' ) } )
+          );
+          const sameDensityGreenMass = Cube.createWithMass(
+            model.engine,
+            sameDensityGreenMaterialProperty.value,
+            Vector2.ZERO,
+            1,
+            combineOptions<CubeOptions>( {}, commonCubeOptions, { tag: MassTag.C, tandem: sameDensityTandem.createTandem( 'greenBlock' ) } )
+          );
+          const sameDensityRedMass = Cube.createWithMass(
+            model.engine,
+            sameDensityRedMaterialProperty.value,
+            Vector2.ZERO,
+            0.5,
+            combineOptions<CubeOptions>( {}, commonCubeOptions, { tag: MassTag.D, tandem: sameDensityTandem.createTandem( 'redBlock' ) } )
+          );
 
-            sameDensityYellowMaterialProperty.link( material => { sameDensityYellowMass.materialProperty.value = material; } );
-            sameDensityBlueMaterialProperty.link( material => { sameDensityBlueMass.materialProperty.value = material; } );
-            sameDensityGreenMaterialProperty.link( material => { sameDensityGreenMass.materialProperty.value = material; } );
-            sameDensityRedMaterialProperty.link( material => { sameDensityRedMass.materialProperty.value = material; } );
+          sameDensityYellowMaterialProperty.link( material => { sameDensityYellowMass.materialProperty.value = material; } );
+          sameDensityBlueMaterialProperty.link( material => { sameDensityBlueMass.materialProperty.value = material; } );
+          sameDensityGreenMaterialProperty.link( material => { sameDensityGreenMass.materialProperty.value = material; } );
+          sameDensityRedMaterialProperty.link( material => { sameDensityRedMass.materialProperty.value = material; } );
 
-            masses = [ sameDensityYellowMass, sameDensityBlueMass, sameDensityGreenMass, sameDensityRedMass ];
+          masses = [ sameDensityYellowMass, sameDensityBlueMass, sameDensityGreenMass, sameDensityRedMass ];
 
-            // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
-            densityProperty.lazyLink( density => {
-              sameDensityYellowDensityProperty.value = density;
-              sameDensityBlueDensityProperty.value = density;
-              sameDensityGreenDensityProperty.value = density;
-              sameDensityRedDensityProperty.value = density;
-            } );
-          }
+          // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
+          densityProperty.lazyLink( density => {
+            sameDensityYellowDensityProperty.value = density;
+            sameDensityBlueDensityProperty.value = density;
+            sameDensityGreenDensityProperty.value = density;
+            sameDensityRedDensityProperty.value = density;
+          } );
+        }
           break;
         default:
           throw new Error( `unknown blockSet: ${blockSet}` );

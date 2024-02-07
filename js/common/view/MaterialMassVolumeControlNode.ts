@@ -231,7 +231,7 @@ export default class MaterialMassVolumeControlNode extends MaterialControlNode {
         useFullHeight: true
       },
       arrowButtonOptions: {
-        enabledEpsilon: 1e-7
+        enabledEpsilon: DensityBuoyancyCommonConstants.TOLERANCE
       },
       enabledRangeProperty: enabledMassRangeProperty,
       tandem: massNumberControlTandem,
@@ -258,7 +258,7 @@ export default class MaterialMassVolumeControlNode extends MaterialControlNode {
         useFullHeight: true
       },
       arrowButtonOptions: {
-        enabledEpsilon: 1e-7
+        enabledEpsilon: DensityBuoyancyCommonConstants.TOLERANCE
       },
       enabledRangeProperty: enabledVolumeRangeProperty,
       tandem: volumeNumberControlTandem,

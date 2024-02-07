@@ -94,8 +94,8 @@ export default class Boat extends Mass {
 
     this.displacementVolumeProperty = displacementVolumeProperty;
     this.liquidMaterialProperty = liquidMaterialProperty;
-    this.massOffsetOrientationProperty.value = new Vector2( 1, -1 / 2 );
-    this.massOffsetProperty.value = massLabelOffsetVector3;
+    this.massLabelOffsetOrientationProperty.value = new Vector2( 1, -1 / 2 );
+    this.massLabelOffsetProperty.value = massLabelOffsetVector3;
 
     this.basin = new BoatBasin( this );
 

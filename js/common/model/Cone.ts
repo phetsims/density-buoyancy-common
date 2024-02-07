@@ -94,7 +94,7 @@ export default class Cone extends Mass {
     this.volumeLock = false;
 
     this.forceOffsetProperty.value = new Vector3( 0, 0, 0 );
-    this.massOffsetProperty.value = new Vector3( 0, -this.heightProperty.value * ( this.isVertexUp ? 0.1 : 0.6 ), radius * 0.7 );
+    this.massLabelOffsetProperty.value = new Vector3( 0, -this.heightProperty.value * ( this.isVertexUp ? 0.1 : 0.6 ), radius * 0.7 );
   }
 
   /**

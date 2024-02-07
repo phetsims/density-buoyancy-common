@@ -84,7 +84,7 @@ export default class HorizontalCylinder extends Mass {
     this.volumeLock = false;
 
     this.forceOffsetProperty.value = new Vector3( 0, 0, radius );
-    this.massOffsetProperty.value = new Vector3( 0, -radius * 0.5, radius * 0.7 );
+    this.massLabelOffsetProperty.value = new Vector3( 0, -radius * 0.5, radius * 0.7 );
   }
 
   /**

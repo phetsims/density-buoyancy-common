@@ -54,7 +54,7 @@ export default class Cuboid extends Mass {
 
     this.stepArea = 0;
     this.stepMaximumVolume = 0;
-    this.massOffsetOrientationProperty.value = new Vector2( 1, -1 );
+    this.massLabelOffsetOrientationProperty.value = new Vector2( 1, -1 );
 
     this.updateSize( size );
   }
@@ -80,7 +80,7 @@ export default class Cuboid extends Mass {
       this.volumeLock = false;
 
       this.forceOffsetProperty.value = new Vector3( 0, 0, size.maxZ );
-      this.massOffsetProperty.value = new Vector3( size.minX, size.minY, size.maxZ );
+      this.massLabelOffsetProperty.value = new Vector3( size.minX, size.minY, size.maxZ );
 
       this.transformedEmitter.emit();
     }

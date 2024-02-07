@@ -858,8 +858,8 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
 
     this.massLabelNodes.forEach( massLabelNode => {
       const mass = massLabelNode.mass;
-      const modelPoint = this.modelToViewPoint( mass.matrix.translation.toVector3().plus( mass.massOffsetProperty.value ) );
-      const offsetPoint = scratchVector2.setXY( massLabelNode.width / 2, massLabelNode.height / 2 ).componentMultiply( mass.massOffsetOrientationProperty.value );
+      const modelPoint = this.modelToViewPoint( mass.matrix.translation.toVector3().plus( mass.massLabelOffsetProperty.value ) );
+      const offsetPoint = scratchVector2.setXY( massLabelNode.width / 2, massLabelNode.height / 2 ).componentMultiply( mass.massLabelOffsetOrientationProperty.value );
       massLabelNode.translation = modelPoint.plus( offsetPoint );
     } );
 

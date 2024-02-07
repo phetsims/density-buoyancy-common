@@ -64,7 +64,7 @@ export default class VerticalCylinder extends Mass {
     this.stepArea = 0;
     this.stepMaximumVolume = 0;
 
-    this.massOffsetOrientationProperty.value = new Vector2( 0, -1 );
+    this.massLabelOffsetOrientationProperty.value = new Vector2( 0, -1 );
 
     this.updateSize( radius, height );
   }
@@ -85,7 +85,7 @@ export default class VerticalCylinder extends Mass {
     this.volumeLock = false;
 
     this.forceOffsetProperty.value = new Vector3( 0, 0, radius );
-    this.massOffsetProperty.value = new Vector3( 0, -height / 2, radius );
+    this.massLabelOffsetProperty.value = new Vector3( 0, -height / 2, radius );
   }
 
   /**

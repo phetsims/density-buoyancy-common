@@ -253,11 +253,11 @@ export default abstract class Mass extends PhetioObject {
 
   // The 3D offset from the center-of-mass where the mass-label should be shown from.
   // The mass label will use this position (plus the masses' position) to determine a view point, then will use the
-  // massOffsetOrientationProperty to position based on that point.
-  public readonly massOffsetProperty: Property<Vector3>;
+  // massLabelOffsetOrientationProperty to position based on that point.
+  public readonly massLabelOffsetProperty: Property<Vector3>;
 
-  // Orientation multiplied by 1/2 width,height for an offset in view space
-  public readonly massOffsetOrientationProperty: Property<Vector2>;
+  // Orientation multiplied by 1/2 width,height of the MassLabelNode for an offset in view space
+  public readonly massLabelOffsetOrientationProperty: Property<Vector2>;
 
   // Transform matrix set before/after the physics engine steps, to be used to adjust/read the mass's position/transform.
   public readonly matrix: Matrix3;
@@ -516,13 +516,13 @@ export default abstract class Mass extends PhetioObject {
       tandem: Tandem.OPT_OUT
     } );
 
-    this.massOffsetProperty = new Property( Vector3.ZERO, {
+    this.massLabelOffsetProperty = new Property( Vector3.ZERO, {
       valueType: Vector3,
       valueComparisonStrategy: 'equalsFunction',
       tandem: Tandem.OPT_OUT
     } );
 
-    this.massOffsetOrientationProperty = new Vector2Property( Vector2.ZERO, {
+    this.massLabelOffsetOrientationProperty = new Vector2Property( Vector2.ZERO, {
       valueComparisonStrategy: 'equalsFunction',
       tandem: Tandem.OPT_OUT
     } );
@@ -711,7 +711,7 @@ export default abstract class Mass extends PhetioObject {
     this.buoyancyForceInterpolatedProperty.reset();
     this.contactForceInterpolatedProperty.reset();
 
-    // NOTE: NOT resetting bodyOffsetProperty/forceOffsetProperty/massOffsetProperty/massOffsetOrientationProperty on
+    // NOTE: NOT resetting bodyOffsetProperty/forceOffsetProperty/massLabelOffsetProperty/massLabelOffsetOrientationProperty on
     // purpose, it will be adjusted by subtypes whenever necessary, and a reset may break things here.
 
     this.resetPosition();

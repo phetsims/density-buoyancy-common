@@ -15,7 +15,7 @@ import AccordionBox, { AccordionBoxOptions } from '../../../../sun/js/AccordionB
 import Panel from '../../../../sun/js/Panel.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 import Material from '../../common/model/Material.js';
-import DensityControlNode from '../../common/view/DensityControlNode.js';
+import LiquidDensityControlNode from '../../common/view/LiquidDensityControlNode.js';
 import DisplayOptionsNode from '../../common/view/DisplayOptionsNode.js';
 import PrimarySecondaryPanelsNode from '../../common/view/PrimarySecondaryPanelsNode.js';
 import SecondaryMassScreenView from '../../common/view/SecondaryMassScreenView.js';
@@ -52,7 +52,7 @@ export default class BuoyancyShapesScreenView extends SecondaryMassScreenView<Bu
     const invisibleMaterials = [ ...DensityBuoyancyCommonConstants.BUOYANCY_FLUID_MYSTERY_MATERIALS ];
     displayedMysteryMaterials.forEach( displayed => arrayRemove( invisibleMaterials, displayed ) );
 
-    const densityControlPanel = new Panel( new DensityControlNode( model.liquidMaterialProperty, [
+    const densityControlPanel = new Panel( new LiquidDensityControlNode( model.liquidMaterialProperty, [
       ...DensityBuoyancyCommonConstants.BUOYANCY_FLUID_MATERIALS,
       ...DensityBuoyancyCommonConstants.BUOYANCY_FLUID_MYSTERY_MATERIALS
     ], this.popupLayer, {

@@ -19,7 +19,7 @@ import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonCo
 import Material from '../../common/model/Material.js';
 import DensityBuoyancyCommonColors from '../../common/view/DensityBuoyancyCommonColors.js';
 import { DensityBuoyancyScreenViewOptions } from '../../common/view/DensityBuoyancyScreenView.js';
-import DensityControlNode from '../../common/view/DensityControlNode.js';
+import LiquidDensityControlNode from '../../common/view/LiquidDensityControlNode.js';
 import DisplayOptionsNode from '../../common/view/DisplayOptionsNode.js';
 import GravityControlNode from '../../common/view/GravityControlNode.js';
 import PrimarySecondaryControlsNode from '../../common/view/PrimarySecondaryControlsNode.js';
@@ -142,7 +142,7 @@ export default class BuoyancyExploreScreenView extends SecondaryMassScreenView<B
     const bottomNode = new HBox( {
       spacing: 2 * MARGIN,
       children: [
-        new Panel( new DensityControlNode( model.liquidMaterialProperty, [
+        new Panel( new LiquidDensityControlNode( model.liquidMaterialProperty, [
           ...DensityBuoyancyCommonConstants.BUOYANCY_FLUID_MATERIALS,
           ...DensityBuoyancyCommonConstants.BUOYANCY_FLUID_MYSTERY_MATERIALS
         ], this.popupLayer, {

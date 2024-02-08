@@ -27,7 +27,7 @@ import Cube from '../../common/model/Cube.js';
 import Material from '../../common/model/Material.js';
 import DensityBuoyancyCommonColors from '../../common/view/DensityBuoyancyCommonColors.js';
 import DensityBuoyancyScreenView, { DensityBuoyancyScreenViewOptions } from '../../common/view/DensityBuoyancyScreenView.js';
-import DensityControlNode from '../../common/view/DensityControlNode.js';
+import LiquidDensityControlNode from '../../common/view/LiquidDensityControlNode.js';
 import DisplayOptionsNode from '../../common/view/DisplayOptionsNode.js';
 import MaterialMassVolumeControlNode from '../../common/view/MaterialMassVolumeControlNode.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
@@ -240,7 +240,7 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
     const invisibleMaterials = [ ...DensityBuoyancyCommonConstants.BUOYANCY_FLUID_MYSTERY_MATERIALS ];
     displayedMysteryMaterials.forEach( displayed => arrayRemove( invisibleMaterials, displayed ) );
 
-    const densityControlPanel = new Panel( new DensityControlNode( model.liquidMaterialProperty, [
+    const densityControlPanel = new Panel( new LiquidDensityControlNode( model.liquidMaterialProperty, [
       ...DensityBuoyancyCommonConstants.BUOYANCY_FLUID_MATERIALS,
       ...DensityBuoyancyCommonConstants.BUOYANCY_FLUID_MYSTERY_MATERIALS
     ], this.popupLayer, {

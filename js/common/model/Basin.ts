@@ -1,4 +1,4 @@
-// Copyright 2020-2023, University of Colorado Boulder
+// Copyright 2020-2024, University of Colorado Boulder
 
 /**
  * Represents a basin that a liquid can reside in at a specific level. This is used for the pool and liquid in the boat.

@@ -31,6 +31,7 @@ const shapeStringMap = {
   [ MassShape.CONE.name ]: DensityBuoyancyCommonStrings.shape.coneStringProperty,
   [ MassShape.INVERTED_CONE.name ]: DensityBuoyancyCommonStrings.shape.invertedConeStringProperty
 };
+// TODO: this should come from somewhere else, https://github.com/phetsims/buoyancy/issues/90
 const tandemNameMap = {
   [ MassShape.BLOCK.name ]: 'block',
   [ MassShape.ELLIPSOID.name ]: 'ellipsoid',

@@ -43,7 +43,6 @@ export default class BuoyancyApplicationsModel extends DensityBuoyancyModel {
   public readonly block: Cube;
   public override boat: Boat;
   public readonly rightScale: Scale;
-  public readonly poolScale: Scale;
 
   public constructor( options: BuoyancyApplicationsModelOptions ) {
 
@@ -87,16 +86,7 @@ export default class BuoyancyApplicationsModel extends DensityBuoyancyModel {
     } );
     this.availableMasses.push( this.rightScale );
 
-    this.poolScale = new Scale( this.engine, this.gravityProperty, {
-      matrix: Matrix3.translation( 0.3, -Scale.SCALE_BASE_BOUNDS.minY + this.poolBounds.minY ),
-      displayType: DisplayType.NEWTONS,
-      canMove: false,
-      tandem: tandem.createTandem( 'poolScale' )
-    } );
-    this.availableMasses.push( this.poolScale );
-
     // Adjust pool volume so that it's at the desired value WITH the pool scale inside.
-    this.pool.liquidVolumeProperty.value -= this.poolScale.volumeProperty.value;
     this.pool.liquidVolumeProperty.setInitialValue( this.pool.liquidVolumeProperty.value );
 
     // This instance lives for the lifetime of the simulation, so we don't need to remove this listener

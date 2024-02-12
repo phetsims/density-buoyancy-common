@@ -16,6 +16,8 @@ import Material from '../model/Material.js';
 import DensityMaterials from './DensityMaterials.js';
 import MassLabelNode from './MassLabelNode.js';
 import MaterialView from './MaterialView.js';
+import { InteractiveHighlightingNode, Node, Path } from '../../../../scenery/js/imports.js';
+import { Shape } from '../../../../kite/js/imports.js';
 
 const TAG_SIZE = 0.03;
 export const TAG_OFFSET = 0.005;
@@ -34,6 +36,8 @@ export default abstract class MassView extends THREE.Mesh {
 
   protected readonly tagHeight: number | null = null;
   protected readonly tagOffsetProperty: Property<Vector3> = new Property<Vector3>( Vector3.ZERO );
+
+  public focusableBox: Node;
 
   protected constructor( mass: Mass, initialGeometry: THREE.BufferGeometry ) {
     const materialView = DensityMaterials.getMaterialView( mass.materialProperty.value );
@@ -107,6 +111,21 @@ export default abstract class MassView extends THREE.Mesh {
         this.tagMesh!.position.set( offset.x, offset.y, offset.z + 0.0001 );
       } );
     }
+
+    const highlight = new Shape().rect( 0, 0, 100, 100 );
+
+    this.focusableBox = new InteractiveHighlightingNode( {
+
+    } );
+
+    this.focusableBox.addChild(
+      new Path( highlight, {
+        accessibleName: this.mass.nameProperty.value ? this.mass.nameProperty.value : 'Mass',
+        cursor: 'pointer',
+        tagName: 'div',
+        focusable: true
+      } )
+    );
   }
 
   /**

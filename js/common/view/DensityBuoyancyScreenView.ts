@@ -640,6 +640,15 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
         this.sceneNode.stage.threeScene.add( massView );
         this.massViews.push( massView );
 
+        const focusableBox = massView.focusableBox;
+        this.sceneNode.backgroundEventTarget.addChild( focusableBox );
+
+        mass.transformedEmitter.addListener( () => {
+            const translation = mass.matrix.translation;
+            focusableBox.translation = this.modelToViewPoint( new Vector3( translation.x, translation.y, 0 ) ).addXY( -50, -50 );
+          }
+        );
+
         if ( massView instanceof ScaleView ) {
 
           // eslint-disable-next-line no-simple-type-checking-assertions

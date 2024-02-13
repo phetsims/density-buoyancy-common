@@ -64,6 +64,8 @@ import Material from '../model/Material.js';
 import TEmitter from '../../../../axon/js/TEmitter.js';
 import PickRequired from '../../../../phet-core/js/types/PickRequired.js';
 import { PhetioObjectOptions } from '../../../../tandem/js/PhetioObject.js';
+import { Shape } from '../../../../kite/js/imports.js';
+import { ConvexHull2 } from '../../../../dot/js/imports.js';
 
 // constants
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
@@ -640,12 +642,29 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
         this.sceneNode.stage.threeScene.add( massView );
         this.massViews.push( massView );
 
-        const focusableBox = massView.focusableBox;
-        this.sceneNode.backgroundEventTarget.addChild( focusableBox );
+        const focusablePath = massView.focusablePath;
+        this.sceneNode.backgroundEventTarget.addChild( focusablePath );
 
         mass.transformedEmitter.addListener( () => {
             const translation = mass.matrix.translation;
-            focusableBox.translation = this.modelToViewPoint( new Vector3( translation.x, translation.y, 0 ) ).addXY( -50, -50 );
+            const bbox = mass.getLocalBounds();
+
+            const shiftedBbox = bbox.shifted( translation.toVector3() );
+
+            const viewPoints = [
+              this.modelToViewPoint( new Vector3( shiftedBbox.minX, shiftedBbox.minY, shiftedBbox.minZ ) ),
+              this.modelToViewPoint( new Vector3( shiftedBbox.minX, shiftedBbox.minY, shiftedBbox.maxZ ) ),
+              this.modelToViewPoint( new Vector3( shiftedBbox.minX, shiftedBbox.maxY, shiftedBbox.minZ ) ),
+              this.modelToViewPoint( new Vector3( shiftedBbox.minX, shiftedBbox.maxY, shiftedBbox.maxZ ) ),
+              this.modelToViewPoint( new Vector3( shiftedBbox.maxX, shiftedBbox.minY, shiftedBbox.minZ ) ),
+              this.modelToViewPoint( new Vector3( shiftedBbox.maxX, shiftedBbox.minY, shiftedBbox.maxZ ) ),
+              this.modelToViewPoint( new Vector3( shiftedBbox.maxX, shiftedBbox.maxY, shiftedBbox.minZ ) ),
+              this.modelToViewPoint( new Vector3( shiftedBbox.maxX, shiftedBbox.maxY, shiftedBbox.maxZ ) )
+            ];
+
+          focusablePath.shape = Shape.polygon( ConvexHull2.grahamScan( viewPoints, false ) );
+
+          focusablePath.focusHighlight = focusablePath.shape;
           }
         );
 
@@ -682,6 +701,12 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
     const onMassRemoved = ( mass: Mass ) => {
       // Mass view
       const massView = _.find( this.massViews, massView => massView.mass === mass )!;
+
+      // Focusable path
+      const focusablePath = massView.focusablePath;
+      this.sceneNode.backgroundEventTarget.removeChild( focusablePath );
+
+      // Remove the mass view
       this.sceneNode.stage.threeScene.remove( massView );
       arrayRemove( this.massViews, massView );
       massView.dispose();

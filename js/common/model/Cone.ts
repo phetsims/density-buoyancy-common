@@ -21,6 +21,7 @@ import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import Mass, { InstrumentedMassOptions, MASS_MAX_SHAPES_DIMENSION, MASS_MIN_SHAPES_DIMENSION, MassOptions } from './Mass.js';
 import PhysicsEngine from './PhysicsEngine.js';
 import { MassShape } from './MassShape.js';
+import Bounds3 from '../../../../dot/js/Bounds3.js';
 
 const BOTTOM_FROM_CENTER_RATIO = 0.25; // center of mass to the bottom is 1/4 of the height of the cone
 const TOP_FROM_CENTER_RATIO = 0.75; // center of mass to the tip is 3/4 of the height of the cone
@@ -74,6 +75,11 @@ export default class Cone extends Mass {
     this.stepMaximumVolume = 0;
 
     this.updateSize( radius, height );
+  }
+
+  public override getLocalBounds(): Bounds3 {
+    const bounds2 = this.shapeProperty.value.bounds;
+    return new Bounds3( bounds2.minX, bounds2.minY, -this.radiusProperty.value, bounds2.maxX, bounds2.maxY, this.radiusProperty.value );
   }
 
   /**

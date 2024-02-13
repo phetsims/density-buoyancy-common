@@ -20,6 +20,7 @@ import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import Mass, { InstrumentedMassOptions, MASS_MAX_SHAPES_DIMENSION, MASS_MIN_SHAPES_DIMENSION } from './Mass.js';
 import PhysicsEngine from './PhysicsEngine.js';
 import { MassShape } from './MassShape.js';
+import Bounds3 from '../../../../dot/js/Bounds3.js';
 
 export type HorizontalCylinderOptions = StrictOmit<InstrumentedMassOptions, 'body' | 'shape' | 'volume' | 'massShape'>;
 
@@ -85,6 +86,11 @@ export default class HorizontalCylinder extends Mass {
 
     this.forceOffsetProperty.value = new Vector3( 0, 0, radius );
     this.massLabelOffsetProperty.value = new Vector3( 0, -radius * 0.5, radius * 0.7 );
+  }
+
+  public override getLocalBounds(): Bounds3 {
+    const bounds2 = this.shapeProperty.value.bounds;
+    return new Bounds3( bounds2.minX, bounds2.minY, -this.radiusProperty.value, bounds2.maxX, bounds2.maxY, this.radiusProperty.value );
   }
 
   /**

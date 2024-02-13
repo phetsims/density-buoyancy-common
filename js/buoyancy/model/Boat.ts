@@ -27,6 +27,7 @@ import { MassShape } from '../../common/model/MassShape.js';
 import optionize, { EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
+import { Bounds3 } from '../../../../dot/js/imports.js';
 
 export type BoatOptions = StrictOmit<InstrumentedMassOptions, 'body' | 'shape' | 'volume' | 'material' | 'massShape'>;
 
@@ -109,6 +110,13 @@ export default class Boat extends Mass {
     this.intersectionGroup = new THREE.Group();
     const intersectionMesh = new THREE.Mesh( BoatDesign.getPrimaryGeometry( 1 ), new THREE.MeshLambertMaterial() );
     this.intersectionGroup.add( intersectionMesh );
+  }
+
+
+  public override getLocalBounds(): Bounds3 {
+    const bounds2 = this.shapeProperty.value.bounds;
+    // TODO: Boat geometry is more complex than this, could be improved https://github.com/phetsims/buoyancy/issues/76
+    return new Bounds3( bounds2.minX, bounds2.minY, -bounds2.minY, bounds2.maxX, bounds2.maxY, bounds2.minY );
   }
 
   /**

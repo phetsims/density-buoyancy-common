@@ -46,6 +46,7 @@ import TinyProperty from '../../../../axon/js/TinyProperty.js';
 import NullableIO from '../../../../tandem/js/types/NullableIO.js';
 import StringIO from '../../../../tandem/js/types/StringIO.js';
 import NumberIO from '../../../../tandem/js/types/NumberIO.js';
+import { Bounds3 } from '../../../../dot/js/imports.js';
 
 // constants
 export class MassTag extends EnumerationValue {
@@ -576,6 +577,11 @@ export default abstract class Mass extends PhetioObject {
   public isBoat(): boolean {
     return false;
   }
+
+  /**
+   * Returns the bounds of this mass.
+   */
+  public abstract getLocalBounds(): Bounds3;
 
   /**
    * Returns the cross-sectional area of this object at a given y level.

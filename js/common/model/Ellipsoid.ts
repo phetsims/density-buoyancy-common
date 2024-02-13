@@ -57,6 +57,10 @@ export default class Ellipsoid extends Mass {
     this.updateSize( size );
   }
 
+  public override getLocalBounds(): Bounds3 {
+    return this.sizeProperty.value;
+  }
+
   /**
    * Updates the size of the ellipsoid.
    */

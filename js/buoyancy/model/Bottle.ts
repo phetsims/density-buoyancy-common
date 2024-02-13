@@ -86,6 +86,7 @@ import Multilink from '../../../../axon/js/Multilink.js';
 import IOType from '../../../../tandem/js/types/IOType.js';
 import { MassShape } from '../../common/model/MassShape.js';
 import ReadOnlyProperty from '../../../../axon/js/ReadOnlyProperty.js';
+import { Bounds3 } from '../../../../dot/js/imports.js';
 
 // constants (in logical coordinates)
 const BODY_CORNER_RADIUS = 0.02; // Used both between the taper/body and between the body/base
@@ -271,6 +272,11 @@ export default class Bottle extends Mass {
     raycaster.intersectObject( this.intersectionGroup, true, intersections );
 
     return intersections.length ? intersections[ 0 ].distance : null;
+  }
+
+  public override getLocalBounds(): Bounds3 {
+    const bounds2 = this.shapeProperty.value.bounds;
+    return new Bounds3( bounds2.minX, bounds2.minY, -bounds2.minY, bounds2.maxX, bounds2.maxY, bounds2.minY );
   }
 
   /**

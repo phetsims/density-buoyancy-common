@@ -134,6 +134,11 @@ export default class Scale extends Mass {
     this.displayType = config.displayType;
   }
 
+  public override getLocalBounds(): Bounds3 {
+    const bounds2 = this.shapeProperty.value.bounds;
+    return new Bounds3( bounds2.minX, bounds2.minY, -SCALE_DEPTH / 2, bounds2.maxX, bounds2.maxY, SCALE_DEPTH / 2 );
+  }
+
   /**
    * Called after a engine-physics-model step once before doing other operations (like computing buoyant forces,
    * displacement, etc.) so that it can set high-performance flags used for this purpose.

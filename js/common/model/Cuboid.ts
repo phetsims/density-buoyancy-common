@@ -86,6 +86,10 @@ export default class Cuboid extends Mass {
     }
   }
 
+  public override getLocalBounds(): Bounds3 {
+    return this.sizeProperty.value;
+  }
+
   /**
    * Returns the general size of the mass based on a general size scale.
    */

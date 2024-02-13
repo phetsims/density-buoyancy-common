@@ -38,6 +38,7 @@ export default abstract class MassView extends THREE.Mesh {
   protected readonly tagOffsetProperty: Property<Vector3> = new Property<Vector3>( Vector3.ZERO );
 
   public focusableBox: Node;
+  public focusablePath: Path;
 
   protected constructor( mass: Mass, initialGeometry: THREE.BufferGeometry ) {
     const materialView = DensityMaterials.getMaterialView( mass.materialProperty.value );
@@ -112,19 +113,21 @@ export default abstract class MassView extends THREE.Mesh {
       } );
     }
 
-    const highlight = new Shape().rect( 0, 0, 100, 100 );
 
-    this.focusableBox = new InteractiveHighlightingNode( {
+    this.focusableBox = new InteractiveHighlightingNode();
 
+    const highlightShape = new Shape().rect( 0, 0, 100, 100 );
+
+    this.focusablePath = new Path( highlightShape, {
+      accessibleName: this.mass.nameProperty.value ? this.mass.nameProperty.value : 'Mass',
+      cursor: 'pointer',
+      tagName: 'div',
+      focusable: true,
+      fill: 'black'
     } );
 
     this.focusableBox.addChild(
-      new Path( highlight, {
-        accessibleName: this.mass.nameProperty.value ? this.mass.nameProperty.value : 'Mass',
-        cursor: 'pointer',
-        tagName: 'div',
-        focusable: true
-      } )
+      this.focusablePath
     );
   }
 

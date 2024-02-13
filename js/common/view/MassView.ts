@@ -115,17 +115,14 @@ export default abstract class MassView extends THREE.Mesh {
     const highlight = new Shape().rect( 0, 0, 100, 100 );
 
     this.focusableBox = new InteractiveHighlightingNode( {
-
-    } );
-
-    this.focusableBox.addChild(
-      new Path( highlight, {
+      children: [ new Path( highlight, {
         accessibleName: this.mass.nameProperty.value ? this.mass.nameProperty.value : 'Mass',
         cursor: 'pointer',
         tagName: 'div',
         focusable: true
       } )
-    );
+      ]
+    } );
   }
 
   /**

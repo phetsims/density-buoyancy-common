@@ -642,9 +642,8 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
         this.sceneNode.stage.threeScene.add( massView );
         this.massViews.push( massView );
 
-        const focusableBox = massView.focusableBox;
         const focusablePath = massView.focusablePath;
-        this.sceneNode.backgroundEventTarget.addChild( focusableBox );
+        this.sceneNode.backgroundEventTarget.addChild( focusablePath );
 
         mass.transformedEmitter.addListener( () => {
             const translation = mass.matrix.translation;
@@ -664,6 +663,8 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
             ];
 
           focusablePath.shape = Shape.polygon( ConvexHull2.grahamScan( viewPoints, false ) );
+
+          focusablePath.focusHighlight = focusablePath.shape;
           }
         );
 
@@ -700,6 +701,12 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
     const onMassRemoved = ( mass: Mass ) => {
       // Mass view
       const massView = _.find( this.massViews, massView => massView.mass === mass )!;
+
+      // Focusable path
+      const focusablePath = massView.focusablePath;
+      this.sceneNode.backgroundEventTarget.removeChild( focusablePath );
+
+      // Remove the mass view
       this.sceneNode.stage.threeScene.remove( massView );
       arrayRemove( this.massViews, massView );
       massView.dispose();

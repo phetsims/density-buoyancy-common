@@ -61,11 +61,15 @@ export default class DensityReadoutNode extends Node {
         font: new PhetFont( 12 ),
         maxWidth: materialsMaxWidths[ index ]
       } );
-      ManualConstraint.create( this, [ label ], labelProxy => {
-        labelProxy.centerX = x;
-        labelProxy.centerY = HEIGHT / 2;
+
+      // Avoid infinite loops like https://github.com/phetsims/axon/issues/447 by applying the maxWidth to a different Node
+      // than the one that is used for layout.
+      const labelContainer = new Node( { children: [ label ] } );
+      ManualConstraint.create( this, [ labelContainer ], labelContainerProxy => {
+        labelContainerProxy.centerX = x;
+        labelContainerProxy.centerY = HEIGHT / 2;
       } );
-      this.addChild( label );
+      this.addChild( labelContainer );
       this.addChild( new Line( x, 0, x, label.top - LINE_PADDING, lineOptions ) );
       this.addChild( new Line( x, HEIGHT, x, label.bottom + LINE_PADDING, lineOptions ) );
     } );
@@ -110,10 +114,14 @@ export default class DensityReadoutNode extends Node {
     const primaryLabel = new RichText( createDensityStringProperty( densityAProperty ), combineOptions<TextOptions>( {
       fill: DensityBuoyancyCommonColors.labelAProperty
     }, labelOptions ) );
+
+    // Avoid infinite loops like https://github.com/phetsims/axon/issues/447 by applying the maxWidth to a different Node
+    // than the one that is used for layout.
+    const primaryLabelContainer = new Node( { children: [ primaryLabel ] } );
     const primaryMarker = new Node( {
       children: [
         primaryArrow,
-        primaryLabel
+        primaryLabelContainer
       ]
     } );
     this.addChild( primaryMarker );
@@ -124,10 +132,14 @@ export default class DensityReadoutNode extends Node {
     const secondaryLabel = new RichText( createDensityStringProperty( densityBProperty ), combineOptions<TextOptions>( {
       fill: DensityBuoyancyCommonColors.labelBProperty
     }, labelOptions ) );
+
+    // Avoid infinite loops like https://github.com/phetsims/axon/issues/447 by applying the maxWidth to a different Node
+    // than the one that is used for layout.
+    const secondaryLabelContainer = new Node( { children: [ secondaryLabel ] } );
     const secondaryMarker = new Node( {
       children: [
         secondaryArrow,
-        secondaryLabel
+        secondaryLabelContainer
       ],
       y: HEIGHT
     } );
@@ -138,16 +150,16 @@ export default class DensityReadoutNode extends Node {
     densityAProperty.link( density => {
       primaryMarker.x = mvt( density );
     } );
-    ManualConstraint.create( this, [ primaryLabel, primaryArrow ], ( primaryLabelProxy, primaryArrowProxy ) => {
-      primaryLabelProxy.centerBottom = primaryArrowProxy.centerTop;
+    ManualConstraint.create( this, [ primaryLabelContainer, primaryArrow ], ( primaryLabelContainerProxy, primaryArrowProxy ) => {
+      primaryLabelContainerProxy.centerBottom = primaryArrowProxy.centerTop;
     } );
 
     // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
     densityBProperty.link( density => {
       secondaryMarker.x = mvt( density );
     } );
-    ManualConstraint.create( this, [ secondaryLabel, secondaryArrow ], ( secondaryLabelProxy, secondaryArrowProxy ) => {
-      secondaryLabelProxy.centerTop = secondaryArrowProxy.centerBottom;
+    ManualConstraint.create( this, [ secondaryLabelContainer, secondaryArrow ], ( secondaryLabelContainerProxy, secondaryArrowProxy ) => {
+      secondaryLabelContainerProxy.centerTop = secondaryArrowProxy.centerBottom;
     } );
 
     // This instance lives for the lifetime of the simulation, so we don't need to remove this listener

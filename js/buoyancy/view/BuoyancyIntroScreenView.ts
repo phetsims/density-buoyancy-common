@@ -41,7 +41,8 @@ const VISIBLE_FLUIDS = [
   Material.GASOLINE,
   Material.WATER,
   Material.SEAWATER,
-  Material.HONEY
+  Material.HONEY,
+  Material.MERCURY
 ];
 
 export default class BuoyancyIntroScreenView extends DensityBuoyancyScreenView<BuoyancyIntroModel> {

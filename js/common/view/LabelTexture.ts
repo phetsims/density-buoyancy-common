@@ -13,6 +13,7 @@ import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 
 export default class LabelTexture extends NodeTexture {
 
+  // TODO: compose Disposable, https://github.com/phetsims/density-buoyancy-common/issues/95
   public readonly disposedEmitter = new TinyEmitter();
 
   private readonly containerNode: Node;

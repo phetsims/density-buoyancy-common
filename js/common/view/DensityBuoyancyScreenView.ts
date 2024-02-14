@@ -662,9 +662,9 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
               this.modelToViewPoint( new Vector3( shiftedBbox.maxX, shiftedBbox.maxY, shiftedBbox.maxZ ) )
             ];
 
-          focusablePath.shape = Shape.polygon( ConvexHull2.grahamScan( viewPoints, false ) );
+            focusablePath.shape = Shape.polygon( ConvexHull2.grahamScan( viewPoints, false ) );
 
-          focusablePath.focusHighlight = focusablePath.shape;
+            focusablePath.focusHighlight = focusablePath.shape;
           }
         );
 
@@ -701,10 +701,6 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
     const onMassRemoved = ( mass: Mass ) => {
       // Mass view
       const massView = _.find( this.massViews, massView => massView.mass === mass )!;
-
-      // Focusable path
-      const focusablePath = massView.focusablePath;
-      this.sceneNode.backgroundEventTarget.removeChild( focusablePath );
 
       // Remove the mass view
       this.sceneNode.stage.threeScene.remove( massView );

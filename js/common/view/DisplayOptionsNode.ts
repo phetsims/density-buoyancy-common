@@ -9,7 +9,7 @@
 import ArrowNode, { ArrowNodeOptions } from '../../../../scenery-phet/js/ArrowNode.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import PlusMinusZoomButtonGroup from '../../../../scenery-phet/js/PlusMinusZoomButtonGroup.js';
-import { FlowBox, GridBox, Text, TextOptions, VBox, VBoxOptions, HSeparator } from '../../../../scenery/js/imports.js';
+import { FlowBox, GridBox, HSeparator, Text, TextOptions, VBox, VBoxOptions } from '../../../../scenery/js/imports.js';
 import Checkbox, { CheckboxOptions } from '../../../../sun/js/Checkbox.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
@@ -17,6 +17,7 @@ import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js
 import DensityBuoyancyCommonColors from './DensityBuoyancyCommonColors.js';
 import DensityBuoyancyModel from '../model/DensityBuoyancyModel.js';
 import { combineOptions } from '../../../../phet-core/js/optionize.js';
+import { optionize } from '../../../../phet-core/js/imports.js';
 
 // constants
 const arrowSpacing = 15;
@@ -37,80 +38,92 @@ const checkboxOptions = {
 };
 const checkboxSpacing = 5;
 
+type SelfOptions = {
+  includeVectorScaleControl?: boolean;
+};
+
+type DisplayOptionsNodeOptions = SelfOptions & VBoxOptions;
+
 export default class DisplayOptionsNode extends VBox {
-  public constructor( model: DensityBuoyancyModel, options?: VBoxOptions ) {
+  public constructor( model: DensityBuoyancyModel, providedOptions?: DisplayOptionsNodeOptions ) {
 
-    super( combineOptions<VBoxOptions>( {
+    const options = optionize<DisplayOptionsNodeOptions, SelfOptions, VBoxOptions>()( {
+      includeVectorScaleControl: true,
       spacing: 10,
-      align: 'left',
-      children: [
-        new Text( DensityBuoyancyCommonStrings.forcesStringProperty, {
-          font: DensityBuoyancyCommonConstants.TITLE_FONT,
-          maxWidth: maxWidth
-        } ),
-        new FlowBox( {
-          orientation: 'vertical',
-          spacing: 8,
-          align: 'left',
-          children: [
-            new GridBox( {
-              xSpacing: arrowSpacing,
-              ySpacing: 10,
-              xAlign: 'left',
-              children: [
+      align: 'left'
+    }, providedOptions );
 
-                // Gravity
-                new Checkbox( model.showGravityForceProperty, new Text( DensityBuoyancyCommonStrings.gravity.nameStringProperty, labelOptions ), combineOptions<CheckboxOptions>( {
-                  layoutOptions: { column: 0, row: 0 }
-                }, checkboxOptions ) ),
-                new ArrowNode( 0, 0, arrowLength, 0, combineOptions<ArrowNodeOptions>( {
-                  layoutOptions: { column: 1, row: 0 },
-                  fill: DensityBuoyancyCommonColors.gravityForceProperty
-                }, arrowOptions ) ),
+    options.children = [
+      new Text( DensityBuoyancyCommonStrings.forcesStringProperty, {
+        font: DensityBuoyancyCommonConstants.TITLE_FONT,
+        maxWidth: maxWidth
+      } ),
+      new FlowBox( {
+        orientation: 'vertical',
+        spacing: 8,
+        align: 'left',
+        children: [
+          new GridBox( {
+            xSpacing: arrowSpacing,
+            ySpacing: 10,
+            xAlign: 'left',
+            children: [
 
-                // Buoyancy
-                new Checkbox( model.showBuoyancyForceProperty, new Text( DensityBuoyancyCommonStrings.buoyancyStringProperty, labelOptions ), combineOptions<CheckboxOptions>( {
-                  layoutOptions: { column: 0, row: 1 }
-                }, checkboxOptions ) ),
-                new ArrowNode( 0, 0, arrowLength, 0, combineOptions<ArrowNodeOptions>( {
-                  layoutOptions: { column: 1, row: 1 },
-                  fill: DensityBuoyancyCommonColors.buoyancyForceProperty
-                }, arrowOptions ) ),
+              // Gravity
+              new Checkbox( model.showGravityForceProperty, new Text( DensityBuoyancyCommonStrings.gravity.nameStringProperty, labelOptions ), combineOptions<CheckboxOptions>( {
+                layoutOptions: { column: 0, row: 0 }
+              }, checkboxOptions ) ),
+              new ArrowNode( 0, 0, arrowLength, 0, combineOptions<ArrowNodeOptions>( {
+                layoutOptions: { column: 1, row: 0 },
+                fill: DensityBuoyancyCommonColors.gravityForceProperty
+              }, arrowOptions ) ),
 
-                // Contact
-                new Checkbox( model.showContactForceProperty, new Text( DensityBuoyancyCommonStrings.contactStringProperty, labelOptions ), combineOptions<CheckboxOptions>( {
-                  layoutOptions: { column: 0, row: 2 }
-                }, checkboxOptions ) ),
-                new ArrowNode( 0, 0, arrowLength, 0, combineOptions<ArrowNodeOptions>( {
-                  layoutOptions: { column: 1, row: 2 },
-                  fill: DensityBuoyancyCommonColors.contactForceProperty
-                }, arrowOptions ) ),
+              // Buoyancy
+              new Checkbox( model.showBuoyancyForceProperty, new Text( DensityBuoyancyCommonStrings.buoyancyStringProperty, labelOptions ), combineOptions<CheckboxOptions>( {
+                layoutOptions: { column: 0, row: 1 }
+              }, checkboxOptions ) ),
+              new ArrowNode( 0, 0, arrowLength, 0, combineOptions<ArrowNodeOptions>( {
+                layoutOptions: { column: 1, row: 1 },
+                fill: DensityBuoyancyCommonColors.buoyancyForceProperty
+              }, arrowOptions ) ),
 
-                // Vector scale
-                new Text( DensityBuoyancyCommonStrings.vectorScaleStringProperty, combineOptions<TextOptions>( {
-                  layoutOptions: { column: 0, row: 3 }
-                }, labelOptions ) ),
-                new PlusMinusZoomButtonGroup( model.forceScaleProperty, {
-                  layoutOptions: { column: 1, row: 3, xAlign: 'center' },
-                  orientation: 'horizontal',
-                  applyZoomIn: ( scale: number ) => scale * 2,
-                  applyZoomOut: ( scale: number ) => scale / 2
-                } )
-              ]
-            } ),
-            new HSeparator(),
-            new VBox( {
-              spacing: checkboxSpacing,
-              align: 'left',
-              children: [
-                new Checkbox( model.showMassesProperty, new Text( DensityBuoyancyCommonStrings.massesStringProperty, labelOptions ), checkboxOptions ),
-                new Checkbox( model.showForceValuesProperty, new Text( DensityBuoyancyCommonStrings.forceValuesStringProperty, labelOptions ), checkboxOptions )
-              ]
-            } )
-          ]
-        } )
-      ]
-    }, options ) );
+              // Contact
+              new Checkbox( model.showContactForceProperty, new Text( DensityBuoyancyCommonStrings.contactStringProperty, labelOptions ), combineOptions<CheckboxOptions>( {
+                layoutOptions: { column: 0, row: 2 }
+              }, checkboxOptions ) ),
+              new ArrowNode( 0, 0, arrowLength, 0, combineOptions<ArrowNodeOptions>( {
+                layoutOptions: { column: 1, row: 2 },
+                fill: DensityBuoyancyCommonColors.contactForceProperty
+              }, arrowOptions ) ),
+
+              // Vector scale
+              ...( options.includeVectorScaleControl ? [
+                  new Text( DensityBuoyancyCommonStrings.vectorScaleStringProperty, combineOptions<TextOptions>( {
+                    layoutOptions: { column: 0, row: 3 }
+                  }, labelOptions ) ),
+                  new PlusMinusZoomButtonGroup( model.forceScaleProperty, {
+                    layoutOptions: { column: 1, row: 3, xAlign: 'center' },
+                    orientation: 'horizontal',
+                    applyZoomIn: ( scale: number ) => scale * 2,
+                    applyZoomOut: ( scale: number ) => scale / 2
+                  } ) ] : []
+              )
+            ]
+          } ),
+          new HSeparator(),
+          new VBox( {
+            spacing: checkboxSpacing,
+            align: 'left',
+            children: [
+              new Checkbox( model.showMassesProperty, new Text( DensityBuoyancyCommonStrings.massesStringProperty, labelOptions ), checkboxOptions ),
+              new Checkbox( model.showForceValuesProperty, new Text( DensityBuoyancyCommonStrings.forceValuesStringProperty, labelOptions ), checkboxOptions )
+            ]
+          } )
+        ]
+      } )
+    ];
+
+    super( options );
   }
 }
 

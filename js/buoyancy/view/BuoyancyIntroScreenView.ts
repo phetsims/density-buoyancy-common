@@ -79,7 +79,8 @@ export default class BuoyancyIntroScreenView extends DensityBuoyancyScreenView<B
       margin: MARGIN
     } ) );
 
-    const displayOptionsPanel = new Panel( new DisplayOptionsNode( model ), DensityBuoyancyCommonConstants.PANEL_OPTIONS );
+    const displayOptionsPanel = new Panel( new DisplayOptionsNode( model, { includeVectorScaleControl: false } ),
+      DensityBuoyancyCommonConstants.PANEL_OPTIONS );
     this.addChild( new AlignBox( displayOptionsPanel, {
       alignBoundsProperty: this.visibleBoundsProperty,
       xAlign: 'left',

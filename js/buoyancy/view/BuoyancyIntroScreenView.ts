@@ -9,7 +9,7 @@
 import Vector3 from '../../../../dot/js/Vector3.js';
 import { combineOptions } from '../../../../phet-core/js/optionize.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
-import { AlignBox, HBox, Node, Text } from '../../../../scenery/js/imports.js';
+import { AlignBox, HBox, Text, VBox } from '../../../../scenery/js/imports.js';
 import AquaRadioButton from '../../../../sun/js/AquaRadioButton.js';
 import Panel from '../../../../sun/js/Panel.js';
 import VerticalAquaRadioButtonGroup from '../../../../sun/js/VerticalAquaRadioButtonGroup.js';
@@ -109,12 +109,12 @@ export default class BuoyancyIntroScreenView extends DensityBuoyancyScreenView<B
     } );
     const fluidTitle = new Text( DensityBuoyancyCommonStrings.fluid, {
       font: DensityBuoyancyCommonConstants.TITLE_FONT,
-      right: fluidBox.left,
-      bottom: fluidBox.top - 3,
       maxWidth: 160
     } );
-    const fluidPanel = new Panel( new Node( {
-      children: [ fluidTitle, fluidBox ]
+    const fluidPanel = new Panel( new VBox( {
+      children: [ fluidTitle, fluidBox ],
+      spacing: 3,
+      align: 'left'
     } ), DensityBuoyancyCommonConstants.PANEL_OPTIONS );
 
     this.addChild( new AlignBox( fluidPanel, {

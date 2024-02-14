@@ -33,13 +33,13 @@ export default class PrimarySecondaryControlsNode extends PrimarySecondaryPanels
 
     const primaryControlNode = new BlockControlNode( primaryMass, popupLayer, combineOptions<BlockControlNodeOptions>( {
       labelNode: PrimarySecondaryPanelsNode.getPrimaryLabelNode(),
-      color: DensityBuoyancyCommonColors.labelAProperty,
+      color: DensityBuoyancyCommonColors.labelPrimaryProperty,
       tandem: tandem.createTandem( 'blockAControlPanel' )
     }, omittedOptions ) );
 
     const secondaryControlNode = new BlockControlNode( secondaryMass, popupLayer, combineOptions<BlockControlNodeOptions>( {
       labelNode: PrimarySecondaryPanelsNode.getSecondaryLabelNode(),
-      color: DensityBuoyancyCommonColors.labelBProperty,
+      color: DensityBuoyancyCommonColors.labelSecondaryProperty,
       tandem: tandem.createTandem( 'blockBControlPanel' )
     }, omittedOptions ) );
 

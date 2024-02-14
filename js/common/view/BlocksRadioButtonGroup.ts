@@ -25,10 +25,10 @@ const aMaterial = new THREE.MeshLambertMaterial();
 const bMaterial = new THREE.MeshLambertMaterial();
 
 // These live for the lifetime of the simulation, so we don't need to remove this listener
-DensityBuoyancyCommonColors.labelAProperty.link( labelColor => {
+DensityBuoyancyCommonColors.labelPrimaryProperty.link( labelColor => {
   aMaterial.color = ThreeUtils.colorToThree( labelColor );
 } );
-DensityBuoyancyCommonColors.labelBProperty.link( labelColor => {
+DensityBuoyancyCommonColors.labelSecondaryProperty.link( labelColor => {
   bMaterial.color = ThreeUtils.colorToThree( labelColor );
 } );
 

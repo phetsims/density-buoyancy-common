@@ -61,13 +61,13 @@ export default class BuoyancyExploreScreenView extends SecondaryMassScreenView<B
     const densityAText = new RichText( getMaterialReadoutStringProperty( model.primaryMass.materialProperty ), {
       maxWidth: 120,
       font: DensityBuoyancyCommonConstants.ITEM_FONT,
-      fill: DensityBuoyancyCommonColors.labelAProperty,
+      fill: DensityBuoyancyCommonColors.labelPrimaryProperty,
       layoutOptions: { column: 1, row: 0 }
     } );
     const densityBText = new RichText( getMaterialReadoutStringProperty( model.secondaryMass.materialProperty ), {
       maxWidth: 120,
       font: DensityBuoyancyCommonConstants.ITEM_FONT,
-      fill: DensityBuoyancyCommonColors.labelBProperty,
+      fill: DensityBuoyancyCommonColors.labelSecondaryProperty,
       layoutOptions: { column: 1, row: 1 }
     } );
 

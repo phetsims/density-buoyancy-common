@@ -98,7 +98,7 @@ export default class DensityReadoutNode extends Node {
     };
 
     const primaryArrow = new ArrowNode( 0, -7, 0, 0, combineOptions<ArrowNodeOptions>( {
-      fill: DensityBuoyancyCommonColors.labelAProperty
+      fill: DensityBuoyancyCommonColors.labelPrimaryProperty
     }, arrowOptions ) );
 
     const createDensityStringProperty = ( densityProperty: TReadOnlyProperty<number> ) => new PatternStringProperty( DensityBuoyancyCommonConstants.KILOGRAMS_PER_VOLUME_PATTERN_STRING_PROPERTY, {
@@ -112,7 +112,7 @@ export default class DensityReadoutNode extends Node {
     } );
 
     const primaryLabel = new RichText( createDensityStringProperty( densityAProperty ), combineOptions<TextOptions>( {
-      fill: DensityBuoyancyCommonColors.labelAProperty
+      fill: DensityBuoyancyCommonColors.labelPrimaryProperty
     }, labelOptions ) );
 
     // Avoid infinite loops like https://github.com/phetsims/axon/issues/447 by applying the maxWidth to a different Node
@@ -127,10 +127,10 @@ export default class DensityReadoutNode extends Node {
     this.addChild( primaryMarker );
 
     const secondaryArrow = new ArrowNode( 0, 7, 0, 0, combineOptions<ArrowNodeOptions>( {
-      fill: DensityBuoyancyCommonColors.labelBProperty
+      fill: DensityBuoyancyCommonColors.labelSecondaryProperty
     }, arrowOptions ) );
     const secondaryLabel = new RichText( createDensityStringProperty( densityBProperty ), combineOptions<TextOptions>( {
-      fill: DensityBuoyancyCommonColors.labelBProperty
+      fill: DensityBuoyancyCommonColors.labelSecondaryProperty
     }, labelOptions ) );
 
     // Avoid infinite loops like https://github.com/phetsims/axon/issues/447 by applying the maxWidth to a different Node

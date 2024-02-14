@@ -42,11 +42,11 @@ const createMassLabel = ( string: TReadOnlyProperty<string>, fill: TPaint ) => {
   return rectangle;
 };
 
-const PRIMARY_LABEL_DEPENDENCIES = [ DensityBuoyancyCommonStrings.massLabel.primaryStringProperty, DensityBuoyancyCommonColors.labelAProperty ];
-const SECONDARY_LABEL_DEPENDENCIES = [ DensityBuoyancyCommonStrings.massLabel.secondaryStringProperty, DensityBuoyancyCommonColors.labelBProperty ];
+const PRIMARY_LABEL_DEPENDENCIES = [ DensityBuoyancyCommonStrings.massLabel.primaryStringProperty, DensityBuoyancyCommonColors.labelPrimaryProperty ];
+const SECONDARY_LABEL_DEPENDENCIES = [ DensityBuoyancyCommonStrings.massLabel.secondaryStringProperty, DensityBuoyancyCommonColors.labelSecondaryProperty ];
 
-const PRIMARY_LABEL = createMassLabel( DensityBuoyancyCommonStrings.massLabel.primaryStringProperty, DensityBuoyancyCommonColors.labelAProperty );
-const SECONDARY_LABEL = createMassLabel( DensityBuoyancyCommonStrings.massLabel.secondaryStringProperty, DensityBuoyancyCommonColors.labelBProperty );
+const PRIMARY_LABEL = createMassLabel( DensityBuoyancyCommonStrings.massLabel.primaryStringProperty, DensityBuoyancyCommonColors.labelPrimaryProperty );
+const SECONDARY_LABEL = createMassLabel( DensityBuoyancyCommonStrings.massLabel.secondaryStringProperty, DensityBuoyancyCommonColors.labelSecondaryProperty );
 
 export default class MassLabelNode extends Node {
 

@@ -117,9 +117,6 @@ export default abstract class MassView extends THREE.Mesh {
       cursor: 'pointer',
       tagName: 'div',
       focusable: true
-
-      // TODO: this breaks during view disposal based on model visibility (BlockSetModel), see https://github.com/phetsims/buoyancy/issues/98
-      // visibleProperty: mass.visibleProperty
     } );
   }
 

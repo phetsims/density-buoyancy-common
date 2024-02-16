@@ -21,7 +21,7 @@ import Gravity from './Gravity.js';
 import Material from './Material.js';
 import P2Engine from './P2Engine.js';
 import Pool from './Pool.js';
-import Scale from './Scale.js';
+import Scale, { DisplayType } from './Scale.js';
 import optionize from '../../../../phet-core/js/optionize.js';
 import Boat from '../../buoyancy/model/Boat.js';
 import PhysicsEngine, { PhysicsEngineBody } from './PhysicsEngine.js';
@@ -35,6 +35,7 @@ import TModel from '../../../../joist/js/TModel.js';
 import { PhetioObjectOptions } from '../../../../tandem/js/PhetioObject.js';
 import PickRequired from '../../../../phet-core/js/types/PickRequired.js';
 import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
+import Matrix3 from '../../../../dot/js/Matrix3.js';
 
 // constants
 const BLOCK_SPACING = 0.01;
@@ -49,6 +50,7 @@ export type DensityBuoyancyModelOptions = {
   showMassesDefault?: boolean;
   canShowForces?: boolean;
   initialForceScale?: number;
+  usePoolScale?: boolean;
 } & PickRequired<PhetioObjectOptions, 'tandem'>;
 
 export default class DensityBuoyancyModel implements TModel {
@@ -81,13 +83,17 @@ export default class DensityBuoyancyModel implements TModel {
   public readonly availableMasses: ObservableArray<Mass>;
 
   // We need to hook into a boat (if it exists) for displaying the water.
+  // TODO: Should this be a readonly? https://github.com/phetsims/density-buoyancy-common/issues/95
   public boat: Boat | null;
+
+  private readonly poolScale: Scale | null;
 
   public constructor( providedOptions?: DensityBuoyancyModelOptions ) {
     const options = optionize<DensityBuoyancyModelOptions, DensityBuoyancyModelOptions>()( {
       showMassesDefault: false,
       canShowForces: true,
-      initialForceScale: 1 / 16
+      initialForceScale: 1 / 16,
+      usePoolScale: false
     }, providedOptions );
 
     const tandem = options.tandem;
@@ -345,6 +351,25 @@ export default class DensityBuoyancyModel implements TModel {
         mass.gravityForceInterpolatedProperty.setNextValue( gravityForce );
       } );
     } );
+
+    if ( options.usePoolScale ) {
+      // Pool scale
+      this.poolScale = new Scale( this.engine, this.gravityProperty, {
+        matrix: Matrix3.translation( 0.3, -Scale.SCALE_BASE_BOUNDS.minY + this.poolBounds.minY ),
+        displayType: DisplayType.NEWTONS,
+        tandem: tandem.createTandem( 'poolScale' ),
+        canMove: true
+      } );
+
+      this.availableMasses.push( this.poolScale );
+
+      // Adjust pool volume so that it's at the desired value WITH the pool scale inside.
+      this.pool.liquidVolumeProperty.value -= this.poolScale.volumeProperty.value;
+      this.pool.liquidVolumeProperty.setInitialValue( this.pool.liquidVolumeProperty.value );
+    }
+    else {
+      this.poolScale = null;
+    }
   }
 
   /**

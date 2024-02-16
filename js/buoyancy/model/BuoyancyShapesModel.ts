@@ -37,7 +37,6 @@ export default class BuoyancyShapesModel extends DensityBuoyancyModel {
   public readonly modeProperty: Property<TwoBlockMode>;
   public readonly densityExpandedProperty: Property<boolean>;
   public readonly leftScale: Scale;
-  public readonly poolScale: Scale;
   public readonly primaryShapeProperty: Property<MassShape>;
   public readonly secondaryShapeProperty: Property<MassShape>;
   public readonly primaryWidthRatioProperty: Property<number>;
@@ -52,7 +51,8 @@ export default class BuoyancyShapesModel extends DensityBuoyancyModel {
 
   public constructor( providedOptions: BuoyancyShapesModelOptions ) {
     const options = optionize<DensityBuoyancyModelOptions, EmptySelfOptions, DensityBuoyancyModelOptions>()( {
-      initialForceScale: 1 / 4
+      initialForceScale: 1 / 4,
+      usePoolScale: true
     }, providedOptions );
 
     const tandem = options.tandem;
@@ -77,18 +77,6 @@ export default class BuoyancyShapesModel extends DensityBuoyancyModel {
       canMove: true
     } );
     this.availableMasses.push( this.leftScale );
-
-    this.poolScale = new Scale( this.engine, this.gravityProperty, {
-      matrix: Matrix3.translation( 0.3, -Scale.SCALE_BASE_BOUNDS.minY + this.poolBounds.minY ),
-      displayType: DisplayType.NEWTONS,
-      tandem: tandem.createTandem( 'poolScale' ),
-      canMove: true
-    } );
-    this.availableMasses.push( this.poolScale );
-
-    // Adjust pool volume so that it's at the desired value WITH the pool scale inside.
-    this.pool.liquidVolumeProperty.value -= this.poolScale.volumeProperty.value;
-    this.pool.liquidVolumeProperty.setInitialValue( this.pool.liquidVolumeProperty.value );
 
     this.primaryShapeProperty = new EnumerationProperty( MassShape.BLOCK, {
       tandem: tandem.createTandem( 'primaryShapeProperty' )

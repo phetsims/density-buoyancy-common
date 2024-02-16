@@ -44,6 +44,8 @@ export default class BuoyancyIntroModel extends BlockSetModel<BlockSet> {
       initialMode: BlockSet.SAME_MASS,
       BlockSet: BlockSet.enumeration,
 
+      usePoolScale: true,
+
       createMassesCallback: ( model, blockSet ) => {
         switch( blockSet ) {
           case BlockSet.SAME_MASS:
@@ -123,19 +125,6 @@ export default class BuoyancyIntroModel extends BlockSetModel<BlockSet> {
       canMove: true,
       tandem: providedOptions.tandem.createTandem( 'leftScale' )
     } ) );
-
-    // Pool scale
-    const poolScale = new Scale( this.engine, this.gravityProperty, {
-      matrix: Matrix3.translation( 0.3, -Scale.SCALE_BASE_BOUNDS.minY + this.poolBounds.minY ),
-      displayType: DisplayType.NEWTONS,
-      canMove: true,
-      tandem: providedOptions.tandem.createTandem( 'poolScale' )
-    } );
-    this.availableMasses.push( poolScale );
-
-    // Adjust pool volume so that it's at the desired value WITH the pool scale inside.
-    this.pool.liquidVolumeProperty.value -= poolScale.volumeProperty.value;
-    this.pool.liquidVolumeProperty.setInitialValue( this.pool.liquidVolumeProperty.value );
   }
 }
 

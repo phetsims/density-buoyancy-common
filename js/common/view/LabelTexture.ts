@@ -23,6 +23,8 @@ export default class LabelTexture extends NodeTexture {
       children: [ labelNode ],
       scale: 2
     } );
+
+    // closest power of 2 is vital for GPU rendering
     const width = Utils.toPowerOf2( Math.ceil( containerNode.width ) );
     const height = Utils.toPowerOf2( Math.ceil( containerNode.height ) );
 

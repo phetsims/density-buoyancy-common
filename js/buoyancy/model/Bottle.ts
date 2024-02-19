@@ -206,8 +206,16 @@ export default class Bottle extends Mass {
 
     super( engine, options );
 
+    const massLabelOffsetVector3 = new Vector3( 0, 0, 0 );
+
     this.bottleBounds = Bounds2.NOTHING.copy();
     Bottle.getFlatIntersectionVertices().forEach( p => this.bottleBounds.addPoint( p ) );
+
+    // Mass label on the bottom left of the boat, top because the shape is flipped.
+    massLabelOffsetVector3.setXYZ( this.bottleBounds.left, this.bottleBounds.top, 0 );
+
+    this.massLabelOffsetOrientationProperty.value = new Vector2( 1, -1 / 2 );
+    this.massLabelOffsetProperty.value = massLabelOffsetVector3;
 
     this.interiorMaterialProperty = new Property( BOTTLE_INITIAL_INTERIOR_MATERIAL, {
       valueType: Material,

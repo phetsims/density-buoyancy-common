@@ -122,8 +122,11 @@ export default class BuoyancyIntroModel extends BlockSetModel<BlockSet> {
     this.availableMasses.push( new Scale( this.engine, this.gravityProperty, {
       matrix: Matrix3.translation( -0.77, -Scale.SCALE_BASE_BOUNDS.minY ),
       displayType: DisplayType.NEWTONS,
+      tandem: providedOptions.tandem.createTandem( 'scale1' ),
       canMove: true,
-      tandem: providedOptions.tandem.createTandem( 'scale1' )
+      inputEnabledPropertyOptions: {
+        phetioReadOnly: false
+      }
     } ) );
   }
 }

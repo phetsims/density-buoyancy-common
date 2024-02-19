@@ -74,7 +74,10 @@ export default class BuoyancyShapesModel extends DensityBuoyancyModel {
       matrix: Matrix3.translation( -0.7, -Scale.SCALE_BASE_BOUNDS.minY ),
       displayType: DisplayType.NEWTONS,
       tandem: tandem.createTandem( 'scale1' ),
-      canMove: true
+      canMove: true,
+      inputEnabledPropertyOptions: {
+        phetioReadOnly: false
+      }
     } );
     this.availableMasses.push( this.scale1 );
 

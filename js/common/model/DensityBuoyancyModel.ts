@@ -360,7 +360,10 @@ export default class DensityBuoyancyModel implements TModel {
         matrix: Matrix3.translation( 0.3, -Scale.SCALE_BASE_BOUNDS.minY + this.poolBounds.minY ),
         displayType: DisplayType.NEWTONS,
         tandem: tandem.createTandem( 'scale2' ),
-        canMove: true
+        canMove: true,
+        inputEnabledPropertyOptions: {
+          phetioReadOnly: false
+        }
       } );
 
       this.availableMasses.push( this.scale2 );

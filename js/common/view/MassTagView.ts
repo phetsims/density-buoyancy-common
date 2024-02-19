@@ -106,7 +106,7 @@ export default class MassTagView extends TextureQuad {
     const label = new Text( string, {
       font: tagFont,
       fill: Color.getLuminance( fill.value ) > ( 255 / 2 ) ? 'black' : 'white', // best guess?
-      maxWidth: 100
+      maxWidth: 30
     } );
 
     return new BackgroundNode( label, {

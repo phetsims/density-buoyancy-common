@@ -113,7 +113,8 @@ export default class Scale extends Mass {
       phetioValueType: NumberIO,
       tandem: config.tandem.createTandem( 'scaleForceInterpolatedProperty' ),
       units: 'N',
-      phetioReadOnly: true
+      phetioReadOnly: true,
+      phetioHighFrequency: true
     } );
 
     this.scaleMeasuredMassProperty = new DerivedProperty( [ this.scaleForceInterpolatedProperty, gravityProperty ], ( force, gravity ) => {

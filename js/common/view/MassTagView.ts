@@ -11,7 +11,7 @@ import Vector3 from '../../../../dot/js/Vector3.js';
 import NodeTexture from '../../../../mobius/js/NodeTexture.js';
 import TextureQuad from '../../../../mobius/js/TextureQuad.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
-import Mass, { MassTag } from '../model/Mass.js';
+import Mass, { MASS_MIN_SHAPES_DIMENSION, MassTag } from '../model/Mass.js';
 import { Color, Node, Text } from '../../../../scenery/js/imports.js';
 import LabelTexture from './LabelTexture.js';
 import { Multilink, TinyProperty, UnknownMultilink } from '../../../../axon/js/imports.js';
@@ -22,11 +22,8 @@ import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import BackgroundNode from '../../../../scenery-phet/js/BackgroundNode.js';
 
-// TODO: make a square with this size, https://github.com/phetsims/buoyancy/issues/102
-// const MIN_TAG_SIZE = 0.03;
-
-// TODO: handle this custom exported value? https://github.com/phetsims/buoyancy/issues/102
-export const TAG_OFFSET = 0.005;
+// Constant for MassView subtypes to use to consistently offset their tag on their shape
+export const TAG_OFFSET = MASS_MIN_SHAPES_DIMENSION / 20;
 const TAG_SCALE_NEW = 0.00046875;
 
 // Calculated by comparing the original label rectangle size when providing primary/secondary tags
@@ -63,7 +60,6 @@ export default class MassTagView extends TextureQuad {
     const tagWidth = TAG_SCALE_NEW * tagNodeTexture._width;
     const tagHeight = TAG_SCALE_NEW * tagNodeTexture._height;
 
-    // TODO: Min as a square, and then otherwise we can tighten up the width margin, https://github.com/phetsims/buoyancy/issues/102
     super( tagNodeTexture, tagWidth, tagHeight, {
       depthTest: true
     } );

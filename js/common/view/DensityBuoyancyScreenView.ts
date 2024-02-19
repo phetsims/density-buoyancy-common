@@ -822,6 +822,9 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
     let closestT = Number.POSITIVE_INFINITY;
     let closestMass = null;
 
+    // Special boat case which allows to drag blocks out of the boat
+    let boatUnderPointer = null;
+
     this.model.masses.forEach( mass => {
       if ( !mass.canMove || !mass.inputEnabledProperty.value ) {
         return;
@@ -830,12 +833,17 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
       const t = mass.intersect( ray, isTouch );
 
       if ( t !== null && t < closestT ) {
-        closestT = t;
-        closestMass = mass;
+        if ( mass instanceof Boat ) {
+          boatUnderPointer = mass;
+        }
+        else {
+          closestT = t;
+          closestMass = mass;
+        }
       }
     } );
 
-    return closestMass;
+    return closestMass ? closestMass : boatUnderPointer ? boatUnderPointer : null;
   }
 
   public override layout( viewBounds: Bounds2 ): void {

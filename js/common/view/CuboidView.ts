@@ -9,9 +9,10 @@
 import Vector3 from '../../../../dot/js/Vector3.js';
 import TriangleArrayWriter from '../../../../mobius/js/TriangleArrayWriter.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
-import MassView, { TAG_OFFSET } from './MassView.js';
+import MassView from './MassView.js';
 import Cuboid from '../model/Cuboid.js';
 import Bounds3 from '../../../../dot/js/Bounds3.js';
+import { TAG_OFFSET } from './MassTagView.js';
 
 // constants
 const numElements = 18 * 3;

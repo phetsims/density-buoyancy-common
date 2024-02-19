@@ -10,7 +10,8 @@ import Bounds3 from '../../../../dot/js/Bounds3.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import Ellipsoid from '../model/Ellipsoid.js';
-import MassView, { TAG_OFFSET } from './MassView.js';
+import MassView from './MassView.js';
+import { TAG_OFFSET } from './MassTagView.js';
 
 export default class EllipsoidView extends MassView {
 

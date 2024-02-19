@@ -9,8 +9,9 @@
 import Vector3 from '../../../../dot/js/Vector3.js';
 import TriangleArrayWriter from '../../../../mobius/js/TriangleArrayWriter.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
-import MassView, { TAG_OFFSET } from './MassView.js';
+import MassView from './MassView.js';
 import HorizontalCylinder from '../model/HorizontalCylinder.js';
+import { TAG_OFFSET } from './MassTagView.js';
 
 // constants
 const segments = 64;

@@ -86,7 +86,8 @@ export default class DensityBuoyancyModel implements TModel {
   // TODO: Should this be a readonly? https://github.com/phetsims/density-buoyancy-common/issues/95
   public boat: Boat | null;
 
-  private readonly poolScale: Scale | null;
+  // Scale for the pool, if we are using it
+  private readonly scale2: Scale | null;
 
   public constructor( providedOptions?: DensityBuoyancyModelOptions ) {
     const options = optionize<DensityBuoyancyModelOptions, DensityBuoyancyModelOptions>()( {
@@ -352,23 +353,24 @@ export default class DensityBuoyancyModel implements TModel {
       } );
     } );
 
+
     if ( options.usePoolScale ) {
       // Pool scale
-      this.poolScale = new Scale( this.engine, this.gravityProperty, {
+      this.scale2 = new Scale( this.engine, this.gravityProperty, {
         matrix: Matrix3.translation( 0.3, -Scale.SCALE_BASE_BOUNDS.minY + this.poolBounds.minY ),
         displayType: DisplayType.NEWTONS,
-        tandem: tandem.createTandem( 'poolScale' ),
+        tandem: tandem.createTandem( 'scale2' ),
         canMove: true
       } );
 
-      this.availableMasses.push( this.poolScale );
+      this.availableMasses.push( this.scale2 );
 
       // Adjust pool volume so that it's at the desired value WITH the pool scale inside.
-      this.pool.liquidVolumeProperty.value -= this.poolScale.volumeProperty.value;
+      this.pool.liquidVolumeProperty.value -= this.scale2.volumeProperty.value;
       this.pool.liquidVolumeProperty.setInitialValue( this.pool.liquidVolumeProperty.value );
     }
     else {
-      this.poolScale = null;
+      this.scale2 = null;
     }
   }
 

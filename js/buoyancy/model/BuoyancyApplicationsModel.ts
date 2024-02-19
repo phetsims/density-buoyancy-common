@@ -42,7 +42,7 @@ export default class BuoyancyApplicationsModel extends DensityBuoyancyModel {
   public readonly bottle: Bottle;
   public readonly block: Cube;
   public override boat: Boat;
-  public readonly rightScale: Scale;
+  public readonly scale1: Scale; // Scale sitting to the right of the pool
 
   public constructor( options: BuoyancyApplicationsModelOptions ) {
 
@@ -78,13 +78,13 @@ export default class BuoyancyApplicationsModel extends DensityBuoyancyModel {
     } );
     this.availableMasses.push( this.boat );
 
-    this.rightScale = new Scale( this.engine, this.gravityProperty, {
+    this.scale1 = new Scale( this.engine, this.gravityProperty, {
       matrix: Matrix3.translation( 0.77, -Scale.SCALE_BASE_BOUNDS.minY ),
       displayType: DisplayType.NEWTONS,
       canMove: false,
-      tandem: tandem.createTandem( 'rightScale' )
+      tandem: tandem.createTandem( 'scale1' )
     } );
-    this.availableMasses.push( this.rightScale );
+    this.availableMasses.push( this.scale1 );
 
     // Adjust pool volume so that it's at the desired value WITH the pool scale inside.
     this.pool.liquidVolumeProperty.setInitialValue( this.pool.liquidVolumeProperty.value );

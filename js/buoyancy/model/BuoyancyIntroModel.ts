@@ -123,7 +123,7 @@ export default class BuoyancyIntroModel extends BlockSetModel<BlockSet> {
       matrix: Matrix3.translation( -0.77, -Scale.SCALE_BASE_BOUNDS.minY ),
       displayType: DisplayType.NEWTONS,
       canMove: true,
-      tandem: providedOptions.tandem.createTandem( 'leftScale' )
+      tandem: providedOptions.tandem.createTandem( 'scale1' )
     } ) );
   }
 }

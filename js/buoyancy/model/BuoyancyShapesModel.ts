@@ -36,7 +36,7 @@ export default class BuoyancyShapesModel extends DensityBuoyancyModel {
 
   public readonly modeProperty: Property<TwoBlockMode>;
   public readonly densityExpandedProperty: Property<boolean>;
-  public readonly leftScale: Scale;
+  public readonly scale1: Scale;
   public readonly primaryShapeProperty: Property<MassShape>;
   public readonly secondaryShapeProperty: Property<MassShape>;
   public readonly primaryWidthRatioProperty: Property<number>;
@@ -70,13 +70,13 @@ export default class BuoyancyShapesModel extends DensityBuoyancyModel {
 
     this.densityExpandedProperty = new BooleanProperty( false );
 
-    this.leftScale = new Scale( this.engine, this.gravityProperty, {
+    this.scale1 = new Scale( this.engine, this.gravityProperty, {
       matrix: Matrix3.translation( -0.7, -Scale.SCALE_BASE_BOUNDS.minY ),
       displayType: DisplayType.NEWTONS,
-      tandem: tandem.createTandem( 'leftScale' ),
+      tandem: tandem.createTandem( 'scale1' ),
       canMove: true
     } );
-    this.availableMasses.push( this.leftScale );
+    this.availableMasses.push( this.scale1 );
 
     this.primaryShapeProperty = new EnumerationProperty( MassShape.BLOCK, {
       tandem: tandem.createTandem( 'primaryShapeProperty' )

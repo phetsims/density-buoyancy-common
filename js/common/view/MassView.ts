@@ -71,7 +71,6 @@ export default abstract class MassView extends THREE.Mesh {
     } );
   }
 
-  // TODO: This forwarding is sloppy, https://github.com/phetsims/buoyancy/issues/96
   public get tagHeight(): number | null {
     return this.massTagView ? this.massTagView.tagHeight : null;
   }

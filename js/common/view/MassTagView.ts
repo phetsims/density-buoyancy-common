@@ -38,7 +38,7 @@ export default class MassTagView extends TextureQuad {
   private tagNodeTexture: NodeTexture;
   private readonly massTagMultilink: UnknownMultilink;
 
-  // TODO: how is this used? Probably best to be a Property https://github.com/phetsims/buoyancy/issues/102
+  // This is set upon construction and never changes. Although the text can update, it won't change the height
   public readonly tagHeight: number;
   public readonly tagOffsetProperty: TReadOnlyProperty<Vector3>;
 
@@ -63,7 +63,7 @@ export default class MassTagView extends TextureQuad {
     super( tagNodeTexture, tagWidth, tagHeight, {
       depthTest: true
     } );
-    this.tagHeight = TAG_SCALE_NEW * tagNodeTexture._height;
+    this.tagHeight = tagHeight;
     this.tagNodeTexture = tagNodeTexture;
     this.tagOffsetProperty = tagOffsetProperty;
 
@@ -72,7 +72,6 @@ export default class MassTagView extends TextureQuad {
       texture.update();
 
       const tagWidth = TAG_SCALE_NEW * texture._width;
-      const tagHeight = TAG_SCALE_NEW * texture._height;
 
       this.updateTexture( texture, tagWidth, tagHeight );
       this.visible = string !== '';
@@ -81,7 +80,7 @@ export default class MassTagView extends TextureQuad {
     this.renderOrder = 1;
 
     this.tagOffsetPropertyListener = offset => {
-      // TODO: why this magic number? Is it needed everywhere? https://github.com/phetsims/density-buoyancy-common/issues/95
+      // Increase the z dimension just slightly to make sure it is always on top of the mass.
       this.position.set( offset.x, offset.y, offset.z + 0.0001 );
     };
     tagOffsetProperty.link( this.tagOffsetPropertyListener );

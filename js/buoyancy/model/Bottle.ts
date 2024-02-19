@@ -192,7 +192,7 @@ export default class Bottle extends Mass {
 
     const vertices = Bottle.getFlatIntersectionVertices();
 
-    const config = optionize<BottleOptions, EmptySelfOptions, InstrumentedMassOptions>()( {
+    const options = optionize<BottleOptions, EmptySelfOptions, InstrumentedMassOptions>()( {
       body: engine.createFromVertices( vertices, true ),
       shape: Shape.polygon( vertices ),
       volume: BOTTLE_VOLUME,
@@ -202,9 +202,9 @@ export default class Bottle extends Mass {
       massShape: MassShape.BLOCK
     }, providedConfig );
 
-    assert && assert( !config.canRotate );
+    assert && assert( !options.canRotate );
 
-    super( engine, config );
+    super( engine, options );
 
     this.bottleBounds = Bounds2.NOTHING.copy();
     Bottle.getFlatIntersectionVertices().forEach( p => this.bottleBounds.addPoint( p ) );
@@ -212,12 +212,12 @@ export default class Bottle extends Mass {
     this.interiorMaterialProperty = new Property( BOTTLE_INITIAL_INTERIOR_MATERIAL, {
       valueType: Material,
       reentrant: true,
-      tandem: config.tandem.createTandem( 'interiorMaterialProperty' ),
+      tandem: options.tandem.createTandem( 'interiorMaterialProperty' ),
       phetioValueType: Material.MaterialIO
     } );
 
     this.interiorVolumeProperty = new NumberProperty( BOTTLE_INITIAL_INTERIOR_VOLUME, {
-      tandem: config.tandem.createTandem( 'interiorVolumeProperty' ),
+      tandem: options.tandem.createTandem( 'interiorVolumeProperty' ),
       range: new Range( 0, Number.POSITIVE_INFINITY ),
       phetioReadOnly: true
     } );

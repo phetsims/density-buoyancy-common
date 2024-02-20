@@ -60,7 +60,7 @@ export default class Boat extends Mass {
       massShape: MassShape.BLOCK,
 
       // material
-      material: Material.ALUMINUM
+      material: Material.BOAT_BODY
     }, providedConfig );
 
     assert && assert( !config.canRotate );

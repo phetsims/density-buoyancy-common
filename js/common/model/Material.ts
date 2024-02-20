@@ -204,6 +204,14 @@ export default class Material {
     density: 832
   } );
 
+  // In essence identical to aluminum, but with a different name for the Density readout
+  public static readonly BOAT_BODY = new Material( {
+    nameProperty: DensityBuoyancyCommonStrings.material.boatBodyStringProperty,
+    tandemName: 'boatBody',
+    identifier: 'BOAT_BODY',
+    density: Material.ALUMINUM.density
+  } );
+
   public static readonly BRICK = new Material( {
     nameProperty: DensityBuoyancyCommonStrings.material.brickStringProperty,
     tandemName: 'brick',

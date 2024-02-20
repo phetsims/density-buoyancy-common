@@ -610,6 +610,9 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
       waterGeometry.computeBoundingSphere();
     } );
 
+    // Map to keep track of the highlight transform listeners for each mass to dispose them later
+    const highlightTransformListenersMap = new Map<Mass, () => void>(); // eslint-disable-line no-spaced-func
+
     const onMassAdded = ( mass: Mass ) => {
       let massView = null;
 
@@ -645,7 +648,7 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
         const focusablePath = massView.focusablePath;
         this.sceneNode.backgroundEventTarget.addChild( focusablePath );
 
-        mass.transformedEmitter.addListener( () => {
+        const highlightTransformListener = () => {
           if ( focusablePath.isDisposed ) {
             return;
           }
@@ -669,7 +672,10 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
           focusablePath.shape = Shape.polygon( ConvexHull2.grahamScan( viewPoints, false ) );
 
           focusablePath.focusHighlight = focusablePath.shape;
-        } );
+        };
+
+        mass.transformedEmitter.addListener( highlightTransformListener );
+        highlightTransformListenersMap.set( mass, highlightTransformListener );
 
         if ( massView instanceof ScaleView ) {
 
@@ -709,6 +715,12 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
       this.sceneNode.stage.threeScene.remove( massView );
       arrayRemove( this.massViews, massView );
       massView.dispose();
+
+      const highlightTransformListener = highlightTransformListenersMap.get( mass );
+      if ( highlightTransformListener ) {
+        mass.transformedEmitter.removeListener( highlightTransformListener );
+        highlightTransformListenersMap.delete( mass );
+      }
 
       if ( massView instanceof ScaleView ) {
         const scaleReadoutNode = _.find( this.scaleReadoutNodes, scaleReadoutNode => scaleReadoutNode.mass === mass )!;

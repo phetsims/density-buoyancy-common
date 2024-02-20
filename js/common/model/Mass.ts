@@ -290,9 +290,9 @@ export default abstract class Mass extends PhetioObject {
   public stepBottom: number; // minimum y value of the mass
   public stepTop: number; // maximum y value of the mass
 
-  protected constructor( engine: PhysicsEngine, providedConfig: MassOptions ) {
+  protected constructor( engine: PhysicsEngine, providedOptions: MassOptions ) {
 
-    const config = optionize<MassOptions, SelfOptions, PhetioObjectOptions>()( {
+    const options = optionize<MassOptions, SelfOptions, PhetioObjectOptions>()( {
       visible: true,
       matrix: new Matrix3(),
       canRotate: false,
@@ -307,22 +307,22 @@ export default abstract class Mass extends PhetioObject {
 
       minVolume: 0,
       maxVolume: Number.POSITIVE_INFINITY
-    }, providedConfig );
+    }, providedOptions );
 
-    assert && assert( config.body, 'config.body required' );
-    assert && assert( config.shape instanceof Shape, 'config.shape required as a Shape' );
-    assert && assert( config.material instanceof Material, 'config.material required as a Material' );
-    assert && assert( config.volume > 0, 'non-zero config.volume required' );
+    assert && assert( options.body, 'options.body required' );
+    assert && assert( options.shape instanceof Shape, 'options.shape required as a Shape' );
+    assert && assert( options.material instanceof Material, 'options.material required as a Material' );
+    assert && assert( options.volume > 0, 'non-zero options.volume required' );
 
-    super( config );
+    super( options );
 
-    const tandem = config.tandem;
+    const tandem = options.tandem;
 
     this.engine = engine;
-    this.body = config.body;
-    this.massShape = config.massShape;
+    this.body = options.body;
+    this.massShape = options.massShape;
 
-    this.shapeProperty = new Property( config.shape, {
+    this.shapeProperty = new Property( options.shape, {
       valueType: Shape
     } );
 
@@ -334,9 +334,9 @@ export default abstract class Mass extends PhetioObject {
     this.inputEnabledProperty = new BooleanProperty( true, combineOptions<BooleanPropertyOptions>( {
       tandem: tandem?.createTandem( 'inputEnabledProperty' ),
       phetioDocumentation: 'Sets whether the element will have input enabled, and hence be interactive'
-    }, config.inputEnabledPropertyOptions ) );
+    }, options.inputEnabledPropertyOptions ) );
 
-    this.internalVisibleProperty = new BooleanProperty( config.visible, {
+    this.internalVisibleProperty = new BooleanProperty( options.visible, {
       phetioDocumentation: 'For internal use only',
 
       // instrumentation is needed for PhET-iO State only, not customizable.
@@ -352,25 +352,25 @@ export default abstract class Mass extends PhetioObject {
       tandem: Tandem.OPT_OUT
     } );
 
-    this.materialProperty = new Property( config.material, combineOptions<PropertyOptions<Material>>( {
+    this.materialProperty = new Property( options.material, combineOptions<PropertyOptions<Material>>( {
       valueType: Material,
       reentrant: true,
       tandem: tandem?.createTandem( 'materialProperty' ),
       phetioValueType: Material.MaterialIO
-    }, config.materialPropertyOptions ) );
+    }, options.materialPropertyOptions ) );
 
-    if ( config.adjustableMaterial ) {
-      this.materialEnumProperty = new EnumerationProperty( materialToEnum( config.material ), {
+    if ( options.adjustableMaterial ) {
+      this.materialEnumProperty = new EnumerationProperty( materialToEnum( options.material ), {
         tandem: tandem?.createTandem( 'materialEnumProperty' ),
         phetioDocumentation: 'Current material of the block. Changing the material will result in changes to the mass, but the volume will remain the same.'
       } );
-      this.customDensityProperty = new NumberProperty( config.material.density, {
+      this.customDensityProperty = new NumberProperty( options.material.density, {
         tandem: tandem?.createTandem( 'customDensityProperty' ),
         phetioDocumentation: 'Density of the block when the material is set to “CUSTOM”.',
         range: new Range( 150, 23000 ),
         units: 'kg/m^3'
       } );
-      this.customColorProperty = new ColorProperty( config.material.customColor ? config.material.customColor.value : Color.WHITE, {
+      this.customColorProperty = new ColorProperty( options.material.customColor ? options.material.customColor.value : Color.WHITE, {
         tandem: tandem?.createTandem( 'customColorProperty' )
       } );
 
@@ -430,14 +430,14 @@ export default abstract class Mass extends PhetioObject {
 
     this.volumeLock = false;
 
-    this.volumeProperty = new NumberProperty( config.volume, combineOptions<NumberPropertyOptions>( {
+    this.volumeProperty = new NumberProperty( options.volume, combineOptions<NumberPropertyOptions>( {
       tandem: tandem?.createTandem( 'volumeProperty' ),
-      range: new Range( config.minVolume, config.maxVolume ),
+      range: new Range( options.minVolume, options.maxVolume ),
       phetioReadOnly: true,
       phetioDocumentation: 'Current volume of the block. Changing the volume will result in changes to the mass, but will not change the material or density.',
       units: 'm^3',
       reentrant: true
-    }, config.volumePropertyOptions ) );
+    }, options.volumePropertyOptions ) );
 
     this.containedMassProperty = new NumberProperty( 0, {
       range: new Range( 0, Number.POSITIVE_INFINITY ),
@@ -469,7 +469,7 @@ export default abstract class Mass extends PhetioObject {
         return isProposedVolumeInRange ? null :
                `The proposed mass ${proposedMass} kg would result in a volume ${proposedVolume} m^3 that is out of range. At the current density, the allowed range is [${minAllowedMass}, ${maxAllowedMass}] kg.`;
       }
-    }, config.massPropertyOptions ) );
+    }, options.massPropertyOptions ) );
 
     Multilink.multilink( [ this.materialProperty, this.volumeProperty, this.containedMassProperty ], ( material, volume, containedMass ) => {
       this.massLock = true;
@@ -528,18 +528,18 @@ export default abstract class Mass extends PhetioObject {
       tandem: Tandem.OPT_OUT
     } );
 
-    this.matrix = config.matrix;
+    this.matrix = options.matrix;
     this.stepMatrix = new Matrix3();
 
     this.transformedEmitter = new Emitter();
     this.interruptedEmitter = new Emitter();
 
-    this.canRotate = config.canRotate;
-    this.canMove = config.canMove;
-    this.tag = config.tag;
+    this.canRotate = options.canRotate;
+    this.canMove = options.canMove;
+    this.tag = options.tag;
 
-    this.nameProperty = blockStringMap[ config.tag.name ] || new TinyProperty( '' );
-    if ( blockStringMap[ config.tag.name ] ) {
+    this.nameProperty = blockStringMap[ options.tag.name ] || new TinyProperty( '' );
+    if ( blockStringMap[ options.tag.name ] ) {
       this.addLinkedElement( this.nameProperty as ReadOnlyProperty<string>, {
         tandemName: 'nameProperty'
       } );
@@ -555,7 +555,7 @@ export default abstract class Mass extends PhetioObject {
     ], () => {
       // Don't allow a fully-zero value for the physics engines
       engine.bodySetMass( this.body, Math.max( this.massProperty.value, 0.01 ), {
-        canRotate: config.canRotate
+        canRotate: options.canRotate
       } );
     } );
 

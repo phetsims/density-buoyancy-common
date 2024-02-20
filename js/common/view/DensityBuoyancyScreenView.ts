@@ -646,27 +646,30 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
         this.sceneNode.backgroundEventTarget.addChild( focusablePath );
 
         mass.transformedEmitter.addListener( () => {
-            const translation = mass.matrix.translation;
-            const bbox = mass.getLocalBounds();
-
-            const shiftedBbox = bbox.shifted( translation.toVector3() );
-
-            const viewPoints = [
-              this.modelToViewPoint( new Vector3( shiftedBbox.minX, shiftedBbox.minY, shiftedBbox.minZ ) ),
-              this.modelToViewPoint( new Vector3( shiftedBbox.minX, shiftedBbox.minY, shiftedBbox.maxZ ) ),
-              this.modelToViewPoint( new Vector3( shiftedBbox.minX, shiftedBbox.maxY, shiftedBbox.minZ ) ),
-              this.modelToViewPoint( new Vector3( shiftedBbox.minX, shiftedBbox.maxY, shiftedBbox.maxZ ) ),
-              this.modelToViewPoint( new Vector3( shiftedBbox.maxX, shiftedBbox.minY, shiftedBbox.minZ ) ),
-              this.modelToViewPoint( new Vector3( shiftedBbox.maxX, shiftedBbox.minY, shiftedBbox.maxZ ) ),
-              this.modelToViewPoint( new Vector3( shiftedBbox.maxX, shiftedBbox.maxY, shiftedBbox.minZ ) ),
-              this.modelToViewPoint( new Vector3( shiftedBbox.maxX, shiftedBbox.maxY, shiftedBbox.maxZ ) )
-            ];
-
-            focusablePath.shape = Shape.polygon( ConvexHull2.grahamScan( viewPoints, false ) );
-
-            focusablePath.focusHighlight = focusablePath.shape;
+          if ( focusablePath.isDisposed ) {
+            return;
           }
-        );
+
+          const translation = mass.matrix.translation;
+          const bbox = mass.getLocalBounds();
+
+          const shiftedBbox = bbox.shifted( translation.toVector3() );
+
+          const viewPoints = [
+            this.modelToViewPoint( new Vector3( shiftedBbox.minX, shiftedBbox.minY, shiftedBbox.minZ ) ),
+            this.modelToViewPoint( new Vector3( shiftedBbox.minX, shiftedBbox.minY, shiftedBbox.maxZ ) ),
+            this.modelToViewPoint( new Vector3( shiftedBbox.minX, shiftedBbox.maxY, shiftedBbox.minZ ) ),
+            this.modelToViewPoint( new Vector3( shiftedBbox.minX, shiftedBbox.maxY, shiftedBbox.maxZ ) ),
+            this.modelToViewPoint( new Vector3( shiftedBbox.maxX, shiftedBbox.minY, shiftedBbox.minZ ) ),
+            this.modelToViewPoint( new Vector3( shiftedBbox.maxX, shiftedBbox.minY, shiftedBbox.maxZ ) ),
+            this.modelToViewPoint( new Vector3( shiftedBbox.maxX, shiftedBbox.maxY, shiftedBbox.minZ ) ),
+            this.modelToViewPoint( new Vector3( shiftedBbox.maxX, shiftedBbox.maxY, shiftedBbox.maxZ ) )
+          ];
+
+          focusablePath.shape = Shape.polygon( ConvexHull2.grahamScan( viewPoints, false ) );
+
+          focusablePath.focusHighlight = focusablePath.shape;
+        } );
 
         if ( massView instanceof ScaleView ) {
 

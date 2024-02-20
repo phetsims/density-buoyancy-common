@@ -66,6 +66,10 @@ import PickRequired from '../../../../phet-core/js/types/PickRequired.js';
 import { PhetioObjectOptions } from '../../../../tandem/js/PhetioObject.js';
 import { Shape } from '../../../../kite/js/imports.js';
 import { ConvexHull2 } from '../../../../dot/js/imports.js';
+import SoundClip from '../../../../tambo/js/sound-generators/SoundClip.js';
+import soundManager from '../../../../tambo/js/soundManager.js';
+import grab_mp3 from '../../../../tambo/sounds/grab_mp3.js';
+import release_mp3 from '../../../../tambo/sounds/release_mp3.js';
 
 // constants
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
@@ -248,6 +252,12 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
       } ]
     } );
 
+    // Sounds clips associated with dragging
+    const grabClip = new SoundClip( grab_mp3, DensityBuoyancyCommonConstants.GRAB_RELEASE_SOUND_CLIP_OPTIONS );
+    const releaseClip = new SoundClip( release_mp3, DensityBuoyancyCommonConstants.GRAB_RELEASE_SOUND_CLIP_OPTIONS );
+    soundManager.addSoundGenerator( grabClip );
+    soundManager.addSoundGenerator( releaseClip );
+
     const draggedMasses: Mass[] = [];
 
     this.sceneNode.backgroundEventTarget.addInputListener( {
@@ -259,6 +269,8 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
         const mass = this.getMassUnderPointer( pointer, isTouch );
 
         if ( mass && mass.canMove && !mass.userControlledProperty.value ) {
+
+          grabClip.play();
 
           const initialRay = this.sceneNode.getRayFromScreenPoint( pointer.point );
           const initialT = mass.intersect( initialRay, isTouch );
@@ -277,7 +289,7 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
             arrayRemove( draggedMasses, mass );
             mass.interruptedEmitter.removeListener( endDrag );
             pointer.cursor = null;
-
+            releaseClip.play();
             this.endDragAction.execute( mass );
           };
           const listener = {

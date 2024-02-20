@@ -132,7 +132,10 @@ const DensityBuoyancyCommonConstants = {
   } ),
   KILOGRAMS_PATTERN_STRING_PROPERTY: new PatternStringProperty( DensityBuoyancyCommonStrings.kilogramsPatternStringProperty, {
     kilograms: '{{value}}'
-  }, { tandem: Tandem.OPT_OUT } )
+  }, { tandem: Tandem.OPT_OUT } ),
+  GRAB_RELEASE_SOUND_CLIP_OPTIONS: {
+    initialOutputLevel: 0.4
+  }
 };
 
 densityBuoyancyCommon.register( 'DensityBuoyancyCommonConstants', DensityBuoyancyCommonConstants );

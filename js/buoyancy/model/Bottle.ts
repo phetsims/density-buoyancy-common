@@ -188,7 +188,7 @@ export default class Bottle extends Mass {
   public readonly capGeometry: THREE.BufferGeometry;
   public readonly intersectionGroup: THREE.Group;
 
-  public constructor( engine: PhysicsEngine, providedConfig: BottleOptions ) {
+  public constructor( engine: PhysicsEngine, providedOptions: BottleOptions ) {
 
     const vertices = Bottle.getFlatIntersectionVertices();
 
@@ -200,7 +200,7 @@ export default class Bottle extends Mass {
         density: ( BOTTLE_MASS + BOTTLE_INITIAL_INTERIOR_MATERIAL.density * BOTTLE_INITIAL_INTERIOR_VOLUME ) / BOTTLE_VOLUME
       } ),
       massShape: MassShape.BLOCK
-    }, providedConfig );
+    }, providedOptions );
 
     assert && assert( !options.canRotate );
 

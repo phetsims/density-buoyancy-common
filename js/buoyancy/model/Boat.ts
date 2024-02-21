@@ -46,14 +46,14 @@ export default class Boat extends Mass {
 
   public readonly intersectionGroup: THREE.Group;
 
-  public constructor( engine: PhysicsEngine, blockWidthProperty: TReadOnlyProperty<number>, liquidMaterialProperty: TProperty<Material>, providedConfig: BoatOptions ) {
+  public constructor( engine: PhysicsEngine, blockWidthProperty: TReadOnlyProperty<number>, liquidMaterialProperty: TProperty<Material>, providedOptions: BoatOptions ) {
 
     const displacementVolumeProperty = new NumberProperty( 0.01 );
 
     const boatIntersectionVertices = BoatDesign.getIntersectionVertices( blockWidthProperty.value / 2, displacementVolumeProperty.value * 1000 );
     const volume = BoatDesign.ONE_LITER_HULL_VOLUME * displacementVolumeProperty.value * 1000;
 
-    const config = optionize<BoatOptions, EmptySelfOptions, MassOptions>()( {
+    const options = optionize<BoatOptions, EmptySelfOptions, MassOptions>()( {
       body: engine.createFromVertices( boatIntersectionVertices, true ),
       shape: Shape.polygon( boatIntersectionVertices ),
       volume: volume,
@@ -61,11 +61,11 @@ export default class Boat extends Mass {
 
       // material
       material: Material.BOAT_BODY
-    }, providedConfig );
+    }, providedOptions );
 
-    assert && assert( !config.canRotate );
+    assert && assert( !options.canRotate );
 
-    super( engine, config );
+    super( engine, options );
 
     const massLabelOffsetVector3 = new Vector3( 0, 0, 0 );
 

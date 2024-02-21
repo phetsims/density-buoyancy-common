@@ -623,6 +623,7 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
     } );
 
     // Map to keep track of the highlight transform listeners for each mass to dispose them later
+    // TODO: Can this be moved to MassView? https://github.com/phetsims/buoyancy/issues/76
     const highlightTransformListenersMap = new Map<Mass, () => void>(); // eslint-disable-line no-spaced-func
 
     const onMassAdded = ( mass: Mass ) => {

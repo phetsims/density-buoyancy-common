@@ -74,19 +74,17 @@ import Utils from '../../../../dot/js/Utils.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
 import { Shape } from '../../../../kite/js/imports.js';
-import ThreeUtils from '../../../../mobius/js/ThreeUtils.js';
 import optionize, { EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
 import Mass, { InstrumentedMassOptions } from '../../common/model/Mass.js';
 import Material from '../../common/model/Material.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import PhysicsEngine from '../../common/model/PhysicsEngine.js';
-import Ray3 from '../../../../dot/js/Ray3.js';
 import Multilink from '../../../../axon/js/Multilink.js';
 import IOType from '../../../../tandem/js/types/IOType.js';
 import { MassShape } from '../../common/model/MassShape.js';
 import ReadOnlyProperty from '../../../../axon/js/ReadOnlyProperty.js';
-import { Bounds3 } from '../../../../dot/js/imports.js';
+import ApplicationsMass, { ApplicationsMassOptions } from './ApplicationsMass.js';
 
 // constants (in logical coordinates)
 const BODY_CORNER_RADIUS = 0.02; // Used both between the taper/body and between the body/base
@@ -171,9 +169,9 @@ const BOTTLE_INITIAL_INTERIOR_VOLUME = 0.004;
 // {Material}
 const BOTTLE_INITIAL_INTERIOR_MATERIAL = Material.WATER;
 
-export type BottleOptions = StrictOmit<InstrumentedMassOptions, 'body' | 'shape' | 'volume' | 'material' | 'massShape'>;
+export type BottleOptions = StrictOmit<ApplicationsMassOptions, 'body' | 'shape' | 'volume' | 'material' | 'massShape'>;
 
-export default class Bottle extends Mass {
+export default class Bottle extends ApplicationsMass {
 
   // model-coordinate bounds in x,y
   private readonly bottleBounds: Bounds2;
@@ -186,7 +184,6 @@ export default class Bottle extends Mass {
 
   public readonly primaryGeometry: THREE.BufferGeometry;
   public readonly capGeometry: THREE.BufferGeometry;
-  public readonly intersectionGroup: THREE.Group;
 
   public constructor( engine: PhysicsEngine, providedOptions: BottleOptions ) {
 
@@ -202,20 +199,10 @@ export default class Bottle extends Mass {
       massShape: MassShape.BLOCK
     }, providedOptions );
 
-    assert && assert( !options.canRotate );
-
-    super( engine, options );
-
-    const massLabelOffsetVector3 = new Vector3( 0, 0, 0 );
+    super( engine, new NumberProperty( BOTTLE_VOLUME ), options );
 
     this.bottleBounds = Bounds2.NOTHING.copy();
     Bottle.getFlatIntersectionVertices().forEach( p => this.bottleBounds.addPoint( p ) );
-
-    // Mass label on the bottom left of the boat, top because the shape is flipped.
-    massLabelOffsetVector3.setXYZ( this.bottleBounds.left, this.bottleBounds.top, 0 );
-
-    this.massLabelOffsetOrientationProperty.value = new Vector2( 1, -1 / 2 );
-    this.massLabelOffsetProperty.value = massLabelOffsetVector3;
 
     this.interiorMaterialProperty = new Property( BOTTLE_INITIAL_INTERIOR_MATERIAL, {
       valueType: Material,
@@ -244,7 +231,6 @@ export default class Bottle extends Mass {
     this.primaryGeometry = Bottle.getPrimaryGeometry();
     this.capGeometry = Bottle.getCapGeometry();
 
-    this.intersectionGroup = new THREE.Group();
     this.intersectionGroup.add( new THREE.Mesh( this.primaryGeometry, new THREE.MeshLambertMaterial() ) );
     this.intersectionGroup.add( new THREE.Mesh( this.capGeometry, new THREE.MeshLambertMaterial() ) );
   }
@@ -266,65 +252,12 @@ export default class Bottle extends Mass {
     this.stepTop = yOffset + this.bottleBounds.maxY;
   }
 
-  /**
-   * If there is an intersection with the ray and this mass, the t-value (distance the ray would need to travel to
-   * reach the intersection, e.g. ray.position + ray.distance * t === intersectionPoint) will be returned. Otherwise
-   * if there is no intersection, null will be returned.
-   */
-  public override intersect( ray: Ray3, isTouch: boolean ): number | null {
-    const translation = this.matrix.translation;
-    const adjustedPosition = ray.position.minusXYZ( translation.x, translation.y, 0 );
-
-    const raycaster = new THREE.Raycaster( ThreeUtils.vectorToThree( adjustedPosition ), ThreeUtils.vectorToThree( ray.direction ) );
-    const intersections: THREE.Intersection<THREE.Group>[] = [];
-    raycaster.intersectObject( this.intersectionGroup, true, intersections );
-
-    return intersections.length ? intersections[ 0 ].distance : null;
-  }
-
-  public override getLocalBounds(): Bounds3 {
-    const bounds2 = this.shapeProperty.value.bounds;
-    return new Bounds3( bounds2.minX, bounds2.minY, -bounds2.minY, bounds2.maxX, bounds2.maxY, bounds2.minY );
-  }
-
-  /**
-   * Returns the cumulative displaced volume of this object up to a given y level.
-   *
-   * Assumes step information was updated.
-   */
-  public getDisplacedArea( liquidLevel: number ): number {
-    const bottom = this.stepBottom;
-    const top = this.stepTop;
-
-    if ( liquidLevel < bottom || liquidLevel > top ) {
-      return 0;
-    }
-
-    const ratio = ( liquidLevel - bottom ) / ( top - bottom );
-
+  public override evaluatePiecewiseLinearArea( ratio: number ): number {
     return Mass.evaluatePiecewiseLinear( TEN_LITER_DISPLACED_AREAS, ratio );
   }
 
-  /**
-   * Returns the displaced volume of this object up to a given y level, assuming a y value for the given liquid level.
-   *
-   * Assumes step information was updated.
-   */
-  public getDisplacedVolume( liquidLevel: number ): number {
-    const bottom = this.stepBottom;
-    const top = this.stepTop;
-
-    if ( liquidLevel <= bottom ) {
-      return 0;
-    }
-    else if ( liquidLevel >= top ) {
-      return BOTTLE_VOLUME;
-    }
-    else {
-      const ratio = ( liquidLevel - bottom ) / ( top - bottom );
-
-      return Mass.evaluatePiecewiseLinear( TEN_LITER_DISPLACED_VOLUMES, ratio );
-    }
+  public override evaluatePiecewiseLinearVolume( ratio: number ): number {
+    return Mass.evaluatePiecewiseLinear( TEN_LITER_DISPLACED_VOLUMES, ratio );
   }
 
   /**
@@ -1236,10 +1169,6 @@ const FLAT_INTERSECTION_VERTICES = [ ${flatIntersectionVertices.map( v => `new V
     document.body.style.background = 'white';
 
     return canvas;
-  }
-
-  public setRatios( widthRatio: number, heightRatio: number ): void {
-    // See subclass for implementation
   }
 
   // The number to scale the original values by to get a 10L-volume bottle

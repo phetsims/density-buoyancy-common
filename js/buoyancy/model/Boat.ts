@@ -11,8 +11,7 @@ import NumberProperty from '../../../../axon/js/NumberProperty.js';
 import StrictOmit from '../../../../phet-core/js/types/StrictOmit.js';
 import Utils from '../../../../dot/js/Utils.js';
 import { Shape } from '../../../../kite/js/imports.js';
-import ThreeUtils from '../../../../mobius/js/ThreeUtils.js';
-import Mass, { InstrumentedMassOptions, MassOptions } from '../../common/model/Mass.js';
+import Mass, { MassOptions } from '../../common/model/Mass.js';
 import Material from '../../common/model/Material.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import BoatBasin from './BoatBasin.js';
@@ -25,16 +24,13 @@ import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import IOType from '../../../../tandem/js/types/IOType.js';
 import { MassShape } from '../../common/model/MassShape.js';
 import optionize, { EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
-import Vector2 from '../../../../dot/js/Vector2.js';
-import Vector3 from '../../../../dot/js/Vector3.js';
-import { Bounds3 } from '../../../../dot/js/imports.js';
+import ApplicationsMass, { ApplicationsMassOptions } from './ApplicationsMass.js';
 
-export type BoatOptions = StrictOmit<InstrumentedMassOptions, 'body' | 'shape' | 'volume' | 'material' | 'massShape'>;
+export type BoatOptions = StrictOmit<ApplicationsMassOptions, 'body' | 'shape' | 'volume' | 'material' | 'massShape'>;
 
-export default class Boat extends Mass {
+export default class Boat extends ApplicationsMass {
 
   // The volume that the boat can hold inside it.
-  public readonly displacementVolumeProperty: NumberProperty;
   public readonly liquidMaterialProperty: TProperty<Material>;
   public readonly basin: BoatBasin;
 
@@ -43,8 +39,6 @@ export default class Boat extends Mass {
 
   // How to multiply our one-liter size up to the model coordinates
   public stepMultiplier: number;
-
-  public readonly intersectionGroup: THREE.Group;
 
   public constructor( engine: PhysicsEngine, blockWidthProperty: TReadOnlyProperty<number>, liquidMaterialProperty: TProperty<Material>, providedOptions: BoatOptions ) {
 
@@ -63,11 +57,7 @@ export default class Boat extends Mass {
       material: Material.BOAT_BODY
     }, providedOptions );
 
-    assert && assert( !options.canRotate );
-
-    super( engine, options );
-
-    const massLabelOffsetVector3 = new Vector3( 0, 0, 0 );
+    super( engine, displacementVolumeProperty, options );
 
     // Update the shape when the block width or displacement changes
     Multilink.multilink( [ blockWidthProperty, displacementVolumeProperty ], ( blockWidth, displacementVolume ) => {
@@ -83,7 +73,7 @@ export default class Boat extends Mass {
 
       // Mass label on the bottom left of the boat, top because the shape is flipped.
       const bounds = this.shapeProperty.value.getBounds();
-      massLabelOffsetVector3.setXYZ( bounds.left, bounds.top, 0 );
+      this.massLabelOffsetVector3.setXYZ( bounds.left, bounds.top, 0 );
 
       this.volumeLock = true;
       this.volumeProperty.value = volume;
@@ -93,12 +83,12 @@ export default class Boat extends Mass {
       this.writeData();
     } );
 
-    this.displacementVolumeProperty = displacementVolumeProperty;
     this.liquidMaterialProperty = liquidMaterialProperty;
-    this.massLabelOffsetOrientationProperty.value = new Vector2( 1, -1 / 2 );
-    this.massLabelOffsetProperty.value = massLabelOffsetVector3;
 
     this.basin = new BoatBasin( this );
+
+    this.stepInternalVolume = 0;
+    this.stepMultiplier = 0;
 
     Multilink.multilink( [ this.liquidMaterialProperty, this.basin.liquidVolumeProperty ], ( material, volume ) => {
       this.containedMassProperty.value = material.density * volume;
@@ -107,16 +97,8 @@ export default class Boat extends Mass {
     this.stepInternalVolume = 0;
     this.stepMultiplier = 0;
 
-    this.intersectionGroup = new THREE.Group();
     const intersectionMesh = new THREE.Mesh( BoatDesign.getPrimaryGeometry( 1 ), new THREE.MeshLambertMaterial() );
     this.intersectionGroup.add( intersectionMesh );
-  }
-
-
-  public override getLocalBounds(): Bounds3 {
-    const bounds2 = this.shapeProperty.value.bounds;
-    // TODO: Boat geometry is more complex than this, could be improved https://github.com/phetsims/buoyancy/issues/76
-    return new Bounds3( bounds2.minX, bounds2.minY, -bounds2.minY, bounds2.maxX, bounds2.maxY, bounds2.minY );
   }
 
   /**
@@ -166,55 +148,16 @@ export default class Boat extends Mass {
    */
   public override intersect( ray: Ray3, isTouch: boolean ): number | null {
     const scale = Math.pow( this.displacementVolumeProperty.value / 0.001, 1 / 3 );
-    // TODO: somewhat borrowed with Bottle, let's combine https://github.com/phetsims/density-buoyancy-common/issues/91
-    const translation = this.matrix.translation;
-    const adjustedPosition = ray.position.minusXYZ( translation.x, translation.y, 0 ).dividedScalar( scale );
-
-    const raycaster = new THREE.Raycaster( ThreeUtils.vectorToThree( adjustedPosition ), ThreeUtils.vectorToThree( ray.direction ) );
-    const intersections: THREE.Intersection<THREE.Group>[] = [];
-    raycaster.intersectObject( this.intersectionGroup, true, intersections );
-
-    return intersections.length ? intersections[ 0 ].distance * scale : null;
+    return super.intersect( ray, isTouch, scale );
   }
 
-  /**
-   * Returns the displayed area of this object at a given y level
-   *
-   * Assumes step information was updated.
-   */
-  public getDisplacedArea( liquidLevel: number ): number {
-    const bottom = this.stepBottom;
-    const top = this.stepTop;
 
-    if ( liquidLevel < bottom || liquidLevel > top ) {
-      return 0;
-    }
-
-    const ratio = ( liquidLevel - bottom ) / ( top - bottom );
-
+  public override evaluatePiecewiseLinearArea( ratio: number ): number {
     return Mass.evaluatePiecewiseLinear( BoatDesign.ONE_LITER_DISPLACED_AREAS, ratio ) * this.stepMultiplier * this.stepMultiplier;
   }
 
-  /**
-   * Returns the displaced volume of this object up to a given y level, assuming a y value for the given liquid level.
-   *
-   * Assumes step information was updated.
-   */
-  public getDisplacedVolume( liquidLevel: number ): number {
-    const bottom = this.stepBottom;
-    const top = this.stepTop;
-
-    if ( liquidLevel <= bottom ) {
-      return 0;
-    }
-    else if ( liquidLevel >= top ) {
-      return this.displacementVolumeProperty.value;
-    }
-    else {
-      const ratio = ( liquidLevel - bottom ) / ( top - bottom );
-
-      return Mass.evaluatePiecewiseLinear( BoatDesign.ONE_LITER_DISPLACED_VOLUMES, ratio ) * this.stepMultiplier * this.stepMultiplier * this.stepMultiplier;
-    }
+  public override evaluatePiecewiseLinearVolume( ratio: number ): number {
+    return Mass.evaluatePiecewiseLinear( BoatDesign.ONE_LITER_DISPLACED_VOLUMES, ratio ) * this.stepMultiplier * this.stepMultiplier * this.stepMultiplier;
   }
 
   /**
@@ -256,10 +199,6 @@ export default class Boat extends Mass {
 
       return Mass.evaluatePiecewiseLinear( BoatDesign.ONE_LITER_INTERNAL_VOLUMES, ratio ) * this.stepMultiplier * this.stepMultiplier * this.stepMultiplier;
     }
-  }
-
-  public setRatios( widthRatio: number, heightRatio: number ): void {
-    // See subclass for implementation
   }
 
   /**

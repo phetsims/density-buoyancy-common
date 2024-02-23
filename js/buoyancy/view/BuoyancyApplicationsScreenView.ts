@@ -72,9 +72,7 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
       Material.WATER,
       Material.SAND,
       Material.CONCRETE,
-      Material.COPPER,
-      Material.LEAD,
-      Material.MERCURY
+      Material.COPPER
     ], volume => model.bottle.interiorVolumeProperty.set( volume ), this.popupLayer, {
       minMass: 0,
       maxCustomMass: 100,

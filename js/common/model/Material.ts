@@ -278,6 +278,22 @@ export default class Material {
     liquidColor: DensityBuoyancyCommonColors.materialLeadColorProperty
   } );
 
+  public static readonly MISTERY_X = new Material( {
+    nameProperty: DensityBuoyancyCommonStrings.material.misteryXStringProperty,
+    tandemName: 'misteryX',
+    identifier: 'MISTERY_X',
+    hidden: true,
+    density: 5010 // Same as pyrite,
+  } );
+
+  public static readonly MISTERY_Y = new Material( {
+    nameProperty: DensityBuoyancyCommonStrings.material.misteryYStringProperty,
+    tandemName: 'misteryY',
+    identifier: 'MISTERY_Y',
+    hidden: true,
+    density: 19320 // Same as gold,
+  } );
+
   public static readonly PLATINUM = new Material( {
     nameProperty: DensityBuoyancyCommonStrings.material.platinumStringProperty,
     tandemName: 'platinum',

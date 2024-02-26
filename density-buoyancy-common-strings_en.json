@@ -77,6 +77,12 @@
   "material.ice": {
     "value": "Ice"
   },
+  "material.misteryX": {
+    "value": "Mistery X"
+  },
+  "material.misteryY": {
+    "value": "Mistery Y"
+  },
   "material.lead": {
     "value": "Lead"
   },
@@ -334,6 +340,9 @@
   },
   "whatIsTheValueOfGravity": {
     "value": "What is the value of gravity?"
+  },
+  "whatIsTheMaterial": {
+    "value": "What is this material?"
   },
   "vectorScale": {
     "value": "Vector Scale"

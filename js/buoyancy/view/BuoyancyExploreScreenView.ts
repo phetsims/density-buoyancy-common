@@ -167,7 +167,8 @@ export default class BuoyancyExploreScreenView extends SecondaryMassScreenView<B
       {
         tandem: tandem,
         minCustomMass: 0.1,
-        maxCustomMass: 27
+        maxCustomMass: 27,
+        supportHiddenMaterial: true
       }
     );
 

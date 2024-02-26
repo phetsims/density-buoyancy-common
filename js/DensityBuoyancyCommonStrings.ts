@@ -66,6 +66,10 @@ type StringsType = {
     'humanStringProperty': LocalizedStringProperty;
     'ice': string;
     'iceStringProperty': LocalizedStringProperty;
+    'misteryX': string;
+    'misteryXStringProperty': LocalizedStringProperty;
+    'misteryY': string;
+    'misteryYStringProperty': LocalizedStringProperty;
     'lead': string;
     'leadStringProperty': LocalizedStringProperty;
     'mercury': string;
@@ -243,6 +247,8 @@ type StringsType = {
   'whatIsTheFluidDensityStringProperty': LocalizedStringProperty;
   'whatIsTheValueOfGravity': string;
   'whatIsTheValueOfGravityStringProperty': LocalizedStringProperty;
+  'whatIsTheMaterial': string;
+  'whatIsTheMaterialStringProperty': LocalizedStringProperty;
   'vectorScale': string;
   'vectorScaleStringProperty': LocalizedStringProperty;
   'volumeUnits': string;

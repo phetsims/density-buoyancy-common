@@ -116,6 +116,12 @@ const DensityBuoyancyCommonConstants = {
     Material.DENSITY_E,
     Material.DENSITY_F
   ],
+
+  BUOYANCY_MISTERY_DENSITY_MATERIALS: [
+    Material.MISTERY_X,
+    Material.MISTERY_Y
+  ],
+
   VOLUME_PATTERN_STRING_PROPERTY: new DerivedProperty( [
     DensityBuoyancyCommonPreferences.volumeUnitsProperty,
     litersPatternStringProperty,

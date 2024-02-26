@@ -1,7 +1,7 @@
 // Copyright 2024, University of Colorado Boulder
 
 /**
- * A control that changes the Material (via provided Property), but also supports handling special cases for custom
+ * A control that changes the Material (via provided Property), but also supports handling special cases for custom or hidden
  * materials.
  *
  * @author Michael Kauzmann (PhET Interactive Simulations)
@@ -32,6 +32,9 @@ type SelfMaterialControlNodeOptions = {
   // If a custom material should be added to the ComboBox
   supportCustomMaterial?: boolean;
 
+  // If a hidden material (Mistery materials for example) should be added to the ComboBox
+  supportHiddenMaterial?: boolean;
+
   minCustomMass?: number;
   maxCustomMass?: number;
   minCustomVolumeLiters?: number;
@@ -50,6 +53,7 @@ export default class MaterialControlNode extends VBox {
     const options = optionize<MaterialControlNodeOptions, SelfMaterialControlNodeOptions, VBoxOptions>()( {
       labelNode: null,
       supportCustomMaterial: true,
+      supportHiddenMaterial: false,
       minCustomMass: 0.5,
       maxCustomMass: 10,
       minCustomVolumeLiters: 1
@@ -59,6 +63,10 @@ export default class MaterialControlNode extends VBox {
       spacing: 15,
       align: 'left'
     } );
+
+    if ( !options.supportHiddenMaterial ) {
+      materials = materials.filter( material => !material.hidden );
+    }
 
     const materialNames: MaterialName[] = [ ...materials.map( material => material.identifier! ) ];
     options.supportCustomMaterial && materialNames.push( CUSTOM_MATERIAL_NAME );
@@ -116,6 +124,7 @@ export default class MaterialControlNode extends VBox {
     this.children = [
       new HBox( {
         spacing: 5,
+        justify: 'left',
         children: [
           comboBox,
           ...( [ options.labelNode ].filter( _.identity ) as Node[] )

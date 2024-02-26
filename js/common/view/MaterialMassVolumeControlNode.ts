@@ -15,13 +15,14 @@ import Range from '../../../../dot/js/Range.js';
 import Utils from '../../../../dot/js/Utils.js';
 import optionize, { combineOptions } from '../../../../phet-core/js/optionize.js';
 import NumberControl, { NumberControlOptions } from '../../../../scenery-phet/js/NumberControl.js';
-import { Node, TPaint } from '../../../../scenery/js/imports.js';
+import { Node, Text, TPaint, VBox, VBoxOptions } from '../../../../scenery/js/imports.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
 import Material from '../model/Material.js';
 import PrecisionSliderThumb from './PrecisionSliderThumb.js';
 import MaterialControlNode, { MaterialControlNodeOptions } from './MaterialControlNode.js';
+import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 
 // constants
 const LITERS_IN_CUBIC_METER = 1000;
@@ -269,8 +270,34 @@ export default class MaterialMassVolumeControlNode extends MaterialControlNode {
       }
     }, MaterialMassVolumeControlNode.getNumberControlOptions() ) );
 
-    this.addChild( massNumberControl );
-    this.addChild( volumeNumberControl );
+    const fallbackContainer = new Node();
+    const massVolumeVBox = new VBox( combineOptions<VBoxOptions>( {
+      children: [ massNumberControl, volumeNumberControl ],
+      spacing: 15
+    } ) );
+
+    this.addChild( fallbackContainer );
+    this.addChild( massVolumeVBox );
+
+    let fallbackNode = null;
+
+    materialProperty.link( material => {
+      fallbackContainer.removeAllChildren();
+      if ( material.hidden ) {
+        fallbackNode = new Text( DensityBuoyancyCommonStrings.whatIsTheMaterialStringProperty, {
+          font: new PhetFont( 14 )
+        } );
+        fallbackNode.maxWidth = massVolumeVBox.width;
+        fallbackNode.center = massVolumeVBox.center;
+        fallbackContainer.addChild( fallbackNode );
+      }
+      else {
+        fallbackNode = null;
+      }
+      massVolumeVBox.visible = fallbackNode === null;
+    } );
+
+    this.minContentWidth = massVolumeVBox.width;
 
     this.mutate( options );
   }

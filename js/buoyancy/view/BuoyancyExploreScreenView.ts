@@ -173,6 +173,18 @@ export default class BuoyancyExploreScreenView extends SecondaryMassScreenView<B
       }
     );
 
+    // TODO: Should this be unlinked? https://github.com/phetsims/density-buoyancy-common/issues/95
+    [ model.primaryMass, model.secondaryMass ].forEach( mass => {
+      mass.materialProperty.link( material => {
+        if ( material === Material.MISTERY_X ) {
+          mass.volumeProperty.value = 0.003;
+        }
+        else if ( material === Material.MISTERY_Y ) {
+          mass.volumeProperty.value = 0.001;
+        }
+      } );
+    } );
+
     this.addChild( new AlignBox( this.rightBox, {
       alignBoundsProperty: this.visibleBoundsProperty,
       xAlign: 'right',

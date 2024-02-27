@@ -33,10 +33,10 @@ export default class MassLabelNode extends Node {
     } );
 
     this.readoutStringProperty = new DerivedProperty(
-      [ mass.materialProperty, mass.massProperty, DensityBuoyancyCommonStrings.kilogramsPatternStringProperty ],
-      ( material, mass, patternStringProperty ) => {
+      [ mass.materialProperty, mass.massProperty, DensityBuoyancyCommonStrings.kilogramsPatternStringProperty, DensityBuoyancyCommonStrings.questionMarkStringProperty ],
+      ( material, mass, patternStringProperty, questionMarkString ) => {
         return material.hidden ?
-               '?' :
+               questionMarkString :
                StringUtils.fillIn( patternStringProperty, {
                  kilograms: DotUtils.toFixed( mass, 2 ),
                  decimalPlaces: 2

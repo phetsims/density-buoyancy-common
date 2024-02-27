@@ -49,10 +49,10 @@ export default class BuoyancyExploreScreenView extends SecondaryMassScreenView<B
 
     // Returns the filled in string for the material readout or '?' if the material is hidden
     const getMisteryMaterialReadoutStringProperty = ( materialProperty: TReadOnlyProperty<Material> ) => new DerivedProperty(
-      [ materialProperty, DensityBuoyancyCommonConstants.KILOGRAMS_PER_VOLUME_PATTERN_STRING_PROPERTY ],
-      ( material, patternStringProperty ) => {
+      [ materialProperty, DensityBuoyancyCommonConstants.KILOGRAMS_PER_VOLUME_PATTERN_STRING_PROPERTY, DensityBuoyancyCommonStrings.questionMarkStringProperty ],
+      ( material, patternStringProperty, questionMarkString ) => {
       return material.hidden ?
-             '?' :
+             questionMarkString :
              StringUtils.fillIn( patternStringProperty, {
                value: DotUtils.toFixed( material.density / 1000, 2 ),
                decimalPlaces: 2

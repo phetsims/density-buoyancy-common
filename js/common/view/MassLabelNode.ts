@@ -9,7 +9,6 @@
 
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
-import PatternStringProperty from '../../../../axon/js/PatternStringProperty.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import { ManualConstraint, Node, Text } from '../../../../scenery/js/imports.js';
 import Panel from '../../../../sun/js/Panel.js';
@@ -17,7 +16,9 @@ import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
 import Mass from '../model/Mass.js';
-import Tandem from '../../../../tandem/js/Tandem.js';
+import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
+import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
+import { DotUtils } from '../../../../dot/js/imports.js';
 
 export default class MassLabelNode extends Node {
 
@@ -31,12 +32,16 @@ export default class MassLabelNode extends Node {
       pickable: false
     } );
 
-    this.readoutStringProperty = new PatternStringProperty( DensityBuoyancyCommonStrings.kilogramsPatternStringProperty, {
-      kilograms: mass.massProperty
-    }, {
-      tandem: Tandem.OPT_OUT,
-      decimalPlaces: 2
-    } );
+    this.readoutStringProperty = new DerivedProperty(
+      [ mass.materialProperty, mass.massProperty, DensityBuoyancyCommonStrings.kilogramsPatternStringProperty ],
+      ( material, mass, patternStringProperty ) => {
+        return material.hidden ?
+               '?' :
+               StringUtils.fillIn( patternStringProperty, {
+                 kilograms: DotUtils.toFixed( mass, 2 ),
+                 decimalPlaces: 2
+               } );
+      } );
 
     const readoutText = new Text( this.readoutStringProperty, {
       font: new PhetFont( {

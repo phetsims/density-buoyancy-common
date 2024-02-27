@@ -10,7 +10,6 @@ import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import { combineOptions } from '../../../../phet-core/js/optionize.js';
-import PatternStringProperty from '../../../../axon/js/PatternStringProperty.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import { AlignBox, GridBox, HBox, HStrut, Node, RichText, Text, VBox } from '../../../../scenery/js/imports.js';
 import AccordionBox, { AccordionBoxOptions } from '../../../../sun/js/AccordionBox.js';
@@ -27,8 +26,8 @@ import SecondaryMassScreenView from '../../common/view/SecondaryMassScreenView.j
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import BuoyancyExploreModel from '../model/BuoyancyExploreModel.js';
-import Tandem from '../../../../tandem/js/Tandem.js';
 import arrayRemove from '../../../../phet-core/js/arrayRemove.js';
+import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
 
 // constants
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
@@ -47,24 +46,26 @@ export default class BuoyancyExploreScreenView extends SecondaryMassScreenView<B
 
     const displayOptionsNode = new DisplayOptionsNode( model );
 
-    const getMaterialReadoutStringProperty = ( materialProperty: TReadOnlyProperty<Material> ) => new PatternStringProperty( DensityBuoyancyCommonConstants.KILOGRAMS_PER_VOLUME_PATTERN_STRING_PROPERTY, {
-      value: materialProperty
-    }, {
-      tandem: Tandem.OPT_OUT,
-      maps: {
-        value: material => material.density / 1000
-      },
-      decimalPlaces: 2
+    // Returns the filled in string for the material readout or '?' if the material is hidden
+    const getMisteryMaterialReadoutStringProperty = ( materialProperty: TReadOnlyProperty<Material> ) => new DerivedProperty(
+      [ materialProperty, DensityBuoyancyCommonConstants.KILOGRAMS_PER_VOLUME_PATTERN_STRING_PROPERTY ],
+      ( material, patternStringProperty ) => {
+      return material.hidden ?
+             '?' :
+             StringUtils.fillIn( patternStringProperty, {
+               value: material.density / 1000,
+               decimalPlaces: 2
+             } );
     } );
 
     // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
-    const densityAText = new RichText( getMaterialReadoutStringProperty( model.primaryMass.materialProperty ), {
+    const densityAText = new RichText( getMisteryMaterialReadoutStringProperty( model.primaryMass.materialProperty ), {
       maxWidth: 120,
       font: DensityBuoyancyCommonConstants.ITEM_FONT,
       fill: DensityBuoyancyCommonColors.labelPrimaryProperty,
       layoutOptions: { column: 1, row: 0 }
     } );
-    const densityBText = new RichText( getMaterialReadoutStringProperty( model.secondaryMass.materialProperty ), {
+    const densityBText = new RichText( getMisteryMaterialReadoutStringProperty( model.secondaryMass.materialProperty ), {
       maxWidth: 120,
       font: DensityBuoyancyCommonConstants.ITEM_FONT,
       fill: DensityBuoyancyCommonColors.labelSecondaryProperty,

@@ -68,7 +68,7 @@ export default class ShapeSizeControlNode extends VBox {
           font: DensityBuoyancyCommonConstants.COMBO_BOX_ITEM_FONT,
           maxWidth: 160
         } ),
-        tandemName: `${tandemNameMap[ massShape.name ]}${ComboBox.ITEM_TANDEM_NAME_SUFFIX}`
+        tandemName: `${tandemNameMap[ massShape.name ]}Item`
       };
     } ), listParent, {
       xMargin: 8,

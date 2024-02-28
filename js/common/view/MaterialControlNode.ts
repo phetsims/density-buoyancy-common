@@ -103,7 +103,7 @@ export default class MaterialControlNode extends VBox {
             font: DensityBuoyancyCommonConstants.COMBO_BOX_ITEM_FONT,
             maxWidth: comboMaxWidth
           } ),
-          tandemName: `${material.tandemName}${ComboBox.ITEM_TANDEM_NAME_SUFFIX}`
+          tandemName: `${material.tandemName}Item`
         };
       } ),
       ...( options.supportCustomMaterial ? [ {
@@ -112,7 +112,7 @@ export default class MaterialControlNode extends VBox {
           font: DensityBuoyancyCommonConstants.COMBO_BOX_ITEM_FONT,
           maxWidth: comboMaxWidth
         } ),
-        tandemName: `custom${ComboBox.ITEM_TANDEM_NAME_SUFFIX}`
+        tandemName: 'customItem'
       }
       ] : [] )
     ], listParent, {

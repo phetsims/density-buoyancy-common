@@ -12,7 +12,6 @@ import { HBox, HBoxOptions, RichText, Text } from '../../../../scenery/js/import
 import PickRequired from '../../../../phet-core/js/types/PickRequired.js';
 import AquaRadioButtonGroup, { AquaRadioButtonGroupItem, AquaRadioButtonGroupOptions } from '../../../../sun/js/AquaRadioButtonGroup.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
-import AquaRadioButton from '../../../../sun/js/AquaRadioButton.js';
 import PreferencesDialog from '../../../../joist/js/preferences/PreferencesDialog.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import { VolumeUnits } from '../DensityBuoyancyCommonQueryParameters.js';
@@ -91,7 +90,7 @@ function createItem( value: VolumeUnits, stringProperty: TReadOnlyProperty<strin
       maxWidth: 200,
       tandem: tandem.createTandem( 'text' )
     } ),
-    tandemName: `${value}${AquaRadioButton.TANDEM_NAME_SUFFIX}`
+    tandemName: `${value}RadioButton`
   };
 }
 

@@ -16,7 +16,6 @@ import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js
 import Gravity from '../model/Gravity.js';
 import ComboNumberControl from './ComboNumberControl.js';
 import DensityBuoyancyCommonQueryParameters from '../DensityBuoyancyCommonQueryParameters.js';
-import ComboBox from '../../../../sun/js/ComboBox.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
 
 export default class GravityControlNode extends ComboNumberControl<Gravity> {
@@ -48,7 +47,7 @@ export default class GravityControlNode extends ComboNumberControl<Gravity> {
             font: DensityBuoyancyCommonConstants.COMBO_BOX_ITEM_FONT,
             maxWidth: 160
           } ),
-          tandemName: `${gravity.tandemName}${ComboBox.ITEM_TANDEM_NAME_SUFFIX}`
+          tandemName: `${gravity.tandemName}Item`
         };
       } ),
       customValue: customValue,

@@ -25,6 +25,7 @@ import IOType from '../../../../tandem/js/types/IOType.js';
 import { MassShape } from '../../common/model/MassShape.js';
 import optionize, { EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
 import ApplicationsMass, { ApplicationsMassOptions } from './ApplicationsMass.js';
+import { Vector2 } from '../../../../dot/js/imports.js';
 
 export type BoatOptions = StrictOmit<ApplicationsMassOptions, 'body' | 'shape' | 'volume' | 'material' | 'massShape'>;
 
@@ -99,6 +100,8 @@ export default class Boat extends ApplicationsMass {
 
     const intersectionMesh = new THREE.Mesh( BoatDesign.getPrimaryGeometry( 1 ), new THREE.MeshLambertMaterial() );
     this.intersectionGroup.add( intersectionMesh );
+
+    this.forceDiagramOffset = new Vector2( -75, 0 );
   }
 
   /**

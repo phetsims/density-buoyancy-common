@@ -651,7 +651,6 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
       }
 
       if ( massView ) {
-        massView.screenView = this;
         this.sceneNode.stage.threeScene.add( massView );
         this.massViews.push( massView );
 

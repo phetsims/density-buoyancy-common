@@ -13,7 +13,7 @@ import Mass, { MassTag } from '../model/Mass.js';
 import Material from '../model/Material.js';
 import DensityMaterials from './DensityMaterials.js';
 import MaterialView from './MaterialView.js';
-import { InteractiveHighlighting, Path } from '../../../../scenery/js/imports.js';
+import { InteractiveHighlighting, KeyboardDragListener, Path } from '../../../../scenery/js/imports.js';
 import { Shape } from '../../../../kite/js/imports.js';
 import MassTagView from './MassTagView.js';
 import ConvexHull2 from '../../../../dot/js/ConvexHull2.js';
@@ -90,6 +90,41 @@ export default abstract class MassView extends THREE.Mesh {
 
     this.mass.transformedEmitter.addListener( this.positionListener );
     this.positionListener();
+
+    // TODO: mass && mass.canMove && !mass.userControlledProperty.value as a starting condition? Basically this is a multi touch/pointer problem?
+    // TODO: grab sound // Look into BASE, RAP, FEL for precedent
+    // TODO: release sound
+    // TODO: zoomed in dragging shouldn't get lost
+    // TODO: invert Y so up is up (not down)
+
+    this.focusablePath.addInputListener( {
+      focus: () => {
+        mass.startDrag( mass.matrix.translation );
+
+        // TODO: Provide Property via parameter?
+        this.screenView.currentMassProperty.value = mass;
+      },
+      blur: () => {
+        mass.endDrag();
+      }
+    } );
+
+    // TODO: Drag bounds
+    const keyboardDragListener = new KeyboardDragListener( {
+      dragDelta: 0.05, // TODO: a bit more tweaking probably
+      shiftDragDelta: 0.025,
+      drag: ( vectorDelta: Vector2 ) => {
+        mass.updateDrag( mass.matrix.translation.add( vectorDelta ) );
+      },
+      start: () => { }, // TODO: anything here?
+      end: () => { }
+    } );
+
+    mass.interruptedEmitter.addListener( () => {
+      keyboardDragListener.interrupt();
+    } );
+
+    this.focusablePath.addInputListener( keyboardDragListener );
   }
 
   public get tagHeight(): number | null {

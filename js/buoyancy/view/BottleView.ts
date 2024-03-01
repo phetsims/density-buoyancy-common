@@ -6,7 +6,7 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
-import MassView from '../../common/view/MassView.js';
+import MassView, { ModelPoint3ToViewPoint2 } from '../../common/view/MassView.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import Bottle from '../model/Bottle.js';
 import Material from '../../common/model/Material.js';
@@ -22,10 +22,10 @@ export default class BottleView extends MassView {
 
   public readonly bottle: Bottle;
 
-  public constructor( bottle: Bottle ) {
+  public constructor( bottle: Bottle, modelToViewPoint: ModelPoint3ToViewPoint2 ) {
 
     // @ts-expect-error
-    super( bottle, new THREE.Geometry() );
+    super( bottle, new THREE.Geometry(), modelToViewPoint );
 
     const bottomClipPlane = new THREE.Plane( new THREE.Vector3( 0, -1, 0 ), 0 );
     const topClipPlane = new THREE.Plane( new THREE.Vector3( 0, 1, 0 ), 0 );

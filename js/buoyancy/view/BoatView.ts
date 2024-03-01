@@ -9,7 +9,7 @@
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import Multilink, { UnknownMultilink } from '../../../../axon/js/Multilink.js';
 import Material from '../../common/model/Material.js';
-import MassView from '../../common/view/MassView.js';
+import MassView, { ModelPoint3ToViewPoint2 } from '../../common/view/MassView.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import Boat from '../model/Boat.js';
 import BoatDesign from '../model/BoatDesign.js';
@@ -28,10 +28,10 @@ export default class BoatView extends MassView {
 
   public readonly boat: Boat;
 
-  public constructor( boat: Boat, liquidYInterpolatedProperty: TReadOnlyProperty<number> ) {
+  public constructor( boat: Boat, modelToViewPoint: ModelPoint3ToViewPoint2, liquidYInterpolatedProperty: TReadOnlyProperty<number> ) {
 
     // @ts-expect-error
-    super( boat, new THREE.Geometry() );
+    super( boat, new THREE.Geometry(), modelToViewPoint );
 
     // Clip planes at the boat's water level
     const topBoatClipPlane = new THREE.Plane( new THREE.Vector3( 0, 1, 0 ), 0 );

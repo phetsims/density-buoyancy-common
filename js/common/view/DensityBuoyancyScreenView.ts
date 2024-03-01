@@ -64,8 +64,6 @@ import Material from '../model/Material.js';
 import TEmitter from '../../../../axon/js/TEmitter.js';
 import PickRequired from '../../../../phet-core/js/types/PickRequired.js';
 import { PhetioObjectOptions } from '../../../../tandem/js/PhetioObject.js';
-import { Shape } from '../../../../kite/js/imports.js';
-import { ConvexHull2 } from '../../../../dot/js/imports.js';
 import SoundClip from '../../../../tambo/js/sound-generators/SoundClip.js';
 import soundManager from '../../../../tambo/js/soundManager.js';
 import grab_mp3 from '../../../../tambo/sounds/grab_mp3.js';
@@ -622,73 +620,41 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
       waterGeometry.computeBoundingSphere();
     } );
 
-    // Map to keep track of the highlight transform listeners for each mass to dispose them later
-    // TODO: Can this be moved to MassView? https://github.com/phetsims/buoyancy/issues/76
-    const highlightTransformListenersMap = new Map<Mass, () => void>(); // eslint-disable-line no-spaced-func
+    const boundModelToViewPoint = this.modelToViewPoint.bind( this );
 
     const onMassAdded = ( mass: Mass ) => {
       let massView = null;
 
       if ( mass instanceof Cuboid ) {
-        massView = new CuboidView( mass );
+        massView = new CuboidView( mass, boundModelToViewPoint );
       }
       else if ( mass instanceof Scale ) {
-        massView = new ScaleView( mass );
+        massView = new ScaleView( mass, boundModelToViewPoint );
       }
       else if ( mass instanceof Cone ) {
-        massView = new ConeView( mass );
+        massView = new ConeView( mass, boundModelToViewPoint );
       }
       else if ( mass instanceof Ellipsoid ) {
-        massView = new EllipsoidView( mass );
+        massView = new EllipsoidView( mass, boundModelToViewPoint );
       }
       else if ( mass instanceof HorizontalCylinder ) {
-        massView = new HorizontalCylinderView( mass );
+        massView = new HorizontalCylinderView( mass, boundModelToViewPoint );
       }
       else if ( mass instanceof VerticalCylinder ) {
-        massView = new VerticalCylinderView( mass );
+        massView = new VerticalCylinderView( mass, boundModelToViewPoint );
       }
       else if ( mass instanceof Bottle ) {
-        massView = new BottleView( mass );
+        massView = new BottleView( mass, boundModelToViewPoint );
       }
       else if ( mass instanceof Boat ) {
-        massView = new BoatView( mass, model.pool.liquidYInterpolatedProperty );
+        massView = new BoatView( mass, boundModelToViewPoint, model.pool.liquidYInterpolatedProperty );
       }
 
       if ( massView ) {
         this.sceneNode.stage.threeScene.add( massView );
         this.massViews.push( massView );
 
-        const focusablePath = massView.focusablePath;
-        this.sceneNode.backgroundEventTarget.addChild( focusablePath );
-
-        const highlightTransformListener = () => {
-          if ( focusablePath.isDisposed ) {
-            return;
-          }
-
-          const translation = mass.matrix.translation;
-          const bbox = mass.getLocalBounds();
-
-          const shiftedBbox = bbox.shifted( translation.toVector3() );
-
-          const viewPoints = [
-            this.modelToViewPoint( new Vector3( shiftedBbox.minX, shiftedBbox.minY, shiftedBbox.minZ ) ),
-            this.modelToViewPoint( new Vector3( shiftedBbox.minX, shiftedBbox.minY, shiftedBbox.maxZ ) ),
-            this.modelToViewPoint( new Vector3( shiftedBbox.minX, shiftedBbox.maxY, shiftedBbox.minZ ) ),
-            this.modelToViewPoint( new Vector3( shiftedBbox.minX, shiftedBbox.maxY, shiftedBbox.maxZ ) ),
-            this.modelToViewPoint( new Vector3( shiftedBbox.maxX, shiftedBbox.minY, shiftedBbox.minZ ) ),
-            this.modelToViewPoint( new Vector3( shiftedBbox.maxX, shiftedBbox.minY, shiftedBbox.maxZ ) ),
-            this.modelToViewPoint( new Vector3( shiftedBbox.maxX, shiftedBbox.maxY, shiftedBbox.minZ ) ),
-            this.modelToViewPoint( new Vector3( shiftedBbox.maxX, shiftedBbox.maxY, shiftedBbox.maxZ ) )
-          ];
-
-          focusablePath.shape = Shape.polygon( ConvexHull2.grahamScan( viewPoints, false ) );
-
-          focusablePath.focusHighlight = focusablePath.shape;
-        };
-
-        mass.transformedEmitter.addListener( highlightTransformListener );
-        highlightTransformListenersMap.set( mass, highlightTransformListener );
+        this.sceneNode.backgroundEventTarget.addChild( massView.focusablePath );
 
         if ( massView instanceof ScaleView ) {
 
@@ -728,12 +694,6 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
       this.sceneNode.stage.threeScene.remove( massView );
       arrayRemove( this.massViews, massView );
       massView.dispose();
-
-      const highlightTransformListener = highlightTransformListenersMap.get( mass );
-      if ( highlightTransformListener ) {
-        mass.transformedEmitter.removeListener( highlightTransformListener );
-        highlightTransformListenersMap.delete( mass );
-      }
 
       if ( massView instanceof ScaleView ) {
         const scaleReadoutNode = _.find( this.scaleReadoutNodes, scaleReadoutNode => scaleReadoutNode.mass === mass )!;

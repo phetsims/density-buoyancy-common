@@ -10,18 +10,18 @@ import Vector3 from '../../../../dot/js/Vector3.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import Scale from '../model/Scale.js';
 import CuboidView from './CuboidView.js';
-import MassView from './MassView.js';
+import MassView, { ModelPoint3ToViewPoint2 } from './MassView.js';
 import VerticalCylinderView from './VerticalCylinderView.js';
 
 export default class ScaleView extends MassView {
 
   private readonly scaleGeometry: THREE.BufferGeometry;
 
-  public constructor( mass: Scale ) {
+  public constructor( mass: Scale, modelToViewPoint: ModelPoint3ToViewPoint2 ) {
 
     const scaleGeometry = ScaleView.getScaleGeometry();
 
-    super( mass, scaleGeometry );
+    super( mass, scaleGeometry, modelToViewPoint );
 
     this.scaleGeometry = scaleGeometry;
   }

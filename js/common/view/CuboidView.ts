@@ -9,7 +9,7 @@
 import Vector3 from '../../../../dot/js/Vector3.js';
 import TriangleArrayWriter from '../../../../mobius/js/TriangleArrayWriter.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
-import MassView from './MassView.js';
+import MassView, { ModelPoint3ToViewPoint2 } from './MassView.js';
 import Cuboid from '../model/Cuboid.js';
 import Bounds3 from '../../../../dot/js/Bounds3.js';
 import { TAG_OFFSET } from './MassTagView.js';
@@ -23,7 +23,7 @@ export default class CuboidView extends MassView {
   private readonly cuboidGeometry: THREE.BufferGeometry;
   private readonly updateListener: ( size: Bounds3 ) => void;
 
-  public constructor( cuboid: Cuboid ) {
+  public constructor( cuboid: Cuboid, modelToViewPoint: ModelPoint3ToViewPoint2 ) {
     const size = cuboid.sizeProperty.value;
 
     const positionArray = new Float32Array( numElements * 3 );
@@ -37,7 +37,7 @@ export default class CuboidView extends MassView {
     cuboidGeometry.addAttribute( 'normal', new THREE.BufferAttribute( normalArray, 3 ) );
     cuboidGeometry.addAttribute( 'uv', new THREE.BufferAttribute( uvArray, 2 ) );
 
-    super( cuboid, cuboidGeometry );
+    super( cuboid, cuboidGeometry, modelToViewPoint );
 
     this.cuboid = cuboid;
     this.cuboidGeometry = cuboidGeometry;

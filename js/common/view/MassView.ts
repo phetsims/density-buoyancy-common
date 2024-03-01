@@ -16,6 +16,10 @@ import MaterialView from './MaterialView.js';
 import { InteractiveHighlighting, Path } from '../../../../scenery/js/imports.js';
 import { Shape } from '../../../../kite/js/imports.js';
 import MassTagView from './MassTagView.js';
+import ConvexHull2 from '../../../../dot/js/ConvexHull2.js';
+import Vector2 from '../../../../dot/js/Vector2.js';
+
+export type ModelPoint3ToViewPoint2 = ( point: Vector3 ) => Vector2;
 
 export default abstract class MassView extends THREE.Mesh {
 
@@ -29,7 +33,7 @@ export default abstract class MassView extends THREE.Mesh {
 
   public focusablePath: Path;
 
-  protected constructor( mass: Mass, initialGeometry: THREE.BufferGeometry ) {
+  protected constructor( mass: Mass, initialGeometry: THREE.BufferGeometry, modelToViewPoint: ModelPoint3ToViewPoint2 ) {
     const materialView = DensityMaterials.getMaterialView( mass.materialProperty.value );
 
     super( initialGeometry, materialView.material );
@@ -46,18 +50,6 @@ export default abstract class MassView extends THREE.Mesh {
     };
     this.mass.materialProperty.lazyLink( this.materialListener );
 
-    this.positionListener = () => {
-      const position = mass.matrix.translation;
-
-      // LHS is NOT a Vector2, don't try to simplify this
-      this.position.x = position.x;
-      this.position.y = position.y;
-    };
-
-    this.mass.transformedEmitter.addListener( this.positionListener );
-    this.positionListener();
-
-
     if ( mass.tag !== MassTag.NONE ) {
       this.massTagView = new MassTagView( mass, this.tagOffsetProperty );
       this.add( this.massTagView );
@@ -69,6 +61,35 @@ export default abstract class MassView extends THREE.Mesh {
       tagName: 'div',
       focusable: true
     } );
+
+    this.positionListener = () => {
+      const position = mass.matrix.translation;
+
+      // LHS is NOT a Vector2, don't try to simplify this
+      this.position.x = position.x;
+      this.position.y = position.y;
+
+      if ( !this.focusablePath.isDisposed ) {
+
+        const shiftedBbox = mass.getLocalBounds().shifted( position.toVector3() );
+
+        const viewPoints = [
+          modelToViewPoint( new Vector3( shiftedBbox.minX, shiftedBbox.minY, shiftedBbox.minZ ) ),
+          modelToViewPoint( new Vector3( shiftedBbox.minX, shiftedBbox.minY, shiftedBbox.maxZ ) ),
+          modelToViewPoint( new Vector3( shiftedBbox.minX, shiftedBbox.maxY, shiftedBbox.minZ ) ),
+          modelToViewPoint( new Vector3( shiftedBbox.minX, shiftedBbox.maxY, shiftedBbox.maxZ ) ),
+          modelToViewPoint( new Vector3( shiftedBbox.maxX, shiftedBbox.minY, shiftedBbox.minZ ) ),
+          modelToViewPoint( new Vector3( shiftedBbox.maxX, shiftedBbox.minY, shiftedBbox.maxZ ) ),
+          modelToViewPoint( new Vector3( shiftedBbox.maxX, shiftedBbox.maxY, shiftedBbox.minZ ) ),
+          modelToViewPoint( new Vector3( shiftedBbox.maxX, shiftedBbox.maxY, shiftedBbox.maxZ ) )
+        ];
+
+        this.focusablePath.focusHighlight = this.focusablePath.shape = Shape.polygon( ConvexHull2.grahamScan( viewPoints, false ) );
+      }
+    };
+
+    this.mass.transformedEmitter.addListener( this.positionListener );
+    this.positionListener();
   }
 
   public get tagHeight(): number | null {

@@ -53,12 +53,12 @@ export default class BuoyancyIntroModel extends BlockSetModel<BlockSet> {
               Cube.createWithMass( model.engine, Material.WOOD, Vector2.ZERO, 5, {
                 tandem: sameMassTandem.createTandem( 'blockA' ),
                 adjustableMaterial: true,
-                tag: MassTag.ONE_A
+                tag: MassTag.ONE_A.withColorProperty( MassTag.PRIMARY_COLOR_PROPERTY )
               } ),
               Cube.createWithMass( model.engine, Material.BRICK, Vector2.ZERO, 5, {
                 tandem: sameMassTandem.createTandem( 'blockB' ),
                 adjustableMaterial: true,
-                tag: MassTag.ONE_B
+                tag: MassTag.ONE_B.withColorProperty( MassTag.SECONDARY_COLOR_PROPERTY )
               } )
             ];
           case BlockSet.SAME_VOLUME:
@@ -66,12 +66,12 @@ export default class BuoyancyIntroModel extends BlockSetModel<BlockSet> {
               Cube.createWithVolume( model.engine, Material.WOOD, Vector2.ZERO, 0.005, {
                 tandem: sameVolumeTandem.createTandem( 'blockA' ),
                 adjustableMaterial: true,
-                tag: MassTag.TWO_A
+                tag: MassTag.TWO_A.withColorProperty( MassTag.PRIMARY_COLOR_PROPERTY )
               } ),
               Cube.createWithVolume( model.engine, Material.BRICK, Vector2.ZERO, 0.005, {
                 tandem: sameVolumeTandem.createTandem( 'blockB' ),
                 adjustableMaterial: true,
-                tag: MassTag.TWO_B
+                tag: MassTag.TWO_B.withColorProperty( MassTag.SECONDARY_COLOR_PROPERTY )
               } )
             ];
           case BlockSet.SAME_DENSITY:
@@ -79,12 +79,12 @@ export default class BuoyancyIntroModel extends BlockSetModel<BlockSet> {
               Cube.createWithMass( model.engine, Material.WOOD, Vector2.ZERO, 2, {
                 tandem: sameDensityTandem.createTandem( 'blockA' ),
                 adjustableMaterial: true,
-                tag: MassTag.THREE_A
+                tag: MassTag.THREE_A.withColorProperty( MassTag.PRIMARY_COLOR_PROPERTY )
               } ),
               Cube.createWithMass( model.engine, Material.WOOD, Vector2.ZERO, 4, {
                 tandem: sameDensityTandem.createTandem( 'blockB' ),
                 adjustableMaterial: true,
-                tag: MassTag.THREE_B
+                tag: MassTag.THREE_B.withColorProperty( MassTag.SECONDARY_COLOR_PROPERTY )
               } )
             ];
           default:

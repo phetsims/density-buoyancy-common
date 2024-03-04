@@ -116,9 +116,9 @@ export default abstract class MassView extends THREE.Mesh {
       } );
 
       const keyboardDragListener = new KeyboardDragListener( {
-        // In model units
-        dragDelta: 0.05,
-        shiftDragDelta: 0.02,
+        // In model units per second
+        dragSpeed: 3,
+        shiftDragSpeed: 0.5,
 
         // This is needed for keyboard but not for mouse/touch because keyboard input applies deltas, not absolute positions
         transform: INVERT_Y_TRANSFORM,

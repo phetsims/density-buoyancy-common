@@ -23,6 +23,7 @@ import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import Bounds3 from '../../../../dot/js/Bounds3.js';
 import MappedProperty from '../../../../axon/js/MappedProperty.js';
 import Bounds2 from '../../../../dot/js/Bounds2.js';
+import Tandem from '../../../../tandem/js/Tandem.js';
 
 export type ModelPoint3ToViewPoint2 = ( point: Vector3 ) => Vector2;
 
@@ -126,7 +127,8 @@ export default abstract class MassView extends THREE.Mesh {
         dragBoundsProperty: new MappedProperty( dragBoundsProperty, { map: bounds3 => Bounds2.create( bounds3 ) } ),
         drag: ( vectorDelta: Vector2 ) => {
           mass.updateDrag( mass.matrix.translation.add( vectorDelta ) );
-        }
+        },
+        tandem: Tandem.OPT_OUT // TODO: https://github.com/phetsims/density-buoyancy-common/issues/98
       } );
 
       // TODO: Should we blur on interrupt? https://github.com/phetsims/density-buoyancy-common/issues/98

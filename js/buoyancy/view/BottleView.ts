@@ -10,6 +10,8 @@ import MassView, { ModelPoint3ToViewPoint2 } from '../../common/view/MassView.js
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import Bottle from '../model/Bottle.js';
 import Material from '../../common/model/Material.js';
+import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
+import Bounds3 from '../../../../dot/js/Bounds3.js';
 
 type BottleDrawingData = {
   group: THREE.Group;
@@ -22,10 +24,11 @@ export default class BottleView extends MassView {
 
   public readonly bottle: Bottle;
 
-  public constructor( bottle: Bottle, modelToViewPoint: ModelPoint3ToViewPoint2 ) {
+  public constructor( bottle: Bottle, modelToViewPoint: ModelPoint3ToViewPoint2,
+                      dragBoundsProperty: TReadOnlyProperty<Bounds3> ) {
 
     // @ts-expect-error
-    super( bottle, new THREE.Geometry(), modelToViewPoint );
+    super( bottle, new THREE.Geometry(), modelToViewPoint, dragBoundsProperty );
 
     const bottomClipPlane = new THREE.Plane( new THREE.Vector3( 0, -1, 0 ), 0 );
     const topClipPlane = new THREE.Plane( new THREE.Vector3( 0, 1, 0 ), 0 );

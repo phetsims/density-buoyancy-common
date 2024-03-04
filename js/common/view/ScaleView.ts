@@ -12,16 +12,18 @@ import Scale from '../model/Scale.js';
 import CuboidView from './CuboidView.js';
 import MassView, { ModelPoint3ToViewPoint2 } from './MassView.js';
 import VerticalCylinderView from './VerticalCylinderView.js';
+import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
+import Bounds3 from '../../../../dot/js/Bounds3.js';
 
 export default class ScaleView extends MassView {
 
   private readonly scaleGeometry: THREE.BufferGeometry;
 
-  public constructor( mass: Scale, modelToViewPoint: ModelPoint3ToViewPoint2 ) {
+  public constructor( mass: Scale, modelToViewPoint: ModelPoint3ToViewPoint2, dragBoundsProperty: TReadOnlyProperty<Bounds3> ) {
 
     const scaleGeometry = ScaleView.getScaleGeometry();
 
-    super( mass, scaleGeometry, modelToViewPoint );
+    super( mass, scaleGeometry, modelToViewPoint, dragBoundsProperty );
 
     this.scaleGeometry = scaleGeometry;
   }

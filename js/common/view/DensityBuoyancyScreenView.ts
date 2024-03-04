@@ -619,28 +619,28 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
       let massView = null;
 
       if ( mass instanceof Cuboid ) {
-        massView = new CuboidView( mass, boundModelToViewPoint );
+        massView = new CuboidView( mass, boundModelToViewPoint, model.invisibleBarrierBoundsProperty );
       }
       else if ( mass instanceof Scale ) {
-        massView = new ScaleView( mass, boundModelToViewPoint );
+        massView = new ScaleView( mass, boundModelToViewPoint, model.invisibleBarrierBoundsProperty );
       }
       else if ( mass instanceof Cone ) {
-        massView = new ConeView( mass, boundModelToViewPoint );
+        massView = new ConeView( mass, boundModelToViewPoint, model.invisibleBarrierBoundsProperty );
       }
       else if ( mass instanceof Ellipsoid ) {
-        massView = new EllipsoidView( mass, boundModelToViewPoint );
+        massView = new EllipsoidView( mass, boundModelToViewPoint, model.invisibleBarrierBoundsProperty );
       }
       else if ( mass instanceof HorizontalCylinder ) {
-        massView = new HorizontalCylinderView( mass, boundModelToViewPoint );
+        massView = new HorizontalCylinderView( mass, boundModelToViewPoint, model.invisibleBarrierBoundsProperty );
       }
       else if ( mass instanceof VerticalCylinder ) {
-        massView = new VerticalCylinderView( mass, boundModelToViewPoint );
+        massView = new VerticalCylinderView( mass, boundModelToViewPoint, model.invisibleBarrierBoundsProperty );
       }
       else if ( mass instanceof Bottle ) {
-        massView = new BottleView( mass, boundModelToViewPoint );
+        massView = new BottleView( mass, boundModelToViewPoint, model.invisibleBarrierBoundsProperty );
       }
       else if ( mass instanceof Boat ) {
-        massView = new BoatView( mass, boundModelToViewPoint, model.pool.liquidYInterpolatedProperty );
+        massView = new BoatView( mass, boundModelToViewPoint, model.invisibleBarrierBoundsProperty, model.pool.liquidYInterpolatedProperty );
       }
 
       if ( massView ) {

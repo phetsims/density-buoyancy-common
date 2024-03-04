@@ -13,6 +13,7 @@ import MassView, { ModelPoint3ToViewPoint2 } from './MassView.js';
 import Cuboid from '../model/Cuboid.js';
 import Bounds3 from '../../../../dot/js/Bounds3.js';
 import { TAG_OFFSET } from './MassTagView.js';
+import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 
 // constants
 const numElements = 18 * 3;
@@ -23,7 +24,7 @@ export default class CuboidView extends MassView {
   private readonly cuboidGeometry: THREE.BufferGeometry;
   private readonly updateListener: ( size: Bounds3 ) => void;
 
-  public constructor( cuboid: Cuboid, modelToViewPoint: ModelPoint3ToViewPoint2 ) {
+  public constructor( cuboid: Cuboid, modelToViewPoint: ModelPoint3ToViewPoint2, dragBoundsProperty: TReadOnlyProperty<Bounds3> ) {
     const size = cuboid.sizeProperty.value;
 
     const positionArray = new Float32Array( numElements * 3 );
@@ -37,7 +38,7 @@ export default class CuboidView extends MassView {
     cuboidGeometry.addAttribute( 'normal', new THREE.BufferAttribute( normalArray, 3 ) );
     cuboidGeometry.addAttribute( 'uv', new THREE.BufferAttribute( uvArray, 2 ) );
 
-    super( cuboid, cuboidGeometry, modelToViewPoint );
+    super( cuboid, cuboidGeometry, modelToViewPoint, dragBoundsProperty );
 
     this.cuboid = cuboid;
     this.cuboidGeometry = cuboidGeometry;

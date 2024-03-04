@@ -12,6 +12,8 @@ import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import Cone from '../model/Cone.js';
 import MassView, { ModelPoint3ToViewPoint2 } from './MassView.js';
 import { TAG_OFFSET } from './MassTagView.js';
+import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
+import Bounds3 from '../../../../dot/js/Bounds3.js';
 
 // constants
 const segments = 64;
@@ -23,7 +25,7 @@ export default class ConeView extends MassView {
   private readonly coneGeometry: THREE.BufferGeometry;
   private readonly updateListener: () => void;
 
-  public constructor( cone: Cone, modelToViewPoint: ModelPoint3ToViewPoint2 ) {
+  public constructor( cone: Cone, modelToViewPoint: ModelPoint3ToViewPoint2, dragBoundsProperty: TReadOnlyProperty<Bounds3> ) {
 
     const positionArray = new Float32Array( numElements * 3 );
     const normalArray = new Float32Array( numElements * 3 );
@@ -36,7 +38,7 @@ export default class ConeView extends MassView {
     coneGeometry.addAttribute( 'normal', new THREE.BufferAttribute( normalArray, 3 ) );
     coneGeometry.addAttribute( 'uv', new THREE.BufferAttribute( uvArray, 2 ) );
 
-    super( cone, coneGeometry, modelToViewPoint );
+    super( cone, coneGeometry, modelToViewPoint, dragBoundsProperty );
 
     this.cone = cone;
     this.coneGeometry = coneGeometry;

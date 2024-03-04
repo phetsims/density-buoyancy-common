@@ -12,6 +12,7 @@ import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import Ellipsoid from '../model/Ellipsoid.js';
 import MassView, { ModelPoint3ToViewPoint2 } from './MassView.js';
 import { TAG_OFFSET } from './MassTagView.js';
+import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 
 export default class EllipsoidView extends MassView {
 
@@ -19,11 +20,11 @@ export default class EllipsoidView extends MassView {
   private readonly ellipsoidGeometry: THREE.SphereGeometry;
   private readonly updateListener: ( newSize: Bounds3, oldSize: Bounds3 ) => void;
 
-  public constructor( ellipsoid: Ellipsoid, modelToViewPoint: ModelPoint3ToViewPoint2 ) {
+  public constructor( ellipsoid: Ellipsoid, modelToViewPoint: ModelPoint3ToViewPoint2, dragBoundsProperty: TReadOnlyProperty<Bounds3> ) {
 
     const ellipsoidGeometry = new THREE.SphereGeometry( 1, 30, 24 );
 
-    super( ellipsoid, ellipsoidGeometry, modelToViewPoint );
+    super( ellipsoid, ellipsoidGeometry, modelToViewPoint, dragBoundsProperty );
 
     this.ellipsoid = ellipsoid;
     this.ellipsoidGeometry = ellipsoidGeometry;

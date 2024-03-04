@@ -19,6 +19,10 @@ import MassTagView from './MassTagView.js';
 import ConvexHull2 from '../../../../dot/js/ConvexHull2.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import ModelViewTransform2 from '../../../../phetcommon/js/view/ModelViewTransform2.js';
+import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
+import Bounds3 from '../../../../dot/js/Bounds3.js';
+import MappedProperty from '../../../../axon/js/MappedProperty.js';
+import Bounds2 from '../../../../dot/js/Bounds2.js';
 
 export type ModelPoint3ToViewPoint2 = ( point: Vector3 ) => Vector2;
 
@@ -36,7 +40,8 @@ export default abstract class MassView extends THREE.Mesh {
 
   public readonly focusablePath: Path | null;
 
-  protected constructor( mass: Mass, initialGeometry: THREE.BufferGeometry, modelToViewPoint: ModelPoint3ToViewPoint2 ) {
+  protected constructor( mass: Mass, initialGeometry: THREE.BufferGeometry, modelToViewPoint: ModelPoint3ToViewPoint2,
+                         dragBoundsProperty: TReadOnlyProperty<Bounds3> ) {
     const materialView = DensityMaterials.getMaterialView( mass.materialProperty.value );
 
     super( initialGeometry, materialView.material );
@@ -118,6 +123,7 @@ export default abstract class MassView extends THREE.Mesh {
 
         // This is needed for keyboard but not for mouse/touch because keyboard input applies deltas, not absolute positions
         transform: INVERT_Y_TRANSFORM,
+        dragBoundsProperty: new MappedProperty( dragBoundsProperty, { map: bounds3 => Bounds2.create( bounds3 ) } ),
         drag: ( vectorDelta: Vector2 ) => {
           mass.updateDrag( mass.matrix.translation.add( vectorDelta ) );
         }

@@ -12,6 +12,8 @@ import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import VerticalCylinder from '../model/VerticalCylinder.js';
 import MassView, { ModelPoint3ToViewPoint2 } from './MassView.js';
 import { TAG_OFFSET } from './MassTagView.js';
+import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
+import Bounds3 from '../../../../dot/js/Bounds3.js';
 
 // constants
 const segments = 64;
@@ -23,7 +25,8 @@ export default class VerticalCylinderView extends MassView {
   private readonly verticalCylinderGeometry: THREE.BufferGeometry;
   private readonly updateListener: () => void;
 
-  public constructor( verticalCylinder: VerticalCylinder, modelToViewPoint: ModelPoint3ToViewPoint2 ) {
+  public constructor( verticalCylinder: VerticalCylinder, modelToViewPoint: ModelPoint3ToViewPoint2,
+                      dragBoundsProperty: TReadOnlyProperty<Bounds3> ) {
 
     const positionArray = new Float32Array( numElements * 3 );
     const normalArray = new Float32Array( numElements * 3 );
@@ -36,7 +39,7 @@ export default class VerticalCylinderView extends MassView {
     verticalCylinderGeometry.addAttribute( 'normal', new THREE.BufferAttribute( normalArray, 3 ) );
     verticalCylinderGeometry.addAttribute( 'uv', new THREE.BufferAttribute( uvArray, 2 ) );
 
-    super( verticalCylinder, verticalCylinderGeometry, modelToViewPoint );
+    super( verticalCylinder, verticalCylinderGeometry, modelToViewPoint, dragBoundsProperty );
 
     const positionTag = () => {
       const radius = verticalCylinder.radiusProperty.value;

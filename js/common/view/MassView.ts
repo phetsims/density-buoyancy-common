@@ -34,7 +34,7 @@ export default abstract class MassView extends THREE.Mesh {
   private readonly massTagView: MassTagView | null = null;
   protected readonly tagOffsetProperty: Property<Vector3> = new Property<Vector3>( Vector3.ZERO );
 
-  public focusablePath: Path;
+  public readonly focusablePath: Path | null;
 
   protected constructor( mass: Mass, initialGeometry: THREE.BufferGeometry, modelToViewPoint: ModelPoint3ToViewPoint2 ) {
     const materialView = DensityMaterials.getMaterialView( mass.materialProperty.value );
@@ -58,14 +58,6 @@ export default abstract class MassView extends THREE.Mesh {
       this.add( this.massTagView );
     }
 
-    // TODO: support canMove for all highlighting, https://github.com/phetsims/density-buoyancy-common/issues/98
-    this.focusablePath = new InteractiveHighlightingPath( new Shape(), {
-      accessibleName: this.mass.nameProperty.value ? this.mass.nameProperty.value : 'Mass',
-      cursor: 'pointer',
-      tagName: 'div',
-      focusable: true
-    } );
-
     this.positionListener = () => {
       const position = mass.matrix.translation;
 
@@ -73,7 +65,7 @@ export default abstract class MassView extends THREE.Mesh {
       this.position.x = position.x;
       this.position.y = position.y;
 
-      if ( !this.focusablePath.isDisposed ) {
+      if ( this.focusablePath && !this.focusablePath.isDisposed ) {
 
         const shiftedBbox = mass.getLocalBounds().shifted( position.toVector3() );
 
@@ -92,42 +84,55 @@ export default abstract class MassView extends THREE.Mesh {
       }
     };
 
+    this.focusablePath = null;
+
+    if ( mass.canMove ) {
+
+      this.focusablePath = new InteractiveHighlightingPath( new Shape(), {
+        accessibleName: this.mass.nameProperty.value ? this.mass.nameProperty.value : 'Mass',
+        cursor: 'pointer',
+        tagName: 'div',
+        focusable: true
+      } );
+
+
+      // TODO: mass && mass.canMove && !mass.userControlledProperty.value as a starting condition? Basically this is a multi touch/pointer problem? see https://github.com/phetsims/density-buoyancy-common/issues/98
+      // TODO: grab sound // Look into BASE, RAP, FEL for precedent see https://github.com/phetsims/density-buoyancy-common/issues/98
+      // TODO: release sound see https://github.com/phetsims/density-buoyancy-common/issues/98
+      // TODO: zoomed in dragging shouldn't get lost see https://github.com/phetsims/density-buoyancy-common/issues/98
+      // TODO: Bug: Left/right arrows apply an upward force too once, probably a bug, https://github.com/phetsims/density-buoyancy-common/issues/98
+      // TODO: Drag bounds see https://github.com/phetsims/density-buoyancy-common/issues/98
+      this.focusablePath.addInputListener( {
+        focus: () => {
+          mass.startDrag( mass.matrix.translation );
+        },
+        blur: () => {
+          mass.endDrag();
+        }
+      } );
+
+      const keyboardDragListener = new KeyboardDragListener( {
+        // In model units
+        dragDelta: 0.05, // TODO: a bit more tweaking probably, see https://github.com/phetsims/density-buoyancy-common/issues/98
+        shiftDragDelta: 0.02,
+
+        // This is needed for keyboard but not for mouse/touch because keyboard input applies deltas, not absolute positions
+        transform: INVERT_Y_TRANSFORM,
+        drag: ( vectorDelta: Vector2 ) => {
+          mass.updateDrag( mass.matrix.translation.add( vectorDelta ) );
+        }
+      } );
+
+      // TODO: Should we blur on interrupt? https://github.com/phetsims/density-buoyancy-common/issues/98
+      mass.interruptedEmitter.addListener( () => {
+        keyboardDragListener.interrupt();
+      } );
+
+      this.focusablePath.addInputListener( keyboardDragListener );
+    }
+
     this.mass.transformedEmitter.addListener( this.positionListener );
     this.positionListener();
-
-    // TODO: mass && mass.canMove && !mass.userControlledProperty.value as a starting condition? Basically this is a multi touch/pointer problem? see https://github.com/phetsims/density-buoyancy-common/issues/98
-    // TODO: grab sound // Look into BASE, RAP, FEL for precedent see https://github.com/phetsims/density-buoyancy-common/issues/98
-    // TODO: release sound see https://github.com/phetsims/density-buoyancy-common/issues/98
-    // TODO: zoomed in dragging shouldn't get lost see https://github.com/phetsims/density-buoyancy-common/issues/98
-    // TODO: Bug: Left/right arrows apply an upward force too once, probably a bug, https://github.com/phetsims/density-buoyancy-common/issues/98
-    // TODO: Drag bounds see https://github.com/phetsims/density-buoyancy-common/issues/98
-    this.focusablePath.addInputListener( {
-      focus: () => {
-        mass.startDrag( mass.matrix.translation );
-      },
-      blur: () => {
-        mass.endDrag();
-      }
-    } );
-
-    const keyboardDragListener = new KeyboardDragListener( {
-      // In model units
-      dragDelta: 0.05, // TODO: a bit more tweaking probably, see https://github.com/phetsims/density-buoyancy-common/issues/98
-      shiftDragDelta: 0.02,
-
-      // This is needed for keyboard but not for mouse/touch because keyboard input applies deltas, not absolute positions
-      transform: INVERT_Y_TRANSFORM,
-      drag: ( vectorDelta: Vector2 ) => {
-        mass.updateDrag( mass.matrix.translation.add( vectorDelta ) );
-      }
-    } );
-
-    // TODO: Should we blur on interrupt? https://github.com/phetsims/density-buoyancy-common/issues/98
-    mass.interruptedEmitter.addListener( () => {
-      keyboardDragListener.interrupt();
-    } );
-
-    this.focusablePath.addInputListener( keyboardDragListener );
   }
 
   public get tagHeight(): number | null {
@@ -143,7 +148,7 @@ export default abstract class MassView extends THREE.Mesh {
 
     this.materialView.dispose();
 
-    this.focusablePath.dispose();
+    this.focusablePath && this.focusablePath.dispose();
 
     this.massTagView && this.massTagView.dispose();
 

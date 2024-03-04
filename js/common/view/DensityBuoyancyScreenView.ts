@@ -646,7 +646,7 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
       if ( massView ) {
         this.sceneNode.stage.threeScene.add( massView );
         this.massViews.push( massView );
-        this.sceneNode.backgroundEventTarget.addChild( massView.focusablePath );
+        massView.focusablePath && this.sceneNode.backgroundEventTarget.addChild( massView.focusablePath );
 
         if ( massView instanceof ScaleView ) {
 

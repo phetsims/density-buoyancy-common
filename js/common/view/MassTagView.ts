@@ -8,13 +8,12 @@
  */
 
 import Vector3 from '../../../../dot/js/Vector3.js';
-import NodeTexture from '../../../../mobius/js/NodeTexture.js';
 import TextureQuad from '../../../../mobius/js/TextureQuad.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import Mass, { MASS_MIN_SHAPES_DIMENSION } from '../model/Mass.js';
 import { Color, Node, Text } from '../../../../scenery/js/imports.js';
 import LabelTexture from './LabelTexture.js';
-import { Multilink, TinyProperty, UnknownMultilink } from '../../../../axon/js/imports.js';
+import { Multilink } from '../../../../axon/js/imports.js';
 import DensityBuoyancyCommonColors from './DensityBuoyancyCommonColors.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
@@ -36,27 +35,22 @@ const tagFont = new PhetFont( { size: 24, weight: 'bold' } );
 
 export default class MassTagView extends TextureQuad {
 
-  private tagNodeTexture: NodeTexture;
-  private readonly massTagMultilink: UnknownMultilink;
 
   // This is set upon construction and never changes. Although the text can update, it won't change the height
   public readonly tagHeight: number;
   public readonly tagOffsetProperty: TReadOnlyProperty<Vector3>;
 
-  private readonly tagOffsetPropertyListener: ( offset: Vector3 ) => void;
-
   public constructor( mass: Mass, tagOffsetProperty: TReadOnlyProperty<Vector3> ) {
 
     assert && assert( mass.tag !== MassTag.NONE, 'MassTagView must have a provided MassTag' );
 
-    const colorProperty = mass.tag === MassTag.PRIMARY ? DensityBuoyancyCommonColors.labelPrimaryProperty :
-                          mass.tag === MassTag.SECONDARY ? DensityBuoyancyCommonColors.labelSecondaryProperty :
-                          new TinyProperty( Color.white );
-    const nameProperty = mass.tag === MassTag.PRIMARY ? DensityBuoyancyCommonStrings.massLabel.primaryStringProperty :
-                         mass.tag === MassTag.SECONDARY ? DensityBuoyancyCommonStrings.massLabel.secondaryStringProperty :
-                         mass.nameProperty;
+    assert && assert( !mass.tag.nameProperty.isDisposed, 'do not dispose a nameProperty' );
 
-    const tagNodeTexture = new LabelTexture( MassTagView.getTagNode( nameProperty, colorProperty ) );
+    const colorProperty = mass.tag.colorProperty;
+    const nameProperty = mass.tag.nameProperty;
+
+    const tagNode = MassTagView.getTagNode( nameProperty, colorProperty );
+    const tagNodeTexture = new LabelTexture( tagNode );
 
     const tagWidth = TAG_SCALE_NEW * tagNodeTexture._width;
     const tagHeight = TAG_SCALE_NEW * tagNodeTexture._height;
@@ -65,42 +59,31 @@ export default class MassTagView extends TextureQuad {
       depthTest: true
     } );
     this.tagHeight = tagHeight;
-    this.tagNodeTexture = tagNodeTexture;
     this.tagOffsetProperty = tagOffsetProperty;
 
-    this.massTagMultilink = new Multilink( [ nameProperty, colorProperty ], string => {
-      const texture = this.tagNodeTexture;
-      texture.update();
+    const massTagMultilink = new Multilink( [ nameProperty, colorProperty ], string => {
+      tagNodeTexture.update();
 
-      const tagWidth = TAG_SCALE_NEW * texture._width;
+      const tagWidth = TAG_SCALE_NEW * tagNodeTexture._width;
 
-      this.updateTexture( texture, tagWidth, tagHeight );
+      this.updateTexture( tagNodeTexture, tagWidth, tagHeight );
       this.visible = string !== '';
     } );
 
     this.renderOrder = 1;
 
-    this.tagOffsetPropertyListener = offset => {
+    const tagOffsetPropertyListener = ( offset: Vector3 ) => {
       // Increase the z dimension just slightly to make sure it is always on top of the mass.
       this.position.set( offset.x, offset.y, offset.z + 0.0001 );
     };
-    tagOffsetProperty.link( this.tagOffsetPropertyListener );
-  }
+    tagOffsetProperty.link( tagOffsetPropertyListener );
 
-  /**
-   * Releases references.
-   */
-  public override dispose(): void {
-
-    if ( this.massTagMultilink ) {
-      this.massTagMultilink.dispose();
-    }
-
-    this.tagOffsetProperty.unlink( this.tagOffsetPropertyListener );
-
-    this.tagNodeTexture && this.tagNodeTexture.dispose();
-
-    super.dispose();
+    this.disposeEmitter.addListener( () => {
+      tagOffsetProperty.unlink( tagOffsetPropertyListener );
+      tagNodeTexture.dispose();
+      tagNode.dispose;
+      massTagMultilink.dispose();
+    } );
   }
 
   private static getTagNode( string: TReadOnlyProperty<string>, fill: TReadOnlyProperty<Color | string> ): Node {
@@ -110,7 +93,7 @@ export default class MassTagView extends TextureQuad {
       maxWidth: 100
     } );
 
-    return new BackgroundNode( label, {
+    const backgroundNode = new BackgroundNode( label, {
       xMargin: horizontalMargin / 2,
       yMargin: verticalMargin / 2,
       rectangleOptions: {
@@ -119,6 +102,8 @@ export default class MassTagView extends TextureQuad {
         opacity: 1
       }
     } );
+    backgroundNode.disposeEmitter.addListener( () => label.dispose() );
+    return backgroundNode;
   }
 
   public static readonly PRIMARY_LABEL = MassTagView.getTagNode( DensityBuoyancyCommonStrings.massLabel.primaryStringProperty, DensityBuoyancyCommonColors.labelPrimaryProperty );

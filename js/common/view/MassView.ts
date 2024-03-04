@@ -101,13 +101,6 @@ export default abstract class MassView extends THREE.Mesh {
         focusable: true
       } );
 
-
-      // TODO: how to use mass.userControlledProperty.value as a starting condition? Basically this is a multi touch/pointer problem? see https://github.com/phetsims/density-buoyancy-common/issues/98
-      // TODO: grab sound // Look into BASE, RAP, FEL for precedent see https://github.com/phetsims/density-buoyancy-common/issues/98
-      // TODO: release sound see https://github.com/phetsims/density-buoyancy-common/issues/98
-      // TODO: zoomed in dragging shouldn't get lost see https://github.com/phetsims/density-buoyancy-common/issues/98
-      // TODO: Bug: Left/right arrows apply an upward force too once, probably a bug, https://github.com/phetsims/density-buoyancy-common/issues/98
-      // TODO: Drag bounds see https://github.com/phetsims/density-buoyancy-common/issues/98
       this.focusablePath.addInputListener( {
         focus: () => {
           mass.startDrag( mass.matrix.translation );
@@ -119,7 +112,7 @@ export default abstract class MassView extends THREE.Mesh {
 
       const keyboardDragListener = new KeyboardDragListener( {
         // In model units
-        dragDelta: 0.05, // TODO: a bit more tweaking probably, see https://github.com/phetsims/density-buoyancy-common/issues/98
+        dragDelta: 0.05,
         shiftDragDelta: 0.02,
 
         // This is needed for keyboard but not for mouse/touch because keyboard input applies deltas, not absolute positions
@@ -128,10 +121,9 @@ export default abstract class MassView extends THREE.Mesh {
         drag: ( vectorDelta: Vector2 ) => {
           mass.updateDrag( mass.matrix.translation.add( vectorDelta ) );
         },
-        tandem: Tandem.OPT_OUT // TODO: https://github.com/phetsims/density-buoyancy-common/issues/98
+        tandem: Tandem.OPT_OUT
       } );
 
-      // TODO: Should we blur on interrupt? https://github.com/phetsims/density-buoyancy-common/issues/98
       mass.interruptedEmitter.addListener( () => {
         keyboardDragListener.interrupt();
       } );

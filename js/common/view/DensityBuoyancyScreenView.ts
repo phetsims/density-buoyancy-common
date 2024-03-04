@@ -88,9 +88,6 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
   protected readonly popupLayer: Node;
   protected readonly backgroundLayer: Node;
 
-  // Support controlling or changing the latest-touched mass in certain demos.
-  protected readonly currentMassProperty: Property<Mass | null>;
-
   private readonly postLayoutEmitter: TEmitter;
 
   // The sky background, in a unit 0-to-1 rectangle (so we can scale it to match)
@@ -136,9 +133,6 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
     this.model = model;
     this.postLayoutEmitter = new TinyEmitter();
     this.popupLayer = new Node();
-    this.currentMassProperty = new Property( model.masses.length > 0 ? model.masses.get( 0 )! : null, {
-      tandem: Tandem.OPT_OUT
-    } );
     this.backgroundNode = new Rectangle( 0, 0, 1, 1, {
       pickable: false,
       fill: new LinearGradient( 0, 0, 0, 1 )
@@ -279,7 +273,6 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
           const initialPlane = new Plane3( Vector3.Z_UNIT, initialPosition.z );
 
           this.startDragAction.execute( mass, initialPosition.toVector2() );
-          this.currentMassProperty.value = mass;
           pointer.cursor = 'pointer';
 
           const endDrag = () => {
@@ -653,7 +646,6 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
       if ( massView ) {
         this.sceneNode.stage.threeScene.add( massView );
         this.massViews.push( massView );
-
         this.sceneNode.backgroundEventTarget.addChild( massView.focusablePath );
 
         if ( massView instanceof ScaleView ) {

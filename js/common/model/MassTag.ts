@@ -40,7 +40,7 @@ export default class MassTag {
 
   public static readonly PRIMARY = new MassTag( DensityBuoyancyCommonStrings.massLabel.primaryStringProperty, MassTag.PRIMARY_COLOR_PROPERTY );
   public static readonly SECONDARY = new MassTag( DensityBuoyancyCommonStrings.massLabel.secondaryStringProperty, MassTag.SECONDARY_COLOR_PROPERTY );
-  public static readonly NONE = new MassTag( new StringProperty( 'NONE' ) ); // TODO: a bit awkward, but better than nulling the param right? https://github.com/phetsims/buoyancy/issues/102
+  public static readonly NONE = new MassTag( new StringProperty( 'NONE' ) );
   public static readonly ONE_A = new MassTag( DensityBuoyancyCommonStrings.massLabel[ '1aStringProperty' ] );
   public static readonly ONE_B = new MassTag( DensityBuoyancyCommonStrings.massLabel[ '1bStringProperty' ] );
   public static readonly ONE_C = new MassTag( DensityBuoyancyCommonStrings.massLabel[ '1cStringProperty' ] );

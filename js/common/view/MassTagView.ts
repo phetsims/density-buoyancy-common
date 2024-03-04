@@ -19,6 +19,7 @@ import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import BackgroundNode from '../../../../scenery-phet/js/BackgroundNode.js';
 import MassTag from '../model/MassTag.js';
+import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 
 // Constant for MassView subtypes to use to consistently offset their tag on their shape
 export const TAG_OFFSET = MASS_MIN_SHAPES_DIMENSION / 20;
@@ -82,9 +83,12 @@ export default class MassTagView extends TextureQuad {
   }
 
   private static getTagNode( massTag: MassTag ): Node {
+    const visibleProperty = new DerivedProperty( [ massTag.nameProperty ], name => name.length > 0 );
+
     const label = new Text( massTag.nameProperty, {
       font: tagFont,
-      maxWidth: 100
+      maxWidth: 100,
+      visibleProperty: visibleProperty
     } );
 
     const colorListener = ( color: Color ) => {
@@ -104,6 +108,7 @@ export default class MassTagView extends TextureQuad {
     backgroundNode.disposeEmitter.addListener( () => {
       massTag.colorProperty.unlink( colorListener );
       label.dispose();
+      visibleProperty.dispose();
     } );
     return backgroundNode;
   }

@@ -311,8 +311,6 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
                 bounds = bounds.withPoint( this.localToGlobalPoint( this.modelToViewPoint( new Vector3( bbox.max.x, bbox.max.y, bbox.min.z ) ) ) );
                 bounds = bounds.withPoint( this.localToGlobalPoint( this.modelToViewPoint( new Vector3( bbox.max.x, bbox.max.y, bbox.max.z ) ) ) );
 
-                console.log( bounds.toString() );
-
                 return bounds;
               }, Bounds2.NOTHING );
             }

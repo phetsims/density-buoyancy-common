@@ -75,7 +75,11 @@ export default abstract class MassView extends THREE.Mesh {
 
         const shiftedBbox = mass.getLocalBounds().shifted( position.toVector3() );
 
-        const viewPoints = [
+        // To support dragging while zoomed in, KeyboardDragListener will keep the position of the focusablePath in view.
+        this.focusablePath.center = modelToViewPoint( shiftedBbox.center );
+
+        // The points that make up the corners of the Bounds3 in THREE.js space, applied onto a 2d plane for scenery.
+        const massViewPoints = [
           modelToViewPoint( new Vector3( shiftedBbox.minX, shiftedBbox.minY, shiftedBbox.minZ ) ),
           modelToViewPoint( new Vector3( shiftedBbox.minX, shiftedBbox.minY, shiftedBbox.maxZ ) ),
           modelToViewPoint( new Vector3( shiftedBbox.minX, shiftedBbox.maxY, shiftedBbox.minZ ) ),
@@ -86,7 +90,8 @@ export default abstract class MassView extends THREE.Mesh {
           modelToViewPoint( new Vector3( shiftedBbox.maxX, shiftedBbox.maxY, shiftedBbox.maxZ ) )
         ];
 
-        this.focusablePath.focusHighlight = this.focusablePath.shape = Shape.polygon( ConvexHull2.grahamScan( viewPoints, false ) );
+        // Update the shape based on the current view of the mass in 3d space
+        this.focusablePath.focusHighlight = this.focusablePath.shape = Shape.polygon( ConvexHull2.grahamScan( massViewPoints, false ) );
       }
     };
 

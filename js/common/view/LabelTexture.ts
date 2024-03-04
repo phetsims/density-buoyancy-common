@@ -6,15 +6,11 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
-import TinyEmitter from '../../../../axon/js/TinyEmitter.js';
 import NodeTexture from '../../../../mobius/js/NodeTexture.js';
-import { Node, Utils } from '../../../../scenery/js/imports.js';
+import { Node } from '../../../../scenery/js/imports.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 
 export default class LabelTexture extends NodeTexture {
-
-  // TODO: compose Disposable, https://github.com/phetsims/density-buoyancy-common/issues/95
-  public readonly disposedEmitter = new TinyEmitter();
 
   private readonly containerNode: Node;
 
@@ -24,11 +20,9 @@ export default class LabelTexture extends NodeTexture {
       scale: 2
     } );
 
-    // closest power of 2 is vital for GPU rendering
-    const width = Utils.toPowerOf2( Math.ceil( containerNode.width ) );
-    const height = Utils.toPowerOf2( Math.ceil( containerNode.height ) );
-
-    super( containerNode, width, height );
+    super( containerNode, {
+      calculateDimensionFromNode: true
+    } );
 
     this.containerNode = containerNode;
   }
@@ -40,8 +34,6 @@ export default class LabelTexture extends NodeTexture {
     this.containerNode.dispose();
 
     super.dispose();
-
-    this.disposedEmitter.emit();
   }
 }
 

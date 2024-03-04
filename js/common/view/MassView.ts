@@ -102,7 +102,7 @@ export default abstract class MassView extends THREE.Mesh {
       } );
 
 
-      // TODO: mass && mass.canMove && !mass.userControlledProperty.value as a starting condition? Basically this is a multi touch/pointer problem? see https://github.com/phetsims/density-buoyancy-common/issues/98
+      // TODO: how to use mass.userControlledProperty.value as a starting condition? Basically this is a multi touch/pointer problem? see https://github.com/phetsims/density-buoyancy-common/issues/98
       // TODO: grab sound // Look into BASE, RAP, FEL for precedent see https://github.com/phetsims/density-buoyancy-common/issues/98
       // TODO: release sound see https://github.com/phetsims/density-buoyancy-common/issues/98
       // TODO: zoomed in dragging shouldn't get lost see https://github.com/phetsims/density-buoyancy-common/issues/98

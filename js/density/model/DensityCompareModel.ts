@@ -25,8 +25,8 @@ import Material from '../../common/model/Material.js';
 import DensityBuoyancyCommonColors from '../../common/view/DensityBuoyancyCommonColors.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyModel from '../../common/model/DensityBuoyancyModel.js';
-import { MassTag } from '../../common/model/Mass.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
+import MassTag from '../../common/model/MassTag.js';
 
 export class BlockSet extends EnumerationValue {
   public static readonly SAME_MASS = new BlockSet();

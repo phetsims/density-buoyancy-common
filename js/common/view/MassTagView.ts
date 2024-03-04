@@ -11,7 +11,7 @@ import Vector3 from '../../../../dot/js/Vector3.js';
 import NodeTexture from '../../../../mobius/js/NodeTexture.js';
 import TextureQuad from '../../../../mobius/js/TextureQuad.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
-import Mass, { MASS_MIN_SHAPES_DIMENSION, MassTag } from '../model/Mass.js';
+import Mass, { MASS_MIN_SHAPES_DIMENSION } from '../model/Mass.js';
 import { Color, Node, Text } from '../../../../scenery/js/imports.js';
 import LabelTexture from './LabelTexture.js';
 import { Multilink, TinyProperty, UnknownMultilink } from '../../../../axon/js/imports.js';
@@ -21,6 +21,7 @@ import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import BackgroundNode from '../../../../scenery-phet/js/BackgroundNode.js';
+import MassTag from '../model/MassTag.js';
 
 // Constant for MassView subtypes to use to consistently offset their tag on their shape
 export const TAG_OFFSET = MASS_MIN_SHAPES_DIMENSION / 20;

@@ -18,7 +18,6 @@ import optionize, { combineOptions, EmptySelfOptions } from '../../../../phet-co
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 import BlockSetModel, { BlockSetModelOptions } from '../../common/model/BlockSetModel.js';
 import Cube, { CubeOptions } from '../../common/model/Cube.js';
-import { MassTag } from '../../common/model/Mass.js';
 import Material from '../../common/model/Material.js';
 import Scale, { DisplayType } from '../../common/model/Scale.js';
 import DensityBuoyancyCommonColors from '../../common/view/DensityBuoyancyCommonColors.js';
@@ -26,6 +25,7 @@ import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyModel from '../../common/model/DensityBuoyancyModel.js';
 import Cuboid from '../../common/model/Cuboid.js';
 import Property from '../../../../axon/js/Property.js';
+import MassTag from '../../common/model/MassTag.js';
 
 // constants
 const randomMaterials = DensityBuoyancyCommonConstants.DENSITY_MYSTERY_MATERIALS;
@@ -292,7 +292,7 @@ export default class DensityMysteryModel extends BlockSetModel<BlockSet> {
               adjustVolumeOnMassChanged: true,
               adjustableMaterial: true,
               tag: tags[ i ],
-              tandem: randomTandem.createTandem( `block${tags[ i ].name}` ),
+              tandem: randomTandem.createTandem( `block${tags[ i ].tandemName}` ),
               minVolume: minScreenVolume,
               maxVolume: maxScreenVolume
             } );

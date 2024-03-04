@@ -17,7 +17,7 @@ import Cube from '../../common/model/Cube.js';
 import Material from '../../common/model/Material.js';
 import Scale, { DisplayType } from '../../common/model/Scale.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
-import { MassTag } from '../../common/model/Mass.js';
+import MassTag from '../../common/model/MassTag.js';
 
 export class BlockSet extends EnumerationValue {
   public static readonly SAME_MASS = new BlockSet();

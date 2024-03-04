@@ -9,7 +9,7 @@
 import Property from '../../../../axon/js/Property.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
-import Mass, { MassTag } from '../model/Mass.js';
+import Mass from '../model/Mass.js';
 import Material from '../model/Material.js';
 import DensityMaterials from './DensityMaterials.js';
 import MaterialView from './MaterialView.js';
@@ -24,6 +24,7 @@ import Bounds3 from '../../../../dot/js/Bounds3.js';
 import MappedProperty from '../../../../axon/js/MappedProperty.js';
 import Bounds2 from '../../../../dot/js/Bounds2.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
+import MassTag from '../model/MassTag.js';
 
 export type ModelPoint3ToViewPoint2 = ( point: Vector3 ) => Vector2;
 

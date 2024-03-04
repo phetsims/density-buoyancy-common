@@ -14,11 +14,11 @@ import { combineOptions } from '../../../../phet-core/js/optionize.js';
 import Cube from '../../common/model/Cube.js';
 import Cuboid from '../../common/model/Cuboid.js';
 import DensityBuoyancyModel, { DensityBuoyancyModelOptions } from '../../common/model/DensityBuoyancyModel.js';
-import { MassTag } from '../../common/model/Mass.js';
 import Material from '../../common/model/Material.js';
 import TwoBlockMode from '../../common/model/TwoBlockMode.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
+import MassTag from '../../common/model/MassTag.js';
 
 export type DensityIntroModelOptions = DensityBuoyancyModelOptions;
 

@@ -20,7 +20,7 @@ import Cuboid from '../../common/model/Cuboid.js';
 import DensityBuoyancyModel, { DensityBuoyancyModelOptions } from '../../common/model/DensityBuoyancyModel.js';
 import Ellipsoid from '../../common/model/Ellipsoid.js';
 import HorizontalCylinder from '../../common/model/HorizontalCylinder.js';
-import Mass, { MassTag } from '../../common/model/Mass.js';
+import Mass from '../../common/model/Mass.js';
 import Material from '../../common/model/Material.js';
 import Scale, { DisplayType } from '../../common/model/Scale.js';
 import TwoBlockMode from '../../common/model/TwoBlockMode.js';
@@ -29,6 +29,7 @@ import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import { MassShape } from '../../common/model/MassShape.js';
 import TProperty from '../../../../axon/js/TProperty.js';
 import isSettingPhetioStateProperty from '../../../../tandem/js/isSettingPhetioStateProperty.js';
+import MassTag from '../../common/model/MassTag.js';
 
 export type BuoyancyShapesModelOptions = DensityBuoyancyModelOptions;
 

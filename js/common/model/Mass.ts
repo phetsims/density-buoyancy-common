@@ -27,7 +27,6 @@ import Tandem from '../../../../tandem/js/Tandem.js';
 import BooleanIO from '../../../../tandem/js/types/BooleanIO.js';
 import IOType from '../../../../tandem/js/types/IOType.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
-import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import InterpolatedProperty from './InterpolatedProperty.js';
 import Material, { CUSTOM_MATERIAL_NAME, CustomMaterialName } from './Material.js';
 import EnumerationValue from '../../../../phet-core/js/EnumerationValue.js';
@@ -41,66 +40,11 @@ import PickRequired from '../../../../phet-core/js/types/PickRequired.js';
 import { MassShape } from './MassShape.js';
 import { BodyStateObject } from './P2Engine.js';
 import TEmitter from '../../../../axon/js/TEmitter.js';
-import ReadOnlyProperty from '../../../../axon/js/ReadOnlyProperty.js';
-import TinyProperty from '../../../../axon/js/TinyProperty.js';
 import NullableIO from '../../../../tandem/js/types/NullableIO.js';
 import StringIO from '../../../../tandem/js/types/StringIO.js';
 import NumberIO from '../../../../tandem/js/types/NumberIO.js';
 import { Bounds3 } from '../../../../dot/js/imports.js';
-
-// constants
-export class MassTag extends EnumerationValue {
-  public static readonly PRIMARY = new MassTag();
-  public static readonly SECONDARY = new MassTag();
-  public static readonly NONE = new MassTag();
-  public static readonly ONE_A = new MassTag();
-  public static readonly ONE_B = new MassTag();
-  public static readonly ONE_C = new MassTag();
-  public static readonly ONE_D = new MassTag();
-  public static readonly ONE_E = new MassTag();
-  public static readonly TWO_A = new MassTag();
-  public static readonly TWO_B = new MassTag();
-  public static readonly TWO_C = new MassTag();
-  public static readonly TWO_D = new MassTag();
-  public static readonly TWO_E = new MassTag();
-  public static readonly THREE_A = new MassTag();
-  public static readonly THREE_B = new MassTag();
-  public static readonly THREE_C = new MassTag();
-  public static readonly THREE_D = new MassTag();
-  public static readonly THREE_E = new MassTag();
-  public static readonly A = new MassTag();
-  public static readonly B = new MassTag();
-  public static readonly C = new MassTag();
-  public static readonly D = new MassTag();
-  public static readonly E = new MassTag();
-
-  public static readonly enumeration = new Enumeration( MassTag, {
-    phetioDocumentation: 'Label for a mass'
-  } );
-}
-
-const blockStringMap = {
-  [ MassTag.ONE_A.name ]: DensityBuoyancyCommonStrings.massLabel[ '1aStringProperty' ],
-  [ MassTag.ONE_B.name ]: DensityBuoyancyCommonStrings.massLabel[ '1bStringProperty' ],
-  [ MassTag.ONE_C.name ]: DensityBuoyancyCommonStrings.massLabel[ '1cStringProperty' ],
-  [ MassTag.ONE_D.name ]: DensityBuoyancyCommonStrings.massLabel[ '1dStringProperty' ],
-  [ MassTag.ONE_E.name ]: DensityBuoyancyCommonStrings.massLabel[ '1eStringProperty' ],
-  [ MassTag.TWO_A.name ]: DensityBuoyancyCommonStrings.massLabel[ '2aStringProperty' ],
-  [ MassTag.TWO_B.name ]: DensityBuoyancyCommonStrings.massLabel[ '2bStringProperty' ],
-  [ MassTag.TWO_C.name ]: DensityBuoyancyCommonStrings.massLabel[ '2cStringProperty' ],
-  [ MassTag.TWO_D.name ]: DensityBuoyancyCommonStrings.massLabel[ '2dStringProperty' ],
-  [ MassTag.TWO_E.name ]: DensityBuoyancyCommonStrings.massLabel[ '2eStringProperty' ],
-  [ MassTag.THREE_A.name ]: DensityBuoyancyCommonStrings.massLabel[ '3aStringProperty' ],
-  [ MassTag.THREE_B.name ]: DensityBuoyancyCommonStrings.massLabel[ '3bStringProperty' ],
-  [ MassTag.THREE_C.name ]: DensityBuoyancyCommonStrings.massLabel[ '3cStringProperty' ],
-  [ MassTag.THREE_D.name ]: DensityBuoyancyCommonStrings.massLabel[ '3dStringProperty' ],
-  [ MassTag.THREE_E.name ]: DensityBuoyancyCommonStrings.massLabel[ '3eStringProperty' ],
-  [ MassTag.A.name ]: DensityBuoyancyCommonStrings.massLabel.aStringProperty,
-  [ MassTag.B.name ]: DensityBuoyancyCommonStrings.massLabel.bStringProperty,
-  [ MassTag.C.name ]: DensityBuoyancyCommonStrings.massLabel.cStringProperty,
-  [ MassTag.D.name ]: DensityBuoyancyCommonStrings.massLabel.dStringProperty,
-  [ MassTag.E.name ]: DensityBuoyancyCommonStrings.massLabel.eStringProperty
-};
+import MassTag, { MassTagStateObject } from './MassTag.js';
 
 class MaterialEnumeration extends EnumerationValue {
   public static readonly ALUMINUM = new MaterialEnumeration();
@@ -193,7 +137,7 @@ export type MassIOStateObject = {
   originalMatrix: Matrix3StateObject;
   canRotate: boolean;
   canMove: boolean;
-  tag: string;
+  tag: MassTagStateObject;
   massShape: string;
 } & BodyStateObject;
 
@@ -541,9 +485,9 @@ export default abstract class Mass extends PhetioObject {
     this.canMove = options.canMove;
     this.tag = options.tag;
 
-    this.nameProperty = blockStringMap[ options.tag.name ] || new TinyProperty( '' );
-    if ( blockStringMap[ options.tag.name ] ) {
-      this.addLinkedElement( this.nameProperty as ReadOnlyProperty<string>, {
+    this.nameProperty = options.tag.nameProperty;
+    if ( options.tag !== MassTag.NONE && this.nameProperty instanceof PhetioObject ) {
+      this.addLinkedElement( this.nameProperty, {
         tandemName: 'nameProperty'
       } );
     }
@@ -771,7 +715,7 @@ export default abstract class Mass extends PhetioObject {
       originalMatrix: Matrix3.Matrix3IO,
       canRotate: BooleanIO,
       canMove: BooleanIO,
-      tag: EnumerationIO( MassTag ),
+      tag: MassTag.MassTagIO,
       massShape: EnumerationIO( MassShape ),
 
       // engine.bodyToStateObject
@@ -786,7 +730,7 @@ export default abstract class Mass extends PhetioObject {
         originalMatrix: Matrix3.toStateObject( mass.originalMatrix ),
         canRotate: mass.canRotate,
         canMove: mass.canMove,
-        tag: EnumerationIO( MassTag ).toStateObject( mass.tag ),
+        tag: MassTag.MassTagIO.toStateObject( mass.tag ),
         massShape: EnumerationIO( MassShape ).toStateObject( mass.massShape )
       }, mass.engine.bodyToStateObject( mass.body ) );
     },
@@ -796,7 +740,7 @@ export default abstract class Mass extends PhetioObject {
       mass.originalMatrix.set( Matrix3.fromStateObject( obj.originalMatrix ) );
       mass.canRotate = obj.canRotate;
       mass.canMove = obj.canMove;
-      mass.tag = EnumerationIO( MassTag ).fromStateObject( obj.tag );
+      MassTag.MassTagIO.applyState( mass.tag, obj.tag );
       mass.engine.bodyApplyState( mass.body, obj );
       mass.transformedEmitter.emit();
     },

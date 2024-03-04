@@ -23,8 +23,8 @@ export default class BlockControlNode extends MaterialMassVolumeControlNode {
       Material.ICE,
       Material.BRICK,
       Material.ALUMINUM,
-      Material.MISTERY_X,
-      Material.MISTERY_Y
+      Material.MYSTERY_X,
+      Material.MYSTERY_Y
     ], cubicMeters => cuboid.updateSize( Cube.boundsFromVolume( cubicMeters ) ), listParent, options );
   }
 }

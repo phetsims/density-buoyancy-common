@@ -66,10 +66,10 @@ type StringsType = {
     'humanStringProperty': LocalizedStringProperty;
     'ice': string;
     'iceStringProperty': LocalizedStringProperty;
-    'misteryX': string;
-    'misteryXStringProperty': LocalizedStringProperty;
-    'misteryY': string;
-    'misteryYStringProperty': LocalizedStringProperty;
+    'mysteryX': string;
+    'mysteryXStringProperty': LocalizedStringProperty;
+    'mysteryY': string;
+    'mysteryYStringProperty': LocalizedStringProperty;
     'lead': string;
     'leadStringProperty': LocalizedStringProperty;
     'mercury': string;

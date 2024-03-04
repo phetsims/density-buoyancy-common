@@ -48,7 +48,7 @@ export default class BuoyancyExploreScreenView extends SecondaryMassScreenView<B
     const displayOptionsNode = new DisplayOptionsNode( model );
 
     // Returns the filled in string for the material readout or '?' if the material is hidden
-    const getMisteryMaterialReadoutStringProperty = ( materialProperty: TReadOnlyProperty<Material> ) => new DerivedProperty(
+    const getMysteryMaterialReadoutStringProperty = ( materialProperty: TReadOnlyProperty<Material> ) => new DerivedProperty(
       [ materialProperty, DensityBuoyancyCommonConstants.KILOGRAMS_PER_VOLUME_PATTERN_STRING_PROPERTY, DensityBuoyancyCommonStrings.questionMarkStringProperty ],
       ( material, patternStringProperty, questionMarkString ) => {
       return material.hidden ?
@@ -60,13 +60,13 @@ export default class BuoyancyExploreScreenView extends SecondaryMassScreenView<B
     } );
 
     // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
-    const densityAText = new RichText( getMisteryMaterialReadoutStringProperty( model.primaryMass.materialProperty ), {
+    const densityAText = new RichText( getMysteryMaterialReadoutStringProperty( model.primaryMass.materialProperty ), {
       maxWidth: 120,
       font: DensityBuoyancyCommonConstants.ITEM_FONT,
       fill: DensityBuoyancyCommonColors.labelPrimaryProperty,
       layoutOptions: { column: 1, row: 0 }
     } );
-    const densityBText = new RichText( getMisteryMaterialReadoutStringProperty( model.secondaryMass.materialProperty ), {
+    const densityBText = new RichText( getMysteryMaterialReadoutStringProperty( model.secondaryMass.materialProperty ), {
       maxWidth: 120,
       font: DensityBuoyancyCommonConstants.ITEM_FONT,
       fill: DensityBuoyancyCommonColors.labelSecondaryProperty,
@@ -177,10 +177,10 @@ export default class BuoyancyExploreScreenView extends SecondaryMassScreenView<B
     // TODO: Should this be unlinked? https://github.com/phetsims/density-buoyancy-common/issues/95
     [ model.primaryMass, model.secondaryMass ].forEach( mass => {
       mass.materialProperty.link( material => {
-        if ( material === Material.MISTERY_X ) {
+        if ( material === Material.MYSTERY_X ) {
           mass.volumeProperty.value = 0.003;
         }
-        else if ( material === Material.MISTERY_Y ) {
+        else if ( material === Material.MYSTERY_Y ) {
           mass.volumeProperty.value = 0.001;
         }
       } );

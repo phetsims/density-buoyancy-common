@@ -32,7 +32,7 @@ type SelfMaterialControlNodeOptions = {
   // If a custom material should be added to the ComboBox
   supportCustomMaterial?: boolean;
 
-  // If a hidden material (Mistery materials for example) should be added to the ComboBox
+  // If a hidden material (Mystery materials for example) should be added to the ComboBox
   supportHiddenMaterial?: boolean;
 
   minCustomMass?: number;

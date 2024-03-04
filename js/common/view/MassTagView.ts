@@ -14,11 +14,9 @@ import Mass, { MASS_MIN_SHAPES_DIMENSION } from '../model/Mass.js';
 import { Color, Node, Text } from '../../../../scenery/js/imports.js';
 import LabelTexture from './LabelTexture.js';
 import { Multilink } from '../../../../axon/js/imports.js';
-import DensityBuoyancyCommonColors from './DensityBuoyancyCommonColors.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
-import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import BackgroundNode from '../../../../scenery-phet/js/BackgroundNode.js';
 import MassTag from '../model/MassTag.js';
 
@@ -46,10 +44,7 @@ export default class MassTagView extends TextureQuad {
 
     assert && assert( !mass.tag.nameProperty.isDisposed, 'do not dispose a nameProperty' );
 
-    const colorProperty = mass.tag.colorProperty;
-    const nameProperty = mass.tag.nameProperty;
-
-    const tagNode = MassTagView.getTagNode( nameProperty, colorProperty );
+    const tagNode = MassTagView.getTagNode( mass.tag );
     const tagNodeTexture = new LabelTexture( tagNode );
 
     const tagWidth = TAG_SCALE_NEW * tagNodeTexture._width;
@@ -61,7 +56,7 @@ export default class MassTagView extends TextureQuad {
     this.tagHeight = tagHeight;
     this.tagOffsetProperty = tagOffsetProperty;
 
-    const massTagMultilink = new Multilink( [ nameProperty, colorProperty ], string => {
+    const massTagMultilink = new Multilink( [ mass.tag.nameProperty, mass.tag.colorProperty ], string => {
       tagNodeTexture.update();
 
       const tagWidth = TAG_SCALE_NEW * tagNodeTexture._width;
@@ -86,28 +81,35 @@ export default class MassTagView extends TextureQuad {
     } );
   }
 
-  private static getTagNode( string: TReadOnlyProperty<string>, fill: TReadOnlyProperty<Color | string> ): Node {
-    const label = new Text( string, {
+  private static getTagNode( massTag: MassTag ): Node {
+    const label = new Text( massTag.nameProperty, {
       font: tagFont,
-      fill: Color.getLuminance( fill.value ) > ( 255 / 2 ) ? 'black' : 'white', // best guess?
       maxWidth: 100
     } );
+
+    const colorListener = ( color: Color ) => {
+      label.fill = Color.getLuminance( color ) > ( 255 / 2 ) ? 'black' : 'white'; // best guess?
+    };
+    massTag.colorProperty.link( colorListener );
 
     const backgroundNode = new BackgroundNode( label, {
       xMargin: horizontalMargin / 2,
       yMargin: verticalMargin / 2,
       rectangleOptions: {
         cornerRadius: DensityBuoyancyCommonConstants.CORNER_RADIUS,
-        fill: fill,
+        fill: massTag.colorProperty,
         opacity: 1
       }
     } );
-    backgroundNode.disposeEmitter.addListener( () => label.dispose() );
+    backgroundNode.disposeEmitter.addListener( () => {
+      massTag.colorProperty.unlink( colorListener );
+      label.dispose();
+    } );
     return backgroundNode;
   }
 
-  public static readonly PRIMARY_LABEL = MassTagView.getTagNode( DensityBuoyancyCommonStrings.massLabel.primaryStringProperty, DensityBuoyancyCommonColors.labelPrimaryProperty );
-  public static readonly SECONDARY_LABEL = MassTagView.getTagNode( DensityBuoyancyCommonStrings.massLabel.secondaryStringProperty, DensityBuoyancyCommonColors.labelSecondaryProperty );
+  public static readonly PRIMARY_LABEL = MassTagView.getTagNode( MassTag.PRIMARY );
+  public static readonly SECONDARY_LABEL = MassTagView.getTagNode( MassTag.SECONDARY );
 }
 
 densityBuoyancyCommon.register( 'MassTagView', MassTagView );

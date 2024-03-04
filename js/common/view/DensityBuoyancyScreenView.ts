@@ -615,32 +615,34 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
 
     const boundModelToViewPoint = this.modelToViewPoint.bind( this );
 
+    const dragBoundsProperty = model.invisibleBarrierBoundsProperty;
+
     const onMassAdded = ( mass: Mass ) => {
       let massView = null;
 
       if ( mass instanceof Cuboid ) {
-        massView = new CuboidView( mass, boundModelToViewPoint, model.invisibleBarrierBoundsProperty );
+        massView = new CuboidView( mass, boundModelToViewPoint, dragBoundsProperty );
       }
       else if ( mass instanceof Scale ) {
-        massView = new ScaleView( mass, boundModelToViewPoint, model.invisibleBarrierBoundsProperty );
+        massView = new ScaleView( mass, boundModelToViewPoint, dragBoundsProperty );
       }
       else if ( mass instanceof Cone ) {
-        massView = new ConeView( mass, boundModelToViewPoint, model.invisibleBarrierBoundsProperty );
+        massView = new ConeView( mass, boundModelToViewPoint, dragBoundsProperty );
       }
       else if ( mass instanceof Ellipsoid ) {
-        massView = new EllipsoidView( mass, boundModelToViewPoint, model.invisibleBarrierBoundsProperty );
+        massView = new EllipsoidView( mass, boundModelToViewPoint, dragBoundsProperty );
       }
       else if ( mass instanceof HorizontalCylinder ) {
-        massView = new HorizontalCylinderView( mass, boundModelToViewPoint, model.invisibleBarrierBoundsProperty );
+        massView = new HorizontalCylinderView( mass, boundModelToViewPoint, dragBoundsProperty );
       }
       else if ( mass instanceof VerticalCylinder ) {
-        massView = new VerticalCylinderView( mass, boundModelToViewPoint, model.invisibleBarrierBoundsProperty );
+        massView = new VerticalCylinderView( mass, boundModelToViewPoint, dragBoundsProperty );
       }
       else if ( mass instanceof Bottle ) {
-        massView = new BottleView( mass, boundModelToViewPoint, model.invisibleBarrierBoundsProperty );
+        massView = new BottleView( mass, boundModelToViewPoint, dragBoundsProperty );
       }
       else if ( mass instanceof Boat ) {
-        massView = new BoatView( mass, boundModelToViewPoint, model.invisibleBarrierBoundsProperty, model.pool.liquidYInterpolatedProperty );
+        massView = new BoatView( mass, boundModelToViewPoint, dragBoundsProperty, model.pool.liquidYInterpolatedProperty );
       }
 
       if ( massView ) {

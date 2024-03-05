@@ -18,7 +18,7 @@ import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js
 import Mass from '../model/Mass.js';
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
-import { DotUtils } from '../../../../dot/js/imports.js';
+import Utils from '../../../../dot/js/Utils.js';
 
 export default class MassLabelNode extends Node {
 
@@ -38,7 +38,7 @@ export default class MassLabelNode extends Node {
         return material.hidden ?
                questionMarkString :
                StringUtils.fillIn( patternStringProperty, {
-                 kilograms: DotUtils.toFixed( mass, 2 ),
+                 kilograms: Utils.toFixed( mass, 2 ),
                  decimalPlaces: 2
                } );
       } );

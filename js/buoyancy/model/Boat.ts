@@ -25,7 +25,7 @@ import IOType from '../../../../tandem/js/types/IOType.js';
 import { MassShape } from '../../common/model/MassShape.js';
 import optionize, { EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
 import ApplicationsMass, { ApplicationsMassOptions } from './ApplicationsMass.js';
-import { Vector2 } from '../../../../dot/js/imports.js';
+import Vector2 from '../../../../dot/js/Vector2.js';
 
 export type BoatOptions = StrictOmit<ApplicationsMassOptions, 'body' | 'shape' | 'volume' | 'material' | 'massShape'>;
 

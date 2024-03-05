@@ -43,8 +43,8 @@ import TEmitter from '../../../../axon/js/TEmitter.js';
 import NullableIO from '../../../../tandem/js/types/NullableIO.js';
 import StringIO from '../../../../tandem/js/types/StringIO.js';
 import NumberIO from '../../../../tandem/js/types/NumberIO.js';
-import { Bounds3 } from '../../../../dot/js/imports.js';
 import MassTag, { MassTagStateObject } from './MassTag.js';
+import Bounds3 from '../../../../dot/js/Bounds3.js';
 
 class MaterialEnumeration extends EnumerationValue {
   public static readonly ALUMINUM = new MaterialEnumeration();

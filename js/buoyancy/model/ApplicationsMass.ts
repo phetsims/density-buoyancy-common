@@ -14,7 +14,7 @@ import PhysicsEngine from '../../common/model/PhysicsEngine.js';
 import Ray3 from '../../../../dot/js/Ray3.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
-import { Bounds3 } from '../../../../dot/js/imports.js';
+import Bounds3 from '../../../../dot/js/Bounds3.js';
 
 export type ApplicationsMassOptions = InstrumentedMassOptions;
 

@@ -28,7 +28,7 @@ import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js'
 import BuoyancyExploreModel from '../model/BuoyancyExploreModel.js';
 import arrayRemove from '../../../../phet-core/js/arrayRemove.js';
 import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
-import { DotUtils } from '../../../../dot/js/imports.js';
+import Utils from '../../../../dot/js/Utils.js';
 
 // constants
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
@@ -54,7 +54,7 @@ export default class BuoyancyExploreScreenView extends SecondaryMassScreenView<B
       return material.hidden ?
              questionMarkString :
              StringUtils.fillIn( patternStringProperty, {
-               value: DotUtils.toFixed( material.density / 1000, 2 ),
+               value: Utils.toFixed( material.density / 1000, 2 ),
                decimalPlaces: 2
              } );
     } );

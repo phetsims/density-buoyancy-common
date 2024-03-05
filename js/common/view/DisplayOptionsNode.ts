@@ -16,8 +16,7 @@ import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js'
 import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
 import DensityBuoyancyCommonColors from './DensityBuoyancyCommonColors.js';
 import DensityBuoyancyModel from '../model/DensityBuoyancyModel.js';
-import { combineOptions } from '../../../../phet-core/js/optionize.js';
-import { optionize } from '../../../../phet-core/js/imports.js';
+import optionize, { combineOptions } from '../../../../phet-core/js/optionize.js';
 
 // constants
 const arrowSpacing = 15;

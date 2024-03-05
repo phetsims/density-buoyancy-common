@@ -13,13 +13,13 @@ import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import Mass, { MASS_MIN_SHAPES_DIMENSION } from '../model/Mass.js';
 import { Color, Node, Text } from '../../../../scenery/js/imports.js';
 import LabelTexture from './LabelTexture.js';
-import { Multilink } from '../../../../axon/js/imports.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import BackgroundNode from '../../../../scenery-phet/js/BackgroundNode.js';
 import MassTag from '../model/MassTag.js';
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
+import Multilink from '../../../../axon/js/Multilink.js';
 
 // Constant for MassView subtypes to use to consistently offset their tag on their shape
 export const TAG_OFFSET = MASS_MIN_SHAPES_DIMENSION / 20;

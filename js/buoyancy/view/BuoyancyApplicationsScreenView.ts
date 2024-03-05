@@ -76,7 +76,7 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
     ], volume => model.bottle.interiorVolumeProperty.set( volume ), this.popupLayer, {
       minMass: 0,
       maxCustomMass: 100,
-      maxMass: Material.MERCURY.density * 0.01,
+      lowDensityMaxMass: Material.MERCURY.density * 0.01,
       minVolumeLiters: 0,
       maxVolumeLiters: 10,
       minCustomVolumeLiters: 0.5,
@@ -143,7 +143,8 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
       Material.BRICK,
       Material.ALUMINUM
     ], material => material.density ), cubicMeters => model.block.updateSize( Cube.boundsFromVolume( cubicMeters ) ), this.popupLayer, {
-      tandem: tandem.createTandem( 'blockControlNode' )
+      tandem: tandem.createTandem( 'blockControlNode' ),
+      highDensityMaxMass: 215
     } );
 
     const resetSceneButton = new RectangularPushButton( {

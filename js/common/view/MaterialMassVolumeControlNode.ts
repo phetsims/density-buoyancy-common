@@ -36,7 +36,9 @@ class WorkaroundRange extends Range {
 
 type SelfOptions = {
   minMass?: number;
-  maxMass?: number;
+  lowDensityMaxMass?: number;
+  highDensityMaxMass?: number | null; // Used in the Applications Screen View to increase the mass range for dense materials
+  highDensityThreshold?: number; // Density above which the range switches from light to heavy
   minVolumeLiters?: number;
   maxVolumeLiters?: number;
   color?: TPaint;
@@ -56,7 +58,9 @@ export default class MaterialMassVolumeControlNode extends MaterialControlNode {
 
     const options = optionize<MaterialMassVolumeControlNodeOptions, SelfOptions, MaterialControlNodeOptions>()( {
       minMass: 0.1,
-      maxMass: 27,
+      lowDensityMaxMass: 27,
+      highDensityMaxMass: null,
+      highDensityThreshold: 2700,
       minVolumeLiters: 1,
       maxVolumeLiters: 10,
       minCustomMass: 0.5,
@@ -84,8 +88,10 @@ export default class MaterialMassVolumeControlNode extends MaterialControlNode {
       else {
         const density = material.density;
 
-        const minMass = Utils.clamp( density * options.minVolumeLiters / LITERS_IN_CUBIC_METER, options.minMass, options.maxMass );
-        const maxMass = Utils.clamp( density * options.maxVolumeLiters / LITERS_IN_CUBIC_METER, options.minMass, options.maxMass );
+        const maxMassRange = options.highDensityMaxMass && density > options.highDensityThreshold ? options.highDensityMaxMass : options.lowDensityMaxMass;
+
+        const minMass = Utils.clamp( density * options.minVolumeLiters / LITERS_IN_CUBIC_METER, options.minMass, maxMassRange );
+        const maxMass = Utils.clamp( density * options.maxVolumeLiters / LITERS_IN_CUBIC_METER, options.minMass, maxMassRange );
 
         return new WorkaroundRange( minMass, maxMass );
       }
@@ -205,44 +211,6 @@ export default class MaterialMassVolumeControlNode extends MaterialControlNode {
       }
     } );
 
-    const massNumberControl = new NumberControl( DensityBuoyancyCommonStrings.massStringProperty, massNumberProperty, new Range( options.minMass, options.maxMass ), combineOptions<NumberControlOptions>( {
-      sliderOptions: {
-        thumbNode: new PrecisionSliderThumb( {
-          thumbFill: options.color,
-          tandem: massNumberControlTandem.createTandem( 'slider' ).createTandem( 'thumbNode' )
-        } ),
-        thumbYOffset: new PrecisionSliderThumb().height / 2 - TRACK_HEIGHT / 2,
-        constrainValue: ( value: number ) => {
-          const range = enabledMassRangeProperty.value;
-
-          // Don't snap before ranges, since this doesn't work for Styrofoam case, see
-          // https://github.com/phetsims/density/issues/46
-          if ( value <= range.min ) {
-            return range.min;
-          }
-          if ( value >= range.max ) {
-            return range.max;
-          }
-          return enabledMassRangeProperty.value.constrainValue( Utils.toFixedNumber( value, 1 ) );
-        },
-        phetioLinkedProperty: massProperty
-      },
-      numberDisplayOptions: {
-        valuePattern: DensityBuoyancyCommonConstants.KILOGRAMS_PATTERN_STRING_PROPERTY,
-        useFullHeight: true
-      },
-      arrowButtonOptions: {
-        enabledEpsilon: DensityBuoyancyCommonConstants.TOLERANCE
-      },
-      enabledRangeProperty: enabledMassRangeProperty,
-      tandem: massNumberControlTandem,
-      titleNodeOptions: {
-        visiblePropertyOptions: {
-          phetioReadOnly: true
-        }
-      }
-    }, MaterialMassVolumeControlNode.getNumberControlOptions() ) );
-
     const volumeNumberControl = new NumberControl( DensityBuoyancyCommonStrings.volumeStringProperty, numberControlVolumeProperty, new Range( options.minVolumeLiters, options.maxVolumeLiters ), combineOptions<NumberControlOptions>( {
       sliderOptions: {
         thumbNode: new PrecisionSliderThumb( {
@@ -270,9 +238,76 @@ export default class MaterialMassVolumeControlNode extends MaterialControlNode {
       }
     }, MaterialMassVolumeControlNode.getNumberControlOptions() ) );
 
+    const volumeContainerNode = new Node( {
+        children: [ volumeNumberControl ]
+      }
+    );
+
+    const massContainerNode = new Node( {
+        children: []
+      }
+    );
+
+    const createMassNumberControl = ( maxMass: number, tandemName: string ) => {
+      return new NumberControl( DensityBuoyancyCommonStrings.massStringProperty, massNumberProperty, new Range( options.minMass, maxMass ), combineOptions<NumberControlOptions>( {
+        sliderOptions: {
+          thumbNode: new PrecisionSliderThumb( {
+            thumbFill: options.color,
+            tandem: massNumberControlTandem.createTandem( 'slider' ).createTandem( 'thumbNode' )
+          } ),
+          thumbYOffset: new PrecisionSliderThumb().height / 2 - TRACK_HEIGHT / 2,
+          constrainValue: ( value: number ) => {
+            const range = enabledMassRangeProperty.value;
+
+            // Don't snap before ranges, since this doesn't work for Styrofoam case, see
+            // https://github.com/phetsims/density/issues/46
+            if ( value <= range.min ) {
+              return range.min;
+            }
+            if ( value >= range.max ) {
+              return range.max;
+            }
+            return enabledMassRangeProperty.value.constrainValue( Utils.toFixedNumber( value, 1 ) );
+          },
+          phetioLinkedProperty: massProperty
+        },
+        numberDisplayOptions: {
+          valuePattern: DensityBuoyancyCommonConstants.KILOGRAMS_PATTERN_STRING_PROPERTY,
+          useFullHeight: true
+        },
+        arrowButtonOptions: {
+          enabledEpsilon: DensityBuoyancyCommonConstants.TOLERANCE
+        },
+        enabledRangeProperty: enabledMassRangeProperty,
+        tandem: massNumberControlTandem,
+        titleNodeOptions: {
+          visiblePropertyOptions: {
+            phetioReadOnly: true
+          }
+        }
+      }, MaterialMassVolumeControlNode.getNumberControlOptions() ) );
+    };
+
+    const lowDensityNumberControl = createMassNumberControl( options.lowDensityMaxMass, 'lowDensity' );
+    let highDensityNumberControl = new Node();
+    if ( options.highDensityMaxMass ) {
+      highDensityNumberControl = createMassNumberControl( options.highDensityMaxMass, 'highDensity' );
+    }
+
+    massContainerNode.addChild( lowDensityNumberControl );
+    massContainerNode.addChild( highDensityNumberControl );
+
+    materialProperty.link( material => {
+      if ( options.highDensityMaxMass ) {
+        const highDensityAndNotCustom = material.density > options.highDensityThreshold && !material.custom;
+        highDensityNumberControl.visible = highDensityAndNotCustom;
+        lowDensityNumberControl.visible = !highDensityAndNotCustom;
+      }
+    } );
+
     const fallbackContainer = new Node();
     const massVolumeVBox = new VBox( combineOptions<VBoxOptions>( {
-      children: [ massNumberControl, volumeNumberControl ],
+      children: [ massContainerNode, volumeContainerNode ],
       spacing: 15
     } ) );
 

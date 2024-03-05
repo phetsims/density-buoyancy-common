@@ -572,6 +572,7 @@ export default abstract class Mass extends PhetioObject {
    * Starts a physics model engine drag at the given 2d (x,y) model position.
    */
   public startDrag( position: Vector2 ): void {
+    assert && assert( !this.userControlledProperty.value, 'cannot start a drag when already userControlled' );
     this.userControlledProperty.value = true;
     this.engine.addPointerConstraint( this.body, position );
   }
@@ -587,6 +588,7 @@ export default abstract class Mass extends PhetioObject {
    * Ends a physics model engine drag.
    */
   public endDrag(): void {
+    assert && assert( this.userControlledProperty.value, 'cannot end a drag if not userControlled' );
     this.engine.removePointerConstraint( this.body );
     this.userControlledProperty.value = false;
   }

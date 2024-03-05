@@ -108,13 +108,27 @@ export default abstract class MassView extends THREE.Mesh {
         tagName: 'div',
         focusable: true
       } );
+      const endKeyboardInteraction = () => {
+        keyboardDragListener.interrupt();
+        mass.interruptedEmitter.removeListener( endKeyboardInteraction );
+        this.focusablePath!.removeInputListener( blurListener );
+
+        mass.endDrag();
+      };
+
+      const blurListener = {
+        blur: endKeyboardInteraction
+      };
 
       this.focusablePath.addInputListener( {
         focus: () => {
+
+          // We want the newer interaction to take precedent, so tabbing to the item should interrupt the previous mouse drag (if applicable).
+          mass.userControlledProperty.value && mass.interruptedEmitter.emit();
+
+          mass.interruptedEmitter.addListener( endKeyboardInteraction );
+          this.focusablePath!.addInputListener( blurListener );
           mass.startDrag( mass.matrix.translation );
-        },
-        blur: () => {
-          mass.endDrag();
         }
       } );
 
@@ -133,10 +147,6 @@ export default abstract class MassView extends THREE.Mesh {
         end: () => releaseSoundPlayer.play(),
 
         tandem: Tandem.OPT_OUT
-      } );
-
-      mass.interruptedEmitter.addListener( () => {
-        keyboardDragListener.interrupt();
       } );
 
       this.focusablePath.addInputListener( keyboardDragListener );

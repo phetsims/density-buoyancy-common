@@ -252,7 +252,11 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
         const isTouch = !( pointer instanceof Mouse );
         const mass = this.getMassUnderPointer( pointer, isTouch );
 
-        if ( mass && mass.canMove && !mass.userControlledProperty.value ) {
+        if ( mass && mass.canMove ) {
+
+          // Newer interactions take precedent, so clean up any old ones first. This also makes mouse/keyboard
+          // cross-interaction much simpler.
+          mass.interruptedEmitter.emit();
 
           grabSoundPlayer.play();
 

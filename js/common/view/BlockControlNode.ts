@@ -10,22 +10,16 @@ import { Node } from '../../../../scenery/js/imports.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import Cube from '../model/Cube.js';
 import Cuboid from '../model/Cuboid.js';
-import Material from '../model/Material.js';
 import MaterialMassVolumeControlNode, { MaterialMassVolumeControlNodeOptions } from './MaterialMassVolumeControlNode.js';
+import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
 
 export type BlockControlNodeOptions = MaterialMassVolumeControlNodeOptions;
 
 export default class BlockControlNode extends MaterialMassVolumeControlNode {
   public constructor( cuboid: Cuboid, listParent: Node, options: BlockControlNodeOptions ) {
-    super( cuboid.materialProperty, cuboid.massProperty, cuboid.volumeProperty, [
-      Material.STYROFOAM,
-      Material.WOOD,
-      Material.ICE,
-      Material.BRICK,
-      Material.ALUMINUM,
-      Material.MYSTERY_X,
-      Material.MYSTERY_Y
-    ], cubicMeters => cuboid.updateSize( Cube.boundsFromVolume( cubicMeters ) ), listParent, options );
+    super( cuboid.materialProperty, cuboid.massProperty, cuboid.volumeProperty,
+      DensityBuoyancyCommonConstants.SIMPLE_MASS_MATERIALS.concat( DensityBuoyancyCommonConstants.BUOYANCY_MYSTERY_DENSITY_MATERIALS ),
+      cubicMeters => cuboid.updateSize( Cube.boundsFromVolume( cubicMeters ) ), listParent, options );
   }
 }
 

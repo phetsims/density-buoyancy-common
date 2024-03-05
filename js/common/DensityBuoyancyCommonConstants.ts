@@ -99,6 +99,14 @@ const DensityBuoyancyCommonConstants = {
     Material.GOLD
   ],
 
+  SIMPLE_MASS_MATERIALS: [
+    Material.STYROFOAM,
+    Material.WOOD,
+    Material.ICE,
+    Material.BRICK,
+    Material.ALUMINUM
+  ],
+
   BUOYANCY_FLUID_MATERIALS: [
     Material.GASOLINE,
     Material.OIL,

@@ -131,18 +131,14 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
     } );
 
     const blockControlNode = new MaterialMassVolumeControlNode( model.block.materialProperty, model.block.massProperty, model.block.volumeProperty, _.sortBy( [
-      Material.PYRITE,
-      Material.STEEL,
-      Material.SILVER,
-      Material.TANTALUM,
-      Material.GOLD,
-      Material.PLATINUM,
-      Material.STYROFOAM,
-      Material.WOOD,
-      Material.ICE,
-      Material.BRICK,
-      Material.ALUMINUM
-    ], material => material.density ), cubicMeters => model.block.updateSize( Cube.boundsFromVolume( cubicMeters ) ), this.popupLayer, {
+        Material.PYRITE,
+        Material.STEEL,
+        Material.SILVER,
+        Material.TANTALUM,
+        Material.GOLD,
+        Material.PLATINUM
+      ].concat( DensityBuoyancyCommonConstants.SIMPLE_MASS_MATERIALS ),
+      material => material.density ), cubicMeters => model.block.updateSize( Cube.boundsFromVolume( cubicMeters ) ), this.popupLayer, {
       tandem: tandem.createTandem( 'blockControlNode' ),
       highDensityMaxMass: 215
     } );

@@ -114,7 +114,7 @@ export default class DensityMysteryModel extends BlockSetModel<BlockSet> {
               } ),
               Vector2.ZERO,
               0.005,
-              combineOptions<CubeOptions>( {}, commonCubeOptions, { tag: MassTag.ONE_D, tandem: set1Tandem.createTandem( 'block1D' ) } )
+              combineOptions<CubeOptions>( {}, commonCubeOptions, { tag: MassTag.ONE_D, tandem: set1Tandem.createTandem( `block${MassTag.ONE_D.tandemName}` ) } )
             ),
 
             Cube.createWithVolume(
@@ -125,7 +125,7 @@ export default class DensityMysteryModel extends BlockSetModel<BlockSet> {
               } ),
               Vector2.ZERO,
               0.001,
-              combineOptions<CubeOptions>( {}, commonCubeOptions, { tag: MassTag.ONE_B, tandem: set1Tandem.createTandem( 'block1B' ) } )
+              combineOptions<CubeOptions>( {}, commonCubeOptions, { tag: MassTag.ONE_B, tandem: set1Tandem.createTandem( `block${MassTag.ONE_B.tandemName}` ) } )
             ),
 
             Cube.createWithVolume(
@@ -136,7 +136,7 @@ export default class DensityMysteryModel extends BlockSetModel<BlockSet> {
               } ),
               Vector2.ZERO,
               0.007,
-              combineOptions<CubeOptions>( {}, commonCubeOptions, { tag: MassTag.ONE_E, tandem: set1Tandem.createTandem( 'block1E' ) } )
+              combineOptions<CubeOptions>( {}, commonCubeOptions, { tag: MassTag.ONE_E, tandem: set1Tandem.createTandem( `block${MassTag.ONE_E.tandemName}` ) } )
             ),
 
             Cube.createWithVolume(
@@ -147,7 +147,7 @@ export default class DensityMysteryModel extends BlockSetModel<BlockSet> {
               } ),
               Vector2.ZERO,
               0.001,
-              combineOptions<CubeOptions>( {}, commonCubeOptions, { tag: MassTag.ONE_C, tandem: set1Tandem.createTandem( 'block1C' ) } )
+              combineOptions<CubeOptions>( {}, commonCubeOptions, { tag: MassTag.ONE_C, tandem: set1Tandem.createTandem( `block${MassTag.ONE_C.tandemName}` ) } )
             ),
 
             Cube.createWithVolume(
@@ -158,7 +158,7 @@ export default class DensityMysteryModel extends BlockSetModel<BlockSet> {
               } ),
               Vector2.ZERO,
               0.0055,
-              combineOptions<CubeOptions>( {}, commonCubeOptions, { tag: MassTag.ONE_A, tandem: set1Tandem.createTandem( 'block1A' ) } )
+              combineOptions<CubeOptions>( {}, commonCubeOptions, { tag: MassTag.ONE_A, tandem: set1Tandem.createTandem( `block${MassTag.ONE_A.tandemName}` ) } )
             )
           ];
         case BlockSet.SET_2:
@@ -171,7 +171,7 @@ export default class DensityMysteryModel extends BlockSetModel<BlockSet> {
               } ),
               Vector2.ZERO,
               18,
-              combineOptions<CubeOptions>( {}, commonCubeOptions, { tag: MassTag.TWO_D, tandem: set2Tandem.createTandem( 'block2D' ) } )
+              combineOptions<CubeOptions>( {}, commonCubeOptions, { tag: MassTag.TWO_D, tandem: set2Tandem.createTandem( `block${MassTag.TWO_D.tandemName}` ) } )
             ),
 
             Cube.createWithMass(
@@ -182,7 +182,7 @@ export default class DensityMysteryModel extends BlockSetModel<BlockSet> {
               } ),
               Vector2.ZERO,
               18,
-              combineOptions<CubeOptions>( {}, commonCubeOptions, { tag: MassTag.TWO_A, tandem: set2Tandem.createTandem( 'block2A' ) } )
+              combineOptions<CubeOptions>( {}, commonCubeOptions, { tag: MassTag.TWO_A, tandem: set2Tandem.createTandem( `block${MassTag.TWO_A.tandemName}` ) } )
             ),
 
             Cube.createWithVolume(
@@ -193,7 +193,7 @@ export default class DensityMysteryModel extends BlockSetModel<BlockSet> {
               } ),
               Vector2.ZERO,
               0.005,
-              combineOptions<CubeOptions>( {}, commonCubeOptions, { tag: MassTag.TWO_E, tandem: set2Tandem.createTandem( 'block2E' ) } )
+              combineOptions<CubeOptions>( {}, commonCubeOptions, { tag: MassTag.TWO_E, tandem: set2Tandem.createTandem( `block${MassTag.TWO_E.tandemName}` ) } )
             ),
 
             Cube.createWithMass(
@@ -204,7 +204,7 @@ export default class DensityMysteryModel extends BlockSetModel<BlockSet> {
               } ),
               Vector2.ZERO,
               2.7,
-              combineOptions<CubeOptions>( {}, commonCubeOptions, { tag: MassTag.TWO_C, tandem: set2Tandem.createTandem( 'block2C' ) } )
+              combineOptions<CubeOptions>( {}, commonCubeOptions, { tag: MassTag.TWO_C, tandem: set2Tandem.createTandem( `block${MassTag.TWO_C.tandemName}` ) } )
             ),
 
             Cube.createWithMass(
@@ -215,7 +215,7 @@ export default class DensityMysteryModel extends BlockSetModel<BlockSet> {
               } ),
               Vector2.ZERO,
               10.8,
-              combineOptions<CubeOptions>( {}, commonCubeOptions, { tag: MassTag.TWO_B, tandem: set2Tandem.createTandem( 'block2B' ) } )
+              combineOptions<CubeOptions>( {}, commonCubeOptions, { tag: MassTag.TWO_B, tandem: set2Tandem.createTandem( `block${MassTag.TWO_B.tandemName}` ) } )
             )
           ];
         case BlockSet.SET_3:
@@ -228,7 +228,7 @@ export default class DensityMysteryModel extends BlockSetModel<BlockSet> {
               } ),
               Vector2.ZERO,
               6,
-              combineOptions<CubeOptions>( {}, commonCubeOptions, { tag: MassTag.THREE_E, tandem: set3Tandem.createTandem( 'block3E' ) } )
+              combineOptions<CubeOptions>( {}, commonCubeOptions, { tag: MassTag.THREE_E, tandem: set3Tandem.createTandem( `block${MassTag.THREE_E.tandemName}` ) } )
             ),
 
             Cube.createWithMass(
@@ -239,7 +239,7 @@ export default class DensityMysteryModel extends BlockSetModel<BlockSet> {
               } ),
               Vector2.ZERO,
               6,
-              combineOptions<CubeOptions>( {}, commonCubeOptions, { tag: MassTag.THREE_B, tandem: set3Tandem.createTandem( 'block3B' ) } )
+              combineOptions<CubeOptions>( {}, commonCubeOptions, { tag: MassTag.THREE_B, tandem: set3Tandem.createTandem( `block${MassTag.THREE_B.tandemName}` ) } )
             ),
 
             Cube.createWithMass(
@@ -250,7 +250,7 @@ export default class DensityMysteryModel extends BlockSetModel<BlockSet> {
               } ),
               Vector2.ZERO,
               2,
-              combineOptions<CubeOptions>( {}, commonCubeOptions, { tag: MassTag.THREE_D, tandem: set3Tandem.createTandem( 'block3D' ) } )
+              combineOptions<CubeOptions>( {}, commonCubeOptions, { tag: MassTag.THREE_D, tandem: set3Tandem.createTandem( `block${MassTag.THREE_D.tandemName}` ) } )
             ),
 
             Cube.createWithMass(
@@ -261,7 +261,7 @@ export default class DensityMysteryModel extends BlockSetModel<BlockSet> {
               } ),
               Vector2.ZERO,
               23.4,
-              combineOptions<CubeOptions>( {}, commonCubeOptions, { tag: MassTag.THREE_C, tandem: set3Tandem.createTandem( 'block3C' ) } )
+              combineOptions<CubeOptions>( {}, commonCubeOptions, { tag: MassTag.THREE_C, tandem: set3Tandem.createTandem( `block${MassTag.THREE_C.tandemName}` ) } )
             ),
 
             Cube.createWithMass(
@@ -272,7 +272,7 @@ export default class DensityMysteryModel extends BlockSetModel<BlockSet> {
               } ),
               Vector2.ZERO,
               2.85,
-              combineOptions<CubeOptions>( {}, commonCubeOptions, { tag: MassTag.THREE_A, tandem: set3Tandem.createTandem( 'block3A' ) } )
+              combineOptions<CubeOptions>( {}, commonCubeOptions, { tag: MassTag.THREE_A, tandem: set3Tandem.createTandem( `block${MassTag.THREE_A.tandemName}` ) } )
             )
           ];
         case BlockSet.RANDOM: {

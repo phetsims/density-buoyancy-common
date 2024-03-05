@@ -13,7 +13,6 @@ import DensityBuoyancyCommonColors from '../view/DensityBuoyancyCommonColors.js'
 import StringProperty from '../../../../axon/js/StringProperty.js';
 import IOType from '../../../../tandem/js/types/IOType.js';
 import StringIO from '../../../../tandem/js/types/StringIO.js';
-import stripEmbeddingMarks from '../../../../phet-core/js/stripEmbeddingMarks.js';
 import TProperty from '../../../../axon/js/TProperty.js';
 
 export type MassTagStateObject = {
@@ -23,44 +22,50 @@ export type MassTagStateObject = {
 
 export default class MassTag {
 
-  public readonly tandemName: string;
+  private readonly _tandemName: string | null;
 
   public constructor( public readonly nameProperty: TProperty<string>,
+                      tandemName: string | null = null,
                       public readonly colorProperty = new ColorProperty( Color.white ) ) {
 
-    this.tandemName = stripEmbeddingMarks( nameProperty.value );
+    this._tandemName = tandemName;
+  }
+
+  public get tandemName(): string {
+    assert && assert( this._tandemName, 'no tandemName provided for this MassTag' );
+    return this._tandemName!;
   }
 
   public withColorProperty( colorProperty: ColorProperty ): MassTag {
-    return new MassTag( this.nameProperty, colorProperty );
+    return new MassTag( this.nameProperty, this._tandemName, colorProperty );
   }
 
   public static readonly PRIMARY_COLOR_PROPERTY = DensityBuoyancyCommonColors.labelPrimaryProperty;
   public static readonly SECONDARY_COLOR_PROPERTY = DensityBuoyancyCommonColors.labelSecondaryProperty;
 
-  public static readonly PRIMARY = new MassTag( DensityBuoyancyCommonStrings.massLabel.primaryStringProperty, MassTag.PRIMARY_COLOR_PROPERTY );
-  public static readonly SECONDARY = new MassTag( DensityBuoyancyCommonStrings.massLabel.secondaryStringProperty, MassTag.SECONDARY_COLOR_PROPERTY );
+  public static readonly PRIMARY = new MassTag( DensityBuoyancyCommonStrings.massLabel.primaryStringProperty, null, MassTag.PRIMARY_COLOR_PROPERTY );
+  public static readonly SECONDARY = new MassTag( DensityBuoyancyCommonStrings.massLabel.secondaryStringProperty, null, MassTag.SECONDARY_COLOR_PROPERTY );
   public static readonly NONE = new MassTag( new StringProperty( 'NONE' ) );
-  public static readonly ONE_A = new MassTag( DensityBuoyancyCommonStrings.massLabel[ '1aStringProperty' ] );
-  public static readonly ONE_B = new MassTag( DensityBuoyancyCommonStrings.massLabel[ '1bStringProperty' ] );
-  public static readonly ONE_C = new MassTag( DensityBuoyancyCommonStrings.massLabel[ '1cStringProperty' ] );
-  public static readonly ONE_D = new MassTag( DensityBuoyancyCommonStrings.massLabel[ '1dStringProperty' ] );
-  public static readonly ONE_E = new MassTag( DensityBuoyancyCommonStrings.massLabel[ '1eStringProperty' ] );
-  public static readonly TWO_A = new MassTag( DensityBuoyancyCommonStrings.massLabel[ '2aStringProperty' ] );
-  public static readonly TWO_B = new MassTag( DensityBuoyancyCommonStrings.massLabel[ '2bStringProperty' ] );
-  public static readonly TWO_C = new MassTag( DensityBuoyancyCommonStrings.massLabel[ '2cStringProperty' ] );
-  public static readonly TWO_D = new MassTag( DensityBuoyancyCommonStrings.massLabel[ '2dStringProperty' ] );
-  public static readonly TWO_E = new MassTag( DensityBuoyancyCommonStrings.massLabel[ '2eStringProperty' ] );
-  public static readonly THREE_A = new MassTag( DensityBuoyancyCommonStrings.massLabel[ '3aStringProperty' ] );
-  public static readonly THREE_B = new MassTag( DensityBuoyancyCommonStrings.massLabel[ '3bStringProperty' ] );
-  public static readonly THREE_C = new MassTag( DensityBuoyancyCommonStrings.massLabel[ '3cStringProperty' ] );
-  public static readonly THREE_D = new MassTag( DensityBuoyancyCommonStrings.massLabel[ '3dStringProperty' ] );
-  public static readonly THREE_E = new MassTag( DensityBuoyancyCommonStrings.massLabel[ '3eStringProperty' ] );
-  public static readonly A = new MassTag( DensityBuoyancyCommonStrings.massLabel.aStringProperty );
-  public static readonly B = new MassTag( DensityBuoyancyCommonStrings.massLabel.bStringProperty );
-  public static readonly C = new MassTag( DensityBuoyancyCommonStrings.massLabel.cStringProperty );
-  public static readonly D = new MassTag( DensityBuoyancyCommonStrings.massLabel.dStringProperty );
-  public static readonly E = new MassTag( DensityBuoyancyCommonStrings.massLabel.eStringProperty );
+  public static readonly ONE_A = new MassTag( DensityBuoyancyCommonStrings.massLabel[ '1aStringProperty' ], '1A' );
+  public static readonly ONE_B = new MassTag( DensityBuoyancyCommonStrings.massLabel[ '1bStringProperty' ], '1B' );
+  public static readonly ONE_C = new MassTag( DensityBuoyancyCommonStrings.massLabel[ '1cStringProperty' ], '1C' );
+  public static readonly ONE_D = new MassTag( DensityBuoyancyCommonStrings.massLabel[ '1dStringProperty' ], '1D' );
+  public static readonly ONE_E = new MassTag( DensityBuoyancyCommonStrings.massLabel[ '1eStringProperty' ], '1E' );
+  public static readonly TWO_A = new MassTag( DensityBuoyancyCommonStrings.massLabel[ '2aStringProperty' ], '2A' );
+  public static readonly TWO_B = new MassTag( DensityBuoyancyCommonStrings.massLabel[ '2bStringProperty' ], '2B' );
+  public static readonly TWO_C = new MassTag( DensityBuoyancyCommonStrings.massLabel[ '2cStringProperty' ], '2C' );
+  public static readonly TWO_D = new MassTag( DensityBuoyancyCommonStrings.massLabel[ '2dStringProperty' ], '2D' );
+  public static readonly TWO_E = new MassTag( DensityBuoyancyCommonStrings.massLabel[ '2eStringProperty' ], '2E' );
+  public static readonly THREE_A = new MassTag( DensityBuoyancyCommonStrings.massLabel[ '3aStringProperty' ], '3A' );
+  public static readonly THREE_B = new MassTag( DensityBuoyancyCommonStrings.massLabel[ '3bStringProperty' ], '3B' );
+  public static readonly THREE_C = new MassTag( DensityBuoyancyCommonStrings.massLabel[ '3cStringProperty' ], '3C' );
+  public static readonly THREE_D = new MassTag( DensityBuoyancyCommonStrings.massLabel[ '3dStringProperty' ], '3D' );
+  public static readonly THREE_E = new MassTag( DensityBuoyancyCommonStrings.massLabel[ '3eStringProperty' ], '3E' );
+  public static readonly A = new MassTag( DensityBuoyancyCommonStrings.massLabel.aStringProperty, 'A' );
+  public static readonly B = new MassTag( DensityBuoyancyCommonStrings.massLabel.bStringProperty, 'B' );
+  public static readonly C = new MassTag( DensityBuoyancyCommonStrings.massLabel.cStringProperty, 'C' );
+  public static readonly D = new MassTag( DensityBuoyancyCommonStrings.massLabel.dStringProperty, 'D' );
+  public static readonly E = new MassTag( DensityBuoyancyCommonStrings.massLabel.eStringProperty, 'E' );
 
   public static MassTagIO = new IOType<MassTag, MassTagStateObject>( 'MassTagIO', {
     valueType: MassTag,

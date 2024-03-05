@@ -25,6 +25,8 @@ import MappedProperty from '../../../../axon/js/MappedProperty.js';
 import Bounds2 from '../../../../dot/js/Bounds2.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
 import MassTag from '../model/MassTag.js';
+import grabSoundPlayer from '../../../../tambo/js/shared-sound-players/grabSoundPlayer.js';
+import releaseSoundPlayer from '../../../../tambo/js/shared-sound-players/releaseSoundPlayer.js';
 
 export type ModelPoint3ToViewPoint2 = ( point: Vector3 ) => Vector2;
 
@@ -127,6 +129,9 @@ export default abstract class MassView extends THREE.Mesh {
         drag: ( vectorDelta: Vector2 ) => {
           mass.updateDrag( mass.matrix.translation.add( vectorDelta ) );
         },
+        start: () => grabSoundPlayer.play(),
+        end: () => releaseSoundPlayer.play(),
+
         tandem: Tandem.OPT_OUT
       } );
 

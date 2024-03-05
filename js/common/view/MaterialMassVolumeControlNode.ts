@@ -2,6 +2,11 @@
 
 /**
  * A control that allows modification of the mass and volume (which can be linked, or unlinked for custom materials).
+ * This also has support for changing the material, see MaterialControlNode.
+ *
+ * Note that NumberControl does not support mutating the provided Range (just the enabled range subset), and so this
+ * class can create two NumberControl instances for controlling the mass. See options.highDensityMaxMass for details.
+ * This was much easier than updating NumberControl and NumberDisplay to support a dynamic range, see https://github.com/phetsims/buoyancy/issues/31.
  *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
@@ -35,10 +40,14 @@ class WorkaroundRange extends Range {
 }
 
 type SelfOptions = {
-  minMass?: number;
-  lowDensityMaxMass?: number;
-  highDensityMaxMass?: number | null; // Used in the Applications Screen View to increase the mass range for dense materials
-  highDensityThreshold?: number; // Density above which the range switches from light to heavy
+  minMass?: number; // The minimum mass available to select
+  maxMass?: number; // The maximum mass available to select
+
+  // Used in the Applications Screen View to increase the mass range for dense materials. null opts out of this feature.
+  highDensityMaxMass?: number | null;
+  // Used only with highDensityMaxMass, Density above which the range switches from normal to high density mass control.
+  highDensityThreshold?: number;
+
   minVolumeLiters?: number;
   maxVolumeLiters?: number;
   color?: TPaint;
@@ -58,7 +67,7 @@ export default class MaterialMassVolumeControlNode extends MaterialControlNode {
 
     const options = optionize<MaterialMassVolumeControlNodeOptions, SelfOptions, MaterialControlNodeOptions>()( {
       minMass: 0.1,
-      lowDensityMaxMass: 27,
+      maxMass: 27,
       highDensityMaxMass: null,
       highDensityThreshold: 2700,
       minVolumeLiters: 1,
@@ -69,7 +78,10 @@ export default class MaterialMassVolumeControlNode extends MaterialControlNode {
       color: null
     }, providedOptions );
 
-    const massNumberControlTandem = options.tandem.createTandem( 'massNumberControl' );
+    // If we will be creating a high density mass NumberControl in addition to the normal one.
+    const supportTwoMassNumberControls = !!options.highDensityMaxMass;
+
+    const massNumberControlContainerTandem = options.tandem.createTandem( 'massNumberControl' );
     const volumeNumberControlTandem = options.tandem.createTandem( 'volumeNumberControl' );
 
     super( materialProperty, volumeProperty, materials, listParent, options );
@@ -88,7 +100,7 @@ export default class MaterialMassVolumeControlNode extends MaterialControlNode {
       else {
         const density = material.density;
 
-        const maxMassRange = options.highDensityMaxMass && density > options.highDensityThreshold ? options.highDensityMaxMass : options.lowDensityMaxMass;
+        const maxMassRange = supportTwoMassNumberControls && density > options.highDensityThreshold ? options.highDensityMaxMass! : options.maxMass;
 
         const minMass = Utils.clamp( density * options.minVolumeLiters / LITERS_IN_CUBIC_METER, options.minMass, maxMassRange );
         const maxMass = Utils.clamp( density * options.maxVolumeLiters / LITERS_IN_CUBIC_METER, options.minMass, maxMassRange );
@@ -99,7 +111,7 @@ export default class MaterialMassVolumeControlNode extends MaterialControlNode {
       reentrant: true,
       phetioState: false,
       phetioValueType: Range.RangeIO,
-      tandem: massNumberControlTandem.createTandem( 'enabledMassRangeProperty' ),
+      tandem: massNumberControlContainerTandem.createTandem( 'enabledMassRangeProperty' ),
       valueComparisonStrategy: 'equalsFunction'
     } );
 
@@ -114,7 +126,7 @@ export default class MaterialMassVolumeControlNode extends MaterialControlNode {
 
     // passed to the NumberControl
     const massNumberProperty = new NumberProperty( massProperty.value, {
-      tandem: massNumberControlTandem.createTandem( 'numberControlMassProperty' ),
+      tandem: massNumberControlContainerTandem.createTandem( 'numberControlMassProperty' ),
       phetioState: false,
       phetioReadOnly: true,
       units: 'kg'
@@ -238,22 +250,17 @@ export default class MaterialMassVolumeControlNode extends MaterialControlNode {
       }
     }, MaterialMassVolumeControlNode.getNumberControlOptions() ) );
 
-    const volumeContainerNode = new Node( {
-        children: [ volumeNumberControl ]
-      }
-    );
+    const massContainerNode = new Node();
 
-    const massContainerNode = new Node( {
-        children: []
-      }
-    );
+    const createMassNumberControl = ( maxMass: number, tandemName?: string ) => {
+      const numberControlTandem = tandemName ? massNumberControlContainerTandem.createTandem( tandemName ) :
+                                  massNumberControlContainerTandem;
 
-    const createMassNumberControl = ( maxMass: number, tandemName: string ) => {
       return new NumberControl( DensityBuoyancyCommonStrings.massStringProperty, massNumberProperty, new Range( options.minMass, maxMass ), combineOptions<NumberControlOptions>( {
         sliderOptions: {
           thumbNode: new PrecisionSliderThumb( {
             thumbFill: options.color,
-            tandem: massNumberControlTandem.createTandem( 'slider' ).createTandem( 'thumbNode' )
+            tandem: numberControlTandem.createTandem( 'slider' ).createTandem( 'thumbNode' )
           } ),
           thumbYOffset: new PrecisionSliderThumb().height / 2 - TRACK_HEIGHT / 2,
           constrainValue: ( value: number ) => {
@@ -279,35 +286,43 @@ export default class MaterialMassVolumeControlNode extends MaterialControlNode {
           enabledEpsilon: DensityBuoyancyCommonConstants.TOLERANCE
         },
         enabledRangeProperty: enabledMassRangeProperty,
-        tandem: massNumberControlTandem,
+        tandem: numberControlTandem,
         titleNodeOptions: {
           visiblePropertyOptions: {
             phetioReadOnly: true
           }
+        },
+
+        visiblePropertyOptions: {
+          // We don't want them messing with visibility if we are toggling it for low/high density
+          phetioReadOnly: supportTwoMassNumberControls
         }
       }, MaterialMassVolumeControlNode.getNumberControlOptions() ) );
     };
 
-    const lowDensityNumberControl = createMassNumberControl( options.lowDensityMaxMass, 'lowDensity' );
-    let highDensityNumberControl = new Node();
-    if ( options.highDensityMaxMass ) {
-      highDensityNumberControl = createMassNumberControl( options.highDensityMaxMass, 'highDensity' );
+    if ( supportTwoMassNumberControls ) {
+      const lowDensityMassNumberControl = createMassNumberControl( options.maxMass, 'lowDensityMassNumberControl' );
+      const highDensityMassNumberControl = createMassNumberControl( options.highDensityMaxMass!, 'highDensityMassNumberControl' );
+
+      massContainerNode.addChild( lowDensityMassNumberControl );
+      massContainerNode.addChild( highDensityMassNumberControl );
+
+      // listener doesn't need removal, since everything here lives for the lifetime of the simulation
+      materialProperty.link( material => {
+        if ( supportTwoMassNumberControls ) {
+          const highDensityAndNotCustom = material.density > options.highDensityThreshold && !material.custom;
+          highDensityMassNumberControl.visible = highDensityAndNotCustom;
+          lowDensityMassNumberControl.visible = !highDensityAndNotCustom;
+        }
+      } );
     }
-
-    massContainerNode.addChild( lowDensityNumberControl );
-    massContainerNode.addChild( highDensityNumberControl );
-
-    materialProperty.link( material => {
-      if ( options.highDensityMaxMass ) {
-        const highDensityAndNotCustom = material.density > options.highDensityThreshold && !material.custom;
-        highDensityNumberControl.visible = highDensityAndNotCustom;
-        lowDensityNumberControl.visible = !highDensityAndNotCustom;
-      }
-    } );
+    else {
+      massContainerNode.addChild( createMassNumberControl( options.maxMass ) );
+    }
 
     const fallbackContainer = new Node();
     const massVolumeVBox = new VBox( combineOptions<VBoxOptions>( {
-      children: [ massContainerNode, volumeContainerNode ],
+      children: [ massContainerNode, volumeNumberControl ],
       spacing: 15
     } ) );
 

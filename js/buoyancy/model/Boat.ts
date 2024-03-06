@@ -101,7 +101,8 @@ export default class Boat extends ApplicationsMass {
     const intersectionMesh = new THREE.Mesh( BoatDesign.getPrimaryGeometry( 1 ), new THREE.MeshLambertMaterial() );
     this.intersectionGroup.add( intersectionMesh );
 
-    this.forceDiagramOffset = new Vector2( -75, 0 );
+    const bounds = this.shapeProperty.value.getBounds();
+    this.forceDiagramOffset = new Vector2( 0.375 * bounds.left, 0 );
   }
 
   /**

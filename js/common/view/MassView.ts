@@ -112,7 +112,7 @@ export default abstract class MassView extends THREE.Mesh {
         keyboardDragListener.interrupt();
         mass.interruptedEmitter.removeListener( endKeyboardInteraction );
         this.focusablePath!.removeInputListener( blurListener );
-
+        releaseSoundPlayer.play();
         mass.endDrag();
       };
 
@@ -128,6 +128,7 @@ export default abstract class MassView extends THREE.Mesh {
 
           mass.interruptedEmitter.addListener( endKeyboardInteraction );
           this.focusablePath!.addInputListener( blurListener );
+          grabSoundPlayer.play();
           mass.startDrag( mass.matrix.translation );
         }
       } );
@@ -143,9 +144,6 @@ export default abstract class MassView extends THREE.Mesh {
         drag: ( vectorDelta: Vector2 ) => {
           mass.updateDrag( mass.matrix.translation.add( vectorDelta ) );
         },
-        start: () => grabSoundPlayer.play(),
-        end: () => releaseSoundPlayer.play(),
-
         tandem: Tandem.OPT_OUT
       } );
 

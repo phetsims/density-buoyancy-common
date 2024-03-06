@@ -29,6 +29,10 @@ import { combineOptions } from '../../../../phet-core/js/optionize.js';
 import MaterialControlNode from '../../common/view/MaterialControlNode.js';
 import MultiSectionPanelsNode from '../../common/view/MultiSectionPanelsNode.js';
 import arrayRemove from '../../../../phet-core/js/arrayRemove.js';
+import InfoButton from '../../../../scenery-phet/js/buttons/InfoButton.js';
+import ShapesInfoDialog from './ShapesInfoDialog.js';
+import Vector3 from '../../../../dot/js/Vector3.js';
+import Bounds2 from '../../../../dot/js/Bounds2.js';
 
 // constants
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
@@ -36,6 +40,8 @@ const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
 export default class BuoyancyShapesScreenView extends SecondaryMassScreenView<BuoyancyShapesModel> {
 
   protected rightBox: Node;
+
+  private positionInfoButton: () => void;
 
   public constructor( model: BuoyancyShapesModel, options: DensityBuoyancyScreenViewOptions ) {
 
@@ -98,6 +104,28 @@ export default class BuoyancyShapesScreenView extends SecondaryMassScreenView<Bu
       margin: MARGIN
     } ) );
 
+    // Info button and associated dialog
+    const infoDialog = new ShapesInfoDialog( tandem.createTandem( 'infoDialog' ) );
+    const infoButton = new InfoButton( {
+      accessibleName: 'infoButton',
+      scale: 0.5,
+      iconFill: 'rgb( 41, 106, 163 )',
+      touchAreaDilation: 20,
+      listener: () => infoDialog.show(),
+      tandem: tandem.createTandem( 'infoButton' )
+    } );
+    this.addChild( infoButton );
+
+    this.positionInfoButton = () => {
+      const bottomLeftPoolPoint = this.modelToViewPoint( new Vector3(
+        this.model.poolBounds.minX,
+        this.model.poolBounds.minY,
+        this.model.poolBounds.maxZ
+      ) );
+      infoButton.top = bottomLeftPoolPoint.y + 10;
+      infoButton.left = bottomLeftPoolPoint.x;
+    };
+
     this.rightBox = new MultiSectionPanelsNode(
       [ new MaterialControlNode( this.model.materialProperty, new Property( 1 ),
         DensityBuoyancyCommonConstants.SIMPLE_MASS_MATERIALS, this.popupLayer, {
@@ -149,6 +177,21 @@ export default class BuoyancyShapesScreenView extends SecondaryMassScreenView<Bu
     this.addSecondMassControl( model.modeProperty );
 
     this.addChild( this.popupLayer );
+  }
+
+  /**
+   * Tracks layout changes to position the info button. Borrowed from SecondaryMassScreenView.ts
+   * @param viewBounds
+   */
+  public override layout( viewBounds: Bounds2 ): void {
+    super.layout( viewBounds );
+
+    // If the simulation was not able to load for WebGL, bail out
+    if ( !this.sceneNode ) {
+      return;
+    }
+
+    this.positionInfoButton();
   }
 }
 

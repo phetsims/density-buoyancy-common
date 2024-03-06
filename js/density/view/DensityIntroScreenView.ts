@@ -43,9 +43,10 @@ export default class DensityIntroScreenView extends SecondaryMassScreenView<Dens
     this.rightBox = new PrimarySecondaryControlsNode(
       model.primaryMass,
       model.secondaryMass,
-      this.popupLayer,
-      { tandem: tandem }
-    );
+      this.popupLayer, {
+        tandem: tandem,
+        maxCustomMass: 10
+      } );
 
     const accordionTandem = tandem.createTandem( 'densityAccordionBox' );
     const densityAccordionBox = new AccordionBox( new DensityReadoutNode(

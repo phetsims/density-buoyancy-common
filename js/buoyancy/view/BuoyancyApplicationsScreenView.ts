@@ -76,7 +76,7 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
     ], volume => model.bottle.interiorVolumeProperty.set( volume ), this.popupLayer, {
       minMass: 0,
       maxCustomMass: 100,
-      maxMass: Material.COPPER.density * 0.01,
+      maxMass: 100,
       minVolumeLiters: 0,
       maxVolumeLiters: 10,
       minCustomVolumeLiters: 0.5,

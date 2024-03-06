@@ -73,7 +73,7 @@ export default class MaterialMassVolumeControlNode extends MaterialControlNode {
       minVolumeLiters: 1,
       maxVolumeLiters: 10,
       minCustomMass: 0.5,
-      maxCustomMass: 10,
+      maxCustomMass: 27,
       minCustomVolumeLiters: 1,
       color: null
     }, providedOptions );

@@ -103,6 +103,7 @@ const DensityBuoyancyCommonConstants = {
     Material.STYROFOAM,
     Material.WOOD,
     Material.ICE,
+    Material.PVC,
     Material.BRICK,
     Material.ALUMINUM
   ],

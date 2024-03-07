@@ -78,6 +78,8 @@ type StringsType = {
     'oilStringProperty': LocalizedStringProperty;
     'platinum': string;
     'platinumStringProperty': LocalizedStringProperty;
+    'pvc': string;
+    'pvcStringProperty': LocalizedStringProperty;
     'pyrite': string;
     'pyriteStringProperty': LocalizedStringProperty;
     'sand': string;

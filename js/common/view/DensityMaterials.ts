@@ -248,6 +248,14 @@ class WoodMaterialView extends MaterialView {
   }
 }
 
+class PVCMaterialView extends MaterialView {
+  public constructor() {
+    super( new THREE.MeshLambertMaterial( {
+      color: '#ccc'
+    } ) );
+  }
+}
+
 class CustomMaterialView extends MaterialView {
   public constructor( density: number ) {
     const lightness = Material.getCustomLightness( density );
@@ -312,6 +320,9 @@ export default class DensityMaterials {
     }
     else if ( material === Material.PLATINUM ) {
       return new PlatinumMaterialView();
+    }
+    else if ( material === Material.PVC ) {
+      return new PVCMaterialView();
     }
     else if ( material === Material.STEEL ) {
       return new SteelMaterialView();

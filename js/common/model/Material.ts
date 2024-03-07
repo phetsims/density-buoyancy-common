@@ -301,6 +301,13 @@ export default class Material {
     density: 21450
   } );
 
+  public static readonly PVC = new Material( {
+    nameProperty: DensityBuoyancyCommonStrings.material.pvcStringProperty,
+    tandemName: 'pvc',
+    identifier: 'PVC',
+    density: 1440
+  } );
+
   public static readonly PYRITE = new Material( {
     nameProperty: DensityBuoyancyCommonStrings.material.pyriteStringProperty,
     tandemName: 'pyrite',

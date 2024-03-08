@@ -528,6 +528,13 @@ export default abstract class Mass extends PhetioObject {
   public abstract getLocalBounds(): Bounds3;
 
   /**
+   * Get the bounds of this mass in parent coordinates.
+   */
+  public getBounds(): Bounds3 {
+    return this.getLocalBounds().shifted( this.matrix.translation.toVector3() );
+  }
+
+  /**
    * Returns the cross-sectional area of this object at a given y level.
    */
   public abstract getDisplacedArea( liquidLevel: number ): number;

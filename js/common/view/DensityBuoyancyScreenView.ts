@@ -108,7 +108,7 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
 
   private readonly debugView?: DebugView;
 
-  // Subtypes can provide their own values to control the barrier sizing
+  // Subtypes can provide their own values to control the barrier sizing. TODO: Rename to *PropertyProperty, https://github.com/phetsims/density-buoyancy-common/issues/98
   protected leftBarrierViewPointProperty: Property<TReadOnlyProperty<Vector2>>;
   protected rightBarrierViewPointProperty: Property<TReadOnlyProperty<Vector2>>;
 
@@ -752,9 +752,11 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
       if ( stage.canvasWidth && stage.canvasHeight ) {
         const leftRay = this.sceneNode.getRayFromScreenPoint( this.localToGlobalPoint( this.leftBarrierViewPointProperty.value.value ) );
         const rightRay = this.sceneNode.getRayFromScreenPoint( this.localToGlobalPoint( this.rightBarrierViewPointProperty.value.value ) );
+        const topRay = this.sceneNode.getRayFromScreenPoint( this.localToGlobalPoint( this.visibleBoundsProperty.value.centerTop ) );
         const leftPoint = new Plane3( Vector3.Z_UNIT, 0.09 ).intersectWithRay( leftRay );
         const rightPoint = new Plane3( Vector3.Z_UNIT, 0.09 ).intersectWithRay( rightRay );
-        model.invisibleBarrierBoundsProperty.value = model.invisibleBarrierBoundsProperty.value.withMinX( leftPoint.x + 0.01 ).withMaxX( rightPoint.x - 0.01 );
+        const topPoint = new Plane3( Vector3.Z_UNIT, 0.09 ).intersectWithRay( topRay );
+        model.invisibleBarrierBoundsProperty.value = model.invisibleBarrierBoundsProperty.value.setMaxY( topPoint.y + 0.06 ).setMinX( leftPoint.x + 0.01 ).withMaxX( rightPoint.x - 0.01 );
       }
     };
 

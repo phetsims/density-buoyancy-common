@@ -21,8 +21,6 @@ import Vector2 from '../../../../dot/js/Vector2.js';
 import ModelViewTransform2 from '../../../../phetcommon/js/view/ModelViewTransform2.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import Bounds3 from '../../../../dot/js/Bounds3.js';
-import MappedProperty from '../../../../axon/js/MappedProperty.js';
-import Bounds2 from '../../../../dot/js/Bounds2.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
 import MassTag from '../model/MassTag.js';
 import grabSoundPlayer from '../../../../tambo/js/shared-sound-players/grabSoundPlayer.js';
@@ -76,7 +74,7 @@ export default abstract class MassView extends THREE.Mesh {
 
       if ( this.focusablePath && !this.focusablePath.isDisposed ) {
 
-        const shiftedBbox = mass.getLocalBounds().shifted( position.toVector3() );
+        const shiftedBbox = mass.getBounds();
 
         // To support dragging while zoomed in, KeyboardDragListener will keep the position of the focusablePath in view.
         this.focusablePath.center = modelToViewPoint( shiftedBbox.center );
@@ -140,7 +138,6 @@ export default abstract class MassView extends THREE.Mesh {
 
         // This is needed for keyboard but not for mouse/touch because keyboard input applies deltas, not absolute positions
         transform: INVERT_Y_TRANSFORM,
-        dragBoundsProperty: new MappedProperty( dragBoundsProperty, { map: bounds3 => Bounds2.create( bounds3 ) } ),
         drag: ( vectorDelta: Vector2 ) => {
           mass.updateDrag( mass.matrix.translation.add( vectorDelta ) );
         },

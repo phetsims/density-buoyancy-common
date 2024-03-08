@@ -102,7 +102,7 @@ export default class Boat extends ApplicationsMass {
     this.intersectionGroup.add( intersectionMesh );
 
     const bounds = this.shapeProperty.value.getBounds();
-    this.forceDiagramOffset = new Vector2( 0.375 * bounds.left, 0 );
+    this.forceOffsetProperty.value = new Vector2( 0.375 * bounds.left, 0 ).toVector3();
   }
 
   /**

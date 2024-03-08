@@ -861,7 +861,7 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
       forceDiagramNode.update();
 
       const mass = forceDiagramNode.mass;
-      const originPoint = this.modelToViewPoint( mass.matrix.translation.toVector3().plus( mass.forceOffsetProperty.value ).plus( mass.forceDiagramOffset.toVector3() ) );
+      const originPoint = this.modelToViewPoint( mass.matrix.translation.toVector3().plus( mass.forceOffsetProperty.value ) );
 
       forceDiagramNode.matrix = Matrix3.rowMajor(
         1, 0, originPoint.x,

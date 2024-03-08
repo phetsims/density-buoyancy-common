@@ -234,9 +234,6 @@ export default abstract class Mass extends PhetioObject {
   public stepBottom: number; // minimum y value of the mass
   public stepTop: number; // maximum y value of the mass
 
-  // Offset by which the force diagram node should be offset from the center of mass;
-  public forceDiagramOffset = new Vector2( 0, 0 );
-
   protected constructor( engine: PhysicsEngine, providedOptions: MassOptions ) {
 
     const options = optionize<MassOptions, SelfOptions, PhetioObjectOptions>()( {

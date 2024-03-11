@@ -26,6 +26,7 @@ import DensityReadoutListNode from './DensityReadoutListNode.js';
 import DisplayOptionsNode from '../../common/view/DisplayOptionsNode.js';
 import BlockControlNode from '../../common/view/BlockControlNode.js';
 import MultiSectionPanelsNode from '../../common/view/MultiSectionPanelsNode.js';
+import DisplayedFluidPanel from './DisplayedFluidPanel.js';
 
 // constants
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
@@ -42,10 +43,19 @@ export default class BuoyancyLabScreenView extends DensityBuoyancyScreenView<Buo
       cameraLookAt: DensityBuoyancyCommonConstants.BUOYANCY_CAMERA_LOOK_AT
     }, options ) );
 
-    const displayOptionsNode = new DisplayOptionsNode( model );
+    const leftSideVBox = new VBox( {
+      spacing: 10,
+      align: 'left',
+      children: [
+        new DisplayedFluidPanel( model.pool.liquidVolumeProperty, {
+          visibleProperty: model.showDisplacedFluidProperty
+        } ),
+        new MultiSectionPanelsNode( [ new DisplayOptionsNode( model ) ] )
+      ]
+    } );
 
     this.addChild( new AlignBox(
-      new Panel( displayOptionsNode, DensityBuoyancyCommonConstants.PANEL_OPTIONS ), {
+      leftSideVBox, {
         alignBoundsProperty: this.visibleBoundsProperty,
         xAlign: 'left',
         yAlign: 'bottom',

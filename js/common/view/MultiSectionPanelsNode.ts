@@ -9,14 +9,19 @@
  */
 
 import { FlowBox, HSeparator, Node } from '../../../../scenery/js/imports.js';
-import Panel from '../../../../sun/js/Panel.js';
+import Panel, { PanelOptions } from '../../../../sun/js/Panel.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
 import interleave from '../../../../phet-core/js/interleave.js';
+import { EmptySelfOptions, optionize3 } from '../../../../phet-core/js/optionize.js';
+
+export type MultiSectionPanelsNodeOptions = PanelOptions;
 
 export default class MultiSectionPanelsNode extends Panel {
 
-  public constructor( nodes: Node[] ) {
+  public constructor( nodes: Node[], providedOptions?: MultiSectionPanelsNodeOptions ) {
+
+    const options = optionize3<MultiSectionPanelsNodeOptions, EmptySelfOptions, PanelOptions>()( {}, DensityBuoyancyCommonConstants.PANEL_OPTIONS, providedOptions );
 
     const children = interleave( nodes, () => new HSeparator() );
 
@@ -25,7 +30,7 @@ export default class MultiSectionPanelsNode extends Panel {
       orientation: 'vertical',
       align: 'left',
       children: children
-    } ), DensityBuoyancyCommonConstants.PANEL_OPTIONS );
+    } ), options );
   }
 }
 

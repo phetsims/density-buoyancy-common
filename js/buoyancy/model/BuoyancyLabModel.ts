@@ -25,6 +25,7 @@ export default class BuoyancyLabModel extends DensityBuoyancyModel {
 
   public readonly primaryMass: Cube;
   public readonly densityExpandedProperty: Property<boolean>;
+  public readonly showDisplacedFluidProperty: Property<boolean>;
 
   public constructor( options: BuoyancyLabModelOptions ) {
 
@@ -53,6 +54,7 @@ export default class BuoyancyLabModel extends DensityBuoyancyModel {
     } ) );
 
     this.densityExpandedProperty = new BooleanProperty( false );
+    this.showDisplacedFluidProperty = new BooleanProperty( false );
   }
 
   /**

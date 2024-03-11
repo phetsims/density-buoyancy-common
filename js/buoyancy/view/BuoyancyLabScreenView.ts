@@ -8,52 +8,32 @@
  */
 
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
-import UnitConversionProperty from '../../../../axon/js/UnitConversionProperty.js';
-import Dimension2 from '../../../../dot/js/Dimension2.js';
-import Range from '../../../../dot/js/Range.js';
-import Utils from '../../../../dot/js/Utils.js';
-import Vector3 from '../../../../dot/js/Vector3.js';
+import Vector2 from '../../../../dot/js/Vector2.js';
 import { combineOptions } from '../../../../phet-core/js/optionize.js';
-import resetArrow_png from '../../../../scenery-phet/images/resetArrow_png.js';
-import NumberControl, { NumberControlOptions } from '../../../../scenery-phet/js/NumberControl.js';
-import NumberDisplay from '../../../../scenery-phet/js/NumberDisplay.js';
-import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
-import { AlignBox, Color, HBox, HSeparator, Image, ManualConstraint, Node, Text, VBox } from '../../../../scenery/js/imports.js';
+import { AlignBox, HBox, Node, Text, VBox } from '../../../../scenery/js/imports.js';
 import AccordionBox, { AccordionBoxOptions } from '../../../../sun/js/AccordionBox.js';
-import RectangularPushButton from '../../../../sun/js/buttons/RectangularPushButton.js';
-import RectangularRadioButtonGroup from '../../../../sun/js/buttons/RectangularRadioButtonGroup.js';
 import Panel from '../../../../sun/js/Panel.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
-import Cube from '../../common/model/Cube.js';
 import Material from '../../common/model/Material.js';
 import DensityBuoyancyCommonColors from '../../common/view/DensityBuoyancyCommonColors.js';
-import DensityBuoyancyScreenView, { DensityBuoyancyScreenViewOptions } from '../../common/view/DensityBuoyancyScreenView.js';
+import { DensityBuoyancyScreenViewOptions } from '../../common/view/DensityBuoyancyScreenView.js';
 import LiquidDensityControlNode from '../../common/view/LiquidDensityControlNode.js';
-import DisplayOptionsNode from '../../common/view/DisplayOptionsNode.js';
-import MaterialMassVolumeControlNode from '../../common/view/MaterialMassVolumeControlNode.js';
+import GravityControlNode from '../../common/view/GravityControlNode.js';
+import PrimarySecondaryControlsNode from '../../common/view/PrimarySecondaryControlsNode.js';
+import SecondaryMassScreenView from '../../common/view/SecondaryMassScreenView.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import BuoyancyLabModel from '../model/BuoyancyLabModel.js';
-import DensityReadoutListNode from './DensityReadoutListNode.js';
 import arrayRemove from '../../../../phet-core/js/arrayRemove.js';
-import ThreeUtils from '../../../../mobius/js/ThreeUtils.js';
-import BoatView from './BoatView.js';
-import BottleView from './BottleView.js';
-import DensityBuoyancyCommonQueryParameters from '../../common/DensityBuoyancyCommonQueryParameters.js';
-import bottle_icon_png from '../../../images/bottle_icon_png.js';
-import boat_icon_png from '../../../images/boat_icon_png.js';
-import Vector2 from '../../../../dot/js/Vector2.js';
-import { Scene } from '../model/BuoyancyApplicationsModel.js';
+import DensityReadoutListNode from './DensityReadoutListNode.js';
+import DisplayOptionsNode from '../../common/view/DisplayOptionsNode.js';
 
 // constants
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
-const ICON_SCALE = 0.1;
-const ICON_IMAGE_SCALE = new Vector2( ICON_SCALE, -ICON_SCALE );
 
+export default class BuoyancyLabScreenView extends SecondaryMassScreenView<BuoyancyLabModel> {
 
-export default class BuoyancyLabScreenView extends DensityBuoyancyScreenView<BuoyancyLabModel> {
-
-  private positionResetSceneButton: () => void;
+  protected rightBox: Node;
 
   public constructor( model: BuoyancyLabModel, options: DensityBuoyancyScreenViewOptions ) {
 
@@ -63,215 +43,25 @@ export default class BuoyancyLabScreenView extends DensityBuoyancyScreenView<Buo
       cameraLookAt: DensityBuoyancyCommonConstants.BUOYANCY_CAMERA_LOOK_AT
     }, options ) );
 
-    // For clipping planes in BottleView
-    if ( this.sceneNode.stage.threeRenderer ) {
-      this.sceneNode.stage.threeRenderer.localClippingEnabled = true;
-    }
-
-    const bottleControlNode = new MaterialMassVolumeControlNode( model.bottle.interiorMaterialProperty, model.bottle.interiorMassProperty, model.bottle.interiorVolumeProperty, [
-      Material.GASOLINE,
-      Material.OIL,
-      Material.WATER,
-      Material.SAND,
-      Material.CONCRETE,
-      Material.COPPER
-    ], volume => model.bottle.interiorVolumeProperty.set( volume ), this.popupLayer, {
-      minMass: 0,
-      maxCustomMass: 100,
-      maxMass: Material.MERCURY.density * 0.01,
-      minVolumeLiters: 0,
-      maxVolumeLiters: 10,
-      minCustomVolumeLiters: 0.5,
-      tandem: tandem.createTandem( 'bottleControlNode' )
-    } );
-
-    const airVolumeLabel = new Text( DensityBuoyancyCommonStrings.airVolumeStringProperty, {
-      font: DensityBuoyancyCommonConstants.READOUT_FONT,
-      maxWidth: 160
-    } );
-
-    // DerivedProperty doesn't need disposal, since everything here lives for the lifetime of the simulation
-    const airLitersProperty = new DerivedProperty( [ model.bottle.interiorVolumeProperty ], volume => {
-      return ( 0.01 - volume ) * 1000;
-    } );
-
-    const bottleBox = new VBox( {
-      spacing: 10,
-      align: 'left',
-      stretch: true,
-      children: [
-        new Text( DensityBuoyancyCommonStrings.materialInsideStringProperty, {
-          font: DensityBuoyancyCommonConstants.TITLE_FONT,
-          maxWidth: 160
-        } ),
-        bottleControlNode,
-        new HSeparator(),
-        new HBox( {
-          spacing: 5,
-          children: [
-            airVolumeLabel,
-            new NumberDisplay( airLitersProperty, new Range( 0, 10 ), {
-              valuePattern: DensityBuoyancyCommonConstants.VOLUME_PATTERN_STRING_PROPERTY,
-              useRichText: true,
-              decimalPlaces: 2,
-              textOptions: {
-                font: new PhetFont( 12 ),
-                maxWidth: 120
-              }
-            } )
-          ]
-        } )
+    const customLabScreenFormatting = {
+      customNames: [ DensityBuoyancyCommonStrings.blockAStringProperty, DensityBuoyancyCommonStrings.blockBStringProperty ],
+      customFormats: [
+        { font: DensityBuoyancyCommonConstants.ITEM_FONT, fill: DensityBuoyancyCommonColors.labelPrimaryProperty },
+        { font: DensityBuoyancyCommonConstants.ITEM_FONT, fill: DensityBuoyancyCommonColors.labelSecondaryProperty }
       ]
-    } );
-
-    const rightBottleContent = new AlignBox( new Panel( bottleBox, DensityBuoyancyCommonConstants.PANEL_OPTIONS ), {
-      alignBoundsProperty: this.visibleBoundsProperty,
-      xAlign: 'right',
-      yAlign: 'bottom',
-      xMargin: 10,
-      yMargin: 60
-    } );
-
-    const blockControlNode = new MaterialMassVolumeControlNode( model.block.materialProperty, model.block.massProperty, model.block.volumeProperty, _.sortBy( [
-        Material.PYRITE,
-        Material.STEEL,
-        Material.SILVER,
-        Material.TANTALUM,
-        Material.GOLD,
-        Material.PLATINUM
-      ].concat( DensityBuoyancyCommonConstants.SIMPLE_MASS_MATERIALS ),
-      material => material.density ), cubicMeters => model.block.updateSize( Cube.boundsFromVolume( cubicMeters ) ), this.popupLayer, {
-      tandem: tandem.createTandem( 'blockControlNode' ),
-      highDensityMaxMass: 215
-    } );
-
-    const resetSceneButton = new RectangularPushButton( {
-      content: new Node( {
-        children: [
-          new Image( resetArrow_png, { scale: 0.3 } )
-        ]
-      } ),
-      xMargin: 5,
-      yMargin: 3,
-      baseColor: new Color( 220, 220, 220 ),
-      listener: () => {
-        model.resetBoatScene();
-      },
-      visibleProperty: new DerivedProperty( [ model.sceneProperty ], scene => scene === Scene.BOAT )
-    } );
-    this.addChild( resetSceneButton );
-
-    this.positionResetSceneButton = () => {
-      resetSceneButton.rightTop = this.modelToViewPoint( new Vector3(
-        this.model.poolBounds.maxX,
-        this.model.poolBounds.minY,
-        this.model.poolBounds.maxZ
-      ) ).plusXY( 0, 5 );
     };
-    this.transformEmitter.addListener( this.positionResetSceneButton );
-    this.positionResetSceneButton();
-
-    const boatVolumeRange = new Range( 5, 30 );
-    const boatBox = new VBox( {
-      spacing: 10,
-      align: 'left',
-      children: [
-        blockControlNode,
-        new HSeparator(),
-        // Convert cubic meters => liters
-        new NumberControl( DensityBuoyancyCommonStrings.boatVolumeStringProperty, new UnitConversionProperty( model.boat.displacementVolumeProperty, {
-          factor: 1000
-        } ), boatVolumeRange, combineOptions<NumberControlOptions>( {
-          numberDisplayOptions: {
-            valuePattern: DensityBuoyancyCommonConstants.VOLUME_PATTERN_STRING_PROPERTY,
-            useRichText: true,
-            textOptions: {
-              font: DensityBuoyancyCommonConstants.READOUT_FONT,
-              maxWidth: 120
-            },
-            useFullHeight: true
-          }
-        }, MaterialMassVolumeControlNode.getNumberControlOptions(), {
-          sliderOptions: {
-            trackSize: new Dimension2( 120, 0.5 ),
-            thumbSize: DensityBuoyancyCommonConstants.THUMB_SIZE,
-            constrainValue: ( value: number ) => {
-              return boatVolumeRange.constrainValue( Utils.roundToInterval( value, 0.1 ) );
-            },
-            phetioLinkedProperty: model.boat.displacementVolumeProperty,
-            majorTickLength: 5,
-            majorTicks: [ {
-              value: boatVolumeRange.min,
-              label: new Text( boatVolumeRange.min, { font: new PhetFont( 12 ), maxWidth: 50 } )
-            }, {
-              value: boatVolumeRange.max,
-              label: new Text( boatVolumeRange.max, { font: new PhetFont( 12 ), maxWidth: 50 } )
-            } ]
-          }
-        } ) )
-      ]
-    } );
-
-    const rightBoatContent = new AlignBox( new Panel( boatBox, DensityBuoyancyCommonConstants.PANEL_OPTIONS ), {
-      alignBoundsProperty: this.visibleBoundsProperty,
-      xAlign: 'right',
-      yAlign: 'bottom',
-      xMargin: 10,
-      yMargin: 60
-    } );
-
-    this.addChild( rightBottleContent );
-    this.addChild( rightBoatContent );
-
-    // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
-    model.sceneProperty.link( scene => {
-      rightBottleContent.visible = scene === Scene.BOTTLE;
-      rightBoatContent.visible = scene === Scene.BOAT;
-    } );
-
-    const displayedMysteryMaterials = [
-      Material.DENSITY_E,
-      Material.DENSITY_F
-    ];
-
-    const invisibleMaterials = [ ...DensityBuoyancyCommonConstants.BUOYANCY_FLUID_MYSTERY_MATERIALS ];
-    displayedMysteryMaterials.forEach( displayed => arrayRemove( invisibleMaterials, displayed ) );
-
-    const densityControlPanel = new Panel( new LiquidDensityControlNode( model.liquidMaterialProperty, [
-      ...DensityBuoyancyCommonConstants.BUOYANCY_FLUID_MATERIALS,
-      ...DensityBuoyancyCommonConstants.BUOYANCY_FLUID_MYSTERY_MATERIALS
-    ], this.popupLayer, {
-      invisibleMaterials: invisibleMaterials,
-      tandem: tandem.createTandem( 'densityControlNode' )
-    } ), DensityBuoyancyCommonConstants.PANEL_OPTIONS );
-
-    this.addChild( new AlignBox( densityControlPanel, {
-      alignBoundsProperty: this.visibleBoundsProperty,
-      xAlign: 'center',
-      yAlign: 'bottom',
-      margin: MARGIN
-    } ) );
 
     const displayOptionsNode = new DisplayOptionsNode( model );
 
-    const densityReadout = new DensityReadoutListNode( [], displayOptionsNode.width - 10 );
-
-    model.sceneProperty.link( scene => {
-      const materials = scene === Scene.BOTTLE ? [
-        model.bottle.interiorMaterialProperty,
-        model.bottle.materialProperty
-      ] : scene === Scene.BOAT ? [
-        model.block.materialProperty,
-        model.boat.materialProperty
-      ] : [];
-      assert && assert( materials.length > 0, 'unsupported Scene', scene );
-      densityReadout.setMaterials( materials );
-    } );
+    const densityReadout = new DensityReadoutListNode(
+      [ model.primaryMass.materialProperty, model.secondaryMass.materialProperty ],
+      displayOptionsNode.width - 10,
+      customLabScreenFormatting );
 
     const densityBox = new AccordionBox( densityReadout, combineOptions<AccordionBoxOptions>( {
       titleNode: new Text( DensityBuoyancyCommonStrings.densityStringProperty, {
-        maxWidth: 160,
-        font: DensityBuoyancyCommonConstants.TITLE_FONT
+        font: DensityBuoyancyCommonConstants.TITLE_FONT,
+        maxWidth: 160
       } ),
       expandedProperty: model.densityExpandedProperty
     }, DensityBuoyancyCommonConstants.ACCORDION_BOX_OPTIONS ) );
@@ -279,7 +69,13 @@ export default class BuoyancyLabScreenView extends DensityBuoyancyScreenView<Buo
     this.addChild( new AlignBox( new VBox( {
       spacing: 10,
       children: [
-        densityBox,
+        // Keep the density box at the top of its possible location, even if it reduces in size due to the second mass
+        // not being visible.
+        new AlignBox( densityBox, {
+          alignBounds: densityBox.bounds.copy(),
+          localBounds: densityBox.bounds.copy(),
+          yAlign: 'top'
+        } ),
         new Panel( displayOptionsNode, DensityBuoyancyCommonConstants.PANEL_OPTIONS )
       ]
     } ), {
@@ -289,76 +85,84 @@ export default class BuoyancyLabScreenView extends DensityBuoyancyScreenView<Buo
       margin: MARGIN
     } ) );
 
-    const bottleBoatSelectionNode = new RectangularRadioButtonGroup( model.sceneProperty, [
-      {
-        value: Scene.BOTTLE,
-        createNode: () => DensityBuoyancyCommonQueryParameters.generateIconImages ?
-                          BuoyancyLabScreenView.getBottleIcon() : new Image( bottle_icon_png, { scale: ICON_IMAGE_SCALE } )
-      },
-      {
-        value: Scene.BOAT,
-        createNode: () => DensityBuoyancyCommonQueryParameters.generateIconImages ?
-                          BuoyancyLabScreenView.getBoatIcon() : new Image( boat_icon_png, { scale: ICON_IMAGE_SCALE } )
-      }
-    ], {
-      orientation: 'horizontal',
-      touchAreaXDilation: 6,
-      touchAreaYDilation: 6,
-      radioButtonOptions: {
-        baseColor: DensityBuoyancyCommonColors.radioBackgroundColorProperty,
-        xMargin: 10,
-        yMargin: 10,
-        buttonAppearanceStrategyOptions: {
-          selectedLineWidth: 2,
-          deselectedLineWidth: 1.5,
-          selectedStroke: DensityBuoyancyCommonColors.radioBorderColorProperty
-        }
-      }
+    // Adjust the visibility after, since we want to size the box's location for its "full" bounds
+    // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
+    model.secondaryMass.visibleProperty.link( visible => {
+      const materials = visible ? [ model.primaryMass.materialProperty, model.secondaryMass.materialProperty ] : [ model.primaryMass.materialProperty ];
+      densityReadout.setMaterials( materials, customLabScreenFormatting );
     } );
-    this.addChild( bottleBoatSelectionNode );
 
-    ManualConstraint.create( this, [ densityControlPanel, bottleBoatSelectionNode ], ( panelWrapper, selectionWrapper ) => {
-      selectionWrapper.bottom = panelWrapper.bottom;
-      selectionWrapper.left = panelWrapper.right + MARGIN;
+
+    const displayedMysteryMaterials = [
+      Material.DENSITY_A,
+      Material.DENSITY_B
+    ];
+
+    const invisibleMaterials = [ ...DensityBuoyancyCommonConstants.BUOYANCY_FLUID_MYSTERY_MATERIALS ];
+    displayedMysteryMaterials.forEach( displayed => arrayRemove( invisibleMaterials, displayed ) );
+
+    const bottomNode = new HBox( {
+      spacing: 2 * MARGIN,
+      children: [
+        new Panel( new LiquidDensityControlNode( model.liquidMaterialProperty, [
+          ...DensityBuoyancyCommonConstants.BUOYANCY_FLUID_MATERIALS,
+          ...DensityBuoyancyCommonConstants.BUOYANCY_FLUID_MYSTERY_MATERIALS
+        ], this.popupLayer, {
+          invisibleMaterials: invisibleMaterials,
+          tandem: tandem.createTandem( 'densityControlNode' )
+        } ), DensityBuoyancyCommonConstants.PANEL_OPTIONS ),
+        new Panel( new GravityControlNode( model.gravityProperty, this.popupLayer, tandem.createTandem( 'gravityControlNode' ) ), DensityBuoyancyCommonConstants.PANEL_OPTIONS )
+      ]
     } );
+
+    this.addChild( new AlignBox( bottomNode, {
+      alignBoundsProperty: this.visibleBoundsProperty,
+      xAlign: 'center',
+      yAlign: 'bottom',
+      margin: MARGIN
+    } ) );
+
+    this.rightBox = new PrimarySecondaryControlsNode(
+      model.primaryMass,
+      model.secondaryMass,
+      this.popupLayer,
+      {
+        tandem: tandem,
+        minCustomMass: 0.1,
+        supportHiddenMaterial: true
+      }
+    );
+
+    // TODO: Should this be unlinked? https://github.com/phetsims/density-buoyancy-common/issues/95
+    [ model.primaryMass, model.secondaryMass ].forEach( mass => {
+      mass.materialProperty.link( material => {
+        if ( material === Material.MYSTERY_X ) {
+          mass.volumeProperty.value = 0.003;
+        }
+        else if ( material === Material.MYSTERY_Y ) {
+          mass.volumeProperty.value = 0.001;
+        }
+      } );
+    } );
+
+    this.addChild( new AlignBox( this.rightBox, {
+      alignBoundsProperty: this.visibleBoundsProperty,
+      xAlign: 'right',
+      yAlign: 'top',
+      margin: MARGIN
+    } ) );
+
+    // DerivedProperty doesn't need disposal, since everything here lives for the lifetime of the simulation
+    this.rightBarrierViewPointPropertyProperty.value = new DerivedProperty( [ this.rightBox.boundsProperty, this.visibleBoundsProperty ], ( boxBounds, visibleBounds ) => {
+      // We might not have a box, see https://github.com/phetsims/density/issues/110
+      return new Vector2( isFinite( boxBounds.left ) ? boxBounds.left : visibleBounds.right, visibleBounds.centerY );
+    }, {
+      strictAxonDependencies: false // This workaround is deemed acceptable for visibleBoundsProperty listening, https://github.com/phetsims/faradays-electromagnetic-lab/issues/65
+    } );
+
+    this.addSecondMassControl( model.modeProperty );
 
     this.addChild( this.popupLayer );
-  }
-
-  public override step( dt: number ): void {
-    super.step( dt );
-
-    this.positionResetSceneButton();
-  }
-
-  public static getBoatIcon(): Node {
-    if ( !ThreeUtils.isWebGLEnabled() ) {
-      return DensityBuoyancyScreenView.getFallbackIcon();
-    }
-
-    // Hard coded zoom and view-port vector help to center the icon.
-    const angledIcon = DensityBuoyancyScreenView.getAngledIcon( 6, new Vector3( -0.03, 0, 0 ), scene => {
-      scene.add( BoatView.getBoatDrawingData().group );
-    }, null );
-
-    angledIcon.setScaleMagnitude( ICON_SCALE );
-
-    return angledIcon;
-  }
-
-  public static getBottleIcon(): Node {
-    if ( !ThreeUtils.isWebGLEnabled() ) {
-      return DensityBuoyancyScreenView.getFallbackIcon();
-    }
-
-    // Hard coded zoom and view-port vector help to center the icon.
-    const angledIcon = DensityBuoyancyScreenView.getAngledIcon( 3.4, new Vector3( -0.02, 0, 0 ), scene => {
-      scene.add( BottleView.getBottleDrawingData().group );
-    }, null );
-
-    angledIcon.setScaleMagnitude( ICON_SCALE );
-
-    return angledIcon;
   }
 }
 

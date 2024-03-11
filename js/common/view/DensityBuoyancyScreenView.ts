@@ -108,9 +108,9 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
 
   private readonly debugView?: DebugView;
 
-  // Subtypes can provide their own values to control the barrier sizing. TODO: Rename to *PropertyProperty, https://github.com/phetsims/density-buoyancy-common/issues/98
-  protected leftBarrierViewPointProperty: Property<TReadOnlyProperty<Vector2>>;
-  protected rightBarrierViewPointProperty: Property<TReadOnlyProperty<Vector2>>;
+  // Subtypes can provide their own values to control the barrier sizing.
+  protected leftBarrierViewPointPropertyProperty: Property<TReadOnlyProperty<Vector2>>;
+  protected rightBarrierViewPointPropertyProperty: Property<TReadOnlyProperty<Vector2>>;
 
   public constructor( model: Model, providedOptions: SelfOptions ) {
 
@@ -739,19 +739,19 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
     }
 
     // DerivedProperty doesn't need disposal, since everything here lives for the lifetime of the simulation
-    this.leftBarrierViewPointProperty = new Property<TReadOnlyProperty<Vector2>>( new DerivedProperty( [ this.visibleBoundsProperty ], visibleBounds => visibleBounds.leftCenter ), {
+    this.leftBarrierViewPointPropertyProperty = new Property<TReadOnlyProperty<Vector2>>( new DerivedProperty( [ this.visibleBoundsProperty ], visibleBounds => visibleBounds.leftCenter ), {
       tandem: Tandem.OPT_OUT
     } );
     // DerivedProperty doesn't need disposal, since everything here lives for the lifetime of the simulation
-    this.rightBarrierViewPointProperty = new Property<TReadOnlyProperty<Vector2>>( new DerivedProperty( [ this.visibleBoundsProperty ], visibleBounds => visibleBounds.rightCenter ), {
+    this.rightBarrierViewPointPropertyProperty = new Property<TReadOnlyProperty<Vector2>>( new DerivedProperty( [ this.visibleBoundsProperty ], visibleBounds => visibleBounds.rightCenter ), {
       tandem: Tandem.OPT_OUT
     } );
 
     const resizeBarrier = () => {
       const stage = this.sceneNode.stage;
       if ( stage.canvasWidth && stage.canvasHeight ) {
-        const leftRay = this.sceneNode.getRayFromScreenPoint( this.localToGlobalPoint( this.leftBarrierViewPointProperty.value.value ) );
-        const rightRay = this.sceneNode.getRayFromScreenPoint( this.localToGlobalPoint( this.rightBarrierViewPointProperty.value.value ) );
+        const leftRay = this.sceneNode.getRayFromScreenPoint( this.localToGlobalPoint( this.leftBarrierViewPointPropertyProperty.value.value ) );
+        const rightRay = this.sceneNode.getRayFromScreenPoint( this.localToGlobalPoint( this.rightBarrierViewPointPropertyProperty.value.value ) );
         const topRay = this.sceneNode.getRayFromScreenPoint( this.localToGlobalPoint( this.visibleBoundsProperty.value.centerTop ) );
         const leftPoint = new Plane3( Vector3.Z_UNIT, 0.09 ).intersectWithRay( leftRay );
         const rightPoint = new Plane3( Vector3.Z_UNIT, 0.09 ).intersectWithRay( rightRay );
@@ -760,11 +760,11 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
       }
     };
 
-    // leftBarrierViewPointProperty and rightBarrierViewPointProperty are Property<Property>, and we need to listen
+    // leftBarrierViewPointPropertyProperty and rightBarrierViewPointPropertyProperty are Property<Property>, and we need to listen
     // to when the value.value changes
     // This instance lives for the lifetime of the simulation, so we don't need to remove these listeners
-    new DynamicProperty( this.leftBarrierViewPointProperty ).lazyLink( resizeBarrier );
-    new DynamicProperty( this.rightBarrierViewPointProperty ).lazyLink( resizeBarrier );
+    new DynamicProperty( this.leftBarrierViewPointPropertyProperty ).lazyLink( resizeBarrier );
+    new DynamicProperty( this.rightBarrierViewPointPropertyProperty ).lazyLink( resizeBarrier );
     this.postLayoutEmitter.addListener( resizeBarrier ); // We need to wait for the layout AND render
 
     if ( !ThreeUtils.isWebGLEnabled() ) {

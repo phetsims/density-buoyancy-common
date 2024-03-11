@@ -15,25 +15,24 @@ import AccordionBox, { AccordionBoxOptions } from '../../../../sun/js/AccordionB
 import Panel from '../../../../sun/js/Panel.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 import Material from '../../common/model/Material.js';
-import DensityBuoyancyCommonColors from '../../common/view/DensityBuoyancyCommonColors.js';
-import { DensityBuoyancyScreenViewOptions } from '../../common/view/DensityBuoyancyScreenView.js';
+import DensityBuoyancyScreenView, { DensityBuoyancyScreenViewOptions } from '../../common/view/DensityBuoyancyScreenView.js';
 import LiquidDensityControlNode from '../../common/view/LiquidDensityControlNode.js';
 import GravityControlNode from '../../common/view/GravityControlNode.js';
-import PrimarySecondaryControlsNode from '../../common/view/PrimarySecondaryControlsNode.js';
-import SecondaryMassScreenView from '../../common/view/SecondaryMassScreenView.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import BuoyancyLabModel from '../model/BuoyancyLabModel.js';
 import arrayRemove from '../../../../phet-core/js/arrayRemove.js';
 import DensityReadoutListNode from './DensityReadoutListNode.js';
 import DisplayOptionsNode from '../../common/view/DisplayOptionsNode.js';
+import BlockControlNode from '../../common/view/BlockControlNode.js';
+import MultiSectionPanelsNode from '../../common/view/MultiSectionPanelsNode.js';
 
 // constants
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
 
-export default class BuoyancyLabScreenView extends SecondaryMassScreenView<BuoyancyLabModel> {
+export default class BuoyancyLabScreenView extends DensityBuoyancyScreenView<BuoyancyLabModel> {
 
-  protected rightBox: Node;
+  private rightBox: Node;
 
   public constructor( model: BuoyancyLabModel, options: DensityBuoyancyScreenViewOptions ) {
 
@@ -43,20 +42,11 @@ export default class BuoyancyLabScreenView extends SecondaryMassScreenView<Buoya
       cameraLookAt: DensityBuoyancyCommonConstants.BUOYANCY_CAMERA_LOOK_AT
     }, options ) );
 
-    const customLabScreenFormatting = {
-      customNames: [ DensityBuoyancyCommonStrings.blockAStringProperty, DensityBuoyancyCommonStrings.blockBStringProperty ],
-      customFormats: [
-        { font: DensityBuoyancyCommonConstants.ITEM_FONT, fill: DensityBuoyancyCommonColors.labelPrimaryProperty },
-        { font: DensityBuoyancyCommonConstants.ITEM_FONT, fill: DensityBuoyancyCommonColors.labelSecondaryProperty }
-      ]
-    };
-
     const displayOptionsNode = new DisplayOptionsNode( model );
 
     const densityReadout = new DensityReadoutListNode(
-      [ model.primaryMass.materialProperty, model.secondaryMass.materialProperty ],
-      displayOptionsNode.width - 10,
-      customLabScreenFormatting );
+      [ model.primaryMass.materialProperty ],
+      displayOptionsNode.width - 10 );
 
     const densityBox = new AccordionBox( densityReadout, combineOptions<AccordionBoxOptions>( {
       titleNode: new Text( DensityBuoyancyCommonStrings.densityStringProperty, {
@@ -69,7 +59,7 @@ export default class BuoyancyLabScreenView extends SecondaryMassScreenView<Buoya
     this.addChild( new AlignBox( new VBox( {
       spacing: 10,
       children: [
-        // Keep the density box at the top of its possible location, even if it reduces in size due to the second mass
+        // Keep the density box at the top of its possible location, even if it reduces in size
         // not being visible.
         new AlignBox( densityBox, {
           alignBounds: densityBox.bounds.copy(),
@@ -84,14 +74,6 @@ export default class BuoyancyLabScreenView extends SecondaryMassScreenView<Buoya
       yAlign: 'bottom',
       margin: MARGIN
     } ) );
-
-    // Adjust the visibility after, since we want to size the box's location for its "full" bounds
-    // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
-    model.secondaryMass.visibleProperty.link( visible => {
-      const materials = visible ? [ model.primaryMass.materialProperty, model.secondaryMass.materialProperty ] : [ model.primaryMass.materialProperty ];
-      densityReadout.setMaterials( materials, customLabScreenFormatting );
-    } );
-
 
     const displayedMysteryMaterials = [
       Material.DENSITY_A,
@@ -122,27 +104,23 @@ export default class BuoyancyLabScreenView extends SecondaryMassScreenView<Buoya
       margin: MARGIN
     } ) );
 
-    this.rightBox = new PrimarySecondaryControlsNode(
+    this.rightBox = new MultiSectionPanelsNode( [ new BlockControlNode(
       model.primaryMass,
-      model.secondaryMass,
       this.popupLayer,
       {
-        tandem: tandem,
+        tandem: tandem.createTandem( 'blockControlPanel' ),
         minCustomMass: 0.1,
         supportHiddenMaterial: true
       }
-    );
+    ) ] );
 
-    // TODO: Should this be unlinked? https://github.com/phetsims/density-buoyancy-common/issues/95
-    [ model.primaryMass, model.secondaryMass ].forEach( mass => {
-      mass.materialProperty.link( material => {
-        if ( material === Material.MYSTERY_X ) {
-          mass.volumeProperty.value = 0.003;
-        }
-        else if ( material === Material.MYSTERY_Y ) {
-          mass.volumeProperty.value = 0.001;
-        }
-      } );
+    model.primaryMass.materialProperty.link( material => {
+      if ( material === Material.MYSTERY_X ) {
+        model.primaryMass.volumeProperty.value = 0.003;
+      }
+      else if ( material === Material.MYSTERY_Y ) {
+        model.primaryMass.volumeProperty.value = 0.001;
+      }
     } );
 
     this.addChild( new AlignBox( this.rightBox, {
@@ -159,8 +137,6 @@ export default class BuoyancyLabScreenView extends SecondaryMassScreenView<Buoya
     }, {
       strictAxonDependencies: false // This workaround is deemed acceptable for visibleBoundsProperty listening, https://github.com/phetsims/faradays-electromagnetic-lab/issues/65
     } );
-
-    this.addSecondMassControl( model.modeProperty );
 
     this.addChild( this.popupLayer );
   }

@@ -9,72 +9,93 @@
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import DynamicProperty from '../../../../axon/js/DynamicProperty.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
-import PatternStringProperty from '../../../../axon/js/PatternStringProperty.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
-import { RichText, VBox } from '../../../../scenery/js/imports.js';
+import { HBox, RichText, RichTextOptions, VBox } from '../../../../scenery/js/imports.js';
 import Material from '../../common/model/Material.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
-import DensityBuoyancyCommonPreferences from '../../common/model/DensityBuoyancyCommonPreferences.js';
-import Tandem from '../../../../tandem/js/Tandem.js';
 import TinyEmitter from '../../../../axon/js/TinyEmitter.js';
-import DerivedStringProperty from '../../../../axon/js/DerivedStringProperty.js';
+import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
+import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
+import Utils from '../../../../dot/js/Utils.js';
+
+type customSetMaterialsOptions = {
+  customNames: TReadOnlyProperty<string>[];
+  customFormats: RichTextOptions[];
+};
 
 export default class DensityReadoutListNode extends VBox {
   private cleanupEmitter = new TinyEmitter();
 
-  public constructor( materialProperties: TReadOnlyProperty<Material>[] ) {
+  public constructor( materialProperties: TReadOnlyProperty<Material>[], providedOptions?: customSetMaterialsOptions ) {
 
     super( {
       spacing: 5,
       align: 'center'
     } );
 
-    this.setMaterials( materialProperties );
+    this.setMaterials( materialProperties, providedOptions );
   }
 
   /**
    * Overwrite the displayed densities with a new set of materialProperties.
    */
-  public setMaterials( materialProperties: TReadOnlyProperty<Material>[] ): void {
+  public setMaterials( materialProperties: TReadOnlyProperty<Material>[], providedOptions?: customSetMaterialsOptions ): void {
 
     // Clear the previous materials that may have been created.
     this.cleanupEmitter.emit();
     this.cleanupEmitter.removeAllListeners();
 
-    this.children = materialProperties.map( materialProperty => {
+    const DEFAULT_TEXT_OPTIONS = {
+      font: new PhetFont( 14 ),
+      maxWidth: 200
+    };
 
-      // Handle units changing
-      const derivedProperty = new DerivedStringProperty( [
-        DensityBuoyancyCommonPreferences.volumeUnitsProperty,
-        DensityBuoyancyCommonStrings.densityReadoutPatternStringProperty,
-        DensityBuoyancyCommonStrings.densityReadoutDecimetersCubedPatternStringProperty
-      ], ( units, litersString, decimetersCubedString ) => {
-        return units === 'liters' ? litersString : decimetersCubedString;
+    // Returns the filled in string for the material readout or '?' if the material is hidden
+    const getMysteryMaterialReadoutStringProperty = ( materialProperty: TReadOnlyProperty<Material> ) => new DerivedProperty(
+      [
+        materialProperty,
+        DensityBuoyancyCommonConstants.KILOGRAMS_PER_VOLUME_PATTERN_STRING_PROPERTY,
+        DensityBuoyancyCommonStrings.questionMarkStringProperty
+      ],
+      ( material, patternStringProperty, questionMarkString ) => {
+        return material.hidden ?
+               questionMarkString :
+               StringUtils.fillIn( patternStringProperty, {
+                 value: Utils.toFixed( material.density / 1000, 2 ),
+                 decimalPlaces: 2
+               } );
       } );
 
-      // Handle updates to the material or density
-      const patternStringProperty = new PatternStringProperty( derivedProperty, {
-        material: new DynamicProperty<string, string, Material>( materialProperty, {
-          derive: material => material.nameProperty
-        } ),
-        density: new DerivedProperty( [ materialProperty ], material => material.density / 1000 )
-      }, {
-        tandem: Tandem.OPT_OUT,
-        decimalPlaces: 2
-      } );
+    this.children = materialProperties.map( ( materialProperty, index ) => {
 
-      // Render as a Node
-      const richText = new RichText( patternStringProperty, {
-        font: new PhetFont( 14 ),
-        maxWidth: 200
-      } );
+      // Get the custom name from the provided options, or create a dynamic property that derives from the material's name
+      const nameProperty = providedOptions?.customNames ?
+                           providedOptions.customNames[ index ] :
+                           new DynamicProperty<string, string, Material>( materialProperty, {
+                             derive: material => material.nameProperty
+                           } );
+      const nameColonProperty = new DerivedProperty( [ nameProperty ], name => name + ': ' );
+      const labelText = new RichText( nameColonProperty, DEFAULT_TEXT_OPTIONS );
+
+      // Create the derived string property for the density readout
+      const densityDerivedStringProperty = getMysteryMaterialReadoutStringProperty( materialProperty );
+      const densityReadout = new RichText( densityDerivedStringProperty,
+        providedOptions?.customFormats ? providedOptions.customFormats[ index ] : DEFAULT_TEXT_OPTIONS );
+
       this.cleanupEmitter.addListener( () => {
-        richText.dispose();
-        patternStringProperty.dispose();
-        derivedProperty.dispose();
+        densityDerivedStringProperty.dispose();
+        densityReadout.dispose();
+        nameColonProperty.dispose();
+        labelText.dispose();
       } );
-      return richText;
+
+      return new HBox( {
+        children: [ labelText, densityReadout ],
+        align: 'origin',
+        spacing: 5
+      } );
+
     } );
   }
 

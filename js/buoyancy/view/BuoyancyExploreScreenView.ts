@@ -7,11 +7,9 @@
  */
 
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
-import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import { combineOptions } from '../../../../phet-core/js/optionize.js';
-import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
-import { AlignBox, GridBox, HBox, HStrut, Node, RichText, Text, VBox } from '../../../../scenery/js/imports.js';
+import { AlignBox, HBox, HStrut, Node, Text, VBox } from '../../../../scenery/js/imports.js';
 import AccordionBox, { AccordionBoxOptions } from '../../../../sun/js/AccordionBox.js';
 import Panel from '../../../../sun/js/Panel.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
@@ -27,8 +25,7 @@ import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import BuoyancyExploreModel from '../model/BuoyancyExploreModel.js';
 import arrayRemove from '../../../../phet-core/js/arrayRemove.js';
-import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
-import Utils from '../../../../dot/js/Utils.js';
+import DensityReadoutListNode from './DensityReadoutListNode.js';
 
 // constants
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
@@ -47,54 +44,20 @@ export default class BuoyancyExploreScreenView extends SecondaryMassScreenView<B
 
     const displayOptionsNode = new DisplayOptionsNode( model );
 
-    // Returns the filled in string for the material readout or '?' if the material is hidden
-    const getMysteryMaterialReadoutStringProperty = ( materialProperty: TReadOnlyProperty<Material> ) => new DerivedProperty(
-      [ materialProperty, DensityBuoyancyCommonConstants.KILOGRAMS_PER_VOLUME_PATTERN_STRING_PROPERTY, DensityBuoyancyCommonStrings.questionMarkStringProperty ],
-      ( material, patternStringProperty, questionMarkString ) => {
-      return material.hidden ?
-             questionMarkString :
-             StringUtils.fillIn( patternStringProperty, {
-               value: Utils.toFixed( material.density / 1000, 2 ),
-               decimalPlaces: 2
-             } );
-    } );
+    const customExploreScreenFormatting = {
+      customNames: [ DensityBuoyancyCommonStrings.blockAStringProperty, DensityBuoyancyCommonStrings.blockBStringProperty ],
+      customFormats: [
+        { font: DensityBuoyancyCommonConstants.ITEM_FONT, fill: DensityBuoyancyCommonColors.labelPrimaryProperty },
+        { font: DensityBuoyancyCommonConstants.ITEM_FONT, fill: DensityBuoyancyCommonColors.labelSecondaryProperty }
+      ]
+    };
 
-    // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
-    const densityAText = new RichText( getMysteryMaterialReadoutStringProperty( model.primaryMass.materialProperty ), {
-      maxWidth: 120,
-      font: DensityBuoyancyCommonConstants.ITEM_FONT,
-      fill: DensityBuoyancyCommonColors.labelPrimaryProperty,
-      layoutOptions: { column: 1, row: 0 }
-    } );
-    const densityBText = new RichText( getMysteryMaterialReadoutStringProperty( model.secondaryMass.materialProperty ), {
-      maxWidth: 120,
-      font: DensityBuoyancyCommonConstants.ITEM_FONT,
-      fill: DensityBuoyancyCommonColors.labelSecondaryProperty,
-      layoutOptions: { column: 1, row: 1 }
-    } );
+    const densityReadout = new DensityReadoutListNode(
+      [ model.primaryMass.materialProperty, model.secondaryMass.materialProperty ], customExploreScreenFormatting );
 
-    const labelAText = new Text( DensityBuoyancyCommonStrings.blockAStringProperty, {
-      font: new PhetFont( 14 ),
-      maxWidth: 200,
-      layoutOptions: { column: 0, row: 0 }
-    } );
-    const labelBText = new Text( DensityBuoyancyCommonStrings.blockBStringProperty, {
-      font: new PhetFont( 14 ),
-      maxWidth: 200,
-      layoutOptions: { column: 0, row: 1 }
-    } );
-
-    const densityReadoutBox = new GridBox( {
-      children: [ densityAText, densityBText, labelAText, labelBText ],
-      xMargin: 5,
-      yMargin: 3,
-      xAlign: 'left',
-      yAlign: 'center'
-    } );
-
-    const densityContainer = new Node( {
+    const densityContainer = new VBox( {
       children: [
-        densityReadoutBox,
+        densityReadout,
         new HStrut( displayOptionsNode.width - 10 ) // Same internal size as displayOptionsNode
       ]
     } );
@@ -129,9 +92,10 @@ export default class BuoyancyExploreScreenView extends SecondaryMassScreenView<B
     // Adjust the visibility after, since we want to size the box's location for its "full" bounds
     // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
     model.secondaryMass.visibleProperty.link( visible => {
-      labelBText.visible = visible;
-      densityBText.visible = visible;
+      const materials = visible ? [ model.primaryMass.materialProperty, model.secondaryMass.materialProperty ] : [ model.primaryMass.materialProperty ];
+      densityReadout.setMaterials( materials, customExploreScreenFormatting );
     } );
+
 
     const displayedMysteryMaterials = [
       Material.DENSITY_A,

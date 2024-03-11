@@ -245,6 +245,8 @@ type StringsType = {
   'densityReadoutPatternStringProperty': LocalizedStringProperty;
   'densityReadoutDecimetersCubedPattern': string;
   'densityReadoutDecimetersCubedPatternStringProperty': LocalizedStringProperty;
+  'densityReadoutUnitlessPattern': string;
+  'densityReadoutUnitlessPatternStringProperty': LocalizedStringProperty;
   'whatIsTheFluidDensity': string;
   'whatIsTheFluidDensityStringProperty': LocalizedStringProperty;
   'whatIsTheValueOfGravity': string;

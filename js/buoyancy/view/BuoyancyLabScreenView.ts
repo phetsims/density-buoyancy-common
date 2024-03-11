@@ -44,36 +44,13 @@ export default class BuoyancyLabScreenView extends DensityBuoyancyScreenView<Buo
 
     const displayOptionsNode = new DisplayOptionsNode( model );
 
-    const densityReadout = new DensityReadoutListNode(
-      [ model.primaryMass.materialProperty ],
-      displayOptionsNode.width - 10 );
-
-    const densityBox = new AccordionBox( densityReadout, combineOptions<AccordionBoxOptions>( {
-      titleNode: new Text( DensityBuoyancyCommonStrings.densityStringProperty, {
-        font: DensityBuoyancyCommonConstants.TITLE_FONT,
-        maxWidth: 160
-      } ),
-      expandedProperty: model.densityExpandedProperty
-    }, DensityBuoyancyCommonConstants.ACCORDION_BOX_OPTIONS ) );
-
-    this.addChild( new AlignBox( new VBox( {
-      spacing: 10,
-      children: [
-        // Keep the density box at the top of its possible location, even if it reduces in size
-        // not being visible.
-        new AlignBox( densityBox, {
-          alignBounds: densityBox.bounds.copy(),
-          localBounds: densityBox.bounds.copy(),
-          yAlign: 'top'
-        } ),
-        new Panel( displayOptionsNode, DensityBuoyancyCommonConstants.PANEL_OPTIONS )
-      ]
-    } ), {
-      alignBoundsProperty: this.visibleBoundsProperty,
-      xAlign: 'left',
-      yAlign: 'bottom',
-      margin: MARGIN
-    } ) );
+    this.addChild( new AlignBox(
+      new Panel( displayOptionsNode, DensityBuoyancyCommonConstants.PANEL_OPTIONS ), {
+        alignBoundsProperty: this.visibleBoundsProperty,
+        xAlign: 'left',
+        yAlign: 'bottom',
+        margin: MARGIN
+      } ) );
 
     const displayedMysteryMaterials = [
       Material.DENSITY_A,
@@ -123,7 +100,26 @@ export default class BuoyancyLabScreenView extends DensityBuoyancyScreenView<Buo
       }
     } );
 
-    this.addChild( new AlignBox( this.rightBox, {
+    const densityReadout = new DensityReadoutListNode( [ model.primaryMass.materialProperty ], 1 );
+
+    const densityBox = new AccordionBox( densityReadout, combineOptions<AccordionBoxOptions>( {
+      titleNode: new Text( DensityBuoyancyCommonStrings.densityStringProperty, {
+        font: DensityBuoyancyCommonConstants.TITLE_FONT,
+        maxWidth: 160
+      } ),
+      expandedProperty: model.densityExpandedProperty
+    }, combineOptions<AccordionBoxOptions>( { layoutOptions: { stretch: true } },
+      DensityBuoyancyCommonConstants.ACCORDION_BOX_OPTIONS
+    ) ) );
+    const rightSideVBox = new VBox( {
+      spacing: 10,
+      align: 'right',
+      children: [
+        this.rightBox,
+        densityBox
+      ]
+    } );
+    this.addChild( new AlignBox( rightSideVBox, {
       alignBoundsProperty: this.visibleBoundsProperty,
       xAlign: 'right',
       yAlign: 'top',
@@ -131,7 +127,7 @@ export default class BuoyancyLabScreenView extends DensityBuoyancyScreenView<Buo
     } ) );
 
     // DerivedProperty doesn't need disposal, since everything here lives for the lifetime of the simulation
-    this.rightBarrierViewPointPropertyProperty.value = new DerivedProperty( [ this.rightBox.boundsProperty, this.visibleBoundsProperty ], ( boxBounds, visibleBounds ) => {
+    this.rightBarrierViewPointPropertyProperty.value = new DerivedProperty( [ rightSideVBox.boundsProperty, this.visibleBoundsProperty ], ( boxBounds, visibleBounds ) => {
       // We might not have a box, see https://github.com/phetsims/density/issues/110
       return new Vector2( isFinite( boxBounds.left ) ? boxBounds.left : visibleBounds.right, visibleBounds.centerY );
     }, {

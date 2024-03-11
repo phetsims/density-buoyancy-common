@@ -10,7 +10,7 @@ import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import DynamicProperty from '../../../../axon/js/DynamicProperty.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
-import { HBox, HStrut, RichText, RichTextOptions, VBox } from '../../../../scenery/js/imports.js';
+import { HBox, HStrut, RichText, RichTextOptions, VBox, VBoxOptions } from '../../../../scenery/js/imports.js';
 import Material from '../../common/model/Material.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
@@ -18,32 +18,54 @@ import TinyEmitter from '../../../../axon/js/TinyEmitter.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
 import Utils from '../../../../dot/js/Utils.js';
+import optionize from '../../../../phet-core/js/optionize.js';
 
-type customSetMaterialsOptions = {
-  customNames: TReadOnlyProperty<string>[];
-  customFormats: RichTextOptions[];
+
+type CustomSetMaterialsOptions = {
+  // Arrays should correspond to the provided materialProperties
+  customNames?: TReadOnlyProperty<string>[] | null;
+  customFormats?: RichTextOptions[] | null;
 };
+
+type SelfOptions = {
+  // Provided to the constructor call of setMaterials()
+  customSetMaterialsOptions?: CustomSetMaterialsOptions;
+};
+
+type DensityReadoutListNodeOptions = SelfOptions & VBoxOptions;
 
 export default class DensityReadoutListNode extends VBox {
   private cleanupEmitter = new TinyEmitter();
   private readonly hStrut: HStrut;
 
-  public constructor( materialProperties: TReadOnlyProperty<Material>[], HStrutWidth: number, providedOptions?: customSetMaterialsOptions ) {
+  // TODO: prefer stretch to an HStrut. That is more dynamic, https://github.com/phetsims/density-buoyancy-common/issues/95
+  public constructor( materialProperties: TReadOnlyProperty<Material>[], HStrutWidth: number, providedOptions?: DensityReadoutListNodeOptions ) {
 
-    super( {
+    const options = optionize<DensityReadoutListNodeOptions, SelfOptions, VBoxOptions>()( {
       spacing: 5,
-      align: 'center'
-    } );
+      align: 'center',
+      customSetMaterialsOptions: {}
+    }, providedOptions );
+
+    super( {} );
 
     this.hStrut = new HStrut( HStrutWidth ); // Same internal size as displayOptionsNode
 
-    this.setMaterials( materialProperties, providedOptions );
+    this.setMaterials( materialProperties, options.customSetMaterialsOptions );
   }
 
   /**
    * Overwrite the displayed densities with a new set of materialProperties.
    */
-  public setMaterials( materialProperties: TReadOnlyProperty<Material>[], providedOptions?: customSetMaterialsOptions ): void {
+  public setMaterials( materialProperties: TReadOnlyProperty<Material>[], providedOptions?: CustomSetMaterialsOptions ): void {
+
+    const options = optionize<CustomSetMaterialsOptions>()( {
+      customNames: null,
+      customFormats: null
+    }, providedOptions );
+
+    assert && options.customNames && assert( options.customNames.length === materialProperties.length, 'customNames option should correspond to provided materials' );
+    assert && options.customFormats && assert( options.customFormats.length === materialProperties.length, 'customFormats option should correspond to provided materials' );
 
     // Clear the previous materials that may have been created.
     this.cleanupEmitter.emit();
@@ -73,8 +95,8 @@ export default class DensityReadoutListNode extends VBox {
     this.children = materialProperties.map( ( materialProperty, index ) => {
 
       // Get the custom name from the provided options, or create a dynamic property that derives from the material's name
-      const nameProperty = providedOptions?.customNames ?
-                           providedOptions.customNames[ index ] :
+      const nameProperty = options?.customNames ?
+                           options.customNames[ index ] :
                            new DynamicProperty<string, string, Material>( materialProperty, {
                              derive: material => material.nameProperty
                            } );
@@ -84,7 +106,7 @@ export default class DensityReadoutListNode extends VBox {
       // Create the derived string property for the density readout
       const densityDerivedStringProperty = getMysteryMaterialReadoutStringProperty( materialProperty );
       const densityReadout = new RichText( densityDerivedStringProperty,
-        providedOptions?.customFormats ? providedOptions.customFormats[ index ] : DEFAULT_TEXT_OPTIONS );
+        options?.customFormats ? options.customFormats[ index ] : DEFAULT_TEXT_OPTIONS );
 
       this.cleanupEmitter.addListener( () => {
         densityDerivedStringProperty.dispose();

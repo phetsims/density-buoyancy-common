@@ -21,7 +21,7 @@ import Utils from '../../../../dot/js/Utils.js';
 import optionize from '../../../../phet-core/js/optionize.js';
 
 
-type CustomSetMaterialsOptions = {
+type SetMaterialsOptions = {
   // Arrays should correspond to the provided materialProperties
   customNames?: TReadOnlyProperty<string>[] | null;
   customFormats?: RichTextOptions[] | null;
@@ -29,7 +29,7 @@ type CustomSetMaterialsOptions = {
 
 type SelfOptions = {
   // Provided to the constructor call of setMaterials()
-  customSetMaterialsOptions?: CustomSetMaterialsOptions;
+  setMaterialsOptions?: SetMaterialsOptions;
 };
 
 type DensityReadoutListNodeOptions = SelfOptions & VBoxOptions;
@@ -44,22 +44,22 @@ export default class DensityReadoutListNode extends VBox {
     const options = optionize<DensityReadoutListNodeOptions, SelfOptions, VBoxOptions>()( {
       spacing: 5,
       align: 'center',
-      customSetMaterialsOptions: {}
+      setMaterialsOptions: {}
     }, providedOptions );
 
     super( {} );
 
     this.hStrut = new HStrut( HStrutWidth ); // Same internal size as displayOptionsNode
 
-    this.setMaterials( materialProperties, options.customSetMaterialsOptions );
+    this.setMaterials( materialProperties, options.setMaterialsOptions );
   }
 
   /**
    * Overwrite the displayed densities with a new set of materialProperties.
    */
-  public setMaterials( materialProperties: TReadOnlyProperty<Material>[], providedOptions?: CustomSetMaterialsOptions ): void {
+  public setMaterials( materialProperties: TReadOnlyProperty<Material>[], providedOptions?: SetMaterialsOptions ): void {
 
-    const options = optionize<CustomSetMaterialsOptions>()( {
+    const options = optionize<SetMaterialsOptions>()( {
       customNames: null,
       customFormats: null
     }, providedOptions );

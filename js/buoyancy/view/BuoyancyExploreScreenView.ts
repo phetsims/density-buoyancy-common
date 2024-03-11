@@ -55,7 +55,7 @@ export default class BuoyancyExploreScreenView extends SecondaryMassScreenView<B
     const densityReadout = new DensityReadoutListNode(
       [ model.primaryMass.materialProperty, model.secondaryMass.materialProperty ],
       displayOptionsNode.width - 10, {
-        customSetMaterialsOptions: customExploreScreenFormatting
+        setMaterialsOptions: customExploreScreenFormatting
       } );
 
     const densityBox = new AccordionBox( densityReadout, combineOptions<AccordionBoxOptions>( {

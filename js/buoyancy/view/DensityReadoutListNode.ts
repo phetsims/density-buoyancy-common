@@ -10,7 +10,7 @@ import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import DynamicProperty from '../../../../axon/js/DynamicProperty.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
-import { HBox, RichText, RichTextOptions, VBox } from '../../../../scenery/js/imports.js';
+import { HBox, HStrut, RichText, RichTextOptions, VBox } from '../../../../scenery/js/imports.js';
 import Material from '../../common/model/Material.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
@@ -26,13 +26,16 @@ type customSetMaterialsOptions = {
 
 export default class DensityReadoutListNode extends VBox {
   private cleanupEmitter = new TinyEmitter();
+  private readonly hStrut: HStrut;
 
-  public constructor( materialProperties: TReadOnlyProperty<Material>[], providedOptions?: customSetMaterialsOptions ) {
+  public constructor( materialProperties: TReadOnlyProperty<Material>[], HStrutWidth: number, providedOptions?: customSetMaterialsOptions ) {
 
     super( {
       spacing: 5,
       align: 'center'
     } );
+
+    this.hStrut = new HStrut( HStrutWidth ); // Same internal size as displayOptionsNode
 
     this.setMaterials( materialProperties, providedOptions );
   }
@@ -95,8 +98,9 @@ export default class DensityReadoutListNode extends VBox {
         align: 'origin',
         spacing: 5
       } );
-
     } );
+
+    this.children = [ ...this.children, this.hStrut ];
   }
 
   public override dispose(): void {

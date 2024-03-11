@@ -10,7 +10,7 @@ import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import DynamicProperty from '../../../../axon/js/DynamicProperty.js';
 import Property from '../../../../axon/js/Property.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
-import { AlignBox, HStrut, Node, Text, VBox } from '../../../../scenery/js/imports.js';
+import { AlignBox, Node, Text, VBox } from '../../../../scenery/js/imports.js';
 import AccordionBox, { AccordionBoxOptions } from '../../../../sun/js/AccordionBox.js';
 import Panel from '../../../../sun/js/Panel.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
@@ -75,13 +75,7 @@ export default class BuoyancyShapesScreenView extends SecondaryMassScreenView<Bu
 
     const displayOptionsNode = new DisplayOptionsNode( model );
 
-    const densityContainer = new VBox( {
-      spacing: 0,
-      children: [
-        new HStrut( displayOptionsNode.width - 10 ), // Same internal size as displayOptionsNode
-        new DensityReadoutListNode( [ model.materialProperty ] )
-      ]
-    } );
+    const densityContainer = new DensityReadoutListNode( [ model.materialProperty ], displayOptionsNode.width - 10 );
 
     const densityBox = new AccordionBox( densityContainer, combineOptions<AccordionBoxOptions>( {
       titleNode: new Text( DensityBuoyancyCommonStrings.densityStringProperty, {

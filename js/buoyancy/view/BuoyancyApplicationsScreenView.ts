@@ -17,7 +17,7 @@ import resetArrow_png from '../../../../scenery-phet/images/resetArrow_png.js';
 import NumberControl, { NumberControlOptions } from '../../../../scenery-phet/js/NumberControl.js';
 import NumberDisplay from '../../../../scenery-phet/js/NumberDisplay.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
-import { AlignBox, Color, HBox, HSeparator, HStrut, Image, ManualConstraint, Node, Text, VBox } from '../../../../scenery/js/imports.js';
+import { AlignBox, Color, HBox, HSeparator, Image, ManualConstraint, Node, Text, VBox } from '../../../../scenery/js/imports.js';
 import AccordionBox, { AccordionBoxOptions } from '../../../../sun/js/AccordionBox.js';
 import RectangularPushButton from '../../../../sun/js/buttons/RectangularPushButton.js';
 import RectangularRadioButtonGroup from '../../../../sun/js/buttons/RectangularRadioButtonGroup.js';
@@ -252,14 +252,7 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
 
     const displayOptionsNode = new DisplayOptionsNode( model );
 
-    const densityReadout = new DensityReadoutListNode( [] );
-    const densityContainer = new VBox( {
-      spacing: 0,
-      children: [
-        new HStrut( displayOptionsNode.width - 10 ), // Same internal size as displayOptionsNode
-        densityReadout
-      ]
-    } );
+    const densityReadout = new DensityReadoutListNode( [], displayOptionsNode.width - 10 );
 
     model.sceneProperty.link( scene => {
       const materials = scene === Scene.BOTTLE ? [
@@ -273,7 +266,7 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
       densityReadout.setMaterials( materials );
     } );
 
-    const densityBox = new AccordionBox( densityContainer, combineOptions<AccordionBoxOptions>( {
+    const densityBox = new AccordionBox( densityReadout, combineOptions<AccordionBoxOptions>( {
       titleNode: new Text( DensityBuoyancyCommonStrings.densityStringProperty, {
         maxWidth: 160,
         font: DensityBuoyancyCommonConstants.TITLE_FONT

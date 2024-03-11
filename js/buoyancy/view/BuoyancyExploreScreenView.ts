@@ -9,7 +9,7 @@
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import { combineOptions } from '../../../../phet-core/js/optionize.js';
-import { AlignBox, HBox, HStrut, Node, Text, VBox } from '../../../../scenery/js/imports.js';
+import { AlignBox, HBox, Node, Text, VBox } from '../../../../scenery/js/imports.js';
 import AccordionBox, { AccordionBoxOptions } from '../../../../sun/js/AccordionBox.js';
 import Panel from '../../../../sun/js/Panel.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
@@ -17,7 +17,6 @@ import Material from '../../common/model/Material.js';
 import DensityBuoyancyCommonColors from '../../common/view/DensityBuoyancyCommonColors.js';
 import { DensityBuoyancyScreenViewOptions } from '../../common/view/DensityBuoyancyScreenView.js';
 import LiquidDensityControlNode from '../../common/view/LiquidDensityControlNode.js';
-import DisplayOptionsNode from '../../common/view/DisplayOptionsNode.js';
 import GravityControlNode from '../../common/view/GravityControlNode.js';
 import PrimarySecondaryControlsNode from '../../common/view/PrimarySecondaryControlsNode.js';
 import SecondaryMassScreenView from '../../common/view/SecondaryMassScreenView.js';
@@ -26,6 +25,7 @@ import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js'
 import BuoyancyExploreModel from '../model/BuoyancyExploreModel.js';
 import arrayRemove from '../../../../phet-core/js/arrayRemove.js';
 import DensityReadoutListNode from './DensityReadoutListNode.js';
+import DisplayOptionsNode from '../../common/view/DisplayOptionsNode.js';
 
 // constants
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
@@ -42,8 +42,6 @@ export default class BuoyancyExploreScreenView extends SecondaryMassScreenView<B
       cameraLookAt: DensityBuoyancyCommonConstants.BUOYANCY_CAMERA_LOOK_AT
     }, options ) );
 
-    const displayOptionsNode = new DisplayOptionsNode( model );
-
     const customExploreScreenFormatting = {
       customNames: [ DensityBuoyancyCommonStrings.blockAStringProperty, DensityBuoyancyCommonStrings.blockBStringProperty ],
       customFormats: [
@@ -52,17 +50,14 @@ export default class BuoyancyExploreScreenView extends SecondaryMassScreenView<B
       ]
     };
 
+    const displayOptionsNode = new DisplayOptionsNode( model );
+
     const densityReadout = new DensityReadoutListNode(
-      [ model.primaryMass.materialProperty, model.secondaryMass.materialProperty ], customExploreScreenFormatting );
+      [ model.primaryMass.materialProperty, model.secondaryMass.materialProperty ],
+      displayOptionsNode.width - 10,
+      customExploreScreenFormatting );
 
-    const densityContainer = new VBox( {
-      children: [
-        densityReadout,
-        new HStrut( displayOptionsNode.width - 10 ) // Same internal size as displayOptionsNode
-      ]
-    } );
-
-    const densityBox = new AccordionBox( densityContainer, combineOptions<AccordionBoxOptions>( {
+    const densityBox = new AccordionBox( densityReadout, combineOptions<AccordionBoxOptions>( {
       titleNode: new Text( DensityBuoyancyCommonStrings.densityStringProperty, {
         font: DensityBuoyancyCommonConstants.TITLE_FONT,
         maxWidth: 160

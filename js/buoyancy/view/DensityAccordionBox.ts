@@ -1,9 +1,9 @@
 // Copyright 2019-2024, University of Colorado Boulder
 
 /**
- * Shows a reference list of densities for named quantities (which can switch between different materials).
+ * An AccordionBox that displays the percentage of each material that is submerged.
  *
- * @author Jonathan Olson <jonathan.olson@colorado.edu>
+ * @author Agustín Vallejo
  */
 
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';

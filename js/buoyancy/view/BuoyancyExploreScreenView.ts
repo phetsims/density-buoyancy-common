@@ -116,7 +116,7 @@ export default class BuoyancyExploreScreenView extends SecondaryMassScreenView<B
         contentWidthMax: this.rightBox.content.width
       } );
 
-    const submergedBox = new SubmergedAccordionBox( [ model.primaryMass ], model );
+    const submergedBox = new SubmergedAccordionBox( [ model.primaryMass ], model.gravityProperty, model.liquidMaterialProperty );
 
     // Adjust the visibility after, since we want to size the box's location for its "full" bounds
     // This instance lives for the lifetime of the simulation, so we don't need to remove this listener

@@ -17,8 +17,9 @@ import optionize, { optionize4 } from '../../../../phet-core/js/optionize.js';
 import AccordionBox, { AccordionBoxOptions } from '../../../../sun/js/AccordionBox.js';
 import Utils from '../../../../dot/js/Utils.js';
 import Mass from '../../common/model/Mass.js';
-import DensityBuoyancyModel from '../../common/model/DensityBuoyancyModel.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
+import Gravity from '../../common/model/Gravity.js';
+import Material from '../../common/model/Material.js';
 
 
 type SetMaterialsOptions = {
@@ -42,7 +43,8 @@ export default class SubmergedAccordionBox extends AccordionBox {
 
   public constructor(
     masses: Mass[],
-    private readonly model: DensityBuoyancyModel,
+    private readonly gravityProperty: TReadOnlyProperty<Gravity>,
+    private readonly liquidMaterialProperty: TReadOnlyProperty<Material>,
     providedOptions?: SubmergedAccordionBoxOptions
   ) {
 
@@ -104,8 +106,8 @@ export default class SubmergedAccordionBox extends AccordionBox {
         [
           mass.volumeProperty,
           mass.buoyancyForceInterpolatedProperty,
-          this.model.gravityProperty,
-          this.model.liquidMaterialProperty
+          this.gravityProperty,
+          this.liquidMaterialProperty
         ], ( volume, buoyancy, gravity, liquid ) => {
           return Utils.toFixed( 100 * buoyancy?.magnitude / volume / gravity.value / liquid.density, 1 ) + '%';
         } );

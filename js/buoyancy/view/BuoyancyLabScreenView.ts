@@ -116,7 +116,7 @@ export default class BuoyancyLabScreenView extends DensityBuoyancyScreenView<Buo
         contentWidthMax: this.rightBox.content.width
       } );
 
-    const submergedBox = new SubmergedAccordionBox( [ model.primaryMass ], model, {
+    const submergedBox = new SubmergedAccordionBox( [ model.primaryMass ], model.gravityProperty, model.liquidMaterialProperty, {
       setSubmergedVolumesOptions: {
         customNames: [ DensityBuoyancyCommonStrings.blockAStringProperty ]
       }

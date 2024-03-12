@@ -109,7 +109,7 @@ export default class SubmergedAccordionBox extends AccordionBox {
           this.gravityProperty,
           this.liquidMaterialProperty
         ], ( volume, buoyancy, gravity, liquid ) => {
-          return Utils.toFixed( 100 * buoyancy?.magnitude / volume / gravity.value / liquid.density, 1 ) + '%';
+          return Utils.toFixed( 100 * buoyancy?.magnitude / ( volume * gravity.value * liquid.density ), 1 ) + '%';
         } );
       const submergedReadout = new RichText( submergedDerivedStringProperty,
         options?.customFormats ? options.customFormats[ index ] : DEFAULT_TEXT_OPTIONS );

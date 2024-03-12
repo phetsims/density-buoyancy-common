@@ -110,17 +110,18 @@ export default class BuoyancyLabScreenView extends DensityBuoyancyScreenView<Buo
       }
     } );
 
-    const densityBox = new DensityAccordionBox(
-      [ { materialProperty: model.primaryMass.materialProperty } ], {
+    const densityBox = new DensityAccordionBox( {
         expandedProperty: model.densityExpandedProperty,
         contentWidthMax: this.rightBox.content.width
       } );
+    densityBox.setReadout( [ { materialProperty: model.primaryMass.materialProperty } ] );
 
-    const submergedBox = new SubmergedAccordionBox( [ model.primaryMass ], model.gravityProperty, model.liquidMaterialProperty, {
-      setSubmergedVolumesOptions: {
-        customNames: [ DensityBuoyancyCommonStrings.blockAStringProperty ]
-      }
-    } );
+    const submergedBox = new SubmergedAccordionBox(
+      model.gravityProperty, model.liquidMaterialProperty, {
+        contentWidthMax: this.rightBox.content.width
+      } );
+    submergedBox.setReadout( [ { mass: model.primaryMass,
+      customNameProperty: DensityBuoyancyCommonStrings.blockAStringProperty } ] );
 
     const rightSideVBox = new VBox( {
       spacing: 10,

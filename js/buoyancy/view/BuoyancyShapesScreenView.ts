@@ -135,11 +135,11 @@ export default class BuoyancyShapesScreenView extends SecondaryMassScreenView<Bu
         ) ]
     );
 
-    const densityBox = new DensityAccordionBox(
-      [ { materialProperty: model.materialProperty } ], {
+    const densityBox = new DensityAccordionBox( {
         expandedProperty: model.densityExpandedProperty,
         contentWidthMax: this.rightBox.content.width
       } );
+    densityBox.setReadout( [ { materialProperty: model.materialProperty } ] );
 
     const rightSideVBox = new VBox( {
       spacing: 10,

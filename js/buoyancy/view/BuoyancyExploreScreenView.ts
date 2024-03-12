@@ -111,26 +111,33 @@ export default class BuoyancyExploreScreenView extends SecondaryMassScreenView<B
     } );
 
     // Materials are set in densityBox.setMaterials() below
-    const densityBox = new DensityAccordionBox(
-      [], {
+    const densityBox = new DensityAccordionBox( {
         expandedProperty: model.densityExpandedProperty,
         contentWidthMax: this.rightBox.content.width
       } );
 
-    const submergedBox = new SubmergedAccordionBox( [ model.primaryMass ], model.gravityProperty, model.liquidMaterialProperty );
+    const submergedBox = new SubmergedAccordionBox( model.gravityProperty, model.liquidMaterialProperty, {
+      contentWidthMax: this.rightBox.content.width
+    } );
 
     // Adjust the visibility after, since we want to size the box's location for its "full" bounds
     // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
     model.secondaryMass.visibleProperty.link( visible => {
       const masses = visible ? [ model.primaryMass, model.secondaryMass ] : [ model.primaryMass ];
-      densityBox.setMaterials( masses.map( ( mass, index ) => {
+      densityBox.setReadout( masses.map( ( mass, index ) => {
         return {
           materialProperty: mass.materialProperty,
           customNameProperty: customExploreScreenFormatting.customNames[ index ],
           customFormat: customExploreScreenFormatting.customFormats[ index ]
         };
       } ) );
-      submergedBox.setSubmergedVolumes( masses, customExploreScreenFormatting );
+      submergedBox.setReadout( masses.map( ( mass, index ) => {
+        return {
+          mass: mass,
+          customNameProperty: customExploreScreenFormatting.customNames[ index ],
+          customFormat: customExploreScreenFormatting.customFormats[ index ]
+        };
+      } ) );
     } );
 
     const rightSideVBox = new VBox( {

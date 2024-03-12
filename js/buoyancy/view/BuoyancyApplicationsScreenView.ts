@@ -249,10 +249,12 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
       margin: MARGIN
     } ) );
 
-    const densityBox = new DensityAccordionBox(
-      [], {
-        expandedProperty: model.densityExpandedProperty
-      } );
+    const displayOptionsNode = new DisplayOptionsNode( model );
+
+    const densityBox = new DensityAccordionBox( {
+      expandedProperty: model.densityExpandedProperty,
+      contentWidthMax: displayOptionsNode.width
+    } );
 
     model.sceneProperty.link( scene => {
       const materials = scene === Scene.BOTTLE ? [
@@ -263,12 +265,11 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
         model.boat.materialProperty
       ] : [];
       assert && assert( materials.length > 0, 'unsupported Scene', scene );
-      densityBox.setMaterials( materials.map( material => {
+      densityBox.setReadout( materials.map( material => {
         return { materialProperty: material };
       } ) );
     } );
 
-    const displayOptionsNode = new DisplayOptionsNode( model );
 
     this.addChild( new AlignBox( new VBox( {
       spacing: 10,

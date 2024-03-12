@@ -21,6 +21,9 @@ import Utils from '../../../../dot/js/Utils.js';
 import optionize, { optionize4 } from '../../../../phet-core/js/optionize.js';
 import AccordionBox, { AccordionBoxOptions } from '../../../../sun/js/AccordionBox.js';
 
+const DEFAULT_FONT = new PhetFont( 14 );
+const HBOX_SPACING = 5;
+const DEFAULT_CONTENT_WIDTH = ( 140 + HBOX_SPACING ) / 2;
 
 type SetMaterialsOptions = {
   // Arrays should correspond to the provided materialProperties
@@ -31,6 +34,9 @@ type SetMaterialsOptions = {
 type SelfOptions = {
   // Provided to the constructor call of setMaterials()
   setMaterialsOptions?: SetMaterialsOptions;
+
+  // Provide the ideal max content width for the accordion box content. This is used to apply maxWidths to the Texts of the readout.
+  contentWidthMax?: number;
 };
 
 type DensityAccordionBoxOptions = SelfOptions & AccordionBoxOptions;
@@ -40,6 +46,7 @@ export default class DensityAccordionBox extends AccordionBox {
   private readonly densityReadoutBox: VBox;
   private cleanupEmitter = new TinyEmitter();
 
+  private readonly contentWidthMax: number;
 
   public constructor(
     materialProperties: TReadOnlyProperty<Material>[],
@@ -48,13 +55,14 @@ export default class DensityAccordionBox extends AccordionBox {
 
     const options = optionize4<DensityAccordionBoxOptions, SelfOptions, AccordionBoxOptions>()( {},
       DensityBuoyancyCommonConstants.ACCORDION_BOX_OPTIONS, {
-      titleNode: new Text( DensityBuoyancyCommonStrings.densityStringProperty, {
-        font: DensityBuoyancyCommonConstants.TITLE_FONT,
-        maxWidth: 160
-      } ),
-      layoutOptions: { stretch: true },
-      setMaterialsOptions: {}
-    }, providedOptions );
+        titleNode: new Text( DensityBuoyancyCommonStrings.densityStringProperty, {
+          font: DensityBuoyancyCommonConstants.TITLE_FONT,
+          maxWidth: 160
+        } ),
+        layoutOptions: { stretch: true },
+        setMaterialsOptions: {},
+        contentWidthMax: DEFAULT_CONTENT_WIDTH
+      }, providedOptions );
 
     const densityReadout = new VBox( {
       spacing: 5,
@@ -64,7 +72,7 @@ export default class DensityAccordionBox extends AccordionBox {
     super( densityReadout, options );
 
     this.densityReadoutBox = densityReadout;
-
+    this.contentWidthMax = options.contentWidthMax;
     this.setMaterials( materialProperties, options.setMaterialsOptions );
   }
 
@@ -86,9 +94,9 @@ export default class DensityAccordionBox extends AccordionBox {
     this.cleanupEmitter.emit();
     this.cleanupEmitter.removeAllListeners();
 
-    const DEFAULT_TEXT_OPTIONS = {
-      font: new PhetFont( 14 ),
-      maxWidth: 200
+    const textOptions = {
+      font: DEFAULT_FONT,
+      maxWidth: ( this.contentWidthMax - HBOX_SPACING ) / 2
     };
 
     // Returns the filled in string for the material readout or '?' if the material is hidden
@@ -116,12 +124,12 @@ export default class DensityAccordionBox extends AccordionBox {
                              derive: material => material.nameProperty
                            } );
       const nameColonProperty = new DerivedProperty( [ nameProperty ], name => name + ': ' );
-      const labelText = new RichText( nameColonProperty, DEFAULT_TEXT_OPTIONS );
+      const labelText = new RichText( nameColonProperty, textOptions );
 
       // Create the derived string property for the density readout
       const densityDerivedStringProperty = getMysteryMaterialReadoutStringProperty( materialProperty );
       const densityReadout = new RichText( densityDerivedStringProperty,
-        options?.customFormats ? options.customFormats[ index ] : DEFAULT_TEXT_OPTIONS );
+        options?.customFormats ? options.customFormats[ index ] : textOptions );
 
       this.cleanupEmitter.addListener( () => {
         densityDerivedStringProperty.dispose();
@@ -133,7 +141,7 @@ export default class DensityAccordionBox extends AccordionBox {
       return new HBox( {
         children: [ labelText, densityReadout ],
         align: 'origin',
-        spacing: 5
+        spacing: HBOX_SPACING
       } );
     } );
   }

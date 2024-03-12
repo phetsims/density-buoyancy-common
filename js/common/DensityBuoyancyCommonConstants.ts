@@ -27,6 +27,7 @@ const decimetersCubedPatternStringProperty = new PatternStringProperty( DensityB
   decimetersCubed: '{{value}}'
 }, { tandem: Tandem.OPT_OUT } );
 
+const X_MARGIN = 10;
 
 // A value applied across the code to prevent unexpected rounding errors.
 const TOLERANCE = 1e-7;
@@ -65,7 +66,7 @@ const DensityBuoyancyCommonConstants = {
   PANEL_OPTIONS: {
     cornerRadius: CORNER_RADIUS,
     fill: DensityBuoyancyCommonColors.panelBackgroundProperty,
-    xMargin: 10,
+    xMargin: X_MARGIN,
     yMargin: 10
   },
 
@@ -74,6 +75,7 @@ const DensityBuoyancyCommonConstants = {
     cornerRadius: CORNER_RADIUS,
     titleYMargin: 5,
     buttonXMargin: 5,
+    contentXMargin: X_MARGIN,
     titleAlignX: 'left',
     fill: DensityBuoyancyCommonColors.panelBackgroundProperty
   } as const,

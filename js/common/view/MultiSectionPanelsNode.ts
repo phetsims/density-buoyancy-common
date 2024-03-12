@@ -19,18 +19,23 @@ export type MultiSectionPanelsNodeOptions = PanelOptions;
 
 export default class MultiSectionPanelsNode extends Panel {
 
+  // Don't use the _content from Panel (says JO)
+  public readonly content: Node;
+
   public constructor( nodes: Node[], providedOptions?: MultiSectionPanelsNodeOptions ) {
 
     const options = optionize3<MultiSectionPanelsNodeOptions, EmptySelfOptions, PanelOptions>()( {}, DensityBuoyancyCommonConstants.PANEL_OPTIONS, providedOptions );
 
     const children = interleave( nodes, () => new HSeparator() );
 
-    super( new FlowBox( {
+    const content = new FlowBox( {
       spacing: 10,
       orientation: 'vertical',
       align: 'left',
       children: children
-    } ), options );
+    } );
+    super( content, options );
+    this.content = content;
   }
 }
 

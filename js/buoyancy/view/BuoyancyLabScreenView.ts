@@ -10,7 +10,7 @@
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import { combineOptions } from '../../../../phet-core/js/optionize.js';
-import { AlignBox, HBox, Node, VBox } from '../../../../scenery/js/imports.js';
+import { AlignBox, HBox, VBox } from '../../../../scenery/js/imports.js';
 import Panel from '../../../../sun/js/Panel.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 import Material from '../../common/model/Material.js';
@@ -33,7 +33,7 @@ const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
 
 export default class BuoyancyLabScreenView extends DensityBuoyancyScreenView<BuoyancyLabModel> {
 
-  private rightBox: Node;
+  private rightBox: MultiSectionPanelsNode;
 
   public constructor( model: BuoyancyLabModel, options: DensityBuoyancyScreenViewOptions ) {
 
@@ -112,7 +112,8 @@ export default class BuoyancyLabScreenView extends DensityBuoyancyScreenView<Buo
 
     const densityBox = new DensityAccordionBox(
       [ model.primaryMass.materialProperty ], {
-        expandedProperty: model.densityExpandedProperty
+        expandedProperty: model.densityExpandedProperty,
+        contentWidthMax: this.rightBox.content.width
       } );
 
     const submergedBox = new SubmergedAccordionBox( [ model.primaryMass ], model, {

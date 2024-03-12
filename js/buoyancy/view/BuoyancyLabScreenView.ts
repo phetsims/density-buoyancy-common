@@ -25,6 +25,8 @@ import DisplayOptionsNode from '../../common/view/DisplayOptionsNode.js';
 import BlockControlNode from '../../common/view/BlockControlNode.js';
 import MultiSectionPanelsNode from '../../common/view/MultiSectionPanelsNode.js';
 import DisplayedFluidPanel from './DisplayedFluidPanel.js';
+import SubmergedAccordionBox from './SubmergedAccordionBox.js';
+import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 
 // constants
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
@@ -113,12 +115,19 @@ export default class BuoyancyLabScreenView extends DensityBuoyancyScreenView<Buo
         expandedProperty: model.densityExpandedProperty
       } );
 
+    const submergedBox = new SubmergedAccordionBox( [ model.primaryMass ], model, {
+      setSubmergedVolumesOptions: {
+        customNames: [ DensityBuoyancyCommonStrings.blockAStringProperty ]
+      }
+    } );
+
     const rightSideVBox = new VBox( {
       spacing: 10,
       align: 'right',
       children: [
         this.rightBox,
-        densityBox
+        densityBox,
+        submergedBox
       ]
     } );
     this.addChild( new AlignBox( rightSideVBox, {

@@ -265,6 +265,8 @@ type StringsType = {
   'questionMarkStringProperty': LocalizedStringProperty;
   'shapesInfoDialog': string;
   'shapesInfoDialogStringProperty': LocalizedStringProperty;
+  'percentSubmerged': string;
+  'percentSubmergedStringProperty': LocalizedStringProperty;
 };
 
 const DensityBuoyancyCommonStrings = getStringModule( 'DENSITY_BUOYANCY_COMMON' ) as StringsType;

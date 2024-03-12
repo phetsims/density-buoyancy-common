@@ -10,7 +10,7 @@ import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import DynamicProperty from '../../../../axon/js/DynamicProperty.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
-import { HBox, HStrut, RichText, RichTextOptions, VBox, VBoxOptions } from '../../../../scenery/js/imports.js';
+import { HBox, RichText, RichTextOptions, Text, VBox } from '../../../../scenery/js/imports.js';
 import Material from '../../common/model/Material.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
@@ -18,7 +18,8 @@ import TinyEmitter from '../../../../axon/js/TinyEmitter.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
 import Utils from '../../../../dot/js/Utils.js';
-import optionize from '../../../../phet-core/js/optionize.js';
+import optionize, { optionize4 } from '../../../../phet-core/js/optionize.js';
+import AccordionBox, { AccordionBoxOptions } from '../../../../sun/js/AccordionBox.js';
 
 
 type SetMaterialsOptions = {
@@ -32,24 +33,37 @@ type SelfOptions = {
   setMaterialsOptions?: SetMaterialsOptions;
 };
 
-type DensityReadoutListNodeOptions = SelfOptions & VBoxOptions;
+type DensityAccordionBoxOptions = SelfOptions & AccordionBoxOptions;
 
-export default class DensityReadoutListNode extends VBox {
+export default class DensityAccordionBox extends AccordionBox {
+
+  private readonly densityReadoutBox: VBox;
   private cleanupEmitter = new TinyEmitter();
-  private readonly hStrut: HStrut;
 
-  // TODO: prefer stretch to an HStrut. That is more dynamic, https://github.com/phetsims/density-buoyancy-common/issues/95
-  public constructor( materialProperties: TReadOnlyProperty<Material>[], HStrutWidth: number, providedOptions?: DensityReadoutListNodeOptions ) {
 
-    const options = optionize<DensityReadoutListNodeOptions, SelfOptions, VBoxOptions>()( {
-      spacing: 5,
-      align: 'center',
+  public constructor(
+    materialProperties: TReadOnlyProperty<Material>[],
+    providedOptions?: DensityAccordionBoxOptions
+  ) {
+
+    const options = optionize4<DensityAccordionBoxOptions, SelfOptions, AccordionBoxOptions>()( {},
+      DensityBuoyancyCommonConstants.ACCORDION_BOX_OPTIONS, {
+      titleNode: new Text( DensityBuoyancyCommonStrings.densityStringProperty, {
+        font: DensityBuoyancyCommonConstants.TITLE_FONT,
+        maxWidth: 160
+      } ),
+      layoutOptions: { stretch: true },
       setMaterialsOptions: {}
     }, providedOptions );
 
-    super( {} );
+    const densityReadout = new VBox( {
+      spacing: 5,
+      align: 'center'
+    } );
 
-    this.hStrut = new HStrut( HStrutWidth ); // Same internal size as displayOptionsNode
+    super( densityReadout, options );
+
+    this.densityReadoutBox = densityReadout;
 
     this.setMaterials( materialProperties, options.setMaterialsOptions );
   }
@@ -93,7 +107,7 @@ export default class DensityReadoutListNode extends VBox {
                } );
       } );
 
-    this.children = materialProperties.map( ( materialProperty, index ) => {
+    this.densityReadoutBox.children = materialProperties.map( ( materialProperty, index ) => {
 
       // Get the custom name from the provided options, or create a dynamic property that derives from the material's name
       const nameProperty = options?.customNames ?
@@ -122,8 +136,6 @@ export default class DensityReadoutListNode extends VBox {
         spacing: 5
       } );
     } );
-
-    this.children = [ ...this.children, this.hStrut ];
   }
 
   public override dispose(): void {
@@ -132,4 +144,4 @@ export default class DensityReadoutListNode extends VBox {
   }
 }
 
-densityBuoyancyCommon.register( 'DensityReadoutListNode', DensityReadoutListNode );
+densityBuoyancyCommon.register( 'DensityAccordionBox', DensityAccordionBox );

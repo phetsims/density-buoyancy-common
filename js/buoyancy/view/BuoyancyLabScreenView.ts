@@ -10,8 +10,7 @@
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import { combineOptions } from '../../../../phet-core/js/optionize.js';
-import { AlignBox, HBox, Node, Text, VBox } from '../../../../scenery/js/imports.js';
-import AccordionBox, { AccordionBoxOptions } from '../../../../sun/js/AccordionBox.js';
+import { AlignBox, HBox, Node, VBox } from '../../../../scenery/js/imports.js';
 import Panel from '../../../../sun/js/Panel.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 import Material from '../../common/model/Material.js';
@@ -19,10 +18,9 @@ import DensityBuoyancyScreenView, { DensityBuoyancyScreenViewOptions } from '../
 import LiquidDensityControlNode from '../../common/view/LiquidDensityControlNode.js';
 import GravityControlNode from '../../common/view/GravityControlNode.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
-import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import BuoyancyLabModel from '../model/BuoyancyLabModel.js';
 import arrayRemove from '../../../../phet-core/js/arrayRemove.js';
-import DensityReadoutListNode from './DensityReadoutListNode.js';
+import DensityAccordionBox from './DensityAccordionBox.js';
 import DisplayOptionsNode from '../../common/view/DisplayOptionsNode.js';
 import BlockControlNode from '../../common/view/BlockControlNode.js';
 import MultiSectionPanelsNode from '../../common/view/MultiSectionPanelsNode.js';
@@ -110,17 +108,11 @@ export default class BuoyancyLabScreenView extends DensityBuoyancyScreenView<Buo
       }
     } );
 
-    const densityReadout = new DensityReadoutListNode( [ model.primaryMass.materialProperty ], 1 );
+    const densityBox = new DensityAccordionBox(
+      [ model.primaryMass.materialProperty ], {
+        expandedProperty: model.densityExpandedProperty
+      } );
 
-    const densityBox = new AccordionBox( densityReadout, combineOptions<AccordionBoxOptions>( {
-      titleNode: new Text( DensityBuoyancyCommonStrings.densityStringProperty, {
-        font: DensityBuoyancyCommonConstants.TITLE_FONT,
-        maxWidth: 160
-      } ),
-      expandedProperty: model.densityExpandedProperty
-    }, combineOptions<AccordionBoxOptions>( { layoutOptions: { stretch: true } },
-      DensityBuoyancyCommonConstants.ACCORDION_BOX_OPTIONS
-    ) ) );
     const rightSideVBox = new VBox( {
       spacing: 10,
       align: 'right',

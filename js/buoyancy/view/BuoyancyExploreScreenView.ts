@@ -9,8 +9,7 @@
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import { combineOptions } from '../../../../phet-core/js/optionize.js';
-import { AlignBox, HBox, Node, Text, VBox } from '../../../../scenery/js/imports.js';
-import AccordionBox, { AccordionBoxOptions } from '../../../../sun/js/AccordionBox.js';
+import { AlignBox, HBox, Node, VBox } from '../../../../scenery/js/imports.js';
 import Panel from '../../../../sun/js/Panel.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 import Material from '../../common/model/Material.js';
@@ -24,7 +23,7 @@ import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import BuoyancyExploreModel from '../model/BuoyancyExploreModel.js';
 import arrayRemove from '../../../../phet-core/js/arrayRemove.js';
-import DensityReadoutListNode from './DensityReadoutListNode.js';
+import DensityAccordionBox from './DensityAccordionBox.js';
 import DisplayOptionsNode from '../../common/view/DisplayOptionsNode.js';
 
 // constants
@@ -52,30 +51,16 @@ export default class BuoyancyExploreScreenView extends SecondaryMassScreenView<B
 
     const displayOptionsNode = new DisplayOptionsNode( model );
 
-    const densityReadout = new DensityReadoutListNode(
-      [ model.primaryMass.materialProperty, model.secondaryMass.materialProperty ],
-      displayOptionsNode.width - 10, {
+    const densityBox = new DensityAccordionBox(
+      [ model.primaryMass.materialProperty, model.secondaryMass.materialProperty ], {
+        expandedProperty: model.densityExpandedProperty,
         setMaterialsOptions: customExploreScreenFormatting
       } );
-
-    const densityBox = new AccordionBox( densityReadout, combineOptions<AccordionBoxOptions>( {
-      titleNode: new Text( DensityBuoyancyCommonStrings.densityStringProperty, {
-        font: DensityBuoyancyCommonConstants.TITLE_FONT,
-        maxWidth: 160
-      } ),
-      expandedProperty: model.densityExpandedProperty
-    }, DensityBuoyancyCommonConstants.ACCORDION_BOX_OPTIONS ) );
 
     this.addChild( new AlignBox( new VBox( {
       spacing: 10,
       children: [
-        // Keep the density box at the top of its possible location, even if it reduces in size due to the second mass
-        // not being visible.
-        new AlignBox( densityBox, {
-          alignBounds: densityBox.bounds.copy(),
-          localBounds: densityBox.bounds.copy(),
-          yAlign: 'top'
-        } ),
+        densityBox,
         new Panel( displayOptionsNode, DensityBuoyancyCommonConstants.PANEL_OPTIONS )
       ]
     } ), {
@@ -89,7 +74,7 @@ export default class BuoyancyExploreScreenView extends SecondaryMassScreenView<B
     // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
     model.secondaryMass.visibleProperty.link( visible => {
       const materials = visible ? [ model.primaryMass.materialProperty, model.secondaryMass.materialProperty ] : [ model.primaryMass.materialProperty ];
-      densityReadout.setMaterials( materials, customExploreScreenFormatting );
+      densityBox.setMaterials( materials, customExploreScreenFormatting );
     } );
 
 

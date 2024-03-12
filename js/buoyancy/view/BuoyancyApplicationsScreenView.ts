@@ -18,7 +18,6 @@ import NumberControl, { NumberControlOptions } from '../../../../scenery-phet/js
 import NumberDisplay from '../../../../scenery-phet/js/NumberDisplay.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import { AlignBox, Color, HBox, HSeparator, Image, ManualConstraint, Node, Text, VBox } from '../../../../scenery/js/imports.js';
-import AccordionBox, { AccordionBoxOptions } from '../../../../sun/js/AccordionBox.js';
 import RectangularPushButton from '../../../../sun/js/buttons/RectangularPushButton.js';
 import RectangularRadioButtonGroup from '../../../../sun/js/buttons/RectangularRadioButtonGroup.js';
 import Panel from '../../../../sun/js/Panel.js';
@@ -33,7 +32,7 @@ import MaterialMassVolumeControlNode from '../../common/view/MaterialMassVolumeC
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import BuoyancyApplicationsModel, { Scene } from '../model/BuoyancyApplicationsModel.js';
-import DensityReadoutListNode from './DensityReadoutListNode.js';
+import DensityAccordionBox from './DensityAccordionBox.js';
 import arrayRemove from '../../../../phet-core/js/arrayRemove.js';
 import ThreeUtils from '../../../../mobius/js/ThreeUtils.js';
 import BoatView from './BoatView.js';
@@ -250,9 +249,10 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
       margin: MARGIN
     } ) );
 
-    const displayOptionsNode = new DisplayOptionsNode( model );
-
-    const densityReadout = new DensityReadoutListNode( [], displayOptionsNode.width - 10 );
+    const densityBox = new DensityAccordionBox(
+      [], {
+        expandedProperty: model.densityExpandedProperty
+      } );
 
     model.sceneProperty.link( scene => {
       const materials = scene === Scene.BOTTLE ? [
@@ -263,16 +263,10 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
         model.boat.materialProperty
       ] : [];
       assert && assert( materials.length > 0, 'unsupported Scene', scene );
-      densityReadout.setMaterials( materials );
+      densityBox.setMaterials( materials );
     } );
 
-    const densityBox = new AccordionBox( densityReadout, combineOptions<AccordionBoxOptions>( {
-      titleNode: new Text( DensityBuoyancyCommonStrings.densityStringProperty, {
-        maxWidth: 160,
-        font: DensityBuoyancyCommonConstants.TITLE_FONT
-      } ),
-      expandedProperty: model.densityExpandedProperty
-    }, DensityBuoyancyCommonConstants.ACCORDION_BOX_OPTIONS ) );
+    const displayOptionsNode = new DisplayOptionsNode( model );
 
     this.addChild( new AlignBox( new VBox( {
       spacing: 10,

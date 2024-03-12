@@ -18,7 +18,7 @@ import TinyEmitter from '../../../../axon/js/TinyEmitter.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
 import Utils from '../../../../dot/js/Utils.js';
-import optionize, { optionize4 } from '../../../../phet-core/js/optionize.js';
+import optionize, { combineOptions, optionize4 } from '../../../../phet-core/js/optionize.js';
 import AccordionBox, { AccordionBoxOptions } from '../../../../sun/js/AccordionBox.js';
 
 const DEFAULT_FONT = new PhetFont( 14 );
@@ -128,8 +128,9 @@ export default class DensityAccordionBox extends AccordionBox {
 
       // Create the derived string property for the density readout
       const densityDerivedStringProperty = getMysteryMaterialReadoutStringProperty( materialProperty );
+      const customFormat = options.customFormats ? options.customFormats[ index ] : {};
       const densityReadout = new RichText( densityDerivedStringProperty,
-        options?.customFormats ? options.customFormats[ index ] : textOptions );
+        combineOptions<RichTextOptions>( {}, textOptions, customFormat ) );
 
       this.cleanupEmitter.addListener( () => {
         densityDerivedStringProperty.dispose();

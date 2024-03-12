@@ -33,6 +33,7 @@ export default abstract class SecondaryMassScreenView<Model extends DensityBuoya
 
     this.addChild( this.blocksRadioButtonGroup );
 
+    // TODO should we listen to the VBox containing rightBox instead? https://github.com/phetsims/buoyancy/issues/32
     // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
     this.rightBox.transformEmitter.addListener( () => this.positionSecondMassControl() );
     this.transformEmitter.addListener( () => this.positionSecondMassControl() );

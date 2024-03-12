@@ -9,7 +9,7 @@
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import { combineOptions } from '../../../../phet-core/js/optionize.js';
-import { AlignBox, HBox, Node, VBox } from '../../../../scenery/js/imports.js';
+import { AlignBox, HBox, VBox } from '../../../../scenery/js/imports.js';
 import Panel from '../../../../sun/js/Panel.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 import Material from '../../common/model/Material.js';
@@ -25,13 +25,14 @@ import BuoyancyExploreModel from '../model/BuoyancyExploreModel.js';
 import arrayRemove from '../../../../phet-core/js/arrayRemove.js';
 import DensityAccordionBox from './DensityAccordionBox.js';
 import DisplayOptionsNode from '../../common/view/DisplayOptionsNode.js';
+import SubmergedAccordionBox from './SubmergedAccordionBox.js';
 
 // constants
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
 
 export default class BuoyancyExploreScreenView extends SecondaryMassScreenView<BuoyancyExploreModel> {
 
-  protected rightBox: Node;
+  protected rightBox: PrimarySecondaryControlsNode;
 
   public constructor( model: BuoyancyExploreModel, options: DensityBuoyancyScreenViewOptions ) {
 
@@ -51,32 +52,12 @@ export default class BuoyancyExploreScreenView extends SecondaryMassScreenView<B
 
     const displayOptionsNode = new DisplayOptionsNode( model );
 
-    const densityBox = new DensityAccordionBox(
-      [ model.primaryMass.materialProperty, model.secondaryMass.materialProperty ], {
-        expandedProperty: model.densityExpandedProperty,
-        setMaterialsOptions: customExploreScreenFormatting
-      } );
-
-    this.addChild( new AlignBox( new VBox( {
-      spacing: 10,
-      children: [
-        densityBox,
-        new Panel( displayOptionsNode, DensityBuoyancyCommonConstants.PANEL_OPTIONS )
-      ]
-    } ), {
+    this.addChild( new AlignBox( new Panel( displayOptionsNode, DensityBuoyancyCommonConstants.PANEL_OPTIONS ), {
       alignBoundsProperty: this.visibleBoundsProperty,
       xAlign: 'left',
       yAlign: 'bottom',
       margin: MARGIN
     } ) );
-
-    // Adjust the visibility after, since we want to size the box's location for its "full" bounds
-    // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
-    model.secondaryMass.visibleProperty.link( visible => {
-      const materials = visible ? [ model.primaryMass.materialProperty, model.secondaryMass.materialProperty ] : [ model.primaryMass.materialProperty ];
-      densityBox.setMaterials( materials, customExploreScreenFormatting );
-    } );
-
 
     const displayedMysteryMaterials = [
       Material.DENSITY_A,
@@ -129,7 +110,33 @@ export default class BuoyancyExploreScreenView extends SecondaryMassScreenView<B
       } );
     } );
 
-    this.addChild( new AlignBox( this.rightBox, {
+    const densityBox = new DensityAccordionBox(
+      [ model.primaryMass.materialProperty, model.secondaryMass.materialProperty ], {
+        expandedProperty: model.densityExpandedProperty,
+        contentWidthMax: this.rightBox.content.width
+      } );
+
+    const submergedBox = new SubmergedAccordionBox( [ model.primaryMass ], model );
+
+    // Adjust the visibility after, since we want to size the box's location for its "full" bounds
+    // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
+    model.secondaryMass.visibleProperty.link( visible => {
+      const masses = visible ? [ model.primaryMass, model.secondaryMass ] : [ model.primaryMass ];
+      densityBox.setMaterials( masses.map( mass => mass.materialProperty ), customExploreScreenFormatting );
+      submergedBox.setSubmergedVolumes( masses, customExploreScreenFormatting );
+    } );
+
+    const rightSideVBox = new VBox( {
+      spacing: 10,
+      align: 'right',
+      children: [
+        this.rightBox,
+        densityBox,
+        submergedBox
+      ]
+    } );
+
+    this.addChild( new AlignBox( rightSideVBox, {
       alignBoundsProperty: this.visibleBoundsProperty,
       xAlign: 'right',
       yAlign: 'top',
@@ -137,7 +144,7 @@ export default class BuoyancyExploreScreenView extends SecondaryMassScreenView<B
     } ) );
 
     // DerivedProperty doesn't need disposal, since everything here lives for the lifetime of the simulation
-    this.rightBarrierViewPointPropertyProperty.value = new DerivedProperty( [ this.rightBox.boundsProperty, this.visibleBoundsProperty ], ( boxBounds, visibleBounds ) => {
+    this.rightBarrierViewPointPropertyProperty.value = new DerivedProperty( [ rightSideVBox.boundsProperty, this.visibleBoundsProperty ], ( boxBounds, visibleBounds ) => {
       // We might not have a box, see https://github.com/phetsims/density/issues/110
       return new Vector2( isFinite( boxBounds.left ) ? boxBounds.left : visibleBounds.right, visibleBounds.centerY );
     }, {

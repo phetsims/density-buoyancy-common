@@ -10,7 +10,7 @@ import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import DynamicProperty from '../../../../axon/js/DynamicProperty.js';
 import Property from '../../../../axon/js/Property.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
-import { AlignBox, Node, VBox } from '../../../../scenery/js/imports.js';
+import { AlignBox, VBox } from '../../../../scenery/js/imports.js';
 import Panel from '../../../../sun/js/Panel.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 import Material from '../../common/model/Material.js';
@@ -37,7 +37,7 @@ const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
 
 export default class BuoyancyShapesScreenView extends SecondaryMassScreenView<BuoyancyShapesModel> {
 
-  protected rightBox: Node;
+  protected rightBox: MultiSectionPanelsNode;
 
   private positionInfoButton: () => void;
 
@@ -71,21 +71,9 @@ export default class BuoyancyShapesScreenView extends SecondaryMassScreenView<Bu
       margin: MARGIN
     } ) );
 
-
-    const densityBox = new DensityAccordionBox(
-      [ model.materialProperty ], {
-        expandedProperty: model.densityExpandedProperty
-      } );
-
     const displayOptionsNode = new DisplayOptionsNode( model );
 
-    this.addChild( new AlignBox( new VBox( {
-      spacing: 10,
-      children: [
-        densityBox,
-        new Panel( displayOptionsNode, DensityBuoyancyCommonConstants.PANEL_OPTIONS )
-      ]
-    } ), {
+    this.addChild( new AlignBox( new Panel( displayOptionsNode, DensityBuoyancyCommonConstants.PANEL_OPTIONS ), {
       alignBoundsProperty: this.visibleBoundsProperty,
       xAlign: 'left',
       yAlign: 'bottom',
@@ -147,7 +135,22 @@ export default class BuoyancyShapesScreenView extends SecondaryMassScreenView<Bu
         ) ]
     );
 
-    this.addChild( new AlignBox( this.rightBox, {
+    const densityBox = new DensityAccordionBox(
+      [ model.materialProperty ], {
+        expandedProperty: model.densityExpandedProperty,
+        contentWidthMax: this.rightBox.content.width
+      } );
+
+    const rightSideVBox = new VBox( {
+      spacing: 10,
+      align: 'right',
+      children: [
+        this.rightBox,
+        densityBox
+      ]
+    } );
+
+    this.addChild( new AlignBox( rightSideVBox, {
       alignBoundsProperty: this.visibleBoundsProperty,
       xAlign: 'right',
       yAlign: 'top',
@@ -155,7 +158,7 @@ export default class BuoyancyShapesScreenView extends SecondaryMassScreenView<Bu
     } ) );
 
     // DerivedProperty doesn't need disposal, since everything here lives for the lifetime of the simulation
-    this.rightBarrierViewPointPropertyProperty.value = new DerivedProperty( [ this.rightBox.boundsProperty, this.visibleBoundsProperty ], ( boxBounds, visibleBounds ) => {
+    this.rightBarrierViewPointPropertyProperty.value = new DerivedProperty( [ rightSideVBox.boundsProperty, this.visibleBoundsProperty ], ( boxBounds, visibleBounds ) => {
       // We might not have a box, see https://github.com/phetsims/density/issues/110
       return new Vector2( isFinite( boxBounds.left ) ? boxBounds.left : visibleBounds.right, visibleBounds.centerY );
     }, {

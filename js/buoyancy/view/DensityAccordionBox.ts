@@ -22,12 +22,12 @@ import ReadoutListAccordionBox, { CustomReadoutObject, ReadoutListAccordionBoxOp
 const HBOX_SPACING = 5;
 
 export default class DensityAccordionBox extends ReadoutListAccordionBox {
+
   public constructor(
     providedOptions?: ReadoutListAccordionBoxOptions
   ) {
 
     super( DensityBuoyancyCommonStrings.densityStringProperty, providedOptions );
-
   }
 
   /**

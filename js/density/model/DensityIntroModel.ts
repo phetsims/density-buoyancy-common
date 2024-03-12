@@ -69,6 +69,7 @@ export default class DensityIntroModel extends DensityBuoyancyModel {
       this.secondaryMass.internalVisibleProperty.value = mode === TwoBlockMode.TWO_BLOCKS;
     } );
 
+    // TODO: Many duplicates, move to DensityBuoyancyModel with option to instrument? https://github.com/phetsims/density-buoyancy-common/issues/95`
     this.densityExpandedProperty = new BooleanProperty( true, {
       tandem: tandem.createTandem( 'densityExpandedProperty' )
     } );

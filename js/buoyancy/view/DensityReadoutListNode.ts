@@ -64,8 +64,9 @@ export default class DensityReadoutListNode extends VBox {
       customFormats: null
     }, providedOptions );
 
-    assert && options.customNames && assert( options.customNames.length === materialProperties.length, 'customNames option should correspond to provided materials' );
-    assert && options.customFormats && assert( options.customFormats.length === materialProperties.length, 'customFormats option should correspond to provided materials' );
+    // TODO: Commenting out the assertions, this is not always true, Explore Screen View can have different number of materials, https://github.com/phetsims/density-buoyancy-common/issues/103
+    // assert && options.customNames && assert( options.customNames.length === materialProperties.length, 'customNames option should correspond to provided materials' );
+    // assert && options.customFormats && assert( options.customFormats.length === materialProperties.length, 'customFormats option should correspond to provided materials' );
 
     // Clear the previous materials that may have been created.
     this.cleanupEmitter.emit();

@@ -15,7 +15,7 @@ import PrimarySecondaryControlsNode from '../../common/view/PrimarySecondaryCont
 import SecondaryMassScreenView from '../../common/view/SecondaryMassScreenView.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
-import DensityReadoutNode from './DensityReadoutNode.js';
+import DensityNumberLineNode from './DensityNumberLineNode.js';
 import DensityIntroModel from '../model/DensityIntroModel.js';
 import DensityBuoyancyScreenView, { DensityBuoyancyScreenViewOptions } from '../../common/view/DensityBuoyancyScreenView.js';
 import { combineOptions } from '../../../../phet-core/js/optionize.js';
@@ -49,7 +49,7 @@ export default class DensityIntroScreenView extends SecondaryMassScreenView<Dens
       } );
 
     const accordionTandem = tandem.createTandem( 'densityAccordionBox' );
-    const densityAccordionBox = new AccordionBox( new DensityReadoutNode(
+    const densityAccordionBox = new AccordionBox( new DensityNumberLineNode(
       // DerivedProperty doesn't need disposal, since everything here lives for the lifetime of the simulation
       new DerivedProperty( [ model.primaryMass.materialProperty ], material => material.density ),
       new DerivedProperty( [ model.secondaryMass.materialProperty ], material => material.density ),

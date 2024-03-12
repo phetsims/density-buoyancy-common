@@ -39,7 +39,7 @@ const LINE_PADDING = 2;
 const mvt = ( density: number ) => WIDTH * Math.min( density, MAX_DENSITY ) / MAX_DENSITY;
 const MAX_LABEL_WIDTH = 80;
 
-export default class DensityReadoutNode extends Node {
+export default class DensityNumberLineNode extends Node {
 
   public constructor( densityAProperty: TReadOnlyProperty<number>, densityBProperty: TReadOnlyProperty<number>,
                       secondaryMassVisibleProperty: TReadOnlyProperty<boolean>, options?: NodeOptions ) {
@@ -174,4 +174,4 @@ export default class DensityReadoutNode extends Node {
   }
 }
 
-densityBuoyancyCommon.register( 'DensityReadoutNode', DensityReadoutNode );
+densityBuoyancyCommon.register( 'DensityNumberLineNode', DensityNumberLineNode );

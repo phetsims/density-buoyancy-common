@@ -18,7 +18,7 @@ import TinyEmitter from '../../../../axon/js/TinyEmitter.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
 import Utils from '../../../../dot/js/Utils.js';
-import optionize, { combineOptions, optionize4 } from '../../../../phet-core/js/optionize.js';
+import { combineOptions, optionize4 } from '../../../../phet-core/js/optionize.js';
 import AccordionBox, { AccordionBoxOptions } from '../../../../sun/js/AccordionBox.js';
 
 const DEFAULT_FONT = new PhetFont( 14 );
@@ -39,6 +39,12 @@ type SelfOptions = {
   contentWidthMax?: number;
 };
 
+type CustomMaterial = {
+  materialProperty: TReadOnlyProperty<Material>;
+  customNameProperty?: TReadOnlyProperty<string>;
+  customFormat?: RichTextOptions;
+};
+
 type DensityAccordionBoxOptions = SelfOptions & AccordionBoxOptions;
 
 export default class DensityAccordionBox extends AccordionBox {
@@ -49,7 +55,7 @@ export default class DensityAccordionBox extends AccordionBox {
   private readonly contentWidthMax: number;
 
   public constructor(
-    materialProperties: TReadOnlyProperty<Material>[],
+    customMaterials: CustomMaterial[],
     providedOptions?: DensityAccordionBoxOptions
   ) {
 
@@ -73,22 +79,13 @@ export default class DensityAccordionBox extends AccordionBox {
 
     this.densityReadoutBox = densityReadout;
     this.contentWidthMax = options.contentWidthMax;
-    this.setMaterials( materialProperties, options.setMaterialsOptions );
+    this.setMaterials( customMaterials );
   }
 
   /**
    * Overwrite the displayed densities with a new set of materialProperties.
    */
-  public setMaterials( materialProperties: TReadOnlyProperty<Material>[], providedOptions?: SetMaterialsOptions ): void {
-
-    const options = optionize<SetMaterialsOptions>()( {
-      customNames: null,
-      customFormats: null
-    }, providedOptions );
-
-    // TODO: Commenting out the assertions, this is not always true, Explore Screen View can have different number of materials, https://github.com/phetsims/density-buoyancy-common/issues/103
-    // assert && options.customNames && assert( options.customNames.length === materialProperties.length, 'customNames option should correspond to provided materials' );
-    // assert && options.customFormats && assert( options.customFormats.length === materialProperties.length, 'customFormats option should correspond to provided materials' );
+  public setMaterials( customMaterials: CustomMaterial[] ): void {
 
     // Clear the previous materials that may have been created.
     this.cleanupEmitter.emit();
@@ -115,11 +112,13 @@ export default class DensityAccordionBox extends AccordionBox {
                } );
       } );
 
-    this.densityReadoutBox.children = materialProperties.map( ( materialProperty, index ) => {
+    this.densityReadoutBox.children = customMaterials.map( customMaterial => {
+
+      const materialProperty = customMaterial.materialProperty;
 
       // Get the custom name from the provided options, or create a dynamic property that derives from the material's name
-      const nameProperty = options?.customNames ?
-                           options.customNames[ index ] :
+      const nameProperty = customMaterial.customNameProperty ?
+                           customMaterial.customNameProperty :
                            new DynamicProperty<string, string, Material>( materialProperty, {
                              derive: material => material.nameProperty
                            } );
@@ -128,7 +127,7 @@ export default class DensityAccordionBox extends AccordionBox {
 
       // Create the derived string property for the density readout
       const densityDerivedStringProperty = getMysteryMaterialReadoutStringProperty( materialProperty );
-      const customFormat = options.customFormats ? options.customFormats[ index ] : {};
+      const customFormat = customMaterial.customFormat ? customMaterial.customFormat : {};
       const densityReadout = new RichText( densityDerivedStringProperty,
         combineOptions<RichTextOptions>( {}, textOptions, customFormat ) );
 

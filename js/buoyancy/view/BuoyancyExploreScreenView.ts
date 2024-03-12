@@ -110,8 +110,9 @@ export default class BuoyancyExploreScreenView extends SecondaryMassScreenView<B
       } );
     } );
 
+    // Materials are set in densityBox.setMaterials() below
     const densityBox = new DensityAccordionBox(
-      [ model.primaryMass.materialProperty, model.secondaryMass.materialProperty ], {
+      [], {
         expandedProperty: model.densityExpandedProperty,
         contentWidthMax: this.rightBox.content.width
       } );
@@ -122,7 +123,13 @@ export default class BuoyancyExploreScreenView extends SecondaryMassScreenView<B
     // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
     model.secondaryMass.visibleProperty.link( visible => {
       const masses = visible ? [ model.primaryMass, model.secondaryMass ] : [ model.primaryMass ];
-      densityBox.setMaterials( masses.map( mass => mass.materialProperty ), customExploreScreenFormatting );
+      densityBox.setMaterials( masses.map( ( mass, index ) => {
+        return {
+          materialProperty: mass.materialProperty,
+          customNameProperty: customExploreScreenFormatting.customNames[ index ],
+          customFormat: customExploreScreenFormatting.customFormats[ index ]
+        };
+      } ) );
       submergedBox.setSubmergedVolumes( masses, customExploreScreenFormatting );
     } );
 

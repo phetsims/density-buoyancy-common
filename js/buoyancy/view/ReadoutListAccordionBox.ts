@@ -1,7 +1,9 @@
 // Copyright 2019-2024, University of Colorado Boulder
 
 /**
- * An AccordionBox that displays the percentage of each material that is submerged.
+ * Common class for DensityAccordionBox and SubmergedAccordionBox. This class is used to create an AccordionBox that
+ * displays a list of readouts. The readouts are created by passing an array of CustomReadoutObjects to the setReadout
+ * method.
  *
  * @author Agustín Vallejo
  */

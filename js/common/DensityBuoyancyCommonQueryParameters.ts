@@ -28,6 +28,13 @@ const DensityBuoyancyCommonQueryParameters = QueryStringMachine.getAll( {
     public: true
   },
 
+  // Displays/hides the percentage submerged readout accordion box
+  percentageSubmergedVisible: {
+    type: 'boolean',
+    defaultValue: true,
+    public: true
+  },
+
   // Changes the "aspect ratio" of the pool, for internal testing/development
   poolWidthMultiplier: {
     type: 'number',

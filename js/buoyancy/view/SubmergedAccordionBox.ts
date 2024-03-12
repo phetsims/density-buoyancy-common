@@ -16,6 +16,7 @@ import Gravity from '../../common/model/Gravity.js';
 import Material from '../../common/model/Material.js';
 import ReadoutListAccordionBox, { CustomReadoutObject, ReadoutListAccordionBoxOptions } from './ReadoutListAccordionBox.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
+import DensityBuoyancyCommonPreferences from '../../common/model/DensityBuoyancyCommonPreferences.js';
 
 export default class SubmergedAccordionBox extends ReadoutListAccordionBox {
 
@@ -25,7 +26,11 @@ export default class SubmergedAccordionBox extends ReadoutListAccordionBox {
     providedOptions?: ReadoutListAccordionBoxOptions
   ) {
 
-    super( DensityBuoyancyCommonStrings.percentSubmergedStringProperty, providedOptions );
+    const options = combineOptions<ReadoutListAccordionBoxOptions>( {
+      visibleProperty: DensityBuoyancyCommonPreferences.percentageSubmergedVisibleProperty
+    }, providedOptions );
+
+    super( DensityBuoyancyCommonStrings.percentSubmergedStringProperty, options );
   }
 
   /**

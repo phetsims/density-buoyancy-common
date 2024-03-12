@@ -12,10 +12,15 @@
 
 import optionize, { EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
 import PickRequired from '../../../../phet-core/js/types/PickRequired.js';
-import { VBox, VBoxOptions } from '../../../../scenery/js/imports.js';
+import { RichText, Text, VBox, VBoxOptions } from '../../../../scenery/js/imports.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonPreferences from '../model/DensityBuoyancyCommonPreferences.js';
 import VolumeUnitsControl from './VolumeUnitsControl.js';
+import PreferencesControl from '../../../../joist/js/preferences/PreferencesControl.js';
+import Tandem from '../../../../tandem/js/Tandem.js';
+import PreferencesDialogConstants from '../../../../joist/js/preferences/PreferencesDialogConstants.js';
+import ToggleSwitch from '../../../../sun/js/ToggleSwitch.js';
+import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 
 type SelfOptions = EmptySelfOptions;
 
@@ -35,11 +40,27 @@ export default class DensityBuoyancyCommonPreferencesNode extends VBox {
       tandem: options.tandem.createTandem( 'volumeUnitsControl' )
     } );
 
+    const percentageSubmergedVisibleControl = new PercentageSubmergedVisibleControl( options.tandem.createTandem( 'percentageSubmergedVisibleControl' ) );
+
     options.children = [
-      volumeUnitsControl
+      volumeUnitsControl,
+      percentageSubmergedVisibleControl
     ];
 
     super( options );
+  }
+}
+
+class PercentageSubmergedVisibleControl extends PreferencesControl {
+  public constructor( tandem: Tandem ) {
+    super( {
+      isDisposable: false,
+      labelNode: new Text( DensityBuoyancyCommonStrings.preferences.percentageSubmerged.titleStringProperty, PreferencesDialogConstants.CONTROL_LABEL_OPTIONS ),
+      descriptionNode: new RichText( DensityBuoyancyCommonStrings.preferences.percentageSubmerged.descriptionStringProperty,
+        PreferencesDialogConstants.CONTROL_DESCRIPTION_OPTIONS ),
+      controlNode: new ToggleSwitch( DensityBuoyancyCommonPreferences.percentageSubmergedVisibleProperty, false, true, PreferencesDialogConstants.TOGGLE_SWITCH_OPTIONS ),
+      tandem: tandem
+    } );
   }
 }
 

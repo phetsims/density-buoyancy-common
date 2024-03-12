@@ -257,6 +257,14 @@ type StringsType = {
   'vectorScaleStringProperty': LocalizedStringProperty;
   'volumeUnits': string;
   'volumeUnitsStringProperty': LocalizedStringProperty;
+  'preferences': {
+    'percentageSubmerged': {
+      'title': string;
+      'titleStringProperty': LocalizedStringProperty;
+      'description': string;
+      'descriptionStringProperty': LocalizedStringProperty;
+    }
+  };
   'liters': string;
   'litersStringProperty': LocalizedStringProperty;
   'decimetersCubed': string;

@@ -26,6 +26,7 @@ import arrayRemove from '../../../../phet-core/js/arrayRemove.js';
 import DensityAccordionBox from './DensityAccordionBox.js';
 import DisplayOptionsNode from '../../common/view/DisplayOptionsNode.js';
 import SubmergedAccordionBox from './SubmergedAccordionBox.js';
+import PatternStringProperty from '../../../../axon/js/PatternStringProperty.js';
 
 // constants
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
@@ -43,7 +44,7 @@ export default class BuoyancyExploreScreenView extends SecondaryMassScreenView<B
     }, options ) );
 
     const customExploreScreenFormatting = {
-      readoutNameProperties: [ DensityBuoyancyCommonStrings.blockAStringProperty, DensityBuoyancyCommonStrings.blockBStringProperty ],
+      readoutNameProperties: [ model.primaryMass, model.secondaryMass ].map( mass => new PatternStringProperty( DensityBuoyancyCommonStrings.blockPatternStringProperty, { tag: mass.nameProperty } ) ),
       readoutFormats: [
         { font: DensityBuoyancyCommonConstants.ITEM_FONT, fill: DensityBuoyancyCommonColors.labelPrimaryProperty },
         { font: DensityBuoyancyCommonConstants.ITEM_FONT, fill: DensityBuoyancyCommonColors.labelSecondaryProperty }
@@ -112,9 +113,9 @@ export default class BuoyancyExploreScreenView extends SecondaryMassScreenView<B
 
     // Materials are set in densityBox.setMaterials() below
     const densityBox = new DensityAccordionBox( {
-        expandedProperty: model.densityExpandedProperty,
-        contentWidthMax: this.rightBox.content.width
-      } );
+      expandedProperty: model.densityExpandedProperty,
+      contentWidthMax: this.rightBox.content.width
+    } );
 
     const submergedBox = new SubmergedAccordionBox( model.gravityProperty, model.liquidMaterialProperty, {
       contentWidthMax: this.rightBox.content.width

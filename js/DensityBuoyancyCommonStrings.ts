@@ -207,10 +207,8 @@ type StringsType = {
     'e': string;
     'eStringProperty': LocalizedStringProperty;
   };
-  'blockA': string;
-  'blockAStringProperty': LocalizedStringProperty;
-  'blockB': string;
-  'blockBStringProperty': LocalizedStringProperty;
+  'blockPattern': string;
+  'blockPatternStringProperty': LocalizedStringProperty;
   'blocks': string;
   'blocksStringProperty': LocalizedStringProperty;
   'blockSet': {

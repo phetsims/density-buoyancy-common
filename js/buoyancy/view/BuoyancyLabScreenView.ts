@@ -27,6 +27,7 @@ import MultiSectionPanelsNode from '../../common/view/MultiSectionPanelsNode.js'
 import DisplayedFluidPanel from './DisplayedFluidPanel.js';
 import SubmergedAccordionBox from './SubmergedAccordionBox.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
+import PatternStringProperty from '../../../../axon/js/PatternStringProperty.js';
 
 // constants
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
@@ -121,7 +122,7 @@ export default class BuoyancyLabScreenView extends DensityBuoyancyScreenView<Buo
         contentWidthMax: this.rightBox.content.width,
         readoutItems: [ {
           readoutItem: model.primaryMass,
-          readoutNameProperty: DensityBuoyancyCommonStrings.blockAStringProperty
+          readoutNameProperty: new PatternStringProperty( DensityBuoyancyCommonStrings.blockPatternStringProperty, { tag: model.primaryMass.nameProperty } )
         } ]
       } );
 

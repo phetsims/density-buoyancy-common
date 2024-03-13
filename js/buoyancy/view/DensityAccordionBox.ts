@@ -17,7 +17,7 @@ import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
 import Utils from '../../../../dot/js/Utils.js';
 import ReadoutListAccordionBox, { CustomReadoutObject, ReadoutData, ReadoutListAccordionBoxOptions } from './ReadoutListAccordionBox.js';
 
-export default class DensityAccordionBox extends ReadoutListAccordionBox {
+export default class DensityAccordionBox extends ReadoutListAccordionBox<TReadOnlyProperty<Material>> {
 
   public constructor(
     providedOptions?: ReadoutListAccordionBoxOptions
@@ -26,10 +26,18 @@ export default class DensityAccordionBox extends ReadoutListAccordionBox {
     super( DensityBuoyancyCommonStrings.densityStringProperty, providedOptions );
   }
 
-  public override generateReadout( customMaterial: CustomReadoutObject ): ReadoutData {
+  public override generateReadout( customMaterial: CustomReadoutObject<TReadOnlyProperty<Material>> ): ReadoutData {
+
+    const materialProperty = customMaterial.readoutItem;
+
+    const nameProperty = customMaterial.customNameProperty ?
+                         customMaterial.customNameProperty :
+                         new DynamicProperty<string, string, Material>( materialProperty, {
+                           derive: material => material.nameProperty
+                         } );
 
     // Returns the filled in string for the material readout or '?' if the material is hidden
-    const getMysteryMaterialReadoutStringProperty = ( materialProperty: TReadOnlyProperty<Material> ) => new DerivedProperty(
+    const valueProperty = new DerivedProperty(
       [
         materialProperty,
         DensityBuoyancyCommonConstants.KILOGRAMS_PER_VOLUME_PATTERN_STRING_PROPERTY,
@@ -38,23 +46,13 @@ export default class DensityAccordionBox extends ReadoutListAccordionBox {
       ( material, patternStringProperty, questionMarkString ) => {
         return material.hidden ?
                questionMarkString :
+
+               // TODO: PatternStringProperty? https://github.com/phetsims/buoyancy/issues/112
                StringUtils.fillIn( patternStringProperty, {
                  value: Utils.toFixed( material.density / 1000, 2 ),
                  decimalPlaces: 2
                } );
       } );
-
-    const materialProperty = customMaterial.materialProperty!;
-
-    assert && assert( materialProperty, 'materialProperty should be defined' );
-
-    const nameProperty = customMaterial.customNameProperty ?
-                         customMaterial.customNameProperty :
-                         new DynamicProperty<string, string, Material>( materialProperty, {
-                           derive: material => material.nameProperty
-                         } );
-
-    const valueProperty = getMysteryMaterialReadoutStringProperty( materialProperty );
 
 
     this.cleanupEmitter.addListener( () => {

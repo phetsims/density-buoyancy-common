@@ -126,14 +126,14 @@ export default class BuoyancyExploreScreenView extends SecondaryMassScreenView<B
       const masses = visible ? [ model.primaryMass, model.secondaryMass ] : [ model.primaryMass ];
       densityBox.setReadout( masses.map( ( mass, index ) => {
         return {
-          materialProperty: mass.materialProperty,
+          readoutItem: mass.materialProperty,
           customNameProperty: customExploreScreenFormatting.customNames[ index ],
           customFormat: customExploreScreenFormatting.customFormats[ index ]
         };
       } ) );
       submergedBox.setReadout( masses.map( ( mass, index ) => {
         return {
-          mass: mass,
+          readoutItem: mass,
           customNameProperty: customExploreScreenFormatting.customNames[ index ],
           customFormat: customExploreScreenFormatting.customFormats[ index ]
         };

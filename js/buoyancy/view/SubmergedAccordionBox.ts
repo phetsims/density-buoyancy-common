@@ -16,8 +16,9 @@ import Material from '../../common/model/Material.js';
 import ReadoutListAccordionBox, { CustomReadoutObject, ReadoutData, ReadoutListAccordionBoxOptions } from './ReadoutListAccordionBox.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import DensityBuoyancyCommonPreferences from '../../common/model/DensityBuoyancyCommonPreferences.js';
+import Mass from '../../common/model/Mass.js';
 
-export default class SubmergedAccordionBox extends ReadoutListAccordionBox {
+export default class SubmergedAccordionBox extends ReadoutListAccordionBox<Mass> {
 
   public constructor(
     private readonly gravityProperty: TReadOnlyProperty<Gravity>,
@@ -32,9 +33,8 @@ export default class SubmergedAccordionBox extends ReadoutListAccordionBox {
     super( DensityBuoyancyCommonStrings.percentSubmergedStringProperty, options );
   }
 
-  public override generateReadout( customObject: CustomReadoutObject ): ReadoutData {
-    const mass = customObject.mass!;
-    assert && assert( mass, 'Mass should be defined' );
+  public override generateReadout( customObject: CustomReadoutObject<Mass> ): ReadoutData {
+    const mass = customObject.readoutItem;
 
     return {
       nameProperty: customObject.customNameProperty ? customObject.customNameProperty : mass.nameProperty,

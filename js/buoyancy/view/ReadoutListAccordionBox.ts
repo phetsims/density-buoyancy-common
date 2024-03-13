@@ -11,13 +11,11 @@
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import { HBox, RichText, RichTextOptions, Text, TextOptions, VBox } from '../../../../scenery/js/imports.js';
-import Material from '../../common/model/Material.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import TinyEmitter from '../../../../axon/js/TinyEmitter.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 import { combineOptions, optionize4 } from '../../../../phet-core/js/optionize.js';
 import AccordionBox, { AccordionBoxOptions } from '../../../../sun/js/AccordionBox.js';
-import Mass from '../../common/model/Mass.js';
 
 const DEFAULT_FONT = new PhetFont( 14 );
 const HBOX_SPACING = 5;
@@ -28,9 +26,8 @@ type SelfOptions = {
   contentWidthMax?: number;
 };
 
-export type CustomReadoutObject = {
-  mass?: Mass | null; // Masses to be passed to the SubmergedAccordionBox
-  materialProperty?: TReadOnlyProperty<Material> | null; // Materials to be passed to the DensityAccordionBox
+export type CustomReadoutObject<ReadoutType> = {
+  readoutItem: ReadoutType; // Provided for use by generateReadout() to create the name/value Properties
   customNameProperty?: TReadOnlyProperty<string>; // Optional: Custom name for the readout
   customFormat?: RichTextOptions; // Optional: Custom format for the readout
 };
@@ -42,7 +39,7 @@ export type ReadoutData = {
 
 export type ReadoutListAccordionBoxOptions = SelfOptions & AccordionBoxOptions;
 
-export default abstract class ReadoutListAccordionBox extends AccordionBox {
+export default abstract class ReadoutListAccordionBox<ReadoutType> extends AccordionBox {
 
   protected cleanupEmitter = new TinyEmitter();
   protected textOptions: TextOptions = {};
@@ -81,9 +78,7 @@ export default abstract class ReadoutListAccordionBox extends AccordionBox {
     };
   }
 
-  /**
-   */
-  public setReadout( customReadoutObjects: CustomReadoutObject[] ): void {
+  public setReadout( customReadoutObjects: CustomReadoutObject<ReadoutType>[] ): void {
     // Clear the previous materials that may have been created.
     this.cleanupEmitter.emit();
     this.cleanupEmitter.removeAllListeners();
@@ -111,7 +106,7 @@ export default abstract class ReadoutListAccordionBox extends AccordionBox {
     } );
   }
 
-  public abstract generateReadout( customObject: CustomReadoutObject ): ReadoutData;
+  public abstract generateReadout( customObject: CustomReadoutObject<ReadoutType> ): ReadoutData;
 
   public override dispose(): void {
     this.cleanupEmitter.emit();

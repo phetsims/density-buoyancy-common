@@ -266,7 +266,7 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
       ] : [];
       assert && assert( materials.length > 0, 'unsupported Scene', scene );
       densityBox.setReadout( materials.map( material => {
-        return { materialProperty: material };
+        return { readoutItem: material };
       } ) );
     } );
 

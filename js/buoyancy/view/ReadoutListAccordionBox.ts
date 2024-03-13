@@ -10,12 +10,12 @@
 
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
-import { RichTextOptions, Text, TextOptions, VBox } from '../../../../scenery/js/imports.js';
+import { HBox, RichText, RichTextOptions, Text, TextOptions, VBox } from '../../../../scenery/js/imports.js';
 import Material from '../../common/model/Material.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import TinyEmitter from '../../../../axon/js/TinyEmitter.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
-import { optionize4 } from '../../../../phet-core/js/optionize.js';
+import { combineOptions, optionize4 } from '../../../../phet-core/js/optionize.js';
 import AccordionBox, { AccordionBoxOptions } from '../../../../sun/js/AccordionBox.js';
 import Mass from '../../common/model/Mass.js';
 
@@ -37,7 +37,7 @@ export type CustomReadoutObject = {
 
 export type ReadoutListAccordionBoxOptions = SelfOptions & AccordionBoxOptions;
 
-export default class ReadoutListAccordionBox extends AccordionBox {
+export default abstract class ReadoutListAccordionBox extends AccordionBox {
 
   protected cleanupEmitter = new TinyEmitter();
   protected textOptions: TextOptions = {};
@@ -82,7 +82,34 @@ export default class ReadoutListAccordionBox extends AccordionBox {
     // Clear the previous materials that may have been created.
     this.cleanupEmitter.emit();
     this.cleanupEmitter.removeAllListeners();
+
+
+    this.readoutBox.children = customReadoutObjects.map( customObject => {
+
+      const { nameProperty, valueProperty } = this.generateReadout( customObject );
+
+      const labelText = new RichText( nameProperty, this.textOptions );
+      const customFormat = customObject.customFormat ? customObject.customFormat : {};
+      const valueText = new RichText( valueProperty,
+        combineOptions<RichTextOptions>( {}, this.textOptions, customFormat ) );
+
+      this.cleanupEmitter.addListener( () => {
+        valueText.dispose();
+        labelText.dispose();
+      } );
+
+      return new HBox( {
+        children: [ labelText, valueText ],
+        align: 'origin',
+        spacing: 5
+      } );
+    } );
   }
+
+  public abstract generateReadout( customObject: CustomReadoutObject ): {
+    nameProperty: TReadOnlyProperty<string>;
+    valueProperty: TReadOnlyProperty<string>;
+  };
 
   public override dispose(): void {
     this.cleanupEmitter.emit();

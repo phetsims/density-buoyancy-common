@@ -9,17 +9,13 @@
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import DynamicProperty from '../../../../axon/js/DynamicProperty.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
-import { HBox, RichText, RichTextOptions } from '../../../../scenery/js/imports.js';
 import Material from '../../common/model/Material.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
 import Utils from '../../../../dot/js/Utils.js';
-import { combineOptions } from '../../../../phet-core/js/optionize.js';
 import ReadoutListAccordionBox, { CustomReadoutObject, ReadoutListAccordionBoxOptions } from './ReadoutListAccordionBox.js';
-
-const HBOX_SPACING = 5;
 
 export default class DensityAccordionBox extends ReadoutListAccordionBox {
 
@@ -30,12 +26,10 @@ export default class DensityAccordionBox extends ReadoutListAccordionBox {
     super( DensityBuoyancyCommonStrings.densityStringProperty, providedOptions );
   }
 
-  /**
-   * Overwrite the displayed densities with a new set of materialProperties.
-   */
-  public override setReadout( customMaterials: CustomReadoutObject[] ): void {
-
-    super.setReadout( customMaterials );
+  public override generateReadout( customMaterial: CustomReadoutObject ): {
+    nameProperty: TReadOnlyProperty<string>;
+    valueProperty: TReadOnlyProperty<string>;
+  } {
 
     // Returns the filled in string for the material readout or '?' if the material is hidden
     const getMysteryMaterialReadoutStringProperty = ( materialProperty: TReadOnlyProperty<Material> ) => new DerivedProperty(
@@ -53,45 +47,28 @@ export default class DensityAccordionBox extends ReadoutListAccordionBox {
                } );
       } );
 
-    this.readoutBox.children = customMaterials.map( customMaterial => {
+    const materialProperty = customMaterial.materialProperty!;
 
-      const materialProperty = customMaterial.materialProperty!;
+    assert && assert( materialProperty, 'materialProperty should be defined' );
 
-      assert && assert( materialProperty, 'materialProperty should be defined' );
+    const nameProperty = customMaterial.customNameProperty ?
+                         customMaterial.customNameProperty :
+                         new DynamicProperty<string, string, Material>( materialProperty, {
+                           derive: material => material.nameProperty
+                         } );
 
-      // Get the custom name from the provided options, or create a dynamic property that derives from the material's name
-      const nameProperty = customMaterial.customNameProperty ?
-                           customMaterial.customNameProperty :
-                           new DynamicProperty<string, string, Material>( materialProperty, {
-                             derive: material => material.nameProperty
-                           } );
-      const nameColonProperty = new DerivedProperty(
-        [ nameProperty, DensityBuoyancyCommonStrings.nameColonPatternStringProperty ], ( name, pattern ) => {
-          return StringUtils.fillIn( pattern, {
-            name: name
-          } );
-        } );
-      const labelText = new RichText( nameColonProperty, this.textOptions );
+    const valueProperty = getMysteryMaterialReadoutStringProperty( materialProperty );
 
-      // Create the derived string property for the density readout
-      const densityDerivedStringProperty = getMysteryMaterialReadoutStringProperty( materialProperty );
-      const customFormat = customMaterial.customFormat ? customMaterial.customFormat : {};
-      const densityReadout = new RichText( densityDerivedStringProperty,
-        combineOptions<RichTextOptions>( {}, this.textOptions, customFormat ) );
 
-      this.cleanupEmitter.addListener( () => {
-        densityDerivedStringProperty.dispose();
-        densityReadout.dispose();
-        nameColonProperty.dispose();
-        labelText.dispose();
-      } );
-
-      return new HBox( {
-        children: [ labelText, densityReadout ],
-        align: 'origin',
-        spacing: HBOX_SPACING
-      } );
+    this.cleanupEmitter.addListener( () => {
+      nameProperty.dispose();
+      valueProperty.dispose();
     } );
+
+    return {
+      nameProperty: nameProperty,
+      valueProperty: valueProperty
+    };
   }
 }
 

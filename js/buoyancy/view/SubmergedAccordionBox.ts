@@ -13,7 +13,7 @@ import { combineOptions } from '../../../../phet-core/js/optionize.js';
 import Utils from '../../../../dot/js/Utils.js';
 import Gravity from '../../common/model/Gravity.js';
 import Material from '../../common/model/Material.js';
-import ReadoutListAccordionBox, { CustomReadoutObject, ReadoutData, ReadoutListAccordionBoxOptions } from './ReadoutListAccordionBox.js';
+import ReadoutListAccordionBox, { ReadoutData, ReadoutListAccordionBoxOptions } from './ReadoutListAccordionBox.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import DensityBuoyancyCommonPreferences from '../../common/model/DensityBuoyancyCommonPreferences.js';
 import Mass from '../../common/model/Mass.js';
@@ -33,8 +33,7 @@ export default class SubmergedAccordionBox extends ReadoutListAccordionBox<Mass>
     super( DensityBuoyancyCommonStrings.percentSubmergedStringProperty, options );
   }
 
-  public override generateReadout( customObject: CustomReadoutObject<Mass> ): ReadoutData {
-    const mass = customObject.readoutItem;
+  public override generateReadout( mass: Mass ): ReadoutData {
 
     return {
       nameProperty: mass.nameProperty,

@@ -88,7 +88,7 @@ export default abstract class ReadoutListAccordionBox<ReadoutType> extends Accor
 
     this.readoutBox.children = customReadoutObjects.map( customObject => {
 
-      const readoutData = this.generateReadout( customObject );
+      const readoutData = this.generateReadout( customObject.readoutItem );
       const nameProperty = customObject.customNameProperty || readoutData.nameProperty;
 
       const labelText = new RichText( nameProperty, this.textOptions );
@@ -109,7 +109,7 @@ export default abstract class ReadoutListAccordionBox<ReadoutType> extends Accor
     } );
   }
 
-  public abstract generateReadout( customObject: CustomReadoutObject<ReadoutType> ): ReadoutData;
+  public abstract generateReadout( readoutType: ReadoutType ): ReadoutData;
 
   public override dispose(): void {
     this.cleanupEmitter.emit();

@@ -15,7 +15,7 @@ import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js'
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
 import Utils from '../../../../dot/js/Utils.js';
-import ReadoutListAccordionBox, { CustomReadoutObject, ReadoutData, ReadoutListAccordionBoxOptions } from './ReadoutListAccordionBox.js';
+import ReadoutListAccordionBox, { ReadoutData, ReadoutListAccordionBoxOptions } from './ReadoutListAccordionBox.js';
 
 export default class DensityAccordionBox extends ReadoutListAccordionBox<TReadOnlyProperty<Material>> {
 
@@ -26,9 +26,7 @@ export default class DensityAccordionBox extends ReadoutListAccordionBox<TReadOn
     super( DensityBuoyancyCommonStrings.densityStringProperty, providedOptions );
   }
 
-  public override generateReadout( customMaterial: CustomReadoutObject<TReadOnlyProperty<Material>> ): ReadoutData {
-
-    const materialProperty = customMaterial.readoutItem;
+  public override generateReadout( materialProperty: TReadOnlyProperty<Material> ): ReadoutData {
 
     // Use DynamicProperty so that this name is updated based on the material AND material's name changing.
     const nameProperty = new DynamicProperty<string, string, Material>( materialProperty, {

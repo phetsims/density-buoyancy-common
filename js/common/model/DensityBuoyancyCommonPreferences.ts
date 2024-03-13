@@ -1,4 +1,4 @@
-// Copyright 2023, University of Colorado Boulder
+// Copyright 2023-2024, University of Colorado Boulder
 
 /**
  * Model for Density/Buoyancy preferences, accessed via the Preferences dialog. They are global, and affect all screens.

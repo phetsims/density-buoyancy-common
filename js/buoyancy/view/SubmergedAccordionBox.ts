@@ -17,6 +17,7 @@ import Material from '../../common/model/Material.js';
 import ReadoutListAccordionBox, { CustomReadoutObject, ReadoutListAccordionBoxOptions } from './ReadoutListAccordionBox.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import DensityBuoyancyCommonPreferences from '../../common/model/DensityBuoyancyCommonPreferences.js';
+import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
 
 export default class SubmergedAccordionBox extends ReadoutListAccordionBox {
 
@@ -48,7 +49,12 @@ export default class SubmergedAccordionBox extends ReadoutListAccordionBox {
       // Get the custom name from the provided options, or create a dynamic property that derives from the material's name
       const nameProperty = customMaterial.customNameProperty ?
                            customMaterial.customNameProperty : mass.nameProperty;
-      const nameColonProperty = new DerivedProperty( [ nameProperty ], name => name + ': ' );
+      const nameColonProperty = new DerivedProperty(
+        [ nameProperty, DensityBuoyancyCommonStrings.nameColonPatternStringProperty ], ( name, pattern ) => {
+          return StringUtils.fillIn( pattern, {
+            name: name
+          } );
+        } );
       const labelText = new RichText( nameColonProperty, this.textOptions );
 
       // Create the derived string property for the submerged readout

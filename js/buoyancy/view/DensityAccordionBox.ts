@@ -65,7 +65,12 @@ export default class DensityAccordionBox extends ReadoutListAccordionBox {
                            new DynamicProperty<string, string, Material>( materialProperty, {
                              derive: material => material.nameProperty
                            } );
-      const nameColonProperty = new DerivedProperty( [ nameProperty ], name => name + ': ' );
+      const nameColonProperty = new DerivedProperty(
+        [ nameProperty, DensityBuoyancyCommonStrings.nameColonPatternStringProperty ], ( name, pattern ) => {
+          return StringUtils.fillIn( pattern, {
+            name: name
+          } );
+        } );
       const labelText = new RichText( nameColonProperty, this.textOptions );
 
       // Create the derived string property for the density readout

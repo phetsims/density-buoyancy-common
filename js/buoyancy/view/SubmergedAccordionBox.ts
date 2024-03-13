@@ -23,10 +23,10 @@ export default class SubmergedAccordionBox extends ReadoutListAccordionBox<Mass>
   public constructor(
     private readonly gravityProperty: TReadOnlyProperty<Gravity>,
     private readonly liquidMaterialProperty: TReadOnlyProperty<Material>,
-    providedOptions?: ReadoutListAccordionBoxOptions
+    providedOptions?: ReadoutListAccordionBoxOptions<Mass>
   ) {
 
-    const options = combineOptions<ReadoutListAccordionBoxOptions>( {
+    const options = combineOptions<ReadoutListAccordionBoxOptions<Mass>>( {
       visibleProperty: DensityBuoyancyCommonPreferences.percentageSubmergedVisibleProperty
     }, providedOptions );
 

@@ -21,9 +21,11 @@ const DEFAULT_FONT = new PhetFont( 14 );
 const HBOX_SPACING = 5;
 const DEFAULT_CONTENT_WIDTH = ( 140 + HBOX_SPACING ) / 2;
 
-type SelfOptions = {
+type SelfOptions<ReadoutType> = {
   // Provide the ideal max content width for the accordion box content. This is used to apply maxWidths to the Texts of the readout.
   contentWidthMax?: number;
+
+  readoutItems?: ReadoutItemOptions<ReadoutType>[];
 };
 
 export type ReadoutItemOptions<ReadoutType> = {
@@ -40,7 +42,7 @@ export type ReadoutData = {
   valueProperty: TReadOnlyProperty<string>;
 };
 
-export type ReadoutListAccordionBoxOptions = SelfOptions & AccordionBoxOptions;
+export type ReadoutListAccordionBoxOptions<ReadoutType> = SelfOptions<ReadoutType> & AccordionBoxOptions;
 
 export default abstract class ReadoutListAccordionBox<ReadoutType> extends AccordionBox {
 
@@ -52,17 +54,18 @@ export default abstract class ReadoutListAccordionBox<ReadoutType> extends Accor
 
   public constructor(
     titleStringProperty: TReadOnlyProperty<string>,
-    providedOptions?: ReadoutListAccordionBoxOptions
+    providedOptions?: ReadoutListAccordionBoxOptions<ReadoutType>
   ) {
 
-    const options = optionize4<ReadoutListAccordionBoxOptions, SelfOptions, AccordionBoxOptions>()( {},
+    const options = optionize4<ReadoutListAccordionBoxOptions<ReadoutType>, SelfOptions<ReadoutType>, AccordionBoxOptions>()( {},
       DensityBuoyancyCommonConstants.ACCORDION_BOX_OPTIONS, {
         titleNode: new Text( titleStringProperty, {
           font: DensityBuoyancyCommonConstants.TITLE_FONT,
           maxWidth: 160
         } ),
         layoutOptions: { stretch: true },
-        contentWidthMax: DEFAULT_CONTENT_WIDTH
+        contentWidthMax: DEFAULT_CONTENT_WIDTH,
+        readoutItems: []
       }, providedOptions );
 
     const readoutBox = new VBox( {
@@ -79,6 +82,8 @@ export default abstract class ReadoutListAccordionBox<ReadoutType> extends Accor
       font: DEFAULT_FONT,
       maxWidth: ( this.contentWidthMax - HBOX_SPACING ) / 2
     };
+
+    this.setReadoutItems( options.readoutItems );
   }
 
   public setReadoutItems( readoutItems: ReadoutItemOptions<ReadoutType>[] ): void {

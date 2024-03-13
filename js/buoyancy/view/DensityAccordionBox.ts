@@ -20,7 +20,7 @@ import ReadoutListAccordionBox, { ReadoutData, ReadoutListAccordionBoxOptions } 
 export default class DensityAccordionBox extends ReadoutListAccordionBox<TReadOnlyProperty<Material>> {
 
   public constructor(
-    providedOptions?: ReadoutListAccordionBoxOptions
+    providedOptions?: ReadoutListAccordionBoxOptions<TReadOnlyProperty<Material>>
   ) {
 
     super( DensityBuoyancyCommonStrings.densityStringProperty, providedOptions );

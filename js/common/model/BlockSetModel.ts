@@ -42,7 +42,7 @@ export default class BlockSetModel<BlockSetValue extends EnumerationValue> exten
   private readonly regenerateMassesCallback: RegenerateMassesCallback<BlockSetValue>;
   private readonly positionMassesCallback: PositionMassesCallback<BlockSetValue>;
 
-  private blockSetToMassesMap: Map<BlockSetValue, Cuboid[]>;
+  public blockSetToMassesMap: Map<BlockSetValue, Cuboid[]>;
 
   public constructor( options: BlockSetModelOptions<BlockSetValue> ) {
     super( options );

@@ -21,7 +21,7 @@ import PatternStringProperty from '../../../../axon/js/PatternStringProperty.js'
 
 const DEFAULT_FONT = new PhetFont( 14 );
 const HBOX_SPACING = 5;
-const DEFAULT_CONTENT_WIDTH = ( 140 + HBOX_SPACING ) / 2;
+const DEFAULT_CONTENT_WIDTH = ( 200 + HBOX_SPACING ) / 2;
 
 type SelfOptions<ReadoutType> = {
   // Provide the ideal max content width for the accordion box content. This is used to apply maxWidths to the Texts of the readout.
@@ -63,7 +63,7 @@ export default abstract class ReadoutListAccordionBox<ReadoutType> extends Accor
       DensityBuoyancyCommonConstants.ACCORDION_BOX_OPTIONS, {
         titleNode: new Text( titleStringProperty, {
           font: DensityBuoyancyCommonConstants.TITLE_FONT,
-          maxWidth: 160
+          maxWidth: providedOptions?.contentWidthMax || DEFAULT_CONTENT_WIDTH
         } ),
         layoutOptions: { stretch: true },
         contentWidthMax: DEFAULT_CONTENT_WIDTH,

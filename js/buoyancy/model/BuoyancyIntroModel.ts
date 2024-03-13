@@ -18,6 +18,7 @@ import Material from '../../common/model/Material.js';
 import Scale, { DisplayType } from '../../common/model/Scale.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import MassTag from '../../common/model/MassTag.js';
+import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
 
 export class BlockSet extends EnumerationValue {
   public static readonly SAME_MASS = new BlockSet();
@@ -32,6 +33,8 @@ export class BlockSet extends EnumerationValue {
 export type BuoyancyIntroModelOptions = StrictOmit<BlockSetModelOptions<BlockSet>, 'initialMode' | 'BlockSet' | 'createMassesCallback' | 'regenerateMassesCallback' | 'positionMassesCallback'>;
 
 export default class BuoyancyIntroModel extends BlockSetModel<BlockSet> {
+  public readonly densityExpandedProperty = new BooleanProperty( false );
+
   public constructor( providedOptions: BuoyancyIntroModelOptions ) {
     const tandem = providedOptions.tandem;
 

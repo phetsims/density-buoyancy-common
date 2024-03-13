@@ -9,7 +9,7 @@
 import Vector3 from '../../../../dot/js/Vector3.js';
 import { combineOptions } from '../../../../phet-core/js/optionize.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
-import { AlignBox, HBox, Text, VBox } from '../../../../scenery/js/imports.js';
+import { AlignBox, HBox, ManualConstraint, Text, VBox } from '../../../../scenery/js/imports.js';
 import AquaRadioButton from '../../../../sun/js/AquaRadioButton.js';
 import Panel from '../../../../sun/js/Panel.js';
 import VerticalAquaRadioButtonGroup from '../../../../sun/js/VerticalAquaRadioButtonGroup.js';
@@ -21,6 +21,8 @@ import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import BuoyancyIntroModel, { BlockSet } from '../model/BuoyancyIntroModel.js';
 import ReadOnlyProperty from '../../../../axon/js/ReadOnlyProperty.js';
+import DensityAccordionBox from './DensityAccordionBox.js';
+import SubmergedAccordionBox from './SubmergedAccordionBox.js';
 
 // constants
 const blockSetStringMap = {
@@ -124,6 +126,47 @@ export default class BuoyancyIntroScreenView extends DensityBuoyancyScreenView<B
       yAlign: 'bottom',
       margin: MARGIN
     } ) );
+
+
+    // Materials are set in densityBox.setMaterials() below
+    const densityBox = new DensityAccordionBox( {
+      expandedProperty: model.densityExpandedProperty
+    } );
+
+    const submergedBox = new SubmergedAccordionBox( model.gravityProperty, model.liquidMaterialProperty );
+
+    // Adjust the visibility after, since we want to size the box's location for its "full" bounds
+    // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
+    model.blockSetProperty.link( blockSet => {
+      // TODO: can blockSetToMassesMap be public? https://github.com/phetsims/buoyancy/issues/96
+      // TODO: recreate items each time with no cache? https://github.com/phetsims/buoyancy/issues/96
+      const blocks = model.blockSetToMassesMap.get( blockSet )!;
+      densityBox.setReadoutItems( blocks.map( mass => {
+        return {
+          readoutItem: mass.materialProperty
+          // readoutNameProperty: customExploreScreenFormatting.readoutNameProperties[ index ],
+          // readoutFormat: customExploreScreenFormatting.readoutFormats[ index ]
+        };
+      } ).concat( { readoutItem: model.liquidMaterialProperty } ) );
+      submergedBox.setReadoutItems( blocks.map( ( mass, index ) => {
+        return {
+          readoutItem: mass
+          // readoutNameProperty: customExploreScreenFormatting.readoutNameProperties[ index ],
+          // readoutFormat: customExploreScreenFormatting.readoutFormats[ index ]
+        };
+      } ) );
+    } );
+
+    const vBox = new VBox( {
+      children: [ densityBox, submergedBox ],
+      spacing: MARGIN
+    } );
+    this.addChild( vBox );
+
+    ManualConstraint.create( this, [ vBox, this.resetAllButton ], ( vBoxProxy, resetAllButtonProxy ) => {
+      vBoxProxy.right = resetAllButtonProxy.right;
+      vBoxProxy.bottom = resetAllButtonProxy.top - MARGIN;
+    } );
 
     this.addChild( this.popupLayer );
   }

@@ -85,6 +85,7 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
   protected readonly model: Model;
   protected readonly popupLayer: Node;
   protected readonly backgroundLayer: Node;
+  protected readonly resetAllButton: Node;
 
   private readonly postLayoutEmitter: TEmitter;
 
@@ -715,14 +716,14 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
       waterLevelIndicator.translation = this.modelToViewPoint( modelPoint );
     } );
 
-    const resetAllButton = new ResetAllButton( {
+    this.resetAllButton = new ResetAllButton( {
       listener: () => {
         this.interruptSubtreeInput();
         model.reset();
       },
       tandem: tandem.createTandem( 'resetAllButton' )
     } );
-    this.addChild( new AlignBox( resetAllButton, {
+    this.addChild( new AlignBox( this.resetAllButton, {
       alignBoundsProperty: this.visibleBoundsProperty,
       xAlign: 'right',
       yAlign: 'bottom',

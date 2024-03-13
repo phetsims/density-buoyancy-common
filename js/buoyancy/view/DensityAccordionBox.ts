@@ -20,10 +20,11 @@ import ReadoutListAccordionBox, { ReadoutData, ReadoutListAccordionBoxOptions } 
 export default class DensityAccordionBox extends ReadoutListAccordionBox<TReadOnlyProperty<Material>> {
 
   public constructor(
-    providedOptions?: ReadoutListAccordionBoxOptions<TReadOnlyProperty<Material>>
+    options?: ReadoutListAccordionBoxOptions<TReadOnlyProperty<Material>>
   ) {
 
-    super( DensityBuoyancyCommonStrings.densityStringProperty, providedOptions );
+    super( DensityBuoyancyCommonStrings.densityStringProperty, options );
+    options?.readoutItems && this.setReadoutItems( options.readoutItems );
   }
 
   public override generateReadoutData( materialProperty: TReadOnlyProperty<Material> ): ReadoutData {

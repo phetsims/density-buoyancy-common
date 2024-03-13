@@ -84,8 +84,6 @@ export default abstract class ReadoutListAccordionBox<ReadoutType> extends Accor
       font: DEFAULT_FONT,
       maxWidth: ( this.contentWidthMax - HBOX_SPACING ) / 2
     };
-
-    this.setReadoutItems( options.readoutItems );
   }
 
   public setReadoutItems( readoutItems: ReadoutItemOptions<ReadoutType>[] ): void {

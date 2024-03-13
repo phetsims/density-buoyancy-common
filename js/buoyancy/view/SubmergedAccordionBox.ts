@@ -27,10 +27,12 @@ export default class SubmergedAccordionBox extends ReadoutListAccordionBox<Mass>
   ) {
 
     const options = combineOptions<ReadoutListAccordionBoxOptions<Mass>>( {
-      visibleProperty: DensityBuoyancyCommonPreferences.percentageSubmergedVisibleProperty
+      visibleProperty: DensityBuoyancyCommonPreferences.percentageSubmergedVisibleProperty,
+      readoutItems: []
     }, providedOptions );
 
     super( DensityBuoyancyCommonStrings.percentSubmergedStringProperty, options );
+    options.readoutItems && this.setReadoutItems( options.readoutItems );
   }
 
   public override generateReadoutData( mass: Mass ): ReadoutData {

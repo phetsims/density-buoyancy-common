@@ -16,6 +16,8 @@ import TinyEmitter from '../../../../axon/js/TinyEmitter.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 import { combineOptions, optionize4 } from '../../../../phet-core/js/optionize.js';
 import AccordionBox, { AccordionBoxOptions } from '../../../../sun/js/AccordionBox.js';
+import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
+import PatternStringProperty from '../../../../axon/js/PatternStringProperty.js';
 
 const DEFAULT_FONT = new PhetFont( 14 );
 const HBOX_SPACING = 5;
@@ -96,8 +98,11 @@ export default abstract class ReadoutListAccordionBox<ReadoutType> extends Accor
 
       const readoutData = this.generateReadoutData( readoutItem.readoutItem );
       const nameProperty = readoutItem.readoutNameProperty || readoutData.nameProperty;
-
-      const labelText = new RichText( nameProperty, this.textOptions );
+      const nameColonProperty = new PatternStringProperty(
+        DensityBuoyancyCommonStrings.nameColonPatternStringProperty, {
+          name: nameProperty
+        } );
+      const labelText = new RichText( nameColonProperty, this.textOptions );
       const readoutFormat = readoutItem.readoutFormat ? readoutItem.readoutFormat : {};
       const valueText = new RichText( readoutData.valueProperty,
         combineOptions<RichTextOptions>( {}, this.textOptions, readoutFormat ) );

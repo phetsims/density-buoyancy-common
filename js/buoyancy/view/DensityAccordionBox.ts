@@ -26,7 +26,7 @@ export default class DensityAccordionBox extends ReadoutListAccordionBox<TReadOn
     super( DensityBuoyancyCommonStrings.densityStringProperty, providedOptions );
   }
 
-  public override generateReadout( materialProperty: TReadOnlyProperty<Material> ): ReadoutData {
+  public override generateReadoutData( materialProperty: TReadOnlyProperty<Material> ): ReadoutData {
 
     // Use DynamicProperty so that this name is updated based on the material AND material's name changing.
     const nameProperty = new DynamicProperty<string, string, Material>( materialProperty, {

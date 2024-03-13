@@ -114,14 +114,14 @@ export default class BuoyancyLabScreenView extends DensityBuoyancyScreenView<Buo
         expandedProperty: model.densityExpandedProperty,
         contentWidthMax: this.rightBox.content.width
       } );
-    densityBox.setReadout( [ { readoutItem: model.primaryMass.materialProperty } ] );
+    densityBox.setReadoutItems( [ { readoutItem: model.primaryMass.materialProperty } ] );
 
     const submergedBox = new SubmergedAccordionBox(
       model.gravityProperty, model.liquidMaterialProperty, {
         contentWidthMax: this.rightBox.content.width
       } );
-    submergedBox.setReadout( [ { readoutItem: model.primaryMass,
-      customNameProperty: DensityBuoyancyCommonStrings.blockAStringProperty } ] );
+    submergedBox.setReadoutItems( [ { readoutItem: model.primaryMass,
+      readoutNameProperty: DensityBuoyancyCommonStrings.blockAStringProperty } ] );
 
     const rightSideVBox = new VBox( {
       spacing: 10,

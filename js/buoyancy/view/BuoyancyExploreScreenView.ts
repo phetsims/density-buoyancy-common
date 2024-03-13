@@ -43,8 +43,8 @@ export default class BuoyancyExploreScreenView extends SecondaryMassScreenView<B
     }, options ) );
 
     const customExploreScreenFormatting = {
-      customNames: [ DensityBuoyancyCommonStrings.blockAStringProperty, DensityBuoyancyCommonStrings.blockBStringProperty ],
-      customFormats: [
+      readoutNameProperties: [ DensityBuoyancyCommonStrings.blockAStringProperty, DensityBuoyancyCommonStrings.blockBStringProperty ],
+      readoutFormats: [
         { font: DensityBuoyancyCommonConstants.ITEM_FONT, fill: DensityBuoyancyCommonColors.labelPrimaryProperty },
         { font: DensityBuoyancyCommonConstants.ITEM_FONT, fill: DensityBuoyancyCommonColors.labelSecondaryProperty }
       ]
@@ -124,18 +124,18 @@ export default class BuoyancyExploreScreenView extends SecondaryMassScreenView<B
     // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
     model.secondaryMass.visibleProperty.link( visible => {
       const masses = visible ? [ model.primaryMass, model.secondaryMass ] : [ model.primaryMass ];
-      densityBox.setReadout( masses.map( ( mass, index ) => {
+      densityBox.setReadoutItems( masses.map( ( mass, index ) => {
         return {
           readoutItem: mass.materialProperty,
-          customNameProperty: customExploreScreenFormatting.customNames[ index ],
-          customFormat: customExploreScreenFormatting.customFormats[ index ]
+          readoutNameProperty: customExploreScreenFormatting.readoutNameProperties[ index ],
+          readoutFormat: customExploreScreenFormatting.readoutFormats[ index ]
         };
       } ) );
-      submergedBox.setReadout( masses.map( ( mass, index ) => {
+      submergedBox.setReadoutItems( masses.map( ( mass, index ) => {
         return {
           readoutItem: mass,
-          customNameProperty: customExploreScreenFormatting.customNames[ index ],
-          customFormat: customExploreScreenFormatting.customFormats[ index ]
+          readoutNameProperty: customExploreScreenFormatting.readoutNameProperties[ index ],
+          readoutFormat: customExploreScreenFormatting.readoutFormats[ index ]
         };
       } ) );
     } );

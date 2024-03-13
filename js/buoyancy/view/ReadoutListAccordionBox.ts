@@ -2,7 +2,7 @@
 
 /**
  * Common class for DensityAccordionBox and SubmergedAccordionBox. This class is used to create an AccordionBox that
- * displays a list of readouts. The readouts are created by passing an array of CustomReadoutObjects to the setReadout
+ * displays a list of readouts. The readouts are created by passing an array of CustomReadoutObjects to the setReadoutItems
  * method.
  *
  * @author Agustín Vallejo
@@ -26,13 +26,13 @@ type SelfOptions = {
   contentWidthMax?: number;
 };
 
-export type CustomReadoutObject<ReadoutType> = {
-  readoutItem: ReadoutType; // Provided for use by generateReadout() to create the name/value Properties
+export type ReadoutItemOptions<ReadoutType> = {
+  readoutItem: ReadoutType; // Provided for use by generateReadoutData() to create the name/value Properties
 
-  // By default, the implementation of generateReadout() will create a default nameProperty, but you can supply your
+  // By default, the implementation of generateReadoutData() will create a default nameProperty, but you can supply your
   // own to be used instead.
-  customNameProperty?: TReadOnlyProperty<string>;
-  customFormat?: RichTextOptions; // Optional: Custom format for the readout
+  readoutNameProperty?: TReadOnlyProperty<string>;
+  readoutFormat?: RichTextOptions; // Any extra formatting options to be passed to the name/value texts.
 };
 
 export type ReadoutData = {
@@ -81,20 +81,21 @@ export default abstract class ReadoutListAccordionBox<ReadoutType> extends Accor
     };
   }
 
-  public setReadout( customReadoutObjects: CustomReadoutObject<ReadoutType>[] ): void {
+  public setReadoutItems( readoutItems: ReadoutItemOptions<ReadoutType>[] ): void {
+
     // Clear the previous materials that may have been created.
     this.cleanupEmitter.emit();
     this.cleanupEmitter.removeAllListeners();
 
-    this.readoutBox.children = customReadoutObjects.map( customObject => {
+    this.readoutBox.children = readoutItems.map( readoutItem => {
 
-      const readoutData = this.generateReadout( customObject.readoutItem );
-      const nameProperty = customObject.customNameProperty || readoutData.nameProperty;
+      const readoutData = this.generateReadoutData( readoutItem.readoutItem );
+      const nameProperty = readoutItem.readoutNameProperty || readoutData.nameProperty;
 
       const labelText = new RichText( nameProperty, this.textOptions );
-      const customFormat = customObject.customFormat ? customObject.customFormat : {};
+      const readoutFormat = readoutItem.readoutFormat ? readoutItem.readoutFormat : {};
       const valueText = new RichText( readoutData.valueProperty,
-        combineOptions<RichTextOptions>( {}, this.textOptions, customFormat ) );
+        combineOptions<RichTextOptions>( {}, this.textOptions, readoutFormat ) );
 
       this.cleanupEmitter.addListener( () => {
         valueText.dispose();
@@ -109,7 +110,7 @@ export default abstract class ReadoutListAccordionBox<ReadoutType> extends Accor
     } );
   }
 
-  public abstract generateReadout( readoutType: ReadoutType ): ReadoutData;
+  public abstract generateReadoutData( readoutType: ReadoutType ): ReadoutData;
 
   public override dispose(): void {
     this.cleanupEmitter.emit();

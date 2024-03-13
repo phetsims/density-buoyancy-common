@@ -35,6 +35,11 @@ export type CustomReadoutObject = {
   customFormat?: RichTextOptions; // Optional: Custom format for the readout
 };
 
+export type ReadoutData = {
+  nameProperty: TReadOnlyProperty<string>;
+  valueProperty: TReadOnlyProperty<string>;
+};
+
 export type ReadoutListAccordionBoxOptions = SelfOptions & AccordionBoxOptions;
 
 export default abstract class ReadoutListAccordionBox extends AccordionBox {
@@ -106,10 +111,7 @@ export default abstract class ReadoutListAccordionBox extends AccordionBox {
     } );
   }
 
-  public abstract generateReadout( customObject: CustomReadoutObject ): {
-    nameProperty: TReadOnlyProperty<string>;
-    valueProperty: TReadOnlyProperty<string>;
-  };
+  public abstract generateReadout( customObject: CustomReadoutObject ): ReadoutData;
 
   public override dispose(): void {
     this.cleanupEmitter.emit();

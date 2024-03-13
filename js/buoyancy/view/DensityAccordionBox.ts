@@ -15,7 +15,7 @@ import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js'
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
 import Utils from '../../../../dot/js/Utils.js';
-import ReadoutListAccordionBox, { CustomReadoutObject, ReadoutListAccordionBoxOptions } from './ReadoutListAccordionBox.js';
+import ReadoutListAccordionBox, { CustomReadoutObject, ReadoutData, ReadoutListAccordionBoxOptions } from './ReadoutListAccordionBox.js';
 
 export default class DensityAccordionBox extends ReadoutListAccordionBox {
 
@@ -26,10 +26,7 @@ export default class DensityAccordionBox extends ReadoutListAccordionBox {
     super( DensityBuoyancyCommonStrings.densityStringProperty, providedOptions );
   }
 
-  public override generateReadout( customMaterial: CustomReadoutObject ): {
-    nameProperty: TReadOnlyProperty<string>;
-    valueProperty: TReadOnlyProperty<string>;
-  } {
+  public override generateReadout( customMaterial: CustomReadoutObject ): ReadoutData {
 
     // Returns the filled in string for the material readout or '?' if the material is hidden
     const getMysteryMaterialReadoutStringProperty = ( materialProperty: TReadOnlyProperty<Material> ) => new DerivedProperty(

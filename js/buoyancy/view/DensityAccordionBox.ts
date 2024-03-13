@@ -30,11 +30,10 @@ export default class DensityAccordionBox extends ReadoutListAccordionBox<TReadOn
 
     const materialProperty = customMaterial.readoutItem;
 
-    const nameProperty = customMaterial.customNameProperty ?
-                         customMaterial.customNameProperty :
-                         new DynamicProperty<string, string, Material>( materialProperty, {
-                           derive: material => material.nameProperty
-                         } );
+    // Use DynamicProperty so that this name is updated based on the material AND material's name changing.
+    const nameProperty = new DynamicProperty<string, string, Material>( materialProperty, {
+      derive: material => material.nameProperty
+    } );
 
     // Returns the filled in string for the material readout or '?' if the material is hidden
     const valueProperty = new DerivedProperty(
@@ -47,7 +46,7 @@ export default class DensityAccordionBox extends ReadoutListAccordionBox<TReadOn
         return material.hidden ?
                questionMarkString :
 
-               // TODO: PatternStringProperty? https://github.com/phetsims/buoyancy/issues/112
+          // TODO: PatternStringProperty? https://github.com/phetsims/buoyancy/issues/112
                StringUtils.fillIn( patternStringProperty, {
                  value: Utils.toFixed( material.density / 1000, 2 ),
                  decimalPlaces: 2

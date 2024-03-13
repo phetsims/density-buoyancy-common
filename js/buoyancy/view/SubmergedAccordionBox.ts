@@ -37,7 +37,7 @@ export default class SubmergedAccordionBox extends ReadoutListAccordionBox<Mass>
     const mass = customObject.readoutItem;
 
     return {
-      nameProperty: customObject.customNameProperty ? customObject.customNameProperty : mass.nameProperty,
+      nameProperty: mass.nameProperty,
       valueProperty: new DerivedProperty(
         [
           mass.volumeProperty,

@@ -28,7 +28,10 @@ type SelfOptions = {
 
 export type CustomReadoutObject<ReadoutType> = {
   readoutItem: ReadoutType; // Provided for use by generateReadout() to create the name/value Properties
-  customNameProperty?: TReadOnlyProperty<string>; // Optional: Custom name for the readout
+
+  // By default, the implementation of generateReadout() will create a default nameProperty, but you can supply your
+  // own to be used instead.
+  customNameProperty?: TReadOnlyProperty<string>;
   customFormat?: RichTextOptions; // Optional: Custom format for the readout
 };
 
@@ -83,14 +86,14 @@ export default abstract class ReadoutListAccordionBox<ReadoutType> extends Accor
     this.cleanupEmitter.emit();
     this.cleanupEmitter.removeAllListeners();
 
-
     this.readoutBox.children = customReadoutObjects.map( customObject => {
 
-      const { nameProperty, valueProperty } = this.generateReadout( customObject );
+      const readoutData = this.generateReadout( customObject );
+      const nameProperty = customObject.customNameProperty || readoutData.nameProperty;
 
       const labelText = new RichText( nameProperty, this.textOptions );
       const customFormat = customObject.customFormat ? customObject.customFormat : {};
-      const valueText = new RichText( valueProperty,
+      const valueText = new RichText( readoutData.valueProperty,
         combineOptions<RichTextOptions>( {}, this.textOptions, customFormat ) );
 
       this.cleanupEmitter.addListener( () => {

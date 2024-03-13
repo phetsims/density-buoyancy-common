@@ -43,14 +43,6 @@ export default class BuoyancyExploreScreenView extends SecondaryMassScreenView<B
       cameraLookAt: DensityBuoyancyCommonConstants.BUOYANCY_CAMERA_LOOK_AT
     }, options ) );
 
-    const customExploreScreenFormatting = {
-      readoutNameProperties: [ model.primaryMass, model.secondaryMass ].map( mass => new PatternStringProperty( DensityBuoyancyCommonStrings.blockPatternStringProperty, { tag: mass.nameProperty } ) ),
-      readoutFormats: [
-        { font: DensityBuoyancyCommonConstants.ITEM_FONT, fill: DensityBuoyancyCommonColors.labelPrimaryProperty },
-        { font: DensityBuoyancyCommonConstants.ITEM_FONT, fill: DensityBuoyancyCommonColors.labelSecondaryProperty }
-      ]
-    };
-
     const displayOptionsNode = new DisplayOptionsNode( model );
 
     this.addChild( new AlignBox( new Panel( displayOptionsNode, DensityBuoyancyCommonConstants.PANEL_OPTIONS ), {
@@ -120,6 +112,14 @@ export default class BuoyancyExploreScreenView extends SecondaryMassScreenView<B
     const submergedBox = new SubmergedAccordionBox( model.gravityProperty, model.liquidMaterialProperty, {
       contentWidthMax: this.rightBox.content.width
     } );
+
+    const customExploreScreenFormatting = {
+      readoutNameProperties: [ model.primaryMass, model.secondaryMass ].map( mass => new PatternStringProperty( DensityBuoyancyCommonStrings.blockPatternStringProperty, { tag: mass.nameProperty } ) ),
+      readoutFormats: [
+        { font: DensityBuoyancyCommonConstants.ITEM_FONT, fill: DensityBuoyancyCommonColors.labelPrimaryProperty },
+        { font: DensityBuoyancyCommonConstants.ITEM_FONT, fill: DensityBuoyancyCommonColors.labelSecondaryProperty }
+      ]
+    };
 
     // Adjust the visibility after, since we want to size the box's location for its "full" bounds
     // This instance lives for the lifetime of the simulation, so we don't need to remove this listener

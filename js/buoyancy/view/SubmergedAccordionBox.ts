@@ -18,15 +18,17 @@ import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js'
 import DensityBuoyancyCommonPreferences from '../../common/model/DensityBuoyancyCommonPreferences.js';
 import Mass from '../../common/model/Mass.js';
 
-export default class SubmergedAccordionBox extends ReadoutListAccordionBox<Mass> {
+type SubmergedReadoutType = Mass;
+
+export default class SubmergedAccordionBox extends ReadoutListAccordionBox<SubmergedReadoutType> {
 
   public constructor(
     private readonly gravityProperty: TReadOnlyProperty<Gravity>,
     private readonly liquidMaterialProperty: TReadOnlyProperty<Material>,
-    providedOptions?: ReadoutListAccordionBoxOptions<Mass>
+    providedOptions?: ReadoutListAccordionBoxOptions<SubmergedReadoutType>
   ) {
 
-    const options = combineOptions<ReadoutListAccordionBoxOptions<Mass>>( {
+    const options = combineOptions<ReadoutListAccordionBoxOptions<SubmergedReadoutType>>( {
       visibleProperty: DensityBuoyancyCommonPreferences.percentageSubmergedVisibleProperty,
       readoutItems: []
     }, providedOptions );
@@ -35,7 +37,7 @@ export default class SubmergedAccordionBox extends ReadoutListAccordionBox<Mass>
     options.readoutItems && this.setReadoutItems( options.readoutItems );
   }
 
-  public override generateReadoutData( mass: Mass ): ReadoutData {
+  public override generateReadoutData( mass: SubmergedReadoutType ): ReadoutData {
 
     return {
       nameProperty: mass.nameProperty,

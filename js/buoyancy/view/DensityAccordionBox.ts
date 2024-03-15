@@ -17,17 +17,19 @@ import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
 import Utils from '../../../../dot/js/Utils.js';
 import ReadoutListAccordionBox, { ReadoutData, ReadoutListAccordionBoxOptions } from './ReadoutListAccordionBox.js';
 
-export default class DensityAccordionBox extends ReadoutListAccordionBox<TReadOnlyProperty<Material>> {
+type DensityReadoutType = TReadOnlyProperty<Material>;
+
+export default class DensityAccordionBox extends ReadoutListAccordionBox<DensityReadoutType> {
 
   public constructor(
-    options?: ReadoutListAccordionBoxOptions<TReadOnlyProperty<Material>>
+    options?: ReadoutListAccordionBoxOptions<DensityReadoutType>
   ) {
 
     super( DensityBuoyancyCommonStrings.densityStringProperty, options );
     options?.readoutItems && this.setReadoutItems( options.readoutItems );
   }
 
-  public override generateReadoutData( materialProperty: TReadOnlyProperty<Material> ): ReadoutData {
+  public override generateReadoutData( materialProperty: DensityReadoutType ): ReadoutData {
 
     // Use DynamicProperty so that this name is updated based on the material AND material's name changing.
     const nameProperty = new DynamicProperty<string, string, Material>( materialProperty, {

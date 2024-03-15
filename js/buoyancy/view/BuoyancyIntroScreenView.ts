@@ -111,7 +111,7 @@ export default class BuoyancyIntroScreenView extends DensityBuoyancyScreenView<B
           } );
       } )
     } );
-    const fluidTitle = new Text( DensityBuoyancyCommonStrings.fluid, {
+    const fluidTitle = new Text( DensityBuoyancyCommonStrings.fluidStringProperty, {
       font: DensityBuoyancyCommonConstants.TITLE_FONT,
       maxWidth: 160
     } );

@@ -16,7 +16,10 @@
       "../sherpa/lib/p2-0.7.1.js",
       "../sherpa/lib/three-r104.js"
     ],
-    "supportsOutputJS": true
+    "supportsOutputJS": true,
+    "simFeatures": {
+      "supportsDynamicLocale": true
+    }
   },
   "eslintConfig": {
     "extends": "../chipper/eslint/sim_eslintrc.js",

@@ -17,6 +17,7 @@ import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js
 import DensityBuoyancyCommonColors from './DensityBuoyancyCommonColors.js';
 import DensityBuoyancyModel from '../model/DensityBuoyancyModel.js';
 import optionize, { combineOptions } from '../../../../phet-core/js/optionize.js';
+import Property from '../../../../axon/js/Property.js';
 
 // constants
 const arrowSpacing = 15;
@@ -39,6 +40,9 @@ const checkboxSpacing = 5;
 
 type SelfOptions = {
   includeVectorScaleControl?: boolean;
+
+  // If provided, a checkbox control will be added to this panel, null to omit.
+  showFluidDisplacedProperty?: Property<boolean> | null;
 };
 
 type DisplayOptionsNodeOptions = SelfOptions & VBoxOptions;
@@ -48,6 +52,7 @@ export default class DisplayOptionsNode extends VBox {
 
     const options = optionize<DisplayOptionsNodeOptions, SelfOptions, VBoxOptions>()( {
       includeVectorScaleControl: true,
+      showFluidDisplacedProperty: null,
       spacing: DensityBuoyancyCommonConstants.MARGIN,
       align: 'left'
     }, providedOptions );
@@ -115,7 +120,10 @@ export default class DisplayOptionsNode extends VBox {
             align: 'left',
             children: [
               new Checkbox( model.showMassesProperty, new Text( DensityBuoyancyCommonStrings.massesStringProperty, labelOptions ), checkboxOptions ),
-              new Checkbox( model.showForceValuesProperty, new Text( DensityBuoyancyCommonStrings.forceValuesStringProperty, labelOptions ), checkboxOptions )
+              new Checkbox( model.showForceValuesProperty, new Text( DensityBuoyancyCommonStrings.forceValuesStringProperty, labelOptions ), checkboxOptions ),
+              ...( options.showFluidDisplacedProperty ?
+                [ new Checkbox( options.showFluidDisplacedProperty, new Text( DensityBuoyancyCommonStrings.fluidDisplacedStringProperty, labelOptions ), checkboxOptions ) ] :
+                [] )
             ]
           } )
         ]

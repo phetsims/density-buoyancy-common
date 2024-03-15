@@ -54,7 +54,9 @@ export default class BuoyancyLabScreenView extends DensityBuoyancyScreenView<Buo
         new FluidDisplacedPanel( this.waterLevelVolumeProperty, maxBlockVolume, {
           visibleProperty: model.showDisplacedFluidProperty
         } ),
-        new MultiSectionPanelsNode( [ new DisplayOptionsNode( model ) ] )
+        new MultiSectionPanelsNode( [ new DisplayOptionsNode( model, {
+          showFluidDisplacedProperty: model.showDisplacedFluidProperty
+        } ) ] )
       ]
     } );
 

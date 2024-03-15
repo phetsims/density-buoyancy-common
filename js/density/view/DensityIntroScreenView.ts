@@ -12,7 +12,6 @@ import { AlignBox, Node, RichText } from '../../../../scenery/js/imports.js';
 import AccordionBox, { AccordionBoxOptions } from '../../../../sun/js/AccordionBox.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 import PrimarySecondaryControlsNode from '../../common/view/PrimarySecondaryControlsNode.js';
-import SecondaryMassScreenView from '../../common/view/SecondaryMassScreenView.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import DensityNumberLineNode from './DensityNumberLineNode.js';
@@ -24,11 +23,12 @@ import ThreeUtils from '../../../../mobius/js/ThreeUtils.js';
 import DensityMaterials from '../../common/view/DensityMaterials.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
 import DensityBuoyancyCommonColors from '../../common/view/DensityBuoyancyCommonColors.js';
+import BlocksRadioButtonGroup from '../../common/view/BlocksRadioButtonGroup.js';
 
 // constants
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
 
-export default class DensityIntroScreenView extends SecondaryMassScreenView<DensityIntroModel> {
+export default class DensityIntroScreenView extends DensityBuoyancyScreenView<DensityIntroModel> {
 
   protected rightBox: Node;
 
@@ -102,7 +102,12 @@ export default class DensityIntroScreenView extends SecondaryMassScreenView<Dens
       strictAxonDependencies: false // This workaround is deemed acceptable for visibleBoundsProperty listening, https://github.com/phetsims/faradays-electromagnetic-lab/issues/65
     } );
 
-    this.addSecondMassControl( model.modeProperty );
+    const blocksRadioButtonGroup = new BlocksRadioButtonGroup( model.modeProperty, {
+      tandem: this.tandem.createTandem( 'blocksRadioButtonGroup' )
+    } );
+    blocksRadioButtonGroup.bottom = this.resetAllButton.bottom;
+    blocksRadioButtonGroup.right = this.resetAllButton.left - 20;
+    this.addChild( blocksRadioButtonGroup );
 
     this.addChild( this.popupLayer );
   }

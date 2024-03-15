@@ -14,11 +14,10 @@ import Panel from '../../../../sun/js/Panel.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 import Material from '../../common/model/Material.js';
 import DensityBuoyancyCommonColors from '../../common/view/DensityBuoyancyCommonColors.js';
-import { DensityBuoyancyScreenViewOptions } from '../../common/view/DensityBuoyancyScreenView.js';
+import DensityBuoyancyScreenView, { DensityBuoyancyScreenViewOptions } from '../../common/view/DensityBuoyancyScreenView.js';
 import LiquidDensityControlNode from '../../common/view/LiquidDensityControlNode.js';
 import GravityControlNode from '../../common/view/GravityControlNode.js';
 import PrimarySecondaryControlsNode from '../../common/view/PrimarySecondaryControlsNode.js';
-import SecondaryMassScreenView from '../../common/view/SecondaryMassScreenView.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import BuoyancyExploreModel from '../model/BuoyancyExploreModel.js';
@@ -27,11 +26,12 @@ import DensityAccordionBox from './DensityAccordionBox.js';
 import DisplayOptionsNode from '../../common/view/DisplayOptionsNode.js';
 import SubmergedAccordionBox from './SubmergedAccordionBox.js';
 import PatternStringProperty from '../../../../axon/js/PatternStringProperty.js';
+import BlocksRadioButtonGroup from '../../common/view/BlocksRadioButtonGroup.js';
 
 // constants
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
 
-export default class BuoyancyExploreScreenView extends SecondaryMassScreenView<BuoyancyExploreModel> {
+export default class BuoyancyExploreScreenView extends DensityBuoyancyScreenView<BuoyancyExploreModel> {
 
   protected rightBox: PrimarySecondaryControlsNode;
 
@@ -62,6 +62,7 @@ export default class BuoyancyExploreScreenView extends SecondaryMassScreenView<B
 
     const bottomNode = new HBox( {
       spacing: 2 * MARGIN,
+      align: 'bottom',
       children: [
         new Panel( new LiquidDensityControlNode( model.liquidMaterialProperty, [
           ...DensityBuoyancyCommonConstants.BUOYANCY_FLUID_MATERIALS,
@@ -70,7 +71,10 @@ export default class BuoyancyExploreScreenView extends SecondaryMassScreenView<B
           invisibleMaterials: invisibleMaterials,
           tandem: tandem.createTandem( 'densityControlNode' )
         } ), DensityBuoyancyCommonConstants.PANEL_OPTIONS ),
-        new Panel( new GravityControlNode( model.gravityProperty, this.popupLayer, tandem.createTandem( 'gravityControlNode' ) ), DensityBuoyancyCommonConstants.PANEL_OPTIONS )
+        new Panel( new GravityControlNode( model.gravityProperty, this.popupLayer, tandem.createTandem( 'gravityControlNode' ) ), DensityBuoyancyCommonConstants.PANEL_OPTIONS ),
+        new BlocksRadioButtonGroup( model.modeProperty, {
+          tandem: this.tandem.createTandem( 'blocksRadioButtonGroup' )
+        } )
       ]
     } );
 
@@ -166,8 +170,6 @@ export default class BuoyancyExploreScreenView extends SecondaryMassScreenView<B
     }, {
       strictAxonDependencies: false // This workaround is deemed acceptable for visibleBoundsProperty listening, https://github.com/phetsims/faradays-electromagnetic-lab/issues/65
     } );
-
-    this.addSecondMassControl( model.modeProperty );
 
     this.addChild( this.popupLayer );
   }

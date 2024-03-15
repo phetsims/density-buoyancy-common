@@ -10,19 +10,18 @@ import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import DynamicProperty from '../../../../axon/js/DynamicProperty.js';
 import Property from '../../../../axon/js/Property.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
-import { AlignBox, VBox } from '../../../../scenery/js/imports.js';
+import { AlignBox, HBox, VBox } from '../../../../scenery/js/imports.js';
 import Panel from '../../../../sun/js/Panel.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 import Material from '../../common/model/Material.js';
 import LiquidDensityControlNode from '../../common/view/LiquidDensityControlNode.js';
 import DisplayOptionsNode from '../../common/view/DisplayOptionsNode.js';
 import PrimarySecondaryPanelsNode from '../../common/view/PrimarySecondaryPanelsNode.js';
-import SecondaryMassScreenView from '../../common/view/SecondaryMassScreenView.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityAccordionBox from './DensityAccordionBox.js';
 import ShapeSizeControlNode from './ShapeSizeControlNode.js';
 import BuoyancyShapesModel from '../model/BuoyancyShapesModel.js';
-import { DensityBuoyancyScreenViewOptions } from '../../common/view/DensityBuoyancyScreenView.js';
+import DensityBuoyancyScreenView, { DensityBuoyancyScreenViewOptions } from '../../common/view/DensityBuoyancyScreenView.js';
 import { combineOptions } from '../../../../phet-core/js/optionize.js';
 import MaterialControlNode from '../../common/view/MaterialControlNode.js';
 import MultiSectionPanelsNode from '../../common/view/MultiSectionPanelsNode.js';
@@ -31,11 +30,12 @@ import InfoButton from '../../../../scenery-phet/js/buttons/InfoButton.js';
 import ShapesInfoDialog from './ShapesInfoDialog.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
 import Bounds2 from '../../../../dot/js/Bounds2.js';
+import BlocksRadioButtonGroup from '../../common/view/BlocksRadioButtonGroup.js';
 
 // constants
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
 
-export default class BuoyancyShapesScreenView extends SecondaryMassScreenView<BuoyancyShapesModel> {
+export default class BuoyancyShapesScreenView extends DensityBuoyancyScreenView<BuoyancyShapesModel> {
 
   protected rightBox: MultiSectionPanelsNode;
 
@@ -64,7 +64,16 @@ export default class BuoyancyShapesScreenView extends SecondaryMassScreenView<Bu
       tandem: tandem.createTandem( 'densityControlNode' )
     } ), DensityBuoyancyCommonConstants.PANEL_OPTIONS );
 
-    this.addChild( new AlignBox( densityControlPanel, {
+    this.addChild( new AlignBox( new HBox( {
+      spacing: 2 * MARGIN,
+      align: 'bottom',
+      children: [
+        densityControlPanel,
+        new BlocksRadioButtonGroup( model.modeProperty, {
+          tandem: this.tandem.createTandem( 'blocksRadioButtonGroup' )
+        } )
+      ]
+    } ), {
       alignBoundsProperty: this.visibleBoundsProperty,
       xAlign: 'center',
       yAlign: 'bottom',
@@ -164,8 +173,6 @@ export default class BuoyancyShapesScreenView extends SecondaryMassScreenView<Bu
     }, {
       strictAxonDependencies: false // This workaround is deemed acceptable for visibleBoundsProperty listening, https://github.com/phetsims/faradays-electromagnetic-lab/issues/65
     } );
-
-    this.addSecondMassControl( model.modeProperty );
 
     this.addChild( this.popupLayer );
   }

@@ -24,7 +24,7 @@ import DensityAccordionBox from './DensityAccordionBox.js';
 import DisplayOptionsNode from '../../common/view/DisplayOptionsNode.js';
 import BlockControlNode from '../../common/view/BlockControlNode.js';
 import MultiSectionPanelsNode from '../../common/view/MultiSectionPanelsNode.js';
-import DisplayedFluidPanel from './DisplayedFluidPanel.js';
+import FluidDisplacedPanel from './FluidDisplacedPanel.js';
 import SubmergedAccordionBox from './SubmergedAccordionBox.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import PatternStringProperty from '../../../../axon/js/PatternStringProperty.js';
@@ -48,7 +48,7 @@ export default class BuoyancyLabScreenView extends DensityBuoyancyScreenView<Buo
       spacing: 10,
       align: 'left',
       children: [
-        new DisplayedFluidPanel( model.pool.liquidVolumeProperty, {
+        new FluidDisplacedPanel( model.pool.liquidVolumeProperty, {
           visibleProperty: model.showDisplacedFluidProperty
         } ),
         new MultiSectionPanelsNode( [ new DisplayOptionsNode( model ) ] )

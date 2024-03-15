@@ -5,7 +5,6 @@
  *
  * @author Michael Kauzmann (PhET Interactive Simulations)
  */
-// TODO: rename to "FluidDisplacedPanel". https://github.com/phetsims/buoyancy/issues/113
 
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
@@ -17,12 +16,12 @@ import { EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
 
 type SelfOptions = EmptySelfOptions;
 
-type DisplayedFluidPanelOptions = SelfOptions & MultiSectionPanelsNodeOptions;
+type FluidDisplacedPanelOptions = SelfOptions & MultiSectionPanelsNodeOptions;
 
-export default class DisplayedFluidPanel extends MultiSectionPanelsNode {
+export default class FluidDisplacedPanel extends MultiSectionPanelsNode {
 
   // TODO: base "100" off of something from the model. https://github.com/phetsims/buoyancy/issues/113
-  public constructor( poolVolumeProperty: TReadOnlyProperty<number>, providedOptions?: DisplayedFluidPanelOptions ) {
+  public constructor( poolVolumeProperty: TReadOnlyProperty<number>, providedOptions?: FluidDisplacedPanelOptions ) {
 
     const beakerVolumeProperty = new NumberProperty( 0.2, { range: new Range( 0, 1 ) } );
     const beakerNode = new BeakerNode( beakerVolumeProperty, {
@@ -38,4 +37,4 @@ export default class DisplayedFluidPanel extends MultiSectionPanelsNode {
   }
 }
 
-densityBuoyancyCommon.register( 'DisplayedFluidPanel', DisplayedFluidPanel );
+densityBuoyancyCommon.register( 'FluidDisplacedPanel', FluidDisplacedPanel );

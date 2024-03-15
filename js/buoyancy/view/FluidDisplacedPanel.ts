@@ -48,9 +48,10 @@ export default class FluidDisplacedPanel extends MultiSectionPanelsNode {
     } );
 
     const numberDisplay = new NumberDisplay( displayedDisplacedVolumeProperty, displayedDisplacedVolumeProperty.range, {
-      numberFormatter: value => StringUtils.fillIn( DensityBuoyancyCommonStrings.litersPattern, {
+      numberFormatter: value => StringUtils.fillIn( DensityBuoyancyCommonStrings.litersPatternStringProperty, {
         liters: Utils.toFixed( value, 2 )
-      } )
+      } ),
+      numberFormatterDependencies: [ DensityBuoyancyCommonStrings.litersPatternStringProperty ]
     } );
 
     // Beaker expects a range between 0 and 1

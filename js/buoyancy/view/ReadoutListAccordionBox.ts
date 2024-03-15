@@ -108,6 +108,7 @@ export default abstract class ReadoutListAccordionBox<ReadoutType> extends Accor
       this.cleanupEmitter.addListener( () => {
         valueText.dispose();
         labelText.dispose();
+        nameColonProperty.dispose();
       } );
 
       return new HBox( {

@@ -23,6 +23,7 @@ import BuoyancyIntroModel, { BlockSet } from '../model/BuoyancyIntroModel.js';
 import ReadOnlyProperty from '../../../../axon/js/ReadOnlyProperty.js';
 import DensityAccordionBox from './DensityAccordionBox.js';
 import SubmergedAccordionBox from './SubmergedAccordionBox.js';
+import PatternStringProperty from '../../../../axon/js/PatternStringProperty.js';
 
 // constants
 const blockSetStringMap = {
@@ -138,23 +139,28 @@ export default class BuoyancyIntroScreenView extends DensityBuoyancyScreenView<B
     // Adjust the visibility after, since we want to size the box's location for its "full" bounds
     // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
     model.blockSetProperty.link( blockSet => {
-      // TODO: can blockSetToMassesMap be public? https://github.com/phetsims/buoyancy/issues/96
       // TODO: recreate items each time with no cache? https://github.com/phetsims/buoyancy/issues/96
       const blocks = model.blockSetToMassesMap.get( blockSet )!;
-      densityBox.setReadoutItems( blocks.map( mass => {
+      const readoutItems = blocks.map( mass => {
         return {
-          readoutItem: mass.materialProperty
-          // readoutNameProperty: customExploreScreenFormatting.readoutNameProperties[ index ],
-          // readoutFormat: customExploreScreenFormatting.readoutFormats[ index ]
+          readoutItem: mass,
+          readoutNameProperty: new PatternStringProperty( DensityBuoyancyCommonStrings.blockPatternStringProperty, {
+            tag: mass.nameProperty
+          } ),
+          readoutFormat: {
+            font: DensityBuoyancyCommonConstants.ITEM_FONT,
+            fill: mass.tag.colorProperty
+          }
         };
-      } ).concat( { readoutItem: model.liquidMaterialProperty } ) );
-      submergedBox.setReadoutItems( blocks.map( ( mass, index ) => {
-        return {
-          readoutItem: mass
-          // readoutNameProperty: customExploreScreenFormatting.readoutNameProperties[ index ],
-          // readoutFormat: customExploreScreenFormatting.readoutFormats[ index ]
-        };
-      } ) );
+      } );
+      submergedBox.setReadoutItems( _.clone( readoutItems ) );
+
+      // Same options, but different readoutItem
+      const densityReadoutItems = readoutItems.map( x => _.assignIn( {}, x, { readoutItem: x.readoutItem.materialProperty } ) );
+      densityBox.setReadoutItems( [
+        ...densityReadoutItems,
+        { readoutItem: model.liquidMaterialProperty }
+      ] );
     } );
 
     const vBox = new VBox( {

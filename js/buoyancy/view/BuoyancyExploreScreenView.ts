@@ -116,6 +116,7 @@ export default class BuoyancyExploreScreenView extends SecondaryMassScreenView<B
     const customExploreScreenFormatting = {
       readoutNameProperties: [ model.primaryMass, model.secondaryMass ].map( mass => new PatternStringProperty( DensityBuoyancyCommonStrings.blockPatternStringProperty, { tag: mass.nameProperty } ) ),
       readoutFormats: [
+        // TODO: use mass.tag.colorProperty, https://github.com/phetsims/buoyancy/issues/112
         { font: DensityBuoyancyCommonConstants.ITEM_FONT, fill: DensityBuoyancyCommonColors.labelPrimaryProperty },
         { font: DensityBuoyancyCommonConstants.ITEM_FONT, fill: DensityBuoyancyCommonColors.labelSecondaryProperty }
       ]

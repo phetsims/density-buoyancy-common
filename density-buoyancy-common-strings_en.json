@@ -360,7 +360,7 @@
     "value": "Percentage Submerged"
   },
   "preferences.percentageSubmerged.description": {
-      "value": "Show the percentage of the object submerged in the fluid."
+    "value": "Show the percentage of the object submerged in the fluid."
   },
   "liters": {
     "value": "L"
@@ -376,5 +376,8 @@
   },
   "percentSubmerged": {
     "value": "% Submerged"
+  },
+  "fluidDisplaced": {
+    "value": "Fluid Displaced"
   }
 }

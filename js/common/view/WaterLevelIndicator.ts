@@ -18,6 +18,8 @@ import DensityBuoyancyCommonColors from './DensityBuoyancyCommonColors.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
 
 export default class WaterLevelIndicator extends Node {
+
+  // volume of the water, in liters
   public constructor( volumeProperty: TReadOnlyProperty<number> ) {
     super();
 
@@ -31,9 +33,6 @@ export default class WaterLevelIndicator extends Node {
     const readoutText = new RichText( new PatternStringProperty( DensityBuoyancyCommonConstants.VOLUME_PATTERN_STRING_PROPERTY, {
       value: volumeProperty
     }, {
-      maps: {
-        value: ( volume: number ) => 1000 * volume
-      },
       tandem: Tandem.OPT_OUT,
       decimalPlaces: 2
     } ), {

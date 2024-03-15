@@ -44,11 +44,14 @@ export default class BuoyancyLabScreenView extends DensityBuoyancyScreenView<Buo
       cameraLookAt: DensityBuoyancyCommonConstants.BUOYANCY_CAMERA_LOOK_AT
     }, options ) );
 
+    // In liters
+    const maxBlockVolume = 10;
+
     const leftSideVBox = new VBox( {
       spacing: 10,
       align: 'left',
       children: [
-        new FluidDisplacedPanel( model.pool.liquidVolumeProperty, {
+        new FluidDisplacedPanel( this.waterLevelVolumeProperty, maxBlockVolume, {
           visibleProperty: model.showDisplacedFluidProperty
         } ),
         new MultiSectionPanelsNode( [ new DisplayOptionsNode( model ) ] )
@@ -98,7 +101,8 @@ export default class BuoyancyLabScreenView extends DensityBuoyancyScreenView<Buo
       {
         tandem: tandem.createTandem( 'blockControlPanel' ),
         minCustomMass: 0.1,
-        supportHiddenMaterial: true
+        supportHiddenMaterial: true,
+        maxVolumeLiters: maxBlockVolume
       }
     ) ] );
 

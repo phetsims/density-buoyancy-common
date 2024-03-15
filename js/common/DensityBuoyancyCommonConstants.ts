@@ -133,6 +133,13 @@ const DensityBuoyancyCommonConstants = {
     Material.MYSTERY_Y
   ],
 
+  // In m^3, the value that we want the initial liquid volume to be (including the displacement of any volumes in the pool).
+  DESIRED_STARTING_POOL_VOLUME: 0.1,
+
+  // Model units for volume are most likely in m^3, multiply by this to convert to liters.
+  // TODO: likely many more usages of "1000" in this repo should use this, https://github.com/phetsims/density-buoyancy-common/issues/95
+  LITERS_IN_CUBIC_METER: 1000,
+
   VOLUME_PATTERN_STRING_PROPERTY: new DerivedProperty( [
     DensityBuoyancyCommonPreferences.volumeUnitsProperty,
     litersPatternStringProperty,

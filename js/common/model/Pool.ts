@@ -11,6 +11,7 @@ import optionize, { EmptySelfOptions } from '../../../../phet-core/js/optionize.
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import Basin, { BasinOptions } from './Basin.js';
 import Mass from './Mass.js';
+import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
 
 export type PoolOptions = BasinOptions;
 
@@ -20,11 +21,11 @@ export default class Pool extends Basin {
 
   public constructor( bounds: Bounds3, options?: PoolOptions ) {
 
-    const initialVolume = 0.1;
+    const initialVolume = DensityBuoyancyCommonConstants.DESIRED_STARTING_POOL_VOLUME;
 
     super( optionize<PoolOptions, EmptySelfOptions, BasinOptions>()( {
       initialVolume: initialVolume,
-      initialY: bounds.minY + initialVolume / ( bounds.width * bounds.depth )
+      initialY: bounds.minY + initialVolume / ( bounds.width * bounds.depth ) // TODO: Wouldn't it be better base this on the provided option instead of the hard coded default? https://github.com/phetsims/density-buoyancy-common/issues/95
     }, options ) );
 
     this.bounds = bounds;

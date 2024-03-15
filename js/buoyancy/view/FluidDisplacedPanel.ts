@@ -13,17 +13,38 @@ import BeakerNode from '../../../../scenery-phet/js/BeakerNode.js';
 import NumberProperty from '../../../../axon/js/NumberProperty.js';
 import Range from '../../../../dot/js/Range.js';
 import { EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
+import { Text, VBox } from '../../../../scenery/js/imports.js';
+import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
+import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 
 type SelfOptions = EmptySelfOptions;
 
 type FluidDisplacedPanelOptions = SelfOptions & MultiSectionPanelsNodeOptions;
 
+const STARTING_VOLUME = DensityBuoyancyCommonConstants.DESIRED_STARTING_POOL_VOLUME * DensityBuoyancyCommonConstants.LITERS_IN_CUBIC_METER;
+
 export default class FluidDisplacedPanel extends MultiSectionPanelsNode {
 
-  // TODO: base "100" off of something from the model. https://github.com/phetsims/buoyancy/issues/113
-  public constructor( poolVolumeProperty: TReadOnlyProperty<number>, providedOptions?: FluidDisplacedPanelOptions ) {
+  /**
+   * @param poolVolumeProperty
+   * @param maxBeakerVolume - in liters
+   * @param providedOptions
+   */
+  public constructor( poolVolumeProperty: TReadOnlyProperty<number>,
+                      maxBeakerVolume: number,
+                      providedOptions?: FluidDisplacedPanelOptions ) {
+    // TODO: is there a way to assert this? https://github.com/phetsims/buoyancy/issues/113
+    // assert && assert( Utils.toFixedNumber( poolVolumeProperty.value, 7 ) === 100,      'This class greatly expects the starting value to be 100.' );
 
-    const beakerVolumeProperty = new NumberProperty( 0.2, { range: new Range( 0, 1 ) } );
+    // Beaker expects a range between 0 and 1
+    const range = new Range( 0, 1 );
+    const beakerVolumeProperty = new NumberProperty( 0, { range: range } );
+    poolVolumeProperty.link( totalLiters => {
+      // TODO: assert if we go over 10?? https://github.com/phetsims/buoyancy/issues/113
+      beakerVolumeProperty.value = range.constrainValue( ( totalLiters - STARTING_VOLUME ) / maxBeakerVolume );
+    } );
+
+    // TODO: add majorTickMarkModulus: 5 as an option, https://github.com/phetsims/buoyancy/issues/113
     const beakerNode = new BeakerNode( beakerVolumeProperty, {
       lineWidth: 1,
       beakerHeight: 100,
@@ -33,7 +54,16 @@ export default class FluidDisplacedPanel extends MultiSectionPanelsNode {
       numberOfTicks: 10
     } );
 
-    super( [ beakerNode ], providedOptions );
+    super( [ new VBox( {
+      spacing: DensityBuoyancyCommonConstants.MARGIN,
+      children: [
+        new Text( DensityBuoyancyCommonStrings.fluidDisplacedStringProperty, {
+          font: DensityBuoyancyCommonConstants.TITLE_FONT,
+          maxWidth: 100
+        } ),
+        beakerNode
+      ]
+    } ) ], providedOptions );
   }
 }
 

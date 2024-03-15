@@ -30,7 +30,7 @@ import MaterialControlNode, { MaterialControlNodeOptions } from './MaterialContr
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 
 // constants
-const LITERS_IN_CUBIC_METER = 1000;
+const LITERS_IN_CUBIC_METER = DensityBuoyancyCommonConstants.LITERS_IN_CUBIC_METER;
 const TRACK_HEIGHT = 3;
 
 // A workaround for changing a DerivedProperty range Property to a NumberProperty, where the new range AND value will

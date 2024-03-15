@@ -113,6 +113,10 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
   protected leftBarrierViewPointPropertyProperty: Property<TReadOnlyProperty<Vector2>>;
   protected rightBarrierViewPointPropertyProperty: Property<TReadOnlyProperty<Vector2>>;
 
+  // In Liters, how much volume does the Pool liquid + displaced Masses take up.
+  // TODO: PhET-iO instrument for https://github.com/phetsims/density-buoyancy-common/issues/82
+  protected waterLevelVolumeProperty: TReadOnlyProperty<number>;
+
   public constructor( model: Model, providedOptions: SelfOptions ) {
 
     const scaleIncrease = 3.5;
@@ -706,9 +710,15 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
     model.masses.addItemRemovedListener( onMassRemoved );
 
     // DerivedProperty doesn't need disposal, since everything here lives for the lifetime of the simulation
-    const waterLevelIndicator = new WaterLevelIndicator( new DerivedProperty( [ model.pool.liquidYInterpolatedProperty ], liquidY => {
-      return model.poolBounds.width * model.poolBounds.depth * ( liquidY - model.poolBounds.minY );
-    } ) );
+    this.waterLevelVolumeProperty = new DerivedProperty( [ model.pool.liquidYInterpolatedProperty ],
+      liquidY => model.poolBounds.width *
+                 model.poolBounds.depth *
+                 ( liquidY - model.poolBounds.minY ) *
+                 DensityBuoyancyCommonConstants.LITERS_IN_CUBIC_METER, {
+        units: 'L'
+      } );
+
+    const waterLevelIndicator = new WaterLevelIndicator( this.waterLevelVolumeProperty );
     this.addChild( waterLevelIndicator );
     // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
     model.pool.liquidYInterpolatedProperty.link( liquidY => {

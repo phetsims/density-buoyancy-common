@@ -48,7 +48,7 @@ export default class DisplayOptionsNode extends VBox {
 
     const options = optionize<DisplayOptionsNodeOptions, SelfOptions, VBoxOptions>()( {
       includeVectorScaleControl: true,
-      spacing: 10,
+      spacing: DensityBuoyancyCommonConstants.MARGIN,
       align: 'left'
     }, providedOptions );
 

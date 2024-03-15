@@ -6,7 +6,6 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
-import Vector3 from '../../../../dot/js/Vector3.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import BlocksRadioButtonGroup from './BlocksRadioButtonGroup.js';
 import DensityBuoyancyScreenView from './DensityBuoyancyScreenView.js';
@@ -43,13 +42,8 @@ export default abstract class SecondaryMassScreenView<Model extends DensityBuoya
    * Positions the second-mass control.
    */
   private positionSecondMassControl(): void {
-    const bottomRightPoolPoint = this.modelToViewPoint( new Vector3(
-      this.model.poolBounds.maxX,
-      this.model.poolBounds.minY,
-      this.model.poolBounds.maxZ
-    ) );
-    this.blocksRadioButtonGroup!.bottom = bottomRightPoolPoint.y;
-    this.blocksRadioButtonGroup!.left = bottomRightPoolPoint.x + 10;
+    this.blocksRadioButtonGroup!.bottom = this.resetAllButton.bottom;
+    this.blocksRadioButtonGroup!.right = this.resetAllButton.left - 20;
   }
 
   public override layout( viewBounds: Bounds2 ): void {

@@ -1,4 +1,4 @@
-// Copyright 2019-2023, University of Colorado Boulder
+// Copyright 2019-2024, University of Colorado Boulder
 
 /**
  * Shows the water level numerically next to the top-left of the pool's water. Lives for the lifetime of the sim.

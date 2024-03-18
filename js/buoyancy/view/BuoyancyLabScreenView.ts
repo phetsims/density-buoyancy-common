@@ -21,7 +21,7 @@ import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import BuoyancyLabModel from '../model/BuoyancyLabModel.js';
 import arrayRemove from '../../../../phet-core/js/arrayRemove.js';
 import DensityAccordionBox from './DensityAccordionBox.js';
-import DisplayOptionsNode from '../../common/view/DisplayOptionsNode.js';
+import BuoyancyDisplayOptionsNode from '../../common/view/BuoyancyDisplayOptionsNode.js';
 import BlockControlNode from '../../common/view/BlockControlNode.js';
 import MultiSectionPanelsNode from '../../common/view/MultiSectionPanelsNode.js';
 import FluidDisplacedPanel from './FluidDisplacedPanel.js';
@@ -54,7 +54,7 @@ export default class BuoyancyLabScreenView extends DensityBuoyancyScreenView<Buo
         new FluidDisplacedPanel( this.waterLevelVolumeProperty, maxBlockVolume, {
           visibleProperty: model.showDisplacedFluidProperty
         } ),
-        new MultiSectionPanelsNode( [ new DisplayOptionsNode( model, {
+        new MultiSectionPanelsNode( [ new BuoyancyDisplayOptionsNode( model, {
           showFluidDisplacedProperty: model.showDisplacedFluidProperty
         } ) ] )
       ]

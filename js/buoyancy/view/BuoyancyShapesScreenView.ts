@@ -15,7 +15,7 @@ import Panel from '../../../../sun/js/Panel.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 import Material from '../../common/model/Material.js';
 import LiquidDensityControlNode from '../../common/view/LiquidDensityControlNode.js';
-import DisplayOptionsNode from '../../common/view/DisplayOptionsNode.js';
+import BuoyancyDisplayOptionsNode from '../../common/view/BuoyancyDisplayOptionsNode.js';
 import PrimarySecondaryPanelsNode from '../../common/view/PrimarySecondaryPanelsNode.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityAccordionBox from './DensityAccordionBox.js';
@@ -80,7 +80,7 @@ export default class BuoyancyShapesScreenView extends DensityBuoyancyScreenView<
       margin: MARGIN
     } ) );
 
-    const displayOptionsNode = new DisplayOptionsNode( model );
+    const displayOptionsNode = new BuoyancyDisplayOptionsNode( model );
 
     this.addChild( new AlignBox( new Panel( displayOptionsNode, DensityBuoyancyCommonConstants.PANEL_OPTIONS ), {
       alignBoundsProperty: this.visibleBoundsProperty,

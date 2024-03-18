@@ -16,7 +16,7 @@ import VerticalAquaRadioButtonGroup from '../../../../sun/js/VerticalAquaRadioBu
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 import Material from '../../common/model/Material.js';
 import DensityBuoyancyScreenView, { DensityBuoyancyScreenViewOptions } from '../../common/view/DensityBuoyancyScreenView.js';
-import DisplayOptionsNode from '../../common/view/DisplayOptionsNode.js';
+import BuoyancyDisplayOptionsNode from '../../common/view/BuoyancyDisplayOptionsNode.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import BuoyancyIntroModel, { BlockSet } from '../model/BuoyancyIntroModel.js';
@@ -82,7 +82,7 @@ export default class BuoyancyIntroScreenView extends DensityBuoyancyScreenView<B
       margin: MARGIN
     } ) );
 
-    const displayOptionsPanel = new Panel( new DisplayOptionsNode( model, { includeVectorScaleControl: false } ),
+    const displayOptionsPanel = new Panel( new BuoyancyDisplayOptionsNode( model, { includeVectorScaleControl: false } ),
       DensityBuoyancyCommonConstants.PANEL_OPTIONS );
     this.addChild( new AlignBox( displayOptionsPanel, {
       alignBoundsProperty: this.visibleBoundsProperty,

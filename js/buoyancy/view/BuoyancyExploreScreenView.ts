@@ -23,7 +23,7 @@ import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js'
 import BuoyancyExploreModel from '../model/BuoyancyExploreModel.js';
 import arrayRemove from '../../../../phet-core/js/arrayRemove.js';
 import DensityAccordionBox from './DensityAccordionBox.js';
-import DisplayOptionsNode from '../../common/view/DisplayOptionsNode.js';
+import BuoyancyDisplayOptionsNode from '../../common/view/BuoyancyDisplayOptionsNode.js';
 import SubmergedAccordionBox from './SubmergedAccordionBox.js';
 import PatternStringProperty from '../../../../axon/js/PatternStringProperty.js';
 import BlocksRadioButtonGroup from '../../common/view/BlocksRadioButtonGroup.js';
@@ -43,9 +43,9 @@ export default class BuoyancyExploreScreenView extends DensityBuoyancyScreenView
       cameraLookAt: DensityBuoyancyCommonConstants.BUOYANCY_CAMERA_LOOK_AT
     }, options ) );
 
-    const displayOptionsNode = new DisplayOptionsNode( model );
+    const buoyancyDisplayOptionsNode = new BuoyancyDisplayOptionsNode( model );
 
-    this.addChild( new AlignBox( new Panel( displayOptionsNode, DensityBuoyancyCommonConstants.PANEL_OPTIONS ), {
+    this.addChild( new AlignBox( new Panel( buoyancyDisplayOptionsNode, DensityBuoyancyCommonConstants.PANEL_OPTIONS ), {
       alignBoundsProperty: this.visibleBoundsProperty,
       xAlign: 'left',
       yAlign: 'bottom',

@@ -45,12 +45,12 @@ type SelfOptions = {
   showFluidDisplacedProperty?: Property<boolean> | null;
 };
 
-type DisplayOptionsNodeOptions = SelfOptions & VBoxOptions;
+type BuoyancyDisplayOptionsNodeOptions = SelfOptions & VBoxOptions;
 
-export default class DisplayOptionsNode extends VBox {
-  public constructor( model: DensityBuoyancyModel, providedOptions?: DisplayOptionsNodeOptions ) {
+export default class BuoyancyDisplayOptionsNode extends VBox {
+  public constructor( model: DensityBuoyancyModel, providedOptions?: BuoyancyDisplayOptionsNodeOptions ) {
 
-    const options = optionize<DisplayOptionsNodeOptions, SelfOptions, VBoxOptions>()( {
+    const options = optionize<BuoyancyDisplayOptionsNodeOptions, SelfOptions, VBoxOptions>()( {
       includeVectorScaleControl: true,
       showFluidDisplacedProperty: null,
       spacing: DensityBuoyancyCommonConstants.MARGIN,
@@ -134,4 +134,4 @@ export default class DisplayOptionsNode extends VBox {
   }
 }
 
-densityBuoyancyCommon.register( 'DisplayOptionsNode', DisplayOptionsNode );
+densityBuoyancyCommon.register( 'BuoyancyDisplayOptionsNode', BuoyancyDisplayOptionsNode );

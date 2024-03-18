@@ -27,7 +27,7 @@ import Material from '../../common/model/Material.js';
 import DensityBuoyancyCommonColors from '../../common/view/DensityBuoyancyCommonColors.js';
 import DensityBuoyancyScreenView, { DensityBuoyancyScreenViewOptions } from '../../common/view/DensityBuoyancyScreenView.js';
 import LiquidDensityControlNode from '../../common/view/LiquidDensityControlNode.js';
-import DisplayOptionsNode from '../../common/view/DisplayOptionsNode.js';
+import BuoyancyDisplayOptionsNode from '../../common/view/BuoyancyDisplayOptionsNode.js';
 import MaterialMassVolumeControlNode from '../../common/view/MaterialMassVolumeControlNode.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
@@ -249,7 +249,7 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
       margin: MARGIN
     } ) );
 
-    const displayOptionsNode = new DisplayOptionsNode( model );
+    const displayOptionsNode = new BuoyancyDisplayOptionsNode( model );
 
     const densityBox = new DensityAccordionBox( {
       expandedProperty: model.densityExpandedProperty,

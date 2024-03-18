@@ -388,7 +388,7 @@ export default abstract class Mass extends PhetioObject {
 
     this.submergedMassFractionProperty = new NumberProperty( 0, {
       range: new Range( 0, 1 ),
-      tandem: Tandem.OPT_OUT
+      tandem: Tandem.OPT_OUT, // TODO: Instrument? https://github.com/phetsims/density-buoyancy-common/issues/82
     } );
 
     this.containedMassProperty = new NumberProperty( 0, {

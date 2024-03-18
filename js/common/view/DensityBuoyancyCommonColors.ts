@@ -36,7 +36,7 @@ const DensityBuoyancyCommonColors = {
     default: new Color( 107, 165, 75 )
   } ),
   grassFarProperty: new ProfileColorProperty( densityBuoyancyCommon, 'grassFar', {
-    default: new Color( 107, 165, 75 ).colorUtilsDarker( 0.7 )
+    default: new Color( 230, 230, 80 )
   } ),
   poolSurfaceProperty: new ProfileColorProperty( densityBuoyancyCommon, 'poolSurface', {
     default: new Color( 183, 159, 159 )

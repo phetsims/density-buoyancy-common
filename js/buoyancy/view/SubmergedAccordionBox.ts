@@ -42,13 +42,8 @@ export default class SubmergedAccordionBox extends ReadoutListAccordionBox<Subme
     return {
       nameProperty: mass.nameProperty,
       valueProperty: new DerivedProperty(
-        [
-          mass.volumeProperty,
-          mass.buoyancyForceInterpolatedProperty,
-          this.gravityProperty,
-          this.liquidMaterialProperty
-        ], ( volume, buoyancy, gravity, liquid ) => {
-          return Utils.toFixed( 100 * buoyancy?.magnitude / ( volume * gravity.value * liquid.density ), 1 ) + '%';
+        [ mass.submergedMassFractionProperty ], submergedMassFraction => {
+          return Utils.toFixed( 100 * submergedMassFraction, 1 ) + '%';
         } )
     };
   }

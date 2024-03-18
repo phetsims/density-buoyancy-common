@@ -181,6 +181,9 @@ export default abstract class Mass extends PhetioObject {
   // In m^3 (cubic meters)
   public readonly volumeProperty: NumberProperty;
 
+  // Percentage of submerged mass, if any
+  public readonly submergedMassFractionProperty: NumberProperty;
+
   // In kg (kilograms), added to the normal mass (computed from density and volume)
   public readonly containedMassProperty: Property<number>;
 
@@ -383,6 +386,11 @@ export default abstract class Mass extends PhetioObject {
       reentrant: true
     }, options.volumePropertyOptions ) );
 
+    this.submergedMassFractionProperty = new NumberProperty( 0, {
+      range: new Range( 0, 1 ),
+      tandem: Tandem.OPT_OUT
+    } );
+
     this.containedMassProperty = new NumberProperty( 0, {
       range: new Range( 0, Number.POSITIVE_INFINITY ),
       tandem: Tandem.OPT_OUT
@@ -543,6 +551,15 @@ export default abstract class Mass extends PhetioObject {
    * Returns the cumulative displaced volume of this object up to a given y level.
    */
   public abstract getDisplacedVolume( liquidLevel: number ): number;
+
+  /**
+   * Returns the fraction of the mass that is submerged in a liquid at a given level. From 0 to 1.
+   */
+  public updateSubmergedMassFraction( gravityMagnitude: number, liquidDensity: number ): void {
+    const buoyancy = this.buoyancyForceInterpolatedProperty.value;
+    const volume = this.volumeProperty.value;
+    this.submergedMassFractionProperty.value = buoyancy.magnitude / ( volume * gravityMagnitude * liquidDensity );
+  }
 
   /**
    * Sets the current location to be the proper position for the mass when it is reset.

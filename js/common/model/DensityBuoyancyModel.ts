@@ -350,6 +350,9 @@ export default class DensityBuoyancyModel implements TModel {
         const gravityForce = new Vector2( 0, -mass.massProperty.value * gravity );
         this.engine.bodyApplyForce( mass.body, gravityForce );
         mass.gravityForceInterpolatedProperty.setNextValue( gravityForce );
+
+        // Calculates the submerged ratio for the mass
+        mass.updateSubmergedMassFraction( gravity, this.liquidDensityProperty.value );
       } );
     } );
 

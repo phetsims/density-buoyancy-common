@@ -556,9 +556,18 @@ export default abstract class Mass extends PhetioObject {
    * Returns the fraction of the mass that is submerged in a liquid at a given level. From 0 to 1.
    */
   public updateSubmergedMassFraction( gravityMagnitude: number, liquidDensity: number ): void {
-    const buoyancy = this.buoyancyForceInterpolatedProperty.value;
-    const volume = this.volumeProperty.value;
-    this.submergedMassFractionProperty.value = buoyancy.magnitude / ( volume * gravityMagnitude * liquidDensity );
+
+    // TODO: Support gravity=0, https://github.com/phetsims/buoyancy/issues/124
+    if ( gravityMagnitude === 0 ) {
+      this.submergedMassFractionProperty.value = 0;
+    }
+    else {
+      const buoyancy = this.buoyancyForceInterpolatedProperty.value;
+      const volume = this.volumeProperty.value;
+      const submergedFraction = buoyancy.magnitude / ( volume * gravityMagnitude * liquidDensity );
+      const range = this.submergedMassFractionProperty.range;
+      this.submergedMassFractionProperty.value = range.constrainValue( submergedFraction );
+    }
   }
 
   /**

@@ -39,8 +39,12 @@ type StringsType = {
     'honeyStringProperty': LocalizedStringProperty;
     'humanStringProperty': LocalizedStringProperty;
     'iceStringProperty': LocalizedStringProperty;
-    'mysteryXStringProperty': LocalizedStringProperty;
-    'mysteryYStringProperty': LocalizedStringProperty;
+    'materialOStringProperty': LocalizedStringProperty;
+    'materialPStringProperty': LocalizedStringProperty;
+    'materialVStringProperty': LocalizedStringProperty;
+    'materialWStringProperty': LocalizedStringProperty;
+    'materialXStringProperty': LocalizedStringProperty;
+    'materialYStringProperty': LocalizedStringProperty;
     'leadStringProperty': LocalizedStringProperty;
     'mercuryStringProperty': LocalizedStringProperty;
     'oilStringProperty': LocalizedStringProperty;

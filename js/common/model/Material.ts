@@ -278,22 +278,6 @@ export default class Material {
     liquidColor: DensityBuoyancyCommonColors.materialLeadColorProperty
   } );
 
-  public static readonly MYSTERY_X = new Material( {
-    nameProperty: DensityBuoyancyCommonStrings.material.mysteryXStringProperty,
-    tandemName: 'mysteryX',
-    identifier: 'MYSTERY_X',
-    hidden: true,
-    density: 5010 // Same as pyrite,
-  } );
-
-  public static readonly MYSTERY_Y = new Material( {
-    nameProperty: DensityBuoyancyCommonStrings.material.mysteryYStringProperty,
-    tandemName: 'mysteryY',
-    identifier: 'MYSTERY_Y',
-    hidden: true,
-    density: 19320 // Same as gold,
-  } );
-
   public static readonly PLATINUM = new Material( {
     nameProperty: DensityBuoyancyCommonStrings.material.platinumStringProperty,
     tandemName: 'platinum',
@@ -485,6 +469,57 @@ export default class Material {
     density: 1000,
     viscosity: 8.9e-4,
     liquidColor: DensityBuoyancyCommonColors.materialWaterColorProperty
+  } );
+
+
+  // (read-only) {Material} - "Mystery Materials"
+
+  public static readonly MATERIAL_O = new Material( {
+    nameProperty: DensityBuoyancyCommonStrings.material.materialOStringProperty,
+    tandemName: 'materialO',
+    identifier: 'MATERIAL_O',
+    hidden: true,
+    density: 950 // Same as the Human's average density
+  } );
+
+  public static readonly MATERIAL_P = new Material( {
+    nameProperty: DensityBuoyancyCommonStrings.material.materialPStringProperty,
+    tandemName: 'materialP',
+    identifier: 'MATERIAL_P',
+    hidden: true,
+    density: Material.DIAMOND.density
+  } );
+
+  public static readonly MATERIAL_V = new Material( {
+    nameProperty: DensityBuoyancyCommonStrings.material.materialVStringProperty,
+    tandemName: 'materialV',
+    identifier: 'MATERIAL_V',
+    hidden: true,
+    density: Material.TITANIUM.density
+  } );
+
+  public static readonly MATERIAL_W = new Material( {
+    nameProperty: DensityBuoyancyCommonStrings.material.materialWStringProperty,
+    tandemName: 'materialW',
+    identifier: 'MATERIAL_W',
+    hidden: true,
+    density: Material.MERCURY.density
+  } );
+
+  public static readonly MATERIAL_X = new Material( {
+    nameProperty: DensityBuoyancyCommonStrings.material.materialXStringProperty,
+    tandemName: 'materialX',
+    identifier: 'MATERIAL_X',
+    hidden: true,
+    density: Material.PYRITE.density
+  } );
+
+  public static readonly MATERIAL_Y = new Material( {
+    nameProperty: DensityBuoyancyCommonStrings.material.materialYStringProperty,
+    tandemName: 'mysteryY',
+    identifier: 'MATERIAL_Y',
+    hidden: true,
+    density: Material.GOLD.density
   } );
 
   public static readonly MATERIALS = [

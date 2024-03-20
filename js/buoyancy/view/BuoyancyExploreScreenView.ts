@@ -96,10 +96,10 @@ export default class BuoyancyExploreScreenView extends DensityBuoyancyScreenView
 
     [ model.primaryMass, model.secondaryMass ].forEach( mass => {
       mass.materialProperty.link( material => {
-        if ( material === Material.MYSTERY_X ) {
+        if ( material === Material.MATERIAL_X ) {
           mass.volumeProperty.value = 0.003;
         }
-        else if ( material === Material.MYSTERY_Y ) {
+        else if ( material === Material.MATERIAL_Y ) {
           mass.volumeProperty.value = 0.001;
         }
       } );

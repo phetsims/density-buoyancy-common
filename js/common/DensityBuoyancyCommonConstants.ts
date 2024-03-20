@@ -129,8 +129,8 @@ const DensityBuoyancyCommonConstants = {
   ],
 
   BUOYANCY_MYSTERY_DENSITY_MATERIALS: [
-    Material.MYSTERY_X,
-    Material.MYSTERY_Y
+    Material.MATERIAL_X,
+    Material.MATERIAL_Y
   ],
 
   // In m^3, the value that we want the initial liquid volume to be (including the displacement of any volumes in the pool).

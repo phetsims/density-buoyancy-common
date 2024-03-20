@@ -109,10 +109,10 @@ export default class BuoyancyLabScreenView extends DensityBuoyancyScreenView<Buo
     ) ] );
 
     model.primaryMass.materialProperty.link( material => {
-      if ( material === Material.MYSTERY_X ) {
+      if ( material === Material.MATERIAL_X ) {
         model.primaryMass.volumeProperty.value = 0.003;
       }
-      else if ( material === Material.MYSTERY_Y ) {
+      else if ( material === Material.MATERIAL_Y ) {
         model.primaryMass.volumeProperty.value = 0.001;
       }
     } );

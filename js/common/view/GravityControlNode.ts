@@ -28,7 +28,7 @@ export default class GravityControlNode extends ComboNumberControl<Gravity> {
       titleProperty: DensityBuoyancyCommonStrings.gravity.nameStringProperty,
       valuePatternProperty: DensityBuoyancyCommonStrings.metersPerSecondSquaredPatternStringProperty,
       property: gravityProperty,
-      range: new Range( 0, 25 ),
+      range: new Range( 0.1, 25 ),
       toNumericValue: gravity => gravity.value,
       createCustomValue: Gravity.createCustomGravity,
       isCustomValue: gravity => gravity.custom,

@@ -90,7 +90,8 @@ export default class BuoyancyExploreScreenView extends DensityBuoyancyScreenView
       {
         tandem: tandem,
         minCustomMass: 0.1,
-        supportHiddenMaterial: true
+        supportHiddenMaterial: true,
+        mysteryMaterials: [ Material.MATERIAL_X, Material.MATERIAL_Y ]
       }
     );
 

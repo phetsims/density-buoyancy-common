@@ -104,16 +104,17 @@ export default class BuoyancyLabScreenView extends DensityBuoyancyScreenView<Buo
         tandem: tandem.createTandem( 'blockControlPanel' ),
         minCustomMass: 0.1,
         supportHiddenMaterial: true,
-        maxVolumeLiters: maxBlockVolume
+        maxVolumeLiters: maxBlockVolume,
+        mysteryMaterials: [ Material.MATERIAL_O, Material.MATERIAL_P ]
       }
     ) ] );
 
     model.primaryMass.materialProperty.link( material => {
-      if ( material === Material.MATERIAL_X ) {
-        model.primaryMass.volumeProperty.value = 0.003;
+      if ( material === Material.MATERIAL_O ) {
+        model.primaryMass.volumeProperty.value = 0.005;
       }
-      else if ( material === Material.MATERIAL_Y ) {
-        model.primaryMass.volumeProperty.value = 0.001;
+      else if ( material === Material.MATERIAL_P ) {
+        model.primaryMass.volumeProperty.value = 0.005;
       }
     } );
 

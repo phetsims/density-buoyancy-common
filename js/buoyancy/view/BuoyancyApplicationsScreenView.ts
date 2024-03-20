@@ -129,7 +129,7 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
       yMargin: 60
     } );
 
-    const blockControlNode = new MaterialMassVolumeControlNode( model.block.materialProperty, model.block.massProperty, model.block.volumeProperty, _.sortBy( [
+    const boatControlNode = new MaterialMassVolumeControlNode( model.block.materialProperty, model.block.massProperty, model.block.volumeProperty, _.sortBy( [
         Material.PYRITE,
         Material.STEEL,
         Material.SILVER,
@@ -138,7 +138,7 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
         Material.PLATINUM
       ].concat( DensityBuoyancyCommonConstants.SIMPLE_MASS_MATERIALS ),
       material => material.density ), cubicMeters => model.block.updateSize( Cube.boundsFromVolume( cubicMeters ) ), this.popupLayer, {
-      tandem: tandem.createTandem( 'blockControlNode' ),
+      tandem: tandem.createTandem( 'boatControlNode' ),
       highDensityMaxMass: 215
     } );
 
@@ -173,7 +173,7 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
       spacing: 10,
       align: 'left',
       children: [
-        blockControlNode,
+        boatControlNode,
         new HSeparator(),
         // Convert cubic meters => liters
         new NumberControl( DensityBuoyancyCommonStrings.boatVolumeStringProperty, new UnitConversionProperty( model.boat.displacementVolumeProperty, {

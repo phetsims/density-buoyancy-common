@@ -15,8 +15,13 @@ import Cuboid from '../model/Cuboid.js';
 import BlockControlNode, { BlockControlNodeOptions } from './BlockControlNode.js';
 import DensityBuoyancyCommonColors from './DensityBuoyancyCommonColors.js';
 import PrimarySecondaryPanelsNode from './PrimarySecondaryPanelsNode.js';
+import Material from '../model/Material.js';
 
-export type PrimarySecondaryControlsNodeOptions = BlockControlNodeOptions & { tandem: Tandem };
+type SelfOptions = {
+  mysteryMaterials?: Material[];
+};
+
+export type PrimarySecondaryControlsNodeOptions = SelfOptions & BlockControlNodeOptions & { tandem: Tandem };
 
 export default class PrimarySecondaryControlsNode extends PrimarySecondaryPanelsNode {
 

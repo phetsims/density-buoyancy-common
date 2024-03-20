@@ -16,7 +16,6 @@ import Material from '../../common/model/Material.js';
 import DensityBuoyancyCommonColors from '../../common/view/DensityBuoyancyCommonColors.js';
 import DensityBuoyancyScreenView, { DensityBuoyancyScreenViewOptions } from '../../common/view/DensityBuoyancyScreenView.js';
 import LiquidDensityControlNode from '../../common/view/LiquidDensityControlNode.js';
-import GravityControlNode from '../../common/view/GravityControlNode.js';
 import PrimarySecondaryControlsNode from '../../common/view/PrimarySecondaryControlsNode.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
@@ -71,7 +70,6 @@ export default class BuoyancyExploreScreenView extends DensityBuoyancyScreenView
           invisibleMaterials: invisibleMaterials,
           tandem: tandem.createTandem( 'densityControlNode' )
         } ), DensityBuoyancyCommonConstants.PANEL_OPTIONS ),
-        new Panel( new GravityControlNode( model.gravityProperty, this.popupLayer, tandem.createTandem( 'gravityControlNode' ) ), DensityBuoyancyCommonConstants.PANEL_OPTIONS ),
         new BlocksRadioButtonGroup( model.modeProperty, {
           tandem: this.tandem.createTandem( 'blocksRadioButtonGroup' )
         } )

@@ -133,9 +133,6 @@ type StringsType = {
   'widthStringProperty': LocalizedStringProperty;
   'heightStringProperty': LocalizedStringProperty;
   'averageStringProperty': LocalizedStringProperty;
-  'densityReadoutPatternStringProperty': LocalizedStringProperty;
-  'densityReadoutDecimetersCubedPatternStringProperty': LocalizedStringProperty;
-  'densityReadoutUnitlessPatternStringProperty': LocalizedStringProperty;
   'nameColonPatternStringProperty': LocalizedStringProperty;
   'whatIsTheFluidDensityStringProperty': LocalizedStringProperty;
   'whatIsTheValueOfGravityStringProperty': LocalizedStringProperty;

@@ -41,6 +41,7 @@ import DensityBuoyancyCommonQueryParameters from '../../common/DensityBuoyancyCo
 import bottle_icon_png from '../../../images/bottle_icon_png.js';
 import boat_icon_png from '../../../images/boat_icon_png.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
+import SubmergedAccordionBox from './SubmergedAccordionBox.js';
 
 // constants
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
@@ -64,6 +65,32 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
     if ( this.sceneNode.stage.threeRenderer ) {
       this.sceneNode.stage.threeRenderer.localClippingEnabled = true;
     }
+
+    const resetSceneButton = new RectangularPushButton( {
+      content: new Node( {
+        children: [
+          new Image( resetArrow_png, { scale: 0.3 } )
+        ]
+      } ),
+      xMargin: 5,
+      yMargin: 3,
+      baseColor: new Color( 220, 220, 220 ),
+      listener: () => {
+        model.resetBoatScene();
+      },
+      visibleProperty: new DerivedProperty( [ model.sceneProperty ], scene => scene === Scene.BOAT )
+    } );
+    this.addChild( resetSceneButton );
+
+    this.positionResetSceneButton = () => {
+      resetSceneButton.rightTop = this.modelToViewPoint( new Vector3(
+        this.model.poolBounds.maxX,
+        this.model.poolBounds.minY,
+        this.model.poolBounds.maxZ
+      ) ).plusXY( 0, 5 );
+    };
+    this.transformEmitter.addListener( this.positionResetSceneButton );
+    this.positionResetSceneButton();
 
     const bottleControlNode = new MaterialMassVolumeControlNode( model.bottle.interiorMaterialProperty, model.bottle.interiorMassProperty, model.bottle.interiorVolumeProperty, [
       Material.GASOLINE,
@@ -121,13 +148,7 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
       ]
     } );
 
-    const rightBottleContent = new AlignBox( new Panel( bottleBox, DensityBuoyancyCommonConstants.PANEL_OPTIONS ), {
-      alignBoundsProperty: this.visibleBoundsProperty,
-      xAlign: 'right',
-      yAlign: 'bottom',
-      xMargin: 10,
-      yMargin: 60
-    } );
+    const rightBottleContent = new Panel( bottleBox, DensityBuoyancyCommonConstants.PANEL_OPTIONS );
 
     const boatControlNode = new MaterialMassVolumeControlNode( model.block.materialProperty, model.block.massProperty, model.block.volumeProperty, _.sortBy( [
         Material.PYRITE,
@@ -141,32 +162,6 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
       tandem: tandem.createTandem( 'boatControlNode' ),
       highDensityMaxMass: 215
     } );
-
-    const resetSceneButton = new RectangularPushButton( {
-      content: new Node( {
-        children: [
-          new Image( resetArrow_png, { scale: 0.3 } )
-        ]
-      } ),
-      xMargin: 5,
-      yMargin: 3,
-      baseColor: new Color( 220, 220, 220 ),
-      listener: () => {
-        model.resetBoatScene();
-      },
-      visibleProperty: new DerivedProperty( [ model.sceneProperty ], scene => scene === Scene.BOAT )
-    } );
-    this.addChild( resetSceneButton );
-
-    this.positionResetSceneButton = () => {
-      resetSceneButton.rightTop = this.modelToViewPoint( new Vector3(
-        this.model.poolBounds.maxX,
-        this.model.poolBounds.minY,
-        this.model.poolBounds.maxZ
-      ) ).plusXY( 0, 5 );
-    };
-    this.transformEmitter.addListener( this.positionResetSceneButton );
-    this.positionResetSceneButton();
 
     const boatVolumeRange = new Range( 5, 30 );
     const boatBox = new VBox( {
@@ -209,16 +204,38 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
       ]
     } );
 
-    const rightBoatContent = new AlignBox( new Panel( boatBox, DensityBuoyancyCommonConstants.PANEL_OPTIONS ), {
-      alignBoundsProperty: this.visibleBoundsProperty,
-      xAlign: 'right',
-      yAlign: 'bottom',
-      xMargin: 10,
-      yMargin: 60
+    const rightBoatContent = new Panel( boatBox, DensityBuoyancyCommonConstants.PANEL_OPTIONS );
+
+    const densityBox = new DensityAccordionBox( {
+      expandedProperty: model.densityExpandedProperty,
+      contentWidthMax: boatBox.width
     } );
 
-    this.addChild( rightBottleContent );
-    this.addChild( rightBoatContent );
+    const submergedBox = new SubmergedAccordionBox( model.gravityProperty, model.liquidMaterialProperty, {
+      readoutItems: [ {
+        readoutItem: model.block
+      } ],
+      contentWidthMax: boatBox.width
+    } );
+
+    const rightSideVBox = new VBox( {
+      spacing: 10,
+      align: 'right',
+      excludeInvisibleChildrenFromBounds: true,
+      children: [
+        rightBottleContent,
+        rightBoatContent,
+        densityBox,
+        submergedBox
+      ]
+    } );
+
+    this.addChild( new AlignBox( rightSideVBox, {
+      alignBoundsProperty: this.visibleBoundsProperty,
+      xAlign: 'right',
+      yAlign: 'top',
+      margin: MARGIN
+    } ) );
 
     // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
     model.sceneProperty.link( scene => {
@@ -251,11 +268,6 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
 
     const displayOptionsNode = new BuoyancyDisplayOptionsNode( model );
 
-    const densityBox = new DensityAccordionBox( {
-      expandedProperty: model.densityExpandedProperty,
-      contentWidthMax: displayOptionsNode.width
-    } );
-
     model.sceneProperty.link( scene => {
       const materials = scene === Scene.BOTTLE ? [
         model.bottle.interiorMaterialProperty,
@@ -268,16 +280,21 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
       densityBox.setReadoutItems( materials.map( material => {
         return { readoutItem: material };
       } ) );
+      const submergedObjects = scene === Scene.BOTTLE ?
+        [ {
+          readoutItem: model.bottle,
+          readoutNameProperty: DensityBuoyancyCommonStrings.bottleStringProperty
+        } ] :
+        [ {
+          readoutItem: model.block,
+          readoutNameProperty: DensityBuoyancyCommonStrings.shape.blockStringProperty
+        }
+        ];
+      submergedBox.setReadoutItems( submergedObjects );
     } );
 
 
-    this.addChild( new AlignBox( new VBox( {
-      spacing: 10,
-      children: [
-        densityBox,
-        new Panel( displayOptionsNode, DensityBuoyancyCommonConstants.PANEL_OPTIONS )
-      ]
-    } ), {
+    this.addChild( new AlignBox( new Panel( displayOptionsNode, DensityBuoyancyCommonConstants.PANEL_OPTIONS ), {
       alignBoundsProperty: this.visibleBoundsProperty,
       xAlign: 'left',
       yAlign: 'bottom',

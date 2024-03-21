@@ -73,6 +73,8 @@ type StringsType = {
   'materialInsideStringProperty': LocalizedStringProperty;
   'airVolumeStringProperty': LocalizedStringProperty;
   'boatVolumeStringProperty': LocalizedStringProperty;
+  'bottleStringProperty': LocalizedStringProperty;
+  'boatStringProperty': LocalizedStringProperty;
   'kilogramsPatternStringProperty': LocalizedStringProperty;
   'litersPatternStringProperty': LocalizedStringProperty;
   'decimetersCubedPatternStringProperty': LocalizedStringProperty;

@@ -64,7 +64,7 @@ export default class BuoyancyApplicationsModel extends DensityBuoyancyModel {
     } );
     this.availableMasses.push( this.bottle );
 
-    this.block = Cube.createWithVolume( this.engine, Material.BRICK, new Vector2( 0.5, 0.5 ), 0.001, {
+    this.block = Cube.createWithVolume( this.engine, Material.BRICK, new Vector2( -0.5, 0.3 ), 0.001, {
       visible: false,
       tandem: tandem.createTandem( 'block' )
     } );
@@ -79,7 +79,7 @@ export default class BuoyancyApplicationsModel extends DensityBuoyancyModel {
     this.availableMasses.push( this.boat );
 
     this.scale1 = new Scale( this.engine, this.gravityProperty, {
-      matrix: Matrix3.translation( 0.77, -Scale.SCALE_BASE_BOUNDS.minY ),
+      matrix: Matrix3.translation( -0.77, -Scale.SCALE_BASE_BOUNDS.minY ),
       displayType: DisplayType.NEWTONS,
       tandem: tandem.createTandem( 'scale1' ),
       canMove: false,

@@ -158,7 +158,10 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
         Material.GOLD,
         Material.PLATINUM
       ].concat( DensityBuoyancyCommonConstants.SIMPLE_MASS_MATERIALS ),
-      material => material.density ), cubicMeters => model.block.updateSize( Cube.boundsFromVolume( cubicMeters ) ), this.popupLayer, {
+      material => material.density ).concat( [ // Adding Mystery Materials at the end so they aren't sorted by density
+      Material.MATERIAL_V,
+      Material.MATERIAL_W
+    ] ), cubicMeters => model.block.updateSize( Cube.boundsFromVolume( cubicMeters ) ), this.popupLayer, {
       tandem: tandem.createTandem( 'boatControlNode' ),
       highDensityMaxMass: 215
     } );

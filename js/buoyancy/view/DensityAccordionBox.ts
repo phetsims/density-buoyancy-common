@@ -6,7 +6,6 @@
  * @author Agustín Vallejo
  */
 
-import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import DynamicProperty from '../../../../axon/js/DynamicProperty.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import Material from '../../common/model/Material.js';
@@ -16,6 +15,7 @@ import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonCo
 import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
 import Utils from '../../../../dot/js/Utils.js';
 import ReadoutListAccordionBox, { ReadoutData, ReadoutListAccordionBoxOptions } from './ReadoutListAccordionBox.js';
+import DerivedStringProperty from '../../../../axon/js/DerivedStringProperty.js';
 
 type DensityReadoutType = TReadOnlyProperty<Material>;
 
@@ -37,7 +37,7 @@ export default class DensityAccordionBox extends ReadoutListAccordionBox<Density
     } );
 
     // Returns the filled in string for the material readout or '?' if the material is hidden
-    const valueProperty = new DerivedProperty(
+    const valueProperty = new DerivedStringProperty(
       [
         materialProperty,
         DensityBuoyancyCommonConstants.KILOGRAMS_PER_VOLUME_PATTERN_STRING_PROPERTY,
@@ -46,8 +46,6 @@ export default class DensityAccordionBox extends ReadoutListAccordionBox<Density
       ( material, patternStringProperty, questionMarkString ) => {
         return material.hidden ?
                questionMarkString :
-
-          // TODO: PatternStringProperty? https://github.com/phetsims/buoyancy/issues/112
                StringUtils.fillIn( patternStringProperty, {
                  value: Utils.toFixed( material.density / 1000, 2 ),
                  decimalPlaces: 2

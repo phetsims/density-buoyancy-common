@@ -13,7 +13,6 @@ import { AlignBox, HBox, VBox } from '../../../../scenery/js/imports.js';
 import Panel from '../../../../sun/js/Panel.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 import Material from '../../common/model/Material.js';
-import DensityBuoyancyCommonColors from '../../common/view/DensityBuoyancyCommonColors.js';
 import DensityBuoyancyScreenView, { DensityBuoyancyScreenViewOptions } from '../../common/view/DensityBuoyancyScreenView.js';
 import LiquidDensityControlNode from '../../common/view/LiquidDensityControlNode.js';
 import PrimarySecondaryControlsNode from '../../common/view/PrimarySecondaryControlsNode.js';
@@ -116,14 +115,12 @@ export default class BuoyancyExploreScreenView extends DensityBuoyancyScreenView
       contentWidthMax: this.rightBox.content.width
     } );
 
-    const customExploreScreenFormatting = {
-      readoutNameProperties: [ model.primaryMass, model.secondaryMass ].map( mass => new PatternStringProperty( DensityBuoyancyCommonStrings.blockPatternStringProperty, { tag: mass.nameProperty } ) ),
-      readoutFormats: [
-        // TODO: use mass.tag.colorProperty, https://github.com/phetsims/buoyancy/issues/112
-        { font: DensityBuoyancyCommonConstants.ITEM_FONT, fill: DensityBuoyancyCommonColors.labelPrimaryProperty },
-        { font: DensityBuoyancyCommonConstants.ITEM_FONT, fill: DensityBuoyancyCommonColors.labelSecondaryProperty }
-      ]
-    };
+    const customExploreScreenFormatting = [ model.primaryMass, model.secondaryMass ].map( mass => {
+      return {
+        readoutNameProperty: new PatternStringProperty( DensityBuoyancyCommonStrings.blockPatternStringProperty, { tag: mass.nameProperty } ),
+        readoutFormat: { font: DensityBuoyancyCommonConstants.ITEM_FONT, fill: mass.tag.colorProperty }
+      };
+    } );
 
     // Adjust the visibility after, since we want to size the box's location for its "full" bounds
     // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
@@ -132,15 +129,15 @@ export default class BuoyancyExploreScreenView extends DensityBuoyancyScreenView
       densityBox.setReadoutItems( masses.map( ( mass, index ) => {
         return {
           readoutItem: mass.materialProperty,
-          readoutNameProperty: customExploreScreenFormatting.readoutNameProperties[ index ],
-          readoutFormat: customExploreScreenFormatting.readoutFormats[ index ]
+          readoutNameProperty: customExploreScreenFormatting[ index ].readoutNameProperty,
+          readoutFormat: customExploreScreenFormatting[ index ].readoutFormat
         };
       } ) );
       submergedBox.setReadoutItems( masses.map( ( mass, index ) => {
         return {
           readoutItem: mass,
-          readoutNameProperty: customExploreScreenFormatting.readoutNameProperties[ index ],
-          readoutFormat: customExploreScreenFormatting.readoutFormats[ index ]
+          readoutNameProperty: customExploreScreenFormatting[ index ].readoutNameProperty,
+          readoutFormat: customExploreScreenFormatting[ index ].readoutFormat
         };
       } ) );
     } );

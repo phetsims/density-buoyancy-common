@@ -11,7 +11,7 @@ import Utils from '../../../../dot/js/Utils.js';
 import { combineOptions } from '../../../../phet-core/js/optionize.js';
 import Orientation from '../../../../phet-core/js/Orientation.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
-import { GridBackgroundNode, GridBox, TLayoutOptions, Node, Rectangle, Text, RichText } from '../../../../scenery/js/imports.js';
+import { GridBackgroundNode, GridBox, Node, Rectangle, RichText, Text, TLayoutOptions } from '../../../../scenery/js/imports.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 import DensityBuoyancyCommonPreferences from '../../common/model/DensityBuoyancyCommonPreferences.js';
 import DensityBuoyancyCommonColors from '../../common/view/DensityBuoyancyCommonColors.js';

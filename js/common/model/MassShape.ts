@@ -1,4 +1,4 @@
-// Copyright 2022, University of Colorado Boulder
+// Copyright 2022-2024, University of Colorado Boulder
 
 /**
  * Mass shape for the Buoyancy Shapes screen. In the common model because some phet-io hackery is needed.

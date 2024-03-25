@@ -21,6 +21,7 @@ import Scale, { DisplayType } from '../../common/model/Scale.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import Boat from './Boat.js';
 import Bottle from './Bottle.js';
+import { combineOptions } from '../../../../phet-core/js/optionize.js';
 
 // constants
 export class Scene extends EnumerationValue {
@@ -48,7 +49,9 @@ export default class BuoyancyApplicationsModel extends DensityBuoyancyModel {
 
     const tandem = options.tandem;
 
-    super( options );
+    super( combineOptions<DensityBuoyancyModelOptions>( {
+      usePoolScale: true
+    }, options ) );
 
     this.sceneProperty = new EnumerationProperty( Scene.BOTTLE, {
       tandem: options.tandem.createTandem( 'sceneProperty' )
@@ -89,7 +92,7 @@ export default class BuoyancyApplicationsModel extends DensityBuoyancyModel {
     } );
     this.availableMasses.push( this.scale1 );
 
-    // Adjust pool volume so that it's at the desired value WITH the pool scale inside.
+    // Adjust pool volume so that it's at the desired value WITH the pool scales inside.
     this.pool.liquidVolumeProperty.setInitialValue( this.pool.liquidVolumeProperty.value );
 
     // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
@@ -97,10 +100,17 @@ export default class BuoyancyApplicationsModel extends DensityBuoyancyModel {
       this.bottle.internalVisibleProperty.value = scene === Scene.BOTTLE;
       this.boat.internalVisibleProperty.value = scene === Scene.BOAT;
       this.block.internalVisibleProperty.value = scene === Scene.BOAT;
+      this.scale2!.internalVisibleProperty.value = scene === Scene.BOTTLE;
 
       assert && assert( !this.boat.visibleProperty.value || !this.bottle.visibleProperty.value,
         'Boat and bottle should not be visible at the same time' );
     } );
+
+    this.scale2!.internalVisibleProperty.lazyLink( visible => {
+      const plusMinusScale = visible ? -1 : 1;
+      this.pool.liquidVolumeProperty.value += plusMinusScale * this.scale2!.volumeProperty.value;
+      this.pool.liquidVolumeProperty.setInitialValue( this.pool.liquidVolumeProperty.value );
+      } );
   }
 
   public override step( dt: number ): void {

@@ -87,7 +87,7 @@ export default class DensityBuoyancyModel implements TModel {
   public boat: Boat | null;
 
   // Scale for the pool, if we are using it
-  private readonly scale2: Scale | null;
+  protected readonly scale2: Scale | null;
 
   public constructor( providedOptions?: DensityBuoyancyModelOptions ) {
     const options = optionize<DensityBuoyancyModelOptions, DensityBuoyancyModelOptions>()( {

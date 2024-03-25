@@ -163,7 +163,8 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
       Material.MATERIAL_W
     ] ), cubicMeters => model.block.updateSize( Cube.boundsFromVolume( cubicMeters ) ), this.popupLayer, {
       tandem: tandem.createTandem( 'boatControlNode' ),
-      highDensityMaxMass: 215
+      highDensityMaxMass: 215,
+      supportHiddenMaterial: true
     } );
 
     const boatVolumeRange = new Range( 5, 30 );

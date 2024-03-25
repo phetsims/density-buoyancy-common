@@ -494,7 +494,7 @@ export default class Material {
     nameProperty: DensityBuoyancyCommonStrings.material.materialVStringProperty,
     tandemName: 'materialV',
     identifier: 'MATERIAL_V',
-    // hidden: true,
+    hidden: true,
     density: Material.TITANIUM.density
   } );
 
@@ -502,7 +502,7 @@ export default class Material {
     nameProperty: DensityBuoyancyCommonStrings.material.materialWStringProperty,
     tandemName: 'materialW',
     identifier: 'MATERIAL_W',
-    // hidden: true,
+    hidden: true,
     density: Material.MERCURY.density
   } );
 

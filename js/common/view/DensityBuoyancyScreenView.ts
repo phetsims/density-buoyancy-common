@@ -787,6 +787,7 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
    * Projects a 3d model point to a 2d view point (in the screen view's coordinate frame).
    */
   public modelToViewPoint( point: Vector3 ): Vector2 {
+
     // We'll want to transform global coordinates into screen coordinates here
     return this.parentToLocalPoint( animatedPanZoomSingleton.listener.matrixProperty.value.inverted().timesVector2( this.sceneNode.projectPoint( point ) ) );
   }

@@ -167,6 +167,15 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
       supportHiddenMaterial: true
     } );
 
+    model.block.materialProperty.link( material => {
+      if ( material === Material.MATERIAL_V ) {
+        model.block.volumeProperty.value = 0.006;
+      }
+      else if ( material === Material.MATERIAL_W ) {
+        model.block.volumeProperty.value = 0.003;
+      }
+    } );
+
     const boatVolumeRange = new Range( 5, 30 );
     const boatBox = new VBox( {
       spacing: 10,

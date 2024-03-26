@@ -9,7 +9,7 @@
 import Vector3 from '../../../../dot/js/Vector3.js';
 import { combineOptions } from '../../../../phet-core/js/optionize.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
-import { AlignBox, HBox, ManualConstraint, Text, VBox } from '../../../../scenery/js/imports.js';
+import { AlignBox, HBox, Text, VBox } from '../../../../scenery/js/imports.js';
 import AquaRadioButton from '../../../../sun/js/AquaRadioButton.js';
 import Panel from '../../../../sun/js/Panel.js';
 import VerticalAquaRadioButtonGroup from '../../../../sun/js/VerticalAquaRadioButtonGroup.js';
@@ -57,6 +57,7 @@ const MAX_RIGHT_SIDE_CONTENT_WIDTH = ScreenView.DEFAULT_LAYOUT_BOUNDS.width / 2;
 export default class BuoyancyIntroScreenView extends DensityBuoyancyScreenView<BuoyancyIntroModel> {
 
   private readonly rightSideMaxContentWidthProperty = new Property( MAX_RIGHT_SIDE_CONTENT_WIDTH );
+  private readonly readoutPanelsVBox = new VBox( { spacing: MARGIN } );
 
   public constructor( model: BuoyancyIntroModel, options: DensityBuoyancyScreenViewOptions ) {
 
@@ -176,34 +177,31 @@ export default class BuoyancyIntroScreenView extends DensityBuoyancyScreenView<B
       ] );
     } );
 
-    const vBox = new VBox( {
+    this.readoutPanelsVBox = new VBox( {
       children: [ densityBox, submergedBox ],
       spacing: MARGIN
     } );
-    this.addChild( vBox );
-
-    ManualConstraint.create( this, [ vBox, this.resetAllButton ], ( vBoxProxy, resetAllButtonProxy ) => {
-      vBoxProxy.right = resetAllButtonProxy.right;
-      vBoxProxy.bottom = resetAllButtonProxy.top - MARGIN;
-    } );
+    this.addChild( this.readoutPanelsVBox );
 
     this.addChild( this.popupLayer );
   }
 
   // Recalculate the space between the right visible bounds and the right side of the pool, for controls/etc to be positioned.
-  private setRightSideMaxContentWidthProperty(): void {
+  private layoutRightSidePanels(): void {
     const rightSideOfPoolViewPoint = this.modelToViewPoint(
-      new Vector3( this.model.pool.bounds.maxX, this.model.pool.bounds.centerY, this.model.pool.bounds.maxZ )
+      new Vector3( this.model.pool.bounds.maxX, this.model.pool.bounds.maxY, this.model.pool.bounds.maxZ )
     );
     const availableRightSpace = this.visibleBoundsProperty.value.right - rightSideOfPoolViewPoint.x;
 
     // 2 margins for the spacing outside the panel, and 2 margins for the panel's content margin
     this.rightSideMaxContentWidthProperty.value = Math.min( availableRightSpace - 4 * MARGIN, MAX_RIGHT_SIDE_CONTENT_WIDTH );
+    this.readoutPanelsVBox.top = rightSideOfPoolViewPoint.y + MARGIN;
+    this.readoutPanelsVBox.left = rightSideOfPoolViewPoint.x + MARGIN;
   }
 
   public override layout( viewBounds: Bounds2 ): void {
     super.layout( viewBounds );
-    this.setRightSideMaxContentWidthProperty();
+    this.layoutRightSidePanels();
   }
 }
 

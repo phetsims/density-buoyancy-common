@@ -21,6 +21,14 @@ import DiamondPlate01_rgh_jpg from '../../../images/DiamondPlate01_rgh_jpg.js';
 import Ice01_alpha_jpg from '../../../images/Ice01_alpha_jpg.js';
 import Ice01_col_jpg from '../../../images/Ice01_col_jpg.js';
 import Ice01_nrm_jpg from '../../../images/Ice01_nrm_jpg.js';
+import Metal002_col_jpg from '../../../images/Metal002_col_jpg.js';
+import Metal002_met_jpg from '../../../images/Metal002_met_jpg.js';
+import Metal002_nrm_jpg from '../../../images/Metal002_nrm_jpg.js';
+import Metal002_rgh_jpg from '../../../images/Metal002_rgh_jpg.js';
+import Metal007_col_jpg from '../../../images/Metal007_col_jpg.js';
+import Metal007_met_jpg from '../../../images/Metal007_met_jpg.js';
+import Metal007_nrm_jpg from '../../../images/Metal007_nrm_jpg.js';
+import Metal007_rgh_jpg from '../../../images/Metal007_rgh_jpg.js';
 import Metal08_col_jpg from '../../../images/Metal08_col_jpg.js';
 import Metal08_met_jpg from '../../../images/Metal08_met_jpg.js';
 import Metal08_nrm_jpg from '../../../images/Metal08_nrm_jpg.js';
@@ -105,6 +113,14 @@ const aluminumRoughnessTexture = toWrappedTexture( Metal10_rgh_jpg );
 const brickAmbientOcclusionTexture = toWrappedTexture( Bricks25_AO_jpg );
 const brickColorTexture = toWrappedTexture( Bricks25_col_jpg );
 const brickNormalTexture = toWrappedTexture( Bricks25_nrm_jpg );
+const greyMetalColorTexture = toWrappedTexture( Metal002_col_jpg );
+const greyMetalMetalnessTexture = toWrappedTexture( Metal002_met_jpg );
+const greyMetalNormalTexture = toWrappedTexture( Metal002_nrm_jpg );
+const greyMetalRoughnessTexture = toWrappedTexture( Metal002_rgh_jpg );
+const goldColorTexture = toWrappedTexture( Metal007_col_jpg );
+const goldMetalnessTexture = toWrappedTexture( Metal007_met_jpg );
+const goldNormalTexture = toWrappedTexture( Metal007_nrm_jpg );
+const goldRoughnessTexture = toWrappedTexture( Metal007_rgh_jpg );
 const copperColorTexture = toWrappedTexture( Metal08_col_jpg );
 const copperMetalnessTexture = toWrappedTexture( Metal08_met_jpg );
 const copperNormalTexture = toWrappedTexture( Metal08_nrm_jpg );
@@ -196,11 +212,11 @@ class PlatinumMaterialView extends MaterialView {
       normalMap: aluminumNormalTexture,
       normalScale: new THREE.Vector2( 1, -1 ),
       roughnessMap: aluminumRoughnessTexture,
-      roughness: 4,
+      roughness: 0,
       metalnessMap: aluminumMetalnessTexture,
       envMapIntensity: 0.5,
       emissive: 0xffffff,
-      emissiveIntensity: 0.5,
+      emissiveIntensity: 0.2,
       envMap: getEnvironmentTexture()
     } ) );
   }
@@ -259,7 +275,11 @@ class PVCMaterialView extends MaterialView {
 class GoldMaterialView extends MaterialView {
   public constructor() {
     super( new THREE.MeshStandardMaterial( {
-      color: '#ffd100',
+      map: goldColorTexture,
+      normalMap: goldNormalTexture,
+      normalScale: new THREE.Vector2( 1, -1 ),
+      roughnessMap: goldRoughnessTexture,
+      metalnessMap: goldMetalnessTexture,
       envMap: getEnvironmentTexture(),
       envMapIntensity: 1,
       metalness: 1,
@@ -269,13 +289,19 @@ class GoldMaterialView extends MaterialView {
 }
 
 class GreyMetalMaterialView extends MaterialView {
-  public constructor() {
+  public constructor( brightness = 0 ) {
     super( new THREE.MeshStandardMaterial( {
-      color: '#aaa',
+      map: greyMetalColorTexture,
+      normalMap: greyMetalNormalTexture,
+      normalScale: new THREE.Vector2( 1, -1 ),
+      roughnessMap: greyMetalRoughnessTexture,
+      metalnessMap: greyMetalMetalnessTexture,
       envMap: getEnvironmentTexture(),
       envMapIntensity: 1,
       metalness: 1,
-      roughness: 0
+      roughness: 0,
+      emissive: 0xffffff,
+      emissiveIntensity: brightness
     } ) );
   }
 }
@@ -361,7 +387,7 @@ export default class DensityMaterials {
       return new SteelMaterialView();
     }
     else if ( material === Material.TANTALUM ) {
-      return new GreyMetalMaterialView();
+      return new GreyMetalMaterialView( 0.3 );
     }
     else if ( material === Material.STYROFOAM ) {
       return new StyrofoamMaterialView();

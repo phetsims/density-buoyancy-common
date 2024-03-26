@@ -24,6 +24,9 @@ import ReadOnlyProperty from '../../../../axon/js/ReadOnlyProperty.js';
 import DensityAccordionBox from './DensityAccordionBox.js';
 import SubmergedAccordionBox from './SubmergedAccordionBox.js';
 import PatternStringProperty from '../../../../axon/js/PatternStringProperty.js';
+import Property from '../../../../axon/js/Property.js';
+import Bounds2 from '../../../../dot/js/Bounds2.js';
+import ScreenView from '../../../../joist/js/ScreenView.js';
 
 // constants
 const blockSetStringMap = {
@@ -48,13 +51,20 @@ const VISIBLE_FLUIDS = [
   Material.MERCURY
 ];
 
+// Relatively arbitrary default
+const MAX_RIGHT_SIDE_CONTENT_WIDTH = ScreenView.DEFAULT_LAYOUT_BOUNDS.width / 2;
+
 export default class BuoyancyIntroScreenView extends DensityBuoyancyScreenView<BuoyancyIntroModel> {
+
+  private readonly rightSideMaxContentWidthProperty = new Property( MAX_RIGHT_SIDE_CONTENT_WIDTH );
 
   public constructor( model: BuoyancyIntroModel, options: DensityBuoyancyScreenViewOptions ) {
 
     super( model, combineOptions<DensityBuoyancyScreenViewOptions>( {
       // Custom just for this screen
-      cameraLookAt: new Vector3( 0, -0.1, 0 )
+      cameraLookAt: new Vector3( 0, -0.1, 0 ),
+
+      layoutBounds: ScreenView.DEFAULT_LAYOUT_BOUNDS // used by constant above.
     }, options ) );
 
     const blocksRadioButtonGroupTandem = options.tandem.createTandem( 'blocksRadioButtonGroup' );
@@ -131,10 +141,13 @@ export default class BuoyancyIntroScreenView extends DensityBuoyancyScreenView<B
 
     // Materials are set in densityBox.setMaterials() below
     const densityBox = new DensityAccordionBox( {
-      expandedProperty: model.densityExpandedProperty
+      expandedProperty: model.densityExpandedProperty,
+      contentWidthMax: this.rightSideMaxContentWidthProperty
     } );
 
-    const submergedBox = new SubmergedAccordionBox( model.gravityProperty, model.liquidMaterialProperty );
+    const submergedBox = new SubmergedAccordionBox( model.gravityProperty, model.liquidMaterialProperty, {
+      contentWidthMax: this.rightSideMaxContentWidthProperty
+    } );
 
     // Adjust the visibility after, since we want to size the box's location for its "full" bounds
     // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
@@ -175,6 +188,22 @@ export default class BuoyancyIntroScreenView extends DensityBuoyancyScreenView<B
     } );
 
     this.addChild( this.popupLayer );
+  }
+
+  // Recalculate the space between the right visible bounds and the right side of the pool, for controls/etc to be positioned.
+  private setRightSideMaxContentWidthProperty(): void {
+    const rightSideOfPoolViewPoint = this.modelToViewPoint(
+      new Vector3( this.model.pool.bounds.maxX, this.model.pool.bounds.centerY, this.model.pool.bounds.maxZ )
+    );
+    const availableRightSpace = this.visibleBoundsProperty.value.right - rightSideOfPoolViewPoint.x;
+
+    // 2 margins for the spacing outside the panel, and 2 margins for the panel's content margin
+    this.rightSideMaxContentWidthProperty.value = Math.min( availableRightSpace - 4 * MARGIN, MAX_RIGHT_SIDE_CONTENT_WIDTH );
+  }
+
+  public override layout( viewBounds: Bounds2 ): void {
+    super.layout( viewBounds );
+    this.setRightSideMaxContentWidthProperty();
   }
 }
 

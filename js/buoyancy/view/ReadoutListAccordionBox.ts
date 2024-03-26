@@ -10,7 +10,7 @@
 
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
-import { HBox, RichText, RichTextOptions, Text, TextOptions, VBox } from '../../../../scenery/js/imports.js';
+import { HBox, RichText, RichTextOptions, Text, VBox } from '../../../../scenery/js/imports.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import TinyEmitter from '../../../../axon/js/TinyEmitter.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
@@ -18,14 +18,20 @@ import { combineOptions, optionize4 } from '../../../../phet-core/js/optionize.j
 import AccordionBox, { AccordionBoxOptions } from '../../../../sun/js/AccordionBox.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import PatternStringProperty from '../../../../axon/js/PatternStringProperty.js';
+import TinyProperty from '../../../../axon/js/TinyProperty.js';
 
 const DEFAULT_FONT = new PhetFont( 14 );
 const HBOX_SPACING = 5;
 const DEFAULT_CONTENT_WIDTH = ( 200 + HBOX_SPACING ) / 2;
 
+const TEXT_OPTIONS = {
+  font: DEFAULT_FONT
+};
+
 type SelfOptions<ReadoutType> = {
+
   // Provide the ideal max content width for the accordion box content. This is used to apply maxWidths to the Texts of the readout.
-  contentWidthMax?: number;
+  contentWidthMax?: number | TReadOnlyProperty<number>;
 
   readoutItems?: ReadoutItemOptions<ReadoutType>[];
 };
@@ -49,22 +55,22 @@ export type ReadoutListAccordionBoxOptions<ReadoutType> = SelfOptions<ReadoutTyp
 export default abstract class ReadoutListAccordionBox<ReadoutType> extends AccordionBox {
 
   protected cleanupEmitter = new TinyEmitter();
-  protected textOptions: TextOptions = {};
 
   protected readonly readoutBox: VBox;
-  protected readonly contentWidthMax: number;
+  protected readonly contentWidthMaxProperty: TReadOnlyProperty<number>;
 
   public constructor(
     titleStringProperty: TReadOnlyProperty<string>,
     providedOptions?: ReadoutListAccordionBoxOptions<ReadoutType>
   ) {
 
+    const titleNode = new Text( titleStringProperty, {
+      font: DensityBuoyancyCommonConstants.TITLE_FONT
+    } );
+
     const options = optionize4<ReadoutListAccordionBoxOptions<ReadoutType>, SelfOptions<ReadoutType>, AccordionBoxOptions>()( {},
       DensityBuoyancyCommonConstants.ACCORDION_BOX_OPTIONS, {
-        titleNode: new Text( titleStringProperty, {
-          font: DensityBuoyancyCommonConstants.TITLE_FONT,
-          maxWidth: providedOptions?.contentWidthMax || DEFAULT_CONTENT_WIDTH
-        } ),
+        titleNode: titleNode,
         layoutOptions: { stretch: true },
         contentWidthMax: DEFAULT_CONTENT_WIDTH,
         readoutItems: []
@@ -78,12 +84,14 @@ export default abstract class ReadoutListAccordionBox<ReadoutType> extends Accor
     super( readoutBox, options );
 
     this.readoutBox = readoutBox;
-    this.contentWidthMax = options.contentWidthMax;
+    this.contentWidthMaxProperty = typeof options.contentWidthMax === 'number' ?
+                                   new TinyProperty( options.contentWidthMax ) :
+                                   options.contentWidthMax;
 
-    this.textOptions = {
-      font: DEFAULT_FONT,
-      maxWidth: ( this.contentWidthMax - HBOX_SPACING ) / 2
-    };
+    // 90% accounts for the expand/collapse button pretty well
+    const maxWidthListener = ( maxWidth: number ) => { titleNode.maxWidth = maxWidth * 0.9; };
+    this.contentWidthMaxProperty.link( maxWidthListener );
+    this.disposeEmitter.addListener( () => this.contentWidthMaxProperty.unlink( maxWidthListener ) );
   }
 
   public setReadoutItems( readoutItems: ReadoutItemOptions<ReadoutType>[] ): void {
@@ -100,12 +108,21 @@ export default abstract class ReadoutListAccordionBox<ReadoutType> extends Accor
         DensityBuoyancyCommonStrings.nameColonPatternStringProperty, {
           name: nameProperty
         } );
-      const labelText = new RichText( nameColonProperty, this.textOptions );
+
+      const labelText = new RichText( nameColonProperty, TEXT_OPTIONS );
       const readoutFormat = readoutItem.readoutFormat ? readoutItem.readoutFormat : {};
       const valueText = new RichText( readoutData.valueProperty,
-        combineOptions<RichTextOptions>( {}, this.textOptions, readoutFormat ) );
+        combineOptions<RichTextOptions>( {}, TEXT_OPTIONS, readoutFormat ) );
+
+      const maxWidthListener = ( contentWidthMax: number ) => {
+        const maxWidth = ( contentWidthMax - HBOX_SPACING ) / 2;
+        labelText.maxWidth = maxWidth;
+        valueText.maxWidth = maxWidth;
+      };
+      this.contentWidthMaxProperty.link( maxWidthListener );
 
       this.cleanupEmitter.addListener( () => {
+        this.contentWidthMaxProperty.unlink( maxWidthListener );
         valueText.dispose();
         labelText.dispose();
         nameColonProperty.dispose();

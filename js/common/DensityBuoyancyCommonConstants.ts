@@ -27,14 +27,14 @@ const decimetersCubedPatternStringProperty = new PatternStringProperty( DensityB
   decimetersCubed: '{{value}}'
 }, { tandem: Tandem.OPT_OUT } );
 
-const X_MARGIN = 10;
+// Used for margins from the offset of screens or between panels/boxes or content margins of panels/boxes.
+const MARGIN = 10;
 
 // A value applied across the code to prevent unexpected rounding errors.
 const TOLERANCE = 1e-7;
 
 const DensityBuoyancyCommonConstants = {
-  // (read-only) {number} - Used for margins from the offset of screens or between panels/boxes
-  MARGIN: 10,
+  MARGIN: MARGIN,
 
   // (read-only) {number} - Used for panels/boxes by default
   CORNER_RADIUS: CORNER_RADIUS,
@@ -66,8 +66,8 @@ const DensityBuoyancyCommonConstants = {
   PANEL_OPTIONS: {
     cornerRadius: CORNER_RADIUS,
     fill: DensityBuoyancyCommonColors.panelBackgroundProperty,
-    xMargin: X_MARGIN,
-    yMargin: 10
+    xMargin: MARGIN,
+    yMargin: MARGIN
   },
 
   // (read-only) {Object}
@@ -75,7 +75,7 @@ const DensityBuoyancyCommonConstants = {
     cornerRadius: CORNER_RADIUS,
     titleYMargin: 5,
     buttonXMargin: 5,
-    contentXMargin: X_MARGIN,
+    contentXMargin: MARGIN,
     titleAlignX: 'left',
     fill: DensityBuoyancyCommonColors.panelBackgroundProperty
   } as const,

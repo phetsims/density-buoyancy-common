@@ -10,7 +10,7 @@
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import { combineOptions } from '../../../../phet-core/js/optionize.js';
-import { AlignBox, HBox, VBox } from '../../../../scenery/js/imports.js';
+import { AlignBox, HBox, Node, VBox } from '../../../../scenery/js/imports.js';
 import Panel from '../../../../sun/js/Panel.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 import Material from '../../common/model/Material.js';
@@ -28,6 +28,9 @@ import FluidDisplacedPanel from './FluidDisplacedPanel.js';
 import SubmergedAccordionBox from './SubmergedAccordionBox.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import PatternStringProperty from '../../../../axon/js/PatternStringProperty.js';
+import ThreeUtils from '../../../../mobius/js/ThreeUtils.js';
+import Vector3 from '../../../../dot/js/Vector3.js';
+import ScaleView from '../../common/view/ScaleView.js';
 
 // constants
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
@@ -51,9 +54,12 @@ export default class BuoyancyLabScreenView extends DensityBuoyancyScreenView<Buo
       spacing: 10,
       align: 'left',
       children: [
-        new FluidDisplacedPanel( this.waterLevelVolumeProperty, maxBlockVolume, {
-          visibleProperty: model.showDisplacedFluidProperty
-        } ),
+        new FluidDisplacedPanel( this.waterLevelVolumeProperty,
+          maxBlockVolume,
+          BuoyancyLabScreenView.getFluidDisplacedPanelScaleIcon(),
+          model.gravityProperty, {
+            visibleProperty: model.showDisplacedFluidProperty
+          } ),
         new MultiSectionPanelsNode( [ new BuoyancyDisplayOptionsNode( model, {
           showFluidDisplacedProperty: model.showDisplacedFluidProperty
         } ) ] )
@@ -158,6 +164,31 @@ export default class BuoyancyLabScreenView extends DensityBuoyancyScreenView<Buo
     } );
 
     this.addChild( this.popupLayer );
+  }
+
+  // TODO: cache icon? https://github.com/phetsims/buoyancy/issues/113
+  private static getFluidDisplacedPanelScaleIcon(): Node {
+    if ( !ThreeUtils.isWebGLEnabled() ) {
+      return DensityBuoyancyScreenView.getFallbackIcon();
+    }
+
+    const icon = DensityBuoyancyScreenView.getAngledIcon( 6, new Vector3( 0, 0.2, 0 ), scene => {
+
+      const scaleGeometry = ScaleView.getScaleGeometry();
+
+      const scale = new THREE.Mesh( scaleGeometry, new THREE.MeshStandardMaterial( {
+        color: 0xffffff,
+        roughness: 0.2,
+        metalness: 0.7,
+        emissive: 0x666666
+      } ) );
+
+      scale.position.copy( ThreeUtils.vectorToThree( new Vector3( 0, 0.2, 0 ) ) );
+      scene.add( scale );
+    }, null );
+
+    icon.setScaleMagnitude( 0.2 );
+    return icon;
   }
 }
 

@@ -13,12 +13,14 @@ import BeakerNode from '../../../../scenery-phet/js/BeakerNode.js';
 import NumberProperty from '../../../../axon/js/NumberProperty.js';
 import Range from '../../../../dot/js/Range.js';
 import { EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
-import { Text, VBox } from '../../../../scenery/js/imports.js';
+import { Node, RichText, Text, VBox } from '../../../../scenery/js/imports.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 import NumberDisplay from '../../../../scenery-phet/js/NumberDisplay.js';
 import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
 import Utils from '../../../../dot/js/Utils.js';
+import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
+import Gravity from '../../common/model/Gravity.js';
 
 type SelfOptions = EmptySelfOptions;
 
@@ -28,17 +30,13 @@ const STARTING_VOLUME = DensityBuoyancyCommonConstants.DESIRED_STARTING_POOL_VOL
 
 export default class FluidDisplacedPanel extends MultiSectionPanelsNode {
 
-  /**
-   * @param poolVolumeProperty
-   * @param maxBeakerVolume - in liters
-   * @param providedOptions
-   */
   public constructor( poolVolumeProperty: TReadOnlyProperty<number>,
                       maxBeakerVolume: number,
+                      scaleIcon: Node,
+                      gravityProperty: TReadOnlyProperty<Gravity>,
                       providedOptions?: FluidDisplacedPanelOptions ) {
     // TODO: is there a way to assert this? https://github.com/phetsims/buoyancy/issues/113
     // assert && assert( Utils.toFixedNumber( poolVolumeProperty.value, 7 ) === 100,      'This class greatly expects the starting value to be 100.' );
-
 
     const displayRange = new Range( 0, maxBeakerVolume );
     const displayedDisplacedVolumeProperty = new NumberProperty( 0, { range: displayRange } );
@@ -51,16 +49,16 @@ export default class FluidDisplacedPanel extends MultiSectionPanelsNode {
       numberFormatter: value => StringUtils.fillIn( DensityBuoyancyCommonStrings.litersPatternStringProperty, {
         liters: Utils.toFixed( value, 2 )
       } ),
-      numberFormatterDependencies: [ DensityBuoyancyCommonStrings.litersPatternStringProperty ]
+      numberFormatterDependencies: [ DensityBuoyancyCommonStrings.litersPatternStringProperty ],
+      textOptions: {
+        font: new PhetFont( 14 )
+      },
+      opacity: 0.8
     } );
 
     // Beaker expects a range between 0 and 1
     const beakerRange = new Range( 0, 1 );
     const beakerVolumeProperty = new NumberProperty( 0, { range: beakerRange } );
-    displayedDisplacedVolumeProperty.link( displayedLiters => {
-      // TODO: assert if we go over 1?? https://github.com/phetsims/buoyancy/issues/113
-      beakerVolumeProperty.value = beakerRange.constrainValue( ( displayedLiters ) / maxBeakerVolume );
-    } );
 
     // TODO: add majorTickMarkModulus: 5 as an option, https://github.com/phetsims/buoyancy/issues/113
     const beakerNode = new BeakerNode( beakerVolumeProperty, {
@@ -72,6 +70,31 @@ export default class FluidDisplacedPanel extends MultiSectionPanelsNode {
       numberOfTicks: 10
     } );
 
+    const forceReadout = new RichText( 'hi mark', {
+      font: new PhetFont( {
+        size: 16,
+        weight: 'bold'
+      } ),
+      // TODO: why doesn't this worK? https://github.com/phetsims/buoyancy/issues/113
+      maxWidth: scaleIcon.width
+    } );
+
+    displayedDisplacedVolumeProperty.link( displayedLiters => {
+      // TODO: assert if we go over 1?? https://github.com/phetsims/buoyancy/issues/113
+      beakerVolumeProperty.value = beakerRange.constrainValue( ( displayedLiters ) / maxBeakerVolume );
+
+      // TODO: i18n, https://github.com/phetsims/buoyancy/issues/113
+      forceReadout.string = `${Utils.toFixedNumber( gravityProperty.value.value * displayedLiters, 2 )}N`;
+      forceReadout.centerX = beakerNode.centerX;
+    } );
+
+    numberDisplay.bottom = beakerNode.bottom;
+    numberDisplay.left = beakerNode.left;
+    scaleIcon.top = beakerNode.bottom - 25;
+    forceReadout.centerY = scaleIcon.bottom - 20;
+    scaleIcon.centerX = forceReadout.centerX = beakerNode.centerX;
+
+
     super( [ new VBox( {
       spacing: DensityBuoyancyCommonConstants.MARGIN,
       children: [
@@ -79,8 +102,9 @@ export default class FluidDisplacedPanel extends MultiSectionPanelsNode {
           font: DensityBuoyancyCommonConstants.TITLE_FONT,
           maxWidth: 100
         } ),
-        beakerNode,
-        numberDisplay
+        new Node( {
+          children: [ scaleIcon, beakerNode, numberDisplay, forceReadout ]
+        } )
       ]
     } ) ], providedOptions );
   }

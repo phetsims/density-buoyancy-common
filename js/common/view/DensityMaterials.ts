@@ -250,8 +250,32 @@ class WoodMaterialView extends MaterialView {
 
 class PVCMaterialView extends MaterialView {
   public constructor() {
-    super( new THREE.MeshLambertMaterial( {
-      color: '#ccc'
+    super( new THREE.MeshStandardMaterial( {
+      color: '#fff'
+    } ) );
+  }
+}
+
+class GoldMaterialView extends MaterialView {
+  public constructor() {
+    super( new THREE.MeshStandardMaterial( {
+      color: '#ffd100',
+      envMap: getEnvironmentTexture(),
+      envMapIntensity: 1,
+      metalness: 1,
+      roughness: 0
+    } ) );
+  }
+}
+
+class GreyMetalMaterialView extends MaterialView {
+  public constructor() {
+    super( new THREE.MeshStandardMaterial( {
+      color: '#aaa',
+      envMap: getEnvironmentTexture(),
+      envMapIntensity: 1,
+      metalness: 1,
+      roughness: 0
     } ) );
   }
 }
@@ -315,6 +339,12 @@ export default class DensityMaterials {
     else if ( material === Material.COPPER ) {
       return new CopperMaterialView();
     }
+    else if ( material === Material.GOLD ) {
+      return new GoldMaterialView();
+    }
+    else if ( material === Material.SILVER ) {
+      return new GreyMetalMaterialView();
+    }
     else if ( material === Material.ICE ) {
       return new IceMaterialView();
     }
@@ -324,14 +354,38 @@ export default class DensityMaterials {
     else if ( material === Material.PVC ) {
       return new PVCMaterialView();
     }
+    else if ( material === Material.PYRITE ) {
+      return new GoldMaterialView();
+    }
     else if ( material === Material.STEEL ) {
       return new SteelMaterialView();
+    }
+    else if ( material === Material.TANTALUM ) {
+      return new GreyMetalMaterialView();
     }
     else if ( material === Material.STYROFOAM ) {
       return new StyrofoamMaterialView();
     }
     else if ( material === Material.WOOD ) {
       return new WoodMaterialView();
+    }
+    else if ( material === Material.MATERIAL_O ) {
+      return new CustomColoredMaterialView( new Property( new Color( '#f00' ) ) );
+    }
+    else if ( material === Material.MATERIAL_P ) {
+      return new CustomColoredMaterialView( new Property( new Color( '#0f0' ) ) );
+    }
+    else if ( material === Material.MATERIAL_V ) {
+      return new CustomColoredMaterialView( new Property( new Color( '#ff0' ) ) );
+    }
+    else if ( material === Material.MATERIAL_W ) {
+      return new CustomColoredMaterialView( new Property( new Color( '#0af' ) ) );
+    }
+    else if ( material === Material.MATERIAL_X ) {
+      return new GoldMaterialView();
+    }
+    else if ( material === Material.MATERIAL_Y ) {
+      return new GoldMaterialView();
     }
     else if ( material.custom ) {
       if ( material.customColor === null ) {

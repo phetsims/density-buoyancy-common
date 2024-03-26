@@ -27,6 +27,9 @@ import PatternStringProperty from '../../../../axon/js/PatternStringProperty.js'
 import Property from '../../../../axon/js/Property.js';
 import Bounds2 from '../../../../dot/js/Bounds2.js';
 import ScreenView from '../../../../joist/js/ScreenView.js';
+import { ReadoutItemOptions } from './ReadoutListAccordionBox.js';
+import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
+import Mass from '../../common/model/Mass.js';
 
 // constants
 const blockSetStringMap = {
@@ -150,35 +153,51 @@ export default class BuoyancyIntroScreenView extends DensityBuoyancyScreenView<B
       contentWidthMax: this.rightSideMaxContentWidthProperty
     } );
 
+    const readoutItemsCache = new Map<BlockSet, {
+      densityItems: ReadoutItemOptions<TReadOnlyProperty<Material>>[];
+      submergedItems: ReadoutItemOptions<Mass>[];
+    }>();
+
     // Adjust the visibility after, since we want to size the box's location for its "full" bounds
     // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
     model.blockSetProperty.link( blockSet => {
-      // TODO: recreate items each time with no cache? https://github.com/phetsims/buoyancy/issues/96
-      const blocks = model.blockSetToMassesMap.get( blockSet )!;
-      const readoutItems = blocks.map( mass => {
-        return {
-          readoutItem: mass,
-          readoutNameProperty: new PatternStringProperty( DensityBuoyancyCommonStrings.blockPatternStringProperty, {
-            tag: mass.nameProperty
-          } ),
-          readoutFormat: {
-            font: DensityBuoyancyCommonConstants.ITEM_FONT,
-            fill: mass.tag.colorProperty
-          }
-        };
-      } );
-      submergedBox.setReadoutItems( _.clone( readoutItems ) );
 
-      // Same options, but different readoutItem
-      const densityReadoutItems = readoutItems.map( x => _.assignIn( {}, x, { readoutItem: x.readoutItem.materialProperty } ) );
-      densityBox.setReadoutItems( [
-        ...densityReadoutItems, {
-          readoutItem: model.liquidMaterialProperty,
-          readoutFormat: {
-            font: DensityBuoyancyCommonConstants.ITEM_FONT
+      if ( !readoutItemsCache.has( blockSet ) ) {
+        const blocks = model.blockSetToMassesMap.get( blockSet )!;
+        const submergedReadoutItems = blocks.map( mass => {
+          return {
+            readoutItem: mass,
+            readoutNameProperty: new PatternStringProperty( DensityBuoyancyCommonStrings.blockPatternStringProperty, {
+              tag: mass.nameProperty
+            } ),
+            readoutFormat: {
+              font: DensityBuoyancyCommonConstants.ITEM_FONT,
+              fill: mass.tag.colorProperty
+            }
+          };
+        } );
+
+        // Same options, but different readoutItem (mass->mass.materialProperty)
+        const densityReadoutItems = [
+          ...submergedReadoutItems.map( submergedReadoutItem => {
+            return _.assignIn( {}, submergedReadoutItem, {
+              readoutItem: submergedReadoutItem.readoutItem.materialProperty
+            } );
+          } ), {
+            readoutItem: model.liquidMaterialProperty,
+            readoutFormat: {
+              font: DensityBuoyancyCommonConstants.ITEM_FONT
+            }
           }
-        }
-      ] );
+        ];
+        readoutItemsCache.set( blockSet, {
+          densityItems: densityReadoutItems,
+          submergedItems: submergedReadoutItems
+        } );
+      }
+      const itemsForBoth = readoutItemsCache.get( blockSet )!;
+      submergedBox.setReadoutItems( itemsForBoth.submergedItems );
+      densityBox.setReadoutItems( itemsForBoth.densityItems );
     } );
 
     this.readoutPanelsVBox = new VBox( {

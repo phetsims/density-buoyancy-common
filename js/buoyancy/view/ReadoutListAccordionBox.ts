@@ -42,7 +42,7 @@ export type ReadoutItemOptions<ReadoutType> = {
   // By default, the implementation of generateReadoutData() will create a default nameProperty, but you can supply your
   // own to be used instead.
   readoutNameProperty?: TReadOnlyProperty<string>;
-  readoutFormat?: RichTextOptions; // Any extra formatting options to be passed to the name/value texts.
+  readoutFormat?: RichTextOptions; // Any extra formatting options to be passed ONLY to the value text.
 };
 
 export type ReadoutData = {

@@ -172,8 +172,12 @@ export default class BuoyancyIntroScreenView extends DensityBuoyancyScreenView<B
       // Same options, but different readoutItem
       const densityReadoutItems = readoutItems.map( x => _.assignIn( {}, x, { readoutItem: x.readoutItem.materialProperty } ) );
       densityBox.setReadoutItems( [
-        ...densityReadoutItems,
-        { readoutItem: model.liquidMaterialProperty }
+        ...densityReadoutItems, {
+          readoutItem: model.liquidMaterialProperty,
+          readoutFormat: {
+            font: DensityBuoyancyCommonConstants.ITEM_FONT
+          }
+        }
       ] );
     } );
 

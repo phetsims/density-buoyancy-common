@@ -38,6 +38,9 @@ import Metal10_col_jpg from '../../../images/Metal10_col_jpg.js';
 import Metal10_met_jpg from '../../../images/Metal10_met_jpg.js';
 import Metal10_nrm_jpg from '../../../images/Metal10_nrm_jpg.js';
 import Metal10_rgh_jpg from '../../../images/Metal10_rgh_jpg.js';
+import Plastic018B_col_jpg from '../../../images/Plastic018B_col_jpg.js';
+import Plastic018B_nrm_jpg from '../../../images/Plastic018B_nrm_jpg.js';
+import Plastic018B_rgh_jpg from '../../../images/Plastic018B_rgh_jpg.js';
 import Styrofoam_001_AO_jpg from '../../../images/Styrofoam_001_AO_jpg.js';
 import Styrofoam_001_col_jpg from '../../../images/Styrofoam_001_col_jpg.js';
 import Styrofoam_001_nrm_jpg from '../../../images/Styrofoam_001_nrm_jpg.js';
@@ -129,6 +132,9 @@ const iceAlphaTexture = toWrappedTexture( Ice01_alpha_jpg );
 const iceColorTexture = toWrappedTexture( Ice01_col_jpg );
 const iceNormalTexture = toWrappedTexture( Ice01_nrm_jpg );
 const platinumColorTexture = toWrappedTexture( Metal10_col_brightened_jpg );
+const plasticColorTexture = toWrappedTexture( Plastic018B_col_jpg );
+const plasticNormalTexture = toWrappedTexture( Plastic018B_nrm_jpg );
+const plasticRoughnessTexture = toWrappedTexture( Plastic018B_rgh_jpg );
 const steelColorTexture = toWrappedTexture( DiamondPlate01_col_jpg );
 const steelMetalnessTexture = toWrappedTexture( DiamondPlate01_met_jpg );
 const steelNormalTexture = toWrappedTexture( DiamondPlate01_nrm_jpg );
@@ -267,7 +273,12 @@ class WoodMaterialView extends MaterialView {
 class PVCMaterialView extends MaterialView {
   public constructor() {
     super( new THREE.MeshStandardMaterial( {
-      color: '#fff'
+      map: plasticColorTexture,
+      normalMap: plasticNormalTexture,
+      normalScale: new THREE.Vector2( 1, -1 ),
+      roughnessMap: plasticRoughnessTexture,
+      envMap: getEnvironmentTexture(),
+      envMapIntensity: 1.5
     } ) );
   }
 }

@@ -31,6 +31,9 @@ import ShapesInfoDialog from './ShapesInfoDialog.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
 import Bounds2 from '../../../../dot/js/Bounds2.js';
 import BlocksRadioButtonGroup from '../../common/view/BlocksRadioButtonGroup.js';
+import SubmergedAccordionBox from './SubmergedAccordionBox.js';
+import Multilink from '../../../../axon/js/Multilink.js';
+import TwoBlockMode from '../../common/model/TwoBlockMode.js';
 
 // constants
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
@@ -150,12 +153,30 @@ export default class BuoyancyShapesScreenView extends DensityBuoyancyScreenView<
       readoutItems: [ { readoutItem: model.materialProperty } ]
     } );
 
+    const submergedBox = new SubmergedAccordionBox( model.gravityProperty, model.liquidMaterialProperty, {
+      contentWidthMax: this.rightBox.content.width
+    } );
+
+    Multilink.multilink( [
+      model.primaryMassProperty,
+      model.secondaryMassProperty,
+      model.modeProperty
+    ], ( primaryMass, secondaryMass, mode ) => {
+      if ( mode === TwoBlockMode.ONE_BLOCK ) {
+        submergedBox.setReadoutItems( [ { readoutItem: primaryMass } ] );
+      }
+      else {
+        submergedBox.setReadoutItems( [ { readoutItem: primaryMass }, { readoutItem: secondaryMass } ] );
+      }
+    } );
+
     const rightSideVBox = new VBox( {
-      spacing: 10,
+      spacing: 5,
       align: 'right',
       children: [
         this.rightBox,
-        densityBox
+        densityBox,
+        submergedBox
       ]
     } );
 

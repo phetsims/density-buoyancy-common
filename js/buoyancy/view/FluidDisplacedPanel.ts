@@ -22,6 +22,7 @@ import Utils from '../../../../dot/js/Utils.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import Gravity from '../../common/model/Gravity.js';
 import PatternStringProperty from '../../../../axon/js/PatternStringProperty.js';
+import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 
 type SelfOptions = EmptySelfOptions;
 
@@ -78,8 +79,13 @@ export default class FluidDisplacedPanel extends MultiSectionPanelsNode {
       opacity: 0.8
     } );
 
+    const displacedFluidForceProperty = new DerivedProperty( [
+      gravityProperty,
+      displayedDisplacedVolumeProperty
+    ], ( gravity, displacedVolume ) => gravity.value * displacedVolume );
+
     const stringProperty = new PatternStringProperty( DensityBuoyancyCommonStrings.newtonsPatternStringProperty, {
-      newtons: displayedDisplacedVolumeProperty
+      newtons: displacedFluidForceProperty
     }, {
       decimalPlaces: {
         newtons: 2

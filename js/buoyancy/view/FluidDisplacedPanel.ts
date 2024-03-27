@@ -38,14 +38,16 @@ export default class FluidDisplacedPanel extends MultiSectionPanelsNode {
                       scaleIcon: Node,
                       gravityProperty: TReadOnlyProperty<Gravity>,
                       providedOptions?: FluidDisplacedPanelOptions ) {
-    // TODO: is there a way to assert this? https://github.com/phetsims/buoyancy/issues/113
-    // assert && assert( Utils.toFixedNumber( poolVolumeProperty.value, 7 ) === 100,      'This class greatly expects the starting value to be 100.' );
+    assert && assert( Utils.toFixedNumber( poolVolumeProperty.value, 7 ) === STARTING_VOLUME,
+      `This class greatly expects the starting volume of the pool to be ${STARTING_VOLUME}L.` );
 
     const displayRange = new Range( 0, maxBeakerVolume );
     const displayedDisplacedVolumeProperty = new NumberProperty( 0, { range: displayRange } );
     poolVolumeProperty.link( totalLiters => {
-      // TODO: assert if we go over 10?? https://github.com/phetsims/buoyancy/issues/113
-      displayedDisplacedVolumeProperty.value = displayRange.constrainValue( totalLiters - STARTING_VOLUME );
+      const displacedVolume = totalLiters - STARTING_VOLUME;
+      assert && assert( Utils.toFixedNumber( displacedVolume, 7 ) <= maxBeakerVolume,
+        `pool volume exceeded expected max of ${STARTING_VOLUME + maxBeakerVolume}: ${totalLiters}` );
+      displayedDisplacedVolumeProperty.value = displayRange.constrainValue( displacedVolume );
     } );
 
     // Beaker expects a range between 0 and 1
@@ -63,8 +65,7 @@ export default class FluidDisplacedPanel extends MultiSectionPanelsNode {
     } );
 
     displayedDisplacedVolumeProperty.link( displayedLiters => {
-      // TODO: assert if we go over 1?? https://github.com/phetsims/buoyancy/issues/113
-      beakerVolumeProperty.value = beakerRange.constrainValue( ( displayedLiters ) / maxBeakerVolume );
+      beakerVolumeProperty.value = displayedLiters / maxBeakerVolume;
     } );
 
     const numberDisplay = new NumberDisplay( displayedDisplacedVolumeProperty, displayedDisplacedVolumeProperty.range, {

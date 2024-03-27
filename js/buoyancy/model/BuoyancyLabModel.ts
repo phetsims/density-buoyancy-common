@@ -54,7 +54,9 @@ export default class BuoyancyLabModel extends DensityBuoyancyModel {
     } ) );
 
     this.densityExpandedProperty = new BooleanProperty( false );
-    this.showFluidDisplacedProperty = new BooleanProperty( false );
+    this.showFluidDisplacedProperty = new BooleanProperty( false, {
+      tandem: tandem.createTandem( 'showFluidDisplacedProperty' )
+    } );
   }
 
   /**

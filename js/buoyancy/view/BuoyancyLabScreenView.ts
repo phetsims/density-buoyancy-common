@@ -172,8 +172,7 @@ export default class BuoyancyLabScreenView extends DensityBuoyancyScreenView<Buo
       return DensityBuoyancyScreenView.getFallbackIcon();
     }
 
-    const icon = DensityBuoyancyScreenView.getAngledIcon( 6, new Vector3( 0, 0.2, 0 ), scene => {
-
+    const icon = DensityBuoyancyScreenView.getAngledIcon( 7.4, new Vector3( 0, 0.2, 0 ), scene => {
       const scaleGeometry = ScaleView.getScaleGeometry();
 
       const scale = new THREE.Mesh( scaleGeometry, new THREE.MeshStandardMaterial( {
@@ -187,7 +186,7 @@ export default class BuoyancyLabScreenView extends DensityBuoyancyScreenView<Buo
       scene.add( scale );
     }, null );
 
-    icon.setScaleMagnitude( 0.2 );
+    icon.setScaleMagnitude( 0.17 );
     return icon;
   }
 }

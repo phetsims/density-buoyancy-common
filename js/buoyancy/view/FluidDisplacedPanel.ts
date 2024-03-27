@@ -21,12 +21,14 @@ import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
 import Utils from '../../../../dot/js/Utils.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import Gravity from '../../common/model/Gravity.js';
+import PatternStringProperty from '../../../../axon/js/PatternStringProperty.js';
 
 type SelfOptions = EmptySelfOptions;
 
 type FluidDisplacedPanelOptions = SelfOptions & MultiSectionPanelsNodeOptions;
 
 const STARTING_VOLUME = DensityBuoyancyCommonConstants.DESIRED_STARTING_POOL_VOLUME * DensityBuoyancyCommonConstants.LITERS_IN_CUBIC_METER;
+const CONTENT_WIDTH = 100;
 
 export default class FluidDisplacedPanel extends MultiSectionPanelsNode {
 
@@ -45,17 +47,6 @@ export default class FluidDisplacedPanel extends MultiSectionPanelsNode {
       displayedDisplacedVolumeProperty.value = displayRange.constrainValue( totalLiters - STARTING_VOLUME );
     } );
 
-    const numberDisplay = new NumberDisplay( displayedDisplacedVolumeProperty, displayedDisplacedVolumeProperty.range, {
-      numberFormatter: value => StringUtils.fillIn( DensityBuoyancyCommonStrings.litersPatternStringProperty, {
-        liters: Utils.toFixed( value, 2 )
-      } ),
-      numberFormatterDependencies: [ DensityBuoyancyCommonStrings.litersPatternStringProperty ],
-      textOptions: {
-        font: new PhetFont( 14 )
-      },
-      opacity: 0.8
-    } );
-
     // Beaker expects a range between 0 and 1
     const beakerRange = new Range( 0, 1 );
     const beakerVolumeProperty = new NumberProperty( 0, { range: beakerRange } );
@@ -63,44 +54,61 @@ export default class FluidDisplacedPanel extends MultiSectionPanelsNode {
     // TODO: add majorTickMarkModulus: 5 as an option, https://github.com/phetsims/buoyancy/issues/113
     const beakerNode = new BeakerNode( beakerVolumeProperty, {
       lineWidth: 1,
-      beakerHeight: 100,
-      beakerWidth: 100,
-      yRadiusOfEnds: 12,
+      beakerHeight: CONTENT_WIDTH * 0.8,
+      beakerWidth: CONTENT_WIDTH,
+      yRadiusOfEnds: CONTENT_WIDTH * 0.12,
       ticksVisible: true,
       numberOfTicks: 10
-    } );
-
-    const forceReadout = new RichText( 'hi mark', {
-      font: new PhetFont( {
-        size: 16,
-        weight: 'bold'
-      } ),
-      // TODO: why doesn't this worK? https://github.com/phetsims/buoyancy/issues/113
-      maxWidth: scaleIcon.width
     } );
 
     displayedDisplacedVolumeProperty.link( displayedLiters => {
       // TODO: assert if we go over 1?? https://github.com/phetsims/buoyancy/issues/113
       beakerVolumeProperty.value = beakerRange.constrainValue( ( displayedLiters ) / maxBeakerVolume );
+    } );
 
-      // TODO: i18n, https://github.com/phetsims/buoyancy/issues/113
-      forceReadout.string = `${Utils.toFixedNumber( gravityProperty.value.value * displayedLiters, 2 )}N`;
+    const numberDisplay = new NumberDisplay( displayedDisplacedVolumeProperty, displayedDisplacedVolumeProperty.range, {
+      numberFormatter: value => StringUtils.fillIn( DensityBuoyancyCommonStrings.litersPatternStringProperty, {
+        liters: Utils.toFixed( value, 2 )
+      } ),
+      numberFormatterDependencies: [ DensityBuoyancyCommonStrings.litersPatternStringProperty ],
+      textOptions: {
+        font: new PhetFont( 14 ),
+        maxWidth: beakerNode.width * 0.66 // recognizing that this isn't the maxWidth of the whole NumberDisplay.
+      },
+      opacity: 0.8
+    } );
+
+    const stringProperty = new PatternStringProperty( DensityBuoyancyCommonStrings.newtonsPatternStringProperty, {
+      newtons: displayedDisplacedVolumeProperty
+    }, {
+      decimalPlaces: {
+        newtons: 2
+      }
+    } );
+    const forceReadout = new RichText( stringProperty, {
+      font: new PhetFont( {
+        size: 16,
+        weight: 'bold'
+      } ),
+      maxWidth: scaleIcon.width * 0.8 // margins on the scale, and the icon goes beyond the actual scale, see https://github.com/phetsims/density-buoyancy-common/issues/108
+    } );
+
+    stringProperty.link( () => {
       forceReadout.centerX = beakerNode.centerX;
     } );
 
     numberDisplay.bottom = beakerNode.bottom;
     numberDisplay.left = beakerNode.left;
-    scaleIcon.top = beakerNode.bottom - 25;
-    forceReadout.centerY = scaleIcon.bottom - 20;
+    scaleIcon.top = beakerNode.bottom - 20;
+    forceReadout.centerY = scaleIcon.bottom - 15;
     scaleIcon.centerX = forceReadout.centerX = beakerNode.centerX;
-
 
     super( [ new VBox( {
       spacing: DensityBuoyancyCommonConstants.MARGIN,
       children: [
         new Text( DensityBuoyancyCommonStrings.fluidDisplacedStringProperty, {
           font: DensityBuoyancyCommonConstants.TITLE_FONT,
-          maxWidth: 100
+          maxWidth: CONTENT_WIDTH
         } ),
         new Node( {
           children: [ scaleIcon, beakerNode, numberDisplay, forceReadout ]

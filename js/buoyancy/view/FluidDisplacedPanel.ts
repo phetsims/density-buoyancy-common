@@ -54,14 +54,14 @@ export default class FluidDisplacedPanel extends MultiSectionPanelsNode {
     const beakerRange = new Range( 0, 1 );
     const beakerVolumeProperty = new NumberProperty( 0, { range: beakerRange } );
 
-    // TODO: add majorTickMarkModulus: 5 as an option, https://github.com/phetsims/buoyancy/issues/113
     const beakerNode = new BeakerNode( beakerVolumeProperty, {
       lineWidth: 1,
       beakerHeight: CONTENT_WIDTH * 0.8,
       beakerWidth: CONTENT_WIDTH,
       yRadiusOfEnds: CONTENT_WIDTH * 0.12,
       ticksVisible: true,
-      numberOfTicks: 10
+      numberOfTicks: 9, // The top is the 10th tick mark
+      majorTickMarkModulus: 5
     } );
 
     displayedDisplacedVolumeProperty.link( displayedLiters => {

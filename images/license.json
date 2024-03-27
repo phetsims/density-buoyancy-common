@@ -71,6 +71,14 @@
     "license": "Public Domain",
     "notes": ""
   },
+  "fluid_displaced_scale_icon.png": {
+    "text": [
+      "Copyright 2024 University of Colorado Boulder"
+    ],
+    "projectURL": "https://phet.colorado.edu",
+    "license": "contact phethelp@colorado.edu",
+    "notes": "created by the simulation code"
+  },
   "Ice01_alpha.jpg": {
     "text": [
       "The textures on this site are licensed under the Creative Commons CC0 (Public Domain) License."

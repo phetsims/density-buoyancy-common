@@ -169,15 +169,15 @@ export default class BuoyancyLabScreenView extends DensityBuoyancyScreenView<Buo
   }
 
   private static getFluidDisplacedPanelScaleIcon(): Node {
-    const iconScale = 0.17;
 
+    let image: Node;
     if ( DensityBuoyancyCommonQueryParameters.generateIconImages ) {
       if ( !ThreeUtils.isWebGLEnabled() ) {
         return DensityBuoyancyScreenView.getFallbackIcon();
       }
 
       // Hard coded zoom and view-port vector help to center the icon.
-      const angledIcon = DensityBuoyancyScreenView.getAngledIcon( 7.4, new Vector3( 0, 0.2, 0 ), scene => {
+      image = DensityBuoyancyScreenView.getAngledIcon( 7.4, new Vector3( 0, 0.2, 0 ), scene => {
         const scaleGeometry = ScaleView.getScaleGeometry();
 
         const scale = new THREE.Mesh( scaleGeometry, new THREE.MeshStandardMaterial( {
@@ -190,13 +190,12 @@ export default class BuoyancyLabScreenView extends DensityBuoyancyScreenView<Buo
         scale.position.copy( ThreeUtils.vectorToThree( new Vector3( 0, 0.2, 0 ) ) );
         scene.add( scale );
       }, null );
-
-      angledIcon.setScaleMagnitude( iconScale );
-      return angledIcon;
     }
     else {
-      return new Image( fluid_displaced_scale_icon_png, { scale: new Vector2( iconScale, -iconScale ) } );
+      image = new Image( fluid_displaced_scale_icon_png );
     }
+    image.setScaleMagnitude( 0.17 );
+    return image;
   }
 }
 

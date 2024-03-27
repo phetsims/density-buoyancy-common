@@ -58,10 +58,10 @@ export default class BuoyancyLabScreenView extends DensityBuoyancyScreenView<Buo
           maxBlockVolume,
           BuoyancyLabScreenView.getFluidDisplacedPanelScaleIcon(),
           model.gravityProperty, {
-            visibleProperty: model.showDisplacedFluidProperty
+            visibleProperty: model.showFluidDisplacedProperty
           } ),
         new MultiSectionPanelsNode( [ new BuoyancyDisplayOptionsNode( model, {
-          showFluidDisplacedProperty: model.showDisplacedFluidProperty
+          showFluidDisplacedProperty: model.showFluidDisplacedProperty
         } ) ] )
       ]
     } );

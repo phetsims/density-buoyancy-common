@@ -94,17 +94,23 @@ export default class FluidDisplacedPanel extends MultiSectionPanelsNode {
 
     const displacedFluidForceProperty = new DerivedProperty( [
       gravityProperty,
-      displayedDisplacedVolumeProperty
-    ], ( gravity, displacedVolume ) => gravity.value * displacedVolume );
+      displayedDisplacedVolumeProperty,
+      liquidMaterialProperty
+    ], ( gravity, displacedVolume, liquidMaterial ) => {
 
-    const stringProperty = new PatternStringProperty( DensityBuoyancyCommonStrings.newtonsPatternStringProperty, {
+      // Convert density units from kg/m^3=>kg/L
+      return ( liquidMaterial.density / DensityBuoyancyCommonConstants.LITERS_IN_CUBIC_METER ) *
+             gravity.value * displacedVolume;
+    } );
+
+    const readoutStringProperty = new PatternStringProperty( DensityBuoyancyCommonStrings.newtonsPatternStringProperty, {
       newtons: displacedFluidForceProperty
     }, {
       decimalPlaces: {
         newtons: 2
       }
     } );
-    const forceReadout = new RichText( stringProperty, {
+    const forceReadout = new RichText( readoutStringProperty, {
       font: new PhetFont( {
         size: 16,
         weight: 'bold'
@@ -112,7 +118,7 @@ export default class FluidDisplacedPanel extends MultiSectionPanelsNode {
       maxWidth: scaleIcon.width * 0.8 // margins on the scale, and the icon goes beyond the actual scale, see https://github.com/phetsims/density-buoyancy-common/issues/108
     } );
 
-    stringProperty.link( () => {
+    readoutStringProperty.link( () => {
       forceReadout.centerX = beakerNode.centerX;
     } );
 

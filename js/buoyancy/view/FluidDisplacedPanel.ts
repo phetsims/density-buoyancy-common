@@ -13,7 +13,7 @@ import BeakerNode from '../../../../scenery-phet/js/BeakerNode.js';
 import NumberProperty from '../../../../axon/js/NumberProperty.js';
 import Range from '../../../../dot/js/Range.js';
 import optionize, { EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
-import { Node, RichText, Text, VBox } from '../../../../scenery/js/imports.js';
+import { Color, Node, RichText, Text, VBox } from '../../../../scenery/js/imports.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 import NumberDisplay from '../../../../scenery-phet/js/NumberDisplay.js';
@@ -23,6 +23,8 @@ import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import Gravity from '../../common/model/Gravity.js';
 import PatternStringProperty from '../../../../axon/js/PatternStringProperty.js';
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
+import Material from '../../common/model/Material.js';
+import DynamicProperty from '../../../../axon/js/DynamicProperty.js';
 
 type SelfOptions = EmptySelfOptions;
 
@@ -36,6 +38,7 @@ export default class FluidDisplacedPanel extends MultiSectionPanelsNode {
   public constructor( poolVolumeProperty: TReadOnlyProperty<number>,
                       maxBeakerVolume: number,
                       scaleIcon: Node,
+                      liquidMaterialProperty: TReadOnlyProperty<Material>,
                       gravityProperty: TReadOnlyProperty<Gravity>,
                       providedOptions?: FluidDisplacedPanelOptions ) {
     assert && assert( Utils.toFixedNumber( poolVolumeProperty.value, 7 ) === STARTING_VOLUME,
@@ -58,7 +61,12 @@ export default class FluidDisplacedPanel extends MultiSectionPanelsNode {
     const beakerRange = new Range( 0, 1 );
     const beakerVolumeProperty = new NumberProperty( 0, { range: beakerRange } );
 
+    const solutionFillProperty = new DynamicProperty<Color, Color, Material>( liquidMaterialProperty, {
+      derive: material => material.liquidColor!
+    } );
+
     const beakerNode = new BeakerNode( beakerVolumeProperty, {
+      solutionFill: solutionFillProperty,
       lineWidth: 1,
       beakerHeight: CONTENT_WIDTH * 0.55,
       beakerWidth: CONTENT_WIDTH,

@@ -10,7 +10,7 @@
 
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
-import { HBox, RichText, RichTextOptions, Text, VBox } from '../../../../scenery/js/imports.js';
+import { AlignGroup, HBox, RichText, RichTextOptions, Text, VBox } from '../../../../scenery/js/imports.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import TinyEmitter from '../../../../axon/js/TinyEmitter.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
@@ -128,9 +128,14 @@ export default abstract class ReadoutListAccordionBox<ReadoutType> extends Accor
         nameColonProperty.dispose();
       } );
 
+      const alignGroup = new AlignGroup();
       return new HBox( {
-        children: [ labelText, valueText ],
+        children: [
+          alignGroup.createBox( labelText, { xAlign: 'right' } ),
+          alignGroup.createBox( valueText, { xAlign: 'left' } )
+        ],
         align: 'origin',
+        justify: 'center',
         spacing: 5
       } );
     } );

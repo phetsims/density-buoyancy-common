@@ -12,7 +12,7 @@ import MultiSectionPanelsNode, { MultiSectionPanelsNodeOptions } from '../../com
 import BeakerNode from '../../../../scenery-phet/js/BeakerNode.js';
 import NumberProperty from '../../../../axon/js/NumberProperty.js';
 import Range from '../../../../dot/js/Range.js';
-import { EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
+import optionize, { EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
 import { Node, RichText, Text, VBox } from '../../../../scenery/js/imports.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
@@ -29,7 +29,7 @@ type SelfOptions = EmptySelfOptions;
 type FluidDisplacedPanelOptions = SelfOptions & MultiSectionPanelsNodeOptions;
 
 const STARTING_VOLUME = DensityBuoyancyCommonConstants.DESIRED_STARTING_POOL_VOLUME * DensityBuoyancyCommonConstants.LITERS_IN_CUBIC_METER;
-const CONTENT_WIDTH = 100;
+const CONTENT_WIDTH = 105;
 
 export default class FluidDisplacedPanel extends MultiSectionPanelsNode {
 
@@ -40,6 +40,10 @@ export default class FluidDisplacedPanel extends MultiSectionPanelsNode {
                       providedOptions?: FluidDisplacedPanelOptions ) {
     assert && assert( Utils.toFixedNumber( poolVolumeProperty.value, 7 ) === STARTING_VOLUME,
       `This class greatly expects the starting volume of the pool to be ${STARTING_VOLUME}L.` );
+
+    const options = optionize<FluidDisplacedPanelOptions, SelfOptions, MultiSectionPanelsNodeOptions>()( {
+      yMargin: DensityBuoyancyCommonConstants.MARGIN / 2
+    }, providedOptions );
 
     const displayRange = new Range( 0, maxBeakerVolume );
     const displayedDisplacedVolumeProperty = new NumberProperty( 0, { range: displayRange } );
@@ -56,7 +60,7 @@ export default class FluidDisplacedPanel extends MultiSectionPanelsNode {
 
     const beakerNode = new BeakerNode( beakerVolumeProperty, {
       lineWidth: 1,
-      beakerHeight: CONTENT_WIDTH * 0.8,
+      beakerHeight: CONTENT_WIDTH * 0.55,
       beakerWidth: CONTENT_WIDTH,
       yRadiusOfEnds: CONTENT_WIDTH * 0.12,
       ticksVisible: true,
@@ -104,24 +108,28 @@ export default class FluidDisplacedPanel extends MultiSectionPanelsNode {
       forceReadout.centerX = beakerNode.centerX;
     } );
 
-    numberDisplay.bottom = beakerNode.bottom;
-    numberDisplay.left = beakerNode.left;
-    scaleIcon.top = beakerNode.bottom - 20;
-    forceReadout.centerY = scaleIcon.bottom - 15;
+    numberDisplay.bottom = beakerNode.bottom - beakerNode.height * 0.05;
+    numberDisplay.right = beakerNode.right;
+    scaleIcon.top = beakerNode.bottom - 13;
+    forceReadout.centerY = scaleIcon.bottom - 13;
     scaleIcon.centerX = forceReadout.centerX = beakerNode.centerX;
 
+    numberDisplay.boundsProperty.link( () => {
+      numberDisplay.right = beakerNode.right;
+    } );
+
     super( [ new VBox( {
-      spacing: DensityBuoyancyCommonConstants.MARGIN,
+      spacing: DensityBuoyancyCommonConstants.MARGIN / 2,
       children: [
         new Text( DensityBuoyancyCommonStrings.fluidDisplacedStringProperty, {
-          font: DensityBuoyancyCommonConstants.TITLE_FONT,
+          font: DensityBuoyancyCommonConstants.ITEM_FONT,
           maxWidth: CONTENT_WIDTH
         } ),
         new Node( {
           children: [ scaleIcon, beakerNode, numberDisplay, forceReadout ]
         } )
       ]
-    } ) ], providedOptions );
+    } ) ], options );
   }
 }
 

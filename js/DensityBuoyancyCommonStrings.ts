@@ -62,6 +62,7 @@ type StringsType = {
     'woodStringProperty': LocalizedStringProperty;
     'nameStringProperty': LocalizedStringProperty;
   };
+  'shapePatternStringProperty': LocalizedStringProperty;
   'shape': {
     'blockStringProperty': LocalizedStringProperty;
     'coneStringProperty': LocalizedStringProperty;

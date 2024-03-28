@@ -34,6 +34,8 @@ import BlocksRadioButtonGroup from '../../common/view/BlocksRadioButtonGroup.js'
 import SubmergedAccordionBox from './SubmergedAccordionBox.js';
 import Multilink from '../../../../axon/js/Multilink.js';
 import TwoBlockMode from '../../common/model/TwoBlockMode.js';
+import PatternStringProperty from '../../../../axon/js/PatternStringProperty.js';
+import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 
 // constants
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
@@ -162,12 +164,14 @@ export default class BuoyancyShapesScreenView extends DensityBuoyancyScreenView<
       model.secondaryMassProperty,
       model.modeProperty
     ], ( primaryMass, secondaryMass, mode ) => {
-      if ( mode === TwoBlockMode.ONE_BLOCK ) {
-        submergedBox.setReadoutItems( [ { readoutItem: primaryMass } ] );
-      }
-      else {
-        submergedBox.setReadoutItems( [ { readoutItem: primaryMass }, { readoutItem: secondaryMass } ] );
-      }
+      const masses = mode === TwoBlockMode.ONE_BLOCK ? [ primaryMass ] : [ primaryMass, secondaryMass ];
+      submergedBox.setReadoutItems( masses.map( ( mass, index ) => {
+        return {
+          readoutItem: mass,
+          readoutNameProperty: new PatternStringProperty( DensityBuoyancyCommonStrings.shapePatternStringProperty, { tag: mass.nameProperty } ),
+          readoutFormat: { font: DensityBuoyancyCommonConstants.ITEM_FONT, fill: mass.tag.colorProperty }
+        };
+      } ) );
     } );
 
     const rightSideVBox = new VBox( {

@@ -204,7 +204,6 @@ export default class BuoyancyShapesScreenView extends DensityBuoyancyScreenView<
 
   /**
    * Tracks layout changes to position the info button.
-   * @param viewBounds
    */
   public override layout( viewBounds: Bounds2 ): void {
     super.layout( viewBounds );

@@ -31,6 +31,8 @@ import PatternStringProperty from '../../../../axon/js/PatternStringProperty.js'
 import ThreeUtils from '../../../../mobius/js/ThreeUtils.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
 import ScaleView from '../../common/view/ScaleView.js';
+import Bounds2 from '../../../../dot/js/Bounds2.js';
+import ScaleHeightSlider from '../../common/view/ScaleHeightSlider.js';
 
 // constants
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
@@ -38,6 +40,7 @@ const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
 export default class BuoyancyLabScreenView extends DensityBuoyancyScreenView<BuoyancyLabModel> {
 
   private rightBox: MultiSectionPanelsNode;
+  private positionWaterLevelSlider: () => void;
 
   public constructor( model: BuoyancyLabModel, options: DensityBuoyancyScreenViewOptions ) {
 
@@ -165,6 +168,22 @@ export default class BuoyancyLabScreenView extends DensityBuoyancyScreenView<Buo
     } );
 
     this.addChild( this.popupLayer );
+
+    // Info button and associated dialog
+    const waterLevelSlider = new ScaleHeightSlider( model.poolScaleHeightProperty, {
+      tandem: tandem.createTandem( 'waterLevelSlider' )
+    } );
+    this.addChild( waterLevelSlider );
+
+    this.positionWaterLevelSlider = () => {
+      const bottomRightPoolPoint = this.modelToViewPoint( new Vector3(
+        this.model.poolBounds.maxX,
+        this.model.poolBounds.minY,
+        this.model.poolBounds.maxZ
+      ) );
+      waterLevelSlider.bottom = bottomRightPoolPoint.y;
+      waterLevelSlider.left = bottomRightPoolPoint.x + 5;
+    };
   }
 
   private static getFluidDisplacedPanelScaleIcon(): Node {
@@ -197,6 +216,20 @@ export default class BuoyancyLabScreenView extends DensityBuoyancyScreenView<Buo
     // }
     image.setScaleMagnitude( 0.12 );
     return image;
+  }
+
+  /**
+   * Tracks layout changes to position the scale height slider
+   */
+  public override layout( viewBounds: Bounds2 ): void {
+    super.layout( viewBounds );
+
+    // If the simulation was not able to load for WebGL, bail out
+    if ( !this.sceneNode ) {
+      return;
+    }
+
+    this.positionWaterLevelSlider();
   }
 }
 

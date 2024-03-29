@@ -18,6 +18,8 @@ import Scale, { DisplayType } from '../../common/model/Scale.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import MassTag from '../../common/model/MassTag.js';
 import { combineOptions } from '../../../../phet-core/js/optionize.js';
+import NumberProperty from '../../../../axon/js/NumberProperty.js';
+import Range from '../../../../dot/js/Range.js';
 
 export type BuoyancyLabModelOptions = DensityBuoyancyModelOptions;
 
@@ -26,13 +28,14 @@ export default class BuoyancyLabModel extends DensityBuoyancyModel {
   public readonly primaryMass: Cube;
   public readonly densityExpandedProperty: Property<boolean>;
   public readonly showFluidDisplacedProperty: Property<boolean>;
+  public readonly poolScaleHeightProperty: NumberProperty;
 
   public constructor( options: BuoyancyLabModelOptions ) {
 
     const tandem = options.tandem;
 
     super( combineOptions<DensityBuoyancyModelOptions>( {
-      usePoolScale: true
+      usePoolScale: false // Creating our own
     }, options ) );
 
 
@@ -57,6 +60,36 @@ export default class BuoyancyLabModel extends DensityBuoyancyModel {
     this.showFluidDisplacedProperty = new BooleanProperty( false, {
       tandem: tandem.createTandem( 'showFluidDisplacedProperty' )
     } );
+
+    this.poolScaleHeightProperty = new NumberProperty( 1, {
+      range: new Range( 0, 1 ),
+      tandem: tandem.createTandem( 'poolScaleHeightProperty' )
+    } );
+
+    // Pool scale
+    const poolScaleDefaultPosition = new Vector2( 0.35, -Scale.SCALE_BASE_BOUNDS.minY + 0.5 * this.poolBounds.minY );
+    const poolScale = new Scale( this.engine, this.gravityProperty, {
+      matrix: Matrix3.translation( poolScaleDefaultPosition.x, poolScaleDefaultPosition.y ),
+      displayType: DisplayType.NEWTONS,
+      tandem: tandem.createTandem( 'poolScale' ),
+      canMove: false, //TODO This should be true, but first some work is needed https://github.com/phetsims/density-buoyancy-common/issues/107
+      inputEnabledPropertyOptions: {
+        phetioReadOnly: true
+      }
+    } );
+
+    poolScale.startDrag( poolScale.matrix.translation );
+
+    this.poolScaleHeightProperty.lazyLink( height => {
+      const modelHeight = -0.5 * ( 2 - height ) * this.poolBounds.height - 2 * Scale.SCALE_BASE_BOUNDS.minY;
+      poolScale.updateDrag( poolScale.matrix.translation.setXY( poolScaleDefaultPosition.x, modelHeight ) );
+    } );
+
+    this.availableMasses.push( poolScale );
+
+    // Adjust pool volume so that it's at the desired value WITH the pool scale inside.
+    this.pool.liquidVolumeProperty.value -= poolScale.volumeProperty.value;
+    this.pool.liquidVolumeProperty.setInitialValue( this.pool.liquidVolumeProperty.value );
   }
 
   /**

@@ -320,10 +320,9 @@ class GreyMetalMaterialView extends MaterialView {
 class CustomMaterialView extends MaterialView {
   public constructor( density: number ) {
     const lightness = Material.getCustomLightness( density );
-    const color = lightness + lightness * 0x100 + lightness * 0x10000;
 
     super( new THREE.MeshLambertMaterial( {
-      color: color
+      color: new THREE.Color( `hsl(0, 0%, ${lightness}%)` )
     } ) );
   }
 }

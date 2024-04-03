@@ -73,7 +73,8 @@ export default abstract class ReadoutListAccordionBox<ReadoutType> extends Accor
         titleNode: titleNode,
         layoutOptions: { stretch: true },
         contentWidthMax: DEFAULT_CONTENT_WIDTH,
-        readoutItems: []
+        readoutItems: [],
+        useExpandedBoundsWhenCollapsed: false
       }, providedOptions );
 
     const readoutBox = new VBox( {

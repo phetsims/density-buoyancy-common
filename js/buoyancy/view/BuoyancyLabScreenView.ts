@@ -190,7 +190,7 @@ export default class BuoyancyLabScreenView extends DensityBuoyancyScreenView<Buo
 
     // let image: Node;
 
-    // TODO: save image again once scale icon design is settled, https://github.com/phetsims/buoyancy/issues/129
+    // TODO: save image again once scale icon design is settled, https://github.com/phetsims/density-buoyancy-common/issues/95
     // if ( DensityBuoyancyCommonQueryParameters.generateIconImages ) {
     if ( !ThreeUtils.isWebGLEnabled() ) {
       return DensityBuoyancyScreenView.getFallbackIcon();

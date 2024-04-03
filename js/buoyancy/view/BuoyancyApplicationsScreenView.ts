@@ -299,7 +299,7 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
           readoutNameProperty: DensityBuoyancyCommonStrings.bottleStringProperty
         } ] :
         [ {
-          readoutItem: model.block,
+          readoutItem: model.boat,
           readoutNameProperty: DensityBuoyancyCommonStrings.shape.blockStringProperty
         }
         ];

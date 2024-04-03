@@ -146,6 +146,19 @@ export default class Boat extends ApplicationsMass {
   }
 
   /**
+   * Returns the fraction of the mass that is submerged in a liquid at a given level. From 0 to 1.
+   */
+  public override updateSubmergedMassFraction( gravityMagnitude: number, liquidDensity: number ): void {
+    assert && assert( gravityMagnitude > 0, 'gravityMagnitude should be positive' );
+
+    const buoyancy = this.buoyancyForceInterpolatedProperty.value;
+    const volume = this.volumeProperty.value + this.stepInternalVolume;
+    const submergedFraction = buoyancy.magnitude / ( volume * gravityMagnitude * liquidDensity );
+    const range = this.submergedMassFractionProperty.range;
+    this.submergedMassFractionProperty.value = range.constrainValue( submergedFraction );
+  }
+
+  /**
    * If there is an intersection with the ray and this mass, the t-value (distance the ray would need to travel to
    * reach the intersection, e.g. ray.position + ray.distance * t === intersectionPoint) will be returned. Otherwise
    * if there is no intersection, null will be returned.

@@ -100,7 +100,7 @@ export default class FluidDisplacedPanel extends MultiSectionPanelsNode {
 
       // Convert density units from kg/m^3=>kg/L
       return ( liquidMaterial.density / DensityBuoyancyCommonConstants.LITERS_IN_CUBIC_METER ) *
-             gravity.value * displacedVolume;
+             gravity.value * displacedVolume; // TODO: wait. Can I just use a buoyant force metric? https://github.com/phetsims/density-buoyancy-common/issues/95
     } );
 
     const readoutStringProperty = new PatternStringProperty( DensityBuoyancyCommonStrings.newtonsPatternStringProperty, {

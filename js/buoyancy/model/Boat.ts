@@ -148,12 +148,12 @@ export default class Boat extends ApplicationsMass {
   /**
    * Returns the fraction of the mass that is submerged in a liquid at a given level. From 0 to 1.
    */
-  public override updateSubmergedMassFraction( gravityMagnitude: number, liquidDensity: number ): void {
+  public override updateSubmergedMassFraction( gravityMagnitude: number, fluidDensity: number ): void {
     assert && assert( gravityMagnitude > 0, 'gravityMagnitude should be positive' );
 
     const buoyancy = this.buoyancyForceInterpolatedProperty.value;
     const volume = this.volumeProperty.value + this.stepInternalVolume;
-    const submergedFraction = buoyancy.magnitude / ( volume * gravityMagnitude * liquidDensity );
+    const submergedFraction = buoyancy.magnitude / ( volume * gravityMagnitude * fluidDensity );
     const range = this.submergedMassFractionProperty.range;
     this.submergedMassFractionProperty.value = range.constrainValue( submergedFraction );
   }

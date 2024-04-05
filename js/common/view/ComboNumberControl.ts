@@ -130,8 +130,9 @@ export default class ComboNumberControl<T> extends VBox {
           useFullHeight: true,
           visibleProperty: numberDisplayVisibleProperty
         },
-        arrowButtonOptions: { scale: 0.56 },
-
+        arrowButtonOptions: {
+          scale: DensityBuoyancyCommonConstants.ARROW_BUTTON_SCALE
+        },
         sliderOptions: {
           majorTickLength: 5,
           thumbSize: DensityBuoyancyCommonConstants.THUMB_SIZE,

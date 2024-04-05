@@ -55,7 +55,9 @@ export default class ComparisonNumberControl extends NumberControl {
         useRichText: true,
         useFullHeight: true
       },
-      arrowButtonOptions: { scale: 0.56 },
+      arrowButtonOptions: {
+        scale: DensityBuoyancyCommonConstants.ARROW_BUTTON_SCALE
+      },
 
       sliderOptions: {
         // Constrain to 0.1 consistently, see https://github.com/phetsims/density/issues/75#issuecomment-896341332

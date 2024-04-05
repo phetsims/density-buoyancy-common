@@ -239,7 +239,8 @@ export default class MaterialMassVolumeControlNode extends MaterialControlNode {
         useFullHeight: true
       },
       arrowButtonOptions: {
-        enabledEpsilon: DensityBuoyancyCommonConstants.TOLERANCE
+        enabledEpsilon: DensityBuoyancyCommonConstants.TOLERANCE,
+        scale: DensityBuoyancyCommonConstants.ARROW_BUTTON_SCALE
       },
       enabledRangeProperty: enabledVolumeRangeProperty,
       tandem: volumeNumberControlTandem,
@@ -256,48 +257,52 @@ export default class MaterialMassVolumeControlNode extends MaterialControlNode {
       const numberControlTandem = tandemName ? massNumberControlContainerTandem.createTandem( tandemName ) :
                                   massNumberControlContainerTandem;
 
-      return new NumberControl( DensityBuoyancyCommonStrings.massStringProperty, massNumberProperty, new Range( options.minMass, maxMass ), combineOptions<NumberControlOptions>( {
-        sliderOptions: {
-          thumbNode: new PrecisionSliderThumb( {
-            thumbFill: options.color,
-            tandem: numberControlTandem.createTandem( 'slider' ).createTandem( 'thumbNode' )
-          } ),
-          thumbYOffset: new PrecisionSliderThumb().height / 2 - TRACK_HEIGHT / 2,
-          constrainValue: ( value: number ) => {
-            const range = enabledMassRangeProperty.value;
+      return new NumberControl(
+        DensityBuoyancyCommonStrings.massStringProperty,
+        massNumberProperty,
+        new Range( options.minMass, maxMass ),
+        combineOptions<NumberControlOptions>( {
+          sliderOptions: {
+            thumbNode: new PrecisionSliderThumb( {
+              thumbFill: options.color,
+              tandem: numberControlTandem.createTandem( 'slider' ).createTandem( 'thumbNode' )
+            } ),
+            thumbYOffset: new PrecisionSliderThumb().height / 2 - TRACK_HEIGHT / 2,
+            constrainValue: ( value: number ) => {
+              const range = enabledMassRangeProperty.value;
 
-            // Don't snap before ranges, since this doesn't work for Styrofoam case, see
-            // https://github.com/phetsims/density/issues/46
-            if ( value <= range.min ) {
-              return range.min;
-            }
-            if ( value >= range.max ) {
-              return range.max;
-            }
-            return enabledMassRangeProperty.value.constrainValue( Utils.toFixedNumber( value, 1 ) );
+              // Don't snap before ranges, since this doesn't work for Styrofoam case, see
+              // https://github.com/phetsims/density/issues/46
+              if ( value <= range.min ) {
+                return range.min;
+              }
+              if ( value >= range.max ) {
+                return range.max;
+              }
+              return enabledMassRangeProperty.value.constrainValue( Utils.toFixedNumber( value, 1 ) );
+            },
+            phetioLinkedProperty: massProperty
           },
-          phetioLinkedProperty: massProperty
-        },
-        numberDisplayOptions: {
-          valuePattern: DensityBuoyancyCommonConstants.KILOGRAMS_PATTERN_STRING_PROPERTY,
-          useFullHeight: true
-        },
-        arrowButtonOptions: {
-          enabledEpsilon: DensityBuoyancyCommonConstants.TOLERANCE
-        },
-        enabledRangeProperty: enabledMassRangeProperty,
-        tandem: numberControlTandem,
-        titleNodeOptions: {
-          visiblePropertyOptions: {
-            phetioReadOnly: true
-          }
-        },
+          numberDisplayOptions: {
+            valuePattern: DensityBuoyancyCommonConstants.KILOGRAMS_PATTERN_STRING_PROPERTY,
+            useFullHeight: true
+          },
+          arrowButtonOptions: {
+            enabledEpsilon: DensityBuoyancyCommonConstants.TOLERANCE
+          },
+          enabledRangeProperty: enabledMassRangeProperty,
+          tandem: numberControlTandem,
+          titleNodeOptions: {
+            visiblePropertyOptions: {
+              phetioReadOnly: true
+            }
+          },
 
-        visiblePropertyOptions: {
-          // We don't want them messing with visibility if we are toggling it for low/high density
-          phetioReadOnly: supportTwoMassNumberControls
-        }
-      }, MaterialMassVolumeControlNode.getNumberControlOptions() ) );
+          visiblePropertyOptions: {
+            // We don't want them messing with visibility if we are toggling it for low/high density
+            phetioReadOnly: supportTwoMassNumberControls
+          }
+        }, MaterialMassVolumeControlNode.getNumberControlOptions() ) );
     };
 
     if ( supportTwoMassNumberControls ) {
@@ -374,6 +379,9 @@ export default class MaterialMassVolumeControlNode extends MaterialControlNode {
       titleNodeOptions: {
         font: DensityBuoyancyCommonConstants.ITEM_FONT,
         maxWidth: 90
+      },
+      arrowButtonOptions: {
+        scale: DensityBuoyancyCommonConstants.ARROW_BUTTON_SCALE
       }
     };
   }

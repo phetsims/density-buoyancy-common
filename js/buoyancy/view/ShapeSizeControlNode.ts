@@ -81,6 +81,9 @@ export default class ShapeSizeControlNode extends VBox {
         trackSize: new Dimension2( 120, 0.5 ),
         thumbSize: DensityBuoyancyCommonConstants.THUMB_SIZE
       },
+      arrowButtonOptions: {
+        scale: DensityBuoyancyCommonConstants.ARROW_BUTTON_SCALE
+      },
       numberDisplayOptions: {
         decimalPlaces: 2,
         textOptions: {

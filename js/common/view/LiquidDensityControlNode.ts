@@ -84,6 +84,9 @@ export default class LiquidDensityControlNode extends ComboNumberControl<Materia
         sliderOptions: {
           // Slightly longer, see https://github.com/phetsims/buoyancy/issues/33
           trackSize: new Dimension2( 130, 0.5 )
+        },
+        arrowButtonOptions: {
+          scale: DensityBuoyancyCommonConstants.ARROW_BUTTON_SCALE
         }
       },
       comboBoxOptions: {

@@ -16,7 +16,6 @@ import DensityBuoyancyModel, { DensityBuoyancyModelOptions } from '../../common/
 import Material from '../../common/model/Material.js';
 import Scale, { DisplayType } from '../../common/model/Scale.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
-import MassTag from '../../common/model/MassTag.js';
 import { combineOptions } from '../../../../phet-core/js/optionize.js';
 import NumberProperty from '../../../../axon/js/NumberProperty.js';
 import Range from '../../../../dot/js/Range.js';
@@ -40,7 +39,6 @@ export default class BuoyancyLabModel extends DensityBuoyancyModel {
 
 
     this.primaryMass = Cube.createWithMass( this.engine, Material.WOOD, new Vector2( -0.2, 0.2 ), 2, {
-      tag: MassTag.PRIMARY,
       tandem: tandem.createTandem( 'blocks' ).createTandem( 'blockA' )
     } );
     this.availableMasses.push( this.primaryMass );

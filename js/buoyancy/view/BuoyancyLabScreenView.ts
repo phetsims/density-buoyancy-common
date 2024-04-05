@@ -27,7 +27,6 @@ import MultiSectionPanelsNode from '../../common/view/MultiSectionPanelsNode.js'
 import FluidDisplacedPanel from './FluidDisplacedPanel.js';
 import SubmergedAccordionBox from './SubmergedAccordionBox.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
-import PatternStringProperty from '../../../../axon/js/PatternStringProperty.js';
 import ThreeUtils from '../../../../mobius/js/ThreeUtils.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
 import ScaleView from '../../common/view/ScaleView.js';
@@ -139,7 +138,7 @@ export default class BuoyancyLabScreenView extends DensityBuoyancyScreenView<Buo
         contentWidthMax: this.rightBox.content.width,
         readoutItems: [ {
           readoutItem: model.primaryMass,
-          readoutNameProperty: new PatternStringProperty( DensityBuoyancyCommonStrings.blockPatternStringProperty, { tag: model.primaryMass.nameProperty } )
+          readoutNameProperty: DensityBuoyancyCommonStrings.shape.blockStringProperty
         } ]
       } );
 

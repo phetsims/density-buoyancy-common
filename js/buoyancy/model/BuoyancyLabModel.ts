@@ -48,7 +48,7 @@ export default class BuoyancyLabModel extends DensityBuoyancyModel {
       matrix: Matrix3.translation( -0.65, -Scale.SCALE_BASE_BOUNDS.minY ),
       displayType: DisplayType.NEWTONS,
       tandem: tandem.createTandem( 'scale1' ),
-      canMove: true,
+      canMove: false,
       inputEnabledPropertyOptions: {
         phetioReadOnly: false
       }

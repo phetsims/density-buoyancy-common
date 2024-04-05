@@ -14,7 +14,7 @@ import { AlignBox, HBox, VBox } from '../../../../scenery/js/imports.js';
 import Panel from '../../../../sun/js/Panel.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 import Material from '../../common/model/Material.js';
-import LiquidDensityControlNode from '../../common/view/LiquidDensityControlNode.js';
+import FluidDensityControlNode from '../../common/view/FluidDensityControlNode.js';
 import BuoyancyDisplayOptionsNode from '../../common/view/BuoyancyDisplayOptionsNode.js';
 import PrimarySecondaryPanelsNode from '../../common/view/PrimarySecondaryPanelsNode.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
@@ -61,7 +61,7 @@ export default class BuoyancyShapesScreenView extends DensityBuoyancyScreenView<
     const invisibleMaterials = [ ...DensityBuoyancyCommonConstants.BUOYANCY_FLUID_MYSTERY_MATERIALS ];
     displayedMysteryMaterials.forEach( displayed => arrayRemove( invisibleMaterials, displayed ) );
 
-    const densityControlPanel = new Panel( new LiquidDensityControlNode( model.liquidMaterialProperty, [
+    const densityControlPanel = new Panel( new FluidDensityControlNode( model.liquidMaterialProperty, [
       ...DensityBuoyancyCommonConstants.BUOYANCY_FLUID_MATERIALS,
       ...DensityBuoyancyCommonConstants.BUOYANCY_FLUID_MYSTERY_MATERIALS
     ], this.popupLayer, {

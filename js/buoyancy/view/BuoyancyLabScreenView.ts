@@ -15,7 +15,7 @@ import Panel from '../../../../sun/js/Panel.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 import Material from '../../common/model/Material.js';
 import DensityBuoyancyScreenView, { DensityBuoyancyScreenViewOptions } from '../../common/view/DensityBuoyancyScreenView.js';
-import LiquidDensityControlNode from '../../common/view/LiquidDensityControlNode.js';
+import FluidDensityControlNode from '../../common/view/FluidDensityControlNode.js';
 import GravityControlNode from '../../common/view/GravityControlNode.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import BuoyancyLabModel from '../model/BuoyancyLabModel.js';
@@ -89,7 +89,7 @@ export default class BuoyancyLabScreenView extends DensityBuoyancyScreenView<Buo
     const bottomNode = new HBox( {
       spacing: 2 * MARGIN,
       children: [
-        new Panel( new LiquidDensityControlNode( model.liquidMaterialProperty, [
+        new Panel( new FluidDensityControlNode( model.liquidMaterialProperty, [
           ...DensityBuoyancyCommonConstants.BUOYANCY_FLUID_MATERIALS,
           ...DensityBuoyancyCommonConstants.BUOYANCY_FLUID_MYSTERY_MATERIALS
         ], this.popupLayer, {

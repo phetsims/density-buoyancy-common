@@ -33,7 +33,7 @@ type ParentOptions = Partial<ComboNumberControlOptions<Material>> &
   PickRequired<ComboNumberControlOptions<Material>, 'tandem'>;
 type DensityControlNodeOptions = SelfOptions & ParentOptions;
 
-export default class LiquidDensityControlNode extends ComboNumberControl<Material> {
+export default class FluidDensityControlNode extends ComboNumberControl<Material> {
   public constructor( liquidMaterialProperty: Property<Material>, materials: Material[], listParent: Node,
                       providedOptions: DensityControlNodeOptions ) {
 
@@ -106,4 +106,4 @@ export default class LiquidDensityControlNode extends ComboNumberControl<Materia
   }
 }
 
-densityBuoyancyCommon.register( 'LiquidDensityControlNode', LiquidDensityControlNode );
+densityBuoyancyCommon.register( 'FluidDensityControlNode', FluidDensityControlNode );

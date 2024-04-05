@@ -18,6 +18,7 @@ import DensityBuoyancyCommonColors from './DensityBuoyancyCommonColors.js';
 import DensityBuoyancyModel from '../model/DensityBuoyancyModel.js';
 import optionize, { combineOptions } from '../../../../phet-core/js/optionize.js';
 import Property from '../../../../axon/js/Property.js';
+import RectangularButton from '../../../../sun/js/buttons/RectangularButton.js';
 
 // constants
 const arrowSpacing = 15;
@@ -106,8 +107,15 @@ export default class BuoyancyDisplayOptionsNode extends VBox {
                     layoutOptions: { column: 0, row: 3 }
                   }, labelOptions ) ),
                   new PlusMinusZoomButtonGroup( model.forceScaleProperty, {
+                    spacing: 3,
                     layoutOptions: { column: 1, row: 3, xAlign: 'center' },
-                    orientation: 'horizontal',
+                    buttonOptions: {
+                      cornerRadius: 3,
+                      buttonAppearanceStrategy: RectangularButton.ThreeDAppearanceStrategy,
+                      stroke: 'black',
+                      xMargin: 7,
+                      yMargin: 7
+                    },
                     applyZoomIn: ( scale: number ) => scale * 2,
                     applyZoomOut: ( scale: number ) => scale / 2
                   } ) ] : []

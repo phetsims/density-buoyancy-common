@@ -65,7 +65,6 @@ export default class BuoyancyLabModel extends DensityBuoyancyModel {
       tandem: tandem.createTandem( 'poolScaleHeightProperty' )
     } );
 
-    // TODO: factor this out into it's own class? Maybe just for the view https://github.com/phetsims/density-buoyancy-common/issues/107
     // Pool scale
     this.poolScale = new Scale( this.engine, this.gravityProperty, {
 

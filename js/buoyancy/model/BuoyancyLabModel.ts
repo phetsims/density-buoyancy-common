@@ -67,12 +67,9 @@ export default class BuoyancyLabModel extends DensityBuoyancyModel {
 
     // Pool scale
     this.poolScale = new Scale( this.engine, this.gravityProperty, {
-
-      // The y value doesn't matter because it will be overwritten while setting up the stick slider value.
-      matrix: Matrix3.translation( 0.35, 0 ),
       displayType: DisplayType.NEWTONS,
       tandem: tandem.createTandem( 'poolScale' ),
-      canMove: false,
+      canMove: false, // No input listeners, but the ScaleHeightSlider can still move it
       inputEnabledPropertyOptions: {
         phetioReadOnly: true
       }

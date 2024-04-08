@@ -32,8 +32,6 @@ import Vector3 from '../../../../dot/js/Vector3.js';
 import ScaleView from '../../common/view/ScaleView.js';
 import Bounds2 from '../../../../dot/js/Bounds2.js';
 import ScaleHeightSlider from '../../common/view/ScaleHeightSlider.js';
-import Utils from '../../../../dot/js/Utils.js';
-import Scale from '../../common/model/Scale.js';
 
 // constants
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
@@ -171,9 +169,10 @@ export default class BuoyancyLabScreenView extends DensityBuoyancyScreenView<Buo
     this.addChild( this.popupLayer );
 
     // Info button and associated dialog
-    const waterLevelSlider = new ScaleHeightSlider( model.poolScaleHeightProperty, {
-      tandem: tandem.createTandem( 'waterLevelSlider' )
-    } );
+    const waterLevelSlider = new ScaleHeightSlider( model.poolScale, model.poolScaleHeightProperty,
+      model.poolBounds, model.pool.liquidYInterpolatedProperty, {
+        tandem: tandem.createTandem( 'waterLevelSlider' )
+      } );
     this.addChild( waterLevelSlider );
 
     this.positionWaterLevelSlider = () => {
@@ -183,21 +182,8 @@ export default class BuoyancyLabScreenView extends DensityBuoyancyScreenView<Buo
         this.model.poolBounds.maxZ
       ) );
       waterLevelSlider.bottom = bottomRightPoolPoint.y;
-      waterLevelSlider.left = bottomRightPoolPoint.x + 5;
+      waterLevelSlider.left = bottomRightPoolPoint.x + DensityBuoyancyCommonConstants.MARGIN / 2;
     };
-    const halfScaleHeight = Scale.SCALE_HEIGHT / 2;
-
-    // This exact top of pool renders fractals of water on the scale, so just a wee bit different.
-    const maxY = model.pool.liquidYInterpolatedProperty.value - halfScaleHeight + 0.00001;
-
-    model.poolScaleHeightProperty.link( height => {
-      const minY = model.poolBounds.minY + halfScaleHeight;
-      const currentHeight = Utils.linear( 0, 1, minY, maxY, height );
-
-      model.poolScale.matrix.set12( currentHeight );
-      model.poolScale.writeData();
-      model.poolScale.transformedEmitter.emit();
-    } );
   }
 
   private static getFluidDisplacedPanelScaleIcon(): Node {

@@ -188,7 +188,7 @@ export default class BuoyancyLabScreenView extends DensityBuoyancyScreenView<Buo
     const halfScaleHeight = Scale.SCALE_HEIGHT / 2;
 
     // This exact top of pool renders fractals of water on the scale, so just a wee bit different.
-    // TODO: want to see white on the scale or nah? https://github.com/phetsims/density-buoyancy-common/issues/107
+    // TODO: want to see white on the scale or have it just below the water? https://github.com/phetsims/density-buoyancy-common/issues/107
     const maxY = model.pool.liquidYInterpolatedProperty.value - halfScaleHeight + 0.00001;
 
     model.poolScaleHeightProperty.link( height => {
@@ -196,7 +196,6 @@ export default class BuoyancyLabScreenView extends DensityBuoyancyScreenView<Buo
       const currentHeight = Utils.linear( 0, 1, minY, maxY, height );
 
       model.poolScale.matrix.set12( currentHeight );
-      // TODO: See if there is a nicer way to do this? https://github.com/phetsims/density-buoyancy-common/issues/107
       model.poolScale.writeData();
       model.poolScale.transformedEmitter.emit();
     } );

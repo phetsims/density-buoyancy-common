@@ -73,7 +73,7 @@ export default class BuoyancyLabModel extends DensityBuoyancyModel {
       matrix: Matrix3.translation( 0.35, 0 ),
       displayType: DisplayType.NEWTONS,
       tandem: tandem.createTandem( 'poolScale' ),
-      canMove: false, //TODO This should be true, but first some work is needed https://github.com/phetsims/density-buoyancy-common/issues/107
+      canMove: false,
       inputEnabledPropertyOptions: {
         phetioReadOnly: true
       }

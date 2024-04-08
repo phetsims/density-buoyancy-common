@@ -13,7 +13,7 @@ import Vector2, { Vector2StateObject } from '../../../../dot/js/Vector2.js';
 import optionize from '../../../../phet-core/js/optionize.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonQueryParameters from '../DensityBuoyancyCommonQueryParameters.js';
-import PhysicsEngine, { PhysicsEngineBody } from './PhysicsEngine.js';
+import PhysicsEngine, { PhysicsBodyType, PhysicsEngineBody } from './PhysicsEngine.js';
 
 // constants
 const FIXED_TIME_STEP = DensityBuoyancyCommonQueryParameters.p2FixedTimeStep;
@@ -24,6 +24,15 @@ const MASS_SCALE = DensityBuoyancyCommonQueryParameters.p2MassScale;
 const groundMaterial = new p2.Material();
 const barrierMaterial = new p2.Material();
 const dynamicMaterial = new p2.Material();
+
+type P2BodyType = typeof p2.Body.KINEMATIC | typeof p2.Body.DYNAMIC | typeof p2.Body.STATIC;
+
+// Map the general supported type into the language the p2 understands
+const BODY_TYPE_MAPPER: Record<PhysicsBodyType, P2BodyType> = {
+  DYNAMIC: p2.Body.DYNAMIC, // Default, can be moved around, and can be effected by other bodies moving around.
+  KINEMATIC: p2.Body.KINEMATIC, // Cannot be moved by other bodies, but can move.
+  STATIC: p2.Body.STATIC // Cannot move, for anything.
+};
 
 type BodySetMassOptions = { canRotate?: boolean };
 
@@ -317,9 +326,9 @@ export default class P2Engine extends PhysicsEngine {
   /**
    * Creates a (dynamic) box body, with the origin at the center of the box.
    */
-  public createBox( width: number, height: number, isStatic?: boolean ): PhysicsEngineBody {
+  public createBox( width: number, height: number, bodyType: PhysicsBodyType = 'DYNAMIC' ): PhysicsEngineBody {
     const body = new p2.Body( {
-      type: isStatic ? p2.Body.STATIC : p2.Body.DYNAMIC,
+      type: BODY_TYPE_MAPPER[ bodyType ],
       fixedRotation: true
     } );
 

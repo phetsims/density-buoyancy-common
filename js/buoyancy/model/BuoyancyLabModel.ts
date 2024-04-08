@@ -28,6 +28,7 @@ export default class BuoyancyLabModel extends DensityBuoyancyModel {
   public readonly densityExpandedProperty: Property<boolean>;
   public readonly showFluidDisplacedProperty: Property<boolean>;
   public readonly poolScaleHeightProperty: NumberProperty;
+  public readonly poolScale: Scale;
 
   public constructor( options: BuoyancyLabModelOptions ) {
 
@@ -64,10 +65,12 @@ export default class BuoyancyLabModel extends DensityBuoyancyModel {
       tandem: tandem.createTandem( 'poolScaleHeightProperty' )
     } );
 
+    // TODO: factor this out into it's own class? Maybe just for the view https://github.com/phetsims/density-buoyancy-common/issues/107
     // Pool scale
-    const poolScaleDefaultPosition = new Vector2( 0.35, -Scale.SCALE_BASE_BOUNDS.minY + 0.5 * this.poolBounds.minY );
-    const poolScale = new Scale( this.engine, this.gravityProperty, {
-      matrix: Matrix3.translation( poolScaleDefaultPosition.x, poolScaleDefaultPosition.y ),
+    this.poolScale = new Scale( this.engine, this.gravityProperty, {
+
+      // The y value doesn't matter because it will be overwritten while setting up the stick slider value.
+      matrix: Matrix3.translation( 0.35, 0 ),
       displayType: DisplayType.NEWTONS,
       tandem: tandem.createTandem( 'poolScale' ),
       canMove: false, //TODO This should be true, but first some work is needed https://github.com/phetsims/density-buoyancy-common/issues/107
@@ -76,17 +79,11 @@ export default class BuoyancyLabModel extends DensityBuoyancyModel {
       }
     } );
 
-    poolScale.startDrag( poolScale.matrix.translation );
-
-    this.poolScaleHeightProperty.lazyLink( height => {
-      const modelHeight = -0.5 * ( 2 - height ) * this.poolBounds.height - 2 * Scale.SCALE_BASE_BOUNDS.minY;
-      poolScale.updateDrag( poolScale.matrix.translation.setXY( poolScaleDefaultPosition.x, modelHeight ) );
-    } );
-
-    this.availableMasses.push( poolScale );
+    // Make sure to render it
+    this.availableMasses.push( this.poolScale );
 
     // Adjust pool volume so that it's at the desired value WITH the pool scale inside.
-    this.pool.liquidVolumeProperty.value -= poolScale.volumeProperty.value;
+    this.pool.liquidVolumeProperty.value -= this.poolScale.volumeProperty.value;
     this.pool.liquidVolumeProperty.setInitialValue( this.pool.liquidVolumeProperty.value );
   }
 

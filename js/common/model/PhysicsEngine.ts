@@ -14,6 +14,9 @@ import Vector2 from '../../../../dot/js/Vector2.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import { BodyStateObject } from './P2Engine.js';
 
+export const PhysicsBodyTypeValues = [ 'STATIC', 'DYNAMIC', 'KINEMATIC' ] as const;
+export type PhysicsBodyType = ( typeof PhysicsBodyTypeValues )[number];
+
 export default abstract class PhysicsEngine {
 
   // Engines typically work in fixed-time steps, this is how far we are in the
@@ -127,7 +130,7 @@ export default abstract class PhysicsEngine {
   /**
    * Creates a (dynamic) box body, with the origin at the center of the box.
    */
-  public abstract createBox( width: number, height: number, isStatic?: boolean ): PhysicsEngineBody;
+  public abstract createBox( width: number, height: number, bodyType?: PhysicsBodyType ): PhysicsEngineBody;
 
   /**
    * Updates the width/height of a box body.

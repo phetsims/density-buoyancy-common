@@ -32,6 +32,8 @@ import Vector3 from '../../../../dot/js/Vector3.js';
 import ScaleView from '../../common/view/ScaleView.js';
 import Bounds2 from '../../../../dot/js/Bounds2.js';
 import ScaleHeightSlider from '../../common/view/ScaleHeightSlider.js';
+import Utils from '../../../../dot/js/Utils.js';
+import Scale from '../../common/model/Scale.js';
 
 // constants
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
@@ -183,6 +185,21 @@ export default class BuoyancyLabScreenView extends DensityBuoyancyScreenView<Buo
       waterLevelSlider.bottom = bottomRightPoolPoint.y;
       waterLevelSlider.left = bottomRightPoolPoint.x + 5;
     };
+    const halfScaleHeight = Scale.SCALE_HEIGHT / 2;
+
+    // This exact top of pool renders fractals of water on the scale, so just a wee bit different.
+    // TODO: want to see white on the scale or nah? https://github.com/phetsims/density-buoyancy-common/issues/107
+    const maxY = model.pool.liquidYInterpolatedProperty.value - halfScaleHeight + 0.00001;
+
+    model.poolScaleHeightProperty.link( height => {
+      const minY = model.poolBounds.minY + halfScaleHeight;
+      const currentHeight = Utils.linear( 0, 1, minY, maxY, height );
+
+      model.poolScale.matrix.set12( currentHeight );
+      // TODO: See if there is a nicer way to do this? https://github.com/phetsims/density-buoyancy-common/issues/107
+      model.poolScale.writeData();
+      model.poolScale.transformedEmitter.emit();
+    } );
   }
 
   private static getFluidDisplacedPanelScaleIcon(): Node {

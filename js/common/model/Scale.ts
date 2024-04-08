@@ -63,6 +63,7 @@ export class DisplayType extends EnumerationValue {
 
 type SelfOptions = {
   displayType?: DisplayType;
+  isKinetic?: boolean;
 };
 
 export type ScaleOptions = SelfOptions & StrictOmit<InstrumentedMassOptions, 'body' | 'shape' | 'volume' | 'material' | 'massShape'>;
@@ -78,16 +79,20 @@ export default class Scale extends Mass {
   public readonly displayType: DisplayType;
 
   public constructor( engine: PhysicsEngine, gravityProperty: TProperty<Gravity>, providedOptions: ScaleOptions ) {
+
+    const bodyType = providedOptions.isKinetic ? 'KINEMATIC' :
+                     providedOptions.canMove === false ? 'STATIC' :
+                     'DYNAMIC';
+
+    // TODO: rename all usages of "config" to "options"? https://github.com/phetsims/density-buoyancy-common/issues/95
     const config = optionize<ScaleOptions, SelfOptions, InstrumentedMassOptions>()( {
-      body: engine.createBox( SCALE_WIDTH, SCALE_HEIGHT, providedOptions.canMove === false ),
+      body: engine.createBox( SCALE_WIDTH, SCALE_HEIGHT, bodyType ),
       shape: Shape.rect( -SCALE_WIDTH / 2, -SCALE_HEIGHT / 2, SCALE_WIDTH, SCALE_HEIGHT ),
       volume: SCALE_VOLUME,
       massShape: MassShape.BLOCK,
 
-      // {DisplayType}
       displayType: DisplayType.NEWTONS,
-
-      // material
+      isKinetic: false,
       material: Material.PLATINUM,
 
       phetioType: Scale.ScaleIO,
@@ -105,6 +110,8 @@ export default class Scale extends Mass {
         phetioDocumentation: PhetioObject.DEFAULT_OPTIONS.phetioDocumentation
       }
     }, providedOptions );
+
+    assert && assert( !( config.isKinetic && config.canMove ), 'cannot move (with input listeners) a kinetic body type.' );
 
     super( engine, config );
 

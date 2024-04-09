@@ -20,6 +20,7 @@ import arrayRemove from '../../../../phet-core/js/arrayRemove.js';
 
 // constants
 const scratchMatrix = new Matrix3();
+const LINE_WIDTH = 0.1;
 
 export default class DebugView extends Node {
 
@@ -53,7 +54,8 @@ export default class DebugView extends Node {
     } ) );
     this.poolPath = new Path( null, {
       fill: 'rgba(0,128,255,0.5)',
-      stroke: 'black'
+      stroke: 'black',
+      lineWidth: LINE_WIDTH
     } );
     this.addChild( this.poolPath );
 
@@ -62,7 +64,8 @@ export default class DebugView extends Node {
 
     this.addChild( new Path( viewPoolShape, {
       fill: 'rgba(161,101,47,0.5)',
-      stroke: 'black'
+      stroke: 'black',
+      lineWidth: LINE_WIDTH
     } ) );
 
     this.massNodes = [];
@@ -181,12 +184,14 @@ class DebugMassNode extends Node {
 
     const path = new Path( null, {
       fill: 'rgba(160,255,100,0.5)',
-      stroke: 'black'
+      stroke: 'black',
+      lineWidth: LINE_WIDTH
     } );
     this.addChild( path );
 
     const intersectionPath = new Path( null, {
-      stroke: 'black'
+      stroke: 'black',
+      lineWidth: LINE_WIDTH
     } );
     this.addChild( intersectionPath );
 
@@ -228,7 +233,8 @@ class DebugMassNode extends Node {
     if ( mass instanceof Boat ) {
       const waterPath = new Path( null, {
         fill: 'rgba(0,128,255,0.5)',
-        stroke: 'black'
+        stroke: 'black',
+        lineWidth: LINE_WIDTH
       } );
       this.addChild( waterPath );
 

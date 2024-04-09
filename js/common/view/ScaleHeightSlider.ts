@@ -55,8 +55,11 @@ export default class ScaleHeightSlider extends VSlider {
 
     const halfScaleHeight = Scale.SCALE_HEIGHT / 2;
 
-    // This exact top of pool renders fractals of water on the scale, so just a wee bit different.
-    const maxY = liquidYInterpolatedProperty.value - halfScaleHeight + 0.00001;
+    // This magic number accomplishes two things:
+    // 1. matching the liquid level exactly causes blue graphical fractals on the top of the scale
+    // 2. Because the P2 engine has a non-infinite stiffness, masses overlap when contacting. This means that we want to
+    //    raise the scale up above the pool so that the block can be the same weight as when measuring with the ground scale.
+    const maxY = liquidYInterpolatedProperty.value - halfScaleHeight + 0.001;
 
     heightProperty.link( height => {
       const minY = poolBounds.minY + halfScaleHeight;

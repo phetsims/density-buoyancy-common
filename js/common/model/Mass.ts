@@ -273,10 +273,7 @@ export default abstract class Mass extends PhetioObject {
       valueType: Shape
     } );
 
-    this.userControlledProperty = new BooleanProperty( false, {
-      tandem: tandem?.createTandem( 'userControlledProperty' ),
-      phetioReadOnly: true
-    } );
+    this.userControlledProperty = new BooleanProperty( false );
 
     this.inputEnabledProperty = new BooleanProperty( true, combineOptions<BooleanPropertyOptions>( {
       tandem: tandem?.createTandem( 'inputEnabledProperty' ),

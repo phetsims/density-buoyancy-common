@@ -11,6 +11,10 @@ import densityBuoyancyCommon from '../densityBuoyancyCommon.js';
 export const VolumeUnitsValues = [ 'liters', 'decimetersCubed' ] as const;
 export type VolumeUnits = ( typeof VolumeUnitsValues )[number];
 
+// In Buoyancy Basics, the percentage submerged readout is shown by default as an additional cue to the student.
+// In Buoyancy, it can be enabled in the preferences menu or via a query parameter.
+const defaultPercentageSubmergedVisible = phet.joist.packageJSON.name === 'buoyancy-basics';
+
 const DensityBuoyancyCommonQueryParameters = QueryStringMachine.getAll( {
 
   gEarth: {
@@ -31,7 +35,7 @@ const DensityBuoyancyCommonQueryParameters = QueryStringMachine.getAll( {
   // Displays/hides the percentage submerged readout accordion box
   percentageSubmergedVisible: {
     type: 'boolean',
-    defaultValue: true,
+    defaultValue: defaultPercentageSubmergedVisible,
     public: true
   },
 

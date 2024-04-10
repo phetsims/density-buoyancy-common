@@ -32,8 +32,7 @@ export default class VolumeUnitsControl extends HBox {
     }, providedOptions );
 
     const labelText = new Text( DensityBuoyancyCommonStrings.volumeUnitsStringProperty, {
-      font: PreferencesDialog.CONTENT_FONT,
-      tandem: options.tandem.createTandem( 'labelText' )
+      font: PreferencesDialog.CONTENT_FONT
     } );
 
     const radioButtonGroup = new VolumeUnitsRadioButtonGroup( beakerUnitsProperty, {

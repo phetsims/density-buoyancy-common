@@ -11,6 +11,9 @@ import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import StringUnionProperty from '../../../../axon/js/StringUnionProperty.js';
 import DensityBuoyancyCommonQueryParameters, { VolumeUnits, VolumeUnitsValues } from '../DensityBuoyancyCommonQueryParameters.js';
 import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
+import packageJSON from '../../../../joist/js/packageJSON.js';
+
+export const supportsPercentageSubmergedVisible = packageJSON.name !== 'density';
 
 const DensityBuoyancyCommonPreferences = {
   volumeUnitsProperty: new StringUnionProperty<VolumeUnits>( DensityBuoyancyCommonQueryParameters.volumeUnits as VolumeUnits, {
@@ -19,7 +22,7 @@ const DensityBuoyancyCommonPreferences = {
     phetioFeatured: true
   } ),
   percentageSubmergedVisibleProperty: new BooleanProperty( DensityBuoyancyCommonQueryParameters.percentageSubmergedVisible, {
-    tandem: Tandem.PREFERENCES.createTandem( 'percentageSubmergedProperty' ),
+    tandem: supportsPercentageSubmergedVisible ? Tandem.PREFERENCES.createTandem( 'percentageSubmergedProperty' ) : Tandem.OPT_OUT,
     phetioFeatured: true
   } )
 };

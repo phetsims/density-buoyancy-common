@@ -7,13 +7,14 @@
  */
 
 import densityBuoyancyCommon from '../densityBuoyancyCommon.js';
+import packageJSON from '../../../joist/js/packageJSON.js';
 
 export const VolumeUnitsValues = [ 'liters', 'decimetersCubed' ] as const;
 export type VolumeUnits = ( typeof VolumeUnitsValues )[number];
 
 // In Buoyancy Basics, the percentage submerged readout is shown by default as an additional cue to the student.
 // In Buoyancy, it can be enabled in the preferences menu or via a query parameter.
-const defaultPercentageSubmergedVisible = phet.joist.packageJSON.name === 'buoyancy-basics';
+const defaultPercentageSubmergedVisible = packageJSON.name === 'buoyancy-basics';
 
 const DensityBuoyancyCommonQueryParameters = QueryStringMachine.getAll( {
 

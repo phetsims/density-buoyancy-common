@@ -23,6 +23,7 @@ type SubmergedReadoutType = Mass;
 export default class SubmergedAccordionBox extends ReadoutListAccordionBox<SubmergedReadoutType> {
 
   public constructor(
+    // TODO: delete these unused parameters, https://github.com/phetsims/density-buoyancy-common/issues/95
     private readonly gravityProperty: TReadOnlyProperty<Gravity>,
     private readonly liquidMaterialProperty: TReadOnlyProperty<Material>,
     providedOptions?: ReadoutListAccordionBoxOptions<SubmergedReadoutType>
@@ -34,7 +35,6 @@ export default class SubmergedAccordionBox extends ReadoutListAccordionBox<Subme
     }, providedOptions );
 
     super( DensityBuoyancyCommonStrings.percentSubmergedStringProperty, options );
-    options.readoutItems && this.setReadoutItems( options.readoutItems );
   }
 
   public override generateReadoutData( mass: SubmergedReadoutType ): ReadoutData {

@@ -21,12 +21,8 @@ type DensityReadoutType = TReadOnlyProperty<Material>;
 
 export default class DensityAccordionBox extends ReadoutListAccordionBox<DensityReadoutType> {
 
-  public constructor(
-    options?: ReadoutListAccordionBoxOptions<DensityReadoutType>
-  ) {
-
+  public constructor( options?: ReadoutListAccordionBoxOptions<DensityReadoutType> ) {
     super( DensityBuoyancyCommonStrings.densityStringProperty, options );
-    options?.readoutItems && this.setReadoutItems( options.readoutItems );
   }
 
   public override generateReadoutData( materialProperty: DensityReadoutType ): ReadoutData {

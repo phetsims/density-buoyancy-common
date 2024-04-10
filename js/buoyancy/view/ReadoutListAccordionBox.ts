@@ -93,6 +93,8 @@ export default abstract class ReadoutListAccordionBox<ReadoutType> extends Accor
     const maxWidthListener = ( maxWidth: number ) => { titleNode.maxWidth = maxWidth * 0.9; };
     this.contentWidthMaxProperty.link( maxWidthListener );
     this.disposeEmitter.addListener( () => this.contentWidthMaxProperty.unlink( maxWidthListener ) );
+
+    options.readoutItems && this.setReadoutItems( options.readoutItems );
   }
 
   public setReadoutItems( readoutItems: ReadoutItemOptions<ReadoutType>[] ): void {

@@ -9,14 +9,36 @@
 import Enumeration from '../../../../phet-core/js/Enumeration.js';
 import EnumerationValue from '../../../../phet-core/js/EnumerationValue.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
+import type LocalizedStringProperty from '../../../../chipper/js/LocalizedStringProperty.js';
+import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 
 export class MassShape extends EnumerationValue {
-  public static readonly BLOCK = new MassShape();
-  public static readonly ELLIPSOID = new MassShape();
-  public static readonly VERTICAL_CYLINDER = new MassShape();
-  public static readonly HORIZONTAL_CYLINDER = new MassShape();
-  public static readonly CONE = new MassShape();
-  public static readonly INVERTED_CONE = new MassShape();
+  public static readonly BLOCK = new MassShape(
+    DensityBuoyancyCommonStrings.shape.blockStringProperty,
+    'block'
+  );
+  public static readonly ELLIPSOID = new MassShape(
+    DensityBuoyancyCommonStrings.shape.ellipsoidStringProperty,
+    'ellipsoid'
+  );
+  public static readonly VERTICAL_CYLINDER = new MassShape(
+    DensityBuoyancyCommonStrings.shape.verticalCylinderStringProperty,
+    'verticalCylinder'
+  );
+  public static readonly HORIZONTAL_CYLINDER = new MassShape(
+    DensityBuoyancyCommonStrings.shape.horizontalCylinderStringProperty,
+    'horizontalCfdsafylinder'
+  );
+  public static readonly CONE = new MassShape(
+    DensityBuoyancyCommonStrings.shape.coneStringProperty,
+    'cone'
+  );
+  public static readonly INVERTED_CONE = new MassShape(
+    DensityBuoyancyCommonStrings.shape.invertedConeStringProperty,
+    'invertedCone'
+  );
+
+  public constructor( public readonly shapeString: LocalizedStringProperty, public readonly tandemName: string ) {super();}
 
   public static readonly enumeration = new Enumeration( MassShape, {
     phetioDocumentation: 'Shape of the mass'

@@ -22,25 +22,6 @@ import { MassShape } from '../../common/model/MassShape.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 
-// constants
-const shapeStringMap = {
-  [ MassShape.BLOCK.name ]: DensityBuoyancyCommonStrings.shape.blockStringProperty,
-  [ MassShape.ELLIPSOID.name ]: DensityBuoyancyCommonStrings.shape.ellipsoidStringProperty,
-  [ MassShape.VERTICAL_CYLINDER.name ]: DensityBuoyancyCommonStrings.shape.verticalCylinderStringProperty,
-  [ MassShape.HORIZONTAL_CYLINDER.name ]: DensityBuoyancyCommonStrings.shape.horizontalCylinderStringProperty,
-  [ MassShape.CONE.name ]: DensityBuoyancyCommonStrings.shape.coneStringProperty,
-  [ MassShape.INVERTED_CONE.name ]: DensityBuoyancyCommonStrings.shape.invertedConeStringProperty
-};
-// TODO: this should come from somewhere else, https://github.com/phetsims/buoyancy/issues/90
-const tandemNameMap = {
-  [ MassShape.BLOCK.name ]: 'block',
-  [ MassShape.ELLIPSOID.name ]: 'ellipsoid',
-  [ MassShape.VERTICAL_CYLINDER.name ]: 'verticalCylinder',
-  [ MassShape.HORIZONTAL_CYLINDER.name ]: 'horizontalCylinder',
-  [ MassShape.CONE.name ]: 'cone',
-  [ MassShape.INVERTED_CONE.name ]: 'invertedCone'
-};
-
 type SelfOptions = {
   labelNode?: Node | null;
 };
@@ -64,11 +45,11 @@ export default class ShapeSizeControlNode extends VBox {
     const comboBox = new ComboBox( massShapeProperty, MassShape.enumeration.values.map( massShape => {
       return {
         value: massShape,
-        createNode: () => new Text( shapeStringMap[ massShape.name ], {
+        createNode: () => new Text( massShape.shapeString, {
           font: DensityBuoyancyCommonConstants.COMBO_BOX_ITEM_FONT,
           maxWidth: 160
         } ),
-        tandemName: `${tandemNameMap[ massShape.name ]}Item`
+        tandemName: `${massShape.tandemName}Item`
       };
     } ), listParent, {
       xMargin: 8,

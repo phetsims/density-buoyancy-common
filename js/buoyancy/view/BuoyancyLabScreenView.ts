@@ -32,6 +32,7 @@ import Vector3 from '../../../../dot/js/Vector3.js';
 import ScaleView from '../../common/view/ScaleView.js';
 import Bounds2 from '../../../../dot/js/Bounds2.js';
 import ScaleHeightSlider from '../../common/view/ScaleHeightSlider.js';
+import Dimension2 from '../../../../dot/js/Dimension2.js';
 
 // constants
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
@@ -143,7 +144,7 @@ export default class BuoyancyLabScreenView extends DensityBuoyancyScreenView<Buo
       } );
 
     const rightSideVBox = new VBox( {
-      spacing: DensityBuoyancyCommonConstants.MARGIN_SMALL,
+      spacing: 10,
       align: 'right',
       children: [
         this.rightBox,
@@ -171,7 +172,8 @@ export default class BuoyancyLabScreenView extends DensityBuoyancyScreenView<Buo
     // Info button and associated dialog
     const waterLevelSlider = new ScaleHeightSlider( model.poolScale, model.poolScaleHeightProperty,
       model.poolBounds, model.pool.liquidYInterpolatedProperty, {
-        tandem: tandem.createTandem( 'waterLevelSlider' )
+        tandem: tandem.createTandem( 'waterLevelSlider' ),
+        trackSize: new Dimension2( 3, 125 ) // TODO: How to calculate the actual pool height? https://github.com/phetsims/density-buoyancy-common/issues/107
       } );
     this.addChild( waterLevelSlider );
 

@@ -2,7 +2,7 @@
 
 /**
  * A label shown in front of a mass that shows its mass-value. This is not to be confused with a label for the name of
- * the mass (see MassTagView).
+ * the mass (see MassTagNode).
  *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */

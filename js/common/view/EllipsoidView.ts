@@ -11,7 +11,7 @@ import Vector3 from '../../../../dot/js/Vector3.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import Ellipsoid from '../model/Ellipsoid.js';
 import MassView, { ModelPoint3ToViewPoint2 } from './MassView.js';
-import { TAG_OFFSET } from './MassTagView.js';
+import { TAG_OFFSET } from './MassTagNode.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 
 export default class EllipsoidView extends MassView {

@@ -11,7 +11,7 @@ import TriangleArrayWriter from '../../../../mobius/js/TriangleArrayWriter.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import VerticalCylinder from '../model/VerticalCylinder.js';
 import MassView, { ModelPoint3ToViewPoint2 } from './MassView.js';
-import { TAG_OFFSET } from './MassTagView.js';
+import { TAG_OFFSET } from './MassTagNode.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import Bounds3 from '../../../../dot/js/Bounds3.js';
 

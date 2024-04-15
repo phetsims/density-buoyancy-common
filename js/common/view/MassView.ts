@@ -15,7 +15,7 @@ import DensityMaterials from './DensityMaterials.js';
 import MaterialView from './MaterialView.js';
 import { InteractiveHighlighting, KeyboardDragListener, Node, Path } from '../../../../scenery/js/imports.js';
 import { Shape } from '../../../../kite/js/imports.js';
-import MassTagView from './MassTagView.js';
+import MassTagNode from './MassTagNode.js';
 import ConvexHull2 from '../../../../dot/js/ConvexHull2.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import ModelViewTransform2 from '../../../../phetcommon/js/view/ModelViewTransform2.js';
@@ -76,7 +76,7 @@ export default abstract class MassView extends THREE.Mesh {
     };
 
     if ( mass.tag !== MassTag.NONE ) {
-      this.massTagNode = MassTagView.getTagNode( this.mass.tag );
+      this.massTagNode = new MassTagNode( this.mass.tag );
       this.tagOffsetProperty.lazyLink( repositionMassTagNode );
       this.disposeEmitter.addListener( () => this.tagOffsetProperty.unlink( repositionMassTagNode ) );
     }

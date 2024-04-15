@@ -272,6 +272,13 @@ const DensityBuoyancyCommonColors = {
   }, {
     phetioReadOnly: true,
     tandem: tandem.createTandem( 'materialWaterColorProperty' )
+  } ),
+
+  depthLinesDarkProperty: new ProfileColorProperty( densityBuoyancyCommon, 'depthLinesDark', {
+    default: Color.DARK_GRAY
+  } ),
+  depthLinesLightProperty: new ProfileColorProperty( densityBuoyancyCommon, 'depthLinesLight', {
+    default: Color.LIGHT_GRAY
   } )
 };
 

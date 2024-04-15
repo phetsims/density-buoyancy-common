@@ -72,6 +72,9 @@ export type MaterialOptions = {
 
   // Uses the alpha channel for opacity
   liquidColor?: Property<Color> | null;
+
+  // Used for the color of depth lines added on top of the Material
+  depthLinesColor?: TProperty<Color> | null;
 };
 
 export default class Material {
@@ -85,6 +88,7 @@ export default class Material {
   public readonly hidden: boolean;
   public readonly customColor: Property<Color> | null;
   public readonly liquidColor: Property<Color> | null;
+  public readonly depthLinesColor: TProperty<Color> | null;
 
   public constructor( providedConfig: MaterialOptions ) {
 
@@ -97,7 +101,8 @@ export default class Material {
       custom: false,
       hidden: false,
       customColor: null,
-      liquidColor: null
+      liquidColor: null,
+      depthLinesColor: DensityBuoyancyCommonColors.depthLinesDarkProperty
     }, providedConfig );
 
     assert && assert( isFinite( config.density ), 'density should be finite, but it was: ' + config.density );
@@ -111,6 +116,7 @@ export default class Material {
     this.hidden = config.hidden;
     this.customColor = config.customColor;
     this.liquidColor = config.liquidColor;
+    this.depthLinesColor = config.depthLinesColor;
   }
 
   /**
@@ -216,7 +222,8 @@ export default class Material {
     nameProperty: DensityBuoyancyCommonStrings.material.brickStringProperty,
     tandemName: 'brick',
     identifier: 'BRICK',
-    density: 2000
+    density: 2000,
+    depthLinesColor: DensityBuoyancyCommonColors.depthLinesLightProperty
   } );
 
   public static readonly CONCRETE = new Material( {
@@ -340,7 +347,8 @@ export default class Material {
     nameProperty: DensityBuoyancyCommonStrings.material.woodStringProperty,
     tandemName: 'wood',
     identifier: 'WOOD',
-    density: 400
+    density: 400,
+    depthLinesColor: DensityBuoyancyCommonColors.depthLinesLightProperty
   } );
 
   // (read-only) {Material} - "Liquids".

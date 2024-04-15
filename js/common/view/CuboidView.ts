@@ -18,6 +18,7 @@ import { MassDecorationLayer } from './DensityBuoyancyScreenView.js';
 import { Path } from '../../../../scenery/js/imports.js';
 import { Shape } from '../../../../kite/js/imports.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
+import Material from '../model/Material.js';
 
 // constants
 const numElements = 18 * 3;
@@ -55,8 +56,7 @@ export default class CuboidView extends MassView {
 
     this.depthLinesNode = new Path( new Shape(), {
       visibleProperty: showDepthLinesProperty,
-      lineWidth: 2,
-      stroke: 'black' // TODO: depends on material https://github.com/phetsims/buoyancy/issues/117
+      lineWidth: 2
     } );
 
     const updateDepthLines = () => {
@@ -65,22 +65,23 @@ export default class CuboidView extends MassView {
       if ( !showDepthLinesProperty.value ) {
         return;
       }
-      const size = cuboid.sizeProperty.value;
-      const shape = new Shape();
-      const height = size.height;
 
-      const modelPerSection = height / DEPTH_LINE_SECTIONS;
-      // const viewCenter = modelToViewPoint( cuboid.matrix.translation.toVector3().plusXYZ( 0, 0, size.maxZ ) )
+      const size = cuboid.sizeProperty.value;
+      const shape = new Shape(); // New shape each time, sad.
+      const modelHeight = size.height;
+
+      const modelHeightPerSection = modelHeight / DEPTH_LINE_SECTIONS;
 
       for ( let i = 1; i < DEPTH_LINE_SECTIONS; i++ ) {
-        const y = ( DEPTH_LINE_SECTIONS - i ) * modelPerSection - height / 2;
+        const y = ( DEPTH_LINE_SECTIONS - i ) * modelHeightPerSection - modelHeight / 2;
         const viewLeft = modelToViewPoint( cuboid.matrix.translation.toVector3().plusXYZ( size.minX, y, size.maxZ ) );
         const viewRight = modelToViewPoint( cuboid.matrix.translation.toVector3().plusXYZ( size.maxX, y, size.maxZ ) );
 
-        // Before first paint of THREE rendering code, we don't have a way to get view coordinates yet.
+        // Before the first paint of THREE rendering code, we don't have a way to get view coordinates yet.
         if ( viewLeft.equals( Vector2.ZERO ) ) {
           return;
         }
+
         shape.moveTo( viewLeft.x, viewLeft.y );
         shape.lineTo( viewRight.x, viewRight.y );
       }
@@ -102,12 +103,17 @@ export default class CuboidView extends MassView {
     cuboid.transformedEmitter.addListener( updateDepthLines );
     showDepthLinesProperty.link( updateDepthLines );
 
+    const materialListener = ( material: Material ) => {
+      this.depthLinesNode.stroke = material.depthLinesColor;
+    };
+    cuboid.materialProperty.link( materialListener );
+
     this.disposeEmitter.addListener( () => {
       cuboidGeometry.dispose();
-      console.log( 'disposed' );
       cuboid.transformedEmitter.removeListener( updateDepthLines );
       cuboid.sizeProperty.unlink( updateListener );
       showDepthLinesProperty.unlink( updateDepthLines );
+      cuboid.materialProperty.unlink( materialListener );
     } );
   }
 

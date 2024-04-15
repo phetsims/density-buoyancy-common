@@ -19,6 +19,7 @@ import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import { combineOptions } from '../../../../phet-core/js/optionize.js';
 import NumberProperty from '../../../../axon/js/NumberProperty.js';
 import Range from '../../../../dot/js/Range.js';
+import VolumelessScale from '../../common/model/VolumelessScale.js';
 
 export type BuoyancyLabModelOptions = DensityBuoyancyModelOptions;
 
@@ -66,7 +67,7 @@ export default class BuoyancyLabModel extends DensityBuoyancyModel {
     } );
 
     // Pool scale
-    this.poolScale = new Scale( this.engine, this.gravityProperty, {
+    this.poolScale = new VolumelessScale( this.engine, this.gravityProperty, {
       displayType: DisplayType.NEWTONS,
       tandem: tandem.createTandem( 'poolScale' ),
       canMove: false, // No input listeners, but the ScaleHeightSlider can still move it
@@ -77,10 +78,6 @@ export default class BuoyancyLabModel extends DensityBuoyancyModel {
 
     // Make sure to render it
     this.availableMasses.push( this.poolScale );
-
-    // Adjust pool volume so that it's at the desired value WITH the pool scale inside.
-    this.pool.liquidVolumeProperty.value -= this.poolScale.volumeProperty.value;
-    this.pool.liquidVolumeProperty.setInitialValue( this.pool.liquidVolumeProperty.value );
   }
 
   /**

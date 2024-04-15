@@ -80,6 +80,16 @@ type SelfOptions = {
 
 export type DensityBuoyancyScreenViewOptions = SelfOptions & ScreenViewOptions;
 
+// TODO: separate class, https://github.com/phetsims/buoyancy/issues/117
+export class MassDecorationLayer extends Node {
+  public readonly depthLinesLayer = new Node();
+
+  public constructor() {
+    super();
+    this.addChild( this.depthLinesLayer );
+  }
+}
+
 export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyModel> extends ScreenView {
 
   protected readonly model: Model;
@@ -94,6 +104,7 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
 
   public readonly sceneNode: ThreeIsometricNode;
 
+  private readonly massDecorationLayer = new MassDecorationLayer();
   private readonly scaleReadoutLayer: Node;
   private readonly massLabelLayer: Node;
   private readonly forceDiagramLayer: Node;
@@ -161,6 +172,8 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
       }
     } );
     this.addChild( this.sceneNode );
+
+    this.addChild( this.massDecorationLayer );
 
     this.scaleReadoutLayer = new Node();
     this.addChild( this.scaleReadoutLayer );
@@ -617,10 +630,10 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
     const dragBoundsProperty = model.invisibleBarrierBoundsProperty;
 
     const onMassAdded = ( mass: Mass ) => {
-      let massView = null;
+      let massView!: MassView;
 
       if ( mass instanceof Cuboid ) {
-        massView = new CuboidView( mass, boundModelToViewPoint, dragBoundsProperty );
+        massView = new CuboidView( mass, boundModelToViewPoint, dragBoundsProperty, model.showDepthLinesProperty );
       }
       else if ( mass instanceof Scale ) {
         massView = new ScaleView( mass, boundModelToViewPoint, dragBoundsProperty );
@@ -643,37 +656,37 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
       else if ( mass instanceof Boat ) {
         massView = new BoatView( mass, boundModelToViewPoint, dragBoundsProperty, model.pool.liquidYInterpolatedProperty );
       }
+      assert && assert( !!massView, `massView is falsy, mass: ${mass.constructor.name}` );
 
-      if ( massView ) {
-        this.sceneNode.stage.threeScene.add( massView );
-        this.massViews.push( massView );
-        massView.focusablePath && this.sceneNode.backgroundEventTarget.addChild( massView.focusablePath );
+      this.sceneNode.stage.threeScene.add( massView );
+      this.massViews.push( massView );
+      massView.focusablePath && this.sceneNode.backgroundEventTarget.addChild( massView.focusablePath );
+      massView.decorate( this.massDecorationLayer );
 
-        if ( massView instanceof ScaleView ) {
+      if ( massView instanceof ScaleView ) {
 
-          // eslint-disable-next-line no-simple-type-checking-assertions
-          assert && assert( mass instanceof Scale );
+        // eslint-disable-next-line no-simple-type-checking-assertions
+        assert && assert( mass instanceof Scale );
 
-          const scaleReadoutNode = new ScaleReadoutNode( mass as Scale, model.gravityProperty );
-          this.scaleReadoutLayer.addChild( scaleReadoutNode );
-          this.scaleReadoutNodes.push( scaleReadoutNode );
-        }
-        else {
-          const forceDiagramNode = new ForceDiagramNode(
-            mass,
-            model.showGravityForceProperty,
-            model.showBuoyancyForceProperty,
-            model.showContactForceProperty,
-            model.showForceValuesProperty,
-            model.forceScaleProperty
-          );
-          this.forceDiagramLayer.addChild( forceDiagramNode );
-          this.forceDiagramNodes.push( forceDiagramNode );
+        const scaleReadoutNode = new ScaleReadoutNode( mass as Scale, model.gravityProperty );
+        this.scaleReadoutLayer.addChild( scaleReadoutNode );
+        this.scaleReadoutNodes.push( scaleReadoutNode );
+      }
+      else {
+        const forceDiagramNode = new ForceDiagramNode(
+          mass,
+          model.showGravityForceProperty,
+          model.showBuoyancyForceProperty,
+          model.showContactForceProperty,
+          model.showForceValuesProperty,
+          model.forceScaleProperty
+        );
+        this.forceDiagramLayer.addChild( forceDiagramNode );
+        this.forceDiagramNodes.push( forceDiagramNode );
 
-          const massLabelNode = new MassLabelNode( mass, model.showMassesProperty );
-          this.massLabelLayer.addChild( massLabelNode );
-          this.massLabelNodes.push( massLabelNode );
-        }
+        const massLabelNode = new MassLabelNode( mass, model.showMassesProperty );
+        this.massLabelLayer.addChild( massLabelNode );
+        this.massLabelNodes.push( massLabelNode );
       }
     };
     model.masses.addItemAddedListener( onMassAdded );

@@ -14,17 +14,24 @@ import Cuboid from '../model/Cuboid.js';
 import Bounds3 from '../../../../dot/js/Bounds3.js';
 import { TAG_OFFSET } from './MassTagView.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
+import { MassDecorationLayer } from './DensityBuoyancyScreenView.js';
+import { Path } from '../../../../scenery/js/imports.js';
+import { Shape } from '../../../../kite/js/imports.js';
+import Vector2 from '../../../../dot/js/Vector2.js';
 
 // constants
 const numElements = 18 * 3;
 
+const DEPTH_LINE_SECTIONS = 5;
+
 export default class CuboidView extends MassView {
 
-  public readonly cuboid: Cuboid;
-  private readonly cuboidGeometry: THREE.BufferGeometry;
-  private readonly updateListener: ( size: Bounds3 ) => void;
+  private readonly depthLinesNode: Path;
 
-  public constructor( cuboid: Cuboid, modelToViewPoint: ModelPoint3ToViewPoint2, dragBoundsProperty: TReadOnlyProperty<Bounds3> ) {
+  public constructor( cuboid: Cuboid,
+                      modelToViewPoint: ModelPoint3ToViewPoint2,
+                      dragBoundsProperty: TReadOnlyProperty<Bounds3>,
+                      showDepthLinesProperty: TReadOnlyProperty<boolean> ) {
     const size = cuboid.sizeProperty.value;
 
     const positionArray = new Float32Array( numElements * 3 );
@@ -40,33 +47,79 @@ export default class CuboidView extends MassView {
 
     super( cuboid, cuboidGeometry, modelToViewPoint, dragBoundsProperty );
 
-    this.cuboid = cuboid;
-    this.cuboidGeometry = cuboidGeometry;
-
     const positionTag = () => {
       const size = cuboid.sizeProperty.value;
       this.tagOffsetProperty.value = new Vector3( size.minX + TAG_OFFSET, size.maxY - this.tagHeight! - TAG_OFFSET, size.maxZ );
     };
     positionTag();
 
-    this.updateListener = ( size: Bounds3 ) => {
+    this.depthLinesNode = new Path( new Shape(), {
+      visibleProperty: showDepthLinesProperty,
+      lineWidth: 2,
+      stroke: 'black' // TODO: depends on material https://github.com/phetsims/buoyancy/issues/117
+    } );
+
+    const updateDepthLines = () => {
+
+      // No need to recompute if not showing depth lines
+      if ( !showDepthLinesProperty.value ) {
+        return;
+      }
+      const size = cuboid.sizeProperty.value;
+      const shape = new Shape();
+      const height = size.height;
+
+      const modelPerSection = height / DEPTH_LINE_SECTIONS;
+      // const viewCenter = modelToViewPoint( cuboid.matrix.translation.toVector3().plusXYZ( 0, 0, size.maxZ ) )
+
+      for ( let i = 1; i < DEPTH_LINE_SECTIONS; i++ ) {
+        const y = ( DEPTH_LINE_SECTIONS - i ) * modelPerSection - height / 2;
+        const viewLeft = modelToViewPoint( cuboid.matrix.translation.toVector3().plusXYZ( size.minX, y, size.maxZ ) );
+        const viewRight = modelToViewPoint( cuboid.matrix.translation.toVector3().plusXYZ( size.maxX, y, size.maxZ ) );
+
+        // Before first paint of THREE rendering code, we don't have a way to get view coordinates yet.
+        if ( viewLeft.equals( Vector2.ZERO ) ) {
+          return;
+        }
+        shape.moveTo( viewLeft.x, viewLeft.y );
+        shape.lineTo( viewRight.x, viewRight.y );
+      }
+
+      this.depthLinesNode.shape = shape;
+    };
+
+    const updateListener = ( size: Bounds3 ) => {
       positionTag();
       CuboidView.updateArrays( cuboidGeometry.attributes.position.array as Float32Array, null, cuboidGeometry.attributes.uv.array as Float32Array, size );
       cuboidGeometry.attributes.position.needsUpdate = true;
       cuboidGeometry.attributes.uv.needsUpdate = true;
       cuboidGeometry.computeBoundingSphere();
+
+      updateDepthLines();
     };
-    this.cuboid.sizeProperty.lazyLink( this.updateListener );
+    cuboid.sizeProperty.lazyLink( updateListener );
+
+    cuboid.transformedEmitter.addListener( updateDepthLines );
+    showDepthLinesProperty.link( updateDepthLines );
+
+    this.disposeEmitter.addListener( () => {
+      cuboidGeometry.dispose();
+      console.log( 'disposed' );
+      cuboid.transformedEmitter.removeListener( updateDepthLines );
+      cuboid.sizeProperty.unlink( updateListener );
+      showDepthLinesProperty.unlink( updateDepthLines );
+    } );
+  }
+
+  public override decorate( massDecorationLayer: MassDecorationLayer ): void {
+    massDecorationLayer.depthLinesLayer.addChild( this.depthLinesNode );
+    this.disposeEmitter.addListener( () => massDecorationLayer.depthLinesLayer.removeChild( this.depthLinesNode ) );
   }
 
   /**
    * Releases references.
    */
   public override dispose(): void {
-    this.cuboid.sizeProperty.unlink( this.updateListener );
-
-    this.cuboidGeometry.dispose();
-
     super.dispose();
   }
 

@@ -51,6 +51,7 @@ export type DensityBuoyancyModelOptions = {
   canShowForces?: boolean;
   initialForceScale?: number;
   usePoolScale?: boolean;
+  supportsDepthLines?: boolean;
 } & PickRequired<PhetioObjectOptions, 'tandem'>;
 
 export default class DensityBuoyancyModel implements TModel {
@@ -65,6 +66,9 @@ export default class DensityBuoyancyModel implements TModel {
   public readonly liquidMaterialProperty: Property<Material>;
   public readonly liquidDensityProperty: TReadOnlyProperty<number>;
   public readonly liquidViscosityProperty: TReadOnlyProperty<number>;
+
+  public readonly supportsDepthLines: boolean;
+  public readonly showDepthLinesProperty: Property<boolean>;
 
   public readonly poolBounds: Bounds3;
   public readonly groundBounds: Bounds3;
@@ -94,7 +98,8 @@ export default class DensityBuoyancyModel implements TModel {
       showMassesDefault: false,
       canShowForces: true,
       initialForceScale: 1 / 16,
-      usePoolScale: false
+      usePoolScale: false,
+      supportsDepthLines: false
     }, providedOptions );
 
     const tandem = options.tandem;
@@ -118,6 +123,11 @@ export default class DensityBuoyancyModel implements TModel {
     this.forceScaleProperty = new NumberProperty( options.initialForceScale, {
       tandem: options.canShowForces ? tandem.createTandem( 'vectorScaleProperty' ) : Tandem.OPT_OUT,
       range: new Range( Math.pow( 0.5, 9 ), 1 )
+    } );
+    this.supportsDepthLines = options.supportsDepthLines;
+    this.showDepthLinesProperty = new BooleanProperty( false, {
+      tandem: options.supportsDepthLines ? tandem.createTandem( 'showDepthLinesProperty' ) : Tandem.OPT_OUT,
+      phetioDocumentation: 'Display visual lines on blocks to aid in calculating the percentage that the block is submerged.'
     } );
 
     this.gravityProperty = new Property( Gravity.EARTH, {

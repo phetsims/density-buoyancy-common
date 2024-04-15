@@ -25,12 +25,20 @@ import Tandem from '../../../../tandem/js/Tandem.js';
 import MassTag from '../model/MassTag.js';
 import grabSoundPlayer from '../../../../tambo/js/shared-sound-players/grabSoundPlayer.js';
 import releaseSoundPlayer from '../../../../tambo/js/shared-sound-players/releaseSoundPlayer.js';
+import { MassDecorationLayer } from './DensityBuoyancyScreenView.js';
+import Disposable from '../../../../axon/js/Disposable.js';
+import { TReadOnlyEmitter } from '../../../../axon/js/TEmitter.js';
 
 export type ModelPoint3ToViewPoint2 = ( point: Vector3 ) => Vector2;
 
 const INVERT_Y_TRANSFORM = ModelViewTransform2.createSinglePointScaleInvertedYMapping( Vector2.ZERO, Vector2.ZERO, 1 );
 
+// TODO: It would be clearer if the class that extends "Mesh" was named as such, and composed in the class, https://github.com/phetsims/buoyancy/issues/117
 export default abstract class MassView extends THREE.Mesh {
+
+  // TODO: once we change the supertype to compose, please extend Disposable, https://github.com/phetsims/buoyancy/issues/117
+  private disposable = new Disposable();
+  public readonly disposeEmitter: TReadOnlyEmitter;
 
   public readonly mass: Mass;
   public materialView: MaterialView;
@@ -42,11 +50,13 @@ export default abstract class MassView extends THREE.Mesh {
 
   public readonly focusablePath: Path | null;
 
-  protected constructor( mass: Mass, initialGeometry: THREE.BufferGeometry, modelToViewPoint: ModelPoint3ToViewPoint2,
+  protected constructor( mass: Mass, initialGeometry: THREE.BufferGeometry,
+                         protected readonly modelToViewPoint: ModelPoint3ToViewPoint2,
                          dragBoundsProperty: TReadOnlyProperty<Bounds3> ) {
     const materialView = DensityMaterials.getMaterialView( mass.materialProperty.value );
 
     super( initialGeometry, materialView.material );
+    this.disposeEmitter = this.disposable.disposeEmitter;
 
     this.mass = mass;
     this.materialView = materialView;
@@ -156,6 +166,13 @@ export default abstract class MassView extends THREE.Mesh {
   }
 
   /**
+   * Called after construction of the MassView, for supporting adding supplemental, non-THREE content to the screen view to render the Mass.
+   */
+  public decorate( decorationLayer: MassDecorationLayer ): void {
+    // TODO: at some point will have force vectors? No. It will be in the subtype called "ExperimentalMassView extends MassView. https://github.com/phetsims/buoyancy/issues/117
+  }
+
+  /**
    * Releases references.
    */
   public dispose(): void {
@@ -168,6 +185,7 @@ export default abstract class MassView extends THREE.Mesh {
 
     this.massTagView && this.massTagView.dispose();
 
+    this.disposable.dispose();
     // @ts-expect-error
     super.dispose && super.dispose();
   }

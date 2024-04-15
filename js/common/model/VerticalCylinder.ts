@@ -220,36 +220,54 @@ export default class VerticalCylinder extends Mass {
   }
 
   /**
-   * If there is an intersection with the ray and the cone, the t-value (distance the ray would need to travel to
-   * reach the intersection, e.g. ray.position + ray.distance * t === intersectionPoint) will be returned. Otherwise
-   * if there is no intersection, null will be returned.
+   * Calculates the intersection of a ray with a finite vertical cylinder. If an intersection occurs, this
+   * function returns the smallest positive t-value, which represents the distance along the ray from its
+   * origin to the closest point of intersection. If no intersection occurs, null is returned.
+   *
+   * The cylinder is assumed to be aligned vertically along the y-axis. The intersection test takes into
+   * account both the radius in the xz-plane and the finite height along the y-axis. The function checks
+   * for intersections that occur in front of the ray's origin and are within the vertical bounds of the
+   * cylinder defined by its height.
+   *
+   * @param ray The Ray3 object representing the ray's origin and direction.
+   * @param isTouch A boolean indicating if touching the surface is considered an intersection (not used in current implementation, but reserved for future use).
+   * @param translation A Vector3 object representing the cylinder's center position in 3D space.
+   * @param radius The radius of the cylinder.
+   * @param height The height of the cylinder, extending symmetrically from the center along the y-axis.
    */
   public static intersect( ray: Ray3, isTouch: boolean, translation: Vector3, radius: number, height: number ): number | null {
-    const relativePosition = ray.position.minusXYZ( translation.x, translation.y, translation.z );
+    const ox = ray.position.x - translation.x;
+    const oz = ray.position.z - translation.z;
+    const dx = ray.direction.x;
+    const dz = ray.direction.z;
 
-    const xp = 4 / ( radius * radius );
-    const zp = 4 / ( radius * radius );
+    // Coefficients for the quadratic equation A*t^2 + B*t + C = 0
+    const A = dx * dx + dz * dz;
+    const B = 2 * ( ox * dx + oz * dz );
+    const C = ox * ox + oz * oz - radius * radius;
 
-    const a = xp * ray.direction.x * ray.direction.x + zp * ray.direction.z * ray.direction.z;
-    const b = 2 * ( xp * relativePosition.x * ray.direction.x + zp * relativePosition.z * ray.direction.z );
-    const c = -1 + xp * relativePosition.x * relativePosition.x + zp * relativePosition.z * relativePosition.z;
-
-    const tValues = Utils.solveQuadraticRootsReal( a, b, c )!.filter( t => {
+    const tValues = Utils.solveQuadraticRootsReal( A, B, C )?.filter( t => {
       if ( t <= 0 ) {
+
+        // Ignore negative t values (behind ray origin)
         return false;
       }
-      const y = ray.pointAtDistance( t ).y;
-
-      return Math.abs( y - translation.y ) <= height / 2;
+      const y = ray.position.y + t * ray.direction.y;
+      const yMin = translation.y - height / 2;
+      const yMax = translation.y + height / 2;
+      return y >= yMin && y <= yMax; // Check if the intersection is within the cylinder height
     } );
 
-    if ( tValues.length ) {
-      return tValues[ 0 ];
+    if ( tValues && tValues.length > 0 ) {
+
+      // Assuming we want the closest intersection
+      return Math.min( ...tValues );
     }
     else {
       return null;
     }
   }
+
 
   public static readonly VerticalCylinderIO = new IOType( 'VerticalCylinderIO', {
     valueType: VerticalCylinder,

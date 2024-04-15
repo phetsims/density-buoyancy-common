@@ -47,6 +47,7 @@ export default class BuoyancyIntroModel extends BlockSetModel<BlockSet> {
       initialMode: BlockSet.SAME_MASS,
       BlockSet: BlockSet.enumeration,
 
+      supportsDepthLines: true,
       usePoolScale: true,
 
       createMassesCallback: ( model, blockSet ) => {

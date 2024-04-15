@@ -130,8 +130,9 @@ export default class BuoyancyDisplayOptionsNode extends VBox {
               new Checkbox( model.showMassesProperty, new Text( DensityBuoyancyCommonStrings.massesStringProperty, labelOptions ), checkboxOptions ),
               new Checkbox( model.showForceValuesProperty, new Text( DensityBuoyancyCommonStrings.forceValuesStringProperty, labelOptions ), checkboxOptions ),
               ...( options.showFluidDisplacedProperty ?
-                [ new Checkbox( options.showFluidDisplacedProperty, new Text( DensityBuoyancyCommonStrings.fluidDisplacedStringProperty, labelOptions ), checkboxOptions ) ] :
-                [] )
+                [ new Checkbox( options.showFluidDisplacedProperty, new Text( DensityBuoyancyCommonStrings.fluidDisplacedStringProperty, labelOptions ), checkboxOptions ) ] : [] ),
+              ...( model.supportsDepthLines ?
+                [ new Checkbox( model.showDepthLinesProperty, new Text( DensityBuoyancyCommonStrings.depthLinesStringProperty, labelOptions ), checkboxOptions ) ] : [] )
             ]
           } )
         ]

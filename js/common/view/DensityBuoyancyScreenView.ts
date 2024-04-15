@@ -83,10 +83,12 @@ export type DensityBuoyancyScreenViewOptions = SelfOptions & ScreenViewOptions;
 // TODO: separate class, https://github.com/phetsims/buoyancy/issues/117
 export class MassDecorationLayer extends Node {
   public readonly depthLinesLayer = new Node();
+  public readonly massTagsLayer = new Node();
 
   public constructor() {
     super();
-    this.addChild( this.depthLinesLayer );
+    this.addChild( this.depthLinesLayer ); // Depth lines need to be behind everything else.
+    this.addChild( this.massTagsLayer );
   }
 }
 

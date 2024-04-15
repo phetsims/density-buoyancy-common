@@ -20,6 +20,7 @@ import BackgroundNode from '../../../../scenery-phet/js/BackgroundNode.js';
 import MassTag from '../model/MassTag.js';
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import Multilink from '../../../../axon/js/Multilink.js';
+import Vector2 from '../../../../dot/js/Vector2.js';
 
 // Constant for MassView subtypes to use to consistently offset their tag on their shape
 export const TAG_OFFSET = MASS_MIN_SHAPES_DIMENSION / 20;
@@ -33,7 +34,6 @@ const verticalMargin = 5;
 const tagFont = new PhetFont( { size: 24, weight: 'bold' } );
 
 export default class MassTagView extends TextureQuad {
-
 
   // This is set upon construction and never changes. Although the text can update, it won't change the height
   public readonly tagHeight: number;
@@ -82,7 +82,7 @@ export default class MassTagView extends TextureQuad {
     } );
   }
 
-  private static getTagNode( massTag: MassTag ): Node {
+  public static getTagNode( massTag: MassTag ): Node {
     const visibleProperty = new DerivedProperty( [ massTag.nameProperty ], name => name.length > 0 );
 
     const label = new Text( massTag.nameProperty, {
@@ -103,14 +103,18 @@ export default class MassTagView extends TextureQuad {
         cornerRadius: DensityBuoyancyCommonConstants.CORNER_RADIUS,
         fill: massTag.colorProperty,
         opacity: 1
-      }
+      },
+      scale: 0.54 // To match the sizing when rendered as a THREE Quad.
     } );
     backgroundNode.disposeEmitter.addListener( () => {
       massTag.colorProperty.unlink( colorListener );
       label.dispose();
       visibleProperty.dispose();
     } );
-    return backgroundNode;
+    backgroundNode.leftBottom = Vector2.ZERO;
+    return new Node( {
+      children: [ backgroundNode ]
+    } );
   }
 
   public static readonly PRIMARY_LABEL = MassTagView.getTagNode( MassTag.PRIMARY );

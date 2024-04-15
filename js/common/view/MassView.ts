@@ -13,7 +13,7 @@ import Mass from '../model/Mass.js';
 import Material from '../model/Material.js';
 import DensityMaterials from './DensityMaterials.js';
 import MaterialView from './MaterialView.js';
-import { InteractiveHighlighting, KeyboardDragListener, Path } from '../../../../scenery/js/imports.js';
+import { InteractiveHighlighting, KeyboardDragListener, Node, Path } from '../../../../scenery/js/imports.js';
 import { Shape } from '../../../../kite/js/imports.js';
 import MassTagView from './MassTagView.js';
 import ConvexHull2 from '../../../../dot/js/ConvexHull2.js';
@@ -22,12 +22,12 @@ import ModelViewTransform2 from '../../../../phetcommon/js/view/ModelViewTransfo
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import Bounds3 from '../../../../dot/js/Bounds3.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
-import MassTag from '../model/MassTag.js';
 import grabSoundPlayer from '../../../../tambo/js/shared-sound-players/grabSoundPlayer.js';
 import releaseSoundPlayer from '../../../../tambo/js/shared-sound-players/releaseSoundPlayer.js';
 import { MassDecorationLayer } from './DensityBuoyancyScreenView.js';
 import Disposable from '../../../../axon/js/Disposable.js';
 import { TReadOnlyEmitter } from '../../../../axon/js/TEmitter.js';
+import MassTag from '../model/MassTag.js';
 
 export type ModelPoint3ToViewPoint2 = ( point: Vector3 ) => Vector2;
 
@@ -45,7 +45,7 @@ export default abstract class MassView extends THREE.Mesh {
   private readonly materialListener: ( material: Material ) => void;
   private readonly positionListener: () => void;
 
-  private readonly massTagView: MassTagView | null = null;
+  private readonly massTagNode: Node | null = null;
   protected readonly tagOffsetProperty: Property<Vector3> = new Property<Vector3>( Vector3.ZERO );
 
   public readonly focusablePath: Path | null;
@@ -70,9 +70,15 @@ export default abstract class MassView extends THREE.Mesh {
     };
     this.mass.materialProperty.lazyLink( this.materialListener );
 
+    const repositionMassTagNode = () => {
+      assert && assert( this.massTagNode, 'do not reposition massTagNode if you do not have a massTag' );
+      this.massTagNode!.translation = this.modelToViewPoint( mass.matrix.translation.toVector3().plus( this.tagOffsetProperty.value ).plusXYZ( 0, 0, 0.0001 ) );
+    };
+
     if ( mass.tag !== MassTag.NONE ) {
-      this.massTagView = new MassTagView( mass, this.tagOffsetProperty );
-      this.add( this.massTagView );
+      this.massTagNode = MassTagView.getTagNode( this.mass.tag );
+      this.tagOffsetProperty.lazyLink( repositionMassTagNode );
+      this.disposeEmitter.addListener( () => this.tagOffsetProperty.unlink( repositionMassTagNode ) );
     }
 
     this.positionListener = () => {
@@ -104,6 +110,8 @@ export default abstract class MassView extends THREE.Mesh {
         // Update the shape based on the current view of the mass in 3d space
         this.focusablePath.focusHighlight = this.focusablePath.shape = Shape.polygon( ConvexHull2.grahamScan( massViewPoints, false ) );
       }
+
+      this.massTagNode && repositionMassTagNode();
     };
 
     this.focusablePath = null;
@@ -162,14 +170,20 @@ export default abstract class MassView extends THREE.Mesh {
   }
 
   public get tagHeight(): number | null {
-    return this.massTagView ? this.massTagView.tagHeight : null;
+    // return this.massTagNode ? this.massTagNode.height : null;
+    return 0.03; // TODO: view-> model coords would be nice. https://github.com/phetsims/density-buoyancy-common/issues/112
   }
 
   /**
    * Called after construction of the MassView, for supporting adding supplemental, non-THREE content to the screen view to render the Mass.
    */
   public decorate( decorationLayer: MassDecorationLayer ): void {
-    // TODO: at some point will have force vectors? No. It will be in the subtype called "ExperimentalMassView extends MassView. https://github.com/phetsims/buoyancy/issues/117
+
+    if ( this.massTagNode ) {
+      decorationLayer.massTagsLayer.addChild( this.massTagNode );
+    }
+
+    // TODO: at some point will have force vectors? No. It will be in the subtype called "ExperimentalMassView extends MassView. https://github.com/phetsims/density-buoyancy-common/issues/111
   }
 
   /**
@@ -183,7 +197,7 @@ export default abstract class MassView extends THREE.Mesh {
 
     this.focusablePath && this.focusablePath.dispose();
 
-    this.massTagView && this.massTagView.dispose();
+    this.massTagNode && this.massTagNode.dispose();
 
     this.disposable.dispose();
     // @ts-expect-error

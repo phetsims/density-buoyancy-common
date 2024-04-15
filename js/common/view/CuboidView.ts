@@ -120,6 +120,7 @@ export default class CuboidView extends MassView {
   public override decorate( massDecorationLayer: MassDecorationLayer ): void {
     massDecorationLayer.depthLinesLayer.addChild( this.depthLinesNode );
     this.disposeEmitter.addListener( () => massDecorationLayer.depthLinesLayer.removeChild( this.depthLinesNode ) );
+    super.decorate( massDecorationLayer );
   }
 
   /**

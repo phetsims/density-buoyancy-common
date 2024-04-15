@@ -13,17 +13,15 @@ import { combineOptions } from '../../../../phet-core/js/optionize.js';
 import Range from '../../../../dot/js/Range.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
 import VSlider from '../../../../sun/js/VSlider.js';
-import SpectrumSliderThumb from '../../../../scenery-phet/js/SpectrumSliderThumb.js';
-import { Color } from '../../../../scenery/js/imports.js';
 import Dimension2 from '../../../../dot/js/Dimension2.js';
 import Scale from '../model/Scale.js';
 import Utils from '../../../../dot/js/Utils.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import Bounds3 from '../../../../dot/js/Bounds3.js';
+import PrecisionSliderThumb from './PrecisionSliderThumb.js';
 
 // constants
 const DEFAULT_RANGE = new Range( 0, 1 );
-const THUMB_COLOR = new Color( 0x00ff00 );
 const SCALE_X_POSITION = 0.35;
 
 export default class ScaleHeightSlider extends VSlider {
@@ -33,19 +31,13 @@ export default class ScaleHeightSlider extends VSlider {
                       liquidYInterpolatedProperty: TReadOnlyProperty<number>,
                       providedOptions?: SliderOptions ) {
 
-    const thumbNode = new SpectrumSliderThumb( heightProperty, {
-      valueToColor: () => THUMB_COLOR,
-      width: 15,
-      height: 20,
-      cursorHeight: 15,
-      cursorWidth: 2,
-      windowCursorOptions: {
-        fill: 'black'
-      }
+    const thumbNode = new PrecisionSliderThumb( {
+      thumbFill: 'rgb( 50, 145, 184 )'
     } );
 
     const options = combineOptions<SliderOptions>( {
       thumbNode: thumbNode,
+      thumbYOffset: thumbNode.height / 2,
       tandem: Tandem.REQUIRED,
       tandemNameSuffix: 'Control',
       trackSize: new Dimension2( 3, 150 )

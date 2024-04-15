@@ -140,37 +140,57 @@ export default class HorizontalCylinder extends Mass {
   }
 
   /**
-   * If there is an intersection with the ray and this mass, the t-value (distance the ray would need to travel to
-   * reach the intersection, e.g. ray.position + ray.distance * t === intersectionPoint) will be returned. Otherwise
-   * if there is no intersection, null will be returned.
+   * Calculates the intersection of a ray with a horizontally aligned cylinder. The function returns the smallest
+   * positive t-value if an intersection occurs, representing the distance from the ray's origin to the closest point
+   * of intersection along the ray's path. If no intersection is found, null is returned.
+   *
+   * The cylinder is assumed to extend infinitely along the x-axis and has a finite radius and length. The intersection
+   * calculation takes into account both the radius in the yz-plane and the finite length along the x-axis. The function
+   * ensures that the intersection point is within the horizontal bounds of the cylinder defined by its length.
+   *
+   * @param ray - The Ray3 object, which includes the ray's origin and direction vector in 3D space.
+   * @param isTouch - A boolean flag (currently reserved for future use) that indicates whether touching
+   *                            the surface should be considered as an intersection. This parameter is not used in
+   *                            the current implementation.
+   * @returns - The smallest positive t-value for which the intersection occurs if any, otherwise null.
+   *                          The t-value is the parameter at which the ray intersects the cylinder along its path,
+   *                          computed as ray.position + ray.direction * t.
+   *
+   * @see VerticalCylinder.intersect
    */
   public override intersect( ray: Ray3, isTouch: boolean ): number | null {
     const translation = this.matrix.getTranslation().toVector3();
     const radius = this.radiusProperty.value;
     const length = this.lengthProperty.value;
-    const relativePosition = ray.position.minusXYZ( translation.x, translation.y, translation.z );
 
-    const yp = 4 / ( radius * radius );
-    const zp = 4 / ( radius * radius );
+    // Relative position of ray origin to cylinder's center in yz-plane
+    const oy = ray.position.y - translation.y;
+    const oz = ray.position.z - translation.z;
 
-    const a = yp * ray.direction.y * ray.direction.y + zp * ray.direction.z * ray.direction.z;
-    const b = 2 * ( yp * relativePosition.y * ray.direction.y + zp * relativePosition.z * ray.direction.z );
-    const c = -1 + yp * relativePosition.y * relativePosition.y + zp * relativePosition.z * relativePosition.z;
+    // Direction components in yz-plane
+    const dy = ray.direction.y;
+    const dz = ray.direction.z;
 
-    const tValues = Utils.solveQuadraticRootsReal( a, b, c )!.filter( t => {
+    // Quadratic coefficients for intersection with cylinder in yz-plane
+    const A = dy * dy + dz * dz;
+    const B = 2 * ( oy * dy + oz * dz );
+    const C = oy * oy + oz * oz - radius * radius;
+
+    // Solve quadratic equation for t
+    const tValues = Utils.solveQuadraticRootsReal( A, B, C )?.filter( t => {
       if ( t <= 0 ) {
-        return false;
+        return false; // Only consider intersections in front of the ray origin
       }
-      const x = ray.pointAtDistance( t ).x;
-
+      // Check if the intersection is within the cylinder's length along the x-axis
+      const x = ray.position.x + t * ray.direction.x;
       return Math.abs( x - translation.x ) <= length / 2;
     } );
 
-    if ( tValues.length ) {
-      return tValues[ 0 ];
+    if ( tValues && tValues.length > 0 ) {
+      return tValues[ 0 ]; // Return the closest valid intersection
     }
     else {
-      return null;
+      return null; // No valid intersection found
     }
   }
 

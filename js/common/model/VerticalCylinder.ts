@@ -229,11 +229,15 @@ export default class VerticalCylinder extends Mass {
    * for intersections that occur in front of the ray's origin and are within the vertical bounds of the
    * cylinder defined by its height.
    *
+   * Note that the top of the Scale is modeled as a VerticalCylinder.
+   *
    * @param ray The Ray3 object representing the ray's origin and direction.
    * @param isTouch A boolean indicating if touching the surface is considered an intersection (not used in current implementation, but reserved for future use).
    * @param translation A Vector3 object representing the cylinder's center position in 3D space.
    * @param radius The radius of the cylinder.
    * @param height The height of the cylinder, extending symmetrically from the center along the y-axis.
+   *
+   * @see HorizontalCylinder.intersect
    */
   public static intersect( ray: Ray3, isTouch: boolean, translation: Vector3, radius: number, height: number ): number | null {
     const ox = ray.position.x - translation.x;

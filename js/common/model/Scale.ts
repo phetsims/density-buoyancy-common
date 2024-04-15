@@ -85,8 +85,7 @@ export default class Scale extends Mass {
     const bodyType = providedOptions.canMove === false ? 'STATIC' :
                      'DYNAMIC';
 
-    // TODO: rename all usages of "config" to "options"? https://github.com/phetsims/density-buoyancy-common/issues/95
-    const config = optionize<ScaleOptions, SelfOptions, InstrumentedMassOptions>()( {
+    const options = optionize<ScaleOptions, SelfOptions, InstrumentedMassOptions>()( {
       body: engine.createBox( SCALE_WIDTH, SCALE_HEIGHT, bodyType ),
       shape: Shape.rect( -SCALE_WIDTH / 2, -SCALE_HEIGHT / 2, SCALE_WIDTH, SCALE_HEIGHT ),
       volume: SCALE_VOLUME,
@@ -111,12 +110,12 @@ export default class Scale extends Mass {
       }
     }, providedOptions );
 
-    super( engine, config );
+    super( engine, options );
 
     this.scaleForceInterpolatedProperty = new InterpolatedProperty( 0, {
       interpolate: InterpolatedProperty.interpolateNumber,
       phetioValueType: NumberIO,
-      tandem: config.tandem.createTandem( 'scaleForceInterpolatedProperty' ),
+      tandem: options.tandem.createTandem( 'scaleForceInterpolatedProperty' ),
       units: 'N',
       phetioReadOnly: true,
       phetioHighFrequency: true
@@ -131,13 +130,13 @@ export default class Scale extends Mass {
       }
     }, {
       phetioValueType: NumberIO,
-      tandem: config.tandem.createTandem( 'scaleMeasuredMassProperty' ),
+      tandem: options.tandem.createTandem( 'scaleMeasuredMassProperty' ),
       units: 'kg',
       phetioReadOnly: true
     } );
 
     // (read-only) {DisplayType}
-    this.displayType = config.displayType;
+    this.displayType = options.displayType;
   }
 
   public override getLocalBounds(): Bounds3 {

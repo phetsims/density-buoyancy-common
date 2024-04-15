@@ -300,7 +300,7 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
         } ] :
         [ {
           readoutItem: model.boat,
-          readoutNameProperty: DensityBuoyancyCommonStrings.shape.blockStringProperty
+          readoutNameProperty: DensityBuoyancyCommonStrings.boatStringProperty
         }
         ];
       submergedBox.setReadoutItems( submergedObjects );

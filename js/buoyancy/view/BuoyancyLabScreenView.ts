@@ -143,7 +143,7 @@ export default class BuoyancyLabScreenView extends DensityBuoyancyScreenView<Buo
       } );
 
     const rightSideVBox = new VBox( {
-      spacing: 10,
+      spacing: DensityBuoyancyCommonConstants.MARGIN_SMALL,
       align: 'right',
       children: [
         this.rightBox,

@@ -36,6 +36,8 @@ const TOLERANCE = 1e-7;
 const DensityBuoyancyCommonConstants = {
   MARGIN: MARGIN,
 
+  MARGIN_SMALL: MARGIN / 2,
+
   // (read-only) {number} - Used for panels/boxes by default
   CORNER_RADIUS: CORNER_RADIUS,
 

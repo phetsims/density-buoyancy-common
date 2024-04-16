@@ -330,8 +330,16 @@ export default class DensityBuoyancyModel implements TModel {
         }
 
         const basin = mass.containingBasin;
-        const submergedVolume = basin ? mass.getDisplacedVolume( basin.liquidYInterpolatedProperty.currentValue ) : 0;
-        if ( submergedVolume ) {
+
+        let submergedVolume = 0;
+        if ( basin ) {
+          const displacedVolume = mass.getDisplacedVolume( basin.liquidYInterpolatedProperty.currentValue );
+
+          // The submergedVolume of the mass cannot be more than the liquid volume in the basin. Bug fix for https://github.com/phetsims/buoyancy/issues/135
+          submergedVolume = displacedVolume > basin.liquidVolumeProperty.value ? basin.liquidVolumeProperty.value : displacedVolume;
+        }
+
+        if ( submergedVolume !== 0 ) {
           const displacedMass = submergedVolume * this.liquidDensityProperty.value;
           // Vertical acceleration of the boat will change the buoyant force.
           const acceleration = gravity + ( ( boat && basin === boat.basin ) ? boatVerticalAcceleration : 0 );

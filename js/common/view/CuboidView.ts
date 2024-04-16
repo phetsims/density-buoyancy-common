@@ -110,6 +110,7 @@ export default class CuboidView extends MassView {
     cuboid.materialProperty.link( materialListener );
 
     this.disposeEmitter.addListener( () => {
+      // TODO: dispose depthLiensNode, https://github.com/phetsims/buoyancy/issues/117
       cuboidGeometry.dispose();
       cuboid.transformedEmitter.removeListener( updateDepthLines );
       cuboid.sizeProperty.unlink( updateListener );

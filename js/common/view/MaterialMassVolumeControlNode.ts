@@ -19,8 +19,8 @@ import Dimension2 from '../../../../dot/js/Dimension2.js';
 import Range from '../../../../dot/js/Range.js';
 import Utils from '../../../../dot/js/Utils.js';
 import optionize, { combineOptions } from '../../../../phet-core/js/optionize.js';
-import NumberControl, { NumberControlOptions } from '../../../../scenery-phet/js/NumberControl.js';
-import { Node, Text, TColor, VBox, VBoxOptions } from '../../../../scenery/js/imports.js';
+import NumberControl, { LayoutFunction, NumberControlOptions } from '../../../../scenery-phet/js/NumberControl.js';
+import { Node, TColor, Text, VBox, VBoxOptions } from '../../../../scenery/js/imports.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
@@ -28,6 +28,9 @@ import Material from '../model/Material.js';
 import PrecisionSliderThumb from './PrecisionSliderThumb.js';
 import MaterialControlNode, { MaterialControlNodeOptions } from './MaterialControlNode.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
+import NumberDisplay from '../../../../scenery-phet/js/NumberDisplay.js';
+import Slider from '../../../../sun/js/Slider.js';
+import ArrowButton from '../../../../sun/js/buttons/ArrowButton.js';
 
 // constants
 const LITERS_IN_CUBIC_METER = DensityBuoyancyCommonConstants.LITERS_IN_CUBIC_METER;
@@ -51,6 +54,8 @@ type SelfOptions = {
   minVolumeLiters?: number;
   maxVolumeLiters?: number;
   color?: TColor;
+
+  showMassAsReadout?: boolean;
 };
 
 export type MaterialMassVolumeControlNodeOptions = SelfOptions & MaterialControlNodeOptions;
@@ -75,7 +80,10 @@ export default class MaterialMassVolumeControlNode extends MaterialControlNode {
       minCustomMass: 0.5,
       maxCustomMass: 27,
       minCustomVolumeLiters: 1,
-      color: DensityBuoyancyCommonConstants.THUMB_FILL
+      color: DensityBuoyancyCommonConstants.THUMB_FILL,
+
+      // For use by the application's bottle scene
+      showMassAsReadout: false
     }, providedOptions );
 
     // If we will be creating a high density mass NumberControl in addition to the normal one.
@@ -302,7 +310,7 @@ export default class MaterialMassVolumeControlNode extends MaterialControlNode {
             // We don't want them messing with visibility if we are toggling it for low/high density
             phetioReadOnly: supportTwoMassNumberControls
           }
-        }, MaterialMassVolumeControlNode.getNumberControlOptions() ) );
+        }, MaterialMassVolumeControlNode.getNumberControlOptions( options.showMassAsReadout ) ) );
     };
 
     if ( supportTwoMassNumberControls ) {
@@ -361,7 +369,22 @@ export default class MaterialMassVolumeControlNode extends MaterialControlNode {
   /**
    * Returns the default NumberControl options used by this component.
    */
-  public static getNumberControlOptions(): NumberControlOptions {
+  public static getNumberControlOptions( showAsReadout = false ): NumberControlOptions {
+    const layoutFunction4 = NumberControl.createLayoutFunction4( {
+      sliderPadding: 5,
+
+      // TODO: we want to preserve the width, but not the invisible height, https://github.com/phetsims/buoyancy/issues/120
+      layoutInvisibleButtons: true
+    } );
+
+    // Custom layout function to hack out a readout look.
+    const layoutFunction: LayoutFunction = showAsReadout ?
+                                           ( titleNode: Node, numberDisplay: NumberDisplay, slider: Slider, decrementButton: ArrowButton | null, incrementButton: ArrowButton | null ) => {
+                                             slider.visible = false;
+                                             decrementButton && decrementButton.setVisible( false );
+                                             incrementButton && incrementButton.setVisible( false );
+                                             return layoutFunction4( titleNode, numberDisplay, slider, decrementButton, incrementButton );
+                                           } : layoutFunction4;
     return {
       delta: 0.01,
       sliderOptions: {
@@ -374,9 +397,7 @@ export default class MaterialMassVolumeControlNode extends MaterialControlNode {
         },
         useFullHeight: true
       },
-      layoutFunction: NumberControl.createLayoutFunction4( {
-        sliderPadding: 5
-      } ),
+      layoutFunction: layoutFunction,
       titleNodeOptions: {
         font: DensityBuoyancyCommonConstants.ITEM_FONT,
         maxWidth: 90

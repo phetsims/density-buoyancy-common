@@ -106,6 +106,7 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
       minVolumeLiters: 0,
       maxVolumeLiters: 10,
       minCustomVolumeLiters: 0.5,
+      showMassAsReadout: true,
       tandem: tandem.createTandem( 'bottleControlNode' )
     } );
 

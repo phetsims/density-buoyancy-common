@@ -1,4 +1,4 @@
-// Copyright 2019-2024, University of Colorado Boulder
+// Copyright 2024, University of Colorado Boulder
 
 /**
  * A special case scale which tricks the model into not displacing any volume, so that the water level doesn't change.

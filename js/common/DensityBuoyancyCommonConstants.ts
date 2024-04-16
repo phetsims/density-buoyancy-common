@@ -18,6 +18,7 @@ import DerivedProperty from '../../../axon/js/DerivedProperty.js';
 import DensityBuoyancyCommonPreferences from './model/DensityBuoyancyCommonPreferences.js';
 import { VolumeUnits } from './DensityBuoyancyCommonQueryParameters.js';
 import Tandem from '../../../tandem/js/Tandem.js';
+import { DEFAULT_FILL, DEFAULT_FILL_HIGHLIGHTED } from '../../../sun/js/SliderThumb.js';
 
 const CORNER_RADIUS = 5;
 const litersPatternStringProperty = new PatternStringProperty( DensityBuoyancyCommonStrings.litersPatternStringProperty, {
@@ -59,8 +60,8 @@ const DensityBuoyancyCommonConstants = {
   READOUT_FONT: new PhetFont( 14 ),
 
   THUMB_SIZE: new Dimension2( 13, 22 ),
-  THUMB_FILL: 'rgb( 50, 145, 184 )',
-  THUMB_HIGHLIGHT_FILL: 'rgb( 71, 207, 255 )',
+  THUMB_FILL: DEFAULT_FILL,
+  THUMB_HIGHLIGHT_FILL: DEFAULT_FILL_HIGHLIGHTED,
 
   ARROW_BUTTON_SCALE: 0.6,
 

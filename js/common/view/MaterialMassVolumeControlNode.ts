@@ -20,7 +20,7 @@ import Range from '../../../../dot/js/Range.js';
 import Utils from '../../../../dot/js/Utils.js';
 import optionize, { combineOptions } from '../../../../phet-core/js/optionize.js';
 import NumberControl, { NumberControlOptions } from '../../../../scenery-phet/js/NumberControl.js';
-import { Node, Text, TPaint, VBox, VBoxOptions } from '../../../../scenery/js/imports.js';
+import { Node, Text, TColor, VBox, VBoxOptions } from '../../../../scenery/js/imports.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
@@ -50,7 +50,7 @@ type SelfOptions = {
 
   minVolumeLiters?: number;
   maxVolumeLiters?: number;
-  color?: TPaint;
+  color?: TColor;
 };
 
 export type MaterialMassVolumeControlNodeOptions = SelfOptions & MaterialControlNodeOptions;

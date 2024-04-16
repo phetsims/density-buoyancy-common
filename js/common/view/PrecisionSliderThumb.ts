@@ -8,15 +8,14 @@
 
 import { Shape } from '../../../../kite/js/imports.js';
 import optionize from '../../../../phet-core/js/optionize.js';
-import { Line, Node, NodeOptions, Path, PressListener, TPaint } from '../../../../scenery/js/imports.js';
+import { Color, Line, Node, NodeOptions, Path, PressListener, TColor } from '../../../../scenery/js/imports.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
 import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
 
 type SelfOptions = {
-  thumbFill?: TPaint;
-  fillHighlighted?: TPaint;
-  thumbStroke?: TPaint;
+  thumbFill?: TColor;
+  thumbStroke?: TColor;
 
   mainHeight?: number;
   taperHeight?: number;
@@ -31,7 +30,6 @@ export default class PrecisionSliderThumb extends Node {
   public constructor( providedOptions?: PrecisionSliderThumbOptions ) {
     const options = optionize<PrecisionSliderThumbOptions, SelfOptions, NodeOptions>()( {
       thumbFill: DensityBuoyancyCommonConstants.THUMB_FILL,
-      fillHighlighted: DensityBuoyancyCommonConstants.THUMB_HIGHLIGHT_FILL,
       thumbStroke: '#000',
       mainHeight: 15,
       taperHeight: 5,
@@ -71,7 +69,10 @@ export default class PrecisionSliderThumb extends Node {
       tandem: Tandem.OPT_OUT // Highlighting doesn't need instrumentation
     } );
     pressListener.isHighlightedProperty.link( isHighlighted => {
-      thumbPath.fill = isHighlighted ? options.fillHighlighted : options.thumbFill;
+      const highlightFill = options.thumbFill === DensityBuoyancyCommonConstants.THUMB_FILL ?
+                            DensityBuoyancyCommonConstants.THUMB_HIGHLIGHT_FILL :
+                            Color.toColor( options.thumbFill ).brighterColor( 0.5 );
+      thumbPath.fill = isHighlighted ? highlightFill : options.thumbFill;
     } );
     this.addInputListener( pressListener );
 

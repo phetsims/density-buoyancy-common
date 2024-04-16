@@ -31,9 +31,7 @@ export default class ScaleHeightSlider extends VSlider {
                       liquidYInterpolatedProperty: TReadOnlyProperty<number>,
                       providedOptions?: SliderOptions ) {
 
-    const thumbNode = new PrecisionSliderThumb( {
-      thumbFill: 'rgb( 50, 145, 184 )'
-    } );
+    const thumbNode = new PrecisionSliderThumb();
 
     const options = combineOptions<SliderOptions>( {
       thumbNode: thumbNode,

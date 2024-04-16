@@ -75,7 +75,7 @@ export default class MaterialMassVolumeControlNode extends MaterialControlNode {
       minCustomMass: 0.5,
       maxCustomMass: 27,
       minCustomVolumeLiters: 1,
-      color: null
+      color: DensityBuoyancyCommonConstants.THUMB_FILL
     }, providedOptions );
 
     // If we will be creating a high density mass NumberControl in addition to the normal one.

@@ -59,6 +59,8 @@ const DensityBuoyancyCommonConstants = {
   READOUT_FONT: new PhetFont( 14 ),
 
   THUMB_SIZE: new Dimension2( 13, 22 ),
+  THUMB_FILL: 'rgb( 50, 145, 184 )',
+  THUMB_HIGHLIGHT_FILL: 'rgb( 71, 207, 255 )',
 
   ARROW_BUTTON_SCALE: 0.6,
 

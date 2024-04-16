@@ -39,16 +39,27 @@ export default class BoatBasin extends Basin {
    * liquid).
    */
   public isMassInside( mass: Mass ): boolean {
-    const slip = 1e-2;
+    const slip = 0.01; // 1 cm of potential overlap due to physics stiffness variables.
     if ( mass === this.boat || mass.stepBottom >= this.stepTop || mass.stepTop <= this.stepBottom - slip ) {
       return false;
     }
-    const oneLiterBottomPoint = new Vector2( mass.stepX, mass.stepBottom ).minus( this.boat.matrix.translation ).timesScalar( 1 / this.boat.stepMultiplier );
+    const stepMiddle = ( mass.stepTop + mass.stepBottom ) / 2;
+    return this.oneLiterShapeContainsPoint( new Vector2( mass.stepX, mass.stepBottom ) ) || this.oneLiterShapeContainsPoint( new Vector2( mass.stepX, stepMiddle ) );
+  }
+
+  /**
+   * Factored out way to take a point in absolute model coordinates, and determine if it is contained in the boat. This
+   * accounts for "slip", which occurs when two objects overlap a bit due to physics stiffness modeling.
+   */
+  private oneLiterShapeContainsPoint( point: Vector2 ): boolean {
+    const slip = 0.01; // 1 cm of potential overlap due to physics stiffness variables.
+
+    const oneLiterPoint = point.minus( this.boat.matrix.translation ).timesScalar( 1 / this.boat.stepMultiplier );
 
     // Check both a point slightly below AND the actual point.
-    const slippedPoint = oneLiterBottomPoint.plusXY( 0, slip );
-    return ( this.oneLiterShape.bounds.containsPoint( oneLiterBottomPoint ) || this.oneLiterShape.bounds.containsPoint( slippedPoint ) ) &&
-           ( this.oneLiterShape.containsPoint( oneLiterBottomPoint ) || this.oneLiterShape.containsPoint( slippedPoint ) );
+    const slippedPoint = oneLiterPoint.plusXY( 0, slip );
+    return ( this.oneLiterShape.bounds.containsPoint( oneLiterPoint ) || this.oneLiterShape.bounds.containsPoint( slippedPoint ) ) &&
+           ( this.oneLiterShape.containsPoint( oneLiterPoint ) || this.oneLiterShape.containsPoint( slippedPoint ) );
   }
 
   /**

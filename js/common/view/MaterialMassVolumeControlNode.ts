@@ -125,7 +125,7 @@ export default class MaterialMassVolumeControlNode extends MaterialControlNode {
     } );
 
     // passed to the NumberControl
-    const massNumberProperty = new NumberProperty( massProperty.value, {
+    const numberControlMassProperty = new NumberProperty( massProperty.value, {
       tandem: massNumberControlContainerTandem.createTandem( 'numberControlMassProperty' ),
       phetioState: false,
       phetioReadOnly: true,
@@ -181,7 +181,7 @@ export default class MaterialMassVolumeControlNode extends MaterialControlNode {
     } );
 
     // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
-    massNumberProperty.lazyLink( mass => {
+    numberControlMassProperty.lazyLink( mass => {
       if ( !modelMassChanging && !userVolumeChanging ) {
         userMassChanging = true;
 
@@ -217,7 +217,7 @@ export default class MaterialMassVolumeControlNode extends MaterialControlNode {
           adjustedMass = max;
         }
 
-        massNumberProperty.value = Utils.clamp( adjustedMass, min, max );
+        numberControlMassProperty.value = Utils.clamp( adjustedMass, min, max );
 
         modelMassChanging = false;
       }
@@ -259,7 +259,7 @@ export default class MaterialMassVolumeControlNode extends MaterialControlNode {
 
       return new NumberControl(
         DensityBuoyancyCommonStrings.massStringProperty,
-        massNumberProperty,
+        numberControlMassProperty,
         new Range( options.minMass, maxMass ),
         combineOptions<NumberControlOptions>( {
           sliderOptions: {
@@ -336,6 +336,7 @@ export default class MaterialMassVolumeControlNode extends MaterialControlNode {
 
     let fallbackNode = null;
 
+    // TODO: Use ToggleNode?, https://github.com/phetsims/density-buoyancy-common/issues/95
     materialProperty.link( material => {
       fallbackContainer.removeAllChildren();
       if ( material.hidden ) {

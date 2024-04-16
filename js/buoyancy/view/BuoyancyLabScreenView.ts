@@ -173,7 +173,7 @@ export default class BuoyancyLabScreenView extends DensityBuoyancyScreenView<Buo
     const waterLevelSlider = new ScaleHeightSlider( model.poolScale, model.poolScaleHeightProperty,
       model.poolBounds, model.pool.liquidYInterpolatedProperty, {
         tandem: tandem.createTandem( 'waterLevelSlider' ),
-        trackSize: new Dimension2( 3, 125 ) // TODO: How to calculate the actual pool height? https://github.com/phetsims/density-buoyancy-common/issues/107
+        trackSize: new Dimension2( 3, 125 ) // Empirically determined to match the height range for the scale TODO https://github.com/phetsims/density-buoyancy-common/issues/113
       } );
     this.addChild( waterLevelSlider );
 

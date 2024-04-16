@@ -278,8 +278,10 @@ export default class DensityBuoyancyModel implements TModel {
     let boatVerticalVelocity = 0;
     let boatVerticalAcceleration = 0;
 
-    // The main engine post-step actions, that will determine the net forces applied on each mass.
-    // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
+    // The main engine post-step actions, that will determine the net forces applied on each mass. This callback fires
+    // once per "physics engine step", and so results in potentially up to "p2MaxSubSteps" calls per simulation frame
+    // (30 as of writing). This instance lives for the lifetime of the simulation, so we don't need to remove this
+    // listener.
     this.engine.addPostStepListener( dt => {
       this.updateLiquid();
 
@@ -487,7 +489,7 @@ export default class DensityBuoyancyModel implements TModel {
   }
 
   /**
-   * Steps forward in time.
+   * Steps forward in time. This is a "simulation step", not a "physics engine step"
    */
   public step( dt: number ): void {
     this.engine.step( dt );

@@ -28,7 +28,8 @@ export default abstract class PhysicsEngine {
   }
 
   /**
-   * Steps forward in time.
+   * Steps forward in time. This could produce multiple "physics engine steps", though this function is only called once
+   * per simulation step.
    */
   public abstract step( dt: number ): void;
 

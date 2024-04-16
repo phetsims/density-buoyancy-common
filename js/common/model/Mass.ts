@@ -190,7 +190,8 @@ export default abstract class Mass extends PhetioObject {
   // (read-only) In kg (kilograms) - written to by other processes
   public readonly massProperty: Property<number>;
 
-  // The following offset will be added onto the body's position to determine ours.
+  // The following offset will be added onto the body's position to determine ours. This value will not be applied to
+  // the physics engine positional data, but instead appended here to this.matrix.
   public readonly bodyOffsetProperty: Property<Vector2>;
 
   public readonly gravityForceInterpolatedProperty: InterpolatedProperty<Vector2>;
@@ -207,10 +208,11 @@ export default abstract class Mass extends PhetioObject {
   // Orientation multiplied by 1/2 width,height of the MassLabelNode for an offset in view space
   public readonly massLabelOffsetOrientationProperty: Property<Vector2>;
 
-  // Transform matrix set before/after the physics engine steps, to be used to adjust/read the mass's position/transform.
+  // Transform matrix set before/after all the physics engine steps in a simulation step, to be used to adjust/read
+  // the mass's position/transform.
   public readonly matrix: Matrix3;
 
-  // Transform matrix set in the internal physics engine steps, used by masses to determine their per-step information.
+  // Transform matrix set in the internal physics engine steps, used by masses to determine their per-physics-step information.
   public readonly stepMatrix: Matrix3;
 
   public readonly transformedEmitter: TEmitter;
@@ -570,7 +572,7 @@ export default abstract class Mass extends PhetioObject {
   }
 
   /**
-   * Reads transform/velocity from the physics model engine.
+   * Reads transform/velocity from the physics model engine and set.
    */
   private readData(): void {
     this.engine.bodyGetMatrixTransform( this.body, this.matrix );

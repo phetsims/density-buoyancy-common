@@ -40,6 +40,7 @@ export default class Pool extends Basin {
    * liquid).
    */
   public isMassInside( mass: Mass ): boolean {
+    // TODO: Why not care about horizontal positioning? https://github.com/phetsims/buoyancy/issues/139
     return mass.stepBottom < this.stepTop;
   }
 

@@ -78,6 +78,7 @@ export default class CuboidView extends MassView {
         const viewRight = modelToViewPoint( cuboid.matrix.translation.toVector3().plusXYZ( size.maxX, y, size.maxZ ) );
 
         // Before the first paint of THREE rendering code, we don't have a way to get view coordinates yet.
+        // TODO: https://github.com/phetsims/density-buoyancy-common/issues/113
         if ( viewLeft.equals( Vector2.ZERO ) ) {
           return;
         }

@@ -171,7 +171,7 @@ export default abstract class MassView extends THREE.Mesh {
 
   public get tagHeight(): number | null {
     // return this.massTagNode ? this.massTagNode.height : null;
-    return 0.03; // TODO: view-> model coords would be nice. https://github.com/phetsims/density-buoyancy-common/issues/112
+    return 0.03; // TODO: view-> model coords would be nice. https://github.com/phetsims/density-buoyancy-common/issues/113
   }
 
   /**

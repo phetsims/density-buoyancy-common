@@ -161,7 +161,7 @@ export default class FluidDisplacedPanel extends MultiSectionPanelsNode {
     // TODO: i18n, see https://github.com/phetsims/buoyancy/issues/48
     const forceReadout = new Text( 'N', {
       font: new PhetFont( {
-        size: 16,
+        size: 34,
         weight: 'bold'
       } ),
       maxWidth: scaleIcon.width * 0.8 // margins on the scale, and the icon goes beyond the actual scale, see https://github.com/phetsims/density-buoyancy-common/issues/108
@@ -182,7 +182,7 @@ export default class FluidDisplacedPanel extends MultiSectionPanelsNode {
 
     scaleIcon.top = beakerNode.bottom - 30;
     scaleIcon.centerX = beakerNode.centerX;
-    forceReadout.centerY = scaleIcon.bottom - 13;
+    forceReadout.centerY = scaleIcon.bottom - 21;
     forceReadout.centerX = beakerNode.centerX;
 
     return new Node( {

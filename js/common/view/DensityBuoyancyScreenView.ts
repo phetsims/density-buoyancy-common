@@ -170,9 +170,10 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
     this.massViews = [];
 
     this.sceneNode.stage.threeCamera.zoom = options.cameraZoom;
-    this.sceneNode.stage.threeCamera.updateProjectionMatrix();
     this.sceneNode.stage.threeCamera.up = new THREE.Vector3( 0, 0, -1 );
     this.sceneNode.stage.threeCamera.lookAt( ThreeUtils.vectorToThree( options.cameraLookAt ) );
+    this.sceneNode.stage.threeCamera.updateMatrixWorld( true );
+    this.sceneNode.stage.threeCamera.updateProjectionMatrix();
 
     let mouse: Mouse | null = null;
 
@@ -676,7 +677,12 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
       return;
     }
 
-    this.sceneNode.layout( viewBounds.width, viewBounds.height );
+    const dimension = phet.joist.sim.dimensionProperty.value;
+
+    const sceneWidth = dimension.width || window.innerWidth; // eslint-disable-line bad-sim-text
+    const sceneHeight = dimension.height || window.innerHeight; // eslint-disable-line bad-sim-text
+
+    this.sceneNode.layout( sceneWidth, sceneHeight );
 
     // We need to do an initial render for certain layout-based code to work
     this.sceneNode.render( undefined );

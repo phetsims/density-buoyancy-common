@@ -158,6 +158,7 @@ export default class FluidDisplacedPanel extends MultiSectionPanelsNode {
     const scaleIcon = BuoyancyLabScreenView.getFluidDisplacedPanelScaleIcon();
     scaleIcon.scale( 1.8 );
 
+    // TODO: i18n, see https://github.com/phetsims/buoyancy/issues/48
     const forceReadout = new Text( 'N', {
       font: new PhetFont( {
         size: 16,

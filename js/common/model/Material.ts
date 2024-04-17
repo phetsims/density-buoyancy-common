@@ -90,9 +90,9 @@ export default class Material {
   public readonly liquidColor: Property<Color> | null;
   public readonly depthLinesColor: TProperty<Color> | null;
 
-  public constructor( providedConfig: MaterialOptions ) {
+  public constructor( providedOptions: MaterialOptions ) {
 
-    const config = optionize<MaterialOptions, MaterialOptions>()( {
+    const options = optionize<MaterialOptions, MaterialOptions>()( {
       nameProperty: new TinyProperty( 'unknown' ),
       identifier: null,
       tandemName: null,
@@ -103,20 +103,20 @@ export default class Material {
       customColor: null,
       liquidColor: null,
       depthLinesColor: DensityBuoyancyCommonColors.depthLinesDarkProperty
-    }, providedConfig );
+    }, providedOptions );
 
-    assert && assert( isFinite( config.density ), 'density should be finite, but it was: ' + config.density );
+    assert && assert( isFinite( options.density ), 'density should be finite, but it was: ' + options.density );
 
-    this.nameProperty = config.nameProperty;
-    this.identifier = config.identifier;
-    this.tandemName = config.tandemName;
-    this.density = config.density;
-    this.viscosity = config.viscosity;
-    this.custom = config.custom;
-    this.hidden = config.hidden;
-    this.customColor = config.customColor;
-    this.liquidColor = config.liquidColor;
-    this.depthLinesColor = config.depthLinesColor;
+    this.nameProperty = options.nameProperty;
+    this.identifier = options.identifier;
+    this.tandemName = options.tandemName;
+    this.density = options.density;
+    this.viscosity = options.viscosity;
+    this.custom = options.custom;
+    this.hidden = options.hidden;
+    this.customColor = options.customColor;
+    this.liquidColor = options.liquidColor;
+    this.depthLinesColor = options.depthLinesColor;
   }
 
   /**

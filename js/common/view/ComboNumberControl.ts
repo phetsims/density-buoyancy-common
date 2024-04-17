@@ -67,12 +67,12 @@ export default class ComboNumberControl<T> extends VBox {
   private readonly numberControl: NumberControl;
   private readonly comboBox: ComboBox<T>;
 
-  public constructor( providedConfig: SelfOptions<T> ) {
+  public constructor( providedOptions: SelfOptions<T> ) {
 
     const disposalCallbacks: ( () => void )[] = [];
     const numberDisplayVisibleProperty = new BooleanProperty( true );
 
-    const config = optionize<ComboNumberControlOptions<T>, SelfOptions<T>, VBoxOptions>()( {
+    const options = optionize<ComboNumberControlOptions<T>, SelfOptions<T>, VBoxOptions>()( {
       getFallbackNode: () => null,
 
       // {Object} Options for the number control
@@ -121,7 +121,7 @@ export default class ComboNumberControl<T> extends VBox {
           textOptions: {
             font: DensityBuoyancyCommonConstants.READOUT_FONT
           },
-          valuePattern: new PatternStringProperty( providedConfig.valuePatternProperty, {
+          valuePattern: new PatternStringProperty( providedOptions.valuePatternProperty, {
             value: SunConstants.VALUE_NAMED_PLACEHOLDER
           }, { tandem: Tandem.OPT_OUT } ),
           maxWidth: 100,
@@ -139,11 +139,11 @@ export default class ComboNumberControl<T> extends VBox {
           thumbTouchAreaXDilation: 5,
           thumbTouchAreaYDilation: 4,
           majorTicks: [ {
-            value: providedConfig.range.min,
-            label: new Text( providedConfig.range.min, { font: new PhetFont( 12 ), maxWidth: 50 } )
+            value: providedOptions.range.min,
+            label: new Text( providedOptions.range.min, { font: new PhetFont( 12 ), maxWidth: 50 } )
           }, {
-            value: providedConfig.range.max,
-            label: new Text( providedConfig.range.max, { font: new PhetFont( 12 ), maxWidth: 50 } )
+            value: providedOptions.range.max,
+            label: new Text( providedOptions.range.max, { font: new PhetFont( 12 ), maxWidth: 50 } )
           } ],
           trackSize: new Dimension2( 120, 0.5 )
         }
@@ -159,26 +159,26 @@ export default class ComboNumberControl<T> extends VBox {
       // VBox options
       spacing: 10,
       align: 'center'
-    }, providedConfig );
+    }, providedOptions );
 
-    assert && assert( !config.children, 'Children should not be specified for ComboNumberControl' );
-    assert && assert( config.property instanceof Property );
-    assert && assert( config.range instanceof Range );
-    assert && assert( typeof config.toNumericValue === 'function' );
-    assert && assert( typeof config.createCustomValue === 'function' );
-    assert && assert( typeof config.isCustomValue === 'function' );
-    assert && assert( config.listParent instanceof Node );
-    assert && assert( Array.isArray( config.comboItems ) );
-    assert && assert( config.customValue );
+    assert && assert( !options.children, 'Children should not be specified for ComboNumberControl' );
+    assert && assert( options.property instanceof Property );
+    assert && assert( options.range instanceof Range );
+    assert && assert( typeof options.toNumericValue === 'function' );
+    assert && assert( typeof options.createCustomValue === 'function' );
+    assert && assert( typeof options.isCustomValue === 'function' );
+    assert && assert( options.listParent instanceof Node );
+    assert && assert( Array.isArray( options.comboItems ) );
+    assert && assert( options.customValue );
 
-    const getFallbackNode = config.getFallbackNode;
+    const getFallbackNode = options.getFallbackNode;
 
     super();
 
-    const getNumericValue = ( value: T ) => config.toNumericValue( value );
-    const getComboValue = ( value: T ) => config.isCustomValue( value ) ? config.customValue : value;
+    const getNumericValue = ( value: T ) => options.toNumericValue( value );
+    const getComboValue = ( value: T ) => options.isCustomValue( value ) ? options.customValue : value;
 
-    this.property = config.property;
+    this.property = options.property;
     this.numberProperty = new NumberProperty( getNumericValue( this.property.value ) );
     this.comboProperty = new Property( getComboValue( this.property.value ) );
     this.disposalCallbacks = disposalCallbacks;
@@ -188,7 +188,7 @@ export default class ComboNumberControl<T> extends VBox {
     // see https://github.com/phetsims/buoyancy/issues/54
     let lastNonHiddenValue = this.property.value;
     this.property.link( value => {
-      if ( !config.isHiddenValue( value ) ) {
+      if ( !options.isHiddenValue( value ) ) {
         lastNonHiddenValue = value;
       }
     } );
@@ -211,8 +211,8 @@ export default class ComboNumberControl<T> extends VBox {
       if ( !locked ) {
         locked = true;
 
-        this.property.value = config.createCustomValue( value );
-        this.comboProperty.value = config.customValue;
+        this.property.value = options.createCustomValue( value );
+        this.comboProperty.value = options.customValue;
 
         locked = false;
       }
@@ -222,12 +222,12 @@ export default class ComboNumberControl<T> extends VBox {
       if ( !locked ) {
         locked = true;
 
-        if ( config.isCustomValue( value ) ) {
+        if ( options.isCustomValue( value ) ) {
           // We'll swap to the last non-hidden value (and make it custom). This is so that we don't immediately show a
           // "hidden" previous value (e.g. DENSITY_A) and the students have to guess it.
           // See https://github.com/phetsims/buoyancy/issues/54
           const newValue = getNumericValue( lastNonHiddenValue );
-          this.property.value = config.createCustomValue( newValue );
+          this.property.value = options.createCustomValue( newValue );
           this.numberProperty.value = newValue;
         }
         else {
@@ -239,23 +239,23 @@ export default class ComboNumberControl<T> extends VBox {
       }
     } );
 
-    this.numberControl = new NumberControl( config.titleProperty, this.numberProperty, config.range, combineOptions<NumberControlOptions>( {
-      tandem: config.tandem.createTandem( 'numberControl' )
-    }, config.numberControlOptions ) );
+    this.numberControl = new NumberControl( options.titleProperty, this.numberProperty, options.range, combineOptions<NumberControlOptions>( {
+      tandem: options.tandem.createTandem( 'numberControl' )
+    }, options.numberControlOptions ) );
     this.numberControl.addLinkedElement( this.property, {
       tandemName: 'valueProperty'
     } );
 
-    this.comboBox = new ComboBox( this.comboProperty, config.comboItems, config.listParent, combineOptions<ComboBoxOptions>( {
-      tandem: config.tandem.createTandem( 'comboBox' )
-    }, config.comboBoxOptions ) );
+    this.comboBox = new ComboBox( this.comboProperty, options.comboItems, options.listParent, combineOptions<ComboBoxOptions>( {
+      tandem: options.tandem.createTandem( 'comboBox' )
+    }, options.comboBoxOptions ) );
 
-    config.children = [
+    options.children = [
       this.numberControl,
       this.comboBox
     ];
 
-    this.mutate( config );
+    this.mutate( options );
   }
 
   /**

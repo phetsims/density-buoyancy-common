@@ -23,25 +23,25 @@ type SelfOptions = {
 export type CubeOptions = SelfOptions & CuboidOptions;
 
 export default class Cube extends Cuboid {
-  public constructor( engine: PhysicsEngine, volume: number, providedConfig: CubeOptions ) {
+  public constructor( engine: PhysicsEngine, volume: number, providedOptions: CubeOptions ) {
 
-    let config = optionize<CubeOptions, SelfOptions, CuboidOptions>()( {
+    let options = optionize<CubeOptions, SelfOptions, CuboidOptions>()( {
       adjustVolumeOnMassChanged: false,
 
       volumePropertyOptions: {
         phetioReadOnly: false
       }
-    }, providedConfig );
+    }, providedOptions );
 
-    if ( config.adjustVolumeOnMassChanged ) {
-      config = combineOptions<typeof config>( {
+    if ( options.adjustVolumeOnMassChanged ) {
+      options = combineOptions<typeof options>( {
         massPropertyOptions: {
           phetioReadOnly: false
         }
-      }, config );
+      }, options );
     }
 
-    super( engine, Cube.boundsFromVolume( volume ), config );
+    super( engine, Cube.boundsFromVolume( volume ), options );
 
     // Hook volumeProperty to adjust the size
     this.volumeProperty.lazyLink( volume => {
@@ -50,7 +50,7 @@ export default class Cube extends Cuboid {
       }
     } );
 
-    if ( config.adjustVolumeOnMassChanged ) {
+    if ( options.adjustVolumeOnMassChanged ) {
       // Hook massProperty to adjust the size
       this.massProperty.lazyLink( mass => {
         if ( !this.massLock ) {

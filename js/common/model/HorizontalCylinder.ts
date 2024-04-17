@@ -36,27 +36,27 @@ export default class HorizontalCylinder extends Mass {
   public stepMaximumVolume: number;
   public stepMaximumArea: number;
 
-  public constructor( engine: PhysicsEngine, radius: number, length: number, providedConfig: HorizontalCylinderOptions ) {
-    const config = optionize<HorizontalCylinderOptions, EmptySelfOptions, InstrumentedMassOptions>()( {
+  public constructor( engine: PhysicsEngine, radius: number, length: number, providedOptions: HorizontalCylinderOptions ) {
+    const options = optionize<HorizontalCylinderOptions, EmptySelfOptions, InstrumentedMassOptions>()( {
       body: engine.createBox( length, radius * 2 ),
       shape: HorizontalCylinder.getHorizontalCylinderShape( radius, length ),
       volume: HorizontalCylinder.getVolume( radius, length ),
       massShape: MassShape.HORIZONTAL_CYLINDER,
 
       phetioType: HorizontalCylinder.HorizontalCylinderIO
-    }, providedConfig );
+    }, providedOptions );
 
-    assert && assert( !config.canRotate );
+    assert && assert( !options.canRotate );
 
-    super( engine, config as InstrumentedMassOptions );
+    super( engine, options as InstrumentedMassOptions );
 
     // {Property.<number>}
     this.radiusProperty = new NumberProperty( radius, {
-      tandem: config.tandem.createTandem( 'radiusProperty' ),
+      tandem: options.tandem.createTandem( 'radiusProperty' ),
       range: new Range( 0, Number.POSITIVE_INFINITY )
     } );
     this.lengthProperty = new NumberProperty( length, {
-      tandem: config.tandem.createTandem( 'lengthProperty' ),
+      tandem: options.tandem.createTandem( 'lengthProperty' ),
       range: new Range( 0, Number.POSITIVE_INFINITY )
     } );
 

@@ -31,23 +31,23 @@ export default class Cuboid extends Mass {
   public stepArea: number;
   public stepMaximumVolume: number;
 
-  public constructor( engine: PhysicsEngine, size: Bounds3, providedConfig: CuboidOptions ) {
-    const config = optionize<CuboidOptions, EmptySelfOptions, InstrumentedMassOptions>()( {
+  public constructor( engine: PhysicsEngine, size: Bounds3, providedOptions: CuboidOptions ) {
+    const options = optionize<CuboidOptions, EmptySelfOptions, InstrumentedMassOptions>()( {
       body: engine.createBox( size.width, size.height ),
       shape: Shape.rect( size.minX, size.minY, size.width, size.height ),
       volume: size.width * size.height * size.depth,
       massShape: MassShape.BLOCK,
       phetioType: Cuboid.CuboidIO
-    }, providedConfig );
+    }, providedOptions );
 
-    assert && assert( !config.canRotate );
+    assert && assert( !options.canRotate );
 
-    super( engine, config );
+    super( engine, options );
 
     this.sizeProperty = new Property( size, {
       valueType: Bounds3,
       valueComparisonStrategy: 'equalsFunction',
-      tandem: config.tandem.createTandem( 'sizeProperty' ),
+      tandem: options.tandem.createTandem( 'sizeProperty' ),
       phetioValueType: Bounds3.Bounds3IO,
       phetioReadOnly: true
     } );

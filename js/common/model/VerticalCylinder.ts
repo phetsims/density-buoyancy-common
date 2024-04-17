@@ -36,27 +36,27 @@ export default class VerticalCylinder extends Mass {
   public stepArea: number;
   public stepMaximumVolume: number;
 
-  public constructor( engine: PhysicsEngine, radius: number, height: number, providedConfig: VerticalCylinderOptions ) {
-    const config = optionize<VerticalCylinderOptions, EmptySelfOptions, InstrumentedMassOptions>()( {
+  public constructor( engine: PhysicsEngine, radius: number, height: number, providedOptions: VerticalCylinderOptions ) {
+    const options = optionize<VerticalCylinderOptions, EmptySelfOptions, InstrumentedMassOptions>()( {
       body: engine.createBox( 2 * radius, height ),
       shape: VerticalCylinder.getVerticalCylinderShape( radius, height ),
       volume: VerticalCylinder.getVolume( radius, height ),
       massShape: MassShape.VERTICAL_CYLINDER,
 
       phetioType: VerticalCylinder.VerticalCylinderIO
-    }, providedConfig );
+    }, providedOptions );
 
-    assert && assert( !config.canRotate );
+    assert && assert( !options.canRotate );
 
-    super( engine, config as InstrumentedMassOptions );
+    super( engine, options as InstrumentedMassOptions );
 
     // {Property.<number>}
     this.radiusProperty = new NumberProperty( radius, {
-      tandem: config.tandem.createTandem( 'radiusProperty' ),
+      tandem: options.tandem.createTandem( 'radiusProperty' ),
       range: new Range( 0, Number.POSITIVE_INFINITY )
     } );
     this.heightProperty = new NumberProperty( height, {
-      tandem: config.tandem.createTandem( 'heightProperty' ),
+      tandem: options.tandem.createTandem( 'heightProperty' ),
       range: new Range( 0, Number.POSITIVE_INFINITY )
     } );
 

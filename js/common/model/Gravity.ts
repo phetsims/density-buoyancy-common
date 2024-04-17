@@ -38,18 +38,18 @@ export default class Gravity {
   public custom: boolean;
   public hidden: boolean;
 
-  public constructor( providedConfig: GravityOptions ) {
+  public constructor( providedOptions: GravityOptions ) {
 
-    const config = optionize<GravityOptions, GravityOptions>()( {
+    const options = optionize<GravityOptions, GravityOptions>()( {
       custom: false,
       hidden: false
-    }, providedConfig );
+    }, providedOptions );
 
-    this.nameProperty = config.nameProperty;
-    this.tandemName = config.tandemName;
-    this.value = config.value;
-    this.custom = config.custom;
-    this.hidden = config.hidden;
+    this.nameProperty = options.nameProperty;
+    this.tandemName = options.tandemName;
+    this.value = options.value;
+    this.custom = options.custom;
+    this.hidden = options.hidden;
   }
 
   /**

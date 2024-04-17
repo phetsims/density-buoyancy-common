@@ -41,29 +41,29 @@ export default class Cone extends Mass {
   public stepArea: number;
   public stepMaximumVolume: number;
 
-  public constructor( engine: PhysicsEngine, radius: number, height: number, isVertexUp: boolean, providedConfig: ConeOptions ) {
+  public constructor( engine: PhysicsEngine, radius: number, height: number, isVertexUp: boolean, providedOptions: ConeOptions ) {
 
     const initialVertices = Cone.getConeVertices( radius, height, isVertexUp );
 
-    const config = optionize<ConeOptions, EmptySelfOptions, MassOptions>()( {
+    const options = optionize<ConeOptions, EmptySelfOptions, MassOptions>()( {
       body: engine.createFromVertices( initialVertices, false ),
       shape: Shape.polygon( initialVertices ),
       volume: Cone.getVolume( radius, height ),
       massShape: isVertexUp ? MassShape.CONE : MassShape.INVERTED_CONE,
 
       phetioType: Cone.ConeIO
-    }, providedConfig );
+    }, providedOptions );
 
-    assert && assert( !config.canRotate );
+    assert && assert( !options.canRotate );
 
-    super( engine, config as InstrumentedMassOptions );
+    super( engine, options as InstrumentedMassOptions );
 
     this.radiusProperty = new NumberProperty( radius, {
-      tandem: config.tandem.createTandem( 'radiusProperty' ),
+      tandem: options.tandem.createTandem( 'radiusProperty' ),
       range: new Range( 0, Number.POSITIVE_INFINITY )
     } );
     this.heightProperty = new NumberProperty( height, {
-      tandem: config.tandem.createTandem( 'heightProperty' ),
+      tandem: options.tandem.createTandem( 'heightProperty' ),
       range: new Range( 0, Number.POSITIVE_INFINITY )
     } );
 

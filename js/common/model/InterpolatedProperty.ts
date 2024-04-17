@@ -31,15 +31,15 @@ export default class InterpolatedProperty<T> extends Property<T> {
 
   private readonly interpolate: Interpolate<T>;
 
-  public constructor( initialValue: T, providedConfig: InterpolatedPropertyOptions<T> ) {
+  public constructor( initialValue: T, providedOptions: InterpolatedPropertyOptions<T> ) {
 
-    const config = optionize<InterpolatedPropertyOptions<T>, SelfOptions<T>, PropertyOptions<T>>()( {
+    const options = optionize<InterpolatedPropertyOptions<T>, SelfOptions<T>, PropertyOptions<T>>()( {
       phetioOuterType: InterpolatedProperty.InterpolatedPropertyIO
-    }, providedConfig );
+    }, providedOptions );
 
-    super( initialValue, config );
+    super( initialValue, options );
 
-    this.interpolate = config.interpolate;
+    this.interpolate = options.interpolate;
 
     this.currentValue = initialValue;
     this.previousValue = initialValue;

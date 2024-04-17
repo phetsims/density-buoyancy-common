@@ -31,23 +31,23 @@ export default class Ellipsoid extends Mass {
   public stepMaximumArea: number;
   public stepMaximumVolume: number;
 
-  public constructor( engine: PhysicsEngine, size: Bounds3, providedConfig: EllipsoidOptions ) {
-    const config = optionize<EllipsoidOptions, EmptySelfOptions, InstrumentedMassOptions>()( {
+  public constructor( engine: PhysicsEngine, size: Bounds3, providedOptions: EllipsoidOptions ) {
+    const options = optionize<EllipsoidOptions, EmptySelfOptions, InstrumentedMassOptions>()( {
       body: engine.createFromVertices( Ellipsoid.getEllipsoidVertices( size.width, size.height ), false ),
       shape: Ellipsoid.getEllipsoidShape( size.width, size.height ),
       volume: Ellipsoid.getVolume( size ),
       massShape: MassShape.ELLIPSOID,
 
       phetioType: Ellipsoid.EllipsoidIO
-    }, providedConfig );
+    }, providedOptions );
 
-    assert && assert( !config.canRotate );
+    assert && assert( !options.canRotate );
 
-    super( engine, config as InstrumentedMassOptions );
+    super( engine, options as InstrumentedMassOptions );
 
     this.sizeProperty = new Property( size, {
       valueType: Bounds3,
-      tandem: config.tandem.createTandem( 'sizeProperty' ),
+      tandem: options.tandem.createTandem( 'sizeProperty' ),
       phetioValueType: Bounds3.Bounds3IO
     } );
 

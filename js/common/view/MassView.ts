@@ -52,6 +52,8 @@ export default abstract class MassView extends THREE.Mesh {
 
   protected constructor( mass: Mass, initialGeometry: THREE.BufferGeometry,
                          protected readonly modelToViewPoint: ModelPoint3ToViewPoint2,
+
+                         // TODO: remove unused? https://github.com/phetsims/density-buoyancy-common/issues/95
                          dragBoundsProperty: TReadOnlyProperty<Bounds3> ) {
     const materialView = DensityMaterials.getMaterialView( mass.materialProperty.value );
 

@@ -165,7 +165,7 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
       }
     };
 
-    const listener = BackgroundEventTargetListener.create(
+    const listener = new BackgroundEventTargetListener(
       this.massViews,
       this.getMassUnderPointer.bind( this ),
       this.sceneNode.getRayFromScreenPoint.bind( this.sceneNode ),

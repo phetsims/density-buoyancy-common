@@ -26,19 +26,22 @@ import DensityBuoyancyScreenView from './DensityBuoyancyScreenView.js';
 import DensityBuoyancyModel from '../model/DensityBuoyancyModel.js';
 import ThreeIsometricNode from '../../../../mobius/js/ThreeIsometricNode.js';
 
-export default class BackgroundEventTargetListener {
+export default class BackgroundEventTargetListener implements TInputListener {
+  private readonly draggedMasses: Mass[] = [];
+
+  private readonly startDragAction: PhetioAction<[ Mass, Vector2 ]>;
+  private readonly updateDragAction: PhetioAction<[ Mass, Vector2 ]>;
+  private readonly endDragAction: PhetioAction<[ Mass ]>;
 
   // Using a "create" function here because that makes it easier to implement TInputListener
-  public static create( massViews: MassView[],
-                        getMassUnderPointer: DensityBuoyancyScreenView<DensityBuoyancyModel>['getMassUnderPointer'],
-                        getRayFromScreenPoint: ThreeIsometricNode['getRayFromScreenPoint'],
-                        modelToGlobalViewPoint: ( point: Vector3 ) => Vector2,
-                        updateCursor: ( mouse: Mouse ) => void,
-                        tandem: Tandem ): TInputListener {
+  public constructor( private readonly massViews: MassView[],
+                      private readonly getMassUnderPointer: DensityBuoyancyScreenView<DensityBuoyancyModel>['getMassUnderPointer'],
+                      private readonly getRayFromScreenPoint: ThreeIsometricNode['getRayFromScreenPoint'],
+                      private readonly modelToGlobalViewPoint: ( point: Vector3 ) => Vector2,
+                      private readonly updateCursor: ( mouse: Mouse ) => void,
+                      tandem: Tandem ) {
 
-    const draggedMasses: Mass[] = [];
-
-    const startDragAction = new PhetioAction( ( mass: Mass, position: Vector2 ) => {
+    this.startDragAction = new PhetioAction( ( mass: Mass, position: Vector2 ) => {
       mass.startDrag( position );
     }, {
       tandem: tandem.createTandem( 'startDragAction' ),
@@ -54,7 +57,7 @@ export default class BackgroundEventTargetListener {
       } ]
     } );
 
-    const updateDragAction = new PhetioAction( ( mass: Mass, position: Vector2 ) => {
+    this.updateDragAction = new PhetioAction( ( mass: Mass, position: Vector2 ) => {
       mass.updateDrag( position );
     }, {
       tandem: tandem.createTandem( 'updateDragAction' ),
@@ -70,7 +73,7 @@ export default class BackgroundEventTargetListener {
       } ]
     } );
 
-    const endDragAction = new PhetioAction( ( mass: Mass ) => {
+    this.endDragAction = new PhetioAction( ( mass: Mass ) => {
       mass.endDrag();
     }, {
       tandem: tandem.createTandem( 'endDragAction' ),
@@ -82,91 +85,90 @@ export default class BackgroundEventTargetListener {
         phetioType: Mass.MassIO
       } ]
     } );
+  }
 
-    return {
-      mousemove: event => {
-        assert && assert( event.pointer instanceof Mouse );
-        updateCursor( event.pointer as Mouse );
-      },
-      down: ( event: SceneryEvent<MouseEvent | TouchEvent | PointerEvent> ) => {
-        if ( !event.canStartPress() ) { return; }
+  public mousemove( event: SceneryEvent<MouseEvent | TouchEvent | PointerEvent> ): void {
+    assert && assert( event.pointer instanceof Mouse );
+    this.updateCursor( event.pointer as Mouse );
+  }
 
-        const pointer = event.pointer;
-        const isTouch = !( pointer instanceof Mouse );
-        const mass = getMassUnderPointer( pointer, isTouch );
+  public down( event: SceneryEvent<MouseEvent | TouchEvent | PointerEvent> ): void {
+    if ( !event.canStartPress() ) { return; }
 
-        if ( mass && mass.canMove ) {
+    const pointer = event.pointer;
+    const isTouch = !( pointer instanceof Mouse );
+    const mass = this.getMassUnderPointer( pointer, isTouch );
 
-          // Newer interactions take precedent, so clean up any old ones first. This also makes mouse/keyboard
-          // cross-interaction much simpler.
-          mass.interruptedEmitter.emit();
+    if ( mass && mass.canMove ) {
 
-          grabSoundPlayer.play();
+      // Newer interactions take precedent, so clean up any old ones first. This also makes mouse/keyboard
+      // cross-interaction much simpler.
+      mass.interruptedEmitter.emit();
 
-          const initialRay = getRayFromScreenPoint( pointer.point );
-          const initialT = mass.intersect( initialRay, isTouch );
-          if ( initialT === null ) {
-            return;
-          }
-          const initialPosition = initialRay.pointAtDistance( initialT );
-          const initialPlane = new Plane3( Vector3.Z_UNIT, initialPosition.z );
+      grabSoundPlayer.play();
 
-          startDragAction.execute( mass, initialPosition.toVector2() );
-          pointer.cursor = 'pointer';
-
-          const endDrag = () => {
-            pointer.removeInputListener( listener );
-            arrayRemove( draggedMasses, mass );
-            mass.interruptedEmitter.removeListener( endDrag );
-            pointer.cursor = null;
-            releaseSoundPlayer.play();
-            endDragAction.execute( mass );
-          };
-          const listener = {
-            // end drag on either up or cancel (not supporting full cancel behavior)
-            up: endDrag,
-            cancel: endDrag,
-            interrupt: endDrag,
-
-            move: () => {
-              const ray = getRayFromScreenPoint( pointer.point );
-              const position = initialPlane.intersectWithRay( ray );
-
-              updateDragAction.execute( mass, position.toVector2() );
-            },
-
-            createPanTargetBounds: () => {
-              return draggedMasses.reduce( ( bounds: Bounds2, mass: Mass ): Bounds2 => {
-                const massView = _.find( massViews, massView => massView.mass === mass )!;
-                const bbox = new THREE.Box3().setFromObject( massView.massMesh );
-
-                // Include all 8 corners of the bounding box
-                bounds = bounds.withPoint( modelToGlobalViewPoint( new Vector3( bbox.min.x, bbox.min.y, bbox.min.z ) ) );
-                bounds = bounds.withPoint( modelToGlobalViewPoint( new Vector3( bbox.min.x, bbox.min.y, bbox.max.z ) ) );
-                bounds = bounds.withPoint( modelToGlobalViewPoint( new Vector3( bbox.min.x, bbox.max.y, bbox.min.z ) ) );
-                bounds = bounds.withPoint( modelToGlobalViewPoint( new Vector3( bbox.min.x, bbox.max.y, bbox.max.z ) ) );
-                bounds = bounds.withPoint( modelToGlobalViewPoint( new Vector3( bbox.max.x, bbox.min.y, bbox.min.z ) ) );
-                bounds = bounds.withPoint( modelToGlobalViewPoint( new Vector3( bbox.max.x, bbox.min.y, bbox.max.z ) ) );
-                bounds = bounds.withPoint( modelToGlobalViewPoint( new Vector3( bbox.max.x, bbox.max.y, bbox.min.z ) ) );
-                bounds = bounds.withPoint( modelToGlobalViewPoint( new Vector3( bbox.max.x, bbox.max.y, bbox.max.z ) ) );
-
-                return bounds;
-              }, Bounds2.NOTHING );
-            }
-          };
-          pointer.reserveForDrag();
-          pointer.addInputListener( listener, true );
-          draggedMasses.push( mass );
-
-          mass.interruptedEmitter.addListener( endDrag );
-        }
-      },
-
-      // Support interruption by subtree
-      interrupt: () => {
-        draggedMasses.slice().forEach( mass => mass.interruptedEmitter.emit() );
+      const initialRay = this.getRayFromScreenPoint( pointer.point );
+      const initialT = mass.intersect( initialRay, isTouch );
+      if ( initialT === null ) {
+        return;
       }
-    };
+      const initialPosition = initialRay.pointAtDistance( initialT );
+      const initialPlane = new Plane3( Vector3.Z_UNIT, initialPosition.z );
+
+      this.startDragAction.execute( mass, initialPosition.toVector2() );
+      pointer.cursor = 'pointer';
+
+      const endDrag = () => {
+        pointer.removeInputListener( listener );
+        arrayRemove( this.draggedMasses, mass );
+        mass.interruptedEmitter.removeListener( endDrag );
+        pointer.cursor = null;
+        releaseSoundPlayer.play();
+        this.endDragAction.execute( mass );
+      };
+      const listener = {
+        // end drag on either up or cancel (not supporting full cancel behavior)
+        up: endDrag,
+        cancel: endDrag,
+        interrupt: endDrag,
+
+        move: () => {
+          const ray = this.getRayFromScreenPoint( pointer.point );
+          const position = initialPlane.intersectWithRay( ray );
+
+          this.updateDragAction.execute( mass, position.toVector2() );
+        },
+
+        createPanTargetBounds: () => {
+          return this.draggedMasses.reduce( ( bounds: Bounds2, mass: Mass ): Bounds2 => {
+            const massView = _.find( this.massViews, massView => massView.mass === mass )!;
+            const bbox = new THREE.Box3().setFromObject( massView.massMesh );
+
+            // Include all 8 corners of the bounding box
+            bounds = bounds.withPoint( this.modelToGlobalViewPoint( new Vector3( bbox.min.x, bbox.min.y, bbox.min.z ) ) );
+            bounds = bounds.withPoint( this.modelToGlobalViewPoint( new Vector3( bbox.min.x, bbox.min.y, bbox.max.z ) ) );
+            bounds = bounds.withPoint( this.modelToGlobalViewPoint( new Vector3( bbox.min.x, bbox.max.y, bbox.min.z ) ) );
+            bounds = bounds.withPoint( this.modelToGlobalViewPoint( new Vector3( bbox.min.x, bbox.max.y, bbox.max.z ) ) );
+            bounds = bounds.withPoint( this.modelToGlobalViewPoint( new Vector3( bbox.max.x, bbox.min.y, bbox.min.z ) ) );
+            bounds = bounds.withPoint( this.modelToGlobalViewPoint( new Vector3( bbox.max.x, bbox.min.y, bbox.max.z ) ) );
+            bounds = bounds.withPoint( this.modelToGlobalViewPoint( new Vector3( bbox.max.x, bbox.max.y, bbox.min.z ) ) );
+            bounds = bounds.withPoint( this.modelToGlobalViewPoint( new Vector3( bbox.max.x, bbox.max.y, bbox.max.z ) ) );
+
+            return bounds;
+          }, Bounds2.NOTHING );
+        }
+      };
+      pointer.reserveForDrag();
+      pointer.addInputListener( listener, true );
+      this.draggedMasses.push( mass );
+
+      mass.interruptedEmitter.addListener( endDrag );
+    }
+  }
+
+  // Support interruption by subtree
+  public interrupt(): void {
+    this.draggedMasses.slice().forEach( mass => mass.interruptedEmitter.emit() );
   }
 }
 

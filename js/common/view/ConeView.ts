@@ -31,7 +31,8 @@ export default class ConeView extends MeasurableMassView {
                       showBuoyancyForceProperty: TReadOnlyProperty<boolean>,
                       showContactForceProperty: TReadOnlyProperty<boolean>,
                       showForceValuesProperty: TReadOnlyProperty<boolean>,
-                      forceScaleProperty: TReadOnlyProperty<number> ) {
+                      forceScaleProperty: TReadOnlyProperty<number>,
+                      showMassesProperty: TReadOnlyProperty<boolean> ) {
 
     const positionArray = new Float32Array( numElements * 3 );
     const normalArray = new Float32Array( numElements * 3 );
@@ -50,7 +51,9 @@ export default class ConeView extends MeasurableMassView {
       showBuoyancyForceProperty,
       showContactForceProperty,
       showForceValuesProperty,
-      forceScaleProperty
+      forceScaleProperty,
+
+      showMassesProperty
     );
 
     this.cone = cone;

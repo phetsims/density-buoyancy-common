@@ -31,7 +31,8 @@ export default class BottleView extends MeasurableMassView {
                       showBuoyancyForceProperty: TReadOnlyProperty<boolean>,
                       showContactForceProperty: TReadOnlyProperty<boolean>,
                       showForceValuesProperty: TReadOnlyProperty<boolean>,
-                      forceScaleProperty: TReadOnlyProperty<number> ) {
+                      forceScaleProperty: TReadOnlyProperty<number>,
+                      showMassesProperty: TReadOnlyProperty<boolean> ) {
 
     // @ts-expect-error
     super( bottle, new THREE.Geometry(), modelToViewPoint, dragBoundsProperty,
@@ -39,7 +40,8 @@ export default class BottleView extends MeasurableMassView {
       showBuoyancyForceProperty,
       showContactForceProperty,
       showForceValuesProperty,
-      forceScaleProperty
+      forceScaleProperty,
+      showMassesProperty
     );
 
     const bottomClipPlane = new THREE.Plane( new THREE.Vector3( 0, -1, 0 ), 0 );

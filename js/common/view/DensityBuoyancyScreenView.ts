@@ -50,7 +50,6 @@ import DebugView from './DebugView.js';
 import DensityBuoyancyCommonColors from './DensityBuoyancyCommonColors.js';
 import EllipsoidView from './EllipsoidView.js';
 import HorizontalCylinderView from './HorizontalCylinderView.js';
-import MassLabelNode from './MassLabelNode.js';
 import ScaleReadoutNode from './ScaleReadoutNode.js';
 import ScaleView from './ScaleView.js';
 import VerticalCylinderView from './VerticalCylinderView.js';
@@ -67,7 +66,6 @@ import releaseSoundPlayer from '../../../../tambo/js/shared-sound-players/releas
 
 // constants
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
-const scratchVector2 = new Vector2( 0, 0 );
 
 type SelfOptions = {
   cameraLookAt?: Vector3;
@@ -84,12 +82,14 @@ export class MassDecorationLayer extends Node {
   public readonly massTagsLayer = new Node();
 
   public readonly forceDiagramLayer = new Node();
+  public readonly massLabelLayer = new Node();
 
   public constructor() {
     super();
     this.addChild( this.depthLinesLayer ); // Depth lines need to be behind everything else.
     this.addChild( this.massTagsLayer );
     this.addChild( this.forceDiagramLayer );
+    this.addChild( this.massLabelLayer );
   }
 }
 
@@ -109,11 +109,9 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
 
   private readonly massDecorationLayer = new MassDecorationLayer();
   private readonly scaleReadoutLayer: Node;
-  private readonly massLabelLayer: Node;
 
   private readonly massViews: MassView[];
   private readonly scaleReadoutNodes: ScaleReadoutNode[];
-  private readonly massLabelNodes: MassLabelNode[];
 
   private readonly startDragAction: PhetioAction<[ Mass, Vector2 ]>;
   private readonly updateDragAction: PhetioAction<[ Mass, Vector2 ]>;
@@ -179,14 +177,9 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
     this.scaleReadoutLayer = new Node();
     this.addChild( this.scaleReadoutLayer );
 
-    this.massLabelLayer = new Node();
-    this.addChild( this.massLabelLayer );
-
     this.massViews = [];
 
     this.scaleReadoutNodes = [];
-
-    this.massLabelNodes = [];
 
     this.sceneNode.stage.threeCamera.zoom = options.cameraZoom;
     this.sceneNode.stage.threeCamera.updateProjectionMatrix();
@@ -631,7 +624,7 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
       if ( mass instanceof Cuboid ) {
         massView = new CuboidView( mass, boundModelToViewPoint, dragBoundsProperty, model.showDepthLinesProperty,
           model.showGravityForceProperty, model.showBuoyancyForceProperty, model.showContactForceProperty,
-          model.showForceValuesProperty, model.forceScaleProperty );
+          model.showForceValuesProperty, model.forceScaleProperty, model.showMassesProperty );
       }
       else if ( mass instanceof Scale ) {
         massView = new ScaleView( mass, boundModelToViewPoint, dragBoundsProperty );
@@ -639,32 +632,32 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
       else if ( mass instanceof Cone ) {
         massView = new ConeView( mass, boundModelToViewPoint, dragBoundsProperty, model.showGravityForceProperty,
           model.showBuoyancyForceProperty, model.showContactForceProperty, model.showForceValuesProperty,
-          model.forceScaleProperty );
+          model.forceScaleProperty, model.showMassesProperty );
       }
       else if ( mass instanceof Ellipsoid ) {
         massView = new EllipsoidView( mass, boundModelToViewPoint, dragBoundsProperty, model.showGravityForceProperty,
           model.showBuoyancyForceProperty, model.showContactForceProperty, model.showForceValuesProperty,
-          model.forceScaleProperty );
+          model.forceScaleProperty, model.showMassesProperty );
       }
       else if ( mass instanceof HorizontalCylinder ) {
         massView = new HorizontalCylinderView( mass, boundModelToViewPoint, dragBoundsProperty,
           model.showGravityForceProperty, model.showBuoyancyForceProperty, model.showContactForceProperty,
-          model.showForceValuesProperty, model.forceScaleProperty );
+          model.showForceValuesProperty, model.forceScaleProperty, model.showMassesProperty );
       }
       else if ( mass instanceof VerticalCylinder ) {
         massView = new VerticalCylinderView( mass, boundModelToViewPoint, dragBoundsProperty, model.showGravityForceProperty,
           model.showBuoyancyForceProperty, model.showContactForceProperty, model.showForceValuesProperty,
-          model.forceScaleProperty );
+          model.forceScaleProperty, model.showMassesProperty );
       }
       else if ( mass instanceof Bottle ) {
         massView = new BottleView( mass, boundModelToViewPoint, dragBoundsProperty, model.showGravityForceProperty,
           model.showBuoyancyForceProperty, model.showContactForceProperty, model.showForceValuesProperty,
-          model.forceScaleProperty );
+          model.forceScaleProperty, model.showMassesProperty );
       }
       else if ( mass instanceof Boat ) {
         massView = new BoatView( mass, boundModelToViewPoint, dragBoundsProperty, model.pool.liquidYInterpolatedProperty,
           model.showGravityForceProperty, model.showBuoyancyForceProperty, model.showContactForceProperty,
-          model.showForceValuesProperty, model.forceScaleProperty );
+          model.showForceValuesProperty, model.forceScaleProperty, model.showMassesProperty );
       }
       assert && assert( !!massView, `massView is falsy, mass: ${mass.constructor.name}` );
 
@@ -681,11 +674,6 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
         const scaleReadoutNode = new ScaleReadoutNode( mass as Scale, model.gravityProperty );
         this.scaleReadoutLayer.addChild( scaleReadoutNode );
         this.scaleReadoutNodes.push( scaleReadoutNode );
-      }
-      else {
-        const massLabelNode = new MassLabelNode( mass, model.showMassesProperty );
-        this.massLabelLayer.addChild( massLabelNode );
-        this.massLabelNodes.push( massLabelNode );
       }
     };
     model.masses.addItemAddedListener( onMassAdded );
@@ -705,13 +693,6 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
         this.scaleReadoutLayer.removeChild( scaleReadoutNode );
         arrayRemove( this.scaleReadoutNodes, scaleReadoutNode );
         scaleReadoutNode.dispose();
-      }
-      else {
-
-        const massLabelNode = _.find( this.massLabelNodes, massLabelNode => massLabelNode.mass === mass )!;
-        this.massLabelLayer.removeChild( massLabelNode );
-        arrayRemove( this.massLabelNodes, massLabelNode );
-        massLabelNode.dispose();
       }
     };
     model.masses.addItemRemovedListener( onMassRemoved );
@@ -879,13 +860,6 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
 
     this.scaleReadoutNodes.forEach( scaleReadoutNode => {
       scaleReadoutNode.translation = this.modelToViewPoint( scaleReadoutNode.mass.matrix.translation.toVector3().plus( Scale.SCALE_FRONT_OFFSET ) );
-    } );
-
-    this.massLabelNodes.forEach( massLabelNode => {
-      const mass = massLabelNode.mass;
-      const modelPoint = this.modelToViewPoint( mass.matrix.translation.toVector3().plus( mass.massLabelOffsetProperty.value ) );
-      const offsetPoint = scratchVector2.setXY( massLabelNode.width / 2, massLabelNode.height / 2 ).componentMultiply( mass.massLabelOffsetOrientationProperty.value );
-      massLabelNode.translation = modelPoint.plus( offsetPoint );
     } );
 
     this.debugView && this.debugView.step( dt );

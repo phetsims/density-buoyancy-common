@@ -36,7 +36,8 @@ export default class BoatView extends MeasurableMassView {
                       showBuoyancyForceProperty: TReadOnlyProperty<boolean>,
                       showContactForceProperty: TReadOnlyProperty<boolean>,
                       showForceValuesProperty: TReadOnlyProperty<boolean>,
-                      forceScaleProperty: TReadOnlyProperty<number> ) {
+                      forceScaleProperty: TReadOnlyProperty<number>,
+                      showMassesProperty: TReadOnlyProperty<boolean> ) {
 
     // @ts-expect-error
     super( boat, new THREE.Geometry(), modelToViewPoint, dragBoundsProperty,
@@ -45,7 +46,9 @@ export default class BoatView extends MeasurableMassView {
       showBuoyancyForceProperty,
       showContactForceProperty,
       showForceValuesProperty,
-      forceScaleProperty
+      forceScaleProperty,
+
+      showMassesProperty
     );
 
     // Clip planes at the boat's water level

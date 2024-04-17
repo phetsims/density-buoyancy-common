@@ -6,12 +6,13 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
-import MassView, { ModelPoint3ToViewPoint2 } from '../../common/view/MassView.js';
+import { ModelPoint3ToViewPoint2 } from '../../common/view/MassView.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import Bottle from '../model/Bottle.js';
 import Material from '../../common/model/Material.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import Bounds3 from '../../../../dot/js/Bounds3.js';
+import MeasurableMassView from '../../common/view/MeasurableMassView.js';
 
 type BottleDrawingData = {
   group: THREE.Group;
@@ -20,15 +21,26 @@ type BottleDrawingData = {
 };
 
 
-export default class BottleView extends MassView {
+export default class BottleView extends MeasurableMassView {
 
   public readonly bottle: Bottle;
 
   public constructor( bottle: Bottle, modelToViewPoint: ModelPoint3ToViewPoint2,
-                      dragBoundsProperty: TReadOnlyProperty<Bounds3> ) {
+                      dragBoundsProperty: TReadOnlyProperty<Bounds3>,
+                      showGravityForceProperty: TReadOnlyProperty<boolean>,
+                      showBuoyancyForceProperty: TReadOnlyProperty<boolean>,
+                      showContactForceProperty: TReadOnlyProperty<boolean>,
+                      showForceValuesProperty: TReadOnlyProperty<boolean>,
+                      forceScaleProperty: TReadOnlyProperty<number> ) {
 
     // @ts-expect-error
-    super( bottle, new THREE.Geometry(), modelToViewPoint, dragBoundsProperty );
+    super( bottle, new THREE.Geometry(), modelToViewPoint, dragBoundsProperty,
+      showGravityForceProperty,
+      showBuoyancyForceProperty,
+      showContactForceProperty,
+      showForceValuesProperty,
+      forceScaleProperty
+    );
 
     const bottomClipPlane = new THREE.Plane( new THREE.Vector3( 0, -1, 0 ), 0 );
     const topClipPlane = new THREE.Plane( new THREE.Vector3( 0, 1, 0 ), 0 );

@@ -174,6 +174,12 @@ export default abstract class MassView extends THREE.Mesh {
     return 0.03; // TODO: view-> model coords would be nice. https://github.com/phetsims/density-buoyancy-common/issues/113
   }
 
+  // Override in subclasses to add subclass-specific behavior
+  public step( dt: number ): void {
+
+    // no-op by default
+  }
+
   /**
    * Called after construction of the MassView, for supporting adding supplemental, non-THREE content to the screen view to render the Mass.
    */

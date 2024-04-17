@@ -6,7 +6,6 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
-import Property from '../../../../axon/js/Property.js';
 import Utils from '../../../../dot/js/Utils.js';
 import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
 import ArrowNode, { ArrowNodeOptions } from '../../../../scenery-phet/js/ArrowNode.js';
@@ -20,7 +19,7 @@ import DensityBuoyancyCommonColors from './DensityBuoyancyCommonColors.js';
 import InterpolatedProperty from '../model/InterpolatedProperty.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import { combineOptions } from '../../../../phet-core/js/optionize.js';
-import TProperty from '../../../../axon/js/TProperty.js';
+import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 
 // constants
 const arrowOptions = {
@@ -35,11 +34,11 @@ const labelFont = new PhetFont( { size: 12, weight: 'bold' } );
 export default class ForceDiagramNode extends Node {
 
   public readonly mass: Mass;
-  private readonly showGravityForceProperty: Property<boolean>;
-  private readonly showBuoyancyForceProperty: Property<boolean>;
-  private readonly showContactForceProperty: Property<boolean>;
-  private readonly showForceValuesProperty: Property<boolean>;
-  private readonly forceScaleProperty: TProperty<number>;
+  private readonly showGravityForceProperty: TReadOnlyProperty<boolean>;
+  private readonly showBuoyancyForceProperty: TReadOnlyProperty<boolean>;
+  private readonly showContactForceProperty: TReadOnlyProperty<boolean>;
+  private readonly showForceValuesProperty: TReadOnlyProperty<boolean>;
+  private readonly forceScaleProperty: TReadOnlyProperty<number>;
 
   private readonly gravityArrowNode: ArrowNode;
   private readonly buoyancyArrowNode: ArrowNode;
@@ -57,7 +56,14 @@ export default class ForceDiagramNode extends Node {
 
   private readonly axisNode: Line;
 
-  public constructor( mass: Mass, showGravityForceProperty: Property<boolean>, showBuoyancyForceProperty: Property<boolean>, showContactForceProperty: Property<boolean>, showForceValuesProperty: Property<boolean>, forceScaleProperty: TProperty<number> ) {
+  public constructor(
+    mass: Mass,
+    showGravityForceProperty: TReadOnlyProperty<boolean>,
+    showBuoyancyForceProperty: TReadOnlyProperty<boolean>,
+    showContactForceProperty: TReadOnlyProperty<boolean>,
+    showForceValuesProperty: TReadOnlyProperty<boolean>,
+    forceScaleProperty: TReadOnlyProperty<number>
+  ) {
     super();
 
     this.mass = mass;
@@ -130,7 +136,7 @@ export default class ForceDiagramNode extends Node {
     const downwardArrows: ArrowNode[] = [];
     const labels: Node[] = [];
 
-    const updateArrow = ( forceProperty: InterpolatedProperty<Vector2>, showForceProperty: Property<boolean>, arrowNode: ArrowNode, textNode: Text, labelNode: Node ) => {
+    const updateArrow = ( forceProperty: InterpolatedProperty<Vector2>, showForceProperty: TReadOnlyProperty<boolean>, arrowNode: ArrowNode, textNode: Text, labelNode: Node ) => {
       const y = forceProperty.value.y;
       if ( showForceProperty.value && Math.abs( y ) > 1e-5 ) {
         arrowNode.setTip( 0, -y * this.forceScaleProperty.value * 20 ); // Default zoom is 20 units per Newton

@@ -9,12 +9,13 @@
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import Multilink, { UnknownMultilink } from '../../../../axon/js/Multilink.js';
 import Material from '../../common/model/Material.js';
-import MassView, { ModelPoint3ToViewPoint2 } from '../../common/view/MassView.js';
+import { ModelPoint3ToViewPoint2 } from '../../common/view/MassView.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import Boat from '../model/Boat.js';
 import BoatDesign from '../model/BoatDesign.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 import Bounds3 from '../../../../dot/js/Bounds3.js';
+import MeasurableMassView from '../../common/view/MeasurableMassView.js';
 
 type BoatDrawingData = {
   backMiddleMaterial: THREE.MeshBasicMaterial;
@@ -24,16 +25,28 @@ type BoatDrawingData = {
 const VOLUME_TOLERANCE = DensityBuoyancyCommonConstants.TOLERANCE;
 
 
-export default class BoatView extends MassView {
+export default class BoatView extends MeasurableMassView {
   private readonly liquidMultilink: UnknownMultilink;
 
   public readonly boat: Boat;
 
   public constructor( boat: Boat, modelToViewPoint: ModelPoint3ToViewPoint2, dragBoundsProperty: TReadOnlyProperty<Bounds3>,
-                      liquidYInterpolatedProperty: TReadOnlyProperty<number> ) {
+                      liquidYInterpolatedProperty: TReadOnlyProperty<number>,
+                      showGravityForceProperty: TReadOnlyProperty<boolean>,
+                      showBuoyancyForceProperty: TReadOnlyProperty<boolean>,
+                      showContactForceProperty: TReadOnlyProperty<boolean>,
+                      showForceValuesProperty: TReadOnlyProperty<boolean>,
+                      forceScaleProperty: TReadOnlyProperty<number> ) {
 
     // @ts-expect-error
-    super( boat, new THREE.Geometry(), modelToViewPoint, dragBoundsProperty );
+    super( boat, new THREE.Geometry(), modelToViewPoint, dragBoundsProperty,
+
+      showGravityForceProperty,
+      showBuoyancyForceProperty,
+      showContactForceProperty,
+      showForceValuesProperty,
+      forceScaleProperty
+    );
 
     // Clip planes at the boat's water level
     const topBoatClipPlane = new THREE.Plane( new THREE.Vector3( 0, 1, 0 ), 0 );

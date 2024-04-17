@@ -13,7 +13,6 @@ import DynamicProperty from '../../../../axon/js/DynamicProperty.js';
 import Property from '../../../../axon/js/Property.js';
 import TinyEmitter from '../../../../axon/js/TinyEmitter.js';
 import Bounds2 from '../../../../dot/js/Bounds2.js';
-import Matrix3 from '../../../../dot/js/Matrix3.js';
 import Plane3 from '../../../../dot/js/Plane3.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
@@ -50,7 +49,6 @@ import CuboidView from './CuboidView.js';
 import DebugView from './DebugView.js';
 import DensityBuoyancyCommonColors from './DensityBuoyancyCommonColors.js';
 import EllipsoidView from './EllipsoidView.js';
-import ForceDiagramNode from './ForceDiagramNode.js';
 import HorizontalCylinderView from './HorizontalCylinderView.js';
 import MassLabelNode from './MassLabelNode.js';
 import ScaleReadoutNode from './ScaleReadoutNode.js';
@@ -80,15 +78,18 @@ type SelfOptions = {
 
 export type DensityBuoyancyScreenViewOptions = SelfOptions & ScreenViewOptions;
 
-// TODO: separate class, https://github.com/phetsims/buoyancy/issues/117
+// TODO: separate file, https://github.com/phetsims/buoyancy/issues/117
 export class MassDecorationLayer extends Node {
   public readonly depthLinesLayer = new Node();
   public readonly massTagsLayer = new Node();
+
+  public readonly forceDiagramLayer = new Node();
 
   public constructor() {
     super();
     this.addChild( this.depthLinesLayer ); // Depth lines need to be behind everything else.
     this.addChild( this.massTagsLayer );
+    this.addChild( this.forceDiagramLayer );
   }
 }
 
@@ -109,11 +110,9 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
   private readonly massDecorationLayer = new MassDecorationLayer();
   private readonly scaleReadoutLayer: Node;
   private readonly massLabelLayer: Node;
-  private readonly forceDiagramLayer: Node;
 
   private readonly massViews: MassView[];
   private readonly scaleReadoutNodes: ScaleReadoutNode[];
-  private readonly forceDiagramNodes: ForceDiagramNode[];
   private readonly massLabelNodes: MassLabelNode[];
 
   private readonly startDragAction: PhetioAction<[ Mass, Vector2 ]>;
@@ -183,14 +182,9 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
     this.massLabelLayer = new Node();
     this.addChild( this.massLabelLayer );
 
-    this.forceDiagramLayer = new Node();
-    this.addChild( this.forceDiagramLayer );
-
     this.massViews = [];
 
     this.scaleReadoutNodes = [];
-
-    this.forceDiagramNodes = [];
 
     this.massLabelNodes = [];
 
@@ -635,28 +629,42 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
       let massView!: MassView;
 
       if ( mass instanceof Cuboid ) {
-        massView = new CuboidView( mass, boundModelToViewPoint, dragBoundsProperty, model.showDepthLinesProperty );
+        massView = new CuboidView( mass, boundModelToViewPoint, dragBoundsProperty, model.showDepthLinesProperty,
+          model.showGravityForceProperty, model.showBuoyancyForceProperty, model.showContactForceProperty,
+          model.showForceValuesProperty, model.forceScaleProperty );
       }
       else if ( mass instanceof Scale ) {
         massView = new ScaleView( mass, boundModelToViewPoint, dragBoundsProperty );
       }
       else if ( mass instanceof Cone ) {
-        massView = new ConeView( mass, boundModelToViewPoint, dragBoundsProperty );
+        massView = new ConeView( mass, boundModelToViewPoint, dragBoundsProperty, model.showGravityForceProperty,
+          model.showBuoyancyForceProperty, model.showContactForceProperty, model.showForceValuesProperty,
+          model.forceScaleProperty );
       }
       else if ( mass instanceof Ellipsoid ) {
-        massView = new EllipsoidView( mass, boundModelToViewPoint, dragBoundsProperty );
+        massView = new EllipsoidView( mass, boundModelToViewPoint, dragBoundsProperty, model.showGravityForceProperty,
+          model.showBuoyancyForceProperty, model.showContactForceProperty, model.showForceValuesProperty,
+          model.forceScaleProperty );
       }
       else if ( mass instanceof HorizontalCylinder ) {
-        massView = new HorizontalCylinderView( mass, boundModelToViewPoint, dragBoundsProperty );
+        massView = new HorizontalCylinderView( mass, boundModelToViewPoint, dragBoundsProperty,
+          model.showGravityForceProperty, model.showBuoyancyForceProperty, model.showContactForceProperty,
+          model.showForceValuesProperty, model.forceScaleProperty );
       }
       else if ( mass instanceof VerticalCylinder ) {
-        massView = new VerticalCylinderView( mass, boundModelToViewPoint, dragBoundsProperty );
+        massView = new VerticalCylinderView( mass, boundModelToViewPoint, dragBoundsProperty, model.showGravityForceProperty,
+          model.showBuoyancyForceProperty, model.showContactForceProperty, model.showForceValuesProperty,
+          model.forceScaleProperty );
       }
       else if ( mass instanceof Bottle ) {
-        massView = new BottleView( mass, boundModelToViewPoint, dragBoundsProperty );
+        massView = new BottleView( mass, boundModelToViewPoint, dragBoundsProperty, model.showGravityForceProperty,
+          model.showBuoyancyForceProperty, model.showContactForceProperty, model.showForceValuesProperty,
+          model.forceScaleProperty );
       }
       else if ( mass instanceof Boat ) {
-        massView = new BoatView( mass, boundModelToViewPoint, dragBoundsProperty, model.pool.liquidYInterpolatedProperty );
+        massView = new BoatView( mass, boundModelToViewPoint, dragBoundsProperty, model.pool.liquidYInterpolatedProperty,
+          model.showGravityForceProperty, model.showBuoyancyForceProperty, model.showContactForceProperty,
+          model.showForceValuesProperty, model.forceScaleProperty );
       }
       assert && assert( !!massView, `massView is falsy, mass: ${mass.constructor.name}` );
 
@@ -675,17 +683,6 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
         this.scaleReadoutNodes.push( scaleReadoutNode );
       }
       else {
-        const forceDiagramNode = new ForceDiagramNode(
-          mass,
-          model.showGravityForceProperty,
-          model.showBuoyancyForceProperty,
-          model.showContactForceProperty,
-          model.showForceValuesProperty,
-          model.forceScaleProperty
-        );
-        this.forceDiagramLayer.addChild( forceDiagramNode );
-        this.forceDiagramNodes.push( forceDiagramNode );
-
         const massLabelNode = new MassLabelNode( mass, model.showMassesProperty );
         this.massLabelLayer.addChild( massLabelNode );
         this.massLabelNodes.push( massLabelNode );
@@ -710,11 +707,6 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
         scaleReadoutNode.dispose();
       }
       else {
-        // Force diagram node
-        const forceDiagramNode = _.find( this.forceDiagramNodes, forceDiagramNode => forceDiagramNode.mass === mass )!;
-        this.forceDiagramLayer.removeChild( forceDiagramNode );
-        arrayRemove( this.forceDiagramNodes, forceDiagramNode );
-        forceDiagramNode.dispose();
 
         const massLabelNode = _.find( this.massLabelNodes, massLabelNode => massLabelNode.mass === mass )!;
         this.massLabelLayer.removeChild( massLabelNode );
@@ -871,32 +863,22 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
    * Steps forward in time.
    */
   public override step( dt: number ): void {
+
     // If the simulation was not able to load for WebGL, bail out
     if ( !this.sceneNode ) {
       return;
     }
 
     assert && this.massViews.forEach( massView => {
-      assert!( massView.position.x === massView.mass.matrix.translation.x );
+      massView.step( dt );
+
+      assert && assert( massView.position.x === massView.mass.matrix.translation.x );
     } );
 
     this.sceneNode.render( undefined );
 
     this.scaleReadoutNodes.forEach( scaleReadoutNode => {
       scaleReadoutNode.translation = this.modelToViewPoint( scaleReadoutNode.mass.matrix.translation.toVector3().plus( Scale.SCALE_FRONT_OFFSET ) );
-    } );
-
-    this.forceDiagramNodes.forEach( forceDiagramNode => {
-      forceDiagramNode.update();
-
-      const mass = forceDiagramNode.mass;
-      const originPoint = this.modelToViewPoint( mass.matrix.translation.toVector3().plus( mass.forceOffsetProperty.value ) );
-
-      forceDiagramNode.matrix = Matrix3.rowMajor(
-        1, 0, originPoint.x,
-        0, 1, originPoint.y,
-        0, 0, 1
-      );
     } );
 
     this.massLabelNodes.forEach( massLabelNode => {

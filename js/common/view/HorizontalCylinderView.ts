@@ -9,24 +9,30 @@
 import Vector3 from '../../../../dot/js/Vector3.js';
 import TriangleArrayWriter from '../../../../mobius/js/TriangleArrayWriter.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
-import MassView, { ModelPoint3ToViewPoint2 } from './MassView.js';
+import { ModelPoint3ToViewPoint2 } from './MassView.js';
 import HorizontalCylinder from '../model/HorizontalCylinder.js';
 import { TAG_OFFSET } from './MassTagNode.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import Bounds3 from '../../../../dot/js/Bounds3.js';
+import MeasurableMassView from './MeasurableMassView.js';
 
 // constants
 const segments = 64;
 const numElements = 12 * segments;
 
-export default class HorizontalCylinderView extends MassView {
+export default class HorizontalCylinderView extends MeasurableMassView {
 
   public readonly horizontalCylinder: HorizontalCylinder;
   private readonly horizontalCylinderGeometry: THREE.BufferGeometry;
   private readonly updateListener: () => void;
 
   public constructor( horizontalCylinder: HorizontalCylinder, modelToViewPoint: ModelPoint3ToViewPoint2,
-                      dragBoundsProperty: TReadOnlyProperty<Bounds3> ) {
+                      dragBoundsProperty: TReadOnlyProperty<Bounds3>,
+                      showGravityForceProperty: TReadOnlyProperty<boolean>,
+                      showBuoyancyForceProperty: TReadOnlyProperty<boolean>,
+                      showContactForceProperty: TReadOnlyProperty<boolean>,
+                      showForceValuesProperty: TReadOnlyProperty<boolean>,
+                      forceScaleProperty: TReadOnlyProperty<number> ) {
 
     const positionArray = new Float32Array( numElements * 3 );
     const normalArray = new Float32Array( numElements * 3 );
@@ -39,7 +45,11 @@ export default class HorizontalCylinderView extends MassView {
     horizontalCylinderGeometry.addAttribute( 'normal', new THREE.BufferAttribute( normalArray, 3 ) );
     horizontalCylinderGeometry.addAttribute( 'uv', new THREE.BufferAttribute( uvArray, 2 ) );
 
-    super( horizontalCylinder, horizontalCylinderGeometry, modelToViewPoint, dragBoundsProperty );
+    super( horizontalCylinder, horizontalCylinderGeometry, modelToViewPoint, dragBoundsProperty, showGravityForceProperty,
+      showBuoyancyForceProperty,
+      showContactForceProperty,
+      showForceValuesProperty,
+      forceScaleProperty );
 
     const positionTag = () => {
       const radius = horizontalCylinder.radiusProperty.value;

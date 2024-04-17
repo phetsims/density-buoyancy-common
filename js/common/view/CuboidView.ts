@@ -9,7 +9,7 @@
 import Vector3 from '../../../../dot/js/Vector3.js';
 import TriangleArrayWriter from '../../../../mobius/js/TriangleArrayWriter.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
-import MassView, { ModelPoint3ToViewPoint2 } from './MassView.js';
+import { ModelPoint3ToViewPoint2 } from './MassView.js';
 import Cuboid from '../model/Cuboid.js';
 import Bounds3 from '../../../../dot/js/Bounds3.js';
 import { TAG_OFFSET } from './MassTagNode.js';
@@ -19,20 +19,26 @@ import { Path } from '../../../../scenery/js/imports.js';
 import { Shape } from '../../../../kite/js/imports.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import Material from '../model/Material.js';
+import MeasurableMassView from './MeasurableMassView.js';
 
 // constants
 const numElements = 18 * 3;
 
 const DEPTH_LINE_SECTIONS = 5;
 
-export default class CuboidView extends MassView {
+export default class CuboidView extends MeasurableMassView {
 
   private readonly depthLinesNode: Path;
 
   public constructor( cuboid: Cuboid,
                       modelToViewPoint: ModelPoint3ToViewPoint2,
                       dragBoundsProperty: TReadOnlyProperty<Bounds3>,
-                      showDepthLinesProperty: TReadOnlyProperty<boolean> ) {
+                      showDepthLinesProperty: TReadOnlyProperty<boolean>,
+                      showGravityForceProperty: TReadOnlyProperty<boolean>,
+                      showBuoyancyForceProperty: TReadOnlyProperty<boolean>,
+                      showContactForceProperty: TReadOnlyProperty<boolean>,
+                      showForceValuesProperty: TReadOnlyProperty<boolean>,
+                      forceScaleProperty: TReadOnlyProperty<number> ) {
     const size = cuboid.sizeProperty.value;
 
     const positionArray = new Float32Array( numElements * 3 );
@@ -46,7 +52,14 @@ export default class CuboidView extends MassView {
     cuboidGeometry.addAttribute( 'normal', new THREE.BufferAttribute( normalArray, 3 ) );
     cuboidGeometry.addAttribute( 'uv', new THREE.BufferAttribute( uvArray, 2 ) );
 
-    super( cuboid, cuboidGeometry, modelToViewPoint, dragBoundsProperty );
+    super( cuboid, cuboidGeometry, modelToViewPoint, dragBoundsProperty,
+
+      showGravityForceProperty,
+      showBuoyancyForceProperty,
+      showContactForceProperty,
+      showForceValuesProperty,
+      forceScaleProperty
+    );
 
     const positionTag = () => {
       const size = cuboid.sizeProperty.value;

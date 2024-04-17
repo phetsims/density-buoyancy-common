@@ -89,7 +89,6 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
 
   private readonly massDecorationLayer = new MassDecorationLayer();
 
-  // TODO: https://github.com/phetsims/buoyancy/issues/104 ok for this to be public?
   public readonly massViews: MassView[];
 
   private readonly debugView?: DebugView;
@@ -159,8 +158,6 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
 
     let mouse: Mouse | null = null;
 
-    // TODO: BackgroundEventTargetListeners wants to be able to set the mouse. Is there a better way to do it? See https://github.com/phetsims/buoyancy/issues/104
-    // TODO: Should this be an instance method on the prototype? And make mouse an instance variable? See https://github.com/phetsims/buoyancy/issues/104
     const updateCursor = ( newMouse?: Mouse ) => {
       mouse = newMouse || mouse;
       if ( mouse ) {
@@ -168,8 +165,15 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
       }
     };
 
-    // TODO: Is it awkward to use the `create` pattern? The input listener is not a class. See https://github.com/phetsims/buoyancy/issues/104
-    this.sceneNode.backgroundEventTarget.addInputListener( BackgroundEventTargetListener.create( this, updateCursor ) );
+    const listener = BackgroundEventTargetListener.create(
+      this.massViews,
+      this.getMassUnderPointer.bind( this ),
+      this.sceneNode.getRayFromScreenPoint.bind( this.sceneNode ),
+      ( point: Vector3 ) => this.localToGlobalPoint( this.modelToViewPoint( point ) ),
+      updateCursor,
+      this.tandem
+    );
+    this.sceneNode.backgroundEventTarget.addInputListener( listener );
 
     // On re-layout or zoom, update the cursor also
     // This instance lives for the lifetime of the simulation, so we don't need to remove these listeners

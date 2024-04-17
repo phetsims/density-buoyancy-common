@@ -10,8 +10,6 @@
 
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import { Mouse, SceneryEvent, TInputListener } from '../../../../scenery/js/imports.js';
-import DensityBuoyancyScreenView from './DensityBuoyancyScreenView.js';
-import DensityBuoyancyModel from '../model/DensityBuoyancyModel.js';
 import grabSoundPlayer from '../../../../tambo/js/shared-sound-players/grabSoundPlayer.js';
 import Plane3 from '../../../../dot/js/Plane3.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
@@ -22,16 +20,24 @@ import Mass from '../model/Mass.js';
 import PhetioAction from '../../../../tandem/js/PhetioAction.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import EventType from '../../../../tandem/js/EventType.js';
+import Tandem from '../../../../tandem/js/Tandem.js';
+import MassView from './MassView.js';
+import DensityBuoyancyScreenView from './DensityBuoyancyScreenView.js';
+import DensityBuoyancyModel from '../model/DensityBuoyancyModel.js';
+import ThreeIsometricNode from '../../../../mobius/js/ThreeIsometricNode.js';
 
 export default class BackgroundEventTargetListener {
-  public static create<Model extends DensityBuoyancyModel>( screenView: DensityBuoyancyScreenView<Model>, updateCursor: ( mouse: Mouse ) => void ): TInputListener {
+
+  // Using a "create" function here because that makes it easier to implement TInputListener
+  public static create( massViews: MassView[],
+                        getMassUnderPointer: DensityBuoyancyScreenView<DensityBuoyancyModel>['getMassUnderPointer'],
+                        getRayFromScreenPoint: ThreeIsometricNode['getRayFromScreenPoint'],
+                        modelToGlobalViewPoint: ( point: Vector3 ) => Vector2,
+                        updateCursor: ( mouse: Mouse ) => void,
+                        tandem: Tandem ): TInputListener {
 
     const draggedMasses: Mass[] = [];
 
-    // TODO: Should we pass this tandem as a top level parameter? See https://github.com/phetsims/buoyancy/issues/104
-    const tandem = screenView.tandem;
-
-    // TODO: OK to define the actions here like so? See https://github.com/phetsims/buoyancy/issues/104
     const startDragAction = new PhetioAction( ( mass: Mass, position: Vector2 ) => {
       mass.startDrag( position );
     }, {
@@ -78,8 +84,6 @@ export default class BackgroundEventTargetListener {
     } );
 
     return {
-
-      // TODO: For review, note I combined the mouseMove with the rest of the input listener. It seems OK in my testing. Please double check. See https://github.com/phetsims/buoyancy/issues/104
       mousemove: event => {
         assert && assert( event.pointer instanceof Mouse );
         updateCursor( event.pointer as Mouse );
@@ -89,7 +93,7 @@ export default class BackgroundEventTargetListener {
 
         const pointer = event.pointer;
         const isTouch = !( pointer instanceof Mouse );
-        const mass = screenView.getMassUnderPointer( pointer, isTouch );
+        const mass = getMassUnderPointer( pointer, isTouch );
 
         if ( mass && mass.canMove ) {
 
@@ -99,7 +103,7 @@ export default class BackgroundEventTargetListener {
 
           grabSoundPlayer.play();
 
-          const initialRay = screenView.sceneNode.getRayFromScreenPoint( pointer.point );
+          const initialRay = getRayFromScreenPoint( pointer.point );
           const initialT = mass.intersect( initialRay, isTouch );
           if ( initialT === null ) {
             return;
@@ -125,7 +129,7 @@ export default class BackgroundEventTargetListener {
             interrupt: endDrag,
 
             move: () => {
-              const ray = screenView.sceneNode.getRayFromScreenPoint( pointer.point );
+              const ray = getRayFromScreenPoint( pointer.point );
               const position = initialPlane.intersectWithRay( ray );
 
               updateDragAction.execute( mass, position.toVector2() );
@@ -133,18 +137,18 @@ export default class BackgroundEventTargetListener {
 
             createPanTargetBounds: () => {
               return draggedMasses.reduce( ( bounds: Bounds2, mass: Mass ): Bounds2 => {
-                const massView = _.find( screenView.massViews, massView => massView.mass === mass )!;
+                const massView = _.find( massViews, massView => massView.mass === mass )!;
                 const bbox = new THREE.Box3().setFromObject( massView.massMesh );
 
                 // Include all 8 corners of the bounding box
-                bounds = bounds.withPoint( screenView.localToGlobalPoint( screenView.modelToViewPoint( new Vector3( bbox.min.x, bbox.min.y, bbox.min.z ) ) ) );
-                bounds = bounds.withPoint( screenView.localToGlobalPoint( screenView.modelToViewPoint( new Vector3( bbox.min.x, bbox.min.y, bbox.max.z ) ) ) );
-                bounds = bounds.withPoint( screenView.localToGlobalPoint( screenView.modelToViewPoint( new Vector3( bbox.min.x, bbox.max.y, bbox.min.z ) ) ) );
-                bounds = bounds.withPoint( screenView.localToGlobalPoint( screenView.modelToViewPoint( new Vector3( bbox.min.x, bbox.max.y, bbox.max.z ) ) ) );
-                bounds = bounds.withPoint( screenView.localToGlobalPoint( screenView.modelToViewPoint( new Vector3( bbox.max.x, bbox.min.y, bbox.min.z ) ) ) );
-                bounds = bounds.withPoint( screenView.localToGlobalPoint( screenView.modelToViewPoint( new Vector3( bbox.max.x, bbox.min.y, bbox.max.z ) ) ) );
-                bounds = bounds.withPoint( screenView.localToGlobalPoint( screenView.modelToViewPoint( new Vector3( bbox.max.x, bbox.max.y, bbox.min.z ) ) ) );
-                bounds = bounds.withPoint( screenView.localToGlobalPoint( screenView.modelToViewPoint( new Vector3( bbox.max.x, bbox.max.y, bbox.max.z ) ) ) );
+                bounds = bounds.withPoint( modelToGlobalViewPoint( new Vector3( bbox.min.x, bbox.min.y, bbox.min.z ) ) );
+                bounds = bounds.withPoint( modelToGlobalViewPoint( new Vector3( bbox.min.x, bbox.min.y, bbox.max.z ) ) );
+                bounds = bounds.withPoint( modelToGlobalViewPoint( new Vector3( bbox.min.x, bbox.max.y, bbox.min.z ) ) );
+                bounds = bounds.withPoint( modelToGlobalViewPoint( new Vector3( bbox.min.x, bbox.max.y, bbox.max.z ) ) );
+                bounds = bounds.withPoint( modelToGlobalViewPoint( new Vector3( bbox.max.x, bbox.min.y, bbox.min.z ) ) );
+                bounds = bounds.withPoint( modelToGlobalViewPoint( new Vector3( bbox.max.x, bbox.min.y, bbox.max.z ) ) );
+                bounds = bounds.withPoint( modelToGlobalViewPoint( new Vector3( bbox.max.x, bbox.max.y, bbox.min.z ) ) );
+                bounds = bounds.withPoint( modelToGlobalViewPoint( new Vector3( bbox.max.x, bbox.max.y, bbox.max.z ) ) );
 
                 return bounds;
               }, Bounds2.NOTHING );

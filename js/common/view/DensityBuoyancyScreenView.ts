@@ -6,7 +6,6 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
-import PhetioAction from '../../../../tandem/js/PhetioAction.js';
 import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import DynamicProperty from '../../../../axon/js/DynamicProperty.js';
@@ -25,9 +24,8 @@ import arrayRemove from '../../../../phet-core/js/arrayRemove.js';
 import optionize from '../../../../phet-core/js/optionize.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import ResetAllButton from '../../../../scenery-phet/js/buttons/ResetAllButton.js';
-import { AlignBox, animatedPanZoomSingleton, Image, LinearGradient, Mouse, Node, Pointer, Rectangle, SceneryEvent, Text, TInputListener } from '../../../../scenery/js/imports.js';
+import { AlignBox, animatedPanZoomSingleton, Image, LinearGradient, Mouse, Node, Pointer, Rectangle, Text } from '../../../../scenery/js/imports.js';
 import Checkbox from '../../../../sun/js/Checkbox.js';
-import EventType from '../../../../tandem/js/EventType.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
 import Boat from '../../buoyancy/model/Boat.js';
 import BoatDesign from '../../buoyancy/model/BoatDesign.js';
@@ -60,8 +58,7 @@ import Material from '../model/Material.js';
 import TEmitter from '../../../../axon/js/TEmitter.js';
 import PickRequired from '../../../../phet-core/js/types/PickRequired.js';
 import { PhetioObjectOptions } from '../../../../tandem/js/PhetioObject.js';
-import grabSoundPlayer from '../../../../tambo/js/shared-sound-players/grabSoundPlayer.js';
-import releaseSoundPlayer from '../../../../tambo/js/shared-sound-players/releaseSoundPlayer.js';
+import BackgroundEventTargetListener from './BackgroundEventTargetListener.js';
 
 // constants
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
@@ -110,11 +107,8 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
 
   private readonly massDecorationLayer = new MassDecorationLayer();
 
-  private readonly massViews: MassView[];
-
-  private readonly startDragAction: PhetioAction<[ Mass, Vector2 ]>;
-  private readonly updateDragAction: PhetioAction<[ Mass, Vector2 ]>;
-  private readonly endDragAction: PhetioAction<[ Mass ]>;
+  // TODO: https://github.com/phetsims/buoyancy/issues/104 ok for this to be public?
+  public readonly massViews: MassView[];
 
   private readonly debugView?: DebugView;
 
@@ -181,150 +175,23 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
     this.sceneNode.stage.threeCamera.lookAt( ThreeUtils.vectorToThree( options.cameraLookAt ) );
 
     let mouse: Mouse | null = null;
-    const updateCursor = () => {
+
+    // TODO: BackgroundEventTargetListeners wants to be able to set the mouse. Is there a better way to do it? See https://github.com/phetsims/buoyancy/issues/104
+    // TODO: Should this be an instance method on the prototype? And make mouse an instance variable? See https://github.com/phetsims/buoyancy/issues/104
+    const updateCursor = ( newMouse?: Mouse ) => {
+      mouse = newMouse || mouse;
       if ( mouse ) {
         this.sceneNode.backgroundEventTarget.cursor = this.getMassUnderPointer( mouse, false ) ? 'pointer' : null;
       }
     };
-    this.sceneNode.backgroundEventTarget.addInputListener( {
-      mousemove: event => {
-        assert && assert( event.pointer instanceof Mouse );
-        mouse = event.pointer as Mouse;
-        updateCursor();
-      }
-    } );
+
+    // TODO: Is it awkward to use the `create` pattern? The input listener is not a class. See https://github.com/phetsims/buoyancy/issues/104
+    this.sceneNode.backgroundEventTarget.addInputListener( BackgroundEventTargetListener.create( this, updateCursor ) );
+
     // On re-layout or zoom, update the cursor also
     // This instance lives for the lifetime of the simulation, so we don't need to remove these listeners
     this.transformEmitter.addListener( updateCursor );
-    animatedPanZoomSingleton.listener.matrixProperty.lazyLink( updateCursor );
-
-    this.startDragAction = new PhetioAction( ( mass: Mass, position: Vector2 ) => {
-      mass.startDrag( position );
-    }, {
-      tandem: tandem.createTandem( 'startDragAction' ),
-      phetioDocumentation: 'Starts the dragging of a mass',
-      phetioReadOnly: true,
-      phetioEventType: EventType.USER,
-      parameters: [ {
-        name: 'mass',
-        phetioType: Mass.MassIO
-      }, {
-        name: 'position',
-        phetioType: Vector2.Vector2IO
-      } ]
-    } );
-
-    this.updateDragAction = new PhetioAction( ( mass: Mass, position: Vector2 ) => {
-      mass.updateDrag( position );
-    }, {
-      tandem: tandem.createTandem( 'updateDragAction' ),
-      phetioDocumentation: 'Continues the dragging of a mass',
-      phetioReadOnly: true,
-      phetioEventType: EventType.USER,
-      parameters: [ {
-        name: 'mass',
-        phetioType: Mass.MassIO
-      }, {
-        name: 'position',
-        phetioType: Vector2.Vector2IO
-      } ]
-    } );
-
-    this.endDragAction = new PhetioAction( ( mass: Mass ) => {
-      mass.endDrag();
-    }, {
-      tandem: tandem.createTandem( 'endDragAction' ),
-      phetioDocumentation: 'Continues the dragging of a mass',
-      phetioReadOnly: true,
-      phetioEventType: EventType.USER,
-      parameters: [ {
-        name: 'mass',
-        phetioType: Mass.MassIO
-      } ]
-    } );
-
-    const draggedMasses: Mass[] = [];
-
-    this.sceneNode.backgroundEventTarget.addInputListener( {
-      down: ( event: SceneryEvent<MouseEvent | TouchEvent | PointerEvent> ) => {
-        if ( !event.canStartPress() ) { return; }
-
-        const pointer = event.pointer;
-        const isTouch = !( pointer instanceof Mouse );
-        const mass = this.getMassUnderPointer( pointer, isTouch );
-
-        if ( mass && mass.canMove ) {
-
-          // Newer interactions take precedent, so clean up any old ones first. This also makes mouse/keyboard
-          // cross-interaction much simpler.
-          mass.interruptedEmitter.emit();
-
-          grabSoundPlayer.play();
-
-          const initialRay = this.sceneNode.getRayFromScreenPoint( pointer.point );
-          const initialT = mass.intersect( initialRay, isTouch );
-          if ( initialT === null ) {
-            return;
-          }
-          const initialPosition = initialRay.pointAtDistance( initialT );
-          const initialPlane = new Plane3( Vector3.Z_UNIT, initialPosition.z );
-
-          this.startDragAction.execute( mass, initialPosition.toVector2() );
-          pointer.cursor = 'pointer';
-
-          const endDrag = () => {
-            pointer.removeInputListener( listener );
-            arrayRemove( draggedMasses, mass );
-            mass.interruptedEmitter.removeListener( endDrag );
-            pointer.cursor = null;
-            releaseSoundPlayer.play();
-            this.endDragAction.execute( mass );
-          };
-          const listener = {
-            // end drag on either up or cancel (not supporting full cancel behavior)
-            up: endDrag,
-            cancel: endDrag,
-            interrupt: endDrag,
-
-            move: () => {
-              const ray = this.sceneNode.getRayFromScreenPoint( pointer.point );
-              const position = initialPlane.intersectWithRay( ray );
-
-              this.updateDragAction.execute( mass, position.toVector2() );
-            },
-
-            createPanTargetBounds: () => {
-              return draggedMasses.reduce( ( bounds: Bounds2, mass: Mass ): Bounds2 => {
-                const massView = _.find( this.massViews, massView => massView.mass === mass )!;
-                const bbox = new THREE.Box3().setFromObject( massView );
-
-                // Include all 8 corners of the bounding box
-                bounds = bounds.withPoint( this.localToGlobalPoint( this.modelToViewPoint( new Vector3( bbox.min.x, bbox.min.y, bbox.min.z ) ) ) );
-                bounds = bounds.withPoint( this.localToGlobalPoint( this.modelToViewPoint( new Vector3( bbox.min.x, bbox.min.y, bbox.max.z ) ) ) );
-                bounds = bounds.withPoint( this.localToGlobalPoint( this.modelToViewPoint( new Vector3( bbox.min.x, bbox.max.y, bbox.min.z ) ) ) );
-                bounds = bounds.withPoint( this.localToGlobalPoint( this.modelToViewPoint( new Vector3( bbox.min.x, bbox.max.y, bbox.max.z ) ) ) );
-                bounds = bounds.withPoint( this.localToGlobalPoint( this.modelToViewPoint( new Vector3( bbox.max.x, bbox.min.y, bbox.min.z ) ) ) );
-                bounds = bounds.withPoint( this.localToGlobalPoint( this.modelToViewPoint( new Vector3( bbox.max.x, bbox.min.y, bbox.max.z ) ) ) );
-                bounds = bounds.withPoint( this.localToGlobalPoint( this.modelToViewPoint( new Vector3( bbox.max.x, bbox.max.y, bbox.min.z ) ) ) );
-                bounds = bounds.withPoint( this.localToGlobalPoint( this.modelToViewPoint( new Vector3( bbox.max.x, bbox.max.y, bbox.max.z ) ) ) );
-
-                return bounds;
-              }, Bounds2.NOTHING );
-            }
-          };
-          pointer.reserveForDrag();
-          pointer.addInputListener( listener, true );
-          draggedMasses.push( mass );
-
-          mass.interruptedEmitter.addListener( endDrag );
-        }
-      },
-
-      // Support interruption by subtree
-      interrupt: () => {
-        draggedMasses.slice().forEach( mass => mass.interruptedEmitter.emit() );
-      }
-    } as TInputListener );
+    animatedPanZoomSingleton.listener.matrixProperty.lazyLink( () => updateCursor() );
 
     const ambientLight = new THREE.AmbientLight( 0x333333 );
     this.sceneNode.stage.threeScene.add( ambientLight );

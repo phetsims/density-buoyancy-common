@@ -10,7 +10,7 @@ import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import DynamicProperty from '../../../../axon/js/DynamicProperty.js';
 import Property from '../../../../axon/js/Property.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
-import { AlignBox, HBox, VBox } from '../../../../scenery/js/imports.js';
+import { AlignBox, VBox } from '../../../../scenery/js/imports.js';
 import Panel from '../../../../sun/js/Panel.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 import Material from '../../common/model/Material.js';
@@ -69,16 +69,7 @@ export default class BuoyancyShapesScreenView extends DensityBuoyancyScreenView<
       tandem: tandem.createTandem( 'densityControlNode' )
     } ), DensityBuoyancyCommonConstants.PANEL_OPTIONS );
 
-    this.addChild( new AlignBox( new HBox( {
-      spacing: 2 * MARGIN,
-      align: 'bottom',
-      children: [
-        densityControlPanel,
-        new BlocksRadioButtonGroup( model.modeProperty, {
-          tandem: this.tandem.createTandem( 'blocksRadioButtonGroup' )
-        } )
-      ]
-    } ), {
+    this.addChild( new AlignBox( densityControlPanel, {
       alignBoundsProperty: this.visibleBoundsProperty,
       xAlign: 'center',
       yAlign: 'bottom',
@@ -190,6 +181,15 @@ export default class BuoyancyShapesScreenView extends DensityBuoyancyScreenView<
       yAlign: 'top',
       margin: MARGIN
     } ) );
+
+    const blocksRadioButtonGroup = new BlocksRadioButtonGroup( model.modeProperty, {
+      tandem: this.tandem.createTandem( 'blocksRadioButtonGroup' )
+    } );
+
+    blocksRadioButtonGroup.left = rightSideVBox.left;
+    blocksRadioButtonGroup.bottom = densityControlPanel.bottom;
+
+    this.addChild( blocksRadioButtonGroup );
 
     // DerivedProperty doesn't need disposal, since everything here lives for the lifetime of the simulation
     this.rightBarrierViewPointPropertyProperty.value = new DerivedProperty( [ rightSideVBox.boundsProperty, this.visibleBoundsProperty ], ( boxBounds, visibleBounds ) => {

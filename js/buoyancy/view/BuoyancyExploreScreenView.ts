@@ -9,7 +9,7 @@
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import { combineOptions } from '../../../../phet-core/js/optionize.js';
-import { AlignBox, HBox, VBox } from '../../../../scenery/js/imports.js';
+import { AlignBox, VBox } from '../../../../scenery/js/imports.js';
 import Panel from '../../../../sun/js/Panel.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 import Material from '../../common/model/Material.js';
@@ -58,30 +58,6 @@ export default class BuoyancyExploreScreenView extends DensityBuoyancyScreenView
     const invisibleMaterials = [ ...DensityBuoyancyCommonConstants.BUOYANCY_FLUID_MYSTERY_MATERIALS ];
     displayedMysteryMaterials.forEach( displayed => arrayRemove( invisibleMaterials, displayed ) );
 
-    const bottomNode = new HBox( {
-      spacing: 2 * MARGIN,
-      align: 'bottom',
-      children: [
-        new Panel( new FluidDensityControlNode( model.liquidMaterialProperty, [
-          ...DensityBuoyancyCommonConstants.BUOYANCY_FLUID_MATERIALS,
-          ...DensityBuoyancyCommonConstants.BUOYANCY_FLUID_MYSTERY_MATERIALS
-        ], this.popupLayer, {
-          invisibleMaterials: invisibleMaterials,
-          tandem: tandem.createTandem( 'densityControlNode' )
-        } ), DensityBuoyancyCommonConstants.PANEL_OPTIONS ),
-        new BlocksRadioButtonGroup( model.modeProperty, {
-          tandem: this.tandem.createTandem( 'blocksRadioButtonGroup' )
-        } )
-      ]
-    } );
-
-    this.addChild( new AlignBox( bottomNode, {
-      alignBoundsProperty: this.visibleBoundsProperty,
-      xAlign: 'center',
-      yAlign: 'bottom',
-      margin: MARGIN
-    } ) );
-
     this.rightBox = new PrimarySecondaryControlsNode(
       model.primaryMass,
       model.secondaryMass,
@@ -93,6 +69,21 @@ export default class BuoyancyExploreScreenView extends DensityBuoyancyScreenView
         mysteryMaterials: [ Material.MATERIAL_X, Material.MATERIAL_Y ]
       }
     );
+
+    const densityControlPanel = new Panel( new FluidDensityControlNode( model.liquidMaterialProperty, [
+      ...DensityBuoyancyCommonConstants.BUOYANCY_FLUID_MATERIALS,
+      ...DensityBuoyancyCommonConstants.BUOYANCY_FLUID_MYSTERY_MATERIALS
+    ], this.popupLayer, {
+      invisibleMaterials: invisibleMaterials,
+      tandem: tandem.createTandem( 'densityControlNode' )
+    } ), DensityBuoyancyCommonConstants.PANEL_OPTIONS );
+
+    this.addChild( new AlignBox( densityControlPanel, {
+      alignBoundsProperty: this.visibleBoundsProperty,
+      xAlign: 'center',
+      yAlign: 'bottom',
+      margin: MARGIN
+    } ) );
 
     [ model.primaryMass, model.secondaryMass ].forEach( mass => {
       mass.materialProperty.link( material => {
@@ -158,6 +149,15 @@ export default class BuoyancyExploreScreenView extends DensityBuoyancyScreenView
       yAlign: 'top',
       margin: MARGIN
     } ) );
+
+    const blocksRadioButtonGroup = new BlocksRadioButtonGroup( model.modeProperty, {
+      tandem: this.tandem.createTandem( 'blocksRadioButtonGroup' )
+    } );
+
+    blocksRadioButtonGroup.left = rightSideVBox.left;
+    blocksRadioButtonGroup.bottom = densityControlPanel.bottom;
+
+    this.addChild( blocksRadioButtonGroup );
 
     // DerivedProperty doesn't need disposal, since everything here lives for the lifetime of the simulation
     this.rightBarrierViewPointPropertyProperty.value = new DerivedProperty( [ rightSideVBox.boundsProperty, this.visibleBoundsProperty ], ( boxBounds, visibleBounds ) => {

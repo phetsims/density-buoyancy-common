@@ -17,7 +17,7 @@ import resetArrow_png from '../../../../scenery-phet/images/resetArrow_png.js';
 import NumberControl, { NumberControlOptions } from '../../../../scenery-phet/js/NumberControl.js';
 import NumberDisplay from '../../../../scenery-phet/js/NumberDisplay.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
-import { AlignBox, Color, HBox, HSeparator, Image, ManualConstraint, Node, Text, VBox } from '../../../../scenery/js/imports.js';
+import { AlignBox, Color, HBox, HSeparator, Image, Node, Text, VBox } from '../../../../scenery/js/imports.js';
 import RectangularPushButton from '../../../../sun/js/buttons/RectangularPushButton.js';
 import RectangularRadioButtonGroup from '../../../../sun/js/buttons/RectangularRadioButtonGroup.js';
 import Panel from '../../../../sun/js/Panel.js';
@@ -45,7 +45,7 @@ import SubmergedAccordionBox from './SubmergedAccordionBox.js';
 
 // constants
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
-const ICON_SCALE = 0.1;
+const ICON_SCALE = 0.08;
 const ICON_IMAGE_SCALE = new Vector2( ICON_SCALE, -ICON_SCALE );
 
 
@@ -265,21 +265,6 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
     const invisibleMaterials = [ ...DensityBuoyancyCommonConstants.BUOYANCY_FLUID_MYSTERY_MATERIALS ];
     displayedMysteryMaterials.forEach( displayed => arrayRemove( invisibleMaterials, displayed ) );
 
-    const densityControlPanel = new Panel( new FluidDensityControlNode( model.liquidMaterialProperty, [
-      ...DensityBuoyancyCommonConstants.BUOYANCY_FLUID_MATERIALS,
-      ...DensityBuoyancyCommonConstants.BUOYANCY_FLUID_MYSTERY_MATERIALS
-    ], this.popupLayer, {
-      invisibleMaterials: invisibleMaterials,
-      tandem: tandem.createTandem( 'densityControlNode' )
-    } ), DensityBuoyancyCommonConstants.PANEL_OPTIONS );
-
-    this.addChild( new AlignBox( densityControlPanel, {
-      alignBoundsProperty: this.visibleBoundsProperty,
-      xAlign: 'center',
-      yAlign: 'bottom',
-      margin: MARGIN
-    } ) );
-
     const displayOptionsNode = new BuoyancyDisplayOptionsNode( model );
 
     model.sceneProperty.link( scene => {
@@ -331,20 +316,35 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
       radioButtonOptions: {
         baseColor: DensityBuoyancyCommonColors.radioBackgroundColorProperty,
         xMargin: 10,
-        yMargin: 10,
-        buttonAppearanceStrategyOptions: {
-          selectedLineWidth: 2,
-          deselectedLineWidth: 1.5,
-          selectedStroke: DensityBuoyancyCommonColors.radioBorderColorProperty
-        }
+        yMargin: 10
+        // buttonAppearanceStrategyOptions: {
+        //   selectedLineWidth: 2,
+        //   deselectedLineWidth: 1.5,
+        //   selectedStroke: DensityBuoyancyCommonColors.radioBorderColorProperty
+        // }
       }
     } );
-    this.addChild( bottleBoatSelectionNode );
 
-    ManualConstraint.create( this, [ densityControlPanel, bottleBoatSelectionNode ], ( panelWrapper, selectionWrapper ) => {
-      selectionWrapper.bottom = panelWrapper.bottom;
-      selectionWrapper.left = panelWrapper.right + MARGIN;
-    } );
+    const densityControlPanel = new Panel( new FluidDensityControlNode( model.liquidMaterialProperty, [
+      ...DensityBuoyancyCommonConstants.BUOYANCY_FLUID_MATERIALS,
+      ...DensityBuoyancyCommonConstants.BUOYANCY_FLUID_MYSTERY_MATERIALS
+    ], this.popupLayer, {
+      invisibleMaterials: invisibleMaterials,
+      tandem: tandem.createTandem( 'densityControlNode' )
+    } ), DensityBuoyancyCommonConstants.PANEL_OPTIONS );
+
+    this.addChild( new AlignBox( densityControlPanel, {
+      alignBoundsProperty: this.visibleBoundsProperty,
+      xAlign: 'center',
+      yAlign: 'bottom',
+      margin: MARGIN
+    } ) );
+
+    // TODO is this correct positional behavior?? https://github.com/phetsims/buoyancy/issues/133
+    bottleBoatSelectionNode.left = rightSideVBox.left;
+    bottleBoatSelectionNode.bottom = densityControlPanel.bottom;
+
+    this.addChild( bottleBoatSelectionNode );
 
     this.addChild( this.popupLayer );
   }

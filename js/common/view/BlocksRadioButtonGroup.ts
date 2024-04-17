@@ -24,6 +24,8 @@ import DensityBuoyancyCommonColors from './DensityBuoyancyCommonColors.js';
 const aMaterial = new THREE.MeshLambertMaterial();
 const bMaterial = new THREE.MeshLambertMaterial();
 
+const ICON_SCALE = 0.15;
+
 // These live for the lifetime of the simulation, so we don't need to remove this listener
 DensityBuoyancyCommonColors.labelPrimaryProperty.link( labelColor => {
   aMaterial.color = ThreeUtils.colorToThree( labelColor );
@@ -159,7 +161,7 @@ export default class BlocksRadioButtonGroup extends RectangularRadioButtonGroup<
       } );
     }
     else {
-      return new Image( singleCuboidIcon_png, { scale: 0.2 } );
+      return new Image( singleCuboidIcon_png, { scale: ICON_SCALE } );
     }
   }
 
@@ -174,7 +176,7 @@ export default class BlocksRadioButtonGroup extends RectangularRadioButtonGroup<
       } );
     }
     else {
-      return new Image( doubleCuboidIcon_png, { scale: 0.2 } );
+      return new Image( doubleCuboidIcon_png, { scale: ICON_SCALE } );
     }
   }
 }

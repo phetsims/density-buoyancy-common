@@ -18,7 +18,7 @@ import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 
 // Constant for MassView subtypes to use to consistently offset their tag on their shape
-export const TAG_OFFSET = MASS_MIN_SHAPES_DIMENSION / 20; // TODO: delete? https://github.com/phetsims/density-buoyancy-common/issues/112
+export const TAG_OFFSET = MASS_MIN_SHAPES_DIMENSION / 20; // TODO: delete? https://github.com/phetsims/density-buoyancy-common/issues/113
 
 // Calculated by comparing the original label rectangle size when providing primary/secondary tags
 const horizontalMargin = 14;

@@ -185,11 +185,7 @@ export default abstract class MassView extends THREE.Mesh {
    */
   public decorate( decorationLayer: MassDecorationLayer ): void {
 
-    if ( this.massTagNode ) {
-      decorationLayer.massTagsLayer.addChild( this.massTagNode );
-    }
-
-    // TODO: at some point will have force vectors? No. It will be in the subtype called "ExperimentalMassView extends MassView. https://github.com/phetsims/density-buoyancy-common/issues/111
+    this.massTagNode && decorationLayer.massTagsLayer.addChild( this.massTagNode );
   }
 
   /**

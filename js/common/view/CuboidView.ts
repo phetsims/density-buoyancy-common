@@ -135,9 +135,10 @@ export default class CuboidView extends MeasurableMassView {
   }
 
   public override decorate( massDecorationLayer: MassDecorationLayer ): void {
+    super.decorate( massDecorationLayer );
+
     massDecorationLayer.depthLinesLayer.addChild( this.depthLinesNode );
     this.disposeEmitter.addListener( () => massDecorationLayer.depthLinesLayer.removeChild( this.depthLinesNode ) );
-    super.decorate( massDecorationLayer );
   }
 
   /**

@@ -25,6 +25,7 @@ import PatternStringProperty from '../../../../axon/js/PatternStringProperty.js'
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import Material from '../../common/model/Material.js';
 import DynamicProperty from '../../../../axon/js/DynamicProperty.js';
+import BuoyancyLabScreenView from './BuoyancyLabScreenView.js';
 
 type SelfOptions = EmptySelfOptions;
 
@@ -37,7 +38,6 @@ export default class FluidDisplacedPanel extends MultiSectionPanelsNode {
 
   public constructor( poolVolumeProperty: TReadOnlyProperty<number>,
                       maxBeakerVolume: number,
-                      scaleIcon: Node,
                       liquidMaterialProperty: TReadOnlyProperty<Material>,
                       gravityProperty: TReadOnlyProperty<Gravity>,
                       providedOptions?: FluidDisplacedPanelOptions ) {
@@ -110,6 +110,7 @@ export default class FluidDisplacedPanel extends MultiSectionPanelsNode {
         newtons: 2
       }
     } );
+    const scaleIcon = BuoyancyLabScreenView.getFluidDisplacedPanelScaleIcon();
     const forceReadout = new RichText( readoutStringProperty, {
       font: new PhetFont( {
         size: 16,
@@ -144,6 +145,48 @@ export default class FluidDisplacedPanel extends MultiSectionPanelsNode {
         } )
       ]
     } ) ], options );
+  }
+
+  /**
+   * Create an icon which can be used for the Lab screen home screen and navigation bar icons.
+   * NOTE: observe the duplication with the code above, this will allow us to adjust the icon independently of
+   * the in-simulation representation. Once the design is finalized, we can remove duplication.
+   * TODO: see https://github.com/phetsims/buoyancy/issues/48
+   */
+  public static createIcon(): Node {
+
+    const scaleIcon = BuoyancyLabScreenView.getFluidDisplacedPanelScaleIcon();
+    scaleIcon.scale( 1.8 );
+
+    const forceReadout = new Text( 'N', {
+      font: new PhetFont( {
+        size: 16,
+        weight: 'bold'
+      } ),
+      maxWidth: scaleIcon.width * 0.8 // margins on the scale, and the icon goes beyond the actual scale, see https://github.com/phetsims/density-buoyancy-common/issues/108
+    } );
+
+    const beakerNode = new BeakerNode( new NumberProperty( 0.2, {
+      range: new Range( 0, 1 )
+    } ), {
+      solutionFill: Material.WATER.liquidColor,
+      lineWidth: 1,
+      beakerHeight: CONTENT_WIDTH * 0.55,
+      beakerWidth: CONTENT_WIDTH,
+      yRadiusOfEnds: CONTENT_WIDTH * 0.12,
+      ticksVisible: true,
+      numberOfTicks: 9, // The top is the 10th tick mark
+      majorTickMarkModulus: 5
+    } );
+
+    scaleIcon.top = beakerNode.bottom - 30;
+    scaleIcon.centerX = beakerNode.centerX;
+    forceReadout.centerY = scaleIcon.bottom - 13;
+    forceReadout.centerX = beakerNode.centerX;
+
+    return new Node( {
+      children: [ scaleIcon, beakerNode, forceReadout ]
+    } );
   }
 }
 

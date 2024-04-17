@@ -14,18 +14,35 @@ import MassView, { ModelPoint3ToViewPoint2 } from './MassView.js';
 import VerticalCylinderView from './VerticalCylinderView.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import Bounds3 from '../../../../dot/js/Bounds3.js';
+import { MassDecorationLayer } from './DensityBuoyancyScreenView.js';
+import ScaleReadoutNode from './ScaleReadoutNode.js';
+import Gravity from '../model/Gravity.js';
 
 export default class ScaleView extends MassView {
 
   private readonly scaleGeometry: THREE.BufferGeometry;
+  private readonly scaleReadoutNode: ScaleReadoutNode;
 
-  public constructor( mass: Scale, modelToViewPoint: ModelPoint3ToViewPoint2, dragBoundsProperty: TReadOnlyProperty<Bounds3> ) {
+  public constructor( mass: Scale, modelToViewPoint: ModelPoint3ToViewPoint2, dragBoundsProperty: TReadOnlyProperty<Bounds3>,
+                      gravityProperty: TReadOnlyProperty<Gravity> ) {
 
     const scaleGeometry = ScaleView.getScaleGeometry();
-
     super( mass, scaleGeometry, modelToViewPoint, dragBoundsProperty );
 
     this.scaleGeometry = scaleGeometry;
+    this.scaleReadoutNode = new ScaleReadoutNode( mass, gravityProperty );
+  }
+
+  public override decorate( decorationLayer: MassDecorationLayer ): void {
+    super.decorate( decorationLayer );
+
+    decorationLayer.scaleReadoutLayer.addChild( this.scaleReadoutNode );
+  }
+
+  public override step( dt: number ): void {
+    super.step( dt );
+
+    this.scaleReadoutNode.translation = this.modelToViewPoint( this.scaleReadoutNode.mass.matrix.translation.toVector3().plus( Scale.SCALE_FRONT_OFFSET ) );
   }
 
   /**
@@ -35,6 +52,8 @@ export default class ScaleView extends MassView {
     this.scaleGeometry.dispose();
 
     super.dispose();
+
+    this.scaleReadoutNode.dispose();
   }
 
   /**

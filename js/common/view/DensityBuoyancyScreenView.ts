@@ -50,7 +50,6 @@ import DebugView from './DebugView.js';
 import DensityBuoyancyCommonColors from './DensityBuoyancyCommonColors.js';
 import EllipsoidView from './EllipsoidView.js';
 import HorizontalCylinderView from './HorizontalCylinderView.js';
-import ScaleReadoutNode from './ScaleReadoutNode.js';
 import ScaleView from './ScaleView.js';
 import VerticalCylinderView from './VerticalCylinderView.js';
 import WaterLevelIndicator from './WaterLevelIndicator.js';
@@ -83,12 +82,14 @@ export class MassDecorationLayer extends Node {
 
   public readonly forceDiagramLayer = new Node();
   public readonly massLabelLayer = new Node();
+  public readonly scaleReadoutLayer = new Node();
 
   public constructor() {
     super();
     this.addChild( this.depthLinesLayer ); // Depth lines need to be behind everything else.
     this.addChild( this.massTagsLayer );
     this.addChild( this.forceDiagramLayer );
+    this.addChild( this.scaleReadoutLayer );
     this.addChild( this.massLabelLayer );
   }
 }
@@ -108,10 +109,8 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
   public readonly sceneNode: ThreeIsometricNode;
 
   private readonly massDecorationLayer = new MassDecorationLayer();
-  private readonly scaleReadoutLayer: Node;
 
   private readonly massViews: MassView[];
-  private readonly scaleReadoutNodes: ScaleReadoutNode[];
 
   private readonly startDragAction: PhetioAction<[ Mass, Vector2 ]>;
   private readonly updateDragAction: PhetioAction<[ Mass, Vector2 ]>;
@@ -174,12 +173,7 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
 
     this.addChild( this.massDecorationLayer );
 
-    this.scaleReadoutLayer = new Node();
-    this.addChild( this.scaleReadoutLayer );
-
     this.massViews = [];
-
-    this.scaleReadoutNodes = [];
 
     this.sceneNode.stage.threeCamera.zoom = options.cameraZoom;
     this.sceneNode.stage.threeCamera.updateProjectionMatrix();
@@ -627,7 +621,7 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
           model.showForceValuesProperty, model.forceScaleProperty, model.showMassesProperty );
       }
       else if ( mass instanceof Scale ) {
-        massView = new ScaleView( mass, boundModelToViewPoint, dragBoundsProperty );
+        massView = new ScaleView( mass, boundModelToViewPoint, dragBoundsProperty, model.gravityProperty );
       }
       else if ( mass instanceof Cone ) {
         massView = new ConeView( mass, boundModelToViewPoint, dragBoundsProperty, model.showGravityForceProperty,
@@ -665,16 +659,6 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
       this.massViews.push( massView );
       massView.focusablePath && this.sceneNode.backgroundEventTarget.addChild( massView.focusablePath );
       massView.decorate( this.massDecorationLayer );
-
-      if ( massView instanceof ScaleView ) {
-
-        // eslint-disable-next-line no-simple-type-checking-assertions
-        assert && assert( mass instanceof Scale );
-
-        const scaleReadoutNode = new ScaleReadoutNode( mass as Scale, model.gravityProperty );
-        this.scaleReadoutLayer.addChild( scaleReadoutNode );
-        this.scaleReadoutNodes.push( scaleReadoutNode );
-      }
     };
     model.masses.addItemAddedListener( onMassAdded );
     model.masses.forEach( onMassAdded );
@@ -687,13 +671,6 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
       this.sceneNode.stage.threeScene.remove( massView );
       arrayRemove( this.massViews, massView );
       massView.dispose();
-
-      if ( massView instanceof ScaleView ) {
-        const scaleReadoutNode = _.find( this.scaleReadoutNodes, scaleReadoutNode => scaleReadoutNode.mass === mass )!;
-        this.scaleReadoutLayer.removeChild( scaleReadoutNode );
-        arrayRemove( this.scaleReadoutNodes, scaleReadoutNode );
-        scaleReadoutNode.dispose();
-      }
     };
     model.masses.addItemRemovedListener( onMassRemoved );
 
@@ -857,10 +834,6 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
     } );
 
     this.sceneNode.render( undefined );
-
-    this.scaleReadoutNodes.forEach( scaleReadoutNode => {
-      scaleReadoutNode.translation = this.modelToViewPoint( scaleReadoutNode.mass.matrix.translation.toVector3().plus( Scale.SCALE_FRONT_OFFSET ) );
-    } );
 
     this.debugView && this.debugView.step( dt );
   }

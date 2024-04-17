@@ -134,7 +134,7 @@ export default class BackgroundEventTargetListener {
             createPanTargetBounds: () => {
               return draggedMasses.reduce( ( bounds: Bounds2, mass: Mass ): Bounds2 => {
                 const massView = _.find( screenView.massViews, massView => massView.mass === mass )!;
-                const bbox = new THREE.Box3().setFromObject( massView );
+                const bbox = new THREE.Box3().setFromObject( massView.massMesh );
 
                 // Include all 8 corners of the bounding box
                 bounds = bounds.withPoint( screenView.localToGlobalPoint( screenView.modelToViewPoint( new Vector3( bbox.min.x, bbox.min.y, bbox.min.z ) ) ) );

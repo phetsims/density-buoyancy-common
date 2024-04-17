@@ -505,7 +505,7 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
       }
       assert && assert( !!massView, `massView is falsy, mass: ${mass.constructor.name}` );
 
-      this.sceneNode.stage.threeScene.add( massView );
+      this.sceneNode.stage.threeScene.add( massView.massMesh );
       this.massViews.push( massView );
       massView.focusablePath && this.sceneNode.backgroundEventTarget.addChild( massView.focusablePath );
       massView.decorate( this.massDecorationLayer );
@@ -518,7 +518,7 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
       const massView = _.find( this.massViews, massView => massView.mass === mass )!;
 
       // Remove the mass view
-      this.sceneNode.stage.threeScene.remove( massView );
+      this.sceneNode.stage.threeScene.remove( massView.massMesh );
       arrayRemove( this.massViews, massView );
       massView.dispose();
     };
@@ -685,7 +685,7 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
     assert && this.massViews.forEach( massView => {
       massView.step( dt );
 
-      assert && assert( massView.position.x === massView.mass.matrix.translation.x );
+      assert && assert( massView.massMesh.position.x === massView.mass.matrix.translation.x );
     } );
 
     this.sceneNode.render( undefined );

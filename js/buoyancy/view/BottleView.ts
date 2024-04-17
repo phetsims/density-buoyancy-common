@@ -50,7 +50,7 @@ export default class BottleView extends MeasurableMassView {
     const bottleDrawingData = BottleView.getBottleDrawingData( bottomClipPlane, topClipPlane );
 
     const bottleGroup = bottleDrawingData.group;
-    this.add( bottleGroup );
+    this.massMesh.add( bottleGroup );
 
     const crossSectionPositionArray = Bottle.createCrossSectionVertexArray();
     const crossSectionNormalArray = new Float32Array( crossSectionPositionArray.length );

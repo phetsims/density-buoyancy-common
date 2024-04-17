@@ -67,7 +67,7 @@ export default class BoatView extends MeasurableMassView {
     );
 
     const boatGroup = boatDrawingData.group;
-    this.add( boatGroup );
+    this.massMesh.add( boatGroup );
 
     boat.displacementVolumeProperty.link( volume => {
       const scale = Math.pow( volume / 0.001, 1 / 3 );
@@ -92,7 +92,7 @@ export default class BoatView extends MeasurableMassView {
       depthWrite: false
     } );
     const topLiquid = new THREE.Mesh( topLiquidGeometry, topLiquidMaterial );
-    this.add( topLiquid );
+    this.massMesh.add( topLiquid );
 
     this.liquidMultilink = Multilink.multilink( [
       boat.basin.liquidYInterpolatedProperty,

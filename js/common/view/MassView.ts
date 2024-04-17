@@ -10,9 +10,6 @@ import Property from '../../../../axon/js/Property.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import Mass from '../model/Mass.js';
-import Material from '../model/Material.js';
-import DensityMaterials from './DensityMaterials.js';
-import MaterialView from './MaterialView.js';
 import { InteractiveHighlighting, KeyboardDragListener, Node, Path } from '../../../../scenery/js/imports.js';
 import { Shape } from '../../../../kite/js/imports.js';
 import MassTagNode from './MassTagNode.js';
@@ -25,24 +22,19 @@ import Tandem from '../../../../tandem/js/Tandem.js';
 import grabSoundPlayer from '../../../../tambo/js/shared-sound-players/grabSoundPlayer.js';
 import releaseSoundPlayer from '../../../../tambo/js/shared-sound-players/releaseSoundPlayer.js';
 import Disposable from '../../../../axon/js/Disposable.js';
-import { TReadOnlyEmitter } from '../../../../axon/js/TEmitter.js';
 import MassTag from '../model/MassTag.js';
 import MassDecorationLayer from './MassDecorationLayer.js';
+import MassThreeMesh from './MassThreeMesh.js';
 
 export type ModelPoint3ToViewPoint2 = ( point: Vector3 ) => Vector2;
 
 const INVERT_Y_TRANSFORM = ModelViewTransform2.createSinglePointScaleInvertedYMapping( Vector2.ZERO, Vector2.ZERO, 1 );
 
-// TODO: It would be clearer if the class that extends "Mesh" was named as such, and composed in the class, https://github.com/phetsims/buoyancy/issues/117
-export default abstract class MassView extends THREE.Mesh {
-
-  // TODO: once we change the supertype to compose, please extend Disposable, https://github.com/phetsims/buoyancy/issues/117
-  private disposable = new Disposable();
-  public readonly disposeEmitter: TReadOnlyEmitter;
+export default abstract class MassView extends Disposable {
 
   public readonly mass: Mass;
-  public materialView: MaterialView;
-  private readonly materialListener: ( material: Material ) => void;
+  public readonly massMesh: MassThreeMesh;
+
   private readonly positionListener: () => void;
 
   private readonly massTagNode: Node | null = null;
@@ -52,25 +44,14 @@ export default abstract class MassView extends THREE.Mesh {
 
   protected constructor( mass: Mass, initialGeometry: THREE.BufferGeometry,
                          protected readonly modelToViewPoint: ModelPoint3ToViewPoint2,
-
                          // TODO: remove unused? https://github.com/phetsims/density-buoyancy-common/issues/95
                          dragBoundsProperty: TReadOnlyProperty<Bounds3> ) {
-    const materialView = DensityMaterials.getMaterialView( mass.materialProperty.value );
 
-    super( initialGeometry, materialView.material );
-    this.disposeEmitter = this.disposable.disposeEmitter;
+    super();
 
     this.mass = mass;
-    this.materialView = materialView;
+    this.massMesh = new MassThreeMesh( mass, initialGeometry );
 
-    this.material = materialView.material;
-
-    this.materialListener = material => {
-      this.materialView.dispose();
-      this.materialView = DensityMaterials.getMaterialView( material );
-      this.material = this.materialView.material;
-    };
-    this.mass.materialProperty.lazyLink( this.materialListener );
 
     const repositionMassTagNode = () => {
       assert && assert( this.massTagNode, 'do not reposition massTagNode if you do not have a massTag' );
@@ -87,8 +68,8 @@ export default abstract class MassView extends THREE.Mesh {
       const position = mass.matrix.translation;
 
       // LHS is NOT a Vector2, don't try to simplify this
-      this.position.x = position.x;
-      this.position.y = position.y;
+      this.massMesh.position.x = position.x;
+      this.massMesh.position.y = position.y;
 
       if ( this.focusablePath && !this.focusablePath.isDisposed ) {
 
@@ -193,19 +174,15 @@ export default abstract class MassView extends THREE.Mesh {
   /**
    * Releases references.
    */
-  public dispose(): void {
+  public override dispose(): void {
     this.mass.transformedEmitter.removeListener( this.positionListener );
-    this.mass.materialProperty.unlink( this.materialListener );
-
-    this.materialView.dispose();
+    this.massMesh.dispose();
 
     this.focusablePath && this.focusablePath.dispose();
 
     this.massTagNode && this.massTagNode.dispose();
 
-    this.disposable.dispose();
-    // @ts-expect-error
-    super.dispose && super.dispose();
+    super.dispose();
   }
 }
 

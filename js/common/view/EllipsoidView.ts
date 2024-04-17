@@ -56,7 +56,7 @@ export default class EllipsoidView extends MeasurableMassView {
         newSize.depth / oldSize.depth
       ) );
       ellipsoidGeometry.computeBoundingSphere();
-      this.updateMatrix();
+      this.massMesh.updateMatrix();
     };
     this.ellipsoid.sizeProperty.lazyLink( this.updateListener );
     this.updateListener( this.ellipsoid.sizeProperty.value, new Bounds3( -1, -1, -1, 1, 1, 1 ) );

@@ -71,8 +71,8 @@ export default class MassTagNode extends Node {
 
   }
 
-  public static readonly PRIMARY_LABEL = new MassTagNode( MassTag.PRIMARY );
-  public static readonly SECONDARY_LABEL = new MassTagNode( MassTag.SECONDARY );
+  public static readonly PRIMARY_TAG = new MassTagNode( MassTag.PRIMARY );
+  public static readonly SECONDARY_TAG = new MassTagNode( MassTag.SECONDARY );
 }
 
 densityBuoyancyCommon.register( 'MassTagNode', MassTagNode );

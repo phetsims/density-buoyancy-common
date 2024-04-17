@@ -122,7 +122,7 @@ export default class BuoyancyShapesScreenView extends DensityBuoyancyScreenView<
           } ),
           this.popupLayer,
           {
-            labelNode: PrimarySecondaryPanelsNode.getPrimaryLabelNode()
+            labelNode: PrimarySecondaryPanelsNode.getPrimaryTagLabelNode()
           }
         ),
         new ShapeSizeControlNode(
@@ -134,7 +134,7 @@ export default class BuoyancyShapesScreenView extends DensityBuoyancyScreenView<
           } ),
           this.popupLayer,
           {
-            labelNode: PrimarySecondaryPanelsNode.getSecondaryLabelNode(),
+            labelNode: PrimarySecondaryPanelsNode.getSecondaryTagLabelNode(),
             visibleProperty: new DynamicProperty( model.secondaryMassProperty, { derive: 'internalVisibleProperty' } )
           }
         ) ]

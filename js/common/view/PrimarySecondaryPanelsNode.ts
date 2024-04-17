@@ -21,22 +21,22 @@ export default class PrimarySecondaryPanelsNode extends MultiSectionPanelsNode {
   }
 
   /**
-   * Returns a Node that displays the "primary mass" label.
+   * Returns a Node that displays the "primary mass" tag label.
    */
-  public static getPrimaryLabelNode(): Node {
+  public static getPrimaryTagLabelNode(): Node {
     return new Node( {
-      children: [ MassTagNode.PRIMARY_LABEL ],
-      scale: 0.7
+      children: [ MassTagNode.PRIMARY_TAG ],
+      scale: 1.3
     } );
   }
 
   /**
-   * Returns a Node that displays the "secondary mass" label.
+   * Returns a Node that displays the "secondary mass" tag label.
    */
-  public static getSecondaryLabelNode(): Node {
+  public static getSecondaryTagLabelNode(): Node {
     return new Node( {
-      children: [ MassTagNode.SECONDARY_LABEL ],
-      scale: 0.7
+      children: [ MassTagNode.SECONDARY_TAG ],
+      scale: 1.3
     } );
   }
 }

@@ -25,6 +25,7 @@ import DensityBuoyancyCommonColors from '../view/DensityBuoyancyCommonColors.js'
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import TinyProperty from '../../../../axon/js/TinyProperty.js';
 import ReadOnlyProperty from '../../../../axon/js/ReadOnlyProperty.js';
+import MappedProperty from '../../../../axon/js/MappedProperty.js';
 
 
 const NullableColorPropertyReferenceType = NullableIO( ReferenceIO( Property.PropertyIO( Color.ColorIO ) ) );
@@ -74,7 +75,7 @@ export type MaterialOptions = {
   liquidColor?: Property<Color> | null;
 
   // Used for the color of depth lines added on top of the Material
-  depthLinesColor?: TProperty<Color> | null;
+  depthLinesColor?: TReadOnlyProperty<Color> | null;
 };
 
 export default class Material {
@@ -88,7 +89,7 @@ export default class Material {
   public readonly hidden: boolean;
   public readonly customColor: Property<Color> | null;
   public readonly liquidColor: Property<Color> | null;
-  public readonly depthLinesColor: TProperty<Color> | null;
+  public readonly depthLinesColor: TReadOnlyProperty<Color> | null;
 
   public constructor( providedOptions: MaterialOptions ) {
 
@@ -143,8 +144,20 @@ export default class Material {
    * Returns a custom material that can be modified at will, but with a solid color specified
    */
   public static createCustomSolidMaterial( config: MaterialOptions & Required<Pick<MaterialOptions, 'density'>> ): Material {
+    const solidColorProperty = Material.getCustomSolidColor( config.density );
+    const depthLinesColorProperty = new MappedProperty( solidColorProperty, {
+      map: solidColor => {
+
+        // The lighter depth line color has better contrast, so use that for more than half
+        const isDark = ( solidColor.r + solidColor.g + solidColor.b ) / 3 < 255 * 0.4;
+
+        return isDark ? DensityBuoyancyCommonColors.depthLinesLightProperty.value : DensityBuoyancyCommonColors.depthLinesDarkProperty.value;
+      }
+    } );
+
     return Material.createCustomMaterial( combineOptions<MaterialOptions>( {
-      liquidColor: Material.getCustomSolidColor( config.density )
+      liquidColor: solidColorProperty,
+      depthLinesColor: depthLinesColorProperty
     }, config ) );
   }
 

@@ -92,11 +92,7 @@ export default class CuboidView extends MeasurableMassView {
         const viewLeft = modelToViewPoint( cuboid.matrix.translation.toVector3().plusXYZ( size.minX, y, size.maxZ ) );
         const viewRight = modelToViewPoint( cuboid.matrix.translation.toVector3().plusXYZ( size.maxX, y, size.maxZ ) );
 
-        // Before the first paint of THREE rendering code, we don't have a way to get view coordinates yet.
-        // TODO: https://github.com/phetsims/density-buoyancy-common/issues/113
-        if ( viewLeft.equals( Vector2.ZERO ) ) {
-          return;
-        }
+        assert && assert( !viewLeft.equals( Vector2.ZERO ) );
 
         shape.moveTo( viewLeft.x, viewLeft.y );
         shape.lineTo( viewRight.x, viewRight.y );
@@ -125,7 +121,7 @@ export default class CuboidView extends MeasurableMassView {
     cuboid.materialProperty.link( materialListener );
 
     this.disposeEmitter.addListener( () => {
-      // TODO: dispose depthLiensNode, https://github.com/phetsims/buoyancy/issues/117
+      this.depthLinesNode.dispose();
       cuboidGeometry.dispose();
       cuboid.transformedEmitter.removeListener( updateDepthLines );
       cuboid.sizeProperty.unlink( updateListener );
@@ -138,7 +134,6 @@ export default class CuboidView extends MeasurableMassView {
     super.decorate( massDecorationLayer );
 
     massDecorationLayer.depthLinesLayer.addChild( this.depthLinesNode );
-    this.disposeEmitter.addListener( () => massDecorationLayer.depthLinesLayer.removeChild( this.depthLinesNode ) );
   }
 
   /**

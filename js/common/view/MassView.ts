@@ -24,10 +24,10 @@ import Bounds3 from '../../../../dot/js/Bounds3.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
 import grabSoundPlayer from '../../../../tambo/js/shared-sound-players/grabSoundPlayer.js';
 import releaseSoundPlayer from '../../../../tambo/js/shared-sound-players/releaseSoundPlayer.js';
-import { MassDecorationLayer } from './DensityBuoyancyScreenView.js';
 import Disposable from '../../../../axon/js/Disposable.js';
 import { TReadOnlyEmitter } from '../../../../axon/js/TEmitter.js';
 import MassTag from '../model/MassTag.js';
+import MassDecorationLayer from './MassDecorationLayer.js';
 
 export type ModelPoint3ToViewPoint2 = ( point: Vector3 ) => Vector2;
 

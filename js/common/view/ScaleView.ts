@@ -14,9 +14,9 @@ import MassView, { ModelPoint3ToViewPoint2 } from './MassView.js';
 import VerticalCylinderView from './VerticalCylinderView.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import Bounds3 from '../../../../dot/js/Bounds3.js';
-import { MassDecorationLayer } from './DensityBuoyancyScreenView.js';
 import ScaleReadoutNode from './ScaleReadoutNode.js';
 import Gravity from '../model/Gravity.js';
+import MassDecorationLayer from './MassDecorationLayer.js';
 
 export default class ScaleView extends MassView {
 

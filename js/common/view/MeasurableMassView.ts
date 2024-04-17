@@ -13,11 +13,11 @@ import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import Mass from '../model/Mass.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import Bounds3 from '../../../../dot/js/Bounds3.js';
-import { MassDecorationLayer } from './DensityBuoyancyScreenView.js';
 import ForceDiagramNode from './ForceDiagramNode.js';
 import Matrix3 from '../../../../dot/js/Matrix3.js';
 import MassLabelNode from './MassLabelNode.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
+import MassDecorationLayer from './MassDecorationLayer.js';
 
 const scratchVector2 = new Vector2( 0, 0 );
 
@@ -53,15 +53,16 @@ export default class MeasurableMassView extends MassView {
   public override step( dt: number ): void {
     this.forceDiagramNode.update();
 
+    // Reposition force diagram
     const modelOrigin = this.mass.matrix.translation.toVector3().plus( this.mass.forceOffsetProperty.value );
     const viewOrigin = this.modelToViewPoint( modelOrigin );
-
     this.forceDiagramNode.matrix = Matrix3.rowMajor(
       1, 0, viewOrigin.x,
       0, 1, viewOrigin.y,
       0, 0, 1
     );
 
+    // Reposition mass label
     const modelPoint = this.modelToViewPoint( this.mass.matrix.translation.toVector3().plus( this.mass.massLabelOffsetProperty.value ) );
     const offsetPoint = scratchVector2.setXY( this.massLabelNode.width / 2, this.massLabelNode.height / 2 ).componentMultiply( this.mass.massLabelOffsetOrientationProperty.value );
     this.massLabelNode.translation = modelPoint.plus( offsetPoint );

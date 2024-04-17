@@ -14,12 +14,12 @@ import Cuboid from '../model/Cuboid.js';
 import Bounds3 from '../../../../dot/js/Bounds3.js';
 import { TAG_OFFSET } from './MassTagNode.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
-import { MassDecorationLayer } from './DensityBuoyancyScreenView.js';
 import { Path } from '../../../../scenery/js/imports.js';
 import { Shape } from '../../../../kite/js/imports.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import Material from '../model/Material.js';
 import MeasurableMassView from './MeasurableMassView.js';
+import MassDecorationLayer from './MassDecorationLayer.js';
 
 // constants
 const numElements = 18 * 3;

@@ -59,6 +59,7 @@ import TEmitter from '../../../../axon/js/TEmitter.js';
 import PickRequired from '../../../../phet-core/js/types/PickRequired.js';
 import { PhetioObjectOptions } from '../../../../tandem/js/PhetioObject.js';
 import BackgroundEventTargetListener from './BackgroundEventTargetListener.js';
+import MassDecorationLayer from './MassDecorationLayer.js';
 
 // constants
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
@@ -71,25 +72,6 @@ type SelfOptions = {
 } & PickRequired<PhetioObjectOptions, 'tandem'>;
 
 export type DensityBuoyancyScreenViewOptions = SelfOptions & ScreenViewOptions;
-
-// TODO: separate file, https://github.com/phetsims/buoyancy/issues/117
-export class MassDecorationLayer extends Node {
-  public readonly depthLinesLayer = new Node();
-  public readonly massTagsLayer = new Node();
-
-  public readonly forceDiagramLayer = new Node();
-  public readonly massLabelLayer = new Node();
-  public readonly scaleReadoutLayer = new Node();
-
-  public constructor() {
-    super();
-    this.addChild( this.depthLinesLayer ); // Depth lines need to be behind everything else.
-    this.addChild( this.massTagsLayer );
-    this.addChild( this.forceDiagramLayer );
-    this.addChild( this.scaleReadoutLayer );
-    this.addChild( this.massLabelLayer );
-  }
-}
 
 export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyModel> extends ScreenView {
 

@@ -146,6 +146,11 @@ export default abstract class MassView extends Disposable {
       } );
 
       this.focusablePath.addInputListener( keyboardDragListener );
+
+      this.disposeEmitter.addListener( () => {
+        keyboardDragListener.dispose();
+        this.focusablePath && this.focusablePath.dispose();
+      } );
     }
 
     this.mass.transformedEmitter.addListener( this.positionListener );
@@ -177,8 +182,6 @@ export default abstract class MassView extends Disposable {
   public override dispose(): void {
     this.mass.transformedEmitter.removeListener( this.positionListener );
     this.massMesh.dispose();
-
-    this.focusablePath && this.focusablePath.dispose();
 
     this.massTagNode && this.massTagNode.dispose();
 

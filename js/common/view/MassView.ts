@@ -169,7 +169,9 @@ export default abstract class MassView extends Disposable {
   }
 
   /**
-   * Called after construction of the MassView, for supporting adding supplemental, non-THREE content to the screen view to render the Mass.
+   * Called after construction of the MassView, for supporting adding supplemental, non-THREE content to the screen view
+   * to render the Mass. Please note this uses the term "decorate" as in adding a visual decoration,
+   * as opposed to the software engineering term "decorator pattern".
    */
   public decorate( decorationLayer: MassDecorationLayer ): void {
 

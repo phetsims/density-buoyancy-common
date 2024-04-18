@@ -604,11 +604,31 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
 
   /**
    * Projects a 3d model point to a 2d view point (in the screen view's coordinate frame).
+   *
+   * TODO: an api for a new MVT class where you provide the transform to get from your IsometricNode to global scenery coords (and vice versa)? https://github.com/phetsims/density-buoyancy-common/issues/113
    */
   public modelToViewPoint( point: Vector3 ): Vector2 {
 
     // We'll want to transform global coordinates into screen coordinates here
-    return this.parentToLocalPoint( animatedPanZoomSingleton.listener.matrixProperty.value.inverted().timesVector2( this.sceneNode.projectPoint( point ) ) );
+    // TODO: JO, why doesn't localToGlobalPoint() care about the pan/zoom matrix. It seems like that is now a misnomer, eh? https://github.com/phetsims/density-buoyancy-common/issues/113
+    // TODO: couldn't there be a way to register the pan/zoom matrix with Display, and then have Node.getActuallyGlobalPoint() handle this? https://github.com/phetsims/density-buoyancy-common/issues/113
+    const viewPoint = this.parentToLocalPoint( animatedPanZoomSingleton.listener.matrixProperty.value.inverted().timesVector2( this.sceneNode.projectPoint( point ) ) );
+
+    // TODO: Remove in a day or two, https://github.com/phetsims/density-buoyancy-common/issues/113
+    if ( assert ) {
+      const modelPoint = this.viewToModelPoint( viewPoint );
+      const newViewPoint = this.parentToLocalPoint( animatedPanZoomSingleton.listener.matrixProperty.value.inverted().timesVector2( this.sceneNode.projectPoint( modelPoint ) ) );
+
+      assert && assert( newViewPoint.minus( viewPoint ).getMagnitude() < 1e-3, `model/view point transform difference: ${viewPoint}, and ${newViewPoint}` );
+    }
+    return viewPoint;
+  }
+
+  /**
+   * Project a 2d global screen coordinate into 3d global coordinate frame.
+   */
+  public viewToModelPoint( point: Vector2 ): Vector3 {
+    return this.sceneNode.unprojectPoint( animatedPanZoomSingleton.listener.matrixProperty.value.timesVector2( this.localToParentPoint( point ) ) );
   }
 
   /**

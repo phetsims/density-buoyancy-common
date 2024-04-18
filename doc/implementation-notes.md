@@ -6,7 +6,7 @@ are updated/computed on every step, but also have "interpolated" values that are
 physics steps are longer than our animation frame steps, this is needed).
 
 The 3D view is handled with three.js (and mobius as our support library). Instead of subtyping Node, we subtype three.js
-view types (with a `View` suffix), using a ThreeIsometricNode to put the 3d view into our Scenery view. This sim isn't
+view types, using a ThreeIsometricNode to put the 3d view into our Scenery view. This sim isn't
 supported without WebGL/three.js, so it won't load the main logic if that isn't supported (e.g. a headless browser
 without WebGL).
 
@@ -24,3 +24,12 @@ Each model step effectively does:
   - Compute forces to be applied in the next step
 - Figure out how far each mass and liquid level is between the two most recent engine steps, and interpolate those
   values (for smooth handling)
+
+Notes about coordinates:
+
+- Model coordinates are in meters
+- Model coordinates are used by:
+  1. Sim model
+  2. P2 engine
+  3. ThreeJS rendering
+- View coordinates are used only for Scenery rendering.

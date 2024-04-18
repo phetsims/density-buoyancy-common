@@ -136,9 +136,6 @@ export default class DensityMysteryScreenView extends DensityBuoyancyScreenView<
   }
 
   public static getDensityMysteryIcon(): Node {
-    if ( !ThreeUtils.isWebGLEnabled() ) {
-      return DensityBuoyancyScreenView.getFallbackIcon();
-    }
 
     return DensityBuoyancyScreenView.getAngledIcon( 4, new Vector3( 0, -0.01, 0 ), scene => {
 

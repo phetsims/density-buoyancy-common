@@ -113,9 +113,6 @@ export default class DensityIntroScreenView extends DensityBuoyancyScreenView<De
   }
 
   public static getDensityIntroIcon(): Node {
-    if ( !ThreeUtils.isWebGLEnabled() ) {
-      return DensityBuoyancyScreenView.getFallbackIcon();
-    }
 
     return DensityBuoyancyScreenView.getAngledIcon( 5.5, new Vector3( 0, 0, 0 ), scene => {
 

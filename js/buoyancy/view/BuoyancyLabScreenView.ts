@@ -10,7 +10,7 @@
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import { combineOptions } from '../../../../phet-core/js/optionize.js';
-import { AlignBox, HBox, Node, VBox } from '../../../../scenery/js/imports.js';
+import { AlignBox, HBox, Image, Node, VBox } from '../../../../scenery/js/imports.js';
 import Panel from '../../../../sun/js/Panel.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 import Material from '../../common/model/Material.js';
@@ -33,6 +33,8 @@ import ScaleView from '../../common/view/ScaleView.js';
 import Bounds2 from '../../../../dot/js/Bounds2.js';
 import ScaleHeightSlider from '../../common/view/ScaleHeightSlider.js';
 import Dimension2 from '../../../../dot/js/Dimension2.js';
+import DensityBuoyancyCommonQueryParameters from '../../common/DensityBuoyancyCommonQueryParameters.js';
+import fluid_displaced_scale_icon_png from '../../../images/fluid_displaced_scale_icon_png.js';
 
 // constants
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
@@ -189,34 +191,35 @@ export default class BuoyancyLabScreenView extends DensityBuoyancyScreenView<Buo
 
   public static getFluidDisplacedPanelScaleIcon(): Node {
 
-    // let image: Node;
+    if ( DensityBuoyancyCommonQueryParameters.generateIconImages && ThreeUtils.isWebGLEnabled() ) {
 
-    // TODO: save image again once scale icon design is settled, https://github.com/phetsims/density-buoyancy-common/issues/95
-    // if ( DensityBuoyancyCommonQueryParameters.generateIconImages ) {
-    if ( !ThreeUtils.isWebGLEnabled() ) {
-      return DensityBuoyancyScreenView.getFallbackIcon();
+      // Hard coded zoom and view-port vector help to center the icon.
+      // TODO: save image again once scale icon design is settled, https://github.com/phetsims/density-buoyancy-common/issues/95 and https://github.com/phetsims/buoyancy/issues/141
+      const image = DensityBuoyancyScreenView.getAngledIcon( 8, new Vector3( 0, 0.25, 0 ), scene => {
+        const scaleGeometry = ScaleView.getScaleGeometry();
+
+        const scale = new THREE.Mesh( scaleGeometry, new THREE.MeshStandardMaterial( {
+          color: 0xffffff,
+          roughness: 0.2,
+          metalness: 0.7,
+          emissive: 0x666666
+        } ) );
+
+        scale.position.copy( ThreeUtils.vectorToThree( new Vector3( 0, 0.25, 0 ) ) );
+        scene.add( scale );
+      }, null );
+      // }
+      // else {
+      //   image = new Image( fluid_displaced_scale_icon_png );
+      // }
+      image.setScaleMagnitude( 0.12 );
+      return image;
     }
-
-    // Hard coded zoom and view-port vector help to center the icon.
-    const image = DensityBuoyancyScreenView.getAngledIcon( 8, new Vector3( 0, 0.25, 0 ), scene => {
-      const scaleGeometry = ScaleView.getScaleGeometry();
-
-      const scale = new THREE.Mesh( scaleGeometry, new THREE.MeshStandardMaterial( {
-        color: 0xffffff,
-        roughness: 0.2,
-        metalness: 0.7,
-        emissive: 0x666666
-      } ) );
-
-      scale.position.copy( ThreeUtils.vectorToThree( new Vector3( 0, 0.25, 0 ) ) );
-      scene.add( scale );
-    }, null );
-    // }
-    // else {
-    //   image = new Image( fluid_displaced_scale_icon_png );
-    // }
-    image.setScaleMagnitude( 0.12 );
-    return image;
+    else {
+      const image = new Image( fluid_displaced_scale_icon_png );
+      image.setScaleMagnitude( 0.12 );
+      return image;
+    }
   }
 
   /**

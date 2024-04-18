@@ -188,9 +188,6 @@ export default class DensityCompareScreenView extends DensityBuoyancyScreenView<
   }
 
   public static getDensityCompareIcon(): Node {
-    if ( !ThreeUtils.isWebGLEnabled() ) {
-      return DensityBuoyancyScreenView.getFallbackIcon();
-    }
 
     return DensityBuoyancyScreenView.getAngledIcon( 4.6, new Vector3( 0, -0.02, 0 ), scene => {
 

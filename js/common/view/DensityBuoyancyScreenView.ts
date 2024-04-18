@@ -751,15 +751,6 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
     image.top = 0;
     return image;
   }
-
-  /**
-   * Returns an icon meant to be used as a fallback in case webgl is not available.
-   */
-  protected static getFallbackIcon(): Node {
-    return new Rectangle( 0, 0, Screen.MINIMUM_HOME_SCREEN_ICON_SIZE.width, Screen.MINIMUM_HOME_SCREEN_ICON_SIZE.height, {
-      fill: 'gray'
-    } );
-  }
 }
 
 densityBuoyancyCommon.register( 'DensityBuoyancyScreenView', DensityBuoyancyScreenView );

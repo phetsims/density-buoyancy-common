@@ -10,11 +10,11 @@ import Vector3 from '../../../../dot/js/Vector3.js';
 import TriangleArrayWriter from '../../../../mobius/js/TriangleArrayWriter.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import Cone from '../model/Cone.js';
-import { ModelPoint3ToViewPoint2 } from './MassView.js';
 import { TAG_OFFSET } from './MassTagNode.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import Bounds3 from '../../../../dot/js/Bounds3.js';
 import MeasurableMassView from './MeasurableMassView.js';
+import { THREEModelViewTransform } from './DensityBuoyancyScreenView.js';
 
 // constants
 const segments = 64;
@@ -26,7 +26,7 @@ export default class ConeView extends MeasurableMassView {
   private readonly coneGeometry: THREE.BufferGeometry;
   private readonly updateListener: () => void;
 
-  public constructor( cone: Cone, modelToViewPoint: ModelPoint3ToViewPoint2, dragBoundsProperty: TReadOnlyProperty<Bounds3>,
+  public constructor( cone: Cone, modelViewTransform: THREEModelViewTransform, dragBoundsProperty: TReadOnlyProperty<Bounds3>,
                       showGravityForceProperty: TReadOnlyProperty<boolean>,
                       showBuoyancyForceProperty: TReadOnlyProperty<boolean>,
                       showContactForceProperty: TReadOnlyProperty<boolean>,
@@ -45,7 +45,7 @@ export default class ConeView extends MeasurableMassView {
     coneGeometry.addAttribute( 'normal', new THREE.BufferAttribute( normalArray, 3 ) );
     coneGeometry.addAttribute( 'uv', new THREE.BufferAttribute( uvArray, 2 ) );
 
-    super( cone, coneGeometry, modelToViewPoint, dragBoundsProperty,
+    super( cone, coneGeometry, modelViewTransform, dragBoundsProperty,
 
       showGravityForceProperty,
       showBuoyancyForceProperty,

@@ -10,11 +10,11 @@ import Vector3 from '../../../../dot/js/Vector3.js';
 import TriangleArrayWriter from '../../../../mobius/js/TriangleArrayWriter.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import VerticalCylinder from '../model/VerticalCylinder.js';
-import { ModelPoint3ToViewPoint2 } from './MassView.js';
 import { TAG_OFFSET } from './MassTagNode.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import Bounds3 from '../../../../dot/js/Bounds3.js';
 import MeasurableMassView from './MeasurableMassView.js';
+import { THREEModelViewTransform } from './DensityBuoyancyScreenView.js';
 
 // constants
 const segments = 64;
@@ -26,7 +26,7 @@ export default class VerticalCylinderView extends MeasurableMassView {
   private readonly verticalCylinderGeometry: THREE.BufferGeometry;
   private readonly updateListener: () => void;
 
-  public constructor( verticalCylinder: VerticalCylinder, modelToViewPoint: ModelPoint3ToViewPoint2,
+  public constructor( verticalCylinder: VerticalCylinder, modelViewTransform: THREEModelViewTransform,
                       dragBoundsProperty: TReadOnlyProperty<Bounds3>,
                       showGravityForceProperty: TReadOnlyProperty<boolean>,
                       showBuoyancyForceProperty: TReadOnlyProperty<boolean>,
@@ -46,7 +46,7 @@ export default class VerticalCylinderView extends MeasurableMassView {
     verticalCylinderGeometry.addAttribute( 'normal', new THREE.BufferAttribute( normalArray, 3 ) );
     verticalCylinderGeometry.addAttribute( 'uv', new THREE.BufferAttribute( uvArray, 2 ) );
 
-    super( verticalCylinder, verticalCylinderGeometry, modelToViewPoint, dragBoundsProperty, showGravityForceProperty,
+    super( verticalCylinder, verticalCylinderGeometry, modelViewTransform, dragBoundsProperty, showGravityForceProperty,
       showBuoyancyForceProperty,
       showContactForceProperty,
       showForceValuesProperty,

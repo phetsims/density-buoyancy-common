@@ -9,7 +9,6 @@
 import Vector3 from '../../../../dot/js/Vector3.js';
 import TriangleArrayWriter from '../../../../mobius/js/TriangleArrayWriter.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
-import { ModelPoint3ToViewPoint2 } from './MassView.js';
 import Cuboid from '../model/Cuboid.js';
 import Bounds3 from '../../../../dot/js/Bounds3.js';
 import { TAG_OFFSET } from './MassTagNode.js';
@@ -20,6 +19,7 @@ import Vector2 from '../../../../dot/js/Vector2.js';
 import Material from '../model/Material.js';
 import MeasurableMassView from './MeasurableMassView.js';
 import MassDecorationLayer from './MassDecorationLayer.js';
+import { THREEModelViewTransform } from './DensityBuoyancyScreenView.js';
 
 // constants
 const numElements = 18 * 3;
@@ -31,7 +31,7 @@ export default class CuboidView extends MeasurableMassView {
   private readonly depthLinesNode: Path;
 
   public constructor( cuboid: Cuboid,
-                      modelToViewPoint: ModelPoint3ToViewPoint2,
+                      modelViewTransform: THREEModelViewTransform,
                       dragBoundsProperty: TReadOnlyProperty<Bounds3>,
                       showDepthLinesProperty: TReadOnlyProperty<boolean>,
                       showGravityForceProperty: TReadOnlyProperty<boolean>,
@@ -53,7 +53,7 @@ export default class CuboidView extends MeasurableMassView {
     cuboidGeometry.addAttribute( 'normal', new THREE.BufferAttribute( normalArray, 3 ) );
     cuboidGeometry.addAttribute( 'uv', new THREE.BufferAttribute( uvArray, 2 ) );
 
-    super( cuboid, cuboidGeometry, modelToViewPoint, dragBoundsProperty,
+    super( cuboid, cuboidGeometry, modelViewTransform, dragBoundsProperty,
 
       showGravityForceProperty,
       showBuoyancyForceProperty,
@@ -89,8 +89,8 @@ export default class CuboidView extends MeasurableMassView {
 
       for ( let i = 1; i < DEPTH_LINE_SECTIONS; i++ ) {
         const y = ( DEPTH_LINE_SECTIONS - i ) * modelHeightPerSection - modelHeight / 2;
-        const viewLeft = modelToViewPoint( cuboid.matrix.translation.toVector3().plusXYZ( size.minX, y, size.maxZ ) );
-        const viewRight = modelToViewPoint( cuboid.matrix.translation.toVector3().plusXYZ( size.maxX, y, size.maxZ ) );
+        const viewLeft = modelViewTransform.modelToViewPoint( cuboid.matrix.translation.toVector3().plusXYZ( size.minX, y, size.maxZ ) );
+        const viewRight = modelViewTransform.modelToViewPoint( cuboid.matrix.translation.toVector3().plusXYZ( size.maxX, y, size.maxZ ) );
 
         assert && assert( !viewLeft.equals( Vector2.ZERO ) );
 

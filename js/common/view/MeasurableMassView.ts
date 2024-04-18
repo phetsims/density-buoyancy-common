@@ -8,7 +8,7 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-import MassView, { ModelPoint3ToViewPoint2 } from './MassView.js';
+import MassView from './MassView.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import Mass from '../model/Mass.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
@@ -18,6 +18,7 @@ import Matrix3 from '../../../../dot/js/Matrix3.js';
 import MassLabelNode from './MassLabelNode.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import MassDecorationLayer from './MassDecorationLayer.js';
+import { THREEModelViewTransform } from './DensityBuoyancyScreenView.js';
 
 const scratchVector2 = new Vector2( 0, 0 );
 
@@ -27,7 +28,7 @@ export default class MeasurableMassView extends MassView {
   private readonly massLabelNode: MassLabelNode;
 
   protected constructor( mass: Mass, initialGeometry: THREE.BufferGeometry,
-                         modelToViewPoint: ModelPoint3ToViewPoint2,
+                         modelViewTransform: THREEModelViewTransform,
                          dragBoundsProperty: TReadOnlyProperty<Bounds3>,
                          showGravityForceProperty: TReadOnlyProperty<boolean>,
                          showBuoyancyForceProperty: TReadOnlyProperty<boolean>,
@@ -36,7 +37,7 @@ export default class MeasurableMassView extends MassView {
                          forceScaleProperty: TReadOnlyProperty<number>,
                          showMassesProperty: TReadOnlyProperty<boolean> ) {
 
-    super( mass, initialGeometry, modelToViewPoint, dragBoundsProperty );
+    super( mass, initialGeometry, modelViewTransform, dragBoundsProperty );
 
     this.forceDiagramNode = new ForceDiagramNode(
       mass,
@@ -55,7 +56,7 @@ export default class MeasurableMassView extends MassView {
 
     // Reposition force diagram
     const modelOrigin = this.mass.matrix.translation.toVector3().plus( this.mass.forceOffsetProperty.value );
-    const viewOrigin = this.modelToViewPoint( modelOrigin );
+    const viewOrigin = this.modelViewTransform.modelToViewPoint( modelOrigin );
     this.forceDiagramNode.matrix = Matrix3.rowMajor(
       1, 0, viewOrigin.x,
       0, 1, viewOrigin.y,
@@ -63,7 +64,7 @@ export default class MeasurableMassView extends MassView {
     );
 
     // Reposition mass label
-    const modelPoint = this.modelToViewPoint( this.mass.matrix.translation.toVector3().plus( this.mass.massLabelOffsetProperty.value ) );
+    const modelPoint = this.modelViewTransform.modelToViewPoint( this.mass.matrix.translation.toVector3().plus( this.mass.massLabelOffsetProperty.value ) );
     const offsetPoint = scratchVector2.setXY( this.massLabelNode.width / 2, this.massLabelNode.height / 2 ).componentMultiply( this.mass.massLabelOffsetOrientationProperty.value );
     this.massLabelNode.translation = modelPoint.plus( offsetPoint );
   }

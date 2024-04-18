@@ -25,8 +25,8 @@ import Disposable from '../../../../axon/js/Disposable.js';
 import MassTag from '../model/MassTag.js';
 import MassDecorationLayer from './MassDecorationLayer.js';
 import MassThreeMesh from './MassThreeMesh.js';
+import { THREEModelViewTransform } from './DensityBuoyancyScreenView.js';
 
-export type ModelPoint3ToViewPoint2 = ( point: Vector3 ) => Vector2;
 
 const INVERT_Y_TRANSFORM = ModelViewTransform2.createSinglePointScaleInvertedYMapping( Vector2.ZERO, Vector2.ZERO, 1 );
 
@@ -43,7 +43,7 @@ export default abstract class MassView extends Disposable {
   public readonly focusablePath: Path | null;
 
   protected constructor( mass: Mass, initialGeometry: THREE.BufferGeometry,
-                         protected readonly modelToViewPoint: ModelPoint3ToViewPoint2,
+                         protected readonly modelViewTransform: THREEModelViewTransform,
                          // TODO: remove unused? https://github.com/phetsims/density-buoyancy-common/issues/95
                          dragBoundsProperty: TReadOnlyProperty<Bounds3> ) {
 
@@ -55,7 +55,7 @@ export default abstract class MassView extends Disposable {
 
     const repositionMassTagNode = () => {
       assert && assert( this.massTagNode, 'do not reposition massTagNode if you do not have a massTag' );
-      this.massTagNode!.translation = this.modelToViewPoint( mass.matrix.translation.toVector3().plus( this.tagOffsetProperty.value ).plusXYZ( 0, 0, 0.0001 ) );
+      this.massTagNode!.translation = modelViewTransform.modelToViewPoint( mass.matrix.translation.toVector3().plus( this.tagOffsetProperty.value ).plusXYZ( 0, 0, 0.0001 ) );
     };
 
     if ( mass.tag !== MassTag.NONE ) {
@@ -76,18 +76,18 @@ export default abstract class MassView extends Disposable {
         const shiftedBbox = mass.getBounds();
 
         // To support dragging while zoomed in, KeyboardDragListener will keep the position of the focusablePath in view.
-        this.focusablePath.center = modelToViewPoint( shiftedBbox.center );
+        this.focusablePath.center = modelViewTransform.modelToViewPoint( shiftedBbox.center );
 
         // The points that make up the corners of the Bounds3 in THREE.js space, applied onto a 2d plane for scenery.
         const massViewPoints = [
-          modelToViewPoint( new Vector3( shiftedBbox.minX, shiftedBbox.minY, shiftedBbox.minZ ) ),
-          modelToViewPoint( new Vector3( shiftedBbox.minX, shiftedBbox.minY, shiftedBbox.maxZ ) ),
-          modelToViewPoint( new Vector3( shiftedBbox.minX, shiftedBbox.maxY, shiftedBbox.minZ ) ),
-          modelToViewPoint( new Vector3( shiftedBbox.minX, shiftedBbox.maxY, shiftedBbox.maxZ ) ),
-          modelToViewPoint( new Vector3( shiftedBbox.maxX, shiftedBbox.minY, shiftedBbox.minZ ) ),
-          modelToViewPoint( new Vector3( shiftedBbox.maxX, shiftedBbox.minY, shiftedBbox.maxZ ) ),
-          modelToViewPoint( new Vector3( shiftedBbox.maxX, shiftedBbox.maxY, shiftedBbox.minZ ) ),
-          modelToViewPoint( new Vector3( shiftedBbox.maxX, shiftedBbox.maxY, shiftedBbox.maxZ ) )
+          modelViewTransform.modelToViewPoint( new Vector3( shiftedBbox.minX, shiftedBbox.minY, shiftedBbox.minZ ) ),
+          modelViewTransform.modelToViewPoint( new Vector3( shiftedBbox.minX, shiftedBbox.minY, shiftedBbox.maxZ ) ),
+          modelViewTransform.modelToViewPoint( new Vector3( shiftedBbox.minX, shiftedBbox.maxY, shiftedBbox.minZ ) ),
+          modelViewTransform.modelToViewPoint( new Vector3( shiftedBbox.minX, shiftedBbox.maxY, shiftedBbox.maxZ ) ),
+          modelViewTransform.modelToViewPoint( new Vector3( shiftedBbox.maxX, shiftedBbox.minY, shiftedBbox.minZ ) ),
+          modelViewTransform.modelToViewPoint( new Vector3( shiftedBbox.maxX, shiftedBbox.minY, shiftedBbox.maxZ ) ),
+          modelViewTransform.modelToViewPoint( new Vector3( shiftedBbox.maxX, shiftedBbox.maxY, shiftedBbox.minZ ) ),
+          modelViewTransform.modelToViewPoint( new Vector3( shiftedBbox.maxX, shiftedBbox.maxY, shiftedBbox.maxZ ) )
         ];
 
         // Update the shape based on the current view of the mass in 3d space

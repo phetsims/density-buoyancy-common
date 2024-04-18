@@ -6,13 +6,13 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
-import { ModelPoint3ToViewPoint2 } from '../../common/view/MassView.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import Bottle from '../model/Bottle.js';
 import Material from '../../common/model/Material.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import Bounds3 from '../../../../dot/js/Bounds3.js';
 import MeasurableMassView from '../../common/view/MeasurableMassView.js';
+import { THREEModelViewTransform } from '../../common/view/DensityBuoyancyScreenView.js';
 
 type BottleDrawingData = {
   group: THREE.Group;
@@ -25,7 +25,7 @@ export default class BottleView extends MeasurableMassView {
 
   public readonly bottle: Bottle;
 
-  public constructor( bottle: Bottle, modelToViewPoint: ModelPoint3ToViewPoint2,
+  public constructor( bottle: Bottle, modelViewTransform: THREEModelViewTransform,
                       dragBoundsProperty: TReadOnlyProperty<Bounds3>,
                       showGravityForceProperty: TReadOnlyProperty<boolean>,
                       showBuoyancyForceProperty: TReadOnlyProperty<boolean>,
@@ -35,7 +35,7 @@ export default class BottleView extends MeasurableMassView {
                       showMassesProperty: TReadOnlyProperty<boolean> ) {
 
     // @ts-expect-error
-    super( bottle, new THREE.Geometry(), modelToViewPoint, dragBoundsProperty,
+    super( bottle, new THREE.Geometry(), modelViewTransform, dragBoundsProperty,
       showGravityForceProperty,
       showBuoyancyForceProperty,
       showContactForceProperty,

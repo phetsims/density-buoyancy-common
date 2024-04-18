@@ -9,13 +9,13 @@
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import Multilink, { UnknownMultilink } from '../../../../axon/js/Multilink.js';
 import Material from '../../common/model/Material.js';
-import { ModelPoint3ToViewPoint2 } from '../../common/view/MassView.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import Boat from '../model/Boat.js';
 import BoatDesign from '../model/BoatDesign.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 import Bounds3 from '../../../../dot/js/Bounds3.js';
 import MeasurableMassView from '../../common/view/MeasurableMassView.js';
+import { THREEModelViewTransform } from '../../common/view/DensityBuoyancyScreenView.js';
 
 type BoatDrawingData = {
   backMiddleMaterial: THREE.MeshBasicMaterial;
@@ -30,7 +30,7 @@ export default class BoatView extends MeasurableMassView {
 
   public readonly boat: Boat;
 
-  public constructor( boat: Boat, modelToViewPoint: ModelPoint3ToViewPoint2, dragBoundsProperty: TReadOnlyProperty<Bounds3>,
+  public constructor( boat: Boat, modelViewTransform: THREEModelViewTransform, dragBoundsProperty: TReadOnlyProperty<Bounds3>,
                       liquidYInterpolatedProperty: TReadOnlyProperty<number>,
                       showGravityForceProperty: TReadOnlyProperty<boolean>,
                       showBuoyancyForceProperty: TReadOnlyProperty<boolean>,
@@ -40,7 +40,7 @@ export default class BoatView extends MeasurableMassView {
                       showMassesProperty: TReadOnlyProperty<boolean> ) {
 
     // @ts-expect-error
-    super( boat, new THREE.Geometry(), modelToViewPoint, dragBoundsProperty,
+    super( boat, new THREE.Geometry(), modelViewTransform, dragBoundsProperty,
 
       showGravityForceProperty,
       showBuoyancyForceProperty,

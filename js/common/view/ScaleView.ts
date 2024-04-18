@@ -10,24 +10,25 @@ import Vector3 from '../../../../dot/js/Vector3.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import Scale from '../model/Scale.js';
 import CuboidView from './CuboidView.js';
-import MassView, { ModelPoint3ToViewPoint2 } from './MassView.js';
+import MassView from './MassView.js';
 import VerticalCylinderView from './VerticalCylinderView.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import Bounds3 from '../../../../dot/js/Bounds3.js';
 import ScaleReadoutNode from './ScaleReadoutNode.js';
 import Gravity from '../model/Gravity.js';
 import MassDecorationLayer from './MassDecorationLayer.js';
+import { THREEModelViewTransform } from './DensityBuoyancyScreenView.js';
 
 export default class ScaleView extends MassView {
 
   private readonly scaleGeometry: THREE.BufferGeometry;
   private readonly scaleReadoutNode: ScaleReadoutNode;
 
-  public constructor( mass: Scale, modelToViewPoint: ModelPoint3ToViewPoint2, dragBoundsProperty: TReadOnlyProperty<Bounds3>,
+  public constructor( mass: Scale, modelViewTransform: THREEModelViewTransform, dragBoundsProperty: TReadOnlyProperty<Bounds3>,
                       gravityProperty: TReadOnlyProperty<Gravity> ) {
 
     const scaleGeometry = ScaleView.getScaleGeometry();
-    super( mass, scaleGeometry, modelToViewPoint, dragBoundsProperty );
+    super( mass, scaleGeometry, modelViewTransform, dragBoundsProperty );
 
     this.scaleGeometry = scaleGeometry;
     this.scaleReadoutNode = new ScaleReadoutNode( mass, gravityProperty );
@@ -42,7 +43,8 @@ export default class ScaleView extends MassView {
   public override step( dt: number ): void {
     super.step( dt );
 
-    this.scaleReadoutNode.translation = this.modelToViewPoint( this.scaleReadoutNode.mass.matrix.translation.toVector3().plus( Scale.SCALE_FRONT_OFFSET ) );
+    const withOffsetPoint = this.scaleReadoutNode.mass.matrix.translation.toVector3().plus( Scale.SCALE_FRONT_OFFSET );
+    this.scaleReadoutNode.translation = this.modelViewTransform.modelToViewPoint( withOffsetPoint );
   }
 
   /**

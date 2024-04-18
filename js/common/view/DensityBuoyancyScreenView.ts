@@ -64,6 +64,11 @@ import MassDecorationLayer from './MassDecorationLayer.js';
 // constants
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
 
+export type THREEModelViewTransform = {
+  modelToViewPoint: ( modelPoint: Vector3 ) => Vector2;
+  viewToModelPoint: ( point: Vector2 ) => Vector3;
+};
+
 type SelfOptions = {
   cameraLookAt?: Vector3;
   cameraPosition?: Vector3;
@@ -73,7 +78,7 @@ type SelfOptions = {
 
 export type DensityBuoyancyScreenViewOptions = SelfOptions & ScreenViewOptions;
 
-export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyModel> extends ScreenView {
+export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyModel> extends ScreenView implements THREEModelViewTransform {
 
   protected readonly model: Model;
   protected readonly popupLayer: Node;
@@ -462,48 +467,46 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
       waterGeometry.computeBoundingSphere();
     } );
 
-    const boundModelToViewPoint = this.modelToViewPoint.bind( this );
-
     const dragBoundsProperty = model.invisibleBarrierBoundsProperty;
 
     const onMassAdded = ( mass: Mass ) => {
       let massView!: MassView;
 
       if ( mass instanceof Cuboid ) {
-        massView = new CuboidView( mass, boundModelToViewPoint, dragBoundsProperty, model.showDepthLinesProperty,
+        massView = new CuboidView( mass, this, dragBoundsProperty, model.showDepthLinesProperty,
           model.showGravityForceProperty, model.showBuoyancyForceProperty, model.showContactForceProperty,
           model.showForceValuesProperty, model.forceScaleProperty, model.showMassesProperty );
       }
       else if ( mass instanceof Scale ) {
-        massView = new ScaleView( mass, boundModelToViewPoint, dragBoundsProperty, model.gravityProperty );
+        massView = new ScaleView( mass, this, dragBoundsProperty, model.gravityProperty );
       }
       else if ( mass instanceof Cone ) {
-        massView = new ConeView( mass, boundModelToViewPoint, dragBoundsProperty, model.showGravityForceProperty,
+        massView = new ConeView( mass, this, dragBoundsProperty, model.showGravityForceProperty,
           model.showBuoyancyForceProperty, model.showContactForceProperty, model.showForceValuesProperty,
           model.forceScaleProperty, model.showMassesProperty );
       }
       else if ( mass instanceof Ellipsoid ) {
-        massView = new EllipsoidView( mass, boundModelToViewPoint, dragBoundsProperty, model.showGravityForceProperty,
+        massView = new EllipsoidView( mass, this, dragBoundsProperty, model.showGravityForceProperty,
           model.showBuoyancyForceProperty, model.showContactForceProperty, model.showForceValuesProperty,
           model.forceScaleProperty, model.showMassesProperty );
       }
       else if ( mass instanceof HorizontalCylinder ) {
-        massView = new HorizontalCylinderView( mass, boundModelToViewPoint, dragBoundsProperty,
+        massView = new HorizontalCylinderView( mass, this, dragBoundsProperty,
           model.showGravityForceProperty, model.showBuoyancyForceProperty, model.showContactForceProperty,
           model.showForceValuesProperty, model.forceScaleProperty, model.showMassesProperty );
       }
       else if ( mass instanceof VerticalCylinder ) {
-        massView = new VerticalCylinderView( mass, boundModelToViewPoint, dragBoundsProperty, model.showGravityForceProperty,
+        massView = new VerticalCylinderView( mass, this, dragBoundsProperty, model.showGravityForceProperty,
           model.showBuoyancyForceProperty, model.showContactForceProperty, model.showForceValuesProperty,
           model.forceScaleProperty, model.showMassesProperty );
       }
       else if ( mass instanceof Bottle ) {
-        massView = new BottleView( mass, boundModelToViewPoint, dragBoundsProperty, model.showGravityForceProperty,
+        massView = new BottleView( mass, this, dragBoundsProperty, model.showGravityForceProperty,
           model.showBuoyancyForceProperty, model.showContactForceProperty, model.showForceValuesProperty,
           model.forceScaleProperty, model.showMassesProperty );
       }
       else if ( mass instanceof Boat ) {
-        massView = new BoatView( mass, boundModelToViewPoint, dragBoundsProperty, model.pool.liquidYInterpolatedProperty,
+        massView = new BoatView( mass, this, dragBoundsProperty, model.pool.liquidYInterpolatedProperty,
           model.showGravityForceProperty, model.showBuoyancyForceProperty, model.showContactForceProperty,
           model.showForceValuesProperty, model.forceScaleProperty, model.showMassesProperty );
       }

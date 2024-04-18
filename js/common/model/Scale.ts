@@ -211,7 +211,7 @@ export default class Scale extends Mass {
   }
 
   public setRatios( widthRatio: number, heightRatio: number ): void {
-    // See subclass for implementation
+    assert && assert( false, 'Scale does not support ratios' );
   }
 
   /**

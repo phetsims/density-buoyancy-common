@@ -208,10 +208,6 @@ export default class BuoyancyLabScreenView extends DensityBuoyancyScreenView<Buo
         scale.position.copy( ThreeUtils.vectorToThree( new Vector3( 0, 0.25, 0 ) ) );
         scene.add( scale );
       }, null );
-      // }
-      // else {
-      //   image = new Image( fluid_displaced_scale_icon_png );
-      // }
       image.setScaleMagnitude( 0.12 );
       return image;
     }

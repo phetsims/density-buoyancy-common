@@ -32,7 +32,6 @@ import Vector3 from '../../../../dot/js/Vector3.js';
 import ScaleView from '../../common/view/ScaleView.js';
 import Bounds2 from '../../../../dot/js/Bounds2.js';
 import ScaleHeightSlider from '../../common/view/ScaleHeightSlider.js';
-import Dimension2 from '../../../../dot/js/Dimension2.js';
 import DensityBuoyancyCommonQueryParameters from '../../common/DensityBuoyancyCommonQueryParameters.js';
 import fluid_displaced_scale_icon_png from '../../../images/fluid_displaced_scale_icon_png.js';
 
@@ -172,9 +171,8 @@ export default class BuoyancyLabScreenView extends DensityBuoyancyScreenView<Buo
 
     // Info button and associated dialog
     const waterLevelSlider = new ScaleHeightSlider( model.poolScale, model.poolScaleHeightProperty,
-      model.poolBounds, model.pool.liquidYInterpolatedProperty, {
-        tandem: tandem.createTandem( 'waterLevelSlider' ),
-        trackSize: new Dimension2( 3, 125 ) // Empirically determined to match the height range for the scale TODO https://github.com/phetsims/density-buoyancy-common/issues/113
+      model.poolBounds, model.pool.liquidYInterpolatedProperty, this, {
+        tandem: tandem.createTandem( 'waterLevelSlider' )
       } );
     this.addChild( waterLevelSlider );
 

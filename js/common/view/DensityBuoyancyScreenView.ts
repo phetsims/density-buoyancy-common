@@ -66,6 +66,7 @@ const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
 
 export type THREEModelViewTransform = {
   modelToViewPoint: ( modelPoint: Vector3 ) => Vector2;
+  modelToViewDelta: ( point1: Vector3, point2: Vector3 ) => Vector2;
   viewToModelPoint: ( point: Vector2 ) => Vector3;
 };
 
@@ -625,6 +626,15 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
       assert && assert( newViewPoint.minus( viewPoint ).getMagnitude() < 1e-3, `model/view point transform difference: ${viewPoint}, and ${newViewPoint}` );
     }
     return viewPoint;
+  }
+
+  /**
+   * Get the difference in screen view coordinates between two model points. Both points are needed because of the 3d nature of the model
+   */
+  public modelToViewDelta( point1: Vector3, point2: Vector3 ): Vector2 {
+    const viewPoint1 = this.modelToViewPoint( point1 );
+    const viewPoint2 = this.modelToViewPoint( point2 );
+    return viewPoint2.minus( viewPoint1 );
   }
 
   /**

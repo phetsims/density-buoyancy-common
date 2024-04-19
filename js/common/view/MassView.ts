@@ -103,7 +103,6 @@ export default abstract class MassView extends Disposable {
 
       this.focusablePath = new InteractiveHighlightingPath( new Shape(), {
         accessibleName: this.mass.nameProperty.value ? this.mass.nameProperty.value : 'Mass',
-        cursor: 'pointer',
         tagName: 'div',
         focusable: true
       } );

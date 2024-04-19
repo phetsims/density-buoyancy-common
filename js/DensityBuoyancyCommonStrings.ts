@@ -70,6 +70,7 @@ type StringsType = {
     'horizontalCylinderStringProperty': LocalizedStringProperty;
     'invertedConeStringProperty': LocalizedStringProperty;
     'verticalCylinderStringProperty': LocalizedStringProperty;
+    'duckStringProperty': LocalizedStringProperty;
   };
   'materialInsideStringProperty': LocalizedStringProperty;
   'airVolumeStringProperty': LocalizedStringProperty;

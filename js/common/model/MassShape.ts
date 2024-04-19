@@ -27,7 +27,7 @@ export class MassShape extends EnumerationValue {
   );
   public static readonly HORIZONTAL_CYLINDER = new MassShape(
     DensityBuoyancyCommonStrings.shape.horizontalCylinderStringProperty,
-    'horizontalCfdsafylinder'
+    'horizontalCylinder'
   );
   public static readonly CONE = new MassShape(
     DensityBuoyancyCommonStrings.shape.coneStringProperty,
@@ -36,6 +36,10 @@ export class MassShape extends EnumerationValue {
   public static readonly INVERTED_CONE = new MassShape(
     DensityBuoyancyCommonStrings.shape.invertedConeStringProperty,
     'invertedCone'
+  );
+  public static readonly DUCK = new MassShape(
+    DensityBuoyancyCommonStrings.shape.duckStringProperty,
+    'duck'
   );
 
   public constructor( public readonly shapeString: LocalizedStringProperty, public readonly tandemName: string ) {super();}

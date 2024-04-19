@@ -71,7 +71,9 @@ export default class Boat extends ApplicationsMass {
       const volume = BoatDesign.ONE_LITER_HULL_VOLUME * displacementVolume * 1000;
 
       engine.updateFromVertices( this.body, vertices, true );
-      this.shapeProperty.value = Shape.polygon( vertices ); // TODO: remove shapeProperty for perf? https://github.com/phetsims/density-buoyancy-common/issues/86
+
+      // This value changes very rarely and only takes 0-1ms to compute (seen on macbook air m1), so it is OK to run it here.
+      this.shapeProperty.value = Shape.polygon( vertices );
 
       // Mass label on the bottom left of the boat, top because the shape is flipped.
       const bounds = this.shapeProperty.value.getBounds();

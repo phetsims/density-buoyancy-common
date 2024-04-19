@@ -767,7 +767,7 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
     stage.threeCamera.updateProjectionMatrix();
     stage.render( undefined );
 
-    const canvas = stage.renderToCanvas( 3 );
+    const canvas = stage.renderToCanvas( 3, 1, new Vector2( 1, -1 ) );
 
     stage.dispose();
 
@@ -779,7 +779,6 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
       initialWidth: canvas.width,
       initialHeight: canvas.height
     } );
-    image.setScaleMagnitude( 1, -1 );
     image.left = 0;
     image.top = 0;
     return image;

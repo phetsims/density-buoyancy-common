@@ -46,8 +46,7 @@ import SubmergedAccordionBox from './SubmergedAccordionBox.js';
 // constants
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
 const ICON_SCALE = 0.08;
-const ICON_IMAGE_SCALE = new Vector2( ICON_SCALE, -ICON_SCALE );
-
+const ICON_IMAGE_SCALE_UPRIGHT = new Vector2( ICON_SCALE, ICON_SCALE );
 
 export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScreenView<BuoyancyApplicationsModel> {
 
@@ -365,7 +364,7 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
       return angledIcon;
     }
     else {
-      return new Image( boat_icon_png, { scale: ICON_IMAGE_SCALE } );
+      return new Image( boat_icon_png, { scale: ICON_IMAGE_SCALE_UPRIGHT } );
     }
   }
 
@@ -380,7 +379,7 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
       return angledIcon;
     }
     else {
-      return new Image( bottle_icon_png, { scale: ICON_IMAGE_SCALE } );
+      return new Image( bottle_icon_png, { scale: ICON_IMAGE_SCALE_UPRIGHT } );
     }
   }
 }

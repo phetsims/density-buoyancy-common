@@ -144,7 +144,7 @@ export default class BuoyancyLabScreenView extends DensityBuoyancyScreenView<Buo
       } );
 
     const rightSideVBox = new VBox( {
-      spacing: 10,
+      spacing: MARGIN / 2, // Reducing margin here for the panels not to overlap with the Scale Height Slider
       align: 'right',
       children: [
         this.rightBox,
@@ -170,11 +170,11 @@ export default class BuoyancyLabScreenView extends DensityBuoyancyScreenView<Buo
     this.addChild( this.popupLayer );
 
     // Info button and associated dialog
-    const waterLevelSlider = new ScaleHeightSlider( model.poolScale, model.poolScaleHeightProperty,
+    const scaleHeightSlider = new ScaleHeightSlider( model.poolScale, model.poolScaleHeightProperty,
       model.poolBounds, model.pool.liquidYInterpolatedProperty, this, {
-        tandem: tandem.createTandem( 'waterLevelSlider' )
+        tandem: tandem.createTandem( 'scaleHeightSlider' )
       } );
-    this.addChild( waterLevelSlider );
+    this.addChild( scaleHeightSlider );
 
     this.positionWaterLevelSlider = () => {
       const bottomRightPoolPoint = this.modelToViewPoint( new Vector3(
@@ -182,8 +182,8 @@ export default class BuoyancyLabScreenView extends DensityBuoyancyScreenView<Buo
         this.model.poolBounds.minY,
         this.model.poolBounds.maxZ
       ) );
-      waterLevelSlider.bottom = bottomRightPoolPoint.y;
-      waterLevelSlider.left = bottomRightPoolPoint.x + DensityBuoyancyCommonConstants.MARGIN / 2;
+      scaleHeightSlider.bottom = bottomRightPoolPoint.y;
+      scaleHeightSlider.left = bottomRightPoolPoint.x + DensityBuoyancyCommonConstants.MARGIN / 2;
     };
   }
 

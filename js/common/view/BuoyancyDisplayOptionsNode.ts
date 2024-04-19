@@ -70,7 +70,7 @@ export default class BuoyancyDisplayOptionsNode extends VBox {
         children: [
           new GridBox( {
             xSpacing: arrowSpacing,
-            ySpacing: 10,
+            ySpacing: checkboxSpacing,
             xAlign: 'left',
             children: [
 

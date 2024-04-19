@@ -46,7 +46,6 @@ export default class ScaleHeightSlider extends VSlider {
 
     const sliderTrackHeight = modelViewTransform.modelToViewDelta( new Vector3( SCALE_X_POSITION, maxY, poolBounds.maxZ ), new Vector3( SCALE_X_POSITION, minY, poolBounds.maxZ ) ).y;
 
-    console.log( sliderTrackHeight );
     const options = combineOptions<SliderOptions>( {
       thumbNode: thumbNode,
       thumbYOffset: thumbNode.height / 2,

@@ -56,7 +56,7 @@ export default class HorizontalCylinderView extends MeasurableMassView {
     const positionTag = () => {
       const radius = horizontalCylinder.radiusProperty.value;
       const length = horizontalCylinder.lengthProperty.value;
-      this.tagOffsetProperty.value = new Vector3( -length / 2 + TAG_OFFSET, radius - this.tagHeight! - TAG_OFFSET, radius );
+      this.tagOffsetProperty.value = new Vector3( -length / 2 + TAG_OFFSET, radius - TAG_OFFSET, radius );
     };
     positionTag();
 

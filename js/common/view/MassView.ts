@@ -156,11 +156,6 @@ export default abstract class MassView extends Disposable {
     this.positionListener();
   }
 
-  public get tagHeight(): number | null {
-    // return this.massTagNode ? this.massTagNode.height : null;
-    return 0.03; // TODO: view-> model coords would be nice. https://github.com/phetsims/density-buoyancy-common/issues/113
-  }
-
   // Override in subclasses to add subclass-specific behavior
   public step( dt: number ): void {
 

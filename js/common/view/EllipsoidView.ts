@@ -43,7 +43,7 @@ export default class EllipsoidView extends MeasurableMassView {
 
     const positionTag = () => {
       const size = ellipsoid.sizeProperty.value;
-      this.tagOffsetProperty.value = new Vector3( size.minX + TAG_OFFSET, size.maxY - this.tagHeight! - TAG_OFFSET, size.maxZ );
+      this.tagOffsetProperty.value = new Vector3( size.minX + TAG_OFFSET, size.maxY - TAG_OFFSET, size.maxZ );
     };
     positionTag();
 

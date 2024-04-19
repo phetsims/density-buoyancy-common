@@ -38,8 +38,9 @@ export default class Boat extends ApplicationsMass {
   // Amount of volume contained in the basin
   public stepInternalVolume: number;
 
-  // How to multiply our one-liter size up to the model coordinates
-  public stepMultiplier: number; // TODO: can this be improved by https://github.com/phetsims/density-buoyancy-common/issues/113 ?
+  // How to multiply our one-liter boat shape up to the model coordinates, since the boat changes size based on its
+  // volume. This is much preferred to trying to redraw the shape to a different size.
+  public stepMultiplier: number;
 
   public constructor( engine: PhysicsEngine, blockWidthProperty: TReadOnlyProperty<number>, liquidMaterialProperty: TProperty<Material>, providedOptions: BoatOptions ) {
 

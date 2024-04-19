@@ -17,8 +17,8 @@ import MassTag from '../model/MassTag.js';
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 
-// Constant for MassView subtypes to use to consistently offset their tag on their shape
-export const TAG_OFFSET = MASS_MIN_SHAPES_DIMENSION / 20; // TODO: delete? https://github.com/phetsims/density-buoyancy-common/issues/113
+// In model coordinates, the margin for the MassTagNode's placement from the top left of the mass.
+export const TAG_OFFSET = MASS_MIN_SHAPES_DIMENSION / 20;
 
 // Calculated by comparing the original label rectangle size when providing primary/secondary tags
 const horizontalMargin = 14;
@@ -58,7 +58,7 @@ export default class MassTagNode extends Node {
       },
       scale: 0.54 // To match the sizing when rendered as a THREE Quad.
     } );
-    backgroundNode.leftBottom = Vector2.ZERO;
+    backgroundNode.leftTop = Vector2.ZERO;
     super( {
       children: [ backgroundNode ]
     } );

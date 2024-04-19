@@ -67,7 +67,7 @@ export default class ConeView extends MeasurableMassView {
       const baseY = -vertexSign * 0.25 * height;
       const topY = Math.max( vertexY, baseY );
 
-      this.tagOffsetProperty.value = new Vector3( -radius + TAG_OFFSET, topY - this.tagHeight! - TAG_OFFSET, radius );
+      this.tagOffsetProperty.value = new Vector3( -radius + TAG_OFFSET, topY - TAG_OFFSET, radius );
     };
     positionTag();
 

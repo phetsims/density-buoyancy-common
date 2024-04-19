@@ -34,9 +34,11 @@ import Bounds2 from '../../../../dot/js/Bounds2.js';
 import ScaleHeightSlider from '../../common/view/ScaleHeightSlider.js';
 import DensityBuoyancyCommonQueryParameters from '../../common/DensityBuoyancyCommonQueryParameters.js';
 import fluid_displaced_scale_icon_png from '../../../images/fluid_displaced_scale_icon_png.js';
+import Multilink from '../../../../axon/js/Multilink.js';
 
 // constants
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
+const DESIRED_LEFT_SIDE_MARGIN = DensityBuoyancyCommonConstants.MARGIN;
 
 export default class BuoyancyLabScreenView extends DensityBuoyancyScreenView<BuoyancyLabModel> {
 
@@ -54,29 +56,60 @@ export default class BuoyancyLabScreenView extends DensityBuoyancyScreenView<Buo
     // In liters
     const maxBlockVolume = 10;
 
+    const fluidDisplacedPanel = new FluidDisplacedPanel( this.waterLevelVolumeProperty,
+      maxBlockVolume,
+      model.liquidMaterialProperty,
+      model.gravityProperty, {
+        visibleProperty: model.showFluidDisplacedProperty
+      } );
+
     const leftSideVBox = new VBox( {
-      spacing: DensityBuoyancyCommonConstants.MARGIN / 2,
       align: 'left',
       children: [
-        new FluidDisplacedPanel( this.waterLevelVolumeProperty,
-          maxBlockVolume,
-          model.liquidMaterialProperty,
-          model.gravityProperty, {
-            visibleProperty: model.showFluidDisplacedProperty
-          } ),
+        fluidDisplacedPanel,
         new MultiSectionPanelsNode( [ new BuoyancyDisplayOptionsNode( model, {
           showFluidDisplacedProperty: model.showFluidDisplacedProperty
         } ) ] )
       ]
     } );
 
-    this.addChild( new AlignBox(
-      leftSideVBox, {
-        alignBoundsProperty: this.visibleBoundsProperty,
-        xAlign: 'left',
-        yAlign: 'bottom',
-        margin: MARGIN
-      } ) );
+    const leftSideContent = new Node( {
+      children: [ leftSideVBox ]
+    } );
+    this.addChild( leftSideContent );
+
+    const applyDefaultMargins = () => {
+      leftSideContent.bottom = this.visibleBoundsProperty.value.bottom - DESIRED_LEFT_SIDE_MARGIN;
+      leftSideContent.left = this.visibleBoundsProperty.value.left + DESIRED_LEFT_SIDE_MARGIN;
+      leftSideVBox.spacing = DESIRED_LEFT_SIDE_MARGIN;
+    };
+
+    // Custom layout code to even out margins when we are close to overlapping with the ground because the
+    // fluidDisplacedPanel is showing
+    Multilink.multilink( [ this.visibleBoundsProperty, fluidDisplacedPanel.visibleProperty ], ( visibleBounds, fluidDisplacedPanelVisible ) => {
+      applyDefaultMargins();
+
+      // No worry of layout going above ground unless the fluid displaced panel is showing
+      if ( fluidDisplacedPanelVisible ) {
+
+        // In screen view coordinates (0,0 is at the top left of layout bounds)
+        const poolTopFrontHeight = this.modelToViewPoint( new Vector3( this.model.poolBounds.left, this.model.poolBounds.maxY, this.model.poolBounds.front ) );
+
+        // Space under the ground that we have for the two panels
+        const availableHeight = visibleBounds.bottom - poolTopFrontHeight.y;
+
+        // The height of just content, no margins counted (top/middle/bottom)
+        const contentHeightNotMargins = leftSideVBox.height - DESIRED_LEFT_SIDE_MARGIN;
+
+        const availableMarginSpace = availableHeight - contentHeightNotMargins;
+        assert && assert( availableMarginSpace > 0, 'left control panels on lab screen are too big to fit under the ground' );
+        if ( availableMarginSpace < 3 * DESIRED_LEFT_SIDE_MARGIN ) {
+          const calculatedMargin = availableMarginSpace > 0 ? availableMarginSpace / 3 : 1;
+          leftSideVBox.spacing = calculatedMargin;
+          leftSideContent.bottom = visibleBounds.bottom - calculatedMargin;
+        }
+      }
+    } );
 
     const displayedMysteryMaterials = [
       Material.DENSITY_A,

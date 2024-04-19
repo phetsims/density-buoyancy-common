@@ -10,7 +10,7 @@ import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import DynamicProperty from '../../../../axon/js/DynamicProperty.js';
 import Property from '../../../../axon/js/Property.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
-import { AlignBox, VBox } from '../../../../scenery/js/imports.js';
+import { AlignBox, ManualConstraint, VBox } from '../../../../scenery/js/imports.js';
 import Panel from '../../../../sun/js/Panel.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 import Material from '../../common/model/Material.js';
@@ -61,7 +61,7 @@ export default class BuoyancyShapesScreenView extends DensityBuoyancyScreenView<
     const invisibleMaterials = [ ...DensityBuoyancyCommonConstants.BUOYANCY_FLUID_MYSTERY_MATERIALS ];
     displayedMysteryMaterials.forEach( displayed => arrayRemove( invisibleMaterials, displayed ) );
 
-    const densityControlPanel = new Panel( new FluidDensityControlNode( model.liquidMaterialProperty, [
+    const fluidDensityControlPanel = new Panel( new FluidDensityControlNode( model.liquidMaterialProperty, [
       ...DensityBuoyancyCommonConstants.BUOYANCY_FLUID_MATERIALS,
       ...DensityBuoyancyCommonConstants.BUOYANCY_FLUID_MYSTERY_MATERIALS
     ], this.popupLayer, {
@@ -69,7 +69,7 @@ export default class BuoyancyShapesScreenView extends DensityBuoyancyScreenView<
       tandem: tandem.createTandem( 'densityControlNode' )
     } ), DensityBuoyancyCommonConstants.PANEL_OPTIONS );
 
-    this.addChild( new AlignBox( densityControlPanel, {
+    this.addChild( new AlignBox( fluidDensityControlPanel, {
       alignBoundsProperty: this.visibleBoundsProperty,
       xAlign: 'center',
       yAlign: 'bottom',
@@ -186,8 +186,11 @@ export default class BuoyancyShapesScreenView extends DensityBuoyancyScreenView<
       tandem: this.tandem.createTandem( 'blocksRadioButtonGroup' )
     } );
 
-    blocksRadioButtonGroup.left = rightSideVBox.left;
-    blocksRadioButtonGroup.bottom = densityControlPanel.bottom;
+    ManualConstraint.create( this, [ rightSideVBox, fluidDensityControlPanel, blocksRadioButtonGroup ],
+      ( rightSideVBoxWrapper, fluidDensityControlPanelWrapper, blocksRadioButtonGroupWrapper ) => {
+        blocksRadioButtonGroupWrapper.left = rightSideVBoxWrapper.left;
+        blocksRadioButtonGroupWrapper.bottom = fluidDensityControlPanelWrapper.bottom;
+      } );
 
     this.addChild( blocksRadioButtonGroup );
 

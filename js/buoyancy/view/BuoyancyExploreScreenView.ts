@@ -9,7 +9,7 @@
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import { combineOptions } from '../../../../phet-core/js/optionize.js';
-import { AlignBox, VBox } from '../../../../scenery/js/imports.js';
+import { AlignBox, ManualConstraint, VBox } from '../../../../scenery/js/imports.js';
 import Panel from '../../../../sun/js/Panel.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 import Material from '../../common/model/Material.js';
@@ -70,7 +70,7 @@ export default class BuoyancyExploreScreenView extends DensityBuoyancyScreenView
       }
     );
 
-    const densityControlPanel = new Panel( new FluidDensityControlNode( model.liquidMaterialProperty, [
+    const fluidDensityControlPanel = new Panel( new FluidDensityControlNode( model.liquidMaterialProperty, [
       ...DensityBuoyancyCommonConstants.BUOYANCY_FLUID_MATERIALS,
       ...DensityBuoyancyCommonConstants.BUOYANCY_FLUID_MYSTERY_MATERIALS
     ], this.popupLayer, {
@@ -78,7 +78,7 @@ export default class BuoyancyExploreScreenView extends DensityBuoyancyScreenView
       tandem: tandem.createTandem( 'densityControlNode' )
     } ), DensityBuoyancyCommonConstants.PANEL_OPTIONS );
 
-    this.addChild( new AlignBox( densityControlPanel, {
+    this.addChild( new AlignBox( fluidDensityControlPanel, {
       alignBoundsProperty: this.visibleBoundsProperty,
       xAlign: 'center',
       yAlign: 'bottom',
@@ -154,8 +154,11 @@ export default class BuoyancyExploreScreenView extends DensityBuoyancyScreenView
       tandem: this.tandem.createTandem( 'blocksRadioButtonGroup' )
     } );
 
-    blocksRadioButtonGroup.left = rightSideVBox.left;
-    blocksRadioButtonGroup.bottom = densityControlPanel.bottom;
+    ManualConstraint.create( this, [ rightSideVBox, fluidDensityControlPanel, blocksRadioButtonGroup ],
+      ( rightSideVBoxWrapper, fluidDensityControlPanelWrapper, blocksRadioButtonGroupWrapper ) => {
+        blocksRadioButtonGroupWrapper.left = rightSideVBoxWrapper.left;
+        blocksRadioButtonGroupWrapper.bottom = fluidDensityControlPanelWrapper.bottom;
+      } );
 
     this.addChild( blocksRadioButtonGroup );
 

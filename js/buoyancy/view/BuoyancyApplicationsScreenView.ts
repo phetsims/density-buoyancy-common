@@ -17,7 +17,7 @@ import resetArrow_png from '../../../../scenery-phet/images/resetArrow_png.js';
 import NumberControl, { NumberControlOptions } from '../../../../scenery-phet/js/NumberControl.js';
 import NumberDisplay from '../../../../scenery-phet/js/NumberDisplay.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
-import { AlignBox, Color, HBox, HSeparator, Image, Node, Text, VBox } from '../../../../scenery/js/imports.js';
+import { AlignBox, Color, HBox, HSeparator, Image, ManualConstraint, Node, Text, VBox } from '../../../../scenery/js/imports.js';
 import RectangularPushButton from '../../../../sun/js/buttons/RectangularPushButton.js';
 import RectangularRadioButtonGroup from '../../../../sun/js/buttons/RectangularRadioButtonGroup.js';
 import Panel from '../../../../sun/js/Panel.js';
@@ -324,7 +324,7 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
       }
     } );
 
-    const densityControlPanel = new Panel( new FluidDensityControlNode( model.liquidMaterialProperty, [
+    const fluidDensityControlPanel = new Panel( new FluidDensityControlNode( model.liquidMaterialProperty, [
       ...DensityBuoyancyCommonConstants.BUOYANCY_FLUID_MATERIALS,
       ...DensityBuoyancyCommonConstants.BUOYANCY_FLUID_MYSTERY_MATERIALS
     ], this.popupLayer, {
@@ -332,16 +332,18 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
       tandem: tandem.createTandem( 'densityControlNode' )
     } ), DensityBuoyancyCommonConstants.PANEL_OPTIONS );
 
-    this.addChild( new AlignBox( densityControlPanel, {
+    this.addChild( new AlignBox( fluidDensityControlPanel, {
       alignBoundsProperty: this.visibleBoundsProperty,
       xAlign: 'center',
       yAlign: 'bottom',
       margin: MARGIN
     } ) );
 
-    // TODO is this correct positional behavior?? https://github.com/phetsims/buoyancy/issues/133
-    bottleBoatSelectionNode.left = rightSideVBox.left;
-    bottleBoatSelectionNode.bottom = densityControlPanel.bottom;
+    ManualConstraint.create( this, [ rightSideVBox, fluidDensityControlPanel, bottleBoatSelectionNode ],
+      ( rightSideVBoxWrapper, densityControlPanelWrapper, bottleBoatSelectionNodeWrapper ) => {
+        bottleBoatSelectionNodeWrapper.left = rightSideVBoxWrapper.left;
+        bottleBoatSelectionNodeWrapper.bottom = densityControlPanelWrapper.bottom;
+      } );
 
     this.addChild( bottleBoatSelectionNode );
 

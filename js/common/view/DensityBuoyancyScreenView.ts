@@ -67,7 +67,8 @@ const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
 export type THREEModelViewTransform = {
   modelToViewPoint: ( modelPoint: Vector3 ) => Vector2;
   modelToViewDelta: ( point1: Vector3, point2: Vector3 ) => Vector2;
-  viewToModelPoint: ( point: Vector2 ) => Vector3;
+  viewToModelPoint: ( point: Vector2, modelZ?: number ) => Vector3;
+  viewToModelDelta: ( viewPoint1: Vector2, modelZ1: number, viewPoint2: Vector2, modelZ2: number ) => Vector3;
 };
 
 type SelfOptions = {
@@ -142,6 +143,7 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
     this.backgroundLayer = new Node();
     this.addChild( this.backgroundLayer );
 
+    // TODO: Factor out to a MobiusScreenView? https://github.com/phetsims/density-buoyancy-common/issues/113
     this.sceneNode = new ThreeIsometricNode( this.layoutBounds, {
       parentMatrixProperty: animatedPanZoomSingleton.listener.matrixProperty,
       cameraPosition: options.cameraPosition,
@@ -606,9 +608,13 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
     }
   }
 
+
+  /////////////////////////////////////////////////////////////////
+  // START: model view transform code
+
   /**
    * Projects a 3d model point to a 2d view point (in the screen view's coordinate frame).
-   *
+   * TODO: Factor out to a MobiusScreenView? https://github.com/phetsims/density-buoyancy-common/issues/113
    * TODO: an api for a new MVT class where you provide the transform to get from your IsometricNode to global scenery coords (and vice versa)? https://github.com/phetsims/density-buoyancy-common/issues/113
    */
   public modelToViewPoint( point: Vector3 ): Vector2 {
@@ -616,21 +622,11 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
     // We'll want to transform global coordinates into screen coordinates here
     // TODO: JO, why doesn't localToGlobalPoint() care about the pan/zoom matrix. It seems like that is now a misnomer, eh? https://github.com/phetsims/density-buoyancy-common/issues/113
     // TODO: couldn't there be a way to register the pan/zoom matrix with Display, and then have Node.getActuallyGlobalPoint() handle this? https://github.com/phetsims/density-buoyancy-common/issues/113
-    const viewPoint = this.parentToLocalPoint( animatedPanZoomSingleton.listener.matrixProperty.value.inverted().timesVector2( this.sceneNode.projectPoint( point ) ) );
-
-    // TODO: Remove in a day or two, https://github.com/phetsims/density-buoyancy-common/issues/113
-    if ( assert ) {
-      const modelPoint = this.viewToModelPoint( viewPoint );
-      const newViewPoint = this.parentToLocalPoint( animatedPanZoomSingleton.listener.matrixProperty.value.inverted().timesVector2( this.sceneNode.projectPoint( modelPoint ) ) );
-
-      assert && assert( newViewPoint.minus( viewPoint ).getMagnitude() < 1e-3, `model/view point transform difference: ${viewPoint}, and ${newViewPoint}` );
-    }
-    return viewPoint;
+    return this.parentToLocalPoint( animatedPanZoomSingleton.listener.matrixProperty.value.inverted().timesVector2( this.sceneNode.projectPoint( point ) ) );
   }
 
   /**
-   * Get the difference in screen view coordinates between two model points. Both points are needed because of the 3d nature of the model
-   */
+   Get the difference in screen view coordinates between two model points. Both points are needed because of the 3d nature of the model   */
   public modelToViewDelta( point1: Vector3, point2: Vector3 ): Vector2 {
     const viewPoint1 = this.modelToViewPoint( point1 );
     const viewPoint2 = this.modelToViewPoint( point2 );
@@ -638,11 +634,26 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
   }
 
   /**
-   * Project a 2d global screen coordinate into 3d global coordinate frame.
+   * Project a 2d global screen coordinate into 3d global coordinate frame. Default to z distance of 0 (center of masses/pool)
    */
-  public viewToModelPoint( point: Vector2 ): Vector3 {
-    return this.sceneNode.unprojectPoint( animatedPanZoomSingleton.listener.matrixProperty.value.timesVector2( this.localToParentPoint( point ) ) );
+  public viewToModelPoint( point: Vector2, modelZ = 0 ): Vector3 {
+    const viewPoint = animatedPanZoomSingleton.listener.matrixProperty.value.timesVector2( this.localToParentPoint( point ) );
+    return this.sceneNode.unprojectPoint( viewPoint, modelZ );
   }
+
+  /**
+   * Get the difference in screen view coordinates from the first to the second provided screen points, in model
+   * coordinates. Both points are needed because of the 3d nature of the model. Please note that the delta can have
+   * negative values.
+   */
+  public viewToModelDelta( viewPoint1: Vector2, modelZ1: number, viewPoint2: Vector2, modelZ2: number ): Vector3 {
+    const modelPoint1 = this.viewToModelPoint( viewPoint1, modelZ1 );
+    const modelPoint2 = this.viewToModelPoint( viewPoint2, modelZ2 );
+    return modelPoint2.minus( modelPoint1 );
+  }
+
+  // END: model view transform code
+  /////////////////////////////////////////////////////////////////
 
   /**
    * Returns the closest grab-able mass under the pointer/

@@ -1,4 +1,4 @@
-// Copyright 2019-2024, University of Colorado Boulder
+// Copyright 2024, University of Colorado Boulder
 
 /**
  * The 3D view for a Duck.

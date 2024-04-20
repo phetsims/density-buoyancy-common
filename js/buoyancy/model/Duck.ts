@@ -30,7 +30,7 @@ const loader = new THREE.ObjectLoader();
 const mainDuckGeometry = loader.parse( DuckData );
 const SCALE = 0.1;
 
-const duckGeometry = ( mainDuckGeometry.children[ 0 ] as THREE.Mesh ).geometry.scale( SCALE, SCALE, SCALE ) as THREE.BufferGeometry;
+const duckGeometry = ( mainDuckGeometry.children[ 0 ] as THREE.Mesh ).geometry.scale( SCALE, SCALE, SCALE );
 
 
 // const VERTICES = _.chunk( mainDuckGeometry.children[ 0 ].geometry.getAttribute( 'position' ).array, 3 ).map( vert3 => {

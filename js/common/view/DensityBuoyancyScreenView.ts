@@ -60,6 +60,8 @@ import PickRequired from '../../../../phet-core/js/types/PickRequired.js';
 import { PhetioObjectOptions } from '../../../../tandem/js/PhetioObject.js';
 import BackgroundEventTargetListener from './BackgroundEventTargetListener.js';
 import MassDecorationLayer from './MassDecorationLayer.js';
+import Duck from '../../buoyancy/model/Duck.js';
+import DuckView from '../../buoyancy/view/DuckView.js';
 
 // constants
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
@@ -510,6 +512,11 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
       }
       else if ( mass instanceof Boat ) {
         massView = new BoatView( mass, this, dragBoundsProperty, model.pool.liquidYInterpolatedProperty,
+          model.showGravityForceProperty, model.showBuoyancyForceProperty, model.showContactForceProperty,
+          model.showForceValuesProperty, model.forceScaleProperty, model.showMassesProperty );
+      }
+      else if ( mass instanceof Duck ) {
+        massView = new DuckView( mass, this, dragBoundsProperty,
           model.showGravityForceProperty, model.showBuoyancyForceProperty, model.showContactForceProperty,
           model.showForceValuesProperty, model.forceScaleProperty, model.showMassesProperty );
       }

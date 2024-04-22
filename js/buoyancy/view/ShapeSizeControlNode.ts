@@ -42,8 +42,7 @@ export default class ShapeSizeControlNode extends VBox {
       align: 'left'
     } );
 
-    // TODO: support ducks, https://github.com/phetsims/buoyancy/issues/101
-    const comboBox = new ComboBox( massShapeProperty, MassShape.enumeration.values.filter( x => x.name !== 'DUCK' ).map( massShape => {
+    const comboBox = new ComboBox( massShapeProperty, MassShape.enumeration.values.map( massShape => {
       return {
         value: massShape,
         createNode: () => new Text( massShape.shapeString, {

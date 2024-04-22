@@ -30,6 +30,7 @@ import { MassShape } from '../../common/model/MassShape.js';
 import TProperty from '../../../../axon/js/TProperty.js';
 import isSettingPhetioStateProperty from '../../../../tandem/js/isSettingPhetioStateProperty.js';
 import MassTag from '../../common/model/MassTag.js';
+import Duck from './Duck.js';
 
 export type BuoyancyShapesModelOptions = DensityBuoyancyModelOptions;
 
@@ -143,6 +144,9 @@ export default class BuoyancyShapesModel extends DensityBuoyancyModel {
             false,
             massOptions
           );
+          break;
+        case MassShape.DUCK:
+          mass = new Duck( this.engine, Duck.getSizeFromRatios( widthRatio, heightRatio ), massOptions );
           break;
         default:
           throw new Error( `shape not recognized: ${shape}` );

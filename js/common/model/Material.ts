@@ -500,6 +500,7 @@ export default class Material {
     tandemName: 'materialO',
     identifier: 'MATERIAL_O',
     hidden: true,
+    customColor: new Property( new Color( '#f00' ) ),
     density: 950 // Same as the Human's average density
   } );
 
@@ -508,6 +509,7 @@ export default class Material {
     tandemName: 'materialP',
     identifier: 'MATERIAL_P',
     hidden: true,
+    customColor: new Property( new Color( '#0f0' ) ),
     density: Material.DIAMOND.density
   } );
 
@@ -516,6 +518,7 @@ export default class Material {
     tandemName: 'materialV',
     identifier: 'MATERIAL_V',
     hidden: true,
+    customColor: new Property( new Color( '#ff0' ) ),
     density: Material.TITANIUM.density
   } );
 
@@ -524,6 +527,7 @@ export default class Material {
     tandemName: 'materialW',
     identifier: 'MATERIAL_W',
     hidden: true,
+    customColor: new Property( new Color( '#0af' ) ),
     density: Material.MERCURY.density
   } );
 

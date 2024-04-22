@@ -327,12 +327,15 @@ class CustomMaterialView extends MaterialView {
   }
 }
 
-class CustomColoredMaterialView extends MaterialView<THREE.MeshLambertMaterial> {
+class ColoredMaterialView extends MaterialView<THREE.MeshLambertMaterial> {
 
   private readonly colorProperty: Property<Color>;
   private readonly listener: ( color: Color ) => void;
 
   public constructor( colorProperty: Property<Color> ) {
+
+    assert && assert( colorProperty !== null, 'colorProperty should not be null' );
+
     super( new THREE.MeshLambertMaterial() );
 
     this.colorProperty = colorProperty;
@@ -406,16 +409,16 @@ export default class DensityMaterials {
       return new WoodMaterialView();
     }
     else if ( material === Material.MATERIAL_O ) {
-      return new CustomColoredMaterialView( new Property( new Color( '#f00' ) ) );
+      return new ColoredMaterialView( material.customColor! );
     }
     else if ( material === Material.MATERIAL_P ) {
-      return new CustomColoredMaterialView( new Property( new Color( '#0f0' ) ) );
+      return new ColoredMaterialView( material.customColor! );
     }
     else if ( material === Material.MATERIAL_V ) {
-      return new CustomColoredMaterialView( new Property( new Color( '#ff0' ) ) );
+      return new ColoredMaterialView( material.customColor! );
     }
     else if ( material === Material.MATERIAL_W ) {
-      return new CustomColoredMaterialView( new Property( new Color( '#0af' ) ) );
+      return new ColoredMaterialView( material.customColor! );
     }
     else if ( material === Material.MATERIAL_X ) {
       return new GoldMaterialView();
@@ -428,7 +431,7 @@ export default class DensityMaterials {
         return new CustomMaterialView( material.density );
       }
       else {
-        return new CustomColoredMaterialView( material.customColor );
+        return new ColoredMaterialView( material.customColor );
       }
     }
     else {

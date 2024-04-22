@@ -85,12 +85,15 @@ export default class BuoyancyLabModel extends DensityBuoyancyModel {
    * Resets things to their original values.
    */
   public override reset(): void {
+    super.reset();
 
     this.primaryMass.reset();
 
     this.densityExpandedProperty.reset();
 
-    super.reset();
+    // The model position of the pool is reset before, so even if this Property value doesn't change, we need to reposition via listeners
+    this.poolScaleHeightProperty.reset();
+    this.poolScaleHeightProperty.notifyListenersStatic();
   }
 }
 

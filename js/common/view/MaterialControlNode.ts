@@ -21,6 +21,7 @@ import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js
 import Material, { CUSTOM_MATERIAL_NAME, MaterialName } from '../model/Material.js';
 import { PhetioObjectOptions } from '../../../../tandem/js/PhetioObject.js';
 import PickRequired from '../../../../phet-core/js/types/PickRequired.js';
+import Range from '../../../../dot/js/Range.js';
 
 const LITERS_IN_CUBIC_METER = 1000;
 
@@ -38,11 +39,15 @@ type SelfMaterialControlNodeOptions = {
   minCustomMass?: number;
   maxCustomMass?: number;
   minCustomVolumeLiters?: number;
+  maxVolumeLiters?: number;
+
 } & PickRequired<PhetioObjectOptions, 'tandem'>;
 
 export type MaterialControlNodeOptions = SelfMaterialControlNodeOptions & VBoxOptions;
 
 export default class MaterialControlNode extends VBox {
+  protected customDensityRange: Range;
+
   public constructor( materialProperty: Property<Material>,
                       volumeProperty: Property<number>,
                       materials: Material[],
@@ -56,13 +61,17 @@ export default class MaterialControlNode extends VBox {
       supportHiddenMaterial: false,
       minCustomMass: 0.5,
       maxCustomMass: 10,
-      minCustomVolumeLiters: 1
+      minCustomVolumeLiters: 1,
+      maxVolumeLiters: 10
     }, providedOptions );
 
     super( {
       spacing: 15,
       align: 'left'
     } );
+
+    this.customDensityRange = new Range( options.minCustomMass / options.maxVolumeLiters * DensityBuoyancyCommonConstants.LITERS_IN_CUBIC_METER,
+      options.maxCustomMass / options.minCustomVolumeLiters * DensityBuoyancyCommonConstants.LITERS_IN_CUBIC_METER );
 
     if ( !options.supportHiddenMaterial ) {
       materials = materials.filter( material => !material.hidden );
@@ -79,7 +88,8 @@ export default class MaterialControlNode extends VBox {
           // Handle our minimum volume if we're switched to custom (if needed)
           const volume = Math.max( volumeProperty.value, options.minCustomVolumeLiters / LITERS_IN_CUBIC_METER );
           return Material.createCustomSolidMaterial( {
-            density: Utils.clamp( materialProperty.value.density, options.minCustomMass / volume, options.maxCustomMass / volume )
+            density: Utils.clamp( materialProperty.value.density, options.minCustomMass / volume, options.maxCustomMass / volume ),
+            densityRange: this.customDensityRange
           } );
         }
         else {

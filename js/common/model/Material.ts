@@ -26,6 +26,7 @@ import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import TinyProperty from '../../../../axon/js/TinyProperty.js';
 import ReadOnlyProperty from '../../../../axon/js/ReadOnlyProperty.js';
 import MappedProperty from '../../../../axon/js/MappedProperty.js';
+import Range from '../../../../dot/js/Range.js';
 
 
 const NullableColorPropertyReferenceType = NullableIO( ReferenceIO( Property.PropertyIO( Color.ColorIO ) ) );
@@ -143,8 +144,11 @@ export default class Material {
   /**
    * Returns a custom material that can be modified at will, but with a solid color specified
    */
-  public static createCustomSolidMaterial( config: MaterialOptions & Required<Pick<MaterialOptions, 'density'>> ): Material {
-    const solidColorProperty = Material.getCustomSolidColor( config.density );
+  public static createCustomSolidMaterial( config: MaterialOptions & Required<Pick<MaterialOptions, 'density'>> & { densityRange?: Range } ): Material {
+
+    assert && assert( config.hasOwnProperty( 'customColor' ) || config.hasOwnProperty( 'densityRange' ), 'we need a way to have a material color' );
+
+    const solidColorProperty = config.customColor || Material.getCustomSolidColor( config.density, config.densityRange! );
     const depthLinesColorProperty = new MappedProperty( solidColorProperty, {
       map: solidColor => {
 
@@ -156,33 +160,50 @@ export default class Material {
     } );
 
     return Material.createCustomMaterial( combineOptions<MaterialOptions>( {
+      customColor: solidColorProperty,
+
+      // Also provide as a liquid color because some solid colors use Material.linkLiquidColor() (like the Bottle)
       liquidColor: solidColorProperty,
+
       depthLinesColor: depthLinesColorProperty
     }, config ) );
   }
 
   /**
    * Returns a value suitable for use in colors (0-255 value) that should be used as a grayscale value for
-   * a material of a given density.
+   * a material of a given density. The mappíng is inverted, i.e. larger densities yield darker colors.
    */
-  public static getCustomLightness( density: number ): number {
-    return Utils.roundSymmetric( Utils.clamp( Utils.linear( 1, -2, 0, 255, Utils.log10( density / 1000 ) ), 0, 255 ) );
+  public static getCustomLightness( density: number, densityRange: Range ): number {
+    return Utils.roundSymmetric( this.getNormalizedLightness( density, densityRange ) * 255 );
+  }
+
+  /**
+   * Returns a lightness factor from 0-1 that can be used to map a density to a desired color.
+   */
+  public static getNormalizedLightness( density: number, densityRange: Range ): number {
+    const scaleFactor = 1000;
+    const scaleMax = Utils.log10( densityRange.max / scaleFactor ); // 1 for the default
+    const scaleMin = Utils.log10( densityRange.min / scaleFactor ); // -2 for the default
+    const scaleValue = Utils.log10( density / scaleFactor );
+    return Utils.clamp( Utils.linear( scaleMax, scaleMin, 0, 1, scaleValue ), 0, 1 );
   }
 
   /**
    * Similar to getCustomLightness, but returns the generated color, with an included alpha effect.
    */
-  public static getCustomLiquidColor( density: number ): ColorProperty {
-    const lightness = Material.getCustomLightness( density * 0.25 );
+  private static getCustomLiquidColor( density: number ): ColorProperty {
+    // TODO: the range here is arbitrary. 0-15 or whatever would be better, https://github.com/phetsims/buoyancy/issues/28
+    const lightness = Material.getCustomLightness( density, new Range( 40, 40000 ) );
 
-    return new ColorProperty( new Color( lightness, lightness, lightness, 0.8 * ( 1 - lightness / 255 ) ) );
+    // TODO: 0,30,255 as the max, https://github.com/phetsims/buoyancy/issues/28
+    return new ColorProperty( new Color( lightness, lightness, 255, 0.8 * ( 1 - lightness / 255 ) ) );
   }
 
   /**
    * Similar to getCustomLightness, but returns the generated color
    */
-  public static getCustomSolidColor( density: number ): ColorProperty {
-    const lightness = Material.getCustomLightness( density );
+  private static getCustomSolidColor( density: number, densityRange: Range ): ColorProperty {
+    const lightness = Material.getCustomLightness( density, densityRange );
 
     return new ColorProperty( new Color( lightness, lightness, lightness ) );
   }

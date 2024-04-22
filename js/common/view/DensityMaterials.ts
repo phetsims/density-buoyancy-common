@@ -317,16 +317,6 @@ class GreyMetalMaterialView extends MaterialView {
   }
 }
 
-class CustomMaterialView extends MaterialView {
-  public constructor( density: number ) {
-    const lightness = Material.getCustomLightness( density );
-
-    super( new THREE.MeshLambertMaterial( {
-      color: new THREE.Color( `hsl(0, 0%, ${lightness}%)` )
-    } ) );
-  }
-}
-
 class ColoredMaterialView extends MaterialView<THREE.MeshLambertMaterial> {
 
   private readonly colorProperty: Property<Color>;
@@ -427,12 +417,8 @@ export default class DensityMaterials {
       return new GoldMaterialView();
     }
     else if ( material.custom ) {
-      if ( material.customColor === null ) {
-        return new CustomMaterialView( material.density );
-      }
-      else {
-        return new ColoredMaterialView( material.customColor );
-      }
+      assert && assert( material.customColor, 'customColor required for custom materials' );
+      return new ColoredMaterialView( material.customColor! );
     }
     else {
       return new DebugMaterialView();

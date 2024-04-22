@@ -52,7 +52,6 @@ type SelfOptions = {
   highDensityThreshold?: number;
 
   minVolumeLiters?: number;
-  maxVolumeLiters?: number;
   color?: TColor;
 
   showMassAsReadout?: boolean;
@@ -159,7 +158,8 @@ export default class MaterialMassVolumeControlNode extends MaterialControlNode {
         // If we're custom, adjust the density
         if ( materialProperty.value.custom ) {
           materialProperty.value = Material.createCustomSolidMaterial( {
-            density: massProperty.value / cubicMeters
+            density: massProperty.value / cubicMeters,
+            densityRange: this.customDensityRange
           } );
         }
         setVolume( cubicMeters );
@@ -196,7 +196,8 @@ export default class MaterialMassVolumeControlNode extends MaterialControlNode {
         // It is possible for the volumeProperty to be 0, so avoid the infinte density case, see https://github.com/phetsims/density-buoyancy-common/issues/78
         if ( materialProperty.value.custom && volumeProperty.value > 0 ) {
           materialProperty.value = Material.createCustomSolidMaterial( {
-            density: mass / volumeProperty.value
+            density: mass / volumeProperty.value,
+            densityRange: this.customDensityRange
           } );
         }
         else {

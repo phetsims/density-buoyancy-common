@@ -169,6 +169,9 @@ const BOTTLE_INITIAL_INTERIOR_VOLUME = 0.004;
 // {Material}
 const BOTTLE_INITIAL_INTERIOR_MATERIAL = Material.WATER;
 
+// Used to calculate the color of the bottle's custom material
+const BOTTLE_DENSITY_RANGE = new Range( 10, 10000 );
+
 export type BottleOptions = StrictOmit<ApplicationsMassOptions, 'body' | 'shape' | 'volume' | 'material' | 'massShape'>;
 
 export default class Bottle extends ApplicationsMass {
@@ -193,8 +196,9 @@ export default class Bottle extends ApplicationsMass {
       body: engine.createFromVertices( vertices, true ),
       shape: Shape.polygon( vertices ),
       volume: BOTTLE_VOLUME,
-      material: Material.createCustomMaterial( {
-        density: ( BOTTLE_MASS + BOTTLE_INITIAL_INTERIOR_MATERIAL.density * BOTTLE_INITIAL_INTERIOR_VOLUME ) / BOTTLE_VOLUME
+      material: Material.createCustomSolidMaterial( {
+        density: ( BOTTLE_MASS + BOTTLE_INITIAL_INTERIOR_MATERIAL.density * BOTTLE_INITIAL_INTERIOR_VOLUME ) / BOTTLE_VOLUME,
+        densityRange: BOTTLE_DENSITY_RANGE
       } ),
       massShape: MassShape.BLOCK
     }, providedOptions );
@@ -222,9 +226,10 @@ export default class Bottle extends ApplicationsMass {
     } );
 
     Multilink.multilink( [ this.interiorMaterialProperty, this.interiorVolumeProperty ], ( material, volume ) => {
-      this.materialProperty.value = Material.createCustomMaterial( {
+      this.materialProperty.value = Material.createCustomSolidMaterial( {
         nameProperty: DensityBuoyancyCommonStrings.averageStringProperty,
-        density: ( BOTTLE_MASS + material.density * volume ) / BOTTLE_VOLUME
+        density: ( BOTTLE_MASS + material.density * volume ) / BOTTLE_VOLUME,
+        densityRange: BOTTLE_DENSITY_RANGE
       } );
     } );
 

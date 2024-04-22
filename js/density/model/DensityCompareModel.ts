@@ -28,6 +28,11 @@ import DensityBuoyancyModel from '../../common/model/DensityBuoyancyModel.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 import MassTag from '../../common/model/MassTag.js';
 
+// Vestigial range used to calculate the color of custom materials. This has nothing to do with the actual range of
+// density values in this model.
+const COLOR_DENSITY_RANGE = new Range( 10, 10000 );
+
+
 export class BlockSet extends EnumerationValue {
   public static readonly SAME_MASS = new BlockSet();
   public static readonly SAME_VOLUME = new BlockSet();
@@ -72,12 +77,12 @@ export default class DensityCompareModel extends BlockSetModel<BlockSet> {
       units: 'kg/m^3'
     } );
 
-    const createMaterialProperty = ( colorProperty: TProperty<Color>, densityProperty: TProperty<number> ) => {
-      return new DerivedProperty( [ colorProperty, densityProperty ], ( color, density ) => {
-        const lightness = Material.getCustomLightness( density ); // 0-255
+    const createMaterialProperty = ( colorProperty: TProperty<Color>, myDensityProperty: TProperty<number> ) => {
+      return new DerivedProperty( [ colorProperty, myDensityProperty ], ( color, density ) => {
+        const lightness = Material.getNormalizedLightness( density, COLOR_DENSITY_RANGE ); // 0-1
 
         const modifier = 0.1;
-        const rawValue = ( lightness / 128 - 1 ) * ( 1 - modifier ) + modifier;
+        const rawValue = ( lightness * 2 - 1 ) * ( 1 - modifier ) + modifier;
         const power = 0.7;
         const modifiedColor = color.colorUtilsBrightness( Math.sign( rawValue ) * Math.pow( Math.abs( rawValue ), power ) );
 

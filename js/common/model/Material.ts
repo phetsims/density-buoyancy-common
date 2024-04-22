@@ -106,7 +106,7 @@ export default class Material {
       hidden: false,
       customColor: null,
       liquidColor: null,
-      depthLinesColor: DensityBuoyancyCommonColors.depthLinesDarkProperty
+      depthLinesColor: DensityBuoyancyCommonColors.depthLinesDarkColorProperty
     }, providedOptions );
 
     assert && assert( isFinite( options.density ), 'density should be finite, but it was: ' + options.density );
@@ -157,7 +157,7 @@ export default class Material {
         // The lighter depth line color has better contrast, so use that for more than half
         const isDark = ( solidColor.r + solidColor.g + solidColor.b ) / 3 < 255 * 0.4;
 
-        return isDark ? DensityBuoyancyCommonColors.depthLinesLightProperty.value : DensityBuoyancyCommonColors.depthLinesDarkProperty.value;
+        return isDark ? DensityBuoyancyCommonColors.depthLinesLightColorProperty.value : DensityBuoyancyCommonColors.depthLinesDarkColorProperty.value;
       }
     } );
 
@@ -262,7 +262,7 @@ export default class Material {
     tandemName: 'brick',
     identifier: 'BRICK',
     density: 2000,
-    depthLinesColor: DensityBuoyancyCommonColors.depthLinesLightProperty
+    depthLinesColor: DensityBuoyancyCommonColors.depthLinesLightColorProperty
   } );
 
   public static readonly CONCRETE = new Material( {
@@ -387,7 +387,7 @@ export default class Material {
     tandemName: 'wood',
     identifier: 'WOOD',
     density: 400,
-    depthLinesColor: DensityBuoyancyCommonColors.depthLinesLightProperty
+    depthLinesColor: DensityBuoyancyCommonColors.depthLinesLightColorProperty
   } );
 
   // (read-only) {Material} - "Liquids".

@@ -280,10 +280,10 @@ const DensityBuoyancyCommonColors = {
     default: new Color( 0, 30, 255, 0.8 )
   } ),
 
-  depthLinesDarkProperty: new ProfileColorProperty( densityBuoyancyCommon, 'depthLinesDark', {
+  depthLinesDarkColorProperty: new ProfileColorProperty( densityBuoyancyCommon, 'depthLinesDark', {
     default: Color.DARK_GRAY
   } ),
-  depthLinesLightProperty: new ProfileColorProperty( densityBuoyancyCommon, 'depthLinesLight', {
+  depthLinesLightColorProperty: new ProfileColorProperty( densityBuoyancyCommon, 'depthLinesLight', {
     default: Color.LIGHT_GRAY
   } )
 };

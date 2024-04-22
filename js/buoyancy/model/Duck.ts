@@ -217,7 +217,7 @@ export default class Duck extends Mass {
    * Returns a duck shape
    */
   public static getDuckShape( width: number, height: number ): Shape {
-    // TODO: Maybe get a 2d shape via code in the patch in https://github.com/phetsims/density-buoyancy-common/issues/115#issuecomment-2067166189
+    // Maybe get a 2d shape via code in the patch in https://github.com/phetsims/density-buoyancy-common/issues/115#issuecomment-2067166189
     return Shape.circle( Vector2.ZERO, height / 2 );
   }
 

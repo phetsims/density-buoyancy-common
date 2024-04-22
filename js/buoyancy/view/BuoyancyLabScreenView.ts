@@ -205,11 +205,22 @@ export default class BuoyancyLabScreenView extends DensityBuoyancyScreenView<Buo
     this.scaleHeightSlider = new ScaleHeightSlider( model.poolScale, model.poolScaleHeightProperty,
       model.poolBounds, model.pool.liquidYInterpolatedProperty, this, {
         tandem: tandem.createTandem( 'scaleHeightSlider' ),
-        getSliderTrackBottomPoint: () => this.modelToViewPoint( new Vector3(
-          this.model.poolBounds.maxX,
-          this.model.poolBounds.minY,
-          this.model.poolScale.getBounds().maxZ
-        ) ).plusXY( DensityBuoyancyCommonConstants.MARGIN, 0 )
+        getSliderTrackBottomPoint: () => {
+          // X margin should be based on the front of the pool
+          const x = this.modelToViewPoint( new Vector3(
+            this.model.poolBounds.maxX,
+            this.model.poolBounds.minY,
+            this.model.poolBounds.maxZ
+          ) ).plusXY( DensityBuoyancyCommonConstants.MARGIN / 2, 0 ).x;
+
+          // Y should be based on the bottom of the front of the scale (in the middle of the pool)
+          const y = this.modelToViewPoint( new Vector3(
+            this.model.poolBounds.maxX,
+            this.model.poolBounds.minY,
+            this.model.poolScale.getBounds().maxZ
+          ) ).y;
+          return new Vector2( x, y );
+        }
       } );
     this.addChild( this.scaleHeightSlider );
 

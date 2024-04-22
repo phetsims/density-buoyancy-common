@@ -49,6 +49,8 @@ export const CUSTOM_MATERIAL_NAME = 'CUSTOM';
 export type CustomMaterialName = typeof CUSTOM_MATERIAL_NAME;
 export type MaterialName = keyof ( typeof Material ) | CustomMaterialName;
 
+type DensityRangeOption = { densityRange?: Range };
+
 export type MaterialOptions = {
   nameProperty?: TReadOnlyProperty<string>;
 
@@ -135,16 +137,16 @@ export default class Material {
   /**
    * Returns a custom material that can be modified at will, but with a liquid color specified.
    */
-  public static createCustomLiquidMaterial( config: MaterialOptions & Required<Pick<MaterialOptions, 'density'>> ): Material {
+  public static createCustomLiquidMaterial( config: MaterialOptions & Required<Pick<MaterialOptions, 'density'> & Required<DensityRangeOption>> ): Material {
     return Material.createCustomMaterial( combineOptions<MaterialOptions>( {
-      liquidColor: Material.getCustomLiquidColor( config.density )
+      liquidColor: Material.getCustomLiquidColor( config.density, config.densityRange )
     }, config ) );
   }
 
   /**
    * Returns a custom material that can be modified at will, but with a solid color specified
    */
-  public static createCustomSolidMaterial( config: MaterialOptions & Required<Pick<MaterialOptions, 'density'>> & { densityRange?: Range } ): Material {
+  public static createCustomSolidMaterial( config: MaterialOptions & Required<Pick<MaterialOptions, 'density'>> & DensityRangeOption ): Material {
 
     assert && assert( config.hasOwnProperty( 'customColor' ) || config.hasOwnProperty( 'densityRange' ), 'we need a way to have a material color' );
 
@@ -191,12 +193,15 @@ export default class Material {
   /**
    * Similar to getCustomLightness, but returns the generated color, with an included alpha effect.
    */
-  private static getCustomLiquidColor( density: number ): ColorProperty {
-    // TODO: the range here is arbitrary. 0-15 or whatever would be better, https://github.com/phetsims/buoyancy/issues/28
-    const lightness = Material.getCustomLightness( density, new Range( 40, 40000 ) );
+  private static getCustomLiquidColor( density: number, densityRange: Range ): ColorProperty {
+    const lightnessFactor = Material.getNormalizedLightness( density, densityRange );
 
-    // TODO: 0,30,255 as the max, https://github.com/phetsims/buoyancy/issues/28
-    return new ColorProperty( new Color( lightness, lightness, 255, 0.8 * ( 1 - lightness / 255 ) ) );
+    return new ColorProperty(
+      Color.interpolateRGBA(
+        DensityBuoyancyCommonColors.customLiquidDarkColorProperty.value,
+        DensityBuoyancyCommonColors.customLiquidLightColorProperty.value,
+        lightnessFactor
+      ) );
   }
 
   /**

@@ -273,6 +273,12 @@ const DensityBuoyancyCommonColors = {
     phetioReadOnly: true,
     tandem: tandem.createTandem( 'materialWaterColorProperty' )
   } ),
+  customLiquidLightColorProperty: new ProfileColorProperty( densityBuoyancyCommon, 'customLiquidLight', {
+    default: new Color( 255, 255, 255, 0.3 )
+  } ),
+  customLiquidDarkColorProperty: new ProfileColorProperty( densityBuoyancyCommon, 'customLiquidDark', {
+    default: new Color( 0, 30, 255, 0.8 )
+  } ),
 
   depthLinesDarkProperty: new ProfileColorProperty( densityBuoyancyCommon, 'depthLinesDark', {
     default: Color.DARK_GRAY

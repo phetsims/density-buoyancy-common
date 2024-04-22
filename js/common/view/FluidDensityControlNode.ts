@@ -29,6 +29,12 @@ type SelfOptions = {
   customMaterial?: Material;
 };
 
+const FLUID_DENSITY_RANGE_PER_L = new Range( 0.5, 15 );
+const FLUID_DENSITY_RANGE_PER_M3 = new Range(
+  FLUID_DENSITY_RANGE_PER_L.min * DensityBuoyancyCommonConstants.LITERS_IN_CUBIC_METER,
+  FLUID_DENSITY_RANGE_PER_L.max * DensityBuoyancyCommonConstants.LITERS_IN_CUBIC_METER
+);
+
 type ParentOptions = Partial<ComboNumberControlOptions<Material>> &
   PickRequired<ComboNumberControlOptions<Material>, 'tandem'>;
 type DensityControlNodeOptions = SelfOptions & ParentOptions;
@@ -42,7 +48,8 @@ export default class FluidDensityControlNode extends ComboNumberControl<Material
 
       // Probably best to not touch this
       customMaterial: Material.createCustomLiquidMaterial( {
-        density: 1000
+        density: 1000,
+        densityRange: FLUID_DENSITY_RANGE_PER_M3
       } )
     }, providedOptions );
 
@@ -57,7 +64,8 @@ export default class FluidDensityControlNode extends ComboNumberControl<Material
       range: new Range( 0.5, 15 ),
       toNumericValue: material => material.density / 1000,
       createCustomValue: density => Material.createCustomLiquidMaterial( {
-        density: density * 1000
+        density: density * 1000,
+        densityRange: FLUID_DENSITY_RANGE_PER_M3
       } ),
       isCustomValue: material => material.custom,
       isHiddenValue: material => material.hidden,

@@ -70,8 +70,8 @@ export default class DensityNumberLineNode extends Node {
         labelContainerProxy.centerY = HEIGHT / 2;
       } );
       this.addChild( labelContainer );
-      this.addChild( new Line( x, 0, x, label.top - LINE_PADDING, lineOptions ) );
-      this.addChild( new Line( x, HEIGHT, x, label.bottom + LINE_PADDING, lineOptions ) );
+      this.addChild( new Line( x, 0, x, labelContainer.top - LINE_PADDING, lineOptions ) );
+      this.addChild( new Line( x, HEIGHT, x, labelContainer.bottom + LINE_PADDING, lineOptions ) );
     } );
 
     this.addChild( new Text( '0', {

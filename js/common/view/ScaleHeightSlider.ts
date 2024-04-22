@@ -9,7 +9,7 @@
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import { SliderOptions } from '../../../../sun/js/Slider.js';
 import Property from '../../../../axon/js/Property.js';
-import { combineOptions } from '../../../../phet-core/js/optionize.js';
+import optionize from '../../../../phet-core/js/optionize.js';
 import Range from '../../../../dot/js/Range.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
 import VSlider from '../../../../sun/js/VSlider.js';
@@ -21,21 +21,30 @@ import Bounds3 from '../../../../dot/js/Bounds3.js';
 import PrecisionSliderThumb from './PrecisionSliderThumb.js';
 import { THREEModelViewTransform } from './DensityBuoyancyScreenView.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
+import Vector2 from '../../../../dot/js/Vector2.js';
+import { Node } from '../../../../scenery/js/imports.js';
 
 // constants
 const DEFAULT_RANGE = new Range( 0, 1 );
 const SCALE_X_POSITION = 0.35;
 
+type GetSliderTrackBottomPoint = () => Vector2;
+type SelfOptions = {
+  getSliderTrackBottomPoint: GetSliderTrackBottomPoint;
+};
+type ScaleHeightSliderOptions = SelfOptions & SliderOptions;
+
 export default class ScaleHeightSlider extends VSlider {
+  private readonly getSliderTrackBottomPoint: GetSliderTrackBottomPoint;
+  private readonly scaleHeightThumbNode: Node;
 
   public constructor( scale: Scale, heightProperty: Property<number>,
                       poolBounds: Bounds3,
                       liquidYInterpolatedProperty: TReadOnlyProperty<number>,
                       modelViewTransform: THREEModelViewTransform,
-                      providedOptions?: SliderOptions ) {
+                      providedOptions: ScaleHeightSliderOptions ) {
 
-    const thumbNode = new PrecisionSliderThumb();
-
+    const scaleHeightThumbNode = new PrecisionSliderThumb();
 
     // This magic number accomplishes two things:
     // 1. matching the liquid level exactly causes blue graphical fractals on the top of the scale
@@ -46,16 +55,17 @@ export default class ScaleHeightSlider extends VSlider {
 
     const sliderTrackHeight = modelViewTransform.modelToViewDelta( new Vector3( SCALE_X_POSITION, maxY, poolBounds.maxZ ), new Vector3( SCALE_X_POSITION, minY, poolBounds.maxZ ) ).y;
 
-    const options = combineOptions<SliderOptions>( {
-      thumbNode: thumbNode,
-      thumbYOffset: thumbNode.height / 2,
+    const options = optionize<ScaleHeightSliderOptions, SelfOptions, SliderOptions>()( {
+      thumbNode: scaleHeightThumbNode,
+      thumbYOffset: scaleHeightThumbNode.height / 2,
       tandem: Tandem.REQUIRED,
       tandemNameSuffix: 'Control',
       trackSize: new Dimension2( 3, sliderTrackHeight )
     }, providedOptions );
 
     super( heightProperty, DEFAULT_RANGE, options );
-
+    this.getSliderTrackBottomPoint = options.getSliderTrackBottomPoint;
+    this.scaleHeightThumbNode = scaleHeightThumbNode;
 
     heightProperty.link( height => {
       const currentHeight = Utils.linear( 0, 1, minY, maxY, height );
@@ -65,6 +75,15 @@ export default class ScaleHeightSlider extends VSlider {
       scale.writeData();
       scale.transformedEmitter.emit();
     } );
+  }
+
+  public layout(): void {
+
+    const bottomPoint = this.getSliderTrackBottomPoint();
+
+    // Position based on the track, not the thumb
+    this.bottom = bottomPoint.y + this.scaleHeightThumbNode.height / 2;
+    this.left = bottomPoint.x;
   }
 }
 

@@ -42,8 +42,8 @@ const DESIRED_LEFT_SIDE_MARGIN = DensityBuoyancyCommonConstants.MARGIN;
 
 export default class BuoyancyLabScreenView extends DensityBuoyancyScreenView<BuoyancyLabModel> {
 
-  private rightBox: MultiSectionPanelsNode;
-  private positionWaterLevelSlider: () => void;
+  private readonly rightBox: MultiSectionPanelsNode;
+  private readonly scaleHeightSlider: ScaleHeightSlider;
 
   public constructor( model: BuoyancyLabModel, options: DensityBuoyancyScreenViewOptions ) {
 
@@ -200,24 +200,21 @@ export default class BuoyancyLabScreenView extends DensityBuoyancyScreenView<Buo
       strictAxonDependencies: false // This workaround is deemed acceptable for visibleBoundsProperty listening, https://github.com/phetsims/faradays-electromagnetic-lab/issues/65
     } );
 
-    this.addChild( this.popupLayer );
 
     // Info button and associated dialog
-    const scaleHeightSlider = new ScaleHeightSlider( model.poolScale, model.poolScaleHeightProperty,
+    this.scaleHeightSlider = new ScaleHeightSlider( model.poolScale, model.poolScaleHeightProperty,
       model.poolBounds, model.pool.liquidYInterpolatedProperty, this, {
-        tandem: tandem.createTandem( 'scaleHeightSlider' )
+        tandem: tandem.createTandem( 'scaleHeightSlider' ),
+        getSliderTrackBottomPoint: () => this.modelToViewPoint( new Vector3(
+          this.model.poolBounds.maxX,
+          this.model.poolBounds.minY,
+          this.model.poolScale.getBounds().maxZ
+        ) ).plusXY( DensityBuoyancyCommonConstants.MARGIN, 0 )
       } );
-    this.addChild( scaleHeightSlider );
+    this.addChild( this.scaleHeightSlider );
 
-    this.positionWaterLevelSlider = () => {
-      const bottomRightPoolPoint = this.modelToViewPoint( new Vector3(
-        this.model.poolBounds.maxX,
-        this.model.poolBounds.minY,
-        this.model.poolBounds.maxZ
-      ) );
-      scaleHeightSlider.bottom = bottomRightPoolPoint.y;
-      scaleHeightSlider.left = bottomRightPoolPoint.x + DensityBuoyancyCommonConstants.MARGIN / 2;
-    };
+    // Popup last
+    this.addChild( this.popupLayer );
   }
 
   public static getFluidDisplacedPanelScaleIcon(): Node {
@@ -260,7 +257,7 @@ export default class BuoyancyLabScreenView extends DensityBuoyancyScreenView<Buo
       return;
     }
 
-    this.positionWaterLevelSlider();
+    this.scaleHeightSlider.layout();
   }
 }
 

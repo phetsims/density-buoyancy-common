@@ -210,7 +210,7 @@ export default class BuoyancyExploreScreenView extends DensityBuoyancyScreenView
         const water = new THREE.Mesh( waterGeometry, waterMaterial );
         water.position.copy( ThreeUtils.vectorToThree( new Vector3( 0, -0.5, 0.12 ) ) );
         scene.add( water );
-      } )
+      } );
     } );
 
 

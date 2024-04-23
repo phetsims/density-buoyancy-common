@@ -34,19 +34,15 @@ import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js'
 import BuoyancyApplicationsModel, { Scene } from '../model/BuoyancyApplicationsModel.js';
 import DensityAccordionBox from './DensityAccordionBox.js';
 import arrayRemove from '../../../../phet-core/js/arrayRemove.js';
-import ThreeUtils from '../../../../mobius/js/ThreeUtils.js';
-import BoatView from './BoatView.js';
 import BottleView from './BottleView.js';
-import DensityBuoyancyCommonQueryParameters from '../../common/DensityBuoyancyCommonQueryParameters.js';
+import BoatView from './BoatView.js';
 import bottle_icon_png from '../../../images/bottle_icon_png.js';
 import boat_icon_png from '../../../images/boat_icon_png.js';
-import Vector2 from '../../../../dot/js/Vector2.js';
 import SubmergedAccordionBox from './SubmergedAccordionBox.js';
 
 // constants
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
 const ICON_SCALE = 0.08;
-const ICON_IMAGE_SCALE_UPRIGHT = new Vector2( ICON_SCALE, ICON_SCALE );
 
 export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScreenView<BuoyancyApplicationsModel> {
 
@@ -357,32 +353,23 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
   }
 
   public static getBoatIcon(): Node {
-    if ( DensityBuoyancyCommonQueryParameters.generateIconImages && ThreeUtils.isWebGLEnabled() ) {
-
-      const angledIcon = DensityBuoyancyScreenView.getAngledIcon( 6, new Vector3( -0.03, 0, 0 ), scene => {
+    const boatIcon = DensityBuoyancyScreenView.getThreeIcon( boat_icon_png, () => {
+      return DensityBuoyancyScreenView.getAngledIcon( 6, new Vector3( -0.03, 0, 0 ), scene => {
         scene.add( BoatView.getBoatDrawingData().group );
       }, null );
-      angledIcon.setScaleMagnitude( ICON_SCALE );
-      return angledIcon;
-    }
-    else {
-      return new Image( boat_icon_png, { scale: ICON_IMAGE_SCALE_UPRIGHT } );
-    }
+    } );
+    boatIcon.setScaleMagnitude( ICON_SCALE );
+    return boatIcon;
   }
 
   public static getBottleIcon(): Node {
-    if ( DensityBuoyancyCommonQueryParameters.generateIconImages && ThreeUtils.isWebGLEnabled() ) {
-
-      // Hard coded zoom and view-port vector help to center the icon.
-      const angledIcon = DensityBuoyancyScreenView.getAngledIcon( 3.4, new Vector3( -0.02, 0, 0 ), scene => {
+    const bottle = DensityBuoyancyScreenView.getThreeIcon( bottle_icon_png, () => {
+      return DensityBuoyancyScreenView.getAngledIcon( 3.4, new Vector3( -0.02, 0, 0 ), scene => {
         scene.add( BottleView.getBottleDrawingData().group );
       }, null );
-      angledIcon.setScaleMagnitude( ICON_SCALE );
-      return angledIcon;
-    }
-    else {
-      return new Image( bottle_icon_png, { scale: ICON_IMAGE_SCALE_UPRIGHT } );
-    }
+    } );
+    bottle.setScaleMagnitude( ICON_SCALE );
+    return bottle;
   }
 }
 

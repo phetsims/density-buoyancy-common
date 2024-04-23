@@ -24,7 +24,7 @@ import arrayRemove from '../../../../phet-core/js/arrayRemove.js';
 import optionize from '../../../../phet-core/js/optionize.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import ResetAllButton from '../../../../scenery-phet/js/buttons/ResetAllButton.js';
-import { AlignBox, animatedPanZoomSingleton, Image, LinearGradient, Mouse, Node, Pointer, Rectangle, Text } from '../../../../scenery/js/imports.js';
+import { AlignBox, animatedPanZoomSingleton, Image, ImageableImage, LinearGradient, Mouse, Node, Pointer, Rectangle, Text } from '../../../../scenery/js/imports.js';
 import Checkbox from '../../../../sun/js/Checkbox.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
 import Boat from '../../buoyancy/model/Boat.js';
@@ -746,6 +746,18 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
     this.sceneNode.render( undefined );
 
     this.debugView && this.debugView.step( dt );
+  }
+
+  /**
+   * Factored out way to only generate an icon with a whole new WebGL context if needed (otherwise just use the saved image.
+   */
+  public static getThreeIcon( iconBrowserImage: ImageableImage, generateIcon: () => Node ): Node {
+    if ( DensityBuoyancyCommonQueryParameters.generateIconImages && ThreeUtils.isWebGLEnabled() ) {
+      return generateIcon();
+    }
+    else {
+      return new Image( iconBrowserImage );
+    }
   }
 
   /**

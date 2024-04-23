@@ -10,7 +10,7 @@ import Utils from '../../../../dot/js/Utils.js';
 import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
 import ArrowNode, { ArrowNodeOptions } from '../../../../scenery-phet/js/ArrowNode.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
-import { Line, Node, Text } from '../../../../scenery/js/imports.js';
+import { Line, Node, Text, VBox } from '../../../../scenery/js/imports.js';
 import Panel from '../../../../sun/js/Panel.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
@@ -195,6 +195,33 @@ export default class ForceDiagramNode extends Node {
     const axisHalfWidth = Math.max( upwardArrows.length, downwardArrows.length ) * 10 - 5;
     this.axisNode.x1 = -axisHalfWidth;
     this.axisNode.x2 = axisHalfWidth;
+  }
+
+  public static getExploreIcon(): Node {
+    const arrowLength = 120;
+
+    const arrowIconOptions = {
+      tailWidth: arrowLength / 8,
+      headWidth: arrowLength / 4,
+      headHeight: arrowLength / 5
+    };
+
+    const gravityArrowNode = new ArrowNode( 0, 0, 0, arrowLength, combineOptions<ArrowNodeOptions>( {
+      fill: DensityBuoyancyCommonColors.gravityForceProperty
+    }, arrowOptions, arrowIconOptions ) );
+
+    const buoyancyArrowNode = new ArrowNode( 0, 0, 0, arrowLength, combineOptions<ArrowNodeOptions>( {
+      fill: DensityBuoyancyCommonColors.buoyancyForceProperty
+    }, arrowOptions, arrowIconOptions ) );
+
+    buoyancyArrowNode.setTip( 0, -arrowLength );
+    gravityArrowNode.setTip( 0, arrowLength );
+    return new VBox( {
+      children: [
+        buoyancyArrowNode,
+        gravityArrowNode
+      ]
+    } );
   }
 }
 

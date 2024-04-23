@@ -1,7 +1,8 @@
 // Copyright 2024, University of Colorado Boulder
 
 /**
- * Slider that changes the height of the Scale for some screens in the density-buoyancy suite of sims.
+ * Slider control with tweaker buttons that changes the height of the Scale for some screens in the density-buoyancy
+ * suite of sims.
  *
  * @author Agustín Vallejo
  */
@@ -32,7 +33,7 @@ const SCALE_X_POSITION = 0.35;
 
 type ScaleHeightSliderOptions = EmptySelfOptions & NumberControlOptions;
 
-export default class ScaleHeightSlider extends NumberControl {
+export default class ScaleHeightControl extends NumberControl {
 
   public constructor( scale: Scale, heightProperty: Property<number>,
                       poolBounds: Bounds3,
@@ -92,4 +93,4 @@ export default class ScaleHeightSlider extends NumberControl {
   }
 }
 
-densityBuoyancyCommon.register( 'ScaleHeightSlider', ScaleHeightSlider );
+densityBuoyancyCommon.register( 'ScaleHeightControl', ScaleHeightControl );

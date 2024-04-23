@@ -31,7 +31,7 @@ import ThreeUtils from '../../../../mobius/js/ThreeUtils.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
 import ScaleView from '../../common/view/ScaleView.js';
 import Bounds2 from '../../../../dot/js/Bounds2.js';
-import ScaleHeightSlider from '../../common/view/ScaleHeightSlider.js';
+import ScaleHeightControl from '../../common/view/ScaleHeightControl.js';
 import fluid_displaced_scale_icon_png from '../../../images/fluid_displaced_scale_icon_png.js';
 import Multilink from '../../../../axon/js/Multilink.js';
 
@@ -42,7 +42,7 @@ const DESIRED_LEFT_SIDE_MARGIN = DensityBuoyancyCommonConstants.MARGIN;
 export default class BuoyancyLabScreenView extends DensityBuoyancyScreenView<BuoyancyLabModel> {
 
   private readonly rightBox: MultiSectionPanelsNode;
-  private readonly scaleHeightControl: ScaleHeightSlider;
+  private readonly scaleHeightControl: ScaleHeightControl;
 
   public constructor( model: BuoyancyLabModel, options: DensityBuoyancyScreenViewOptions ) {
 
@@ -201,7 +201,7 @@ export default class BuoyancyLabScreenView extends DensityBuoyancyScreenView<Buo
 
 
     // Info button and associated dialog
-    this.scaleHeightControl = new ScaleHeightSlider( model.poolScale, model.poolScaleHeightProperty,
+    this.scaleHeightControl = new ScaleHeightControl( model.poolScale, model.poolScaleHeightProperty,
       model.poolBounds, model.pool.liquidYInterpolatedProperty, this, {
         tandem: tandem.createTandem( 'scaleHeightControl' )
       } );

@@ -7,12 +7,11 @@
  */
 
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
-import { SliderOptions } from '../../../../sun/js/Slider.js';
+import Slider from '../../../../sun/js/Slider.js';
 import Property from '../../../../axon/js/Property.js';
-import optionize from '../../../../phet-core/js/optionize.js';
+import optionize, { EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
 import Range from '../../../../dot/js/Range.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
-import VSlider from '../../../../sun/js/VSlider.js';
 import Dimension2 from '../../../../dot/js/Dimension2.js';
 import Scale from '../model/Scale.js';
 import Utils from '../../../../dot/js/Utils.js';
@@ -21,22 +20,19 @@ import Bounds3 from '../../../../dot/js/Bounds3.js';
 import PrecisionSliderThumb from './PrecisionSliderThumb.js';
 import { THREEModelViewTransform } from './DensityBuoyancyScreenView.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
-import Vector2 from '../../../../dot/js/Vector2.js';
-import { Node } from '../../../../scenery/js/imports.js';
+import { Node, VBox } from '../../../../scenery/js/imports.js';
+import NumberControl, { NumberControlOptions } from '../../../../scenery-phet/js/NumberControl.js';
+import NumberDisplay from '../../../../scenery-phet/js/NumberDisplay.js';
+import ArrowButton from '../../../../sun/js/buttons/ArrowButton.js';
+import Orientation from '../../../../phet-core/js/Orientation.js';
 
 // constants
 const DEFAULT_RANGE = new Range( 0, 1 );
 const SCALE_X_POSITION = 0.35;
 
-type GetSliderTrackBottomPoint = () => Vector2;
-type SelfOptions = {
-  getSliderTrackBottomPoint: GetSliderTrackBottomPoint;
-};
-type ScaleHeightSliderOptions = SelfOptions & SliderOptions;
+type ScaleHeightSliderOptions = EmptySelfOptions & NumberControlOptions;
 
-export default class ScaleHeightSlider extends VSlider {
-  private readonly getSliderTrackBottomPoint: GetSliderTrackBottomPoint;
-  private readonly scaleHeightThumbNode: Node;
+export default class ScaleHeightSlider extends NumberControl {
 
   public constructor( scale: Scale, heightProperty: Property<number>,
                       poolBounds: Bounds3,
@@ -55,17 +51,35 @@ export default class ScaleHeightSlider extends VSlider {
 
     const sliderTrackHeight = modelViewTransform.modelToViewDelta( new Vector3( SCALE_X_POSITION, maxY, poolBounds.maxZ ), new Vector3( SCALE_X_POSITION, minY, poolBounds.maxZ ) ).y;
 
-    const options = optionize<ScaleHeightSliderOptions, SelfOptions, SliderOptions>()( {
-      thumbNode: scaleHeightThumbNode,
-      thumbYOffset: scaleHeightThumbNode.height / 2,
-      tandem: Tandem.REQUIRED,
-      tandemNameSuffix: 'Control',
-      trackSize: new Dimension2( 3, sliderTrackHeight )
+    const options = optionize<ScaleHeightSliderOptions, EmptySelfOptions, NumberControlOptions>()( {
+      sliderOptions: {
+        orientation: Orientation.VERTICAL,
+        thumbNode: scaleHeightThumbNode,
+        thumbYOffset: scaleHeightThumbNode.height / 2,
+        trackSize: new Dimension2( 3, sliderTrackHeight )
+      },
+      titleNodeOptions: { tandem: Tandem.OPT_OUT },
+      numberDisplayOptions: { tandem: Tandem.OPT_OUT },
+      delta: DEFAULT_RANGE.getLength() / 100,
+      layoutFunction( titleNode: Node, numberDisplay: NumberDisplay, slider: Slider, decrementButton: ArrowButton | null, incrementButton: ArrowButton | null ) {
+        const actualIncrement = incrementButton!;
+        const actualDecrement = decrementButton!;
+        actualIncrement.rotate( -Math.PI / 2 );
+        actualDecrement.rotate( -Math.PI / 2 );
+        const margin = 2;
+        const vBox = new VBox( {
+          align: 'left',
+          spacing: margin,
+          children: [ actualIncrement, slider, actualDecrement ]
+        } );
+
+        // Set the origin to exactly where placement should be (at the bottom of the slider, to line up with the scale at the bottom
+        vBox.y = -( actualIncrement.height + margin + slider.height - scaleHeightThumbNode.width / 2 );
+        return vBox;
+      }
     }, providedOptions );
 
-    super( heightProperty, DEFAULT_RANGE, options );
-    this.getSliderTrackBottomPoint = options.getSliderTrackBottomPoint;
-    this.scaleHeightThumbNode = scaleHeightThumbNode;
+    super( new Property( '' ), heightProperty, DEFAULT_RANGE, options );
 
     heightProperty.link( height => {
       const currentHeight = Utils.linear( 0, 1, minY, maxY, height );
@@ -75,15 +89,6 @@ export default class ScaleHeightSlider extends VSlider {
       scale.writeData();
       scale.transformedEmitter.emit();
     } );
-  }
-
-  public layout(): void {
-
-    const bottomPoint = this.getSliderTrackBottomPoint();
-
-    // Position based on the track, not the thumb
-    this.bottom = bottomPoint.y + this.scaleHeightThumbNode.height / 2;
-    this.left = bottomPoint.x;
   }
 }
 

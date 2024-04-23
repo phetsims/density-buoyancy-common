@@ -42,7 +42,7 @@ const DESIRED_LEFT_SIDE_MARGIN = DensityBuoyancyCommonConstants.MARGIN;
 export default class BuoyancyLabScreenView extends DensityBuoyancyScreenView<BuoyancyLabModel> {
 
   private readonly rightBox: MultiSectionPanelsNode;
-  private readonly scaleHeightSlider: ScaleHeightSlider;
+  private readonly scaleHeightControl: ScaleHeightSlider;
 
   public constructor( model: BuoyancyLabModel, options: DensityBuoyancyScreenViewOptions ) {
 
@@ -201,27 +201,11 @@ export default class BuoyancyLabScreenView extends DensityBuoyancyScreenView<Buo
 
 
     // Info button and associated dialog
-    this.scaleHeightSlider = new ScaleHeightSlider( model.poolScale, model.poolScaleHeightProperty,
+    this.scaleHeightControl = new ScaleHeightSlider( model.poolScale, model.poolScaleHeightProperty,
       model.poolBounds, model.pool.liquidYInterpolatedProperty, this, {
-        tandem: tandem.createTandem( 'scaleHeightSlider' ),
-        getSliderTrackBottomPoint: () => {
-          // X margin should be based on the front of the pool
-          const x = this.modelToViewPoint( new Vector3(
-            this.model.poolBounds.maxX,
-            this.model.poolBounds.minY,
-            this.model.poolBounds.maxZ
-          ) ).plusXY( DensityBuoyancyCommonConstants.MARGIN / 2, 0 ).x;
-
-          // Y should be based on the bottom of the front of the scale (in the middle of the pool)
-          const y = this.modelToViewPoint( new Vector3(
-            this.model.poolBounds.maxX,
-            this.model.poolBounds.minY,
-            this.model.poolScale.getBounds().maxZ
-          ) ).y;
-          return new Vector2( x, y );
-        }
+        tandem: tandem.createTandem( 'scaleHeightControl' )
       } );
-    this.addChild( this.scaleHeightSlider );
+    this.addChild( this.scaleHeightControl );
 
     // Popup last
     this.addChild( this.popupLayer );
@@ -260,7 +244,19 @@ export default class BuoyancyLabScreenView extends DensityBuoyancyScreenView<Buo
       return;
     }
 
-    this.scaleHeightSlider.layout();
+    // X margin should be based on the front of the pool
+    this.scaleHeightControl.x = this.modelToViewPoint( new Vector3(
+      this.model.poolBounds.maxX,
+      this.model.poolBounds.minY,
+      this.model.poolBounds.maxZ
+    ) ).plusXY( DensityBuoyancyCommonConstants.MARGIN / 2, 0 ).x;
+
+    // Y should be based on the bottom of the front of the scale (in the middle of the pool)
+    this.scaleHeightControl.y = this.modelToViewPoint( new Vector3(
+      this.model.poolBounds.maxX,
+      this.model.poolBounds.minY,
+      this.model.poolScale.getBounds().maxZ
+    ) ).y;
   }
 }
 

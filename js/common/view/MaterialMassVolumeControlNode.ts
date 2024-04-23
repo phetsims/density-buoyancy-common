@@ -55,6 +55,7 @@ type SelfOptions = {
   color?: TColor;
 
   showMassAsReadout?: boolean;
+  customKeepsConstantDensity?: boolean;
 };
 
 export type MaterialMassVolumeControlNodeOptions = SelfOptions & MaterialControlNodeOptions;
@@ -82,7 +83,8 @@ export default class MaterialMassVolumeControlNode extends MaterialControlNode {
       color: DensityBuoyancyCommonConstants.THUMB_FILL,
 
       // For use by the application's bottle scene
-      showMassAsReadout: false
+      showMassAsReadout: false,
+      customKeepsConstantDensity: false
     }, providedOptions );
 
     // If we will be creating a high density mass NumberControl in addition to the normal one.
@@ -156,7 +158,7 @@ export default class MaterialMassVolumeControlNode extends MaterialControlNode {
         userVolumeChanging = true;
 
         // If we're custom, adjust the density
-        if ( materialProperty.value.custom ) {
+        if ( materialProperty.value.custom && !options.customKeepsConstantDensity ) {
           materialProperty.value = Material.createCustomSolidMaterial( {
             density: massProperty.value / cubicMeters,
             densityRange: this.customDensityRange
@@ -193,12 +195,14 @@ export default class MaterialMassVolumeControlNode extends MaterialControlNode {
       if ( !modelMassChanging && !userVolumeChanging ) {
         userMassChanging = true;
 
-        // It is possible for the volumeProperty to be 0, so avoid the infinte density case, see https://github.com/phetsims/density-buoyancy-common/issues/78
+        // It is possible for the volumeProperty to be 0, so avoid the infinite density case, see https://github.com/phetsims/density-buoyancy-common/issues/78
         if ( materialProperty.value.custom && volumeProperty.value > 0 ) {
-          materialProperty.value = Material.createCustomSolidMaterial( {
-            density: mass / volumeProperty.value,
-            densityRange: this.customDensityRange
-          } );
+          if ( !options.customKeepsConstantDensity ) { // Separate if statement so we don't setVolume() below
+            materialProperty.value = Material.createCustomSolidMaterial( {
+              density: mass / volumeProperty.value,
+              densityRange: this.customDensityRange
+            } );
+          }
         }
         else {
           setVolume( mass / materialProperty.value.density );

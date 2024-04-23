@@ -39,6 +39,9 @@ import BoatView from './BoatView.js';
 import bottle_icon_png from '../../../images/bottle_icon_png.js';
 import boat_icon_png from '../../../images/boat_icon_png.js';
 import SubmergedAccordionBox from './SubmergedAccordionBox.js';
+import NumberProperty from '../../../../axon/js/NumberProperty.js';
+import Multilink from '../../../../axon/js/Multilink.js';
+import PrecisionSliderThumb from '../../common/view/PrecisionSliderThumb.js';
 
 // constants
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
@@ -102,6 +105,7 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
       maxVolumeLiters: 10,
       minCustomVolumeLiters: 0.5,
       showMassAsReadout: true,
+      customKeepsConstantDensity: true,
       tandem: tandem.createTandem( 'bottleControlNode' )
     } );
 
@@ -115,6 +119,36 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
       return ( 0.01 - volume ) * 1000;
     } );
 
+    const range = new Range( 0.05, 20 );
+    // TODO: reset, https://github.com/phetsims/buoyancy/issues/120
+    // TODO: PhET-iO state support, https://github.com/phetsims/buoyancy/issues/120
+    const customDensityProperty = new NumberProperty( 1, {
+      range: range
+    } );
+    const customDensityControlVisibleProperty = new DerivedProperty( [ model.bottle.interiorMaterialProperty ], material => material.custom );
+
+    // TODO: best initialValue for this? https://github.com/phetsims/buoyancy/issues/120
+    Multilink.lazyMultilink( [ customDensityProperty, customDensityControlVisibleProperty ], density => {
+      if ( model.bottle.interiorMaterialProperty.value.custom ) {
+        // @ts-expect-error TODO: readonly mass, that will need to change, https://github.com/phetsims/buoyancy/issues/120
+        model.bottle.interiorMassProperty.value = density / model.bottle.interiorVolumeProperty.value;
+        model.bottle.interiorMaterialProperty.value = Material.createCustomSolidMaterial( {
+          density: density * DensityBuoyancyCommonConstants.LITERS_IN_CUBIC_METER,
+          densityRange: new Range( 50, 20000 ) // TODO: based on above range, https://github.com/phetsims/buoyancy/issues/120
+        } );
+      }
+    } );
+
+    const customBottleDensityControl = new NumberControl( DensityBuoyancyCommonStrings.densityStringProperty, customDensityProperty, customDensityProperty.range, combineOptions<NumberControlOptions>( {
+      visibleProperty: customDensityControlVisibleProperty,
+      sliderOptions: {
+        thumbNode: new PrecisionSliderThumb() // TODO: Tandem? https://github.com/phetsims/buoyancy/issues/120
+      },
+      numberDisplayOptions: {
+        valuePattern: DensityBuoyancyCommonConstants.KILOGRAMS_PER_VOLUME_PATTERN_STRING_PROPERTY
+      }
+    }, MaterialMassVolumeControlNode.getNumberControlOptions() ) );
+
     const bottleBox = new VBox( {
       spacing: 10,
       align: 'left',
@@ -125,6 +159,7 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
           maxWidth: 160
         } ),
         bottleControlNode,
+        customBottleDensityControl,
         new HSeparator(),
         new HBox( {
           spacing: 5,
@@ -193,7 +228,7 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
           }
         }, MaterialMassVolumeControlNode.getNumberControlOptions(), {
           sliderOptions: {
-            thumbNode: new PrecisionSliderThumb(),
+            thumbNode: new PrecisionSliderThumb(), // TODO: Tandem? https://github.com/phetsims/buoyancy/issues/120
             constrainValue: ( value: number ) => {
               return boatVolumeRange.constrainValue( Utils.roundToInterval( value, 0.1 ) );
             },

@@ -20,7 +20,7 @@ import Range from '../../../../dot/js/Range.js';
 import Utils from '../../../../dot/js/Utils.js';
 import optionize, { combineOptions } from '../../../../phet-core/js/optionize.js';
 import NumberControl, { LayoutFunction, NumberControlOptions } from '../../../../scenery-phet/js/NumberControl.js';
-import { Node, TColor, Text, VBox, VBoxOptions } from '../../../../scenery/js/imports.js';
+import { HBox, Node, TColor, Text, VBox, VBoxOptions } from '../../../../scenery/js/imports.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
@@ -197,7 +197,7 @@ export default class MaterialMassVolumeControlNode extends MaterialControlNode {
 
         // It is possible for the volumeProperty to be 0, so avoid the infinite density case, see https://github.com/phetsims/density-buoyancy-common/issues/78
         if ( materialProperty.value.custom && volumeProperty.value > 0 ) {
-          if ( !options.customKeepsConstantDensity ) { // Separate if statement so we don't setVolume() below
+          if ( !options.customKeepsConstantDensity ) { // Separate if statement, so we don't setVolume() below
             materialProperty.value = Material.createCustomSolidMaterial( {
               density: mass / volumeProperty.value,
               densityRange: this.customDensityRange
@@ -372,13 +372,8 @@ export default class MaterialMassVolumeControlNode extends MaterialControlNode {
     } );
 
     // Custom layout function to hack out a readout look.
-    const layoutFunction: LayoutFunction = showAsReadout ?
-                                           ( titleNode: Node, numberDisplay: NumberDisplay, slider: Slider, decrementButton: ArrowButton | null, incrementButton: ArrowButton | null ) => {
-                                             slider.visible = false;
-                                             decrementButton && decrementButton.setVisible( false );
-                                             incrementButton && incrementButton.setVisible( false );
-                                             return layoutFunction4( titleNode, numberDisplay, slider, decrementButton, incrementButton );
-                                           } : layoutFunction4;
+    const layoutFunction: LayoutFunction = showAsReadout ? getMassReadoutLayoutFunction( layoutFunction4 )
+                                                         : layoutFunction4;
     return {
       delta: 0.01,
       sliderOptions: {
@@ -404,5 +399,24 @@ export default class MaterialMassVolumeControlNode extends MaterialControlNode {
     };
   }
 }
+
+// A special layout function that uses a provided layout function for the functional width of the control, but only
+// provides the title and numbeDisplay (for readout purposes)
+const getMassReadoutLayoutFunction = ( normalLayoutFunction: LayoutFunction ) => {
+  return ( titleNode: Node, numberDisplay: NumberDisplay, slider: Slider, decrementButton: ArrowButton | null, incrementButton: ArrowButton | null ) => {
+    const tempNode = normalLayoutFunction( titleNode, numberDisplay, slider, decrementButton, incrementButton );
+    const width = tempNode.width;
+    tempNode.dispose();
+    titleNode.detach();
+    numberDisplay.detach();
+    return new Node( {
+      children: [ new HBox( {
+        children: [ titleNode, numberDisplay ],
+        stretch: true,
+        preferredWidth: width
+      } ) ]
+    } );
+  };
+};
 
 densityBuoyancyCommon.register( 'MaterialMassVolumeControlNode', MaterialMassVolumeControlNode );

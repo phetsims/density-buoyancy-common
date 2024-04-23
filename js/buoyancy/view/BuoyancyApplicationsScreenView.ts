@@ -100,11 +100,12 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
       Material.MATERIAL_S
     ], volume => model.bottle.interiorVolumeProperty.set( volume ), this.popupLayer, {
       minMass: 0,
+      minCustomMass: 0,
       maxCustomMass: 100,
       maxMass: 100,
       minVolumeLiters: 0,
       maxVolumeLiters: 10,
-      minCustomVolumeLiters: 0,
+      minCustomVolumeLiters: 0.5,
       showMassAsReadout: true,
       supportHiddenMaterial: true,
       customKeepsConstantDensity: true,
@@ -132,8 +133,6 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
     // TODO: best initialValue for this? https://github.com/phetsims/buoyancy/issues/120
     Multilink.lazyMultilink( [ customDensityProperty, customDensityControlVisibleProperty ], density => {
       if ( model.bottle.interiorMaterialProperty.value.custom ) {
-        // @ts-expect-error TODO: readonly mass, that will need to change, https://github.com/phetsims/buoyancy/issues/120
-        model.bottle.interiorMassProperty.value = density / model.bottle.interiorVolumeProperty.value;
         model.bottle.interiorMaterialProperty.value = Material.createCustomSolidMaterial( {
           density: density * DensityBuoyancyCommonConstants.LITERS_IN_CUBIC_METER,
           densityRange: new Range( 50, 20000 ) // TODO: based on above range, https://github.com/phetsims/buoyancy/issues/120

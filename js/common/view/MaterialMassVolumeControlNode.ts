@@ -89,6 +89,8 @@ export default class MaterialMassVolumeControlNode extends MaterialControlNode {
       customKeepsConstantDensity: false
     }, providedOptions );
 
+    assert && assert( options.minVolumeLiters <= options.minCustomVolumeLiters, 'This seems to be a requirement, I hope you never hit this' );
+
     // If we will be creating a high density mass NumberControl in addition to the normal one.
     const supportTwoMassNumberControls = !!options.highDensityMaxMass;
 
@@ -128,11 +130,11 @@ export default class MaterialMassVolumeControlNode extends MaterialControlNode {
 
     const enabledVolumeRangeProperty = new DerivedProperty( [ materialProperty ], material => {
       return new WorkaroundRange(
-        material.custom ? Math.max( options.minVolumeLiters, options.minCustomVolumeLiters ) : options.minVolumeLiters,
+        material.custom ? options.minCustomVolumeLiters : options.minVolumeLiters,
         options.maxVolumeLiters
       );
     }, {
-      valueComparisonStrategy: 'equalsFunction'
+      valueComparisonStrategy: 'equalsFunction' // TODO: How does this work?  https://github.com/phetsims/buoyancy/issues/120
     } );
 
     // passed to the NumberControl

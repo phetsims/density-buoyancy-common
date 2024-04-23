@@ -74,7 +74,7 @@ export default class MaterialControlNode extends VBox {
       options.minCustomMass / options.maxVolumeLiters * DensityBuoyancyCommonConstants.LITERS_IN_CUBIC_METER,
 
       // Prevent divide by zero errors (infinity) with a manual, tiny number
-      options.maxCustomMass / ( options.minCustomVolumeLiters + 0.0001 ) * DensityBuoyancyCommonConstants.LITERS_IN_CUBIC_METER
+      options.maxCustomMass / ( options.minCustomVolumeLiters ) * DensityBuoyancyCommonConstants.LITERS_IN_CUBIC_METER
     );
 
     if ( !options.supportHiddenMaterial ) {

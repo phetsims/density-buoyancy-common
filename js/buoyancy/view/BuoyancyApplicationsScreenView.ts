@@ -110,7 +110,7 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
 
     const airVolumeLabel = new Text( DensityBuoyancyCommonStrings.airVolumeStringProperty, {
       font: DensityBuoyancyCommonConstants.READOUT_FONT,
-      maxWidth: 160
+      maxWidth: 100
     } );
 
     // DerivedProperty doesn't need disposal, since everything here lives for the lifetime of the simulation
@@ -170,7 +170,7 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
               decimalPlaces: 2,
               textOptions: {
                 font: new PhetFont( 12 ),
-                maxWidth: 120
+                maxWidth: 100
               }
             } )
           ]

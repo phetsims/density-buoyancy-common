@@ -104,7 +104,7 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
       maxMass: 100,
       minVolumeLiters: 0,
       maxVolumeLiters: 10,
-      minCustomVolumeLiters: 0.5,
+      minCustomVolumeLiters: 0,
       showMassAsReadout: true,
       supportHiddenMaterial: true,
       customKeepsConstantDensity: true,

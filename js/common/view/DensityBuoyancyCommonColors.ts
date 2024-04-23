@@ -277,7 +277,7 @@ const DensityBuoyancyCommonColors = {
     default: new Color( 255, 255, 255, 0.3 )
   } ),
   customLiquidDarkColorProperty: new ProfileColorProperty( densityBuoyancyCommon, 'customLiquidDark', {
-    default: new Color( 0, 30, 255, 0.8 )
+    default: new Color( 0, 30, 255, 0.6 )
   } ),
 
   depthLinesDarkColorProperty: new ProfileColorProperty( densityBuoyancyCommon, 'depthLinesDark', {

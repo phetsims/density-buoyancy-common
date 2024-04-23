@@ -31,6 +31,7 @@ import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import NumberDisplay from '../../../../scenery-phet/js/NumberDisplay.js';
 import Slider from '../../../../sun/js/Slider.js';
 import ArrowButton from '../../../../sun/js/buttons/ArrowButton.js';
+import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
 
 // constants
 const LITERS_IN_CUBIC_METER = DensityBuoyancyCommonConstants.LITERS_IN_CUBIC_METER;
@@ -290,7 +291,25 @@ export default class MaterialMassVolumeControlNode extends MaterialControlNode {
             phetioLinkedProperty: massProperty
           },
           numberDisplayOptions: {
-            valuePattern: DensityBuoyancyCommonConstants.KILOGRAMS_PATTERN_STRING_PROPERTY
+            ...( options.showMassAsReadout ? // eslint-disable-line no-object-spread-on-non-literals
+                {
+                  numberFormatter: value => {
+                    if ( options.showMassAsReadout && materialProperty.value.hidden ) {
+                      return DensityBuoyancyCommonStrings.questionMarkStringProperty.value;
+                    }
+                    return StringUtils.fillIn( DensityBuoyancyCommonConstants.KILOGRAMS_PATTERN_STRING_PROPERTY, {
+                      value: Utils.toFixed( value, 2 )
+                    } );
+                  },
+                  numberFormatterDependencies: [
+                    DensityBuoyancyCommonConstants.KILOGRAMS_PATTERN_STRING_PROPERTY,
+                    DensityBuoyancyCommonStrings.questionMarkStringProperty,
+                    materialProperty
+                  ]
+                } : {
+                  valuePattern: DensityBuoyancyCommonConstants.KILOGRAMS_PATTERN_STRING_PROPERTY
+                }
+            )
           },
           enabledRangeProperty: enabledMassRangeProperty,
           tandem: numberControlTandem,
@@ -341,7 +360,9 @@ export default class MaterialMassVolumeControlNode extends MaterialControlNode {
     // TODO: Use ToggleNode?, https://github.com/phetsims/buoyancy/issues/120
     materialProperty.link( material => {
       fallbackContainer.removeAllChildren();
-      if ( material.hidden ) {
+
+      // When mass showing as a readout, the hidden material is hidden via the mass readout.
+      if ( !options.showMassAsReadout && material.hidden ) {
         fallbackNode = new Text( DensityBuoyancyCommonStrings.whatIsTheMaterialStringProperty, {
           font: new PhetFont( 14 )
         } );
@@ -374,14 +395,13 @@ export default class MaterialMassVolumeControlNode extends MaterialControlNode {
     // Custom layout function to hack out a readout look.
     const layoutFunction: LayoutFunction = showAsReadout ? getMassReadoutLayoutFunction( layoutFunction4 )
                                                          : layoutFunction4;
-    return {
+    const options: NumberControlOptions = {
       delta: 0.01,
       sliderOptions: {
         trackSize: new Dimension2( 120, TRACK_HEIGHT ),
         thumbYOffset: new PrecisionSliderThumb().height / 2 - TRACK_HEIGHT / 2
       },
       numberDisplayOptions: {
-        decimalPlaces: 2,
         textOptions: {
           maxWidth: 60
         },
@@ -397,6 +417,10 @@ export default class MaterialMassVolumeControlNode extends MaterialControlNode {
         enabledEpsilon: DensityBuoyancyCommonConstants.TOLERANCE
       }
     };
+    if ( !showAsReadout ) {
+      options.numberDisplayOptions!.decimalPlaces = 2;
+    }
+    return options;
   }
 }
 

@@ -95,7 +95,9 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
       Material.WATER,
       Material.SAND,
       Material.CONCRETE,
-      Material.COPPER
+      Material.COPPER,
+      Material.MATERIAL_R,
+      Material.MATERIAL_S
     ], volume => model.bottle.interiorVolumeProperty.set( volume ), this.popupLayer, {
       minMass: 0,
       maxCustomMass: 100,
@@ -104,6 +106,7 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
       maxVolumeLiters: 10,
       minCustomVolumeLiters: 0.5,
       showMassAsReadout: true,
+      supportHiddenMaterial: true,
       customKeepsConstantDensity: true,
       tandem: tandem.createTandem( 'bottleControlNode' )
     } );

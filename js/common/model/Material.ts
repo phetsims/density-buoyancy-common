@@ -539,6 +539,24 @@ export default class Material {
     density: Material.DIAMOND.density
   } );
 
+  public static readonly MATERIAL_R = new Material( {
+    nameProperty: DensityBuoyancyCommonStrings.material.materialRStringProperty,
+    tandemName: 'materialR',
+    identifier: 'MATERIAL_R',
+    hidden: true,
+    liquidColor: new Property( new Color( '#00ffc1' ) ),
+    density: Material.ICE.density
+  } );
+
+  public static readonly MATERIAL_S = new Material( {
+    nameProperty: DensityBuoyancyCommonStrings.material.materialSStringProperty,
+    tandemName: 'materialS',
+    identifier: 'MATERIAL_S',
+    hidden: true,
+    liquidColor: new Property( new Color( '#ff10df' ) ),
+    density: Material.LEAD.density
+  } );
+
   public static readonly MATERIAL_V = new Material( {
     nameProperty: DensityBuoyancyCommonStrings.material.materialVStringProperty,
     tandemName: 'materialV',

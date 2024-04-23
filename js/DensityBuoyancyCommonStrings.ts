@@ -41,6 +41,8 @@ type StringsType = {
     'iceStringProperty': LocalizedStringProperty;
     'materialOStringProperty': LocalizedStringProperty;
     'materialPStringProperty': LocalizedStringProperty;
+    'materialRStringProperty': LocalizedStringProperty;
+    'materialSStringProperty': LocalizedStringProperty;
     'materialVStringProperty': LocalizedStringProperty;
     'materialWStringProperty': LocalizedStringProperty;
     'materialXStringProperty': LocalizedStringProperty;

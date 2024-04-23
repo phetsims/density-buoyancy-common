@@ -10,7 +10,7 @@ import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import DynamicProperty from '../../../../axon/js/DynamicProperty.js';
 import Property from '../../../../axon/js/Property.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
-import { AlignBox, ManualConstraint, VBox } from '../../../../scenery/js/imports.js';
+import { AlignBox, ManualConstraint, Node, VBox } from '../../../../scenery/js/imports.js';
 import Panel from '../../../../sun/js/Panel.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 import Material from '../../common/model/Material.js';
@@ -36,6 +36,11 @@ import Multilink from '../../../../axon/js/Multilink.js';
 import TwoBlockMode from '../../common/model/TwoBlockMode.js';
 import PatternStringProperty from '../../../../axon/js/PatternStringProperty.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
+import DensityMaterials from '../../common/view/DensityMaterials.js';
+import ThreeUtils from '../../../../mobius/js/ThreeUtils.js';
+import DensityBuoyancyCommonColors from '../../common/view/DensityBuoyancyCommonColors.js';
+import Cone from '../../common/model/Cone.js';
+import ConeView from '../../common/view/ConeView.js';
 
 // constants
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
@@ -217,6 +222,40 @@ export default class BuoyancyShapesScreenView extends DensityBuoyancyScreenView<
     }
 
     this.positionInfoButton();
+  }
+
+  public static getBuoyancyShapesIcon(): Node {
+
+    return DensityBuoyancyScreenView.getAngledIcon( 5.5, new Vector3( 0, 0, 0 ), scene => {
+
+      const coneGeometry = ConeView.getConeGeometery( Cone.getRadiusFromRatio( 0.2 ), Cone.getHeightFromRatio( 0.35 ), true );
+
+      const cone = new THREE.Mesh( coneGeometry, new THREE.MeshStandardMaterial( {
+        map: DensityMaterials.woodColorTexture,
+        normalMap: DensityMaterials.woodNormalTexture,
+        normalScale: new THREE.Vector2( 1, -1 ),
+        roughnessMap: DensityMaterials.woodRoughnessTexture,
+        metalness: 0
+        // NOTE: Removed the environment map for now
+      } ) );
+      cone.position.copy( ThreeUtils.vectorToThree( new Vector3( 0, -0.02, 0 ) ) );
+
+      scene.add( cone );
+
+      const waterMaterial = new THREE.MeshLambertMaterial( {
+        transparent: true
+      } );
+      const waterColor = DensityBuoyancyCommonColors.materialWaterColorProperty.value;
+      waterMaterial.color = ThreeUtils.colorToThree( waterColor );
+      waterMaterial.opacity = waterColor.alpha;
+
+      // Fake it!
+      const waterGeometry = new THREE.BoxGeometry( 1, 1, 0.2 );
+
+      const water = new THREE.Mesh( waterGeometry, waterMaterial );
+      water.position.copy( ThreeUtils.vectorToThree( new Vector3( 0, -0.5, 0.1 ) ) );
+      scene.add( water );
+    } );
   }
 }
 

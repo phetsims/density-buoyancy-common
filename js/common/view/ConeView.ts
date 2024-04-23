@@ -34,16 +34,7 @@ export default class ConeView extends MeasurableMassView {
                       forceScaleProperty: TReadOnlyProperty<number>,
                       showMassesProperty: TReadOnlyProperty<boolean> ) {
 
-    const positionArray = new Float32Array( numElements * 3 );
-    const normalArray = new Float32Array( numElements * 3 );
-    const uvArray = new Float32Array( numElements * 2 );
-
-    ConeView.updateArrays( positionArray, normalArray, uvArray, cone.radiusProperty.value, cone.heightProperty.value, cone.isVertexUp );
-
-    const coneGeometry = new THREE.BufferGeometry();
-    coneGeometry.addAttribute( 'position', new THREE.BufferAttribute( positionArray, 3 ) );
-    coneGeometry.addAttribute( 'normal', new THREE.BufferAttribute( normalArray, 3 ) );
-    coneGeometry.addAttribute( 'uv', new THREE.BufferAttribute( uvArray, 2 ) );
+    const coneGeometry = ConeView.getConeGeometery( cone.radiusProperty.value, cone.heightProperty.value, cone.isVertexUp );
 
     super( cone, coneGeometry, modelViewTransform, dragBoundsProperty,
 
@@ -73,7 +64,14 @@ export default class ConeView extends MeasurableMassView {
 
     this.updateListener = () => {
       positionTag();
-      ConeView.updateArrays( coneGeometry.attributes.position.array as Float32Array, coneGeometry.attributes.normal.array as Float32Array, null, cone.radiusProperty.value, cone.heightProperty.value, cone.isVertexUp );
+      ConeView.updateArrays(
+        coneGeometry.attributes.position.array as Float32Array,
+        coneGeometry.attributes.normal.array as Float32Array,
+        null,
+        cone.radiusProperty.value,
+        cone.heightProperty.value,
+        cone.isVertexUp
+      );
       coneGeometry.attributes.position.needsUpdate = true;
       coneGeometry.attributes.normal.needsUpdate = true;
       coneGeometry.computeBoundingSphere();
@@ -160,6 +158,22 @@ export default class ConeView extends MeasurableMassView {
     }
 
     return writer.getOffset();
+  }
+
+  public static getConeGeometery( radius: number, height: number, isVertexUp: boolean ): THREE.BufferGeometry {
+
+    const positionArray = new Float32Array( numElements * 3 );
+    const normalArray = new Float32Array( numElements * 3 );
+    const uvArray = new Float32Array( numElements * 2 );
+
+    ConeView.updateArrays( positionArray, normalArray, uvArray, radius, height, isVertexUp );
+
+    const coneGeometry = new THREE.BufferGeometry();
+    coneGeometry.addAttribute( 'position', new THREE.BufferAttribute( positionArray, 3 ) );
+    coneGeometry.addAttribute( 'normal', new THREE.BufferAttribute( normalArray, 3 ) );
+    coneGeometry.addAttribute( 'uv', new THREE.BufferAttribute( uvArray, 2 ) );
+
+    return coneGeometry;
   }
 }
 

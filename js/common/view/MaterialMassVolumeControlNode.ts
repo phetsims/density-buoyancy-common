@@ -238,18 +238,12 @@ export default class MaterialMassVolumeControlNode extends MaterialControlNode {
           thumbFill: options.color,
           tandem: volumeNumberControlTandem.createTandem( 'slider' ).createTandem( 'thumbNode' )
         } ),
-        thumbYOffset: new PrecisionSliderThumb().height / 2 - TRACK_HEIGHT / 2,
         constrainValue: ( value: number ) => Utils.roundSymmetric( value * 2 ) / 2,
         phetioLinkedProperty: volumeProperty
       },
       numberDisplayOptions: {
         valuePattern: DensityBuoyancyCommonConstants.VOLUME_PATTERN_STRING_PROPERTY,
-        useRichText: true,
-        useFullHeight: true
-      },
-      arrowButtonOptions: {
-        enabledEpsilon: DensityBuoyancyCommonConstants.TOLERANCE,
-        scale: DensityBuoyancyCommonConstants.ARROW_BUTTON_SCALE
+        useRichText: true
       },
       enabledRangeProperty: enabledVolumeRangeProperty,
       tandem: volumeNumberControlTandem,
@@ -276,7 +270,6 @@ export default class MaterialMassVolumeControlNode extends MaterialControlNode {
               thumbFill: options.color,
               tandem: numberControlTandem.createTandem( 'slider' ).createTandem( 'thumbNode' )
             } ),
-            thumbYOffset: new PrecisionSliderThumb().height / 2 - TRACK_HEIGHT / 2,
             constrainValue: ( value: number ) => {
               const range = enabledMassRangeProperty.value;
 
@@ -293,11 +286,7 @@ export default class MaterialMassVolumeControlNode extends MaterialControlNode {
             phetioLinkedProperty: massProperty
           },
           numberDisplayOptions: {
-            valuePattern: DensityBuoyancyCommonConstants.KILOGRAMS_PATTERN_STRING_PROPERTY,
-            useFullHeight: true
-          },
-          arrowButtonOptions: {
-            enabledEpsilon: DensityBuoyancyCommonConstants.TOLERANCE
+            valuePattern: DensityBuoyancyCommonConstants.KILOGRAMS_PATTERN_STRING_PROPERTY
           },
           enabledRangeProperty: enabledMassRangeProperty,
           tandem: numberControlTandem,
@@ -345,7 +334,7 @@ export default class MaterialMassVolumeControlNode extends MaterialControlNode {
 
     let fallbackNode = null;
 
-    // TODO: Use ToggleNode?, https://github.com/phetsims/density-buoyancy-common/issues/95
+    // TODO: Use ToggleNode?, https://github.com/phetsims/buoyancy/issues/120
     materialProperty.link( material => {
       fallbackContainer.removeAllChildren();
       if ( material.hidden ) {
@@ -389,7 +378,8 @@ export default class MaterialMassVolumeControlNode extends MaterialControlNode {
     return {
       delta: 0.01,
       sliderOptions: {
-        trackSize: new Dimension2( 120, TRACK_HEIGHT )
+        trackSize: new Dimension2( 120, TRACK_HEIGHT ),
+        thumbYOffset: new PrecisionSliderThumb().height / 2 - TRACK_HEIGHT / 2
       },
       numberDisplayOptions: {
         decimalPlaces: 2,
@@ -404,7 +394,8 @@ export default class MaterialMassVolumeControlNode extends MaterialControlNode {
         maxWidth: 90
       },
       arrowButtonOptions: {
-        scale: DensityBuoyancyCommonConstants.ARROW_BUTTON_SCALE
+        scale: DensityBuoyancyCommonConstants.ARROW_BUTTON_SCALE,
+        enabledEpsilon: DensityBuoyancyCommonConstants.TOLERANCE
       }
     };
   }

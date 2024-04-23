@@ -189,13 +189,11 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
             textOptions: {
               font: DensityBuoyancyCommonConstants.READOUT_FONT,
               maxWidth: 120
-            },
-            useFullHeight: true
+            }
           }
         }, MaterialMassVolumeControlNode.getNumberControlOptions(), {
           sliderOptions: {
-            trackSize: new Dimension2( 120, 0.5 ),
-            thumbSize: DensityBuoyancyCommonConstants.THUMB_SIZE,
+            thumbNode: new PrecisionSliderThumb(),
             constrainValue: ( value: number ) => {
               return boatVolumeRange.constrainValue( Utils.roundToInterval( value, 0.1 ) );
             },

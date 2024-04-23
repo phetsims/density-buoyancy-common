@@ -30,10 +30,7 @@ type SelfOptions = {
 };
 
 const FLUID_DENSITY_RANGE_PER_L = new Range( 0.5, 15 );
-const FLUID_DENSITY_RANGE_PER_M3 = new Range(
-  FLUID_DENSITY_RANGE_PER_L.min * DensityBuoyancyCommonConstants.LITERS_IN_CUBIC_METER,
-  FLUID_DENSITY_RANGE_PER_L.max * DensityBuoyancyCommonConstants.LITERS_IN_CUBIC_METER
-);
+const FLUID_DENSITY_RANGE_PER_M3 = FLUID_DENSITY_RANGE_PER_L.copy().times( DensityBuoyancyCommonConstants.LITERS_IN_CUBIC_METER );
 
 type ParentOptions = Partial<ComboNumberControlOptions<Material>> &
   PickRequired<ComboNumberControlOptions<Material>, 'tandem'>;

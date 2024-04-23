@@ -135,7 +135,7 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
       if ( model.bottle.interiorMaterialProperty.value.custom ) {
         model.bottle.interiorMaterialProperty.value = Material.createCustomSolidMaterial( {
           density: density * DensityBuoyancyCommonConstants.LITERS_IN_CUBIC_METER,
-          densityRange: new Range( 50, 20000 ) // TODO: based on above range, https://github.com/phetsims/buoyancy/issues/120
+          densityRange: range.copy().times( DensityBuoyancyCommonConstants.LITERS_IN_CUBIC_METER )
         } );
       }
     } );

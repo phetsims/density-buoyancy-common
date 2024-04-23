@@ -20,8 +20,7 @@ import Range from '../../../../dot/js/Range.js';
 import Utils from '../../../../dot/js/Utils.js';
 import optionize, { combineOptions } from '../../../../phet-core/js/optionize.js';
 import NumberControl, { LayoutFunction, NumberControlOptions } from '../../../../scenery-phet/js/NumberControl.js';
-import { HBox, Node, TColor, Text, VBox, VBoxOptions } from '../../../../scenery/js/imports.js';
-import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
+import { HBox, ManualConstraint, Node, TColor, Text, VBox, VBoxOptions } from '../../../../scenery/js/imports.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
 import Material from '../model/Material.js';
@@ -32,6 +31,8 @@ import NumberDisplay from '../../../../scenery-phet/js/NumberDisplay.js';
 import Slider from '../../../../sun/js/Slider.js';
 import ArrowButton from '../../../../sun/js/buttons/ArrowButton.js';
 import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
+import ToggleNode from '../../../../sun/js/ToggleNode.js';
+import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 
 // constants
 const LITERS_IN_CUBIC_METER = DensityBuoyancyCommonConstants.LITERS_IN_CUBIC_METER;
@@ -346,35 +347,31 @@ export default class MaterialMassVolumeControlNode extends MaterialControlNode {
       massContainerNode.addChild( createMassNumberControl( options.maxMass ) );
     }
 
-    const fallbackContainer = new Node();
     const massVolumeVBox = new VBox( combineOptions<VBoxOptions>( {
       children: [ massContainerNode, volumeNumberControl ],
       spacing: 15
     } ) );
 
-    this.addChild( fallbackContainer );
-    this.addChild( massVolumeVBox );
-
-    let fallbackNode = null;
-
-    // TODO: Use ToggleNode?, https://github.com/phetsims/buoyancy/issues/120
-    materialProperty.link( material => {
-      fallbackContainer.removeAllChildren();
-
-      // When mass showing as a readout, the hidden material is hidden via the mass readout.
-      if ( !options.showMassAsReadout && material.hidden ) {
-        fallbackNode = new Text( DensityBuoyancyCommonStrings.whatIsTheMaterialStringProperty, {
-          font: new PhetFont( 14 )
-        } );
-        fallbackNode.maxWidth = massVolumeVBox.width;
-        fallbackNode.center = massVolumeVBox.center;
-        fallbackContainer.addChild( fallbackNode );
-      }
-      else {
-        fallbackNode = null;
-      }
-      massVolumeVBox.visible = fallbackNode === null;
+    const fallbackNode = new Text( DensityBuoyancyCommonStrings.whatIsTheMaterialStringProperty, {
+      font: new PhetFont( 14 )
     } );
+    ManualConstraint.create( this, [ fallbackNode, massVolumeVBox ], ( fallbackProxy, vboxProxy ) => {
+      fallbackProxy.maxWidth = vboxProxy.width;
+      fallbackProxy.center = vboxProxy.center;
+    } );
+    const fallbackContainer = new Node( {
+      children: [ fallbackNode ]
+    } );
+
+    // Show the "hidden" material view if the material is hidden (excect for mass-readout mode)
+    const toggleNodeValueProperty = new DerivedProperty( [ materialProperty ], material => {
+      return !options.showMassAsReadout && material.hidden;
+    } );
+
+    this.addChild( new ToggleNode( toggleNodeValueProperty, [
+      { value: true, createNode: () => fallbackContainer },
+      { value: false, createNode: () => massVolumeVBox }
+    ] ) );
 
     this.minContentWidth = massVolumeVBox.width;
 

@@ -352,15 +352,15 @@ export default class MaterialMassVolumeControlNode extends MaterialControlNode {
       spacing: 15
     } ) );
 
-    const fallbackNode = new Text( DensityBuoyancyCommonStrings.whatIsTheMaterialStringProperty, {
+    const hiddenMaterialNode = new Text( DensityBuoyancyCommonStrings.whatIsTheMaterialStringProperty, {
       font: new PhetFont( 14 )
     } );
-    ManualConstraint.create( this, [ fallbackNode, massVolumeVBox ], ( fallbackProxy, vboxProxy ) => {
-      fallbackProxy.maxWidth = vboxProxy.width;
-      fallbackProxy.center = vboxProxy.center;
+    ManualConstraint.create( this, [ hiddenMaterialNode, massVolumeVBox ], ( hiddenMaterialProxy, vboxProxy ) => {
+      hiddenMaterialProxy.maxWidth = vboxProxy.width;
+      hiddenMaterialProxy.center = vboxProxy.center;
     } );
-    const fallbackContainer = new Node( {
-      children: [ fallbackNode ]
+    const hiddenMaterialContainer = new Node( {
+      children: [ hiddenMaterialNode ]
     } );
 
     // Show the "hidden" material view if the material is hidden (excect for mass-readout mode)
@@ -369,7 +369,7 @@ export default class MaterialMassVolumeControlNode extends MaterialControlNode {
     } );
 
     this.addChild( new ToggleNode( toggleNodeValueProperty, [
-      { value: true, createNode: () => fallbackContainer },
+      { value: true, createNode: () => hiddenMaterialContainer },
       { value: false, createNode: () => massVolumeVBox }
     ] ) );
 

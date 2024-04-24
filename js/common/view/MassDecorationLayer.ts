@@ -25,9 +25,9 @@ export default class MassDecorationLayer extends Node {
     super();
     this.addChild( this.depthLinesLayer ); // Depth lines need to be behind everything else.
     this.addChild( this.massTagsLayer );
+    this.addChild( this.massLabelLayer );
     this.addChild( this.forceDiagramLayer );
     this.addChild( this.scaleReadoutLayer );
-    this.addChild( this.massLabelLayer );
   }
 }
 

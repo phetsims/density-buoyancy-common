@@ -40,18 +40,10 @@ export default class CuboidView extends MeasurableMassView {
                       showForceValuesProperty: TReadOnlyProperty<boolean>,
                       forceScaleProperty: TReadOnlyProperty<number>,
                       showMassesProperty: TReadOnlyProperty<boolean> ) {
+
     const size = cuboid.sizeProperty.value;
 
-    const positionArray = new Float32Array( numElements * 3 );
-    const normalArray = new Float32Array( numElements * 3 );
-    const uvArray = new Float32Array( numElements * 2 );
-
-    CuboidView.updateArrays( positionArray, normalArray, uvArray, size );
-
-    const cuboidGeometry = new THREE.BufferGeometry();
-    cuboidGeometry.addAttribute( 'position', new THREE.BufferAttribute( positionArray, 3 ) );
-    cuboidGeometry.addAttribute( 'normal', new THREE.BufferAttribute( normalArray, 3 ) );
-    cuboidGeometry.addAttribute( 'uv', new THREE.BufferAttribute( uvArray, 2 ) );
+    const cuboidGeometry = CuboidView.getCuboidGeometery( size );
 
     super( cuboid, cuboidGeometry, modelViewTransform, dragBoundsProperty,
 
@@ -237,6 +229,21 @@ export default class CuboidView extends MeasurableMassView {
     for ( let i = 0; i < 6; i++ ) { writer.normal( 0, 0, 1 ); }
 
     return writer.getOffset();
+  }
+
+  public static getCuboidGeometery( size: Bounds3 ): THREE.BufferGeometry {
+    const positionArray = new Float32Array( numElements * 3 );
+    const normalArray = new Float32Array( numElements * 3 );
+    const uvArray = new Float32Array( numElements * 2 );
+
+    CuboidView.updateArrays( positionArray, normalArray, uvArray, size );
+
+    const cuboidGeometry = new THREE.BufferGeometry();
+    cuboidGeometry.addAttribute( 'position', new THREE.BufferAttribute( positionArray, 3 ) );
+    cuboidGeometry.addAttribute( 'normal', new THREE.BufferAttribute( normalArray, 3 ) );
+    cuboidGeometry.addAttribute( 'uv', new THREE.BufferAttribute( uvArray, 2 ) );
+
+    return cuboidGeometry;
   }
 }
 

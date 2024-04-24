@@ -9,7 +9,7 @@
 import Vector3 from '../../../../dot/js/Vector3.js';
 import { combineOptions } from '../../../../phet-core/js/optionize.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
-import { AlignBox, HBox, Text, VBox } from '../../../../scenery/js/imports.js';
+import { AlignBox, HBox, Node, Text, VBox } from '../../../../scenery/js/imports.js';
 import AquaRadioButton from '../../../../sun/js/AquaRadioButton.js';
 import Panel from '../../../../sun/js/Panel.js';
 import VerticalAquaRadioButtonGroup from '../../../../sun/js/VerticalAquaRadioButtonGroup.js';
@@ -30,6 +30,9 @@ import ScreenView from '../../../../joist/js/ScreenView.js';
 import { ReadoutItemOptions } from './ReadoutListAccordionBox.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import Mass from '../../common/model/Mass.js';
+import DensityMaterials from '../../common/view/DensityMaterials.js';
+import ThreeUtils from '../../../../mobius/js/ThreeUtils.js';
+import DensityBuoyancyCommonColors from '../../common/view/DensityBuoyancyCommonColors.js';
 
 // constants
 const blockSetStringMap = {
@@ -225,6 +228,52 @@ export default class BuoyancyIntroScreenView extends DensityBuoyancyScreenView<B
   public override layout( viewBounds: Bounds2 ): void {
     super.layout( viewBounds );
     this.layoutRightSidePanels();
+  }
+
+
+  public static getBuoyancyIntroIcon(): Node {
+      return DensityBuoyancyScreenView.getAngledIcon( 4, new Vector3( 0, 0, 0 ), scene => {
+
+        const boxGeometry = new THREE.BoxGeometry( 0.1, 0.1, 0.1 );
+
+        const box1 = new THREE.Mesh( boxGeometry, new THREE.MeshStandardMaterial( {
+          map: DensityMaterials.woodColorTexture,
+          normalMap: DensityMaterials.woodNormalTexture,
+          normalScale: new THREE.Vector2( 1, -1 ),
+          roughnessMap: DensityMaterials.woodRoughnessTexture,
+          metalness: 0
+          // NOTE: Removed the environment map for now
+        } ) );
+        box1.position.copy( ThreeUtils.vectorToThree( new Vector3( 0.08, 0, 0 ) ) );
+
+        scene.add( box1 );
+
+        const box2 = new THREE.Mesh( boxGeometry, new THREE.MeshStandardMaterial( {
+          map: DensityMaterials.brickColorTexture,
+          normalMap: DensityMaterials.brickNormalTexture,
+          normalScale: new THREE.Vector2( 1, -1 ),
+          metalness: 0
+          // NOTE: Removed the environment map for now
+        } ) );
+        box2.position.copy( ThreeUtils.vectorToThree( new Vector3( -0.08, -0.05, 0 ) ) );
+
+        scene.add( box2 );
+
+        const waterMaterial = new THREE.MeshLambertMaterial( {
+          transparent: true
+        } );
+        const waterColor = DensityBuoyancyCommonColors.materialWaterColorProperty.value;
+        waterMaterial.color = ThreeUtils.colorToThree( waterColor );
+        waterMaterial.opacity = waterColor.alpha;
+
+        // Fake it!
+        const waterGeometry = new THREE.BoxGeometry( 1, 1, 0.2 );
+
+        const water = new THREE.Mesh( waterGeometry, waterMaterial );
+        water.position.copy( ThreeUtils.vectorToThree( new Vector3( 0, -0.5, 0.12 ) ) );
+        scene.add( water );
+      } );
+
   }
 }
 

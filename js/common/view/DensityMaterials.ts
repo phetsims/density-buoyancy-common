@@ -428,6 +428,9 @@ export default class DensityMaterials {
   public static readonly woodColorTexture = woodColorTexture;
   public static readonly woodNormalTexture = woodNormalTexture;
   public static readonly woodRoughnessTexture = woodRoughnessTexture;
+
+  public static readonly brickColorTexture = brickColorTexture;
+  public static readonly brickNormalTexture = brickNormalTexture;
 }
 
 

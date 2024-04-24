@@ -544,7 +544,7 @@ export default class Material {
     tandemName: 'materialR',
     identifier: 'MATERIAL_R',
     hidden: true,
-    liquidColor: new Property( new Color( 'rgba(0,255,193,0.7)' ) ),
+    liquidColor: DensityBuoyancyCommonColors.materialRColorProperty,
     density: Material.ICE.density
   } );
 
@@ -553,7 +553,7 @@ export default class Material {
     tandemName: 'materialS',
     identifier: 'MATERIAL_S',
     hidden: true,
-    liquidColor: new Property( new Color( 'rgba(255,16,223,0.5)' ) ),
+    liquidColor: DensityBuoyancyCommonColors.materialSColorProperty,
     density: Material.LEAD.density
   } );
 

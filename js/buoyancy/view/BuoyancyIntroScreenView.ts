@@ -232,7 +232,7 @@ export default class BuoyancyIntroScreenView extends DensityBuoyancyScreenView<B
 
 
   public static getBuoyancyIntroIcon(): Node {
-      return DensityBuoyancyScreenView.getAngledIcon( 4, new Vector3( 0, 0, 0 ), scene => {
+      return DensityBuoyancyScreenView.getAngledIcon( 4, new Vector3( 0, -0.05, 0 ), scene => {
 
         const boxGeometry = new THREE.BoxGeometry( 0.1, 0.1, 0.1 );
 
@@ -244,7 +244,7 @@ export default class BuoyancyIntroScreenView extends DensityBuoyancyScreenView<B
           metalness: 0
           // NOTE: Removed the environment map for now
         } ) );
-        box1.position.copy( ThreeUtils.vectorToThree( new Vector3( 0.08, 0, 0 ) ) );
+        box1.position.copy( ThreeUtils.vectorToThree( new Vector3( 0.08, -0.02, 0 ) ) );
 
         scene.add( box1 );
 
@@ -255,7 +255,7 @@ export default class BuoyancyIntroScreenView extends DensityBuoyancyScreenView<B
           metalness: 0
           // NOTE: Removed the environment map for now
         } ) );
-        box2.position.copy( ThreeUtils.vectorToThree( new Vector3( -0.08, -0.05, 0 ) ) );
+        box2.position.copy( ThreeUtils.vectorToThree( new Vector3( -0.08, -0.1, 0 ) ) );
 
         scene.add( box2 );
 

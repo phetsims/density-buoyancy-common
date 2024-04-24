@@ -41,6 +41,8 @@ import SubmergedAccordionBox from './SubmergedAccordionBox.js';
 import NumberProperty from '../../../../axon/js/NumberProperty.js';
 import Multilink from '../../../../axon/js/Multilink.js';
 import PrecisionSliderThumb from '../../common/view/PrecisionSliderThumb.js';
+import ThreeUtils from '../../../../mobius/js/ThreeUtils.js';
+import Bottle from '../model/Bottle.js';
 
 // constants
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
@@ -404,6 +406,51 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
     } );
     bottle.setScaleMagnitude( ICON_SCALE );
     return bottle;
+  }
+
+  public static getBuoyancyApplicationsIcon(): Node {
+
+    return DensityBuoyancyScreenView.getAngledIcon( 5.5, new Vector3( 0, 0, 0 ), scene => {
+
+      const primaryGeometry = Bottle.getPrimaryGeometry();
+
+      const bottleGroup = new THREE.Group();
+
+      const frontBottomMaterial = new THREE.MeshPhongMaterial( {
+        color: Material.OIL.liquidColor!.value.toHexString(),
+        opacity: 0.8,
+        transparent: true,
+        side: THREE.FrontSide
+      } );
+      const frontBottom = new THREE.Mesh( primaryGeometry, frontBottomMaterial );
+      frontBottom.renderOrder = -1;
+      bottleGroup.add( frontBottom );
+
+      const cap = new THREE.Mesh( Bottle.getCapGeometry(), new THREE.MeshPhongMaterial( {
+        color: 0xFF3333,
+        side: THREE.DoubleSide
+      } ) );
+      bottleGroup.add( cap );
+
+      bottleGroup.scale.multiplyScalar( 0.5 );
+      bottleGroup.position.add( new THREE.Vector3( 0, 0, 0.05 ) );
+
+      scene.add( bottleGroup );
+
+      const waterMaterial = new THREE.MeshLambertMaterial( {
+        transparent: true
+      } );
+      const waterColor = DensityBuoyancyCommonColors.materialWaterColorProperty.value;
+      waterMaterial.color = ThreeUtils.colorToThree( waterColor );
+      waterMaterial.opacity = waterColor.alpha;
+
+      // Fake it!
+      const waterGeometry = new THREE.BoxGeometry( 1, 1, 0.2 );
+
+      const water = new THREE.Mesh( waterGeometry, waterMaterial );
+      water.position.copy( ThreeUtils.vectorToThree( new Vector3( 0, -0.5, 0.1 ) ) );
+      scene.add( water );
+    } );
   }
 }
 

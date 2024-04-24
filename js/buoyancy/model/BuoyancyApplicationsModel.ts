@@ -59,7 +59,7 @@ export default class BuoyancyApplicationsModel extends DensityBuoyancyModel {
       usePoolScale: true
     }, options ) );
 
-    this.sceneProperty = new EnumerationProperty( Scene.BOAT, {
+    this.sceneProperty = new EnumerationProperty( Scene.BOTTLE, {
       tandem: options.tandem.createTandem( 'sceneProperty' )
     } );
     this.densityExpandedProperty = new BooleanProperty( false, {

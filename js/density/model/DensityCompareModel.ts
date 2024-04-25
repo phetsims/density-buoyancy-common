@@ -27,21 +27,11 @@ import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyModel from '../../common/model/DensityBuoyancyModel.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 import MassTag from '../../common/model/MassTag.js';
+import { BlockSet } from '../../common/model/BlockSet.js';
 
 // Vestigial range used to calculate the color of custom materials. This has nothing to do with the actual range of
 // density values in this model.
 const COLOR_DENSITY_RANGE = new Range( 10, 10000 );
-
-
-export class BlockSet extends EnumerationValue {
-  public static readonly SAME_MASS = new BlockSet();
-  public static readonly SAME_VOLUME = new BlockSet();
-  public static readonly SAME_DENSITY = new BlockSet();
-
-  public static readonly enumeration = new Enumeration( BlockSet, {
-    phetioDocumentation: 'Block set'
-  } );
-}
 
 export type DensityCompareModelOptions = StrictOmit<BlockSetModelOptions<BlockSet>, 'initialMode' | 'BlockSet' | 'createMassesCallback' | 'regenerateMassesCallback' | 'positionMassesCallback'>;
 

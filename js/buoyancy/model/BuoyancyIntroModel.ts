@@ -19,16 +19,7 @@ import Scale, { DisplayType } from '../../common/model/Scale.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import MassTag from '../../common/model/MassTag.js';
 import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
-
-export class BlockSet extends EnumerationValue {
-  public static readonly SAME_MASS = new BlockSet();
-  public static readonly SAME_VOLUME = new BlockSet();
-  public static readonly SAME_DENSITY = new BlockSet();
-
-  public static readonly enumeration = new Enumeration( BlockSet, {
-    phetioDocumentation: 'Block set'
-  } );
-}
+import { BlockSet } from '../../common/model/BlockSet.js';
 
 export type BuoyancyIntroModelOptions = StrictOmit<BlockSetModelOptions<BlockSet>, 'initialMode' | 'BlockSet' | 'createMassesCallback' | 'regenerateMassesCallback' | 'positionMassesCallback'>;
 

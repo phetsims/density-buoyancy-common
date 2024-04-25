@@ -61,7 +61,7 @@ export default class ScaleHeightControl extends NumberControl {
       },
       titleNodeOptions: { tandem: Tandem.OPT_OUT },
       numberDisplayOptions: { tandem: Tandem.OPT_OUT },
-      delta: DEFAULT_RANGE.getLength() / 100,
+      delta: DEFAULT_RANGE.getLength() / 2000,
       layoutFunction( titleNode: Node, numberDisplay: NumberDisplay, slider: Slider, decrementButton: ArrowButton | null, incrementButton: ArrowButton | null ) {
         const actualIncrement = incrementButton!;
         const actualDecrement = decrementButton!;

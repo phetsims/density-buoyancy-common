@@ -14,7 +14,6 @@ import Panel from '../../../../sun/js/Panel.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 import Material from '../../common/model/Material.js';
 import DensityBuoyancyScreenView, { DensityBuoyancyScreenViewOptions } from '../../common/view/DensityBuoyancyScreenView.js';
-import FluidDensityControlNode from '../../common/view/FluidDensityControlNode.js';
 import PrimarySecondaryControlsNode from '../../common/view/PrimarySecondaryControlsNode.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
@@ -28,6 +27,7 @@ import BuoyancyExploreScreenView from '../../buoyancy/view/BuoyancyExploreScreen
 import Vector3 from '../../../../dot/js/Vector3.js';
 import Bounds2 from '../../../../dot/js/Bounds2.js';
 import ScaleHeightControl from '../../common/view/ScaleHeightControl.js';
+import FluidsRadioButtonPanel from '../../buoyancy/view/FluidsRadioButtonPanel.js';
 
 // constants
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
@@ -74,15 +74,11 @@ export default class BuoyancyBasicsExploreScreenView extends DensityBuoyancyScre
       }
     );
 
-    const fluidDensityControlPanel = new Panel( new FluidDensityControlNode( model.liquidMaterialProperty, [
-      ...DensityBuoyancyCommonConstants.BUOYANCY_FLUID_MATERIALS,
-      ...DensityBuoyancyCommonConstants.BUOYANCY_FLUID_MYSTERY_MATERIALS
-    ], this.popupLayer, {
-      invisibleMaterials: invisibleMaterials,
-      tandem: tandem.createTandem( 'densityControlNode' )
-    } ), DensityBuoyancyCommonConstants.PANEL_OPTIONS );
+    const fluidSelectionPanel = new FluidsRadioButtonPanel( model.liquidMaterialProperty, {
+      tandem: options.tandem.createTandem( 'fluidSelectionPanel' )
+    } );
 
-    this.addChild( new AlignBox( fluidDensityControlPanel, {
+    this.addChild( new AlignBox( fluidSelectionPanel, {
       alignBoundsProperty: this.visibleBoundsProperty,
       xAlign: 'center',
       yAlign: 'bottom',
@@ -145,7 +141,7 @@ export default class BuoyancyBasicsExploreScreenView extends DensityBuoyancyScre
       tandem: this.tandem.createTandem( 'blocksRadioButtonGroup' )
     } );
 
-    ManualConstraint.create( this, [ rightSideVBox, fluidDensityControlPanel, blocksRadioButtonGroup ],
+    ManualConstraint.create( this, [ rightSideVBox, fluidSelectionPanel, blocksRadioButtonGroup ],
       ( rightSideVBoxWrapper, fluidDensityControlPanelWrapper, blocksRadioButtonGroupWrapper ) => {
         blocksRadioButtonGroupWrapper.left = rightSideVBoxWrapper.left;
         blocksRadioButtonGroupWrapper.bottom = fluidDensityControlPanelWrapper.bottom;

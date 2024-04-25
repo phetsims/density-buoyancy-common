@@ -7,7 +7,7 @@
  */
 
 import { combineOptions } from '../../../../phet-core/js/optionize.js';
-import { AlignBox, HBox, Node, Path, Text, VBox } from '../../../../scenery/js/imports.js';
+import { AlignBox, Node, Path, Text, VBox } from '../../../../scenery/js/imports.js';
 import Panel from '../../../../sun/js/Panel.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 import Material from '../../common/model/Material.js';
@@ -24,9 +24,6 @@ import Vector3 from '../../../../dot/js/Vector3.js';
 import ScreenView from '../../../../joist/js/ScreenView.js';
 import VerticalAquaRadioButtonGroup from '../../../../sun/js/VerticalAquaRadioButtonGroup.js';
 import BlockSet from '../../common/model/BlockSet.js';
-import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
-import ReadOnlyProperty from '../../../../axon/js/ReadOnlyProperty.js';
-import AquaRadioButton from '../../../../sun/js/AquaRadioButton.js';
 import { ReadoutItemOptions } from '../../buoyancy/view/ReadoutListAccordionBox.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import Mass from '../../common/model/Mass.js';
@@ -36,17 +33,7 @@ import ThreeUtils from '../../../../mobius/js/ThreeUtils.js';
 import DensityBuoyancyCommonColors from '../../common/view/DensityBuoyancyCommonColors.js';
 import ScaleHeightControl from '../../common/view/ScaleHeightControl.js';
 import smileWinkSolidShape from '../../../../sherpa/js/fontawesome-5/smileWinkSolidShape.js';
-
-
-// Any others are invisible in the radio buttons, and are only available through PhET-iO if a client decides
-// to show them, https://github.com/phetsims/buoyancy/issues/58
-const VISIBLE_FLUIDS = [
-  Material.GASOLINE,
-  Material.WATER,
-  Material.SEAWATER,
-  Material.HONEY,
-  Material.MERCURY
-];
+import FluidsRadioButtonPanel from '../../buoyancy/view/FluidsRadioButtonPanel.js';
 
 // constants
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
@@ -103,37 +90,9 @@ export default class BuoyancyBasicsCompareScreenView extends DensityBuoyancyScre
       margin: MARGIN
     } ) );
 
-    const radioButtonLabelOptions = {
-      font: new PhetFont( 14 ),
-      maxWidth: 120
-    };
-    const radioButtonGroupTandem = options.tandem.createTandem( 'liquidMaterialRadioButtonGroup' );
-
-    model.liquidMaterialProperty instanceof ReadOnlyProperty && this.addLinkedElement( model.liquidMaterialProperty, {
-      tandem: radioButtonGroupTandem.createTandem( 'property' )
-    } );
-
-    const fluidBox = new HBox( {
-      spacing: 20,
-      children: DensityBuoyancyCommonConstants.BUOYANCY_FLUID_MATERIALS.map( material => {
-        return new AquaRadioButton( model.liquidMaterialProperty, material,
-          new Text( material.nameProperty, radioButtonLabelOptions ), {
-            tandem: radioButtonGroupTandem.createTandem( `${material.tandemName}RadioButton` ),
-            visible: VISIBLE_FLUIDS.includes( material )
-          } );
-      } )
-    } );
-    const fluidTitle = new Text( DensityBuoyancyCommonStrings.fluidStringProperty, {
-      font: DensityBuoyancyCommonConstants.TITLE_FONT,
-      maxWidth: 160
-    } );
-    const fluidPanel = new Panel( new VBox( {
-      children: [ fluidTitle, fluidBox ],
-      spacing: 3,
-      align: 'left'
-    } ), DensityBuoyancyCommonConstants.PANEL_OPTIONS );
-
-    this.addChild( new AlignBox( fluidPanel, {
+    this.addChild( new AlignBox( new FluidsRadioButtonPanel( model.liquidMaterialProperty, {
+      tandem: options.tandem.createTandem( 'fluidSelectionPanel' )
+    } ), {
       alignBoundsProperty: this.visibleBoundsProperty,
       xAlign: 'center',
       yAlign: 'bottom',

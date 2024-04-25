@@ -20,7 +20,6 @@ import BuoyancyDisplayOptionsNode from '../../common/view/BuoyancyDisplayOptions
 import SubmergedAccordionBox from '../../buoyancy/view/SubmergedAccordionBox.js';
 import PatternStringProperty from '../../../../axon/js/PatternStringProperty.js';
 import Property from '../../../../axon/js/Property.js';
-import BuoyancyIntroModel from '../../buoyancy/model/BuoyancyIntroModel.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
 import ScreenView from '../../../../joist/js/ScreenView.js';
 import VerticalAquaRadioButtonGroup from '../../../../sun/js/VerticalAquaRadioButtonGroup.js';
@@ -35,6 +34,7 @@ import Bounds2 from '../../../../dot/js/Bounds2.js';
 import DensityMaterials from '../../common/view/DensityMaterials.js';
 import ThreeUtils from '../../../../mobius/js/ThreeUtils.js';
 import DensityBuoyancyCommonColors from '../../common/view/DensityBuoyancyCommonColors.js';
+import ScaleHeightControl from '../../common/view/ScaleHeightControl.js';
 
 
 // Any others are invisible in the radio buttons, and are only available through PhET-iO if a client decides
@@ -57,8 +57,9 @@ export default class BuoyancyBasicsCompareScreenView extends DensityBuoyancyScre
 
   private readonly rightSideMaxContentWidthProperty = new Property( MAX_RIGHT_SIDE_CONTENT_WIDTH );
   private readonly readoutPanelsVBox = new VBox( { spacing: MARGIN } );
+  private readonly scaleHeightControl: ScaleHeightControl;
 
-  public constructor( model: BuoyancyIntroModel, options: DensityBuoyancyScreenViewOptions ) {
+  public constructor( model: BuoyancyBasicsCompareModel, options: DensityBuoyancyScreenViewOptions ) {
 
     super( model, combineOptions<DensityBuoyancyScreenViewOptions>( {
       // Custom just for this screen
@@ -202,6 +203,13 @@ export default class BuoyancyBasicsCompareScreenView extends DensityBuoyancyScre
     } );
     this.addChild( this.readoutPanelsVBox );
 
+    // Info button and associated dialog
+    this.scaleHeightControl = new ScaleHeightControl( model.poolScale, model.poolScaleHeightProperty,
+      model.poolBounds, model.pool.liquidYInterpolatedProperty, this, {
+        tandem: options.tandem.createTandem( 'scaleHeightControl' )
+      } );
+    this.addChild( this.scaleHeightControl );
+
     this.addChild( this.popupLayer );
   }
 
@@ -221,6 +229,20 @@ export default class BuoyancyBasicsCompareScreenView extends DensityBuoyancyScre
   public override layout( viewBounds: Bounds2 ): void {
     super.layout( viewBounds );
     this.layoutRightSidePanels();
+
+    // X margin should be based on the front of the pool
+    this.scaleHeightControl.x = this.modelToViewPoint( new Vector3(
+      this.model.poolBounds.maxX,
+      this.model.poolBounds.minY,
+      this.model.poolBounds.maxZ
+    ) ).plusXY( DensityBuoyancyCommonConstants.MARGIN / 2, 0 ).x;
+
+    // Y should be based on the bottom of the front of the scale (in the middle of the pool)
+    this.scaleHeightControl.y = this.modelToViewPoint( new Vector3(
+      this.model.poolBounds.maxX,
+      this.model.poolBounds.minY,
+      this.model.poolScale.getBounds().maxZ
+    ) ).y;
   }
 
 

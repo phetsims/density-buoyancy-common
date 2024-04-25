@@ -4,6 +4,8 @@
  * Slider control with tweaker buttons that changes the height of the Scale for some screens in the density-buoyancy
  * suite of sims.
  *
+ * TODO: Rename to "PoolScaleHeightControl"? https://github.com/phetsims/density-buoyancy-common/issues/95
+ *
  * @author Agustín Vallejo
  */
 

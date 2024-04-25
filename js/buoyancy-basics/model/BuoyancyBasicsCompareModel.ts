@@ -18,11 +18,16 @@ import BlockSetModel, { BlockSetModelOptions } from '../../common/model/BlockSet
 import optionize, { EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
 import StrictOmit from '../../../../phet-core/js/types/StrictOmit.js';
 import BlockSet from '../../common/model/BlockSet.js';
+import VolumelessScale from '../../common/model/VolumelessScale.js';
+import NumberProperty from '../../../../axon/js/NumberProperty.js';
+import Range from '../../../../dot/js/Range.js';
 
 export type BuoyancyBasicsCompareModelOptions = StrictOmit<BlockSetModelOptions<BlockSet>, 'initialMode' | 'BlockSet' | 'createMassesCallback' | 'regenerateMassesCallback' | 'positionMassesCallback'>;
 
 export default class BuoyancyBasicsCompareModel extends BlockSetModel<BlockSet> {
   public readonly densityExpandedProperty = new BooleanProperty( false );
+  public readonly poolScaleHeightProperty: NumberProperty;
+  public readonly poolScale: Scale;
 
   public constructor( providedOptions: BuoyancyBasicsCompareModelOptions ) {
     const tandem = providedOptions.tandem;
@@ -37,7 +42,7 @@ export default class BuoyancyBasicsCompareModel extends BlockSetModel<BlockSet> 
       BlockSet: BlockSet.enumeration,
 
       supportsDepthLines: true,
-      usePoolScale: true,
+      usePoolScale: false, // create out own based on the ScaleHeightControl
 
       createMassesCallback: ( model, blockSet ) => {
         switch( blockSet ) {
@@ -121,6 +126,24 @@ export default class BuoyancyBasicsCompareModel extends BlockSetModel<BlockSet> 
         phetioReadOnly: false
       }
     } ) );
+
+    this.poolScaleHeightProperty = new NumberProperty( 1, {
+      range: new Range( 0, 1 ),
+      tandem: tandem.createTandem( 'poolScaleHeightProperty' )
+    } );
+
+    // Pool scale
+    this.poolScale = new VolumelessScale( this.engine, this.gravityProperty, {
+      displayType: DisplayType.NEWTONS,
+      tandem: tandem.createTandem( 'poolScale' ),
+      canMove: false, // No input listeners, but the ScaleHeightControl can still move it
+      inputEnabledPropertyOptions: {
+        phetioReadOnly: true
+      }
+    } );
+
+    // Make sure to render it
+    this.availableMasses.push( this.poolScale );
   }
 }
 

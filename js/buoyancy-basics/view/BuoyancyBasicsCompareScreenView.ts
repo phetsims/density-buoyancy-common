@@ -9,7 +9,7 @@
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import { combineOptions } from '../../../../phet-core/js/optionize.js';
-import { AlignBox, ManualConstraint, Node, VBox } from '../../../../scenery/js/imports.js';
+import { AlignBox, ManualConstraint, VBox } from '../../../../scenery/js/imports.js';
 import Panel from '../../../../sun/js/Panel.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 import Material from '../../common/model/Material.js';
@@ -25,12 +25,6 @@ import BuoyancyDisplayOptionsNode from '../../common/view/BuoyancyDisplayOptions
 import SubmergedAccordionBox from '../../buoyancy/view/SubmergedAccordionBox.js';
 import PatternStringProperty from '../../../../axon/js/PatternStringProperty.js';
 import BlocksRadioButtonGroup from '../../common/view/BlocksRadioButtonGroup.js';
-import Vector3 from '../../../../dot/js/Vector3.js';
-import DensityMaterials from '../../common/view/DensityMaterials.js';
-import ThreeUtils from '../../../../mobius/js/ThreeUtils.js';
-import DensityBuoyancyCommonColors from '../../common/view/DensityBuoyancyCommonColors.js';
-import ForceDiagramNode from '../../common/view/ForceDiagramNode.js';
-import buoyancy_explore_screen_block_png from '../../../images/buoyancy_explore_screen_block_png.js';
 
 // constants
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
@@ -177,51 +171,6 @@ export default class BuoyancyBasicsCompareScreenView extends DensityBuoyancyScre
     } );
 
     this.addChild( this.popupLayer );
-  }
-
-  public static getBuoyancyCompareIcon(): Node {
-    const boxScene = DensityBuoyancyScreenView.getThreeIcon( buoyancy_explore_screen_block_png, () => {
-      return DensityBuoyancyScreenView.getAngledIcon( 5.5, new Vector3( 0, 0, 0 ), scene => {
-
-        const boxGeometry = new THREE.BoxGeometry( 0.1, 0.1, 0.1 );
-
-        const box = new THREE.Mesh( boxGeometry, new THREE.MeshStandardMaterial( {
-          map: DensityMaterials.woodColorTexture,
-          normalMap: DensityMaterials.woodNormalTexture,
-          normalScale: new THREE.Vector2( 1, -1 ),
-          roughnessMap: DensityMaterials.woodRoughnessTexture,
-          metalness: 0
-          // NOTE: Removed the environment map for now
-        } ) );
-        box.position.copy( ThreeUtils.vectorToThree( new Vector3( 0, 0, 0 ) ) );
-
-        scene.add( box );
-
-        const waterMaterial = new THREE.MeshLambertMaterial( {
-          transparent: true
-        } );
-        const waterColor = DensityBuoyancyCommonColors.materialWaterColorProperty.value;
-        waterMaterial.color = ThreeUtils.colorToThree( waterColor );
-        waterMaterial.opacity = waterColor.alpha;
-
-        // Fake it!
-        const waterGeometry = new THREE.BoxGeometry( 1, 1, 0.2 );
-
-        const water = new THREE.Mesh( waterGeometry, waterMaterial );
-        water.position.copy( ThreeUtils.vectorToThree( new Vector3( 0, -0.5, 0.12 ) ) );
-        scene.add( water );
-      } );
-    } );
-
-
-    return new Node( {
-      children: [
-        boxScene,
-        ForceDiagramNode.getCompareIcon().mutate( {
-          center: boxScene.center.plusXY( 0, boxScene.height * 0.09 )
-        } )
-      ]
-    } );
   }
 }
 

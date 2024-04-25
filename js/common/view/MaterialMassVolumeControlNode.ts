@@ -134,7 +134,7 @@ export default class MaterialMassVolumeControlNode extends MaterialControlNode {
         options.maxVolumeLiters
       );
     }, {
-      valueComparisonStrategy: 'equalsFunction' // TODO: How does this work?  https://github.com/phetsims/buoyancy/issues/120
+      valueComparisonStrategy: 'equalsFunction'
     } );
 
     // passed to the NumberControl

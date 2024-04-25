@@ -22,6 +22,10 @@ import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import Boat from './Boat.js';
 import Bottle from './Bottle.js';
 import { combineOptions } from '../../../../phet-core/js/optionize.js';
+import Range from '../../../../dot/js/Range.js';
+import NumberProperty from '../../../../axon/js/NumberProperty.js';
+import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
+import BooleanIO from '../../../../tandem/js/types/BooleanIO.js';
 
 // constants
 export class Scene extends EnumerationValue {
@@ -44,6 +48,8 @@ export default class BuoyancyApplicationsModel extends DensityBuoyancyModel {
   public readonly block: Cube;
   public override boat: Boat;
   public readonly scale1: Scale; // Scale sitting to the right of the pool
+  public readonly customDensityProperty: NumberProperty;
+  public readonly customDensityControlVisibleProperty: TReadOnlyProperty<boolean>;
 
   public constructor( options: BuoyancyApplicationsModelOptions ) {
 
@@ -92,6 +98,17 @@ export default class BuoyancyApplicationsModel extends DensityBuoyancyModel {
     } );
     this.availableMasses.push( this.scale1 );
 
+    this.customDensityProperty = new NumberProperty( 1, {
+      range: new Range( 0.05, 20 ),
+      tandem: tandem.createTandem( 'customDensityProperty' ),
+      units: 'kg/L'
+    } );
+    this.customDensityControlVisibleProperty = new DerivedProperty( [ this.bottle.interiorMaterialProperty ],
+      material => material.custom, {
+        tandem: tandem.createTandem( 'customDensityControlVisibleProperty' ),
+        phetioValueType: BooleanIO
+      } );
+
     // Adjust pool volume so that it's at the desired value WITH the pool scales inside.
     this.pool.liquidVolumeProperty.setInitialValue( this.pool.liquidVolumeProperty.value );
 
@@ -110,7 +127,7 @@ export default class BuoyancyApplicationsModel extends DensityBuoyancyModel {
       const plusMinusScale = visible ? -1 : 1;
       this.pool.liquidVolumeProperty.value += plusMinusScale * this.scale2!.volumeProperty.value;
       this.pool.liquidVolumeProperty.setInitialValue( this.pool.liquidVolumeProperty.value );
-      } );
+    } );
   }
 
   public override step( dt: number ): void {
@@ -142,6 +159,8 @@ export default class BuoyancyApplicationsModel extends DensityBuoyancyModel {
     this.bottle.reset();
     this.block.reset();
     this.boat.reset();
+
+    this.customDensityProperty.reset();
 
     super.reset();
 

@@ -38,7 +38,6 @@ import BoatView from './BoatView.js';
 import bottle_icon_png from '../../../images/bottle_icon_png.js';
 import boat_icon_png from '../../../images/boat_icon_png.js';
 import SubmergedAccordionBox from './SubmergedAccordionBox.js';
-import NumberProperty from '../../../../axon/js/NumberProperty.js';
 import Multilink from '../../../../axon/js/Multilink.js';
 import PrecisionSliderThumb from '../../common/view/PrecisionSliderThumb.js';
 import ThreeUtils from '../../../../mobius/js/ThreeUtils.js';
@@ -124,32 +123,26 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
       return ( 0.01 - volume ) * 1000;
     } );
 
-    const range = new Range( 0.05, 20 );
-    // TODO: reset, https://github.com/phetsims/buoyancy/issues/120
-    // TODO: PhET-iO state support, https://github.com/phetsims/buoyancy/issues/120
-    const customDensityProperty = new NumberProperty( 1, {
-      range: range
-    } );
-    const customDensityControlVisibleProperty = new DerivedProperty( [ model.bottle.interiorMaterialProperty ], material => material.custom );
-
-    // TODO: best initialValue for this? https://github.com/phetsims/buoyancy/issues/120
-    Multilink.lazyMultilink( [ customDensityProperty, customDensityControlVisibleProperty ], density => {
-      if ( model.bottle.interiorMaterialProperty.value.custom ) {
+    let materialChangeLocked = false;
+    Multilink.lazyMultilink( [ model.customDensityProperty, model.bottle.interiorMassProperty, model.customDensityControlVisibleProperty ], density => {
+      if ( !materialChangeLocked && model.bottle.interiorMaterialProperty.value.custom ) {
+        materialChangeLocked = true;
         model.bottle.interiorMaterialProperty.value = Material.createCustomSolidMaterial( {
           density: density * DensityBuoyancyCommonConstants.LITERS_IN_CUBIC_METER,
-          densityRange: range.copy().times( DensityBuoyancyCommonConstants.LITERS_IN_CUBIC_METER )
+          densityRange: model.customDensityProperty.range.copy().times( DensityBuoyancyCommonConstants.LITERS_IN_CUBIC_METER )
         } );
+        materialChangeLocked = false;
       }
     } );
 
-    const customBottleDensityControl = new NumberControl( DensityBuoyancyCommonStrings.densityStringProperty, customDensityProperty, customDensityProperty.range, combineOptions<NumberControlOptions>( {
-      visibleProperty: customDensityControlVisibleProperty,
+    const customBottleDensityControl = new NumberControl( DensityBuoyancyCommonStrings.densityStringProperty, model.customDensityProperty, model.customDensityProperty.range, combineOptions<NumberControlOptions>( {
+      visibleProperty: model.customDensityControlVisibleProperty,
       sliderOptions: {
         thumbNode: new PrecisionSliderThumb() // TODO: Tandem? https://github.com/phetsims/buoyancy/issues/120
       },
       numberDisplayOptions: {
         valuePattern: DensityBuoyancyCommonConstants.KILOGRAMS_PER_VOLUME_PATTERN_STRING_PROPERTY
-      }
+      },
     }, MaterialMassVolumeControlNode.getNumberControlOptions() ) );
 
     const bottleBox = new VBox( {

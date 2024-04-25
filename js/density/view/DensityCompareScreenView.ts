@@ -16,19 +16,14 @@ import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonCo
 import DensityBuoyancyScreenView, { DensityBuoyancyScreenViewOptions } from '../../common/view/DensityBuoyancyScreenView.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
-import DensityCompareModel, { BlockSet } from '../model/DensityCompareModel.js';
+import DensityCompareModel from '../model/DensityCompareModel.js';
 import ComparisonNumberControl from './ComparisonNumberControl.js';
 import Bounds2 from '../../../../dot/js/Bounds2.js';
 import { combineOptions } from '../../../../phet-core/js/optionize.js';
 import ThreeUtils from '../../../../mobius/js/ThreeUtils.js';
 import DensityBuoyancyCommonColors from '../../common/view/DensityBuoyancyCommonColors.js';
+import BlockSet from '../../common/model/BlockSet.js';
 
-// constants
-const blockSetStringMap = {
-  [ BlockSet.SAME_MASS.name ]: DensityBuoyancyCommonStrings.blockSet.sameMassStringProperty,
-  [ BlockSet.SAME_VOLUME.name ]: DensityBuoyancyCommonStrings.blockSet.sameVolumeStringProperty,
-  [ BlockSet.SAME_DENSITY.name ]: DensityBuoyancyCommonStrings.blockSet.sameDensityStringProperty
-};
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
 
 export default class DensityCompareScreenView extends DensityBuoyancyScreenView<DensityCompareModel> {
@@ -43,11 +38,6 @@ export default class DensityCompareScreenView extends DensityBuoyancyScreenView<
       cameraLookAt: DensityBuoyancyCommonConstants.DENSITY_CAMERA_LOOK_AT
     }, options ) );
 
-    const blockSetTandemMap = {
-      [ BlockSet.SAME_MASS.name ]: 'sameMass',
-      [ BlockSet.SAME_VOLUME.name ]: 'sameVolume',
-      [ BlockSet.SAME_DENSITY.name ]: 'sameDensity'
-    };
 
     const blocksPanelTandem = tandem.createTandem( 'blocksPanel' );
     const blocksRadioButtonGroupTandem = blocksPanelTandem.createTandem( 'blocksRadioButtonGroup' );
@@ -60,13 +50,13 @@ export default class DensityCompareScreenView extends DensityBuoyancyScreenView<
         } ),
         new VerticalAquaRadioButtonGroup( model.blockSetProperty, BlockSet.enumeration.values.map( blockSet => {
           return {
-            createNode: tandem => new Text( blockSetStringMap[ blockSet.name ], {
+            createNode: tandem => new Text( blockSet.stringProperty, {
               font: DensityBuoyancyCommonConstants.RADIO_BUTTON_FONT,
               maxWidth: 160,
               tandem: tandem.createTandem( 'labelText' )
             } ),
             value: blockSet,
-            tandemName: `${blockSetTandemMap[ blockSet.name ]}RadioButton`
+            tandemName: `${blockSet.tandemName}RadioButton`
           };
         } ), {
           align: 'left',

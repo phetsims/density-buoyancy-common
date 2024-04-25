@@ -13,8 +13,6 @@ import NumberProperty from '../../../../axon/js/NumberProperty.js';
 import Property from '../../../../axon/js/Property.js';
 import Range from '../../../../dot/js/Range.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
-import Enumeration from '../../../../phet-core/js/Enumeration.js';
-import EnumerationValue from '../../../../phet-core/js/EnumerationValue.js';
 import optionize, { combineOptions, EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
 import { Color } from '../../../../scenery/js/imports.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
@@ -27,7 +25,7 @@ import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyModel from '../../common/model/DensityBuoyancyModel.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 import MassTag from '../../common/model/MassTag.js';
-import { BlockSet } from '../../common/model/BlockSet.js';
+import BlockSet from '../../common/model/BlockSet.js';
 
 // Vestigial range used to calculate the color of custom materials. This has nothing to do with the actual range of
 // density values in this model.

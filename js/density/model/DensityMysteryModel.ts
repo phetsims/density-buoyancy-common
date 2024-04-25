@@ -26,6 +26,8 @@ import DensityBuoyancyModel from '../../common/model/DensityBuoyancyModel.js';
 import Cuboid from '../../common/model/Cuboid.js';
 import Property from '../../../../axon/js/Property.js';
 import MassTag from '../../common/model/MassTag.js';
+import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
+import LocalizedStringProperty from '../../../../chipper/js/LocalizedStringProperty.js';
 
 // constants
 const randomMaterials = DensityBuoyancyCommonConstants.DENSITY_MYSTERY_MATERIALS;
@@ -47,20 +49,24 @@ const randomColors = [
   DensityBuoyancyCommonColors.mysteryMaroonColorProperty
 ];
 
-export class BlockSet extends EnumerationValue {
-  public static readonly SET_1 = new BlockSet();
-  public static readonly SET_2 = new BlockSet();
-  public static readonly SET_3 = new BlockSet();
-  public static readonly RANDOM = new BlockSet();
+export class MysteryBlockSet extends EnumerationValue {
+  public static readonly SET_1 = new MysteryBlockSet( DensityBuoyancyCommonStrings.blockSet.set1StringProperty, 'set1' );
+  public static readonly SET_2 = new MysteryBlockSet( DensityBuoyancyCommonStrings.blockSet.set2StringProperty, 'set2' );
+  public static readonly SET_3 = new MysteryBlockSet( DensityBuoyancyCommonStrings.blockSet.set3StringProperty, 'set3' );
+  public static readonly RANDOM = new MysteryBlockSet( DensityBuoyancyCommonStrings.blockSet.randomStringProperty, 'random' );
 
-  public static readonly enumeration = new Enumeration( BlockSet, {
+  public constructor( public readonly stringProperty: LocalizedStringProperty, public readonly tandemName: string ) {
+    super();
+  }
+
+  public static readonly enumeration = new Enumeration( MysteryBlockSet, {
     phetioDocumentation: 'Block set'
   } );
 }
 
-export type DensityMysteryModelOptions = StrictOmit<BlockSetModelOptions<BlockSet>, 'initialMode' | 'BlockSet' | 'createMassesCallback' | 'regenerateMassesCallback' | 'positionMassesCallback'>;
+export type DensityMysteryModelOptions = StrictOmit<BlockSetModelOptions<MysteryBlockSet>, 'initialMode' | 'BlockSet' | 'createMassesCallback' | 'regenerateMassesCallback' | 'positionMassesCallback'>;
 
-export default class DensityMysteryModel extends BlockSetModel<BlockSet> {
+export default class DensityMysteryModel extends BlockSetModel<MysteryBlockSet> {
 
   public readonly densityTableExpandedProperty: Property<boolean>;
   private readonly scale: Scale;
@@ -102,9 +108,9 @@ export default class DensityMysteryModel extends BlockSetModel<BlockSet> {
     const set3Tandem = blockSetsTandem.createTandem( 'set3' );
     const randomTandem = blockSetsTandem.createTandem( 'random' );
 
-    const createMasses = ( model: DensityBuoyancyModel, blockSet: BlockSet ) => {
+    const createMasses = ( model: DensityBuoyancyModel, blockSet: MysteryBlockSet ) => {
       switch( blockSet ) {
-        case BlockSet.SET_1:
+        case MysteryBlockSet.SET_1:
           return [
             Cube.createWithVolume(
               model.engine,
@@ -161,7 +167,7 @@ export default class DensityMysteryModel extends BlockSetModel<BlockSet> {
               combineOptions<CubeOptions>( {}, commonCubeOptions, { tag: MassTag.ONE_A, tandem: set1Tandem.createTandem( `block${MassTag.ONE_A.tandemName}` ) } )
             )
           ];
-        case BlockSet.SET_2:
+        case MysteryBlockSet.SET_2:
           return [
             Cube.createWithMass(
               model.engine,
@@ -218,7 +224,7 @@ export default class DensityMysteryModel extends BlockSetModel<BlockSet> {
               combineOptions<CubeOptions>( {}, commonCubeOptions, { tag: MassTag.TWO_B, tandem: set2Tandem.createTandem( `block${MassTag.TWO_B.tandemName}` ) } )
             )
           ];
-        case BlockSet.SET_3:
+        case MysteryBlockSet.SET_3:
           return [
             Cube.createWithMass(
               model.engine,
@@ -275,7 +281,7 @@ export default class DensityMysteryModel extends BlockSetModel<BlockSet> {
               combineOptions<CubeOptions>( {}, commonCubeOptions, { tag: MassTag.THREE_A, tandem: set3Tandem.createTandem( `block${MassTag.THREE_A.tandemName}` ) } )
             )
           ];
-        case BlockSet.RANDOM: {
+        case MysteryBlockSet.RANDOM: {
           const tags = [
             MassTag.C,
             MassTag.D,
@@ -303,8 +309,8 @@ export default class DensityMysteryModel extends BlockSetModel<BlockSet> {
       }
     };
 
-    const regenerateMasses = ( model: DensityBuoyancyModel, blockSet: BlockSet, masses: Cuboid[] ) => {
-      if ( blockSet === BlockSet.RANDOM ) {
+    const regenerateMasses = ( model: DensityBuoyancyModel, blockSet: MysteryBlockSet, masses: Cuboid[] ) => {
+      if ( blockSet === MysteryBlockSet.RANDOM ) {
         const mysteryMaterials = createMysteryMaterials();
         const mysteryVolumes = createMysteryVolumes();
 
@@ -315,21 +321,21 @@ export default class DensityMysteryModel extends BlockSetModel<BlockSet> {
       }
     };
 
-    const positionMasses = ( model: DensityBuoyancyModel, blockSet: BlockSet, masses: Cuboid[] ) => {
+    const positionMasses = ( model: DensityBuoyancyModel, blockSet: MysteryBlockSet, masses: Cuboid[] ) => {
       switch( blockSet ) {
-        case BlockSet.SET_1:
+        case MysteryBlockSet.SET_1:
           model.positionStackLeft( [ masses[ 1 ], masses[ 4 ] ] );
           model.positionStackRight( [ masses[ 2 ], masses[ 3 ], masses[ 0 ] ] );
           break;
-        case BlockSet.SET_2:
+        case MysteryBlockSet.SET_2:
           model.positionStackLeft( [ masses[ 1 ], masses[ 4 ] ] );
           model.positionStackRight( [ masses[ 2 ], masses[ 3 ], masses[ 0 ] ] );
           break;
-        case BlockSet.SET_3:
+        case MysteryBlockSet.SET_3:
           model.positionStackLeft( [ masses[ 1 ], masses[ 4 ] ] );
           model.positionStackRight( [ masses[ 2 ], masses[ 3 ], masses[ 0 ] ] );
           break;
-        case BlockSet.RANDOM:
+        case MysteryBlockSet.RANDOM:
           model.positionStackLeft( [ masses[ 3 ], masses[ 4 ] ] );
           model.positionStackRight( [ masses[ 0 ], masses[ 1 ], masses[ 2 ] ] );
           break;
@@ -338,12 +344,12 @@ export default class DensityMysteryModel extends BlockSetModel<BlockSet> {
       }
     };
 
-    super( optionize<DensityMysteryModelOptions, EmptySelfOptions, BlockSetModelOptions<BlockSet>>()( {
+    super( optionize<DensityMysteryModelOptions, EmptySelfOptions, BlockSetModelOptions<MysteryBlockSet>>()( {
       canShowForces: false,
 
       // TODO: How can this type-check if I leave these out?!? --- oh we're expecting them in our providedOptions? https://github.com/phetsims/density-buoyancy-common/issues/86
-      initialMode: BlockSet.SET_1,
-      BlockSet: BlockSet.enumeration,
+      initialMode: MysteryBlockSet.SET_1,
+      BlockSet: MysteryBlockSet.enumeration,
 
       // TODO: overridden (abstract) methods instead https://github.com/phetsims/density-buoyancy-common/issues/86
       createMassesCallback: createMasses,
@@ -395,7 +401,7 @@ export default class DensityMysteryModel extends BlockSetModel<BlockSet> {
     super.reset();
 
     // Make sure to create new random masses on a reset
-    this.regenerate( BlockSet.RANDOM );
+    this.regenerate( MysteryBlockSet.RANDOM );
 
     this.uninterpolateMasses();
   }

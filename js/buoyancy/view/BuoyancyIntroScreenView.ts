@@ -19,7 +19,7 @@ import DensityBuoyancyScreenView, { DensityBuoyancyScreenViewOptions } from '../
 import BuoyancyDisplayOptionsNode from '../../common/view/BuoyancyDisplayOptionsNode.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
-import BuoyancyIntroModel, { BlockSet } from '../model/BuoyancyIntroModel.js';
+import BuoyancyIntroModel from '../model/BuoyancyIntroModel.js';
 import ReadOnlyProperty from '../../../../axon/js/ReadOnlyProperty.js';
 import DensityAccordionBox from './DensityAccordionBox.js';
 import SubmergedAccordionBox from './SubmergedAccordionBox.js';
@@ -33,18 +33,8 @@ import Mass from '../../common/model/Mass.js';
 import DensityMaterials from '../../common/view/DensityMaterials.js';
 import ThreeUtils from '../../../../mobius/js/ThreeUtils.js';
 import DensityBuoyancyCommonColors from '../../common/view/DensityBuoyancyCommonColors.js';
+import BlockSet from '../../common/model/BlockSet.js';
 
-// constants
-const blockSetStringMap = {
-  [ BlockSet.SAME_MASS.name ]: DensityBuoyancyCommonStrings.blockSet.sameMassStringProperty,
-  [ BlockSet.SAME_VOLUME.name ]: DensityBuoyancyCommonStrings.blockSet.sameVolumeStringProperty,
-  [ BlockSet.SAME_DENSITY.name ]: DensityBuoyancyCommonStrings.blockSet.sameDensityStringProperty
-};
-const blockSetTandemNameMap = {
-  [ BlockSet.SAME_MASS.name ]: 'sameMassLabel',
-  [ BlockSet.SAME_VOLUME.name ]: 'sameVolumeLabel',
-  [ BlockSet.SAME_DENSITY.name ]: 'sameDensityLabel'
-};
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
 
 // Any others are invisible in the radio buttons, and are only available through PhET-iO if a client decides
@@ -78,13 +68,13 @@ export default class BuoyancyIntroScreenView extends DensityBuoyancyScreenView<B
 
     const blocksRadioButtonGroup = new VerticalAquaRadioButtonGroup( model.blockSetProperty, BlockSet.enumeration.values.map( blockSet => {
       return {
-        createNode: tandem => new Text( blockSetStringMap[ blockSet.name ], {
+        createNode: tandem => new Text( blockSet.stringProperty, {
           font: DensityBuoyancyCommonConstants.RADIO_BUTTON_FONT,
           maxWidth: 160,
           tandem: tandem.createTandem( 'labelText' )
         } ),
         value: blockSet,
-        tandemName: `${blockSetTandemNameMap[ blockSet.name ]}RadioButton`
+        tandemName: `${blockSet.tandemName}RadioButton`
       };
     } ), {
       align: 'left',
@@ -232,47 +222,47 @@ export default class BuoyancyIntroScreenView extends DensityBuoyancyScreenView<B
 
 
   public static getBuoyancyIntroIcon(): Node {
-      return DensityBuoyancyScreenView.getAngledIcon( 4, new Vector3( 0, -0.05, 0 ), scene => {
+    return DensityBuoyancyScreenView.getAngledIcon( 4, new Vector3( 0, -0.05, 0 ), scene => {
 
-        const boxGeometry = new THREE.BoxGeometry( 0.1, 0.1, 0.1 );
+      const boxGeometry = new THREE.BoxGeometry( 0.1, 0.1, 0.1 );
 
-        const box1 = new THREE.Mesh( boxGeometry, new THREE.MeshStandardMaterial( {
-          map: DensityMaterials.woodColorTexture,
-          normalMap: DensityMaterials.woodNormalTexture,
-          normalScale: new THREE.Vector2( 1, -1 ),
-          roughnessMap: DensityMaterials.woodRoughnessTexture,
-          metalness: 0
-          // NOTE: Removed the environment map for now
-        } ) );
-        box1.position.copy( ThreeUtils.vectorToThree( new Vector3( 0.08, -0.02, 0 ) ) );
+      const box1 = new THREE.Mesh( boxGeometry, new THREE.MeshStandardMaterial( {
+        map: DensityMaterials.woodColorTexture,
+        normalMap: DensityMaterials.woodNormalTexture,
+        normalScale: new THREE.Vector2( 1, -1 ),
+        roughnessMap: DensityMaterials.woodRoughnessTexture,
+        metalness: 0
+        // NOTE: Removed the environment map for now
+      } ) );
+      box1.position.copy( ThreeUtils.vectorToThree( new Vector3( 0.08, -0.02, 0 ) ) );
 
-        scene.add( box1 );
+      scene.add( box1 );
 
-        const box2 = new THREE.Mesh( boxGeometry, new THREE.MeshStandardMaterial( {
-          map: DensityMaterials.brickColorTexture,
-          normalMap: DensityMaterials.brickNormalTexture,
-          normalScale: new THREE.Vector2( 1, -1 ),
-          metalness: 0
-          // NOTE: Removed the environment map for now
-        } ) );
-        box2.position.copy( ThreeUtils.vectorToThree( new Vector3( -0.08, -0.1, 0 ) ) );
+      const box2 = new THREE.Mesh( boxGeometry, new THREE.MeshStandardMaterial( {
+        map: DensityMaterials.brickColorTexture,
+        normalMap: DensityMaterials.brickNormalTexture,
+        normalScale: new THREE.Vector2( 1, -1 ),
+        metalness: 0
+        // NOTE: Removed the environment map for now
+      } ) );
+      box2.position.copy( ThreeUtils.vectorToThree( new Vector3( -0.08, -0.1, 0 ) ) );
 
-        scene.add( box2 );
+      scene.add( box2 );
 
-        const waterMaterial = new THREE.MeshLambertMaterial( {
-          transparent: true
-        } );
-        const waterColor = DensityBuoyancyCommonColors.materialWaterColorProperty.value;
-        waterMaterial.color = ThreeUtils.colorToThree( waterColor );
-        waterMaterial.opacity = waterColor.alpha;
-
-        // Fake it!
-        const waterGeometry = new THREE.BoxGeometry( 1, 1, 0.2 );
-
-        const water = new THREE.Mesh( waterGeometry, waterMaterial );
-        water.position.copy( ThreeUtils.vectorToThree( new Vector3( 0, -0.5, 0.12 ) ) );
-        scene.add( water );
+      const waterMaterial = new THREE.MeshLambertMaterial( {
+        transparent: true
       } );
+      const waterColor = DensityBuoyancyCommonColors.materialWaterColorProperty.value;
+      waterMaterial.color = ThreeUtils.colorToThree( waterColor );
+      waterMaterial.opacity = waterColor.alpha;
+
+      // Fake it!
+      const waterGeometry = new THREE.BoxGeometry( 1, 1, 0.2 );
+
+      const water = new THREE.Mesh( waterGeometry, waterMaterial );
+      water.position.copy( ThreeUtils.vectorToThree( new Vector3( 0, -0.5, 0.12 ) ) );
+      scene.add( water );
+    } );
 
   }
 }

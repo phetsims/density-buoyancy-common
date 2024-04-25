@@ -17,7 +17,7 @@ import Scale, { DisplayType } from '../../common/model/Scale.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import MassTag from '../../common/model/MassTag.js';
 import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
-import { BlockSet } from '../../common/model/BlockSet.js';
+import BlockSet from '../../common/model/BlockSet.js';
 
 export type BuoyancyIntroModelOptions = StrictOmit<BlockSetModelOptions<BlockSet>, 'initialMode' | 'BlockSet' | 'createMassesCallback' | 'regenerateMassesCallback' | 'positionMassesCallback'>;
 

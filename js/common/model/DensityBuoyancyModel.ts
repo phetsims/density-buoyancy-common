@@ -433,12 +433,27 @@ export default class DensityBuoyancyModel implements TModel {
     if ( boat ) {
       if ( boat.visibleProperty.value ) {
         let boatLiquidVolume = boat.basin.liquidVolumeProperty.value;
+        const basinMaximumVolume = boat.basin.getMaximumVolume( boat.basin.stepTop );
 
         const poolEmptyVolumeToBoatTop = this.pool.getEmptyVolume( Math.min( boat.stepTop, this.poolBounds.maxY ) );
         const boatEmptyVolumeToBoatTop = boat.basin.getEmptyVolume( boat.stepTop );
 
-        const poolExcess = poolLiquidVolume - poolEmptyVolumeToBoatTop;
-        const boatExcess = boatLiquidVolume - boatEmptyVolumeToBoatTop;
+        let poolExcess = poolLiquidVolume - poolEmptyVolumeToBoatTop;
+        let boatExcess = boatLiquidVolume - boatEmptyVolumeToBoatTop;
+
+        const boatHeight = boat.shapeProperty.value.getBounds().height;
+        if ( boatLiquidVolume && boat.stepTop > this.pool.liquidYInterpolatedProperty.value + boatHeight ) {
+          // If the boat is totally out of the water, spill the water back into the pool
+          boatExcess = Math.min( 0.2 * boat.volumeProperty.value, boatLiquidVolume ); // This animates the boat spilling out
+        }
+        else if ( boatLiquidVolume > 0 && boatLiquidVolume < basinMaximumVolume &&
+                  Math.abs( boat.stepTop - this.pool.liquidYInterpolatedProperty.value ) < 0.3 * boatHeight
+        ) {
+          // If the boat got some water in it, drown it! Even if it's a bit under or over the waterline
+          const excess = Math.min( 0.1 * boat.volumeProperty.value, basinMaximumVolume - boatLiquidVolume ); // This animates the boat spilling in
+          poolExcess = excess;
+          boatExcess = -excess;
+        }
 
         if ( poolExcess > 0 && boatExcess < 0 ) {
           const transferVolume = Math.min( poolExcess, -boatExcess );

@@ -7,86 +7,122 @@
  */
 
 import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
-import EnumerationProperty from '../../../../axon/js/EnumerationProperty.js';
-import Property from '../../../../axon/js/Property.js';
 import Matrix3 from '../../../../dot/js/Matrix3.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import Cube from '../../common/model/Cube.js';
-import DensityBuoyancyModel, { DensityBuoyancyModelOptions } from '../../common/model/DensityBuoyancyModel.js';
 import Material from '../../common/model/Material.js';
 import Scale, { DisplayType } from '../../common/model/Scale.js';
-import TwoBlockMode from '../../common/model/TwoBlockMode.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import MassTag from '../../common/model/MassTag.js';
-import { combineOptions } from '../../../../phet-core/js/optionize.js';
+import BlockSetModel, { BlockSetModelOptions } from '../../common/model/BlockSetModel.js';
+import optionize, { EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
+import StrictOmit from '../../../../phet-core/js/types/StrictOmit.js';
+import BlockSet from '../../common/model/BlockSet.js';
 
-type BuoyancyBasicsCompareModelOptions = DensityBuoyancyModelOptions;
+export type BuoyancyBasicsCompareModelOptions = StrictOmit<BlockSetModelOptions<BlockSet>, 'initialMode' | 'BlockSet' | 'createMassesCallback' | 'regenerateMassesCallback' | 'positionMassesCallback'>;
 
-export default class BuoyancyBasicsCompareModel extends DensityBuoyancyModel {
+export default class BuoyancyBasicsCompareModel extends BlockSetModel<BlockSet> {
+  public readonly densityExpandedProperty = new BooleanProperty( false );
 
-  public readonly modeProperty: Property<TwoBlockMode>;
-  public readonly primaryMass: Cube;
-  public readonly secondaryMass: Cube;
-  public readonly densityExpandedProperty: Property<boolean>;
+  public constructor( providedOptions: BuoyancyBasicsCompareModelOptions ) {
+    const tandem = providedOptions.tandem;
 
-  public constructor( options: BuoyancyBasicsCompareModelOptions ) {
+    const blockSetsTandem = tandem.createTandem( 'blockSets' );
+    const sameMassTandem = blockSetsTandem.createTandem( 'sameMass' );
+    const sameVolumeTandem = blockSetsTandem.createTandem( 'sameVolume' );
+    const sameDensityTandem = blockSetsTandem.createTandem( 'sameDensity' );
 
-    const tandem = options.tandem;
+    const options = optionize<BuoyancyBasicsCompareModelOptions, EmptySelfOptions, BlockSetModelOptions<BlockSet>>()( {
+      initialMode: BlockSet.SAME_MASS,
+      BlockSet: BlockSet.enumeration,
 
-    super( combineOptions<DensityBuoyancyModelOptions>( {
+      supportsDepthLines: true,
       usePoolScale: true,
-      supportsDepthLines: true
-    }, options ) );
 
-    this.modeProperty = new EnumerationProperty( TwoBlockMode.ONE_BLOCK, {
-      tandem: tandem.createTandem( 'modeProperty' )
-    } );
+      createMassesCallback: ( model, blockSet ) => {
+        switch( blockSet ) {
+          case BlockSet.SAME_MASS:
+            return [
+              Cube.createWithMass( model.engine, Material.WOOD, Vector2.ZERO, 5, {
+                tandem: sameMassTandem.createTandem( 'blockA' ),
+                adjustableMaterial: true,
+                tag: MassTag.ONE_A.withColorProperty( MassTag.PRIMARY_COLOR_PROPERTY )
+              } ),
+              Cube.createWithMass( model.engine, Material.BRICK, Vector2.ZERO, 5, {
+                tandem: sameMassTandem.createTandem( 'blockB' ),
+                adjustableMaterial: true,
+                tag: MassTag.ONE_B.withColorProperty( MassTag.SECONDARY_COLOR_PROPERTY )
+              } )
+            ];
+          case BlockSet.SAME_VOLUME:
+            return [
+              Cube.createWithVolume( model.engine, Material.WOOD, Vector2.ZERO, 0.005, {
+                tandem: sameVolumeTandem.createTandem( 'blockA' ),
+                adjustableMaterial: true,
+                tag: MassTag.TWO_A.withColorProperty( MassTag.PRIMARY_COLOR_PROPERTY )
+              } ),
+              Cube.createWithVolume( model.engine, Material.BRICK, Vector2.ZERO, 0.005, {
+                tandem: sameVolumeTandem.createTandem( 'blockB' ),
+                adjustableMaterial: true,
+                tag: MassTag.TWO_B.withColorProperty( MassTag.SECONDARY_COLOR_PROPERTY )
+              } )
+            ];
+          case BlockSet.SAME_DENSITY:
+            return [
+              Cube.createWithMass( model.engine, Material.WOOD, Vector2.ZERO, 2, {
+                tandem: sameDensityTandem.createTandem( 'blockA' ),
+                adjustableMaterial: true,
+                tag: MassTag.THREE_A.withColorProperty( MassTag.PRIMARY_COLOR_PROPERTY )
+              } ),
+              Cube.createWithMass( model.engine, Material.WOOD, Vector2.ZERO, 4, {
+                tandem: sameDensityTandem.createTandem( 'blockB' ),
+                adjustableMaterial: true,
+                tag: MassTag.THREE_B.withColorProperty( MassTag.SECONDARY_COLOR_PROPERTY )
+              } )
+            ];
+          default:
+            throw new Error( `unknown blockSet: ${blockSet}` );
+        }
+      },
 
-    const blocksTandem = tandem.createTandem( 'blocks' );
+      regenerateMassesCallback: ( model, blockSet, masses ) => {
+        // See subclass for implementation
+      },
 
-    this.primaryMass = Cube.createWithMass( this.engine, Material.WOOD, new Vector2( -0.2, 0.2 ), 2, {
-      tag: MassTag.PRIMARY,
-      tandem: blocksTandem.createTandem( 'blockA' )
-    } );
-    this.availableMasses.push( this.primaryMass );
-    this.secondaryMass = Cube.createWithMass( this.engine, Material.ALUMINUM, new Vector2( 0.05, 0.35 ), 13.5, {
-      tag: MassTag.SECONDARY,
-      tandem: blocksTandem.createTandem( 'blockB' ),
-      visible: false
-    } );
-    this.availableMasses.push( this.secondaryMass );
+      positionMassesCallback: ( model, blockSet, masses ) => {
+        switch( blockSet ) {
+          case BlockSet.SAME_MASS:
+            model.positionMassesLeft( [ masses[ 0 ] ] );
+            model.positionMassesRight( [ masses[ 1 ] ] );
+            break;
+          case BlockSet.SAME_VOLUME:
+            model.positionMassesLeft( [ masses[ 0 ] ] );
+            model.positionMassesRight( [ masses[ 1 ] ] );
+            break;
+          case BlockSet.SAME_DENSITY:
+            model.positionMassesLeft( [ masses[ 0 ] ] );
+            model.positionMassesRight( [ masses[ 1 ] ] );
+            break;
+          default:
+            throw new Error( `unknown blockSet: ${blockSet}` );
+        }
+      }
+    }, providedOptions );
 
-    this.modeProperty.link( mode => {
-      this.secondaryMass.internalVisibleProperty.value = mode === TwoBlockMode.TWO_BLOCKS;
-    } );
+    super( options );
 
     // Left scale
     this.availableMasses.push( new Scale( this.engine, this.gravityProperty, {
-      matrix: Matrix3.translation( -0.65, -Scale.SCALE_BASE_BOUNDS.minY ),
+      matrix: Matrix3.translation( -0.77, -Scale.SCALE_BASE_BOUNDS.minY ),
       displayType: DisplayType.NEWTONS,
-      tandem: tandem.createTandem( 'scale1' ),
+      tandem: providedOptions.tandem.createTandem( 'scale1' ),
       canMove: true,
       inputEnabledPropertyOptions: {
         phetioReadOnly: false
       }
     } ) );
-
-    this.densityExpandedProperty = new BooleanProperty( false );
-  }
-
-  /**
-   * Resets things to their original values.
-   */
-  public override reset(): void {
-    this.modeProperty.reset();
-
-    this.primaryMass.reset();
-    this.secondaryMass.reset();
-
-    this.densityExpandedProperty.reset();
-
-    super.reset();
   }
 }
+
 
 densityBuoyancyCommon.register( 'BuoyancyBasicsCompareModel', BuoyancyBasicsCompareModel );

@@ -89,6 +89,7 @@ export default class DensityBuoyancyModel implements TModel {
   // We need to hook into a boat (if it exists) for displaying the water.
   // TODO: Should this be a readonly? https://github.com/phetsims/density-buoyancy-common/issues/95
   public boat: Boat | null;
+  private boatSpilling = false;
 
   // Scale for the pool, if we are using it
   protected readonly scale2: Scale | null;
@@ -442,9 +443,21 @@ export default class DensityBuoyancyModel implements TModel {
         let boatExcess = boatLiquidVolume - boatEmptyVolumeToBoatTop;
 
         const boatHeight = boat.shapeProperty.value.getBounds().height;
-        if ( boatLiquidVolume && boat.stepTop > this.pool.liquidYInterpolatedProperty.value + boatHeight ) {
+
+        if ( boatLiquidVolume ) {
+          if ( boat.stepTop > this.pool.liquidYInterpolatedProperty.value + boatHeight * 0.5 ) {
+            // If the boat passed the height threshold, spill the water back into the pool
+            this.boatSpilling = true;
+          }
+        }
+        else {
+          // If the boat is empty, stop spilling
+          this.boatSpilling = false;
+        }
+
+        if ( this.boatSpilling ) {
           // If the boat is totally out of the water, spill the water back into the pool
-          boatExcess = Math.min( 0.2 * boat.volumeProperty.value, boatLiquidVolume ); // This animates the boat spilling out
+          boatExcess = Math.min( 0.1 * boat.volumeProperty.value, boatLiquidVolume ); // This animates the boat spilling out
         }
         else if ( boatLiquidVolume > 0 && boatLiquidVolume < basinMaximumVolume &&
                   Math.abs( boat.stepTop - this.pool.liquidYInterpolatedProperty.value ) < 0.3 * boatHeight

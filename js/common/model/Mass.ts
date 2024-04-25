@@ -612,9 +612,10 @@ export default abstract class Mass extends PhetioObject {
    * Ends a physics model engine drag.
    */
   public endDrag(): void {
-    assert && assert( this.userControlledProperty.value, 'cannot end a drag if not userControlled' );
-    this.engine.removePointerConstraint( this.body );
-    this.userControlledProperty.value = false;
+    if ( this.userControlledProperty.value ) {
+      this.engine.removePointerConstraint( this.body );
+      this.userControlledProperty.value = false;
+    }
   }
 
   /**

@@ -385,10 +385,7 @@ export default class MaterialMassVolumeControlNode extends MaterialControlNode {
    */
   public static getNumberControlOptions( showAsReadout = false ): NumberControlOptions {
     const layoutFunction4 = NumberControl.createLayoutFunction4( {
-      sliderPadding: 5,
-
-      // TODO: we want to preserve the width, but not the invisible height, https://github.com/phetsims/buoyancy/issues/120
-      layoutInvisibleButtons: true
+      sliderPadding: 5
     } );
 
     // Custom layout function to hack out a readout look.

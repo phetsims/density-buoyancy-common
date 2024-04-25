@@ -45,7 +45,7 @@ export default class BuoyancyBasicsExploreScreenView extends DensityBuoyancyScre
       cameraLookAt: DensityBuoyancyCommonConstants.BUOYANCY_CAMERA_LOOK_AT
     }, options ) );
 
-    const buoyancyDisplayOptionsNode = new BuoyancyDisplayOptionsNode( model );
+    const buoyancyDisplayOptionsNode = new BuoyancyDisplayOptionsNode( model, { includeVectorScaleControl: false } );
 
     this.addChild( new AlignBox( new Panel( buoyancyDisplayOptionsNode, DensityBuoyancyCommonConstants.PANEL_OPTIONS ), {
       alignBoundsProperty: this.visibleBoundsProperty,

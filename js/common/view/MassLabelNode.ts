@@ -33,12 +33,23 @@ export default class MassLabelNode extends Node {
     } );
 
     this.readoutStringProperty = new DerivedProperty(
-      [ mass.materialProperty, mass.massProperty, DensityBuoyancyCommonStrings.kilogramsPatternStringProperty, DensityBuoyancyCommonStrings.questionMarkStringProperty ],
-      ( material, mass, patternStringProperty, questionMarkString ) => {
+      [
+        mass.materialProperty,
+        mass.volumeProperty,
+        DensityBuoyancyCommonStrings.kilogramsPatternStringProperty,
+        DensityBuoyancyCommonStrings.questionMarkStringProperty
+      ],
+      (
+        material,
+        volume,
+        patternStringProperty,
+        questionMarkString
+      ) => {
         return material.hidden ?
                questionMarkString :
                StringUtils.fillIn( patternStringProperty, {
-                 kilograms: Utils.toFixed( mass, 2 ),
+                 // Deriving the mass instead of using massProperty to avoid including the contained mass, for the case of the boat
+                 kilograms: Utils.toFixed( volume * material.density, 2 ),
                  decimalPlaces: 2
                } );
       } );

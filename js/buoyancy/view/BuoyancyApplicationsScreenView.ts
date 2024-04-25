@@ -135,14 +135,16 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
       }
     } );
 
+    const customBottleDensityControlTandem = tandem.createTandem( 'customBottleDensityNumberControl' );
     const customBottleDensityControl = new NumberControl( DensityBuoyancyCommonStrings.densityStringProperty, model.customDensityProperty, model.customDensityProperty.range, combineOptions<NumberControlOptions>( {
       visibleProperty: model.customDensityControlVisibleProperty,
       sliderOptions: {
-        thumbNode: new PrecisionSliderThumb() // TODO: Tandem? https://github.com/phetsims/buoyancy/issues/120
+        thumbNode: new PrecisionSliderThumb()
       },
       numberDisplayOptions: {
         valuePattern: DensityBuoyancyCommonConstants.KILOGRAMS_PER_VOLUME_PATTERN_STRING_PROPERTY
       },
+      tandem: customBottleDensityControlTandem
     }, MaterialMassVolumeControlNode.getNumberControlOptions() ) );
 
     const bottleBox = new VBox( {
@@ -203,6 +205,7 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
       }
     } );
 
+    const boatVolumeControlTandem = tandem.createTandem( 'boatVolumeNumberControl' );
     const boatVolumeRange = new Range( 5, 30 );
     const boatBox = new VBox( {
       spacing: 10,
@@ -224,7 +227,7 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
           }
         }, MaterialMassVolumeControlNode.getNumberControlOptions(), {
           sliderOptions: {
-            thumbNode: new PrecisionSliderThumb(), // TODO: Tandem? https://github.com/phetsims/buoyancy/issues/120
+            thumbNode: new PrecisionSliderThumb(),
             constrainValue: ( value: number ) => {
               return boatVolumeRange.constrainValue( Utils.roundToInterval( value, 0.1 ) );
             },
@@ -237,7 +240,8 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
               value: boatVolumeRange.max,
               label: new Text( boatVolumeRange.max, { font: new PhetFont( 12 ), maxWidth: 50 } )
             } ]
-          }
+          },
+          tandem: boatVolumeControlTandem
         } ) )
       ]
     } );

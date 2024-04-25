@@ -26,6 +26,7 @@ export type BuoyancyBasicsCompareModelOptions = StrictOmit<BlockSetModelOptions<
 
 export default class BuoyancyBasicsCompareModel extends BlockSetModel<BlockSet> {
   public readonly densityExpandedProperty = new BooleanProperty( false );
+  public readonly percentageSubmergedExpandedProperty = new BooleanProperty( false );
   public readonly poolScaleHeightProperty: NumberProperty;
   public readonly poolScale: Scale;
 
@@ -40,6 +41,7 @@ export default class BuoyancyBasicsCompareModel extends BlockSetModel<BlockSet> 
     const options = optionize<BuoyancyBasicsCompareModelOptions, EmptySelfOptions, BlockSetModelOptions<BlockSet>>()( {
       initialMode: BlockSet.SAME_MASS,
       BlockSet: BlockSet.enumeration,
+      showMassesDefault: true,
 
       supportsDepthLines: true,
       usePoolScale: false, // create out own based on the ScaleHeightControl

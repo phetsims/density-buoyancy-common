@@ -188,7 +188,7 @@ export default class BuoyancyLabScreenView extends DensityBuoyancyScreenView<Buo
       alignBoundsProperty: this.visibleBoundsProperty,
       xAlign: 'right',
       yAlign: 'top',
-      margin: MARGIN
+      margin: MARGIN / 2
     } ) );
 
     // DerivedProperty doesn't need disposal, since everything here lives for the lifetime of the simulation

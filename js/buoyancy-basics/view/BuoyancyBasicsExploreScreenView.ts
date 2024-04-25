@@ -20,19 +20,22 @@ import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import BuoyancyBasicsExploreModel from '../model/BuoyancyBasicsExploreModel.js';
 import arrayRemove from '../../../../phet-core/js/arrayRemove.js';
-import DensityAccordionBox from '../../buoyancy/view/DensityAccordionBox.js';
 import BuoyancyDisplayOptionsNode from '../../common/view/BuoyancyDisplayOptionsNode.js';
 import SubmergedAccordionBox from '../../buoyancy/view/SubmergedAccordionBox.js';
 import PatternStringProperty from '../../../../axon/js/PatternStringProperty.js';
 import BlocksRadioButtonGroup from '../../common/view/BlocksRadioButtonGroup.js';
 import BuoyancyExploreScreenView from '../../buoyancy/view/BuoyancyExploreScreenView.js';
+import Vector3 from '../../../../dot/js/Vector3.js';
+import Bounds2 from '../../../../dot/js/Bounds2.js';
+import ScaleHeightControl from '../../common/view/ScaleHeightControl.js';
 
 // constants
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
 
 export default class BuoyancyBasicsExploreScreenView extends DensityBuoyancyScreenView<BuoyancyBasicsExploreModel> {
 
-  protected rightBox: PrimarySecondaryControlsNode;
+  protected readonly rightBox: PrimarySecondaryControlsNode;
+  private readonly scaleHeightControl: ScaleHeightControl;
 
   public constructor( model: BuoyancyBasicsExploreModel, options: DensityBuoyancyScreenViewOptions ) {
 
@@ -97,13 +100,8 @@ export default class BuoyancyBasicsExploreScreenView extends DensityBuoyancyScre
       } );
     } );
 
-    // Materials are set in densityBox.setMaterials() below
-    const densityBox = new DensityAccordionBox( {
-      expandedProperty: model.densityExpandedProperty,
-      contentWidthMax: this.rightBox.content.width
-    } );
-
     const submergedBox = new SubmergedAccordionBox( model.gravityProperty, model.liquidMaterialProperty, {
+      expandedProperty: model.percentageSubmergedExpandedProperty,
       contentWidthMax: this.rightBox.content.width
     } );
 
@@ -118,13 +116,6 @@ export default class BuoyancyBasicsExploreScreenView extends DensityBuoyancyScre
     // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
     model.secondaryMass.visibleProperty.link( visible => {
       const masses = visible ? [ model.primaryMass, model.secondaryMass ] : [ model.primaryMass ];
-      densityBox.setReadoutItems( masses.map( ( mass, index ) => {
-        return {
-          readoutItem: mass.materialProperty,
-          readoutNameProperty: customExploreScreenFormatting[ index ].readoutNameProperty,
-          readoutFormat: customExploreScreenFormatting[ index ].readoutFormat
-        };
-      } ) );
       submergedBox.setReadoutItems( masses.map( ( mass, index ) => {
         return {
           readoutItem: mass,
@@ -139,7 +130,6 @@ export default class BuoyancyBasicsExploreScreenView extends DensityBuoyancyScre
       align: 'right',
       children: [
         this.rightBox,
-        densityBox,
         submergedBox
       ]
     } );
@@ -171,7 +161,34 @@ export default class BuoyancyBasicsExploreScreenView extends DensityBuoyancyScre
       strictAxonDependencies: false // This workaround is deemed acceptable for visibleBoundsProperty listening, https://github.com/phetsims/faradays-electromagnetic-lab/issues/65
     } );
 
+    // Info button and associated dialog
+    this.scaleHeightControl = new ScaleHeightControl( model.poolScale, model.poolScaleHeightProperty,
+      model.poolBounds, model.pool.liquidYInterpolatedProperty, this, {
+        tandem: options.tandem.createTandem( 'scaleHeightControl' )
+      } );
+    this.addChild( this.scaleHeightControl );
+
+
     this.addChild( this.popupLayer );
+  }
+
+  public override layout( viewBounds: Bounds2 ): void {
+    super.layout( viewBounds );
+
+
+    // X margin should be based on the front of the pool
+    this.scaleHeightControl.x = this.modelToViewPoint( new Vector3(
+      this.model.poolBounds.maxX,
+      this.model.poolBounds.minY,
+      this.model.poolBounds.maxZ
+    ) ).plusXY( DensityBuoyancyCommonConstants.MARGIN / 2, 0 ).x;
+
+    // Y should be based on the bottom of the front of the scale (in the middle of the pool)
+    this.scaleHeightControl.y = this.modelToViewPoint( new Vector3(
+      this.model.poolBounds.maxX,
+      this.model.poolBounds.minY,
+      this.model.poolScale.getBounds().maxZ
+    ) ).y;
   }
 
   public static getBuoyancyBasicsExploreIcon(): Node {

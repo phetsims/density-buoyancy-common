@@ -19,6 +19,9 @@ import TwoBlockMode from '../../common/model/TwoBlockMode.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import MassTag from '../../common/model/MassTag.js';
 import { combineOptions } from '../../../../phet-core/js/optionize.js';
+import NumberProperty from '../../../../axon/js/NumberProperty.js';
+import Range from '../../../../dot/js/Range.js';
+import VolumelessScale from '../../common/model/VolumelessScale.js';
 
 type BuoyancyBasicsExploreModelOptions = DensityBuoyancyModelOptions;
 
@@ -27,14 +30,17 @@ export default class BuoyancyBasicsExploreModel extends DensityBuoyancyModel {
   public readonly modeProperty: Property<TwoBlockMode>;
   public readonly primaryMass: Cube;
   public readonly secondaryMass: Cube;
-  public readonly densityExpandedProperty: Property<boolean>;
+  public readonly densityExpandedProperty = new BooleanProperty( false );
+  public readonly percentageSubmergedExpandedProperty = new BooleanProperty( false );
+  public readonly poolScaleHeightProperty: NumberProperty;
+  public readonly poolScale: Scale;
 
   public constructor( options: BuoyancyBasicsExploreModelOptions ) {
 
     const tandem = options.tandem;
 
     super( combineOptions<DensityBuoyancyModelOptions>( {
-      usePoolScale: true,
+      usePoolScale: false, // Create our own for the ScaleHeightControl
       supportsDepthLines: true
     }, options ) );
 
@@ -71,7 +77,24 @@ export default class BuoyancyBasicsExploreModel extends DensityBuoyancyModel {
       }
     } ) );
 
-    this.densityExpandedProperty = new BooleanProperty( false );
+    // TODO: Three repeat declarations for ScaleHeightSliders, https://github.com/phetsims/buoyancy-basics/issues/4
+    this.poolScaleHeightProperty = new NumberProperty( 1, {
+      range: new Range( 0, 1 ),
+      tandem: tandem.createTandem( 'poolScaleHeightProperty' )
+    } );
+
+    // Pool scale
+    this.poolScale = new VolumelessScale( this.engine, this.gravityProperty, {
+      displayType: DisplayType.NEWTONS,
+      tandem: tandem.createTandem( 'poolScale' ),
+      canMove: false, // No input listeners, but the ScaleHeightControl can still move it
+      inputEnabledPropertyOptions: {
+        phetioReadOnly: true
+      }
+    } );
+
+    // Make sure to render it
+    this.availableMasses.push( this.poolScale );
   }
 
   /**

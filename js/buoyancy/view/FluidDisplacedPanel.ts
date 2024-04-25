@@ -9,10 +9,10 @@
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import MultiSectionPanelsNode, { MultiSectionPanelsNodeOptions } from '../../common/view/MultiSectionPanelsNode.js';
-import BeakerNode from '../../../../scenery-phet/js/BeakerNode.js';
+import BeakerNode, { BeakerNodeOptions } from '../../../../scenery-phet/js/BeakerNode.js';
 import NumberProperty from '../../../../axon/js/NumberProperty.js';
 import Range from '../../../../dot/js/Range.js';
-import optionize, { EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
+import optionize, { combineOptions, EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
 import { Color, Node, RichText, Text, VBox } from '../../../../scenery/js/imports.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
@@ -33,6 +33,9 @@ type FluidDisplacedPanelOptions = SelfOptions & MultiSectionPanelsNodeOptions;
 
 const STARTING_VOLUME = DensityBuoyancyCommonConstants.DESIRED_STARTING_POOL_VOLUME * DensityBuoyancyCommonConstants.LITERS_IN_CUBIC_METER;
 const CONTENT_WIDTH = 105;
+
+// Beaker expects a range between 0 (empty) and 1 (full)
+const BEAKER_RANGE = new Range( 0, 1 );
 
 export default class FluidDisplacedPanel extends MultiSectionPanelsNode {
 
@@ -57,24 +60,15 @@ export default class FluidDisplacedPanel extends MultiSectionPanelsNode {
       displayedDisplacedVolumeProperty.value = displayRange.constrainValue( displacedVolume );
     } );
 
-    // Beaker expects a range between 0 and 1
-    const beakerRange = new Range( 0, 1 );
-    const beakerVolumeProperty = new NumberProperty( 0, { range: beakerRange } );
+    const beakerVolumeProperty = new NumberProperty( 0, { range: BEAKER_RANGE.copy() } );
 
     const solutionFillProperty = new DynamicProperty<Color, Color, Material>( liquidMaterialProperty, {
       derive: material => material.liquidColor!
     } );
 
-    const beakerNode = new BeakerNode( beakerVolumeProperty, {
-      solutionFill: solutionFillProperty,
-      lineWidth: 1,
-      beakerHeight: CONTENT_WIDTH * 0.55,
-      beakerWidth: CONTENT_WIDTH,
-      yRadiusOfEnds: CONTENT_WIDTH * 0.12,
-      ticksVisible: true,
-      numberOfTicks: 9, // The top is the 10th tick mark
-      majorTickMarkModulus: 5
-    } );
+    const beakerNode = new BeakerNode( beakerVolumeProperty, combineOptions<BeakerNodeOptions>( {
+      solutionFill: solutionFillProperty
+    }, FluidDisplacedPanel.getBeakerOptions() ) );
 
     displayedDisplacedVolumeProperty.link( displayedLiters => {
       beakerVolumeProperty.value = displayedLiters / maxBeakerVolume;
@@ -147,19 +141,29 @@ export default class FluidDisplacedPanel extends MultiSectionPanelsNode {
     } ) ], options );
   }
 
+  private static getBeakerOptions(): BeakerNodeOptions {
+    return {
+      lineWidth: 1,
+      beakerHeight: CONTENT_WIDTH * 0.55,
+      beakerWidth: CONTENT_WIDTH,
+      yRadiusOfEnds: CONTENT_WIDTH * 0.12,
+      ticksVisible: true,
+      numberOfTicks: 9, // The top is the 10th tick mark
+      majorTickMarkModulus: 5
+    };
+  }
+
   /**
    * Create an icon which can be used for the Lab screen home screen and navigation bar icons.
    * NOTE: observe the duplication with the code above, this will allow us to adjust the icon independently of
-   * the in-simulation representation. Once the design is finalized, we can remove duplication.
-   * TODO: see https://github.com/phetsims/buoyancy/issues/48
+   * the in-simulation representation.
    */
   public static createIcon(): Node {
 
     const scaleIcon = BuoyancyLabScreenView.getFluidDisplacedPanelScaleIcon();
     scaleIcon.scale( 1.8 );
 
-    // TODO: i18n, see https://github.com/phetsims/buoyancy/issues/48
-    const forceReadout = new Text( 'N', {
+    const newtonUnitText = new Text( DensityBuoyancyCommonStrings.newtonsUnitStringProperty, {
       font: new PhetFont( {
         size: 34,
         weight: 'bold'
@@ -168,25 +172,18 @@ export default class FluidDisplacedPanel extends MultiSectionPanelsNode {
     } );
 
     const beakerNode = new BeakerNode( new NumberProperty( 0.2, {
-      range: new Range( 0, 1 )
-    } ), {
-      solutionFill: Material.WATER.liquidColor,
-      lineWidth: 1,
-      beakerHeight: CONTENT_WIDTH * 0.55,
-      beakerWidth: CONTENT_WIDTH,
-      yRadiusOfEnds: CONTENT_WIDTH * 0.12,
-      ticksVisible: true,
-      numberOfTicks: 9, // The top is the 10th tick mark
-      majorTickMarkModulus: 5
-    } );
+      range: BEAKER_RANGE.copy()
+    } ), combineOptions<BeakerNodeOptions>( {
+      solutionFill: Material.WATER.liquidColor
+    }, FluidDisplacedPanel.getBeakerOptions() ) );
 
     scaleIcon.top = beakerNode.bottom - 30;
     scaleIcon.centerX = beakerNode.centerX;
-    forceReadout.centerY = scaleIcon.bottom - 21;
-    forceReadout.centerX = beakerNode.centerX;
+    newtonUnitText.centerY = scaleIcon.bottom - 21;
+    newtonUnitText.centerX = beakerNode.centerX;
 
     return new Node( {
-      children: [ scaleIcon, beakerNode, forceReadout ]
+      children: [ scaleIcon, beakerNode, newtonUnitText ]
     } );
   }
 }

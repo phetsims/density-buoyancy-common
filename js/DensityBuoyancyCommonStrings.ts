@@ -82,6 +82,7 @@ type StringsType = {
   'kilogramsPatternStringProperty': LocalizedStringProperty;
   'litersPatternStringProperty': LocalizedStringProperty;
   'decimetersCubedPatternStringProperty': LocalizedStringProperty;
+  'newtonsUnitStringProperty': LocalizedStringProperty;
   'newtonsPatternStringProperty': LocalizedStringProperty;
   'forcesStringProperty': LocalizedStringProperty;
   'buoyancyStringProperty': LocalizedStringProperty;

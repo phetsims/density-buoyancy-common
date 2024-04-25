@@ -7,7 +7,7 @@
  */
 
 import { combineOptions } from '../../../../phet-core/js/optionize.js';
-import { AlignBox, HBox, Node, Text, VBox } from '../../../../scenery/js/imports.js';
+import { AlignBox, HBox, Node, Path, Text, VBox } from '../../../../scenery/js/imports.js';
 import Panel from '../../../../sun/js/Panel.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 import Material from '../../common/model/Material.js';
@@ -35,6 +35,7 @@ import DensityMaterials from '../../common/view/DensityMaterials.js';
 import ThreeUtils from '../../../../mobius/js/ThreeUtils.js';
 import DensityBuoyancyCommonColors from '../../common/view/DensityBuoyancyCommonColors.js';
 import ScaleHeightControl from '../../common/view/ScaleHeightControl.js';
+import smileWinkSolidShape from '../../../../sherpa/js/fontawesome-5/smileWinkSolidShape.js';
 
 
 // Any others are invisible in the radio buttons, and are only available through PhET-iO if a client decides
@@ -290,6 +291,10 @@ export default class BuoyancyBasicsCompareScreenView extends DensityBuoyancyScre
       scene.add( water );
     } );
 
+  }
+
+  public static getBuoyancyBasicsCompareIcon(): Node {
+    return new Path( smileWinkSolidShape, { stroke: 'red', fill: 'blue' } );
   }
 }
 

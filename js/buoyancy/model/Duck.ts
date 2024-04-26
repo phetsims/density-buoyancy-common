@@ -32,11 +32,19 @@ const SCALE = 0.1;
 
 const duckGeometry = ( mainDuckGeometry.children[ 0 ] as THREE.Mesh ).geometry.scale( SCALE, SCALE, SCALE );
 
+// translate the 3d shape up
+duckGeometry.translate( 0, 0.0165, 0 );
+
 let flatDuckData = FlatDuckData;
 
 flatDuckData = flatDuckData.map( vertex => {
   return vertex.multiplyScalar( SCALE );
 } );
+// compute the centroid of the vertices
+const centroid = flatDuckData.reduce( ( sum, vertex ) => sum.add( vertex ), new Vector2( 0, 0 ) ).multiplyScalar( 1 / flatDuckData.length );
+
+// translate the vertices so that the centroid is at the origin
+flatDuckData = flatDuckData.map( vertex => vertex.subtractXY( centroid.x, centroid.y - 0.008 ) );
 
 // const VERTICES = _.chunk( mainDuckGeometry.children[ 0 ].geometry.getAttribute( 'position' ).array, 3 ).map( vert3 => {
 //   return new Vector2( vert3[ 0 ], vert3[ 2 ] );
@@ -53,7 +61,7 @@ export default class Duck extends Mass {
   public constructor( engine: PhysicsEngine, size: Bounds3, providedConfig: DuckOptions ) {
 
     const config = optionize<DuckOptions, EmptySelfOptions, InstrumentedMassOptions>()( {
-      body: engine.createFromVertices( Duck.getDuckVertices( size.width, size.height ), false ),
+      body: engine.createFromVertices( Duck.getDuckVertices( size.width, size.height ), true ),
       shape: Duck.getDuckShape( size.width, size.height ),
       volume: Duck.getVolume( size ),
       massShape: MassShape.DUCK,
@@ -85,7 +93,7 @@ export default class Duck extends Mass {
    * Updates the size of the duck.
    */
   public updateSize( size: Bounds3 ): void {
-    this.engine.updateFromVertices( this.body, Duck.getDuckVertices( size.width, size.height ), false );
+    this.engine.updateFromVertices( this.body, Duck.getDuckVertices( size.width, size.height ), true );
     this.sizeProperty.value = size;
     this.shapeProperty.value = Duck.getDuckShape( size.width, size.height );
 
@@ -223,11 +231,11 @@ export default class Duck extends Mass {
    */
   public static getDuckShape( width: number, height: number ): Shape {
 
-    const projectedVertices = this.getFlatGeometry();
+    const projectedVertices = Duck.getDuckVertices( width, height );
 
     // ConvexHull2.grahamScan( projectedVertices, false )
 
-    return Shape.polygon( projectedVertices.reverse() );
+    return Shape.polygon( projectedVertices );
   }
 
   /**

@@ -21,7 +21,7 @@ import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import Mass, { InstrumentedMassOptions, MASS_MAX_SHAPES_DIMENSION, MASS_MIN_SHAPES_DIMENSION } from '../../common/model/Mass.js';
 import PhysicsEngine from '../../common/model/PhysicsEngine.js';
 import { MassShape } from '../../common/model/MassShape.js';
-import DuckData from './DuckData.js';
+import DuckData, { FlatDuckData } from './DuckData.js';
 
 export type DuckOptions = StrictOmit<InstrumentedMassOptions, 'body' | 'shape' | 'volume' | 'massShape'>;
 
@@ -32,6 +32,11 @@ const SCALE = 0.1;
 
 const duckGeometry = ( mainDuckGeometry.children[ 0 ] as THREE.Mesh ).geometry.scale( SCALE, SCALE, SCALE );
 
+let flatDuckData = FlatDuckData;
+
+flatDuckData = flatDuckData.map( vertex => {
+  return vertex.multiplyScalar( SCALE );
+} );
 
 // const VERTICES = _.chunk( mainDuckGeometry.children[ 0 ].geometry.getAttribute( 'position' ).array, 3 ).map( vert3 => {
 //   return new Vector2( vert3[ 0 ], vert3[ 2 ] );
@@ -217,23 +222,19 @@ export default class Duck extends Mass {
    * Returns a duck shape
    */
   public static getDuckShape( width: number, height: number ): Shape {
-    // Maybe get a 2d shape via code in the patch in https://github.com/phetsims/density-buoyancy-common/issues/115#issuecomment-2067166189
-    return Shape.circle( Vector2.ZERO, height / 2 );
+
+    const projectedVertices = this.getFlatGeometry();
+
+    // ConvexHull2.grahamScan( projectedVertices, false )
+
+    return Shape.polygon( projectedVertices.reverse() );
   }
 
   /**
    * Returns vertices for a duck
    */
   public static getDuckVertices( width: number, height: number ): Vector2[] {
-
-    // a square
-    const vertices = [
-      new Vector2( -width / 2, -height / 2 ),
-      new Vector2( width / 2, -height / 2 ),
-      new Vector2( width / 2, height / 2 ),
-      new Vector2( -width / 2, height / 2 )
-    ];
-    return vertices;
+    return this.getFlatGeometry();
   }
 
   /**
@@ -253,8 +254,10 @@ export default class Duck extends Mass {
     return duckGeometry;
     // const SCALE = 0.1;
     // this.duckGeometry.scale( SCALE, SCALE, SCALE );
+  }
 
-
+  public static getFlatGeometry(): Vector2[] {
+    return flatDuckData;
   }
 }
 

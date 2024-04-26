@@ -453,6 +453,7 @@ export default class DensityBuoyancyModel implements TModel {
         const poolEmptyVolumeToBoatTop = this.pool.getEmptyVolume( Math.min( boat.stepTop, this.poolBounds.maxY ) );
         const boatEmptyVolumeToBoatTop = boatBasin.getEmptyVolume( boat.stepTop );
 
+        // Calculate adjustments to water volumes to match the current space in the basin
         let poolExcess = poolLiquidVolume - poolEmptyVolumeToBoatTop;
         let boatExcess = boatLiquidVolume - boatEmptyVolumeToBoatTop;
 
@@ -491,7 +492,7 @@ export default class DensityBuoyancyModel implements TModel {
           poolLiquidVolume -= transferVolume;
           boatLiquidVolume += transferVolume;
         }
-        else if ( boatExcess > 0 ) { // TODO: kinda weird that this only cares about boatExcess, and not pool? https://github.com/phetsims/buoyancy/issues/142
+        else if ( boatExcess > 0 ) {
           // If the boat overflows, just dump the rest in the pool
           poolLiquidVolume += boatExcess;
           boatLiquidVolume -= boatExcess;

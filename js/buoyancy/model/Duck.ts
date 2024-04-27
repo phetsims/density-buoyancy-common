@@ -21,30 +21,9 @@ import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import Mass, { InstrumentedMassOptions, MASS_MAX_SHAPES_DIMENSION, MASS_MIN_SHAPES_DIMENSION } from '../../common/model/Mass.js';
 import PhysicsEngine from '../../common/model/PhysicsEngine.js';
 import { MassShape } from '../../common/model/MassShape.js';
-import DuckData, { FlatDuckData } from './DuckData.js';
+import { duckGeometry, flatDuckData } from './DuckData.js';
 
 export type DuckOptions = StrictOmit<InstrumentedMassOptions, 'body' | 'shape' | 'volume' | 'massShape'>;
-
-const loader = new THREE.ObjectLoader();
-
-const mainDuckGeometry = loader.parse( DuckData );
-const SCALE = 0.1;
-
-const duckGeometry = ( mainDuckGeometry.children[ 0 ] as THREE.Mesh ).geometry.scale( SCALE, SCALE, SCALE );
-
-// translate the 3d shape up
-duckGeometry.translate( 0, 0.0165, 0 );
-
-let flatDuckData = FlatDuckData;
-
-flatDuckData = flatDuckData.map( vertex => {
-  return vertex.multiplyScalar( SCALE );
-} );
-// compute the centroid of the vertices
-const centroid = flatDuckData.reduce( ( sum, vertex ) => sum.add( vertex ), new Vector2( 0, 0 ) ).multiplyScalar( 1 / flatDuckData.length );
-
-// translate the vertices so that the centroid is at the origin
-flatDuckData = flatDuckData.map( vertex => vertex.subtractXY( centroid.x, centroid.y - 0.008 ) );
 
 // const VERTICES = _.chunk( mainDuckGeometry.children[ 0 ].geometry.getAttribute( 'position' ).array, 3 ).map( vert3 => {
 //   return new Vector2( vert3[ 0 ], vert3[ 2 ] );
@@ -203,7 +182,7 @@ export default class Duck extends Mass {
     else {
       const ratio = ( liquidLevel - this.stepBottom ) / ( this.stepTop - this.stepBottom );
 
-      return this.stepMaximumVolume * ratio * ratio * ( 3 - 2 * ratio ); // 4/3 * pi * a * b * c * t^2 * ( 3 - 2t )
+      return this.stepMaximumVolume * ratio;
     }
   }
 
@@ -260,8 +239,6 @@ export default class Duck extends Mass {
 
   public static getGeometry(): THREE.BufferGeometry {
     return duckGeometry;
-    // const SCALE = 0.1;
-    // this.duckGeometry.scale( SCALE, SCALE, SCALE );
   }
 
   public static getFlatGeometry(): Vector2[] {

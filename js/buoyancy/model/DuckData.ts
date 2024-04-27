@@ -9,6 +9,8 @@
 
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
+import ConvexHull2 from '../../../../dot/js/ConvexHull2.js';
+import { Shape } from '../../../../kite/js/imports.js';
 
 /* eslint-disable */
 const DuckData = {
@@ -38,9 +40,31 @@ const DuckData = {
 // @formatter:on
 /* eslint-enable */
 
-export const FlatDuckData = [
+const FlatDuckData = [
   new Vector2( 0.024127, -0.985022 ), new Vector2( -0.065763, -1.010711 ), new Vector2( -0.29008, -1.012616 ), new Vector2( -0.354542, -1.001538 ), new Vector2( -0.385327, -0.963505 ), new Vector2( -0.371228, -0.897462 ), new Vector2( -0.226988, -0.834853 ), new Vector2( -0.23751, -0.716437 ), new Vector2( -0.343253, -0.706173 ), new Vector2( -0.447034, -0.656992 ), new Vector2( -0.541834, -0.553407 ), new Vector2( -0.609499, -0.440947 ), new Vector2( -0.637335, -0.325621 ), new Vector2( -0.628668, -0.215376 ), new Vector2( -0.591497, -0.114765 ), new Vector2( -0.537008, -0.013863 ), new Vector2( -0.430042, 0.214967 ), new Vector2( -0.46972, 0.274876 ), new Vector2( -0.518352, 0.330276 ), new Vector2( -0.635876, 0.427949 ), new Vector2( -0.657909, 0.456598 ), new Vector2( -0.660824, 0.485854 ), new Vector2( -0.612145, 0.514872 ), new Vector2( -0.512324, 0.511485 ), new Vector2( -0.457111, 0.533535 ), new Vector2( -0.405968, 0.601713 ), new Vector2( -0.357356, 0.67749 ), new Vector2( -0.306776, 0.73531 ), new Vector2( -0.247754, 0.773244 ), new Vector2( -0.17106, 0.795093 ), new Vector2( -0.093403, 0.801028 ), new Vector2( -0.035849, 0.804496 ), new Vector2( 0.027891, 0.792761 ), new Vector2( 0.092705, 0.770376 ), new Vector2( 0.163772, 0.742717 ), new Vector2( 0.215767, 0.711891 ), new Vector2( 0.261052, 0.672716 ), new Vector2( 0.305289, 0.616332 ), new Vector2( 0.33883, 0.531846 ), new Vector2( 0.336206, 0.5276 ), new Vector2( 0.347608, 0.417499 ), new Vector2( 0.337073, 0.306564 ), new Vector2( 0.298522, 0.240446 ), new Vector2( 0.269807, 0.170258 ), new Vector2( 0.260725, 0.10015 ), new Vector2( 0.284936, 0.038505 ), new Vector2( 0.34165, -0.005539 ), new Vector2( 0.419488, -0.004722 ), new Vector2( 0.494726, 0.02512 ), new Vector2( 0.56651, 0.07802 ), new Vector2( 0.727214, 0.223658 ), new Vector2( 0.755921, 0.231461 ), new Vector2( 0.783558, 0.208392 ), new Vector2( 0.8071, 0.164325 ), new Vector2( 0.859687, -0.136826 ), new Vector2( 0.870634, -0.346609 ), new Vector2( 0.849003, -0.486313 ), new Vector2( 0.798585, -0.567414 ), new Vector2( 0.726078, -0.627812 ), new Vector2( 0.638086, -0.670727 ), new Vector2( 0.597362, -0.682948 ), new Vector2( 0.597362, -0.985022 ), new Vector2( 0.507472, -1.010711 ), new Vector2( 0.283155, -1.012616 ), new Vector2( 0.218693, -1.001538 ), new Vector2( 0.187908, -0.963505 ), new Vector2( 0.202007, -0.897462 ), new Vector2( 0.346248, -0.834853 ), new Vector2( 0.335938, -0.719925 ), new Vector2( 0.024127, -0.720342 )
 ];
 
+// Scale to be used both on the 2d and 3d ducks
+const SCALE = 0.1;
+
+// Parsing the geometry of the 3d duck
+const loader = new THREE.ObjectLoader();
+const mainDuckGeometry = loader.parse( DuckData );
+export const duckGeometry = ( mainDuckGeometry.children[ 0 ] as THREE.Mesh ).geometry;
+
+// translate the 3d shape up
+duckGeometry.translate( 0, 0.16, 0 );
+duckGeometry.scale( SCALE, SCALE, SCALE );
+
+// Parsing the geometry of the 2d duck
+export let flatDuckData = FlatDuckData;
+const grahamScan = ConvexHull2.grahamScan( flatDuckData, false );
+const centroid = Shape.polygon( grahamScan ).bounds.center;
+
+// translate the vertices so that the centroid is at the origin
+flatDuckData = flatDuckData.map( vertex => vertex.subtractXY( centroid.x, centroid.y - 0.04 ) );
+flatDuckData = flatDuckData.map( vertex => {
+  return vertex.multiplyScalar( SCALE );
+} );
+
 densityBuoyancyCommon.register( 'DuckData', DuckData );
-export default DuckData;

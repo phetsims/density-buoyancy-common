@@ -11,6 +11,7 @@ import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import ConvexHull2 from '../../../../dot/js/ConvexHull2.js';
 import { Shape } from '../../../../kite/js/imports.js';
+import Vector3 from '../../../../dot/js/Vector3.js';
 
 /* eslint-disable */
 const DuckData = {
@@ -45,24 +46,48 @@ const FlatDuckData = [
 ];
 
 // Scale to be used both on the 2d and 3d ducks
-const SCALE = 0.1;
+const SCALE = 0.15;
 
 // Parsing the geometry of the 3d duck
 const loader = new THREE.ObjectLoader();
 const mainDuckGeometry = loader.parse( DuckData );
 export const duckGeometry = ( mainDuckGeometry.children[ 0 ] as THREE.Mesh ).geometry;
 
+const minValues = new Vector3( 0, 0, 0 );
+const maxValues = new Vector3( 0, 0, 0 );
+
+// Getting the shape bounds to normalize the vertices
+if ( duckGeometry.isBufferGeometry && duckGeometry.attributes.position ) {
+  const positions = duckGeometry.attributes.position;
+  const xs: number[] = [];
+  const ys: number[] = [];
+  const zs: number[] = [];
+  for ( let i = 0; i < positions.count; i++ ) {
+    xs.push( positions.getX( i ) );
+    ys.push( positions.getY( i ) );
+    zs.push( positions.getZ( i ) );
+  }
+
+  minValues.setXYZ( Math.min( ...xs ), Math.min( ...ys ), Math.min( ...zs ) );
+  maxValues.setXYZ( Math.max( ...xs ), Math.max( ...ys ), Math.max( ...zs ) );
+
+  maxValues.subtract( minValues );
+  const normalizationFactors = new Vector3( Math.abs( maxValues.x ), Math.abs( maxValues.y ), Math.abs( maxValues.z ) );
+
+  duckGeometry.scale( 1 / normalizationFactors.x, 1 / normalizationFactors.y, 1 / normalizationFactors.z );
+}
+
 // translate the 3d shape up
-duckGeometry.translate( 0, 0.16, 0 );
+duckGeometry.translate( 0, 0.08, 0 );
 duckGeometry.scale( SCALE, SCALE, SCALE );
 
 // Parsing the geometry of the 2d duck
 export let flatDuckData = FlatDuckData;
 const grahamScan = ConvexHull2.grahamScan( flatDuckData, false );
-const centroid = Shape.polygon( grahamScan ).bounds.center;
-
+const bounds = Shape.polygon( grahamScan ).bounds;
+flatDuckData = flatDuckData.map( vertex => vertex.subtractXY( bounds.center.x, bounds.center.y - 0.04 ) );
+flatDuckData = flatDuckData.map( vertex => vertex.componentMultiply( new Vector2( 1 / bounds.width, 1 / bounds.height ) ) );
 // translate the vertices so that the centroid is at the origin
-flatDuckData = flatDuckData.map( vertex => vertex.subtractXY( centroid.x, centroid.y - 0.04 ) );
 flatDuckData = flatDuckData.map( vertex => {
   return vertex.multiplyScalar( SCALE );
 } );

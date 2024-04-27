@@ -209,12 +209,7 @@ export default class Duck extends Mass {
    * Returns a duck shape
    */
   public static getDuckShape( width: number, height: number ): Shape {
-
-    const projectedVertices = Duck.getDuckVertices( width, height );
-
-    // ConvexHull2.grahamScan( projectedVertices, false )
-
-    return Shape.polygon( projectedVertices );
+    return Shape.polygon( Duck.getDuckVertices( width, height ) );
   }
 
   /**

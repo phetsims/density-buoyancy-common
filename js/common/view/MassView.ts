@@ -187,7 +187,7 @@ export default abstract class MassView extends Disposable {
 
 /**
  * Intermediate class to create a Path with InteractiveHighlightingNode.
- * @mixes {InteractiveHighlighting}
+ * @mixes InteractiveHighlighting
  */
 class InteractiveHighlightingPath extends InteractiveHighlighting( Path ) {}
 

@@ -112,15 +112,14 @@ export default class Duck extends Mass {
     const xOffset = this.stepMatrix.m02();
     const yOffset = this.stepMatrix.m12();
 
-    this.stepX = xOffset;
-    this.stepBottom = yOffset + this.sizeProperty.value.minY;
-    this.stepTop = yOffset + this.sizeProperty.value.maxY;
+    const size = this.sizeProperty.value;
 
-    const a = this.sizeProperty.value.width / 2;
-    const b = this.sizeProperty.value.height / 2;
-    const c = this.sizeProperty.value.depth / 2;
-    this.stepMaximumArea = 4 * Math.PI * a * c; // 4 * pi * a * c
-    this.stepMaximumVolume = this.stepMaximumArea * b / 3; // 4/3 * pi * a * b * c
+    this.stepX = xOffset;
+    this.stepBottom = yOffset + size.minY;
+    this.stepTop = yOffset + size.maxY;
+
+    this.stepMaximumArea = 1.88 * size.width * size.height;
+    this.stepMaximumVolume = Duck.getVolume( size );
   }
 
   /**
@@ -227,7 +226,7 @@ export default class Duck extends Mass {
    */
   public static getVolume( size: Bounds3 ): number {
     // Hard coded normalized volume obtained from Blender
-    return 1.0264 * size.width * size.height * size.depth;
+    return 0.128 * size.width * size.height * size.depth;
   }
 
   public static DuckIO = new IOType( 'DuckIO', {

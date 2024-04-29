@@ -13,11 +13,14 @@ import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import Duck from '../model/Duck.js';
 import { THREEModelViewTransform } from '../../common/view/DensityBuoyancyScreenView.js';
 import MeasurableMassView from '../../common/view/MeasurableMassView.js';
+import { duckGeometry } from '../model/DuckData.js';
+import Vector3 from '../../../../dot/js/Vector3.js';
+import { TAG_OFFSET } from '../../common/view/MassTagNode.js';
 
 export default class DuckView extends MeasurableMassView {
 
   public readonly duck: Duck;
-  private readonly duckGeometry: THREE.BufferGeometry;
+  private duckGeometry: THREE.BufferGeometry;
 
   // private readonly updateListener: ( newSize: Bounds3, oldSize: Bounds3 ) => void;
 
@@ -30,7 +33,9 @@ export default class DuckView extends MeasurableMassView {
                       forceScaleProperty: TReadOnlyProperty<number>,
                       showMassesProperty: TReadOnlyProperty<boolean> ) {
 
-    const duckGeometry = Duck.getGeometry();
+    const size = duck.sizeProperty.value;
+
+    const duckGeometry = DuckView.getDuckGeometry( size );
 
     super( duck, duckGeometry, modelViewTransform, dragBoundsProperty,
 
@@ -44,6 +49,26 @@ export default class DuckView extends MeasurableMassView {
 
     this.duck = duck;
     this.duckGeometry = duckGeometry;
+
+    const positionTag = () => {
+      const size = duck.sizeProperty.value;
+      this.tagOffsetProperty.value = new Vector3( size.minX + TAG_OFFSET, size.maxY - TAG_OFFSET, size.maxZ );
+    };
+    positionTag();
+
+    const updateListener = ( newSize: Bounds3, oldSize: Bounds3 ) => {
+      positionTag();
+      // @ts-expect-error OLD version possibly?
+      duckGeometry.applyMatrix( new THREE.Matrix4().makeScale(
+        newSize.width / oldSize.width,
+        newSize.height / oldSize.height,
+        newSize.depth / oldSize.depth
+      ) );
+      duckGeometry.computeBoundingSphere();
+      this.massMesh.updateMatrix();
+    };
+    duck.sizeProperty.lazyLink( updateListener );
+
   }
 
   /**
@@ -53,6 +78,16 @@ export default class DuckView extends MeasurableMassView {
     this.duckGeometry.dispose();
 
     super.dispose();
+  }
+
+  public static getDuckGeometry( size: Bounds3 ): THREE.BufferGeometry {
+
+    const geometry = duckGeometry.clone();
+
+    // Scale the duck to the size of the duck model
+    geometry.scale( size.width, size.height, size.depth );
+
+    return geometry;
   }
 }
 

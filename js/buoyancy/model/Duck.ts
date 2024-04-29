@@ -21,7 +21,7 @@ import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import Mass, { InstrumentedMassOptions, MASS_MAX_SHAPES_DIMENSION, MASS_MIN_SHAPES_DIMENSION } from '../../common/model/Mass.js';
 import PhysicsEngine from '../../common/model/PhysicsEngine.js';
 import { MassShape } from '../../common/model/MassShape.js';
-import { duckGeometry, flatDuckData } from './DuckData.js';
+import { flatDuckData } from './DuckData.js';
 
 export type DuckOptions = StrictOmit<InstrumentedMassOptions, 'body' | 'shape' | 'volume' | 'massShape'>;
 
@@ -216,14 +216,18 @@ export default class Duck extends Mass {
    * Returns vertices for a duck
    */
   public static getDuckVertices( width: number, height: number ): Vector2[] {
-    return this.getFlatGeometry();
+    const vertices = this.getFlatGeometry();
+
+    // Scale the vertices to the given width and height
+    return vertices.map( vertex => vertex.componentTimes( new Vector2( width, height ) ) );
   }
 
   /**
    * Returns the volume of a duck with the given axis-aligned bounding box.
    */
   public static getVolume( size: Bounds3 ): number {
-    return Math.PI * size.width * size.height * size.depth / 6;
+    // Hard coded normalized volume obtained from Blender
+    return 1.0264 * size.width * size.height * size.depth;
   }
 
   public static DuckIO = new IOType( 'DuckIO', {
@@ -231,10 +235,6 @@ export default class Duck extends Mass {
     supertype: Mass.MassIO,
     documentation: 'Represents a duck'
   } );
-
-  public static getGeometry(): THREE.BufferGeometry {
-    return duckGeometry;
-  }
 
   public static getFlatGeometry(): Vector2[] {
     return flatDuckData;

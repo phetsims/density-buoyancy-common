@@ -42,6 +42,8 @@ export default class Boat extends ApplicationsMass {
   // volume. This is much preferred to trying to redraw the shape to a different size.
   public stepMultiplier: number;
 
+  public isUnderwater = false;
+
   public constructor( engine: PhysicsEngine, blockWidthProperty: TReadOnlyProperty<number>, liquidMaterialProperty: TProperty<Material>, providedOptions: BoatOptions ) {
 
     const displacementVolumeProperty = new NumberProperty( 0.01 );
@@ -93,7 +95,6 @@ export default class Boat extends ApplicationsMass {
 
     this.stepInternalVolume = 0;
     this.stepMultiplier = 0;
-
     Multilink.multilink( [ this.liquidMaterialProperty, this.basin.liquidVolumeProperty ], ( material, volume ) => {
       this.containedMassProperty.value = material.density * volume;
     } );

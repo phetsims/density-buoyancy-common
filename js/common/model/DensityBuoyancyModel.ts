@@ -305,6 +305,7 @@ export default class DensityBuoyancyModel implements TModel {
       const boat = this.getBoat();
 
       if ( boat && dt ) {
+        boat.isUnderwater = boat.stepTop < this.pool.liquidYInterpolatedProperty.value - DensityBuoyancyCommonConstants.TOLERANCE;
         const nextBoatVerticalVelocity = this.engine.bodyGetVelocity( boat.body ).y;
         boatVerticalAcceleration = ( nextBoatVerticalVelocity - boatVerticalVelocity ) / dt;
         boatVerticalVelocity = nextBoatVerticalVelocity;
@@ -353,6 +354,15 @@ export default class DensityBuoyancyModel implements TModel {
           submergedVolume = displacedVolume > basin.liquidVolumeProperty.value ? basin.liquidVolumeProperty.value : displacedVolume;
         }
 
+        let massValue = mass.massProperty.value;
+
+        if ( mass === boat && boat.isUnderwater ) {
+          // Special consideration for when boat is underwater
+          // Don't count the liquid inside the boat as part of the mass
+          submergedVolume = boat.volumeProperty.value;
+          massValue = submergedVolume * boat.materialProperty.value.density;
+        }
+
         if ( submergedVolume !== 0 ) {
           const displacedMass = submergedVolume * this.liquidDensityProperty.value;
           // Vertical acceleration of the boat will change the buoyant force.
@@ -372,7 +382,7 @@ export default class DensityBuoyancyModel implements TModel {
             ( 1 - DensityBuoyancyCommonQueryParameters.viscositySubmergedRatio ) +
             DensityBuoyancyCommonQueryParameters.viscositySubmergedRatio * submergedVolume / mass.volumeProperty.value;
           const hackedViscosity = this.liquidViscosityProperty.value ? 0.03 * Math.pow( this.liquidViscosityProperty.value / 0.03, 0.8 ) : 0;
-          const viscosityMass = Math.max( DensityBuoyancyCommonQueryParameters.viscosityMassCutoff, mass.massProperty.value );
+          const viscosityMass = Math.max( DensityBuoyancyCommonQueryParameters.viscosityMassCutoff, massValue );
           const viscousForce = velocity.times( -hackedViscosity * viscosityMass * ratioSubmerged * 3000 * DensityBuoyancyCommonQueryParameters.viscosityMultiplier );
           this.engine.bodyApplyForce( mass.body, viscousForce );
         }
@@ -381,7 +391,7 @@ export default class DensityBuoyancyModel implements TModel {
         }
 
         // Gravity
-        const gravityForce = new Vector2( 0, -mass.massProperty.value * gravity );
+        const gravityForce = new Vector2( 0, -massValue * gravity );
         this.engine.bodyApplyForce( mass.body, gravityForce );
         mass.gravityForceInterpolatedProperty.setNextValue( gravityForce );
 
@@ -454,10 +464,9 @@ export default class DensityBuoyancyModel implements TModel {
     this.pool.computeY();
     boat && boat.basin.computeY();
 
-    // If we have a boat that is NOT underwater, we'll assign masses into the boat's basin where relevant. Otherwise
+    // If we have a boat that is NOT underwater, we'll assign masses into the boat's basin where relevant. Otherwise,
     // anything will go just into the pool's basin.
-    if ( boat && boat.visibleProperty.value &&
-         this.pool.liquidYInterpolatedProperty.currentValue < ( boat.basin.stepTop + DensityBuoyancyCommonConstants.TOLERANCE ) ) {
+    if ( boat && boat.visibleProperty.value && !boat.isUnderwater ) {
       this.masses.forEach( mass => {
         mass.containingBasin = boat.basin.isMassInside( mass ) ? boat.basin : ( this.pool.isMassInside( mass ) ? this.pool : null );
       } );

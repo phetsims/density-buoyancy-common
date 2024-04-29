@@ -67,23 +67,25 @@ export default class BuoyancyApplicationsModel extends DensityBuoyancyModel {
       tandem: tandem.createTandem( 'densityExpandedProperty' )
     } );
 
+    const objectsTandem = tandem.createTandem( 'objects' );
+
     this.bottle = new Bottle( this.engine, {
       matrix: Matrix3.translation( 0, 0 ),
-      tandem: tandem.createTandem( 'bottle' ),
+      tandem: objectsTandem.createTandem( 'bottle' ),
       visible: true
     } );
     this.availableMasses.push( this.bottle );
 
     this.block = Cube.createWithVolume( this.engine, Material.BRICK, new Vector2( -0.5, 0.3 ), 0.001, {
       visible: false,
-      tandem: tandem.createTandem( 'block' )
+      tandem: objectsTandem.createTandem( 'block' )
     } );
     this.availableMasses.push( this.block );
 
     // DerivedProperty doesn't need disposal, since everything here lives for the lifetime of the simulation
     this.boat = new Boat( this.engine, new DerivedProperty( [ this.block.sizeProperty ], size => size.depth ), this.liquidMaterialProperty, {
       matrix: Matrix3.translation( 0, -0.1 ),
-      tandem: tandem.createTandem( 'boat' ),
+      tandem: objectsTandem.createTandem( 'boat' ),
       visible: false
     } );
     this.availableMasses.push( this.boat );

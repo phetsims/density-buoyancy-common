@@ -430,7 +430,7 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
       bottleGroup.add( cap );
 
       bottleGroup.scale.multiplyScalar( 0.5 );
-      bottleGroup.position.add( new THREE.Vector3( 0, 0, 0.05 ) );
+      bottleGroup.position.add( new THREE.Vector3( 0.01, 0, 0.05 ) );
 
       scene.add( bottleGroup );
 

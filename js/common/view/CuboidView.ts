@@ -43,7 +43,7 @@ export default class CuboidView extends MeasurableMassView {
 
     const size = cuboid.sizeProperty.value;
 
-    const cuboidGeometry = CuboidView.getCuboidGeometery( size );
+    const cuboidGeometry = CuboidView.getCuboidGeometry( size );
 
     super( cuboid, cuboidGeometry, modelViewTransform, dragBoundsProperty,
 
@@ -231,7 +231,7 @@ export default class CuboidView extends MeasurableMassView {
     return writer.getOffset();
   }
 
-  public static getCuboidGeometery( size: Bounds3 ): THREE.BufferGeometry {
+  public static getCuboidGeometry( size: Bounds3 ): THREE.BufferGeometry {
     const positionArray = new Float32Array( numElements * 3 );
     const normalArray = new Float32Array( numElements * 3 );
     const uvArray = new Float32Array( numElements * 2 );

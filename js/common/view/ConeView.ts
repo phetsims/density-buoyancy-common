@@ -34,7 +34,7 @@ export default class ConeView extends MeasurableMassView {
                       forceScaleProperty: TReadOnlyProperty<number>,
                       showMassesProperty: TReadOnlyProperty<boolean> ) {
 
-    const coneGeometry = ConeView.getConeGeometery( cone.radiusProperty.value, cone.heightProperty.value, cone.isVertexUp );
+    const coneGeometry = ConeView.getConeGeometry( cone.radiusProperty.value, cone.heightProperty.value, cone.isVertexUp );
 
     super( cone, coneGeometry, modelViewTransform, dragBoundsProperty,
 
@@ -160,7 +160,7 @@ export default class ConeView extends MeasurableMassView {
     return writer.getOffset();
   }
 
-  public static getConeGeometery( radius: number, height: number, isVertexUp: boolean ): THREE.BufferGeometry {
+  public static getConeGeometry( radius: number, height: number, isVertexUp: boolean ): THREE.BufferGeometry {
 
     const positionArray = new Float32Array( numElements * 3 );
     const normalArray = new Float32Array( numElements * 3 );

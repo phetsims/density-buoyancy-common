@@ -228,7 +228,7 @@ export default class BuoyancyShapesScreenView extends DensityBuoyancyScreenView<
 
     return DensityBuoyancyScreenView.getAngledIcon( 5.5, new Vector3( 0, 0, 0 ), scene => {
 
-      const coneGeometry = ConeView.getConeGeometery( Cone.getRadiusFromRatio( 0.2 ), Cone.getHeightFromRatio( 0.35 ), true );
+      const coneGeometry = ConeView.getConeGeometry( Cone.getRadiusFromRatio( 0.2 ), Cone.getHeightFromRatio( 0.35 ), true );
 
       const cone = new THREE.Mesh( coneGeometry, new THREE.MeshStandardMaterial( {
         map: DensityMaterials.woodColorTexture,

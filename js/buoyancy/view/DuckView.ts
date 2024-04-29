@@ -15,7 +15,7 @@ import { THREEModelViewTransform } from '../../common/view/DensityBuoyancyScreen
 import MeasurableMassView from '../../common/view/MeasurableMassView.js';
 import { duckGeometry } from '../model/DuckData.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
-import { TAG_OFFSET } from '../../common/view/MassTagNode.js';
+import Vector2 from '../../../../dot/js/Vector2.js';
 
 export default class DuckView extends MeasurableMassView {
 
@@ -52,7 +52,8 @@ export default class DuckView extends MeasurableMassView {
 
     const positionTag = () => {
       const size = duck.sizeProperty.value;
-      this.tagOffsetProperty.value = new Vector3( size.minX + TAG_OFFSET, size.maxY - TAG_OFFSET, size.maxZ );
+      const DUCK_TAG_OFFSET = new Vector2( 0.01, 0.03 );
+      this.tagOffsetProperty.value = new Vector3( size.minX - DUCK_TAG_OFFSET.x, size.maxY + DUCK_TAG_OFFSET.y, size.maxZ );
     };
     positionTag();
 

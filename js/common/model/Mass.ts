@@ -46,6 +46,9 @@ import NumberIO from '../../../../tandem/js/types/NumberIO.js';
 import MassTag, { MassTagStateObject } from './MassTag.js';
 import Bounds3 from '../../../../dot/js/Bounds3.js';
 
+type MaterialNonCustomIdentifier = 'ALUMINUM' | 'BRICK' | 'COPPER' | 'ICE' | 'PLATINUM' | 'STEEL' | 'STYROFOAM' | 'WOOD';
+type MaterialIdentifier = MaterialNonCustomIdentifier | CustomMaterialName;
+
 class MaterialEnumeration extends EnumerationValue {
   public static readonly ALUMINUM = new MaterialEnumeration();
   public static readonly BRICK = new MaterialEnumeration();
@@ -61,6 +64,8 @@ class MaterialEnumeration extends EnumerationValue {
     phetioDocumentation: 'Material values'
   } );
 }
+
+const materialToEnum = ( material: Material ): MaterialEnumeration => MaterialEnumeration[ ( ( material.identifier as MaterialIdentifier | null ) || CUSTOM_MATERIAL_NAME ) ];
 
 type GuardedNumberPropertyOptions = NumberPropertyOptions & { getPhetioSpecificValidationError: ( value: number ) => string | null };
 
@@ -93,11 +98,6 @@ const GuardedNumberPropertyIO = new IOType( 'GuardedNumberPropertyIO', {
     }
   }
 } );
-
-type MaterialNonCustomIdentifier = 'ALUMINUM' | 'BRICK' | 'COPPER' | 'ICE' | 'PLATINUM' | 'STEEL' | 'STYROFOAM' | 'WOOD';
-type MaterialIdentifier = MaterialNonCustomIdentifier | CustomMaterialName;
-
-const materialToEnum = ( material: Material ): MaterialEnumeration => MaterialEnumeration[ ( ( material.identifier as MaterialIdentifier | null ) || CUSTOM_MATERIAL_NAME ) ];
 
 // For the Buoyancy Shapes screen, but needed here because setRatios is included in each core type
 // See https://github.com/phetsims/buoyancy/issues/29
@@ -364,7 +364,7 @@ export default abstract class Mass extends PhetioObject {
             } );
           }
           else {
-            // TODO: does this need an assertion just in case? https://github.com/phetsims/density-buoyancy-common/issues/93
+            assert && assert( Material.hasOwnProperty( materialEnum.name ), `unexpected material enum: ${materialEnum.name}` );
             this.materialProperty.value = Material[ materialEnum.name as MaterialNonCustomIdentifier ];
           }
           enumLock = false;

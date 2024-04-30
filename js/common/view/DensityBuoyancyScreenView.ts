@@ -145,7 +145,6 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
     this.backgroundLayer = new Node();
     this.addChild( this.backgroundLayer );
 
-    // TODO: Factor out to a MobiusScreenView? https://github.com/phetsims/density-buoyancy-common/issues/113
     this.sceneNode = new ThreeIsometricNode( this.layoutBounds, {
       parentMatrixProperty: animatedPanZoomSingleton.listener.matrixProperty,
       cameraPosition: options.cameraPosition,
@@ -621,14 +620,11 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
 
   /**
    * Projects a 3d model point to a 2d view point (in the screen view's coordinate frame).
-   * TODO: Factor out to a MobiusScreenView? https://github.com/phetsims/density-buoyancy-common/issues/113
-   * TODO: an api for a new MVT class where you provide the transform to get from your IsometricNode to global scenery coords (and vice versa)? https://github.com/phetsims/density-buoyancy-common/issues/113
    */
   public modelToViewPoint( point: Vector3 ): Vector2 {
 
     // We'll want to transform global coordinates into screen coordinates here
-    // TODO: JO, why doesn't localToGlobalPoint() care about the pan/zoom matrix. It seems like that is now a misnomer, eh? https://github.com/phetsims/density-buoyancy-common/issues/113
-    // TODO: couldn't there be a way to register the pan/zoom matrix with Display, and then have Node.getActuallyGlobalPoint() handle this? https://github.com/phetsims/density-buoyancy-common/issues/113
+    // TODO: This would be better code, but it relies on the screenView already being a child. Can we get rid of animatedPanZoomSingleton usage somehow?, `this.globalToLocalPoint( this.sceneNode.projectPoint( point ) )` https://github.com/phetsims/density-buoyancy-common/issues/95
     return this.parentToLocalPoint( animatedPanZoomSingleton.listener.matrixProperty.value.inverted().timesVector2( this.sceneNode.projectPoint( point ) ) );
   }
 

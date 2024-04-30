@@ -67,7 +67,8 @@ export default class BuoyancyLabScreenView extends DensityBuoyancyScreenView<Buo
       children: [
         fluidDisplacedPanel,
         new MultiSectionPanelsNode( [ new BuoyancyDisplayOptionsNode( model, {
-          showFluidDisplacedProperty: model.showFluidDisplacedProperty
+          showFluidDisplacedProperty: model.showFluidDisplacedProperty,
+          tandem: tandem.createTandem( 'buoyancyDisplayOptionsNode' )
         } ) ] )
       ]
     } );
@@ -166,13 +167,14 @@ export default class BuoyancyLabScreenView extends DensityBuoyancyScreenView<Buo
       readoutItems: [ { readoutItem: model.primaryMass.materialProperty } ]
     } );
 
-    const submergedBox = new SubmergedAccordionBox(
+    const submergedAccordionBox = new SubmergedAccordionBox(
       model.gravityProperty, model.liquidMaterialProperty, {
         contentWidthMax: this.rightBox.content.width,
         readoutItems: [ {
           readoutItem: model.primaryMass,
           readoutNameProperty: DensityBuoyancyCommonStrings.shape.blockStringProperty
-        } ]
+        } ],
+        tandem: tandem.createTandem( 'submergedAccordionBox' )
       } );
 
     const rightSideVBox = new VBox( {
@@ -181,7 +183,7 @@ export default class BuoyancyLabScreenView extends DensityBuoyancyScreenView<Buo
       children: [
         this.rightBox,
         densityBox,
-        submergedBox
+        submergedAccordionBox
       ]
     } );
     this.addChild( new AlignBox( rightSideVBox, {

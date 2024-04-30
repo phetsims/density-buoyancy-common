@@ -47,7 +47,9 @@ export default class BuoyancyExploreScreenView extends DensityBuoyancyScreenView
       cameraLookAt: DensityBuoyancyCommonConstants.BUOYANCY_CAMERA_LOOK_AT
     }, options ) );
 
-    const buoyancyDisplayOptionsNode = new BuoyancyDisplayOptionsNode( model );
+    const buoyancyDisplayOptionsNode = new BuoyancyDisplayOptionsNode( model, {
+      tandem: tandem.createTandem( 'buoyancyDisplayOptionsNode' )
+    } );
 
     this.addChild( new AlignBox( new Panel( buoyancyDisplayOptionsNode, DensityBuoyancyCommonConstants.PANEL_OPTIONS ), {
       alignBoundsProperty: this.visibleBoundsProperty,
@@ -108,8 +110,9 @@ export default class BuoyancyExploreScreenView extends DensityBuoyancyScreenView
       contentWidthMax: this.rightBox.content.width
     } );
 
-    const submergedBox = new SubmergedAccordionBox( model.gravityProperty, model.liquidMaterialProperty, {
-      contentWidthMax: this.rightBox.content.width
+    const submergedAccordionBox = new SubmergedAccordionBox( model.gravityProperty, model.liquidMaterialProperty, {
+      contentWidthMax: this.rightBox.content.width,
+      tandem: tandem.createTandem( 'submergedAccordionBox' )
     } );
 
     const customExploreScreenFormatting = [ model.primaryMass, model.secondaryMass ].map( mass => {
@@ -130,7 +133,7 @@ export default class BuoyancyExploreScreenView extends DensityBuoyancyScreenView
           readoutFormat: customExploreScreenFormatting[ index ].readoutFormat
         };
       } ) );
-      submergedBox.setReadoutItems( masses.map( ( mass, index ) => {
+      submergedAccordionBox.setReadoutItems( masses.map( ( mass, index ) => {
         return {
           readoutItem: mass,
           readoutNameProperty: customExploreScreenFormatting[ index ].readoutNameProperty,
@@ -145,7 +148,7 @@ export default class BuoyancyExploreScreenView extends DensityBuoyancyScreenView
       children: [
         this.rightBox,
         densityBox,
-        submergedBox
+        submergedAccordionBox
       ]
     } );
 

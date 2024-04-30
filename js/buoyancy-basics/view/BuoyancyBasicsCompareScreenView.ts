@@ -81,7 +81,10 @@ export default class BuoyancyBasicsCompareScreenView extends DensityBuoyancyScre
       margin: MARGIN
     } ) );
 
-    const displayOptionsPanel = new Panel( new BuoyancyDisplayOptionsNode( model, { includeVectorScaleControl: false } ),
+    const displayOptionsPanel = new Panel( new BuoyancyDisplayOptionsNode( model, {
+        includeVectorScaleControl: false,
+        tandem: options.tandem.createTandem( 'buoyancyDisplayOptionsNode' )
+      } ),
       DensityBuoyancyCommonConstants.PANEL_OPTIONS );
     this.addChild( new AlignBox( displayOptionsPanel, {
       alignBoundsProperty: this.visibleBoundsProperty,
@@ -101,14 +104,16 @@ export default class BuoyancyBasicsCompareScreenView extends DensityBuoyancyScre
 
 
     // Materials are set in densityBox.setMaterials() below
-    const densityBox = new DensityAccordionBox( {
+    const densityAccordionBox = new DensityAccordionBox( {
       expandedProperty: model.densityExpandedProperty,
-      contentWidthMax: this.rightSideMaxContentWidthProperty
+      contentWidthMax: this.rightSideMaxContentWidthProperty,
+      tandem: options.tandem.createTandem( 'densityAccordionBox' )
     } );
 
-    const submergedBox = new SubmergedAccordionBox( model.gravityProperty, model.liquidMaterialProperty, {
+    const submergedAccordionBox = new SubmergedAccordionBox( model.gravityProperty, model.liquidMaterialProperty, {
       expandedProperty: model.percentageSubmergedExpandedProperty,
-      contentWidthMax: this.rightSideMaxContentWidthProperty
+      contentWidthMax: this.rightSideMaxContentWidthProperty,
+      tandem: options.tandem.createTandem( 'submergedAccordionBox' )
     } );
 
     const readoutItemsCache = new Map<BlockSet, {
@@ -154,12 +159,12 @@ export default class BuoyancyBasicsCompareScreenView extends DensityBuoyancyScre
         } );
       }
       const itemsForBoth = readoutItemsCache.get( blockSet )!;
-      submergedBox.setReadoutItems( itemsForBoth.submergedItems );
-      densityBox.setReadoutItems( itemsForBoth.densityItems );
+      submergedAccordionBox.setReadoutItems( itemsForBoth.submergedItems );
+      densityAccordionBox.setReadoutItems( itemsForBoth.densityItems );
     } );
 
     this.readoutPanelsVBox = new VBox( {
-      children: [ densityBox, submergedBox ],
+      children: [ densityAccordionBox, submergedAccordionBox ],
       spacing: MARGIN
     } );
     this.addChild( this.readoutPanelsVBox );

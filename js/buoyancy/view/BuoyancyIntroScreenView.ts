@@ -77,7 +77,10 @@ export default class BuoyancyIntroScreenView extends DensityBuoyancyScreenView<B
       margin: MARGIN
     } ) );
 
-    const displayOptionsPanel = new Panel( new BuoyancyDisplayOptionsNode( model, { includeVectorScaleControl: false } ),
+    const displayOptionsPanel = new Panel( new BuoyancyDisplayOptionsNode( model, {
+        includeVectorScaleControl: false,
+        tandem: options.tandem.createTandem( 'displayOptionsPanel' )
+      } ),
       DensityBuoyancyCommonConstants.PANEL_OPTIONS );
     this.addChild( new AlignBox( displayOptionsPanel, {
       alignBoundsProperty: this.visibleBoundsProperty,
@@ -102,8 +105,9 @@ export default class BuoyancyIntroScreenView extends DensityBuoyancyScreenView<B
       contentWidthMax: this.rightSideMaxContentWidthProperty
     } );
 
-    const submergedBox = new SubmergedAccordionBox( model.gravityProperty, model.liquidMaterialProperty, {
-      contentWidthMax: this.rightSideMaxContentWidthProperty
+    const submergedAccordionBox = new SubmergedAccordionBox( model.gravityProperty, model.liquidMaterialProperty, {
+      contentWidthMax: this.rightSideMaxContentWidthProperty,
+      tandem: options.tandem.createTandem( 'submergedAccordionBox' )
     } );
 
     const readoutItemsCache = new Map<BlockSet, {
@@ -149,12 +153,12 @@ export default class BuoyancyIntroScreenView extends DensityBuoyancyScreenView<B
         } );
       }
       const itemsForBoth = readoutItemsCache.get( blockSet )!;
-      submergedBox.setReadoutItems( itemsForBoth.submergedItems );
+      submergedAccordionBox.setReadoutItems( itemsForBoth.submergedItems );
       densityBox.setReadoutItems( itemsForBoth.densityItems );
     } );
 
     this.readoutPanelsVBox = new VBox( {
-      children: [ densityBox, submergedBox ],
+      children: [ densityBox, submergedAccordionBox ],
       spacing: MARGIN
     } );
     this.addChild( this.readoutPanelsVBox );

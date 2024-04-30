@@ -253,11 +253,12 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
       contentWidthMax: boatBox.width
     } );
 
-    const submergedBox = new SubmergedAccordionBox( model.gravityProperty, model.liquidMaterialProperty, {
+    const submergedAccordionBox = new SubmergedAccordionBox( model.gravityProperty, model.liquidMaterialProperty, {
       readoutItems: [ {
         readoutItem: model.block
       } ],
-      contentWidthMax: boatBox.width
+      contentWidthMax: boatBox.width,
+      tandem: tandem.createTandem( 'submergedAccordionBox' )
     } );
 
     const rightSideVBox = new VBox( {
@@ -268,7 +269,7 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
         rightBottleContent,
         rightBoatContent,
         densityBox,
-        submergedBox
+        submergedAccordionBox
       ]
     } );
 
@@ -293,7 +294,9 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
     const invisibleMaterials = [ ...DensityBuoyancyCommonConstants.BUOYANCY_FLUID_MYSTERY_MATERIALS ];
     displayedMysteryMaterials.forEach( displayed => arrayRemove( invisibleMaterials, displayed ) );
 
-    const displayOptionsNode = new BuoyancyDisplayOptionsNode( model );
+    const displayOptionsNode = new BuoyancyDisplayOptionsNode( model, {
+      tandem: tandem.createTandem( 'displayOptionsNode' )
+    } );
 
     model.sceneProperty.link( scene => {
       const materials = scene === Scene.BOTTLE ? [
@@ -317,7 +320,7 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
           readoutNameProperty: DensityBuoyancyCommonStrings.boatStringProperty
         }
         ];
-      submergedBox.setReadoutItems( submergedObjects );
+      submergedAccordionBox.setReadoutItems( submergedObjects );
     } );
 
 

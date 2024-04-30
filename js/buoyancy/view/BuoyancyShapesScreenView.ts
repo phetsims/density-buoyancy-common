@@ -81,9 +81,11 @@ export default class BuoyancyShapesScreenView extends DensityBuoyancyScreenView<
       margin: MARGIN
     } ) );
 
-    const displayOptionsNode = new BuoyancyDisplayOptionsNode( model );
+    const buoyancyDisplayOptionsNode = new BuoyancyDisplayOptionsNode( model, {
+      tandem: tandem.createTandem( 'buoyancyDisplayOptionsNode' )
+    } );
 
-    this.addChild( new AlignBox( new Panel( displayOptionsNode, DensityBuoyancyCommonConstants.PANEL_OPTIONS ), {
+    this.addChild( new AlignBox( new Panel( buoyancyDisplayOptionsNode, DensityBuoyancyCommonConstants.PANEL_OPTIONS ), {
       alignBoundsProperty: this.visibleBoundsProperty,
       xAlign: 'left',
       yAlign: 'bottom',
@@ -151,8 +153,9 @@ export default class BuoyancyShapesScreenView extends DensityBuoyancyScreenView<
       readoutItems: [ { readoutItem: model.materialProperty } ]
     } );
 
-    const submergedBox = new SubmergedAccordionBox( model.gravityProperty, model.liquidMaterialProperty, {
-      contentWidthMax: this.rightBox.content.width
+    const submergedAccordionBox = new SubmergedAccordionBox( model.gravityProperty, model.liquidMaterialProperty, {
+      contentWidthMax: this.rightBox.content.width,
+      tandem: tandem.createTandem( 'submergedAccordionBox' )
     } );
 
     Multilink.multilink( [
@@ -161,7 +164,7 @@ export default class BuoyancyShapesScreenView extends DensityBuoyancyScreenView<
       model.modeProperty
     ], ( primaryMass, secondaryMass, mode ) => {
       const masses = mode === TwoBlockMode.ONE_BLOCK ? [ primaryMass ] : [ primaryMass, secondaryMass ];
-      submergedBox.setReadoutItems( masses.map( ( mass, index ) => {
+      submergedAccordionBox.setReadoutItems( masses.map( ( mass, index ) => {
         return {
           readoutItem: mass,
           readoutNameProperty: new PatternStringProperty( DensityBuoyancyCommonStrings.shapePatternStringProperty, { tag: mass.nameProperty } ),
@@ -176,7 +179,7 @@ export default class BuoyancyShapesScreenView extends DensityBuoyancyScreenView<
       children: [
         this.rightBox,
         densityBox,
-        submergedBox
+        submergedAccordionBox
       ]
     } );
 

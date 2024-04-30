@@ -19,6 +19,7 @@ import DensityBuoyancyModel from '../model/DensityBuoyancyModel.js';
 import optionize, { combineOptions } from '../../../../phet-core/js/optionize.js';
 import Property from '../../../../axon/js/Property.js';
 import RectangularButton from '../../../../sun/js/buttons/RectangularButton.js';
+import WithRequired from '../../../../phet-core/js/types/WithRequired.js';
 
 // constants
 const arrowSpacing = 15;
@@ -46,10 +47,10 @@ type SelfOptions = {
   showFluidDisplacedProperty?: Property<boolean> | null;
 };
 
-type BuoyancyDisplayOptionsNodeOptions = SelfOptions & VBoxOptions;
+type BuoyancyDisplayOptionsNodeOptions = SelfOptions & WithRequired<VBoxOptions, 'tandem'>;
 
 export default class BuoyancyDisplayOptionsNode extends VBox {
-  public constructor( model: DensityBuoyancyModel, providedOptions?: BuoyancyDisplayOptionsNodeOptions ) {
+  public constructor( model: DensityBuoyancyModel, providedOptions: BuoyancyDisplayOptionsNodeOptions ) {
 
     const options = optionize<BuoyancyDisplayOptionsNodeOptions, SelfOptions, VBoxOptions>()( {
       includeVectorScaleControl: true,
@@ -76,7 +77,8 @@ export default class BuoyancyDisplayOptionsNode extends VBox {
 
               // Gravity
               new Checkbox( model.showGravityForceProperty, new Text( DensityBuoyancyCommonStrings.gravity.nameStringProperty, labelOptions ), combineOptions<CheckboxOptions>( {
-                layoutOptions: { column: 0, row: 0 }
+                layoutOptions: { column: 0, row: 0 },
+                tandem: options.tandem.createTandem( 'gravityCheckbox' )
               }, checkboxOptions ) ),
               new ArrowNode( 0, 0, arrowLength, 0, combineOptions<ArrowNodeOptions>( {
                 layoutOptions: { column: 1, row: 0 },
@@ -85,7 +87,8 @@ export default class BuoyancyDisplayOptionsNode extends VBox {
 
               // Buoyancy
               new Checkbox( model.showBuoyancyForceProperty, new Text( DensityBuoyancyCommonStrings.buoyancyStringProperty, labelOptions ), combineOptions<CheckboxOptions>( {
-                layoutOptions: { column: 0, row: 1 }
+                layoutOptions: { column: 0, row: 1 },
+                tandem: options.tandem.createTandem( 'buoyancyCheckbox' )
               }, checkboxOptions ) ),
               new ArrowNode( 0, 0, arrowLength, 0, combineOptions<ArrowNodeOptions>( {
                 layoutOptions: { column: 1, row: 1 },
@@ -94,7 +97,8 @@ export default class BuoyancyDisplayOptionsNode extends VBox {
 
               // Contact
               new Checkbox( model.showContactForceProperty, new Text( DensityBuoyancyCommonStrings.contactStringProperty, labelOptions ), combineOptions<CheckboxOptions>( {
-                layoutOptions: { column: 0, row: 2 }
+                layoutOptions: { column: 0, row: 2 },
+                tandem: options.tandem.createTandem( 'contactCheckbox' )
               }, checkboxOptions ) ),
               new ArrowNode( 0, 0, arrowLength, 0, combineOptions<ArrowNodeOptions>( {
                 layoutOptions: { column: 1, row: 2 },
@@ -127,12 +131,20 @@ export default class BuoyancyDisplayOptionsNode extends VBox {
             spacing: checkboxSpacing,
             align: 'left',
             children: [
-              new Checkbox( model.showMassesProperty, new Text( DensityBuoyancyCommonStrings.massesStringProperty, labelOptions ), checkboxOptions ),
-              new Checkbox( model.showForceValuesProperty, new Text( DensityBuoyancyCommonStrings.forceValuesStringProperty, labelOptions ), checkboxOptions ),
+              new Checkbox( model.showMassesProperty, new Text( DensityBuoyancyCommonStrings.massesStringProperty, labelOptions ), combineOptions<CheckboxOptions>( {
+                tandem: options.tandem.createTandem( 'massesCheckbox' )
+              }, checkboxOptions ) ),
+              new Checkbox( model.showForceValuesProperty, new Text( DensityBuoyancyCommonStrings.forceValuesStringProperty, labelOptions ), combineOptions<CheckboxOptions>( {
+                tandem: options.tandem.createTandem( 'forcesCheckbox' )
+              }, checkboxOptions ) ),
               ...( options.showFluidDisplacedProperty ?
-                [ new Checkbox( options.showFluidDisplacedProperty, new Text( DensityBuoyancyCommonStrings.fluidDisplacedStringProperty, labelOptions ), checkboxOptions ) ] : [] ),
+                [ new Checkbox( options.showFluidDisplacedProperty, new Text( DensityBuoyancyCommonStrings.fluidDisplacedStringProperty, labelOptions ), combineOptions<CheckboxOptions>( {
+                  tandem: options.tandem.createTandem( 'fluidDisplacedCheckbox' )
+                }, checkboxOptions ) ) ] : [] ),
               ...( model.supportsDepthLines ?
-                [ new Checkbox( model.showDepthLinesProperty, new Text( DensityBuoyancyCommonStrings.depthLinesStringProperty, labelOptions ), checkboxOptions ) ] : [] )
+                [ new Checkbox( model.showDepthLinesProperty, new Text( DensityBuoyancyCommonStrings.depthLinesStringProperty, labelOptions ), combineOptions<CheckboxOptions>( {
+                  tandem: options.tandem.createTandem( 'depthLinesCheckbox' )
+                }, checkboxOptions ) ) ] : [] )
             ]
           } )
         ]

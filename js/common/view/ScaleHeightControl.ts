@@ -28,12 +28,13 @@ import NumberControl, { NumberControlOptions } from '../../../../scenery-phet/js
 import NumberDisplay from '../../../../scenery-phet/js/NumberDisplay.js';
 import ArrowButton from '../../../../sun/js/buttons/ArrowButton.js';
 import Orientation from '../../../../phet-core/js/Orientation.js';
+import WithRequired from '../../../../phet-core/js/types/WithRequired.js';
 
 // constants
 const DEFAULT_RANGE = new Range( 0, 1 );
 const SCALE_X_POSITION = 0.35;
 
-type ScaleHeightSliderOptions = EmptySelfOptions & NumberControlOptions;
+type ScaleHeightSliderOptions = EmptySelfOptions & WithRequired<NumberControlOptions, 'tandem'>;
 
 export default class ScaleHeightControl extends NumberControl {
 
@@ -43,7 +44,11 @@ export default class ScaleHeightControl extends NumberControl {
                       modelViewTransform: THREEModelViewTransform,
                       providedOptions: ScaleHeightSliderOptions ) {
 
-    const scaleHeightThumbNode = new PrecisionSliderThumb();
+    const sliderTandem = providedOptions.tandem;
+    const thumbTandem = sliderTandem.createTandem( 'slider' ).createTandem( 'thumbNode' );
+    const thumbNode = new PrecisionSliderThumb( {
+      tandem: thumbTandem
+    } );
 
     // This magic number accomplishes two things:
     // 1. matching the liquid level exactly causes blue graphical fractals on the top of the scale
@@ -57,8 +62,8 @@ export default class ScaleHeightControl extends NumberControl {
     const options = optionize<ScaleHeightSliderOptions, EmptySelfOptions, NumberControlOptions>()( {
       sliderOptions: {
         orientation: Orientation.VERTICAL,
-        thumbNode: scaleHeightThumbNode,
-        thumbYOffset: scaleHeightThumbNode.height / 2,
+        thumbNode: thumbNode,
+        thumbYOffset: thumbNode.height / 2,
         trackSize: new Dimension2( 3, sliderTrackHeight )
       },
       titleNodeOptions: { tandem: Tandem.OPT_OUT },
@@ -77,7 +82,7 @@ export default class ScaleHeightControl extends NumberControl {
         } );
 
         // Set the origin to exactly where placement should be (at the bottom of the slider, to line up with the scale at the bottom
-        vBox.y = -( actualIncrement.height + margin + slider.height - scaleHeightThumbNode.width / 2 );
+        vBox.y = -( actualIncrement.height + margin + slider.height - thumbNode.width / 2 );
         return vBox;
       }
     }, providedOptions );

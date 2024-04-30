@@ -45,7 +45,10 @@ export default class BuoyancyBasicsExploreScreenView extends DensityBuoyancyScre
       cameraLookAt: DensityBuoyancyCommonConstants.BUOYANCY_CAMERA_LOOK_AT
     }, options ) );
 
-    const buoyancyDisplayOptionsNode = new BuoyancyDisplayOptionsNode( model, { includeVectorScaleControl: false } );
+    const buoyancyDisplayOptionsNode = new BuoyancyDisplayOptionsNode( model, {
+      includeVectorScaleControl: false,
+      tandem: tandem.createTandem( 'buoyancyDisplayOptionsNode' )
+    } );
 
     this.addChild( new AlignBox( new Panel( buoyancyDisplayOptionsNode, DensityBuoyancyCommonConstants.PANEL_OPTIONS ), {
       alignBoundsProperty: this.visibleBoundsProperty,
@@ -96,9 +99,10 @@ export default class BuoyancyBasicsExploreScreenView extends DensityBuoyancyScre
       } );
     } );
 
-    const submergedBox = new SubmergedAccordionBox( model.gravityProperty, model.liquidMaterialProperty, {
+    const submergedAccordionBox = new SubmergedAccordionBox( model.gravityProperty, model.liquidMaterialProperty, {
       expandedProperty: model.percentageSubmergedExpandedProperty,
-      contentWidthMax: this.rightBox.content.width
+      contentWidthMax: this.rightBox.content.width,
+      tandem: tandem.createTandem( 'submergedAccordionBox' )
     } );
 
     const customExploreScreenFormatting = [ model.primaryMass, model.secondaryMass ].map( mass => {
@@ -112,7 +116,7 @@ export default class BuoyancyBasicsExploreScreenView extends DensityBuoyancyScre
     // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
     model.secondaryMass.visibleProperty.link( visible => {
       const masses = visible ? [ model.primaryMass, model.secondaryMass ] : [ model.primaryMass ];
-      submergedBox.setReadoutItems( masses.map( ( mass, index ) => {
+      submergedAccordionBox.setReadoutItems( masses.map( ( mass, index ) => {
         return {
           readoutItem: mass,
           readoutNameProperty: customExploreScreenFormatting[ index ].readoutNameProperty,
@@ -126,7 +130,7 @@ export default class BuoyancyBasicsExploreScreenView extends DensityBuoyancyScre
       align: 'right',
       children: [
         this.rightBox,
-        submergedBox
+        submergedAccordionBox
       ]
     } );
 

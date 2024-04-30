@@ -21,6 +21,7 @@ import BlockSet from '../../common/model/BlockSet.js';
 import VolumelessScale from '../../common/model/VolumelessScale.js';
 import NumberProperty from '../../../../axon/js/NumberProperty.js';
 import Range from '../../../../dot/js/Range.js';
+import DensityBuoyancyCommonColors from '../../common/view/DensityBuoyancyCommonColors.js';
 
 export type BuoyancyBasicsCompareModelOptions = StrictOmit<BlockSetModelOptions<BlockSet>, 'initialMode' | 'BlockSet' | 'createMassesCallback' | 'regenerateMassesCallback' | 'positionMassesCallback'>;
 
@@ -50,25 +51,39 @@ export default class BuoyancyBasicsCompareModel extends BlockSetModel<BlockSet> 
         switch( blockSet ) {
           case BlockSet.SAME_MASS:
             return [
-              Cube.createWithMass( model.engine, Material.WOOD, Vector2.ZERO, 5, {
-                tandem: sameMassTandem.createTandem( 'blockA' ),
-                adjustableMaterial: true,
-                tag: MassTag.ONE_A.withColorProperty( MassTag.PRIMARY_COLOR_PROPERTY )
-              } ),
-              Cube.createWithMass( model.engine, Material.BRICK, Vector2.ZERO, 5, {
-                tandem: sameMassTandem.createTandem( 'blockB' ),
-                adjustableMaterial: true,
-                tag: MassTag.ONE_B.withColorProperty( MassTag.SECONDARY_COLOR_PROPERTY )
-              } )
+              Cube.createWithMass( model.engine,
+                Material.createCustomMaterial( {
+                  density: 500, // V=10L
+                  customColor: DensityBuoyancyCommonColors.compareRedColorProperty
+                } ), Vector2.ZERO, 5, {
+                  tandem: sameMassTandem.createTandem( 'blockA' ),
+                  adjustableMaterial: true,
+                  tag: MassTag.ONE_A.withColorProperty( MassTag.PRIMARY_COLOR_PROPERTY )
+                } ),
+              Cube.createWithMass( model.engine,
+                Material.createCustomMaterial( {
+                  density: 2500, // V=2L
+                  customColor: DensityBuoyancyCommonColors.compareBlueColorProperty
+                } ), Vector2.ZERO, 5, {
+                  tandem: sameMassTandem.createTandem( 'blockB' ),
+                  adjustableMaterial: true,
+                  tag: MassTag.ONE_B.withColorProperty( MassTag.SECONDARY_COLOR_PROPERTY )
+                } )
             ];
           case BlockSet.SAME_VOLUME:
             return [
-              Cube.createWithVolume( model.engine, Material.WOOD, Vector2.ZERO, 0.005, {
+              Cube.createWithVolume( model.engine, Material.createCustomMaterial( {
+                density: 400, // m=2kg
+                customColor: DensityBuoyancyCommonColors.compareRedColorProperty
+              } ), Vector2.ZERO, 0.005, {
                 tandem: sameVolumeTandem.createTandem( 'blockA' ),
                 adjustableMaterial: true,
                 tag: MassTag.TWO_A.withColorProperty( MassTag.PRIMARY_COLOR_PROPERTY )
               } ),
-              Cube.createWithVolume( model.engine, Material.BRICK, Vector2.ZERO, 0.005, {
+              Cube.createWithVolume( model.engine, Material.createCustomMaterial( {
+                density: 2000, // m=2kg
+                customColor: DensityBuoyancyCommonColors.compareBlueColorProperty
+              } ), Vector2.ZERO, 0.005, {
                 tandem: sameVolumeTandem.createTandem( 'blockB' ),
                 adjustableMaterial: true,
                 tag: MassTag.TWO_B.withColorProperty( MassTag.SECONDARY_COLOR_PROPERTY )
@@ -76,12 +91,18 @@ export default class BuoyancyBasicsCompareModel extends BlockSetModel<BlockSet> 
             ];
           case BlockSet.SAME_DENSITY:
             return [
-              Cube.createWithMass( model.engine, Material.WOOD, Vector2.ZERO, 2, {
+              Cube.createWithMass( model.engine, Material.createCustomMaterial( {
+                density: 400, // V=5L
+                customColor: DensityBuoyancyCommonColors.compareRedColorProperty
+              } ), Vector2.ZERO, 2, {
                 tandem: sameDensityTandem.createTandem( 'blockA' ),
                 adjustableMaterial: true,
                 tag: MassTag.THREE_A.withColorProperty( MassTag.PRIMARY_COLOR_PROPERTY )
               } ),
-              Cube.createWithMass( model.engine, Material.WOOD, Vector2.ZERO, 4, {
+              Cube.createWithMass( model.engine, Material.createCustomMaterial( {
+                density: 400, // V=10L
+                customColor: DensityBuoyancyCommonColors.compareBlueColorProperty
+              } ), Vector2.ZERO, 4, {
                 tandem: sameDensityTandem.createTandem( 'blockB' ),
                 adjustableMaterial: true,
                 tag: MassTag.THREE_B.withColorProperty( MassTag.SECONDARY_COLOR_PROPERTY )

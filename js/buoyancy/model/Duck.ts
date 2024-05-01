@@ -72,7 +72,8 @@ export default class Duck extends Mass {
    * Updates the size of the duck.
    */
   public updateSize( size: Bounds3 ): void {
-    this.engine.updateFromVertices( this.body, Duck.getDuckVertices( size.width, size.height ), true );
+    const vertices = Duck.getDuckVertices( size.width, size.height );
+    this.engine.updateFromVertices( this.body, vertices, true );
     this.sizeProperty.value = size;
     this.shapeProperty.value = Duck.getDuckShape( size.width, size.height );
 
@@ -82,6 +83,10 @@ export default class Duck extends Mass {
 
     this.forceOffsetProperty.value = new Vector3( 0, 0, size.maxZ );
     this.massLabelOffsetProperty.value = new Vector3( 0, size.minY * 0.5, size.maxZ * 0.7 );
+
+    // Keep the body centered, see https://github.com/phetsims/buoyancy/issues/148
+    this.bodyOffsetProperty.value = Utils.centroidOfPolygon( vertices ).negated();
+    this.writeData();
   }
 
   /**

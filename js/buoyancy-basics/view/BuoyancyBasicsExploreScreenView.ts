@@ -9,7 +9,7 @@
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import { combineOptions } from '../../../../phet-core/js/optionize.js';
-import { AlignBox, ManualConstraint, Node, VBox } from '../../../../scenery/js/imports.js';
+import { AlignBox, ManualConstraint, Node, RichText, VBox } from '../../../../scenery/js/imports.js';
 import Panel from '../../../../sun/js/Panel.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 import Material from '../../common/model/Material.js';
@@ -28,6 +28,9 @@ import Vector3 from '../../../../dot/js/Vector3.js';
 import Bounds2 from '../../../../dot/js/Bounds2.js';
 import ScaleHeightControl from '../../common/view/ScaleHeightControl.js';
 import FluidsRadioButtonPanel from '../../buoyancy/view/FluidsRadioButtonPanel.js';
+import AccordionBox, { AccordionBoxOptions } from '../../../../sun/js/AccordionBox.js';
+import DensityNumberLineNode from '../../density/view/DensityNumberLineNode.js';
+import DensityBuoyancyCommonPreferences from '../../common/model/DensityBuoyancyCommonPreferences.js';
 
 // constants
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
@@ -141,6 +144,46 @@ export default class BuoyancyBasicsExploreScreenView extends DensityBuoyancyScre
       margin: MARGIN
     } ) );
 
+
+    const accordionTandem = tandem.createTandem( 'densityAccordionBox' );
+    const densityAccordionBox = new AccordionBox( new DensityNumberLineNode(
+      // DerivedProperty doesn't need disposal, since everything here lives for the lifetime of the simulation
+      new DerivedProperty( [ model.primaryMass.materialProperty ], material => material.density ),
+      new DerivedProperty( [ model.secondaryMass.materialProperty ], material => material.density ),
+      model.secondaryMass.visibleProperty,
+      {
+        tandem: accordionTandem.createTandem( 'densityReadout' ),
+        visiblePropertyOptions: {
+          phetioReadOnly: true
+        }
+      }
+    ), combineOptions<AccordionBoxOptions>( {
+      titleNode: new RichText( new DerivedProperty( [
+        DensityBuoyancyCommonPreferences.volumeUnitsProperty,
+        DensityBuoyancyCommonStrings.densityReadoutStringProperty,
+        DensityBuoyancyCommonStrings.densityReadoutDecimetersCubedStringProperty
+      ], ( units, litersReadout, decimetersCubedReadout ) => {
+        return units === 'liters' ? litersReadout : decimetersCubedReadout;
+      } ), {
+        font: DensityBuoyancyCommonConstants.TITLE_FONT,
+        maxWidth: 200,
+        visiblePropertyOptions: {
+          phetioReadOnly: true
+        },
+        tandem: accordionTandem.createTandem( 'titleText' )
+      } ),
+      expandedProperty: model.densityExpandedProperty,
+      buttonAlign: 'left' as const,
+      tandem: accordionTandem
+    }, DensityBuoyancyCommonConstants.ACCORDION_BOX_OPTIONS ) );
+
+    this.addChild( new AlignBox( densityAccordionBox, {
+      alignBoundsProperty: this.visibleBoundsProperty,
+      xAlign: 'center',
+      yAlign: 'top',
+      margin: MARGIN
+    } ) );
+
     const blocksRadioButtonGroup = new BlocksRadioButtonGroup( model.modeProperty, {
       tandem: this.tandem.createTandem( 'blocksRadioButtonGroup' )
     } );
@@ -174,7 +217,6 @@ export default class BuoyancyBasicsExploreScreenView extends DensityBuoyancyScre
 
   public override layout( viewBounds: Bounds2 ): void {
     super.layout( viewBounds );
-
 
     // X margin should be based on the front of the pool
     this.scaleHeightControl.x = this.modelToViewPoint( new Vector3(

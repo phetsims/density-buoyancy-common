@@ -66,6 +66,9 @@ const DensityBuoyancyCommonColors = {
   labelSecondaryProperty: new ProfileColorProperty( densityBuoyancyCommon, 'labelSecondary', {
     default: new Color( 48, 89, 166 )
   } ),
+  liquidLabelProperty: new ProfileColorProperty( densityBuoyancyCommon, 'liquidLabel', {
+    default: new Color( 0, 0, 0 )
+  } ),
 
   compareYellowColorProperty: new ProfileColorProperty( densityBuoyancyCommon, 'compareYellow', {
     default: new Color( 252, 246, 80 )

@@ -31,6 +31,7 @@ import FluidsRadioButtonPanel from '../../buoyancy/view/FluidsRadioButtonPanel.j
 import AccordionBox, { AccordionBoxOptions } from '../../../../sun/js/AccordionBox.js';
 import DensityNumberLineNode from '../../density/view/DensityNumberLineNode.js';
 import DensityBuoyancyCommonPreferences from '../../common/model/DensityBuoyancyCommonPreferences.js';
+import DensityBuoyancyCommonColors from '../../common/view/DensityBuoyancyCommonColors.js';
 
 // constants
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
@@ -147,11 +148,23 @@ export default class BuoyancyBasicsExploreScreenView extends DensityBuoyancyScre
 
     const accordionTandem = tandem.createTandem( 'densityAccordionBox' );
     const densityAccordionBox = new AccordionBox( new DensityNumberLineNode(
-      // DerivedProperty doesn't need disposal, since everything here lives for the lifetime of the simulation
-      new DerivedProperty( [ model.primaryMass.materialProperty ], material => material.density ),
-      new DerivedProperty( [ model.secondaryMass.materialProperty ], material => material.density ),
-      model.secondaryMass.visibleProperty,
       {
+        displayDensities: [
+          // {
+          //   densityProperty: new DerivedProperty( [ model.liquidDensityProperty ], density => density ),
+          //   color: DensityBuoyancyCommonColors.liquidLabelProperty
+          // },
+          // DerivedProperty doesn't need disposal, since everything here lives for the lifetime of the simulation
+          {
+            densityProperty: new DerivedProperty( [ model.primaryMass.materialProperty ], material => material.density ),
+            color: DensityBuoyancyCommonColors.labelPrimaryProperty
+          },
+          {
+            densityProperty: new DerivedProperty( [ model.secondaryMass.materialProperty ], material => material.density ),
+            color: DensityBuoyancyCommonColors.labelSecondaryProperty,
+            visibleProperty: model.secondaryMass.visibleProperty
+          }
+        ],
         materials: [
           Material.HUMAN,
           Material.GLASS,

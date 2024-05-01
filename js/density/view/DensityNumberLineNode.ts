@@ -7,20 +7,25 @@
  */
 
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
-import Multilink from '../../../../axon/js/Multilink.js';
 import Bounds2 from '../../../../dot/js/Bounds2.js';
 import optionize, { combineOptions } from '../../../../phet-core/js/optionize.js';
 import ArrowNode, { ArrowNodeOptions } from '../../../../scenery-phet/js/ArrowNode.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
-import { Line, ManualConstraint, Node, NodeOptions, Rectangle, RichText, Text, TextOptions } from '../../../../scenery/js/imports.js';
+import { Line, ManualConstraint, Node, NodeOptions, Rectangle, RichText, Text, TextOptions, TPaint } from '../../../../scenery/js/imports.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 import Material from '../../common/model/Material.js';
-import DensityBuoyancyCommonColors from '../../common/view/DensityBuoyancyCommonColors.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import PatternStringProperty from '../../../../axon/js/PatternStringProperty.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
 
+export type DisplayDensity = {
+  densityProperty: TReadOnlyProperty<number>;
+  visibleProperty?: TReadOnlyProperty<boolean>;
+  color?: TPaint;
+};
+
 type SelfOptions = {
+  displayDensities: DisplayDensity[];
   materials?: Material[];
   materialsMaxWidths?: number[];
   width?: number;
@@ -34,12 +39,11 @@ const WIDTH = 400;
 const HEIGHT = 22;
 const MAX_DENSITY = 10000;
 
-type DensityNumberLineNodeOptions = SelfOptions & NodeOptions;
+export type DensityNumberLineNodeOptions = SelfOptions & NodeOptions;
 
 export default class DensityNumberLineNode extends Node {
 
-  public constructor( densityAProperty: TReadOnlyProperty<number>, densityBProperty: TReadOnlyProperty<number>,
-                      secondaryMassVisibleProperty: TReadOnlyProperty<boolean>, providedOptions?: DensityNumberLineNodeOptions ) {
+  public constructor( providedOptions?: DensityNumberLineNodeOptions ) {
 
     const options = optionize<DensityNumberLineNodeOptions, SelfOptions, NodeOptions>()( {
       materials: [
@@ -118,10 +122,6 @@ export default class DensityNumberLineNode extends Node {
       maxWidth: options.maxLabelWidth
     };
 
-    const primaryArrow = new ArrowNode( 0, -7, 0, 0, combineOptions<ArrowNodeOptions>( {
-      fill: DensityBuoyancyCommonColors.labelPrimaryProperty
-    }, arrowOptions ) );
-
     const createDensityStringProperty = ( densityProperty: TReadOnlyProperty<number> ) => new PatternStringProperty( DensityBuoyancyCommonConstants.KILOGRAMS_PER_VOLUME_PATTERN_STRING_PROPERTY, {
       value: densityProperty
     }, {
@@ -132,63 +132,47 @@ export default class DensityNumberLineNode extends Node {
       decimalPlaces: 2
     } );
 
-    const primaryLabel = new RichText( createDensityStringProperty( densityAProperty ), combineOptions<TextOptions>( {
-      fill: DensityBuoyancyCommonColors.labelPrimaryProperty
-    }, labelOptions ) );
+    options.displayDensities.forEach( ( { densityProperty, visibleProperty, color }, index ) => {
 
-    // Avoid infinite loops like https://github.com/phetsims/axon/issues/447 by applying the maxWidth to a different Node
-    // than the one that is used for layout.
-    const primaryLabelContainer = new Node( { children: [ primaryLabel ] } );
-    const primaryMarker = new Node( {
-      children: [
-        primaryArrow,
-        primaryLabelContainer
-      ]
-    } );
-    this.addChild( primaryMarker );
+      const arrow = new ArrowNode( 0, index === 0 ? -7 : 7, 0, 0, combineOptions<ArrowNodeOptions>( {
+        fill: color
+      }, arrowOptions ) );
 
-    const secondaryArrow = new ArrowNode( 0, 7, 0, 0, combineOptions<ArrowNodeOptions>( {
-      fill: DensityBuoyancyCommonColors.labelSecondaryProperty
-    }, arrowOptions ) );
-    const secondaryLabel = new RichText( createDensityStringProperty( densityBProperty ), combineOptions<TextOptions>( {
-      fill: DensityBuoyancyCommonColors.labelSecondaryProperty
-    }, labelOptions ) );
+      const label = new RichText( createDensityStringProperty( densityProperty ), combineOptions<TextOptions>( {
+        fill: color
+      }, labelOptions ) );
 
-    // Avoid infinite loops like https://github.com/phetsims/axon/issues/447 by applying the maxWidth to a different Node
-    // than the one that is used for layout.
-    const secondaryLabelContainer = new Node( { children: [ secondaryLabel ] } );
-    const secondaryMarker = new Node( {
-      children: [
-        secondaryArrow,
-        secondaryLabelContainer
-      ],
-      y: options.height
-    } );
-    this.addChild( secondaryMarker );
+      // Avoid infinite loops like https://github.com/phetsims/axon/issues/447 by applying the maxWidth to a different Node
+      // than the one that is used for layout.
+      const labelContainer = new Node( { children: [ label ] } );
+      const marker = new Node( {
+        children: [
+          arrow,
+          labelContainer
+        ],
+        y: index === 0 ? 0 : options.height
+      } );
+      this.addChild( marker );
 
-    // Density links
-    // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
-    densityAProperty.link( density => {
-      primaryMarker.x = modelViewTransform( density );
-    } );
-    ManualConstraint.create( this, [ primaryLabelContainer, primaryArrow ], ( primaryLabelContainerProxy, primaryArrowProxy ) => {
-      primaryLabelContainerProxy.centerBottom = primaryArrowProxy.centerTop;
-    } );
+      // Density links
+      // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
+      densityProperty.link( density => {
+        marker.x = modelViewTransform( density );
+        marker.visible = density < options.maxDensity + 1e-5; // Allow rounding error
+      } );
+      ManualConstraint.create( this, [ labelContainer, arrow ], ( labelContainerProxy, arrowProxy ) => {
+        if ( index === 0 ) {
+          labelContainerProxy.centerBottom = arrowProxy.centerTop;
+        }
+        else {
+          labelContainerProxy.centerTop = arrowProxy.centerBottom;
+        }
+      } );
 
-    // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
-    densityBProperty.link( density => {
-      secondaryMarker.x = modelViewTransform( density );
-    } );
-    ManualConstraint.create( this, [ secondaryLabelContainer, secondaryArrow ], ( secondaryLabelContainerProxy, secondaryArrowProxy ) => {
-      secondaryLabelContainerProxy.centerTop = secondaryArrowProxy.centerBottom;
-    } );
-
-    // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
-    densityAProperty.link( density => {
-      primaryMarker.visible = density < options.maxDensity + 1e-5; // Allow rounding error
-    } );
-    Multilink.multilink( [ secondaryMassVisibleProperty, densityBProperty ], ( visible, density ) => {
-      secondaryMarker.visible = visible && density < options.maxDensity + 1e-5; // Allow rounding error
+      // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
+      visibleProperty && visibleProperty.link( visible => {
+        marker.visible = visible;
+      } );
     } );
 
     this.mutate( options );

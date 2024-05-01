@@ -26,6 +26,7 @@ import { MassShape } from '../../common/model/MassShape.js';
 import optionize, { EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
 import ApplicationsMass, { ApplicationsMassOptions } from './ApplicationsMass.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
+import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 
 export type BoatOptions = StrictOmit<ApplicationsMassOptions, 'body' | 'shape' | 'volume' | 'material' | 'massShape'>;
 
@@ -42,7 +43,7 @@ export default class Boat extends ApplicationsMass {
   // volume. This is much preferred to trying to redraw the shape to a different size.
   public stepMultiplier: number;
 
-  // REVIEW: Doc needed, https://github.com/phetsims/buoyancy/issues/142
+  // Wether the boat is underwater or not
   public isUnderwater = false;
 
   public constructor( engine: PhysicsEngine, blockWidthProperty: TReadOnlyProperty<number>, liquidMaterialProperty: TProperty<Material>, providedOptions: BoatOptions ) {
@@ -221,6 +222,14 @@ export default class Boat extends ApplicationsMass {
 
       return Mass.evaluatePiecewiseLinear( BoatDesign.ONE_LITER_INTERNAL_VOLUMES, ratio ) * this.stepMultiplier * this.stepMultiplier * this.stepMultiplier;
     }
+  }
+
+  /**
+   * Checks if the boat is underwater and sets the flag
+   */
+  public setUnderwaterState( liquidLevel: number ): void {
+    this.isUnderwater = liquidLevel >= this.stepBottom;
+    this.isUnderwater = this.stepTop < liquidLevel - DensityBuoyancyCommonConstants.TOLERANCE;
   }
 
   /**

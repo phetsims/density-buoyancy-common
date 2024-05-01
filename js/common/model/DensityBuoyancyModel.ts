@@ -34,7 +34,6 @@ import TRangedProperty from '../../../../axon/js/TRangedProperty.js';
 import TModel from '../../../../joist/js/TModel.js';
 import { PhetioObjectOptions } from '../../../../tandem/js/PhetioObject.js';
 import PickRequired from '../../../../phet-core/js/types/PickRequired.js';
-import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
 import Matrix3 from '../../../../dot/js/Matrix3.js';
 
 // constants
@@ -305,8 +304,7 @@ export default class DensityBuoyancyModel implements TModel {
       const boat = this.getBoat();
 
       if ( boat && dt ) {
-        // REVIEW: I kinda feel like using a method to set this would be more clear. https://github.com/phetsims/buoyancy/issues/142
-        boat.isUnderwater = boat.stepTop < this.pool.liquidYInterpolatedProperty.value - DensityBuoyancyCommonConstants.TOLERANCE;
+        boat.setUnderwaterState( this.pool.liquidYInterpolatedProperty.value );
         const nextBoatVerticalVelocity = this.engine.bodyGetVelocity( boat.body ).y;
         boatVerticalAcceleration = ( nextBoatVerticalVelocity - boatVerticalVelocity ) / dt;
         boatVerticalVelocity = nextBoatVerticalVelocity;

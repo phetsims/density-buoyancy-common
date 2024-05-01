@@ -305,6 +305,7 @@ export default class DensityBuoyancyModel implements TModel {
       const boat = this.getBoat();
 
       if ( boat && dt ) {
+        // REVIEW: I kinda feel like using a method to set this would be more clear. https://github.com/phetsims/buoyancy/issues/142
         boat.isUnderwater = boat.stepTop < this.pool.liquidYInterpolatedProperty.value - DensityBuoyancyCommonConstants.TOLERANCE;
         const nextBoatVerticalVelocity = this.engine.bodyGetVelocity( boat.body ).y;
         boatVerticalAcceleration = ( nextBoatVerticalVelocity - boatVerticalVelocity ) / dt;

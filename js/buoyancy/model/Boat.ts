@@ -42,6 +42,7 @@ export default class Boat extends ApplicationsMass {
   // volume. This is much preferred to trying to redraw the shape to a different size.
   public stepMultiplier: number;
 
+  // REVIEW: Doc needed, https://github.com/phetsims/buoyancy/issues/142
   public isUnderwater = false;
 
   public constructor( engine: PhysicsEngine, blockWidthProperty: TReadOnlyProperty<number>, liquidMaterialProperty: TProperty<Material>, providedOptions: BoatOptions ) {

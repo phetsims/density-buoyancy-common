@@ -9,7 +9,7 @@
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import Multilink from '../../../../axon/js/Multilink.js';
 import Bounds2 from '../../../../dot/js/Bounds2.js';
-import { combineOptions } from '../../../../phet-core/js/optionize.js';
+import optionize, { combineOptions } from '../../../../phet-core/js/optionize.js';
 import ArrowNode, { ArrowNodeOptions } from '../../../../scenery-phet/js/ArrowNode.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import { Line, ManualConstraint, Node, NodeOptions, Rectangle, RichText, Text, TextOptions } from '../../../../scenery/js/imports.js';
@@ -20,46 +20,65 @@ import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import PatternStringProperty from '../../../../axon/js/PatternStringProperty.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
 
-// constants
-const materials = [
-  Material.HUMAN,
-  Material.GLASS,
-  Material.TITANIUM,
-  Material.STEEL,
-  Material.COPPER
-];
-// We need different maxWidths for each, since some are closer to others
-const materialsMaxWidths = [
-  70, 70, 70, 45, 45
-];
+type SelfOptions = {
+  materials?: Material[];
+  materialsMaxWidths?: number[];
+  width?: number;
+  height?: number;
+  maxDensity?: number;
+  linePadding?: number;
+  mvt?: ( density: number ) => number;
+  maxLabelWidth?: number;
+};
+
 const WIDTH = 400;
 const HEIGHT = 22;
 const MAX_DENSITY = 10000;
-const LINE_PADDING = 2;
-const mvt = ( density: number ) => WIDTH * Math.min( density, MAX_DENSITY ) / MAX_DENSITY;
-const MAX_LABEL_WIDTH = 80;
+
+type DensityNumberLineNodeOptions = SelfOptions & NodeOptions;
 
 export default class DensityNumberLineNode extends Node {
 
   public constructor( densityAProperty: TReadOnlyProperty<number>, densityBProperty: TReadOnlyProperty<number>,
-                      secondaryMassVisibleProperty: TReadOnlyProperty<boolean>, options?: NodeOptions ) {
+                      secondaryMassVisibleProperty: TReadOnlyProperty<boolean>, providedOptions?: DensityNumberLineNodeOptions ) {
+
+    const options = optionize<DensityNumberLineNodeOptions, SelfOptions, NodeOptions>()( {
+      materials: [
+        Material.HUMAN,
+        Material.GLASS,
+        Material.TITANIUM,
+        Material.STEEL,
+        Material.COPPER
+      ],
+      // We need different maxWidths for each, since some are closer to others
+      materialsMaxWidths: [
+        70, 70, 70, 45, 45
+      ],
+      width: WIDTH,
+      height: HEIGHT,
+      maxDensity: MAX_DENSITY,
+      linePadding: 2,
+      mvt: ( density: number ) => WIDTH * Math.min( density, MAX_DENSITY ) / MAX_DENSITY,
+      maxLabelWidth: 80
+    }, providedOptions );
+
     super();
 
-    const background = new Rectangle( 0, 0, WIDTH, HEIGHT, {
+    const background = new Rectangle( 0, 0, options.width, options.height, {
       fill: 'white',
       stroke: 'black'
     } );
     this.addChild( background );
 
     // Include the width necessary for the labels
-    background.localBounds = new Bounds2( 0, 0, WIDTH, HEIGHT ).dilatedX( MAX_LABEL_WIDTH / 2 );
+    background.localBounds = new Bounds2( 0, 0, options.width, options.height ).dilatedX( options.maxLabelWidth / 2 );
 
     const lineOptions = { stroke: 'black' };
-    materials.forEach( ( material, index ) => {
-      const x = mvt( material.density );
+    options.materials.forEach( ( material, index ) => {
+      const x = options.mvt( material.density );
       const label = new Text( material.nameProperty, {
         font: new PhetFont( 12 ),
-        maxWidth: materialsMaxWidths[ index ]
+        maxWidth: options.materialsMaxWidths[ index ]
       } );
 
       // Avoid infinite loops like https://github.com/phetsims/axon/issues/447 by applying the maxWidth to a different Node
@@ -67,11 +86,11 @@ export default class DensityNumberLineNode extends Node {
       const labelContainer = new Node( { children: [ label ] } );
       ManualConstraint.create( this, [ labelContainer ], labelContainerProxy => {
         labelContainerProxy.centerX = x;
-        labelContainerProxy.centerY = HEIGHT / 2;
+        labelContainerProxy.centerY = options.height / 2;
       } );
       this.addChild( labelContainer );
-      this.addChild( new Line( x, 0, x, labelContainer.top - LINE_PADDING, lineOptions ) );
-      this.addChild( new Line( x, HEIGHT, x, labelContainer.bottom + LINE_PADDING, lineOptions ) );
+      this.addChild( new Line( x, 0, x, labelContainer.top - options.linePadding, lineOptions ) );
+      this.addChild( new Line( x, options.height, x, labelContainer.bottom + options.linePadding, lineOptions ) );
     } );
 
     this.addChild( new Text( '0', {
@@ -81,7 +100,7 @@ export default class DensityNumberLineNode extends Node {
     } ) );
 
     this.addChild( new Text( '10', {
-      left: WIDTH + 10,
+      left: options.width + 10,
       centerY: background.centerY,
       font: DensityBuoyancyCommonConstants.ITEM_FONT
     } ) );
@@ -94,7 +113,7 @@ export default class DensityNumberLineNode extends Node {
     };
     const labelOptions = {
       font: new PhetFont( { size: 16, weight: 'bold' } ),
-      maxWidth: MAX_LABEL_WIDTH
+      maxWidth: options.maxLabelWidth
     };
 
     const primaryArrow = new ArrowNode( 0, -7, 0, 0, combineOptions<ArrowNodeOptions>( {
@@ -141,14 +160,14 @@ export default class DensityNumberLineNode extends Node {
         secondaryArrow,
         secondaryLabelContainer
       ],
-      y: HEIGHT
+      y: options.height
     } );
     this.addChild( secondaryMarker );
 
     // Density links
     // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
     densityAProperty.link( density => {
-      primaryMarker.x = mvt( density );
+      primaryMarker.x = options.mvt( density );
     } );
     ManualConstraint.create( this, [ primaryLabelContainer, primaryArrow ], ( primaryLabelContainerProxy, primaryArrowProxy ) => {
       primaryLabelContainerProxy.centerBottom = primaryArrowProxy.centerTop;
@@ -156,7 +175,7 @@ export default class DensityNumberLineNode extends Node {
 
     // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
     densityBProperty.link( density => {
-      secondaryMarker.x = mvt( density );
+      secondaryMarker.x = options.mvt( density );
     } );
     ManualConstraint.create( this, [ secondaryLabelContainer, secondaryArrow ], ( secondaryLabelContainerProxy, secondaryArrowProxy ) => {
       secondaryLabelContainerProxy.centerTop = secondaryArrowProxy.centerBottom;

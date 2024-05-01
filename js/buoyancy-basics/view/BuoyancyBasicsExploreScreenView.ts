@@ -152,6 +152,15 @@ export default class BuoyancyBasicsExploreScreenView extends DensityBuoyancyScre
       new DerivedProperty( [ model.secondaryMass.materialProperty ], material => material.density ),
       model.secondaryMass.visibleProperty,
       {
+        materials: [
+          Material.HUMAN,
+          Material.GLASS,
+          Material.TITANIUM,
+          Material.STEEL,
+          Material.LEAD,
+          Material.MERCURY
+        ],
+        maxDensity: 15000,
         tandem: accordionTandem.createTandem( 'densityReadout' ),
         visiblePropertyOptions: {
           phetioReadOnly: true

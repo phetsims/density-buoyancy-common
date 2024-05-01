@@ -27,7 +27,6 @@ type SelfOptions = {
   height?: number;
   maxDensity?: number;
   linePadding?: number;
-  mvt?: ( density: number ) => number;
   maxLabelWidth?: number;
 };
 
@@ -58,9 +57,12 @@ export default class DensityNumberLineNode extends Node {
       height: HEIGHT,
       maxDensity: MAX_DENSITY,
       linePadding: 2,
-      mvt: ( density: number ) => WIDTH * Math.min( density, MAX_DENSITY ) / MAX_DENSITY,
       maxLabelWidth: 80
     }, providedOptions );
+
+    const modelViewTransform = ( density: number ) => {
+      return options.width * Math.min( density, options.maxDensity ) / options.maxDensity;
+    };
 
     super();
 
@@ -75,7 +77,7 @@ export default class DensityNumberLineNode extends Node {
 
     const lineOptions = { stroke: 'black' };
     options.materials.forEach( ( material, index ) => {
-      const x = options.mvt( material.density );
+      const x = modelViewTransform( material.density );
       const label = new Text( material.nameProperty, {
         font: new PhetFont( 12 ),
         maxWidth: options.materialsMaxWidths[ index ]
@@ -99,7 +101,7 @@ export default class DensityNumberLineNode extends Node {
       font: DensityBuoyancyCommonConstants.ITEM_FONT
     } ) );
 
-    this.addChild( new Text( '10', {
+    this.addChild( new Text( options.maxDensity / DensityBuoyancyCommonConstants.LITERS_IN_CUBIC_METER, {
       left: options.width + 10,
       centerY: background.centerY,
       font: DensityBuoyancyCommonConstants.ITEM_FONT
@@ -124,7 +126,7 @@ export default class DensityNumberLineNode extends Node {
       value: densityProperty
     }, {
       maps: {
-        value: ( density: number ) => density / 1000
+        value: ( density: number ) => density / DensityBuoyancyCommonConstants.LITERS_IN_CUBIC_METER
       },
       tandem: Tandem.OPT_OUT,
       decimalPlaces: 2
@@ -167,7 +169,7 @@ export default class DensityNumberLineNode extends Node {
     // Density links
     // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
     densityAProperty.link( density => {
-      primaryMarker.x = options.mvt( density );
+      primaryMarker.x = modelViewTransform( density );
     } );
     ManualConstraint.create( this, [ primaryLabelContainer, primaryArrow ], ( primaryLabelContainerProxy, primaryArrowProxy ) => {
       primaryLabelContainerProxy.centerBottom = primaryArrowProxy.centerTop;
@@ -175,7 +177,7 @@ export default class DensityNumberLineNode extends Node {
 
     // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
     densityBProperty.link( density => {
-      secondaryMarker.x = options.mvt( density );
+      secondaryMarker.x = modelViewTransform( density );
     } );
     ManualConstraint.create( this, [ secondaryLabelContainer, secondaryArrow ], ( secondaryLabelContainerProxy, secondaryArrowProxy ) => {
       secondaryLabelContainerProxy.centerTop = secondaryArrowProxy.centerBottom;
@@ -183,10 +185,10 @@ export default class DensityNumberLineNode extends Node {
 
     // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
     densityAProperty.link( density => {
-      primaryMarker.visible = density < MAX_DENSITY + 1e-5; // Allow rounding error
+      primaryMarker.visible = density < options.maxDensity + 1e-5; // Allow rounding error
     } );
     Multilink.multilink( [ secondaryMassVisibleProperty, densityBProperty ], ( visible, density ) => {
-      secondaryMarker.visible = visible && density < MAX_DENSITY + 1e-5; // Allow rounding error
+      secondaryMarker.visible = visible && density < options.maxDensity + 1e-5; // Allow rounding error
     } );
 
     this.mutate( options );

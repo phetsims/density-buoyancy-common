@@ -116,6 +116,8 @@ type SelfOptions = {
   matrix?: Matrix3;
   canRotate?: boolean;
   canMove?: boolean;
+
+  // Allow PhET-iO customization of the material beyond initial value, see https://github.com/phetsims/density/issues/101
   adjustableMaterial?: boolean;
   tag?: MassTag;
   phetioType?: IOType;

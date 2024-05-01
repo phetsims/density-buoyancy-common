@@ -226,7 +226,7 @@ export default class Duck extends Mass {
    */
   public static getVolume( size: Bounds3 ): number {
     // Hard coded normalized volume obtained from Blender
-    return 0.128 * size.width * size.height * size.depth;
+    return 0.5 * size.width * size.height * size.depth;
   }
 
   public static DuckIO = new IOType( 'DuckIO', {

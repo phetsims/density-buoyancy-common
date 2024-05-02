@@ -15,7 +15,7 @@ import NumberControl, { NumberControlOptions } from '../../../../scenery-phet/js
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import { Text } from '../../../../scenery/js/imports.js';
 import SunConstants from '../../../../sun/js/SunConstants.js';
-import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
+import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import TRangedProperty from '../../../../axon/js/TRangedProperty.js';
 import Tandem from '../../../../tandem/js/Tandem.js';

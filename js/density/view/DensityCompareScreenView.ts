@@ -17,7 +17,7 @@ import DensityBuoyancyScreenView, { DensityBuoyancyScreenViewOptions } from '../
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import DensityCompareModel from '../model/DensityCompareModel.js';
-import ComparisonNumberControl from './ComparisonNumberControl.js';
+import ComparisonNumberControl from '../../common/view/ComparisonNumberControl.js';
 import Bounds2 from '../../../../dot/js/Bounds2.js';
 import { combineOptions } from '../../../../phet-core/js/optionize.js';
 import ThreeUtils from '../../../../mobius/js/ThreeUtils.js';
@@ -87,6 +87,7 @@ export default class DensityCompareScreenView extends DensityBuoyancyScreenView<
       factor: 1 / 1000
     } );
 
+    // TODO: ComparisonControlPanel refactor, https://github.com/phetsims/buoyancy-basics/issues/5
     const massNumberControlTandem = tandem.createTandem( 'massNumberControl' );
     const massNumberControl = new ComparisonNumberControl(
       model.massProperty,

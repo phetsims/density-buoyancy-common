@@ -7,8 +7,8 @@
  */
 
 import { combineOptions } from '../../../../phet-core/js/optionize.js';
-import { AlignBox, Node, Path, Text, VBox } from '../../../../scenery/js/imports.js';
-import Panel from '../../../../sun/js/Panel.js';
+import { AlignBox, Node, Path, PhetioControlledVisibilityProperty, Text, VBox } from '../../../../scenery/js/imports.js';
+import Panel, { PanelOptions } from '../../../../sun/js/Panel.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 import Material from '../../common/model/Material.js';
 import DensityBuoyancyScreenView, { DensityBuoyancyScreenViewOptions } from '../../common/view/DensityBuoyancyScreenView.js';
@@ -34,6 +34,9 @@ import DensityBuoyancyCommonColors from '../../common/view/DensityBuoyancyCommon
 import ScaleHeightControl from '../../common/view/ScaleHeightControl.js';
 import smileWinkSolidShape from '../../../../sherpa/js/fontawesome-5/smileWinkSolidShape.js';
 import FluidsRadioButtonPanel from '../../buoyancy/view/FluidsRadioButtonPanel.js';
+import UnitConversionProperty from '../../../../axon/js/UnitConversionProperty.js';
+import ComparisonNumberControl from '../../common/view/ComparisonNumberControl.js';
+import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 
 // constants
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
@@ -46,6 +49,7 @@ export default class BuoyancyBasicsCompareScreenView extends DensityBuoyancyScre
   private readonly rightSideMaxContentWidthProperty = new Property( MAX_RIGHT_SIDE_CONTENT_WIDTH );
   private readonly readoutPanelsVBox = new VBox( { spacing: MARGIN } );
   private readonly scaleHeightControl: ScaleHeightControl;
+  private readonly positionPanel: VoidFunction;
 
   public constructor( model: BuoyancyBasicsCompareModel, options: DensityBuoyancyScreenViewOptions ) {
 
@@ -55,6 +59,8 @@ export default class BuoyancyBasicsCompareScreenView extends DensityBuoyancyScre
 
       layoutBounds: ScreenView.DEFAULT_LAYOUT_BOUNDS // used by constant above.
     }, options ) );
+
+    const tandem = options.tandem;
 
     const blocksRadioButtonGroupTandem = options.tandem.createTandem( 'blocksRadioButtonGroup' );
 
@@ -176,6 +182,94 @@ export default class BuoyancyBasicsCompareScreenView extends DensityBuoyancyScre
       } );
     this.addChild( this.scaleHeightControl );
 
+
+    // For unit conversion, cubic meters => liters
+    const volumeProperty = new UnitConversionProperty( model.volumeProperty, {
+      factor: 1000
+    } );
+
+    // For unit conversion, kg/cubic meter => kg/liter
+    const densityProperty = new UnitConversionProperty( model.densityProperty, {
+      factor: 1 / 1000
+    } );
+
+    const massNumberControlTandem = tandem.createTandem( 'massNumberControl' );
+    const massNumberControl = new ComparisonNumberControl(
+      model.massProperty,
+      DensityBuoyancyCommonStrings.massStringProperty,
+      DensityBuoyancyCommonStrings.kilogramsPatternStringProperty,
+      'kilograms',
+      {
+        tandem: massNumberControlTandem,
+        visibleProperty: new PhetioControlledVisibilityProperty( [ model.blockSetProperty ], blockSet => blockSet === BlockSet.SAME_MASS, {
+          nodeTandem: massNumberControlTandem
+        } ),
+        sliderOptions: {
+          phetioLinkedProperty: model.massProperty
+        }
+      }
+    );
+
+    const volumeNumberControlTandem = tandem.createTandem( 'volumeNumberControl' );
+    const volumeNumberControl = new ComparisonNumberControl(
+      volumeProperty,
+      DensityBuoyancyCommonStrings.volumeStringProperty,
+      DensityBuoyancyCommonConstants.VOLUME_PATTERN_STRING_PROPERTY,
+      'value',
+      {
+        tandem: volumeNumberControlTandem,
+        visibleProperty: new PhetioControlledVisibilityProperty( [ model.blockSetProperty ], blockSet => blockSet === BlockSet.SAME_VOLUME, {
+          nodeTandem: volumeNumberControlTandem
+        } ),
+        sliderOptions: {
+          phetioLinkedProperty: model.volumeProperty
+        }
+      }
+    );
+
+    const densityNumberControlTandem = tandem.createTandem( 'densityNumberControl' );
+    const densityNumberControl = new ComparisonNumberControl(
+      densityProperty,
+      DensityBuoyancyCommonStrings.densityStringProperty,
+      DensityBuoyancyCommonConstants.KILOGRAMS_PER_VOLUME_PATTERN_STRING_PROPERTY,
+      'value',
+      {
+        tandem: densityNumberControlTandem,
+        visibleProperty: new PhetioControlledVisibilityProperty( [ model.blockSetProperty ], blockSet => blockSet === BlockSet.SAME_DENSITY, {
+          nodeTandem: densityNumberControlTandem
+        } ),
+        sliderOptions: {
+          phetioLinkedProperty: model.densityProperty
+        }
+      }
+    );
+
+    const numberControlPanel = new Panel( new Node( {
+      children: [
+        massNumberControl,
+        volumeNumberControl,
+        densityNumberControl
+      ],
+      excludeInvisibleChildrenFromBounds: true
+    } ), combineOptions<PanelOptions>( {
+      visibleProperty: DerivedProperty.or( [ massNumberControl.visibleProperty, volumeNumberControl.visibleProperty, densityNumberControl.visibleProperty ] )
+    }, DensityBuoyancyCommonConstants.PANEL_OPTIONS ) );
+    this.addChild( numberControlPanel );
+
+    this.positionPanel = () => {
+      // We should be MARGIN below where the edge of the ground exists
+      const groundFrontPoint = this.modelToViewPoint( new Vector3( 0, 0, model.groundBounds.maxZ ) );
+      numberControlPanel.top = groundFrontPoint.y + MARGIN;
+      numberControlPanel.right = this.visibleBoundsProperty.value.maxX - 10;
+    };
+
+    this.positionPanel();
+    // This instance lives for the lifetime of the simulation, so we don't need to remove these listeners
+    this.transformEmitter.addListener( this.positionPanel );
+    this.visibleBoundsProperty.lazyLink( this.positionPanel );
+    numberControlPanel.localBoundsProperty.lazyLink( this.positionPanel );
+
+
     this.addChild( this.popupLayer );
   }
 
@@ -209,6 +303,8 @@ export default class BuoyancyBasicsCompareScreenView extends DensityBuoyancyScre
       this.model.poolBounds.minY,
       this.model.poolScale.getBounds().maxZ
     ) ).y;
+
+    this.positionPanel();
   }
 
 

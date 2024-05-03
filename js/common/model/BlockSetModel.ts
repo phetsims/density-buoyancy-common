@@ -93,6 +93,7 @@ export default class BlockSetModel<BlockSetValue extends EnumerationValue> exten
    */
   private positionMasses( blockSet: BlockSetValue ): void {
     this.positionMassesCallback( this, blockSet, this.blockSetToMassesMap.get( blockSet )! );
+    this.syncPreviousMassPositionsToCurrent();
   }
 
   /**
@@ -116,11 +117,6 @@ export default class BlockSetModel<BlockSetValue extends EnumerationValue> exten
 
     // Reposition AFTER the reset
     this.BlockSet.values.forEach( blockSet => this.positionMasses( blockSet ) );
-
-    // Reset the previous positions on masses
-    this.BlockSet.values.forEach( blockSet => this.blockSetToMassesMap.get( blockSet )!.forEach( mass => {
-      this.engine.bodySynchronizePrevious( mass.body );
-    } ) );
 
     // Rehandle visibility, since we reset them
     this.BlockSet.values.forEach( blockSet => this.blockSetToMassesMap.get( blockSet )!.forEach( mass => {

@@ -300,6 +300,7 @@ export default abstract class Mass extends PhetioObject {
       tandem: Tandem.OPT_OUT
     } );
 
+    // TODO: It would be helpful in CompareBlockSetModel if this could just take a Property, https://github.com/phetsims/density-buoyancy-common/issues/95
     this.materialProperty = new Property( options.material, combineOptions<PropertyOptions<Material>>( {
       valueType: Material,
       reentrant: true,

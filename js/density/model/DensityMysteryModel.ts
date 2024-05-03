@@ -388,8 +388,6 @@ export default class DensityMysteryModel extends BlockSetModel<MysteryBlockSet> 
 
       this.scale.transformedEmitter.emit();
     } );
-
-    this.uninterpolateMasses();
   }
 
   /**
@@ -402,8 +400,6 @@ export default class DensityMysteryModel extends BlockSetModel<MysteryBlockSet> 
 
     // Make sure to create new random masses on a reset
     this.regenerate( MysteryBlockSet.RANDOM );
-
-    this.uninterpolateMasses();
   }
 }
 

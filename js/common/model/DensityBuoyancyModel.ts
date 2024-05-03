@@ -575,7 +575,7 @@ export default class DensityBuoyancyModel implements TModel {
   /**
    * Moves masses' previous positions to their current positions.
    */
-  public uninterpolateMasses(): void {
+  public syncPreviousMassPositionsToCurrent(): void {
     this.masses.forEach( mass => this.engine.bodySynchronizePrevious( mass.body ) );
   }
 

@@ -229,12 +229,6 @@ export default class CompareBlockSetModel extends BlockSetModel<BlockSet> {
     this.massProperty = massProperty;
     this.volumeProperty = volumeProperty;
     this.densityProperty = densityProperty;
-
-
-    // TODO: not sure about this. https://github.com/phetsims/buoyancy-basics/issues/5
-    this.uninterpolateMasses();
-
-
   }
 
   private static createMaterialProperty( colorProperty: TProperty<Color>, myDensityProperty: TProperty<number> ): TReadOnlyProperty<Material> {

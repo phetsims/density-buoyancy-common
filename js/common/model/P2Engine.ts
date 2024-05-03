@@ -278,7 +278,7 @@ export default class P2Engine extends PhysicsEngine {
   }
 
   /**
-   * Sets the previous position of a body to the current position
+   * Sets the previous position of a body to the current position. This is helpful for making sure the body is stationary.
    */
   public bodySynchronizePrevious( body: PhysicsEngineBody ): void {
     body.previousPosition[ 0 ] = body.position[ 0 ];

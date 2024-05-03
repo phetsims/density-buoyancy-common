@@ -114,7 +114,7 @@ export default abstract class PhysicsEngine {
   public abstract bodyResetHidden( body: PhysicsEngineBody ): void;
 
   /**
-   * Sets the previous position of a body to the current position
+   * Sets the previous position of a body to the current position. This is helpful for making sure the body is stationary.
    */
   public abstract bodySynchronizePrevious( body: PhysicsEngineBody ): void;
 

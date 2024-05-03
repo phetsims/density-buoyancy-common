@@ -219,10 +219,16 @@ export default class CompareBlockSetModel extends BlockSetModel<BlockSet> {
       return masses;
     };
 
+    // Using spread here is the best possible solution. We want to add in `createMassesCallback` but cannot change the
+    // type of `options` after creation, so `options.createMassesCallback = ...` won't work. Because we are providing an
+    // object literal here, there is excess property checking (main worry about object spread), and the output type is
+    // cleaner than using `merge()`. By spreading the output of optionize, we ensure that all contents of that type
+    // are behaving correctly (including excess property checking). Furthermore, if we didn't use `OptionizeParent`
+    // above (like by providing an initial void function to be overwritten), then we would be hacking out a solution
+    // in value space for something that really should be handled in type space.
     super( {
       createMassesCallback: createMasses,
 
-      // TODO: Did I just solve how to provide required elements to super after the subtype optionize call? https://github.com/phetsims/buoyancy-basics/issues/5
       ...options // eslint-disable-line no-object-spread-on-non-literals
     } );
 

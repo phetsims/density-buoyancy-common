@@ -50,6 +50,7 @@ export default class BuoyancyBasicsCompareScreenView extends DensityBuoyancyScre
   private readonly readoutPanelsVBox = new VBox( { spacing: MARGIN } );
   private readonly scaleHeightControl: ScaleHeightControl;
   private readonly positionPanel: VoidFunction;
+  private readonly numberControlPanel: Node;
 
   public constructor( model: BuoyancyBasicsCompareModel, options: DensityBuoyancyScreenViewOptions ) {
 
@@ -270,6 +271,9 @@ export default class BuoyancyBasicsCompareScreenView extends DensityBuoyancyScre
     numberControlPanel.localBoundsProperty.lazyLink( this.positionPanel );
 
 
+    // TODO: bring together numberControlPanel and readout accordion box vbox panel, https://github.com/phetsims/buoyancy-basics/issues/5
+    this.numberControlPanel = numberControlPanel;
+
     this.addChild( this.popupLayer );
   }
 
@@ -282,13 +286,12 @@ export default class BuoyancyBasicsCompareScreenView extends DensityBuoyancyScre
 
     // 2 margins for the spacing outside the panel, and 2 margins for the panel's content margin
     this.rightSideMaxContentWidthProperty.value = Math.min( availableRightSpace - 4 * MARGIN, MAX_RIGHT_SIDE_CONTENT_WIDTH );
-    this.readoutPanelsVBox.top = rightSideOfPoolViewPoint.y + MARGIN;
+    this.readoutPanelsVBox.top = this.numberControlPanel.bottom + MARGIN;
     this.readoutPanelsVBox.right = this.visibleBoundsProperty.value.right - MARGIN;
   }
 
   public override layout( viewBounds: Bounds2 ): void {
     super.layout( viewBounds );
-    this.layoutRightSidePanels();
 
     // X margin should be based on the front of the pool
     this.scaleHeightControl.x = this.modelToViewPoint( new Vector3(
@@ -305,6 +308,7 @@ export default class BuoyancyBasicsCompareScreenView extends DensityBuoyancyScre
     ) ).y;
 
     this.positionPanel();
+    this.layoutRightSidePanels();
   }
 
 

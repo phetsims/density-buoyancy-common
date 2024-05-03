@@ -44,8 +44,8 @@ export default class DensityIntroModel extends DensityBuoyancyModel {
 
     const blocksTandem = tandem.createTandem( 'blocks' );
 
-    const minScreenVolume = DensityBuoyancyCommonConstants.DENSITY_MIN_SCREEN_VOLUME;
-    const maxScreenVolume = DensityBuoyancyCommonConstants.DENSITY_MAX_SCREEN_VOLUME;
+    const minScreenVolume = DensityBuoyancyCommonConstants.MIN_CUBE_VOLUME;
+    const maxScreenVolume = DensityBuoyancyCommonConstants.MAX_CUBE_VOLUME;
 
     this.primaryMass = Cube.createWithMass( this.engine, Material.WOOD, new Vector2( -0.2, 0.2 ), 2, {
       tag: MassTag.PRIMARY,

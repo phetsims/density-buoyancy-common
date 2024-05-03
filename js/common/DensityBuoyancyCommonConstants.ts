@@ -66,8 +66,10 @@ const DensityBuoyancyCommonConstants = {
   ARROW_BUTTON_SCALE: 0.6,
 
   TOLERANCE: TOLERANCE,
-  DENSITY_MIN_SCREEN_VOLUME: 0.001 - TOLERANCE,
-  DENSITY_MAX_SCREEN_VOLUME: 0.01 + TOLERANCE,
+
+  // Not really used in Buoyancy, just Density
+  MIN_CUBE_VOLUME: 0.001 - TOLERANCE,
+  MAX_CUBE_VOLUME: 0.01 + TOLERANCE,
 
   // (read-only) {Object}
   PANEL_OPTIONS: {

@@ -83,8 +83,8 @@ export default class DensityCompareModel extends BlockSetModel<BlockSet> {
       } );
     };
 
-    const minScreenVolume = DensityBuoyancyCommonConstants.DENSITY_MIN_SCREEN_VOLUME;
-    const maxScreenVolume = DensityBuoyancyCommonConstants.DENSITY_MAX_SCREEN_VOLUME;
+    const minScreenVolume = DensityBuoyancyCommonConstants.MIN_CUBE_VOLUME;
+    const maxScreenVolume = DensityBuoyancyCommonConstants.MAX_CUBE_VOLUME;
 
     const commonCubeOptions = {
       minVolume: minScreenVolume,

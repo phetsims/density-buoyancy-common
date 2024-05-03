@@ -29,7 +29,7 @@ import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import WithRequired from '../../../../phet-core/js/types/WithRequired.js';
 
-// TODO: range, https://github.com/phetsims/buoyancy-basics/issues/5
+// This hard coded range is a bit arbitrary, but it lends itself to better colors than the provided range in the options.
 const COLOR_DENSITY_RANGE = new Range( 10, 10000 );
 
 assert && assert( BlockSet.enumeration.values.length === 3, 'This class is very hard coded for the three "SAME" values of BlockSet' );
@@ -118,20 +118,18 @@ export default class CompareBlockSetModel extends BlockSetModel<BlockSet> {
       units: 'kg/m^3'
     } );
 
-
-    // TODO: wat? https://github.com/phetsims/buoyancy-basics/issues/5
-    const minScreenVolume = DensityBuoyancyCommonConstants.DENSITY_MIN_SCREEN_VOLUME;
-    const maxScreenVolume = DensityBuoyancyCommonConstants.DENSITY_MAX_SCREEN_VOLUME;
-
     const commonCubeOptions = {
-      minVolume: minScreenVolume,
-      maxVolume: maxScreenVolume
+      minVolume: DensityBuoyancyCommonConstants.MIN_CUBE_VOLUME,
+      maxVolume: DensityBuoyancyCommonConstants.MAX_CUBE_VOLUME
     };
 
     const cubesData: CubeDataInternal[] = options.cubesData.map( cubeData => {
       const sameMassDensityProperty = new NumberProperty( options.sameMassValue / cubeData.sameMassVolume, { tandem: Tandem.OPT_OUT } );
       const sameVolumeDensityProperty = new NumberProperty( cubeData.sameVolumeMass / options.sameVolumeValue, { tandem: Tandem.OPT_OUT } );
-      const sameDensityDensityProperty = new NumberProperty( options.sameDensityValue, { tandem: Tandem.OPT_OUT } ); // TODO: Should this have a range on it?  https://github.com/phetsims/buoyancy-basics/issues/5
+      const sameDensityDensityProperty = new NumberProperty( options.sameDensityValue, {
+        range: options.sameDensityRange,
+        tandem: Tandem.OPT_OUT
+      } );
 
       return merge( {
         sameMassDensityProperty: sameMassDensityProperty,
@@ -288,5 +286,8 @@ export default class CompareBlockSetModel extends BlockSetModel<BlockSet> {
   //   } ) );
   // }
 }
+
+// The tandem where all cubes should be nested under
+export const BLOCK_SETS_TANDEM_NAME = 'blockSets';
 
 densityBuoyancyCommon.register( 'CompareBlockSetModel', CompareBlockSetModel );

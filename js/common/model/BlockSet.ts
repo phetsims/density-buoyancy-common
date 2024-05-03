@@ -3,6 +3,9 @@
 /**
  * Determines which variable in the density equation is consistent across all blocks in the scene, see BlockSetModel.
  *
+ * This is not the most descriptive name, as this Enumeration is specifically for "same variable" block sets, but we
+ * don't want to rename this because of the PhET-iO API concerns.
+ *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
@@ -12,7 +15,6 @@ import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import LocalizedStringProperty from '../../../../chipper/js/LocalizedStringProperty.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 
-// TODO: Rename to "SameVariableBlockSet" https://github.com/phetsims/buoyancy-basics/issues/5
 export default class BlockSet extends EnumerationValue {
   public static readonly SAME_MASS = new BlockSet( DensityBuoyancyCommonStrings.blockSet.sameMassStringProperty, 'sameMass' );
   public static readonly SAME_VOLUME = new BlockSet( DensityBuoyancyCommonStrings.blockSet.sameVolumeStringProperty, 'sameVolume' );

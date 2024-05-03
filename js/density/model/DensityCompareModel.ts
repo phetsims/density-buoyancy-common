@@ -285,6 +285,7 @@ export default class DensityCompareModel extends BlockSetModel<BlockSet> {
     };
 
     const positionMasses = ( model: DensityBuoyancyModel, blockSet: BlockSet, masses: Cuboid[] ) => {
+      assert && assert( masses.length === 4, 'four masses please' );
       switch( blockSet ) {
         case BlockSet.SAME_MASS:
           model.positionMassesLeft( [ masses[ 0 ], masses[ 1 ] ] );

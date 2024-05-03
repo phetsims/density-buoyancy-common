@@ -141,8 +141,6 @@ export default class CompareBlockSetModel extends BlockSetModel<BlockSet> {
       }, cubeData );
     } );
 
-
-    // TODO: supertype creates this based on an array of block-data https://github.com/phetsims/buoyancy-basics/issues/5
     const createMasses = ( model: DensityBuoyancyModel, blockSet: BlockSet ) => {
       let masses;
       switch( blockSet ) {
@@ -159,7 +157,7 @@ export default class CompareBlockSetModel extends BlockSetModel<BlockSet> {
             // This cube instance lives for the lifetime of the simulation, so we don't need to remove listeners.
             cubeData.sameMassMaterialProperty.link( material => { cube.materialProperty.value = material; } );
 
-            // TODO: N listeners with one assignment instead of one listener with n assignments. https://github.com/phetsims/buoyancy-basics/issues/5
+            // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
             massProperty.lazyLink( massValue => { cubeData.sameMassDensityProperty.value = massValue / cube.volumeProperty.value; } );
             return cube;
           } );
@@ -181,8 +179,6 @@ export default class CompareBlockSetModel extends BlockSetModel<BlockSet> {
 
             // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
             volumeProperty.lazyLink( volume => {
-
-              // TODO: Do this N times. N listeners with one assignment instead of one listener with n assignments. https://github.com/phetsims/buoyancy-basics/issues/5
               const size = Cube.boundsFromVolume( volume );
               cube.updateSize( size );
 
@@ -258,33 +254,6 @@ export default class CompareBlockSetModel extends BlockSetModel<BlockSet> {
       tandem: Tandem.OPT_OUT
     } );
   }
-
-  // TODO:? https://github.com/phetsims/buoyancy-basics/issues/5
-  //
-  // /**
-  //  * Resets values to their original state
-  //  */
-  // public override reset(): void {
-  //   this.blockSetProperty.reset();
-  //
-  //   // Reset every available mass.
-  //   this.BlockSet.values.forEach( blockSet => this.blockSetToMassesMap.get( blockSet )!.forEach( mass => mass.reset() ) );
-  //
-  //   super.reset();
-  //
-  //   // Reposition AFTER the reset
-  //   this.BlockSet.values.forEach( blockSet => this.positionMasses( blockSet ) );
-  //
-  //   // Reset the previous positions on masses
-  //   this.BlockSet.values.forEach( blockSet => this.blockSetToMassesMap.get( blockSet )!.forEach( mass => {
-  //     this.engine.bodySynchronizePrevious( mass.body );
-  //   } ) );
-  //
-  //   // Rehandle visibility, since we reset them
-  //   this.BlockSet.values.forEach( blockSet => this.blockSetToMassesMap.get( blockSet )!.forEach( mass => {
-  //     mass.internalVisibleProperty.value = blockSet === this.blockSetProperty.value;
-  //   } ) );
-  // }
 }
 
 // The tandem where all cubes should be nested under

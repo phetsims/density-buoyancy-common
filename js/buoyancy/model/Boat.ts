@@ -157,11 +157,16 @@ export default class Boat extends ApplicationsMass {
   public override updateSubmergedMassFraction( gravityMagnitude: number, fluidDensity: number ): void {
     assert && assert( gravityMagnitude > 0, 'gravityMagnitude should be positive' );
 
-    const buoyancy = this.buoyancyForceInterpolatedProperty.value;
-    const volume = this.volumeProperty.value + this.stepInternalVolume;
-    const submergedFraction = buoyancy.magnitude / ( volume * gravityMagnitude * fluidDensity );
-    const range = this.submergedMassFractionProperty.range;
-    this.submergedMassFractionProperty.value = range.constrainValue( submergedFraction );
+    if ( !this.isUnderwater ) {
+      const buoyancy = this.buoyancyForceInterpolatedProperty.value;
+      const volume = this.volumeProperty.value + this.stepInternalVolume;
+      const submergedFraction = buoyancy.magnitude / ( volume * gravityMagnitude * fluidDensity );
+      const range = this.submergedMassFractionProperty.range;
+      this.submergedMassFractionProperty.value = range.constrainValue( submergedFraction );
+    }
+    else {
+      this.submergedMassFractionProperty.value = 1;
+    }
   }
 
   /**

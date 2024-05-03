@@ -43,6 +43,8 @@ export type DensityNumberLineNodeOptions = SelfOptions & NodeOptions;
 
 export default class DensityNumberLineNode extends Node {
 
+  private readonly modelViewTransform: ( density: number ) => number;
+
   public constructor( providedOptions?: DensityNumberLineNodeOptions ) {
 
     const options = optionize<DensityNumberLineNodeOptions, SelfOptions, NodeOptions>()( {
@@ -64,11 +66,11 @@ export default class DensityNumberLineNode extends Node {
       maxLabelWidth: 80
     }, providedOptions );
 
-    const modelViewTransform = ( density: number ) => {
+    super();
+
+    this.modelViewTransform = ( density: number ) => {
       return options.width * Math.min( density, options.maxDensity ) / options.maxDensity;
     };
-
-    super();
 
     const background = new Rectangle( 0, 0, options.width, options.height, {
       fill: 'white',
@@ -81,7 +83,7 @@ export default class DensityNumberLineNode extends Node {
 
     const lineOptions = { stroke: 'black' };
     options.materials.forEach( ( material, index ) => {
-      const x = modelViewTransform( material.density );
+      const x = this.modelViewTransform( material.density );
       const label = new Text( material.nameProperty, {
         font: new PhetFont( 12 ),
         maxWidth: options.materialsMaxWidths[ index ]
@@ -111,10 +113,18 @@ export default class DensityNumberLineNode extends Node {
       font: DensityBuoyancyCommonConstants.ITEM_FONT
     } ) );
 
+    const markerNodes = this.createMarkerNodes( options );
+
+    markerNodes.forEach( markerNode => this.addChild( markerNode ) );
+
+    this.mutate( options );
+  }
+
+  public createMarkerNodes( options: DensityNumberLineNodeOptions ): Node[] {
     const arrowOptions = {
-      headHeight: 4,
-      headWidth: 5,
-      tailWidth: 1,
+      headHeight: 12,
+      headWidth: 15,
+      tailWidth: 3,
       stroke: null
     };
     const labelOptions = {
@@ -131,6 +141,8 @@ export default class DensityNumberLineNode extends Node {
       tandem: Tandem.OPT_OUT,
       decimalPlaces: 2
     } );
+
+    const markerNodes: Node[] = [];
 
     options.displayDensities.forEach( ( { densityProperty, visibleProperty, color }, index ) => {
 
@@ -152,13 +164,13 @@ export default class DensityNumberLineNode extends Node {
         ],
         y: index === 0 ? 0 : options.height
       } );
-      this.addChild( marker );
+      markerNodes.push( marker );
 
       // Density links
       // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
       densityProperty.link( density => {
-        marker.x = modelViewTransform( density );
-        marker.visible = density < options.maxDensity + 1e-5; // Allow rounding error
+        marker.x = this.modelViewTransform( density );
+        marker.visible = density < options.maxDensity! + 1e-5; // Allow rounding error
       } );
       ManualConstraint.create( this, [ labelContainer, arrow ], ( labelContainerProxy, arrowProxy ) => {
         if ( index === 0 ) {
@@ -174,8 +186,7 @@ export default class DensityNumberLineNode extends Node {
         marker.visible = visible;
       } );
     } );
-
-    this.mutate( options );
+    return markerNodes;
   }
 }
 

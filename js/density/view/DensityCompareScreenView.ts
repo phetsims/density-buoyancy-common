@@ -87,7 +87,6 @@ export default class DensityCompareScreenView extends DensityBuoyancyScreenView<
       factor: 1 / 1000
     } );
 
-    // TODO: ComparisonControlPanel refactor, https://github.com/phetsims/buoyancy-basics/issues/5
     const massNumberControlTandem = tandem.createTandem( 'massNumberControl' );
     const massNumberControl = new ComparisonNumberControl(
       model.massProperty,

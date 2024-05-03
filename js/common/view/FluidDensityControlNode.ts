@@ -17,7 +17,7 @@ import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js
 import Material from '../model/Material.js';
 import ComboNumberControl, { ComboNumberControlOptions } from './ComboNumberControl.js';
 import optionize from '../../../../phet-core/js/optionize.js';
-import PickRequired from '../../../../phet-core/js/types/PickRequired.js';
+import WithRequired from '../../../../phet-core/js/types/WithRequired.js';
 
 type SelfOptions = {
 
@@ -32,8 +32,9 @@ type SelfOptions = {
 const FLUID_DENSITY_RANGE_PER_L = new Range( 0.5, 15 );
 const FLUID_DENSITY_RANGE_PER_M3 = FLUID_DENSITY_RANGE_PER_L.copy().times( DensityBuoyancyCommonConstants.LITERS_IN_CUBIC_METER );
 
-type ParentOptions = Partial<ComboNumberControlOptions<Material>> &
-  PickRequired<ComboNumberControlOptions<Material>, 'tandem'>;
+// No required super options but tandem
+type ParentOptions = WithRequired<Partial<ComboNumberControlOptions<Material>>, 'tandem'>;
+
 type DensityControlNodeOptions = SelfOptions & ParentOptions;
 
 export default class FluidDensityControlNode extends ComboNumberControl<Material> {

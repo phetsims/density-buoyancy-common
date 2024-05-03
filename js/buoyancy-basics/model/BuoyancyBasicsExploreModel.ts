@@ -95,6 +95,8 @@ export default class BuoyancyBasicsExploreModel extends DensityBuoyancyModel {
 
     // Make sure to render it
     this.availableMasses.push( this.poolScale );
+
+    this.showMassesProperty.value = false;
   }
 
   /**

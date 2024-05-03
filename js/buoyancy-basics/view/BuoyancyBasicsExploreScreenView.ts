@@ -148,6 +148,7 @@ export default class BuoyancyBasicsExploreScreenView extends DensityBuoyancyScre
     const densityAccordionBox = new AccordionBox( new DensityNumberLineNode(
       {
         displayDensities: [
+          // TODO: On hold code for https://github.com/phetsims/buoyancy-basics/issues/6
           // {
           //   densityProperty: new DerivedProperty( [ model.liquidDensityProperty ], density => density ),
           //   color: DensityBuoyancyCommonColors.liquidLabelProperty

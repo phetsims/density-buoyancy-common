@@ -77,7 +77,7 @@ export default class BuoyancyBasicsExploreScreenView extends DensityBuoyancyScre
         tandem: tandem,
         minCustomMass: 0.1,
         supportHiddenMaterial: true,
-        mysteryMaterials: [ Material.MATERIAL_X, Material.MATERIAL_Y ]
+        mysteryMaterials: [ Material.MATERIAL_X ]
       }
     );
 
@@ -96,9 +96,6 @@ export default class BuoyancyBasicsExploreScreenView extends DensityBuoyancyScre
       mass.materialProperty.link( material => {
         if ( material === Material.MATERIAL_X ) {
           mass.volumeProperty.value = 0.003;
-        }
-        else if ( material === Material.MATERIAL_Y ) {
-          mass.volumeProperty.value = 0.001;
         }
       } );
     } );

@@ -1,4 +1,4 @@
-// Copyright 2022-2024, University of Colorado Boulder
+// Copyright 2024, University of Colorado Boulder
 
 /**
  * Model set up to support a "comparison" BlockSet where you can "lock" one variable of the density equation such

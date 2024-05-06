@@ -161,10 +161,11 @@ export default class BuoyancyLabScreenView extends DensityBuoyancyScreenView<Buo
       }
     } );
 
-    const densityBox = new DensityAccordionBox( {
+    const densityAccordionBox = new DensityAccordionBox( {
       expandedProperty: model.densityExpandedProperty,
       contentWidthMax: this.rightBox.content.width,
-      readoutItems: [ { readoutItem: model.primaryMass.materialProperty } ]
+      readoutItems: [ { readoutItem: model.primaryMass.materialProperty } ],
+      tandem: tandem.createTandem( 'densityAccordionBox' )
     } );
 
     const submergedAccordionBox = new SubmergedAccordionBox(
@@ -182,7 +183,7 @@ export default class BuoyancyLabScreenView extends DensityBuoyancyScreenView<Buo
       align: 'right',
       children: [
         this.rightBox,
-        densityBox,
+        densityAccordionBox,
         submergedAccordionBox
       ]
     } );

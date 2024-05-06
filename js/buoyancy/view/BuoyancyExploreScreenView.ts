@@ -105,9 +105,10 @@ export default class BuoyancyExploreScreenView extends DensityBuoyancyScreenView
     } );
 
     // Materials are set in densityBox.setMaterials() below
-    const densityBox = new DensityAccordionBox( {
+    const densityAccordionBox = new DensityAccordionBox( {
       expandedProperty: model.densityExpandedProperty,
-      contentWidthMax: this.rightBox.content.width
+      contentWidthMax: this.rightBox.content.width,
+      tandem: tandem.createTandem( 'densityAccordionBox' )
     } );
 
     const submergedAccordionBox = new SubmergedAccordionBox( model.gravityProperty, model.liquidMaterialProperty, {
@@ -126,7 +127,7 @@ export default class BuoyancyExploreScreenView extends DensityBuoyancyScreenView
     // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
     model.secondaryMass.visibleProperty.link( visible => {
       const masses = visible ? [ model.primaryMass, model.secondaryMass ] : [ model.primaryMass ];
-      densityBox.setReadoutItems( masses.map( ( mass, index ) => {
+      densityAccordionBox.setReadoutItems( masses.map( ( mass, index ) => {
         return {
           readoutItem: mass.materialProperty,
           readoutNameProperty: customExploreScreenFormatting[ index ].readoutNameProperty,
@@ -147,7 +148,7 @@ export default class BuoyancyExploreScreenView extends DensityBuoyancyScreenView
       align: 'right',
       children: [
         this.rightBox,
-        densityBox,
+        densityAccordionBox,
         submergedAccordionBox
       ]
     } );

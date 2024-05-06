@@ -121,7 +121,8 @@ export default class BuoyancyDisplayOptionsNode extends VBox {
                       yMargin: 7
                     },
                     applyZoomIn: ( scale: number ) => scale * 2,
-                    applyZoomOut: ( scale: number ) => scale / 2
+                    applyZoomOut: ( scale: number ) => scale / 2,
+                    tandem: options.tandem.createTandem( 'vectorScaleZoomButtonGroup' )
                   } ) ] : []
               )
             ]

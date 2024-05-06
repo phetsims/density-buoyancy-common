@@ -12,8 +12,8 @@ import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import Property from '../../../../axon/js/Property.js';
 import Dimension2 from '../../../../dot/js/Dimension2.js';
 import Range from '../../../../dot/js/Range.js';
-import optionize from '../../../../phet-core/js/optionize.js';
-import NumberControl from '../../../../scenery-phet/js/NumberControl.js';
+import optionize, { combineOptions } from '../../../../phet-core/js/optionize.js';
+import NumberControl, { NumberControlOptions } from '../../../../scenery-phet/js/NumberControl.js';
 import NumberDisplay from '../../../../scenery-phet/js/NumberDisplay.js';
 import { FlowBox, FlowBoxOptions, HBox, HSeparator, Node, Text, VBox } from '../../../../scenery/js/imports.js';
 import ComboBox from '../../../../sun/js/ComboBox.js';
@@ -21,12 +21,13 @@ import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonCo
 import { MassShape } from '../../common/model/MassShape.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
+import WithRequired from '../../../../phet-core/js/types/WithRequired.js';
 
 type SelfOptions = {
   labelNode?: Node | null;
 };
 
-export type ShapeSizeControlNodeOptions = SelfOptions & FlowBoxOptions;
+export type ShapeSizeControlNodeOptions = SelfOptions & WithRequired<FlowBoxOptions, 'tandem'>;
 
 export default class ShapeSizeControlNode extends VBox {
   public constructor( massShapeProperty: Property<MassShape>, widthRatioProperty: Property<number>,
@@ -42,7 +43,7 @@ export default class ShapeSizeControlNode extends VBox {
       align: 'left'
     } );
 
-    const comboBox = new ComboBox( massShapeProperty, MassShape.enumeration.values.map( massShape => {
+    const shapeComboBox = new ComboBox( massShapeProperty, MassShape.enumeration.values.map( massShape => {
       return {
         value: massShape,
         createNode: () => new Text( massShape.shapeString, {
@@ -53,7 +54,8 @@ export default class ShapeSizeControlNode extends VBox {
       };
     } ), listParent, {
       xMargin: 8,
-      yMargin: 4
+      yMargin: 4,
+      tandem: options.tandem.createTandem( 'shapeComboBox' )
     } );
 
     const numberControlOptions = {
@@ -82,8 +84,12 @@ export default class ShapeSizeControlNode extends VBox {
       }
     };
 
-    const widthNumberControl = new NumberControl( DensityBuoyancyCommonStrings.widthStringProperty, widthRatioProperty, new Range( 0, 1 ), numberControlOptions );
-    const heightNumberControl = new NumberControl( DensityBuoyancyCommonStrings.heightStringProperty, heightRatioProperty, new Range( 0, 1 ), numberControlOptions );
+    const widthNumberControl = new NumberControl( DensityBuoyancyCommonStrings.widthStringProperty, widthRatioProperty, new Range( 0, 1 ), combineOptions<NumberControlOptions>( {
+      tandem: options.tandem.createTandem( 'widthNumberControl' )
+    }, numberControlOptions ) );
+    const heightNumberControl = new NumberControl( DensityBuoyancyCommonStrings.heightStringProperty, heightRatioProperty, new Range( 0, 1 ), combineOptions<NumberControlOptions>( {
+      tandem: options.tandem.createTandem( 'heightNumberControl' )
+    }, numberControlOptions ) );
 
     // DerivedProperty doesn't need disposal, since everything here lives for the lifetime of the simulation
     const litersProperty = new DerivedProperty( [ volumeProperty ], volume => {
@@ -95,7 +101,7 @@ export default class ShapeSizeControlNode extends VBox {
       new HBox( {
         spacing: 5,
         children: [
-          comboBox,
+          shapeComboBox,
           options.labelNode
         ].filter( _.identity ) as Node[]
       } ),

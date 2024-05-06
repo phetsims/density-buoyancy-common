@@ -48,7 +48,9 @@ export default class Boat extends ApplicationsMass {
 
   public constructor( engine: PhysicsEngine, blockWidthProperty: TReadOnlyProperty<number>, liquidMaterialProperty: TProperty<Material>, providedOptions: BoatOptions ) {
 
-    const displacementVolumeProperty = new NumberProperty( 0.01 );
+    const displacementVolumeProperty = new NumberProperty( 0.01, {
+      tandem: providedOptions.tandem.createTandem( 'displacementVolumeProperty' )
+    } );
 
     const boatIntersectionVertices = BoatDesign.getIntersectionVertices( blockWidthProperty.value / 2, displacementVolumeProperty.value * 1000 );
     const volume = BoatDesign.ONE_LITER_HULL_VOLUME * displacementVolumeProperty.value * 1000;

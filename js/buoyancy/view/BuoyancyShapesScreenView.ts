@@ -127,9 +127,9 @@ export default class BuoyancyShapesScreenView extends DensityBuoyancyScreenView<
           new DynamicProperty( model.primaryMassProperty, {
             derive: 'volumeProperty'
           } ),
-          this.popupLayer,
-          {
-            labelNode: PrimarySecondaryPanelsNode.getPrimaryTagLabelNode()
+          this.popupLayer, {
+            labelNode: PrimarySecondaryPanelsNode.getPrimaryTagLabelNode(),
+            tandem: tandem.createTandem( 'primaryShapeSizeControlNode' )
           }
         ),
         new ShapeSizeControlNode(
@@ -139,18 +139,19 @@ export default class BuoyancyShapesScreenView extends DensityBuoyancyScreenView<
           new DynamicProperty( model.secondaryMassProperty, {
             derive: 'volumeProperty'
           } ),
-          this.popupLayer,
-          {
+          this.popupLayer, {
             labelNode: PrimarySecondaryPanelsNode.getSecondaryTagLabelNode(),
-            visibleProperty: new DynamicProperty( model.secondaryMassProperty, { derive: 'internalVisibleProperty' } )
+            visibleProperty: new DynamicProperty( model.secondaryMassProperty, { derive: 'internalVisibleProperty' } ),
+            tandem: tandem.createTandem( 'secondaryShapeSizeControlNode' )
           }
         ) ]
     );
 
-    const densityBox = new DensityAccordionBox( {
+    const densityAccordionBox = new DensityAccordionBox( {
       expandedProperty: model.densityExpandedProperty,
       contentWidthMax: this.rightBox.content.width,
-      readoutItems: [ { readoutItem: model.materialProperty } ]
+      readoutItems: [ { readoutItem: model.materialProperty } ],
+      tandem: tandem.createTandem( 'densityAccordionBox' )
     } );
 
     const submergedAccordionBox = new SubmergedAccordionBox( model.gravityProperty, model.liquidMaterialProperty, {
@@ -178,7 +179,7 @@ export default class BuoyancyShapesScreenView extends DensityBuoyancyScreenView<
       align: 'right',
       children: [
         this.rightBox,
-        densityBox,
+        densityAccordionBox,
         submergedAccordionBox
       ]
     } );

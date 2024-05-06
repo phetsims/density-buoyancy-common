@@ -85,6 +85,7 @@ import IOType from '../../../../tandem/js/types/IOType.js';
 import { MassShape } from '../../common/model/MassShape.js';
 import ReadOnlyProperty from '../../../../axon/js/ReadOnlyProperty.js';
 import ApplicationsMass, { ApplicationsMassOptions } from './ApplicationsMass.js';
+import NumberIO from '../../../../tandem/js/types/NumberIO.js';
 
 // constants (in logical coordinates)
 const BODY_CORNER_RADIUS = 0.02; // Used both between the taper/body and between the body/base
@@ -223,6 +224,9 @@ export default class Bottle extends ApplicationsMass {
 
     this.interiorMassProperty = new DerivedProperty( [ this.interiorMaterialProperty, this.interiorVolumeProperty ], ( material, volume ) => {
       return material.density * volume;
+    }, {
+      tandem: options.tandem.createTandem( 'interiorMassProperty' ),
+      phetioValueType: NumberIO
     } );
 
     Multilink.multilink( [ this.interiorMaterialProperty, this.interiorVolumeProperty ], ( material, volume ) => {

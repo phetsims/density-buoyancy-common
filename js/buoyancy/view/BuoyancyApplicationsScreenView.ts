@@ -76,7 +76,8 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
       listener: () => {
         model.resetBoatScene();
       },
-      visibleProperty: new DerivedProperty( [ model.sceneProperty ], scene => scene === Scene.BOAT )
+      visibleProperty: new DerivedProperty( [ model.sceneProperty ], scene => scene === Scene.BOAT ),
+      tandem: tandem.createTandem( 'resetSceneButton' )
     } );
     this.addChild( resetSceneButton );
 
@@ -139,7 +140,9 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
     const customBottleDensityControl = new NumberControl( DensityBuoyancyCommonStrings.densityStringProperty, model.customDensityProperty, model.customDensityProperty.range, combineOptions<NumberControlOptions>( {
       visibleProperty: model.customDensityControlVisibleProperty,
       sliderOptions: {
-        thumbNode: new PrecisionSliderThumb()
+        thumbNode: new PrecisionSliderThumb( {
+          tandem: customBottleDensityControlTandem.createTandem( 'slider' ).createTandem( 'thumbNode' )
+        } )
       },
       numberDisplayOptions: {
         valuePattern: DensityBuoyancyCommonConstants.KILOGRAMS_PER_VOLUME_PATTERN_STRING_PROPERTY
@@ -227,7 +230,9 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
           }
         }, MaterialMassVolumeControlNode.getNumberControlOptions(), {
           sliderOptions: {
-            thumbNode: new PrecisionSliderThumb(),
+            thumbNode: new PrecisionSliderThumb( {
+              tandem: boatVolumeControlTandem.createTandem( 'slider' ).createTandem( 'thumbNode' )
+            } ),
             constrainValue: ( value: number ) => {
               return boatVolumeRange.constrainValue( Utils.roundToInterval( value, 0.1 ) );
             },
@@ -248,9 +253,10 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
 
     const rightBoatContent = new Panel( boatBox, DensityBuoyancyCommonConstants.PANEL_OPTIONS );
 
-    const densityBox = new DensityAccordionBox( {
+    const densityAccordionBox = new DensityAccordionBox( {
       expandedProperty: model.densityExpandedProperty,
-      contentWidthMax: boatBox.width
+      contentWidthMax: boatBox.width,
+      tandem: tandem.createTandem( 'densityAccordionBox' )
     } );
 
     const submergedAccordionBox = new SubmergedAccordionBox( model.gravityProperty, model.liquidMaterialProperty, {
@@ -268,7 +274,7 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
       children: [
         rightBottleContent,
         rightBoatContent,
-        densityBox,
+        densityAccordionBox,
         submergedAccordionBox
       ]
     } );
@@ -307,7 +313,7 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
         model.boat.materialProperty
       ] : [];
       assert && assert( materials.length > 0, 'unsupported Scene', scene );
-      densityBox.setReadoutItems( materials.map( material => {
+      densityAccordionBox.setReadoutItems( materials.map( material => {
         return { readoutItem: material };
       } ) );
       const submergedObjects = scene === Scene.BOTTLE ?
@@ -331,14 +337,16 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
       margin: MARGIN
     } ) );
 
-    const bottleBoatSelectionNode = new RectangularRadioButtonGroup( model.sceneProperty, [
+    const bottleBoatRadioButtonGroup = new RectangularRadioButtonGroup( model.sceneProperty, [
       {
         value: Scene.BOTTLE,
-        createNode: () => BuoyancyApplicationsScreenView.getBottleIcon()
+        createNode: () => BuoyancyApplicationsScreenView.getBottleIcon(),
+        tandemName: 'bottleRadioButton'
       },
       {
         value: Scene.BOAT,
-        createNode: () => BuoyancyApplicationsScreenView.getBoatIcon()
+        createNode: () => BuoyancyApplicationsScreenView.getBoatIcon(),
+        tandemName: 'boatRadioButton'
       }
     ], {
       orientation: 'horizontal',
@@ -353,7 +361,8 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
         //   deselectedLineWidth: 1.5,
         //   selectedStroke: DensityBuoyancyCommonColors.radioBorderColorProperty
         // }
-      }
+      },
+      tandem: tandem.createTandem( 'bottleBoatRadioButtonGroup' )
     } );
 
     const fluidDensityControlPanel = new Panel( new FluidDensityControlNode( model.liquidMaterialProperty, [
@@ -371,13 +380,13 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
       margin: MARGIN
     } ) );
 
-    ManualConstraint.create( this, [ rightSideVBox, fluidDensityControlPanel, bottleBoatSelectionNode ],
+    ManualConstraint.create( this, [ rightSideVBox, fluidDensityControlPanel, bottleBoatRadioButtonGroup ],
       ( rightSideVBoxWrapper, densityControlPanelWrapper, bottleBoatSelectionNodeWrapper ) => {
         bottleBoatSelectionNodeWrapper.left = rightSideVBoxWrapper.left;
         bottleBoatSelectionNodeWrapper.bottom = densityControlPanelWrapper.bottom;
       } );
 
-    this.addChild( bottleBoatSelectionNode );
+    this.addChild( bottleBoatRadioButtonGroup );
 
     this.addChild( this.popupLayer );
   }

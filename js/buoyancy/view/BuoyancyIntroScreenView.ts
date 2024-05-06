@@ -100,9 +100,10 @@ export default class BuoyancyIntroScreenView extends DensityBuoyancyScreenView<B
 
 
     // Materials are set in densityBox.setMaterials() below
-    const densityBox = new DensityAccordionBox( {
+    const densityAccordionBox = new DensityAccordionBox( {
       expandedProperty: model.densityExpandedProperty,
-      contentWidthMax: this.rightSideMaxContentWidthProperty
+      contentWidthMax: this.rightSideMaxContentWidthProperty,
+      tandem: options.tandem.createTandem( 'densityAccordionBox' )
     } );
 
     const submergedAccordionBox = new SubmergedAccordionBox( model.gravityProperty, model.liquidMaterialProperty, {
@@ -154,11 +155,11 @@ export default class BuoyancyIntroScreenView extends DensityBuoyancyScreenView<B
       }
       const itemsForBoth = readoutItemsCache.get( blockSet )!;
       submergedAccordionBox.setReadoutItems( itemsForBoth.submergedItems );
-      densityBox.setReadoutItems( itemsForBoth.densityItems );
+      densityAccordionBox.setReadoutItems( itemsForBoth.densityItems );
     } );
 
     this.readoutPanelsVBox = new VBox( {
-      children: [ densityBox, submergedAccordionBox ],
+      children: [ densityAccordionBox, submergedAccordionBox ],
       spacing: MARGIN
     } );
     this.addChild( this.readoutPanelsVBox );

@@ -100,7 +100,8 @@ export default class BuoyancyShapesModel extends DensityBuoyancyModel {
       const massOptions = {
         material: this.materialProperty.value,
         tandem: tandem,
-        tag: tag
+        tag: tag,
+        phetioDynamicElement: true
       };
 
       let mass: Mass;

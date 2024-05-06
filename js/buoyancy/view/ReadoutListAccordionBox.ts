@@ -19,6 +19,7 @@ import AccordionBox, { AccordionBoxOptions } from '../../../../sun/js/AccordionB
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import PatternStringProperty from '../../../../axon/js/PatternStringProperty.js';
 import TinyProperty from '../../../../axon/js/TinyProperty.js';
+import WithRequired from '../../../../phet-core/js/types/WithRequired.js';
 
 const DEFAULT_FONT = new PhetFont( 14 );
 const HBOX_SPACING = 5;
@@ -50,7 +51,7 @@ export type ReadoutData = {
   valueProperty: TReadOnlyProperty<string>;
 };
 
-export type ReadoutListAccordionBoxOptions<ReadoutType> = SelfOptions<ReadoutType> & AccordionBoxOptions;
+export type ReadoutListAccordionBoxOptions<ReadoutType> = SelfOptions<ReadoutType> & WithRequired<AccordionBoxOptions, 'tandem'>;
 
 export default abstract class ReadoutListAccordionBox<ReadoutType> extends AccordionBox {
 

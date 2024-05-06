@@ -258,6 +258,8 @@ export default abstract class Mass extends PhetioObject {
 
       minVolume: 0,
       maxVolume: Number.POSITIVE_INFINITY
+
+      // phetioDynamicElement: true
     }, providedOptions );
 
     assert && assert( options.body, 'options.body required' );

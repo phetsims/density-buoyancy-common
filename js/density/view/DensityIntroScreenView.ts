@@ -50,18 +50,20 @@ export default class DensityIntroScreenView extends DensityBuoyancyScreenView<De
 
     const accordionTandem = tandem.createTandem( 'densityAccordionBox' );
     const densityAccordionBox = new AccordionBox( new DensityNumberLineNode( {
-      displayDensities: [
-        // DerivedProperty doesn't need disposal, since everything here lives for the lifetime of the simulation
-        {
-          densityProperty: new DerivedProperty( [ model.primaryMass.materialProperty ], material => material.density ),
-          color: DensityBuoyancyCommonColors.labelPrimaryProperty
-        },
-        {
-          densityProperty: new DerivedProperty( [ model.secondaryMass.materialProperty ], material => material.density ),
-          color: DensityBuoyancyCommonColors.labelSecondaryProperty,
-          visibleProperty: model.secondaryMass.visibleProperty
-        }
-      ],
+        displayDensities: [
+          // DerivedProperty doesn't need disposal, since everything here lives for the lifetime of the simulation
+          {
+            densityProperty: new DerivedProperty( [ model.primaryMass.materialProperty ], material => material.density ),
+            color: DensityBuoyancyCommonColors.labelPrimaryProperty,
+            nameProperty: model.primaryMass.tag.nameProperty
+          },
+          {
+            densityProperty: new DerivedProperty( [ model.secondaryMass.materialProperty ], material => material.density ),
+            color: DensityBuoyancyCommonColors.labelSecondaryProperty,
+            visibleProperty: model.secondaryMass.visibleProperty,
+            nameProperty: model.secondaryMass.tag.nameProperty
+          }
+        ],
         tandem: accordionTandem.createTandem( 'densityReadout' ),
         visiblePropertyOptions: {
           phetioReadOnly: true

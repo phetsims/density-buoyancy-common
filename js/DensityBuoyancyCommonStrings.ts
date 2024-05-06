@@ -141,6 +141,7 @@ type StringsType = {
   'heightStringProperty': LocalizedStringProperty;
   'averageStringProperty': LocalizedStringProperty;
   'nameColonPatternStringProperty': LocalizedStringProperty;
+  'nameColonValueUnitsPatternStringProperty': LocalizedStringProperty;
   'whatIsTheFluidDensityStringProperty': LocalizedStringProperty;
   'whatIsTheValueOfGravityStringProperty': LocalizedStringProperty;
   'whatIsTheMaterialStringProperty': LocalizedStringProperty;

@@ -365,6 +365,9 @@
   "nameColonPattern": {
     "value": "{{name}}:"
   },
+  "nameColonValueUnitsPattern": {
+    "value": "{{name}}: {{valueWithUnits}}"
+  },
   "whatIsTheFluidDensity": {
     "value": "What is the fluid density?"
   },

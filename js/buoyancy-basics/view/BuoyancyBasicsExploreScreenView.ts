@@ -148,20 +148,22 @@ export default class BuoyancyBasicsExploreScreenView extends DensityBuoyancyScre
     const densityAccordionBox = new AccordionBox( new DensityNumberLineNode(
       {
         displayDensities: [
-          // TODO: On hold code for https://github.com/phetsims/buoyancy-basics/issues/6
-          // {
-          //   densityProperty: new DerivedProperty( [ model.liquidDensityProperty ], density => density ),
-          //   color: DensityBuoyancyCommonColors.liquidLabelProperty
-          // },
           // DerivedProperty doesn't need disposal, since everything here lives for the lifetime of the simulation
           {
+            densityProperty: new DerivedProperty( [ model.liquidDensityProperty ], density => density ),
+            color: DensityBuoyancyCommonColors.liquidLabelProperty,
+            nameProperty: DensityBuoyancyCommonStrings.fluidStringProperty
+          },
+          {
             densityProperty: new DerivedProperty( [ model.primaryMass.materialProperty ], material => material.density ),
-            color: DensityBuoyancyCommonColors.labelPrimaryProperty
+            color: DensityBuoyancyCommonColors.labelPrimaryProperty,
+            nameProperty: model.primaryMass.tag.nameProperty
           },
           {
             densityProperty: new DerivedProperty( [ model.secondaryMass.materialProperty ], material => material.density ),
             color: DensityBuoyancyCommonColors.labelSecondaryProperty,
-            visibleProperty: model.secondaryMass.visibleProperty
+            visibleProperty: model.secondaryMass.visibleProperty,
+            nameProperty: model.secondaryMass.tag.nameProperty
           }
         ],
         materials: [
@@ -172,6 +174,7 @@ export default class BuoyancyBasicsExploreScreenView extends DensityBuoyancyScre
           Material.LEAD,
           Material.MERCURY
         ],
+        showNumericValue: false,
         maxDensity: 15000,
         tandem: accordionTandem.createTandem( 'densityReadout' ),
         visiblePropertyOptions: {

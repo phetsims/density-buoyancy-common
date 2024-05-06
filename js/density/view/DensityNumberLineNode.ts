@@ -17,10 +17,12 @@ import Material from '../../common/model/Material.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import PatternStringProperty from '../../../../axon/js/PatternStringProperty.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
+import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 
 export type DisplayDensity = {
   densityProperty: TReadOnlyProperty<number>;
   visibleProperty?: TReadOnlyProperty<boolean>;
+  nameProperty?: TReadOnlyProperty<string>;
   color?: TPaint;
 };
 
@@ -33,6 +35,7 @@ type SelfOptions = {
   maxDensity?: number;
   linePadding?: number;
   maxLabelWidth?: number;
+  showNumericValue?: boolean;
 };
 
 const WIDTH = 400;
@@ -63,7 +66,8 @@ export default class DensityNumberLineNode extends Node {
       height: HEIGHT,
       maxDensity: MAX_DENSITY,
       linePadding: 2,
-      maxLabelWidth: 80
+      maxLabelWidth: 80,
+      showNumericValue: true
     }, providedOptions );
 
     super();
@@ -132,25 +136,47 @@ export default class DensityNumberLineNode extends Node {
       maxWidth: options.maxLabelWidth
     };
 
-    const createDensityStringProperty = ( densityProperty: TReadOnlyProperty<number> ) => new PatternStringProperty( DensityBuoyancyCommonConstants.KILOGRAMS_PER_VOLUME_PATTERN_STRING_PROPERTY, {
-      value: densityProperty
-    }, {
-      maps: {
-        value: ( density: number ) => density / DensityBuoyancyCommonConstants.LITERS_IN_CUBIC_METER
-      },
-      tandem: Tandem.OPT_OUT,
-      decimalPlaces: 2
-    } );
-
     const markerNodes: Node[] = [];
 
-    options.displayDensities.forEach( ( { densityProperty, visibleProperty, color }, index ) => {
+    options.displayDensities.forEach( ( { densityProperty, visibleProperty, color, nameProperty }, index ) => {
 
       const arrow = new ArrowNode( 0, index === 0 ? -7 : 7, 0, 0, combineOptions<ArrowNodeOptions>( {
         fill: color
       }, arrowOptions ) );
 
-      const label = new RichText( createDensityStringProperty( densityProperty ), combineOptions<TextOptions>( {
+      let createDensityStringProperty;
+
+      if ( options.showNumericValue ) {
+        createDensityStringProperty = ( densityProperty: TReadOnlyProperty<number> ) => {
+          // This is densityProperty kg/L (units depending on preferences)
+          const valueUnitsStringProperty = new PatternStringProperty( DensityBuoyancyCommonConstants.KILOGRAMS_PER_VOLUME_PATTERN_STRING_PROPERTY, {
+            value: densityProperty
+          }, {
+            maps: {
+              value: ( density: number ) => density / DensityBuoyancyCommonConstants.LITERS_IN_CUBIC_METER
+            },
+            tandem: Tandem.OPT_OUT,
+            decimalPlaces: 2
+          } );
+
+          // This is name: valueUnitsStringProperty
+          const nameColonValueStringProperty = new PatternStringProperty( DensityBuoyancyCommonStrings.nameColonValueUnitsPatternStringProperty, {
+            name: nameProperty,
+            valueWithUnits: valueUnitsStringProperty
+          } );
+
+          return nameColonValueStringProperty;
+        };
+      }
+      else {
+        createDensityStringProperty = () => {
+          return nameProperty;
+        };
+      }
+
+      const densityStringProperty = createDensityStringProperty( densityProperty );
+
+      const label = new RichText( densityStringProperty!, combineOptions<TextOptions>( {
         fill: color
       }, labelOptions ) );
 

@@ -22,6 +22,7 @@ import { combineOptions } from '../../../../phet-core/js/optionize.js';
 import NumberProperty from '../../../../axon/js/NumberProperty.js';
 import Range from '../../../../dot/js/Range.js';
 import VolumelessScale from '../../common/model/VolumelessScale.js';
+import PoolScaleHeightProperty from '../../common/model/PoolScaleHeightProperty.js';
 
 type BuoyancyBasicsExploreModelOptions = DensityBuoyancyModelOptions;
 
@@ -77,8 +78,7 @@ export default class BuoyancyBasicsExploreModel extends DensityBuoyancyModel {
       }
     } ) );
 
-    // TODO: Three repeat declarations for ScaleHeightSliders, https://github.com/phetsims/buoyancy-basics/issues/4
-    this.poolScaleHeightProperty = new NumberProperty( 1, {
+    this.poolScaleHeightProperty = new PoolScaleHeightProperty( 1, {
       range: new Range( 0, 1 ),
       tandem: tandem.createTandem( 'poolScaleHeightProperty' )
     } );
@@ -112,11 +112,8 @@ export default class BuoyancyBasicsExploreModel extends DensityBuoyancyModel {
 
     super.reset();
 
-    // The model position of the pool is reset before, so even if this Property value doesn't change, we need to reposition via listeners
     // This has to be called after the super reset
     this.poolScaleHeightProperty.reset();
-    this.poolScaleHeightProperty.notifyListenersStatic();
-
   }
 }
 

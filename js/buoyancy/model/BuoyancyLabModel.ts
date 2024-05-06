@@ -17,9 +17,9 @@ import Material from '../../common/model/Material.js';
 import Scale, { DisplayType } from '../../common/model/Scale.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import { combineOptions } from '../../../../phet-core/js/optionize.js';
-import NumberProperty from '../../../../axon/js/NumberProperty.js';
 import Range from '../../../../dot/js/Range.js';
 import VolumelessScale from '../../common/model/VolumelessScale.js';
+import PoolScaleHeightProperty from '../../common/model/PoolScaleHeightProperty.js';
 
 export type BuoyancyLabModelOptions = DensityBuoyancyModelOptions;
 
@@ -28,7 +28,7 @@ export default class BuoyancyLabModel extends DensityBuoyancyModel {
   public readonly primaryMass: Cube;
   public readonly densityExpandedProperty: Property<boolean>;
   public readonly showFluidDisplacedProperty: Property<boolean>;
-  public readonly poolScaleHeightProperty: NumberProperty;
+  public readonly poolScaleHeightProperty: PoolScaleHeightProperty;
   public readonly poolScale: Scale;
 
   public constructor( options: BuoyancyLabModelOptions ) {
@@ -63,7 +63,7 @@ export default class BuoyancyLabModel extends DensityBuoyancyModel {
       tandem: tandem.createTandem( 'showFluidDisplacedProperty' )
     } );
 
-    this.poolScaleHeightProperty = new NumberProperty( 1, {
+    this.poolScaleHeightProperty = new PoolScaleHeightProperty( 1, {
       range: new Range( 0, 1 ),
       tandem: tandem.createTandem( 'poolScaleHeightProperty' )
     } );
@@ -92,9 +92,7 @@ export default class BuoyancyLabModel extends DensityBuoyancyModel {
 
     this.densityExpandedProperty.reset();
 
-    // The model position of the pool is reset before, so even if this Property value doesn't change, we need to reposition via listeners
     this.poolScaleHeightProperty.reset();
-    this.poolScaleHeightProperty.notifyListenersStatic();
   }
 }
 

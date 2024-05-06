@@ -19,6 +19,7 @@ import Range from '../../../../dot/js/Range.js';
 import DensityBuoyancyCommonColors from '../../common/view/DensityBuoyancyCommonColors.js';
 import CompareBlockSetModel, { BLOCK_SETS_TANDEM_NAME, CompareBlockSetModelOptions } from '../../common/model/CompareBlockSetModel.js';
 import StrictOmit from '../../../../phet-core/js/types/StrictOmit.js';
+import PoolScaleHeightProperty from '../../common/model/PoolScaleHeightProperty.js';
 
 export type BuoyancyBasicsCompareModelOptions = StrictOmit<CompareBlockSetModelOptions, 'positionMassesCallback' | 'cubesData'>;
 
@@ -112,7 +113,7 @@ export default class BuoyancyBasicsCompareModel extends CompareBlockSetModel {
       }
     } ) );
 
-    this.poolScaleHeightProperty = new NumberProperty( 1, {
+    this.poolScaleHeightProperty = new PoolScaleHeightProperty( 1, {
       range: new Range( 0, 1 ),
       tandem: tandem.createTandem( 'poolScaleHeightProperty' )
     } );
@@ -134,10 +135,8 @@ export default class BuoyancyBasicsCompareModel extends CompareBlockSetModel {
   public override reset(): void {
     super.reset();
 
-    // The model position of the pool is reset before, so even if this Property value doesn't change, we need to reposition via listeners
     // This has to be called after the super reset
     this.poolScaleHeightProperty.reset();
-    this.poolScaleHeightProperty.notifyListenersStatic();
   }
 }
 

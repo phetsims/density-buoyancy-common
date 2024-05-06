@@ -237,6 +237,12 @@ export default class CompareBlockSetModel extends BlockSetModel<BlockSet> {
     this.densityProperty = densityProperty;
   }
 
+  public override reset(): void {
+    this.massProperty.reset();
+    this.volumeProperty.reset();
+    this.densityProperty.reset();
+  }
+
   private static createMaterialProperty( colorProperty: TProperty<Color>, myDensityProperty: TProperty<number> ): TReadOnlyProperty<Material> {
     return new DerivedProperty( [ colorProperty, myDensityProperty ], ( color, density ) => {
       const lightness = Material.getNormalizedLightness( density, COLOR_DENSITY_RANGE ); // 0-1

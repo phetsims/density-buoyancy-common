@@ -62,6 +62,8 @@ import BackgroundEventTargetListener from './BackgroundEventTargetListener.js';
 import MassDecorationLayer from './MassDecorationLayer.js';
 import Duck from '../../buoyancy/model/Duck.js';
 import DuckView from '../../buoyancy/view/DuckView.js';
+import NumberIO from '../../../../tandem/js/types/NumberIO.js';
+import Utils from '../../../../dot/js/Utils.js';
 
 // constants
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
@@ -542,11 +544,18 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
 
     // DerivedProperty doesn't need disposal, since everything here lives for the lifetime of the simulation
     this.waterLevelVolumeProperty = new DerivedProperty( [ model.pool.liquidYInterpolatedProperty ],
-      liquidY => model.poolBounds.width *
-                 model.poolBounds.depth *
-                 ( liquidY - model.poolBounds.minY ) *
-                 DensityBuoyancyCommonConstants.LITERS_IN_CUBIC_METER, {
-        units: 'L'
+
+      // Round to nearest 1E-6 to avoid floating point errors. Before we were rounding, the initial value
+      // was showing as 99.999999999999 and the current value on startup was 100.0000000000001
+      // Normally we would ignore a problem like this, but the former was appearing in the API.
+      liquidY => Utils.roundToInterval( model.poolBounds.width *
+                                        model.poolBounds.depth *
+                                        ( liquidY - model.poolBounds.minY ) *
+                                        DensityBuoyancyCommonConstants.LITERS_IN_CUBIC_METER, 1E-6 ), {
+        units: 'L',
+        tandem: providedOptions.tandem.createTandem( 'waterLevelVolumeProperty' ),
+        phetioValueType: NumberIO,
+        phetioDocumentation: 'The volume of water in the pool plus the volume of fluid displaced by objects in the pool.'
       } );
 
     const waterLevelIndicator = new WaterLevelIndicator( this.waterLevelVolumeProperty );

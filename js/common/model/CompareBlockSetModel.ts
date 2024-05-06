@@ -241,6 +241,7 @@ export default class CompareBlockSetModel extends BlockSetModel<BlockSet> {
     this.massProperty.reset();
     this.volumeProperty.reset();
     this.densityProperty.reset();
+    super.reset();
   }
 
   private static createMaterialProperty( colorProperty: TProperty<Color>, myDensityProperty: TProperty<number> ): TReadOnlyProperty<Material> {

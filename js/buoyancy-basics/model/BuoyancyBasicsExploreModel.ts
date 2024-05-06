@@ -111,6 +111,12 @@ export default class BuoyancyBasicsExploreModel extends DensityBuoyancyModel {
     this.densityExpandedProperty.reset();
 
     super.reset();
+
+    // The model position of the pool is reset before, so even if this Property value doesn't change, we need to reposition via listeners
+    // This has to be called after the super reset
+    this.poolScaleHeightProperty.reset();
+    this.poolScaleHeightProperty.notifyListenersStatic();
+
   }
 }
 

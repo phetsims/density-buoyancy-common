@@ -130,6 +130,15 @@ export default class BuoyancyBasicsCompareModel extends CompareBlockSetModel {
     // Make sure to render it
     this.availableMasses.push( this.poolScale );
   }
+
+  public override reset(): void {
+    super.reset();
+
+    // The model position of the pool is reset before, so even if this Property value doesn't change, we need to reposition via listeners
+    // This has to be called after the super reset
+    this.poolScaleHeightProperty.reset();
+    this.poolScaleHeightProperty.notifyListenersStatic();
+  }
 }
 
 

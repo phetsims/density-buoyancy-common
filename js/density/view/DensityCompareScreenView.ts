@@ -6,10 +6,8 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
-import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
-import UnitConversionProperty from '../../../../axon/js/UnitConversionProperty.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
-import { AlignBox, Node, PhetioControlledVisibilityProperty, Text, VBox } from '../../../../scenery/js/imports.js';
+import { AlignBox, Node, Text, VBox } from '../../../../scenery/js/imports.js';
 import Panel, { PanelOptions } from '../../../../sun/js/Panel.js';
 import VerticalAquaRadioButtonGroup from '../../../../sun/js/VerticalAquaRadioButtonGroup.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
@@ -17,12 +15,12 @@ import DensityBuoyancyScreenView, { DensityBuoyancyScreenViewOptions } from '../
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import DensityCompareModel from '../model/DensityCompareModel.js';
-import ComparisonNumberControl from '../../common/view/ComparisonNumberControl.js';
 import Bounds2 from '../../../../dot/js/Bounds2.js';
 import { combineOptions } from '../../../../phet-core/js/optionize.js';
 import ThreeUtils from '../../../../mobius/js/ThreeUtils.js';
 import DensityBuoyancyCommonColors from '../../common/view/DensityBuoyancyCommonColors.js';
 import BlockSet from '../../common/model/BlockSet.js';
+import ComparisonControlPanel from '../../common/view/ComparisonControlPanel.js';
 
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
 
@@ -77,77 +75,10 @@ export default class DensityCompareScreenView extends DensityBuoyancyScreenView<
       margin: MARGIN
     } ) );
 
-    // For unit conversion, cubic meters => liters
-    const volumeProperty = new UnitConversionProperty( model.volumeProperty, {
-      factor: 1000
+    const numberControlPanel = new ComparisonControlPanel( model.massProperty, model.volumeProperty, model.densityProperty, model.blockSetProperty, {
+      tandem: tandem // just pass through, because ComparisonControlPanel doesn't instrument the Panel.
     } );
 
-    // For unit conversion, kg/cubic meter => kg/liter
-    const densityProperty = new UnitConversionProperty( model.densityProperty, {
-      factor: 1 / 1000
-    } );
-
-    const massNumberControlTandem = tandem.createTandem( 'massNumberControl' );
-    const massNumberControl = new ComparisonNumberControl(
-      model.massProperty,
-      DensityBuoyancyCommonStrings.massStringProperty,
-      DensityBuoyancyCommonStrings.kilogramsPatternStringProperty,
-      'kilograms',
-      {
-        tandem: massNumberControlTandem,
-        visibleProperty: new PhetioControlledVisibilityProperty( [ model.blockSetProperty ], blockSet => blockSet === BlockSet.SAME_MASS, {
-          nodeTandem: massNumberControlTandem
-        } ),
-        sliderOptions: {
-          phetioLinkedProperty: model.massProperty
-        }
-      }
-    );
-
-    const volumeNumberControlTandem = tandem.createTandem( 'volumeNumberControl' );
-    const volumeNumberControl = new ComparisonNumberControl(
-      volumeProperty,
-      DensityBuoyancyCommonStrings.volumeStringProperty,
-      DensityBuoyancyCommonConstants.VOLUME_PATTERN_STRING_PROPERTY,
-      'value',
-      {
-        tandem: volumeNumberControlTandem,
-        visibleProperty: new PhetioControlledVisibilityProperty( [ model.blockSetProperty ], blockSet => blockSet === BlockSet.SAME_VOLUME, {
-          nodeTandem: volumeNumberControlTandem
-        } ),
-        sliderOptions: {
-          phetioLinkedProperty: model.volumeProperty
-        }
-      }
-    );
-
-    const densityNumberControlTandem = tandem.createTandem( 'densityNumberControl' );
-    const densityNumberControl = new ComparisonNumberControl(
-      densityProperty,
-      DensityBuoyancyCommonStrings.densityStringProperty,
-      DensityBuoyancyCommonConstants.KILOGRAMS_PER_VOLUME_PATTERN_STRING_PROPERTY,
-      'value',
-      {
-        tandem: densityNumberControlTandem,
-        visibleProperty: new PhetioControlledVisibilityProperty( [ model.blockSetProperty ], blockSet => blockSet === BlockSet.SAME_DENSITY, {
-          nodeTandem: densityNumberControlTandem
-        } ),
-        sliderOptions: {
-          phetioLinkedProperty: model.densityProperty
-        }
-      }
-    );
-
-    const numberControlPanel = new Panel( new Node( {
-      children: [
-        massNumberControl,
-        volumeNumberControl,
-        densityNumberControl
-      ],
-      excludeInvisibleChildrenFromBounds: true
-    } ), combineOptions<PanelOptions>( {
-      visibleProperty: DerivedProperty.or( [ massNumberControl.visibleProperty, volumeNumberControl.visibleProperty, densityNumberControl.visibleProperty ] )
-    }, DensityBuoyancyCommonConstants.PANEL_OPTIONS ) );
     this.addChild( numberControlPanel );
 
     this.positionPanel = () => {

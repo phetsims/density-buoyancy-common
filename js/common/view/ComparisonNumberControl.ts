@@ -22,6 +22,8 @@ import Tandem from '../../../../tandem/js/Tandem.js';
 
 export type ComparisonNumberControlOptions = NumberControlOptions;
 
+export const DEFAULT_COMPARISON_TRACK_SIZE = new Dimension2( 120, 0.5 );
+
 export default class ComparisonNumberControl extends NumberControl {
   public constructor(
     property: TRangedProperty,
@@ -75,7 +77,7 @@ export default class ComparisonNumberControl extends NumberControl {
           value: property.range.max,
           label: new Text( property.range.max, { font: new PhetFont( 12 ), maxWidth: 50 } )
         } ],
-        trackSize: new Dimension2( 120, 0.5 )
+        trackSize: DEFAULT_COMPARISON_TRACK_SIZE
       }
     }, options ) );
   }

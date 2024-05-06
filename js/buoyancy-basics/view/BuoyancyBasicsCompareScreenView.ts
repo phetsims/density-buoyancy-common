@@ -35,6 +35,7 @@ import ScaleHeightControl from '../../common/view/ScaleHeightControl.js';
 import smileWinkSolidShape from '../../../../sherpa/js/fontawesome-5/smileWinkSolidShape.js';
 import FluidsRadioButtonPanel from '../../buoyancy/view/FluidsRadioButtonPanel.js';
 import ComparisonControlPanel from '../../common/view/ComparisonControlPanel.js';
+import Dimension2 from '../../../../dot/js/Dimension2.js';
 
 // constants
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
@@ -167,6 +168,7 @@ export default class BuoyancyBasicsCompareScreenView extends DensityBuoyancyScre
     } );
 
     const numberControlPanel = new ComparisonControlPanel( model.massProperty, model.volumeProperty, model.densityProperty, model.blockSetProperty, {
+      sliderTrackSize: new Dimension2( 80, 0.5 ),
       tandem: tandem // just pass through, because ComparisonControlPanel doesn't instrument the Panel.
     } );
 

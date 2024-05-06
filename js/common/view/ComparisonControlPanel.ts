@@ -10,11 +10,11 @@
 import { Node, PhetioControlledVisibilityProperty } from '../../../../scenery/js/imports.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
-import { combineOptions, EmptySelfOptions, optionize3 } from '../../../../phet-core/js/optionize.js';
+import { combineOptions, optionize4 } from '../../../../phet-core/js/optionize.js';
 import PickRequired from '../../../../phet-core/js/types/PickRequired.js';
 import Panel, { PanelOptions } from '../../../../sun/js/Panel.js';
 import UnitConversionProperty from '../../../../axon/js/UnitConversionProperty.js';
-import ComparisonNumberControl from './ComparisonNumberControl.js';
+import ComparisonNumberControl, { DEFAULT_COMPARISON_TRACK_SIZE } from './ComparisonNumberControl.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import BlockSet from '../model/BlockSet.js';
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
@@ -22,9 +22,9 @@ import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import NumberProperty from '../../../../axon/js/NumberProperty.js';
 import Dimension2 from '../../../../dot/js/Dimension2.js';
 
-const TRACK_SIZE = new Dimension2( 80, 0.5 );
-
-type SelfOptions = EmptySelfOptions;
+type SelfOptions = {
+  sliderTrackSize?: Dimension2;
+};
 
 type ComparisonControlPanelOptions = SelfOptions & PickRequired<Partial<PanelOptions>, 'tandem'>;
 
@@ -36,7 +36,11 @@ export default class ComparisonControlPanel extends Panel {
                       blockSetProperty: TReadOnlyProperty<BlockSet>,
                       providedOptions: ComparisonControlPanelOptions ) {
 
-    const options = optionize3<ComparisonControlPanelOptions, SelfOptions, PanelOptions>()( {}, DensityBuoyancyCommonConstants.PANEL_OPTIONS, providedOptions );
+
+    const options = optionize4<ComparisonControlPanelOptions, SelfOptions, PanelOptions>()( {},
+      DensityBuoyancyCommonConstants.PANEL_OPTIONS, {
+        sliderTrackSize: DEFAULT_COMPARISON_TRACK_SIZE
+      }, providedOptions );
 
     // For unit conversion, cubic meters => liters
     const convertedVolumeProperty = new UnitConversionProperty( volumeProperty, {
@@ -61,7 +65,7 @@ export default class ComparisonControlPanel extends Panel {
         } ),
         sliderOptions: {
           phetioLinkedProperty: massProperty,
-          trackSize: TRACK_SIZE
+          trackSize: options.sliderTrackSize
         }
       }
     );
@@ -79,7 +83,7 @@ export default class ComparisonControlPanel extends Panel {
         } ),
         sliderOptions: {
           phetioLinkedProperty: volumeProperty,
-          trackSize: TRACK_SIZE
+          trackSize: options.sliderTrackSize
         }
       }
     );
@@ -97,8 +101,7 @@ export default class ComparisonControlPanel extends Panel {
         } ),
         sliderOptions: {
           phetioLinkedProperty: densityProperty,
-          trackSize: TRACK_SIZE
-
+          trackSize: options.sliderTrackSize
         }
       }
     );

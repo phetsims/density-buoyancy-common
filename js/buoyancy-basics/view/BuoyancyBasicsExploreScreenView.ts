@@ -27,7 +27,7 @@ import BuoyancyExploreScreenView from '../../buoyancy/view/BuoyancyExploreScreen
 import Vector3 from '../../../../dot/js/Vector3.js';
 import Bounds2 from '../../../../dot/js/Bounds2.js';
 import ScaleHeightControl from '../../common/view/ScaleHeightControl.js';
-import FluidsRadioButtonPanel from '../../buoyancy/view/FluidsRadioButtonPanel.js';
+import FluidSelectionPanel from '../../buoyancy/view/FluidSelectionPanel.js';
 import AccordionBox, { AccordionBoxOptions } from '../../../../sun/js/AccordionBox.js';
 import DensityNumberLineNode from '../../density/view/DensityNumberLineNode.js';
 import DensityBuoyancyCommonPreferences from '../../common/model/DensityBuoyancyCommonPreferences.js';
@@ -82,7 +82,7 @@ export default class BuoyancyBasicsExploreScreenView extends DensityBuoyancyScre
       }
     );
 
-    const fluidSelectionPanel = new FluidsRadioButtonPanel( model.liquidMaterialProperty, {
+    const fluidSelectionPanel = new FluidSelectionPanel( model.liquidMaterialProperty, {
       tandem: options.tandem.createTandem( 'fluidSelectionPanel' )
     } );
 

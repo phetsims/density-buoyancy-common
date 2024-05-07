@@ -33,7 +33,7 @@ import ThreeUtils from '../../../../mobius/js/ThreeUtils.js';
 import DensityBuoyancyCommonColors from '../../common/view/DensityBuoyancyCommonColors.js';
 import ScaleHeightControl from '../../common/view/ScaleHeightControl.js';
 import smileWinkSolidShape from '../../../../sherpa/js/fontawesome-5/smileWinkSolidShape.js';
-import FluidsRadioButtonPanel from '../../buoyancy/view/FluidsRadioButtonPanel.js';
+import FluidSelectionPanel from '../../buoyancy/view/FluidSelectionPanel.js';
 import ComparisonControlPanel from '../../common/view/ComparisonControlPanel.js';
 import Dimension2 from '../../../../dot/js/Dimension2.js';
 
@@ -97,7 +97,7 @@ export default class BuoyancyBasicsCompareScreenView extends DensityBuoyancyScre
       margin: MARGIN
     } ) );
 
-    this.addChild( new AlignBox( new FluidsRadioButtonPanel( model.liquidMaterialProperty, {
+    this.addChild( new AlignBox( new FluidSelectionPanel( model.liquidMaterialProperty, {
       tandem: options.tandem.createTandem( 'fluidSelectionPanel' )
     } ), {
       alignBoundsProperty: this.visibleBoundsProperty,

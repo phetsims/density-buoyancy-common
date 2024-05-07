@@ -3,7 +3,6 @@
 /**
  * A panel that holds radio buttons for selecting what fluid the pool has in it.
  *
- * TODO: rename to FluidSelectionPanel? https://github.com/phetsims/buoyancy-basics/issues/4
  * @author Michael Kauzmann (PhET Interactive Simulations)
  */
 
@@ -31,13 +30,13 @@ const VISIBLE_FLUIDS = [
   Material.MERCURY
 ];
 
-type FluidsRadioButtonPanelOptions = WithRequired<PanelOptions, 'tandem'>;
+type FluidSelectionPanelOptions = WithRequired<PanelOptions, 'tandem'>;
 
-export default class FluidsRadioButtonPanel extends Panel {
+export default class FluidSelectionPanel extends Panel {
 
-  public constructor( private readonly liquidMaterialProperty: TProperty<Material>, providedOptions?: FluidsRadioButtonPanelOptions ) {
+  public constructor( private readonly liquidMaterialProperty: TProperty<Material>, providedOptions?: FluidSelectionPanelOptions ) {
 
-    const options = optionize3<FluidsRadioButtonPanelOptions, EmptySelfOptions, PanelOptions>()( {}, DensityBuoyancyCommonConstants.PANEL_OPTIONS, providedOptions );
+    const options = optionize3<FluidSelectionPanelOptions, EmptySelfOptions, PanelOptions>()( {}, DensityBuoyancyCommonConstants.PANEL_OPTIONS, providedOptions );
 
     const radioButtonLabelOptions = {
       font: new PhetFont( 14 ),
@@ -75,4 +74,4 @@ export default class FluidsRadioButtonPanel extends Panel {
 
 }
 
-densityBuoyancyCommon.register( 'FluidsRadioButtonPanel', FluidsRadioButtonPanel );
+densityBuoyancyCommon.register( 'FluidSelectionPanel', FluidSelectionPanel );

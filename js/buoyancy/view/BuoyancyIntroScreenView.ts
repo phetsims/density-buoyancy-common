@@ -31,7 +31,7 @@ import DensityMaterials from '../../common/view/DensityMaterials.js';
 import ThreeUtils from '../../../../mobius/js/ThreeUtils.js';
 import DensityBuoyancyCommonColors from '../../common/view/DensityBuoyancyCommonColors.js';
 import BlockSet from '../../common/model/BlockSet.js';
-import FluidsRadioButtonPanel from './FluidsRadioButtonPanel.js';
+import FluidSelectionPanel from './FluidSelectionPanel.js';
 
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
 
@@ -89,7 +89,7 @@ export default class BuoyancyIntroScreenView extends DensityBuoyancyScreenView<B
       margin: MARGIN
     } ) );
 
-    this.addChild( new AlignBox( new FluidsRadioButtonPanel( model.liquidMaterialProperty, {
+    this.addChild( new AlignBox( new FluidSelectionPanel( model.liquidMaterialProperty, {
       tandem: options.tandem.createTandem( 'fluidSelectionPanel' )
     } ), {
       alignBoundsProperty: this.visibleBoundsProperty,

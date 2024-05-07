@@ -11,7 +11,7 @@ import Bounds2 from '../../../../dot/js/Bounds2.js';
 import optionize, { combineOptions } from '../../../../phet-core/js/optionize.js';
 import ArrowNode, { ArrowNodeOptions } from '../../../../scenery-phet/js/ArrowNode.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
-import { Line, ManualConstraint, Node, NodeOptions, Rectangle, RichText, Text, TextOptions, TPaint } from '../../../../scenery/js/imports.js';
+import { HBox, Line, ManualConstraint, Node, NodeOptions, Rectangle, RichText, Text, TextOptions, TPaint, VBox } from '../../../../scenery/js/imports.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 import Material from '../../common/model/Material.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
@@ -19,11 +19,12 @@ import PatternStringProperty from '../../../../axon/js/PatternStringProperty.js'
 import Tandem from '../../../../tandem/js/Tandem.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 
+// Type declarations: DisplayDensity is the object which will construct the marker and the legend
 export type DisplayDensity = {
   densityProperty: TReadOnlyProperty<number>;
+  nameProperty: TReadOnlyProperty<string>;
+  color: TPaint;
   visibleProperty?: TReadOnlyProperty<boolean>;
-  nameProperty?: TReadOnlyProperty<string>;
-  color?: TPaint;
 };
 
 type SelfOptions = {
@@ -38,15 +39,53 @@ type SelfOptions = {
   showNumericValue?: boolean;
 };
 
+// Constants and Functions
 const WIDTH = 400;
 const HEIGHT = 22;
 const MAX_DENSITY = 10000;
+
+// To display name: xxx kg/L dynamically
+const createDensityStringProperty = ( densityNumberProperty: TReadOnlyProperty<number>, nameStringProperty: TReadOnlyProperty<string> ) => {
+  // This is densityProperty kg/L (units depending on preferences)
+  const valueUnitsStringProperty = new PatternStringProperty( DensityBuoyancyCommonConstants.KILOGRAMS_PER_VOLUME_PATTERN_STRING_PROPERTY, {
+    value: densityNumberProperty
+  }, {
+    maps: {
+      value: ( density: number ) => density / DensityBuoyancyCommonConstants.LITERS_IN_CUBIC_METER
+    },
+    tandem: Tandem.OPT_OUT,
+    decimalPlaces: 2
+  } );
+
+  // This is name: valueUnitsStringProperty
+  const nameColonValueStringProperty = new PatternStringProperty( DensityBuoyancyCommonStrings.nameColonValueUnitsPatternStringProperty, {
+    name: nameStringProperty,
+    valueWithUnits: valueUnitsStringProperty
+  } );
+
+  return nameColonValueStringProperty;
+};
+
+const arrowOptions = {
+  headHeight: 12,
+  headWidth: 15,
+  tailWidth: 3,
+  stroke: null
+};
+
+const createArrow = ( index: number, color: TPaint ) => {
+  return new ArrowNode( 0, index === 0 ? -7 : 7, 0, 0, combineOptions<ArrowNodeOptions>( {
+    fill: color
+  }, arrowOptions ) );
+};
 
 export type DensityNumberLineNodeOptions = SelfOptions & NodeOptions;
 
 export default class DensityNumberLineNode extends Node {
 
   private readonly modelViewTransform: ( density: number ) => number;
+
+  private markerNodes: Node[] = [];
 
   public constructor( providedOptions?: DensityNumberLineNodeOptions ) {
 
@@ -117,20 +156,15 @@ export default class DensityNumberLineNode extends Node {
       font: DensityBuoyancyCommonConstants.ITEM_FONT
     } ) );
 
-    const markerNodes = this.createMarkerNodes( options );
+    this.createContents( options );
 
-    markerNodes.forEach( markerNode => this.addChild( markerNode ) );
+    this.markerNodes.forEach( markerNode => this.addChild( markerNode ) );
 
     this.mutate( options );
   }
 
-  public createMarkerNodes( options: DensityNumberLineNodeOptions ): Node[] {
-    const arrowOptions = {
-      headHeight: 12,
-      headWidth: 15,
-      tailWidth: 3,
-      stroke: null
-    };
+  public createContents( options: DensityNumberLineNodeOptions ): void {
+
     const labelOptions = {
       font: new PhetFont( { size: 16, weight: 'bold' } ),
       maxWidth: options.maxLabelWidth
@@ -138,45 +172,19 @@ export default class DensityNumberLineNode extends Node {
 
     const markerNodes: Node[] = [];
 
-    options.displayDensities.forEach( ( { densityProperty, visibleProperty, color, nameProperty }, index ) => {
+    options.displayDensities.forEach( (
+      {
+        densityProperty,
+        visibleProperty,
+        color,
+        nameProperty
+      }, index ) => {
 
-      const arrow = new ArrowNode( 0, index === 0 ? -7 : 7, 0, 0, combineOptions<ArrowNodeOptions>( {
-        fill: color
-      }, arrowOptions ) );
+      const arrow = createArrow( index, color );
 
-      let createDensityStringProperty;
+      const densityStringProperty = options.showNumericValue ? createDensityStringProperty( densityProperty, nameProperty ) : nameProperty;
 
-      if ( options.showNumericValue ) {
-        createDensityStringProperty = ( densityProperty: TReadOnlyProperty<number> ) => {
-          // This is densityProperty kg/L (units depending on preferences)
-          const valueUnitsStringProperty = new PatternStringProperty( DensityBuoyancyCommonConstants.KILOGRAMS_PER_VOLUME_PATTERN_STRING_PROPERTY, {
-            value: densityProperty
-          }, {
-            maps: {
-              value: ( density: number ) => density / DensityBuoyancyCommonConstants.LITERS_IN_CUBIC_METER
-            },
-            tandem: Tandem.OPT_OUT,
-            decimalPlaces: 2
-          } );
-
-          // This is name: valueUnitsStringProperty
-          const nameColonValueStringProperty = new PatternStringProperty( DensityBuoyancyCommonStrings.nameColonValueUnitsPatternStringProperty, {
-            name: nameProperty,
-            valueWithUnits: valueUnitsStringProperty
-          } );
-
-          return nameColonValueStringProperty;
-        };
-      }
-      else {
-        createDensityStringProperty = () => {
-          return nameProperty;
-        };
-      }
-
-      const densityStringProperty = createDensityStringProperty( densityProperty );
-
-      const label = new RichText( densityStringProperty!, combineOptions<TextOptions>( {
+      const label = new RichText( densityStringProperty, combineOptions<TextOptions>( {
         fill: color
       }, labelOptions ) );
 
@@ -212,7 +220,43 @@ export default class DensityNumberLineNode extends Node {
         marker.visible = visible;
       } );
     } );
-    return markerNodes;
+
+    this.markerNodes = markerNodes;
+  }
+}
+
+export class DensityNumberLineLegend extends VBox {
+  public constructor( displayDensities: DisplayDensity[] ) {
+
+    const legendChildren: Node[][] = [];
+
+    const legendVisibilities: TReadOnlyProperty<boolean>[] = [];
+
+    displayDensities.forEach( (
+      {
+        densityProperty,
+        visibleProperty,
+        color,
+        nameProperty
+      }, index ) => {
+
+      legendChildren.push( [
+        createArrow( index, color ),
+        new RichText( createDensityStringProperty( densityProperty, nameProperty ), {
+          font: new PhetFont( 16 ),
+          maxWidth: 100
+        } )
+      ] );
+
+      legendVisibilities.push( visibleProperty! );
+    } );
+
+    super( {
+      children: legendChildren.map( ( children, index ) => new HBox(
+        { children: children, spacing: 5, visibleProperty: legendVisibilities[ index ] } ) ),
+      spacing: 5,
+      align: 'left'
+    } );
   }
 }
 

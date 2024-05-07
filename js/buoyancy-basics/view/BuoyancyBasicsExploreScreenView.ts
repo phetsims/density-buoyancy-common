@@ -9,7 +9,7 @@
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import { combineOptions } from '../../../../phet-core/js/optionize.js';
-import { AlignBox, ManualConstraint, Node, RichText, VBox } from '../../../../scenery/js/imports.js';
+import { AlignBox, HBox, ManualConstraint, Node, RichText, VBox } from '../../../../scenery/js/imports.js';
 import Panel from '../../../../sun/js/Panel.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 import Material from '../../common/model/Material.js';
@@ -29,7 +29,7 @@ import Bounds2 from '../../../../dot/js/Bounds2.js';
 import ScaleHeightControl from '../../common/view/ScaleHeightControl.js';
 import FluidSelectionPanel from '../../buoyancy/view/FluidSelectionPanel.js';
 import AccordionBox, { AccordionBoxOptions } from '../../../../sun/js/AccordionBox.js';
-import DensityNumberLineNode from '../../density/view/DensityNumberLineNode.js';
+import DensityNumberLineNode, { DensityNumberLineLegend, DisplayDensity } from '../../density/view/DensityNumberLineNode.js';
 import DensityBuoyancyCommonPreferences from '../../common/model/DensityBuoyancyCommonPreferences.js';
 import DensityBuoyancyCommonColors from '../../common/view/DensityBuoyancyCommonColors.js';
 
@@ -143,29 +143,31 @@ export default class BuoyancyBasicsExploreScreenView extends DensityBuoyancyScre
       margin: MARGIN
     } ) );
 
+    const displayDensities: DisplayDensity[] = [
+      // DerivedProperty doesn't need disposal, since everything here lives for the lifetime of the simulation
+      {
+        densityProperty: new DerivedProperty( [ model.liquidDensityProperty ], density => density ),
+        color: DensityBuoyancyCommonColors.liquidLabelProperty,
+        nameProperty: DensityBuoyancyCommonStrings.fluidStringProperty
+      },
+      {
+        densityProperty: new DerivedProperty( [ model.primaryMass.materialProperty ], material => material.density ),
+        color: DensityBuoyancyCommonColors.labelPrimaryProperty,
+        nameProperty: model.primaryMass.tag.nameProperty
+      },
+      {
+        densityProperty: new DerivedProperty( [ model.secondaryMass.materialProperty ], material => material.density ),
+        color: DensityBuoyancyCommonColors.labelSecondaryProperty,
+        visibleProperty: model.secondaryMass.visibleProperty,
+        nameProperty: model.secondaryMass.tag.nameProperty
+      }
+    ];
 
     const accordionTandem = tandem.createTandem( 'densityAccordionBox' );
-    const densityAccordionBox = new AccordionBox( new DensityNumberLineNode(
+
+    const densityNumberLineNode = new DensityNumberLineNode(
       {
-        displayDensities: [
-          // DerivedProperty doesn't need disposal, since everything here lives for the lifetime of the simulation
-          {
-            densityProperty: new DerivedProperty( [ model.liquidDensityProperty ], density => density ),
-            color: DensityBuoyancyCommonColors.liquidLabelProperty,
-            nameProperty: DensityBuoyancyCommonStrings.fluidStringProperty
-          },
-          {
-            densityProperty: new DerivedProperty( [ model.primaryMass.materialProperty ], material => material.density ),
-            color: DensityBuoyancyCommonColors.labelPrimaryProperty,
-            nameProperty: model.primaryMass.tag.nameProperty
-          },
-          {
-            densityProperty: new DerivedProperty( [ model.secondaryMass.materialProperty ], material => material.density ),
-            color: DensityBuoyancyCommonColors.labelSecondaryProperty,
-            visibleProperty: model.secondaryMass.visibleProperty,
-            nameProperty: model.secondaryMass.tag.nameProperty
-          }
-        ],
+        displayDensities: displayDensities,
         materials: [
           Material.HUMAN,
           Material.GLASS,
@@ -181,7 +183,16 @@ export default class BuoyancyBasicsExploreScreenView extends DensityBuoyancyScre
           phetioReadOnly: true
         }
       }
-    ), combineOptions<AccordionBoxOptions>( {
+    );
+
+    const densityLegend = new DensityNumberLineLegend( displayDensities );
+
+    const densityAccordionBox = new AccordionBox( new HBox( {
+      children: [
+        densityLegend,
+        densityNumberLineNode
+      ]
+    } ), combineOptions<AccordionBoxOptions>( {
       titleNode: new RichText( new DerivedProperty( [
         DensityBuoyancyCommonPreferences.volumeUnitsProperty,
         DensityBuoyancyCommonStrings.densityReadoutStringProperty,
@@ -203,7 +214,7 @@ export default class BuoyancyBasicsExploreScreenView extends DensityBuoyancyScre
 
     this.addChild( new AlignBox( densityAccordionBox, {
       alignBoundsProperty: this.visibleBoundsProperty,
-      xAlign: 'center',
+      xAlign: 'left',
       yAlign: 'top',
       margin: MARGIN
     } ) );

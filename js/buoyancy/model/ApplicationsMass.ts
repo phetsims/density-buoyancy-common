@@ -26,7 +26,8 @@ export default abstract class ApplicationsMass extends Mass {
 
   protected massLabelOffsetVector3: Vector3;
 
-  public readonly intersectionGroup: THREE.Group;
+  // For ray casting/hit testing
+  public readonly intersectionGroup = new THREE.Group();
 
   protected constructor( engine: PhysicsEngine, displacementVolumeProperty: NumberProperty, options: ApplicationsMassOptions ) {
 
@@ -41,8 +42,6 @@ export default abstract class ApplicationsMass extends Mass {
 
     this.massLabelOffsetOrientationProperty.value = new Vector2( 1, -1 / 2 );
     this.massLabelOffsetProperty.value = this.massLabelOffsetVector3;
-
-    this.intersectionGroup = new THREE.Group();
   }
 
   /**
@@ -55,7 +54,7 @@ export default abstract class ApplicationsMass extends Mass {
 
   /**
    * If there is an intersection with the ray and this mass, the t-value (distance the ray would need to travel to
-   * reach the intersection, e.g. ray.position + ray.distance * t === intersectionPoint) will be returned. Otherwise
+   * reach the intersection, e.g. ray.position + ray.distance * t === intersectionPoint) will be returned. Otherwise,
    * if there is no intersection, null will be returned.
    */
   public override intersect( ray: Ray3, isTouch: boolean, scale = 1 ): number | null {
@@ -77,11 +76,14 @@ export default abstract class ApplicationsMass extends Mass {
    * Returns the displayed area of this object at a given y level
    *
    * Assumes step information was updated.
+   *
+   * TODO: Why is this different than getDisplacedVolume? Should they share implementation? See https://github.com/phetsims/density-buoyancy-common/issues/123
    */
   public getDisplacedArea( liquidLevel: number ): number {
     const bottom = this.stepBottom;
     const top = this.stepTop;
 
+    // TODO: https://github.com/phetsims/density-buoyancy-common/issues/123 if the liquid level is beyond the top, it probably shouldn't be 0, right?
     if ( liquidLevel < bottom || liquidLevel > top ) {
       return 0;
     }

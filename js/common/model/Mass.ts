@@ -263,8 +263,6 @@ export default abstract class Mass extends PhetioObject {
     }, providedOptions );
 
     assert && assert( options.body, 'options.body required' );
-    assert && assert( options.shape instanceof Shape, 'options.shape required as a Shape' );
-    assert && assert( options.material instanceof Material, 'options.material required as a Material' );
     assert && assert( options.volume > 0, 'non-zero options.volume required' );
 
     super( options );
@@ -629,11 +627,11 @@ export default abstract class Mass extends PhetioObject {
   public abstract setRatios( widthRatio: number, heightRatio: number ): void;
 
   /**
-   * Called after a engine-physics-model step once before doing other operations (like computing buoyant forces,
+   * Called after the engine-physics-model step once before doing other operations (like computing buoyant forces,
    * displacement, etc.) so that it can set high-performance flags used for this purpose.
    *
    * Type-specific values are likely to be set, but this should set at least stepX/stepBottom/stepTop (as those are
-   * used for determining basin volumes and cross sections)
+   * used for determining basin volumes and cross-sections)
    */
   public updateStepInformation(): void {
     this.engine.bodyGetStepMatrixTransform( this.body, this.stepMatrix );

@@ -120,13 +120,6 @@ export default class Boat extends ApplicationsMass {
   }
 
   /**
-   * Returns whether this is a boat (as more complicated handling is needed in this case).
-   */
-  public override isBoat(): boolean {
-    return true;
-  }
-
-  /**
    * Called after a engine-physics-model step once before doing other operations (like computing buoyant forces,
    * displacement, etc.) so that it can set high-performance flags used for this purpose.
    *

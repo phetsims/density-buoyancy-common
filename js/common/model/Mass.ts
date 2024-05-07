@@ -522,13 +522,6 @@ export default abstract class Mass extends PhetioObject {
   }
 
   /**
-   * Returns whether this is a boat (as more complicated handling is needed in this case).
-   */
-  public isBoat(): boolean {
-    return false;
-  }
-
-  /**
    * Returns the bounds of this mass.
    */
   public abstract getLocalBounds(): Bounds3;

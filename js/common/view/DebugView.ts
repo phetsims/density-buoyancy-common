@@ -147,7 +147,7 @@ export default class DebugView extends Node {
     } );
     this.poolVolumePath.shape = poolVolumeShape;
 
-    const boat = this.model.masses.find( mass => mass.isBoat() );
+    const boat = this.model.masses.find( mass => mass instanceof Boat );
     if ( boat instanceof Boat ) {
       const boatYValues = _.range( boat.stepBottom, boat.stepTop, 0.002 );
 

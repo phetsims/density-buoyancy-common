@@ -1,8 +1,8 @@
 // Copyright 2023-2024, University of Colorado Boulder
 
 /**
- * DensityBuoyancyCommonKeyboardHelpNode is the keyboard help for all screens. The majority of elements are relevant to all screens.
- * Elements that are not relevant to all screens may be omitted via the constructor parameters.
+ * DensityBuoyancyCommonKeyboardHelpNode is the keyboard help for all screens, with parameters that determine whether
+ * slider or "change choice" (combo box) help should be shown.
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */

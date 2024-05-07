@@ -45,11 +45,12 @@ export default class Boat extends ApplicationsMass {
   // volume. This is much preferred to trying to redraw the shape to a different size.
   public stepMultiplier = 0;
 
-  // Whether the boat is underwater (at all) or not. Does not need to be fully submerged.
+  // Whether the boat is fully submerged
   public isUnderwater = false;
 
   public constructor( engine: PhysicsEngine, blockWidthProperty: TReadOnlyProperty<number>, liquidMaterialProperty: TProperty<Material>, providedOptions: BoatOptions ) {
 
+    // REVIEW https://github.com/phetsims/density-buoyancy-common/issues/123 Document and explain the 0.01 initial value
     const displacementVolumeProperty = new NumberProperty( 0.01, {
       tandem: providedOptions.tandem.createTandem( 'displacementVolumeProperty' )
     } );
@@ -62,8 +63,6 @@ export default class Boat extends ApplicationsMass {
       shape: Shape.polygon( boatIntersectionVertices ),
       volume: volume,
       massShape: MassShape.BLOCK,
-
-      // material
       material: Material.BOAT_BODY
     }, providedOptions );
 
@@ -225,7 +224,9 @@ export default class Boat extends ApplicationsMass {
    * Checks if the boat is underwater and sets the flag
    */
   public setUnderwaterState( liquidLevel: number ): void {
-    this.isUnderwater = liquidLevel >= this.stepBottom;
+
+    // TODO: Should we set this value at the beginning of the post physics engine step, see https://github.com/phetsims/density-buoyancy-common/issues/123
+    // It currently seems like it is updated partway through (after it is accessed)?
     this.isUnderwater = this.stepTop < liquidLevel - DensityBuoyancyCommonConstants.TOLERANCE;
   }
 

@@ -19,6 +19,7 @@ import MassLabelNode from './MassLabelNode.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import MassDecorationLayer from './MassDecorationLayer.js';
 import { THREEModelViewTransform } from './DensityBuoyancyScreenView.js';
+import Tandem from '../../../../tandem/js/Tandem.js';
 
 const scratchVector2 = new Vector2( 0, 0 );
 
@@ -49,9 +50,18 @@ export default class MeasurableMassView extends MassView {
     );
 
     this.massLabelNode = new MassLabelNode( mass, showMassesProperty );
+
+    // Update the decoration layer when phet-io state is set
+    const updateDecorationLayer = () => this.updateDecorationLayer();
+    if ( Tandem.PHET_IO_ENABLED ) {
+      phet.phetio.phetioEngine.phetioStateEngine.stateSetEmitter.addListener( updateDecorationLayer );
+      this.disposeEmitter.addListener( () => {
+        phet.phetio.phetioEngine.phetioStateEngine.stateSetEmitter.removeListener( updateDecorationLayer );
+      } );
+    }
   }
 
-  public override step( dt: number ): void {
+  private updateDecorationLayer(): void {
     this.forceDiagramNode.update();
 
     // Reposition force diagram
@@ -67,6 +77,10 @@ export default class MeasurableMassView extends MassView {
     const modelPoint = this.modelViewTransform.modelToViewPoint( this.mass.matrix.translation.toVector3().plus( this.mass.massLabelOffsetProperty.value ) );
     const offsetPoint = scratchVector2.setXY( this.massLabelNode.width / 2, this.massLabelNode.height / 2 ).componentMultiply( this.mass.massLabelOffsetOrientationProperty.value );
     this.massLabelNode.translation = modelPoint.plus( offsetPoint );
+  }
+
+  public override step( dt: number ): void {
+    this.updateDecorationLayer();
   }
 
   public override decorate( decorationLayer: MassDecorationLayer ): void {

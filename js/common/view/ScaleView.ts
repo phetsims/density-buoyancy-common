@@ -18,6 +18,7 @@ import ScaleReadoutNode from './ScaleReadoutNode.js';
 import Gravity from '../model/Gravity.js';
 import MassDecorationLayer from './MassDecorationLayer.js';
 import { THREEModelViewTransform } from './DensityBuoyancyScreenView.js';
+import Tandem from '../../../../tandem/js/Tandem.js';
 
 export default class ScaleView extends MassView {
 
@@ -32,6 +33,15 @@ export default class ScaleView extends MassView {
 
     this.scaleGeometry = scaleGeometry;
     this.scaleReadoutNode = new ScaleReadoutNode( mass, gravityProperty );
+
+    // Update the decoration layer when phet-io state is set
+    const updateDecorationLayer = () => this.updateDecorationLayer();
+    if ( Tandem.PHET_IO_ENABLED ) {
+      phet.phetio.phetioEngine.phetioStateEngine.stateSetEmitter.addListener( updateDecorationLayer );
+      this.disposeEmitter.addListener( () => {
+        phet.phetio.phetioEngine.phetioStateEngine.stateSetEmitter.removeListener( updateDecorationLayer );
+      } );
+    }
   }
 
   public override decorate( decorationLayer: MassDecorationLayer ): void {
@@ -40,11 +50,15 @@ export default class ScaleView extends MassView {
     decorationLayer.scaleReadoutLayer.addChild( this.scaleReadoutNode );
   }
 
+  private updateDecorationLayer(): void {
+    const withOffsetPoint = this.scaleReadoutNode.mass.matrix.translation.toVector3().plus( Scale.SCALE_FRONT_OFFSET );
+    this.scaleReadoutNode.translation = this.modelViewTransform.modelToViewPoint( withOffsetPoint );
+  }
+
   public override step( dt: number ): void {
     super.step( dt );
 
-    const withOffsetPoint = this.scaleReadoutNode.mass.matrix.translation.toVector3().plus( Scale.SCALE_FRONT_OFFSET );
-    this.scaleReadoutNode.translation = this.modelViewTransform.modelToViewPoint( withOffsetPoint );
+    this.updateDecorationLayer();
   }
 
   /**

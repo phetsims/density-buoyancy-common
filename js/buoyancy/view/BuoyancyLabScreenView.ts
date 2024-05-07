@@ -10,7 +10,7 @@
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import { combineOptions } from '../../../../phet-core/js/optionize.js';
-import { AlignBox, HBox, Node, VBox } from '../../../../scenery/js/imports.js';
+import { AlignBox, HBox, ManualConstraint, Node, RichText, VBox } from '../../../../scenery/js/imports.js';
 import Panel from '../../../../sun/js/Panel.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 import Material from '../../common/model/Material.js';
@@ -33,7 +33,9 @@ import ScaleView from '../../common/view/ScaleView.js';
 import Bounds2 from '../../../../dot/js/Bounds2.js';
 import ScaleHeightControl from '../../common/view/ScaleHeightControl.js';
 import fluid_displaced_scale_icon_png from '../../../images/fluid_displaced_scale_icon_png.js';
-import Multilink from '../../../../axon/js/Multilink.js';
+import AccordionBox from '../../../../sun/js/AccordionBox.js';
+import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
+import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 
 // constants
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
@@ -55,19 +57,40 @@ export default class BuoyancyLabScreenView extends DensityBuoyancyScreenView<Buo
     // In liters
     const maxBlockVolume = 10;
 
-    const fluidDisplacedPanel = new FluidDisplacedPanel( this.waterLevelVolumeProperty,
+    const fluidDisplacedAccordionBoxTandem = tandem.createTandem( 'fluidDisplacedAccordionBox' );
+
+    const accordionBoxIsExpandedProperty = new BooleanProperty( false, {
+      tandem: fluidDisplacedAccordionBoxTandem.createTandem( 'expandedProperty' )
+    } );
+
+    const fluidDisplacedAccordionBox = new AccordionBox( new FluidDisplacedPanel( this.waterLevelVolumeProperty,
       maxBlockVolume,
       model.liquidMaterialProperty,
-      model.gravityProperty, {
-        visibleProperty: model.showFluidDisplacedProperty
-      } );
+      model.gravityProperty ), {
+      titleNode: new RichText( DensityBuoyancyCommonStrings.fluidDisplacedStringProperty, {
+        font: new PhetFont( 14 ), // Matches the checkbox label font size
+        maxWidth: 130
+      } ),
+      expandedProperty: accordionBoxIsExpandedProperty,
+
+      titleAlignX: 'left',
+      titleAlignY: 'center',
+      titleXMargin: 5,
+      titleXSpacing: 10,
+
+      contentXMargin: 2,
+      contentYMargin: 2,
+      contentXSpacing: 2,
+      contentYSpacing: 2,
+      tandem: fluidDisplacedAccordionBoxTandem
+    } );
 
     const leftSideVBox = new VBox( {
       align: 'left',
+      spacing: 5,
       children: [
-        fluidDisplacedPanel,
+        fluidDisplacedAccordionBox,
         new MultiSectionPanelsNode( [ new BuoyancyDisplayOptionsNode( model, {
-          showFluidDisplacedProperty: model.showFluidDisplacedProperty,
           tandem: tandem.createTandem( 'buoyancyDisplayOptionsNode' )
         } ) ] )
       ]
@@ -78,38 +101,19 @@ export default class BuoyancyLabScreenView extends DensityBuoyancyScreenView<Buo
     } );
     this.addChild( leftSideContent );
 
-    const applyDefaultMargins = () => {
+    const positionLeftSideContent = () => {
       leftSideContent.bottom = this.visibleBoundsProperty.value.bottom - DESIRED_LEFT_SIDE_MARGIN;
       leftSideContent.left = this.visibleBoundsProperty.value.left + DESIRED_LEFT_SIDE_MARGIN;
-      leftSideVBox.spacing = DESIRED_LEFT_SIDE_MARGIN;
     };
 
-    // Custom layout code to even out margins when we are close to overlapping with the ground because the
-    // fluidDisplacedPanel is showing
-    Multilink.multilink( [ this.visibleBoundsProperty, fluidDisplacedPanel.visibleProperty ], ( visibleBounds, fluidDisplacedPanelVisible ) => {
-      applyDefaultMargins();
-
-      // No worry of layout going above ground unless the fluid displaced panel is showing
-      if ( fluidDisplacedPanelVisible ) {
-
-        // In screen view coordinates (0,0 is at the top left of layout bounds)
-        const poolTopFrontHeight = this.modelToViewPoint( new Vector3( this.model.poolBounds.left, this.model.poolBounds.maxY, this.model.poolBounds.front ) );
-
-        // Space under the ground that we have for the two panels
-        const availableHeight = visibleBounds.bottom - poolTopFrontHeight.y;
-
-        // The height of just content, no margins counted (top/middle/bottom)
-        const contentHeightNotMargins = leftSideVBox.height - DESIRED_LEFT_SIDE_MARGIN;
-
-        const availableMarginSpace = availableHeight - contentHeightNotMargins;
-        assert && assert( availableMarginSpace > 0, 'left control panels on lab screen are too big to fit under the ground' );
-        if ( availableMarginSpace < 3 * DESIRED_LEFT_SIDE_MARGIN ) {
-          const calculatedMargin = availableMarginSpace > 0 ? availableMarginSpace / 3 : 1;
-          leftSideVBox.spacing = calculatedMargin;
-          leftSideContent.bottom = visibleBounds.bottom - calculatedMargin;
-        }
-      }
+    // Reflow when the entire accordion box is hidden in phet-io studio.
+    // TODO: https://github.com/phetsims/buoyancy/issues/150 this layout is duplicated with the abvoe
+    ManualConstraint.create( this, [ leftSideContent ], leftSideContentProxy => {
+      leftSideContentProxy.bottom = this.visibleBoundsProperty.value.bottom - DESIRED_LEFT_SIDE_MARGIN;
+      leftSideContentProxy.left = this.visibleBoundsProperty.value.left + DESIRED_LEFT_SIDE_MARGIN;
     } );
+
+    this.visibleBoundsProperty.link( positionLeftSideContent );
 
     const displayedMysteryMaterials = [
       Material.DENSITY_A,

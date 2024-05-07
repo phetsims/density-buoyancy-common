@@ -13,7 +13,7 @@ import BeakerNode, { BeakerNodeOptions } from '../../../../scenery-phet/js/Beake
 import NumberProperty from '../../../../axon/js/NumberProperty.js';
 import Range from '../../../../dot/js/Range.js';
 import optionize, { combineOptions, EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
-import { Color, Node, RichText, Text, VBox } from '../../../../scenery/js/imports.js';
+import { Color, Node, RichText, Text } from '../../../../scenery/js/imports.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 import NumberDisplay from '../../../../scenery-phet/js/NumberDisplay.js';
@@ -48,7 +48,8 @@ export default class FluidDisplacedPanel extends MultiSectionPanelsNode {
       `This class greatly expects the starting volume of the pool to be ${STARTING_VOLUME}L.` );
 
     const options = optionize<FluidDisplacedPanelOptions, SelfOptions, MultiSectionPanelsNodeOptions>()( {
-      yMargin: DensityBuoyancyCommonConstants.MARGIN / 2
+      yMargin: DensityBuoyancyCommonConstants.MARGIN / 2,
+      stroke: null
     }, providedOptions );
 
     const displayRange = new Range( 0, maxBeakerVolume );
@@ -127,18 +128,10 @@ export default class FluidDisplacedPanel extends MultiSectionPanelsNode {
       numberDisplay.right = beakerNode.right;
     } );
 
-    super( [ new VBox( {
-      spacing: DensityBuoyancyCommonConstants.MARGIN / 2,
-      children: [
-        new Text( DensityBuoyancyCommonStrings.fluidDisplacedStringProperty, {
-          font: DensityBuoyancyCommonConstants.ITEM_FONT,
-          maxWidth: CONTENT_WIDTH
-        } ),
-        new Node( {
-          children: [ scaleIcon, beakerNode, numberDisplay, forceReadout ]
-        } )
-      ]
-    } ) ], options );
+    super( [ new Node( {
+      children: [ scaleIcon, beakerNode, numberDisplay, forceReadout ]
+    } )
+    ], options );
   }
 
   private static getBeakerOptions(): BeakerNodeOptions {

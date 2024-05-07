@@ -17,7 +17,6 @@ import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js
 import DensityBuoyancyCommonColors from './DensityBuoyancyCommonColors.js';
 import DensityBuoyancyModel from '../model/DensityBuoyancyModel.js';
 import optionize, { combineOptions } from '../../../../phet-core/js/optionize.js';
-import Property from '../../../../axon/js/Property.js';
 import RectangularButton from '../../../../sun/js/buttons/RectangularButton.js';
 import WithRequired from '../../../../phet-core/js/types/WithRequired.js';
 
@@ -42,9 +41,6 @@ const checkboxSpacing = 5;
 
 type SelfOptions = {
   includeVectorScaleControl?: boolean;
-
-  // If provided, a checkbox control will be added to this panel, null to omit.
-  showFluidDisplacedProperty?: Property<boolean> | null;
 };
 
 type BuoyancyDisplayOptionsNodeOptions = SelfOptions & WithRequired<VBoxOptions, 'tandem'>;
@@ -54,7 +50,6 @@ export default class BuoyancyDisplayOptionsNode extends VBox {
 
     const options = optionize<BuoyancyDisplayOptionsNodeOptions, SelfOptions, VBoxOptions>()( {
       includeVectorScaleControl: true,
-      showFluidDisplacedProperty: null,
       spacing: DensityBuoyancyCommonConstants.MARGIN,
       align: 'left'
     }, providedOptions );
@@ -138,10 +133,6 @@ export default class BuoyancyDisplayOptionsNode extends VBox {
               new Checkbox( model.showForceValuesProperty, new Text( DensityBuoyancyCommonStrings.forceValuesStringProperty, labelOptions ), combineOptions<CheckboxOptions>( {
                 tandem: options.tandem.createTandem( 'forcesCheckbox' )
               }, checkboxOptions ) ),
-              ...( options.showFluidDisplacedProperty ?
-                [ new Checkbox( options.showFluidDisplacedProperty, new Text( DensityBuoyancyCommonStrings.fluidDisplacedStringProperty, labelOptions ), combineOptions<CheckboxOptions>( {
-                  tandem: options.tandem.createTandem( 'fluidDisplacedCheckbox' )
-                }, checkboxOptions ) ) ] : [] ),
               ...( model.supportsDepthLines ?
                 [ new Checkbox( model.showDepthLinesProperty, new Text( DensityBuoyancyCommonStrings.depthLinesStringProperty, labelOptions ), combineOptions<CheckboxOptions>( {
                   tandem: options.tandem.createTandem( 'depthLinesCheckbox' )

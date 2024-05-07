@@ -175,10 +175,10 @@ export default abstract class Mass extends PhetioObject {
   public readonly customColorProperty?: Property<Color>;
 
   // Whether we are modifying the volumeProperty directly
-  protected volumeLock: boolean;
+  protected volumeLock = false;
 
   // Whether we are modifying the massProperty directly
-  protected massLock: boolean;
+  protected massLock = false;
 
   // In m^3 (cubic meters)
   public readonly volumeProperty: NumberProperty;
@@ -377,8 +377,6 @@ export default abstract class Mass extends PhetioObject {
       } );
     }
 
-    this.volumeLock = false;
-
     this.volumeProperty = new NumberProperty( options.volume, combineOptions<NumberPropertyOptions>( {
       tandem: tandem?.createTandem( 'volumeProperty' ),
       range: new Range( options.minVolume, options.maxVolume ),
@@ -397,8 +395,6 @@ export default abstract class Mass extends PhetioObject {
       range: new Range( 0, Number.POSITIVE_INFINITY ),
       tandem: Tandem.OPT_OUT
     } );
-
-    this.massLock = false;
 
     this.massProperty = new GuardedNumberProperty( this.materialProperty.value.density * this.volumeProperty.value + this.containedMassProperty.value, combineOptions<GuardedNumberPropertyOptions>( {
       tandem: tandem?.createTandem( 'massProperty' ),

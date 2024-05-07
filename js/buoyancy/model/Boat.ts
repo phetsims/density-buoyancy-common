@@ -34,16 +34,18 @@ export default class Boat extends ApplicationsMass {
 
   // The volume that the boat can hold inside it.
   public readonly liquidMaterialProperty: TProperty<Material>;
+
+  // The interior that can contain liquid
   public readonly basin: BoatBasin;
 
   // Amount of volume contained in the basin
-  public stepInternalVolume: number;
+  public stepInternalVolume = 0;
 
   // How to multiply our one-liter boat shape up to the model coordinates, since the boat changes size based on its
   // volume. This is much preferred to trying to redraw the shape to a different size.
-  public stepMultiplier: number;
+  public stepMultiplier = 0;
 
-  // Wether the boat is underwater or not
+  // Whether the boat is underwater (at all) or not. Does not need to be fully submerged.
   public isUnderwater = false;
 
   public constructor( engine: PhysicsEngine, blockWidthProperty: TReadOnlyProperty<number>, liquidMaterialProperty: TProperty<Material>, providedOptions: BoatOptions ) {
@@ -97,14 +99,9 @@ export default class Boat extends ApplicationsMass {
 
     this.basin = new BoatBasin( this );
 
-    this.stepInternalVolume = 0;
-    this.stepMultiplier = 0;
     Multilink.multilink( [ this.liquidMaterialProperty, this.basin.liquidVolumeProperty ], ( material, volume ) => {
       this.containedMassProperty.value = material.density * volume;
     } );
-
-    this.stepInternalVolume = 0;
-    this.stepMultiplier = 0;
 
     const intersectionMesh = new THREE.Mesh( BoatDesign.getPrimaryGeometry( 1 ), new THREE.MeshLambertMaterial() );
     this.intersectionGroup.add( intersectionMesh );

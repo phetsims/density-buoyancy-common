@@ -15,8 +15,9 @@ import Ray3 from '../../../../dot/js/Ray3.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
 import Bounds3 from '../../../../dot/js/Bounds3.js';
+import StrictOmit from '../../../../phet-core/js/types/StrictOmit.js';
 
-export type ApplicationsMassOptions = InstrumentedMassOptions;
+export type ApplicationsMassOptions = StrictOmit<InstrumentedMassOptions, 'canRotate'>;
 
 export default abstract class ApplicationsMass extends Mass {
 
@@ -28,8 +29,6 @@ export default abstract class ApplicationsMass extends Mass {
   public readonly intersectionGroup: THREE.Group;
 
   protected constructor( engine: PhysicsEngine, displacementVolumeProperty: NumberProperty, options: ApplicationsMassOptions ) {
-
-    assert && assert( !options.canRotate );
 
     super( engine, options );
 

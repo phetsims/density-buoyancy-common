@@ -69,7 +69,7 @@ export default class BuoyancyLabScreenView extends DensityBuoyancyScreenView<Buo
       model.gravityProperty ), {
       titleNode: new RichText( DensityBuoyancyCommonStrings.fluidDisplacedStringProperty, {
         font: new PhetFont( 14 ), // Matches the checkbox label font size
-        maxWidth: 130
+        maxWidth: 100
       } ),
       expandedProperty: accordionBoxIsExpandedProperty,
 

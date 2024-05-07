@@ -34,7 +34,7 @@ type FluidSelectionPanelOptions = WithRequired<PanelOptions, 'tandem'>;
 
 export default class FluidSelectionPanel extends Panel {
 
-  public constructor( private readonly liquidMaterialProperty: TProperty<Material>, providedOptions?: FluidSelectionPanelOptions ) {
+  public constructor( liquidMaterialProperty: TProperty<Material>, providedOptions?: FluidSelectionPanelOptions ) {
 
     const options = optionize3<FluidSelectionPanelOptions, EmptySelfOptions, PanelOptions>()( {}, DensityBuoyancyCommonConstants.PANEL_OPTIONS, providedOptions );
 

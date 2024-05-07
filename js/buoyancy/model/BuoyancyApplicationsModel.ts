@@ -116,20 +116,21 @@ export default class BuoyancyApplicationsModel extends DensityBuoyancyModel {
     this.pool.liquidVolumeProperty.setInitialValue( this.pool.liquidVolumeProperty.value );
 
     // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
-    this.sceneProperty.link( scene => {
+    this.sceneProperty.link( ( scene, previousScene ) => {
       this.bottle.internalVisibleProperty.value = scene === Scene.BOTTLE;
       this.boat.internalVisibleProperty.value = scene === Scene.BOAT;
       this.block.internalVisibleProperty.value = scene === Scene.BOAT;
       this.scale2!.internalVisibleProperty.value = scene === Scene.BOTTLE;
 
+      // When switching from boat to bottle scene, subtract the scale volume from the pool and viceversa (-1 and 1)
+      // But don't do it when the bottle scene is first loaded (0)
+      const plusMinusScaleVolume = scene === Scene.BOTTLE ?
+                             previousScene === Scene.BOAT ? -1 : 0 : 1;
+      this.pool.liquidVolumeProperty.value += plusMinusScaleVolume * this.scale2!.volumeProperty.value;
+      this.pool.liquidVolumeProperty.setInitialValue( this.pool.liquidVolumeProperty.value );
+
       assert && assert( !this.boat.visibleProperty.value || !this.bottle.visibleProperty.value,
         'Boat and bottle should not be visible at the same time' );
-    } );
-
-    this.scale2!.internalVisibleProperty.lazyLink( visible => {
-      const plusMinusScale = visible ? -1 : 1;
-      this.pool.liquidVolumeProperty.value += plusMinusScale * this.scale2!.volumeProperty.value;
-      this.pool.liquidVolumeProperty.setInitialValue( this.pool.liquidVolumeProperty.value );
     } );
   }
 

@@ -107,7 +107,7 @@ export default class BuoyancyLabScreenView extends DensityBuoyancyScreenView<Buo
     };
 
     // Reflow when the entire accordion box is hidden in phet-io studio.
-    // TODO: https://github.com/phetsims/buoyancy/issues/150 this layout is duplicated with the abvoe
+    // TODO: https://github.com/phetsims/buoyancy/issues/150 this layout is duplicated with the above. Is there a way to listen to visibleBoundsProperty in a ManualConstraint?
     ManualConstraint.create( this, [ leftSideContent ], leftSideContentProxy => {
       leftSideContentProxy.bottom = this.visibleBoundsProperty.value.bottom - DESIRED_LEFT_SIDE_MARGIN;
       leftSideContentProxy.left = this.visibleBoundsProperty.value.left + DESIRED_LEFT_SIDE_MARGIN;

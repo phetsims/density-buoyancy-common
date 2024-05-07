@@ -60,7 +60,7 @@ export default abstract class ReadoutListAccordionBox<ReadoutType> extends Accor
   protected readonly readoutBox: VBox;
   protected readonly contentWidthMaxProperty: TReadOnlyProperty<number>;
 
-  public constructor(
+  protected constructor(
     titleStringProperty: TReadOnlyProperty<string>,
     providedOptions?: ReadoutListAccordionBoxOptions<ReadoutType>
   ) {

@@ -3,7 +3,7 @@
 /**
  * A general class for shared functionality between the boat and bottle.
  *
- * @author Agustín Vallejo
+ * @author Agustín Vallejo (PhET Interactive Simulations)
  */
 
 import NumberProperty from '../../../../axon/js/NumberProperty.js';
@@ -27,7 +27,7 @@ export default abstract class ApplicationsMass extends Mass {
 
   public readonly intersectionGroup: THREE.Group;
 
-  public constructor( engine: PhysicsEngine, displacementVolumeProperty: NumberProperty, options: ApplicationsMassOptions ) {
+  protected constructor( engine: PhysicsEngine, displacementVolumeProperty: NumberProperty, options: ApplicationsMassOptions ) {
 
     assert && assert( !options.canRotate );
 

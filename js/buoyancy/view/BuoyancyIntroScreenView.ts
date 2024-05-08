@@ -32,6 +32,8 @@ import ThreeUtils from '../../../../mobius/js/ThreeUtils.js';
 import DensityBuoyancyCommonColors from '../../common/view/DensityBuoyancyCommonColors.js';
 import BlockSet from '../../common/model/BlockSet.js';
 import FluidSelectionPanel from './FluidSelectionPanel.js';
+import CuboidView from '../../common/view/CuboidView.js';
+import ScaleView from '../../common/view/ScaleView.js';
 
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
 
@@ -89,9 +91,11 @@ export default class BuoyancyIntroScreenView extends DensityBuoyancyScreenView<B
       margin: MARGIN
     } ) );
 
-    this.addChild( new AlignBox( new FluidSelectionPanel( model.liquidMaterialProperty, {
+    // TODO: Convert to a combo box, see https://github.com/phetsims/density-buoyancy-common/issues/126
+    const fluidSelectionPanel = new FluidSelectionPanel( model.liquidMaterialProperty, {
       tandem: options.tandem.createTandem( 'fluidSelectionPanel' )
-    } ), {
+    } );
+    this.addChild( new AlignBox( fluidSelectionPanel, {
       alignBoundsProperty: this.visibleBoundsProperty,
       xAlign: 'center',
       yAlign: 'bottom',
@@ -165,6 +169,30 @@ export default class BuoyancyIntroScreenView extends DensityBuoyancyScreenView<B
     this.addChild( this.readoutPanelsVBox );
 
     this.addChild( this.popupLayer );
+
+    const cuboidViews = this.massViews.filter( massView => massView instanceof CuboidView );
+    const scaleViews = this.massViews.filter( massView => massView instanceof ScaleView );
+
+    this.pdomPlayAreaNode.pdomOrder = [
+
+      // TODO: When the cuboids change from the radio buttons, this needs to update. So consider a different parent for this part
+      // see https://github.com/phetsims/density-buoyancy-common/issues/121
+      ...cuboidViews.map( cuboidView => cuboidView.focusablePath ),
+
+      blocksRadioButtonGroup,
+
+      fluidSelectionPanel,
+
+      // The blocks are added (a) pool then (b) outside, but the focus order is (a) outside then (b) pool
+      ..._.reverse( scaleViews.map( scaleView => scaleView.focusablePath ) ),
+
+      displayOptionsPanel
+    ];
+
+    this.pdomControlAreaNode.pdomOrder = [
+      this.readoutPanelsVBox,
+      this.resetAllButton
+    ];
   }
 
   // Recalculate the space between the right visible bounds and the right side of the pool, for controls/etc to be positioned.

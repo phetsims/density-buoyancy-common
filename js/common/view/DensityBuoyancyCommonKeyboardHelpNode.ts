@@ -1,4 +1,4 @@
-// Copyright 2023-2024, University of Colorado Boulder
+// Copyright 2024, University of Colorado Boulder
 
 /**
  * DensityBuoyancyCommonKeyboardHelpNode is the keyboard help for all screens, with parameters that determine whether

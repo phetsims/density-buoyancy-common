@@ -36,6 +36,7 @@ import fluid_displaced_scale_icon_png from '../../../images/fluid_displaced_scal
 import AccordionBox from '../../../../sun/js/AccordionBox.js';
 import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
+import CuboidView from '../../common/view/CuboidView.js';
 
 // constants
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
@@ -206,8 +207,6 @@ export default class BuoyancyLabScreenView extends DensityBuoyancyScreenView<Buo
       strictAxonDependencies: false // This workaround is deemed acceptable for visibleBoundsProperty listening, https://github.com/phetsims/faradays-electromagnetic-lab/issues/65
     } );
 
-
-    // Info button and associated dialog
     this.scaleHeightControl = new ScaleHeightControl( model.poolScale, model.poolScaleHeightProperty,
       model.poolBounds, model.pool.liquidYInterpolatedProperty, this, {
         tandem: tandem.createTandem( 'scaleHeightControl' )
@@ -216,6 +215,27 @@ export default class BuoyancyLabScreenView extends DensityBuoyancyScreenView<Buo
 
     // Popup last
     this.addChild( this.popupLayer );
+
+    const cuboidViews = this.massViews.filter( massView => massView instanceof CuboidView );
+
+    // Layer for the focusable masses. Must be in the scene graph, so they can populate the pdom order
+    const cuboidPDOMLayer = new Node( { pdomOrder: [] } );
+    this.addChild( cuboidPDOMLayer );
+
+    // The focus order is described in https://github.com/phetsims/density-buoyancy-common/issues/121
+    this.pdomPlayAreaNode.pdomOrder = [
+      cuboidViews[ 0 ].focusablePath,
+      this.scaleHeightControl,
+      this.rightBox,
+      bottomNode
+    ];
+
+    this.pdomControlAreaNode.pdomOrder = [
+      leftSideContent,
+      densityAccordionBox,
+      submergedAccordionBox,
+      this.resetAllButton
+    ];
   }
 
   public static getFluidDisplacedPanelScaleIcon(): Node {

@@ -10,7 +10,7 @@
  * - heightRatio: 0 (bottom) to 1 (top)
  * - Design: -BoatDesign.DESIGN_BOAT_HEIGHT (bottom) to 0 (top)
  *
- * At each height, we define 4 control points to determine a cubic bezier curve for the shape of the cross-section of
+ * At each height, we define 4 control points to determine a cubic Bézier curve for the shape of the cross-section of
  * the boat (both inside and outside).
  *
  * Additionally, we'll need to compute different "intersection" geometries for a given block size. It's possible to
@@ -34,6 +34,7 @@ import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 const CROSS_SECTION_SAMPLES = 30;
 
 export default class BoatDesign {
+
   /**
    * Given a design y-value, returns the height ratio (0 being the bottom of the boat, 1 being the top)
    */
@@ -42,7 +43,7 @@ export default class BoatDesign {
   }
 
   /**
-   * Returns the control point net for a cubic bezier curve for a given height ratio (0=top, 1=bottom) and whether it
+   * Returns the control point net for a cubic Bézier curve for a given height ratio (0=top, 1=bottom) and whether it
    * is on the inside or outside surface of the boat.
    */
   private static getControlPoints( heightRatio: number, isInside: boolean ): [ Vector2, Vector2, Vector2, Vector2 ] {
@@ -174,14 +175,14 @@ export default class BoatDesign {
   private static getSegmentsFromControlPoints( points: Vector2[] ): Segment[] {
     assert && assert( points.length === 4 );
 
-    const flip = ( p: Vector2 ) => p.componentTimes( new Vector2( 1, -1 ) );
+    const verticalFlip = ( p: Vector2 ) => p.componentTimes( new Vector2( 1, -1 ) );
+
+    const flippedPoints = points.slice().reverse().map( verticalFlip );
 
     return [
-      // @ts-expect-error See assertion above, even if we tuple-type it, the below one with the reverse and map won't typecheck
-      new Cubic( ...points ),
-      new Line( points[ 3 ], flip( points[ 3 ] ) ),
-      // @ts-expect-error
-      new Cubic( ...points.slice().reverse().map( flip ) )
+      new Cubic( points[ 0 ], points[ 1 ], points[ 2 ], points[ 3 ] ),
+      new Line( points[ 3 ], verticalFlip( points[ 3 ] ) ),
+      new Cubic( flippedPoints[ 0 ], flippedPoints[ 1 ], flippedPoints[ 2 ], flippedPoints[ 3 ] )
     ];
   }
 
@@ -205,7 +206,8 @@ export default class BoatDesign {
 
   /**
    * Meant for mapping a raw number-based array of x,y,z position data from the construction coordinates to model
-   * coordinates.
+   * coordinates. TODO: https://github.com/phetsims/density-buoyancy-common/issues/123 Bottle has a method like this
+   * That is used, but this one is unused
    */
   private static positionArrayMap( point: number, index: number ): number {
     const mod = index % 3;
@@ -249,6 +251,7 @@ export default class BoatDesign {
     const array = BoatDesign.createWaterVertexArray();
 
     for ( let i = 0; i < array.length / 3; i++ ) {
+
       // The first 6 normals should be 0,0,1 (front). After that, 0,1,0 (up)
       array[ i * 3 + ( i < 6 ? 2 : 1 ) ] = 1;
     }

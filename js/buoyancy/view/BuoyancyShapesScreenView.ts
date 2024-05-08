@@ -41,6 +41,9 @@ import ThreeUtils from '../../../../mobius/js/ThreeUtils.js';
 import DensityBuoyancyCommonColors from '../../common/view/DensityBuoyancyCommonColors.js';
 import Cone from '../../common/model/Cone.js';
 import ConeView from '../../common/view/ConeView.js';
+import CuboidView from '../../common/view/CuboidView.js';
+import ScaleView from '../../common/view/ScaleView.js';
+import MassView from '../../common/view/MassView.js';
 
 // constants
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
@@ -114,37 +117,40 @@ export default class BuoyancyShapesScreenView extends DensityBuoyancyScreenView<
       infoButton.left = bottomLeftPoolPoint.x;
     };
 
+    const materialControlNode = new MaterialControlNode( this.model.materialProperty, new Property( 1 ),
+      DensityBuoyancyCommonConstants.SIMPLE_MASS_MATERIALS, this.popupLayer, {
+        supportCustomMaterial: false,
+        tandem: options.tandem.createTandem( 'materialComboBox' )
+      } );
+    const primaryShapeSizeControlNode = new ShapeSizeControlNode(
+      model.primaryShapeProperty,
+      model.primaryWidthRatioProperty,
+      model.primaryHeightRatioProperty,
+      new DynamicProperty( model.primaryMassProperty, {
+        derive: 'volumeProperty'
+      } ),
+      this.popupLayer, {
+        labelNode: PrimarySecondaryPanelsNode.getPrimaryTagLabelNode(),
+        tandem: tandem.createTandem( 'primaryShapeSizeControlNode' )
+      }
+    );
+    const secondaryShapeSizeControlNode = new ShapeSizeControlNode(
+      model.secondaryShapeProperty,
+      model.secondaryWidthRatioProperty,
+      model.secondaryHeightRatioProperty,
+      new DynamicProperty( model.secondaryMassProperty, {
+        derive: 'volumeProperty'
+      } ),
+      this.popupLayer, {
+        labelNode: PrimarySecondaryPanelsNode.getSecondaryTagLabelNode(),
+        visibleProperty: new DynamicProperty( model.secondaryMassProperty, { derive: 'internalVisibleProperty' } ),
+        tandem: tandem.createTandem( 'secondaryShapeSizeControlNode' )
+      }
+    );
     this.rightBox = new MultiSectionPanelsNode(
-      [ new MaterialControlNode( this.model.materialProperty, new Property( 1 ),
-        DensityBuoyancyCommonConstants.SIMPLE_MASS_MATERIALS, this.popupLayer, {
-          supportCustomMaterial: false,
-          tandem: options.tandem.createTandem( 'materialComboBox' )
-        } ),
-        new ShapeSizeControlNode(
-          model.primaryShapeProperty,
-          model.primaryWidthRatioProperty,
-          model.primaryHeightRatioProperty,
-          new DynamicProperty( model.primaryMassProperty, {
-            derive: 'volumeProperty'
-          } ),
-          this.popupLayer, {
-            labelNode: PrimarySecondaryPanelsNode.getPrimaryTagLabelNode(),
-            tandem: tandem.createTandem( 'primaryShapeSizeControlNode' )
-          }
-        ),
-        new ShapeSizeControlNode(
-          model.secondaryShapeProperty,
-          model.secondaryWidthRatioProperty,
-          model.secondaryHeightRatioProperty,
-          new DynamicProperty( model.secondaryMassProperty, {
-            derive: 'volumeProperty'
-          } ),
-          this.popupLayer, {
-            labelNode: PrimarySecondaryPanelsNode.getSecondaryTagLabelNode(),
-            visibleProperty: new DynamicProperty( model.secondaryMassProperty, { derive: 'internalVisibleProperty' } ),
-            tandem: tandem.createTandem( 'secondaryShapeSizeControlNode' )
-          }
-        ) ]
+      [ materialControlNode,
+        primaryShapeSizeControlNode,
+        secondaryShapeSizeControlNode ]
     );
 
     const densityAccordionBox = new DensityAccordionBox( {
@@ -212,6 +218,54 @@ export default class BuoyancyShapesScreenView extends DensityBuoyancyScreenView<
     } );
 
     this.addChild( this.popupLayer );
+
+
+    const cuboidViews = this.massViews.filter( massView => massView instanceof CuboidView );
+    const scaleViews = this.massViews.filter( massView => massView instanceof ScaleView );
+
+    // Layer for the focusable masses. Must be in the scene graph, so they can populate the pdom order
+    const primaryMassLayer = new Node( { pdomOrder: [] } );
+    this.addChild( primaryMassLayer );
+    const secondaryMassLayer = new Node( { pdomOrder: [] } );
+    this.addChild( secondaryMassLayer );
+
+    // The focus order is described in https://github.com/phetsims/density-buoyancy-common/issues/121
+    this.pdomPlayAreaNode.pdomOrder = [
+
+      primaryMassLayer,
+      materialControlNode,
+      primaryShapeSizeControlNode,
+
+      secondaryMassLayer,
+      secondaryShapeSizeControlNode,
+
+      fluidDensityControlPanel,
+
+      // The blocks are added (a) pool then (b) outside, but the focus order is (a) outside then (b) pool
+      ..._.reverse( scaleViews.map( scaleView => scaleView.focusablePath ) )
+    ];
+
+    const massViewAdded = ( massView: MassView ) => {
+      if ( massView.mass === model.secondaryMassProperty.value ) {
+        secondaryMassLayer.pdomOrder = [ ...secondaryMassLayer.pdomOrder!, massView.focusablePath ];
+        // nothing to do for removal since disposal of the node will remove it from the pdom order
+      }
+      else if ( massView.mass === model.primaryMassProperty.value ) {
+        primaryMassLayer.pdomOrder = [ ...primaryMassLayer.pdomOrder!, massView.focusablePath ];
+        // nothing to do for removal since disposal of the node will remove it from the pdom order
+      }
+    };
+    this.massViews.addItemAddedListener( massViewAdded );
+    this.massViews.forEach( massViewAdded );
+
+    this.pdomControlAreaNode.pdomOrder = [
+      blocksRadioButtonGroup,
+      buoyancyDisplayOptionsNode,
+      densityAccordionBox,
+      submergedAccordionBox,
+      infoButton,
+      this.resetAllButton
+    ];
   }
 
   /**

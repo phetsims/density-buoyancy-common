@@ -192,14 +192,14 @@ export default class BuoyancyIntroScreenView extends DensityBuoyancyScreenView<B
       displayOptionsPanel
     ];
 
-    const massAdded = ( massView: MassView ) => {
+    const massViewAdded = ( massView: MassView ) => {
       if ( massView instanceof CuboidView ) {
         cuboidPDOMLayer.pdomOrder = [ ...cuboidPDOMLayer.pdomOrder!, massView.focusablePath ];
         // nothing to do for removal since disposal of the node will remove it from the pdom order
       }
     };
-    this.massViews.addItemAddedListener( massAdded );
-    this.massViews.forEach( massAdded );
+    this.massViews.addItemAddedListener( massViewAdded );
+    this.massViews.forEach( massViewAdded );
 
     this.pdomControlAreaNode.pdomOrder = [
       this.readoutPanelsVBox,

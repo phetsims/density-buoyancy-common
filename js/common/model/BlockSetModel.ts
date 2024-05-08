@@ -36,6 +36,7 @@ export type BlockSetModelOptions<BlockSetValue extends EnumerationValue> = SelfO
 
 export default class BlockSetModel<BlockSetValue extends EnumerationValue> extends DensityBuoyancyModel {
 
+  // TODO: https://github.com/phetsims/density-buoyancy-common/issues/123 Why is this capitalized?
   public readonly BlockSet: Enumeration<BlockSetValue>;
   public readonly blockSetProperty: Property<BlockSetValue>;
   private readonly createMassesCallback: CreateMassesCallback<BlockSetValue>;

@@ -173,6 +173,7 @@ export default class BuoyancyIntroScreenView extends DensityBuoyancyScreenView<B
     const cuboidViews = this.massViews.filter( massView => massView instanceof CuboidView );
     const scaleViews = this.massViews.filter( massView => massView instanceof ScaleView );
 
+    // The focus order is described in https://github.com/phetsims/density-buoyancy-common/issues/121
     this.pdomPlayAreaNode.pdomOrder = [
 
       // TODO: When the cuboids change from the radio buttons, this needs to update. So consider a different parent for this part

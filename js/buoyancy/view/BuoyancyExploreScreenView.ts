@@ -31,6 +31,8 @@ import ThreeUtils from '../../../../mobius/js/ThreeUtils.js';
 import DensityBuoyancyCommonColors from '../../common/view/DensityBuoyancyCommonColors.js';
 import ForceDiagramNode from '../../common/view/ForceDiagramNode.js';
 import buoyancy_explore_screen_block_png from '../../../images/buoyancy_explore_screen_block_png.js';
+import CuboidView from '../../common/view/CuboidView.js';
+import ScaleView from '../../common/view/ScaleView.js';
 
 // constants
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
@@ -181,6 +183,33 @@ export default class BuoyancyExploreScreenView extends DensityBuoyancyScreenView
     } );
 
     this.addChild( this.popupLayer );
+
+    const cuboidViews = this.massViews.filter( massView => massView instanceof CuboidView );
+    const scaleViews = this.massViews.filter( massView => massView instanceof ScaleView );
+
+    // The focus order is described in https://github.com/phetsims/density-buoyancy-common/issues/121
+    this.pdomPlayAreaNode.pdomOrder = [
+
+      cuboidViews[ 0 ].focusablePath,
+      this.rightBox.primaryControlNode,
+
+      // TODO: Add cuboidViews[1] which is created lazily when the radio button is pressed, see https://github.com/phetsims/density-buoyancy-common/issues/121
+      // cuboidViews[ 1 ].focusablePath,
+      this.rightBox.secondaryControlNode,
+
+      fluidDensityControlPanel,
+
+      // The blocks are added (a) pool then (b) outside, but the focus order is (a) outside then (b) pool
+      ..._.reverse( scaleViews.map( scaleView => scaleView.focusablePath ) )
+    ];
+
+    this.pdomControlAreaNode.pdomOrder = [
+      blocksRadioButtonGroup,
+      buoyancyDisplayOptionsNode,
+      densityAccordionBox,
+      submergedAccordionBox,
+      this.resetAllButton
+    ];
   }
 
   public static getBuoyancyExploreIcon(): Node {

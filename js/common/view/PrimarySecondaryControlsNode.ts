@@ -25,6 +25,11 @@ export type PrimarySecondaryControlsNodeOptions = SelfOptions & BlockControlNode
 
 export default class PrimarySecondaryControlsNode extends PrimarySecondaryPanelsNode {
 
+  // Controls for the primary and secondary masses. Public so they can be split up in the focus order,
+  // see https://github.com/phetsims/density-buoyancy-common/issues/121
+  public readonly primaryControlNode: BlockControlNode;
+  public readonly secondaryControlNode: BlockControlNode;
+
   /**
    * @param primaryMass
    * @param secondaryMass
@@ -58,6 +63,9 @@ export default class PrimarySecondaryControlsNode extends PrimarySecondaryPanels
         visibleProperty: DerivedProperty.and( [ secondaryMass.visibleProperty, secondaryControlNode.visibleProperty ] )
       } )
     );
+
+    this.primaryControlNode = primaryControlNode;
+    this.secondaryControlNode = secondaryControlNode;
   }
 }
 

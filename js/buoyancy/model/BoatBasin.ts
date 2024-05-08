@@ -17,20 +17,15 @@ import BoatDesign from './BoatDesign.js';
 
 export default class BoatBasin extends Basin {
 
-  private readonly boat: Boat;
-
   // Used for intersection
-  public readonly oneLiterShape: Shape;
+  public readonly oneLiterShape = Shape.polygon( BoatDesign.getBasinOneLiterVertices() );
 
-  public constructor( boat: Boat ) {
+  public constructor( private readonly boat: Boat ) {
     super( {
       initialVolume: 0,
       initialY: 0,
       tandem: Tandem.OPT_OUT
     } );
-
-    this.boat = boat;
-    this.oneLiterShape = Shape.polygon( BoatDesign.getBasinOneLiterVertices() );
   }
 
   /**
@@ -43,7 +38,8 @@ export default class BoatBasin extends Basin {
       return false;
     }
     const stepMiddle = ( mass.stepTop + mass.stepBottom ) / 2;
-    return this.oneLiterShapeContainsPoint( new Vector2( mass.stepX, mass.stepBottom ) ) || this.oneLiterShapeContainsPoint( new Vector2( mass.stepX, stepMiddle ) );
+    return this.oneLiterShapeContainsPoint( new Vector2( mass.stepX, mass.stepBottom ) ) ||
+           this.oneLiterShapeContainsPoint( new Vector2( mass.stepX, stepMiddle ) );
   }
 
   /**

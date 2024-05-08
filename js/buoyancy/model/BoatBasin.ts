@@ -26,7 +26,6 @@ export default class BoatBasin extends Basin {
     super( {
       initialVolume: 0,
       initialY: 0,
-      // TODO: tandem here https://github.com/phetsims/density-buoyancy-common/issues/92
       tandem: Tandem.OPT_OUT
     } );
 

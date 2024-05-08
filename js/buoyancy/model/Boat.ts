@@ -21,7 +21,6 @@ import TProperty from '../../../../axon/js/TProperty.js';
 import Ray3 from '../../../../dot/js/Ray3.js';
 import Multilink from '../../../../axon/js/Multilink.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
-import IOType from '../../../../tandem/js/types/IOType.js';
 import { MassShape } from '../../common/model/MassShape.js';
 import optionize, { EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
 import ApplicationsMass, { ApplicationsMassOptions } from './ApplicationsMass.js';
@@ -240,12 +239,6 @@ export default class Boat extends ApplicationsMass {
 
     super.reset();
   }
-
-  public static readonly BoatIO = new IOType( 'BoatIO', {
-    valueType: Boat,
-    supertype: Mass.MassIO,
-    documentation: 'Represents a boat'
-  } );
 }
 
 densityBuoyancyCommon.register( 'Boat', Boat );

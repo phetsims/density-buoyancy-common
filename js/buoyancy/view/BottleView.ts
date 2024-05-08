@@ -20,12 +20,12 @@ type BottleDrawingData = {
   frontBottomMaterial: THREE.MeshBasicMaterial;
 };
 
-
 export default class BottleView extends MeasurableMassView {
 
   public readonly bottle: Bottle;
 
-  public constructor( bottle: Bottle, modelViewTransform: THREEModelViewTransform,
+  public constructor( bottle: Bottle,
+                      modelViewTransform: THREEModelViewTransform,
                       dragBoundsProperty: TReadOnlyProperty<Bounds3>,
                       showGravityForceProperty: TReadOnlyProperty<boolean>,
                       showBuoyancyForceProperty: TReadOnlyProperty<boolean>,
@@ -34,8 +34,12 @@ export default class BottleView extends MeasurableMassView {
                       forceScaleProperty: TReadOnlyProperty<number>,
                       showMassesProperty: TReadOnlyProperty<boolean> ) {
 
-    // @ts-expect-error
-    super( bottle, new THREE.Geometry(), modelViewTransform, dragBoundsProperty,
+    super( bottle,
+
+      // @ts-expect-error
+      new THREE.Geometry(),
+      modelViewTransform,
+      dragBoundsProperty,
       showGravityForceProperty,
       showBuoyancyForceProperty,
       showContactForceProperty,

@@ -33,6 +33,7 @@ import ForceDiagramNode from '../../common/view/ForceDiagramNode.js';
 import buoyancy_explore_screen_block_png from '../../../images/buoyancy_explore_screen_block_png.js';
 import CuboidView from '../../common/view/CuboidView.js';
 import ScaleView from '../../common/view/ScaleView.js';
+import MassView from '../../common/view/MassView.js';
 
 // constants
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
@@ -187,14 +188,17 @@ export default class BuoyancyExploreScreenView extends DensityBuoyancyScreenView
     const cuboidViews = this.massViews.filter( massView => massView instanceof CuboidView );
     const scaleViews = this.massViews.filter( massView => massView instanceof ScaleView );
 
+    // Layer for the focusable masses. Must be in the scene graph, so they can populate the pdom order
+    const cuboidPDOMLayer = new Node( { pdomOrder: [] } );
+    this.addChild( cuboidPDOMLayer );
+
     // The focus order is described in https://github.com/phetsims/density-buoyancy-common/issues/121
     this.pdomPlayAreaNode.pdomOrder = [
 
       cuboidViews[ 0 ].focusablePath,
       this.rightBox.primaryControlNode,
 
-      // TODO: Add cuboidViews[1] which is created lazily when the radio button is pressed, see https://github.com/phetsims/density-buoyancy-common/issues/121
-      // cuboidViews[ 1 ].focusablePath,
+      cuboidPDOMLayer,
       this.rightBox.secondaryControlNode,
 
       fluidDensityControlPanel,
@@ -202,6 +206,15 @@ export default class BuoyancyExploreScreenView extends DensityBuoyancyScreenView
       // The blocks are added (a) pool then (b) outside, but the focus order is (a) outside then (b) pool
       ..._.reverse( scaleViews.map( scaleView => scaleView.focusablePath ) )
     ];
+
+    const massAdded = ( massView: MassView ) => {
+      if ( massView instanceof CuboidView && massView.mass === model.secondaryMass ) {
+        cuboidPDOMLayer.pdomOrder = [ ...cuboidPDOMLayer.pdomOrder!, massView.focusablePath ];
+        // nothing to do for removal since disposal of the node will remove it from the pdom order
+      }
+    };
+    this.massViews.addItemAddedListener( massAdded );
+    this.massViews.forEach( massAdded );
 
     this.pdomControlAreaNode.pdomOrder = [
       blocksRadioButtonGroup,

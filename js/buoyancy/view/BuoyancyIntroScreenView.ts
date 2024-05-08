@@ -173,9 +173,8 @@ export default class BuoyancyIntroScreenView extends DensityBuoyancyScreenView<B
 
     const scaleViews = this.massViews.filter( massView => massView instanceof ScaleView );
 
+    // Layer for the focusable masses. Must be in the scene graph, so they can populate the pdom order
     const cuboidPDOMLayer = new Node( { pdomOrder: [] } );
-
-    // Must be in the scene graph, so they can populate the pdom order
     this.addChild( cuboidPDOMLayer );
 
     // The focus order is described in https://github.com/phetsims/density-buoyancy-common/issues/121

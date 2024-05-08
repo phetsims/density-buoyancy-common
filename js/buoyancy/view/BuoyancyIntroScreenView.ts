@@ -34,6 +34,7 @@ import BlockSet from '../../common/model/BlockSet.js';
 import FluidSelectionPanel from './FluidSelectionPanel.js';
 import CuboidView from '../../common/view/CuboidView.js';
 import ScaleView from '../../common/view/ScaleView.js';
+import MassView from '../../common/view/MassView.js';
 
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
 
@@ -170,15 +171,17 @@ export default class BuoyancyIntroScreenView extends DensityBuoyancyScreenView<B
 
     this.addChild( this.popupLayer );
 
-    const cuboidViews = this.massViews.filter( massView => massView instanceof CuboidView );
     const scaleViews = this.massViews.filter( massView => massView instanceof ScaleView );
+
+    const cuboidPDOMLayer = new Node( { pdomOrder: [] } );
+
+    // Must be in the scene graph, so they can populate the pdom order
+    this.addChild( cuboidPDOMLayer );
 
     // The focus order is described in https://github.com/phetsims/density-buoyancy-common/issues/121
     this.pdomPlayAreaNode.pdomOrder = [
 
-      // TODO: When the cuboids change from the radio buttons, this needs to update. So consider a different parent for this part
-      // see https://github.com/phetsims/density-buoyancy-common/issues/121
-      ...cuboidViews.map( cuboidView => cuboidView.focusablePath ),
+      cuboidPDOMLayer,
 
       blocksRadioButtonGroup,
 
@@ -189,6 +192,15 @@ export default class BuoyancyIntroScreenView extends DensityBuoyancyScreenView<B
 
       displayOptionsPanel
     ];
+
+    const massAdded = ( massView: MassView ) => {
+      if ( massView instanceof CuboidView ) {
+        cuboidPDOMLayer.pdomOrder = [ ...cuboidPDOMLayer.pdomOrder!, massView.focusablePath ];
+        // nothing to do for removal since disposal of the node will remove it from the pdom order
+      }
+    };
+    this.massViews.addItemAddedListener( massAdded );
+    this.massViews.forEach( massAdded );
 
     this.pdomControlAreaNode.pdomOrder = [
       this.readoutPanelsVBox,

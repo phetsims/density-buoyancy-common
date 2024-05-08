@@ -64,6 +64,7 @@ import Duck from '../../buoyancy/model/Duck.js';
 import DuckView from '../../buoyancy/view/DuckView.js';
 import NumberIO from '../../../../tandem/js/types/NumberIO.js';
 import Utils from '../../../../dot/js/Utils.js';
+import createObservableArray, { ObservableArray } from '../../../../axon/js/createObservableArray.js';
 
 // constants
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
@@ -100,7 +101,7 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
 
   private readonly massDecorationLayer = new MassDecorationLayer();
 
-  public readonly massViews: MassView[];
+  public readonly massViews: ObservableArray<MassView>;
 
   private readonly debugView?: DebugView;
 
@@ -159,7 +160,7 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
 
     this.addChild( this.massDecorationLayer );
 
-    this.massViews = [];
+    this.massViews = createObservableArray<MassView>();
 
     this.sceneNode.stage.threeCamera.zoom = options.cameraZoom;
     this.sceneNode.stage.threeCamera.up = new THREE.Vector3( 0, 0, -1 );

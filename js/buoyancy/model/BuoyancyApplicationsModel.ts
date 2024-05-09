@@ -59,7 +59,6 @@ export default class BuoyancyApplicationsModel extends DensityBuoyancyModel {
       usePoolScale: true
     }, options ) );
 
-    // TODO: If this default to boat, then it changes the water level to start with. Not great. https://github.com/phetsims/buoyancy/issues/145
     this.sceneProperty = new EnumerationProperty( Scene.BOTTLE, {
       tandem: options.tandem.createTandem( 'sceneProperty' )
     } );
@@ -156,7 +155,6 @@ export default class BuoyancyApplicationsModel extends DensityBuoyancyModel {
 
   /**
    * Resets things to their original values.
-   * TODO: THis doesn't work if we start in the boat scene. https://github.com/phetsims/buoyancy/issues/145
    */
   public override reset(): void {
     this.densityExpandedProperty.reset();

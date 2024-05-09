@@ -49,7 +49,8 @@ export default class BuoyancyBasicsExploreScreenView extends DensityBuoyancyScre
     const tandem = options.tandem;
 
     super( model, combineOptions<DensityBuoyancyScreenViewOptions>( {
-      cameraLookAt: DensityBuoyancyCommonConstants.BUOYANCY_BASICS_CAMERA_LOOK_AT
+      cameraLookAt: DensityBuoyancyCommonConstants.BUOYANCY_BASICS_CAMERA_LOOK_AT,
+      viewOffset: DensityBuoyancyCommonConstants.BUOYANCY_BASICS_VIEW_OFFSET
     }, options ) );
 
     const buoyancyDisplayOptionsNode = new BuoyancyDisplayOptionsNode( model, {

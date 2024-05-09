@@ -79,6 +79,7 @@ export type THREEModelViewTransform = {
 type SelfOptions = {
   cameraLookAt?: Vector3;
   cameraPosition?: Vector3;
+  viewOffset?: Vector2;
   cameraZoom?: number;
   preventFit?: boolean;
 } & PickRequired<PhetioObjectOptions, 'tandem'>;
@@ -121,6 +122,7 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
       cameraLookAt: DensityBuoyancyCommonConstants.BUOYANCY_CAMERA_LOOK_AT,
       cameraPosition: new Vector3( 0, 0.2, 2 ).timesScalar( scaleIncrease ),
       cameraZoom: 1.75 * scaleIncrease,
+      viewOffset: new Vector2( 0, 0 ),
 
       preventFit: true
     }, providedOptions );
@@ -151,6 +153,7 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
     this.sceneNode = new ThreeIsometricNode( this.layoutBounds, {
       parentMatrixProperty: animatedPanZoomSingleton.listener.matrixProperty,
       cameraPosition: options.cameraPosition,
+      viewOffset: options.viewOffset,
       getPhetioMouseHit: point => {
         const mass = this.getMassUnderPoint( this.localToGlobalPoint( point ), false );
         return mass ? mass.getPhetioMouseHitTarget() : mass;

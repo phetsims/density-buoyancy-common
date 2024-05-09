@@ -19,6 +19,7 @@ import DensityBuoyancyCommonPreferences from './model/DensityBuoyancyCommonPrefe
 import { VolumeUnits } from './DensityBuoyancyCommonQueryParameters.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import { DEFAULT_FILL, DEFAULT_FILL_HIGHLIGHTED } from '../../../sun/js/SliderThumb.js';
+import Vector2 from '../../../dot/js/Vector2.js';
 
 const CORNER_RADIUS = 5;
 const litersPatternStringProperty = new PatternStringProperty( DensityBuoyancyCommonStrings.litersPatternStringProperty, {
@@ -93,6 +94,9 @@ const DensityBuoyancyCommonConstants = {
   DENSITY_CAMERA_LOOK_AT: Vector3.ZERO,
   BUOYANCY_CAMERA_LOOK_AT: new Vector3( 0, -0.18, 0 ),
   BUOYANCY_BASICS_CAMERA_LOOK_AT: new Vector3( 0, -0.1, 0 ),
+
+  // Shift on the screen view with respect to the camera's view
+  BUOYANCY_BASICS_VIEW_OFFSET: new Vector2( -25, 0 ),
 
   // {Array.<Material>}
   DENSITY_MYSTERY_MATERIALS: [

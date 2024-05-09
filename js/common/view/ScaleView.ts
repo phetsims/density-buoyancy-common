@@ -35,15 +35,15 @@ export default class ScaleView extends MassView {
     this.scaleReadoutNode = new ScaleReadoutNode( mass, gravityProperty );
 
     // Update the decoration layer when phet-io state is set
-    const updateDecorationLayer = () => this.updateDecorationLayer();
     if ( Tandem.PHET_IO_ENABLED ) {
+      const updateDecorationLayer = () => this.updateDecorationLayer();
       phet.phetio.phetioEngine.phetioStateEngine.stateSetEmitter.addListener( updateDecorationLayer );
       this.disposeEmitter.addListener( () => {
         phet.phetio.phetioEngine.phetioStateEngine.stateSetEmitter.removeListener( updateDecorationLayer );
       } );
     }
 
-    updateDecorationLayer();
+    this.updateDecorationLayer();
   }
 
   public override decorate( decorationLayer: MassDecorationLayer ): void {

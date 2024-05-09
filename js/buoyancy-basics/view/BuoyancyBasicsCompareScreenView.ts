@@ -56,8 +56,7 @@ export default class BuoyancyBasicsCompareScreenView extends DensityBuoyancyScre
 
     super( model, combineOptions<DensityBuoyancyScreenViewOptions>( {
       // Custom just for this screen
-      cameraLookAt: new Vector3( 0, -0.1, 0 ),
-
+      cameraLookAt: DensityBuoyancyCommonConstants.BUOYANCY_BASICS_CAMERA_LOOK_AT,
       layoutBounds: ScreenView.DEFAULT_LAYOUT_BOUNDS // used by constant above.
     }, options ) );
 

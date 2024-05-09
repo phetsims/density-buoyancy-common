@@ -92,6 +92,7 @@ const DensityBuoyancyCommonConstants = {
   // (read-only) {Vector3} cameraLookAt locations
   DENSITY_CAMERA_LOOK_AT: Vector3.ZERO,
   BUOYANCY_CAMERA_LOOK_AT: new Vector3( 0, -0.18, 0 ),
+  BUOYANCY_BASICS_CAMERA_LOOK_AT: new Vector3( 0, -0.1, 0 ),
 
   // {Array.<Material>}
   DENSITY_MYSTERY_MATERIALS: [

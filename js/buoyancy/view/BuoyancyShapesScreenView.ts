@@ -41,7 +41,6 @@ import ThreeUtils from '../../../../mobius/js/ThreeUtils.js';
 import DensityBuoyancyCommonColors from '../../common/view/DensityBuoyancyCommonColors.js';
 import Cone from '../../common/model/Cone.js';
 import ConeView from '../../common/view/ConeView.js';
-import CuboidView from '../../common/view/CuboidView.js';
 import ScaleView from '../../common/view/ScaleView.js';
 import MassView from '../../common/view/MassView.js';
 
@@ -117,7 +116,7 @@ export default class BuoyancyShapesScreenView extends DensityBuoyancyScreenView<
       infoButton.left = bottomLeftPoolPoint.x;
     };
 
-    const materialControlNode = new MaterialControlNode( this.model.materialProperty, new Property( 1 ),
+    const materialComboBox = new MaterialControlNode( this.model.materialProperty, new Property( 1 ),
       DensityBuoyancyCommonConstants.SIMPLE_MASS_MATERIALS, this.popupLayer, {
         supportCustomMaterial: false,
         tandem: options.tandem.createTandem( 'materialComboBox' )
@@ -148,7 +147,7 @@ export default class BuoyancyShapesScreenView extends DensityBuoyancyScreenView<
       }
     );
     this.rightBox = new MultiSectionPanelsNode(
-      [ materialControlNode,
+      [ materialComboBox,
         primaryShapeSizeControlNode,
         secondaryShapeSizeControlNode ]
     );
@@ -219,8 +218,6 @@ export default class BuoyancyShapesScreenView extends DensityBuoyancyScreenView<
 
     this.addChild( this.popupLayer );
 
-
-    const cuboidViews = this.massViews.filter( massView => massView instanceof CuboidView );
     const scaleViews = this.massViews.filter( massView => massView instanceof ScaleView );
 
     // Layer for the focusable masses. Must be in the scene graph, so they can populate the pdom order
@@ -233,7 +230,7 @@ export default class BuoyancyShapesScreenView extends DensityBuoyancyScreenView<
     this.pdomPlayAreaNode.pdomOrder = [
 
       primaryMassLayer,
-      materialControlNode,
+      materialComboBox,
       primaryShapeSizeControlNode,
 
       secondaryMassLayer,

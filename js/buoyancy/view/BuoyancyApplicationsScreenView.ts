@@ -42,6 +42,7 @@ import Multilink from '../../../../axon/js/Multilink.js';
 import PrecisionSliderThumb from '../../common/view/PrecisionSliderThumb.js';
 import ThreeUtils from '../../../../mobius/js/ThreeUtils.js';
 import Bottle from '../model/Bottle.js';
+import MassView from '../../common/view/MassView.js';
 
 // constants
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
@@ -389,6 +390,47 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
     this.addChild( bottleBoatRadioButtonGroup );
 
     this.addChild( this.popupLayer );
+
+    // Layer for the focusable masses. Must be in the scene graph, so they can populate the pdom order
+    const blockLayer = new Node( { pdomOrder: [] } );
+    this.addChild( blockLayer );
+    const bottleBoatLayer = new Node( { pdomOrder: [] } );
+    this.addChild( bottleBoatLayer );
+
+    // The focus order is described in https://github.com/phetsims/density-buoyancy-common/issues/121
+    this.pdomPlayAreaNode.pdomOrder = [
+
+      blockLayer,
+      rightBoatContent,
+      rightBottleContent,
+      bottleBoatLayer,
+
+      resetSceneButton,
+      fluidDensityControlPanel
+    ];
+
+    const massViewAdded = ( massView: MassView ) => {
+      if ( massView.mass === model.bottle || massView.mass === model.boat ) {
+        bottleBoatLayer.pdomOrder = [ ...bottleBoatLayer.pdomOrder!, massView.focusablePath ];
+
+        // nothing to do for removal since disposal of the node will remove it from the pdom order
+      }
+      else if ( massView.mass === model.block ) {
+        blockLayer.pdomOrder = [ ...blockLayer.pdomOrder!, massView.focusablePath ];
+
+        // nothing to do for removal since disposal of the node will remove it from the pdom order
+      }
+    };
+    this.massViews.addItemAddedListener( massViewAdded );
+    this.massViews.forEach( massViewAdded );
+
+    this.pdomControlAreaNode.pdomOrder = [
+      displayOptionsNode,
+      densityAccordionBox,
+      submergedAccordionBox,
+      bottleBoatRadioButtonGroup,
+      this.resetAllButton
+    ];
   }
 
   public override step( dt: number ): void {

@@ -253,11 +253,12 @@ export default class CompareBlockSetModel extends BlockSetModel<BlockSet> {
       const power = 0.7;
       const modifiedColor = color.colorUtilsBrightness( Math.sign( rawValue ) * Math.pow( Math.abs( rawValue ), power ) );
 
-      return Material.createCustomMaterial( {
+      return Material.createCustomSolidMaterial( {
         density: density,
         customColor: new Property( modifiedColor, { tandem: Tandem.OPT_OUT } )
       } );
     }, {
+      strictAxonDependencies: false, // The DerivedProperty derivation triggers the creation of a DynamicProperty which calls .value on itself, which is safe
       tandem: Tandem.OPT_OUT
     } );
   }

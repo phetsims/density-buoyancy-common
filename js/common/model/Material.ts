@@ -126,31 +126,31 @@ export default class Material {
   /**
    * Returns a custom material that can be modified at will.
    */
-  public static createCustomMaterial( config: MaterialOptions ): Material {
+  public static createCustomMaterial( options: MaterialOptions ): Material {
     return new Material( combineOptions<MaterialOptions>( {
       nameProperty: DensityBuoyancyCommonStrings.material.customStringProperty,
       tandemName: 'custom',
       custom: true
-    }, config ) );
+    }, options ) );
   }
 
   /**
    * Returns a custom material that can be modified at will, but with a liquid color specified.
    */
-  public static createCustomLiquidMaterial( config: MaterialOptions & Required<Pick<MaterialOptions, 'density'> & Required<DensityRangeOption>> ): Material {
+  public static createCustomLiquidMaterial( options: MaterialOptions & Required<Pick<MaterialOptions, 'density'> & Required<DensityRangeOption>> ): Material {
     return Material.createCustomMaterial( combineOptions<MaterialOptions>( {
-      liquidColor: Material.getCustomLiquidColor( config.density, config.densityRange )
-    }, config ) );
+      liquidColor: Material.getCustomLiquidColor( options.density, options.densityRange )
+    }, options ) );
   }
 
   /**
    * Returns a custom material that can be modified at will, but with a solid color specified
    */
-  public static createCustomSolidMaterial( config: MaterialOptions & Required<Pick<MaterialOptions, 'density'>> & DensityRangeOption ): Material {
+  public static createCustomSolidMaterial( options: MaterialOptions & Required<Pick<MaterialOptions, 'density'>> & DensityRangeOption ): Material {
 
-    assert && assert( config.hasOwnProperty( 'customColor' ) || config.hasOwnProperty( 'densityRange' ), 'we need a way to have a material color' );
+    assert && assert( options.hasOwnProperty( 'customColor' ) || options.hasOwnProperty( 'densityRange' ), 'we need a way to have a material color' );
 
-    const solidColorProperty = config.customColor || Material.getCustomSolidColor( config.density, config.densityRange! );
+    const solidColorProperty = options.customColor || Material.getCustomSolidColor( options.density, options.densityRange! );
     const depthLinesColorProperty = new MappedProperty( solidColorProperty, {
       map: solidColor => {
 
@@ -168,7 +168,7 @@ export default class Material {
       liquidColor: solidColorProperty,
 
       depthLinesColor: depthLinesColorProperty
-    }, config ) );
+    }, options ) );
   }
 
   /**

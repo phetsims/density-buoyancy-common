@@ -25,6 +25,8 @@ import NodeTexture from '../../../../mobius/js/NodeTexture.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import ScaleView from '../../common/view/ScaleView.js';
+import MassView from '../../common/view/MassView.js';
+import CuboidView from '../../common/view/CuboidView.js';
 
 
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
@@ -120,6 +122,46 @@ export default class DensityMysteryScreenView extends DensityBuoyancyScreenView<
     } ) );
 
     this.addChild( this.popupLayer );
+
+
+    // Layer for the focusable masses. Must be in the scene graph, so they can populate the pdom order
+    const cuboidPDOMLayer = new Node( { pdomOrder: [] } );
+    this.addChild( cuboidPDOMLayer );
+
+    // The focus order is described in https://github.com/phetsims/density-buoyancy-common/issues/121
+    this.pdomPlayAreaNode.pdomOrder = [
+
+      cuboidPDOMLayer,
+
+      blockSetPanel,
+
+      densityTableAccordionBox
+    ];
+
+    const massViewAdded = ( massView: MassView ) => {
+      if ( massView instanceof CuboidView ) {
+
+        // Preserve prior order, and add the next massView.
+        // TODO: https://github.com/phetsims/density-buoyancy-common/issues/121 There is a bit of back and forth here that is
+        // unnecessary. Is there a better way? Also, is it OK to tie it to the tandem name?
+        const proposedOrder = [ ...cuboidPDOMLayer.pdomOrder!, massView.focusablePath ];
+
+        // look up all the views
+        const massViews = proposedOrder.map( node => this.massViews.find( massView => massView.focusablePath === node ) );
+
+        // Sort alphabetically based on the tag, which is specified (locale-independently) in the tandem
+        massViews.sort( ( a, b ) => a!.mass.tag.tandemName.localeCompare( b!.mass.tag.tandemName ) );
+
+        cuboidPDOMLayer.pdomOrder = massViews.filter( massView => !!massView ).map( massView => massView!.focusablePath );
+        // nothing to do for removal since disposal of the node will remove it from the pdom order
+      }
+    };
+    this.massViews.addItemAddedListener( massViewAdded );
+    this.massViews.forEach( massViewAdded );
+
+    this.pdomControlAreaNode.pdomOrder = [
+      this.resetAllButton
+    ];
   }
 
   public static getDensityMysteryIcon(): Node {

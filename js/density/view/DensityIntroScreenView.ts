@@ -24,13 +24,14 @@ import DensityMaterials from '../../common/view/DensityMaterials.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
 import DensityBuoyancyCommonColors from '../../common/view/DensityBuoyancyCommonColors.js';
 import BlocksRadioButtonGroup from '../../common/view/BlocksRadioButtonGroup.js';
+import MassView from '../../common/view/MassView.js';
 
 // constants
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
 
 export default class DensityIntroScreenView extends DensityBuoyancyScreenView<DensityIntroModel> {
 
-  protected rightBox: Node;
+  protected rightBox: PrimarySecondaryControlsNode;
 
   public constructor( model: DensityIntroModel, options: DensityBuoyancyScreenViewOptions ) {
 
@@ -119,6 +120,43 @@ export default class DensityIntroScreenView extends DensityBuoyancyScreenView<De
     this.addChild( blocksRadioButtonGroup );
 
     this.addChild( this.popupLayer );
+
+    // Layer for the focusable masses. Must be in the scene graph, so they can populate the pdom order
+    const primaryCubeLayer = new Node( { pdomOrder: [] } );
+    this.addChild( primaryCubeLayer );
+    const secondaryCubeLayer = new Node( { pdomOrder: [] } );
+    this.addChild( secondaryCubeLayer );
+
+    // The focus order is described in https://github.com/phetsims/density-buoyancy-common/issues/121
+    this.pdomPlayAreaNode.pdomOrder = [
+
+      primaryCubeLayer,
+      this.rightBox.primaryControlNode,
+
+      secondaryCubeLayer,
+      this.rightBox.secondaryControlNode
+    ];
+
+    const massViewAdded = ( massView: MassView ) => {
+      if ( massView.mass === model.primaryMass ) {
+        primaryCubeLayer.pdomOrder = [ ...primaryCubeLayer.pdomOrder!, massView.focusablePath ];
+        // nothing to do for removal since disposal of the node will remove it from the pdom order
+      }
+      else if ( massView.mass === model.secondaryMass ) {
+        secondaryCubeLayer.pdomOrder = [ ...secondaryCubeLayer.pdomOrder!, massView.focusablePath ];
+        // nothing to do for removal since disposal of the node will remove it from the pdom order
+      }
+    };
+    this.massViews.addItemAddedListener( massViewAdded );
+    this.massViews.forEach( massViewAdded );
+
+    this.pdomControlAreaNode.pdomOrder = [
+      blocksRadioButtonGroup,
+      densityAccordionBox,
+      this.resetAllButton
+    ];
+
+    console.log( 'hello' );
   }
 
   public static getDensityIntroIcon(): Node {

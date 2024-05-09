@@ -42,6 +42,8 @@ export default class ScaleView extends MassView {
         phet.phetio.phetioEngine.phetioStateEngine.stateSetEmitter.removeListener( updateDecorationLayer );
       } );
     }
+
+    updateDecorationLayer();
   }
 
   public override decorate( decorationLayer: MassDecorationLayer ): void {

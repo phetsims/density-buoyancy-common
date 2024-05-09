@@ -743,7 +743,7 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
       return;
     }
 
-    assert && this.massViews.forEach( massView => {
+    this.massViews.forEach( massView => {
       massView.step( dt );
 
       assert && assert( massView.massMesh.position.x === massView.mass.matrix.translation.x );

@@ -59,6 +59,8 @@ export default class MeasurableMassView extends MassView {
         phet.phetio.phetioEngine.phetioStateEngine.stateSetEmitter.removeListener( updateDecorationLayer );
       } );
     }
+
+    updateDecorationLayer();
   }
 
   private updateDecorationLayer(): void {

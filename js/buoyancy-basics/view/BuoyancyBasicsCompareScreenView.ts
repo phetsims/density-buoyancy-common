@@ -36,6 +36,9 @@ import smileWinkSolidShape from '../../../../sherpa/js/fontawesome-5/smileWinkSo
 import FluidSelectionPanel from '../../buoyancy/view/FluidSelectionPanel.js';
 import ComparisonControlPanel from '../../common/view/ComparisonControlPanel.js';
 import Dimension2 from '../../../../dot/js/Dimension2.js';
+import ScaleView from '../../common/view/ScaleView.js';
+import MassView from '../../common/view/MassView.js';
+import CuboidView from '../../common/view/CuboidView.js';
 
 // constants
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
@@ -97,9 +100,10 @@ export default class BuoyancyBasicsCompareScreenView extends DensityBuoyancyScre
       margin: MARGIN
     } ) );
 
-    this.addChild( new AlignBox( new FluidSelectionPanel( model.liquidMaterialProperty, {
+    const fluidSelectionPanel = new FluidSelectionPanel( model.liquidMaterialProperty, {
       tandem: options.tandem.createTandem( 'fluidSelectionPanel' )
-    } ), {
+    } );
+    this.addChild( new AlignBox( fluidSelectionPanel, {
       alignBoundsProperty: this.visibleBoundsProperty,
       xAlign: 'center',
       yAlign: 'bottom',
@@ -190,6 +194,45 @@ export default class BuoyancyBasicsCompareScreenView extends DensityBuoyancyScre
     this.rightSidePanelsVBox.localBoundsProperty.lazyLink( () => this.layoutRightSidePanels() );
 
     this.addChild( this.popupLayer );
+
+    const scaleViews = this.massViews.filter( massView => massView instanceof ScaleView );
+
+    // Layer for the focusable masses. Must be in the scene graph, so they can populate the pdom order
+    const cuboidPDOMLayer = new Node( { pdomOrder: [] } );
+    this.addChild( cuboidPDOMLayer );
+
+    // The focus order is described in https://github.com/phetsims/density-buoyancy-common/issues/121
+    this.pdomPlayAreaNode.pdomOrder = [
+
+      cuboidPDOMLayer,
+
+      // Note: only the leftmost land scale is focusable in this screen, but we use the same code as the other screens for consistency
+      // The blocks are added (a) pool then (b) outside, but the focus order is (a) outside then (b) pool
+      ..._.reverse( scaleViews.map( scaleView => scaleView.focusablePath ) ),
+      this.scaleHeightControl,
+
+      blocksRadioButtonGroup,
+
+      numberControlPanel,
+
+      fluidSelectionPanel
+    ];
+
+    const massViewAdded = ( massView: MassView ) => {
+      if ( massView instanceof CuboidView ) {
+        cuboidPDOMLayer.pdomOrder = [ ...cuboidPDOMLayer.pdomOrder!, massView.focusablePath ];
+        // nothing to do for removal since disposal of the node will remove it from the pdom order
+      }
+    };
+    this.massViews.addItemAddedListener( massViewAdded );
+    this.massViews.forEach( massViewAdded );
+
+    this.pdomControlAreaNode.pdomOrder = [
+      displayOptionsPanel,
+      densityAccordionBox,
+      submergedAccordionBox,
+      this.resetAllButton
+    ];
   }
 
   // Recalculate the space between the right visible bounds and the right side of the pool, for controls/etc to be positioned.

@@ -173,7 +173,7 @@ export default class BuoyancyBasicsCompareScreenView extends DensityBuoyancyScre
     } );
 
     const numberControlPanel = new ComparisonControlPanel( model.massProperty, model.volumeProperty, model.densityProperty, model.blockSetProperty, {
-      sliderTrackSize: new Dimension2( 80, 0.5 ),
+      sliderTrackSize: new Dimension2( 120, 0.5 ),
       tandem: tandem // just pass through, because ComparisonControlPanel doesn't instrument the Panel.
     } );
 

@@ -10,7 +10,7 @@
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import { combineOptions } from '../../../../phet-core/js/optionize.js';
-import { AlignBox, HBox, ManualConstraint, Node, RichText, VBox } from '../../../../scenery/js/imports.js';
+import { AlignBox, HBox, LayoutProxy, ManualConstraint, Node, RichText, VBox } from '../../../../scenery/js/imports.js';
 import Panel from '../../../../sun/js/Panel.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 import Material from '../../common/model/Material.js';
@@ -102,19 +102,17 @@ export default class BuoyancyLabScreenView extends DensityBuoyancyScreenView<Buo
     } );
     this.addChild( leftSideContent );
 
-    const positionLeftSideContent = () => {
-      leftSideContent.bottom = this.visibleBoundsProperty.value.bottom - DESIRED_LEFT_SIDE_MARGIN;
-      leftSideContent.left = this.visibleBoundsProperty.value.left + DESIRED_LEFT_SIDE_MARGIN;
+    const positionLeftSideContent = ( nodelLike: LayoutProxy | Node ) => {
+      nodelLike.bottom = this.visibleBoundsProperty.value.bottom - DESIRED_LEFT_SIDE_MARGIN;
+      nodelLike.left = this.visibleBoundsProperty.value.left + DESIRED_LEFT_SIDE_MARGIN;
     };
 
     // Reflow when the entire accordion box is hidden in phet-io studio.
-    // TODO: https://github.com/phetsims/buoyancy/issues/150 this layout is duplicated with the above. Is there a way to listen to visibleBoundsProperty in a ManualConstraint?
-    ManualConstraint.create( this, [ leftSideContent ], leftSideContentProxy => {
-      leftSideContentProxy.bottom = this.visibleBoundsProperty.value.bottom - DESIRED_LEFT_SIDE_MARGIN;
-      leftSideContentProxy.left = this.visibleBoundsProperty.value.left + DESIRED_LEFT_SIDE_MARGIN;
-    } );
+    ManualConstraint.create( this, [ leftSideContent ], positionLeftSideContent );
 
-    this.visibleBoundsProperty.link( positionLeftSideContent );
+    this.visibleBoundsProperty.link( () => {
+      positionLeftSideContent( leftSideContent );
+    } );
 
     const displayedMysteryMaterials = [
       Material.DENSITY_A,

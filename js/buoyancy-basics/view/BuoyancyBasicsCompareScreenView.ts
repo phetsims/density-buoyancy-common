@@ -8,7 +8,7 @@
 
 import { combineOptions } from '../../../../phet-core/js/optionize.js';
 import { AlignBox, Node, Path, Text, VBox } from '../../../../scenery/js/imports.js';
-import Panel from '../../../../sun/js/Panel.js';
+import Panel, { PanelOptions } from '../../../../sun/js/Panel.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 import Material from '../../common/model/Material.js';
 import DensityBuoyancyScreenView, { DensityBuoyancyScreenViewOptions } from '../../common/view/DensityBuoyancyScreenView.js';
@@ -78,9 +78,25 @@ export default class BuoyancyBasicsCompareScreenView extends DensityBuoyancyScre
       };
     } ), {
       align: 'left',
+      spacing: 8,
       tandem: blocksRadioButtonGroupTandem
     } );
-    const blockSetPanel = new Panel( blocksRadioButtonGroup, DensityBuoyancyCommonConstants.PANEL_OPTIONS );
+
+    const blocksPanelTandem = tandem.createTandem( 'blocksPanel' );
+    const blockSetPanel = new Panel( new VBox( {
+      children: [
+        new Text( DensityBuoyancyCommonStrings.blocksStringProperty, {
+          font: DensityBuoyancyCommonConstants.TITLE_FONT,
+          maxWidth: 160,
+          tandem: blocksPanelTandem.createTandem( 'titleText' )
+        } ),
+        blocksRadioButtonGroup
+      ],
+      spacing: 10,
+      align: 'left'
+    } ), combineOptions<PanelOptions>( {
+      tandem: blocksPanelTandem
+    }, DensityBuoyancyCommonConstants.PANEL_OPTIONS ) );
 
     this.addChild( new AlignBox( blockSetPanel, {
       alignBoundsProperty: this.visibleBoundsProperty,

@@ -118,7 +118,7 @@ export default class BuoyancyBasicsCompareScreenView extends DensityBuoyancyScre
       margin: MARGIN
     } ) );
 
-    const fluidSelectionPanel = new FluidSelectionPanel( model.liquidMaterialProperty, {
+    const fluidSelectionPanel = new FluidSelectionPanel( model.liquidMaterialProperty, this.popupLayer, {
       tandem: options.tandem.createTandem( 'fluidSelectionPanel' )
     } );
     this.addChild( new AlignBox( fluidSelectionPanel, {

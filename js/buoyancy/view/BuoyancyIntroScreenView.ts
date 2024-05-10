@@ -93,7 +93,7 @@ export default class BuoyancyIntroScreenView extends DensityBuoyancyScreenView<B
     } ) );
 
     // TODO: Convert to a combo box, see https://github.com/phetsims/density-buoyancy-common/issues/127
-    const fluidSelectionPanel = new FluidSelectionPanel( model.liquidMaterialProperty, {
+    const fluidSelectionPanel = new FluidSelectionPanel( model.liquidMaterialProperty, this.popupLayer, {
       tandem: options.tandem.createTandem( 'fluidSelectionPanel' )
     } );
     this.addChild( new AlignBox( fluidSelectionPanel, {

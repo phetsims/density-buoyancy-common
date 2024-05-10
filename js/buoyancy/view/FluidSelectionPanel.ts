@@ -10,14 +10,13 @@ import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import Material from '../../common/model/Material.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import Panel, { PanelOptions } from '../../../../sun/js/Panel.js';
-import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import ReadOnlyProperty from '../../../../axon/js/ReadOnlyProperty.js';
-import { HBox, Text, VBox } from '../../../../scenery/js/imports.js';
+import { Node, Text, VBox } from '../../../../scenery/js/imports.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
-import AquaRadioButton from '../../../../sun/js/AquaRadioButton.js';
 import { EmptySelfOptions, optionize3 } from '../../../../phet-core/js/optionize.js';
-import TProperty from '../../../../axon/js/TProperty.js';
 import WithRequired from '../../../../phet-core/js/types/WithRequired.js';
+import ComboBox from '../../../../sun/js/ComboBox.js';
+import Property from '../../../../axon/js/Property.js';
 
 
 // Any others are invisible in the radio buttons, and are only available through PhET-iO if a client decides
@@ -34,27 +33,34 @@ type FluidSelectionPanelOptions = WithRequired<PanelOptions, 'tandem'>;
 
 export default class FluidSelectionPanel extends Panel {
 
-  public constructor( liquidMaterialProperty: TProperty<Material>, providedOptions?: FluidSelectionPanelOptions ) {
+  public constructor( liquidMaterialProperty: Property<Material>, listParent: Node, providedOptions?: FluidSelectionPanelOptions ) {
 
     const options = optionize3<FluidSelectionPanelOptions, EmptySelfOptions, PanelOptions>()( {}, DensityBuoyancyCommonConstants.PANEL_OPTIONS, providedOptions );
 
-    const radioButtonLabelOptions = {
-      font: new PhetFont( 14 ),
-      maxWidth: 120
-    };
-    const radioButtonGroupTandem = options.tandem.createTandem( 'liquidMaterialRadioButtonGroup' );
+
+    const comboBoxTandem = options.tandem.createTandem( 'fluidSelectionComboBox' );
 
 
-    const fluidBox = new HBox( {
-      spacing: 20,
-      children: DensityBuoyancyCommonConstants.BUOYANCY_FLUID_MATERIALS.map( material => {
-        return new AquaRadioButton( liquidMaterialProperty, material,
-          new Text( material.nameProperty, radioButtonLabelOptions ), {
-            tandem: radioButtonGroupTandem.createTandem( `${material.tandemName}RadioButton` ),
+    const fluidBox = new ComboBox(
+      liquidMaterialProperty,
+      DensityBuoyancyCommonConstants.BUOYANCY_FLUID_MATERIALS.map( material => {
+        return {
+          value: material,
+          createNode: () => new Text( material.nameProperty, {
+            font: DensityBuoyancyCommonConstants.COMBO_BOX_ITEM_FONT,
+            maxWidth: 160
+          } ),
+          comboBoxListItemNodeOptions: {
             visible: VISIBLE_FLUIDS.includes( material )
-          } );
-      } )
-    } );
+          },
+          tandemName: `${material.tandemName}Item`
+        };
+      } ),
+      listParent, {
+        tandem: comboBoxTandem,
+        listPosition: 'above'
+      } );
+
     const fluidTitle = new Text( DensityBuoyancyCommonStrings.fluidStringProperty, {
       font: DensityBuoyancyCommonConstants.TITLE_FONT,
       maxWidth: 160
@@ -68,7 +74,7 @@ export default class FluidSelectionPanel extends Panel {
 
 
     liquidMaterialProperty instanceof ReadOnlyProperty && this.addLinkedElement( liquidMaterialProperty, {
-      tandem: radioButtonGroupTandem.createTandem( 'property' )
+      tandem: comboBoxTandem.createTandem( 'property' )
     } );
   }
 

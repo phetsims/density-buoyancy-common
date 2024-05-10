@@ -86,7 +86,7 @@ export default class BuoyancyBasicsExploreScreenView extends DensityBuoyancyScre
       }
     );
 
-    const fluidSelectionPanel = new FluidSelectionPanel( model.liquidMaterialProperty, {
+    const fluidSelectionPanel = new FluidSelectionPanel( model.liquidMaterialProperty, this.popupLayer, {
       tandem: options.tandem.createTandem( 'fluidSelectionPanel' )
     } );
 

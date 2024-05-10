@@ -317,7 +317,7 @@ class GreyMetalMaterialView extends MaterialView {
   }
 }
 
-class ColoredMaterialView extends MaterialView<THREE.MeshLambertMaterial> {
+export class ColoredMaterialView extends MaterialView<THREE.MeshLambertMaterial> {
 
   private readonly colorProperty: Property<Color>;
   private readonly listener: ( color: Color ) => void;

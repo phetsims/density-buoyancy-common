@@ -7,7 +7,7 @@
  */
 
 import { combineOptions } from '../../../../phet-core/js/optionize.js';
-import { AlignBox, Node, Path, Text, VBox } from '../../../../scenery/js/imports.js';
+import { AlignBox, Node, Text, VBox } from '../../../../scenery/js/imports.js';
 import Panel, { PanelOptions } from '../../../../sun/js/Panel.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 import Material from '../../common/model/Material.js';
@@ -32,13 +32,14 @@ import DensityMaterials from '../../common/view/DensityMaterials.js';
 import ThreeUtils from '../../../../mobius/js/ThreeUtils.js';
 import DensityBuoyancyCommonColors from '../../common/view/DensityBuoyancyCommonColors.js';
 import ScaleHeightControl from '../../common/view/ScaleHeightControl.js';
-import smileWinkSolidShape from '../../../../sherpa/js/fontawesome-5/smileWinkSolidShape.js';
 import FluidSelectionPanel from '../../buoyancy/view/FluidSelectionPanel.js';
 import ComparisonControlPanel from '../../common/view/ComparisonControlPanel.js';
 import Dimension2 from '../../../../dot/js/Dimension2.js';
 import ScaleView from '../../common/view/ScaleView.js';
 import MassView from '../../common/view/MassView.js';
 import CuboidView from '../../common/view/CuboidView.js';
+import ForceDiagramNode from '../../common/view/ForceDiagramNode.js';
+import Vector2 from '../../../../dot/js/Vector2.js';
 
 // constants
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
@@ -332,7 +333,58 @@ export default class BuoyancyBasicsCompareScreenView extends DensityBuoyancyScre
   }
 
   public static getBuoyancyBasicsCompareIcon(): Node {
-    return new Path( smileWinkSolidShape, { stroke: 'red', fill: 'blue' } );
+
+    const box1Position = new Vector2( -0.08, -0.02 );
+    const box2Position = new Vector2( 0.08, -0.1 );
+
+    const boxScene = DensityBuoyancyScreenView.getAngledIcon( 4, new Vector3( 0, -0.05, 0 ), scene => {
+
+      const boxGeometry = new THREE.BoxGeometry( 0.1, 0.1, 0.1 );
+
+      const box1 = new THREE.Mesh( boxGeometry, new THREE.MeshLambertMaterial( {
+        color: 0xffff00
+      } ) );
+      box1.position.copy( ThreeUtils.vectorToThree( new Vector3( box1Position.x, box1Position.y, 0 ) ) );
+
+      scene.add( box1 );
+
+      const box2 = new THREE.Mesh( boxGeometry, new THREE.MeshLambertMaterial( {
+        color: 0xff2255
+      } ) );
+      box2.position.copy( ThreeUtils.vectorToThree( new Vector3( box2Position.x, box2Position.y, 0 ) ) );
+
+      scene.add( box2 );
+
+      const waterMaterial = new THREE.MeshLambertMaterial( {
+        transparent: true
+      } );
+      const waterColor = DensityBuoyancyCommonColors.materialWaterColorProperty.value;
+      waterMaterial.color = ThreeUtils.colorToThree( waterColor );
+      waterMaterial.opacity = waterColor.alpha;
+
+      // Fake it!
+      const waterGeometry = new THREE.BoxGeometry( 1, 1, 0.2 );
+
+      const water = new THREE.Mesh( waterGeometry, waterMaterial );
+      water.position.copy( ThreeUtils.vectorToThree( new Vector3( 0, -0.5, 0.12 ) ) );
+      scene.add( water );
+    } );
+
+    const scalingFactor = 2.8;
+
+    return new Node( {
+      children: [
+        boxScene,
+        ForceDiagramNode.getExploreIcon().mutate( {
+          center: boxScene.center.plusXY( scalingFactor * boxScene.width * box1Position.x, scalingFactor * boxScene.height * box1Position.y ),
+          scale: 0.6
+        } ),
+        ForceDiagramNode.getExploreIcon().mutate( {
+          center: boxScene.center.plusXY( scalingFactor * boxScene.width * box2Position.x, -scalingFactor * boxScene.height * box2Position.y ),
+          scale: 0.6
+        } )
+      ]
+    } );
   }
 }
 

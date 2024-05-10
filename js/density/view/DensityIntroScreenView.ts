@@ -155,8 +155,6 @@ export default class DensityIntroScreenView extends DensityBuoyancyScreenView<De
       densityAccordionBox,
       this.resetAllButton
     ];
-
-    console.log( 'hello' );
   }
 
   public static getDensityIntroIcon(): Node {

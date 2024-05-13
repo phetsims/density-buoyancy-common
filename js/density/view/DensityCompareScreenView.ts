@@ -7,22 +7,19 @@
  */
 
 import Vector3 from '../../../../dot/js/Vector3.js';
-import { AlignBox, Node, Text, VBox } from '../../../../scenery/js/imports.js';
-import Panel, { PanelOptions } from '../../../../sun/js/Panel.js';
-import VerticalAquaRadioButtonGroup from '../../../../sun/js/VerticalAquaRadioButtonGroup.js';
+import { AlignBox, Node } from '../../../../scenery/js/imports.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 import DensityBuoyancyScreenView, { DensityBuoyancyScreenViewOptions } from '../../common/view/DensityBuoyancyScreenView.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
-import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import DensityCompareModel from '../model/DensityCompareModel.js';
 import Bounds2 from '../../../../dot/js/Bounds2.js';
 import { combineOptions } from '../../../../phet-core/js/optionize.js';
 import ThreeUtils from '../../../../mobius/js/ThreeUtils.js';
 import DensityBuoyancyCommonColors from '../../common/view/DensityBuoyancyCommonColors.js';
-import BlockSet from '../../common/model/BlockSet.js';
 import ComparisonControlPanel from '../../common/view/ComparisonControlPanel.js';
 import MassView from '../../common/view/MassView.js';
 import CuboidView from '../../common/view/CuboidView.js';
+import BlocksPanel from '../../common/view/BlocksPanel.js';
 
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
 
@@ -38,37 +35,7 @@ export default class DensityCompareScreenView extends DensityBuoyancyScreenView<
       cameraLookAt: DensityBuoyancyCommonConstants.DENSITY_CAMERA_LOOK_AT
     }, options ) );
 
-
-    const blocksPanelTandem = tandem.createTandem( 'blocksPanel' );
-    const blocksRadioButtonGroupTandem = blocksPanelTandem.createTandem( 'blocksRadioButtonGroup' );
-    const blocksPanel = new Panel( new VBox( {
-      children: [
-        new Text( DensityBuoyancyCommonStrings.blocksStringProperty, {
-          font: DensityBuoyancyCommonConstants.TITLE_FONT,
-          maxWidth: 160,
-          tandem: blocksPanelTandem.createTandem( 'titleText' )
-        } ),
-        new VerticalAquaRadioButtonGroup( model.blockSetProperty, BlockSet.enumeration.values.map( blockSet => {
-          return {
-            createNode: tandem => new Text( blockSet.stringProperty, {
-              font: DensityBuoyancyCommonConstants.RADIO_BUTTON_FONT,
-              maxWidth: 160,
-              tandem: tandem.createTandem( 'labelText' )
-            } ),
-            value: blockSet,
-            tandemName: `${blockSet.tandemName}RadioButton`
-          };
-        } ), {
-          align: 'left',
-          spacing: 8,
-          tandem: blocksRadioButtonGroupTandem
-        } )
-      ],
-      spacing: 10,
-      align: 'left'
-    } ), combineOptions<PanelOptions>( {
-      tandem: blocksPanelTandem
-    }, DensityBuoyancyCommonConstants.PANEL_OPTIONS ) );
+    const blocksPanel = new BlocksPanel( model.blockSetProperty, tandem.createTandem( 'blocksPanel' ) );
 
     this.addChild( new AlignBox( blocksPanel, {
       alignBoundsProperty: this.visibleBoundsProperty,

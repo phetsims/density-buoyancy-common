@@ -8,9 +8,8 @@
 
 import Vector3 from '../../../../dot/js/Vector3.js';
 import { combineOptions } from '../../../../phet-core/js/optionize.js';
-import { AlignBox, Node, Text, VBox } from '../../../../scenery/js/imports.js';
+import { AlignBox, Node, VBox } from '../../../../scenery/js/imports.js';
 import Panel from '../../../../sun/js/Panel.js';
-import VerticalAquaRadioButtonGroup from '../../../../sun/js/VerticalAquaRadioButtonGroup.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 import Material from '../../common/model/Material.js';
 import DensityBuoyancyScreenView, { DensityBuoyancyScreenViewOptions } from '../../common/view/DensityBuoyancyScreenView.js';
@@ -35,6 +34,7 @@ import FluidSelectionPanel from './FluidSelectionPanel.js';
 import CuboidView from '../../common/view/CuboidView.js';
 import ScaleView from '../../common/view/ScaleView.js';
 import MassView from '../../common/view/MassView.js';
+import BlocksPanel from '../../common/view/BlocksPanel.js';
 
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
 
@@ -55,23 +55,7 @@ export default class BuoyancyIntroScreenView extends DensityBuoyancyScreenView<B
       layoutBounds: ScreenView.DEFAULT_LAYOUT_BOUNDS // used by constant above.
     }, options ) );
 
-    const blocksRadioButtonGroupTandem = options.tandem.createTandem( 'blocksRadioButtonGroup' );
-
-    const blocksRadioButtonGroup = new VerticalAquaRadioButtonGroup( model.blockSetProperty, BlockSet.enumeration.values.map( blockSet => {
-      return {
-        createNode: tandem => new Text( blockSet.stringProperty, {
-          font: DensityBuoyancyCommonConstants.RADIO_BUTTON_FONT,
-          maxWidth: 160,
-          tandem: tandem.createTandem( 'labelText' )
-        } ),
-        value: blockSet,
-        tandemName: `${blockSet.tandemName}RadioButton`
-      };
-    } ), {
-      align: 'left',
-      tandem: blocksRadioButtonGroupTandem
-    } );
-    const blockSetPanel = new Panel( blocksRadioButtonGroup, DensityBuoyancyCommonConstants.PANEL_OPTIONS );
+    const blockSetPanel = new BlocksPanel( model.blockSetProperty, options.tandem.createTandem( 'blockSetPanel' ) );
 
     this.addChild( new AlignBox( blockSetPanel, {
       alignBoundsProperty: this.visibleBoundsProperty,
@@ -182,7 +166,7 @@ export default class BuoyancyIntroScreenView extends DensityBuoyancyScreenView<B
 
       cuboidPDOMLayer,
 
-      blocksRadioButtonGroup,
+      blockSetPanel,
 
       fluidSelectionPanel,
 

@@ -7,8 +7,8 @@
  */
 
 import { combineOptions } from '../../../../phet-core/js/optionize.js';
-import { AlignBox, Node, Text, VBox } from '../../../../scenery/js/imports.js';
-import Panel, { PanelOptions } from '../../../../sun/js/Panel.js';
+import { AlignBox, Node, VBox } from '../../../../scenery/js/imports.js';
+import Panel from '../../../../sun/js/Panel.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 import Material from '../../common/model/Material.js';
 import DensityBuoyancyScreenView, { DensityBuoyancyScreenViewOptions } from '../../common/view/DensityBuoyancyScreenView.js';
@@ -22,7 +22,6 @@ import PatternStringProperty from '../../../../axon/js/PatternStringProperty.js'
 import Property from '../../../../axon/js/Property.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
 import ScreenView from '../../../../joist/js/ScreenView.js';
-import VerticalAquaRadioButtonGroup from '../../../../sun/js/VerticalAquaRadioButtonGroup.js';
 import BlockSet from '../../common/model/BlockSet.js';
 import { ReadoutItemOptions } from '../../buoyancy/view/ReadoutListAccordionBox.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
@@ -40,6 +39,7 @@ import MassView from '../../common/view/MassView.js';
 import CuboidView from '../../common/view/CuboidView.js';
 import ForceDiagramNode from '../../common/view/ForceDiagramNode.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
+import BlocksPanel from '../../common/view/BlocksPanel.js';
 
 // constants
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
@@ -65,41 +65,9 @@ export default class BuoyancyBasicsCompareScreenView extends DensityBuoyancyScre
 
     const tandem = options.tandem;
 
-    const blocksRadioButtonGroupTandem = options.tandem.createTandem( 'blocksRadioButtonGroup' );
+    const blocksPanel = new BlocksPanel( model.blockSetProperty, tandem.createTandem( 'blocksPanel' ) );
 
-    const blocksRadioButtonGroup = new VerticalAquaRadioButtonGroup( model.blockSetProperty, BlockSet.enumeration.values.map( blockSet => {
-      return {
-        createNode: tandem => new Text( blockSet.stringProperty, {
-          font: DensityBuoyancyCommonConstants.RADIO_BUTTON_FONT,
-          maxWidth: 160,
-          tandem: tandem.createTandem( 'labelText' )
-        } ),
-        value: blockSet,
-        tandemName: `${blockSet.tandemName}RadioButton`
-      };
-    } ), {
-      align: 'left',
-      spacing: 8,
-      tandem: blocksRadioButtonGroupTandem
-    } );
-
-    const blocksPanelTandem = tandem.createTandem( 'blocksPanel' );
-    const blockSetPanel = new Panel( new VBox( {
-      children: [
-        new Text( DensityBuoyancyCommonStrings.blocksStringProperty, {
-          font: DensityBuoyancyCommonConstants.TITLE_FONT,
-          maxWidth: 160,
-          tandem: blocksPanelTandem.createTandem( 'titleText' )
-        } ),
-        blocksRadioButtonGroup
-      ],
-      spacing: 10,
-      align: 'left'
-    } ), combineOptions<PanelOptions>( {
-      tandem: blocksPanelTandem
-    }, DensityBuoyancyCommonConstants.PANEL_OPTIONS ) );
-
-    this.addChild( new AlignBox( blockSetPanel, {
+    this.addChild( new AlignBox( blocksPanel, {
       alignBoundsProperty: this.visibleBoundsProperty,
       xAlign: 'right',
       yAlign: 'top',
@@ -229,7 +197,7 @@ export default class BuoyancyBasicsCompareScreenView extends DensityBuoyancyScre
       ..._.reverse( scaleViews.map( scaleView => scaleView.focusablePath ) ),
       this.scaleHeightControl,
 
-      blocksRadioButtonGroup,
+      blocksPanel,
 
       numberControlPanel,
 

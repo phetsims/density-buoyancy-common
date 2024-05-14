@@ -40,7 +40,7 @@ type SelfOptions = {
 };
 
 // Constants and Functions
-const WIDTH = 400;
+const WIDTH = 550;
 const HEIGHT = 22;
 const MAX_DENSITY = 10000;
 
@@ -129,7 +129,7 @@ export default class DensityNumberLineNode extends Node {
       const x = this.modelViewTransform( material.density );
       const label = new Text( material.nameProperty, {
         font: new PhetFont( 12 ),
-        maxWidth: options.materialsMaxWidths[ index ]
+        maxWidth: index < options.materialsMaxWidths.length ? options.materialsMaxWidths[ index ] : 70
       } );
 
       // Avoid infinite loops like https://github.com/phetsims/axon/issues/447 by applying the maxWidth to a different Node

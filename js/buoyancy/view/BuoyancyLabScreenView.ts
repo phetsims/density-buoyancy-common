@@ -81,6 +81,8 @@ export default class BuoyancyLabScreenView extends DensityBuoyancyScreenView<Buo
       tandem: fluidDisplacedAccordionBoxTandem
     } );
 
+    this.resetEmitter.addListener( () => fluidDisplacedAccordionBox.expandedProperty.reset() );
+
     const leftSideVBox = new VBox( {
       align: 'left',
       spacing: 5,

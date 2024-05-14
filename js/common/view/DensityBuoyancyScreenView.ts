@@ -65,6 +65,7 @@ import DuckView from '../../buoyancy/view/DuckView.js';
 import NumberIO from '../../../../tandem/js/types/NumberIO.js';
 import Utils from '../../../../dot/js/Utils.js';
 import createObservableArray, { ObservableArray } from '../../../../axon/js/createObservableArray.js';
+import Emitter from '../../../../axon/js/Emitter.js';
 
 // constants
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
@@ -113,6 +114,9 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
   // In Liters, how much volume does the Pool liquid + displaced Masses take up.
   // TODO: PhET-iO instrument for https://github.com/phetsims/density-buoyancy-common/issues/82
   protected waterLevelVolumeProperty: TReadOnlyProperty<number>;
+
+  // Called upon resetting
+  protected readonly resetEmitter = new Emitter();
 
   public constructor( model: Model, providedOptions: SelfOptions ) {
 
@@ -574,6 +578,7 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
       listener: () => {
         this.interruptSubtreeInput();
         model.reset();
+        this.resetEmitter.emit();
       },
       tandem: tandem.createTandem( 'resetAllButton' )
     } );

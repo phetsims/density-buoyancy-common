@@ -28,6 +28,7 @@ import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import BooleanIO from '../../../../tandem/js/types/BooleanIO.js';
 
 // constants
+// REVIEW: Recommended to use string literal enumeration. We can do so here since it is not encumbered by density API.
 export class Scene extends EnumerationValue {
   public static readonly BOTTLE = new Scene();
   public static readonly BOAT = new Scene();

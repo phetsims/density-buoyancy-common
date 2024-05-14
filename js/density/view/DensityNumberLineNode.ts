@@ -18,13 +18,16 @@ import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import PatternStringProperty from '../../../../axon/js/PatternStringProperty.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
+import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
+import Multilink from '../../../../axon/js/Multilink.js';
 
 // Type declarations: DisplayDensity is the object which will construct the marker and the legend
 export type DisplayDensity = {
   densityProperty: TReadOnlyProperty<number>;
   nameProperty: TReadOnlyProperty<string>;
+  visibleProperty: TReadOnlyProperty<boolean>;
+  isHiddenProperty: TReadOnlyProperty<boolean>;
   color: TPaint;
-  visibleProperty?: TReadOnlyProperty<boolean>;
 };
 
 type SelfOptions = {
@@ -40,12 +43,15 @@ type SelfOptions = {
 };
 
 // Constants and Functions
-const WIDTH = 550;
+const WIDTH = 540;
 const HEIGHT = 22;
 const MAX_DENSITY = 10000;
 
 // To display name: xxx kg/L dynamically
-const createDensityStringProperty = ( densityNumberProperty: TReadOnlyProperty<number>, nameStringProperty: TReadOnlyProperty<string> ) => {
+const createDensityStringProperty = (
+  densityNumberProperty: TReadOnlyProperty<number>,
+  nameStringProperty: TReadOnlyProperty<string>,
+  isHiddenProperty: TReadOnlyProperty<boolean> ) => {
   // This is densityProperty kg/L (units depending on preferences)
   const valueUnitsStringProperty = new PatternStringProperty( DensityBuoyancyCommonConstants.KILOGRAMS_PER_VOLUME_PATTERN_STRING_PROPERTY, {
     value: densityNumberProperty
@@ -60,7 +66,11 @@ const createDensityStringProperty = ( densityNumberProperty: TReadOnlyProperty<n
   // This is name: valueUnitsStringProperty
   const nameColonValueStringProperty = new PatternStringProperty( DensityBuoyancyCommonStrings.nameColonValueUnitsPatternStringProperty, {
     name: nameStringProperty,
-    valueWithUnits: valueUnitsStringProperty
+    valueWithUnits: new DerivedProperty(
+      [ isHiddenProperty, DensityBuoyancyCommonStrings.questionMarkStringProperty, valueUnitsStringProperty ],
+      ( isHidden, questionMark, valueUnitsString ) => {
+      return isHidden ? questionMark : valueUnitsString;
+    } )
   } );
 
   return nameColonValueStringProperty;
@@ -175,14 +185,15 @@ export default class DensityNumberLineNode extends Node {
     options.displayDensities.forEach( (
       {
         densityProperty,
+        nameProperty,
         visibleProperty,
-        color,
-        nameProperty
+        isHiddenProperty,
+        color
       }, index ) => {
 
       const arrow = createArrow( index, color );
 
-      const densityStringProperty = options.showNumericValue ? createDensityStringProperty( densityProperty, nameProperty ) : nameProperty;
+      const densityStringProperty = options.showNumericValue ? createDensityStringProperty( densityProperty, nameProperty, isHiddenProperty ) : nameProperty;
 
       const label = new RichText( densityStringProperty, combineOptions<TextOptions>( {
         fill: color
@@ -200,12 +211,6 @@ export default class DensityNumberLineNode extends Node {
       } );
       markerNodes.push( marker );
 
-      // Density links
-      // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
-      densityProperty.link( density => {
-        marker.x = this.modelViewTransform( density );
-        marker.visible = density < options.maxDensity! + 1e-5; // Allow rounding error
-      } );
       ManualConstraint.create( this, [ labelContainer, arrow ], ( labelContainerProxy, arrowProxy ) => {
         if ( index === 0 ) {
           labelContainerProxy.centerBottom = arrowProxy.centerTop;
@@ -216,8 +221,13 @@ export default class DensityNumberLineNode extends Node {
       } );
 
       // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
-      visibleProperty && visibleProperty.link( visible => {
-        marker.visible = visible;
+      Multilink.multilink( [
+        densityProperty,
+        visibleProperty,
+        isHiddenProperty
+      ], ( density, isVisible, isHidden ) => {
+        marker.x = this.modelViewTransform( density );
+        marker.visible = isVisible && !isHidden && density < options.maxDensity! + 1e-5;
       } );
     } );
 
@@ -235,20 +245,21 @@ export class DensityNumberLineLegend extends VBox {
     displayDensities.forEach( (
       {
         densityProperty,
+        nameProperty,
         visibleProperty,
-        color,
-        nameProperty
+        isHiddenProperty,
+        color
       }, index ) => {
 
       legendChildren.push( [
         createArrow( index, color ),
-        new RichText( createDensityStringProperty( densityProperty, nameProperty ), {
+        new RichText( createDensityStringProperty( densityProperty, nameProperty, isHiddenProperty ), {
           font: new PhetFont( 16 ),
-          maxWidth: 100
+          maxWidth: 110
         } )
       ] );
 
-      legendVisibilities.push( visibleProperty! );
+      legendVisibilities.push( visibleProperty );
     } );
 
     super( {

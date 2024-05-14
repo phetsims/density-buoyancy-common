@@ -25,6 +25,8 @@ import Vector3 from '../../../../dot/js/Vector3.js';
 import DensityBuoyancyCommonColors from '../../common/view/DensityBuoyancyCommonColors.js';
 import BlocksRadioButtonGroup from '../../common/view/BlocksRadioButtonGroup.js';
 import MassView from '../../common/view/MassView.js';
+import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
+import Multilink from '../../../../axon/js/Multilink.js';
 
 // constants
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
@@ -55,14 +57,17 @@ export default class DensityIntroScreenView extends DensityBuoyancyScreenView<De
           // DerivedProperty doesn't need disposal, since everything here lives for the lifetime of the simulation
           {
             densityProperty: new DerivedProperty( [ model.primaryMass.materialProperty ], material => material.density ),
-            color: DensityBuoyancyCommonColors.labelPrimaryProperty,
-            nameProperty: model.primaryMass.tag.nameProperty
+            nameProperty: model.primaryMass.tag.nameProperty,
+            visibleProperty: new BooleanProperty( true ),
+            isHiddenProperty: new BooleanProperty( false ),
+            color: DensityBuoyancyCommonColors.labelPrimaryProperty
           },
           {
             densityProperty: new DerivedProperty( [ model.secondaryMass.materialProperty ], material => material.density ),
-            color: DensityBuoyancyCommonColors.labelSecondaryProperty,
+            nameProperty: model.secondaryMass.tag.nameProperty,
             visibleProperty: model.secondaryMass.visibleProperty,
-            nameProperty: model.secondaryMass.tag.nameProperty
+            isHiddenProperty: new BooleanProperty( false ),
+            color: DensityBuoyancyCommonColors.labelSecondaryProperty
           }
         ],
         tandem: accordionTandem.createTandem( 'densityReadout' ),
@@ -90,12 +95,24 @@ export default class DensityIntroScreenView extends DensityBuoyancyScreenView<De
       tandem: accordionTandem
     }, DensityBuoyancyCommonConstants.ACCORDION_BOX_OPTIONS ) );
 
-    this.addChild( new AlignBox( densityAccordionBox, {
-      alignBoundsProperty: this.visibleBoundsProperty,
-      xAlign: 'center',
-      yAlign: 'top',
-      margin: MARGIN
-    } ) );
+    this.addChild( densityAccordionBox );
+
+    Multilink.multilink( [
+        this.visibleBoundsProperty,
+        this.rightBox.boundsProperty,
+        densityAccordionBox.boundsProperty ],
+      ( visibleBounds, rightBoxBounds, accordionBounds ) => {
+          const rightBoxLeftEdge = rightBoxBounds.left;
+          const visibleBoundsLeftEdge = visibleBounds.left;
+
+          const availableWidth = rightBoxLeftEdge - visibleBoundsLeftEdge - 2 * MARGIN;
+
+          if ( availableWidth > 0 ) {
+            densityAccordionBox.maxWidth = availableWidth;
+            densityAccordionBox.centerX = visibleBoundsLeftEdge + availableWidth / 2 + MARGIN;
+            densityAccordionBox.top = visibleBounds.top + MARGIN;
+          }
+      } );
 
     this.addChild( new AlignBox( this.rightBox, {
       alignBoundsProperty: this.visibleBoundsProperty,

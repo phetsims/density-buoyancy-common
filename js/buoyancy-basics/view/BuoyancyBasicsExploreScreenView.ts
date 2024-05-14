@@ -35,6 +35,7 @@ import DensityBuoyancyCommonColors from '../../common/view/DensityBuoyancyCommon
 import CuboidView from '../../common/view/CuboidView.js';
 import ScaleView from '../../common/view/ScaleView.js';
 import MassView from '../../common/view/MassView.js';
+import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
 
 // constants
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
@@ -151,19 +152,24 @@ export default class BuoyancyBasicsExploreScreenView extends DensityBuoyancyScre
       // DerivedProperty doesn't need disposal, since everything here lives for the lifetime of the simulation
       {
         densityProperty: new DerivedProperty( [ model.liquidDensityProperty ], density => density ),
-        color: DensityBuoyancyCommonColors.liquidLabelProperty,
-        nameProperty: DensityBuoyancyCommonStrings.fluidStringProperty
+        nameProperty: DensityBuoyancyCommonStrings.fluidStringProperty,
+        visibleProperty: new BooleanProperty( true ),
+        isHiddenProperty: new BooleanProperty( false ),
+        color: DensityBuoyancyCommonColors.liquidLabelProperty
       },
       {
         densityProperty: new DerivedProperty( [ model.primaryMass.materialProperty ], material => material.density ),
-        color: DensityBuoyancyCommonColors.labelPrimaryProperty,
-        nameProperty: model.primaryMass.tag.nameProperty
+        nameProperty: model.primaryMass.tag.nameProperty,
+        visibleProperty: new BooleanProperty( true ),
+        isHiddenProperty: new DerivedProperty( [ model.primaryMass.materialProperty ], material => material.hidden ),
+        color: DensityBuoyancyCommonColors.labelPrimaryProperty
       },
       {
         densityProperty: new DerivedProperty( [ model.secondaryMass.materialProperty ], material => material.density ),
-        color: DensityBuoyancyCommonColors.labelSecondaryProperty,
+        nameProperty: model.secondaryMass.tag.nameProperty,
         visibleProperty: model.secondaryMass.visibleProperty,
-        nameProperty: model.secondaryMass.tag.nameProperty
+        isHiddenProperty: new DerivedProperty( [ model.secondaryMass.materialProperty ], material => material.hidden ),
+        color: DensityBuoyancyCommonColors.labelSecondaryProperty
       }
     ];
 

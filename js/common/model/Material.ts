@@ -155,7 +155,7 @@ export default class Material {
       map: solidColor => {
 
         // The lighter depth line color has better contrast, so use that for more than half
-        const isDark = ( solidColor.r + solidColor.g + solidColor.b ) / 3 < 255 * 0.4;
+        const isDark = ( solidColor.r + solidColor.g + solidColor.b ) / 3 < 255 * 0.6;
 
         return isDark ? DensityBuoyancyCommonColors.depthLinesLightColorProperty.value : DensityBuoyancyCommonColors.depthLinesDarkColorProperty.value;
       }

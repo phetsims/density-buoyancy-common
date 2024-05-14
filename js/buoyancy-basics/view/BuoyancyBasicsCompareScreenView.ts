@@ -314,7 +314,7 @@ export default class BuoyancyBasicsCompareScreenView extends DensityBuoyancyScre
 
         // On the left
         const box1 = new THREE.Mesh( boxGeometry, new THREE.MeshLambertMaterial( {
-          color: 0xff2255
+          color: DensityBuoyancyCommonColors.compareOcreColorProperty.value.toHexString()
         } ) );
         box1.position.copy( ThreeUtils.vectorToThree( new Vector3( box1Position.x, box1Position.y, 0 ) ) );
 
@@ -322,7 +322,7 @@ export default class BuoyancyBasicsCompareScreenView extends DensityBuoyancyScre
 
         // On the right
         const box2 = new THREE.Mesh( boxGeometry, new THREE.MeshLambertMaterial( {
-          color: 0xaaaaff
+          color: DensityBuoyancyCommonColors.compareBlueColorProperty.value.toHexString()
         } ) );
         box2.position.copy( ThreeUtils.vectorToThree( new Vector3( box2Position.x, box2Position.y, 0 ) ) );
 

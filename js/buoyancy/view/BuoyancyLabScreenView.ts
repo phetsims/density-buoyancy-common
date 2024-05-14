@@ -34,7 +34,6 @@ import Bounds2 from '../../../../dot/js/Bounds2.js';
 import ScaleHeightControl from '../../common/view/ScaleHeightControl.js';
 import fluid_displaced_scale_icon_png from '../../../images/fluid_displaced_scale_icon_png.js';
 import AccordionBox from '../../../../sun/js/AccordionBox.js';
-import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import CuboidView from '../../common/view/CuboidView.js';
 
@@ -60,10 +59,6 @@ export default class BuoyancyLabScreenView extends DensityBuoyancyScreenView<Buo
 
     const fluidDisplacedAccordionBoxTandem = tandem.createTandem( 'fluidDisplacedAccordionBox' );
 
-    const accordionBoxIsExpandedProperty = new BooleanProperty( false, {
-      tandem: fluidDisplacedAccordionBoxTandem.createTandem( 'expandedProperty' )
-    } );
-
     const fluidDisplacedAccordionBox = new AccordionBox( new FluidDisplacedPanel( this.waterLevelVolumeProperty,
       maxBlockVolume,
       model.liquidMaterialProperty,
@@ -72,7 +67,7 @@ export default class BuoyancyLabScreenView extends DensityBuoyancyScreenView<Buo
         font: new PhetFont( 14 ), // Matches the checkbox label font size
         maxWidth: 100
       } ),
-      expandedProperty: accordionBoxIsExpandedProperty,
+      expandedDefaultValue: false,
 
       titleAlignX: 'left',
       titleAlignY: 'center',

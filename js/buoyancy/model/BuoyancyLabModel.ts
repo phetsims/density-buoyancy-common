@@ -27,7 +27,6 @@ export default class BuoyancyLabModel extends DensityBuoyancyModel {
 
   public readonly primaryMass: Cube;
   public readonly densityExpandedProperty: Property<boolean>;
-  public readonly showFluidDisplacedProperty: Property<boolean>;
   public readonly poolScaleHeightProperty: PoolScaleHeightProperty;
   public readonly poolScale: Scale;
 
@@ -59,9 +58,6 @@ export default class BuoyancyLabModel extends DensityBuoyancyModel {
     } ) );
 
     this.densityExpandedProperty = new BooleanProperty( false );
-    this.showFluidDisplacedProperty = new BooleanProperty( false, {
-      tandem: tandem.createTandem( 'showFluidDisplacedProperty' )
-    } );
 
     this.poolScaleHeightProperty = new PoolScaleHeightProperty( 1, {
       range: new Range( 0, 1 ),

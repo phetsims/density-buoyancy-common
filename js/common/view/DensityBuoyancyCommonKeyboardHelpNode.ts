@@ -13,20 +13,29 @@ import MoveDraggableItemsKeyboardHelpSection from '../../../../scenery-phet/js/k
 import SliderControlsKeyboardHelpSection from '../../../../scenery-phet/js/keyboard/help/SliderControlsKeyboardHelpSection.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import ComboBoxKeyboardHelpSection from '../../../../scenery-phet/js/keyboard/help/ComboBoxKeyboardHelpSection.js';
+import KeyboardHelpSection from '../../../../scenery-phet/js/keyboard/help/KeyboardHelpSection.js';
 
 export default class DensityBuoyancyCommonKeyboardHelpNode extends TwoColumnKeyboardHelpContent {
 
   public constructor( showSliderHelp: boolean, showChangeChoiceHelp: boolean ) {
 
-    const leftColumn = [
-      new MoveDraggableItemsKeyboardHelpSection(),
-      ...( showSliderHelp ? [ new SliderControlsKeyboardHelpSection() ] : [] )
+    const leftColumn: KeyboardHelpSection[] = [
+      new MoveDraggableItemsKeyboardHelpSection()
     ];
 
-    const rightColumn = [
-      ...( showChangeChoiceHelp ? [ new ComboBoxKeyboardHelpSection( {} ) ] : [] ),
-      new BasicActionsKeyboardHelpSection( { withCheckboxContent: true } )
-    ];
+    const rightColumn: KeyboardHelpSection[] = [];
+
+    if ( showSliderHelp ) {
+      leftColumn.push( new SliderControlsKeyboardHelpSection() );
+      if ( showChangeChoiceHelp ) {
+        rightColumn.push( new ComboBoxKeyboardHelpSection() );
+      }
+    }
+    else if ( showChangeChoiceHelp ) {
+      leftColumn.push( new ComboBoxKeyboardHelpSection() );
+    }
+
+    rightColumn.push( new BasicActionsKeyboardHelpSection( { withCheckboxContent: true } ) );
 
     super( leftColumn, rightColumn );
   }

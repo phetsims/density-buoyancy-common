@@ -36,6 +36,9 @@
  *              the tip to the saddle point (second curve).
  * - Saddle point: The true mathematical saddle where the saddle/tip curves meet back up, at r=0
  *
+ * REVIEW: https://github.com/phetsims/density-buoyancy-common/issues/123 This file is > 1200 lines of complicated code
+ * with many magic numbers. We should make an effort to remove unused parts, and clean up where possible.
+ *
  * Diagram in x,r coordinates, showing the "profile" (exactly half of the bottle, and the curves that the
  * three-dimensional form will be made from):
  *

@@ -401,9 +401,10 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
     this.pdomPlayAreaNode.pdomOrder = [
 
       blockLayer,
+      bottleBoatLayer,
+
       rightBoatContent,
       rightBottleContent,
-      bottleBoatLayer,
 
       resetSceneButton,
       fluidDensityControlPanel

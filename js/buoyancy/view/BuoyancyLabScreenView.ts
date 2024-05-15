@@ -58,7 +58,7 @@ export default class BuoyancyLabScreenView extends DensityBuoyancyScreenView<Buo
     const fluidDisplacedAccordionBox = new FluidDisplacedAccordionBox( this.waterLevelVolumeProperty,
       maxBlockVolume,
       model.liquidMaterialProperty,
-      model.gravityProperty , {
+      model.gravityProperty, {
         tandem: tandem.createTandem( 'fluidDisplacedAccordionBox' )
       } );
 

@@ -8,7 +8,6 @@
 
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
-import MultiSectionPanelsNode, { MultiSectionPanelsNodeOptions } from '../../common/view/MultiSectionPanelsNode.js';
 import BeakerNode, { BeakerNodeOptions } from '../../../../scenery-phet/js/BeakerNode.js';
 import NumberProperty from '../../../../axon/js/NumberProperty.js';
 import Range from '../../../../dot/js/Range.js';
@@ -26,10 +25,12 @@ import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import Material from '../../common/model/Material.js';
 import DynamicProperty from '../../../../axon/js/DynamicProperty.js';
 import BuoyancyLabScreenView from './BuoyancyLabScreenView.js';
+import AccordionBox, { AccordionBoxOptions } from '../../../../sun/js/AccordionBox.js';
+import Panel, { PanelOptions } from '../../../../sun/js/Panel.js';
 
 type SelfOptions = EmptySelfOptions;
 
-type FluidDisplacedPanelOptions = SelfOptions & MultiSectionPanelsNodeOptions;
+type FluidDisplacedPanelOptions = SelfOptions & AccordionBoxOptions;
 
 const STARTING_VOLUME = DensityBuoyancyCommonConstants.DESIRED_STARTING_POOL_VOLUME * DensityBuoyancyCommonConstants.LITERS_IN_CUBIC_METER;
 const CONTENT_WIDTH = 105;
@@ -37,7 +38,7 @@ const CONTENT_WIDTH = 105;
 // Beaker expects a range between 0 (empty) and 1 (full)
 const BEAKER_RANGE = new Range( 0, 1 );
 
-export default class FluidDisplacedPanel extends MultiSectionPanelsNode {
+export default class FluidDisplacedPanel extends AccordionBox {
 
   public constructor( poolVolumeProperty: TReadOnlyProperty<number>,
                       maxBeakerVolume: number,
@@ -47,9 +48,24 @@ export default class FluidDisplacedPanel extends MultiSectionPanelsNode {
     assert && assert( Utils.toFixedNumber( poolVolumeProperty.value, 7 ) === STARTING_VOLUME,
       `This class greatly expects the starting volume of the pool to be ${STARTING_VOLUME}L.` );
 
-    const options = optionize<FluidDisplacedPanelOptions, SelfOptions, MultiSectionPanelsNodeOptions>()( {
-      yMargin: DensityBuoyancyCommonConstants.MARGIN / 2,
-      stroke: null
+    const options = optionize<FluidDisplacedPanelOptions, SelfOptions, AccordionBoxOptions>()( {
+      titleNode: new RichText( DensityBuoyancyCommonStrings.fluidDisplacedStringProperty, {
+        font: DensityBuoyancyCommonConstants.TITLE_FONT,
+        maxWidth: 100,
+        lineWrap: 90,
+        maxHeight: 40
+      } ),
+      expandedDefaultValue: false,
+
+      titleAlignX: 'left',
+      titleAlignY: 'center',
+      titleXMargin: 5,
+      titleXSpacing: 10,
+
+      contentXMargin: 2,
+      contentYMargin: 2,
+      contentXSpacing: 2,
+      contentYSpacing: 2
     }, providedOptions );
 
     const displayRange = new Range( 0, maxBeakerVolume );
@@ -128,10 +144,16 @@ export default class FluidDisplacedPanel extends MultiSectionPanelsNode {
       numberDisplay.right = beakerNode.right;
     } );
 
-    super( [ new Node( {
-      children: [ scaleIcon, beakerNode, numberDisplay, forceReadout ]
-    } )
-    ], options );
+    const panel = new Panel(
+      new Node( {
+        children: [ scaleIcon, beakerNode, numberDisplay, forceReadout ]
+      } ),
+      combineOptions<PanelOptions>( {
+        yMargin: DensityBuoyancyCommonConstants.MARGIN / 2,
+        stroke: null
+      }, DensityBuoyancyCommonConstants.PANEL_OPTIONS )
+    );
+    super( panel, options );
   }
 
   private static getBeakerOptions(): BeakerNodeOptions {

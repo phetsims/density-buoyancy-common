@@ -10,7 +10,7 @@
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import { combineOptions } from '../../../../phet-core/js/optionize.js';
-import { AlignBox, HBox, LayoutProxy, ManualConstraint, Node, RichText, VBox } from '../../../../scenery/js/imports.js';
+import { AlignBox, HBox, LayoutProxy, ManualConstraint, Node, VBox } from '../../../../scenery/js/imports.js';
 import Panel from '../../../../sun/js/Panel.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 import Material from '../../common/model/Material.js';
@@ -33,7 +33,6 @@ import ScaleView from '../../common/view/ScaleView.js';
 import Bounds2 from '../../../../dot/js/Bounds2.js';
 import ScaleHeightControl from '../../common/view/ScaleHeightControl.js';
 import fluid_displaced_scale_icon_png from '../../../images/fluid_displaced_scale_icon_png.js';
-import AccordionBox from '../../../../sun/js/AccordionBox.js';
 import CuboidView from '../../common/view/CuboidView.js';
 
 // constants
@@ -56,31 +55,12 @@ export default class BuoyancyLabScreenView extends DensityBuoyancyScreenView<Buo
     // In liters
     const maxBlockVolume = 10;
 
-    const fluidDisplacedAccordionBoxTandem = tandem.createTandem( 'fluidDisplacedAccordionBox' );
-
-    const fluidDisplacedAccordionBox = new AccordionBox( new FluidDisplacedPanel( this.waterLevelVolumeProperty,
+    const fluidDisplacedAccordionBox = new FluidDisplacedPanel( this.waterLevelVolumeProperty,
       maxBlockVolume,
       model.liquidMaterialProperty,
-      model.gravityProperty ), {
-      titleNode: new RichText( DensityBuoyancyCommonStrings.fluidDisplacedStringProperty, {
-        font: DensityBuoyancyCommonConstants.TITLE_FONT,
-        maxWidth: 100,
-        lineWrap: 90,
-        maxHeight: 40
-      } ),
-      expandedDefaultValue: false,
-
-      titleAlignX: 'left',
-      titleAlignY: 'center',
-      titleXMargin: 5,
-      titleXSpacing: 10,
-
-      contentXMargin: 2,
-      contentYMargin: 2,
-      contentXSpacing: 2,
-      contentYSpacing: 2,
-      tandem: fluidDisplacedAccordionBoxTandem
-    } );
+      model.gravityProperty , {
+        tandem: tandem.createTandem( 'fluidDisplacedAccordionBox' )
+      } );
 
     this.resetEmitter.addListener( () => fluidDisplacedAccordionBox.expandedProperty.reset() );
 

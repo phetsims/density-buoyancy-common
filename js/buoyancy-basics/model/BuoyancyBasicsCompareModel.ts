@@ -42,7 +42,7 @@ export default class BuoyancyBasicsCompareModel extends CompareBlockSetModel {
 
       cubesData: [
         {
-          sameMassVolume: 0.01,
+          sameMassVolume: 0.002,
           sameVolumeMass: 2,
           sameDensityVolume: 0.005,
           colorProperty: DensityBuoyancyCommonColors.compareOcreColorProperty,
@@ -59,7 +59,7 @@ export default class BuoyancyBasicsCompareModel extends CompareBlockSetModel {
             tandem: blockSetsTandem.createTandem( BlockSet.SAME_DENSITY.tandemName ).createTandem( 'blockA' )
           }
         }, {
-          sameMassVolume: 0.002,
+          sameMassVolume: 0.01,
           sameVolumeMass: 10,
           sameDensityVolume: 0.01,
           colorProperty: DensityBuoyancyCommonColors.compareBlueColorProperty,
@@ -104,7 +104,7 @@ export default class BuoyancyBasicsCompareModel extends CompareBlockSetModel {
 
     // Left scale
     this.availableMasses.push( new Scale( this.engine, this.gravityProperty, {
-      matrix: Matrix3.translation( -0.77, -Scale.SCALE_BASE_BOUNDS.minY ),
+      matrix: Matrix3.translation( -0.70, -Scale.SCALE_BASE_BOUNDS.minY ),
       displayType: DisplayType.NEWTONS,
       tandem: providedOptions.tandem.createTandem( 'scale1' ),
       canMove: true,

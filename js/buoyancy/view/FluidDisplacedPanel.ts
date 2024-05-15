@@ -27,6 +27,7 @@ import DynamicProperty from '../../../../axon/js/DynamicProperty.js';
 import BuoyancyLabScreenView from './BuoyancyLabScreenView.js';
 import AccordionBox, { AccordionBoxOptions } from '../../../../sun/js/AccordionBox.js';
 import Panel, { PanelOptions } from '../../../../sun/js/Panel.js';
+import DensityBuoyancyCommonColors from '../../common/view/DensityBuoyancyCommonColors.js';
 
 type SelfOptions = EmptySelfOptions;
 
@@ -56,6 +57,7 @@ export default class FluidDisplacedPanel extends AccordionBox {
         maxHeight: 40
       } ),
       expandedDefaultValue: false,
+      fill: DensityBuoyancyCommonColors.panelBackgroundProperty,
 
       titleAlignX: 'left',
       titleAlignY: 'center',
@@ -148,10 +150,10 @@ export default class FluidDisplacedPanel extends AccordionBox {
       new Node( {
         children: [ scaleIcon, beakerNode, numberDisplay, forceReadout ]
       } ),
-      combineOptions<PanelOptions>( {
+      combineOptions<PanelOptions>( {}, DensityBuoyancyCommonConstants.PANEL_OPTIONS, {
         yMargin: DensityBuoyancyCommonConstants.MARGIN / 2,
         stroke: null
-      }, DensityBuoyancyCommonConstants.PANEL_OPTIONS )
+      } )
     );
     super( panel, options );
   }

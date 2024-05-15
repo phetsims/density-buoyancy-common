@@ -34,7 +34,6 @@ import Bounds2 from '../../../../dot/js/Bounds2.js';
 import ScaleHeightControl from '../../common/view/ScaleHeightControl.js';
 import fluid_displaced_scale_icon_png from '../../../images/fluid_displaced_scale_icon_png.js';
 import AccordionBox from '../../../../sun/js/AccordionBox.js';
-import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import CuboidView from '../../common/view/CuboidView.js';
 
 // constants
@@ -64,7 +63,7 @@ export default class BuoyancyLabScreenView extends DensityBuoyancyScreenView<Buo
       model.liquidMaterialProperty,
       model.gravityProperty ), {
       titleNode: new RichText( DensityBuoyancyCommonStrings.fluidDisplacedStringProperty, {
-        font: new PhetFont( 14 ), // Matches the checkbox label font size
+        font: DensityBuoyancyCommonConstants.TITLE_FONT,
         maxWidth: 100,
         lineWrap: 90,
         maxHeight: 40

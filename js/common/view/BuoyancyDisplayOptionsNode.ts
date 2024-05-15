@@ -32,7 +32,8 @@ const arrowOptions = {
 };
 const labelFont = new PhetFont( 14 );
 const checkboxOptions = {
-  boxWidth: 17
+  boxWidth: 17,
+  spacing: 5
 };
 const checkboxSpacing = 5;
 
@@ -53,7 +54,7 @@ export default class BuoyancyDisplayOptionsNode extends Panel {
 
     const labelOptions = {
       font: labelFont,
-      maxWidth: options.contentWidth - arrowSpacing - arrowLength - checkboxOptions.boxWidth
+      maxWidth: options.contentWidth - arrowSpacing - arrowLength - checkboxOptions.boxWidth - checkboxOptions.spacing - 2 * options.xMargin
     };
 
     const content = new VBox( {
@@ -62,7 +63,7 @@ export default class BuoyancyDisplayOptionsNode extends Panel {
       children: [
         new Text( DensityBuoyancyCommonStrings.forcesStringProperty, {
           font: DensityBuoyancyCommonConstants.TITLE_FONT,
-          maxWidth: options.contentWidth
+          maxWidth: options.contentWidth - 2 * options.xMargin
         } ),
         new VBox( {
           spacing: 8,

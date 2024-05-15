@@ -8,7 +8,6 @@
 
 import { combineOptions } from '../../../../phet-core/js/optionize.js';
 import { AlignBox, Node, VBox } from '../../../../scenery/js/imports.js';
-import Panel from '../../../../sun/js/Panel.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 import Material from '../../common/model/Material.js';
 import DensityBuoyancyScreenView, { DensityBuoyancyScreenViewOptions } from '../../common/view/DensityBuoyancyScreenView.js';
@@ -77,7 +76,12 @@ export default class BuoyancyBasicsCompareScreenView extends DensityBuoyancyScre
 
     const buoyancyDisplayOptionsPanel = new BuoyancyDisplayOptionsNode( model, {
       includeVectorScaleControl: false,
-      tandem: options.tandem.createTandem( 'buoyancyDisplayOptionsPanel' )
+      tandem: options.tandem.createTandem( 'buoyancyDisplayOptionsPanel' ),
+      contentWidth: this.modelToViewPoint( new Vector3(
+        this.model.poolBounds.left,
+        this.model.poolBounds.top,
+        this.model.poolBounds.front
+      ) ).x - 2 * MARGIN
     } );
     this.addChild( new AlignBox( buoyancyDisplayOptionsPanel, {
       alignBoundsProperty: this.visibleBoundsProperty,

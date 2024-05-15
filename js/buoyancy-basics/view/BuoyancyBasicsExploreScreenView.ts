@@ -10,7 +10,6 @@ import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import { combineOptions } from '../../../../phet-core/js/optionize.js';
 import { AlignBox, HBox, ManualConstraint, Node, RichText, VBox } from '../../../../scenery/js/imports.js';
-import Panel from '../../../../sun/js/Panel.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 import Material from '../../common/model/Material.js';
 import DensityBuoyancyScreenView, { DensityBuoyancyScreenViewOptions } from '../../common/view/DensityBuoyancyScreenView.js';
@@ -56,7 +55,12 @@ export default class BuoyancyBasicsExploreScreenView extends DensityBuoyancyScre
 
     const buoyancyDisplayOptionsPanel = new BuoyancyDisplayOptionsNode( model, {
       includeVectorScaleControl: false,
-      tandem: tandem.createTandem( 'buoyancyDisplayOptionsPanel' )
+      tandem: tandem.createTandem( 'buoyancyDisplayOptionsPanel' ),
+      contentWidth: this.modelToViewPoint( new Vector3(
+        this.model.poolBounds.left,
+        this.model.poolBounds.top,
+        this.model.poolBounds.front
+      ) ).x - 2 * MARGIN
     } );
 
     this.addChild( new AlignBox( buoyancyDisplayOptionsPanel, {

@@ -82,18 +82,13 @@ export default class DensityCompareScreenView extends DensityBuoyancyScreenView<
     const massViewAdded = ( massView: MassView ) => {
       if ( massView instanceof CuboidView ) {
 
-        // Preserve prior order, and add the next massView.
-        // TODO: https://github.com/phetsims/density-buoyancy-common/issues/121 There is a bit of back and forth here that is
-        // unnecessary. Is there a better way?
-        const proposedOrder = [ ...cuboidPDOMLayer.pdomOrder!, massView.focusablePath ];
+        // Only Cuboids
+        cuboidPDOMLayer.pdomOrder = this.massViews.filter( view => view instanceof CuboidView && view.focusablePath )
 
-        // look up all the views
-        const massViews = proposedOrder.map( node => this.massViews.find( massView => massView.focusablePath === node ) );
+          // Sort alphabetically based on the tag, which is specified (locale-independently) in the tandem
+          .sort( ( a, b ) => a.mass.tag.tandemName.localeCompare( b.mass.tag.tandemName ) )
 
-        // Sort alphabetically based on the tag, which is specified (locale-independently) in the tandem
-        massViews.sort( ( a, b ) => a!.mass.tag.tandemName.localeCompare( b!.mass.tag.tandemName ) );
-
-        cuboidPDOMLayer.pdomOrder = massViews.filter( massView => !!massView ).map( massView => massView!.focusablePath );
+          .map( view => view.focusablePath );
         // nothing to do for removal since disposal of the node will remove it from the pdom order
       }
     };

@@ -84,20 +84,22 @@ export default class ForceDiagramNode extends Node {
       fill: DensityBuoyancyCommonColors.contactForceProperty
     }, arrowOptions ) );
 
+    const textMaxWidth = 150;
+
     this.gravityLabelText = new Text( '', {
       font: labelFont,
       fill: DensityBuoyancyCommonColors.gravityForceProperty,
-      maxWidth: 200
+      maxWidth: textMaxWidth
     } );
     this.buoyancyLabelText = new Text( '', {
       font: labelFont,
       fill: DensityBuoyancyCommonColors.buoyancyForceProperty,
-      maxWidth: 200
+      maxWidth: textMaxWidth
     } );
     this.contactLabelText = new Text( '', {
       font: labelFont,
       fill: DensityBuoyancyCommonColors.contactForceProperty,
-      maxWidth: 200
+      maxWidth: textMaxWidth
     } );
 
     const panelOptions = {

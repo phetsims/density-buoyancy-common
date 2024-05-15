@@ -10,6 +10,7 @@ import { Node } from '../../../../scenery/js/imports.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import MultiSectionPanelsNode from './MultiSectionPanelsNode.js';
 import MassTagNode from './MassTagNode.js';
+import MassTag from '../model/MassTag.js';
 
 export default class PrimarySecondaryPanelsNode extends MultiSectionPanelsNode {
 
@@ -25,7 +26,7 @@ export default class PrimarySecondaryPanelsNode extends MultiSectionPanelsNode {
    */
   public static getPrimaryTagLabelNode(): Node {
     return new Node( {
-      children: [ MassTagNode.PRIMARY_TAG ],
+      children: [ new MassTagNode( MassTag.PRIMARY, 50 ) ],
       scale: 1.3
     } );
   }
@@ -35,7 +36,7 @@ export default class PrimarySecondaryPanelsNode extends MultiSectionPanelsNode {
    */
   public static getSecondaryTagLabelNode(): Node {
     return new Node( {
-      children: [ MassTagNode.SECONDARY_TAG ],
+      children: [ new MassTagNode( MassTag.SECONDARY, 50 ) ],
       scale: 1.3
     } );
   }

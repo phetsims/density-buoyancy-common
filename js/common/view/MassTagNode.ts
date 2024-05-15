@@ -29,7 +29,7 @@ const tagFont = new PhetFont( { size: 24, weight: 'bold' } );
 
 export default class MassTagNode extends Node {
 
-  public constructor( massTag: MassTag ) {
+  public constructor( massTag: MassTag, maxTextWidth = 100 ) {
 
     assert && assert( massTag !== MassTag.NONE, 'MassTagNode must have a provided MassTag' );
 
@@ -39,7 +39,7 @@ export default class MassTagNode extends Node {
 
     const label = new Text( massTag.nameProperty, {
       font: tagFont,
-      maxWidth: 100,
+      maxWidth: maxTextWidth,
       visibleProperty: visibleProperty
     } );
 
@@ -70,9 +70,6 @@ export default class MassTagNode extends Node {
     } );
 
   }
-
-  public static readonly PRIMARY_TAG = new MassTagNode( MassTag.PRIMARY );
-  public static readonly SECONDARY_TAG = new MassTagNode( MassTag.SECONDARY );
 }
 
 densityBuoyancyCommon.register( 'MassTagNode', MassTagNode );

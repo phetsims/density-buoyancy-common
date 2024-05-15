@@ -39,7 +39,7 @@ const CONTENT_WIDTH = 105;
 // Beaker expects a range between 0 (empty) and 1 (full)
 const BEAKER_RANGE = new Range( 0, 1 );
 
-export default class FluidDisplacedPanel extends AccordionBox {
+export default class FluidDisplacedAccordionBox extends AccordionBox {
 
   public constructor( poolVolumeProperty: TReadOnlyProperty<number>,
                       maxBeakerVolume: number,
@@ -87,7 +87,7 @@ export default class FluidDisplacedPanel extends AccordionBox {
 
     const beakerNode = new BeakerNode( beakerVolumeProperty, combineOptions<BeakerNodeOptions>( {
       solutionFill: solutionFillProperty
-    }, FluidDisplacedPanel.getBeakerOptions() ) );
+    }, FluidDisplacedAccordionBox.getBeakerOptions() ) );
 
     displayedDisplacedVolumeProperty.link( displayedLiters => {
       beakerVolumeProperty.value = displayedLiters / maxBeakerVolume;
@@ -192,7 +192,7 @@ export default class FluidDisplacedPanel extends AccordionBox {
       range: BEAKER_RANGE.copy()
     } ), combineOptions<BeakerNodeOptions>( {
       solutionFill: Material.WATER.liquidColor
-    }, FluidDisplacedPanel.getBeakerOptions() ) );
+    }, FluidDisplacedAccordionBox.getBeakerOptions() ) );
 
     scaleIcon.top = beakerNode.bottom - 30;
     scaleIcon.centerX = beakerNode.centerX;
@@ -205,4 +205,4 @@ export default class FluidDisplacedPanel extends AccordionBox {
   }
 }
 
-densityBuoyancyCommon.register( 'FluidDisplacedPanel', FluidDisplacedPanel );
+densityBuoyancyCommon.register( 'FluidDisplacedAccordionBox', FluidDisplacedAccordionBox );

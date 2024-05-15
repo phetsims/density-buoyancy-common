@@ -24,7 +24,7 @@ import DensityAccordionBox from './DensityAccordionBox.js';
 import BuoyancyDisplayOptionsNode from '../../common/view/BuoyancyDisplayOptionsNode.js';
 import BlockControlNode from '../../common/view/BlockControlNode.js';
 import MultiSectionPanelsNode from '../../common/view/MultiSectionPanelsNode.js';
-import FluidDisplacedPanel from './FluidDisplacedPanel.js';
+import FluidDisplacedAccordionBox from './FluidDisplacedAccordionBox.js';
 import SubmergedAccordionBox from './SubmergedAccordionBox.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import ThreeUtils from '../../../../mobius/js/ThreeUtils.js';
@@ -55,7 +55,7 @@ export default class BuoyancyLabScreenView extends DensityBuoyancyScreenView<Buo
     // In liters
     const maxBlockVolume = 10;
 
-    const fluidDisplacedAccordionBox = new FluidDisplacedPanel( this.waterLevelVolumeProperty,
+    const fluidDisplacedAccordionBox = new FluidDisplacedAccordionBox( this.waterLevelVolumeProperty,
       maxBlockVolume,
       model.liquidMaterialProperty,
       model.gravityProperty , {

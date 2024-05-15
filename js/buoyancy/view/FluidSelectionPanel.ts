@@ -18,7 +18,6 @@ import WithRequired from '../../../../phet-core/js/types/WithRequired.js';
 import ComboBox from '../../../../sun/js/ComboBox.js';
 import Property from '../../../../axon/js/Property.js';
 
-
 // Any others are invisible in the radio buttons, and are only available through PhET-iO if a client decides
 // to show them, https://github.com/phetsims/buoyancy/issues/58
 const VISIBLE_FLUIDS = [
@@ -31,15 +30,14 @@ const VISIBLE_FLUIDS = [
 
 type FluidSelectionPanelOptions = WithRequired<PanelOptions, 'tandem'>;
 
+
 export default class FluidSelectionPanel extends Panel {
 
   public constructor( liquidMaterialProperty: Property<Material>, listParent: Node, providedOptions?: FluidSelectionPanelOptions ) {
 
     const options = optionize3<FluidSelectionPanelOptions, EmptySelfOptions, PanelOptions>()( {}, DensityBuoyancyCommonConstants.PANEL_OPTIONS, providedOptions );
 
-
     const comboBoxTandem = options.tandem.createTandem( 'fluidSelectionComboBox' );
-
 
     const fluidBox = new ComboBox(
       liquidMaterialProperty,
@@ -71,7 +69,6 @@ export default class FluidSelectionPanel extends Panel {
       spacing: 3,
       align: 'left'
     } ), DensityBuoyancyCommonConstants.PANEL_OPTIONS );
-
 
     liquidMaterialProperty instanceof ReadOnlyProperty && this.addLinkedElement( liquidMaterialProperty, {
       tandem: comboBoxTandem.createTandem( 'property' )

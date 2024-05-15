@@ -115,11 +115,6 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
       tandem: tandem.createTandem( 'bottleControlNode' )
     } );
 
-    const airVolumeLabel = new Text( DensityBuoyancyCommonStrings.airVolumeStringProperty, {
-      font: DensityBuoyancyCommonConstants.READOUT_FONT,
-      maxWidth: 100
-    } );
-
     // DerivedProperty doesn't need disposal, since everything here lives for the lifetime of the simulation
     const airLitersProperty = new DerivedProperty( [ model.bottle.interiorVolumeProperty ], volume => {
       return ( 0.01 - volume ) * 1000;
@@ -151,6 +146,9 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
       tandem: customBottleDensityControlTandem
     }, MaterialMassVolumeControlNode.getNumberControlOptions() ) );
 
+    const spacing = 5;
+    const airVolumeMaxWidth = ( bottleControlNode.width - spacing ) / 2;
+
     const bottleBox = new VBox( {
       spacing: 10,
       align: 'left',
@@ -164,16 +162,19 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
         customBottleDensityControl,
         new HSeparator(),
         new HBox( {
-          spacing: 5,
+          spacing: spacing,
           children: [
-            airVolumeLabel,
+            new Text( DensityBuoyancyCommonStrings.airVolumeStringProperty, {
+              font: DensityBuoyancyCommonConstants.READOUT_FONT,
+              maxWidth: airVolumeMaxWidth * 0.95 // to account for numberDisplay padding
+            } ),
             new NumberDisplay( airLitersProperty, new Range( 0, 10 ), {
               valuePattern: DensityBuoyancyCommonConstants.VOLUME_PATTERN_STRING_PROPERTY,
               useRichText: true,
               decimalPlaces: 2,
               textOptions: {
                 font: new PhetFont( 12 ),
-                maxWidth: 100
+                maxWidth: airVolumeMaxWidth
               }
             } )
           ]

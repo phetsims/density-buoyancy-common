@@ -404,6 +404,9 @@
   "percentSubmerged": {
     "value": "% Submerged"
   },
+  "valuePercent": {
+    "value": "{{value}}%"
+  },
   "fluidDisplaced": {
     "value": "Fluid<br>Displaced"
   },

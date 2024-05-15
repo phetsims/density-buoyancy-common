@@ -158,6 +158,7 @@ type StringsType = {
   'questionMarkStringProperty': LocalizedStringProperty;
   'shapesInfoDialogStringProperty': LocalizedStringProperty;
   'percentSubmergedStringProperty': LocalizedStringProperty;
+  'valuePercentStringProperty': LocalizedStringProperty;
   'fluidDisplacedStringProperty': LocalizedStringProperty;
   'depthLinesStringProperty': LocalizedStringProperty;
 };

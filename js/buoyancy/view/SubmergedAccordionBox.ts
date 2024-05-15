@@ -6,7 +6,6 @@
  * @author Agustín Vallejo
  */
 
-import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import { combineOptions } from '../../../../phet-core/js/optionize.js';
 import Utils from '../../../../dot/js/Utils.js';
@@ -14,6 +13,7 @@ import ReadoutListAccordionBox, { ReadoutData, ReadoutListAccordionBoxOptions } 
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import DensityBuoyancyCommonPreferences from '../../common/model/DensityBuoyancyCommonPreferences.js';
 import Mass from '../../common/model/Mass.js';
+import PatternStringProperty from '../../../../axon/js/PatternStringProperty.js';
 
 type SubmergedReadoutType = Mass;
 
@@ -38,10 +38,13 @@ export default class SubmergedAccordionBox extends ReadoutListAccordionBox<Subme
 
     return {
       nameProperty: mass.nameProperty,
-      valueProperty: new DerivedProperty(
-        [ mass.submergedMassFractionProperty ], submergedMassFraction => {
-          return Utils.toFixed( 100 * submergedMassFraction, 1 ) + '%';
-        } )
+      valueProperty: new PatternStringProperty( DensityBuoyancyCommonStrings.valuePercentStringProperty, {
+        value: mass.submergedMassFractionProperty
+      }, {
+        maps: {
+          value: submergedMassFraction => Utils.toFixed( 100 * submergedMassFraction, 1 )
+        }
+      } )
     };
   }
 

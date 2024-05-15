@@ -75,12 +75,11 @@ export default class BuoyancyBasicsCompareScreenView extends DensityBuoyancyScre
       margin: MARGIN
     } ) );
 
-    const displayOptionsPanel = new Panel( new BuoyancyDisplayOptionsNode( model, {
-        includeVectorScaleControl: false,
-        tandem: options.tandem.createTandem( 'buoyancyDisplayOptionsNode' )
-      } ),
-      DensityBuoyancyCommonConstants.PANEL_OPTIONS );
-    this.addChild( new AlignBox( displayOptionsPanel, {
+    const buoyancyDisplayOptionsPanel = new BuoyancyDisplayOptionsNode( model, {
+      includeVectorScaleControl: false,
+      tandem: options.tandem.createTandem( 'buoyancyDisplayOptionsPanel' )
+    } );
+    this.addChild( new AlignBox( buoyancyDisplayOptionsPanel, {
       alignBoundsProperty: this.visibleBoundsProperty,
       xAlign: 'left',
       yAlign: 'bottom',
@@ -215,7 +214,7 @@ export default class BuoyancyBasicsCompareScreenView extends DensityBuoyancyScre
     this.massViews.forEach( massViewAdded );
 
     this.pdomControlAreaNode.pdomOrder = [
-      displayOptionsPanel,
+      buoyancyDisplayOptionsPanel,
       densityAccordionBox,
       submergedAccordionBox,
       this.resetAllButton

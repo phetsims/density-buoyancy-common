@@ -301,9 +301,6 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
     const invisibleMaterials = [ ...DensityBuoyancyCommonConstants.BUOYANCY_FLUID_MYSTERY_MATERIALS ];
     displayedMysteryMaterials.forEach( displayed => arrayRemove( invisibleMaterials, displayed ) );
 
-    const displayOptionsNode = new BuoyancyDisplayOptionsNode( model, {
-      tandem: tandem.createTandem( 'displayOptionsNode' )
-    } );
 
     model.sceneProperty.link( scene => {
       const materials = scene === Scene.BOTTLE ? [
@@ -330,8 +327,11 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
       submergedAccordionBox.setReadoutItems( submergedObjects );
     } );
 
+    const buoyancyDisplayOptionsPanel = new BuoyancyDisplayOptionsNode( model, {
+      tandem: tandem.createTandem( 'buoyancyDisplayOptionsPanel' )
+    } );
 
-    this.addChild( new AlignBox( new Panel( displayOptionsNode, DensityBuoyancyCommonConstants.PANEL_OPTIONS ), {
+    this.addChild( new AlignBox( buoyancyDisplayOptionsPanel, {
       alignBoundsProperty: this.visibleBoundsProperty,
       xAlign: 'left',
       yAlign: 'bottom',
@@ -426,7 +426,7 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
     this.massViews.forEach( massViewAdded );
 
     this.pdomControlAreaNode.pdomOrder = [
-      displayOptionsNode,
+      buoyancyDisplayOptionsPanel,
       densityAccordionBox,
       submergedAccordionBox,
       bottleBoatRadioButtonGroup,

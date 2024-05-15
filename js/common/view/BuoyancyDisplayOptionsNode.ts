@@ -9,16 +9,17 @@
 import ArrowNode, { ArrowNodeOptions } from '../../../../scenery-phet/js/ArrowNode.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import PlusMinusZoomButtonGroup from '../../../../scenery-phet/js/PlusMinusZoomButtonGroup.js';
-import { GridBox, HSeparator, Text, TextOptions, VBox, VBoxOptions } from '../../../../scenery/js/imports.js';
+import { GridBox, HSeparator, Text, TextOptions, VBox } from '../../../../scenery/js/imports.js';
 import Checkbox, { CheckboxOptions } from '../../../../sun/js/Checkbox.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
 import DensityBuoyancyCommonColors from './DensityBuoyancyCommonColors.js';
 import DensityBuoyancyModel from '../model/DensityBuoyancyModel.js';
-import optionize, { combineOptions } from '../../../../phet-core/js/optionize.js';
+import { combineOptions, optionize4 } from '../../../../phet-core/js/optionize.js';
 import RectangularButton from '../../../../sun/js/buttons/RectangularButton.js';
 import WithRequired from '../../../../phet-core/js/types/WithRequired.js';
+import Panel, { PanelOptions } from '../../../../sun/js/Panel.js';
 
 // constants
 const arrowSpacing = 15;
@@ -40,15 +41,13 @@ type SelfOptions = {
   contentWidth?: number;
 };
 
-type BuoyancyDisplayOptionsNodeOptions = SelfOptions & WithRequired<VBoxOptions, 'tandem'>;
+type BuoyancyDisplayOptionsNodeOptions = SelfOptions & WithRequired<PanelOptions, 'tandem'>;
 
-export default class BuoyancyDisplayOptionsNode extends VBox {
+export default class BuoyancyDisplayOptionsNode extends Panel {
   public constructor( model: DensityBuoyancyModel, providedOptions: BuoyancyDisplayOptionsNodeOptions ) {
 
-    const options = optionize<BuoyancyDisplayOptionsNodeOptions, SelfOptions, VBoxOptions>()( {
+    const options = optionize4<BuoyancyDisplayOptionsNodeOptions, SelfOptions, PanelOptions>()( {}, DensityBuoyancyCommonConstants.PANEL_OPTIONS, {
       includeVectorScaleControl: true,
-      spacing: DensityBuoyancyCommonConstants.MARGIN,
-      align: 'left',
       contentWidth: 200
     }, providedOptions );
 
@@ -57,95 +56,99 @@ export default class BuoyancyDisplayOptionsNode extends VBox {
       maxWidth: options.contentWidth - arrowSpacing - arrowLength - checkboxOptions.boxWidth
     };
 
-    options.children = [
-      new Text( DensityBuoyancyCommonStrings.forcesStringProperty, {
-        font: DensityBuoyancyCommonConstants.TITLE_FONT,
-        maxWidth: options.contentWidth
-      } ),
-      new VBox( {
-        spacing: 8,
-        align: 'left',
-        children: [
-          new GridBox( {
-            xSpacing: arrowSpacing,
-            ySpacing: checkboxSpacing,
-            xAlign: 'left',
-            children: [
+    const content = new VBox( {
+      spacing: DensityBuoyancyCommonConstants.MARGIN,
+      align: 'left',
+      children: [
+        new Text( DensityBuoyancyCommonStrings.forcesStringProperty, {
+          font: DensityBuoyancyCommonConstants.TITLE_FONT,
+          maxWidth: options.contentWidth
+        } ),
+        new VBox( {
+          spacing: 8,
+          align: 'left',
+          children: [
+            new GridBox( {
+              xSpacing: arrowSpacing,
+              ySpacing: checkboxSpacing,
+              xAlign: 'left',
+              children: [
 
-              // Gravity
-              new Checkbox( model.showGravityForceProperty, new Text( DensityBuoyancyCommonStrings.gravity.nameStringProperty, labelOptions ), combineOptions<CheckboxOptions>( {
-                layoutOptions: { column: 0, row: 0 },
-                tandem: options.tandem.createTandem( 'gravityCheckbox' )
-              }, checkboxOptions ) ),
-              new ArrowNode( 0, 0, arrowLength, 0, combineOptions<ArrowNodeOptions>( {
-                layoutOptions: { column: 1, row: 0 },
-                fill: DensityBuoyancyCommonColors.gravityForceProperty
-              }, arrowOptions ) ),
+                // Gravity
+                new Checkbox( model.showGravityForceProperty, new Text( DensityBuoyancyCommonStrings.gravity.nameStringProperty, labelOptions ), combineOptions<CheckboxOptions>( {
+                  layoutOptions: { column: 0, row: 0 },
+                  tandem: options.tandem.createTandem( 'gravityCheckbox' )
+                }, checkboxOptions ) ),
+                new ArrowNode( 0, 0, arrowLength, 0, combineOptions<ArrowNodeOptions>( {
+                  layoutOptions: { column: 1, row: 0 },
+                  fill: DensityBuoyancyCommonColors.gravityForceProperty
+                }, arrowOptions ) ),
 
-              // Buoyancy
-              new Checkbox( model.showBuoyancyForceProperty, new Text( DensityBuoyancyCommonStrings.buoyancyStringProperty, labelOptions ), combineOptions<CheckboxOptions>( {
-                layoutOptions: { column: 0, row: 1 },
-                tandem: options.tandem.createTandem( 'buoyancyCheckbox' )
-              }, checkboxOptions ) ),
-              new ArrowNode( 0, 0, arrowLength, 0, combineOptions<ArrowNodeOptions>( {
-                layoutOptions: { column: 1, row: 1 },
-                fill: DensityBuoyancyCommonColors.buoyancyForceProperty
-              }, arrowOptions ) ),
+                // Buoyancy
+                new Checkbox( model.showBuoyancyForceProperty, new Text( DensityBuoyancyCommonStrings.buoyancyStringProperty, labelOptions ), combineOptions<CheckboxOptions>( {
+                  layoutOptions: { column: 0, row: 1 },
+                  tandem: options.tandem.createTandem( 'buoyancyCheckbox' )
+                }, checkboxOptions ) ),
+                new ArrowNode( 0, 0, arrowLength, 0, combineOptions<ArrowNodeOptions>( {
+                  layoutOptions: { column: 1, row: 1 },
+                  fill: DensityBuoyancyCommonColors.buoyancyForceProperty
+                }, arrowOptions ) ),
 
-              // Contact
-              new Checkbox( model.showContactForceProperty, new Text( DensityBuoyancyCommonStrings.contactStringProperty, labelOptions ), combineOptions<CheckboxOptions>( {
-                layoutOptions: { column: 0, row: 2 },
-                tandem: options.tandem.createTandem( 'contactCheckbox' )
-              }, checkboxOptions ) ),
-              new ArrowNode( 0, 0, arrowLength, 0, combineOptions<ArrowNodeOptions>( {
-                layoutOptions: { column: 1, row: 2 },
-                fill: DensityBuoyancyCommonColors.contactForceProperty
-              }, arrowOptions ) ),
+                // Contact
+                new Checkbox( model.showContactForceProperty, new Text( DensityBuoyancyCommonStrings.contactStringProperty, labelOptions ), combineOptions<CheckboxOptions>( {
+                  layoutOptions: { column: 0, row: 2 },
+                  tandem: options.tandem.createTandem( 'contactCheckbox' )
+                }, checkboxOptions ) ),
+                new ArrowNode( 0, 0, arrowLength, 0, combineOptions<ArrowNodeOptions>( {
+                  layoutOptions: { column: 1, row: 2 },
+                  fill: DensityBuoyancyCommonColors.contactForceProperty
+                }, arrowOptions ) ),
 
-              // Vector scale
-              ...( options.includeVectorScaleControl ? [
-                  new Text( DensityBuoyancyCommonStrings.vectorScaleStringProperty, combineOptions<TextOptions>( {
-                    layoutOptions: { column: 0, row: 3 }
-                  }, labelOptions ) ),
-                  new PlusMinusZoomButtonGroup( model.forceScaleProperty, {
-                    spacing: 3,
-                    layoutOptions: { column: 1, row: 3, xAlign: 'center' },
-                    buttonOptions: {
-                      cornerRadius: 3,
-                      buttonAppearanceStrategy: RectangularButton.ThreeDAppearanceStrategy,
-                      stroke: 'black',
-                      xMargin: 7,
-                      yMargin: 7
-                    },
-                    applyZoomIn: ( scale: number ) => scale * 2,
-                    applyZoomOut: ( scale: number ) => scale / 2,
-                    tandem: options.tandem.createTandem( 'vectorScaleZoomButtonGroup' )
-                  } ) ] : []
-              )
-            ]
-          } ),
-          new HSeparator(),
-          new VBox( {
-            spacing: checkboxSpacing,
-            align: 'left',
-            children: [
-              new Checkbox( model.showMassesProperty, new Text( DensityBuoyancyCommonStrings.massesStringProperty, labelOptions ), combineOptions<CheckboxOptions>( {
-                tandem: options.tandem.createTandem( 'massesCheckbox' )
-              }, checkboxOptions ) ),
-              new Checkbox( model.showForceValuesProperty, new Text( DensityBuoyancyCommonStrings.forceValuesStringProperty, labelOptions ), combineOptions<CheckboxOptions>( {
-                tandem: options.tandem.createTandem( 'forcesCheckbox' )
-              }, checkboxOptions ) ),
-              ...( model.supportsDepthLines ?
-                [ new Checkbox( model.showDepthLinesProperty, new Text( DensityBuoyancyCommonStrings.depthLinesStringProperty, labelOptions ), combineOptions<CheckboxOptions>( {
-                  tandem: options.tandem.createTandem( 'depthLinesCheckbox' )
-                }, checkboxOptions ) ) ] : [] )
-            ]
-          } )
-        ]
-      } )
-    ];
+                // Vector scale
+                ...( options.includeVectorScaleControl ? [
+                    new Text( DensityBuoyancyCommonStrings.vectorScaleStringProperty, combineOptions<TextOptions>( {
+                      layoutOptions: { column: 0, row: 3 }
+                    }, labelOptions ) ),
+                    new PlusMinusZoomButtonGroup( model.forceScaleProperty, {
+                      spacing: 3,
+                      layoutOptions: { column: 1, row: 3, xAlign: 'center' },
+                      buttonOptions: {
+                        cornerRadius: 3,
+                        buttonAppearanceStrategy: RectangularButton.ThreeDAppearanceStrategy,
+                        stroke: 'black',
+                        xMargin: 7,
+                        yMargin: 7
+                      },
+                      applyZoomIn: ( scale: number ) => scale * 2,
+                      applyZoomOut: ( scale: number ) => scale / 2,
+                      tandem: options.tandem.createTandem( 'vectorScaleZoomButtonGroup' )
+                    } ) ] : []
+                )
+              ]
+            } ),
+            new HSeparator(),
+            new VBox( {
+              spacing: checkboxSpacing,
+              align: 'left',
+              children: [
+                new Checkbox( model.showMassesProperty, new Text( DensityBuoyancyCommonStrings.massesStringProperty, labelOptions ), combineOptions<CheckboxOptions>( {
+                  tandem: options.tandem.createTandem( 'massesCheckbox' )
+                }, checkboxOptions ) ),
+                new Checkbox( model.showForceValuesProperty, new Text( DensityBuoyancyCommonStrings.forceValuesStringProperty, labelOptions ), combineOptions<CheckboxOptions>( {
+                  tandem: options.tandem.createTandem( 'forcesCheckbox' )
+                }, checkboxOptions ) ),
+                ...( model.supportsDepthLines ?
+                  [ new Checkbox( model.showDepthLinesProperty, new Text( DensityBuoyancyCommonStrings.depthLinesStringProperty, labelOptions ), combineOptions<CheckboxOptions>( {
+                    tandem: options.tandem.createTandem( 'depthLinesCheckbox' )
+                  }, checkboxOptions ) ) ] : [] )
+              ]
+            } )
+          ]
+        } )
+      ]
+    } );
 
-    super( options );
+    super( content, options );
   }
 }
 

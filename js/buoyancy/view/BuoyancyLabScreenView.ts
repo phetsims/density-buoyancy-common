@@ -88,9 +88,9 @@ export default class BuoyancyLabScreenView extends DensityBuoyancyScreenView<Buo
       spacing: 5,
       children: [
         fluidDisplacedAccordionBox,
-        new MultiSectionPanelsNode( [ new BuoyancyDisplayOptionsNode( model, {
-          tandem: tandem.createTandem( 'buoyancyDisplayOptionsNode' )
-        } ) ] )
+        new BuoyancyDisplayOptionsNode( model, {
+          tandem: tandem.createTandem( 'buoyancyDisplayOptionsPanel' )
+        } )
       ]
     } );
 

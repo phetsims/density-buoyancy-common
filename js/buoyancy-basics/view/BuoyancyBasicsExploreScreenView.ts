@@ -54,12 +54,12 @@ export default class BuoyancyBasicsExploreScreenView extends DensityBuoyancyScre
       viewOffset: DensityBuoyancyCommonConstants.BUOYANCY_BASICS_VIEW_OFFSET
     }, options ) );
 
-    const buoyancyDisplayOptionsNode = new BuoyancyDisplayOptionsNode( model, {
+    const buoyancyDisplayOptionsPanel = new BuoyancyDisplayOptionsNode( model, {
       includeVectorScaleControl: false,
-      tandem: tandem.createTandem( 'buoyancyDisplayOptionsNode' )
+      tandem: tandem.createTandem( 'buoyancyDisplayOptionsPanel' )
     } );
 
-    this.addChild( new AlignBox( new Panel( buoyancyDisplayOptionsNode, DensityBuoyancyCommonConstants.PANEL_OPTIONS ), {
+    this.addChild( new AlignBox( buoyancyDisplayOptionsPanel, {
       alignBoundsProperty: this.visibleBoundsProperty,
       xAlign: 'left',
       yAlign: 'bottom',
@@ -294,7 +294,7 @@ export default class BuoyancyBasicsExploreScreenView extends DensityBuoyancyScre
 
     this.pdomControlAreaNode.pdomOrder = [
       blocksRadioButtonGroup,
-      buoyancyDisplayOptionsNode,
+      buoyancyDisplayOptionsPanel,
       densityAccordionBox,
       submergedAccordionBox,
       this.resetAllButton

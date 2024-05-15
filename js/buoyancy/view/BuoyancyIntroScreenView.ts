@@ -9,7 +9,6 @@
 import Vector3 from '../../../../dot/js/Vector3.js';
 import { combineOptions } from '../../../../phet-core/js/optionize.js';
 import { AlignBox, Node, VBox } from '../../../../scenery/js/imports.js';
-import Panel from '../../../../sun/js/Panel.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 import Material from '../../common/model/Material.js';
 import DensityBuoyancyScreenView, { DensityBuoyancyScreenViewOptions } from '../../common/view/DensityBuoyancyScreenView.js';
@@ -70,13 +69,12 @@ export default class BuoyancyIntroScreenView extends DensityBuoyancyScreenView<B
       this.model.poolBounds.front
     ) ).x - 4 * MARGIN;
 
-    const displayOptionsPanel = new Panel( new BuoyancyDisplayOptionsNode( model, {
-        includeVectorScaleControl: false,
-        tandem: options.tandem.createTandem( 'displayOptionsPanel' ),
-        contentWidth: displayOptionsSpace
-      } ),
-      DensityBuoyancyCommonConstants.PANEL_OPTIONS );
-    this.addChild( new AlignBox( displayOptionsPanel, {
+    const buoyancyDisplayOptionsPanel = new BuoyancyDisplayOptionsNode( model, {
+      includeVectorScaleControl: false,
+      tandem: options.tandem.createTandem( 'buoyancyDisplayOptionsPanel' ),
+      contentWidth: displayOptionsSpace
+    } );
+    this.addChild( new AlignBox( buoyancyDisplayOptionsPanel, {
       alignBoundsProperty: this.visibleBoundsProperty,
       xAlign: 'left',
       yAlign: 'bottom',
@@ -179,7 +177,7 @@ export default class BuoyancyIntroScreenView extends DensityBuoyancyScreenView<B
       // The blocks are added (a) pool then (b) outside, but the focus order is (a) outside then (b) pool
       ..._.reverse( scaleViews.map( scaleView => scaleView.focusablePath ) ),
 
-      displayOptionsPanel
+      buoyancyDisplayOptionsPanel
     ];
 
     const massViewAdded = ( massView: MassView ) => {

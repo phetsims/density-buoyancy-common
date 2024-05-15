@@ -64,9 +64,16 @@ export default class BuoyancyIntroScreenView extends DensityBuoyancyScreenView<B
       margin: MARGIN
     } ) );
 
+    const displayOptionsSpace = this.modelToViewPoint( new Vector3(
+      this.model.poolBounds.left,
+      this.model.poolBounds.top,
+      this.model.poolBounds.front
+    ) ).x - 4 * MARGIN;
+
     const displayOptionsPanel = new Panel( new BuoyancyDisplayOptionsNode( model, {
         includeVectorScaleControl: false,
-        tandem: options.tandem.createTandem( 'displayOptionsPanel' )
+        tandem: options.tandem.createTandem( 'displayOptionsPanel' ),
+        contentWidth: displayOptionsSpace
       } ),
       DensityBuoyancyCommonConstants.PANEL_OPTIONS );
     this.addChild( new AlignBox( displayOptionsPanel, {

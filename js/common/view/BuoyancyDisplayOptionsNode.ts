@@ -9,7 +9,7 @@
 import ArrowNode, { ArrowNodeOptions } from '../../../../scenery-phet/js/ArrowNode.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import PlusMinusZoomButtonGroup from '../../../../scenery-phet/js/PlusMinusZoomButtonGroup.js';
-import { FlowBox, GridBox, HSeparator, Text, TextOptions, VBox, VBoxOptions } from '../../../../scenery/js/imports.js';
+import { GridBox, HSeparator, Text, TextOptions, VBox, VBoxOptions } from '../../../../scenery/js/imports.js';
 import Checkbox, { CheckboxOptions } from '../../../../sun/js/Checkbox.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
@@ -22,7 +22,6 @@ import WithRequired from '../../../../phet-core/js/types/WithRequired.js';
 
 // constants
 const arrowSpacing = 15;
-const maxWidth = 200;
 const arrowLength = 60;
 const arrowOptions = {
   stroke: null,
@@ -30,10 +29,7 @@ const arrowOptions = {
   headHeight: 15,
   tailWidth: 4
 };
-const labelOptions = {
-  font: new PhetFont( 14 ),
-  maxWidth: maxWidth
-};
+const labelFont = new PhetFont( 14 );
 const checkboxOptions = {
   boxWidth: 17
 };
@@ -41,6 +37,7 @@ const checkboxSpacing = 5;
 
 type SelfOptions = {
   includeVectorScaleControl?: boolean;
+  contentWidth?: number;
 };
 
 type BuoyancyDisplayOptionsNodeOptions = SelfOptions & WithRequired<VBoxOptions, 'tandem'>;
@@ -51,16 +48,21 @@ export default class BuoyancyDisplayOptionsNode extends VBox {
     const options = optionize<BuoyancyDisplayOptionsNodeOptions, SelfOptions, VBoxOptions>()( {
       includeVectorScaleControl: true,
       spacing: DensityBuoyancyCommonConstants.MARGIN,
-      align: 'left'
+      align: 'left',
+      contentWidth: 200
     }, providedOptions );
+
+    const labelOptions = {
+      font: labelFont,
+      maxWidth: options.contentWidth - arrowSpacing - arrowLength - checkboxOptions.boxWidth
+    };
 
     options.children = [
       new Text( DensityBuoyancyCommonStrings.forcesStringProperty, {
         font: DensityBuoyancyCommonConstants.TITLE_FONT,
-        maxWidth: maxWidth
+        maxWidth: options.contentWidth
       } ),
-      new FlowBox( {
-        orientation: 'vertical',
+      new VBox( {
         spacing: 8,
         align: 'left',
         children: [

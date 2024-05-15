@@ -168,8 +168,7 @@ export default class BuoyancyLabScreenView extends DensityBuoyancyScreenView<Buo
       tandem: tandem.createTandem( 'densityAccordionBox' )
     } );
 
-    const submergedAccordionBox = new SubmergedAccordionBox(
-      model.gravityProperty, model.liquidMaterialProperty, {
+    const submergedAccordionBox = new SubmergedAccordionBox( {
         contentWidthMax: this.rightBox.content.width,
         readoutItems: [ {
           readoutItem: model.primaryMass,

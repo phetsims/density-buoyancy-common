@@ -7,12 +7,9 @@
  */
 
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
-import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import { combineOptions } from '../../../../phet-core/js/optionize.js';
 import Utils from '../../../../dot/js/Utils.js';
-import Gravity from '../../common/model/Gravity.js';
-import Material from '../../common/model/Material.js';
 import ReadoutListAccordionBox, { ReadoutData, ReadoutListAccordionBoxOptions } from './ReadoutListAccordionBox.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import DensityBuoyancyCommonPreferences from '../../common/model/DensityBuoyancyCommonPreferences.js';
@@ -23,9 +20,6 @@ type SubmergedReadoutType = Mass;
 export default class SubmergedAccordionBox extends ReadoutListAccordionBox<SubmergedReadoutType> {
 
   public constructor(
-    // TODO: delete these unused parameters, https://github.com/phetsims/density-buoyancy-common/issues/95
-    private readonly gravityProperty: TReadOnlyProperty<Gravity>,
-    private readonly liquidMaterialProperty: TReadOnlyProperty<Material>,
     providedOptions?: ReadoutListAccordionBoxOptions<SubmergedReadoutType>
   ) {
 
@@ -35,6 +29,9 @@ export default class SubmergedAccordionBox extends ReadoutListAccordionBox<Subme
     }, providedOptions );
 
     super( DensityBuoyancyCommonStrings.percentSubmergedStringProperty, options );
+
+    // By default, the accordion box is collapsed
+    this.expandedProperty.value = false;
   }
 
   public override generateReadoutData( mass: SubmergedReadoutType ): ReadoutData {

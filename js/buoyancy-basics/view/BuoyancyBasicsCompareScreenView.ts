@@ -105,7 +105,7 @@ export default class BuoyancyBasicsCompareScreenView extends DensityBuoyancyScre
       tandem: options.tandem.createTandem( 'densityAccordionBox' )
     } );
 
-    const submergedAccordionBox = new SubmergedAccordionBox( model.gravityProperty, model.liquidMaterialProperty, {
+    const submergedAccordionBox = new SubmergedAccordionBox( {
       expandedProperty: model.percentageSubmergedExpandedProperty,
       contentWidthMax: this.rightSideMaxContentWidthProperty,
       tandem: options.tandem.createTandem( 'submergedAccordionBox' )

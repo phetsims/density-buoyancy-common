@@ -106,7 +106,7 @@ export default class BuoyancyBasicsExploreScreenView extends DensityBuoyancyScre
       } );
     } );
 
-    const submergedAccordionBox = new SubmergedAccordionBox( model.gravityProperty, model.liquidMaterialProperty, {
+    const submergedAccordionBox = new SubmergedAccordionBox( {
       expandedProperty: model.percentageSubmergedExpandedProperty,
       contentWidthMax: this.rightBox.content.width,
       tandem: tandem.createTandem( 'submergedAccordionBox' )

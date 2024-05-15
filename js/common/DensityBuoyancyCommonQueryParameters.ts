@@ -7,14 +7,9 @@
  */
 
 import densityBuoyancyCommon from '../densityBuoyancyCommon.js';
-import packageJSON from '../../../joist/js/packageJSON.js';
 
 export const VolumeUnitsValues = [ 'liters', 'decimetersCubed' ] as const;
 export type VolumeUnits = ( typeof VolumeUnitsValues )[number];
-
-// In Buoyancy Basics, the percentage submerged readout is shown by default as an additional cue to the student.
-// In Buoyancy, it can be enabled in the preferences menu or via a query parameter.
-const defaultPercentageSubmergedVisible = packageJSON.name === 'buoyancy-basics';
 
 const DensityBuoyancyCommonQueryParameters = QueryStringMachine.getAll( {
 
@@ -36,7 +31,7 @@ const DensityBuoyancyCommonQueryParameters = QueryStringMachine.getAll( {
   // Displays/hides the percentage submerged readout accordion box
   percentageSubmergedVisible: {
     type: 'boolean',
-    defaultValue: defaultPercentageSubmergedVisible,
+    defaultValue: true,
     public: true
   },
 

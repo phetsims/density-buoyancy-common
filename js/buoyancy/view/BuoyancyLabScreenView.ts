@@ -218,7 +218,7 @@ export default class BuoyancyLabScreenView extends DensityBuoyancyScreenView<Buo
     ];
   }
 
-  public static getFluidDisplacedPanelScaleIcon(): Node {
+  public static getFluidDisplacedAccordionBoxScaleIcon(): Node {
 
     // Hard coded zoom and view-port vector help to center the icon.
     const image = DensityBuoyancyScreenView.getThreeIcon( fluid_displaced_scale_icon_png, () => {

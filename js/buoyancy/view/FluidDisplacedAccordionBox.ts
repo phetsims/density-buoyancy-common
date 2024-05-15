@@ -31,7 +31,7 @@ import DensityBuoyancyCommonColors from '../../common/view/DensityBuoyancyCommon
 
 type SelfOptions = EmptySelfOptions;
 
-type FluidDisplacedPanelOptions = SelfOptions & AccordionBoxOptions;
+type FluidDisplacedAccordionBoxOptions = SelfOptions & AccordionBoxOptions;
 
 const STARTING_VOLUME = DensityBuoyancyCommonConstants.DESIRED_STARTING_POOL_VOLUME * DensityBuoyancyCommonConstants.LITERS_IN_CUBIC_METER;
 const CONTENT_WIDTH = 105;
@@ -45,11 +45,11 @@ export default class FluidDisplacedAccordionBox extends AccordionBox {
                       maxBeakerVolume: number,
                       liquidMaterialProperty: TReadOnlyProperty<Material>,
                       gravityProperty: TReadOnlyProperty<Gravity>,
-                      providedOptions?: FluidDisplacedPanelOptions ) {
+                      providedOptions?: FluidDisplacedAccordionBoxOptions ) {
     assert && assert( Utils.toFixedNumber( poolVolumeProperty.value, 7 ) === STARTING_VOLUME,
       `This class greatly expects the starting volume of the pool to be ${STARTING_VOLUME}L.` );
 
-    const options = optionize<FluidDisplacedPanelOptions, SelfOptions, AccordionBoxOptions>()( {
+    const options = optionize<FluidDisplacedAccordionBoxOptions, SelfOptions, AccordionBoxOptions>()( {
       titleNode: new RichText( DensityBuoyancyCommonStrings.fluidDisplacedStringProperty, {
         font: DensityBuoyancyCommonConstants.TITLE_FONT,
         maxWidth: 100,
@@ -123,7 +123,7 @@ export default class FluidDisplacedAccordionBox extends AccordionBox {
         newtons: 2
       }
     } );
-    const scaleIcon = BuoyancyLabScreenView.getFluidDisplacedPanelScaleIcon();
+    const scaleIcon = BuoyancyLabScreenView.getFluidDisplacedAccordionBoxScaleIcon();
     const forceReadout = new RichText( readoutStringProperty, {
       font: new PhetFont( {
         size: 16,
@@ -177,7 +177,7 @@ export default class FluidDisplacedAccordionBox extends AccordionBox {
    */
   public static createIcon(): Node {
 
-    const scaleIcon = BuoyancyLabScreenView.getFluidDisplacedPanelScaleIcon();
+    const scaleIcon = BuoyancyLabScreenView.getFluidDisplacedAccordionBoxScaleIcon();
     scaleIcon.scale( 1.8 );
 
     const newtonUnitText = new Text( DensityBuoyancyCommonStrings.newtonsUnitStringProperty, {

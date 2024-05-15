@@ -12,7 +12,7 @@ import { AlignBox, Node, VBox } from '../../../../scenery/js/imports.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 import Material from '../../common/model/Material.js';
 import DensityBuoyancyScreenView, { DensityBuoyancyScreenViewOptions } from '../../common/view/DensityBuoyancyScreenView.js';
-import BuoyancyDisplayOptionsNode from '../../common/view/BuoyancyDisplayOptionsNode.js';
+import BuoyancyDisplayOptionsPanel from '../../common/view/BuoyancyDisplayOptionsPanel.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import BuoyancyIntroModel from '../model/BuoyancyIntroModel.js';
@@ -63,7 +63,7 @@ export default class BuoyancyIntroScreenView extends DensityBuoyancyScreenView<B
       margin: MARGIN
     } ) );
 
-    const buoyancyDisplayOptionsPanel = new BuoyancyDisplayOptionsNode( model, {
+    const buoyancyDisplayOptionsPanel = new BuoyancyDisplayOptionsPanel( model, {
       includeVectorScaleControl: false,
       tandem: options.tandem.createTandem( 'buoyancyDisplayOptionsPanel' ),
       contentWidth: this.modelToViewPoint( new Vector3(

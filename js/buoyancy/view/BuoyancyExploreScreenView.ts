@@ -21,7 +21,7 @@ import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js'
 import BuoyancyExploreModel from '../model/BuoyancyExploreModel.js';
 import arrayRemove from '../../../../phet-core/js/arrayRemove.js';
 import DensityAccordionBox from './DensityAccordionBox.js';
-import BuoyancyDisplayOptionsNode from '../../common/view/BuoyancyDisplayOptionsNode.js';
+import BuoyancyDisplayOptionsPanel from '../../common/view/BuoyancyDisplayOptionsPanel.js';
 import SubmergedAccordionBox from './SubmergedAccordionBox.js';
 import PatternStringProperty from '../../../../axon/js/PatternStringProperty.js';
 import BlocksRadioButtonGroup from '../../common/view/BlocksRadioButtonGroup.js';
@@ -50,7 +50,7 @@ export default class BuoyancyExploreScreenView extends DensityBuoyancyScreenView
       cameraLookAt: DensityBuoyancyCommonConstants.BUOYANCY_CAMERA_LOOK_AT
     }, options ) );
 
-    const buoyancyDisplayOptionsPanel = new BuoyancyDisplayOptionsNode( model, {
+    const buoyancyDisplayOptionsPanel = new BuoyancyDisplayOptionsPanel( model, {
       tandem: tandem.createTandem( 'buoyancyDisplayOptionsPanel' ),
       contentWidth: this.modelToViewPoint( new Vector3(
         this.model.poolBounds.left,

@@ -26,7 +26,7 @@ import Material from '../../common/model/Material.js';
 import DensityBuoyancyCommonColors from '../../common/view/DensityBuoyancyCommonColors.js';
 import DensityBuoyancyScreenView, { DensityBuoyancyScreenViewOptions } from '../../common/view/DensityBuoyancyScreenView.js';
 import FluidDensityControlNode from '../../common/view/FluidDensityControlNode.js';
-import BuoyancyDisplayOptionsNode from '../../common/view/BuoyancyDisplayOptionsNode.js';
+import BuoyancyDisplayOptionsPanel from '../../common/view/BuoyancyDisplayOptionsPanel.js';
 import MaterialMassVolumeControlNode from '../../common/view/MaterialMassVolumeControlNode.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
@@ -327,7 +327,7 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
       submergedAccordionBox.setReadoutItems( submergedObjects );
     } );
 
-    const buoyancyDisplayOptionsPanel = new BuoyancyDisplayOptionsNode( model, {
+    const buoyancyDisplayOptionsPanel = new BuoyancyDisplayOptionsPanel( model, {
       tandem: tandem.createTandem( 'buoyancyDisplayOptionsPanel' ),
       contentWidth: this.modelToViewPoint( new Vector3(
         this.model.poolBounds.left,

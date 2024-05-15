@@ -15,7 +15,7 @@ import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import BuoyancyBasicsCompareModel from '../model/BuoyancyBasicsCompareModel.js';
 import DensityAccordionBox from '../../buoyancy/view/DensityAccordionBox.js';
-import BuoyancyDisplayOptionsNode from '../../common/view/BuoyancyDisplayOptionsNode.js';
+import BuoyancyDisplayOptionsPanel from '../../common/view/BuoyancyDisplayOptionsPanel.js';
 import SubmergedAccordionBox from '../../buoyancy/view/SubmergedAccordionBox.js';
 import PatternStringProperty from '../../../../axon/js/PatternStringProperty.js';
 import Property from '../../../../axon/js/Property.js';
@@ -74,7 +74,7 @@ export default class BuoyancyBasicsCompareScreenView extends DensityBuoyancyScre
       margin: MARGIN
     } ) );
 
-    const buoyancyDisplayOptionsPanel = new BuoyancyDisplayOptionsNode( model, {
+    const buoyancyDisplayOptionsPanel = new BuoyancyDisplayOptionsPanel( model, {
       includeVectorScaleControl: false,
       tandem: options.tandem.createTandem( 'buoyancyDisplayOptionsPanel' ),
       contentWidth: this.modelToViewPoint( new Vector3(

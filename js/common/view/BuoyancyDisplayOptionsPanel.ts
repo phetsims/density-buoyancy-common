@@ -42,12 +42,12 @@ type SelfOptions = {
   contentWidth?: number;
 };
 
-type BuoyancyDisplayOptionsNodeOptions = SelfOptions & WithRequired<PanelOptions, 'tandem'>;
+type BuoyancyDisplayOptionsPanelOptions = SelfOptions & WithRequired<PanelOptions, 'tandem'>;
 
-export default class BuoyancyDisplayOptionsNode extends Panel {
-  public constructor( model: DensityBuoyancyModel, providedOptions: BuoyancyDisplayOptionsNodeOptions ) {
+export default class BuoyancyDisplayOptionsPanel extends Panel {
+  public constructor( model: DensityBuoyancyModel, providedOptions: BuoyancyDisplayOptionsPanelOptions ) {
 
-    const options = optionize4<BuoyancyDisplayOptionsNodeOptions, SelfOptions, PanelOptions>()( {}, DensityBuoyancyCommonConstants.PANEL_OPTIONS, {
+    const options = optionize4<BuoyancyDisplayOptionsPanelOptions, SelfOptions, PanelOptions>()( {}, DensityBuoyancyCommonConstants.PANEL_OPTIONS, {
       includeVectorScaleControl: true,
       contentWidth: 200
     }, providedOptions );
@@ -153,4 +153,4 @@ export default class BuoyancyDisplayOptionsNode extends Panel {
   }
 }
 
-densityBuoyancyCommon.register( 'BuoyancyDisplayOptionsNode', BuoyancyDisplayOptionsNode );
+densityBuoyancyCommon.register( 'BuoyancyDisplayOptionsPanel', BuoyancyDisplayOptionsPanel );

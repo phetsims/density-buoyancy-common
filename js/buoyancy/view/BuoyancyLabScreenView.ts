@@ -65,7 +65,9 @@ export default class BuoyancyLabScreenView extends DensityBuoyancyScreenView<Buo
       model.gravityProperty ), {
       titleNode: new RichText( DensityBuoyancyCommonStrings.fluidDisplacedStringProperty, {
         font: new PhetFont( 14 ), // Matches the checkbox label font size
-        maxWidth: 100
+        maxWidth: 100,
+        lineWrap: 90,
+        maxHeight: 40
       } ),
       expandedDefaultValue: false,
 

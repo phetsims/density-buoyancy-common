@@ -15,7 +15,7 @@ import Range from '../../../../dot/js/Range.js';
 import optionize, { combineOptions } from '../../../../phet-core/js/optionize.js';
 import NumberControl, { NumberControlOptions } from '../../../../scenery-phet/js/NumberControl.js';
 import NumberDisplay from '../../../../scenery-phet/js/NumberDisplay.js';
-import { FlowBox, FlowBoxOptions, HBox, HSeparator, Node, Text, VBox } from '../../../../scenery/js/imports.js';
+import { FlowBoxOptions, HBox, HSeparator, Node, Text, VBox } from '../../../../scenery/js/imports.js';
 import ComboBox from '../../../../sun/js/ComboBox.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 import { MassShape } from '../../common/model/MassShape.js';
@@ -48,7 +48,7 @@ export default class ShapeSizeControlNode extends VBox {
         value: massShape,
         createNode: () => new Text( massShape.shapeString, {
           font: DensityBuoyancyCommonConstants.COMBO_BOX_ITEM_FONT,
-          maxWidth: 160
+          maxWidth: 120 // 160 minus maxwidth of the icons
         } ),
         tandemName: `${massShape.tandemName}Item`
       };
@@ -108,15 +108,14 @@ export default class ShapeSizeControlNode extends VBox {
       heightNumberControl,
       widthNumberControl,
       new HSeparator(),
-      new FlowBox( {
+      new HBox( {
         layoutOptions: { stretch: true },
-        orientation: 'horizontal',
         align: 'center',
         justify: 'spaceBetween',
         children: [
           new Text( DensityBuoyancyCommonStrings.volumeStringProperty, {
             font: DensityBuoyancyCommonConstants.READOUT_FONT,
-            maxWidth: 120
+            maxWidth: widthNumberControl.width / 2
           } ),
           new NumberDisplay( litersProperty, new Range( 0, 10 ), { // TODO: is 10 the most? https://github.com/phetsims/density-buoyancy-common/issues/86
             valuePattern: DensityBuoyancyCommonConstants.VOLUME_PATTERN_STRING_PROPERTY,
@@ -124,7 +123,7 @@ export default class ShapeSizeControlNode extends VBox {
             decimalPlaces: 2,
             textOptions: {
               font: DensityBuoyancyCommonConstants.READOUT_FONT,
-              maxWidth: 160
+              maxWidth: widthNumberControl.width / 2
             }
           } )
         ]

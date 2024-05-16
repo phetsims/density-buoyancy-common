@@ -82,7 +82,8 @@ export default class FluidDisplacedAccordionBox extends AccordionBox {
     const beakerVolumeProperty = new NumberProperty( 0, { range: BEAKER_RANGE.copy() } );
 
     const solutionFillProperty = new DynamicProperty<Color, Color, Material>( liquidMaterialProperty, {
-      derive: material => material.liquidColor!
+      derive: material => material.liquidColor!,
+      map: color => color.withAlpha( 1 )
     } );
 
     const beakerNode = new BeakerNode( beakerVolumeProperty, combineOptions<BeakerNodeOptions>( {

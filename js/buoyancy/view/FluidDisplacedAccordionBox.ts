@@ -28,6 +28,7 @@ import BuoyancyLabScreenView from './BuoyancyLabScreenView.js';
 import AccordionBox, { AccordionBoxOptions } from '../../../../sun/js/AccordionBox.js';
 import Panel, { PanelOptions } from '../../../../sun/js/Panel.js';
 import DensityBuoyancyCommonColors from '../../common/view/DensityBuoyancyCommonColors.js';
+import { FLUID_DENSITY_RANGE_PER_M3 } from '../../common/view/FluidDensityControlNode.js';
 
 type SelfOptions = EmptySelfOptions;
 
@@ -35,6 +36,9 @@ type FluidDisplacedAccordionBoxOptions = SelfOptions & AccordionBoxOptions;
 
 const STARTING_VOLUME = DensityBuoyancyCommonConstants.DESIRED_STARTING_POOL_VOLUME * DensityBuoyancyCommonConstants.LITERS_IN_CUBIC_METER;
 const CONTENT_WIDTH = 105;
+
+// For custom fluid densities, holywood the color to ensure good contrast with the beaker fluid and the panel background, see https://github.com/phetsims/buoyancy/issues/154
+const SAME_COLOR_MIN_DENSITY_THRESHOLD = 1000; // 1 kg/L
 
 // Beaker expects a range between 0 (empty) and 1 (full)
 const BEAKER_RANGE = new Range( 0, 1 );
@@ -83,7 +87,14 @@ export default class FluidDisplacedAccordionBox extends AccordionBox {
 
     const solutionFillProperty = new DynamicProperty<Color, Color, Material>( liquidMaterialProperty, {
       derive: material => material.liquidColor!,
-      map: color => color.withAlpha( 1 )
+      map: color => {
+
+        // Below this threshold, use the same color for better contrast, see https://github.com/phetsims/buoyancy/issues/154
+        if ( liquidMaterialProperty.value.custom && liquidMaterialProperty.value.density < SAME_COLOR_MIN_DENSITY_THRESHOLD ) {
+          color = Material.getCustomLiquidColor( SAME_COLOR_MIN_DENSITY_THRESHOLD, FLUID_DENSITY_RANGE_PER_M3 ).value;
+        }
+        return color.withAlpha( 1 );
+      }
     } );
 
     const beakerNode = new BeakerNode( beakerVolumeProperty, combineOptions<BeakerNodeOptions>( {

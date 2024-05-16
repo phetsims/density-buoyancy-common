@@ -30,7 +30,7 @@ type SelfOptions = {
 };
 
 const FLUID_DENSITY_RANGE_PER_L = new Range( 0.5, 15 );
-const FLUID_DENSITY_RANGE_PER_M3 = FLUID_DENSITY_RANGE_PER_L.copy().times( DensityBuoyancyCommonConstants.LITERS_IN_CUBIC_METER );
+export const FLUID_DENSITY_RANGE_PER_M3 = FLUID_DENSITY_RANGE_PER_L.copy().times( DensityBuoyancyCommonConstants.LITERS_IN_CUBIC_METER );
 
 // No required super options but tandem
 type ParentOptions = WithRequired<Partial<ComboNumberControlOptions<Material>>, 'tandem'>;

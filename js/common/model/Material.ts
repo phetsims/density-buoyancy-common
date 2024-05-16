@@ -193,7 +193,7 @@ export default class Material {
   /**
    * Similar to getCustomLightness, but returns the generated color, with an included alpha effect.
    */
-  private static getCustomLiquidColor( density: number, densityRange: Range ): ColorProperty {
+  public static getCustomLiquidColor( density: number, densityRange: Range ): ColorProperty {
     const lightnessFactor = Material.getNormalizedLightness( density, densityRange );
 
     return new ColorProperty(

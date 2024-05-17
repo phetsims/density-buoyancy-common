@@ -35,6 +35,8 @@ import TModel from '../../../../joist/js/TModel.js';
 import { PhetioObjectOptions } from '../../../../tandem/js/PhetioObject.js';
 import PickRequired from '../../../../phet-core/js/types/PickRequired.js';
 import Matrix3 from '../../../../dot/js/Matrix3.js';
+import InterpolatedProperty from './InterpolatedProperty.js';
+import Utils from '../../../../dot/js/Utils.js';
 
 // constants
 const BLOCK_SPACING = 0.01;
@@ -332,6 +334,14 @@ export default class DensityBuoyancyModel implements TModel {
               }
             }
           } );
+
+          const currentValue = mass.scaleForceInterpolatedProperty.currentValue;
+          const diff = Math.abs( currentValue - scaleForce );
+          scaleForce = InterpolatedProperty.interpolateNumber(
+            currentValue,
+            scaleForce,
+            diff < 0.1 ? Utils.clamp( Math.abs( diff ), 0.1, 1 ) : 1 );
+
           mass.scaleForceInterpolatedProperty.setNextValue( scaleForce );
         }
 

@@ -109,7 +109,7 @@ export default class DensityNumberLineNode extends Node {
       ],
       // We need different maxWidths for each, since some are closer to others
       materialsMaxWidths: [
-        70, 70, 70, 45, 45
+        60, 60, 70, 45, 45
       ],
       width: WIDTH,
       height: HEIGHT,

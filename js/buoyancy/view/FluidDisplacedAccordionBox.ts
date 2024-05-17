@@ -90,10 +90,17 @@ export default class FluidDisplacedAccordionBox extends AccordionBox {
       map: color => {
 
         // Below this threshold, use the same color for better contrast, see https://github.com/phetsims/buoyancy/issues/154
-        if ( liquidMaterialProperty.value.custom && liquidMaterialProperty.value.density < SAME_COLOR_MIN_DENSITY_THRESHOLD ) {
-          color = Material.getCustomLiquidColor( SAME_COLOR_MIN_DENSITY_THRESHOLD, FLUID_DENSITY_RANGE_PER_M3 ).value;
+        if ( liquidMaterialProperty.value.custom ) {
+
+          if ( liquidMaterialProperty.value.density < SAME_COLOR_MIN_DENSITY_THRESHOLD ) {
+            color = Material.getCustomLiquidColor( SAME_COLOR_MIN_DENSITY_THRESHOLD, FLUID_DENSITY_RANGE_PER_M3 ).value;
+          }
+
+          return color.withAlpha( 0.8 );
         }
-        return color.withAlpha( 1 );
+        else {
+          return color;
+        }
       }
     } );
 

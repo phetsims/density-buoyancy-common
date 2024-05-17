@@ -124,7 +124,12 @@ export default class BuoyancyDisplayOptionsPanel extends Panel {
                       applyZoomOut: ( scale: number ) => scale / 2,
                       tandem: options.tandem.createTandem( 'vectorScaleZoomButtonGroup' )
                     } ) ] : []
-                )
+                ),
+
+                new Checkbox( model.showForceValuesProperty, new Text( DensityBuoyancyCommonStrings.forceValuesStringProperty, labelOptions ), combineOptions<CheckboxOptions>( {
+                  tandem: options.tandem.createTandem( 'forcesCheckbox' ),
+                  layoutOptions: { column: 0, row: 4 }
+                }, checkboxOptions ) )
               ]
             } ),
             new HSeparator(),
@@ -134,9 +139,6 @@ export default class BuoyancyDisplayOptionsPanel extends Panel {
               children: [
                 new Checkbox( model.showMassesProperty, new Text( DensityBuoyancyCommonStrings.massesStringProperty, labelOptions ), combineOptions<CheckboxOptions>( {
                   tandem: options.tandem.createTandem( 'massesCheckbox' )
-                }, checkboxOptions ) ),
-                new Checkbox( model.showForceValuesProperty, new Text( DensityBuoyancyCommonStrings.forceValuesStringProperty, labelOptions ), combineOptions<CheckboxOptions>( {
-                  tandem: options.tandem.createTandem( 'forcesCheckbox' )
                 }, checkboxOptions ) ),
                 ...( model.supportsDepthLines ?
                   [ new Checkbox( model.showDepthLinesProperty, new Text( DensityBuoyancyCommonStrings.depthLinesStringProperty, labelOptions ), combineOptions<CheckboxOptions>( {

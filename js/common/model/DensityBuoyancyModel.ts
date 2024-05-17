@@ -337,6 +337,9 @@ export default class DensityBuoyancyModel implements TModel {
 
           const currentValue = mass.scaleForceInterpolatedProperty.currentValue;
           const diff = Math.abs( currentValue - scaleForce );
+
+          // Lerping from the current value to the new value. If the difference is small, interpolate slowly
+          // This is to avoid flickering in the scale
           scaleForce = InterpolatedProperty.interpolateNumber(
             currentValue,
             scaleForce,

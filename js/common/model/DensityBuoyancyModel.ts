@@ -340,7 +340,7 @@ export default class DensityBuoyancyModel implements TModel {
           scaleForce = InterpolatedProperty.interpolateNumber(
             currentValue,
             scaleForce,
-            diff < 0.1 ? Utils.clamp( Math.abs( diff ), 0.1, 1 ) : 1 );
+            Utils.clamp( Math.abs( diff ), 0.1, 1 ) );
 
           mass.scaleForceInterpolatedProperty.setNextValue( scaleForce );
         }

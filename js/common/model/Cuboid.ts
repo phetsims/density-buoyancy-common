@@ -229,7 +229,7 @@ export default class Cuboid extends Mass {
     return ( tNear >= tFar ) ? null : ( tNear >= 0 ? tNear : ( isFinite( tFar ) && tFar >= 0 ? tFar : null ) );
   }
 
-  public static CuboidIO = new IOType<Cuboid, CuboidIOStateObject, CubiodSelfState>( 'CuboidIO', {
+  public static CuboidIO = new IOType<Cuboid, CuboidIOStateObject, CuboidSelfState>( 'CuboidIO', {
     valueType: Cuboid,
     supertype: Mass.MassIO,
     documentation: 'Represents an axis-aligned cuboid mass',
@@ -239,7 +239,7 @@ export default class Cuboid extends Mass {
 
     toStateObject: ( cuboid: Cuboid ): CuboidIOStateObject => {
       const parentStateObject = Mass.MassIO.toStateObject( cuboid );
-      return _.merge<CubiodSelfState, MassIOStateObject>( {
+      return _.merge<CuboidSelfState, MassIOStateObject>( {
         size: Bounds3.Bounds3IO.toStateObject( cuboid.sizeProperty.value )
       }, parentStateObject );
     },
@@ -252,7 +252,7 @@ export default class Cuboid extends Mass {
   } );
 }
 
-type CubiodSelfState = {
+type CuboidSelfState = {
   size: {
     minX: number;
     minY: number;
@@ -262,6 +262,6 @@ type CubiodSelfState = {
     maxZ: number;
   };
 };
-export type CuboidIOStateObject = MassIOStateObject & CubiodSelfState;
+export type CuboidIOStateObject = MassIOStateObject & CuboidSelfState;
 
 densityBuoyancyCommon.register( 'Cuboid', Cuboid );

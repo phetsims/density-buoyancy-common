@@ -39,7 +39,7 @@ export default class CuboidView extends MeasurableMassView {
                       showContactForceProperty: TReadOnlyProperty<boolean>,
                       showForceValuesProperty: TReadOnlyProperty<boolean>,
                       forceScaleProperty: TReadOnlyProperty<number>,
-                      showMassesProperty: TReadOnlyProperty<boolean> ) {
+                      showMassValuesProperty: TReadOnlyProperty<boolean> ) {
 
     const size = cuboid.sizeProperty.value;
 
@@ -52,7 +52,7 @@ export default class CuboidView extends MeasurableMassView {
       showContactForceProperty,
       showForceValuesProperty,
       forceScaleProperty,
-      showMassesProperty
+      showMassValuesProperty
     );
 
     const positionTag = () => {

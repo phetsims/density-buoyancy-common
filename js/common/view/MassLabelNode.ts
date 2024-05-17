@@ -23,11 +23,11 @@ import Utils from '../../../../dot/js/Utils.js';
 export default class MassLabelNode extends Node {
 
   public readonly mass: Mass;
-  private readonly showMassesProperty: TReadOnlyProperty<boolean>;
+  private readonly showMassValuesProperty: TReadOnlyProperty<boolean>;
   private readonly showMassesListener: ( n: boolean ) => void;
   private readonly readoutStringProperty: TReadOnlyProperty<string>;
 
-  public constructor( mass: Mass, showMassesProperty: TReadOnlyProperty<boolean> ) {
+  public constructor( mass: Mass, showMassValuesProperty: TReadOnlyProperty<boolean> ) {
     super( {
       pickable: false
     } );
@@ -69,7 +69,7 @@ export default class MassLabelNode extends Node {
     this.addChild( readoutPanel );
 
     this.mass = mass;
-    this.showMassesProperty = showMassesProperty;
+    this.showMassValuesProperty = showMassValuesProperty;
 
     // Keep it centered
     ManualConstraint.create( this, [ readoutPanel ], readoutWrapper => {
@@ -80,14 +80,14 @@ export default class MassLabelNode extends Node {
       readoutPanel.visible = shown;
     };
 
-    this.showMassesProperty.link( this.showMassesListener );
+    this.showMassValuesProperty.link( this.showMassesListener );
   }
 
   /**
    * Releases references.
    */
   public override dispose(): void {
-    this.showMassesProperty.unlink( this.showMassesListener );
+    this.showMassValuesProperty.unlink( this.showMassesListener );
     this.readoutStringProperty.dispose();
 
     super.dispose();

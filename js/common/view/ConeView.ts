@@ -32,7 +32,7 @@ export default class ConeView extends MeasurableMassView {
                       showContactForceProperty: TReadOnlyProperty<boolean>,
                       showForceValuesProperty: TReadOnlyProperty<boolean>,
                       forceScaleProperty: TReadOnlyProperty<number>,
-                      showMassesProperty: TReadOnlyProperty<boolean> ) {
+                      showMassValuesProperty: TReadOnlyProperty<boolean> ) {
 
     const coneGeometry = ConeView.getConeGeometry( cone.radiusProperty.value, cone.heightProperty.value, cone.isVertexUp );
 
@@ -44,7 +44,7 @@ export default class ConeView extends MeasurableMassView {
       showForceValuesProperty,
       forceScaleProperty,
 
-      showMassesProperty
+      showMassValuesProperty
     );
 
     this.cone = cone;

@@ -31,7 +31,7 @@ export default class DuckView extends MeasurableMassView {
                       showContactForceProperty: TReadOnlyProperty<boolean>,
                       showForceValuesProperty: TReadOnlyProperty<boolean>,
                       forceScaleProperty: TReadOnlyProperty<number>,
-                      showMassesProperty: TReadOnlyProperty<boolean> ) {
+                      showMassValuesProperty: TReadOnlyProperty<boolean> ) {
 
     const size = duck.sizeProperty.value;
 
@@ -45,7 +45,7 @@ export default class DuckView extends MeasurableMassView {
       showForceValuesProperty,
       forceScaleProperty,
 
-      showMassesProperty );
+      showMassValuesProperty );
 
     this.duck = duck;
     this.duckGeometry = duckGeometry;

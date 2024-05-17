@@ -36,7 +36,7 @@ export default class MeasurableMassView extends MassView {
                          showContactForceProperty: TReadOnlyProperty<boolean>,
                          showForceValuesProperty: TReadOnlyProperty<boolean>,
                          forceScaleProperty: TReadOnlyProperty<number>,
-                         showMassesProperty: TReadOnlyProperty<boolean> ) {
+                         showMassValuesProperty: TReadOnlyProperty<boolean> ) {
 
     super( mass, initialGeometry, modelViewTransform, dragBoundsProperty );
 
@@ -49,7 +49,7 @@ export default class MeasurableMassView extends MassView {
       forceScaleProperty
     );
 
-    this.massLabelNode = new MassLabelNode( mass, showMassesProperty );
+    this.massLabelNode = new MassLabelNode( mass, showMassValuesProperty );
 
     // Update the decoration layer when phet-io state is set
     const updateDecorationLayer = () => this.updateDecorationLayer();

@@ -27,7 +27,7 @@ export default class EllipsoidView extends MeasurableMassView {
                       showContactForceProperty: TReadOnlyProperty<boolean>,
                       showForceValuesProperty: TReadOnlyProperty<boolean>,
                       forceScaleProperty: TReadOnlyProperty<number>,
-                      showMassesProperty: TReadOnlyProperty<boolean> ) {
+                      showMassValuesProperty: TReadOnlyProperty<boolean> ) {
 
     const ellipsoidGeometry = new THREE.SphereGeometry( 1, 30, 24 );
 
@@ -36,7 +36,7 @@ export default class EllipsoidView extends MeasurableMassView {
       showContactForceProperty,
       showForceValuesProperty,
       forceScaleProperty,
-      showMassesProperty );
+      showMassValuesProperty );
 
     this.ellipsoid = ellipsoid;
     this.ellipsoidGeometry = ellipsoidGeometry;

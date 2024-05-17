@@ -137,8 +137,8 @@ export default class BuoyancyDisplayOptionsPanel extends Panel {
               spacing: checkboxSpacing,
               align: 'left',
               children: [
-                new Checkbox( model.showMassesProperty, new Text( DensityBuoyancyCommonStrings.massesStringProperty, labelOptions ), combineOptions<CheckboxOptions>( {
-                  tandem: options.tandem.createTandem( 'massesCheckbox' )
+                new Checkbox( model.showMassValuesProperty, new Text( DensityBuoyancyCommonStrings.massValuesStringProperty, labelOptions ), combineOptions<CheckboxOptions>( {
+                  tandem: options.tandem.createTandem( 'massValuesCheckbox' )
                 }, checkboxOptions ) ),
                 ...( model.supportsDepthLines ?
                   [ new Checkbox( model.showDepthLinesProperty, new Text( DensityBuoyancyCommonStrings.depthLinesStringProperty, labelOptions ), combineOptions<CheckboxOptions>( {

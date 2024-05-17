@@ -89,7 +89,7 @@ type StringsType = {
   'contactStringProperty': LocalizedStringProperty;
   'massStringProperty': LocalizedStringProperty;
   'volumeStringProperty': LocalizedStringProperty;
-  'massesStringProperty': LocalizedStringProperty;
+  'massValuesStringProperty': LocalizedStringProperty;
   'forceValuesStringProperty': LocalizedStringProperty;
   'kilogramsPerLiterPatternStringProperty': LocalizedStringProperty;
   'kilogramsPerDecimeterCubedPatternStringProperty': LocalizedStringProperty;

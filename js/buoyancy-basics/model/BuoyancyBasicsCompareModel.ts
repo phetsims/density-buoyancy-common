@@ -35,7 +35,7 @@ export default class BuoyancyBasicsCompareModel extends CompareBlockSetModel {
     const blockSetsTandem = tandem.createTandem( BLOCK_SETS_TANDEM_NAME );
 
     const options = optionize<BuoyancyBasicsCompareModelOptions, EmptySelfOptions, CompareBlockSetModelOptions>()( {
-      showMassesDefault: true,
+      showMassValuesDefault: true,
 
       supportsDepthLines: true,
       usePoolScale: false, // create out own based on the ScaleHeightControl

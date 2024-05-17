@@ -57,7 +57,7 @@ const BOAT_FULL_THRESHOLD = 0.01;
 
 
 export type DensityBuoyancyModelOptions = {
-  showMassesDefault?: boolean;
+  showMassValuesDefault?: boolean;
   canShowForces?: boolean;
   initialForceScale?: number;
   usePoolScale?: boolean;
@@ -71,7 +71,7 @@ export default class DensityBuoyancyModel implements TModel {
   public readonly showContactForceProperty: Property<boolean>;
   public readonly showForceValuesProperty: Property<boolean>;
   public readonly forceScaleProperty: TRangedProperty;
-  public readonly showMassesProperty: Property<boolean>;
+  public readonly showMassValuesProperty: Property<boolean>;
   public readonly gravityProperty: Property<Gravity>;
   public readonly liquidMaterialProperty: Property<Material>;
   public readonly liquidDensityProperty: TReadOnlyProperty<number>;
@@ -108,7 +108,7 @@ export default class DensityBuoyancyModel implements TModel {
 
   public constructor( providedOptions?: DensityBuoyancyModelOptions ) {
     const options = optionize<DensityBuoyancyModelOptions, DensityBuoyancyModelOptions>()( {
-      showMassesDefault: false,
+      showMassValuesDefault: false,
       canShowForces: true,
       initialForceScale: 1 / 16,
       usePoolScale: false,
@@ -129,8 +129,8 @@ export default class DensityBuoyancyModel implements TModel {
     this.showForceValuesProperty = new BooleanProperty( false, {
       tandem: options.canShowForces ? tandem.createTandem( 'showForceValuesProperty' ) : Tandem.OPT_OUT
     } );
-    this.showMassesProperty = new BooleanProperty( options.showMassesDefault, {
-      tandem: tandem.createTandem( 'showMassesProperty' ),
+    this.showMassValuesProperty = new BooleanProperty( options.showMassValuesDefault, {
+      tandem: tandem.createTandem( 'showMassValuesProperty' ),
       phetioDocumentation: 'Displays a mass readout on each object'
     } );
     this.forceScaleProperty = new NumberProperty( options.initialForceScale, {
@@ -549,7 +549,7 @@ export default class DensityBuoyancyModel implements TModel {
     this.showGravityForceProperty.reset();
     this.showBuoyancyForceProperty.reset();
     this.showContactForceProperty.reset();
-    this.showMassesProperty.reset();
+    this.showMassValuesProperty.reset();
     this.showForceValuesProperty.reset();
     this.gravityProperty.reset();
     this.liquidMaterialProperty.reset();

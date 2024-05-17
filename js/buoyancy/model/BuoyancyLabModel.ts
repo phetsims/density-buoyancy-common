@@ -36,7 +36,7 @@ export default class BuoyancyLabModel extends DensityBuoyancyModel {
 
     super( combineOptions<DensityBuoyancyModelOptions>( {
       supportsDepthLines: true,
-      showMassesDefault: true,
+      showMassValuesDefault: true,
       usePoolScale: false // Creating our own
     }, options ) );
 

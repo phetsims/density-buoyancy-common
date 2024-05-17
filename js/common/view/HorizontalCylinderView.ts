@@ -33,7 +33,7 @@ export default class HorizontalCylinderView extends MeasurableMassView {
                       showContactForceProperty: TReadOnlyProperty<boolean>,
                       showForceValuesProperty: TReadOnlyProperty<boolean>,
                       forceScaleProperty: TReadOnlyProperty<number>,
-                      showMassesProperty: TReadOnlyProperty<boolean> ) {
+                      showMassValuesProperty: TReadOnlyProperty<boolean> ) {
 
     const positionArray = new Float32Array( numElements * 3 );
     const normalArray = new Float32Array( numElements * 3 );
@@ -51,7 +51,7 @@ export default class HorizontalCylinderView extends MeasurableMassView {
       showContactForceProperty,
       showForceValuesProperty,
       forceScaleProperty,
-      showMassesProperty );
+      showMassValuesProperty );
 
     const positionTag = () => {
       const radius = horizontalCylinder.radiusProperty.value;

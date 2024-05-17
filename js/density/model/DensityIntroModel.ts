@@ -34,7 +34,7 @@ export default class DensityIntroModel extends DensityBuoyancyModel {
     const tandem = options.tandem;
 
     super( combineOptions<DensityIntroModelOptions>( {
-      showMassesDefault: true,
+      showMassValuesDefault: true,
       canShowForces: false
     }, options ) );
 

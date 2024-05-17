@@ -24,7 +24,7 @@ import arrayRemove from '../../../../phet-core/js/arrayRemove.js';
 import optionize from '../../../../phet-core/js/optionize.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import ResetAllButton from '../../../../scenery-phet/js/buttons/ResetAllButton.js';
-import { AlignBox, animatedPanZoomSingleton, Image, ImageableImage, LinearGradient, Mouse, Node, Pointer, Rectangle, Text } from '../../../../scenery/js/imports.js';
+import { AlignBox, animatedPanZoomSingleton, Color, ColorProperty, Image, ImageableImage, LinearGradient, Mouse, Node, Pointer, Rectangle, Text } from '../../../../scenery/js/imports.js';
 import Checkbox from '../../../../sun/js/Checkbox.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
 import Boat from '../../buoyancy/model/Boat.js';
@@ -161,7 +161,10 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
       getPhetioMouseHit: point => {
         const mass = this.getMassUnderPoint( this.localToGlobalPoint( point ), false );
         return mass ? mass.getPhetioMouseHitTarget() : mass;
-      }
+      },
+
+      // So the sky background will show through
+      backgroundProperty: new ColorProperty( Color.TRANSPARENT )
     } );
     this.addChild( this.sceneNode );
 

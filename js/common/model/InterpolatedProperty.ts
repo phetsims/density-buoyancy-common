@@ -1,7 +1,12 @@
 // Copyright 2019-2024, University of Colorado Boulder
 
 /**
- * A Property that is based on the step-based interpolation between a current and previous value.
+ * A Property that is based on the step-based interpolation between a current (most recent value) and previous value
+ * (two values ago). In addition, this Property wants to notify changes less often than it may update. This is why
+ * its value is set much less often than currentValue.
+ *
+ * This interpolation is an established algorithm for handling excess DT when stepping based on fixed model steps
+ * (which Density and Buoyancy do).
  *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
@@ -25,7 +30,10 @@ export type InterpolatedPropertyOptions<T> = SelfOptions<T> & PropertyOptions<T>
 
 export default class InterpolatedProperty<T> extends Property<T> {
 
+  // The most recently set value, but changing this will not fire listeners.
   public currentValue: T;
+
+  // Capture the previous value upon currentValue change.
   public previousValue: T;
   public ratio: number;
 
@@ -61,6 +69,9 @@ export default class InterpolatedProperty<T> extends Property<T> {
   public setRatio( ratio: number ): void {
     this.ratio = ratio;
 
+    // Interpolating between two values ago and the most recent value is a common heuristic to do, but it is important
+    // that no model code relies on this, and instead would just use currentValue directly. This is also duplicated from
+    // what p2 World does after step.
     this.value = this.interpolate( this.previousValue, this.currentValue, this.ratio );
   }
 

@@ -547,7 +547,7 @@ export default abstract class Mass extends PhetioObject {
   public updateSubmergedMassFraction( gravityMagnitude: number, fluidDensity: number ): void {
     assert && assert( gravityMagnitude > 0, 'gravityMagnitude should be positive' );
 
-    const buoyancy = this.buoyancyForceInterpolatedProperty.value;
+    const buoyancy = this.buoyancyForceInterpolatedProperty.currentValue;
     const volume = this.volumeProperty.value;
     const submergedFraction = buoyancy.magnitude / ( volume * gravityMagnitude * fluidDensity );
     const range = this.submergedMassFractionProperty.range;

@@ -148,7 +148,7 @@ export default class Boat extends ApplicationsMass {
     assert && assert( gravityMagnitude > 0, 'gravityMagnitude should be positive' );
 
     if ( !this.isUnderwater ) {
-      const buoyancy = this.buoyancyForceInterpolatedProperty.value;
+      const buoyancy = this.buoyancyForceInterpolatedProperty.currentValue;
       const volume = this.volumeProperty.value + this.stepInternalVolume;
       const submergedFraction = buoyancy.magnitude / ( volume * gravityMagnitude * fluidDensity );
       const range = this.submergedMassFractionProperty.range;

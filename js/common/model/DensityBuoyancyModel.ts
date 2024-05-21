@@ -304,7 +304,7 @@ export default class DensityBuoyancyModel implements TModel {
       const boat = this.getBoat();
 
       if ( boat && dt ) {
-        boat.setUnderwaterState( this.pool.liquidYInterpolatedProperty.value );
+        boat.setUnderwaterState( this.pool.liquidYInterpolatedProperty.currentValue );
         const nextBoatVerticalVelocity = this.engine.bodyGetVelocity( boat.body ).y;
         boatVerticalAcceleration = ( nextBoatVerticalVelocity - boatVerticalVelocity ) / dt;
         boatVerticalVelocity = nextBoatVerticalVelocity;
@@ -500,7 +500,7 @@ export default class DensityBuoyancyModel implements TModel {
 
         // If the top of the boat is out of the water past the height threshold, spill the water back into the pool
         // (even if not totally full).
-        if ( boat.stepTop > this.pool.liquidYInterpolatedProperty.value + boatHeight * BOAT_READY_TO_SPILL_OUT_THRESHOLD ) {
+        if ( boat.stepTop > this.pool.liquidYInterpolatedProperty.currentValue + boatHeight * BOAT_READY_TO_SPILL_OUT_THRESHOLD ) {
           this.spillingWaterOutOfBoat = true;
         }
       }
@@ -514,7 +514,7 @@ export default class DensityBuoyancyModel implements TModel {
         boatExcess = Math.min( FILL_EMPTY_MULTIPLIER * boat.volumeProperty.value, boatLiquidVolume );
       }
       else if ( boatLiquidVolume > 0 &&
-                Math.abs( boatBasin.liquidYInterpolatedProperty.value - boatBasin.stepTop ) >= BOAT_FULL_THRESHOLD ) {
+                Math.abs( boatBasin.liquidYInterpolatedProperty.currentValue - boatBasin.stepTop ) >= BOAT_FULL_THRESHOLD ) {
         // If the boat is neither full nor empty, nor spilling, then it is currently filling up. We will up no matter
         // the current water leve or the boat AND no matter the boats position. This is because the boat can only
         // ever be full or empty (or animating to one of those states).

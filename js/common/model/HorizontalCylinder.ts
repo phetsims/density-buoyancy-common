@@ -118,7 +118,7 @@ export default class HorizontalCylinder extends Mass {
   }
 
   /**
-   * Called after a engine-physics-model step once before doing other operations (like computing buoyant forces,
+   * Called after an engine-physics-model step once before doing other operations (like computing buoyant forces,
    * displacement, etc.) so that it can set high-performance flags used for this purpose.
    *
    * Type-specific values are likely to be set, but this should set at least stepX/stepBottom/stepTop

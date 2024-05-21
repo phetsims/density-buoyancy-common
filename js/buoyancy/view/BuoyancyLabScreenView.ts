@@ -85,9 +85,9 @@ export default class BuoyancyLabScreenView extends DensityBuoyancyScreenView<Buo
     } );
     this.addChild( leftSideContent );
 
-    const positionLeftSideContent = ( nodelLike: LayoutProxy | Node ) => {
-      nodelLike.bottom = this.visibleBoundsProperty.value.bottom - DESIRED_LEFT_SIDE_MARGIN;
-      nodelLike.left = this.visibleBoundsProperty.value.left + DESIRED_LEFT_SIDE_MARGIN;
+    const positionLeftSideContent = ( nodelike: LayoutProxy | Node ) => {
+      nodelike.bottom = this.visibleBoundsProperty.value.bottom - DESIRED_LEFT_SIDE_MARGIN;
+      nodelike.left = this.visibleBoundsProperty.value.left + DESIRED_LEFT_SIDE_MARGIN;
     };
 
     // Reflow when the entire accordion box is hidden in phet-io studio.

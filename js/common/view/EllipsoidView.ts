@@ -1,7 +1,7 @@
 // Copyright 2019-2024, University of Colorado Boulder
 
 /**
- * The 3D view for a Ellipsoid.
+ * The 3D view for an Ellipsoid.
  *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */

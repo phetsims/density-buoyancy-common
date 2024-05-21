@@ -144,7 +144,7 @@ const DensityBuoyancyCommonQueryParameters = QueryStringMachine.getAll( {
   },
 
   // Relaxation:
-  // "The number of time steps needed to stabilize the constraint equation. Typically between 3 and 5 time steps."
+  // "The number of time steps needed to stabilize the constraint equation. Typically, between 3 and 5 time steps."
   // p2 default is 4.
 
   // Relaxation to use for ground-mass interactions

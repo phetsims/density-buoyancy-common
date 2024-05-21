@@ -122,7 +122,7 @@ export default class BuoyancyApplicationsModel extends DensityBuoyancyModel {
       this.block.internalVisibleProperty.value = scene === Scene.BOAT;
       this.scale2!.internalVisibleProperty.value = scene === Scene.BOTTLE;
 
-      // When switching from boat to bottle scene, subtract the scale volume from the pool and viceversa (-1 and 1)
+      // When switching from boat to bottle scene, subtract the scale volume from the pool and vice versa (-1 and 1)
       // But don't do it when the bottle scene is first loaded (0)
       const plusMinusScaleVolume = scene === Scene.BOTTLE ?
                              previousScene === Scene.BOAT ? -1 : 0 : 1;

@@ -88,11 +88,11 @@ const DensityBuoyancyCommonColors = {
     phetioReadOnly: true,
     tandem: tandem.createTandem( 'compareGreenColorProperty' )
   } ),
-  compareOcreColorProperty: new ProfileColorProperty( densityBuoyancyCommon, 'compareOcre', {
+  compareOchreColorProperty: new ProfileColorProperty( densityBuoyancyCommon, 'compareOchre', {
     default: new Color( 160, 140, 0 )
   }, {
     phetioReadOnly: true,
-    tandem: tandem.createTandem( 'compareOcreColorProperty' )
+    tandem: tandem.createTandem( 'compareOchreColorProperty' )
   } ),
   compareRedColorProperty: new ProfileColorProperty( densityBuoyancyCommon, 'compareRed', {
     default: new Color( 233, 55, 50 )

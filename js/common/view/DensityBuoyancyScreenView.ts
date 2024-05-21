@@ -766,7 +766,7 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
   }
 
   /**
-   * Factored out way to only generate an icon with a whole new WebGL context if needed (otherwise just use the saved image.
+   * Factored out way to only generate an icon with a whole new WebGL context if needed, otherwise just use the saved image.
    */
   public static getThreeIcon( iconBrowserImage: ImageableImage, generateIcon: () => Node ): Node {
     if ( DensityBuoyancyCommonQueryParameters.generateIconImages && ThreeUtils.isWebGLEnabled() ) {
@@ -818,7 +818,7 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
 
     stage.dispose();
 
-    // Yes, we log this so we can regenerate them if we have changes
+    // Output to the console, so we can regenerate them if we have changes
     console.log( canvas.toDataURL() );
 
     const image = new Image( canvas.toDataURL(), {

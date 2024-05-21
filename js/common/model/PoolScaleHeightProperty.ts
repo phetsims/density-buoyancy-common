@@ -1,6 +1,6 @@
 // Copyright 2024, University of Colorado Boulder
 /**
- * NumberProperty that notifies listeners when reset. Its used in the models of the Buoyancy Lab, Buoyaancy Basics Explore and Buoyancy Basics Compare screens.
+ * NumberProperty that notifies listeners when reset. It's used in the models of the Buoyancy Lab, Buoyaancy Basics Explore and Buoyancy Basics Compare screens.
  *
  * @author Agustín Vallejo
  */

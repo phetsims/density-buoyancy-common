@@ -145,7 +145,7 @@ export default class Scale extends Mass {
   }
 
   /**
-   * Called after a engine-physics-model step once before doing other operations (like computing buoyant forces,
+   * Called after an engine-physics-model step once before doing other operations (like computing buoyant forces,
    * displacement, etc.) so that it can set high-performance flags used for this purpose.
    *
    * Type-specific values are likely to be set, but this should set at least stepX/stepBottom/stepTop
@@ -163,7 +163,7 @@ export default class Scale extends Mass {
 
   /**
    * If there is an intersection with the ray and this mass, the t-value (distance the ray would need to travel to
-   * reach the intersection, e.g. ray.position + ray.distance * t === intersectionPoint) will be returned. Otherwise
+   * reach the intersection, e.g. ray.position + ray.distance * t === intersectionPoint) will be returned. Otherwise,
    * if there is no intersection, null will be returned.
    */
   public override intersect( ray: Ray3, isTouch: boolean ): number | null {

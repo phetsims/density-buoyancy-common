@@ -45,7 +45,7 @@ const POOL_HEIGHT = POOL_VOLUME / POOL_WIDTH / POOL_DEPTH;
 const GROUND_FRONT_Z = POOL_DEPTH / 2;
 const POOL_BACK_Z = -POOL_DEPTH / 2;
 
-// Faster than normal stepping to fill the boat (kinda like animation speed, where .
+// Faster than normal stepping to fill the boat (kind of like animation speed)
 const FILL_EMPTY_MULTIPLIER = 0.3;
 
 // 90% of the boat is out of the water before spilling out the full boat
@@ -310,7 +310,7 @@ export default class DensityBuoyancyModel implements TModel {
         boatVerticalVelocity = nextBoatVerticalVelocity;
       }
 
-      // Will set the force Properties for all of the masses
+      // Will set the force Properties for all the masses
       this.masses.forEach( mass => {
         let contactForce = this.engine.bodyGetContactForces( mass.body );
 

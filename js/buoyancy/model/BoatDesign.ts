@@ -270,7 +270,7 @@ export default class BoatDesign {
   }
 
   /**
-   * Fills the positionArray with a X,Z cross-section of the water around a boat at a given y value (for a given liters
+   * Fills the positionArray with an X,Z cross-section of the water around a boat at a given y value (for a given liters
    * value).
    *
    * @returns - Whether the water is completely filled
@@ -368,7 +368,7 @@ export default class BoatDesign {
   }
 
   /**
-   * Fills the positionArray with a X,Z cross-section of the boat at a given y value (for a given liters value).
+   * Fills the positionArray with an X,Z cross-section of the boat at a given y value (for a given liters value).
    */
   public static fillCrossSectionVertexArray( y: number, liters: number, positionArray: Float32Array ): void {
     const insideBottomY = -BoatDesign.DESIGN_BOAT_HEIGHT + BoatDesign.DESIGN_WALL_THICKNESS;

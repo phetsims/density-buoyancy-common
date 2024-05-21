@@ -225,7 +225,7 @@ export default class BuoyancyBasicsCompareScreenView extends DensityBuoyancyScre
     ];
   }
 
-  // Recalculate the space between the right visible bounds and the right side of the pool, for controls/etc to be positioned.
+  // Recalculate the space between the right visible bounds and the right side of the pool, for controls/etc. to be positioned.
   private layoutRightSidePanels(): void {
     const rightSideOfPoolViewPoint = this.modelToViewPoint(
       new Vector3( this.model.pool.bounds.maxX, this.model.pool.bounds.maxY, this.model.pool.bounds.maxZ )
@@ -317,7 +317,7 @@ export default class BuoyancyBasicsCompareScreenView extends DensityBuoyancyScre
 
         // On the left
         const box1 = new THREE.Mesh( boxGeometry, new THREE.MeshLambertMaterial( {
-          color: DensityBuoyancyCommonColors.compareOcreColorProperty.value.toHexString()
+          color: DensityBuoyancyCommonColors.compareOchreColorProperty.value.toHexString()
         } ) );
         box1.position.copy( ThreeUtils.vectorToThree( new Vector3( box1Position.x, box1Position.y, 0 ) ) );
 

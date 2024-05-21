@@ -25,7 +25,7 @@ const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
 
 export default class DensityCompareScreenView extends DensityBuoyancyScreenView<DensityCompareModel> {
 
-  private positionPanel: () => void;
+  private readonly positionPanel: () => void;
 
   public constructor( model: DensityCompareModel, options: DensityBuoyancyScreenViewOptions ) {
 

@@ -93,7 +93,7 @@ export default class VerticalCylinderView extends MeasurableMassView {
    * @param radius
    * @param height
    * @param offset - How many vertices have been specified so far?
-   * @param offsetPosition - How to transform all of the points
+   * @param offsetPosition - How to transform all the points
    * @returns - The offset after the specified vertices have been written
    */
   public static updateArrays( positionArray: Float32Array | null, normalArray: Float32Array | null, uvArray: Float32Array | null, radius: number, height: number, offset = 0, offsetPosition: Vector3 = Vector3.ZERO ): number {

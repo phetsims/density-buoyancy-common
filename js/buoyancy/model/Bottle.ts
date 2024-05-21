@@ -126,7 +126,7 @@ const BASE_TIP = BASE_START + BASE_TIP_LENGTH;
 // Controls the precision used for generated cross-sections (multiplies how many subdivisions are included by default)
 const CROSS_SECTION_PRECISION = 1;
 
-// {Array.<Vector2>} - Each vector is (x,r), control nets for the cubics for base/taper curves
+// {Array.<Vector2>} - Each vector is (x,r), control nets for the cubic curves for base/taper curves
 const BASE_SADDLE_CONTROL_POINTS = [
   new Vector2( BASE_START, FULL_RADIUS ),
   new Vector2( BASE_START + 0.5 * ( BASE_SADDLE - BASE_START ), FULL_RADIUS ),
@@ -248,7 +248,7 @@ export default class Bottle extends ApplicationsMass {
   }
 
   /**
-   * Called after a engine-physics-model step once before doing other operations (like computing buoyant forces,
+   * Called after an engine-physics-model step once before doing other operations (like computing buoyant forces,
    * displacement, etc.) so that it can set high-performance flags used for this purpose.
    *
    * Type-specific values are likely to be set, but this should set at least stepX/stepBottom/stepTop

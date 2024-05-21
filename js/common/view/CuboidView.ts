@@ -143,7 +143,7 @@ export default class CuboidView extends MeasurableMassView {
    * @param uvArray
    * @param size
    * @param offset - How many vertices have been specified so far?
-   * @param offsetPosition - How to transform all of the points
+   * @param offsetPosition - How to transform all the points
    * @returns - The offset after the specified vertices have been written
    */
   public static updateArrays( positionArray: Float32Array | null, normalArray: Float32Array | null, uvArray: Float32Array | null, size: Bounds3, offset = 0, offsetPosition: Vector3 = Vector3.ZERO ): number {

@@ -51,7 +51,7 @@ export default class BuoyancyShapesScreenView extends DensityBuoyancyScreenView<
 
   protected rightBox: MultiSectionPanelsNode;
 
-  private positionInfoButton: () => void;
+  private readonly positionInfoButton: () => void;
 
   public constructor( model: BuoyancyShapesModel, options: DensityBuoyancyScreenViewOptions ) {
 

@@ -45,7 +45,7 @@ export default class BuoyancyBasicsCompareModel extends CompareBlockSetModel {
           sameMassVolume: 0.002,
           sameVolumeMass: 2,
           sameDensityVolume: 0.005,
-          colorProperty: DensityBuoyancyCommonColors.compareOcreColorProperty,
+          colorProperty: DensityBuoyancyCommonColors.compareOchreColorProperty,
           sameMassCubeOptions: {
             tag: MassTag.ONE_A.withColorProperty( MassTag.PRIMARY_COLOR_PROPERTY ),
             tandem: blockSetsTandem.createTandem( BlockSet.SAME_MASS.tandemName ).createTandem( 'blockA' )

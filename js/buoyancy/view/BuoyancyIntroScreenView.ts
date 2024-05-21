@@ -193,7 +193,7 @@ export default class BuoyancyIntroScreenView extends DensityBuoyancyScreenView<B
     ];
   }
 
-  // Recalculate the space between the right visible bounds and the right side of the pool, for controls/etc to be positioned.
+  // Recalculate the space between the right visible bounds and the right side of the pool, for controls/etc. to be positioned.
   private layoutRightSidePanels(): void {
     const rightSideOfPoolViewPoint = this.modelToViewPoint(
       new Vector3( this.model.pool.bounds.maxX, this.model.pool.bounds.maxY, this.model.pool.bounds.maxZ )

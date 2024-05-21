@@ -119,7 +119,7 @@ export default class BlockSetModel<BlockSetValue extends EnumerationValue> exten
     // Reposition AFTER the reset
     this.BlockSet.values.forEach( blockSet => this.positionMasses( blockSet ) );
 
-    // Rehandle visibility, since we reset them
+    // Update the visibility again since it was reset above
     this.BlockSet.values.forEach( blockSet => this.blockSetToMassesMap.get( blockSet )!.forEach( mass => {
       mass.internalVisibleProperty.value = blockSet === this.blockSetProperty.value;
     } ) );

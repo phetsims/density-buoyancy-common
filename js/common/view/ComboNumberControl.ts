@@ -163,11 +163,9 @@ export default class ComboNumberControl<T> extends VBox {
 
     assert && assert( !options.children, 'Children should not be specified for ComboNumberControl' );
     assert && assert( options.property instanceof Property );
-    assert && assert( options.range instanceof Range );
     assert && assert( typeof options.toNumericValue === 'function' );
     assert && assert( typeof options.createCustomValue === 'function' );
     assert && assert( typeof options.isCustomValue === 'function' );
-    assert && assert( options.listParent instanceof Node );
     assert && assert( Array.isArray( options.comboItems ) );
     assert && assert( options.customValue );
 

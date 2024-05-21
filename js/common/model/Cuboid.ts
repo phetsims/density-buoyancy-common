@@ -128,7 +128,7 @@ export default class Cuboid extends Mass {
 
   /**
    * If there is an intersection with the ray and this mass, the t-value (distance the ray would need to travel to
-   * reach the intersection, e.g. ray.position + ray.distance * t === intersectionPoint) will be returned. Otherwise
+   * reach the intersection, e.g. ray.position + ray.distance * t === intersectionPoint) will be returned. Otherwise,
    * if there is no intersection, null will be returned.
    */
   public override intersect( ray: Ray3, isTouch: boolean ): number | null {
@@ -193,7 +193,7 @@ export default class Cuboid extends Mass {
   }
 
   /**
-   * Returns a (quick) closest ray intersection with a cuboid (defined by the given Bounds3 and translation).
+   * Returns a (quick) closest-ray intersection with a cuboid (defined by the given Bounds3 and translation).
    */
   public static intersect( bounds: Bounds3, translation: Vector3, ray: Ray3 ): number | null {
     let tNear = Number.NEGATIVE_INFINITY;

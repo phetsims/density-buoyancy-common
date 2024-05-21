@@ -364,7 +364,7 @@ export default class Material {
     tandemName: 'styrofoam',
     identifier: 'STYROFOAM',
     // From Flash version: between 25 and 200 according to http://wiki.answers.com/Q/What_is_the_density_of_styrofoam;
-    // chose 150 so it isn't too low to show on slider, but not 200 so it's not half of wood
+    // chose 150, so it isn't too low to show on slider, but not 200, so it's not half of wood
     density: 150
   } );
 

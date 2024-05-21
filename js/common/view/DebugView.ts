@@ -26,21 +26,21 @@ export default class DebugView extends Node {
 
   private model: DensityBuoyancyModel;
   private layoutBounds: Bounds2;
-  private modelViewTransform: ModelViewTransform2;
-  private poolPath: Path;
-  private massNodes: DebugMassNode[];
+  private readonly modelViewTransform: ModelViewTransform2;
+  private readonly poolPath: Path;
+  private readonly massNodes: DebugMassNode[];
 
   // proportional to the area at that level that is displaced in the pool
-  private poolAreaPath: Path;
+  private readonly poolAreaPath: Path;
 
   // proportional to the volume up to that level that is displaced in the pool
-  private poolVolumePath: Path;
+  private readonly poolVolumePath: Path;
 
   // proportional to the area at that level that is displaced in the boat
-  private boatAreaPath: Path;
+  private readonly boatAreaPath: Path;
 
   // proportional to the volume up to that level that is displaced in the boat
-  private boatVolumePath: Path;
+  private readonly boatVolumePath: Path;
 
   public constructor( model: DensityBuoyancyModel, layoutBounds: Bounds2 ) {
     super();

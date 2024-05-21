@@ -20,6 +20,7 @@ import IOTypeCache from '../../../../tandem/js/IOTypeCache.js';
 type Interpolate<T> = ( a: T, b: T, ratio: number ) => T;
 type SelfOptions<T> = {
   interpolate: Interpolate<T>;
+  nextValueInterpolationRatio?: number;
 };
 export type InterpolatedPropertyOptions<T> = SelfOptions<T> & PropertyOptions<T>;
 
@@ -28,13 +29,15 @@ export default class InterpolatedProperty<T> extends Property<T> {
   public currentValue: T;
   public previousValue: T;
   public ratio: number;
+  public nextValueInterpolationRatio: number;
 
   private readonly interpolate: Interpolate<T>;
 
   public constructor( initialValue: T, providedOptions: InterpolatedPropertyOptions<T> ) {
 
     const options = optionize<InterpolatedPropertyOptions<T>, SelfOptions<T>, PropertyOptions<T>>()( {
-      phetioOuterType: InterpolatedProperty.InterpolatedPropertyIO
+      phetioOuterType: InterpolatedProperty.InterpolatedPropertyIO,
+      nextValueInterpolationRatio: 1 // The change is instant by default
     }, providedOptions );
 
     super( initialValue, options );
@@ -45,6 +48,7 @@ export default class InterpolatedProperty<T> extends Property<T> {
     this.previousValue = initialValue;
 
     this.ratio = 0;
+    this.nextValueInterpolationRatio = options.nextValueInterpolationRatio;
   }
 
   /**
@@ -52,7 +56,7 @@ export default class InterpolatedProperty<T> extends Property<T> {
    */
   public setNextValue( value: T ): void {
     this.previousValue = this.currentValue;
-    this.currentValue = value;
+    this.currentValue = this.interpolate( this.previousValue, value, this.nextValueInterpolationRatio );
   }
 
   /**

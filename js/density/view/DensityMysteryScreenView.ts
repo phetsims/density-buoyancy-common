@@ -47,7 +47,7 @@ export default class DensityMysteryScreenView extends DensityBuoyancyScreenView<
         maxWidth: 200,
         tandem: densityTableAccordionBoxTandem.createTandem( 'titleText' )
       } ),
-      expandedProperty: model.densityTableExpandedProperty,
+      expandedDefaultValue: false,
       tandem: densityTableAccordionBoxTandem
     }, DensityBuoyancyCommonConstants.ACCORDION_BOX_OPTIONS ) );
 
@@ -123,6 +123,9 @@ export default class DensityMysteryScreenView extends DensityBuoyancyScreenView<
 
     this.addChild( this.popupLayer );
 
+    this.resetEmitter.addListener( () => {
+      densityTableAccordionBox.reset();
+    } );
 
     // Layer for the focusable masses. Must be in the scene graph, so they can populate the pdom order
     const cuboidPDOMLayer = new Node( { pdomOrder: [] } );

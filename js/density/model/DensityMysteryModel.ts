@@ -68,7 +68,6 @@ export type DensityMysteryModelOptions = StrictOmit<BlockSetModelOptions<Mystery
 
 export default class DensityMysteryModel extends BlockSetModel<MysteryBlockSet> {
 
-  public readonly densityTableExpandedProperty: Property<boolean>;
   private readonly scale: Scale;
 
   public constructor( providedOptions: DensityMysteryModelOptions ) {
@@ -357,10 +356,6 @@ export default class DensityMysteryModel extends BlockSetModel<MysteryBlockSet> 
       positionMassesCallback: positionMasses
     }, providedOptions ) );
 
-    this.densityTableExpandedProperty = new BooleanProperty( false, {
-      tandem: tandem.createTandem( 'densityTableExpandedProperty' )
-    } );
-
     const scalePositionProperty = new DerivedProperty( [ this.invisibleBarrierBoundsProperty ], bounds => {
       return new Vector2( -0.75 + bounds.minX + 0.875, -Scale.SCALE_BASE_BOUNDS.minY );
     } );
@@ -394,8 +389,6 @@ export default class DensityMysteryModel extends BlockSetModel<MysteryBlockSet> 
    * Resets things to their original values.
    */
   public override reset(): void {
-    this.densityTableExpandedProperty.reset();
-
     super.reset();
 
     // Make sure to create new random masses on a reset

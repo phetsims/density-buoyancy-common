@@ -62,8 +62,6 @@ export default class BuoyancyLabScreenView extends DensityBuoyancyScreenView<Buo
         tandem: tandem.createTandem( 'fluidDisplacedAccordionBox' )
       } );
 
-    this.resetEmitter.addListener( () => fluidDisplacedAccordionBox.expandedProperty.reset() );
-
     const leftSideVBox = new VBox( {
       align: 'left',
       spacing: 5,
@@ -196,6 +194,7 @@ export default class BuoyancyLabScreenView extends DensityBuoyancyScreenView<Buo
     this.addChild( this.popupLayer );
 
     this.resetEmitter.addListener( () => {
+      fluidDisplacedAccordionBox.reset();
       submergedAccordionBox.reset();
       densityAccordionBox.reset();
     } );

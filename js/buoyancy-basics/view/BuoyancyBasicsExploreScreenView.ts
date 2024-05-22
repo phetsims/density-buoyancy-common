@@ -111,7 +111,6 @@ export default class BuoyancyBasicsExploreScreenView extends DensityBuoyancyScre
     } );
 
     const submergedAccordionBox = new SubmergedAccordionBox( {
-      expandedDefaultValue: false,
       contentWidthMax: this.rightBox.content.width,
       tandem: tandem.createTandem( 'submergedAccordionBox' )
     } );
@@ -221,7 +220,7 @@ export default class BuoyancyBasicsExploreScreenView extends DensityBuoyancyScre
         },
         tandem: accordionTandem.createTandem( 'titleText' )
       } ),
-      expandedDefaultValue: false,
+      expandedDefaultValue: true,
       buttonAlign: 'left' as const,
       tandem: accordionTandem
     }, DensityBuoyancyCommonConstants.ACCORDION_BOX_OPTIONS ) );

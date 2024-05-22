@@ -91,7 +91,9 @@ export default abstract class MassView extends Disposable {
         ];
 
         // Update the shape based on the current view of the mass in 3d space
-        this.focusablePath.focusHighlight = this.focusablePath.shape = Shape.polygon( ConvexHull2.grahamScan( massViewPoints, false ) );
+        const shape = Shape.polygon( ConvexHull2.grahamScan( massViewPoints, false ) );
+        this.focusablePath.focusHighlight = shape;
+        this.focusablePath.shape = shape;
       }
 
       this.massTagNode && repositionMassTagNode();

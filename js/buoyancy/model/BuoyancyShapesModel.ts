@@ -37,7 +37,6 @@ export type BuoyancyShapesModelOptions = DensityBuoyancyModelOptions;
 export default class BuoyancyShapesModel extends DensityBuoyancyModel {
 
   public readonly modeProperty: Property<TwoBlockMode>;
-  public readonly densityExpandedProperty: Property<boolean>;
   public readonly scale1: Scale;
   public readonly primaryShapeProperty: Property<MassShape>;
   public readonly secondaryShapeProperty: Property<MassShape>;
@@ -69,8 +68,6 @@ export default class BuoyancyShapesModel extends DensityBuoyancyModel {
       tandem: tandem.createTandem( 'materialProperty' ),
       phetioValueType: Material.MaterialIO
     } );
-
-    this.densityExpandedProperty = new BooleanProperty( false );
 
     this.scale1 = new Scale( this.engine, this.gravityProperty, {
       matrix: Matrix3.translation( -0.7, -Scale.SCALE_BASE_BOUNDS.minY ),
@@ -253,8 +250,6 @@ export default class BuoyancyShapesModel extends DensityBuoyancyModel {
    */
   public override reset(): void {
     this.modeProperty.reset();
-
-    this.densityExpandedProperty.reset();
 
     this.primaryShapeProperty.reset();
     this.secondaryShapeProperty.reset();

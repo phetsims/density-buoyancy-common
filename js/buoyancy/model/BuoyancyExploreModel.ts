@@ -27,7 +27,6 @@ export default class BuoyancyExploreModel extends DensityBuoyancyModel {
   public readonly modeProperty: Property<TwoBlockMode>;
   public readonly primaryMass: Cube;
   public readonly secondaryMass: Cube;
-  public readonly densityExpandedProperty: Property<boolean>;
 
   public constructor( options: BuoyancyExploreModelOptions ) {
 
@@ -71,7 +70,6 @@ export default class BuoyancyExploreModel extends DensityBuoyancyModel {
       }
     } ) );
 
-    this.densityExpandedProperty = new BooleanProperty( false );
   }
 
   /**
@@ -82,8 +80,6 @@ export default class BuoyancyExploreModel extends DensityBuoyancyModel {
 
     this.primaryMass.reset();
     this.secondaryMass.reset();
-
-    this.densityExpandedProperty.reset();
 
     super.reset();
   }

@@ -25,13 +25,11 @@ export default class SubmergedAccordionBox extends ReadoutListAccordionBox<Subme
 
     const options = combineOptions<ReadoutListAccordionBoxOptions<SubmergedReadoutType>>( {
       visibleProperty: DensityBuoyancyCommonPreferences.percentageSubmergedVisibleProperty,
-      readoutItems: []
+      readoutItems: [],
+      expandedDefaultValue: false
     }, providedOptions );
 
     super( DensityBuoyancyCommonStrings.percentSubmergedStringProperty, options );
-
-    // By default, the accordion box is collapsed
-    this.expandedProperty.value = false;
   }
 
   public override generateReadoutData( mass: SubmergedReadoutType ): ReadoutData {

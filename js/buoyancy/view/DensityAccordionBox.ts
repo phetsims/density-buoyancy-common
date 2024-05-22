@@ -16,12 +16,22 @@ import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
 import Utils from '../../../../dot/js/Utils.js';
 import ReadoutListAccordionBox, { ReadoutData, ReadoutListAccordionBoxOptions } from './ReadoutListAccordionBox.js';
 import DerivedStringProperty from '../../../../axon/js/DerivedStringProperty.js';
+import optionize, { EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
 
 type DensityReadoutType = TReadOnlyProperty<Material>;
 
+type ParentOptions = ReadoutListAccordionBoxOptions<DensityReadoutType>;
+type SelfOptions = EmptySelfOptions;
+type DensityAccordionBoxOptions = SelfOptions & ParentOptions;
+
 export default class DensityAccordionBox extends ReadoutListAccordionBox<DensityReadoutType> {
 
-  public constructor( options?: ReadoutListAccordionBoxOptions<DensityReadoutType> ) {
+  public constructor( providedOptions?: DensityAccordionBoxOptions ) {
+
+    const options = optionize<DensityAccordionBoxOptions, SelfOptions, ParentOptions>()( {
+      expandedDefaultValue: false
+    }, providedOptions );
+
     super( DensityBuoyancyCommonStrings.densityStringProperty, options );
   }
 

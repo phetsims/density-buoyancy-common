@@ -92,7 +92,6 @@ export default class BuoyancyIntroScreenView extends DensityBuoyancyScreenView<B
 
     // Materials are set in densityBox.setMaterials() below
     const densityAccordionBox = new DensityAccordionBox( {
-      expandedDefaultValue: false,
       contentWidthMax: this.rightSideMaxContentWidthProperty,
       tandem: options.tandem.createTandem( 'densityAccordionBox' )
     } );
@@ -165,6 +164,7 @@ export default class BuoyancyIntroScreenView extends DensityBuoyancyScreenView<B
 
     this.resetEmitter.addListener( () => {
       densityAccordionBox.reset();
+      submergedAccordionBox.reset();
     } );
 
     // The focus order is described in https://github.com/phetsims/density-buoyancy-common/issues/121

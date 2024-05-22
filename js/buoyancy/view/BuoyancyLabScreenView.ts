@@ -148,20 +148,19 @@ export default class BuoyancyLabScreenView extends DensityBuoyancyScreenView<Buo
     } );
 
     const densityAccordionBox = new DensityAccordionBox( {
-      expandedProperty: model.densityExpandedProperty,
       contentWidthMax: this.rightBox.content.width,
       readoutItems: [ { readoutItem: model.primaryMass.materialProperty } ],
       tandem: tandem.createTandem( 'densityAccordionBox' )
     } );
 
     const submergedAccordionBox = new SubmergedAccordionBox( {
-        contentWidthMax: this.rightBox.content.width,
-        readoutItems: [ {
-          readoutItem: model.primaryMass,
-          readoutNameProperty: DensityBuoyancyCommonStrings.shape.blockStringProperty
-        } ],
-        tandem: tandem.createTandem( 'submergedAccordionBox' )
-      } );
+      contentWidthMax: this.rightBox.content.width,
+      readoutItems: [ {
+        readoutItem: model.primaryMass,
+        readoutNameProperty: DensityBuoyancyCommonStrings.shape.blockStringProperty
+      } ],
+      tandem: tandem.createTandem( 'submergedAccordionBox' )
+    } );
 
     const rightSideVBox = new VBox( {
       spacing: MARGIN / 2, // Reducing margin here for the panels not to overlap with the Scale Height Slider
@@ -195,6 +194,11 @@ export default class BuoyancyLabScreenView extends DensityBuoyancyScreenView<Buo
 
     // Popup last
     this.addChild( this.popupLayer );
+
+    this.resetEmitter.addListener( () => {
+      submergedAccordionBox.reset();
+      densityAccordionBox.reset();
+    } );
 
     const cuboidViews = this.massViews.filter( massView => massView instanceof CuboidView );
 

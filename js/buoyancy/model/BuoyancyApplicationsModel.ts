@@ -6,7 +6,6 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
-import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import EnumerationProperty from '../../../../axon/js/EnumerationProperty.js';
 import Property from '../../../../axon/js/Property.js';
@@ -43,7 +42,6 @@ export type BuoyancyApplicationsModelOptions = DensityBuoyancyModelOptions;
 export default class BuoyancyApplicationsModel extends DensityBuoyancyModel {
 
   public readonly sceneProperty: Property<Scene>;
-  public readonly densityExpandedProperty: Property<boolean>;
 
   public readonly bottle: Bottle;
   public readonly block: Cube;
@@ -62,9 +60,6 @@ export default class BuoyancyApplicationsModel extends DensityBuoyancyModel {
 
     this.sceneProperty = new EnumerationProperty( Scene.BOTTLE, {
       tandem: options.tandem.createTandem( 'sceneProperty' )
-    } );
-    this.densityExpandedProperty = new BooleanProperty( false, {
-      tandem: tandem.createTandem( 'densityExpandedProperty' )
     } );
 
     const objectsTandem = tandem.createTandem( 'objects' );
@@ -158,7 +153,6 @@ export default class BuoyancyApplicationsModel extends DensityBuoyancyModel {
    * Resets things to their original values.
    */
   public override reset(): void {
-    this.densityExpandedProperty.reset();
 
     this.bottle.reset();
     this.block.reset();

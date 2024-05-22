@@ -256,7 +256,6 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
     const rightBoatContent = new Panel( boatBox, DensityBuoyancyCommonConstants.PANEL_OPTIONS );
 
     const densityAccordionBox = new DensityAccordionBox( {
-      expandedProperty: model.densityExpandedProperty,
       contentWidthMax: boatBox.width,
       tandem: tandem.createTandem( 'densityAccordionBox' )
     } );
@@ -402,6 +401,11 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
     this.addChild( blockLayer );
     const bottleBoatLayer = new Node( { pdomOrder: [] } );
     this.addChild( bottleBoatLayer );
+
+    this.resetEmitter.addListener( () => {
+      submergedAccordionBox.reset();
+      densityAccordionBox.reset();
+    } );
 
     // The focus order is described in https://github.com/phetsims/density-buoyancy-common/issues/121
     this.pdomPlayAreaNode.pdomOrder = [

@@ -114,7 +114,6 @@ export default class BuoyancyExploreScreenView extends DensityBuoyancyScreenView
 
     // Materials are set in densityBox.setMaterials() below
     const densityAccordionBox = new DensityAccordionBox( {
-      expandedProperty: model.densityExpandedProperty,
       contentWidthMax: this.rightBox.content.width,
       tandem: tandem.createTandem( 'densityAccordionBox' )
     } );
@@ -189,6 +188,11 @@ export default class BuoyancyExploreScreenView extends DensityBuoyancyScreenView
     } );
 
     this.addChild( this.popupLayer );
+
+    this.resetEmitter.addListener( () => {
+      submergedAccordionBox.reset();
+      densityAccordionBox.reset();
+    } );
 
     const cuboidViews = this.massViews.filter( massView => massView instanceof CuboidView );
     const scaleViews = this.massViews.filter( massView => massView instanceof ScaleView );

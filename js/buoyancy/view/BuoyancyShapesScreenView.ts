@@ -158,7 +158,6 @@ export default class BuoyancyShapesScreenView extends DensityBuoyancyScreenView<
     );
 
     const densityAccordionBox = new DensityAccordionBox( {
-      expandedProperty: model.densityExpandedProperty,
       contentWidthMax: this.rightBox.content.width,
       readoutItems: [ { readoutItem: model.materialProperty } ],
       tandem: tandem.createTandem( 'densityAccordionBox' )
@@ -222,6 +221,11 @@ export default class BuoyancyShapesScreenView extends DensityBuoyancyScreenView<
     } );
 
     this.addChild( this.popupLayer );
+
+    this.resetEmitter.addListener( () => {
+      submergedAccordionBox.reset();
+      densityAccordionBox.reset();
+    } );
 
     const scaleViews = this.massViews.filter( massView => massView instanceof ScaleView );
 

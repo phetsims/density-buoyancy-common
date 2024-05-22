@@ -92,7 +92,7 @@ export default class BuoyancyIntroScreenView extends DensityBuoyancyScreenView<B
 
     // Materials are set in densityBox.setMaterials() below
     const densityAccordionBox = new DensityAccordionBox( {
-      expandedProperty: model.densityExpandedProperty,
+      expandedDefaultValue: false,
       contentWidthMax: this.rightSideMaxContentWidthProperty,
       tandem: options.tandem.createTandem( 'densityAccordionBox' )
     } );
@@ -162,6 +162,10 @@ export default class BuoyancyIntroScreenView extends DensityBuoyancyScreenView<B
     // Layer for the focusable masses. Must be in the scene graph, so they can populate the pdom order
     const cuboidPDOMLayer = new Node( { pdomOrder: [] } );
     this.addChild( cuboidPDOMLayer );
+
+    this.resetEmitter.addListener( () => {
+      densityAccordionBox.reset();
+    } );
 
     // The focus order is described in https://github.com/phetsims/density-buoyancy-common/issues/121
     this.pdomPlayAreaNode.pdomOrder = [

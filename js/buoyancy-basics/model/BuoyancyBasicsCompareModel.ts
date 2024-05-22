@@ -6,7 +6,6 @@
  * @author Michael Kauzmann (PhET Interactive Simulations)
  */
 
-import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
 import Matrix3 from '../../../../dot/js/Matrix3.js';
 import Scale, { DisplayType } from '../../common/model/Scale.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
@@ -24,8 +23,6 @@ import PoolScaleHeightProperty from '../../common/model/PoolScaleHeightProperty.
 export type BuoyancyBasicsCompareModelOptions = StrictOmit<CompareBlockSetModelOptions, 'positionMassesCallback' | 'cubesData'>;
 
 export default class BuoyancyBasicsCompareModel extends CompareBlockSetModel {
-  public readonly densityExpandedProperty = new BooleanProperty( false );
-  public readonly percentageSubmergedExpandedProperty = new BooleanProperty( false );
   public readonly poolScaleHeightProperty: NumberProperty;
   public readonly poolScale: Scale;
 

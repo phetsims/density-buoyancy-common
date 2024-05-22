@@ -103,13 +103,13 @@ export default class BuoyancyBasicsCompareScreenView extends DensityBuoyancyScre
 
     // Materials are set in densityBox.setMaterials() below
     const densityAccordionBox = new DensityAccordionBox( {
-      expandedProperty: model.densityExpandedProperty,
+      expandedDefaultValue: false,
       contentWidthMax: this.rightSideMaxContentWidthProperty,
       tandem: options.tandem.createTandem( 'densityAccordionBox' )
     } );
 
     const submergedAccordionBox = new SubmergedAccordionBox( {
-      expandedProperty: model.percentageSubmergedExpandedProperty,
+      expandedDefaultValue: false,
       contentWidthMax: this.rightSideMaxContentWidthProperty,
       tandem: options.tandem.createTandem( 'submergedAccordionBox' )
     } );
@@ -186,6 +186,11 @@ export default class BuoyancyBasicsCompareScreenView extends DensityBuoyancyScre
     this.addChild( this.popupLayer );
 
     const scaleViews = this.massViews.filter( massView => massView instanceof ScaleView );
+
+    this.resetEmitter.addListener( () => {
+      densityAccordionBox.reset();
+      submergedAccordionBox.reset();
+    } );
 
     // Layer for the focusable masses. Must be in the scene graph, so they can populate the pdom order
     const cuboidPDOMLayer = new Node( { pdomOrder: [] } );

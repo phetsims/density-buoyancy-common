@@ -6,7 +6,6 @@
  * @author Michael Kauzmann (PhET Interactive Simulations)
  */
 
-import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
 import EnumerationProperty from '../../../../axon/js/EnumerationProperty.js';
 import Property from '../../../../axon/js/Property.js';
 import Matrix3 from '../../../../dot/js/Matrix3.js';
@@ -31,8 +30,6 @@ export default class BuoyancyBasicsExploreModel extends DensityBuoyancyModel {
   public readonly modeProperty: Property<TwoBlockMode>;
   public readonly primaryMass: Cube;
   public readonly secondaryMass: Cube;
-  public readonly densityExpandedProperty = new BooleanProperty( false );
-  public readonly percentageSubmergedExpandedProperty = new BooleanProperty( false );
   public readonly poolScaleHeightProperty: NumberProperty;
   public readonly poolScale: Scale;
 
@@ -107,8 +104,6 @@ export default class BuoyancyBasicsExploreModel extends DensityBuoyancyModel {
 
     this.primaryMass.reset();
     this.secondaryMass.reset();
-
-    this.densityExpandedProperty.reset();
 
     super.reset();
 

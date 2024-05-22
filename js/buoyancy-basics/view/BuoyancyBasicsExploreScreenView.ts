@@ -111,7 +111,7 @@ export default class BuoyancyBasicsExploreScreenView extends DensityBuoyancyScre
     } );
 
     const submergedAccordionBox = new SubmergedAccordionBox( {
-      expandedProperty: model.percentageSubmergedExpandedProperty,
+      expandedDefaultValue: false,
       contentWidthMax: this.rightBox.content.width,
       tandem: tandem.createTandem( 'submergedAccordionBox' )
     } );
@@ -221,7 +221,7 @@ export default class BuoyancyBasicsExploreScreenView extends DensityBuoyancyScre
         },
         tandem: accordionTandem.createTandem( 'titleText' )
       } ),
-      expandedProperty: model.densityExpandedProperty,
+      expandedDefaultValue: false,
       buttonAlign: 'left' as const,
       tandem: accordionTandem
     }, DensityBuoyancyCommonConstants.ACCORDION_BOX_OPTIONS ) );
@@ -261,6 +261,11 @@ export default class BuoyancyBasicsExploreScreenView extends DensityBuoyancyScre
     this.addChild( this.scaleHeightControl );
 
     this.addChild( this.popupLayer );
+
+    this.resetEmitter.addListener( () => {
+      submergedAccordionBox.reset();
+      densityAccordionBox.reset();
+    } );
 
     const cuboidViews = this.massViews.filter( massView => massView instanceof CuboidView );
     const scaleViews = this.massViews.filter( massView => massView instanceof ScaleView );

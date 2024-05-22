@@ -27,7 +27,6 @@ export default class DensityIntroModel extends DensityBuoyancyModel {
   public readonly modeProperty: Property<TwoBlockMode>;
   public readonly primaryMass: Cuboid;
   public readonly secondaryMass: Cuboid;
-  public readonly densityExpandedProperty: Property<boolean>;
 
   public constructor( options: DensityIntroModelOptions ) {
 
@@ -68,11 +67,6 @@ export default class DensityIntroModel extends DensityBuoyancyModel {
     this.modeProperty.link( mode => {
       this.secondaryMass.internalVisibleProperty.value = mode === TwoBlockMode.TWO_BLOCKS;
     } );
-
-    // TODO: Many duplicates, move to DensityBuoyancyModel with option to instrument? https://github.com/phetsims/density-buoyancy-common/issues/95`
-    this.densityExpandedProperty = new BooleanProperty( true, {
-      tandem: tandem.createTandem( 'densityExpandedProperty' )
-    } );
   }
 
   /**
@@ -83,8 +77,6 @@ export default class DensityIntroModel extends DensityBuoyancyModel {
 
     this.primaryMass.reset();
     this.secondaryMass.reset();
-
-    this.densityExpandedProperty.reset();
 
     super.reset();
   }

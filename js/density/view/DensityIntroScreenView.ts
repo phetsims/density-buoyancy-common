@@ -90,7 +90,6 @@ export default class DensityIntroScreenView extends DensityBuoyancyScreenView<De
         },
         tandem: accordionTandem.createTandem( 'titleText' )
       } ),
-      expandedProperty: model.densityExpandedProperty,
       buttonAlign: 'left' as const,
       tandem: accordionTandem
     }, DensityBuoyancyCommonConstants.ACCORDION_BOX_OPTIONS ) );
@@ -102,16 +101,16 @@ export default class DensityIntroScreenView extends DensityBuoyancyScreenView<De
         this.rightBox.boundsProperty,
         densityAccordionBox.boundsProperty ],
       ( visibleBounds, rightBoxBounds, accordionBounds ) => {
-          const rightBoxLeftEdge = rightBoxBounds.left;
-          const visibleBoundsLeftEdge = visibleBounds.left;
+        const rightBoxLeftEdge = rightBoxBounds.left;
+        const visibleBoundsLeftEdge = visibleBounds.left;
 
-          const availableWidth = rightBoxLeftEdge - visibleBoundsLeftEdge - 2 * MARGIN;
+        const availableWidth = rightBoxLeftEdge - visibleBoundsLeftEdge - 2 * MARGIN;
 
-          if ( availableWidth > 0 ) {
-            densityAccordionBox.maxWidth = availableWidth;
-            densityAccordionBox.centerX = visibleBoundsLeftEdge + availableWidth / 2 + MARGIN;
-            densityAccordionBox.top = visibleBounds.top + MARGIN;
-          }
+        if ( availableWidth > 0 ) {
+          densityAccordionBox.maxWidth = availableWidth;
+          densityAccordionBox.centerX = visibleBoundsLeftEdge + availableWidth / 2 + MARGIN;
+          densityAccordionBox.top = visibleBounds.top + MARGIN;
+        }
       } );
 
     this.addChild( new AlignBox( this.rightBox, {
@@ -166,6 +165,10 @@ export default class DensityIntroScreenView extends DensityBuoyancyScreenView<De
     };
     this.massViews.addItemAddedListener( massViewAdded );
     this.massViews.forEach( massViewAdded );
+
+    this.resetEmitter.addListener( () => {
+      densityAccordionBox.reset();
+    } );
 
     this.pdomControlAreaNode.pdomOrder = [
       blocksRadioButtonGroup,

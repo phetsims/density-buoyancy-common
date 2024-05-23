@@ -131,6 +131,7 @@ export default class DensityBuoyancyModel implements TModel {
     } );
     this.showMassValuesProperty = new BooleanProperty( options.showMassValuesDefault, {
       tandem: tandem.createTandem( 'showMassValuesProperty' ),
+      phetioFeatured: true,
       phetioDocumentation: 'Displays a mass readout on each object'
     } );
     this.forceScaleProperty = new NumberProperty( options.initialForceScale, {

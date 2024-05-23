@@ -303,7 +303,8 @@ export default abstract class Mass extends PhetioObject {
       valueType: Material,
       reentrant: true,
       tandem: tandem?.createTandem( 'materialProperty' ),
-      phetioValueType: Material.MaterialIO
+      phetioValueType: Material.MaterialIO,
+      phetioFeatured: true
     }, options.materialPropertyOptions ) );
 
     if ( options.adjustableMaterial ) {

@@ -60,7 +60,8 @@ export default class BuoyancyShapesModel extends DensityBuoyancyModel {
     super( options );
 
     this.modeProperty = new EnumerationProperty( TwoBlockMode.ONE_BLOCK, {
-      tandem: tandem.createTandem( 'modeProperty' )
+      tandem: tandem.createTandem( 'modeProperty' ),
+      phetioFeatured: true
     } );
 
     this.materialProperty = new Property( Material.WOOD, {

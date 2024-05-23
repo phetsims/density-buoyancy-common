@@ -43,7 +43,8 @@ export default class BuoyancyBasicsExploreModel extends DensityBuoyancyModel {
     }, options ) );
 
     this.modeProperty = new EnumerationProperty( TwoBlockMode.ONE_BLOCK, {
-      tandem: tandem.createTandem( 'modeProperty' )
+      tandem: tandem.createTandem( 'modeProperty' ),
+      phetioFeatured: true
     } );
 
     const blocksTandem = tandem.createTandem( 'blocks' );

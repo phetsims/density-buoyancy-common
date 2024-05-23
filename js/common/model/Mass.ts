@@ -321,7 +321,8 @@ export default abstract class Mass extends PhetioObject {
         units: 'kg/m^3'
       } );
       this.customColorProperty = new ColorProperty( options.material.customColor ? options.material.customColor.value : Color.WHITE, {
-        tandem: tandem?.createTandem( 'customColorProperty' )
+        tandem: tandem?.createTandem( 'customColorProperty' ),
+        phetioFeatured: true
       } );
 
       this.materialProperty.addPhetioStateDependencies( [ this.materialEnumProperty, this.customDensityProperty, this.customColorProperty ] );

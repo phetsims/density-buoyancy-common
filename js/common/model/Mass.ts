@@ -279,7 +279,8 @@ export default abstract class Mass extends PhetioObject {
 
     this.inputEnabledProperty = new BooleanProperty( true, combineOptions<BooleanPropertyOptions>( {
       tandem: tandem?.createTandem( 'inputEnabledProperty' ),
-      phetioDocumentation: 'Sets whether the element will have input enabled, and hence be interactive'
+      phetioDocumentation: 'Sets whether the element will have input enabled, and hence be interactive',
+      phetioFeatured: true
     }, options.inputEnabledPropertyOptions ) );
 
     this.internalVisibleProperty = new BooleanProperty( options.visible, {

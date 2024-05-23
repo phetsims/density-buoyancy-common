@@ -52,6 +52,7 @@ export default abstract class Basin {
 
     this.liquidVolumeProperty = new NumberProperty( options.initialVolume, {
       tandem: tandem.createTandem( 'liquidVolumeProperty' ),
+      phetioFeatured: true,
       phetioReadOnly: true,
       range: new Range( 0, Number.POSITIVE_INFINITY ),
       phetioDocumentation: 'The volume of liquid contained in the basin',

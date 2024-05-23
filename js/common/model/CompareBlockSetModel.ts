@@ -117,6 +117,7 @@ export default class CompareBlockSetModel extends BlockSetModel<BlockSet> {
       range: options.sameDensityRange,
 
       tandem: tandem.createTandem( 'densityProperty' ),
+      phetioFeatured: true,
       units: 'kg/m^3'
     } );
 

@@ -398,6 +398,7 @@ export default abstract class Mass extends PhetioObject {
       tandem: tandem?.createTandem( 'massProperty' ),
       phetioReadOnly: true,
       phetioState: false,
+      phetioFeatured: true,
       phetioDocumentation: 'Current mass of the block. Changing the mass will result in changes to the volume (Intro and ' +
                            'Mystery Screens) or density (Compare Screen). Since the volume is computed as a function of ' +
                            'the mass, you can only set a mass that will keep the volume in range.',

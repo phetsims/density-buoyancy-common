@@ -102,6 +102,7 @@ export default class CompareBlockSetModel extends BlockSetModel<BlockSet> {
     const massProperty = new NumberProperty( options.sameMassValue, {
       range: options.sameMassRange,
       tandem: tandem.createTandem( 'massProperty' ),
+      phetioFeatured: true,
       units: 'kg'
     } );
 

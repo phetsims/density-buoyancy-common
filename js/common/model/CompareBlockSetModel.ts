@@ -109,6 +109,7 @@ export default class CompareBlockSetModel extends BlockSetModel<BlockSet> {
     const volumeProperty = new NumberProperty( options.sameVolumeValue, {
       range: options.sameVolumeRange,
       tandem: tandem.createTandem( 'volumeProperty' ),
+      phetioFeatured: true,
       units: 'm^3'
     } );
 

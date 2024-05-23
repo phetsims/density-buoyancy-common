@@ -381,6 +381,7 @@ export default abstract class Mass extends PhetioObject {
 
     this.volumeProperty = new NumberProperty( options.volume, combineOptions<NumberPropertyOptions>( {
       tandem: tandem?.createTandem( 'volumeProperty' ),
+      phetioFeatured: true,
       range: new Range( options.minVolume, options.maxVolume ),
       phetioReadOnly: true,
       phetioDocumentation: 'Current volume of the block. Changing the volume will result in changes to the mass, but will not change the material or density.',

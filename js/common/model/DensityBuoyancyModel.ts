@@ -162,6 +162,7 @@ export default class DensityBuoyancyModel implements TModel {
     // DerivedProperty doesn't need disposal, since everything here lives for the lifetime of the simulation
     this.liquidDensityProperty = new DerivedProperty( [ this.liquidMaterialProperty ], liquidMaterial => liquidMaterial.density, {
       tandem: tandem.createTandem( 'liquidDensityProperty' ),
+      phetioFeatured: true,
       phetioValueType: NumberIO,
       units: 'kg/m^3'
     } );

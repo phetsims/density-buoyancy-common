@@ -99,6 +99,7 @@ export default class BuoyancyApplicationsModel extends DensityBuoyancyModel {
     this.customDensityProperty = new NumberProperty( 1, {
       range: new Range( 0.05, 20 ),
       tandem: tandem.createTandem( 'customDensityProperty' ),
+      phetioFeatured: true,
       units: 'kg/L'
     } );
     this.customDensityControlVisibleProperty = new DerivedProperty( [ this.bottle.interiorMaterialProperty ],

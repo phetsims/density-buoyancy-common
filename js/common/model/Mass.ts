@@ -315,6 +315,7 @@ export default abstract class Mass extends PhetioObject {
       } );
       this.customDensityProperty = new NumberProperty( options.material.density, {
         tandem: tandem?.createTandem( 'customDensityProperty' ),
+        phetioFeatured: true,
         phetioDocumentation: 'Density of the block when the material is set to “CUSTOM”.',
         range: new Range( 150, 23000 ),
         units: 'kg/m^3'

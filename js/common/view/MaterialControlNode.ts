@@ -103,6 +103,7 @@ export default class MaterialControlNode extends VBox {
       reentrant: true,
       phetioState: false,
       tandem: options.tandem.createTandem( 'comboBoxMaterialProperty' ),
+      phetioFeatured: true,
       phetioDocumentation: 'Current material of the block. Changing the material will result in changes to the mass, but the volume will remain the same.',
       validValues: materialNames,
       phetioValueType: StringIO

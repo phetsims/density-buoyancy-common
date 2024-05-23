@@ -51,7 +51,8 @@ export default class FluidSelectionPanel extends Panel {
           comboBoxListItemNodeOptions: {
             visible: VISIBLE_FLUIDS.includes( material )
           },
-          tandemName: `${material.tandemName}Item`
+          tandemName: `${material.tandemName}Item`,
+          a11yName: material.nameProperty
         };
       } ),
       listParent, {

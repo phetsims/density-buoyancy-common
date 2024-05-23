@@ -38,7 +38,10 @@ export default class BlocksPanel extends Panel {
               tandem: tandem.createTandem( 'labelText' )
             } ),
             value: blockSet,
-            tandemName: `${blockSet.tandemName}RadioButton`
+            tandemName: `${blockSet.tandemName}RadioButton`,
+
+            // pdom
+            labelContent: blockSet.stringProperty
           };
         } ), {
           align: 'left',

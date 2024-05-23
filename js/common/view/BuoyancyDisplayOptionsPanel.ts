@@ -78,7 +78,9 @@ export default class BuoyancyDisplayOptionsPanel extends Panel {
                 // Gravity
                 new Checkbox( model.showGravityForceProperty, new Text( DensityBuoyancyCommonStrings.gravity.nameStringProperty, labelOptions ), combineOptions<CheckboxOptions>( {
                   layoutOptions: { column: 0, row: 0 },
-                  tandem: options.tandem.createTandem( 'gravityCheckbox' )
+                  tandem: options.tandem.createTandem( 'gravityCheckbox' ),
+                  containerTagName: 'p',
+                  accessibleName: DensityBuoyancyCommonStrings.gravity.nameStringProperty
                 }, checkboxOptions ) ),
                 new ArrowNode( 0, 0, arrowLength, 0, combineOptions<ArrowNodeOptions>( {
                   layoutOptions: { column: 1, row: 0 },
@@ -88,7 +90,9 @@ export default class BuoyancyDisplayOptionsPanel extends Panel {
                 // Buoyancy
                 new Checkbox( model.showBuoyancyForceProperty, new Text( DensityBuoyancyCommonStrings.buoyancyStringProperty, labelOptions ), combineOptions<CheckboxOptions>( {
                   layoutOptions: { column: 0, row: 1 },
-                  tandem: options.tandem.createTandem( 'buoyancyCheckbox' )
+                  tandem: options.tandem.createTandem( 'buoyancyCheckbox' ),
+                  containerTagName: 'p',
+                  accessibleName: DensityBuoyancyCommonStrings.buoyancyStringProperty
                 }, checkboxOptions ) ),
                 new ArrowNode( 0, 0, arrowLength, 0, combineOptions<ArrowNodeOptions>( {
                   layoutOptions: { column: 1, row: 1 },
@@ -98,7 +102,9 @@ export default class BuoyancyDisplayOptionsPanel extends Panel {
                 // Contact
                 new Checkbox( model.showContactForceProperty, new Text( DensityBuoyancyCommonStrings.contactStringProperty, labelOptions ), combineOptions<CheckboxOptions>( {
                   layoutOptions: { column: 0, row: 2 },
-                  tandem: options.tandem.createTandem( 'contactCheckbox' )
+                  tandem: options.tandem.createTandem( 'contactCheckbox' ),
+                  containerTagName: 'p',
+                  accessibleName: DensityBuoyancyCommonStrings.contactStringProperty
                 }, checkboxOptions ) ),
                 new ArrowNode( 0, 0, arrowLength, 0, combineOptions<ArrowNodeOptions>( {
                   layoutOptions: { column: 1, row: 2 },
@@ -128,7 +134,9 @@ export default class BuoyancyDisplayOptionsPanel extends Panel {
 
                 new Checkbox( model.showForceValuesProperty, new Text( DensityBuoyancyCommonStrings.forceValuesStringProperty, labelOptions ), combineOptions<CheckboxOptions>( {
                   tandem: options.tandem.createTandem( 'forcesCheckbox' ),
-                  layoutOptions: { column: 0, row: 4 }
+                  layoutOptions: { column: 0, row: 4 },
+                  containerTagName: 'p',
+                  accessibleName: DensityBuoyancyCommonStrings.forceValuesStringProperty
                 }, checkboxOptions ) )
               ]
             } ),
@@ -138,11 +146,15 @@ export default class BuoyancyDisplayOptionsPanel extends Panel {
               align: 'left',
               children: [
                 new Checkbox( model.showMassValuesProperty, new Text( DensityBuoyancyCommonStrings.massValuesStringProperty, labelOptions ), combineOptions<CheckboxOptions>( {
-                  tandem: options.tandem.createTandem( 'massValuesCheckbox' )
+                  tandem: options.tandem.createTandem( 'massValuesCheckbox' ),
+                  containerTagName: 'p',
+                  accessibleName: DensityBuoyancyCommonStrings.massValuesStringProperty
                 }, checkboxOptions ) ),
                 ...( model.supportsDepthLines ?
                   [ new Checkbox( model.showDepthLinesProperty, new Text( DensityBuoyancyCommonStrings.depthLinesStringProperty, labelOptions ), combineOptions<CheckboxOptions>( {
-                    tandem: options.tandem.createTandem( 'depthLinesCheckbox' )
+                    tandem: options.tandem.createTandem( 'depthLinesCheckbox' ),
+                    containerTagName: 'p',
+                    accessibleName: DensityBuoyancyCommonStrings.depthLinesStringProperty
                   }, checkboxOptions ) ) ] : [] )
               ]
             } )

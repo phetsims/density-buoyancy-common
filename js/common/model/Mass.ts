@@ -291,8 +291,10 @@ export default abstract class Mass extends PhetioObject {
       phetioReadOnly: true
     } );
 
+    // REVIEW: This is very confusing, tandem names don't match
     this.studioVisibleProperty = new BooleanProperty( true, {
-      tandem: tandem?.createTandem( 'visibleProperty' )
+      tandem: tandem?.createTandem( 'visibleProperty' ),
+      phetioFeatured: true
     } );
 
     this.visibleProperty = DerivedProperty.and( [ this.internalVisibleProperty, this.studioVisibleProperty ], {

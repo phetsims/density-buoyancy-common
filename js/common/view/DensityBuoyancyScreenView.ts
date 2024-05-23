@@ -66,6 +66,7 @@ import NumberIO from '../../../../tandem/js/types/NumberIO.js';
 import Utils from '../../../../dot/js/Utils.js';
 import createObservableArray, { ObservableArray } from '../../../../axon/js/createObservableArray.js';
 import Emitter from '../../../../axon/js/Emitter.js';
+import { Shape } from '../../../../kite/js/imports.js';
 
 // constants
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
@@ -180,10 +181,21 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
 
     let mouse: Mouse | null = null;
 
+    // Empty shape to use when 3d objects are not focused
+    const emptyShapeProperty = new Property( Shape.rectangle( 0, 0, 0, 0 ) );
+
     const updateCursor = ( newMouse?: Mouse ) => {
       mouse = newMouse || mouse;
       if ( mouse ) {
-        this.sceneNode.backgroundEventTarget.cursor = this.getMassUnderPointer( mouse, false ) ? 'pointer' : null;
+        const massUnderPointer = this.getMassUnderPointer( mouse, false );
+        this.sceneNode.backgroundEventTarget.cursor = massUnderPointer ? 'pointer' : null;
+
+        this.massViews.forEach( massView => {
+          if ( massView.focusablePath ) {
+            massView.focusablePath.shapeProperty = massView.mass === massUnderPointer ?
+                                                   massView.focusableShapeProperty : emptyShapeProperty;
+          }
+        } );
       }
     };
 

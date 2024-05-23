@@ -41,6 +41,7 @@ export default abstract class MassView extends Disposable {
   protected readonly tagOffsetProperty: Property<Vector3> = new Property<Vector3>( Vector3.ZERO );
 
   public readonly focusablePath: Path | null;
+  public readonly focusableShapeProperty = new Property( new Shape() );
 
   protected constructor( mass: Mass, initialGeometry: THREE.BufferGeometry,
                          protected readonly modelViewTransform: THREEModelViewTransform,
@@ -92,8 +93,10 @@ export default abstract class MassView extends Disposable {
 
         // Update the shape based on the current view of the mass in 3d space
         const shape = Shape.polygon( ConvexHull2.grahamScan( massViewPoints, false ) );
+
+        this.focusableShapeProperty.value = shape;
+
         this.focusablePath.focusHighlight = shape;
-        this.focusablePath.shape = shape;
       }
 
       this.massTagNode && repositionMassTagNode();
@@ -103,7 +106,7 @@ export default abstract class MassView extends Disposable {
 
     if ( mass.canMove ) {
 
-      this.focusablePath = new InteractiveHighlightingPath( new Shape(), {
+      this.focusablePath = new InteractiveHighlightingPath( this.focusableShapeProperty, {
         accessibleName: this.mass.nameProperty.value ? this.mass.nameProperty.value : 'Mass',
         tagName: 'div',
         focusable: true

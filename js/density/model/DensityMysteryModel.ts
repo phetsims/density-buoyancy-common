@@ -6,7 +6,6 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
-import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
 import StrictOmit from '../../../../phet-core/js/types/StrictOmit.js';
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import dotRandom from '../../../../dot/js/dotRandom.js';
@@ -24,7 +23,6 @@ import DensityBuoyancyCommonColors from '../../common/view/DensityBuoyancyCommon
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyModel from '../../common/model/DensityBuoyancyModel.js';
 import Cuboid from '../../common/model/Cuboid.js';
-import Property from '../../../../axon/js/Property.js';
 import MassTag from '../../common/model/MassTag.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import LocalizedStringProperty from '../../../../chipper/js/LocalizedStringProperty.js';

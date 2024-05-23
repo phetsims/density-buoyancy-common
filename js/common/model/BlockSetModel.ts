@@ -54,7 +54,8 @@ export default class BlockSetModel<BlockSetValue extends EnumerationValue> exten
 
     // {Property.<BlockSetValue>}
     this.blockSetProperty = new EnumerationProperty( options.initialMode, {
-      tandem: tandem.createTandem( 'blockSets' ).createTandem( 'blockSetProperty' )
+      tandem: tandem.createTandem( 'blockSets' ).createTandem( 'blockSetProperty' ),
+      phetioDocumentation: 'Controls the set of blocks to be displayed'
     } );
 
     this.createMassesCallback = options.createMassesCallback;

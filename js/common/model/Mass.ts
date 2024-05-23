@@ -310,6 +310,7 @@ export default abstract class Mass extends PhetioObject {
     if ( options.adjustableMaterial ) {
       this.materialEnumProperty = new EnumerationProperty( materialToEnum( options.material ), {
         tandem: tandem?.createTandem( 'materialEnumProperty' ),
+        phetioFeatured: true,
         phetioDocumentation: 'Current material of the block. Changing the material will result in changes to the mass, but the volume will remain the same.'
       } );
       this.customDensityProperty = new NumberProperty( options.material.density, {

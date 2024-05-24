@@ -9,7 +9,7 @@
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import { combineOptions } from '../../../../phet-core/js/optionize.js';
-import { AlignBox, HBox, ManualConstraint, Node, RichText, VBox } from '../../../../scenery/js/imports.js';
+import { AlignBox, ManualConstraint, Node, VBox } from '../../../../scenery/js/imports.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 import Material from '../../common/model/Material.js';
 import DensityBuoyancyScreenView, { DensityBuoyancyScreenViewOptions } from '../../common/view/DensityBuoyancyScreenView.js';
@@ -27,14 +27,9 @@ import Vector3 from '../../../../dot/js/Vector3.js';
 import Bounds2 from '../../../../dot/js/Bounds2.js';
 import ScaleHeightControl from '../../common/view/ScaleHeightControl.js';
 import FluidSelectionPanel from '../../buoyancy/view/FluidSelectionPanel.js';
-import AccordionBox, { AccordionBoxOptions } from '../../../../sun/js/AccordionBox.js';
-import DensityNumberLineNode, { DensityNumberLineLegend, DisplayDensity } from '../../density/view/DensityNumberLineNode.js';
-import DensityBuoyancyCommonPreferences from '../../common/model/DensityBuoyancyCommonPreferences.js';
-import DensityBuoyancyCommonColors from '../../common/view/DensityBuoyancyCommonColors.js';
 import CuboidView from '../../common/view/CuboidView.js';
 import ScaleView from '../../common/view/ScaleView.js';
 import MassView from '../../common/view/MassView.js';
-import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
 
 // constants
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
@@ -151,87 +146,6 @@ export default class BuoyancyBasicsExploreScreenView extends DensityBuoyancyScre
       margin: MARGIN
     } ) );
 
-    const displayDensities: DisplayDensity[] = [
-      // DerivedProperty doesn't need disposal, since everything here lives for the lifetime of the simulation
-      {
-        densityProperty: new DerivedProperty( [ model.liquidDensityProperty ], density => density ),
-        nameProperty: DensityBuoyancyCommonStrings.fluidStringProperty,
-        visibleProperty: new BooleanProperty( true ),
-        isHiddenProperty: new BooleanProperty( false ),
-        color: DensityBuoyancyCommonColors.liquidLabelProperty
-      },
-      {
-        densityProperty: new DerivedProperty( [ model.primaryMass.materialProperty ], material => material.density ),
-        nameProperty: model.primaryMass.tag.nameProperty,
-        visibleProperty: new BooleanProperty( true ),
-        isHiddenProperty: new DerivedProperty( [ model.primaryMass.materialProperty ], material => material.hidden ),
-        color: DensityBuoyancyCommonColors.labelPrimaryProperty
-      },
-      {
-        densityProperty: new DerivedProperty( [ model.secondaryMass.materialProperty ], material => material.density ),
-        nameProperty: model.secondaryMass.tag.nameProperty,
-        visibleProperty: model.secondaryMass.visibleProperty,
-        isHiddenProperty: new DerivedProperty( [ model.secondaryMass.materialProperty ], material => material.hidden ),
-        color: DensityBuoyancyCommonColors.labelSecondaryProperty
-      }
-    ];
-
-    const accordionTandem = tandem.createTandem( 'densityAccordionBox' );
-
-    const densityNumberLineNode = new DensityNumberLineNode(
-      {
-        displayDensities: displayDensities,
-        materials: [
-          Material.HUMAN,
-          Material.GLASS,
-          Material.TITANIUM,
-          Material.STEEL,
-          Material.LEAD,
-          Material.MERCURY
-        ],
-        showNumericValue: false,
-        maxDensity: 15000,
-        tandem: accordionTandem.createTandem( 'densityReadout' ),
-        visiblePropertyOptions: {
-          phetioReadOnly: true
-        }
-      }
-    );
-
-    const densityLegend = new DensityNumberLineLegend( displayDensities );
-
-    const densityAccordionBox = new AccordionBox( new HBox( {
-      children: [
-        densityLegend,
-        densityNumberLineNode
-      ]
-    } ), combineOptions<AccordionBoxOptions>( {
-      titleNode: new RichText( new DerivedProperty( [
-        DensityBuoyancyCommonPreferences.volumeUnitsProperty,
-        DensityBuoyancyCommonStrings.densityReadoutStringProperty,
-        DensityBuoyancyCommonStrings.densityReadoutDecimetersCubedStringProperty
-      ], ( units, litersReadout, decimetersCubedReadout ) => {
-        return units === 'liters' ? litersReadout : decimetersCubedReadout;
-      } ), {
-        font: DensityBuoyancyCommonConstants.TITLE_FONT,
-        maxWidth: 200,
-        visiblePropertyOptions: {
-          phetioReadOnly: true
-        },
-        tandem: accordionTandem.createTandem( 'titleText' )
-      } ),
-      expandedDefaultValue: true,
-      buttonAlign: 'left' as const,
-      tandem: accordionTandem
-    }, DensityBuoyancyCommonConstants.ACCORDION_BOX_OPTIONS ) );
-
-    this.addChild( new AlignBox( densityAccordionBox, {
-      alignBoundsProperty: this.visibleBoundsProperty,
-      xAlign: 'left',
-      yAlign: 'top',
-      margin: MARGIN
-    } ) );
-
     const blocksRadioButtonGroup = new BlocksRadioButtonGroup( model.modeProperty, {
       tandem: this.tandem.createTandem( 'blocksRadioButtonGroup' )
     } );
@@ -263,7 +177,6 @@ export default class BuoyancyBasicsExploreScreenView extends DensityBuoyancyScre
 
     this.resetEmitter.addListener( () => {
       submergedAccordionBox.reset();
-      densityAccordionBox.reset();
     } );
 
     const cuboidViews = this.massViews.filter( massView => massView instanceof CuboidView );
@@ -303,7 +216,6 @@ export default class BuoyancyBasicsExploreScreenView extends DensityBuoyancyScre
     this.pdomControlAreaNode.pdomOrder = [
       blocksRadioButtonGroup,
       buoyancyDisplayOptionsPanel,
-      densityAccordionBox,
       submergedAccordionBox,
       this.resetAllButton
     ];

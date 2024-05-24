@@ -96,14 +96,6 @@ export default class BuoyancyBasicsExploreScreenView extends DensityBuoyancyScre
       margin: MARGIN
     } ) );
 
-    [ model.primaryMass, model.secondaryMass ].forEach( mass => {
-      mass.materialProperty.link( material => {
-        if ( material === Material.MATERIAL_X ) {
-          mass.volumeProperty.value = 0.003;
-        }
-      } );
-    } );
-
     const submergedAccordionBox = new SubmergedAccordionBox( {
       contentWidthMax: this.rightBox.content.width,
       tandem: tandem.createTandem( 'submergedAccordionBox' )

@@ -18,6 +18,7 @@ import { combineOptions } from '../../../../phet-core/js/optionize.js';
 import Range from '../../../../dot/js/Range.js';
 import VolumelessScale from '../../common/model/VolumelessScale.js';
 import PoolScaleHeightProperty from '../../common/model/PoolScaleHeightProperty.js';
+import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 
 export type BuoyancyLabModelOptions = DensityBuoyancyModelOptions;
 
@@ -54,7 +55,7 @@ export default class BuoyancyLabModel extends DensityBuoyancyModel {
       }
     } ) );
 
-    this.poolScaleHeightProperty = new PoolScaleHeightProperty( 1, {
+    this.poolScaleHeightProperty = new PoolScaleHeightProperty( DensityBuoyancyCommonConstants.POOL_SCALE_INITIAL_HEIGHT, {
       range: new Range( 0, 1 ),
       tandem: tandem.createTandem( 'poolScaleHeightProperty' )
     } );

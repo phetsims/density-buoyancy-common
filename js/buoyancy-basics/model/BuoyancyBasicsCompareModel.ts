@@ -19,6 +19,7 @@ import DensityBuoyancyCommonColors from '../../common/view/DensityBuoyancyCommon
 import CompareBlockSetModel, { BLOCK_SETS_TANDEM_NAME, CompareBlockSetModelOptions } from '../../common/model/CompareBlockSetModel.js';
 import StrictOmit from '../../../../phet-core/js/types/StrictOmit.js';
 import PoolScaleHeightProperty from '../../common/model/PoolScaleHeightProperty.js';
+import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 
 export type BuoyancyBasicsCompareModelOptions = StrictOmit<CompareBlockSetModelOptions, 'positionMassesCallback' | 'cubesData'>;
 
@@ -110,7 +111,7 @@ export default class BuoyancyBasicsCompareModel extends CompareBlockSetModel {
       }
     } ) );
 
-    this.poolScaleHeightProperty = new PoolScaleHeightProperty( 1, {
+    this.poolScaleHeightProperty = new PoolScaleHeightProperty( DensityBuoyancyCommonConstants.POOL_SCALE_INITIAL_HEIGHT, {
       range: new Range( 0, 1 ),
       tandem: tandem.createTandem( 'poolScaleHeightProperty' )
     } );

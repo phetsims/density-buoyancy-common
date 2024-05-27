@@ -50,7 +50,8 @@ export default class ShapeSizeControlNode extends VBox {
           font: DensityBuoyancyCommonConstants.COMBO_BOX_ITEM_FONT,
           maxWidth: 120 // 160 minus maxwidth of the icons
         } ),
-        tandemName: `${massShape.tandemName}Item`
+        tandemName: `${massShape.tandemName}Item`,
+        a11yName: massShape.shapeString
       };
     } ), listParent, {
       xMargin: 8,

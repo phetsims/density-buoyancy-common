@@ -71,7 +71,9 @@ export default class FluidDisplacedAccordionBox extends AccordionBox {
       contentXMargin: 2,
       contentYMargin: 2,
       contentXSpacing: 2,
-      contentYSpacing: 2
+      contentYSpacing: 2,
+
+      accessibleName: DensityBuoyancyCommonStrings.fluidDisplacedStringProperty
     }, providedOptions );
 
     const displayRange = new Range( 0, maxBeakerVolume );

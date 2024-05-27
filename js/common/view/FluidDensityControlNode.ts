@@ -79,6 +79,7 @@ export default class FluidDensityControlNode extends ComboNumberControl<Material
             maxWidth: 160
           } ),
           tandemName: `${material.tandemName}Item`,
+          a11yName: material.nameProperty,
           comboBoxListItemNodeOptions: {
             visible: !options.invisibleMaterials.includes( material )
           }

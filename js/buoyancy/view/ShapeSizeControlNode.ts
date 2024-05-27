@@ -85,10 +85,16 @@ export default class ShapeSizeControlNode extends VBox {
     };
 
     const widthNumberControl = new NumberControl( DensityBuoyancyCommonStrings.widthStringProperty, widthRatioProperty, new Range( 0, 1 ), combineOptions<NumberControlOptions>( {
-      tandem: options.tandem.createTandem( 'widthNumberControl' )
+      tandem: options.tandem.createTandem( 'widthNumberControl' ),
+      sliderOptions: {
+        accessibleName: DensityBuoyancyCommonStrings.widthStringProperty
+      }
     }, numberControlOptions ) );
     const heightNumberControl = new NumberControl( DensityBuoyancyCommonStrings.heightStringProperty, heightRatioProperty, new Range( 0, 1 ), combineOptions<NumberControlOptions>( {
-      tandem: options.tandem.createTandem( 'heightNumberControl' )
+      tandem: options.tandem.createTandem( 'heightNumberControl' ),
+      sliderOptions: {
+        accessibleName: DensityBuoyancyCommonStrings.heightStringProperty
+      }
     }, numberControlOptions ) );
 
     // DerivedProperty doesn't need disposal, since everything here lives for the lifetime of the simulation

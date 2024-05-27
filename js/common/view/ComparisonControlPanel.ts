@@ -65,7 +65,8 @@ export default class ComparisonControlPanel extends Panel {
         } ),
         sliderOptions: {
           phetioLinkedProperty: massProperty,
-          trackSize: options.sliderTrackSize
+          trackSize: options.sliderTrackSize,
+          accessibleName: DensityBuoyancyCommonStrings.massStringProperty
         }
       }
     );
@@ -83,7 +84,8 @@ export default class ComparisonControlPanel extends Panel {
         } ),
         sliderOptions: {
           phetioLinkedProperty: volumeProperty,
-          trackSize: options.sliderTrackSize
+          trackSize: options.sliderTrackSize,
+          accessibleName: DensityBuoyancyCommonStrings.volumeStringProperty
         }
       }
     );
@@ -101,7 +103,8 @@ export default class ComparisonControlPanel extends Panel {
         } ),
         sliderOptions: {
           phetioLinkedProperty: densityProperty,
-          trackSize: options.sliderTrackSize
+          trackSize: options.sliderTrackSize,
+          accessibleName: DensityBuoyancyCommonStrings.densityStringProperty
         }
       }
     );

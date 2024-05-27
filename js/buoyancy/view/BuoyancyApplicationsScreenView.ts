@@ -136,6 +136,7 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
     const customBottleDensityControl = new NumberControl( DensityBuoyancyCommonStrings.densityStringProperty, model.customDensityProperty, model.customDensityProperty.range, combineOptions<NumberControlOptions>( {
       visibleProperty: model.customDensityControlVisibleProperty,
       sliderOptions: {
+        accessibleName: DensityBuoyancyCommonStrings.densityStringProperty,
         thumbNode: new PrecisionSliderThumb( {
           tandem: customBottleDensityControlTandem.createTandem( 'slider' ).createTandem( 'thumbNode' )
         } )
@@ -246,7 +247,8 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
             }, {
               value: boatVolumeRange.max,
               label: new Text( boatVolumeRange.max, { font: new PhetFont( 12 ), maxWidth: 50 } )
-            } ]
+            } ],
+            accessibleName: DensityBuoyancyCommonStrings.boatVolumeStringProperty
           },
           tandem: boatVolumeControlTandem
         } ) )

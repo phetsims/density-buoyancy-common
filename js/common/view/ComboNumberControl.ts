@@ -238,7 +238,10 @@ export default class ComboNumberControl<T> extends VBox {
     } );
 
     this.numberControl = new NumberControl( options.titleProperty, this.numberProperty, options.range, combineOptions<NumberControlOptions>( {
-      tandem: options.tandem.createTandem( 'numberControl' )
+      tandem: options.tandem.createTandem( 'numberControl' ),
+      sliderOptions: {
+        accessibleName: options.titleProperty
+      }
     }, options.numberControlOptions ) );
     this.numberControl.addLinkedElement( this.property, {
       tandemName: 'valueProperty'

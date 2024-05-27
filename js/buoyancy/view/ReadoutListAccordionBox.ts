@@ -20,6 +20,7 @@ import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js'
 import PatternStringProperty from '../../../../axon/js/PatternStringProperty.js';
 import TinyProperty from '../../../../axon/js/TinyProperty.js';
 import WithRequired from '../../../../phet-core/js/types/WithRequired.js';
+import DerivedStringProperty from '../../../../axon/js/DerivedStringProperty.js';
 
 const DEFAULT_FONT = new PhetFont( 14 );
 const HBOX_SPACING = 5;
@@ -116,7 +117,13 @@ export default abstract class ReadoutListAccordionBox<ReadoutType> extends Accor
       const labelText = new RichText( nameColonProperty, TEXT_OPTIONS );
       const readoutFormat = readoutItem.readoutFormat ? readoutItem.readoutFormat : {};
       const valueText = new RichText( readoutData.valueProperty,
-        combineOptions<RichTextOptions>( {}, TEXT_OPTIONS, readoutFormat ) );
+        combineOptions<RichTextOptions>( {
+          // A11y content for the PDOM
+          tagName: 'p',
+          innerContent: new DerivedStringProperty( [ nameColonProperty, readoutData.valueProperty ], ( name, value ) => {
+            return `${name} ${value}`;
+          } )
+        }, TEXT_OPTIONS, readoutFormat ) );
 
       const maxWidthListener = ( contentWidthMax: number ) => {
         const maxWidth = ( contentWidthMax - HBOX_SPACING ) / 2;

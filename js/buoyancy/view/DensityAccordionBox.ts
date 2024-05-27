@@ -29,7 +29,8 @@ export default class DensityAccordionBox extends ReadoutListAccordionBox<Density
   public constructor( providedOptions?: DensityAccordionBoxOptions ) {
 
     const options = optionize<DensityAccordionBoxOptions, SelfOptions, ParentOptions>()( {
-      expandedDefaultValue: false
+      expandedDefaultValue: false,
+      accessibleName: DensityBuoyancyCommonStrings.densityStringProperty
     }, providedOptions );
 
     super( DensityBuoyancyCommonStrings.densityStringProperty, options );

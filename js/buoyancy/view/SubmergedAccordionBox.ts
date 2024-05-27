@@ -26,7 +26,9 @@ export default class SubmergedAccordionBox extends ReadoutListAccordionBox<Subme
     const options = combineOptions<ReadoutListAccordionBoxOptions<SubmergedReadoutType>>( {
       visibleProperty: DensityBuoyancyCommonPreferences.percentageSubmergedVisibleProperty,
       readoutItems: [],
-      expandedDefaultValue: false
+      expandedDefaultValue: false,
+
+      accessibleName: DensityBuoyancyCommonStrings.percentSubmergedStringProperty
     }, providedOptions );
 
     super( DensityBuoyancyCommonStrings.percentSubmergedStringProperty, options );

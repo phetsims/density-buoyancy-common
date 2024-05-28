@@ -96,8 +96,6 @@ export default class BuoyancyBasicsExploreModel extends DensityBuoyancyModel {
     this.availableMasses.push( this.poolScale );
 
     this.showMassValuesProperty.value = false;
-
-    this.showMassValuesProperty.value = true;
   }
 
   /**

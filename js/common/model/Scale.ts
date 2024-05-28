@@ -119,6 +119,7 @@ export default class Scale extends Mass {
       interpolate: InterpolatedProperty.interpolateNumber,
       phetioValueType: NumberIO,
       tandem: options.tandem.createTandem( 'scaleForceInterpolatedProperty' ),
+      phetioFeatured: true,
       units: 'N',
       phetioReadOnly: true,
       phetioHighFrequency: true

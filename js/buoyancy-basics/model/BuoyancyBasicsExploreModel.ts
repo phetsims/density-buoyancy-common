@@ -39,7 +39,7 @@ export default class BuoyancyBasicsExploreModel extends DensityBuoyancyModel {
     const tandem = options.tandem;
 
     super( combineOptions<DensityBuoyancyModelOptions>( {
-      usePoolScale: false, // Create our own for the ScaleHeightControl
+      usePoolScale: false, // Create our own for the PoolScaleHeightControl
       supportsDepthLines: true
     }, options ) );
 
@@ -86,7 +86,7 @@ export default class BuoyancyBasicsExploreModel extends DensityBuoyancyModel {
     this.poolScale = new VolumelessScale( this.engine, this.gravityProperty, {
       displayType: DisplayType.NEWTONS,
       tandem: tandem.createTandem( 'poolScale' ),
-      canMove: false, // No input listeners, but the ScaleHeightControl can still move it
+      canMove: false, // No input listeners, but the PoolScaleHeightControl can still move it
       inputEnabledPropertyOptions: {
         phetioReadOnly: true
       }

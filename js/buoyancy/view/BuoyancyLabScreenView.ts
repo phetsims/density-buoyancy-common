@@ -31,7 +31,7 @@ import ThreeUtils from '../../../../mobius/js/ThreeUtils.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
 import ScaleView from '../../common/view/ScaleView.js';
 import Bounds2 from '../../../../dot/js/Bounds2.js';
-import ScaleHeightControl from '../../common/view/ScaleHeightControl.js';
+import PoolScaleHeightControl from '../../common/view/PoolScaleHeightControl.js';
 import fluid_displaced_scale_icon_png from '../../../images/fluid_displaced_scale_icon_png.js';
 import CuboidView from '../../common/view/CuboidView.js';
 
@@ -42,7 +42,7 @@ const DESIRED_LEFT_SIDE_MARGIN = DensityBuoyancyCommonConstants.MARGIN;
 export default class BuoyancyLabScreenView extends DensityBuoyancyScreenView<BuoyancyLabModel> {
 
   private readonly rightBox: MultiSectionPanelsNode;
-  private readonly scaleHeightControl: ScaleHeightControl;
+  private readonly scaleHeightControl: PoolScaleHeightControl;
 
   public constructor( model: BuoyancyLabModel, options: DensityBuoyancyScreenViewOptions ) {
 
@@ -184,7 +184,7 @@ export default class BuoyancyLabScreenView extends DensityBuoyancyScreenView<Buo
       strictAxonDependencies: false // This workaround is deemed acceptable for visibleBoundsProperty listening, https://github.com/phetsims/faradays-electromagnetic-lab/issues/65
     } );
 
-    this.scaleHeightControl = new ScaleHeightControl( model.poolScale, model.poolScaleHeightProperty,
+    this.scaleHeightControl = new PoolScaleHeightControl( model.poolScale, model.poolScaleHeightProperty,
       model.poolBounds, model.pool.liquidYInterpolatedProperty, this, {
         tandem: tandem.createTandem( 'scaleHeightControl' )
       } );

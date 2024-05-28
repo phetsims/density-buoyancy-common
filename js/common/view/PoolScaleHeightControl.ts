@@ -4,8 +4,6 @@
  * Slider control with tweaker buttons that changes the height of the Scale for some screens in the density-buoyancy
  * suite of sims.
  *
- * TODO: Rename to "PoolScaleHeightControl"? https://github.com/phetsims/density-buoyancy-common/issues/95
- *
  * @author Agustín Vallejo
  */
 
@@ -29,6 +27,7 @@ import NumberDisplay from '../../../../scenery-phet/js/NumberDisplay.js';
 import ArrowButton from '../../../../sun/js/buttons/ArrowButton.js';
 import Orientation from '../../../../phet-core/js/Orientation.js';
 import WithRequired from '../../../../phet-core/js/types/WithRequired.js';
+import { Shape } from '../../../../kite/js/imports.js';
 
 // constants
 const DEFAULT_RANGE = new Range( 0, 1 );
@@ -36,7 +35,7 @@ const SCALE_X_POSITION = 0.35;
 
 type ScaleHeightSliderOptions = EmptySelfOptions & WithRequired<NumberControlOptions, 'tandem'>;
 
-export default class ScaleHeightControl extends NumberControl {
+export default class PoolScaleHeightControl extends NumberControl {
 
   public constructor( scale: Scale, heightProperty: Property<number>,
                       poolBounds: Bounds3,
@@ -46,8 +45,14 @@ export default class ScaleHeightControl extends NumberControl {
 
     const sliderTandem = providedOptions.tandem;
     const thumbTandem = sliderTandem.createTandem( 'slider' ).createTandem( 'thumbNode' );
+
+    // We add this shape to the interactive area so the user can also drag the scale directly (it's part of the thumb)
+    const thumbInteractionArea = Shape.rect( -5, -125, 40, 100 );
     const thumbNode = new PrecisionSliderThumb( {
-      tandem: thumbTandem
+      tandem: thumbTandem,
+
+      // This area is in addition to the default mouse area, touch area is set below
+      mouseArea: thumbInteractionArea
     } );
 
     // This magic number accomplishes two things:
@@ -97,7 +102,9 @@ export default class ScaleHeightControl extends NumberControl {
       scale.writeData();
       scale.transformedEmitter.emit();
     } );
+
+    thumbNode.touchArea = thumbInteractionArea.copy().rect( -10, -10, 20, 50 );
   }
 }
 
-densityBuoyancyCommon.register( 'ScaleHeightControl', ScaleHeightControl );
+densityBuoyancyCommon.register( 'PoolScaleHeightControl', PoolScaleHeightControl );

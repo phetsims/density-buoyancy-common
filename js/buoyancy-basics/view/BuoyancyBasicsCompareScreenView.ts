@@ -29,7 +29,7 @@ import Bounds2 from '../../../../dot/js/Bounds2.js';
 import DensityMaterials from '../../common/view/DensityMaterials.js';
 import ThreeUtils from '../../../../mobius/js/ThreeUtils.js';
 import DensityBuoyancyCommonColors from '../../common/view/DensityBuoyancyCommonColors.js';
-import ScaleHeightControl from '../../common/view/ScaleHeightControl.js';
+import PoolScaleHeightControl from '../../common/view/PoolScaleHeightControl.js';
 import FluidSelectionPanel from '../../buoyancy/view/FluidSelectionPanel.js';
 import ComparisonControlPanel from '../../common/view/ComparisonControlPanel.js';
 import Dimension2 from '../../../../dot/js/Dimension2.js';
@@ -51,7 +51,7 @@ export default class BuoyancyBasicsCompareScreenView extends DensityBuoyancyScre
 
   private readonly rightSideMaxContentWidthProperty = new Property( MAX_RIGHT_SIDE_CONTENT_WIDTH );
   private readonly rightSidePanelsVBox: Node;
-  private readonly scaleHeightControl: ScaleHeightControl;
+  private readonly scaleHeightControl: PoolScaleHeightControl;
 
   public constructor( model: BuoyancyBasicsCompareModel, options: DensityBuoyancyScreenViewOptions ) {
 
@@ -171,7 +171,7 @@ export default class BuoyancyBasicsCompareScreenView extends DensityBuoyancyScre
     this.addChild( this.rightSidePanelsVBox );
 
     // Info button and associated dialog
-    this.scaleHeightControl = new ScaleHeightControl( model.poolScale, model.poolScaleHeightProperty,
+    this.scaleHeightControl = new PoolScaleHeightControl( model.poolScale, model.poolScaleHeightProperty,
       model.poolBounds, model.pool.liquidYInterpolatedProperty, this, {
         tandem: options.tandem.createTandem( 'scaleHeightControl' )
       } );

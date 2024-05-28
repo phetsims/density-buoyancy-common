@@ -64,7 +64,7 @@ export default class BuoyancyLabModel extends DensityBuoyancyModel {
     this.poolScale = new VolumelessScale( this.engine, this.gravityProperty, {
       displayType: DisplayType.NEWTONS,
       tandem: tandem.createTandem( 'poolScale' ),
-      canMove: false, // No input listeners, but the ScaleHeightControl can still move it
+      canMove: false, // No input listeners, but the PoolScaleHeightControl can still move it
       inputEnabledPropertyOptions: {
         phetioReadOnly: true
       }

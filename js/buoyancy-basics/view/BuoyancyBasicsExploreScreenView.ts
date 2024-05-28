@@ -25,7 +25,7 @@ import BlocksRadioButtonGroup from '../../common/view/BlocksRadioButtonGroup.js'
 import BuoyancyExploreScreenView from '../../buoyancy/view/BuoyancyExploreScreenView.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
 import Bounds2 from '../../../../dot/js/Bounds2.js';
-import ScaleHeightControl from '../../common/view/ScaleHeightControl.js';
+import PoolScaleHeightControl from '../../common/view/PoolScaleHeightControl.js';
 import FluidSelectionPanel from '../../buoyancy/view/FluidSelectionPanel.js';
 import CuboidView from '../../common/view/CuboidView.js';
 import ScaleView from '../../common/view/ScaleView.js';
@@ -37,7 +37,7 @@ const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
 export default class BuoyancyBasicsExploreScreenView extends DensityBuoyancyScreenView<BuoyancyBasicsExploreModel> {
 
   protected readonly rightBox: PrimarySecondaryControlsNode;
-  private readonly scaleHeightControl: ScaleHeightControl;
+  private readonly scaleHeightControl: PoolScaleHeightControl;
 
   public constructor( model: BuoyancyBasicsExploreModel, options: DensityBuoyancyScreenViewOptions ) {
 
@@ -158,7 +158,7 @@ export default class BuoyancyBasicsExploreScreenView extends DensityBuoyancyScre
     } );
 
     // Info button and associated dialog
-    this.scaleHeightControl = new ScaleHeightControl( model.poolScale, model.poolScaleHeightProperty,
+    this.scaleHeightControl = new PoolScaleHeightControl( model.poolScale, model.poolScaleHeightProperty,
       model.poolBounds, model.pool.liquidYInterpolatedProperty, this, {
         tandem: options.tandem.createTandem( 'scaleHeightControl' )
       } );

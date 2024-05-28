@@ -365,6 +365,15 @@ export default class DensityMysteryModel extends BlockSetModel<MysteryBlockSet> 
       tandem: tandem.createTandem( 'scale' ),
       massPropertyOptions: {
         phetioFeatured: false
+      },
+      materialPropertyOptions: {
+        phetioFeatured: false
+      },
+      volumePropertyOptions: {
+        phetioFeatured: false
+      },
+      inputEnabledPropertyOptions: {
+        phetioFeatured: false
       }
     } );
     this.availableMasses.push( this.scale );

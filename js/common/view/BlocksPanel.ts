@@ -21,8 +21,29 @@ import Tandem from '../../../../tandem/js/Tandem.js';
 import Property from '../../../../axon/js/Property.js';
 
 export default class BlocksPanel extends Panel {
-  public constructor( blockSetProperty: Property<BlockSet>, tandem: Tandem ) {
+  public constructor( blockSetProperty: Property<BlockSet>, radioButtonGroupVisiblePropertyPhetioFeatured: boolean, tandem: Tandem ) {
     const blocksRadioButtonGroupTandem = tandem.createTandem( 'blocksRadioButtonGroup' );
+    const verticalAquaRadioButtonGroup = new VerticalAquaRadioButtonGroup( blockSetProperty, BlockSet.enumeration.values.map( blockSet => {
+      return {
+        createNode: tandem => new Text( blockSet.stringProperty, {
+          font: DensityBuoyancyCommonConstants.RADIO_BUTTON_FONT,
+          maxWidth: 160,
+          tandem: tandem.createTandem( 'labelText' )
+        } ),
+        value: blockSet,
+        tandemName: `${blockSet.tandemName}RadioButton`,
+
+        // pdom
+        labelContent: blockSet.stringProperty
+      };
+    } ), {
+      align: 'left',
+      spacing: 8,
+      tandem: blocksRadioButtonGroupTandem,
+      visiblePropertyOptions: {
+        phetioFeatured: radioButtonGroupVisiblePropertyPhetioFeatured
+      }
+    } );
     super( new VBox( {
       children: [
         new Text( DensityBuoyancyCommonStrings.blocksStringProperty, {
@@ -30,24 +51,7 @@ export default class BlocksPanel extends Panel {
           maxWidth: 160,
           tandem: tandem.createTandem( 'titleText' )
         } ),
-        new VerticalAquaRadioButtonGroup( blockSetProperty, BlockSet.enumeration.values.map( blockSet => {
-          return {
-            createNode: tandem => new Text( blockSet.stringProperty, {
-              font: DensityBuoyancyCommonConstants.RADIO_BUTTON_FONT,
-              maxWidth: 160,
-              tandem: tandem.createTandem( 'labelText' )
-            } ),
-            value: blockSet,
-            tandemName: `${blockSet.tandemName}RadioButton`,
-
-            // pdom
-            labelContent: blockSet.stringProperty
-          };
-        } ), {
-          align: 'left',
-          spacing: 8,
-          tandem: blocksRadioButtonGroupTandem
-        } )
+        verticalAquaRadioButtonGroup
       ],
       spacing: 10,
       align: 'left'

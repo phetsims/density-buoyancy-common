@@ -133,7 +133,7 @@ export default class BuoyancyDisplayOptionsPanel extends Panel {
                 ),
 
                 new Checkbox( model.showForceValuesProperty, new Text( DensityBuoyancyCommonStrings.forceValuesStringProperty, labelOptions ), combineOptions<CheckboxOptions>( {
-                  tandem: options.tandem.createTandem( 'forcesCheckbox' ),
+                  tandem: options.tandem.createTandem( 'forceValuesCheckbox' ),
                   layoutOptions: { column: 0, row: 4 },
                   containerTagName: 'p',
                   accessibleName: DensityBuoyancyCommonStrings.forceValuesStringProperty

@@ -41,7 +41,7 @@ export default class PrimarySecondaryControlsNode extends PrimarySecondaryPanels
     const tandem = options.tandem;
     const omittedOptions = _.omit( options, [ 'tandem' ] );
 
-    const primaryControlNode = new BlockControlNode( primaryMass, popupLayer, combineOptions<BlockControlNodeOptions>( {
+    const primaryControlNode = new BlockControlNode( primaryMass, popupLayer, true, combineOptions<BlockControlNodeOptions>( {
       labelNode: PrimarySecondaryPanelsNode.getPrimaryTagLabelNode(),
       color: DensityBuoyancyCommonColors.labelPrimaryProperty,
       tandem: tandem.createTandem( 'blockAControlPanel' ),
@@ -50,7 +50,7 @@ export default class PrimarySecondaryControlsNode extends PrimarySecondaryPanels
       }
     }, omittedOptions ) );
 
-    const secondaryControlNode = new BlockControlNode( secondaryMass, popupLayer, combineOptions<BlockControlNodeOptions>( {
+    const secondaryControlNode = new BlockControlNode( secondaryMass, popupLayer, false, combineOptions<BlockControlNodeOptions>( {
       labelNode: PrimarySecondaryPanelsNode.getSecondaryTagLabelNode(),
       color: DensityBuoyancyCommonColors.labelSecondaryProperty,
       tandem: tandem.createTandem( 'blockBControlPanel' ),

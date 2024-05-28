@@ -21,7 +21,7 @@ type SelfOptions = {
 export type BlockControlNodeOptions = MaterialMassVolumeControlNodeOptions & SelfOptions;
 
 export default class BlockControlNode extends MaterialMassVolumeControlNode {
-  public constructor( cuboid: Cuboid, listParent: Node, options: BlockControlNodeOptions ) {
+  public constructor( cuboid: Cuboid, listParent: Node, numberControlMassPropertyFeatured: boolean, options: BlockControlNodeOptions ) {
 
     // Add mystery materials at the end, if provided
     const materials = options.mysteryMaterials ?
@@ -29,7 +29,7 @@ export default class BlockControlNode extends MaterialMassVolumeControlNode {
                       DensityBuoyancyCommonConstants.SIMPLE_MASS_MATERIALS;
 
     super( cuboid.materialProperty, cuboid.massProperty, cuboid.volumeProperty, materials,
-      cubicMeters => cuboid.updateSize( Cube.boundsFromVolume( cubicMeters ) ), listParent, options );
+      cubicMeters => cuboid.updateSize( Cube.boundsFromVolume( cubicMeters ) ), listParent, numberControlMassPropertyFeatured, options );
   }
 }
 

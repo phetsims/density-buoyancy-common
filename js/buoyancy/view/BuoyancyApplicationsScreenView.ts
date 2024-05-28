@@ -101,7 +101,7 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
       Material.COPPER,
       Material.MATERIAL_R,
       Material.MATERIAL_S
-    ], volume => model.bottle.interiorVolumeProperty.set( volume ), this.popupLayer, {
+    ], volume => model.bottle.interiorVolumeProperty.set( volume ), this.popupLayer, true, {
       minMass: 0,
       minCustomMass: 0,
       maxCustomMass: 100,
@@ -196,7 +196,7 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
       material => material.density ).concat( [ // Adding Mystery Materials at the end, so they aren't sorted by density
       Material.MATERIAL_V,
       Material.MATERIAL_W
-    ] ), cubicMeters => model.block.updateSize( Cube.boundsFromVolume( cubicMeters ) ), this.popupLayer, {
+    ] ), cubicMeters => model.block.updateSize( Cube.boundsFromVolume( cubicMeters ) ), this.popupLayer, true, {
       tandem: tandem.createTandem( 'boatControlNode' ),
       highDensityMaxMass: 215,
       supportHiddenMaterial: true

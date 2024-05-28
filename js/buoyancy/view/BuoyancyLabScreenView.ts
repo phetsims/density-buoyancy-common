@@ -127,6 +127,7 @@ export default class BuoyancyLabScreenView extends DensityBuoyancyScreenView<Buo
     this.rightBox = new MultiSectionPanelsNode( [ new BlockControlNode(
       model.primaryMass,
       this.popupLayer,
+      true,
       {
         tandem: tandem.createTandem( 'blockControlPanel' ),
         minCustomMass: 0.1,

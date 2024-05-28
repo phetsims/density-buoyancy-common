@@ -70,6 +70,7 @@ export default class MaterialMassVolumeControlNode extends MaterialControlNode {
                       materials: Material[],
                       setVolume: ( volume: number ) => void,
                       listParent: Node,
+                      numberControlMassPropertyFeatured: boolean,
                       providedOptions: MaterialMassVolumeControlNodeOptions ) {
 
     const options = optionize<MaterialMassVolumeControlNodeOptions, SelfOptions, MaterialControlNodeOptions>()( {
@@ -141,6 +142,7 @@ export default class MaterialMassVolumeControlNode extends MaterialControlNode {
     // passed to the NumberControl
     const numberControlMassProperty = new NumberProperty( massProperty.value, {
       tandem: massNumberControlContainerTandem.createTandem( 'numberControlMassProperty' ),
+      phetioFeatured: numberControlMassPropertyFeatured,
       phetioState: false,
       phetioReadOnly: true,
       units: 'kg'

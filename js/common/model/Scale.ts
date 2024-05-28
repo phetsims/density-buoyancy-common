@@ -31,8 +31,8 @@ import Ray3 from '../../../../dot/js/Ray3.js';
 import { MassShape } from './MassShape.js';
 
 // constants
-const SCALE_WIDTH = 0.15;
-const SCALE_HEIGHT = 0.06;
+export const SCALE_WIDTH = 0.15;
+export const SCALE_HEIGHT = 0.06;
 const SCALE_DEPTH = 0.2;
 const SCALE_BASE_HEIGHT = 0.05;
 const SCALE_TOP_HEIGHT = SCALE_HEIGHT - SCALE_BASE_HEIGHT;

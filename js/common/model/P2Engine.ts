@@ -356,9 +356,9 @@ export default class P2Engine extends PhysicsEngine {
   /**
    * Creates a (dynamic) body, with the origin at the centroid.
    */
-  public createFromVertices( vertices: Vector2[], workaround: boolean ): PhysicsEngineBody {
+  public createFromVertices( vertices: Vector2[], workaround: boolean, bodyType: PhysicsBodyType = 'DYNAMIC' ): PhysicsEngineBody {
     const body = new p2.Body( {
-      type: p2.Body.DYNAMIC,
+      type: BODY_TYPE_MAPPER[ bodyType ],
       fixedRotation: true
     } );
 

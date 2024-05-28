@@ -141,7 +141,7 @@ export default abstract class PhysicsEngine {
   /**
    * Creates a (dynamic) body, with the origin at the centroid.
    */
-  public abstract createFromVertices( vertices: Vector2[], workaround: boolean ): PhysicsEngineBody;
+  public abstract createFromVertices( vertices: Vector2[], workaround: boolean, bodyType?: PhysicsBodyType ): PhysicsEngineBody;
 
   /**
    * Updates the vertices of a dynamic vertex-based body.

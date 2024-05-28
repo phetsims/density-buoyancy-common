@@ -535,7 +535,7 @@ export default abstract class Mass extends PhetioObject {
     // code for determining liquid height.
     this.stepX = 0; // x-value of the position
     this.stepBottom = 0; // minimum y value of the mass
-    this.stepTop = 0; // maxmimum y value of the mass
+    this.stepTop = 0; // maximum y value of the mass
   }
 
   /**

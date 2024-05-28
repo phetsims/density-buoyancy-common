@@ -21,7 +21,7 @@ import Gravity from './Gravity.js';
 import Material from './Material.js';
 import P2Engine from './P2Engine.js';
 import Pool from './Pool.js';
-import Scale, { DisplayType } from './Scale.js';
+import Scale, { DisplayType, SCALE_WIDTH } from './Scale.js';
 import optionize from '../../../../phet-core/js/optionize.js';
 import Boat from '../../buoyancy/model/Boat.js';
 import PhysicsEngine, { PhysicsEngineBody } from './PhysicsEngine.js';
@@ -35,6 +35,7 @@ import TModel from '../../../../joist/js/TModel.js';
 import { PhetioObjectOptions } from '../../../../tandem/js/PhetioObject.js';
 import PickRequired from '../../../../phet-core/js/types/PickRequired.js';
 import Matrix3 from '../../../../dot/js/Matrix3.js';
+import VolumelessScale from './VolumelessScale.js';
 
 // constants
 const BLOCK_SPACING = 0.01;
@@ -319,6 +320,21 @@ export default class DensityBuoyancyModel implements TModel {
         // p2.js will report bad forces for static scales, so we need to zero these out
         if ( !contactForce.isFinite() ) {
           contactForce = Vector2.ZERO;
+        }
+
+        // Teleporting blocks to the left of the volumelessScale (pool scale with slider) when they get trapped beneath it
+        if ( mass instanceof VolumelessScale ) {
+          this.masses.forEach( otherMass => {
+            if ( mass !== otherMass ) {
+              const horizontalForce = this.engine.bodyGetContactForceBetween( mass.body, otherMass.body ).x;
+              // Blocks should never experiment +x forces by this scale. If they do, they are trapped beneath it.
+              if ( horizontalForce > 0 ) {
+                otherMass.matrix.set02( mass.matrix.m02() - SCALE_WIDTH );
+                otherMass.writeData();
+                otherMass.transformedEmitter.emit();
+              }
+            }
+          } );
         }
 
         this.engine.resetContactForces( mass.body );

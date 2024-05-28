@@ -204,7 +204,9 @@ export default class Bottle extends ApplicationsMass {
         density: ( BOTTLE_MASS + BOTTLE_INITIAL_INTERIOR_MATERIAL.density * BOTTLE_INITIAL_INTERIOR_VOLUME ) / BOTTLE_VOLUME,
         densityRange: BOTTLE_DENSITY_RANGE
       } ),
-      massShape: MassShape.BLOCK
+      massShape: MassShape.BLOCK,
+
+      accessibleName: 'Bottle'
     }, providedOptions );
 
     super( engine, new NumberProperty( BOTTLE_VOLUME ), options );

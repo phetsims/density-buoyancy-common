@@ -97,6 +97,8 @@ export default class Scale extends Mass {
 
       phetioType: Scale.ScaleIO,
 
+      accessibleName: 'Scale',
+
       inputEnabledPropertyOptions: {
         phetioReadOnly: true
       },

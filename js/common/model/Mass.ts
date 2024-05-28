@@ -21,7 +21,7 @@ import Vector3 from '../../../../dot/js/Vector3.js';
 import { Shape } from '../../../../kite/js/imports.js';
 import EnumerationIO from '../../../../tandem/js/types/EnumerationIO.js';
 import optionize, { combineOptions, EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
-import { Color, ColorProperty } from '../../../../scenery/js/imports.js';
+import { Color, ColorProperty, PDOMValueType } from '../../../../scenery/js/imports.js';
 import PhetioObject, { PhetioObjectOptions } from '../../../../tandem/js/PhetioObject.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
 import BooleanIO from '../../../../tandem/js/types/BooleanIO.js';
@@ -120,6 +120,7 @@ type SelfOptions = {
   // Allow PhET-iO customization of the material beyond initial value, see https://github.com/phetsims/density/issues/101
   adjustableMaterial?: boolean;
   tag?: MassTag;
+  accessibleName?: PDOMValueType | null;
   phetioType?: IOType;
   inputEnabledPropertyOptions?: BooleanPropertyOptions;
   materialPropertyOptions?: PropertyOptions<Material>;
@@ -228,6 +229,8 @@ export default abstract class Mass extends PhetioObject {
 
   public readonly nameProperty: TReadOnlyProperty<string>;
 
+  public readonly accessibleName: PDOMValueType;
+
   // Set by the model
   public containingBasin: Basin | null;
 
@@ -250,6 +253,7 @@ export default abstract class Mass extends PhetioObject {
       canMove: true,
       adjustableMaterial: false,
       tag: MassTag.NONE,
+      accessibleName: null,
       phetioType: Mass.MassIO,
       inputEnabledPropertyOptions: {},
       materialPropertyOptions: {},
@@ -501,6 +505,12 @@ export default abstract class Mass extends PhetioObject {
         tandemName: 'nameProperty'
       } );
     }
+
+    this.accessibleName = options.accessibleName || new DerivedProperty( [ options.tag.nameProperty ],
+      ( tagName: string ) => {
+        const suffix = tagName !== 'NONE' ? tagName : '';
+        return 'Mass ' + suffix;
+      } );
 
     this.containingBasin = null;
 

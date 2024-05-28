@@ -48,7 +48,8 @@ export default class DensityMysteryScreenView extends DensityBuoyancyScreenView<
         tandem: densityTableAccordionBoxTandem.createTandem( 'titleText' )
       } ),
       expandedDefaultValue: false,
-      tandem: densityTableAccordionBoxTandem
+      tandem: densityTableAccordionBoxTandem,
+      accessibleName: DensityBuoyancyCommonStrings.densityTableStringProperty
     }, DensityBuoyancyCommonConstants.ACCORDION_BOX_OPTIONS ) );
 
     this.addChild( new AlignBox( densityTableAccordionBox, {
@@ -69,7 +70,10 @@ export default class DensityMysteryScreenView extends DensityBuoyancyScreenView<
           tandem: tandem.createTandem( 'labelText' )
         } ),
         value: blockSet,
-        tandemName: `${blockSet.tandemName}RadioButton`
+        tandemName: `${blockSet.tandemName}RadioButton`,
+        options: {
+          accessibleName: blockSet.stringProperty
+        }
       };
     } ), {
       align: 'left',

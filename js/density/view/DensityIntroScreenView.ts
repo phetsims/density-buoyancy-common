@@ -52,6 +52,13 @@ export default class DensityIntroScreenView extends DensityBuoyancyScreenView<De
       } );
 
     const accordionTandem = tandem.createTandem( 'densityAccordionBox' );
+    const accordionBoxTitleStringProperty = new DerivedProperty( [
+      DensityBuoyancyCommonPreferences.volumeUnitsProperty,
+      DensityBuoyancyCommonStrings.densityReadoutStringProperty,
+      DensityBuoyancyCommonStrings.densityReadoutDecimetersCubedStringProperty
+    ], ( units, litersReadout, decimetersCubedReadout ) => {
+      return units === 'liters' ? litersReadout : decimetersCubedReadout;
+    } );
     const densityAccordionBox = new AccordionBox( new DensityNumberLineNode( {
         displayDensities: [
           // DerivedProperty doesn't need disposal, since everything here lives for the lifetime of the simulation
@@ -76,13 +83,7 @@ export default class DensityIntroScreenView extends DensityBuoyancyScreenView<De
         }
       }
     ), combineOptions<AccordionBoxOptions>( {
-      titleNode: new RichText( new DerivedProperty( [
-        DensityBuoyancyCommonPreferences.volumeUnitsProperty,
-        DensityBuoyancyCommonStrings.densityReadoutStringProperty,
-        DensityBuoyancyCommonStrings.densityReadoutDecimetersCubedStringProperty
-      ], ( units, litersReadout, decimetersCubedReadout ) => {
-        return units === 'liters' ? litersReadout : decimetersCubedReadout;
-      } ), {
+      titleNode: new RichText( accordionBoxTitleStringProperty, {
         font: DensityBuoyancyCommonConstants.TITLE_FONT,
         maxWidth: 200,
         visiblePropertyOptions: {
@@ -91,7 +92,8 @@ export default class DensityIntroScreenView extends DensityBuoyancyScreenView<De
         tandem: accordionTandem.createTandem( 'titleText' )
       } ),
       buttonAlign: 'left' as const,
-      tandem: accordionTandem
+      tandem: accordionTandem,
+      accessibleName: accordionBoxTitleStringProperty
     }, DensityBuoyancyCommonConstants.ACCORDION_BOX_OPTIONS ) );
 
     this.addChild( densityAccordionBox );

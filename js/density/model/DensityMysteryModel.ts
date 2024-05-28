@@ -362,7 +362,10 @@ export default class DensityMysteryModel extends BlockSetModel<MysteryBlockSet> 
       matrix: Matrix3.translationFromVector( scalePositionProperty.value ),
       displayType: DisplayType.KILOGRAMS,
       canMove: false,
-      tandem: tandem.createTandem( 'scale' )
+      tandem: tandem.createTandem( 'scale' ),
+      massPropertyOptions: {
+        phetioFeatured: false
+      }
     } );
     this.availableMasses.push( this.scale );
 

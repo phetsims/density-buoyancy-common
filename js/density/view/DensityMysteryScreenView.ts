@@ -111,7 +111,10 @@ export default class DensityMysteryScreenView extends DensityBuoyancyScreenView<
       spacing: 10,
       align: 'left'
     } ), combineOptions<PanelOptions>( {
-      tandem: blocksPanelTandem
+      tandem: blocksPanelTandem,
+      visiblePropertyOptions: {
+        phetioFeatured: true
+      }
     }, DensityBuoyancyCommonConstants.PANEL_OPTIONS ) );
 
     this.addChild( new AlignBox( blockSetPanel, {

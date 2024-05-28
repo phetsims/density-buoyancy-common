@@ -53,7 +53,10 @@ export default class BlocksPanel extends Panel {
       align: 'left'
     } ), combineOptions<PanelOptions>( {
       tandem: tandem,
-      phetioType: Node.NodeIO
+      phetioType: Node.NodeIO,
+      visiblePropertyOptions: {
+        phetioFeatured: true
+      }
     }, DensityBuoyancyCommonConstants.PANEL_OPTIONS ) );
 
   }

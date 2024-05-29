@@ -7,12 +7,8 @@
  */
 
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
-import EnumerationProperty from '../../../../axon/js/EnumerationProperty.js';
-import Property from '../../../../axon/js/Property.js';
 import Matrix3 from '../../../../dot/js/Matrix3.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
-import Enumeration from '../../../../phet-core/js/Enumeration.js';
-import EnumerationValue from '../../../../phet-core/js/EnumerationValue.js';
 import Cube from '../../common/model/Cube.js';
 import DensityBuoyancyModel, { DensityBuoyancyModelOptions } from '../../common/model/DensityBuoyancyModel.js';
 import Material from '../../common/model/Material.js';
@@ -25,23 +21,14 @@ import Range from '../../../../dot/js/Range.js';
 import NumberProperty from '../../../../axon/js/NumberProperty.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import BooleanIO from '../../../../tandem/js/types/BooleanIO.js';
-
-// constants
-// REVIEW: Recommended to use string literal enumeration. We can do so here since it is not encumbered by density API.
-export class Scene extends EnumerationValue {
-  public static readonly BOTTLE = new Scene();
-  public static readonly BOAT = new Scene();
-
-  public static readonly enumeration = new Enumeration( Scene, {
-    phetioDocumentation: 'Bottle or boat scene'
-  } );
-}
+import { BottleOrBoat, BottleOrBoatValues } from './BottleOrBoat.js';
+import StringUnionProperty from '../../../../axon/js/StringUnionProperty.js';
 
 export type BuoyancyApplicationsModelOptions = DensityBuoyancyModelOptions;
 
 export default class BuoyancyApplicationsModel extends DensityBuoyancyModel {
 
-  public readonly sceneProperty: Property<Scene>;
+  public readonly sceneProperty: StringUnionProperty<BottleOrBoat>;
 
   public readonly bottle: Bottle;
   public readonly block: Cube;
@@ -58,7 +45,8 @@ export default class BuoyancyApplicationsModel extends DensityBuoyancyModel {
       usePoolScale: true
     }, options ) );
 
-    this.sceneProperty = new EnumerationProperty( Scene.BOTTLE, {
+    this.sceneProperty = new StringUnionProperty<BottleOrBoat>( 'bottle', {
+      validValues: BottleOrBoatValues,
       tandem: options.tandem.createTandem( 'sceneProperty' )
     } );
 
@@ -113,15 +101,15 @@ export default class BuoyancyApplicationsModel extends DensityBuoyancyModel {
 
     // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
     this.sceneProperty.link( ( scene, previousScene ) => {
-      this.bottle.internalVisibleProperty.value = scene === Scene.BOTTLE;
-      this.boat.internalVisibleProperty.value = scene === Scene.BOAT;
-      this.block.internalVisibleProperty.value = scene === Scene.BOAT;
-      this.scale2!.internalVisibleProperty.value = scene === Scene.BOTTLE;
+      this.bottle.internalVisibleProperty.value = scene === 'bottle';
+      this.boat.internalVisibleProperty.value = scene === 'boat';
+      this.block.internalVisibleProperty.value = scene === 'boat';
+      this.scale2!.internalVisibleProperty.value = scene === 'bottle';
 
       // When switching from boat to bottle scene, subtract the scale volume from the pool and vice versa (-1 and 1)
       // But don't do it when the bottle scene is first loaded (0)
-      const plusMinusScaleVolume = scene === Scene.BOTTLE ?
-                             previousScene === Scene.BOAT ? -1 : 0 : 1;
+      const plusMinusScaleVolume = scene === 'bottle' ?
+                                   previousScene === 'boat' ? -1 : 0 : 1;
       this.pool.liquidVolumeProperty.value += plusMinusScaleVolume * this.scale2!.volumeProperty.value;
       this.pool.liquidVolumeProperty.setInitialValue( this.pool.liquidVolumeProperty.value );
 

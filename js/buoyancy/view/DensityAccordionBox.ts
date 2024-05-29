@@ -1,7 +1,7 @@
 // Copyright 2019-2024, University of Colorado Boulder
 
 /**
- * An AccordionBox that displays the percentage of each material that is submerged.
+ * An AccordionBox that displays the density of each material.
  *
  * @author Agustín Vallejo
  */

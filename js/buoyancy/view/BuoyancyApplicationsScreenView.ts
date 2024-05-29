@@ -364,11 +364,6 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
         baseColor: DensityBuoyancyCommonColors.radioBackgroundColorProperty,
         xMargin: 10,
         yMargin: 10
-        // buttonAppearanceStrategyOptions: {
-        //   selectedLineWidth: 2,
-        //   deselectedLineWidth: 1.5,
-        //   selectedStroke: DensityBuoyancyCommonColors.radioBorderColorProperty
-        // }
       },
       tandem: tandem.createTandem( 'bottleBoatRadioButtonGroup' )
     } );

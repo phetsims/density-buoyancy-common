@@ -724,7 +724,6 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
 
       const t = intersections.length ? intersections[ 0 ].distance : null;
       if ( t !== null && massView.mass.canMove && massView.mass.inputEnabledProperty.value ) {
-        console.log( t );
         entries.push( {
           massView: massView,
           t: t

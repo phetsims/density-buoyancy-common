@@ -9,8 +9,6 @@
 import Property from '../../../../axon/js/Property.js';
 import StrictOmit from '../../../../phet-core/js/types/StrictOmit.js';
 import Bounds3 from '../../../../dot/js/Bounds3.js';
-import Ray3 from '../../../../dot/js/Ray3.js';
-import Utils from '../../../../dot/js/Utils.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
 import { Shape } from '../../../../kite/js/imports.js';
@@ -114,34 +112,6 @@ export default class Ellipsoid extends Mass {
     const c = this.sizeProperty.value.depth / 2;
     this.stepMaximumArea = 4 * Math.PI * a * c; // 4 * pi * a * c
     this.stepMaximumVolume = this.stepMaximumArea * b / 3; // 4/3 * pi * a * b * c
-  }
-
-  /**
-   * If there is an intersection with the ray and this mass, the t-value (distance the ray would need to travel to
-   * reach the intersection, e.g. ray.position + ray.distance * t === intersectionPoint) will be returned. Otherwise,
-   * if there is no intersection, null will be returned.
-   */
-  public override intersect( ray: Ray3, isTouch: boolean ): number | null {
-    const translation = this.matrix.getTranslation().toVector3();
-    const size = this.sizeProperty.value;
-    const relativePosition = ray.position.minusXYZ( translation.x, translation.y, translation.z );
-
-    const xp = 4 / ( size.width * size.width );
-    const yp = 4 / ( size.height * size.height );
-    const zp = 4 / ( size.depth * size.depth );
-
-    const a = xp * ray.direction.x * ray.direction.x + yp * ray.direction.y * ray.direction.y + zp * ray.direction.z * ray.direction.z;
-    const b = 2 * ( xp * relativePosition.x * ray.direction.x + yp * relativePosition.y * ray.direction.y + zp * relativePosition.z * ray.direction.z );
-    const c = -1 + xp * relativePosition.x * relativePosition.x + yp * relativePosition.y * relativePosition.y + zp * relativePosition.z * relativePosition.z;
-
-    const tValues = Utils.solveQuadraticRootsReal( a, b, c )!.filter( t => t > 0 );
-
-    if ( tValues.length ) {
-      return tValues[ 0 ];
-    }
-    else {
-      return null;
-    }
   }
 
   /**

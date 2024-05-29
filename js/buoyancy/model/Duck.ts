@@ -10,7 +10,6 @@
 import Property from '../../../../axon/js/Property.js';
 import StrictOmit from '../../../../phet-core/js/types/StrictOmit.js';
 import Bounds3 from '../../../../dot/js/Bounds3.js';
-import Ray3 from '../../../../dot/js/Ray3.js';
 import Utils from '../../../../dot/js/Utils.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
@@ -125,34 +124,6 @@ export default class Duck extends Mass {
 
     this.stepMaximumArea = 1.88 * size.width * size.height;
     this.stepMaximumVolume = Duck.getVolume( size );
-  }
-
-  /**
-   * If there is an intersection with the ray and this mass, the t-value (distance the ray would need to travel to
-   * reach the intersection, e.g. ray.position + ray.distance * t === intersectionPoint) will be returned. Otherwise,
-   * if there is no intersection, null will be returned.
-   */
-  public override intersect( ray: Ray3, isTouch: boolean ): number | null {
-    const translation = this.matrix.getTranslation().toVector3();
-    const size = this.sizeProperty.value;
-    const relativePosition = ray.position.minusXYZ( translation.x, translation.y, translation.z );
-
-    const xp = 4 / ( size.width * size.width );
-    const yp = 4 / ( size.height * size.height );
-    const zp = 4 / ( size.depth * size.depth );
-
-    const a = xp * ray.direction.x * ray.direction.x + yp * ray.direction.y * ray.direction.y + zp * ray.direction.z * ray.direction.z;
-    const b = 2 * ( xp * relativePosition.x * ray.direction.x + yp * relativePosition.y * ray.direction.y + zp * relativePosition.z * ray.direction.z );
-    const c = -1 + xp * relativePosition.x * relativePosition.x + yp * relativePosition.y * relativePosition.y + zp * relativePosition.z * relativePosition.z;
-
-    const tValues = Utils.solveQuadraticRootsReal( a, b, c )!.filter( t => t > 0 );
-
-    if ( tValues.length ) {
-      return tValues[ 0 ];
-    }
-    else {
-      return null;
-    }
   }
 
   /**

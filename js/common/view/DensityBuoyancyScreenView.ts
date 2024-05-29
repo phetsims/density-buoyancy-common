@@ -88,6 +88,11 @@ type SelfOptions = {
 
 export type DensityBuoyancyScreenViewOptions = SelfOptions & ScreenViewOptions;
 
+type PointedAtMassView = {
+  massView: MassView;
+  t: number;
+};
+
 export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyModel> extends ScreenView implements THREEModelViewTransform {
 
   protected readonly model: Model;
@@ -160,8 +165,8 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
       cameraPosition: options.cameraPosition,
       viewOffset: options.viewOffset,
       getPhetioMouseHit: point => {
-        const mass = this.getMassUnderPoint( this.localToGlobalPoint( point ), false );
-        return mass ? mass.getPhetioMouseHitTarget() : mass;
+        const pointedAtMass = this.getMassViewUnderPoint( this.localToGlobalPoint( point ), false );
+        return pointedAtMass ? pointedAtMass.massView.mass.getPhetioMouseHitTarget() : pointedAtMass;
       },
 
       // So the sky background will show through
@@ -187,12 +192,12 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
     const updateCursor = ( newMouse?: Mouse ) => {
       mouse = newMouse || mouse;
       if ( mouse ) {
-        const massUnderPointer = this.getMassUnderPointer( mouse, false );
+        const massUnderPointer = this.getMassViewUnderPointer( mouse, false );
         this.sceneNode.backgroundEventTarget.cursor = massUnderPointer ? 'pointer' : null;
 
         this.massViews.forEach( massView => {
           if ( massView.focusablePath ) {
-            massView.focusablePath.shapeProperty = massView.mass === massUnderPointer ?
+            massView.focusablePath.shapeProperty = massView === massUnderPointer?.massView ?
                                                    massView.focusableShapeProperty : emptyShapeProperty;
           }
         } );
@@ -201,7 +206,7 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
 
     const listener = new BackgroundEventTargetListener(
       this.massViews,
-      this.getMassUnderPointer.bind( this ),
+      this.getMassViewUnderPointer.bind( this ),
       this.sceneNode.getRayFromScreenPoint.bind( this.sceneNode ),
       ( point: Vector3 ) => this.localToGlobalPoint( this.modelToViewPoint( point ) ),
       updateCursor,
@@ -694,45 +699,46 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
   /**
    * Returns the closest grab-able mass under the pointer/
    */
-  public getMassUnderPointer( pointer: Pointer, isTouch: boolean ): Mass | null {
+  public getMassViewUnderPointer( pointer: Pointer, isTouch: boolean ): PointedAtMassView | null {
     const point = pointer.point;
     if ( point === null ) {
       return null;
     }
-    return this.getMassUnderPoint( point, isTouch );
+    return this.getMassViewUnderPoint( point, isTouch );
   }
 
   /**
    * Returns the closest grab-able mass under the point
    */
-  public getMassUnderPoint( point: Vector2, isTouch: boolean ): Mass | null {
+  public getMassViewUnderPoint( point: Vector2, isTouch: boolean ): PointedAtMassView | null {
     const ray = this.sceneNode.getRayFromScreenPoint( point );
 
-    let closestT = Number.POSITIVE_INFINITY;
-    let closestMass = null;
+    const entries: PointedAtMassView[] = [];
+    this.massViews.forEach( massView => {
+      const raycaster = new THREE.Raycaster( ThreeUtils.vectorToThree( ray.position ), ThreeUtils.vectorToThree( ray.direction ) );
+      const intersections: THREE.Intersection<THREE.Group>[] = [];
 
-    // Special boat case which allows to drag blocks out of the boat
-    let boatUnderPointer = null;
-
-    this.model.masses.forEach( mass => {
-      if ( !mass.canMove || !mass.inputEnabledProperty.value ) {
-        return;
+      if ( massView.massMesh ) {
+        raycaster.intersectObject( massView.massMesh, true, intersections );
       }
 
-      const t = mass.intersect( ray, isTouch );
-
-      if ( t !== null && t < closestT ) {
-        if ( mass instanceof Boat ) {
-          boatUnderPointer = mass;
-        }
-        else {
-          closestT = t;
-          closestMass = mass;
-        }
+      const t = intersections.length ? intersections[ 0 ].distance : null;
+      if ( t !== null && massView.mass.canMove && massView.mass.inputEnabledProperty.value ) {
+        console.log( t );
+        entries.push( {
+          massView: massView,
+          t: t
+        } );
       }
     } );
 
-    return closestMass ? closestMass : boatUnderPointer ? boatUnderPointer : null;
+    const closestEntry = _.minBy( entries, entry => {
+
+      // Favor objects inside the boat by treating the boat as if it always the furthest back.
+      return entry.massView.mass instanceof Boat ? Number.POSITIVE_INFINITY : entry.t;
+    } );
+
+    return closestEntry ? { massView: closestEntry.massView, t: closestEntry.t } : null;
   }
 
   public override layout( viewBounds: Bounds2 ): void {

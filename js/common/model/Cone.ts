@@ -10,8 +10,6 @@ import NumberProperty from '../../../../axon/js/NumberProperty.js';
 import StrictOmit from '../../../../phet-core/js/types/StrictOmit.js';
 import Property from '../../../../axon/js/Property.js';
 import Range from '../../../../dot/js/Range.js';
-import Ray3 from '../../../../dot/js/Ray3.js';
-import Utils from '../../../../dot/js/Utils.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
 import { Shape } from '../../../../kite/js/imports.js';
@@ -149,49 +147,6 @@ export default class Cone extends Mass {
     this.stepHeight = this.heightProperty.value;
     this.stepArea = Math.PI * this.stepRadius * this.stepRadius;
     this.stepMaximumVolume = this.stepArea * this.heightProperty.value / 3;
-  }
-
-  /**
-   * If there is an intersection with the ray and this mass, the t-value (distance the ray would need to travel to
-   * reach the intersection, e.g. ray.position + ray.distance * t === intersectionPoint) will be returned. Otherwise,
-   * if there is no intersection, null will be returned.
-   */
-  public override intersect( ray: Ray3, isTouch: boolean ): number | null {
-    const translation = this.matrix.getTranslation().toVector3();
-    const height = this.heightProperty.value;
-    const radius = this.radiusProperty.value;
-
-    const tipY = translation.y + this.vertexSign * height * TOP_FROM_CENTER_RATIO;
-    const baseY = translation.y - this.vertexSign * height * BOTTOM_FROM_CENTER_RATIO;
-    const cos = radius / height;
-    const cosSquared = cos * cos;
-    const cosSquaredInverse = 1 / cosSquared;
-
-    const relativePosition = ray.position.minusXYZ( translation.x, tipY, translation.z );
-
-    const a = cosSquaredInverse * ( ray.direction.x * ray.direction.x + ray.direction.z * ray.direction.z ) - ray.direction.y * ray.direction.y;
-    const b = cosSquaredInverse * 2 * ( relativePosition.x * ray.direction.x + relativePosition.z * ray.direction.z ) - 2 * relativePosition.y * ray.direction.y;
-    const c = cosSquaredInverse * ( relativePosition.x * relativePosition.x + relativePosition.z * relativePosition.z ) - relativePosition.y * relativePosition.y;
-
-    const tValues = Utils.solveQuadraticRootsReal( a, b, c )!.filter( t => {
-      if ( t <= 0 ) {
-        return false;
-      }
-      const y = ray.pointAtDistance( t ).y;
-      if ( this.isVertexUp ) {
-        return y < tipY && y > baseY;
-      }
-      else {
-        return y > tipY && y < baseY;
-      }
-    } );
-
-    if ( tValues.length ) {
-      return tValues[ 0 ];
-    }
-    else {
-      return null;
-    }
   }
 
   /**

@@ -7,11 +7,9 @@
  */
 
 import NumberProperty from '../../../../axon/js/NumberProperty.js';
-import ThreeUtils from '../../../../mobius/js/ThreeUtils.js';
 import Mass, { InstrumentedMassOptions } from '../../common/model/Mass.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import PhysicsEngine from '../../common/model/PhysicsEngine.js';
-import Ray3 from '../../../../dot/js/Ray3.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
 import Bounds3 from '../../../../dot/js/Bounds3.js';
@@ -25,9 +23,6 @@ export default abstract class ApplicationsMass extends Mass {
   public displacementVolumeProperty: NumberProperty;
 
   protected massLabelOffsetVector3: Vector3;
-
-  // For ray casting/hit testing
-  public readonly intersectionGroup = new THREE.Group();
 
   protected constructor( engine: PhysicsEngine, displacementVolumeProperty: NumberProperty, options: ApplicationsMassOptions ) {
 
@@ -50,22 +45,6 @@ export default abstract class ApplicationsMass extends Mass {
   public override getLocalBounds(): Bounds3 {
     const bounds2 = this.shapeProperty.value.bounds;
     return new Bounds3( bounds2.minX, bounds2.minY, -bounds2.minY, bounds2.maxX, bounds2.maxY, bounds2.minY );
-  }
-
-  /**
-   * If there is an intersection with the ray and this mass, the t-value (distance the ray would need to travel to
-   * reach the intersection, e.g. ray.position + ray.distance * t === intersectionPoint) will be returned. Otherwise,
-   * if there is no intersection, null will be returned.
-   */
-  public override intersect( ray: Ray3, isTouch: boolean, scale = 1 ): number | null {
-    const translation = this.matrix.translation;
-    const adjustedPosition = ray.position.minusXYZ( translation.x, translation.y, 0 ).dividedScalar( scale );
-
-    const raycaster = new THREE.Raycaster( ThreeUtils.vectorToThree( adjustedPosition ), ThreeUtils.vectorToThree( ray.direction ) );
-    const intersections: THREE.Intersection<THREE.Group>[] = [];
-    raycaster.intersectObject( this.intersectionGroup, true, intersections );
-
-    return intersections.length ? intersections[ 0 ].distance * scale : null;
   }
 
   protected abstract evaluatePiecewiseLinearArea( ratio: number ): number;

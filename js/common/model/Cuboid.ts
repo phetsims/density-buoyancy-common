@@ -127,18 +127,6 @@ export default class Cuboid extends Mass {
   }
 
   /**
-   * If there is an intersection with the ray and this mass, the t-value (distance the ray would need to travel to
-   * reach the intersection, e.g. ray.position + ray.distance * t === intersectionPoint) will be returned. Otherwise,
-   * if there is no intersection, null will be returned.
-   */
-  public override intersect( ray: Ray3, isTouch: boolean ): number | null {
-    const size = this.sizeProperty.value;
-    const translation = this.matrix.getTranslation().toVector3();
-
-    return Cuboid.intersect( size, translation, ray );
-  }
-
-  /**
    * Returns the cumulative displaced volume of this object up to a given y level.
    *
    * Assumes step information was updated.

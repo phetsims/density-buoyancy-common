@@ -244,9 +244,6 @@ export default class Bottle extends ApplicationsMass {
 
     this.primaryGeometry = Bottle.getPrimaryGeometry();
     this.capGeometry = Bottle.getCapGeometry();
-
-    this.intersectionGroup.add( new THREE.Mesh( this.primaryGeometry, new THREE.MeshLambertMaterial() ) );
-    this.intersectionGroup.add( new THREE.Mesh( this.capGeometry, new THREE.MeshLambertMaterial() ) );
   }
 
   /**

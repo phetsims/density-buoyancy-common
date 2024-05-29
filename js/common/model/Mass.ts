@@ -33,7 +33,6 @@ import EnumerationValue from '../../../../phet-core/js/EnumerationValue.js';
 import Enumeration from '../../../../phet-core/js/Enumeration.js';
 import PhysicsEngine, { PhysicsEngineBody } from './PhysicsEngine.js';
 import Basin from './Basin.js';
-import Ray3 from '../../../../dot/js/Ray3.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import Multilink from '../../../../axon/js/Multilink.js';
 import PickRequired from '../../../../phet-core/js/types/PickRequired.js';
@@ -645,16 +644,6 @@ export default abstract class Mass extends PhetioObject {
     // Apply the body offset
     this.stepMatrix.set02( this.stepMatrix.m02() + this.bodyOffsetProperty.value.x );
     this.stepMatrix.set12( this.stepMatrix.m12() + this.bodyOffsetProperty.value.y );
-  }
-
-  /**
-   * If there is an intersection with the ray and this mass, the t-value (distance the ray would need to travel to
-   * reach the intersection, e.g. ray.position + ray.distance * t === intersectionPoint) will be returned. Otherwise,
-   * if there is no intersection, null will be returned.
-   */
-  public intersect( ray: Ray3, isTouch: boolean ): number | null {
-    // TODO: should this be abstract https://github.com/phetsims/density-buoyancy-common/issues/86
-    return null;
   }
 
   /**

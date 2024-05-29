@@ -18,16 +18,13 @@ import PhetioObject from '../../../../tandem/js/PhetioObject.js';
 import IOType from '../../../../tandem/js/types/IOType.js';
 import NumberIO from '../../../../tandem/js/types/NumberIO.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
-import Cuboid from './Cuboid.js';
 import InterpolatedProperty from './InterpolatedProperty.js';
 import Mass, { InstrumentedMassOptions } from './Mass.js';
 import Material from './Material.js';
-import VerticalCylinder from './VerticalCylinder.js';
 import PhysicsEngine from './PhysicsEngine.js';
 import Gravity from './Gravity.js';
 import TProperty from '../../../../axon/js/TProperty.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
-import Ray3 from '../../../../dot/js/Ray3.js';
 import { MassShape } from './MassShape.js';
 
 // constants
@@ -164,21 +161,6 @@ export default class Scale extends Mass {
     this.stepX = xOffset;
     this.stepBottom = yOffset - SCALE_HEIGHT / 2;
     this.stepTop = yOffset + SCALE_HEIGHT / 2;
-  }
-
-  /**
-   * If there is an intersection with the ray and this mass, the t-value (distance the ray would need to travel to
-   * reach the intersection, e.g. ray.position + ray.distance * t === intersectionPoint) will be returned. Otherwise,
-   * if there is no intersection, null will be returned.
-   */
-  public override intersect( ray: Ray3, isTouch: boolean ): number | null {
-    const translation = this.matrix.getTranslation().toVector3();
-    const topOffsetTranslation = translation.plusXYZ( 0, SCALE_HEIGHT / 2 - SCALE_TOP_HEIGHT / 2, 0 );
-
-    const baseIntersection = Cuboid.intersect( SCALE_BASE_BOUNDS, translation, ray );
-    const topIntersection = VerticalCylinder.intersect( ray, isTouch, topOffsetTranslation, SCALE_WIDTH / 2, SCALE_TOP_HEIGHT );
-
-    return ( baseIntersection && topIntersection ) ? Math.min( baseIntersection, topIntersection ) : ( baseIntersection || topIntersection );
   }
 
   /**

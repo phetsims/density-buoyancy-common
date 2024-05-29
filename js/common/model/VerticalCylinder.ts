@@ -141,15 +141,6 @@ export default class VerticalCylinder extends Mass {
   }
 
   /**
-   * If there is an intersection with the ray and this mass, the t-value (distance the ray would need to travel to
-   * reach the intersection, e.g. ray.position + ray.distance * t === intersectionPoint) will be returned. Otherwise,
-   * if there is no intersection, null will be returned.
-   */
-  public override intersect( ray: Ray3, isTouch: boolean ): number | null {
-    return VerticalCylinder.intersect( ray, isTouch, this.matrix.getTranslation().toVector3(), this.radiusProperty.value, this.heightProperty.value );
-  }
-
-  /**
    * Returns the cumulative displaced volume of this object up to a given y level.
    *
    * Assumes step information was updated.

@@ -35,7 +35,7 @@ export default class BackgroundEventTargetListener implements TInputListener {
 
   // Using a "create" function here because that makes it easier to implement TInputListener
   public constructor( private readonly massViews: MassView[],
-                      private readonly getMassUnderPointer: DensityBuoyancyScreenView<DensityBuoyancyModel>['getMassUnderPointer'],
+                      private readonly getMassViewUnderPointer: DensityBuoyancyScreenView<DensityBuoyancyModel>['getMassViewUnderPointer'],
                       private readonly getRayFromScreenPoint: ThreeIsometricNode['getRayFromScreenPoint'],
                       private readonly modelToGlobalViewPoint: ( point: Vector3 ) => Vector2,
                       private readonly updateCursor: ( mouse: Mouse ) => void,
@@ -97,9 +97,10 @@ export default class BackgroundEventTargetListener implements TInputListener {
 
     const pointer = event.pointer;
     const isTouch = !( pointer instanceof Mouse );
-    const mass = this.getMassUnderPointer( pointer, isTouch );
+    const massEntry = this.getMassViewUnderPointer( pointer, isTouch );
 
-    if ( mass && mass.canMove ) {
+    if ( massEntry && massEntry.massView.mass.canMove ) {
+      const mass = massEntry.massView.mass;
 
       // Newer interactions take precedent, so clean up any old ones first. This also makes mouse/keyboard
       // cross-interaction much simpler.
@@ -108,7 +109,7 @@ export default class BackgroundEventTargetListener implements TInputListener {
       grabSoundPlayer.play();
 
       const initialRay = this.getRayFromScreenPoint( pointer.point );
-      const initialT = mass.intersect( initialRay, isTouch );
+      const initialT = massEntry.t;
       if ( initialT === null ) {
         return;
       }

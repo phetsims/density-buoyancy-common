@@ -18,7 +18,6 @@ import BoatBasin from './BoatBasin.js';
 import BoatDesign from './BoatDesign.js';
 import PhysicsEngine from '../../common/model/PhysicsEngine.js';
 import TProperty from '../../../../axon/js/TProperty.js';
-import Ray3 from '../../../../dot/js/Ray3.js';
 import Multilink from '../../../../axon/js/Multilink.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import { MassShape } from '../../common/model/MassShape.js';
@@ -103,9 +102,6 @@ export default class Boat extends ApplicationsMass {
       this.containedMassProperty.value = material.density * volume;
     } );
 
-    const intersectionMesh = new THREE.Mesh( BoatDesign.getPrimaryGeometry( 1 ), new THREE.MeshLambertMaterial() );
-    this.intersectionGroup.add( intersectionMesh );
-
     const bounds = this.shapeProperty.value.getBounds();
     this.forceOffsetProperty.value = new Vector2( 0.375 * bounds.left, 0 ).toVector3();
   }
@@ -141,6 +137,9 @@ export default class Boat extends ApplicationsMass {
 
     this.basin.stepTop = this.stepTop;
     this.basin.stepBottom = yOffset + this.stepMultiplier * BoatDesign.ONE_LITER_INTERIOR_BOTTOM;
+
+    assert && assert( !isNaN( this.stepTop ), 'stepTop should not be NaN' );
+    assert && assert( !isNaN( this.basin.stepTop ), 'basin.stepTop should not be NaN' );
   }
 
   /**
@@ -160,17 +159,6 @@ export default class Boat extends ApplicationsMass {
       this.submergedMassFractionProperty.value = 1;
     }
   }
-
-  /**
-   * If there is an intersection with the ray and this mass, the t-value (distance the ray would need to travel to
-   * reach the intersection, e.g. ray.position + ray.distance * t === intersectionPoint) will be returned. Otherwise,
-   * if there is no intersection, null will be returned.
-   */
-  public override intersect( ray: Ray3, isTouch: boolean ): number | null {
-    const scale = Math.pow( this.displacementVolumeProperty.value / 0.001, 1 / 3 );
-    return super.intersect( ray, isTouch, scale );
-  }
-
 
   public override evaluatePiecewiseLinearArea( ratio: number ): number {
     return Mass.evaluatePiecewiseLinear( BoatDesign.ONE_LITER_DISPLACED_AREAS, ratio ) * this.stepMultiplier * this.stepMultiplier;

@@ -96,8 +96,7 @@ export default class BackgroundEventTargetListener implements TInputListener {
     if ( !event.canStartPress() ) { return; }
 
     const pointer = event.pointer;
-    const isTouch = !( pointer instanceof Mouse );
-    const massEntry = this.getMassViewUnderPointer( pointer, isTouch );
+    const massEntry = this.getMassViewUnderPointer( pointer );
 
     if ( massEntry && massEntry.massView.mass.canMove ) {
       const mass = massEntry.massView.mass;

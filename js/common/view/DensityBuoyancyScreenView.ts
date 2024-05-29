@@ -165,7 +165,7 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
       cameraPosition: options.cameraPosition,
       viewOffset: options.viewOffset,
       getPhetioMouseHit: point => {
-        const pointedAtMass = this.getMassViewUnderPoint( this.localToGlobalPoint( point ), false );
+        const pointedAtMass = this.getMassViewUnderPoint( this.localToGlobalPoint( point ) );
         return pointedAtMass ? pointedAtMass.massView.mass.getPhetioMouseHitTarget() : pointedAtMass;
       },
 
@@ -192,7 +192,7 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
     const updateCursor = ( newMouse?: Mouse ) => {
       mouse = newMouse || mouse;
       if ( mouse ) {
-        const massUnderPointer = this.getMassViewUnderPointer( mouse, false );
+        const massUnderPointer = this.getMassViewUnderPointer( mouse );
         this.sceneNode.backgroundEventTarget.cursor = massUnderPointer ? 'pointer' : null;
 
         this.massViews.forEach( massView => {
@@ -699,18 +699,18 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
   /**
    * Returns the closest grab-able mass under the pointer/
    */
-  public getMassViewUnderPointer( pointer: Pointer, isTouch: boolean ): PointedAtMassView | null {
+  public getMassViewUnderPointer( pointer: Pointer ): PointedAtMassView | null {
     const point = pointer.point;
     if ( point === null ) {
       return null;
     }
-    return this.getMassViewUnderPoint( point, isTouch );
+    return this.getMassViewUnderPoint( point );
   }
 
   /**
    * Returns the closest grab-able mass under the point
    */
-  public getMassViewUnderPoint( point: Vector2, isTouch: boolean ): PointedAtMassView | null {
+  public getMassViewUnderPoint( point: Vector2 ): PointedAtMassView | null {
     const ray = this.sceneNode.getRayFromScreenPoint( point );
 
     const entries: PointedAtMassView[] = [];

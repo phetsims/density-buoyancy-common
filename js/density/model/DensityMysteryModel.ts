@@ -341,10 +341,9 @@ export default class DensityMysteryModel extends BlockSetModel<MysteryBlockSet> 
       }
     };
 
-    super( optionize<DensityMysteryModelOptions, EmptySelfOptions, BlockSetModelOptions<MysteryBlockSet>>()( {
+    const options = optionize<DensityMysteryModelOptions, EmptySelfOptions, BlockSetModelOptions<MysteryBlockSet>>()( {
       canShowForces: false,
 
-      // TODO: How can this type-check if I leave these out?!? --- oh we're expecting them in our providedOptions? https://github.com/phetsims/density-buoyancy-common/issues/86
       initialMode: MysteryBlockSet.SET_1,
       BlockSet: MysteryBlockSet.enumeration,
 
@@ -352,7 +351,9 @@ export default class DensityMysteryModel extends BlockSetModel<MysteryBlockSet> 
       createMassesCallback: createMasses,
       regenerateMassesCallback: regenerateMasses,
       positionMassesCallback: positionMasses
-    }, providedOptions ) );
+    }, providedOptions );
+
+    super( options );
 
     const scalePositionProperty = new DerivedProperty( [ this.invisibleBarrierBoundsProperty ], bounds => {
       return new Vector2( -0.75 + bounds.minX + 0.875, -Scale.SCALE_BASE_BOUNDS.minY );

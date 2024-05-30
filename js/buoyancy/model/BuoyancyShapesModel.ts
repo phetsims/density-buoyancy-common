@@ -13,7 +13,6 @@ import Property from '../../../../axon/js/Property.js';
 import Matrix3 from '../../../../dot/js/Matrix3.js';
 import optionize, { EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
-import PhetioCapsule from '../../../../tandem/js/PhetioCapsule.js';
 import Cone from '../../common/model/Cone.js';
 import Cuboid from '../../common/model/Cuboid.js';
 import DensityBuoyancyModel, { DensityBuoyancyModelOptions } from '../../common/model/DensityBuoyancyModel.js';
@@ -97,8 +96,7 @@ export default class BuoyancyShapesModel extends DensityBuoyancyModel {
       const massOptions = {
         material: this.materialProperty.value,
         tandem: tandem,
-        tag: tag,
-        phetioDynamicElement: true
+        tag: tag
       };
 
       let mass: Mass;
@@ -158,44 +156,33 @@ export default class BuoyancyShapesModel extends DensityBuoyancyModel {
 
     const objectsTandem = tandem.createTandem( 'objects' );
 
-    const objectACapsule = new PhetioCapsule(
-      ( tandem: Tandem, shape: MassShape ) => createMass( tandem, shape, this.primaryWidthRatioProperty.value, this.primaryHeightRatioProperty.value, MassTag.PRIMARY ),
-      [ this.primaryShapeProperty.initialValue ], {
-        disposeCreatedOnStateSet: true,
-        tandem: objectsTandem.createTandem( 'objectACapsule' ),
-        phetioType: PhetioCapsule.PhetioCapsuleIO( Mass.MassIO )
-      } );
+    // Statically initialize all possible Mass instances to simplify phet-io. This is well within a good memory limit, see https://github.com/phetsims/buoyancy/issues/160
+    const aMap = new Map<MassShape, Mass>();
+    const bMap = new Map<MassShape, Mass>();
 
-    const objectBCapsule = new PhetioCapsule(
-      ( tandem: Tandem, shape: MassShape ) => createMass( tandem, shape, this.secondaryWidthRatioProperty.value, this.secondaryHeightRatioProperty.value, MassTag.SECONDARY ),
-      [ this.secondaryShapeProperty.initialValue ], {
-        disposeCreatedOnStateSet: true,
-        tandem: objectsTandem.createTandem( 'objectBCapsule' ),
-        phetioType: PhetioCapsule.PhetioCapsuleIO( Mass.MassIO )
-      } );
+    MassShape.enumeration.values.forEach( shape => {
 
-    // Property doesn't need disposal, since everything here lives for the lifetime of the simulation
-    this.primaryMassProperty = new Property( objectACapsule.getElement( this.primaryShapeProperty.value ) );
-    this.primaryShapeProperty.lazyLink( ( massShape: MassShape ) => {
-      if ( objectACapsule.hasElement() && !isSettingPhetioStateProperty.value ) {
-        objectACapsule.disposeElement();
-      }
-      this.primaryMassProperty.value = objectACapsule.getElement( massShape );
-    } );
-    objectACapsule.elementCreatedEmitter.addListener( element => {
-      this.primaryMassProperty.value = element;
+      aMap.set( shape, createMass(
+        objectsTandem.createTandem( 'groupA' ).createTandem( shape.tandemName ), shape,
+        this.primaryWidthRatioProperty.value, this.primaryHeightRatioProperty.value, MassTag.PRIMARY
+      ) );
+
+      bMap.set( shape, createMass(
+        objectsTandem.createTandem( 'groupB' ).createTandem( shape.tandemName ), shape,
+        this.secondaryWidthRatioProperty.value, this.secondaryHeightRatioProperty.value, MassTag.SECONDARY
+      ) );
     } );
 
     // Property doesn't need disposal, since everything here lives for the lifetime of the simulation
-    this.secondaryMassProperty = new Property( objectBCapsule.getElement( this.secondaryShapeProperty.value ) );
-    this.secondaryShapeProperty.lazyLink( ( massShape: MassShape ) => {
-      if ( objectBCapsule.hasElement() && !isSettingPhetioStateProperty.value ) {
-        objectBCapsule.disposeElement();
-      }
-      this.secondaryMassProperty.value = objectBCapsule.getElement( massShape );
+    this.primaryMassProperty = new Property( aMap.get( this.primaryShapeProperty.value )! );
+    this.primaryShapeProperty.lazyLink( massShape => {
+      this.primaryMassProperty.value = aMap.get( massShape )!;
     } );
-    objectBCapsule.elementCreatedEmitter.addListener( element => {
-      this.secondaryMassProperty.value = element;
+
+    // Property doesn't need disposal, since everything here lives for the lifetime of the simulation
+    this.secondaryMassProperty = new Property( bMap.get( this.secondaryShapeProperty.value )! );
+    this.secondaryShapeProperty.lazyLink( massShape => {
+      this.secondaryMassProperty.value = bMap.get( massShape )!;
     } );
 
     Multilink.lazyMultilink( [ this.primaryWidthRatioProperty, this.primaryHeightRatioProperty ], ( widthRatio, heightRatio ) => {
@@ -207,6 +194,7 @@ export default class BuoyancyShapesModel extends DensityBuoyancyModel {
 
     // When a new mass is created, set up its position to be that of the old mass
     [ this.primaryMassProperty, this.secondaryMassProperty ].forEach( massProperty => {
+
       // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
       massProperty.lazyLink( ( newMass, oldMass ) => {
         if ( !isSettingPhetioStateProperty.value ) {

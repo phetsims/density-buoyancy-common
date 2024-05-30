@@ -241,7 +241,7 @@ export default class Cuboid extends Mass {
   } );
 }
 
-// TODO: Use Bounds3State type, https://github.com/phetsims/buoyancy/issues/160
+// TODO: Use Bounds3State type, https://github.com/phetsims/buoyancy/issues/166
 type CuboidSelfState = {
   size: {
     minX: number;

@@ -68,12 +68,12 @@ export default class BottleView extends MeasurableMassView {
       interiorSurfaceGeometry.attributes.position.needsUpdate = true;
       interiorSurfaceGeometry.computeBoundingSphere();
     };
-    // TODO: unlink https://github.com/phetsims/density-buoyancy-common/issues/86
+    // TODO: unlink https://github.com/phetsims/density-buoyancy-common/issues/143
     bottle.interiorVolumeProperty.link( volume => {
       setCrossSectionRelativeY( Bottle.getYFromVolume( volume ) );
     } );
 
-    // TODO: unlink https://github.com/phetsims/density-buoyancy-common/issues/86
+    // TODO: unlink https://github.com/phetsims/density-buoyancy-common/issues/143
     const adjustClipPlanes = () => {
       const modelY = bottle.matrix.translation.y + Bottle.getYFromVolume( bottle.interiorVolumeProperty.value );
 
@@ -108,7 +108,7 @@ export default class BottleView extends MeasurableMassView {
    * Releases references.
    */
   public override dispose(): void {
-    // TODO: dispose everything from above https://github.com/phetsims/density-buoyancy-common/issues/86
+    // TODO: dispose everything from above https://github.com/phetsims/density-buoyancy-common/issues/143
 
     super.dispose();
   }

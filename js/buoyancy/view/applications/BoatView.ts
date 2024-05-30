@@ -140,7 +140,7 @@ export default class BoatView extends MeasurableMassView {
    * Releases references.
    */
   public override dispose(): void {
-    // TODO: dispose everything from above https://github.com/phetsims/density-buoyancy-common/issues/86
+    // TODO: dispose everything from above https://github.com/phetsims/density-buoyancy-common/issues/143
 
     this.liquidMultilink.dispose();
 

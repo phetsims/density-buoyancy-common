@@ -6,23 +6,23 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
-import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
-import Matrix3 from '../../../../dot/js/Matrix3.js';
-import Vector2 from '../../../../dot/js/Vector2.js';
-import Cube from '../../common/model/Cube.js';
-import DensityBuoyancyModel, { DensityBuoyancyModelOptions } from '../../common/model/DensityBuoyancyModel.js';
-import Material from '../../common/model/Material.js';
-import Scale, { DisplayType } from '../../common/model/Scale.js';
-import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
+import DerivedProperty from '../../../../../axon/js/DerivedProperty.js';
+import Matrix3 from '../../../../../dot/js/Matrix3.js';
+import Vector2 from '../../../../../dot/js/Vector2.js';
+import Cube from '../../../common/model/Cube.js';
+import DensityBuoyancyModel, { DensityBuoyancyModelOptions } from '../../../common/model/DensityBuoyancyModel.js';
+import Material from '../../../common/model/Material.js';
+import Scale, { DisplayType } from '../../../common/model/Scale.js';
+import densityBuoyancyCommon from '../../../densityBuoyancyCommon.js';
 import Boat from './Boat.js';
 import Bottle from './Bottle.js';
-import { combineOptions } from '../../../../phet-core/js/optionize.js';
-import Range from '../../../../dot/js/Range.js';
-import NumberProperty from '../../../../axon/js/NumberProperty.js';
-import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
-import BooleanIO from '../../../../tandem/js/types/BooleanIO.js';
+import { combineOptions } from '../../../../../phet-core/js/optionize.js';
+import Range from '../../../../../dot/js/Range.js';
+import NumberProperty from '../../../../../axon/js/NumberProperty.js';
+import TReadOnlyProperty from '../../../../../axon/js/TReadOnlyProperty.js';
+import BooleanIO from '../../../../../tandem/js/types/BooleanIO.js';
 import { BottleOrBoat, BottleOrBoatValues } from './BottleOrBoat.js';
-import StringUnionProperty from '../../../../axon/js/StringUnionProperty.js';
+import StringUnionProperty from '../../../../../axon/js/StringUnionProperty.js';
 
 export type BuoyancyApplicationsModelOptions = DensityBuoyancyModelOptions;
 

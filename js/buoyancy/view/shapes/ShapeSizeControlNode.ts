@@ -6,22 +6,22 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
-import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
-import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
-import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
-import Property from '../../../../axon/js/Property.js';
-import Dimension2 from '../../../../dot/js/Dimension2.js';
-import Range from '../../../../dot/js/Range.js';
-import optionize, { combineOptions } from '../../../../phet-core/js/optionize.js';
-import NumberControl, { NumberControlOptions } from '../../../../scenery-phet/js/NumberControl.js';
-import NumberDisplay from '../../../../scenery-phet/js/NumberDisplay.js';
-import { FlowBoxOptions, HBox, HSeparator, Node, Text, VBox } from '../../../../scenery/js/imports.js';
-import ComboBox from '../../../../sun/js/ComboBox.js';
-import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
-import { MassShape } from '../../common/model/MassShape.js';
-import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
-import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
-import WithRequired from '../../../../phet-core/js/types/WithRequired.js';
+import BooleanProperty from '../../../../../axon/js/BooleanProperty.js';
+import DerivedProperty from '../../../../../axon/js/DerivedProperty.js';
+import TReadOnlyProperty from '../../../../../axon/js/TReadOnlyProperty.js';
+import Property from '../../../../../axon/js/Property.js';
+import Dimension2 from '../../../../../dot/js/Dimension2.js';
+import Range from '../../../../../dot/js/Range.js';
+import optionize, { combineOptions } from '../../../../../phet-core/js/optionize.js';
+import NumberControl, { NumberControlOptions } from '../../../../../scenery-phet/js/NumberControl.js';
+import NumberDisplay from '../../../../../scenery-phet/js/NumberDisplay.js';
+import { FlowBoxOptions, HBox, HSeparator, Node, Text, VBox } from '../../../../../scenery/js/imports.js';
+import ComboBox from '../../../../../sun/js/ComboBox.js';
+import DensityBuoyancyCommonConstants from '../../../common/DensityBuoyancyCommonConstants.js';
+import { MassShape } from '../../../common/model/MassShape.js';
+import densityBuoyancyCommon from '../../../densityBuoyancyCommon.js';
+import DensityBuoyancyCommonStrings from '../../../DensityBuoyancyCommonStrings.js';
+import WithRequired from '../../../../../phet-core/js/types/WithRequired.js';
 
 type SelfOptions = {
   labelNode?: Node | null;

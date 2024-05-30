@@ -6,15 +6,15 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
-import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
-import Multilink, { UnknownMultilink } from '../../../../axon/js/Multilink.js';
-import Material from '../../common/model/Material.js';
-import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
-import Boat from '../model/Boat.js';
-import BoatDesign from '../model/BoatDesign.js';
-import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
-import MeasurableMassView from '../../common/view/MeasurableMassView.js';
-import { THREEModelViewTransform } from '../../common/view/DensityBuoyancyScreenView.js';
+import TReadOnlyProperty from '../../../../../axon/js/TReadOnlyProperty.js';
+import Multilink, { UnknownMultilink } from '../../../../../axon/js/Multilink.js';
+import Material from '../../../common/model/Material.js';
+import densityBuoyancyCommon from '../../../densityBuoyancyCommon.js';
+import Boat from '../../model/applications/Boat.js';
+import BoatDesign from '../../model/applications/BoatDesign.js';
+import DensityBuoyancyCommonConstants from '../../../common/DensityBuoyancyCommonConstants.js';
+import MeasurableMassView from '../../../common/view/MeasurableMassView.js';
+import { THREEModelViewTransform } from '../../../common/view/DensityBuoyancyScreenView.js';
 
 type BoatDrawingData = {
   backMiddleMaterial: THREE.MeshBasicMaterial;

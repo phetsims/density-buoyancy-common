@@ -6,12 +6,12 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
-import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
-import Bottle from '../model/Bottle.js';
-import Material from '../../common/model/Material.js';
-import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
-import MeasurableMassView from '../../common/view/MeasurableMassView.js';
-import { THREEModelViewTransform } from '../../common/view/DensityBuoyancyScreenView.js';
+import densityBuoyancyCommon from '../../../densityBuoyancyCommon.js';
+import Bottle from '../../model/applications/Bottle.js';
+import Material from '../../../common/model/Material.js';
+import TReadOnlyProperty from '../../../../../axon/js/TReadOnlyProperty.js';
+import MeasurableMassView from '../../../common/view/MeasurableMassView.js';
+import { THREEModelViewTransform } from '../../../common/view/DensityBuoyancyScreenView.js';
 
 type BottleDrawingData = {
   group: THREE.Group;

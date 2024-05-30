@@ -6,12 +6,12 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
-import Vector2 from '../../../../dot/js/Vector2.js';
-import { Shape } from '../../../../kite/js/imports.js';
-import Tandem from '../../../../tandem/js/Tandem.js';
-import Basin from '../../common/model/Basin.js';
-import Mass from '../../common/model/Mass.js';
-import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
+import Vector2 from '../../../../../dot/js/Vector2.js';
+import { Shape } from '../../../../../kite/js/imports.js';
+import Tandem from '../../../../../tandem/js/Tandem.js';
+import Basin from '../../../common/model/Basin.js';
+import Mass from '../../../common/model/Mass.js';
+import densityBuoyancyCommon from '../../../densityBuoyancyCommon.js';
 import Boat from './Boat.js';
 import BoatDesign from './BoatDesign.js';
 

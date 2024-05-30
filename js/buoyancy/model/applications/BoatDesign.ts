@@ -23,15 +23,15 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
-import Bounds2 from '../../../../dot/js/Bounds2.js';
-import Bounds3 from '../../../../dot/js/Bounds3.js';
-import Utils from '../../../../dot/js/Utils.js';
-import Vector2 from '../../../../dot/js/Vector2.js';
-import Vector3 from '../../../../dot/js/Vector3.js';
-import { Cubic, Line, Segment } from '../../../../kite/js/imports.js';
-import ThreeUtils from '../../../../mobius/js/ThreeUtils.js';
-import { Color } from '../../../../scenery/js/imports.js';
-import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
+import Bounds2 from '../../../../../dot/js/Bounds2.js';
+import Bounds3 from '../../../../../dot/js/Bounds3.js';
+import Utils from '../../../../../dot/js/Utils.js';
+import Vector2 from '../../../../../dot/js/Vector2.js';
+import Vector3 from '../../../../../dot/js/Vector3.js';
+import { Cubic, Line, Segment } from '../../../../../kite/js/imports.js';
+import ThreeUtils from '../../../../../mobius/js/ThreeUtils.js';
+import { Color } from '../../../../../scenery/js/imports.js';
+import densityBuoyancyCommon from '../../../densityBuoyancyCommon.js';
 
 // constants
 const CROSS_SECTION_SAMPLES = 30;

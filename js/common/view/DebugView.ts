@@ -12,7 +12,7 @@ import Vector2 from '../../../../dot/js/Vector2.js';
 import { Shape } from '../../../../kite/js/imports.js';
 import ModelViewTransform2 from '../../../../phetcommon/js/view/ModelViewTransform2.js';
 import { DragListener, Node, Path, Rectangle } from '../../../../scenery/js/imports.js';
-import Boat from '../../buoyancy/model/Boat.js';
+import Boat from '../../buoyancy/model/applications/Boat.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyModel from '../model/DensityBuoyancyModel.js';
 import Mass from '../model/Mass.js';

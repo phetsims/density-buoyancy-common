@@ -23,7 +23,7 @@ import P2Engine from './P2Engine.js';
 import Pool from './Pool.js';
 import Scale, { DisplayType, SCALE_WIDTH } from './Scale.js';
 import optionize from '../../../../phet-core/js/optionize.js';
-import Boat from '../../buoyancy/model/Boat.js';
+import Boat from '../../buoyancy/model/applications/Boat.js';
 import PhysicsEngine, { PhysicsEngineBody } from './PhysicsEngine.js';
 import Mass from './Mass.js';
 import Basin from './Basin.js';

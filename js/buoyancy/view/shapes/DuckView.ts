@@ -7,15 +7,15 @@
  * @author Michael Kauzmann
  */
 
-import Bounds3 from '../../../../dot/js/Bounds3.js';
-import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
-import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
-import Duck from '../model/Duck.js';
-import { THREEModelViewTransform } from '../../common/view/DensityBuoyancyScreenView.js';
-import MeasurableMassView from '../../common/view/MeasurableMassView.js';
-import { duckGeometry } from '../model/DuckData.js';
-import Vector3 from '../../../../dot/js/Vector3.js';
-import Vector2 from '../../../../dot/js/Vector2.js';
+import Bounds3 from '../../../../../dot/js/Bounds3.js';
+import densityBuoyancyCommon from '../../../densityBuoyancyCommon.js';
+import TReadOnlyProperty from '../../../../../axon/js/TReadOnlyProperty.js';
+import Duck from '../../model/shapes/Duck.js';
+import { THREEModelViewTransform } from '../../../common/view/DensityBuoyancyScreenView.js';
+import MeasurableMassView from '../../../common/view/MeasurableMassView.js';
+import { duckGeometry } from '../../model/shapes/DuckData.js';
+import Vector3 from '../../../../../dot/js/Vector3.js';
+import Vector2 from '../../../../../dot/js/Vector2.js';
 
 export default class DuckView extends MeasurableMassView {
 

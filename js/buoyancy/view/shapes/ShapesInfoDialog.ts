@@ -1,11 +1,11 @@
 // Copyright 2024, University of Colorado Boulder
 
-import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
-import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
-import Dialog, { DialogOptions } from '../../../../sun/js/Dialog.js';
-import Tandem from '../../../../tandem/js/Tandem.js';
-import { RichText, VBox } from '../../../../scenery/js/imports.js';
-import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
+import densityBuoyancyCommon from '../../../densityBuoyancyCommon.js';
+import PhetFont from '../../../../../scenery-phet/js/PhetFont.js';
+import Dialog, { DialogOptions } from '../../../../../sun/js/Dialog.js';
+import Tandem from '../../../../../tandem/js/Tandem.js';
+import { RichText, VBox } from '../../../../../scenery/js/imports.js';
+import DensityBuoyancyCommonStrings from '../../../DensityBuoyancyCommonStrings.js';
 
 /**
  * ShapesInfoDialog is a dialog that displays info related to the forces and torque limitations within the sim

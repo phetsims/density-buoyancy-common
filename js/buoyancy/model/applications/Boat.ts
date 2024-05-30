@@ -7,24 +7,24 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
-import NumberProperty from '../../../../axon/js/NumberProperty.js';
-import StrictOmit from '../../../../phet-core/js/types/StrictOmit.js';
-import Utils from '../../../../dot/js/Utils.js';
-import { Shape } from '../../../../kite/js/imports.js';
-import Mass, { MassOptions } from '../../common/model/Mass.js';
-import Material from '../../common/model/Material.js';
-import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
+import NumberProperty from '../../../../../axon/js/NumberProperty.js';
+import StrictOmit from '../../../../../phet-core/js/types/StrictOmit.js';
+import Utils from '../../../../../dot/js/Utils.js';
+import { Shape } from '../../../../../kite/js/imports.js';
+import Mass, { MassOptions } from '../../../common/model/Mass.js';
+import Material from '../../../common/model/Material.js';
+import densityBuoyancyCommon from '../../../densityBuoyancyCommon.js';
 import BoatBasin from './BoatBasin.js';
 import BoatDesign from './BoatDesign.js';
-import PhysicsEngine from '../../common/model/PhysicsEngine.js';
-import TProperty from '../../../../axon/js/TProperty.js';
-import Multilink from '../../../../axon/js/Multilink.js';
-import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
-import { MassShape } from '../../common/model/MassShape.js';
-import optionize, { EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
+import PhysicsEngine from '../../../common/model/PhysicsEngine.js';
+import TProperty from '../../../../../axon/js/TProperty.js';
+import Multilink from '../../../../../axon/js/Multilink.js';
+import TReadOnlyProperty from '../../../../../axon/js/TReadOnlyProperty.js';
+import { MassShape } from '../../../common/model/MassShape.js';
+import optionize, { EmptySelfOptions } from '../../../../../phet-core/js/optionize.js';
 import ApplicationsMass, { ApplicationsMassOptions } from './ApplicationsMass.js';
-import Vector2 from '../../../../dot/js/Vector2.js';
-import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
+import Vector2 from '../../../../../dot/js/Vector2.js';
+import DensityBuoyancyCommonConstants from '../../../common/DensityBuoyancyCommonConstants.js';
 
 export type BoatOptions = StrictOmit<ApplicationsMassOptions, 'body' | 'shape' | 'volume' | 'material' | 'massShape'>;
 

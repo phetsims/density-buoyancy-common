@@ -43,6 +43,7 @@ import PrecisionSliderThumb from '../../common/view/PrecisionSliderThumb.js';
 import ThreeUtils from '../../../../mobius/js/ThreeUtils.js';
 import Bottle from '../model/Bottle.js';
 import MassView from '../../common/view/MassView.js';
+import Vector2 from '../../../../dot/js/Vector2.js';
 
 // constants
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
@@ -288,6 +289,14 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
       yAlign: 'top',
       margin: MARGIN
     } ) );
+
+    // DerivedProperty doesn't need disposal, since everything here lives for the lifetime of the simulation
+    this.rightBarrierViewPointPropertyProperty.value = new DerivedProperty( [ rightSideVBox.boundsProperty, this.visibleBoundsProperty ], ( boxBounds, visibleBounds ) => {
+      // We might not have a box, see https://github.com/phetsims/density/issues/110
+      return new Vector2( isFinite( boxBounds.left ) ? boxBounds.left : visibleBounds.right, visibleBounds.centerY );
+    }, {
+      strictAxonDependencies: false // This workaround is deemed acceptable for visibleBoundsProperty listening, https://github.com/phetsims/faradays-electromagnetic-lab/issues/65
+    } );
 
     // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
     model.sceneProperty.link( scene => {

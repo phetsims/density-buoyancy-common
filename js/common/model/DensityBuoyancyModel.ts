@@ -229,9 +229,7 @@ export default class DensityBuoyancyModel implements TModel {
       new Vector2( this.groundBounds.minX, this.groundBounds.maxY )
     ];
 
-    this.pool = new Pool( this.poolBounds, {
-      tandem: tandem.createTandem( 'pool' )
-    } );
+    this.pool = new Pool( this.poolBounds, tandem.createTandem( 'pool' ) );
 
     this.engine = new P2Engine();
 

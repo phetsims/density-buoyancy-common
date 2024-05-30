@@ -7,26 +7,25 @@
  */
 
 import Bounds3 from '../../../../dot/js/Bounds3.js';
-import optionize, { EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
-import Basin, { BasinOptions } from './Basin.js';
+import Basin from './Basin.js';
 import Mass from './Mass.js';
 import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
-
-export type PoolOptions = BasinOptions;
+import Tandem from '../../../../tandem/js/Tandem.js';
 
 export default class Pool extends Basin {
 
   public readonly bounds: Bounds3;
 
-  public constructor( bounds: Bounds3, options?: PoolOptions ) {
+  public constructor( bounds: Bounds3, tandem: Tandem ) {
 
     const initialVolume = DensityBuoyancyCommonConstants.DESIRED_STARTING_POOL_VOLUME;
 
-    super( optionize<PoolOptions, EmptySelfOptions, BasinOptions>()( {
+    super( {
       initialVolume: initialVolume,
-      initialY: bounds.minY + initialVolume / ( bounds.width * bounds.depth ) // TODO: Wouldn't it be better base this on the provided option instead of the hard coded default? https://github.com/phetsims/density-buoyancy-common/issues/95
-    }, options ) );
+      initialY: bounds.minY + initialVolume / ( bounds.width * bounds.depth ),
+      tandem: tandem
+    } );
 
     this.bounds = bounds;
 

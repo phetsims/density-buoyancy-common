@@ -14,7 +14,7 @@ import { Node, Text } from '../../../../scenery/js/imports.js';
 import Panel from '../../../../sun/js/Panel.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
-import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
+import DensityBuoyancyCommonConstants, { chooseDecimalPlaces } from '../DensityBuoyancyCommonConstants.js';
 import Scale, { DisplayType } from '../model/Scale.js';
 import Gravity from '../model/Gravity.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
@@ -39,12 +39,12 @@ export default class ScaleReadoutNode extends Node {
     ], ( scaleForce, gravity, newtonsPattern, kilogramsPattern ) => {
       if ( mass.displayType === DisplayType.NEWTONS ) {
         return StringUtils.fillIn( newtonsPattern, {
-          newtons: Utils.toFixed( scaleForce, 2 )
+          newtons: Utils.toFixed( scaleForce, chooseDecimalPlaces( scaleForce ) )
         } );
       }
       else {
         return StringUtils.fillIn( kilogramsPattern, {
-          kilograms: gravity.value > 0 ? Utils.toFixed( scaleForce / gravity.value, 2 ) : '-'
+          kilograms: gravity.value > 0 ? Utils.toFixed( scaleForce / gravity.value, chooseDecimalPlaces( scaleForce ) ) : '-'
         } );
       }
     } );

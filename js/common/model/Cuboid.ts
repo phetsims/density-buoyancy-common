@@ -217,7 +217,7 @@ export default class Cuboid extends Mass {
     return ( tNear >= tFar ) ? null : ( tNear >= 0 ? tNear : ( isFinite( tFar ) && tFar >= 0 ? tFar : null ) );
   }
 
-  // TODO: sizeProperty isn't needed here for state. It is instrumented itself, https://github.com/phetsims/buoyancy/issues/160
+  // TODO: sizeProperty isn't needed here for state. It is instrumented itself, see https://github.com/phetsims/buoyancy/issues/165
   public static CuboidIO = new IOType<Cuboid, CuboidIOStateObject, CuboidSelfState>( 'CuboidIO', {
     valueType: Cuboid,
     supertype: Mass.MassIO,

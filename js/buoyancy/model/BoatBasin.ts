@@ -29,8 +29,8 @@ export default class BoatBasin extends Basin {
   }
 
   /**
-   * Returns whether a given mass is inside this basin (e.g. if filled with liquid, would it be displacing any
-   * liquid).
+   * Returns whether a given mass is inside this basin (e.g. if filled with liquid, would it be displacing any liquid).
+   * See Pool.isMassInside
    */
   public isMassInside( mass: Mass ): boolean {
     const slip = 0.01; // 1 cm of potential overlap due to physics stiffness variables.

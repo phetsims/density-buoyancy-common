@@ -40,8 +40,12 @@ export default class Pool extends Basin {
    * liquid).
    */
   public isMassInside( mass: Mass ): boolean {
-    // TODO: Why not care about horizontal positioning? https://github.com/phetsims/buoyancy/issues/139
-    return mass.stepBottom < this.stepTop;
+
+    const SLIP = 0.01; // 1 cm of potential overlap due to physics stiffness variables, see BoatBasin.isMassInside
+
+    // Horizontal position does not need to be considered because the only way for a shape to have part below the top
+    // of the empty pool is for it to be inside the pool.
+    return mass.stepBottom < this.stepTop - SLIP;
   }
 
   /**

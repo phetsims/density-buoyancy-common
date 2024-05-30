@@ -123,7 +123,10 @@ export default class ShapeSizeControlNode extends VBox {
             font: DensityBuoyancyCommonConstants.READOUT_FONT,
             maxWidth: widthNumberControl.width / 2
           } ),
-          new NumberDisplay( litersProperty, new Range( 0, 10 ), { // TODO: is 10 the most? https://github.com/phetsims/density-buoyancy-common/issues/86
+
+          // For this number display, the max is 8.66 (for the cube Block) but each shape has a different maximum. But
+          // the limit of 10.00 works well for the sizing.
+          new NumberDisplay( litersProperty, new Range( 0, 10 ), {
             valuePattern: DensityBuoyancyCommonConstants.VOLUME_PATTERN_STRING_PROPERTY,
             useRichText: true,
             decimalPlaces: 2,

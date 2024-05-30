@@ -97,10 +97,6 @@ export default class DensityBuoyancyModel implements TModel {
   public barrierBody: PhysicsEngineBody;
   public readonly availableMasses: ObservableArray<Mass>;
 
-  // We need to hook into a boat (if it exists) for displaying the water.
-  // TODO: Should this be a readonly? https://github.com/phetsims/density-buoyancy-common/issues/95
-  public boat: Boat | null;
-
   // Flag that sets an animation to empty the boat of any water inside of it
   private spillingWaterOutOfBoat = false;
 
@@ -237,7 +233,6 @@ export default class DensityBuoyancyModel implements TModel {
       tandem: tandem.createTandem( 'pool' )
     } );
 
-    this.boat = null;
     this.engine = new P2Engine();
 
     this.groundBody = this.engine.createGround( this.groundPoints );
@@ -442,10 +437,10 @@ export default class DensityBuoyancyModel implements TModel {
   }
 
   /**
-   * Returns the boat (if there is one)
+   * Returns the boat (if there is one). Overridden in subclasses that have a boat.
    */
   public getBoat(): Boat | null {
-    return this.boat;
+    return null;
   }
 
   /**

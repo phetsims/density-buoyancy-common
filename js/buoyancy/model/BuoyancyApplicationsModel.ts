@@ -32,7 +32,7 @@ export default class BuoyancyApplicationsModel extends DensityBuoyancyModel {
 
   public readonly bottle: Bottle;
   public readonly block: Cube;
-  public override boat: Boat;
+  public readonly boat: Boat;
   public readonly scale1: Scale; // Scale sitting to the right of the pool
   public readonly customDensityProperty: NumberProperty;
   public readonly customDensityControlVisibleProperty: TReadOnlyProperty<boolean>;
@@ -126,6 +126,10 @@ export default class BuoyancyApplicationsModel extends DensityBuoyancyModel {
       'Boat and bottle should not be visible at the same time' );
 
     super.step( dt );
+  }
+
+  public override getBoat(): Boat | null {
+    return this.boat;
   }
 
   /**

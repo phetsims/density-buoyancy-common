@@ -104,7 +104,6 @@ export default class ShapeSizeControlNode extends VBox {
     } );
 
     this.children = [
-      // TODO: ensure maxWidth for combo box contents so this isn't an issue. How do we want to do layout? https://github.com/phetsims/density-buoyancy-common/issues/86
       new HBox( {
         spacing: 5,
         children: [

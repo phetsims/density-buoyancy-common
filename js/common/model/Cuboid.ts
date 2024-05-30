@@ -15,7 +15,6 @@ import Vector2 from '../../../../dot/js/Vector2.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
 import { Shape } from '../../../../kite/js/imports.js';
 import optionize, { EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
-import IOType from '../../../../tandem/js/types/IOType.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import Mass, { InstrumentedMassOptions, MASS_MAX_SHAPES_DIMENSION, MASS_MIN_SHAPES_DIMENSION, MassIOStateObject } from './Mass.js';
 import PhysicsEngine from './PhysicsEngine.js';
@@ -36,8 +35,7 @@ export default class Cuboid extends Mass {
       body: engine.createBox( size.width, size.height ),
       shape: Shape.rect( size.minX, size.minY, size.width, size.height ),
       volume: size.width * size.height * size.depth,
-      massShape: MassShape.BLOCK,
-      phetioType: Cuboid.CuboidIO
+      massShape: MassShape.BLOCK
     }, providedOptions );
 
     assert && assert( !options.canRotate );
@@ -216,29 +214,6 @@ export default class Cuboid extends Mass {
 
     return ( tNear >= tFar ) ? null : ( tNear >= 0 ? tNear : ( isFinite( tFar ) && tFar >= 0 ? tFar : null ) );
   }
-
-  // TODO: sizeProperty isn't needed here for state. It is instrumented itself, see https://github.com/phetsims/buoyancy/issues/165
-  public static CuboidIO = new IOType<Cuboid, CuboidIOStateObject, CuboidSelfState>( 'CuboidIO', {
-    valueType: Cuboid,
-    supertype: Mass.MassIO,
-    documentation: 'Represents an axis-aligned cuboid mass',
-    stateSchema: {
-      size: Bounds3.Bounds3IO
-    },
-
-    toStateObject: ( cuboid: Cuboid ): CuboidIOStateObject => {
-      const parentStateObject = Mass.MassIO.toStateObject( cuboid );
-      return _.merge<CuboidSelfState, MassIOStateObject>( {
-        size: Bounds3.Bounds3IO.toStateObject( cuboid.sizeProperty.value )
-      }, parentStateObject );
-    },
-    applyState: ( cuboid: Cuboid, stateObject: CuboidIOStateObject ) => {
-
-      // Apply size update first, and with the very specific update method
-      cuboid.updateSize( Bounds3.Bounds3IO.fromStateObject( stateObject.size ) );
-      Mass.MassIO.applyState( cuboid, stateObject );
-    }
-  } );
 }
 
 // TODO: Use Bounds3State type, https://github.com/phetsims/buoyancy/issues/166

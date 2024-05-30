@@ -347,7 +347,7 @@ export default class DensityMysteryModel extends BlockSetModel<MysteryBlockSet> 
       initialMode: MysteryBlockSet.SET_1,
       BlockSet: MysteryBlockSet.enumeration,
 
-      // Prefer callbacks to overridden abstract methods in this case because it is an anti-pattern to have the parent
+      // Prefer callbacks to overridden abstract methods in this case because it is an antipattern to have the parent
       // type call an overridden method, since the subtype may not have been fully constructed yet and have undefined
       // members.
       createMassesCallback: createMasses,

@@ -13,7 +13,6 @@ import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import Boat from '../model/Boat.js';
 import BoatDesign from '../model/BoatDesign.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
-import Bounds3 from '../../../../dot/js/Bounds3.js';
 import MeasurableMassView from '../../common/view/MeasurableMassView.js';
 import { THREEModelViewTransform } from '../../common/view/DensityBuoyancyScreenView.js';
 
@@ -30,7 +29,7 @@ export default class BoatView extends MeasurableMassView {
 
   public readonly boat: Boat;
 
-  public constructor( boat: Boat, modelViewTransform: THREEModelViewTransform, dragBoundsProperty: TReadOnlyProperty<Bounds3>,
+  public constructor( boat: Boat, modelViewTransform: THREEModelViewTransform,
                       liquidYInterpolatedProperty: TReadOnlyProperty<number>,
                       showGravityForceProperty: TReadOnlyProperty<boolean>,
                       showBuoyancyForceProperty: TReadOnlyProperty<boolean>,
@@ -40,7 +39,7 @@ export default class BoatView extends MeasurableMassView {
                       showMassValuesProperty: TReadOnlyProperty<boolean> ) {
 
     // @ts-expect-error
-    super( boat, new THREE.Geometry(), modelViewTransform, dragBoundsProperty,
+    super( boat, new THREE.Geometry(), modelViewTransform,
 
       showGravityForceProperty,
       showBuoyancyForceProperty,

@@ -12,7 +12,6 @@ import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import HorizontalCylinder from '../model/HorizontalCylinder.js';
 import { TAG_OFFSET } from './MassTagNode.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
-import Bounds3 from '../../../../dot/js/Bounds3.js';
 import MeasurableMassView from './MeasurableMassView.js';
 import { THREEModelViewTransform } from './DensityBuoyancyScreenView.js';
 
@@ -27,7 +26,6 @@ export default class HorizontalCylinderView extends MeasurableMassView {
   private readonly updateListener: () => void;
 
   public constructor( horizontalCylinder: HorizontalCylinder, modelViewTransform: THREEModelViewTransform,
-                      dragBoundsProperty: TReadOnlyProperty<Bounds3>,
                       showGravityForceProperty: TReadOnlyProperty<boolean>,
                       showBuoyancyForceProperty: TReadOnlyProperty<boolean>,
                       showContactForceProperty: TReadOnlyProperty<boolean>,
@@ -46,7 +44,7 @@ export default class HorizontalCylinderView extends MeasurableMassView {
     horizontalCylinderGeometry.addAttribute( 'normal', new THREE.BufferAttribute( normalArray, 3 ) );
     horizontalCylinderGeometry.addAttribute( 'uv', new THREE.BufferAttribute( uvArray, 2 ) );
 
-    super( horizontalCylinder, horizontalCylinderGeometry, modelViewTransform, dragBoundsProperty, showGravityForceProperty,
+    super( horizontalCylinder, horizontalCylinderGeometry, modelViewTransform, showGravityForceProperty,
       showBuoyancyForceProperty,
       showContactForceProperty,
       showForceValuesProperty,

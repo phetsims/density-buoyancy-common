@@ -32,7 +32,6 @@ export default class CuboidView extends MeasurableMassView {
 
   public constructor( cuboid: Cuboid,
                       modelViewTransform: THREEModelViewTransform,
-                      dragBoundsProperty: TReadOnlyProperty<Bounds3>,
                       showDepthLinesProperty: TReadOnlyProperty<boolean>,
                       showGravityForceProperty: TReadOnlyProperty<boolean>,
                       showBuoyancyForceProperty: TReadOnlyProperty<boolean>,
@@ -45,7 +44,7 @@ export default class CuboidView extends MeasurableMassView {
 
     const cuboidGeometry = CuboidView.getCuboidGeometry( size );
 
-    super( cuboid, cuboidGeometry, modelViewTransform, dragBoundsProperty,
+    super( cuboid, cuboidGeometry, modelViewTransform,
 
       showGravityForceProperty,
       showBuoyancyForceProperty,

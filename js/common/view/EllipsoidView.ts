@@ -21,7 +21,7 @@ export default class EllipsoidView extends MeasurableMassView {
   private readonly ellipsoidGeometry: THREE.SphereGeometry;
   private readonly updateListener: ( newSize: Bounds3, oldSize: Bounds3 ) => void;
 
-  public constructor( ellipsoid: Ellipsoid, modelViewTransform: THREEModelViewTransform, dragBoundsProperty: TReadOnlyProperty<Bounds3>,
+  public constructor( ellipsoid: Ellipsoid, modelViewTransform: THREEModelViewTransform,
                       showGravityForceProperty: TReadOnlyProperty<boolean>,
                       showBuoyancyForceProperty: TReadOnlyProperty<boolean>,
                       showContactForceProperty: TReadOnlyProperty<boolean>,
@@ -31,7 +31,7 @@ export default class EllipsoidView extends MeasurableMassView {
 
     const ellipsoidGeometry = new THREE.SphereGeometry( 1, 30, 24 );
 
-    super( ellipsoid, ellipsoidGeometry, modelViewTransform, dragBoundsProperty, showGravityForceProperty,
+    super( ellipsoid, ellipsoidGeometry, modelViewTransform, showGravityForceProperty,
       showBuoyancyForceProperty,
       showContactForceProperty,
       showForceValuesProperty,

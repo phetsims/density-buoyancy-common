@@ -16,8 +16,6 @@ import MassTagNode from './MassTagNode.js';
 import ConvexHull2 from '../../../../dot/js/ConvexHull2.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import ModelViewTransform2 from '../../../../phetcommon/js/view/ModelViewTransform2.js';
-import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
-import Bounds3 from '../../../../dot/js/Bounds3.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
 import grabSoundPlayer from '../../../../tambo/js/shared-sound-players/grabSoundPlayer.js';
 import releaseSoundPlayer from '../../../../tambo/js/shared-sound-players/releaseSoundPlayer.js';
@@ -44,9 +42,7 @@ export default abstract class MassView extends Disposable {
   public readonly focusableShapeProperty = new Property( new Shape() );
 
   protected constructor( mass: Mass, initialGeometry: THREE.BufferGeometry,
-                         protected readonly modelViewTransform: THREEModelViewTransform,
-                         // TODO: remove unused? https://github.com/phetsims/density-buoyancy-common/issues/95
-                         dragBoundsProperty: TReadOnlyProperty<Bounds3> ) {
+                         protected readonly modelViewTransform: THREEModelViewTransform ) {
 
     super();
 

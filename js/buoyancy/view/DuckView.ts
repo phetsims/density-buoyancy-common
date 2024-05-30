@@ -22,10 +22,7 @@ export default class DuckView extends MeasurableMassView {
   public readonly duck: Duck;
   private duckGeometry: THREE.BufferGeometry;
 
-  // private readonly updateListener: ( newSize: Bounds3, oldSize: Bounds3 ) => void;
-
   public constructor( duck: Duck, modelViewTransform: THREEModelViewTransform,
-                      dragBoundsProperty: TReadOnlyProperty<Bounds3>,
                       showGravityForceProperty: TReadOnlyProperty<boolean>,
                       showBuoyancyForceProperty: TReadOnlyProperty<boolean>,
                       showContactForceProperty: TReadOnlyProperty<boolean>,
@@ -37,7 +34,7 @@ export default class DuckView extends MeasurableMassView {
 
     const duckGeometry = DuckView.getDuckGeometry( size );
 
-    super( duck, duckGeometry, modelViewTransform, dragBoundsProperty,
+    super( duck, duckGeometry, modelViewTransform,
 
       showGravityForceProperty,
       showBuoyancyForceProperty,

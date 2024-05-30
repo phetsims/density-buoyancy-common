@@ -12,7 +12,6 @@ import MassView from './MassView.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import Mass from '../model/Mass.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
-import Bounds3 from '../../../../dot/js/Bounds3.js';
 import ForceDiagramNode from './ForceDiagramNode.js';
 import Matrix3 from '../../../../dot/js/Matrix3.js';
 import MassLabelNode from './MassLabelNode.js';
@@ -30,7 +29,6 @@ export default class MeasurableMassView extends MassView {
 
   protected constructor( mass: Mass, initialGeometry: THREE.BufferGeometry,
                          modelViewTransform: THREEModelViewTransform,
-                         dragBoundsProperty: TReadOnlyProperty<Bounds3>,
                          showGravityForceProperty: TReadOnlyProperty<boolean>,
                          showBuoyancyForceProperty: TReadOnlyProperty<boolean>,
                          showContactForceProperty: TReadOnlyProperty<boolean>,
@@ -38,7 +36,7 @@ export default class MeasurableMassView extends MassView {
                          forceScaleProperty: TReadOnlyProperty<number>,
                          showMassValuesProperty: TReadOnlyProperty<boolean> ) {
 
-    super( mass, initialGeometry, modelViewTransform, dragBoundsProperty );
+    super( mass, initialGeometry, modelViewTransform );
 
     this.forceDiagramNode = new ForceDiagramNode(
       mass,

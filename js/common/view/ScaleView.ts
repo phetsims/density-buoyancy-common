@@ -13,7 +13,6 @@ import CuboidView from './CuboidView.js';
 import MassView from './MassView.js';
 import VerticalCylinderView from './VerticalCylinderView.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
-import Bounds3 from '../../../../dot/js/Bounds3.js';
 import ScaleReadoutNode from './ScaleReadoutNode.js';
 import Gravity from '../model/Gravity.js';
 import MassDecorationLayer from './MassDecorationLayer.js';
@@ -25,11 +24,10 @@ export default class ScaleView extends MassView {
   private readonly scaleGeometry: THREE.BufferGeometry;
   private readonly scaleReadoutNode: ScaleReadoutNode;
 
-  public constructor( mass: Scale, modelViewTransform: THREEModelViewTransform, dragBoundsProperty: TReadOnlyProperty<Bounds3>,
-                      gravityProperty: TReadOnlyProperty<Gravity> ) {
+  public constructor( mass: Scale, modelViewTransform: THREEModelViewTransform, gravityProperty: TReadOnlyProperty<Gravity> ) {
 
     const scaleGeometry = ScaleView.getScaleGeometry();
-    super( mass, scaleGeometry, modelViewTransform, dragBoundsProperty );
+    super( mass, scaleGeometry, modelViewTransform );
 
     this.scaleGeometry = scaleGeometry;
     this.scaleReadoutNode = new ScaleReadoutNode( mass, gravityProperty );

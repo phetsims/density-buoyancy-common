@@ -10,7 +10,6 @@ import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import Bottle from '../model/Bottle.js';
 import Material from '../../common/model/Material.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
-import Bounds3 from '../../../../dot/js/Bounds3.js';
 import MeasurableMassView from '../../common/view/MeasurableMassView.js';
 import { THREEModelViewTransform } from '../../common/view/DensityBuoyancyScreenView.js';
 
@@ -26,7 +25,6 @@ export default class BottleView extends MeasurableMassView {
 
   public constructor( bottle: Bottle,
                       modelViewTransform: THREEModelViewTransform,
-                      dragBoundsProperty: TReadOnlyProperty<Bounds3>,
                       showGravityForceProperty: TReadOnlyProperty<boolean>,
                       showBuoyancyForceProperty: TReadOnlyProperty<boolean>,
                       showContactForceProperty: TReadOnlyProperty<boolean>,
@@ -39,7 +37,6 @@ export default class BottleView extends MeasurableMassView {
       // @ts-expect-error
       new THREE.Geometry(),
       modelViewTransform,
-      dragBoundsProperty,
       showGravityForceProperty,
       showBuoyancyForceProperty,
       showContactForceProperty,

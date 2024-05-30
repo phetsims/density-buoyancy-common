@@ -755,7 +755,7 @@ const FLAT_INTERSECTION_VERTICES = [ ${flatIntersectionVertices.map( v => `new V
   /**
    * For UV-mapping
    *
-   * TODO: What is the most efficient to have the value of V? https://github.com/phetsims/density-buoyancy-common/issues/86
+   * TODO: What is the most efficient to have the value of V? https://github.com/phetsims/density-buoyancy-common/issues/144
    */
   private static yToV( y: number ): number {
     return y / ( 2 * FULL_RADIUS ) + 0.5;
@@ -945,7 +945,7 @@ const FLAT_INTERSECTION_VERTICES = [ ${flatIntersectionVertices.map( v => `new V
           const north = baseMesh[ Utils.moduloBetweenDown( i - 1, 0, radialSegments ) ][ j ].minus( position );
           const south = baseMesh[ Utils.moduloBetweenDown( i + 1, 0, radialSegments ) ][ j ].minus( position );
 
-          // TODO: check sign https://github.com/phetsims/density-buoyancy-common/issues/86
+          // TODO: check sign https://github.com/phetsims/density-buoyancy-common/issues/144
           const cumulativeNormal = new Vector3( 0, 0, 0 );
           cumulativeNormal.add( north.cross( east ).normalize() );
           cumulativeNormal.add( east.cross( south ).normalize() );
@@ -1141,7 +1141,7 @@ const FLAT_INTERSECTION_VERTICES = [ ${flatIntersectionVertices.map( v => `new V
 
     context.strokeStyle = 'magenta';
     context.beginPath();
-    // TODO: figure out segments improvement https://github.com/phetsims/density-buoyancy-common/issues/86
+    // TODO: figure out segments improvement https://github.com/phetsims/density-buoyancy-common/issues/144
     const baseTipProfile = [
       ..._.range( 0, BASE_SEGMENTS + 1 ).map( i => Bottle.getBaseFirstTipParametricProfilePoint( i / BASE_SEGMENTS ) ),
       ..._.range( 1, BASE_SEGMENTS + 1 ).map( i => Bottle.getBaseSecondTipParametricProfilePoint( i / BASE_SEGMENTS ) )

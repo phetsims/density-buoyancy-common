@@ -163,13 +163,13 @@ export default class BottleView extends MeasurableMassView {
       opacity: 0.5,
       transparent: true,
       side: THREE.FrontSide,
-      // depthWrite: false, // TODO: hmmm? https://github.com/phetsims/density-buoyancy-common/issues/86
+      // depthWrite: false, // TODO: hmmm? https://github.com/phetsims/density-buoyancy-common/issues/144
       clippingPlanes: [ bottomClipPlane ]
     } );
     const frontBottom = new THREE.Mesh( primaryGeometry, frontBottomMaterial );
     bottleGroup.add( frontBottom );
 
-    // TODO: optimize https://github.com/phetsims/density-buoyancy-common/issues/86
+    // TODO: optimize https://github.com/phetsims/density-buoyancy-common/issues/144
     const frontBottomForDepth = new THREE.Mesh( primaryGeometry, new THREE.MeshPhongMaterial( {
       color: 0xFF0000,
       opacity: 0,

@@ -66,7 +66,11 @@ export default class ForceDiagramNode extends Node {
     showForceValuesProperty: TReadOnlyProperty<boolean>,
     forceScaleProperty: TReadOnlyProperty<number>
   ) {
-    super();
+    super( {
+
+      // Make unpickable so the user can grab the mass through the force diagram
+      pickable: false
+    } );
 
     this.mass = mass;
 

@@ -44,6 +44,7 @@ import StringIO from '../../../../tandem/js/types/StringIO.js';
 import NumberIO from '../../../../tandem/js/types/NumberIO.js';
 import MassTag, { MassTagStateObject } from './MassTag.js';
 import Bounds3 from '../../../../dot/js/Bounds3.js';
+import BlendedVector2Property from './BlendedVector2Property.js';
 
 type MaterialNonCustomIdentifier = 'ALUMINUM' | 'BRICK' | 'COPPER' | 'ICE' | 'PLATINUM' | 'STEEL' | 'STYROFOAM' | 'WOOD';
 type MaterialIdentifier = MaterialNonCustomIdentifier | CustomMaterialName;
@@ -199,6 +200,9 @@ export default abstract class Mass extends PhetioObject {
   public readonly gravityForceInterpolatedProperty: InterpolatedProperty<Vector2>;
   public readonly buoyancyForceInterpolatedProperty: InterpolatedProperty<Vector2>;
   public readonly contactForceInterpolatedProperty: InterpolatedProperty<Vector2>;
+
+  // A force with an interpolation to blend new values with old ones to avoid flickering
+  public readonly contactForceBlendedProperty: BlendedVector2Property;
 
   public readonly forceOffsetProperty: Property<Vector3>;
 
@@ -470,6 +474,8 @@ export default abstract class Mass extends PhetioObject {
       units: 'N',
       phetioHighFrequency: true
     } );
+
+    this.contactForceBlendedProperty = new BlendedVector2Property( this.contactForceInterpolatedProperty );
 
     this.forceOffsetProperty = new Property( Vector3.ZERO, {
       valueType: Vector3,

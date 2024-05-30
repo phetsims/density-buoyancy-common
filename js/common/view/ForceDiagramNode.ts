@@ -21,6 +21,7 @@ import Vector2 from '../../../../dot/js/Vector2.js';
 import { combineOptions } from '../../../../phet-core/js/optionize.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import { chooseDecimalPlaces } from '../DensityBuoyancyCommonConstants.js';
+import BlendedVector2Property from '../model/BlendedVector2Property.js';
 
 // constants
 const arrowOptions = {
@@ -139,7 +140,7 @@ export default class ForceDiagramNode extends Node {
     const downwardArrows: ArrowNode[] = [];
     const labels: Node[] = [];
 
-    const updateArrow = ( forceProperty: InterpolatedProperty<Vector2>, showForceProperty: TReadOnlyProperty<boolean>, arrowNode: ArrowNode, textNode: Text, labelNode: Node ) => {
+    const updateArrow = ( forceProperty: InterpolatedProperty<Vector2> | BlendedVector2Property, showForceProperty: TReadOnlyProperty<boolean>, arrowNode: ArrowNode, textNode: Text, labelNode: Node ) => {
       const y = forceProperty.value.y;
       if ( showForceProperty.value && Math.abs( y ) > 1e-5 ) {
         arrowNode.setTip( 0, -y * this.forceScaleProperty.value * 20 ); // Default zoom is 20 units per Newton
@@ -156,7 +157,7 @@ export default class ForceDiagramNode extends Node {
     };
 
     // Documentation specifies that contact force should always be on the left if there are conflicts
-    updateArrow( this.mass.contactForceInterpolatedProperty, this.showContactForceProperty, this.contactArrowNode, this.contactLabelText, this.contactLabelNode );
+    updateArrow( this.mass.contactForceBlendedProperty, this.showContactForceProperty, this.contactArrowNode, this.contactLabelText, this.contactLabelNode );
     updateArrow( this.mass.gravityForceInterpolatedProperty, this.showGravityForceProperty, this.gravityArrowNode, this.gravityLabelText, this.gravityLabelNode );
     updateArrow( this.mass.buoyancyForceInterpolatedProperty, this.showBuoyancyForceProperty, this.buoyancyArrowNode, this.buoyancyLabelText, this.buoyancyLabelNode );
 

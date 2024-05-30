@@ -19,6 +19,7 @@ import Scale, { DisplayType } from '../model/Scale.js';
 import Gravity from '../model/Gravity.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
+import BlendedNumberProperty from '../model/BlendedNumberProperty.js';
 
 export default class ScaleReadoutNode extends Node {
 
@@ -31,8 +32,10 @@ export default class ScaleReadoutNode extends Node {
       pickable: false
     } );
 
+    const blendedProperty = new BlendedNumberProperty( mass.scaleForceInterpolatedProperty );
+
     this.stringProperty = new DerivedProperty( [
-      mass.scaleForceInterpolatedProperty,
+      blendedProperty,
       gravityProperty,
       DensityBuoyancyCommonStrings.newtonsPatternStringProperty,
       DensityBuoyancyCommonStrings.kilogramsPatternStringProperty

@@ -20,6 +20,7 @@ import InterpolatedProperty from '../model/InterpolatedProperty.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import { combineOptions } from '../../../../phet-core/js/optionize.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
+import { chooseDecimalPlaces } from '../DensityBuoyancyCommonConstants.js';
 
 // constants
 const arrowOptions = {
@@ -147,7 +148,7 @@ export default class ForceDiagramNode extends Node {
         if ( this.showForceValuesProperty.value ) {
           // We have a listener to the string that will call update
           textNode.string = StringUtils.fillIn( DensityBuoyancyCommonStrings.newtonsPatternStringProperty, {
-            newtons: Utils.toFixed( forceProperty.value.magnitude, 2 )
+            newtons: Utils.toFixed( forceProperty.value.magnitude, chooseDecimalPlaces( forceProperty.value.magnitude ) )
           } );
           labels.push( labelNode );
         }

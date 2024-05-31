@@ -57,12 +57,8 @@ const DensityBuoyancyCommonConstants = {
     size: 14,
     weight: 'bold'
   } ),
-  RADIO_BUTTON_FONT: new PhetFont( {
-    size: 16
-  } ),
-  COMBO_BOX_ITEM_FONT: new PhetFont( {
-    size: 14
-  } ),
+  RADIO_BUTTON_FONT: new PhetFont( 14 ),
+  COMBO_BOX_ITEM_FONT: new PhetFont( 14 ),
   READOUT_FONT: new PhetFont( 14 ),
 
   THUMB_SIZE: new Dimension2( 13, 22 ),

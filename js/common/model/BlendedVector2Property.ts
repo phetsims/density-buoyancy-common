@@ -1,4 +1,4 @@
-// Copyright 2019-2024, University of Colorado Boulder
+// Copyright 2024, University of Colorado Boulder
 
 /**
  * A Property that blends a Vector2 Property between the old and new value based on the distance between them.

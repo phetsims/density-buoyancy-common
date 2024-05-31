@@ -145,7 +145,7 @@ type StringsType = {
   'whatIsTheFluidDensityStringProperty': LocalizedStringProperty;
   'whatIsTheValueOfGravityStringProperty': LocalizedStringProperty;
   'whatIsTheMaterialStringProperty': LocalizedStringProperty;
-  'vectorScaleStringProperty': LocalizedStringProperty;
+  'vectorZoomStringProperty': LocalizedStringProperty;
   'volumeUnitsStringProperty': LocalizedStringProperty;
   'preferences': {
     'percentageSubmerged': {

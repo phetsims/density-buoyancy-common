@@ -38,7 +38,7 @@ const checkboxOptions = {
 const checkboxSpacing = 5;
 
 type SelfOptions = {
-  includeVectorScaleControl?: boolean;
+  includeVectorZoomControl?: boolean;
   contentWidth?: number;
 };
 
@@ -48,7 +48,7 @@ export default class BuoyancyDisplayOptionsPanel extends Panel {
   public constructor( model: DensityBuoyancyModel, providedOptions: BuoyancyDisplayOptionsPanelOptions ) {
 
     const options = optionize4<BuoyancyDisplayOptionsPanelOptions, SelfOptions, PanelOptions>()( {}, DensityBuoyancyCommonConstants.PANEL_OPTIONS, {
-      includeVectorScaleControl: true,
+      includeVectorZoomControl: true,
       contentWidth: 200
     }, providedOptions );
 
@@ -112,11 +112,11 @@ export default class BuoyancyDisplayOptionsPanel extends Panel {
                 }, arrowOptions ) ),
 
                 // Vector scale
-                ...( options.includeVectorScaleControl ? [
-                    new Text( DensityBuoyancyCommonStrings.vectorScaleStringProperty, combineOptions<TextOptions>( {
+                ...( options.includeVectorZoomControl ? [
+                    new Text( DensityBuoyancyCommonStrings.vectorZoomStringProperty, combineOptions<TextOptions>( {
                       layoutOptions: { column: 0, row: 3 }
                     }, labelOptions ) ),
-                    new PlusMinusZoomButtonGroup( model.forceScaleProperty, {
+                    new PlusMinusZoomButtonGroup( model.vectorZoomProperty, {
                       spacing: 3,
                       layoutOptions: { column: 1, row: 3, xAlign: 'center' },
                       buttonOptions: {
@@ -128,7 +128,7 @@ export default class BuoyancyDisplayOptionsPanel extends Panel {
                       },
                       applyZoomIn: ( scale: number ) => scale * 2,
                       applyZoomOut: ( scale: number ) => scale / 2,
-                      tandem: options.tandem.createTandem( 'vectorScaleZoomButtonGroup' )
+                      tandem: options.tandem.createTandem( 'vectorZoomButtonGroup' )
                     } ) ] : []
                 ),
 

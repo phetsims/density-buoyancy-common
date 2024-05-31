@@ -30,7 +30,7 @@ export default class VerticalCylinderView extends MeasurableMassView {
                       showBuoyancyForceProperty: TReadOnlyProperty<boolean>,
                       showContactForceProperty: TReadOnlyProperty<boolean>,
                       showForceValuesProperty: TReadOnlyProperty<boolean>,
-                      forceScaleProperty: TReadOnlyProperty<number>,
+                      vectorZoomProperty: TReadOnlyProperty<number>,
                       showMassValuesProperty: TReadOnlyProperty<boolean> ) {
 
     const positionArray = new Float32Array( numElements * 3 );
@@ -48,7 +48,7 @@ export default class VerticalCylinderView extends MeasurableMassView {
       showBuoyancyForceProperty,
       showContactForceProperty,
       showForceValuesProperty,
-      forceScaleProperty,
+      vectorZoomProperty,
       showMassValuesProperty );
 
     const positionTag = () => {

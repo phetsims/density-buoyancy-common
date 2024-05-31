@@ -33,7 +33,7 @@ export default class MeasurableMassView extends MassView {
                          showBuoyancyForceProperty: TReadOnlyProperty<boolean>,
                          showContactForceProperty: TReadOnlyProperty<boolean>,
                          showForceValuesProperty: TReadOnlyProperty<boolean>,
-                         forceScaleProperty: TReadOnlyProperty<number>,
+                         vectorZoomProperty: TReadOnlyProperty<number>,
                          showMassValuesProperty: TReadOnlyProperty<boolean> ) {
 
     super( mass, initialGeometry, modelViewTransform );
@@ -44,7 +44,7 @@ export default class MeasurableMassView extends MassView {
       showBuoyancyForceProperty,
       showContactForceProperty,
       showForceValuesProperty,
-      forceScaleProperty
+      vectorZoomProperty
     );
 
     this.massLabelNode = new MassLabelNode( mass, showMassValuesProperty );

@@ -71,7 +71,7 @@ export default class DensityBuoyancyModel implements TModel {
   public readonly showBuoyancyForceProperty: Property<boolean>;
   public readonly showContactForceProperty: Property<boolean>;
   public readonly showForceValuesProperty: Property<boolean>;
-  public readonly forceScaleProperty: TRangedProperty;
+  public readonly vectorZoomProperty: TRangedProperty;
   public readonly showMassValuesProperty: Property<boolean>;
   public readonly gravityProperty: Property<Gravity>;
   public readonly liquidMaterialProperty: Property<Material>;
@@ -131,8 +131,8 @@ export default class DensityBuoyancyModel implements TModel {
       phetioFeatured: true,
       phetioDocumentation: 'Displays a mass readout on each object'
     } );
-    this.forceScaleProperty = new NumberProperty( options.initialForceScale, {
-      tandem: options.canShowForces ? tandem.createTandem( 'vectorScaleProperty' ) : Tandem.OPT_OUT,
+    this.vectorZoomProperty = new NumberProperty( options.initialForceScale, {
+      tandem: options.canShowForces ? tandem.createTandem( 'vectorZoomProperty' ) : Tandem.OPT_OUT,
       range: new Range( Math.pow( 0.5, 9 ), 1 )
     } );
     this.supportsDepthLines = options.supportsDepthLines;

@@ -27,7 +27,7 @@ export default class DuckView extends MeasurableMassView {
                       showBuoyancyForceProperty: TReadOnlyProperty<boolean>,
                       showContactForceProperty: TReadOnlyProperty<boolean>,
                       showForceValuesProperty: TReadOnlyProperty<boolean>,
-                      forceScaleProperty: TReadOnlyProperty<number>,
+                      vectorZoomProperty: TReadOnlyProperty<number>,
                       showMassValuesProperty: TReadOnlyProperty<boolean> ) {
 
     const size = duck.sizeProperty.value;
@@ -40,7 +40,7 @@ export default class DuckView extends MeasurableMassView {
       showBuoyancyForceProperty,
       showContactForceProperty,
       showForceValuesProperty,
-      forceScaleProperty,
+      vectorZoomProperty,
 
       showMassValuesProperty );
 

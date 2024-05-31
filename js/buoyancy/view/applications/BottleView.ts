@@ -29,7 +29,7 @@ export default class BottleView extends MeasurableMassView {
                       showBuoyancyForceProperty: TReadOnlyProperty<boolean>,
                       showContactForceProperty: TReadOnlyProperty<boolean>,
                       showForceValuesProperty: TReadOnlyProperty<boolean>,
-                      forceScaleProperty: TReadOnlyProperty<number>,
+                      vectorZoomProperty: TReadOnlyProperty<number>,
                       showMassValuesProperty: TReadOnlyProperty<boolean> ) {
 
     super( bottle,
@@ -41,7 +41,7 @@ export default class BottleView extends MeasurableMassView {
       showBuoyancyForceProperty,
       showContactForceProperty,
       showForceValuesProperty,
-      forceScaleProperty,
+      vectorZoomProperty,
       showMassValuesProperty
     );
 

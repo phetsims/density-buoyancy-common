@@ -507,7 +507,7 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
       if ( mass instanceof Cuboid ) {
         massView = new CuboidView( mass, this, model.showDepthLinesProperty,
           model.showGravityForceProperty, model.showBuoyancyForceProperty, model.showContactForceProperty,
-          model.showForceValuesProperty, model.forceScaleProperty, model.showMassValuesProperty );
+          model.showForceValuesProperty, model.vectorZoomProperty, model.showMassValuesProperty );
       }
       else if ( mass instanceof Scale ) {
         massView = new ScaleView( mass, this, model.gravityProperty );
@@ -515,37 +515,37 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
       else if ( mass instanceof Cone ) {
         massView = new ConeView( mass, this, model.showGravityForceProperty,
           model.showBuoyancyForceProperty, model.showContactForceProperty, model.showForceValuesProperty,
-          model.forceScaleProperty, model.showMassValuesProperty );
+          model.vectorZoomProperty, model.showMassValuesProperty );
       }
       else if ( mass instanceof Ellipsoid ) {
         massView = new EllipsoidView( mass, this, model.showGravityForceProperty,
           model.showBuoyancyForceProperty, model.showContactForceProperty, model.showForceValuesProperty,
-          model.forceScaleProperty, model.showMassValuesProperty );
+          model.vectorZoomProperty, model.showMassValuesProperty );
       }
       else if ( mass instanceof HorizontalCylinder ) {
         massView = new HorizontalCylinderView( mass, this,
           model.showGravityForceProperty, model.showBuoyancyForceProperty, model.showContactForceProperty,
-          model.showForceValuesProperty, model.forceScaleProperty, model.showMassValuesProperty );
+          model.showForceValuesProperty, model.vectorZoomProperty, model.showMassValuesProperty );
       }
       else if ( mass instanceof VerticalCylinder ) {
         massView = new VerticalCylinderView( mass, this, model.showGravityForceProperty,
           model.showBuoyancyForceProperty, model.showContactForceProperty, model.showForceValuesProperty,
-          model.forceScaleProperty, model.showMassValuesProperty );
+          model.vectorZoomProperty, model.showMassValuesProperty );
       }
       else if ( mass instanceof Bottle ) {
         massView = new BottleView( mass, this, model.showGravityForceProperty,
           model.showBuoyancyForceProperty, model.showContactForceProperty, model.showForceValuesProperty,
-          model.forceScaleProperty, model.showMassValuesProperty );
+          model.vectorZoomProperty, model.showMassValuesProperty );
       }
       else if ( mass instanceof Boat ) {
         massView = new BoatView( mass, this, model.pool.liquidYInterpolatedProperty,
           model.showGravityForceProperty, model.showBuoyancyForceProperty, model.showContactForceProperty,
-          model.showForceValuesProperty, model.forceScaleProperty, model.showMassValuesProperty );
+          model.showForceValuesProperty, model.vectorZoomProperty, model.showMassValuesProperty );
       }
       else if ( mass instanceof Duck ) {
         massView = new DuckView( mass, this,
           model.showGravityForceProperty, model.showBuoyancyForceProperty, model.showContactForceProperty,
-          model.showForceValuesProperty, model.forceScaleProperty, model.showMassValuesProperty );
+          model.showForceValuesProperty, model.vectorZoomProperty, model.showMassValuesProperty );
       }
       assert && assert( !!massView, `massView is falsy, mass: ${mass.constructor.name}` );
 

@@ -35,7 +35,7 @@ export default class BoatView extends MeasurableMassView {
                       showBuoyancyForceProperty: TReadOnlyProperty<boolean>,
                       showContactForceProperty: TReadOnlyProperty<boolean>,
                       showForceValuesProperty: TReadOnlyProperty<boolean>,
-                      forceScaleProperty: TReadOnlyProperty<number>,
+                      vectorZoomProperty: TReadOnlyProperty<number>,
                       showMassValuesProperty: TReadOnlyProperty<boolean> ) {
 
     // @ts-expect-error
@@ -45,7 +45,7 @@ export default class BoatView extends MeasurableMassView {
       showBuoyancyForceProperty,
       showContactForceProperty,
       showForceValuesProperty,
-      forceScaleProperty,
+      vectorZoomProperty,
 
       showMassValuesProperty
     );

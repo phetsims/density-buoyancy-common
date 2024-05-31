@@ -40,7 +40,7 @@ export default class ForceDiagramNode extends Node {
   private readonly showBuoyancyForceProperty: TReadOnlyProperty<boolean>;
   private readonly showContactForceProperty: TReadOnlyProperty<boolean>;
   private readonly showForceValuesProperty: TReadOnlyProperty<boolean>;
-  private readonly forceScaleProperty: TReadOnlyProperty<number>;
+  private readonly vectorZoomProperty: TReadOnlyProperty<number>;
 
   private readonly gravityArrowNode: ArrowNode;
   private readonly buoyancyArrowNode: ArrowNode;
@@ -64,7 +64,7 @@ export default class ForceDiagramNode extends Node {
     showBuoyancyForceProperty: TReadOnlyProperty<boolean>,
     showContactForceProperty: TReadOnlyProperty<boolean>,
     showForceValuesProperty: TReadOnlyProperty<boolean>,
-    forceScaleProperty: TReadOnlyProperty<number>
+    vectorZoomProperty: TReadOnlyProperty<number>
   ) {
     super( {
 
@@ -78,7 +78,7 @@ export default class ForceDiagramNode extends Node {
     this.showBuoyancyForceProperty = showBuoyancyForceProperty;
     this.showContactForceProperty = showContactForceProperty;
     this.showForceValuesProperty = showForceValuesProperty;
-    this.forceScaleProperty = forceScaleProperty;
+    this.vectorZoomProperty = vectorZoomProperty;
 
     this.gravityArrowNode = new ArrowNode( 0, 0, 0, 0, combineOptions<ArrowNodeOptions>( {
       fill: DensityBuoyancyCommonColors.gravityForceProperty
@@ -147,7 +147,7 @@ export default class ForceDiagramNode extends Node {
     const updateArrow = ( forceProperty: InterpolatedProperty<Vector2> | BlendedVector2Property, showForceProperty: TReadOnlyProperty<boolean>, arrowNode: ArrowNode, textNode: Text, labelNode: Node ) => {
       const y = forceProperty.value.y;
       if ( showForceProperty.value && Math.abs( y ) > 1e-5 ) {
-        arrowNode.setTip( 0, -y * this.forceScaleProperty.value * 20 ); // Default zoom is 20 units per Newton
+        arrowNode.setTip( 0, -y * this.vectorZoomProperty.value * 20 ); // Default zoom is 20 units per Newton
         ( y > 0 ? upwardArrows : downwardArrows ).push( arrowNode );
 
         if ( this.showForceValuesProperty.value ) {

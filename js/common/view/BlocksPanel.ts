@@ -38,7 +38,7 @@ export default class BlocksPanel extends Panel {
       };
     } ), {
       align: 'left',
-      spacing: 8,
+      spacing: 6,
       tandem: blocksRadioButtonGroupTandem,
       visiblePropertyOptions: {
         phetioFeatured: radioButtonGroupVisiblePropertyPhetioFeatured

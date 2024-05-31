@@ -22,8 +22,8 @@ import WithRequired from '../../../../phet-core/js/types/WithRequired.js';
 import Panel, { PanelOptions } from '../../../../sun/js/Panel.js';
 
 // constants
-const arrowSpacing = 15;
-const arrowLength = 60;
+const arrowSpacing = 10;
+const arrowLength = 45;
 const arrowOptions = {
   stroke: null,
   headWidth: 15,
@@ -111,7 +111,7 @@ export default class BuoyancyDisplayOptionsPanel extends Panel {
                   fill: DensityBuoyancyCommonColors.contactForceProperty
                 }, arrowOptions ) ),
 
-                // Vector scale
+                // Vector zoom
                 ...( options.includeVectorZoomControl ? [
                     new Text( DensityBuoyancyCommonStrings.vectorZoomStringProperty, combineOptions<TextOptions>( {
                       layoutOptions: { column: 0, row: 3 }

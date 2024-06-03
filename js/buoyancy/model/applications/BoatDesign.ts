@@ -86,7 +86,7 @@ export default class BoatDesign {
    * @param blockHalfWidth - in model coordinates
    * @param liters - the number of liters of the boat's displacement
    */
-  public static getIntersectionVertices( blockHalfWidth = 0, liters = 1 ): Vector2[] {
+  public static getIntersectionVertices( blockHalfWidth: number, liters: number ): Vector2[] {
     const scale = Math.pow( liters, 1 / 3 ) * BoatDesign.ONE_LITER_SCALE_MULTIPLIER;
     const frontSamples = 30;
     const insideSamples = 40;
@@ -801,7 +801,7 @@ BoatDesign.ONE_LITER_HULL_VOLUME = BoatDesign.DESIGN_HULL_VOLUME * BoatDesign.ON
 
       context.strokeStyle = Color.MAGENTA.blend( Color.ORANGE, ix ).toCSS();
       context.beginPath();
-      BoatDesign.getIntersectionVertices( z ).forEach( ( point, index ) => {
+      BoatDesign.getIntersectionVertices( z, 1 ).forEach( ( point, index ) => {
         const method = index > 0 ? 'lineTo' : 'moveTo';
         context[ method ]( 600 + 1000 * point.x, 230 - 1000 * point.y );
       } );

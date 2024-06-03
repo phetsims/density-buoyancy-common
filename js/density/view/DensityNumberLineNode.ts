@@ -11,7 +11,7 @@ import Bounds2 from '../../../../dot/js/Bounds2.js';
 import optionize, { combineOptions } from '../../../../phet-core/js/optionize.js';
 import ArrowNode, { ArrowNodeOptions } from '../../../../scenery-phet/js/ArrowNode.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
-import { HBox, Line, ManualConstraint, Node, NodeOptions, Rectangle, RichText, Text, TextOptions, TPaint, VBox } from '../../../../scenery/js/imports.js';
+import { Line, ManualConstraint, Node, NodeOptions, Rectangle, RichText, Text, TextOptions, TPaint } from '../../../../scenery/js/imports.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 import Material from '../../common/model/Material.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
@@ -43,7 +43,7 @@ type SelfOptions = {
 };
 
 // Constants and Functions
-const WIDTH = 540;
+const WIDTH = 400;
 const HEIGHT = 22;
 const MAX_DENSITY = 10000;
 
@@ -232,42 +232,6 @@ export default class DensityNumberLineNode extends Node {
     } );
 
     this.markerNodes = markerNodes;
-  }
-}
-
-export class DensityNumberLineLegend extends VBox {
-  public constructor( displayDensities: DisplayDensity[] ) {
-
-    const legendChildren: Node[][] = [];
-
-    const legendVisibilities: TReadOnlyProperty<boolean>[] = [];
-
-    displayDensities.forEach( (
-      {
-        densityProperty,
-        nameProperty,
-        visibleProperty,
-        isHiddenProperty,
-        color
-      }, index ) => {
-
-      legendChildren.push( [
-        createArrow( index, color ),
-        new RichText( createDensityStringProperty( densityProperty, nameProperty, isHiddenProperty ), {
-          font: new PhetFont( 16 ),
-          maxWidth: 110
-        } )
-      ] );
-
-      legendVisibilities.push( visibleProperty );
-    } );
-
-    super( {
-      children: legendChildren.map( ( children, index ) => new HBox(
-        { children: children, spacing: 5, visibleProperty: legendVisibilities[ index ] } ) ),
-      spacing: 5,
-      align: 'left'
-    } );
   }
 }
 

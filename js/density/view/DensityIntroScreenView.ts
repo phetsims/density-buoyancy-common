@@ -26,7 +26,6 @@ import DensityBuoyancyCommonColors from '../../common/view/DensityBuoyancyCommon
 import BlocksRadioButtonGroup from '../../common/view/BlocksRadioButtonGroup.js';
 import MassView from '../../common/view/MassView.js';
 import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
-import Multilink from '../../../../axon/js/Multilink.js';
 
 // constants
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
@@ -96,24 +95,12 @@ export default class DensityIntroScreenView extends DensityBuoyancyScreenView<De
       accessibleName: accordionBoxTitleStringProperty
     }, DensityBuoyancyCommonConstants.ACCORDION_BOX_OPTIONS ) );
 
-    this.addChild( densityAccordionBox );
-
-    Multilink.multilink( [
-        this.visibleBoundsProperty,
-        this.rightBox.boundsProperty,
-        densityAccordionBox.boundsProperty ],
-      ( visibleBounds, rightBoxBounds, accordionBounds ) => {
-        const rightBoxLeftEdge = rightBoxBounds.left;
-        const visibleBoundsLeftEdge = visibleBounds.left;
-
-        const availableWidth = rightBoxLeftEdge - visibleBoundsLeftEdge - 2 * MARGIN;
-
-        if ( availableWidth > 0 ) {
-          densityAccordionBox.maxWidth = availableWidth;
-          densityAccordionBox.centerX = visibleBoundsLeftEdge + availableWidth / 2 + MARGIN;
-          densityAccordionBox.top = visibleBounds.top + MARGIN;
-        }
-      } );
+    this.addChild( new AlignBox( densityAccordionBox, {
+      alignBoundsProperty: this.visibleBoundsProperty,
+      xAlign: 'center',
+      yAlign: 'top',
+      margin: MARGIN
+    } ) );
 
     this.addChild( new AlignBox( this.rightBox, {
       alignBoundsProperty: this.visibleBoundsProperty,

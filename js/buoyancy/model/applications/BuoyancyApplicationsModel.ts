@@ -33,7 +33,10 @@ export default class BuoyancyApplicationsModel extends DensityBuoyancyModel {
   public readonly bottle: Bottle;
   public readonly block: Cube;
   public readonly boat: Boat;
-  public readonly scale1: Scale; // Scale sitting to the right of the pool
+  public readonly scale1: Scale; // Scale sitting on the ground next to the pool
+
+  // REVIEW: Should these Properties move to Bottle?
+  // For the material inside the bottle.
   public readonly customDensityProperty: NumberProperty;
   public readonly customDensityControlVisibleProperty: TReadOnlyProperty<boolean>;
 
@@ -79,6 +82,9 @@ export default class BuoyancyApplicationsModel extends DensityBuoyancyModel {
       tandem: tandem.createTandem( 'scale1' ),
       canMove: false,
       inputEnabledPropertyOptions: {
+
+        // REVIEW: Why can the input enabled be turned on? Is this adding a phet-io feature that makes the scale movable?
+        // If so, is changing the inputEnabledProperty to true the only thing that has to happen to make it work?
         phetioReadOnly: false
       }
     } );

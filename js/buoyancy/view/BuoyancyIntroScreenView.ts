@@ -54,9 +54,9 @@ export default class BuoyancyIntroScreenView extends DensityBuoyancyScreenView<B
       layoutBounds: ScreenView.DEFAULT_LAYOUT_BOUNDS // used by constant above.
     }, options ) );
 
-    const blockSetPanel = new BlocksPanel( model.blockSetProperty, true, options.tandem.createTandem( 'blockSetPanel' ) );
+    const blocksPanel = new BlocksPanel( model.blockSetProperty, true, options.tandem.createTandem( 'blocksPanel' ) );
 
-    this.addChild( new AlignBox( blockSetPanel, {
+    this.addChild( new AlignBox( blocksPanel, {
       alignBoundsProperty: this.visibleBoundsProperty,
       xAlign: 'right',
       yAlign: 'top',
@@ -172,7 +172,7 @@ export default class BuoyancyIntroScreenView extends DensityBuoyancyScreenView<B
 
       cuboidPDOMLayer,
 
-      blockSetPanel,
+      blocksPanel,
 
       fluidSelectionPanel,
 

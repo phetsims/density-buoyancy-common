@@ -36,6 +36,7 @@ import { PhetioObjectOptions } from '../../../../tandem/js/PhetioObject.js';
 import PickRequired from '../../../../phet-core/js/types/PickRequired.js';
 import Matrix3 from '../../../../dot/js/Matrix3.js';
 import SlidableScale from './SlidableScale.js';
+import packageJSON from '../../../../joist/js/packageJSON.js';
 
 // constants
 const BLOCK_SPACING = 0.01;
@@ -114,20 +115,21 @@ export default class DensityBuoyancyModel implements TModel {
 
     const tandem = options.tandem;
 
+    const visiblePropertiesTandem = tandem.createTandem( 'visibleProperties' );
     this.showGravityForceProperty = new BooleanProperty( false, {
-      tandem: options.canShowForces ? tandem.createTandem( 'showGravityForceProperty' ) : Tandem.OPT_OUT
+      tandem: options.canShowForces ? visiblePropertiesTandem.createTandem( 'showGravityForceProperty' ) : Tandem.OPT_OUT
     } );
     this.showBuoyancyForceProperty = new BooleanProperty( false, {
-      tandem: options.canShowForces ? tandem.createTandem( 'showBuoyancyForceProperty' ) : Tandem.OPT_OUT
+      tandem: options.canShowForces ? visiblePropertiesTandem.createTandem( 'showBuoyancyForceProperty' ) : Tandem.OPT_OUT
     } );
     this.showContactForceProperty = new BooleanProperty( false, {
-      tandem: options.canShowForces ? tandem.createTandem( 'showContactForceProperty' ) : Tandem.OPT_OUT
+      tandem: options.canShowForces ? visiblePropertiesTandem.createTandem( 'showContactForceProperty' ) : Tandem.OPT_OUT
     } );
     this.showForceValuesProperty = new BooleanProperty( false, {
-      tandem: options.canShowForces ? tandem.createTandem( 'showForceValuesProperty' ) : Tandem.OPT_OUT
+      tandem: options.canShowForces ? visiblePropertiesTandem.createTandem( 'showForceValuesProperty' ) : Tandem.OPT_OUT
     } );
     this.showMassValuesProperty = new BooleanProperty( options.showMassValuesDefault, {
-      tandem: tandem.createTandem( 'showMassValuesProperty' ),
+      tandem: packageJSON.name === 'density' ? Tandem.OPT_OUT : visiblePropertiesTandem.createTandem( 'showMassValuesProperty' ),
       phetioFeatured: true,
       phetioDocumentation: 'Displays a mass readout on each object'
     } );
@@ -137,7 +139,7 @@ export default class DensityBuoyancyModel implements TModel {
     } );
     this.supportsDepthLines = options.supportsDepthLines;
     this.showDepthLinesProperty = new BooleanProperty( false, {
-      tandem: options.supportsDepthLines ? tandem.createTandem( 'showDepthLinesProperty' ) : Tandem.OPT_OUT,
+      tandem: options.supportsDepthLines ? visiblePropertiesTandem.createTandem( 'showDepthLinesProperty' ) : Tandem.OPT_OUT,
       phetioDocumentation: 'Display visual lines on blocks to aid in calculating the percentage that the block is submerged.'
     } );
 

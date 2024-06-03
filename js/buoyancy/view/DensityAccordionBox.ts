@@ -54,7 +54,9 @@ export default class DensityAccordionBox extends ReadoutListAccordionBox<Density
         return material.hidden ?
                questionMarkString :
                StringUtils.fillIn( patternStringProperty, {
-                 value: Utils.toFixed( material.density / 1000, 2 ),
+
+                 // convert from kg/m^3 to kg/L
+                 value: Utils.toFixed( material.density / DensityBuoyancyCommonConstants.LITERS_IN_CUBIC_METER, 2 ),
                  decimalPlaces: 2
                } );
       } );

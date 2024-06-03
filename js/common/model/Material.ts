@@ -86,7 +86,7 @@ export default class Material {
   public readonly nameProperty: TReadOnlyProperty<string>;
   public readonly identifier: MaterialName | null;
   public readonly tandemName: string | null;
-  public readonly density: number;
+  public readonly density: number; // in SI (kg/m^3)
   public readonly viscosity: number;
   public readonly custom: boolean;
   public readonly hidden: boolean;

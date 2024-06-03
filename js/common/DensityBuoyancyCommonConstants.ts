@@ -149,7 +149,6 @@ const DensityBuoyancyCommonConstants = {
   DESIRED_STARTING_POOL_VOLUME: 0.1,
 
   // Model units for volume are most likely in m^3, multiply by this to convert to liters.
-  // TODO: likely many more usages of "1000" in this repo should use this, see https://github.com/phetsims/density-buoyancy-common/issues/140
   LITERS_IN_CUBIC_METER: 1000,
 
   VOLUME_PATTERN_STRING_PROPERTY: new DerivedProperty( [
@@ -172,6 +171,14 @@ const DensityBuoyancyCommonConstants = {
   GRAB_RELEASE_SOUND_CLIP_OPTIONS: {
     initialOutputLevel: 0.4
   }
+};
+
+export const toLiters = ( cubicMeters: number ): number => {
+  return cubicMeters * DensityBuoyancyCommonConstants.LITERS_IN_CUBIC_METER;
+};
+
+export const toCubicMeters = ( liters: number ): number => {
+  return liters / DensityBuoyancyCommonConstants.LITERS_IN_CUBIC_METER;
 };
 
 densityBuoyancyCommon.register( 'DensityBuoyancyCommonConstants', DensityBuoyancyCommonConstants );

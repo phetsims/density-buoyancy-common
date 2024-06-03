@@ -23,8 +23,6 @@ import { PhetioObjectOptions } from '../../../../tandem/js/PhetioObject.js';
 import PickRequired from '../../../../phet-core/js/types/PickRequired.js';
 import Range from '../../../../dot/js/Range.js';
 
-const LITERS_IN_CUBIC_METER = 1000;
-
 type SelfMaterialControlNodeOptions = {
 
   // A label, if provided to be placed to the right of the ComboBox
@@ -90,7 +88,7 @@ export default class MaterialControlNode extends VBox {
       inverseMap: ( materialName: MaterialName ): Material => {
         if ( materialName === CUSTOM_MATERIAL_NAME ) {
           // Handle our minimum volume if we're switched to custom (if needed)
-          const volume = Math.max( volumeProperty.value, options.minCustomVolumeLiters / LITERS_IN_CUBIC_METER );
+          const volume = Math.max( volumeProperty.value, options.minCustomVolumeLiters / DensityBuoyancyCommonConstants.LITERS_IN_CUBIC_METER );
           return Material.createCustomSolidMaterial( {
             density: Utils.clamp( materialProperty.value.density, options.minCustomMass / volume, options.maxCustomMass / volume ),
             densityRange: this.customDensityRange

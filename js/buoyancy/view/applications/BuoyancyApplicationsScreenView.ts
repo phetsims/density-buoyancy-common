@@ -20,7 +20,7 @@ import { AlignBox, Color, HBox, HSeparator, Image, ManualConstraint, Node, Text,
 import RectangularPushButton from '../../../../../sun/js/buttons/RectangularPushButton.js';
 import RectangularRadioButtonGroup from '../../../../../sun/js/buttons/RectangularRadioButtonGroup.js';
 import Panel from '../../../../../sun/js/Panel.js';
-import DensityBuoyancyCommonConstants from '../../../common/DensityBuoyancyCommonConstants.js';
+import DensityBuoyancyCommonConstants, { toLiters } from '../../../common/DensityBuoyancyCommonConstants.js';
 import Cube from '../../../common/model/Cube.js';
 import Material from '../../../common/model/Material.js';
 import DensityBuoyancyCommonColors from '../../../common/view/DensityBuoyancyCommonColors.js';
@@ -116,9 +116,9 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
       tandem: tandem.createTandem( 'bottleControlNode' )
     } );
 
-    // DerivedProperty doesn't need disposal, since everything here lives for the lifetime of the simulation
+    // This DerivedProperty doesn't need disposal, since everything here lives for the lifetime of the simulation
     const airLitersProperty = new DerivedProperty( [ model.bottle.interiorVolumeProperty ], volume => {
-      return ( 0.01 - volume ) * 1000;
+      return toLiters( 0.01 - volume );
     } );
 
     let materialChangeLocked = false;
@@ -222,7 +222,7 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
         new HSeparator(),
         // Convert cubic meters => liters
         new NumberControl( DensityBuoyancyCommonStrings.boatVolumeStringProperty, new UnitConversionProperty( model.boat.displacementVolumeProperty, {
-          factor: 1000
+          factor: DensityBuoyancyCommonConstants.LITERS_IN_CUBIC_METER
         } ), boatVolumeRange, combineOptions<NumberControlOptions>( {
           numberDisplayOptions: {
             valuePattern: DensityBuoyancyCommonConstants.VOLUME_PATTERN_STRING_PROPERTY,

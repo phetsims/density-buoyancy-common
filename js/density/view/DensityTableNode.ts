@@ -56,7 +56,7 @@ export default class DensityTableNode extends Node {
           maxWidth: 200,
           layoutOptions: combineOptions<TLayoutOptions>( { column: 0, row: index + 1, xAlign: 'left' }, layoutOptions )
         } ) ),
-        ...materials.map( ( material, index ) => new Text( Utils.toFixed( material.density / 1000, 2 ), {
+        ...materials.map( ( material, index ) => new Text( Utils.toFixed( material.density / DensityBuoyancyCommonConstants.LITERS_IN_CUBIC_METER, 2 ), {
           font: bodyFont,
           maxWidth: 150,
           layoutOptions: combineOptions<TLayoutOptions>( { column: 1, row: index + 1, xAlign: 'right' }, layoutOptions )

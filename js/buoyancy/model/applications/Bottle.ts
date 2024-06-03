@@ -184,7 +184,7 @@ export default class Bottle extends ApplicationsMass {
   private readonly bottleBounds: Bounds2;
 
   public readonly interiorMaterialProperty: Property<Material>;
-  public readonly interiorVolumeProperty: Property<number>;
+  public readonly interiorVolumeProperty: Property<number>; // m^3
 
   // In kg (kilograms)
   public interiorMassProperty: ReadOnlyProperty<number>;

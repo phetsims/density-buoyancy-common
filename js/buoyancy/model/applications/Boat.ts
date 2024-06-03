@@ -23,7 +23,7 @@ import { MassShape } from '../../../common/model/MassShape.js';
 import optionize, { EmptySelfOptions } from '../../../../../phet-core/js/optionize.js';
 import ApplicationsMass, { ApplicationsMassOptions } from './ApplicationsMass.js';
 import Vector2 from '../../../../../dot/js/Vector2.js';
-import DensityBuoyancyCommonConstants from '../../../common/DensityBuoyancyCommonConstants.js';
+import DensityBuoyancyCommonConstants, { toLiters } from '../../../common/DensityBuoyancyCommonConstants.js';
 
 export type BoatOptions = StrictOmit<ApplicationsMassOptions, 'body' | 'shape' | 'volume' | 'material' | 'massShape'>;
 
@@ -47,8 +47,8 @@ export default class Boat extends ApplicationsMass {
 
   public constructor( engine: PhysicsEngine, blockWidthProperty: TReadOnlyProperty<number>, liquidMaterialProperty: TProperty<Material>, providedOptions: BoatOptions ) {
 
-    const boatIntersectionVertices = BoatDesign.getIntersectionVertices( blockWidthProperty.value / 2, ApplicationsMass.DEFAULT_DISPLACEMENT_VOLUME * 1000 );
-    const volume = BoatDesign.ONE_LITER_HULL_VOLUME * ApplicationsMass.DEFAULT_DISPLACEMENT_VOLUME * 1000;
+    const boatIntersectionVertices = BoatDesign.getIntersectionVertices( blockWidthProperty.value / 2, toLiters( ApplicationsMass.DEFAULT_DISPLACEMENT_VOLUME ) );
+    const volume = BoatDesign.ONE_LITER_HULL_VOLUME * toLiters( ApplicationsMass.DEFAULT_DISPLACEMENT_VOLUME );
 
     const options = optionize<BoatOptions, EmptySelfOptions, MassOptions>()( {
       body: engine.createFromVertices( boatIntersectionVertices, true ),
@@ -68,8 +68,8 @@ export default class Boat extends ApplicationsMass {
         return;
       }
 
-      const vertices = BoatDesign.getIntersectionVertices( blockWidth / 2, displacementVolume * 1000 );
-      const volume = BoatDesign.ONE_LITER_HULL_VOLUME * displacementVolume * 1000;
+      const vertices = BoatDesign.getIntersectionVertices( blockWidth / 2, toLiters( displacementVolume ) );
+      const volume = BoatDesign.ONE_LITER_HULL_VOLUME * toLiters( displacementVolume );
 
       engine.updateFromVertices( this.body, vertices, true );
 

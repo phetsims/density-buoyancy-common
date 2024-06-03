@@ -17,7 +17,7 @@ import NumberControl, { NumberControlOptions } from '../../../../../scenery-phet
 import NumberDisplay from '../../../../../scenery-phet/js/NumberDisplay.js';
 import { FlowBoxOptions, HBox, HSeparator, Node, Text, VBox } from '../../../../../scenery/js/imports.js';
 import ComboBox from '../../../../../sun/js/ComboBox.js';
-import DensityBuoyancyCommonConstants from '../../../common/DensityBuoyancyCommonConstants.js';
+import DensityBuoyancyCommonConstants, { toLiters } from '../../../common/DensityBuoyancyCommonConstants.js';
 import { MassShape } from '../../../common/model/MassShape.js';
 import densityBuoyancyCommon from '../../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../../DensityBuoyancyCommonStrings.js';
@@ -100,7 +100,7 @@ export default class ShapeSizeControlNode extends VBox {
 
     // DerivedProperty doesn't need disposal, since everything here lives for the lifetime of the simulation
     const litersProperty = new DerivedProperty( [ volumeProperty ], volume => {
-      return volume * 1000;
+      return toLiters( volume );
     } );
 
     this.children = [

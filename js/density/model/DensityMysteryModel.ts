@@ -14,7 +14,7 @@ import Vector2 from '../../../../dot/js/Vector2.js';
 import Enumeration from '../../../../phet-core/js/Enumeration.js';
 import EnumerationValue from '../../../../phet-core/js/EnumerationValue.js';
 import optionize, { combineOptions, EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
-import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
+import DensityBuoyancyCommonConstants, { toCubicMeters } from '../../common/DensityBuoyancyCommonConstants.js';
 import BlockSetModel, { BlockSetModelOptions } from '../../common/model/BlockSetModel.js';
 import Cube, { CubeOptions } from '../../common/model/Cube.js';
 import Material from '../../common/model/Material.js';
@@ -94,8 +94,8 @@ export default class DensityMysteryModel extends BlockSetModel<MysteryBlockSet> 
     const createMysteryVolumes = () => {
       return [
         // we will want 3 smaller masses on the right, then 2 larger masses on the left
-        ...dotRandom.shuffle( [ 1, 2, 3, 4, 5, 6 ].map( n => n / 1000 ) ).slice( 0, 3 ),
-        ...dotRandom.shuffle( [ 7, 8, 9, 10 ].map( n => n / 1000 ) ).slice( 0, 2 )
+        ...dotRandom.shuffle( [ 1, 2, 3, 4, 5, 6 ].map( toCubicMeters ) ).slice( 0, 3 ),
+        ...dotRandom.shuffle( [ 7, 8, 9, 10 ].map( toCubicMeters ) ).slice( 0, 2 )
       ].sort();
     };
 
@@ -237,7 +237,7 @@ export default class DensityMysteryModel extends BlockSetModel<MysteryBlockSet> 
             Cube.createWithMass(
               model.engine,
               Material.createCustomMaterial( {
-                density: 1000,
+                density: 1000, // same as water, in SI (kg/m^3)
                 customColor: DensityBuoyancyCommonColors.mysteryGrayColorProperty
               } ),
               Vector2.ZERO,

@@ -46,7 +46,7 @@ export default class FluidDensityControlNode extends ComboNumberControl<Material
 
       // Probably best to not touch this
       customMaterial: Material.createCustomLiquidMaterial( {
-        density: 1000,
+        density: 1000, // Same as water, in SI (kg/m^3)
         densityRange: FLUID_DENSITY_RANGE_PER_M3
       } )
     }, providedOptions );
@@ -60,9 +60,9 @@ export default class FluidDensityControlNode extends ComboNumberControl<Material
       valuePatternProperty: DensityBuoyancyCommonConstants.KILOGRAMS_PER_VOLUME_PATTERN_STRING_PROPERTY,
       property: liquidMaterialProperty,
       range: new Range( 0.5, 15 ),
-      toNumericValue: material => material.density / 1000,
+      toNumericValue: material => material.density / DensityBuoyancyCommonConstants.LITERS_IN_CUBIC_METER,
       createCustomValue: density => Material.createCustomLiquidMaterial( {
-        density: density * 1000,
+        density: density * DensityBuoyancyCommonConstants.LITERS_IN_CUBIC_METER,
         densityRange: FLUID_DENSITY_RANGE_PER_M3
       } ),
       isCustomValue: material => material.custom,

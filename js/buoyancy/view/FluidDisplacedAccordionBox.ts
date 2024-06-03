@@ -37,7 +37,7 @@ type FluidDisplacedAccordionBoxOptions = SelfOptions & AccordionBoxOptions;
 const STARTING_VOLUME = DensityBuoyancyCommonConstants.DESIRED_STARTING_POOL_VOLUME * DensityBuoyancyCommonConstants.LITERS_IN_CUBIC_METER;
 const CONTENT_WIDTH = 105;
 
-// For custom fluid densities, holywood the color to ensure good contrast with the beaker fluid and the panel background, see https://github.com/phetsims/buoyancy/issues/154
+// For custom fluid densities, hollywood the color to ensure good contrast with the beaker fluid and the panel background, see https://github.com/phetsims/buoyancy/issues/154
 const SAME_COLOR_MIN_DENSITY_THRESHOLD = 1000; // 1 kg/L
 
 // Beaker expects a range between 0 (empty) and 1 (full)

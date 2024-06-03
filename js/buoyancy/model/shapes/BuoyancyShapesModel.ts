@@ -36,17 +36,20 @@ export default class BuoyancyShapesModel extends DensityBuoyancyModel {
 
   public readonly modeProperty: Property<TwoBlockMode>;
   public readonly scale1: Scale;
+
+  // REVIEW: Add a structure like primary:{shapeProperty, widthRatioProperty, heightRatioProperty, massProperty}?
+  // REVIEW: This will also help with the studio tree
   public readonly primaryShapeProperty: Property<MassShape>;
-  public readonly secondaryShapeProperty: Property<MassShape>;
   public readonly primaryWidthRatioProperty: Property<number>;
-  public readonly secondaryWidthRatioProperty: Property<number>;
   public readonly primaryHeightRatioProperty: Property<number>;
+  public readonly primaryMassProperty: TProperty<Mass>;
+
+  public readonly secondaryShapeProperty: Property<MassShape>;
+  public readonly secondaryWidthRatioProperty: Property<number>;
   public readonly secondaryHeightRatioProperty: Property<number>;
+  public readonly secondaryMassProperty: TProperty<Mass>;
 
   public readonly materialProperty: Property<Material>;
-
-  public readonly primaryMassProperty: TProperty<Mass>;
-  public readonly secondaryMassProperty: TProperty<Mass>;
 
   public constructor( providedOptions: BuoyancyShapesModelOptions ) {
     const options = optionize<DensityBuoyancyModelOptions, EmptySelfOptions, DensityBuoyancyModelOptions>()( {

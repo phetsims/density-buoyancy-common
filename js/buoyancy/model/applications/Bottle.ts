@@ -209,7 +209,7 @@ export default class Bottle extends ApplicationsMass {
       accessibleName: 'Bottle'
     }, providedOptions );
 
-    super( engine, new NumberProperty( BOTTLE_VOLUME ), options );
+    super( engine, options );
 
     this.bottleBounds = Bounds2.NOTHING.copy();
     Bottle.getFlatIntersectionVertices().forEach( p => this.bottleBounds.addPoint( p ) );

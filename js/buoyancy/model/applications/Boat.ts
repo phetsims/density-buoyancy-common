@@ -7,7 +7,6 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
-import NumberProperty from '../../../../../axon/js/NumberProperty.js';
 import StrictOmit from '../../../../../phet-core/js/types/StrictOmit.js';
 import Utils from '../../../../../dot/js/Utils.js';
 import { Shape } from '../../../../../kite/js/imports.js';
@@ -48,13 +47,8 @@ export default class Boat extends ApplicationsMass {
 
   public constructor( engine: PhysicsEngine, blockWidthProperty: TReadOnlyProperty<number>, liquidMaterialProperty: TProperty<Material>, providedOptions: BoatOptions ) {
 
-    // REVIEW https://github.com/phetsims/density-buoyancy-common/issues/123 Document and explain the 0.01 initial value
-    const displacementVolumeProperty = new NumberProperty( 0.01, {
-      tandem: providedOptions.tandem.createTandem( 'displacementVolumeProperty' )
-    } );
-
-    const boatIntersectionVertices = BoatDesign.getIntersectionVertices( blockWidthProperty.value / 2, displacementVolumeProperty.value * 1000 );
-    const volume = BoatDesign.ONE_LITER_HULL_VOLUME * displacementVolumeProperty.value * 1000;
+    const boatIntersectionVertices = BoatDesign.getIntersectionVertices( blockWidthProperty.value / 2, ApplicationsMass.DEFAULT_DISPLACEMENT_VOLUME * 1000 );
+    const volume = BoatDesign.ONE_LITER_HULL_VOLUME * ApplicationsMass.DEFAULT_DISPLACEMENT_VOLUME * 1000;
 
     const options = optionize<BoatOptions, EmptySelfOptions, MassOptions>()( {
       body: engine.createFromVertices( boatIntersectionVertices, true ),
@@ -66,10 +60,10 @@ export default class Boat extends ApplicationsMass {
       accessibleName: 'Boat'
     }, providedOptions );
 
-    super( engine, displacementVolumeProperty, options );
+    super( engine, options );
 
     // Update the shape when the block width or displacement changes
-    Multilink.multilink( [ blockWidthProperty, displacementVolumeProperty ], ( blockWidth, displacementVolume ) => {
+    Multilink.multilink( [ blockWidthProperty, this.displacementVolumeProperty ], ( blockWidth, displacementVolume ) => {
       if ( displacementVolume === 0 ) {
         return;
       }

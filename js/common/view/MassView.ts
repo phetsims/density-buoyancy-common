@@ -140,7 +140,7 @@ export default abstract class MassView extends Disposable {
         // This is needed for keyboard but not for mouse/touch because keyboard input applies deltas, not absolute positions
         transform: INVERT_Y_TRANSFORM,
         drag: ( event, listener ) => {
-          mass.updateDrag( mass.matrix.translation.add( listener.vectorDelta ) );
+          mass.updateDrag( mass.matrix.translation.add( listener.modelDelta ) );
         },
         tandem: Tandem.OPT_OUT
       } );

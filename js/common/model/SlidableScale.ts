@@ -1,7 +1,8 @@
 // Copyright 2024, University of Colorado Boulder
 
 /**
- * A special case scale which tricks the model into not displacing any volume, so that the water level doesn't change.
+ * A special case scale which height is controlled by a slider. It also extends the invisible part of the scale
+ * vertically downward to prevent objects from being dragged beneath it.
  *
  * @author Agustín Vallejo
  */
@@ -19,7 +20,7 @@ import { Shape } from '../../../../kite/js/imports.js';
 // To prevent objects from being dragged beneath the scale, we extend the invisible part of the scale vertically downward.
 const SCALE_INVISIBLE_VERTICAL_EXTENSION_FACTOR = 8.26;
 
-export default class VolumelessScale extends Scale {
+export default class SlidableScale extends Scale {
 
   public constructor( engine: PhysicsEngine, gravityProperty: TProperty<Gravity>, providedOptions: ScaleOptions ) {
 
@@ -36,13 +37,6 @@ export default class VolumelessScale extends Scale {
 
     super( engine, gravityProperty, options );
   }
-
-  /**
-   * Assumes the displaced volume is 0 to avoid changing the water level on the Lab screen.
-   */
-  public override getDisplacedVolume( liquidLevel: number ): number {
-    return 0;
-  }
 }
 
-densityBuoyancyCommon.register( 'VolumelessScale', VolumelessScale );
+densityBuoyancyCommon.register( 'SlidableScale', SlidableScale );

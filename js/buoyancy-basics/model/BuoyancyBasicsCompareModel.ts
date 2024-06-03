@@ -12,7 +12,7 @@ import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import MassTag from '../../common/model/MassTag.js';
 import optionize, { EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
 import BlockSet from '../../common/model/BlockSet.js';
-import VolumelessScale from '../../common/model/VolumelessScale.js';
+import SlidableScale from '../../common/model/SlidableScale.js';
 import NumberProperty from '../../../../axon/js/NumberProperty.js';
 import Range from '../../../../dot/js/Range.js';
 import DensityBuoyancyCommonColors from '../../common/view/DensityBuoyancyCommonColors.js';
@@ -117,7 +117,7 @@ export default class BuoyancyBasicsCompareModel extends CompareBlockSetModel {
     } );
 
     // Pool scale
-    this.poolScale = new VolumelessScale( this.engine, this.gravityProperty, {
+    this.poolScale = new SlidableScale( this.engine, this.gravityProperty, {
       displayType: DisplayType.NEWTONS,
       tandem: tandem.createTandem( 'poolScale' ),
       canMove: false, // No input listeners, but the PoolScaleHeightControl can still move it
@@ -128,6 +128,10 @@ export default class BuoyancyBasicsCompareModel extends CompareBlockSetModel {
 
     // Make sure to render it
     this.availableMasses.push( this.poolScale );
+
+    // Adjust pool volume so that it's at the desired value WITH the pool scale inside.
+    this.pool.liquidVolumeProperty.value -= this.poolScale.volumeProperty.value;
+    this.pool.liquidVolumeProperty.setInitialValue( this.pool.liquidVolumeProperty.value );
   }
 
   public override reset(): void {

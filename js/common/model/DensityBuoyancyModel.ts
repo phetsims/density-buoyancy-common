@@ -35,7 +35,7 @@ import TModel from '../../../../joist/js/TModel.js';
 import { PhetioObjectOptions } from '../../../../tandem/js/PhetioObject.js';
 import PickRequired from '../../../../phet-core/js/types/PickRequired.js';
 import Matrix3 from '../../../../dot/js/Matrix3.js';
-import VolumelessScale from './VolumelessScale.js';
+import SlidableScale from './SlidableScale.js';
 
 // constants
 const BLOCK_SPACING = 0.01;
@@ -316,7 +316,7 @@ export default class DensityBuoyancyModel implements TModel {
         }
 
         // Teleporting blocks to the left of the volumelessScale (pool scale with slider) when they get trapped beneath it
-        if ( mass instanceof VolumelessScale ) {
+        if ( mass instanceof SlidableScale ) {
           this.masses.forEach( otherMass => {
             if ( mass !== otherMass ) {
               const horizontalForce = this.engine.bodyGetContactForceBetween( mass.body, otherMass.body ).x;
@@ -412,7 +412,7 @@ export default class DensityBuoyancyModel implements TModel {
 
 
     if ( options.usePoolScale ) {
-      // Pool scale
+      // Normal pool scale, is draggable. Use SlidableScale for the slider one.
       this.scale2 = new Scale( this.engine, this.gravityProperty, {
         matrix: Matrix3.translation( 0.3, -Scale.SCALE_BASE_BOUNDS.minY + this.poolBounds.minY ),
         displayType: DisplayType.NEWTONS,

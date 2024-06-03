@@ -59,7 +59,7 @@ export default class PoolScaleHeightControl extends NumberControl {
     // 1. matching the liquid level exactly causes blue graphical fractals on the top of the scale
     // 2. Because the P2 engine has a non-infinite stiffness, masses overlap when contacting. This means that we want to
     //    raise the scale up above the pool so that the block can be the same weight as when measuring with the ground scale.
-    const maxY = liquidYInterpolatedProperty.value - Scale.SCALE_HEIGHT + 0.001;
+    const maxY = liquidYInterpolatedProperty.value;
     const minY = poolBounds.minY;
 
     const sliderTrackHeight = modelViewTransform.modelToViewDelta( new Vector3( SCALE_X_POSITION, maxY, poolBounds.maxZ ), new Vector3( SCALE_X_POSITION, minY, poolBounds.maxZ ) ).y;

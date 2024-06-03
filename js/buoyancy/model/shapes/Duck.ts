@@ -24,10 +24,6 @@ import { flatDuckData } from './DuckData.js';
 
 export type DuckOptions = StrictOmit<InstrumentedMassOptions, 'body' | 'shape' | 'volume' | 'massShape'>;
 
-// const VERTICES = _.chunk( mainDuckGeometry.children[ 0 ].geometry.getAttribute( 'position' ).array, 3 ).map( vert3 => {
-//   return new Vector2( vert3[ 0 ], vert3[ 2 ] );
-// } );
-
 export default class Duck extends Mass {
 
   public readonly sizeProperty: Property<Bounds3>;

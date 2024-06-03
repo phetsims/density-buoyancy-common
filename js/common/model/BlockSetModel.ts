@@ -20,7 +20,7 @@ type SelfOptions<BlockSetValue extends EnumerationValue> = {
   createMassesCallback: ( model: DensityBuoyancyModel, blockSet: BlockSetValue ) => Cuboid[];
 
   // Regenerate masses (when given a blockSet)
-  regenerateMassesCallback: ( model: DensityBuoyancyModel, blockSet: BlockSetValue, masses: Cuboid[] ) => void;
+  regenerateMassesCallback: ( blockSet: BlockSetValue, masses: Cuboid[] ) => void;
 
   // Positions masses (for a given blockSet)
   positionMassesCallback: ( model: DensityBuoyancyModel, blockSet: BlockSetValue, masses: Cuboid[] ) => void;
@@ -38,7 +38,7 @@ export default class BlockSetModel<BlockSetValue extends EnumerationValue> exten
   public readonly blockSetProperty: Property<BlockSetValue>;
 
   private readonly createMassesCallback: ( model: DensityBuoyancyModel, blockSet: BlockSetValue ) => Cuboid[];
-  private readonly regenerateMassesCallback: ( model: DensityBuoyancyModel, blockSet: BlockSetValue, masses: Cuboid[] ) => void;
+  private readonly regenerateMassesCallback: ( blockSet: BlockSetValue, masses: Cuboid[] ) => void;
   private readonly positionMassesCallback: ( model: DensityBuoyancyModel, blockSet: BlockSetValue, masses: Cuboid[] ) => void;
 
   public readonly blockSetToMassesMap: Map<BlockSetValue, Cuboid[]>;
@@ -101,7 +101,7 @@ export default class BlockSetModel<BlockSetValue extends EnumerationValue> exten
    * Regenerates the masses for a specific blockSet.
    */
   public regenerate( blockSet: BlockSetValue ): void {
-    this.regenerateMassesCallback( this, blockSet, this.blockSetToMassesMap.get( blockSet )! );
+    this.regenerateMassesCallback( blockSet, this.blockSetToMassesMap.get( blockSet )! );
     this.positionMasses( blockSet );
   }
 

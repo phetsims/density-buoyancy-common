@@ -77,9 +77,7 @@ export default class BuoyancyIntroModel extends BlockSetModel<BlockSet> {
         }
       },
 
-      regenerateMassesCallback: ( model, blockSet, masses ) => {
-        // See subclass for implementation
-      },
+      regenerateMassesCallback: _.noop, // Cannot be regenerated on this screen
 
       positionMassesCallback: ( model, blockSet, masses ) => {
         switch( blockSet ) {

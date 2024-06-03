@@ -306,7 +306,7 @@ export default class DensityMysteryModel extends BlockSetModel<MysteryBlockSet> 
       }
     };
 
-    const regenerateMasses = ( model: DensityBuoyancyModel, blockSet: MysteryBlockSet, masses: Cuboid[] ) => {
+    const regenerateMasses = ( blockSet: MysteryBlockSet, masses: Cuboid[] ) => {
       if ( blockSet === MysteryBlockSet.RANDOM ) {
         const mysteryMaterials = createMysteryMaterials();
         const mysteryVolumes = createMysteryVolumes();

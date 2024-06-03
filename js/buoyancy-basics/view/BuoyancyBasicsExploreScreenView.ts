@@ -30,6 +30,7 @@ import FluidSelectionPanel from '../../buoyancy/view/FluidSelectionPanel.js';
 import CuboidView from '../../common/view/CuboidView.js';
 import ScaleView from '../../common/view/ScaleView.js';
 import MassView from '../../common/view/MassView.js';
+import DensityAccordionBox from '../../buoyancy/view/DensityAccordionBox.js';
 
 // constants
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
@@ -96,6 +97,11 @@ export default class BuoyancyBasicsExploreScreenView extends DensityBuoyancyScre
       margin: MARGIN
     } ) );
 
+    const densityAccordionBox = new DensityAccordionBox( {
+      contentWidthMax: this.rightBox.content.width,
+      tandem: tandem.createTandem( 'densityAccordionBox' )
+    } );
+
     const submergedAccordionBox = new SubmergedAccordionBox( {
       contentWidthMax: this.rightBox.content.width,
       tandem: tandem.createTandem( 'submergedAccordionBox' )
@@ -112,6 +118,13 @@ export default class BuoyancyBasicsExploreScreenView extends DensityBuoyancyScre
     // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
     model.secondaryMass.visibleProperty.link( visible => {
       const masses = visible ? [ model.primaryMass, model.secondaryMass ] : [ model.primaryMass ];
+      densityAccordionBox.setReadoutItems( masses.map( ( mass, index ) => {
+        return {
+          readoutItem: mass.materialProperty,
+          readoutNameProperty: customExploreScreenFormatting[ index ].readoutNameProperty,
+          readoutFormat: customExploreScreenFormatting[ index ].readoutFormat
+        };
+      } ) );
       submergedAccordionBox.setReadoutItems( masses.map( ( mass, index ) => {
         return {
           readoutItem: mass,
@@ -126,6 +139,7 @@ export default class BuoyancyBasicsExploreScreenView extends DensityBuoyancyScre
       align: 'right',
       children: [
         this.rightBox,
+        densityAccordionBox,
         submergedAccordionBox
       ]
     } );
@@ -167,6 +181,7 @@ export default class BuoyancyBasicsExploreScreenView extends DensityBuoyancyScre
     this.addChild( this.popupLayer );
 
     this.resetEmitter.addListener( () => {
+      densityAccordionBox.reset();
       submergedAccordionBox.reset();
     } );
 
@@ -207,6 +222,7 @@ export default class BuoyancyBasicsExploreScreenView extends DensityBuoyancyScre
     this.pdomControlAreaNode.pdomOrder = [
       blocksRadioButtonGroup,
       buoyancyDisplayOptionsPanel,
+      densityAccordionBox,
       submergedAccordionBox,
       this.resetAllButton
     ];

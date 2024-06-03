@@ -14,19 +14,16 @@ import DensityBuoyancyModel, { DensityBuoyancyModelOptions } from '../../common/
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import Cuboid from './Cuboid.js';
 
-type CreateMassesCallback<BlockSetValue extends EnumerationValue> = ( model: DensityBuoyancyModel, blockSet: BlockSetValue ) => Cuboid[];
-type RegenerateMassesCallback<BlockSetValue extends EnumerationValue> = ( model: DensityBuoyancyModel, blockSet: BlockSetValue, masses: Cuboid[] ) => void;
-type PositionMassesCallback<BlockSetValue extends EnumerationValue> = ( model: DensityBuoyancyModel, blockSet: BlockSetValue, masses: Cuboid[] ) => void;
-
 type SelfOptions<BlockSetValue extends EnumerationValue> = {
+
   // Creates masses (when given a blockSet)
-  createMassesCallback: CreateMassesCallback<BlockSetValue>;
+  createMassesCallback: ( model: DensityBuoyancyModel, blockSet: BlockSetValue ) => Cuboid[];
 
   // Regenerate masses (when given a blockSet)
-  regenerateMassesCallback: RegenerateMassesCallback<BlockSetValue>;
+  regenerateMassesCallback: ( model: DensityBuoyancyModel, blockSet: BlockSetValue, masses: Cuboid[] ) => void;
 
   // Positions masses (for a given blockSet)
-  positionMassesCallback: PositionMassesCallback<BlockSetValue>;
+  positionMassesCallback: ( model: DensityBuoyancyModel, blockSet: BlockSetValue, masses: Cuboid[] ) => void;
 
   initialMode: BlockSetValue;
   BlockSet: Enumeration<BlockSetValue>;
@@ -39,11 +36,12 @@ export default class BlockSetModel<BlockSetValue extends EnumerationValue> exten
   // TODO: https://github.com/phetsims/density-buoyancy-common/issues/123 Why is this capitalized?
   public readonly BlockSet: Enumeration<BlockSetValue>;
   public readonly blockSetProperty: Property<BlockSetValue>;
-  private readonly createMassesCallback: CreateMassesCallback<BlockSetValue>;
-  private readonly regenerateMassesCallback: RegenerateMassesCallback<BlockSetValue>;
-  private readonly positionMassesCallback: PositionMassesCallback<BlockSetValue>;
 
-  public blockSetToMassesMap: Map<BlockSetValue, Cuboid[]>;
+  private readonly createMassesCallback: ( model: DensityBuoyancyModel, blockSet: BlockSetValue ) => Cuboid[];
+  private readonly regenerateMassesCallback: ( model: DensityBuoyancyModel, blockSet: BlockSetValue, masses: Cuboid[] ) => void;
+  private readonly positionMassesCallback: ( model: DensityBuoyancyModel, blockSet: BlockSetValue, masses: Cuboid[] ) => void;
+
+  public readonly blockSetToMassesMap: Map<BlockSetValue, Cuboid[]>;
 
   public constructor( options: BlockSetModelOptions<BlockSetValue> ) {
     super( options );

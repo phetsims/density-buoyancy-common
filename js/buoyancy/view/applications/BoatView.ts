@@ -7,7 +7,7 @@
  */
 
 import TReadOnlyProperty from '../../../../../axon/js/TReadOnlyProperty.js';
-import Multilink, { UnknownMultilink } from '../../../../../axon/js/Multilink.js';
+import Multilink from '../../../../../axon/js/Multilink.js';
 import Material from '../../../common/model/Material.js';
 import densityBuoyancyCommon from '../../../densityBuoyancyCommon.js';
 import Boat from '../../model/applications/Boat.js';
@@ -25,8 +25,6 @@ const VOLUME_TOLERANCE = DensityBuoyancyCommonConstants.TOLERANCE;
 
 
 export default class BoatView extends MeasurableMassView {
-  private readonly liquidMultilink: UnknownMultilink;
-
   public readonly boat: Boat;
 
   public constructor( boat: Boat, modelViewTransform: THREEModelViewTransform,
@@ -68,12 +66,13 @@ export default class BoatView extends MeasurableMassView {
     const boatGroup = boatDrawingData.group;
     this.massMesh.add( boatGroup );
 
-    boat.displacementVolumeProperty.link( volume => {
+    const updateBoatScale = ( volume: number ) => {
       const scale = Math.pow( volume / 0.001, 1 / 3 );
       boatGroup.scale.x = scale;
       boatGroup.scale.y = scale;
       boatGroup.scale.z = scale;
-    } );
+    };
+    boat.displacementVolumeProperty.link( updateBoatScale );
 
     const topLiquidPositionArray = BoatDesign.createCrossSectionVertexArray();
     const topLiquidNormalArray = new Float32Array( topLiquidPositionArray.length );
@@ -93,7 +92,7 @@ export default class BoatView extends MeasurableMassView {
     const topLiquid = new THREE.Mesh( topLiquidGeometry, topLiquidMaterial );
     this.massMesh.add( topLiquid );
 
-    this.liquidMultilink = Multilink.multilink( [
+    const liquidMultilink = Multilink.multilink( [
       boat.basin.liquidYInterpolatedProperty,
       boat.displacementVolumeProperty,
       boat.basin.liquidVolumeProperty
@@ -134,17 +133,11 @@ export default class BoatView extends MeasurableMassView {
     topLiquid.renderOrder = 3;
 
     this.boat = boat;
-  }
 
-  /**
-   * Releases references.
-   */
-  public override dispose(): void {
-    // TODO: dispose everything from above https://github.com/phetsims/density-buoyancy-common/issues/143
-
-    this.liquidMultilink.dispose();
-
-    super.dispose();
+    this.disposeEmitter.addListener( () => {
+      liquidMultilink.dispose();
+      boat.displacementVolumeProperty.unlink( updateBoatScale );
+    } );
   }
 
   /**

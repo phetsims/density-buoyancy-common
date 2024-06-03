@@ -68,12 +68,11 @@ export default class BottleView extends MeasurableMassView {
       interiorSurfaceGeometry.attributes.position.needsUpdate = true;
       interiorSurfaceGeometry.computeBoundingSphere();
     };
-    // TODO: unlink https://github.com/phetsims/density-buoyancy-common/issues/143
-    bottle.interiorVolumeProperty.link( volume => {
+    const updateCrossSection = ( volume: number ) => {
       setCrossSectionRelativeY( Bottle.getYFromVolume( volume ) );
-    } );
+    };
+    bottle.interiorVolumeProperty.link( updateCrossSection );
 
-    // TODO: unlink https://github.com/phetsims/density-buoyancy-common/issues/143
     const adjustClipPlanes = () => {
       const modelY = bottle.matrix.translation.y + Bottle.getYFromVolume( bottle.interiorVolumeProperty.value );
 
@@ -83,6 +82,12 @@ export default class BottleView extends MeasurableMassView {
     bottle.transformedEmitter.addListener( adjustClipPlanes );
     bottle.interiorVolumeProperty.lazyLink( adjustClipPlanes );
     adjustClipPlanes();
+
+    this.disposeEmitter.addListener( () => {
+      bottle.interiorVolumeProperty.unlink( adjustClipPlanes );
+      bottle.transformedEmitter.removeListener( adjustClipPlanes );
+      bottle.interiorVolumeProperty.unlink( updateCrossSection );
+    } );
 
     const interiorSurfaceMaterial = new THREE.MeshPhongMaterial( {
       color: 0x33FF33,
@@ -102,15 +107,6 @@ export default class BottleView extends MeasurableMassView {
     Material.linkLiquidColor( bottle.interiorMaterialProperty, bottleDrawingData.frontBottomMaterial );
 
     this.bottle = bottle;
-  }
-
-  /**
-   * Releases references.
-   */
-  public override dispose(): void {
-    // TODO: dispose everything from above https://github.com/phetsims/density-buoyancy-common/issues/143
-
-    super.dispose();
   }
 
   /**

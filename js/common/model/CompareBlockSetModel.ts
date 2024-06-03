@@ -127,11 +127,10 @@ export default class CompareBlockSetModel extends BlockSetModel<BlockSet> {
     };
 
     const cubesData: CubeDataInternal[] = options.cubesData.map( cubeData => {
-      const sameMassDensityProperty = new NumberProperty( options.sameMassValue / cubeData.sameMassVolume, { tandem: Tandem.OPT_OUT } );
-      const sameVolumeDensityProperty = new NumberProperty( cubeData.sameVolumeMass / options.sameVolumeValue, { tandem: Tandem.OPT_OUT } );
+      const sameMassDensityProperty = new NumberProperty( options.sameMassValue / cubeData.sameMassVolume );
+      const sameVolumeDensityProperty = new NumberProperty( cubeData.sameVolumeMass / options.sameVolumeValue );
       const sameDensityDensityProperty = new NumberProperty( options.sameDensityValue, {
-        range: options.sameDensityRange,
-        tandem: Tandem.OPT_OUT
+        range: options.sameDensityRange
       } );
 
       return merge( {

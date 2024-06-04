@@ -31,13 +31,13 @@ export default class Cone extends Mass {
   public readonly radiusProperty: Property<number>;
   public readonly heightProperty: Property<number>;
   public readonly isVertexUp: boolean;
-  public readonly vertexSign: number;
+  private readonly vertexSign: number;
 
   // Step information
-  public stepRadius: number;
-  public stepHeight: number;
-  public stepArea: number;
-  public stepMaximumVolume: number;
+  private stepRadius: number;
+  private stepHeight: number;
+  private stepArea: number;
+  private stepMaximumVolume: number;
 
   public constructor( engine: PhysicsEngine, radius: number, height: number, isVertexUp: boolean, providedOptions: ConeOptions ) {
 
@@ -83,7 +83,7 @@ export default class Cone extends Mass {
   /**
    * Updates the size of the cone.
    */
-  public updateSize( radius: number, height: number ): void {
+  private updateSize( radius: number, height: number ): void {
     const vertices = Cone.getConeVertices( radius, height, this.isVertexUp );
 
     this.engine.updateFromVertices( this.body, vertices, false );
@@ -220,7 +220,7 @@ export default class Cone extends Mass {
   /**
    * Returns an array of vertices for the 2d physics model
    */
-  public static getConeVertices( radius: number, height: number, isVertexUp: boolean ): Vector2[] {
+  private static getConeVertices( radius: number, height: number, isVertexUp: boolean ): Vector2[] {
     const vertexSign = isVertexUp ? 1 : -1;
 
     return [
@@ -233,11 +233,11 @@ export default class Cone extends Mass {
   /**
    * Returns the volume of a cone with the given radius and height.
    */
-  public static getVolume( radius: number, height: number ): number {
+  private static getVolume( radius: number, height: number ): number {
     return Math.PI * radius * radius * height / 3;
   }
 
-  public static readonly ConeIO = new IOType( 'ConeIO', {
+  private static readonly ConeIO = new IOType( 'ConeIO', {
     valueType: Cone,
     supertype: Mass.MassIO,
     documentation: 'Represents an up/down cone'

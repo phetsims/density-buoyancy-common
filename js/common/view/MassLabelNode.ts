@@ -22,7 +22,7 @@ import Utils from '../../../../dot/js/Utils.js';
 
 export default class MassLabelNode extends Node {
 
-  public readonly mass: Mass;
+  private readonly mass: Mass;
   private readonly showMassValuesProperty: TReadOnlyProperty<boolean>;
   private readonly showMassesListener: ( n: boolean ) => void;
   private readonly readoutStringProperty: TReadOnlyProperty<string>;

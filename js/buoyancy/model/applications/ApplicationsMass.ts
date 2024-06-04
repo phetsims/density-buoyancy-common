@@ -20,7 +20,7 @@ export type ApplicationsMassOptions = StrictOmit<InstrumentedMassOptions, 'canRo
 export default abstract class ApplicationsMass extends Mass {
 
   // The default volume that the boat or bottle can hold inside them, in m^3
-  public static readonly DEFAULT_DISPLACEMENT_VOLUME = 0.01;
+  protected static readonly DEFAULT_DISPLACEMENT_VOLUME = 0.01;
 
   // The volume that the boat or bottle can hold inside them, in m^3.
   public displacementVolumeProperty: NumberProperty;
@@ -47,7 +47,7 @@ export default abstract class ApplicationsMass extends Mass {
   /**
    * A box that contains the geometry of the Mass
    */
-  public override getLocalBounds(): Bounds3 {
+  protected override getLocalBounds(): Bounds3 {
     const bounds2 = this.shapeProperty.value.bounds;
     return new Bounds3( bounds2.minX, bounds2.minY, -bounds2.minY, bounds2.maxX, bounds2.maxY, bounds2.minY );
   }

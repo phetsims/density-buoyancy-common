@@ -56,7 +56,7 @@ export class DisplayType extends EnumerationValue {
   public static readonly NEWTONS = new DisplayType();
   public static readonly KILOGRAMS = new DisplayType();
 
-  public static readonly enumeration = new Enumeration( DisplayType, {
+  private static readonly enumeration = new Enumeration( DisplayType, {
     phetioDocumentation: 'Units for the scale readout'
   } );
 }
@@ -140,7 +140,7 @@ export default class Scale extends Mass {
     this.displayType = options.displayType;
   }
 
-  public override getLocalBounds(): Bounds3 {
+  protected override getLocalBounds(): Bounds3 {
     const bounds2 = this.shapeProperty.value.bounds;
     return new Bounds3( bounds2.minX, bounds2.minY, -SCALE_DEPTH / 2, bounds2.maxX, bounds2.maxY, SCALE_DEPTH / 2 );
   }
@@ -209,7 +209,7 @@ export default class Scale extends Mass {
     this.scaleForceInterpolatedProperty.setRatio( interpolationRatio );
   }
 
-  public static readonly ScaleIO = new IOType( 'ScaleIO', {
+  private static readonly ScaleIO = new IOType( 'ScaleIO', {
     valueType: Scale,
     supertype: Mass.MassIO,
     documentation: 'Represents scale used for measuring mass/weight'
@@ -217,11 +217,11 @@ export default class Scale extends Mass {
 
   public static readonly SCALE_WIDTH = SCALE_WIDTH;
   public static readonly SCALE_HEIGHT = SCALE_HEIGHT;
-  public static readonly SCALE_DEPTH = SCALE_DEPTH;
-  public static readonly SCALE_BASE_HEIGHT = SCALE_BASE_HEIGHT;
+  private static readonly SCALE_DEPTH = SCALE_DEPTH;
+  private static readonly SCALE_BASE_HEIGHT = SCALE_BASE_HEIGHT;
   public static readonly SCALE_TOP_HEIGHT = SCALE_TOP_HEIGHT;
-  public static readonly SCALE_AREA = SCALE_AREA;
-  public static readonly SCALE_VOLUME = SCALE_VOLUME;
+  private static readonly SCALE_AREA = SCALE_AREA;
+  private static readonly SCALE_VOLUME = SCALE_VOLUME;
   public static readonly SCALE_BASE_BOUNDS = SCALE_BASE_BOUNDS;
   public static readonly SCALE_FRONT_OFFSET = SCALE_FRONT_OFFSET;
 }

@@ -32,7 +32,7 @@ const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
 
 export default class DensityIntroScreenView extends DensityBuoyancyScreenView<DensityIntroModel> {
 
-  protected rightBox: PrimarySecondaryControlsNode;
+  private rightBox: PrimarySecondaryControlsNode;
 
   public constructor( model: DensityIntroModel, options: DensityBuoyancyScreenViewOptions ) {
 

@@ -15,8 +15,8 @@ import MaterialView from './MaterialView.js';
 
 export default class MassThreeMesh extends THREE.Mesh {
 
-  public readonly mass: Mass;
-  public materialView: MaterialView;
+  private readonly mass: Mass;
+  private materialView: MaterialView;
   private readonly materialListener: ( material: Material ) => void;
 
   public constructor( mass: Mass, initialGeometry: THREE.BufferGeometry ) {

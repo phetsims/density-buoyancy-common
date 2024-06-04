@@ -34,8 +34,8 @@ export default class InterpolatedProperty<T> extends Property<T> {
   public currentValue: T;
 
   // Capture the previous value upon currentValue change.
-  public previousValue: T;
-  public ratio: number;
+  private previousValue: T;
+  private ratio: number;
 
   private readonly interpolate: Interpolate<T>;
 
@@ -103,7 +103,7 @@ export default class InterpolatedProperty<T> extends Property<T> {
   /**
    * Interpolation for Vector3.
    */
-  public static interpolateVector3( a: Vector3, b: Vector3, ratio: number ): Vector3 {
+  private static interpolateVector3( a: Vector3, b: Vector3, ratio: number ): Vector3 {
     return a.blend( b, ratio );
   }
 

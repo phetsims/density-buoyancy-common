@@ -173,7 +173,7 @@ export default class DensityNumberLineNode extends Node {
     this.mutate( options );
   }
 
-  public createContents( options: DensityNumberLineNodeOptions ): void {
+  private createContents( options: DensityNumberLineNodeOptions ): void {
 
     const labelOptions = {
       font: new PhetFont( { size: 16, weight: 'bold' } ),

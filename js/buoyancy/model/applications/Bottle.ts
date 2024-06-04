@@ -189,8 +189,8 @@ export default class Bottle extends ApplicationsMass {
   // In kg (kilograms)
   public interiorMassProperty: ReadOnlyProperty<number>;
 
-  public readonly primaryGeometry: THREE.BufferGeometry;
-  public readonly capGeometry: THREE.BufferGeometry;
+  private readonly primaryGeometry: THREE.BufferGeometry;
+  private readonly capGeometry: THREE.BufferGeometry;
 
   public constructor( engine: PhysicsEngine, providedOptions: BottleOptions ) {
 
@@ -263,11 +263,11 @@ export default class Bottle extends ApplicationsMass {
     this.stepTop = yOffset + this.bottleBounds.maxY;
   }
 
-  public override evaluatePiecewiseLinearArea( ratio: number ): number {
+  protected override evaluatePiecewiseLinearArea( ratio: number ): number {
     return Mass.evaluatePiecewiseLinear( TEN_LITER_DISPLACED_AREAS, ratio );
   }
 
-  public override evaluatePiecewiseLinearVolume( ratio: number ): number {
+  protected override evaluatePiecewiseLinearVolume( ratio: number ): number {
     return Mass.evaluatePiecewiseLinear( TEN_LITER_DISPLACED_VOLUMES, ratio );
   }
 
@@ -285,7 +285,7 @@ export default class Bottle extends ApplicationsMass {
    * @param controlPoints - Four points for a cubic
    * @param t
    */
-  public static evaluateCubic( controlPoints: Vector2[], t: number ): Vector2 {
+  private static evaluateCubic( controlPoints: Vector2[], t: number ): Vector2 {
     const mt = 1 - t;
     const mmm = mt * mt * mt;
     const mmt = 3 * mt * mt * t;
@@ -308,7 +308,7 @@ export default class Bottle extends ApplicationsMass {
    * @param controlPoints - Four points for a cubic
    * @param t
    */
-  public static evaluateCubicDerivative( controlPoints: Vector2[], t: number ): Vector2 {
+  private static evaluateCubicDerivative( controlPoints: Vector2[], t: number ): Vector2 {
     const mt = 1 - t;
 
     return new Vector2(
@@ -327,7 +327,7 @@ export default class Bottle extends ApplicationsMass {
    * Given control points for a parametric cubic bezier, finds the parametric value for the curve that will have the
    * defined radius.
    */
-  public static getParametricFromRadius( controlPoints: Vector2[], r: number ): number {
+  private static getParametricFromRadius( controlPoints: Vector2[], r: number ): number {
     const r0 = controlPoints[ 0 ].y;
     const r1 = controlPoints[ 1 ].y;
     const r2 = controlPoints[ 2 ].y;
@@ -570,7 +570,7 @@ export default class Bottle extends ApplicationsMass {
    *
    * @param triangles - Every section of three vertices represents a 2d triangle
    */
-  public static getCrossSectionArea( triangles: Vector2[] ): number {
+  private static getCrossSectionArea( triangles: Vector2[] ): number {
     let area = 0;
     _.range( 0, triangles.length, 3 ).forEach( i => {
       area += Utils.triangleArea(
@@ -582,7 +582,7 @@ export default class Bottle extends ApplicationsMass {
     return area;
   }
 
-  public static computeBottleData( samples = 1000, accuracyMultiplier = 100 ): string {
+  private static computeBottleData( samples = 1000, accuracyMultiplier = 100 ): string {
     const desiredVolume = 0.01;
 
     const multiplier = FULL_RADIUS * 2;
@@ -682,7 +682,7 @@ const FLAT_INTERSECTION_VERTICES = [ ${flatIntersectionVertices.map( v => `new V
   /**
    * Returns a list of points in (x,r) that is the cross-section profile of the cap.
    */
-  public static getCapProfile(): Vector2[] {
+  private static getCapProfile(): Vector2[] {
     return [
       new Vector2( 0, 0 ),
       ..._.range( 0, CORNER_SEGMENTS ).map( i => {
@@ -733,14 +733,14 @@ const FLAT_INTERSECTION_VERTICES = [ ${flatIntersectionVertices.map( v => `new V
   /**
    * Returns a list of points in (x,r) that is the cross-section profile of the non-base portion of the bottle.
    */
-  public static getMainBottleProfile(): Vector2[] {
+  private static getMainBottleProfile(): Vector2[] {
     return [
       new Vector2( CAP_CORNER_RADIUS, NECK_RADIUS ),
       ...Bottle.getLipToBodyProfile()
     ];
   }
 
-  public static getMainFlatIntersectionProfile(): Vector2[] {
+  private static getMainFlatIntersectionProfile(): Vector2[] {
     return [
       ...Bottle.getCapProfile(),
       ...Bottle.getLipToBodyProfile()
@@ -1086,7 +1086,7 @@ const FLAT_INTERSECTION_VERTICES = [ ${flatIntersectionVertices.map( v => `new V
    * Returns a list of model-space x,y coordinates for the intersection profile of the bottle.
    *
    */
-  public static getFlatIntersectionVertices(): Vector2[] {
+  private static getFlatIntersectionVertices(): Vector2[] {
     return FLAT_INTERSECTION_VERTICES.map( v => {
       return v.minusXY( TEN_LITER_INTERSECTION_CENTROID.x, TEN_LITER_INTERSECTION_CENTROID.y ).timesScalar( TEN_LITER_SCALE_MULTIPLIER );
     } );
@@ -1095,7 +1095,7 @@ const FLAT_INTERSECTION_VERTICES = [ ${flatIntersectionVertices.map( v => `new V
   /**
    * Replaces the main page with a debug view of the bottle, for debugging various curves and properties.
    */
-  public static getDebugCanvas(): HTMLCanvasElement {
+  private static getDebugCanvas(): HTMLCanvasElement {
     const canvas = document.createElement( 'canvas' );
     const context = canvas.getContext( '2d' )!;
 
@@ -1185,21 +1185,21 @@ const FLAT_INTERSECTION_VERTICES = [ ${flatIntersectionVertices.map( v => `new V
   }
 
   // The number to scale the original values by to get a 10L-volume bottle
-  public static readonly TEN_LITER_SCALE_MULTIPLIER = TEN_LITER_SCALE_MULTIPLIER;
+  private static readonly TEN_LITER_SCALE_MULTIPLIER = TEN_LITER_SCALE_MULTIPLIER;
 
   // The maximum bounding radius for the 10L-volume bottle
-  public static readonly MAX_RADIUS = FULL_RADIUS * TEN_LITER_SCALE_MULTIPLIER;
+  private static readonly MAX_RADIUS = FULL_RADIUS * TEN_LITER_SCALE_MULTIPLIER;
 
   // The maximum length for the 10L-volume bottle
-  public static readonly MAX_LENGTH = BASE_TIP * TEN_LITER_SCALE_MULTIPLIER;
+  private static readonly MAX_LENGTH = BASE_TIP * TEN_LITER_SCALE_MULTIPLIER;
 
   // From the bottom to top, cross-sectional area and cumulative (displaced) volume
-  public static readonly TEN_LITER_DISPLACED_AREAS = TEN_LITER_DISPLACED_AREAS;
-  public static readonly TEN_LITER_DISPLACED_VOLUMES = TEN_LITER_DISPLACED_VOLUMES;
+  private static readonly TEN_LITER_DISPLACED_AREAS = TEN_LITER_DISPLACED_AREAS;
+  private static readonly TEN_LITER_DISPLACED_VOLUMES = TEN_LITER_DISPLACED_VOLUMES;
 
-  public static readonly FLAT_INTERSECTION_VERTICES = FLAT_INTERSECTION_VERTICES;
+  private static readonly FLAT_INTERSECTION_VERTICES = FLAT_INTERSECTION_VERTICES;
 
-  public static readonly BottleIO = new IOType( 'BottleIO', {
+  private static readonly BottleIO = new IOType( 'BottleIO', {
     valueType: Bottle,
     supertype: Mass.MassIO,
     documentation: 'Represents a bottle'

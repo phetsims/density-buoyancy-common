@@ -28,11 +28,11 @@ export default class HorizontalCylinder extends Mass {
   public readonly lengthProperty: Property<number>;
 
   // Step information
-  public stepRadius: number;
-  public stepHeight: number;
-  public stepArea: number;
-  public stepMaximumVolume: number;
-  public stepMaximumArea: number;
+  private stepRadius: number;
+  private stepHeight: number;
+  private stepArea: number;
+  private stepMaximumVolume: number;
+  private stepMaximumArea: number;
 
   public constructor( engine: PhysicsEngine, radius: number, length: number, providedOptions: HorizontalCylinderOptions ) {
     const options = optionize<HorizontalCylinderOptions, EmptySelfOptions, InstrumentedMassOptions>()( {
@@ -70,7 +70,7 @@ export default class HorizontalCylinder extends Mass {
   /**
    * Updates the size of the cone.
    */
-  public updateSize( radius: number, length: number ): void {
+  private updateSize( radius: number, length: number ): void {
     this.engine.updateBox( this.body, length, radius * 2 );
 
     this.radiusProperty.value = radius;
@@ -198,18 +198,18 @@ export default class HorizontalCylinder extends Mass {
   /**
    * Returns a horizontal cylinder shape for a given radius/length.
    */
-  public static getHorizontalCylinderShape( radius: number, length: number ): Shape {
+  private static getHorizontalCylinderShape( radius: number, length: number ): Shape {
     return Shape.rect( -length / 2, -radius, length, 2 * radius );
   }
 
   /**
    * Returns the volume of a horizontal cylinder with the given radius and length.
    */
-  public static getVolume( radius: number, length: number ): number {
+  private static getVolume( radius: number, length: number ): number {
     return Math.PI * radius * radius * length;
   }
 
-  public static readonly HorizontalCylinderIO = new IOType( 'HorizontalCylinderIO', {
+  private static readonly HorizontalCylinderIO = new IOType( 'HorizontalCylinderIO', {
     valueType: HorizontalCylinder,
     supertype: Mass.MassIO,
     documentation: 'Represents a cylinder laying on its side'

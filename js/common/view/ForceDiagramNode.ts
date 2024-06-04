@@ -35,7 +35,7 @@ const labelFont = new PhetFont( { size: 12, weight: 'bold' } );
 
 export default class ForceDiagramNode extends Node {
 
-  public readonly mass: Mass;
+  private readonly mass: Mass;
   private readonly showGravityForceProperty: TReadOnlyProperty<boolean>;
   private readonly showBuoyancyForceProperty: TReadOnlyProperty<boolean>;
   private readonly showContactForceProperty: TReadOnlyProperty<boolean>;

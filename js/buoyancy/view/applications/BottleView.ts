@@ -21,7 +21,7 @@ type BottleDrawingData = {
 
 export default class BottleView extends MeasurableMassView {
 
-  public readonly bottle: Bottle;
+  private readonly bottle: Bottle;
 
   public constructor( bottle: Bottle,
                       modelViewTransform: THREEModelViewTransform,

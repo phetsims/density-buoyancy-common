@@ -76,8 +76,8 @@ export default class DensityBuoyancyModel implements TModel {
   public readonly showMassValuesProperty: Property<boolean>;
   public readonly gravityProperty: Property<Gravity>;
   public readonly liquidMaterialProperty: Property<Material>;
-  public readonly liquidDensityProperty: TReadOnlyProperty<number>;
-  public readonly liquidViscosityProperty: TReadOnlyProperty<number>;
+  private readonly liquidDensityProperty: TReadOnlyProperty<number>;
+  private readonly liquidViscosityProperty: TReadOnlyProperty<number>;
 
   public readonly supportsDepthLines: boolean;
   public readonly showDepthLinesProperty: Property<boolean>;
@@ -94,9 +94,9 @@ export default class DensityBuoyancyModel implements TModel {
   public readonly masses: ObservableArray<Mass>;
   public readonly pool: Pool;
   public readonly engine: PhysicsEngine;
-  public readonly groundBody: PhysicsEngineBody;
-  public barrierBody: PhysicsEngineBody;
-  public readonly availableMasses: ObservableArray<Mass>;
+  private readonly groundBody: PhysicsEngineBody;
+  private barrierBody: PhysicsEngineBody;
+  protected readonly availableMasses: ObservableArray<Mass>;
 
   // Flag that sets an animation to empty the boat of any water inside of it
   private spillingWaterOutOfBoat = false;
@@ -591,7 +591,7 @@ export default class DensityBuoyancyModel implements TModel {
   /**
    * Moves masses' previous positions to their current positions.
    */
-  public syncPreviousMassPositionsToCurrent(): void {
+  protected syncPreviousMassPositionsToCurrent(): void {
     this.masses.forEach( mass => this.engine.bodySynchronizePrevious( mass.body ) );
   }
 
@@ -650,7 +650,7 @@ export default class DensityBuoyancyModel implements TModel {
   /**
    * Position a stack of masses at a given center x.
    */
-  protected positionStack( masses: Cuboid[], x: number ): void {
+  private positionStack( masses: Cuboid[], x: number ): void {
     let position = 0;
 
     masses = _.sortBy( masses, mass => -mass.volumeProperty.value );

@@ -30,7 +30,7 @@ export default class SubmergedAccordionBox extends ReadoutListAccordionBox<Mass>
     super( DensityBuoyancyCommonStrings.percentSubmergedStringProperty, options );
   }
 
-  public override generateReadoutData( mass: Mass ): ReadoutData {
+  protected override generateReadoutData( mass: Mass ): ReadoutData {
 
     return {
       nameProperty: mass.nameProperty,

@@ -60,7 +60,7 @@ export default class BoatBasin extends Basin {
   /**
    * Returns the maximum area that could be contained with liquid at a given y value.
    */
-  public getMaximumArea( y: number ): number {
+  protected getMaximumArea( y: number ): number {
     return this.boat.getBasinArea( y );
   }
 

@@ -175,7 +175,7 @@ export default class Material {
    * Returns a value suitable for use in colors (0-255 value) that should be used as a grayscale value for
    * a material of a given density. The mappíng is inverted, i.e. larger densities yield darker colors.
    */
-  public static getCustomLightness( density: number, densityRange: Range ): number {
+  private static getCustomLightness( density: number, densityRange: Range ): number {
     return Utils.roundSymmetric( this.getNormalizedLightness( density, densityRange ) * 255 );
   }
 
@@ -590,7 +590,7 @@ export default class Material {
     density: Material.GOLD.density
   } );
 
-  public static readonly MATERIALS = [
+  private static readonly MATERIALS = [
     Material.AIR,
     Material.ALUMINUM,
     Material.APPLE,

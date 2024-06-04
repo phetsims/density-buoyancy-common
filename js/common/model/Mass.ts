@@ -50,17 +50,17 @@ type MaterialNonCustomIdentifier = 'ALUMINUM' | 'BRICK' | 'COPPER' | 'ICE' | 'PL
 type MaterialIdentifier = MaterialNonCustomIdentifier | CustomMaterialName;
 
 class MaterialEnumeration extends EnumerationValue {
-  public static readonly ALUMINUM = new MaterialEnumeration();
-  public static readonly BRICK = new MaterialEnumeration();
-  public static readonly COPPER = new MaterialEnumeration();
-  public static readonly ICE = new MaterialEnumeration();
-  public static readonly PLATINUM = new MaterialEnumeration();
-  public static readonly STEEL = new MaterialEnumeration();
-  public static readonly STYROFOAM = new MaterialEnumeration();
-  public static readonly WOOD = new MaterialEnumeration();
+  private static readonly ALUMINUM = new MaterialEnumeration();
+  private static readonly BRICK = new MaterialEnumeration();
+  private static readonly COPPER = new MaterialEnumeration();
+  private static readonly ICE = new MaterialEnumeration();
+  private static readonly PLATINUM = new MaterialEnumeration();
+  private static readonly STEEL = new MaterialEnumeration();
+  private static readonly STYROFOAM = new MaterialEnumeration();
+  private static readonly WOOD = new MaterialEnumeration();
   public static readonly CUSTOM = new MaterialEnumeration();
 
-  public static readonly enumeration = new Enumeration( MaterialEnumeration, {
+  private static readonly enumeration = new Enumeration( MaterialEnumeration, {
     phetioDocumentation: 'Material values'
   } );
 }
@@ -70,7 +70,7 @@ const materialToEnum = ( material: Material ): MaterialEnumeration => MaterialEn
 type GuardedNumberPropertyOptions = NumberPropertyOptions & { getPhetioSpecificValidationError: ( value: number ) => string | null };
 
 class GuardedNumberProperty extends NumberProperty {
-  public readonly getPhetioSpecificValidationError: ( number: number ) => string | null;
+  protected readonly getPhetioSpecificValidationError: ( number: number ) => string | null;
 
   public constructor( value: number, providedOptions: GuardedNumberPropertyOptions ) {
     const options = optionize<GuardedNumberPropertyOptions, EmptySelfOptions, NumberPropertyOptions>()( {
@@ -146,10 +146,10 @@ export type MassIOStateObject = {
 
 export default abstract class Mass extends PhetioObject {
 
-  public readonly engine: PhysicsEngine;
+  protected readonly engine: PhysicsEngine;
   public readonly body: PhysicsEngineBody;
 
-  public readonly massShape: MassShape;
+  private readonly massShape: MassShape;
 
   // Without the matrix applied (effectively in "local" model coordinates)
   public readonly shapeProperty: Property<Shape>;
@@ -162,18 +162,18 @@ export default abstract class Mass extends PhetioObject {
   // Here just for instrumentation, see https://github.com/phetsims/density/issues/112
   // This can only hide it, but won't make it visible.
   // TODO: Definitely name it for "phet-io" and not "studio", https://github.com/phetsims/buoyancy/issues/51
-  public readonly studioVisibleProperty: Property<boolean>;
+  private readonly studioVisibleProperty: Property<boolean>;
 
   public readonly materialProperty: Property<Material>;
 
   // for phet-io support (to control the materialProperty)
-  public readonly materialEnumProperty?: Property<MaterialEnumeration>;
+  private readonly materialEnumProperty?: Property<MaterialEnumeration>;
 
   // for phet-io support (to control the materialProperty)
-  public readonly customDensityProperty?: Property<number>;
+  private readonly customDensityProperty?: Property<number>;
 
   // for phet-io support (to control the materialProperty)
-  public readonly customColorProperty?: Property<Color>;
+  private readonly customColorProperty?: Property<Color>;
 
   // Whether we are modifying the volumeProperty directly
   protected volumeLock = false;
@@ -188,14 +188,14 @@ export default abstract class Mass extends PhetioObject {
   public readonly submergedMassFractionProperty: NumberProperty;
 
   // In kg (kilograms), added to the normal mass (computed from density and volume)
-  public readonly containedMassProperty: Property<number>;
+  protected readonly containedMassProperty: Property<number>;
 
   // In kg (kilograms) - written to by other processes
   public readonly massProperty: Property<number>;
 
   // The following offset will be added onto the body's position to determine ours. This value will not be applied to
   // the physics engine positional data, but instead appended here to this.matrix.
-  public readonly bodyOffsetProperty: Property<Vector2>;
+  protected readonly bodyOffsetProperty: Property<Vector2>;
 
   public readonly gravityForceInterpolatedProperty: InterpolatedProperty<Vector2>;
   public readonly buoyancyForceInterpolatedProperty: InterpolatedProperty<Vector2>;
@@ -219,14 +219,14 @@ export default abstract class Mass extends PhetioObject {
   public readonly matrix: Matrix3;
 
   // Transform matrix set in the internal physics engine steps, used by masses to determine their per-physics-step information.
-  public readonly stepMatrix: Matrix3;
+  protected readonly stepMatrix: Matrix3;
 
   public readonly transformedEmitter: TEmitter;
 
   // Fired when this mass's input (drag) should be interrupted.
   public readonly interruptedEmitter: TEmitter;
 
-  public canRotate: boolean;
+  private canRotate: boolean;
   public canMove: boolean;
   public tag: MassTag;
 
@@ -237,7 +237,7 @@ export default abstract class Mass extends PhetioObject {
   // Set by the model
   public containingBasin: Basin | null;
 
-  public originalMatrix: Matrix3;
+  private originalMatrix: Matrix3;
 
   // Required internal-physics-step properties that should be set by subtypes in
   // updateStepInformation(). There may exist more set by the subtype (that will be used for e.g. volume/area
@@ -541,7 +541,7 @@ export default abstract class Mass extends PhetioObject {
   /**
    * Returns the bounds of this mass.
    */
-  public abstract getLocalBounds(): Bounds3;
+  protected abstract getLocalBounds(): Bounds3;
 
   /**
    * Get the bounds of this mass in parent coordinates.
@@ -719,7 +719,7 @@ export default abstract class Mass extends PhetioObject {
   /**
    * Given a list of values and a ratio from 0 (the start) to 1 (the end), return an interpolated value.
    */
-  public static evaluatePiecewiseLinear( values: number[], ratio: number ): number {
+  protected static evaluatePiecewiseLinear( values: number[], ratio: number ): number {
     const logicalIndex = ratio * ( values.length - 1 );
     if ( logicalIndex % 1 === 0 ) {
       return values[ logicalIndex ];

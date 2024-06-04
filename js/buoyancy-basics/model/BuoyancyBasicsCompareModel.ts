@@ -29,7 +29,6 @@ export default class BuoyancyBasicsCompareModel extends CompareBlockSetModel {
       showMassValuesDefault: true,
 
       supportsDepthLines: true,
-      usePoolScale: true,
 
       cubesData: [
         {

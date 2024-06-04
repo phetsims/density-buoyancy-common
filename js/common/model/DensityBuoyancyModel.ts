@@ -107,7 +107,7 @@ export default class DensityBuoyancyModel implements TModel {
       showMassValuesDefault: false,
       canShowForces: true,
       initialForceScale: 1 / 16,
-      usePoolScale: false, // TODO: Set to true to hide it on most screen models, see https://github.com/phetsims/density-buoyancy-common/issues/148
+      usePoolScale: true,
       supportsDepthLines: false
     }, providedOptions );
 

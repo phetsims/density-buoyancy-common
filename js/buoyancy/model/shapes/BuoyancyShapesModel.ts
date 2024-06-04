@@ -53,8 +53,7 @@ export default class BuoyancyShapesModel extends DensityBuoyancyModel {
 
   public constructor( providedOptions: BuoyancyShapesModelOptions ) {
     const options = optionize<DensityBuoyancyModelOptions, EmptySelfOptions, DensityBuoyancyModelOptions>()( {
-      initialForceScale: 1 / 4,
-      usePoolScale: true
+      initialForceScale: 1 / 4
     }, providedOptions );
 
     const tandem = options.tandem;

@@ -16,7 +16,6 @@ import Scale, { DisplayType } from '../../../common/model/Scale.js';
 import densityBuoyancyCommon from '../../../densityBuoyancyCommon.js';
 import Boat from './Boat.js';
 import Bottle from './Bottle.js';
-import { combineOptions } from '../../../../../phet-core/js/optionize.js';
 import Range from '../../../../../dot/js/Range.js';
 import NumberProperty from '../../../../../axon/js/NumberProperty.js';
 import TReadOnlyProperty from '../../../../../axon/js/TReadOnlyProperty.js';
@@ -44,9 +43,7 @@ export default class BuoyancyApplicationsModel extends DensityBuoyancyModel {
 
     const tandem = options.tandem;
 
-    super( combineOptions<DensityBuoyancyModelOptions>( {
-      usePoolScale: true
-    }, options ) );
+    super( options );
 
     this.sceneProperty = new StringUnionProperty<BottleOrBoat>( 'bottle', {
       validValues: BottleOrBoatValues,

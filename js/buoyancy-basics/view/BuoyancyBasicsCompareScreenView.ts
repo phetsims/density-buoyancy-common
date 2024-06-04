@@ -171,7 +171,7 @@ export default class BuoyancyBasicsCompareScreenView extends DensityBuoyancyScre
     this.addChild( this.rightSidePanelsVBox );
 
     // Info button and associated dialog
-    this.scaleHeightControl = new PoolScaleHeightControl( model.poolScale, model.poolScaleHeightProperty,
+    this.scaleHeightControl = new PoolScaleHeightControl( model.poolScale!, model.poolScaleHeightProperty,
       model.poolBounds, model.pool.liquidYInterpolatedProperty, this, {
         tandem: options.tandem.createTandem( 'scaleHeightControl' )
       } );
@@ -243,6 +243,11 @@ export default class BuoyancyBasicsCompareScreenView extends DensityBuoyancyScre
 
   public override layout( viewBounds: Bounds2 ): void {
     super.layout( viewBounds );
+
+    // If the simulation was not able to load for WebGL, bail out
+    if ( !this.sceneNode || !this.model.poolScale ) {
+      return;
+    }
 
     // X margin should be based on the front of the pool
     this.scaleHeightControl.x = this.modelToViewPoint( new Vector3(

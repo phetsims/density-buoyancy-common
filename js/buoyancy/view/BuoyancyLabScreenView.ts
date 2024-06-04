@@ -186,7 +186,7 @@ export default class BuoyancyLabScreenView extends DensityBuoyancyScreenView<Buo
       strictAxonDependencies: false // This workaround is deemed acceptable for visibleBoundsProperty listening, https://github.com/phetsims/faradays-electromagnetic-lab/issues/65
     } );
 
-    this.scaleHeightControl = new PoolScaleHeightControl( model.poolScale, model.poolScaleHeightProperty,
+    this.scaleHeightControl = new PoolScaleHeightControl( model.poolScale!, model.poolScaleHeightProperty,
       model.poolBounds, model.pool.liquidYInterpolatedProperty, this, {
         tandem: tandem.createTandem( 'scaleHeightControl' )
       } );
@@ -252,7 +252,7 @@ export default class BuoyancyLabScreenView extends DensityBuoyancyScreenView<Buo
     super.layout( viewBounds );
 
     // If the simulation was not able to load for WebGL, bail out
-    if ( !this.sceneNode ) {
+    if ( !this.sceneNode || !this.model.poolScale ) {
       return;
     }
 

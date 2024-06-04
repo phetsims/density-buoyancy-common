@@ -12,7 +12,6 @@ import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import MassTag from '../../common/model/MassTag.js';
 import optionize, { EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
 import BlockSet from '../../common/model/BlockSet.js';
-import SlidableScale from '../../common/model/SlidableScale.js';
 import DensityBuoyancyCommonColors from '../../common/view/DensityBuoyancyCommonColors.js';
 import CompareBlockSetModel, { BLOCK_SETS_TANDEM_NAME, CompareBlockSetModelOptions } from '../../common/model/CompareBlockSetModel.js';
 import StrictOmit from '../../../../phet-core/js/types/StrictOmit.js';
@@ -20,7 +19,6 @@ import StrictOmit from '../../../../phet-core/js/types/StrictOmit.js';
 export type BuoyancyBasicsCompareModelOptions = StrictOmit<CompareBlockSetModelOptions, 'positionMassesCallback' | 'cubesData'>;
 
 export default class BuoyancyBasicsCompareModel extends CompareBlockSetModel {
-  public readonly poolScale: Scale;
 
   public constructor( providedOptions: BuoyancyBasicsCompareModelOptions ) {
 
@@ -31,7 +29,7 @@ export default class BuoyancyBasicsCompareModel extends CompareBlockSetModel {
       showMassValuesDefault: true,
 
       supportsDepthLines: true,
-      usePoolScale: false, // create out own based on the PoolScaleHeightControl
+      usePoolScale: true,
 
       cubesData: [
         {
@@ -105,23 +103,6 @@ export default class BuoyancyBasicsCompareModel extends CompareBlockSetModel {
         phetioReadOnly: false
       }
     } ) );
-
-    // Pool scale
-    this.poolScale = new SlidableScale( this.engine, this.gravityProperty, {
-      displayType: DisplayType.NEWTONS,
-      tandem: tandem.createTandem( 'poolScale' ),
-      canMove: false, // No input listeners, but the PoolScaleHeightControl can still move it
-      inputEnabledPropertyOptions: {
-        phetioReadOnly: true
-      }
-    } );
-
-    // Make sure to render it
-    this.availableMasses.push( this.poolScale );
-
-    // Adjust pool volume so that it's at the desired value WITH the pool scale inside.
-    this.pool.liquidVolumeProperty.value -= this.poolScale.volumeProperty.value;
-    this.pool.liquidVolumeProperty.setInitialValue( this.pool.liquidVolumeProperty.value );
   }
 }
 

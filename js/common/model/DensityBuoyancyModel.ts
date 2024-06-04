@@ -34,7 +34,6 @@ import TRangedProperty from '../../../../axon/js/TRangedProperty.js';
 import TModel from '../../../../joist/js/TModel.js';
 import { PhetioObjectOptions } from '../../../../tandem/js/PhetioObject.js';
 import PickRequired from '../../../../phet-core/js/types/PickRequired.js';
-import Matrix3 from '../../../../dot/js/Matrix3.js';
 import SlidableScale from './SlidableScale.js';
 import PoolScaleHeightProperty from './PoolScaleHeightProperty.js';
 import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
@@ -103,7 +102,7 @@ export default class DensityBuoyancyModel implements TModel {
   private spillingWaterOutOfBoat = false;
 
   // Scale for the pool and its heightProperty, if we are using it
-  public readonly scale2: Scale | null;
+  public readonly poolScale: Scale | null;
   public readonly poolScaleHeightProperty: NumberProperty;
 
 
@@ -112,7 +111,7 @@ export default class DensityBuoyancyModel implements TModel {
       showMassValuesDefault: false,
       canShowForces: true,
       initialForceScale: 1 / 16,
-      usePoolScale: false,
+      usePoolScale: false, // TODO: Set to true to hide it on most screen models, see https://github.com/phetsims/density-buoyancy-common/issues/148
       supportsDepthLines: false
     }, providedOptions );
 
@@ -421,26 +420,25 @@ export default class DensityBuoyancyModel implements TModel {
       // tandem: tandem.createTandem( 'poolScaleHeightProperty' ) // TODO: Properly integrate this https://github.com/phetsims/density-buoyancy-common/issues/148
     } );
     if ( options.usePoolScale ) {
-
-      // Normal pool scale, is draggable. Use SlidableScale for the slider one.
-      this.scale2 = new Scale( this.engine, this.gravityProperty, {
-        matrix: Matrix3.translation( 0.3, -Scale.SCALE_BASE_BOUNDS.minY + this.poolBounds.minY ),
+      // Pool scale
+      this.poolScale = new SlidableScale( this.engine, this.gravityProperty, {
         displayType: DisplayType.NEWTONS,
-        tandem: tandem.createTandem( 'scale2' ),
-        canMove: true,
+        tandem: tandem.createTandem( 'poolScale' ),
+        canMove: false, // No input listeners, but the PoolScaleHeightControl can still move it
         inputEnabledPropertyOptions: {
-          phetioReadOnly: false
+          phetioReadOnly: true
         }
       } );
 
-      this.availableMasses.push( this.scale2 );
+      // Make sure to render it
+      this.availableMasses.push( this.poolScale );
 
       // Adjust pool volume so that it's at the desired value WITH the pool scale inside.
-      this.pool.liquidVolumeProperty.value -= this.scale2.volumeProperty.value;
+      this.pool.liquidVolumeProperty.value -= this.poolScale.volumeProperty.value;
       this.pool.liquidVolumeProperty.setInitialValue( this.pool.liquidVolumeProperty.value );
     }
     else {
-      this.scale2 = null;
+      this.poolScale = null;
     }
   }
 

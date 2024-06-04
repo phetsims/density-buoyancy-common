@@ -31,8 +31,8 @@ import NumberDisplay from '../../../../scenery-phet/js/NumberDisplay.js';
 import Slider from '../../../../sun/js/Slider.js';
 import ArrowButton from '../../../../sun/js/buttons/ArrowButton.js';
 import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
-import ToggleNode from '../../../../sun/js/ToggleNode.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
+import BooleanToggleNode from '../../../../sun/js/BooleanToggleNode.js';
 
 // constants
 const LITERS_IN_CUBIC_METER = DensityBuoyancyCommonConstants.LITERS_IN_CUBIC_METER;
@@ -50,6 +50,7 @@ type SelfOptions = {
 
   // Used in the Applications Screen View to increase the mass range for dense materials. null opts out of this feature.
   highDensityMaxMass?: number | null;
+
   // Used only with highDensityMaxMass, Density above which the range switches from normal to high density mass control.
   highDensityThreshold?: number;
 
@@ -335,20 +336,17 @@ export default class MaterialMassVolumeControlNode extends MaterialControlNode {
     };
 
     if ( supportTwoMassNumberControls ) {
-      const lowDensityMassNumberControl = createMassNumberControl( options.maxMass, 'lowDensityMassNumberControl' );
-      const highDensityMassNumberControl = createMassNumberControl( options.highDensityMaxMass!, 'highDensityMassNumberControl' );
 
-      massContainerNode.addChild( lowDensityMassNumberControl );
-      massContainerNode.addChild( highDensityMassNumberControl );
-
-      // listener doesn't need removal, since everything here lives for the lifetime of the simulation
-      materialProperty.link( material => {
-        if ( supportTwoMassNumberControls ) {
-          const highDensityAndNotCustom = material.density > options.highDensityThreshold && !material.custom;
-          highDensityMassNumberControl.visible = highDensityAndNotCustom;
-          lowDensityMassNumberControl.visible = !highDensityAndNotCustom;
-        }
+      const showHighDensityMassNumberControlProperty = new DerivedProperty( [ materialProperty ], material => {
+        return material.density > options.highDensityThreshold && !material.custom;
       } );
+      const toggleNode = new BooleanToggleNode(
+        showHighDensityMassNumberControlProperty,
+        createMassNumberControl( options.highDensityMaxMass!, 'highDensityMassNumberControl' ),
+        createMassNumberControl( options.maxMass, 'lowDensityMassNumberControl' )
+      );
+
+      massContainerNode.addChild( toggleNode );
     }
     else {
       massContainerNode.addChild( createMassNumberControl( options.maxMass ) );
@@ -370,15 +368,12 @@ export default class MaterialMassVolumeControlNode extends MaterialControlNode {
       children: [ hiddenMaterialNode ]
     } );
 
-    // Show the "hidden" material view if the material is hidden (excect for mass-readout mode)
+    // Show the "hidden" material view if the material is hidden (except for mass-readout mode)
     const toggleNodeValueProperty = new DerivedProperty( [ materialProperty ], material => {
       return !options.showMassAsReadout && material.hidden;
     } );
 
-    this.addChild( new ToggleNode( toggleNodeValueProperty, [
-      { value: true, createNode: () => hiddenMaterialContainer },
-      { value: false, createNode: () => massVolumeVBox }
-    ] ) );
+    this.addChild( new BooleanToggleNode( toggleNodeValueProperty, hiddenMaterialContainer, massVolumeVBox ) );
 
     this.minContentWidth = massVolumeVBox.width;
 
@@ -426,7 +421,7 @@ export default class MaterialMassVolumeControlNode extends MaterialControlNode {
 }
 
 // A special layout function that uses a provided layout function for the functional width of the control, but only
-// provides the title and numbeDisplay (for readout purposes)
+// provides the title and numberDisplay (for readout purposes)
 const getMassReadoutLayoutFunction = ( normalLayoutFunction: LayoutFunction ) => {
   return ( titleNode: Node, numberDisplay: NumberDisplay, slider: Slider, decrementButton: ArrowButton | null, incrementButton: ArrowButton | null ) => {
     const tempNode = normalLayoutFunction( titleNode, numberDisplay, slider, decrementButton, incrementButton );

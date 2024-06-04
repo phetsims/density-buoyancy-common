@@ -117,9 +117,7 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
     } );
 
     // This DerivedProperty doesn't need disposal, since everything here lives for the lifetime of the simulation
-    const airLitersProperty = new DerivedProperty( [ model.bottle.interiorVolumeProperty ], volume => {
-      return toLiters( 0.01 - volume );
-    } );
+    const airLitersProperty = new DerivedProperty( [ model.bottle.interiorVolumeProperty ], volume => toLiters( 0.01 - volume ) );
 
     let materialChangeLocked = false;
     Multilink.lazyMultilink( [ model.customDensityProperty, model.bottle.interiorMassProperty, model.customDensityControlVisibleProperty ], density => {

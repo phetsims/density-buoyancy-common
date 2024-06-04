@@ -48,6 +48,7 @@ export default class BuoyancyIntroScreenView extends DensityBuoyancyScreenView<B
   public constructor( model: BuoyancyIntroModel, options: DensityBuoyancyScreenViewOptions ) {
 
     super( model, combineOptions<DensityBuoyancyScreenViewOptions>( {
+
       // Custom just for this screen
       cameraLookAt: new Vector3( 0, -0.1, 0 ),
 
@@ -88,7 +89,6 @@ export default class BuoyancyIntroScreenView extends DensityBuoyancyScreenView<B
       yAlign: 'bottom',
       margin: MARGIN
     } ) );
-
 
     // Materials are set in densityBox.setMaterials() below
     const densityAccordionBox = new DensityAccordionBox( {

@@ -35,9 +35,6 @@ import CuboidView from '../../common/view/CuboidView.js';
 import ScaleView from '../../common/view/ScaleView.js';
 import MassView from '../../common/view/MassView.js';
 
-// constants
-const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
-
 export default class BuoyancyExploreScreenView extends DensityBuoyancyScreenView<BuoyancyExploreModel> {
 
   protected rightBox: PrimarySecondaryControlsNode;
@@ -56,14 +53,14 @@ export default class BuoyancyExploreScreenView extends DensityBuoyancyScreenView
         this.model.poolBounds.left,
         this.model.poolBounds.top,
         this.model.poolBounds.front
-      ) ).x - 2 * MARGIN
+      ) ).x - 2 * DensityBuoyancyCommonConstants.MARGIN
     } );
 
     this.addChild( new AlignBox( buoyancyDisplayOptionsPanel, {
       alignBoundsProperty: this.visibleBoundsProperty,
       xAlign: 'left',
       yAlign: 'bottom',
-      margin: MARGIN
+      margin: DensityBuoyancyCommonConstants.MARGIN
     } ) );
 
     const displayedMysteryMaterials = [
@@ -98,7 +95,7 @@ export default class BuoyancyExploreScreenView extends DensityBuoyancyScreenView
       alignBoundsProperty: this.visibleBoundsProperty,
       xAlign: 'center',
       yAlign: 'bottom',
-      margin: MARGIN
+      margin: DensityBuoyancyCommonConstants.MARGIN
     } ) );
 
     [ model.primaryMass, model.secondaryMass ].forEach( mass => {
@@ -164,7 +161,7 @@ export default class BuoyancyExploreScreenView extends DensityBuoyancyScreenView
       alignBoundsProperty: this.visibleBoundsProperty,
       xAlign: 'right',
       yAlign: 'top',
-      margin: MARGIN
+      margin: DensityBuoyancyCommonConstants.MARGIN
     } ) );
 
     const blocksRadioButtonGroup = new BlocksRadioButtonGroup( model.modeProperty, {

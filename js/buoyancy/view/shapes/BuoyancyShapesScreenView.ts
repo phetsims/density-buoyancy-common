@@ -165,7 +165,7 @@ export default class BuoyancyShapesScreenView extends DensityBuoyancyScreenView<
         secondaryShapeSizeControlNode ]
     );
 
-    const densityAccordionBox = new DensityAccordionBox( {
+    const densityAccordionBox = new DensityAccordionBox( DensityBuoyancyCommonStrings.objectDensityStringProperty, {
       contentWidthMax: this.rightBox.content.width,
       readoutItems: [ { readoutItem: model.materialProperty } ],
       tandem: tandem.createTandem( 'densityAccordionBox' )

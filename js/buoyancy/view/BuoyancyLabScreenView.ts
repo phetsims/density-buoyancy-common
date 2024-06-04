@@ -151,7 +151,7 @@ export default class BuoyancyLabScreenView extends DensityBuoyancyScreenView<Buo
       }
     } );
 
-    const densityAccordionBox = new DensityAccordionBox( {
+    const densityAccordionBox = new DensityAccordionBox( DensityBuoyancyCommonStrings.objectDensityStringProperty, {
       contentWidthMax: this.rightBox.content.width,
       readoutItems: [ { readoutItem: model.primaryMass.materialProperty } ],
       tandem: tandem.createTandem( 'densityAccordionBox' )

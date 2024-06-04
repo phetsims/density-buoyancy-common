@@ -26,14 +26,14 @@ type DensityAccordionBoxOptions = SelfOptions & ParentOptions;
 
 export default class DensityAccordionBox extends ReadoutListAccordionBox<DensityReadoutType> {
 
-  public constructor( providedOptions?: DensityAccordionBoxOptions ) {
+  public constructor( titleStringProperty: TReadOnlyProperty<string>, providedOptions?: DensityAccordionBoxOptions ) {
 
     const options = optionize<DensityAccordionBoxOptions, SelfOptions, ParentOptions>()( {
       expandedDefaultValue: false,
       accessibleName: DensityBuoyancyCommonStrings.densityStringProperty
     }, providedOptions );
 
-    super( DensityBuoyancyCommonStrings.densityStringProperty, options );
+    super( titleStringProperty, options );
   }
 
   public override generateReadoutData( materialProperty: DensityReadoutType ): ReadoutData {

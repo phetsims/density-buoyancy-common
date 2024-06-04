@@ -118,7 +118,7 @@ export default class BuoyancyExploreScreenView extends DensityBuoyancyScreenView
     } );
 
     // Materials are set in densityBox.setMaterials() below
-    const densityAccordionBox = new DensityAccordionBox( {
+    const densityAccordionBox = new DensityAccordionBox( DensityBuoyancyCommonStrings.objectDensityStringProperty, {
       contentWidthMax: this.rightBox.content.width,
       tandem: tandem.createTandem( 'densityAccordionBox' )
     } );

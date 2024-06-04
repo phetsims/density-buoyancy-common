@@ -257,7 +257,7 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
 
     const rightBoatContent = new Panel( boatBox, DensityBuoyancyCommonConstants.PANEL_OPTIONS );
 
-    const densityAccordionBox = new DensityAccordionBox( {
+    const densityAccordionBox = new DensityAccordionBox( DensityBuoyancyCommonStrings.objectDensityStringProperty, {
       contentWidthMax: boatBox.width,
       tandem: tandem.createTandem( 'densityAccordionBox' )
     } );

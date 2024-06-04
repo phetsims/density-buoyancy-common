@@ -99,6 +99,8 @@ type StringsType = {
   'densityStringProperty': LocalizedStringProperty;
   'densityReadoutStringProperty': LocalizedStringProperty;
   'densityReadoutDecimetersCubedStringProperty': LocalizedStringProperty;
+  'densityComparisonStringProperty': LocalizedStringProperty;
+  'objectDensityStringProperty': LocalizedStringProperty;
   'massLabel': {
     'primaryStringProperty': LocalizedStringProperty;
     'secondaryStringProperty': LocalizedStringProperty;

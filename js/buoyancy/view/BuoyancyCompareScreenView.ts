@@ -97,7 +97,7 @@ export default class BuoyancyCompareScreenView extends DensityBuoyancyScreenView
 
 
     // Materials are set in densityBox.setMaterials() below
-    const densityAccordionBox = new DensityAccordionBox( {
+    const densityAccordionBox = new DensityAccordionBox( DensityBuoyancyCommonStrings.densityComparisonStringProperty, {
       contentWidthMax: this.rightSideMaxContentWidthProperty,
       tandem: options.tandem.createTandem( 'densityAccordionBox' )
     } );

@@ -94,7 +94,7 @@ export default class BuoyancyBasicsExploreScreenView extends DensityBuoyancyScre
       margin: MARGIN
     } ) );
 
-    const densityAccordionBox = new DensityAccordionBox( {
+    const densityAccordionBox = new DensityAccordionBox( DensityBuoyancyCommonStrings.densityComparisonStringProperty, {
       contentWidthMax: this.rightBox.content.width,
       tandem: tandem.createTandem( 'densityAccordionBox' )
     } );

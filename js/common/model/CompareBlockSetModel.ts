@@ -13,7 +13,7 @@ import StrictOmit from '../../../../phet-core/js/types/StrictOmit.js';
 import BlockSetModel, { BlockSetModelOptions } from './BlockSetModel.js';
 import BlockSet from './BlockSet.js';
 import optionize, { combineOptions } from '../../../../phet-core/js/optionize.js';
-import NumberProperty from '../../../../axon/js/NumberProperty.js';
+import NumberProperty, { NumberPropertyOptions } from '../../../../axon/js/NumberProperty.js';
 import Range from '../../../../dot/js/Range.js';
 import TProperty from '../../../../axon/js/TProperty.js';
 import { Color } from '../../../../scenery/js/imports.js';
@@ -28,6 +28,7 @@ import merge from '../../../../phet-core/js/merge.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import WithRequired from '../../../../phet-core/js/types/WithRequired.js';
+import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
 
 // This hard coded range is a bit arbitrary, but it lends itself to better colors than the provided range in the options.
 const COLOR_DENSITY_RANGE = new Range( 10, 10000 );
@@ -63,6 +64,11 @@ type SelfOptions = {
   sameVolumeRange?: Range;
   sameDensityValue?: number;
   sameDensityRange?: Range;
+
+  // Support for using non-custom materials as the initial materials of the blocks, but only if their densities are
+  // the same. Once the variable changes for the given block set, these are ignored, and custom materials are used. Use
+  // an empty list to opt out of this feature.
+  initialMaterials?: Material[];
 };
 
 type ParentOptions = BlockSetModelOptions<BlockSet>;
@@ -89,6 +95,8 @@ export default class CompareBlockSetModel extends BlockSetModel<BlockSet> {
       sameDensityValue: 400,
       sameDensityRange: new Range( 100, 2000 ),
 
+      initialMaterials: [],
+
       // BlockSetModel options
       initialMode: BlockSet.SAME_MASS,
       BlockSet: BlockSet.enumeration,
@@ -99,21 +107,21 @@ export default class CompareBlockSetModel extends BlockSetModel<BlockSet> {
 
     const tandem = options.tandem;
 
-    const massProperty = new NumberProperty( options.sameMassValue, {
+    const massProperty = new HasChangedNumberProperty( options.sameMassValue, {
       range: options.sameMassRange,
       tandem: tandem.createTandem( 'massProperty' ),
       phetioFeatured: true,
       units: 'kg'
     } );
 
-    const volumeProperty = new NumberProperty( options.sameVolumeValue, {
+    const volumeProperty = new HasChangedNumberProperty( options.sameVolumeValue, {
       range: options.sameVolumeRange,
       tandem: tandem.createTandem( 'volumeProperty' ),
       phetioFeatured: true,
       units: 'm^3'
     } );
 
-    const densityProperty = new NumberProperty( options.sameDensityValue, {
+    const densityProperty = new HasChangedNumberProperty( options.sameDensityValue, {
       range: options.sameDensityRange,
 
       tandem: tandem.createTandem( 'densityProperty' ),
@@ -134,12 +142,19 @@ export default class CompareBlockSetModel extends BlockSetModel<BlockSet> {
       } );
 
       return merge( {
+
         sameMassDensityProperty: sameMassDensityProperty,
-        sameMassMaterialProperty: CompareBlockSetModel.createMaterialProperty( cubeData.colorProperty, sameMassDensityProperty ),
+        sameMassMaterialProperty: CompareBlockSetModel.createMaterialProperty( cubeData.colorProperty, sameMassDensityProperty,
+          massProperty.hasChangedProperty, options.initialMaterials ),
+
         sameVolumeDensityProperty: sameVolumeDensityProperty,
-        sameVolumeMaterialProperty: CompareBlockSetModel.createMaterialProperty( cubeData.colorProperty, sameVolumeDensityProperty ),
+        sameVolumeMaterialProperty: CompareBlockSetModel.createMaterialProperty( cubeData.colorProperty, sameVolumeDensityProperty,
+          volumeProperty.hasChangedProperty, options.initialMaterials ),
+
         sameDensityDensityProperty: sameDensityDensityProperty,
-        sameDensityMaterialProperty: CompareBlockSetModel.createMaterialProperty( cubeData.colorProperty, sameDensityDensityProperty )
+        sameDensityMaterialProperty: CompareBlockSetModel.createMaterialProperty( cubeData.colorProperty, sameDensityDensityProperty,
+          densityProperty.hasChangedProperty, options.initialMaterials )
+
       }, cubeData );
     } );
 
@@ -246,23 +261,63 @@ export default class CompareBlockSetModel extends BlockSetModel<BlockSet> {
     super.reset();
   }
 
-  private static createMaterialProperty( colorProperty: TProperty<Color>, myDensityProperty: TProperty<number> ): TReadOnlyProperty<Material> {
-    return new DerivedProperty( [ colorProperty, myDensityProperty ], ( color, density ) => {
-      const lightness = Material.getNormalizedLightness( density, COLOR_DENSITY_RANGE ); // 0-1
+  private static createMaterialProperty( colorProperty: TProperty<Color>, myDensityProperty: TProperty<number>,
+                                         blockSetValueChangedProperty: TProperty<boolean>, initialMaterials: Material[] ): TReadOnlyProperty<Material> {
+    return new DerivedProperty( [ colorProperty, myDensityProperty, blockSetValueChangedProperty ],
+      ( color, density, blockSetValueChanged ) => {
 
-      const modifier = 0.1;
-      const rawValue = ( lightness * 2 - 1 ) * ( 1 - modifier ) + modifier;
-      const power = 0.7;
-      const modifiedColor = color.colorUtilsBrightness( Math.sign( rawValue ) * Math.pow( Math.abs( rawValue ), power ) );
+        if ( !blockSetValueChanged ) {
+          for ( let i = 0; i < initialMaterials.length; i++ ) {
+            const material = initialMaterials[ i ];
+            if ( material.density === density ) {
+              return material;
+            }
+          }
+        }
 
-      return Material.createCustomSolidMaterial( {
-        density: density,
-        customColor: new Property( modifiedColor, { tandem: Tandem.OPT_OUT } )
+        const lightness = Material.getNormalizedLightness( density, COLOR_DENSITY_RANGE ); // 0-1
+
+        const modifier = 0.1;
+        const rawValue = ( lightness * 2 - 1 ) * ( 1 - modifier ) + modifier;
+        const power = 0.7;
+        const modifiedColor = color.colorUtilsBrightness( Math.sign( rawValue ) * Math.pow( Math.abs( rawValue ), power ) );
+
+        return Material.createCustomSolidMaterial( {
+          density: density,
+          customColor: new Property( modifiedColor, { tandem: Tandem.OPT_OUT } )
+        } );
+      }, {
+        strictAxonDependencies: false, // The DerivedProperty derivation triggers the creation of a DynamicProperty which calls .value on itself, which is safe
+        tandem: Tandem.OPT_OUT
       } );
-    }, {
-      strictAxonDependencies: false, // The DerivedProperty derivation triggers the creation of a DynamicProperty which calls .value on itself, which is safe
-      tandem: Tandem.OPT_OUT
+  }
+}
+
+// NumberProperty that composes an additional Property that monitors if that Property's value has changed or not.
+class HasChangedNumberProperty extends NumberProperty {
+
+  // Has the value changed? Will stay true even if set 0->1->0 when 0 is the initial value. True until reset.
+  public hasChangedProperty: Property<boolean>;
+
+  public constructor( initialValue: number, options: NumberPropertyOptions ) {
+    super( initialValue, options );
+    this.hasChangedProperty = new BooleanProperty( false, {
+      tandem: options.tandem?.createTandem( 'hasChangedProperty' ),
+      phetioReadOnly: true
     } );
+    this.lazyLink( () => { this.hasChangedProperty.value = true; } );
+  }
+
+  public override reset(): void {
+    super.reset();
+
+    // Reset after the potenial value change in the super call
+    this.hasChangedProperty.reset();
+  }
+
+  public override dispose(): void {
+    this.hasChangedProperty.dispose();
+    super.dispose();
   }
 }
 

@@ -15,6 +15,7 @@ import BlockSet from '../../common/model/BlockSet.js';
 import DensityBuoyancyCommonColors from '../../common/view/DensityBuoyancyCommonColors.js';
 import CompareBlockSetModel, { BLOCK_SETS_TANDEM_NAME, CompareBlockSetModelOptions } from '../../common/model/CompareBlockSetModel.js';
 import StrictOmit from '../../../../phet-core/js/types/StrictOmit.js';
+import Material from '../../common/model/Material.js';
 
 export type BuoyancyBasicsCompareModelOptions = StrictOmit<CompareBlockSetModelOptions, 'positionMassesCallback' | 'cubesData'>;
 
@@ -29,11 +30,13 @@ export default class BuoyancyBasicsCompareModel extends CompareBlockSetModel {
       showMassValuesDefault: true,
 
       supportsDepthLines: true,
-
+      initialMaterials: [ Material.WOOD, Material.BRICK ],
+      sameMassValue: 4,
+      sameDensityValue: Material.WOOD.density,
       cubesData: [
         {
           sameMassVolume: 0.002,
-          sameVolumeMass: 2,
+          sameVolumeMass: 10,
           sameDensityVolume: 0.005,
           colorProperty: DensityBuoyancyCommonColors.compareOchreColorProperty,
           sameMassCubeOptions: {
@@ -50,7 +53,7 @@ export default class BuoyancyBasicsCompareModel extends CompareBlockSetModel {
           }
         }, {
           sameMassVolume: 0.01,
-          sameVolumeMass: 10,
+          sameVolumeMass: 2,
           sameDensityVolume: 0.01,
           colorProperty: DensityBuoyancyCommonColors.compareBlueColorProperty,
           sameMassCubeOptions: {

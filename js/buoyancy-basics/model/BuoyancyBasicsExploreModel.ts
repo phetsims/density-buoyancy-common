@@ -18,11 +18,7 @@ import TwoBlockMode from '../../common/model/TwoBlockMode.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import MassTag from '../../common/model/MassTag.js';
 import { combineOptions } from '../../../../phet-core/js/optionize.js';
-import NumberProperty from '../../../../axon/js/NumberProperty.js';
-import Range from '../../../../dot/js/Range.js';
 import SlidableScale from '../../common/model/SlidableScale.js';
-import PoolScaleHeightProperty from '../../common/model/PoolScaleHeightProperty.js';
-import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 
 type BuoyancyBasicsExploreModelOptions = DensityBuoyancyModelOptions;
 
@@ -31,7 +27,6 @@ export default class BuoyancyBasicsExploreModel extends DensityBuoyancyModel {
   public readonly modeProperty: Property<TwoBlockMode>;
   public readonly primaryMass: Cube;
   public readonly secondaryMass: Cube;
-  public readonly poolScaleHeightProperty: NumberProperty;
   public readonly poolScale: Scale;
 
   public constructor( options: BuoyancyBasicsExploreModelOptions ) {
@@ -77,11 +72,6 @@ export default class BuoyancyBasicsExploreModel extends DensityBuoyancyModel {
       }
     } ) );
 
-    this.poolScaleHeightProperty = new PoolScaleHeightProperty( DensityBuoyancyCommonConstants.POOL_SCALE_INITIAL_HEIGHT, {
-      range: new Range( 0, 1 ),
-      tandem: tandem.createTandem( 'poolScaleHeightProperty' )
-    } );
-
     // Pool scale
     this.poolScale = new SlidableScale( this.engine, this.gravityProperty, {
       displayType: DisplayType.NEWTONS,
@@ -112,9 +102,6 @@ export default class BuoyancyBasicsExploreModel extends DensityBuoyancyModel {
     this.secondaryMass.reset();
 
     super.reset();
-
-    // This has to be called after the super reset
-    this.poolScaleHeightProperty.reset();
   }
 }
 

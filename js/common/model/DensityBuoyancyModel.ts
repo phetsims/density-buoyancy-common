@@ -36,6 +36,8 @@ import { PhetioObjectOptions } from '../../../../tandem/js/PhetioObject.js';
 import PickRequired from '../../../../phet-core/js/types/PickRequired.js';
 import Matrix3 from '../../../../dot/js/Matrix3.js';
 import SlidableScale from './SlidableScale.js';
+import PoolScaleHeightProperty from './PoolScaleHeightProperty.js';
+import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
 
 // constants
 const BLOCK_SPACING = 0.01;
@@ -100,8 +102,10 @@ export default class DensityBuoyancyModel implements TModel {
   // Flag that sets an animation to empty the boat of any water inside of it
   private spillingWaterOutOfBoat = false;
 
-  // Scale for the pool, if we are using it
-  protected readonly scale2: Scale | null;
+  // Scale for the pool and its heightProperty, if we are using it
+  public readonly scale2: Scale | null;
+  public readonly poolScaleHeightProperty: NumberProperty;
+
 
   public constructor( providedOptions?: DensityBuoyancyModelOptions ) {
     const options = optionize<DensityBuoyancyModelOptions, DensityBuoyancyModelOptions>()( {
@@ -412,7 +416,12 @@ export default class DensityBuoyancyModel implements TModel {
     } );
 
 
+    this.poolScaleHeightProperty = new PoolScaleHeightProperty( DensityBuoyancyCommonConstants.POOL_SCALE_INITIAL_HEIGHT, {
+      range: new Range( 0, 1 )
+      // tandem: tandem.createTandem( 'poolScaleHeightProperty' ) // TODO: Properly integrate this https://github.com/phetsims/density-buoyancy-common/issues/148
+    } );
     if ( options.usePoolScale ) {
+
       // Normal pool scale, is draggable. Use SlidableScale for the slider one.
       this.scale2 = new Scale( this.engine, this.gravityProperty, {
         matrix: Matrix3.translation( 0.3, -Scale.SCALE_BASE_BOUNDS.minY + this.poolBounds.minY ),
@@ -569,6 +578,8 @@ export default class DensityBuoyancyModel implements TModel {
 
     this.pool.reset();
     this.masses.forEach( mass => mass.reset() );
+
+    this.poolScaleHeightProperty && this.poolScaleHeightProperty.reset();
   }
 
   /**

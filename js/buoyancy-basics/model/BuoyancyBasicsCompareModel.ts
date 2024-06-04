@@ -13,18 +13,13 @@ import MassTag from '../../common/model/MassTag.js';
 import optionize, { EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
 import BlockSet from '../../common/model/BlockSet.js';
 import SlidableScale from '../../common/model/SlidableScale.js';
-import NumberProperty from '../../../../axon/js/NumberProperty.js';
-import Range from '../../../../dot/js/Range.js';
 import DensityBuoyancyCommonColors from '../../common/view/DensityBuoyancyCommonColors.js';
 import CompareBlockSetModel, { BLOCK_SETS_TANDEM_NAME, CompareBlockSetModelOptions } from '../../common/model/CompareBlockSetModel.js';
 import StrictOmit from '../../../../phet-core/js/types/StrictOmit.js';
-import PoolScaleHeightProperty from '../../common/model/PoolScaleHeightProperty.js';
-import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 
 export type BuoyancyBasicsCompareModelOptions = StrictOmit<CompareBlockSetModelOptions, 'positionMassesCallback' | 'cubesData'>;
 
 export default class BuoyancyBasicsCompareModel extends CompareBlockSetModel {
-  public readonly poolScaleHeightProperty: NumberProperty;
   public readonly poolScale: Scale;
 
   public constructor( providedOptions: BuoyancyBasicsCompareModelOptions ) {
@@ -111,11 +106,6 @@ export default class BuoyancyBasicsCompareModel extends CompareBlockSetModel {
       }
     } ) );
 
-    this.poolScaleHeightProperty = new PoolScaleHeightProperty( DensityBuoyancyCommonConstants.POOL_SCALE_INITIAL_HEIGHT, {
-      range: new Range( 0, 1 ),
-      tandem: tandem.createTandem( 'poolScaleHeightProperty' )
-    } );
-
     // Pool scale
     this.poolScale = new SlidableScale( this.engine, this.gravityProperty, {
       displayType: DisplayType.NEWTONS,
@@ -132,13 +122,6 @@ export default class BuoyancyBasicsCompareModel extends CompareBlockSetModel {
     // Adjust pool volume so that it's at the desired value WITH the pool scale inside.
     this.pool.liquidVolumeProperty.value -= this.poolScale.volumeProperty.value;
     this.pool.liquidVolumeProperty.setInitialValue( this.pool.liquidVolumeProperty.value );
-  }
-
-  public override reset(): void {
-    super.reset();
-
-    // This has to be called after the super reset
-    this.poolScaleHeightProperty.reset();
   }
 }
 

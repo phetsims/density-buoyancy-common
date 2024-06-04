@@ -15,17 +15,13 @@ import Material from '../../common/model/Material.js';
 import Scale, { DisplayType } from '../../common/model/Scale.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import { combineOptions } from '../../../../phet-core/js/optionize.js';
-import Range from '../../../../dot/js/Range.js';
 import SlidableScale from '../../common/model/SlidableScale.js';
-import PoolScaleHeightProperty from '../../common/model/PoolScaleHeightProperty.js';
-import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 
 export type BuoyancyLabModelOptions = DensityBuoyancyModelOptions;
 
 export default class BuoyancyLabModel extends DensityBuoyancyModel {
 
   public readonly primaryMass: Cube;
-  public readonly poolScaleHeightProperty: PoolScaleHeightProperty;
   public readonly poolScale: Scale;
 
   public constructor( options: BuoyancyLabModelOptions ) {
@@ -55,11 +51,6 @@ export default class BuoyancyLabModel extends DensityBuoyancyModel {
       }
     } ) );
 
-    this.poolScaleHeightProperty = new PoolScaleHeightProperty( DensityBuoyancyCommonConstants.POOL_SCALE_INITIAL_HEIGHT, {
-      range: new Range( 0, 1 ),
-      tandem: tandem.createTandem( 'poolScaleHeightProperty' )
-    } );
-
     // Pool scale
     this.poolScale = new SlidableScale( this.engine, this.gravityProperty, {
       displayType: DisplayType.NEWTONS,
@@ -85,8 +76,6 @@ export default class BuoyancyLabModel extends DensityBuoyancyModel {
     super.reset();
 
     this.primaryMass.reset();
-
-    this.poolScaleHeightProperty.reset();
   }
 }
 

@@ -57,11 +57,17 @@ const BOAT_FULL_THRESHOLD = 0.01;
 
 
 export type DensityBuoyancyModelOptions = {
-  showMassValuesDefault?: boolean;
   canShowForces?: boolean;
   initialForceScale?: number;
   usePoolScale?: boolean;
   supportsDepthLines?: boolean;
+  showMassValuesDefault?: boolean;
+  showForcesDefaults?: {
+    showGravityForceArrow: boolean;
+    showBuoyancyForceArrow: boolean;
+    showContactForceArrow: boolean;
+    showForceValues: boolean;
+  };
 } & PickRequired<PhetioObjectOptions, 'tandem'>;
 
 export default class DensityBuoyancyModel implements TModel {
@@ -108,22 +114,28 @@ export default class DensityBuoyancyModel implements TModel {
       canShowForces: true,
       initialForceScale: 1 / 16,
       usePoolScale: true,
-      supportsDepthLines: false
+      supportsDepthLines: false,
+      showForcesDefaults: {
+        showGravityForceArrow: false,
+        showBuoyancyForceArrow: false,
+        showContactForceArrow: false,
+        showForceValues: false
+      }
     }, providedOptions );
 
     const tandem = options.tandem;
 
     const visiblePropertiesTandem = tandem.createTandem( 'visibleProperties' );
-    this.showGravityForceProperty = new BooleanProperty( false, {
+    this.showGravityForceProperty = new BooleanProperty( options.showForcesDefaults.showGravityForceArrow, {
       tandem: options.canShowForces ? visiblePropertiesTandem.createTandem( 'showGravityForceProperty' ) : Tandem.OPT_OUT
     } );
-    this.showBuoyancyForceProperty = new BooleanProperty( false, {
+    this.showBuoyancyForceProperty = new BooleanProperty( options.showForcesDefaults.showBuoyancyForceArrow, {
       tandem: options.canShowForces ? visiblePropertiesTandem.createTandem( 'showBuoyancyForceProperty' ) : Tandem.OPT_OUT
     } );
-    this.showContactForceProperty = new BooleanProperty( false, {
+    this.showContactForceProperty = new BooleanProperty( options.showForcesDefaults.showContactForceArrow, {
       tandem: options.canShowForces ? visiblePropertiesTandem.createTandem( 'showContactForceProperty' ) : Tandem.OPT_OUT
     } );
-    this.showForceValuesProperty = new BooleanProperty( false, {
+    this.showForceValuesProperty = new BooleanProperty( options.showForcesDefaults.showForceValues, {
       tandem: options.canShowForces ? visiblePropertiesTandem.createTandem( 'showForceValuesProperty' ) : Tandem.OPT_OUT
     } );
     this.showMassValuesProperty = new BooleanProperty( options.showMassValuesDefault, {

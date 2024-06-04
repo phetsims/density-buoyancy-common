@@ -60,7 +60,7 @@ export default class FluidDisplacedAccordionBox extends AccordionBox {
         lineWrap: 90,
         maxHeight: 40
       } ),
-      expandedDefaultValue: false,
+      expandedDefaultValue: true,
       fill: DensityBuoyancyCommonColors.panelBackgroundProperty,
 
       titleAlignX: 'left',

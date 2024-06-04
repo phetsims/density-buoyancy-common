@@ -28,7 +28,13 @@ export default class BuoyancyLabModel extends DensityBuoyancyModel {
 
     super( combineOptions<DensityBuoyancyModelOptions>( {
       supportsDepthLines: true,
-      showMassValuesDefault: true
+      showMassValuesDefault: true,
+      showForcesDefaults: {
+        showGravityForceArrow: true,
+        showBuoyancyForceArrow: true,
+        showContactForceArrow: true,
+        showForceValues: true
+      }
     }, options ) );
 
 

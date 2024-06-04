@@ -13,7 +13,7 @@ import Material from '../../common/model/Material.js';
 import DensityBuoyancyScreenView, { DensityBuoyancyScreenViewOptions } from '../../common/view/DensityBuoyancyScreenView.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
-import BuoyancyBasicsCompareModel from '../model/BuoyancyBasicsCompareModel.js';
+import BuoyancyBasicsCompareModel from '../../buoyancy/model/BuoyancyBasicsCompareModel.js';
 import DensityAccordionBox from '../../buoyancy/view/DensityAccordionBox.js';
 import BuoyancyDisplayOptionsPanel from '../../common/view/BuoyancyDisplayOptionsPanel.js';
 import SubmergedAccordionBox from '../../buoyancy/view/SubmergedAccordionBox.js';

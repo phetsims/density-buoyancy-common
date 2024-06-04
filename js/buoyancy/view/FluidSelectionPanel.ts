@@ -71,11 +71,10 @@ export default class FluidSelectionPanel extends Panel {
       align: 'left'
     } ), DensityBuoyancyCommonConstants.PANEL_OPTIONS );
 
-    liquidMaterialProperty instanceof ReadOnlyProperty && this.addLinkedElement( liquidMaterialProperty, {
+    this.addLinkedElement( liquidMaterialProperty, {
       tandem: comboBoxTandem.createTandem( 'property' )
     } );
   }
-
 }
 
 densityBuoyancyCommon.register( 'FluidSelectionPanel', FluidSelectionPanel );

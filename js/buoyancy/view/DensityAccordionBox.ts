@@ -61,7 +61,6 @@ export default class DensityAccordionBox extends ReadoutListAccordionBox<Density
                } );
       } );
 
-
     this.cleanupEmitter.addListener( () => {
       nameProperty.dispose();
       valueProperty.dispose();

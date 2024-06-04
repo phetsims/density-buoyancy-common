@@ -15,15 +15,11 @@ import DensityBuoyancyCommonPreferences from '../../common/model/DensityBuoyancy
 import Mass from '../../common/model/Mass.js';
 import PatternStringProperty from '../../../../axon/js/PatternStringProperty.js';
 
-type SubmergedReadoutType = Mass;
+export default class SubmergedAccordionBox extends ReadoutListAccordionBox<Mass> {
 
-export default class SubmergedAccordionBox extends ReadoutListAccordionBox<SubmergedReadoutType> {
+  public constructor( providedOptions?: ReadoutListAccordionBoxOptions<Mass> ) {
 
-  public constructor(
-    providedOptions?: ReadoutListAccordionBoxOptions<SubmergedReadoutType>
-  ) {
-
-    const options = combineOptions<ReadoutListAccordionBoxOptions<SubmergedReadoutType>>( {
+    const options = combineOptions<ReadoutListAccordionBoxOptions<Mass>>( {
       visibleProperty: DensityBuoyancyCommonPreferences.percentageSubmergedVisibleProperty,
       readoutItems: [],
       expandedDefaultValue: false,
@@ -34,7 +30,7 @@ export default class SubmergedAccordionBox extends ReadoutListAccordionBox<Subme
     super( DensityBuoyancyCommonStrings.percentSubmergedStringProperty, options );
   }
 
-  public override generateReadoutData( mass: SubmergedReadoutType ): ReadoutData {
+  public override generateReadoutData( mass: Mass ): ReadoutData {
 
     return {
       nameProperty: mass.nameProperty,

@@ -301,6 +301,7 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
     model.sceneProperty.link( scene => {
       rightBottleContent.visible = scene === 'bottle';
       rightBoatContent.visible = scene === 'boat';
+      this.poolScaleHeightControl!.visible = scene === 'bottle'; // TODO: Interrupt subtree https://github.com/phetsims/density-buoyancy-common/issues/148
     } );
 
     const displayedMysteryMaterials = [

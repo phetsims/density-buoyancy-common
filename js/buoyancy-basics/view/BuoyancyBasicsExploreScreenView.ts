@@ -24,7 +24,6 @@ import PatternStringProperty from '../../../../axon/js/PatternStringProperty.js'
 import BlocksRadioButtonGroup from '../../common/view/BlocksRadioButtonGroup.js';
 import BuoyancyExploreScreenView from '../../buoyancy/view/BuoyancyExploreScreenView.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
-import Bounds2 from '../../../../dot/js/Bounds2.js';
 import PoolScaleHeightControl from '../../common/view/PoolScaleHeightControl.js';
 import FluidSelectionPanel from '../../buoyancy/view/FluidSelectionPanel.js';
 import CuboidView from '../../common/view/CuboidView.js';
@@ -38,7 +37,6 @@ const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
 export default class BuoyancyBasicsExploreScreenView extends DensityBuoyancyScreenView<BuoyancyBasicsExploreModel> {
 
   protected readonly rightBox: PrimarySecondaryControlsNode;
-  private readonly scaleHeightControl: PoolScaleHeightControl;
 
   public constructor( model: BuoyancyBasicsExploreModel, options: DensityBuoyancyScreenViewOptions ) {
 
@@ -171,13 +169,6 @@ export default class BuoyancyBasicsExploreScreenView extends DensityBuoyancyScre
       strictAxonDependencies: false // This workaround is deemed acceptable for visibleBoundsProperty listening, https://github.com/phetsims/faradays-electromagnetic-lab/issues/65
     } );
 
-    // Info button and associated dialog
-    this.scaleHeightControl = new PoolScaleHeightControl( model.poolScale!, model.poolScaleHeightProperty,
-      model.poolBounds, model.pool.liquidYInterpolatedProperty, this, {
-        tandem: options.tandem.createTandem( 'scaleHeightControl' )
-      } );
-    this.addChild( this.scaleHeightControl );
-
     this.addChild( this.popupLayer );
 
     this.resetEmitter.addListener( () => {
@@ -205,8 +196,6 @@ export default class BuoyancyBasicsExploreScreenView extends DensityBuoyancyScre
       // The blocks are added (a) pool then (b) outside, but the focus order is (a) outside then (b) pool
       ..._.reverse( scaleViews.map( scaleView => scaleView.focusablePath ) ),
 
-      this.scaleHeightControl,
-
       fluidSelectionPanel
     ];
 
@@ -226,29 +215,6 @@ export default class BuoyancyBasicsExploreScreenView extends DensityBuoyancyScre
       submergedAccordionBox,
       this.resetAllButton
     ];
-  }
-
-  public override layout( viewBounds: Bounds2 ): void {
-    super.layout( viewBounds );
-
-    // If the simulation was not able to load for WebGL, bail out
-    if ( !this.sceneNode || !this.model.poolScale ) {
-      return;
-    }
-
-    // X margin should be based on the front of the pool
-    this.scaleHeightControl.x = this.modelToViewPoint( new Vector3(
-      this.model.poolBounds.maxX,
-      this.model.poolBounds.minY,
-      this.model.poolBounds.maxZ
-    ) ).plusXY( DensityBuoyancyCommonConstants.MARGIN / 2, 0 ).x;
-
-    // Y should be based on the bottom of the front of the scale (in the middle of the pool)
-    this.scaleHeightControl.y = this.modelToViewPoint( new Vector3(
-      this.model.poolBounds.maxX,
-      this.model.poolBounds.minY,
-      this.model.poolScale.getBounds().maxZ
-    ) ).y;
   }
 
   public static getBuoyancyBasicsExploreIcon(): Node {

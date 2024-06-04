@@ -30,8 +30,6 @@ import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js'
 import ThreeUtils from '../../../../mobius/js/ThreeUtils.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
 import ScaleView from '../../common/view/ScaleView.js';
-import Bounds2 from '../../../../dot/js/Bounds2.js';
-import PoolScaleHeightControl from '../../common/view/PoolScaleHeightControl.js';
 import fluid_displaced_scale_icon_png from '../../../images/fluid_displaced_scale_icon_png.js';
 import CuboidView from '../../common/view/CuboidView.js';
 
@@ -42,7 +40,6 @@ const DESIRED_LEFT_SIDE_MARGIN = DensityBuoyancyCommonConstants.MARGIN;
 export default class BuoyancyLabScreenView extends DensityBuoyancyScreenView<BuoyancyLabModel> {
 
   private readonly rightBox: MultiSectionPanelsNode;
-  private readonly scaleHeightControl: PoolScaleHeightControl;
 
   public constructor( model: BuoyancyLabModel, options: DensityBuoyancyScreenViewOptions ) {
 
@@ -186,12 +183,6 @@ export default class BuoyancyLabScreenView extends DensityBuoyancyScreenView<Buo
       strictAxonDependencies: false // This workaround is deemed acceptable for visibleBoundsProperty listening, https://github.com/phetsims/faradays-electromagnetic-lab/issues/65
     } );
 
-    this.scaleHeightControl = new PoolScaleHeightControl( model.poolScale!, model.poolScaleHeightProperty,
-      model.poolBounds, model.pool.liquidYInterpolatedProperty, this, {
-        tandem: tandem.createTandem( 'scaleHeightControl' )
-      } );
-    this.addChild( this.scaleHeightControl );
-
     // Popup last
     this.addChild( this.popupLayer );
 
@@ -210,7 +201,6 @@ export default class BuoyancyLabScreenView extends DensityBuoyancyScreenView<Buo
     // The focus order is described in https://github.com/phetsims/density-buoyancy-common/issues/121
     this.pdomPlayAreaNode.pdomOrder = [
       cuboidViews[ 0 ].focusablePath,
-      this.scaleHeightControl,
       this.rightBox,
       bottomNode
     ];
@@ -243,32 +233,6 @@ export default class BuoyancyLabScreenView extends DensityBuoyancyScreenView<Buo
     } );
     image.setScaleMagnitude( 0.12 );
     return image;
-  }
-
-  /**
-   * Tracks layout changes to position the scale height slider
-   */
-  public override layout( viewBounds: Bounds2 ): void {
-    super.layout( viewBounds );
-
-    // If the simulation was not able to load for WebGL, bail out
-    if ( !this.sceneNode || !this.model.poolScale ) {
-      return;
-    }
-
-    // X margin should be based on the front of the pool
-    this.scaleHeightControl.x = this.modelToViewPoint( new Vector3(
-      this.model.poolBounds.maxX,
-      this.model.poolBounds.minY,
-      this.model.poolBounds.maxZ
-    ) ).plusXY( DensityBuoyancyCommonConstants.MARGIN / 2, 0 ).x;
-
-    // Y should be based on the bottom of the front of the scale (in the middle of the pool)
-    this.scaleHeightControl.y = this.modelToViewPoint( new Vector3(
-      this.model.poolBounds.maxX,
-      this.model.poolBounds.minY,
-      this.model.poolScale.getBounds().maxZ
-    ) ).y;
   }
 }
 

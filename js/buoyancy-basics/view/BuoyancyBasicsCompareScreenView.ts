@@ -29,7 +29,6 @@ import Bounds2 from '../../../../dot/js/Bounds2.js';
 import DensityMaterials from '../../common/view/DensityMaterials.js';
 import ThreeUtils from '../../../../mobius/js/ThreeUtils.js';
 import DensityBuoyancyCommonColors from '../../common/view/DensityBuoyancyCommonColors.js';
-import PoolScaleHeightControl from '../../common/view/PoolScaleHeightControl.js';
 import FluidSelectionPanel from '../../buoyancy/view/FluidSelectionPanel.js';
 import ComparisonControlPanel from '../../common/view/ComparisonControlPanel.js';
 import Dimension2 from '../../../../dot/js/Dimension2.js';
@@ -51,7 +50,6 @@ export default class BuoyancyBasicsCompareScreenView extends DensityBuoyancyScre
 
   private readonly rightSideMaxContentWidthProperty = new Property( MAX_RIGHT_SIDE_CONTENT_WIDTH );
   private readonly rightSidePanelsVBox: Node;
-  private readonly scaleHeightControl: PoolScaleHeightControl;
 
   public constructor( model: BuoyancyBasicsCompareModel, options: DensityBuoyancyScreenViewOptions ) {
 
@@ -170,13 +168,6 @@ export default class BuoyancyBasicsCompareScreenView extends DensityBuoyancyScre
     } );
     this.addChild( this.rightSidePanelsVBox );
 
-    // Info button and associated dialog
-    this.scaleHeightControl = new PoolScaleHeightControl( model.poolScale!, model.poolScaleHeightProperty,
-      model.poolBounds, model.pool.liquidYInterpolatedProperty, this, {
-        tandem: options.tandem.createTandem( 'scaleHeightControl' )
-      } );
-    this.addChild( this.scaleHeightControl );
-
     // This instance lives for the lifetime of the simulation, so we don't need to remove these listeners
     this.transformEmitter.addListener( () => this.layoutRightSidePanels() );
     this.rightSidePanelsVBox.localBoundsProperty.lazyLink( () => this.layoutRightSidePanels() );
@@ -202,7 +193,6 @@ export default class BuoyancyBasicsCompareScreenView extends DensityBuoyancyScre
       // Note: only the leftmost land scale is focusable in this screen, but we use the same code as the other screens for consistency
       // The blocks are added (a) pool then (b) outside, but the focus order is (a) outside then (b) pool
       ..._.reverse( scaleViews.map( scaleView => scaleView.focusablePath ) ),
-      this.scaleHeightControl,
 
       blocksPanel,
 
@@ -233,7 +223,7 @@ export default class BuoyancyBasicsCompareScreenView extends DensityBuoyancyScre
     const rightSideOfPoolViewPoint = this.modelToViewPoint(
       new Vector3( this.model.pool.bounds.maxX, this.model.pool.bounds.maxY, this.model.pool.bounds.maxZ )
     );
-    const availableRightSpace = this.visibleBoundsProperty.value.right - this.scaleHeightControl.right;
+    const availableRightSpace = this.visibleBoundsProperty.value.right - this.poolScaleHeightControl!.right;
 
     // 2 margins for the spacing outside the panel, and 2 margins for the panel's content margin
     this.rightSideMaxContentWidthProperty.value = Math.min( availableRightSpace - 4 * MARGIN, MAX_RIGHT_SIDE_CONTENT_WIDTH );
@@ -243,26 +233,6 @@ export default class BuoyancyBasicsCompareScreenView extends DensityBuoyancyScre
 
   public override layout( viewBounds: Bounds2 ): void {
     super.layout( viewBounds );
-
-    // If the simulation was not able to load for WebGL, bail out
-    if ( !this.sceneNode || !this.model.poolScale ) {
-      return;
-    }
-
-    // X margin should be based on the front of the pool
-    this.scaleHeightControl.x = this.modelToViewPoint( new Vector3(
-      this.model.poolBounds.maxX,
-      this.model.poolBounds.minY,
-      this.model.poolBounds.maxZ
-    ) ).plusXY( DensityBuoyancyCommonConstants.MARGIN / 2, 0 ).x;
-
-    // Y should be based on the bottom of the front of the scale (in the middle of the pool)
-    this.scaleHeightControl.y = this.modelToViewPoint( new Vector3(
-      this.model.poolBounds.maxX,
-      this.model.poolBounds.minY,
-      this.model.poolScale.getBounds().maxZ
-    ) ).y;
-
     this.layoutRightSidePanels();
   }
 

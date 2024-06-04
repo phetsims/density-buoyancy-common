@@ -67,6 +67,7 @@ import Utils from '../../../../dot/js/Utils.js';
 import createObservableArray, { ObservableArray } from '../../../../axon/js/createObservableArray.js';
 import Emitter from '../../../../axon/js/Emitter.js';
 import { Shape } from '../../../../kite/js/imports.js';
+import PoolScaleHeightControl from './PoolScaleHeightControl.js';
 
 // constants
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
@@ -123,6 +124,8 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
 
   // Called upon resetting
   protected readonly resetEmitter = new Emitter();
+
+  protected readonly poolScaleHeightControl: PoolScaleHeightControl | null;
 
   public constructor( model: Model, providedOptions: SelfOptions ) {
 
@@ -592,6 +595,17 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
       waterLevelIndicator.translation = this.modelToViewPoint( modelPoint );
     } );
 
+    if ( model.poolScale ) {
+      this.poolScaleHeightControl = new PoolScaleHeightControl( model.poolScale, model.poolScaleHeightProperty,
+        model.poolBounds, model.pool.liquidYInterpolatedProperty, this, {
+          tandem: options.tandem.createTandem( 'poolScaleHeightControl' )
+        } );
+      this.addChild( this.poolScaleHeightControl );
+    }
+    else {
+      this.poolScaleHeightControl = null;
+    }
+
     this.resetAllButton = new ResetAllButton( {
       listener: () => {
         this.interruptSubtreeInput();
@@ -757,6 +771,27 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
     this.sceneNode.render( undefined );
 
     this.postLayoutEmitter.emit();
+
+    this.positionScaleHeightControl();
+  }
+
+  public positionScaleHeightControl(): void {
+    // If the simulation was not able to load for WebGL, bail out
+    if ( this.sceneNode && this.poolScaleHeightControl && this.model.poolScale ) {
+      // X margin should be based on the front of the pool
+      this.poolScaleHeightControl.x = this.modelToViewPoint( new Vector3(
+        this.model.poolBounds.maxX,
+        this.model.poolBounds.minY,
+        this.model.poolBounds.maxZ
+      ) ).plusXY( DensityBuoyancyCommonConstants.MARGIN / 2, 0 ).x;
+
+      // Y should be based on the bottom of the front of the scale (in the middle of the pool)
+      this.poolScaleHeightControl.y = this.modelToViewPoint( new Vector3(
+        this.model.poolBounds.maxX,
+        this.model.poolBounds.minY,
+        this.model.poolScale.getBounds().maxZ
+      ) ).y;
+    }
   }
 
   /**

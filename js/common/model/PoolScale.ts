@@ -11,7 +11,7 @@ import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import PhysicsEngine from './PhysicsEngine.js';
 import Gravity from './Gravity.js';
 import TProperty from '../../../../axon/js/TProperty.js';
-import Scale, { SCALE_HEIGHT, SCALE_WIDTH, ScaleOptions } from './Scale.js';
+import Scale, { DisplayType, SCALE_HEIGHT, SCALE_WIDTH, ScaleOptions } from './Scale.js';
 import { combineOptions } from '../../../../phet-core/js/optionize.js';
 import { InstrumentedMassOptions } from './Mass.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
@@ -32,7 +32,12 @@ export default class PoolScale extends Scale {
     ];
     const options = combineOptions<InstrumentedMassOptions>( {
       body: engine.createFromVertices( vertices, false, 'STATIC' ),
-      shape: Shape.polygon( vertices )
+      shape: Shape.polygon( vertices ),
+      displayType: DisplayType.NEWTONS,
+      canMove: false, // No input listeners, but the PoolScaleHeightControl can still move it
+      inputEnabledPropertyOptions: {
+        phetioReadOnly: true
+      }
     }, providedOptions );
 
     super( engine, gravityProperty, options );

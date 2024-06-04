@@ -21,7 +21,7 @@ import Gravity from './Gravity.js';
 import Material from './Material.js';
 import P2Engine from './P2Engine.js';
 import Pool from './Pool.js';
-import Scale, { DisplayType, SCALE_WIDTH } from './Scale.js';
+import Scale, { SCALE_WIDTH } from './Scale.js';
 import optionize from '../../../../phet-core/js/optionize.js';
 import Boat from '../../buoyancy/model/applications/Boat.js';
 import PhysicsEngine, { PhysicsEngineBody } from './PhysicsEngine.js';
@@ -422,12 +422,7 @@ export default class DensityBuoyancyModel implements TModel {
     if ( options.usePoolScale ) {
       // Pool scale
       this.poolScale = new PoolScale( this.engine, this.gravityProperty, {
-        displayType: DisplayType.NEWTONS,
-        tandem: tandem.createTandem( 'poolScale' ),
-        canMove: false, // No input listeners, but the PoolScaleHeightControl can still move it
-        inputEnabledPropertyOptions: {
-          phetioReadOnly: true
-        }
+        tandem: tandem.createTandem( 'poolScale' )
       } );
 
       // Make sure to render it

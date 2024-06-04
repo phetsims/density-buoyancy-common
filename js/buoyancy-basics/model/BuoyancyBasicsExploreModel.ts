@@ -69,7 +69,7 @@ export default class BuoyancyBasicsExploreModel extends DensityBuoyancyModel {
       }
     } ) );
 
-    this.showMassValuesProperty.value = false;
+    this.showMassValuesProperty.value = true;
   }
 
   /**

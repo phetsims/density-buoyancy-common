@@ -142,6 +142,7 @@ export default class BuoyancyApplicationsModel extends DensityBuoyancyModel {
    * Moves the boat and block to their initial locations (see https://github.com/phetsims/buoyancy/issues/25)
    */
   public resetBoatScene(): void {
+
     // Reset the basin levels (clear the liquid out of the boat)
     this.boat.basin.reset();
     this.pool.reset();

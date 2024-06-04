@@ -118,6 +118,7 @@ export default abstract class ReadoutListAccordionBox<ReadoutType> extends Accor
       const readoutFormat = readoutItem.readoutFormat ? readoutItem.readoutFormat : {};
       const valueText = new RichText( readoutData.valueProperty,
         combineOptions<RichTextOptions>( {
+
           // A11y content for the PDOM
           tagName: 'p',
           innerContent: new DerivedStringProperty( [ nameColonProperty, readoutData.valueProperty ], ( name, value ) => {

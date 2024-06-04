@@ -81,8 +81,10 @@ duckGeometry.translate( 0, 0.08, 0 );
 export let flatDuckData = FlatDuckData;
 const grahamScan = ConvexHull2.grahamScan( flatDuckData, false );
 const bounds = Shape.polygon( grahamScan ).bounds;
+
 // translate the vertices so that the centroid is at the origin
 flatDuckData = flatDuckData.map( vertex => vertex.subtractXY( bounds.center.x, bounds.center.y - 0.04 ) );
+
 // Normalizing the vertices
 flatDuckData = flatDuckData.map( vertex => vertex.componentMultiply( new Vector2( 1 / bounds.width, 1 / bounds.height ) ) );
 

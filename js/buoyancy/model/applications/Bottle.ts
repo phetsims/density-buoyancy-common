@@ -589,6 +589,7 @@ export default class Bottle extends ApplicationsMass {
     let sum = 0;
     const sliceAreas: number[] = [];
     _.range( 0, samples ).forEach( i => {
+
       // unit area times the multiplier
       const y = ( i / ( samples - 1 ) - 0.5 ) * multiplier;
       const area = Bottle.getCrossSectionArea( Bottle.getMainBottleCrossSectionTriangles( y, accuracyMultiplier ) );
@@ -603,6 +604,7 @@ export default class Bottle extends ApplicationsMass {
     let cumulativeArea = 0;
     actualAreas.forEach( area => {
       cumulativeArea += area / samples * multiplier * tenLiterMultiplier;
+
       // sanity work due to rounding
       actualCumulativeAreas.push( Math.min( desiredVolume, cumulativeArea ) );
     } );

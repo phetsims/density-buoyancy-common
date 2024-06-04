@@ -234,6 +234,7 @@ export default class BoatView extends MeasurableMassView {
     frontForDepth.renderOrder = 4;
     frontTop.renderOrder = 2;
     frontExterior.renderOrder = 1;
+
     // block will be at 0
     backBottom.renderOrder = -1;
     backMiddle.renderOrder = -1;

@@ -185,6 +185,7 @@ export default class BuoyancyIntroScreenView extends DensityBuoyancyScreenView<B
     const massViewAdded = ( massView: MassView ) => {
       if ( massView instanceof CuboidView ) {
         cuboidPDOMLayer.pdomOrder = [ ...cuboidPDOMLayer.pdomOrder!, massView.focusablePath ];
+
         // nothing to do for removal since disposal of the node will remove it from the pdom order
       }
     };
@@ -238,6 +239,7 @@ export default class BuoyancyIntroScreenView extends DensityBuoyancyScreenView<B
         normalMap: DensityMaterials.brickNormalTexture,
         normalScale: new THREE.Vector2( 1, -1 ),
         metalness: 0
+
         // NOTE: Removed the environment map for now
       } ) );
       box2.position.copy( ThreeUtils.vectorToThree( new Vector3( -0.08, -0.1, 0 ) ) );

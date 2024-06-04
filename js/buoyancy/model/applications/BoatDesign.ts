@@ -452,6 +452,7 @@ export default class BoatDesign {
       assert && assert( frontCurve.length === backCurve.length );
 
       for ( let i = 0; i < frontCurve.length - 1; i++ ) {
+
         // Positions for our quad
         const pA = backCurve[ i ];
         const pB = backCurve[ i + 1 ];
@@ -492,6 +493,7 @@ export default class BoatDesign {
     };
 
     const writeGrid = ( rows: Vector3[][], normalRows: Vector3[][], reverse: boolean ) => _.range( 0, rows.length - 1 ).forEach( i => _.range( 0, rows[ i ].length - 1 ).forEach( j => {
+
       // Positions for our quad
       const pA = rows[ i ][ j ];
       const pB = rows[ i + 1 ][ j ];
@@ -636,6 +638,7 @@ export default class BoatDesign {
     const designBounds = Bounds3.NOTHING;
     const designInteriorBottom = -BoatDesign.DESIGN_BOAT_HEIGHT + BoatDesign.DESIGN_WALL_THICKNESS;
     _.range( 0, samples ).forEach( i => {
+
       // unit area times the multiplier
       const y = ( i / ( samples - 1 ) - 1 ) * BoatDesign.DESIGN_BOAT_HEIGHT;
       const heightRatio = BoatDesign.getHeightRatioFromDesignY( y );

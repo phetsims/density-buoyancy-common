@@ -178,6 +178,7 @@ export default class BuoyancyExploreScreenView extends DensityBuoyancyScreenView
 
     // DerivedProperty doesn't need disposal, since everything here lives for the lifetime of the simulation
     this.rightBarrierViewPointPropertyProperty.value = new DerivedProperty( [ rightSideVBox.boundsProperty, this.visibleBoundsProperty ], ( boxBounds, visibleBounds ) => {
+
       // We might not have a box, see https://github.com/phetsims/density/issues/110
       return new Vector2( isFinite( boxBounds.left ) ? boxBounds.left : visibleBounds.right, visibleBounds.centerY );
     }, {
@@ -216,6 +217,7 @@ export default class BuoyancyExploreScreenView extends DensityBuoyancyScreenView
     const massViewAdded = ( massView: MassView ) => {
       if ( massView instanceof CuboidView && massView.mass === model.secondaryMass ) {
         cuboidPDOMLayer.pdomOrder = [ ...cuboidPDOMLayer.pdomOrder!, massView.focusablePath ];
+
         // nothing to do for removal since disposal of the node will remove it from the pdom order
       }
     };
@@ -243,6 +245,7 @@ export default class BuoyancyExploreScreenView extends DensityBuoyancyScreenView
           normalScale: new THREE.Vector2( 1, -1 ),
           roughnessMap: DensityMaterials.woodRoughnessTexture,
           metalness: 0
+
           // NOTE: Removed the environment map for now
         } ) );
         box.position.copy( ThreeUtils.vectorToThree( new Vector3( 0, 0, 0 ) ) );

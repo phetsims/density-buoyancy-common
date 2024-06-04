@@ -132,6 +132,7 @@ export default class Duck extends Mass {
       return 0;
     }
     else {
+
       // const ratio = ( liquidLevel - this.stepBottom ) / ( this.stepTop - this.stepBottom );
 
       return 0.1; // 4 * pi * a * c * ( t - t^2 )
@@ -197,6 +198,7 @@ export default class Duck extends Mass {
    * Returns the volume of a duck with the given axis-aligned bounding box.
    */
   public static getVolume( size: Bounds3 ): number {
+
     // Hard coded normalized volume obtained from Blender
     return 0.5 * size.width * size.height * size.depth;
   }

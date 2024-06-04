@@ -36,7 +36,6 @@ import { PhetioObjectOptions } from '../../../../tandem/js/PhetioObject.js';
 import PickRequired from '../../../../phet-core/js/types/PickRequired.js';
 import Matrix3 from '../../../../dot/js/Matrix3.js';
 import SlidableScale from './SlidableScale.js';
-import packageJSON from '../../../../joist/js/packageJSON.js';
 
 // constants
 const BLOCK_SPACING = 0.01;
@@ -129,7 +128,7 @@ export default class DensityBuoyancyModel implements TModel {
       tandem: options.canShowForces ? visiblePropertiesTandem.createTandem( 'showForceValuesProperty' ) : Tandem.OPT_OUT
     } );
     this.showMassValuesProperty = new BooleanProperty( options.showMassValuesDefault, {
-      tandem: packageJSON.name === 'density' ? Tandem.OPT_OUT : visiblePropertiesTandem.createTandem( 'showMassValuesProperty' ),
+      tandem: visiblePropertiesTandem.createTandem( 'showMassValuesProperty' ),
       phetioFeatured: true,
       phetioDocumentation: 'Displays a mass readout on each object'
     } );

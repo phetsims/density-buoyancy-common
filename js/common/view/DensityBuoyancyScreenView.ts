@@ -776,8 +776,10 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
   }
 
   public positionScaleHeightControl(): void {
+
     // If the simulation was not able to load for WebGL, bail out
     if ( this.sceneNode && this.poolScaleHeightControl && this.model.poolScale ) {
+
       // X margin should be based on the front of the pool
       this.poolScaleHeightControl.x = this.modelToViewPoint( new Vector3(
         this.model.poolBounds.maxX,

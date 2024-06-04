@@ -26,6 +26,7 @@ import Gravity from './Gravity.js';
 import TProperty from '../../../../axon/js/TProperty.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import { MassShape } from './MassShape.js';
+import PickOptional from '../../../../phet-core/js/types/PickOptional.js';
 
 // constants
 export const SCALE_WIDTH = 0.15;
@@ -65,7 +66,7 @@ type SelfOptions = {
   displayType?: DisplayType;
 };
 
-export type ScaleOptions = SelfOptions & StrictOmit<InstrumentedMassOptions, 'body' | 'shape' | 'volume' | 'material' | 'massShape'>;
+export type ScaleOptions = SelfOptions & StrictOmit<InstrumentedMassOptions, 'body' | 'shape' | 'volume' | 'material' | 'massShape'> & PickOptional<InstrumentedMassOptions, 'body' | 'shape'>;
 
 export default class Scale extends Mass {
 
@@ -80,8 +81,7 @@ export default class Scale extends Mass {
 
   public constructor( engine: PhysicsEngine, gravityProperty: TProperty<Gravity>, providedOptions: ScaleOptions ) {
 
-    const bodyType = providedOptions.canMove === false ? 'STATIC' :
-                     'DYNAMIC';
+    const bodyType = providedOptions.canMove === false ? 'STATIC' : 'DYNAMIC';
 
     const options = optionize<ScaleOptions, SelfOptions, InstrumentedMassOptions>()( {
       body: engine.createBox( SCALE_WIDTH, SCALE_HEIGHT, bodyType ),

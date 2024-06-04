@@ -102,9 +102,8 @@ export default class DensityBuoyancyModel implements TModel {
   private spillingWaterOutOfBoat = false;
 
   // Scale for the pool and its heightProperty, if we are using it
-  public readonly poolScale: Scale | null;
+  public readonly poolScale: Scale | null = null;
   public readonly poolScaleHeightProperty: NumberProperty;
-
 
   public constructor( providedOptions?: DensityBuoyancyModelOptions ) {
     const options = optionize<DensityBuoyancyModelOptions, DensityBuoyancyModelOptions>()( {
@@ -420,10 +419,8 @@ export default class DensityBuoyancyModel implements TModel {
       // tandem: tandem.createTandem( 'poolScaleHeightProperty' ) // TODO: Properly integrate this https://github.com/phetsims/density-buoyancy-common/issues/148
     } );
     if ( options.usePoolScale ) {
-      // Pool scale
-      this.poolScale = new PoolScale( this.engine, this.gravityProperty, {
-        tandem: tandem.createTandem( 'poolScale' )
-      } );
+
+      this.poolScale = new PoolScale( this.engine, this.gravityProperty, tandem.createTandem( 'poolScale' ) );
 
       // Make sure to render it
       this.availableMasses.push( this.poolScale );
@@ -431,9 +428,6 @@ export default class DensityBuoyancyModel implements TModel {
       // Adjust pool volume so that it's at the desired value WITH the pool scale inside.
       this.pool.liquidVolumeProperty.value -= this.poolScale.volumeProperty.value;
       this.pool.liquidVolumeProperty.setInitialValue( this.pool.liquidVolumeProperty.value );
-    }
-    else {
-      this.poolScale = null;
     }
   }
 

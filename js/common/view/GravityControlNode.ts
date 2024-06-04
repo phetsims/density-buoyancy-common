@@ -38,8 +38,10 @@ export default class GravityControlNode extends ComboNumberControl<Gravity> {
         Gravity.MOON,
         Gravity.EARTH,
         Gravity.JUPITER,
-        Gravity.PLANET_X,
-        customValue
+
+        // Custom goes before mystery, see https://github.com/phetsims/density-buoyancy-common/issues/161
+        customValue,
+        Gravity.PLANET_X
       ].map( gravity => {
         return {
           value: gravity,

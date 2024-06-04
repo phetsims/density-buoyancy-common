@@ -32,6 +32,7 @@ import Vector3 from '../../../../dot/js/Vector3.js';
 import ScaleView from '../../common/view/ScaleView.js';
 import fluid_displaced_scale_icon_png from '../../../images/fluid_displaced_scale_icon_png.js';
 import CuboidView from '../../common/view/CuboidView.js';
+import fluidDensityRangePerM3 from '../../common/fluidDensityRangePerM3.js';
 
 // constants
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
@@ -100,16 +101,23 @@ export default class BuoyancyLabScreenView extends DensityBuoyancyScreenView<Buo
     const invisibleMaterials = [ ...DensityBuoyancyCommonConstants.BUOYANCY_FLUID_MYSTERY_MATERIALS ];
     displayedMysteryMaterials.forEach( displayed => arrayRemove( invisibleMaterials, displayed ) );
 
+    const customMaterial = Material.createCustomLiquidMaterial( {
+      density: 1000, // Same as water, in SI (kg/m^3)
+      densityRange: fluidDensityRangePerM3
+    } );
+
     const bottomNode = new HBox( {
       spacing: 2 * MARGIN,
       children: [
         new Panel( new FluidDensityControlNode( model.liquidMaterialProperty, [
-          ...DensityBuoyancyCommonConstants.BUOYANCY_FLUID_MATERIALS,
-          ...DensityBuoyancyCommonConstants.BUOYANCY_FLUID_MYSTERY_MATERIALS
-        ], this.popupLayer, {
-          invisibleMaterials: invisibleMaterials,
-          tandem: tandem.createTandem( 'densityControlNode' )
-        } ), DensityBuoyancyCommonConstants.PANEL_OPTIONS ),
+            ...DensityBuoyancyCommonConstants.BUOYANCY_FLUID_MATERIALS,
+            customMaterial,
+            ...DensityBuoyancyCommonConstants.BUOYANCY_FLUID_MYSTERY_MATERIALS
+          ], customMaterial,
+          this.popupLayer, {
+            invisibleMaterials: invisibleMaterials,
+            tandem: tandem.createTandem( 'densityControlNode' )
+          } ), DensityBuoyancyCommonConstants.PANEL_OPTIONS ),
         new Panel( new GravityControlNode( model.gravityProperty, this.popupLayer, tandem.createTandem( 'gravityControlNode' ) ), DensityBuoyancyCommonConstants.PANEL_OPTIONS )
       ]
     } );

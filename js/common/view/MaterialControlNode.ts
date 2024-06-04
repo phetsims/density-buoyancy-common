@@ -108,18 +108,24 @@ export default class MaterialControlNode extends VBox {
     } );
 
     const comboMaxWidth = options.labelNode ? 110 : 160;
+
+    const regularMaterials = materials.filter( material => !material.hidden );
+    const mysteryMaterials = materials.filter( material => material.hidden );
+
+    const materialToItem = ( material: Material ) => {
+      return {
+        value: material.identifier!,
+        createNode: () => new Text( material.nameProperty, {
+          font: DensityBuoyancyCommonConstants.COMBO_BOX_ITEM_FONT,
+          maxWidth: comboMaxWidth
+        } ),
+        tandemName: `${material.tandemName}Item`,
+        a11yName: material.nameProperty
+      };
+    };
+
     const comboBox = new ComboBox( comboBoxMaterialProperty, [
-      ...materials.map( material => {
-        return {
-          value: material.identifier!,
-          createNode: () => new Text( material.nameProperty, {
-            font: DensityBuoyancyCommonConstants.COMBO_BOX_ITEM_FONT,
-            maxWidth: comboMaxWidth
-          } ),
-          tandemName: `${material.tandemName}Item`,
-          a11yName: material.nameProperty
-        };
-      } ),
+      ...regularMaterials.map( materialToItem ),
       ...( options.supportCustomMaterial ? [ {
         value: CUSTOM_MATERIAL_NAME,
         createNode: () => new Text( DensityBuoyancyCommonStrings.material.customStringProperty, {
@@ -127,8 +133,8 @@ export default class MaterialControlNode extends VBox {
           maxWidth: comboMaxWidth
         } ),
         tandemName: 'customItem'
-      }
-      ] : [] )
+      } ] : [] ),
+      ...mysteryMaterials.map( materialToItem )
     ], listParent, {
       xMargin: 8,
       yMargin: 4,

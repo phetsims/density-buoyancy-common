@@ -28,7 +28,6 @@ import ReadOnlyProperty from '../../../../axon/js/ReadOnlyProperty.js';
 import MappedProperty from '../../../../axon/js/MappedProperty.js';
 import Range from '../../../../dot/js/Range.js';
 
-
 const NullableColorPropertyReferenceType = NullableIO( ReferenceIO( Property.PropertyIO( Color.ColorIO ) ) );
 
 type MaterialState = {

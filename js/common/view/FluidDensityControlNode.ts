@@ -18,19 +18,14 @@ import Material from '../model/Material.js';
 import ComboNumberControl, { ComboNumberControlOptions } from './ComboNumberControl.js';
 import optionize from '../../../../phet-core/js/optionize.js';
 import WithRequired from '../../../../phet-core/js/types/WithRequired.js';
+import fluidDensityRangePerM3 from '../fluidDensityRangePerM3.js';
 
 type SelfOptions = {
 
   // A subset of the provided materials that should be invisible on startup. Created for PhET-iO
   // consistency and customization.
   invisibleMaterials?: Material[];
-
-  // Material provided to the custom selection
-  customMaterial?: Material;
 };
-
-const FLUID_DENSITY_RANGE_PER_L = new Range( 0.5, 15 );
-export const FLUID_DENSITY_RANGE_PER_M3 = FLUID_DENSITY_RANGE_PER_L.copy().times( DensityBuoyancyCommonConstants.LITERS_IN_CUBIC_METER );
 
 // No required super options but tandem
 type ParentOptions = WithRequired<Partial<ComboNumberControlOptions<Material>>, 'tandem'>;
@@ -38,17 +33,15 @@ type ParentOptions = WithRequired<Partial<ComboNumberControlOptions<Material>>, 
 type DensityControlNodeOptions = SelfOptions & ParentOptions;
 
 export default class FluidDensityControlNode extends ComboNumberControl<Material> {
-  public constructor( liquidMaterialProperty: Property<Material>, materials: Material[], listParent: Node,
-                      providedOptions: DensityControlNodeOptions ) {
+  public constructor(
+    liquidMaterialProperty: Property<Material>,
+    materials: Material[],
+    customMaterial: Material, // also appears in the list above
+    listParent: Node,
+    providedOptions: DensityControlNodeOptions ) {
 
     const options = optionize<DensityControlNodeOptions, SelfOptions, ParentOptions>()( {
-      invisibleMaterials: [],
-
-      // Probably best to not touch this
-      customMaterial: Material.createCustomLiquidMaterial( {
-        density: 1000, // Same as water, in SI (kg/m^3)
-        densityRange: FLUID_DENSITY_RANGE_PER_M3
-      } )
+      invisibleMaterials: []
     }, providedOptions );
 
     assert && assert( _.every( options.invisibleMaterials, invisible => materials.includes( invisible ) ),
@@ -63,15 +56,12 @@ export default class FluidDensityControlNode extends ComboNumberControl<Material
       toNumericValue: material => material.density / DensityBuoyancyCommonConstants.LITERS_IN_CUBIC_METER,
       createCustomValue: density => Material.createCustomLiquidMaterial( {
         density: density * DensityBuoyancyCommonConstants.LITERS_IN_CUBIC_METER,
-        densityRange: FLUID_DENSITY_RANGE_PER_M3
+        densityRange: fluidDensityRangePerM3
       } ),
       isCustomValue: material => material.custom,
       isHiddenValue: material => material.hidden,
       listParent: listParent,
-      comboItems: [
-        ...materials,
-        options.customMaterial
-      ].map( material => {
+      comboItems: materials.map( material => {
         return {
           value: material,
           createNode: () => new Text( material.nameProperty, {
@@ -85,7 +75,7 @@ export default class FluidDensityControlNode extends ComboNumberControl<Material
           }
         };
       } ),
-      customValue: options.customMaterial,
+      customValue: customMaterial,
       numberControlOptions: {
         delta: 0.01,
         sliderOptions: {

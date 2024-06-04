@@ -28,7 +28,7 @@ import BuoyancyLabScreenView from './BuoyancyLabScreenView.js';
 import AccordionBox, { AccordionBoxOptions } from '../../../../sun/js/AccordionBox.js';
 import Panel, { PanelOptions } from '../../../../sun/js/Panel.js';
 import DensityBuoyancyCommonColors from '../../common/view/DensityBuoyancyCommonColors.js';
-import { FLUID_DENSITY_RANGE_PER_M3 } from '../../common/view/FluidDensityControlNode.js';
+import fluidDensityRangePerM3 from '../../common/fluidDensityRangePerM3.js';
 
 type SelfOptions = EmptySelfOptions;
 
@@ -95,7 +95,7 @@ export default class FluidDisplacedAccordionBox extends AccordionBox {
         if ( liquidMaterialProperty.value.custom ) {
 
           if ( liquidMaterialProperty.value.density < SAME_COLOR_MIN_DENSITY_THRESHOLD ) {
-            color = Material.getCustomLiquidColor( SAME_COLOR_MIN_DENSITY_THRESHOLD, FLUID_DENSITY_RANGE_PER_M3 ).value;
+            color = Material.getCustomLiquidColor( SAME_COLOR_MIN_DENSITY_THRESHOLD, fluidDensityRangePerM3 ).value;
           }
 
           return color.withAlpha( 0.8 );

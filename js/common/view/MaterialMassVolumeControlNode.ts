@@ -362,8 +362,12 @@ export default class MaterialMassVolumeControlNode extends MaterialControlNode {
     } );
     ManualConstraint.create( this, [ hiddenMaterialNode, massVolumeVBox ], ( hiddenMaterialProxy, vboxProxy ) => {
       hiddenMaterialProxy.maxWidth = vboxProxy.width;
+
+      // TODO: Remove when sun issue complete, see also https://github.com/phetsims/density-buoyancy-common/issues/154
       hiddenMaterialProxy.center = vboxProxy.center;
     } );
+
+    // TODO: Remove parent Node when sun issue complete, see also https://github.com/phetsims/density-buoyancy-common/issues/154
     const hiddenMaterialContainer = new Node( {
       children: [ hiddenMaterialNode ]
     } );

@@ -20,7 +20,7 @@ import { Shape } from '../../../../kite/js/imports.js';
 // To prevent objects from being dragged beneath the scale, we extend the invisible part of the scale vertically downward.
 const SCALE_INVISIBLE_VERTICAL_EXTENSION_FACTOR = 8.26;
 
-export default class SlidableScale extends Scale {
+export default class PoolScale extends Scale {
 
   public constructor( engine: PhysicsEngine, gravityProperty: TProperty<Gravity>, providedOptions: ScaleOptions ) {
 
@@ -39,4 +39,4 @@ export default class SlidableScale extends Scale {
   }
 }
 
-densityBuoyancyCommon.register( 'SlidableScale', SlidableScale );
+densityBuoyancyCommon.register( 'PoolScale', PoolScale );

@@ -34,7 +34,7 @@ import TRangedProperty from '../../../../axon/js/TRangedProperty.js';
 import TModel from '../../../../joist/js/TModel.js';
 import { PhetioObjectOptions } from '../../../../tandem/js/PhetioObject.js';
 import PickRequired from '../../../../phet-core/js/types/PickRequired.js';
-import SlidableScale from './SlidableScale.js';
+import PoolScale from './PoolScale.js';
 import PoolScaleHeightProperty from './PoolScaleHeightProperty.js';
 import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
 
@@ -320,7 +320,7 @@ export default class DensityBuoyancyModel implements TModel {
         }
 
         // Teleporting blocks to the left of the volumelessScale (pool scale with slider) when they get trapped beneath it
-        if ( mass instanceof SlidableScale ) {
+        if ( mass instanceof PoolScale ) {
           this.masses.forEach( otherMass => {
             if ( mass !== otherMass ) {
               const horizontalForce = this.engine.bodyGetContactForceBetween( mass.body, otherMass.body ).x;
@@ -421,7 +421,7 @@ export default class DensityBuoyancyModel implements TModel {
     } );
     if ( options.usePoolScale ) {
       // Pool scale
-      this.poolScale = new SlidableScale( this.engine, this.gravityProperty, {
+      this.poolScale = new PoolScale( this.engine, this.gravityProperty, {
         displayType: DisplayType.NEWTONS,
         tandem: tandem.createTandem( 'poolScale' ),
         canMove: false, // No input listeners, but the PoolScaleHeightControl can still move it

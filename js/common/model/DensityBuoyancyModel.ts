@@ -413,14 +413,15 @@ export default class DensityBuoyancyModel implements TModel {
       } );
     } );
 
-
+    // TODO: https://github.com/phetsims/density-buoyancy-common/issues/148 maybe create the pool scale height property in PoolScale?
+    const poolScaleTandem = tandem.createTandem( 'poolScale' );
     this.poolScaleHeightProperty = new PoolScaleHeightProperty( DensityBuoyancyCommonConstants.POOL_SCALE_INITIAL_HEIGHT, {
-      range: new Range( 0, 1 )
-      // tandem: tandem.createTandem( 'poolScaleHeightProperty' ) // TODO: Properly integrate this https://github.com/phetsims/density-buoyancy-common/issues/148
+      range: new Range( 0, 1 ),
+      tandem: options.usePoolScale ? poolScaleTandem.createTandem( 'heightProperty' ) : Tandem.OPT_OUT
     } );
     if ( options.usePoolScale ) {
 
-      this.poolScale = new PoolScale( this.engine, this.gravityProperty, tandem.createTandem( 'poolScale' ) );
+      this.poolScale = new PoolScale( this.engine, this.gravityProperty, poolScaleTandem );
 
       // Make sure to render it
       this.availableMasses.push( this.poolScale );

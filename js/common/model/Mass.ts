@@ -50,17 +50,17 @@ type MaterialNonCustomIdentifier = 'ALUMINUM' | 'BRICK' | 'COPPER' | 'ICE' | 'PL
 type MaterialIdentifier = MaterialNonCustomIdentifier | CustomMaterialName;
 
 class MaterialEnumeration extends EnumerationValue {
-  private static readonly ALUMINUM = new MaterialEnumeration();
-  private static readonly BRICK = new MaterialEnumeration();
-  private static readonly COPPER = new MaterialEnumeration();
-  private static readonly ICE = new MaterialEnumeration();
-  private static readonly PLATINUM = new MaterialEnumeration();
-  private static readonly STEEL = new MaterialEnumeration();
-  private static readonly STYROFOAM = new MaterialEnumeration();
-  private static readonly WOOD = new MaterialEnumeration();
+  public static readonly ALUMINUM = new MaterialEnumeration();
+  public static readonly BRICK = new MaterialEnumeration();
+  public static readonly COPPER = new MaterialEnumeration();
+  public static readonly ICE = new MaterialEnumeration();
+  public static readonly PLATINUM = new MaterialEnumeration();
+  public static readonly STEEL = new MaterialEnumeration();
+  public static readonly STYROFOAM = new MaterialEnumeration();
+  public static readonly WOOD = new MaterialEnumeration();
   public static readonly CUSTOM = new MaterialEnumeration();
 
-  private static readonly enumeration = new Enumeration( MaterialEnumeration, {
+  public static readonly enumeration = new Enumeration( MaterialEnumeration, {
     phetioDocumentation: 'Material values'
   } );
 }

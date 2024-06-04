@@ -57,7 +57,7 @@ export class DisplayType extends EnumerationValue {
   public static readonly NEWTONS = new DisplayType();
   public static readonly KILOGRAMS = new DisplayType();
 
-  private static readonly enumeration = new Enumeration( DisplayType, {
+  public static readonly enumeration = new Enumeration( DisplayType, {
     phetioDocumentation: 'Units for the scale readout'
   } );
 }

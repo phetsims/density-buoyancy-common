@@ -14,7 +14,7 @@ export default class TwoBlockMode extends EnumerationValue {
   public static readonly ONE_BLOCK = new TwoBlockMode();
   public static readonly TWO_BLOCKS = new TwoBlockMode();
 
-  private static readonly enumeration = new Enumeration( TwoBlockMode, {
+  public static readonly enumeration = new Enumeration( TwoBlockMode, {
     phetioDocumentation: 'Whether one or two blocks are visible'
   } );
 }

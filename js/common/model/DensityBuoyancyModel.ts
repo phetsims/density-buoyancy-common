@@ -35,8 +35,6 @@ import TModel from '../../../../joist/js/TModel.js';
 import { PhetioObjectOptions } from '../../../../tandem/js/PhetioObject.js';
 import PickRequired from '../../../../phet-core/js/types/PickRequired.js';
 import PoolScale from './PoolScale.js';
-import PoolScaleHeightProperty from './PoolScaleHeightProperty.js';
-import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
 
 // constants
 const BLOCK_SPACING = 0.01;
@@ -102,8 +100,7 @@ export default class DensityBuoyancyModel implements TModel {
   private spillingWaterOutOfBoat = false;
 
   // Scale for the pool and its heightProperty, if we are using it
-  public readonly poolScale: Scale | null = null;
-  public readonly poolScaleHeightProperty: NumberProperty;
+  public readonly poolScale: PoolScale | null = null;
 
   public constructor( providedOptions?: DensityBuoyancyModelOptions ) {
     const options = optionize<DensityBuoyancyModelOptions, DensityBuoyancyModelOptions>()( {
@@ -413,15 +410,9 @@ export default class DensityBuoyancyModel implements TModel {
       } );
     } );
 
-    // TODO: https://github.com/phetsims/density-buoyancy-common/issues/148 maybe create the pool scale height property in PoolScale?
-    const poolScaleTandem = tandem.createTandem( 'poolScale' );
-    this.poolScaleHeightProperty = new PoolScaleHeightProperty( DensityBuoyancyCommonConstants.POOL_SCALE_INITIAL_HEIGHT, {
-      range: new Range( 0, 1 ),
-      tandem: options.usePoolScale ? poolScaleTandem.createTandem( 'heightProperty' ) : Tandem.OPT_OUT
-    } );
     if ( options.usePoolScale ) {
 
-      this.poolScale = new PoolScale( this.engine, this.gravityProperty, poolScaleTandem );
+      this.poolScale = new PoolScale( this.engine, this.gravityProperty, tandem.createTandem( 'poolScale' ) );
 
       // Make sure to render it
       this.availableMasses.push( this.poolScale );
@@ -567,7 +558,7 @@ export default class DensityBuoyancyModel implements TModel {
     this.pool.reset();
     this.masses.forEach( mass => mass.reset() );
 
-    this.poolScaleHeightProperty && this.poolScaleHeightProperty.reset();
+    this.poolScale && this.poolScale.reset();
   }
 
   /**

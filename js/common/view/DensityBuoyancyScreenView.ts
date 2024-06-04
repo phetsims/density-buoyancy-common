@@ -596,7 +596,7 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
     } );
 
     if ( model.poolScale ) {
-      this.poolScaleHeightControl = new PoolScaleHeightControl( model.poolScale, model.poolScaleHeightProperty,
+      this.poolScaleHeightControl = new PoolScaleHeightControl( model.poolScale,
         model.poolBounds, model.pool.liquidYInterpolatedProperty, this, {
           tandem: options.tandem.createTandem( 'poolScaleHeightControl' )
         } );

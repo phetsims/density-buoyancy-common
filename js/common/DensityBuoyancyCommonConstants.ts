@@ -88,7 +88,10 @@ const DensityBuoyancyCommonConstants = {
     buttonXMargin: 5,
     contentXMargin: MARGIN,
     titleAlignX: 'left',
-    fill: DensityBuoyancyCommonColors.panelBackgroundProperty
+    fill: DensityBuoyancyCommonColors.panelBackgroundProperty,
+
+    // Content should appear directly below the title
+    contentYSpacing: 0
   } as const,
 
   // cameraLookAt locations

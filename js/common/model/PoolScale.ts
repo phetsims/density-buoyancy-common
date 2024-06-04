@@ -15,9 +15,10 @@ import Scale, { DisplayType, SCALE_HEIGHT, SCALE_WIDTH } from './Scale.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import { Shape } from '../../../../kite/js/imports.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
-import PoolScaleHeightProperty from './PoolScaleHeightProperty.js';
 import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
 import Range from '../../../../dot/js/Range.js';
+import Property from '../../../../axon/js/Property.js';
+import NumberProperty from '../../../../axon/js/NumberProperty.js';
 
 // To prevent objects from being dragged beneath the scale, we extend the invisible part of the scale vertically downward.
 const SCALE_INVISIBLE_VERTICAL_EXTENSION_FACTOR = 8.26;
@@ -26,7 +27,7 @@ export default class PoolScale extends Scale {
 
   // Unitless value between 0 and 1 that represents how high the scale is above the bottom of the pool.
   // See PoolScaleHeightControl for the mapping to model coordinates.
-  public readonly heightProperty: PoolScaleHeightProperty;
+  public readonly heightProperty: Property<number>;
 
   public constructor( engine: PhysicsEngine, gravityProperty: TProperty<Gravity>, tandem: Tandem ) {
 
@@ -47,7 +48,7 @@ export default class PoolScale extends Scale {
       tandem: tandem
     } );
 
-    this.heightProperty = new PoolScaleHeightProperty( DensityBuoyancyCommonConstants.POOL_SCALE_INITIAL_HEIGHT, {
+    this.heightProperty = new NumberProperty( DensityBuoyancyCommonConstants.POOL_SCALE_INITIAL_HEIGHT, {
       range: new Range( 0, 1 ),
       tandem: tandem.createTandem( 'heightProperty' )
     } );
@@ -56,6 +57,10 @@ export default class PoolScale extends Scale {
   public override reset(): void {
     super.reset();
     this.heightProperty.reset();
+
+    // The model position of the pool is reset before, so even if this Property value doesn't change, we need to reposition via listeners
+    // Otherwise the scale itself will be in the wrong position.
+    this.heightProperty.notifyListenersStatic();
   }
 }
 

@@ -33,7 +33,8 @@ export default class DensityIntroModel extends DensityBuoyancyModel {
 
     super( combineOptions<DensityIntroModelOptions>( {
       showMassValuesDefault: true,
-      canShowForces: false
+      canShowForces: false,
+      usePoolScale: false
     }, options ) );
 
     this.modeProperty = new EnumerationProperty( TwoBlockMode.ONE_BLOCK, {

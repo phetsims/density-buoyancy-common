@@ -352,7 +352,9 @@ export default class DensityMysteryModel extends BlockSetModel<MysteryBlockSet> 
       // members.
       createMassesCallback: createMasses,
       regenerateMassesCallback: regenerateMasses,
-      positionMassesCallback: positionMasses
+      positionMassesCallback: positionMasses,
+
+      usePoolScale: false
     }, providedOptions );
 
     super( options );

@@ -9,7 +9,6 @@
 
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import Slider from '../../../../sun/js/Slider.js';
-import Property from '../../../../axon/js/Property.js';
 import optionize, { EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
 import Range from '../../../../dot/js/Range.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
@@ -28,6 +27,7 @@ import ArrowButton from '../../../../sun/js/buttons/ArrowButton.js';
 import Orientation from '../../../../phet-core/js/Orientation.js';
 import WithRequired from '../../../../phet-core/js/types/WithRequired.js';
 import { Shape } from '../../../../kite/js/imports.js';
+import PoolScale from '../model/PoolScale.js';
 
 // constants
 const DEFAULT_RANGE = new Range( 0, 1 );
@@ -37,7 +37,7 @@ type ScaleHeightSliderOptions = EmptySelfOptions & WithRequired<NumberControlOpt
 
 export default class PoolScaleHeightControl extends NumberControl {
 
-  public constructor( scale: Scale, heightProperty: Property<number>,
+  public constructor( poolScale: PoolScale,
                       poolBounds: Bounds3,
                       liquidYInterpolatedProperty: TReadOnlyProperty<number>,
                       modelViewTransform: THREEModelViewTransform,
@@ -55,12 +55,8 @@ export default class PoolScaleHeightControl extends NumberControl {
       mouseArea: thumbInteractionArea
     } );
 
-    // This magic number accomplishes two things:
-    // 1. matching the liquid level exactly causes blue graphical fractals on the top of the scale
-    // 2. Because the P2 engine has a non-infinite stiffness, masses overlap when contacting. This means that we want to
-    //    raise the scale up above the pool so that the block can be the same weight as when measuring with the ground scale.
-    const maxY = liquidYInterpolatedProperty.value;
     const minY = poolBounds.minY;
+    const maxY = liquidYInterpolatedProperty.value;
 
     const sliderTrackHeight = modelViewTransform.modelToViewDelta( new Vector3( SCALE_X_POSITION, maxY, poolBounds.maxZ ), new Vector3( SCALE_X_POSITION, minY, poolBounds.maxZ ) ).y;
 
@@ -94,15 +90,15 @@ export default class PoolScaleHeightControl extends NumberControl {
       }
     }, providedOptions );
 
-    super( new Property( '' ), heightProperty, DEFAULT_RANGE, options );
+    super( '', poolScale.heightProperty, DEFAULT_RANGE, options );
 
-    heightProperty.link( height => {
+    poolScale.heightProperty.link( height => {
       const currentHeight = Utils.linear( 0, 1, minY, maxY, height );
 
-      scale.matrix.set02( SCALE_X_POSITION );
-      scale.matrix.set12( currentHeight + Scale.SCALE_HEIGHT / 2 );
-      scale.writeData();
-      scale.transformedEmitter.emit();
+      poolScale.matrix.set02( SCALE_X_POSITION );
+      poolScale.matrix.set12( currentHeight + Scale.SCALE_HEIGHT / 2 );
+      poolScale.writeData();
+      poolScale.transformedEmitter.emit();
     } );
 
     thumbNode.touchArea = thumbInteractionArea.copy().rect( -10, -10, 20, 50 );

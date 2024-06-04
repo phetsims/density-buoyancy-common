@@ -15,14 +15,12 @@ import Material from '../../common/model/Material.js';
 import Scale, { DisplayType } from '../../common/model/Scale.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import { combineOptions } from '../../../../phet-core/js/optionize.js';
-import SlidableScale from '../../common/model/SlidableScale.js';
 
 export type BuoyancyLabModelOptions = DensityBuoyancyModelOptions;
 
 export default class BuoyancyLabModel extends DensityBuoyancyModel {
 
   public readonly primaryMass: Cube;
-  public readonly poolScale: Scale;
 
   public constructor( options: BuoyancyLabModelOptions ) {
 
@@ -30,8 +28,7 @@ export default class BuoyancyLabModel extends DensityBuoyancyModel {
 
     super( combineOptions<DensityBuoyancyModelOptions>( {
       supportsDepthLines: true,
-      showMassValuesDefault: true,
-      usePoolScale: false // Creating our own
+      showMassValuesDefault: true
     }, options ) );
 
 
@@ -50,23 +47,6 @@ export default class BuoyancyLabModel extends DensityBuoyancyModel {
         phetioReadOnly: false
       }
     } ) );
-
-    // Pool scale
-    this.poolScale = new SlidableScale( this.engine, this.gravityProperty, {
-      displayType: DisplayType.NEWTONS,
-      tandem: tandem.createTandem( 'poolScale' ),
-      canMove: false, // No input listeners, but the PoolScaleHeightControl can still move it
-      inputEnabledPropertyOptions: {
-        phetioReadOnly: true
-      }
-    } );
-
-    // Make sure to render it
-    this.availableMasses.push( this.poolScale );
-
-    // Adjust pool volume so that it's at the desired value WITH the pool scale inside.
-    this.pool.liquidVolumeProperty.value -= this.poolScale.volumeProperty.value;
-    this.pool.liquidVolumeProperty.setInitialValue( this.pool.liquidVolumeProperty.value );
   }
 
   /**

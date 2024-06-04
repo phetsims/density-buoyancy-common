@@ -18,7 +18,6 @@ import TwoBlockMode from '../../common/model/TwoBlockMode.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import MassTag from '../../common/model/MassTag.js';
 import { combineOptions } from '../../../../phet-core/js/optionize.js';
-import SlidableScale from '../../common/model/SlidableScale.js';
 
 type BuoyancyBasicsExploreModelOptions = DensityBuoyancyModelOptions;
 
@@ -27,14 +26,12 @@ export default class BuoyancyBasicsExploreModel extends DensityBuoyancyModel {
   public readonly modeProperty: Property<TwoBlockMode>;
   public readonly primaryMass: Cube;
   public readonly secondaryMass: Cube;
-  public readonly poolScale: Scale;
 
   public constructor( options: BuoyancyBasicsExploreModelOptions ) {
 
     const tandem = options.tandem;
 
     super( combineOptions<DensityBuoyancyModelOptions>( {
-      usePoolScale: false, // Create our own for the PoolScaleHeightControl
       supportsDepthLines: true
     }, options ) );
 
@@ -71,23 +68,6 @@ export default class BuoyancyBasicsExploreModel extends DensityBuoyancyModel {
         phetioReadOnly: false
       }
     } ) );
-
-    // Pool scale
-    this.poolScale = new SlidableScale( this.engine, this.gravityProperty, {
-      displayType: DisplayType.NEWTONS,
-      tandem: tandem.createTandem( 'poolScale' ),
-      canMove: false, // No input listeners, but the PoolScaleHeightControl can still move it
-      inputEnabledPropertyOptions: {
-        phetioReadOnly: true
-      }
-    } );
-
-    // Make sure to render it
-    this.availableMasses.push( this.poolScale );
-
-    // Adjust pool volume so that it's at the desired value WITH the pool scale inside.
-    this.pool.liquidVolumeProperty.value -= this.poolScale.volumeProperty.value;
-    this.pool.liquidVolumeProperty.setInitialValue( this.pool.liquidVolumeProperty.value );
 
     this.showMassValuesProperty.value = false;
   }

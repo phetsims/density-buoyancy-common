@@ -26,6 +26,7 @@ export default class DensityCompareModel extends CompareBlockSetModel {
     const blockSetsTandem = tandem.createTandem( 'blockSets' );
 
     const options = optionize<DensityCompareModelOptions, EmptySelfOptions, CompareBlockSetModelOptions>()( {
+      usePoolScale: false,
       sameDensityValue: 500,
 
       showMassValuesDefault: true,

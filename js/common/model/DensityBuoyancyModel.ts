@@ -21,7 +21,7 @@ import Gravity from './Gravity.js';
 import Material from './Material.js';
 import P2Engine from './P2Engine.js';
 import Pool from './Pool.js';
-import Scale, { DisplayType, SCALE_WIDTH } from './Scale.js';
+import Scale, { SCALE_WIDTH } from './Scale.js';
 import optionize from '../../../../phet-core/js/optionize.js';
 import Boat from '../../buoyancy/model/applications/Boat.js';
 import PhysicsEngine, { PhysicsEngineBody } from './PhysicsEngine.js';
@@ -34,10 +34,7 @@ import TRangedProperty from '../../../../axon/js/TRangedProperty.js';
 import TModel from '../../../../joist/js/TModel.js';
 import { PhetioObjectOptions } from '../../../../tandem/js/PhetioObject.js';
 import PickRequired from '../../../../phet-core/js/types/PickRequired.js';
-import Matrix3 from '../../../../dot/js/Matrix3.js';
-import SlidableScale from './SlidableScale.js';
-import PoolScaleHeightProperty from './PoolScaleHeightProperty.js';
-import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
+import PoolScale from './PoolScale.js';
 
 // constants
 const BLOCK_SPACING = 0.01;
@@ -103,16 +100,14 @@ export default class DensityBuoyancyModel implements TModel {
   private spillingWaterOutOfBoat = false;
 
   // Scale for the pool and its heightProperty, if we are using it
-  public readonly scale2: Scale | null;
-  public readonly poolScaleHeightProperty: NumberProperty;
-
+  public readonly poolScale: PoolScale | null = null;
 
   public constructor( providedOptions?: DensityBuoyancyModelOptions ) {
     const options = optionize<DensityBuoyancyModelOptions, DensityBuoyancyModelOptions>()( {
       showMassValuesDefault: false,
       canShowForces: true,
       initialForceScale: 1 / 16,
-      usePoolScale: false,
+      usePoolScale: true,
       supportsDepthLines: false
     }, providedOptions );
 
@@ -321,7 +316,7 @@ export default class DensityBuoyancyModel implements TModel {
         }
 
         // Teleporting blocks to the left of the volumelessScale (pool scale with slider) when they get trapped beneath it
-        if ( mass instanceof SlidableScale ) {
+        if ( mass instanceof PoolScale ) {
           this.masses.forEach( otherMass => {
             if ( mass !== otherMass ) {
               const horizontalForce = this.engine.bodyGetContactForceBetween( mass.body, otherMass.body ).x;
@@ -415,32 +410,16 @@ export default class DensityBuoyancyModel implements TModel {
       } );
     } );
 
-
-    this.poolScaleHeightProperty = new PoolScaleHeightProperty( DensityBuoyancyCommonConstants.POOL_SCALE_INITIAL_HEIGHT, {
-      range: new Range( 0, 1 )
-      // tandem: tandem.createTandem( 'poolScaleHeightProperty' ) // TODO: Properly integrate this https://github.com/phetsims/density-buoyancy-common/issues/148
-    } );
     if ( options.usePoolScale ) {
 
-      // Normal pool scale, is draggable. Use SlidableScale for the slider one.
-      this.scale2 = new Scale( this.engine, this.gravityProperty, {
-        matrix: Matrix3.translation( 0.3, -Scale.SCALE_BASE_BOUNDS.minY + this.poolBounds.minY ),
-        displayType: DisplayType.NEWTONS,
-        tandem: tandem.createTandem( 'scale2' ),
-        canMove: true,
-        inputEnabledPropertyOptions: {
-          phetioReadOnly: false
-        }
-      } );
+      this.poolScale = new PoolScale( this.engine, this.gravityProperty, tandem.createTandem( 'poolScale' ) );
 
-      this.availableMasses.push( this.scale2 );
+      // Make sure to render it
+      this.availableMasses.push( this.poolScale );
 
       // Adjust pool volume so that it's at the desired value WITH the pool scale inside.
-      this.pool.liquidVolumeProperty.value -= this.scale2.volumeProperty.value;
+      this.pool.liquidVolumeProperty.value -= this.poolScale.volumeProperty.value;
       this.pool.liquidVolumeProperty.setInitialValue( this.pool.liquidVolumeProperty.value );
-    }
-    else {
-      this.scale2 = null;
     }
   }
 
@@ -579,7 +558,7 @@ export default class DensityBuoyancyModel implements TModel {
     this.pool.reset();
     this.masses.forEach( mass => mass.reset() );
 
-    this.poolScaleHeightProperty && this.poolScaleHeightProperty.reset();
+    this.poolScale && this.poolScale.reset();
   }
 
   /**

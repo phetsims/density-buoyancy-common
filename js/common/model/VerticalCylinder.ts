@@ -31,10 +31,10 @@ export default class VerticalCylinder extends Mass {
   public readonly heightProperty: Property<number>;
 
   // Step information
-  public stepRadius: number;
-  public stepHeight: number;
-  public stepArea: number;
-  public stepMaximumVolume: number;
+  private stepRadius: number;
+  private stepHeight: number;
+  private stepArea: number;
+  private stepMaximumVolume: number;
 
   public constructor( engine: PhysicsEngine, radius: number, height: number, providedOptions: VerticalCylinderOptions ) {
     const options = optionize<VerticalCylinderOptions, EmptySelfOptions, InstrumentedMassOptions>()( {
@@ -70,7 +70,7 @@ export default class VerticalCylinder extends Mass {
     this.updateSize( radius, height );
   }
 
-  public override getLocalBounds(): Bounds3 {
+  protected override getLocalBounds(): Bounds3 {
     const bounds2 = this.shapeProperty.value.bounds;
     return new Bounds3( bounds2.minX, bounds2.minY, -this.radiusProperty.value, bounds2.maxX, bounds2.maxY, this.radiusProperty.value );
   }
@@ -78,7 +78,7 @@ export default class VerticalCylinder extends Mass {
   /**
    * Updates the size of the cone.
    */
-  public updateSize( radius: number, height: number ): void {
+  private updateSize( radius: number, height: number ): void {
     this.engine.updateBox( this.body, 2 * radius, height );
 
     this.radiusProperty.value = radius;
@@ -199,14 +199,14 @@ export default class VerticalCylinder extends Mass {
   /**
    * Returns a vertical cylinder shape for a given radius/height.
    */
-  public static getVerticalCylinderShape( radius: number, height: number ): Shape {
+  private static getVerticalCylinderShape( radius: number, height: number ): Shape {
     return Shape.rect( -radius, -height / 2, 2 * radius, height );
   }
 
   /**
    * Returns the volume of a vertical cylinder with the given radius and height.
    */
-  public static getVolume( radius: number, height: number ): number {
+  private static getVolume( radius: number, height: number ): number {
     return Math.PI * radius * radius * height;
   }
 
@@ -229,7 +229,7 @@ export default class VerticalCylinder extends Mass {
    *
    * @see HorizontalCylinder.intersect
    */
-  public static intersect( ray: Ray3, translation: Vector3, radius: number, height: number ): number | null {
+  private static intersect( ray: Ray3, translation: Vector3, radius: number, height: number ): number | null {
     const ox = ray.position.x - translation.x;
     const oz = ray.position.z - translation.z;
     const dx = ray.direction.x;
@@ -263,7 +263,7 @@ export default class VerticalCylinder extends Mass {
   }
 
 
-  public static readonly VerticalCylinderIO = new IOType( 'VerticalCylinderIO', {
+  private static readonly VerticalCylinderIO = new IOType( 'VerticalCylinderIO', {
     valueType: VerticalCylinder,
     supertype: Mass.MassIO,
     documentation: 'Represents a cylinder laying on its end'

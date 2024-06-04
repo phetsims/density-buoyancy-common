@@ -21,7 +21,7 @@ const numElements = 6 * segments;
 
 export default class ConeView extends MeasurableMassView {
 
-  public readonly cone: Cone;
+  private readonly cone: Cone;
   private readonly coneGeometry: THREE.BufferGeometry;
   private readonly updateListener: () => void;
 
@@ -103,7 +103,7 @@ export default class ConeView extends MeasurableMassView {
    * @param offsetPosition - How to transform all the points
    * @returns - The offset after the specified vertices have been written
    */
-  public static updateArrays( positionArray: Float32Array | null, normalArray: Float32Array | null, uvArray: Float32Array | null, radius: number, height: number, isVertexUp: boolean, offset = 0, offsetPosition: Vector3 = Vector3.ZERO ): number {
+  private static updateArrays( positionArray: Float32Array | null, normalArray: Float32Array | null, uvArray: Float32Array | null, radius: number, height: number, isVertexUp: boolean, offset = 0, offsetPosition: Vector3 = Vector3.ZERO ): number {
     const writer = new TriangleArrayWriter( positionArray, normalArray, uvArray, offset, offsetPosition );
 
     const vertexSign = isVertexUp ? 1 : -1;

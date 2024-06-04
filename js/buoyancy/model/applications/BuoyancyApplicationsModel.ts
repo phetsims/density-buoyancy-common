@@ -33,7 +33,7 @@ export default class BuoyancyApplicationsModel extends DensityBuoyancyModel {
   public readonly bottle: Bottle;
   public readonly block: Cube;
   public readonly boat: Boat;
-  public readonly scale1: Scale; // Scale sitting on the ground next to the pool
+  private readonly scale1: Scale; // Scale sitting on the ground next to the pool
 
   // REVIEW: Should these Properties move to Bottle?
   // For the material inside the bottle.

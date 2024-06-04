@@ -455,7 +455,7 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
     this.positionResetSceneButton();
   }
 
-  public static getBoatIcon(): Node {
+  private static getBoatIcon(): Node {
     const boatIcon = DensityBuoyancyScreenView.getThreeIcon( boat_icon_png, () => {
       return DensityBuoyancyScreenView.getAngledIcon( 6, new Vector3( -0.03, 0, 0 ), scene => {
         scene.add( BoatView.getBoatDrawingData().group );
@@ -465,7 +465,7 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
     return boatIcon;
   }
 
-  public static getBottleIcon(): Node {
+  private static getBottleIcon(): Node {
     const bottle = DensityBuoyancyScreenView.getThreeIcon( bottle_icon_png, () => {
       return DensityBuoyancyScreenView.getAngledIcon( 3.4, new Vector3( -0.02, 0, 0 ), scene => {
         scene.add( BottleView.getBottleDrawingData().group );

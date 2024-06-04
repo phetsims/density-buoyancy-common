@@ -90,7 +90,7 @@ export default class Gravity {
     hidden: true
   } );
 
-  public static readonly GRAVITIES = [
+  private static readonly GRAVITIES = [
     Gravity.EARTH,
     Gravity.JUPITER,
     Gravity.MOON,

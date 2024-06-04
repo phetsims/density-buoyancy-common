@@ -26,8 +26,8 @@ export default class Ellipsoid extends Mass {
   public readonly sizeProperty: Property<Bounds3>;
 
   // Step information
-  public stepMaximumArea: number;
-  public stepMaximumVolume: number;
+  private stepMaximumArea: number;
+  private stepMaximumVolume: number;
 
   public constructor( engine: PhysicsEngine, size: Bounds3, providedOptions: EllipsoidOptions ) {
     const options = optionize<EllipsoidOptions, EmptySelfOptions, InstrumentedMassOptions>()( {
@@ -62,7 +62,7 @@ export default class Ellipsoid extends Mass {
   /**
    * Updates the size of the ellipsoid.
    */
-  public updateSize( size: Bounds3 ): void {
+  private updateSize( size: Bounds3 ): void {
     this.engine.updateFromVertices( this.body, Ellipsoid.getEllipsoidVertices( size.width, size.height ), false );
     this.sizeProperty.value = size;
     this.shapeProperty.value = Ellipsoid.getEllipsoidShape( size.width, size.height );
@@ -171,14 +171,14 @@ export default class Ellipsoid extends Mass {
   /**
    * Returns an ellipsoid shape
    */
-  public static getEllipsoidShape( width: number, height: number ): Shape {
+  private static getEllipsoidShape( width: number, height: number ): Shape {
     return Shape.ellipse( 0, 0, width / 2, height / 2, 0 );
   }
 
   /**
    * Returns vertices for an ellipsoid
    */
-  public static getEllipsoidVertices( width: number, height: number ): Vector2[] {
+  private static getEllipsoidVertices( width: number, height: number ): Vector2[] {
     const segments = 80;
     const vertices = [];
     for ( let i = 0; i < segments; i++ ) {
@@ -193,11 +193,11 @@ export default class Ellipsoid extends Mass {
   /**
    * Returns the volume of an ellipsoid with the given axis-aligned bounding box.
    */
-  public static getVolume( size: Bounds3 ): number {
+  private static getVolume( size: Bounds3 ): number {
     return Math.PI * size.width * size.height * size.depth / 6;
   }
 
-  public static EllipsoidIO = new IOType( 'EllipsoidIO', {
+  private static EllipsoidIO = new IOType( 'EllipsoidIO', {
     valueType: Ellipsoid,
     supertype: Mass.MassIO,
     documentation: 'Represents an ellipsoid'

@@ -27,8 +27,8 @@ export default class Cuboid extends Mass {
   public readonly sizeProperty: Property<Bounds3>;
 
   // Step information
-  public stepArea: number;
-  public stepMaximumVolume: number;
+  private stepArea: number;
+  private stepMaximumVolume: number;
 
   public constructor( engine: PhysicsEngine, size: Bounds3, providedOptions: CuboidOptions ) {
     const options = optionize<CuboidOptions, EmptySelfOptions, InstrumentedMassOptions>()( {
@@ -181,7 +181,7 @@ export default class Cuboid extends Mass {
   /**
    * Returns a (quick) closest-ray intersection with a cuboid (defined by the given Bounds3 and translation).
    */
-  public static intersect( bounds: Bounds3, translation: Vector3, ray: Ray3 ): number | null {
+  private static intersect( bounds: Bounds3, translation: Vector3, ray: Ray3 ): number | null {
     let tNear = Number.NEGATIVE_INFINITY;
     let tFar = Number.POSITIVE_INFINITY;
 

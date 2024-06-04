@@ -35,7 +35,7 @@ export type BuoyancyShapesModelOptions = DensityBuoyancyModelOptions;
 export default class BuoyancyShapesModel extends DensityBuoyancyModel {
 
   public readonly modeProperty: Property<TwoBlockMode>;
-  public readonly scale1: Scale;
+  private readonly scale1: Scale;
 
   // REVIEW: Add a structure like primary:{shapeProperty, widthRatioProperty, heightRatioProperty, massProperty}?
   // REVIEW: This will also help with the studio tree

@@ -216,7 +216,6 @@ export default class BuoyancyIntroScreenView extends DensityBuoyancyScreenView<B
     this.layoutRightSidePanels();
   }
 
-
   public static getBuoyancyIntroIcon(): Node {
     return DensityBuoyancyScreenView.getAngledIcon( 4, new Vector3( 0, -0.05, 0 ), scene => {
 

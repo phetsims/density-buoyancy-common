@@ -50,7 +50,7 @@ export default class Pool extends Basin {
   /**
    * Returns the maximum area that could be contained with liquid at a given y value.
    */
-  public getMaximumArea( y: number ): number {
+  protected getMaximumArea( y: number ): number {
     if ( y < this.bounds.minY || y > this.bounds.maxY ) {
       return 0;
     }
@@ -62,7 +62,7 @@ export default class Pool extends Basin {
   /**
    * Returns the maximum volume that could be contained with liquid up to a given y value.
    */
-  public getMaximumVolume( y: number ): number {
+  protected getMaximumVolume( y: number ): number {
     if ( y <= this.bounds.minY ) {
       return 0;
     }

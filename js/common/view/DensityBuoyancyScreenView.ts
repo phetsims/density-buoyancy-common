@@ -97,7 +97,7 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
 
   protected readonly model: Model;
   protected readonly popupLayer: Node;
-  protected readonly backgroundLayer: Node;
+  private readonly backgroundLayer: Node;
   protected readonly resetAllButton: Node;
 
   private readonly postLayoutEmitter: TEmitter;
@@ -105,16 +105,16 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
   // The sky background, in a unit 0-to-1 rectangle (so we can scale it to match)
   private readonly backgroundNode: Rectangle;
 
-  public readonly sceneNode: ThreeIsometricNode;
+  protected readonly sceneNode: ThreeIsometricNode;
 
   private readonly massDecorationLayer = new MassDecorationLayer();
 
-  public readonly massViews: ObservableArray<MassView>;
+  protected readonly massViews: ObservableArray<MassView>;
 
   private readonly debugView?: DebugView;
 
   // Subtypes can provide their own values to control the barrier sizing.
-  protected leftBarrierViewPointPropertyProperty: Property<TReadOnlyProperty<Vector2>>;
+  private leftBarrierViewPointPropertyProperty: Property<TReadOnlyProperty<Vector2>>;
   protected rightBarrierViewPointPropertyProperty: Property<TReadOnlyProperty<Vector2>>;
 
   // In Liters, how much volume does the Pool liquid + displaced Masses take up.
@@ -697,7 +697,7 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
   /**
    * Returns the closest grab-able mass under the pointer/
    */
-  public getMassViewUnderPointer( pointer: Pointer ): PointedAtMassView | null {
+  private getMassViewUnderPointer( pointer: Pointer ): PointedAtMassView | null {
     const point = pointer.point;
     if ( point === null ) {
       return null;
@@ -708,7 +708,7 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
   /**
    * Returns the closest grab-able mass under the point
    */
-  public getMassViewUnderPoint( point: Vector2 ): PointedAtMassView | null {
+  private getMassViewUnderPoint( point: Vector2 ): PointedAtMassView | null {
     const ray = this.sceneNode.getRayFromScreenPoint( point );
 
     const entries: PointedAtMassView[] = [];

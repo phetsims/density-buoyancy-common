@@ -84,12 +84,12 @@ export default abstract class Basin {
   /**
    * Returns the maximum area that could be contained with liquid at a given y value.
    */
-  public abstract getMaximumArea( y: number ): number;
+  protected abstract getMaximumArea( y: number ): number;
 
   /**
    * Returns the maximum volume that could be contained with liquid up to a given y value.
    */
-  public abstract getMaximumVolume( y: number ): number;
+  protected abstract getMaximumVolume( y: number ): number;
 
   /**
    * Returns the filled area in the basin (i.e. things that aren't air or water) at the given y value
@@ -134,7 +134,7 @@ export default abstract class Basin {
   /**
    * Returns the empty area in the basin (i.e. air, that isn't a solid object) at the given y value.
    */
-  public getEmptyArea( y: number ): number {
+  private getEmptyArea( y: number ): number {
     return this.getMaximumArea( y ) - this.getDisplacedArea( y );
   }
 

@@ -58,8 +58,8 @@ export default abstract class ReadoutListAccordionBox<ReadoutType> extends Accor
 
   protected cleanupEmitter = new TinyEmitter();
 
-  protected readonly readoutBox: VBox;
-  protected readonly contentWidthMaxProperty: TReadOnlyProperty<number>;
+  private readonly readoutBox: VBox;
+  private readonly contentWidthMaxProperty: TReadOnlyProperty<number>;
 
   protected constructor(
     titleStringProperty: TReadOnlyProperty<string>,
@@ -153,7 +153,7 @@ export default abstract class ReadoutListAccordionBox<ReadoutType> extends Accor
     } );
   }
 
-  public abstract generateReadoutData( readoutType: ReadoutType ): ReadoutData;
+  protected abstract generateReadoutData( readoutType: ReadoutType ): ReadoutData;
 
   public override dispose(): void {
     this.cleanupEmitter.emit();

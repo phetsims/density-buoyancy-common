@@ -29,8 +29,8 @@ export default class Duck extends Mass {
   public readonly sizeProperty: Property<Bounds3>;
 
   // Step information
-  public stepMaximumArea: number;
-  public stepMaximumVolume: number;
+  private stepMaximumArea: number;
+  private stepMaximumVolume: number;
 
   public constructor( engine: PhysicsEngine, size: Bounds3, providedConfig: DuckOptions ) {
 
@@ -59,14 +59,14 @@ export default class Duck extends Mass {
     this.updateSize( size );
   }
 
-  public override getLocalBounds(): Bounds3 {
+  protected override getLocalBounds(): Bounds3 {
     return this.sizeProperty.value;
   }
 
   /**
    * Updates the size of the duck.
    */
-  public updateSize( size: Bounds3 ): void {
+  private updateSize( size: Bounds3 ): void {
     const vertices = Duck.getDuckVertices( size.width, size.height );
     this.engine.updateFromVertices( this.body, vertices, true );
     this.sizeProperty.value = size;
@@ -180,14 +180,14 @@ export default class Duck extends Mass {
   /**
    * Returns a duck shape
    */
-  public static getDuckShape( width: number, height: number ): Shape {
+  private static getDuckShape( width: number, height: number ): Shape {
     return Shape.polygon( Duck.getDuckVertices( width, height ) );
   }
 
   /**
    * Returns vertices for a duck
    */
-  public static getDuckVertices( width: number, height: number ): Vector2[] {
+  private static getDuckVertices( width: number, height: number ): Vector2[] {
     const vertices = this.getFlatGeometry();
 
     // Scale the vertices to the given width and height
@@ -197,19 +197,19 @@ export default class Duck extends Mass {
   /**
    * Returns the volume of a duck with the given axis-aligned bounding box.
    */
-  public static getVolume( size: Bounds3 ): number {
+  private static getVolume( size: Bounds3 ): number {
 
     // Hard coded normalized volume obtained from Blender
     return 0.5 * size.width * size.height * size.depth;
   }
 
-  public static DuckIO = new IOType( 'DuckIO', {
+  private static DuckIO = new IOType( 'DuckIO', {
     valueType: Duck,
     supertype: Mass.MassIO,
     documentation: 'Represents a duck'
   } );
 
-  public static getFlatGeometry(): Vector2[] {
+  private static getFlatGeometry(): Vector2[] {
     return flatDuckData;
   }
 }

@@ -19,7 +19,7 @@ import Vector2 from '../../../../../dot/js/Vector2.js';
 
 export default class DuckView extends MeasurableMassView {
 
-  public readonly duck: Duck;
+  private readonly duck: Duck;
   private duckGeometry: THREE.BufferGeometry;
 
   public constructor( duck: Duck, modelViewTransform: THREEModelViewTransform,
@@ -78,7 +78,7 @@ export default class DuckView extends MeasurableMassView {
     super.dispose();
   }
 
-  public static getDuckGeometry( size: Bounds3 ): THREE.BufferGeometry {
+  private static getDuckGeometry( size: Bounds3 ): THREE.BufferGeometry {
 
     const geometry = duckGeometry.clone();
 

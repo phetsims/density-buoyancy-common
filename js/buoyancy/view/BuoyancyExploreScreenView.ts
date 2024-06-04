@@ -37,7 +37,7 @@ import MassView from '../../common/view/MassView.js';
 
 export default class BuoyancyExploreScreenView extends DensityBuoyancyScreenView<BuoyancyExploreModel> {
 
-  protected rightBox: PrimarySecondaryControlsNode;
+  private rightBox: PrimarySecondaryControlsNode;
 
   public constructor( model: BuoyancyExploreModel, options: DensityBuoyancyScreenViewOptions ) {
 

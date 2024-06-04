@@ -36,7 +36,7 @@ export default class Boat extends ApplicationsMass {
   public readonly basin: BoatBasin;
 
   // Amount of volume contained in the basin
-  public stepInternalVolume = 0;
+  private stepInternalVolume = 0;
 
   // How to multiply our one-liter boat shape up to the model coordinates, since the boat changes size based on its
   // volume. This is much preferred to trying to redraw the shape to a different size.
@@ -154,11 +154,11 @@ export default class Boat extends ApplicationsMass {
     }
   }
 
-  public override evaluatePiecewiseLinearArea( ratio: number ): number {
+  protected override evaluatePiecewiseLinearArea( ratio: number ): number {
     return Mass.evaluatePiecewiseLinear( BoatDesign.ONE_LITER_DISPLACED_AREAS, ratio ) * this.stepMultiplier * this.stepMultiplier;
   }
 
-  public override evaluatePiecewiseLinearVolume( ratio: number ): number {
+  protected override evaluatePiecewiseLinearVolume( ratio: number ): number {
     return Mass.evaluatePiecewiseLinear( BoatDesign.ONE_LITER_DISPLACED_VOLUMES, ratio ) * this.stepMultiplier * this.stepMultiplier * this.stepMultiplier;
   }
 

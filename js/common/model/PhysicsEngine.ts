@@ -156,7 +156,7 @@ export default abstract class PhysicsEngine {
   /**
    * Removes a listener to be called after each internal step.
    */
-  public abstract removePostStepListener( listener: ( dt: number ) => void ): void;
+  protected abstract removePostStepListener( listener: ( dt: number ) => void ): void;
 
   /**
    * Adds in a pointer constraint so that the body's current point at the position will stay at the position

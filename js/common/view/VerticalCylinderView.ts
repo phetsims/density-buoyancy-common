@@ -21,7 +21,7 @@ const numElements = 12 * segments;
 
 export default class VerticalCylinderView extends MeasurableMassView {
 
-  public readonly verticalCylinder: VerticalCylinder;
+  private readonly verticalCylinder: VerticalCylinder;
   private readonly verticalCylinderGeometry: THREE.BufferGeometry;
   private readonly updateListener: () => void;
 

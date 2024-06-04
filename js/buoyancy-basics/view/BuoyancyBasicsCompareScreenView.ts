@@ -262,7 +262,7 @@ export default class BuoyancyBasicsCompareScreenView extends DensityBuoyancyScre
   }
 
 
-  public static getBuoyancyIntroIcon(): Node {
+  private static getBuoyancyIntroIcon(): Node {
     return DensityBuoyancyScreenView.getAngledIcon( 4, new Vector3( 0, -0.05, 0 ), scene => {
 
       const boxGeometry = new THREE.BoxGeometry( 0.1, 0.1, 0.1 );

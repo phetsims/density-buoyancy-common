@@ -49,7 +49,7 @@ const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
 
 export default class BuoyancyShapesScreenView extends DensityBuoyancyScreenView<BuoyancyShapesModel> {
 
-  protected rightBox: MultiSectionPanelsNode;
+  private rightBox: MultiSectionPanelsNode;
 
   private readonly positionInfoButton: () => void;
 

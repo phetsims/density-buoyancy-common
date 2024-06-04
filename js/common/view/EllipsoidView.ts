@@ -17,7 +17,7 @@ import { THREEModelViewTransform } from './DensityBuoyancyScreenView.js';
 
 export default class EllipsoidView extends MeasurableMassView {
 
-  public readonly ellipsoid: Ellipsoid;
+  private readonly ellipsoid: Ellipsoid;
   private readonly ellipsoidGeometry: THREE.SphereGeometry;
   private readonly updateListener: ( newSize: Bounds3, oldSize: Bounds3 ) => void;
 

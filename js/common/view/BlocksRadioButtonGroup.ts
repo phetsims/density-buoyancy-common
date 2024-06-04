@@ -154,7 +154,7 @@ export default class BlocksRadioButtonGroup extends RectangularRadioButtonGroup<
   /**
    * Returns an icon that shows a single cuboid.
    */
-  public static getSingleCuboidIcon(): Node {
+  private static getSingleCuboidIcon(): Node {
     if ( DensityBuoyancyCommonQueryParameters.generateIconImages ) {
       return BlocksRadioButtonGroup.getIcon( 5.5, scene => {
         scene.add( BlocksRadioButtonGroup.createBox( aMaterial, new Vector3( 0, 0, 0 ) ) );
@@ -168,7 +168,7 @@ export default class BlocksRadioButtonGroup extends RectangularRadioButtonGroup<
   /**
    * Returns an icon that shows a single cuboid.
    */
-  public static getDoubleCuboidIcon(): Node {
+  private static getDoubleCuboidIcon(): Node {
     if ( DensityBuoyancyCommonQueryParameters.generateIconImages ) {
       return BlocksRadioButtonGroup.getIcon( 4, scene => {
         scene.add( BlocksRadioButtonGroup.createBox( aMaterial, new Vector3( -0.039, 0.015, -0.07 ) ) );

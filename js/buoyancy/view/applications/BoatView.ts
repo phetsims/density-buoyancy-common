@@ -25,7 +25,7 @@ const VOLUME_TOLERANCE = DensityBuoyancyCommonConstants.TOLERANCE;
 
 
 export default class BoatView extends MeasurableMassView {
-  public readonly boat: Boat;
+  private readonly boat: Boat;
 
   public constructor( boat: Boat, modelViewTransform: THREEModelViewTransform,
                       liquidYInterpolatedProperty: TReadOnlyProperty<number>,

@@ -231,7 +231,7 @@ export default class Material {
     } );
   }
 
-  // (read-only) {Material} - "Solids"
+  ////////////////// SOLIDS //////////////////
 
   public static readonly ALUMINUM = new Material( {
     nameProperty: DensityBuoyancyCommonStrings.material.aluminumStringProperty,
@@ -390,7 +390,7 @@ export default class Material {
     depthLinesColor: DensityBuoyancyCommonColors.depthLinesLightColorProperty
   } );
 
-  // (read-only) {Material} - "Liquids".
+  ////////////////// LIQUIDS //////////////////
 
   public static readonly AIR = new Material( {
     nameProperty: DensityBuoyancyCommonStrings.material.airStringProperty,
@@ -518,8 +518,7 @@ export default class Material {
     liquidColor: DensityBuoyancyCommonColors.materialWaterColorProperty
   } );
 
-
-  // (read-only) {Material} - "Mystery Materials"
+  ////////////////// MYSTERY MATERIALS //////////////////
 
   public static readonly MATERIAL_O = new Material( {
     nameProperty: DensityBuoyancyCommonStrings.material.materialOStringProperty,

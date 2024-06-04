@@ -45,10 +45,9 @@ const DensityBuoyancyCommonConstants = {
 
   MARGIN_SMALL: MARGIN / 2,
 
-  // (read-only) {number} - Used for panels/boxes by default
+  // Used for panels/boxes by default
   CORNER_RADIUS: CORNER_RADIUS,
 
-  // (read-only) {Font}
   TITLE_FONT: new PhetFont( {
     size: 16,
     weight: 'bold'
@@ -83,7 +82,6 @@ const DensityBuoyancyCommonConstants = {
     yMargin: MARGIN
   },
 
-  // (read-only) {Object}
   ACCORDION_BOX_OPTIONS: {
     cornerRadius: CORNER_RADIUS,
     titleYMargin: 5,
@@ -93,7 +91,7 @@ const DensityBuoyancyCommonConstants = {
     fill: DensityBuoyancyCommonColors.panelBackgroundProperty
   } as const,
 
-  // (read-only) {Vector3} cameraLookAt locations
+  // cameraLookAt locations
   DENSITY_CAMERA_LOOK_AT: Vector3.ZERO,
   BUOYANCY_CAMERA_LOOK_AT: new Vector3( 0, -0.18, 0 ),
   BUOYANCY_BASICS_CAMERA_LOOK_AT: new Vector3( 0, -0.1, 0 ),

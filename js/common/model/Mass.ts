@@ -190,7 +190,7 @@ export default abstract class Mass extends PhetioObject {
   // In kg (kilograms), added to the normal mass (computed from density and volume)
   public readonly containedMassProperty: Property<number>;
 
-  // (read-only) In kg (kilograms) - written to by other processes
+  // In kg (kilograms) - written to by other processes
   public readonly massProperty: Property<number>;
 
   // The following offset will be added onto the body's position to determine ours. This value will not be applied to
@@ -533,10 +533,6 @@ export default abstract class Mass extends PhetioObject {
     this.writeData();
     this.engine.bodySynchronizePrevious( this.body );
 
-    // (read-only) {number} - Required internal-physics-step properties that should be set by subtypes in
-    // updateStepInformation(). There may exist more set by the subtype (that will be used for e.g. volume/area
-    // calculations). These are updated more often than simulation steps. These specific values will be used by external
-    // code for determining liquid height.
     this.stepX = 0; // x-value of the position
     this.stepBottom = 0; // minimum y value of the mass
     this.stepTop = 0; // maximum y value of the mass

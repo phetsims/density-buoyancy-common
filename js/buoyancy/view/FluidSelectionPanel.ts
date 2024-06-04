@@ -10,7 +10,6 @@ import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import Material from '../../common/model/Material.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import Panel, { PanelOptions } from '../../../../sun/js/Panel.js';
-import ReadOnlyProperty from '../../../../axon/js/ReadOnlyProperty.js';
 import { Node, Text, VBox } from '../../../../scenery/js/imports.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 import { EmptySelfOptions, optionize3 } from '../../../../phet-core/js/optionize.js';

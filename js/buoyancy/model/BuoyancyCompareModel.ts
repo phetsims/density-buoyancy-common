@@ -17,16 +17,16 @@ import CompareBlockSetModel, { BLOCK_SETS_TANDEM_NAME, CompareBlockSetModelOptio
 import StrictOmit from '../../../../phet-core/js/types/StrictOmit.js';
 import Material from '../../common/model/Material.js';
 
-export type BuoyancyBasicsCompareModelOptions = StrictOmit<CompareBlockSetModelOptions, 'positionMassesCallback' | 'cubesData'>;
+export type BuoyancyCompareModelOptions = StrictOmit<CompareBlockSetModelOptions, 'positionMassesCallback' | 'cubesData'>;
 
-export default class BuoyancyBasicsCompareModel extends CompareBlockSetModel {
+export default class BuoyancyCompareModel extends CompareBlockSetModel {
 
-  public constructor( providedOptions: BuoyancyBasicsCompareModelOptions ) {
+  public constructor( providedOptions: BuoyancyCompareModelOptions ) {
 
     const tandem = providedOptions.tandem;
     const blockSetsTandem = tandem.createTandem( BLOCK_SETS_TANDEM_NAME );
 
-    const options = optionize<BuoyancyBasicsCompareModelOptions, EmptySelfOptions, CompareBlockSetModelOptions>()( {
+    const options = optionize<BuoyancyCompareModelOptions, EmptySelfOptions, CompareBlockSetModelOptions>()( {
       showMassValuesDefault: true,
 
       supportsDepthLines: true,
@@ -109,4 +109,4 @@ export default class BuoyancyBasicsCompareModel extends CompareBlockSetModel {
 }
 
 
-densityBuoyancyCommon.register( 'BuoyancyBasicsCompareModel', BuoyancyBasicsCompareModel );
+densityBuoyancyCommon.register( 'BuoyancyCompareModel', BuoyancyCompareModel );

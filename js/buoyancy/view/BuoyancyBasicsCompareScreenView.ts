@@ -13,23 +13,23 @@ import Material from '../../common/model/Material.js';
 import DensityBuoyancyScreenView, { DensityBuoyancyScreenViewOptions } from '../../common/view/DensityBuoyancyScreenView.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
-import BuoyancyBasicsCompareModel from '../../buoyancy/model/BuoyancyBasicsCompareModel.js';
-import DensityAccordionBox from '../../buoyancy/view/DensityAccordionBox.js';
+import BuoyancyCompareModel from '../model/BuoyancyCompareModel.js';
+import DensityAccordionBox from './DensityAccordionBox.js';
 import BuoyancyDisplayOptionsPanel from '../../common/view/BuoyancyDisplayOptionsPanel.js';
-import SubmergedAccordionBox from '../../buoyancy/view/SubmergedAccordionBox.js';
+import SubmergedAccordionBox from './SubmergedAccordionBox.js';
 import PatternStringProperty from '../../../../axon/js/PatternStringProperty.js';
 import Property from '../../../../axon/js/Property.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
 import ScreenView from '../../../../joist/js/ScreenView.js';
 import BlockSet from '../../common/model/BlockSet.js';
-import { ReadoutItemOptions } from '../../buoyancy/view/ReadoutListAccordionBox.js';
+import { ReadoutItemOptions } from './ReadoutListAccordionBox.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import Mass from '../../common/model/Mass.js';
 import Bounds2 from '../../../../dot/js/Bounds2.js';
 import DensityMaterials from '../../common/view/DensityMaterials.js';
 import ThreeUtils from '../../../../mobius/js/ThreeUtils.js';
 import DensityBuoyancyCommonColors from '../../common/view/DensityBuoyancyCommonColors.js';
-import FluidSelectionPanel from '../../buoyancy/view/FluidSelectionPanel.js';
+import FluidSelectionPanel from './FluidSelectionPanel.js';
 import ComparisonControlPanel from '../../common/view/ComparisonControlPanel.js';
 import Dimension2 from '../../../../dot/js/Dimension2.js';
 import ScaleView from '../../common/view/ScaleView.js';
@@ -43,12 +43,12 @@ const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
 // Relatively arbitrary default
 const MAX_RIGHT_SIDE_CONTENT_WIDTH = ScreenView.DEFAULT_LAYOUT_BOUNDS.width / 2;
 
-export default class BuoyancyBasicsCompareScreenView extends DensityBuoyancyScreenView<BuoyancyBasicsCompareModel> {
+export default class BuoyancyBasicsCompareScreenView extends DensityBuoyancyScreenView<BuoyancyCompareModel> {
 
   private readonly rightSideMaxContentWidthProperty = new Property( MAX_RIGHT_SIDE_CONTENT_WIDTH );
   private readonly rightSidePanelsVBox: Node;
 
-  public constructor( model: BuoyancyBasicsCompareModel, options: DensityBuoyancyScreenViewOptions ) {
+  public constructor( model: BuoyancyCompareModel, options: DensityBuoyancyScreenViewOptions ) {
 
     super( model, combineOptions<DensityBuoyancyScreenViewOptions>( {
       // Custom just for this screen

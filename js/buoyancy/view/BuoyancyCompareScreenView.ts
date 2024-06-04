@@ -43,7 +43,7 @@ const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
 // Relatively arbitrary default
 const MAX_RIGHT_SIDE_CONTENT_WIDTH = ScreenView.DEFAULT_LAYOUT_BOUNDS.width / 2;
 
-export default class BuoyancyBasicsCompareScreenView extends DensityBuoyancyScreenView<BuoyancyCompareModel> {
+export default class BuoyancyCompareScreenView extends DensityBuoyancyScreenView<BuoyancyCompareModel> {
 
   private readonly rightSideMaxContentWidthProperty = new Property( MAX_RIGHT_SIDE_CONTENT_WIDTH );
   private readonly rightSidePanelsVBox: Node;
@@ -233,7 +233,7 @@ export default class BuoyancyBasicsCompareScreenView extends DensityBuoyancyScre
     this.layoutRightSidePanels();
   }
 
-  public static getBuoyancyBasicsCompareIcon(): Node {
+  public static getBuoyancyCompareIcon(): Node {
     return DensityBuoyancyScreenView.getAngledIcon( 4, new Vector3( 0, -0.05, 0 ), scene => {
 
       const boxGeometry = new THREE.BoxGeometry( 0.1, 0.1, 0.1 );
@@ -278,4 +278,4 @@ export default class BuoyancyBasicsCompareScreenView extends DensityBuoyancyScre
   }
 }
 
-densityBuoyancyCommon.register( 'BuoyancyBasicsCompareScreenView', BuoyancyBasicsCompareScreenView );
+densityBuoyancyCommon.register( 'BuoyancyCompareScreenView', BuoyancyCompareScreenView );

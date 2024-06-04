@@ -24,7 +24,6 @@ import PatternStringProperty from '../../../../axon/js/PatternStringProperty.js'
 import BlocksRadioButtonGroup from '../../common/view/BlocksRadioButtonGroup.js';
 import BuoyancyExploreScreenView from '../../buoyancy/view/BuoyancyExploreScreenView.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
-import PoolScaleHeightControl from '../../common/view/PoolScaleHeightControl.js';
 import FluidSelectionPanel from '../../buoyancy/view/FluidSelectionPanel.js';
 import CuboidView from '../../common/view/CuboidView.js';
 import ScaleView from '../../common/view/ScaleView.js';

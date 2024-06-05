@@ -20,7 +20,7 @@ import Vector2Property from '../../../../dot/js/Vector2Property.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
 import { Shape } from '../../../../kite/js/imports.js';
 import EnumerationIO from '../../../../tandem/js/types/EnumerationIO.js';
-import optionize, { combineOptions, EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
+import optionize, { combineOptions } from '../../../../phet-core/js/optionize.js';
 import { Color, ColorProperty, PDOMValueType } from '../../../../scenery/js/imports.js';
 import PhetioObject, { PhetioObjectOptions } from '../../../../tandem/js/PhetioObject.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
@@ -37,13 +37,11 @@ import PickRequired from '../../../../phet-core/js/types/PickRequired.js';
 import { MassShape } from './MassShape.js';
 import { BodyStateObject } from './P2Engine.js';
 import TEmitter from '../../../../axon/js/TEmitter.js';
-import NullableIO from '../../../../tandem/js/types/NullableIO.js';
-import StringIO from '../../../../tandem/js/types/StringIO.js';
-import NumberIO from '../../../../tandem/js/types/NumberIO.js';
 import MassTag, { MassTagStateObject } from './MassTag.js';
 import Bounds3 from '../../../../dot/js/Bounds3.js';
 import BlendedVector2Property from './BlendedVector2Property.js';
 import MaterialEnumeration from './MaterialEnumeration.js';
+import { GuardedNumberProperty, GuardedNumberPropertyOptions } from './GuardedNumberProperty.js';
 
 // REVIEW: How do these relate to MaterialName which is the type of material.identifier?
 type MaterialNonCustomIdentifier = 'ALUMINUM' | 'BRICK' | 'COPPER' | 'ICE' | 'PLATINUM' | 'STEEL' | 'STYROFOAM' | 'WOOD' | 'PVC';
@@ -55,38 +53,6 @@ const materialToEnum = ( material: Material ): MaterialEnumeration => {
   assert && assert( enumerationValue, 'Unexpected material identifier: ' + material.identifier );
   return enumerationValue;
 };
-
-type GuardedNumberPropertyOptions = NumberPropertyOptions & { getPhetioSpecificValidationError: ( value: number ) => string | null };
-
-class GuardedNumberProperty extends NumberProperty {
-  protected readonly getPhetioSpecificValidationError: ( number: number ) => string | null;
-
-  public constructor( value: number, providedOptions: GuardedNumberPropertyOptions ) {
-    const options = optionize<GuardedNumberPropertyOptions, EmptySelfOptions, NumberPropertyOptions>()( {
-      phetioOuterType: () => GuardedNumberPropertyIO
-    }, providedOptions );
-    super( value, options );
-
-    this.getPhetioSpecificValidationError = options.getPhetioSpecificValidationError;
-  }
-}
-
-const GuardedNumberPropertyIO = new IOType( 'GuardedNumberPropertyIO', {
-  supertype: NumberProperty.NumberPropertyIO,
-  parameterTypes: [ NumberIO ],
-  methods: {
-    getValidationError: {
-      returnType: NullableIO( StringIO ),
-      parameterTypes: [ NumberIO ],
-      implementation: function( this: GuardedNumberProperty, value: number ) {
-
-        // Fails early on the first error, checking the superclass validation first
-        return this.getValidationError( value ) || this.getPhetioSpecificValidationError( value );
-      },
-      documentation: 'Checks to see if a proposed value is valid. Returns the first validation error, or null if the value is valid.'
-    }
-  }
-} );
 
 // For the Buoyancy Shapes screen, but needed here because setRatios is included in each core type
 // See https://github.com/phetsims/buoyancy/issues/29

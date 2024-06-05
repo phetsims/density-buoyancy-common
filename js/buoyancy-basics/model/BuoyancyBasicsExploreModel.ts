@@ -45,12 +45,14 @@ export default class BuoyancyBasicsExploreModel extends DensityBuoyancyModel {
     this.primaryMass = Cube.createWithMass( this.engine, Material.WOOD, new Vector2( -0.2, 0.2 ), 2, {
       tag: MassTag.PRIMARY,
       adjustableMaterial: true,
+      adjustableColor: false,
       tandem: blocksTandem.createTandem( 'blockA' )
     } );
     this.availableMasses.push( this.primaryMass );
     this.secondaryMass = Cube.createWithMass( this.engine, Material.ALUMINUM, new Vector2( 0.05, 0.35 ), 13.5, {
       tag: MassTag.SECONDARY,
       adjustableMaterial: true,
+      adjustableColor: false,
       tandem: blocksTandem.createTandem( 'blockB' ),
       visible: false
     } );

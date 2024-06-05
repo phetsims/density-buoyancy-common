@@ -28,7 +28,7 @@ import BooleanIO from '../../../../tandem/js/types/BooleanIO.js';
 import IOType from '../../../../tandem/js/types/IOType.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import InterpolatedProperty from './InterpolatedProperty.js';
-import Material, { CUSTOM_MATERIAL_NAME, CustomMaterialName } from './Material.js';
+import Material, { CreateCustomMaterialOptions, CUSTOM_MATERIAL_NAME, CustomMaterialName } from './Material.js';
 import PhysicsEngine, { PhysicsEngineBody } from './PhysicsEngine.js';
 import Basin from './Basin.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
@@ -106,8 +106,13 @@ type SelfOptions = {
   canRotate?: boolean;
   canMove?: boolean;
 
-  // Allow PhET-iO customization of the material beyond initial value, see https://github.com/phetsims/density/issues/101
+  // Allow Customization of the material beyond initial value, this includes PhET-iO support for changing the density
+  // and color, as well as support for some screens to adjust density instead of mass/volume as is most typical, see https://github.com/phetsims/density/issues/101
   adjustableMaterial?: boolean;
+
+  // Only used when adjustableMaterial:true. Set to true to support a PhET-iO instrumented Property to set the color
+  // of the block. Set to false to calculate the color based on the current density + the density range.
+  adjustableColor?: boolean;
   tag?: MassTag;
   accessibleName?: PDOMValueType | null;
   phetioType?: IOType;
@@ -159,7 +164,7 @@ export default abstract class Mass extends PhetioObject {
   public readonly materialEnumProperty?: Property<MaterialEnumeration>;
 
   // for phet-io support (to control the materialProperty)
-  public readonly customDensityProperty?: Property<number>;
+  public readonly customDensityProperty?: NumberProperty;
 
   // for phet-io support (to control the materialProperty)
   private readonly customColorProperty?: Property<Color>;
@@ -247,6 +252,7 @@ export default abstract class Mass extends PhetioObject {
       canRotate: false,
       canMove: true,
       adjustableMaterial: false,
+      adjustableColor: true,
       tag: MassTag.NONE,
       accessibleName: null,
       phetioType: Mass.MassIO,
@@ -324,7 +330,7 @@ export default abstract class Mass extends PhetioObject {
         units: 'kg/m^3'
       } );
       this.customColorProperty = new ColorProperty( options.material.customColor ? options.material.customColor.value : Color.WHITE, {
-        tandem: tandem?.createTandem( 'customColorProperty' ),
+        tandem: options.adjustableColor ? tandem?.createTandem( 'customColorProperty' ) : Tandem.OPT_OUT,
         phetioFeatured: true
       } );
 
@@ -366,10 +372,17 @@ export default abstract class Mass extends PhetioObject {
           densityLock = true;
           colorLock = true;
           if ( materialEnum === MaterialEnumeration.CUSTOM ) {
-            this.materialProperty.value = Material.createCustomSolidMaterial( {
-              density: this.customDensityProperty!.value,
-              customColor: this.customColorProperty
-            } );
+            const createMaterialOptions: CreateCustomMaterialOptions = {
+              density: this.customDensityProperty!.value
+            };
+            if ( options.adjustableColor ) {
+              createMaterialOptions.customColor = this.customColorProperty;
+            }
+            else {
+              createMaterialOptions.densityRange = this.customDensityProperty!.range;
+            }
+
+            this.materialProperty.value = Material.createCustomSolidMaterial( createMaterialOptions );
           }
           else {
             assert && assert( Material.hasOwnProperty( materialEnum.name ), `unexpected material enum: ${materialEnum.name}` );

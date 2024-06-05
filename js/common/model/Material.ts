@@ -27,6 +27,7 @@ import TinyProperty from '../../../../axon/js/TinyProperty.js';
 import ReadOnlyProperty from '../../../../axon/js/ReadOnlyProperty.js';
 import MappedProperty from '../../../../axon/js/MappedProperty.js';
 import Range from '../../../../dot/js/Range.js';
+import WithRequired from '../../../../phet-core/js/types/WithRequired.js';
 
 const NullableColorPropertyReferenceType = NullableIO( ReferenceIO( Property.PropertyIO( Color.ColorIO ) ) );
 
@@ -47,8 +48,7 @@ type MaterialState = {
 export const CUSTOM_MATERIAL_NAME = 'CUSTOM';
 export type CustomMaterialName = typeof CUSTOM_MATERIAL_NAME;
 export type MaterialName = keyof ( typeof Material ) | CustomMaterialName;
-
-type DensityRangeOption = { densityRange?: Range };
+export type CreateCustomMaterialOptions = MaterialOptions & Required<Pick<MaterialOptions, 'density'>> & { densityRange?: Range };
 
 export type MaterialOptions = {
   nameProperty?: TReadOnlyProperty<string>;
@@ -136,7 +136,7 @@ export default class Material {
   /**
    * Returns a custom material that can be modified at will, but with a liquid color specified.
    */
-  public static createCustomLiquidMaterial( options: MaterialOptions & Required<Pick<MaterialOptions, 'density'> & Required<DensityRangeOption>> ): Material {
+  public static createCustomLiquidMaterial( options: WithRequired<CreateCustomMaterialOptions, 'densityRange'> ): Material {
     return Material.createCustomMaterial( combineOptions<MaterialOptions>( {
       liquidColor: Material.getCustomLiquidColor( options.density, options.densityRange )
     }, options ) );
@@ -145,7 +145,7 @@ export default class Material {
   /**
    * Returns a custom material that can be modified at will, but with a solid color specified
    */
-  public static createCustomSolidMaterial( options: MaterialOptions & Required<Pick<MaterialOptions, 'density'>> & DensityRangeOption ): Material {
+  public static createCustomSolidMaterial( options: CreateCustomMaterialOptions ): Material {
 
     assert && assert( options.hasOwnProperty( 'customColor' ) || options.hasOwnProperty( 'densityRange' ), 'we need a way to have a material color' );
 

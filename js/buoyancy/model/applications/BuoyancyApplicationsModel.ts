@@ -22,6 +22,7 @@ import TReadOnlyProperty from '../../../../../axon/js/TReadOnlyProperty.js';
 import BooleanIO from '../../../../../tandem/js/types/BooleanIO.js';
 import { BottleOrBoat, BottleOrBoatValues } from './BottleOrBoat.js';
 import StringUnionProperty from '../../../../../axon/js/StringUnionProperty.js';
+import MassTag from '../../../common/model/MassTag.js';
 
 export type BuoyancyApplicationsModelOptions = DensityBuoyancyModelOptions;
 
@@ -55,7 +56,8 @@ export default class BuoyancyApplicationsModel extends DensityBuoyancyModel {
     this.bottle = new Bottle( this.engine, {
       matrix: Matrix3.translation( 0, 0 ),
       tandem: objectsTandem.createTandem( 'bottle' ),
-      visible: true
+      visible: true,
+      tag: MassTag.PRIMARY
     } );
     this.availableMasses.push( this.bottle );
 

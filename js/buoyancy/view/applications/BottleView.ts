@@ -12,6 +12,8 @@ import Material from '../../../common/model/Material.js';
 import TReadOnlyProperty from '../../../../../axon/js/TReadOnlyProperty.js';
 import MeasurableMassView from '../../../common/view/MeasurableMassView.js';
 import { THREEModelViewTransform } from '../../../common/view/DensityBuoyancyScreenView.js';
+import Vector3 from '../../../../../dot/js/Vector3.js';
+import { TAG_OFFSET } from '../../../common/view/MassTagNode.js';
 
 type BottleDrawingData = {
   group: THREE.Group;
@@ -107,6 +109,9 @@ export default class BottleView extends MeasurableMassView {
     Material.linkLiquidColor( bottle.interiorMaterialProperty, bottleDrawingData.frontBottomMaterial );
 
     this.bottle = bottle;
+
+    const bottleSize = bottle.getBounds();
+    this.tagOffsetProperty.value = new Vector3( bottleSize.minX + TAG_OFFSET, bottleSize.maxY - TAG_OFFSET, bottleSize.maxZ );
   }
 
   /**

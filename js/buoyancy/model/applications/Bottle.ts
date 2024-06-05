@@ -236,7 +236,7 @@ export default class Bottle extends ApplicationsMass {
 
     Multilink.multilink( [ this.interiorMaterialProperty, this.interiorVolumeProperty ], ( material, volume ) => {
       this.materialProperty.value = Material.createCustomSolidMaterial( {
-        nameProperty: DensityBuoyancyCommonStrings.averageStringProperty,
+        nameProperty: DensityBuoyancyCommonStrings.systemAStringProperty,
         density: ( BOTTLE_MASS + material.density * volume ) / BOTTLE_VOLUME,
         densityRange: BOTTLE_DENSITY_RANGE
       } );

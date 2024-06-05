@@ -45,6 +45,7 @@ import Bounds3 from '../../../../dot/js/Bounds3.js';
 import BlendedVector2Property from './BlendedVector2Property.js';
 import MaterialEnumeration from './MaterialEnumeration.js';
 
+// REVIEW: How do these relate to MaterialName which is the type of material.identifier?
 type MaterialNonCustomIdentifier = 'ALUMINUM' | 'BRICK' | 'COPPER' | 'ICE' | 'PLATINUM' | 'STEEL' | 'STYROFOAM' | 'WOOD' | 'PVC';
 type MaterialIdentifier = MaterialNonCustomIdentifier | CustomMaterialName;
 

@@ -44,6 +44,7 @@ import MaterialEnumeration from './MaterialEnumeration.js';
 import { GuardedNumberProperty, GuardedNumberPropertyOptions } from './GuardedNumberProperty.js';
 
 // REVIEW: How do these relate to MaterialName which is the type of material.identifier?
+// REVIEW: MK: I don't know how to say this type must be a subset of "keyof Material". Do you?
 type MaterialNonCustomIdentifier = 'ALUMINUM' | 'BRICK' | 'COPPER' | 'ICE' | 'PLATINUM' | 'STEEL' | 'STYROFOAM' | 'WOOD' | 'PVC';
 type MaterialIdentifier = MaterialNonCustomIdentifier | CustomMaterialName;
 

@@ -17,7 +17,6 @@ import NumberControl, { NumberControlOptions } from '../../../../scenery-phet/js
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import { combineOptions } from '../../../../phet-core/js/optionize.js';
 import PrecisionSliderThumb from './PrecisionSliderThumb.js';
-import Tandem from '../../../../tandem/js/Tandem.js';
 import { MaterialEnumeration } from '../model/Mass.js';
 import UnitConversionProperty from '../../../../axon/js/UnitConversionProperty.js';
 import Range from '../../../../dot/js/Range.js';
@@ -43,7 +42,7 @@ export default class BlockControlNode extends MaterialMassVolumeControlNode {
 
       assert && assert( cuboid.adjustableMaterial, 'useDensityControlInsteadOfMassControl should only be used with adjustable materials' );
 
-      const customDensityControlTandem = options.tandem?.createTandem( 'densityNumberControl' ) || Tandem.OPTIONAL;
+      const densityNumberControlTandem = options.tandem.createTandem( 'densityNumberControl' );
       cuboid.customDensityProperty!.lazyLink( () => {
         cuboid.materialEnumProperty!.value = MaterialEnumeration.CUSTOM;
       } );
@@ -63,14 +62,14 @@ export default class BlockControlNode extends MaterialMassVolumeControlNode {
           sliderOptions: {
             accessibleName: DensityBuoyancyCommonStrings.densityStringProperty,
             thumbNode: new PrecisionSliderThumb( {
-              tandem: customDensityControlTandem.createTandem( 'slider' ).createTandem( 'thumbNode' ),
+              tandem: densityNumberControlTandem.createTandem( 'slider' ).createTandem( 'thumbNode' ),
               thumbFill: options.color
             } )
           },
           numberDisplayOptions: {
             valuePattern: DensityBuoyancyCommonConstants.KILOGRAMS_PER_VOLUME_PATTERN_STRING_PROPERTY
           },
-          tandem: customDensityControlTandem
+          tandem: densityNumberControlTandem
         }, MaterialMassVolumeControlNode.getNumberControlOptions() ) );
       this.densityControlPlaceholderLayer.addChild( densityNumberControl );
     }

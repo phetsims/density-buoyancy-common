@@ -40,6 +40,9 @@ export default class BlockControlNode extends MaterialMassVolumeControlNode {
       cubicMeters => cuboid.updateSize( Cube.boundsFromVolume( cubicMeters ) ), listParent, numberControlMassPropertyFeatured, options );
 
     if ( options.useDensityControlInsteadOfMassControl ) {
+
+      assert && assert( cuboid.adjustableMaterial, 'useDensityControlInsteadOfMassControl should only be used with adjustable materials' );
+
       const customDensityControlTandem = options.tandem?.createTandem( 'densityNumberControl' ) || Tandem.OPTIONAL;
       cuboid.customDensityProperty!.lazyLink( () => {
         cuboid.materialEnumProperty!.value = MaterialEnumeration.CUSTOM;
@@ -57,7 +60,6 @@ export default class BlockControlNode extends MaterialMassVolumeControlNode {
         // TODO: https://github.com/phetsims/density-buoyancy-common/issues/154 are the colors right?
         // TODO: https://github.com/phetsims/density-buoyancy-common/issues/154 red/blue colors per the tag color
         // TODO: https://github.com/phetsims/density-buoyancy-common/issues/154 Can the bottle density property use adjustableMaterial?
-        // TODO: https://github.com/phetsims/density-buoyancy-common/issues/154 assert the cuboid.isAdjustableMaterial is true
         densityAsLitersProperty, new Range( 0.15, 10 ),
         combineOptions<NumberControlOptions>( {
           sliderOptions: {

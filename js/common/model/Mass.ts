@@ -249,6 +249,8 @@ export default abstract class Mass extends PhetioObject {
   public stepBottom: number; // minimum y value of the mass
   public stepTop: number; // maximum y value of the mass
 
+  public readonly adjustableMaterial: boolean;
+
   protected constructor( engine: PhysicsEngine, providedOptions: MassOptions ) {
 
     const options = optionize<MassOptions, SelfOptions, PhetioObjectOptions>()( {
@@ -317,6 +319,8 @@ export default abstract class Mass extends PhetioObject {
       phetioValueType: Material.MaterialIO,
       phetioFeatured: true
     }, options.materialPropertyOptions ) );
+
+    this.adjustableMaterial = options.adjustableMaterial;
 
     if ( options.adjustableMaterial ) {
       this.materialEnumProperty = new EnumerationProperty( materialToEnum( options.material ), {

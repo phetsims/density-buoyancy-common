@@ -68,6 +68,10 @@ export type MaterialMassVolumeControlNodeOptions = SelfOptions & MaterialControl
 
 export default class MaterialMassVolumeControlNode extends MaterialControlNode {
 
+  // When the density slider is shown instead of the mass slider, via the useDensityControlInsteadOfMassControl option
+  // the density slider can be added to this layer to show up in the right position (above the volume slider).
+  protected readonly densityControlPlaceholderLayer: Node = new Node();
+
   public constructor( materialProperty: Property<Material>,
                       massProperty: ReadOnlyProperty<number>,
                       volumeProperty: Property<number>,
@@ -365,7 +369,7 @@ export default class MaterialMassVolumeControlNode extends MaterialControlNode {
     }
 
     const massVolumeVBox = new VBox( combineOptions<VBoxOptions>( {
-      children: [ massContainerNode, volumeNumberControl ],
+      children: [ this.densityControlPlaceholderLayer, massContainerNode, volumeNumberControl ],
       spacing: 15
     } ) );
 

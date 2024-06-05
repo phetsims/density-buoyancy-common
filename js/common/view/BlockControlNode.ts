@@ -51,7 +51,6 @@ export default class BlockControlNode extends MaterialMassVolumeControlNode {
 
       const densityNumberControl = new NumberControl( DensityBuoyancyCommonStrings.densityStringProperty,
 
-        // TODO: https://github.com/phetsims/density-buoyancy-common/issues/154 densityNumberControl should appear before the volume control in the vbox order
         // TODO: https://github.com/phetsims/density-buoyancy-common/issues/154 lower phet-io range for adjustable material to .1?
         // TODO: https://github.com/phetsims/density-buoyancy-common/issues/154 interleave to be on top of Volume control.
         // TODO: https://github.com/phetsims/density-buoyancy-common/issues/154 Ask DL if there will ever be mystery materials here
@@ -73,7 +72,7 @@ export default class BlockControlNode extends MaterialMassVolumeControlNode {
           },
           tandem: customDensityControlTandem
         }, MaterialMassVolumeControlNode.getNumberControlOptions() ) );
-      this.addChild( densityNumberControl );
+      this.densityControlPlaceholderLayer.addChild( densityNumberControl );
     }
   }
 }

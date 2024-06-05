@@ -29,8 +29,6 @@ import IOType from '../../../../tandem/js/types/IOType.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import InterpolatedProperty from './InterpolatedProperty.js';
 import Material, { CUSTOM_MATERIAL_NAME, CustomMaterialName } from './Material.js';
-import EnumerationValue from '../../../../phet-core/js/EnumerationValue.js';
-import Enumeration from '../../../../phet-core/js/Enumeration.js';
 import PhysicsEngine, { PhysicsEngineBody } from './PhysicsEngine.js';
 import Basin from './Basin.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
@@ -45,27 +43,17 @@ import NumberIO from '../../../../tandem/js/types/NumberIO.js';
 import MassTag, { MassTagStateObject } from './MassTag.js';
 import Bounds3 from '../../../../dot/js/Bounds3.js';
 import BlendedVector2Property from './BlendedVector2Property.js';
+import MaterialEnumeration from './MaterialEnumeration.js';
 
-type MaterialNonCustomIdentifier = 'ALUMINUM' | 'BRICK' | 'COPPER' | 'ICE' | 'PLATINUM' | 'STEEL' | 'STYROFOAM' | 'WOOD';
+type MaterialNonCustomIdentifier = 'ALUMINUM' | 'BRICK' | 'COPPER' | 'ICE' | 'PLATINUM' | 'STEEL' | 'STYROFOAM' | 'WOOD' | 'PVC';
 type MaterialIdentifier = MaterialNonCustomIdentifier | CustomMaterialName;
 
-export class MaterialEnumeration extends EnumerationValue {
-  public static readonly ALUMINUM = new MaterialEnumeration();
-  public static readonly BRICK = new MaterialEnumeration();
-  public static readonly COPPER = new MaterialEnumeration();
-  public static readonly ICE = new MaterialEnumeration();
-  public static readonly PLATINUM = new MaterialEnumeration();
-  public static readonly STEEL = new MaterialEnumeration();
-  public static readonly STYROFOAM = new MaterialEnumeration();
-  public static readonly WOOD = new MaterialEnumeration();
-  public static readonly CUSTOM = new MaterialEnumeration();
+const materialToEnum = ( material: Material ): MaterialEnumeration => {
+  const enumerationValue = MaterialEnumeration[ ( ( material.identifier as MaterialIdentifier | null ) || CUSTOM_MATERIAL_NAME ) ];
 
-  public static readonly enumeration = new Enumeration( MaterialEnumeration, {
-    phetioDocumentation: 'Material values'
-  } );
-}
-
-const materialToEnum = ( material: Material ): MaterialEnumeration => MaterialEnumeration[ ( ( material.identifier as MaterialIdentifier | null ) || CUSTOM_MATERIAL_NAME ) ];
+  assert && assert( enumerationValue, 'Unexpected material identifier: ' + material.identifier );
+  return enumerationValue;
+};
 
 type GuardedNumberPropertyOptions = NumberPropertyOptions & { getPhetioSpecificValidationError: ( value: number ) => string | null };
 

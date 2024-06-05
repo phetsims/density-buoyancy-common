@@ -17,9 +17,9 @@ import NumberControl, { NumberControlOptions } from '../../../../scenery-phet/js
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import { combineOptions } from '../../../../phet-core/js/optionize.js';
 import PrecisionSliderThumb from './PrecisionSliderThumb.js';
-import { MaterialEnumeration } from '../model/Mass.js';
 import UnitConversionProperty from '../../../../axon/js/UnitConversionProperty.js';
 import Range from '../../../../dot/js/Range.js';
+import MaterialEnumeration from '../model/MaterialEnumeration.js';
 
 type SelfOptions = {
   mysteryMaterials?: Material[];

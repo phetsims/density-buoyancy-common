@@ -20,7 +20,6 @@ import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
 import Utils from '../../../../dot/js/Utils.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import Gravity from '../../common/model/Gravity.js';
-import PatternStringProperty from '../../../../axon/js/PatternStringProperty.js';
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import Material from '../../common/model/Material.js';
 import DynamicProperty from '../../../../axon/js/DynamicProperty.js';
@@ -29,6 +28,8 @@ import AccordionBox, { AccordionBoxOptions } from '../../../../sun/js/AccordionB
 import Panel, { PanelOptions } from '../../../../sun/js/Panel.js';
 import DensityBuoyancyCommonColors from '../../common/view/DensityBuoyancyCommonColors.js';
 import fluidDensityRangePerM3 from '../../common/fluidDensityRangePerM3.js';
+import { GeneralScaleReadoutNode } from '../../common/view/ScaleReadoutNode.js';
+import { DisplayType } from '../../common/model/Scale.js';
 
 type SelfOptions = EmptySelfOptions;
 
@@ -137,23 +138,13 @@ export default class FluidDisplacedAccordionBox extends AccordionBox {
              gravity.value * displacedVolume;
     } );
 
-    const readoutStringProperty = new PatternStringProperty( DensityBuoyancyCommonStrings.newtonsPatternStringProperty, {
-      newtons: displacedFluidForceProperty
-    }, {
-      decimalPlaces: {
-        newtons: 2
-      }
-    } );
     const scaleIcon = BuoyancyLabScreenView.getFluidDisplacedAccordionBoxScaleIcon();
-    const forceReadout = new RichText( readoutStringProperty, {
-      font: new PhetFont( {
-        size: 16,
-        weight: 'bold'
-      } ),
-      maxWidth: scaleIcon.width * 0.8 // margins on the scale, and the icon goes beyond the actual scale, see https://github.com/phetsims/density-buoyancy-common/issues/108
+
+    const forceReadout = new GeneralScaleReadoutNode( displacedFluidForceProperty, gravityProperty, DisplayType.NEWTONS, {
+      textMaxWidth: scaleIcon.width * 0.8 // margins on the scale, and the icon goes beyond the actual scale, see https://github.com/phetsims/density-buoyancy-common/issues/108
     } );
 
-    readoutStringProperty.link( () => {
+    forceReadout.childBoundsProperty.link( () => {
       forceReadout.centerX = beakerNode.centerX;
     } );
 

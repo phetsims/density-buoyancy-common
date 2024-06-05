@@ -10,7 +10,7 @@ import Utils from '../../../../dot/js/Utils.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
-import { Node, Text } from '../../../../scenery/js/imports.js';
+import { Node, NodeOptions, Text } from '../../../../scenery/js/imports.js';
 import Panel from '../../../../sun/js/Panel.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
@@ -20,28 +20,33 @@ import Gravity from '../model/Gravity.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import BlendedNumberProperty from '../model/BlendedNumberProperty.js';
+import optionize from '../../../../phet-core/js/optionize.js';
 
-export default class ScaleReadoutNode extends Node {
+type GeneralScaleReadoutNodeSelfOptions = {
+  textMaxWidth?: number;
+};
+type GeneralScaleReadoutNodeOptions = NodeOptions & GeneralScaleReadoutNodeSelfOptions;
 
-  public readonly mass: Scale;
+// Not dependent on a Scale model instance.
+export class GeneralScaleReadoutNode extends Node {
 
   private readonly stringProperty: TReadOnlyProperty<string>;
 
-  public constructor( mass: Scale, gravityProperty: TReadOnlyProperty<Gravity> ) {
-    super( {
-      pickable: false
-    } );
-
-    const blendedProperty = new BlendedNumberProperty( mass.scaleForceInterpolatedProperty.value );
-    mass.stepEmitter.addListener( () => blendedProperty.step( mass.scaleForceInterpolatedProperty.value ) );
+  public constructor( forceProperty: TReadOnlyProperty<number>, gravityProperty: TReadOnlyProperty<Gravity>,
+                      displayType: DisplayType, providedOptions?: GeneralScaleReadoutNodeOptions ) {
+    const options = optionize<GeneralScaleReadoutNodeOptions, GeneralScaleReadoutNodeSelfOptions, NodeOptions>()( {
+      pickable: false,
+      textMaxWidth: 85
+    }, providedOptions );
+    super( options );
 
     this.stringProperty = new DerivedProperty( [
-      blendedProperty,
+      forceProperty,
       gravityProperty,
       DensityBuoyancyCommonStrings.newtonsPatternStringProperty,
       DensityBuoyancyCommonStrings.kilogramsPatternStringProperty
     ], ( scaleForce, gravity, newtonsPattern, kilogramsPattern ) => {
-      if ( mass.displayType === DisplayType.NEWTONS ) {
+      if ( displayType === DisplayType.NEWTONS ) {
         return StringUtils.fillIn( newtonsPattern, {
           newtons: Utils.toFixed( scaleForce, chooseDecimalPlaces( scaleForce ) )
         } );
@@ -58,7 +63,7 @@ export default class ScaleReadoutNode extends Node {
         size: 16,
         weight: 'bold'
       } ),
-      maxWidth: 85
+      maxWidth: options.textMaxWidth
     } );
 
     const readoutPanel = new Panel( readoutText, {
@@ -74,8 +79,6 @@ export default class ScaleReadoutNode extends Node {
     } );
 
     this.addChild( readoutPanel );
-
-    this.mass = mass;
   }
 
   /**
@@ -85,6 +88,21 @@ export default class ScaleReadoutNode extends Node {
     this.stringProperty.dispose();
 
     super.dispose();
+  }
+}
+
+export default class ScaleReadoutNode extends GeneralScaleReadoutNode {
+
+  public readonly mass: Scale;
+
+  public constructor( mass: Scale, gravityProperty: TReadOnlyProperty<Gravity> ) {
+
+    const blendedProperty = new BlendedNumberProperty( mass.scaleForceInterpolatedProperty.value );
+    mass.stepEmitter.addListener( () => blendedProperty.step( mass.scaleForceInterpolatedProperty.value ) );
+
+    super( blendedProperty, gravityProperty, mass.displayType );
+
+    this.mass = mass;
   }
 }
 

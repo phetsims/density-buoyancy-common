@@ -110,7 +110,7 @@ export default class DensityBuoyancyModel implements TModel {
 
   public constructor( providedOptions?: DensityBuoyancyModelOptions ) {
     const options = optionize<DensityBuoyancyModelOptions, DensityBuoyancyModelOptions>()( {
-      showMassValuesDefault: false,
+      showMassValuesDefault: true,
       canShowForces: true,
       initialForceScale: 1 / 16,
       usePoolScale: true,

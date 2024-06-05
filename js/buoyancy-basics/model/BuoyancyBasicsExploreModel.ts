@@ -32,8 +32,7 @@ export default class BuoyancyBasicsExploreModel extends DensityBuoyancyModel {
     const tandem = options.tandem;
 
     super( combineOptions<DensityBuoyancyModelOptions>( {
-      supportsDepthLines: true,
-      showMassValuesDefault: true
+      supportsDepthLines: true
     }, options ) );
 
     this.modeProperty = new EnumerationProperty( TwoBlockMode.ONE_BLOCK, {

@@ -29,7 +29,6 @@ export default class DensityCompareModel extends CompareBlockSetModel {
       usePoolScale: false,
       sameDensityValue: 500,
 
-      showMassValuesDefault: true,
       canShowForces: false,
       positionMassesCallback: ( model: DensityBuoyancyModel, blockSet: BlockSet, masses: Cuboid[] ) => {
         assert && assert( masses.length === 4, 'four masses please' );

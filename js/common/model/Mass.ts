@@ -49,7 +49,7 @@ import BlendedVector2Property from './BlendedVector2Property.js';
 type MaterialNonCustomIdentifier = 'ALUMINUM' | 'BRICK' | 'COPPER' | 'ICE' | 'PLATINUM' | 'STEEL' | 'STYROFOAM' | 'WOOD';
 type MaterialIdentifier = MaterialNonCustomIdentifier | CustomMaterialName;
 
-class MaterialEnumeration extends EnumerationValue {
+export class MaterialEnumeration extends EnumerationValue {
   public static readonly ALUMINUM = new MaterialEnumeration();
   public static readonly BRICK = new MaterialEnumeration();
   public static readonly COPPER = new MaterialEnumeration();
@@ -168,10 +168,10 @@ export default abstract class Mass extends PhetioObject {
   public readonly materialProperty: Property<Material>;
 
   // for phet-io support (to control the materialProperty)
-  private readonly materialEnumProperty?: Property<MaterialEnumeration>;
+  public readonly materialEnumProperty?: Property<MaterialEnumeration>;
 
   // for phet-io support (to control the materialProperty)
-  private readonly customDensityProperty?: Property<number>;
+  public readonly customDensityProperty?: Property<number>;
 
   // for phet-io support (to control the materialProperty)
   private readonly customColorProperty?: Property<Color>;

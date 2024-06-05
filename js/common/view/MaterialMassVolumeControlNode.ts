@@ -33,6 +33,7 @@ import ArrowButton from '../../../../sun/js/buttons/ArrowButton.js';
 import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import BooleanToggleNode from '../../../../sun/js/BooleanToggleNode.js';
+import Tandem from '../../../../tandem/js/Tandem.js';
 
 // constants
 const LITERS_IN_CUBIC_METER = DensityBuoyancyCommonConstants.LITERS_IN_CUBIC_METER;
@@ -59,6 +60,8 @@ type SelfOptions = {
 
   showMassAsReadout?: boolean;
   customKeepsConstantDensity?: boolean;
+
+  useDensityControlInsteadOfMassControl?: boolean;
 };
 
 export type MaterialMassVolumeControlNodeOptions = SelfOptions & MaterialControlNodeOptions;
@@ -85,6 +88,7 @@ export default class MaterialMassVolumeControlNode extends MaterialControlNode {
       maxCustomMass: 27,
       minCustomVolumeLiters: 1,
       color: DensityBuoyancyCommonConstants.THUMB_FILL,
+      useDensityControlInsteadOfMassControl: false,
 
       // For use by the application's bottle scene
       showMassAsReadout: false,
@@ -95,6 +99,11 @@ export default class MaterialMassVolumeControlNode extends MaterialControlNode {
 
     // If we will be creating a high density mass NumberControl in addition to the normal one.
     const supportTwoMassNumberControls = !!options.highDensityMaxMass;
+
+    // Mass-related elements should not be instrumented if showing as a Density control instead of Mass control.
+    const getMassRelatedTandem = ( tandem: Tandem ): Tandem => {
+      return options.useDensityControlInsteadOfMassControl ? Tandem.OPT_OUT : tandem;
+    };
 
     const massNumberControlContainerTandem = options.tandem.createTandem( 'massNumberControl' );
     const volumeNumberControlTandem = options.tandem.createTandem( 'volumeNumberControl' );
@@ -126,7 +135,7 @@ export default class MaterialMassVolumeControlNode extends MaterialControlNode {
       reentrant: true,
       phetioState: false,
       phetioValueType: Range.RangeIO,
-      tandem: massNumberControlContainerTandem.createTandem( 'enabledMassRangeProperty' ),
+      tandem: getMassRelatedTandem( massNumberControlContainerTandem.createTandem( 'enabledMassRangeProperty' ) ),
       phetioFeatured: true,
       valueComparisonStrategy: 'equalsFunction'
     } );
@@ -142,7 +151,7 @@ export default class MaterialMassVolumeControlNode extends MaterialControlNode {
 
     // passed to the NumberControl
     const numberControlMassProperty = new NumberProperty( massProperty.value, {
-      tandem: massNumberControlContainerTandem.createTandem( 'numberControlMassProperty' ),
+      tandem: getMassRelatedTandem( massNumberControlContainerTandem.createTandem( 'numberControlMassProperty' ) ),
       phetioFeatured: numberControlMassPropertyFeatured,
       phetioState: false,
       phetioReadOnly: true,
@@ -270,8 +279,8 @@ export default class MaterialMassVolumeControlNode extends MaterialControlNode {
     const massContainerNode = new Node();
 
     const createMassNumberControl = ( maxMass: number, tandemName?: string ) => {
-      const numberControlTandem = tandemName ? massNumberControlContainerTandem.createTandem( tandemName ) :
-                                  massNumberControlContainerTandem;
+      const numberControlTandem = getMassRelatedTandem( tandemName ? massNumberControlContainerTandem.createTandem( tandemName ) :
+                                                        massNumberControlContainerTandem );
 
       return new NumberControl(
         DensityBuoyancyCommonStrings.massStringProperty,
@@ -335,7 +344,10 @@ export default class MaterialMassVolumeControlNode extends MaterialControlNode {
         }, MaterialMassVolumeControlNode.getNumberControlOptions( options.showMassAsReadout ) ) );
     };
 
-    if ( supportTwoMassNumberControls ) {
+    if ( options.useDensityControlInsteadOfMassControl ) {
+      // Nothing please
+    }
+    else if ( supportTwoMassNumberControls ) {
 
       const showHighDensityMassNumberControlProperty = new DerivedProperty( [ materialProperty ], material => {
         return material.density > options.highDensityThreshold && !material.custom;

@@ -52,7 +52,6 @@ export default class BlockControlNode extends MaterialMassVolumeControlNode {
       const densityNumberControl = new NumberControl( DensityBuoyancyCommonStrings.densityStringProperty,
 
         // TODO: https://github.com/phetsims/density-buoyancy-common/issues/154 lower phet-io range for adjustable material to .1?
-        // TODO: https://github.com/phetsims/density-buoyancy-common/issues/154 interleave to be on top of Volume control.
         // TODO: https://github.com/phetsims/density-buoyancy-common/issues/154 Ask DL if there will ever be mystery materials here
         // TODO: https://github.com/phetsims/density-buoyancy-common/issues/154 test phet-io
         // TODO: https://github.com/phetsims/density-buoyancy-common/issues/154 are the colors right?

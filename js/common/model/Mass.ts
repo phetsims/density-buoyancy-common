@@ -78,7 +78,7 @@ type SelfOptions = {
   adjustableMaterial?: boolean;
 
   // Only used when adjustableMaterial:true. Set to true to support a PhET-iO instrumented Property to set the color
-  // of the block. Set to false to calculate the color based on the current density + the density range.
+  // of the block. Set to false in order to calculate the color based on the current density + the density range.
   adjustableColor?: boolean;
   tag?: MassTag;
   accessibleName?: PDOMValueType | null;

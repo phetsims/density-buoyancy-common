@@ -57,15 +57,14 @@ export default class BlockControlNode extends MaterialMassVolumeControlNode {
         // TODO: https://github.com/phetsims/density-buoyancy-common/issues/154 lower phet-io range for adjustable material to .1?
         // TODO: https://github.com/phetsims/density-buoyancy-common/issues/154 Ask DL if there will ever be mystery materials here
         // TODO: https://github.com/phetsims/density-buoyancy-common/issues/154 test phet-io
-        // TODO: https://github.com/phetsims/density-buoyancy-common/issues/154 are the colors right?
-        // TODO: https://github.com/phetsims/density-buoyancy-common/issues/154 red/blue colors per the tag color
         // TODO: https://github.com/phetsims/density-buoyancy-common/issues/154 Can the bottle density property use adjustableMaterial?
         densityAsLitersProperty, new Range( 0.15, 10 ),
         combineOptions<NumberControlOptions>( {
           sliderOptions: {
             accessibleName: DensityBuoyancyCommonStrings.densityStringProperty,
             thumbNode: new PrecisionSliderThumb( {
-              tandem: customDensityControlTandem.createTandem( 'slider' ).createTandem( 'thumbNode' )
+              tandem: customDensityControlTandem.createTandem( 'slider' ).createTandem( 'thumbNode' ),
+              thumbFill: options.color
             } )
           },
           numberDisplayOptions: {

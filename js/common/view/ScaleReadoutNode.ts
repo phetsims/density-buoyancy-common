@@ -32,7 +32,8 @@ export default class ScaleReadoutNode extends Node {
       pickable: false
     } );
 
-    const blendedProperty = new BlendedNumberProperty( mass.scaleForceInterpolatedProperty );
+    const blendedProperty = new BlendedNumberProperty( mass.scaleForceInterpolatedProperty.value );
+    mass.stepEmitter.addListener( () => blendedProperty.step( mass.scaleForceInterpolatedProperty.value ) );
 
     this.stringProperty = new DerivedProperty( [
       blendedProperty,

@@ -223,6 +223,7 @@ export default abstract class Mass extends PhetioObject {
   protected readonly stepMatrix: Matrix3;
 
   public readonly transformedEmitter: TEmitter;
+  public readonly stepEmitter = new Emitter();
 
   // Fired when this mass's input (drag) should be interrupted.
   public readonly interruptedEmitter: TEmitter;
@@ -475,7 +476,8 @@ export default abstract class Mass extends PhetioObject {
       phetioHighFrequency: true
     } );
 
-    this.contactForceBlendedProperty = new BlendedVector2Property( this.contactForceInterpolatedProperty );
+    this.contactForceBlendedProperty = new BlendedVector2Property( this.contactForceInterpolatedProperty.value );
+    this.stepEmitter.addListener( () => this.contactForceBlendedProperty.step( this.contactForceInterpolatedProperty.value ) );
 
     this.forceOffsetProperty = new Property( Vector3.ZERO, {
       valueType: Vector3,
@@ -662,6 +664,8 @@ export default abstract class Mass extends PhetioObject {
     this.contactForceInterpolatedProperty.setRatio( interpolationRatio );
     this.buoyancyForceInterpolatedProperty.setRatio( interpolationRatio );
     this.gravityForceInterpolatedProperty.setRatio( interpolationRatio );
+
+    this.stepEmitter.emit();
   }
 
   /**

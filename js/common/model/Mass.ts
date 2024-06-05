@@ -43,8 +43,8 @@ import BlendedVector2Property from './BlendedVector2Property.js';
 import MaterialEnumeration from './MaterialEnumeration.js';
 import { GuardedNumberProperty, GuardedNumberPropertyOptions } from './GuardedNumberProperty.js';
 
-// REVIEW: How do these relate to MaterialName which is the type of material.identifier?
-// REVIEW: MK: I don't know how to say this type must be a subset of "keyof Material". Do you?
+// TODO: https://github.com/phetsims/density-buoyancy-common/issues/176: How do these relate to MaterialName which is the type of material.identifier?
+// TODO: https://github.com/phetsims/density-buoyancy-common/issues/176 MK: I don't know how to say this type must be a subset of "keyof Material". Do you?
 type MaterialNonCustomIdentifier = 'ALUMINUM' | 'BRICK' | 'COPPER' | 'ICE' | 'PLATINUM' | 'STEEL' | 'STYROFOAM' | 'WOOD' | 'PVC';
 type MaterialIdentifier = MaterialNonCustomIdentifier | CustomMaterialName;
 

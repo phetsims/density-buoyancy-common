@@ -117,20 +117,27 @@ export default class BuoyancyBasicsExploreScreenView extends DensityBuoyancyScre
     // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
     model.secondaryMass.visibleProperty.link( visible => {
       const masses = visible ? [ model.primaryMass, model.secondaryMass ] : [ model.primaryMass ];
-      densityAccordionBox.setReadoutItems( masses.map( ( mass, index ) => {
-        return {
-          readoutItem: mass.materialProperty,
-          readoutNameProperty: customExploreScreenFormatting[ index ].readoutNameProperty,
-          readoutFormat: customExploreScreenFormatting[ index ].readoutFormat
-        };
-      } ) );
-      submergedAccordionBox.setReadoutItems( masses.map( ( mass, index ) => {
+      const submergedReadoutItems = masses.map( ( mass, index ) => {
         return {
           readoutItem: mass,
           readoutNameProperty: customExploreScreenFormatting[ index ].readoutNameProperty,
           readoutFormat: customExploreScreenFormatting[ index ].readoutFormat
         };
-      } ) );
+      } );
+      const densityReadoutItems = [
+        ...submergedReadoutItems.map( submergedReadoutItem => {
+          return _.assignIn( {}, submergedReadoutItem, {
+            readoutItem: submergedReadoutItem.readoutItem.materialProperty
+          } );
+        } ), {
+          readoutItem: model.liquidMaterialProperty,
+          readoutFormat: {
+            font: DensityBuoyancyCommonConstants.ITEM_FONT
+          }
+        }
+      ];
+      submergedAccordionBox.setReadoutItems( submergedReadoutItems );
+      densityAccordionBox.setReadoutItems( densityReadoutItems );
     } );
 
     const rightSideVBox = new VBox( {

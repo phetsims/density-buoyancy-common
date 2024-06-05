@@ -44,19 +44,18 @@ export default class BlockControlNode extends MaterialMassVolumeControlNode {
       assert && assert( cuboid.adjustableMaterial, 'useDensityControlInsteadOfMassControl should only be used with adjustable materials' );
 
       const densityNumberControlTandem = options.tandem.createTandem( 'densityNumberControl' );
-      cuboid.customDensityProperty!.lazyLink( () => {
+      const customDensityProperty = cuboid.customDensityProperty!;
+
+      customDensityProperty.lazyLink( () => {
         cuboid.materialEnumProperty!.value = MaterialEnumeration.CUSTOM;
       } );
 
-      const densityAsLitersProperty = new UnitConversionProperty( cuboid.customDensityProperty!, {
+      const densityAsLitersProperty = new UnitConversionProperty( customDensityProperty, {
         factor: 1 / DensityBuoyancyCommonConstants.LITERS_IN_CUBIC_METER
       } );
 
       const densityNumberControl = new NumberControl( DensityBuoyancyCommonStrings.densityStringProperty,
-
-        // TODO: https://github.com/phetsims/density-buoyancy-common/issues/154 lower phet-io range for adjustable material to .1?
-        // TODO: https://github.com/phetsims/density-buoyancy-common/issues/154 Ask DL if there will ever be mystery materials here
-        densityAsLitersProperty, new Range( 0.15, 10 ),
+        densityAsLitersProperty, new Range( customDensityProperty.range.min / DensityBuoyancyCommonConstants.LITERS_IN_CUBIC_METER, 10 ),
         combineOptions<NumberControlOptions>( {
           sliderOptions: {
             accessibleName: DensityBuoyancyCommonStrings.densityStringProperty,

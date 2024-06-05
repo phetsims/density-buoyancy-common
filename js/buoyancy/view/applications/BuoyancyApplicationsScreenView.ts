@@ -470,7 +470,13 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
   private static getBoatIcon(): Node {
     const boatIcon = DensityBuoyancyScreenView.getThreeIcon( boat_icon_png, () => {
       return DensityBuoyancyScreenView.getAngledIcon( 6, new Vector3( -0.03, 0, 0 ), scene => {
-        scene.add( BoatView.getBoatDrawingData().group );
+
+        const topBoatClipPlane: THREE.Plane = new THREE.Plane( new THREE.Vector3( 0, 1, 0 ), 0 );
+        const bottomBoatClipPlane: THREE.Plane = new THREE.Plane( new THREE.Vector3( 0, -1, 0 ), 0 );
+        const topPoolClipPlane: THREE.Plane = new THREE.Plane( new THREE.Vector3( 0, 1, 0 ), 0 );
+        const bottomPoolClipPlane: THREE.Plane = new THREE.Plane( new THREE.Vector3( 0, -1, 0 ), 0 );
+
+        scene.add( BoatView.getBoatDrawingData( topBoatClipPlane, bottomBoatClipPlane, topPoolClipPlane, bottomPoolClipPlane ).group );
       }, null );
     } );
     boatIcon.setScaleMagnitude( ICON_SCALE );

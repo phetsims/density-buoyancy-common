@@ -23,11 +23,10 @@ type BoatDrawingData = {
 
 const VOLUME_TOLERANCE = DensityBuoyancyCommonConstants.TOLERANCE;
 
-
 export default class BoatView extends MeasurableMassView {
-  private readonly boat: Boat;
 
-  public constructor( boat: Boat, modelViewTransform: THREEModelViewTransform,
+  public constructor( boat: Boat,
+                      modelViewTransform: THREEModelViewTransform,
                       liquidYInterpolatedProperty: TReadOnlyProperty<number>,
                       showGravityForceProperty: TReadOnlyProperty<boolean>,
                       showBuoyancyForceProperty: TReadOnlyProperty<boolean>,
@@ -56,12 +55,7 @@ export default class BoatView extends MeasurableMassView {
     const topPoolClipPlane = new THREE.Plane( new THREE.Vector3( 0, 1, 0 ), 0 );
     const bottomPoolClipPlane = new THREE.Plane( new THREE.Vector3( 0, -1, 0 ), 0 );
 
-    const boatDrawingData = BoatView.getBoatDrawingData(
-      topBoatClipPlane,
-      bottomBoatClipPlane,
-      topPoolClipPlane,
-      bottomPoolClipPlane
-    );
+    const boatDrawingData = BoatView.getBoatDrawingData( topBoatClipPlane, bottomBoatClipPlane, topPoolClipPlane, bottomPoolClipPlane );
 
     const boatGroup = boatDrawingData.group;
     this.massMesh.add( boatGroup );
@@ -132,8 +126,6 @@ export default class BoatView extends MeasurableMassView {
     // see the static function for the rest of render orders
     topLiquid.renderOrder = 3;
 
-    this.boat = boat;
-
     this.disposeEmitter.addListener( () => {
       liquidMultilink.dispose();
       boat.displacementVolumeProperty.unlink( updateBoatScale );
@@ -143,12 +135,8 @@ export default class BoatView extends MeasurableMassView {
   /**
    * Factored out way to get the view object of the boat. (mostly for use as an icon)
    */
-  public static getBoatDrawingData(
-    topBoatClipPlane: THREE.Plane = new THREE.Plane( new THREE.Vector3( 0, 1, 0 ), 0 ),
-    bottomBoatClipPlane: THREE.Plane = new THREE.Plane( new THREE.Vector3( 0, -1, 0 ), 0 ),
-    topPoolClipPlane: THREE.Plane = new THREE.Plane( new THREE.Vector3( 0, 1, 0 ), 0 ),
-    bottomPoolClipPlane: THREE.Plane = new THREE.Plane( new THREE.Vector3( 0, -1, 0 ), 0 )
-  ): BoatDrawingData {
+  public static getBoatDrawingData( topBoatClipPlane: THREE.Plane, bottomBoatClipPlane: THREE.Plane,
+                                    topPoolClipPlane: THREE.Plane, bottomPoolClipPlane: THREE.Plane ): BoatDrawingData {
 
     const boatOneLiterInteriorGeometry = BoatDesign.getPrimaryGeometry( 1, false, false, true, false );
     const boatOneLiterExteriorGeometry = BoatDesign.getPrimaryGeometry( 1, true, true, false, false );

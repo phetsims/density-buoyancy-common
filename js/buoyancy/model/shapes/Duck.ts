@@ -118,8 +118,12 @@ export default class Duck extends Mass {
     this.stepBottom = yOffset + size.minY;
     this.stepTop = yOffset + size.maxY;
 
-    this.stepMaximumArea = 1.88 * size.width * size.height;
-    this.stepMaximumVolume = Duck.getVolume( size );
+    // Duck is internally modelled as an ellipsoid for the volume and area displacement.
+    const a = this.sizeProperty.value.width / 2;
+    const b = this.sizeProperty.value.height / 2;
+    const c = this.sizeProperty.value.depth / 2;
+    this.stepMaximumArea = 4 * Math.PI * a * c; // 4 * pi * a * c
+    this.stepMaximumVolume = this.stepMaximumArea * b / 3; // 4/3 * pi * a * b * c
   }
 
   /**
@@ -132,10 +136,10 @@ export default class Duck extends Mass {
       return 0;
     }
     else {
+      const ratio = ( liquidLevel - this.stepBottom ) / ( this.stepTop - this.stepBottom );
 
-      // const ratio = ( liquidLevel - this.stepBottom ) / ( this.stepTop - this.stepBottom );
-
-      return 0.1; // 4 * pi * a * c * ( t - t^2 )
+      // Duck is internally modelled as an ellipsoid for the volume and area displacement.
+      return this.stepMaximumArea * ( ratio - ratio * ratio ); // 4 * pi * a * c * ( t - t^2 )
     }
   }
 
@@ -154,7 +158,7 @@ export default class Duck extends Mass {
     else {
       const ratio = ( liquidLevel - this.stepBottom ) / ( this.stepTop - this.stepBottom );
 
-      return this.stepMaximumVolume * ratio;
+      return this.stepMaximumVolume * ratio * ratio * ( 3 - 2 * ratio ); // 4/3 * pi * a * b * c * t^2 * ( 3 - 2t )
     }
   }
 

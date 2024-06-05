@@ -1,1 +1,1 @@
-See simulation-specific notes.
+- Duck is internally modelled as an ellipsoid for the volume and area displacement.

@@ -49,6 +49,9 @@ export default class PoolScaleHeightControl extends NumberControl {
     // We add this shape to the interactive area so the user can also drag the scale directly (it's part of the thumb)
     const thumbInteractionArea = Shape.rect( -5, -125, 40, 100 );
     const thumbNode = new PrecisionSliderThumb( {
+      mainHeight: 12,
+      lineHeight: 0,
+
       tandem: thumbTandem,
 
       // This area is in addition to the default mouse area, touch area is set below

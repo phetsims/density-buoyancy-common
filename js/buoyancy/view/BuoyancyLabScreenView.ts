@@ -130,7 +130,7 @@ export default class BuoyancyLabScreenView extends DensityBuoyancyScreenView<Buo
     } ) );
 
     this.rightBox = new MultiSectionPanelsNode( [ new BlockControlNode(
-      model.primaryMass,
+      model.block,
       this.popupLayer,
       true,
       {
@@ -142,25 +142,25 @@ export default class BuoyancyLabScreenView extends DensityBuoyancyScreenView<Buo
       }
     ) ] );
 
-    model.primaryMass.materialProperty.link( material => {
+    model.block.materialProperty.link( material => {
       if ( material === Material.MATERIAL_O ) {
-        model.primaryMass.volumeProperty.value = 0.005;
+        model.block.volumeProperty.value = 0.005;
       }
       else if ( material === Material.MATERIAL_P ) {
-        model.primaryMass.volumeProperty.value = 0.005;
+        model.block.volumeProperty.value = 0.005;
       }
     } );
 
     const densityAccordionBox = new DensityAccordionBox( DensityBuoyancyCommonStrings.objectDensityStringProperty, {
       contentWidthMax: this.rightBox.content.width,
-      readoutItems: [ { readoutItem: model.primaryMass.materialProperty } ],
+      readoutItems: [ { readoutItem: model.block.materialProperty } ],
       tandem: tandem.createTandem( 'densityAccordionBox' )
     } );
 
     const submergedAccordionBox = new SubmergedAccordionBox( {
       contentWidthMax: this.rightBox.content.width,
       readoutItems: [ {
-        readoutItem: model.primaryMass,
+        readoutItem: model.block,
         readoutNameProperty: DensityBuoyancyCommonStrings.shape.blockStringProperty
       } ],
       tandem: tandem.createTandem( 'submergedAccordionBox' )

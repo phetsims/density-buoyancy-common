@@ -20,7 +20,7 @@ export type BuoyancyLabModelOptions = DensityBuoyancyModelOptions;
 
 export default class BuoyancyLabModel extends DensityBuoyancyModel {
 
-  public readonly primaryMass: Cube;
+  public readonly block: Cube;
 
   public constructor( options: BuoyancyLabModelOptions ) {
 
@@ -38,10 +38,10 @@ export default class BuoyancyLabModel extends DensityBuoyancyModel {
     }, options ) );
 
 
-    this.primaryMass = Cube.createWithMass( this.engine, Material.WOOD, new Vector2( -0.2, 0.2 ), 2, {
-      tandem: tandem.createTandem( 'blocks' ).createTandem( 'blockA' )
+    this.block = Cube.createWithMass( this.engine, Material.WOOD, new Vector2( -0.2, 0.2 ), 2, {
+      tandem: tandem.createTandem( 'block' )
     } );
-    this.availableMasses.push( this.primaryMass );
+    this.availableMasses.push( this.block );
 
     // Left scale
     this.availableMasses.push( new Scale( this.engine, this.gravityProperty, {
@@ -61,7 +61,7 @@ export default class BuoyancyLabModel extends DensityBuoyancyModel {
   public override reset(): void {
     super.reset();
 
-    this.primaryMass.reset();
+    this.block.reset();
   }
 }
 

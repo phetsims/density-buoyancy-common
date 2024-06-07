@@ -288,12 +288,12 @@ export default abstract class Mass extends PhetioObject {
       this.materialEnumProperty = new EnumerationProperty( materialToEnum( options.material ), {
         tandem: tandem?.createTandem( 'materialEnumProperty' ),
         phetioFeatured: true,
-        phetioDocumentation: 'Current material of the block. Changing the material will result in changes to the mass, but the volume will remain the same.'
+        phetioDocumentation: 'Current material of the object. Changing the material will result in changes to the mass, but the volume will remain the same.'
       } );
       this.customDensityProperty = new NumberProperty( options.material.density, {
         tandem: tandem?.createTandem( 'customDensityProperty' ),
         phetioFeatured: true,
-        phetioDocumentation: 'Density of the block when the material is set to “CUSTOM”.',
+        phetioDocumentation: 'Density of the objet when the material is set to “CUSTOM”.',
         range: new Range( 150, 23000 ),
         units: 'kg/m^3'
       } );
@@ -368,7 +368,7 @@ export default abstract class Mass extends PhetioObject {
       phetioFeatured: true,
       range: new Range( options.minVolume, options.maxVolume ),
       phetioReadOnly: true,
-      phetioDocumentation: 'Current volume of the block. Changing the volume will result in changes to the mass, but will not change the material or density.',
+      phetioDocumentation: 'Current volume of the object. Changing the volume will result in changes to the mass, but will not change the material or density.',
       units: 'm^3',
       reentrant: true
     }, options.volumePropertyOptions ) );
@@ -388,7 +388,7 @@ export default abstract class Mass extends PhetioObject {
       phetioReadOnly: true,
       phetioState: false,
       phetioFeatured: true,
-      phetioDocumentation: 'Current mass of the block. Changing the mass will result in changes to the volume (Intro and ' +
+      phetioDocumentation: 'Current mass of the object. Changing the mass will result in changes to the volume (Intro and ' +
                            'Mystery Screens) or density (Compare Screen). Since the volume is computed as a function of ' +
                            'the mass, you can only set a mass that will keep the volume in range.',
       units: 'kg',

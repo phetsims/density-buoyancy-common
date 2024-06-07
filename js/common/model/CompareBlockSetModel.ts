@@ -104,19 +104,19 @@ export default class CompareBlockSetModel extends BlockSetModel<BlockSet> {
 
     }, providedOptions );
 
-
     const tandem = options.tandem;
+    const blockSetsTandem = tandem.createTandem( 'blockSets' );
 
     const massProperty = new HasChangedNumberProperty( options.sameMassValue, {
       range: options.sameMassRange,
-      tandem: tandem.createTandem( 'massProperty' ),
+      tandem: blockSetsTandem.createTandem( BlockSet.SAME_MASS.tandemName ).createTandem( 'massProperty' ),
       phetioFeatured: true,
       units: 'kg'
     } );
 
     const volumeProperty = new HasChangedNumberProperty( options.sameVolumeValue, {
       range: options.sameVolumeRange,
-      tandem: tandem.createTandem( 'volumeProperty' ),
+      tandem: blockSetsTandem.createTandem( BlockSet.SAME_VOLUME.tandemName ).createTandem( 'volumeProperty' ),
       phetioFeatured: true,
       units: 'm^3'
     } );
@@ -124,7 +124,7 @@ export default class CompareBlockSetModel extends BlockSetModel<BlockSet> {
     const densityProperty = new HasChangedNumberProperty( options.sameDensityValue, {
       range: options.sameDensityRange,
 
-      tandem: tandem.createTandem( 'densityProperty' ),
+      tandem: blockSetsTandem.createTandem( BlockSet.SAME_DENSITY.tandemName ).createTandem( 'densityProperty' ),
       phetioFeatured: true,
       units: 'kg/m^3'
     } );

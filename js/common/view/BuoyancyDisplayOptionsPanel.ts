@@ -78,7 +78,7 @@ export default class BuoyancyDisplayOptionsPanel extends Panel {
                 // Gravity
                 new Checkbox( model.showGravityForceProperty, new Text( DensityBuoyancyCommonStrings.gravity.nameStringProperty, labelOptions ), combineOptions<CheckboxOptions>( {
                   layoutOptions: { column: 0, row: 0 },
-                  tandem: options.tandem.createTandem( 'gravityCheckbox' ),
+                  tandem: options.tandem.createTandem( 'showGravityForceCheckbox' ),
                   containerTagName: 'p',
                   accessibleName: DensityBuoyancyCommonStrings.gravity.nameStringProperty
                 }, checkboxOptions ) ),
@@ -90,7 +90,7 @@ export default class BuoyancyDisplayOptionsPanel extends Panel {
                 // Buoyancy
                 new Checkbox( model.showBuoyancyForceProperty, new Text( DensityBuoyancyCommonStrings.buoyancyStringProperty, labelOptions ), combineOptions<CheckboxOptions>( {
                   layoutOptions: { column: 0, row: 1 },
-                  tandem: options.tandem.createTandem( 'buoyancyCheckbox' ),
+                  tandem: options.tandem.createTandem( 'showBuoyancyForceCheckbox' ),
                   containerTagName: 'p',
                   accessibleName: DensityBuoyancyCommonStrings.buoyancyStringProperty
                 }, checkboxOptions ) ),
@@ -102,7 +102,7 @@ export default class BuoyancyDisplayOptionsPanel extends Panel {
                 // Contact
                 new Checkbox( model.showContactForceProperty, new Text( DensityBuoyancyCommonStrings.contactStringProperty, labelOptions ), combineOptions<CheckboxOptions>( {
                   layoutOptions: { column: 0, row: 2 },
-                  tandem: options.tandem.createTandem( 'contactCheckbox' ),
+                  tandem: options.tandem.createTandem( 'showContactForceCheckbox' ),
                   containerTagName: 'p',
                   accessibleName: DensityBuoyancyCommonStrings.contactStringProperty
                 }, checkboxOptions ) ),
@@ -133,7 +133,7 @@ export default class BuoyancyDisplayOptionsPanel extends Panel {
                 ),
 
                 new Checkbox( model.showForceValuesProperty, new Text( DensityBuoyancyCommonStrings.forceValuesStringProperty, labelOptions ), combineOptions<CheckboxOptions>( {
-                  tandem: options.tandem.createTandem( 'forceValuesCheckbox' ),
+                  tandem: options.tandem.createTandem( 'showForceValuesCheckbox' ),
                   layoutOptions: { column: 0, row: 4 },
                   containerTagName: 'p',
                   accessibleName: DensityBuoyancyCommonStrings.forceValuesStringProperty
@@ -146,7 +146,7 @@ export default class BuoyancyDisplayOptionsPanel extends Panel {
               align: 'left',
               children: [
                 new Checkbox( model.showMassValuesProperty, new Text( DensityBuoyancyCommonStrings.massValuesStringProperty, labelOptions ), combineOptions<CheckboxOptions>( {
-                  tandem: options.tandem.createTandem( 'massValuesCheckbox' ),
+                  tandem: options.tandem.createTandem( 'showMassValuesCheckbox' ),
                   containerTagName: 'p',
                   accessibleName: DensityBuoyancyCommonStrings.massValuesStringProperty
                 }, checkboxOptions ) ),

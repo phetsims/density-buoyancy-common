@@ -142,6 +142,7 @@ export default abstract class MassView extends Disposable {
         drag: ( event, listener ) => {
           mass.updateDrag( mass.matrix.translation.add( listener.modelDelta ) );
         },
+        enabledProperty: mass.inputEnabledProperty,
         tandem: Tandem.OPT_OUT
       } );
 

@@ -66,7 +66,7 @@ const DensityBuoyancyCommonConstants = {
 
   ARROW_BUTTON_SCALE: 0.6,
 
-  POOL_SCALE_INITIAL_HEIGHT: 0.75,
+  POOL_SCALE_INITIAL_HEIGHT: 0.65,
 
   TOLERANCE: TOLERANCE,
 

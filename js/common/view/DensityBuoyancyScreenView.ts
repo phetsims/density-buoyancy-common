@@ -785,7 +785,7 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
         this.model.poolBounds.maxX,
         this.model.poolBounds.minY,
         this.model.poolBounds.maxZ
-      ) ).plusXY( DensityBuoyancyCommonConstants.MARGIN / 2, 0 ).x;
+      ) ).plusXY( DensityBuoyancyCommonConstants.MARGIN_SMALL, 0 ).x;
 
       // Y should be based on the bottom of the front of the scale (in the middle of the pool)
       this.poolScaleHeightControl.y = this.modelToViewPoint( new Vector3(

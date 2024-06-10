@@ -163,7 +163,7 @@ export default class FluidDisplacedAccordionBox extends AccordionBox {
         children: [ scaleIcon, beakerNode, numberDisplay, forceReadout ]
       } ),
       combineOptions<PanelOptions>( {}, DensityBuoyancyCommonConstants.PANEL_OPTIONS, {
-        yMargin: DensityBuoyancyCommonConstants.MARGIN / 2,
+        yMargin: DensityBuoyancyCommonConstants.MARGIN_SMALL,
         stroke: null
       } )
     );

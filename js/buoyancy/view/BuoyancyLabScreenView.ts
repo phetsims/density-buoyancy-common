@@ -35,8 +35,7 @@ import CuboidView from '../../common/view/CuboidView.js';
 import fluidDensityRangePerM3 from '../../common/fluidDensityRangePerM3.js';
 
 // constants
-const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
-const DESIRED_LEFT_SIDE_MARGIN = DensityBuoyancyCommonConstants.MARGIN;
+const MARGIN = DensityBuoyancyCommonConstants.MARGIN_SMALL;
 
 export default class BuoyancyLabScreenView extends DensityBuoyancyScreenView<BuoyancyLabModel> {
 
@@ -71,7 +70,7 @@ export default class BuoyancyLabScreenView extends DensityBuoyancyScreenView<Buo
             this.model.poolBounds.left,
             this.model.poolBounds.top,
             this.model.poolBounds.front
-          ) ).x - 2 * DESIRED_LEFT_SIDE_MARGIN
+          ) ).x - 2 * MARGIN
         } )
       ]
     } );
@@ -82,8 +81,8 @@ export default class BuoyancyLabScreenView extends DensityBuoyancyScreenView<Buo
     this.addChild( leftSideContent );
 
     const positionLeftSideContent = ( nodelike: LayoutProxy | Node ) => {
-      nodelike.bottom = this.visibleBoundsProperty.value.bottom - DESIRED_LEFT_SIDE_MARGIN;
-      nodelike.left = this.visibleBoundsProperty.value.left + DESIRED_LEFT_SIDE_MARGIN;
+      nodelike.bottom = this.visibleBoundsProperty.value.bottom - MARGIN;
+      nodelike.left = this.visibleBoundsProperty.value.left + MARGIN;
     };
 
     // Reflow when the entire accordion box is hidden in phet-io studio.
@@ -167,7 +166,7 @@ export default class BuoyancyLabScreenView extends DensityBuoyancyScreenView<Buo
     } );
 
     const rightSideVBox = new VBox( {
-      spacing: MARGIN / 2, // Reducing margin here for the panels not to overlap with the Scale Height Slider
+      spacing: MARGIN, // Reducing margin here for the panels not to overlap with the Scale Height Slider
       align: 'right',
       children: [
         this.rightBox,
@@ -179,7 +178,7 @@ export default class BuoyancyLabScreenView extends DensityBuoyancyScreenView<Buo
       alignBoundsProperty: this.visibleBoundsProperty,
       xAlign: 'right',
       yAlign: 'top',
-      margin: MARGIN / 2
+      margin: MARGIN
     } ) );
 
     // DerivedProperty doesn't need disposal, since everything here lives for the lifetime of the simulation

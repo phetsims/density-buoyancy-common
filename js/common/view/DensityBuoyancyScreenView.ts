@@ -70,7 +70,7 @@ import { Shape } from '../../../../kite/js/imports.js';
 import PoolScaleHeightControl from './PoolScaleHeightControl.js';
 
 // constants
-const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
+const MARGIN = DensityBuoyancyCommonConstants.MARGIN_SMALL;
 
 export type THREEModelViewTransform = {
   modelToViewPoint: ( modelPoint: Vector3 ) => Vector2;

@@ -47,7 +47,7 @@ import Vector2 from '../../../../../dot/js/Vector2.js';
 import fluidDensityRangePerM3 from '../../../common/fluidDensityRangePerM3.js';
 
 // constants
-const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
+const MARGIN = DensityBuoyancyCommonConstants.MARGIN_SMALL;
 const ICON_SCALE = 0.08;
 
 export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScreenView<BuoyancyApplicationsModel> {

@@ -28,7 +28,7 @@ import MassView from '../../common/view/MassView.js';
 import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
 
 // constants
-const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
+const MARGIN = DensityBuoyancyCommonConstants.MARGIN_SMALL;
 
 export default class DensityIntroScreenView extends DensityBuoyancyScreenView<DensityIntroModel> {
 

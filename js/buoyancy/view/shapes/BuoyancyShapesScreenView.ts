@@ -46,7 +46,7 @@ import MassView from '../../../common/view/MassView.js';
 import fluidDensityRangePerM3 from '../../../common/fluidDensityRangePerM3.js';
 
 // constants
-const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
+const MARGIN = DensityBuoyancyCommonConstants.MARGIN_SMALL;
 
 export default class BuoyancyShapesScreenView extends DensityBuoyancyScreenView<BuoyancyShapesModel> {
 

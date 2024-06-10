@@ -31,7 +31,7 @@ import MassView from '../../common/view/MassView.js';
 import DensityAccordionBox from '../../buoyancy/view/DensityAccordionBox.js';
 
 // constants
-const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
+const MARGIN = DensityBuoyancyCommonConstants.MARGIN_SMALL;
 
 export default class BuoyancyBasicsExploreScreenView extends DensityBuoyancyScreenView<BuoyancyBasicsExploreModel> {
 

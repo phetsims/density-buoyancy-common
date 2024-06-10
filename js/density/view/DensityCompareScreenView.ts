@@ -21,7 +21,7 @@ import MassView from '../../common/view/MassView.js';
 import CuboidView from '../../common/view/CuboidView.js';
 import BlocksPanel from '../../common/view/BlocksPanel.js';
 
-const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
+const MARGIN = DensityBuoyancyCommonConstants.MARGIN_SMALL;
 
 export default class DensityCompareScreenView extends DensityBuoyancyScreenView<DensityCompareModel> {
 
@@ -54,7 +54,7 @@ export default class DensityCompareScreenView extends DensityBuoyancyScreenView<
       // We should be MARGIN below where the edge of the ground exists
       const groundFrontPoint = this.modelToViewPoint( new Vector3( 0, 0, model.groundBounds.maxZ ) );
       numberControlPanel.top = groundFrontPoint.y + MARGIN;
-      numberControlPanel.right = this.visibleBoundsProperty.value.maxX - 10;
+      numberControlPanel.right = this.visibleBoundsProperty.value.maxX - MARGIN;
     };
 
     this.positionPanel();

@@ -29,7 +29,7 @@ import MassView from '../../common/view/MassView.js';
 import CuboidView from '../../common/view/CuboidView.js';
 
 
-const MARGIN = DensityBuoyancyCommonConstants.MARGIN;
+const MARGIN = DensityBuoyancyCommonConstants.MARGIN_SMALL;
 
 export default class DensityMysteryScreenView extends DensityBuoyancyScreenView<DensityMysteryModel> {
   public constructor( model: DensityMysteryModel, options: DensityBuoyancyScreenViewOptions ) {

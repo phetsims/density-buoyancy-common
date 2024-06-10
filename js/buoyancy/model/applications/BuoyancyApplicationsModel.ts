@@ -68,7 +68,7 @@ export default class BuoyancyApplicationsModel extends DensityBuoyancyModel {
     this.availableMasses.push( this.block );
 
     // DerivedProperty doesn't need disposal, since everything here lives for the lifetime of the simulation
-    this.boat = new Boat( this.engine, new DerivedProperty( [ this.block.sizeProperty ], size => size.depth ), this.liquidMaterialProperty, {
+    this.boat = new Boat( this.engine, new DerivedProperty( [ this.block.sizeProperty ], size => size.depth ), this.pool.liquidMaterialProperty, {
       matrix: Matrix3.translation( 0, -0.1 ),
       tandem: objectsTandem.createTandem( 'boat' ),
       visible: false

@@ -14,11 +14,9 @@ import Bounds3 from '../../../../dot/js/Bounds3.js';
 import Range from '../../../../dot/js/Range.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
-import NumberIO from '../../../../tandem/js/types/NumberIO.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonQueryParameters from '../DensityBuoyancyCommonQueryParameters.js';
 import Gravity from './Gravity.js';
-import Material from './Material.js';
 import P2Engine from './P2Engine.js';
 import Pool from './Pool.js';
 import Scale, { SCALE_WIDTH } from './Scale.js';
@@ -29,7 +27,6 @@ import Mass from './Mass.js';
 import Basin from './Basin.js';
 import Cuboid from './Cuboid.js';
 import NumberProperty from '../../../../axon/js/NumberProperty.js';
-import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import TRangedProperty from '../../../../axon/js/TRangedProperty.js';
 import TModel from '../../../../joist/js/TModel.js';
 import { PhetioObjectOptions } from '../../../../tandem/js/PhetioObject.js';
@@ -79,9 +76,6 @@ export default class DensityBuoyancyModel implements TModel {
   public readonly vectorZoomProperty: TRangedProperty;
   public readonly showMassValuesProperty: Property<boolean>;
   public readonly gravityProperty: Property<Gravity>;
-  public readonly liquidMaterialProperty: Property<Material>;
-  private readonly liquidDensityProperty: TReadOnlyProperty<number>;
-  private readonly liquidViscosityProperty: TReadOnlyProperty<number>;
 
   public readonly supportsDepthLines: boolean;
   public readonly showDepthLinesProperty: Property<boolean>;
@@ -159,29 +153,6 @@ export default class DensityBuoyancyModel implements TModel {
       tandem: tandem.createTandem( 'gravityProperty' ),
       phetioReadOnly: true,
       phetioDocumentation: 'The acceleration due to gravity applied to all masses, (may be potentially custom or hidden from view)'
-    } );
-
-    this.liquidMaterialProperty = new Property( Material.WATER, {
-      valueType: Material,
-      phetioValueType: Material.MaterialIO,
-      tandem: tandem.createTandem( 'liquidMaterialProperty' ),
-      phetioReadOnly: true,
-      phetioDocumentation: 'The material of the liquid in the pool'
-    } );
-
-    // DerivedProperty doesn't need disposal, since everything here lives for the lifetime of the simulation
-    this.liquidDensityProperty = new DerivedProperty( [ this.liquidMaterialProperty ], liquidMaterial => liquidMaterial.density, {
-      tandem: tandem.createTandem( 'liquidDensityProperty' ),
-      phetioFeatured: true,
-      phetioValueType: NumberIO,
-      units: 'kg/m^3'
-    } );
-
-    // DerivedProperty doesn't need disposal, since everything here lives for the lifetime of the simulation
-    this.liquidViscosityProperty = new DerivedProperty( [ this.liquidMaterialProperty ], liquidMaterial => liquidMaterial.viscosity, {
-      tandem: tandem.createTandem( 'liquidViscosityProperty' ),
-      phetioValueType: NumberIO,
-      units: 'Pa\u00b7s'
     } );
 
     this.poolBounds = new Bounds3(
@@ -386,7 +357,7 @@ export default class DensityBuoyancyModel implements TModel {
         }
 
         if ( submergedVolume !== 0 ) {
-          const displacedMass = submergedVolume * this.liquidDensityProperty.value;
+          const displacedMass = submergedVolume * this.pool.liquidDensityProperty.value;
           // Vertical acceleration of the boat will change the buoyant force.
           const acceleration = gravity + ( ( boat && basin === boat.basin ) ? boatVerticalAcceleration : 0 );
           const buoyantForce = new Vector2( 0, displacedMass * acceleration );
@@ -403,7 +374,7 @@ export default class DensityBuoyancyModel implements TModel {
           const ratioSubmerged =
             ( 1 - DensityBuoyancyCommonQueryParameters.viscositySubmergedRatio ) +
             DensityBuoyancyCommonQueryParameters.viscositySubmergedRatio * submergedVolume / mass.volumeProperty.value;
-          const hackedViscosity = this.liquidViscosityProperty.value ? 0.03 * Math.pow( this.liquidViscosityProperty.value / 0.03, 0.8 ) : 0;
+          const hackedViscosity = this.pool.liquidViscosityProperty.value ? 0.03 * Math.pow( this.pool.liquidViscosityProperty.value / 0.03, 0.8 ) : 0;
           const viscosityMass = Math.max( DensityBuoyancyCommonQueryParameters.viscosityMassCutoff, massValue );
           const viscousForce = velocity.times( -hackedViscosity * viscosityMass * ratioSubmerged * 3000 * DensityBuoyancyCommonQueryParameters.viscosityMultiplier );
           this.engine.bodyApplyForce( mass.body, viscousForce );
@@ -418,7 +389,7 @@ export default class DensityBuoyancyModel implements TModel {
         mass.gravityForceInterpolatedProperty.setNextValue( gravityForce );
 
         // Calculates the submerged ratio for the mass
-        mass.updateSubmergedMassFraction( gravity, this.liquidDensityProperty.value );
+        mass.updateSubmergedMassFraction( gravity, this.pool.liquidDensityProperty.value );
       } );
     } );
 
@@ -564,7 +535,6 @@ export default class DensityBuoyancyModel implements TModel {
     this.showMassValuesProperty.reset();
     this.showForceValuesProperty.reset();
     this.gravityProperty.reset();
-    this.liquidMaterialProperty.reset();
     this.spillingWaterOutOfBoat = false;
 
     this.pool.reset();

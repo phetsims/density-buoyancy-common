@@ -386,7 +386,7 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
       densityRange: fluidDensityRangePerM3
     } );
 
-    const fluidDensityControlPanel = new Panel( new FluidDensityControlNode( model.liquidMaterialProperty, [
+    const fluidDensityControlPanel = new Panel( new FluidDensityControlNode( model.pool.liquidMaterialProperty, [
         ...DensityBuoyancyCommonConstants.BUOYANCY_FLUID_MATERIALS,
         customMaterial,
         ...DensityBuoyancyCommonConstants.BUOYANCY_FLUID_MYSTERY_MATERIALS

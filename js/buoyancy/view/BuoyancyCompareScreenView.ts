@@ -85,7 +85,7 @@ export default class BuoyancyCompareScreenView extends DensityBuoyancyScreenView
       margin: MARGIN
     } ) );
 
-    const fluidSelectionPanel = new FluidSelectionPanel( model.liquidMaterialProperty, this.popupLayer, {
+    const fluidSelectionPanel = new FluidSelectionPanel( model.pool.liquidMaterialProperty, this.popupLayer, {
       tandem: options.tandem.createTandem( 'fluidSelectionPanel' )
     } );
     this.addChild( new AlignBox( fluidSelectionPanel, {
@@ -138,7 +138,7 @@ export default class BuoyancyCompareScreenView extends DensityBuoyancyScreenView
               readoutItem: submergedReadoutItem.readoutItem.materialProperty
             } );
           } ), {
-            readoutItem: model.liquidMaterialProperty,
+            readoutItem: model.pool.liquidMaterialProperty,
             readoutFormat: {
               font: DensityBuoyancyCommonConstants.ITEM_FONT
             }

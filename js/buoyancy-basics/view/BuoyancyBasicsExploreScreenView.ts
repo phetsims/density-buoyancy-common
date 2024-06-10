@@ -85,7 +85,7 @@ export default class BuoyancyBasicsExploreScreenView extends DensityBuoyancyScre
       }
     );
 
-    const fluidSelectionPanel = new FluidSelectionPanel( model.liquidMaterialProperty, this.popupLayer, {
+    const fluidSelectionPanel = new FluidSelectionPanel( model.pool.liquidMaterialProperty, this.popupLayer, {
       tandem: options.tandem.createTandem( 'fluidSelectionPanel' )
     } );
 
@@ -130,7 +130,7 @@ export default class BuoyancyBasicsExploreScreenView extends DensityBuoyancyScre
             readoutItem: submergedReadoutItem.readoutItem.materialProperty
           } );
         } ), {
-          readoutItem: model.liquidMaterialProperty,
+          readoutItem: model.pool.liquidMaterialProperty,
           readoutFormat: {
             font: DensityBuoyancyCommonConstants.ITEM_FONT
           }

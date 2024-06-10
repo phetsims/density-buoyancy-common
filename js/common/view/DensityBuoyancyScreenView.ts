@@ -484,7 +484,7 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
       depthWrite: false
     } );
 
-    Material.linkLiquidColor( model.liquidMaterialProperty, waterMaterial );
+    Material.linkLiquidColor( model.pool.liquidMaterialProperty, waterMaterial );
     const waterMesh = new THREE.Mesh( waterGeometry, waterMaterial );
     this.sceneNode.stage.threeScene.add( waterMesh );
     waterMesh.renderOrder = 10;

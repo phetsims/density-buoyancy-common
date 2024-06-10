@@ -12,10 +12,19 @@ import Basin from './Basin.js';
 import Mass from './Mass.js';
 import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
+import Property from '../../../../axon/js/Property.js';
+import Material from './Material.js';
+import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
+import NumberIO from '../../../../tandem/js/types/NumberIO.js';
+import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 
 export default class Pool extends Basin {
 
   public readonly bounds: Bounds3;
+
+  public readonly liquidMaterialProperty: Property<Material>;
+  public readonly liquidDensityProperty: TReadOnlyProperty<number>;
+  public readonly liquidViscosityProperty: TReadOnlyProperty<number>;
 
   public constructor( bounds: Bounds3, tandem: Tandem ) {
 
@@ -32,6 +41,29 @@ export default class Pool extends Basin {
     // These won't change over the life of the pool.
     this.stepBottom = bounds.minY;
     this.stepTop = bounds.maxY;
+
+    this.liquidMaterialProperty = new Property( Material.WATER, {
+      valueType: Material,
+      phetioValueType: Material.MaterialIO,
+      tandem: tandem.createTandem( 'liquidMaterialProperty' ),
+      phetioReadOnly: true,
+      phetioDocumentation: 'The material of the liquid in the pool'
+    } );
+
+    // DerivedProperty doesn't need disposal, since everything here lives for the lifetime of the simulation
+    this.liquidDensityProperty = new DerivedProperty( [ this.liquidMaterialProperty ], liquidMaterial => liquidMaterial.density, {
+      tandem: tandem.createTandem( 'liquidDensityProperty' ),
+      phetioFeatured: true,
+      phetioValueType: NumberIO,
+      units: 'kg/m^3'
+    } );
+
+    // DerivedProperty doesn't need disposal, since everything here lives for the lifetime of the simulation
+    this.liquidViscosityProperty = new DerivedProperty( [ this.liquidMaterialProperty ], liquidMaterial => liquidMaterial.viscosity, {
+      tandem: tandem.createTandem( 'liquidViscosityProperty' ),
+      phetioValueType: NumberIO,
+      units: 'Pa\u00b7s'
+    } );
   }
 
   /**
@@ -72,6 +104,12 @@ export default class Pool extends Basin {
     else {
       return this.bounds.width * this.bounds.depth * ( y - this.bounds.minY );
     }
+  }
+
+  public override reset(): void {
+    super.reset();
+    this.liquidMaterialProperty.reset();
+
   }
 }
 

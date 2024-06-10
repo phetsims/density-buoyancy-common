@@ -55,7 +55,7 @@ export default class BuoyancyLabScreenView extends DensityBuoyancyScreenView<Buo
 
     const fluidDisplacedAccordionBox = new FluidDisplacedAccordionBox( this.waterLevelVolumeProperty,
       maxBlockVolume,
-      model.liquidMaterialProperty,
+      model.pool.liquidMaterialProperty,
       model.gravityProperty, {
         tandem: tandem.createTandem( 'fluidDisplacedAccordionBox' )
       } );
@@ -109,7 +109,7 @@ export default class BuoyancyLabScreenView extends DensityBuoyancyScreenView<Buo
     const bottomNode = new HBox( {
       spacing: 2 * MARGIN,
       children: [
-        new Panel( new FluidDensityControlNode( model.liquidMaterialProperty, [
+        new Panel( new FluidDensityControlNode( model.pool.liquidMaterialProperty, [
             ...DensityBuoyancyCommonConstants.BUOYANCY_FLUID_MATERIALS,
             customMaterial,
             ...DensityBuoyancyCommonConstants.BUOYANCY_FLUID_MYSTERY_MATERIALS

@@ -50,8 +50,10 @@ export default abstract class Basin {
 
     const tandem = options.tandem;
 
+    const liquidTandem = tandem.createTandem( 'liquid' );
+
     this.liquidVolumeProperty = new NumberProperty( options.initialVolume, {
-      tandem: tandem.createTandem( 'liquidVolumeProperty' ),
+      tandem: liquidTandem.createTandem( 'volumeProperty' ),
       phetioFeatured: true,
       phetioReadOnly: true,
       range: new Range( 0, Number.POSITIVE_INFINITY ),
@@ -63,7 +65,7 @@ export default abstract class Basin {
       interpolate: InterpolatedProperty.interpolateNumber,
       phetioOuterType: InterpolatedProperty.InterpolatedPropertyIO,
       phetioValueType: NumberIO,
-      tandem: tandem.createTandem( 'liquidYInterpolatedProperty' ),
+      tandem: liquidTandem.createTandem( 'yInterpolatedProperty' ),
       phetioHighFrequency: true,
       phetioReadOnly: true,
       phetioDocumentation: 'The y-value of the liquid in model coordinates (where 0 is the top of the pool)'

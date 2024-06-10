@@ -38,6 +38,8 @@ export default class Pool extends Basin {
 
     this.bounds = bounds;
 
+    const liquidTandem = tandem.createTandem( 'liquid' );
+
     // These won't change over the life of the pool.
     this.stepBottom = bounds.minY;
     this.stepTop = bounds.maxY;
@@ -45,14 +47,14 @@ export default class Pool extends Basin {
     this.liquidMaterialProperty = new Property( Material.WATER, {
       valueType: Material,
       phetioValueType: Material.MaterialIO,
-      tandem: tandem.createTandem( 'liquidMaterialProperty' ),
+      tandem: liquidTandem.createTandem( 'materialProperty' ),
       phetioReadOnly: true,
       phetioDocumentation: 'The material of the liquid in the pool'
     } );
 
     // DerivedProperty doesn't need disposal, since everything here lives for the lifetime of the simulation
     this.liquidDensityProperty = new DerivedProperty( [ this.liquidMaterialProperty ], liquidMaterial => liquidMaterial.density, {
-      tandem: tandem.createTandem( 'liquidDensityProperty' ),
+      tandem: liquidTandem.createTandem( 'densityProperty' ),
       phetioFeatured: true,
       phetioValueType: NumberIO,
       units: 'kg/m^3'
@@ -60,7 +62,7 @@ export default class Pool extends Basin {
 
     // DerivedProperty doesn't need disposal, since everything here lives for the lifetime of the simulation
     this.liquidViscosityProperty = new DerivedProperty( [ this.liquidMaterialProperty ], liquidMaterial => liquidMaterial.viscosity, {
-      tandem: tandem.createTandem( 'liquidViscosityProperty' ),
+      tandem: liquidTandem.createTandem( 'viscosityProperty' ),
       phetioValueType: NumberIO,
       units: 'Pa\u00b7s'
     } );

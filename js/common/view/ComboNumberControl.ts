@@ -157,7 +157,7 @@ export default class ComboNumberControl<T> extends VBox {
       },
 
       // VBox options
-      spacing: 10,
+      spacing: DensityBuoyancyCommonConstants.SPACING,
       align: 'center'
     }, providedOptions );
 

@@ -29,7 +29,7 @@ export default class MultiSectionPanelsNode extends Panel {
     const children = interleave( nodes, () => new HSeparator() );
 
     const content = new FlowBox( {
-      spacing: 10,
+      spacing: DensityBuoyancyCommonConstants.SPACING,
       orientation: 'vertical',
       align: 'left',
       children: children

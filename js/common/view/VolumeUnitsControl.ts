@@ -16,6 +16,7 @@ import PreferencesDialog from '../../../../joist/js/preferences/PreferencesDialo
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import { VolumeUnits } from '../DensityBuoyancyCommonQueryParameters.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
+import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
 
 type SelfOptions = EmptySelfOptions;
 
@@ -28,7 +29,7 @@ export default class VolumeUnitsControl extends HBox {
   public constructor( beakerUnitsProperty: Property<VolumeUnits>, providedOptions: VolumeUnitsControlOptions ) {
 
     const options = optionize<VolumeUnitsControlOptions, SelfOptions, HBoxOptions>()( {
-      spacing: 15
+      spacing: DensityBuoyancyCommonConstants.SPACING
     }, providedOptions );
 
     const labelText = new Text( DensityBuoyancyCommonStrings.volumeUnitsStringProperty, {
@@ -69,7 +70,7 @@ class VolumeUnitsRadioButtonGroup extends AquaRadioButtonGroup<VolumeUnits> {
 
       // AquaRadioButtonGroupOptions
       orientation: 'horizontal',
-      spacing: 15
+      spacing: DensityBuoyancyCommonConstants.SPACING
     }, providedOptions );
 
     const items: AquaRadioButtonGroupItem<VolumeUnits>[] = [

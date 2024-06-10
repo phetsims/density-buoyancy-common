@@ -161,7 +161,7 @@ export default class BuoyancyCompareScreenView extends DensityBuoyancyScreenView
 
     this.rightSidePanelsVBox = new VBox( {
       children: [ numberControlPanel, densityAccordionBox, submergedAccordionBox ],
-      spacing: MARGIN
+      spacing: DensityBuoyancyCommonConstants.SPACING_SMALL
     } );
     this.addChild( this.rightSidePanelsVBox );
 

@@ -38,13 +38,15 @@ export default class BlocksPanel extends Panel {
       };
     } ), {
       align: 'left',
-      spacing: 6,
+      spacing: DensityBuoyancyCommonConstants.SPACING_SMALL,
       tandem: blocksRadioButtonGroupTandem,
       visiblePropertyOptions: {
         phetioFeatured: radioButtonGroupVisiblePropertyPhetioFeatured
       }
     } );
     super( new VBox( {
+      align: 'left',
+      spacing: DensityBuoyancyCommonConstants.SPACING_SMALL,
       children: [
         new Text( DensityBuoyancyCommonStrings.blocksStringProperty, {
           font: DensityBuoyancyCommonConstants.TITLE_FONT,
@@ -52,9 +54,7 @@ export default class BlocksPanel extends Panel {
           tandem: tandem.createTandem( 'titleText' )
         } ),
         verticalAquaRadioButtonGroup
-      ],
-      spacing: 10,
-      align: 'left'
+      ]
     } ), combineOptions<PanelOptions>( {
       tandem: tandem,
       phetioType: Node.NodeIO,

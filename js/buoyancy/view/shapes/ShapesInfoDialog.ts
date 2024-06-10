@@ -6,6 +6,7 @@ import Dialog, { DialogOptions } from '../../../../../sun/js/Dialog.js';
 import Tandem from '../../../../../tandem/js/Tandem.js';
 import { RichText, VBox } from '../../../../../scenery/js/imports.js';
 import DensityBuoyancyCommonStrings from '../../../DensityBuoyancyCommonStrings.js';
+import DensityBuoyancyCommonConstants from '../../../common/DensityBuoyancyCommonConstants.js';
 
 /**
  * ShapesInfoDialog is a dialog that displays info related to the forces and torque limitations within the sim
@@ -26,8 +27,8 @@ export default class ShapesInfoDialog extends Dialog {
 
     const content = new VBox( {
       align: 'left',
-      spacing: 15,
-      margin: 20,
+      spacing: DensityBuoyancyCommonConstants.SPACING_SMALL,
+      margin: DensityBuoyancyCommonConstants.MARGIN,
       children: [
         new RichText( DensityBuoyancyCommonStrings.shapesInfoDialogStringProperty, {
           font: new PhetFont( 18 ),

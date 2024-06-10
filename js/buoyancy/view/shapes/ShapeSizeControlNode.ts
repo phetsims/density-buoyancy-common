@@ -39,7 +39,7 @@ export default class ShapeSizeControlNode extends VBox {
     }, providedOptions );
 
     super( {
-      spacing: 5,
+      spacing: DensityBuoyancyCommonConstants.SPACING_SMALL,
       align: 'left'
     } );
 
@@ -105,7 +105,7 @@ export default class ShapeSizeControlNode extends VBox {
 
     this.children = [
       new HBox( {
-        spacing: 5,
+        spacing: DensityBuoyancyCommonConstants.SPACING_SMALL,
         children: [
           shapeComboBox,
           options.labelNode

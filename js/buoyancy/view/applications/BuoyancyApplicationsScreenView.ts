@@ -147,11 +147,10 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
       tandem: customBottleDensityControlTandem
     }, MaterialMassVolumeControlNode.getNumberControlOptions() ) );
 
-    const spacing = 5;
-    const airVolumeMaxWidth = ( bottleControlNode.width - spacing ) / 2;
+    const airVolumeMaxWidth = ( bottleControlNode.width - DensityBuoyancyCommonConstants.SPACING_SMALL ) / 2;
 
     const bottleBox = new VBox( {
-      spacing: 10,
+      spacing: DensityBuoyancyCommonConstants.SPACING_SMALL,
       align: 'left',
       stretch: true,
       children: [
@@ -163,7 +162,7 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
         customBottleDensityControl,
         new HSeparator(),
         new HBox( {
-          spacing: spacing,
+          spacing: DensityBuoyancyCommonConstants.SPACING_SMALL,
           children: [
             new Text( DensityBuoyancyCommonStrings.airVolumeStringProperty, {
               font: DensityBuoyancyCommonConstants.READOUT_FONT,
@@ -214,7 +213,7 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
     const boatVolumeControlTandem = tandem.createTandem( 'boatVolumeNumberControl' );
     const boatVolumeRange = new Range( 5, 30 );
     const boatBox = new VBox( {
-      spacing: 10,
+      spacing: DensityBuoyancyCommonConstants.SPACING_SMALL,
       align: 'left',
       children: [
         boatControlNode,
@@ -271,7 +270,7 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
     } );
 
     const rightSideVBox = new VBox( {
-      spacing: 10,
+      spacing: DensityBuoyancyCommonConstants.SPACING_SMALL,
       align: 'right',
       excludeInvisibleChildrenFromBounds: true,
       children: [

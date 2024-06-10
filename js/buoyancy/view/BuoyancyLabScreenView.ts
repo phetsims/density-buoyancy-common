@@ -61,7 +61,7 @@ export default class BuoyancyLabScreenView extends DensityBuoyancyScreenView<Buo
 
     const leftSideVBox = new VBox( {
       align: 'left',
-      spacing: 5,
+      spacing: DensityBuoyancyCommonConstants.SPACING_SMALL,
       children: [
         fluidDisplacedAccordionBox,
         new BuoyancyDisplayOptionsPanel( model, {
@@ -106,7 +106,7 @@ export default class BuoyancyLabScreenView extends DensityBuoyancyScreenView<Buo
     } );
 
     const bottomNode = new HBox( {
-      spacing: 2 * MARGIN,
+      spacing: 2 * DensityBuoyancyCommonConstants.SPACING,
       children: [
         new Panel( new FluidDensityControlNode( model.pool.liquidMaterialProperty, [
             ...DensityBuoyancyCommonConstants.BUOYANCY_FLUID_MATERIALS,
@@ -166,7 +166,7 @@ export default class BuoyancyLabScreenView extends DensityBuoyancyScreenView<Buo
     } );
 
     const rightSideVBox = new VBox( {
-      spacing: MARGIN, // Reducing margin here for the panels not to overlap with the Scale Height Slider
+      spacing: DensityBuoyancyCommonConstants.SPACING_SMALL,
       align: 'right',
       children: [
         this.rightBox,

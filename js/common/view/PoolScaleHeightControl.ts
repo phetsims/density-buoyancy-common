@@ -80,7 +80,7 @@ export default class PoolScaleHeightControl extends NumberControl {
         const actualDecrement = decrementButton!;
         actualIncrement.rotate( -Math.PI / 2 );
         actualDecrement.rotate( -Math.PI / 2 );
-        const margin = 2;
+        const margin = 2; // Custom spacing/margin for buttons
         const vBox = new VBox( {
           align: 'left',
           spacing: margin,

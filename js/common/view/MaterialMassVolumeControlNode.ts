@@ -370,7 +370,7 @@ export default class MaterialMassVolumeControlNode extends MaterialControlNode {
 
     const massVolumeVBox = new VBox( combineOptions<VBoxOptions>( {
       children: [ this.densityControlPlaceholderLayer, massContainerNode, volumeNumberControl ],
-      spacing: 15
+      spacing: DensityBuoyancyCommonConstants.SPACING_SMALL
     } ) );
 
     const hiddenMaterialNode = new Text( DensityBuoyancyCommonStrings.whatIsTheMaterialStringProperty, {

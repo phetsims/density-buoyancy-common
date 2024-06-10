@@ -32,6 +32,9 @@ const decimetersCubedPatternStringProperty = new PatternStringProperty( DensityB
 // Used for margins from the offset of screens or between panels/boxes or content margins of panels/boxes.
 const MARGIN = 10;
 
+// Used for panels/boxes by default
+const SPACING = 10;
+
 // A value applied across the code to prevent unexpected rounding errors.
 const TOLERANCE = 1e-7;
 
@@ -42,8 +45,10 @@ export const chooseDecimalPlaces = ( value: number ): number => {
 
 const DensityBuoyancyCommonConstants = {
   MARGIN: MARGIN,
-
   MARGIN_SMALL: MARGIN / 2,
+
+  SPACING: SPACING,
+  SPACING_SMALL: SPACING / 2,
 
   // Used for panels/boxes by default
   CORNER_RADIUS: CORNER_RADIUS,

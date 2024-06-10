@@ -64,7 +64,7 @@ export default class MaterialControlNode extends VBox {
     }, providedOptions );
 
     super( {
-      spacing: 15,
+      spacing: DensityBuoyancyCommonConstants.SPACING,
       align: 'left'
     } );
 

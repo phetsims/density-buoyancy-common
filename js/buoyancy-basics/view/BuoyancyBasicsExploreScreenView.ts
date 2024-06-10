@@ -141,7 +141,7 @@ export default class BuoyancyBasicsExploreScreenView extends DensityBuoyancyScre
     } );
 
     const rightSideVBox = new VBox( {
-      spacing: 10,
+      spacing: DensityBuoyancyCommonConstants.SPACING_SMALL,
       align: 'right',
       children: [
         this.rightBox,

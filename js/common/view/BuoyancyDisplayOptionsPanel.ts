@@ -22,7 +22,7 @@ import WithRequired from '../../../../phet-core/js/types/WithRequired.js';
 import Panel, { PanelOptions } from '../../../../sun/js/Panel.js';
 
 // constants
-const arrowSpacing = 10;
+const arrowSpacing = DensityBuoyancyCommonConstants.SPACING;
 const arrowLength = 45;
 const arrowOptions = {
   stroke: null,
@@ -33,9 +33,9 @@ const arrowOptions = {
 const labelFont = new PhetFont( 14 );
 const checkboxOptions = {
   boxWidth: 17,
-  spacing: 5
+  spacing: DensityBuoyancyCommonConstants.SPACING_SMALL
 };
-const checkboxSpacing = 5;
+const checkboxSpacing = DensityBuoyancyCommonConstants.SPACING_SMALL;
 
 type SelfOptions = {
   includeVectorZoomControl?: boolean;
@@ -58,15 +58,15 @@ export default class BuoyancyDisplayOptionsPanel extends Panel {
     };
 
     const content = new VBox( {
-      spacing: DensityBuoyancyCommonConstants.MARGIN,
       align: 'left',
+      spacing: DensityBuoyancyCommonConstants.SPACING_SMALL,
       children: [
         new Text( DensityBuoyancyCommonStrings.forcesStringProperty, {
           font: DensityBuoyancyCommonConstants.TITLE_FONT,
           maxWidth: options.contentWidth - 2 * options.xMargin
         } ),
         new VBox( {
-          spacing: 8,
+          spacing: DensityBuoyancyCommonConstants.SPACING_SMALL,
           align: 'left',
           children: [
             new GridBox( {
@@ -117,7 +117,7 @@ export default class BuoyancyDisplayOptionsPanel extends Panel {
                       layoutOptions: { column: 0, row: 3 }
                     }, labelOptions ) ),
                     new PlusMinusZoomButtonGroup( model.vectorZoomProperty, {
-                      spacing: 3,
+                      spacing: 3, // Custom small spacing between the buttons
                       layoutOptions: { column: 1, row: 3, xAlign: 'center' },
                       buttonOptions: {
                         cornerRadius: 3,

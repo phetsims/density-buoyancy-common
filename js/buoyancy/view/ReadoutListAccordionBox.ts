@@ -80,7 +80,7 @@ export default abstract class ReadoutListAccordionBox<ReadoutType> extends Accor
       }, providedOptions );
 
     const readoutBox = new VBox( {
-      spacing: 5,
+      spacing: DensityBuoyancyCommonConstants.SPACING_SMALL,
       align: 'center'
     } );
 
@@ -148,7 +148,7 @@ export default abstract class ReadoutListAccordionBox<ReadoutType> extends Accor
         ],
         align: 'origin',
         justify: 'center',
-        spacing: 5
+        spacing: DensityBuoyancyCommonConstants.SPACING_SMALL
       } );
     } );
   }

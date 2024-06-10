@@ -77,7 +77,7 @@ export default class DensityMysteryScreenView extends DensityBuoyancyScreenView<
       };
     } ), {
       align: 'left',
-      spacing: 8,
+      spacing: DensityBuoyancyCommonConstants.SPACING_SMALL,
       tandem: blocksRadioButtonGroupTandem
     } );
     const randomBlocksRefreshButton = new RefreshButton( {
@@ -89,7 +89,7 @@ export default class DensityMysteryScreenView extends DensityBuoyancyScreenView<
       tandem: blocksPanelTandem.createTandem( 'randomBlocksRefreshButton' )
     } );
     const blockSetContent = new VBox( {
-      spacing: 10
+      spacing: DensityBuoyancyCommonConstants.SPACING_SMALL
     } );
 
     // Include the refresh button when in random blockSet.
@@ -112,7 +112,7 @@ export default class DensityMysteryScreenView extends DensityBuoyancyScreenView<
         } ),
         blockSetContent
       ],
-      spacing: 10,
+      spacing: DensityBuoyancyCommonConstants.SPACING_SMALL,
       align: 'left'
     } ), combineOptions<PanelOptions>( {
       tandem: blocksPanelTandem,

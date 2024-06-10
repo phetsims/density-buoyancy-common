@@ -20,6 +20,7 @@ import PreferencesControl from '../../../../joist/js/preferences/PreferencesCont
 import PreferencesDialogConstants from '../../../../joist/js/preferences/PreferencesDialogConstants.js';
 import ToggleSwitch from '../../../../sun/js/ToggleSwitch.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
+import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
 
 type SelfOptions = EmptySelfOptions;
 
@@ -31,7 +32,7 @@ export default class DensityBuoyancyCommonPreferencesNode extends VBox {
 
     const options = optionize<DensityBuoyancyCommonPreferencesNodeOptions, SelfOptions, VBoxOptions>()( {
       align: 'left',
-      spacing: 20,
+      spacing: 2 * DensityBuoyancyCommonConstants.SPACING,
       phetioVisiblePropertyInstrumented: false
     }, providedOptions );
 

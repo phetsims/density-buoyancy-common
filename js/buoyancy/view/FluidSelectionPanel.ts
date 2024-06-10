@@ -66,7 +66,7 @@ export default class FluidSelectionPanel extends Panel {
 
     super( new VBox( {
       children: [ fluidTitle, fluidBox ],
-      spacing: 3,
+      spacing: DensityBuoyancyCommonConstants.SPACING_SMALL,
       align: 'left'
     } ), DensityBuoyancyCommonConstants.PANEL_OPTIONS );
 

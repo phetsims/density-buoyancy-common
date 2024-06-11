@@ -234,16 +234,10 @@ export default class CompareBlockSetModel extends BlockSetModel<BlockSet> {
    * Creates a material property based on the provided color, density, and block set value change status.
    * If the block set value has not changed, it attempts to use an initial material with the same density.
    * Otherwise, it creates a custom material with a modified color based on the density.
-   *
-   * @param colorProperty - The property representing the color of the material.
-   * @param myDensityProperty - The property representing the density of the material.
-   * @param blockSetValueChangedProperty - The property indicating if the block set value has changed.
-   * @param initialMaterials - The list of initial materials to use if their densities match.
-   * @returns A read-only property representing the material.
    */
-  private static createMaterialProperty( colorProperty: TProperty<Color>, myDensityProperty: TProperty<number>,
-                                         blockSetValueChangedProperty: TProperty<boolean>, initialMaterials: Material[] ): TReadOnlyProperty<Material> {
-    return new DerivedProperty( [ colorProperty, myDensityProperty, blockSetValueChangedProperty ],
+  private static createMaterialProperty( colorProperty: TReadOnlyProperty<Color>, densityProperty: TReadOnlyProperty<number>,
+                                         blockSetValueChangedProperty: TReadOnlyProperty<boolean>, initialMaterials: Material[] ): TReadOnlyProperty<Material> {
+    return new DerivedProperty( [ colorProperty, densityProperty, blockSetValueChangedProperty ],
       ( color, density, blockSetValueChanged ) => {
 
         // If the block set value has not changed, attempt to use an initial material with the same density.

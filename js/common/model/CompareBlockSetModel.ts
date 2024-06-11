@@ -230,11 +230,23 @@ export default class CompareBlockSetModel extends BlockSetModel<BlockSet> {
     super.reset();
   }
 
+  /**
+   * Creates a material property based on the provided color, density, and block set value change status.
+   * If the block set value has not changed, it attempts to use an initial material with the same density.
+   * Otherwise, it creates a custom material with a modified color based on the density.
+   *
+   * @param colorProperty - The property representing the color of the material.
+   * @param myDensityProperty - The property representing the density of the material.
+   * @param blockSetValueChangedProperty - The property indicating if the block set value has changed.
+   * @param initialMaterials - The list of initial materials to use if their densities match.
+   * @returns A read-only property representing the material.
+   */
   private static createMaterialProperty( colorProperty: TProperty<Color>, myDensityProperty: TProperty<number>,
                                          blockSetValueChangedProperty: TProperty<boolean>, initialMaterials: Material[] ): TReadOnlyProperty<Material> {
     return new DerivedProperty( [ colorProperty, myDensityProperty, blockSetValueChangedProperty ],
       ( color, density, blockSetValueChanged ) => {
 
+        // If the block set value has not changed, attempt to use an initial material with the same density.
         if ( !blockSetValueChanged ) {
           for ( let i = 0; i < initialMaterials.length; i++ ) {
             const material = initialMaterials[ i ];
@@ -244,13 +256,16 @@ export default class CompareBlockSetModel extends BlockSetModel<BlockSet> {
           }
         }
 
+        // Calculate the lightness of the material based on its density.
         const lightness = Material.getNormalizedLightness( density, COLOR_DENSITY_RANGE ); // 0-1
 
+        // Modify the color brightness based on the lightness.
         const modifier = 0.1;
         const rawValue = ( lightness * 2 - 1 ) * ( 1 - modifier ) + modifier;
         const power = 0.7;
         const modifiedColor = color.colorUtilsBrightness( Math.sign( rawValue ) * Math.pow( Math.abs( rawValue ), power ) );
 
+        // Create and return a custom material with the modified color and density.
         return Material.createCustomSolidMaterial( {
           density: density,
           customColor: new Property( modifiedColor, { tandem: Tandem.OPT_OUT } )

@@ -21,7 +21,7 @@ import Vector3 from '../../../../dot/js/Vector3.js';
 import { Shape } from '../../../../kite/js/imports.js';
 import EnumerationIO from '../../../../tandem/js/types/EnumerationIO.js';
 import optionize, { combineOptions } from '../../../../phet-core/js/optionize.js';
-import { Color, ColorProperty, PDOMValueType } from '../../../../scenery/js/imports.js';
+import { Color, ColorProperty, createGatedVisibleProperty, PDOMValueType } from '../../../../scenery/js/imports.js';
 import PhetioObject, { PhetioObjectOptions } from '../../../../tandem/js/PhetioObject.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
 import BooleanIO from '../../../../tandem/js/types/BooleanIO.js';
@@ -83,7 +83,6 @@ type SelfOptions = {
   adjustableColor?: boolean;
   tag?: MassTag;
   accessibleName?: PDOMValueType | null;
-  phetioType?: IOType;
   inputEnabledPropertyOptions?: BooleanPropertyOptions;
   materialPropertyOptions?: PropertyOptions<Material>;
   volumePropertyOptions?: NumberPropertyOptions;
@@ -118,13 +117,13 @@ export default abstract class Mass extends PhetioObject {
 
   public readonly userControlledProperty: Property<boolean>;
   public readonly inputEnabledProperty: Property<boolean>;
-  public readonly visibleProperty: TReadOnlyProperty<boolean>;
+
+  // This property is like a model value, indicating whether it should be shown
   public readonly internalVisibleProperty: Property<boolean>;
 
-  // Here just for instrumentation, see https://github.com/phetsims/density/issues/112
-  // This can only hide it, but won't make it visible.
-  // TODO: Definitely name it for "phet-io" and not "studio", https://github.com/phetsims/buoyancy/issues/51
-  private readonly studioVisibleProperty: Property<boolean>;
+  // There is a gated visibility property that is accessible to PhET-iO. Combined with the above internalVisibleProperty
+  // it yields this overall visibleProperty which is respected in the view.
+  public readonly visibleProperty: TReadOnlyProperty<boolean>;
 
   public readonly materialProperty: Property<Material>;
 
@@ -238,7 +237,8 @@ export default abstract class Mass extends PhetioObject {
 
     super( options );
 
-    const tandem = options.tandem;
+    // TODO: Why did the question mark disappear? See https://github.com/phetsims/buoyancy/issues/86
+    const tandem: Tandem = options.tandem;
 
     this.engine = engine;
     this.body = options.body;
@@ -260,19 +260,11 @@ export default abstract class Mass extends PhetioObject {
       phetioDocumentation: 'For internal use only',
 
       // instrumentation is needed for PhET-iO State only, not customizable.
-      tandem: tandem?.createTandem( 'internalVisibleProperty' ),
+      tandem: tandem.createTandem( 'internalVisibleProperty' ),
       phetioReadOnly: true
     } );
 
-    // REVIEW: This is very confusing, tandem names don't match
-    this.studioVisibleProperty = new BooleanProperty( true, {
-      tandem: tandem?.createTandem( 'visibleProperty' ),
-      phetioFeatured: true
-    } );
-
-    this.visibleProperty = DerivedProperty.and( [ this.internalVisibleProperty, this.studioVisibleProperty ], {
-      tandem: Tandem.OPT_OUT
-    } );
+    this.visibleProperty = createGatedVisibleProperty( this.internalVisibleProperty, tandem );
 
     this.materialProperty = new Property( options.material, combineOptions<PropertyOptions<Material>>( {
       valueType: Material,
@@ -683,7 +675,6 @@ export default abstract class Mass extends PhetioObject {
 
     this.userControlledProperty.dispose();
     this.inputEnabledProperty.dispose();
-    this.studioVisibleProperty.dispose();
     this.materialProperty.dispose();
     this.volumeProperty.dispose();
     this.massProperty.dispose();
@@ -691,6 +682,7 @@ export default abstract class Mass extends PhetioObject {
     this.buoyancyForceInterpolatedProperty.dispose();
     this.contactForceInterpolatedProperty.dispose();
     this.internalVisibleProperty.dispose();
+    this.visibleProperty.dispose();
     super.dispose();
   }
 

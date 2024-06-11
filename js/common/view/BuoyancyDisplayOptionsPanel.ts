@@ -9,7 +9,7 @@
 import ArrowNode, { ArrowNodeOptions } from '../../../../scenery-phet/js/ArrowNode.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import PlusMinusZoomButtonGroup from '../../../../scenery-phet/js/PlusMinusZoomButtonGroup.js';
-import { GridBox, HSeparator, Text, TextOptions, VBox } from '../../../../scenery/js/imports.js';
+import { Color, GridBox, HSeparator, Text, TextOptions, VBox } from '../../../../scenery/js/imports.js';
 import Checkbox, { CheckboxOptions } from '../../../../sun/js/Checkbox.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
@@ -20,6 +20,8 @@ import { combineOptions, optionize4 } from '../../../../phet-core/js/optionize.j
 import RectangularButton from '../../../../sun/js/buttons/RectangularButton.js';
 import WithRequired from '../../../../phet-core/js/types/WithRequired.js';
 import Panel, { PanelOptions } from '../../../../sun/js/Panel.js';
+import Property from '../../../../axon/js/Property.js';
+import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 
 // constants
 const arrowSpacing = DensityBuoyancyCommonConstants.SPACING;
@@ -57,7 +59,7 @@ export default class BuoyancyDisplayOptionsPanel extends Panel {
       maxWidth: options.contentWidth - arrowSpacing - arrowLength - checkboxOptions.boxWidth - checkboxOptions.spacing - 2 * options.xMargin
     };
 
-    const createForceControl = ( property: Property<boolean>, label: string, color: Color, row: number, tandemName: string ) => {
+    const createForceControl = ( property: Property<boolean>, label: TReadOnlyProperty<string>, color: TReadOnlyProperty<Color>, row: number, tandemName: string ) => {
       return [
         new Checkbox( property, new Text( label, labelOptions ), combineOptions<CheckboxOptions>( {
           layoutOptions: { column: 0, row: row },

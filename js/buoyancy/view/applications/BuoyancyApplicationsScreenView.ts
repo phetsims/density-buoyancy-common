@@ -174,7 +174,7 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
               decimalPlaces: 2,
               textOptions: {
                 font: new PhetFont( 12 ),
-                maxWidth: airVolumeMaxWidth
+                maxWidth: airVolumeMaxWidth * 0.9 // to account for the numberDisplay padding
               }
             } )
           ]

@@ -48,7 +48,7 @@ export default class ShapeSizeControlNode extends VBox {
         value: massShape,
         createNode: () => new Text( massShape.shapeString, {
           font: DensityBuoyancyCommonConstants.COMBO_BOX_ITEM_FONT,
-          maxWidth: 120 // 160 minus maxwidth of the icons
+          maxWidth: 110 // 160 minus maxwidth of the icons
         } ),
         tandemName: `${massShape.tandemName}Item`,
         a11yName: massShape.shapeString
@@ -132,7 +132,7 @@ export default class ShapeSizeControlNode extends VBox {
             decimalPlaces: 2,
             textOptions: {
               font: DensityBuoyancyCommonConstants.READOUT_FONT,
-              maxWidth: widthNumberControl.width / 2
+              maxWidth: widthNumberControl.width / 3 // to account for the numberDisplay padding
             }
           } )
         ]

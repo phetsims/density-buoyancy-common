@@ -107,7 +107,7 @@ export default class MaterialControlNode extends VBox {
       phetioValueType: StringIO
     } );
 
-    const comboMaxWidth = options.labelNode ? 110 : 160;
+    const comboMaxWidth = 110;
 
     const regularMaterials = materials.filter( material => !material.hidden );
     const mysteryMaterials = materials.filter( material => material.hidden );

@@ -289,7 +289,7 @@ class HasChangedNumberProperty extends NumberProperty {
   public override reset(): void {
     super.reset();
 
-    // Reset after the potenial value change in the super call
+    // Reset after the potential value change in the super call
     this.hasChangedProperty.reset();
   }
 

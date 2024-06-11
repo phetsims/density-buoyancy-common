@@ -21,6 +21,8 @@ export default class BlendedVector2Property extends Property<Vector2> {
     // choose the blendAmount based on the distance between values
     // This adds a hysteresis effect to the readout, which reduces flickering inherent to the model.
     const MIN_BLEND = 0.1; // When close, blend with the old value more
+
+    // REVIEW: Does this MAX_BLEND differ from BlendedNumberProperty max on purpose? If so, document.
     const MAX_BLEND = 0.7; // When far apart, take the new value completely
     const blendAmount = Utils.clamp(
       Utils.linear( 0, 1, MIN_BLEND, MAX_BLEND, newValue.minus( oldValue ).magnitude ),

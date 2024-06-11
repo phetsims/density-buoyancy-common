@@ -159,81 +159,50 @@ export default class CompareBlockSetModel extends BlockSetModel<BlockSet> {
     } );
 
     const createMasses = ( model: DensityBuoyancyModel, blockSet: BlockSet ) => {
-      let masses;
-      switch( blockSet ) {
-        case BlockSet.SAME_MASS: {
-          masses = cubesData.map( cubeData => {
-            const cube = Cube.createWithMass(
-              model.engine,
-              cubeData.sameMassMaterialProperty.value,
-              Vector2.ZERO,
-              massProperty.value,
-              combineOptions<CubeOptions>( {}, commonCubeOptions, cubeData.sameMassCubeOptions )
-            );
 
-            // This cube instance lives for the lifetime of the simulation, so we don't need to remove listeners.
-            cubeData.sameMassMaterialProperty.link( material => { cube.materialProperty.value = material; } );
+      // In the following code, the cube instance persists for the lifetime of the simulation and the listeners
+      // don't need to be removed.
+      return blockSet === BlockSet.SAME_MASS ?
+             cubesData.map( cubeData => {
+               const cube = Cube.createWithMass( model.engine, cubeData.sameMassMaterialProperty.value, Vector2.ZERO,
+                 massProperty.value, combineOptions<CubeOptions>( {}, commonCubeOptions, cubeData.sameMassCubeOptions ) );
 
-            // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
-            massProperty.lazyLink( massValue => { cubeData.sameMassDensityProperty.value = massValue / cube.volumeProperty.value; } );
-            return cube;
-          } );
-        }
-          break;
-        case BlockSet.SAME_VOLUME: {
+               cubeData.sameMassMaterialProperty.link( material => cube.materialProperty.set( material ) );
+               massProperty.lazyLink( massValue => cubeData.sameMassDensityProperty.set( massValue / cube.volumeProperty.value ) );
 
-          masses = cubesData.map( cubeData => {
-            const cube = Cube.createWithMass(
-              model.engine,
-              cubeData.sameVolumeMaterialProperty.value,
-              Vector2.ZERO,
-              cubeData.sameVolumeMass,
-              combineOptions<CubeOptions>( {}, commonCubeOptions, cubeData.sameVolumeCubeOptions )
-            );
+               return cube;
+             } ) :
 
-            // This cube instance lives for the lifetime of the simulation, so we don't need to remove listeners.
-            cubeData.sameVolumeMaterialProperty.link( material => { cube.materialProperty.value = material; } );
+             blockSet === BlockSet.SAME_VOLUME ?
+             cubesData.map( cubeData => {
+               const cube = Cube.createWithMass( model.engine, cubeData.sameVolumeMaterialProperty.value, Vector2.ZERO,
+                 cubeData.sameVolumeMass, combineOptions<CubeOptions>( {}, commonCubeOptions, cubeData.sameVolumeCubeOptions ) );
 
-            // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
-            volumeProperty.lazyLink( volume => {
-              const size = Cube.boundsFromVolume( volume );
-              cube.updateSize( size );
+               cubeData.sameVolumeMaterialProperty.link( material => cube.materialProperty.set( material ) );
 
-              // Our volume listener is triggered AFTER the cubes have phet-io applyState run, so we can't rely on
-              // inspecting their mass at that time (and instead need an external reference from the data).
-              // See https://github.com/phetsims/density/issues/111
-              cubeData.sameVolumeDensityProperty.value = cubeData.sameVolumeMass / volume;
-            } );
-            return cube;
-          } );
-        }
-          break;
-        case BlockSet.SAME_DENSITY: {
-          masses = cubesData.map( cubeData => {
-            const startingMass = options.sameDensityValue * cubeData.sameDensityVolume;
+               volumeProperty.lazyLink( volume => {
+                 const size = Cube.boundsFromVolume( volume );
+                 cube.updateSize( size );
 
-            const cube = Cube.createWithMass(
-              model.engine,
-              cubeData.sameDensityMaterialProperty.value,
-              Vector2.ZERO,
-              startingMass,
-              combineOptions<CubeOptions>( {}, commonCubeOptions, cubeData.sameDensityCubeOptions )
-            );
+                 // Our volume listener is triggered AFTER the cubes have phet-io applyState run, so we can't rely on
+                 // inspecting their mass at that time (and instead need an external reference from the data).
+                 // See https://github.com/phetsims/density/issues/111
+                 cubeData.sameVolumeDensityProperty.value = cubeData.sameVolumeMass / volume;
+               } );
 
-            // This cube instance lives for the lifetime of the simulation, so we don't need to remove listeners.
-            cubeData.sameDensityMaterialProperty.link( material => { cube.materialProperty.value = material; } );
+               return cube;
+             } ) :
+             cubesData.map( cubeData => {
+               const startingMass = options.sameDensityValue * cubeData.sameDensityVolume;
 
-            // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
-            densityProperty.lazyLink( density => { cubeData.sameDensityDensityProperty.value = density; } );
-            return cube;
-          } );
-        }
-          break;
-        default:
-          throw new Error( `unknown blockSet: ${blockSet}` );
-      }
+               const cube = Cube.createWithMass( model.engine, cubeData.sameDensityMaterialProperty.value, Vector2.ZERO,
+                 startingMass, combineOptions<CubeOptions>( {}, commonCubeOptions, cubeData.sameDensityCubeOptions ) );
 
-      return masses;
+               cubeData.sameDensityMaterialProperty.link( material => cube.materialProperty.set( material ) );
+               densityProperty.lazyLink( density => cubeData.sameDensityDensityProperty.set( density ) );
+
+               return cube;
+             } );
     };
 
     // Using spread here is the best possible solution. We want to add in `createMassesCallback` but cannot change the

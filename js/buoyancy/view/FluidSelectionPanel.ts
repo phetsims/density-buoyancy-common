@@ -29,7 +29,6 @@ const VISIBLE_FLUIDS = [
 
 type FluidSelectionPanelOptions = WithRequired<PanelOptions, 'tandem'>;
 
-
 export default class FluidSelectionPanel extends Panel {
 
   public constructor( liquidMaterialProperty: Property<Material>, listParent: Node, providedOptions?: FluidSelectionPanelOptions ) {

@@ -16,7 +16,6 @@ import Vector2 from '../../../../dot/js/Vector2.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
 import { Shape } from '../../../../kite/js/imports.js';
 import optionize, { EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
-import IOType from '../../../../tandem/js/types/IOType.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import Mass, { InstrumentedMassOptions, MASS_MAX_SHAPES_DIMENSION, MASS_MIN_SHAPES_DIMENSION } from './Mass.js';
 import PhysicsEngine from './PhysicsEngine.js';
@@ -41,9 +40,7 @@ export default class VerticalCylinder extends Mass {
       body: engine.createBox( 2 * radius, height ),
       shape: VerticalCylinder.getVerticalCylinderShape( radius, height ),
       volume: VerticalCylinder.getVolume( radius, height ),
-      massShape: MassShape.VERTICAL_CYLINDER,
-
-      phetioType: VerticalCylinder.VerticalCylinderIO
+      massShape: MassShape.VERTICAL_CYLINDER
     }, providedOptions );
 
     assert && assert( !options.canRotate );
@@ -261,13 +258,6 @@ export default class VerticalCylinder extends Mass {
       return null;
     }
   }
-
-
-  private static readonly VerticalCylinderIO = new IOType( 'VerticalCylinderIO', {
-    valueType: VerticalCylinder,
-    supertype: Mass.MassIO,
-    documentation: 'Represents a cylinder laying on its end'
-  } );
 }
 
 densityBuoyancyCommon.register( 'VerticalCylinder', VerticalCylinder );

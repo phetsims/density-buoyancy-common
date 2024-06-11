@@ -13,7 +13,6 @@ import Vector2 from '../../../../dot/js/Vector2.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
 import { Shape } from '../../../../kite/js/imports.js';
 import optionize, { EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
-import IOType from '../../../../tandem/js/types/IOType.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import Mass, { InstrumentedMassOptions, MASS_MAX_SHAPES_DIMENSION, MASS_MIN_SHAPES_DIMENSION } from './Mass.js';
 import PhysicsEngine from './PhysicsEngine.js';
@@ -34,9 +33,7 @@ export default class Ellipsoid extends Mass {
       body: engine.createFromVertices( Ellipsoid.getEllipsoidVertices( size.width, size.height ), false ),
       shape: Ellipsoid.getEllipsoidShape( size.width, size.height ),
       volume: Ellipsoid.getVolume( size ),
-      massShape: MassShape.ELLIPSOID,
-
-      phetioType: Ellipsoid.EllipsoidIO
+      massShape: MassShape.ELLIPSOID
     }, providedOptions );
 
     assert && assert( !options.canRotate );
@@ -196,12 +193,6 @@ export default class Ellipsoid extends Mass {
   private static getVolume( size: Bounds3 ): number {
     return Math.PI * size.width * size.height * size.depth / 6;
   }
-
-  private static EllipsoidIO = new IOType( 'EllipsoidIO', {
-    valueType: Ellipsoid,
-    supertype: Mass.MassIO,
-    documentation: 'Represents an ellipsoid'
-  } );
 }
 
 densityBuoyancyCommon.register( 'Ellipsoid', Ellipsoid );

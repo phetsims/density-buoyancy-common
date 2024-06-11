@@ -84,7 +84,6 @@ import densityBuoyancyCommon from '../../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../../DensityBuoyancyCommonStrings.js';
 import PhysicsEngine from '../../../common/model/PhysicsEngine.js';
 import Multilink from '../../../../../axon/js/Multilink.js';
-import IOType from '../../../../../tandem/js/types/IOType.js';
 import { MassShape } from '../../../common/model/MassShape.js';
 import ReadOnlyProperty from '../../../../../axon/js/ReadOnlyProperty.js';
 import ApplicationsMass, { ApplicationsMassOptions } from './ApplicationsMass.js';
@@ -1198,12 +1197,6 @@ const FLAT_INTERSECTION_VERTICES = [ ${flatIntersectionVertices.map( v => `new V
   private static readonly TEN_LITER_DISPLACED_VOLUMES = TEN_LITER_DISPLACED_VOLUMES;
 
   private static readonly FLAT_INTERSECTION_VERTICES = FLAT_INTERSECTION_VERTICES;
-
-  private static readonly BottleIO = new IOType( 'BottleIO', {
-    valueType: Bottle,
-    supertype: Mass.MassIO,
-    documentation: 'Represents a bottle'
-  } );
 }
 
 densityBuoyancyCommon.register( 'Bottle', Bottle );

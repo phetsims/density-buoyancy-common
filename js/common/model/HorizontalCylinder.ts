@@ -13,7 +13,6 @@ import Range from '../../../../dot/js/Range.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
 import { Shape } from '../../../../kite/js/imports.js';
 import optionize, { EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
-import IOType from '../../../../tandem/js/types/IOType.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import Mass, { InstrumentedMassOptions, MASS_MAX_SHAPES_DIMENSION, MASS_MIN_SHAPES_DIMENSION } from './Mass.js';
 import PhysicsEngine from './PhysicsEngine.js';
@@ -39,9 +38,7 @@ export default class HorizontalCylinder extends Mass {
       body: engine.createBox( length, radius * 2 ),
       shape: HorizontalCylinder.getHorizontalCylinderShape( radius, length ),
       volume: HorizontalCylinder.getVolume( radius, length ),
-      massShape: MassShape.HORIZONTAL_CYLINDER,
-
-      phetioType: HorizontalCylinder.HorizontalCylinderIO
+      massShape: MassShape.HORIZONTAL_CYLINDER
     }, providedOptions );
 
     assert && assert( !options.canRotate );
@@ -208,12 +205,6 @@ export default class HorizontalCylinder extends Mass {
   private static getVolume( radius: number, length: number ): number {
     return Math.PI * radius * radius * length;
   }
-
-  private static readonly HorizontalCylinderIO = new IOType( 'HorizontalCylinderIO', {
-    valueType: HorizontalCylinder,
-    supertype: Mass.MassIO,
-    documentation: 'Represents a cylinder laying on its side'
-  } );
 }
 
 densityBuoyancyCommon.register( 'HorizontalCylinder', HorizontalCylinder );

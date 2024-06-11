@@ -14,7 +14,6 @@ import Vector2 from '../../../../dot/js/Vector2.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
 import { Shape } from '../../../../kite/js/imports.js';
 import optionize, { EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
-import IOType from '../../../../tandem/js/types/IOType.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import Mass, { InstrumentedMassOptions, MASS_MAX_SHAPES_DIMENSION, MASS_MIN_SHAPES_DIMENSION, MassOptions } from './Mass.js';
 import PhysicsEngine from './PhysicsEngine.js';
@@ -47,9 +46,7 @@ export default class Cone extends Mass {
       body: engine.createFromVertices( initialVertices, false ),
       shape: Shape.polygon( initialVertices ),
       volume: Cone.getVolume( radius, height ),
-      massShape: isVertexUp ? MassShape.CONE : MassShape.INVERTED_CONE,
-
-      phetioType: Cone.ConeIO
+      massShape: isVertexUp ? MassShape.CONE : MassShape.INVERTED_CONE
     }, providedOptions );
 
     assert && assert( !options.canRotate );
@@ -236,12 +233,6 @@ export default class Cone extends Mass {
   private static getVolume( radius: number, height: number ): number {
     return Math.PI * radius * radius * height / 3;
   }
-
-  private static readonly ConeIO = new IOType( 'ConeIO', {
-    valueType: Cone,
-    supertype: Mass.MassIO,
-    documentation: 'Represents an up/down cone'
-  } );
 }
 
 densityBuoyancyCommon.register( 'Cone', Cone );

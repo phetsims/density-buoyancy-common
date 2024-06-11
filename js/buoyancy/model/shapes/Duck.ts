@@ -15,7 +15,6 @@ import Vector2 from '../../../../../dot/js/Vector2.js';
 import Vector3 from '../../../../../dot/js/Vector3.js';
 import { Shape } from '../../../../../kite/js/imports.js';
 import optionize, { EmptySelfOptions } from '../../../../../phet-core/js/optionize.js';
-import IOType from '../../../../../tandem/js/types/IOType.js';
 import densityBuoyancyCommon from '../../../densityBuoyancyCommon.js';
 import Mass, { InstrumentedMassOptions, MASS_MAX_SHAPES_DIMENSION, MASS_MIN_SHAPES_DIMENSION } from '../../../common/model/Mass.js';
 import PhysicsEngine from '../../../common/model/PhysicsEngine.js';
@@ -38,9 +37,7 @@ export default class Duck extends Mass {
       body: engine.createFromVertices( Duck.getDuckVertices( size.width, size.height ), true ),
       shape: Duck.getDuckShape( size.width, size.height ),
       volume: Duck.getVolume( size ),
-      massShape: MassShape.DUCK,
-
-      phetioType: Duck.DuckIO
+      massShape: MassShape.DUCK
     }, providedConfig );
 
     assert && assert( !config.canRotate );
@@ -206,12 +203,6 @@ export default class Duck extends Mass {
     // Hard coded normalized volume obtained from Blender
     return 0.5 * size.width * size.height * size.depth;
   }
-
-  private static DuckIO = new IOType( 'DuckIO', {
-    valueType: Duck,
-    supertype: Mass.MassIO,
-    documentation: 'Represents a duck'
-  } );
 
   private static getFlatGeometry(): Vector2[] {
     return flatDuckData;

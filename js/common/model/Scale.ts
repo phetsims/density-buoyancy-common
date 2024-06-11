@@ -209,6 +209,8 @@ export default class Scale extends Mass {
     this.scaleForceInterpolatedProperty.setRatio( interpolationRatio );
   }
 
+  // Not interesting or useful, but maintained as a documentation point, and for backward compatibility with
+  // legacy publications of Density
   private static readonly ScaleIO = new IOType( 'ScaleIO', {
     valueType: Scale,
     supertype: Mass.MassIO,

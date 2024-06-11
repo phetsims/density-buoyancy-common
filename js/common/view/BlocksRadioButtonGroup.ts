@@ -1,7 +1,8 @@
 // Copyright 2020-2024, University of Colorado Boulder
 
 /**
- * Controls whether the second mass is visible.
+ * Controls whether the second mass is visible. This is a standard straightforward RectangularRadioButtonGroup. Most
+ * of the complexity of this file is in generating the icons.
  *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
@@ -38,17 +39,15 @@ export type BlocksRadioButtonGroupOptions = RectangularRadioButtonGroupOptions;
 
 export default class BlocksRadioButtonGroup extends RectangularRadioButtonGroup<TwoBlockMode> {
   public constructor( modeProperty: Property<TwoBlockMode>, options?: BlocksRadioButtonGroupOptions ) {
-    super( modeProperty, [
-      {
-        value: TwoBlockMode.ONE_BLOCK,
-        createNode: () => BlocksRadioButtonGroup.getSingleCuboidIcon(),
-        tandemName: 'oneBlockRadioButton'
-      },
-      {
-        value: TwoBlockMode.TWO_BLOCKS,
-        createNode: () => BlocksRadioButtonGroup.getDoubleCuboidIcon(),
-        tandemName: 'twoBlocksRadioButton'
-      }
+    super( modeProperty, [ {
+      value: TwoBlockMode.ONE_BLOCK,
+      createNode: () => BlocksRadioButtonGroup.getSingleCuboidIcon(),
+      tandemName: 'oneBlockRadioButton'
+    }, {
+      value: TwoBlockMode.TWO_BLOCKS,
+      createNode: () => BlocksRadioButtonGroup.getDoubleCuboidIcon(),
+      tandemName: 'twoBlocksRadioButton'
+    }
     ], optionize<BlocksRadioButtonGroupOptions, EmptySelfOptions, RectangularRadioButtonGroupOptions>()( {
       orientation: 'horizontal',
       touchAreaXDilation: 5,

@@ -57,6 +57,21 @@ export default class BuoyancyDisplayOptionsPanel extends Panel {
       maxWidth: options.contentWidth - arrowSpacing - arrowLength - checkboxOptions.boxWidth - checkboxOptions.spacing - 2 * options.xMargin
     };
 
+    const createForceControl = ( property: Property<boolean>, label: string, color: Color, row: number, tandemName: string ) => {
+      return [
+        new Checkbox( property, new Text( label, labelOptions ), combineOptions<CheckboxOptions>( {
+          layoutOptions: { column: 0, row: row },
+          tandem: options.tandem.createTandem( tandemName ),
+          containerTagName: 'p',
+          accessibleName: label
+        }, checkboxOptions ) ),
+        new ArrowNode( 0, 0, arrowLength, 0, combineOptions<ArrowNodeOptions>( {
+          layoutOptions: { column: 1, row: row },
+          fill: color
+        }, arrowOptions ) )
+      ];
+    };
+
     const content = new VBox( {
       align: 'left',
       spacing: DensityBuoyancyCommonConstants.SPACING_SMALL,
@@ -76,40 +91,9 @@ export default class BuoyancyDisplayOptionsPanel extends Panel {
               children: [
 
                 // Gravity
-                new Checkbox( model.showGravityForceProperty, new Text( DensityBuoyancyCommonStrings.gravity.nameStringProperty, labelOptions ), combineOptions<CheckboxOptions>( {
-                  layoutOptions: { column: 0, row: 0 },
-                  tandem: options.tandem.createTandem( 'showGravityForceCheckbox' ),
-                  containerTagName: 'p',
-                  accessibleName: DensityBuoyancyCommonStrings.gravity.nameStringProperty
-                }, checkboxOptions ) ),
-                new ArrowNode( 0, 0, arrowLength, 0, combineOptions<ArrowNodeOptions>( {
-                  layoutOptions: { column: 1, row: 0 },
-                  fill: DensityBuoyancyCommonColors.gravityForceProperty
-                }, arrowOptions ) ),
-
-                // Buoyancy
-                new Checkbox( model.showBuoyancyForceProperty, new Text( DensityBuoyancyCommonStrings.buoyancyStringProperty, labelOptions ), combineOptions<CheckboxOptions>( {
-                  layoutOptions: { column: 0, row: 1 },
-                  tandem: options.tandem.createTandem( 'showBuoyancyForceCheckbox' ),
-                  containerTagName: 'p',
-                  accessibleName: DensityBuoyancyCommonStrings.buoyancyStringProperty
-                }, checkboxOptions ) ),
-                new ArrowNode( 0, 0, arrowLength, 0, combineOptions<ArrowNodeOptions>( {
-                  layoutOptions: { column: 1, row: 1 },
-                  fill: DensityBuoyancyCommonColors.buoyancyForceProperty
-                }, arrowOptions ) ),
-
-                // Contact
-                new Checkbox( model.showContactForceProperty, new Text( DensityBuoyancyCommonStrings.contactStringProperty, labelOptions ), combineOptions<CheckboxOptions>( {
-                  layoutOptions: { column: 0, row: 2 },
-                  tandem: options.tandem.createTandem( 'showContactForceCheckbox' ),
-                  containerTagName: 'p',
-                  accessibleName: DensityBuoyancyCommonStrings.contactStringProperty
-                }, checkboxOptions ) ),
-                new ArrowNode( 0, 0, arrowLength, 0, combineOptions<ArrowNodeOptions>( {
-                  layoutOptions: { column: 1, row: 2 },
-                  fill: DensityBuoyancyCommonColors.contactForceProperty
-                }, arrowOptions ) ),
+                ...createForceControl( model.showGravityForceProperty, DensityBuoyancyCommonStrings.gravity.nameStringProperty, DensityBuoyancyCommonColors.gravityForceProperty, 0, 'showGravityForceCheckbox' ),
+                ...createForceControl( model.showBuoyancyForceProperty, DensityBuoyancyCommonStrings.buoyancyStringProperty, DensityBuoyancyCommonColors.buoyancyForceProperty, 1, 'showBuoyancyForceCheckbox' ),
+                ...createForceControl( model.showContactForceProperty, DensityBuoyancyCommonStrings.contactStringProperty, DensityBuoyancyCommonColors.contactForceProperty, 2, 'showContactForceCheckbox' ),
 
                 // Vector zoom
                 ...( options.includeVectorZoomControl ? [

@@ -223,7 +223,7 @@ export default class BuoyancyCompareScreenView extends DensityBuoyancyScreenView
     const availableRightSpace = this.visibleBoundsProperty.value.right - this.poolScaleHeightControl!.right;
 
     // 2 margins for the spacing outside the panel, and 2 margins for the panel's content margin
-    this.rightSideMaxContentWidthProperty.value = Math.min( availableRightSpace - 4 * MARGIN, MAX_RIGHT_SIDE_CONTENT_WIDTH );
+    this.rightSideMaxContentWidthProperty.value = Math.min( availableRightSpace - 6 * MARGIN, MAX_RIGHT_SIDE_CONTENT_WIDTH );
     this.rightSidePanelsVBox.top = rightSideOfPoolViewPoint.y + MARGIN;
     this.rightSidePanelsVBox.right = this.visibleBoundsProperty.value.right - MARGIN;
   }

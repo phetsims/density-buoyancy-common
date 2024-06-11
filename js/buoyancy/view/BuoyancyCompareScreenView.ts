@@ -95,15 +95,19 @@ export default class BuoyancyCompareScreenView extends DensityBuoyancyScreenView
       margin: MARGIN
     } ) );
 
+    const numberControlPanel = new ComparisonControlPanel( model.massProperty, model.volumeProperty, model.densityProperty, model.blockSetProperty, {
+      sliderTrackSize: new Dimension2( 120, 0.5 ),
+      tandem: tandem // just pass through, because ComparisonControlPanel doesn't instrument the Panel.
+    } );
 
     // Materials are set in densityBox.setMaterials() below
     const densityAccordionBox = new DensityAccordionBox( DensityBuoyancyCommonStrings.densityComparisonStringProperty, {
-      contentWidthMax: this.rightSideMaxContentWidthProperty,
+      contentWidthMax: numberControlPanel.width * 0.9,
       tandem: options.tandem.createTandem( 'densityAccordionBox' )
     } );
 
     const submergedAccordionBox = new SubmergedAccordionBox( {
-      contentWidthMax: this.rightSideMaxContentWidthProperty,
+      contentWidthMax: numberControlPanel.width * 0.9,
       tandem: options.tandem.createTandem( 'submergedAccordionBox' )
     } );
 
@@ -152,11 +156,6 @@ export default class BuoyancyCompareScreenView extends DensityBuoyancyScreenView
       const itemsForBoth = readoutItemsCache.get( blockSet )!;
       submergedAccordionBox.setReadoutItems( itemsForBoth.submergedItems );
       densityAccordionBox.setReadoutItems( itemsForBoth.densityItems );
-    } );
-
-    const numberControlPanel = new ComparisonControlPanel( model.massProperty, model.volumeProperty, model.densityProperty, model.blockSetProperty, {
-      sliderTrackSize: new Dimension2( 120, 0.5 ),
-      tandem: tandem // just pass through, because ComparisonControlPanel doesn't instrument the Panel.
     } );
 
     this.rightSidePanelsVBox = new VBox( {
@@ -223,7 +222,7 @@ export default class BuoyancyCompareScreenView extends DensityBuoyancyScreenView
     const availableRightSpace = this.visibleBoundsProperty.value.right - this.poolScaleHeightControl!.right;
 
     // 2 margins for the spacing outside the panel, and 2 margins for the panel's content margin
-    this.rightSideMaxContentWidthProperty.value = Math.min( availableRightSpace - 4 * MARGIN, MAX_RIGHT_SIDE_CONTENT_WIDTH );
+    this.rightSideMaxContentWidthProperty.value = Math.min( availableRightSpace - 6 * MARGIN, MAX_RIGHT_SIDE_CONTENT_WIDTH );
     this.rightSidePanelsVBox.top = rightSideOfPoolViewPoint.y + MARGIN;
     this.rightSidePanelsVBox.right = this.visibleBoundsProperty.value.right - MARGIN;
   }

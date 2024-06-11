@@ -13,7 +13,7 @@ import StrictOmit from '../../../../phet-core/js/types/StrictOmit.js';
 import BlockSetModel, { BlockSetModelOptions } from './BlockSetModel.js';
 import BlockSet from './BlockSet.js';
 import optionize, { combineOptions } from '../../../../phet-core/js/optionize.js';
-import NumberProperty, { NumberPropertyOptions } from '../../../../axon/js/NumberProperty.js';
+import NumberProperty from '../../../../axon/js/NumberProperty.js';
 import Range from '../../../../dot/js/Range.js';
 import TProperty from '../../../../axon/js/TProperty.js';
 import { Color } from '../../../../scenery/js/imports.js';
@@ -28,7 +28,7 @@ import merge from '../../../../phet-core/js/merge.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import WithRequired from '../../../../phet-core/js/types/WithRequired.js';
-import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
+import HasChangedNumberProperty from './HasChangedNumberProperty.js';
 
 // This hard coded range is a bit arbitrary, but it lends itself to better colors than the provided range in the options.
 const COLOR_DENSITY_RANGE = new Range( 10, 10000 );
@@ -268,34 +268,6 @@ export default class CompareBlockSetModel extends BlockSetModel<BlockSet> {
         strictAxonDependencies: false, // The DerivedProperty derivation triggers the creation of a DynamicProperty which calls .value on itself, which is safe
         tandem: Tandem.OPT_OUT
       } );
-  }
-}
-
-// NumberProperty that composes an additional Property that monitors if that Property's value has changed or not.
-class HasChangedNumberProperty extends NumberProperty {
-
-  // Has the value changed? Will stay true even if set 0->1->0 when 0 is the initial value. True until reset.
-  public hasChangedProperty: Property<boolean>;
-
-  public constructor( initialValue: number, options: NumberPropertyOptions ) {
-    super( initialValue, options );
-    this.hasChangedProperty = new BooleanProperty( false, {
-      tandem: options.tandem?.createTandem( 'hasChangedProperty' ),
-      phetioReadOnly: true
-    } );
-    this.lazyLink( () => { this.hasChangedProperty.value = true; } );
-  }
-
-  public override reset(): void {
-    super.reset();
-
-    // Reset after the potential value change in the super call
-    this.hasChangedProperty.reset();
-  }
-
-  public override dispose(): void {
-    this.hasChangedProperty.dispose();
-    super.dispose();
   }
 }
 

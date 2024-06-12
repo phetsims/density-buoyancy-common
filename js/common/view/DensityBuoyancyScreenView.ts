@@ -153,10 +153,15 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
         .addColorStop( 0, DensityBuoyancyCommonColors.skyTopProperty )
         .addColorStop( 1, DensityBuoyancyCommonColors.skyBottomProperty )
     } );
+
     // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
     this.visibleBoundsProperty.link( visibleBounds => {
-      this.backgroundNode.translation = visibleBounds.leftTop;
-      this.backgroundNode.setScaleMagnitude( visibleBounds.width, visibleBounds.height / 2 );
+      this.backgroundNode.setRect( visibleBounds.left, visibleBounds.top, visibleBounds.width, visibleBounds.height );
+
+      this.backgroundNode.fill = new LinearGradient( visibleBounds.centerX, visibleBounds.top, visibleBounds.centerX, visibleBounds.centerY )
+        .addColorStop( 0, DensityBuoyancyCommonColors.skyTopProperty )
+        .addColorStop( 1, DensityBuoyancyCommonColors.skyBottomProperty )
+      ;
     } );
     this.addChild( this.backgroundNode );
 

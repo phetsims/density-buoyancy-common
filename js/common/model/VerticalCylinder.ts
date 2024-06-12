@@ -10,7 +10,6 @@ import NumberProperty from '../../../../axon/js/NumberProperty.js';
 import StrictOmit from '../../../../phet-core/js/types/StrictOmit.js';
 import Property from '../../../../axon/js/Property.js';
 import Range from '../../../../dot/js/Range.js';
-import Ray3 from '../../../../dot/js/Ray3.js';
 import Utils from '../../../../dot/js/Utils.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
@@ -21,6 +20,7 @@ import Mass, { InstrumentedMassOptions, MASS_MAX_SHAPES_DIMENSION, MASS_MIN_SHAP
 import PhysicsEngine from './PhysicsEngine.js';
 import { MassShape } from './MassShape.js';
 import Bounds3 from '../../../../dot/js/Bounds3.js';
+import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
 
 export type VerticalCylinderOptions = StrictOmit<InstrumentedMassOptions, 'body' | 'shape' | 'volume' | 'massShape'>;
 
@@ -83,9 +83,7 @@ export default class VerticalCylinder extends Mass {
 
     this.shapeProperty.value = VerticalCylinder.getVerticalCylinderShape( radius, height );
 
-    this.volumeLock = true;
     this.volumeProperty.value = VerticalCylinder.getVolume( radius, height );
-    this.volumeLock = false;
 
     this.forceOffsetProperty.value = new Vector3( 0, 0, radius );
     this.massLabelOffsetProperty.value = new Vector3( 0, -height / 2, radius );
@@ -204,59 +202,10 @@ export default class VerticalCylinder extends Mass {
    * Returns the volume of a vertical cylinder with the given radius and height.
    */
   private static getVolume( radius: number, height: number ): number {
-    return Math.PI * radius * radius * height;
-  }
-
-  /**
-   * Calculates the intersection of a ray with a finite vertical cylinder. If an intersection occurs, this
-   * function returns the smallest positive t-value, which represents the distance along the ray from its
-   * origin to the closest point of intersection. If no intersection occurs, null is returned.
-   *
-   * The cylinder is assumed to be aligned vertically along the y-axis. The intersection test takes into
-   * account both the radius in the xz-plane and the finite height along the y-axis. The function checks
-   * for intersections that occur in front of the ray's origin and are within the vertical bounds of the
-   * cylinder defined by its height.
-   *
-   * Note that the top of the Scale is modeled as a VerticalCylinder.
-   *
-   * @param ray The Ray3 object representing the ray's origin and direction.
-   * @param translation A Vector3 object representing the cylinder's center position in 3D space.
-   * @param radius The radius of the cylinder.
-   * @param height The height of the cylinder, extending symmetrically from the center along the y-axis.
-   *
-   * @see HorizontalCylinder.intersect
-   */
-  private static intersect( ray: Ray3, translation: Vector3, radius: number, height: number ): number | null {
-    const ox = ray.position.x - translation.x;
-    const oz = ray.position.z - translation.z;
-    const dx = ray.direction.x;
-    const dz = ray.direction.z;
-
-    // Coefficients for the quadratic equation A*t^2 + B*t + C = 0
-    const A = dx * dx + dz * dz;
-    const B = 2 * ( ox * dx + oz * dz );
-    const C = ox * ox + oz * oz - radius * radius;
-
-    const tValues = Utils.solveQuadraticRootsReal( A, B, C )?.filter( t => {
-      if ( t <= 0 ) {
-
-        // Ignore negative t values (behind ray origin)
-        return false;
-      }
-      const y = ray.position.y + t * ray.direction.y;
-      const yMin = translation.y - height / 2;
-      const yMax = translation.y + height / 2;
-      return y >= yMin && y <= yMax; // Check if the intersection is within the cylinder height
-    } );
-
-    if ( tValues && tValues.length > 0 ) {
-
-      // Assuming we want the closest intersection
-      return Math.min( ...tValues );
-    }
-    else {
-      return null;
-    }
+    const value = Math.PI * radius * radius * height;
+    
+    // Rounding to proactively prevent infinite compounding rounding errors, like https://github.com/phetsims/density-buoyancy-common/issues/192
+    return Utils.roundToInterval( value, DensityBuoyancyCommonConstants.TOLERANCE );
   }
 }
 

@@ -10,7 +10,6 @@ import Property from '../../../../axon/js/Property.js';
 import StrictOmit from '../../../../phet-core/js/types/StrictOmit.js';
 import Bounds3 from '../../../../dot/js/Bounds3.js';
 import Matrix3 from '../../../../dot/js/Matrix3.js';
-import Ray3 from '../../../../dot/js/Ray3.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
 import { Shape } from '../../../../kite/js/imports.js';
@@ -19,6 +18,8 @@ import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import Mass, { InstrumentedMassOptions, MASS_MAX_SHAPES_DIMENSION, MASS_MIN_SHAPES_DIMENSION } from './Mass.js';
 import PhysicsEngine from './PhysicsEngine.js';
 import { MassShape } from './MassShape.js';
+import Utils from '../../../../dot/js/Utils.js';
+import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
 
 export type CuboidOptions = StrictOmit<InstrumentedMassOptions, 'body' | 'shape' | 'volume' | 'massShape'>;
 
@@ -34,7 +35,7 @@ export default class Cuboid extends Mass {
     const options = optionize<CuboidOptions, EmptySelfOptions, InstrumentedMassOptions>()( {
       body: engine.createBox( size.width, size.height ),
       shape: Shape.rect( size.minX, size.minY, size.width, size.height ),
-      volume: size.width * size.height * size.depth,
+      volume: Cuboid.getVolume( size ),
       massShape: MassShape.BLOCK
     }, providedOptions );
 
@@ -73,9 +74,7 @@ export default class Cuboid extends Mass {
       this.sizeProperty.value = size;
       this.shapeProperty.value = Shape.rect( size.minX, size.minY, size.width, size.height );
 
-      this.volumeLock = true;
-      this.volumeProperty.value = size.width * size.height * size.depth;
-      this.volumeLock = false;
+      this.volumeProperty.value = Cuboid.getVolume( size );
 
       this.forceOffsetProperty.value = new Vector3( 0, 0, size.maxZ );
       this.massLabelOffsetProperty.value = new Vector3( size.minX, size.minY, size.maxZ );
@@ -116,12 +115,13 @@ export default class Cuboid extends Mass {
     const xOffset = this.stepMatrix.m02();
     const yOffset = this.stepMatrix.m12();
 
+    const size = this.sizeProperty.value;
     this.stepX = xOffset;
-    this.stepBottom = yOffset + this.sizeProperty.value.minY;
-    this.stepTop = yOffset + this.sizeProperty.value.maxY;
+    this.stepBottom = yOffset + size.minY;
+    this.stepTop = yOffset + size.maxY;
 
-    this.stepArea = this.sizeProperty.value.width * this.sizeProperty.value.depth;
-    this.stepMaximumVolume = this.stepArea * this.sizeProperty.value.height;
+    this.stepArea = size.width * size.depth;
+    this.stepMaximumVolume = this.stepArea * size.height;
   }
 
   /**
@@ -178,41 +178,10 @@ export default class Cuboid extends Mass {
     super.dispose();
   }
 
-  /**
-   * Returns a (quick) closest-ray intersection with a cuboid (defined by the given Bounds3 and translation).
-   */
-  private static intersect( bounds: Bounds3, translation: Vector3, ray: Ray3 ): number | null {
-    let tNear = Number.NEGATIVE_INFINITY;
-    let tFar = Number.POSITIVE_INFINITY;
+  private static getVolume( size: Bounds3 ): number {
 
-    if ( ray.direction.x > 0 ) {
-      tNear = Math.max( tNear, ( bounds.minX + translation.x - ray.position.x ) / ray.direction.x );
-      tFar = Math.min( tFar, ( bounds.maxX + translation.x - ray.position.x ) / ray.direction.x );
-    }
-    else if ( ray.direction.x < 0 ) {
-      tNear = Math.max( tNear, ( bounds.maxX + translation.x - ray.position.x ) / ray.direction.x );
-      tFar = Math.min( tFar, ( bounds.minX + translation.x - ray.position.x ) / ray.direction.x );
-    }
-
-    if ( ray.direction.y > 0 ) {
-      tNear = Math.max( tNear, ( bounds.minY + translation.y - ray.position.y ) / ray.direction.y );
-      tFar = Math.min( tFar, ( bounds.maxY + translation.y - ray.position.y ) / ray.direction.y );
-    }
-    else if ( ray.direction.y < 0 ) {
-      tNear = Math.max( tNear, ( bounds.maxY + translation.y - ray.position.y ) / ray.direction.y );
-      tFar = Math.min( tFar, ( bounds.minY + translation.y - ray.position.y ) / ray.direction.y );
-    }
-
-    if ( ray.direction.z > 0 ) {
-      tNear = Math.max( tNear, ( bounds.minZ + translation.z - ray.position.z ) / ray.direction.z );
-      tFar = Math.min( tFar, ( bounds.maxZ + translation.z - ray.position.z ) / ray.direction.z );
-    }
-    else if ( ray.direction.z < 0 ) {
-      tNear = Math.max( tNear, ( bounds.maxZ + translation.z - ray.position.z ) / ray.direction.z );
-      tFar = Math.min( tFar, ( bounds.minZ + translation.z - ray.position.z ) / ray.direction.z );
-    }
-
-    return ( tNear >= tFar ) ? null : ( tNear >= 0 ? tNear : ( isFinite( tFar ) && tFar >= 0 ? tFar : null ) );
+    // Rounding to proactively prevent infinite compounding rounding errors, like https://github.com/phetsims/density-buoyancy-common/issues/192
+    return Utils.roundToInterval( size.volume, DensityBuoyancyCommonConstants.TOLERANCE );
   }
 }
 

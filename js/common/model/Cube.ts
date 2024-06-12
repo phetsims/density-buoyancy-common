@@ -45,17 +45,13 @@ export default class Cube extends Cuboid {
 
     // Hook volumeProperty to adjust the size
     this.volumeProperty.lazyLink( volume => {
-      if ( !this.volumeLock ) {
-        this.updateSize( Cube.boundsFromVolume( volume ) );
-      }
+      this.updateSize( Cube.boundsFromVolume( volume ) );
     } );
 
     if ( options.adjustVolumeOnMassChanged ) {
       // Hook massProperty to adjust the size
       this.massProperty.lazyLink( mass => {
-        if ( !this.massLock ) {
-          this.updateSize( Cube.boundsFromVolume( mass / this.materialProperty.value.density ) );
-        }
+        this.updateSize( Cube.boundsFromVolume( mass / this.materialProperty.value.density ) );
       } );
     }
   }

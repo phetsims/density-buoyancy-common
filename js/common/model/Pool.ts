@@ -101,7 +101,7 @@ export default class Pool extends Basin {
       return 0;
     }
     else if ( y >= this.bounds.maxY ) {
-      return this.bounds.width * this.bounds.depth * this.bounds.height;
+      return this.bounds.volume;
     }
     else {
       return this.bounds.width * this.bounds.depth * ( y - this.bounds.minY );

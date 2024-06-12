@@ -42,6 +42,7 @@ import Bounds3 from '../../../../dot/js/Bounds3.js';
 import BlendedVector2Property from './BlendedVector2Property.js';
 import MaterialEnumeration from './MaterialEnumeration.js';
 import { GuardedNumberProperty, GuardedNumberPropertyOptions } from './GuardedNumberProperty.js';
+import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
 
 // TODO: https://github.com/phetsims/density-buoyancy-common/issues/176: How do these relate to MaterialName which is the type of material.identifier?
 // TODO: https://github.com/phetsims/density-buoyancy-common/issues/176 MK: I don't know how to say this type must be a subset of "keyof Material". Do you?
@@ -135,12 +136,6 @@ export default abstract class Mass extends PhetioObject {
 
   // for phet-io support (to control the materialProperty)
   private readonly customColorProperty?: Property<Color>;
-
-  // Whether we are modifying the volumeProperty directly
-  protected volumeLock = false;
-
-  // Whether we are modifying the massProperty directly
-  protected massLock = false;
 
   // In m^3 (cubic meters)
   public readonly volumeProperty: NumberProperty;
@@ -402,9 +397,10 @@ export default abstract class Mass extends PhetioObject {
     }, options.massPropertyOptions ) );
 
     Multilink.multilink( [ this.materialProperty, this.volumeProperty, this.containedMassProperty ], ( material, volume, containedMass ) => {
-      this.massLock = true;
-      this.massProperty.value = material.density * volume + containedMass;
-      this.massLock = false;
+
+      const selfMass = Utils.roundToInterval( material.density * volume, DensityBuoyancyCommonConstants.TOLERANCE );
+      this.massProperty.value = selfMass + containedMass;
+
     } );
 
     this.bodyOffsetProperty = new Vector2Property( Vector2.ZERO, {

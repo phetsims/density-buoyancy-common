@@ -17,6 +17,8 @@ import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import Mass, { InstrumentedMassOptions, MASS_MAX_SHAPES_DIMENSION, MASS_MIN_SHAPES_DIMENSION } from './Mass.js';
 import PhysicsEngine from './PhysicsEngine.js';
 import { MassShape } from './MassShape.js';
+import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
+import Utils from '../../../../dot/js/Utils.js';
 
 export type EllipsoidOptions = StrictOmit<InstrumentedMassOptions, 'body' | 'shape' | 'volume' | 'massShape'>;
 
@@ -64,9 +66,7 @@ export default class Ellipsoid extends Mass {
     this.sizeProperty.value = size;
     this.shapeProperty.value = Ellipsoid.getEllipsoidShape( size.width, size.height );
 
-    this.volumeLock = true;
     this.volumeProperty.value = Ellipsoid.getVolume( size );
-    this.volumeLock = false;
 
     this.forceOffsetProperty.value = new Vector3( 0, 0, size.maxZ );
     this.massLabelOffsetProperty.value = new Vector3( 0, size.minY * 0.5, size.maxZ * 0.7 );
@@ -191,7 +191,10 @@ export default class Ellipsoid extends Mass {
    * Returns the volume of an ellipsoid with the given axis-aligned bounding box.
    */
   private static getVolume( size: Bounds3 ): number {
-    return Math.PI * size.width * size.height * size.depth / 6;
+    const value = Math.PI * size.volume / 6;
+
+    // Rounding to proactively prevent infinite compounding rounding errors, like https://github.com/phetsims/density-buoyancy-common/issues/192
+    return Utils.roundToInterval( value, DensityBuoyancyCommonConstants.TOLERANCE );
   }
 }
 

@@ -80,9 +80,8 @@ export default class Boat extends ApplicationsMass {
       const bounds = this.shapeProperty.value.getBounds();
       this.massLabelOffsetVector3.setXYZ( bounds.left, bounds.top, 0 );
 
-      this.volumeLock = true;
-      this.volumeProperty.value = volume;
-      this.volumeLock = false;
+      // Rounding to proactively prevent infinite compounding rounding errors, like https://github.com/phetsims/density-buoyancy-common/issues/192
+      this.volumeProperty.value = Utils.roundToInterval( volume, DensityBuoyancyCommonConstants.TOLERANCE );
 
       this.bodyOffsetProperty.value = Utils.centroidOfPolygon( vertices ).negated();
       this.writeData();

@@ -20,6 +20,7 @@ import Mass, { InstrumentedMassOptions, MASS_MAX_SHAPES_DIMENSION, MASS_MIN_SHAP
 import PhysicsEngine from '../../../common/model/PhysicsEngine.js';
 import { MassShape } from '../../../common/model/MassShape.js';
 import { flatDuckData } from './DuckData.js';
+import DensityBuoyancyCommonConstants from '../../../common/DensityBuoyancyCommonConstants.js';
 
 export type DuckOptions = StrictOmit<InstrumentedMassOptions, 'body' | 'shape' | 'volume' | 'massShape'>;
 
@@ -69,9 +70,7 @@ export default class Duck extends Mass {
     this.sizeProperty.value = size;
     this.shapeProperty.value = Duck.getDuckShape( size.width, size.height );
 
-    this.volumeLock = true;
     this.volumeProperty.value = Duck.getVolume( size );
-    this.volumeLock = false;
 
     this.forceOffsetProperty.value = new Vector3( 0, 0, size.maxZ );
     this.massLabelOffsetProperty.value = new Vector3( 0, size.minY * 0.5, size.maxZ * 0.7 );
@@ -201,7 +200,11 @@ export default class Duck extends Mass {
   private static getVolume( size: Bounds3 ): number {
 
     // Hard coded normalized volume obtained from Blender
-    return 0.5 * size.width * size.height * size.depth;
+    // TODO: Should this be more ellipsoid? https://github.com/phetsims/density-buoyancy-common/issues/159
+    const value = 0.5 * size.width * size.height * size.depth;
+
+    // Rounding to proactively prevent infinite compounding rounding errors, like https://github.com/phetsims/density-buoyancy-common/issues/192
+    return Utils.roundToInterval( value, DensityBuoyancyCommonConstants.TOLERANCE );
   }
 
   private static getFlatGeometry(): Vector2[] {

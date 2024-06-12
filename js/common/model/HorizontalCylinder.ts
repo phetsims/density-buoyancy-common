@@ -18,6 +18,8 @@ import Mass, { InstrumentedMassOptions, MASS_MAX_SHAPES_DIMENSION, MASS_MIN_SHAP
 import PhysicsEngine from './PhysicsEngine.js';
 import { MassShape } from './MassShape.js';
 import Bounds3 from '../../../../dot/js/Bounds3.js';
+import Utils from '../../../../dot/js/Utils.js';
+import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
 
 export type HorizontalCylinderOptions = StrictOmit<InstrumentedMassOptions, 'body' | 'shape' | 'volume' | 'massShape'>;
 
@@ -75,9 +77,7 @@ export default class HorizontalCylinder extends Mass {
 
     this.shapeProperty.value = HorizontalCylinder.getHorizontalCylinderShape( radius, length );
 
-    this.volumeLock = true;
     this.volumeProperty.value = HorizontalCylinder.getVolume( radius, length );
-    this.volumeLock = false;
 
     this.forceOffsetProperty.value = new Vector3( 0, 0, radius );
     this.massLabelOffsetProperty.value = new Vector3( 0, -radius * 0.5, radius * 0.7 );
@@ -203,7 +203,10 @@ export default class HorizontalCylinder extends Mass {
    * Returns the volume of a horizontal cylinder with the given radius and length.
    */
   private static getVolume( radius: number, length: number ): number {
-    return Math.PI * radius * radius * length;
+    const value = Math.PI * radius * radius * length;
+
+    // Rounding to proactively prevent infinite compounding rounding errors, like https://github.com/phetsims/density-buoyancy-common/issues/192
+    return Utils.roundToInterval( value, DensityBuoyancyCommonConstants.TOLERANCE );
   }
 }
 

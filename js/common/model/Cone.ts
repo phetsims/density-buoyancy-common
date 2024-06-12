@@ -19,6 +19,8 @@ import Mass, { InstrumentedMassOptions, MASS_MAX_SHAPES_DIMENSION, MASS_MIN_SHAP
 import PhysicsEngine from './PhysicsEngine.js';
 import { MassShape } from './MassShape.js';
 import Bounds3 from '../../../../dot/js/Bounds3.js';
+import Utils from '../../../../dot/js/Utils.js';
+import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
 
 const BOTTOM_FROM_CENTER_RATIO = 0.25; // center of mass to the bottom is 1/4 of the height of the cone
 const TOP_FROM_CENTER_RATIO = 0.75; // center of mass to the tip is 3/4 of the height of the cone
@@ -90,9 +92,7 @@ export default class Cone extends Mass {
 
     this.shapeProperty.value = Shape.polygon( vertices );
 
-    this.volumeLock = true;
     this.volumeProperty.value = Cone.getVolume( radius, height );
-    this.volumeLock = false;
 
     this.forceOffsetProperty.value = new Vector3( 0, 0, 0 );
     this.massLabelOffsetProperty.value = new Vector3( 0, -this.heightProperty.value * ( this.isVertexUp ? 0.1 : 0.6 ), radius * 0.7 );
@@ -231,7 +231,10 @@ export default class Cone extends Mass {
    * Returns the volume of a cone with the given radius and height.
    */
   private static getVolume( radius: number, height: number ): number {
-    return Math.PI * radius * radius * height / 3;
+    const volume = Math.PI * radius * radius * height / 3;
+
+    // Rounding to proactively prevent infinite compounding rounding errors, like https://github.com/phetsims/density-buoyancy-common/issues/192
+    return Utils.roundToInterval( volume, DensityBuoyancyCommonConstants.TOLERANCE );
   }
 }
 

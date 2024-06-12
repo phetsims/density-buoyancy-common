@@ -208,6 +208,7 @@ export default class BuoyancyLabScreenView extends DensityBuoyancyScreenView<Buo
     // The focus order is described in https://github.com/phetsims/density-buoyancy-common/issues/121
     this.pdomPlayAreaNode.pdomOrder = [
       cuboidViews[ 0 ].focusablePath,
+      this.poolScaleHeightControl,
       this.rightBox,
       bottomNode
     ];

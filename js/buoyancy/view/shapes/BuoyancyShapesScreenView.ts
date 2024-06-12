@@ -257,7 +257,9 @@ export default class BuoyancyShapesScreenView extends DensityBuoyancyScreenView<
       fluidDensityControlPanel,
 
       // The blocks are added (a) pool then (b) outside, but the focus order is (a) outside then (b) pool
-      ..._.reverse( scaleViews.map( scaleView => scaleView.focusablePath ) )
+      ..._.reverse( scaleViews.map( scaleView => scaleView.focusablePath ) ),
+
+      this.poolScaleHeightControl
     ];
 
     const massViewAdded = ( massView: MassView ) => {

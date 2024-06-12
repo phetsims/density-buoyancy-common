@@ -204,6 +204,8 @@ export default class BuoyancyBasicsExploreScreenView extends DensityBuoyancyScre
       // The blocks are added (a) pool then (b) outside, but the focus order is (a) outside then (b) pool
       ..._.reverse( scaleViews.map( scaleView => scaleView.focusablePath ) ),
 
+      this.poolScaleHeightControl,
+
       fluidSelectionPanel
     ];
 

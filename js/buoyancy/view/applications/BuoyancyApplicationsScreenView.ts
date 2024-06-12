@@ -433,7 +433,8 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
       rightBottleContent,
 
       resetSceneButton,
-      fluidDensityControlPanel
+      fluidDensityControlPanel,
+      this.poolScaleHeightControl
     ];
 
     const massViewAdded = ( massView: MassView ) => {

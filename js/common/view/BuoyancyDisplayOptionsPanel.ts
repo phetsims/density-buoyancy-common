@@ -60,15 +60,17 @@ export default class BuoyancyDisplayOptionsPanel extends Panel {
     };
 
     const createForceControl = ( property: Property<boolean>, label: TReadOnlyProperty<string>, color: TReadOnlyProperty<Color>, row: number, tandemName: string ) => {
+      const checkbox = new Checkbox( property, new Text( label, labelOptions ), combineOptions<CheckboxOptions>( {
+        layoutOptions: { column: 0, row: row },
+        tandem: options.tandem.createTandem( tandemName ),
+        containerTagName: 'p',
+        accessibleName: label
+      }, checkboxOptions ) );
       return [
-        new Checkbox( property, new Text( label, labelOptions ), combineOptions<CheckboxOptions>( {
-          layoutOptions: { column: 0, row: row },
-          tandem: options.tandem.createTandem( tandemName ),
-          containerTagName: 'p',
-          accessibleName: label
-        }, checkboxOptions ) ),
+        checkbox,
         new ArrowNode( 0, 0, arrowLength, 0, combineOptions<ArrowNodeOptions>( {
           layoutOptions: { column: 1, row: row },
+          visibleProperty: checkbox.visibleProperty,
           fill: color
         }, arrowOptions ) )
       ];
@@ -138,7 +140,7 @@ export default class BuoyancyDisplayOptionsPanel extends Panel {
                 }, checkboxOptions ) ),
                 ...( model.supportsDepthLines ?
                   [ new Checkbox( model.showDepthLinesProperty, new Text( DensityBuoyancyCommonStrings.depthLinesStringProperty, labelOptions ), combineOptions<CheckboxOptions>( {
-                    tandem: options.tandem.createTandem( 'depthLinesCheckbox' ),
+                    tandem: options.tandem.createTandem( 'showDepthLinesCheckbox' ),
                     containerTagName: 'p',
                     accessibleName: DensityBuoyancyCommonStrings.depthLinesStringProperty
                   }, checkboxOptions ) ) ] : [] )

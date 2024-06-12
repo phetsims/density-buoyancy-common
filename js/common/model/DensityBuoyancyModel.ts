@@ -534,6 +534,8 @@ export default class DensityBuoyancyModel implements TModel {
     this.showContactForceProperty.reset();
     this.showMassValuesProperty.reset();
     this.showForceValuesProperty.reset();
+    this.showDepthLinesProperty.reset();
+    
     this.gravityProperty.reset();
     this.spillingWaterOutOfBoat = false;
 

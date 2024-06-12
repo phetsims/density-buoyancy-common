@@ -160,8 +160,7 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
 
       this.backgroundNode.fill = new LinearGradient( visibleBounds.centerX, visibleBounds.top, visibleBounds.centerX, visibleBounds.centerY )
         .addColorStop( 0, DensityBuoyancyCommonColors.skyTopProperty )
-        .addColorStop( 1, DensityBuoyancyCommonColors.skyBottomProperty )
-      ;
+        .addColorStop( 1, DensityBuoyancyCommonColors.skyBottomProperty );
     } );
     this.addChild( this.backgroundNode );
 

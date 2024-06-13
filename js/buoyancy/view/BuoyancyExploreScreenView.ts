@@ -120,9 +120,9 @@ export default class BuoyancyExploreScreenView extends DensityBuoyancyScreenView
     } );
 
     // Materials are set in densityBox.setMaterials() below
-    const densityAccordionBox = new DensityAccordionBox( DensityBuoyancyCommonStrings.objectDensityStringProperty, {
+    const objectDensityAccordionBox = new DensityAccordionBox( DensityBuoyancyCommonStrings.objectDensityStringProperty, {
       contentWidthMax: this.rightBox.content.width,
-      tandem: tandem.createTandem( 'densityAccordionBox' )
+      tandem: tandem.createTandem( 'objectDensityAccordionBox' )
     } );
 
     const submergedAccordionBox = new SubmergedAccordionBox( {
@@ -141,7 +141,7 @@ export default class BuoyancyExploreScreenView extends DensityBuoyancyScreenView
     // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
     model.secondaryMass.visibleProperty.link( visible => {
       const masses = visible ? [ model.primaryMass, model.secondaryMass ] : [ model.primaryMass ];
-      densityAccordionBox.setReadoutItems( masses.map( ( mass, index ) => {
+      objectDensityAccordionBox.setReadoutItems( masses.map( ( mass, index ) => {
         return {
           readoutItem: mass.materialProperty,
           readoutNameProperty: customExploreScreenFormatting[ index ].readoutNameProperty,
@@ -162,7 +162,7 @@ export default class BuoyancyExploreScreenView extends DensityBuoyancyScreenView
       align: 'right',
       children: [
         this.rightBox,
-        densityAccordionBox,
+        objectDensityAccordionBox,
         submergedAccordionBox
       ]
     } );
@@ -199,7 +199,7 @@ export default class BuoyancyExploreScreenView extends DensityBuoyancyScreenView
 
     this.resetEmitter.addListener( () => {
       submergedAccordionBox.reset();
-      densityAccordionBox.reset();
+      objectDensityAccordionBox.reset();
     } );
 
     const cuboidViews = this.massViews.filter( massView => massView instanceof CuboidView );
@@ -238,7 +238,7 @@ export default class BuoyancyExploreScreenView extends DensityBuoyancyScreenView
     this.pdomControlAreaNode.pdomOrder = [
       blocksRadioButtonGroup,
       buoyancyDisplayOptionsPanel,
-      densityAccordionBox,
+      objectDensityAccordionBox,
       submergedAccordionBox,
       this.resetAllButton
     ];

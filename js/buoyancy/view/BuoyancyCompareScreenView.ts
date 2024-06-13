@@ -97,9 +97,9 @@ export default class BuoyancyCompareScreenView extends DensityBuoyancyScreenView
 
 
     // Materials are set in densityBox.setMaterials() below
-    const densityAccordionBox = new DensityAccordionBox( DensityBuoyancyCommonStrings.densityComparisonStringProperty, {
+    const densityComparisonAccordionBox = new DensityAccordionBox( DensityBuoyancyCommonStrings.densityComparisonStringProperty, {
       contentWidthMax: this.rightSideMaxContentWidthProperty,
-      tandem: options.tandem.createTandem( 'densityAccordionBox' )
+      tandem: options.tandem.createTandem( 'densityComparisonAccordionBox' )
     } );
 
     const submergedAccordionBox = new SubmergedAccordionBox( {
@@ -151,7 +151,7 @@ export default class BuoyancyCompareScreenView extends DensityBuoyancyScreenView
       }
       const itemsForBoth = readoutItemsCache.get( blockSet )!;
       submergedAccordionBox.setReadoutItems( itemsForBoth.submergedItems );
-      densityAccordionBox.setReadoutItems( itemsForBoth.densityItems );
+      densityComparisonAccordionBox.setReadoutItems( itemsForBoth.densityItems );
     } );
 
     const numberControlPanel = new ComparisonControlPanel( model.massProperty, model.volumeProperty, model.densityProperty, model.blockSetProperty, {
@@ -160,7 +160,7 @@ export default class BuoyancyCompareScreenView extends DensityBuoyancyScreenView
     } );
 
     this.rightSidePanelsVBox = new VBox( {
-      children: [ numberControlPanel, densityAccordionBox, submergedAccordionBox ],
+      children: [ numberControlPanel, densityComparisonAccordionBox, submergedAccordionBox ],
       spacing: DensityBuoyancyCommonConstants.SPACING_SMALL
     } );
     this.addChild( this.rightSidePanelsVBox );
@@ -174,7 +174,7 @@ export default class BuoyancyCompareScreenView extends DensityBuoyancyScreenView
     const scaleViews = this.massViews.filter( massView => massView instanceof ScaleView );
 
     this.resetEmitter.addListener( () => {
-      densityAccordionBox.reset();
+      densityComparisonAccordionBox.reset();
       submergedAccordionBox.reset();
     } );
 
@@ -211,7 +211,7 @@ export default class BuoyancyCompareScreenView extends DensityBuoyancyScreenView
 
     this.pdomControlAreaNode.pdomOrder = [
       buoyancyDisplayOptionsPanel,
-      densityAccordionBox,
+      densityComparisonAccordionBox,
       submergedAccordionBox,
       this.resetAllButton
     ];

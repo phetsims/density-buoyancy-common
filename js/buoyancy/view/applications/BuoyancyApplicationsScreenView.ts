@@ -256,9 +256,9 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
 
     const rightBoatContent = new Panel( boatBox, DensityBuoyancyCommonConstants.PANEL_OPTIONS );
 
-    const densityAccordionBox = new DensityAccordionBox( DensityBuoyancyCommonStrings.objectDensityStringProperty, {
+    const objectDensityAccordionBox = new DensityAccordionBox( DensityBuoyancyCommonStrings.objectDensityStringProperty, {
       contentWidthMax: boatBox.width,
-      tandem: tandem.createTandem( 'densityAccordionBox' )
+      tandem: tandem.createTandem( 'objectDensityAccordionBox' )
     } );
 
     const submergedAccordionBox = new SubmergedAccordionBox( {
@@ -276,7 +276,7 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
       children: [
         rightBottleContent,
         rightBoatContent,
-        densityAccordionBox,
+        objectDensityAccordionBox,
         submergedAccordionBox
       ]
     } );
@@ -325,7 +325,7 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
         model.boat.materialProperty
       ] : [];
       assert && assert( materials.length > 0, 'unsupported Scene', scene );
-      densityAccordionBox.setReadoutItems( materials.map( material => {
+      objectDensityAccordionBox.setReadoutItems( materials.map( material => {
         return { readoutItem: material };
       } ) );
       const submergedObjects = scene === 'bottle' ?
@@ -420,7 +420,7 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
 
     this.resetEmitter.addListener( () => {
       submergedAccordionBox.reset();
-      densityAccordionBox.reset();
+      objectDensityAccordionBox.reset();
     } );
 
     // The focus order is described in https://github.com/phetsims/density-buoyancy-common/issues/121
@@ -454,7 +454,7 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
 
     this.pdomControlAreaNode.pdomOrder = [
       buoyancyDisplayOptionsPanel,
-      densityAccordionBox,
+      objectDensityAccordionBox,
       submergedAccordionBox,
       bottleBoatRadioButtonGroup,
       this.resetAllButton

@@ -150,10 +150,10 @@ export default class BuoyancyLabScreenView extends DensityBuoyancyScreenView<Buo
       }
     } );
 
-    const densityAccordionBox = new DensityAccordionBox( DensityBuoyancyCommonStrings.objectDensityStringProperty, {
+    const objectDensityAccordionBox = new DensityAccordionBox( DensityBuoyancyCommonStrings.objectDensityStringProperty, {
       contentWidthMax: this.rightBox.content.width,
       readoutItems: [ { readoutItem: model.block.materialProperty } ],
-      tandem: tandem.createTandem( 'densityAccordionBox' )
+      tandem: tandem.createTandem( 'objectDensityAccordionBox' )
     } );
 
     const submergedAccordionBox = new SubmergedAccordionBox( {
@@ -170,7 +170,7 @@ export default class BuoyancyLabScreenView extends DensityBuoyancyScreenView<Buo
       align: 'right',
       children: [
         this.rightBox,
-        densityAccordionBox,
+        objectDensityAccordionBox,
         submergedAccordionBox
       ]
     } );
@@ -196,7 +196,7 @@ export default class BuoyancyLabScreenView extends DensityBuoyancyScreenView<Buo
     this.resetEmitter.addListener( () => {
       fluidDisplacedAccordionBox.reset();
       submergedAccordionBox.reset();
-      densityAccordionBox.reset();
+      objectDensityAccordionBox.reset();
     } );
 
     const cuboidViews = this.massViews.filter( massView => massView instanceof CuboidView );
@@ -215,7 +215,7 @@ export default class BuoyancyLabScreenView extends DensityBuoyancyScreenView<Buo
 
     this.pdomControlAreaNode.pdomOrder = [
       leftSideContent,
-      densityAccordionBox,
+      objectDensityAccordionBox,
       submergedAccordionBox,
       this.resetAllButton
     ];

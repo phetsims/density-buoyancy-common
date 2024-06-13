@@ -165,10 +165,10 @@ export default class BuoyancyShapesScreenView extends DensityBuoyancyScreenView<
         secondaryShapeSizeControlNode ]
     );
 
-    const densityAccordionBox = new DensityAccordionBox( DensityBuoyancyCommonStrings.objectDensityStringProperty, {
+    const objectDensityAccordionBox = new DensityAccordionBox( DensityBuoyancyCommonStrings.objectDensityStringProperty, {
       contentWidthMax: this.rightBox.content.width,
       readoutItems: [ { readoutItem: model.materialProperty } ],
-      tandem: tandem.createTandem( 'densityAccordionBox' )
+      tandem: tandem.createTandem( 'objectDensityAccordionBox' )
     } );
 
     const submergedAccordionBox = new SubmergedAccordionBox( {
@@ -196,7 +196,7 @@ export default class BuoyancyShapesScreenView extends DensityBuoyancyScreenView<
       align: 'right',
       children: [
         this.rightBox,
-        densityAccordionBox,
+        objectDensityAccordionBox,
         submergedAccordionBox
       ]
     } );
@@ -233,7 +233,7 @@ export default class BuoyancyShapesScreenView extends DensityBuoyancyScreenView<
 
     this.resetEmitter.addListener( () => {
       submergedAccordionBox.reset();
-      densityAccordionBox.reset();
+      objectDensityAccordionBox.reset();
     } );
 
     const scaleViews = this.massViews.filter( massView => massView instanceof ScaleView );
@@ -278,7 +278,7 @@ export default class BuoyancyShapesScreenView extends DensityBuoyancyScreenView<
     this.pdomControlAreaNode.pdomOrder = [
       blocksRadioButtonGroup,
       buoyancyDisplayOptionsPanel,
-      densityAccordionBox,
+      objectDensityAccordionBox,
       submergedAccordionBox,
       infoButton,
       this.resetAllButton

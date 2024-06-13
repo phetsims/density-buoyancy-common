@@ -96,9 +96,9 @@ export default class BuoyancyBasicsExploreScreenView extends DensityBuoyancyScre
       margin: MARGIN
     } ) );
 
-    const densityAccordionBox = new DensityAccordionBox( DensityBuoyancyCommonStrings.densityComparisonStringProperty, {
+    const densityComparisonAccordionBox = new DensityAccordionBox( DensityBuoyancyCommonStrings.densityComparisonStringProperty, {
       contentWidthMax: this.rightBox.content.width,
-      tandem: tandem.createTandem( 'densityAccordionBox' )
+      tandem: tandem.createTandem( 'densityComparisonAccordionBox' )
     } );
 
     const submergedAccordionBox = new SubmergedAccordionBox( {
@@ -137,7 +137,7 @@ export default class BuoyancyBasicsExploreScreenView extends DensityBuoyancyScre
         }
       ];
       submergedAccordionBox.setReadoutItems( submergedReadoutItems );
-      densityAccordionBox.setReadoutItems( densityReadoutItems );
+      densityComparisonAccordionBox.setReadoutItems( densityReadoutItems );
     } );
 
     const rightSideVBox = new VBox( {
@@ -145,7 +145,7 @@ export default class BuoyancyBasicsExploreScreenView extends DensityBuoyancyScre
       align: 'right',
       children: [
         this.rightBox,
-        densityAccordionBox,
+        densityComparisonAccordionBox,
         submergedAccordionBox
       ]
     } );
@@ -180,7 +180,7 @@ export default class BuoyancyBasicsExploreScreenView extends DensityBuoyancyScre
     this.addChild( this.popupLayer );
 
     this.resetEmitter.addListener( () => {
-      densityAccordionBox.reset();
+      densityComparisonAccordionBox.reset();
       submergedAccordionBox.reset();
     } );
 
@@ -221,7 +221,7 @@ export default class BuoyancyBasicsExploreScreenView extends DensityBuoyancyScre
     this.pdomControlAreaNode.pdomOrder = [
       blocksRadioButtonGroup,
       buoyancyDisplayOptionsPanel,
-      densityAccordionBox,
+      densityComparisonAccordionBox,
       submergedAccordionBox,
       this.resetAllButton
     ];

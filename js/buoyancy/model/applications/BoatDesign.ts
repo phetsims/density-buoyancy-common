@@ -141,8 +141,6 @@ export default class BoatDesign {
     } );
 
     const fullPoints = points.concat( _.sortBy( interiorPoints, point => point.x ) );
-
-    // TODO: Don't require a reverse here https://github.com/phetsims/density-buoyancy-common/issues/144
     return _.reverse( fullPoints.map( designPoint => BoatDesign.designToModel( designPoint.toVector3(), liters ).toVector2() ) );
   }
 
@@ -306,8 +304,6 @@ export default class BoatDesign {
       const x0 = ( cubic.positionAt( 0 ).x - BoatDesign.DESIGN_CENTROID.x ) * scale + boatX;
       const x1 = ( cubic.positionAt( 1 ).x - BoatDesign.DESIGN_CENTROID.x ) * scale + boatX;
 
-      // TODO: reduce these allocations? https://github.com/phetsims/density-buoyancy-common/issues/144
-
       // Left top
       index = ThreeUtils.writeTopVertices( positionArray, index, new Bounds2(
         poolBounds.minX, poolBounds.minZ,
@@ -324,6 +320,7 @@ export default class BoatDesign {
         const t0 = i / CROSS_SECTION_SAMPLES;
         const t1 = ( i + 1 ) / CROSS_SECTION_SAMPLES;
 
+        // TODO: reduce these allocations? https://github.com/phetsims/density-buoyancy-common/issues/144
         const p0 = cubic.positionAt( t0 );
         const p1 = cubic.positionAt( t1 );
 
@@ -463,7 +460,7 @@ export default class BoatDesign {
         const uL = i / ( frontCurve.length - 1 );
         const uR = ( i + 1 ) / ( frontCurve.length - 1 );
         const vL = 0;
-        const vR = 1; // TODO: better mapping for the boat bottom presumably? https://github.com/phetsims/density-buoyancy-common/issues/144
+        const vR = 1;
 
         positions.push(
           pA.x, pA.y, pA.z,
@@ -512,7 +509,6 @@ export default class BoatDesign {
       const vL = i / ( rows.length - 1 );
       const vR = ( i + 1 ) / ( rows.length - 1 );
 
-      // TODO: better way to factor this out? https://github.com/phetsims/density-buoyancy-common/issues/144
       if ( reverse ) {
         positions.push(
           pA.x, pA.y, pA.z,
@@ -573,7 +569,7 @@ export default class BoatDesign {
     const flipRows = ( rows: Vector3[][] ) => rows.map( flipRow );
 
     const exteriorNormalRows = normalizeRows( exteriorRows );
-    const interiorNormalRows = normalizeRows( interiorRows ); // TODO: we'll presumably need to reverse these https://github.com/phetsims/density-buoyancy-common/issues/144
+    const interiorNormalRows = normalizeRows( interiorRows );
 
     // Z+ exterior side
     includeExterior && writeGrid( exteriorRows, negateRows( exteriorNormalRows ), true );

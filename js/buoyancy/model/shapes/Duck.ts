@@ -199,9 +199,8 @@ export default class Duck extends Mass {
    */
   private static getVolume( size: Bounds3 ): number {
 
-    // Hard coded normalized volume obtained from Blender
-    // TODO: Should this be more ellipsoid? https://github.com/phetsims/density-buoyancy-common/issues/159
-    const value = 0.5 * size.width * size.height * size.depth;
+    // Duck is internally modelled as an ellipsoid for the volume and area displacement.
+    const value = Math.PI * size.width * size.height * size.depth / 6;
 
     // Rounding to proactively prevent infinite compounding rounding errors, like https://github.com/phetsims/density-buoyancy-common/issues/192
     return Utils.roundToInterval( value, DensityBuoyancyCommonConstants.TOLERANCE );

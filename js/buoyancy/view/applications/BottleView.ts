@@ -111,7 +111,7 @@ export default class BottleView extends MeasurableMassView {
     this.bottle = bottle;
 
     const bottleSize = bottle.getBounds();
-    this.tagOffsetProperty.value = new Vector3( bottleSize.minX + TAG_OFFSET, bottleSize.maxY - TAG_OFFSET, bottleSize.maxZ );
+    this.tagOffsetProperty.value = new Vector3( -bottleSize.width / 2 + TAG_OFFSET, bottleSize.height / 2 - TAG_OFFSET, bottleSize.depth / 2 );
   }
 
   /**

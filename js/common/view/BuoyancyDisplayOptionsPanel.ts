@@ -9,7 +9,7 @@
 import ArrowNode, { ArrowNodeOptions } from '../../../../scenery-phet/js/ArrowNode.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import PlusMinusZoomButtonGroup from '../../../../scenery-phet/js/PlusMinusZoomButtonGroup.js';
-import { Color, GridBox, HSeparator, Text, TextOptions, VBox } from '../../../../scenery/js/imports.js';
+import { Color, Node, HBox, HSeparator, Text, TextOptions, VBox } from '../../../../scenery/js/imports.js';
 import Checkbox, { CheckboxOptions } from '../../../../sun/js/Checkbox.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
@@ -56,24 +56,23 @@ export default class BuoyancyDisplayOptionsPanel extends Panel {
 
     const labelOptions = {
       font: labelFont,
-      maxWidth: options.contentWidth - arrowSpacing - arrowLength - checkboxOptions.boxWidth - checkboxOptions.spacing - 2 * options.xMargin
+      maxWidth: options.contentWidth - 3 * arrowSpacing - arrowLength - checkboxOptions.boxWidth - checkboxOptions.spacing - 2 * options.xMargin
     };
 
-    const createForceControl = ( property: Property<boolean>, label: TReadOnlyProperty<string>, color: TReadOnlyProperty<Color>, row: number, tandemName: string ) => {
-      const checkbox = new Checkbox( property, new Text( label, labelOptions ), combineOptions<CheckboxOptions>( {
-        layoutOptions: { column: 0, row: row },
-        tandem: options.tandem.createTandem( tandemName ),
-        containerTagName: 'p',
-        accessibleName: label
-      }, checkboxOptions ) );
-      return [
-        checkbox,
+    const createForceControl = ( property: Property<boolean>, label: TReadOnlyProperty<string>, color: TReadOnlyProperty<Color>, tandemName: string ) => {
+      const children = [
+        new Text( label, labelOptions ),
         new ArrowNode( 0, 0, arrowLength, 0, combineOptions<ArrowNodeOptions>( {
-          layoutOptions: { column: 1, row: row },
-          visibleProperty: checkbox.visibleProperty,
           fill: color
         }, arrowOptions ) )
       ];
+      return new Checkbox( property, new HBox( { children: children, spacing: 2 * arrowSpacing } ), combineOptions<CheckboxOptions>( {
+        tandem: options.tandem.createTandem( tandemName ),
+        containerTagName: 'p',
+        accessibleName: label,
+        boxWidth: 14,
+        touchAreaYDilation: 2.2
+      }, checkboxOptions ) );
     };
 
     const content = new VBox( {
@@ -85,44 +84,42 @@ export default class BuoyancyDisplayOptionsPanel extends Panel {
           maxWidth: options.contentWidth - 2 * options.xMargin
         } ),
         new VBox( {
-          spacing: DensityBuoyancyCommonConstants.SPACING_SMALL,
+          spacing: checkboxSpacing,
           align: 'left',
           children: [
-            new GridBox( {
-              xSpacing: arrowSpacing,
-              ySpacing: checkboxSpacing,
-              xAlign: 'left',
+            new VBox( {
+              spacing: checkboxSpacing,
+              align: 'left',
+              stretch: true,
               children: [
-
                 // Gravity
-                ...createForceControl( model.showGravityForceProperty, DensityBuoyancyCommonStrings.gravity.nameStringProperty, DensityBuoyancyCommonColors.gravityForceProperty, 0, 'showGravityForceCheckbox' ),
-                ...createForceControl( model.showBuoyancyForceProperty, DensityBuoyancyCommonStrings.buoyancyStringProperty, DensityBuoyancyCommonColors.buoyancyForceProperty, 1, 'showBuoyancyForceCheckbox' ),
-                ...createForceControl( model.showContactForceProperty, DensityBuoyancyCommonStrings.contactStringProperty, DensityBuoyancyCommonColors.contactForceProperty, 2, 'showContactForceCheckbox' ),
+                createForceControl( model.showGravityForceProperty, DensityBuoyancyCommonStrings.gravity.nameStringProperty, DensityBuoyancyCommonColors.gravityForceProperty, 'showGravityForceCheckbox' ),
+                createForceControl( model.showBuoyancyForceProperty, DensityBuoyancyCommonStrings.buoyancyStringProperty, DensityBuoyancyCommonColors.buoyancyForceProperty, 'showBuoyancyForceCheckbox' ),
+                createForceControl( model.showContactForceProperty, DensityBuoyancyCommonStrings.contactStringProperty, DensityBuoyancyCommonColors.contactForceProperty, 'showContactForceCheckbox' ),
 
                 // Vector zoom
-                ...( options.includeVectorZoomControl ? [
-                    new Text( DensityBuoyancyCommonStrings.vectorZoomStringProperty, combineOptions<TextOptions>( {
-                      layoutOptions: { column: 0, row: 3 }
-                    }, labelOptions ) ),
-                    new PlusMinusZoomButtonGroup( model.vectorZoomProperty, {
-                      spacing: 3, // Custom small spacing between the buttons
-                      layoutOptions: { column: 1, row: 3, xAlign: 'center' },
-                      buttonOptions: {
-                        cornerRadius: 3,
-                        buttonAppearanceStrategy: RectangularButton.ThreeDAppearanceStrategy,
-                        stroke: 'black',
-                        xMargin: 7,
-                        yMargin: 7
-                      },
-                      applyZoomIn: ( scale: number ) => scale * 2,
-                      applyZoomOut: ( scale: number ) => scale / 2,
-                      tandem: options.tandem.createTandem( 'vectorZoomButtonGroup' )
-                    } ) ] : []
+                ( options.includeVectorZoomControl ? new HBox( {
+                    children: [
+                      new Text( DensityBuoyancyCommonStrings.vectorZoomStringProperty, combineOptions<TextOptions>( {
+                      }, labelOptions ) ),
+                      new PlusMinusZoomButtonGroup( model.vectorZoomProperty, {
+                        spacing: 3, // Custom small spacing between the buttons
+                        buttonOptions: {
+                          cornerRadius: 3,
+                          buttonAppearanceStrategy: RectangularButton.ThreeDAppearanceStrategy,
+                          stroke: 'black',
+                          xMargin: 7,
+                          yMargin: 7
+                        },
+                        applyZoomIn: ( scale: number ) => scale * 2,
+                        applyZoomOut: ( scale: number ) => scale / 2,
+                        tandem: options.tandem.createTandem( 'vectorZoomButtonGroup' )
+                      } ) ]
+                  } ) : new Node()
                 ),
 
                 new Checkbox( model.showForceValuesProperty, new Text( DensityBuoyancyCommonStrings.forceValuesStringProperty, labelOptions ), combineOptions<CheckboxOptions>( {
                   tandem: options.tandem.createTandem( 'showForceValuesCheckbox' ),
-                  layoutOptions: { column: 0, row: 4 },
                   containerTagName: 'p',
                   accessibleName: DensityBuoyancyCommonStrings.forceValuesStringProperty
                 }, checkboxOptions ) )

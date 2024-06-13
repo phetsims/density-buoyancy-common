@@ -265,7 +265,6 @@ export default class CompareBlockSetModel extends BlockSetModel<BlockSet> {
           customColor: new Property( modifiedColor, { tandem: Tandem.OPT_OUT } )
         } );
       }, {
-        strictAxonDependencies: false, // The DerivedProperty derivation triggers the creation of a DynamicProperty which calls .value on itself, which is safe
         tandem: Tandem.OPT_OUT
       } );
   }

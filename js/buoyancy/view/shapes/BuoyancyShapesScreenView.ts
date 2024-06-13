@@ -225,8 +225,6 @@ export default class BuoyancyShapesScreenView extends DensityBuoyancyScreenView<
 
       // We might not have a box, see https://github.com/phetsims/density/issues/110
       return new Vector2( isFinite( boxBounds.left ) ? boxBounds.left : visibleBounds.right, visibleBounds.centerY );
-    }, {
-      strictAxonDependencies: false // This workaround is deemed acceptable for visibleBoundsProperty listening, https://github.com/phetsims/faradays-electromagnetic-lab/issues/65
     } );
 
     this.addChild( this.popupLayer );

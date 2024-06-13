@@ -216,6 +216,7 @@ export default class Bottle extends ApplicationsMass {
     this.interiorMaterialProperty = new Property( BOTTLE_INITIAL_INTERIOR_MATERIAL, {
       valueType: Material,
       reentrant: true,
+      reentrantNotificationStrategy: 'stack',
       tandem: options.tandem.createTandem( 'interiorMaterialProperty' ),
       phetioValueType: Material.MaterialIO
     } );

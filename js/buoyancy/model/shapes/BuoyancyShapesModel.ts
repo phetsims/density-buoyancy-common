@@ -248,6 +248,8 @@ export default class BuoyancyShapesModel extends DensityBuoyancyModel {
     this.primaryWidthRatioProperty.reset();
     this.secondaryWidthRatioProperty.reset();
 
+    this.materialProperty.reset();
+
     super.reset();
 
     this.setInitialPositions();

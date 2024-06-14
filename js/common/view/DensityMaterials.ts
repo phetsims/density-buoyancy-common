@@ -1,7 +1,9 @@
 // Copyright 2019-2024, University of Colorado Boulder
 
 /**
- * Provides factory methods for creating MaterialViews for various Materials.
+ * A container for a three.js material and various associated functions/data that are needed to update it.
+ *
+ * Also provides factory methods for creating MaterialViews for various Materials.
  *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
@@ -50,7 +52,25 @@ import Wood26_nrm_jpg from '../../../images/Wood26_nrm_jpg.js';
 import Wood26_rgh_jpg from '../../../images/Wood26_rgh_jpg.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import Material from '../model/Material.js';
-import MaterialView from './MaterialView.js';
+
+// MaterialView definition
+
+export class MaterialView<T extends THREE.Material = THREE.Material> {
+
+  public readonly material: T;
+
+  public constructor( material: T ) {
+    this.material = material;
+  }
+
+  /**
+   * Releases references
+   */
+  public dispose(): void {
+    this.material.dispose();
+  }
+}
+
 
 // constants
 

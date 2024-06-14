@@ -27,7 +27,6 @@ import Mass from './Mass.js';
 import Basin from './Basin.js';
 import Cuboid from './Cuboid.js';
 import NumberProperty from '../../../../axon/js/NumberProperty.js';
-import TRangedProperty from '../../../../axon/js/TRangedProperty.js';
 import TModel from '../../../../joist/js/TModel.js';
 import { PhetioObjectOptions } from '../../../../tandem/js/PhetioObject.js';
 import PickRequired from '../../../../phet-core/js/types/PickRequired.js';
@@ -73,7 +72,7 @@ export default class DensityBuoyancyModel implements TModel {
   public readonly showBuoyancyForceProperty: Property<boolean>;
   public readonly showContactForceProperty: Property<boolean>;
   public readonly showForceValuesProperty: Property<boolean>;
-  public readonly vectorZoomProperty: TRangedProperty;
+  public readonly vectorZoomProperty: NumberProperty;
   public readonly showMassValuesProperty: Property<boolean>;
   public readonly gravityProperty: Property<Gravity>;
 
@@ -538,6 +537,8 @@ export default class DensityBuoyancyModel implements TModel {
     
     this.gravityProperty.reset();
     this.spillingWaterOutOfBoat = false;
+
+    this.vectorZoomProperty.reset();
 
     this.pool.reset();
     this.masses.forEach( mass => mass.reset() );

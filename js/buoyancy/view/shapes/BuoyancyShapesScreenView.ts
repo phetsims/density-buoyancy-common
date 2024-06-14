@@ -15,7 +15,7 @@ import Panel from '../../../../../sun/js/Panel.js';
 import DensityBuoyancyCommonConstants from '../../../common/DensityBuoyancyCommonConstants.js';
 import Material from '../../../common/model/Material.js';
 import FluidDensityControlNode from '../../../common/view/FluidDensityControlNode.js';
-import BuoyancyDisplayOptionsPanel from '../../../common/view/BuoyancyDisplayOptionsPanel.js';
+import BuoyancyDisplayOptionsPanel from '../BuoyancyDisplayOptionsPanel.js';
 import PrimarySecondaryPanelsNode from '../../../common/view/PrimarySecondaryPanelsNode.js';
 import densityBuoyancyCommon from '../../../densityBuoyancyCommon.js';
 import DensityAccordionBox from '../DensityAccordionBox.js';
@@ -91,8 +91,8 @@ export default class BuoyancyShapesScreenView extends DensityBuoyancyScreenView<
       margin: MARGIN
     } ) );
 
-    const buoyancyDisplayOptionsPanel = new BuoyancyDisplayOptionsPanel( model, {
-      tandem: tandem.createTandem( 'buoyancyDisplayOptionsPanel' ),
+    const displayOptionsPanel = new BuoyancyDisplayOptionsPanel( model, {
+      tandem: tandem.createTandem( 'displayOptionsPanel' ),
       contentWidth: this.modelToViewPoint( new Vector3(
         this.model.poolBounds.left,
         this.model.poolBounds.top,
@@ -100,7 +100,7 @@ export default class BuoyancyShapesScreenView extends DensityBuoyancyScreenView<
       ) ).x - 2 * MARGIN
     } );
 
-    this.addChild( new AlignBox( buoyancyDisplayOptionsPanel, {
+    this.addChild( new AlignBox( displayOptionsPanel, {
       alignBoundsProperty: this.visibleBoundsProperty,
       xAlign: 'left',
       yAlign: 'bottom',
@@ -275,7 +275,7 @@ export default class BuoyancyShapesScreenView extends DensityBuoyancyScreenView<
 
     this.pdomControlAreaNode.pdomOrder = [
       blocksRadioButtonGroup,
-      buoyancyDisplayOptionsPanel,
+      displayOptionsPanel,
       objectDensityAccordionBox,
       submergedAccordionBox,
       infoButton,

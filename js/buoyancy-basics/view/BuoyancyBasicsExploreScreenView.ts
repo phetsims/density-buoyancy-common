@@ -18,7 +18,7 @@ import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import BuoyancyBasicsExploreModel from '../model/BuoyancyBasicsExploreModel.js';
 import arrayRemove from '../../../../phet-core/js/arrayRemove.js';
-import BuoyancyDisplayOptionsPanel from '../../common/view/BuoyancyDisplayOptionsPanel.js';
+import BuoyancyDisplayOptionsPanel from '../../buoyancy/view/BuoyancyDisplayOptionsPanel.js';
 import SubmergedAccordionBox from '../../buoyancy/view/SubmergedAccordionBox.js';
 import PatternStringProperty from '../../../../axon/js/PatternStringProperty.js';
 import BlocksRadioButtonGroup from '../../common/view/BlocksRadioButtonGroup.js';
@@ -46,8 +46,8 @@ export default class BuoyancyBasicsExploreScreenView extends DensityBuoyancyScre
       viewOffset: DensityBuoyancyCommonConstants.BUOYANCY_BASICS_VIEW_OFFSET
     }, options ) );
 
-    const buoyancyDisplayOptionsPanel = new BuoyancyDisplayOptionsPanel( model, {
-      tandem: tandem.createTandem( 'buoyancyDisplayOptionsPanel' ),
+    const displayOptionsPanel = new BuoyancyDisplayOptionsPanel( model, {
+      tandem: tandem.createTandem( 'displayOptionsPanel' ),
       contentWidth: this.modelToViewPoint( new Vector3(
         this.model.poolBounds.left,
         this.model.poolBounds.top,
@@ -55,7 +55,7 @@ export default class BuoyancyBasicsExploreScreenView extends DensityBuoyancyScre
       ) ).x - 2 * MARGIN
     } );
 
-    this.addChild( new AlignBox( buoyancyDisplayOptionsPanel, {
+    this.addChild( new AlignBox( displayOptionsPanel, {
       alignBoundsProperty: this.visibleBoundsProperty,
       xAlign: 'left',
       yAlign: 'bottom',
@@ -217,7 +217,7 @@ export default class BuoyancyBasicsExploreScreenView extends DensityBuoyancyScre
 
     this.pdomControlAreaNode.pdomOrder = [
       blocksRadioButtonGroup,
-      buoyancyDisplayOptionsPanel,
+      displayOptionsPanel,
       densityComparisonAccordionBox,
       submergedAccordionBox,
       this.resetAllButton

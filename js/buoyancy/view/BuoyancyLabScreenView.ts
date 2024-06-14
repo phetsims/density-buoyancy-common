@@ -21,7 +21,7 @@ import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import BuoyancyLabModel from '../model/BuoyancyLabModel.js';
 import arrayRemove from '../../../../phet-core/js/arrayRemove.js';
 import DensityAccordionBox from './DensityAccordionBox.js';
-import BuoyancyDisplayOptionsPanel from '../../common/view/BuoyancyDisplayOptionsPanel.js';
+import BuoyancyDisplayOptionsPanel from './BuoyancyDisplayOptionsPanel.js';
 import BlockControlNode from '../../common/view/BlockControlNode.js';
 import MultiSectionPanelsNode from '../../common/view/MultiSectionPanelsNode.js';
 import FluidDisplacedAccordionBox from './FluidDisplacedAccordionBox.js';
@@ -65,7 +65,7 @@ export default class BuoyancyLabScreenView extends DensityBuoyancyScreenView<Buo
       children: [
         fluidDisplacedAccordionBox,
         new BuoyancyDisplayOptionsPanel( model, {
-          tandem: tandem.createTandem( 'buoyancyDisplayOptionsPanel' ),
+          tandem: tandem.createTandem( 'displayOptionsPanel' ),
           contentWidth: this.modelToViewPoint( new Vector3(
             this.model.poolBounds.left,
             this.model.poolBounds.top,

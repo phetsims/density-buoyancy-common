@@ -26,7 +26,7 @@ import Material from '../../../common/model/Material.js';
 import DensityBuoyancyCommonColors from '../../../common/view/DensityBuoyancyCommonColors.js';
 import DensityBuoyancyScreenView, { DensityBuoyancyScreenViewOptions } from '../../../common/view/DensityBuoyancyScreenView.js';
 import FluidDensityControlNode from '../../../common/view/FluidDensityControlNode.js';
-import BuoyancyDisplayOptionsPanel from '../../../common/view/BuoyancyDisplayOptionsPanel.js';
+import BuoyancyDisplayOptionsPanel from '../BuoyancyDisplayOptionsPanel.js';
 import MaterialMassVolumeControlNode from '../../../common/view/MaterialMassVolumeControlNode.js';
 import densityBuoyancyCommon from '../../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../../DensityBuoyancyCommonStrings.js';
@@ -339,8 +339,8 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
       submergedAccordionBox.setReadoutItems( submergedObjects );
     } );
 
-    const buoyancyDisplayOptionsPanel = new BuoyancyDisplayOptionsPanel( model, {
-      tandem: tandem.createTandem( 'buoyancyDisplayOptionsPanel' ),
+    const displayOptionsPanel = new BuoyancyDisplayOptionsPanel( model, {
+      tandem: tandem.createTandem( 'displayOptionsPanel' ),
       contentWidth: this.modelToViewPoint( new Vector3(
         this.model.poolBounds.left,
         this.model.poolBounds.top,
@@ -348,7 +348,7 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
       ) ).x - 2 * MARGIN
     } );
 
-    this.addChild( new AlignBox( buoyancyDisplayOptionsPanel, {
+    this.addChild( new AlignBox( displayOptionsPanel, {
       alignBoundsProperty: this.visibleBoundsProperty,
       xAlign: 'left',
       yAlign: 'bottom',
@@ -451,7 +451,7 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
     this.massViews.forEach( massViewAdded );
 
     this.pdomControlAreaNode.pdomOrder = [
-      buoyancyDisplayOptionsPanel,
+      displayOptionsPanel,
       objectDensityAccordionBox,
       submergedAccordionBox,
       bottleBoatRadioButtonGroup,

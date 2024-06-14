@@ -13,9 +13,9 @@ import { Color, HBox, HSeparator, Text, TextOptions, VBox } from '../../../../sc
 import Checkbox, { CheckboxOptions } from '../../../../sun/js/Checkbox.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
-import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
-import DensityBuoyancyCommonColors from './DensityBuoyancyCommonColors.js';
-import DensityBuoyancyModel from '../model/DensityBuoyancyModel.js';
+import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
+import DensityBuoyancyCommonColors from '../../common/view/DensityBuoyancyCommonColors.js';
+import DensityBuoyancyModel from '../../common/model/DensityBuoyancyModel.js';
 import { combineOptions, optionize4 } from '../../../../phet-core/js/optionize.js';
 import RectangularButton from '../../../../sun/js/buttons/RectangularButton.js';
 import WithRequired from '../../../../phet-core/js/types/WithRequired.js';

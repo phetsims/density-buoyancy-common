@@ -15,7 +15,7 @@ import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import BuoyancyCompareModel from '../model/BuoyancyCompareModel.js';
 import DensityAccordionBox from './DensityAccordionBox.js';
-import BuoyancyDisplayOptionsPanel from '../../common/view/BuoyancyDisplayOptionsPanel.js';
+import BuoyancyDisplayOptionsPanel from './BuoyancyDisplayOptionsPanel.js';
 import SubmergedAccordionBox from './SubmergedAccordionBox.js';
 import PatternStringProperty from '../../../../axon/js/PatternStringProperty.js';
 import Property from '../../../../axon/js/Property.js';
@@ -72,15 +72,15 @@ export default class BuoyancyCompareScreenView extends DensityBuoyancyScreenView
       margin: MARGIN
     } ) );
 
-    const buoyancyDisplayOptionsPanel = new BuoyancyDisplayOptionsPanel( model, {
-      tandem: options.tandem.createTandem( 'buoyancyDisplayOptionsPanel' ),
+    const displayOptionsPanel = new BuoyancyDisplayOptionsPanel( model, {
+      tandem: options.tandem.createTandem( 'displayOptionsPanel' ),
       contentWidth: this.modelToViewPoint( new Vector3(
         this.model.poolBounds.left,
         this.model.poolBounds.top,
         this.model.poolBounds.front
       ) ).x - 2 * MARGIN
     } );
-    this.addChild( new AlignBox( buoyancyDisplayOptionsPanel, {
+    this.addChild( new AlignBox( displayOptionsPanel, {
       alignBoundsProperty: this.visibleBoundsProperty,
       xAlign: 'left',
       yAlign: 'bottom',
@@ -211,7 +211,7 @@ export default class BuoyancyCompareScreenView extends DensityBuoyancyScreenView
     this.massViews.forEach( massViewAdded );
 
     this.pdomControlAreaNode.pdomOrder = [
-      buoyancyDisplayOptionsPanel,
+      displayOptionsPanel,
       densityComparisonAccordionBox,
       submergedAccordionBox,
       this.resetAllButton

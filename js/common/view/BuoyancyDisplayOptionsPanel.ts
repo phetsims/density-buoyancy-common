@@ -9,7 +9,7 @@
 import ArrowNode, { ArrowNodeOptions } from '../../../../scenery-phet/js/ArrowNode.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import PlusMinusZoomButtonGroup from '../../../../scenery-phet/js/PlusMinusZoomButtonGroup.js';
-import { Color, Node, HBox, HSeparator, Text, TextOptions, VBox } from '../../../../scenery/js/imports.js';
+import { Color, HBox, HSeparator, Text, TextOptions, VBox } from '../../../../scenery/js/imports.js';
 import Checkbox, { CheckboxOptions } from '../../../../sun/js/Checkbox.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
@@ -40,7 +40,6 @@ const checkboxOptions = {
 const checkboxSpacing = DensityBuoyancyCommonConstants.SPACING_SMALL;
 
 type SelfOptions = {
-  includeVectorZoomControl?: boolean;
   contentWidth?: number;
 };
 
@@ -50,7 +49,6 @@ export default class BuoyancyDisplayOptionsPanel extends Panel {
   public constructor( model: DensityBuoyancyModel, providedOptions: BuoyancyDisplayOptionsPanelOptions ) {
 
     const options = optionize4<BuoyancyDisplayOptionsPanelOptions, SelfOptions, PanelOptions>()( {}, DensityBuoyancyCommonConstants.PANEL_OPTIONS, {
-      includeVectorZoomControl: true,
       contentWidth: 200
     }, providedOptions );
 
@@ -98,25 +96,23 @@ export default class BuoyancyDisplayOptionsPanel extends Panel {
                 createForceControl( model.showContactForceProperty, DensityBuoyancyCommonStrings.contactStringProperty, DensityBuoyancyCommonColors.contactForceProperty, 'showContactForceCheckbox' ),
 
                 // Vector zoom
-                ( options.includeVectorZoomControl ? new HBox( {
-                    children: [
-                      new Text( DensityBuoyancyCommonStrings.vectorZoomStringProperty, combineOptions<TextOptions>( {
-                      }, labelOptions ) ),
-                      new PlusMinusZoomButtonGroup( model.vectorZoomProperty, {
-                        spacing: 3, // Custom small spacing between the buttons
-                        buttonOptions: {
-                          cornerRadius: 3,
-                          buttonAppearanceStrategy: RectangularButton.ThreeDAppearanceStrategy,
-                          stroke: 'black',
-                          xMargin: 7,
-                          yMargin: 7
-                        },
-                        applyZoomIn: ( scale: number ) => scale * 2,
-                        applyZoomOut: ( scale: number ) => scale / 2,
-                        tandem: options.tandem.createTandem( 'vectorZoomButtonGroup' )
-                      } ) ]
-                  } ) : new Node()
-                ),
+                new HBox( {
+                  children: [
+                    new Text( DensityBuoyancyCommonStrings.vectorZoomStringProperty, combineOptions<TextOptions>( {}, labelOptions ) ),
+                    new PlusMinusZoomButtonGroup( model.vectorZoomProperty, {
+                      spacing: 3, // Custom small spacing between the buttons
+                      buttonOptions: {
+                        cornerRadius: 3,
+                        buttonAppearanceStrategy: RectangularButton.ThreeDAppearanceStrategy,
+                        stroke: 'black',
+                        xMargin: 7,
+                        yMargin: 7
+                      },
+                      applyZoomIn: ( scale: number ) => scale * 2,
+                      applyZoomOut: ( scale: number ) => scale / 2,
+                      tandem: options.tandem.createTandem( 'vectorZoomButtonGroup' )
+                    } ) ]
+                } ),
 
                 new Checkbox( model.showForceValuesProperty, new Text( DensityBuoyancyCommonStrings.forceValuesStringProperty, labelOptions ), combineOptions<CheckboxOptions>( {
                   tandem: options.tandem.createTandem( 'showForceValuesCheckbox' ),

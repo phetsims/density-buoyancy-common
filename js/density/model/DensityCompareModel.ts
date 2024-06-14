@@ -15,6 +15,7 @@ import DensityBuoyancyModel from '../../common/model/DensityBuoyancyModel.js';
 import MassTag from '../../common/model/MassTag.js';
 import BlockSet from '../../common/model/BlockSet.js';
 import CompareBlockSetModel, { CompareBlockSetModelOptions } from '../../common/model/CompareBlockSetModel.js';
+import Range from '../../../../dot/js/Range.js';
 
 export type DensityCompareModelOptions = StrictOmit<CompareBlockSetModelOptions, 'positionMassesCallback' | 'cubesData'>;
 
@@ -28,6 +29,7 @@ export default class DensityCompareModel extends CompareBlockSetModel {
     const options = optionize<DensityCompareModelOptions, EmptySelfOptions, CompareBlockSetModelOptions>()( {
       usePoolScale: false,
       sameDensityValue: 500,
+      sameDensityRange: new Range( 100, 2000 ),
 
       canShowForces: false,
       positionMassesCallback: ( model: DensityBuoyancyModel, blockSet: BlockSet, masses: Cuboid[] ) => {

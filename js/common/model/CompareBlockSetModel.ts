@@ -93,7 +93,7 @@ export default class CompareBlockSetModel extends BlockSetModel<BlockSet> {
       sameVolumeValue: 0.005,
       sameVolumeRange: new Range( 0.001, 0.01 ),
       sameDensityValue: 400,
-      sameDensityRange: new Range( 100, 2000 ),
+      sameDensityRange: new Range( 100, 3000 ),
 
       initialMaterials: [],
 

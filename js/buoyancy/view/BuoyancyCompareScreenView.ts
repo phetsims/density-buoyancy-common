@@ -70,7 +70,6 @@ export default class BuoyancyCompareScreenView extends DensityBuoyancyScreenView
     } ) );
 
     const buoyancyDisplayOptionsPanel = new BuoyancyDisplayOptionsPanel( model, {
-      includeVectorZoomControl: false,
       tandem: options.tandem.createTandem( 'buoyancyDisplayOptionsPanel' ),
       contentWidth: this.modelToViewPoint( new Vector3(
         this.model.poolBounds.left,

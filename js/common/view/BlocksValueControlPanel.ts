@@ -26,18 +26,18 @@ type SelfOptions = {
   sliderTrackSize?: Dimension2;
 };
 
-type ComparisonControlPanelOptions = SelfOptions & PickRequired<Partial<PanelOptions>, 'tandem'>;
+type BlocksValueControlPanelOptions = SelfOptions & PickRequired<Partial<PanelOptions>, 'tandem'>;
 
-export default class ComparisonControlPanel extends Panel {
+export default class BlocksValueControlPanel extends Panel {
 
   public constructor( massProperty: NumberProperty,
                       volumeProperty: NumberProperty,
                       densityProperty: NumberProperty,
                       blockSetProperty: TReadOnlyProperty<BlockSet>,
-                      providedOptions: ComparisonControlPanelOptions ) {
+                      providedOptions: BlocksValueControlPanelOptions ) {
 
 
-    const options = optionize4<ComparisonControlPanelOptions, SelfOptions, PanelOptions>()( {},
+    const options = optionize4<BlocksValueControlPanelOptions, SelfOptions, PanelOptions>()( {},
       DensityBuoyancyCommonConstants.PANEL_OPTIONS, {
         sliderTrackSize: DEFAULT_COMPARISON_TRACK_SIZE
       }, providedOptions );
@@ -124,4 +124,4 @@ export default class ComparisonControlPanel extends Panel {
   }
 }
 
-densityBuoyancyCommon.register( 'ComparisonControlPanel', ComparisonControlPanel );
+densityBuoyancyCommon.register( 'BlocksValueControlPanel', BlocksValueControlPanel );

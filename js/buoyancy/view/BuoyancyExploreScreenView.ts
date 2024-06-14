@@ -34,7 +34,6 @@ import buoyancy_explore_screen_block_png from '../../../images/buoyancy_explore_
 import CuboidView from '../../common/view/CuboidView.js';
 import ScaleView from '../../common/view/ScaleView.js';
 import MassView from '../../common/view/MassView.js';
-import fluidDensityRangePerM3 from '../../common/fluidDensityRangePerM3.js';
 
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN_SMALL;
 
@@ -71,7 +70,7 @@ export default class BuoyancyExploreScreenView extends DensityBuoyancyScreenView
       Material.DENSITY_B
     ];
 
-    const invisibleMaterials = [ ...DensityBuoyancyCommonConstants.BUOYANCY_FLUID_MYSTERY_MATERIALS ];
+    const invisibleMaterials = [ ...Material.BUOYANCY_FLUID_MYSTERY_MATERIALS ];
     displayedMysteryMaterials.forEach( displayed => arrayRemove( invisibleMaterials, displayed ) );
 
     this.rightBox = new PrimarySecondaryControlsNode(
@@ -88,13 +87,13 @@ export default class BuoyancyExploreScreenView extends DensityBuoyancyScreenView
 
     const customMaterial = Material.createCustomLiquidMaterial( {
       density: 1000, // Same as water, in SI (kg/m^3)
-      densityRange: fluidDensityRangePerM3
+      densityRange: DensityBuoyancyCommonConstants.FLUID_DENSITY_RANGE_PER_M3
     } );
 
     const fluidDensityControlPanel = new Panel( new FluidDensityControlNode( model.pool.liquidMaterialProperty, [
-        ...DensityBuoyancyCommonConstants.BUOYANCY_FLUID_MATERIALS,
+        ...Material.BUOYANCY_FLUID_MATERIALS,
         customMaterial,
-        ...DensityBuoyancyCommonConstants.BUOYANCY_FLUID_MYSTERY_MATERIALS
+        ...Material.BUOYANCY_FLUID_MYSTERY_MATERIALS
       ], customMaterial,
       this.popupLayer, {
         invisibleMaterials: invisibleMaterials,

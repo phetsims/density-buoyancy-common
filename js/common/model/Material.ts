@@ -589,7 +589,7 @@ export default class Material {
     density: Material.GOLD.density
   } );
 
-  private static readonly MATERIALS = [
+  public static readonly MATERIALS = [
     Material.AIR,
     Material.ALUMINUM,
     Material.APPLE,
@@ -628,6 +628,50 @@ export default class Material {
     Material.WATER,
     Material.WOOD
   ];
+
+  public static readonly DENSITY_MYSTERY_MATERIALS = [
+    Material.WOOD,
+    Material.GASOLINE,
+    Material.APPLE,
+    Material.ICE,
+    Material.HUMAN,
+    Material.WATER,
+    Material.GLASS,
+    Material.DIAMOND,
+    Material.TITANIUM,
+    Material.STEEL,
+    Material.COPPER,
+    Material.LEAD,
+    Material.GOLD
+  ];
+
+  public static readonly SIMPLE_MASS_MATERIALS = [
+    Material.STYROFOAM,
+    Material.WOOD,
+    Material.ICE,
+    Material.PVC,
+    Material.BRICK,
+    Material.ALUMINUM
+  ];
+
+  public static readonly BUOYANCY_FLUID_MATERIALS = [
+    Material.GASOLINE,
+    Material.OIL,
+    Material.WATER,
+    Material.SEAWATER,
+    Material.HONEY,
+    Material.MERCURY
+  ];
+
+  public static readonly BUOYANCY_FLUID_MYSTERY_MATERIALS = [
+    Material.DENSITY_A,
+    Material.DENSITY_B,
+    Material.DENSITY_C,
+    Material.DENSITY_D,
+    Material.DENSITY_E,
+    Material.DENSITY_F
+  ];
+
   public static readonly MaterialIO = new IOType<Material, MaterialState>( 'MaterialIO', {
     valueType: Material,
     documentation: 'Represents different materials that solids/liquids in the simulations can take, including density (kg/m^3), viscosity (Pa * s), and color.',

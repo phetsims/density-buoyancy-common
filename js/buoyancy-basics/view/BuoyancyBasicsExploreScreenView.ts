@@ -67,7 +67,7 @@ export default class BuoyancyBasicsExploreScreenView extends DensityBuoyancyScre
       Material.DENSITY_B
     ];
 
-    const invisibleMaterials = [ ...DensityBuoyancyCommonConstants.BUOYANCY_FLUID_MYSTERY_MATERIALS ];
+    const invisibleMaterials = [ ...Material.BUOYANCY_FLUID_MYSTERY_MATERIALS ];
     displayedMysteryMaterials.forEach( displayed => arrayRemove( invisibleMaterials, displayed ) );
 
     this.rightBox = new PrimarySecondaryControlsNode(

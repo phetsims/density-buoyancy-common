@@ -17,11 +17,12 @@ import DensityBuoyancyCommonPreferences from '../../common/model/DensityBuoyancy
 import DensityBuoyancyCommonColors from '../../common/view/DensityBuoyancyCommonColors.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
+import Material from '../../common/model/Material.js';
 
 // constants
 const headerFont = new PhetFont( { size: 12, weight: 'bold' } );
 const bodyFont = new PhetFont( { size: 12 } );
-const materials = _.sortBy( DensityBuoyancyCommonConstants.DENSITY_MYSTERY_MATERIALS, material => material.density );
+const materials = _.sortBy( Material.DENSITY_MYSTERY_MATERIALS, material => material.density );
 
 export default class DensityTableNode extends Node {
   public constructor() {

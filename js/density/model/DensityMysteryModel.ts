@@ -28,7 +28,7 @@ import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js'
 import LocalizedStringProperty from '../../../../chipper/js/LocalizedStringProperty.js';
 
 // constants
-const randomMaterials = DensityBuoyancyCommonConstants.DENSITY_MYSTERY_MATERIALS;
+const randomMaterials = Material.DENSITY_MYSTERY_MATERIALS;
 const randomColors = [
   DensityBuoyancyCommonColors.compareYellowColorProperty,
   DensityBuoyancyCommonColors.compareBlueColorProperty,

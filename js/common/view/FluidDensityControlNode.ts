@@ -18,7 +18,6 @@ import Material from '../model/Material.js';
 import ComboNumberControl, { ComboNumberControlOptions } from './ComboNumberControl.js';
 import optionize from '../../../../phet-core/js/optionize.js';
 import WithRequired from '../../../../phet-core/js/types/WithRequired.js';
-import fluidDensityRangePerM3 from '../fluidDensityRangePerM3.js';
 
 type SelfOptions = {
 
@@ -56,7 +55,7 @@ export default class FluidDensityControlNode extends ComboNumberControl<Material
       toNumericValue: material => material.density / DensityBuoyancyCommonConstants.LITERS_IN_CUBIC_METER,
       createCustomValue: density => Material.createCustomLiquidMaterial( {
         density: density * DensityBuoyancyCommonConstants.LITERS_IN_CUBIC_METER,
-        densityRange: fluidDensityRangePerM3
+        densityRange: DensityBuoyancyCommonConstants.FLUID_DENSITY_RANGE_PER_M3
       } ),
       isCustomValue: material => material.custom,
       isHiddenValue: material => material.hidden,

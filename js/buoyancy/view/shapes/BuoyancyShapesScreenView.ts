@@ -43,7 +43,6 @@ import Cone from '../../../common/model/Cone.js';
 import ConeView from '../../../common/view/ConeView.js';
 import ScaleView from '../../../common/view/ScaleView.js';
 import MassView from '../../../common/view/MassView.js';
-import fluidDensityRangePerM3 from '../../../common/fluidDensityRangePerM3.js';
 
 // constants
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN_SMALL;
@@ -66,18 +65,18 @@ export default class BuoyancyShapesScreenView extends DensityBuoyancyScreenView<
       Material.DENSITY_C,
       Material.DENSITY_D
     ];
-    const invisibleMaterials = [ ...DensityBuoyancyCommonConstants.BUOYANCY_FLUID_MYSTERY_MATERIALS ];
+    const invisibleMaterials = [ ...Material.BUOYANCY_FLUID_MYSTERY_MATERIALS ];
     displayedMysteryMaterials.forEach( displayed => arrayRemove( invisibleMaterials, displayed ) );
 
     const customMaterial = Material.createCustomLiquidMaterial( {
       density: 1000, // Same as water, in SI (kg/m^3)
-      densityRange: fluidDensityRangePerM3
+      densityRange: DensityBuoyancyCommonConstants.FLUID_DENSITY_RANGE_PER_M3
     } );
 
     const fluidDensityControlPanel = new Panel( new FluidDensityControlNode( model.pool.liquidMaterialProperty, [
-        ...DensityBuoyancyCommonConstants.BUOYANCY_FLUID_MATERIALS,
+        ...Material.BUOYANCY_FLUID_MATERIALS,
         customMaterial,
-        ...DensityBuoyancyCommonConstants.BUOYANCY_FLUID_MYSTERY_MATERIALS
+        ...Material.BUOYANCY_FLUID_MYSTERY_MATERIALS
       ], customMaterial,
       this.popupLayer, {
         invisibleMaterials: invisibleMaterials,
@@ -130,7 +129,7 @@ export default class BuoyancyShapesScreenView extends DensityBuoyancyScreenView<
     };
 
     const materialComboBox = new MaterialControlNode( this.model.materialProperty, new Property( 1 ),
-      DensityBuoyancyCommonConstants.SIMPLE_MASS_MATERIALS, this.popupLayer, {
+      Material.SIMPLE_MASS_MATERIALS, this.popupLayer, {
         supportCustomMaterial: false,
         tandem: options.tandem.createTandem( 'materialComboBox' )
       } );

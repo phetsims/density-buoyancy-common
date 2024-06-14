@@ -39,7 +39,7 @@ export default class FluidSelectionPanel extends Panel {
 
     const fluidBox = new ComboBox(
       liquidMaterialProperty,
-      DensityBuoyancyCommonConstants.BUOYANCY_FLUID_MATERIALS.map( material => {
+      Material.BUOYANCY_FLUID_MATERIALS.map( material => {
         return {
           value: material,
           createNode: () => new Text( material.nameProperty, {

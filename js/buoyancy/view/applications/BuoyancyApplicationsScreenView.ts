@@ -44,7 +44,6 @@ import ThreeUtils from '../../../../../mobius/js/ThreeUtils.js';
 import Bottle from '../../model/applications/Bottle.js';
 import MassView from '../../../common/view/MassView.js';
 import Vector2 from '../../../../../dot/js/Vector2.js';
-import fluidDensityRangePerM3 from '../../../common/fluidDensityRangePerM3.js';
 
 // constants
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN_SMALL;
@@ -191,7 +190,7 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
         Material.TANTALUM,
         Material.GOLD,
         Material.PLATINUM
-      ].concat( DensityBuoyancyCommonConstants.SIMPLE_MASS_MATERIALS ),
+      ].concat( Material.SIMPLE_MASS_MATERIALS ),
       material => material.density ).concat( [ // Adding Mystery Materials at the end, so they aren't sorted by density
       Material.MATERIAL_V,
       Material.MATERIAL_W
@@ -310,7 +309,7 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
       Material.DENSITY_F
     ];
 
-    const invisibleMaterials = [ ...DensityBuoyancyCommonConstants.BUOYANCY_FLUID_MYSTERY_MATERIALS ];
+    const invisibleMaterials = [ ...Material.BUOYANCY_FLUID_MYSTERY_MATERIALS ];
     displayedMysteryMaterials.forEach( displayed => arrayRemove( invisibleMaterials, displayed ) );
 
 
@@ -380,13 +379,13 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
 
     const customMaterial = Material.createCustomLiquidMaterial( {
       density: 1000, // Same as water, in SI (kg/m^3)
-      densityRange: fluidDensityRangePerM3
+      densityRange: DensityBuoyancyCommonConstants.FLUID_DENSITY_RANGE_PER_M3
     } );
 
     const fluidDensityControlPanel = new Panel( new FluidDensityControlNode( model.pool.liquidMaterialProperty, [
-        ...DensityBuoyancyCommonConstants.BUOYANCY_FLUID_MATERIALS,
+        ...Material.BUOYANCY_FLUID_MATERIALS,
         customMaterial,
-        ...DensityBuoyancyCommonConstants.BUOYANCY_FLUID_MYSTERY_MATERIALS
+        ...Material.BUOYANCY_FLUID_MYSTERY_MATERIALS
       ], customMaterial,
       this.popupLayer, {
         invisibleMaterials: invisibleMaterials,

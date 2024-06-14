@@ -12,7 +12,6 @@ import PatternStringProperty from '../../../axon/js/PatternStringProperty.js';
 import PhetFont from '../../../scenery-phet/js/PhetFont.js';
 import densityBuoyancyCommon from '../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../DensityBuoyancyCommonStrings.js';
-import Material from './model/Material.js';
 import DensityBuoyancyCommonColors from './view/DensityBuoyancyCommonColors.js';
 import DerivedProperty from '../../../axon/js/DerivedProperty.js';
 import DensityBuoyancyCommonPreferences from './model/DensityBuoyancyCommonPreferences.js';
@@ -20,6 +19,7 @@ import { VolumeUnits } from './DensityBuoyancyCommonQueryParameters.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import { DEFAULT_FILL, DEFAULT_FILL_HIGHLIGHTED } from '../../../sun/js/SliderThumb.js';
 import Vector2 from '../../../dot/js/Vector2.js';
+import Range from '../../../dot/js/Range.js';
 
 const CORNER_RADIUS = 5;
 const litersPatternStringProperty = new PatternStringProperty( DensityBuoyancyCommonStrings.litersPatternStringProperty, {
@@ -42,6 +42,11 @@ const TOLERANCE = 1e-7;
 export const chooseDecimalPlaces = ( value: number ): number => {
   return value >= 10 ? 1 : 2;
 };
+
+const LITERS_IN_CUBIC_METER = 1000;
+
+
+const FLUID_DENSITY_RANGE_PER_L = new Range( 0.5, 15 );
 
 const DensityBuoyancyCommonConstants = {
   MARGIN: MARGIN,
@@ -107,50 +112,6 @@ const DensityBuoyancyCommonConstants = {
   // Shift on the screen view with respect to the camera's view
   BUOYANCY_BASICS_VIEW_OFFSET: new Vector2( -25, 0 ),
 
-  // {Array.<Material>}
-  DENSITY_MYSTERY_MATERIALS: [
-    Material.WOOD,
-    Material.GASOLINE,
-    Material.APPLE,
-    Material.ICE,
-    Material.HUMAN,
-    Material.WATER,
-    Material.GLASS,
-    Material.DIAMOND,
-    Material.TITANIUM,
-    Material.STEEL,
-    Material.COPPER,
-    Material.LEAD,
-    Material.GOLD
-  ],
-
-  SIMPLE_MASS_MATERIALS: [
-    Material.STYROFOAM,
-    Material.WOOD,
-    Material.ICE,
-    Material.PVC,
-    Material.BRICK,
-    Material.ALUMINUM
-  ],
-
-  BUOYANCY_FLUID_MATERIALS: [
-    Material.GASOLINE,
-    Material.OIL,
-    Material.WATER,
-    Material.SEAWATER,
-    Material.HONEY,
-    Material.MERCURY
-  ],
-
-  BUOYANCY_FLUID_MYSTERY_MATERIALS: [
-    Material.DENSITY_A,
-    Material.DENSITY_B,
-    Material.DENSITY_C,
-    Material.DENSITY_D,
-    Material.DENSITY_E,
-    Material.DENSITY_F
-  ],
-
   // In m^3, the value that we want the initial liquid volume to be (including the displacement of any volumes in the pool).
   DESIRED_STARTING_POOL_VOLUME: 0.1,
 
@@ -176,7 +137,9 @@ const DensityBuoyancyCommonConstants = {
   }, { tandem: Tandem.OPT_OUT } ),
   GRAB_RELEASE_SOUND_CLIP_OPTIONS: {
     initialOutputLevel: 0.4
-  }
+  },
+
+  FLUID_DENSITY_RANGE_PER_M3: FLUID_DENSITY_RANGE_PER_L.copy().times( LITERS_IN_CUBIC_METER )
 };
 
 export const toLiters = ( cubicMeters: number ): number => {

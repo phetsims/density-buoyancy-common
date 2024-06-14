@@ -177,11 +177,14 @@ export default class BuoyancyExploreScreenView extends DensityBuoyancyScreenView
       tandem: this.tandem.createTandem( 'blocksRadioButtonGroup' )
     } );
 
-    ManualConstraint.create( this, [ rightSideVBox, fluidDensityControlPanel, blocksRadioButtonGroup ],
-      ( rightSideVBoxWrapper, fluidDensityControlPanelWrapper, blocksRadioButtonGroupWrapper ) => {
+    ManualConstraint.create( this, [ rightSideVBox, blocksRadioButtonGroup ],
+      ( rightSideVBoxWrapper, blocksRadioButtonGroupWrapper ) => {
         blocksRadioButtonGroupWrapper.left = rightSideVBoxWrapper.left;
-        blocksRadioButtonGroupWrapper.bottom = fluidDensityControlPanelWrapper.bottom;
       } );
+
+    this.visibleBoundsProperty.link( visibleBounds => {
+      blocksRadioButtonGroup.bottom = this.visibleBoundsProperty.value.bottom - MARGIN;
+    } );
 
     this.addChild( blocksRadioButtonGroup );
 

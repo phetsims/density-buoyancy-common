@@ -63,16 +63,16 @@ export default abstract class ApplicationsMass extends Mass {
    *
    * TODO: Why is this different than getDisplacedVolume? Should they share implementation? See https://github.com/phetsims/density-buoyancy-common/issues/123
    */
-  public getDisplacedArea( liquidLevel: number ): number {
+  public getDisplacedArea( fluidLevel: number ): number {
     const bottom = this.stepBottom;
     const top = this.stepTop;
 
-    // TODO: https://github.com/phetsims/density-buoyancy-common/issues/123 if the liquid level is beyond the top, it probably shouldn't be 0, right?
-    if ( liquidLevel < bottom || liquidLevel > top ) {
+    // TODO: https://github.com/phetsims/density-buoyancy-common/issues/123 if the fluid level is beyond the top, it probably shouldn't be 0, right?
+    if ( fluidLevel < bottom || fluidLevel > top ) {
       return 0;
     }
 
-    const ratio = ( liquidLevel - bottom ) / ( top - bottom );
+    const ratio = ( fluidLevel - bottom ) / ( top - bottom );
 
     return this.evaluatePiecewiseLinearArea( ratio );
   }
@@ -82,18 +82,18 @@ export default abstract class ApplicationsMass extends Mass {
    *
    * Assumes step information was updated.
    */
-  public getDisplacedVolume( liquidLevel: number ): number {
+  public getDisplacedVolume( fluidLevel: number ): number {
     const bottom = this.stepBottom;
     const top = this.stepTop;
 
-    if ( liquidLevel <= bottom ) {
+    if ( fluidLevel <= bottom ) {
       return 0;
     }
-    else if ( liquidLevel >= top ) {
+    else if ( fluidLevel >= top ) {
       return this.displacementVolumeProperty.value;
     }
     else {
-      const ratio = ( liquidLevel - bottom ) / ( top - bottom );
+      const ratio = ( fluidLevel - bottom ) / ( top - bottom );
 
       return this.evaluatePiecewiseLinearVolume( ratio );
     }

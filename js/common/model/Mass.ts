@@ -521,12 +521,12 @@ export default abstract class Mass extends PhetioObject {
   /**
    * Returns the cross-sectional area of this object at a given y level.
    */
-  public abstract getDisplacedArea( liquidLevel: number ): number;
+  public abstract getDisplacedArea( fluidLevel: number ): number;
 
   /**
    * Returns the cumulative displaced volume of this object up to a given y level.
    */
-  public abstract getDisplacedVolume( liquidLevel: number ): number;
+  public abstract getDisplacedVolume( fluidLevel: number ): number;
 
   /**
    * Returns the fraction of the mass that is submerged in a liquid at a given level. From 0 to 1.

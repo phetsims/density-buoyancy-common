@@ -66,9 +66,6 @@ const DensityBuoyancyCommonColors = {
   labelSecondaryProperty: new ProfileColorProperty( densityBuoyancyCommon, 'labelSecondary', {
     default: new Color( 48, 89, 166 )
   } ),
-  liquidLabelProperty: new ProfileColorProperty( densityBuoyancyCommon, 'liquidLabel', {
-    default: new Color( 0, 0, 0 )
-  } ),
 
   compareYellowColorProperty: new ProfileColorProperty( densityBuoyancyCommon, 'compareYellow', {
     default: new Color( 252, 246, 80 )
@@ -288,10 +285,10 @@ const DensityBuoyancyCommonColors = {
   materialSColorProperty: new ProfileColorProperty( densityBuoyancyCommon, 'materialS', {
     default: new Color( 'rgba(255,16,223,0.5)' )
   } ),
-  customLiquidLightColorProperty: new ProfileColorProperty( densityBuoyancyCommon, 'customLiquidLight', {
+  customFluidLightColorProperty: new ProfileColorProperty( densityBuoyancyCommon, 'customFluidLight', {
     default: new Color( 255, 255, 255, 0.3 )
   } ),
-  customLiquidDarkColorProperty: new ProfileColorProperty( densityBuoyancyCommon, 'customLiquidDark', {
+  customFluidDarkColorProperty: new ProfileColorProperty( densityBuoyancyCommon, 'customFluidDark', {
     default: new Color( 0, 30, 255, 0.6 )
   } ),
 

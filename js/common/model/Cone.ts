@@ -151,12 +151,12 @@ export default class Cone extends Mass {
    *
    * Assumes step information was updated.
    */
-  public getDisplacedArea( liquidLevel: number ): number {
-    if ( liquidLevel < this.stepBottom || liquidLevel > this.stepTop ) {
+  public getDisplacedArea( fluidLevel: number ): number {
+    if ( fluidLevel < this.stepBottom || fluidLevel > this.stepTop ) {
       return 0;
     }
     else {
-      let ratio = ( liquidLevel - this.stepBottom ) / ( this.stepTop - this.stepBottom );
+      let ratio = ( fluidLevel - this.stepBottom ) / ( this.stepTop - this.stepBottom );
       if ( this.isVertexUp ) {
         ratio = 1 - ratio;
       }
@@ -170,15 +170,15 @@ export default class Cone extends Mass {
    *
    * Assumes step information was updated.
    */
-  public getDisplacedVolume( liquidLevel: number ): number {
-    if ( liquidLevel <= this.stepBottom ) {
+  public getDisplacedVolume( fluidLevel: number ): number {
+    if ( fluidLevel <= this.stepBottom ) {
       return 0;
     }
-    else if ( liquidLevel >= this.stepTop ) {
+    else if ( fluidLevel >= this.stepTop ) {
       return this.stepMaximumVolume;
     }
     else {
-      const ratio = ( liquidLevel - this.stepBottom ) / ( this.stepTop - this.stepBottom );
+      const ratio = ( fluidLevel - this.stepBottom ) / ( this.stepTop - this.stepBottom );
 
       if ( this.isVertexUp ) {
         // a = pi * ( r * ( 1 - t ) )^2 = pi * r^2 * ( 1 - t )^2 = ( pi * r^2 ) - ( pi * r^2 * t^2 )

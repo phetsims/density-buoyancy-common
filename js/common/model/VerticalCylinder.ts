@@ -140,8 +140,8 @@ export default class VerticalCylinder extends Mass {
    *
    * Assumes step information was updated.
    */
-  public getDisplacedArea( liquidLevel: number ): number {
-    if ( liquidLevel < this.stepBottom || liquidLevel > this.stepTop ) {
+  public getDisplacedArea( fluidLevel: number ): number {
+    if ( fluidLevel < this.stepBottom || fluidLevel > this.stepTop ) {
       return 0;
     }
     else {
@@ -154,19 +154,19 @@ export default class VerticalCylinder extends Mass {
    *
    * Assumes step information was updated.
    */
-  public getDisplacedVolume( liquidLevel: number ): number {
+  public getDisplacedVolume( fluidLevel: number ): number {
     const bottom = this.stepBottom;
     const top = this.stepTop;
 
-    if ( liquidLevel <= bottom ) {
+    if ( fluidLevel <= bottom ) {
       return 0;
     }
-    else if ( liquidLevel >= top ) {
+    else if ( fluidLevel >= top ) {
       return this.stepMaximumVolume;
     }
     else {
       // This is identical to Cuboid's getDisplacedVolume formula, see there if this needs to change.
-      return this.stepMaximumVolume * ( liquidLevel - bottom ) / ( top - bottom );
+      return this.stepMaximumVolume * ( fluidLevel - bottom ) / ( top - bottom );
     }
   }
 

@@ -197,8 +197,8 @@ export default class Material {
 
     return new ColorProperty(
       Color.interpolateRGBA(
-        DensityBuoyancyCommonColors.customLiquidDarkColorProperty.value,
-        DensityBuoyancyCommonColors.customLiquidLightColorProperty.value,
+        DensityBuoyancyCommonColors.customFluidDarkColorProperty.value,
+        DensityBuoyancyCommonColors.customFluidLightColorProperty.value,
         lightnessFactor
       ) );
   }

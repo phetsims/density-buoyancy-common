@@ -47,7 +47,7 @@ const FILL_EMPTY_MULTIPLIER = 0.3;
 // 90% of the boat is out of the water before spilling out the full boat
 const BOAT_READY_TO_SPILL_OUT_THRESHOLD = 0.9;
 
-// Y model distance of tolerance between the boat basin liquidY level and the boat basin stepTop. This was needed to
+// Y model distance of tolerance between the boat basin fluidY level and the boat basin stepTop. This was needed to
 // prevent filling thrashing as a containing mass floats around. See updateLiquidLevel();
 const BOAT_FULL_THRESHOLD = 0.01;
 
@@ -274,7 +274,7 @@ export default class DensityBuoyancyModel implements TModel {
     // (30 as of writing). This instance lives for the lifetime of the simulation, so we don't need to remove this
     // listener.
     this.engine.addPostStepListener( dt => {
-      this.updateLiquid();
+      this.updateFluid();
 
       // {number}
       const gravity = this.gravityProperty.value.value;
@@ -415,7 +415,7 @@ export default class DensityBuoyancyModel implements TModel {
   /**
    * Computes the heights of the main pool liquid (and optionally that of the boat)
    */
-  private updateLiquid(): void {
+  private updateFluid(): void {
     const boat = this.getBoat();
 
     const basins: Basin[] = [ this.pool ];
@@ -432,15 +432,15 @@ export default class DensityBuoyancyModel implements TModel {
       basin.stepMasses = this.masses.filter( mass => basin.isMassInside( mass ) );
     } );
 
-    let poolLiquidVolume = this.pool.fluidVolumeProperty.value;
+    let poolFluidVolume = this.pool.fluidVolumeProperty.value;
 
     // May need to adjust volumes between the boat/pool if there is a boat
     if ( boat ) {
-      poolLiquidVolume = this.updateLiquidsForBoat( poolLiquidVolume );
+      poolFluidVolume = this.updateFluidsForBoat( poolFluidVolume );
     }
 
     // Check to see if water "spilled" out of the pool, and set the finalized liquid volume
-    this.pool.fluidVolumeProperty.value = Math.min( poolLiquidVolume, this.pool.getEmptyVolume( this.poolBounds.maxY ) );
+    this.pool.fluidVolumeProperty.value = Math.min( poolFluidVolume, this.pool.getEmptyVolume( this.poolBounds.maxY ) );
 
     this.pool.computeY();
     boat && boat.basin.computeY();
@@ -459,26 +459,26 @@ export default class DensityBuoyancyModel implements TModel {
     }
   }
 
-  private updateLiquidsForBoat( poolLiquidVolume: number ): number {
+  private updateFluidsForBoat( poolFluidVolume: number ): number {
     const boat = this.getBoat()!;
 
     assert && assert( boat, 'boat needed to update liquids for boat' );
 
     const boatBasin = boat.basin;
     if ( boat.visibleProperty.value ) {
-      let boatLiquidVolume = boatBasin.fluidVolumeProperty.value;
+      let boatFluidVolume = boatBasin.fluidVolumeProperty.value;
       const boatBasinMaximumVolume = boatBasin.getMaximumVolume( boatBasin.stepTop );
 
       const poolEmptyVolumeToBoatTop = this.pool.getEmptyVolume( Math.min( boat.stepTop, this.poolBounds.maxY ) );
       const boatEmptyVolumeToBoatTop = boatBasin.getEmptyVolume( boat.stepTop );
 
       // Calculate adjustments to water volumes to match the current space in the basin
-      let poolExcess = poolLiquidVolume - poolEmptyVolumeToBoatTop;
-      let boatExcess = boatLiquidVolume - boatEmptyVolumeToBoatTop;
+      let poolExcess = poolFluidVolume - poolEmptyVolumeToBoatTop;
+      let boatExcess = boatFluidVolume - boatEmptyVolumeToBoatTop;
 
       const boatHeight = boat.shapeProperty.value.getBounds().height;
 
-      if ( boatLiquidVolume ) {
+      if ( boatFluidVolume ) {
 
         // If the top of the boat is out of the water past the height threshold, spill the water back into the pool
         // (even if not totally full).
@@ -493,35 +493,35 @@ export default class DensityBuoyancyModel implements TModel {
 
       // If the boat is out of the water, spill the water back into the pool
       if ( this.spillingWaterOutOfBoat ) {
-        boatExcess = Math.min( FILL_EMPTY_MULTIPLIER * boat.volumeProperty.value, boatLiquidVolume );
+        boatExcess = Math.min( FILL_EMPTY_MULTIPLIER * boat.volumeProperty.value, boatFluidVolume );
       }
-      else if ( boatLiquidVolume > 0 &&
+      else if ( boatFluidVolume > 0 &&
                 Math.abs( boatBasin.fluidYInterpolatedProperty.currentValue - boatBasin.stepTop ) >= BOAT_FULL_THRESHOLD ) {
         // If the boat is neither full nor empty, nor spilling, then it is currently filling up. We will up no matter
         // the current water leve or the boat AND no matter the boats position. This is because the boat can only
         // ever be full or empty (or animating to one of those states).
 
-        const excess = Math.min( FILL_EMPTY_MULTIPLIER * boat.volumeProperty.value, boatBasinMaximumVolume - boatLiquidVolume ); // This animates the boat spilling in
+        const excess = Math.min( FILL_EMPTY_MULTIPLIER * boat.volumeProperty.value, boatBasinMaximumVolume - boatFluidVolume ); // This animates the boat spilling in
         poolExcess = excess;
         boatExcess = -excess;
       }
 
       if ( poolExcess > 0 && boatExcess < 0 ) {
         const transferVolume = Math.min( poolExcess, -boatExcess );
-        poolLiquidVolume -= transferVolume;
-        boatLiquidVolume += transferVolume;
+        poolFluidVolume -= transferVolume;
+        boatFluidVolume += transferVolume;
       }
       else if ( boatExcess > 0 ) {
         // If the boat overflows, just dump the rest in the pool
-        poolLiquidVolume += boatExcess;
-        boatLiquidVolume -= boatExcess;
+        poolFluidVolume += boatExcess;
+        boatFluidVolume -= boatExcess;
       }
-      boatBasin.fluidVolumeProperty.value = boatLiquidVolume;
+      boatBasin.fluidVolumeProperty.value = boatFluidVolume;
     }
     else {
       boatBasin.fluidVolumeProperty.value = 0;
     }
-    return poolLiquidVolume;
+    return poolFluidVolume;
   }
 
   /**

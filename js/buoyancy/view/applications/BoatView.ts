@@ -68,66 +68,66 @@ export default class BoatView extends MeasurableMassView {
     };
     boat.displacementVolumeProperty.link( updateBoatScale );
 
-    const topLiquidPositionArray = BoatDesign.createCrossSectionVertexArray();
-    const topLiquidNormalArray = new Float32Array( topLiquidPositionArray.length );
-    for ( let i = 1; i < topLiquidNormalArray.length; i += 3 ) {
-      topLiquidNormalArray[ i ] = 1; // normals should all be 0,1,0
+    const topFluidPositionArray = BoatDesign.createCrossSectionVertexArray();
+    const topFluidNormalArray = new Float32Array( topFluidPositionArray.length );
+    for ( let i = 1; i < topFluidNormalArray.length; i += 3 ) {
+      topFluidNormalArray[ i ] = 1; // normals should all be 0,1,0
     }
-    const topLiquidGeometry = new THREE.BufferGeometry();
-    topLiquidGeometry.addAttribute( 'position', new THREE.BufferAttribute( topLiquidPositionArray, 3 ) );
-    topLiquidGeometry.addAttribute( 'normal', new THREE.BufferAttribute( topLiquidNormalArray, 3 ) );
+    const topFluidGeometry = new THREE.BufferGeometry();
+    topFluidGeometry.addAttribute( 'position', new THREE.BufferAttribute( topFluidPositionArray, 3 ) );
+    topFluidGeometry.addAttribute( 'normal', new THREE.BufferAttribute( topFluidNormalArray, 3 ) );
 
-    const topLiquidMaterial = new THREE.MeshPhongMaterial( {
+    const topFluidMaterial = new THREE.MeshPhongMaterial( {
       color: 0x33FF33, // will be replaced with liquid color below
       opacity: 0.8,
       transparent: true,
       depthWrite: false
     } );
-    const topLiquid = new THREE.Mesh( topLiquidGeometry, topLiquidMaterial );
+    const topLiquid = new THREE.Mesh( topFluidGeometry, topFluidMaterial );
     this.massMesh.add( topLiquid );
 
-    const liquidMultilink = Multilink.multilink( [
+    const fluidMultilink = Multilink.multilink( [
       boat.basin.fluidYInterpolatedProperty,
       boat.displacementVolumeProperty,
       boat.basin.fluidVolumeProperty
-    ], ( boatLiquidY, boatDisplacement, boatLiquidVolume ) => {
-      const poolLiquidY = fluidYInterpolatedProperty.value;
+    ], ( boatFluidY, boatDisplacement, boatFluidVolume ) => {
+      const poolFluidY = fluidYInterpolatedProperty.value;
       const liters = boatDisplacement / 0.001;
 
-      const relativeBoatLiquidY = boatLiquidY - boat.matrix.translation.y;
+      const relativeBoatFluidY = boatFluidY - boat.matrix.translation.y;
 
       const maximumVolume = boat.basin.getEmptyVolume( Number.POSITIVE_INFINITY );
       const volume = boat.basin.fluidVolumeProperty.value;
       const isFull = volume >= maximumVolume - VOLUME_TOLERANCE;
-      if ( boatLiquidVolume > 0 && ( !isFull || BoatDesign.shouldBoatWaterDisplayIfFull( fluidYInterpolatedProperty.value - boat.matrix.translation.y, liters ) ) ) {
-        BoatDesign.fillCrossSectionVertexArray( relativeBoatLiquidY, liters, topLiquidPositionArray );
+      if ( boatFluidVolume > 0 && ( !isFull || BoatDesign.shouldBoatWaterDisplayIfFull( fluidYInterpolatedProperty.value - boat.matrix.translation.y, liters ) ) ) {
+        BoatDesign.fillCrossSectionVertexArray( relativeBoatFluidY, liters, topFluidPositionArray );
       }
       else {
-        topLiquidPositionArray.fill( 0 );
+        topFluidPositionArray.fill( 0 );
       }
-      topLiquidGeometry.attributes.position.needsUpdate = true;
-      topLiquidGeometry.computeBoundingSphere();
+      topFluidGeometry.attributes.position.needsUpdate = true;
+      topFluidGeometry.computeBoundingSphere();
 
       if ( boat.basin.fluidVolumeProperty.value > VOLUME_TOLERANCE ) {
-        bottomBoatClipPlane.constant = boatLiquidY;
-        topBoatClipPlane.constant = -boatLiquidY;
+        bottomBoatClipPlane.constant = boatFluidY;
+        topBoatClipPlane.constant = -boatFluidY;
       }
       else {
         bottomBoatClipPlane.constant = -1000;
         topBoatClipPlane.constant = 1000;
       }
-      bottomPoolClipPlane.constant = poolLiquidY;
-      topPoolClipPlane.constant = -poolLiquidY;
+      bottomPoolClipPlane.constant = poolFluidY;
+      topPoolClipPlane.constant = -poolFluidY;
     } );
 
-    Material.linkLiquidColor( boat.fluidMaterialProperty, topLiquidMaterial );
+    Material.linkLiquidColor( boat.fluidMaterialProperty, topFluidMaterial );
     Material.linkLiquidColor( boat.fluidMaterialProperty, boatDrawingData.backMiddleMaterial );
 
     // see the static function for the rest of render orders
     topLiquid.renderOrder = 3;
 
     this.disposeEmitter.addListener( () => {
-      liquidMultilink.dispose();
+      fluidMultilink.dispose();
       boat.displacementVolumeProperty.unlink( updateBoatScale );
     } );
   }

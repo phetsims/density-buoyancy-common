@@ -130,10 +130,10 @@ export default class FluidDisplacedAccordionBox extends AccordionBox {
       gravityProperty,
       displayedDisplacedVolumeProperty,
       fluidMaterialProperty
-    ], ( gravity, displacedVolume, liquidMaterial ) => {
+    ], ( gravity, displacedVolume, fluidMaterial ) => {
 
       // Convert density units from kg/m^3=>kg/L
-      return ( liquidMaterial.density / DensityBuoyancyCommonConstants.LITERS_IN_CUBIC_METER ) *
+      return ( fluidMaterial.density / DensityBuoyancyCommonConstants.LITERS_IN_CUBIC_METER ) *
              gravity.value * displacedVolume;
     } );
 

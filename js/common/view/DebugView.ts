@@ -263,7 +263,7 @@ class DebugMassNode extends Node {
 
       // @ts-expect-error
       const block = model.block;
-      const liquidListener = () => {
+      const fluidListener = () => {
         const y = mass.basin.fluidYInterpolatedProperty.value;
 
         if ( mass.basin.fluidVolumeProperty.value > 0 ) {
@@ -296,13 +296,13 @@ class DebugMassNode extends Node {
           waterPath.shape = null;
         }
       };
-      mass.basin.fluidYInterpolatedProperty.link( liquidListener );
-      block.shapeProperty.lazyLink( liquidListener );
-      block.transformedEmitter.addListener( liquidListener );
+      mass.basin.fluidYInterpolatedProperty.link( fluidListener );
+      block.shapeProperty.lazyLink( fluidListener );
+      block.transformedEmitter.addListener( fluidListener );
       this.disposeEmitter.addListener( () => {
-        mass.basin.fluidYInterpolatedProperty.unlink( liquidListener );
-        block.shapeProperty.unlink( liquidListener );
-        block.transformedEmitter.removeListener( liquidListener );
+        mass.basin.fluidYInterpolatedProperty.unlink( fluidListener );
+        block.shapeProperty.unlink( fluidListener );
+        block.transformedEmitter.removeListener( fluidListener );
       } );
     }
 

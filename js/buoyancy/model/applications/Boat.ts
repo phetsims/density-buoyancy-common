@@ -166,15 +166,15 @@ export default class Boat extends ApplicationsMass {
    *
    * Assumes step information was updated.
    */
-  public getBasinArea( liquidLevel: number ): number {
+  public getBasinArea( fluidLevel: number ): number {
     const bottom = this.stepBottom;
     const top = this.stepTop;
 
-    if ( liquidLevel <= bottom || liquidLevel >= top ) {
+    if ( fluidLevel <= bottom || fluidLevel >= top ) {
       return 0;
     }
     else {
-      const ratio = ( liquidLevel - bottom ) / ( top - bottom );
+      const ratio = ( fluidLevel - bottom ) / ( top - bottom );
 
       return Mass.evaluatePiecewiseLinear( BoatDesign.ONE_LITER_INTERNAL_AREAS, ratio ) * this.stepMultiplier * this.stepMultiplier;
     }
@@ -185,18 +185,18 @@ export default class Boat extends ApplicationsMass {
    *
    * Assumes step information was updated.
    */
-  public getBasinVolume( liquidLevel: number ): number {
+  public getBasinVolume( fluidLevel: number ): number {
     const bottom = this.stepBottom;
     const top = this.stepTop;
 
-    if ( liquidLevel <= bottom ) {
+    if ( fluidLevel <= bottom ) {
       return 0;
     }
-    else if ( liquidLevel >= top ) {
+    else if ( fluidLevel >= top ) {
       return this.stepInternalVolume;
     }
     else {
-      const ratio = ( liquidLevel - bottom ) / ( top - bottom );
+      const ratio = ( fluidLevel - bottom ) / ( top - bottom );
 
       return Mass.evaluatePiecewiseLinear( BoatDesign.ONE_LITER_INTERNAL_VOLUMES, ratio ) * this.stepMultiplier * this.stepMultiplier * this.stepMultiplier;
     }
@@ -205,11 +205,11 @@ export default class Boat extends ApplicationsMass {
   /**
    * Checks if the boat is underwater and sets the flag
    */
-  public setUnderwaterState( liquidLevel: number ): void {
+  public setUnderwaterState( fluidLevel: number ): void {
 
     // TODO: Should we set this value at the beginning of the post physics engine step, see https://github.com/phetsims/density-buoyancy-common/issues/123
     // It currently seems like it is updated partway through (after it is accessed)?
-    this.isUnderwater = this.stepTop < liquidLevel - DensityBuoyancyCommonConstants.TOLERANCE;
+    this.isUnderwater = this.stepTop < fluidLevel - DensityBuoyancyCommonConstants.TOLERANCE;
   }
 
   /**

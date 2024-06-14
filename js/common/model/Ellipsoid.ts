@@ -116,12 +116,12 @@ export default class Ellipsoid extends Mass {
    *
    * Assumes step information was updated.
    */
-  public getDisplacedArea( liquidLevel: number ): number {
-    if ( liquidLevel < this.stepBottom || liquidLevel > this.stepTop ) {
+  public getDisplacedArea( fluidLevel: number ): number {
+    if ( fluidLevel < this.stepBottom || fluidLevel > this.stepTop ) {
       return 0;
     }
     else {
-      const ratio = ( liquidLevel - this.stepBottom ) / ( this.stepTop - this.stepBottom );
+      const ratio = ( fluidLevel - this.stepBottom ) / ( this.stepTop - this.stepBottom );
 
       return this.stepMaximumArea * ( ratio - ratio * ratio ); // 4 * pi * a * c * ( t - t^2 )
     }
@@ -132,15 +132,15 @@ export default class Ellipsoid extends Mass {
    *
    * Assumes step information was updated.
    */
-  public getDisplacedVolume( liquidLevel: number ): number {
-    if ( liquidLevel <= this.stepBottom ) {
+  public getDisplacedVolume( fluidLevel: number ): number {
+    if ( fluidLevel <= this.stepBottom ) {
       return 0;
     }
-    else if ( liquidLevel >= this.stepTop ) {
+    else if ( fluidLevel >= this.stepTop ) {
       return this.stepMaximumVolume;
     }
     else {
-      const ratio = ( liquidLevel - this.stepBottom ) / ( this.stepTop - this.stepBottom );
+      const ratio = ( fluidLevel - this.stepBottom ) / ( this.stepTop - this.stepBottom );
 
       return this.stepMaximumVolume * ratio * ratio * ( 3 - 2 * ratio ); // 4/3 * pi * a * b * c * t^2 * ( 3 - 2t )
     }

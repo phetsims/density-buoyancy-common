@@ -571,8 +571,8 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
     const waterLevelIndicator = new WaterLevelIndicator( model.pool.fluidLevelVolumeProperty );
     this.addChild( waterLevelIndicator );
     // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
-    model.pool.fluidYInterpolatedProperty.link( liquidY => {
-      const modelPoint = new Vector3( model.poolBounds.minX, liquidY, model.poolBounds.maxZ );
+    model.pool.fluidYInterpolatedProperty.link( fluidY => {
+      const modelPoint = new Vector3( model.poolBounds.minX, fluidY, model.poolBounds.maxZ );
       waterLevelIndicator.translation = this.modelToViewPoint( modelPoint );
     } );
 

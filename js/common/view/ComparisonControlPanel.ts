@@ -117,8 +117,7 @@ export default class ComparisonControlPanel extends Panel {
         massNumberControl,
         volumeNumberControl,
         densityNumberControl
-      ],
-      excludeInvisibleChildrenFromBounds: true // To give the "swap out" functionality.
+      ]
     } ), combineOptions<PanelOptions>( {
       visibleProperty: DerivedProperty.or( [ massNumberControl.visibleProperty, volumeNumberControl.visibleProperty, densityNumberControl.visibleProperty ] )
     }, options ) );

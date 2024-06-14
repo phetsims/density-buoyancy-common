@@ -211,15 +211,15 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
       }
     };
 
-    const listener = new BackgroundEventTargetListener(
+    const backgroundEventTargetListener = new BackgroundEventTargetListener(
       this.massViews,
       this.getMassViewUnderPointer.bind( this ),
       this.sceneNode.getRayFromScreenPoint.bind( this.sceneNode ),
       ( point: Vector3 ) => this.localToGlobalPoint( this.modelToViewPoint( point ) ),
       updateCursor,
-      this.tandem
+      this.tandem.createTandem( 'backgroundEventTargetListener' )
     );
-    this.sceneNode.backgroundEventTarget.addInputListener( listener );
+    this.sceneNode.backgroundEventTarget.addInputListener( backgroundEventTargetListener );
 
     // On re-layout or zoom, update the cursor also
     // This instance lives for the lifetime of the simulation, so we don't need to remove these listeners

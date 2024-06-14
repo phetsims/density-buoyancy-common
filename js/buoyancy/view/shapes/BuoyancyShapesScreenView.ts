@@ -36,7 +36,7 @@ import Multilink from '../../../../../axon/js/Multilink.js';
 import TwoBlockMode from '../../../common/model/TwoBlockMode.js';
 import PatternStringProperty from '../../../../../axon/js/PatternStringProperty.js';
 import DensityBuoyancyCommonStrings from '../../../DensityBuoyancyCommonStrings.js';
-import DensityMaterials from '../../../common/view/DensityMaterials.js';
+import { DensityMaterials } from '../../../common/view/MaterialView.js';
 import ThreeUtils from '../../../../../mobius/js/ThreeUtils.js';
 import DensityBuoyancyCommonColors from '../../../common/view/DensityBuoyancyCommonColors.js';
 import Cone from '../../../common/model/Cone.js';

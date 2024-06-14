@@ -55,7 +55,7 @@ import Material from '../model/Material.js';
 
 // MaterialView definition
 
-export class MaterialView<T extends THREE.Material = THREE.Material> {
+class MaterialView<T extends THREE.Material = THREE.Material> {
 
   public readonly material: T;
 
@@ -374,7 +374,7 @@ class DebugMaterialView extends MaterialView {
   }
 }
 
-export default class DensityMaterials {
+export class DensityMaterials {
   /**
    * Returns a view for the given Material.
    */
@@ -453,5 +453,5 @@ export default class DensityMaterials {
   public static readonly brickNormalTexture = brickNormalTexture;
 }
 
-
-densityBuoyancyCommon.register( 'DensityMaterials', DensityMaterials );
+export default MaterialView;
+densityBuoyancyCommon.register( 'MaterialView', MaterialView );

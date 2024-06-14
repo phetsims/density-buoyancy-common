@@ -26,7 +26,7 @@ import SubmergedAccordionBox from './SubmergedAccordionBox.js';
 import PatternStringProperty from '../../../../axon/js/PatternStringProperty.js';
 import BlocksRadioButtonGroup from '../../common/view/BlocksRadioButtonGroup.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
-import DensityMaterials from '../../common/view/DensityMaterials.js';
+import { DensityMaterials } from '../../common/view/MaterialView.js';
 import ThreeUtils from '../../../../mobius/js/ThreeUtils.js';
 import DensityBuoyancyCommonColors from '../../common/view/DensityBuoyancyCommonColors.js';
 import ForceDiagramNode from '../../common/view/ForceDiagramNode.js';

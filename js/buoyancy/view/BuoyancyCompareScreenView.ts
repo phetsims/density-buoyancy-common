@@ -26,7 +26,7 @@ import { ReadoutItemOptions } from './ReadoutListAccordionBox.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import Mass from '../../common/model/Mass.js';
 import Bounds2 from '../../../../dot/js/Bounds2.js';
-import DensityMaterials from '../../common/view/DensityMaterials.js';
+import { DensityMaterials } from '../../common/view/MaterialView.js';
 import ThreeUtils from '../../../../mobius/js/ThreeUtils.js';
 import DensityBuoyancyCommonColors from '../../common/view/DensityBuoyancyCommonColors.js';
 import FluidSelectionPanel from './FluidSelectionPanel.js';

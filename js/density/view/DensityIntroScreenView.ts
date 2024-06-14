@@ -20,7 +20,7 @@ import DensityBuoyancyScreenView, { DensityBuoyancyScreenViewOptions } from '../
 import { combineOptions } from '../../../../phet-core/js/optionize.js';
 import DensityBuoyancyCommonPreferences from '../../common/model/DensityBuoyancyCommonPreferences.js';
 import ThreeUtils from '../../../../mobius/js/ThreeUtils.js';
-import DensityMaterials from '../../common/view/DensityMaterials.js';
+import { DensityMaterials } from '../../common/view/MaterialView.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
 import DensityBuoyancyCommonColors from '../../common/view/DensityBuoyancyCommonColors.js';
 import BlocksRadioButtonGroup from '../../common/view/BlocksRadioButtonGroup.js';

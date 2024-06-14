@@ -36,7 +36,6 @@ import ScaleView from '../../common/view/ScaleView.js';
 import MassView from '../../common/view/MassView.js';
 import CuboidView from '../../common/view/CuboidView.js';
 import BlocksPanel from '../../common/view/BlocksPanel.js';
-import Panel from '../../../../sun/js/Panel.js';
 
 // constants
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN_SMALL;
@@ -48,8 +47,6 @@ export default class BuoyancyCompareScreenView extends DensityBuoyancyScreenView
 
   private readonly rightSideMaxContentWidthProperty = new Property( MAX_RIGHT_SIDE_CONTENT_WIDTH );
   private readonly rightSidePanelsVBox: Node;
-
-  private readonly numberControlPanel: Panel;
 
   public constructor( model: BuoyancyCompareModel, options: DensityBuoyancyScreenViewOptions ) {
 
@@ -98,10 +95,6 @@ export default class BuoyancyCompareScreenView extends DensityBuoyancyScreenView
       margin: MARGIN
     } ) );
 
-    this.numberControlPanel = new ComparisonControlPanel( model.massProperty, model.volumeProperty, model.densityProperty, model.blockSetProperty, {
-      sliderTrackSize: new Dimension2( 120, 0.5 ),
-      tandem: tandem // just pass through, because ComparisonControlPanel doesn't instrument the Panel.
-    } );
 
     // Materials are set in densityBox.setMaterials() below
     const densityComparisonAccordionBox = new DensityAccordionBox( DensityBuoyancyCommonStrings.densityComparisonStringProperty, {
@@ -161,8 +154,13 @@ export default class BuoyancyCompareScreenView extends DensityBuoyancyScreenView
       densityComparisonAccordionBox.setReadoutItems( itemsForBoth.densityItems );
     } );
 
+    const numberControlPanel = new ComparisonControlPanel( model.massProperty, model.volumeProperty, model.densityProperty, model.blockSetProperty, {
+      sliderTrackSize: new Dimension2( 120, 0.5 ),
+      tandem: tandem // just pass through, because ComparisonControlPanel doesn't instrument the Panel.
+    } );
+
     this.rightSidePanelsVBox = new VBox( {
-      children: [ this.numberControlPanel, densityComparisonAccordionBox, submergedAccordionBox ],
+      children: [ numberControlPanel, densityComparisonAccordionBox, submergedAccordionBox ],
       spacing: DensityBuoyancyCommonConstants.SPACING_SMALL
     } );
     this.addChild( this.rightSidePanelsVBox );
@@ -197,7 +195,7 @@ export default class BuoyancyCompareScreenView extends DensityBuoyancyScreenView
 
       blocksPanel,
 
-      this.numberControlPanel,
+      numberControlPanel,
 
       fluidSelectionPanel
     ];
@@ -219,14 +217,17 @@ export default class BuoyancyCompareScreenView extends DensityBuoyancyScreenView
     ];
   }
 
-  // Reposition and rescale the right side content
+  // Recalculate the space between the right visible bounds and the right side of the pool, for controls/etc. to be positioned.
   private layoutRightSidePanels(): void {
     const rightSideOfPoolViewPoint = this.modelToViewPoint(
       new Vector3( this.model.pool.bounds.maxX, this.model.pool.bounds.maxY, this.model.pool.bounds.maxZ )
     );
+    const availableRightSpace = this.visibleBoundsProperty.value.right - this.poolScaleHeightControl!.right;
+
+    // 2 margins for the spacing outside the panel, and 2 margins for the panel's content margin
+    this.rightSideMaxContentWidthProperty.value = Math.min( availableRightSpace - 6 * MARGIN, MAX_RIGHT_SIDE_CONTENT_WIDTH );
     this.rightSidePanelsVBox.top = rightSideOfPoolViewPoint.y + MARGIN;
     this.rightSidePanelsVBox.right = this.visibleBoundsProperty.value.right - MARGIN;
-    this.rightSideMaxContentWidthProperty.value = this.numberControlPanel.width - 2 * DensityBuoyancyCommonConstants.PANEL_OPTIONS.xMargin;
   }
 
   public override layout( viewBounds: Bounds2 ): void {

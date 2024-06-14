@@ -36,12 +36,11 @@ export default class DensityIntroModel extends DensityBuoyancyModel {
       usePoolScale: false
     }, options ) );
 
+    const blocksTandem = tandem.createTandem( 'blocks' );
     this.modeProperty = new EnumerationProperty( TwoBlockMode.ONE_BLOCK, {
-      tandem: tandem.createTandem( 'modeProperty' ),
+      tandem: blocksTandem.createTandem( 'modeProperty' ),
       phetioFeatured: true
     } );
-
-    const blocksTandem = tandem.createTandem( 'blocks' );
 
     const minScreenVolume = DensityBuoyancyCommonConstants.MIN_CUBE_VOLUME;
     const maxScreenVolume = DensityBuoyancyCommonConstants.MAX_CUBE_VOLUME;

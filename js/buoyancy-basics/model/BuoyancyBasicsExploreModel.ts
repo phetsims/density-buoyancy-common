@@ -35,12 +35,12 @@ export default class BuoyancyBasicsExploreModel extends DensityBuoyancyModel {
       supportsDepthLines: true
     }, options ) );
 
+    const blocksTandem = tandem.createTandem( 'blocks' );
+
     this.modeProperty = new EnumerationProperty( TwoBlockMode.ONE_BLOCK, {
-      tandem: tandem.createTandem( 'modeProperty' ),
+      tandem: blocksTandem.createTandem( 'modeProperty' ),
       phetioFeatured: true
     } );
-
-    const blocksTandem = tandem.createTandem( 'blocks' );
 
     this.primaryMass = Cube.createWithMass( this.engine, Material.WOOD, new Vector2( -0.2, 0.2 ), 2, {
       tag: MassTag.PRIMARY,

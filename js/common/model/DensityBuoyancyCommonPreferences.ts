@@ -21,8 +21,8 @@ const DensityBuoyancyCommonPreferences = {
     tandem: Tandem.PREFERENCES.createTandem( 'volumeUnitsProperty' ),
     phetioFeatured: true
   } ),
-  percentageSubmergedVisibleProperty: new BooleanProperty( DensityBuoyancyCommonQueryParameters.percentageSubmergedVisible, {
-    tandem: supportsPercentageSubmergedVisible ? Tandem.PREFERENCES.createTandem( 'percentageSubmergedProperty' ) : Tandem.OPT_OUT,
+  percentSubmergedVisibleProperty: new BooleanProperty( DensityBuoyancyCommonQueryParameters.percentSubmergedVisible, {
+    tandem: supportsPercentageSubmergedVisible ? Tandem.PREFERENCES.createTandem( 'percentSubmergedProperty' ) : Tandem.OPT_OUT,
     phetioFeatured: true
   } )
 };

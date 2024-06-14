@@ -62,8 +62,6 @@ import BackgroundEventTargetListener from './BackgroundEventTargetListener.js';
 import MassDecorationLayer from './MassDecorationLayer.js';
 import Duck from '../../buoyancy/model/shapes/Duck.js';
 import DuckView from '../../buoyancy/view/shapes/DuckView.js';
-import NumberIO from '../../../../tandem/js/types/NumberIO.js';
-import Utils from '../../../../dot/js/Utils.js';
 import createObservableArray, { ObservableArray } from '../../../../axon/js/createObservableArray.js';
 import Emitter from '../../../../axon/js/Emitter.js';
 import { Shape } from '../../../../kite/js/imports.js';
@@ -115,14 +113,9 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
   private readonly debugView?: DebugView;
 
   // Subtypes can provide their own values to control the barrier sizing.
-  private leftBarrierViewPointPropertyProperty: Property<TReadOnlyProperty<Vector2>>;
-  protected rightBarrierViewPointPropertyProperty: Property<TReadOnlyProperty<Vector2>>;
-
-  // In Liters, how much volume does the Pool liquid + displaced Masses take up.
-  // TODO: PhET-iO instrument for https://github.com/phetsims/density-buoyancy-common/issues/82
-  protected waterLevelVolumeProperty: TReadOnlyProperty<number>;
-
-  // Called upon resetting
+  private readonly leftBarrierViewPointPropertyProperty: Property<TReadOnlyProperty<Vector2>>;
+  protected readonly rightBarrierViewPointPropertyProperty: Property<TReadOnlyProperty<Vector2>>;
+  
   protected readonly resetEmitter = new Emitter();
 
   protected readonly poolScaleHeightControl: PoolScaleHeightControl | null;
@@ -488,14 +481,14 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
       depthWrite: false
     } );
 
-    Material.linkLiquidColor( model.pool.liquidMaterialProperty, waterMaterial );
+    Material.linkLiquidColor( model.pool.fluidMaterialProperty, waterMaterial );
     const waterMesh = new THREE.Mesh( waterGeometry, waterMaterial );
     this.sceneNode.stage.threeScene.add( waterMesh );
     waterMesh.renderOrder = 10;
 
     let wasFilled = false;
     // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
-    model.pool.liquidYInterpolatedProperty.link( y => {
+    model.pool.fluidYInterpolatedProperty.link( y => {
       const boat = model.getBoat();
       const hasVisibleBoat = boat && boat.visibleProperty.value;
       wasFilled = BoatDesign.fillWaterVertexArray(
@@ -545,7 +538,7 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
           model.vectorZoomProperty, model.showMassValuesProperty );
       }
       else if ( mass instanceof Boat ) {
-        massView = new BoatView( mass, this, model.pool.liquidYInterpolatedProperty,
+        massView = new BoatView( mass, this, model.pool.fluidYInterpolatedProperty,
           model.showGravityForceProperty, model.showBuoyancyForceProperty, model.showContactForceProperty,
           model.showForceValuesProperty, model.vectorZoomProperty, model.showMassValuesProperty );
       }
@@ -575,33 +568,17 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
     };
     model.masses.addItemRemovedListener( onMassRemoved );
 
-    // DerivedProperty doesn't need disposal, since everything here lives for the lifetime of the simulation
-    this.waterLevelVolumeProperty = new DerivedProperty( [ model.pool.liquidYInterpolatedProperty ],
-
-      // Round to nearest 1E-6 to avoid floating point errors. Before we were rounding, the initial value
-      // was showing as 99.999999999999 and the current value on startup was 100.0000000000001
-      // Normally we would ignore a problem like this, but the former was appearing in the API.
-      liquidY => Utils.roundToInterval( model.poolBounds.width *
-                                        model.poolBounds.depth *
-                                        ( liquidY - model.poolBounds.minY ) *
-                                        DensityBuoyancyCommonConstants.LITERS_IN_CUBIC_METER, 1E-6 ), {
-        units: 'L',
-        tandem: providedOptions.tandem.createTandem( 'waterLevelVolumeProperty' ),
-        phetioValueType: NumberIO,
-        phetioDocumentation: 'The volume of water in the pool plus the volume of fluid displaced by objects in the pool.'
-      } );
-
-    const waterLevelIndicator = new WaterLevelIndicator( this.waterLevelVolumeProperty );
+    const waterLevelIndicator = new WaterLevelIndicator( model.pool.fluidLevelVolumeProperty );
     this.addChild( waterLevelIndicator );
     // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
-    model.pool.liquidYInterpolatedProperty.link( liquidY => {
+    model.pool.fluidYInterpolatedProperty.link( liquidY => {
       const modelPoint = new Vector3( model.poolBounds.minX, liquidY, model.poolBounds.maxZ );
       waterLevelIndicator.translation = this.modelToViewPoint( modelPoint );
     } );
 
     if ( model.poolScale ) {
       this.poolScaleHeightControl = new PoolScaleHeightControl( model.poolScale,
-        model.poolBounds, model.pool.liquidYInterpolatedProperty, this, {
+        model.poolBounds, model.pool.fluidYInterpolatedProperty, this, {
           tandem: options.tandem.createTandem( 'poolScaleHeightControl' )
         } );
       this.addChild( this.poolScaleHeightControl );

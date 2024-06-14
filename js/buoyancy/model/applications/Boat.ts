@@ -30,7 +30,7 @@ export type BoatOptions = StrictOmit<ApplicationsMassOptions, 'body' | 'shape' |
 export default class Boat extends ApplicationsMass {
 
   // The volume that the boat can hold inside it.
-  public readonly liquidMaterialProperty: TProperty<Material>;
+  public readonly fluidMaterialProperty: TProperty<Material>;
 
   // The interior that can contain liquid
   public readonly basin: BoatBasin;
@@ -45,7 +45,7 @@ export default class Boat extends ApplicationsMass {
   // Whether the boat is fully submerged
   public isUnderwater = false;
 
-  public constructor( engine: PhysicsEngine, blockWidthProperty: TReadOnlyProperty<number>, liquidMaterialProperty: TProperty<Material>, providedOptions: BoatOptions ) {
+  public constructor( engine: PhysicsEngine, blockWidthProperty: TReadOnlyProperty<number>, fluidMaterialProperty: TProperty<Material>, providedOptions: BoatOptions ) {
 
     const boatIntersectionVertices = BoatDesign.getIntersectionVertices( blockWidthProperty.value / 2, toLiters( ApplicationsMass.DEFAULT_DISPLACEMENT_VOLUME ) );
     const volume = BoatDesign.ONE_LITER_HULL_VOLUME * toLiters( ApplicationsMass.DEFAULT_DISPLACEMENT_VOLUME );
@@ -87,11 +87,11 @@ export default class Boat extends ApplicationsMass {
       this.writeData();
     } );
 
-    this.liquidMaterialProperty = liquidMaterialProperty;
+    this.fluidMaterialProperty = fluidMaterialProperty;
 
     this.basin = new BoatBasin( this );
 
-    Multilink.multilink( [ this.liquidMaterialProperty, this.basin.liquidVolumeProperty ], ( material, volume ) => {
+    Multilink.multilink( [ this.fluidMaterialProperty, this.basin.liquidVolumeProperty ], ( material, volume ) => {
       this.containedMassProperty.value = material.density * volume;
     } );
 
@@ -105,7 +105,7 @@ export default class Boat extends ApplicationsMass {
   public override step( dt: number, interpolationRatio: number ): void {
     super.step( dt, interpolationRatio );
 
-    this.basin.liquidYInterpolatedProperty.setRatio( interpolationRatio );
+    this.basin.fluidYInterpolatedProperty.setRatio( interpolationRatio );
   }
 
   /**

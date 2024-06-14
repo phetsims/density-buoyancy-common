@@ -58,7 +58,7 @@ type SelfOptions<T> = {
 
 export type ComboNumberControlOptions<T> = SelfOptions<T> & VBoxOptions;
 
-export default class ComboNumberControl<T> extends VBox {
+export default abstract class ComboNumberControl<T> extends VBox {
 
   private readonly property: Property<T>;
   private readonly numberProperty: Property<number>;

@@ -31,14 +31,14 @@ type FluidSelectionPanelOptions = WithRequired<PanelOptions, 'tandem'>;
 
 export default class FluidSelectionPanel extends Panel {
 
-  public constructor( liquidMaterialProperty: Property<Material>, listParent: Node, providedOptions?: FluidSelectionPanelOptions ) {
+  public constructor( fluidMaterialProperty: Property<Material>, listParent: Node, providedOptions?: FluidSelectionPanelOptions ) {
 
     const options = optionize3<FluidSelectionPanelOptions, EmptySelfOptions, PanelOptions>()( {}, DensityBuoyancyCommonConstants.PANEL_OPTIONS, providedOptions );
 
-    const comboBoxTandem = options.tandem.createTandem( 'fluidSelectionComboBox' );
+    const comboBoxTandem = options.tandem.createTandem( 'comboBox' );
 
     const fluidBox = new ComboBox(
-      liquidMaterialProperty,
+      fluidMaterialProperty,
       Material.BUOYANCY_FLUID_MATERIALS.map( material => {
         return {
           value: material,
@@ -55,7 +55,8 @@ export default class FluidSelectionPanel extends Panel {
       } ),
       listParent, {
         tandem: comboBoxTandem,
-        listPosition: 'above'
+        listPosition: 'above',
+        phetioVisiblePropertyInstrumented: false
       } );
 
     const fluidTitle = new Text( DensityBuoyancyCommonStrings.fluidStringProperty, {
@@ -67,11 +68,7 @@ export default class FluidSelectionPanel extends Panel {
       children: [ fluidTitle, fluidBox ],
       spacing: DensityBuoyancyCommonConstants.SPACING_SMALL,
       align: 'left'
-    } ), DensityBuoyancyCommonConstants.PANEL_OPTIONS );
-
-    this.addLinkedElement( liquidMaterialProperty, {
-      tandem: comboBoxTandem.createTandem( 'property' )
-    } );
+    } ), options );
   }
 }
 

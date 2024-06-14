@@ -282,7 +282,7 @@ export default class DensityBuoyancyModel implements TModel {
       const boat = this.getBoat();
 
       if ( boat && dt ) {
-        boat.setUnderwaterState( this.pool.liquidYInterpolatedProperty.currentValue );
+        boat.setUnderwaterState( this.pool.fluidYInterpolatedProperty.currentValue );
         const nextBoatVerticalVelocity = this.engine.bodyGetVelocity( boat.body ).y;
         boatVerticalAcceleration = ( nextBoatVerticalVelocity - boatVerticalVelocity ) / dt;
         boatVerticalVelocity = nextBoatVerticalVelocity;
@@ -340,7 +340,7 @@ export default class DensityBuoyancyModel implements TModel {
 
         let submergedVolume = 0;
         if ( basin ) {
-          const displacedVolume = mass.getDisplacedVolume( basin.liquidYInterpolatedProperty.currentValue );
+          const displacedVolume = mass.getDisplacedVolume( basin.fluidYInterpolatedProperty.currentValue );
 
           // The submergedVolume of the mass cannot be more than the liquid volume in the basin. Bug fix for https://github.com/phetsims/buoyancy/issues/135
           submergedVolume = displacedVolume > basin.liquidVolumeProperty.value ? basin.liquidVolumeProperty.value : displacedVolume;
@@ -356,7 +356,7 @@ export default class DensityBuoyancyModel implements TModel {
         }
 
         if ( submergedVolume !== 0 ) {
-          const displacedMass = submergedVolume * this.pool.liquidDensityProperty.value;
+          const displacedMass = submergedVolume * this.pool.fluidDensityProperty.value;
           // Vertical acceleration of the boat will change the buoyant force.
           const acceleration = gravity + ( ( boat && basin === boat.basin ) ? boatVerticalAcceleration : 0 );
           const buoyantForce = new Vector2( 0, displacedMass * acceleration );
@@ -373,7 +373,7 @@ export default class DensityBuoyancyModel implements TModel {
           const ratioSubmerged =
             ( 1 - DensityBuoyancyCommonQueryParameters.viscositySubmergedRatio ) +
             DensityBuoyancyCommonQueryParameters.viscositySubmergedRatio * submergedVolume / mass.volumeProperty.value;
-          const hackedViscosity = this.pool.liquidViscosityProperty.value ? 0.03 * Math.pow( this.pool.liquidViscosityProperty.value / 0.03, 0.8 ) : 0;
+          const hackedViscosity = this.pool.fluidViscosityProperty.value ? 0.03 * Math.pow( this.pool.fluidViscosityProperty.value / 0.03, 0.8 ) : 0;
           const viscosityMass = Math.max( DensityBuoyancyCommonQueryParameters.viscosityMassCutoff, massValue );
           const viscousForce = velocity.times( -hackedViscosity * viscosityMass * ratioSubmerged * 3000 * DensityBuoyancyCommonQueryParameters.viscosityMultiplier );
           this.engine.bodyApplyForce( mass.body, viscousForce );
@@ -388,7 +388,7 @@ export default class DensityBuoyancyModel implements TModel {
         mass.gravityForceInterpolatedProperty.setNextValue( gravityForce );
 
         // Calculates the submerged ratio for the mass
-        mass.updateSubmergedMassFraction( gravity, this.pool.liquidDensityProperty.value );
+        mass.updateSubmergedMassFraction( gravity, this.pool.fluidDensityProperty.value );
       } );
     } );
 
@@ -482,7 +482,7 @@ export default class DensityBuoyancyModel implements TModel {
 
         // If the top of the boat is out of the water past the height threshold, spill the water back into the pool
         // (even if not totally full).
-        if ( boat.stepTop > this.pool.liquidYInterpolatedProperty.currentValue + boatHeight * BOAT_READY_TO_SPILL_OUT_THRESHOLD ) {
+        if ( boat.stepTop > this.pool.fluidYInterpolatedProperty.currentValue + boatHeight * BOAT_READY_TO_SPILL_OUT_THRESHOLD ) {
           this.spillingWaterOutOfBoat = true;
         }
       }
@@ -496,7 +496,7 @@ export default class DensityBuoyancyModel implements TModel {
         boatExcess = Math.min( FILL_EMPTY_MULTIPLIER * boat.volumeProperty.value, boatLiquidVolume );
       }
       else if ( boatLiquidVolume > 0 &&
-                Math.abs( boatBasin.liquidYInterpolatedProperty.currentValue - boatBasin.stepTop ) >= BOAT_FULL_THRESHOLD ) {
+                Math.abs( boatBasin.fluidYInterpolatedProperty.currentValue - boatBasin.stepTop ) >= BOAT_FULL_THRESHOLD ) {
         // If the boat is neither full nor empty, nor spilling, then it is currently filling up. We will up no matter
         // the current water leve or the boat AND no matter the boats position. This is because the boat can only
         // ever be full or empty (or animating to one of those states).
@@ -556,7 +556,7 @@ export default class DensityBuoyancyModel implements TModel {
       mass.step( dt, this.engine.interpolationRatio );
     } );
 
-    this.pool.liquidYInterpolatedProperty.setRatio( this.engine.interpolationRatio );
+    this.pool.fluidYInterpolatedProperty.setRatio( this.engine.interpolationRatio );
   }
 
   /**

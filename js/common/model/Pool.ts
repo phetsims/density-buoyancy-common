@@ -17,14 +17,18 @@ import Material from './Material.js';
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import NumberIO from '../../../../tandem/js/types/NumberIO.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
+import Utils from '../../../../dot/js/Utils.js';
 
 export default class Pool extends Basin {
 
   public readonly bounds: Bounds3;
 
-  public readonly liquidMaterialProperty: Property<Material>;
-  public readonly liquidDensityProperty: TReadOnlyProperty<number>;
-  public readonly liquidViscosityProperty: TReadOnlyProperty<number>;
+  public readonly fluidMaterialProperty: Property<Material>;
+  public readonly fluidDensityProperty: TReadOnlyProperty<number>;
+  public readonly fluidViscosityProperty: TReadOnlyProperty<number>;
+
+  // In Liters, how much volume does the Pool liquid + displaced Masses take up.
+  public readonly fluidLevelVolumeProperty: TReadOnlyProperty<number>;
 
   public constructor( bounds: Bounds3, tandem: Tandem ) {
 
@@ -44,7 +48,7 @@ export default class Pool extends Basin {
     this.stepBottom = bounds.minY;
     this.stepTop = bounds.maxY;
 
-    this.liquidMaterialProperty = new Property( Material.WATER, {
+    this.fluidMaterialProperty = new Property( Material.WATER, {
       valueType: Material,
       phetioValueType: Material.MaterialIO,
       tandem: liquidTandem.createTandem( 'materialProperty' ),
@@ -53,7 +57,7 @@ export default class Pool extends Basin {
     } );
 
     // DerivedProperty doesn't need disposal, since everything here lives for the lifetime of the simulation
-    this.liquidDensityProperty = new DerivedProperty( [ this.liquidMaterialProperty ], liquidMaterial => liquidMaterial.density, {
+    this.fluidDensityProperty = new DerivedProperty( [ this.fluidMaterialProperty ], liquidMaterial => liquidMaterial.density, {
       tandem: liquidTandem.createTandem( 'densityProperty' ),
       phetioFeatured: true,
       phetioValueType: NumberIO,
@@ -61,11 +65,27 @@ export default class Pool extends Basin {
     } );
 
     // DerivedProperty doesn't need disposal, since everything here lives for the lifetime of the simulation
-    this.liquidViscosityProperty = new DerivedProperty( [ this.liquidMaterialProperty ], liquidMaterial => liquidMaterial.viscosity, {
+    this.fluidViscosityProperty = new DerivedProperty( [ this.fluidMaterialProperty ], liquidMaterial => liquidMaterial.viscosity, {
       tandem: liquidTandem.createTandem( 'viscosityProperty' ),
       phetioValueType: NumberIO,
       units: 'Pa\u00b7s'
     } );
+
+    // DerivedProperty doesn't need disposal, since everything here lives for the lifetime of the simulation
+    this.fluidLevelVolumeProperty = new DerivedProperty( [ this.fluidYInterpolatedProperty ],
+
+      // Round to nearest 1E-6 to avoid floating point errors. Before we were rounding, the initial value
+      // was showing as 99.999999999999 and the current value on startup was 100.0000000000001
+      // Normally we would ignore a problem like this, but the former was appearing in the API.
+      liquidY => Utils.roundToInterval( bounds.width *
+                                        bounds.depth *
+                                        ( liquidY - bounds.minY ) *
+                                        DensityBuoyancyCommonConstants.LITERS_IN_CUBIC_METER, DensityBuoyancyCommonConstants.TOLERANCE ), {
+        units: 'L',
+        tandem: tandem.createTandem( 'fluidLevelVolumeProperty' ),
+        phetioValueType: NumberIO,
+        phetioDocumentation: 'The volume of fluid in the pool plus the volume of fluid displaced by objects in the pool.'
+      } );
   }
 
   /**
@@ -110,7 +130,7 @@ export default class Pool extends Basin {
 
   public override reset(): void {
     super.reset();
-    this.liquidMaterialProperty.reset();
+    this.fluidMaterialProperty.reset();
 
   }
 }

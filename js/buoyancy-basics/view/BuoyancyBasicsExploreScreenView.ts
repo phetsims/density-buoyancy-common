@@ -84,11 +84,11 @@ export default class BuoyancyBasicsExploreScreenView extends DensityBuoyancyScre
       }
     );
 
-    const fluidSelectionPanel = new FluidSelectionPanel( model.pool.liquidMaterialProperty, this.popupLayer, {
-      tandem: options.tandem.createTandem( 'fluidSelectionPanel' )
+    const fluidPanel = new FluidSelectionPanel( model.pool.fluidMaterialProperty, this.popupLayer, {
+      tandem: options.tandem.createTandem( 'fluidPanel' )
     } );
 
-    this.addChild( new AlignBox( fluidSelectionPanel, {
+    this.addChild( new AlignBox( fluidPanel, {
       alignBoundsProperty: this.visibleBoundsProperty,
       xAlign: 'center',
       yAlign: 'bottom',
@@ -100,9 +100,9 @@ export default class BuoyancyBasicsExploreScreenView extends DensityBuoyancyScre
       tandem: tandem.createTandem( 'densityComparisonAccordionBox' )
     } );
 
-    const submergedAccordionBox = new SubmergedAccordionBox( {
+    const percentSubmergedAccordionBox = new SubmergedAccordionBox( {
       contentWidthMax: this.rightBox.content.width,
-      tandem: tandem.createTandem( 'submergedAccordionBox' )
+      tandem: tandem.createTandem( 'percentSubmergedAccordionBox' )
     } );
 
     const customExploreScreenFormatting = [ model.primaryMass, model.secondaryMass ].map( mass => {
@@ -129,13 +129,13 @@ export default class BuoyancyBasicsExploreScreenView extends DensityBuoyancyScre
             readoutItem: submergedReadoutItem.readoutItem.materialProperty
           } );
         } ), {
-          readoutItem: model.pool.liquidMaterialProperty,
+          readoutItem: model.pool.fluidMaterialProperty,
           readoutFormat: {
             font: DensityBuoyancyCommonConstants.ITEM_FONT
           }
         }
       ];
-      submergedAccordionBox.setReadoutItems( submergedReadoutItems );
+      percentSubmergedAccordionBox.setReadoutItems( submergedReadoutItems );
       densityComparisonAccordionBox.setReadoutItems( densityReadoutItems );
     } );
 
@@ -145,7 +145,7 @@ export default class BuoyancyBasicsExploreScreenView extends DensityBuoyancyScre
       children: [
         this.rightBox,
         densityComparisonAccordionBox,
-        submergedAccordionBox
+        percentSubmergedAccordionBox
       ]
     } );
 
@@ -160,7 +160,7 @@ export default class BuoyancyBasicsExploreScreenView extends DensityBuoyancyScre
       tandem: this.tandem.createTandem( 'blocksRadioButtonGroup' )
     } );
 
-    ManualConstraint.create( this, [ rightSideVBox, fluidSelectionPanel, blocksRadioButtonGroup ],
+    ManualConstraint.create( this, [ rightSideVBox, fluidPanel, blocksRadioButtonGroup ],
       ( rightSideVBoxWrapper, fluidDensityControlPanelWrapper, blocksRadioButtonGroupWrapper ) => {
         blocksRadioButtonGroupWrapper.left = rightSideVBoxWrapper.left;
         blocksRadioButtonGroupWrapper.bottom = fluidDensityControlPanelWrapper.bottom;
@@ -178,7 +178,7 @@ export default class BuoyancyBasicsExploreScreenView extends DensityBuoyancyScre
 
     this.resetEmitter.addListener( () => {
       densityComparisonAccordionBox.reset();
-      submergedAccordionBox.reset();
+      percentSubmergedAccordionBox.reset();
     } );
 
     const cuboidViews = this.massViews.filter( massView => massView instanceof CuboidView );
@@ -203,7 +203,7 @@ export default class BuoyancyBasicsExploreScreenView extends DensityBuoyancyScre
 
       this.poolScaleHeightControl,
 
-      fluidSelectionPanel
+      fluidPanel
     ];
 
     const massViewAdded = ( massView: MassView ) => {
@@ -219,7 +219,7 @@ export default class BuoyancyBasicsExploreScreenView extends DensityBuoyancyScre
       blocksRadioButtonGroup,
       displayOptionsPanel,
       densityComparisonAccordionBox,
-      submergedAccordionBox,
+      percentSubmergedAccordionBox,
       this.resetAllButton
     ];
   }

@@ -51,9 +51,9 @@ export default class BuoyancyLabScreenView extends DensityBuoyancyScreenView<Buo
     // In liters
     const maxBlockVolume = 10;
 
-    const fluidDisplacedAccordionBox = new FluidDisplacedAccordionBox( this.waterLevelVolumeProperty,
+    const fluidDisplacedAccordionBox = new FluidDisplacedAccordionBox( model.pool.fluidLevelVolumeProperty,
       maxBlockVolume,
-      model.pool.liquidMaterialProperty,
+      model.pool.fluidMaterialProperty,
       model.gravityProperty, {
         tandem: tandem.createTandem( 'fluidDisplacedAccordionBox' )
       } );
@@ -107,7 +107,7 @@ export default class BuoyancyLabScreenView extends DensityBuoyancyScreenView<Buo
     const bottomNode = new HBox( {
       spacing: 2 * DensityBuoyancyCommonConstants.SPACING,
       children: [
-        new Panel( new FluidDensityControlNode( model.pool.liquidMaterialProperty, [
+        new Panel( new FluidDensityControlNode( model.pool.fluidMaterialProperty, [
             ...Material.BUOYANCY_FLUID_MATERIALS,
             customMaterial,
             ...Material.BUOYANCY_FLUID_MYSTERY_MATERIALS
@@ -155,13 +155,13 @@ export default class BuoyancyLabScreenView extends DensityBuoyancyScreenView<Buo
       tandem: tandem.createTandem( 'objectDensityAccordionBox' )
     } );
 
-    const submergedAccordionBox = new SubmergedAccordionBox( {
+    const percentSubmergedAccordionBox = new SubmergedAccordionBox( {
       contentWidthMax: this.rightBox.content.width,
       readoutItems: [ {
         readoutItem: model.block,
         readoutNameProperty: DensityBuoyancyCommonStrings.shape.blockStringProperty
       } ],
-      tandem: tandem.createTandem( 'submergedAccordionBox' )
+      tandem: tandem.createTandem( 'percentSubmergedAccordionBox' )
     } );
 
     const rightSideVBox = new VBox( {
@@ -170,7 +170,7 @@ export default class BuoyancyLabScreenView extends DensityBuoyancyScreenView<Buo
       children: [
         this.rightBox,
         objectDensityAccordionBox,
-        submergedAccordionBox
+        percentSubmergedAccordionBox
       ]
     } );
     this.addChild( new AlignBox( rightSideVBox, {
@@ -192,7 +192,7 @@ export default class BuoyancyLabScreenView extends DensityBuoyancyScreenView<Buo
 
     this.resetEmitter.addListener( () => {
       fluidDisplacedAccordionBox.reset();
-      submergedAccordionBox.reset();
+      percentSubmergedAccordionBox.reset();
       objectDensityAccordionBox.reset();
     } );
 
@@ -213,7 +213,7 @@ export default class BuoyancyLabScreenView extends DensityBuoyancyScreenView<Buo
     this.pdomControlAreaNode.pdomOrder = [
       leftSideContent,
       objectDensityAccordionBox,
-      submergedAccordionBox,
+      percentSubmergedAccordionBox,
       this.resetAllButton
     ];
   }

@@ -90,7 +90,7 @@ export default class BuoyancyExploreScreenView extends DensityBuoyancyScreenView
       densityRange: DensityBuoyancyCommonConstants.FLUID_DENSITY_RANGE_PER_M3
     } );
 
-    const fluidDensityControlPanel = new Panel( new FluidDensityControlNode( model.pool.liquidMaterialProperty, [
+    const fluidDensityControlPanel = new Panel( new FluidDensityControlNode( model.pool.fluidMaterialProperty, [
         ...Material.BUOYANCY_FLUID_MATERIALS,
         customMaterial,
         ...Material.BUOYANCY_FLUID_MYSTERY_MATERIALS
@@ -124,9 +124,9 @@ export default class BuoyancyExploreScreenView extends DensityBuoyancyScreenView
       tandem: tandem.createTandem( 'objectDensityAccordionBox' )
     } );
 
-    const submergedAccordionBox = new SubmergedAccordionBox( {
+    const percentSubmergedAccordionBox = new SubmergedAccordionBox( {
       contentWidthMax: this.rightBox.content.width,
-      tandem: tandem.createTandem( 'submergedAccordionBox' )
+      tandem: tandem.createTandem( 'percentSubmergedAccordionBox' )
     } );
 
     const customExploreScreenFormatting = [ model.primaryMass, model.secondaryMass ].map( mass => {
@@ -147,7 +147,7 @@ export default class BuoyancyExploreScreenView extends DensityBuoyancyScreenView
           readoutFormat: customExploreScreenFormatting[ index ].readoutFormat
         };
       } ) );
-      submergedAccordionBox.setReadoutItems( masses.map( ( mass, index ) => {
+      percentSubmergedAccordionBox.setReadoutItems( masses.map( ( mass, index ) => {
         return {
           readoutItem: mass,
           readoutNameProperty: customExploreScreenFormatting[ index ].readoutNameProperty,
@@ -162,7 +162,7 @@ export default class BuoyancyExploreScreenView extends DensityBuoyancyScreenView
       children: [
         this.rightBox,
         objectDensityAccordionBox,
-        submergedAccordionBox
+        percentSubmergedAccordionBox
       ]
     } );
 
@@ -195,7 +195,7 @@ export default class BuoyancyExploreScreenView extends DensityBuoyancyScreenView
     this.addChild( this.popupLayer );
 
     this.resetEmitter.addListener( () => {
-      submergedAccordionBox.reset();
+      percentSubmergedAccordionBox.reset();
       objectDensityAccordionBox.reset();
     } );
 
@@ -236,7 +236,7 @@ export default class BuoyancyExploreScreenView extends DensityBuoyancyScreenView
       blocksRadioButtonGroup,
       displayOptionsPanel,
       objectDensityAccordionBox,
-      submergedAccordionBox,
+      percentSubmergedAccordionBox,
       this.resetAllButton
     ];
   }

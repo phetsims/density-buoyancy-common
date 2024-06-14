@@ -47,7 +47,7 @@ export default class FluidDisplacedAccordionBox extends AccordionBox {
 
   public constructor( poolVolumeProperty: TReadOnlyProperty<number>,
                       maxBeakerVolume: number,
-                      liquidMaterialProperty: TReadOnlyProperty<Material>,
+                      fluidMaterialProperty: TReadOnlyProperty<Material>,
                       gravityProperty: TReadOnlyProperty<Gravity>,
                       providedOptions?: FluidDisplacedAccordionBoxOptions ) {
     assert && assert( Utils.toFixedNumber( poolVolumeProperty.value, 7 ) === STARTING_VOLUME,
@@ -87,14 +87,14 @@ export default class FluidDisplacedAccordionBox extends AccordionBox {
 
     const beakerVolumeProperty = new NumberProperty( 0, { range: BEAKER_RANGE.copy() } );
 
-    const solutionFillProperty = new DynamicProperty<Color, Color, Material>( liquidMaterialProperty, {
+    const solutionFillProperty = new DynamicProperty<Color, Color, Material>( fluidMaterialProperty, {
       derive: material => material.liquidColor!,
       map: color => {
 
         // Below this threshold, use the same color for better contrast, see https://github.com/phetsims/buoyancy/issues/154
-        if ( liquidMaterialProperty.value.custom ) {
+        if ( fluidMaterialProperty.value.custom ) {
 
-          if ( liquidMaterialProperty.value.density < SAME_COLOR_MIN_DENSITY_THRESHOLD ) {
+          if ( fluidMaterialProperty.value.density < SAME_COLOR_MIN_DENSITY_THRESHOLD ) {
             color = Material.getCustomLiquidColor( SAME_COLOR_MIN_DENSITY_THRESHOLD, DensityBuoyancyCommonConstants.FLUID_DENSITY_RANGE_PER_M3 ).value;
           }
 
@@ -129,7 +129,7 @@ export default class FluidDisplacedAccordionBox extends AccordionBox {
     const displacedFluidForceProperty = new DerivedProperty( [
       gravityProperty,
       displayedDisplacedVolumeProperty,
-      liquidMaterialProperty
+      fluidMaterialProperty
     ], ( gravity, displacedVolume, liquidMaterial ) => {
 
       // Convert density units from kg/m^3=>kg/L

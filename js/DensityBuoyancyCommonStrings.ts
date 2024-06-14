@@ -24,6 +24,7 @@ type StringsType = {
     'boatBodyStringProperty': LocalizedStringProperty;
     'brickStringProperty': LocalizedStringProperty;
     'concreteStringProperty': LocalizedStringProperty;
+    'cementStringProperty': LocalizedStringProperty;
     'copperStringProperty': LocalizedStringProperty;
     'customStringProperty': LocalizedStringProperty;
     'densityAStringProperty': LocalizedStringProperty;
@@ -150,7 +151,7 @@ type StringsType = {
   'vectorZoomStringProperty': LocalizedStringProperty;
   'volumeUnitsStringProperty': LocalizedStringProperty;
   'preferences': {
-    'percentageSubmerged': {
+    'percentSubmerged': {
       'titleStringProperty': LocalizedStringProperty;
       'descriptionStringProperty': LocalizedStringProperty;
     }

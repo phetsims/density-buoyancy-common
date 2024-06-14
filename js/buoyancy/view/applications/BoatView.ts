@@ -27,7 +27,7 @@ export default class BoatView extends MeasurableMassView {
 
   public constructor( boat: Boat,
                       modelViewTransform: THREEModelViewTransform,
-                      liquidYInterpolatedProperty: TReadOnlyProperty<number>,
+                      fluidYInterpolatedProperty: TReadOnlyProperty<number>,
                       showGravityForceProperty: TReadOnlyProperty<boolean>,
                       showBuoyancyForceProperty: TReadOnlyProperty<boolean>,
                       showContactForceProperty: TReadOnlyProperty<boolean>,
@@ -87,11 +87,11 @@ export default class BoatView extends MeasurableMassView {
     this.massMesh.add( topLiquid );
 
     const liquidMultilink = Multilink.multilink( [
-      boat.basin.liquidYInterpolatedProperty,
+      boat.basin.fluidYInterpolatedProperty,
       boat.displacementVolumeProperty,
       boat.basin.liquidVolumeProperty
     ], ( boatLiquidY, boatDisplacement, boatLiquidVolume ) => {
-      const poolLiquidY = liquidYInterpolatedProperty.value;
+      const poolLiquidY = fluidYInterpolatedProperty.value;
       const liters = boatDisplacement / 0.001;
 
       const relativeBoatLiquidY = boatLiquidY - boat.matrix.translation.y;
@@ -99,7 +99,7 @@ export default class BoatView extends MeasurableMassView {
       const maximumVolume = boat.basin.getEmptyVolume( Number.POSITIVE_INFINITY );
       const volume = boat.basin.liquidVolumeProperty.value;
       const isFull = volume >= maximumVolume - VOLUME_TOLERANCE;
-      if ( boatLiquidVolume > 0 && ( !isFull || BoatDesign.shouldBoatWaterDisplayIfFull( liquidYInterpolatedProperty.value - boat.matrix.translation.y, liters ) ) ) {
+      if ( boatLiquidVolume > 0 && ( !isFull || BoatDesign.shouldBoatWaterDisplayIfFull( fluidYInterpolatedProperty.value - boat.matrix.translation.y, liters ) ) ) {
         BoatDesign.fillCrossSectionVertexArray( relativeBoatLiquidY, liters, topLiquidPositionArray );
       }
       else {
@@ -120,8 +120,8 @@ export default class BoatView extends MeasurableMassView {
       topPoolClipPlane.constant = -poolLiquidY;
     } );
 
-    Material.linkLiquidColor( boat.liquidMaterialProperty, topLiquidMaterial );
-    Material.linkLiquidColor( boat.liquidMaterialProperty, boatDrawingData.backMiddleMaterial );
+    Material.linkLiquidColor( boat.fluidMaterialProperty, topLiquidMaterial );
+    Material.linkLiquidColor( boat.fluidMaterialProperty, boatDrawingData.backMiddleMaterial );
 
     // see the static function for the rest of render orders
     topLiquid.renderOrder = 3;

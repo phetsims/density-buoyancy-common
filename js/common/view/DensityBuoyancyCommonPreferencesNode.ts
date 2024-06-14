@@ -41,17 +41,17 @@ export default class DensityBuoyancyCommonPreferencesNode extends VBox {
     } ) ];
 
     if ( supportsPercentageSubmergedVisible ) {
-      const percentageSubmergedVisibleControl = new PreferencesControl( {
+      const percentSubmergedVisibleControl = new PreferencesControl( {
         isDisposable: false,
-        labelNode: new Text( DensityBuoyancyCommonStrings.preferences.percentageSubmerged.titleStringProperty, PreferencesDialogConstants.CONTROL_LABEL_OPTIONS ),
-        descriptionNode: new RichText( DensityBuoyancyCommonStrings.preferences.percentageSubmerged.descriptionStringProperty,
+        labelNode: new Text( DensityBuoyancyCommonStrings.preferences.percentSubmerged.titleStringProperty, PreferencesDialogConstants.CONTROL_LABEL_OPTIONS ),
+        descriptionNode: new RichText( DensityBuoyancyCommonStrings.preferences.percentSubmerged.descriptionStringProperty,
           PreferencesDialogConstants.CONTROL_DESCRIPTION_OPTIONS ),
-        controlNode: new ToggleSwitch( DensityBuoyancyCommonPreferences.percentageSubmergedVisibleProperty, false, true, PreferencesDialogConstants.TOGGLE_SWITCH_OPTIONS ),
-        tandem: options.tandem.createTandem( 'percentageSubmergedVisibleControl' )
+        controlNode: new ToggleSwitch( DensityBuoyancyCommonPreferences.percentSubmergedVisibleProperty, false, true, PreferencesDialogConstants.TOGGLE_SWITCH_OPTIONS ),
+        tandem: options.tandem.createTandem( 'percentSubmergedVisibleControl' )
       } );
-      percentageSubmergedVisibleControl.addLinkedElement( DensityBuoyancyCommonPreferences.percentageSubmergedVisibleProperty );
+      percentSubmergedVisibleControl.addLinkedElement( DensityBuoyancyCommonPreferences.percentSubmergedVisibleProperty );
 
-      options.children.push( percentageSubmergedVisibleControl );
+      options.children.push( percentSubmergedVisibleControl );
     }
 
     super( options );

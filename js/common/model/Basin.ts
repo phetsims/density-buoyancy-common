@@ -29,7 +29,7 @@ export default abstract class Basin {
   public readonly liquidVolumeProperty: Property<number>;
 
   // The y coordinate of the liquid level (absolute in the model, NOT relative to anything)
-  public readonly liquidYInterpolatedProperty: InterpolatedProperty<number>;
+  public readonly fluidYInterpolatedProperty: InterpolatedProperty<number>;
 
   // The bottom and top of the basin's area of containment (absolute model coordinates), set during physics engine steps.
   public stepBottom: number;
@@ -61,7 +61,7 @@ export default abstract class Basin {
       units: 'm^3'
     } );
 
-    this.liquidYInterpolatedProperty = new InterpolatedProperty( options.initialY, {
+    this.fluidYInterpolatedProperty = new InterpolatedProperty( options.initialY, {
       interpolate: InterpolatedProperty.interpolateNumber,
       phetioOuterType: InterpolatedProperty.InterpolatedPropertyIO,
       phetioValueType: NumberIO,
@@ -155,18 +155,18 @@ export default abstract class Basin {
   public computeY(): void {
     const liquidVolume = this.liquidVolumeProperty.value;
     if ( liquidVolume === 0 ) {
-      this.liquidYInterpolatedProperty.setNextValue( this.stepBottom );
+      this.fluidYInterpolatedProperty.setNextValue( this.stepBottom );
       return;
     }
 
     const emptyVolume = this.getEmptyVolume( this.stepTop );
     if ( emptyVolume === liquidVolume ) {
-      this.liquidYInterpolatedProperty.setNextValue( this.stepTop );
+      this.fluidYInterpolatedProperty.setNextValue( this.stepTop );
       return;
     }
 
     // Due to shapes used, there is no analytical solution.
-    this.liquidYInterpolatedProperty.setNextValue( Basin.findRoot(
+    this.fluidYInterpolatedProperty.setNextValue( Basin.findRoot(
       this.stepBottom,
       this.stepTop,
       DensityBuoyancyCommonConstants.TOLERANCE,
@@ -184,7 +184,7 @@ export default abstract class Basin {
    */
   public reset(): void {
     this.liquidVolumeProperty.reset();
-    this.liquidYInterpolatedProperty.reset();
+    this.fluidYInterpolatedProperty.reset();
   }
 
   /**

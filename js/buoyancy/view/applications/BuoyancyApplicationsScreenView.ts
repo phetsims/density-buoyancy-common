@@ -260,12 +260,12 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
       tandem: tandem.createTandem( 'objectDensityAccordionBox' )
     } );
 
-    const submergedAccordionBox = new SubmergedAccordionBox( {
+    const percentSubmergedAccordionBox = new SubmergedAccordionBox( {
       readoutItems: [ {
         readoutItem: model.block
       } ],
       contentWidthMax: boatBox.width,
-      tandem: tandem.createTandem( 'submergedAccordionBox' )
+      tandem: tandem.createTandem( 'percentSubmergedAccordionBox' )
     } );
 
     const rightSideVBox = new VBox( {
@@ -276,7 +276,7 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
         rightBottleContent,
         rightBoatContent,
         objectDensityAccordionBox,
-        submergedAccordionBox
+        percentSubmergedAccordionBox
       ]
     } );
 
@@ -335,7 +335,7 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
           readoutNameProperty: DensityBuoyancyCommonStrings.boatStringProperty
         }
         ];
-      submergedAccordionBox.setReadoutItems( submergedObjects );
+      percentSubmergedAccordionBox.setReadoutItems( submergedObjects );
     } );
 
     const displayOptionsPanel = new BuoyancyDisplayOptionsPanel( model, {
@@ -382,7 +382,7 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
       densityRange: DensityBuoyancyCommonConstants.FLUID_DENSITY_RANGE_PER_M3
     } );
 
-    const fluidDensityControlPanel = new Panel( new FluidDensityControlNode( model.pool.liquidMaterialProperty, [
+    const fluidDensityControlPanel = new Panel( new FluidDensityControlNode( model.pool.fluidMaterialProperty, [
         ...Material.BUOYANCY_FLUID_MATERIALS,
         customMaterial,
         ...Material.BUOYANCY_FLUID_MYSTERY_MATERIALS
@@ -416,7 +416,7 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
     this.addChild( bottleBoatLayer );
 
     this.resetEmitter.addListener( () => {
-      submergedAccordionBox.reset();
+      percentSubmergedAccordionBox.reset();
       objectDensityAccordionBox.reset();
     } );
 
@@ -452,7 +452,7 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
     this.pdomControlAreaNode.pdomOrder = [
       displayOptionsPanel,
       objectDensityAccordionBox,
-      submergedAccordionBox,
+      percentSubmergedAccordionBox,
       bottleBoatRadioButtonGroup,
       this.resetAllButton
     ];

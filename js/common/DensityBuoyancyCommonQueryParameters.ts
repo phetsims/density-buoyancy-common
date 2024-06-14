@@ -28,8 +28,8 @@ const DensityBuoyancyCommonQueryParameters = QueryStringMachine.getAll( {
     public: true
   },
 
-  // Displays/hides the percentage submerged readout accordion box
-  percentageSubmergedVisible: {
+  // Displays/hides the percent submerged readout accordion box
+  percentSubmergedVisible: {
     type: 'boolean',
     defaultValue: true,
     public: true

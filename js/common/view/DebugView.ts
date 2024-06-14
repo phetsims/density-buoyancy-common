@@ -116,7 +116,7 @@ export default class DebugView extends Node {
 
     let poolShape = Shape.bounds( new Bounds2(
       this.model.poolBounds.minX, this.model.poolBounds.minY,
-      this.model.poolBounds.maxX, this.model.pool.liquidYInterpolatedProperty.value
+      this.model.poolBounds.maxX, this.model.pool.fluidYInterpolatedProperty.value
     ) );
     this.model.masses.forEach( mass => {
       try {
@@ -264,7 +264,7 @@ class DebugMassNode extends Node {
       // @ts-expect-error
       const block = model.block;
       const liquidListener = () => {
-        const y = mass.basin.liquidYInterpolatedProperty.value;
+        const y = mass.basin.fluidYInterpolatedProperty.value;
 
         if ( mass.basin.liquidVolumeProperty.value > 0 ) {
           const matrix = scratchMatrix.set( modelViewTransform.getMatrix() );
@@ -296,11 +296,11 @@ class DebugMassNode extends Node {
           waterPath.shape = null;
         }
       };
-      mass.basin.liquidYInterpolatedProperty.link( liquidListener );
+      mass.basin.fluidYInterpolatedProperty.link( liquidListener );
       block.shapeProperty.lazyLink( liquidListener );
       block.transformedEmitter.addListener( liquidListener );
       this.disposeEmitter.addListener( () => {
-        mass.basin.liquidYInterpolatedProperty.unlink( liquidListener );
+        mass.basin.fluidYInterpolatedProperty.unlink( liquidListener );
         block.shapeProperty.unlink( liquidListener );
         block.transformedEmitter.removeListener( liquidListener );
       } );

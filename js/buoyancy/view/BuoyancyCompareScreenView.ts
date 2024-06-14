@@ -87,10 +87,10 @@ export default class BuoyancyCompareScreenView extends DensityBuoyancyScreenView
       margin: MARGIN
     } ) );
 
-    const fluidSelectionPanel = new FluidSelectionPanel( model.pool.liquidMaterialProperty, this.popupLayer, {
-      tandem: options.tandem.createTandem( 'fluidSelectionPanel' )
+    const fluidPanel = new FluidSelectionPanel( model.pool.fluidMaterialProperty, this.popupLayer, {
+      tandem: options.tandem.createTandem( 'fluidPanel' )
     } );
-    this.addChild( new AlignBox( fluidSelectionPanel, {
+    this.addChild( new AlignBox( fluidPanel, {
       alignBoundsProperty: this.visibleBoundsProperty,
       xAlign: 'center',
       yAlign: 'bottom',
@@ -108,9 +108,9 @@ export default class BuoyancyCompareScreenView extends DensityBuoyancyScreenView
       tandem: options.tandem.createTandem( 'densityComparisonAccordionBox' )
     } );
 
-    const submergedAccordionBox = new SubmergedAccordionBox( {
+    const percentSubmergedAccordionBox = new SubmergedAccordionBox( {
       contentWidthMax: this.rightSideMaxContentWidthProperty,
-      tandem: options.tandem.createTandem( 'submergedAccordionBox' )
+      tandem: options.tandem.createTandem( 'percentSubmergedAccordionBox' )
     } );
 
     const readoutItemsCache = new Map<BlockSet, {
@@ -144,7 +144,7 @@ export default class BuoyancyCompareScreenView extends DensityBuoyancyScreenView
               readoutItem: submergedReadoutItem.readoutItem.materialProperty
             } );
           } ), {
-            readoutItem: model.pool.liquidMaterialProperty,
+            readoutItem: model.pool.fluidMaterialProperty,
             readoutFormat: {
               font: DensityBuoyancyCommonConstants.ITEM_FONT
             }
@@ -156,12 +156,12 @@ export default class BuoyancyCompareScreenView extends DensityBuoyancyScreenView
         } );
       }
       const itemsForBoth = readoutItemsCache.get( blockSet )!;
-      submergedAccordionBox.setReadoutItems( itemsForBoth.submergedItems );
+      percentSubmergedAccordionBox.setReadoutItems( itemsForBoth.submergedItems );
       densityComparisonAccordionBox.setReadoutItems( itemsForBoth.densityItems );
     } );
 
     this.rightSidePanelsVBox = new VBox( {
-      children: [ this.blocksValueControlPanel, densityComparisonAccordionBox, submergedAccordionBox ],
+      children: [ this.blocksValueControlPanel, densityComparisonAccordionBox, percentSubmergedAccordionBox ],
       spacing: DensityBuoyancyCommonConstants.SPACING_SMALL
     } );
     this.addChild( this.rightSidePanelsVBox );
@@ -176,7 +176,7 @@ export default class BuoyancyCompareScreenView extends DensityBuoyancyScreenView
 
     this.resetEmitter.addListener( () => {
       densityComparisonAccordionBox.reset();
-      submergedAccordionBox.reset();
+      percentSubmergedAccordionBox.reset();
     } );
 
     // Layer for the focusable masses. Must be in the scene graph, so they can populate the pdom order
@@ -198,7 +198,7 @@ export default class BuoyancyCompareScreenView extends DensityBuoyancyScreenView
 
       this.blocksValueControlPanel,
 
-      fluidSelectionPanel
+      fluidPanel
     ];
 
     const massViewAdded = ( massView: MassView ) => {
@@ -213,7 +213,7 @@ export default class BuoyancyCompareScreenView extends DensityBuoyancyScreenView
     this.pdomControlAreaNode.pdomOrder = [
       displayOptionsPanel,
       densityComparisonAccordionBox,
-      submergedAccordionBox,
+      percentSubmergedAccordionBox,
       this.resetAllButton
     ];
   }

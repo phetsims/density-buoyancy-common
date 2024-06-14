@@ -33,7 +33,7 @@ type DensityControlNodeOptions = SelfOptions & ParentOptions;
 
 export default class FluidDensityControlNode extends ComboNumberControl<Material> {
   public constructor(
-    liquidMaterialProperty: Property<Material>,
+    fluidMaterialProperty: Property<Material>,
     materials: Material[],
     customMaterial: Material, // also appears in the list above
     listParent: Node,
@@ -50,7 +50,7 @@ export default class FluidDensityControlNode extends ComboNumberControl<Material
       tandem: options.tandem,
       titleProperty: DensityBuoyancyCommonStrings.fluidDensityStringProperty,
       valuePatternProperty: DensityBuoyancyCommonConstants.KILOGRAMS_PER_VOLUME_PATTERN_STRING_PROPERTY,
-      property: liquidMaterialProperty,
+      property: fluidMaterialProperty,
       range: new Range( 0.5, 15 ),
       toNumericValue: material => material.density / DensityBuoyancyCommonConstants.LITERS_IN_CUBIC_METER,
       createCustomValue: density => Material.createCustomLiquidMaterial( {

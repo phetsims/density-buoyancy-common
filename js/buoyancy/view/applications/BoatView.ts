@@ -89,7 +89,7 @@ export default class BoatView extends MeasurableMassView {
     const liquidMultilink = Multilink.multilink( [
       boat.basin.fluidYInterpolatedProperty,
       boat.displacementVolumeProperty,
-      boat.basin.liquidVolumeProperty
+      boat.basin.fluidVolumeProperty
     ], ( boatLiquidY, boatDisplacement, boatLiquidVolume ) => {
       const poolLiquidY = fluidYInterpolatedProperty.value;
       const liters = boatDisplacement / 0.001;
@@ -97,7 +97,7 @@ export default class BoatView extends MeasurableMassView {
       const relativeBoatLiquidY = boatLiquidY - boat.matrix.translation.y;
 
       const maximumVolume = boat.basin.getEmptyVolume( Number.POSITIVE_INFINITY );
-      const volume = boat.basin.liquidVolumeProperty.value;
+      const volume = boat.basin.fluidVolumeProperty.value;
       const isFull = volume >= maximumVolume - VOLUME_TOLERANCE;
       if ( boatLiquidVolume > 0 && ( !isFull || BoatDesign.shouldBoatWaterDisplayIfFull( fluidYInterpolatedProperty.value - boat.matrix.translation.y, liters ) ) ) {
         BoatDesign.fillCrossSectionVertexArray( relativeBoatLiquidY, liters, topLiquidPositionArray );
@@ -108,7 +108,7 @@ export default class BoatView extends MeasurableMassView {
       topLiquidGeometry.attributes.position.needsUpdate = true;
       topLiquidGeometry.computeBoundingSphere();
 
-      if ( boat.basin.liquidVolumeProperty.value > VOLUME_TOLERANCE ) {
+      if ( boat.basin.fluidVolumeProperty.value > VOLUME_TOLERANCE ) {
         bottomBoatClipPlane.constant = boatLiquidY;
         topBoatClipPlane.constant = -boatLiquidY;
       }

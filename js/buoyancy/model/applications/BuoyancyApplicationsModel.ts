@@ -103,7 +103,7 @@ export default class BuoyancyApplicationsModel extends DensityBuoyancyModel {
 
     // Adjust pool volume so that it's at the desired value WITH the pool scales inside.
     // REVIEW: How does this relate to https://github.com/phetsims/density-buoyancy-common/blob/4038cb05c2b5c2b8b1f600bfbcf0a7eaac4617a2/js/common/model/DensityBuoyancyModel.ts#L435-L437
-    this.pool.liquidVolumeProperty.setInitialValue( this.pool.liquidVolumeProperty.value );
+    this.pool.fluidVolumeProperty.setInitialValue( this.pool.fluidVolumeProperty.value );
 
     // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
     this.sceneProperty.link( ( scene, previousScene ) => {
@@ -118,8 +118,8 @@ export default class BuoyancyApplicationsModel extends DensityBuoyancyModel {
       // But don't do it when the bottle scene is first loaded (0)
       const plusMinusScaleVolume = scene === 'bottle' ?
                                    previousScene === 'boat' ? -1 : 0 : 1;
-      this.pool.liquidVolumeProperty.value += plusMinusScaleVolume * this.poolScale!.volumeProperty.value;
-      this.pool.liquidVolumeProperty.setInitialValue( this.pool.liquidVolumeProperty.value );
+      this.pool.fluidVolumeProperty.value += plusMinusScaleVolume * this.poolScale!.volumeProperty.value;
+      this.pool.fluidVolumeProperty.setInitialValue( this.pool.fluidVolumeProperty.value );
 
       assert && assert( !this.boat.visibleProperty.value || !this.bottle.visibleProperty.value,
         'Boat and bottle should not be visible at the same time' );

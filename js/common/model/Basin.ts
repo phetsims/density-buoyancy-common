@@ -1,7 +1,7 @@
 // Copyright 2020-2024, University of Colorado Boulder
 
 /**
- * Represents a basin that a liquid can reside in at a specific level. This is used for the pool and liquid in the boat.
+ * Represents a basin that a fluid can reside in at a specific level. This is used for the pool and fluid in the boat.
  *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
@@ -25,10 +25,10 @@ export type BasinOptions = {
 
 export default abstract class Basin {
 
-  // In m^3, the volume of liquid contained in this basin
-  public readonly liquidVolumeProperty: Property<number>;
+  // In m^3, the volume of fluid contained in this basin
+  public readonly fluidVolumeProperty: Property<number>;
 
-  // The y coordinate of the liquid level (absolute in the model, NOT relative to anything)
+  // The y coordinate of the fluid level (absolute in the model, NOT relative to anything)
   public readonly fluidYInterpolatedProperty: InterpolatedProperty<number>;
 
   // The bottom and top of the basin's area of containment (absolute model coordinates), set during physics engine steps.
@@ -50,14 +50,14 @@ export default abstract class Basin {
 
     const tandem = options.tandem;
 
-    const liquidTandem = tandem.createTandem( 'liquid' );
+    const fluidTandem = tandem.createTandem( 'fluid' );
 
-    this.liquidVolumeProperty = new NumberProperty( options.initialVolume, {
-      tandem: liquidTandem.createTandem( 'volumeProperty' ),
+    this.fluidVolumeProperty = new NumberProperty( options.initialVolume, {
+      tandem: fluidTandem.createTandem( 'volumeProperty' ),
       phetioFeatured: true,
       phetioReadOnly: true,
       range: new Range( 0, Number.POSITIVE_INFINITY ),
-      phetioDocumentation: 'The volume of liquid contained in the basin',
+      phetioDocumentation: 'The volume of fluid contained in the basin',
       units: 'm^3'
     } );
 
@@ -65,10 +65,10 @@ export default abstract class Basin {
       interpolate: InterpolatedProperty.interpolateNumber,
       phetioOuterType: InterpolatedProperty.InterpolatedPropertyIO,
       phetioValueType: NumberIO,
-      tandem: liquidTandem.createTandem( 'yInterpolatedProperty' ),
+      tandem: fluidTandem.createTandem( 'yInterpolatedProperty' ),
       phetioHighFrequency: true,
       phetioReadOnly: true,
-      phetioDocumentation: 'The y-value of the liquid in model coordinates (where 0 is the top of the pool)'
+      phetioDocumentation: 'The y-value of the fluid in model coordinates (where 0 is the top of the pool)'
     } );
 
     this.stepBottom = 0;
@@ -78,18 +78,18 @@ export default abstract class Basin {
   }
 
   /**
-   * Returns whether a given mass is inside this basin (e.g. if filled with liquid, would it be displacing any
-   * liquid).
+   * Returns whether a given mass is inside this basin (e.g. if filled with fluid, would it be displacing any
+   * fluid).
    */
   public abstract isMassInside( mass: Mass ): boolean;
 
   /**
-   * Returns the maximum area that could be contained with liquid at a given y value.
+   * Returns the maximum area that could be contained with fluid at a given y value.
    */
   protected abstract getMaximumArea( y: number ): number;
 
   /**
-   * Returns the maximum volume that could be contained with liquid up to a given y value.
+   * Returns the maximum volume that could be contained with fluid up to a given y value.
    */
   protected abstract getMaximumVolume( y: number ): number;
 
@@ -150,17 +150,17 @@ export default abstract class Basin {
   }
 
   /**
-   * Computes the liquid's y coordinate, given the current volume
+   * Computes the fluid's y coordinate, given the current volume
    */
   public computeY(): void {
-    const liquidVolume = this.liquidVolumeProperty.value;
-    if ( liquidVolume === 0 ) {
+    const fluidVolume = this.fluidVolumeProperty.value;
+    if ( fluidVolume === 0 ) {
       this.fluidYInterpolatedProperty.setNextValue( this.stepBottom );
       return;
     }
 
     const emptyVolume = this.getEmptyVolume( this.stepTop );
-    if ( emptyVolume === liquidVolume ) {
+    if ( emptyVolume === fluidVolume ) {
       this.fluidYInterpolatedProperty.setNextValue( this.stepTop );
       return;
     }
@@ -171,8 +171,8 @@ export default abstract class Basin {
       this.stepTop,
       DensityBuoyancyCommonConstants.TOLERANCE,
 
-      // We're finding the root (zero), so that's where the empty volume equals the liquid volume
-      yTest => this.getEmptyVolume( yTest ) - liquidVolume,
+      // We're finding the root (zero), so that's where the empty volume equals the fluid volume
+      yTest => this.getEmptyVolume( yTest ) - fluidVolume,
 
       // The derivative (change of volume) happens to be the area at that section
       yTest => this.getEmptyArea( yTest )
@@ -183,7 +183,7 @@ export default abstract class Basin {
    * Resets to an initial state.
    */
   public reset(): void {
-    this.liquidVolumeProperty.reset();
+    this.fluidVolumeProperty.reset();
     this.fluidYInterpolatedProperty.reset();
   }
 

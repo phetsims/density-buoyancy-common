@@ -266,7 +266,7 @@ class DebugMassNode extends Node {
       const liquidListener = () => {
         const y = mass.basin.fluidYInterpolatedProperty.value;
 
-        if ( mass.basin.liquidVolumeProperty.value > 0 ) {
+        if ( mass.basin.fluidVolumeProperty.value > 0 ) {
           const matrix = scratchMatrix.set( modelViewTransform.getMatrix() );
 
           // Zero out the translation

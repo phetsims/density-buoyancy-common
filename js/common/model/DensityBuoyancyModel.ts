@@ -343,7 +343,7 @@ export default class DensityBuoyancyModel implements TModel {
           const displacedVolume = mass.getDisplacedVolume( basin.fluidYInterpolatedProperty.currentValue );
 
           // The submergedVolume of the mass cannot be more than the liquid volume in the basin. Bug fix for https://github.com/phetsims/buoyancy/issues/135
-          submergedVolume = displacedVolume > basin.liquidVolumeProperty.value ? basin.liquidVolumeProperty.value : displacedVolume;
+          submergedVolume = displacedVolume > basin.fluidVolumeProperty.value ? basin.fluidVolumeProperty.value : displacedVolume;
         }
 
         let massValue = mass.massProperty.value;
@@ -400,8 +400,8 @@ export default class DensityBuoyancyModel implements TModel {
       this.availableMasses.push( this.poolScale );
 
       // Adjust pool volume so that it's at the desired value WITH the pool scale inside.
-      this.pool.liquidVolumeProperty.value -= this.poolScale.volumeProperty.value;
-      this.pool.liquidVolumeProperty.setInitialValue( this.pool.liquidVolumeProperty.value );
+      this.pool.fluidVolumeProperty.value -= this.poolScale.volumeProperty.value;
+      this.pool.fluidVolumeProperty.setInitialValue( this.pool.fluidVolumeProperty.value );
     }
   }
 
@@ -432,7 +432,7 @@ export default class DensityBuoyancyModel implements TModel {
       basin.stepMasses = this.masses.filter( mass => basin.isMassInside( mass ) );
     } );
 
-    let poolLiquidVolume = this.pool.liquidVolumeProperty.value;
+    let poolLiquidVolume = this.pool.fluidVolumeProperty.value;
 
     // May need to adjust volumes between the boat/pool if there is a boat
     if ( boat ) {
@@ -440,7 +440,7 @@ export default class DensityBuoyancyModel implements TModel {
     }
 
     // Check to see if water "spilled" out of the pool, and set the finalized liquid volume
-    this.pool.liquidVolumeProperty.value = Math.min( poolLiquidVolume, this.pool.getEmptyVolume( this.poolBounds.maxY ) );
+    this.pool.fluidVolumeProperty.value = Math.min( poolLiquidVolume, this.pool.getEmptyVolume( this.poolBounds.maxY ) );
 
     this.pool.computeY();
     boat && boat.basin.computeY();
@@ -466,7 +466,7 @@ export default class DensityBuoyancyModel implements TModel {
 
     const boatBasin = boat.basin;
     if ( boat.visibleProperty.value ) {
-      let boatLiquidVolume = boatBasin.liquidVolumeProperty.value;
+      let boatLiquidVolume = boatBasin.fluidVolumeProperty.value;
       const boatBasinMaximumVolume = boatBasin.getMaximumVolume( boatBasin.stepTop );
 
       const poolEmptyVolumeToBoatTop = this.pool.getEmptyVolume( Math.min( boat.stepTop, this.poolBounds.maxY ) );
@@ -516,10 +516,10 @@ export default class DensityBuoyancyModel implements TModel {
         poolLiquidVolume += boatExcess;
         boatLiquidVolume -= boatExcess;
       }
-      boatBasin.liquidVolumeProperty.value = boatLiquidVolume;
+      boatBasin.fluidVolumeProperty.value = boatLiquidVolume;
     }
     else {
-      boatBasin.liquidVolumeProperty.value = 0;
+      boatBasin.fluidVolumeProperty.value = 0;
     }
     return poolLiquidVolume;
   }

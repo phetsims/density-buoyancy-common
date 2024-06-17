@@ -82,6 +82,8 @@ export default class MaterialControlNode extends VBox {
     const materialNames: MaterialName[] = [ ...materials.map( material => material.identifier! ) ];
     options.supportCustomMaterial && materialNames.push( CUSTOM_MATERIAL_NAME );
 
+    // TODO: https://github.com/phetsims/density-buoyancy-common/issues/163 re-evaluate eliminating or moving this code
+    //       after addressing #163
     const comboBoxMaterialProperty = new DynamicProperty( new Property( materialProperty ), {
       bidirectional: true,
       map: ( material: Material ) => material.custom ? CUSTOM_MATERIAL_NAME : material.identifier!,

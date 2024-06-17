@@ -21,7 +21,8 @@ import Property from '../../../../axon/js/Property.js';
 import NumberProperty from '../../../../axon/js/NumberProperty.js';
 
 // To prevent objects from being dragged beneath the scale, we extend the invisible part of the scale vertically downward.
-const SCALE_INVISIBLE_VERTICAL_EXTENSION_FACTOR = 8.26;
+// This has to be big enough to cover all the way to the bottom of the pool when the scale is at its maximum height.
+const SCALE_INVISIBLE_VERTICAL_EXTENSION_FACTOR = 10.2;
 
 export default class PoolScale extends Scale {
 

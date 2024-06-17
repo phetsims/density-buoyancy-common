@@ -59,7 +59,7 @@ export default class PoolScaleHeightControl extends NumberControl {
     } );
 
     const minY = poolBounds.minY;
-    const maxY = fluidYInterpolatedProperty.value;
+    const maxY = fluidYInterpolatedProperty.value + Scale.SCALE_HEIGHT;
 
     const sliderTrackHeight = modelViewTransform.modelToViewDelta( new Vector3( SCALE_X_POSITION, maxY, poolBounds.maxZ ), new Vector3( SCALE_X_POSITION, minY, poolBounds.maxZ ) ).y;
 

@@ -7,20 +7,19 @@
  * @author Michael Kauzmann (PhET Interactive Simulations)
  */
 
-import { Node, PhetioControlledVisibilityProperty } from '../../../../scenery/js/imports.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
-import { combineOptions, optionize4 } from '../../../../phet-core/js/optionize.js';
+import { optionize4 } from '../../../../phet-core/js/optionize.js';
 import PickRequired from '../../../../phet-core/js/types/PickRequired.js';
 import Panel, { PanelOptions } from '../../../../sun/js/Panel.js';
 import UnitConversionProperty from '../../../../axon/js/UnitConversionProperty.js';
 import ComparisonNumberControl, { DEFAULT_COMPARISON_TRACK_SIZE } from './ComparisonNumberControl.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import BlockSet from '../model/BlockSet.js';
-import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import NumberProperty from '../../../../axon/js/NumberProperty.js';
 import Dimension2 from '../../../../dot/js/Dimension2.js';
+import ToggleNode from '../../../../sun/js/ToggleNode.js';
 
 type SelfOptions = {
   sliderTrackSize?: Dimension2;
@@ -52,75 +51,63 @@ export default class BlocksValueControlPanel extends Panel {
       factor: 1 / DensityBuoyancyCommonConstants.LITERS_IN_CUBIC_METER
     } );
 
-    const massNumberControlTandem = options.tandem.createTandem( 'massNumberControl' );
-    const massNumberControl = new ComparisonNumberControl(
-      massProperty,
-      DensityBuoyancyCommonStrings.massStringProperty,
-      DensityBuoyancyCommonStrings.kilogramsPatternStringProperty,
-      'kilograms',
-      {
-        tandem: massNumberControlTandem,
-        visibleProperty: new PhetioControlledVisibilityProperty( [ blockSetProperty ], blockSet => blockSet === BlockSet.SAME_MASS, {
-          nodeTandem: massNumberControlTandem
-        } ),
-        sliderOptions: {
-          phetioLinkedProperty: massProperty,
-          trackSize: options.sliderTrackSize,
-          accessibleName: DensityBuoyancyCommonStrings.massStringProperty
+    const toggleNode = new ToggleNode( blockSetProperty, [ {
+      value: BlockSet.SAME_MASS,
+      tandemName: 'massNumberControl',
+      createNode: tandem => new ComparisonNumberControl(
+        massProperty,
+        DensityBuoyancyCommonStrings.massStringProperty,
+        DensityBuoyancyCommonStrings.kilogramsPatternStringProperty,
+        'kilograms', {
+          tandem: tandem,
+          sliderOptions: {
+            phetioLinkedProperty: massProperty,
+            trackSize: options.sliderTrackSize,
+            accessibleName: DensityBuoyancyCommonStrings.massStringProperty
+          },
+          phetioVisiblePropertyInstrumented: false
         }
-      }
-    );
-
-    const volumeNumberControlTandem = options.tandem.createTandem( 'volumeNumberControl' );
-    const volumeNumberControl = new ComparisonNumberControl(
-      convertedVolumeProperty,
-      DensityBuoyancyCommonStrings.volumeStringProperty,
-      DensityBuoyancyCommonConstants.VOLUME_PATTERN_STRING_PROPERTY,
-      'value',
-      {
-        tandem: volumeNumberControlTandem,
-        visibleProperty: new PhetioControlledVisibilityProperty( [ blockSetProperty ], blockSet => blockSet === BlockSet.SAME_VOLUME, {
-          nodeTandem: volumeNumberControlTandem
-        } ),
-        sliderOptions: {
-          phetioLinkedProperty: volumeProperty,
-          trackSize: options.sliderTrackSize,
-          accessibleName: DensityBuoyancyCommonStrings.volumeStringProperty
+      )
+    }, {
+      value: BlockSet.SAME_VOLUME,
+      tandemName: 'volumeNumberControl',
+      createNode: tandem => new ComparisonNumberControl(
+        convertedVolumeProperty,
+        DensityBuoyancyCommonStrings.volumeStringProperty,
+        DensityBuoyancyCommonConstants.VOLUME_PATTERN_STRING_PROPERTY,
+        'value', {
+          tandem: tandem,
+          sliderOptions: {
+            phetioLinkedProperty: volumeProperty,
+            trackSize: options.sliderTrackSize,
+            accessibleName: DensityBuoyancyCommonStrings.volumeStringProperty
+          },
+          phetioVisiblePropertyInstrumented: false
         }
-      }
-    );
-
-    const densityNumberControlTandem = options.tandem.createTandem( 'densityNumberControl' );
-    const densityNumberControl = new ComparisonNumberControl(
-      convertedDensityProperty,
-      DensityBuoyancyCommonStrings.densityStringProperty,
-      DensityBuoyancyCommonConstants.KILOGRAMS_PER_VOLUME_PATTERN_STRING_PROPERTY,
-      'value',
-      {
-        tandem: densityNumberControlTandem,
-        visibleProperty: new PhetioControlledVisibilityProperty( [ blockSetProperty ], blockSet => blockSet === BlockSet.SAME_DENSITY, {
-          nodeTandem: densityNumberControlTandem
-        } ),
-        sliderOptions: {
-          phetioLinkedProperty: densityProperty,
-          trackSize: options.sliderTrackSize,
-          accessibleName: DensityBuoyancyCommonStrings.densityStringProperty
+      )
+    }, {
+      value: BlockSet.SAME_DENSITY,
+      tandemName: 'densityNumberControl',
+      createNode: tandem => new ComparisonNumberControl(
+        convertedDensityProperty,
+        DensityBuoyancyCommonStrings.densityStringProperty,
+        DensityBuoyancyCommonConstants.KILOGRAMS_PER_VOLUME_PATTERN_STRING_PROPERTY,
+        'value', {
+          tandem: tandem,
+          sliderOptions: {
+            phetioLinkedProperty: densityProperty,
+            trackSize: options.sliderTrackSize,
+            accessibleName: DensityBuoyancyCommonStrings.densityStringProperty
+          },
+          phetioVisiblePropertyInstrumented: false
         }
-      }
-    );
+      )
+    } ], {
+      tandem: options.tandem.createTandem( 'toggleNode' ),
+      phetioVisiblePropertyInstrumented: false
+    } );
 
-    // @ts-expect-error - don't instrument this container.
-    delete options.tandem;
-
-    super( new Node( {
-      children: [
-        massNumberControl,
-        volumeNumberControl,
-        densityNumberControl
-      ]
-    } ), combineOptions<PanelOptions>( {
-      visibleProperty: DerivedProperty.or( [ massNumberControl.visibleProperty, volumeNumberControl.visibleProperty, densityNumberControl.visibleProperty ] )
-    }, options ) );
+    super( toggleNode, options );
   }
 }
 

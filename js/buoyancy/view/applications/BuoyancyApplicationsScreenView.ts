@@ -25,7 +25,6 @@ import Cube from '../../../common/model/Cube.js';
 import Material from '../../../common/model/Material.js';
 import DensityBuoyancyCommonColors from '../../../common/view/DensityBuoyancyCommonColors.js';
 import DensityBuoyancyScreenView, { DensityBuoyancyScreenViewOptions } from '../../../common/view/DensityBuoyancyScreenView.js';
-import FluidDensityControlNode from '../../../common/view/FluidDensityControlNode.js';
 import BuoyancyDisplayOptionsPanel from '../BuoyancyDisplayOptionsPanel.js';
 import MaterialMassVolumeControlNode from '../../../common/view/MaterialMassVolumeControlNode.js';
 import densityBuoyancyCommon from '../../../densityBuoyancyCommon.js';
@@ -44,6 +43,7 @@ import ThreeUtils from '../../../../../mobius/js/ThreeUtils.js';
 import Bottle from '../../model/applications/Bottle.js';
 import MassView from '../../../common/view/MassView.js';
 import Vector2 from '../../../../../dot/js/Vector2.js';
+import FluidDensityPanel from '../FluidDensityPanel.js';
 
 // constants
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN_SMALL;
@@ -382,24 +382,16 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
       densityRange: DensityBuoyancyCommonConstants.FLUID_DENSITY_RANGE_PER_M3
     } );
 
-    const fluidDensityControlPanel = new Panel( new FluidDensityControlNode( model.pool.fluidMaterialProperty, [
-        ...Material.BUOYANCY_FLUID_MATERIALS,
-        customMaterial,
-        ...Material.BUOYANCY_FLUID_MYSTERY_MATERIALS
-      ], customMaterial,
-      this.popupLayer, {
-        invisibleMaterials: invisibleMaterials,
-        tandem: tandem.createTandem( 'fluidDensityControlPanel' )
-      } ), DensityBuoyancyCommonConstants.PANEL_OPTIONS );
+    const fluidDensityPanel = new FluidDensityPanel( model, customMaterial, invisibleMaterials, this.popupLayer, tandem.createTandem( 'fluidDensityControlPanel' ) );
 
-    this.addChild( new AlignBox( fluidDensityControlPanel, {
+    this.addChild( new AlignBox( fluidDensityPanel, {
       alignBoundsProperty: this.visibleBoundsProperty,
       xAlign: 'center',
       yAlign: 'bottom',
       margin: MARGIN
     } ) );
 
-    ManualConstraint.create( this, [ rightSideVBox, fluidDensityControlPanel, bottleBoatRadioButtonGroup ],
+    ManualConstraint.create( this, [ rightSideVBox, fluidDensityPanel, bottleBoatRadioButtonGroup ],
       ( rightSideVBoxWrapper, densityControlPanelWrapper, bottleBoatSelectionNodeWrapper ) => {
         bottleBoatSelectionNodeWrapper.left = rightSideVBoxWrapper.left;
         bottleBoatSelectionNodeWrapper.bottom = densityControlPanelWrapper.bottom;
@@ -430,7 +422,7 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
       rightBottleContent,
 
       resetSceneButton,
-      fluidDensityControlPanel,
+      fluidDensityPanel,
       this.poolScaleHeightControl
     ];
 

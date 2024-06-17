@@ -67,7 +67,7 @@ export default abstract class ComboNumberControl<T> extends VBox {
   private readonly numberControl: NumberControl;
   private readonly comboBox: ComboBox<T>;
 
-  public constructor( providedOptions: SelfOptions<T> ) {
+  protected constructor( providedOptions: SelfOptions<T> ) {
 
     const disposalCallbacks: ( () => void )[] = [];
     const numberDisplayVisibleProperty = new BooleanProperty( true );
@@ -255,6 +255,9 @@ export default abstract class ComboNumberControl<T> extends VBox {
       this.numberControl,
       this.comboBox
     ];
+
+    // @ts-expect-error
+    delete options.tandem;
 
     this.mutate( options );
   }

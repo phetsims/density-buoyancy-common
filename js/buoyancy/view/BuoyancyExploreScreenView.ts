@@ -10,11 +10,9 @@ import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import { combineOptions } from '../../../../phet-core/js/optionize.js';
 import { AlignBox, ManualConstraint, Node, VBox } from '../../../../scenery/js/imports.js';
-import Panel from '../../../../sun/js/Panel.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 import Material from '../../common/model/Material.js';
 import DensityBuoyancyScreenView, { DensityBuoyancyScreenViewOptions } from '../../common/view/DensityBuoyancyScreenView.js';
-import FluidDensityControlNode from '../../common/view/FluidDensityControlNode.js';
 import PrimarySecondaryControlsNode from '../../common/view/PrimarySecondaryControlsNode.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
@@ -34,6 +32,7 @@ import buoyancy_explore_screen_block_png from '../../../images/buoyancy_explore_
 import CuboidView from '../../common/view/CuboidView.js';
 import ScaleView from '../../common/view/ScaleView.js';
 import MassView from '../../common/view/MassView.js';
+import FluidDensityPanel from './FluidDensityPanel.js';
 
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN_SMALL;
 
@@ -90,17 +89,9 @@ export default class BuoyancyExploreScreenView extends DensityBuoyancyScreenView
       densityRange: DensityBuoyancyCommonConstants.FLUID_DENSITY_RANGE_PER_M3
     } );
 
-    const fluidDensityControlPanel = new Panel( new FluidDensityControlNode( model.pool.fluidMaterialProperty, [
-        ...Material.BUOYANCY_FLUID_MATERIALS,
-        customMaterial,
-        ...Material.BUOYANCY_FLUID_MYSTERY_MATERIALS
-      ], customMaterial,
-      this.popupLayer, {
-        invisibleMaterials: invisibleMaterials,
-        tandem: tandem.createTandem( 'fluidDensityControlPanel' )
-      } ), DensityBuoyancyCommonConstants.PANEL_OPTIONS );
+    const fluidDensityPanel = new FluidDensityPanel( model, customMaterial, invisibleMaterials, this.popupLayer, tandem.createTandem( 'fluidDensityControlPanel' ) );
 
-    this.addChild( new AlignBox( fluidDensityControlPanel, {
+    this.addChild( new AlignBox( fluidDensityPanel, {
       alignBoundsProperty: this.visibleBoundsProperty,
       xAlign: 'center',
       yAlign: 'bottom',
@@ -218,7 +209,7 @@ export default class BuoyancyExploreScreenView extends DensityBuoyancyScreenView
       cuboidPDOMLayer,
       this.rightBox.secondaryControlNode,
 
-      fluidDensityControlPanel,
+      fluidDensityPanel,
 
       // The blocks are added (a) pool then (b) outside, but the focus order is (a) outside then (b) pool
       ..._.reverse( scaleViews.map( scaleView => scaleView.focusablePath ) ),

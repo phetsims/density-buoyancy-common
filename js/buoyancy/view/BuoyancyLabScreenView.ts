@@ -11,11 +11,10 @@ import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import { combineOptions } from '../../../../phet-core/js/optionize.js';
 import { AlignBox, HBox, LayoutProxy, ManualConstraint, Node, VBox } from '../../../../scenery/js/imports.js';
-import Panel from '../../../../sun/js/Panel.js';
+import Panel, { PanelOptions } from '../../../../sun/js/Panel.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 import Material from '../../common/model/Material.js';
 import DensityBuoyancyScreenView, { DensityBuoyancyScreenViewOptions } from '../../common/view/DensityBuoyancyScreenView.js';
-import FluidDensityControlNode from '../../common/view/FluidDensityControlNode.js';
 import GravityControlNode from '../../common/view/GravityControlNode.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import BuoyancyLabModel from '../model/BuoyancyLabModel.js';
@@ -32,6 +31,7 @@ import Vector3 from '../../../../dot/js/Vector3.js';
 import ScaleView from '../../common/view/ScaleView.js';
 import fluid_displaced_scale_icon_png from '../../../images/fluid_displaced_scale_icon_png.js';
 import CuboidView from '../../common/view/CuboidView.js';
+import FluidDensityPanel from './FluidDensityPanel.js';
 
 // constants
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN_SMALL;
@@ -107,16 +107,10 @@ export default class BuoyancyLabScreenView extends DensityBuoyancyScreenView<Buo
     const bottomNode = new HBox( {
       spacing: 2 * DensityBuoyancyCommonConstants.SPACING,
       children: [
-        new Panel( new FluidDensityControlNode( model.pool.fluidMaterialProperty, [
-            ...Material.BUOYANCY_FLUID_MATERIALS,
-            customMaterial,
-            ...Material.BUOYANCY_FLUID_MYSTERY_MATERIALS
-          ], customMaterial,
-          this.popupLayer, {
-            invisibleMaterials: invisibleMaterials,
-            tandem: tandem.createTandem( 'fluidDensityControlPanel' )
-          } ), DensityBuoyancyCommonConstants.PANEL_OPTIONS ),
-        new Panel( new GravityControlNode( model.gravityProperty, this.popupLayer, tandem.createTandem( 'gravityControlPanel' ) ), DensityBuoyancyCommonConstants.PANEL_OPTIONS )
+        new FluidDensityPanel( model, customMaterial, invisibleMaterials, this.popupLayer, tandem.createTandem( 'fluidDensityControlPanel' ) ),
+        new Panel( new GravityControlNode( model.gravityProperty, this.popupLayer, tandem.createTandem( 'gravityControlPanel' ) ), combineOptions<PanelOptions>( {
+          tandem: tandem.createTandem( 'gravityControlPanel' )
+        }, DensityBuoyancyCommonConstants.PANEL_OPTIONS ) )
       ]
     } );
 

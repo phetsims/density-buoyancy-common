@@ -378,14 +378,6 @@ export default class MaterialMassVolumeControlNode extends MaterialControlNode {
     } );
     ManualConstraint.create( this, [ hiddenMaterialNode, massVolumeVBox ], ( hiddenMaterialProxy, vboxProxy ) => {
       hiddenMaterialProxy.maxWidth = vboxProxy.width;
-
-      // TODO: Remove when sun issue complete, see also https://github.com/phetsims/sun/issues/885
-      hiddenMaterialProxy.center = vboxProxy.center;
-    } );
-
-    // TODO: Remove parent Node when sun issue complete, see also https://github.com/phetsims/sun/issues/885
-    const hiddenMaterialContainer = new Node( {
-      children: [ hiddenMaterialNode ]
     } );
 
     // Show the "hidden" material view if the material is hidden (except for mass-readout mode)
@@ -393,7 +385,7 @@ export default class MaterialMassVolumeControlNode extends MaterialControlNode {
       return !options.showMassAsReadout && material.hidden;
     } );
 
-    this.addChild( new BooleanToggleNode( toggleNodeValueProperty, hiddenMaterialContainer, massVolumeVBox ) );
+    this.addChild( new BooleanToggleNode( toggleNodeValueProperty, hiddenMaterialNode, massVolumeVBox ) );
 
     this.minContentWidth = massVolumeVBox.width;
 

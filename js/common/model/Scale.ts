@@ -23,7 +23,6 @@ import Mass, { InstrumentedMassOptions } from './Mass.js';
 import Material from './Material.js';
 import PhysicsEngine from './PhysicsEngine.js';
 import Gravity from './Gravity.js';
-import TProperty from '../../../../axon/js/TProperty.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import { MassShape } from './MassShape.js';
 import PickOptional from '../../../../phet-core/js/types/PickOptional.js';
@@ -79,7 +78,7 @@ export default class Scale extends Mass {
 
   public readonly displayType: DisplayType;
 
-  public constructor( engine: PhysicsEngine, gravityProperty: TProperty<Gravity>, providedOptions: ScaleOptions ) {
+  public constructor( engine: PhysicsEngine, gravityProperty: TReadOnlyProperty<Gravity>, providedOptions: ScaleOptions ) {
 
     const bodyType = providedOptions.canMove === false ? 'STATIC' : 'DYNAMIC';
 
@@ -107,7 +106,9 @@ export default class Scale extends Mass {
       },
       volumePropertyOptions: {
         phetioDocumentation: PhetioObject.DEFAULT_OPTIONS.phetioDocumentation
-      }
+      },
+
+      phetioDocumentation: 'A scale that can be used to measure the mass/weight of objects stacked on top. Initially on the ground by default.'
     }, providedOptions );
 
     super( engine, options );

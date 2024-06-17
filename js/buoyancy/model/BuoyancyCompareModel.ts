@@ -97,7 +97,7 @@ export default class BuoyancyCompareModel extends CompareBlockSetModel {
     this.availableMasses.push( new Scale( this.engine, this.gravityProperty, {
       matrix: Matrix3.translation( -0.70, -Scale.SCALE_BASE_BOUNDS.minY ),
       displayType: DisplayType.NEWTONS,
-      tandem: providedOptions.tandem.createTandem( 'scale1' ),
+      tandem: providedOptions.tandem.createTandem( 'scale' ),
       canMove: true,
       inputEnabledPropertyOptions: {
         phetioReadOnly: false

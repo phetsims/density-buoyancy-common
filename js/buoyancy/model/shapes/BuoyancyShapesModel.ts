@@ -35,7 +35,7 @@ export type BuoyancyShapesModelOptions = DensityBuoyancyModelOptions;
 export default class BuoyancyShapesModel extends DensityBuoyancyModel {
 
   public readonly modeProperty: Property<TwoBlockMode>;
-  private readonly scale1: Scale;
+  private readonly scale: Scale;
 
   // REVIEW: Add a structure like primary:{shapeProperty, widthRatioProperty, heightRatioProperty, massProperty}?
   // REVIEW: This will also help with the studio tree
@@ -70,16 +70,16 @@ export default class BuoyancyShapesModel extends DensityBuoyancyModel {
       phetioValueType: Material.MaterialIO
     } );
 
-    this.scale1 = new Scale( this.engine, this.gravityProperty, {
+    this.scale = new Scale( this.engine, this.gravityProperty, {
       matrix: Matrix3.translation( -0.7, -Scale.SCALE_BASE_BOUNDS.minY ),
       displayType: DisplayType.NEWTONS,
-      tandem: tandem.createTandem( 'scale1' ),
+      tandem: tandem.createTandem( 'scale' ),
       canMove: true,
       inputEnabledPropertyOptions: {
         phetioReadOnly: false
       }
     } );
-    this.availableMasses.push( this.scale1 );
+    this.availableMasses.push( this.scale );
 
     this.primaryShapeProperty = new EnumerationProperty( MassShape.BLOCK, {
       tandem: tandem.createTandem( 'primaryShapeProperty' )

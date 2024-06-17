@@ -66,7 +66,7 @@ export default class BuoyancyBasicsExploreModel extends DensityBuoyancyModel {
     this.availableMasses.push( new Scale( this.engine, this.gravityProperty, {
       matrix: Matrix3.translation( -0.65, -Scale.SCALE_BASE_BOUNDS.minY ),
       displayType: DisplayType.NEWTONS,
-      tandem: tandem.createTandem( 'scale1' ),
+      tandem: tandem.createTandem( 'scale' ),
       canMove: true,
       inputEnabledPropertyOptions: {
         phetioReadOnly: false

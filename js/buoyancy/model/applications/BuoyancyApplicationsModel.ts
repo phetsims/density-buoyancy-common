@@ -33,7 +33,7 @@ export default class BuoyancyApplicationsModel extends DensityBuoyancyModel {
   public readonly bottle: Bottle;
   public readonly block: Cube;
   public readonly boat: Boat;
-  private readonly scale1: Scale; // Scale sitting on the ground next to the pool
+  private readonly scale: Scale; // Scale sitting on the ground next to the pool
 
   // REVIEW: Should these Properties move to Bottle?
   // For the material inside the bottle.
@@ -75,10 +75,10 @@ export default class BuoyancyApplicationsModel extends DensityBuoyancyModel {
     } );
     this.availableMasses.push( this.boat );
 
-    this.scale1 = new Scale( this.engine, this.gravityProperty, {
+    this.scale = new Scale( this.engine, this.gravityProperty, {
       matrix: Matrix3.translation( -0.77, -Scale.SCALE_BASE_BOUNDS.minY ),
       displayType: DisplayType.NEWTONS,
-      tandem: tandem.createTandem( 'scale1' ),
+      tandem: tandem.createTandem( 'scale' ),
       canMove: false,
       inputEnabledPropertyOptions: {
 
@@ -87,7 +87,7 @@ export default class BuoyancyApplicationsModel extends DensityBuoyancyModel {
         phetioReadOnly: false
       }
     } );
-    this.availableMasses.push( this.scale1 );
+    this.availableMasses.push( this.scale );
 
     this.customDensityProperty = new NumberProperty( 1, {
       range: new Range( 0.05, 20 ),
@@ -112,13 +112,13 @@ export default class BuoyancyApplicationsModel extends DensityBuoyancyModel {
       this.block.internalVisibleProperty.value = scene === 'BOAT';
 
       // As described in https://github.com/phetsims/buoyancy/issues/118#issue-2192969056, the underwater scale only shows for the bottle scene, not for the boat
-      this.poolScale!.internalVisibleProperty.value = scene === 'BOTTLE';
+      this.pool.scale!.internalVisibleProperty.value = scene === 'BOTTLE';
 
       // When switching from boat to bottle scene, subtract the scale volume from the pool and vice versa (-1 and 1)
       // But don't do it when the bottle scene is first loaded (0)
       const plusMinusScaleVolume = scene === 'BOTTLE' ?
                                    previousScene === 'BOAT' ? -1 : 0 : 1;
-      this.pool.fluidVolumeProperty.value += plusMinusScaleVolume * this.poolScale!.volumeProperty.value;
+      this.pool.fluidVolumeProperty.value += plusMinusScaleVolume * this.pool.scale!.volumeProperty.value;
       this.pool.fluidVolumeProperty.setInitialValue( this.pool.fluidVolumeProperty.value );
 
       assert && assert( !this.boat.visibleProperty.value || !this.bottle.visibleProperty.value,

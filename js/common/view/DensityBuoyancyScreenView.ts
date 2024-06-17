@@ -576,8 +576,8 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
       waterLevelIndicator.translation = this.modelToViewPoint( modelPoint );
     } );
 
-    if ( model.poolScale ) {
-      this.poolScaleHeightControl = new PoolScaleHeightControl( model.poolScale,
+    if ( model.pool.scale ) {
+      this.poolScaleHeightControl = new PoolScaleHeightControl( model.pool.scale,
         model.poolBounds, model.pool.fluidYInterpolatedProperty, this, {
           tandem: options.tandem.createTandem( 'poolScaleHeightControl' )
         } );
@@ -759,7 +759,7 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
   public positionScaleHeightControl(): void {
 
     // If the simulation was not able to load for WebGL, bail out
-    if ( this.sceneNode && this.poolScaleHeightControl && this.model.poolScale ) {
+    if ( this.sceneNode && this.poolScaleHeightControl && this.model.pool.scale ) {
 
       // X margin should be based on the front of the pool
       this.poolScaleHeightControl.x = this.modelToViewPoint( new Vector3(
@@ -772,7 +772,7 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
       this.poolScaleHeightControl.y = this.modelToViewPoint( new Vector3(
         this.model.poolBounds.maxX,
         this.model.poolBounds.minY,
-        this.model.poolScale.getBounds().maxZ
+        this.model.pool.scale.getBounds().maxZ
       ) ).y;
     }
   }

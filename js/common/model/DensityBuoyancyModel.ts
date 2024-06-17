@@ -98,9 +98,6 @@ export default class DensityBuoyancyModel implements TModel {
   // Flag that sets an animation to empty the boat of any water inside of it
   private spillingWaterOutOfBoat = false;
 
-  // Scale for the pool and its heightProperty, if we are using it
-  public readonly poolScale: PoolScale | null = null;
-
   public constructor( providedOptions?: DensityBuoyancyModelOptions ) {
     const options = optionize<DensityBuoyancyModelOptions, DensityBuoyancyModelOptions>()( {
       showMassValuesDefault: true,
@@ -211,9 +208,8 @@ export default class DensityBuoyancyModel implements TModel {
       new Vector2( this.groundBounds.minX, this.groundBounds.maxY )
     ];
 
-    this.pool = new Pool( this.poolBounds, tandem.createTandem( 'pool' ) );
-
     this.engine = new P2Engine();
+    this.pool = new Pool( this.poolBounds, options.usePoolScale, this.engine, this.gravityProperty, tandem.createTandem( 'pool' ) );
 
     this.groundBody = this.engine.createGround( this.groundPoints );
     this.engine.addBody( this.groundBody );
@@ -392,17 +388,8 @@ export default class DensityBuoyancyModel implements TModel {
       } );
     } );
 
-    if ( options.usePoolScale ) {
-
-      this.poolScale = new PoolScale( this.engine, this.gravityProperty, tandem.createTandem( 'poolScale' ) );
-
-      // Make sure to render it
-      this.availableMasses.push( this.poolScale );
-
-      // Adjust pool volume so that it's at the desired value WITH the pool scale inside.
-      this.pool.fluidVolumeProperty.value -= this.poolScale.volumeProperty.value;
-      this.pool.fluidVolumeProperty.setInitialValue( this.pool.fluidVolumeProperty.value );
-    }
+    // Make sure to render it
+    this.pool.scale && this.availableMasses.push( this.pool.scale );
   }
 
   /**
@@ -534,7 +521,7 @@ export default class DensityBuoyancyModel implements TModel {
     this.showMassValuesProperty.reset();
     this.showForceValuesProperty.reset();
     this.showDepthLinesProperty.reset();
-    
+
     this.gravityProperty.reset();
     this.spillingWaterOutOfBoat = false;
 
@@ -542,8 +529,6 @@ export default class DensityBuoyancyModel implements TModel {
 
     this.pool.reset();
     this.masses.forEach( mass => mass.reset() );
-
-    this.poolScale && this.poolScale.reset();
   }
 
   /**

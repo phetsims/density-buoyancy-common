@@ -389,7 +389,7 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
       ], customMaterial,
       this.popupLayer, {
         invisibleMaterials: invisibleMaterials,
-        tandem: tandem.createTandem( 'densityControlNode' )
+        tandem: tandem.createTandem( 'fluidDensityControlPanel' )
       } ), DensityBuoyancyCommonConstants.PANEL_OPTIONS );
 
     this.addChild( new AlignBox( fluidDensityControlPanel, {

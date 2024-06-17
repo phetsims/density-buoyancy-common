@@ -114,7 +114,7 @@ export default class BuoyancyLabScreenView extends DensityBuoyancyScreenView<Buo
           ], customMaterial,
           this.popupLayer, {
             invisibleMaterials: invisibleMaterials,
-            tandem: tandem.createTandem( 'densityControlNode' )
+            tandem: tandem.createTandem( 'fluidDensityControlPanel' )
           } ), DensityBuoyancyCommonConstants.PANEL_OPTIONS ),
         new Panel( new GravityControlNode( model.gravityProperty, this.popupLayer, tandem.createTandem( 'gravityControlNode' ) ), DensityBuoyancyCommonConstants.PANEL_OPTIONS )
       ]

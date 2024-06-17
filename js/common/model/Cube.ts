@@ -15,6 +15,7 @@ import PhysicsEngine from './PhysicsEngine.js';
 import optionize, { combineOptions } from '../../../../phet-core/js/optionize.js';
 import Material from './Material.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
+import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
 
 type SelfOptions = {
   adjustVolumeOnMassChanged?: boolean;
@@ -77,6 +78,8 @@ export default class Cube extends Cuboid {
   public static createWithVolume( engine: PhysicsEngine, material: Material, position: Vector2, volume: number, options?: StrictOmit<CubeOptions, 'matrix' | 'material'> ): Cube {
     return new Cube( engine, volume, combineOptions<CubeOptions>( {
       matrix: Matrix3.translation( position.x, position.y ),
+      minVolume: DensityBuoyancyCommonConstants.MIN_CUBE_VOLUME,
+      maxVolume: DensityBuoyancyCommonConstants.MAX_CUBE_VOLUME,
       material: material
     }, options ) );
   }

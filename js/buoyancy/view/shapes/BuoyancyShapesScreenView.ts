@@ -107,14 +107,15 @@ export default class BuoyancyShapesScreenView extends DensityBuoyancyScreenView<
     } ) );
 
     // Info button and associated dialog
-    const infoDialog = new ShapesInfoDialog( tandem.createTandem( 'infoDialog' ) );
+    const infoButtonTandem = tandem.createTandem( 'infoButton' );
+    const infoDialog = new ShapesInfoDialog( infoButtonTandem.createTandem( 'infoDialog' ) );
     const infoButton = new InfoButton( {
       accessibleName: 'infoButton',
       scale: 0.5,
       iconFill: 'rgb( 41, 106, 163 )',
       touchAreaDilation: 20,
       listener: () => infoDialog.show(),
-      tandem: tandem.createTandem( 'infoButton' )
+      tandem: infoButtonTandem
     } );
     this.addChild( infoButton );
 
@@ -128,10 +129,10 @@ export default class BuoyancyShapesScreenView extends DensityBuoyancyScreenView<
       infoButton.left = bottomLeftPoolPoint.x;
     };
 
-    const materialComboBox = new MaterialControlNode( this.model.materialProperty, new Property( 1 ),
+    const materialControlNode = new MaterialControlNode( this.model.materialProperty, new Property( 1 ),
       Material.SIMPLE_MASS_MATERIALS, this.popupLayer, {
         supportCustomMaterial: false,
-        tandem: options.tandem.createTandem( 'materialComboBox' )
+        tandem: options.tandem.createTandem( 'materialControlNode' )
       } );
     const primaryShapeSizeControlNode = new ShapeSizeControlNode(
       model.primaryShapeProperty,
@@ -159,7 +160,7 @@ export default class BuoyancyShapesScreenView extends DensityBuoyancyScreenView<
       }
     );
     this.rightBox = new MultiSectionPanelsNode(
-      [ materialComboBox,
+      [ materialControlNode,
         primaryShapeSizeControlNode,
         secondaryShapeSizeControlNode ]
     );
@@ -245,7 +246,7 @@ export default class BuoyancyShapesScreenView extends DensityBuoyancyScreenView<
     this.pdomPlayAreaNode.pdomOrder = [
 
       primaryMassLayer,
-      materialComboBox,
+      materialControlNode,
       primaryShapeSizeControlNode,
 
       secondaryMassLayer,

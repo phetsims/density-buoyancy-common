@@ -10,7 +10,7 @@ import DerivedProperty from '../../../../../axon/js/DerivedProperty.js';
 import DynamicProperty from '../../../../../axon/js/DynamicProperty.js';
 import Property from '../../../../../axon/js/Property.js';
 import Vector2 from '../../../../../dot/js/Vector2.js';
-import { AlignBox, ManualConstraint, Node, VBox } from '../../../../../scenery/js/imports.js';
+import { AlignBox, createGatedVisibleProperty, ManualConstraint, Node, VBox } from '../../../../../scenery/js/imports.js';
 import Panel from '../../../../../sun/js/Panel.js';
 import DensityBuoyancyCommonConstants from '../../../common/DensityBuoyancyCommonConstants.js';
 import Material from '../../../common/model/Material.js';
@@ -146,6 +146,7 @@ export default class BuoyancyShapesScreenView extends DensityBuoyancyScreenView<
         tandem: tandem.createTandem( 'primaryShapeSizeControlNode' )
       }
     );
+    const secondaryShapeSizeControlNodeTandem = tandem.createTandem( 'secondaryShapeSizeControlNode' );
     const secondaryShapeSizeControlNode = new ShapeSizeControlNode(
       model.secondaryShapeProperty,
       model.secondaryWidthRatioProperty,
@@ -155,8 +156,11 @@ export default class BuoyancyShapesScreenView extends DensityBuoyancyScreenView<
       } ),
       this.popupLayer, {
         labelNode: PrimarySecondaryPanelsNode.getSecondaryTagLabelNode(),
-        visibleProperty: new DynamicProperty( model.secondaryMassProperty, { derive: 'internalVisibleProperty' } ),
-        tandem: tandem.createTandem( 'secondaryShapeSizeControlNode' )
+        visibleProperty: createGatedVisibleProperty(
+          new DynamicProperty( model.secondaryMassProperty, { derive: 'internalVisibleProperty' } ),
+          secondaryShapeSizeControlNodeTandem
+          ),
+        tandem: secondaryShapeSizeControlNodeTandem
       }
     );
     this.rightBox = new MultiSectionPanelsNode(

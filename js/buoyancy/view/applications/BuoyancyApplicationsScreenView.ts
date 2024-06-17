@@ -78,7 +78,7 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
       listener: () => {
         model.resetBoatScene();
       },
-      visibleProperty: new DerivedProperty( [ model.sceneProperty ], scene => scene === 'boat' ),
+      visibleProperty: new DerivedProperty( [ model.sceneProperty ], scene => scene === 'BOAT' ),
       tandem: tandem.createTandem( 'resetSceneButton' )
     } );
     this.addChild( resetSceneButton );
@@ -296,9 +296,9 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
 
     // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
     model.sceneProperty.link( scene => {
-      rightBottleContent.visible = scene === 'bottle';
-      rightBoatContent.visible = scene === 'boat';
-      this.poolScaleHeightControl!.visible = scene === 'bottle';
+      rightBottleContent.visible = scene === 'BOTTLE';
+      rightBoatContent.visible = scene === 'BOAT';
+      this.poolScaleHeightControl!.visible = scene === 'BOTTLE';
       if ( this.poolScaleHeightControl && !this.poolScaleHeightControl.visible ) {
         this.poolScaleHeightControl.interruptSubtreeInput();
       }
@@ -314,10 +314,10 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
 
 
     model.sceneProperty.link( scene => {
-      const materials = scene === 'bottle' ? [
+      const materials = scene === 'BOTTLE' ? [
         model.bottle.interiorMaterialProperty,
         model.bottle.materialProperty
-      ] : scene === 'boat' ? [
+      ] : scene === 'BOAT' ? [
         model.block.materialProperty,
         model.boat.materialProperty
       ] : [];
@@ -325,7 +325,7 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
       objectDensityAccordionBox.setReadoutItems( materials.map( material => {
         return { readoutItem: material };
       } ) );
-      const submergedObjects = scene === 'bottle' ?
+      const submergedObjects = scene === 'BOTTLE' ?
         [ {
           readoutItem: model.bottle,
           readoutNameProperty: DensityBuoyancyCommonStrings.bottleStringProperty
@@ -356,12 +356,12 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
 
     const bottleBoatRadioButtonGroup = new RectangularRadioButtonGroup( model.sceneProperty, [
       {
-        value: 'bottle',
+        value: 'BOTTLE',
         createNode: () => BuoyancyApplicationsScreenView.getBottleIcon(),
         tandemName: 'bottleRadioButton'
       },
       {
-        value: 'boat',
+        value: 'BOAT',
         createNode: () => BuoyancyApplicationsScreenView.getBoatIcon(),
         tandemName: 'boatRadioButton'
       }

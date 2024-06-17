@@ -46,7 +46,7 @@ export default class BuoyancyApplicationsModel extends DensityBuoyancyModel {
 
     super( options );
 
-    this.sceneProperty = new StringUnionProperty<BottleOrBoat>( 'bottle', {
+    this.sceneProperty = new StringUnionProperty<BottleOrBoat>( 'BOTTLE', {
       validValues: BottleOrBoatValues,
       tandem: options.tandem.createTandem( 'sceneProperty' )
     } );
@@ -107,17 +107,17 @@ export default class BuoyancyApplicationsModel extends DensityBuoyancyModel {
 
     // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
     this.sceneProperty.link( ( scene, previousScene ) => {
-      this.bottle.internalVisibleProperty.value = scene === 'bottle';
-      this.boat.internalVisibleProperty.value = scene === 'boat';
-      this.block.internalVisibleProperty.value = scene === 'boat';
+      this.bottle.internalVisibleProperty.value = scene === 'BOTTLE';
+      this.boat.internalVisibleProperty.value = scene === 'BOAT';
+      this.block.internalVisibleProperty.value = scene === 'BOAT';
 
       // As described in https://github.com/phetsims/buoyancy/issues/118#issue-2192969056, the underwater scale only shows for the bottle scene, not for the boat
-      this.poolScale!.internalVisibleProperty.value = scene === 'bottle';
+      this.poolScale!.internalVisibleProperty.value = scene === 'BOTTLE';
 
       // When switching from boat to bottle scene, subtract the scale volume from the pool and vice versa (-1 and 1)
       // But don't do it when the bottle scene is first loaded (0)
-      const plusMinusScaleVolume = scene === 'bottle' ?
-                                   previousScene === 'boat' ? -1 : 0 : 1;
+      const plusMinusScaleVolume = scene === 'BOTTLE' ?
+                                   previousScene === 'BOAT' ? -1 : 0 : 1;
       this.pool.fluidVolumeProperty.value += plusMinusScaleVolume * this.poolScale!.volumeProperty.value;
       this.pool.fluidVolumeProperty.setInitialValue( this.pool.fluidVolumeProperty.value );
 

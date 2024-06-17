@@ -6,6 +6,6 @@
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
-export const BottleOrBoatValues = [ 'bottle', 'boat' ] as const;
+export const BottleOrBoatValues = [ 'BOTTLE', 'BOAT' ] as const;
 
 export type BottleOrBoat = typeof BottleOrBoatValues[number];

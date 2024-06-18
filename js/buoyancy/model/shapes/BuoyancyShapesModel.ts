@@ -172,16 +172,25 @@ export default class BuoyancyShapesModel extends DensityBuoyancyModel {
       ) );
     } );
 
+    const changeShape = ( massProperty: TProperty<Mass>, shapeMap: Map<MassShape, Mass>, massShape: MassShape ) => {
+      const minYBefore = massProperty.value.getBounds().minY;
+      massProperty.value = shapeMap.get( massShape )!;
+      const minYAfter = massProperty.value.getBounds().minY;
+      massProperty.value.matrix.multiplyMatrix( Matrix3.translation( 0, minYBefore - minYAfter ) );
+      massProperty.value.writeData();
+      massProperty.value.transformedEmitter.emit();
+    };
+
     // Property doesn't need disposal, since everything here lives for the lifetime of the simulation
     this.primaryMassProperty = new Property( aMap.get( this.primaryShapeProperty.value )! );
-    this.primaryShapeProperty.lazyLink( massShape => {
-      this.primaryMassProperty.value = aMap.get( massShape )!;
+    this.primaryShapeProperty.link( massShape => {
+      changeShape( this.primaryMassProperty, aMap, massShape );
     } );
 
     // Property doesn't need disposal, since everything here lives for the lifetime of the simulation
     this.secondaryMassProperty = new Property( bMap.get( this.secondaryShapeProperty.value )! );
-    this.secondaryShapeProperty.lazyLink( massShape => {
-      this.secondaryMassProperty.value = bMap.get( massShape )!;
+    this.secondaryShapeProperty.link( massShape => {
+      changeShape( this.secondaryMassProperty, bMap, massShape );
     } );
 
     Multilink.lazyMultilink( [ this.primaryWidthRatioProperty, this.primaryHeightRatioProperty ], ( widthRatio, heightRatio ) => {

@@ -55,7 +55,7 @@ export default class GravityControlNode extends ComboNumberControl<Gravity> {
       } ),
       customValue: customValue,
       numberControlOptions: {
-        delta: 0.1
+        delta: DensityBuoyancyCommonConstants.NUMBER_CONTROL_DELTA
       },
       comboBoxOptions: {
         listPosition: 'above'

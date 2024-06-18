@@ -404,7 +404,7 @@ export default class MaterialMassVolumeControlNode extends MaterialControlNode {
     const layoutFunction: LayoutFunction = showAsReadout ? getMassReadoutLayoutFunction( layoutFunction4 )
                                                          : layoutFunction4;
     const options: NumberControlOptions = {
-      delta: 0.01,
+      delta: DensityBuoyancyCommonConstants.NUMBER_CONTROL_DELTA,
       sliderOptions: {
         trackSize: new Dimension2( 120, TRACK_HEIGHT ),
         thumbYOffset: new PrecisionSliderThumb().height / 2 - TRACK_HEIGHT / 2

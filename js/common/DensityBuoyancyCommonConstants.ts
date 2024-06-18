@@ -78,6 +78,8 @@ const DensityBuoyancyCommonConstants = {
 
   POOL_SCALE_INITIAL_HEIGHT: 0.5,
 
+  NUMBER_CONTROL_DELTA: 0.01,
+
   TOLERANCE: TOLERANCE,
 
   // Not really used in Buoyancy, just Density

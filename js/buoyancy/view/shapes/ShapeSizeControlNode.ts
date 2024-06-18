@@ -60,7 +60,7 @@ export default class ShapeSizeControlNode extends VBox {
     } );
 
     const numberControlOptions = {
-      delta: 0.01,
+      delta: DensityBuoyancyCommonConstants.NUMBER_CONTROL_DELTA,
       sliderOptions: {
         trackSize: new Dimension2( 120, 0.5 ),
         thumbSize: DensityBuoyancyCommonConstants.THUMB_SIZE

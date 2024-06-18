@@ -36,7 +36,7 @@ export default class ComparisonNumberControl extends NumberControl {
       layoutFunction: NumberControl.createLayoutFunction4( {
         sliderPadding: 5
       } ),
-      delta: 0.01,
+      delta: DensityBuoyancyCommonConstants.NUMBER_CONTROL_DELTA,
       titleNodeOptions: {
         font: DensityBuoyancyCommonConstants.TITLE_FONT,
         maxWidth: 80,

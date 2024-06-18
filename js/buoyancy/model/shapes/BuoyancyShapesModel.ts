@@ -242,7 +242,6 @@ export default class BuoyancyShapesModel extends DensityBuoyancyModel {
    * Resets things to their original values.
    */
   public override reset(): void {
-    this.modeProperty.reset();
 
     this.primaryShapeProperty.reset();
     this.secondaryShapeProperty.reset();
@@ -250,6 +249,10 @@ export default class BuoyancyShapesModel extends DensityBuoyancyModel {
     this.secondaryHeightRatioProperty.reset();
     this.primaryWidthRatioProperty.reset();
     this.secondaryWidthRatioProperty.reset();
+
+    // Reset the mode after resetting the secondaryShapeProperty, otherwise the secondary mass will become visible
+    // if it changes, see https://github.com/phetsims/density-buoyancy-common/issues/221
+    this.modeProperty.reset();
 
     this.materialProperty.reset();
 

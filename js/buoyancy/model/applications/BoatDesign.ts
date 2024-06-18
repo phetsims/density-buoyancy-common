@@ -87,11 +87,13 @@ export default class BoatDesign {
    * @param liters - the number of liters of the boat's displacement
    */
   public static getIntersectionVertices( blockHalfWidth: number, liters: number ): Vector2[] {
-    const scale = Math.pow( liters, 1 / 3 ) * BoatDesign.ONE_LITER_SCALE_MULTIPLIER;
+
     const frontSamples = 30;
     const insideSamples = 40;
 
     const outsideBottomY = -BoatDesign.DESIGN_BOAT_HEIGHT;
+    const scale = Math.pow( liters, 1 / 3 ) * BoatDesign.ONE_LITER_SCALE_MULTIPLIER;
+
     const insideBottomY = -BoatDesign.DESIGN_BOAT_HEIGHT + BoatDesign.DESIGN_WALL_THICKNESS;
 
     const outsideBottomPoints = BoatDesign.getControlPoints( 1, false );
@@ -260,9 +262,17 @@ export default class BoatDesign {
     return array;
   }
 
+  public static getScaleForLiters( liters: number ): number {
+    return Math.pow( liters, 1 / 3 ) * BoatDesign.ONE_LITER_SCALE_MULTIPLIER;
+  }
+
+  public static getDesignY( boatY: number, scale: number ): number {
+    return boatY / scale + BoatDesign.DESIGN_CENTROID.y;
+  }
+
   public static shouldBoatWaterDisplayIfFull( boatY: number, liters: number ): boolean {
-    const scale = Math.pow( liters, 1 / 3 ) * BoatDesign.ONE_LITER_SCALE_MULTIPLIER;
-    const designY = boatY / scale + BoatDesign.DESIGN_CENTROID.y;
+    const scale = BoatDesign.getScaleForLiters( liters );
+    const designY = BoatDesign.getDesignY( boatY, scale );
 
     return designY <= 1e-3 && scale > 0;
   }
@@ -274,10 +284,10 @@ export default class BoatDesign {
    * @returns - Whether the water is completely filled
    */
   public static fillWaterVertexArray( waterY: number, boatX: number, boatY: number, liters: number, poolBounds: Bounds3, positionArray: Float32Array, wasFilled: boolean ): boolean {
-    // TODO: reduce duplication with below https://github.com/phetsims/density-buoyancy-common/issues/144
+    
     const outsideBottomY = -BoatDesign.DESIGN_BOAT_HEIGHT;
-    const scale = Math.pow( liters, 1 / 3 ) * BoatDesign.ONE_LITER_SCALE_MULTIPLIER;
-    const designY = boatY / scale + BoatDesign.DESIGN_CENTROID.y;
+    const scale = BoatDesign.getScaleForLiters( liters );
+    const designY = BoatDesign.getDesignY( boatY, scale );
 
     let index = 0;
 
@@ -369,8 +379,8 @@ export default class BoatDesign {
    */
   public static fillCrossSectionVertexArray( y: number, liters: number, positionArray: Float32Array ): void {
     const insideBottomY = -BoatDesign.DESIGN_BOAT_HEIGHT + BoatDesign.DESIGN_WALL_THICKNESS;
-    const scale = Math.pow( liters, 1 / 3 ) * BoatDesign.ONE_LITER_SCALE_MULTIPLIER;
-    const designY = y / scale + BoatDesign.DESIGN_CENTROID.y;
+    const scale = BoatDesign.getScaleForLiters( liters );
+    const designY = BoatDesign.getDesignY( y, scale );
 
     // If we have a low enough value, just zero things out (won't show anything)
     if ( designY < insideBottomY || scale === 0 ) {

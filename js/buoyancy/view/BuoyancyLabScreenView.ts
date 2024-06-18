@@ -106,12 +106,14 @@ export default class BuoyancyLabScreenView extends BuoyancyScreenView<BuoyancyLa
       densityRange: DensityBuoyancyCommonConstants.FLUID_DENSITY_RANGE_PER_M3
     } );
 
+    const gravityControlPanelTandem = tandem.createTandem( 'gravityControlPanel' );
+
     const bottomNode = new HBox( {
       spacing: 2 * DensityBuoyancyCommonConstants.SPACING,
       children: [
         new FluidDensityPanel( model, customMaterial, invisibleMaterials, this.popupLayer, tandem.createTandem( 'fluidDensityControlPanel' ) ),
-        new Panel( new GravityControlNode( model.gravityProperty, this.popupLayer, tandem.createTandem( 'gravityControlPanel' ) ), combineOptions<PanelOptions>( {
-          tandem: tandem.createTandem( 'gravityControlPanel' )
+        new Panel( new GravityControlNode( model.gravityProperty, this.popupLayer, gravityControlPanelTandem ), combineOptions<PanelOptions>( {
+          tandem: gravityControlPanelTandem
         }, DensityBuoyancyCommonConstants.PANEL_OPTIONS ) )
       ]
     } );

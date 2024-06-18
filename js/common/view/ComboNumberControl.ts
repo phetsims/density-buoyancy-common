@@ -77,6 +77,7 @@ export default abstract class ComboNumberControl<T> extends VBox {
 
       // {Object} Options for the number control
       numberControlOptions: {
+        delta: DensityBuoyancyCommonConstants.NUMBER_CONTROL_DELTA,
         layoutFunction: NumberControl.createLayoutFunction4( {
           createBottomContent: bottomBox => {
 

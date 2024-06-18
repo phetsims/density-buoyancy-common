@@ -76,14 +76,10 @@ export default class FluidDensityControlNode extends ComboNumberControl<Material
       } ),
       customValue: customMaterial,
       numberControlOptions: {
-        delta: DensityBuoyancyCommonConstants.NUMBER_CONTROL_DELTA,
         sliderOptions: {
           // Slightly longer, see https://github.com/phetsims/buoyancy/issues/33
           trackSize: new Dimension2( 130, 0.5 ),
           accessibleName: DensityBuoyancyCommonStrings.fluidDensityStringProperty
-        },
-        arrowButtonOptions: {
-          scale: DensityBuoyancyCommonConstants.ARROW_BUTTON_SCALE
         }
       },
       comboBoxOptions: {

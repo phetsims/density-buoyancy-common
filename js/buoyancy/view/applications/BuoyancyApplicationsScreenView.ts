@@ -211,7 +211,7 @@ export default class BuoyancyApplicationsScreenView extends BuoyancyScreenView<B
     } );
 
     const boatVolumeControlTandem = tandem.createTandem( 'boatVolumeNumberControl' );
-    const boatVolumeRange = new Range( 5, 30 );
+    const boatVolumeRange = new Range( 5, 30 ); // TODO: PhET_iO move this range into the displacementVolumeProperty, https://github.com/phetsims/density-buoyancy-common/issues/228
     const boatBox = new VBox( {
       spacing: DensityBuoyancyCommonConstants.SPACING_SMALL,
       align: 'left',

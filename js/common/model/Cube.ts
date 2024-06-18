@@ -18,6 +18,9 @@ import Vector2 from '../../../../dot/js/Vector2.js';
 import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
 
 type SelfOptions = {
+
+  // When true, volume will update upon a mass change. The default (false) will update the density on mass change.
+  // This will also make the massProperty phetioReadOnly:false. Careful!
   adjustVolumeOnMassChanged?: boolean;
 };
 

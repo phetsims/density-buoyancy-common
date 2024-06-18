@@ -17,13 +17,13 @@ import Cuboid from './Cuboid.js';
 type SelfOptions<BlockSetValue extends EnumerationValue> = {
 
   // Creates masses (when given a blockSet)
-  createMassesCallback: ( model: DensityBuoyancyModel, blockSet: BlockSetValue ) => Cuboid[];
+  createMassesCallback: ( model: BlockSetModel<BlockSetValue>, blockSet: BlockSetValue ) => Cuboid[];
 
   // Regenerate masses (when given a blockSet)
   regenerateMassesCallback: ( blockSet: BlockSetValue, masses: Cuboid[] ) => void;
 
   // Positions masses (for a given blockSet)
-  positionMassesCallback: ( model: DensityBuoyancyModel, blockSet: BlockSetValue, masses: Cuboid[] ) => void;
+  positionMassesCallback: ( model: BlockSetModel<BlockSetValue>, blockSet: BlockSetValue, masses: Cuboid[] ) => void;
 
   initialMode: BlockSetValue;
   BlockSet: Enumeration<BlockSetValue>;
@@ -37,9 +37,9 @@ export default class BlockSetModel<BlockSetValue extends EnumerationValue> exten
   private readonly BlockSet: Enumeration<BlockSetValue>;
   public readonly blockSetProperty: Property<BlockSetValue>;
 
-  private readonly createMassesCallback: ( model: DensityBuoyancyModel, blockSet: BlockSetValue ) => Cuboid[];
+  private readonly createMassesCallback: ( model: BlockSetModel<BlockSetValue>, blockSet: BlockSetValue ) => Cuboid[];
   private readonly regenerateMassesCallback: ( blockSet: BlockSetValue, masses: Cuboid[] ) => void;
-  private readonly positionMassesCallback: ( model: DensityBuoyancyModel, blockSet: BlockSetValue, masses: Cuboid[] ) => void;
+  private readonly positionMassesCallback: ( model: BlockSetModel<BlockSetValue>, blockSet: BlockSetValue, masses: Cuboid[] ) => void;
 
   public readonly blockSetToMassesMap: Map<BlockSetValue, Cuboid[]>;
 

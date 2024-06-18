@@ -22,13 +22,14 @@ import Material from './Material.js';
 import Property from '../../../../axon/js/Property.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
 import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
-import DensityBuoyancyModel from './DensityBuoyancyModel.js';
 import Cube, { CubeOptions } from './Cube.js';
 import merge from '../../../../phet-core/js/merge.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import WithRequired from '../../../../phet-core/js/types/WithRequired.js';
 import HasChangedNumberProperty from './HasChangedNumberProperty.js';
+import propertyStateHandlerSingleton from '../../../../axon/js/propertyStateHandlerSingleton.js';
+import PropertyStatePhase from '../../../../axon/js/PropertyStatePhase.js';
 
 // This hard coded range is a bit arbitrary, but it lends itself to better colors than the provided range in the options.
 const COLOR_DENSITY_RANGE = new Range( 10, 10000 );
@@ -158,7 +159,7 @@ export default class CompareBlockSetModel extends BlockSetModel<BlockSet> {
       }, cubeData );
     } );
 
-    const createMasses = ( model: DensityBuoyancyModel, blockSet: BlockSet ) => {
+    const createMasses = ( model: BlockSetModel<BlockSet>, blockSet: BlockSet ) => {
 
       // In the following code, the cube instance persists for the lifetime of the simulation and the listeners
       // don't need to be removed.
@@ -170,6 +171,9 @@ export default class CompareBlockSetModel extends BlockSetModel<BlockSet> {
                cubeData.sameMassMaterialProperty.link( material => cube.materialProperty.set( material ) );
                massProperty.lazyLink( massValue => cubeData.sameMassDensityProperty.set( massValue / cube.volumeProperty.value ) );
 
+               // We must undefer the Cube's materialProperty first, in order for the DynamicProperty in DensityAccordionBox to be correctly unregistered
+               // We do not know why scheduling a NOTIFY order dependency was not sufficient
+               propertyStateHandlerSingleton.registerPhetioOrderDependency( cube.materialProperty, PropertyStatePhase.UNDEFER, model.blockSetProperty, PropertyStatePhase.UNDEFER );
                return cube;
              } ) :
 
@@ -190,6 +194,10 @@ export default class CompareBlockSetModel extends BlockSetModel<BlockSet> {
                  cubeData.sameVolumeDensityProperty.value = cubeData.sameVolumeMass / volume;
                } );
 
+               // We must undefer the Cube's materialProperty first, in order for the DynamicProperty in DensityAccordionBox to be correctly unregistered
+               // We do not know why scheduling a NOTIFY order dependency was not sufficient
+               propertyStateHandlerSingleton.registerPhetioOrderDependency( cube.materialProperty, PropertyStatePhase.UNDEFER, model.blockSetProperty, PropertyStatePhase.UNDEFER );
+
                return cube;
              } ) :
              cubesData.map( cubeData => {
@@ -200,6 +208,10 @@ export default class CompareBlockSetModel extends BlockSetModel<BlockSet> {
 
                cubeData.sameDensityMaterialProperty.link( material => cube.materialProperty.set( material ) );
                densityProperty.lazyLink( density => cubeData.sameDensityDensityProperty.set( density ) );
+
+               // We must undefer the Cube's materialProperty first, in order for the DynamicProperty in DensityAccordionBox to be correctly unregistered
+               // We do not know why scheduling a NOTIFY order dependency was not sufficient
+               propertyStateHandlerSingleton.registerPhetioOrderDependency( cube.materialProperty, PropertyStatePhase.UNDEFER, model.blockSetProperty, PropertyStatePhase.UNDEFER );
 
                return cube;
              } );

@@ -156,6 +156,7 @@ export default abstract class ReadoutListAccordionBox<ReadoutType> extends Accor
   protected abstract generateReadoutData( readoutType: ReadoutType ): ReadoutData;
 
   public override dispose(): void {
+    assert && assert( false, 'Not disposable' );
     this.cleanupEmitter.emit();
     super.dispose();
   }

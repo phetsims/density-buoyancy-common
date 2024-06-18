@@ -91,9 +91,9 @@ export default class BuoyancyDisplayOptionsPanel extends Panel {
               stretch: true,
               children: [
                 // Gravity
-                createForceControl( displayProperties.gravityForceVisibleProperty, DensityBuoyancyCommonStrings.gravity.nameStringProperty, DensityBuoyancyCommonColors.gravityForceProperty, 'showGravityForceCheckbox' ),
-                createForceControl( displayProperties.buoyancyForceVisibleProperty, DensityBuoyancyCommonStrings.buoyancyStringProperty, DensityBuoyancyCommonColors.buoyancyForceProperty, 'showBuoyancyForceCheckbox' ),
-                createForceControl( displayProperties.contactForceVisibleProperty, DensityBuoyancyCommonStrings.contactStringProperty, DensityBuoyancyCommonColors.contactForceProperty, 'showContactForceCheckbox' ),
+                createForceControl( displayProperties.gravityForceVisibleProperty, DensityBuoyancyCommonStrings.gravity.nameStringProperty, DensityBuoyancyCommonColors.gravityForceProperty, 'gravityForceCheckbox' ),
+                createForceControl( displayProperties.buoyancyForceVisibleProperty, DensityBuoyancyCommonStrings.buoyancyStringProperty, DensityBuoyancyCommonColors.buoyancyForceProperty, 'buoyancyForceCheckbox' ),
+                createForceControl( displayProperties.contactForceVisibleProperty, DensityBuoyancyCommonStrings.contactStringProperty, DensityBuoyancyCommonColors.contactForceProperty, 'contactForceCheckbox' ),
 
                 // Vector zoom
                 new HBox( {
@@ -115,7 +115,7 @@ export default class BuoyancyDisplayOptionsPanel extends Panel {
                 } ),
 
                 new Checkbox( displayProperties.forceValuesVisibleProperty, new Text( DensityBuoyancyCommonStrings.forceValuesStringProperty, labelOptions ), combineOptions<CheckboxOptions>( {
-                  tandem: options.tandem.createTandem( 'showForceValuesCheckbox' ),
+                  tandem: options.tandem.createTandem( 'forceValuesCheckbox' ),
                   containerTagName: 'p',
                   accessibleName: DensityBuoyancyCommonStrings.forceValuesStringProperty
                 }, checkboxOptions ) )
@@ -127,13 +127,13 @@ export default class BuoyancyDisplayOptionsPanel extends Panel {
               align: 'left',
               children: [
                 new Checkbox( displayProperties.massValuesVisibleProperty, new Text( DensityBuoyancyCommonStrings.massValuesStringProperty, labelOptions ), combineOptions<CheckboxOptions>( {
-                  tandem: options.tandem.createTandem( 'showMassValuesCheckbox' ),
+                  tandem: options.tandem.createTandem( 'massValuesCheckbox' ),
                   containerTagName: 'p',
                   accessibleName: DensityBuoyancyCommonStrings.massValuesStringProperty
                 }, checkboxOptions ) ),
                 ...( displayProperties.supportsDepthLines ?
                   [ new Checkbox( displayProperties.depthLinesVisibleProperty, new Text( DensityBuoyancyCommonStrings.depthLinesStringProperty, labelOptions ), combineOptions<CheckboxOptions>( {
-                    tandem: options.tandem.createTandem( 'showDepthLinesCheckbox' ),
+                    tandem: options.tandem.createTandem( 'depthLinesCheckbox' ),
                     containerTagName: 'p',
                     accessibleName: DensityBuoyancyCommonStrings.depthLinesStringProperty
                   }, checkboxOptions ) ) ] : [] )

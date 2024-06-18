@@ -14,7 +14,6 @@ import DensityBuoyancyModel, { DensityBuoyancyModelOptions } from '../../common/
 import Material from '../../common/model/Material.js';
 import Scale, { DisplayType } from '../../common/model/Scale.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
-import { combineOptions } from '../../../../phet-core/js/optionize.js';
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
@@ -29,21 +28,10 @@ export default class BuoyancyLabModel extends DensityBuoyancyModel {
 
   public constructor( options: BuoyancyLabModelOptions ) {
 
-    const tandem = options.tandem;
-
-    super( combineOptions<DensityBuoyancyModelOptions>( {
-      supportsDepthLines: true,
-      showMassValuesDefault: false,
-      showForcesDefaults: {
-        showGravityForceArrow: true,
-        showBuoyancyForceArrow: true,
-        showContactForceArrow: true,
-        showForceValues: true
-      }
-    }, options ) );
+    super( options );
 
     this.block = Cube.createWithMass( this.engine, Material.WOOD, new Vector2( -0.2, 0.2 ), 2, {
-      tandem: tandem.createTandem( 'block' )
+      tandem: options.tandem.createTandem( 'block' )
     } );
     this.availableMasses.push( this.block );
 
@@ -51,7 +39,7 @@ export default class BuoyancyLabModel extends DensityBuoyancyModel {
     this.availableMasses.push( new Scale( this.engine, this.gravityProperty, {
       matrix: Matrix3.translation( -0.65, -Scale.SCALE_BASE_BOUNDS.minY ),
       displayType: DisplayType.NEWTONS,
-      tandem: tandem.createTandem( 'scale' ),
+      tandem: options.tandem.createTandem( 'scale' ),
       canMove: false,
       inputEnabledPropertyOptions: {
         phetioReadOnly: false

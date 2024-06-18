@@ -27,7 +27,6 @@ export default class BuoyancyCompareModel extends CompareBlockSetModel {
     const blockSetsTandem = tandem.createTandem( BLOCK_SETS_TANDEM_NAME );
 
     const options = optionize<BuoyancyCompareModelOptions, EmptySelfOptions, CompareBlockSetModelOptions>()( {
-      supportsDepthLines: true,
       initialMaterials: [ Material.WOOD, Material.BRICK ],
       sameMassValue: 4,
       sameDensityValue: Material.WOOD.density,

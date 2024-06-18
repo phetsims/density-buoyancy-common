@@ -17,7 +17,6 @@ import Scale, { DisplayType } from '../../common/model/Scale.js';
 import TwoBlockMode from '../../common/model/TwoBlockMode.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import MassTag from '../../common/model/MassTag.js';
-import { combineOptions } from '../../../../phet-core/js/optionize.js';
 
 export type BuoyancyExploreModelOptions = DensityBuoyancyModelOptions;
 
@@ -29,13 +28,9 @@ export default class BuoyancyExploreModel extends DensityBuoyancyModel {
 
   public constructor( options: BuoyancyExploreModelOptions ) {
 
-    const tandem = options.tandem;
+    super( options );
 
-    super( combineOptions<DensityBuoyancyModelOptions>( {
-      supportsDepthLines: true
-    }, options ) );
-
-    const blocksTandem = tandem.createTandem( 'blocks' );
+    const blocksTandem = options.tandem.createTandem( 'blocks' );
 
     this.modeProperty = new EnumerationProperty( TwoBlockMode.ONE_BLOCK, {
       tandem: blocksTandem.createTandem( 'modeProperty' ),
@@ -64,7 +59,7 @@ export default class BuoyancyExploreModel extends DensityBuoyancyModel {
     this.availableMasses.push( new Scale( this.engine, this.gravityProperty, {
       matrix: Matrix3.translation( -0.65, -Scale.SCALE_BASE_BOUNDS.minY ),
       displayType: DisplayType.NEWTONS,
-      tandem: tandem.createTandem( 'scale' ),
+      tandem: options.tandem.createTandem( 'scale' ),
       canMove: true,
       inputEnabledPropertyOptions: {
         phetioReadOnly: false

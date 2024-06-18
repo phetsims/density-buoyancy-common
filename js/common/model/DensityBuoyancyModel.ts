@@ -47,19 +47,8 @@ const BOAT_READY_TO_SPILL_OUT_THRESHOLD = 0.9;
 // prevent filling thrashing as a containing mass floats around. See updateLiquidLevel();
 const BOAT_FULL_THRESHOLD = 0.01;
 
-
 export type DensityBuoyancyModelOptions = {
-  canShowForces?: boolean;
-  initialForceScale?: number;
   usePoolScale?: boolean;
-  supportsDepthLines?: boolean;
-  showMassValuesDefault?: boolean;
-  showForcesDefaults?: {
-    showGravityForceArrow: boolean;
-    showBuoyancyForceArrow: boolean;
-    showContactForceArrow: boolean;
-    showForceValues: boolean;
-  };
 } & PickRequired<PhetioObjectOptions, 'tandem'>;
 
 export default class DensityBuoyancyModel implements TModel {
@@ -87,17 +76,7 @@ export default class DensityBuoyancyModel implements TModel {
 
   public constructor( providedOptions?: DensityBuoyancyModelOptions ) {
     const options = optionize<DensityBuoyancyModelOptions, DensityBuoyancyModelOptions>()( {
-      showMassValuesDefault: true,
-      canShowForces: true,
-      initialForceScale: 1 / 16,
-      usePoolScale: true,
-      supportsDepthLines: false,
-      showForcesDefaults: {
-        showGravityForceArrow: false,
-        showBuoyancyForceArrow: false,
-        showContactForceArrow: false,
-        showForceValues: false
-      }
+      usePoolScale: true
     }, providedOptions );
 
     const tandem = options.tandem;

@@ -11,7 +11,6 @@ import Multilink from '../../../../../axon/js/Multilink.js';
 import NumberProperty from '../../../../../axon/js/NumberProperty.js';
 import Property from '../../../../../axon/js/Property.js';
 import Matrix3 from '../../../../../dot/js/Matrix3.js';
-import optionize, { EmptySelfOptions } from '../../../../../phet-core/js/optionize.js';
 import Tandem from '../../../../../tandem/js/Tandem.js';
 import Cone from '../../../common/model/Cone.js';
 import Cuboid from '../../../common/model/Cuboid.js';
@@ -52,29 +51,24 @@ export default class BuoyancyShapesModel extends DensityBuoyancyModel {
 
   public readonly materialProperty: Property<Material>;
 
-  public constructor( providedOptions: BuoyancyShapesModelOptions ) {
-    const options = optionize<DensityBuoyancyModelOptions, EmptySelfOptions, DensityBuoyancyModelOptions>()( {
-      initialForceScale: 1 / 4
-    }, providedOptions );
-
-    const tandem = options.tandem;
+  public constructor( options: BuoyancyShapesModelOptions ) {
 
     super( options );
 
     this.modeProperty = new EnumerationProperty( TwoBlockMode.ONE_BLOCK, {
-      tandem: tandem.createTandem( 'modeProperty' ),
+      tandem: options.tandem.createTandem( 'modeProperty' ),
       phetioFeatured: true
     } );
 
     this.materialProperty = new Property( Material.WOOD, {
-      tandem: tandem.createTandem( 'materialProperty' ),
+      tandem: options.tandem.createTandem( 'materialProperty' ),
       phetioValueType: Material.MaterialIO
     } );
 
     this.scale = new Scale( this.engine, this.gravityProperty, {
       matrix: Matrix3.translation( -0.7, -Scale.SCALE_BASE_BOUNDS.minY ),
       displayType: DisplayType.NEWTONS,
-      tandem: tandem.createTandem( 'scale' ),
+      tandem: options.tandem.createTandem( 'scale' ),
       canMove: true,
       inputEnabledPropertyOptions: {
         phetioReadOnly: false
@@ -83,10 +77,10 @@ export default class BuoyancyShapesModel extends DensityBuoyancyModel {
     this.availableMasses.push( this.scale );
 
     this.primaryShapeProperty = new EnumerationProperty( MassShape.BLOCK, {
-      tandem: tandem.createTandem( 'primaryShapeProperty' )
+      tandem: options.tandem.createTandem( 'primaryShapeProperty' )
     } );
     this.secondaryShapeProperty = new EnumerationProperty( MassShape.INVERTED_CONE, {
-      tandem: tandem.createTandem( 'secondaryShapeProperty' )
+      tandem: options.tandem.createTandem( 'secondaryShapeProperty' )
     } );
 
     this.primaryWidthRatioProperty = new NumberProperty( 0.25 );
@@ -159,7 +153,7 @@ export default class BuoyancyShapesModel extends DensityBuoyancyModel {
       return mass;
     };
 
-    const objectsTandem = tandem.createTandem( 'objects' );
+    const objectsTandem = options.tandem.createTandem( 'objects' );
 
     // Statically initialize all possible Mass instances to simplify phet-io. This is well within a good memory limit, see https://github.com/phetsims/buoyancy/issues/160
     const aMap = new Map<MassShape, Mass>();

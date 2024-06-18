@@ -129,7 +129,7 @@ export default class ForceDiagramNode extends Node {
         arrowNode.setTip( 0, -y * this.displayProperties.vectorZoomProperty.value * 20 ); // Default zoom is 20 units per Newton
         ( y > 0 ? upwardArrows : downwardArrows ).push( arrowNode );
 
-        if ( this.displayProperties.showForceValuesProperty.value ) {
+        if ( this.displayProperties.forceValuesVisibleProperty.value ) {
           // We have a listener to the string that will call update
           textNode.string = StringUtils.fillIn( DensityBuoyancyCommonStrings.newtonsPatternStringProperty, {
             newtons: Utils.toFixed( forceProperty.value.magnitude, chooseDecimalPlaces( forceProperty.value.magnitude ) )
@@ -140,9 +140,9 @@ export default class ForceDiagramNode extends Node {
     };
 
     // Documentation specifies that contact force should always be on the left if there are conflicts
-    updateArrow( this.mass.contactForceBlendedProperty, this.displayProperties.showContactForceProperty, this.contactArrowNode, this.contactLabelText, this.contactLabelNode );
-    updateArrow( this.mass.gravityForceInterpolatedProperty, this.displayProperties.showGravityForceProperty, this.gravityArrowNode, this.gravityLabelText, this.gravityLabelNode );
-    updateArrow( this.mass.buoyancyForceInterpolatedProperty, this.displayProperties.showBuoyancyForceProperty, this.buoyancyArrowNode, this.buoyancyLabelText, this.buoyancyLabelNode );
+    updateArrow( this.mass.contactForceBlendedProperty, this.displayProperties.contactForceVisibleProperty, this.contactArrowNode, this.contactLabelText, this.contactLabelNode );
+    updateArrow( this.mass.gravityForceInterpolatedProperty, this.displayProperties.gravityForceVisibleProperty, this.gravityArrowNode, this.gravityLabelText, this.gravityLabelNode );
+    updateArrow( this.mass.buoyancyForceInterpolatedProperty, this.displayProperties.buoyancyForceVisibleProperty, this.buoyancyArrowNode, this.buoyancyLabelText, this.buoyancyLabelNode );
 
     this.children = [
       ...upwardArrows,
@@ -154,7 +154,7 @@ export default class ForceDiagramNode extends Node {
     const positionArrow = ( array: ArrowNode[], index: number, isUp: boolean ) => {
       const arrow = array[ index ];
       arrow.x = ( index - ( array.length - 1 ) / 2 ) * arrowSpacing;
-      if ( this.displayProperties.showForceValuesProperty.value ) {
+      if ( this.displayProperties.forceValuesVisibleProperty.value ) {
         const label = this.arrowMap.get( arrow )!;
         if ( isUp ) {
           label.bottom = -2;

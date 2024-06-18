@@ -35,7 +35,7 @@ export default class MeasurableMassView extends MassView {
 
     this.forceDiagramNode = new ForceDiagramNode( mass, displayProperties );
 
-    this.massLabelNode = new MassLabelNode( mass, displayProperties.showMassValuesProperty );
+    this.massLabelNode = new MassLabelNode( mass, displayProperties.massValuesVisibleProperty );
 
     // Update the decoration layer when phet-io state is set
     const updateDecorationLayer = () => this.updateDecorationLayer();

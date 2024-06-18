@@ -47,14 +47,14 @@ export default class CuboidView extends MeasurableMassView {
     positionTag();
 
     this.depthLinesNode = new Path( new Shape(), {
-      visibleProperty: displayProperties.showDepthLinesProperty,
+      visibleProperty: displayProperties.depthLinesVisibleProperty,
       lineWidth: 2
     } );
 
     const updateDepthLines = () => {
 
       // No need to recompute if not showing depth lines
-      if ( !displayProperties.showDepthLinesProperty.value ) {
+      if ( !displayProperties.depthLinesVisibleProperty.value ) {
         return;
       }
 
@@ -90,7 +90,7 @@ export default class CuboidView extends MeasurableMassView {
     cuboid.sizeProperty.lazyLink( updateListener );
 
     cuboid.transformedEmitter.addListener( updateDepthLines );
-    displayProperties.showDepthLinesProperty.link( updateDepthLines );
+    displayProperties.depthLinesVisibleProperty.link( updateDepthLines );
 
     const materialListener = ( material: Material ) => {
       this.depthLinesNode.stroke = material.depthLinesColor;
@@ -102,7 +102,7 @@ export default class CuboidView extends MeasurableMassView {
       cuboidGeometry.dispose();
       cuboid.transformedEmitter.removeListener( updateDepthLines );
       cuboid.sizeProperty.unlink( updateListener );
-      displayProperties.showDepthLinesProperty.unlink( updateDepthLines );
+      displayProperties.depthLinesVisibleProperty.unlink( updateDepthLines );
       cuboid.materialProperty.unlink( materialListener );
     } );
   }

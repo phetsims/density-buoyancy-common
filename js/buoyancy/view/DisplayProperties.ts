@@ -15,13 +15,13 @@ import Property from '../../../../axon/js/Property.js';
 
 export default class DisplayProperties {
 
-  public readonly showGravityForceProperty: Property<boolean>;
-  public readonly showBuoyancyForceProperty: Property<boolean>;
-  public readonly showContactForceProperty: Property<boolean>;
-  public readonly showForceValuesProperty: Property<boolean>;
+  public readonly gravityForceVisibleProperty: Property<boolean>;
+  public readonly buoyancyForceVisibleProperty: Property<boolean>;
+  public readonly contactForceVisibleProperty: Property<boolean>;
+  public readonly forceValuesVisibleProperty: Property<boolean>;
 
-  public readonly showMassValuesProperty: Property<boolean>;
-  public readonly showDepthLinesProperty: Property<boolean>;
+  public readonly massValuesVisibleProperty: Property<boolean>;
+  public readonly depthLinesVisibleProperty: Property<boolean>;
 
   public readonly vectorZoomProperty: NumberProperty;
 
@@ -31,20 +31,20 @@ export default class DisplayProperties {
                       forcesInitiallyDisplayed: boolean,
                       massValuesInitiallyDisplayed: boolean,
                       initialForceScale: number ) {
-    this.showGravityForceProperty = new BooleanProperty( forcesInitiallyDisplayed, {
-      tandem: canShowForces ? tandem.createTandem( 'showGravityForceProperty' ) : Tandem.OPT_OUT
+    this.gravityForceVisibleProperty = new BooleanProperty( forcesInitiallyDisplayed, {
+      tandem: canShowForces ? tandem.createTandem( 'gravityForceVisibleProperty' ) : Tandem.OPT_OUT
     } );
-    this.showBuoyancyForceProperty = new BooleanProperty( forcesInitiallyDisplayed, {
-      tandem: canShowForces ? tandem.createTandem( 'showBuoyancyForceProperty' ) : Tandem.OPT_OUT
+    this.buoyancyForceVisibleProperty = new BooleanProperty( forcesInitiallyDisplayed, {
+      tandem: canShowForces ? tandem.createTandem( 'buoyancyForceVisibleProperty' ) : Tandem.OPT_OUT
     } );
-    this.showContactForceProperty = new BooleanProperty( forcesInitiallyDisplayed, {
-      tandem: canShowForces ? tandem.createTandem( 'showContactForceProperty' ) : Tandem.OPT_OUT
+    this.contactForceVisibleProperty = new BooleanProperty( forcesInitiallyDisplayed, {
+      tandem: canShowForces ? tandem.createTandem( 'contactForceVisibleProperty' ) : Tandem.OPT_OUT
     } );
-    this.showForceValuesProperty = new BooleanProperty( forcesInitiallyDisplayed, {
-      tandem: canShowForces ? tandem.createTandem( 'showForceValuesProperty' ) : Tandem.OPT_OUT
+    this.forceValuesVisibleProperty = new BooleanProperty( forcesInitiallyDisplayed, {
+      tandem: canShowForces ? tandem.createTandem( 'forceValuesVisibleProperty' ) : Tandem.OPT_OUT
     } );
-    this.showMassValuesProperty = new BooleanProperty( massValuesInitiallyDisplayed, {
-      tandem: tandem.createTandem( 'showMassValuesProperty' ),
+    this.massValuesVisibleProperty = new BooleanProperty( massValuesInitiallyDisplayed, {
+      tandem: tandem.createTandem( 'massValuesVisibleProperty' ),
       phetioFeatured: true,
       phetioDocumentation: 'Displays a mass readout on each object'
     } );
@@ -53,19 +53,19 @@ export default class DisplayProperties {
       range: new Range( Math.pow( 0.5, 9 ), 1 )
     } );
 
-    this.showDepthLinesProperty = new BooleanProperty( false, {
-      tandem: supportsDepthLines ? tandem.createTandem( 'showDepthLinesProperty' ) : Tandem.OPT_OUT,
+    this.depthLinesVisibleProperty = new BooleanProperty( false, {
+      tandem: supportsDepthLines ? tandem.createTandem( 'depthLinesVisibleProperty' ) : Tandem.OPT_OUT,
       phetioDocumentation: 'Display visual lines on blocks to aid in calculating the percentage that the block is submerged.'
     } );
   }
 
   public reset(): void {
-    this.showGravityForceProperty.reset();
-    this.showBuoyancyForceProperty.reset();
-    this.showContactForceProperty.reset();
-    this.showMassValuesProperty.reset();
-    this.showForceValuesProperty.reset();
-    this.showDepthLinesProperty.reset();
+    this.gravityForceVisibleProperty.reset();
+    this.buoyancyForceVisibleProperty.reset();
+    this.contactForceVisibleProperty.reset();
+    this.massValuesVisibleProperty.reset();
+    this.forceValuesVisibleProperty.reset();
+    this.depthLinesVisibleProperty.reset();
     this.vectorZoomProperty.reset();
   }
 

@@ -146,7 +146,10 @@ export default abstract class ComboNumberControl<T> extends VBox {
             value: providedOptions.range.max,
             label: new Text( providedOptions.range.max, { font: new PhetFont( 12 ), maxWidth: 50 } )
           } ],
-          trackSize: new Dimension2( 120, 0.5 )
+          trackSize: new Dimension2( 120, 0.5 ),
+          keyboardStep: 0.05,
+          pageKeyboardStep: 1,
+          shiftKeyboardStep: 0.01
         }
       },
 

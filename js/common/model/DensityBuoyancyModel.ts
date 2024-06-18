@@ -28,6 +28,9 @@ import { PhetioObjectOptions } from '../../../../tandem/js/PhetioObject.js';
 import PickRequired from '../../../../phet-core/js/types/PickRequired.js';
 import PoolScale from './PoolScale.js';
 
+// TODO: Don't import Bottle in density, it is causing too large of a file size, see https://github.com/phetsims/density-buoyancy-common/issues/194
+import Bottle from '../../buoyancy/model/applications/Bottle.js';
+
 // constants
 const BLOCK_SPACING = 0.01;
 const POOL_VOLUME = 0.15;
@@ -238,7 +241,13 @@ export default class DensityBuoyancyModel implements TModel {
               const horizontalForce = this.engine.bodyGetContactForceBetween( mass.body, otherMass.body ).x;
               // Blocks should never experiment +x forces by this scale. If they do, they are trapped beneath it.
               if ( horizontalForce > 0 ) {
-                otherMass.matrix.set02( mass.matrix.m02() - SCALE_WIDTH );
+
+                // The bottle is very wide, and must be teleported a bit further.
+                // TODO: Can we estimate the bounds of the otherMass, so that we can position it exactly (minus a small epsilon)
+                // to the left of the scale, see https://github.com/phetsims/density-buoyancy-common/issues/194
+                const delta = otherMass instanceof Bottle ? SCALE_WIDTH * 2 : SCALE_WIDTH;
+
+                otherMass.matrix.set02( mass.matrix.m02() - delta );
                 otherMass.writeData();
                 otherMass.transformedEmitter.emit();
               }

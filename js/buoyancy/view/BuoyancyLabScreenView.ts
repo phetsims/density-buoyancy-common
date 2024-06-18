@@ -51,7 +51,8 @@ export default class BuoyancyLabScreenView extends DensityBuoyancyScreenView<Buo
     // In liters
     const maxBlockVolume = 10;
 
-    const fluidDisplacedAccordionBox = new FluidDisplacedAccordionBox( model.pool.fluidLevelVolumeProperty,
+    const fluidDisplacedAccordionBox = new FluidDisplacedAccordionBox(
+      model.fluidDisplacedVolumeProperty,
       maxBlockVolume,
       model.pool.fluidMaterialProperty,
       model.gravityProperty, {

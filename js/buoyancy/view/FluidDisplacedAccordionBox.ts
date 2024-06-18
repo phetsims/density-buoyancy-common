@@ -34,7 +34,6 @@ type SelfOptions = EmptySelfOptions;
 
 type FluidDisplacedAccordionBoxOptions = SelfOptions & AccordionBoxOptions;
 
-const STARTING_VOLUME = DensityBuoyancyCommonConstants.DESIRED_STARTING_POOL_VOLUME * DensityBuoyancyCommonConstants.LITERS_IN_CUBIC_METER;
 const CONTENT_WIDTH = 105;
 
 // For custom fluid densities, hollywood the color to ensure good contrast with the beaker fluid and the panel background, see https://github.com/phetsims/buoyancy/issues/154
@@ -45,14 +44,11 @@ const BEAKER_RANGE = new Range( 0, 1 );
 
 export default class FluidDisplacedAccordionBox extends AccordionBox {
 
-  public constructor( poolVolumeProperty: TReadOnlyProperty<number>,
+  public constructor( displayedDisplacedVolumeProperty: TReadOnlyProperty<number>,
                       maxBeakerVolume: number,
                       fluidMaterialProperty: TReadOnlyProperty<Material>,
                       gravityProperty: TReadOnlyProperty<Gravity>,
                       providedOptions?: FluidDisplacedAccordionBoxOptions ) {
-    assert && assert( Utils.toFixedNumber( poolVolumeProperty.value, 7 ) === STARTING_VOLUME,
-      `This class greatly expects the starting volume of the pool to be ${STARTING_VOLUME}L.` );
-
     const options = optionize<FluidDisplacedAccordionBoxOptions, SelfOptions, AccordionBoxOptions>()( {
       titleNode: new RichText( DensityBuoyancyCommonStrings.fluidDisplacedStringProperty, {
         font: DensityBuoyancyCommonConstants.TITLE_FONT,
@@ -75,15 +71,6 @@ export default class FluidDisplacedAccordionBox extends AccordionBox {
 
       accessibleName: DensityBuoyancyCommonStrings.fluidDisplacedStringProperty
     }, providedOptions );
-
-    const displayRange = new Range( 0, maxBeakerVolume );
-    const displayedDisplacedVolumeProperty = new NumberProperty( 0, { range: displayRange } );
-    poolVolumeProperty.link( totalLiters => {
-      const displacedVolume = totalLiters - STARTING_VOLUME;
-      assert && assert( Utils.toFixedNumber( displacedVolume, 7 ) <= maxBeakerVolume,
-        `pool volume exceeded expected max of ${STARTING_VOLUME + maxBeakerVolume}: ${totalLiters}` );
-      displayedDisplacedVolumeProperty.value = displayRange.constrainValue( displacedVolume );
-    } );
 
     const beakerVolumeProperty = new NumberProperty( 0, { range: BEAKER_RANGE.copy() } );
 
@@ -114,7 +101,7 @@ export default class FluidDisplacedAccordionBox extends AccordionBox {
       beakerVolumeProperty.value = displayedLiters / maxBeakerVolume;
     } );
 
-    const numberDisplay = new NumberDisplay( displayedDisplacedVolumeProperty, displayedDisplacedVolumeProperty.range, {
+    const numberDisplay = new NumberDisplay( displayedDisplacedVolumeProperty, new Range( 0, maxBeakerVolume ), {
       numberFormatter: value => StringUtils.fillIn( DensityBuoyancyCommonStrings.litersPatternStringProperty, {
         liters: Utils.toFixed( value, 2 )
       } ),

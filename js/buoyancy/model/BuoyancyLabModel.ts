@@ -15,12 +15,17 @@ import Material from '../../common/model/Material.js';
 import Scale, { DisplayType } from '../../common/model/Scale.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import { combineOptions } from '../../../../phet-core/js/optionize.js';
+import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
+import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
+import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 
 export type BuoyancyLabModelOptions = DensityBuoyancyModelOptions;
 
 export default class BuoyancyLabModel extends DensityBuoyancyModel {
 
   public readonly block: Cube;
+
+  public readonly fluidDisplacedVolumeProperty: TReadOnlyProperty<number>;
 
   public constructor( options: BuoyancyLabModelOptions ) {
 
@@ -53,6 +58,13 @@ export default class BuoyancyLabModel extends DensityBuoyancyModel {
         phetioReadOnly: false
       }
     } ) );
+
+    this.fluidDisplacedVolumeProperty = new DerivedProperty(
+      [ this.block.submergedMassFractionProperty, this.block.volumeProperty ],
+      ( submergedMassFraction, volume ) => {
+        return submergedMassFraction * volume * DensityBuoyancyCommonConstants.LITERS_IN_CUBIC_METER;
+      }
+    );
   }
 
   /**

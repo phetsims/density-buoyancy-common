@@ -11,7 +11,6 @@
 import MassView from './MassView.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import Mass from '../model/Mass.js';
-import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import ForceDiagramNode from './ForceDiagramNode.js';
 import Matrix3 from '../../../../dot/js/Matrix3.js';
 import MassLabelNode from './MassLabelNode.js';
@@ -19,6 +18,7 @@ import Vector2 from '../../../../dot/js/Vector2.js';
 import MassDecorationLayer from './MassDecorationLayer.js';
 import { THREEModelViewTransform } from './DensityBuoyancyScreenView.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
+import DisplayProperties from '../../buoyancy/view/DisplayProperties.js';
 
 const scratchVector2 = new Vector2( 0, 0 );
 
@@ -29,25 +29,13 @@ export default class MeasurableMassView extends MassView {
 
   protected constructor( mass: Mass, initialGeometry: THREE.BufferGeometry,
                          modelViewTransform: THREEModelViewTransform,
-                         showGravityForceProperty: TReadOnlyProperty<boolean>,
-                         showBuoyancyForceProperty: TReadOnlyProperty<boolean>,
-                         showContactForceProperty: TReadOnlyProperty<boolean>,
-                         showForceValuesProperty: TReadOnlyProperty<boolean>,
-                         vectorZoomProperty: TReadOnlyProperty<number>,
-                         showMassValuesProperty: TReadOnlyProperty<boolean> ) {
+                         displayProperties: DisplayProperties ) {
 
     super( mass, initialGeometry, modelViewTransform );
 
-    this.forceDiagramNode = new ForceDiagramNode(
-      mass,
-      showGravityForceProperty,
-      showBuoyancyForceProperty,
-      showContactForceProperty,
-      showForceValuesProperty,
-      vectorZoomProperty
-    );
+    this.forceDiagramNode = new ForceDiagramNode( mass, displayProperties );
 
-    this.massLabelNode = new MassLabelNode( mass, showMassValuesProperty );
+    this.massLabelNode = new MassLabelNode( mass, displayProperties.showMassValuesProperty );
 
     // Update the decoration layer when phet-io state is set
     const updateDecorationLayer = () => this.updateDecorationLayer();

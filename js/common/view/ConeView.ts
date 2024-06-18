@@ -11,9 +11,9 @@ import TriangleArrayWriter from '../../../../mobius/js/TriangleArrayWriter.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import Cone from '../model/Cone.js';
 import { TAG_OFFSET } from './MassTagNode.js';
-import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import MeasurableMassView from './MeasurableMassView.js';
 import { THREEModelViewTransform } from './DensityBuoyancyScreenView.js';
+import DisplayProperties from '../../buoyancy/view/DisplayProperties.js';
 
 // constants
 const segments = 64;
@@ -25,26 +25,11 @@ export default class ConeView extends MeasurableMassView {
   private readonly coneGeometry: THREE.BufferGeometry;
   private readonly updateListener: () => void;
 
-  public constructor( cone: Cone, modelViewTransform: THREEModelViewTransform,
-                      showGravityForceProperty: TReadOnlyProperty<boolean>,
-                      showBuoyancyForceProperty: TReadOnlyProperty<boolean>,
-                      showContactForceProperty: TReadOnlyProperty<boolean>,
-                      showForceValuesProperty: TReadOnlyProperty<boolean>,
-                      vectorZoomProperty: TReadOnlyProperty<number>,
-                      showMassValuesProperty: TReadOnlyProperty<boolean> ) {
+  public constructor( cone: Cone, modelViewTransform: THREEModelViewTransform, displayProperties: DisplayProperties ) {
 
     const coneGeometry = ConeView.getConeGeometry( cone.radiusProperty.value, cone.heightProperty.value, cone.isVertexUp );
 
-    super( cone, coneGeometry, modelViewTransform,
-
-      showGravityForceProperty,
-      showBuoyancyForceProperty,
-      showContactForceProperty,
-      showForceValuesProperty,
-      vectorZoomProperty,
-
-      showMassValuesProperty
-    );
+    super( cone, coneGeometry, modelViewTransform, displayProperties );
 
     this.cone = cone;
     this.coneGeometry = coneGeometry;

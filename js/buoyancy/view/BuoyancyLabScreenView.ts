@@ -32,11 +32,12 @@ import ScaleView from '../../common/view/ScaleView.js';
 import fluid_displaced_scale_icon_png from '../../../images/fluid_displaced_scale_icon_png.js';
 import CuboidView from '../../common/view/CuboidView.js';
 import FluidDensityPanel from './FluidDensityPanel.js';
+import BuoyancyScreenView from './BuoyancyScreenView.js';
 
 // constants
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN_SMALL;
 
-export default class BuoyancyLabScreenView extends DensityBuoyancyScreenView<BuoyancyLabModel> {
+export default class BuoyancyLabScreenView extends BuoyancyScreenView<BuoyancyLabModel> {
 
   private readonly rightBox: MultiSectionPanelsNode;
 
@@ -44,7 +45,7 @@ export default class BuoyancyLabScreenView extends DensityBuoyancyScreenView<Buo
 
     const tandem = options.tandem;
 
-    super( model, combineOptions<DensityBuoyancyScreenViewOptions>( {
+    super( model, true, true, false, 1 / 16, combineOptions<DensityBuoyancyScreenViewOptions>( {
       cameraLookAt: DensityBuoyancyCommonConstants.BUOYANCY_CAMERA_LOOK_AT
     }, options ) );
 
@@ -64,7 +65,7 @@ export default class BuoyancyLabScreenView extends DensityBuoyancyScreenView<Buo
       spacing: DensityBuoyancyCommonConstants.SPACING_SMALL,
       children: [
         fluidDisplacedAccordionBox,
-        new BuoyancyDisplayOptionsPanel( model, {
+        new BuoyancyDisplayOptionsPanel( this.displayProperties, {
           tandem: tandem.createTandem( 'displayOptionsPanel' ),
           contentWidth: this.modelToViewPoint( new Vector3(
             this.model.poolBounds.left,

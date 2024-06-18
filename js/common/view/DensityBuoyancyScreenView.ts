@@ -66,6 +66,7 @@ import createObservableArray, { ObservableArray } from '../../../../axon/js/crea
 import Emitter from '../../../../axon/js/Emitter.js';
 import { Shape } from '../../../../kite/js/imports.js';
 import PoolScaleHeightControl from './PoolScaleHeightControl.js';
+import DisplayProperties from '../../buoyancy/view/DisplayProperties.js';
 
 // constants
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN_SMALL;
@@ -115,12 +116,15 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
   // Subtypes can provide their own values to control the barrier sizing.
   private readonly leftBarrierViewPointPropertyProperty: Property<TReadOnlyProperty<Vector2>>;
   protected readonly rightBarrierViewPointPropertyProperty: Property<TReadOnlyProperty<Vector2>>;
-  
+
   protected readonly resetEmitter = new Emitter();
 
   protected readonly poolScaleHeightControl: PoolScaleHeightControl | null;
 
-  public constructor( model: Model, providedOptions: SelfOptions ) {
+  public readonly displayProperties: DisplayProperties;
+
+  public constructor( model: Model, canShowForces: boolean, supportsDepthLines: boolean, forcesInitiallyDisplayed: boolean,
+                      massValuesInitiallyDisplayed: boolean, initialForceScale: number, providedOptions: SelfOptions ) {
 
     const scaleIncrease = 3.5;
 
@@ -136,6 +140,9 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
     const tandem = options.tandem;
 
     super( options );
+
+    this.displayProperties = new DisplayProperties( canShowForces, options.tandem.createTandem( 'displayProperties' ),
+      supportsDepthLines, forcesInitiallyDisplayed, massValuesInitiallyDisplayed, initialForceScale );
 
     this.model = model;
     this.postLayoutEmitter = new TinyEmitter();
@@ -505,47 +512,31 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
       let massView!: MassView;
 
       if ( mass instanceof Cuboid ) {
-        massView = new CuboidView( mass, this, model.showDepthLinesProperty,
-          model.showGravityForceProperty, model.showBuoyancyForceProperty, model.showContactForceProperty,
-          model.showForceValuesProperty, model.vectorZoomProperty, model.showMassValuesProperty );
+        massView = new CuboidView( mass, this, this.displayProperties );
       }
       else if ( mass instanceof Scale ) {
         massView = new ScaleView( mass, this, model.gravityProperty );
       }
       else if ( mass instanceof Cone ) {
-        massView = new ConeView( mass, this, model.showGravityForceProperty,
-          model.showBuoyancyForceProperty, model.showContactForceProperty, model.showForceValuesProperty,
-          model.vectorZoomProperty, model.showMassValuesProperty );
+        massView = new ConeView( mass, this, this.displayProperties );
       }
       else if ( mass instanceof Ellipsoid ) {
-        massView = new EllipsoidView( mass, this, model.showGravityForceProperty,
-          model.showBuoyancyForceProperty, model.showContactForceProperty, model.showForceValuesProperty,
-          model.vectorZoomProperty, model.showMassValuesProperty );
+        massView = new EllipsoidView( mass, this, this.displayProperties );
       }
       else if ( mass instanceof HorizontalCylinder ) {
-        massView = new HorizontalCylinderView( mass, this,
-          model.showGravityForceProperty, model.showBuoyancyForceProperty, model.showContactForceProperty,
-          model.showForceValuesProperty, model.vectorZoomProperty, model.showMassValuesProperty );
+        massView = new HorizontalCylinderView( mass, this, this.displayProperties );
       }
       else if ( mass instanceof VerticalCylinder ) {
-        massView = new VerticalCylinderView( mass, this, model.showGravityForceProperty,
-          model.showBuoyancyForceProperty, model.showContactForceProperty, model.showForceValuesProperty,
-          model.vectorZoomProperty, model.showMassValuesProperty );
+        massView = new VerticalCylinderView( mass, this, this.displayProperties );
       }
       else if ( mass instanceof Bottle ) {
-        massView = new BottleView( mass, this, model.showGravityForceProperty,
-          model.showBuoyancyForceProperty, model.showContactForceProperty, model.showForceValuesProperty,
-          model.vectorZoomProperty, model.showMassValuesProperty );
+        massView = new BottleView( mass, this, this.displayProperties );
       }
       else if ( mass instanceof Boat ) {
-        massView = new BoatView( mass, this, model.pool.fluidYInterpolatedProperty,
-          model.showGravityForceProperty, model.showBuoyancyForceProperty, model.showContactForceProperty,
-          model.showForceValuesProperty, model.vectorZoomProperty, model.showMassValuesProperty );
+        massView = new BoatView( mass, this, model.pool.fluidYInterpolatedProperty, this.displayProperties );
       }
       else if ( mass instanceof Duck ) {
-        massView = new DuckView( mass, this,
-          model.showGravityForceProperty, model.showBuoyancyForceProperty, model.showContactForceProperty,
-          model.showForceValuesProperty, model.vectorZoomProperty, model.showMassValuesProperty );
+        massView = new DuckView( mass, this, this.displayProperties );
       }
       assert && assert( !!massView, `massView is falsy, mass: ${mass.constructor.name}` );
 

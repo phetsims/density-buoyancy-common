@@ -37,6 +37,7 @@ import MassView from '../../common/view/MassView.js';
 import CuboidView from '../../common/view/CuboidView.js';
 import BlocksPanel from '../../common/view/BlocksPanel.js';
 import Panel from '../../../../sun/js/Panel.js';
+import BuoyancyScreenView from './BuoyancyScreenView.js';
 
 // constants
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN_SMALL;
@@ -44,7 +45,7 @@ const MARGIN = DensityBuoyancyCommonConstants.MARGIN_SMALL;
 // Relatively arbitrary default
 const MAX_RIGHT_SIDE_CONTENT_WIDTH = ScreenView.DEFAULT_LAYOUT_BOUNDS.width / 2;
 
-export default class BuoyancyCompareScreenView extends DensityBuoyancyScreenView<BuoyancyCompareModel> {
+export default class BuoyancyCompareScreenView extends BuoyancyScreenView<BuoyancyCompareModel> {
 
   private readonly rightSideMaxContentWidthProperty = new Property( MAX_RIGHT_SIDE_CONTENT_WIDTH );
   private readonly rightSidePanelsVBox: Node;
@@ -53,7 +54,7 @@ export default class BuoyancyCompareScreenView extends DensityBuoyancyScreenView
 
   public constructor( model: BuoyancyCompareModel, options: DensityBuoyancyScreenViewOptions ) {
 
-    super( model, combineOptions<DensityBuoyancyScreenViewOptions>( {
+    super( model, true, false, true, 1 / 16, combineOptions<DensityBuoyancyScreenViewOptions>( {
       // Custom just for this screen
       cameraLookAt: DensityBuoyancyCommonConstants.BUOYANCY_BASICS_CAMERA_LOOK_AT,
       viewOffset: DensityBuoyancyCommonConstants.BUOYANCY_BASICS_VIEW_OFFSET,
@@ -72,7 +73,7 @@ export default class BuoyancyCompareScreenView extends DensityBuoyancyScreenView
       margin: MARGIN
     } ) );
 
-    const displayOptionsPanel = new BuoyancyDisplayOptionsPanel( model, {
+    const displayOptionsPanel = new BuoyancyDisplayOptionsPanel( this.displayProperties, {
       tandem: options.tandem.createTandem( 'displayOptionsPanel' ),
       contentWidth: this.modelToViewPoint( new Vector3(
         this.model.poolBounds.left,

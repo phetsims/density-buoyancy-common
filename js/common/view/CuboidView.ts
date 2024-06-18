@@ -12,7 +12,6 @@ import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import Cuboid from '../model/Cuboid.js';
 import Bounds3 from '../../../../dot/js/Bounds3.js';
 import { TAG_OFFSET } from './MassTagNode.js';
-import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import { Path } from '../../../../scenery/js/imports.js';
 import { Shape } from '../../../../kite/js/imports.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
@@ -20,6 +19,7 @@ import Material from '../model/Material.js';
 import MeasurableMassView from './MeasurableMassView.js';
 import MassDecorationLayer from './MassDecorationLayer.js';
 import { THREEModelViewTransform } from './DensityBuoyancyScreenView.js';
+import DisplayProperties from '../../buoyancy/view/DisplayProperties.js';
 
 // constants
 const numElements = 18 * 3;
@@ -32,27 +32,13 @@ export default class CuboidView extends MeasurableMassView {
 
   public constructor( cuboid: Cuboid,
                       modelViewTransform: THREEModelViewTransform,
-                      showDepthLinesProperty: TReadOnlyProperty<boolean>,
-                      showGravityForceProperty: TReadOnlyProperty<boolean>,
-                      showBuoyancyForceProperty: TReadOnlyProperty<boolean>,
-                      showContactForceProperty: TReadOnlyProperty<boolean>,
-                      showForceValuesProperty: TReadOnlyProperty<boolean>,
-                      vectorZoomProperty: TReadOnlyProperty<number>,
-                      showMassValuesProperty: TReadOnlyProperty<boolean> ) {
+                      displayProperties: DisplayProperties ) {
 
     const size = cuboid.sizeProperty.value;
 
     const cuboidGeometry = CuboidView.getCuboidGeometry( size );
 
-    super( cuboid, cuboidGeometry, modelViewTransform,
-
-      showGravityForceProperty,
-      showBuoyancyForceProperty,
-      showContactForceProperty,
-      showForceValuesProperty,
-      vectorZoomProperty,
-      showMassValuesProperty
-    );
+    super( cuboid, cuboidGeometry, modelViewTransform, displayProperties );
 
     const positionTag = () => {
       const size = cuboid.sizeProperty.value;
@@ -61,14 +47,14 @@ export default class CuboidView extends MeasurableMassView {
     positionTag();
 
     this.depthLinesNode = new Path( new Shape(), {
-      visibleProperty: showDepthLinesProperty,
+      visibleProperty: displayProperties.showDepthLinesProperty,
       lineWidth: 2
     } );
 
     const updateDepthLines = () => {
 
       // No need to recompute if not showing depth lines
-      if ( !showDepthLinesProperty.value ) {
+      if ( !displayProperties.showDepthLinesProperty.value ) {
         return;
       }
 
@@ -104,7 +90,7 @@ export default class CuboidView extends MeasurableMassView {
     cuboid.sizeProperty.lazyLink( updateListener );
 
     cuboid.transformedEmitter.addListener( updateDepthLines );
-    showDepthLinesProperty.link( updateDepthLines );
+    displayProperties.showDepthLinesProperty.link( updateDepthLines );
 
     const materialListener = ( material: Material ) => {
       this.depthLinesNode.stroke = material.depthLinesColor;
@@ -116,7 +102,7 @@ export default class CuboidView extends MeasurableMassView {
       cuboidGeometry.dispose();
       cuboid.transformedEmitter.removeListener( updateDepthLines );
       cuboid.sizeProperty.unlink( updateListener );
-      showDepthLinesProperty.unlink( updateDepthLines );
+      displayProperties.showDepthLinesProperty.unlink( updateDepthLines );
       cuboid.materialProperty.unlink( materialListener );
     } );
   }

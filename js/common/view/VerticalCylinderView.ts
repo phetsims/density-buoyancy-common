@@ -11,9 +11,9 @@ import TriangleArrayWriter from '../../../../mobius/js/TriangleArrayWriter.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import VerticalCylinder from '../model/VerticalCylinder.js';
 import { TAG_OFFSET } from './MassTagNode.js';
-import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import MeasurableMassView from './MeasurableMassView.js';
 import { THREEModelViewTransform } from './DensityBuoyancyScreenView.js';
+import DisplayProperties from '../../buoyancy/view/DisplayProperties.js';
 
 // constants
 const segments = 64;
@@ -26,12 +26,7 @@ export default class VerticalCylinderView extends MeasurableMassView {
   private readonly updateListener: () => void;
 
   public constructor( verticalCylinder: VerticalCylinder, modelViewTransform: THREEModelViewTransform,
-                      showGravityForceProperty: TReadOnlyProperty<boolean>,
-                      showBuoyancyForceProperty: TReadOnlyProperty<boolean>,
-                      showContactForceProperty: TReadOnlyProperty<boolean>,
-                      showForceValuesProperty: TReadOnlyProperty<boolean>,
-                      vectorZoomProperty: TReadOnlyProperty<number>,
-                      showMassValuesProperty: TReadOnlyProperty<boolean> ) {
+                      displayProperties: DisplayProperties ) {
 
     const positionArray = new Float32Array( numElements * 3 );
     const normalArray = new Float32Array( numElements * 3 );
@@ -44,12 +39,7 @@ export default class VerticalCylinderView extends MeasurableMassView {
     verticalCylinderGeometry.addAttribute( 'normal', new THREE.BufferAttribute( normalArray, 3 ) );
     verticalCylinderGeometry.addAttribute( 'uv', new THREE.BufferAttribute( uvArray, 2 ) );
 
-    super( verticalCylinder, verticalCylinderGeometry, modelViewTransform, showGravityForceProperty,
-      showBuoyancyForceProperty,
-      showContactForceProperty,
-      showForceValuesProperty,
-      vectorZoomProperty,
-      showMassValuesProperty );
+    super( verticalCylinder, verticalCylinderGeometry, modelViewTransform, displayProperties );
 
     const positionTag = () => {
       const radius = verticalCylinder.radiusProperty.value;

@@ -22,6 +22,7 @@ import { combineOptions } from '../../../../phet-core/js/optionize.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import { chooseDecimalPlaces } from '../DensityBuoyancyCommonConstants.js';
 import BlendedVector2Property from '../model/BlendedVector2Property.js';
+import DisplayProperties from '../../buoyancy/view/DisplayProperties.js';
 
 // constants
 const arrowOptions = {
@@ -34,13 +35,6 @@ const arrowSpacing = arrowOptions.headWidth + 3;
 const labelFont = new PhetFont( { size: 12, weight: 'bold' } );
 
 export default class ForceDiagramNode extends Node {
-
-  private readonly mass: Mass;
-  private readonly showGravityForceProperty: TReadOnlyProperty<boolean>;
-  private readonly showBuoyancyForceProperty: TReadOnlyProperty<boolean>;
-  private readonly showContactForceProperty: TReadOnlyProperty<boolean>;
-  private readonly showForceValuesProperty: TReadOnlyProperty<boolean>;
-  private readonly vectorZoomProperty: TReadOnlyProperty<number>;
 
   private readonly gravityArrowNode: ArrowNode;
   private readonly buoyancyArrowNode: ArrowNode;
@@ -58,27 +52,12 @@ export default class ForceDiagramNode extends Node {
 
   private readonly axisNode: Line;
 
-  public constructor(
-    mass: Mass,
-    showGravityForceProperty: TReadOnlyProperty<boolean>,
-    showBuoyancyForceProperty: TReadOnlyProperty<boolean>,
-    showContactForceProperty: TReadOnlyProperty<boolean>,
-    showForceValuesProperty: TReadOnlyProperty<boolean>,
-    vectorZoomProperty: TReadOnlyProperty<number>
-  ) {
+  public constructor( public readonly mass: Mass, public readonly displayProperties: DisplayProperties ) {
     super( {
 
       // Make unpickable so the user can grab the mass through the force diagram
       pickable: false
     } );
-
-    this.mass = mass;
-
-    this.showGravityForceProperty = showGravityForceProperty;
-    this.showBuoyancyForceProperty = showBuoyancyForceProperty;
-    this.showContactForceProperty = showContactForceProperty;
-    this.showForceValuesProperty = showForceValuesProperty;
-    this.vectorZoomProperty = vectorZoomProperty;
 
     this.gravityArrowNode = new ArrowNode( 0, 0, 0, 0, combineOptions<ArrowNodeOptions>( {
       fill: DensityBuoyancyCommonColors.gravityForceProperty
@@ -147,10 +126,10 @@ export default class ForceDiagramNode extends Node {
     const updateArrow = ( forceProperty: InterpolatedProperty<Vector2> | BlendedVector2Property, showForceProperty: TReadOnlyProperty<boolean>, arrowNode: ArrowNode, textNode: Text, labelNode: Node ) => {
       const y = forceProperty.value.y;
       if ( showForceProperty.value && Math.abs( y ) > 1e-5 ) {
-        arrowNode.setTip( 0, -y * this.vectorZoomProperty.value * 20 ); // Default zoom is 20 units per Newton
+        arrowNode.setTip( 0, -y * this.displayProperties.vectorZoomProperty.value * 20 ); // Default zoom is 20 units per Newton
         ( y > 0 ? upwardArrows : downwardArrows ).push( arrowNode );
 
-        if ( this.showForceValuesProperty.value ) {
+        if ( this.displayProperties.showForceValuesProperty.value ) {
           // We have a listener to the string that will call update
           textNode.string = StringUtils.fillIn( DensityBuoyancyCommonStrings.newtonsPatternStringProperty, {
             newtons: Utils.toFixed( forceProperty.value.magnitude, chooseDecimalPlaces( forceProperty.value.magnitude ) )
@@ -161,9 +140,9 @@ export default class ForceDiagramNode extends Node {
     };
 
     // Documentation specifies that contact force should always be on the left if there are conflicts
-    updateArrow( this.mass.contactForceBlendedProperty, this.showContactForceProperty, this.contactArrowNode, this.contactLabelText, this.contactLabelNode );
-    updateArrow( this.mass.gravityForceInterpolatedProperty, this.showGravityForceProperty, this.gravityArrowNode, this.gravityLabelText, this.gravityLabelNode );
-    updateArrow( this.mass.buoyancyForceInterpolatedProperty, this.showBuoyancyForceProperty, this.buoyancyArrowNode, this.buoyancyLabelText, this.buoyancyLabelNode );
+    updateArrow( this.mass.contactForceBlendedProperty, this.displayProperties.showContactForceProperty, this.contactArrowNode, this.contactLabelText, this.contactLabelNode );
+    updateArrow( this.mass.gravityForceInterpolatedProperty, this.displayProperties.showGravityForceProperty, this.gravityArrowNode, this.gravityLabelText, this.gravityLabelNode );
+    updateArrow( this.mass.buoyancyForceInterpolatedProperty, this.displayProperties.showBuoyancyForceProperty, this.buoyancyArrowNode, this.buoyancyLabelText, this.buoyancyLabelNode );
 
     this.children = [
       ...upwardArrows,
@@ -175,7 +154,7 @@ export default class ForceDiagramNode extends Node {
     const positionArrow = ( array: ArrowNode[], index: number, isUp: boolean ) => {
       const arrow = array[ index ];
       arrow.x = ( index - ( array.length - 1 ) / 2 ) * arrowSpacing;
-      if ( this.showForceValuesProperty.value ) {
+      if ( this.displayProperties.showForceValuesProperty.value ) {
         const label = this.arrowMap.get( arrow )!;
         if ( isUp ) {
           label.bottom = -2;

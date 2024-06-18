@@ -28,7 +28,6 @@ import ScaleView from '../../common/view/ScaleView.js';
 import MassView from '../../common/view/MassView.js';
 import CuboidView from '../../common/view/CuboidView.js';
 
-
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN_SMALL;
 
 export default class DensityMysteryScreenView extends DensityBuoyancyScreenView<DensityMysteryModel> {
@@ -36,7 +35,7 @@ export default class DensityMysteryScreenView extends DensityBuoyancyScreenView<
 
     const tandem = options.tandem;
 
-    super( model, combineOptions<DensityBuoyancyScreenViewOptions>( {
+    super( model, false, false, false, false, 1 / 16, combineOptions<DensityBuoyancyScreenViewOptions>( {
       cameraLookAt: DensityBuoyancyCommonConstants.DENSITY_CAMERA_LOOK_AT
     }, options ) );
 

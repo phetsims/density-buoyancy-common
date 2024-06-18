@@ -33,10 +33,11 @@ import CuboidView from '../../common/view/CuboidView.js';
 import ScaleView from '../../common/view/ScaleView.js';
 import MassView from '../../common/view/MassView.js';
 import FluidDensityPanel from './FluidDensityPanel.js';
+import BuoyancyScreenView from './BuoyancyScreenView.js';
 
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN_SMALL;
 
-export default class BuoyancyExploreScreenView extends DensityBuoyancyScreenView<BuoyancyExploreModel> {
+export default class BuoyancyExploreScreenView extends BuoyancyScreenView<BuoyancyExploreModel> {
 
   private rightBox: PrimarySecondaryControlsNode;
 
@@ -44,11 +45,11 @@ export default class BuoyancyExploreScreenView extends DensityBuoyancyScreenView
 
     const tandem = options.tandem;
 
-    super( model, combineOptions<DensityBuoyancyScreenViewOptions>( {
+    super( model, true, false, true, 1 / 16, combineOptions<DensityBuoyancyScreenViewOptions>( {
       cameraLookAt: DensityBuoyancyCommonConstants.BUOYANCY_CAMERA_LOOK_AT
     }, options ) );
 
-    const displayOptionsPanel = new BuoyancyDisplayOptionsPanel( model, {
+    const displayOptionsPanel = new BuoyancyDisplayOptionsPanel( this.displayProperties, {
       tandem: tandem.createTandem( 'displayOptionsPanel' ),
       contentWidth: this.modelToViewPoint( new Vector3(
         this.model.poolBounds.left,

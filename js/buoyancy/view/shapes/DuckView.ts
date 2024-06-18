@@ -9,40 +9,26 @@
 
 import Bounds3 from '../../../../../dot/js/Bounds3.js';
 import densityBuoyancyCommon from '../../../densityBuoyancyCommon.js';
-import TReadOnlyProperty from '../../../../../axon/js/TReadOnlyProperty.js';
 import Duck from '../../model/shapes/Duck.js';
 import { THREEModelViewTransform } from '../../../common/view/DensityBuoyancyScreenView.js';
 import MeasurableMassView from '../../../common/view/MeasurableMassView.js';
 import { duckGeometry } from '../../model/shapes/DuckData.js';
 import Vector3 from '../../../../../dot/js/Vector3.js';
 import Vector2 from '../../../../../dot/js/Vector2.js';
+import DisplayProperties from '../DisplayProperties.js';
 
 export default class DuckView extends MeasurableMassView {
 
   private readonly duck: Duck;
   private duckGeometry: THREE.BufferGeometry;
 
-  public constructor( duck: Duck, modelViewTransform: THREEModelViewTransform,
-                      showGravityForceProperty: TReadOnlyProperty<boolean>,
-                      showBuoyancyForceProperty: TReadOnlyProperty<boolean>,
-                      showContactForceProperty: TReadOnlyProperty<boolean>,
-                      showForceValuesProperty: TReadOnlyProperty<boolean>,
-                      vectorZoomProperty: TReadOnlyProperty<number>,
-                      showMassValuesProperty: TReadOnlyProperty<boolean> ) {
+  public constructor( duck: Duck, modelViewTransform: THREEModelViewTransform, displayProperties: DisplayProperties ) {
 
     const size = duck.sizeProperty.value;
 
     const duckGeometry = DuckView.getDuckGeometry( size );
 
-    super( duck, duckGeometry, modelViewTransform,
-
-      showGravityForceProperty,
-      showBuoyancyForceProperty,
-      showContactForceProperty,
-      showForceValuesProperty,
-      vectorZoomProperty,
-
-      showMassValuesProperty );
+    super( duck, duckGeometry, modelViewTransform, displayProperties );
 
     this.duck = duck;
     this.duckGeometry = duckGeometry;

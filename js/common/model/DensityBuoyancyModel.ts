@@ -6,14 +6,11 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
-import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import Property from '../../../../axon/js/Property.js';
 import createObservableArray, { ObservableArray } from '../../../../axon/js/createObservableArray.js';
 import Bounds3 from '../../../../dot/js/Bounds3.js';
-import Range from '../../../../dot/js/Range.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
-import Tandem from '../../../../tandem/js/Tandem.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonQueryParameters from '../DensityBuoyancyCommonQueryParameters.js';
 import Gravity from './Gravity.js';
@@ -26,7 +23,6 @@ import PhysicsEngine, { PhysicsEngineBody } from './PhysicsEngine.js';
 import Mass from './Mass.js';
 import Basin from './Basin.js';
 import Cuboid from './Cuboid.js';
-import NumberProperty from '../../../../axon/js/NumberProperty.js';
 import TModel from '../../../../joist/js/TModel.js';
 import { PhetioObjectOptions } from '../../../../tandem/js/PhetioObject.js';
 import PickRequired from '../../../../phet-core/js/types/PickRequired.js';
@@ -68,16 +64,7 @@ export type DensityBuoyancyModelOptions = {
 
 export default class DensityBuoyancyModel implements TModel {
 
-  public readonly showGravityForceProperty: Property<boolean>;
-  public readonly showBuoyancyForceProperty: Property<boolean>;
-  public readonly showContactForceProperty: Property<boolean>;
-  public readonly showForceValuesProperty: Property<boolean>;
-  public readonly vectorZoomProperty: NumberProperty;
-  public readonly showMassValuesProperty: Property<boolean>;
   public readonly gravityProperty: Property<Gravity>;
-
-  public readonly supportsDepthLines: boolean;
-  public readonly showDepthLinesProperty: Property<boolean>;
 
   public readonly poolBounds: Bounds3;
   public readonly groundBounds: Bounds3;
@@ -114,34 +101,6 @@ export default class DensityBuoyancyModel implements TModel {
     }, providedOptions );
 
     const tandem = options.tandem;
-
-    const visiblePropertiesTandem = tandem.createTandem( 'visibleProperties' );
-    this.showGravityForceProperty = new BooleanProperty( options.showForcesDefaults.showGravityForceArrow, {
-      tandem: options.canShowForces ? visiblePropertiesTandem.createTandem( 'showGravityForceProperty' ) : Tandem.OPT_OUT
-    } );
-    this.showBuoyancyForceProperty = new BooleanProperty( options.showForcesDefaults.showBuoyancyForceArrow, {
-      tandem: options.canShowForces ? visiblePropertiesTandem.createTandem( 'showBuoyancyForceProperty' ) : Tandem.OPT_OUT
-    } );
-    this.showContactForceProperty = new BooleanProperty( options.showForcesDefaults.showContactForceArrow, {
-      tandem: options.canShowForces ? visiblePropertiesTandem.createTandem( 'showContactForceProperty' ) : Tandem.OPT_OUT
-    } );
-    this.showForceValuesProperty = new BooleanProperty( options.showForcesDefaults.showForceValues, {
-      tandem: options.canShowForces ? visiblePropertiesTandem.createTandem( 'showForceValuesProperty' ) : Tandem.OPT_OUT
-    } );
-    this.showMassValuesProperty = new BooleanProperty( options.showMassValuesDefault, {
-      tandem: visiblePropertiesTandem.createTandem( 'showMassValuesProperty' ),
-      phetioFeatured: true,
-      phetioDocumentation: 'Displays a mass readout on each object'
-    } );
-    this.vectorZoomProperty = new NumberProperty( options.initialForceScale, {
-      tandem: options.canShowForces ? tandem.createTandem( 'vectorZoomProperty' ) : Tandem.OPT_OUT,
-      range: new Range( Math.pow( 0.5, 9 ), 1 )
-    } );
-    this.supportsDepthLines = options.supportsDepthLines;
-    this.showDepthLinesProperty = new BooleanProperty( false, {
-      tandem: options.supportsDepthLines ? visiblePropertiesTandem.createTandem( 'showDepthLinesProperty' ) : Tandem.OPT_OUT,
-      phetioDocumentation: 'Display visual lines on blocks to aid in calculating the percentage that the block is submerged.'
-    } );
 
     this.gravityProperty = new Property( Gravity.EARTH, {
       valueType: Gravity,
@@ -515,17 +474,9 @@ export default class DensityBuoyancyModel implements TModel {
    * Resets things to their original values.
    */
   public reset(): void {
-    this.showGravityForceProperty.reset();
-    this.showBuoyancyForceProperty.reset();
-    this.showContactForceProperty.reset();
-    this.showMassValuesProperty.reset();
-    this.showForceValuesProperty.reset();
-    this.showDepthLinesProperty.reset();
 
     this.gravityProperty.reset();
     this.spillingWaterOutOfBoat = false;
-
-    this.vectorZoomProperty.reset();
 
     this.pool.reset();
     this.masses.forEach( mass => mass.reset() );

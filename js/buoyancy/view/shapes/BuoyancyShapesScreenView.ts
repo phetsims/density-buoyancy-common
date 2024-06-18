@@ -42,11 +42,12 @@ import ConeView from '../../../common/view/ConeView.js';
 import ScaleView from '../../../common/view/ScaleView.js';
 import MassView from '../../../common/view/MassView.js';
 import FluidDensityPanel from '../FluidDensityPanel.js';
+import BuoyancyScreenView from '../BuoyancyScreenView.js';
 
 // constants
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN_SMALL;
 
-export default class BuoyancyShapesScreenView extends DensityBuoyancyScreenView<BuoyancyShapesModel> {
+export default class BuoyancyShapesScreenView extends BuoyancyScreenView<BuoyancyShapesModel> {
 
   private rightBox: MultiSectionPanelsNode;
 
@@ -56,9 +57,12 @@ export default class BuoyancyShapesScreenView extends DensityBuoyancyScreenView<
 
     const tandem = options.tandem;
 
-    super( model, combineOptions<DensityBuoyancyScreenViewOptions>( {
-      cameraLookAt: DensityBuoyancyCommonConstants.BUOYANCY_CAMERA_LOOK_AT
-    }, options ) );
+    super( model, false, false, true,
+
+      // TODO: https://github.com/phetsims/density-buoyancy-common/issues/186 Why is the force scale 1/4 here? Won't that be confusing to secretly have the scale differ on 1 out of 5 screens?
+      1 / 4, combineOptions<DensityBuoyancyScreenViewOptions>( {
+        cameraLookAt: DensityBuoyancyCommonConstants.BUOYANCY_CAMERA_LOOK_AT
+      }, options ) );
 
     const displayedMysteryMaterials = [
       Material.DENSITY_C,
@@ -81,7 +85,7 @@ export default class BuoyancyShapesScreenView extends DensityBuoyancyScreenView<
       margin: MARGIN
     } ) );
 
-    const displayOptionsPanel = new BuoyancyDisplayOptionsPanel( model, {
+    const displayOptionsPanel = new BuoyancyDisplayOptionsPanel( this.displayProperties, {
       tandem: tandem.createTandem( 'displayOptionsPanel' ),
       contentWidth: this.modelToViewPoint( new Vector3(
         this.model.poolBounds.left,

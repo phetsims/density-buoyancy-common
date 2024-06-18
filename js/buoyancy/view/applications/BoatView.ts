@@ -15,6 +15,7 @@ import BoatDesign from '../../model/applications/BoatDesign.js';
 import DensityBuoyancyCommonConstants from '../../../common/DensityBuoyancyCommonConstants.js';
 import MeasurableMassView from '../../../common/view/MeasurableMassView.js';
 import { THREEModelViewTransform } from '../../../common/view/DensityBuoyancyScreenView.js';
+import DisplayProperties from '../DisplayProperties.js';
 
 type BoatDrawingData = {
   backMiddleMaterial: THREE.MeshBasicMaterial;
@@ -28,24 +29,10 @@ export default class BoatView extends MeasurableMassView {
   public constructor( boat: Boat,
                       modelViewTransform: THREEModelViewTransform,
                       fluidYInterpolatedProperty: TReadOnlyProperty<number>,
-                      showGravityForceProperty: TReadOnlyProperty<boolean>,
-                      showBuoyancyForceProperty: TReadOnlyProperty<boolean>,
-                      showContactForceProperty: TReadOnlyProperty<boolean>,
-                      showForceValuesProperty: TReadOnlyProperty<boolean>,
-                      vectorZoomProperty: TReadOnlyProperty<number>,
-                      showMassValuesProperty: TReadOnlyProperty<boolean> ) {
+                      displayProperties: DisplayProperties ) {
 
     // @ts-expect-error
-    super( boat, new THREE.Geometry(), modelViewTransform,
-
-      showGravityForceProperty,
-      showBuoyancyForceProperty,
-      showContactForceProperty,
-      showForceValuesProperty,
-      vectorZoomProperty,
-
-      showMassValuesProperty
-    );
+    super( boat, new THREE.Geometry(), modelViewTransform, displayProperties );
 
     // Clip planes at the boat's water level
     const topBoatClipPlane = new THREE.Plane( new THREE.Vector3( 0, 1, 0 ), 0 );

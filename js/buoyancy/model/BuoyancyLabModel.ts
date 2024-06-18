@@ -42,7 +42,6 @@ export default class BuoyancyLabModel extends DensityBuoyancyModel {
       }
     }, options ) );
 
-
     this.block = Cube.createWithMass( this.engine, Material.WOOD, new Vector2( -0.2, 0.2 ), 2, {
       tandem: tandem.createTandem( 'block' )
     } );

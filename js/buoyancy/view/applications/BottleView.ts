@@ -9,11 +9,11 @@
 import densityBuoyancyCommon from '../../../densityBuoyancyCommon.js';
 import Bottle from '../../model/applications/Bottle.js';
 import Material from '../../../common/model/Material.js';
-import TReadOnlyProperty from '../../../../../axon/js/TReadOnlyProperty.js';
 import MeasurableMassView from '../../../common/view/MeasurableMassView.js';
 import { THREEModelViewTransform } from '../../../common/view/DensityBuoyancyScreenView.js';
 import Vector3 from '../../../../../dot/js/Vector3.js';
 import { TAG_OFFSET } from '../../../common/view/MassTagNode.js';
+import DisplayProperties from '../DisplayProperties.js';
 
 type BottleDrawingData = {
   group: THREE.Group;
@@ -27,24 +27,14 @@ export default class BottleView extends MeasurableMassView {
 
   public constructor( bottle: Bottle,
                       modelViewTransform: THREEModelViewTransform,
-                      showGravityForceProperty: TReadOnlyProperty<boolean>,
-                      showBuoyancyForceProperty: TReadOnlyProperty<boolean>,
-                      showContactForceProperty: TReadOnlyProperty<boolean>,
-                      showForceValuesProperty: TReadOnlyProperty<boolean>,
-                      vectorZoomProperty: TReadOnlyProperty<number>,
-                      showMassValuesProperty: TReadOnlyProperty<boolean> ) {
+                      displayPropreties: DisplayProperties ) {
 
     super( bottle,
 
       // @ts-expect-error
       new THREE.Geometry(),
       modelViewTransform,
-      showGravityForceProperty,
-      showBuoyancyForceProperty,
-      showContactForceProperty,
-      showForceValuesProperty,
-      vectorZoomProperty,
-      showMassValuesProperty
+      displayPropreties
     );
 
     const bottomClipPlane = new THREE.Plane( new THREE.Vector3( 0, -1, 0 ), 0 );

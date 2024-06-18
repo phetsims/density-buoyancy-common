@@ -11,9 +11,9 @@ import Vector3 from '../../../../dot/js/Vector3.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import Ellipsoid from '../model/Ellipsoid.js';
 import { TAG_OFFSET } from './MassTagNode.js';
-import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import MeasurableMassView from './MeasurableMassView.js';
 import { THREEModelViewTransform } from './DensityBuoyancyScreenView.js';
+import DisplayProperties from '../../buoyancy/view/DisplayProperties.js';
 
 export default class EllipsoidView extends MeasurableMassView {
 
@@ -21,22 +21,11 @@ export default class EllipsoidView extends MeasurableMassView {
   private readonly ellipsoidGeometry: THREE.SphereGeometry;
   private readonly updateListener: ( newSize: Bounds3, oldSize: Bounds3 ) => void;
 
-  public constructor( ellipsoid: Ellipsoid, modelViewTransform: THREEModelViewTransform,
-                      showGravityForceProperty: TReadOnlyProperty<boolean>,
-                      showBuoyancyForceProperty: TReadOnlyProperty<boolean>,
-                      showContactForceProperty: TReadOnlyProperty<boolean>,
-                      showForceValuesProperty: TReadOnlyProperty<boolean>,
-                      vectorZoomProperty: TReadOnlyProperty<number>,
-                      showMassValuesProperty: TReadOnlyProperty<boolean> ) {
+  public constructor( ellipsoid: Ellipsoid, modelViewTransform: THREEModelViewTransform, displayProperties: DisplayProperties ) {
 
     const ellipsoidGeometry = new THREE.SphereGeometry( 1, 30, 24 );
 
-    super( ellipsoid, ellipsoidGeometry, modelViewTransform, showGravityForceProperty,
-      showBuoyancyForceProperty,
-      showContactForceProperty,
-      showForceValuesProperty,
-      vectorZoomProperty,
-      showMassValuesProperty );
+    super( ellipsoid, ellipsoidGeometry, modelViewTransform, displayProperties );
 
     this.ellipsoid = ellipsoid;
     this.ellipsoidGeometry = ellipsoidGeometry;

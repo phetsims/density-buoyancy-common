@@ -31,7 +31,7 @@ export default class DensityCompareScreenView extends DensityBuoyancyScreenView<
 
     const tandem = options.tandem;
 
-    super( model, combineOptions<DensityBuoyancyScreenViewOptions>( {
+    super( model, false, false, false, true, 1 / 16, combineOptions<DensityBuoyancyScreenViewOptions>( {
       cameraLookAt: DensityBuoyancyCommonConstants.DENSITY_CAMERA_LOOK_AT
     }, options ) );
 

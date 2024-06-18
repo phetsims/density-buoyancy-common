@@ -44,12 +44,13 @@ import Bottle from '../../model/applications/Bottle.js';
 import MassView from '../../../common/view/MassView.js';
 import Vector2 from '../../../../../dot/js/Vector2.js';
 import FluidDensityPanel from '../FluidDensityPanel.js';
+import BuoyancyScreenView from '../BuoyancyScreenView.js';
 
 // constants
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN_SMALL;
 const ICON_SCALE = 0.08;
 
-export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScreenView<BuoyancyApplicationsModel> {
+export default class BuoyancyApplicationsScreenView extends BuoyancyScreenView<BuoyancyApplicationsModel> {
 
   private readonly positionResetSceneButton: () => void;
 
@@ -57,7 +58,7 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
 
     const tandem = options.tandem;
 
-    super( model, combineOptions<DensityBuoyancyScreenViewOptions>( {
+    super( model, false, false, true, 1 / 16, combineOptions<DensityBuoyancyScreenViewOptions>( {
       cameraLookAt: DensityBuoyancyCommonConstants.BUOYANCY_CAMERA_LOOK_AT
     }, options ) );
 
@@ -338,7 +339,7 @@ export default class BuoyancyApplicationsScreenView extends DensityBuoyancyScree
       percentSubmergedAccordionBox.setReadoutItems( submergedObjects );
     } );
 
-    const displayOptionsPanel = new BuoyancyDisplayOptionsPanel( model, {
+    const displayOptionsPanel = new BuoyancyDisplayOptionsPanel( this.displayProperties, {
       tandem: tandem.createTandem( 'displayOptionsPanel' ),
       contentWidth: this.modelToViewPoint( new Vector3(
         this.model.poolBounds.left,

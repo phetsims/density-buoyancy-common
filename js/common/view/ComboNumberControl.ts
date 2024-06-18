@@ -147,9 +147,9 @@ export default abstract class ComboNumberControl<T> extends VBox {
             label: new Text( providedOptions.range.max, { font: new PhetFont( 12 ), maxWidth: 50 } )
           } ],
           trackSize: new Dimension2( 120, 0.5 ),
-          keyboardStep: 0.05,
-          pageKeyboardStep: 1,
-          shiftKeyboardStep: 0.01
+          keyboardStep: DensityBuoyancyCommonConstants.SLIDER_KEYBOARD_STEP,
+          pageKeyboardStep: DensityBuoyancyCommonConstants.SLIDER_KEYBOARD_PAGE_STEP,
+          shiftKeyboardStep: DensityBuoyancyCommonConstants.SLIDER_KEYBOARD_SHIFT_STEP
         }
       },
 

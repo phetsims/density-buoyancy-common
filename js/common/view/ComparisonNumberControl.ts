@@ -62,10 +62,12 @@ export default class ComparisonNumberControl extends NumberControl {
       },
 
       sliderOptions: {
-        // Constrain to 0.1 consistently, see https://github.com/phetsims/density/issues/75#issuecomment-896341332
         constrainValue: ( value: number ) => {
-          return property.range.constrainValue( Utils.roundToInterval( value, 0.1 ) );
+          return property.range.constrainValue( Utils.roundToInterval( value, 0.05 ) );
         },
+        keyboardStep: DensityBuoyancyCommonConstants.SLIDER_KEYBOARD_STEP,
+        pageKeyboardStep: DensityBuoyancyCommonConstants.SLIDER_KEYBOARD_PAGE_STEP,
+        shiftKeyboardStep: DensityBuoyancyCommonConstants.SLIDER_KEYBOARD_SHIFT_STEP,
         majorTickLength: 5,
         thumbSize: new Dimension2( 13, 22 ),
         thumbTouchAreaXDilation: 5,

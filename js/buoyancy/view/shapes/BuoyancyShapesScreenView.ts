@@ -59,8 +59,10 @@ export default class BuoyancyShapesScreenView extends BuoyancyScreenView<Buoyanc
 
     super( model, false, false, true,
 
-      // TODO: https://github.com/phetsims/density-buoyancy-common/issues/186 Why is the force scale 1/4 here? Won't that be confusing to secretly have the scale differ on 1 out of 5 screens?
-      1 / 4, combineOptions<DensityBuoyancyScreenViewOptions>( {
+      // Show the forces as larger in this case, because the masses are significantly smaller, see https://github.com/phetsims/density-buoyancy-common/issues/186
+      1 / 4,
+
+      combineOptions<DensityBuoyancyScreenViewOptions>( {
         cameraLookAt: DensityBuoyancyCommonConstants.BUOYANCY_CAMERA_LOOK_AT
       }, options ) );
 

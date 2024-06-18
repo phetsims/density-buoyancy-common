@@ -500,6 +500,7 @@ export default abstract class Mass extends PhetioObject {
 
     this.writeData();
     this.engine.bodySynchronizePrevious( this.body );
+    // TODO: why not call transformedEmitter()? https://github.com/phetsims/density-buoyancy-common/issues/231
 
     this.stepX = 0; // x-value of the position
     this.stepBottom = 0; // minimum y value of the mass

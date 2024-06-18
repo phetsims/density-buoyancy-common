@@ -77,7 +77,7 @@ export default class Duck extends Mass {
 
     // Keep the body centered, see https://github.com/phetsims/buoyancy/issues/148
     this.bodyOffsetProperty.value = Utils.centroidOfPolygon( vertices ).negated();
-    this.writeData();
+    this.writeData(); // TODO: why not call transformedEmitter? https://github.com/phetsims/density-buoyancy-common/issues/231
   }
 
   /**

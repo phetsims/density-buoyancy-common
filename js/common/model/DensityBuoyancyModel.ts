@@ -319,7 +319,20 @@ export default class DensityBuoyancyModel implements TModel {
           const hackedViscosity = 0.03 * Math.pow( this.pool.fluidMaterialProperty.value.viscosity / 0.03, 0.8 );
           const viscosityMass = Math.max( DensityBuoyancyCommonQueryParameters.viscosityMassCutoff, massValue );
           const viscousForce = velocity.times( -hackedViscosity * viscosityMass * ratioSubmerged * 3000 * DensityBuoyancyCommonQueryParameters.viscosityMultiplier );
-          this.engine.bodyApplyForce( mass.body, viscousForce );
+
+          // Calculate the maximum allowable viscous force to prevent it from being so high that it could change the
+          // direction of the velocity. Note the viscous force is always in the opposite direction of the velocity,
+          // so we just need to manage the magnitude
+          // F = ma = m dv/dv
+          // see https://github.com/phetsims/density-buoyancy-common/issues/223
+          const maxViscousForceMagnitude = velocity.magnitude * massValue / dt;
+          const viscousForceMagnitude = Math.min( viscousForce.magnitude, maxViscousForceMagnitude );
+
+          // Apply the viscous force if it exceeds the threshold.
+          if ( viscousForce.magnitude > 1E-6 ) {
+            const actualViscousForce = viscousForce.normalize().times( viscousForceMagnitude );
+            this.engine.bodyApplyForce( mass.body, actualViscousForce );
+          }
         }
         else {
           mass.buoyancyForceInterpolatedProperty.setNextValue( Vector2.ZERO );

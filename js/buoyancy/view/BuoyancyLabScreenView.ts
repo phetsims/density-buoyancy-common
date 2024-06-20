@@ -33,11 +33,12 @@ import fluid_displaced_scale_icon_png from '../../../images/fluid_displaced_scal
 import CuboidView from '../../common/view/CuboidView.js';
 import FluidDensityPanel from './FluidDensityPanel.js';
 import BuoyancyScreenView from './BuoyancyScreenView.js';
+import StrictOmit from '../../../../phet-core/js/types/StrictOmit.js';
 
 // constants
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN_SMALL;
 
-type BuoyancyLabScreenViewOptions = DensityBuoyancyScreenViewOptions;
+type BuoyancyLabScreenViewOptions = StrictOmit<DensityBuoyancyScreenViewOptions, 'canShowForces'>;
 
 export default class BuoyancyLabScreenView extends BuoyancyScreenView<BuoyancyLabModel> {
 

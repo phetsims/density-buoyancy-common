@@ -43,11 +43,12 @@ import ScaleView from '../../../common/view/ScaleView.js';
 import MassView from '../../../common/view/MassView.js';
 import FluidDensityPanel from '../FluidDensityPanel.js';
 import BuoyancyScreenView from '../BuoyancyScreenView.js';
+import StrictOmit from '../../../../../phet-core/js/types/StrictOmit.js';
 
 // constants
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN_SMALL;
 
-type BuoyancyShapesScreenViewOptions = DensityBuoyancyScreenViewOptions;
+type BuoyancyShapesScreenViewOptions = StrictOmit<DensityBuoyancyScreenViewOptions, 'canShowForces'>;
 
 export default class BuoyancyShapesScreenView extends BuoyancyScreenView<BuoyancyShapesModel> {
 

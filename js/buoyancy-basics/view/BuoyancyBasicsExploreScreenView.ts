@@ -30,11 +30,12 @@ import ScaleView from '../../common/view/ScaleView.js';
 import MassView from '../../common/view/MassView.js';
 import DensityAccordionBox from '../../buoyancy/view/DensityAccordionBox.js';
 import BuoyancyScreenView from '../../buoyancy/view/BuoyancyScreenView.js';
+import StrictOmit from '../../../../phet-core/js/types/StrictOmit.js';
 
 // constants
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN_SMALL;
 
-type BuoyancyExploreScreenViewOptions = DensityBuoyancyScreenViewOptions;
+type BuoyancyExploreScreenViewOptions = StrictOmit<DensityBuoyancyScreenViewOptions, 'canShowForces'>;
 
 export default class BuoyancyBasicsExploreScreenView extends BuoyancyScreenView<BuoyancyBasicsExploreModel> {
 

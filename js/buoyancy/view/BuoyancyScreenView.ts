@@ -10,6 +10,10 @@
 import DensityBuoyancyScreenView, { DensityBuoyancyScreenViewOptions } from '../../common/view/DensityBuoyancyScreenView.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyModel from '../../common/model/DensityBuoyancyModel.js';
+import optionize, { EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
+import StrictOmit from '../../../../phet-core/js/types/StrictOmit.js';
+
+type BuoyancyScreenViewOptions = StrictOmit<DensityBuoyancyScreenViewOptions, 'canShowForces'>;
 
 export default abstract class BuoyancyScreenView<T extends DensityBuoyancyModel> extends DensityBuoyancyScreenView<T> {
 
@@ -18,8 +22,13 @@ export default abstract class BuoyancyScreenView<T extends DensityBuoyancyModel>
                          forcesInitiallyDisplayed: boolean,
                          massValuesInitiallyDisplayed: boolean,
                          initialForceScale: number,
-                         options: DensityBuoyancyScreenViewOptions ) {
-    super( model, true, supportsDepthLines, forcesInitiallyDisplayed, massValuesInitiallyDisplayed, initialForceScale, options );
+                         providedOptions: BuoyancyScreenViewOptions ) {
+
+    const options = optionize<BuoyancyScreenViewOptions, EmptySelfOptions, DensityBuoyancyScreenViewOptions>()( {
+      canShowForces: true
+    }, providedOptions );
+
+    super( model, supportsDepthLines, forcesInitiallyDisplayed, massValuesInitiallyDisplayed, initialForceScale, options );
   }
 }
 

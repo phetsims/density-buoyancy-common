@@ -27,17 +27,19 @@ import Vector2 from '../../../../dot/js/Vector2.js';
 import ScaleView from '../../common/view/ScaleView.js';
 import MassView from '../../common/view/MassView.js';
 import CuboidView from '../../common/view/CuboidView.js';
+import StrictOmit from '../../../../phet-core/js/types/StrictOmit.js';
 
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN_SMALL;
 
-type DensityMysteryScreenViewOptions = DensityBuoyancyScreenViewOptions;
+type DensityMysteryScreenViewOptions = StrictOmit<DensityBuoyancyScreenViewOptions, 'canShowForces'>;
 
 export default class DensityMysteryScreenView extends DensityBuoyancyScreenView<DensityMysteryModel> {
   public constructor( model: DensityMysteryModel, options: DensityMysteryScreenViewOptions ) {
 
     const tandem = options.tandem;
 
-    super( model, false, false, false, false, 1 / 16, combineOptions<DensityBuoyancyScreenViewOptions>( {
+    super( model, false, false, false, 1 / 16, combineOptions<DensityBuoyancyScreenViewOptions>( {
+      canShowForces: false,
       cameraLookAt: DensityBuoyancyCommonConstants.DENSITY_CAMERA_LOOK_AT
     }, options ) );
 

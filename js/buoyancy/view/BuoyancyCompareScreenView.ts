@@ -38,6 +38,7 @@ import CuboidView from '../../common/view/CuboidView.js';
 import BlocksPanel from '../../common/view/BlocksPanel.js';
 import Panel from '../../../../sun/js/Panel.js';
 import BuoyancyScreenView from './BuoyancyScreenView.js';
+import StrictOmit from '../../../../phet-core/js/types/StrictOmit.js';
 
 // constants
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN_SMALL;
@@ -45,7 +46,7 @@ const MARGIN = DensityBuoyancyCommonConstants.MARGIN_SMALL;
 // Relatively arbitrary default
 const MAX_RIGHT_SIDE_CONTENT_WIDTH = ScreenView.DEFAULT_LAYOUT_BOUNDS.width / 2;
 
-type BuoyancyCompareScreenViewOptions = DensityBuoyancyScreenViewOptions;
+type BuoyancyCompareScreenViewOptions = StrictOmit<DensityBuoyancyScreenViewOptions, 'canShowForces'>;
 
 export default class BuoyancyCompareScreenView extends BuoyancyScreenView<BuoyancyCompareModel> {
 

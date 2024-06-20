@@ -13,6 +13,10 @@ import NumberProperty from '../../../../axon/js/NumberProperty.js';
 import Range from '../../../../dot/js/Range.js';
 import Property from '../../../../axon/js/Property.js';
 
+type DisplayPropertiesOptions = {
+  canShowForces: boolean;
+};
+
 export default class DisplayProperties {
 
   public readonly gravityForceVisibleProperty: Property<boolean>;
@@ -25,23 +29,22 @@ export default class DisplayProperties {
 
   public readonly vectorZoomProperty: NumberProperty;
 
-  public constructor( canShowForces: boolean,
-                      tandem: Tandem,
+  public constructor( tandem: Tandem,
                       public readonly supportsDepthLines: boolean,
                       forcesInitiallyDisplayed: boolean,
                       massValuesInitiallyDisplayed: boolean,
-                      initialForceScale: number ) {
+                      initialForceScale: number, options: DisplayPropertiesOptions ) {
     this.gravityForceVisibleProperty = new BooleanProperty( forcesInitiallyDisplayed, {
-      tandem: canShowForces ? tandem.createTandem( 'gravityForceVisibleProperty' ) : Tandem.OPT_OUT
+      tandem: options.canShowForces ? tandem.createTandem( 'gravityForceVisibleProperty' ) : Tandem.OPT_OUT
     } );
     this.buoyancyForceVisibleProperty = new BooleanProperty( forcesInitiallyDisplayed, {
-      tandem: canShowForces ? tandem.createTandem( 'buoyancyForceVisibleProperty' ) : Tandem.OPT_OUT
+      tandem: options.canShowForces ? tandem.createTandem( 'buoyancyForceVisibleProperty' ) : Tandem.OPT_OUT
     } );
     this.contactForceVisibleProperty = new BooleanProperty( forcesInitiallyDisplayed, {
-      tandem: canShowForces ? tandem.createTandem( 'contactForceVisibleProperty' ) : Tandem.OPT_OUT
+      tandem: options.canShowForces ? tandem.createTandem( 'contactForceVisibleProperty' ) : Tandem.OPT_OUT
     } );
     this.forceValuesVisibleProperty = new BooleanProperty( forcesInitiallyDisplayed, {
-      tandem: canShowForces ? tandem.createTandem( 'forceValuesVisibleProperty' ) : Tandem.OPT_OUT
+      tandem: options.canShowForces ? tandem.createTandem( 'forceValuesVisibleProperty' ) : Tandem.OPT_OUT
     } );
     this.massValuesVisibleProperty = new BooleanProperty( massValuesInitiallyDisplayed, {
       tandem: tandem.createTandem( 'massValuesVisibleProperty' ),
@@ -49,7 +52,7 @@ export default class DisplayProperties {
       phetioDocumentation: 'Displays a mass readout on each object'
     } );
     this.vectorZoomProperty = new NumberProperty( initialForceScale, {
-      tandem: canShowForces ? tandem.createTandem( 'vectorZoomProperty' ) : Tandem.OPT_OUT,
+      tandem: options.canShowForces ? tandem.createTandem( 'vectorZoomProperty' ) : Tandem.OPT_OUT,
       range: new Range( Math.pow( 0.5, 9 ), 1 )
     } );
 

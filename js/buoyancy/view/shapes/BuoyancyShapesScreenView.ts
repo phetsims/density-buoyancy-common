@@ -48,7 +48,7 @@ import StrictOmit from '../../../../../phet-core/js/types/StrictOmit.js';
 // constants
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN_SMALL;
 
-type BuoyancyShapesScreenViewOptions = StrictOmit<DensityBuoyancyScreenViewOptions, 'canShowForces'>;
+type BuoyancyShapesScreenViewOptions = StrictOmit<DensityBuoyancyScreenViewOptions, 'canShowForces' | 'supportsDepthLines'>;
 
 export default class BuoyancyShapesScreenView extends BuoyancyScreenView<BuoyancyShapesModel> {
 
@@ -60,12 +60,13 @@ export default class BuoyancyShapesScreenView extends BuoyancyScreenView<Buoyanc
 
     const tandem = options.tandem;
 
-    super( model, false, false, true,
+    super( model, false, true,
 
       // Show the forces as larger in this case, because the masses are significantly smaller, see https://github.com/phetsims/density-buoyancy-common/issues/186
       1 / 4,
 
       combineOptions<DensityBuoyancyScreenViewOptions>( {
+        supportsDepthLines: false,
         cameraLookAt: DensityBuoyancyCommonConstants.BUOYANCY_CAMERA_LOOK_AT
       }, options ) );
 

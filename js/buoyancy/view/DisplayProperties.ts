@@ -15,6 +15,7 @@ import Property from '../../../../axon/js/Property.js';
 
 type DisplayPropertiesOptions = {
   canShowForces: boolean;
+  supportsDepthLines: boolean;
 };
 
 export default class DisplayProperties {
@@ -29,11 +30,15 @@ export default class DisplayProperties {
 
   public readonly vectorZoomProperty: NumberProperty;
 
+  public readonly supportsDepthLines: boolean;
+
   public constructor( tandem: Tandem,
-                      public readonly supportsDepthLines: boolean,
                       forcesInitiallyDisplayed: boolean,
                       massValuesInitiallyDisplayed: boolean,
                       initialForceScale: number, options: DisplayPropertiesOptions ) {
+
+    this.supportsDepthLines = options.supportsDepthLines;
+
     this.gravityForceVisibleProperty = new BooleanProperty( forcesInitiallyDisplayed, {
       tandem: options.canShowForces ? tandem.createTandem( 'gravityForceVisibleProperty' ) : Tandem.OPT_OUT
     } );
@@ -57,7 +62,7 @@ export default class DisplayProperties {
     } );
 
     this.depthLinesVisibleProperty = new BooleanProperty( false, {
-      tandem: supportsDepthLines ? tandem.createTandem( 'depthLinesVisibleProperty' ) : Tandem.OPT_OUT,
+      tandem: options.supportsDepthLines ? tandem.createTandem( 'depthLinesVisibleProperty' ) : Tandem.OPT_OUT,
       phetioDocumentation: 'Display visual lines on blocks to aid in calculating the percentage that the block is submerged.'
     } );
   }

@@ -86,6 +86,7 @@ type SelfOptions = {
   preventFit?: boolean;
 
   canShowForces: boolean;
+  supportsDepthLines: boolean;
 } & PickRequired<PhetioObjectOptions, 'tandem'>;
 
 export type DensityBuoyancyScreenViewOptions = SelfOptions & ScreenViewOptions;
@@ -125,7 +126,7 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
 
   public readonly displayProperties: DisplayProperties;
 
-  public constructor( model: Model, supportsDepthLines: boolean, forcesInitiallyDisplayed: boolean,
+  public constructor( model: Model, forcesInitiallyDisplayed: boolean,
                       massValuesInitiallyDisplayed: boolean, initialForceScale: number, providedOptions: SelfOptions ) {
 
     const scaleIncrease = 3.5;
@@ -145,8 +146,9 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
 
     // TODO: Move to options, see https://github.com/phetsims/density-buoyancy-common/issues/186
     this.displayProperties = new DisplayProperties( options.tandem.createTandem( 'displayProperties' ),
-      supportsDepthLines, forcesInitiallyDisplayed, massValuesInitiallyDisplayed, initialForceScale, {
-        canShowForces: options.canShowForces
+      forcesInitiallyDisplayed, massValuesInitiallyDisplayed, initialForceScale, {
+        canShowForces: options.canShowForces,
+        supportsDepthLines: options.supportsDepthLines
       } );
 
     this.model = model;

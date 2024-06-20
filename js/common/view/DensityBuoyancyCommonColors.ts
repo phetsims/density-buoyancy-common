@@ -71,98 +71,98 @@ const DensityBuoyancyCommonColors = {
     default: new Color( 252, 246, 80 )
   }, {
     phetioReadOnly: true,
-    tandem: tandem.createTandem( 'compareYellowColorProperty' )
+    tandem: packageName === 'density' ? tandem.createTandem( 'compareYellowColorProperty' ) : Tandem.OPT_OUT
   } ),
   compareBlueColorProperty: new ProfileColorProperty( densityBuoyancyCommon, 'compareBlue', {
     default: new Color( 46, 88, 166 )
   }, {
     phetioReadOnly: true,
-    tandem: tandem.createTandem( 'compareBlueColorProperty' )
+    tandem: packageName === 'density' ? tandem.createTandem( 'compareBlueColorProperty' ) : Tandem.OPT_OUT
   } ),
   compareGreenColorProperty: new ProfileColorProperty( densityBuoyancyCommon, 'compareGreen', {
     default: new Color( 125, 195, 52 )
   }, {
     phetioReadOnly: true,
-    tandem: tandem.createTandem( 'compareGreenColorProperty' )
+    tandem: packageName === 'density' ? tandem.createTandem( 'compareGreenColorProperty' ) : Tandem.OPT_OUT
   } ),
   compareOchreColorProperty: new ProfileColorProperty( densityBuoyancyCommon, 'compareOchre', {
     default: new Color( 160, 140, 0 )
   }, {
     phetioReadOnly: true,
-    tandem: tandem.createTandem( 'compareOchreColorProperty' )
+    tandem: packageName === 'density' ? tandem.createTandem( 'compareOchreColorProperty' ) : Tandem.OPT_OUT
   } ),
   compareRedColorProperty: new ProfileColorProperty( densityBuoyancyCommon, 'compareRed', {
     default: new Color( 233, 55, 50 )
   }, {
     phetioReadOnly: true,
-    tandem: tandem.createTandem( 'compareRedColorProperty' )
+    tandem: packageName === 'density' ? tandem.createTandem( 'compareRedColorProperty' ) : Tandem.OPT_OUT
   } ),
   comparePurpleColorProperty: new ProfileColorProperty( densityBuoyancyCommon, 'comparePurple', {
     default: new Color( 131, 43, 126 )
   }, {
     phetioReadOnly: true,
-    tandem: tandem.createTandem( 'comparePurpleColorProperty' )
+    tandem: packageName === 'density' ? tandem.createTandem( 'comparePurpleColorProperty' ) : Tandem.OPT_OUT
   } ),
 
   mysteryPinkColorProperty: new ProfileColorProperty( densityBuoyancyCommon, 'mysteryPink', {
     default: new Color( 255, 192, 203 )
   }, {
     phetioReadOnly: true,
-    tandem: tandem.createTandem( 'mysteryPinkColorProperty' )
+    tandem: packageName === 'density' ? tandem.createTandem( 'mysteryPinkColorProperty' ) : Tandem.OPT_OUT
   } ),
   mysteryOrangeColorProperty: new ProfileColorProperty( densityBuoyancyCommon, 'mysteryOrange', {
     default: new Color( 255, 127, 0 )
   }, {
     phetioReadOnly: true,
-    tandem: tandem.createTandem( 'mysteryOrangeColorProperty' )
+    tandem: packageName === 'density' ? tandem.createTandem( 'mysteryOrangeColorProperty' ) : Tandem.OPT_OUT
   } ),
   mysteryLightPurpleColorProperty: new ProfileColorProperty( densityBuoyancyCommon, 'mysteryLightPurple', {
     default: new Color( 177, 156, 217 )
   }, {
     phetioReadOnly: true,
-    tandem: tandem.createTandem( 'mysteryLightPurpleColorProperty' )
+    tandem: packageName === 'density' ? tandem.createTandem( 'mysteryLightPurpleColorProperty' ) : Tandem.OPT_OUT
   } ),
   mysteryLightGreenColorProperty: new ProfileColorProperty( densityBuoyancyCommon, 'mysteryLightGreen', {
     default: new Color( 144, 238, 144 )
   }, {
     phetioReadOnly: true,
-    tandem: tandem.createTandem( 'mysteryLightGreenColorProperty' )
+    tandem: packageName === 'density' ? tandem.createTandem( 'mysteryLightGreenColorProperty' ) : Tandem.OPT_OUT
   } ),
   mysteryBrownColorProperty: new ProfileColorProperty( densityBuoyancyCommon, 'mysteryBrown', {
     default: new Color( 150, 75, 0 )
   }, {
     phetioReadOnly: true,
-    tandem: tandem.createTandem( 'mysteryBrownColorProperty' )
+    tandem: packageName === 'density' ? tandem.createTandem( 'mysteryBrownColorProperty' ) : Tandem.OPT_OUT
   } ),
   mysteryWhiteColorProperty: new ProfileColorProperty( densityBuoyancyCommon, 'mysteryWhite', {
     default: new Color( 255, 255, 255 )
   }, {
     phetioReadOnly: true,
-    tandem: tandem.createTandem( 'mysteryWhiteColorProperty' )
+    tandem: packageName === 'density' ? tandem.createTandem( 'mysteryWhiteColorProperty' ) : Tandem.OPT_OUT
   } ),
   mysteryGrayColorProperty: new ProfileColorProperty( densityBuoyancyCommon, 'mysteryGray', {
     default: new Color( 140, 140, 140 )
   }, {
     phetioReadOnly: true,
-    tandem: tandem.createTandem( 'mysteryGrayColorProperty' )
+    tandem: packageName === 'density' ? tandem.createTandem( 'mysteryGrayColorProperty' ) : Tandem.OPT_OUT
   } ),
   mysteryMustardColorProperty: new ProfileColorProperty( densityBuoyancyCommon, 'mysteryMustard', {
     default: new Color( 225, 173, 0 )
   }, {
     phetioReadOnly: true,
-    tandem: tandem.createTandem( 'mysteryMustardColorProperty' )
+    tandem: packageName === 'density' ? tandem.createTandem( 'mysteryMustardColorProperty' ) : Tandem.OPT_OUT
   } ),
   mysteryPeachColorProperty: new ProfileColorProperty( densityBuoyancyCommon, 'mysteryPeach', {
     default: new Color( 255, 229, 180 )
   }, {
     phetioReadOnly: true,
-    tandem: tandem.createTandem( 'mysteryPeachColorProperty' )
+    tandem: packageName === 'density' ? tandem.createTandem( 'mysteryPeachColorProperty' ) : Tandem.OPT_OUT
   } ),
   mysteryMaroonColorProperty: new ProfileColorProperty( densityBuoyancyCommon, 'mysteryMaroon', {
     default: new Color( 128, 0, 0 )
   }, {
     phetioReadOnly: true,
-    tandem: tandem.createTandem( 'mysteryMaroonColorProperty' )
+    tandem: packageName === 'density' ? tandem.createTandem( 'mysteryMaroonColorProperty' ) : Tandem.OPT_OUT
   } ),
 
   chartHeaderColorProperty: new ProfileColorProperty( densityBuoyancyCommon, 'chartHeader', {

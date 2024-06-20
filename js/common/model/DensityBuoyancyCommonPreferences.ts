@@ -22,7 +22,7 @@ const DensityBuoyancyCommonPreferences = {
     phetioFeatured: true
   } ),
   percentSubmergedVisibleProperty: new BooleanProperty( DensityBuoyancyCommonQueryParameters.percentSubmergedVisible, {
-    tandem: supportsPercentageSubmergedVisible ? Tandem.PREFERENCES.createTandem( 'percentSubmergedProperty' ) : Tandem.OPT_OUT,
+    tandem: supportsPercentageSubmergedVisible ? Tandem.PREFERENCES.createTandem( 'percentSubmergedVisibleProperty' ) : Tandem.OPT_OUT,
     phetioFeatured: true
   } )
 };

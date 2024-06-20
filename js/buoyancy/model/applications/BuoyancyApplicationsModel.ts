@@ -16,9 +16,6 @@ import Scale, { DisplayType } from '../../../common/model/Scale.js';
 import densityBuoyancyCommon from '../../../densityBuoyancyCommon.js';
 import Boat from './Boat.js';
 import Bottle from './Bottle.js';
-import Range from '../../../../../dot/js/Range.js';
-import NumberProperty from '../../../../../axon/js/NumberProperty.js';
-import TReadOnlyProperty from '../../../../../axon/js/TReadOnlyProperty.js';
 import { BottleOrBoat, BottleOrBoatValues } from './BottleOrBoat.js';
 import StringUnionProperty from '../../../../../axon/js/StringUnionProperty.js';
 import MassTag from '../../../common/model/MassTag.js';
@@ -33,11 +30,6 @@ export default class BuoyancyApplicationsModel extends DensityBuoyancyModel {
   public readonly block: Cube;
   public readonly boat: Boat;
   private readonly scale: Scale; // Scale sitting on the ground next to the pool
-
-  // REVIEW: Should these Properties move to Bottle?
-  // For the material inside the bottle.
-  public readonly customDensityProperty: NumberProperty;
-  public readonly customDensityControlVisibleProperty: TReadOnlyProperty<boolean>;
 
   public constructor( options: BuoyancyApplicationsModelOptions ) {
 
@@ -87,15 +79,6 @@ export default class BuoyancyApplicationsModel extends DensityBuoyancyModel {
       }
     } );
     this.availableMasses.push( this.scale );
-
-    this.customDensityProperty = new NumberProperty( 1, {
-      range: new Range( 0.05, 20 ),
-      tandem: tandem.createTandem( 'customDensityProperty' ),
-      phetioFeatured: true,
-      units: 'kg/L'
-    } );
-    this.customDensityControlVisibleProperty = new DerivedProperty( [ this.bottle.interiorMaterialProperty ],
-      material => material.custom );
 
     // Adjust pool volume so that it's at the desired value WITH the pool scales inside.
     // REVIEW: How does this relate to https://github.com/phetsims/density-buoyancy-common/blob/4038cb05c2b5c2b8b1f600bfbcf0a7eaac4617a2/js/common/model/DensityBuoyancyModel.ts#L435-L437
@@ -157,8 +140,6 @@ export default class BuoyancyApplicationsModel extends DensityBuoyancyModel {
     this.bottle.reset();
     this.block.reset();
     this.boat.reset();
-
-    this.customDensityProperty.reset();
 
     super.reset();
 

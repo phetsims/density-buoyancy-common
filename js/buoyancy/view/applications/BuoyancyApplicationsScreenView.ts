@@ -127,21 +127,29 @@ export default class BuoyancyApplicationsScreenView extends BuoyancyScreenView<B
     // This DerivedProperty doesn't need disposal, since everything here lives for the lifetime of the simulation
     const airLitersProperty = new DerivedProperty( [ model.bottle.interiorVolumeProperty ], volume => toLiters( 0.01 - volume ) );
 
+    const customDensityControlVisibleProperty = new DerivedProperty( [ model.bottle.interiorMaterialProperty ],
+      material => material.custom );
+
     let materialChangeLocked = false;
-    Multilink.lazyMultilink( [ model.customDensityProperty, model.bottle.interiorMassProperty, model.customDensityControlVisibleProperty ], density => {
+    Multilink.lazyMultilink( [
+      model.bottle.customDensityProperty,
+      model.bottle.customDensityProperty.rangeProperty,
+      model.bottle.interiorMassProperty,
+      customDensityControlVisibleProperty
+    ], ( density, densityRange ) => {
       if ( !materialChangeLocked && model.bottle.interiorMaterialProperty.value.custom ) {
         materialChangeLocked = true;
         model.bottle.interiorMaterialProperty.value = Material.createCustomSolidMaterial( {
           density: density * DensityBuoyancyCommonConstants.LITERS_IN_CUBIC_METER,
-          densityRange: model.customDensityProperty.range.copy().times( DensityBuoyancyCommonConstants.LITERS_IN_CUBIC_METER )
+          densityRange: densityRange.copy().times( DensityBuoyancyCommonConstants.LITERS_IN_CUBIC_METER )
         } );
         materialChangeLocked = false;
       }
     } );
 
     const customBottleDensityControlTandem = tandem.createTandem( 'customBottleDensityNumberControl' );
-    const customBottleDensityControl = new NumberControl( DensityBuoyancyCommonStrings.densityStringProperty, model.customDensityProperty, model.customDensityProperty.range, combineOptions<NumberControlOptions>( {
-      visibleProperty: model.customDensityControlVisibleProperty,
+    const customBottleDensityControl = new NumberControl( DensityBuoyancyCommonStrings.densityStringProperty, model.bottle.customDensityProperty, model.bottle.customDensityProperty.range, combineOptions<NumberControlOptions>( {
+      visibleProperty: customDensityControlVisibleProperty,
       sliderOptions: {
         accessibleName: DensityBuoyancyCommonStrings.densityStringProperty,
         thumbNode: new PrecisionSliderThumb( {

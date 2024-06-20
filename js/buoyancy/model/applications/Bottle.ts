@@ -191,6 +191,8 @@ export default class Bottle extends ApplicationsMass {
   private readonly primaryGeometry: THREE.BufferGeometry;
   private readonly capGeometry: THREE.BufferGeometry;
 
+  public override readonly customDensityProperty: NumberProperty;
+
   public constructor( engine: PhysicsEngine, providedOptions: BottleOptions ) {
 
     const vertices = Bottle.getFlatIntersectionVertices();
@@ -224,6 +226,13 @@ export default class Bottle extends ApplicationsMass {
       tandem: options.tandem.createTandem( 'interiorVolumeProperty' ),
       range: new Range( 0, Number.POSITIVE_INFINITY ),
       phetioReadOnly: true
+    } );
+
+    this.customDensityProperty = new NumberProperty( 1, {
+      range: new Range( 0.05, 20 ),
+      tandem: options.tandem.createTandem( 'customDensityProperty' ),
+      phetioFeatured: true,
+      units: 'kg/L'
     } );
 
     this.interiorMassProperty = new DerivedProperty( [ this.interiorMaterialProperty, this.interiorVolumeProperty ], ( material, volume ) => {

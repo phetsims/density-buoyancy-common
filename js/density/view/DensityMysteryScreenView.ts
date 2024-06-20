@@ -30,8 +30,10 @@ import CuboidView from '../../common/view/CuboidView.js';
 
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN_SMALL;
 
+type DensityMysteryScreenViewOptions = DensityBuoyancyScreenViewOptions;
+
 export default class DensityMysteryScreenView extends DensityBuoyancyScreenView<DensityMysteryModel> {
-  public constructor( model: DensityMysteryModel, options: DensityBuoyancyScreenViewOptions ) {
+  public constructor( model: DensityMysteryModel, options: DensityMysteryScreenViewOptions ) {
 
     const tandem = options.tandem;
 

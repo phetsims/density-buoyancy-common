@@ -50,11 +50,13 @@ import BuoyancyScreenView from '../BuoyancyScreenView.js';
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN_SMALL;
 const ICON_SCALE = 0.08;
 
+type BuoyancyExploreScreenViewOptions = DensityBuoyancyScreenViewOptions;
+
 export default class BuoyancyApplicationsScreenView extends BuoyancyScreenView<BuoyancyApplicationsModel> {
 
   private readonly positionResetSceneButton: () => void;
 
-  public constructor( model: BuoyancyApplicationsModel, options: DensityBuoyancyScreenViewOptions ) {
+  public constructor( model: BuoyancyApplicationsModel, options: BuoyancyExploreScreenViewOptions ) {
 
     const tandem = options.tandem;
 

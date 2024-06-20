@@ -23,11 +23,13 @@ import BlocksPanel from '../../common/view/BlocksPanel.js';
 
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN_SMALL;
 
+type DensityCompareScreenViewOptions = DensityBuoyancyScreenViewOptions;
+
 export default class DensityCompareScreenView extends DensityBuoyancyScreenView<DensityCompareModel> {
 
   private readonly positionPanel: () => void;
 
-  public constructor( model: DensityCompareModel, options: DensityBuoyancyScreenViewOptions ) {
+  public constructor( model: DensityCompareModel, options: DensityCompareScreenViewOptions ) {
 
     const tandem = options.tandem;
 

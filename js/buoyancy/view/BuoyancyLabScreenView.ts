@@ -37,11 +37,13 @@ import BuoyancyScreenView from './BuoyancyScreenView.js';
 // constants
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN_SMALL;
 
+type BuoyancyLabScreenViewOptions = DensityBuoyancyScreenViewOptions;
+
 export default class BuoyancyLabScreenView extends BuoyancyScreenView<BuoyancyLabModel> {
 
   private readonly rightBox: MultiSectionPanelsNode;
 
-  public constructor( model: BuoyancyLabModel, options: DensityBuoyancyScreenViewOptions ) {
+  public constructor( model: BuoyancyLabModel, options: BuoyancyLabScreenViewOptions ) {
 
     const tandem = options.tandem;
 

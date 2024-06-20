@@ -45,6 +45,8 @@ const MARGIN = DensityBuoyancyCommonConstants.MARGIN_SMALL;
 // Relatively arbitrary default
 const MAX_RIGHT_SIDE_CONTENT_WIDTH = ScreenView.DEFAULT_LAYOUT_BOUNDS.width / 2;
 
+type BuoyancyCompareScreenViewOptions = DensityBuoyancyScreenViewOptions;
+
 export default class BuoyancyCompareScreenView extends BuoyancyScreenView<BuoyancyCompareModel> {
 
   private readonly rightSideMaxContentWidthProperty = new Property( MAX_RIGHT_SIDE_CONTENT_WIDTH );
@@ -52,7 +54,7 @@ export default class BuoyancyCompareScreenView extends BuoyancyScreenView<Buoyan
 
   private readonly blocksValueControlPanel: Panel;
 
-  public constructor( model: BuoyancyCompareModel, options: DensityBuoyancyScreenViewOptions ) {
+  public constructor( model: BuoyancyCompareModel, options: BuoyancyCompareScreenViewOptions ) {
 
     super( model, true, false, true, 1 / 16, combineOptions<DensityBuoyancyScreenViewOptions>( {
       // Custom just for this screen

@@ -30,11 +30,13 @@ import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
 // constants
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN_SMALL;
 
+type DensityIntroScreenViewOptions = DensityBuoyancyScreenViewOptions;
+
 export default class DensityIntroScreenView extends DensityBuoyancyScreenView<DensityIntroModel> {
 
   private rightBox: PrimarySecondaryControlsNode;
 
-  public constructor( model: DensityIntroModel, options: DensityBuoyancyScreenViewOptions ) {
+  public constructor( model: DensityIntroModel, options: DensityIntroScreenViewOptions ) {
 
     const tandem = options.tandem;
 

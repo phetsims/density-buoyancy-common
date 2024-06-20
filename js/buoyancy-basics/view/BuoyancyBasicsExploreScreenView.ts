@@ -34,11 +34,13 @@ import BuoyancyScreenView from '../../buoyancy/view/BuoyancyScreenView.js';
 // constants
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN_SMALL;
 
+type BuoyancyExploreScreenViewOptions = DensityBuoyancyScreenViewOptions;
+
 export default class BuoyancyBasicsExploreScreenView extends BuoyancyScreenView<BuoyancyBasicsExploreModel> {
 
   private readonly rightBox: PrimarySecondaryControlsNode;
 
-  public constructor( model: BuoyancyBasicsExploreModel, options: DensityBuoyancyScreenViewOptions ) {
+  public constructor( model: BuoyancyBasicsExploreModel, options: BuoyancyExploreScreenViewOptions ) {
 
     const tandem = options.tandem;
 

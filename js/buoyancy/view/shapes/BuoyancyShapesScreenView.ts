@@ -47,13 +47,15 @@ import BuoyancyScreenView from '../BuoyancyScreenView.js';
 // constants
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN_SMALL;
 
+type BuoyancyShapesScreenViewOptions = DensityBuoyancyScreenViewOptions;
+
 export default class BuoyancyShapesScreenView extends BuoyancyScreenView<BuoyancyShapesModel> {
 
   private rightBox: MultiSectionPanelsNode;
 
   private readonly positionInfoButton: () => void;
 
-  public constructor( model: BuoyancyShapesModel, options: DensityBuoyancyScreenViewOptions ) {
+  public constructor( model: BuoyancyShapesModel, options: BuoyancyShapesScreenViewOptions ) {
 
     const tandem = options.tandem;
 

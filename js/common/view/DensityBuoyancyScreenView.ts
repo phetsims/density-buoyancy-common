@@ -141,6 +141,7 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
 
     super( options );
 
+    // TODO: Move to options, see https://github.com/phetsims/density-buoyancy-common/issues/186
     this.displayProperties = new DisplayProperties( canShowForces, options.tandem.createTandem( 'displayProperties' ),
       supportsDepthLines, forcesInitiallyDisplayed, massValuesInitiallyDisplayed, initialForceScale );
 

@@ -18,6 +18,7 @@ type DisplayPropertiesOptions = {
   supportsDepthLines: boolean;
   forcesInitiallyDisplayed: boolean;
   massValuesInitiallyDisplayed: boolean;
+  initialForceScale: number;
 };
 
 export default class DisplayProperties {
@@ -34,9 +35,7 @@ export default class DisplayProperties {
 
   public readonly supportsDepthLines: boolean;
 
-  public constructor( tandem: Tandem,
-                      initialForceScale: number,
-                      options: DisplayPropertiesOptions ) {
+  public constructor( tandem: Tandem, options: DisplayPropertiesOptions ) {
 
     this.supportsDepthLines = options.supportsDepthLines;
 
@@ -57,7 +56,7 @@ export default class DisplayProperties {
       phetioFeatured: true,
       phetioDocumentation: 'Displays a mass readout on each object'
     } );
-    this.vectorZoomProperty = new NumberProperty( initialForceScale, {
+    this.vectorZoomProperty = new NumberProperty( options.initialForceScale, {
       tandem: options.canShowForces ? tandem.createTandem( 'vectorZoomProperty' ) : Tandem.OPT_OUT,
       range: new Range( Math.pow( 0.5, 9 ), 1 )
     } );

@@ -13,7 +13,7 @@ import Panel, { PanelOptions } from '../../../../sun/js/Panel.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import VerticalAquaRadioButtonGroup from '../../../../sun/js/VerticalAquaRadioButtonGroup.js';
 import BlockSet from '../model/BlockSet.js';
-import { Text, VBox, Node } from '../../../../scenery/js/imports.js';
+import { Node, Text, VBox } from '../../../../scenery/js/imports.js';
 import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import { combineOptions } from '../../../../phet-core/js/optionize.js';

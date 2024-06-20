@@ -69,8 +69,8 @@ const createDensityStringProperty = (
     valueWithUnits: new DerivedProperty(
       [ isHiddenProperty, DensityBuoyancyCommonStrings.questionMarkStringProperty, valueUnitsStringProperty ],
       ( isHidden, questionMark, valueUnitsString ) => {
-      return isHidden ? questionMark : valueUnitsString;
-    } )
+        return isHidden ? questionMark : valueUnitsString;
+      } )
   } );
 
   return nameColonValueStringProperty;

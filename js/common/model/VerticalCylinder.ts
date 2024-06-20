@@ -203,7 +203,7 @@ export default class VerticalCylinder extends Mass {
    */
   private static getVolume( radius: number, height: number ): number {
     const value = Math.PI * radius * radius * height;
-    
+
     // Rounding to proactively prevent infinite compounding rounding errors, like https://github.com/phetsims/density-buoyancy-common/issues/192
     return Utils.roundToInterval( value, DensityBuoyancyCommonConstants.TOLERANCE );
   }

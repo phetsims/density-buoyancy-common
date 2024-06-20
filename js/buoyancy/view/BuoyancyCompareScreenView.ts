@@ -46,7 +46,7 @@ const MARGIN = DensityBuoyancyCommonConstants.MARGIN_SMALL;
 // Relatively arbitrary default
 const MAX_RIGHT_SIDE_CONTENT_WIDTH = ScreenView.DEFAULT_LAYOUT_BOUNDS.width / 2;
 
-type BuoyancyCompareScreenViewOptions = StrictOmit<DensityBuoyancyScreenViewOptions, 'canShowForces' | 'supportsDepthLines'>;
+type BuoyancyCompareScreenViewOptions = StrictOmit<DensityBuoyancyScreenViewOptions, 'canShowForces' | 'supportsDepthLines' | 'forcesInitiallyDisplayed' >;
 
 export default class BuoyancyCompareScreenView extends BuoyancyScreenView<BuoyancyCompareModel> {
 
@@ -57,8 +57,9 @@ export default class BuoyancyCompareScreenView extends BuoyancyScreenView<Buoyan
 
   public constructor( model: BuoyancyCompareModel, options: BuoyancyCompareScreenViewOptions ) {
 
-    super( model, false, true, 1 / 16, combineOptions<DensityBuoyancyScreenViewOptions>( {
+    super( model, true, 1 / 16, combineOptions<DensityBuoyancyScreenViewOptions>( {
       supportsDepthLines: true,
+      forcesInitiallyDisplayed: false,
       // Custom just for this screen
       cameraLookAt: DensityBuoyancyCommonConstants.BUOYANCY_BASICS_CAMERA_LOOK_AT,
       viewOffset: DensityBuoyancyCommonConstants.BUOYANCY_BASICS_VIEW_OFFSET,

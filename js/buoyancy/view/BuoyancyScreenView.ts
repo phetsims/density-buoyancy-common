@@ -18,7 +18,6 @@ type BuoyancyScreenViewOptions = StrictOmit<DensityBuoyancyScreenViewOptions, 'c
 export default abstract class BuoyancyScreenView<T extends DensityBuoyancyModel> extends DensityBuoyancyScreenView<T> {
 
   protected constructor( model: T,
-                         forcesInitiallyDisplayed: boolean,
                          massValuesInitiallyDisplayed: boolean,
                          initialForceScale: number,
                          providedOptions: BuoyancyScreenViewOptions ) {
@@ -27,7 +26,7 @@ export default abstract class BuoyancyScreenView<T extends DensityBuoyancyModel>
       canShowForces: true
     }, providedOptions );
 
-    super( model, forcesInitiallyDisplayed, massValuesInitiallyDisplayed, initialForceScale, options );
+    super( model, massValuesInitiallyDisplayed, initialForceScale, options );
   }
 }
 

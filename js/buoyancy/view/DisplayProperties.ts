@@ -16,6 +16,7 @@ import Property from '../../../../axon/js/Property.js';
 type DisplayPropertiesOptions = {
   canShowForces: boolean;
   supportsDepthLines: boolean;
+  forcesInitiallyDisplayed: boolean;
 };
 
 export default class DisplayProperties {
@@ -33,22 +34,22 @@ export default class DisplayProperties {
   public readonly supportsDepthLines: boolean;
 
   public constructor( tandem: Tandem,
-                      forcesInitiallyDisplayed: boolean,
                       massValuesInitiallyDisplayed: boolean,
-                      initialForceScale: number, options: DisplayPropertiesOptions ) {
+                      initialForceScale: number,
+                      options: DisplayPropertiesOptions ) {
 
     this.supportsDepthLines = options.supportsDepthLines;
 
-    this.gravityForceVisibleProperty = new BooleanProperty( forcesInitiallyDisplayed, {
+    this.gravityForceVisibleProperty = new BooleanProperty( options.forcesInitiallyDisplayed, {
       tandem: options.canShowForces ? tandem.createTandem( 'gravityForceVisibleProperty' ) : Tandem.OPT_OUT
     } );
-    this.buoyancyForceVisibleProperty = new BooleanProperty( forcesInitiallyDisplayed, {
+    this.buoyancyForceVisibleProperty = new BooleanProperty( options.forcesInitiallyDisplayed, {
       tandem: options.canShowForces ? tandem.createTandem( 'buoyancyForceVisibleProperty' ) : Tandem.OPT_OUT
     } );
-    this.contactForceVisibleProperty = new BooleanProperty( forcesInitiallyDisplayed, {
+    this.contactForceVisibleProperty = new BooleanProperty( options.forcesInitiallyDisplayed, {
       tandem: options.canShowForces ? tandem.createTandem( 'contactForceVisibleProperty' ) : Tandem.OPT_OUT
     } );
-    this.forceValuesVisibleProperty = new BooleanProperty( forcesInitiallyDisplayed, {
+    this.forceValuesVisibleProperty = new BooleanProperty( options.forcesInitiallyDisplayed, {
       tandem: options.canShowForces ? tandem.createTandem( 'forceValuesVisibleProperty' ) : Tandem.OPT_OUT
     } );
     this.massValuesVisibleProperty = new BooleanProperty( massValuesInitiallyDisplayed, {

@@ -16,8 +16,6 @@ import { Color, Node, RichText, Text } from '../../../../scenery/js/imports.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 import NumberDisplay from '../../../../scenery-phet/js/NumberDisplay.js';
-import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
-import Utils from '../../../../dot/js/Utils.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import Gravity from '../../common/model/Gravity.js';
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
@@ -102,10 +100,9 @@ export default class FluidDisplacedAccordionBox extends AccordionBox {
     } );
 
     const numberDisplay = new NumberDisplay( displayedDisplacedVolumeProperty, new Range( 0, maxBeakerVolume ), {
-      numberFormatter: value => StringUtils.fillIn( DensityBuoyancyCommonStrings.litersPatternStringProperty, {
-        liters: Utils.toFixed( value, 2 )
-      } ),
-      numberFormatterDependencies: [ DensityBuoyancyCommonStrings.litersPatternStringProperty ],
+      valuePattern: DensityBuoyancyCommonConstants.VOLUME_PATTERN_STRING_PROPERTY,
+      useRichText: true,
+      decimalPlaces: 2,
       textOptions: {
         font: new PhetFont( 14 ),
         maxWidth: beakerNode.width * 0.66 // recognizing that this isn't the maxWidth of the whole NumberDisplay.

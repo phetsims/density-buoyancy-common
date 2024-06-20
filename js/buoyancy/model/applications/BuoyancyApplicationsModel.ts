@@ -19,7 +19,6 @@ import Bottle from './Bottle.js';
 import Range from '../../../../../dot/js/Range.js';
 import NumberProperty from '../../../../../axon/js/NumberProperty.js';
 import TReadOnlyProperty from '../../../../../axon/js/TReadOnlyProperty.js';
-import BooleanIO from '../../../../../tandem/js/types/BooleanIO.js';
 import { BottleOrBoat, BottleOrBoatValues } from './BottleOrBoat.js';
 import StringUnionProperty from '../../../../../axon/js/StringUnionProperty.js';
 import MassTag from '../../../common/model/MassTag.js';
@@ -96,10 +95,7 @@ export default class BuoyancyApplicationsModel extends DensityBuoyancyModel {
       units: 'kg/L'
     } );
     this.customDensityControlVisibleProperty = new DerivedProperty( [ this.bottle.interiorMaterialProperty ],
-      material => material.custom, {
-        tandem: tandem.createTandem( 'customDensityControlVisibleProperty' ),
-        phetioValueType: BooleanIO
-      } );
+      material => material.custom );
 
     // Adjust pool volume so that it's at the desired value WITH the pool scales inside.
     // REVIEW: How does this relate to https://github.com/phetsims/density-buoyancy-common/blob/4038cb05c2b5c2b8b1f600bfbcf0a7eaac4617a2/js/common/model/DensityBuoyancyModel.ts#L435-L437

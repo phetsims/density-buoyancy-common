@@ -83,11 +83,19 @@ export default class BuoyancyShapesModel extends DensityBuoyancyModel {
       tandem: options.tandem.createTandem( 'secondaryShapeProperty' )
     } );
 
-    this.primaryWidthRatioProperty = new NumberProperty( 0.25 );
-    this.secondaryWidthRatioProperty = new NumberProperty( 0.25 );
+    this.primaryWidthRatioProperty = new NumberProperty( 0.25, {
+      tandem: options.tandem.createTandem( 'primaryWidthRatioProperty' )
+    } );
+    this.secondaryWidthRatioProperty = new NumberProperty( 0.25, {
+      tandem: options.tandem.createTandem( 'secondaryWidthRatioProperty' )
+    } );
 
-    this.primaryHeightRatioProperty = new NumberProperty( 0.75 );
-    this.secondaryHeightRatioProperty = new NumberProperty( 0.75 );
+    this.primaryHeightRatioProperty = new NumberProperty( 0.75, {
+      tandem: options.tandem.createTandem( 'primaryHeightRatioProperty' )
+    } );
+    this.secondaryHeightRatioProperty = new NumberProperty( 0.75, {
+      tandem: options.tandem.createTandem( 'secondaryHeightRatioProperty' )
+    } );
 
     const createMass = ( tandem: Tandem, shape: MassShape, widthRatio: number, heightRatio: number, tag: MassTag ): Mass => {
       const massOptions = {

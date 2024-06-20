@@ -97,8 +97,8 @@ export default class ScaleReadoutNode extends GeneralScaleReadoutNode {
 
   public constructor( mass: Scale, gravityProperty: TReadOnlyProperty<Gravity> ) {
 
-    const blendedProperty = new BlendedNumberProperty( mass.scaleForceInterpolatedProperty.value );
-    mass.stepEmitter.addListener( () => blendedProperty.step( mass.scaleForceInterpolatedProperty.value ) );
+    const blendedProperty = new BlendedNumberProperty( mass.measuredWeightInterpolatedProperty.value );
+    mass.stepEmitter.addListener( () => blendedProperty.step( mass.measuredWeightInterpolatedProperty.value ) );
 
     super( blendedProperty, gravityProperty, mass.displayType );
 

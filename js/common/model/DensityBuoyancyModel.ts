@@ -268,7 +268,7 @@ export default class DensityBuoyancyModel implements TModel {
               }
             }
           } );
-          mass.scaleForceInterpolatedProperty.setNextValue( scaleForce );
+          mass.measuredWeightInterpolatedProperty.setNextValue( scaleForce );
         }
 
         const velocity = this.engine.bodyGetVelocity( mass.body );

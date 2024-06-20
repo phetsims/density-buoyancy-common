@@ -70,11 +70,11 @@ export type ScaleOptions = SelfOptions & StrictOmit<InstrumentedMassOptions, 'bo
 export default class Scale extends Mass {
 
   // In Newtons.
-  public readonly scaleForceInterpolatedProperty: InterpolatedProperty<number>;
+  public readonly measuredWeightInterpolatedProperty: InterpolatedProperty<number>;
 
   // Just exist for phet-io, see https://github.com/phetsims/density/issues/97
   // TODO: Add a wrapper test for this, https://github.com/phetsims/buoyancy/issues/86
-  private readonly scaleMeasuredMassProperty: TReadOnlyProperty<number>;
+  private readonly measuredMassProperty: TReadOnlyProperty<number>;
 
   public readonly displayType: DisplayType;
 
@@ -113,17 +113,18 @@ export default class Scale extends Mass {
 
     super( engine, options );
 
-    this.scaleForceInterpolatedProperty = new InterpolatedProperty( 0, {
+    // Disable lint to hide the InterpolatedProperty implementation detail.
+    this.measuredWeightInterpolatedProperty = new InterpolatedProperty( 0, { // eslint-disable-line tandem-name-should-match
       interpolate: InterpolatedProperty.interpolateNumber,
       phetioValueType: NumberIO,
-      tandem: options.tandem.createTandem( 'scaleForceInterpolatedProperty' ),
+      tandem: options.tandem.createTandem( 'measuredWeightProperty' ),
       phetioFeatured: true,
       units: 'N',
       phetioReadOnly: true,
       phetioHighFrequency: true
     } );
 
-    this.scaleMeasuredMassProperty = new DerivedProperty( [ this.scaleForceInterpolatedProperty, gravityProperty ], ( force, gravity ) => {
+    this.measuredMassProperty = new DerivedProperty( [ this.measuredWeightInterpolatedProperty, gravityProperty ], ( force, gravity ) => {
       if ( gravity.value !== 0 ) {
         return force / gravity.value;
       }
@@ -132,7 +133,7 @@ export default class Scale extends Mass {
       }
     }, {
       phetioValueType: NumberIO,
-      tandem: options.tandem.createTandem( 'scaleMeasuredMassProperty' ),
+      tandem: options.tandem.createTandem( 'measuredMassProperty' ),
       phetioFeatured: true,
       units: 'kg',
       phetioReadOnly: true
@@ -207,7 +208,7 @@ export default class Scale extends Mass {
   public override step( dt: number, interpolationRatio: number ): void {
     super.step( dt, interpolationRatio );
 
-    this.scaleForceInterpolatedProperty.setRatio( interpolationRatio );
+    this.measuredWeightInterpolatedProperty.setRatio( interpolationRatio );
   }
 
   // Not interesting or useful, but maintained as a documentation point, and for backward compatibility with

@@ -316,7 +316,7 @@ export default class DensityBuoyancyModel implements TModel {
           const ratioSubmerged =
             ( 1 - DensityBuoyancyCommonQueryParameters.viscositySubmergedRatio ) +
             DensityBuoyancyCommonQueryParameters.viscositySubmergedRatio * submergedVolume / mass.volumeProperty.value;
-          const hackedViscosity = this.pool.fluidViscosityProperty.value ? 0.03 * Math.pow( this.pool.fluidViscosityProperty.value / 0.03, 0.8 ) : 0;
+          const hackedViscosity = 0.03 * Math.pow( this.pool.fluidMaterialProperty.value.viscosity / 0.03, 0.8 );
           const viscosityMass = Math.max( DensityBuoyancyCommonQueryParameters.viscosityMassCutoff, massValue );
           const viscousForce = velocity.times( -hackedViscosity * viscosityMass * ratioSubmerged * 3000 * DensityBuoyancyCommonQueryParameters.viscosityMultiplier );
           this.engine.bodyApplyForce( mass.body, viscousForce );

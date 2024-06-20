@@ -28,7 +28,6 @@ export default class Pool extends Basin {
 
   public readonly fluidMaterialProperty: Property<Material>;
   public readonly fluidDensityProperty: TReadOnlyProperty<number>;
-  public readonly fluidViscosityProperty: TReadOnlyProperty<number>;
 
   // In Liters, how much volume does the Pool fluid + displaced Masses take up.
   public readonly fluidLevelVolumeProperty: TReadOnlyProperty<number>;
@@ -69,9 +68,6 @@ export default class Pool extends Basin {
       phetioValueType: NumberIO,
       units: 'kg/m^3'
     } );
-
-    // DerivedProperty doesn't need disposal, since everything here lives for the lifetime of the simulation
-    this.fluidViscosityProperty = new DerivedProperty( [ this.fluidMaterialProperty ], fluidMaterial => fluidMaterial.viscosity );
 
     // DerivedProperty doesn't need disposal, since everything here lives for the lifetime of the simulation
     this.fluidLevelVolumeProperty = new DerivedProperty( [ this.fluidYInterpolatedProperty ],

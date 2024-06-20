@@ -71,11 +71,7 @@ export default class Pool extends Basin {
     } );
 
     // DerivedProperty doesn't need disposal, since everything here lives for the lifetime of the simulation
-    this.fluidViscosityProperty = new DerivedProperty( [ this.fluidMaterialProperty ], fluidMaterial => fluidMaterial.viscosity, {
-      tandem: fluidTandem.createTandem( 'viscosityProperty' ),
-      phetioValueType: NumberIO,
-      units: 'Pa\u00b7s'
-    } );
+    this.fluidViscosityProperty = new DerivedProperty( [ this.fluidMaterialProperty ], fluidMaterial => fluidMaterial.viscosity );
 
     // DerivedProperty doesn't need disposal, since everything here lives for the lifetime of the simulation
     this.fluidLevelVolumeProperty = new DerivedProperty( [ this.fluidYInterpolatedProperty ],

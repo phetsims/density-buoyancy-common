@@ -17,6 +17,7 @@ type DisplayPropertiesOptions = {
   canShowForces: boolean;
   supportsDepthLines: boolean;
   forcesInitiallyDisplayed: boolean;
+  massValuesInitiallyDisplayed: boolean;
 };
 
 export default class DisplayProperties {
@@ -34,7 +35,6 @@ export default class DisplayProperties {
   public readonly supportsDepthLines: boolean;
 
   public constructor( tandem: Tandem,
-                      massValuesInitiallyDisplayed: boolean,
                       initialForceScale: number,
                       options: DisplayPropertiesOptions ) {
 
@@ -52,7 +52,7 @@ export default class DisplayProperties {
     this.forceValuesVisibleProperty = new BooleanProperty( options.forcesInitiallyDisplayed, {
       tandem: options.canShowForces ? tandem.createTandem( 'forceValuesVisibleProperty' ) : Tandem.OPT_OUT
     } );
-    this.massValuesVisibleProperty = new BooleanProperty( massValuesInitiallyDisplayed, {
+    this.massValuesVisibleProperty = new BooleanProperty( options.massValuesInitiallyDisplayed, {
       tandem: tandem.createTandem( 'massValuesVisibleProperty' ),
       phetioFeatured: true,
       phetioDocumentation: 'Displays a mass readout on each object'

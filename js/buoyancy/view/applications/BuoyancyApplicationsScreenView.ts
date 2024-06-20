@@ -51,7 +51,7 @@ import StrictOmit from '../../../../../phet-core/js/types/StrictOmit.js';
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN_SMALL;
 const ICON_SCALE = 0.08;
 
-type BuoyancyExploreScreenViewOptions = StrictOmit<DensityBuoyancyScreenViewOptions, 'canShowForces' | 'supportsDepthLines' | 'forcesInitiallyDisplayed' >;
+type BuoyancyExploreScreenViewOptions = StrictOmit<DensityBuoyancyScreenViewOptions, 'canShowForces' | 'supportsDepthLines' | 'forcesInitiallyDisplayed' | 'massValuesInitiallyDisplayed' >;
 
 export default class BuoyancyApplicationsScreenView extends BuoyancyScreenView<BuoyancyApplicationsModel> {
 
@@ -61,9 +61,10 @@ export default class BuoyancyApplicationsScreenView extends BuoyancyScreenView<B
 
     const tandem = options.tandem;
 
-    super( model, true, 1 / 16, combineOptions<DensityBuoyancyScreenViewOptions>( {
+    super( model, 1 / 16, combineOptions<DensityBuoyancyScreenViewOptions>( {
       supportsDepthLines: false,
       forcesInitiallyDisplayed: false,
+      massValuesInitiallyDisplayed: true,
       cameraLookAt: DensityBuoyancyCommonConstants.BUOYANCY_CAMERA_LOOK_AT
     }, options ) );
 

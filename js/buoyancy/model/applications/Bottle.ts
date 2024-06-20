@@ -228,6 +228,9 @@ export default class Bottle extends ApplicationsMass {
       phetioReadOnly: true
     } );
 
+    // @ts-expect-error
+    assert && assert( !this.customDensityProperty, 'There should not be a customDensityProperty on bottle before we create our internal one below' );
+
     this.customDensityProperty = new NumberProperty( 1, {
       range: new Range( 0.05, 20 ),
       tandem: options.tandem.createTandem( 'customDensityProperty' ),

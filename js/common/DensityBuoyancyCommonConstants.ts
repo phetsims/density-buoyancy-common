@@ -140,7 +140,7 @@ const DensityBuoyancyCommonConstants = {
     initialOutputLevel: 0.4
   },
 
-  FLUID_DENSITY_RANGE_PER_M3: FLUID_DENSITY_RANGE_PER_L.copy().times( LITERS_IN_CUBIC_METER )
+  FLUID_DENSITY_RANGE_PER_M3: FLUID_DENSITY_RANGE_PER_L.times( LITERS_IN_CUBIC_METER )
 };
 
 export const toLiters = ( cubicMeters: number ): number => {

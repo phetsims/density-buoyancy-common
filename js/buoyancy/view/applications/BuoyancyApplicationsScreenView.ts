@@ -142,7 +142,7 @@ export default class BuoyancyApplicationsScreenView extends BuoyancyScreenView<B
         materialChangeLocked = true;
         model.bottle.interiorMaterialProperty.value = Material.createCustomSolidMaterial( {
           density: density * DensityBuoyancyCommonConstants.LITERS_IN_CUBIC_METER,
-          densityRange: densityRange.copy().times( DensityBuoyancyCommonConstants.LITERS_IN_CUBIC_METER )
+          densityRange: densityRange.times( DensityBuoyancyCommonConstants.LITERS_IN_CUBIC_METER )
         } );
         materialChangeLocked = false;
       }
@@ -228,7 +228,7 @@ export default class BuoyancyApplicationsScreenView extends BuoyancyScreenView<B
     } );
 
     const boatVolumeControlTandem = tandem.createTandem( 'boatVolumeNumberControl' );
-    const boatVolumeRange = new Range( 5, 30 ); // TODO: PhET_iO move this range into the displacementVolumeProperty, https://github.com/phetsims/density-buoyancy-common/issues/228
+    const boatVolumeRange = model.boat.displacementVolumeProperty.range.times( DensityBuoyancyCommonConstants.LITERS_IN_CUBIC_METER );
     const boatBox = new VBox( {
       spacing: DensityBuoyancyCommonConstants.SPACING_SMALL,
       align: 'left',
@@ -255,6 +255,7 @@ export default class BuoyancyApplicationsScreenView extends BuoyancyScreenView<B
             constrainValue: ( value: number ) => {
               return boatVolumeRange.constrainValue( Utils.roundToInterval( value, 0.1 ) );
             },
+            phetioLinkedProperty: model.boat.displacementVolumeProperty,
             majorTickLength: 5,
             majorTicks: [ {
               value: boatVolumeRange.min,

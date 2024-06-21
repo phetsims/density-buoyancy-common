@@ -9,6 +9,7 @@
 
 import StrictOmit from '../../../../../phet-core/js/types/StrictOmit.js';
 import Utils from '../../../../../dot/js/Utils.js';
+import Range from '../../../../../dot/js/Range.js';
 import { Shape } from '../../../../../kite/js/imports.js';
 import Mass, { MassOptions } from '../../../common/model/Mass.js';
 import Material from '../../../common/model/Material.js';
@@ -66,7 +67,8 @@ export default class Boat extends ApplicationsMass {
     super( engine, options );
 
     this.displacementVolumeProperty = new NumberProperty( ApplicationsMass.DEFAULT_DISPLACEMENT_VOLUME, {
-      tandem: options.tandem.createTandem( 'displacementVolumeProperty' )
+      tandem: options.tandem.createTandem( 'displacementVolumeProperty' ),
+      range: new Range( 0.005, 0.03 )
     } );
 
     // Update the shape when the block width or displacement changes

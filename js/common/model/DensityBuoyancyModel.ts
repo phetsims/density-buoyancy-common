@@ -47,7 +47,7 @@ const FILL_EMPTY_MULTIPLIER = 0.3;
 const BOAT_READY_TO_SPILL_OUT_THRESHOLD = 0.9;
 
 // Y model distance of tolerance between the boat basin fluidY level and the boat basin stepTop. This was needed to
-// prevent filling thrashing as a containing mass floats around. See updateLiquidLevel();
+// prevent filling thrashing as a containing mass floats around. See updateFluid();
 const BOAT_FULL_THRESHOLD = 0.01;
 
 export type DensityBuoyancyModelOptions = {

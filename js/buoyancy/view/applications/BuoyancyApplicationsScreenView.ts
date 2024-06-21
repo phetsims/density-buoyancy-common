@@ -101,7 +101,9 @@ export default class BuoyancyApplicationsScreenView extends BuoyancyScreenView<B
     this.transformEmitter.addListener( this.positionResetSceneButton );
     this.positionResetSceneButton();
 
-    const bottleControlNode = new MaterialMassVolumeControlNode( model.bottle.interiorMaterialProperty, model.bottle.interiorMassProperty, model.bottle.interiorVolumeProperty, [
+    const bottleControlNodeTandem = tandem.createTandem( 'bottleControlNode' );
+
+    const insideMaterialControlNode = new MaterialMassVolumeControlNode( model.bottle.interiorMaterialProperty, model.bottle.interiorMassProperty, model.bottle.interiorVolumeProperty, [
       Material.GASOLINE,
       Material.OIL,
       Material.WATER,
@@ -121,7 +123,7 @@ export default class BuoyancyApplicationsScreenView extends BuoyancyScreenView<B
       showMassAsReadout: true,
       supportHiddenMaterial: true,
       customKeepsConstantDensity: true,
-      tandem: tandem.createTandem( 'bottleControlNode' )
+      tandem: bottleControlNodeTandem.createTandem( 'insideMaterialControlNode' )
     } );
 
     // This DerivedProperty doesn't need disposal, since everything here lives for the lifetime of the simulation
@@ -162,18 +164,19 @@ export default class BuoyancyApplicationsScreenView extends BuoyancyScreenView<B
       tandem: customBottleDensityControlTandem
     }, MaterialMassVolumeControlNode.getNumberControlOptions() ) );
 
-    const airVolumeMaxWidth = ( bottleControlNode.width - DensityBuoyancyCommonConstants.SPACING_SMALL ) / 2;
+    const airVolumeMaxWidth = ( insideMaterialControlNode.width - DensityBuoyancyCommonConstants.SPACING_SMALL ) / 2;
 
     const bottleBox = new VBox( {
       spacing: DensityBuoyancyCommonConstants.SPACING_SMALL,
       align: 'left',
       stretch: true,
+      tandem: bottleControlNodeTandem,
       children: [
         new Text( DensityBuoyancyCommonStrings.materialInsideStringProperty, {
           font: DensityBuoyancyCommonConstants.TITLE_FONT,
           maxWidth: 160
         } ),
-        bottleControlNode,
+        insideMaterialControlNode,
         customBottleDensityControl,
         new HSeparator(),
         new HBox( {
@@ -253,7 +256,6 @@ export default class BuoyancyApplicationsScreenView extends BuoyancyScreenView<B
             constrainValue: ( value: number ) => {
               return boatVolumeRange.constrainValue( Utils.roundToInterval( value, 0.1 ) );
             },
-            phetioLinkedProperty: model.boat.displacementVolumeProperty,
             majorTickLength: 5,
             majorTicks: [ {
               value: boatVolumeRange.min,

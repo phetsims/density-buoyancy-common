@@ -22,7 +22,7 @@ import DensityAccordionBox from './DensityAccordionBox.js';
 import BuoyancyDisplayOptionsPanel from './BuoyancyDisplayOptionsPanel.js';
 import SubmergedAccordionBox from './SubmergedAccordionBox.js';
 import PatternStringProperty from '../../../../axon/js/PatternStringProperty.js';
-import BlocksRadioButtonGroup from '../../common/view/BlocksRadioButtonGroup.js';
+import BlocksModeRadioButtonGroup from '../../common/view/BlocksModeRadioButtonGroup.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
 import { DensityMaterials } from '../../common/view/MaterialView.js';
 import ThreeUtils from '../../../../mobius/js/ThreeUtils.js';
@@ -172,20 +172,20 @@ export default class BuoyancyExploreScreenView extends BuoyancyScreenView<Buoyan
       margin: MARGIN
     } ) );
 
-    const blocksRadioButtonGroup = new BlocksRadioButtonGroup( model.modeProperty, {
-      tandem: this.tandem.createTandem( 'blocksRadioButtonGroup' )
+    const blocksModeRadioButtonGroup = new BlocksModeRadioButtonGroup( model.modeProperty, {
+      tandem: this.tandem.createTandem( 'blocksModeRadioButtonGroup' )
     } );
 
-    ManualConstraint.create( this, [ rightSideVBox, blocksRadioButtonGroup ],
-      ( rightSideVBoxWrapper, blocksRadioButtonGroupWrapper ) => {
-        blocksRadioButtonGroupWrapper.left = rightSideVBoxWrapper.left;
+    ManualConstraint.create( this, [ rightSideVBox, blocksModeRadioButtonGroup ],
+      ( rightSideVBoxWrapper, blocksModeRadioButtonGroupWrapper ) => {
+        blocksModeRadioButtonGroupWrapper.left = rightSideVBoxWrapper.left;
       } );
 
     this.visibleBoundsProperty.link( visibleBounds => {
-      blocksRadioButtonGroup.bottom = this.visibleBoundsProperty.value.bottom - MARGIN;
+      blocksModeRadioButtonGroup.bottom = this.visibleBoundsProperty.value.bottom - MARGIN;
     } );
 
-    this.addChild( blocksRadioButtonGroup );
+    this.addChild( blocksModeRadioButtonGroup );
 
     // DerivedProperty doesn't need disposal, since everything here lives for the lifetime of the simulation
     this.rightBarrierViewPointPropertyProperty.value = new DerivedProperty( [ rightSideVBox.boundsProperty, this.visibleBoundsProperty ], ( boxBounds, visibleBounds ) => {
@@ -235,7 +235,7 @@ export default class BuoyancyExploreScreenView extends BuoyancyScreenView<Buoyan
     this.massViews.forEach( massViewAdded );
 
     this.pdomControlAreaNode.pdomOrder = [
-      blocksRadioButtonGroup,
+      blocksModeRadioButtonGroup,
       displayOptionsPanel,
       objectDensityAccordionBox,
       percentSubmergedAccordionBox,

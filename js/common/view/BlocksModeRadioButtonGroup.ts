@@ -35,20 +35,20 @@ DensityBuoyancyCommonColors.labelSecondaryProperty.link( labelColor => {
   bMaterial.color = ThreeUtils.colorToThree( labelColor );
 } );
 
-export type BlocksRadioButtonGroupOptions = RectangularRadioButtonGroupOptions;
+export type BlocksModeRadioButtonGroupOptions = RectangularRadioButtonGroupOptions;
 
-export default class BlocksRadioButtonGroup extends RectangularRadioButtonGroup<TwoBlockMode> {
-  public constructor( modeProperty: Property<TwoBlockMode>, options?: BlocksRadioButtonGroupOptions ) {
+export default class BlocksModeRadioButtonGroup extends RectangularRadioButtonGroup<TwoBlockMode> {
+  public constructor( modeProperty: Property<TwoBlockMode>, options?: BlocksModeRadioButtonGroupOptions ) {
     super( modeProperty, [ {
       value: TwoBlockMode.ONE_BLOCK,
-      createNode: () => BlocksRadioButtonGroup.getSingleCuboidIcon(),
+      createNode: () => BlocksModeRadioButtonGroup.getSingleCuboidIcon(),
       tandemName: 'oneBlockRadioButton'
     }, {
       value: TwoBlockMode.TWO_BLOCKS,
-      createNode: () => BlocksRadioButtonGroup.getDoubleCuboidIcon(),
+      createNode: () => BlocksModeRadioButtonGroup.getDoubleCuboidIcon(),
       tandemName: 'twoBlocksRadioButton'
     }
-    ], optionize<BlocksRadioButtonGroupOptions, EmptySelfOptions, RectangularRadioButtonGroupOptions>()( {
+    ], optionize<BlocksModeRadioButtonGroupOptions, EmptySelfOptions, RectangularRadioButtonGroupOptions>()( {
       orientation: 'horizontal',
       touchAreaXDilation: 5,
       touchAreaYDilation: 5,
@@ -155,8 +155,8 @@ export default class BlocksRadioButtonGroup extends RectangularRadioButtonGroup<
    */
   private static getSingleCuboidIcon(): Node {
     if ( DensityBuoyancyCommonQueryParameters.generateIconImages ) {
-      return BlocksRadioButtonGroup.getIcon( 5.5, scene => {
-        scene.add( BlocksRadioButtonGroup.createBox( aMaterial, new Vector3( 0, 0, 0 ) ) );
+      return BlocksModeRadioButtonGroup.getIcon( 5.5, scene => {
+        scene.add( BlocksModeRadioButtonGroup.createBox( aMaterial, new Vector3( 0, 0, 0 ) ) );
       } );
     }
     else {
@@ -169,9 +169,9 @@ export default class BlocksRadioButtonGroup extends RectangularRadioButtonGroup<
    */
   private static getDoubleCuboidIcon(): Node {
     if ( DensityBuoyancyCommonQueryParameters.generateIconImages ) {
-      return BlocksRadioButtonGroup.getIcon( 4, scene => {
-        scene.add( BlocksRadioButtonGroup.createBox( aMaterial, new Vector3( -0.039, 0.015, -0.07 ) ) );
-        scene.add( BlocksRadioButtonGroup.createBox( bMaterial, new Vector3( 0.03, -0.005, 0.07 ) ) );
+      return BlocksModeRadioButtonGroup.getIcon( 4, scene => {
+        scene.add( BlocksModeRadioButtonGroup.createBox( aMaterial, new Vector3( -0.039, 0.015, -0.07 ) ) );
+        scene.add( BlocksModeRadioButtonGroup.createBox( bMaterial, new Vector3( 0.03, -0.005, 0.07 ) ) );
       } );
     }
     else {
@@ -180,4 +180,4 @@ export default class BlocksRadioButtonGroup extends RectangularRadioButtonGroup<
   }
 }
 
-densityBuoyancyCommon.register( 'BlocksRadioButtonGroup', BlocksRadioButtonGroup );
+densityBuoyancyCommon.register( 'BlocksModeRadioButtonGroup', BlocksModeRadioButtonGroup );

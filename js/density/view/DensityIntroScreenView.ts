@@ -23,7 +23,7 @@ import ThreeUtils from '../../../../mobius/js/ThreeUtils.js';
 import { DensityMaterials } from '../../common/view/MaterialView.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
 import DensityBuoyancyCommonColors from '../../common/view/DensityBuoyancyCommonColors.js';
-import BlocksRadioButtonGroup from '../../common/view/BlocksRadioButtonGroup.js';
+import BlocksModeRadioButtonGroup from '../../common/view/BlocksModeRadioButtonGroup.js';
 import MassView from '../../common/view/MassView.js';
 import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
 import StrictOmit from '../../../../phet-core/js/types/StrictOmit.js';
@@ -123,12 +123,12 @@ export default class DensityIntroScreenView extends DensityBuoyancyScreenView<De
       return new Vector2( isFinite( boxBounds.left ) ? boxBounds.left : visibleBounds.right, visibleBounds.centerY );
     } );
 
-    const blocksRadioButtonGroup = new BlocksRadioButtonGroup( model.modeProperty, {
-      tandem: this.tandem.createTandem( 'blocksRadioButtonGroup' )
+    const blocksModeRadioButtonGroup = new BlocksModeRadioButtonGroup( model.modeProperty, {
+      tandem: this.tandem.createTandem( 'blocksModeRadioButtonGroup' )
     } );
-    blocksRadioButtonGroup.bottom = this.resetAllButton.bottom;
-    blocksRadioButtonGroup.right = this.resetAllButton.left - 20;
-    this.addChild( blocksRadioButtonGroup );
+    blocksModeRadioButtonGroup.bottom = this.resetAllButton.bottom;
+    blocksModeRadioButtonGroup.right = this.resetAllButton.left - 20;
+    this.addChild( blocksModeRadioButtonGroup );
 
     this.addChild( this.popupLayer );
 
@@ -166,7 +166,7 @@ export default class DensityIntroScreenView extends DensityBuoyancyScreenView<De
     } );
 
     this.pdomControlAreaNode.pdomOrder = [
-      blocksRadioButtonGroup,
+      blocksModeRadioButtonGroup,
       densityAccordionBox,
       this.resetAllButton
     ];

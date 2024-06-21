@@ -67,9 +67,9 @@ export default class DensityMysteryScreenView extends DensityBuoyancyScreenView<
     } ) );
 
     const blocksPanelTandem = tandem.createTandem( 'blocksPanel' );
-    const blocksRadioButtonGroupTandem = blocksPanelTandem.createTandem( 'blocksRadioButtonGroup' );
+    const blocksModeRadioButtonGroupTandem = blocksPanelTandem.createTandem( 'blocksModeRadioButtonGroup' );
 
-    const blocksRadioButtonGroup = new VerticalAquaRadioButtonGroup( model.blockSetProperty, MysteryBlockSet.enumeration.values.map( blockSet => {
+    const blocksModeRadioButtonGroup = new VerticalAquaRadioButtonGroup( model.blockSetProperty, MysteryBlockSet.enumeration.values.map( blockSet => {
       return {
         createNode: tandem => new Text( blockSet.stringProperty, {
           font: DensityBuoyancyCommonConstants.RADIO_BUTTON_FONT,
@@ -85,7 +85,7 @@ export default class DensityMysteryScreenView extends DensityBuoyancyScreenView<
     } ), {
       align: 'left',
       spacing: DensityBuoyancyCommonConstants.SPACING_SMALL,
-      tandem: blocksRadioButtonGroupTandem
+      tandem: blocksModeRadioButtonGroupTandem
     } );
     const randomBlocksRefreshButton = new RefreshButton( {
       listener: () => {
@@ -103,10 +103,10 @@ export default class DensityMysteryScreenView extends DensityBuoyancyScreenView<
     // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
     model.blockSetProperty.link( blockSet => {
       blockSetContent.children = blockSet === MysteryBlockSet.RANDOM ? [
-        blocksRadioButtonGroup,
+        blocksModeRadioButtonGroup,
         randomBlocksRefreshButton
       ] : [
-        blocksRadioButtonGroup
+        blocksModeRadioButtonGroup
       ];
     } );
 

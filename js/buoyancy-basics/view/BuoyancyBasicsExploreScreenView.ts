@@ -21,7 +21,7 @@ import arrayRemove from '../../../../phet-core/js/arrayRemove.js';
 import BuoyancyDisplayOptionsPanel from '../../buoyancy/view/BuoyancyDisplayOptionsPanel.js';
 import SubmergedAccordionBox from '../../buoyancy/view/SubmergedAccordionBox.js';
 import PatternStringProperty from '../../../../axon/js/PatternStringProperty.js';
-import BlocksRadioButtonGroup from '../../common/view/BlocksRadioButtonGroup.js';
+import BlocksModeRadioButtonGroup from '../../common/view/BlocksModeRadioButtonGroup.js';
 import BuoyancyExploreScreenView from '../../buoyancy/view/BuoyancyExploreScreenView.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
 import FluidSelectionPanel from '../../buoyancy/view/FluidSelectionPanel.js';
@@ -164,17 +164,17 @@ export default class BuoyancyBasicsExploreScreenView extends BuoyancyScreenView<
       margin: MARGIN
     } ) );
 
-    const blocksRadioButtonGroup = new BlocksRadioButtonGroup( model.modeProperty, {
-      tandem: this.tandem.createTandem( 'blocksRadioButtonGroup' )
+    const blocksModeRadioButtonGroup = new BlocksModeRadioButtonGroup( model.modeProperty, {
+      tandem: this.tandem.createTandem( 'blocksModeRadioButtonGroup' )
     } );
 
-    ManualConstraint.create( this, [ rightSideVBox, fluidPanel, blocksRadioButtonGroup ],
-      ( rightSideVBoxWrapper, fluidDensityControlPanelWrapper, blocksRadioButtonGroupWrapper ) => {
-        blocksRadioButtonGroupWrapper.left = rightSideVBoxWrapper.left;
-        blocksRadioButtonGroupWrapper.bottom = fluidDensityControlPanelWrapper.bottom;
+    ManualConstraint.create( this, [ rightSideVBox, fluidPanel, blocksModeRadioButtonGroup ],
+      ( rightSideVBoxWrapper, fluidDensityControlPanelWrapper, blocksModeRadioButtonGroupWrapper ) => {
+        blocksModeRadioButtonGroupWrapper.left = rightSideVBoxWrapper.left;
+        blocksModeRadioButtonGroupWrapper.bottom = fluidDensityControlPanelWrapper.bottom;
       } );
 
-    this.addChild( blocksRadioButtonGroup );
+    this.addChild( blocksModeRadioButtonGroup );
 
     // DerivedProperty doesn't need disposal, since everything here lives for the lifetime of the simulation
     this.rightBarrierViewPointPropertyProperty.value = new DerivedProperty( [ rightSideVBox.boundsProperty, this.visibleBoundsProperty ], ( boxBounds, visibleBounds ) => {
@@ -224,7 +224,7 @@ export default class BuoyancyBasicsExploreScreenView extends BuoyancyScreenView<
     this.massViews.forEach( massViewAdded );
 
     this.pdomControlAreaNode.pdomOrder = [
-      blocksRadioButtonGroup,
+      blocksModeRadioButtonGroup,
       displayOptionsPanel,
       densityComparisonAccordionBox,
       percentSubmergedAccordionBox,

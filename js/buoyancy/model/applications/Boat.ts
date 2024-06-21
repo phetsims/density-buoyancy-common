@@ -24,6 +24,7 @@ import optionize, { EmptySelfOptions } from '../../../../../phet-core/js/optioni
 import ApplicationsMass, { ApplicationsMassOptions } from './ApplicationsMass.js';
 import Vector2 from '../../../../../dot/js/Vector2.js';
 import DensityBuoyancyCommonConstants, { toLiters } from '../../../common/DensityBuoyancyCommonConstants.js';
+import NumberProperty from '../../../../../axon/js/NumberProperty.js';
 
 export type BoatOptions = StrictOmit<ApplicationsMassOptions, 'body' | 'shape' | 'volume' | 'material' | 'massShape'>;
 
@@ -31,6 +32,8 @@ export default class Boat extends ApplicationsMass {
 
   // The volume that the boat can hold inside it.
   public readonly fluidMaterialProperty: TProperty<Material>;
+
+  public readonly displacementVolumeProperty: NumberProperty;
 
   // The interior that can contain liquid
   public readonly basin: BoatBasin;
@@ -61,6 +64,10 @@ export default class Boat extends ApplicationsMass {
     }, providedOptions );
 
     super( engine, options );
+
+    this.displacementVolumeProperty = new NumberProperty( ApplicationsMass.DEFAULT_DISPLACEMENT_VOLUME, {
+      tandem: options.tandem.createTandem( 'displacementVolumeProperty' )
+    } );
 
     // Update the shape when the block width or displacement changes
     Multilink.multilink( [ blockWidthProperty, this.displacementVolumeProperty ], ( blockWidth, displacementVolume ) => {

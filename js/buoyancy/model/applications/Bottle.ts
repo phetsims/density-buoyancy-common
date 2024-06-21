@@ -185,11 +185,10 @@ export default class Bottle extends ApplicationsMass {
   public readonly interiorMaterialProperty: Property<Material>;
   public readonly interiorVolumeProperty: Property<number>; // m^3
 
+  public readonly displacementVolumeProperty = new NumberProperty( ApplicationsMass.DEFAULT_DISPLACEMENT_VOLUME );
+
   // In kg (kilograms)
   public interiorMassProperty: ReadOnlyProperty<number>;
-
-  private readonly primaryGeometry: THREE.BufferGeometry;
-  private readonly capGeometry: THREE.BufferGeometry;
 
   public override readonly customDensityProperty: NumberProperty;
 
@@ -253,8 +252,6 @@ export default class Bottle extends ApplicationsMass {
       } );
     } );
 
-    this.primaryGeometry = Bottle.getPrimaryGeometry();
-    this.capGeometry = Bottle.getCapGeometry();
   }
 
   /**

@@ -22,18 +22,14 @@ export default abstract class ApplicationsMass extends Mass {
   // The default volume that the boat or bottle can hold inside them, in m^3
   protected static readonly DEFAULT_DISPLACEMENT_VOLUME = 0.01;
 
-  // The volume that the boat or bottle can hold inside them, in m^3.
-  public displacementVolumeProperty: NumberProperty;
+  // The volume that the boat or bottle can hold inside them, in m^3. This includes the material of the bottle/boat too.
+  public readonly abstract displacementVolumeProperty: NumberProperty;
 
-  protected massLabelOffsetVector3: Vector3;
+  protected readonly massLabelOffsetVector3: Vector3;
 
   protected constructor( engine: PhysicsEngine, options: ApplicationsMassOptions ) {
 
     super( engine, options );
-
-    this.displacementVolumeProperty = new NumberProperty( ApplicationsMass.DEFAULT_DISPLACEMENT_VOLUME, {
-      tandem: options.tandem.createTandem( 'displacementVolumeProperty' )
-    } );
 
     const bounds = this.shapeProperty.value.getBounds();
 

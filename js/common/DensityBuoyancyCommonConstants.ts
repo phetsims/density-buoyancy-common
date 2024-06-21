@@ -85,10 +85,6 @@ const DensityBuoyancyCommonConstants = {
 
   TOLERANCE: TOLERANCE,
 
-  // Not really used in Buoyancy, just Density
-  MIN_CUBE_VOLUME: 0.001 - TOLERANCE,
-  MAX_CUBE_VOLUME: 0.01 + TOLERANCE,
-
   // (read-only) {Object}
   PANEL_OPTIONS: {
     cornerRadius: CORNER_RADIUS,

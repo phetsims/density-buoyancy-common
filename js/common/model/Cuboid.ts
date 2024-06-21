@@ -31,6 +31,9 @@ export default class Cuboid extends Mass {
   private stepArea: number;
   private stepMaximumVolume: number;
 
+  public static readonly MIN_VOLUME = 0.001;
+  public static readonly MAX_VOLUME = 0.01;
+
   public constructor( engine: PhysicsEngine, size: Bounds3, providedOptions: CuboidOptions ) {
     const options = optionize<CuboidOptions, EmptySelfOptions, InstrumentedMassOptions>()( {
       body: engine.createBox( size.width, size.height ),
@@ -181,6 +184,7 @@ export default class Cuboid extends Mass {
   private static getVolume( size: Bounds3 ): number {
 
     // Rounding to proactively prevent infinite compounding rounding errors, like https://github.com/phetsims/density-buoyancy-common/issues/192
+    // In addition, this keeps the volume in range. Before this fix, the volume range had to be expanded by TOLERANCE, see https://github.com/phetsims/density-buoyancy-common/issues/224
     return Utils.roundToInterval( size.volume, DensityBuoyancyCommonConstants.TOLERANCE );
   }
 }

@@ -14,7 +14,7 @@ import Vector2 from '../../../../dot/js/Vector2.js';
 import Enumeration from '../../../../phet-core/js/Enumeration.js';
 import EnumerationValue from '../../../../phet-core/js/EnumerationValue.js';
 import optionize, { combineOptions, EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
-import DensityBuoyancyCommonConstants, { toCubicMeters } from '../../common/DensityBuoyancyCommonConstants.js';
+import { toCubicMeters } from '../../common/DensityBuoyancyCommonConstants.js';
 import BlockSetModel, { BlockSetModelOptions } from '../../common/model/BlockSetModel.js';
 import Cube, { CubeOptions } from '../../common/model/Cube.js';
 import Material from '../../common/model/Material.js';
@@ -72,12 +72,7 @@ export default class DensityMysteryModel extends BlockSetModel<MysteryBlockSet> 
 
     const tandem = providedOptions.tandem;
 
-    const minScreenVolume = DensityBuoyancyCommonConstants.MIN_CUBE_VOLUME;
-    const maxScreenVolume = DensityBuoyancyCommonConstants.MAX_CUBE_VOLUME;
-
     const commonCubeOptions = {
-      minVolume: minScreenVolume,
-      maxVolume: maxScreenVolume,
       adjustVolumeOnMassChanged: true,
       adjustableMaterial: true
     };
@@ -295,9 +290,7 @@ export default class DensityMysteryModel extends BlockSetModel<MysteryBlockSet> 
               adjustVolumeOnMassChanged: true,
               adjustableMaterial: true,
               tag: tags[ i ],
-              tandem: randomTandem.createTandem( `block${tags[ i ].tandemName}` ),
-              minVolume: minScreenVolume,
-              maxVolume: maxScreenVolume
+              tandem: randomTandem.createTandem( `block${tags[ i ].tandemName}` )
             } );
           } );
         }

@@ -16,7 +16,6 @@ import DensityBuoyancyModel, { DensityBuoyancyModelOptions } from '../../common/
 import Material from '../../common/model/Material.js';
 import TwoBlockMode from '../../common/model/TwoBlockMode.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
-import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 import MassTag from '../../common/model/MassTag.js';
 
 export type DensityIntroModelOptions = DensityBuoyancyModelOptions;
@@ -41,24 +40,15 @@ export default class DensityIntroModel extends DensityBuoyancyModel {
       phetioFeatured: true
     } );
 
-    const minScreenVolume = DensityBuoyancyCommonConstants.MIN_CUBE_VOLUME;
-    const maxScreenVolume = DensityBuoyancyCommonConstants.MAX_CUBE_VOLUME;
-
     this.primaryMass = Cube.createWithMass( this.engine, Material.WOOD, new Vector2( -0.2, 0.2 ), 2, {
       tag: MassTag.PRIMARY,
-      tandem: blocksTandem.createTandem( 'blockA' ),
-
-      minVolume: minScreenVolume,
-      maxVolume: maxScreenVolume
+      tandem: blocksTandem.createTandem( 'blockA' )
     } );
     this.availableMasses.push( this.primaryMass );
     this.secondaryMass = Cube.createWithMass( this.engine, Material.ALUMINUM, new Vector2( 0.2, 0.2 ), 13.5, {
       tag: MassTag.SECONDARY,
       tandem: blocksTandem.createTandem( 'blockB' ),
-      visible: false,
-
-      minVolume: minScreenVolume,
-      maxVolume: maxScreenVolume
+      visible: false
     } );
     this.availableMasses.push( this.secondaryMass );
 

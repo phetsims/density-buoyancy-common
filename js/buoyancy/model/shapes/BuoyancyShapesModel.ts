@@ -28,7 +28,6 @@ import TProperty from '../../../../../axon/js/TProperty.js';
 import isSettingPhetioStateProperty from '../../../../../tandem/js/isSettingPhetioStateProperty.js';
 import MassTag from '../../../common/model/MassTag.js';
 import Duck from './Duck.js';
-import DensityBuoyancyCommonConstants from '../../../common/DensityBuoyancyCommonConstants.js';
 
 export type BuoyancyShapesModelOptions = DensityBuoyancyModelOptions;
 
@@ -100,8 +99,8 @@ export default class BuoyancyShapesModel extends DensityBuoyancyModel {
     const createMass = ( tandem: Tandem, shape: MassShape, widthRatio: number, heightRatio: number, tag: MassTag ): Mass => {
       const massOptions = {
         material: this.materialProperty.value,
-        minVolume: 0.0002, // Cone's have a smaller volume at min height/width
-        maxVolume: DensityBuoyancyCommonConstants.MAX_CUBE_VOLUME,
+        minVolume: 0.0002, // Cones have a smaller volume at min height/width
+        maxVolume: Cuboid.MAX_VOLUME, // Cubes are the highest volume object in this screen
         tandem: tandem,
         tag: tag
       };

@@ -12,7 +12,7 @@ import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import StrictOmit from '../../../../phet-core/js/types/StrictOmit.js';
 import BlockSetModel, { BlockSetModelOptions } from './BlockSetModel.js';
 import BlockSet from './BlockSet.js';
-import optionize, { combineOptions } from '../../../../phet-core/js/optionize.js';
+import optionize from '../../../../phet-core/js/optionize.js';
 import NumberProperty from '../../../../axon/js/NumberProperty.js';
 import Range from '../../../../dot/js/Range.js';
 import TProperty from '../../../../axon/js/TProperty.js';
@@ -21,7 +21,6 @@ import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import Material from './Material.js';
 import Property from '../../../../axon/js/Property.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
-import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
 import Cube, { CubeOptions } from './Cube.js';
 import merge from '../../../../phet-core/js/merge.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
@@ -130,11 +129,6 @@ export default class CompareBlockSetModel extends BlockSetModel<BlockSet> {
       units: 'kg/m^3'
     } );
 
-    const commonCubeOptions = {
-      minVolume: DensityBuoyancyCommonConstants.MIN_CUBE_VOLUME,
-      maxVolume: DensityBuoyancyCommonConstants.MAX_CUBE_VOLUME
-    };
-
     const cubesData: CubeDataInternal[] = options.cubesData.map( cubeData => {
       const sameMassDensityProperty = new NumberProperty( options.sameMassValue / cubeData.sameMassVolume );
       const sameVolumeDensityProperty = new NumberProperty( cubeData.sameVolumeMass / options.sameVolumeValue );
@@ -166,7 +160,7 @@ export default class CompareBlockSetModel extends BlockSetModel<BlockSet> {
       return blockSet === BlockSet.SAME_MASS ?
              cubesData.map( cubeData => {
                const cube = Cube.createWithMass( model.engine, cubeData.sameMassMaterialProperty.value, Vector2.ZERO,
-                 massProperty.value, combineOptions<CubeOptions>( {}, commonCubeOptions, cubeData.sameMassCubeOptions ) );
+                 massProperty.value, cubeData.sameMassCubeOptions );
 
                cubeData.sameMassMaterialProperty.link( material => cube.materialProperty.set( material ) );
                massProperty.lazyLink( massValue => cubeData.sameMassDensityProperty.set( massValue / cube.volumeProperty.value ) );
@@ -180,7 +174,7 @@ export default class CompareBlockSetModel extends BlockSetModel<BlockSet> {
              blockSet === BlockSet.SAME_VOLUME ?
              cubesData.map( cubeData => {
                const cube = Cube.createWithMass( model.engine, cubeData.sameVolumeMaterialProperty.value, Vector2.ZERO,
-                 cubeData.sameVolumeMass, combineOptions<CubeOptions>( {}, commonCubeOptions, cubeData.sameVolumeCubeOptions ) );
+                 cubeData.sameVolumeMass, cubeData.sameVolumeCubeOptions );
 
                cubeData.sameVolumeMaterialProperty.link( material => cube.materialProperty.set( material ) );
 
@@ -204,7 +198,7 @@ export default class CompareBlockSetModel extends BlockSetModel<BlockSet> {
                const startingMass = options.sameDensityValue * cubeData.sameDensityVolume;
 
                const cube = Cube.createWithMass( model.engine, cubeData.sameDensityMaterialProperty.value, Vector2.ZERO,
-                 startingMass, combineOptions<CubeOptions>( {}, commonCubeOptions, cubeData.sameDensityCubeOptions ) );
+                 startingMass, cubeData.sameDensityCubeOptions );
 
                cubeData.sameDensityMaterialProperty.link( material => cube.materialProperty.set( material ) );
                densityProperty.lazyLink( density => cubeData.sameDensityDensityProperty.set( density ) );

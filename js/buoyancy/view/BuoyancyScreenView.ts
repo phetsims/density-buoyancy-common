@@ -12,10 +12,16 @@ import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyModel from '../../common/model/DensityBuoyancyModel.js';
 import optionize, { EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
 import StrictOmit from '../../../../phet-core/js/types/StrictOmit.js';
+import PoolScaleHeightControl from '../../common/view/PoolScaleHeightControl.js';
+import Vector3 from '../../../../dot/js/Vector3.js';
+import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
+import Bounds2 from '../../../../dot/js/Bounds2.js';
 
 type BuoyancyScreenViewOptions = StrictOmit<DensityBuoyancyScreenViewOptions, 'canShowForces'>;
 
 export default abstract class BuoyancyScreenView<T extends DensityBuoyancyModel> extends DensityBuoyancyScreenView<T> {
+
+  protected readonly poolScaleHeightControl: PoolScaleHeightControl | null = null;
 
   protected constructor( model: T,
                          providedOptions: BuoyancyScreenViewOptions ) {
@@ -25,6 +31,40 @@ export default abstract class BuoyancyScreenView<T extends DensityBuoyancyModel>
     }, providedOptions );
 
     super( model, options );
+
+    if ( model.pool.scale ) {
+      this.poolScaleHeightControl = new PoolScaleHeightControl( model.pool.scale,
+        model.poolBounds, model.pool.fluidYInterpolatedProperty, this, {
+          tandem: options.tandem.createTandem( 'poolScaleHeightControl' )
+        } );
+      this.addChild( this.poolScaleHeightControl );
+    }
+  }
+
+  private positionScaleHeightControl(): void {
+
+    // If the simulation was not able to load for WebGL, bail out
+    if ( this.sceneNode && this.poolScaleHeightControl && this.model.pool.scale ) {
+
+      // X margin should be based on the front of the pool
+      this.poolScaleHeightControl.x = this.modelToViewPoint( new Vector3(
+        this.model.poolBounds.maxX,
+        this.model.poolBounds.minY,
+        this.model.poolBounds.maxZ
+      ) ).plusXY( DensityBuoyancyCommonConstants.MARGIN_SMALL, 0 ).x;
+
+      // Y should be based on the bottom of the front of the scale (in the middle of the pool)
+      this.poolScaleHeightControl.y = this.modelToViewPoint( new Vector3(
+        this.model.poolBounds.maxX,
+        this.model.poolBounds.minY,
+        this.model.pool.scale.getBounds().maxZ
+      ) ).y;
+    }
+  }
+
+  public override layout( viewBounds: Bounds2 ): void {
+    super.layout( viewBounds );
+    this.positionScaleHeightControl();
   }
 }
 

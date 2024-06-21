@@ -10,7 +10,6 @@ import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import DynamicProperty from '../../../../axon/js/DynamicProperty.js';
 import Property from '../../../../axon/js/Property.js';
-import TinyEmitter from '../../../../axon/js/TinyEmitter.js';
 import Bounds2 from '../../../../dot/js/Bounds2.js';
 import Plane3 from '../../../../dot/js/Plane3.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
@@ -55,7 +54,6 @@ import DensityBuoyancyModel from '../model/DensityBuoyancyModel.js';
 import MassView from './MassView.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import Material from '../model/Material.js';
-import TEmitter from '../../../../axon/js/TEmitter.js';
 import PickRequired from '../../../../phet-core/js/types/PickRequired.js';
 import { PhetioObjectOptions } from '../../../../tandem/js/PhetioObject.js';
 import BackgroundEventTargetListener from './BackgroundEventTargetListener.js';
@@ -65,7 +63,6 @@ import DuckView from '../../buoyancy/view/shapes/DuckView.js';
 import createObservableArray, { ObservableArray } from '../../../../axon/js/createObservableArray.js';
 import Emitter from '../../../../axon/js/Emitter.js';
 import { Shape } from '../../../../kite/js/imports.js';
-import PoolScaleHeightControl from './PoolScaleHeightControl.js';
 import DisplayProperties from '../../buoyancy/view/DisplayProperties.js';
 
 // constants
@@ -106,8 +103,6 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
   private readonly backgroundLayer: Node;
   protected readonly resetAllButton: Node;
 
-  private readonly postLayoutEmitter: TEmitter;
-
   // The sky background, in a unit 0-to-1 rectangle (so we can scale it to match)
   private readonly backgroundNode: Rectangle;
 
@@ -124,8 +119,6 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
   protected readonly rightBarrierViewPointPropertyProperty: Property<TReadOnlyProperty<Vector2>>;
 
   protected readonly resetEmitter = new Emitter();
-
-  protected readonly poolScaleHeightControl: PoolScaleHeightControl | null;
 
   public readonly displayProperties: DisplayProperties;
 
@@ -158,7 +151,6 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
     } );
 
     this.model = model;
-    this.postLayoutEmitter = new TinyEmitter();
     this.popupLayer = new Node();
     this.backgroundNode = new Rectangle( 0, 0, 1, 1, {
       pickable: false,
@@ -580,17 +572,6 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
       waterLevelIndicator.translation = this.modelToViewPoint( modelPoint );
     } );
 
-    if ( model.pool.scale ) {
-      this.poolScaleHeightControl = new PoolScaleHeightControl( model.pool.scale,
-        model.poolBounds, model.pool.fluidYInterpolatedProperty, this, {
-          tandem: options.tandem.createTandem( 'poolScaleHeightControl' )
-        } );
-      this.addChild( this.poolScaleHeightControl );
-    }
-    else {
-      this.poolScaleHeightControl = null;
-    }
-
     this.resetAllButton = new ResetAllButton( {
       listener: () => {
         this.interruptSubtreeInput();
@@ -624,28 +605,30 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
       tandem: Tandem.OPT_OUT
     } );
 
-    const resizeBarrier = () => {
-      const stage = this.sceneNode.stage;
-      if ( stage.canvasWidth && stage.canvasHeight ) {
-        const leftRay = this.sceneNode.getRayFromScreenPoint( this.localToGlobalPoint( this.leftBarrierViewPointPropertyProperty.value.value ) );
-        const rightRay = this.sceneNode.getRayFromScreenPoint( this.localToGlobalPoint( this.rightBarrierViewPointPropertyProperty.value.value ) );
-        const topRay = this.sceneNode.getRayFromScreenPoint( this.localToGlobalPoint( this.visibleBoundsProperty.value.centerTop ) );
-        const leftPoint = new Plane3( Vector3.Z_UNIT, 0.09 ).intersectWithRay( leftRay );
-        const rightPoint = new Plane3( Vector3.Z_UNIT, 0.09 ).intersectWithRay( rightRay );
-        const topPoint = new Plane3( Vector3.Z_UNIT, 0.09 ).intersectWithRay( topRay );
-        model.invisibleBarrierBoundsProperty.value = model.invisibleBarrierBoundsProperty.value.setMaxY( topPoint.y + 0.06 ).setMinX( leftPoint.x + 0.01 ).withMaxX( rightPoint.x - 0.01 );
-      }
-    };
-
     // leftBarrierViewPointPropertyProperty and rightBarrierViewPointPropertyProperty are Property<Property>, and we need to listen
     // to when the value.value changes
     // This instance lives for the lifetime of the simulation, so we don't need to remove these listeners
-    new DynamicProperty( this.leftBarrierViewPointPropertyProperty ).lazyLink( resizeBarrier );
-    new DynamicProperty( this.rightBarrierViewPointPropertyProperty ).lazyLink( resizeBarrier );
-    this.postLayoutEmitter.addListener( resizeBarrier ); // We need to wait for the layout AND render
+    new DynamicProperty( this.leftBarrierViewPointPropertyProperty ).lazyLink( () => this.resizeBarrier() );
+    new DynamicProperty( this.rightBarrierViewPointPropertyProperty ).lazyLink( () => this.resizeBarrier() );
 
     if ( !ThreeUtils.isWebGLEnabled() ) {
       ThreeUtils.showWebGLWarning( this );
+    }
+  }
+
+  /**
+   * There is an invisible barrier that prevents objects from being dragged behind control panels.
+   */
+  private resizeBarrier(): void {
+    const stage = this.sceneNode.stage;
+    if ( stage.canvasWidth && stage.canvasHeight ) {
+      const leftRay = this.sceneNode.getRayFromScreenPoint( this.localToGlobalPoint( this.leftBarrierViewPointPropertyProperty.value.value ) );
+      const rightRay = this.sceneNode.getRayFromScreenPoint( this.localToGlobalPoint( this.rightBarrierViewPointPropertyProperty.value.value ) );
+      const topRay = this.sceneNode.getRayFromScreenPoint( this.localToGlobalPoint( this.visibleBoundsProperty.value.centerTop ) );
+      const leftPoint = new Plane3( Vector3.Z_UNIT, 0.09 ).intersectWithRay( leftRay );
+      const rightPoint = new Plane3( Vector3.Z_UNIT, 0.09 ).intersectWithRay( rightRay );
+      const topPoint = new Plane3( Vector3.Z_UNIT, 0.09 ).intersectWithRay( topRay );
+      this.model.invisibleBarrierBoundsProperty.value = this.model.invisibleBarrierBoundsProperty.value.setMaxY( topPoint.y + 0.06 ).setMinX( leftPoint.x + 0.01 ).withMaxX( rightPoint.x - 0.01 );
     }
   }
 
@@ -755,30 +738,10 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
     // We need to do an initial render for certain layout-based code to work
     this.sceneNode.render( undefined );
 
-    this.postLayoutEmitter.emit();
+    this.resizeBarrier();
 
-    this.positionScaleHeightControl();
-  }
-
-  public positionScaleHeightControl(): void {
-
-    // If the simulation was not able to load for WebGL, bail out
-    if ( this.sceneNode && this.poolScaleHeightControl && this.model.pool.scale ) {
-
-      // X margin should be based on the front of the pool
-      this.poolScaleHeightControl.x = this.modelToViewPoint( new Vector3(
-        this.model.poolBounds.maxX,
-        this.model.poolBounds.minY,
-        this.model.poolBounds.maxZ
-      ) ).plusXY( DensityBuoyancyCommonConstants.MARGIN_SMALL, 0 ).x;
-
-      // Y should be based on the bottom of the front of the scale (in the middle of the pool)
-      this.poolScaleHeightControl.y = this.modelToViewPoint( new Vector3(
-        this.model.poolBounds.maxX,
-        this.model.poolBounds.minY,
-        this.model.pool.scale.getBounds().maxZ
-      ) ).y;
-    }
+    // Note that subclasses may have other layout considerations. If they affect the barrier, then rewrite to move
+    // resizeBarrier() to be afterwards.
   }
 
   /**

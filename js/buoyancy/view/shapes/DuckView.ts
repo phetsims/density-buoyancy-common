@@ -19,19 +19,16 @@ import DisplayProperties from '../DisplayProperties.js';
 
 export default class DuckView extends MeasurableMassView {
 
-  private readonly duck: Duck;
   private duckGeometry: THREE.BufferGeometry;
+  private readonly updateListener: ( newSize: Bounds3 ) => void;
 
-  public constructor( duck: Duck, modelViewTransform: THREEModelViewTransform, displayProperties: DisplayProperties ) {
+  public constructor( private readonly duck: Duck, modelViewTransform: THREEModelViewTransform, displayProperties: DisplayProperties ) {
 
-    const size = duck.sizeProperty.value;
+    const localDuckGeometry = duckGeometry.clone();
 
-    const duckGeometry = DuckView.getDuckGeometry( size );
+    super( duck, localDuckGeometry, modelViewTransform, displayProperties );
 
-    super( duck, duckGeometry, modelViewTransform, displayProperties );
-
-    this.duck = duck;
-    this.duckGeometry = duckGeometry;
+    this.duckGeometry = localDuckGeometry;
 
     const positionTag = () => {
       const size = duck.sizeProperty.value;
@@ -40,18 +37,13 @@ export default class DuckView extends MeasurableMassView {
     };
     positionTag();
 
-    const updateListener = ( newSize: Bounds3, oldSize: Bounds3 ) => {
+    this.updateListener = ( newSize: Bounds3 ) => {
       positionTag();
-      // @ts-expect-error OLD version possibly?
-      duckGeometry.applyMatrix( new THREE.Matrix4().makeScale(
-        newSize.width / oldSize.width,
-        newSize.height / oldSize.height,
-        newSize.depth / oldSize.depth
-      ) );
-      duckGeometry.computeBoundingSphere();
-      this.massMesh.updateMatrix();
+      this.massMesh.scale.x = newSize.width;
+      this.massMesh.scale.y = newSize.height;
+      this.massMesh.scale.z = newSize.depth;
     };
-    duck.sizeProperty.lazyLink( updateListener );
+    this.duck.sizeProperty.link( this.updateListener );
 
   }
 
@@ -59,19 +51,10 @@ export default class DuckView extends MeasurableMassView {
    * Releases references.
    */
   public override dispose(): void {
+    this.duck.sizeProperty.unlink( this.updateListener );
     this.duckGeometry.dispose();
 
     super.dispose();
-  }
-
-  private static getDuckGeometry( size: Bounds3 ): THREE.BufferGeometry {
-
-    const geometry = duckGeometry.clone();
-
-    // Scale the duck to the size of the duck model
-    geometry.scale( size.width, size.height, size.depth );
-
-    return geometry;
   }
 }
 

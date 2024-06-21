@@ -19,11 +19,11 @@ export default class EllipsoidView extends MeasurableMassView {
 
   private readonly ellipsoid: Ellipsoid;
   private readonly ellipsoidGeometry: THREE.SphereGeometry;
-  private readonly updateListener: ( newSize: Bounds3, oldSize: Bounds3 ) => void;
+  private readonly updateListener: ( newSize: Bounds3 ) => void;
 
   public constructor( ellipsoid: Ellipsoid, modelViewTransform: THREEModelViewTransform, displayProperties: DisplayProperties ) {
 
-    const ellipsoidGeometry = new THREE.SphereGeometry( 1, 30, 24 );
+    const ellipsoidGeometry = new THREE.SphereGeometry( 0.5, 30, 24 );
 
     super( ellipsoid, ellipsoidGeometry, modelViewTransform, displayProperties );
 
@@ -36,19 +36,13 @@ export default class EllipsoidView extends MeasurableMassView {
     };
     positionTag();
 
-    this.updateListener = ( newSize: Bounds3, oldSize: Bounds3 ) => {
+    this.updateListener = ( newSize: Bounds3 ) => {
       positionTag();
-      // @ts-expect-error OLD version possibly?
-      ellipsoidGeometry.applyMatrix( new THREE.Matrix4().makeScale(
-        newSize.width / oldSize.width,
-        newSize.height / oldSize.height,
-        newSize.depth / oldSize.depth
-      ) );
-      ellipsoidGeometry.computeBoundingSphere();
-      this.massMesh.updateMatrix();
+      this.massMesh.scale.x = newSize.width;
+      this.massMesh.scale.y = newSize.height;
+      this.massMesh.scale.z = newSize.depth;
     };
-    this.ellipsoid.sizeProperty.lazyLink( this.updateListener );
-    this.updateListener( this.ellipsoid.sizeProperty.value, new Bounds3( -1, -1, -1, 1, 1, 1 ) );
+    this.ellipsoid.sizeProperty.link( this.updateListener );
   }
 
   /**

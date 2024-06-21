@@ -123,7 +123,7 @@ export default class BuoyancyApplicationsModel extends DensityBuoyancyModel {
 
     // Reset the basin levels (clear the liquid out of the boat)
     this.boat.basin.reset();
-    this.pool.reset();
+    this.pool.reset( false );
 
     // Move things to the initial position
     this.boat.resetPosition();

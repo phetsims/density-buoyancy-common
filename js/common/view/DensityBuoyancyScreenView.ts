@@ -89,7 +89,7 @@ type SelfOptions = {
   supportsDepthLines: boolean;
   forcesInitiallyDisplayed: boolean;
   massValuesInitiallyDisplayed: boolean;
-  initialForceScale: number;
+  initialForceScale?: number;
 } & PickRequired<PhetioObjectOptions, 'tandem'>;
 
 export type DensityBuoyancyScreenViewOptions = SelfOptions & ScreenViewOptions;
@@ -138,6 +138,8 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
       cameraPosition: new Vector3( 0, 0.2, 2 ).timesScalar( scaleIncrease ),
       cameraZoom: 1.75 * scaleIncrease,
       viewOffset: new Vector2( 0, 0 ),
+
+      initialForceScale: 1 / 16,
 
       preventFit: true
     }, providedOptions );

@@ -61,7 +61,6 @@ export default class BuoyancyCompareScreenView extends BuoyancyScreenView<Buoyan
       supportsDepthLines: true,
       forcesInitiallyDisplayed: false,
       massValuesInitiallyDisplayed: true,
-      initialForceScale: 1 / 16,
 
       // Custom just for this screen
       cameraLookAt: DensityBuoyancyCommonConstants.BUOYANCY_BASICS_CAMERA_LOOK_AT,

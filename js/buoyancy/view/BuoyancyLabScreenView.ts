@@ -52,7 +52,6 @@ export default class BuoyancyLabScreenView extends BuoyancyScreenView<BuoyancyLa
       supportsDepthLines: true,
       forcesInitiallyDisplayed: true,
       massValuesInitiallyDisplayed: false,
-      initialForceScale: 1 / 16,
       cameraLookAt: DensityBuoyancyCommonConstants.BUOYANCY_CAMERA_LOOK_AT
     }, options ) );
 

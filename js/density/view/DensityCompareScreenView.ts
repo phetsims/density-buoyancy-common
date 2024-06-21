@@ -39,7 +39,6 @@ export default class DensityCompareScreenView extends DensityBuoyancyScreenView<
       supportsDepthLines: false,
       forcesInitiallyDisplayed: false,
       massValuesInitiallyDisplayed: true,
-      initialForceScale: 1 / 16,
       cameraLookAt: DensityBuoyancyCommonConstants.DENSITY_CAMERA_LOOK_AT
     }, options ) );
 

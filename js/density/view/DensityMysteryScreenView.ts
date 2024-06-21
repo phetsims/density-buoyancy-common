@@ -43,7 +43,6 @@ export default class DensityMysteryScreenView extends DensityBuoyancyScreenView<
       supportsDepthLines: false,
       forcesInitiallyDisplayed: false,
       massValuesInitiallyDisplayed: false,
-      initialForceScale: 1 / 16,
       cameraLookAt: DensityBuoyancyCommonConstants.DENSITY_CAMERA_LOOK_AT
     }, options ) );
 

@@ -180,9 +180,10 @@ export default class BuoyancyShapesModel extends DensityBuoyancyModel {
       ) );
     } );
 
-    const changeShape = ( massProperty: TProperty<Mass>, shapeMap: Map<MassShape, Mass>, massShape: MassShape ) => {
+    const changeShape = ( massProperty: TProperty<Mass>, shapeMap: Map<MassShape, Mass>, massShape: MassShape, widthProperty: Property<number> ) => { // Triggering dimension change first
       const minYBefore = massProperty.value.getBounds().minY;
       massProperty.value = shapeMap.get( massShape )!;
+      widthProperty.notifyListenersStatic(); // Triggering dimension change first
       const minYAfter = massProperty.value.getBounds().minY;
       massProperty.value.matrix.multiplyMatrix( Matrix3.translation( 0, minYBefore - minYAfter ) );
       massProperty.value.writeData();
@@ -192,13 +193,13 @@ export default class BuoyancyShapesModel extends DensityBuoyancyModel {
     // Property doesn't need disposal, since everything here lives for the lifetime of the simulation
     this.primaryMassProperty = new Property( aMap.get( this.primaryShapeProperty.value )! );
     this.primaryShapeProperty.link( massShape => {
-      changeShape( this.primaryMassProperty, aMap, massShape );
+      changeShape( this.primaryMassProperty, aMap, massShape, this.primaryWidthRatioProperty );
     } );
 
     // Property doesn't need disposal, since everything here lives for the lifetime of the simulation
     this.secondaryMassProperty = new Property( bMap.get( this.secondaryShapeProperty.value )! );
     this.secondaryShapeProperty.link( massShape => {
-      changeShape( this.secondaryMassProperty, bMap, massShape );
+      changeShape( this.secondaryMassProperty, bMap, massShape, this.primaryWidthRatioProperty );
     } );
 
     Multilink.lazyMultilink( [ this.primaryWidthRatioProperty, this.primaryHeightRatioProperty ], ( widthRatio, heightRatio ) => {

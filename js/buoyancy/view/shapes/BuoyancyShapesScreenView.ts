@@ -219,10 +219,10 @@ export default class BuoyancyShapesScreenView extends BuoyancyScreenView<Buoyanc
       tandem: this.tandem.createTandem( 'blocksModeRadioButtonGroup' )
     } );
 
-    ManualConstraint.create( this, [ rightSideVBox, fluidDensityPanel, blocksModeRadioButtonGroup ],
-      ( rightSideVBoxWrapper, fluidDensityControlPanelWrapper, blocksModeRadioButtonGroupWrapper ) => {
-        blocksModeRadioButtonGroupWrapper.left = rightSideVBoxWrapper.left;
-        blocksModeRadioButtonGroupWrapper.bottom = fluidDensityControlPanelWrapper.bottom;
+    ManualConstraint.create( this, [ this.resetAllButton, blocksModeRadioButtonGroup ],
+      ( resetAllButtonWrapper, blocksModeRadioButtonGroupWrapper ) => {
+        blocksModeRadioButtonGroupWrapper.right = resetAllButtonWrapper.left - DensityBuoyancyCommonConstants.MARGIN;
+        blocksModeRadioButtonGroupWrapper.bottom = resetAllButtonWrapper.bottom;
       } );
 
     this.addChild( blocksModeRadioButtonGroup );

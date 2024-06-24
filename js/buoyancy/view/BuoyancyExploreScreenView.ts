@@ -175,9 +175,10 @@ export default class BuoyancyExploreScreenView extends BuoyancyScreenView<Buoyan
       tandem: this.tandem.createTandem( 'blocksModeRadioButtonGroup' )
     } );
 
-    ManualConstraint.create( this, [ rightSideVBox, blocksModeRadioButtonGroup ],
-      ( rightSideVBoxWrapper, blocksModeRadioButtonGroupWrapper ) => {
-        blocksModeRadioButtonGroupWrapper.left = rightSideVBoxWrapper.left;
+    ManualConstraint.create( this, [ this.resetAllButton, blocksModeRadioButtonGroup ],
+      ( resetAllButtonWrapper, blocksModeRadioButtonGroupWrapper ) => {
+        blocksModeRadioButtonGroupWrapper.right = resetAllButtonWrapper.left - DensityBuoyancyCommonConstants.MARGIN;
+        blocksModeRadioButtonGroupWrapper.bottom = resetAllButtonWrapper.bottom;
       } );
 
     this.visibleBoundsProperty.link( visibleBounds => {

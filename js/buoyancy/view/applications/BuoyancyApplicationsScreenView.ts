@@ -409,10 +409,10 @@ export default class BuoyancyApplicationsScreenView extends BuoyancyScreenView<B
       margin: MARGIN
     } ) );
 
-    ManualConstraint.create( this, [ rightSideVBox, fluidDensityPanel, sceneRadioButtonGroup ],
-      ( rightSideVBoxWrapper, densityControlPanelWrapper, bottleBoatSelectionNodeWrapper ) => {
-        bottleBoatSelectionNodeWrapper.left = rightSideVBoxWrapper.left;
-        bottleBoatSelectionNodeWrapper.bottom = densityControlPanelWrapper.bottom;
+    ManualConstraint.create( this, [ this.resetAllButton, sceneRadioButtonGroup ],
+      ( resetAllButtonWrapper, bottleBoatSelectionNodeWrapper ) => {
+        bottleBoatSelectionNodeWrapper.right = resetAllButtonWrapper.left - DensityBuoyancyCommonConstants.MARGIN;
+        bottleBoatSelectionNodeWrapper.bottom = resetAllButtonWrapper.bottom;
       } );
 
     this.addChild( sceneRadioButtonGroup );

@@ -323,7 +323,7 @@ export default class DensityBuoyancyModel implements TModel {
           // Calculate the maximum allowable viscous force to prevent it from being so high that it could change the
           // direction of the velocity. Note the viscous force is always in the opposite direction of the velocity,
           // so we just need to manage the magnitude
-          // F = ma = m dv/dv
+          // F = ma = m dv/dt
           // see https://github.com/phetsims/density-buoyancy-common/issues/223
           const maxViscousForceMagnitude = velocity.magnitude * massValue / dt;
           const viscousForceMagnitude = Math.min( viscousForce.magnitude, maxViscousForceMagnitude );

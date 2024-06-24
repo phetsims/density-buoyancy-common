@@ -466,6 +466,9 @@ export default class DensityBuoyancyModel implements TModel {
       boatBasin.fluidVolumeProperty.value = boatFluidVolume;
     }
     else {
+
+      // When the boat is hidden (whether via changing scene or by phet-io), move the fluid from the boat basin to the pool.
+      poolFluidVolume += boatBasin.fluidVolumeProperty.value;
       boatBasin.fluidVolumeProperty.value = 0;
     }
     return poolFluidVolume;

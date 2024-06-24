@@ -47,9 +47,9 @@ export default class BuoyancyLabModel extends DensityBuoyancyModel {
     } ) );
 
     this.fluidDisplacedVolumeProperty = new DerivedProperty(
-      [ this.block.submergedMassFractionProperty, this.block.volumeProperty ],
-      ( submergedMassFraction, volume ) => {
-        return submergedMassFraction * volume * DensityBuoyancyCommonConstants.LITERS_IN_CUBIC_METER;
+      [ this.block.percentSubmergedProperty, this.block.volumeProperty ],
+      ( percentSubmerged, volume ) => {
+        return percentSubmerged / 100 * volume * DensityBuoyancyCommonConstants.LITERS_IN_CUBIC_METER;
       }
     );
   }

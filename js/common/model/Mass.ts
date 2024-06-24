@@ -141,7 +141,7 @@ export default abstract class Mass extends PhetioObject {
   public readonly volumeProperty: NumberProperty;
 
   // Percentage of submerged mass, if any
-  public readonly submergedMassFractionProperty: NumberProperty;
+  public readonly percentSubmergedProperty: NumberProperty;
 
   // In kg (kilograms), added to the normal mass (computed from density and volume)
   protected readonly containedMassProperty: Property<number>;
@@ -364,9 +364,11 @@ export default abstract class Mass extends PhetioObject {
       reentrant: true
     }, options.volumePropertyOptions ) );
 
-    this.submergedMassFractionProperty = new NumberProperty( 0, {
-      range: new Range( 0, 1 ),
-      tandem: Tandem.OPT_OUT // TODO: Instrument? https://github.com/phetsims/density-buoyancy-common/issues/82
+    this.percentSubmergedProperty = new NumberProperty( 0, {
+      range: new Range( 0, 100 ),
+      units: '%',
+      tandem: tandem?.createTandem( 'percentSubmergedProperty' ),
+      phetioReadOnly: true
     } );
 
     this.containedMassProperty = new NumberProperty( 0, {
@@ -537,9 +539,9 @@ export default abstract class Mass extends PhetioObject {
 
     const buoyancy = this.buoyancyForceInterpolatedProperty.currentValue;
     const volume = this.volumeProperty.value;
-    const submergedFraction = buoyancy.magnitude / ( volume * gravityMagnitude * fluidDensity );
-    const range = this.submergedMassFractionProperty.range;
-    this.submergedMassFractionProperty.value = range.constrainValue( submergedFraction );
+    const submergedFraction = 100 * buoyancy.magnitude / ( volume * gravityMagnitude * fluidDensity );
+    const range = this.percentSubmergedProperty.range;
+    this.percentSubmergedProperty.value = range.constrainValue( submergedFraction );
   }
 
   /**

@@ -153,12 +153,12 @@ export default class Boat extends ApplicationsMass {
     if ( !this.isUnderwater ) {
       const buoyancy = this.buoyancyForceInterpolatedProperty.currentValue;
       const volume = this.volumeProperty.value + this.stepInternalVolume;
-      const submergedFraction = buoyancy.magnitude / ( volume * gravityMagnitude * fluidDensity );
-      const range = this.submergedMassFractionProperty.range;
-      this.submergedMassFractionProperty.value = range.constrainValue( submergedFraction );
+      const submergedFraction = 100 * buoyancy.magnitude / ( volume * gravityMagnitude * fluidDensity );
+      const range = this.percentSubmergedProperty.range;
+      this.percentSubmergedProperty.value = range.constrainValue( submergedFraction );
     }
     else {
-      this.submergedMassFractionProperty.value = 1;
+      this.percentSubmergedProperty.value = 100;
     }
   }
 

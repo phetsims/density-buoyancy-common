@@ -33,10 +33,10 @@ export default class SubmergedAccordionBox extends ReadoutListAccordionBox<Mass>
   protected override generateReadoutData( mass: Mass ): ReadoutData {
 
     const patternStringProperty = new PatternStringProperty( DensityBuoyancyCommonStrings.valuePercentStringProperty, {
-      value: mass.submergedMassFractionProperty
+      value: mass.percentSubmergedProperty
     }, {
       maps: {
-        value: submergedMassFraction => Utils.toFixed( 100 * submergedMassFraction, 1 )
+        value: percentSubmerged => Utils.toFixed( percentSubmerged, 1 )
       }
     } );
     this.cleanupEmitter.addListener( () => {

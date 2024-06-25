@@ -17,6 +17,7 @@ import Scale, { DisplayType } from '../../common/model/Scale.js';
 import TwoBlockMode from '../../common/model/TwoBlockMode.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import MassTag from '../../common/model/MassTag.js';
+import MaterialEnumeration from '../../common/model/MaterialEnumeration.js';
 
 type BuoyancyBasicsExploreModelOptions = DensityBuoyancyModelOptions;
 
@@ -37,9 +38,15 @@ export default class BuoyancyBasicsExploreModel extends DensityBuoyancyModel {
       phetioFeatured: true
     } );
 
+    const materialIdentifiers = Material.SIMPLE_MASS_MATERIALS.map( x => x.identifier ) as string[];
+    const subSetKeys = MaterialEnumeration.enumeration.keys.filter( name => materialIdentifiers.includes( name ) );
+    // @ts-expect-error TODO: is this string indexing correct? https://github.com/phetsims/density-buoyancy-common/issues/225
+    const subSet = subSetKeys.map( x => MaterialEnumeration[ x ] ).concat( [ MaterialEnumeration.CUSTOM ] );
+
     this.primaryMass = Cube.createWithMass( this.engine, Material.WOOD, new Vector2( -0.2, 0.2 ), 2, {
       tag: MassTag.PRIMARY,
       adjustableMaterial: true,
+      materialEnumPropertyValidValues: subSet,
       adjustableColor: false,
       tandem: blocksTandem.createTandem( 'blockA' )
     } );
@@ -47,6 +54,7 @@ export default class BuoyancyBasicsExploreModel extends DensityBuoyancyModel {
     this.secondaryMass = Cube.createWithMass( this.engine, Material.ALUMINUM, new Vector2( 0.05, 0.35 ), 13.5, {
       tag: MassTag.SECONDARY,
       adjustableMaterial: true,
+      materialEnumPropertyValidValues: subSet,
       adjustableColor: false,
       tandem: blocksTandem.createTandem( 'blockB' ),
       visible: false

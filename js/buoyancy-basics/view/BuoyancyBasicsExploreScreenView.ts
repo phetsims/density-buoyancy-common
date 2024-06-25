@@ -11,13 +11,11 @@ import Vector2 from '../../../../dot/js/Vector2.js';
 import { combineOptions } from '../../../../phet-core/js/optionize.js';
 import { AlignBox, ManualConstraint, Node, VBox } from '../../../../scenery/js/imports.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
-import Material from '../../common/model/Material.js';
 import { DensityBuoyancyScreenViewOptions } from '../../common/view/DensityBuoyancyScreenView.js';
 import PrimarySecondaryControlsNode from '../../common/view/PrimarySecondaryControlsNode.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import BuoyancyBasicsExploreModel from '../model/BuoyancyBasicsExploreModel.js';
-import arrayRemove from '../../../../phet-core/js/arrayRemove.js';
 import BuoyancyDisplayOptionsPanel from '../../buoyancy/view/BuoyancyDisplayOptionsPanel.js';
 import SubmergedAccordionBox from '../../buoyancy/view/SubmergedAccordionBox.js';
 import PatternStringProperty from '../../../../axon/js/PatternStringProperty.js';
@@ -68,14 +66,6 @@ export default class BuoyancyBasicsExploreScreenView extends BuoyancyScreenView<
       yAlign: 'bottom',
       margin: MARGIN
     } ) );
-
-    const displayedMysteryMaterials = [
-      Material.DENSITY_A,
-      Material.DENSITY_B
-    ];
-
-    const invisibleMaterials = [ ...Material.BUOYANCY_FLUID_MYSTERY_MATERIALS ];
-    displayedMysteryMaterials.forEach( displayed => arrayRemove( invisibleMaterials, displayed ) );
 
     this.rightBox = new PrimarySecondaryControlsNode(
       model.primaryMass,

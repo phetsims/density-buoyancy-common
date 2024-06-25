@@ -89,6 +89,9 @@ type SelfOptions = {
   volumePropertyOptions?: NumberPropertyOptions;
   massPropertyOptions?: NumberPropertyOptions;
 
+  // Accepted values for the Material Combo Box
+  materialEnumPropertyValidValues?: MaterialEnumeration[];
+
   minVolume?: number;
   maxVolume?: number;
 };
@@ -223,6 +226,8 @@ export default abstract class Mass extends PhetioObject {
       volumePropertyOptions: {},
       massPropertyOptions: {},
 
+      materialEnumPropertyValidValues: MaterialEnumeration.enumeration.values,
+
       minVolume: 0,
       maxVolume: Number.POSITIVE_INFINITY
     }, providedOptions );
@@ -279,6 +284,7 @@ export default abstract class Mass extends PhetioObject {
     if ( options.adjustableMaterial ) {
       this.materialEnumProperty = new EnumerationProperty( materialToEnum( options.material ), {
         tandem: tandem?.createTandem( 'materialEnumProperty' ),
+        validValues: options.materialEnumPropertyValidValues,
         phetioFeatured: true,
         phetioDocumentation: 'Current material of the object. Changing the material will result in changes to the mass, but the volume will remain the same.'
       } );

@@ -223,6 +223,7 @@ export default class Bottle extends ApplicationsMass {
 
     this.interiorVolumeProperty = new NumberProperty( BOTTLE_INITIAL_INTERIOR_VOLUME, {
       tandem: options.tandem.createTandem( 'interiorVolumeProperty' ),
+      phetioDocumentation: 'Volume of the material inside the bottle.',
       range: new Range( 0, Number.POSITIVE_INFINITY ),
       phetioReadOnly: true
     } );
@@ -233,6 +234,7 @@ export default class Bottle extends ApplicationsMass {
     this.customDensityProperty = new NumberProperty( 1, {
       range: new Range( 0.05, 20 ),
       tandem: options.tandem.createTandem( 'customDensityProperty' ),
+      phetioDocumentation: 'Density of the material inside the bottle when ‘CUSTOM’ is chosen.',
       phetioFeatured: true,
       units: 'kg/L'
     } );
@@ -241,6 +243,7 @@ export default class Bottle extends ApplicationsMass {
       return material.density * volume;
     }, {
       tandem: options.tandem.createTandem( 'interiorMassProperty' ),
+      phetioDocumentation: 'Mass of the material inside the bottle.',
       phetioValueType: NumberIO
     } );
 

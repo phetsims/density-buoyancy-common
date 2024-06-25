@@ -48,6 +48,7 @@ export default class Duck extends Mass {
     this.sizeProperty = new Property( size, {
       valueType: Bounds3,
       tandem: config.tandem.createTandem( 'sizeProperty' ),
+      phetioDocumentation: 'For internal use only.',
       phetioValueType: Bounds3.Bounds3IO
     } );
 

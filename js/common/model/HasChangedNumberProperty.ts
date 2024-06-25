@@ -20,6 +20,7 @@ export default class HasChangedNumberProperty extends NumberProperty {
     super( initialValue, options );
     this.hasChangedProperty = new BooleanProperty( false, {
       tandem: options.tandem?.createTandem( 'hasChangedProperty' ),
+      phetioDocumentation: 'For internal use only',
       phetioReadOnly: true
     } );
     this.lazyLink( () => { this.hasChangedProperty.value = true; } );

@@ -245,6 +245,7 @@ export default abstract class Mass extends PhetioObject {
 
     this.userControlledProperty = new BooleanProperty( false, {
       tandem: tandem?.createTandem( 'userControlledProperty' ),
+      phetioDocumentation: 'For internal use only',
       phetioReadOnly: true,
       phetioState: false
     } );
@@ -381,9 +382,7 @@ export default abstract class Mass extends PhetioObject {
       phetioReadOnly: true,
       phetioState: false,
       phetioFeatured: true,
-      phetioDocumentation: 'Current mass of the object. Changing the mass will result in changes to the volume (Intro and ' +
-                           'Mystery Screens) or density (Compare Screen). Since the volume is computed as a function of ' +
-                           'the mass, you can only set a mass that will keep the volume in range.',
+      phetioDocumentation: 'Current mass of the object',
       units: 'kg',
       reentrant: true,
       range: new Range( Number.MIN_VALUE, Number.POSITIVE_INFINITY ),
@@ -417,6 +416,7 @@ export default abstract class Mass extends PhetioObject {
       interpolate: InterpolatedProperty.interpolateVector2,
       valueComparisonStrategy: 'equalsFunction',
       tandem: tandem?.createTandem( 'gravityForceInterpolatedProperty' ),
+      phetioDocumentation: 'For internal use only.',
       phetioValueType: Vector2.Vector2IO,
       phetioReadOnly: true,
       units: 'N',
@@ -427,6 +427,7 @@ export default abstract class Mass extends PhetioObject {
       interpolate: InterpolatedProperty.interpolateVector2,
       valueComparisonStrategy: 'equalsFunction',
       tandem: tandem?.createTandem( 'buoyancyForceInterpolatedProperty' ),
+      phetioDocumentation: 'For internal use only.',
       phetioValueType: Vector2.Vector2IO,
       phetioReadOnly: true,
       units: 'N',
@@ -437,6 +438,7 @@ export default abstract class Mass extends PhetioObject {
       interpolate: InterpolatedProperty.interpolateVector2,
       valueComparisonStrategy: 'equalsFunction',
       tandem: tandem?.createTandem( 'contactForceInterpolatedProperty' ),
+      phetioDocumentation: 'For internal use only.',
       phetioValueType: Vector2.Vector2IO,
       phetioReadOnly: true,
       units: 'N',

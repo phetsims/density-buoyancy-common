@@ -118,6 +118,7 @@ export default class Scale extends Mass {
       interpolate: InterpolatedProperty.interpolateNumber,
       phetioValueType: NumberIO,
       tandem: options.tandem.createTandem( 'measuredWeightProperty' ),
+      phetioDocumentation: 'Weight measured by the scale, in N.',
       phetioFeatured: true,
       units: 'N',
       phetioReadOnly: true,
@@ -134,6 +135,7 @@ export default class Scale extends Mass {
     }, {
       phetioValueType: NumberIO,
       tandem: options.tandem.createTandem( 'measuredMassProperty' ),
+      phetioDocumentation: 'Mass measured by the scale, in kg.',
       phetioFeatured: true,
       units: 'kg',
       phetioReadOnly: true

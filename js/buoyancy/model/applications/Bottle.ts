@@ -224,8 +224,7 @@ export default class Bottle extends ApplicationsMass {
     this.interiorVolumeProperty = new NumberProperty( BOTTLE_INITIAL_INTERIOR_VOLUME, {
       tandem: options.tandem.createTandem( 'interiorVolumeProperty' ),
       phetioDocumentation: 'Volume of the material inside the bottle.',
-      range: new Range( 0, Number.POSITIVE_INFINITY ),
-      phetioReadOnly: true
+      range: new Range( 0, Number.POSITIVE_INFINITY )
     } );
 
     // @ts-expect-error

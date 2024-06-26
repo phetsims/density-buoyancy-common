@@ -16,7 +16,7 @@ import DensityBuoyancyCommonQueryParameters from '../DensityBuoyancyCommonQueryP
 import Gravity from './Gravity.js';
 import P2Engine from './P2Engine.js';
 import Pool from './Pool.js';
-import Scale, { SCALE_WIDTH } from './Scale.js';
+import Scale from './Scale.js';
 import optionize from '../../../../phet-core/js/optionize.js';
 import Boat from '../../buoyancy/model/applications/Boat.js';
 import PhysicsEngine, { PhysicsEngineBody } from './PhysicsEngine.js';
@@ -29,7 +29,6 @@ import PickRequired from '../../../../phet-core/js/types/PickRequired.js';
 import PoolScale from './PoolScale.js';
 
 // TODO: Don't import Bottle in density, it is causing too large of a file size, see https://github.com/phetsims/density-buoyancy-common/issues/194
-import Bottle from '../../buoyancy/model/applications/Bottle.js';
 
 // constants
 const BLOCK_SPACING = 0.01;
@@ -242,14 +241,13 @@ export default class DensityBuoyancyModel implements TModel {
               // Blocks should never experiment +x forces by this scale. If they do, they are trapped beneath it.
               if ( horizontalForce > 0 ) {
 
-                // The bottle is very wide, and must be teleported a bit further.
-                // TODO: Can we estimate the bounds of the otherMass, so that we can position it exactly (minus a small epsilon)
-                // to the left of the scale, see https://github.com/phetsims/density-buoyancy-common/issues/194
-                const delta = otherMass instanceof Bottle ? SCALE_WIDTH * 2 : SCALE_WIDTH;
+                const delta = otherMass.getBounds().maxX - mass.getBounds().minX + 0.1;
 
                 otherMass.matrix.set02( mass.matrix.m02() - delta );
                 otherMass.writeData();
                 otherMass.transformedEmitter.emit();
+
+                this.engine.bodySynchronizePrevious( otherMass.body );
               }
             }
           } );

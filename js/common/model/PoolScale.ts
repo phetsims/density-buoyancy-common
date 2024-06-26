@@ -22,7 +22,7 @@ import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 
 // To prevent objects from being dragged beneath the scale, we extend the invisible part of the scale vertically downward.
 // This has to be big enough to cover all the way to the bottom of the pool when the scale is at its maximum height.
-const SCALE_INVISIBLE_VERTICAL_EXTENSION_FACTOR = 10.2;
+const SCALE_INVISIBLE_VERTICAL_EXTENSION_FACTOR = 15;
 
 export default class PoolScale extends Scale {
 

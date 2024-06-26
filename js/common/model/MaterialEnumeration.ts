@@ -16,8 +16,8 @@ export default class MaterialEnumeration extends EnumerationValue {
   public static readonly STEEL = new MaterialEnumeration();
   public static readonly STYROFOAM = new MaterialEnumeration();
   public static readonly WOOD = new MaterialEnumeration();
-  public static readonly CUSTOM = new MaterialEnumeration();
   public static readonly PVC = new MaterialEnumeration();
+  public static readonly CUSTOM = new MaterialEnumeration();
 
   public static readonly enumeration = new Enumeration( MaterialEnumeration, {
     phetioDocumentation: 'Material values'

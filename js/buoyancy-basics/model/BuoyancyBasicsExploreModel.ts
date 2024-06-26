@@ -40,7 +40,7 @@ export default class BuoyancyBasicsExploreModel extends DensityBuoyancyModel {
 
     const materialIdentifiers = Material.SIMPLE_MASS_MATERIALS.map( x => x.identifier ) as string[];
     const subSetKeys = MaterialEnumeration.enumeration.keys.filter( name => materialIdentifiers.includes( name ) );
-    // @ts-expect-error TODO: is this string indexing correct? https://github.com/phetsims/density-buoyancy-common/issues/225
+    // @ts-expect-error TODO: is this string indexing correct? https://github.com/phetsims/density-buoyancy-common/issues/236
     const subSet = subSetKeys.map( x => MaterialEnumeration[ x ] ).concat( [ MaterialEnumeration.CUSTOM ] );
 
     this.primaryMass = Cube.createWithMass( this.engine, Material.WOOD, new Vector2( -0.2, 0.2 ), 2, {

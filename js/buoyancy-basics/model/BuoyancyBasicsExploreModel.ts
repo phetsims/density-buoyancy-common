@@ -38,15 +38,17 @@ export default class BuoyancyBasicsExploreModel extends DensityBuoyancyModel {
       phetioFeatured: true
     } );
 
-    const materialIdentifiers = Material.SIMPLE_MASS_MATERIALS.map( x => x.identifier ) as string[];
-    const subSetKeys = MaterialEnumeration.enumeration.keys.filter( name => materialIdentifiers.includes( name ) );
+    // This step is required because, for this screen, MaterialEnumeration does not use all of the simple materials.
+    // So we have to filter out the ones that are not used for phet-io valid values.
+    const simpleMaterialsIdentifiers = Material.SIMPLE_MASS_MATERIALS.map( x => x.identifier ) as string[];
+    const simpleMaterialsInEnumerationKeys = MaterialEnumeration.enumeration.keys.filter( name => simpleMaterialsIdentifiers.includes( name ) );
     // @ts-expect-error TODO: is this string indexing correct? https://github.com/phetsims/density-buoyancy-common/issues/236
-    const subSet = subSetKeys.map( x => MaterialEnumeration[ x ] ).concat( [ MaterialEnumeration.CUSTOM ] );
+    const validSimpleMaterials = simpleMaterialsInEnumerationKeys.map( x => MaterialEnumeration[ x ] ).concat( [ MaterialEnumeration.CUSTOM ] );
 
     this.primaryMass = Cube.createWithMass( this.engine, Material.WOOD, new Vector2( -0.2, 0.2 ), 2, {
       tag: MassTag.PRIMARY,
       adjustableMaterial: true,
-      materialEnumPropertyValidValues: subSet,
+      materialEnumPropertyValidValues: validSimpleMaterials,
       adjustableColor: false,
       tandem: blocksTandem.createTandem( 'blockA' )
     } );
@@ -54,7 +56,7 @@ export default class BuoyancyBasicsExploreModel extends DensityBuoyancyModel {
     this.secondaryMass = Cube.createWithMass( this.engine, Material.ALUMINUM, new Vector2( 0.05, 0.35 ), 13.5, {
       tag: MassTag.SECONDARY,
       adjustableMaterial: true,
-      materialEnumPropertyValidValues: subSet,
+      materialEnumPropertyValidValues: validSimpleMaterials,
       adjustableColor: false,
       tandem: blocksTandem.createTandem( 'blockB' ),
       visible: false

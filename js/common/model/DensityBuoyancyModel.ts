@@ -241,7 +241,8 @@ export default class DensityBuoyancyModel implements TModel {
               // Blocks should never experiment +x forces by this scale. If they do, they are trapped beneath it.
               if ( horizontalForce > 0 ) {
 
-                const delta = otherMass.getBounds().maxX - mass.getBounds().minX + 0.1;
+                const minSpacing = 0.1; // Ideal new spacing between the scale and the mass
+                const delta = otherMass.getBounds().maxX - mass.getBounds().minX + minSpacing;
 
                 otherMass.matrix.set02( mass.matrix.m02() - delta );
                 otherMass.writeData();

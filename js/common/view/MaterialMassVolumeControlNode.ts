@@ -280,7 +280,9 @@ export default class MaterialMassVolumeControlNode extends MaterialControlNode {
       }
     }, MaterialMassVolumeControlNode.getNumberControlOptions() ) );
 
-    const massContainerNode = new Node();
+    const massContainerNode = new Node( {
+      excludeInvisibleChildrenFromBounds: true
+    } );
 
     const createMassNumberControl = ( maxMass: number, tandemName?: string ) => {
       const numberControlTandem = getMassRelatedTandem( tandemName ? massNumberControlContainerTandem.createTandem( tandemName ) :

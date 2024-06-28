@@ -183,6 +183,7 @@ export default class Bottle extends ApplicationsMass {
   private readonly bottleBounds: Bounds2;
 
   public readonly interiorMaterialProperty: Property<Material>;
+  public readonly interiorVolumePropertyRange = new Range( 0, 10 );
   public readonly interiorVolumeProperty: Property<number>; // m^3
 
   public readonly displacementVolumeProperty = new NumberProperty( ApplicationsMass.DEFAULT_DISPLACEMENT_VOLUME );
@@ -224,7 +225,7 @@ export default class Bottle extends ApplicationsMass {
     this.interiorVolumeProperty = new NumberProperty( BOTTLE_INITIAL_INTERIOR_VOLUME, {
       tandem: options.tandem.createTandem( 'interiorVolumeProperty' ),
       phetioDocumentation: 'Volume of the material inside the bottle.',
-      range: new Range( 0, Number.POSITIVE_INFINITY )
+      range: this.interiorVolumePropertyRange
     } );
 
     // @ts-expect-error

@@ -34,6 +34,7 @@ import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import BooleanToggleNode from '../../../../sun/js/BooleanToggleNode.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
+import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
 
 // constants
 const LITERS_IN_CUBIC_METER = DensityBuoyancyCommonConstants.LITERS_IN_CUBIC_METER;
@@ -285,7 +286,12 @@ export default class MaterialMassVolumeControlNode extends MaterialControlNode {
     } );
 
     const createMassNumberControl = ( maxMass: number, tandemName?: string ) => {
-      const numberControlTandem = getMassRelatedTandem( tandemName ? massNumberControlContainerTandem.createTandem( tandemName ) :
+      // If we are showing the mass as a readout, don't provide all the number control tandems
+      // see https://github.com/phetsims/buoyancy/issues/180
+      const numberControlTandem = options.showMassAsReadout ?
+                                  Tandem.OPT_OUT :
+                                  getMassRelatedTandem( tandemName ?
+                                                        massNumberControlContainerTandem.createTandem( tandemName ) :
                                                         massNumberControlContainerTandem );
 
       return new NumberControl(
@@ -293,6 +299,11 @@ export default class MaterialMassVolumeControlNode extends MaterialControlNode {
         numberControlMassProperty,
         new Range( options.minMass, maxMass ),
         combineOptions<NumberControlOptions>( {
+          // Providing a manual visible property when the number control is not instrumented
+          // see https://github.com/phetsims/buoyancy/issues/180
+          visibleProperty: options.showMassAsReadout ? new BooleanProperty( true, {
+            tandem: massNumberControlContainerTandem.createTandem( 'visibleProperty' )
+          } ) : undefined,
           sliderOptions: {
             thumbNode: new PrecisionSliderThumb( {
               thumbFill: options.color,
@@ -365,6 +376,14 @@ export default class MaterialMassVolumeControlNode extends MaterialControlNode {
       );
 
       massContainerNode.addChild( toggleNode );
+
+      // When using two mass number controls, we need to provide a visible property for the group
+      // see https://github.com/phetsims/buoyancy/issues/180
+      const massNumberControlVisibleProperty = new BooleanProperty( true, {
+        tandem: massNumberControlContainerTandem.createTandem( 'visibleProperty' )
+      } );
+
+      massContainerNode.visibleProperty = massNumberControlVisibleProperty;
     }
     else {
       massContainerNode.addChild( createMassNumberControl( options.maxMass ) );

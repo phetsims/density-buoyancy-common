@@ -101,7 +101,7 @@ export default class BuoyancyApplicationsScreenView extends BuoyancyScreenView<B
     this.positionResetSceneButton();
 
     const bottleControlsTandem = tandem.createTandem( 'bottleControls' );
-
+    const materialInsideControlsTandem = bottleControlsTandem.createTandem( 'materialInsideControls' );
     const materialInsideControls = new MaterialMassVolumeControlNode( model.bottle.interiorMaterialProperty, model.bottle.interiorMassProperty, model.bottle.interiorVolumeProperty, [
       Material.GASOLINE,
       Material.OIL,
@@ -122,7 +122,7 @@ export default class BuoyancyApplicationsScreenView extends BuoyancyScreenView<B
       showMassAsReadout: true,
       supportHiddenMaterial: true,
       customKeepsConstantDensity: true,
-      tandem: bottleControlsTandem.createTandem( 'materialInsideControls' )
+      tandem: materialInsideControlsTandem
     } );
 
     // This DerivedProperty doesn't need disposal, since everything here lives for the lifetime of the simulation
@@ -148,7 +148,7 @@ export default class BuoyancyApplicationsScreenView extends BuoyancyScreenView<B
       }
     } );
 
-    const customBottleDensityControlTandem = tandem.createTandem( 'customBottleDensityNumberControl' );
+    const customBottleDensityControlTandem = materialInsideControlsTandem.createTandem( 'customBottleDensityNumberControl' );
     const customBottleDensityControl = new NumberControl( DensityBuoyancyCommonStrings.densityStringProperty, model.bottle.customDensityProperty, model.bottle.customDensityProperty.range, combineOptions<NumberControlOptions>( {
       visibleProperty: createGatedVisibleProperty( customDensityControlVisibleProperty, customBottleDensityControlTandem ),
       sliderOptions: {
@@ -173,7 +173,8 @@ export default class BuoyancyApplicationsScreenView extends BuoyancyScreenView<B
       children: [
         new Text( DensityBuoyancyCommonStrings.materialInsideStringProperty, {
           font: DensityBuoyancyCommonConstants.TITLE_FONT,
-          maxWidth: 160
+          maxWidth: 160,
+          visibleProperty: materialInsideControls.visibleProperty
         } ),
         materialInsideControls,
         customBottleDensityControl,

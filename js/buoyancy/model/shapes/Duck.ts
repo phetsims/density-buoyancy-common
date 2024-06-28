@@ -35,7 +35,7 @@ export default class Duck extends Mass {
   public constructor( engine: PhysicsEngine, size: Bounds3, providedConfig: DuckOptions ) {
 
     const config = optionize<DuckOptions, EmptySelfOptions, InstrumentedMassOptions>()( {
-      body: engine.createFromVertices( Duck.getDuckVertices( size.width, size.height ), true ), // TODO: workaround means groundMaterial, make sure this isn't buggy https://github.com/phetsims/density-buoyancy-common/issues/194
+      body: engine.createFromVertices( Duck.getDuckVertices( size.width, size.height ), false ),
       shape: Duck.getDuckShape( size.width, size.height ),
       volume: Duck.getVolume( size ),
       massShape: MassShape.DUCK

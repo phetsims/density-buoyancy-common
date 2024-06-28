@@ -28,7 +28,7 @@ import { PhetioObjectOptions } from '../../../../tandem/js/PhetioObject.js';
 import PickRequired from '../../../../phet-core/js/types/PickRequired.js';
 import PoolScale from './PoolScale.js';
 
-// TODO: Don't import Bottle in density, it is causing too large of a file size, see https://github.com/phetsims/density-buoyancy-common/issues/194
+// TODO: Don't import Bottle in density, it is causing too large of a file size, see https://github.com/phetsims/density-buoyancy-common/issues/238
 
 // constants
 const BLOCK_SPACING = 0.01;

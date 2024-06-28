@@ -237,7 +237,7 @@ export default abstract class Mass extends PhetioObject {
 
     super( options );
 
-    // TODO: Why did the question mark disappear? See https://github.com/phetsims/buoyancy/issues/86
+    // TODO: Why did the question mark disappear? See https://github.com/phetsims/density-buoyancy-common/issues/243
     const tandem: Tandem = options.tandem;
 
     this.engine = engine;

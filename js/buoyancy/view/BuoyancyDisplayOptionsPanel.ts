@@ -86,38 +86,38 @@ export default class BuoyancyDisplayOptionsPanel extends Panel {
           tandem: forcesSubpanelTandem,
           stretch: true,
           children: [
-          new Text( DensityBuoyancyCommonStrings.forcesStringProperty, {
-            font: DensityBuoyancyCommonConstants.TITLE_FONT,
-            maxWidth: options.contentWidth - 2 * options.xMargin
-          } ),
-          createForceControl( displayProperties.gravityForceVisibleProperty, DensityBuoyancyCommonStrings.gravity.nameStringProperty, DensityBuoyancyCommonColors.gravityForceProperty, 'gravityForceCheckbox' ),
-          createForceControl( displayProperties.buoyancyForceVisibleProperty, DensityBuoyancyCommonStrings.buoyancyStringProperty, DensityBuoyancyCommonColors.buoyancyForceProperty, 'buoyancyForceCheckbox' ),
-          createForceControl( displayProperties.contactForceVisibleProperty, DensityBuoyancyCommonStrings.contactStringProperty, DensityBuoyancyCommonColors.contactForceProperty, 'contactForceCheckbox' ),
+            new Text( DensityBuoyancyCommonStrings.forcesStringProperty, {
+              font: DensityBuoyancyCommonConstants.TITLE_FONT,
+              maxWidth: options.contentWidth - 2 * options.xMargin
+            } ),
+            createForceControl( displayProperties.gravityForceVisibleProperty, DensityBuoyancyCommonStrings.gravity.nameStringProperty, DensityBuoyancyCommonColors.gravityForceProperty, 'gravityForceCheckbox' ),
+            createForceControl( displayProperties.buoyancyForceVisibleProperty, DensityBuoyancyCommonStrings.buoyancyStringProperty, DensityBuoyancyCommonColors.buoyancyForceProperty, 'buoyancyForceCheckbox' ),
+            createForceControl( displayProperties.contactForceVisibleProperty, DensityBuoyancyCommonStrings.contactStringProperty, DensityBuoyancyCommonColors.contactForceProperty, 'contactForceCheckbox' ),
 
-          // Vector zoom
-          new HBox( {
-            children: [
-              new Text( DensityBuoyancyCommonStrings.vectorZoomStringProperty, combineOptions<TextOptions>( {}, labelOptions ) ),
-              new PlusMinusZoomButtonGroup( displayProperties.vectorZoomProperty, {
-                spacing: 3, // Custom small spacing between the buttons
-                buttonOptions: {
-                  cornerRadius: 3,
-                  buttonAppearanceStrategy: RectangularButton.ThreeDAppearanceStrategy,
-                  stroke: 'black',
-                  xMargin: 7,
-                  yMargin: 7
-                },
-                applyZoomIn: ( scale: number ) => scale * 2,
-                applyZoomOut: ( scale: number ) => scale / 2,
-                tandem: options.tandem.createTandem( 'vectorZoomButtonGroup' )
-              } ) ]
-          } ),
+            // Vector zoom
+            new HBox( {
+              children: [
+                new Text( DensityBuoyancyCommonStrings.vectorZoomStringProperty, combineOptions<TextOptions>( {}, labelOptions ) ),
+                new PlusMinusZoomButtonGroup( displayProperties.vectorZoomProperty, {
+                  spacing: 3, // Custom small spacing between the buttons
+                  buttonOptions: {
+                    cornerRadius: 3,
+                    buttonAppearanceStrategy: RectangularButton.ThreeDAppearanceStrategy,
+                    stroke: 'black',
+                    xMargin: 7,
+                    yMargin: 7
+                  },
+                  applyZoomIn: ( scale: number ) => scale * 2,
+                  applyZoomOut: ( scale: number ) => scale / 2,
+                  tandem: options.tandem.createTandem( 'vectorZoomButtonGroup' )
+                } ) ]
+            } ),
 
-          new Checkbox( displayProperties.forceValuesVisibleProperty, new Text( DensityBuoyancyCommonStrings.forceValuesStringProperty, labelOptions ), combineOptions<CheckboxOptions>( {
-            tandem: options.tandem.createTandem( 'forceValuesCheckbox' ),
-            containerTagName: 'p',
-            accessibleName: DensityBuoyancyCommonStrings.forceValuesStringProperty
-          }, checkboxOptions ) )
+            new Checkbox( displayProperties.forceValuesVisibleProperty, new Text( DensityBuoyancyCommonStrings.forceValuesStringProperty, labelOptions ), combineOptions<CheckboxOptions>( {
+              tandem: options.tandem.createTandem( 'forceValuesCheckbox' ),
+              containerTagName: 'p',
+              accessibleName: DensityBuoyancyCommonStrings.forceValuesStringProperty
+            }, checkboxOptions ) )
           ]
         } ),
 

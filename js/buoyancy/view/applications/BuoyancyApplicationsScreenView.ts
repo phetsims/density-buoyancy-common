@@ -179,6 +179,8 @@ export default class BuoyancyApplicationsScreenView extends BuoyancyScreenView<B
         customBottleDensityControl,
         new HSeparator(),
         new HBox( {
+          tandem: bottleControlsTandem.createTandem( 'airVolumeDisplay' ),
+          phetioFeatured: true,
           spacing: DensityBuoyancyCommonConstants.SPACING_SMALL,
           children: [
             new Text( DensityBuoyancyCommonStrings.airVolumeStringProperty, {

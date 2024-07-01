@@ -43,6 +43,7 @@ type MaterialState = {
   customColor: null | ColorState;
   staticLiquidColor: null | ColorState;
   liquidColor: null | ColorState;
+  depthLinesColor: ColorState;
 };
 
 export const CUSTOM_MATERIAL_NAME = 'CUSTOM';
@@ -80,7 +81,7 @@ export type MaterialOptions = {
   liquidColor?: Property<Color> | null;
 
   // Used for the color of depth lines added on top of the Material
-  depthLinesColor?: TReadOnlyProperty<Color> | null;
+  depthLinesColorProperty?: TReadOnlyProperty<Color>;
 };
 
 export default class Material {
@@ -94,7 +95,7 @@ export default class Material {
   public readonly hidden: boolean;
   public readonly customColor: Property<Color> | null;
   public readonly liquidColor: Property<Color> | null;
-  public readonly depthLinesColor: TReadOnlyProperty<Color> | null;
+  public readonly depthLinesColorProperty: TReadOnlyProperty<Color>;
 
   public constructor( providedOptions: MaterialOptions ) {
 
@@ -108,7 +109,7 @@ export default class Material {
       hidden: false,
       customColor: null,
       liquidColor: null,
-      depthLinesColor: DensityBuoyancyCommonColors.depthLinesDarkColorProperty
+      depthLinesColorProperty: DensityBuoyancyCommonColors.depthLinesDarkColorProperty
     }, providedOptions );
 
     assert && assert( isFinite( options.density ), 'density should be finite, but it was: ' + options.density );
@@ -122,7 +123,7 @@ export default class Material {
     this.hidden = options.hidden;
     this.customColor = options.customColor;
     this.liquidColor = options.liquidColor;
-    this.depthLinesColor = options.depthLinesColor;
+    this.depthLinesColorProperty = options.depthLinesColorProperty;
   }
 
   /**
@@ -153,7 +154,7 @@ export default class Material {
     assert && assert( options.hasOwnProperty( 'customColor' ) || options.hasOwnProperty( 'densityRange' ), 'we need a way to have a material color' );
 
     const solidColorProperty = options.customColor || Material.getCustomSolidColor( options.density, options.densityRange! );
-    const depthLinesColorProperty = new MappedProperty( solidColorProperty, {
+    const depthLinesColorPropertyProperty = new MappedProperty( solidColorProperty, {
       map: solidColor => {
 
         // The lighter depth line color has better contrast, so use that for more than half
@@ -169,7 +170,7 @@ export default class Material {
       // Also provide as a liquid color because some solid colors use Material.linkLiquidColor() (like the Bottle)
       liquidColor: solidColorProperty,
 
-      depthLinesColor: depthLinesColorProperty
+      depthLinesColorProperty: depthLinesColorPropertyProperty
     }, options ) );
   }
 
@@ -264,7 +265,7 @@ export default class Material {
     tandemName: 'brick',
     identifier: 'BRICK',
     density: 2000,
-    depthLinesColor: DensityBuoyancyCommonColors.depthLinesLightColorProperty
+    depthLinesColorProperty: DensityBuoyancyCommonColors.depthLinesLightColorProperty
   } );
 
   public static readonly CONCRETE = new Material( {
@@ -389,7 +390,7 @@ export default class Material {
     tandemName: 'wood',
     identifier: 'WOOD',
     density: 400,
-    depthLinesColor: DensityBuoyancyCommonColors.depthLinesLightColorProperty
+    depthLinesColorProperty: DensityBuoyancyCommonColors.depthLinesLightColorProperty
   } );
 
   ////////////////// LIQUIDS //////////////////
@@ -689,9 +690,10 @@ export default class Material {
       staticCustomColor: NullableIO( Color.ColorIO ),
       customColor: NullableColorPropertyReferenceType,
       staticLiquidColor: NullableIO( Color.ColorIO ),
-      liquidColor: NullableColorPropertyReferenceType
+      liquidColor: NullableColorPropertyReferenceType,
+      depthLinesColor: Color.ColorIO
     },
-    toStateObject( material: Material ): MaterialState {
+    toStateObject( material ) {
 
       const isCustomColorUninstrumented = material.customColor && !material.customColor.isPhetioInstrumented();
       const isLiquidColorUninstrumented = material.liquidColor && !material.liquidColor.isPhetioInstrumented();
@@ -707,10 +709,11 @@ export default class Material {
         staticCustomColor: NullableIO( Color.ColorIO ).toStateObject( isCustomColorUninstrumented ? material.customColor.value : null ),
         customColor: NullableColorPropertyReferenceType.toStateObject( isCustomColorUninstrumented ? null : material.customColor ),
         staticLiquidColor: NullableIO( Color.ColorIO ).toStateObject( isLiquidColorUninstrumented ? material.liquidColor.value : null ),
-        liquidColor: NullableColorPropertyReferenceType.toStateObject( isLiquidColorUninstrumented ? null : material.liquidColor )
+        liquidColor: NullableColorPropertyReferenceType.toStateObject( isLiquidColorUninstrumented ? null : material.liquidColor ),
+        depthLinesColor: Color.ColorIO.toStateObject( material.depthLinesColorProperty.value )
       };
     },
-    fromStateObject( obj: MaterialState ): Material {
+    fromStateObject( obj ): Material {
       if ( obj.identifier ) {
         const material = Material[ obj.identifier ];
         assert && assert( material, `Unknown material: ${obj.identifier}` );
@@ -728,7 +731,8 @@ export default class Material {
           custom: obj.custom,
           hidden: obj.hidden,
           customColor: staticCustomColor ? new ColorProperty( staticCustomColor ) : NullableColorPropertyReferenceType.fromStateObject( obj.customColor ),
-          liquidColor: staticLiquidColor ? new ColorProperty( staticLiquidColor ) : NullableColorPropertyReferenceType.fromStateObject( obj.liquidColor )
+          liquidColor: staticLiquidColor ? new ColorProperty( staticLiquidColor ) : NullableColorPropertyReferenceType.fromStateObject( obj.liquidColor ),
+          depthLinesColorProperty: new ColorProperty( Color.ColorIO.fromStateObject( obj.depthLinesColor ) )
         } );
       }
     }

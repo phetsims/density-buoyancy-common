@@ -109,12 +109,12 @@ export default class BuoyancyDisplayOptionsPanel extends Panel {
                   },
                   applyZoomIn: ( scale: number ) => scale * 2,
                   applyZoomOut: ( scale: number ) => scale / 2,
-                  tandem: options.tandem.createTandem( 'vectorZoomButtonGroup' )
+                  tandem: forcesSubpanelTandem.createTandem( 'vectorZoomButtonGroup' )
                 } ) ]
             } ),
 
             new Checkbox( displayProperties.forceValuesVisibleProperty, new Text( DensityBuoyancyCommonStrings.forceValuesStringProperty, labelOptions ), combineOptions<CheckboxOptions>( {
-              tandem: options.tandem.createTandem( 'forceValuesCheckbox' ),
+              tandem: forcesSubpanelTandem.createTandem( 'forceValuesCheckbox' ),
               containerTagName: 'p',
               accessibleName: DensityBuoyancyCommonStrings.forceValuesStringProperty
             }, checkboxOptions ) )

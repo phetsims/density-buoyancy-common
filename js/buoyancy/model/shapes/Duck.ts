@@ -34,20 +34,20 @@ export default class Duck extends Mass {
 
   public constructor( engine: PhysicsEngine, size: Bounds3, providedConfig: DuckOptions ) {
 
-    const config = optionize<DuckOptions, EmptySelfOptions, InstrumentedMassOptions>()( {
+    const options = optionize<DuckOptions, EmptySelfOptions, InstrumentedMassOptions>()( {
       body: engine.createFromVertices( Duck.getDuckVertices( size.width, size.height ), false ),
       shape: Duck.getDuckShape( size.width, size.height ),
       volume: Duck.getVolume( size ),
       massShape: MassShape.DUCK
     }, providedConfig );
 
-    assert && assert( !config.canRotate );
+    assert && assert( !options.canRotate );
 
-    super( engine, config as InstrumentedMassOptions );
+    super( engine, options as InstrumentedMassOptions );
 
     this.sizeProperty = new Property( size, {
       valueType: Bounds3,
-      tandem: config.tandem.createTandem( 'sizeProperty' ),
+      tandem: options.tandem.createTandem( 'sizeProperty' ),
       phetioDocumentation: 'For internal use only.',
       phetioValueType: Bounds3.Bounds3IO
     } );

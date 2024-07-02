@@ -73,6 +73,7 @@ export default class BuoyancyApplicationsScreenView extends BuoyancyScreenView<B
       this.sceneNode.stage.threeRenderer.localClippingEnabled = true;
     }
 
+    const resetBoatSceneButtonTandem = tandem.createTandem( 'resetBoatSceneButton' );
     const resetBoatSceneButton = new RectangularPushButton( {
       content: new Node( {
         children: [
@@ -85,8 +86,10 @@ export default class BuoyancyApplicationsScreenView extends BuoyancyScreenView<B
       listener: () => {
         model.resetBoatScene();
       },
-      visibleProperty: new DerivedProperty( [ model.sceneProperty ], scene => scene === 'BOAT' ),
-      tandem: tandem.createTandem( 'resetBoatSceneButton' )
+      visibleProperty: createGatedVisibleProperty(
+        new DerivedProperty( [ model.sceneProperty ], scene => scene === 'BOAT' ),
+        resetBoatSceneButtonTandem ),
+      tandem: resetBoatSceneButtonTandem
     } );
     this.addChild( resetBoatSceneButton );
 

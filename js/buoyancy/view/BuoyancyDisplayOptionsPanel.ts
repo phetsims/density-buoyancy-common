@@ -75,6 +75,20 @@ export default class BuoyancyDisplayOptionsPanel extends Panel {
       }, checkboxOptions ) );
     };
 
+    const plusMinusZoomButtonGroup = new PlusMinusZoomButtonGroup( displayProperties.vectorZoomProperty, {
+      spacing: 3, // Custom small spacing between the buttons
+      buttonOptions: {
+        cornerRadius: 3,
+        buttonAppearanceStrategy: RectangularButton.ThreeDAppearanceStrategy,
+        stroke: 'black',
+        xMargin: 7,
+        yMargin: 7
+      },
+      applyZoomIn: ( scale: number ) => scale * 2,
+      applyZoomOut: ( scale: number ) => scale / 2,
+      tandem: forcesSubpanelTandem.createTandem( 'vectorZoomButtonGroup' )
+    } );
+
     const content = new VBox( {
       align: 'left',
       spacing: checkboxSpacing,
@@ -97,20 +111,11 @@ export default class BuoyancyDisplayOptionsPanel extends Panel {
             // Vector zoom
             new HBox( {
               children: [
-                new Text( DensityBuoyancyCommonStrings.vectorZoomStringProperty, combineOptions<TextOptions>( {}, labelOptions ) ),
-                new PlusMinusZoomButtonGroup( displayProperties.vectorZoomProperty, {
-                  spacing: 3, // Custom small spacing between the buttons
-                  buttonOptions: {
-                    cornerRadius: 3,
-                    buttonAppearanceStrategy: RectangularButton.ThreeDAppearanceStrategy,
-                    stroke: 'black',
-                    xMargin: 7,
-                    yMargin: 7
-                  },
-                  applyZoomIn: ( scale: number ) => scale * 2,
-                  applyZoomOut: ( scale: number ) => scale / 2,
-                  tandem: forcesSubpanelTandem.createTandem( 'vectorZoomButtonGroup' )
-                } ) ]
+                new Text( DensityBuoyancyCommonStrings.vectorZoomStringProperty, combineOptions<TextOptions>( {
+                  visibleProperty: plusMinusZoomButtonGroup.visibleProperty
+                }, labelOptions ) ),
+                plusMinusZoomButtonGroup
+              ]
             } ),
 
             new Checkbox( displayProperties.forceValuesVisibleProperty, new Text( DensityBuoyancyCommonStrings.forceValuesStringProperty, labelOptions ), combineOptions<CheckboxOptions>( {

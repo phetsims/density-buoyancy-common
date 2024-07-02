@@ -50,6 +50,7 @@ export default class Cuboid extends Mass {
       valueType: Bounds3,
       valueComparisonStrategy: 'equalsFunction',
       tandem: options.tandem.createTandem( 'sizeProperty' ),
+      phetioDocumentation: 'For internal use only.',
       phetioValueType: Bounds3.Bounds3IO,
       phetioReadOnly: true
     } );

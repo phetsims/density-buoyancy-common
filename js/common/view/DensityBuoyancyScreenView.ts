@@ -586,6 +586,10 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
       margin: MARGIN
     } ) );
 
+    this.resetEmitter.addListener( () => {
+      this.displayProperties.reset();
+    } );
+
     if ( DensityBuoyancyCommonQueryParameters.showDebug ) {
       const debugVisibleProperty = new BooleanProperty( true );
 

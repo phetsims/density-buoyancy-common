@@ -35,6 +35,8 @@ export default class Pool extends Basin {
   // Scale for the pool and its heightProperty, if we are using it
   public readonly scale: PoolScale | null = null;
 
+  public readonly fluidTandem: Tandem;
+
   public constructor( bounds: Bounds3, usePoolScale: boolean, engine: PhysicsEngine, gravityProperty: TReadOnlyProperty<Gravity>, tandem: Tandem ) {
 
     const initialVolume = DensityBuoyancyCommonConstants.DESIRED_STARTING_POOL_VOLUME;
@@ -47,7 +49,7 @@ export default class Pool extends Basin {
 
     this.bounds = bounds;
 
-    const fluidTandem = tandem.createTandem( 'fluid' );
+    this.fluidTandem = tandem.createTandem( 'fluid' );
 
     // These won't change over the life of the pool.
     this.stepBottom = bounds.minY;
@@ -56,14 +58,14 @@ export default class Pool extends Basin {
     this.fluidMaterialProperty = new Property( Material.WATER, {
       valueType: Material,
       phetioValueType: Material.MaterialIO,
-      tandem: fluidTandem.createTandem( 'materialProperty' ),
+      tandem: this.fluidTandem.createTandem( 'materialProperty' ),
       phetioReadOnly: true,
       phetioDocumentation: 'The material of the fluid in the pool'
     } );
 
     // DerivedProperty doesn't need disposal, since everything here lives for the lifetime of the simulation
     this.fluidDensityProperty = new DerivedProperty( [ this.fluidMaterialProperty ], fluidMaterial => fluidMaterial.density, {
-      tandem: fluidTandem.createTandem( 'densityProperty' ),
+      tandem: this.fluidTandem.createTandem( 'densityProperty' ),
       phetioFeatured: true,
       phetioValueType: NumberIO,
       units: 'kg/m^3'
@@ -80,7 +82,7 @@ export default class Pool extends Basin {
                                        ( fluidY - bounds.minY ) *
                                        DensityBuoyancyCommonConstants.LITERS_IN_CUBIC_METER, DensityBuoyancyCommonConstants.TOLERANCE ), {
         units: 'L',
-        tandem: tandem.createTandem( 'fluidLevelVolumeProperty' ),
+        tandem: this.fluidTandem.createTandem( 'levelVolumeProperty' ),
         phetioValueType: NumberIO,
         phetioDocumentation: 'The volume of fluid in the pool plus the volume of fluid displaced by objects in the pool.'
       } );

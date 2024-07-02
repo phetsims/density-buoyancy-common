@@ -29,6 +29,7 @@ import { GeneralScaleReadoutNode } from '../../common/view/ScaleReadoutNode.js';
 import { DisplayType } from '../../common/model/Scale.js';
 import PickRequired from '../../../../phet-core/js/types/PickRequired.js';
 import NumberIO from '../../../../tandem/js/types/NumberIO.js';
+import ReadOnlyProperty from '../../../../axon/js/ReadOnlyProperty.js';
 
 type SelfOptions = EmptySelfOptions;
 
@@ -44,7 +45,7 @@ const BEAKER_RANGE = new Range( 0, 1 );
 
 export default class FluidDisplacedAccordionBox extends AccordionBox {
 
-  public constructor( displayedDisplacedVolumeProperty: TReadOnlyProperty<number>,
+  public constructor( displayedDisplacedVolumeProperty: ReadOnlyProperty<number>, // Imported as property to link to it in phet-io
                       maxBeakerVolume: number,
                       fluidMaterialProperty: TReadOnlyProperty<Material>,
                       gravityProperty: TReadOnlyProperty<Gravity>,
@@ -157,6 +158,10 @@ export default class FluidDisplacedAccordionBox extends AccordionBox {
       } )
     );
     super( panel, options );
+
+    this.addLinkedElement( displayedDisplacedVolumeProperty, {
+      tandemName: 'displacedVolumeProperty'
+    } );
   }
 
   private static getBeakerOptions(): BeakerNodeOptions {

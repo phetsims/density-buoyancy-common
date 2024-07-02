@@ -15,9 +15,9 @@ import Material from '../../common/model/Material.js';
 import Scale, { DisplayType } from '../../common/model/Scale.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
-import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 import NumberIO from '../../../../tandem/js/types/NumberIO.js';
+import ReadOnlyProperty from '../../../../axon/js/ReadOnlyProperty.js';
 
 export type BuoyancyLabModelOptions = DensityBuoyancyModelOptions;
 
@@ -25,7 +25,7 @@ export default class BuoyancyLabModel extends DensityBuoyancyModel {
 
   public readonly block: Cube;
 
-  public readonly fluidDisplacedVolumeProperty: TReadOnlyProperty<number>;
+  public readonly fluidDisplacedVolumeProperty: ReadOnlyProperty<number>;
 
   public constructor( options: BuoyancyLabModelOptions ) {
 
@@ -52,8 +52,9 @@ export default class BuoyancyLabModel extends DensityBuoyancyModel {
       ( percentSubmerged, volume ) => {
         return percentSubmerged / 100 * volume * DensityBuoyancyCommonConstants.LITERS_IN_CUBIC_METER;
       }, {
-        tandem: options.tandem.createTandem( 'fluidDisplacedVolumeProperty' ),
-        phetioValueType: NumberIO
+        tandem: this.pool.fluidTandem.createTandem( 'displacedVolumeProperty' ),
+        phetioValueType: NumberIO,
+        phetioFeatured: true
       }
     );
   }

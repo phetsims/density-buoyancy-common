@@ -18,6 +18,7 @@ import Material from '../model/Material.js';
 import ComboNumberControl, { ComboNumberControlOptions } from './ComboNumberControl.js';
 import optionize from '../../../../phet-core/js/optionize.js';
 import WithRequired from '../../../../phet-core/js/types/WithRequired.js';
+import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
 
 type SelfOptions = {
 
@@ -76,6 +77,11 @@ export default class FluidDensityControlNode extends ComboNumberControl<Material
       } ),
       customValue: customMaterial,
       numberControlOptions: {
+        numberDisplayOptions: {
+          visibleProperty: new BooleanProperty( true, {
+            tandem: options.tandem.createTandem( 'numberDisplayVisibleProperty' )
+          } )
+        },
         sliderOptions: {
           // Slightly longer, see https://github.com/phetsims/buoyancy/issues/33
           trackSize: new Dimension2( 130, 0.5 ),

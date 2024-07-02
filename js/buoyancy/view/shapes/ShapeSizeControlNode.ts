@@ -22,6 +22,7 @@ import { MassShape } from '../../../common/model/MassShape.js';
 import densityBuoyancyCommon from '../../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../../DensityBuoyancyCommonStrings.js';
 import WithRequired from '../../../../../phet-core/js/types/WithRequired.js';
+import Tandem from '../../../../../tandem/js/Tandem.js';
 
 type SelfOptions = {
   labelNode?: Node | null;
@@ -69,11 +70,7 @@ export default class ShapeSizeControlNode extends VBox {
         scale: DensityBuoyancyCommonConstants.ARROW_BUTTON_SCALE
       },
       numberDisplayOptions: {
-        decimalPlaces: 2,
-        textOptions: {
-          font: DensityBuoyancyCommonConstants.READOUT_FONT
-        },
-        useFullHeight: true
+        tandem: Tandem.OPT_OUT
       },
       layoutFunction: NumberControl.createLayoutFunction4( {
         hasReadoutProperty: new BooleanProperty( false ),

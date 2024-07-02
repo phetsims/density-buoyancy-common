@@ -281,7 +281,8 @@ export default class MaterialMassVolumeControlNode extends MaterialControlNode {
       }
     }, MaterialMassVolumeControlNode.getNumberControlOptions() ) );
 
-    const massContainerNode = new Node( {
+    const massContainerNode = new VBox( {
+      stretch: true,
       excludeInvisibleChildrenFromBounds: true
     } );
 
@@ -372,7 +373,9 @@ export default class MaterialMassVolumeControlNode extends MaterialControlNode {
       const toggleNode = new BooleanToggleNode(
         showHighDensityMassNumberControlProperty,
         createMassNumberControl( options.highDensityMaxMass!, 'highDensityMassNumberControl' ),
-        createMassNumberControl( options.maxMass, 'lowDensityMassNumberControl' )
+        createMassNumberControl( options.maxMass, 'lowDensityMassNumberControl' ), {
+          excludeInvisibleChildrenFromBounds: true
+        }
       );
 
       massContainerNode.addChild( toggleNode );
@@ -390,6 +393,7 @@ export default class MaterialMassVolumeControlNode extends MaterialControlNode {
     }
 
     const massVolumeVBox = new VBox( combineOptions<VBoxOptions>( {
+      stretch: true,
       children: [ this.densityControlPlaceholderLayer, massContainerNode, volumeNumberControl ],
       spacing: DensityBuoyancyCommonConstants.SPACING_SMALL
     } ) );

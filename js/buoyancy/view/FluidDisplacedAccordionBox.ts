@@ -27,10 +27,12 @@ import Panel, { PanelOptions } from '../../../../sun/js/Panel.js';
 import DensityBuoyancyCommonColors from '../../common/view/DensityBuoyancyCommonColors.js';
 import { GeneralScaleReadoutNode } from '../../common/view/ScaleReadoutNode.js';
 import { DisplayType } from '../../common/model/Scale.js';
+import PickRequired from '../../../../phet-core/js/types/PickRequired.js';
+import NumberIO from '../../../../tandem/js/types/NumberIO.js';
 
 type SelfOptions = EmptySelfOptions;
 
-type FluidDisplacedAccordionBoxOptions = SelfOptions & AccordionBoxOptions;
+type FluidDisplacedAccordionBoxOptions = SelfOptions & PickRequired<AccordionBoxOptions, 'tandem'>;
 
 const CONTENT_WIDTH = 105;
 
@@ -110,7 +112,7 @@ export default class FluidDisplacedAccordionBox extends AccordionBox {
       opacity: 0.8
     } );
 
-    const displacedFluidForceProperty = new DerivedProperty( [
+    const displacedWeightProperty = new DerivedProperty( [
       gravityProperty,
       displayedDisplacedVolumeProperty,
       fluidMaterialProperty
@@ -119,11 +121,15 @@ export default class FluidDisplacedAccordionBox extends AccordionBox {
       // Convert density units from kg/m^3=>kg/L
       return ( fluidMaterial.density / DensityBuoyancyCommonConstants.LITERS_IN_CUBIC_METER ) *
              gravity.value * displacedVolume;
+    }, {
+      tandem: options.tandem.createTandem( 'displacedWeightProperty' ),
+      phetioValueType: NumberIO,
+      phetioFeatured: true
     } );
 
     const scaleIcon = BuoyancyLabScreenView.getFluidDisplacedAccordionBoxScaleIcon();
 
-    const forceReadout = new GeneralScaleReadoutNode( displacedFluidForceProperty, gravityProperty, DisplayType.NEWTONS, {
+    const forceReadout = new GeneralScaleReadoutNode( displacedWeightProperty, gravityProperty, DisplayType.NEWTONS, {
       textMaxWidth: scaleIcon.width * 0.8 // margins on the scale, and the icon goes beyond the actual scale, see https://github.com/phetsims/density-buoyancy-common/issues/108
     } );
 

@@ -110,7 +110,10 @@ export default class MaterialMassVolumeControlNode extends MaterialControlNode {
       return options.useDensityControlInsteadOfMassControl ? Tandem.OPT_OUT : tandem;
     };
 
-    const massNumberControlContainerTandem = options.tandem.createTandem( 'massNumberControl' );
+    const massNumberControlContainerTandem = options.showMassAsReadout ?
+                                             options.tandem.createTandem( 'massDisplay' ) :
+                                             options.tandem.createTandem( 'massNumberControl' );
+
     const volumeNumberControlTandem = options.tandem.createTandem( 'volumeNumberControl' );
 
     super( materialProperty, volumeProperty, materials, listParent, options );

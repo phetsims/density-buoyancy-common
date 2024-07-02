@@ -17,6 +17,7 @@ import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
+import NumberIO from '../../../../tandem/js/types/NumberIO.js';
 
 export type BuoyancyLabModelOptions = DensityBuoyancyModelOptions;
 
@@ -50,6 +51,9 @@ export default class BuoyancyLabModel extends DensityBuoyancyModel {
       [ this.block.percentSubmergedProperty, this.block.volumeProperty ],
       ( percentSubmerged, volume ) => {
         return percentSubmerged / 100 * volume * DensityBuoyancyCommonConstants.LITERS_IN_CUBIC_METER;
+      }, {
+        tandem: options.tandem.createTandem( 'fluidDisplacedVolumeProperty' ),
+        phetioValueType: NumberIO
       }
     );
   }

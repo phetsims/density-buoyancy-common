@@ -22,6 +22,16 @@ import MassTag from '../../../common/model/MassTag.js';
 
 export type BuoyancyApplicationsModelOptions = DensityBuoyancyModelOptions;
 
+// Faster than normal stepping to fill the boat (kind of like animation speed)
+const FILL_EMPTY_MULTIPLIER = 0.3;
+
+// 90% of the boat is out of the water before spilling out the full boat
+const BOAT_READY_TO_SPILL_OUT_THRESHOLD = 0.9;
+
+// Y model distance of tolerance between the boat basin fluidY level and the boat basin stepTop. This was needed to
+// prevent filling thrashing as a containing mass floats around. See updateFluid();
+const BOAT_FULL_THRESHOLD = 0.01;
+
 export default class BuoyancyApplicationsModel extends DensityBuoyancyModel {
 
   public readonly sceneProperty: StringUnionProperty<BottleOrBoat>;
@@ -147,6 +157,78 @@ export default class BuoyancyApplicationsModel extends DensityBuoyancyModel {
 
     assert && assert( !this.boat.visibleProperty.value || !this.bottle.visibleProperty.value,
       'Boat and bottle should not be visible at the same time' );
+  }
+
+  // May need to adjust volumes between the boat/pool if there is a boat
+  protected override getPoolFluidVolume(): number {
+
+    let poolFluidVolume = this.pool.fluidVolumeProperty.value;
+
+    const boat = this.getBoat()!;
+
+    assert && assert( boat, 'boat needed to update liquids for boat' );
+
+    const boatBasin = boat.basin;
+    if ( boat.visibleProperty.value ) {
+      let boatFluidVolume = boatBasin.fluidVolumeProperty.value;
+      const boatBasinMaximumVolume = boatBasin.getMaximumVolume( boatBasin.stepTop );
+
+      const poolEmptyVolumeToBoatTop = this.pool.getEmptyVolume( Math.min( boat.stepTop, this.poolBounds.maxY ) );
+      const boatEmptyVolumeToBoatTop = boatBasin.getEmptyVolume( boat.stepTop );
+
+      // Calculate adjustments to water volumes to match the current space in the basin
+      let poolExcess = poolFluidVolume - poolEmptyVolumeToBoatTop;
+      let boatExcess = boatFluidVolume - boatEmptyVolumeToBoatTop;
+
+      const boatHeight = boat.shapeProperty.value.getBounds().height;
+
+      if ( boatFluidVolume ) {
+
+        // If the top of the boat is out of the water past the height threshold, spill the water back into the pool
+        // (even if not totally full).
+        if ( boat.stepTop > this.pool.fluidYInterpolatedProperty.currentValue + boatHeight * BOAT_READY_TO_SPILL_OUT_THRESHOLD ) {
+          this.spillingWaterOutOfBoat = true;
+        }
+      }
+      else {
+        // If the boat is empty, stop spilling
+        this.spillingWaterOutOfBoat = false;
+      }
+
+      // If the boat is out of the water, spill the water back into the pool
+      if ( this.spillingWaterOutOfBoat ) {
+        boatExcess = Math.min( FILL_EMPTY_MULTIPLIER * boat.volumeProperty.value, boatFluidVolume );
+      }
+      else if ( boatFluidVolume > 0 &&
+                Math.abs( boatBasin.fluidYInterpolatedProperty.currentValue - boatBasin.stepTop ) >= BOAT_FULL_THRESHOLD ) {
+        // If the boat is neither full nor empty, nor spilling, then it is currently filling up. We will up no matter
+        // the current water leve or the boat AND no matter the boats position. This is because the boat can only
+        // ever be full or empty (or animating to one of those states).
+
+        const excess = Math.min( FILL_EMPTY_MULTIPLIER * boat.volumeProperty.value, boatBasinMaximumVolume - boatFluidVolume ); // This animates the boat spilling in
+        poolExcess = excess;
+        boatExcess = -excess;
+      }
+
+      if ( poolExcess > 0 && boatExcess < 0 ) {
+        const transferVolume = Math.min( poolExcess, -boatExcess );
+        poolFluidVolume -= transferVolume;
+        boatFluidVolume += transferVolume;
+      }
+      else if ( boatExcess > 0 ) {
+        // If the boat overflows, just dump the rest in the pool
+        poolFluidVolume += boatExcess;
+        boatFluidVolume -= boatExcess;
+      }
+      boatBasin.fluidVolumeProperty.value = boatFluidVolume;
+    }
+    else {
+
+      // When the boat is hidden (whether via changing scene or by phet-io), move the fluid from the boat basin to the pool.
+      poolFluidVolume += boatBasin.fluidVolumeProperty.value;
+      boatBasin.fluidVolumeProperty.value = 0;
+    }
+    return poolFluidVolume;
   }
 }
 

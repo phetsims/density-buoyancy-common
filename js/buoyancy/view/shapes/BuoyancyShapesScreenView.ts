@@ -138,10 +138,8 @@ export default class BuoyancyShapesScreenView extends BuoyancyScreenView<Buoyanc
         tandem: options.tandem.createTandem( 'materialControlNode' )
       } );
     const primaryShapeSizeControlNode = new ShapeSizeControlNode(
-      model.primaryShapeProperty,
-      model.primaryWidthRatioProperty,
-      model.primaryHeightRatioProperty,
-      new DynamicProperty( model.primaryMassProperty, {
+      model.primaryShapeModel,
+      new DynamicProperty( model.primaryShapeModel.massProperty, {
         derive: 'volumeProperty'
       } ),
       this.popupLayer, {
@@ -151,16 +149,14 @@ export default class BuoyancyShapesScreenView extends BuoyancyScreenView<Buoyanc
     );
     const secondaryShapeSizeControlNodeTandem = tandem.createTandem( 'secondaryShapeSizeControlNode' );
     const secondaryShapeSizeControlNode = new ShapeSizeControlNode(
-      model.secondaryShapeProperty,
-      model.secondaryWidthRatioProperty,
-      model.secondaryHeightRatioProperty,
-      new DynamicProperty( model.secondaryMassProperty, {
+      model.secondaryShapeModel,
+      new DynamicProperty( model.secondaryShapeModel.massProperty, {
         derive: 'volumeProperty'
       } ),
       this.popupLayer, {
         labelNode: PrimarySecondaryPanelsNode.getSecondaryTagLabelNode(),
         visibleProperty: createGatedVisibleProperty(
-          new DynamicProperty( model.secondaryMassProperty, { derive: 'internalVisibleProperty' } ),
+          new DynamicProperty( model.secondaryShapeModel.massProperty, { derive: 'internalVisibleProperty' } ),
           secondaryShapeSizeControlNodeTandem
         ),
         tandem: secondaryShapeSizeControlNodeTandem
@@ -184,8 +180,8 @@ export default class BuoyancyShapesScreenView extends BuoyancyScreenView<Buoyanc
     } );
 
     Multilink.multilink( [
-      model.primaryMassProperty,
-      model.secondaryMassProperty,
+      model.primaryShapeModel.massProperty,
+      model.secondaryShapeModel.massProperty,
       model.modeProperty
     ], ( primaryMass, secondaryMass, mode ) => {
       const masses = mode === TwoBlockMode.ONE_BLOCK ? [ primaryMass ] : [ primaryMass, secondaryMass ];
@@ -268,11 +264,11 @@ export default class BuoyancyShapesScreenView extends BuoyancyScreenView<Buoyanc
     ];
 
     const massViewAdded = ( massView: MassView ) => {
-      if ( massView.mass === model.secondaryMassProperty.value ) {
+      if ( massView.mass === model.secondaryShapeModel.massProperty.value ) {
         secondaryMassLayer.pdomOrder = [ ...secondaryMassLayer.pdomOrder!, massView.focusablePath ];
         // nothing to do for removal since disposal of the node will remove it from the pdom order
       }
-      else if ( massView.mass === model.primaryMassProperty.value ) {
+      else if ( massView.mass === model.primaryShapeModel.massProperty.value ) {
         primaryMassLayer.pdomOrder = [ ...primaryMassLayer.pdomOrder!, massView.focusablePath ];
         // nothing to do for removal since disposal of the node will remove it from the pdom order
       }

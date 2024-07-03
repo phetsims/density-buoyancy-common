@@ -4,11 +4,10 @@
  * The main model for the Shapes screen of the Buoyancy simulation.
  *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
+ * @author Michael Kauzmann (PhET Interactive Simulations)
  */
 
 import EnumerationProperty from '../../../../../axon/js/EnumerationProperty.js';
-import Multilink from '../../../../../axon/js/Multilink.js';
-import NumberProperty from '../../../../../axon/js/NumberProperty.js';
 import Property from '../../../../../axon/js/Property.js';
 import Matrix3 from '../../../../../dot/js/Matrix3.js';
 import Tandem from '../../../../../tandem/js/Tandem.js';
@@ -24,10 +23,10 @@ import TwoBlockMode from '../../../common/model/TwoBlockMode.js';
 import VerticalCylinder from '../../../common/model/VerticalCylinder.js';
 import densityBuoyancyCommon from '../../../densityBuoyancyCommon.js';
 import { MassShape } from '../../../common/model/MassShape.js';
-import TProperty from '../../../../../axon/js/TProperty.js';
 import isSettingPhetioStateProperty from '../../../../../tandem/js/isSettingPhetioStateProperty.js';
 import MassTag from '../../../common/model/MassTag.js';
 import Duck from './Duck.js';
+import BuoyancyShapeModel from './BuoyancyShapeModel.js';
 
 export type BuoyancyShapesModelOptions = DensityBuoyancyModelOptions;
 
@@ -36,17 +35,8 @@ export default class BuoyancyShapesModel extends DensityBuoyancyModel {
   public readonly modeProperty: Property<TwoBlockMode>;
   private readonly scale: Scale;
 
-  // REVIEW: Add a structure like primary:{shapeProperty, widthRatioProperty, heightRatioProperty, massProperty}?
-  // REVIEW: This will also help with the studio tree
-  public readonly primaryShapeProperty: Property<MassShape>;
-  public readonly primaryWidthRatioProperty: Property<number>;
-  public readonly primaryHeightRatioProperty: Property<number>;
-  public readonly primaryMassProperty: TProperty<Mass>;
-
-  public readonly secondaryShapeProperty: Property<MassShape>;
-  public readonly secondaryWidthRatioProperty: Property<number>;
-  public readonly secondaryHeightRatioProperty: Property<number>;
-  public readonly secondaryMassProperty: TProperty<Mass>;
+  public readonly primaryShapeModel: BuoyancyShapeModel;
+  public readonly secondaryShapeModel: BuoyancyShapeModel;
 
   public readonly materialProperty: Property<Material>;
 
@@ -75,144 +65,26 @@ export default class BuoyancyShapesModel extends DensityBuoyancyModel {
     } );
     this.availableMasses.push( this.scale );
 
-    this.primaryShapeProperty = new EnumerationProperty( MassShape.BLOCK, {
-      tandem: options.tandem.createTandem( 'primaryShapeProperty' )
-    } );
-    this.secondaryShapeProperty = new EnumerationProperty( MassShape.INVERTED_CONE, {
-      tandem: options.tandem.createTandem( 'secondaryShapeProperty' )
-    } );
+    const boundCreateMass = this.createMass.bind( this );
 
-    this.primaryWidthRatioProperty = new NumberProperty( 0.25, {
-      tandem: options.tandem.createTandem( 'primaryWidthRatioProperty' )
-    } );
-    this.secondaryWidthRatioProperty = new NumberProperty( 0.25, {
-      tandem: options.tandem.createTandem( 'secondaryWidthRatioProperty' )
+    // TODO: solve this, https://github.com/phetsims/density-buoyancy-common/issues/182
+    // eslint-disable-next-line tandem-name-should-match
+    this.primaryShapeModel = new BuoyancyShapeModel( MassShape.BLOCK, 0.25, 0.75, MassTag.PRIMARY, boundCreateMass, {
+      tandem: options.tandem.createTandem( 'objectA' )
     } );
 
-    this.primaryHeightRatioProperty = new NumberProperty( 0.75, {
-      tandem: options.tandem.createTandem( 'primaryHeightRatioProperty' )
-    } );
-    this.secondaryHeightRatioProperty = new NumberProperty( 0.75, {
-      tandem: options.tandem.createTandem( 'secondaryHeightRatioProperty' )
-    } );
-
-    const createMass = ( tandem: Tandem, shape: MassShape, widthRatio: number, heightRatio: number, tag: MassTag ): Mass => {
-      const massOptions = {
-        material: this.materialProperty.value,
-        minVolume: 0.0002, // Cones have a smaller volume at min height/width
-        maxVolume: Cuboid.MAX_VOLUME, // Cubes are the highest volume object in this screen
-        tandem: tandem,
-        tag: tag
-      };
-
-      let mass: Mass;
-      switch( shape ) {
-        case MassShape.BLOCK:
-          mass = new Cuboid( this.engine, Cuboid.getSizeFromRatios( widthRatio, heightRatio ), massOptions );
-          break;
-        case MassShape.ELLIPSOID:
-          mass = new Ellipsoid( this.engine, Ellipsoid.getSizeFromRatios( widthRatio, heightRatio ), massOptions );
-          break;
-        case MassShape.VERTICAL_CYLINDER:
-          mass = new VerticalCylinder(
-            this.engine,
-            VerticalCylinder.getRadiusFromRatio( widthRatio ),
-            VerticalCylinder.getHeightFromRatio( heightRatio ),
-            massOptions
-          );
-          break;
-        case MassShape.HORIZONTAL_CYLINDER:
-          mass = new HorizontalCylinder(
-            this.engine,
-            HorizontalCylinder.getRadiusFromRatio( heightRatio ),
-            HorizontalCylinder.getLengthFromRatio( widthRatio ),
-            massOptions
-          );
-          break;
-        case MassShape.CONE:
-          mass = new Cone(
-            this.engine,
-            Cone.getRadiusFromRatio( widthRatio ),
-            Cone.getHeightFromRatio( heightRatio ),
-            true,
-            massOptions
-          );
-          break;
-        case MassShape.INVERTED_CONE:
-          mass = new Cone(
-            this.engine,
-            Cone.getRadiusFromRatio( widthRatio ),
-            Cone.getHeightFromRatio( heightRatio ),
-            false,
-            massOptions
-          );
-          break;
-        case MassShape.DUCK:
-          mass = new Duck( this.engine, Duck.getSizeFromRatios( widthRatio, heightRatio ), massOptions );
-          break;
-        default:
-          throw new Error( `shape not recognized: ${shape}` );
-      }
-
-      this.materialProperty.lazyLink( material => {
-        mass.materialProperty.value = material;
-      } );
-      return mass;
-    };
-
-    const objectsTandem = options.tandem.createTandem( 'objects' );
-
-    // Statically initialize all possible Mass instances to simplify phet-io. This is well within a good memory limit, see https://github.com/phetsims/buoyancy/issues/160
-    const aMap = new Map<MassShape, Mass>();
-    const bMap = new Map<MassShape, Mass>();
-
-    MassShape.enumeration.values.forEach( shape => {
-
-      aMap.set( shape, createMass(
-        objectsTandem.createTandem( 'groupA' ).createTandem( shape.tandemName ), shape,
-        this.primaryWidthRatioProperty.value, this.primaryHeightRatioProperty.value, MassTag.PRIMARY
-      ) );
-
-      bMap.set( shape, createMass(
-        objectsTandem.createTandem( 'groupB' ).createTandem( shape.tandemName ), shape,
-        this.secondaryWidthRatioProperty.value, this.secondaryHeightRatioProperty.value, MassTag.SECONDARY
-      ) );
+    // TODO: solve this, https://github.com/phetsims/density-buoyancy-common/issues/182
+    // eslint-disable-next-line tandem-name-should-match
+    this.secondaryShapeModel = new BuoyancyShapeModel( MassShape.BLOCK, 0.25, 0.75, MassTag.SECONDARY, boundCreateMass, {
+      tandem: options.tandem.createTandem( 'objectB' )
     } );
 
-    const changeShape = ( massProperty: TProperty<Mass>, shapeMap: Map<MassShape, Mass>, massShape: MassShape, widthProperty: Property<number> ) => { // Triggering dimension change first
-      const minYBefore = massProperty.value.getBounds().minY;
-      massProperty.value = shapeMap.get( massShape )!;
-      widthProperty.notifyListenersStatic(); // Triggering dimension change first
-      const minYAfter = massProperty.value.getBounds().minY;
-      massProperty.value.matrix.multiplyMatrix( Matrix3.translation( 0, minYBefore - minYAfter ) );
-      massProperty.value.writeData();
-      massProperty.value.transformedEmitter.emit();
-    };
-
-    // Property doesn't need disposal, since everything here lives for the lifetime of the simulation
-    this.primaryMassProperty = new Property( aMap.get( this.primaryShapeProperty.value )! );
-    this.primaryShapeProperty.link( massShape => {
-      changeShape( this.primaryMassProperty, aMap, massShape, this.primaryWidthRatioProperty );
-    } );
-
-    // Property doesn't need disposal, since everything here lives for the lifetime of the simulation
-    this.secondaryMassProperty = new Property( bMap.get( this.secondaryShapeProperty.value )! );
-    this.secondaryShapeProperty.link( massShape => {
-      changeShape( this.secondaryMassProperty, bMap, massShape, this.primaryWidthRatioProperty );
-    } );
-
-    Multilink.lazyMultilink( [ this.primaryWidthRatioProperty, this.primaryHeightRatioProperty ], ( widthRatio, heightRatio ) => {
-      this.primaryMassProperty.value.setRatios( widthRatio, heightRatio );
-    } );
-    Multilink.lazyMultilink( [ this.secondaryWidthRatioProperty, this.secondaryHeightRatioProperty ], ( widthRatio, heightRatio ) => {
-      this.secondaryMassProperty.value.setRatios( widthRatio, heightRatio );
-    } );
 
     // When a new mass is created, set up its position to be that of the old mass
-    [ this.primaryMassProperty, this.secondaryMassProperty ].forEach( massProperty => {
+    [ this.primaryShapeModel, this.secondaryShapeModel ].forEach( ( shapeModel: BuoyancyShapeModel ) => {
 
       // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
-      massProperty.lazyLink( ( newMass, oldMass ) => {
+      shapeModel.massProperty.lazyLink( ( newMass, oldMass ) => {
         if ( !isSettingPhetioStateProperty.value ) {
           newMass.matrix.set( oldMass.matrix );
         }
@@ -226,27 +98,86 @@ export default class BuoyancyShapesModel extends DensityBuoyancyModel {
       } );
     } );
 
-    this.availableMasses.add( this.primaryMassProperty.value );
-    this.availableMasses.add( this.secondaryMassProperty.value );
+    this.availableMasses.add( this.primaryShapeModel.massProperty.value );
+    this.availableMasses.add( this.secondaryShapeModel.massProperty.value );
 
     this.modeProperty.link( mode => {
-      this.secondaryMassProperty.value.internalVisibleProperty.value = mode === TwoBlockMode.TWO_BLOCKS;
+      this.secondaryShapeModel.massProperty.value.internalVisibleProperty.value = mode === TwoBlockMode.TWO_BLOCKS;
     } );
 
     this.setInitialPositions();
+  }
+
+  private createMass( tandem: Tandem, shape: MassShape, widthRatio: number, heightRatio: number, tag: MassTag ): Mass {
+    const massOptions = {
+      material: this.materialProperty.value,
+      minVolume: 0.0002, // Cones have a smaller volume at min height/width
+      maxVolume: Cuboid.MAX_VOLUME, // Cubes are the highest volume object in this screen
+      tandem: tandem,
+      tag: tag
+    };
+
+    let mass: Mass;
+    switch( shape ) {
+      case MassShape.BLOCK:
+        mass = new Cuboid( this.engine, Cuboid.getSizeFromRatios( widthRatio, heightRatio ), massOptions );
+        break;
+      case MassShape.ELLIPSOID:
+        mass = new Ellipsoid( this.engine, Ellipsoid.getSizeFromRatios( widthRatio, heightRatio ), massOptions );
+        break;
+      case MassShape.VERTICAL_CYLINDER:
+        mass = new VerticalCylinder(
+          this.engine,
+          VerticalCylinder.getRadiusFromRatio( widthRatio ),
+          VerticalCylinder.getHeightFromRatio( heightRatio ),
+          massOptions
+        );
+        break;
+      case MassShape.HORIZONTAL_CYLINDER:
+        mass = new HorizontalCylinder(
+          this.engine,
+          HorizontalCylinder.getRadiusFromRatio( heightRatio ),
+          HorizontalCylinder.getLengthFromRatio( widthRatio ),
+          massOptions
+        );
+        break;
+      case MassShape.CONE:
+        mass = new Cone(
+          this.engine,
+          Cone.getRadiusFromRatio( widthRatio ),
+          Cone.getHeightFromRatio( heightRatio ),
+          true,
+          massOptions
+        );
+        break;
+      case MassShape.INVERTED_CONE:
+        mass = new Cone(
+          this.engine,
+          Cone.getRadiusFromRatio( widthRatio ),
+          Cone.getHeightFromRatio( heightRatio ),
+          false,
+          massOptions
+        );
+        break;
+      case MassShape.DUCK:
+        mass = new Duck( this.engine, Duck.getSizeFromRatios( widthRatio, heightRatio ), massOptions );
+        break;
+      default:
+        throw new Error( `shape not recognized: ${shape}` );
+    }
+
+    this.materialProperty.lazyLink( material => {
+      mass.materialProperty.value = material;
+    } );
+    return mass;
   }
 
   /**
    * Sets up the initial positions of the masses (since some resets may not change the mass).
    */
   private setInitialPositions(): void {
-    this.primaryMassProperty.value.matrix.setToTranslation( -0.225, 0 );
-    this.primaryMassProperty.value.writeData();
-    this.primaryMassProperty.value.transformedEmitter.emit();
-
-    this.secondaryMassProperty.value.matrix.setToTranslation( 0.075, 0 );
-    this.secondaryMassProperty.value.writeData();
-    this.secondaryMassProperty.value.transformedEmitter.emit();
+    this.primaryShapeModel.massProperty.value.setPosition( -0.225, 0 );
+    this.secondaryShapeModel.massProperty.value.setPosition( 0.075, 0 );
   }
 
   /**
@@ -254,12 +185,8 @@ export default class BuoyancyShapesModel extends DensityBuoyancyModel {
    */
   public override reset(): void {
 
-    this.primaryShapeProperty.reset();
-    this.secondaryShapeProperty.reset();
-    this.primaryHeightRatioProperty.reset();
-    this.secondaryHeightRatioProperty.reset();
-    this.primaryWidthRatioProperty.reset();
-    this.secondaryWidthRatioProperty.reset();
+    this.primaryShapeModel.reset();
+    this.secondaryShapeModel.reset();
 
     // Reset the mode after resetting the secondaryShapeProperty, otherwise the secondary mass will become visible
     // if it changes, see https://github.com/phetsims/density-buoyancy-common/issues/221

@@ -9,7 +9,6 @@
 import BooleanProperty from '../../../../../axon/js/BooleanProperty.js';
 import DerivedProperty from '../../../../../axon/js/DerivedProperty.js';
 import TReadOnlyProperty from '../../../../../axon/js/TReadOnlyProperty.js';
-import Property from '../../../../../axon/js/Property.js';
 import Dimension2 from '../../../../../dot/js/Dimension2.js';
 import Range from '../../../../../dot/js/Range.js';
 import optionize, { combineOptions } from '../../../../../phet-core/js/optionize.js';
@@ -23,6 +22,7 @@ import densityBuoyancyCommon from '../../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../../DensityBuoyancyCommonStrings.js';
 import WithRequired from '../../../../../phet-core/js/types/WithRequired.js';
 import Tandem from '../../../../../tandem/js/Tandem.js';
+import BuoyancyShapeModel from '../../model/shapes/BuoyancyShapeModel.js';
 
 type SelfOptions = {
   labelNode?: Node | null;
@@ -31,8 +31,7 @@ type SelfOptions = {
 export type ShapeSizeControlNodeOptions = SelfOptions & WithRequired<FlowBoxOptions, 'tandem'>;
 
 export default class ShapeSizeControlNode extends VBox {
-  public constructor( massShapeProperty: Property<MassShape>, widthRatioProperty: Property<number>,
-                      heightRatioProperty: Property<number>, volumeProperty: TReadOnlyProperty<number>,
+  public constructor( shapeModel: BuoyancyShapeModel, volumeProperty: TReadOnlyProperty<number>,
                       listParent: Node, providedOptions?: ShapeSizeControlNodeOptions ) {
 
     const options = optionize<ShapeSizeControlNodeOptions, SelfOptions, FlowBoxOptions>()( {
@@ -44,7 +43,7 @@ export default class ShapeSizeControlNode extends VBox {
       align: 'left'
     } );
 
-    const shapeComboBox = new ComboBox( massShapeProperty, MassShape.enumeration.values.map( massShape => {
+    const shapeComboBox = new ComboBox( shapeModel.shapeProperty, MassShape.enumeration.values.map( massShape => {
       return {
         value: massShape,
         createNode: () => new Text( massShape.shapeString, {
@@ -82,13 +81,13 @@ export default class ShapeSizeControlNode extends VBox {
       }
     };
 
-    const widthNumberControl = new NumberControl( DensityBuoyancyCommonStrings.widthStringProperty, widthRatioProperty, new Range( 0, 1 ), combineOptions<NumberControlOptions>( {
+    const widthNumberControl = new NumberControl( DensityBuoyancyCommonStrings.widthStringProperty, shapeModel.widthRatioProperty, new Range( 0, 1 ), combineOptions<NumberControlOptions>( {
       tandem: options.tandem.createTandem( 'widthNumberControl' ),
       sliderOptions: {
         accessibleName: DensityBuoyancyCommonStrings.widthStringProperty
       }
     }, numberControlOptions ) );
-    const heightNumberControl = new NumberControl( DensityBuoyancyCommonStrings.heightStringProperty, heightRatioProperty, new Range( 0, 1 ), combineOptions<NumberControlOptions>( {
+    const heightNumberControl = new NumberControl( DensityBuoyancyCommonStrings.heightStringProperty, shapeModel.heightRatioProperty, new Range( 0, 1 ), combineOptions<NumberControlOptions>( {
       tandem: options.tandem.createTandem( 'heightNumberControl' ),
       sliderOptions: {
         accessibleName: DensityBuoyancyCommonStrings.heightStringProperty

@@ -623,6 +623,12 @@ export default abstract class Mass extends PhetioObject {
     this.stepMatrix.set12( this.stepMatrix.m12() + this.bodyOffsetProperty.value.y );
   }
 
+  public setPosition( x: number, y: number ): void {
+    this.matrix.setToTranslation( x, y );
+    this.writeData();
+    this.transformedEmitter.emit();
+  }
+
   /**
    * Steps forward in time.
    *

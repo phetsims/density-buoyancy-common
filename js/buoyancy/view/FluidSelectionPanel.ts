@@ -21,6 +21,7 @@ import Property from '../../../../axon/js/Property.js';
 // to show them, https://github.com/phetsims/buoyancy/issues/58
 const VISIBLE_FLUIDS = [
   Material.GASOLINE,
+  Material.OIL,
   Material.WATER,
   Material.SEAWATER,
   Material.HONEY,

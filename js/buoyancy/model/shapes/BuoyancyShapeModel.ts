@@ -30,6 +30,9 @@ export default class BuoyancyShapeModel {
   public readonly heightRatioProperty: Property<number>;
   public readonly massProperty: TProperty<Mass>;
 
+  // Statically initialize all possible Mass instances to simplify phet-io. This is well within a good memory limit, see https://github.com/phetsims/buoyancy/issues/160
+  private readonly shapeCacheMap = new Map<MassShape, Mass>();
+
   public constructor( massShape: MassShape, width: number, height: number, massTag: MassTag, createMass: BuoyancyShapesModel['createMass'], options: BuoyancyShapeModelOptions ) {
 
     this.shapeProperty = new EnumerationProperty( massShape, {
@@ -44,36 +47,32 @@ export default class BuoyancyShapeModel {
       tandem: options.tandem.createTandem( 'heightRatioProperty' )
     } );
 
-    // Statically initialize all possible Mass instances to simplify phet-io. This is well within a good memory limit, see https://github.com/phetsims/buoyancy/issues/160
-    const shapeCacheMap = new Map<MassShape, Mass>();
-
     MassShape.enumeration.values.forEach( shape => {
-      shapeCacheMap.set( shape, createMass(
+      this.shapeCacheMap.set( shape, createMass(
         options.tandem.createTandem( 'shapes' ).createTandem( shape.tandemName ), shape,
         this.widthRatioProperty.value, this.heightRatioProperty.value, massTag
       ) );
     } );
 
-    // TODO: private method, https://github.com/phetsims/density-buoyancy-common/issues/182
-    const changeShape = ( massProperty: TProperty<Mass>, shapeMap: Map<MassShape, Mass>, massShape: MassShape, widthProperty: Property<number> ) => { // Triggering dimension change first
-      const minYBefore = massProperty.value.getBounds().minY;
-      massProperty.value = shapeMap.get( massShape )!;
-      widthProperty.notifyListenersStatic(); // Triggering dimension change first
-      const minYAfter = massProperty.value.getBounds().minY;
-      massProperty.value.matrix.multiplyMatrix( Matrix3.translation( 0, minYBefore - minYAfter ) );
-      massProperty.value.writeData();
-      massProperty.value.transformedEmitter.emit();
-    };
-
     // Property doesn't need disposal, since everything here lives for the lifetime of the simulation
-    this.massProperty = new Property( shapeCacheMap.get( this.shapeProperty.value )! );
-    this.shapeProperty.link( massShape => {
-      changeShape( this.massProperty, shapeCacheMap, massShape, this.widthRatioProperty );
-    } );
+    this.massProperty = new Property( this.shapeCacheMap.get( this.shapeProperty.value )! );
+    this.shapeProperty.link( () => this.changeShape() );
 
     Multilink.lazyMultilink( [ this.widthRatioProperty, this.heightRatioProperty ], ( widthRatio, heightRatio ) => {
       this.massProperty.value.setRatios( widthRatio, heightRatio );
     } );
+  }
+
+  private changeShape(): void {
+
+    // Triggering dimension change first
+    const minYBefore = this.massProperty.value.getBounds().minY;
+    this.massProperty.value = this.shapeCacheMap.get( this.shapeProperty.value )!;
+    this.widthRatioProperty.notifyListenersStatic(); // Triggering dimension change first
+    const minYAfter = this.massProperty.value.getBounds().minY;
+    this.massProperty.value.matrix.multiplyMatrix( Matrix3.translation( 0, minYBefore - minYAfter ) );
+    this.massProperty.value.writeData();
+    this.massProperty.value.transformedEmitter.emit();
   }
 
   public reset(): void {

@@ -49,9 +49,53 @@ type MaterialState = {
 export const CUSTOM_MATERIAL_NAME = 'CUSTOM';
 export type CustomMaterialName = typeof CUSTOM_MATERIAL_NAME;
 
-// TODO: https://github.com/phetsims/density-buoyancy-common/issues/236 re-evaluate after addressing #163 this type
-//       includes a lot of static methods that should not be in the list.
-export type MaterialName = keyof ( typeof Material ) | CustomMaterialName;
+const nonCustomMaterialNames = [
+  'ALUMINUM',
+  'APPLE',
+  'BOAT_BODY',
+  'BRICK',
+  'CONCRETE',
+  'COPPER',
+  'DIAMOND',
+  'GLASS',
+  'GOLD',
+  'HUMAN',
+  'ICE',
+  'LEAD',
+  'PLATINUM',
+  'PVC',
+  'PYRITE',
+  'SILVER',
+  'STEEL',
+  'STYROFOAM',
+  'TANTALUM',
+  'TITANIUM',
+  'WOOD',
+  'AIR',
+  'DENSITY_A',
+  'DENSITY_B',
+  'DENSITY_C',
+  'DENSITY_D',
+  'DENSITY_E',
+  'DENSITY_F',
+  'GASOLINE',
+  'HONEY',
+  'MERCURY',
+  'OIL',
+  'SAND',
+  'SEAWATER',
+  'WATER',
+  'MATERIAL_O',
+  'MATERIAL_P',
+  'MATERIAL_R',
+  'MATERIAL_S',
+  'MATERIAL_V',
+  'MATERIAL_W',
+  'MATERIAL_X',
+  'MATERIAL_Y' ] as const;
+
+export type MaterialName = typeof nonCustomMaterialNames[ number ] | CustomMaterialName;
+
 export type CreateCustomMaterialOptions = MaterialOptions & Required<Pick<MaterialOptions, 'density'>> & { densityRange?: Range };
 
 export type MaterialOptions = {

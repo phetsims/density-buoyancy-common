@@ -1,6 +1,8 @@
 // Copyright 2024, University of Colorado Boulder
 
 /**
+ * This is a subset of the possible Materials that can be used to set the material in Density.
+ *
  * @author Sam Reid (PhET Interactive Simulations)
  */
 import EnumerationValue from '../../../../phet-core/js/EnumerationValue.js';

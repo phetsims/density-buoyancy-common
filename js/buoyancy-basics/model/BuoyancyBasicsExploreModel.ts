@@ -42,7 +42,7 @@ export default class BuoyancyBasicsExploreModel extends DensityBuoyancyModel {
     // So we have to filter out the ones that are not used for phet-io valid values.
     const simpleMaterialsIdentifiers = Material.SIMPLE_MASS_MATERIALS.map( x => x.identifier ) as string[];
     const simpleMaterialsInEnumerationKeys = MaterialEnumeration.enumeration.keys.filter( name => simpleMaterialsIdentifiers.includes( name ) );
-    // @ts-expect-error TODO: is this string indexing correct? https://github.com/phetsims/density-buoyancy-common/issues/236
+    // @ts-expect-error TODO: is this string indexing correct? https://github.com/phetsims/density-buoyancy-common/issues/176
     const validSimpleMaterials = simpleMaterialsInEnumerationKeys.map( x => MaterialEnumeration[ x ] ).concat( [ MaterialEnumeration.CUSTOM ] );
 
     this.primaryMass = Cube.createWithMass( this.engine, Material.WOOD, new Vector2( -0.2, 0.2 ), 2, {

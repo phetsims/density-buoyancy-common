@@ -17,17 +17,6 @@ import WithRequired from '../../../../phet-core/js/types/WithRequired.js';
 import ComboBox from '../../../../sun/js/ComboBox.js';
 import Property from '../../../../axon/js/Property.js';
 
-// Any others are invisible in the radio buttons, and are only available through PhET-iO if a client decides
-// to show them, https://github.com/phetsims/buoyancy/issues/58
-const VISIBLE_FLUIDS = [
-  Material.GASOLINE,
-  Material.OIL,
-  Material.WATER,
-  Material.SEAWATER,
-  Material.HONEY,
-  Material.MERCURY
-];
-
 type FluidSelectionPanelOptions = WithRequired<PanelOptions, 'tandem'>;
 
 export default class FluidSelectionPanel extends Panel {
@@ -47,9 +36,6 @@ export default class FluidSelectionPanel extends Panel {
             font: DensityBuoyancyCommonConstants.COMBO_BOX_ITEM_FONT,
             maxWidth: 160
           } ),
-          comboBoxListItemNodeOptions: {
-            visible: VISIBLE_FLUIDS.includes( material )
-          },
           tandemName: `${material.tandemName}Item`,
           a11yName: material.nameProperty
         };

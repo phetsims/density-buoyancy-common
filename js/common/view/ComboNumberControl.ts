@@ -70,7 +70,10 @@ export default abstract class ComboNumberControl<T> extends VBox {
   protected constructor( providedOptions: SelfOptions<T> ) {
 
     const disposalCallbacks: ( () => void )[] = [];
-    const numberDisplayVisibleProperty = new BooleanProperty( true );
+    const numberDisplayVisibleProperty = new BooleanProperty( true, {
+      tandem: providedOptions.tandem.createTandem( 'numberDisplayVisibleProperty' ),
+      phetioFeatured: true
+    } );
 
     const options = optionize<ComboNumberControlOptions<T>, SelfOptions<T>, VBoxOptions>()( {
       getFallbackNode: () => null,

@@ -17,7 +17,6 @@ import Gravity from '../model/Gravity.js';
 import ComboNumberControl from './ComboNumberControl.js';
 import DensityBuoyancyCommonQueryParameters from '../DensityBuoyancyCommonQueryParameters.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
-import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
 
 export default class GravityControlNode extends ComboNumberControl<Gravity> {
   public constructor( gravityProperty: Property<Gravity>, listParent: Node, tandem: Tandem ) {
@@ -57,13 +56,6 @@ export default class GravityControlNode extends ComboNumberControl<Gravity> {
       customValue: customValue,
       comboBoxOptions: {
         listPosition: 'above'
-      },
-      numberControlOptions: {
-        numberDisplayOptions: {
-          visibleProperty: new BooleanProperty( true, {
-            tandem: tandem.createTandem( 'numberDisplayVisibleProperty' )
-          } )
-        }
       },
       getFallbackNode: gravity => {
         if ( gravity.hidden ) {

@@ -100,8 +100,8 @@ export default class BuoyancyLabScreenView extends BuoyancyScreenView<BuoyancyLa
     } );
 
     const displayedMysteryMaterials = [
-      Material.DENSITY_A,
-      Material.DENSITY_B
+      Material.FLUID_A,
+      Material.FLUID_B
     ];
 
     const invisibleMaterials = [ ...Material.BUOYANCY_FLUID_MYSTERY_MATERIALS ];

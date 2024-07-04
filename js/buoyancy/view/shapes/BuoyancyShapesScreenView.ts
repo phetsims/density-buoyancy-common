@@ -73,8 +73,8 @@ export default class BuoyancyShapesScreenView extends BuoyancyScreenView<Buoyanc
       }, options ) );
 
     const displayedMysteryMaterials = [
-      Material.DENSITY_C,
-      Material.DENSITY_D
+      Material.FLUID_C,
+      Material.FLUID_D
     ];
     const invisibleMaterials = [ ...Material.BUOYANCY_FLUID_MYSTERY_MATERIALS ];
     displayedMysteryMaterials.forEach( displayed => arrayRemove( invisibleMaterials, displayed ) );

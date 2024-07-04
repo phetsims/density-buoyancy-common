@@ -229,7 +229,7 @@ export default abstract class ComboNumberControl<T> extends VBox {
 
         if ( options.isCustomValue( value ) ) {
           // We'll swap to the last non-hidden value (and make it custom). This is so that we don't immediately show a
-          // "hidden" previous value (e.g. DENSITY_A) and the students have to guess it.
+          // "hidden" previous value (e.g. FLUID_A) and the students have to guess it.
           // See https://github.com/phetsims/buoyancy/issues/54
           const newValue = getNumericValue( lastNonHiddenValue );
           this.property.value = options.createCustomValue( newValue );

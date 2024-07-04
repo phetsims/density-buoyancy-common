@@ -329,8 +329,8 @@ export default class BuoyancyApplicationsScreenView extends BuoyancyScreenView<B
     } );
 
     const displayedMysteryMaterials = [
-      Material.DENSITY_E,
-      Material.DENSITY_F
+      Material.FLUID_E,
+      Material.FLUID_F
     ];
 
     const invisibleMaterials = [ ...Material.BUOYANCY_FLUID_MYSTERY_MATERIALS ];

@@ -72,12 +72,12 @@ const nonCustomMaterialNames = [
   'TITANIUM',
   'WOOD',
   'AIR',
-  'DENSITY_A',
-  'DENSITY_B',
-  'DENSITY_C',
-  'DENSITY_D',
-  'DENSITY_E',
-  'DENSITY_F',
+  'FLUID_A',
+  'FLUID_B',
+  'FLUID_C',
+  'FLUID_D',
+  'FLUID_E',
+  'FLUID_F',
   'GASOLINE',
   'HONEY',
   'MERCURY',
@@ -448,55 +448,55 @@ export default class Material {
     liquidColor: DensityBuoyancyCommonColors.materialAirColorProperty
   } );
 
-  public static readonly DENSITY_A = new Material( {
+  public static readonly FLUID_A = new Material( {
     nameProperty: DensityBuoyancyCommonStrings.material.densityAStringProperty,
-    tandemName: 'densityA',
-    identifier: 'DENSITY_A',
+    tandemName: 'fluidA',
+    identifier: 'FLUID_A',
     density: 3100,
     liquidColor: DensityBuoyancyCommonColors.materialDensityAColorProperty,
     hidden: true
   } );
 
-  public static readonly DENSITY_B = new Material( {
+  public static readonly FLUID_B = new Material( {
     nameProperty: DensityBuoyancyCommonStrings.material.densityBStringProperty,
-    tandemName: 'densityB',
-    identifier: 'DENSITY_B',
+    tandemName: 'fluidB',
+    identifier: 'FLUID_B',
     density: 790,
     liquidColor: DensityBuoyancyCommonColors.materialDensityBColorProperty,
     hidden: true
   } );
 
-  public static readonly DENSITY_C = new Material( {
+  public static readonly FLUID_C = new Material( {
     nameProperty: DensityBuoyancyCommonStrings.material.densityCStringProperty,
-    tandemName: 'densityC',
-    identifier: 'DENSITY_C',
+    tandemName: 'fluidC',
+    identifier: 'FLUID_C',
     density: 490,
     liquidColor: DensityBuoyancyCommonColors.materialDensityCColorProperty,
     hidden: true
   } );
 
-  public static readonly DENSITY_D = new Material( {
+  public static readonly FLUID_D = new Material( {
     nameProperty: DensityBuoyancyCommonStrings.material.densityDStringProperty,
-    tandemName: 'densityD',
-    identifier: 'DENSITY_D',
+    tandemName: 'fluidD',
+    identifier: 'FLUID_D',
     density: 2890,
     liquidColor: DensityBuoyancyCommonColors.materialDensityDColorProperty,
     hidden: true
   } );
 
-  public static readonly DENSITY_E = new Material( {
+  public static readonly FLUID_E = new Material( {
     nameProperty: DensityBuoyancyCommonStrings.material.densityEStringProperty,
-    tandemName: 'densityE',
-    identifier: 'DENSITY_E',
+    tandemName: 'fluidE',
+    identifier: 'FLUID_E',
     density: 1260,
     liquidColor: DensityBuoyancyCommonColors.materialDensityEColorProperty,
     hidden: true
   } );
 
-  public static readonly DENSITY_F = new Material( {
+  public static readonly FLUID_F = new Material( {
     nameProperty: DensityBuoyancyCommonStrings.material.densityFStringProperty,
-    tandemName: 'densityF',
-    identifier: 'DENSITY_F',
+    tandemName: 'fluidF',
+    identifier: 'FLUID_F',
     density: 6440,
     liquidColor: DensityBuoyancyCommonColors.materialDensityFColorProperty,
     hidden: true
@@ -644,10 +644,10 @@ export default class Material {
     Material.BRICK,
     Material.CONCRETE,
     Material.COPPER,
-    Material.DENSITY_E,
-    Material.DENSITY_F,
-    Material.DENSITY_A,
-    Material.DENSITY_B,
+    Material.FLUID_E,
+    Material.FLUID_F,
+    Material.FLUID_A,
+    Material.FLUID_B,
     Material.DIAMOND,
     Material.GASOLINE,
     Material.GLASS,
@@ -712,12 +712,12 @@ export default class Material {
   ];
 
   public static readonly BUOYANCY_FLUID_MYSTERY_MATERIALS = [
-    Material.DENSITY_A,
-    Material.DENSITY_B,
-    Material.DENSITY_C,
-    Material.DENSITY_D,
-    Material.DENSITY_E,
-    Material.DENSITY_F
+    Material.FLUID_A,
+    Material.FLUID_B,
+    Material.FLUID_C,
+    Material.FLUID_D,
+    Material.FLUID_E,
+    Material.FLUID_F
   ];
 
   public static readonly MaterialIO = new IOType<Material, MaterialState>( 'MaterialIO', {

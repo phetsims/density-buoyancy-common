@@ -66,7 +66,7 @@ export default class DensityMysteryScreenView extends DensityBuoyancyScreenView<
     } ) );
 
     const blocksPanelTandem = tandem.createTandem( 'blocksPanel' );
-    const blocksModeRadioButtonGroupTandem = blocksPanelTandem.createTandem( 'blocksModeRadioButtonGroup' );
+    const blocksModeRadioButtonGroupTandem = blocksPanelTandem.createTandem( 'blockSetRadioButtonGroup' );
 
     const blocksModeRadioButtonGroup = new VerticalAquaRadioButtonGroup( model.blockSetProperty, MysteryBlockSet.enumeration.values.map( blockSet => {
       return {

@@ -97,7 +97,7 @@ export default class MaterialControlNode extends VBox {
           } );
         }
         else {
-          return Material[ materialName ] as Material;
+          return Material[ materialName ];
         }
       },
       reentrant: true,

@@ -21,7 +21,7 @@ type StringsType = {
     'airStringProperty': LocalizedStringProperty;
     'aluminumStringProperty': LocalizedStringProperty;
     'appleStringProperty': LocalizedStringProperty;
-    'boatBodyStringProperty': LocalizedStringProperty;
+    'boatHullStringProperty': LocalizedStringProperty;
     'brickStringProperty': LocalizedStringProperty;
     'concreteStringProperty': LocalizedStringProperty;
     'cementStringProperty': LocalizedStringProperty;
@@ -65,7 +65,7 @@ type StringsType = {
     'woodStringProperty': LocalizedStringProperty;
     'nameStringProperty': LocalizedStringProperty;
   };
-  'shapePatternStringProperty': LocalizedStringProperty;
+  'shapeTagPatternStringProperty': LocalizedStringProperty;
   'shape': {
     'blockStringProperty': LocalizedStringProperty;
     'coneStringProperty': LocalizedStringProperty;

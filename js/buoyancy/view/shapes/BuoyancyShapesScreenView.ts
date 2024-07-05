@@ -188,7 +188,7 @@ export default class BuoyancyShapesScreenView extends BuoyancyScreenView<Buoyanc
       percentSubmergedAccordionBox.setReadoutItems( masses.map( ( mass, index ) => {
         return {
           readoutItem: mass,
-          readoutNameProperty: new PatternStringProperty( DensityBuoyancyCommonStrings.shapePatternStringProperty, { tag: mass.nameProperty } ),
+          readoutNameProperty: new PatternStringProperty( DensityBuoyancyCommonStrings.shapeTagPatternStringProperty, { tag: mass.nameProperty } ),
           readoutFormat: { font: DensityBuoyancyCommonConstants.ITEM_FONT, fill: mass.tag.colorProperty }
         };
       } ) );

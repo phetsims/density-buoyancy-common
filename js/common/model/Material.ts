@@ -298,8 +298,8 @@ export default class Material {
 
   // In essence identical to aluminum, but with a different name for the Density readout
   public static readonly BOAT_BODY = new Material( {
-    nameProperty: DensityBuoyancyCommonStrings.material.boatBodyStringProperty,
-    tandemName: 'boatBody',
+    nameProperty: DensityBuoyancyCommonStrings.material.boatHullStringProperty,
+    tandemName: 'boatHull',
     identifier: 'BOAT_BODY',
     density: Material.ALUMINUM.density
   } );

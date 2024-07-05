@@ -1,7 +1,7 @@
 // Copyright 2019-2024, University of Colorado Boulder
 
 /**
- * Shows the water level numerically next to the top-left of the pool's water. Lives for the lifetime of the sim.
+ * Shows the fluid level numerically next to the top-left of the pool's fluid. Lives for the lifetime of the sim.
  *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
@@ -17,15 +17,15 @@ import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js
 import DensityBuoyancyCommonColors from './DensityBuoyancyCommonColors.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
 
-export default class WaterLevelIndicator extends Node {
+export default class FluidLevelIndicator extends Node {
 
-  // volume of the water, in liters
+  // volume of the fluid, in liters
   public constructor( volumeProperty: TReadOnlyProperty<number> ) {
     super();
 
     const highlightShape = new Shape().moveTo( 0, 0 ).lineTo( -20, -10 ).lineTo( -20, 10 ).close();
     const highlightPath = new Path( highlightShape, {
-      fill: DensityBuoyancyCommonColors.waterIndicatorHighlightProperty
+      fill: DensityBuoyancyCommonColors.fluidIndicatorHighlightProperty
     } );
     this.addChild( highlightPath );
 
@@ -52,4 +52,4 @@ export default class WaterLevelIndicator extends Node {
   }
 }
 
-densityBuoyancyCommon.register( 'WaterLevelIndicator', WaterLevelIndicator );
+densityBuoyancyCommon.register( 'FluidLevelIndicator', FluidLevelIndicator );

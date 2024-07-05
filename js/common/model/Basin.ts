@@ -94,7 +94,7 @@ export default abstract class Basin {
   protected abstract getMaximumVolume( y: number ): number;
 
   /**
-   * Returns the filled area in the basin (i.e. things that aren't air or water) at the given y value
+   * Returns the filled area in the basin (i.e. things that aren't air or fluid) at the given y value
    */
   public getDisplacedArea( y: number ): number {
     let area = 0;
@@ -112,7 +112,7 @@ export default abstract class Basin {
   }
 
   /**
-   * Returns the filled volume in the basin (i.e. things that aren't air or water) that is below the given y value.
+   * Returns the filled volume in the basin (i.e. things that aren't air or fluid) that is below the given y value.
    */
   public getDisplacedVolume( y: number ): number {
     let volume = 0;

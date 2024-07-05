@@ -42,7 +42,7 @@ const DensityBuoyancyCommonColors = {
     default: new Color( 183, 159, 159 )
   } ),
 
-  waterIndicatorHighlightProperty: new ProfileColorProperty( densityBuoyancyCommon, 'waterIndicatorHighlight', {
+  fluidIndicatorHighlightProperty: new ProfileColorProperty( densityBuoyancyCommon, 'fluidIndicatorHighlight', {
     default: new Color( 255, 0, 0 )
   } ),
 

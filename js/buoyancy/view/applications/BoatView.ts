@@ -34,11 +34,11 @@ export default class BoatView extends MeasurableMassView {
     // @ts-expect-error
     super( boat, new THREE.Geometry(), modelViewTransform, displayProperties );
 
-    // Clip planes at the boat's water level
+    // Clip planes at the boat's fluid level
     const topBoatClipPlane = new THREE.Plane( new THREE.Vector3( 0, 1, 0 ), 0 );
     const bottomBoatClipPlane = new THREE.Plane( new THREE.Vector3( 0, -1, 0 ), 0 );
 
-    // Clip planes at the pool's water level
+    // Clip planes at the pool's fluid level
     const topPoolClipPlane = new THREE.Plane( new THREE.Vector3( 0, 1, 0 ), 0 );
     const bottomPoolClipPlane = new THREE.Plane( new THREE.Vector3( 0, -1, 0 ), 0 );
 
@@ -86,7 +86,7 @@ export default class BoatView extends MeasurableMassView {
       const maximumVolume = boat.basin.getEmptyVolume( Number.POSITIVE_INFINITY );
       const volume = boat.basin.fluidVolumeProperty.value;
       const isFull = volume >= maximumVolume - VOLUME_TOLERANCE;
-      if ( boatFluidVolume > 0 && ( !isFull || BoatDesign.shouldBoatWaterDisplayIfFull( fluidYInterpolatedProperty.value - boat.matrix.translation.y, liters ) ) ) {
+      if ( boatFluidVolume > 0 && ( !isFull || BoatDesign.shouldBoatFluidDisplayIfFull( fluidYInterpolatedProperty.value - boat.matrix.translation.y, liters ) ) ) {
         BoatDesign.fillCrossSectionVertexArray( relativeBoatFluidY, liters, topFluidPositionArray );
       }
       else {

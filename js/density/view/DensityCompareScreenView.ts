@@ -136,19 +136,19 @@ export default class DensityCompareScreenView extends DensityBuoyancyScreenView<
       rightBox.position.copy( ThreeUtils.vectorToThree( new Vector3( 0.07, -0.06, 0 ) ) );
       scene.add( rightBox );
 
-      const waterMaterial = new THREE.MeshLambertMaterial( {
+      const fluidMaterial = new THREE.MeshLambertMaterial( {
         transparent: true
       } );
-      const waterColor = DensityBuoyancyCommonColors.materialWaterColorProperty.value;
-      waterMaterial.color = ThreeUtils.colorToThree( waterColor );
-      waterMaterial.opacity = waterColor.alpha;
+      const fluidColor = DensityBuoyancyCommonColors.materialWaterColorProperty.value;
+      fluidMaterial.color = ThreeUtils.colorToThree( fluidColor );
+      fluidMaterial.opacity = fluidColor.alpha;
 
       // Fake it!
-      const waterGeometry = new THREE.BoxGeometry( 1, 1, 0.12 );
+      const fluidGeometry = new THREE.BoxGeometry( 1, 1, 0.12 );
 
-      const water = new THREE.Mesh( waterGeometry, waterMaterial );
-      water.position.copy( ThreeUtils.vectorToThree( new Vector3( 0, -0.5, 0 ) ) );
-      scene.add( water );
+      const fluid = new THREE.Mesh( fluidGeometry, fluidMaterial );
+      fluid.position.copy( ThreeUtils.vectorToThree( new Vector3( 0, -0.5, 0 ) ) );
+      scene.add( fluid );
     } );
   }
 }

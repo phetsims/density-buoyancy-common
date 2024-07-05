@@ -63,7 +63,7 @@ export default class DensityBuoyancyModel implements TModel {
   private barrierBody: PhysicsEngineBody;
   protected readonly availableMasses: ObservableArray<Mass>;
 
-  // Flag that sets an animation to empty the boat of any water inside of it
+  // Flag that sets an animation to empty the boat of any fluid inside of it
   protected spillingWaterOutOfBoat = false;
 
   public constructor( providedOptions?: DensityBuoyancyModelOptions ) {
@@ -208,7 +208,7 @@ export default class DensityBuoyancyModel implements TModel {
       const boat = this.getBoat();
 
       if ( boat && dt ) {
-        boat.setUnderwaterState( this.pool.fluidYInterpolatedProperty.currentValue );
+        boat.setSubmergedState( this.pool.fluidYInterpolatedProperty.currentValue );
         const nextBoatVerticalVelocity = this.engine.bodyGetVelocity( boat.body ).y;
         boatVerticalAcceleration = ( nextBoatVerticalVelocity - boatVerticalVelocity ) / dt;
         boatVerticalVelocity = nextBoatVerticalVelocity;
@@ -280,8 +280,8 @@ export default class DensityBuoyancyModel implements TModel {
 
         let massValue = mass.massProperty.value;
 
-        if ( mass === boat && boat.isUnderwater ) {
-          // Special consideration for when boat is underwater
+        if ( mass === boat && boat.isFullySubmerged ) {
+          // Special consideration for when boat is submerged
           // Don't count the liquid inside the boat as part of the mass
           submergedVolume = boat.volumeProperty.value;
           massValue = submergedVolume * boat.materialProperty.value.density;
@@ -370,15 +370,15 @@ export default class DensityBuoyancyModel implements TModel {
 
     const poolFluidVolume = this.getPoolFluidVolume();
 
-    // Check to see if water "spilled" out of the pool, and set the finalized liquid volume
+    // Check to see if fluid "spilled" out of the pool, and set the finalized liquid volume
     this.pool.fluidVolumeProperty.value = Math.min( poolFluidVolume, this.pool.getEmptyVolume( this.poolBounds.maxY ) );
 
     this.pool.computeY();
     boat && boat.basin.computeY();
 
-    // If we have a boat that is NOT underwater, we'll assign masses into the boat's basin where relevant. Otherwise,
+    // If we have a boat that is NOT submerged, we'll assign masses into the boat's basin where relevant. Otherwise,
     // anything will go just into the pool's basin.
-    if ( boat && boat.visibleProperty.value && !boat.isUnderwater ) {
+    if ( boat && boat.visibleProperty.value && !boat.isFullySubmerged ) {
       this.masses.forEach( mass => {
         mass.containingBasin = boat.basin.isMassInside( mass ) ? boat.basin : ( this.pool.isMassInside( mass ) ? this.pool : null );
       } );

@@ -47,7 +47,7 @@ export default class Boat extends ApplicationsMass {
   public stepMultiplier = 0;
 
   // Whether the boat is fully submerged
-  public isUnderwater = false;
+  public isFullySubmerged = false;
 
   public constructor( engine: PhysicsEngine, blockWidthProperty: TReadOnlyProperty<number>, fluidMaterialProperty: TProperty<Material>, providedOptions: BoatOptions ) {
 
@@ -152,7 +152,7 @@ export default class Boat extends ApplicationsMass {
   public override updateSubmergedMassFraction( gravityMagnitude: number, fluidDensity: number ): void {
     assert && assert( gravityMagnitude > 0, 'gravityMagnitude should be positive' );
 
-    if ( !this.isUnderwater ) {
+    if ( !this.isFullySubmerged ) {
       const buoyancy = this.buoyancyForceInterpolatedProperty.currentValue;
       const volume = this.volumeProperty.value + this.stepInternalVolume;
       const submergedFraction = 100 * buoyancy.magnitude / ( volume * gravityMagnitude * fluidDensity );
@@ -214,13 +214,13 @@ export default class Boat extends ApplicationsMass {
   }
 
   /**
-   * Checks if the boat is underwater and sets the flag
+   * Checks if the boat is submerged and sets the flag
    */
-  public setUnderwaterState( fluidLevel: number ): void {
+  public setSubmergedState( fluidLevel: number ): void {
 
     // TODO: Should we set this value at the beginning of the post physics engine step, see https://github.com/phetsims/density-buoyancy-common/issues/123
     // It currently seems like it is updated partway through (after it is accessed)?
-    this.isUnderwater = this.stepTop < fluidLevel - DensityBuoyancyCommonConstants.TOLERANCE;
+    this.isFullySubmerged = this.stepTop < fluidLevel - DensityBuoyancyCommonConstants.TOLERANCE;
   }
 
   /**

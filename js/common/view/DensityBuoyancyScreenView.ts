@@ -49,7 +49,7 @@ import EllipsoidView from './EllipsoidView.js';
 import HorizontalCylinderView from './HorizontalCylinderView.js';
 import ScaleView from './ScaleView.js';
 import VerticalCylinderView from './VerticalCylinderView.js';
-import WaterLevelIndicator from './WaterLevelIndicator.js';
+import FluidLevelIndicator from './FluidLevelIndicator.js';
 import DensityBuoyancyModel from '../model/DensityBuoyancyModel.js';
 import MassView from './MassView.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
@@ -482,34 +482,34 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
       this.sceneNode.stage.threeScene.add( barrierMesh );
     }
 
-    // Water
-    const waterGeometry = new THREE.BufferGeometry();
-    const waterPositionArray = BoatDesign.createWaterVertexArray();
-    waterGeometry.addAttribute( 'position', new THREE.BufferAttribute( waterPositionArray, 3 ) );
-    waterGeometry.addAttribute( 'normal', new THREE.BufferAttribute( BoatDesign.createWaterNormalArray(), 3 ) );
-    const waterMaterial = new THREE.MeshLambertMaterial( {
+    // Water TODO https://github.com/phetsims/density-buoyancy-common/issues/213
+    const fluidGeometry = new THREE.BufferGeometry();
+    const fluidPositionArray = BoatDesign.createFluidVertexArray();
+    fluidGeometry.addAttribute( 'position', new THREE.BufferAttribute( fluidPositionArray, 3 ) );
+    fluidGeometry.addAttribute( 'normal', new THREE.BufferAttribute( BoatDesign.createFluidNormalArray(), 3 ) );
+    const fluidMaterial = new THREE.MeshLambertMaterial( {
       transparent: true,
       depthWrite: false
     } );
 
-    Material.linkLiquidColor( model.pool.fluidMaterialProperty, waterMaterial );
-    const waterMesh = new THREE.Mesh( waterGeometry, waterMaterial );
-    this.sceneNode.stage.threeScene.add( waterMesh );
-    waterMesh.renderOrder = 10;
+    Material.linkLiquidColor( model.pool.fluidMaterialProperty, fluidMaterial );
+    const fluidMesh = new THREE.Mesh( fluidGeometry, fluidMaterial );
+    this.sceneNode.stage.threeScene.add( fluidMesh );
+    fluidMesh.renderOrder = 10;
 
     let wasFilled = false;
     // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
     model.pool.fluidYInterpolatedProperty.link( y => {
       const boat = model.getBoat();
       const hasVisibleBoat = boat && boat.visibleProperty.value;
-      wasFilled = BoatDesign.fillWaterVertexArray(
+      wasFilled = BoatDesign.fillFluidVertexArray(
         y,
         hasVisibleBoat ? boat.matrix.translation.x : 0,
         hasVisibleBoat ? y - boat.matrix.translation.y : 0,
         hasVisibleBoat ? boat.displacementVolumeProperty.value / 0.001 : 0,
-        model.poolBounds, waterPositionArray, wasFilled );
-      waterGeometry.attributes.position.needsUpdate = true;
-      waterGeometry.computeBoundingSphere();
+        model.poolBounds, fluidPositionArray, wasFilled );
+      fluidGeometry.attributes.position.needsUpdate = true;
+      fluidGeometry.computeBoundingSphere();
     } );
 
     const onMassAdded = ( mass: Mass ) => {
@@ -563,12 +563,12 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
     };
     model.masses.addItemRemovedListener( onMassRemoved );
 
-    const waterLevelIndicator = new WaterLevelIndicator( model.pool.fluidLevelVolumeProperty );
-    this.addChild( waterLevelIndicator );
+    const fluidLevelIndicator = new FluidLevelIndicator( model.pool.fluidLevelVolumeProperty );
+    this.addChild( fluidLevelIndicator );
     // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
     model.pool.fluidYInterpolatedProperty.link( fluidY => {
       const modelPoint = new Vector3( model.poolBounds.minX, fluidY, model.poolBounds.maxZ );
-      waterLevelIndicator.translation = this.modelToViewPoint( modelPoint );
+      fluidLevelIndicator.translation = this.modelToViewPoint( modelPoint );
     } );
 
     this.resetAllButton = new ResetAllButton( {

@@ -25,7 +25,7 @@ export type BuoyancyApplicationsModelOptions = DensityBuoyancyModelOptions;
 // Faster than normal stepping to fill the boat (kind of like animation speed)
 const FILL_EMPTY_MULTIPLIER = 0.3;
 
-// 90% of the boat is out of the water before spilling out the full boat
+// 90% of the boat is out of the fluid before spilling out the full boat
 const BOAT_READY_TO_SPILL_OUT_THRESHOLD = 0.9;
 
 // Y model distance of tolerance between the boat basin fluidY level and the boat basin stepTop. This was needed to
@@ -100,7 +100,7 @@ export default class BuoyancyApplicationsModel extends DensityBuoyancyModel {
       this.boat.internalVisibleProperty.value = scene === 'BOAT';
       this.block.internalVisibleProperty.value = scene === 'BOAT';
 
-      // As described in https://github.com/phetsims/buoyancy/issues/118#issue-2192969056, the underwater scale only shows for the bottle scene, not for the boat
+      // As described in https://github.com/phetsims/buoyancy/issues/118#issue-2192969056, the submerged scale only shows for the bottle scene, not for the boat
       this.pool.scale!.internalVisibleProperty.value = scene === 'BOTTLE';
 
       // When switching from boat to bottle scene, subtract the scale volume from the pool and vice versa (-1 and 1)
@@ -176,7 +176,7 @@ export default class BuoyancyApplicationsModel extends DensityBuoyancyModel {
       const poolEmptyVolumeToBoatTop = this.pool.getEmptyVolume( Math.min( boat.stepTop, this.poolBounds.maxY ) );
       const boatEmptyVolumeToBoatTop = boatBasin.getEmptyVolume( boat.stepTop );
 
-      // Calculate adjustments to water volumes to match the current space in the basin
+      // Calculate adjustments to fluid volumes to match the current space in the basin
       let poolExcess = poolFluidVolume - poolEmptyVolumeToBoatTop;
       let boatExcess = boatFluidVolume - boatEmptyVolumeToBoatTop;
 
@@ -184,7 +184,7 @@ export default class BuoyancyApplicationsModel extends DensityBuoyancyModel {
 
       if ( boatFluidVolume ) {
 
-        // If the top of the boat is out of the water past the height threshold, spill the water back into the pool
+        // If the top of the boat is out of the fluid past the height threshold, spill the fluid back into the pool
         // (even if not totally full).
         if ( boat.stepTop > this.pool.fluidYInterpolatedProperty.currentValue + boatHeight * BOAT_READY_TO_SPILL_OUT_THRESHOLD ) {
           this.spillingWaterOutOfBoat = true;
@@ -195,14 +195,14 @@ export default class BuoyancyApplicationsModel extends DensityBuoyancyModel {
         this.spillingWaterOutOfBoat = false;
       }
 
-      // If the boat is out of the water, spill the water back into the pool
+      // If the boat is out of the fluid, spill the fluid back into the pool
       if ( this.spillingWaterOutOfBoat ) {
         boatExcess = Math.min( FILL_EMPTY_MULTIPLIER * boat.volumeProperty.value, boatFluidVolume );
       }
       else if ( boatFluidVolume > 0 &&
                 Math.abs( boatBasin.fluidYInterpolatedProperty.currentValue - boatBasin.stepTop ) >= BOAT_FULL_THRESHOLD ) {
         // If the boat is neither full nor empty, nor spilling, then it is currently filling up. We will up no matter
-        // the current water leve or the boat AND no matter the boats position. This is because the boat can only
+        // the current fluid leve or the boat AND no matter the boats position. This is because the boat can only
         // ever be full or empty (or animating to one of those states).
 
         const excess = Math.min( FILL_EMPTY_MULTIPLIER * boat.volumeProperty.value, boatBasinMaximumVolume - boatFluidVolume ); // This animates the boat spilling in

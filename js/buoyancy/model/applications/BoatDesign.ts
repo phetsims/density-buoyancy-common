@@ -241,17 +241,17 @@ export default class BoatDesign {
   }
 
   /**
-   * Creates a coordinate float array to be used with fillWaterVertexArray, for three.js purposes.
+   * Creates a coordinate float array to be used with fillFluidVertexArray, for three.js purposes.
    */
-  public static createWaterVertexArray(): Float32Array {
+  public static createFluidVertexArray(): Float32Array {
     return new Float32Array( ( CROSS_SECTION_SAMPLES + 1.5 ) * 3 * 3 * 4 );
   }
 
   /**
-   * Creates a coordinate float array to be used with fillWaterVertexArray, for three.js purposes.
+   * Creates a coordinate float array to be used with fillFluidVertexArray, for three.js purposes.
    */
-  public static createWaterNormalArray(): Float32Array {
-    const array = BoatDesign.createWaterVertexArray();
+  public static createFluidNormalArray(): Float32Array {
+    const array = BoatDesign.createFluidVertexArray();
 
     for ( let i = 0; i < array.length / 3; i++ ) {
 
@@ -270,7 +270,7 @@ export default class BoatDesign {
     return boatY / scale + BoatDesign.DESIGN_CENTROID.y;
   }
 
-  public static shouldBoatWaterDisplayIfFull( boatY: number, liters: number ): boolean {
+  public static shouldBoatFluidDisplayIfFull( boatY: number, liters: number ): boolean {
     const scale = BoatDesign.getScaleForLiters( liters );
     const designY = BoatDesign.getDesignY( boatY, scale );
 
@@ -278,12 +278,12 @@ export default class BoatDesign {
   }
 
   /**
-   * Fills the positionArray with an X,Z cross-section of the water around a boat at a given y value (for a given liters
+   * Fills the positionArray with an X,Z cross-section of the fluid around a boat at a given y value (for a given liters
    * value).
    *
-   * @returns - Whether the water is completely filled
+   * @returns - Whether the fluid is completely filled
    */
-  public static fillWaterVertexArray( waterY: number, boatX: number, boatY: number, liters: number, poolBounds: Bounds3, positionArray: Float32Array, wasFilled: boolean ): boolean {
+  public static fillFluidVertexArray( fluidY: number, boatX: number, boatY: number, liters: number, poolBounds: Bounds3, positionArray: Float32Array, wasFilled: boolean ): boolean {
     
     const outsideBottomY = -BoatDesign.DESIGN_BOAT_HEIGHT;
     const scale = BoatDesign.getScaleForLiters( liters );
@@ -294,7 +294,7 @@ export default class BoatDesign {
     // Front
     index = ThreeUtils.writeFrontVertices( positionArray, index, new Bounds2(
       poolBounds.minX, poolBounds.minY,
-      poolBounds.maxX, waterY
+      poolBounds.maxX, fluidY
     ), poolBounds.maxZ );
 
     // If we have a low enough value, just zero things out (won't show anything)
@@ -305,7 +305,7 @@ export default class BoatDesign {
       index = ThreeUtils.writeTopVertices( positionArray, index, new Bounds2(
         poolBounds.minX, poolBounds.minZ,
         poolBounds.maxX, poolBounds.maxZ
-      ), waterY );
+      ), fluidY );
     }
     else {
       const controlPoints = BoatDesign.getControlPoints( BoatDesign.getHeightRatioFromDesignY( designY ), false );
@@ -318,13 +318,13 @@ export default class BoatDesign {
       index = ThreeUtils.writeTopVertices( positionArray, index, new Bounds2(
         poolBounds.minX, poolBounds.minZ,
         x0, poolBounds.maxZ
-      ), waterY );
+      ), fluidY );
 
       // Right top
       index = ThreeUtils.writeTopVertices( positionArray, index, new Bounds2(
         x1, poolBounds.minZ,
         poolBounds.maxX, poolBounds.maxZ
-      ), waterY );
+      ), fluidY );
 
       for ( let i = 0; i < CROSS_SECTION_SAMPLES; i++ ) {
         const t0 = i / CROSS_SECTION_SAMPLES;
@@ -342,19 +342,19 @@ export default class BoatDesign {
         // Behind the boat
         index = ThreeUtils.writeQuad(
           positionArray, index,
-          p0x, waterY, poolBounds.minZ,
-          p0x, waterY, -p0z,
-          p1x, waterY, -p1z,
-          p1x, waterY, poolBounds.minZ
+          p0x, fluidY, poolBounds.minZ,
+          p0x, fluidY, -p0z,
+          p1x, fluidY, -p1z,
+          p1x, fluidY, poolBounds.minZ
         );
 
         // In front of the boat
         index = ThreeUtils.writeQuad(
           positionArray, index,
-          p1x, waterY, poolBounds.maxZ,
-          p1x, waterY, p1z,
-          p0x, waterY, p0z,
-          p0x, waterY, poolBounds.maxZ
+          p1x, fluidY, poolBounds.maxZ,
+          p1x, fluidY, p1z,
+          p0x, fluidY, p0z,
+          p0x, fluidY, poolBounds.maxZ
         );
       }
     }

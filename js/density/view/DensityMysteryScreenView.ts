@@ -66,7 +66,7 @@ export default class DensityMysteryScreenView extends DensityBuoyancyScreenView<
     } ) );
 
     const blocksPanelTandem = tandem.createTandem( 'blocksPanel' );
-    const blocksModeRadioButtonGroupTandem = blocksPanelTandem.createTandem( 'blockSetRadioButtonGroup' );
+    const blockSetRadioButtonGroupTandem = blocksPanelTandem.createTandem( 'blockSetRadioButtonGroup' );
 
     const blocksModeRadioButtonGroup = new VerticalAquaRadioButtonGroup( model.blockSetProperty, MysteryBlockSet.enumeration.values.map( blockSet => {
       return {
@@ -84,7 +84,7 @@ export default class DensityMysteryScreenView extends DensityBuoyancyScreenView<
     } ), {
       align: 'left',
       spacing: DensityBuoyancyCommonConstants.SPACING_SMALL,
-      tandem: blocksModeRadioButtonGroupTandem
+      tandem: blockSetRadioButtonGroupTandem
     } );
     const randomBlocksRefreshButton = new RefreshButton( {
       listener: () => {

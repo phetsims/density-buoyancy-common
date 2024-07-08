@@ -51,10 +51,11 @@ export default class BlocksValueControlPanel extends Panel {
       factor: 1 / DensityBuoyancyCommonConstants.LITERS_IN_CUBIC_METER
     } );
 
+    // PhET-iO Note: We are not using tandemName here because we don't want to instrument the ToggleNode itself.
+    // Instead we instrument the number controls directly under the Panel. See design in https://github.com/phetsims/density-buoyancy-common/issues/251
     const toggleNode = new ToggleNode( blockSetProperty, [ {
       value: BlockSet.SAME_MASS,
-      tandemName: 'massNumberControl',
-      createNode: tandem => new ComparisonNumberControl(
+      createNode: () => new ComparisonNumberControl(
         massProperty,
         DensityBuoyancyCommonStrings.massStringProperty,
         DensityBuoyancyCommonStrings.kilogramsPatternStringProperty,
@@ -70,8 +71,7 @@ export default class BlocksValueControlPanel extends Panel {
       )
     }, {
       value: BlockSet.SAME_VOLUME,
-      tandemName: 'volumeNumberControl',
-      createNode: tandem => new ComparisonNumberControl(
+      createNode: () => new ComparisonNumberControl(
         convertedVolumeProperty,
         DensityBuoyancyCommonStrings.volumeStringProperty,
         DensityBuoyancyCommonConstants.VOLUME_PATTERN_STRING_PROPERTY,
@@ -87,8 +87,7 @@ export default class BlocksValueControlPanel extends Panel {
       )
     }, {
       value: BlockSet.SAME_DENSITY,
-      tandemName: 'densityNumberControl',
-      createNode: tandem => new ComparisonNumberControl(
+      createNode: () => new ComparisonNumberControl(
         convertedDensityProperty,
         DensityBuoyancyCommonStrings.densityStringProperty,
         DensityBuoyancyCommonConstants.KILOGRAMS_PER_VOLUME_PATTERN_STRING_PROPERTY,

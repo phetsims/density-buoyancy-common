@@ -47,6 +47,7 @@ import BuoyancyScreenView from '../BuoyancyScreenView.js';
 import StrictOmit from '../../../../../phet-core/js/types/StrictOmit.js';
 import FluidIconMesh from '../../../common/view/FluidIconMesh.js';
 import BoatDesign from '../../model/applications/BoatDesign.js';
+import BooleanProperty from '../../../../../axon/js/BooleanProperty.js';
 
 // constants
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN_SMALL;
@@ -168,6 +169,7 @@ export default class BuoyancyApplicationsScreenView extends BuoyancyScreenView<B
     }, MaterialMassVolumeControlNode.getNumberControlOptions() ) );
 
     const airVolumeMaxWidth = ( materialInsideControls.width - DensityBuoyancyCommonConstants.SPACING_SMALL ) / 2;
+    const airVolumeDisplayTandem = bottleControlsTandem.createTandem( 'airVolumeDisplay' );
 
     const bottleBox = new VBox( {
       spacing: DensityBuoyancyCommonConstants.SPACING_SMALL,
@@ -184,8 +186,11 @@ export default class BuoyancyApplicationsScreenView extends BuoyancyScreenView<B
         customBottleDensityControl,
         new HSeparator(),
         new HBox( {
-          tandem: bottleControlsTandem.createTandem( 'airVolumeDisplay' ),
-          phetioFeatured: true,
+          tandem: airVolumeDisplayTandem,
+          visibleProperty: new BooleanProperty( true, {
+            tandem: airVolumeDisplayTandem.createTandem( 'visibleProperty' ),
+            phetioFeatured: true
+          } ),
           spacing: DensityBuoyancyCommonConstants.SPACING_SMALL,
           children: [
             new Text( DensityBuoyancyCommonStrings.airVolumeStringProperty, {

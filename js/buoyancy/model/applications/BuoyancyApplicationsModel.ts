@@ -249,31 +249,12 @@ export default class BuoyancyApplicationsModel extends DensityBuoyancyModel {
       this.pool.childBasin = null;
     }
 
-    this.masses.forEach( mass => mass.updateStepInformation() );
-    basins.forEach( basin => {
-      basin.stepMasses = this.masses.filter( mass => basin.isMassInside( mass ) );
-    } );
-
-    // Check to see if fluid "spilled" out of the pool, and set the finalized liquid volume
-    this.pool.fluidVolumeProperty.value = Math.min( this.getPoolFluidVolume(), this.pool.getEmptyVolume( this.poolBounds.maxY ) );
-
-    this.pool.computeY();
-    boat.basin.computeY();
-
     // If we have a boat that is NOT submerged, we'll assign masses into the boat's basin where relevant. Otherwise,
     // anything will go just into the pool's basin.
-    if ( boat && boat.visibleProperty.value && !boat.isFullySubmerged ) {
-      this.masses.forEach( mass => {
-        mass.containingBasin = boat.basin.isMassInside( mass ) ? boat.basin :
-                               this.pool.isMassInside( mass ) ? this.pool :
-                               null;
-      } );
-    }
-    else {
-      this.masses.forEach( mass => {
-        mass.containingBasin = this.pool.isMassInside( mass ) ? this.pool : null;
-      } );
-    }
+    // Note the order is important here, as the boat basin takes precedence.
+    const assignableBasins = boat && boat.visibleProperty.value && !boat.isFullySubmerged ? [ boat.basin, this.pool ] : [ this.pool ];
+
+    this.updateFluidForBasins( basins, assignableBasins );
   }
 }
 

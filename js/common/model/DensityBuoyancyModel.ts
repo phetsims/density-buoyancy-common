@@ -26,6 +26,7 @@ import TModel from '../../../../joist/js/TModel.js';
 import { PhetioObjectOptions } from '../../../../tandem/js/PhetioObject.js';
 import PickRequired from '../../../../phet-core/js/types/PickRequired.js';
 import PoolScale from './PoolScale.js';
+import Basin from './Basin.js';
 
 // TODO: Don't import Bottle in density, it is causing too large of a file size, see https://github.com/phetsims/density-buoyancy-common/issues/238
 
@@ -354,15 +355,28 @@ export default class DensityBuoyancyModel implements TModel {
   protected updateFluid(): void {
 
     this.pool.childBasin = null;
+
+    this.updateFluidForBasins( [ this.pool ], [ this.pool ] );
+  }
+
+  /**
+   * Implementation details for updateFluid that is independent of whether there is a Boat or not.
+   * @param basins - The basins that are being updated
+   * @param assignableBasins - The basins that masses can be assigned to, note these must be specified in order of precedence
+   */
+  protected updateFluidForBasins( basins: Basin[], assignableBasins: Basin[] ): void {
     this.masses.forEach( mass => mass.updateStepInformation() );
-    this.pool.stepMasses = this.masses.filter( mass => this.pool.isMassInside( mass ) );
+    basins.forEach( basin => {
+      basin.stepMasses = this.masses.filter( mass => basin.isMassInside( mass ) );
+    } );
 
     // Check to see if fluid "spilled" out of the pool, and set the finalized liquid volume
     this.pool.fluidVolumeProperty.value = Math.min( this.getPoolFluidVolume(), this.pool.getEmptyVolume( this.poolBounds.maxY ) );
-    this.pool.computeY();
+
+    basins.forEach( basin => basin.computeY() );
 
     this.masses.forEach( mass => {
-      mass.containingBasin = this.pool.isMassInside( mass ) ? this.pool : null;
+      mass.containingBasin = assignableBasins.find( basin => basin.isMassInside( mass ) ) || null;
     } );
   }
 

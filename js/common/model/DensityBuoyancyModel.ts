@@ -18,7 +18,6 @@ import P2Engine from './P2Engine.js';
 import Pool from './Pool.js';
 import Scale from './Scale.js';
 import optionize from '../../../../phet-core/js/optionize.js';
-import Boat from '../../buoyancy/model/applications/Boat.js';
 import PhysicsEngine, { PhysicsEngineBody } from './PhysicsEngine.js';
 import Mass from './Mass.js';
 import Cuboid from './Cuboid.js';
@@ -27,8 +26,6 @@ import { PhetioObjectOptions } from '../../../../tandem/js/PhetioObject.js';
 import PickRequired from '../../../../phet-core/js/types/PickRequired.js';
 import PoolScale from './PoolScale.js';
 import Basin from './Basin.js';
-
-// TODO: Don't import Bottle in density, it is causing too large of a file size, see https://github.com/phetsims/density-buoyancy-common/issues/238
 
 // constants
 const BLOCK_SPACING = 0.01;
@@ -62,9 +59,6 @@ export default class DensityBuoyancyModel implements TModel {
   private readonly groundBody: PhysicsEngineBody;
   private barrierBody: PhysicsEngineBody;
   protected readonly availableMasses: ObservableArray<Mass>;
-
-  // Flag that sets an animation to empty the boat of any fluid inside of it
-  protected spillingWaterOutOfBoat = false;
 
   public constructor( providedOptions?: DensityBuoyancyModelOptions ) {
     const options = optionize<DensityBuoyancyModelOptions, DensityBuoyancyModelOptions>()( {
@@ -192,9 +186,6 @@ export default class DensityBuoyancyModel implements TModel {
       mass.interruptedEmitter.emit();
     } );
 
-    let boatVerticalVelocity = 0;
-    let boatVerticalAcceleration = 0;
-
     // The main engine post-step actions, that will determine the net forces applied on each mass. This callback fires
     // once per "physics engine step", and so results in potentially up to "p2MaxSubSteps" calls per simulation frame
     // (30 as of writing). This instance lives for the lifetime of the simulation, so we don't need to remove this
@@ -202,17 +193,8 @@ export default class DensityBuoyancyModel implements TModel {
     this.engine.addPostStepListener( dt => {
       this.updateFluid();
 
-      // {number}
       const gravity = this.gravityProperty.value.value;
-
-      const boat = this.getBoat();
-
-      if ( boat && dt ) {
-        boat.setSubmergedState( this.pool.fluidYInterpolatedProperty.currentValue );
-        const nextBoatVerticalVelocity = this.engine.bodyGetVelocity( boat.body ).y;
-        boatVerticalAcceleration = ( nextBoatVerticalVelocity - boatVerticalVelocity ) / dt;
-        boatVerticalVelocity = nextBoatVerticalVelocity;
-      }
+      this.updateVerticalMotion( dt );
 
       // Will set the force Properties for all the masses
       this.masses.forEach( mass => {
@@ -280,26 +262,18 @@ export default class DensityBuoyancyModel implements TModel {
 
         let massValue = mass.massProperty.value;
 
-        if ( mass === boat && boat.isFullySubmerged ) {
-          // Special consideration for when boat is submerged
-          // Don't count the liquid inside the boat as part of the mass
-          submergedVolume = boat.volumeProperty.value;
-          massValue = submergedVolume * boat.materialProperty.value.density;
-        }
+        submergedVolume = this.getUpdatedSubmergedVolume( mass, submergedVolume );
+        massValue = this.getUpdatedMassValue( mass, massValue, submergedVolume );
 
         if ( submergedVolume !== 0 ) {
           const displacedMass = submergedVolume * this.pool.fluidDensityProperty.value;
-          // Vertical acceleration of the boat will change the buoyant force.
-          const acceleration = gravity + ( ( boat && basin === boat.basin ) ? boatVerticalAcceleration : 0 );
+          const acceleration = gravity + this.getAdditionalVerticalAcceleration( basin );
+
           const buoyantForce = new Vector2( 0, displacedMass * acceleration );
           this.engine.bodyApplyForce( mass.body, buoyantForce );
           mass.buoyancyForceInterpolatedProperty.setNextValue( buoyantForce );
 
-          // If the boat is moving, assume the liquid moves with it, and apply viscosity due to the movement of our mass
-          // inside the boat's liquid.
-          if ( boat && basin === boat.basin ) {
-            velocity.subtract( this.engine.bodyGetVelocity( boat.body ) );
-          }
+          this.adjustVelocity( basin, velocity );
 
           // Increase the generally-visible viscosity effect
           const ratioSubmerged =
@@ -341,21 +315,16 @@ export default class DensityBuoyancyModel implements TModel {
     this.pool.scale && this.availableMasses.push( this.pool.scale );
   }
 
-  /**
-   * Returns the boat (if there is one). Overridden in subclasses that have a boat.
-   */
-  public getBoat(): Boat | null {
-    return null;
+  protected updateVerticalMotion( dt: number ): void {
+    // no-op
   }
 
   /**
-   * Computes the heights of the main pool liquid (and optionally that of the boat)
-   * NOTE: the overridden method in BuoyancyApplicationsModel, which does NOT call super.updateFluid()
+   * Computes the heights of the main pool liquid.
+   * NOTE: the overridden method in BuoyancyApplicationsModel does NOT call super.updateFluid()
    */
   protected updateFluid(): void {
-
     this.pool.childBasin = null;
-
     this.updateFluidForBasins( [ this.pool ], [ this.pool ] );
   }
 
@@ -390,7 +359,6 @@ export default class DensityBuoyancyModel implements TModel {
   public reset(): void {
 
     this.gravityProperty.reset();
-    this.spillingWaterOutOfBoat = false;
 
     this.pool.reset();
     this.masses.forEach( mass => mass.reset() );
@@ -483,6 +451,22 @@ export default class DensityBuoyancyModel implements TModel {
       this.engine.bodySynchronizePrevious( mass.body );
       mass.transformedEmitter.emit();
     } );
+  }
+
+  protected getUpdatedSubmergedVolume( mass: Mass, submergedVolume: number ): number {
+    return submergedVolume;
+  }
+
+  protected getUpdatedMassValue( mass: Mass, massValue: number, submergedVolume: number ): number {
+    return massValue;
+  }
+
+  protected getAdditionalVerticalAcceleration( basin: Basin | null ): number {
+    return 0;
+  }
+
+  protected adjustVelocity( basin: Basin | null, velocity: Vector2 ): void {
+    // no-op
   }
 }
 

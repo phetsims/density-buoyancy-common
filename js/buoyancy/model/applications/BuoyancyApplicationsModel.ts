@@ -20,6 +20,7 @@ import { BottleOrBoat, BottleOrBoatValues } from './BottleOrBoat.js';
 import StringUnionProperty from '../../../../../axon/js/StringUnionProperty.js';
 import MassTag from '../../../common/model/MassTag.js';
 import Basin from '../../../common/model/Basin.js';
+import Mass from '../../../common/model/Mass.js';
 
 export type BuoyancyApplicationsModelOptions = DensityBuoyancyModelOptions;
 
@@ -41,6 +42,9 @@ export default class BuoyancyApplicationsModel extends DensityBuoyancyModel {
   public readonly block: Cube;
   public readonly boat: Boat;
   private readonly scale: Scale; // Scale sitting on the ground next to the pool
+
+  // Flag that sets an animation to empty the boat of any fluid inside of it
+  protected spillingWaterOutOfBoat = false;
 
   public constructor( options: BuoyancyApplicationsModelOptions ) {
 
@@ -123,10 +127,6 @@ export default class BuoyancyApplicationsModel extends DensityBuoyancyModel {
     super.step( dt );
   }
 
-  public override getBoat(): Boat | null {
-    return this.boat;
-  }
-
   /**
    * Moves the boat and block to their initial locations (see https://github.com/phetsims/buoyancy/issues/25)
    */
@@ -139,6 +139,12 @@ export default class BuoyancyApplicationsModel extends DensityBuoyancyModel {
     // Move things to the initial position
     this.boat.resetPosition();
     this.block.resetPosition();
+
+    // REVIEW: Can we call boat.reset() here?
+    this.boat.verticalAcceleration = 0;
+    this.boat.verticalVelocity = 0;
+
+    this.spillingWaterOutOfBoat = false;
   }
 
   /**
@@ -153,6 +159,7 @@ export default class BuoyancyApplicationsModel extends DensityBuoyancyModel {
     this.boat.reset();
 
     super.reset();
+    this.spillingWaterOutOfBoat = false;
 
     this.sceneProperty.reset();
 
@@ -165,7 +172,7 @@ export default class BuoyancyApplicationsModel extends DensityBuoyancyModel {
 
     let poolFluidVolume = this.pool.fluidVolumeProperty.value;
 
-    const boat = this.getBoat()!;
+    const boat = this.boat;
 
     assert && assert( boat, 'boat needed to update liquids for boat' );
 
@@ -256,6 +263,54 @@ export default class BuoyancyApplicationsModel extends DensityBuoyancyModel {
 
     this.updateFluidForBasins( basins, assignableBasins );
   }
+
+  protected override getUpdatedSubmergedVolume( mass: Mass, submergedVolume: number ): number {
+
+    if ( mass === this.boat && this.boat.isFullySubmerged ) {
+
+      // Special consideration for when boat is submerged
+      // Don't count the liquid inside the boat as part of the mass
+      return this.boat.volumeProperty.value;
+    }
+    else {
+      return super.getUpdatedSubmergedVolume( mass, submergedVolume );
+    }
+  }
+
+  protected override getUpdatedMassValue( mass: Mass, massValue: number, submergedVolume: number ): number {
+    if ( mass === this.boat && this.boat.isFullySubmerged ) {
+
+      // Special consideration for when boat is submerged
+      // Don't count the liquid inside the boat as part of the mass
+      return submergedVolume * this.boat.materialProperty.value.density;
+    }
+    else {
+      return super.getUpdatedMassValue( mass, massValue, submergedVolume );
+    }
+  }
+
+  // Vertical acceleration of the boat will change the buoyant force.
+  protected override getAdditionalVerticalAcceleration( basin: Basin | null ): number {
+    return basin === this.boat.basin ? this.boat.verticalAcceleration : 0;
+  }
+
+  protected override adjustVelocity( basin: Basin | null, velocity: Vector2 ): void {
+
+    // If the boat is moving, assume the liquid moves with it, and apply viscosity due to the movement of our mass
+    // inside the boat's liquid.
+    if ( basin === this.boat.basin ) {
+      velocity.subtract( this.engine.bodyGetVelocity( this.boat.body ) );
+    }
+  }
+
+  protected override updateVerticalMotion( dt: number ): void {
+    super.updateVerticalMotion( dt );
+
+    if ( dt ) {
+      this.boat.updateVerticalMotion( this.pool, dt );
+    }
+  }
+
 }
 
 densityBuoyancyCommon.register( 'BuoyancyApplicationsModel', BuoyancyApplicationsModel );

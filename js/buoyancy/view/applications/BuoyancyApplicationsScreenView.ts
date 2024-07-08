@@ -46,6 +46,7 @@ import FluidDensityPanel from '../FluidDensityPanel.js';
 import BuoyancyScreenView from '../BuoyancyScreenView.js';
 import StrictOmit from '../../../../../phet-core/js/types/StrictOmit.js';
 import FluidIconMesh from '../../../common/view/FluidIconMesh.js';
+import BoatDesign from '../../model/applications/BoatDesign.js';
 
 // constants
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN_SMALL;
@@ -478,6 +479,21 @@ export default class BuoyancyApplicationsScreenView extends BuoyancyScreenView<B
     super.step( dt );
 
     this.positionResetSceneButton();
+  }
+
+  protected override fillFluidGeometry( y: number, fluidPositionArray: Float32Array, fluidGeometry: THREE.BufferGeometry, wasFilled: boolean ): boolean {
+    const boat = this.model.boat;
+    const hasVisibleBoat = boat && boat.visibleProperty.value;
+    wasFilled = BoatDesign.fillFluidVertexArray(
+      y,
+      hasVisibleBoat ? boat.matrix.translation.x : 0,
+      hasVisibleBoat ? y - boat.matrix.translation.y : 0,
+      hasVisibleBoat ? boat.displacementVolumeProperty.value / 0.001 : 0,
+      this.model.poolBounds, fluidPositionArray, wasFilled );
+    fluidGeometry.attributes.position.needsUpdate = true;
+    fluidGeometry.computeBoundingSphere();
+
+    return wasFilled;
   }
 
   private static getBoatIcon(): Node {

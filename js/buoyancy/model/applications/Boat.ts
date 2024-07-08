@@ -26,6 +26,7 @@ import ApplicationsMass, { ApplicationsMassOptions } from './ApplicationsMass.js
 import Vector2 from '../../../../../dot/js/Vector2.js';
 import DensityBuoyancyCommonConstants, { toLiters } from '../../../common/DensityBuoyancyCommonConstants.js';
 import NumberProperty from '../../../../../axon/js/NumberProperty.js';
+import Pool from '../../../common/model/Pool.js';
 
 export type BoatOptions = StrictOmit<ApplicationsMassOptions, 'body' | 'shape' | 'volume' | 'material' | 'massShape'>;
 
@@ -48,6 +49,9 @@ export default class Boat extends ApplicationsMass {
 
   // Whether the boat is fully submerged
   public isFullySubmerged = false;
+
+  public verticalVelocity = 0;
+  public verticalAcceleration = 0;
 
   public constructor( engine: PhysicsEngine, blockWidthProperty: TReadOnlyProperty<number>, fluidMaterialProperty: TProperty<Material>, providedOptions: BoatOptions ) {
 
@@ -230,8 +234,17 @@ export default class Boat extends ApplicationsMass {
     this.displacementVolumeProperty.reset();
 
     this.basin.reset();
+    this.verticalVelocity = 0;
+    this.verticalAcceleration = 0;
 
     super.reset();
+  }
+
+  public updateVerticalMotion( pool: Pool, dt: number ): void {
+    this.setSubmergedState( pool.fluidYInterpolatedProperty.currentValue );
+    const nextBoatVerticalVelocity = this.engine.bodyGetVelocity( this.body ).y;
+    this.verticalAcceleration = ( nextBoatVerticalVelocity - this.verticalVelocity ) / dt;
+    this.verticalVelocity = nextBoatVerticalVelocity;
   }
 }
 

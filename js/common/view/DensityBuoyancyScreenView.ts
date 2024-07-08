@@ -64,6 +64,7 @@ import createObservableArray, { ObservableArray } from '../../../../axon/js/crea
 import Emitter from '../../../../axon/js/Emitter.js';
 import { Shape } from '../../../../kite/js/imports.js';
 import DisplayProperties from '../../buoyancy/view/DisplayProperties.js';
+import { BufferGeometry } from '../../../../chipper/node_modules/@types/three/index.js';
 
 // constants
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN_SMALL;
@@ -497,19 +498,12 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
     this.sceneNode.stage.threeScene.add( fluidMesh );
     fluidMesh.renderOrder = 10;
 
+    // boolean for optimization, to prevent zeroing out the remainder of the array if we have already done so
     let wasFilled = false;
+
     // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
     model.pool.fluidYInterpolatedProperty.link( y => {
-      const boat = model.getBoat();
-      const hasVisibleBoat = boat && boat.visibleProperty.value;
-      wasFilled = BoatDesign.fillFluidVertexArray(
-        y,
-        hasVisibleBoat ? boat.matrix.translation.x : 0,
-        hasVisibleBoat ? y - boat.matrix.translation.y : 0,
-        hasVisibleBoat ? boat.displacementVolumeProperty.value / 0.001 : 0,
-        model.poolBounds, fluidPositionArray, wasFilled );
-      fluidGeometry.attributes.position.needsUpdate = true;
-      fluidGeometry.computeBoundingSphere();
+      wasFilled = this.fillFluidGeometry( y, fluidPositionArray, fluidGeometry, wasFilled );
     } );
 
     const onMassAdded = ( mass: Mass ) => {
@@ -617,6 +611,14 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
     if ( !ThreeUtils.isWebGLEnabled() ) {
       ThreeUtils.showWebGLWarning( this );
     }
+  }
+
+  protected fillFluidGeometry( y: number, fluidPositionArray: Float32Array, fluidGeometry: BufferGeometry, wasFilled: boolean ): boolean {
+    wasFilled = BoatDesign.fillFluidVertexArray( y, 0, 0, 0, this.model.poolBounds, fluidPositionArray, wasFilled );
+    fluidGeometry.attributes.position.needsUpdate = true;
+    fluidGeometry.computeBoundingSphere();
+
+    return wasFilled;
   }
 
   /**

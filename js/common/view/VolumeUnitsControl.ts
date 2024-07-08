@@ -87,8 +87,7 @@ function createItem( value: VolumeUnits, stringProperty: TReadOnlyProperty<strin
     value: value,
     createNode: tandem => new RichText( stringProperty, {
       font: PreferencesDialog.CONTENT_FONT,
-      maxWidth: 200,
-      tandem: tandem.createTandem( 'text' )
+      maxWidth: 200
     } ),
     tandemName: `${value}RadioButton`
   };

@@ -21,7 +21,6 @@ import optionize from '../../../../phet-core/js/optionize.js';
 import Boat from '../../buoyancy/model/applications/Boat.js';
 import PhysicsEngine, { PhysicsEngineBody } from './PhysicsEngine.js';
 import Mass from './Mass.js';
-import Basin from './Basin.js';
 import Cuboid from './Cuboid.js';
 import TModel from '../../../../joist/js/TModel.js';
 import { PhetioObjectOptions } from '../../../../tandem/js/PhetioObject.js';
@@ -350,44 +349,21 @@ export default class DensityBuoyancyModel implements TModel {
 
   /**
    * Computes the heights of the main pool liquid (and optionally that of the boat)
+   * NOTE: the overridden method in BuoyancyApplicationsModel, which does NOT call super.updateFluid()
    */
-  private updateFluid(): void {
-    const boat = this.getBoat();
+  protected updateFluid(): void {
 
-    const basins: Basin[] = [ this.pool ];
-    if ( boat && boat.visibleProperty.value ) {
-      basins.push( boat.basin );
-      this.pool.childBasin = boat.basin;
-    }
-    else {
-      this.pool.childBasin = null;
-    }
-
+    this.pool.childBasin = null;
     this.masses.forEach( mass => mass.updateStepInformation() );
-    basins.forEach( basin => {
-      basin.stepMasses = this.masses.filter( mass => basin.isMassInside( mass ) );
-    } );
-
-    const poolFluidVolume = this.getPoolFluidVolume();
+    this.pool.stepMasses = this.masses.filter( mass => this.pool.isMassInside( mass ) );
 
     // Check to see if fluid "spilled" out of the pool, and set the finalized liquid volume
-    this.pool.fluidVolumeProperty.value = Math.min( poolFluidVolume, this.pool.getEmptyVolume( this.poolBounds.maxY ) );
-
+    this.pool.fluidVolumeProperty.value = Math.min( this.getPoolFluidVolume(), this.pool.getEmptyVolume( this.poolBounds.maxY ) );
     this.pool.computeY();
-    boat && boat.basin.computeY();
 
-    // If we have a boat that is NOT submerged, we'll assign masses into the boat's basin where relevant. Otherwise,
-    // anything will go just into the pool's basin.
-    if ( boat && boat.visibleProperty.value && !boat.isFullySubmerged ) {
-      this.masses.forEach( mass => {
-        mass.containingBasin = boat.basin.isMassInside( mass ) ? boat.basin : ( this.pool.isMassInside( mass ) ? this.pool : null );
-      } );
-    }
-    else {
-      this.masses.forEach( mass => {
-        mass.containingBasin = this.pool.isMassInside( mass ) ? this.pool : null;
-      } );
-    }
+    this.masses.forEach( mass => {
+      mass.containingBasin = this.pool.isMassInside( mass ) ? this.pool : null;
+    } );
   }
 
   protected getPoolFluidVolume(): number {

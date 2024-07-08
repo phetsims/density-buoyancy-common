@@ -19,6 +19,7 @@ import Bottle from './Bottle.js';
 import { BottleOrBoat, BottleOrBoatValues } from './BottleOrBoat.js';
 import StringUnionProperty from '../../../../../axon/js/StringUnionProperty.js';
 import MassTag from '../../../common/model/MassTag.js';
+import Basin from '../../../common/model/Basin.js';
 
 export type BuoyancyApplicationsModelOptions = DensityBuoyancyModelOptions;
 
@@ -229,6 +230,50 @@ export default class BuoyancyApplicationsModel extends DensityBuoyancyModel {
       boatBasin.fluidVolumeProperty.value = 0;
     }
     return poolFluidVolume;
+  }
+
+  /**
+   * Computes the heights of the main pool liquid, incorporating the Boat logic.
+   * NOTE: This does not call super.updateFluid() because we need to handle the boat logic interspersed with the rest of the logic here.
+   */
+  protected override updateFluid(): void {
+
+    const boat = this.boat;
+
+    const basins: Basin[] = [ this.pool ];
+    if ( boat.visibleProperty.value ) {
+      basins.push( boat.basin );
+      this.pool.childBasin = boat.basin;
+    }
+    else {
+      this.pool.childBasin = null;
+    }
+
+    this.masses.forEach( mass => mass.updateStepInformation() );
+    basins.forEach( basin => {
+      basin.stepMasses = this.masses.filter( mass => basin.isMassInside( mass ) );
+    } );
+
+    // Check to see if fluid "spilled" out of the pool, and set the finalized liquid volume
+    this.pool.fluidVolumeProperty.value = Math.min( this.getPoolFluidVolume(), this.pool.getEmptyVolume( this.poolBounds.maxY ) );
+
+    this.pool.computeY();
+    boat.basin.computeY();
+
+    // If we have a boat that is NOT submerged, we'll assign masses into the boat's basin where relevant. Otherwise,
+    // anything will go just into the pool's basin.
+    if ( boat && boat.visibleProperty.value && !boat.isFullySubmerged ) {
+      this.masses.forEach( mass => {
+        mass.containingBasin = boat.basin.isMassInside( mass ) ? boat.basin :
+                               this.pool.isMassInside( mass ) ? this.pool :
+                               null;
+      } );
+    }
+    else {
+      this.masses.forEach( mass => {
+        mass.containingBasin = this.pool.isMassInside( mass ) ? this.pool : null;
+      } );
+    }
   }
 }
 

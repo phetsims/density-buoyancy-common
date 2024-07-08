@@ -83,7 +83,7 @@ type StringsType = {
   'kilogramsPatternStringProperty': LocalizedStringProperty;
   'litersPatternStringProperty': LocalizedStringProperty;
   'decimetersCubedPatternStringProperty': LocalizedStringProperty;
-  'newtonsUnitStringProperty': LocalizedStringProperty;
+  'NStringProperty': LocalizedStringProperty;
   'newtonsPatternStringProperty': LocalizedStringProperty;
   'forcesStringProperty': LocalizedStringProperty;
   'buoyancyStringProperty': LocalizedStringProperty;

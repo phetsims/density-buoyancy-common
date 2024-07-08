@@ -186,7 +186,7 @@ export default class FluidDisplacedAccordionBox extends AccordionBox {
     const scaleIcon = BuoyancyLabScreenView.getFluidDisplacedAccordionBoxScaleIcon();
     scaleIcon.scale( 1.8 );
 
-    const newtonUnitText = new Text( DensityBuoyancyCommonStrings.newtonsUnitStringProperty, {
+    const newtonUnitText = new Text( DensityBuoyancyCommonStrings.NStringProperty, {
       font: new PhetFont( {
         size: 34,
         weight: 'bold'

@@ -73,7 +73,7 @@ export default class Boat extends ApplicationsMass {
 
     this.displacementVolumeProperty = new NumberProperty( ApplicationsMass.DEFAULT_DISPLACEMENT_VOLUME, {
       tandem: options.tandem.createTandem( 'displacementVolumeProperty' ),
-      phetioDocumentation: 'Interior volume of the boat.',
+      phetioDocumentation: 'The total volume of the boat, including its capacity and hull.',
       range: new Range( 0.005, 0.03 ),
       units: 'm^3'
     } );

@@ -21,6 +21,7 @@ import MassView from '../../common/view/MassView.js';
 import CuboidView from '../../common/view/CuboidView.js';
 import BlocksPanel from '../../common/view/BlocksPanel.js';
 import StrictOmit from '../../../../phet-core/js/types/StrictOmit.js';
+import FluidIconMesh from '../../common/view/FluidIconMesh.js';
 
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN_SMALL;
 
@@ -136,19 +137,7 @@ export default class DensityCompareScreenView extends DensityBuoyancyScreenView<
       rightBox.position.copy( ThreeUtils.vectorToThree( new Vector3( 0.07, -0.06, 0 ) ) );
       scene.add( rightBox );
 
-      const fluidMaterial = new THREE.MeshLambertMaterial( {
-        transparent: true
-      } );
-      const fluidColor = DensityBuoyancyCommonColors.materialWaterColorProperty.value;
-      fluidMaterial.color = ThreeUtils.colorToThree( fluidColor );
-      fluidMaterial.opacity = fluidColor.alpha;
-
-      // Fake it!
-      const fluidGeometry = new THREE.BoxGeometry( 1, 1, 0.12 );
-
-      const fluid = new THREE.Mesh( fluidGeometry, fluidMaterial );
-      fluid.position.copy( ThreeUtils.vectorToThree( new Vector3( 0, -0.5, 0 ) ) );
-      scene.add( fluid );
+      scene.add( new FluidIconMesh( new Vector3( 0, -0.5, 0 ), new THREE.BoxGeometry( 1, 1, 0.12 ) ) );
     } );
   }
 }

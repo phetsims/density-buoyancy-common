@@ -46,6 +46,7 @@ import Vector2 from '../../../../../dot/js/Vector2.js';
 import FluidDensityPanel from '../FluidDensityPanel.js';
 import BuoyancyScreenView from '../BuoyancyScreenView.js';
 import StrictOmit from '../../../../../phet-core/js/types/StrictOmit.js';
+import FluidIconMesh from '../../../common/view/FluidIconMesh.js';
 
 // constants
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN_SMALL;
@@ -535,19 +536,7 @@ export default class BuoyancyApplicationsScreenView extends BuoyancyScreenView<B
 
       scene.add( bottleGroup );
 
-      const fluidMaterial = new THREE.MeshLambertMaterial( {
-        transparent: true
-      } );
-      const fluidColor = DensityBuoyancyCommonColors.materialWaterColorProperty.value;
-      fluidMaterial.color = ThreeUtils.colorToThree( fluidColor );
-      fluidMaterial.opacity = fluidColor.alpha;
-
-      // Fake it!
-      const fluidGeometry = new THREE.BoxGeometry( 1, 1, 0.2 );
-
-      const fluid = new THREE.Mesh( fluidGeometry, fluidMaterial );
-      fluid.position.copy( ThreeUtils.vectorToThree( new Vector3( 0, -0.5, 0.1 ) ) );
-      scene.add( fluid );
+      scene.add( new FluidIconMesh() );
     } );
   }
 }

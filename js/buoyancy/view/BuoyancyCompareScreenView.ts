@@ -28,7 +28,6 @@ import Mass from '../../common/model/Mass.js';
 import Bounds2 from '../../../../dot/js/Bounds2.js';
 import { DensityMaterials } from '../../common/view/MaterialView.js';
 import ThreeUtils from '../../../../mobius/js/ThreeUtils.js';
-import DensityBuoyancyCommonColors from '../../common/view/DensityBuoyancyCommonColors.js';
 import FluidSelectionPanel from './FluidSelectionPanel.js';
 import BlocksValueControlPanel from '../../common/view/BlocksValueControlPanel.js';
 import Dimension2 from '../../../../dot/js/Dimension2.js';
@@ -39,6 +38,7 @@ import BlocksPanel from '../../common/view/BlocksPanel.js';
 import Panel from '../../../../sun/js/Panel.js';
 import BuoyancyScreenView from './BuoyancyScreenView.js';
 import StrictOmit from '../../../../phet-core/js/types/StrictOmit.js';
+import FluidIconMesh from '../../common/view/FluidIconMesh.js';
 
 // constants
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN_SMALL;
@@ -269,19 +269,7 @@ export default class BuoyancyCompareScreenView extends BuoyancyScreenView<Buoyan
 
       scene.add( box2 );
 
-      const fluidMaterial = new THREE.MeshLambertMaterial( {
-        transparent: true
-      } );
-      const fluidColor = DensityBuoyancyCommonColors.materialWaterColorProperty.value;
-      fluidMaterial.color = ThreeUtils.colorToThree( fluidColor );
-      fluidMaterial.opacity = fluidColor.alpha;
-
-      // Fake it!
-      const fluidGeometry = new THREE.BoxGeometry( 1, 1, 0.2 );
-
-      const fluid = new THREE.Mesh( fluidGeometry, fluidMaterial );
-      fluid.position.copy( ThreeUtils.vectorToThree( new Vector3( 0, -0.5, 0.12 ) ) );
-      scene.add( fluid );
+      scene.add( new FluidIconMesh( new Vector3( 0, -0.5, 0.12 ) ) );
     } );
   }
 }

@@ -143,8 +143,6 @@ export default class MaterialMassVolumeControlNode extends MaterialControlNode {
       reentrant: true,
       phetioState: false,
       phetioValueType: Range.RangeIO,
-      tandem: getMassRelatedTandem( massNumberControlContainerTandem.createTandem( 'enabledMassRangeProperty' ) ),
-      phetioFeatured: true,
       valueComparisonStrategy: 'equalsFunction'
     } );
 

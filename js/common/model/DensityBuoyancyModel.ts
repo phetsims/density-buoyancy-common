@@ -315,6 +315,7 @@ export default class DensityBuoyancyModel implements TModel {
     this.pool.scale && this.availableMasses.push( this.pool.scale );
   }
 
+  // Placeholder for subclasses to adjust the vertical motion during the physics step.
   protected updateVerticalMotion( dt: number ): void {
     // no-op
   }
@@ -349,6 +350,7 @@ export default class DensityBuoyancyModel implements TModel {
     } );
   }
 
+  // NOTE: Subclasses may override this to account for other geometric considerations.
   protected getPoolFluidVolume(): number {
     return this.pool.fluidVolumeProperty.value;
   }
@@ -453,6 +455,7 @@ export default class DensityBuoyancyModel implements TModel {
     } );
   }
 
+  // Placeholders for the physics update sequence, which must be overridden in BuoyancyApplicationsModel.
   protected getUpdatedSubmergedVolume( mass: Mass, submergedVolume: number ): number {
     return submergedVolume;
   }

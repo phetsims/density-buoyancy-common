@@ -50,6 +50,7 @@ export default class Boat extends ApplicationsMass {
   // Whether the boat is fully submerged
   public isFullySubmerged = false;
 
+  // In the physics update step, keep track of the boat vertical acceleration and velocity in mks.
   public verticalVelocity = 0;
   public verticalAcceleration = 0;
 

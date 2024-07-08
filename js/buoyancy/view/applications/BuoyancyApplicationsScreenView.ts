@@ -39,7 +39,6 @@ import boat_icon_png from '../../../../images/boat_icon_png.js';
 import SubmergedAccordionBox from '../SubmergedAccordionBox.js';
 import Multilink from '../../../../../axon/js/Multilink.js';
 import PrecisionSliderThumb from '../../../common/view/PrecisionSliderThumb.js';
-import ThreeUtils from '../../../../../mobius/js/ThreeUtils.js';
 import Bottle from '../../model/applications/Bottle.js';
 import MassView from '../../../common/view/MassView.js';
 import Vector2 from '../../../../../dot/js/Vector2.js';

@@ -15,7 +15,6 @@ import DensityCompareModel from '../model/DensityCompareModel.js';
 import Bounds2 from '../../../../dot/js/Bounds2.js';
 import { combineOptions } from '../../../../phet-core/js/optionize.js';
 import ThreeUtils from '../../../../mobius/js/ThreeUtils.js';
-import DensityBuoyancyCommonColors from '../../common/view/DensityBuoyancyCommonColors.js';
 import BlocksValueControlPanel from '../../common/view/BlocksValueControlPanel.js';
 import MassView from '../../common/view/MassView.js';
 import CuboidView from '../../common/view/CuboidView.js';

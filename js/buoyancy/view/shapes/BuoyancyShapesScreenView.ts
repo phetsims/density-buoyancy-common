@@ -36,7 +36,6 @@ import PatternStringProperty from '../../../../../axon/js/PatternStringProperty.
 import DensityBuoyancyCommonStrings from '../../../DensityBuoyancyCommonStrings.js';
 import { DensityMaterials } from '../../../common/view/MaterialView.js';
 import ThreeUtils from '../../../../../mobius/js/ThreeUtils.js';
-import DensityBuoyancyCommonColors from '../../../common/view/DensityBuoyancyCommonColors.js';
 import Cone from '../../../common/model/Cone.js';
 import ConeView from '../../../common/view/ConeView.js';
 import ScaleView from '../../../common/view/ScaleView.js';

@@ -26,7 +26,6 @@ import BlocksModeRadioButtonGroup from '../../common/view/BlocksModeRadioButtonG
 import Vector3 from '../../../../dot/js/Vector3.js';
 import { DensityMaterials } from '../../common/view/MaterialView.js';
 import ThreeUtils from '../../../../mobius/js/ThreeUtils.js';
-import DensityBuoyancyCommonColors from '../../common/view/DensityBuoyancyCommonColors.js';
 import ForceDiagramNode from '../../common/view/ForceDiagramNode.js';
 import buoyancy_explore_screen_block_png from '../../../images/buoyancy_explore_screen_block_png.js';
 import CuboidView from '../../common/view/CuboidView.js';

@@ -59,7 +59,7 @@ export default class BlocksValueControlPanel extends Panel {
         DensityBuoyancyCommonStrings.massStringProperty,
         DensityBuoyancyCommonStrings.kilogramsPatternStringProperty,
         'kilograms', {
-          tandem: tandem,
+          tandem: options.tandem.createTandem( 'massNumberControl' ),
           sliderOptions: {
             phetioLinkedProperty: massProperty,
             trackSize: options.sliderTrackSize,
@@ -76,7 +76,7 @@ export default class BlocksValueControlPanel extends Panel {
         DensityBuoyancyCommonStrings.volumeStringProperty,
         DensityBuoyancyCommonConstants.VOLUME_PATTERN_STRING_PROPERTY,
         'value', {
-          tandem: tandem,
+          tandem: options.tandem.createTandem( 'volumeNumberControl' ),
           sliderOptions: {
             phetioLinkedProperty: volumeProperty,
             trackSize: options.sliderTrackSize,
@@ -93,7 +93,7 @@ export default class BlocksValueControlPanel extends Panel {
         DensityBuoyancyCommonStrings.densityStringProperty,
         DensityBuoyancyCommonConstants.KILOGRAMS_PER_VOLUME_PATTERN_STRING_PROPERTY,
         'value', {
-          tandem: tandem,
+          tandem: options.tandem.createTandem( 'densityNumberControl' ),
           sliderOptions: {
             phetioLinkedProperty: densityProperty,
             trackSize: options.sliderTrackSize,
@@ -102,10 +102,7 @@ export default class BlocksValueControlPanel extends Panel {
           phetioVisiblePropertyInstrumented: false
         }
       )
-    } ], {
-      tandem: options.tandem.createTandem( 'toggleNode' ),
-      phetioVisiblePropertyInstrumented: false
-    } );
+    } ] );
 
     super( toggleNode, options );
   }

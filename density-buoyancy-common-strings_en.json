@@ -41,22 +41,22 @@
   "material.custom": {
     "value": "Custom"
   },
-  "material.densityA": {
+  "material.fluidA": {
     "value": "Fluid A"
   },
-  "material.densityB": {
+  "material.fluidB": {
     "value": "Fluid B"
   },
-  "material.densityC": {
+  "material.fluidC": {
     "value": "Fluid C"
   },
-  "material.densityD": {
+  "material.fluidD": {
     "value": "Fluid D"
   },
-  "material.densityE": {
+  "material.fluidE": {
     "value": "Fluid E"
   },
-  "material.densityF": {
+  "material.fluidF": {
     "value": "Fluid F"
   },
   "material.diamond": {

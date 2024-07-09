@@ -449,7 +449,7 @@ export default class Material {
   } );
 
   public static readonly FLUID_A = new Material( {
-    nameProperty: DensityBuoyancyCommonStrings.material.densityAStringProperty,
+    nameProperty: DensityBuoyancyCommonStrings.material.fluidAStringProperty,
     tandemName: 'fluidA',
     identifier: 'FLUID_A',
     density: 3100,
@@ -458,7 +458,7 @@ export default class Material {
   } );
 
   public static readonly FLUID_B = new Material( {
-    nameProperty: DensityBuoyancyCommonStrings.material.densityBStringProperty,
+    nameProperty: DensityBuoyancyCommonStrings.material.fluidBStringProperty,
     tandemName: 'fluidB',
     identifier: 'FLUID_B',
     density: 790,
@@ -467,7 +467,7 @@ export default class Material {
   } );
 
   public static readonly FLUID_C = new Material( {
-    nameProperty: DensityBuoyancyCommonStrings.material.densityCStringProperty,
+    nameProperty: DensityBuoyancyCommonStrings.material.fluidCStringProperty,
     tandemName: 'fluidC',
     identifier: 'FLUID_C',
     density: 490,
@@ -476,7 +476,7 @@ export default class Material {
   } );
 
   public static readonly FLUID_D = new Material( {
-    nameProperty: DensityBuoyancyCommonStrings.material.densityDStringProperty,
+    nameProperty: DensityBuoyancyCommonStrings.material.fluidDStringProperty,
     tandemName: 'fluidD',
     identifier: 'FLUID_D',
     density: 2890,
@@ -485,7 +485,7 @@ export default class Material {
   } );
 
   public static readonly FLUID_E = new Material( {
-    nameProperty: DensityBuoyancyCommonStrings.material.densityEStringProperty,
+    nameProperty: DensityBuoyancyCommonStrings.material.fluidEStringProperty,
     tandemName: 'fluidE',
     identifier: 'FLUID_E',
     density: 1260,
@@ -494,7 +494,7 @@ export default class Material {
   } );
 
   public static readonly FLUID_F = new Material( {
-    nameProperty: DensityBuoyancyCommonStrings.material.densityFStringProperty,
+    nameProperty: DensityBuoyancyCommonStrings.material.fluidFStringProperty,
     tandemName: 'fluidF',
     identifier: 'FLUID_F',
     density: 6440,

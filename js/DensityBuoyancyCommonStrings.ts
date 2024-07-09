@@ -27,12 +27,12 @@ type StringsType = {
     'cementStringProperty': LocalizedStringProperty;
     'copperStringProperty': LocalizedStringProperty;
     'customStringProperty': LocalizedStringProperty;
-    'densityAStringProperty': LocalizedStringProperty;
-    'densityBStringProperty': LocalizedStringProperty;
-    'densityCStringProperty': LocalizedStringProperty;
-    'densityDStringProperty': LocalizedStringProperty;
-    'densityEStringProperty': LocalizedStringProperty;
-    'densityFStringProperty': LocalizedStringProperty;
+    'fluidAStringProperty': LocalizedStringProperty;
+    'fluidBStringProperty': LocalizedStringProperty;
+    'fluidCStringProperty': LocalizedStringProperty;
+    'fluidDStringProperty': LocalizedStringProperty;
+    'fluidEStringProperty': LocalizedStringProperty;
+    'fluidFStringProperty': LocalizedStringProperty;
     'diamondStringProperty': LocalizedStringProperty;
     'gasolineStringProperty': LocalizedStringProperty;
     'glassStringProperty': LocalizedStringProperty;

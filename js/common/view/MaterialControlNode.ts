@@ -18,7 +18,7 @@ import StringIO from '../../../../tandem/js/types/StringIO.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
-import Material, { CUSTOM_MATERIAL_NAME, MaterialName } from '../model/Material.js';
+import Material, { MaterialName } from '../model/Material.js';
 import { PhetioObjectOptions } from '../../../../tandem/js/PhetioObject.js';
 import PickRequired from '../../../../phet-core/js/types/PickRequired.js';
 import Range from '../../../../dot/js/Range.js';
@@ -79,16 +79,16 @@ export default class MaterialControlNode extends VBox {
       materials = materials.filter( material => !material.hidden );
     }
 
-    const materialNames: MaterialName[] = [ ...materials.map( material => material.identifier! ) ];
-    options.supportCustomMaterial && materialNames.push( CUSTOM_MATERIAL_NAME );
+    const materialNames: MaterialName[] = [ ...materials.map( material => material.identifier ) ];
+    options.supportCustomMaterial && materialNames.push( 'CUSTOM' );
 
     // TODO: https://github.com/phetsims/density-buoyancy-common/issues/163 re-evaluate eliminating or moving this code
     //       after addressing #163
     const comboBoxMaterialProperty = new DynamicProperty( new Property( materialProperty ), {
       bidirectional: true,
-      map: ( material: Material ) => material.custom ? CUSTOM_MATERIAL_NAME : material.identifier!,
+      map: ( material: Material ) => material.identifier,
       inverseMap: ( materialName: MaterialName ): Material => {
-        if ( materialName === CUSTOM_MATERIAL_NAME ) {
+        if ( materialName === 'CUSTOM' ) {
           // Handle our minimum volume if we're switched to custom (if needed)
           const volume = Math.max( volumeProperty.value, options.minCustomVolumeLiters / DensityBuoyancyCommonConstants.LITERS_IN_CUBIC_METER );
           return Material.createCustomSolidMaterial( {
@@ -97,7 +97,7 @@ export default class MaterialControlNode extends VBox {
           } );
         }
         else {
-          return Material[ materialName ];
+          return Material.getMaterial( materialName );
         }
       },
       reentrant: true,
@@ -116,7 +116,7 @@ export default class MaterialControlNode extends VBox {
 
     const materialToItem = ( material: Material ) => {
       return {
-        value: material.identifier!,
+        value: material.identifier,
         createNode: () => new Text( material.nameProperty, {
           font: DensityBuoyancyCommonConstants.COMBO_BOX_ITEM_FONT,
           maxWidth: comboMaxWidth
@@ -126,10 +126,11 @@ export default class MaterialControlNode extends VBox {
       };
     };
 
+    // TODO: parametrize to MaterialName, https://github.com/phetsims/density-buoyancy-common/issues/176
     const comboBox = new ComboBox( comboBoxMaterialProperty, [
       ...regularMaterials.map( materialToItem ),
       ...( options.supportCustomMaterial ? [ {
-        value: CUSTOM_MATERIAL_NAME,
+        value: 'CUSTOM',
         createNode: () => new Text( DensityBuoyancyCommonStrings.material.customStringProperty, {
           font: DensityBuoyancyCommonConstants.COMBO_BOX_ITEM_FONT,
           maxWidth: comboMaxWidth

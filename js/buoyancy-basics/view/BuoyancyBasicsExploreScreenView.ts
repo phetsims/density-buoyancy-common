@@ -70,14 +70,14 @@ export default class BuoyancyBasicsExploreScreenView extends BuoyancyScreenView<
     this.rightBox = new ABControlsNode(
       model.massA,
       model.massB,
-      this.popupLayer,
-      {
+      this.popupLayer, {
         useDensityControlInsteadOfMassControl: true,
         customKeepsConstantDensity: true,
         tandem: tandem,
         minCustomMass: 0.1,
         maxCustomMass: 15,
-        supportHiddenMaterial: true
+        supportHiddenMaterial: true,
+        mysteryMaterials: []
       }
     );
 

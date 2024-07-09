@@ -28,11 +28,12 @@ import ReadOnlyProperty from '../../../../axon/js/ReadOnlyProperty.js';
 import MappedProperty from '../../../../axon/js/MappedProperty.js';
 import Range from '../../../../dot/js/Range.js';
 import WithRequired from '../../../../phet-core/js/types/WithRequired.js';
+import StrictOmit from '../../../../phet-core/js/types/StrictOmit.js';
 
 const NullableColorPropertyReferenceType = NullableIO( ReferenceIO( Property.PropertyIO( Color.ColorIO ) ) );
 
 type MaterialState = {
-  identifier: null | keyof typeof Material;
+  identifier: MaterialName;
   name: ReferenceIOState;
   tandemName: string | null;
   density: number;
@@ -45,9 +46,6 @@ type MaterialState = {
   liquidColor: null | ColorState;
   depthLinesColor: ColorState;
 };
-
-export const CUSTOM_MATERIAL_NAME = 'CUSTOM';
-export type CustomMaterialName = typeof CUSTOM_MATERIAL_NAME;
 
 const nonCustomMaterialNames = [
   'ALUMINUM',
@@ -94,15 +92,14 @@ const nonCustomMaterialNames = [
   'MATERIAL_X',
   'MATERIAL_Y' ] as const;
 
-export type MaterialName = typeof nonCustomMaterialNames[ number ] | CustomMaterialName;
-
-export type CreateCustomMaterialOptions = MaterialOptions & Required<Pick<MaterialOptions, 'density'>> & { densityRange?: Range };
+type NonCustomMaterialName = typeof nonCustomMaterialNames[ number ];
+export type MaterialName = NonCustomMaterialName | 'CUSTOM';
 
 export type MaterialOptions = {
   nameProperty?: TReadOnlyProperty<string>;
 
   // If set, this material will be available at Material[ identifier ] as a global
-  identifier?: MaterialName | null;
+  identifier: MaterialName;
 
   // Used for tandems
   tandemName?: string | null;
@@ -113,6 +110,7 @@ export type MaterialOptions = {
   // in SI (Pa * s). For reference a poise is 1e-2 Pa*s, and a centipoise is 1e-3 Pa*s.
   viscosity?: number;
 
+  // TODO: Eliminate, see https://github.com/phetsims/density-buoyancy-common/issues/176
   custom?: boolean;
 
   // If true, don't show the density in number pickers/readouts
@@ -127,14 +125,18 @@ export type MaterialOptions = {
   // Used for the color of depth lines added on top of the Material
   depthLinesColorProperty?: TReadOnlyProperty<Color>;
 };
+type NoIdentifierMaterialOptions = StrictOmit<MaterialOptions, 'identifier'>;
+export type CreateCustomMaterialOptions = NoIdentifierMaterialOptions & Required<Pick<MaterialOptions, 'density'>> & { densityRange?: Range };
 
 export default class Material {
 
   public readonly nameProperty: TReadOnlyProperty<string>;
-  public readonly identifier: MaterialName | null;
+  public readonly identifier: MaterialName;
   public readonly tandemName: string | null;
   public readonly density: number; // in SI (kg/m^3)
   public readonly viscosity: number;
+
+  // TODO: Eliminate custom as an orthogonal attribute, it can be determined from identifier. https://github.com/phetsims/density-buoyancy-common/issues/176
   public readonly custom: boolean;
   public readonly hidden: boolean;
   public readonly customColor: Property<Color> | null;
@@ -145,7 +147,6 @@ export default class Material {
 
     const options = optionize<MaterialOptions, MaterialOptions>()( {
       nameProperty: new TinyProperty( 'unknown' ),
-      identifier: null,
       tandemName: null,
       density: 1,
       viscosity: 1e-3,
@@ -173,10 +174,11 @@ export default class Material {
   /**
    * Returns a custom material that can be modified at will.
    */
-  public static createCustomMaterial( options: MaterialOptions ): Material {
+  public static createCustomMaterial( options: NoIdentifierMaterialOptions ): Material {
     return new Material( combineOptions<MaterialOptions>( {
       nameProperty: DensityBuoyancyCommonStrings.material.customStringProperty,
       tandemName: 'custom',
+      identifier: 'CUSTOM',
       custom: true
     }, options ) );
   }
@@ -637,6 +639,8 @@ export default class Material {
     density: Material.GOLD.density
   } );
 
+  // TODO: Convert to an object literal like{AIR: new Material( ... ), ...} as const
+  // TODO: Then we can lift the keys for a string union of "NonCustomMaterialName". https://github.com/phetsims/density-buoyancy-common/issues/176
   public static readonly MATERIALS = [
     Material.AIR,
     Material.ALUMINUM,
@@ -665,6 +669,7 @@ export default class Material {
     Material.MERCURY,
     Material.OIL,
     Material.PLATINUM,
+    Material.PVC,
     Material.PYRITE,
     Material.SAND,
     Material.SEAWATER,
@@ -676,6 +681,12 @@ export default class Material {
     Material.WATER,
     Material.WOOD
   ] as const;
+
+  public static getMaterial( materialName: MaterialName ): Material {
+    const material = _.find( Material.MATERIALS, material => material.identifier === materialName )!;
+    assert && assert( material, `unknown material name: ${materialName}` );
+    return material;
+  }
 
   public static readonly DENSITY_MYSTERY_MATERIALS = [
     Material.WOOD,
@@ -725,7 +736,7 @@ export default class Material {
     documentation: 'Represents different materials that solids/liquids in the simulations can take, including density (kg/m^3), viscosity (Pa * s), and color.',
     stateSchema: {
       name: ReferenceIO( ReadOnlyProperty.PropertyIO( StringIO ) ),
-      identifier: NullableIO( StringIO ),
+      identifier: StringIO,
       tandemName: NullableIO( StringIO ),
       density: NumberIO,
       viscosity: NumberIO,
@@ -744,7 +755,7 @@ export default class Material {
 
       return {
         name: ReferenceIO( ReadOnlyProperty.PropertyIO( StringIO ) ).toStateObject( material.nameProperty ),
-        identifier: NullableIO( StringIO ).toStateObject( material.identifier ),
+        identifier: material.identifier,
         tandemName: NullableIO( StringIO ).toStateObject( material.tandemName ),
         density: material.density,
         viscosity: material.viscosity,
@@ -758,10 +769,8 @@ export default class Material {
       };
     },
     fromStateObject( obj ): Material {
-      if ( obj.identifier ) {
-        const material = Material[ obj.identifier ];
-        assert && assert( material, `Unknown material: ${obj.identifier}` );
-        return material as Material;
+      if ( obj.identifier !== 'CUSTOM' ) {
+        return Material.getMaterial( obj.identifier );
       }
       else {
         const staticCustomColor = NullableIO( Color.ColorIO ).fromStateObject( obj.staticCustomColor );
@@ -782,5 +791,9 @@ export default class Material {
     }
   } );
 }
+
+assert && assert( _.every( Material.MATERIALS, material => !( material.custom || material.identifier === 'CUSTOM' ) ),
+  'custom materials not allowed in MATERIALS list' );
+assert && assert( _.uniq( Material.MATERIALS ).length === Material.MATERIALS.length, 'duplicate in Material.MATERIALS' );
 
 densityBuoyancyCommon.register( 'Material', Material );

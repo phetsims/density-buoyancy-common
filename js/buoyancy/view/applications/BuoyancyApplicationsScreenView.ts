@@ -221,7 +221,7 @@ export default class BuoyancyApplicationsScreenView extends BuoyancyScreenView<B
         Material.GOLD,
         Material.PLATINUM
       ].concat( Material.SIMPLE_MASS_MATERIALS ),
-      material => material.density ).concat( [ // Adding Mystery Materials at the end, so they aren't sorted by density
+      material => material.density ).concat( [ // Adding Mystery Materials at the end, so they aren't sorted by density // TODO: Doesn't the class always make mystery at the end? https://github.com/phetsims/density-buoyancy-common/issues/176
       Material.MATERIAL_V,
       Material.MATERIAL_W
     ] ), cubicMeters => model.block.updateSize( Cube.boundsFromVolume( cubicMeters ) ), this.popupLayer, true, {

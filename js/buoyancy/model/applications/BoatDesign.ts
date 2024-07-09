@@ -208,27 +208,6 @@ export default class BoatDesign {
   }
 
   /**
-   * Meant for mapping a raw number-based array of x,y,z position data from the construction coordinates to model
-   * coordinates. TODO: https://github.com/phetsims/density-buoyancy-common/issues/123 Bottle has a method like this
-   * That is used, but this one is unused
-   */
-  private static positionArrayMap( point: number, index: number ): number {
-    const mod = index % 3;
-
-    // x
-    if ( mod === 0 ) {
-      point -= BoatDesign.DESIGN_CENTROID.x;
-    }
-
-    // y
-    if ( mod === 1 ) {
-      point -= BoatDesign.DESIGN_CENTROID.y;
-    }
-
-    return point * BoatDesign.ONE_LITER_SCALE_MULTIPLIER;
-  }
-
-  /**
    * Returns the model-space local coordinate for the boat, given a design-space point and number of liters.
    */
   private static designToModel( point: Vector3, liters = 1 ): Vector3 {

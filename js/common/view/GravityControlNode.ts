@@ -9,7 +9,7 @@
 import Property from '../../../../axon/js/Property.js';
 import Range from '../../../../dot/js/Range.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
-import { Node, Text } from '../../../../scenery/js/imports.js';
+import { createGatedVisibleProperty, Node, Text } from '../../../../scenery/js/imports.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
@@ -17,12 +17,14 @@ import Gravity from '../model/Gravity.js';
 import ComboNumberControl from './ComboNumberControl.js';
 import DensityBuoyancyCommonQueryParameters from '../DensityBuoyancyCommonQueryParameters.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
-import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
+import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 
 export default class GravityControlNode extends ComboNumberControl<Gravity> {
   public constructor( gravityProperty: Property<Gravity>, listParent: Node, tandem: Tandem ) {
 
     const customValue = Gravity.createCustomGravity( DensityBuoyancyCommonQueryParameters.gEarth );
+
+    const numberDisplayTandem = tandem.createTandem( 'numberDisplay' );
 
     super( {
       tandem: tandem,
@@ -60,9 +62,11 @@ export default class GravityControlNode extends ComboNumberControl<Gravity> {
       },
       numberControlOptions: {
         numberDisplayOptions: {
-          visibleProperty: new BooleanProperty( true, {
-            tandem: tandem.createTandem( 'numberDisplayVisibleProperty' )
-          } )
+          tandem: numberDisplayTandem,
+          visibleProperty: createGatedVisibleProperty(
+            new DerivedProperty( [ gravityProperty ], gravity => !gravity.hidden ),
+            numberDisplayTandem
+          )
         }
       },
       getFallbackNode: gravity => {

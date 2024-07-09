@@ -10,7 +10,7 @@ import Property from '../../../../axon/js/Property.js';
 import Dimension2 from '../../../../dot/js/Dimension2.js';
 import Range from '../../../../dot/js/Range.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
-import { Node, Text } from '../../../../scenery/js/imports.js';
+import { createGatedVisibleProperty, Node, Text } from '../../../../scenery/js/imports.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
@@ -18,7 +18,7 @@ import Material from '../model/Material.js';
 import ComboNumberControl, { ComboNumberControlOptions } from './ComboNumberControl.js';
 import optionize from '../../../../phet-core/js/optionize.js';
 import WithRequired from '../../../../phet-core/js/types/WithRequired.js';
-import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
+import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 
 type SelfOptions = {
 
@@ -46,6 +46,8 @@ export default class FluidDensityControlNode extends ComboNumberControl<Material
 
     assert && assert( _.every( options.invisibleMaterials, invisible => materials.includes( invisible ) ),
       'invisible material must be in full list.' );
+
+    const numberDisplayTandem = options.tandem.createTandem( 'numberDisplay' );
 
     super( {
       tandem: options.tandem,
@@ -78,9 +80,11 @@ export default class FluidDensityControlNode extends ComboNumberControl<Material
       customValue: customMaterial,
       numberControlOptions: {
         numberDisplayOptions: {
-          visibleProperty: new BooleanProperty( true, {
-            tandem: options.tandem.createTandem( 'numberDisplayVisibleProperty' )
-          } )
+          tandem: numberDisplayTandem,
+          visibleProperty: createGatedVisibleProperty(
+            new DerivedProperty( [ fluidMaterialProperty ], material => !material.hidden ),
+            numberDisplayTandem
+            )
         },
         sliderOptions: {
           // Slightly longer, see https://github.com/phetsims/buoyancy/issues/33

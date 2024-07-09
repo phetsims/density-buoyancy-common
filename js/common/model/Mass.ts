@@ -119,7 +119,6 @@ export default abstract class Mass extends PhetioObject {
   public readonly materialProperty: Property<Material>;
 
   // for phet-io support (to control the materialProperty)
-  // TODO: rename from "enum"? https://github.com/phetsims/density-buoyancy-common/issues/176
   public readonly materialEnumProperty?: StringUnionProperty<MaterialName>;
 
   // for phet-io support (to control the materialProperty)
@@ -281,7 +280,7 @@ export default abstract class Mass extends PhetioObject {
 
     if ( options.adjustableMaterial ) {
       this.materialEnumProperty = new StringUnionProperty<MaterialName>( options.material.identifier, {
-        tandem: tandem?.createTandem( 'materialEnumProperty' ), // TODO: rename? https://github.com/phetsims/density-buoyancy-common/issues/176
+        tandem: tandem?.createTandem( 'materialEnumProperty' ),
         validValues: options.materialEnumPropertyValidValues,
         phetioFeatured: true,
         phetioDocumentation: 'Current material of the object. Changing the material will result in changes to the mass, but the volume will remain the same.'
@@ -330,21 +329,6 @@ export default abstract class Mass extends PhetioObject {
         }
       } );
 
-//       this.customDensityProperty.lazyLink( currentDensity => {
-// // TODO: locks? See https://github.com/phetsims/density-buoyancy-common/issues/176
-//
-//         if ( this.materialEnumProperty!.value !== 'CUSTOM' &&
-//
-//              // if NOT any valid materials match current density
-//              !_.some( options.materialEnumPropertyValidValues, materialName => {
-//                if ( materialName === 'CUSTOM' ) {
-//                  return false;
-//                }
-//                return Material.getMaterial( materialName ).density === currentDensity;
-//              } ) ) {
-//           this.materialEnumProperty!.value = 'CUSTOM';
-//         }
-//       } );
       Multilink.lazyMultilink( [ this.materialEnumProperty, this.customDensityProperty, this.customColorProperty ], materialEnum => {
         // See if it's an external change
         if ( !enumLock && !densityLock && !colorLock ) {

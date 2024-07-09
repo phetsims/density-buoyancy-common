@@ -16,7 +16,7 @@ import resetArrow_png from '../../../../../scenery-phet/images/resetArrow_png.js
 import NumberControl, { NumberControlOptions } from '../../../../../scenery-phet/js/NumberControl.js';
 import NumberDisplay from '../../../../../scenery-phet/js/NumberDisplay.js';
 import PhetFont from '../../../../../scenery-phet/js/PhetFont.js';
-import { AlignBox, Color, createGatedVisibleProperty, HBox, HSeparator, Image, ManualConstraint, Node, Text, VBox } from '../../../../../scenery/js/imports.js';
+import { AlignBox, Color, GatedVisibleProperty, HBox, HSeparator, Image, ManualConstraint, Node, Text, VBox } from '../../../../../scenery/js/imports.js';
 import RectangularPushButton from '../../../../../sun/js/buttons/RectangularPushButton.js';
 import RectangularRadioButtonGroup from '../../../../../sun/js/buttons/RectangularRadioButtonGroup.js';
 import Panel from '../../../../../sun/js/Panel.js';
@@ -88,7 +88,7 @@ export default class BuoyancyApplicationsScreenView extends BuoyancyScreenView<B
       listener: () => {
         model.resetBoatScene();
       },
-      visibleProperty: createGatedVisibleProperty(
+      visibleProperty: new GatedVisibleProperty(
         new DerivedProperty( [ model.sceneProperty ], scene => scene === 'BOAT' ),
         resetBoatSceneButtonTandem ),
       tandem: resetBoatSceneButtonTandem
@@ -155,7 +155,7 @@ export default class BuoyancyApplicationsScreenView extends BuoyancyScreenView<B
 
     const customBottleDensityControlTandem = materialInsideControlsTandem.createTandem( 'customBottleDensityNumberControl' );
     const customBottleDensityControl = new NumberControl( DensityBuoyancyCommonStrings.densityStringProperty, model.bottle.customDensityProperty, model.bottle.customDensityProperty.range, combineOptions<NumberControlOptions>( {
-      visibleProperty: createGatedVisibleProperty( customDensityControlVisibleProperty, customBottleDensityControlTandem ),
+      visibleProperty: new GatedVisibleProperty( customDensityControlVisibleProperty, customBottleDensityControlTandem ),
       sliderOptions: {
         accessibleName: DensityBuoyancyCommonStrings.densityStringProperty,
         thumbNode: new PrecisionSliderThumb( {

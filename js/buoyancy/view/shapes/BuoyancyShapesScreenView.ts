@@ -10,7 +10,7 @@ import DerivedProperty from '../../../../../axon/js/DerivedProperty.js';
 import DynamicProperty from '../../../../../axon/js/DynamicProperty.js';
 import Property from '../../../../../axon/js/Property.js';
 import Vector2 from '../../../../../dot/js/Vector2.js';
-import { AlignBox, createGatedVisibleProperty, ManualConstraint, Node, VBox } from '../../../../../scenery/js/imports.js';
+import { AlignBox, GatedVisibleProperty, ManualConstraint, Node, VBox } from '../../../../../scenery/js/imports.js';
 import DensityBuoyancyCommonConstants from '../../../common/DensityBuoyancyCommonConstants.js';
 import Material from '../../../common/model/Material.js';
 import BuoyancyDisplayOptionsPanel from '../BuoyancyDisplayOptionsPanel.js';
@@ -154,7 +154,7 @@ export default class BuoyancyShapesScreenView extends BuoyancyScreenView<Buoyanc
       } ),
       this.popupLayer, {
         labelNode: ABPanelsNode.getSecondaryTagLabelNode(),
-        visibleProperty: createGatedVisibleProperty(
+        visibleProperty: new GatedVisibleProperty(
           new DynamicProperty( model.shapeBModel.massProperty, { derive: 'internalVisibleProperty' } ),
           objectBShapeSizeControlNodeTandem
         ),

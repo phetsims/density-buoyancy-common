@@ -9,7 +9,7 @@
 import Property from '../../../../axon/js/Property.js';
 import Range from '../../../../dot/js/Range.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
-import { createGatedVisibleProperty, Node, Text } from '../../../../scenery/js/imports.js';
+import { GatedVisibleProperty, Node, Text } from '../../../../scenery/js/imports.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
@@ -63,7 +63,7 @@ export default class GravityControlNode extends ComboNumberControl<Gravity> {
       numberControlOptions: {
         numberDisplayOptions: {
           tandem: numberDisplayTandem,
-          visibleProperty: createGatedVisibleProperty(
+          visibleProperty: new GatedVisibleProperty(
             new DerivedProperty( [ gravityProperty ], gravity => !gravity.hidden ),
             numberDisplayTandem
           )

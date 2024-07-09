@@ -21,7 +21,7 @@ import Vector3 from '../../../../dot/js/Vector3.js';
 import { Shape } from '../../../../kite/js/imports.js';
 import EnumerationIO from '../../../../tandem/js/types/EnumerationIO.js';
 import optionize, { combineOptions } from '../../../../phet-core/js/optionize.js';
-import { Color, ColorProperty, createGatedVisibleProperty, PDOMValueType } from '../../../../scenery/js/imports.js';
+import { Color, ColorProperty, GatedVisibleProperty, PDOMValueType } from '../../../../scenery/js/imports.js';
 import PhetioObject, { PhetioObjectOptions } from '../../../../tandem/js/PhetioObject.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
 import BooleanIO from '../../../../tandem/js/types/BooleanIO.js';
@@ -269,7 +269,7 @@ export default abstract class Mass extends PhetioObject {
       phetioReadOnly: true
     } );
 
-    this.visibleProperty = createGatedVisibleProperty( this.internalVisibleProperty, tandem );
+    this.visibleProperty = new GatedVisibleProperty( this.internalVisibleProperty, tandem );
 
     this.materialProperty = new Property( options.material, combineOptions<PropertyOptions<Material>>( {
       valueType: Material,

@@ -23,8 +23,6 @@ type BottleDrawingData = {
 
 export default class BottleView extends MeasurableMassView {
 
-  private readonly bottle: Bottle;
-
   public constructor( bottle: Bottle,
                       modelViewTransform: THREEModelViewTransform,
                       displayPropreties: DisplayProperties ) {
@@ -97,8 +95,6 @@ export default class BottleView extends MeasurableMassView {
     Material.linkLiquidColor( bottle.interiorMaterialProperty, interiorSurfaceMaterial );
     Material.linkLiquidColor( bottle.interiorMaterialProperty, bottleDrawingData.backBottomMaterial );
     Material.linkLiquidColor( bottle.interiorMaterialProperty, bottleDrawingData.frontBottomMaterial );
-
-    this.bottle = bottle;
 
     const bottleSize = bottle.getBounds();
     this.tagOffsetProperty.value = new Vector3( -bottleSize.width / 2 + TAG_OFFSET, bottleSize.height / 2 - TAG_OFFSET, bottleSize.depth / 2 );

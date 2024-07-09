@@ -52,8 +52,7 @@ type BuoyancyShapesScreenViewOptions = StrictOmit<DensityBuoyancyScreenViewOptio
 
 export default class BuoyancyShapesScreenView extends BuoyancyScreenView<BuoyancyShapesModel> {
 
-  private rightBox: MultiSectionPanelsNode;
-
+  private readonly rightBox: MultiSectionPanelsNode;
   private readonly positionInfoButton: () => void;
 
   public constructor( model: BuoyancyShapesModel, options: BuoyancyShapesScreenViewOptions ) {

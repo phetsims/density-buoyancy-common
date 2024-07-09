@@ -355,16 +355,10 @@ export default class BuoyancyApplicationsScreenView extends BuoyancyScreenView<B
       objectDensityAccordionBox.setReadoutItems( materials.map( material => {
         return { readoutItem: material };
       } ) );
-      const submergedObjects = scene === 'BOTTLE' ?
-        [ {
-          readoutItem: model.bottle,
-          readoutNameProperty: DensityBuoyancyCommonStrings.bottleStringProperty
-        } ] :
-        [ {
-          readoutItem: model.boat,
-          readoutNameProperty: DensityBuoyancyCommonStrings.boatStringProperty
-        }
-        ];
+      const submergedObjects = [ {
+        readoutItem: scene === 'BOTTLE' ? model.bottle : model.boat,
+        readoutNameProperty: scene === 'BOTTLE' ? DensityBuoyancyCommonStrings.bottleStringProperty : DensityBuoyancyCommonStrings.boatStringProperty
+      } ];
       percentSubmergedAccordionBox.setReadoutItems( submergedObjects );
     } );
 
@@ -384,18 +378,15 @@ export default class BuoyancyApplicationsScreenView extends BuoyancyScreenView<B
       margin: MARGIN
     } ) );
 
-    const sceneRadioButtonGroup = new RectangularRadioButtonGroup( model.sceneProperty, [
-      {
-        value: 'BOTTLE',
-        createNode: () => BuoyancyApplicationsScreenView.getBottleIcon(),
-        tandemName: 'bottleRadioButton'
-      },
-      {
-        value: 'BOAT',
-        createNode: () => BuoyancyApplicationsScreenView.getBoatIcon(),
-        tandemName: 'boatRadioButton'
-      }
-    ], {
+    const sceneRadioButtonGroup = new RectangularRadioButtonGroup( model.sceneProperty, [ {
+      value: 'BOTTLE',
+      createNode: () => BuoyancyApplicationsScreenView.getBottleIcon(),
+      tandemName: 'bottleRadioButton'
+    }, {
+      value: 'BOAT',
+      createNode: () => BuoyancyApplicationsScreenView.getBoatIcon(),
+      tandemName: 'boatRadioButton'
+    } ], {
       orientation: 'horizontal',
       touchAreaXDilation: 6,
       touchAreaYDilation: 6,

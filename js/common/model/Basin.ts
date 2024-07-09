@@ -3,7 +3,7 @@
 /**
  * Represents a basin that a fluid can reside in at a specific level. This is used for the pool and fluid in the boat.
  *
- * @author Jonathan Olson <jonathan.olson@colorado.edu>
+ * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
 import NumberProperty from '../../../../axon/js/NumberProperty.js';

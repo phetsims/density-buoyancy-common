@@ -8,7 +8,7 @@
  * This interpolation is an established algorithm for handling excess DT when stepping based on fixed model steps
  * (which Density and Buoyancy do).
  *
- * @author Jonathan Olson <jonathan.olson@colorado.edu>
+ * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
 import Property, { PropertyOptions } from '../../../../axon/js/Property.js';

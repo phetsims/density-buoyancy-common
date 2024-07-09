@@ -3,7 +3,7 @@
 /**
  * Determines the mode difference between one block and two blocks.
  *
- * @author Jonathan Olson <jonathan.olson@colorado.edu>
+ * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
 import Enumeration from '../../../../phet-core/js/Enumeration.js';

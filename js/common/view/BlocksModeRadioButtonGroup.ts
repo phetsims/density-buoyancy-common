@@ -4,7 +4,7 @@
  * Controls whether the second mass is visible. This is a standard straightforward RectangularRadioButtonGroup. Most
  * of the complexity of this file is in generating the icons.
  *
- * @author Jonathan Olson <jonathan.olson@colorado.edu>
+ * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
 import Property from '../../../../axon/js/Property.js';

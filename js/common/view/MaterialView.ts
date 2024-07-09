@@ -5,7 +5,7 @@
  *
  * Also provides factory methods for creating MaterialViews for various Materials.
  *
- * @author Jonathan Olson <jonathan.olson@colorado.edu>
+ * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
 import Property from '../../../../axon/js/Property.js';

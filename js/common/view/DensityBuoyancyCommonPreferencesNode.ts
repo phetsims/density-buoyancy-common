@@ -7,7 +7,7 @@
  * The Preferences dialog is created on demand by joist, using a PhetioCapsule. So DensityBuoyancyCommonPreferencesNode and its
  * subcomponents must implement dispose.
  *
- * @author Jonathan Olson <jonathan.olson@colorado.edu>
+ * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
 import optionize, { EmptySelfOptions } from '../../../../phet-core/js/optionize.js';

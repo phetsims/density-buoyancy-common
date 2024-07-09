@@ -4,7 +4,7 @@
  * Slider control with tweaker buttons that changes the height of the Scale for some screens in the density-buoyancy
  * suite of sims.
  *
- * @author Agustín Vallejo
+ * @author Agustín Vallejo (PhET Interactive Simulations)
  */
 
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';

@@ -6,7 +6,7 @@
  * This is not the most descriptive name, as this Enumeration is specifically for "same variable" block sets, but we
  * don't want to rename this because of the PhET-iO API concerns.
  *
- * @author Jonathan Olson <jonathan.olson@colorado.edu>
+ * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
 import Enumeration from '../../../../phet-core/js/Enumeration.js';

@@ -3,7 +3,7 @@
 /**
  * The core model for the Density and Buoyancy sim screens, including a pool and masses.
  *
- * @author Jonathan Olson <jonathan.olson@colorado.edu>
+ * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';

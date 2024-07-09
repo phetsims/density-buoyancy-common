@@ -20,7 +20,7 @@
  * REVIEW: https://github.com/phetsims/density-buoyancy-common/issues/123 This file is > 800 lines of complicated code
  * with many magic numbers. We should make an effort to remove unused parts, and clean up where possible.
  *
- * @author Jonathan Olson <jonathan.olson@colorado.edu>
+ * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
 import Bounds2 from '../../../../../dot/js/Bounds2.js';

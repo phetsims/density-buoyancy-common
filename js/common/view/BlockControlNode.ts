@@ -3,7 +3,7 @@
 /**
  * A mass/volume control specifically for blocks.
  *
- * @author Jonathan Olson <jonathan.olson@colorado.edu>
+ * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
 import { Node } from '../../../../scenery/js/imports.js';

@@ -4,7 +4,7 @@
  * A Panel with nodes that are separated by an HSeparator. When nodes are hidden, so will any HSeparators that are
  * no longer needed.
  *
- * @author Jonathan Olson <jonathan.olson@colorado.edu>
+ * @author Jonathan Olson (PhET Interactive Simulations)
  * @author Michael Kauzmann (PhET Interactive Simulations)
  */
 

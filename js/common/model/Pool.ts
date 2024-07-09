@@ -3,7 +3,7 @@
 /**
  * The main pool of fluid, cut into the ground.
  *
- * @author Jonathan Olson <jonathan.olson@colorado.edu>
+ * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
 import Bounds3 from '../../../../dot/js/Bounds3.js';

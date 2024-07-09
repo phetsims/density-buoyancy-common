@@ -3,7 +3,7 @@
 /**
  * A model for the name of the Mass, storing name and color data for it.
  *
- * @author Jonathan Olson <jonathan.olson@colorado.edu>
+ * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
 import { Color, ColorProperty, ColorState } from '../../../../scenery/js/imports.js';

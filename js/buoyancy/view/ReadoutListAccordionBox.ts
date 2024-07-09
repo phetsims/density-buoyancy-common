@@ -5,7 +5,7 @@
  * displays a list of readouts. The readouts are created by passing an array of CustomReadoutObjects to the setReadoutItems
  * method.
  *
- * @author Agustín Vallejo
+ * @author Agustín Vallejo (PhET Interactive Simulations)
  */
 
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';

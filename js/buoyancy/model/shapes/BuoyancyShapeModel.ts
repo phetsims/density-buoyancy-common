@@ -4,7 +4,7 @@
  * The main model for a single shape model object in the sim. This manages changing the shape, phet-io, and updating
  * the size of the shape
  *
- * @author Jonathan Olson <jonathan.olson@colorado.edu>
+ * @author Jonathan Olson (PhET Interactive Simulations)
  * @author Michael Kauzmann (PhET Interactive Simulations)
  */
 

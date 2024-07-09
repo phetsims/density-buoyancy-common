@@ -3,7 +3,7 @@
 /**
  * The main model for the Shapes screen of the Buoyancy simulation.
  *
- * @author Jonathan Olson <jonathan.olson@colorado.edu>
+ * @author Jonathan Olson (PhET Interactive Simulations)
  * @author Michael Kauzmann (PhET Interactive Simulations)
  */
 

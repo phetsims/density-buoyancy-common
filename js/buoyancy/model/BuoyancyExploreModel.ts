@@ -3,7 +3,7 @@
 /**
  * The main model for the Explore screen of the Buoyancy simulation.
  *
- * @author Jonathan Olson <jonathan.olson@colorado.edu>
+ * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
 import EnumerationProperty from '../../../../axon/js/EnumerationProperty.js';

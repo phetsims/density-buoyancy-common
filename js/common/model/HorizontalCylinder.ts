@@ -3,7 +3,7 @@
 /**
  * A cylinder laying on its side (the caps are on the left/right)
  *
- * @author Jonathan Olson <jonathan.olson@colorado.edu>
+ * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
 import NumberProperty from '../../../../axon/js/NumberProperty.js';

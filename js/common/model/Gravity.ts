@@ -3,7 +3,7 @@
 /**
  * Represents different gravity values, including a custom option.
  *
- * @author Jonathan Olson <jonathan.olson@colorado.edu>
+ * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';

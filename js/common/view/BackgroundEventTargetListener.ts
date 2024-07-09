@@ -4,7 +4,7 @@
  * BackgroundEventTargetListener supports dragging masses around the screen and changing the cursor when it is over a
  * draggable mass.
  *
- * @author Jonathan Olson <jonathan.olson@colorado.edu>
+ * @author Jonathan Olson (PhET Interactive Simulations)
  * @author Sam Reid (PhET Interactive Simulations)
  */
 

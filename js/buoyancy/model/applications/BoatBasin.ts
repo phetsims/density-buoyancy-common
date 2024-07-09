@@ -3,7 +3,7 @@
 /**
  * Represents basin of the interior of the boat (that a liquid can reside in at a specific level).
  *
- * @author Jonathan Olson <jonathan.olson@colorado.edu>
+ * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
 import Vector2 from '../../../../../dot/js/Vector2.js';

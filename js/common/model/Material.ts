@@ -3,7 +3,7 @@
 /**
  * Represents different materials that solids/liquids in the simulations can take, including density/viscosity/color.
  *
- * @author Jonathan Olson <jonathan.olson@colorado.edu>
+ * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
 import DynamicProperty from '../../../../axon/js/DynamicProperty.js';

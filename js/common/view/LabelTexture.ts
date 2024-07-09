@@ -3,7 +3,7 @@
 /**
  * A wrapper for NodeTexture that scales it up and uses power-of-2 dimensions.
  *
- * @author Jonathan Olson <jonathan.olson@colorado.edu>
+ * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
 import NodeTexture from '../../../../mobius/js/NodeTexture.js';

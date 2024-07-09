@@ -3,7 +3,7 @@
 /**
  * Handles the THREE rendering for any of the 3D views of any type of mass.
  *
- * @author Jonathan Olson <jonathan.olson@colorado.edu>
+ * @author Jonathan Olson (PhET Interactive Simulations)
  * @author Michael Kauzmann (PhET Interactive Simulations)
  */
 

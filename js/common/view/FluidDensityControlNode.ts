@@ -3,7 +3,7 @@
 /**
  * Shows a combined NumberControl/ComboBox for controlling liquid density.
  *
- * @author Jonathan Olson <jonathan.olson@colorado.edu>
+ * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
 import Property from '../../../../axon/js/Property.js';

@@ -3,8 +3,8 @@
 /**
  * The 3D view for a Duck.
  *
- * @author Agustín Vallejo
- * @author Michael Kauzmann
+ * @author Agustín Vallejo (PhET Interactive Simulations)
+ * @author Michael Kauzmann (PhET Interactive Simulations)
  */
 
 import Bounds3 from '../../../../../dot/js/Bounds3.js';

@@ -3,7 +3,7 @@
 /**
  * The main model for the Compare screen of the Density simulation.
  *
- * @author Jonathan Olson <jonathan.olson@colorado.edu>
+ * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
 import StrictOmit from '../../../../phet-core/js/types/StrictOmit.js';

@@ -3,7 +3,7 @@
 /**
  * Adapter for the p2.js physics engine
  *
- * @author Jonathan Olson <jonathan.olson@colorado.edu>
+ * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
 import TEmitter from '../../../../axon/js/TEmitter.js';

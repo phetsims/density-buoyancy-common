@@ -5,7 +5,7 @@
  * materials.
  *
  * @author Michael Kauzmann (PhET Interactive Simulations)
- * @author Jonathan Olson <jonathan.olson@colorado.edu>
+ * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
 import DynamicProperty from '../../../../axon/js/DynamicProperty.js';

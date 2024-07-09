@@ -3,7 +3,7 @@
 /**
  * Model for Density/Buoyancy preferences, accessed via the Preferences dialog. They are global, and affect all screens.
  *
- * @author Jonathan Olson <jonathan.olson@colorado.edu>
+ * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
 import Tandem from '../../../../tandem/js/Tandem.js';

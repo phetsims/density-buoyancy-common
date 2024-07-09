@@ -6,7 +6,7 @@
  * PhysicsEngine.Body represents an opaque object reference type that is specific to the engine it was created from.
  * These can be created with the create* methods, and are passed in to many methods.
  *
- * @author Jonathan Olson <jonathan.olson@colorado.edu>
+ * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
 import Matrix3 from '../../../../dot/js/Matrix3.js';

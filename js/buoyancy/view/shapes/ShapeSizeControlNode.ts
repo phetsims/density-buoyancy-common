@@ -3,7 +3,7 @@
 /**
  * Controls the dimensions of different masses with a generic "height/width" control.
  *
- * @author Jonathan Olson <jonathan.olson@colorado.edu>
+ * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
 import BooleanProperty from '../../../../../axon/js/BooleanProperty.js';

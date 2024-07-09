@@ -8,7 +8,7 @@
  * class can create two NumberControl instances for controlling the mass. See options.highDensityMaxMass for details.
  * This was much easier than updating NumberControl and NumberDisplay to support a dynamic range, see https://github.com/phetsims/buoyancy/issues/31.
  *
- * @author Jonathan Olson <jonathan.olson@colorado.edu>
+ * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';

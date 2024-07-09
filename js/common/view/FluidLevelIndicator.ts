@@ -3,7 +3,7 @@
 /**
  * Shows the fluid level numerically next to the top-left of the pool's fluid. Lives for the lifetime of the sim.
  *
- * @author Jonathan Olson <jonathan.olson@colorado.edu>
+ * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';

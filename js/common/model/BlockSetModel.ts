@@ -3,7 +3,7 @@
 /**
  * Mix-in for modal Density/Buoyancy models, where callbacks will create/position masses for each set.
  *
- * @author Jonathan Olson <jonathan.olson@colorado.edu>
+ * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
 import EnumerationProperty from '../../../../axon/js/EnumerationProperty.js';

@@ -3,7 +3,7 @@
 /**
  * Mass shape for the Buoyancy Shapes screen. In the common model because some phet-io hackery is needed.
  *
- * @author Jonathan Olson <jonathan.olson@colorado.edu>
+ * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
 import Enumeration from '../../../../phet-core/js/Enumeration.js';

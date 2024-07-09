@@ -3,7 +3,7 @@
 /**
  * The 3D view for a Bottle.
  *
- * @author Jonathan Olson <jonathan.olson@colorado.edu>
+ * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
 import densityBuoyancyCommon from '../../../densityBuoyancyCommon.js';

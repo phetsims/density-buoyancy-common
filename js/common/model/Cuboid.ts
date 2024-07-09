@@ -3,7 +3,7 @@
 /**
  * An axis-aligned cuboid.
  *
- * @author Jonathan Olson <jonathan.olson@colorado.edu>
+ * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
 import Property from '../../../../axon/js/Property.js';

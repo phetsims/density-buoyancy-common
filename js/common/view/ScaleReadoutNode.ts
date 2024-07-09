@@ -3,7 +3,7 @@
 /**
  * Shows a readout in front of a scale, for its measured mass/weight.
  *
- * @author Jonathan Olson <jonathan.olson@colorado.edu>
+ * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
 import Utils from '../../../../dot/js/Utils.js';

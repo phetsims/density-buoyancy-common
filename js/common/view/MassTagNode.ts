@@ -3,7 +3,7 @@
 /**
  * The view code for the label for the name of the mass, often called the mass "tag" (see MassTag).
  *
- * @author Jonathan Olson <jonathan.olson@colorado.edu>
+ * @author Jonathan Olson (PhET Interactive Simulations)
  * @author Michael Kauzmann (PhET Interactive Simulations)
  */
 

@@ -3,7 +3,7 @@
 /**
  * A cuboid with the same dimension in all directions (allows adjusting volume on the fly)
  *
- * @author Jonathan Olson <jonathan.olson@colorado.edu>
+ * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
 import Bounds3 from '../../../../dot/js/Bounds3.js';

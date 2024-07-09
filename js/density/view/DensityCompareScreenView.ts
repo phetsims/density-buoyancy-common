@@ -3,7 +3,7 @@
 /**
  * The main view for the Compare screen of the Density simulation.
  *
- * @author Jonathan Olson <jonathan.olson@colorado.edu>
+ * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
 import Vector3 from '../../../../dot/js/Vector3.js';

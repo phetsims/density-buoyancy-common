@@ -4,7 +4,7 @@
  * A special case scale which height is controlled by a slider. It also extends the invisible part of the scale
  * vertically downward to prevent objects from being dragged beneath it.
  *
- * @author Agustín Vallejo
+ * @author Agustín Vallejo (PhET Interactive Simulations)
  */
 
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';

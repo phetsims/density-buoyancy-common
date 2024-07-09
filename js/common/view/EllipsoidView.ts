@@ -3,7 +3,7 @@
 /**
  * The 3D view for an Ellipsoid.
  *
- * @author Jonathan Olson <jonathan.olson@colorado.edu>
+ * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
 import Bounds3 from '../../../../dot/js/Bounds3.js';

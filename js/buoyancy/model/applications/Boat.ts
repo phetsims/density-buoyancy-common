@@ -4,7 +4,7 @@
  * A boat (Mass) that can contain some liquid inside.  Boats exist for the lifetime of the sim and do not need to be
  * disposed.
  *
- * @author Jonathan Olson <jonathan.olson@colorado.edu>
+ * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
 import StrictOmit from '../../../../../phet-core/js/types/StrictOmit.js';

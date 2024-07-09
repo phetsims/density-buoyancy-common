@@ -3,7 +3,7 @@
 /**
  * Handles controlling a quantity with a NumberControl, but combined with a ComboBox for specific non-custom values.
  *
- * @author Jonathan Olson <jonathan.olson@colorado.edu>
+ * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
 import BooleanProperty from '../../../../axon/js/BooleanProperty.js';

@@ -3,7 +3,7 @@
 /**
  * An AccordionBox that displays the density of each material.
  *
- * @author Agustín Vallejo
+ * @author Agustín Vallejo (PhET Interactive Simulations)
  */
 
 import DynamicProperty from '../../../../axon/js/DynamicProperty.js';

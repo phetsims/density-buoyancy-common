@@ -3,7 +3,7 @@
 /**
  * An AccordionBox that displays the percentage of a material that is submerged in a fluid.
  *
- * @author Agustín Vallejo
+ * @author Agustín Vallejo (PhET Interactive Simulations)
  */
 
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';

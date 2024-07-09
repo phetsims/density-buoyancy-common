@@ -3,7 +3,7 @@
 /**
  * The 3D view for a Boat.
  *
- * @author Jonathan Olson <jonathan.olson@colorado.edu>
+ * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
 import TReadOnlyProperty from '../../../../../axon/js/TReadOnlyProperty.js';

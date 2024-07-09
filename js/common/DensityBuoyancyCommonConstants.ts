@@ -3,7 +3,7 @@
 /**
  * Constants for the density/buoyancy sims
  *
- * @author Jonathan Olson <jonathan.olson@colorado.edu>
+ * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
 import Dimension2 from '../../../dot/js/Dimension2.js';

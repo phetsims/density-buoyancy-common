@@ -11,7 +11,7 @@ import DensityBuoyancyCommonConstants from '../../../common/DensityBuoyancyCommo
 /**
  * ShapesInfoDialog is a dialog that displays info related to the forces and torque limitations within the sim
  *
- * @author Agustín Vallejo
+ * @author Agustín Vallejo (PhET Interactive Simulations)
  */
 
 

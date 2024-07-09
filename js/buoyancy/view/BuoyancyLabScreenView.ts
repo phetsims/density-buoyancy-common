@@ -4,7 +4,7 @@
  * The main view for the Lab screen of the Buoyancy simulation.
  *
  * @author Michael Kauzmann (PhET Interactive Simulations)
- * @author Jonathan Olson <jonathan.olson@colorado.edu>
+ * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';

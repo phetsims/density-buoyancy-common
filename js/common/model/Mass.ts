@@ -3,7 +3,7 @@
 /**
  * Represents a mass that interacts in the scene, and can potentially float or displace liquid.
  *
- * @author Jonathan Olson <jonathan.olson@colorado.edu>
+ * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
 import BooleanProperty, { BooleanPropertyOptions } from '../../../../axon/js/BooleanProperty.js';

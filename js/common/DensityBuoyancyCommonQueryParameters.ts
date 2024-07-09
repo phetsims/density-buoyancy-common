@@ -3,7 +3,7 @@
 /**
  * Query parameters supported by density-buoyancy-common simulations.
  *
- * @author Jonathan Olson <jonathan.olson@colorado.edu>
+ * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
 import densityBuoyancyCommon from '../densityBuoyancyCommon.js';

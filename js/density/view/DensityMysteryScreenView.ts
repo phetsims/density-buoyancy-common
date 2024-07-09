@@ -3,7 +3,7 @@
 /**
  * The main view for the Mystery screen of the Density simulation.
  *
- * @author Jonathan Olson <jonathan.olson@colorado.edu>
+ * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
 import RefreshButton from '../../../../scenery-phet/js/buttons/RefreshButton.js';

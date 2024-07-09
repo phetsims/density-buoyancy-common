@@ -3,7 +3,7 @@
 /**
  * Shows a NumberControl for the current BlockSet, to control the "locked in" variable.
  *
- * @author Jonathan Olson <jonathan.olson@colorado.edu>
+ * @author Jonathan Olson (PhET Interactive Simulations)
  * @author Michael Kauzmann (PhET Interactive Simulations)
  */
 

@@ -3,7 +3,7 @@
 /**
  * The base type for 3D views of any type of mass.
  *
- * @author Jonathan Olson <jonathan.olson@colorado.edu>
+ * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
 import Property from '../../../../axon/js/Property.js';

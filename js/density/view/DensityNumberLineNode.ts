@@ -3,7 +3,7 @@
 /**
  * Displays a bar-scale with interactive density labels above/below and named reference values.
  *
- * @author Jonathan Olson <jonathan.olson@colorado.edu>
+ * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';

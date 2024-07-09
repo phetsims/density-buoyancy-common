@@ -3,7 +3,7 @@
 /**
  * A custom slider thumb (that appears like our wavelength sliders) with a thin line on the actual slider track.
  *
- * @author Jonathan Olson <jonathan.olson@colorado.edu>
+ * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
 import { Shape } from '../../../../kite/js/imports.js';

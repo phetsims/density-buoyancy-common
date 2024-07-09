@@ -20,7 +20,7 @@ import Vector2 from '../../../../dot/js/Vector2.js';
 // In model coordinates, the margin for the MassTagNode's placement from the top left of the mass.
 export const TAG_OFFSET = MASS_MIN_SHAPES_DIMENSION / 20;
 
-// Calculated by comparing the original label rectangle size when providing primary/secondary tags
+// Calculated by comparing the original label rectangle size when providing A/B tags
 const horizontalMargin = 14;
 const verticalMargin = 5;
 

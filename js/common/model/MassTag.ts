@@ -40,12 +40,13 @@ export default class MassTag {
     return new MassTag( this.nameProperty, this._tandemName, colorProperty );
   }
 
-  public static readonly PRIMARY_COLOR_PROPERTY = DensityBuoyancyCommonColors.labelPrimaryProperty;
-  public static readonly SECONDARY_COLOR_PROPERTY = DensityBuoyancyCommonColors.labelSecondaryProperty;
+  // TODO Remember these colors https://github.com/phetsims/density-buoyancy-common/issues/182
+  public static readonly OBJECT_A_COLOR_PROPERTY = DensityBuoyancyCommonColors.tagAProperty;
+  public static readonly OBJECT_B_COLOR_PROPERTY = DensityBuoyancyCommonColors.tagBProperty;
 
   // TODO How to rename these tags? https://github.com/phetsims/density-buoyancy-common/issues/182
-  public static readonly PRIMARY = new MassTag( DensityBuoyancyCommonStrings.massLabel.primaryStringProperty, null, MassTag.PRIMARY_COLOR_PROPERTY );
-  public static readonly SECONDARY = new MassTag( DensityBuoyancyCommonStrings.massLabel.secondaryStringProperty, null, MassTag.SECONDARY_COLOR_PROPERTY );
+  public static readonly OBJECT_A = new MassTag( DensityBuoyancyCommonStrings.massLabel.primaryStringProperty, null, MassTag.OBJECT_A_COLOR_PROPERTY );
+  public static readonly OBJECT_B = new MassTag( DensityBuoyancyCommonStrings.massLabel.secondaryStringProperty, null, MassTag.OBJECT_B_COLOR_PROPERTY );
   public static readonly NONE = new MassTag( new StringProperty( 'NONE' ) );
   public static readonly ONE_A = new MassTag( DensityBuoyancyCommonStrings.massLabel[ '1aStringProperty' ], '1A' );
   public static readonly ONE_B = new MassTag( DensityBuoyancyCommonStrings.massLabel[ '1bStringProperty' ], '1B' );

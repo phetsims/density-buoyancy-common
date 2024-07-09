@@ -69,13 +69,13 @@ export default class BuoyancyShapesModel extends DensityBuoyancyModel {
 
     // TODO: solve this, https://github.com/phetsims/density-buoyancy-common/issues/182
     // eslint-disable-next-line tandem-name-should-match
-    this.shapeAModel = new BuoyancyShapeModel( MassShape.BLOCK, 0.25, 0.75, MassTag.PRIMARY, boundCreateMass, {
+    this.shapeAModel = new BuoyancyShapeModel( MassShape.BLOCK, 0.25, 0.75, MassTag.OBJECT_A, boundCreateMass, {
       tandem: options.tandem.createTandem( 'objectA' )
     } );
 
     // TODO: solve this, https://github.com/phetsims/density-buoyancy-common/issues/182
     // eslint-disable-next-line tandem-name-should-match
-    this.shapeBModel = new BuoyancyShapeModel( MassShape.BLOCK, 0.25, 0.75, MassTag.SECONDARY, boundCreateMass, {
+    this.shapeBModel = new BuoyancyShapeModel( MassShape.BLOCK, 0.25, 0.75, MassTag.OBJECT_B, boundCreateMass, {
       tandem: options.tandem.createTandem( 'objectB' )
     } );
 

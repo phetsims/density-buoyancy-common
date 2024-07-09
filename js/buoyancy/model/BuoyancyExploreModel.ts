@@ -38,12 +38,12 @@ export default class BuoyancyExploreModel extends DensityBuoyancyModel {
     } );
 
     this.massA = Cube.createWithMass( this.engine, Material.WOOD, new Vector2( -0.2, 0.2 ), 2, {
-      tag: MassTag.PRIMARY,
+      tag: MassTag.OBJECT_A,
       tandem: blocksTandem.createTandem( 'blockA' )
     } );
     this.availableMasses.push( this.massA );
     this.massB = Cube.createWithMass( this.engine, Material.ALUMINUM, new Vector2( 0.05, 0.35 ), 13.5, {
-      tag: MassTag.SECONDARY,
+      tag: MassTag.OBJECT_B,
 
       // REVIEW: Tandem doesn't match variable name
       tandem: blocksTandem.createTandem( 'blockB' ),

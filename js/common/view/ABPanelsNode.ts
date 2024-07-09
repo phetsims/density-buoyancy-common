@@ -27,7 +27,7 @@ export default class ABPanelsNode extends MultiSectionPanelsNode {
    */
   public static getPrimaryTagLabelNode(): Node {
     return new Node( {
-      children: [ new MassTagNode( MassTag.PRIMARY, 40 ) ],
+      children: [ new MassTagNode( MassTag.OBJECT_A, 40 ) ],
       scale: 1.3
     } );
   }
@@ -37,7 +37,7 @@ export default class ABPanelsNode extends MultiSectionPanelsNode {
    */
   public static getSecondaryTagLabelNode(): Node {
     return new Node( {
-      children: [ new MassTagNode( MassTag.SECONDARY, 40 ) ],
+      children: [ new MassTagNode( MassTag.OBJECT_B, 40 ) ],
       scale: 1.3
     } );
   }

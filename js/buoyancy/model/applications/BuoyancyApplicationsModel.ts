@@ -63,7 +63,7 @@ export default class BuoyancyApplicationsModel extends DensityBuoyancyModel {
       matrix: Matrix3.translation( 0, 0 ),
       tandem: objectsTandem.createTandem( 'bottle' ),
       visible: true,
-      tag: MassTag.PRIMARY
+      tag: MassTag.OBJECT_A
     } );
     this.availableMasses.push( this.bottle );
 

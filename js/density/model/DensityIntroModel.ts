@@ -41,12 +41,12 @@ export default class DensityIntroModel extends DensityBuoyancyModel {
     } );
 
     this.massA = Cube.createWithMass( this.engine, Material.WOOD, new Vector2( -0.2, 0.2 ), 2, {
-      tag: MassTag.PRIMARY,
+      tag: MassTag.OBJECT_A,
       tandem: blocksTandem.createTandem( 'blockA' )
     } );
     this.availableMasses.push( this.massA );
     this.massB = Cube.createWithMass( this.engine, Material.ALUMINUM, new Vector2( 0.2, 0.2 ), 13.5, {
-      tag: MassTag.SECONDARY,
+      tag: MassTag.OBJECT_B,
       tandem: blocksTandem.createTandem( 'blockB' ),
       visible: false
     } );

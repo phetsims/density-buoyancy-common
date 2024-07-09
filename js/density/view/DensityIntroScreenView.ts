@@ -75,14 +75,14 @@ export default class DensityIntroScreenView extends DensityBuoyancyScreenView<De
             nameProperty: model.massA.tag.nameProperty,
             visibleProperty: new BooleanProperty( true ),
             isHiddenProperty: new BooleanProperty( false ),
-            color: DensityBuoyancyCommonColors.labelPrimaryProperty
+            color: DensityBuoyancyCommonColors.tagAProperty
           },
           {
             densityProperty: new DerivedProperty( [ model.massB.materialProperty ], material => material.density ),
             nameProperty: model.massB.tag.nameProperty,
             visibleProperty: model.massB.visibleProperty,
             isHiddenProperty: new BooleanProperty( false ),
-            color: DensityBuoyancyCommonColors.labelSecondaryProperty
+            color: DensityBuoyancyCommonColors.tagBProperty
           }
         ],
         tandem: accordionTandem.createTandem( 'densityReadout' ),

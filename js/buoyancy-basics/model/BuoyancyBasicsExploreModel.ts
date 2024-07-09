@@ -41,7 +41,7 @@ export default class BuoyancyBasicsExploreModel extends DensityBuoyancyModel {
     const simpleMaterialsIdentifiers: MaterialName[] = Material.SIMPLE_MASS_MATERIALS.map( x => x.identifier ).concat( [ 'CUSTOM' ] );
 
     this.massA = Cube.createWithMass( this.engine, Material.WOOD, new Vector2( -0.2, 0.2 ), 2, {
-      tag: MassTag.PRIMARY,
+      tag: MassTag.OBJECT_A,
       adjustableMaterial: true,
       materialEnumPropertyValidValues: simpleMaterialsIdentifiers,
       adjustableColor: false,
@@ -49,7 +49,7 @@ export default class BuoyancyBasicsExploreModel extends DensityBuoyancyModel {
     } );
     this.availableMasses.push( this.massA );
     this.massB = Cube.createWithMass( this.engine, Material.ALUMINUM, new Vector2( 0.05, 0.35 ), 13.5, {
-      tag: MassTag.SECONDARY,
+      tag: MassTag.OBJECT_B,
       adjustableMaterial: true,
       materialEnumPropertyValidValues: simpleMaterialsIdentifiers,
       adjustableColor: false,

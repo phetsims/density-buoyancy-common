@@ -60,10 +60,10 @@ const DensityBuoyancyCommonColors = {
     default: Color.WHITE
   } ),
 
-  labelPrimaryProperty: new ProfileColorProperty( densityBuoyancyCommon, 'labelPrimary', {
+  tagAProperty: new ProfileColorProperty( densityBuoyancyCommon, 'tagA', {
     default: new Color( 237, 55, 50 )
   } ),
-  labelSecondaryProperty: new ProfileColorProperty( densityBuoyancyCommon, 'labelSecondary', {
+  tagBProperty: new ProfileColorProperty( densityBuoyancyCommon, 'tagB', {
     default: new Color( 48, 89, 166 )
   } ),
 

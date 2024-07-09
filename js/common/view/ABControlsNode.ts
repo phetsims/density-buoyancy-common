@@ -43,7 +43,7 @@ export default class ABControlsNode extends ABPanelsNode {
 
     const controlANode = new BlockControlNode( massA, popupLayer, true, combineOptions<BlockControlNodeOptions>( {
       labelNode: ABPanelsNode.getPrimaryTagLabelNode(),
-      color: DensityBuoyancyCommonColors.labelPrimaryProperty,
+      color: DensityBuoyancyCommonColors.tagAProperty,
       tandem: tandem.createTandem( 'blockAControlPanel' ),
       visiblePropertyOptions: {
         phetioFeatured: true
@@ -52,7 +52,7 @@ export default class ABControlsNode extends ABPanelsNode {
 
     const controlBNode = new BlockControlNode( massB, popupLayer, false, combineOptions<BlockControlNodeOptions>( {
       labelNode: ABPanelsNode.getSecondaryTagLabelNode(),
-      color: DensityBuoyancyCommonColors.labelSecondaryProperty,
+      color: DensityBuoyancyCommonColors.tagBProperty,
       tandem: tandem.createTandem( 'blockBControlPanel' ),
       visiblePropertyOptions: {
         phetioFeatured: true

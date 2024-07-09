@@ -37,15 +37,15 @@ export default class BuoyancyCompareModel extends CompareBlockSetModel {
           sameDensityVolume: 0.005,
           colorProperty: DensityBuoyancyCommonColors.compareOchreColorProperty,
           sameMassCubeOptions: {
-            tag: MassTag.ONE_A.withColorProperty( MassTag.PRIMARY_COLOR_PROPERTY ),
+            tag: MassTag.ONE_A.withColorProperty( MassTag.OBJECT_A_COLOR_PROPERTY ),
             tandem: blockSetsTandem.createTandem( BlockSet.SAME_MASS.tandemName ).createTandem( 'block1A' )
           },
           sameVolumeCubeOptions: {
-            tag: MassTag.TWO_A.withColorProperty( MassTag.PRIMARY_COLOR_PROPERTY ),
+            tag: MassTag.TWO_A.withColorProperty( MassTag.OBJECT_A_COLOR_PROPERTY ),
             tandem: blockSetsTandem.createTandem( BlockSet.SAME_VOLUME.tandemName ).createTandem( 'block2A' )
           },
           sameDensityCubeOptions: {
-            tag: MassTag.THREE_A.withColorProperty( MassTag.PRIMARY_COLOR_PROPERTY ),
+            tag: MassTag.THREE_A.withColorProperty( MassTag.OBJECT_A_COLOR_PROPERTY ),
             tandem: blockSetsTandem.createTandem( BlockSet.SAME_DENSITY.tandemName ).createTandem( 'block3A' )
           }
         }, {
@@ -54,15 +54,15 @@ export default class BuoyancyCompareModel extends CompareBlockSetModel {
           sameDensityVolume: 0.01,
           colorProperty: DensityBuoyancyCommonColors.compareBlueColorProperty,
           sameMassCubeOptions: {
-            tag: MassTag.ONE_B.withColorProperty( MassTag.SECONDARY_COLOR_PROPERTY ),
+            tag: MassTag.ONE_B.withColorProperty( MassTag.OBJECT_B_COLOR_PROPERTY ),
             tandem: blockSetsTandem.createTandem( BlockSet.SAME_MASS.tandemName ).createTandem( 'block1B' )
           },
           sameVolumeCubeOptions: {
-            tag: MassTag.TWO_B.withColorProperty( MassTag.SECONDARY_COLOR_PROPERTY ),
+            tag: MassTag.TWO_B.withColorProperty( MassTag.OBJECT_B_COLOR_PROPERTY ),
             tandem: blockSetsTandem.createTandem( BlockSet.SAME_VOLUME.tandemName ).createTandem( 'block2B' )
           },
           sameDensityCubeOptions: {
-            tag: MassTag.THREE_B.withColorProperty( MassTag.SECONDARY_COLOR_PROPERTY ),
+            tag: MassTag.THREE_B.withColorProperty( MassTag.OBJECT_B_COLOR_PROPERTY ),
             tandem: blockSetsTandem.createTandem( BlockSet.SAME_DENSITY.tandemName ).createTandem( 'block3B' )
           }
         }

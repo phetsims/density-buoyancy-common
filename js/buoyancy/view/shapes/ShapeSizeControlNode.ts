@@ -48,7 +48,7 @@ export default class ShapeSizeControlNode extends VBox {
         value: massShape,
         createNode: () => new Text( massShape.shapeString, {
           font: DensityBuoyancyCommonConstants.COMBO_BOX_ITEM_FONT,
-          maxWidth: 110 // 160 minus maxwidth of the icons
+          maxWidth: 110 // 160 minus maxWidth of the icons
         } ),
         tandemName: `${massShape.tandemName}Item`,
         a11yName: massShape.shapeString
@@ -95,9 +95,7 @@ export default class ShapeSizeControlNode extends VBox {
     }, numberControlOptions ) );
 
     // DerivedProperty doesn't need disposal, since everything here lives for the lifetime of the simulation
-    const litersProperty = new DerivedProperty( [ volumeProperty ], volume => {
-      return toLiters( volume );
-    } );
+    const litersProperty = new DerivedProperty( [ volumeProperty ], volume => toLiters( volume ) );
 
     this.children = [
       new HBox( {

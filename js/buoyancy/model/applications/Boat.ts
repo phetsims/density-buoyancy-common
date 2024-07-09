@@ -35,7 +35,7 @@ export default class Boat extends ApplicationsMass {
   // The volume that the boat can hold inside it.
   public readonly fluidMaterialProperty: TProperty<Material>;
 
-  public readonly displacementVolumeProperty: NumberProperty;
+  public readonly maxVolumeDisplacedProperty: NumberProperty;
 
   // The interior that can contain liquid
   public readonly basin: BoatBasin;
@@ -71,15 +71,15 @@ export default class Boat extends ApplicationsMass {
 
     super( engine, options );
 
-    this.displacementVolumeProperty = new NumberProperty( ApplicationsMass.DEFAULT_DISPLACEMENT_VOLUME, {
-      tandem: options.tandem.createTandem( 'displacementVolumeProperty' ),
+    this.maxVolumeDisplacedProperty = new NumberProperty( ApplicationsMass.DEFAULT_DISPLACEMENT_VOLUME, {
+      tandem: options.tandem.createTandem( 'maxVolumeDisplacedProperty' ),
       phetioDocumentation: 'The total volume of the boat, including its capacity and hull.',
       range: new Range( 0.005, 0.03 ),
       units: 'm^3'
     } );
 
     // Update the shape when the block width or displacement changes
-    Multilink.multilink( [ blockWidthProperty, this.displacementVolumeProperty ], ( blockWidth, displacementVolume ) => {
+    Multilink.multilink( [ blockWidthProperty, this.maxVolumeDisplacedProperty ], ( blockWidth, displacementVolume ) => {
       if ( displacementVolume === 0 ) {
         return;
       }
@@ -136,7 +136,7 @@ export default class Boat extends ApplicationsMass {
     const xOffset = this.stepMatrix.m02();
     const yOffset = this.stepMatrix.m12();
 
-    const displacedVolume = this.displacementVolumeProperty.value;
+    const displacedVolume = this.maxVolumeDisplacedProperty.value;
     this.stepMultiplier = Math.pow( displacedVolume / 0.001, 1 / 3 );
     this.stepInternalVolume = BoatDesign.ONE_LITER_INTERNAL_VOLUMES[ BoatDesign.ONE_LITER_INTERNAL_VOLUMES.length - 1 ] * this.stepMultiplier * this.stepMultiplier * this.stepMultiplier;
 
@@ -232,7 +232,7 @@ export default class Boat extends ApplicationsMass {
    * Resets values to their original state
    */
   public override reset(): void {
-    this.displacementVolumeProperty.reset();
+    this.maxVolumeDisplacedProperty.reset();
 
     this.basin.reset();
     this.verticalVelocity = 0;

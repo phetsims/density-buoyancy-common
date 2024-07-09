@@ -107,7 +107,7 @@ export default class BuoyancyApplicationsScreenView extends BuoyancyScreenView<B
 
     const bottleControlsTandem = tandem.createTandem( 'bottleControls' );
     const materialInsideControlsTandem = bottleControlsTandem.createTandem( 'materialInsideControls' );
-    const materialInsideControls = new MaterialMassVolumeControlNode( model.bottle.interiorMaterialProperty, model.bottle.interiorMassProperty, model.bottle.interiorVolumeProperty, [
+    const materialInsideControls = new MaterialMassVolumeControlNode( model.bottle.materialInsideProperty, model.bottle.interiorMassProperty, model.bottle.materialInsideVolumeProperty, [
       Material.GASOLINE,
       Material.OIL,
       Material.WATER,
@@ -116,13 +116,13 @@ export default class BuoyancyApplicationsScreenView extends BuoyancyScreenView<B
       Material.COPPER,
       Material.MATERIAL_R,
       Material.MATERIAL_S
-    ], volume => model.bottle.interiorVolumeProperty.set( volume ), this.popupLayer, true, {
+    ], volume => model.bottle.materialInsideVolumeProperty.set( volume ), this.popupLayer, true, {
       minMass: 0,
       minCustomMass: 0,
       maxCustomMass: 100,
       maxMass: 100,
-      minVolumeLiters: model.bottle.interiorVolumePropertyRange.min,
-      maxVolumeLiters: model.bottle.interiorVolumePropertyRange.max,
+      minVolumeLiters: model.bottle.materialInsideVolumeRange.min,
+      maxVolumeLiters: model.bottle.materialInsideVolumeRange.max,
       minCustomVolumeLiters: 0.5,
       showMassAsReadout: true,
       supportHiddenMaterial: true,
@@ -131,9 +131,9 @@ export default class BuoyancyApplicationsScreenView extends BuoyancyScreenView<B
     } );
 
     // This DerivedProperty doesn't need disposal, since everything here lives for the lifetime of the simulation
-    const airLitersProperty = new DerivedProperty( [ model.bottle.interiorVolumeProperty ], volume => toLiters( 0.01 - volume ) );
+    const airLitersProperty = new DerivedProperty( [ model.bottle.materialInsideVolumeProperty ], volume => toLiters( 0.01 - volume ) );
 
-    const customDensityControlVisibleProperty = new DerivedProperty( [ model.bottle.interiorMaterialProperty ],
+    const customDensityControlVisibleProperty = new DerivedProperty( [ model.bottle.materialInsideProperty ],
       material => material.custom );
 
     let materialChangeLocked = false;
@@ -143,9 +143,9 @@ export default class BuoyancyApplicationsScreenView extends BuoyancyScreenView<B
       model.bottle.interiorMassProperty,
       customDensityControlVisibleProperty
     ], ( density, densityRange ) => {
-      if ( !materialChangeLocked && model.bottle.interiorMaterialProperty.value.custom ) {
+      if ( !materialChangeLocked && model.bottle.materialInsideProperty.value.custom ) {
         materialChangeLocked = true;
-        model.bottle.interiorMaterialProperty.value = Material.createCustomSolidMaterial( {
+        model.bottle.materialInsideProperty.value = Material.createCustomSolidMaterial( {
           density: density * DensityBuoyancyCommonConstants.LITERS_IN_CUBIC_METER,
           densityRange: densityRange.times( DensityBuoyancyCommonConstants.LITERS_IN_CUBIC_METER )
         } );
@@ -240,7 +240,7 @@ export default class BuoyancyApplicationsScreenView extends BuoyancyScreenView<B
     } );
 
     const boatVolumeControlTandem = tandem.createTandem( 'boatVolumeNumberControl' );
-    const boatVolumeRange = model.boat.displacementVolumeProperty.range.times( DensityBuoyancyCommonConstants.LITERS_IN_CUBIC_METER );
+    const boatVolumeRange = model.boat.maxVolumeDisplacedProperty.range.times( DensityBuoyancyCommonConstants.LITERS_IN_CUBIC_METER );
     const boatBox = new VBox( {
       spacing: DensityBuoyancyCommonConstants.SPACING_SMALL,
       align: 'left',
@@ -248,7 +248,7 @@ export default class BuoyancyApplicationsScreenView extends BuoyancyScreenView<B
         blockControls,
         new HSeparator(),
         // Convert cubic meters => liters
-        new NumberControl( DensityBuoyancyCommonStrings.boatVolumeStringProperty, new UnitConversionProperty( model.boat.displacementVolumeProperty, {
+        new NumberControl( DensityBuoyancyCommonStrings.boatVolumeStringProperty, new UnitConversionProperty( model.boat.maxVolumeDisplacedProperty, {
           factor: DensityBuoyancyCommonConstants.LITERS_IN_CUBIC_METER
         } ), boatVolumeRange, combineOptions<NumberControlOptions>( {
           numberDisplayOptions: {
@@ -267,7 +267,7 @@ export default class BuoyancyApplicationsScreenView extends BuoyancyScreenView<B
             constrainValue: ( value: number ) => {
               return boatVolumeRange.constrainValue( Utils.roundToInterval( value, 0.1 ) );
             },
-            phetioLinkedProperty: model.boat.displacementVolumeProperty,
+            phetioLinkedProperty: model.boat.maxVolumeDisplacedProperty,
             majorTickLength: 5,
             majorTicks: [ {
               value: boatVolumeRange.min,
@@ -345,7 +345,7 @@ export default class BuoyancyApplicationsScreenView extends BuoyancyScreenView<B
 
     model.sceneProperty.link( scene => {
       const materials = scene === 'BOTTLE' ? [
-        model.bottle.interiorMaterialProperty,
+        model.bottle.materialInsideProperty,
         model.bottle.materialProperty
       ] : scene === 'BOAT' ? [
         model.block.materialProperty,
@@ -484,7 +484,7 @@ export default class BuoyancyApplicationsScreenView extends BuoyancyScreenView<B
       y,
       hasVisibleBoat ? boat.matrix.translation.x : 0,
       hasVisibleBoat ? y - boat.matrix.translation.y : 0,
-      hasVisibleBoat ? boat.displacementVolumeProperty.value / 0.001 : 0,
+      hasVisibleBoat ? boat.maxVolumeDisplacedProperty.value / 0.001 : 0,
       this.model.poolBounds, fluidPositionArray, wasFilled );
     fluidGeometry.attributes.position.needsUpdate = true;
     fluidGeometry.computeBoundingSphere();

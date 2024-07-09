@@ -182,11 +182,11 @@ export default class Bottle extends ApplicationsMass {
   // model-coordinate bounds in x,y
   private readonly bottleBounds: Bounds2;
 
-  public readonly interiorMaterialProperty: Property<Material>;
-  public readonly interiorVolumePropertyRange = new Range( 0, 10 );
-  public readonly interiorVolumeProperty: Property<number>; // m^3
+  public readonly materialInsideProperty: Property<Material>;
+  public readonly materialInsideVolumeRange = new Range( 0, 10 );
+  public readonly materialInsideVolumeProperty: Property<number>; // m^3
 
-  public readonly displacementVolumeProperty = new NumberProperty( ApplicationsMass.DEFAULT_DISPLACEMENT_VOLUME );
+  public readonly maxVolumeDisplacedProperty = new NumberProperty( ApplicationsMass.DEFAULT_DISPLACEMENT_VOLUME );
 
   // In kg (kilograms)
   public interiorMassProperty: ReadOnlyProperty<number>;
@@ -215,17 +215,19 @@ export default class Bottle extends ApplicationsMass {
     this.bottleBounds = Bounds2.NOTHING.copy();
     Bottle.getFlatIntersectionVertices().forEach( p => this.bottleBounds.addPoint( p ) );
 
-    this.interiorMaterialProperty = new Property( BOTTLE_INITIAL_INTERIOR_MATERIAL, {
+    const materialInsideTandem = options.tandem.createTandem( 'materialInside' );
+
+    this.materialInsideProperty = new Property( BOTTLE_INITIAL_INTERIOR_MATERIAL, {
       valueType: Material,
       reentrant: true,
-      tandem: options.tandem.createTandem( 'interiorMaterialProperty' ),
+      tandem: materialInsideTandem.createTandem( 'materialProperty' ),
       phetioValueType: Material.MaterialIO
     } );
 
-    this.interiorVolumeProperty = new NumberProperty( BOTTLE_INITIAL_INTERIOR_VOLUME, {
-      tandem: options.tandem.createTandem( 'interiorVolumeProperty' ),
+    this.materialInsideVolumeProperty = new NumberProperty( BOTTLE_INITIAL_INTERIOR_VOLUME, {
+      tandem: materialInsideTandem.createTandem( 'volumeProperty' ),
       phetioDocumentation: 'Volume of the material inside the bottle.',
-      range: this.interiorVolumePropertyRange,
+      range: this.materialInsideVolumeRange,
       units: 'm^3'
     } );
 
@@ -234,21 +236,21 @@ export default class Bottle extends ApplicationsMass {
 
     this.customDensityProperty = new NumberProperty( 1, {
       range: new Range( 0.05, 20 ),
-      tandem: options.tandem.createTandem( 'customDensityProperty' ),
+      tandem: materialInsideTandem.createTandem( 'customDensityProperty' ),
       phetioDocumentation: 'Density of the material inside the bottle when ‘CUSTOM’ is chosen.',
       phetioFeatured: true,
       units: 'kg/L'
     } );
 
-    this.interiorMassProperty = new DerivedProperty( [ this.interiorMaterialProperty, this.interiorVolumeProperty ], ( material, volume ) => {
+    this.interiorMassProperty = new DerivedProperty( [ this.materialInsideProperty, this.materialInsideVolumeProperty ], ( material, volume ) => {
       return material.density * volume;
     }, {
-      tandem: options.tandem.createTandem( 'interiorMassProperty' ),
+      tandem: materialInsideTandem.createTandem( 'massProperty' ),
       phetioDocumentation: 'Mass of the material inside the bottle.',
       phetioValueType: NumberIO
     } );
 
-    Multilink.multilink( [ this.interiorMaterialProperty, this.interiorVolumeProperty ], ( material, volume ) => {
+    Multilink.multilink( [ this.materialInsideProperty, this.materialInsideVolumeProperty ], ( material, volume ) => {
       this.materialProperty.value = Material.createCustomSolidMaterial( {
         nameProperty: DensityBuoyancyCommonStrings.systemAStringProperty,
         density: ( BOTTLE_MASS + material.density * volume ) / BOTTLE_VOLUME,
@@ -287,8 +289,8 @@ export default class Bottle extends ApplicationsMass {
    * Resets values to their original state
    */
   public override reset(): void {
-    this.interiorMaterialProperty.reset();
-    this.interiorVolumeProperty.reset();
+    this.materialInsideProperty.reset();
+    this.materialInsideVolumeProperty.reset();
 
     super.reset();
   }

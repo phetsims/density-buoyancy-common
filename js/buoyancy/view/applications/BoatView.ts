@@ -53,7 +53,7 @@ export default class BoatView extends MeasurableMassView {
       boatGroup.scale.y = scale;
       boatGroup.scale.z = scale;
     };
-    boat.displacementVolumeProperty.link( updateBoatScale );
+    boat.maxVolumeDisplacedProperty.link( updateBoatScale );
 
     const topFluidPositionArray = BoatDesign.createCrossSectionVertexArray();
     const topFluidNormalArray = new Float32Array( topFluidPositionArray.length );
@@ -75,7 +75,7 @@ export default class BoatView extends MeasurableMassView {
 
     const fluidMultilink = Multilink.multilink( [
       boat.basin.fluidYInterpolatedProperty,
-      boat.displacementVolumeProperty,
+      boat.maxVolumeDisplacedProperty,
       boat.basin.fluidVolumeProperty
     ], ( boatFluidY, boatDisplacement, boatFluidVolume ) => {
       const poolFluidY = fluidYInterpolatedProperty.value;
@@ -115,7 +115,7 @@ export default class BoatView extends MeasurableMassView {
 
     this.disposeEmitter.addListener( () => {
       fluidMultilink.dispose();
-      boat.displacementVolumeProperty.unlink( updateBoatScale );
+      boat.maxVolumeDisplacedProperty.unlink( updateBoatScale );
     } );
   }
 

@@ -122,7 +122,7 @@ export default class DebugView extends Node {
       try {
         poolShape = poolShape.shapeDifference( mass.shapeProperty.value.transformed( mass.matrix ) );
         if ( mass instanceof Boat ) {
-          const multiplier = Math.pow( mass.displacementVolumeProperty.value / 0.001, 1 / 3 );
+          const multiplier = Math.pow( mass.maxVolumeDisplacedProperty.value / 0.001, 1 / 3 );
           poolShape = poolShape.shapeDifference( mass.basin.oneLiterShape.transformed( Matrix3.scaling( multiplier ) ).transformed( mass.matrix ) );
         }
       }
@@ -205,7 +205,7 @@ class DebugMassNode extends Node {
       matrix.set12( 0 );
 
       if ( mass instanceof Boat ) {
-        const multiplier = Math.pow( mass.displacementVolumeProperty.value / 0.001, 1 / 3 );
+        const multiplier = Math.pow( mass.maxVolumeDisplacedProperty.value / 0.001, 1 / 3 );
         const basinShape = mass.basin.oneLiterShape.transformed( Matrix3.scaling( multiplier ) );
         path.shape = shape.shapeDifference( basinShape ).transformed( matrix );
         intersectionPath.shape = shape.transformed( matrix );
@@ -256,9 +256,9 @@ class DebugMassNode extends Node {
 
         hitPath.shape = basinShape.transformed( matrix );
       };
-      mass.displacementVolumeProperty.link( displacementListener );
+      mass.maxVolumeDisplacedProperty.link( displacementListener );
       this.disposeEmitter.addListener( () => {
-        mass.displacementVolumeProperty.unlink( displacementListener );
+        mass.maxVolumeDisplacedProperty.unlink( displacementListener );
       } );
 
       // @ts-expect-error
@@ -275,7 +275,7 @@ class DebugMassNode extends Node {
 
           const invertedMatrix = mass.matrix.inverted();
 
-          const multiplier = Math.pow( mass.displacementVolumeProperty.value / 0.001, 1 / 3 );
+          const multiplier = Math.pow( mass.maxVolumeDisplacedProperty.value / 0.001, 1 / 3 );
           const basinShape = mass.basin.oneLiterShape.transformed( Matrix3.scaling( multiplier ) );
           const rectangleShape = Shape.bounds( new Bounds2( -10, -10, 10, y ) ).transformed( invertedMatrix );
 

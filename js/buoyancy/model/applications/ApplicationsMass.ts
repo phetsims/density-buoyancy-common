@@ -19,11 +19,11 @@ export type ApplicationsMassOptions = StrictOmit<InstrumentedMassOptions, 'canRo
 
 export default abstract class ApplicationsMass extends Mass {
 
-  // The default volume that the boat or bottle can hold inside them, in m^3
+  // The default volume of the max displacement for the mass, in m^3
   protected static readonly DEFAULT_DISPLACEMENT_VOLUME = 0.01;
 
   // The volume of the mass's capacity AND itself. For example the boat is the hull plus how much the boat can hold.
-  public readonly abstract displacementVolumeProperty: NumberProperty;
+  public readonly abstract maxVolumeDisplacedProperty: NumberProperty;
 
   protected readonly massLabelOffsetVector3: Vector3;
 
@@ -86,7 +86,7 @@ export default abstract class ApplicationsMass extends Mass {
       return 0;
     }
     else if ( fluidLevel >= top ) {
-      return this.displacementVolumeProperty.value;
+      return this.maxVolumeDisplacedProperty.value;
     }
     else {
       const ratio = ( fluidLevel - bottom ) / ( top - bottom );

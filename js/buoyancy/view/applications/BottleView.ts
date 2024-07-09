@@ -61,22 +61,22 @@ export default class BottleView extends MeasurableMassView {
     const updateCrossSection = ( volume: number ) => {
       setCrossSectionRelativeY( Bottle.getYFromVolume( volume ) );
     };
-    bottle.interiorVolumeProperty.link( updateCrossSection );
+    bottle.materialInsideVolumeProperty.link( updateCrossSection );
 
     const adjustClipPlanes = () => {
-      const modelY = bottle.matrix.translation.y + Bottle.getYFromVolume( bottle.interiorVolumeProperty.value );
+      const modelY = bottle.matrix.translation.y + Bottle.getYFromVolume( bottle.materialInsideVolumeProperty.value );
 
       bottomClipPlane.constant = modelY;
       topClipPlane.constant = -modelY;
     };
     bottle.transformedEmitter.addListener( adjustClipPlanes );
-    bottle.interiorVolumeProperty.lazyLink( adjustClipPlanes );
+    bottle.materialInsideVolumeProperty.lazyLink( adjustClipPlanes );
     adjustClipPlanes();
 
     this.disposeEmitter.addListener( () => {
-      bottle.interiorVolumeProperty.unlink( adjustClipPlanes );
+      bottle.materialInsideVolumeProperty.unlink( adjustClipPlanes );
       bottle.transformedEmitter.removeListener( adjustClipPlanes );
-      bottle.interiorVolumeProperty.unlink( updateCrossSection );
+      bottle.materialInsideVolumeProperty.unlink( updateCrossSection );
     } );
 
     const interiorSurfaceMaterial = new THREE.MeshPhongMaterial( {
@@ -92,9 +92,9 @@ export default class BottleView extends MeasurableMassView {
 
     interiorSurface.renderOrder = 2;
 
-    Material.linkLiquidColor( bottle.interiorMaterialProperty, interiorSurfaceMaterial );
-    Material.linkLiquidColor( bottle.interiorMaterialProperty, bottleDrawingData.backBottomMaterial );
-    Material.linkLiquidColor( bottle.interiorMaterialProperty, bottleDrawingData.frontBottomMaterial );
+    Material.linkLiquidColor( bottle.materialInsideProperty, interiorSurfaceMaterial );
+    Material.linkLiquidColor( bottle.materialInsideProperty, bottleDrawingData.backBottomMaterial );
+    Material.linkLiquidColor( bottle.materialInsideProperty, bottleDrawingData.frontBottomMaterial );
 
     const bottleSize = bottle.getBounds();
     this.tagOffsetProperty.value = new Vector3( -bottleSize.width / 2 + TAG_OFFSET, bottleSize.height / 2 - TAG_OFFSET, bottleSize.depth / 2 );

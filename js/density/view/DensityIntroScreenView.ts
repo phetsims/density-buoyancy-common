@@ -11,7 +11,7 @@ import Vector2 from '../../../../dot/js/Vector2.js';
 import { AlignBox, Node, RichText } from '../../../../scenery/js/imports.js';
 import AccordionBox, { AccordionBoxOptions } from '../../../../sun/js/AccordionBox.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
-import PrimarySecondaryControlsNode from '../../common/view/PrimarySecondaryControlsNode.js';
+import ABControlsNode from '../../common/view/ABControlsNode.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import DensityNumberLineNode from './DensityNumberLineNode.js';
@@ -36,7 +36,7 @@ type DensityIntroScreenViewOptions = StrictOmit<DensityBuoyancyScreenViewOptions
 
 export default class DensityIntroScreenView extends DensityBuoyancyScreenView<DensityIntroModel> {
 
-  private rightBox: PrimarySecondaryControlsNode;
+  private rightBox: ABControlsNode;
 
   public constructor( model: DensityIntroModel, options: DensityIntroScreenViewOptions ) {
 
@@ -50,9 +50,9 @@ export default class DensityIntroScreenView extends DensityBuoyancyScreenView<De
       cameraLookAt: DensityBuoyancyCommonConstants.DENSITY_CAMERA_LOOK_AT
     }, options ) );
 
-    this.rightBox = new PrimarySecondaryControlsNode(
-      model.primaryMass,
-      model.secondaryMass,
+    this.rightBox = new ABControlsNode(
+      model.massA,
+      model.massB,
       this.popupLayer, {
         tandem: tandem,
         maxCustomMass: 10
@@ -70,16 +70,16 @@ export default class DensityIntroScreenView extends DensityBuoyancyScreenView<De
         displayDensities: [
           // DerivedProperty doesn't need disposal, since everything here lives for the lifetime of the simulation
           {
-            densityProperty: new DerivedProperty( [ model.primaryMass.materialProperty ], material => material.density ),
-            nameProperty: model.primaryMass.tag.nameProperty,
+            densityProperty: new DerivedProperty( [ model.massA.materialProperty ], material => material.density ),
+            nameProperty: model.massA.tag.nameProperty,
             visibleProperty: new BooleanProperty( true ),
             isHiddenProperty: new BooleanProperty( false ),
             color: DensityBuoyancyCommonColors.labelPrimaryProperty
           },
           {
-            densityProperty: new DerivedProperty( [ model.secondaryMass.materialProperty ], material => material.density ),
-            nameProperty: model.secondaryMass.tag.nameProperty,
-            visibleProperty: model.secondaryMass.visibleProperty,
+            densityProperty: new DerivedProperty( [ model.massB.materialProperty ], material => material.density ),
+            nameProperty: model.massB.tag.nameProperty,
+            visibleProperty: model.massB.visibleProperty,
             isHiddenProperty: new BooleanProperty( false ),
             color: DensityBuoyancyCommonColors.labelSecondaryProperty
           }
@@ -133,28 +133,28 @@ export default class DensityIntroScreenView extends DensityBuoyancyScreenView<De
     this.addChild( this.popupLayer );
 
     // Layer for the focusable masses. Must be in the scene graph, so they can populate the pdom order
-    const primaryCubeLayer = new Node( { pdomOrder: [] } );
-    this.addChild( primaryCubeLayer );
-    const secondaryCubeLayer = new Node( { pdomOrder: [] } );
-    this.addChild( secondaryCubeLayer );
+    const cubeALayer = new Node( { pdomOrder: [] } );
+    this.addChild( cubeALayer );
+    const cubeBLayer = new Node( { pdomOrder: [] } );
+    this.addChild( cubeBLayer );
 
     // The focus order is described in https://github.com/phetsims/density-buoyancy-common/issues/121
     this.pdomPlayAreaNode.pdomOrder = [
 
-      primaryCubeLayer,
-      this.rightBox.primaryControlNode,
+      cubeALayer,
+      this.rightBox.controlANode,
 
-      secondaryCubeLayer,
-      this.rightBox.secondaryControlNode
+      cubeBLayer,
+      this.rightBox.controlBNode
     ];
 
     const massViewAdded = ( massView: MassView ) => {
-      if ( massView.mass === model.primaryMass ) {
-        primaryCubeLayer.pdomOrder = [ ...primaryCubeLayer.pdomOrder!, massView.focusablePath ];
+      if ( massView.mass === model.massA ) {
+        cubeALayer.pdomOrder = [ ...cubeALayer.pdomOrder!, massView.focusablePath ];
         // nothing to do for removal since disposal of the node will remove it from the pdom order
       }
-      else if ( massView.mass === model.secondaryMass ) {
-        secondaryCubeLayer.pdomOrder = [ ...secondaryCubeLayer.pdomOrder!, massView.focusablePath ];
+      else if ( massView.mass === model.massB ) {
+        cubeBLayer.pdomOrder = [ ...cubeBLayer.pdomOrder!, massView.focusablePath ];
         // nothing to do for removal since disposal of the node will remove it from the pdom order
       }
     };

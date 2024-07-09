@@ -1,7 +1,7 @@
 // Copyright 2019-2024, University of Colorado Boulder
 
 /**
- * A Panel with primary/secondary nodes
+ * A Panel with primary/secondary nodes, called A and B.
  *
  * @author Jonathan Olson (PhET Interactive Simulations)
  */
@@ -12,17 +12,18 @@ import MultiSectionPanelsNode from './MultiSectionPanelsNode.js';
 import MassTagNode from './MassTagNode.js';
 import MassTag from '../model/MassTag.js';
 
-export default class PrimarySecondaryPanelsNode extends MultiSectionPanelsNode {
+export default class ABPanelsNode extends MultiSectionPanelsNode {
 
-  public constructor( primaryNode: Node, secondaryNode: Node ) {
+  public constructor( nodeA: Node, nodeB: Node ) {
     super( [
-      primaryNode,
-      secondaryNode
+      nodeA,
+      nodeB
     ] );
   }
 
   /**
    * Returns a Node that displays the "primary mass" tag label.
+   * TODO: Change these function name as well https://github.com/phetsims/density-buoyancy-common/issues/182
    */
   public static getPrimaryTagLabelNode(): Node {
     return new Node( {
@@ -42,4 +43,4 @@ export default class PrimarySecondaryPanelsNode extends MultiSectionPanelsNode {
   }
 }
 
-densityBuoyancyCommon.register( 'PrimarySecondaryPanelsNode', PrimarySecondaryPanelsNode );
+densityBuoyancyCommon.register( 'ABPanelsNode', ABPanelsNode );

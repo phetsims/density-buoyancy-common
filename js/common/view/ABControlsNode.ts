@@ -1,7 +1,7 @@
 // Copyright 2019-2024, University of Colorado Boulder
 
 /**
- * Shows mass/volume controls for a primary and secondary mass.
+ * Shows mass/volume controls for a primary and secondary mass, called A and B.
  *
  * @author Jonathan Olson (PhET Interactive Simulations)
  */
@@ -14,7 +14,7 @@ import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import Cuboid from '../model/Cuboid.js';
 import BlockControlNode, { BlockControlNodeOptions } from './BlockControlNode.js';
 import DensityBuoyancyCommonColors from './DensityBuoyancyCommonColors.js';
-import PrimarySecondaryPanelsNode from './PrimarySecondaryPanelsNode.js';
+import ABPanelsNode from './ABPanelsNode.js';
 import Material from '../model/Material.js';
 
 type SelfOptions = {
@@ -23,26 +23,26 @@ type SelfOptions = {
 
 export type PrimarySecondaryControlsNodeOptions = SelfOptions & BlockControlNodeOptions & { tandem: Tandem };
 
-export default class PrimarySecondaryControlsNode extends PrimarySecondaryPanelsNode {
+export default class ABControlsNode extends ABPanelsNode {
 
   // Controls for the primary and secondary masses. Public so they can be split up in the focus order,
   // see https://github.com/phetsims/density-buoyancy-common/issues/121
-  public readonly primaryControlNode: BlockControlNode;
-  public readonly secondaryControlNode: BlockControlNode;
+  public readonly controlANode: BlockControlNode;
+  public readonly controlBNode: BlockControlNode;
 
   /**
-   * @param primaryMass
-   * @param secondaryMass
+   * @param massA
+   * @param massB
    * @param popupLayer
    * @param options - Applied to each BlockControlNode
    */
-  public constructor( primaryMass: Cuboid, secondaryMass: Cuboid, popupLayer: Node, options: PrimarySecondaryControlsNodeOptions ) {
+  public constructor( massA: Cuboid, massB: Cuboid, popupLayer: Node, options: PrimarySecondaryControlsNodeOptions ) {
 
     const tandem = options.tandem;
     const omittedOptions = _.omit( options, [ 'tandem' ] );
 
-    const primaryControlNode = new BlockControlNode( primaryMass, popupLayer, true, combineOptions<BlockControlNodeOptions>( {
-      labelNode: PrimarySecondaryPanelsNode.getPrimaryTagLabelNode(),
+    const controlANode = new BlockControlNode( massA, popupLayer, true, combineOptions<BlockControlNodeOptions>( {
+      labelNode: ABPanelsNode.getPrimaryTagLabelNode(),
       color: DensityBuoyancyCommonColors.labelPrimaryProperty,
       tandem: tandem.createTandem( 'blockAControlPanel' ),
       visiblePropertyOptions: {
@@ -50,8 +50,8 @@ export default class PrimarySecondaryControlsNode extends PrimarySecondaryPanels
       }
     }, omittedOptions ) );
 
-    const secondaryControlNode = new BlockControlNode( secondaryMass, popupLayer, false, combineOptions<BlockControlNodeOptions>( {
-      labelNode: PrimarySecondaryPanelsNode.getSecondaryTagLabelNode(),
+    const controlBNode = new BlockControlNode( massB, popupLayer, false, combineOptions<BlockControlNodeOptions>( {
+      labelNode: ABPanelsNode.getSecondaryTagLabelNode(),
       color: DensityBuoyancyCommonColors.labelSecondaryProperty,
       tandem: tandem.createTandem( 'blockBControlPanel' ),
       visiblePropertyOptions: {
@@ -61,18 +61,18 @@ export default class PrimarySecondaryControlsNode extends PrimarySecondaryPanels
 
     super(
       new Node( {
-        children: [ primaryControlNode ],
-        visibleProperty: DerivedProperty.and( [ primaryMass.visibleProperty, primaryControlNode.visibleProperty ] )
+        children: [ controlANode ],
+        visibleProperty: DerivedProperty.and( [ massA.visibleProperty, controlANode.visibleProperty ] )
       } ),
       new Node( {
-        children: [ secondaryControlNode ],
-        visibleProperty: DerivedProperty.and( [ secondaryMass.visibleProperty, secondaryControlNode.visibleProperty ] )
+        children: [ controlBNode ],
+        visibleProperty: DerivedProperty.and( [ massB.visibleProperty, controlBNode.visibleProperty ] )
       } )
     );
 
-    this.primaryControlNode = primaryControlNode;
-    this.secondaryControlNode = secondaryControlNode;
+    this.controlANode = controlANode;
+    this.controlBNode = controlBNode;
   }
 }
 
-densityBuoyancyCommon.register( 'PrimarySecondaryControlsNode', PrimarySecondaryControlsNode );
+densityBuoyancyCommon.register( 'ABControlsNode', ABControlsNode );

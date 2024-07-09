@@ -23,8 +23,8 @@ export type BuoyancyExploreModelOptions = DensityBuoyancyModelOptions;
 export default class BuoyancyExploreModel extends DensityBuoyancyModel {
 
   public readonly modeProperty: Property<TwoBlockMode>;
-  public readonly primaryMass: Cube;
-  public readonly secondaryMass: Cube;
+  public readonly massA: Cube;
+  public readonly massB: Cube;
 
   public constructor( options: BuoyancyExploreModelOptions ) {
 
@@ -37,22 +37,22 @@ export default class BuoyancyExploreModel extends DensityBuoyancyModel {
       phetioFeatured: true
     } );
 
-    this.primaryMass = Cube.createWithMass( this.engine, Material.WOOD, new Vector2( -0.2, 0.2 ), 2, {
+    this.massA = Cube.createWithMass( this.engine, Material.WOOD, new Vector2( -0.2, 0.2 ), 2, {
       tag: MassTag.PRIMARY,
       tandem: blocksTandem.createTandem( 'blockA' )
     } );
-    this.availableMasses.push( this.primaryMass );
-    this.secondaryMass = Cube.createWithMass( this.engine, Material.ALUMINUM, new Vector2( 0.05, 0.35 ), 13.5, {
+    this.availableMasses.push( this.massA );
+    this.massB = Cube.createWithMass( this.engine, Material.ALUMINUM, new Vector2( 0.05, 0.35 ), 13.5, {
       tag: MassTag.SECONDARY,
 
       // REVIEW: Tandem doesn't match variable name
       tandem: blocksTandem.createTandem( 'blockB' ),
       visible: false
     } );
-    this.availableMasses.push( this.secondaryMass );
+    this.availableMasses.push( this.massB );
 
     this.modeProperty.link( mode => {
-      this.secondaryMass.internalVisibleProperty.value = mode === TwoBlockMode.TWO_BLOCKS;
+      this.massB.internalVisibleProperty.value = mode === TwoBlockMode.TWO_BLOCKS;
     } );
 
     // Left scale
@@ -74,8 +74,8 @@ export default class BuoyancyExploreModel extends DensityBuoyancyModel {
   public override reset(): void {
     this.modeProperty.reset();
 
-    this.primaryMass.reset();
-    this.secondaryMass.reset();
+    this.massA.reset();
+    this.massB.reset();
 
     super.reset();
   }

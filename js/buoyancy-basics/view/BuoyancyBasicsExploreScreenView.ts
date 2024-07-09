@@ -12,7 +12,7 @@ import { combineOptions } from '../../../../phet-core/js/optionize.js';
 import { AlignBox, ManualConstraint, Node, VBox } from '../../../../scenery/js/imports.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 import { DensityBuoyancyScreenViewOptions } from '../../common/view/DensityBuoyancyScreenView.js';
-import PrimarySecondaryControlsNode from '../../common/view/PrimarySecondaryControlsNode.js';
+import ABControlsNode from '../../common/view/ABControlsNode.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import BuoyancyBasicsExploreModel from '../model/BuoyancyBasicsExploreModel.js';
@@ -37,7 +37,7 @@ type BuoyancyExploreScreenViewOptions = StrictOmit<DensityBuoyancyScreenViewOpti
 
 export default class BuoyancyBasicsExploreScreenView extends BuoyancyScreenView<BuoyancyBasicsExploreModel> {
 
-  private readonly rightBox: PrimarySecondaryControlsNode;
+  private readonly rightBox: ABControlsNode;
 
   public constructor( model: BuoyancyBasicsExploreModel, options: BuoyancyExploreScreenViewOptions ) {
 
@@ -67,9 +67,9 @@ export default class BuoyancyBasicsExploreScreenView extends BuoyancyScreenView<
       margin: MARGIN
     } ) );
 
-    this.rightBox = new PrimarySecondaryControlsNode(
-      model.primaryMass,
-      model.secondaryMass,
+    this.rightBox = new ABControlsNode(
+      model.massA,
+      model.massB,
       this.popupLayer,
       {
         useDensityControlInsteadOfMassControl: true,
@@ -102,7 +102,7 @@ export default class BuoyancyBasicsExploreScreenView extends BuoyancyScreenView<
       tandem: tandem.createTandem( 'percentSubmergedAccordionBox' )
     } );
 
-    const customExploreScreenFormatting = [ model.primaryMass, model.secondaryMass ].map( mass => {
+    const customExploreScreenFormatting = [ model.massA, model.massB ].map( mass => {
       return {
         readoutNameProperty: new PatternStringProperty( DensityBuoyancyCommonStrings.blockPatternStringProperty, { tag: mass.nameProperty } ),
         readoutFormat: { font: DensityBuoyancyCommonConstants.ITEM_FONT, fill: mass.tag.colorProperty }
@@ -111,8 +111,8 @@ export default class BuoyancyBasicsExploreScreenView extends BuoyancyScreenView<
 
     // Adjust the visibility after, since we want to size the box's location for its "full" bounds
     // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
-    model.secondaryMass.visibleProperty.link( visible => {
-      const masses = visible ? [ model.primaryMass, model.secondaryMass ] : [ model.primaryMass ];
+    model.massB.visibleProperty.link( visible => {
+      const masses = visible ? [ model.massA, model.massB ] : [ model.massA ];
       const submergedReadoutItems = masses.map( ( mass, index ) => {
         return {
           readoutItem: mass,
@@ -189,10 +189,10 @@ export default class BuoyancyBasicsExploreScreenView extends BuoyancyScreenView<
     this.pdomPlayAreaNode.pdomOrder = [
 
       cuboidViews[ 0 ].focusablePath,
-      this.rightBox.primaryControlNode,
+      this.rightBox.controlANode,
 
       cuboidPDOMLayer,
-      this.rightBox.secondaryControlNode,
+      this.rightBox.controlBNode,
 
       // Note: only the leftmost land scale is focusable in this screen, but we use the same code as the other screens for consistency
       // The blocks are added (a) pool then (b) outside, but the focus order is (a) outside then (b) pool
@@ -204,7 +204,7 @@ export default class BuoyancyBasicsExploreScreenView extends BuoyancyScreenView<
     ];
 
     const massViewAdded = ( massView: MassView ) => {
-      if ( massView instanceof CuboidView && massView.mass === model.secondaryMass ) {
+      if ( massView instanceof CuboidView && massView.mass === model.massB ) {
         cuboidPDOMLayer.pdomOrder = [ ...cuboidPDOMLayer.pdomOrder!, massView.focusablePath ];
         // nothing to do for removal since disposal of the node will remove it from the pdom order
       }

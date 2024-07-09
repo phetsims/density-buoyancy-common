@@ -14,7 +14,7 @@ import { AlignBox, createGatedVisibleProperty, ManualConstraint, Node, VBox } fr
 import DensityBuoyancyCommonConstants from '../../../common/DensityBuoyancyCommonConstants.js';
 import Material from '../../../common/model/Material.js';
 import BuoyancyDisplayOptionsPanel from '../BuoyancyDisplayOptionsPanel.js';
-import PrimarySecondaryPanelsNode from '../../../common/view/PrimarySecondaryPanelsNode.js';
+import ABPanelsNode from '../../../common/view/ABPanelsNode.js';
 import densityBuoyancyCommon from '../../../densityBuoyancyCommon.js';
 import DensityAccordionBox from '../DensityAccordionBox.js';
 import ShapeSizeControlNode from './ShapeSizeControlNode.js';
@@ -136,35 +136,35 @@ export default class BuoyancyShapesScreenView extends BuoyancyScreenView<Buoyanc
         supportCustomMaterial: false,
         tandem: options.tandem.createTandem( 'materialControlNode' )
       } );
-    const primaryShapeSizeControlNode = new ShapeSizeControlNode(
-      model.primaryShapeModel,
-      new DynamicProperty( model.primaryShapeModel.massProperty, {
+    const objectAShapeSizeControlNode = new ShapeSizeControlNode(
+      model.shapeAModel,
+      new DynamicProperty( model.shapeAModel.massProperty, {
         derive: 'volumeProperty'
       } ),
       this.popupLayer, {
-        labelNode: PrimarySecondaryPanelsNode.getPrimaryTagLabelNode(),
-        tandem: tandem.createTandem( 'primaryShapeSizeControlNode' )
+        labelNode: ABPanelsNode.getPrimaryTagLabelNode(),
+        tandem: tandem.createTandem( 'objectAShapeSizeControlNode' )
       }
     );
-    const secondaryShapeSizeControlNodeTandem = tandem.createTandem( 'secondaryShapeSizeControlNode' );
-    const secondaryShapeSizeControlNode = new ShapeSizeControlNode(
-      model.secondaryShapeModel,
-      new DynamicProperty( model.secondaryShapeModel.massProperty, {
+    const objectBShapeSizeControlNodeTandem = tandem.createTandem( 'objectBShapeSizeControlNodeTandem' );
+    const objectBShapeSizeControlNode = new ShapeSizeControlNode(
+      model.shapeBModel,
+      new DynamicProperty( model.shapeBModel.massProperty, {
         derive: 'volumeProperty'
       } ),
       this.popupLayer, {
-        labelNode: PrimarySecondaryPanelsNode.getSecondaryTagLabelNode(),
+        labelNode: ABPanelsNode.getSecondaryTagLabelNode(),
         visibleProperty: createGatedVisibleProperty(
-          new DynamicProperty( model.secondaryShapeModel.massProperty, { derive: 'internalVisibleProperty' } ),
-          secondaryShapeSizeControlNodeTandem
+          new DynamicProperty( model.shapeBModel.massProperty, { derive: 'internalVisibleProperty' } ),
+          objectBShapeSizeControlNodeTandem
         ),
-        tandem: secondaryShapeSizeControlNodeTandem
+        tandem: objectBShapeSizeControlNodeTandem
       }
     );
     this.rightBox = new MultiSectionPanelsNode(
       [ materialControlNode,
-        primaryShapeSizeControlNode,
-        secondaryShapeSizeControlNode ]
+        objectAShapeSizeControlNode,
+        objectBShapeSizeControlNode ]
     );
 
     const objectDensityAccordionBox = new DensityAccordionBox( DensityBuoyancyCommonStrings.objectDensityStringProperty, {
@@ -179,11 +179,11 @@ export default class BuoyancyShapesScreenView extends BuoyancyScreenView<Buoyanc
     } );
 
     Multilink.multilink( [
-      model.primaryShapeModel.massProperty,
-      model.secondaryShapeModel.massProperty,
+      model.shapeAModel.massProperty,
+      model.shapeBModel.massProperty,
       model.modeProperty
-    ], ( primaryMass, secondaryMass, mode ) => {
-      const masses = mode === TwoBlockMode.ONE_BLOCK ? [ primaryMass ] : [ primaryMass, secondaryMass ];
+    ], ( massA, massB, mode ) => {
+      const masses = mode === TwoBlockMode.ONE_BLOCK ? [ massA ] : [ massA, massB ];
       percentSubmergedAccordionBox.setReadoutItems( masses.map( ( mass, index ) => {
         return {
           readoutItem: mass,
@@ -239,20 +239,20 @@ export default class BuoyancyShapesScreenView extends BuoyancyScreenView<Buoyanc
     const scaleViews = this.massViews.filter( massView => massView instanceof ScaleView );
 
     // Layer for the focusable masses. Must be in the scene graph, so they can populate the pdom order
-    const primaryMassLayer = new Node( { pdomOrder: [] } );
-    this.addChild( primaryMassLayer );
-    const secondaryMassLayer = new Node( { pdomOrder: [] } );
-    this.addChild( secondaryMassLayer );
+    const massALayer = new Node( { pdomOrder: [] } );
+    this.addChild( massALayer );
+    const massBLayer = new Node( { pdomOrder: [] } );
+    this.addChild( massBLayer );
 
     // The focus order is described in https://github.com/phetsims/density-buoyancy-common/issues/121
     this.pdomPlayAreaNode.pdomOrder = [
 
-      primaryMassLayer,
+      massALayer,
       materialControlNode,
-      primaryShapeSizeControlNode,
+      objectAShapeSizeControlNode,
 
-      secondaryMassLayer,
-      secondaryShapeSizeControlNode,
+      massBLayer,
+      objectBShapeSizeControlNode,
 
       fluidDensityPanel,
 
@@ -263,12 +263,12 @@ export default class BuoyancyShapesScreenView extends BuoyancyScreenView<Buoyanc
     ];
 
     const massViewAdded = ( massView: MassView ) => {
-      if ( massView.mass === model.secondaryShapeModel.massProperty.value ) {
-        secondaryMassLayer.pdomOrder = [ ...secondaryMassLayer.pdomOrder!, massView.focusablePath ];
+      if ( massView.mass === model.shapeBModel.massProperty.value ) {
+        massBLayer.pdomOrder = [ ...massBLayer.pdomOrder!, massView.focusablePath ];
         // nothing to do for removal since disposal of the node will remove it from the pdom order
       }
-      else if ( massView.mass === model.primaryShapeModel.massProperty.value ) {
-        primaryMassLayer.pdomOrder = [ ...primaryMassLayer.pdomOrder!, massView.focusablePath ];
+      else if ( massView.mass === model.shapeAModel.massProperty.value ) {
+        massALayer.pdomOrder = [ ...massALayer.pdomOrder!, massView.focusablePath ];
         // nothing to do for removal since disposal of the node will remove it from the pdom order
       }
     };

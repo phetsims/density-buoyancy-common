@@ -13,7 +13,7 @@ import { AlignBox, ManualConstraint, Node, VBox } from '../../../../scenery/js/i
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 import Material from '../../common/model/Material.js';
 import DensityBuoyancyScreenView, { DensityBuoyancyScreenViewOptions } from '../../common/view/DensityBuoyancyScreenView.js';
-import PrimarySecondaryControlsNode from '../../common/view/PrimarySecondaryControlsNode.js';
+import ABControlsNode from '../../common/view/ABControlsNode.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import BuoyancyExploreModel from '../model/BuoyancyExploreModel.js';
@@ -42,7 +42,7 @@ type BuoyancyExploreScreenViewOptions = StrictOmit<DensityBuoyancyScreenViewOpti
 
 export default class BuoyancyExploreScreenView extends BuoyancyScreenView<BuoyancyExploreModel> {
 
-  private rightBox: PrimarySecondaryControlsNode;
+  private rightBox: ABControlsNode;
 
   public constructor( model: BuoyancyExploreModel, options: BuoyancyExploreScreenViewOptions ) {
 
@@ -79,9 +79,9 @@ export default class BuoyancyExploreScreenView extends BuoyancyScreenView<Buoyan
     const invisibleMaterials = [ ...Material.BUOYANCY_FLUID_MYSTERY_MATERIALS ];
     displayedMysteryMaterials.forEach( displayed => arrayRemove( invisibleMaterials, displayed ) );
 
-    this.rightBox = new PrimarySecondaryControlsNode(
-      model.primaryMass,
-      model.secondaryMass,
+    this.rightBox = new ABControlsNode(
+      model.massA,
+      model.massB,
       this.popupLayer,
       {
         tandem: tandem,
@@ -105,7 +105,7 @@ export default class BuoyancyExploreScreenView extends BuoyancyScreenView<Buoyan
       margin: MARGIN
     } ) );
 
-    [ model.primaryMass, model.secondaryMass ].forEach( mass => {
+    [ model.massA, model.massB ].forEach( mass => {
       mass.materialProperty.link( material => {
         if ( material === Material.MATERIAL_X ) {
           mass.volumeProperty.value = 0.003;
@@ -127,7 +127,7 @@ export default class BuoyancyExploreScreenView extends BuoyancyScreenView<Buoyan
       tandem: tandem.createTandem( 'percentSubmergedAccordionBox' )
     } );
 
-    const customExploreScreenFormatting = [ model.primaryMass, model.secondaryMass ].map( mass => {
+    const customExploreScreenFormatting = [ model.massA, model.massB ].map( mass => {
       return {
         readoutNameProperty: new PatternStringProperty( DensityBuoyancyCommonStrings.blockPatternStringProperty, { tag: mass.nameProperty } ),
         readoutFormat: { font: DensityBuoyancyCommonConstants.ITEM_FONT, fill: mass.tag.colorProperty }
@@ -136,8 +136,8 @@ export default class BuoyancyExploreScreenView extends BuoyancyScreenView<Buoyan
 
     // Adjust the visibility after, since we want to size the box's location for its "full" bounds
     // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
-    model.secondaryMass.visibleProperty.link( visible => {
-      const masses = visible ? [ model.primaryMass, model.secondaryMass ] : [ model.primaryMass ];
+    model.massB.visibleProperty.link( visible => {
+      const masses = visible ? [ model.massA, model.massB ] : [ model.massA ];
       objectDensityAccordionBox.setReadoutItems( masses.map( ( mass, index ) => {
         return {
           readoutItem: mass.materialProperty,
@@ -212,10 +212,10 @@ export default class BuoyancyExploreScreenView extends BuoyancyScreenView<Buoyan
     this.pdomPlayAreaNode.pdomOrder = [
 
       cuboidViews[ 0 ].focusablePath,
-      this.rightBox.primaryControlNode,
+      this.rightBox.controlANode,
 
       cuboidPDOMLayer,
-      this.rightBox.secondaryControlNode,
+      this.rightBox.controlBNode,
 
       fluidDensityPanel,
 
@@ -225,7 +225,7 @@ export default class BuoyancyExploreScreenView extends BuoyancyScreenView<Buoyan
     ];
 
     const massViewAdded = ( massView: MassView ) => {
-      if ( massView instanceof CuboidView && massView.mass === model.secondaryMass ) {
+      if ( massView instanceof CuboidView && massView.mass === model.massB ) {
         cuboidPDOMLayer.pdomOrder = [ ...cuboidPDOMLayer.pdomOrder!, massView.focusablePath ];
 
         // nothing to do for removal since disposal of the node will remove it from the pdom order

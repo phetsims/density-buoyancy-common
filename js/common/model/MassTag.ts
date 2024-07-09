@@ -43,6 +43,7 @@ export default class MassTag {
   public static readonly PRIMARY_COLOR_PROPERTY = DensityBuoyancyCommonColors.labelPrimaryProperty;
   public static readonly SECONDARY_COLOR_PROPERTY = DensityBuoyancyCommonColors.labelSecondaryProperty;
 
+  // TODO How to rename these tags? https://github.com/phetsims/density-buoyancy-common/issues/182
   public static readonly PRIMARY = new MassTag( DensityBuoyancyCommonStrings.massLabel.primaryStringProperty, null, MassTag.PRIMARY_COLOR_PROPERTY );
   public static readonly SECONDARY = new MassTag( DensityBuoyancyCommonStrings.massLabel.secondaryStringProperty, null, MassTag.SECONDARY_COLOR_PROPERTY );
   public static readonly NONE = new MassTag( new StringProperty( 'NONE' ) );

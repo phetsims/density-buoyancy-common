@@ -138,7 +138,7 @@ export default class BuoyancyShapesScreenView extends BuoyancyScreenView<Buoyanc
       } );
     const objectAShapeSizeControlNode = new ShapeSizeControlNode(
       model.shapeAModel,
-      new DynamicProperty( model.shapeAModel.massProperty, {
+      new DynamicProperty( model.shapeAModel.shapeProperty, {
         derive: 'volumeProperty'
       } ),
       this.popupLayer, {
@@ -149,13 +149,13 @@ export default class BuoyancyShapesScreenView extends BuoyancyScreenView<Buoyanc
     const objectBShapeSizeControlNodeTandem = tandem.createTandem( 'objectBShapeSizeControlNodeTandem' );
     const objectBShapeSizeControlNode = new ShapeSizeControlNode(
       model.shapeBModel,
-      new DynamicProperty( model.shapeBModel.massProperty, {
+      new DynamicProperty( model.shapeBModel.shapeProperty, {
         derive: 'volumeProperty'
       } ),
       this.popupLayer, {
         labelNode: ABPanelsNode.getSecondaryTagLabelNode(),
         visibleProperty: new GatedVisibleProperty(
-          new DynamicProperty( model.shapeBModel.massProperty, { derive: 'internalVisibleProperty' } ),
+          new DynamicProperty( model.shapeBModel.shapeProperty, { derive: 'internalVisibleProperty' } ),
           objectBShapeSizeControlNodeTandem
         ),
         tandem: objectBShapeSizeControlNodeTandem
@@ -179,8 +179,8 @@ export default class BuoyancyShapesScreenView extends BuoyancyScreenView<Buoyanc
     } );
 
     Multilink.multilink( [
-      model.shapeAModel.massProperty,
-      model.shapeBModel.massProperty,
+      model.shapeAModel.shapeProperty,
+      model.shapeBModel.shapeProperty,
       model.modeProperty
     ], ( massA, massB, mode ) => {
       const masses = mode === TwoBlockMode.ONE_BLOCK ? [ massA ] : [ massA, massB ];
@@ -263,11 +263,11 @@ export default class BuoyancyShapesScreenView extends BuoyancyScreenView<Buoyanc
     ];
 
     const massViewAdded = ( massView: MassView ) => {
-      if ( massView.mass === model.shapeBModel.massProperty.value ) {
+      if ( massView.mass === model.shapeBModel.shapeProperty.value ) {
         massBLayer.pdomOrder = [ ...massBLayer.pdomOrder!, massView.focusablePath ];
         // nothing to do for removal since disposal of the node will remove it from the pdom order
       }
-      else if ( massView.mass === model.shapeAModel.massProperty.value ) {
+      else if ( massView.mass === model.shapeAModel.shapeProperty.value ) {
         massALayer.pdomOrder = [ ...massALayer.pdomOrder!, massView.focusablePath ];
         // nothing to do for removal since disposal of the node will remove it from the pdom order
       }

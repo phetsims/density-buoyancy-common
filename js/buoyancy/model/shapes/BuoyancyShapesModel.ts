@@ -67,13 +67,11 @@ export default class BuoyancyShapesModel extends DensityBuoyancyModel {
 
     const boundCreateMass = this.createMass.bind( this );
 
-    // TODO: solve this, https://github.com/phetsims/density-buoyancy-common/issues/182
     // eslint-disable-next-line tandem-name-should-match
     this.shapeAModel = new BuoyancyShapeModel( MassShape.BLOCK, 0.25, 0.75, MassTag.OBJECT_A, boundCreateMass, {
       tandem: options.tandem.createTandem( 'objectA' )
     } );
 
-    // TODO: solve this, https://github.com/phetsims/density-buoyancy-common/issues/182
     // eslint-disable-next-line tandem-name-should-match
     this.shapeBModel = new BuoyancyShapeModel( MassShape.BLOCK, 0.25, 0.75, MassTag.OBJECT_B, boundCreateMass, {
       tandem: options.tandem.createTandem( 'objectB' )
@@ -84,7 +82,7 @@ export default class BuoyancyShapesModel extends DensityBuoyancyModel {
     [ this.shapeAModel, this.shapeBModel ].forEach( ( shapeModel: BuoyancyShapeModel ) => {
 
       // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
-      shapeModel.massProperty.lazyLink( ( newMass, oldMass ) => {
+      shapeModel.shapeProperty.lazyLink( ( newMass, oldMass ) => {
         if ( !isSettingPhetioStateProperty.value ) {
           newMass.matrix.set( oldMass.matrix );
         }
@@ -98,11 +96,11 @@ export default class BuoyancyShapesModel extends DensityBuoyancyModel {
       } );
     } );
 
-    this.availableMasses.add( this.shapeAModel.massProperty.value );
-    this.availableMasses.add( this.shapeBModel.massProperty.value );
+    this.availableMasses.add( this.shapeAModel.shapeProperty.value );
+    this.availableMasses.add( this.shapeBModel.shapeProperty.value );
 
     this.modeProperty.link( mode => {
-      this.shapeBModel.massProperty.value.internalVisibleProperty.value = mode === TwoBlockMode.TWO_BLOCKS;
+      this.shapeBModel.shapeProperty.value.internalVisibleProperty.value = mode === TwoBlockMode.TWO_BLOCKS;
     } );
 
     this.setInitialPositions();
@@ -176,8 +174,8 @@ export default class BuoyancyShapesModel extends DensityBuoyancyModel {
    * Sets up the initial positions of the masses (since some resets may not change the mass).
    */
   private setInitialPositions(): void {
-    this.shapeAModel.massProperty.value.setPosition( -0.225, 0 );
-    this.shapeBModel.massProperty.value.setPosition( 0.075, 0 );
+    this.shapeAModel.shapeProperty.value.setPosition( -0.225, 0 );
+    this.shapeBModel.shapeProperty.value.setPosition( 0.075, 0 );
   }
 
   /**

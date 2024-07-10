@@ -43,7 +43,7 @@ export default class ShapeSizeControlNode extends VBox {
       align: 'left'
     } );
 
-    const shapeComboBox = new ComboBox( shapeModel.shapeProperty, MassShape.enumeration.values.map( massShape => {
+    const shapeComboBox = new ComboBox( shapeModel.shapeNameProperty, MassShape.enumeration.values.map( massShape => {
       return {
         value: massShape,
         createNode: () => new Text( massShape.shapeString, {

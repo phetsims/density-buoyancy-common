@@ -25,18 +25,18 @@ import BuoyancyShapesModel from './BuoyancyShapesModel.js';
 export type BuoyancyShapeModelOptions = PickRequired<PhetioObjectOptions, 'tandem'>;
 
 export default class BuoyancyShapeModel {
-  public readonly shapeProperty: Property<MassShape>;
+  public readonly shapeNameProperty: Property<MassShape>;
   public readonly widthRatioProperty: Property<number>;
   public readonly heightRatioProperty: Property<number>;
-  public readonly massProperty: TProperty<Mass>;
+  public readonly shapeProperty: TProperty<Mass>;
 
   // Statically initialize all possible Mass instances to simplify phet-io. This is well within a good memory limit, see https://github.com/phetsims/buoyancy/issues/160
   private readonly shapeCacheMap = new Map<MassShape, Mass>();
 
   public constructor( massShape: MassShape, width: number, height: number, massTag: MassTag, createMass: BuoyancyShapesModel['createMass'], options: BuoyancyShapeModelOptions ) {
 
-    this.shapeProperty = new EnumerationProperty( massShape, {
-      tandem: options.tandem.createTandem( 'shapeProperty' )
+    this.shapeNameProperty = new EnumerationProperty( massShape, {
+      tandem: options.tandem.createTandem( 'shapeNameProperty' )
     } );
 
     this.widthRatioProperty = new NumberProperty( width, {
@@ -55,28 +55,31 @@ export default class BuoyancyShapeModel {
     } );
 
     // Property doesn't need disposal, since everything here lives for the lifetime of the simulation
-    this.massProperty = new Property( this.shapeCacheMap.get( this.shapeProperty.value )! );
-    this.shapeProperty.link( () => this.changeShape() );
+    this.shapeProperty = new Property( this.shapeCacheMap.get( this.shapeNameProperty.value )!, {
+      tandem: options.tandem.createTandem( 'shapeProperty' ),
+      phetioValueType: Mass.MassIO
+    } );
+    this.shapeNameProperty.link( () => this.changeShape() );
 
     Multilink.lazyMultilink( [ this.widthRatioProperty, this.heightRatioProperty ], ( widthRatio, heightRatio ) => {
-      this.massProperty.value.setRatios( widthRatio, heightRatio );
+      this.shapeProperty.value.setRatios( widthRatio, heightRatio );
     } );
   }
 
   private changeShape(): void {
 
     // Triggering dimension change first
-    const minYBefore = this.massProperty.value.getBounds().minY;
-    this.massProperty.value = this.shapeCacheMap.get( this.shapeProperty.value )!;
+    const minYBefore = this.shapeProperty.value.getBounds().minY;
+    this.shapeProperty.value = this.shapeCacheMap.get( this.shapeNameProperty.value )!;
     this.widthRatioProperty.notifyListenersStatic(); // Triggering dimension change first
-    const minYAfter = this.massProperty.value.getBounds().minY;
-    this.massProperty.value.matrix.multiplyMatrix( Matrix3.translation( 0, minYBefore - minYAfter ) );
-    this.massProperty.value.writeData();
-    this.massProperty.value.transformedEmitter.emit();
+    const minYAfter = this.shapeProperty.value.getBounds().minY;
+    this.shapeProperty.value.matrix.multiplyMatrix( Matrix3.translation( 0, minYBefore - minYAfter ) );
+    this.shapeProperty.value.writeData();
+    this.shapeProperty.value.transformedEmitter.emit();
   }
 
   public reset(): void {
-    this.shapeProperty.reset();
+    this.shapeNameProperty.reset();
     this.heightRatioProperty.reset();
     this.widthRatioProperty.reset();
   }

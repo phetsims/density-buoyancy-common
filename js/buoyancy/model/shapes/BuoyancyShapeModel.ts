@@ -21,13 +21,17 @@ import MassTag from '../../../common/model/MassTag.js';
 import PickRequired from '../../../../../phet-core/js/types/PickRequired.js';
 import { PhetioObjectOptions } from '../../../../../tandem/js/PhetioObject.js';
 import BuoyancyShapesModel from './BuoyancyShapesModel.js';
+import ReferenceIO from '../../../../../tandem/js/types/ReferenceIO.js';
 
 export type BuoyancyShapeModelOptions = PickRequired<PhetioObjectOptions, 'tandem'>;
 
 export default class BuoyancyShapeModel {
+  // The currentlyt selected shape, from which the mass changes to this type.
   public readonly shapeNameProperty: Property<MassShape>;
   public readonly widthRatioProperty: Property<number>;
   public readonly heightRatioProperty: Property<number>;
+
+  // A reference to the currently selected Mass based on the shapeName (MassShape).
   public readonly shapeProperty: TProperty<Mass>;
 
   // Statically initialize all possible Mass instances to simplify phet-io. This is well within a good memory limit, see https://github.com/phetsims/buoyancy/issues/160
@@ -57,7 +61,7 @@ export default class BuoyancyShapeModel {
     // Property doesn't need disposal, since everything here lives for the lifetime of the simulation
     this.shapeProperty = new Property( this.shapeCacheMap.get( this.shapeNameProperty.value )!, {
       tandem: options.tandem.createTandem( 'shapeProperty' ),
-      phetioValueType: Mass.MassIO
+      phetioValueType: ReferenceIO( Mass.MassIO )
     } );
     this.shapeNameProperty.link( () => this.changeShape() );
 

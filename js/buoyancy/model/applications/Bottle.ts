@@ -88,6 +88,7 @@ import { MassShape } from '../../../common/model/MassShape.js';
 import ReadOnlyProperty from '../../../../../axon/js/ReadOnlyProperty.js';
 import ApplicationsMass, { ApplicationsMassOptions } from './ApplicationsMass.js';
 import NumberIO from '../../../../../tandem/js/types/NumberIO.js';
+import DensityBuoyancyCommonConstants from '../../../common/DensityBuoyancyCommonConstants.js';
 
 // constants (in logical coordinates)
 const BODY_CORNER_RADIUS = 0.02; // Used both between the taper/body and between the body/base
@@ -227,7 +228,7 @@ export default class Bottle extends ApplicationsMass {
     this.materialInsideVolumeProperty = new NumberProperty( BOTTLE_INITIAL_INTERIOR_VOLUME, {
       tandem: materialInsideTandem.createTandem( 'volumeProperty' ),
       phetioDocumentation: 'Volume of the material inside the bottle.',
-      range: this.materialInsideVolumeRange,
+      range: this.materialInsideVolumeRange.times( 1 / DensityBuoyancyCommonConstants.LITERS_IN_CUBIC_METER ),
       units: 'm^3'
     } );
 

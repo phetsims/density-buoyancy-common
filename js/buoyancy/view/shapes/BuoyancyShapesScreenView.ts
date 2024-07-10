@@ -44,6 +44,18 @@ import FluidDensityPanel from '../FluidDensityPanel.js';
 import BuoyancyScreenView from '../BuoyancyScreenView.js';
 import StrictOmit from '../../../../../phet-core/js/types/StrictOmit.js';
 import FluidIconMesh from '../../../common/view/FluidIconMesh.js';
+import Mass from '../../../common/model/Mass.js';
+import Cuboid from '../../../common/model/Cuboid.js';
+import CuboidView from '../../../common/view/CuboidView.js';
+import Scale from '../../../common/model/Scale.js';
+import Ellipsoid from '../../../common/model/Ellipsoid.js';
+import EllipsoidView from '../../../common/view/EllipsoidView.js';
+import HorizontalCylinder from '../../../common/model/HorizontalCylinder.js';
+import HorizontalCylinderView from '../../../common/view/HorizontalCylinderView.js';
+import VerticalCylinder from '../../../common/model/VerticalCylinder.js';
+import VerticalCylinderView from '../../../common/view/VerticalCylinderView.js';
+import Duck from '../../model/shapes/Duck.js';
+import DuckView from './DuckView.js';
 
 // constants
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN_SMALL;
@@ -283,6 +295,36 @@ export default class BuoyancyShapesScreenView extends BuoyancyScreenView<Buoyanc
       infoButton,
       this.resetAllButton
     ];
+  }
+
+  protected override getMassViewFromMass( mass: Mass ): MassView {
+    let massView!: MassView;
+
+    if ( mass instanceof Cuboid ) {
+      massView = new CuboidView( mass, this, this.displayProperties );
+    }
+    else if ( mass instanceof Scale ) {
+      massView = new ScaleView( mass, this, this.model.gravityProperty );
+    }
+    else if ( mass instanceof Cone ) {
+      massView = new ConeView( mass, this, this.displayProperties );
+    }
+    else if ( mass instanceof Ellipsoid ) {
+      massView = new EllipsoidView( mass, this, this.displayProperties );
+    }
+    else if ( mass instanceof HorizontalCylinder ) {
+      massView = new HorizontalCylinderView( mass, this, this.displayProperties );
+    }
+    else if ( mass instanceof VerticalCylinder ) {
+      massView = new VerticalCylinderView( mass, this, this.displayProperties );
+    }
+    else if ( mass instanceof Duck ) {
+      massView = new DuckView( mass, this, this.displayProperties );
+    }
+
+    assert && assert( !!massView, `massView is falsy, mass: ${mass.constructor.name}` );
+
+    return massView;
   }
 
   /**

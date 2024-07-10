@@ -48,6 +48,12 @@ import StrictOmit from '../../../../../phet-core/js/types/StrictOmit.js';
 import FluidIconMesh from '../../../common/view/FluidIconMesh.js';
 import BoatDesign from '../../model/applications/BoatDesign.js';
 import BooleanProperty from '../../../../../axon/js/BooleanProperty.js';
+import Mass from '../../../common/model/Mass.js';
+import Cuboid from '../../../common/model/Cuboid.js';
+import CuboidView from '../../../common/view/CuboidView.js';
+import Scale from '../../../common/model/Scale.js';
+import ScaleView from '../../../common/view/ScaleView.js';
+import Boat from '../../model/applications/Boat.js';
 
 // constants
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN_SMALL;
@@ -469,6 +475,27 @@ export default class BuoyancyApplicationsScreenView extends BuoyancyScreenView<B
       sceneRadioButtonGroup,
       this.resetAllButton
     ];
+  }
+
+  protected override getMassViewFromMass( mass: Mass ): MassView {
+    let massView!: MassView;
+
+    if ( mass instanceof Cuboid ) {
+      massView = new CuboidView( mass, this, this.displayProperties );
+    }
+    else if ( mass instanceof Scale ) {
+      massView = new ScaleView( mass, this, this.model.gravityProperty );
+    }
+    else if ( mass instanceof Bottle ) {
+      massView = new BottleView( mass, this, this.displayProperties );
+    }
+    else if ( mass instanceof Boat ) {
+      massView = new BoatView( mass, this, this.model.pool.fluidYInterpolatedProperty, this.displayProperties );
+    }
+
+    assert && assert( !!massView, `massView is falsy, mass: ${mass.constructor.name}` );
+
+    return massView;
   }
 
   public override step( dt: number ): void {

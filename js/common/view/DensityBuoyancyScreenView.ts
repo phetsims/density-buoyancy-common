@@ -28,27 +28,16 @@ import Checkbox from '../../../../sun/js/Checkbox.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
 import Boat from '../../buoyancy/model/applications/Boat.js';
 import BoatDesign from '../../buoyancy/model/applications/BoatDesign.js';
-import Bottle from '../../buoyancy/model/applications/Bottle.js';
-import BoatView from '../../buoyancy/view/applications/BoatView.js';
-import BottleView from '../../buoyancy/view/applications/BottleView.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
 import DensityBuoyancyCommonQueryParameters from '../DensityBuoyancyCommonQueryParameters.js';
-import Cone from '../model/Cone.js';
 import Cuboid from '../model/Cuboid.js';
-import Ellipsoid from '../model/Ellipsoid.js';
-import HorizontalCylinder from '../model/HorizontalCylinder.js';
 import Mass from '../model/Mass.js';
 import Scale from '../model/Scale.js';
-import VerticalCylinder from '../model/VerticalCylinder.js';
-import ConeView from './ConeView.js';
 import CuboidView from './CuboidView.js';
 import DebugView from './DebugView.js';
 import DensityBuoyancyCommonColors from './DensityBuoyancyCommonColors.js';
-import EllipsoidView from './EllipsoidView.js';
-import HorizontalCylinderView from './HorizontalCylinderView.js';
 import ScaleView from './ScaleView.js';
-import VerticalCylinderView from './VerticalCylinderView.js';
 import FluidLevelIndicator from './FluidLevelIndicator.js';
 import DensityBuoyancyModel from '../model/DensityBuoyancyModel.js';
 import MassView from './MassView.js';
@@ -58,8 +47,6 @@ import PickRequired from '../../../../phet-core/js/types/PickRequired.js';
 import { PhetioObjectOptions } from '../../../../tandem/js/PhetioObject.js';
 import BackgroundEventTargetListener from './BackgroundEventTargetListener.js';
 import MassDecorationLayer from './MassDecorationLayer.js';
-import Duck from '../../buoyancy/model/shapes/Duck.js';
-import DuckView from '../../buoyancy/view/shapes/DuckView.js';
 import createObservableArray, { ObservableArray } from '../../../../axon/js/createObservableArray.js';
 import Emitter from '../../../../axon/js/Emitter.js';
 import { Shape } from '../../../../kite/js/imports.js';
@@ -507,42 +494,13 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
     } );
 
     const onMassAdded = ( mass: Mass ) => {
-      let massView!: MassView;
-
-      if ( mass instanceof Cuboid ) {
-        massView = new CuboidView( mass, this, this.displayProperties );
-      }
-      else if ( mass instanceof Scale ) {
-        massView = new ScaleView( mass, this, model.gravityProperty );
-      }
-      else if ( mass instanceof Cone ) {
-        massView = new ConeView( mass, this, this.displayProperties );
-      }
-      else if ( mass instanceof Ellipsoid ) {
-        massView = new EllipsoidView( mass, this, this.displayProperties );
-      }
-      else if ( mass instanceof HorizontalCylinder ) {
-        massView = new HorizontalCylinderView( mass, this, this.displayProperties );
-      }
-      else if ( mass instanceof VerticalCylinder ) {
-        massView = new VerticalCylinderView( mass, this, this.displayProperties );
-      }
-      else if ( mass instanceof Bottle ) {
-        massView = new BottleView( mass, this, this.displayProperties );
-      }
-      else if ( mass instanceof Boat ) {
-        massView = new BoatView( mass, this, model.pool.fluidYInterpolatedProperty, this.displayProperties );
-      }
-      else if ( mass instanceof Duck ) {
-        massView = new DuckView( mass, this, this.displayProperties );
-      }
-      assert && assert( !!massView, `massView is falsy, mass: ${mass.constructor.name}` );
-
+      const massView = this.getMassViewFromMass( mass );
       this.sceneNode.stage.threeScene.add( massView.massMesh );
       this.massViews.push( massView );
       massView.focusablePath && this.sceneNode.backgroundEventTarget.addChild( massView.focusablePath );
       massView.decorate( this.massDecorationLayer );
     };
+
     model.masses.addItemAddedListener( onMassAdded );
     model.masses.forEach( onMassAdded );
 
@@ -611,6 +569,21 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
     if ( !ThreeUtils.isWebGLEnabled() ) {
       ThreeUtils.showWebGLWarning( this );
     }
+  }
+
+  protected getMassViewFromMass( mass: Mass ): MassView {
+    let massView!: MassView;
+
+    if ( mass instanceof Cuboid ) {
+      massView = new CuboidView( mass, this, this.displayProperties );
+    }
+    else if ( mass instanceof Scale ) {
+      massView = new ScaleView( mass, this, this.model.gravityProperty );
+    }
+
+    assert && assert( !!massView, `massView is falsy, mass: ${mass.constructor.name}` );
+
+    return massView;
   }
 
   protected fillFluidGeometry( y: number, fluidPositionArray: Float32Array, fluidGeometry: BufferGeometry, wasFilled: boolean ): boolean {

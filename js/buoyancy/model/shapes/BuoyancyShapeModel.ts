@@ -58,9 +58,12 @@ export default class BuoyancyShapeModel {
       ) );
     } );
 
-    // Property doesn't need disposal, since everything here lives for the lifetime of the simulation
+    // Property doesn't need disposal, since everything here lives for the lifetime of the simulation.
+    // Named like this for clarity with PhET-iO naming, do not confuse this with "KITE/Shape" or Mass.shapeProperty.
     this.shapeProperty = new Property( this.shapeCacheMap.get( this.shapeNameProperty.value )!, {
       tandem: options.tandem.createTandem( 'shapeProperty' ),
+      phetioReadOnly: true,
+      phetioDocumentation: 'A reference to the currently selected shape based on the shape name.',
       phetioValueType: ReferenceIO( Mass.MassIO )
     } );
     this.shapeNameProperty.link( () => this.changeShape() );

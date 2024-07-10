@@ -1,7 +1,7 @@
 // Copyright 2019-2024, University of Colorado Boulder
 
 /**
- * A boat (Mass) that can contain some liquid inside.  Boats exist for the lifetime of the sim and do not need to be
+ * A boat (Mass) that can contain some fluid inside.  Boats exist for the lifetime of the sim and do not need to be
  * disposed.
  *
  * @author Jonathan Olson (PhET Interactive Simulations)
@@ -37,7 +37,7 @@ export default class Boat extends ApplicationsMass {
 
   public readonly maxVolumeDisplacedProperty: NumberProperty;
 
-  // The interior that can contain liquid
+  // The interior that can contain fluid
   public readonly basin: BoatBasin;
 
   // Amount of volume contained in the basin
@@ -152,7 +152,7 @@ export default class Boat extends ApplicationsMass {
   }
 
   /**
-   * Returns the fraction of the mass that is submerged in a liquid at a given level. From 0 to 1.
+   * Returns the fraction of the mass that is submerged in a fluid at a given level. From 0 to 1.
    */
   public override updateSubmergedMassFraction( gravityMagnitude: number, fluidDensity: number ): void {
     assert && assert( gravityMagnitude > 0, 'gravityMagnitude should be positive' );
@@ -178,7 +178,7 @@ export default class Boat extends ApplicationsMass {
   }
 
   /**
-   * Returns the internal basin area of this object up to a given y level, assuming a y value for the given liquid level.
+   * Returns the internal basin area of this object up to a given y level, assuming a y value for the given fluid level.
    *
    * Assumes step information was updated.
    */
@@ -197,7 +197,7 @@ export default class Boat extends ApplicationsMass {
   }
 
   /**
-   * Returns the displaced volume of this object up to a given y level, assuming a y value for the given liquid level.
+   * Returns the displaced volume of this object up to a given y level, assuming a y value for the given fluid level.
    *
    * Assumes step information was updated.
    */

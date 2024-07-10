@@ -1,7 +1,7 @@
 // Copyright 2020-2024, University of Colorado Boulder
 
 /**
- * Represents basin of the interior of the boat (that a liquid can reside in at a specific level).
+ * Represents basin of the interior of the boat (that a fluid can reside in at a specific level).
  *
  * @author Jonathan Olson (PhET Interactive Simulations)
  */
@@ -29,7 +29,7 @@ export default class BoatBasin extends Basin {
   }
 
   /**
-   * Returns whether a given mass is inside this basin (e.g. if filled with liquid, would it be displacing any liquid).
+   * Returns whether a given mass is inside this basin (e.g. if filled with fluid, would it be displacing any liquid).
    * See Pool.isMassInside
    */
   public isMassInside( mass: Mass ): boolean {
@@ -58,14 +58,14 @@ export default class BoatBasin extends Basin {
   }
 
   /**
-   * Returns the maximum area that could be contained with liquid at a given y value.
+   * Returns the maximum area that could be contained with fluid at a given y value.
    */
   protected getMaximumArea( y: number ): number {
     return this.boat.getBasinArea( y );
   }
 
   /**
-   * Returns the maximum volume that could be contained with liquid up to a given y value.
+   * Returns the maximum volume that could be contained with fluid up to a given y value.
    */
   public getMaximumVolume( y: number ): number {
     return this.boat.getBasinVolume( y );

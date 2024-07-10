@@ -129,7 +129,7 @@ export default class Ellipsoid extends Mass {
   }
 
   /**
-   * Returns the displaced volume of this object up to a given y level, assuming a y value for the given liquid level.
+   * Returns the displaced volume of this object up to a given y level, assuming a y value for the given fluid level.
    *
    * Assumes step information was updated.
    */

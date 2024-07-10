@@ -65,13 +65,13 @@ export default class BoatView extends MeasurableMassView {
     topFluidGeometry.addAttribute( 'normal', new THREE.BufferAttribute( topFluidNormalArray, 3 ) );
 
     const topFluidMaterial = new THREE.MeshPhongMaterial( {
-      color: 0x33FF33, // will be replaced with liquid color below
+      color: 0x33FF33, // will be replaced with fluid color below
       opacity: 0.8,
       transparent: true,
       depthWrite: false
     } );
-    const topLiquid = new THREE.Mesh( topFluidGeometry, topFluidMaterial );
-    this.massMesh.add( topLiquid );
+    const topFluid = new THREE.Mesh( topFluidGeometry, topFluidMaterial );
+    this.massMesh.add( topFluid );
 
     const fluidMultilink = Multilink.multilink( [
       boat.basin.fluidYInterpolatedProperty,
@@ -111,7 +111,7 @@ export default class BoatView extends MeasurableMassView {
     Material.linkLiquidColor( boat.fluidMaterialProperty, boatDrawingData.backMiddleMaterial );
 
     // see the static function for the rest of render orders
-    topLiquid.renderOrder = 3;
+    topFluid.renderOrder = 3;
 
     this.disposeEmitter.addListener( () => {
       fluidMultilink.dispose();
@@ -154,7 +154,7 @@ export default class BoatView extends MeasurableMassView {
     boatGroup.add( backTop );
 
     const backMiddleMaterial = new THREE.MeshBasicMaterial( {
-      color: 0xffffff, // will be replaced with liquid color from Property updates
+      color: 0xffffff, // will be replaced with fluid color from Property updates
       opacity: 0.8,
       transparent: true,
       side: THREE.BackSide, // better appearance with this
@@ -205,7 +205,7 @@ export default class BoatView extends MeasurableMassView {
     } ) );
     boatGroup.add( frontForDepth );
 
-    // pool liquid will be at a higher value
+    // pool fluid will be at a higher value
     frontForDepth.renderOrder = 4;
     frontTop.renderOrder = 2;
     frontExterior.renderOrder = 1;

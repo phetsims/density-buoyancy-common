@@ -113,7 +113,7 @@ const DensityBuoyancyCommonConstants = {
   // Shift on the screen view with respect to the camera's view
   BUOYANCY_BASICS_VIEW_OFFSET: new Vector2( -25, 0 ),
 
-  // In m^3, the value that we want the initial liquid volume to be (including the displacement of any volumes in the pool).
+  // In m^3, the value that we want the initial fluid volume to be (including the displacement of any volumes in the pool).
   DESIRED_STARTING_POOL_VOLUME: 0.1,
 
   // Model units for volume are most likely in m^3, multiply by this to convert to liters.

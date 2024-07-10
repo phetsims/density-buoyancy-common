@@ -256,7 +256,7 @@ export default class DensityBuoyancyModel implements TModel {
         if ( basin ) {
           const displacedVolume = mass.getDisplacedVolume( basin.fluidYInterpolatedProperty.currentValue );
 
-          // The submergedVolume of the mass cannot be more than the liquid volume in the basin. Bug fix for https://github.com/phetsims/buoyancy/issues/135
+          // The submergedVolume of the mass cannot be more than the fluid volume in the basin. Bug fix for https://github.com/phetsims/buoyancy/issues/135
           submergedVolume = displacedVolume > basin.fluidVolumeProperty.value ? basin.fluidVolumeProperty.value : displacedVolume;
         }
 
@@ -326,7 +326,7 @@ export default class DensityBuoyancyModel implements TModel {
       basin.stepMasses = this.masses.filter( mass => basin.isMassInside( mass ) );
     } );
 
-    // Check to see if fluid "spilled" out of the pool, and set the finalized liquid volume
+    // Check to see if fluid "spilled" out of the pool, and set the finalized fluid volume
     this.pool.fluidVolumeProperty.value = Math.min( this.getPoolFluidVolume(), this.pool.getEmptyVolume( this.poolBounds.maxY ) );
 
     basins.forEach( basin => basin.computeY() );
@@ -439,7 +439,7 @@ export default class DensityBuoyancyModel implements TModel {
   // NOTE: The functions below are to be overridden in BuoyancyApplicationsModel for Boat functionality
 
   /**
-   * Computes the heights of the main pool liquid.
+   * Computes the heights of the main pool fluid.
    * NOTE: the overridden method in BuoyancyApplicationsModel does NOT call super.updateFluid()
    */
   protected updateFluid(): void {

@@ -1,7 +1,7 @@
 // Copyright 2019-2024, University of Colorado Boulder
 
 /**
- * Shows a combined NumberControl/ComboBox for controlling liquid density.
+ * Shows a combined NumberControl/ComboBox for controlling fluid density.
  *
  * @author Jonathan Olson (PhET Interactive Simulations)
  */

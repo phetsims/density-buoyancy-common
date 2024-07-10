@@ -132,7 +132,7 @@ export default class BuoyancyApplicationsModel extends DensityBuoyancyModel {
    */
   public resetBoatScene(): void {
 
-    // Reset the basin levels (clear the liquid out of the boat)
+    // Reset the basin levels (clear the fluid out of the boat)
     this.boat.basin.reset();
     this.pool.reset( false );
 
@@ -168,7 +168,7 @@ export default class BuoyancyApplicationsModel extends DensityBuoyancyModel {
   }
 
   /**
-   * Computes the heights of the main pool liquid, incorporating the Boat logic.
+   * Computes the heights of the main pool fluid, incorporating the Boat logic.
    * NOTE: This does not call super.updateFluid() because we need to handle the boat logic interspersed with the rest of the logic here.
    */
   protected override updateFluid(): void {
@@ -199,7 +199,7 @@ export default class BuoyancyApplicationsModel extends DensityBuoyancyModel {
 
     const boat = this.boat;
 
-    assert && assert( boat, 'boat needed to update liquids for boat' );
+    assert && assert( boat, 'boat needed to update fluid for boat' );
 
     const boatBasin = boat.basin;
     if ( boat.visibleProperty.value ) {
@@ -269,7 +269,7 @@ export default class BuoyancyApplicationsModel extends DensityBuoyancyModel {
     if ( mass === this.boat && this.boat.isFullySubmerged ) {
 
       // Special consideration for when boat is submerged
-      // Don't count the liquid inside the boat as part of the volume
+      // Don't count the fluid inside the boat as part of the volume
       return this.boat.volumeProperty.value;
     }
     else {
@@ -281,7 +281,7 @@ export default class BuoyancyApplicationsModel extends DensityBuoyancyModel {
     if ( mass === this.boat && this.boat.isFullySubmerged ) {
 
       // Special consideration for when boat is submerged
-      // Don't count the liquid inside the boat as part of the mass
+      // Don't count the fluid inside the boat as part of the mass
       return submergedVolume * this.boat.materialProperty.value.density;
     }
     else {
@@ -296,8 +296,8 @@ export default class BuoyancyApplicationsModel extends DensityBuoyancyModel {
 
   protected override adjustVelocity( basin: Basin | null, velocity: Vector2 ): void {
 
-    // If the boat is moving, assume the liquid moves with it, and apply viscosity due to the movement of our mass
-    // inside the boat's liquid.
+    // If the boat is moving, assume the fluid moves with it, and apply viscosity due to the movement of our mass
+    // inside the boat's fluid.
     if ( basin === this.boat.basin ) {
       velocity.subtract( this.engine.bodyGetVelocity( this.boat.body ) );
     }

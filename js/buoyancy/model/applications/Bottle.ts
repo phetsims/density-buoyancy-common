@@ -5,7 +5,7 @@
  * to a 10-liter volume).
  *
  * The bottle is mathematically modeled so that we can quickly compute cross-sections (we'll need those to display
- * "liquid" contents inside), and also to compute cross-sectional areas and cumulative volumes accurately (for the
+ * "fluid" contents inside), and also to compute cross-sectional areas and cumulative volumes accurately (for the
  * buoyancy model, we need to quickly compute displaced area and volume). We'll also want to compute an accurate volume
  * for our model, so that we can apply a correction factor and scale things so that our model is an exact 10-liter
  * bottle.

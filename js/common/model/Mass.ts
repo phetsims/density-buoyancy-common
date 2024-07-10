@@ -1,7 +1,7 @@
 // Copyright 2019-2024, University of Colorado Boulder
 
 /**
- * Represents a mass that interacts in the scene, and can potentially float or displace liquid.
+ * Represents a mass that interacts in the scene, and can potentially float or displace fluid.
  *
  * @author Jonathan Olson (PhET Interactive Simulations)
  */
@@ -189,7 +189,7 @@ export default abstract class Mass extends PhetioObject {
   // Required internal-physics-step properties that should be set by subtypes in
   // updateStepInformation(). There may exist more set by the subtype (that will be used for e.g. volume/area
   // calculations). These are updated more often than simulation steps. These specific values will be used by external
-  // code for determining liquid height.
+  // code for determining fluid height.
   public stepX: number; // x-value of the position
   public stepBottom: number; // minimum y value of the mass
   public stepTop: number; // maximum y value of the mass
@@ -534,7 +534,7 @@ export default abstract class Mass extends PhetioObject {
   public abstract getDisplacedVolume( fluidLevel: number ): number;
 
   /**
-   * Returns the fraction of the mass that is submerged in a liquid at a given level. From 0 to 1.
+   * Returns the fraction of the mass that is submerged in a fluid at a given level. From 0 to 1.
    */
   public updateSubmergedMassFraction( gravityMagnitude: number, fluidDensity: number ): void {
     assert && assert( gravityMagnitude > 0, 'gravityMagnitude should be positive' );
@@ -715,7 +715,7 @@ export default abstract class Mass extends PhetioObject {
 
   public static readonly MassIO = new IOType<Mass, MassIOStateObject>( 'MassIO', {
     valueType: Mass,
-    documentation: 'Represents a mass that interacts in the scene, and can potentially float or displace liquid.',
+    documentation: 'Represents a mass that interacts in the scene, and can potentially float or displace fluid.',
     stateSchema: {
       matrix: Matrix3.Matrix3IO,
       stepMatrix: Matrix3.Matrix3IO,

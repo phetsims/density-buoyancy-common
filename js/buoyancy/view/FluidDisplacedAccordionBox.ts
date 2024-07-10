@@ -1,7 +1,7 @@
 // Copyright 2024, University of Colorado Boulder
 
 /**
- * A display to show the excess pool liquid that has been displaced.
+ * A display to show the excess pool fluid that has been displaced.
  *
  * @author Michael Kauzmann (PhET Interactive Simulations)
  */

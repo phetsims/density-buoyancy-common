@@ -1,7 +1,7 @@
 // Copyright 2024, University of Colorado Boulder
 
 /**
- * Represents a mass that interacts in the scene, and can potentially float or displace liquid.
+ * Represents a mass that interacts in the scene, and can potentially float or displace fluid.
  *
  * @author Jonathan Olson (PhET Interactive Simulations)
  */

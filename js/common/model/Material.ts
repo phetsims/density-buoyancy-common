@@ -644,6 +644,7 @@ export default class Material {
   public static readonly MATERIALS = [
     Material.ALUMINUM,
     Material.APPLE,
+    Material.BOAT_BODY,
     Material.BRICK,
     Material.CONCRETE,
     Material.COPPER,

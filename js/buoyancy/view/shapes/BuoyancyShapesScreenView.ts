@@ -142,7 +142,7 @@ export default class BuoyancyShapesScreenView extends BuoyancyScreenView<Buoyanc
         derive: 'volumeProperty'
       } ),
       this.popupLayer, {
-        labelNode: ABPanelsNode.getPrimaryTagLabelNode(),
+        labelNode: ABPanelsNode.getTagALabelNode(),
         tandem: tandem.createTandem( 'objectAShapeSizeControlNode' )
       }
     );
@@ -153,7 +153,7 @@ export default class BuoyancyShapesScreenView extends BuoyancyScreenView<Buoyanc
         derive: 'volumeProperty'
       } ),
       this.popupLayer, {
-        labelNode: ABPanelsNode.getSecondaryTagLabelNode(),
+        labelNode: ABPanelsNode.getTagBLabelNode(),
         visibleProperty: new GatedVisibleProperty(
           new DynamicProperty( model.shapeBModel.shapeProperty, { derive: 'internalVisibleProperty' } ),
           objectBShapeSizeControlNodeTandem

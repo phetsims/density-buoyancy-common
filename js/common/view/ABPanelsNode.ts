@@ -23,9 +23,8 @@ export default class ABPanelsNode extends MultiSectionPanelsNode {
 
   /**
    * Returns a Node that displays the "primary mass" tag label.
-   * TODO: Change these function name as well https://github.com/phetsims/density-buoyancy-common/issues/182
    */
-  public static getPrimaryTagLabelNode(): Node {
+  public static getTagALabelNode(): Node {
     return new Node( {
       children: [ new MassTagNode( MassTag.OBJECT_A, 40 ) ],
       scale: 1.3
@@ -35,7 +34,7 @@ export default class ABPanelsNode extends MultiSectionPanelsNode {
   /**
    * Returns a Node that displays the "secondary mass" tag label.
    */
-  public static getSecondaryTagLabelNode(): Node {
+  public static getTagBLabelNode(): Node {
     return new Node( {
       children: [ new MassTagNode( MassTag.OBJECT_B, 40 ) ],
       scale: 1.3

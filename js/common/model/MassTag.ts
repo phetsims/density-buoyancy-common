@@ -40,11 +40,9 @@ export default class MassTag {
     return new MassTag( this.nameProperty, this._tandemName, colorProperty );
   }
 
-  // TODO Remember these colors https://github.com/phetsims/density-buoyancy-common/issues/182
   public static readonly OBJECT_A_COLOR_PROPERTY = DensityBuoyancyCommonColors.tagAProperty;
   public static readonly OBJECT_B_COLOR_PROPERTY = DensityBuoyancyCommonColors.tagBProperty;
 
-  // TODO How to rename these tags? https://github.com/phetsims/density-buoyancy-common/issues/182
   public static readonly OBJECT_A = new MassTag( DensityBuoyancyCommonStrings.massLabel.primaryStringProperty, null, MassTag.OBJECT_A_COLOR_PROPERTY );
   public static readonly OBJECT_B = new MassTag( DensityBuoyancyCommonStrings.massLabel.secondaryStringProperty, null, MassTag.OBJECT_B_COLOR_PROPERTY );
   public static readonly NONE = new MassTag( new StringProperty( 'NONE' ) );

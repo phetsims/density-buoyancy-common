@@ -483,7 +483,7 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
       this.sceneNode.stage.threeScene.add( barrierMesh );
     }
 
-    // Water TODO https://github.com/phetsims/density-buoyancy-common/issues/213
+    // Fluid
     const fluidGeometry = new THREE.BufferGeometry();
     const fluidPositionArray = BoatDesign.createFluidVertexArray();
     fluidGeometry.addAttribute( 'position', new THREE.BufferAttribute( fluidPositionArray, 3 ) );

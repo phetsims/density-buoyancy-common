@@ -44,7 +44,7 @@ export default class BuoyancyApplicationsModel extends DensityBuoyancyModel {
   private readonly scale: Scale; // Scale sitting on the ground next to the pool
 
   // Flag that sets an animation to empty the boat of any fluid inside of it
-  protected spillingWaterOutOfBoat = false;
+  protected spillingFluidOutOfBoat = false;
 
   public constructor( options: BuoyancyApplicationsModelOptions ) {
 
@@ -144,7 +144,7 @@ export default class BuoyancyApplicationsModel extends DensityBuoyancyModel {
     this.boat.verticalAcceleration = 0;
     this.boat.verticalVelocity = 0;
 
-    this.spillingWaterOutOfBoat = false;
+    this.spillingFluidOutOfBoat = false;
   }
 
   /**
@@ -159,7 +159,7 @@ export default class BuoyancyApplicationsModel extends DensityBuoyancyModel {
     this.boat.reset();
 
     super.reset();
-    this.spillingWaterOutOfBoat = false;
+    this.spillingFluidOutOfBoat = false;
 
     this.sceneProperty.reset();
 
@@ -220,16 +220,16 @@ export default class BuoyancyApplicationsModel extends DensityBuoyancyModel {
         // If the top of the boat is out of the fluid past the height threshold, spill the fluid back into the pool
         // (even if not totally full).
         if ( boat.stepTop > this.pool.fluidYInterpolatedProperty.currentValue + boatHeight * BOAT_READY_TO_SPILL_OUT_THRESHOLD ) {
-          this.spillingWaterOutOfBoat = true;
+          this.spillingFluidOutOfBoat = true;
         }
       }
       else {
         // If the boat is empty, stop spilling
-        this.spillingWaterOutOfBoat = false;
+        this.spillingFluidOutOfBoat = false;
       }
 
       // If the boat is out of the fluid, spill the fluid back into the pool
-      if ( this.spillingWaterOutOfBoat ) {
+      if ( this.spillingFluidOutOfBoat ) {
         boatExcess = Math.min( FILL_EMPTY_MULTIPLIER * boat.volumeProperty.value, boatFluidVolume );
       }
       else if ( boatFluidVolume > 0 &&

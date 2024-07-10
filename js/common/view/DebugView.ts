@@ -231,12 +231,12 @@ class DebugMassNode extends Node {
     transformListener();
 
     if ( mass instanceof Boat ) {
-      const waterPath = new Path( null, {
+      const fluidPath = new Path( null, {
         fill: 'rgba(0,128,255,0.5)',
         stroke: 'black',
         lineWidth: LINE_WIDTH
       } );
-      this.addChild( waterPath );
+      this.addChild( fluidPath );
 
       const hitPath = new Path( null, {
         stroke: 'red',
@@ -279,21 +279,21 @@ class DebugMassNode extends Node {
           const basinShape = mass.basin.oneLiterShape.transformed( Matrix3.scaling( multiplier ) );
           const rectangleShape = Shape.bounds( new Bounds2( -10, -10, 10, y ) ).transformed( invertedMatrix );
 
-          let waterShape = rectangleShape.shapeIntersection( basinShape );
+          let fluidShape = rectangleShape.shapeIntersection( basinShape );
 
           // assume BuoyancyApplicationsModel
           try {
             const blockShape = block.shapeProperty.value.transformed( block.matrix ).transformed( invertedMatrix );
-            waterShape = waterShape.shapeDifference( blockShape );
+            fluidShape = fluidShape.shapeDifference( blockShape );
           }
           catch( e ) {
             console.log( e );
           }
 
-          waterPath.shape = waterShape.transformed( matrix );
+          fluidPath.shape = fluidShape.transformed( matrix );
         }
         else {
-          waterPath.shape = null;
+          fluidPath.shape = null;
         }
       };
       mass.basin.fluidYInterpolatedProperty.link( fluidListener );

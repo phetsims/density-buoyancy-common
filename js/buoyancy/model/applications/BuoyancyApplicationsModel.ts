@@ -167,6 +167,31 @@ export default class BuoyancyApplicationsModel extends DensityBuoyancyModel {
       'Boat and bottle should not be visible at the same time' );
   }
 
+  /**
+   * Computes the heights of the main pool liquid, incorporating the Boat logic.
+   * NOTE: This does not call super.updateFluid() because we need to handle the boat logic interspersed with the rest of the logic here.
+   */
+  protected override updateFluid(): void {
+
+    const boat = this.boat;
+
+    const basins: Basin[] = [ this.pool ];
+    if ( boat.visibleProperty.value ) {
+      basins.push( boat.basin );
+      this.pool.childBasin = boat.basin;
+    }
+    else {
+      this.pool.childBasin = null;
+    }
+
+    // If we have a boat that is NOT submerged, we'll assign masses into the boat's basin where relevant. Otherwise,
+    // anything will go just into the pool's basin.
+    // Note the order is important here, as the boat basin takes precedence.
+    const assignableBasins = boat && boat.visibleProperty.value && !boat.isFullySubmerged ? [ boat.basin, this.pool ] : [ this.pool ];
+
+    this.updateFluidForBasins( basins, assignableBasins );
+  }
+
   // May need to adjust volumes between the boat/pool if there is a boat
   protected override getPoolFluidVolume(): number {
 
@@ -239,37 +264,12 @@ export default class BuoyancyApplicationsModel extends DensityBuoyancyModel {
     return poolFluidVolume;
   }
 
-  /**
-   * Computes the heights of the main pool liquid, incorporating the Boat logic.
-   * NOTE: This does not call super.updateFluid() because we need to handle the boat logic interspersed with the rest of the logic here.
-   */
-  protected override updateFluid(): void {
-
-    const boat = this.boat;
-
-    const basins: Basin[] = [ this.pool ];
-    if ( boat.visibleProperty.value ) {
-      basins.push( boat.basin );
-      this.pool.childBasin = boat.basin;
-    }
-    else {
-      this.pool.childBasin = null;
-    }
-
-    // If we have a boat that is NOT submerged, we'll assign masses into the boat's basin where relevant. Otherwise,
-    // anything will go just into the pool's basin.
-    // Note the order is important here, as the boat basin takes precedence.
-    const assignableBasins = boat && boat.visibleProperty.value && !boat.isFullySubmerged ? [ boat.basin, this.pool ] : [ this.pool ];
-
-    this.updateFluidForBasins( basins, assignableBasins );
-  }
-
   protected override getUpdatedSubmergedVolume( mass: Mass, submergedVolume: number ): number {
 
     if ( mass === this.boat && this.boat.isFullySubmerged ) {
 
       // Special consideration for when boat is submerged
-      // Don't count the liquid inside the boat as part of the mass
+      // Don't count the liquid inside the boat as part of the volume
       return this.boat.volumeProperty.value;
     }
     else {

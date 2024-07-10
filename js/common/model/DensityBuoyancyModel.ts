@@ -315,20 +315,6 @@ export default class DensityBuoyancyModel implements TModel {
     this.pool.scale && this.availableMasses.push( this.pool.scale );
   }
 
-  // Placeholder for subclasses to adjust the vertical motion during the physics step.
-  protected updateVerticalMotion( dt: number ): void {
-    // no-op
-  }
-
-  /**
-   * Computes the heights of the main pool liquid.
-   * NOTE: the overridden method in BuoyancyApplicationsModel does NOT call super.updateFluid()
-   */
-  protected updateFluid(): void {
-    this.pool.childBasin = null;
-    this.updateFluidForBasins( [ this.pool ], [ this.pool ] );
-  }
-
   /**
    * Implementation details for updateFluid that is independent of whether there is a Boat or not.
    * @param basins - The basins that are being updated
@@ -348,11 +334,6 @@ export default class DensityBuoyancyModel implements TModel {
     this.masses.forEach( mass => {
       mass.containingBasin = assignableBasins.find( basin => basin.isMassInside( mass ) ) || null;
     } );
-  }
-
-  // NOTE: Subclasses may override this to account for other geometric considerations.
-  protected getPoolFluidVolume(): number {
-    return this.pool.fluidVolumeProperty.value;
   }
 
   /**
@@ -455,7 +436,21 @@ export default class DensityBuoyancyModel implements TModel {
     } );
   }
 
-  // Placeholders for the physics update sequence, which must be overridden in BuoyancyApplicationsModel.
+  // NOTE: The functions below are to be overridden in BuoyancyApplicationsModel for Boat functionality
+
+  /**
+   * Computes the heights of the main pool liquid.
+   * NOTE: the overridden method in BuoyancyApplicationsModel does NOT call super.updateFluid()
+   */
+  protected updateFluid(): void {
+    this.pool.childBasin = null;
+    this.updateFluidForBasins( [ this.pool ], [ this.pool ] );
+  }
+
+  protected getPoolFluidVolume(): number {
+    return this.pool.fluidVolumeProperty.value;
+  }
+
   protected getUpdatedSubmergedVolume( mass: Mass, submergedVolume: number ): number {
     return submergedVolume;
   }
@@ -469,6 +464,10 @@ export default class DensityBuoyancyModel implements TModel {
   }
 
   protected adjustVelocity( basin: Basin | null, velocity: Vector2 ): void {
+    // no-op
+  }
+
+  protected updateVerticalMotion( dt: number ): void {
     // no-op
   }
 }

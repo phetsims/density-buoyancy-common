@@ -50,8 +50,7 @@ export default class DensityMysteryScreenView extends DensityBuoyancyScreenView<
     const densityTableAccordionBox = new AccordionBox( new DensityTableNode(), combineOptions<AccordionBoxOptions>( {
       titleNode: new Text( DensityBuoyancyCommonStrings.densityTableStringProperty, {
         font: DensityBuoyancyCommonConstants.TITLE_FONT,
-        maxWidth: 200,
-        tandem: densityTableAccordionBoxTandem.createTandem( 'titleText' )
+        maxWidth: 200
       } ),
       expandedDefaultValue: false,
       tandem: densityTableAccordionBoxTandem,
@@ -70,10 +69,9 @@ export default class DensityMysteryScreenView extends DensityBuoyancyScreenView<
 
     const blocksModeRadioButtonGroup = new VerticalAquaRadioButtonGroup( model.blockSetProperty, MysteryBlockSet.enumeration.values.map( blockSet => {
       return {
-        createNode: tandem => new Text( blockSet.stringProperty, {
+        createNode: () => new Text( blockSet.stringProperty, {
           font: DensityBuoyancyCommonConstants.RADIO_BUTTON_FONT,
-          maxWidth: 65,
-          tandem: tandem.createTandem( 'labelText' )
+          maxWidth: 65
         } ),
         value: blockSet,
         tandemName: `${blockSet.tandemName}RadioButton`,

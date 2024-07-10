@@ -28,6 +28,7 @@ import MassView from '../../common/view/MassView.js';
 import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
 import StrictOmit from '../../../../phet-core/js/types/StrictOmit.js';
 import FluidIconMesh from '../../common/view/FluidIconMesh.js';
+import DerivedStringProperty from '../../../../axon/js/DerivedStringProperty.js';
 
 // constants
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN_SMALL;
@@ -60,12 +61,14 @@ export default class DensityIntroScreenView extends DensityBuoyancyScreenView<De
       } );
 
     const accordionTandem = tandem.createTandem( 'densityAccordionBox' );
-    const accordionBoxTitleStringProperty = new DerivedProperty( [
+    const accordionBoxTitleStringProperty = new DerivedStringProperty( [
       DensityBuoyancyCommonPreferences.volumeUnitsProperty,
       DensityBuoyancyCommonStrings.densityReadoutStringProperty,
       DensityBuoyancyCommonStrings.densityReadoutDecimetersCubedStringProperty
     ], ( units, litersReadout, decimetersCubedReadout ) => {
       return units === 'liters' ? litersReadout : decimetersCubedReadout;
+    }, {
+      tandem: accordionTandem.createTandem( 'titleStringProperty' )
     } );
     const densityAccordionBox = new AccordionBox( new DensityNumberLineNode( {
         displayDensities: [
@@ -93,11 +96,7 @@ export default class DensityIntroScreenView extends DensityBuoyancyScreenView<De
     ), combineOptions<AccordionBoxOptions>( {
       titleNode: new RichText( accordionBoxTitleStringProperty, {
         font: DensityBuoyancyCommonConstants.TITLE_FONT,
-        maxWidth: 200,
-        visiblePropertyOptions: {
-          phetioReadOnly: true
-        },
-        tandem: accordionTandem.createTandem( 'titleText' )
+        maxWidth: 200
       } ),
       buttonAlign: 'left' as const,
       tandem: accordionTandem,

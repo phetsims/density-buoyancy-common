@@ -50,8 +50,7 @@ export default class BlocksPanel extends Panel {
       children: [
         new Text( DensityBuoyancyCommonStrings.blocksStringProperty, {
           font: DensityBuoyancyCommonConstants.TITLE_FONT,
-          maxWidth: 160,
-          tandem: tandem.createTandem( 'titleText' )
+          maxWidth: 160
         } ),
         verticalAquaRadioButtonGroup
       ]

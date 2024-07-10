@@ -73,7 +73,6 @@ export default class Scale extends Mass {
   public readonly measuredWeightInterpolatedProperty: InterpolatedProperty<number>;
 
   // Just exist for phet-io, see https://github.com/phetsims/density/issues/97
-  // TODO: Add a wrapper test for this, https://github.com/phetsims/density-buoyancy-common/issues/244
   private readonly measuredMassProperty: TReadOnlyProperty<number>;
 
   public readonly displayType: DisplayType;

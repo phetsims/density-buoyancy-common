@@ -219,28 +219,6 @@ export default class BoatDesign {
     );
   }
 
-  /**
-   * Creates a coordinate float array to be used with fillFluidVertexArray, for three.js purposes.
-   */
-  public static createFluidVertexArray(): Float32Array {
-    return new Float32Array( ( CROSS_SECTION_SAMPLES + 1.5 ) * 3 * 3 * 4 );
-  }
-
-  /**
-   * Creates a coordinate float array to be used with fillFluidVertexArray, for three.js purposes.
-   */
-  public static createFluidNormalArray(): Float32Array {
-    const array = BoatDesign.createFluidVertexArray();
-
-    for ( let i = 0; i < array.length / 3; i++ ) {
-
-      // The first 6 normals should be 0,0,1 (front). After that, 0,1,0 (up)
-      array[ i * 3 + ( i < 6 ? 2 : 1 ) ] = 1;
-    }
-
-    return array;
-  }
-
   public static getScaleForLiters( liters: number ): number {
     return Math.pow( liters, 1 / 3 ) * BoatDesign.ONE_LITER_SCALE_MULTIPLIER;
   }

@@ -475,6 +475,19 @@ export default class BuoyancyApplicationsScreenView extends BuoyancyScreenView<B
       sceneRadioButtonGroup,
       this.resetAllButton
     ];
+
+    const fluidGeometry = new THREE.BufferGeometry();
+    const fluidPositionArray = DensityBuoyancyScreenView.createFluidVertexArray();
+    fluidGeometry.addAttribute( 'position', new THREE.BufferAttribute( fluidPositionArray, 3 ) );
+    fluidGeometry.addAttribute( 'normal', new THREE.BufferAttribute( DensityBuoyancyScreenView.createFluidNormalArray(), 3 ) );
+
+    // boolean for optimization, to prevent zeroing out the remainder of the array if we have already done so
+    let wasFilled = false;
+
+    // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
+    model.pool.fluidYInterpolatedProperty.link( y => {
+      wasFilled = this.fillFluidGeometry( y, fluidPositionArray, fluidGeometry, wasFilled );
+    } );
   }
 
   protected override getMassViewFromMass( mass: Mass ): MassView {

@@ -418,6 +418,8 @@ export class DensityMaterials {
     else if ( material === Material.WOOD ) {
       return new WoodMaterialView();
     }
+
+    // TODO: Can we just change the material.custom check below to add "or hidden" https://github.com/phetsims/density-buoyancy-common/issues/256
     else if ( material === Material.MATERIAL_O ) {
       return new ColoredMaterialView( material.customColor! );
     }

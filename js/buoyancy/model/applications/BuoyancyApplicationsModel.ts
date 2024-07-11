@@ -169,7 +169,7 @@ export default class BuoyancyApplicationsModel extends DensityBuoyancyModel {
 
   /**
    * Computes the heights of the main pool fluid, incorporating the Boat logic.
-   * NOTE: This does not call super.updateFluid() because we need to handle the boat logic interspersed with the rest of the logic here.
+   * NOTE: This does not call super.updateFluid() because we need to handle the boat logic with the rest of the logic here.
    */
   protected override updateFluid(): void {
 
@@ -266,7 +266,7 @@ export default class BuoyancyApplicationsModel extends DensityBuoyancyModel {
 
   protected override getUpdatedSubmergedVolume( mass: Mass, submergedVolume: number ): number {
 
-    if ( mass === this.boat && this.boat.isFullySubmerged ) {
+    if ( mass === this.boat && this.boat.visibleProperty.value && this.boat.isFullySubmerged ) {
 
       // Special consideration for when boat is submerged
       // Don't count the fluid inside the boat as part of the volume
@@ -278,7 +278,8 @@ export default class BuoyancyApplicationsModel extends DensityBuoyancyModel {
   }
 
   protected override getUpdatedMassValue( mass: Mass, massValue: number, submergedVolume: number ): number {
-    if ( mass === this.boat && this.boat.isFullySubmerged ) {
+
+    if ( mass === this.boat && this.boat.visibleProperty.value && this.boat.isFullySubmerged ) {
 
       // Special consideration for when boat is submerged
       // Don't count the fluid inside the boat as part of the mass
@@ -306,7 +307,7 @@ export default class BuoyancyApplicationsModel extends DensityBuoyancyModel {
   protected override updateVerticalMotion( dt: number ): void {
     super.updateVerticalMotion( dt );
 
-    if ( dt ) {
+    if ( dt !== 0 && this.boat.visibleProperty.value ) {
       this.boat.updateVerticalMotion( this.pool, dt );
     }
   }

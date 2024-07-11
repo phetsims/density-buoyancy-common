@@ -544,7 +544,7 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
     if ( DensityBuoyancyCommonQueryParameters.showDebug ) {
       const debugVisibleProperty = new BooleanProperty( true );
 
-      this.debugView = new DebugView( model, this.layoutBounds );
+      this.debugView = this.createDebugView();
       this.debugView.visibleProperty = debugVisibleProperty;
       this.popupLayer.addChild( this.debugView );
       this.addChild( new Checkbox( debugVisibleProperty, new Text( 'Debug', { font: new PhetFont( 12 ) } ) ) );
@@ -568,6 +568,10 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
     if ( !ThreeUtils.isWebGLEnabled() ) {
       ThreeUtils.showWebGLWarning( this );
     }
+  }
+
+  protected createDebugView(): DebugView {
+    return new DebugView( this.model, this.layoutBounds );
   }
 
   protected getMassViewFromMass( mass: Mass ): MassView {

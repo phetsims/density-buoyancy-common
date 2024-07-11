@@ -12,7 +12,6 @@ import Vector2 from '../../../../dot/js/Vector2.js';
 import { Shape } from '../../../../kite/js/imports.js';
 import ModelViewTransform2 from '../../../../phetcommon/js/view/ModelViewTransform2.js';
 import { DragListener, Node, Path, Rectangle } from '../../../../scenery/js/imports.js';
-import Boat from '../../buoyancy/model/applications/Boat.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyModel from '../model/DensityBuoyancyModel.js';
 import Mass from '../model/Mass.js';
@@ -24,23 +23,17 @@ const LINE_WIDTH = 0.1;
 
 export default class DebugView extends Node {
 
-  private model: DensityBuoyancyModel;
-  private layoutBounds: Bounds2;
-  private readonly modelViewTransform: ModelViewTransform2;
-  private readonly poolPath: Path;
-  private readonly massNodes: DebugMassNode[];
+  protected model: DensityBuoyancyModel;
+  protected layoutBounds: Bounds2;
+  protected readonly modelViewTransform: ModelViewTransform2;
+  protected readonly poolPath: Path;
+  protected readonly massNodes: DebugMassNode[];
 
   // proportional to the area at that level that is displaced in the pool
-  private readonly poolAreaPath: Path;
+  protected readonly poolAreaPath: Path;
 
   // proportional to the volume up to that level that is displaced in the pool
-  private readonly poolVolumePath: Path;
-
-  // proportional to the area at that level that is displaced in the boat
-  private readonly boatAreaPath: Path;
-
-  // proportional to the volume up to that level that is displaced in the boat
-  private readonly boatVolumePath: Path;
+  protected readonly poolVolumePath: Path;
 
   public constructor( model: DensityBuoyancyModel, layoutBounds: Bounds2 ) {
     super();
@@ -71,7 +64,7 @@ export default class DebugView extends Node {
     this.massNodes = [];
 
     const onMassAdded = ( mass: Mass ) => {
-      const massNode = new DebugMassNode( model, mass, this.modelViewTransform );
+      const massNode = this.createDebugMassNode( model, mass, this.modelViewTransform );
       this.addChild( massNode );
       this.massNodes.push( massNode );
     };
@@ -94,16 +87,10 @@ export default class DebugView extends Node {
       stroke: 'green'
     } );
     this.addChild( this.poolVolumePath );
+  }
 
-    this.boatAreaPath = new Path( null, {
-      stroke: 'red'
-    } );
-    this.addChild( this.boatAreaPath );
-
-    this.boatVolumePath = new Path( null, {
-      stroke: 'green'
-    } );
-    this.addChild( this.boatVolumePath );
+  protected createDebugMassNode( model: DensityBuoyancyModel, mass: Mass, modelViewTransform: ModelViewTransform2 ): DebugMassNode {
+    return new DebugMassNode( model, mass, modelViewTransform );
   }
 
   /**
@@ -119,16 +106,7 @@ export default class DebugView extends Node {
       this.model.poolBounds.maxX, this.model.pool.fluidYInterpolatedProperty.value
     ) );
     this.model.masses.forEach( mass => {
-      try {
-        poolShape = poolShape.shapeDifference( mass.shapeProperty.value.transformed( mass.matrix ) );
-        if ( mass instanceof Boat ) {
-          const multiplier = Math.pow( mass.maxVolumeDisplacedProperty.value / 0.001, 1 / 3 );
-          poolShape = poolShape.shapeDifference( mass.basin.oneLiterShape.transformed( Matrix3.scaling( multiplier ) ).transformed( mass.matrix ) );
-        }
-      }
-      catch( e ) {
-        console.log( e );
-      }
+      poolShape = this.mutatePoolShape( mass, poolShape );
     } );
     poolShape = this.modelViewTransform.modelToViewShape( poolShape );
     this.poolPath.shape = poolShape;
@@ -146,33 +124,20 @@ export default class DebugView extends Node {
       poolVolumeShape.lineTo( this.modelViewTransform.modelToViewX( this.model.pool.bounds.maxX ) + point.x * 10000, this.modelViewTransform.modelToViewY( point.y ) );
     } );
     this.poolVolumePath.shape = poolVolumeShape;
+  }
 
-    const boat = this.model.masses.find( mass => mass instanceof Boat );
-    if ( boat instanceof Boat ) {
-      const boatYValues = _.range( boat.stepBottom, boat.stepTop, 0.002 );
-
-      const boatNode = _.find( this.massNodes, massNode => massNode.mass === boat )!;
-
-      const boatAreaShape = new Shape();
-      boatYValues.map( y => new Vector2( boat.basin.getDisplacedArea( y ), y ) ).forEach( point => {
-        boatAreaShape.lineTo( boatNode.right + point.x * 2000, this.modelViewTransform.modelToViewY( point.y ) );
-      } );
-      this.boatAreaPath.shape = boatAreaShape;
-
-      const boatVolumeShape = new Shape();
-      boatYValues.map( y => new Vector2( boat.basin.getDisplacedVolume( y ), y ) ).forEach( point => {
-        boatVolumeShape.lineTo( boatNode.right + point.x * 10000, this.modelViewTransform.modelToViewY( point.y ) );
-      } );
-      this.boatVolumePath.shape = boatVolumeShape;
+  protected mutatePoolShape( mass: Mass, poolShape: Shape ): Shape {
+    try {
+      poolShape = poolShape.shapeDifference( mass.shapeProperty.value.transformed( mass.matrix ) );
     }
-    else {
-      this.boatAreaPath.shape = null;
-      this.boatVolumePath.shape = null;
+    catch( e ) {
+      console.log( e );
     }
+    return poolShape;
   }
 }
 
-class DebugMassNode extends Node {
+export class DebugMassNode extends Node {
 
   public readonly mass: Mass;
   private readonly dragListener: DragListener;
@@ -182,7 +147,7 @@ class DebugMassNode extends Node {
       cursor: 'pointer'
     } );
 
-    const path = new Path( null, {
+    let path = new Path( null, {
       fill: 'rgba(160,255,100,0.5)',
       stroke: 'black',
       lineWidth: LINE_WIDTH
@@ -204,15 +169,7 @@ class DebugMassNode extends Node {
       matrix.set02( 0 );
       matrix.set12( 0 );
 
-      if ( mass instanceof Boat ) {
-        const multiplier = Math.pow( mass.maxVolumeDisplacedProperty.value / 0.001, 1 / 3 );
-        const basinShape = mass.basin.oneLiterShape.transformed( Matrix3.scaling( multiplier ) );
-        path.shape = shape.shapeDifference( basinShape ).transformed( matrix );
-        intersectionPath.shape = shape.transformed( matrix );
-      }
-      else {
-        path.shape = shape.transformed( matrix );
-      }
+      path = this.boatShapeListener( mass, path, intersectionPath, shape, matrix );
     };
     mass.shapeProperty.link( shapeListener );
     this.disposeEmitter.addListener( () => {
@@ -230,81 +187,7 @@ class DebugMassNode extends Node {
     } );
     transformListener();
 
-    if ( mass instanceof Boat ) {
-      const fluidPath = new Path( null, {
-        fill: 'rgba(0,128,255,0.5)',
-        stroke: 'black',
-        lineWidth: LINE_WIDTH
-      } );
-      this.addChild( fluidPath );
-
-      const hitPath = new Path( null, {
-        stroke: 'red',
-        pickable: false
-      } );
-      this.addChild( hitPath );
-
-      const displacementListener = ( volume: number ) => {
-        const matrix = scratchMatrix.set( modelViewTransform.getMatrix() );
-
-        // Zero out the translation
-        matrix.set02( 0 );
-        matrix.set12( 0 );
-
-        const multiplier = Math.pow( volume / 0.001, 1 / 3 );
-        const basinShape = mass.basin.oneLiterShape.transformed( Matrix3.scaling( multiplier ) );
-
-        hitPath.shape = basinShape.transformed( matrix );
-      };
-      mass.maxVolumeDisplacedProperty.link( displacementListener );
-      this.disposeEmitter.addListener( () => {
-        mass.maxVolumeDisplacedProperty.unlink( displacementListener );
-      } );
-
-      // @ts-expect-error
-      const block = model.block;
-      const fluidListener = () => {
-        const y = mass.basin.fluidYInterpolatedProperty.value;
-
-        if ( mass.basin.fluidVolumeProperty.value > 0 ) {
-          const matrix = scratchMatrix.set( modelViewTransform.getMatrix() );
-
-          // Zero out the translation
-          matrix.set02( 0 );
-          matrix.set12( 0 );
-
-          const invertedMatrix = mass.matrix.inverted();
-
-          const multiplier = Math.pow( mass.maxVolumeDisplacedProperty.value / 0.001, 1 / 3 );
-          const basinShape = mass.basin.oneLiterShape.transformed( Matrix3.scaling( multiplier ) );
-          const rectangleShape = Shape.bounds( new Bounds2( -10, -10, 10, y ) ).transformed( invertedMatrix );
-
-          let fluidShape = rectangleShape.shapeIntersection( basinShape );
-
-          // assume BuoyancyApplicationsModel
-          try {
-            const blockShape = block.shapeProperty.value.transformed( block.matrix ).transformed( invertedMatrix );
-            fluidShape = fluidShape.shapeDifference( blockShape );
-          }
-          catch( e ) {
-            console.log( e );
-          }
-
-          fluidPath.shape = fluidShape.transformed( matrix );
-        }
-        else {
-          fluidPath.shape = null;
-        }
-      };
-      mass.basin.fluidYInterpolatedProperty.link( fluidListener );
-      block.shapeProperty.lazyLink( fluidListener );
-      block.transformedEmitter.addListener( fluidListener );
-      this.disposeEmitter.addListener( () => {
-        mass.basin.fluidYInterpolatedProperty.unlink( fluidListener );
-        block.shapeProperty.unlink( fluidListener );
-        block.transformedEmitter.removeListener( fluidListener );
-      } );
-    }
+    this.specialBoatCase( mass );
 
     this.dragListener = new DragListener( {
       transform: modelViewTransform,
@@ -320,6 +203,15 @@ class DebugMassNode extends Node {
       }
     } );
     this.addInputListener( this.dragListener );
+  }
+
+  protected boatShapeListener( mass: Mass, path: Path, intersectionPath: Path, shape: Shape, matrix: Matrix3 ): Path {
+    path.shape = shape.transformed( matrix );
+    return path;
+  }
+
+  protected specialBoatCase( mass: Mass ): void {
+    // no-op, to be implemented by child class
   }
 }
 

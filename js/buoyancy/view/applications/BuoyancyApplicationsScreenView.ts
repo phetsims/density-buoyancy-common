@@ -54,6 +54,8 @@ import CuboidView from '../../../common/view/CuboidView.js';
 import Scale from '../../../common/model/Scale.js';
 import ScaleView from '../../../common/view/ScaleView.js';
 import Boat from '../../model/applications/Boat.js';
+import DebugView from '../../../common/view/DebugView.js';
+import ApplicationsDebugView from './ApplicationsDebugView.js';
 
 // constants
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN_SMALL;
@@ -515,6 +517,10 @@ export default class BuoyancyApplicationsScreenView extends BuoyancyScreenView<B
     super.step( dt );
 
     this.positionResetSceneButton();
+  }
+
+  protected override createDebugView(): DebugView {
+    return new ApplicationsDebugView( this.model, this.layoutBounds );
   }
 
   protected override getMinClosestEntry( entries: PointedAtMassView[] ): PointedAtMassView | undefined {

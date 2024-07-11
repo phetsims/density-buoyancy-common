@@ -10,15 +10,16 @@
 
 import Property from '../../../../axon/js/Property.js';
 import optionize from '../../../../phet-core/js/optionize.js';
-import { Color, ColorProperty, HBox, Node, Text, VBox, VBoxOptions } from '../../../../scenery/js/imports.js';
+import { HBox, Node, Text, VBox, VBoxOptions } from '../../../../scenery/js/imports.js';
 import ComboBox from '../../../../sun/js/ComboBox.js';
-import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
 import Material, { MaterialName } from '../model/Material.js';
 import { PhetioObjectOptions } from '../../../../tandem/js/PhetioObject.js';
 import PickRequired from '../../../../phet-core/js/types/PickRequired.js';
 import Range from '../../../../dot/js/Range.js';
+import Utils from '../../../../dot/js/Utils.js';
+import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 
 type SelfMaterialControlNodeOptions = {
 
@@ -96,9 +97,18 @@ export default class MaterialControlNode extends VBox {
       };
     };
 
-    // TODO: Yar, https://github.com/phetsims/density-buoyancy-common/issues/256
-    const customMaterial = Material.createCustomMaterial( {
-      customColor: new ColorProperty( new Color( 'green' ) )
+    // TODO: Yar? https://github.com/phetsims/density-buoyancy-common/issues/256
+    const customMaterial = Material.createCustomSolidMaterial( {
+      densityRange: this.customDensityRange,
+      density: materialProperty.value.density
+    } );
+    volumeProperty.link( volume => {
+      if ( materialProperty.value.custom ) {
+
+        // Handle our minimum volume if we're switched to custom (if needed)
+        const maxVolume = Math.max( volume, options.minCustomVolumeLiters / DensityBuoyancyCommonConstants.LITERS_IN_CUBIC_METER );
+        customMaterial.densityProperty.value = Utils.clamp( materialProperty.value.density, options.minCustomMass / maxVolume, options.maxCustomMass / maxVolume );
+      }
     } );
 
     // TODO: But can we just use the validValues of the provided MaterialProperty, https://github.com/phetsims/density-buoyancy-common/issues/256

@@ -8,7 +8,6 @@
  * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
-import Property from '../../../../axon/js/Property.js';
 import Utils from '../../../../dot/js/Utils.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
 import ThreeUtils from '../../../../mobius/js/ThreeUtils.js';
@@ -52,6 +51,7 @@ import Wood26_nrm_jpg from '../../../images/Wood26_nrm_jpg.js';
 import Wood26_rgh_jpg from '../../../images/Wood26_rgh_jpg.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import Material from '../model/Material.js';
+import ReadOnlyProperty from '../../../../axon/js/ReadOnlyProperty.js';
 
 // MaterialView definition
 
@@ -339,10 +339,10 @@ class GreyMetalMaterialView extends MaterialView {
 
 export class ColoredMaterialView extends MaterialView<THREE.MeshLambertMaterial> {
 
-  private readonly colorProperty: Property<Color>;
+  private readonly colorProperty: ReadOnlyProperty<Color>;
   private readonly listener: ( color: Color ) => void;
 
-  public constructor( colorProperty: Property<Color> ) {
+  public constructor( colorProperty: ReadOnlyProperty<Color> ) {
 
     assert && assert( colorProperty !== null, 'colorProperty should not be null' );
 

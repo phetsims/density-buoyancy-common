@@ -182,10 +182,7 @@ export default class MaterialMassVolumeControlNode extends MaterialControlNode {
 
         // If we're custom, adjust the density
         if ( materialProperty.value.custom && !options.customKeepsConstantDensity ) {
-          materialProperty.value = Material.createCustomSolidMaterial( {
-            density: massProperty.value / cubicMeters,
-            densityRange: this.customDensityRange
-          } );
+          materialProperty.value.densityProperty.value = massProperty.value / cubicMeters;
         }
         setVolume( cubicMeters );
 
@@ -221,10 +218,7 @@ export default class MaterialMassVolumeControlNode extends MaterialControlNode {
         // It is possible for the volumeProperty to be 0, so avoid the infinite density case, see https://github.com/phetsims/density-buoyancy-common/issues/78
         if ( materialProperty.value.custom && volumeProperty.value > 0 ) {
           if ( !options.customKeepsConstantDensity ) { // Separate if statement, so we don't setVolume() below
-            materialProperty.value = Material.createCustomSolidMaterial( {
-              density: mass / volumeProperty.value,
-              densityRange: this.customDensityRange
-            } );
+            materialProperty.value.densityProperty.value = mass / volumeProperty.value;
           }
         }
         else {

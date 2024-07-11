@@ -56,6 +56,7 @@ export default class FluidDensityControlNode extends ComboNumberControl<Material
       property: fluidMaterialProperty,
       range: new Range( 0.5, 15 ),
       toNumericValue: material => material.density / DensityBuoyancyCommonConstants.LITERS_IN_CUBIC_METER,
+      // TODO: just the one thanks. https://github.com/phetsims/density-buoyancy-common/issues/256
       createCustomValue: density => Material.createCustomLiquidMaterial( {
         density: density * DensityBuoyancyCommonConstants.LITERS_IN_CUBIC_METER,
         densityRange: DensityBuoyancyCommonConstants.FLUID_DENSITY_RANGE_PER_M3

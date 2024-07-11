@@ -109,6 +109,11 @@ export default class BuoyancyApplicationsScreenView extends BuoyancyScreenView<B
     this.transformEmitter.addListener( this.positionResetSceneButton );
     this.positionResetSceneButton();
 
+    const customMaterialInside = Material.createCustomSolidMaterial( {
+      density: 1000,
+      densityRange: new Range( 0, 1000 ) // TODO: range, https://github.com/phetsims/density-buoyancy-common/issues/256
+    } );
+
     const bottleControlsTandem = tandem.createTandem( 'bottleControls' );
     const materialInsideControlsTandem = bottleControlsTandem.createTandem( 'materialInsideControls' );
     const materialInsideControls = new MaterialMassVolumeControlNode( model.bottle.materialInsideProperty, model.bottle.interiorMassProperty, model.bottle.materialInsideVolumeProperty, [
@@ -142,23 +147,21 @@ export default class BuoyancyApplicationsScreenView extends BuoyancyScreenView<B
 
     let materialChangeLocked = false;
     Multilink.lazyMultilink( [
-      model.bottle.customDensityProperty,
-      model.bottle.customDensityProperty.rangeProperty,
+      // TODO: umm...... https://github.com/phetsims/density-buoyancy-common/issues/256
+      // model.bottle.customDensityProperty,
+      // model.bottle.customDensityProperty.rangeProperty,
       model.bottle.interiorMassProperty,
       customDensityControlVisibleProperty
     ], ( density, densityRange ) => {
       if ( !materialChangeLocked && model.bottle.materialInsideProperty.value.custom ) {
         materialChangeLocked = true;
-        model.bottle.materialInsideProperty.value = Material.createCustomSolidMaterial( {
-          density: density * DensityBuoyancyCommonConstants.LITERS_IN_CUBIC_METER,
-          densityRange: densityRange.times( DensityBuoyancyCommonConstants.LITERS_IN_CUBIC_METER )
-        } );
+        model.bottle.materialInsideProperty.value.densityProperty.value = density * DensityBuoyancyCommonConstants.LITERS_IN_CUBIC_METER;
         materialChangeLocked = false;
       }
     } );
 
     const customBottleDensityControlTandem = materialInsideControlsTandem.createTandem( 'customBottleDensityNumberControl' );
-    const customBottleDensityControl = new NumberControl( DensityBuoyancyCommonStrings.densityStringProperty, model.bottle.customDensityProperty, model.bottle.customDensityProperty.range, combineOptions<NumberControlOptions>( {
+    const customBottleDensityControl = new NumberControl( DensityBuoyancyCommonStrings.densityStringProperty, customMaterialInside.densityProperty, customMaterialInside.densityProperty.range, combineOptions<NumberControlOptions>( {
       visibleProperty: new GatedVisibleProperty( customDensityControlVisibleProperty, customBottleDensityControlTandem ),
       sliderOptions: {
         accessibleName: DensityBuoyancyCommonStrings.densityStringProperty,

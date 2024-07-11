@@ -89,6 +89,7 @@ import ReadOnlyProperty from '../../../../../axon/js/ReadOnlyProperty.js';
 import ApplicationsMass, { ApplicationsMassOptions } from './ApplicationsMass.js';
 import NumberIO from '../../../../../tandem/js/types/NumberIO.js';
 import DensityBuoyancyCommonConstants from '../../../common/DensityBuoyancyCommonConstants.js';
+import MaterialProperty from '../../../common/model/MaterialProperty.js';
 
 // constants (in logical coordinates)
 const BODY_CORNER_RADIUS = 0.02; // Used both between the taper/body and between the body/base
@@ -183,7 +184,8 @@ export default class Bottle extends ApplicationsMass {
   // model-coordinate bounds in x,y
   private readonly bottleBounds: Bounds2;
 
-  public readonly materialInsideProperty: Property<Material>;
+  // TODO: look through all usages of Property<Material> to see if they should be MaterialProperty. https://github.com/phetsims/density-buoyancy-common/issues/256
+  public readonly materialInsideProperty: MaterialProperty;
   public readonly materialInsideVolumeRange = new Range( 0, 10 );
   public readonly materialInsideVolumeProperty: Property<number>; // m^3
 
@@ -192,20 +194,24 @@ export default class Bottle extends ApplicationsMass {
   // In kg (kilograms)
   public interiorMassProperty: ReadOnlyProperty<number>;
 
-  public override readonly customDensityProperty: NumberProperty;
-
   public constructor( engine: PhysicsEngine, providedOptions: BottleOptions ) {
 
     const vertices = Bottle.getFlatIntersectionVertices();
+
+    const customMaterial = Material.createCustomSolidMaterial( {
+      nameProperty: DensityBuoyancyCommonStrings.systemAStringProperty,
+      density: ( BOTTLE_MASS + BOTTLE_INITIAL_INTERIOR_MATERIAL.density * BOTTLE_INITIAL_INTERIOR_VOLUME ) / BOTTLE_VOLUME,
+      densityRange: BOTTLE_DENSITY_RANGE
+    } );
 
     const options = optionize<BottleOptions, EmptySelfOptions, InstrumentedMassOptions>()( {
       body: engine.createFromVertices( vertices, true ),
       shape: Shape.polygon( vertices ),
       volume: BOTTLE_VOLUME,
-      material: Material.createCustomSolidMaterial( {
-        density: ( BOTTLE_MASS + BOTTLE_INITIAL_INTERIOR_MATERIAL.density * BOTTLE_INITIAL_INTERIOR_VOLUME ) / BOTTLE_VOLUME,
-        densityRange: BOTTLE_DENSITY_RANGE
-      } ),
+      material: customMaterial,
+      materialPropertyOptions: {
+        validValues: [ customMaterial ]
+      },
       massShape: MassShape.BLOCK,
 
       accessibleName: 'Bottle'
@@ -218,7 +224,7 @@ export default class Bottle extends ApplicationsMass {
 
     const materialInsideTandem = options.tandem.createTandem( 'materialInside' );
 
-    this.materialInsideProperty = new Property( BOTTLE_INITIAL_INTERIOR_MATERIAL, {
+    this.materialInsideProperty = new MaterialProperty( BOTTLE_INITIAL_INTERIOR_MATERIAL, {
       valueType: Material,
       reentrant: true,
       tandem: materialInsideTandem.createTandem( 'materialProperty' ),
@@ -232,17 +238,6 @@ export default class Bottle extends ApplicationsMass {
       units: 'm^3'
     } );
 
-    // @ts-expect-error
-    assert && assert( !this.customDensityProperty, 'There should not be a customDensityProperty on bottle before we create our internal one below' );
-
-    this.customDensityProperty = new NumberProperty( 1, {
-      range: new Range( 0.05, 20 ),
-      tandem: materialInsideTandem.createTandem( 'customDensityProperty' ),
-      phetioDocumentation: 'Density of the material inside the bottle when ‘CUSTOM’ is chosen.',
-      phetioFeatured: true,
-      units: 'kg/L'
-    } );
-
     this.interiorMassProperty = new DerivedProperty( [ this.materialInsideProperty, this.materialInsideVolumeProperty ], ( material, volume ) => {
       return material.density * volume;
     }, {
@@ -251,14 +246,11 @@ export default class Bottle extends ApplicationsMass {
       phetioValueType: NumberIO
     } );
 
-    Multilink.multilink( [ this.materialInsideProperty, this.materialInsideVolumeProperty ], ( material, volume ) => {
-      this.materialProperty.value = Material.createCustomSolidMaterial( {
-        nameProperty: DensityBuoyancyCommonStrings.systemAStringProperty,
-        density: ( BOTTLE_MASS + material.density * volume ) / BOTTLE_VOLUME,
-        densityRange: BOTTLE_DENSITY_RANGE
-      } );
+    // TODO: Bottle.materialProperty.value.densityProperty could be a DerivedProperty based on these, but to do that,
+    //       you need to support dependency injection for densityProperty into Material. Do we want to do that?!? https://github.com/phetsims/density-buoyancy-common/issues/256
+    Multilink.multilink( [ this.materialInsideProperty.densityProperty, this.materialInsideVolumeProperty ], ( density, volume ) => {
+      this.materialProperty.value.densityProperty.value = ( BOTTLE_MASS + density * volume ) / BOTTLE_VOLUME;
     } );
-
   }
 
   /**

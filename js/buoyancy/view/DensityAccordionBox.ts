@@ -18,13 +18,11 @@ import ReadoutListAccordionBox, { ReadoutData, ReadoutListAccordionBoxOptions } 
 import DerivedStringProperty from '../../../../axon/js/DerivedStringProperty.js';
 import optionize, { EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
 
-type DensityReadoutType = TReadOnlyProperty<Material>;
-
-type ParentOptions = ReadoutListAccordionBoxOptions<DensityReadoutType>;
+type ParentOptions = ReadoutListAccordionBoxOptions<TReadOnlyProperty<Material>>;
 type SelfOptions = EmptySelfOptions;
 type DensityAccordionBoxOptions = SelfOptions & ParentOptions;
 
-export default class DensityAccordionBox extends ReadoutListAccordionBox<DensityReadoutType> {
+export default class DensityAccordionBox extends ReadoutListAccordionBox<TReadOnlyProperty<Material>> {
 
   public constructor( titleStringProperty: TReadOnlyProperty<string>, providedOptions?: DensityAccordionBoxOptions ) {
 
@@ -36,7 +34,7 @@ export default class DensityAccordionBox extends ReadoutListAccordionBox<Density
     super( titleStringProperty, options );
   }
 
-  public override generateReadoutData( materialProperty: DensityReadoutType ): ReadoutData {
+  public override generateReadoutData( materialProperty: TReadOnlyProperty<Material> ): ReadoutData {
 
     // Use DynamicProperty so that this name is updated based on the material AND material's name changing.
     const nameProperty = new DynamicProperty<string, string, Material>( materialProperty, {
@@ -56,6 +54,9 @@ export default class DensityAccordionBox extends ReadoutListAccordionBox<Density
                StringUtils.fillIn( patternStringProperty, {
 
                  // convert from kg/m^3 to kg/L
+                 // TODO: This needs to update when custom material density changes, https://github.com/phetsims/density-buoyancy-common/issues/256
+                 // Can do with a DynamicProperty that takes the value of density of the selected material
+                 // Or with DerivedProperty.deriveAny across all the validValues which are Materials and then take their densityProperties
                  value: Utils.toFixed( material.density / DensityBuoyancyCommonConstants.LITERS_IN_CUBIC_METER, 2 ),
                  decimalPlaces: 2
                } );

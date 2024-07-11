@@ -8,13 +8,10 @@
  * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
-import DynamicProperty from '../../../../axon/js/DynamicProperty.js';
 import Property from '../../../../axon/js/Property.js';
-import Utils from '../../../../dot/js/Utils.js';
 import optionize from '../../../../phet-core/js/optionize.js';
-import { HBox, Node, Text, VBox, VBoxOptions } from '../../../../scenery/js/imports.js';
+import { Color, ColorProperty, HBox, Node, Text, VBox, VBoxOptions } from '../../../../scenery/js/imports.js';
 import ComboBox from '../../../../sun/js/ComboBox.js';
-import StringIO from '../../../../tandem/js/types/StringIO.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
@@ -82,33 +79,6 @@ export default class MaterialControlNode extends VBox {
     const materialNames: MaterialName[] = [ ...materials.map( material => material.identifier ) ];
     options.supportCustomMaterial && materialNames.push( 'CUSTOM' );
 
-    // TODO: https://github.com/phetsims/density-buoyancy-common/issues/163 re-evaluate eliminating or moving this code
-    //       after addressing #163
-    const comboBoxMaterialProperty = new DynamicProperty( new Property( materialProperty ), {
-      bidirectional: true,
-      map: ( material: Material ) => material.identifier,
-      inverseMap: ( materialName: MaterialName ): Material => {
-        if ( materialName === 'CUSTOM' ) {
-          // Handle our minimum volume if we're switched to custom (if needed)
-          const volume = Math.max( volumeProperty.value, options.minCustomVolumeLiters / DensityBuoyancyCommonConstants.LITERS_IN_CUBIC_METER );
-          return Material.createCustomSolidMaterial( {
-            density: Utils.clamp( materialProperty.value.density, options.minCustomMass / volume, options.maxCustomMass / volume ),
-            densityRange: this.customDensityRange
-          } );
-        }
-        else {
-          return Material.getMaterial( materialName );
-        }
-      },
-      reentrant: true,
-      phetioState: false,
-      tandem: options.tandem.createTandem( 'comboBoxMaterialProperty' ),
-      phetioFeatured: true,
-      phetioDocumentation: 'Current material of the block. Changing the material will result in changes to the mass, but the volume will remain the same.',
-      validValues: materialNames,
-      phetioValueType: StringIO
-    } );
-
     const comboMaxWidth = 110;
 
     const regularMaterials = materials.filter( material => !material.hidden );
@@ -116,7 +86,7 @@ export default class MaterialControlNode extends VBox {
 
     const materialToItem = ( material: Material ) => {
       return {
-        value: material.identifier,
+        value: material,
         createNode: () => new Text( material.nameProperty, {
           font: DensityBuoyancyCommonConstants.COMBO_BOX_ITEM_FONT,
           maxWidth: comboMaxWidth
@@ -126,11 +96,17 @@ export default class MaterialControlNode extends VBox {
       };
     };
 
-    // TODO: parametrize to MaterialName, https://github.com/phetsims/density-buoyancy-common/issues/176
-    const comboBox = new ComboBox( comboBoxMaterialProperty, [
+    // TODO: Yar, https://github.com/phetsims/density-buoyancy-common/issues/256
+    const customMaterial = Material.createCustomMaterial( {
+      customColor: new ColorProperty( new Color( 'green' ) )
+    } );
+
+    // TODO: But can we just use the validValues of the provided MaterialProperty, https://github.com/phetsims/density-buoyancy-common/issues/256
+    // TODO: But hidden ones!!! https://github.com/phetsims/density-buoyancy-common/issues/256
+    const comboBox = new ComboBox( materialProperty, [
       ...regularMaterials.map( materialToItem ),
       ...( options.supportCustomMaterial ? [ {
-        value: 'CUSTOM',
+        value: customMaterial,
         createNode: () => new Text( DensityBuoyancyCommonStrings.material.customStringProperty, {
           font: DensityBuoyancyCommonConstants.COMBO_BOX_ITEM_FONT,
           maxWidth: comboMaxWidth

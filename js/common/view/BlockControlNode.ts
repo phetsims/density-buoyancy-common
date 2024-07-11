@@ -19,6 +19,7 @@ import { combineOptions } from '../../../../phet-core/js/optionize.js';
 import PrecisionSliderThumb from './PrecisionSliderThumb.js';
 import UnitConversionProperty from '../../../../axon/js/UnitConversionProperty.js';
 import Range from '../../../../dot/js/Range.js';
+import NumberProperty from '../../../../axon/js/NumberProperty.js';
 
 type SelfOptions = {
   mysteryMaterials: Material[]; // Provide empty list to opt out.
@@ -41,19 +42,19 @@ export default class BlockControlNode extends MaterialMassVolumeControlNode {
       assert && assert( cuboid.adjustableMaterial, 'useDensityControlInsteadOfMassControl should only be used with adjustable materials' );
 
       const densityNumberControlTandem = options.tandem.createTandem( 'densityNumberControl' );
-      const customDensityProperty = cuboid.customDensityProperty!;
 
-      // TODO: See https://github.com/phetsims/density-buoyancy-common/issues/176
-      // customDensityProperty.lazyLink( () => {
-      //   cuboid.materialEnumProperty!.value = 'CUSTOM';
-      // } );
+      // TODO: Lots of work needed here, https://github.com/phetsims/density-buoyancy-common/issues/256
+      // TODO: Manually set material to custom when this property changes? https://github.com/phetsims/density-buoyancy-common/issues/256
+      const customDensityProperty = new NumberProperty( 1000, {} );
 
       const densityAsLitersProperty = new UnitConversionProperty( customDensityProperty, {
         factor: 1 / DensityBuoyancyCommonConstants.LITERS_IN_CUBIC_METER
       } );
 
-      const densityNumberControl = new NumberControl( DensityBuoyancyCommonStrings.densityStringProperty,
-        densityAsLitersProperty, new Range( customDensityProperty.range.min / DensityBuoyancyCommonConstants.LITERS_IN_CUBIC_METER, 10 ),
+      const densityNumberControl = new NumberControl(
+        DensityBuoyancyCommonStrings.densityStringProperty,
+        densityAsLitersProperty,
+        new Range( customDensityProperty.range.min / DensityBuoyancyCommonConstants.LITERS_IN_CUBIC_METER, 10 ),
         combineOptions<NumberControlOptions>( {
           sliderOptions: {
             accessibleName: DensityBuoyancyCommonStrings.densityStringProperty,

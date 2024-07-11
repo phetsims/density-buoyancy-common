@@ -29,6 +29,7 @@ import MappedProperty from '../../../../axon/js/MappedProperty.js';
 import Range from '../../../../dot/js/Range.js';
 import WithRequired from '../../../../phet-core/js/types/WithRequired.js';
 import StrictOmit from '../../../../phet-core/js/types/StrictOmit.js';
+import NumberProperty from '../../../../axon/js/NumberProperty.js';
 
 const NullableColorPropertyReferenceType = NullableIO( ReferenceIO( Property.PropertyIO( Color.ColorIO ) ) );
 
@@ -116,11 +117,12 @@ export type MaterialOptions = {
   // If true, don't show the density in number pickers/readouts
   hidden?: boolean;
 
+  // TODO: Can we combine custom/liquid colors? https://github.com/phetsims/density-buoyancy-common/issues/256
   // Uses the color for a solid material's color
-  customColor?: Property<Color> | null;
+  customColor?: ReadOnlyProperty<Color> | null;
 
   // Uses the alpha channel for opacity
-  liquidColor?: Property<Color> | null;
+  liquidColor?: ReadOnlyProperty<Color> | null;
 
   // Used for the color of depth lines added on top of the Material
   depthLinesColorProperty?: TReadOnlyProperty<Color>;
@@ -128,20 +130,33 @@ export type MaterialOptions = {
 type NoIdentifierMaterialOptions = StrictOmit<MaterialOptions, 'identifier'>;
 export type CreateCustomMaterialOptions = NoIdentifierMaterialOptions & Required<Pick<MaterialOptions, 'density'>> & { densityRange?: Range };
 
+// TODO: Material should wire up color properties https://github.com/phetsims/density-buoyancy-common/issues/256
+// TODO: Material only needs one freaking color Property, https://github.com/phetsims/density-buoyancy-common/issues/256
+// TODO: Material should know its density range https://github.com/phetsims/density-buoyancy-common/issues/256
+/**
+ * TODO: Subtype material? Is it worth it?
+ *       LiquidMaterial
+ *          viscosity
+ *          liquidColor (hopefully going away)
+ *       SolidMaterial
+ *          depthLinesColorProperty
+ *  https://github.com/phetsims/density-buoyancy-common/issues/256
+ */
+// TODO: Instrument Materials globally (and locally for custom), and their densityProperty too. https://github.com/phetsims/density-buoyancy-common/issues/256
 export default class Material {
 
   public readonly nameProperty: TReadOnlyProperty<string>;
   public readonly identifier: MaterialName;
   public readonly tandemName: string | null;
-  public readonly density: number; // in SI (kg/m^3)
   public readonly viscosity: number;
 
-  // TODO: Eliminate custom as an orthogonal attribute, it can be determined from identifier. https://github.com/phetsims/density-buoyancy-common/issues/176
+  // TODO: Eliminate custom as an orthogonal attribute, it can be determined from identifier. https://github.com/phetsims/density-buoyancy-common/issues/256
   public readonly custom: boolean;
   public readonly hidden: boolean;
-  public readonly customColor: Property<Color> | null;
-  public readonly liquidColor: Property<Color> | null;
+  public readonly customColor: ReadOnlyProperty<Color> | null;
+  public readonly liquidColor: ReadOnlyProperty<Color> | null;
   public readonly depthLinesColorProperty: TReadOnlyProperty<Color>;
+  public readonly densityProperty: NumberProperty;
 
   public constructor( providedOptions: MaterialOptions ) {
 
@@ -162,13 +177,26 @@ export default class Material {
     this.nameProperty = options.nameProperty;
     this.identifier = options.identifier;
     this.tandemName = options.tandemName;
-    this.density = options.density;
+    this.densityProperty = new NumberProperty( options.density, {
+      // phetioFeatured: true,
+      // phetioDocumentation: 'Density of the object when the material is set to “CUSTOM”.',
+      range: new Range( 0, 23000 ),
+      units: 'kg/m^3'
+    } );
     this.viscosity = options.viscosity;
     this.custom = options.custom;
     this.hidden = options.hidden;
     this.customColor = options.customColor;
     this.liquidColor = options.liquidColor;
     this.depthLinesColorProperty = options.depthLinesColorProperty;
+
+    // TODO: make this happen less https://github.com/phetsims/density-buoyancy-common/issues/256
+    console.log( 'hello new material' );
+  }
+
+  // TODO: do we need this pointer? https://github.com/phetsims/density-buoyancy-common/issues/256
+  public get density(): number {
+    return this.densityProperty.value;
   }
 
   /**
@@ -188,6 +216,9 @@ export default class Material {
    */
   public static createCustomLiquidMaterial( options: WithRequired<CreateCustomMaterialOptions, 'densityRange'> ): Material {
     return Material.createCustomMaterial( combineOptions<MaterialOptions>( {
+
+      // TODO: Make sure to change the liquidColor when the density changes https://github.com/phetsims/density-buoyancy-common/issues/256
+      // This can be done by moving more things into the Material constructor, so they can use the densityProperty
       liquidColor: Material.getCustomLiquidColor( options.density, options.densityRange )
     }, options ) );
   }
@@ -199,7 +230,10 @@ export default class Material {
 
     assert && assert( options.hasOwnProperty( 'customColor' ) || options.hasOwnProperty( 'densityRange' ), 'we need a way to have a material color' );
 
+    // TODO: Make sure to change the solidColorProperty when the density changes https://github.com/phetsims/density-buoyancy-common/issues/256
     const solidColorProperty = options.customColor || Material.getCustomSolidColor( options.density, options.densityRange! );
+
+    // TODO: Make sure to change the depthLinesColorPropertyProperty when the density changes https://github.com/phetsims/density-buoyancy-common/issues/256
     const depthLinesColorPropertyProperty = new MappedProperty( solidColorProperty, {
       map: solidColor => {
 
@@ -263,8 +297,13 @@ export default class Material {
   }
 
   /**
+   * TODO: a couple thoughts. https://github.com/phetsims/density-buoyancy-common/issues/256
+   *       1. could this be solved is MaterialProperty.colorProperty was a dynamic property, then these usages would just link to that to update the THREE mesh.
+   *       2. At the very leas, move this to a prototype method on MaterialProperty.
+   *
    * Keep a material's color and opacity to match the liquid color from a given Property<Material>
    *
+   * // TODO: Can this just link to any color? https://github.com/phetsims/density-buoyancy-common/issues/256
    * NOTE: Only call this for things that exist for the lifetime of this simulation (otherwise it would leak memory)
    */
   public static linkLiquidColor( property: TProperty<Material>, threeMaterial: THREE.MeshPhongMaterial | THREE.MeshLambertMaterial | THREE.MeshBasicMaterial ): void {
@@ -773,6 +812,7 @@ export default class Material {
         depthLinesColor: Color.ColorIO.toStateObject( material.depthLinesColorProperty.value )
       };
     },
+    // TODO: even custom materials will want to grab the right reference based on screen/scene/mass, uh oh https://github.com/phetsims/density-buoyancy-common/issues/256
     fromStateObject( obj ): Material {
       if ( obj.identifier !== 'CUSTOM' ) {
         return Material.getMaterial( obj.identifier );

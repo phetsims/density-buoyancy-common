@@ -27,7 +27,7 @@ import BooleanIO from '../../../../tandem/js/types/BooleanIO.js';
 import IOType from '../../../../tandem/js/types/IOType.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import InterpolatedProperty from './InterpolatedProperty.js';
-import Material, { CreateCustomMaterialOptions, MaterialName } from './Material.js';
+import Material from './Material.js';
 import PhysicsEngine, { PhysicsEngineBody } from './PhysicsEngine.js';
 import Basin from './Basin.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
@@ -41,7 +41,7 @@ import Bounds3 from '../../../../dot/js/Bounds3.js';
 import BlendedVector2Property from './BlendedVector2Property.js';
 import { GuardedNumberProperty, GuardedNumberPropertyOptions } from './GuardedNumberProperty.js';
 import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
-import StringUnionProperty from '../../../../axon/js/StringUnionProperty.js';
+import MaterialProperty from './MaterialProperty.js';
 
 // For the Buoyancy Shapes screen, but needed here because setRatios is included in each core type
 // See https://github.com/phetsims/buoyancy/issues/29
@@ -77,7 +77,7 @@ type SelfOptions = {
   massPropertyOptions?: NumberPropertyOptions;
 
   // Accepted values for the Material Combo Box
-  materialEnumPropertyValidValues?: MaterialName[];
+  materialValidValues?: Material[];
 
   minVolume?: number;
   maxVolume?: number;
@@ -116,13 +116,14 @@ export default abstract class Mass extends PhetioObject {
   // it yields this overall visibleProperty which is respected in the view.
   public readonly visibleProperty: TReadOnlyProperty<boolean>;
 
-  public readonly materialProperty: Property<Material>;
+  public readonly materialProperty: MaterialProperty;
+
+  // TODO: PhET-iO support for DensityMysteryScreen for these items, and migration? https://github.com/phetsims/density-buoyancy-common/issues/256
+  // for phet-io support (to control the materialProperty)
+  // public readonly materialEnumProperty?: StringUnionProperty<MaterialName>;
 
   // for phet-io support (to control the materialProperty)
-  public readonly materialEnumProperty?: StringUnionProperty<MaterialName>;
-
-  // for phet-io support (to control the materialProperty)
-  public readonly customDensityProperty?: NumberProperty;
+  // public readonly customDensityProperty?: NumberProperty;
 
   // for phet-io support (to control the materialProperty)
   private readonly customColorProperty?: Property<Color>;
@@ -195,6 +196,7 @@ export default abstract class Mass extends PhetioObject {
   public stepTop: number; // maximum y value of the mass
 
   public readonly adjustableMaterial: boolean;
+  public readonly densityProperty: TReadOnlyProperty<number>;
 
   protected constructor( engine: PhysicsEngine, providedOptions: MassOptions ) {
 
@@ -213,16 +215,23 @@ export default abstract class Mass extends PhetioObject {
       volumePropertyOptions: {},
       massPropertyOptions: {},
 
-      materialEnumPropertyValidValues: [
-        'ALUMINUM',
-        'BRICK',
-        'COPPER',
-        'ICE',
-        'PLATINUM',
-        'STEEL',
-        'STYROFOAM',
-        'WOOD',
-        'CUSTOM'
+      // TODO: Make the default an empty list and move this list to density's mystery screen
+      // TODO: Should all masses be created with their valid materials immediately?
+      // TODO: Move the materialValidValues over to the view, and let each materialProperty be able to take on any material.
+      // TODO: please note `materialPropertyOptions`. https://github.com/phetsims/density-buoyancy-common/issues/256
+      materialValidValues: [
+        Material.ALUMINUM,
+        Material.BRICK,
+        Material.COPPER,
+        Material.ICE,
+        Material.PLATINUM,
+        Material.STEEL,
+        Material.STYROFOAM,
+        Material.WOOD,
+        Material.createCustomSolidMaterial( {
+          density: 1000,
+          customColor: new ColorProperty( Color.white )
+        } )
       ],
 
       minVolume: 0,
@@ -268,7 +277,7 @@ export default abstract class Mass extends PhetioObject {
 
     this.visibleProperty = new GatedVisibleProperty( this.internalVisibleProperty, tandem );
 
-    this.materialProperty = new Property( options.material, combineOptions<PropertyOptions<Material>>( {
+    this.materialProperty = new MaterialProperty( options.material, combineOptions<PropertyOptions<Material>>( {
       valueType: Material,
       reentrant: true,
       tandem: tandem?.createTandem( 'materialProperty' ),
@@ -276,87 +285,15 @@ export default abstract class Mass extends PhetioObject {
       phetioFeatured: true
     }, options.materialPropertyOptions ) );
 
+    // TODO: In some cases, when the materialProperty changes to custom, we should set the custom density to be the value of the previous material, where/how should that happen? https://github.com/phetsims/density-buoyancy-common/issues/256
+
+    // TODO: Review all places where we are observing materialProperty, and see if actually they should just listen to the densityProperty, https://github.com/phetsims/density-buoyancy-common/issues/256
+
+    // TODO: do we need this pointer? https://github.com/phetsims/density-buoyancy-common/issues/256
+    this.densityProperty = this.materialProperty.densityProperty;
+
+    // TODO: Delete this please https://github.com/phetsims/density-buoyancy-common/issues/256
     this.adjustableMaterial = options.adjustableMaterial;
-
-    if ( options.adjustableMaterial ) {
-      this.materialEnumProperty = new StringUnionProperty<MaterialName>( options.material.identifier, {
-        tandem: tandem?.createTandem( 'materialEnumProperty' ),
-        validValues: options.materialEnumPropertyValidValues,
-        phetioFeatured: true,
-        phetioDocumentation: 'Current material of the object. Changing the material will result in changes to the mass, but the volume will remain the same.'
-      } );
-      this.customDensityProperty = new NumberProperty( options.material.density, {
-        tandem: tandem?.createTandem( 'customDensityProperty' ),
-        phetioFeatured: true,
-        phetioDocumentation: 'Density of the object when the material is set to “CUSTOM”.',
-        range: new Range( 150, 23000 ),
-        units: 'kg/m^3'
-      } );
-      this.customColorProperty = new ColorProperty( options.material.customColor ? options.material.customColor.value : Color.WHITE, {
-        tandem: options.adjustableColor ? tandem?.createTandem( 'customColorProperty' ) : Tandem.OPT_OUT,
-        phetioFeatured: true
-      } );
-
-      this.materialProperty.addPhetioStateDependencies( [ this.materialEnumProperty, this.customDensityProperty, this.customColorProperty ] );
-
-      // Hook up phet-io Properties for interoperation with the normal ones
-      let enumLock = false;
-      let densityLock = false;
-      let colorLock = false;
-      const colorListener = ( color: Color ) => {
-        if ( !colorLock ) {
-          colorLock = true;
-          this.customColorProperty!.value = color;
-          colorLock = false;
-        }
-      };
-      this.materialProperty.link( ( material, oldMaterial ) => {
-        if ( !enumLock ) {
-          enumLock = true;
-          this.materialEnumProperty!.value = material.identifier;
-          enumLock = false;
-        }
-        if ( !densityLock ) {
-          densityLock = true;
-          this.customDensityProperty!.value = material.density;
-          densityLock = false;
-        }
-        if ( oldMaterial && oldMaterial.customColor ) {
-          oldMaterial.customColor.unlink( colorListener );
-        }
-        if ( material && material.customColor ) {
-          material.customColor.link( colorListener );
-        }
-      } );
-
-      Multilink.lazyMultilink( [ this.materialEnumProperty, this.customDensityProperty, this.customColorProperty ], materialEnum => {
-        // See if it's an external change
-        if ( !enumLock && !densityLock && !colorLock ) {
-          enumLock = true;
-          densityLock = true;
-          colorLock = true;
-          if ( materialEnum === 'CUSTOM' ) {
-            const createMaterialOptions: CreateCustomMaterialOptions = {
-              density: this.customDensityProperty!.value
-            };
-            if ( options.adjustableColor ) {
-              createMaterialOptions.customColor = this.customColorProperty;
-            }
-            else {
-              createMaterialOptions.densityRange = this.customDensityProperty!.range;
-            }
-
-            this.materialProperty.value = Material.createCustomSolidMaterial( createMaterialOptions );
-          }
-          else {
-            this.materialProperty.value = Material.getMaterial( materialEnum );
-          }
-          enumLock = false;
-          densityLock = false;
-          colorLock = false;
-        }
-      } );
-    }
 
     this.volumeProperty = new NumberProperty( options.volume, combineOptions<NumberPropertyOptions>( {
       tandem: tandem?.createTandem( 'volumeProperty' ),
@@ -404,11 +341,11 @@ export default abstract class Mass extends PhetioObject {
       }
     }, options.massPropertyOptions ) );
 
-    Multilink.multilink( [ this.materialProperty, this.volumeProperty, this.containedMassProperty ], ( material, volume, containedMass ) => {
+    // TODO: Think one more time about how all density changes must come back to change the mass (as mass is the only thing that p2 cares about). https://github.com/phetsims/density-buoyancy-common/issues/256
+    Multilink.multilink( [ this.densityProperty, this.volumeProperty, this.containedMassProperty ], ( density, volume, containedMass ) => {
 
-      const selfMass = Utils.roundToInterval( material.density * volume, DensityBuoyancyCommonConstants.TOLERANCE );
+      const selfMass = Utils.roundToInterval( density * volume, DensityBuoyancyCommonConstants.TOLERANCE );
       this.massProperty.value = selfMass + containedMass;
-
     } );
 
     this.bodyOffsetProperty = new Vector2Property( Vector2.ZERO, {

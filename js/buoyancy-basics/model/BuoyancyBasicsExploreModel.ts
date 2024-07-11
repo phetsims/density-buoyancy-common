@@ -12,11 +12,12 @@ import Matrix3 from '../../../../dot/js/Matrix3.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import Cube from '../../common/model/Cube.js';
 import DensityBuoyancyModel, { DensityBuoyancyModelOptions } from '../../common/model/DensityBuoyancyModel.js';
-import Material, { MaterialName } from '../../common/model/Material.js';
+import Material from '../../common/model/Material.js';
 import Scale, { DisplayType } from '../../common/model/Scale.js';
 import TwoBlockMode from '../../common/model/TwoBlockMode.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import MassTag from '../../common/model/MassTag.js';
+import { Color, ColorProperty } from '../../../../scenery/js/imports.js';
 
 type BuoyancyBasicsExploreModelOptions = DensityBuoyancyModelOptions;
 
@@ -37,13 +38,13 @@ export default class BuoyancyBasicsExploreModel extends DensityBuoyancyModel {
       phetioFeatured: true
     } );
 
-    // B:B Explore has a more limited set of available materials.
-    const simpleMaterialsIdentifiers: MaterialName[] = Material.SIMPLE_MASS_MATERIALS.map( x => x.identifier ).concat( [ 'CUSTOM' ] );
-
     this.massA = Cube.createWithMass( this.engine, Material.WOOD, new Vector2( -0.2, 0.2 ), 2, {
       tag: MassTag.OBJECT_A,
       adjustableMaterial: true,
-      materialEnumPropertyValidValues: simpleMaterialsIdentifiers,
+      materialValidValues: Material.SIMPLE_MASS_MATERIALS.concat( [ Material.createCustomSolidMaterial( {
+        density: 1000,
+        customColor: new ColorProperty( Color.RED )
+      } ) ] ),
       adjustableColor: false,
       tandem: blocksTandem.createTandem( 'blockA' )
     } );
@@ -51,7 +52,10 @@ export default class BuoyancyBasicsExploreModel extends DensityBuoyancyModel {
     this.massB = Cube.createWithMass( this.engine, Material.ALUMINUM, new Vector2( 0.05, 0.35 ), 13.5, {
       tag: MassTag.OBJECT_B,
       adjustableMaterial: true,
-      materialEnumPropertyValidValues: simpleMaterialsIdentifiers,
+      materialValidValues: Material.SIMPLE_MASS_MATERIALS.concat( [ Material.createCustomSolidMaterial( {
+        density: 1000,
+        customColor: new ColorProperty( Color.RED )
+      } ) ] ),
       adjustableColor: false,
       tandem: blocksTandem.createTandem( 'blockB' ),
       visible: false

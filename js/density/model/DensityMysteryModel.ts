@@ -77,6 +77,7 @@ export default class DensityMysteryModel extends BlockSetModel<MysteryBlockSet> 
       adjustableMaterial: true
     };
 
+    // TODO: this should just set density/color on 5 references that live forever. https://github.com/phetsims/density-buoyancy-common/issues/256
     const createMysteryMaterials = () => {
       const densities = dotRandom.shuffle( randomMaterials ).slice( 0, 5 ).map( material => material.density );
       const colors = dotRandom.shuffle( randomColors ).slice( 0, 5 );

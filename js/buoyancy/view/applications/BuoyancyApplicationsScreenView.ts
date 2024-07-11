@@ -24,7 +24,7 @@ import DensityBuoyancyCommonConstants, { toLiters } from '../../../common/Densit
 import Cube from '../../../common/model/Cube.js';
 import Material from '../../../common/model/Material.js';
 import DensityBuoyancyCommonColors from '../../../common/view/DensityBuoyancyCommonColors.js';
-import DensityBuoyancyScreenView, { DensityBuoyancyScreenViewOptions } from '../../../common/view/DensityBuoyancyScreenView.js';
+import DensityBuoyancyScreenView, { DensityBuoyancyScreenViewOptions, PointedAtMassView } from '../../../common/view/DensityBuoyancyScreenView.js';
 import BuoyancyDisplayOptionsPanel from '../BuoyancyDisplayOptionsPanel.js';
 import MaterialMassVolumeControlNode from '../../../common/view/MaterialMassVolumeControlNode.js';
 import densityBuoyancyCommon from '../../../densityBuoyancyCommon.js';
@@ -515,6 +515,12 @@ export default class BuoyancyApplicationsScreenView extends BuoyancyScreenView<B
     super.step( dt );
 
     this.positionResetSceneButton();
+  }
+
+  protected override getMinClosestEntry( entries: PointedAtMassView[] ): PointedAtMassView | undefined {
+    return _.minBy( entries, entry => {
+      entry.massView.mass instanceof Boat ? Number.POSITIVE_INFINITY : entry.t;
+    } );
   }
 
   protected override fillFluidGeometry( y: number, fluidPositionArray: Float32Array, fluidGeometry: THREE.BufferGeometry, wasFilled: boolean ): boolean {

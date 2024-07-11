@@ -26,7 +26,6 @@ import ResetAllButton from '../../../../scenery-phet/js/buttons/ResetAllButton.j
 import { AlignBox, animatedPanZoomSingleton, Color, ColorProperty, Image, ImageableImage, LinearGradient, Mouse, Node, Pointer, Rectangle, Text } from '../../../../scenery/js/imports.js';
 import Checkbox from '../../../../sun/js/Checkbox.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
-import Boat from '../../buoyancy/model/applications/Boat.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
 import DensityBuoyancyCommonQueryParameters from '../DensityBuoyancyCommonQueryParameters.js';
@@ -79,7 +78,7 @@ type SelfOptions = {
 
 export type DensityBuoyancyScreenViewOptions = SelfOptions & ScreenViewOptions;
 
-type PointedAtMassView = {
+export type PointedAtMassView = {
   massView: MassView;
   t: number;
 };
@@ -689,13 +688,13 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
       }
     } );
 
-    const closestEntry = _.minBy( entries, entry => {
-
-      // Favor objects inside the boat by treating the boat as if it always the furthest back.
-      return entry.massView.mass instanceof Boat ? Number.POSITIVE_INFINITY : entry.t;
-    } );
+    const closestEntry = this.getMinClosestEntry( entries );
 
     return closestEntry ? { massView: closestEntry.massView, t: closestEntry.t } : null;
+  }
+
+  protected getMinClosestEntry( entries: PointedAtMassView[] ): PointedAtMassView | undefined {
+    return _.minBy( entries, entry => entry.t );
   }
 
   public override layout( viewBounds: Bounds2 ): void {

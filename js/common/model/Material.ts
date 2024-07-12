@@ -26,6 +26,7 @@ import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
 import PhetioObject from '../../../../tandem/js/PhetioObject.js';
 
+// TODO: get rid of this whole thing and MaterialName?, https://github.com/phetsims/density-buoyancy-common/issues/256
 const nonCustomMaterialNames = [
   'ALUMINUM',
   'APPLE',
@@ -98,7 +99,7 @@ export type MaterialOptions = {
   // TODO: Eliminate, see https://github.com/phetsims/density-buoyancy-common/issues/176
   custom?: boolean;
 
-  // If true, don't show the density in number pickers/readouts
+  // If true, don't show the density in number pickers/readouts, often called a "mystery" material elsewhere in the code.
   hidden?: boolean;
 
   // TODO: Can we combine custom/liquid colors? https://github.com/phetsims/density-buoyancy-common/issues/256
@@ -164,6 +165,8 @@ export default class Material extends PhetioObject {
     this.hidden = options.hidden;
     this.colorProperty = options.colorProperty;
     this.depthLinesColorProperty = options.depthLinesColorProperty;
+
+    assert && assert( !( this.custom && this.hidden ), 'cannot be a mystery custom material' );
 
     // TODO: make this happen less https://github.com/phetsims/density-buoyancy-common/issues/256
     console.log( 'hello new material' );

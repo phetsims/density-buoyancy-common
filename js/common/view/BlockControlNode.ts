@@ -30,9 +30,11 @@ export type BlockControlNodeOptions = MaterialMassVolumeControlNodeOptions & Sel
 export default class BlockControlNode extends MaterialMassVolumeControlNode {
   public constructor( cuboid: Cuboid, listParent: Node, numberControlMassPropertyFeatured: boolean, options: BlockControlNodeOptions ) {
 
-    // Add mystery materials at the end. Note custom will appear before mystery materials. This is handled
-    // by the supertype, see https://github.com/phetsims/density-buoyancy-common/issues/161
-    const materials = Material.SIMPLE_MASS_MATERIALS.concat( options.mysteryMaterials );
+    const materials = [
+      ...Material.SIMPLE_MASS_MATERIALS,
+      cuboid.materialProperty.customMaterial,
+      ...options.mysteryMaterials
+    ];
 
     super( cuboid.materialProperty, cuboid.massProperty, cuboid.volumeProperty, materials,
       cubicMeters => cuboid.updateSize( Cube.boundsFromVolume( cubicMeters ) ), listParent, numberControlMassPropertyFeatured, options );

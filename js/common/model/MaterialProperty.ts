@@ -17,6 +17,7 @@ type MaterialPropertyOptions = PropertyOptions<Material>;
 
 export default class MaterialProperty extends Property<Material> {
   public readonly densityProperty: TReadOnlyProperty<number>;
+  public readonly customMaterial: Material;
 
   public constructor( material: Material, providedOptions?: MaterialPropertyOptions ) {
     super( material, providedOptions );
@@ -25,6 +26,12 @@ export default class MaterialProperty extends Property<Material> {
     this.densityProperty = new DynamicProperty<number, number, Material>( this, {
       bidirectional: false,
       derive: material => material.densityProperty
+    } );
+
+    //  TODO: Why here? https://github.com/phetsims/density-buoyancy-common/issues/256
+    this.customMaterial = Material.createCustomSolidMaterial( {
+      density: material.density,
+      densityRange: material.densityProperty.range
     } );
   }
 }

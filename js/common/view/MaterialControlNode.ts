@@ -12,13 +12,13 @@ import Property from '../../../../axon/js/Property.js';
 import optionize from '../../../../phet-core/js/optionize.js';
 import { HBox, Node, Text, VBox, VBoxOptions } from '../../../../scenery/js/imports.js';
 import ComboBox from '../../../../sun/js/ComboBox.js';
-import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
-import Material, { MaterialName } from '../model/Material.js';
+import Material from '../model/Material.js';
 import { PhetioObjectOptions } from '../../../../tandem/js/PhetioObject.js';
 import PickRequired from '../../../../phet-core/js/types/PickRequired.js';
 import Utils from '../../../../dot/js/Utils.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
+import MaterialProperty from '../model/MaterialProperty.js';
 
 type SelfMaterialControlNodeOptions = {
 
@@ -26,25 +26,24 @@ type SelfMaterialControlNodeOptions = {
   labelNode?: Node | null;
 
   // If a custom material should be added to the ComboBox
+  // TODO: delete this, https://github.com/phetsims/density-buoyancy-common/issues/256
   supportCustomMaterial?: boolean;
 
   // If a hidden material (Mystery materials for example) should be added to the ComboBox
+  // TODO: why can't this just be derived from if you pass in mystery material in the parameter? https://github.com/phetsims/density-buoyancy-common/issues/256
   supportHiddenMaterial?: boolean;
 
   minCustomMass?: number;
   maxCustomMass?: number;
   minCustomVolumeLiters?: number;
   maxVolumeLiters?: number;
-
-  customMaterial?: Material | null;
-
 } & PickRequired<PhetioObjectOptions, 'tandem'>;
 
 export type MaterialControlNodeOptions = SelfMaterialControlNodeOptions & VBoxOptions;
 
 export default class MaterialControlNode extends VBox {
 
-  public constructor( materialProperty: Property<Material>,
+  public constructor( materialProperty: MaterialProperty,
                       volumeProperty: Property<number>,
                       materials: Material[],
                       listParent: Node,
@@ -58,8 +57,7 @@ export default class MaterialControlNode extends VBox {
       minCustomMass: 0.5,
       maxCustomMass: 10,
       minCustomVolumeLiters: 1,
-      maxVolumeLiters: 10,
-      customMaterial: null
+      maxVolumeLiters: 10
     }, providedOptions );
 
     super( {
@@ -67,19 +65,22 @@ export default class MaterialControlNode extends VBox {
       align: 'left'
     } );
 
-    assert && options.supportCustomMaterial && assert( options.customMaterial, 'custom material please' );
-
     if ( !options.supportHiddenMaterial ) {
       materials = materials.filter( material => !material.hidden );
     }
 
-    const materialNames: MaterialName[] = [ ...materials.map( material => material.identifier ) ];
-    options.supportCustomMaterial && materialNames.push( 'CUSTOM' );
-
     const comboMaxWidth = 110;
 
-    const regularMaterials = materials.filter( material => !material.hidden );
+    // TODO: Should all these be separate options instead of one list that needs parsing? MK does not know, https://github.com/phetsims/density-buoyancy-common/issues/256
+    // TODO: sort at usage sites instead? https://github.com/phetsims/density-buoyancy-common/issues/256
+    const regularMaterials = materials.filter( material => !material.hidden && !material.custom );
+    const customMaterials = materials.filter( material => material.custom );
     const mysteryMaterials = materials.filter( material => material.hidden );
+
+    if ( options.supportCustomMaterial ) {
+      assert && assert( customMaterials.length > 0, 'custom please' );
+    }
+    assert && assert( customMaterials.length <= 1, 'one or less custom materials please' );
 
     const materialToItem = ( material: Material ) => {
       return {
@@ -93,12 +94,14 @@ export default class MaterialControlNode extends VBox {
       };
     };
 
-    volumeProperty.link( volume => {
-      if ( materialProperty.value.custom ) {
+    // When switching to custom, set the custom density to the previous material's density (clamped just in case)
+    materialProperty.lazyLink( ( material, oldMaterial ) => {
+      if ( material.custom ) {
+        assert && assert( materialProperty.customMaterial === customMaterials[ 0 ], 'I would really rather know what customMaterial we are dealing with' );
 
         // Handle our minimum volume if we're switched to custom (if needed)
-        const maxVolume = Math.max( volume, options.minCustomVolumeLiters / DensityBuoyancyCommonConstants.LITERS_IN_CUBIC_METER );
-        options.customMaterial!.densityProperty.value = Utils.clamp( materialProperty.value.density, options.minCustomMass / maxVolume, options.maxCustomMass / maxVolume );
+        const maxVolume = Math.max( volumeProperty.value, options.minCustomVolumeLiters / DensityBuoyancyCommonConstants.LITERS_IN_CUBIC_METER );
+        materialProperty.customMaterial.densityProperty.value = Utils.clamp( oldMaterial.density, options.minCustomMass / maxVolume, options.maxCustomMass / maxVolume );
       }
     } );
 
@@ -106,14 +109,7 @@ export default class MaterialControlNode extends VBox {
     // TODO: But hidden ones!!! https://github.com/phetsims/density-buoyancy-common/issues/256
     const comboBox = new ComboBox( materialProperty, [
       ...regularMaterials.map( materialToItem ),
-      ...( options.supportCustomMaterial ? [ {
-        value: options.customMaterial!,
-        createNode: () => new Text( DensityBuoyancyCommonStrings.material.customStringProperty, {
-          font: DensityBuoyancyCommonConstants.COMBO_BOX_ITEM_FONT,
-          maxWidth: comboMaxWidth
-        } ),
-        tandemName: 'customItem'
-      } ] : [] ),
+      ...( options.supportCustomMaterial ? customMaterials.map( materialToItem ) : [] ),
       ...mysteryMaterials.map( materialToItem )
     ], listParent, {
       xMargin: 8,

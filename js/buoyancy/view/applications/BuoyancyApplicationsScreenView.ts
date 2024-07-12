@@ -37,7 +37,6 @@ import BoatView from './BoatView.js';
 import bottle_icon_png from '../../../../images/bottle_icon_png.js';
 import boat_icon_png from '../../../../images/boat_icon_png.js';
 import SubmergedAccordionBox from '../SubmergedAccordionBox.js';
-import Multilink from '../../../../../axon/js/Multilink.js';
 import PrecisionSliderThumb from '../../../common/view/PrecisionSliderThumb.js';
 import Bottle from '../../model/applications/Bottle.js';
 import MassView from '../../../common/view/MassView.js';
@@ -110,7 +109,7 @@ export default class BuoyancyApplicationsScreenView extends BuoyancyScreenView<B
     this.positionResetSceneButton();
 
     // TODO: create in bottle? https://github.com/phetsims/density-buoyancy-common/issues/256
-    const customMaterialInside = Material.createCustomSolidMaterial( {
+    const customInsideBottleMaterial = Material.createCustomSolidMaterial( {
       density: 1000,
       densityRange: new Range( 50, 20000 )
     } );
@@ -124,6 +123,7 @@ export default class BuoyancyApplicationsScreenView extends BuoyancyScreenView<B
       Material.SAND,
       Material.CONCRETE,
       Material.COPPER,
+      customInsideBottleMaterial,
       Material.MATERIAL_R,
       Material.MATERIAL_S
     ], volume => model.bottle.materialInsideVolumeProperty.set( volume ), this.popupLayer, true, {
@@ -137,8 +137,7 @@ export default class BuoyancyApplicationsScreenView extends BuoyancyScreenView<B
       showMassAsReadout: true,
       supportHiddenMaterial: true,
       customKeepsConstantDensity: true,
-      tandem: materialInsideControlsTandem,
-      customMaterial: customMaterialInside
+      tandem: materialInsideControlsTandem
     } );
 
     // This DerivedProperty doesn't need disposal, since everything here lives for the lifetime of the simulation
@@ -148,7 +147,7 @@ export default class BuoyancyApplicationsScreenView extends BuoyancyScreenView<B
       material => material.custom );
 
     const customBottleDensityControlTandem = materialInsideControlsTandem.createTandem( 'customBottleDensityNumberControl' );
-    const customBottleDensityControl = new NumberControl( DensityBuoyancyCommonStrings.densityStringProperty, customMaterialInside.densityProperty, customMaterialInside.densityProperty.range, combineOptions<NumberControlOptions>( {
+    const customBottleDensityControl = new NumberControl( DensityBuoyancyCommonStrings.densityStringProperty, customInsideBottleMaterial.densityProperty, customInsideBottleMaterial.densityProperty.range, combineOptions<NumberControlOptions>( {
       visibleProperty: new GatedVisibleProperty( customDensityControlVisibleProperty, customBottleDensityControlTandem ),
       sliderOptions: {
         accessibleName: DensityBuoyancyCommonStrings.densityStringProperty,
@@ -215,14 +214,15 @@ export default class BuoyancyApplicationsScreenView extends BuoyancyScreenView<B
         Material.GOLD,
         Material.PLATINUM
       ].concat( Material.SIMPLE_MASS_MATERIALS ),
-      material => material.density ).concat( [ // Adding Mystery Materials at the end, so they aren't sorted by density // TODO: Doesn't the class always make mystery at the end? https://github.com/phetsims/density-buoyancy-common/issues/176
+      material => material.density ).concat( [
+      // Adding custom/mystery Materials separately, so they aren't sorted by density
+      model.block.materialProperty.customMaterial,
       Material.MATERIAL_V,
       Material.MATERIAL_W
     ] ), cubicMeters => model.block.updateSize( Cube.boundsFromVolume( cubicMeters ) ), this.popupLayer, true, {
       tandem: tandem.createTandem( 'blockControls' ),
       highDensityMaxMass: 215,
-      supportHiddenMaterial: true,
-      supportCustomMaterial: false // TODO: Undeoo!!
+      supportHiddenMaterial: true
     } );
 
     model.block.materialProperty.link( material => {

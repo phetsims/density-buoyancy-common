@@ -109,9 +109,10 @@ export default class BuoyancyApplicationsScreenView extends BuoyancyScreenView<B
     this.transformEmitter.addListener( this.positionResetSceneButton );
     this.positionResetSceneButton();
 
+    // TODO: create in bottle? https://github.com/phetsims/density-buoyancy-common/issues/256
     const customMaterialInside = Material.createCustomSolidMaterial( {
       density: 1000,
-      densityRange: new Range( 0, 1000 ) // TODO: range, https://github.com/phetsims/density-buoyancy-common/issues/256
+      densityRange: new Range( 50, 20000 )
     } );
 
     const bottleControlsTandem = tandem.createTandem( 'bottleControls' );
@@ -136,7 +137,8 @@ export default class BuoyancyApplicationsScreenView extends BuoyancyScreenView<B
       showMassAsReadout: true,
       supportHiddenMaterial: true,
       customKeepsConstantDensity: true,
-      tandem: materialInsideControlsTandem
+      tandem: materialInsideControlsTandem,
+      customMaterial: customMaterialInside
     } );
 
     // This DerivedProperty doesn't need disposal, since everything here lives for the lifetime of the simulation
@@ -144,21 +146,6 @@ export default class BuoyancyApplicationsScreenView extends BuoyancyScreenView<B
 
     const customDensityControlVisibleProperty = new DerivedProperty( [ model.bottle.materialInsideProperty ],
       material => material.custom );
-
-    let materialChangeLocked = false;
-    Multilink.lazyMultilink( [
-      // TODO: umm...... https://github.com/phetsims/density-buoyancy-common/issues/256
-      // model.bottle.customDensityProperty,
-      // model.bottle.customDensityProperty.rangeProperty,
-      model.bottle.interiorMassProperty,
-      customDensityControlVisibleProperty
-    ], ( density, densityRange ) => {
-      if ( !materialChangeLocked && model.bottle.materialInsideProperty.value.custom ) {
-        materialChangeLocked = true;
-        model.bottle.materialInsideProperty.value.densityProperty.value = density * DensityBuoyancyCommonConstants.LITERS_IN_CUBIC_METER;
-        materialChangeLocked = false;
-      }
-    } );
 
     const customBottleDensityControlTandem = materialInsideControlsTandem.createTandem( 'customBottleDensityNumberControl' );
     const customBottleDensityControl = new NumberControl( DensityBuoyancyCommonStrings.densityStringProperty, customMaterialInside.densityProperty, customMaterialInside.densityProperty.range, combineOptions<NumberControlOptions>( {
@@ -234,7 +221,8 @@ export default class BuoyancyApplicationsScreenView extends BuoyancyScreenView<B
     ] ), cubicMeters => model.block.updateSize( Cube.boundsFromVolume( cubicMeters ) ), this.popupLayer, true, {
       tandem: tandem.createTandem( 'blockControls' ),
       highDensityMaxMass: 215,
-      supportHiddenMaterial: true
+      supportHiddenMaterial: true,
+      supportCustomMaterial: false // TODO: Undeoo!!
     } );
 
     model.block.materialProperty.link( material => {

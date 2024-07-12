@@ -194,7 +194,8 @@ export default class Bottle extends ApplicationsMass {
   public readonly maxVolumeDisplacedProperty = new NumberProperty( ApplicationsMass.DEFAULT_DISPLACEMENT_VOLUME );
 
   // In kg (kilograms)
-  public interiorMassProperty: ReadOnlyProperty<number>;
+  // TODO: rename to materialInsideMassProperty, https://github.com/phetsims/density-buoyancy-common/issues/256
+  public readonly interiorMassProperty: ReadOnlyProperty<number>;
 
   public constructor( engine: PhysicsEngine, providedOptions: BottleOptions ) {
 
@@ -203,7 +204,7 @@ export default class Bottle extends ApplicationsMass {
     const customMaterial = Material.createCustomSolidMaterial( {
       nameProperty: DensityBuoyancyCommonStrings.systemAStringProperty,
       density: ( BOTTLE_MASS + BOTTLE_INITIAL_INTERIOR_MATERIAL.density * BOTTLE_INITIAL_INTERIOR_VOLUME ) / BOTTLE_VOLUME,
-      densityRange: BOTTLE_DENSITY_RANGE
+      densityRange: new Range( 10, 1000000000 ) // TODO: set min lower than 10? https://github.com/phetsims/density-buoyancy-common/issues/256
     } );
 
     const options = optionize<BottleOptions, EmptySelfOptions, InstrumentedMassOptions>()( {

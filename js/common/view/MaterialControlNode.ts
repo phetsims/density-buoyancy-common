@@ -17,7 +17,6 @@ import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js
 import Material, { MaterialName } from '../model/Material.js';
 import { PhetioObjectOptions } from '../../../../tandem/js/PhetioObject.js';
 import PickRequired from '../../../../phet-core/js/types/PickRequired.js';
-import Range from '../../../../dot/js/Range.js';
 import Utils from '../../../../dot/js/Utils.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 
@@ -37,12 +36,13 @@ type SelfMaterialControlNodeOptions = {
   minCustomVolumeLiters?: number;
   maxVolumeLiters?: number;
 
+  customMaterial?: Material | null;
+
 } & PickRequired<PhetioObjectOptions, 'tandem'>;
 
 export type MaterialControlNodeOptions = SelfMaterialControlNodeOptions & VBoxOptions;
 
 export default class MaterialControlNode extends VBox {
-  protected customDensityRange: Range;
 
   public constructor( materialProperty: Property<Material>,
                       volumeProperty: Property<number>,
@@ -58,7 +58,8 @@ export default class MaterialControlNode extends VBox {
       minCustomMass: 0.5,
       maxCustomMass: 10,
       minCustomVolumeLiters: 1,
-      maxVolumeLiters: 10
+      maxVolumeLiters: 10,
+      customMaterial: null
     }, providedOptions );
 
     super( {
@@ -66,12 +67,7 @@ export default class MaterialControlNode extends VBox {
       align: 'left'
     } );
 
-    this.customDensityRange = new Range(
-      options.minCustomMass / options.maxVolumeLiters * DensityBuoyancyCommonConstants.LITERS_IN_CUBIC_METER,
-
-      // Prevent divide by zero errors (infinity) with a manual, tiny number
-      options.maxCustomMass / ( options.minCustomVolumeLiters ) * DensityBuoyancyCommonConstants.LITERS_IN_CUBIC_METER
-    );
+    assert && options.supportCustomMaterial && assert( options.customMaterial, 'custom material please' );
 
     if ( !options.supportHiddenMaterial ) {
       materials = materials.filter( material => !material.hidden );
@@ -97,17 +93,12 @@ export default class MaterialControlNode extends VBox {
       };
     };
 
-    // TODO: Yar? https://github.com/phetsims/density-buoyancy-common/issues/256
-    const customMaterial = Material.createCustomSolidMaterial( {
-      densityRange: this.customDensityRange,
-      density: materialProperty.value.density
-    } );
     volumeProperty.link( volume => {
       if ( materialProperty.value.custom ) {
 
         // Handle our minimum volume if we're switched to custom (if needed)
         const maxVolume = Math.max( volume, options.minCustomVolumeLiters / DensityBuoyancyCommonConstants.LITERS_IN_CUBIC_METER );
-        customMaterial.densityProperty.value = Utils.clamp( materialProperty.value.density, options.minCustomMass / maxVolume, options.maxCustomMass / maxVolume );
+        options.customMaterial!.densityProperty.value = Utils.clamp( materialProperty.value.density, options.minCustomMass / maxVolume, options.maxCustomMass / maxVolume );
       }
     } );
 
@@ -116,7 +107,7 @@ export default class MaterialControlNode extends VBox {
     const comboBox = new ComboBox( materialProperty, [
       ...regularMaterials.map( materialToItem ),
       ...( options.supportCustomMaterial ? [ {
-        value: customMaterial,
+        value: options.customMaterial!,
         createNode: () => new Text( DensityBuoyancyCommonStrings.material.customStringProperty, {
           font: DensityBuoyancyCommonConstants.COMBO_BOX_ITEM_FONT,
           maxWidth: comboMaxWidth

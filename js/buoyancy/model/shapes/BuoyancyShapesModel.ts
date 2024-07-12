@@ -27,6 +27,8 @@ import isSettingPhetioStateProperty from '../../../../../tandem/js/isSettingPhet
 import MassTag from '../../../common/model/MassTag.js';
 import Duck from './Duck.js';
 import BuoyancyShapeModel from './BuoyancyShapeModel.js';
+import ReferenceIO from '../../../../../tandem/js/types/ReferenceIO.js';
+import IOType from '../../../../../tandem/js/types/IOType.js';
 
 export type BuoyancyShapesModelOptions = DensityBuoyancyModelOptions;
 
@@ -53,7 +55,7 @@ export default class BuoyancyShapesModel extends DensityBuoyancyModel {
 
     this.materialProperty = new Property( Material.WOOD, {
       tandem: objectsTandem.createTandem( 'materialProperty' ),
-      phetioValueType: Material.MaterialIO
+      phetioValueType: ReferenceIO( IOType.ObjectIO )
     } );
 
     this.scale = new Scale( this.engine, this.gravityProperty, {

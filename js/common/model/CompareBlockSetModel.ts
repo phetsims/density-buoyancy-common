@@ -258,7 +258,7 @@ export default class CompareBlockSetModel extends BlockSetModel<BlockSet> {
     } );
     const myCustomMaterial = Material.createCustomSolidMaterial( {
       density: densityProperty.value,
-      customColor: myColorProperty
+      colorProperty: myColorProperty
     } );
 
     // TODO: Pass the densityProperty directly into the custom one https://github.com/phetsims/density-buoyancy-common/issues/256

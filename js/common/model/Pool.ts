@@ -21,6 +21,8 @@ import Utils from '../../../../dot/js/Utils.js';
 import PoolScale from './PoolScale.js';
 import PhysicsEngine from './PhysicsEngine.js';
 import Gravity from './Gravity.js';
+import ReferenceIO from '../../../../tandem/js/types/ReferenceIO.js';
+import IOType from '../../../../tandem/js/types/IOType.js';
 
 export default class Pool extends Basin {
 
@@ -57,7 +59,7 @@ export default class Pool extends Basin {
 
     this.fluidMaterialProperty = new Property( Material.WATER, {
       valueType: Material,
-      phetioValueType: Material.MaterialIO,
+      phetioValueType: ReferenceIO( IOType.ObjectIO ),
       tandem: this.fluidTandem.createTandem( 'materialProperty' ),
       phetioReadOnly: true,
       phetioDocumentation: 'The material of the fluid in the pool'

@@ -90,6 +90,8 @@ import ApplicationsMass, { ApplicationsMassOptions } from './ApplicationsMass.js
 import NumberIO from '../../../../../tandem/js/types/NumberIO.js';
 import DensityBuoyancyCommonConstants from '../../../common/DensityBuoyancyCommonConstants.js';
 import MaterialProperty from '../../../common/model/MaterialProperty.js';
+import ReferenceIO from '../../../../../tandem/js/types/ReferenceIO.js';
+import IOType from '../../../../../tandem/js/types/IOType.js';
 
 // constants (in logical coordinates)
 const BODY_CORNER_RADIUS = 0.02; // Used both between the taper/body and between the body/base
@@ -228,7 +230,7 @@ export default class Bottle extends ApplicationsMass {
       valueType: Material,
       reentrant: true,
       tandem: materialInsideTandem.createTandem( 'materialProperty' ),
-      phetioValueType: Material.MaterialIO
+      phetioValueType: ReferenceIO( IOType.ObjectIO )
     } );
 
     this.materialInsideVolumeProperty = new NumberProperty( BOTTLE_INITIAL_INTERIOR_VOLUME, {

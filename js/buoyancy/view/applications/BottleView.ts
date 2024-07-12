@@ -92,9 +92,9 @@ export default class BottleView extends MeasurableMassView {
 
     interiorSurface.renderOrder = 2;
 
-    Material.linkLiquidColor( bottle.materialInsideProperty, interiorSurfaceMaterial );
-    Material.linkLiquidColor( bottle.materialInsideProperty, bottleDrawingData.backBottomMaterial );
-    Material.linkLiquidColor( bottle.materialInsideProperty, bottleDrawingData.frontBottomMaterial );
+    Material.linkColorProperty( bottle.materialInsideProperty, interiorSurfaceMaterial );
+    Material.linkColorProperty( bottle.materialInsideProperty, bottleDrawingData.backBottomMaterial );
+    Material.linkColorProperty( bottle.materialInsideProperty, bottleDrawingData.frontBottomMaterial );
 
     const bottleSize = bottle.getBounds();
     this.tagOffsetProperty.value = new Vector3( -bottleSize.width / 2 + TAG_OFFSET, bottleSize.height / 2 - TAG_OFFSET, bottleSize.depth / 2 );
@@ -146,7 +146,7 @@ export default class BottleView extends MeasurableMassView {
     bottleGroup.add( frontTop );
 
     const frontBottomMaterial = new THREE.MeshPhongMaterial( {
-      color: Material.WATER.liquidColor!.value.toHexString(),
+      color: Material.WATER.colorProperty!.value.toHexString(),
       opacity: 0.5,
       transparent: true,
       side: THREE.FrontSide,

@@ -569,7 +569,7 @@ export default class BuoyancyApplicationsScreenView extends BuoyancyScreenView<B
       const bottleGroup = new THREE.Group();
 
       const frontBottomMaterial = new THREE.MeshPhongMaterial( {
-        color: Material.OIL.liquidColor!.value.toHexString(),
+        color: Material.OIL.colorProperty!.value.toHexString(),
         opacity: 0.8,
         transparent: true,
         side: THREE.FrontSide

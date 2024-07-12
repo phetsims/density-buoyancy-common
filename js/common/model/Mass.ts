@@ -42,6 +42,7 @@ import BlendedVector2Property from './BlendedVector2Property.js';
 import { GuardedNumberProperty, GuardedNumberPropertyOptions } from './GuardedNumberProperty.js';
 import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
 import MaterialProperty from './MaterialProperty.js';
+import ReferenceIO from '../../../../tandem/js/types/ReferenceIO.js';
 
 // For the Buoyancy Shapes screen, but needed here because setRatios is included in each core type
 // See https://github.com/phetsims/buoyancy/issues/29
@@ -126,7 +127,7 @@ export default abstract class Mass extends PhetioObject {
   // public readonly customDensityProperty?: NumberProperty;
 
   // for phet-io support (to control the materialProperty)
-  private readonly customColorProperty?: Property<Color>;
+  // private readonly customColorProperty?: Property<Color>;
 
   // In m^3 (cubic meters)
   public readonly volumeProperty: NumberProperty;
@@ -230,7 +231,7 @@ export default abstract class Mass extends PhetioObject {
         Material.WOOD,
         Material.createCustomSolidMaterial( {
           density: 1000,
-          customColor: new ColorProperty( Color.white )
+          colorProperty: new ColorProperty( Color.white )
         } )
       ],
 
@@ -281,7 +282,7 @@ export default abstract class Mass extends PhetioObject {
       valueType: Material,
       reentrant: true,
       tandem: tandem?.createTandem( 'materialProperty' ),
-      phetioValueType: Material.MaterialIO,
+      phetioValueType: ReferenceIO( IOType.ObjectIO ),
       phetioFeatured: true
     }, options.materialPropertyOptions ) );
 

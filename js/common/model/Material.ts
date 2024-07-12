@@ -12,13 +12,7 @@ import Property from '../../../../axon/js/Property.js';
 import Utils from '../../../../dot/js/Utils.js';
 import ThreeUtils from '../../../../mobius/js/ThreeUtils.js';
 import optionize, { combineOptions, EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
-import { Color, ColorProperty, ColorState } from '../../../../scenery/js/imports.js';
-import BooleanIO from '../../../../tandem/js/types/BooleanIO.js';
-import IOType from '../../../../tandem/js/types/IOType.js';
-import NullableIO from '../../../../tandem/js/types/NullableIO.js';
-import NumberIO from '../../../../tandem/js/types/NumberIO.js';
-import ReferenceIO, { ReferenceIOState } from '../../../../tandem/js/types/ReferenceIO.js';
-import StringIO from '../../../../tandem/js/types/StringIO.js';
+import { Color } from '../../../../scenery/js/imports.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import DensityBuoyancyCommonColors from '../view/DensityBuoyancyCommonColors.js';
@@ -29,24 +23,8 @@ import Range from '../../../../dot/js/Range.js';
 import StrictOmit from '../../../../phet-core/js/types/StrictOmit.js';
 import NumberProperty from '../../../../axon/js/NumberProperty.js';
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
-import MappedProperty from '../../../../axon/js/MappedProperty.js';
-
-const NullableColorPropertyReferenceType = NullableIO( ReferenceIO( Property.PropertyIO( Color.ColorIO ) ) );
-
-type MaterialState = {
-  identifier: MaterialName;
-  name: ReferenceIOState;
-  tandemName: string | null;
-  density: number;
-  viscosity: number;
-  custom: boolean;
-  hidden: boolean;
-  staticCustomColor: null | ColorState;
-  customColor: null | ColorState;
-  staticLiquidColor: null | ColorState;
-  liquidColor: null | ColorState;
-  depthLinesColor: ColorState;
-};
+import Tandem from '../../../../tandem/js/Tandem.js';
+import PhetioObject from '../../../../tandem/js/PhetioObject.js';
 
 const nonCustomMaterialNames = [
   'ALUMINUM',
@@ -93,6 +71,9 @@ const nonCustomMaterialNames = [
   'MATERIAL_X',
   'MATERIAL_Y' ] as const;
 
+// TODO: phetioIDs for custom materials?  https://github.com/phetsims/density-buoyancy-common/issues/256
+let customTandemIndex = 0;
+
 type NonCustomMaterialName = typeof nonCustomMaterialNames[ number ];
 export type MaterialName = NonCustomMaterialName | 'CUSTOM';
 
@@ -103,7 +84,7 @@ export type MaterialOptions = {
   identifier: MaterialName;
 
   // Used for tandems
-  tandemName?: string | null;
+  tandemName: string;
 
   // in SI (kg/m^3)
   density?: number;
@@ -120,33 +101,20 @@ export type MaterialOptions = {
   // If true, don't show the density in number pickers/readouts
   hidden?: boolean;
 
-  // TODO: Rename to customColorProperty, https://github.com/phetsims/density-buoyancy-common/issues/256
   // TODO: Can we combine custom/liquid colors? https://github.com/phetsims/density-buoyancy-common/issues/256
   // Uses the color for a solid material's color
-  customColor?: ReadOnlyProperty<Color> | null;
-
-  // Uses the alpha channel for opacity
-  liquidColor?: ReadOnlyProperty<Color> | null;
+  colorProperty?: ReadOnlyProperty<Color> | null;
 
   // Used for the color of depth lines added on top of the Material
   depthLinesColorProperty?: TReadOnlyProperty<Color>;
 };
-type NoIdentifierMaterialOptions = StrictOmit<MaterialOptions, 'identifier'>;
+type NoIdentifierMaterialOptions = StrictOmit<MaterialOptions, 'identifier' | 'tandemName'>;
 
 // TODO: Material should wire up color properties https://github.com/phetsims/density-buoyancy-common/issues/256
 // TODO: Material only needs one freaking color Property, https://github.com/phetsims/density-buoyancy-common/issues/256
 // TODO: Material should know its density range https://github.com/phetsims/density-buoyancy-common/issues/256
-/**
- * TODO: Subtype material? Is it worth it?
- *       LiquidMaterial
- *          viscosity
- *          liquidColor (hopefully going away)
- *       SolidMaterial
- *          depthLinesColorProperty
- *  https://github.com/phetsims/density-buoyancy-common/issues/256
- */
 // TODO: Instrument Materials globally (and locally for custom), and their densityProperty too. https://github.com/phetsims/density-buoyancy-common/issues/256
-export default class Material {
+export default class Material extends PhetioObject {
 
   public readonly nameProperty: TReadOnlyProperty<string>;
   public readonly identifier: MaterialName;
@@ -156,8 +124,7 @@ export default class Material {
   // TODO: Eliminate custom as an orthogonal attribute, it can be determined from identifier. https://github.com/phetsims/density-buoyancy-common/issues/256
   public readonly custom: boolean;
   public readonly hidden: boolean;
-  public customColor: ReadOnlyProperty<Color> | null;
-  public liquidColor: ReadOnlyProperty<Color> | null;
+  public colorProperty: ReadOnlyProperty<Color> | null;
   public depthLinesColorProperty: TReadOnlyProperty<Color>;
   public readonly densityProperty: NumberProperty;
 
@@ -165,34 +132,37 @@ export default class Material {
 
     const options = optionize<MaterialOptions, MaterialOptions>()( {
       nameProperty: new TinyProperty( 'unknown' ),
-      tandemName: null,
       density: 1,
       densityRange: new Range( 0.8, 23000 ),
       viscosity: 1e-3,
       custom: false,
       hidden: false,
-      customColor: null,
-      liquidColor: null,
+      colorProperty: null,
       depthLinesColorProperty: DensityBuoyancyCommonColors.depthLinesDarkColorProperty
     }, providedOptions );
 
     assert && assert( isFinite( options.density ), 'density should be finite, but it was: ' + options.density );
 
+    // TODO: better options pattern https://github.com/phetsims/density-buoyancy-common/issues/256
+    super( {
+      tandem: Tandem.GLOBAL_MODEL.createTandem( 'materials' ).createTandem( options.tandemName ),
+      phetioState: false
+    } );
+
     this.nameProperty = options.nameProperty;
     this.identifier = options.identifier;
     this.tandemName = options.tandemName;
     this.densityProperty = new NumberProperty( options.density, {
-      // phetioFeatured: true,
-      // phetioDocumentation: 'Density of the object when the material is set to “CUSTOM”.',
+      tandem: this.tandem.createTandem( 'densityProperty' ),
+      phetioFeatured: true,
+      phetioDocumentation: 'Density of the material',
       range: options.densityRange,
       units: 'kg/m^3'
     } );
     this.viscosity = options.viscosity;
     this.custom = options.custom;
     this.hidden = options.hidden;
-
-    this.customColor = options.customColor;
-    this.liquidColor = options.liquidColor;
+    this.colorProperty = options.colorProperty;
     this.depthLinesColorProperty = options.depthLinesColorProperty;
 
     // TODO: make this happen less https://github.com/phetsims/density-buoyancy-common/issues/256
@@ -210,7 +180,7 @@ export default class Material {
   public static createCustomMaterial( options: NoIdentifierMaterialOptions ): Material {
     return new Material( combineOptions<MaterialOptions>( {
       nameProperty: DensityBuoyancyCommonStrings.material.customStringProperty,
-      tandemName: 'custom',
+      tandemName: `custom${++customTandemIndex}`,
       identifier: 'CUSTOM',
       custom: true
     }, options ) );
@@ -224,7 +194,7 @@ export default class Material {
   public static createCustomLiquidMaterial( options: NoIdentifierMaterialOptions ): Material {
     return new LiquidMaterial( combineOptions<MaterialOptions>( {
       nameProperty: DensityBuoyancyCommonStrings.material.customStringProperty,
-      tandemName: 'custom',
+      tandemName: `custom${++customTandemIndex}`,
       identifier: 'CUSTOM',
       custom: true
     }, options ) );
@@ -236,7 +206,7 @@ export default class Material {
   public static createCustomSolidMaterial( options: NoIdentifierMaterialOptions ): Material {
     return new SolidMaterial( combineOptions<MaterialOptions>( {
       nameProperty: DensityBuoyancyCommonStrings.material.customStringProperty,
-      tandemName: 'custom',
+      tandemName: `custom${++customTandemIndex}`,
       identifier: 'CUSTOM',
       custom: true
     }, options ) );
@@ -279,15 +249,14 @@ export default class Material {
    *
    * Keep a material's color and opacity to match the liquid color from a given Property<Material>
    *
-   * // TODO: Can this just link to any color? https://github.com/phetsims/density-buoyancy-common/issues/256
    * NOTE: Only call this for things that exist for the lifetime of this simulation (otherwise it would leak memory)
    */
-  public static linkLiquidColor( property: TProperty<Material>, threeMaterial: THREE.MeshPhongMaterial | THREE.MeshLambertMaterial | THREE.MeshBasicMaterial ): void {
+  public static linkColorProperty( property: TProperty<Material>, threeMaterial: THREE.MeshPhongMaterial | THREE.MeshLambertMaterial | THREE.MeshBasicMaterial ): void {
     new DynamicProperty<Color, Color, Material>( property, {
       derive: material => {
-        assert && assert( material.liquidColor );
+        assert && assert( material.colorProperty );
 
-        return material.liquidColor!;
+        return material.colorProperty!;
       }
     } ).link( ( color: Color ) => {
       threeMaterial.color = ThreeUtils.colorToThree( color );
@@ -334,7 +303,7 @@ export default class Material {
     tandemName: 'concrete',
     identifier: 'CONCRETE',
     density: 3150,
-    liquidColor: DensityBuoyancyCommonColors.materialConcreteColorProperty
+    colorProperty: DensityBuoyancyCommonColors.materialConcreteColorProperty
   } );
 
   public static readonly COPPER = new Material( {
@@ -342,7 +311,7 @@ export default class Material {
     tandemName: 'copper',
     identifier: 'COPPER',
     density: 8960,
-    liquidColor: DensityBuoyancyCommonColors.materialCopperColorProperty
+    colorProperty: DensityBuoyancyCommonColors.materialCopperColorProperty
   } );
 
   public static readonly DIAMOND = new Material( {
@@ -385,7 +354,7 @@ export default class Material {
     tandemName: 'lead',
     identifier: 'LEAD',
     density: 11342,
-    liquidColor: DensityBuoyancyCommonColors.materialLeadColorProperty
+    colorProperty: DensityBuoyancyCommonColors.materialLeadColorProperty
   } );
 
   public static readonly PLATINUM = new Material( {
@@ -462,7 +431,7 @@ export default class Material {
     identifier: 'AIR',
     density: 1.2,
     viscosity: 0,
-    liquidColor: DensityBuoyancyCommonColors.materialAirColorProperty
+    colorProperty: DensityBuoyancyCommonColors.materialAirColorProperty
   } );
 
   public static readonly FLUID_A = new Material( {
@@ -470,7 +439,7 @@ export default class Material {
     tandemName: 'fluidA',
     identifier: 'FLUID_A',
     density: 3100,
-    liquidColor: DensityBuoyancyCommonColors.materialDensityAColorProperty,
+    colorProperty: DensityBuoyancyCommonColors.materialDensityAColorProperty,
     hidden: true
   } );
 
@@ -479,7 +448,7 @@ export default class Material {
     tandemName: 'fluidB',
     identifier: 'FLUID_B',
     density: 790,
-    liquidColor: DensityBuoyancyCommonColors.materialDensityBColorProperty,
+    colorProperty: DensityBuoyancyCommonColors.materialDensityBColorProperty,
     hidden: true
   } );
 
@@ -488,7 +457,7 @@ export default class Material {
     tandemName: 'fluidC',
     identifier: 'FLUID_C',
     density: 490,
-    liquidColor: DensityBuoyancyCommonColors.materialDensityCColorProperty,
+    colorProperty: DensityBuoyancyCommonColors.materialDensityCColorProperty,
     hidden: true
   } );
 
@@ -497,7 +466,7 @@ export default class Material {
     tandemName: 'fluidD',
     identifier: 'FLUID_D',
     density: 2890,
-    liquidColor: DensityBuoyancyCommonColors.materialDensityDColorProperty,
+    colorProperty: DensityBuoyancyCommonColors.materialDensityDColorProperty,
     hidden: true
   } );
 
@@ -506,7 +475,7 @@ export default class Material {
     tandemName: 'fluidE',
     identifier: 'FLUID_E',
     density: 1260,
-    liquidColor: DensityBuoyancyCommonColors.materialDensityEColorProperty,
+    colorProperty: DensityBuoyancyCommonColors.materialDensityEColorProperty,
     hidden: true
   } );
 
@@ -515,7 +484,7 @@ export default class Material {
     tandemName: 'fluidF',
     identifier: 'FLUID_F',
     density: 6440,
-    liquidColor: DensityBuoyancyCommonColors.materialDensityFColorProperty,
+    colorProperty: DensityBuoyancyCommonColors.materialDensityFColorProperty,
     hidden: true
   } );
 
@@ -525,7 +494,7 @@ export default class Material {
     identifier: 'GASOLINE',
     density: 680,
     viscosity: 6e-4,
-    liquidColor: DensityBuoyancyCommonColors.materialGasolineColorProperty
+    colorProperty: DensityBuoyancyCommonColors.materialGasolineColorProperty
   } );
 
   public static readonly HONEY = new Material( {
@@ -534,7 +503,7 @@ export default class Material {
     identifier: 'HONEY',
     density: 1440,
     viscosity: 0.03, // NOTE: actual value around 2.5, but we can get away with this for animation
-    liquidColor: DensityBuoyancyCommonColors.materialHoneyColorProperty
+    colorProperty: DensityBuoyancyCommonColors.materialHoneyColorProperty
   } );
 
   public static readonly MERCURY = new Material( {
@@ -543,7 +512,7 @@ export default class Material {
     identifier: 'MERCURY',
     density: 13593,
     viscosity: 1.53e-3,
-    liquidColor: DensityBuoyancyCommonColors.materialMercuryColorProperty
+    colorProperty: DensityBuoyancyCommonColors.materialMercuryColorProperty
   } );
 
   public static readonly OIL = new Material( {
@@ -552,7 +521,7 @@ export default class Material {
     identifier: 'OIL',
     density: 920,
     viscosity: 0.02, // Too much bigger and it won't work, not particularly physical
-    liquidColor: DensityBuoyancyCommonColors.materialOilColorProperty
+    colorProperty: DensityBuoyancyCommonColors.materialOilColorProperty
   } );
 
   public static readonly SAND = new Material( {
@@ -561,7 +530,7 @@ export default class Material {
     identifier: 'SAND',
     density: 1442,
     viscosity: 0.03, // Too much bigger and it won't work, not particularly physical
-    liquidColor: DensityBuoyancyCommonColors.materialSandColorProperty
+    colorProperty: DensityBuoyancyCommonColors.materialSandColorProperty
   } );
 
   public static readonly SEAWATER = new Material( {
@@ -570,7 +539,7 @@ export default class Material {
     identifier: 'SEAWATER',
     density: 1029,
     viscosity: 1.88e-3,
-    liquidColor: DensityBuoyancyCommonColors.materialSeawaterColorProperty
+    colorProperty: DensityBuoyancyCommonColors.materialSeawaterColorProperty
   } );
 
   public static readonly WATER = new Material( {
@@ -579,7 +548,7 @@ export default class Material {
     identifier: 'WATER',
     density: 1000,
     viscosity: 8.9e-4,
-    liquidColor: DensityBuoyancyCommonColors.materialWaterColorProperty
+    colorProperty: DensityBuoyancyCommonColors.materialWaterColorProperty
   } );
 
   ////////////////// MYSTERY MATERIALS //////////////////
@@ -589,7 +558,7 @@ export default class Material {
     tandemName: 'materialO',
     identifier: 'MATERIAL_O',
     hidden: true,
-    customColor: new Property( new Color( '#f00' ) ),
+    colorProperty: new Property( new Color( '#f00' ) ),
     density: 950 // Same as the Human's average density
   } );
 
@@ -598,7 +567,7 @@ export default class Material {
     tandemName: 'materialP',
     identifier: 'MATERIAL_P',
     hidden: true,
-    customColor: new Property( new Color( '#0f0' ) ),
+    colorProperty: new Property( new Color( '#0f0' ) ),
     density: Material.DIAMOND.density
   } );
 
@@ -607,7 +576,7 @@ export default class Material {
     tandemName: 'materialR',
     identifier: 'MATERIAL_R',
     hidden: true,
-    liquidColor: DensityBuoyancyCommonColors.materialRColorProperty,
+    colorProperty: DensityBuoyancyCommonColors.materialRColorProperty,
     density: Material.ICE.density
   } );
 
@@ -616,7 +585,7 @@ export default class Material {
     tandemName: 'materialS',
     identifier: 'MATERIAL_S',
     hidden: true,
-    liquidColor: DensityBuoyancyCommonColors.materialSColorProperty,
+    colorProperty: DensityBuoyancyCommonColors.materialSColorProperty,
     density: Material.LEAD.density
   } );
 
@@ -625,7 +594,7 @@ export default class Material {
     tandemName: 'materialV',
     identifier: 'MATERIAL_V',
     hidden: true,
-    customColor: new Property( new Color( '#ff0' ) ),
+    colorProperty: new Property( new Color( '#ff0' ) ),
     density: Material.TITANIUM.density
   } );
 
@@ -634,7 +603,7 @@ export default class Material {
     tandemName: 'materialW',
     identifier: 'MATERIAL_W',
     hidden: true,
-    customColor: new Property( new Color( '#0af' ) ),
+    colorProperty: new Property( new Color( '#0af' ) ),
     density: Material.MERCURY.density
   } );
 
@@ -750,69 +719,9 @@ export default class Material {
     Material.FLUID_E,
     Material.FLUID_F
   ];
-
-  public static readonly MaterialIO = new IOType<Material, MaterialState>( 'MaterialIO', {
-    valueType: Material,
-    documentation: 'Represents different materials that solids/liquids in the simulations can take, including density (kg/m^3), viscosity (Pa * s), and color.',
-    stateSchema: {
-      name: ReferenceIO( ReadOnlyProperty.PropertyIO( StringIO ) ),
-      identifier: StringIO,
-      tandemName: NullableIO( StringIO ),
-      density: NumberIO,
-      viscosity: NumberIO,
-      custom: BooleanIO,
-      hidden: BooleanIO,
-      staticCustomColor: NullableIO( Color.ColorIO ),
-      customColor: NullableColorPropertyReferenceType,
-      staticLiquidColor: NullableIO( Color.ColorIO ),
-      liquidColor: NullableColorPropertyReferenceType,
-      depthLinesColor: Color.ColorIO
-    },
-    toStateObject( material ) {
-
-      const isCustomColorUninstrumented = material.customColor && !material.customColor.isPhetioInstrumented();
-      const isLiquidColorUninstrumented = material.liquidColor && !material.liquidColor.isPhetioInstrumented();
-
-      return {
-        name: ReferenceIO( ReadOnlyProperty.PropertyIO( StringIO ) ).toStateObject( material.nameProperty ),
-        identifier: material.identifier,
-        tandemName: NullableIO( StringIO ).toStateObject( material.tandemName ),
-        density: material.density,
-        viscosity: material.viscosity,
-        custom: material.custom,
-        hidden: material.hidden,
-        staticCustomColor: NullableIO( Color.ColorIO ).toStateObject( isCustomColorUninstrumented ? material.customColor!.value : null ),
-        customColor: NullableColorPropertyReferenceType.toStateObject( isCustomColorUninstrumented ? null : material.customColor ),
-        staticLiquidColor: NullableIO( Color.ColorIO ).toStateObject( isLiquidColorUninstrumented ? material.liquidColor!.value : null ),
-        liquidColor: NullableColorPropertyReferenceType.toStateObject( isLiquidColorUninstrumented ? null : material.liquidColor ),
-        depthLinesColor: Color.ColorIO.toStateObject( material.depthLinesColorProperty.value )
-      };
-    },
-    // TODO: even custom materials will want to grab the right reference based on screen/scene/mass, uh oh https://github.com/phetsims/density-buoyancy-common/issues/256
-    fromStateObject( obj ): Material {
-      if ( obj.identifier !== 'CUSTOM' ) {
-        return Material.getMaterial( obj.identifier );
-      }
-      else {
-        const staticCustomColor = NullableIO( Color.ColorIO ).fromStateObject( obj.staticCustomColor );
-        const staticLiquidColor = NullableIO( Color.ColorIO ).fromStateObject( obj.staticLiquidColor );
-        return new Material( {
-          nameProperty: ReferenceIO( ReadOnlyProperty.PropertyIO( StringIO ) ).fromStateObject( obj.name ),
-          identifier: NullableIO( StringIO ).fromStateObject( obj.identifier ),
-          tandemName: NullableIO( StringIO ).fromStateObject( obj.tandemName ),
-          density: obj.density,
-          viscosity: obj.viscosity,
-          custom: obj.custom,
-          hidden: obj.hidden,
-          customColor: staticCustomColor ? new ColorProperty( staticCustomColor ) : NullableColorPropertyReferenceType.fromStateObject( obj.customColor ),
-          liquidColor: staticLiquidColor ? new ColorProperty( staticLiquidColor ) : NullableColorPropertyReferenceType.fromStateObject( obj.liquidColor ),
-          depthLinesColorProperty: new ColorProperty( Color.ColorIO.fromStateObject( obj.depthLinesColor ) )
-        } );
-      }
-    }
-  } );
 }
 
+// TODO: SolidCustomMaterial? https://github.com/phetsims/density-buoyancy-common/issues/256
 class SolidMaterial extends Material {
   public constructor( providedOptions: MaterialOptions ) {
 
@@ -820,23 +729,26 @@ class SolidMaterial extends Material {
 
     super( options );
 
-    if ( !this.customColor ) {
+    assert && assert( this.custom, 'SolidMaterial should only be used for custom materials' );
+
+    if ( !this.colorProperty ) {
+
       // TODO: can we make this field readonly again? https://github.com/phetsims/density-buoyancy-common/issues/256
-      this.customColor = new DerivedProperty( [ this.densityProperty, this.densityProperty.rangeProperty ], ( density, densityRange ) => {
+      this.colorProperty = new DerivedProperty( [ this.densityProperty, this.densityProperty.rangeProperty ], ( density, densityRange ) => {
         const lightness = Material.getCustomLightness( density, densityRange );
         return new Color( lightness, lightness, lightness );
       } );
-      this.liquidColor = this.customColor;
     }
 
-    this.depthLinesColorProperty = new MappedProperty( this.customColor, {
-      map: solidColor => {
+    this.depthLinesColorProperty = new DerivedProperty( [
+      this.colorProperty,
+      DensityBuoyancyCommonColors.depthLinesLightColorProperty,
+      DensityBuoyancyCommonColors.depthLinesDarkColorProperty
+    ], ( color, depthLinesLightColor, depthLinesDarkColor ) => {
 
-        // The lighter depth line color has better contrast, so use that for more than half
-        const isDark = ( solidColor.r + solidColor.g + solidColor.b ) / 3 < 255 * 0.6;
-
-        return isDark ? DensityBuoyancyCommonColors.depthLinesLightColorProperty.value : DensityBuoyancyCommonColors.depthLinesDarkColorProperty.value;
-      }
+      // The lighter depth line color has better contrast, so use that for more than half
+      const isDark = ( color.r + color.g + color.b ) / 3 < 255 * 0.6;
+      return isDark ? depthLinesLightColor : depthLinesDarkColor;
     } );
   }
 }
@@ -848,9 +760,9 @@ class LiquidMaterial extends Material {
 
     super( options );
     // TODO: This could be custom color given a "liquid" flag/subtype, https://github.com/phetsims/density-buoyancy-common/issues/256
-    if ( !this.liquidColor && this.custom ) {
+    if ( !this.colorProperty && this.custom ) {
       // TODO: can we make this field readonly again? https://github.com/phetsims/density-buoyancy-common/issues/256
-      this.liquidColor = new DerivedProperty( [ this.densityProperty, this.densityProperty.rangeProperty ], ( density, densityRange ) => {
+      this.colorProperty = new DerivedProperty( [ this.densityProperty, this.densityProperty.rangeProperty ], ( density, densityRange ) => {
         return Material.getCustomLiquidColor( density, densityRange );
       } );
     }

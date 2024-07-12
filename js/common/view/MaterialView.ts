@@ -421,16 +421,16 @@ export class DensityMaterials {
 
     // TODO: Can we just change the material.custom check below to add "or hidden" https://github.com/phetsims/density-buoyancy-common/issues/256
     else if ( material === Material.MATERIAL_O ) {
-      return new ColoredMaterialView( material.customColor! );
+      return new ColoredMaterialView( material.colorProperty! );
     }
     else if ( material === Material.MATERIAL_P ) {
-      return new ColoredMaterialView( material.customColor! );
+      return new ColoredMaterialView( material.colorProperty! );
     }
     else if ( material === Material.MATERIAL_V ) {
-      return new ColoredMaterialView( material.customColor! );
+      return new ColoredMaterialView( material.colorProperty! );
     }
     else if ( material === Material.MATERIAL_W ) {
-      return new ColoredMaterialView( material.customColor! );
+      return new ColoredMaterialView( material.colorProperty! );
     }
     else if ( material === Material.MATERIAL_X ) {
       return new GoldMaterialView();
@@ -439,8 +439,8 @@ export class DensityMaterials {
       return new GoldMaterialView();
     }
     else if ( material.custom ) {
-      assert && assert( material.customColor, 'customColor required for custom materials' );
-      return new ColoredMaterialView( material.customColor! );
+      assert && assert( material.colorProperty, 'colorProperty required for custom materials' );
+      return new ColoredMaterialView( material.colorProperty! );
     }
     else {
       return new DebugMaterialView();

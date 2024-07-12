@@ -77,8 +77,8 @@ export default class FluidDisplacedAccordionBox extends AccordionBox {
 
     const solutionFillProperty = new DynamicProperty<Color, Color, Material>( fluidMaterialProperty, {
       derive: material => {
-        assert && assert( material.liquidColor, 'liquid color needed here' );
-        return material.liquidColor!;
+        assert && assert( material.colorProperty, 'liquid color needed here' );
+        return material.colorProperty!;
       },
       map: color => {
 
@@ -199,7 +199,7 @@ export default class FluidDisplacedAccordionBox extends AccordionBox {
     const beakerNode = new BeakerNode( new NumberProperty( 0.2, {
       range: BEAKER_RANGE.copy()
     } ), combineOptions<BeakerNodeOptions>( {
-      solutionFill: Material.WATER.liquidColor
+      solutionFill: Material.WATER.colorProperty
     }, FluidDisplacedAccordionBox.getBeakerOptions() ) );
 
     scaleIcon.top = beakerNode.bottom - 30;

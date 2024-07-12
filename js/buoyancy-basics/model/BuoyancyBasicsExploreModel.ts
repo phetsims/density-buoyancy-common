@@ -43,7 +43,7 @@ export default class BuoyancyBasicsExploreModel extends DensityBuoyancyModel {
       adjustableMaterial: true,
       materialValidValues: Material.SIMPLE_MASS_MATERIALS.concat( [ Material.createCustomSolidMaterial( {
         density: 1000,
-        customColor: new ColorProperty( Color.RED )
+        colorProperty: new ColorProperty( Color.RED )
       } ) ] ),
       adjustableColor: false,
       tandem: blocksTandem.createTandem( 'blockA' )
@@ -54,7 +54,7 @@ export default class BuoyancyBasicsExploreModel extends DensityBuoyancyModel {
       adjustableMaterial: true,
       materialValidValues: Material.SIMPLE_MASS_MATERIALS.concat( [ Material.createCustomSolidMaterial( {
         density: 1000,
-        customColor: new ColorProperty( Color.RED )
+        colorProperty: new ColorProperty( Color.RED )
       } ) ] ),
       adjustableColor: false,
       tandem: blocksTandem.createTandem( 'blockB' ),

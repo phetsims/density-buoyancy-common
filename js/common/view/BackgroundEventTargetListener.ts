@@ -10,11 +10,9 @@
 
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import { Mouse, SceneryEvent, TInputListener } from '../../../../scenery/js/imports.js';
-import grabSoundPlayer from '../../../../tambo/js/shared-sound-players/grabSoundPlayer.js';
 import Plane3 from '../../../../dot/js/Plane3.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
 import arrayRemove from '../../../../phet-core/js/arrayRemove.js';
-import releaseSoundPlayer from '../../../../tambo/js/shared-sound-players/releaseSoundPlayer.js';
 import Bounds2 from '../../../../dot/js/Bounds2.js';
 import Mass from '../model/Mass.js';
 import PhetioAction from '../../../../tandem/js/PhetioAction.js';
@@ -25,6 +23,7 @@ import MassView from './MassView.js';
 import DensityBuoyancyScreenView from './DensityBuoyancyScreenView.js';
 import DensityBuoyancyModel from '../model/DensityBuoyancyModel.js';
 import ThreeIsometricNode from '../../../../mobius/js/ThreeIsometricNode.js';
+import sharedSoundPlayers from '../../../../tambo/js/sharedSoundPlayers.js';
 
 export default class BackgroundEventTargetListener implements TInputListener {
   private readonly draggedMasses: Mass[] = [];
@@ -32,6 +31,8 @@ export default class BackgroundEventTargetListener implements TInputListener {
   private readonly startDragAction: PhetioAction<[ Mass, Vector2 ]>;
   private readonly updateDragAction: PhetioAction<[ Mass, Vector2 ]>;
   private readonly endDragAction: PhetioAction<[ Mass ]>;
+  private readonly grabSoundPlayer = sharedSoundPlayers.get( 'grab' );
+  private readonly releaseSoundPlayer = sharedSoundPlayers.get( 'release' );
 
   // Using a "create" function here because that makes it easier to implement TInputListener
   public constructor( private readonly massViews: MassView[],
@@ -105,7 +106,7 @@ export default class BackgroundEventTargetListener implements TInputListener {
       // cross-interaction much simpler.
       mass.interruptedEmitter.emit();
 
-      grabSoundPlayer.play();
+      this.grabSoundPlayer.play();
 
       const initialRay = this.getRayFromScreenPoint( pointer.point );
       const initialT = massEntry.t;
@@ -123,7 +124,7 @@ export default class BackgroundEventTargetListener implements TInputListener {
         arrayRemove( this.draggedMasses, mass );
         mass.interruptedEmitter.removeListener( endDrag );
         pointer.cursor = null;
-        releaseSoundPlayer.play();
+        this.releaseSoundPlayer.play();
         this.endDragAction.execute( mass );
       };
       const listener = {

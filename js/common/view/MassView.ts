@@ -17,14 +17,12 @@ import ConvexHull2 from '../../../../dot/js/ConvexHull2.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import ModelViewTransform2 from '../../../../phetcommon/js/view/ModelViewTransform2.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
-import grabSoundPlayer from '../../../../tambo/js/shared-sound-players/grabSoundPlayer.js';
-import releaseSoundPlayer from '../../../../tambo/js/shared-sound-players/releaseSoundPlayer.js';
 import Disposable from '../../../../axon/js/Disposable.js';
 import MassTag from '../model/MassTag.js';
 import MassDecorationLayer from './MassDecorationLayer.js';
 import MassThreeMesh from './MassThreeMesh.js';
 import { THREEModelViewTransform } from './DensityBuoyancyScreenView.js';
-
+import sharedSoundPlayers from '../../../../tambo/js/sharedSoundPlayers.js';
 
 const INVERT_Y_TRANSFORM = ModelViewTransform2.createSinglePointScaleInvertedYMapping( Vector2.ZERO, Vector2.ZERO, 1 );
 
@@ -60,6 +58,10 @@ export default abstract class MassView extends Disposable {
       this.tagOffsetProperty.lazyLink( repositionMassTagNode );
       this.disposeEmitter.addListener( () => this.tagOffsetProperty.unlink( repositionMassTagNode ) );
     }
+
+    // sound generation
+    const grabSoundPlayer = sharedSoundPlayers.get( 'grab' );
+    const releaseSoundPlayer = sharedSoundPlayers.get( 'release' );
 
     this.positionListener = () => {
       const position = mass.matrix.translation;

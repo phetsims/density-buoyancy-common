@@ -1,4 +1,4 @@
-// Copyright 2020-2024, University of Colorado Boulder
+// Copyright 2024, University of Colorado Boulder
 /**
  * Extends DebugView, which shows a 2d version of the model. In this case, used for the boat's shape.
  *

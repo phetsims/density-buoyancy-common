@@ -45,7 +45,7 @@ export type MaterialControlNodeOptions = SelfMaterialControlNodeOptions & VBoxOp
 
 export default class MaterialControlNode extends VBox {
 
-  public constructor( materialProperty: Property<Material>,
+  public constructor( materialProperty: MaterialProperty,
                       volumeProperty: Property<number>,
                       materials: Material[],
                       listParent: Node,

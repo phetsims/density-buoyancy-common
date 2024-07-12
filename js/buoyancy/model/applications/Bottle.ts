@@ -177,7 +177,8 @@ const BOTTLE_INITIAL_INTERIOR_VOLUME = 0.004;
 const BOTTLE_INITIAL_INTERIOR_MATERIAL = Material.WATER;
 
 // Used to calculate the color of the bottle's custom material
-const BOTTLE_DENSITY_RANGE = new Range( 10, 10000 );
+// TODO: Provide this to the customMaterial of the inside material MaterialProperty. https://github.com/phetsims/density-buoyancy-common/issues/256
+// const BOTTLE_DENSITY_RANGE = new Range( 10, 10000 );
 
 export type BottleOptions = StrictOmit<ApplicationsMassOptions, 'body' | 'shape' | 'volume' | 'material' | 'massShape'>;
 

@@ -15,6 +15,7 @@ import DynamicProperty from '../../../../axon/js/DynamicProperty.js';
 
 type MaterialPropertyOptions = PropertyOptions<Material>;
 
+// TODO: reset these, https://github.com/phetsims/density-buoyancy-common/issues/256
 export default class MaterialProperty extends Property<Material> {
   public readonly densityProperty: TReadOnlyProperty<number>;
   public readonly customMaterial: Material;

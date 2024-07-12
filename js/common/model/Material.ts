@@ -111,6 +111,7 @@ export type MaterialOptions = {
 };
 type NoIdentifierMaterialOptions = StrictOmit<MaterialOptions, 'identifier' | 'tandemName'>;
 
+// TODO: Resetting, https://github.com/phetsims/density-buoyancy-common/issues/256
 // TODO: Material should wire up color properties https://github.com/phetsims/density-buoyancy-common/issues/256
 // TODO: Material only needs one freaking color Property, https://github.com/phetsims/density-buoyancy-common/issues/256
 // TODO: Material should know its density range https://github.com/phetsims/density-buoyancy-common/issues/256

@@ -512,7 +512,7 @@ export default class BuoyancyApplicationsScreenView extends BuoyancyScreenView<B
 
   protected override getMinClosestEntry( entries: PointedAtMassView[] ): PointedAtMassView | undefined {
     return _.minBy( entries, entry => {
-      entry.massView.mass instanceof Boat ? Number.POSITIVE_INFINITY : entry.t;
+      return entry.massView.mass instanceof Boat ? Number.POSITIVE_INFINITY : entry.t;
     } );
   }
 

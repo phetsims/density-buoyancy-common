@@ -12,7 +12,7 @@ import { combineOptions } from '../../../../phet-core/js/optionize.js';
 
 /**
  * Panel that allows the user to adjust the fluid density.
- *
+ * TODO: Delete this file and move it into the FluidDensityControlNode, https://github.com/phetsims/density-buoyancy-common/issues/256
  * @author Sam Reid (PhET Interactive Simulations)
  */
 export default class FluidDensityPanel extends Panel {

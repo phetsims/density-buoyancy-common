@@ -45,7 +45,7 @@ export type MaterialControlNodeOptions = SelfMaterialControlNodeOptions & VBoxOp
 
 export default class MaterialControlNode extends VBox {
 
-  public constructor( materialProperty: MaterialProperty,
+  public constructor( materialProperty: Property<Material>,
                       volumeProperty: Property<number>,
                       materials: Material[],
                       listParent: Node,
@@ -99,7 +99,9 @@ export default class MaterialControlNode extends VBox {
 
     // When switching to custom, set the custom density to the previous material's density (clamped just in case)
     if ( options.syncCustomMaterialDensity ) {
-      materialProperty.lazyLink( ( material, oldMaterial ) => {
+      assert && assert( materialProperty instanceof MaterialProperty ); // eslint-disable-line no-simple-type-checking-assertions
+
+      materialProperty instanceof MaterialProperty && materialProperty.lazyLink( ( material, oldMaterial ) => {
         if ( material.custom ) {
           assert && assert( materialProperty.customMaterial === customMaterials[ 0 ], 'I would really rather know what customMaterial we are dealing with' );
 

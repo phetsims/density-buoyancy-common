@@ -29,7 +29,6 @@ import Duck from './Duck.js';
 import BuoyancyShapeModel from './BuoyancyShapeModel.js';
 import ReferenceIO from '../../../../../tandem/js/types/ReferenceIO.js';
 import IOType from '../../../../../tandem/js/types/IOType.js';
-import MaterialProperty from '../../../common/model/MaterialProperty.js';
 
 export type BuoyancyShapesModelOptions = DensityBuoyancyModelOptions;
 
@@ -41,7 +40,7 @@ export default class BuoyancyShapesModel extends DensityBuoyancyModel {
   public readonly shapeAModel: BuoyancyShapeModel;
   public readonly shapeBModel: BuoyancyShapeModel;
 
-  public readonly materialProperty: MaterialProperty;
+  public readonly materialProperty: Property<Material>;
 
   public constructor( options: BuoyancyShapesModelOptions ) {
 

@@ -109,6 +109,7 @@ export default class BuoyancyApplicationsScreenView extends BuoyancyScreenView<B
     this.positionResetSceneButton();
 
     // TODO: create in bottle? https://github.com/phetsims/density-buoyancy-common/issues/256
+    // TODO: Fix units, see https://github.com/phetsims/density-buoyancy-common/issues/256
     const customInsideBottleMaterial = Material.createCustomSolidMaterial( {
       density: 1000,
       densityRange: new Range( 50, 20000 )
@@ -151,19 +152,23 @@ export default class BuoyancyApplicationsScreenView extends BuoyancyScreenView<B
       material => material.custom );
 
     const customBottleDensityControlTandem = materialInsideControlsTandem.createTandem( 'customBottleDensityNumberControl' );
-    const customBottleDensityControl = new NumberControl( DensityBuoyancyCommonStrings.densityStringProperty, customInsideBottleMaterial.densityProperty, customInsideBottleMaterial.densityProperty.range, combineOptions<NumberControlOptions>( {
-      visibleProperty: new GatedVisibleProperty( customDensityControlVisibleProperty, customBottleDensityControlTandem ),
-      sliderOptions: {
-        accessibleName: DensityBuoyancyCommonStrings.densityStringProperty,
-        thumbNode: new PrecisionSliderThumb( {
-          tandem: customBottleDensityControlTandem.createTandem( 'slider' ).createTandem( 'thumbNode' )
-        } )
-      },
-      numberDisplayOptions: {
-        valuePattern: DensityBuoyancyCommonConstants.KILOGRAMS_PER_VOLUME_PATTERN_STRING_PROPERTY
-      },
-      tandem: customBottleDensityControlTandem
-    }, MaterialMassVolumeControlNode.getNumberControlOptions() ) );
+    const bottleCustomInsideMaterialDensityControl = new NumberControl(
+      DensityBuoyancyCommonStrings.densityStringProperty,
+      customInsideBottleMaterial.densityProperty,
+      customInsideBottleMaterial.densityProperty.range,
+      combineOptions<NumberControlOptions>( {
+        visibleProperty: new GatedVisibleProperty( customDensityControlVisibleProperty, customBottleDensityControlTandem ),
+        sliderOptions: {
+          accessibleName: DensityBuoyancyCommonStrings.densityStringProperty,
+          thumbNode: new PrecisionSliderThumb( {
+            tandem: customBottleDensityControlTandem.createTandem( 'slider' ).createTandem( 'thumbNode' )
+          } )
+        },
+        numberDisplayOptions: {
+          valuePattern: DensityBuoyancyCommonConstants.KILOGRAMS_PER_VOLUME_PATTERN_STRING_PROPERTY
+        },
+        tandem: customBottleDensityControlTandem
+      }, MaterialMassVolumeControlNode.getNumberControlOptions() ) );
 
     const airVolumeMaxWidth = ( materialInsideControls.width - DensityBuoyancyCommonConstants.SPACING_SMALL ) / 2;
     const airVolumeDisplayTandem = bottleControlsTandem.createTandem( 'airVolumeDisplay' );
@@ -180,7 +185,7 @@ export default class BuoyancyApplicationsScreenView extends BuoyancyScreenView<B
           visibleProperty: materialInsideControls.visibleProperty
         } ),
         materialInsideControls,
-        customBottleDensityControl,
+        bottleCustomInsideMaterialDensityControl,
         new HSeparator(),
         new HBox( {
           tandem: airVolumeDisplayTandem,

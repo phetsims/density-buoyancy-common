@@ -575,18 +575,15 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
   }
 
   protected getMassViewFromMass( mass: Mass ): MassView {
-    let massView!: MassView;
-
     if ( mass instanceof Cuboid ) {
-      massView = new CuboidView( mass, this, this.displayProperties );
+      return new CuboidView( mass, this, this.displayProperties );
     }
     else if ( mass instanceof Scale ) {
-      massView = new ScaleView( mass, this, this.model.gravityProperty );
+      return new ScaleView( mass, this, this.model.gravityProperty );
     }
-
-    assert && assert( !!massView, `massView is falsy, mass: ${mass.constructor.name}` );
-
-    return massView;
+    else {
+      throw new Error( 'massView is falsy' );
+    }
   }
 
   protected fillFluidGeometry( y: number, fluidPositionArray: Float32Array, fluidGeometry: BufferGeometry, wasFilled: boolean ): boolean {

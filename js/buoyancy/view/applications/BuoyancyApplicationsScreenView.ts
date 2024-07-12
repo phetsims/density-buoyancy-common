@@ -137,7 +137,11 @@ export default class BuoyancyApplicationsScreenView extends BuoyancyScreenView<B
       showMassAsReadout: true,
       supportHiddenMaterial: true,
       customKeepsConstantDensity: true,
-      tandem: materialInsideControlsTandem
+      tandem: materialInsideControlsTandem,
+
+      // When controlling the material inside, the custom density is an independent variable and should not automatically
+      // sync with the previously selected material's density.
+      syncCustomMaterialDensity: false
     } );
 
     // This DerivedProperty doesn't need disposal, since everything here lives for the lifetime of the simulation

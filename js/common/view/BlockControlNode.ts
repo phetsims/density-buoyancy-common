@@ -19,7 +19,6 @@ import { combineOptions } from '../../../../phet-core/js/optionize.js';
 import PrecisionSliderThumb from './PrecisionSliderThumb.js';
 import UnitConversionProperty from '../../../../axon/js/UnitConversionProperty.js';
 import Range from '../../../../dot/js/Range.js';
-import NumberProperty from '../../../../axon/js/NumberProperty.js';
 
 type SelfOptions = {
   mysteryMaterials: Material[]; // Provide empty list to opt out.
@@ -36,6 +35,13 @@ export default class BlockControlNode extends MaterialMassVolumeControlNode {
       ...options.mysteryMaterials
     ];
 
+    // If we have useDensityControlInsteadOfMassControl, we control the logic completely here, and hence will shut off
+    // that one-way synchronization in the super.
+    // TODO: Use optionize, see https://github.com/phetsims/density-buoyancy-common/issues/256
+    if ( options.useDensityControlInsteadOfMassControl ) {
+      options.syncCustomMaterialDensity = false;
+    }
+
     super( cuboid.materialProperty, cuboid.massProperty, cuboid.volumeProperty, materials,
       cubicMeters => cuboid.updateSize( Cube.boundsFromVolume( cubicMeters ) ), listParent, numberControlMassPropertyFeatured, options );
 
@@ -45,9 +51,27 @@ export default class BlockControlNode extends MaterialMassVolumeControlNode {
 
       const densityNumberControlTandem = options.tandem.createTandem( 'densityNumberControl' );
 
-      // TODO: Lots of work needed here, https://github.com/phetsims/density-buoyancy-common/issues/256
-      // TODO: Manually set material to custom when this property changes? https://github.com/phetsims/density-buoyancy-common/issues/256
-      const customDensityProperty = new NumberProperty( 1000, {} );
+      const customDensityProperty = cuboid.materialProperty.customMaterial.densityProperty;
+
+      let isChangingToPredefinedMaterialLock = false;
+
+      // When the user changes the density by dragging the slider, automatically switch from the predefined material to
+      // the custom material
+      customDensityProperty.lazyLink( () => {
+        if ( !isChangingToPredefinedMaterialLock ) {
+          cuboid.materialProperty.value = cuboid.materialProperty.customMaterial;
+        }
+      } );
+
+      // In the explore screen, when switching from custom to wood, change the density back to the wood density
+      cuboid.materialProperty.lazyLink( material => {
+        if ( !material.custom ) {
+
+          isChangingToPredefinedMaterialLock = true;
+          customDensityProperty.value = material.density;
+          isChangingToPredefinedMaterialLock = false;
+        }
+      } );
 
       const densityAsLitersProperty = new UnitConversionProperty( customDensityProperty, {
         factor: 1 / DensityBuoyancyCommonConstants.LITERS_IN_CUBIC_METER

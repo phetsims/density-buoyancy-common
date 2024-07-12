@@ -16,11 +16,13 @@ import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js
 import Material from '../model/Material.js';
 import { PhetioObjectOptions } from '../../../../tandem/js/PhetioObject.js';
 import PickRequired from '../../../../phet-core/js/types/PickRequired.js';
-import Utils from '../../../../dot/js/Utils.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import MaterialProperty from '../model/MaterialProperty.js';
+import Utils from '../../../../dot/js/Utils.js';
 
 type SelfMaterialControlNodeOptions = {
+
+  syncCustomMaterialDensity?: boolean;
 
   // A label, if provided to be placed to the right of the ComboBox
   labelNode?: Node | null;
@@ -51,6 +53,7 @@ export default class MaterialControlNode extends VBox {
 
 
     const options = optionize<MaterialControlNodeOptions, SelfMaterialControlNodeOptions, VBoxOptions>()( {
+      syncCustomMaterialDensity: true,
       labelNode: null,
       supportCustomMaterial: true,
       supportHiddenMaterial: false,
@@ -95,15 +98,17 @@ export default class MaterialControlNode extends VBox {
     };
 
     // When switching to custom, set the custom density to the previous material's density (clamped just in case)
-    materialProperty.lazyLink( ( material, oldMaterial ) => {
-      if ( material.custom ) {
-        assert && assert( materialProperty.customMaterial === customMaterials[ 0 ], 'I would really rather know what customMaterial we are dealing with' );
+    if ( options.syncCustomMaterialDensity ) {
+      materialProperty.lazyLink( ( material, oldMaterial ) => {
+        if ( material.custom ) {
+          assert && assert( materialProperty.customMaterial === customMaterials[ 0 ], 'I would really rather know what customMaterial we are dealing with' );
 
-        // Handle our minimum volume if we're switched to custom (if needed)
-        const maxVolume = Math.max( volumeProperty.value, options.minCustomVolumeLiters / DensityBuoyancyCommonConstants.LITERS_IN_CUBIC_METER );
-        materialProperty.customMaterial.densityProperty.value = Utils.clamp( oldMaterial.density, options.minCustomMass / maxVolume, options.maxCustomMass / maxVolume );
-      }
-    } );
+          // Handle our minimum volume if we're switched to custom (if needed)
+          const maxVolume = Math.max( volumeProperty.value, options.minCustomVolumeLiters / DensityBuoyancyCommonConstants.LITERS_IN_CUBIC_METER );
+          materialProperty.customMaterial.densityProperty.value = Utils.clamp( oldMaterial.density, options.minCustomMass / maxVolume, options.maxCustomMass / maxVolume );
+        }
+      } );
+    }
 
     // TODO: But can we just use the validValues of the provided MaterialProperty, https://github.com/phetsims/density-buoyancy-common/issues/256
     // TODO: But hidden ones!!! https://github.com/phetsims/density-buoyancy-common/issues/256

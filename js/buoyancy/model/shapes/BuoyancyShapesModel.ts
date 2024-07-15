@@ -44,13 +44,15 @@ export default class BuoyancyShapesModel extends DensityBuoyancyModel {
 
     super( options );
 
+    const objectsTandem = options.tandem.createTandem( 'objects' );
+
     this.modeProperty = new EnumerationProperty( TwoBlockMode.ONE_BLOCK, {
-      tandem: options.tandem.createTandem( 'modeProperty' ),
+      tandem: objectsTandem.createTandem( 'modeProperty' ),
       phetioFeatured: true
     } );
 
     this.materialProperty = new Property( Material.WOOD, {
-      tandem: options.tandem.createTandem( 'materialProperty' ),
+      tandem: objectsTandem.createTandem( 'materialProperty' ),
       phetioValueType: Material.MaterialIO
     } );
 
@@ -67,14 +69,12 @@ export default class BuoyancyShapesModel extends DensityBuoyancyModel {
 
     const boundCreateMass = this.createMass.bind( this );
 
-    // eslint-disable-next-line tandem-name-should-match
     this.shapeAModel = new BuoyancyShapeModel( MassShape.BLOCK, 0.25, 0.75, MassTag.OBJECT_A, boundCreateMass, {
-      tandem: options.tandem.createTandem( 'objectA' )
+      tandem: objectsTandem.createTandem( 'objectA' )
     } );
 
-    // eslint-disable-next-line tandem-name-should-match
     this.shapeBModel = new BuoyancyShapeModel( MassShape.BLOCK, 0.25, 0.75, MassTag.OBJECT_B, boundCreateMass, {
-      tandem: options.tandem.createTandem( 'objectB' )
+      tandem: objectsTandem.createTandem( 'objectB' )
     } );
 
 

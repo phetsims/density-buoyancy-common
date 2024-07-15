@@ -25,7 +25,7 @@ type SelfOptions = {
   sliderTrackSize?: Dimension2;
 };
 
-type BlocksValueControlPanelOptions = SelfOptions & PickRequired<Partial<PanelOptions>, 'tandem'>;
+type BlocksValuePanelOptions = SelfOptions & PickRequired<Partial<PanelOptions>, 'tandem'>;
 
 export default class BlocksValuePanel extends Panel {
 
@@ -33,10 +33,10 @@ export default class BlocksValuePanel extends Panel {
                       volumeProperty: NumberProperty,
                       densityProperty: NumberProperty,
                       blockSetProperty: TReadOnlyProperty<BlockSet>,
-                      providedOptions: BlocksValueControlPanelOptions ) {
+                      providedOptions: BlocksValuePanelOptions ) {
 
 
-    const options = optionize4<BlocksValueControlPanelOptions, SelfOptions, PanelOptions>()( {},
+    const options = optionize4<BlocksValuePanelOptions, SelfOptions, PanelOptions>()( {},
       DensityBuoyancyCommonConstants.PANEL_OPTIONS, {
         sliderTrackSize: DEFAULT_COMPARISON_TRACK_SIZE
       }, providedOptions );

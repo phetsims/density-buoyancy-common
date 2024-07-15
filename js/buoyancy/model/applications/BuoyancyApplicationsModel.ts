@@ -36,7 +36,7 @@ const BOAT_FULL_THRESHOLD = 0.01;
 
 export default class BuoyancyApplicationsModel extends DensityBuoyancyModel {
 
-  public readonly sceneProperty: StringUnionProperty<BottleOrBoat>;
+  public readonly applicationModeProperty: StringUnionProperty<BottleOrBoat>;
 
   public readonly bottle: Bottle;
   public readonly block: Cube;
@@ -52,9 +52,9 @@ export default class BuoyancyApplicationsModel extends DensityBuoyancyModel {
 
     super( options );
 
-    this.sceneProperty = new StringUnionProperty<BottleOrBoat>( 'BOTTLE', {
+    this.applicationModeProperty = new StringUnionProperty<BottleOrBoat>( 'BOTTLE', {
       validValues: BottleOrBoatValues,
-      tandem: options.tandem.createTandem( 'sceneProperty' )
+      tandem: options.tandem.createTandem( 'applicationModeProperty' )
     } );
 
     const objectsTandem = tandem.createTandem( 'objects' );
@@ -100,7 +100,7 @@ export default class BuoyancyApplicationsModel extends DensityBuoyancyModel {
     this.pool.fluidVolumeProperty.setInitialValue( this.pool.fluidVolumeProperty.value );
 
     // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
-    this.sceneProperty.link( ( scene, previousScene ) => {
+    this.applicationModeProperty.link( ( scene, previousScene ) => {
       this.bottle.internalVisibleProperty.value = scene === 'BOTTLE';
       this.boat.internalVisibleProperty.value = scene === 'BOAT';
       this.block.internalVisibleProperty.value = scene === 'BOAT';
@@ -161,7 +161,7 @@ export default class BuoyancyApplicationsModel extends DensityBuoyancyModel {
     super.reset();
     this.spillingFluidOutOfBoat = false;
 
-    this.sceneProperty.reset();
+    this.applicationModeProperty.reset();
 
     assert && assert( !this.boat.visibleProperty.value || !this.bottle.visibleProperty.value,
       'Boat and bottle should not be visible at the same time' );

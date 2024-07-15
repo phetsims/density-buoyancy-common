@@ -27,7 +27,7 @@ type SelfOptions = {
 
 type BlocksValueControlPanelOptions = SelfOptions & PickRequired<Partial<PanelOptions>, 'tandem'>;
 
-export default class BlocksValueControlPanel extends Panel {
+export default class BlocksValuePanel extends Panel {
 
   public constructor( massProperty: NumberProperty,
                       volumeProperty: NumberProperty,
@@ -107,4 +107,4 @@ export default class BlocksValueControlPanel extends Panel {
   }
 }
 
-densityBuoyancyCommon.register( 'BlocksValueControlPanel', BlocksValueControlPanel );
+densityBuoyancyCommon.register( 'BlocksValuePanel', BlocksValuePanel );

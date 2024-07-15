@@ -29,7 +29,7 @@ import Bounds2 from '../../../../dot/js/Bounds2.js';
 import { DensityMaterials } from '../../common/view/MaterialView.js';
 import ThreeUtils from '../../../../mobius/js/ThreeUtils.js';
 import FluidSelectionPanel from './FluidSelectionPanel.js';
-import BlocksValueControlPanel from '../../common/view/BlocksValueControlPanel.js';
+import BlocksValuePanel from '../../common/view/BlocksValuePanel.js';
 import Dimension2 from '../../../../dot/js/Dimension2.js';
 import ScaleView from '../../common/view/ScaleView.js';
 import MassView from '../../common/view/MassView.js';
@@ -53,7 +53,7 @@ export default class BuoyancyCompareScreenView extends BuoyancyScreenView<Buoyan
   private readonly rightSideMaxContentWidthProperty = new Property( MAX_RIGHT_SIDE_CONTENT_WIDTH );
   private readonly rightSidePanelsVBox: Node;
 
-  private readonly blocksValueControlPanel: Panel;
+  private readonly blocksValuePanel: Panel;
 
   public constructor( model: BuoyancyCompareModel, options: BuoyancyCompareScreenViewOptions ) {
 
@@ -105,9 +105,9 @@ export default class BuoyancyCompareScreenView extends BuoyancyScreenView<Buoyan
       margin: MARGIN
     } ) );
 
-    this.blocksValueControlPanel = new BlocksValueControlPanel( model.massProperty, model.volumeProperty, model.densityProperty, model.blockSetProperty, {
+    this.blocksValuePanel = new BlocksValuePanel( model.massProperty, model.volumeProperty, model.densityProperty, model.blockSetProperty, {
       sliderTrackSize: new Dimension2( 120, 0.5 ),
-      tandem: tandem.createTandem( 'blocksValueControlPanel' )
+      tandem: tandem.createTandem( 'blocksValuePanel' )
     } );
 
     // Materials are set in densityBox.setMaterials() below
@@ -169,7 +169,7 @@ export default class BuoyancyCompareScreenView extends BuoyancyScreenView<Buoyan
     } );
 
     this.rightSidePanelsVBox = new VBox( {
-      children: [ this.blocksValueControlPanel, densityComparisonAccordionBox, percentSubmergedAccordionBox ],
+      children: [ this.blocksValuePanel, densityComparisonAccordionBox, percentSubmergedAccordionBox ],
       spacing: DensityBuoyancyCommonConstants.SPACING_SMALL
     } );
     this.addChild( this.rightSidePanelsVBox );
@@ -204,7 +204,7 @@ export default class BuoyancyCompareScreenView extends BuoyancyScreenView<Buoyan
 
       blocksPanel,
 
-      this.blocksValueControlPanel,
+      this.blocksValuePanel,
 
       fluidPanel
     ];
@@ -233,7 +233,7 @@ export default class BuoyancyCompareScreenView extends BuoyancyScreenView<Buoyan
     );
     this.rightSidePanelsVBox.top = rightSideOfPoolViewPoint.y + MARGIN;
     this.rightSidePanelsVBox.right = this.visibleBoundsProperty.value.right - MARGIN;
-    this.rightSideMaxContentWidthProperty.value = this.blocksValueControlPanel.width - 2 * DensityBuoyancyCommonConstants.PANEL_OPTIONS.xMargin;
+    this.rightSideMaxContentWidthProperty.value = this.blocksValuePanel.width - 2 * DensityBuoyancyCommonConstants.PANEL_OPTIONS.xMargin;
   }
 
   public override layout( viewBounds: Bounds2 ): void {

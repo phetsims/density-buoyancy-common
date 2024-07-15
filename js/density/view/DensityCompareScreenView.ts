@@ -15,7 +15,7 @@ import DensityCompareModel from '../model/DensityCompareModel.js';
 import Bounds2 from '../../../../dot/js/Bounds2.js';
 import { combineOptions } from '../../../../phet-core/js/optionize.js';
 import ThreeUtils from '../../../../mobius/js/ThreeUtils.js';
-import BlocksValueControlPanel from '../../common/view/BlocksValueControlPanel.js';
+import BlocksValuePanel from '../../common/view/BlocksValuePanel.js';
 import MassView from '../../common/view/MassView.js';
 import CuboidView from '../../common/view/CuboidView.js';
 import BlocksPanel from '../../common/view/BlocksPanel.js';
@@ -51,24 +51,24 @@ export default class DensityCompareScreenView extends DensityBuoyancyScreenView<
       margin: MARGIN
     } ) );
 
-    const blocksValueControlPanel = new BlocksValueControlPanel( model.massProperty, model.volumeProperty, model.densityProperty, model.blockSetProperty, {
-      tandem: tandem.createTandem( 'blocksValueControlPanel' )
+    const blocksValuePanel = new BlocksValuePanel( model.massProperty, model.volumeProperty, model.densityProperty, model.blockSetProperty, {
+      tandem: tandem.createTandem( 'blocksValuePanel' )
     } );
 
-    this.addChild( blocksValueControlPanel );
+    this.addChild( blocksValuePanel );
 
     this.positionPanel = () => {
       // We should be MARGIN below where the edge of the ground exists
       const groundFrontPoint = this.modelToViewPoint( new Vector3( 0, 0, model.groundBounds.maxZ ) );
-      blocksValueControlPanel.top = groundFrontPoint.y + MARGIN;
-      blocksValueControlPanel.right = this.visibleBoundsProperty.value.maxX - MARGIN;
+      blocksValuePanel.top = groundFrontPoint.y + MARGIN;
+      blocksValuePanel.right = this.visibleBoundsProperty.value.maxX - MARGIN;
     };
 
     this.positionPanel();
     // This instance lives for the lifetime of the simulation, so we don't need to remove these listeners
     this.transformEmitter.addListener( this.positionPanel );
     this.visibleBoundsProperty.lazyLink( this.positionPanel );
-    blocksValueControlPanel.localBoundsProperty.lazyLink( this.positionPanel );
+    blocksValuePanel.localBoundsProperty.lazyLink( this.positionPanel );
 
     this.addChild( this.popupLayer );
 
@@ -83,7 +83,7 @@ export default class DensityCompareScreenView extends DensityBuoyancyScreenView<
 
       blocksPanel,
 
-      blocksValueControlPanel
+      blocksValuePanel
     ];
 
     const massViewAdded = ( massView: MassView ) => {

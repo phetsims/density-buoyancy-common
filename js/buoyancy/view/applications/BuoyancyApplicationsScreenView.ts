@@ -79,8 +79,8 @@ export default class BuoyancyApplicationsScreenView extends BuoyancyScreenView<B
       this.sceneNode.stage.threeRenderer.localClippingEnabled = true;
     }
 
-    const resetBoatSceneButtonTandem = tandem.createTandem( 'resetBoatSceneButton' );
-    const resetBoatSceneButton = new RectangularPushButton( {
+    const resetBoatButtonTandem = tandem.createTandem( 'resetBoatButton' );
+    const resetBoatButton = new RectangularPushButton( {
       content: new Node( {
         children: [
           new Image( resetArrow_png, { scale: 0.3 } )
@@ -93,14 +93,14 @@ export default class BuoyancyApplicationsScreenView extends BuoyancyScreenView<B
         model.resetBoatScene();
       },
       visibleProperty: new GatedVisibleProperty(
-        new DerivedProperty( [ model.sceneProperty ], scene => scene === 'BOAT' ),
-        resetBoatSceneButtonTandem ),
-      tandem: resetBoatSceneButtonTandem
+        new DerivedProperty( [ model.applicationModeProperty ], scene => scene === 'BOAT' ),
+        resetBoatButtonTandem ),
+      tandem: resetBoatButtonTandem
     } );
-    this.addChild( resetBoatSceneButton );
+    this.addChild( resetBoatButton );
 
     this.positionResetSceneButton = () => {
-      resetBoatSceneButton.rightTop = this.modelToViewPoint( new Vector3(
+      resetBoatButton.rightTop = this.modelToViewPoint( new Vector3(
         this.model.poolBounds.maxX,
         this.model.poolBounds.minY,
         this.model.poolBounds.maxZ
@@ -329,7 +329,7 @@ export default class BuoyancyApplicationsScreenView extends BuoyancyScreenView<B
     } );
 
     // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
-    model.sceneProperty.link( scene => {
+    model.applicationModeProperty.link( scene => {
       rightBottleContent.visible = scene === 'BOTTLE';
       rightBoatContent.visible = scene === 'BOAT';
       this.poolScaleHeightControl!.visible = scene === 'BOTTLE';
@@ -347,7 +347,7 @@ export default class BuoyancyApplicationsScreenView extends BuoyancyScreenView<B
     displayedMysteryMaterials.forEach( displayed => arrayRemove( invisibleMaterials, displayed ) );
 
 
-    model.sceneProperty.link( scene => {
+    model.applicationModeProperty.link( scene => {
       const materials = scene === 'BOTTLE' ? [
         model.bottle.materialInsideProperty,
         model.bottle.materialProperty
@@ -382,7 +382,7 @@ export default class BuoyancyApplicationsScreenView extends BuoyancyScreenView<B
       margin: MARGIN
     } ) );
 
-    const sceneRadioButtonGroup = new RectangularRadioButtonGroup( model.sceneProperty, [ {
+    const applicationModeRadioButtonGroup = new RectangularRadioButtonGroup( model.applicationModeProperty, [ {
       value: 'BOTTLE',
       createNode: () => BuoyancyApplicationsScreenView.getBottleIcon(),
       tandemName: 'bottleRadioButton'
@@ -399,7 +399,7 @@ export default class BuoyancyApplicationsScreenView extends BuoyancyScreenView<B
         xMargin: 10,
         yMargin: 10
       },
-      tandem: tandem.createTandem( 'sceneRadioButtonGroup' )
+      tandem: tandem.createTandem( 'applicationModeRadioButtonGroup' )
     } );
 
     const customMaterial = Material.createCustomLiquidMaterial( {
@@ -416,13 +416,13 @@ export default class BuoyancyApplicationsScreenView extends BuoyancyScreenView<B
       margin: MARGIN
     } ) );
 
-    ManualConstraint.create( this, [ this.resetAllButton, sceneRadioButtonGroup ],
+    ManualConstraint.create( this, [ this.resetAllButton, applicationModeRadioButtonGroup ],
       ( resetAllButtonWrapper, bottleBoatSelectionNodeWrapper ) => {
         bottleBoatSelectionNodeWrapper.right = resetAllButtonWrapper.left - DensityBuoyancyCommonConstants.MARGIN;
         bottleBoatSelectionNodeWrapper.bottom = resetAllButtonWrapper.bottom;
       } );
 
-    this.addChild( sceneRadioButtonGroup );
+    this.addChild( applicationModeRadioButtonGroup );
 
     this.addChild( this.popupLayer );
 
@@ -446,7 +446,7 @@ export default class BuoyancyApplicationsScreenView extends BuoyancyScreenView<B
       rightBoatContent,
       rightBottleContent,
 
-      resetBoatSceneButton,
+      resetBoatButton,
       fluidDensityPanel,
       this.poolScaleHeightControl
     ];
@@ -470,7 +470,7 @@ export default class BuoyancyApplicationsScreenView extends BuoyancyScreenView<B
       displayOptionsPanel,
       objectDensityAccordionBox,
       percentSubmergedAccordionBox,
-      sceneRadioButtonGroup,
+      applicationModeRadioButtonGroup,
       this.resetAllButton
     ];
 

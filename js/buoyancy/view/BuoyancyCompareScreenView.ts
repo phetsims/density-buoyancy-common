@@ -71,7 +71,7 @@ export default class BuoyancyCompareScreenView extends BuoyancyScreenView<Buoyan
 
     const tandem = options.tandem;
 
-    const blocksPanel = new BlocksPanel( model.blockSetProperty, true, tandem.createTandem( 'blocksPanel' ) );
+    const blocksPanel = new BlocksPanel( model.blockSetProperty, tandem.createTandem( 'blocksPanel' ) );
 
     this.addChild( new AlignBox( blocksPanel, {
       alignBoundsProperty: this.visibleBoundsProperty,

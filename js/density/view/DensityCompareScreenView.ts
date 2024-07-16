@@ -42,7 +42,7 @@ export default class DensityCompareScreenView extends DensityBuoyancyScreenView<
       cameraLookAt: DensityBuoyancyCommonConstants.DENSITY_CAMERA_LOOK_AT
     }, options ) );
 
-    const blocksPanel = new BlocksPanel( model.blockSetProperty, false, tandem.createTandem( 'blocksPanel' ) );
+    const blocksPanel = new BlocksPanel( model.blockSetProperty, tandem.createTandem( 'blocksPanel' ) );
 
     this.addChild( new AlignBox( blocksPanel, {
       alignBoundsProperty: this.visibleBoundsProperty,

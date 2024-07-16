@@ -238,7 +238,7 @@ export default class BuoyancyLabScreenView extends BuoyancyScreenView<BuoyancyLa
 
         scale.position.copy( ThreeUtils.vectorToThree( new Vector3( 0, 0.25, 0 ) ) );
         scene.add( scale );
-      } );
+      }, null );
     } );
     image.setScaleMagnitude( 0.12 );
     return image;

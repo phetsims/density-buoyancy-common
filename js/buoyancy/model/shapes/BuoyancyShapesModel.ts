@@ -38,8 +38,8 @@ export default class BuoyancyShapesModel extends DensityBuoyancyModel {
   public readonly modeProperty: Property<TwoBlockMode>;
   private readonly scale: Scale;
 
-  public readonly shapeAModel: BuoyancyShapeModel;
-  public readonly shapeBModel: BuoyancyShapeModel;
+  public readonly objectA: BuoyancyShapeModel;
+  public readonly objectB: BuoyancyShapeModel;
 
   public readonly materialProperty: MaterialProperty;
 
@@ -73,17 +73,17 @@ export default class BuoyancyShapesModel extends DensityBuoyancyModel {
 
     const boundCreateMass = this.createMass.bind( this );
 
-    this.shapeAModel = new BuoyancyShapeModel( MassShape.BLOCK, 0.25, 0.75, MassTag.OBJECT_A, boundCreateMass, {
+    this.objectA = new BuoyancyShapeModel( MassShape.BLOCK, 0.25, 0.75, MassTag.OBJECT_A, boundCreateMass, {
       tandem: objectsTandem.createTandem( 'objectA' )
     } );
 
-    this.shapeBModel = new BuoyancyShapeModel( MassShape.BLOCK, 0.25, 0.75, MassTag.OBJECT_B, boundCreateMass, {
+    this.objectB = new BuoyancyShapeModel( MassShape.BLOCK, 0.25, 0.75, MassTag.OBJECT_B, boundCreateMass, {
       tandem: objectsTandem.createTandem( 'objectB' )
     } );
 
 
     // When a new mass is created, set up its position to be that of the old mass
-    [ this.shapeAModel, this.shapeBModel ].forEach( ( shapeModel: BuoyancyShapeModel ) => {
+    [ this.objectA, this.objectB ].forEach( ( shapeModel: BuoyancyShapeModel ) => {
 
       // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
       shapeModel.shapeProperty.lazyLink( ( newMass, oldMass ) => {
@@ -100,11 +100,11 @@ export default class BuoyancyShapesModel extends DensityBuoyancyModel {
       } );
     } );
 
-    this.availableMasses.add( this.shapeAModel.shapeProperty.value );
-    this.availableMasses.add( this.shapeBModel.shapeProperty.value );
+    this.availableMasses.add( this.objectA.shapeProperty.value );
+    this.availableMasses.add( this.objectB.shapeProperty.value );
 
     this.modeProperty.link( mode => {
-      this.shapeBModel.shapeProperty.value.internalVisibleProperty.value = mode === TwoBlockMode.TWO_BLOCKS;
+      this.objectB.shapeProperty.value.internalVisibleProperty.value = mode === TwoBlockMode.TWO_BLOCKS;
     } );
 
     this.setInitialPositions();
@@ -178,8 +178,8 @@ export default class BuoyancyShapesModel extends DensityBuoyancyModel {
    * Sets up the initial positions of the masses (since some resets may not change the mass).
    */
   private setInitialPositions(): void {
-    this.shapeAModel.shapeProperty.value.setPosition( -0.225, 0 );
-    this.shapeBModel.shapeProperty.value.setPosition( 0.075, 0 );
+    this.objectA.shapeProperty.value.setPosition( -0.225, 0 );
+    this.objectB.shapeProperty.value.setPosition( 0.075, 0 );
   }
 
   /**
@@ -187,8 +187,8 @@ export default class BuoyancyShapesModel extends DensityBuoyancyModel {
    */
   public override reset(): void {
 
-    this.shapeAModel.reset();
-    this.shapeBModel.reset();
+    this.objectA.reset();
+    this.objectB.reset();
 
     // Reset the mode after resetting the shapeBProperty, otherwise the secondary mass will become visible
     // if it changes, see https://github.com/phetsims/density-buoyancy-common/issues/221

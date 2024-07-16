@@ -47,8 +47,6 @@ export default class BlockControlNode extends MaterialMassVolumeControlNode {
 
     if ( options.useDensityControlInsteadOfMassControl ) {
 
-      assert && assert( cuboid.adjustableMaterial, 'useDensityControlInsteadOfMassControl should only be used with adjustable materials' );
-
       const densityNumberControlTandem = options.tandem.createTandem( 'densityNumberControl' );
 
       const customDensityProperty = cuboid.materialProperty.customMaterial.densityProperty;

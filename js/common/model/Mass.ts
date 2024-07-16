@@ -196,7 +196,6 @@ export default abstract class Mass extends PhetioObject {
   public stepBottom: number; // minimum y value of the mass
   public stepTop: number; // maximum y value of the mass
 
-  public readonly adjustableMaterial: boolean;
   public readonly densityProperty: TReadOnlyProperty<number>;
 
   protected constructor( engine: PhysicsEngine, providedOptions: MassOptions ) {
@@ -292,9 +291,6 @@ export default abstract class Mass extends PhetioObject {
 
     // TODO: do we need this pointer? https://github.com/phetsims/density-buoyancy-common/issues/256
     this.densityProperty = this.materialProperty.densityProperty;
-
-    // TODO: Delete this please https://github.com/phetsims/density-buoyancy-common/issues/256
-    this.adjustableMaterial = options.adjustableMaterial;
 
     this.volumeProperty = new NumberProperty( options.volume, combineOptions<NumberPropertyOptions>( {
       tandem: tandem?.createTandem( 'volumeProperty' ),

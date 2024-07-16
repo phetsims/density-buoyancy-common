@@ -21,9 +21,8 @@ import Tandem from '../../../../tandem/js/Tandem.js';
 import Property from '../../../../axon/js/Property.js';
 
 export default class BlocksPanel extends Panel {
-  public constructor( blockSetProperty: Property<BlockSet>, radioButtonGroupVisiblePropertyPhetioFeatured: boolean, tandem: Tandem ) {
-    const blockSetRadioButtonGroupTandem = tandem.createTandem( 'blockSetRadioButtonGroup' );
-    const verticalAquaRadioButtonGroup = new VerticalAquaRadioButtonGroup( blockSetProperty, BlockSet.enumeration.values.map( blockSet => {
+  public constructor( blockSetProperty: Property<BlockSet>, tandem: Tandem ) {
+    const blockSetRadioButtonGroup = new VerticalAquaRadioButtonGroup( blockSetProperty, BlockSet.enumeration.values.map( blockSet => {
       return {
         createNode: tandem => new Text( blockSet.stringProperty, {
           font: DensityBuoyancyCommonConstants.RADIO_BUTTON_FONT,
@@ -39,10 +38,8 @@ export default class BlocksPanel extends Panel {
     } ), {
       align: 'left',
       spacing: DensityBuoyancyCommonConstants.SPACING_SMALL,
-      tandem: blockSetRadioButtonGroupTandem,
-      visiblePropertyOptions: {
-        phetioFeatured: radioButtonGroupVisiblePropertyPhetioFeatured
-      }
+      tandem: tandem.createTandem( 'blockSetRadioButtonGroup' ),
+      phetioVisiblePropertyInstrumented: false
     } );
     super( new VBox( {
       align: 'left',
@@ -52,7 +49,7 @@ export default class BlocksPanel extends Panel {
           font: DensityBuoyancyCommonConstants.TITLE_FONT,
           maxWidth: 160
         } ),
-        verticalAquaRadioButtonGroup
+        blockSetRadioButtonGroup
       ]
     } ), combineOptions<PanelOptions>( {
       tandem: tandem,

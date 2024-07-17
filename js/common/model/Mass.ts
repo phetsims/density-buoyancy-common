@@ -285,8 +285,6 @@ export default abstract class Mass extends PhetioObject {
 
     // TODO: In some cases, when the materialProperty changes to custom, we should set the custom density to be the value of the previous material, where/how should that happen? https://github.com/phetsims/density-buoyancy-common/issues/256
 
-    // TODO: Review all places where we are observing materialProperty, and see if actually they should just listen to the densityProperty, https://github.com/phetsims/density-buoyancy-common/issues/256
-
     this.volumeProperty = new NumberProperty( options.volume, combineOptions<NumberPropertyOptions>( {
       tandem: tandem?.createTandem( 'volumeProperty' ),
       phetioFeatured: true,

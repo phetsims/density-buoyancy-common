@@ -270,11 +270,6 @@ export default class CompareBlockSetModel extends BlockSetModel<BlockSet> {
     densityProperty.link( density => {
       myCustomMaterial.densityProperty.value = density;
     } );
-    //
-    // // TODO: https://github.com/phetsims/density-buoyancy-common/issues/256 allow passing in the density property directly
-    // Multilink.multilink( [ colorProperty, densityProperty ], ( color, density ) => {
-    //
-    // } );
 
     return new DerivedProperty( [ densityProperty, blockSetValueChangedProperty ], ( density, blockSetValueChanged ) => {
 

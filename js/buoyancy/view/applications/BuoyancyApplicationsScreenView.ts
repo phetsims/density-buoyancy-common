@@ -110,7 +110,7 @@ export default class BuoyancyApplicationsScreenView extends BuoyancyScreenView<B
 
     const bottleControlsTandem = tandem.createTandem( 'bottleControls' );
     const materialInsideControlsTandem = bottleControlsTandem.createTandem( 'materialInsideControls' );
-    const materialInsideControls = new MaterialMassVolumeControlNode( model.bottle.materialInsideProperty, model.bottle.interiorMassProperty, model.bottle.materialInsideVolumeProperty, [
+    const materialInsideControls = new MaterialMassVolumeControlNode( model.bottle.materialInsideProperty, model.bottle.materialInsideMassProperty, model.bottle.materialInsideVolumeProperty, [
       Material.GASOLINE,
       Material.OIL,
       Material.WATER,

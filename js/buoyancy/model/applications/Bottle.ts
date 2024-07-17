@@ -195,8 +195,7 @@ export default class Bottle extends ApplicationsMass {
   public readonly maxVolumeDisplacedProperty = new NumberProperty( ApplicationsMass.DEFAULT_DISPLACEMENT_VOLUME );
 
   // In kg (kilograms)
-  // TODO: rename to materialInsideMassProperty, https://github.com/phetsims/density-buoyancy-common/issues/256
-  public readonly interiorMassProperty: ReadOnlyProperty<number>;
+  public readonly materialInsideMassProperty: ReadOnlyProperty<number>;
   public readonly customInsideBottleMaterial: Material;
 
   public constructor( engine: PhysicsEngine, providedOptions: BottleOptions ) {
@@ -244,7 +243,7 @@ export default class Bottle extends ApplicationsMass {
       units: 'm^3'
     } );
 
-    this.interiorMassProperty = new DerivedProperty( [ this.materialInsideProperty, this.materialInsideVolumeProperty ], ( material, volume ) => {
+    this.materialInsideMassProperty = new DerivedProperty( [ this.materialInsideProperty, this.materialInsideVolumeProperty ], ( material, volume ) => {
       return material.density * volume;
     }, {
       tandem: materialInsideTandem.createTandem( 'massProperty' ),

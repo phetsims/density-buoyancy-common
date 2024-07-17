@@ -21,7 +21,6 @@ export default class GravityProperty extends MappedWrappedProperty<Gravity> {
   public constructor( gravity: Gravity, providedOptions: PropertyOptions<Gravity> & PickRequired<PhetioObjectOptions, 'tandem'> ) {
     super( gravity, Gravity.createCustomGravity( gravity.gravityValue, providedOptions.tandem.createTandem( 'customGravity' ) ), providedOptions );
 
-    // TODO: Use gravityValueProperty instead of dynamicValueProperty where possible, see https://github.com/phetsims/density-buoyancy-common/issues/256
     this.gravityValueProperty = this.dynamicValueProperty;
   }
 }

@@ -24,7 +24,7 @@ export type HasValueProperty = {
 
 // TODO: reset these, https://github.com/phetsims/density-buoyancy-common/issues/256
 export default abstract class MappedWrappedProperty<T extends HasValueProperty> extends Property<T> {
-  public readonly dynamicValueProperty: TReadOnlyProperty<number>;
+  protected readonly dynamicValueProperty: TReadOnlyProperty<number>;
   public readonly customValue: T;
 
   protected constructor( initialValue: T, customValue: T, providedOptions?: PropertyOptions<T> ) {

@@ -119,14 +119,7 @@ export default abstract class Mass extends PhetioObject {
 
   public readonly materialProperty: MaterialProperty;
 
-  // TODO: PhET-iO support for DensityMysteryScreen for these items, and migration? https://github.com/phetsims/density-buoyancy-common/issues/256
-  // for phet-io support (to control the materialProperty)
-  // public readonly materialEnumProperty?: StringUnionProperty<MaterialName>;
-
-  // for phet-io support (to control the materialProperty)
-  // public readonly customDensityProperty?: NumberProperty;
-
-  // for phet-io support (to control the materialProperty)
+  // for phet-io support (to control the materialProperty), see https://github.com/phetsims/density-buoyancy-common/issues/268
   // private readonly customColorProperty?: Property<Color>;
 
   // In m^3 (cubic meters)

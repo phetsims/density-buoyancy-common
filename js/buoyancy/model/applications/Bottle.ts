@@ -176,10 +176,6 @@ const BOTTLE_INITIAL_INTERIOR_VOLUME = 0.004;
 // {Material}
 const BOTTLE_INITIAL_INTERIOR_MATERIAL = Material.WATER;
 
-// Used to calculate the color of the bottle's custom material
-// TODO: Provide this to the customMaterial of the inside material MaterialProperty. https://github.com/phetsims/density-buoyancy-common/issues/256
-// const BOTTLE_DENSITY_RANGE = new Range( 10, 10000 );
-
 export type BottleOptions = StrictOmit<ApplicationsMassOptions, 'body' | 'shape' | 'volume' | 'material' | 'massShape'>;
 
 export default class Bottle extends ApplicationsMass {
@@ -202,11 +198,14 @@ export default class Bottle extends ApplicationsMass {
 
     const vertices = Bottle.getFlatIntersectionVertices();
 
-    // TODO: Is the custom material inside the bottle supposed to be solid or liquid? Or maybe it doesn't matter. See https://github.com/phetsims/density-buoyancy-common/issues/256
+    // Used to calculate the color of the bottle's custom material
+    // TODO: Provide this to the customMaterial of the inside material MaterialProperty. https://github.com/phetsims/density-buoyancy-common/issues/268
+    // const BOTTLE_DENSITY_RANGE = new Range( 10, 10000 );
+    // TODO: Is the custom material inside the bottle supposed to be solid or liquid? Or maybe it doesn't matter. It mainly affects the color. See https://github.com/phetsims/density-buoyancy-common/issues/268
     const customMaterial = Material.createCustomSolidMaterial( providedOptions.tandem.createTandem( 'customMaterial' ), {
       nameProperty: DensityBuoyancyCommonStrings.systemAStringProperty,
       density: ( BOTTLE_MASS + BOTTLE_INITIAL_INTERIOR_MATERIAL.density * BOTTLE_INITIAL_INTERIOR_VOLUME ) / BOTTLE_VOLUME,
-      densityRange: new Range( 10, 1000000000 ) // TODO: set min lower than 10? https://github.com/phetsims/density-buoyancy-common/issues/256
+      densityRange: new Range( 10, 1000000000 ) // TODO: set min lower than 10? https://github.com/phetsims/density-buoyancy-common/issues/268
     } );
 
     const options = optionize<BottleOptions, EmptySelfOptions, InstrumentedMassOptions>()( {

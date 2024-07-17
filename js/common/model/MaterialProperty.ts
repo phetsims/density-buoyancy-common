@@ -32,7 +32,7 @@ export default class MaterialProperty extends MappedWrappedProperty<Material> {
       customMaterial: Material.createCustomSolidMaterial( providedOptions && providedOptions.tandem ? providedOptions.tandem.createTandem( 'customMaterial' ) : Tandem.OPT_OUT, {
         density: material.density,
 
-        // TODO: It is incorrect to take the range of the default value, see https://github.com/phetsims/density-buoyancy-common/issues/256
+        // TODO: It is incorrect to take the range of the default value, this affects the color, see https://github.com/phetsims/density-buoyancy-common/issues/268
         densityRange: material.densityProperty.range
       } )
     }, providedOptions );

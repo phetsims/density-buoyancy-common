@@ -60,8 +60,7 @@ const MATERIALS_TANDEM = Tandem.GLOBAL_MODEL.createTandem( 'materials' );
 // TODO: Resetting all Property instances that can/should be, https://github.com/phetsims/density-buoyancy-common/issues/267
 // TODO: Material should wire up color properties https://github.com/phetsims/density-buoyancy-common/issues/268
 // TODO: Material only needs one color Property, https://github.com/phetsims/density-buoyancy-common/issues/268
-// TODO: Material should know its density range https://github.com/phetsims/density-buoyancy-common/issues/256
-// TODO: Instrument Materials globally (and locally for custom), and their densityProperty too. https://github.com/phetsims/density-buoyancy-common/issues/256
+// TODO: Material should know its density range https://github.com/phetsims/density-buoyancy-common/issues/268
 export default class Material extends PhetioObject implements HasValueProperty {
 
   public readonly nameProperty: TReadOnlyProperty<string>;

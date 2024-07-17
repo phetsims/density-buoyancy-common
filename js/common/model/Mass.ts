@@ -27,7 +27,7 @@ import BooleanIO from '../../../../tandem/js/types/BooleanIO.js';
 import IOType from '../../../../tandem/js/types/IOType.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import InterpolatedProperty from './InterpolatedProperty.js';
-import Material from './Material.js';
+import Material, { CustomSolidMaterial } from './Material.js';
 import PhysicsEngine, { PhysicsEngineBody } from './PhysicsEngine.js';
 import Basin from './Basin.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
@@ -222,7 +222,7 @@ export default abstract class Mass extends PhetioObject {
 
         // TODO: Visit this tandem after moving elsewhere, see https://github.com/phetsims/density-buoyancy-common/issues/256
         // TODO: MaterialProperty really wants to create its own custom instances, see https://github.com/phetsims/density-buoyancy-common/issues/256
-        Material.createCustomSolidMaterial( providedOptions.tandem ? providedOptions.tandem.createTandem( 'customSolidMaterial' ) : Tandem.OPT_OUT, {
+        new CustomSolidMaterial( providedOptions.tandem ? providedOptions.tandem.createTandem( 'customSolidMaterial' ) : Tandem.OPT_OUT, {
           density: 1000,
           colorProperty: new ColorProperty( Color.white )
         } )
@@ -271,7 +271,7 @@ export default abstract class Mass extends PhetioObject {
 
     this.visibleProperty = new GatedVisibleProperty( this.internalVisibleProperty, tandem );
 
-    this.materialProperty = new MaterialProperty( options.material, tandem => Material.createCustomSolidMaterial( tandem.createTandem( 'customMaterial' ), {
+    this.materialProperty = new MaterialProperty( options.material, tandem => new CustomSolidMaterial( tandem.createTandem( 'customMaterial' ), {
       density: options.material.density,
 
       // TODO: It is incorrect to take the range of the default value, this affects the color, see https://github.com/phetsims/density-buoyancy-common/issues/268

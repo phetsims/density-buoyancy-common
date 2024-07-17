@@ -18,7 +18,7 @@ import Range from '../../../../dot/js/Range.js';
 import TProperty from '../../../../axon/js/TProperty.js';
 import { Color } from '../../../../scenery/js/imports.js';
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
-import Material from './Material.js';
+import Material, { CustomSolidMaterial } from './Material.js';
 import Property from '../../../../axon/js/Property.js';
 import Cube, { CubeOptions } from './Cube.js';
 import merge from '../../../../phet-core/js/merge.js';
@@ -263,7 +263,7 @@ export default class CompareBlockSetModel extends BlockSetModel<BlockSet> {
 
       return colorProperty.value.colorUtilsBrightness( Math.sign( rawValue ) * Math.pow( Math.abs( rawValue ), power ) );
     } );
-    const myCustomMaterial = Material.createCustomSolidMaterial( tandem, {
+    const myCustomMaterial = new CustomSolidMaterial( tandem, {
       density: densityProperty.value,
       colorProperty: myColorProperty
     } );

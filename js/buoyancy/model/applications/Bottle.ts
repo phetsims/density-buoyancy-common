@@ -79,7 +79,7 @@ import Vector3 from '../../../../../dot/js/Vector3.js';
 import { Shape } from '../../../../../kite/js/imports.js';
 import optionize, { EmptySelfOptions } from '../../../../../phet-core/js/optionize.js';
 import Mass, { InstrumentedMassOptions } from '../../../common/model/Mass.js';
-import Material from '../../../common/model/Material.js';
+import Material, { CustomSolidMaterial } from '../../../common/model/Material.js';
 import densityBuoyancyCommon from '../../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../../DensityBuoyancyCommonStrings.js';
 import PhysicsEngine from '../../../common/model/PhysicsEngine.js';
@@ -200,7 +200,7 @@ export default class Bottle extends ApplicationsMass {
     // The overall composite material for the bottle + inside material system.
     // This is not used for colorizing, since the bottle + liquid composite system is rendered separately, it just
     // needs to be a superset of all possible values across the different inside materials
-    const customMaterial = Material.createCustomSolidMaterial( providedOptions.tandem.createTandem( 'customMaterial' ), {
+    const customMaterial = new CustomSolidMaterial( providedOptions.tandem.createTandem( 'customMaterial' ), {
       nameProperty: DensityBuoyancyCommonStrings.systemAStringProperty,
       density: ( BOTTLE_MASS + BOTTLE_INITIAL_INTERIOR_MATERIAL.density * BOTTLE_INITIAL_INTERIOR_VOLUME ) / BOTTLE_VOLUME,
       densityRange: new Range( 0, 1000000000 )
@@ -226,7 +226,7 @@ export default class Bottle extends ApplicationsMass {
 
     const materialInsideTandem = options.tandem.createTandem( 'materialInside' );
 
-    this.materialInsideProperty = new MaterialProperty( BOTTLE_INITIAL_INTERIOR_MATERIAL, tandem => Material.createCustomSolidMaterial( tandem, {
+    this.materialInsideProperty = new MaterialProperty( BOTTLE_INITIAL_INTERIOR_MATERIAL, tandem => new CustomSolidMaterial( tandem, {
       density: BOTTLE_INITIAL_INTERIOR_MATERIAL.density,
       densityRange: new Range( 50, 20000 )
     } ), {

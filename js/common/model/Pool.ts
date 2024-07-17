@@ -12,7 +12,7 @@ import Basin from './Basin.js';
 import Mass from './Mass.js';
 import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
-import Material from './Material.js';
+import Material, { CustomLiquidMaterial } from './Material.js';
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import NumberIO from '../../../../tandem/js/types/NumberIO.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
@@ -57,7 +57,7 @@ export default class Pool extends Basin {
     this.stepBottom = bounds.minY;
     this.stepTop = bounds.maxY;
 
-    this.fluidMaterialProperty = new MaterialProperty( Material.WATER, tandem => Material.createCustomLiquidMaterial( tandem, {
+    this.fluidMaterialProperty = new MaterialProperty( Material.WATER, tandem => new CustomLiquidMaterial( tandem, {
       density: Material.WATER.density,
       densityRange: DensityBuoyancyCommonConstants.FLUID_DENSITY_RANGE_PER_M3
     } ), {

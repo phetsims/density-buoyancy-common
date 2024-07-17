@@ -45,7 +45,7 @@ type SelfOptions = {
   // If true, don't show the density in number pickers/readouts, often called a "mystery" material elsewhere in the code.
   hidden?: boolean;
 
-  // TODO: Can we combine custom/liquid colors? https://github.com/phetsims/density-buoyancy-common/issues/256
+  // TODO: Can we combine custom/liquid colors? https://github.com/phetsims/density-buoyancy-common/issues/268
   // Uses the color for a solid material's color
   colorProperty?: ReadOnlyProperty<Color> | null;
 
@@ -58,8 +58,8 @@ export type MaterialOptions = SelfOptions & StrictOmit<PhetioObjectOptions, 'tan
 const MATERIALS_TANDEM = Tandem.GLOBAL_MODEL.createTandem( 'materials' );
 
 // TODO: Resetting all Property instances that can/should be, https://github.com/phetsims/density-buoyancy-common/issues/267
-// TODO: Material should wire up color properties https://github.com/phetsims/density-buoyancy-common/issues/256
-// TODO: Material only needs one color Property, https://github.com/phetsims/density-buoyancy-common/issues/256
+// TODO: Material should wire up color properties https://github.com/phetsims/density-buoyancy-common/issues/268
+// TODO: Material only needs one color Property, https://github.com/phetsims/density-buoyancy-common/issues/268
 // TODO: Material should know its density range https://github.com/phetsims/density-buoyancy-common/issues/256
 // TODO: Instrument Materials globally (and locally for custom), and their densityProperty too. https://github.com/phetsims/density-buoyancy-common/issues/256
 export default class Material extends PhetioObject implements HasValueProperty {
@@ -133,7 +133,7 @@ export default class Material extends PhetioObject implements HasValueProperty {
   /**
    * Returns a custom material that can be modified at will, but with a liquid color specified.
    *
-   * TODO: Delete once we better understand custom vs liquid colors, https://github.com/phetsims/density-buoyancy-common/issues/256
+   * TODO: Delete once we better understand custom vs liquid colors, https://github.com/phetsims/density-buoyancy-common/issues/268
    */
   public static createCustomLiquidMaterial( tandem: Tandem, options: MaterialOptions ): Material {
     return new LiquidMaterial( tandem, combineOptions<MaterialOptions>( {
@@ -183,7 +183,7 @@ export default class Material extends PhetioObject implements HasValueProperty {
   }
 
   /**
-   * TODO: a couple thoughts. https://github.com/phetsims/density-buoyancy-common/issues/256
+   * TODO: a couple thoughts. https://github.com/phetsims/density-buoyancy-common/issues/268
    *  1. could this be solved is MaterialProperty.colorProperty was a dynamic property, then these usages would just link to that to update the THREE mesh.
    *  2. At the very least, move this to a prototype method on MaterialProperty.
    *
@@ -570,7 +570,7 @@ export default class Material extends PhetioObject implements HasValueProperty {
   ];
 }
 
-// TODO: SolidCustomMaterial? https://github.com/phetsims/density-buoyancy-common/issues/256
+// TODO: SolidCustomMaterial? https://github.com/phetsims/density-buoyancy-common/issues/268
 class SolidMaterial extends Material {
   public constructor( tandem: Tandem, providedOptions: MaterialOptions ) {
 
@@ -582,7 +582,7 @@ class SolidMaterial extends Material {
 
     if ( !this.colorProperty ) {
 
-      // TODO: can we make this field readonly again? https://github.com/phetsims/density-buoyancy-common/issues/256
+      // TODO: can we make this field readonly again? https://github.com/phetsims/density-buoyancy-common/issues/268
       this.colorProperty = new DerivedProperty( [ this.densityProperty, this.densityProperty.rangeProperty ], ( density, densityRange ) => {
         const lightness = Material.getCustomLightness( density, densityRange );
         return new Color( lightness, lightness, lightness );
@@ -608,9 +608,9 @@ class LiquidMaterial extends Material {
     const options = optionize<MaterialOptions, EmptySelfOptions, MaterialOptions>()( {}, providedOptions );
 
     super( tandem, options );
-    // TODO: This could be custom color given a "liquid" flag/subtype, https://github.com/phetsims/density-buoyancy-common/issues/256
+    // TODO: This could be custom color given a "liquid" flag/subtype, https://github.com/phetsims/density-buoyancy-common/issues/268
     if ( !this.colorProperty && this.custom ) {
-      // TODO: can we make this field readonly again? https://github.com/phetsims/density-buoyancy-common/issues/256
+      // TODO: can we make this field readonly again? https://github.com/phetsims/density-buoyancy-common/issues/268
       this.colorProperty = new DerivedProperty( [ this.densityProperty, this.densityProperty.rangeProperty ], ( density, densityRange ) => {
         return Material.getCustomLiquidColor( density, densityRange );
       } );

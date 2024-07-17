@@ -3,6 +3,8 @@
 /**
  * Shows a combined NumberControl/ComboBox for controlling fluid density.
  *
+ * TODO: Changing the fluid density slider on Buoyancy/Explore does not change the actual fluid density. See https://github.com/phetsims/density-buoyancy-common/issues/256
+ *
  * @author Jonathan Olson (PhET Interactive Simulations)
  */
 

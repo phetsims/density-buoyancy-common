@@ -27,6 +27,8 @@ import PickRequired from '../../../../phet-core/js/types/PickRequired.js';
 import PoolScale from './PoolScale.js';
 import Basin from './Basin.js';
 import GravityProperty from './GravityProperty.js';
+import ReferenceIO from '../../../../tandem/js/types/ReferenceIO.js';
+import IOType from '../../../../tandem/js/types/IOType.js';
 
 // constants
 const BLOCK_SPACING = 0.01;
@@ -70,7 +72,7 @@ export default class DensityBuoyancyModel implements TModel {
 
     this.gravityProperty = new GravityProperty( Gravity.EARTH, {
       valueType: Gravity,
-      phetioValueType: Gravity.GravityIO,
+      phetioValueType: ReferenceIO( IOType.ObjectIO ),
       tandem: tandem.createTandem( 'gravityProperty' ),
       phetioReadOnly: true,
       phetioDocumentation: 'The acceleration due to gravity applied to all masses, (may be potentially custom or hidden from view)'

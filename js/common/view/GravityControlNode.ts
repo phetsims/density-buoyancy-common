@@ -46,7 +46,7 @@ export default class GravityControlNode extends ComboNumberControl<Gravity> {
             font: DensityBuoyancyCommonConstants.COMBO_BOX_ITEM_FONT,
             maxWidth: 160
           } ),
-          tandemName: `${gravity.tandemName}Item`,
+          tandemName: `${gravity.tandem.name}Item`,
           a11yName: gravity.nameProperty
         };
       } ),

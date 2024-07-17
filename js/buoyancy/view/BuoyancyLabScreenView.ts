@@ -107,17 +107,12 @@ export default class BuoyancyLabScreenView extends BuoyancyScreenView<BuoyancyLa
     const invisibleMaterials = [ ...Material.BUOYANCY_FLUID_MYSTERY_MATERIALS ];
     displayedMysteryMaterials.forEach( displayed => arrayRemove( invisibleMaterials, displayed ) );
 
-    const customMaterial = Material.createCustomLiquidMaterial( {
-      density: 1000, // Same as water, in SI (kg/m^3)
-      densityRange: DensityBuoyancyCommonConstants.FLUID_DENSITY_RANGE_PER_M3
-    } );
-
     const gravityPanelTandem = tandem.createTandem( 'gravityPanel' );
 
     const bottomNode = new HBox( {
       spacing: 2 * DensityBuoyancyCommonConstants.SPACING,
       children: [
-        new FluidDensityPanel( model, customMaterial, invisibleMaterials, this.popupLayer, tandem.createTandem( 'fluidDensityPanel' ) ),
+        new FluidDensityPanel( model, invisibleMaterials, this.popupLayer, tandem.createTandem( 'fluidDensityPanel' ) ),
         new Panel( new GravityControlNode( model.gravityProperty, this.popupLayer, gravityPanelTandem ), combineOptions<PanelOptions>( {
           tandem: gravityPanelTandem
         }, DensityBuoyancyCommonConstants.PANEL_OPTIONS ) )

@@ -62,7 +62,11 @@ export default class Pool extends Basin {
       phetioValueType: ReferenceIO( IOType.ObjectIO ),
       tandem: this.fluidTandem.createTandem( 'materialProperty' ),
       phetioReadOnly: true,
-      phetioDocumentation: 'The material of the fluid in the pool'
+      phetioDocumentation: 'The material of the fluid in the pool',
+      customMaterial: Material.createCustomLiquidMaterial( {
+        density: Material.WATER.density,
+        densityRange: DensityBuoyancyCommonConstants.FLUID_DENSITY_RANGE_PER_M3
+      } )
     } );
 
     // DerivedProperty doesn't need disposal, since everything here lives for the lifetime of the simulation

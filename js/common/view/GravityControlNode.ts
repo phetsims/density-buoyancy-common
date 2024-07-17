@@ -6,7 +6,6 @@
  * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
-import Property from '../../../../axon/js/Property.js';
 import Range from '../../../../dot/js/Range.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import { GatedVisibleProperty, Node, Text } from '../../../../scenery/js/imports.js';
@@ -15,27 +14,22 @@ import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js'
 import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
 import Gravity from '../model/Gravity.js';
 import ComboNumberControl from './ComboNumberControl.js';
-import DensityBuoyancyCommonQueryParameters from '../DensityBuoyancyCommonQueryParameters.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
+import GravityProperty from '../model/GravityProperty.js';
 
 export default class GravityControlNode extends ComboNumberControl<Gravity> {
-  public constructor( gravityProperty: Property<Gravity>, listParent: Node, tandem: Tandem ) {
-
-    const customValue = Gravity.createCustomGravity( DensityBuoyancyCommonQueryParameters.gEarth );
+  public constructor( gravityProperty: GravityProperty, listParent: Node, tandem: Tandem ) {
 
     const numberDisplayTandem = tandem.createTandem( 'numberDisplay' );
 
     super( {
+      unitsConversionFactor: 1,
       tandem: tandem,
       titleProperty: DensityBuoyancyCommonStrings.gravity.nameStringProperty,
       valuePatternProperty: DensityBuoyancyCommonStrings.metersPerSecondSquaredPatternStringProperty,
       property: gravityProperty,
       range: new Range( 0.1, 25 ),
-      toNumericValue: gravity => gravity.value,
-      createCustomValue: Gravity.createCustomGravity,
-      isCustomValue: gravity => gravity.custom,
-      isHiddenValue: gravity => gravity.hidden,
       listParent: listParent,
       comboItems: [
         Gravity.MOON,
@@ -43,7 +37,7 @@ export default class GravityControlNode extends ComboNumberControl<Gravity> {
         Gravity.JUPITER,
 
         // Custom goes before mystery, see https://github.com/phetsims/density-buoyancy-common/issues/161
-        customValue,
+        gravityProperty.customValue,
         Gravity.PLANET_X
       ].map( gravity => {
         return {
@@ -56,7 +50,6 @@ export default class GravityControlNode extends ComboNumberControl<Gravity> {
           a11yName: gravity.nameProperty
         };
       } ),
-      customValue: customValue,
       comboBoxOptions: {
         listPosition: 'above'
       },

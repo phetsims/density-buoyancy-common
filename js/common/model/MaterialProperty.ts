@@ -1,39 +1,44 @@
 // Copyright 2024, University of Colorado Boulder
 
 /**
- * A Property of a Material with build in Property support for accessibing the current Material's densityProperty.
+ * A Property of a Material with build in Property support for accessing the current Material's densityProperty.
  *
  * @author Sam Reid (PhET Interactive Simulations)
  * @author Michael Kauzmann (PhET Interactive Simulations)
  */
 
-import Property, { PropertyOptions } from '../../../../axon/js/Property.js';
+import { PropertyOptions } from '../../../../axon/js/Property.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import Material from './Material.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
-import DynamicProperty from '../../../../axon/js/DynamicProperty.js';
+import MappedWrappedProperty from './MappedWrappedProperty.js';
+import optionize from '../../../../phet-core/js/optionize.js';
 
-type MaterialPropertyOptions = PropertyOptions<Material>;
+type SelfOptions = {
+  customMaterial?: Material;
+};
 
-// TODO: reset these, https://github.com/phetsims/density-buoyancy-common/issues/256
-export default class MaterialProperty extends Property<Material> {
+type MaterialPropertyOptions = PropertyOptions<Material> & SelfOptions;
+
+export default class MaterialProperty extends MappedWrappedProperty<Material> {
   public readonly densityProperty: TReadOnlyProperty<number>;
   public readonly customMaterial: Material;
 
   public constructor( material: Material, providedOptions?: MaterialPropertyOptions ) {
-    super( material, providedOptions );
 
-    // TODO: phet-io editable density? https://github.com/phetsims/density-buoyancy-common/issues/256
-    this.densityProperty = new DynamicProperty<number, number, Material>( this, {
-      bidirectional: false,
-      derive: material => material.densityProperty
-    } );
+    const options = optionize<MaterialPropertyOptions, SelfOptions, PropertyOptions<Material>>()( {
+      customMaterial: Material.createCustomSolidMaterial( {
+        density: material.density,
 
-    //  TODO: Why here? https://github.com/phetsims/density-buoyancy-common/issues/256
-    this.customMaterial = Material.createCustomSolidMaterial( {
-      density: material.density,
-      densityRange: material.densityProperty.range
-    } );
+        // TODO: It is incorrect to take the range of the default value, see https://github.com/phetsims/density-buoyancy-common/issues/256
+        densityRange: material.densityProperty.range
+      } )
+    }, providedOptions );
+
+    super( material, options.customMaterial, providedOptions );
+
+    this.densityProperty = this.dynamicValueProperty;
+    this.customMaterial = this.customValue;
   }
 }
 

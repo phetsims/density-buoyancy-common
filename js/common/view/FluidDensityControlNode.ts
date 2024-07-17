@@ -6,7 +6,6 @@
  * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
-import Property from '../../../../axon/js/Property.js';
 import Dimension2 from '../../../../dot/js/Dimension2.js';
 import Range from '../../../../dot/js/Range.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
@@ -19,6 +18,7 @@ import ComboNumberControl, { ComboNumberControlOptions } from './ComboNumberCont
 import optionize from '../../../../phet-core/js/optionize.js';
 import WithRequired from '../../../../phet-core/js/types/WithRequired.js';
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
+import MaterialProperty from '../model/MaterialProperty.js';
 
 type SelfOptions = {
 
@@ -34,9 +34,8 @@ type DensityControlNodeOptions = SelfOptions & ParentOptions;
 
 export default class FluidDensityControlNode extends ComboNumberControl<Material> {
   public constructor(
-    fluidMaterialProperty: Property<Material>,
+    fluidMaterialProperty: MaterialProperty,
     materials: Material[],
-    customMaterial: Material, // also appears in the list above
     listParent: Node,
     providedOptions: DensityControlNodeOptions ) {
 
@@ -51,18 +50,12 @@ export default class FluidDensityControlNode extends ComboNumberControl<Material
 
     super( {
       tandem: options.tandem,
+
+      unitsConversionFactor: 1 / DensityBuoyancyCommonConstants.LITERS_IN_CUBIC_METER,
       titleProperty: DensityBuoyancyCommonStrings.fluidDensityStringProperty,
       valuePatternProperty: DensityBuoyancyCommonConstants.KILOGRAMS_PER_VOLUME_PATTERN_STRING_PROPERTY,
       property: fluidMaterialProperty,
       range: new Range( 0.5, 15 ),
-      toNumericValue: material => material.density / DensityBuoyancyCommonConstants.LITERS_IN_CUBIC_METER,
-      // TODO: just the one thanks. https://github.com/phetsims/density-buoyancy-common/issues/256
-      createCustomValue: density => Material.createCustomLiquidMaterial( {
-        density: density * DensityBuoyancyCommonConstants.LITERS_IN_CUBIC_METER,
-        densityRange: DensityBuoyancyCommonConstants.FLUID_DENSITY_RANGE_PER_M3
-      } ),
-      isCustomValue: material => material.custom,
-      isHiddenValue: material => material.hidden,
       listParent: listParent,
       comboItems: materials.map( material => {
         return {
@@ -78,14 +71,13 @@ export default class FluidDensityControlNode extends ComboNumberControl<Material
           }
         };
       } ),
-      customValue: customMaterial,
       numberControlOptions: {
         numberDisplayOptions: {
           tandem: numberDisplayTandem,
           visibleProperty: new GatedVisibleProperty(
             new DerivedProperty( [ fluidMaterialProperty ], material => !material.hidden ),
             numberDisplayTandem
-            )
+          )
         },
         sliderOptions: {
           // Slightly longer, see https://github.com/phetsims/buoyancy/issues/33

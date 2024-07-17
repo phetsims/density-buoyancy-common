@@ -52,7 +52,7 @@ export default class BlocksValuePanel extends Panel {
     } );
 
     // PhET-iO Note: We are not using tandemName here because we don't want to instrument the ToggleNode itself.
-    // Instead we instrument the number controls directly under the Panel. See design in https://github.com/phetsims/density-buoyancy-common/issues/251
+    // Instead, we instrument the number controls directly under the Panel. See design in https://github.com/phetsims/density-buoyancy-common/issues/251
     const toggleNode = new ToggleNode( blockSetProperty, [ {
       value: BlockSet.SAME_MASS,
       createNode: () => new ComparisonNumberControl(

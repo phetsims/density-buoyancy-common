@@ -25,6 +25,7 @@ import NumberProperty from '../../../../axon/js/NumberProperty.js';
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
 import PhetioObject from '../../../../tandem/js/PhetioObject.js';
+import { HasValueProperty } from './MappedWrappedProperty.js';
 
 // TODO: get rid of this whole thing and MaterialName?, https://github.com/phetsims/density-buoyancy-common/issues/256
 const nonCustomMaterialNames = [
@@ -111,12 +112,12 @@ export type MaterialOptions = {
 };
 type NoIdentifierMaterialOptions = StrictOmit<MaterialOptions, 'identifier' | 'tandemName'>;
 
-// TODO: Resetting, https://github.com/phetsims/density-buoyancy-common/issues/256
+// TODO: Resetting all Property instances that can/should be, https://github.com/phetsims/density-buoyancy-common/issues/256
 // TODO: Material should wire up color properties https://github.com/phetsims/density-buoyancy-common/issues/256
 // TODO: Material only needs one freaking color Property, https://github.com/phetsims/density-buoyancy-common/issues/256
 // TODO: Material should know its density range https://github.com/phetsims/density-buoyancy-common/issues/256
 // TODO: Instrument Materials globally (and locally for custom), and their densityProperty too. https://github.com/phetsims/density-buoyancy-common/issues/256
-export default class Material extends PhetioObject {
+export default class Material extends PhetioObject implements HasValueProperty {
 
   public readonly nameProperty: TReadOnlyProperty<string>;
   public readonly identifier: MaterialName;
@@ -176,6 +177,10 @@ export default class Material extends PhetioObject {
   // TODO: do we need this pointer? https://github.com/phetsims/density-buoyancy-common/issues/256
   public get density(): number {
     return this.densityProperty.value;
+  }
+
+  public get valueProperty(): NumberProperty {
+    return this.densityProperty;
   }
 
   /**

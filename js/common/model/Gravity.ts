@@ -16,6 +16,9 @@ import StringIO from '../../../../tandem/js/types/StringIO.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import DensityBuoyancyCommonQueryParameters from '../DensityBuoyancyCommonQueryParameters.js';
+import NumberProperty from '../../../../axon/js/NumberProperty.js';
+import { HasValueProperty } from './MappedWrappedProperty.js';
+import TProperty from '../../../../axon/js/TProperty.js';
 
 const customStringProperty = DensityBuoyancyCommonStrings.gravity.customStringProperty;
 
@@ -30,13 +33,13 @@ export type GravityOptions = {
   hidden?: boolean;
 };
 
-export default class Gravity {
+export default class Gravity implements HasValueProperty {
 
-  public nameProperty: TReadOnlyProperty<string>;
-  public tandemName: string;
-  public value: number;
-  public custom: boolean;
-  public hidden: boolean;
+  public readonly nameProperty: TReadOnlyProperty<string>;
+  public readonly tandemName: string;
+  public readonly gravityValueProperty: NumberProperty;
+  public readonly custom: boolean;
+  public readonly hidden: boolean;
 
   public constructor( providedOptions: GravityOptions ) {
 
@@ -47,9 +50,23 @@ export default class Gravity {
 
     this.nameProperty = options.nameProperty;
     this.tandemName = options.tandemName;
-    this.value = options.value;
+
+    // TODO: Make sure gravityValueProperty is reset, see https://github.com/phetsims/density-buoyancy-common/issues/256
+    this.gravityValueProperty = new NumberProperty( options.value, {
+      // TODO: Instrumentation, see https://github.com/phetsims/density-buoyancy-common/issues/256
+      // tandem: options.tandem
+    } );
     this.custom = options.custom;
     this.hidden = options.hidden;
+  }
+
+  // TODO: value is too abstract and generic, prefer something like acceleration or gravityAmount or gravityValue, see https://github.com/phetsims/density-buoyancy-common/issues/256
+  public get value(): number {
+    return this.gravityValueProperty.value;
+  }
+
+  public get valueProperty(): TProperty<number> {
+    return this.gravityValueProperty;
   }
 
   /**
@@ -63,7 +80,6 @@ export default class Gravity {
       custom: true
     } );
   }
-
 
   public static readonly EARTH = new Gravity( {
     nameProperty: DensityBuoyancyCommonStrings.gravity.earthStringProperty,

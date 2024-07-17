@@ -187,6 +187,7 @@ export default class Bottle extends ApplicationsMass {
   // model-coordinate bounds in x,y
   private readonly bottleBounds: Bounds2;
 
+  // TODO: Sometimes when switching materials with the combo box, the volume maxes out to 10L, see https://github.com/phetsims/density-buoyancy-common/issues/256
   public readonly materialInsideProperty: MaterialProperty;
   public readonly materialInsideVolumeRange = new Range( 0, 10 );
   public readonly materialInsideVolumeProperty: Property<number>; // m^3
@@ -196,6 +197,7 @@ export default class Bottle extends ApplicationsMass {
   // In kg (kilograms)
   // TODO: rename to materialInsideMassProperty, https://github.com/phetsims/density-buoyancy-common/issues/256
   public readonly interiorMassProperty: ReadOnlyProperty<number>;
+  public readonly customInsideBottleMaterial: Material;
 
   public constructor( engine: PhysicsEngine, providedOptions: BottleOptions ) {
 
@@ -248,6 +250,12 @@ export default class Bottle extends ApplicationsMass {
       tandem: materialInsideTandem.createTandem( 'massProperty' ),
       phetioDocumentation: 'Mass of the material inside the bottle.',
       phetioValueType: NumberIO
+    } );
+
+    // TODO: Fix units, see https://github.com/phetsims/density-buoyancy-common/issues/266
+    this.customInsideBottleMaterial = Material.createCustomSolidMaterial( {
+      density: 1000,
+      densityRange: new Range( 50, 20000 )
     } );
 
     // Synchronize the overall density of the bottle + material system to the materialProperty. This should not be done

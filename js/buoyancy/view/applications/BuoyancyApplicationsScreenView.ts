@@ -108,13 +108,6 @@ export default class BuoyancyApplicationsScreenView extends BuoyancyScreenView<B
     this.transformEmitter.addListener( this.positionResetSceneButton );
     this.positionResetSceneButton();
 
-    // TODO: create in bottle? https://github.com/phetsims/density-buoyancy-common/issues/256
-    // TODO: Fix units, see https://github.com/phetsims/density-buoyancy-common/issues/266
-    const customInsideBottleMaterial = Material.createCustomSolidMaterial( {
-      density: 1000,
-      densityRange: new Range( 50, 20000 )
-    } );
-
     const bottleControlsTandem = tandem.createTandem( 'bottleControls' );
     const materialInsideControlsTandem = bottleControlsTandem.createTandem( 'materialInsideControls' );
     const materialInsideControls = new MaterialMassVolumeControlNode( model.bottle.materialInsideProperty, model.bottle.interiorMassProperty, model.bottle.materialInsideVolumeProperty, [
@@ -124,7 +117,7 @@ export default class BuoyancyApplicationsScreenView extends BuoyancyScreenView<B
       Material.SAND,
       Material.CONCRETE,
       Material.COPPER,
-      customInsideBottleMaterial,
+      model.bottle.customInsideBottleMaterial,
       Material.MATERIAL_R,
       Material.MATERIAL_S
     ], volume => model.bottle.materialInsideVolumeProperty.set( volume ), this.popupLayer, true, {
@@ -154,8 +147,8 @@ export default class BuoyancyApplicationsScreenView extends BuoyancyScreenView<B
     const customBottleDensityControlTandem = materialInsideControlsTandem.createTandem( 'customBottleDensityNumberControl' );
     const bottleCustomInsideMaterialDensityControl = new NumberControl(
       DensityBuoyancyCommonStrings.densityStringProperty,
-      customInsideBottleMaterial.densityProperty,
-      customInsideBottleMaterial.densityProperty.range,
+      model.bottle.customInsideBottleMaterial.densityProperty,
+      model.bottle.customInsideBottleMaterial.densityProperty.range,
       combineOptions<NumberControlOptions>( {
         visibleProperty: new GatedVisibleProperty( customDensityControlVisibleProperty, customBottleDensityControlTandem ),
         sliderOptions: {

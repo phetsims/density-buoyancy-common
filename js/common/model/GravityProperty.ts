@@ -17,7 +17,7 @@ export default class GravityProperty extends MappedWrappedProperty<Gravity> {
   public readonly gravityValueProperty: TReadOnlyProperty<number>;
 
   public constructor( gravity: Gravity, providedOptions?: PropertyOptions<Gravity> ) {
-    super( gravity, Gravity.createCustomGravity( gravity.value ), providedOptions );
+    super( gravity, Gravity.createCustomGravity( gravity.gravityValue ), providedOptions );
 
     // TODO: Use gravityValueProperty instead of dynamicValueProperty where possible, see https://github.com/phetsims/density-buoyancy-common/issues/256
     this.gravityValueProperty = this.dynamicValueProperty;

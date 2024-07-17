@@ -125,8 +125,8 @@ export default class Scale extends Mass {
     } );
 
     this.measuredMassProperty = new DerivedProperty( [ this.measuredWeightInterpolatedProperty, gravityProperty ], ( force, gravity ) => {
-      if ( gravity.value !== 0 ) {
-        return force / gravity.value;
+      if ( gravity.gravityValue !== 0 ) {
+        return force / gravity.gravityValue;
       }
       else {
         return 0;

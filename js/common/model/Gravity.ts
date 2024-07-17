@@ -60,8 +60,7 @@ export default class Gravity implements HasValueProperty {
     this.hidden = options.hidden;
   }
 
-  // TODO: value is too abstract and generic, prefer something like acceleration or gravityAmount or gravityValue, see https://github.com/phetsims/density-buoyancy-common/issues/256
-  public get value(): number {
+  public get gravityValue(): number {
     return this.gravityValueProperty.value;
   }
 
@@ -112,13 +111,16 @@ export default class Gravity implements HasValueProperty {
     Gravity.MOON,
     Gravity.PLANET_X
   ];
+
+  // TODO: Delete GravityIO, see https://github.com/phetsims/density-buoyancy-common/issues/256
+  // TODO: Search for other new IOType that can be deleted, see https://github.com/phetsims/density-buoyancy-common/issues/256
   public static readonly GravityIO = new IOType<Gravity, GravityState>( 'GravityIO', {
     valueType: Gravity,
     documentation: 'Represents a specific value of gravity (m/s^2)',
     toStateObject: function( gravity: Gravity ): GravityState {
       return {
         tandemName: gravity.tandemName,
-        value: gravity.value,
+        value: gravity.gravityValue,
         custom: gravity.custom,
         hidden: gravity.hidden
       };
@@ -131,7 +133,7 @@ export default class Gravity implements HasValueProperty {
         }, stateObject as unknown as GravityOptions ) );
       }
       else {
-        return _.find( Gravity.GRAVITIES, gravity => gravity.value === stateObject.value )!;
+        return _.find( Gravity.GRAVITIES, gravity => gravity.gravityValue === stateObject.value )!;
       }
     },
     stateSchema: {

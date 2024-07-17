@@ -123,7 +123,7 @@ export default class FluidDisplacedAccordionBox extends AccordionBox {
 
       // Convert density units from kg/m^3=>kg/L
       return ( fluidMaterial.density / DensityBuoyancyCommonConstants.LITERS_IN_CUBIC_METER ) *
-             gravity.value * displacedVolume;
+             gravity.gravityValue * displacedVolume;
     }, {
       tandem: options.tandem.createTandem( 'displacedWeightProperty' ),
       phetioValueType: NumberIO,

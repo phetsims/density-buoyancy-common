@@ -53,7 +53,7 @@ export class GeneralScaleReadoutNode extends Node {
       }
       else {
         return StringUtils.fillIn( kilogramsPattern, {
-          kilograms: gravity.value > 0 ? Utils.toFixed( scaleForce / gravity.value, chooseDecimalPlaces( scaleForce ) ) : '-'
+          kilograms: gravity.gravityValue > 0 ? Utils.toFixed( scaleForce / gravity.gravityValue, chooseDecimalPlaces( scaleForce ) ) : '-'
         } );
       }
     } );

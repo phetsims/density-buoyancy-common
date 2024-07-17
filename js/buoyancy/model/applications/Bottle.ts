@@ -250,8 +250,9 @@ export default class Bottle extends ApplicationsMass {
       phetioValueType: NumberIO
     } );
 
-    // TODO: Bottle.materialProperty.value.densityProperty could be a DerivedProperty based on these, but to do that,
-    //       you need to support dependency injection for densityProperty into Material. Do we want to do that?!? https://github.com/phetsims/density-buoyancy-common/issues/256
+    // Synchronize the overall density of the bottle + material system to the materialProperty. This should not be done
+    // as a DerivedProperty due to the difficulty in passing the derivation (which is only available later) to the
+    // instantiation in the super class which is required much sooner.
     Multilink.multilink( [ this.materialInsideProperty.densityProperty, this.materialInsideVolumeProperty ], ( density, volume ) => {
       this.materialProperty.value.densityProperty.value = ( BOTTLE_MASS + density * volume ) / BOTTLE_VOLUME;
     } );

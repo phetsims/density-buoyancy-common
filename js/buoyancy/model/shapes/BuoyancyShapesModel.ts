@@ -168,6 +168,7 @@ export default class BuoyancyShapesModel extends DensityBuoyancyModel {
         throw new Error( `shape not recognized: ${shape}` );
     }
 
+    // When the main material selector changes, propagate that through to the mass.
     this.materialProperty.lazyLink( material => {
       mass.materialProperty.value = material;
     } );

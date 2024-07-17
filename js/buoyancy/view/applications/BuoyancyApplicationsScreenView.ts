@@ -341,13 +341,8 @@ export default class BuoyancyApplicationsScreenView extends BuoyancyScreenView<B
 
 
     model.applicationModeProperty.link( scene => {
-      const materials = scene === 'BOTTLE' ? [
-        model.bottle.materialInsideProperty,
-        model.bottle.materialProperty
-      ] : scene === 'BOAT' ? [
-        model.block.materialProperty,
-        model.boat.materialProperty
-      ] : [];
+      const materials = scene === 'BOTTLE' ? [ model.bottle.materialInsideProperty, model.bottle.materialProperty ] :
+                        scene === 'BOAT' ? [ model.block.materialProperty, model.boat.materialProperty ] : [];
       assert && assert( materials.length > 0, 'unsupported Scene', scene );
       objectDensityAccordionBox.setReadoutItems( materials.map( material => {
         return { readoutItem: material };

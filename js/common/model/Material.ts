@@ -63,8 +63,6 @@ export default class Material extends PhetioObject implements HasValueProperty {
 
   public readonly nameProperty: TReadOnlyProperty<string>;
   public readonly viscosity: number;
-
-  // TODO: Eliminate custom as an orthogonal attribute, it can be determined from identifier. https://github.com/phetsims/density-buoyancy-common/issues/256
   public readonly custom: boolean;
   public readonly hidden: boolean;
   public colorProperty: ReadOnlyProperty<Color> | null;

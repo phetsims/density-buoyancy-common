@@ -206,10 +206,12 @@ export default abstract class Mass extends PhetioObject {
       volumePropertyOptions: {},
       massPropertyOptions: {},
 
-      // TODO: Make the default an empty list and move this list to density's mystery screen
+      /*
+        TODO: Make the default an empty list and move this list to density's mystery screen
       // TODO: Should all masses be created with their valid materials immediately?
       // TODO: Move the materialValidValues over to the view, and let each materialProperty be able to take on any material.
-      // TODO: please note `materialPropertyOptions`. https://github.com/phetsims/density-buoyancy-common/issues/256
+      // TODO: please note `materialPropertyOptions`. https://github.com/phetsims/density-buoyancy-common/issues/270
+       */
       materialValidValues: [
         Material.ALUMINUM,
         Material.BRICK,
@@ -220,9 +222,10 @@ export default abstract class Mass extends PhetioObject {
         Material.STYROFOAM,
         Material.WOOD,
 
-        // TODO: Visit this tandem after moving elsewhere, see https://github.com/phetsims/density-buoyancy-common/issues/256
-        // TODO: MaterialProperty really wants to create its own custom instances, see https://github.com/phetsims/density-buoyancy-common/issues/256
-        new CustomSolidMaterial( providedOptions.tandem ? providedOptions.tandem.createTandem( 'customSolidMaterial' ) : Tandem.OPT_OUT, {
+        // TODO: Visit this tandem after moving elsewhere, see https://github.com/phetsims/density-buoyancy-common/issues/270
+        new CustomSolidMaterial( providedOptions.tandem ?
+                                 providedOptions.tandem.createTandem( 'customSolidMaterial' ) :
+                                 Tandem.OPT_OUT, {
           density: 1000,
           colorProperty: new ColorProperty( Color.white )
         } )
@@ -280,13 +283,11 @@ export default abstract class Mass extends PhetioObject {
       valueType: Material,
       reentrant: true,
 
-      // TODO: Is this correct? See // TODO: Is the aggregate custom material supposed to be solid or liquid? Or maybe it doesn't matter. It mainly affects the color. See https://github.com/phetsims/density-buoyancy-common/issues/256
-      tandem: ( tandem || Tandem.OPT_OUT ).createTandem( 'materialProperty' ),
+      // TODO: Is this correct? See https://github.com/phetsims/density-buoyancy-common/issues/256
+      tandem: tandem?.createTandem( 'materialProperty' ),
       phetioValueType: ReferenceIO( IOType.ObjectIO ),
       phetioFeatured: true
     }, options.materialPropertyOptions ) );
-
-    // TODO: In some cases, when the materialProperty changes to custom, we should set the custom density to be the value of the previous material, where/how should that happen? https://github.com/phetsims/density-buoyancy-common/issues/256
 
     this.volumeProperty = new NumberProperty( options.volume, combineOptions<NumberPropertyOptions>( {
       tandem: tandem?.createTandem( 'volumeProperty' ),
@@ -334,9 +335,11 @@ export default abstract class Mass extends PhetioObject {
       }
     }, options.massPropertyOptions ) );
 
-    // TODO: Think one more time about how all density changes must come back to change the mass (as mass is the only thing that p2 cares about). https://github.com/phetsims/density-buoyancy-common/issues/256
-    Multilink.multilink( [ this.materialProperty.densityProperty, this.volumeProperty, this.containedMassProperty ], ( density, volume, containedMass ) => {
-
+    Multilink.multilink( [
+      this.materialProperty.densityProperty,
+      this.volumeProperty,
+      this.containedMassProperty
+    ], ( density, volume, containedMass ) => {
       const selfMass = Utils.roundToInterval( density * volume, DensityBuoyancyCommonConstants.TOLERANCE );
       this.massProperty.value = selfMass + containedMass;
     } );

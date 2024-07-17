@@ -30,13 +30,11 @@ export default abstract class MappedWrappedProperty<T extends HasValueProperty> 
   protected constructor( initialValue: T, customValue: T, providedOptions?: PropertyOptions<T> ) {
     super( initialValue, providedOptions );
 
-    // TODO: phet-io editable density? https://github.com/phetsims/density-buoyancy-common/issues/256
     this.dynamicValueProperty = new DynamicProperty<number, number, T>( this, {
       bidirectional: false,
       derive: value => value.valueProperty
     } );
 
-    //  TODO: Why here? https://github.com/phetsims/density-buoyancy-common/issues/256
     this.customValue = customValue;
   }
 }

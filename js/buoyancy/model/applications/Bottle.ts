@@ -183,9 +183,9 @@ export default class Bottle extends ApplicationsMass {
   // model-coordinate bounds in x,y
   private readonly bottleBounds: Bounds2;
 
-  // TODO: Sometimes when switching materials with the combo box, the volume maxes out to 10L, see https://github.com/phetsims/density-buoyancy-common/issues/256
   public readonly materialInsideProperty: MaterialProperty;
   public readonly materialInsideVolumeRange = new Range( 0, 10 );
+  // TODO: BUG: When switching to a mystery material for the bottle, why does the volume sometimes change to 10L?, see https://github.com/phetsims/density-buoyancy-common/issues/256
   public readonly materialInsideVolumeProperty: Property<number>; // m^3
 
   public readonly maxVolumeDisplacedProperty = new NumberProperty( ApplicationsMass.DEFAULT_DISPLACEMENT_VOLUME );

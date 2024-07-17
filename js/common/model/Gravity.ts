@@ -53,8 +53,7 @@ export default class Gravity extends PhetioObject implements HasValueProperty {
 
     // TODO: Make sure gravityValueProperty is reset, see https://github.com/phetsims/density-buoyancy-common/issues/267
     this.gravityValueProperty = new NumberProperty( options.value, {
-      // TODO: Instrumentation, see https://github.com/phetsims/density-buoyancy-common/issues/256
-      // tandem: options.tandem
+      tandem: options.tandem.createTandem( 'gravityValueProperty' )
     } );
     this.custom = options.custom;
     this.hidden = options.hidden;
@@ -92,8 +91,6 @@ export default class Gravity extends PhetioObject implements HasValueProperty {
     value: 19.6,
     hidden: true
   } );
-
-  // TODO: Search for other new IOType that can be deleted, see https://github.com/phetsims/density-buoyancy-common/issues/256
 }
 
 densityBuoyancyCommon.register( 'Gravity', Gravity );

@@ -112,8 +112,8 @@ export default class MaterialControlNode extends VBox {
       } );
     }
 
-    // TODO: But can we just use the validValues of the provided MaterialProperty, https://github.com/phetsims/density-buoyancy-common/issues/256
-    // TODO: But hidden ones!!! https://github.com/phetsims/density-buoyancy-common/issues/256
+    // TODO: But can we just use the validValues of the provided MaterialProperty, https://github.com/phetsims/density-buoyancy-common/issues/270
+    // TODO: But hidden ones!!! https://github.com/phetsims/density-buoyancy-common/issues/270
     const comboBox = new ComboBox( materialProperty, [
       ...regularMaterials.map( materialToItem ),
       ...( options.supportCustomMaterial ? customMaterials.map( materialToItem ) : [] ),

@@ -96,7 +96,6 @@ export default class CuboidView extends MeasurableMassView {
       this.depthLinesNode.stroke = material.depthLinesColorProperty;
     };
 
-    // TODO: Change the depth lines stroke when the density changes. Is this needed? https://github.com/phetsims/density-buoyancy-common/issues/268
     cuboid.materialProperty.link( materialListener );
 
     this.disposeEmitter.addListener( () => {

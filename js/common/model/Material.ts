@@ -20,24 +20,14 @@ import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import TinyProperty from '../../../../axon/js/TinyProperty.js';
 import ReadOnlyProperty from '../../../../axon/js/ReadOnlyProperty.js';
 import Range from '../../../../dot/js/Range.js';
-import StrictOmit from '../../../../phet-core/js/types/StrictOmit.js';
 import NumberProperty from '../../../../axon/js/NumberProperty.js';
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
 import PhetioObject from '../../../../tandem/js/PhetioObject.js';
 import { HasValueProperty } from './MappedWrappedProperty.js';
 
-// TODO: phetioIDs for custom materials?  https://github.com/phetsims/density-buoyancy-common/issues/256
-let customTandemIndex = 0;
-
 export type MaterialOptions = {
   nameProperty?: TReadOnlyProperty<string>;
-
-  // If set, this material will be available at Material[ identifier ] as a global
-  identifier: string;
-
-  // Used for tandems
-  tandemName: string;
 
   // in SI (kg/m^3)
   density?: number;
@@ -61,17 +51,17 @@ export type MaterialOptions = {
   // Used for the color of depth lines added on top of the Material
   depthLinesColorProperty?: TReadOnlyProperty<Color>;
 };
-type NoIdentifierMaterialOptions = StrictOmit<MaterialOptions, 'identifier' | 'tandemName'>;
+
+const MATERIALS_TANDEM = Tandem.GLOBAL_MODEL.createTandem( 'materials' );
 
 // TODO: Resetting all Property instances that can/should be, https://github.com/phetsims/density-buoyancy-common/issues/256
 // TODO: Material should wire up color properties https://github.com/phetsims/density-buoyancy-common/issues/256
-// TODO: Material only needs one freaking color Property, https://github.com/phetsims/density-buoyancy-common/issues/256
+// TODO: Material only needs one color Property, https://github.com/phetsims/density-buoyancy-common/issues/256
 // TODO: Material should know its density range https://github.com/phetsims/density-buoyancy-common/issues/256
 // TODO: Instrument Materials globally (and locally for custom), and their densityProperty too. https://github.com/phetsims/density-buoyancy-common/issues/256
 export default class Material extends PhetioObject implements HasValueProperty {
 
   public readonly nameProperty: TReadOnlyProperty<string>;
-  public readonly tandemName: string | null;
   public readonly viscosity: number;
 
   // TODO: Eliminate custom as an orthogonal attribute, it can be determined from identifier. https://github.com/phetsims/density-buoyancy-common/issues/256
@@ -81,7 +71,7 @@ export default class Material extends PhetioObject implements HasValueProperty {
   public depthLinesColorProperty: TReadOnlyProperty<Color>;
   public readonly densityProperty: NumberProperty;
 
-  public constructor( providedOptions: MaterialOptions ) {
+  public constructor( tandem: Tandem, providedOptions: MaterialOptions ) {
 
     const options = optionize<MaterialOptions, MaterialOptions>()( {
       nameProperty: new TinyProperty( 'unknown' ),
@@ -98,12 +88,11 @@ export default class Material extends PhetioObject implements HasValueProperty {
 
     // TODO: better options pattern https://github.com/phetsims/density-buoyancy-common/issues/256
     super( {
-      tandem: Tandem.GLOBAL_MODEL.createTandem( 'materials' ).createTandem( options.tandemName ),
+      tandem: tandem,
       phetioState: false
     } );
 
     this.nameProperty = options.nameProperty;
-    this.tandemName = options.tandemName;
     this.densityProperty = new NumberProperty( options.density, {
       tandem: this.tandem.createTandem( 'densityProperty' ),
       phetioFeatured: true,
@@ -135,11 +124,9 @@ export default class Material extends PhetioObject implements HasValueProperty {
   /**
    * Returns a custom material that can be modified at will.
    */
-  public static createCustomMaterial( options: NoIdentifierMaterialOptions ): Material {
-    return new Material( combineOptions<MaterialOptions>( {
+  public static createCustomMaterial( tandem: Tandem, options: MaterialOptions ): Material {
+    return new Material( tandem, combineOptions<MaterialOptions>( {
       nameProperty: DensityBuoyancyCommonStrings.material.customStringProperty,
-      tandemName: `custom${++customTandemIndex}`,
-      identifier: 'CUSTOM',
       custom: true
     }, options ) );
   }
@@ -149,11 +136,9 @@ export default class Material extends PhetioObject implements HasValueProperty {
    *
    * TODO: Delete once we better understand custom vs liquid colors, https://github.com/phetsims/density-buoyancy-common/issues/256
    */
-  public static createCustomLiquidMaterial( options: NoIdentifierMaterialOptions ): Material {
-    return new LiquidMaterial( combineOptions<MaterialOptions>( {
+  public static createCustomLiquidMaterial( tandem: Tandem, options: MaterialOptions ): Material {
+    return new LiquidMaterial( tandem, combineOptions<MaterialOptions>( {
       nameProperty: DensityBuoyancyCommonStrings.material.customStringProperty,
-      tandemName: `custom${++customTandemIndex}`,
-      identifier: 'CUSTOM',
       custom: true
     }, options ) );
   }
@@ -161,11 +146,9 @@ export default class Material extends PhetioObject implements HasValueProperty {
   /**
    * Returns a custom material that can be modified at will, but with a solid color specified
    */
-  public static createCustomSolidMaterial( options: NoIdentifierMaterialOptions ): Material {
-    return new SolidMaterial( combineOptions<MaterialOptions>( {
+  public static createCustomSolidMaterial( tandem: Tandem, options: MaterialOptions ): Material {
+    return new SolidMaterial( tandem, combineOptions<MaterialOptions>( {
       nameProperty: DensityBuoyancyCommonStrings.material.customStringProperty,
-      tandemName: `custom${++customTandemIndex}`,
-      identifier: 'CUSTOM',
       custom: true
     }, options ) );
   }
@@ -224,286 +207,217 @@ export default class Material extends PhetioObject implements HasValueProperty {
 
   ////////////////// SOLIDS //////////////////
 
-  public static readonly ALUMINUM = new Material( {
+  public static readonly ALUMINUM = new Material( MATERIALS_TANDEM.createTandem( 'aluminum' ), {
     nameProperty: DensityBuoyancyCommonStrings.material.aluminumStringProperty,
-    tandemName: 'aluminum',
-    identifier: 'ALUMINUM',
     density: 2700
   } );
 
-  public static readonly APPLE = new Material( {
+  public static readonly APPLE = new Material( MATERIALS_TANDEM.createTandem( 'apple' ), {
     nameProperty: DensityBuoyancyCommonStrings.material.appleStringProperty,
-    tandemName: 'apple',
-    identifier: 'APPLE',
     // "Some Physical Properties of Apple" - Averaged the two cultivars' densities for this
     // http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.548.1131&rep=rep1&type=pdf
     density: 832
   } );
 
   // In essence identical to aluminum, but with a different name for the Density readout
-  public static readonly BOAT_BODY = new Material( {
+  // TODO: Unify the names body vs hull, see https://github.com/phetsims/density-buoyancy-common/issues/123
+  public static readonly BOAT_BODY = new Material( MATERIALS_TANDEM.createTandem( 'boatHull' ), {
     nameProperty: DensityBuoyancyCommonStrings.material.boatHullStringProperty,
-    tandemName: 'boatHull',
-    identifier: 'BOAT_BODY',
     density: Material.ALUMINUM.density
   } );
 
-  public static readonly BRICK = new Material( {
+  public static readonly BRICK = new Material( MATERIALS_TANDEM.createTandem( 'brick' ), {
     nameProperty: DensityBuoyancyCommonStrings.material.brickStringProperty,
-    tandemName: 'brick',
-    identifier: 'BRICK',
     density: 2000,
     depthLinesColorProperty: DensityBuoyancyCommonColors.depthLinesLightColorProperty
   } );
 
-  public static readonly CONCRETE = new Material( {
+  public static readonly CONCRETE = new Material( MATERIALS_TANDEM.createTandem( 'concrete' ), {
     nameProperty: DensityBuoyancyCommonStrings.material.concreteStringProperty,
-    tandemName: 'concrete',
-    identifier: 'CONCRETE',
     density: 3150,
     colorProperty: DensityBuoyancyCommonColors.materialConcreteColorProperty
   } );
 
-  public static readonly COPPER = new Material( {
+  public static readonly COPPER = new Material( MATERIALS_TANDEM.createTandem( 'copper' ), {
     nameProperty: DensityBuoyancyCommonStrings.material.copperStringProperty,
-    tandemName: 'copper',
-    identifier: 'COPPER',
     density: 8960,
     colorProperty: DensityBuoyancyCommonColors.materialCopperColorProperty
   } );
 
-  public static readonly DIAMOND = new Material( {
+  public static readonly DIAMOND = new Material( MATERIALS_TANDEM.createTandem( 'diamond' ), {
     nameProperty: DensityBuoyancyCommonStrings.material.diamondStringProperty,
-    tandemName: 'diamond',
-    identifier: 'DIAMOND',
     density: 3510
   } );
 
-  public static readonly GLASS = new Material( {
+  public static readonly GLASS = new Material( MATERIALS_TANDEM.createTandem( 'glass' ), {
     nameProperty: DensityBuoyancyCommonStrings.material.glassStringProperty,
-    tandemName: 'glass',
-    identifier: 'GLASS',
     density: 2700
   } );
 
-  public static readonly GOLD = new Material( {
+  public static readonly GOLD = new Material( MATERIALS_TANDEM.createTandem( 'gold' ), {
     nameProperty: DensityBuoyancyCommonStrings.material.goldStringProperty,
-    tandemName: 'gold',
-    identifier: 'GOLD',
     density: 19320
   } );
 
-  public static readonly HUMAN = new Material( {
+  public static readonly HUMAN = new Material( MATERIALS_TANDEM.createTandem( 'human' ), {
     nameProperty: DensityBuoyancyCommonStrings.material.humanStringProperty,
-    tandemName: 'human',
-    identifier: 'HUMAN',
     density: 950
   } );
 
-  public static readonly ICE = new Material( {
+  public static readonly ICE = new Material( MATERIALS_TANDEM.createTandem( 'ice' ), {
     nameProperty: DensityBuoyancyCommonStrings.material.iceStringProperty,
-    tandemName: 'ice',
-    identifier: 'ICE',
     density: 919
   } );
 
-  public static readonly LEAD = new Material( {
+  public static readonly LEAD = new Material( MATERIALS_TANDEM.createTandem( 'lead' ), {
     nameProperty: DensityBuoyancyCommonStrings.material.leadStringProperty,
-    tandemName: 'lead',
-    identifier: 'LEAD',
     density: 11342,
     colorProperty: DensityBuoyancyCommonColors.materialLeadColorProperty
   } );
 
-  public static readonly PLATINUM = new Material( {
+  public static readonly PLATINUM = new Material( MATERIALS_TANDEM.createTandem( 'platinum' ), {
     nameProperty: DensityBuoyancyCommonStrings.material.platinumStringProperty,
-    tandemName: 'platinum',
-    identifier: 'PLATINUM',
     density: 21450
   } );
 
-  public static readonly PVC = new Material( {
+  public static readonly PVC = new Material( MATERIALS_TANDEM.createTandem( 'pvc' ), {
     nameProperty: DensityBuoyancyCommonStrings.material.pvcStringProperty,
-    tandemName: 'pvc',
-    identifier: 'PVC',
     density: 1440
   } );
 
-  public static readonly PYRITE = new Material( {
+  public static readonly PYRITE = new Material( MATERIALS_TANDEM.createTandem( 'pyrite' ), {
     nameProperty: DensityBuoyancyCommonStrings.material.pyriteStringProperty,
-    tandemName: 'pyrite',
-    identifier: 'PYRITE',
     density: 5010
   } );
 
-  public static readonly SILVER = new Material( {
+  public static readonly SILVER = new Material( MATERIALS_TANDEM.createTandem( 'silver' ), {
     nameProperty: DensityBuoyancyCommonStrings.material.silverStringProperty,
-    tandemName: 'silver',
-    identifier: 'SILVER',
     density: 10490
   } );
 
-  public static readonly STEEL = new Material( {
+  public static readonly STEEL = new Material( MATERIALS_TANDEM.createTandem( 'steel' ), {
     nameProperty: DensityBuoyancyCommonStrings.material.steelStringProperty,
-    tandemName: 'steel',
-    identifier: 'STEEL',
     density: 7800
   } );
 
-  public static readonly STYROFOAM = new Material( {
+  public static readonly STYROFOAM = new Material( MATERIALS_TANDEM.createTandem( 'styrofoam' ), {
     nameProperty: DensityBuoyancyCommonStrings.material.styrofoamStringProperty,
-    tandemName: 'styrofoam',
-    identifier: 'STYROFOAM',
     // From Flash version: between 25 and 200 according to http://wiki.answers.com/Q/What_is_the_density_of_styrofoam;
     // chose 150, so it isn't too low to show on slider, but not 200, so it's not half of wood
     density: 150
   } );
 
-  public static readonly TANTALUM = new Material( {
+  public static readonly TANTALUM = new Material( MATERIALS_TANDEM.createTandem( 'tantalum' ), {
     nameProperty: DensityBuoyancyCommonStrings.material.tantalumStringProperty,
-    tandemName: 'tantalum',
-    identifier: 'TANTALUM',
     density: 16650
   } );
 
-  public static readonly TITANIUM = new Material( {
+  public static readonly TITANIUM = new Material( MATERIALS_TANDEM.createTandem( 'titanium' ), {
     nameProperty: DensityBuoyancyCommonStrings.material.titaniumStringProperty,
-    tandemName: 'titanium',
-    identifier: 'TITANIUM',
     density: 4500
   } );
 
-  public static readonly WOOD = new Material( {
+  public static readonly WOOD = new Material( MATERIALS_TANDEM.createTandem( 'wood' ), {
     nameProperty: DensityBuoyancyCommonStrings.material.woodStringProperty,
-    tandemName: 'wood',
-    identifier: 'WOOD',
     density: 400,
     depthLinesColorProperty: DensityBuoyancyCommonColors.depthLinesLightColorProperty
   } );
 
   ////////////////// LIQUIDS //////////////////
 
-  public static readonly AIR = new Material( {
+  public static readonly AIR = new Material( MATERIALS_TANDEM.createTandem( 'air' ), {
     nameProperty: DensityBuoyancyCommonStrings.material.airStringProperty,
-    tandemName: 'air',
-    identifier: 'AIR',
     density: 1.2,
     viscosity: 0,
     colorProperty: DensityBuoyancyCommonColors.materialAirColorProperty
   } );
 
-  public static readonly FLUID_A = new Material( {
+  public static readonly FLUID_A = new Material( MATERIALS_TANDEM.createTandem( 'fluidA' ), {
     nameProperty: DensityBuoyancyCommonStrings.material.fluidAStringProperty,
-    tandemName: 'fluidA',
-    identifier: 'FLUID_A',
     density: 3100,
     colorProperty: DensityBuoyancyCommonColors.materialDensityAColorProperty,
     hidden: true
   } );
 
-  public static readonly FLUID_B = new Material( {
+  public static readonly FLUID_B = new Material( MATERIALS_TANDEM.createTandem( 'fluidB' ), {
     nameProperty: DensityBuoyancyCommonStrings.material.fluidBStringProperty,
-    tandemName: 'fluidB',
-    identifier: 'FLUID_B',
     density: 790,
     colorProperty: DensityBuoyancyCommonColors.materialDensityBColorProperty,
     hidden: true
   } );
 
-  public static readonly FLUID_C = new Material( {
+  public static readonly FLUID_C = new Material( MATERIALS_TANDEM.createTandem( 'fluidC' ), {
     nameProperty: DensityBuoyancyCommonStrings.material.fluidCStringProperty,
-    tandemName: 'fluidC',
-    identifier: 'FLUID_C',
     density: 490,
     colorProperty: DensityBuoyancyCommonColors.materialDensityCColorProperty,
     hidden: true
   } );
 
-  public static readonly FLUID_D = new Material( {
+  public static readonly FLUID_D = new Material( MATERIALS_TANDEM.createTandem( 'fluidD' ), {
     nameProperty: DensityBuoyancyCommonStrings.material.fluidDStringProperty,
-    tandemName: 'fluidD',
-    identifier: 'FLUID_D',
     density: 2890,
     colorProperty: DensityBuoyancyCommonColors.materialDensityDColorProperty,
     hidden: true
   } );
 
-  public static readonly FLUID_E = new Material( {
+  public static readonly FLUID_E = new Material( MATERIALS_TANDEM.createTandem( 'fluidE' ), {
     nameProperty: DensityBuoyancyCommonStrings.material.fluidEStringProperty,
-    tandemName: 'fluidE',
-    identifier: 'FLUID_E',
     density: 1260,
     colorProperty: DensityBuoyancyCommonColors.materialDensityEColorProperty,
     hidden: true
   } );
 
-  public static readonly FLUID_F = new Material( {
+  public static readonly FLUID_F = new Material( MATERIALS_TANDEM.createTandem( 'fluidF' ), {
     nameProperty: DensityBuoyancyCommonStrings.material.fluidFStringProperty,
-    tandemName: 'fluidF',
-    identifier: 'FLUID_F',
     density: 6440,
     colorProperty: DensityBuoyancyCommonColors.materialDensityFColorProperty,
     hidden: true
   } );
 
-  public static readonly GASOLINE = new Material( {
+  public static readonly GASOLINE = new Material( MATERIALS_TANDEM.createTandem( 'gasoline' ), {
     nameProperty: DensityBuoyancyCommonStrings.material.gasolineStringProperty,
-    tandemName: 'gasoline',
-    identifier: 'GASOLINE',
     density: 680,
     viscosity: 6e-4,
     colorProperty: DensityBuoyancyCommonColors.materialGasolineColorProperty
   } );
 
-  public static readonly HONEY = new Material( {
+  public static readonly HONEY = new Material( MATERIALS_TANDEM.createTandem( 'honey' ), {
     nameProperty: DensityBuoyancyCommonStrings.material.honeyStringProperty,
-    tandemName: 'honey',
-    identifier: 'HONEY',
     density: 1440,
     viscosity: 0.03, // NOTE: actual value around 2.5, but we can get away with this for animation
     colorProperty: DensityBuoyancyCommonColors.materialHoneyColorProperty
   } );
 
-  public static readonly MERCURY = new Material( {
+  public static readonly MERCURY = new Material( MATERIALS_TANDEM.createTandem( 'mercury' ), {
     nameProperty: DensityBuoyancyCommonStrings.material.mercuryStringProperty,
-    tandemName: 'mercury',
-    identifier: 'MERCURY',
     density: 13593,
     viscosity: 1.53e-3,
     colorProperty: DensityBuoyancyCommonColors.materialMercuryColorProperty
   } );
 
-  public static readonly OIL = new Material( {
+  public static readonly OIL = new Material( MATERIALS_TANDEM.createTandem( 'oil' ), {
     nameProperty: DensityBuoyancyCommonStrings.material.oilStringProperty,
-    tandemName: 'oil',
-    identifier: 'OIL',
     density: 920,
     viscosity: 0.02, // Too much bigger and it won't work, not particularly physical
     colorProperty: DensityBuoyancyCommonColors.materialOilColorProperty
   } );
 
-  public static readonly SAND = new Material( {
+  public static readonly SAND = new Material( MATERIALS_TANDEM.createTandem( 'sand' ), {
     nameProperty: DensityBuoyancyCommonStrings.material.sandStringProperty,
-    tandemName: 'sand',
-    identifier: 'SAND',
     density: 1442,
     viscosity: 0.03, // Too much bigger and it won't work, not particularly physical
     colorProperty: DensityBuoyancyCommonColors.materialSandColorProperty
   } );
 
-  public static readonly SEAWATER = new Material( {
+  public static readonly SEAWATER = new Material( MATERIALS_TANDEM.createTandem( 'seawater' ), {
     nameProperty: DensityBuoyancyCommonStrings.material.seawaterStringProperty,
-    tandemName: 'seawater',
-    identifier: 'SEAWATER',
     density: 1029,
     viscosity: 1.88e-3,
     colorProperty: DensityBuoyancyCommonColors.materialSeawaterColorProperty
   } );
 
-  public static readonly WATER = new Material( {
+  public static readonly WATER = new Material( MATERIALS_TANDEM.createTandem( 'water' ), {
     nameProperty: DensityBuoyancyCommonStrings.material.waterStringProperty,
-    tandemName: 'water',
-    identifier: 'WATER',
     density: 1000,
     viscosity: 8.9e-4,
     colorProperty: DensityBuoyancyCommonColors.materialWaterColorProperty
@@ -511,72 +425,56 @@ export default class Material extends PhetioObject implements HasValueProperty {
 
   ////////////////// MYSTERY MATERIALS //////////////////
 
-  public static readonly MATERIAL_O = new Material( {
+  public static readonly MATERIAL_O = new Material( MATERIALS_TANDEM.createTandem( 'materialO' ), {
     nameProperty: DensityBuoyancyCommonStrings.material.materialOStringProperty,
-    tandemName: 'materialO',
-    identifier: 'MATERIAL_O',
     hidden: true,
     colorProperty: new Property( new Color( '#f00' ) ),
     density: 950 // Same as the Human's average density
   } );
 
-  public static readonly MATERIAL_P = new Material( {
+  public static readonly MATERIAL_P = new Material( MATERIALS_TANDEM.createTandem( 'materialP' ), {
     nameProperty: DensityBuoyancyCommonStrings.material.materialPStringProperty,
-    tandemName: 'materialP',
-    identifier: 'MATERIAL_P',
     hidden: true,
     colorProperty: new Property( new Color( '#0f0' ) ),
     density: Material.DIAMOND.density
   } );
 
-  public static readonly MATERIAL_R = new Material( {
+  public static readonly MATERIAL_R = new Material( MATERIALS_TANDEM.createTandem( 'materialR' ), {
     nameProperty: DensityBuoyancyCommonStrings.material.materialRStringProperty,
-    tandemName: 'materialR',
-    identifier: 'MATERIAL_R',
     hidden: true,
     colorProperty: DensityBuoyancyCommonColors.materialRColorProperty,
     density: Material.ICE.density
   } );
 
-  public static readonly MATERIAL_S = new Material( {
+  public static readonly MATERIAL_S = new Material( MATERIALS_TANDEM.createTandem( 'materialS' ), {
     nameProperty: DensityBuoyancyCommonStrings.material.materialSStringProperty,
-    tandemName: 'materialS',
-    identifier: 'MATERIAL_S',
     hidden: true,
     colorProperty: DensityBuoyancyCommonColors.materialSColorProperty,
     density: Material.LEAD.density
   } );
 
-  public static readonly MATERIAL_V = new Material( {
+  public static readonly MATERIAL_V = new Material( MATERIALS_TANDEM.createTandem( 'materialV' ), {
     nameProperty: DensityBuoyancyCommonStrings.material.materialVStringProperty,
-    tandemName: 'materialV',
-    identifier: 'MATERIAL_V',
     hidden: true,
     colorProperty: new Property( new Color( '#ff0' ) ),
     density: Material.TITANIUM.density
   } );
 
-  public static readonly MATERIAL_W = new Material( {
+  public static readonly MATERIAL_W = new Material( MATERIALS_TANDEM.createTandem( 'materialW' ), {
     nameProperty: DensityBuoyancyCommonStrings.material.materialWStringProperty,
-    tandemName: 'materialW',
-    identifier: 'MATERIAL_W',
     hidden: true,
     colorProperty: new Property( new Color( '#0af' ) ),
     density: Material.MERCURY.density
   } );
 
-  public static readonly MATERIAL_X = new Material( {
+  public static readonly MATERIAL_X = new Material( MATERIALS_TANDEM.createTandem( 'materialX' ), {
     nameProperty: DensityBuoyancyCommonStrings.material.materialXStringProperty,
-    tandemName: 'materialX',
-    identifier: 'MATERIAL_X',
     hidden: true,
     density: Material.PYRITE.density
   } );
 
-  public static readonly MATERIAL_Y = new Material( {
+  public static readonly MATERIAL_Y = new Material( MATERIALS_TANDEM.createTandem( 'mysteryY' ), {
     nameProperty: DensityBuoyancyCommonStrings.material.materialYStringProperty,
-    tandemName: 'mysteryY',
-    identifier: 'MATERIAL_Y',
     hidden: true,
     density: Material.GOLD.density
   } );
@@ -675,11 +573,11 @@ export default class Material extends PhetioObject implements HasValueProperty {
 
 // TODO: SolidCustomMaterial? https://github.com/phetsims/density-buoyancy-common/issues/256
 class SolidMaterial extends Material {
-  public constructor( providedOptions: MaterialOptions ) {
+  public constructor( tandem: Tandem, providedOptions: MaterialOptions ) {
 
     const options = optionize<MaterialOptions, EmptySelfOptions, MaterialOptions>()( {}, providedOptions );
 
-    super( options );
+    super( tandem, options );
 
     assert && assert( this.custom, 'SolidMaterial should only be used for custom materials' );
 
@@ -706,11 +604,11 @@ class SolidMaterial extends Material {
 }
 
 class LiquidMaterial extends Material {
-  public constructor( providedOptions: MaterialOptions ) {
+  public constructor( tandem: Tandem, providedOptions: MaterialOptions ) {
 
     const options = optionize<MaterialOptions, EmptySelfOptions, MaterialOptions>()( {}, providedOptions );
 
-    super( options );
+    super( tandem, options );
     // TODO: This could be custom color given a "liquid" flag/subtype, https://github.com/phetsims/density-buoyancy-common/issues/256
     if ( !this.colorProperty && this.custom ) {
       // TODO: can we make this field readonly again? https://github.com/phetsims/density-buoyancy-common/issues/256

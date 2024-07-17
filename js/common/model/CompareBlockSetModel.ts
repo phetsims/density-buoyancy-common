@@ -28,6 +28,7 @@ import WithRequired from '../../../../phet-core/js/types/WithRequired.js';
 import HasChangedNumberProperty from './HasChangedNumberProperty.js';
 import propertyStateHandlerSingleton from '../../../../axon/js/propertyStateHandlerSingleton.js';
 import PropertyStatePhase from '../../../../axon/js/PropertyStatePhase.js';
+import Tandem from '../../../../tandem/js/Tandem.js';
 
 // This hard coded range is a bit arbitrary, but it lends itself to better colors than the provided range in the options.
 const COLOR_DENSITY_RANGE = new Range( 10, 10000 );
@@ -43,6 +44,8 @@ type CubeData = {
   sameMassCubeOptions: WithRequired<Partial<CubeOptions>, 'tandem'>;
   sameVolumeCubeOptions: WithRequired<Partial<CubeOptions>, 'tandem'>;
   sameDensityCubeOptions: WithRequired<Partial<CubeOptions>, 'tandem'>;
+
+  tandemName: string;
 };
 
 type CubeDataInternal = {
@@ -138,15 +141,15 @@ export default class CompareBlockSetModel extends BlockSetModel<BlockSet> {
       return merge( {
 
         sameMassDensityProperty: sameMassDensityProperty,
-        sameMassMaterialProperty: CompareBlockSetModel.createMaterialProperty( cubeData.colorProperty, sameMassDensityProperty,
+        sameMassMaterialProperty: CompareBlockSetModel.createMaterialProperty( tandem.createTandem( cubeData.tandemName ).createTandem( 'sameMassCustomMaterial' ), cubeData.colorProperty, sameMassDensityProperty,
           massProperty.hasChangedProperty, options.initialMaterials ),
 
         sameVolumeDensityProperty: sameVolumeDensityProperty,
-        sameVolumeMaterialProperty: CompareBlockSetModel.createMaterialProperty( cubeData.colorProperty, sameVolumeDensityProperty,
+        sameVolumeMaterialProperty: CompareBlockSetModel.createMaterialProperty( tandem.createTandem( cubeData.tandemName ).createTandem( 'sameVolumeCustomMaterial' ), cubeData.colorProperty, sameVolumeDensityProperty,
           volumeProperty.hasChangedProperty, options.initialMaterials ),
 
         sameDensityDensityProperty: sameDensityDensityProperty,
-        sameDensityMaterialProperty: CompareBlockSetModel.createMaterialProperty( cubeData.colorProperty, sameDensityDensityProperty,
+        sameDensityMaterialProperty: CompareBlockSetModel.createMaterialProperty( tandem.createTandem( cubeData.tandemName ).createTandem( 'sameDensityCustomMaterial' ), cubeData.colorProperty, sameDensityDensityProperty,
           densityProperty.hasChangedProperty, options.initialMaterials )
 
       }, cubeData );
@@ -240,7 +243,7 @@ export default class CompareBlockSetModel extends BlockSetModel<BlockSet> {
    * If the block set value has not changed, it attempts to use an initial material with the same density.
    * Otherwise, it creates a custom material with a modified color based on the density.
    */
-  private static createMaterialProperty( colorProperty: TReadOnlyProperty<Color>, densityProperty: TReadOnlyProperty<number>,
+  private static createMaterialProperty( tandem: Tandem, colorProperty: TReadOnlyProperty<Color>, densityProperty: TReadOnlyProperty<number>,
                                          blockSetValueChangedProperty: TReadOnlyProperty<boolean>, initialMaterials: Material[] ): TReadOnlyProperty<Material> {
 
     // Create and return a custom material with the modified color and density.
@@ -258,7 +261,7 @@ export default class CompareBlockSetModel extends BlockSetModel<BlockSet> {
 
       return colorProperty.value.colorUtilsBrightness( Math.sign( rawValue ) * Math.pow( Math.abs( rawValue ), power ) );
     } );
-    const myCustomMaterial = Material.createCustomSolidMaterial( {
+    const myCustomMaterial = Material.createCustomSolidMaterial( tandem, {
       density: densityProperty.value,
       colorProperty: myColorProperty
     } );

@@ -92,7 +92,7 @@ export default class MaterialControlNode extends VBox {
           font: DensityBuoyancyCommonConstants.COMBO_BOX_ITEM_FONT,
           maxWidth: comboMaxWidth
         } ),
-        tandemName: `${material.tandemName}Item`,
+        tandemName: `${material.tandem.name}Item`,
         a11yName: material.nameProperty
       };
     };

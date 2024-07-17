@@ -204,7 +204,7 @@ export default class Bottle extends ApplicationsMass {
     const vertices = Bottle.getFlatIntersectionVertices();
 
     // TODO: Is the custom material inside the bottle supposed to be solid or liquid? Or maybe it doesn't matter. See https://github.com/phetsims/density-buoyancy-common/issues/256
-    const customMaterial = Material.createCustomSolidMaterial( {
+    const customMaterial = Material.createCustomSolidMaterial( providedOptions.tandem.createTandem( 'customMaterial' ), {
       nameProperty: DensityBuoyancyCommonStrings.systemAStringProperty,
       density: ( BOTTLE_MASS + BOTTLE_INITIAL_INTERIOR_MATERIAL.density * BOTTLE_INITIAL_INTERIOR_VOLUME ) / BOTTLE_VOLUME,
       densityRange: new Range( 10, 1000000000 ) // TODO: set min lower than 10? https://github.com/phetsims/density-buoyancy-common/issues/256
@@ -253,7 +253,7 @@ export default class Bottle extends ApplicationsMass {
     } );
 
     // TODO: Fix units, see https://github.com/phetsims/density-buoyancy-common/issues/266
-    this.customInsideBottleMaterial = Material.createCustomSolidMaterial( {
+    this.customInsideBottleMaterial = Material.createCustomSolidMaterial( materialInsideTandem.createTandem( 'customMaterial' ), {
       density: 1000,
       densityRange: new Range( 50, 20000 )
     } );

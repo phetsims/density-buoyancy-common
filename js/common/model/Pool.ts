@@ -63,7 +63,7 @@ export default class Pool extends Basin {
       tandem: this.fluidTandem.createTandem( 'materialProperty' ),
       phetioReadOnly: true,
       phetioDocumentation: 'The material of the fluid in the pool',
-      customMaterial: Material.createCustomLiquidMaterial( {
+      customMaterial: Material.createCustomLiquidMaterial( this.fluidTandem.createTandem( 'customMaterial' ), {
         density: Material.WATER.density,
         densityRange: DensityBuoyancyCommonConstants.FLUID_DENSITY_RANGE_PER_M3
       } )

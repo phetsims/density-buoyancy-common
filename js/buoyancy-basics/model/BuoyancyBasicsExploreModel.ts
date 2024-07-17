@@ -38,26 +38,29 @@ export default class BuoyancyBasicsExploreModel extends DensityBuoyancyModel {
       phetioFeatured: true
     } );
 
+    const blockATandem = blocksTandem.createTandem( 'blockA' );
     this.massA = Cube.createWithMass( this.engine, Material.WOOD, new Vector2( -0.2, 0.2 ), 2, {
       tag: MassTag.OBJECT_A,
       adjustableMaterial: true,
-      materialValidValues: Material.SIMPLE_MASS_MATERIALS.concat( [ Material.createCustomSolidMaterial( {
+      materialValidValues: Material.SIMPLE_MASS_MATERIALS.concat( [ Material.createCustomSolidMaterial( blockATandem.createTandem( 'customMaterial' ), {
         density: 1000,
         colorProperty: new ColorProperty( Color.RED )
       } ) ] ),
       adjustableColor: false,
-      tandem: blocksTandem.createTandem( 'blockA' )
+      tandem: blockATandem
     } );
     this.availableMasses.push( this.massA );
+
+    const blockBTandem = blocksTandem.createTandem( 'blockB' );
     this.massB = Cube.createWithMass( this.engine, Material.ALUMINUM, new Vector2( 0.05, 0.35 ), 13.5, {
       tag: MassTag.OBJECT_B,
       adjustableMaterial: true,
-      materialValidValues: Material.SIMPLE_MASS_MATERIALS.concat( [ Material.createCustomSolidMaterial( {
+      materialValidValues: Material.SIMPLE_MASS_MATERIALS.concat( [ Material.createCustomSolidMaterial( blockBTandem, {
         density: 1000,
         colorProperty: new ColorProperty( Color.RED )
       } ) ] ),
       adjustableColor: false,
-      tandem: blocksTandem.createTandem( 'blockB' ),
+      tandem: blockBTandem,
       visible: false
     } );
     this.availableMasses.push( this.massB );

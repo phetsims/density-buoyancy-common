@@ -192,7 +192,6 @@ export default class Bottle extends ApplicationsMass {
 
   // In kg (kilograms)
   public readonly materialInsideMassProperty: ReadOnlyProperty<number>;
-  public readonly customInsideBottleMaterial: Material;
 
   public constructor( engine: PhysicsEngine, providedOptions: BottleOptions ) {
 
@@ -203,7 +202,10 @@ export default class Bottle extends ApplicationsMass {
     const customMaterial = Material.createCustomSolidMaterial( providedOptions.tandem.createTandem( 'customMaterial' ), {
       nameProperty: DensityBuoyancyCommonStrings.systemAStringProperty,
       density: ( BOTTLE_MASS + BOTTLE_INITIAL_INTERIOR_MATERIAL.density * BOTTLE_INITIAL_INTERIOR_VOLUME ) / BOTTLE_VOLUME,
-      densityRange: new Range( 10, 1000000000 ) // TODO: set min lower than 10? https://github.com/phetsims/density-buoyancy-common/issues/268
+
+      // This is not used for colorizing, since the bottle + liquid composite system is rendered separately, it just
+      // needs to be a superset of all possible values across the different inside materials
+      densityRange: new Range( 0, 1000000000 )
     } );
 
     const options = optionize<BottleOptions, EmptySelfOptions, InstrumentedMassOptions>()( {
@@ -226,14 +228,13 @@ export default class Bottle extends ApplicationsMass {
 
     const materialInsideTandem = options.tandem.createTandem( 'materialInside' );
 
-    // TODO: Is the materialInside custom material supposed to be solid or liquid? Or maybe it doesn't matter. It mainly affects the color. See https://github.com/phetsims/density-buoyancy-common/issues/268
-    this.materialInsideProperty = new MaterialProperty( BOTTLE_INITIAL_INTERIOR_MATERIAL, tandem => Material.createCustomLiquidMaterial( tandem, {
+    this.materialInsideProperty = new MaterialProperty( BOTTLE_INITIAL_INTERIOR_MATERIAL, tandem => Material.createCustomSolidMaterial( tandem, {
       density: BOTTLE_INITIAL_INTERIOR_MATERIAL.density,
-      densityRange: new Range( 10, 10000 )
+      densityRange: new Range( 50, 20000 )
     } ), {
       valueType: Material,
       reentrant: true,
-      tandem: materialInsideTandem.createTandem( 'materialProperty' ),
+      tandem: materialInsideTandem.createTandem( 'materialInsideProperty' ),
       phetioValueType: ReferenceIO( IOType.ObjectIO )
     } );
 
@@ -250,12 +251,6 @@ export default class Bottle extends ApplicationsMass {
       tandem: materialInsideTandem.createTandem( 'massProperty' ),
       phetioDocumentation: 'Mass of the material inside the bottle.',
       phetioValueType: NumberIO
-    } );
-
-    // TODO: Fix units, see https://github.com/phetsims/density-buoyancy-common/issues/266
-    this.customInsideBottleMaterial = Material.createCustomSolidMaterial( materialInsideTandem.createTandem( 'customMaterial' ), {
-      density: 1000,
-      densityRange: new Range( 50, 20000 )
     } );
 
     // Synchronize the overall density of the bottle + material system to the materialProperty. This should not be done

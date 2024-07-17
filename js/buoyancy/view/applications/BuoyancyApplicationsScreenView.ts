@@ -117,7 +117,7 @@ export default class BuoyancyApplicationsScreenView extends BuoyancyScreenView<B
       Material.SAND,
       Material.CONCRETE,
       Material.COPPER,
-      model.bottle.customInsideBottleMaterial,
+      model.bottle.materialInsideProperty.customMaterial,
       Material.MATERIAL_R,
       Material.MATERIAL_S
     ], volume => model.bottle.materialInsideVolumeProperty.set( volume ), this.popupLayer, true, {
@@ -145,10 +145,15 @@ export default class BuoyancyApplicationsScreenView extends BuoyancyScreenView<B
       material => material.custom );
 
     const customBottleDensityControlTandem = materialInsideControlsTandem.createTandem( 'customBottleDensityNumberControl' );
+
+    const correctUnitsCustomMaterialDensityProperty = new UnitConversionProperty( model.bottle.materialInsideProperty.customMaterial.densityProperty, {
+      factor: 1 / DensityBuoyancyCommonConstants.LITERS_IN_CUBIC_METER
+    } );
+
     const bottleCustomInsideMaterialDensityControl = new NumberControl(
       DensityBuoyancyCommonStrings.densityStringProperty,
-      model.bottle.customInsideBottleMaterial.densityProperty,
-      model.bottle.customInsideBottleMaterial.densityProperty.range,
+      correctUnitsCustomMaterialDensityProperty,
+      correctUnitsCustomMaterialDensityProperty.range,
       combineOptions<NumberControlOptions>( {
         visibleProperty: new GatedVisibleProperty( customDensityControlVisibleProperty, customBottleDensityControlTandem ),
         sliderOptions: {

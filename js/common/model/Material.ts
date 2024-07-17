@@ -154,15 +154,8 @@ export default class Material extends PhetioObject implements HasValueProperty {
   }
 
   /**
-   * Returns a value suitable for use in colors (0-255 value) that should be used as a grayscale value for
-   * a material of a given density. The mappíng is inverted, i.e. larger densities yield darker colors.
-   */
-  protected static getCustomLightness( density: number, densityRange: Range ): number {
-    return Utils.roundSymmetric( this.getNormalizedLightness( density, densityRange ) * 255 );
-  }
-
-  /**
    * Returns a lightness factor from 0-1 that can be used to map a density to a desired color.
+   * TODO: This has a poor dynamic range for the bottle inside material, but is used elsewhere. Should it be changed/split/improved? https://github.com/phetsims/density-buoyancy-common/issues/268
    */
   public static getNormalizedLightness( density: number, densityRange: Range ): number {
     const scaleFactor = 1000;
@@ -585,7 +578,12 @@ class SolidMaterial extends Material {
 
       // TODO: can we make this field readonly again? https://github.com/phetsims/density-buoyancy-common/issues/268
       this.colorProperty = new DerivedProperty( [ this.densityProperty, this.densityProperty.rangeProperty ], ( density, densityRange ) => {
-        const lightness = Material.getCustomLightness( density, densityRange );
+
+        // TODO: The dynamic range for the bottle interior solid material flattens out quickly past 4 kg/L, see https://github.com/phetsims/density-buoyancy-common/issues/268
+
+        // Returns a value suitable for use in colors (0-255 value) that should be used as a grayscale value for
+        // a material of a given density. The mappíng is inverted, i.e. larger densities yield darker colors.
+        const lightness = Utils.roundSymmetric( Material.getNormalizedLightness( density, densityRange ) * 255 );
         return new Color( lightness, lightness, lightness );
       } );
     }

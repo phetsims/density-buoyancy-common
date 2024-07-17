@@ -3,6 +3,8 @@
 /**
  * Represents different materials that solids/liquids in the simulations can take, including density/viscosity/color.
  *
+ * TODO: Migration for changes that made Material and Gravity mutable, see https://github.com/phetsims/density-buoyancy-common/issues/256
+ *
  * @author Jonathan Olson (PhET Interactive Simulations)
  */
 

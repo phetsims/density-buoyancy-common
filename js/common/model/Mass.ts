@@ -196,8 +196,6 @@ export default abstract class Mass extends PhetioObject {
   public stepBottom: number; // minimum y value of the mass
   public stepTop: number; // maximum y value of the mass
 
-  public readonly densityProperty: TReadOnlyProperty<number>;
-
   protected constructor( engine: PhysicsEngine, providedOptions: MassOptions ) {
 
     const options = optionize<MassOptions, SelfOptions, PhetioObjectOptions>()( {
@@ -289,9 +287,6 @@ export default abstract class Mass extends PhetioObject {
 
     // TODO: Review all places where we are observing materialProperty, and see if actually they should just listen to the densityProperty, https://github.com/phetsims/density-buoyancy-common/issues/256
 
-    // TODO: do we need this pointer? https://github.com/phetsims/density-buoyancy-common/issues/256
-    this.densityProperty = this.materialProperty.densityProperty;
-
     this.volumeProperty = new NumberProperty( options.volume, combineOptions<NumberPropertyOptions>( {
       tandem: tandem?.createTandem( 'volumeProperty' ),
       phetioFeatured: true,
@@ -339,7 +334,7 @@ export default abstract class Mass extends PhetioObject {
     }, options.massPropertyOptions ) );
 
     // TODO: Think one more time about how all density changes must come back to change the mass (as mass is the only thing that p2 cares about). https://github.com/phetsims/density-buoyancy-common/issues/256
-    Multilink.multilink( [ this.densityProperty, this.volumeProperty, this.containedMassProperty ], ( density, volume, containedMass ) => {
+    Multilink.multilink( [ this.materialProperty.densityProperty, this.volumeProperty, this.containedMassProperty ], ( density, volume, containedMass ) => {
 
       const selfMass = Utils.roundToInterval( density * volume, DensityBuoyancyCommonConstants.TOLERANCE );
       this.massProperty.value = selfMass + containedMass;

@@ -63,7 +63,7 @@ export default class Pool extends Basin {
     } ), {
       valueType: Material,
       phetioValueType: ReferenceIO( IOType.ObjectIO ),
-      tandem: this.fluidTandem.createTandem( 'materialProperty' ),
+      tandem: this.fluidTandem.createTandem( 'fluidMaterialProperty' ),
       phetioReadOnly: true,
       phetioDocumentation: 'The material of the fluid in the pool'
     } );

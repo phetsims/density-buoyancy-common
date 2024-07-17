@@ -112,7 +112,9 @@ export default class Material extends PhetioObject implements HasValueProperty {
     console.log( 'hello new material' );
   }
 
-  // TODO: do we need this pointer? https://github.com/phetsims/density-buoyancy-common/issues/256
+  /**
+   * Get the current density value of the densityProperty. Convenience accessor which is used numerous times in the simulation.
+   */
   public get density(): number {
     return this.densityProperty.value;
   }

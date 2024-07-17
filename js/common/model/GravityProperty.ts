@@ -20,7 +20,8 @@ export default class GravityProperty extends MappedWrappedProperty<Gravity> {
   public readonly customGravity: Gravity;
 
   public constructor( gravity: Gravity, providedOptions: PropertyOptions<Gravity> & PickRequired<PhetioObjectOptions, 'tandem'> ) {
-    super( gravity, Gravity.createCustomGravity( gravity.gravityValue, providedOptions.tandem.createTandem( 'customGravity' ) ), providedOptions );
+    const customGravity = Gravity.createCustomGravity( gravity.gravityValue, providedOptions.tandem.createTandem( 'customGravity' ) );
+    super( gravity, customGravity, providedOptions );
 
     this.gravityValueProperty = this.dynamicValueProperty;
     this.customGravity = this.customValue;

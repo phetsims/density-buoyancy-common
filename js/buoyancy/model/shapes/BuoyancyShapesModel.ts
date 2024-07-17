@@ -54,11 +54,13 @@ export default class BuoyancyShapesModel extends DensityBuoyancyModel {
       phetioFeatured: true
     } );
 
-    // TODO: we don't want the customMaterial, at least not instrumented for PhET-iO, https://github.com/phetsims/density-buoyancy-common/issues/256
-    this.materialProperty = new MaterialProperty( Material.WOOD, {
-      tandem: objectsTandem.createTandem( 'materialProperty' ),
-      phetioValueType: ReferenceIO( IOType.ObjectIO )
-    } );
+    this.materialProperty = new MaterialProperty( Material.WOOD,
+
+      // This hack is a way of saying, we do not create or support a custom material in this case.
+      () => Material.WOOD, {
+        tandem: objectsTandem.createTandem( 'materialProperty' ),
+        phetioValueType: ReferenceIO( IOType.ObjectIO )
+      } );
 
     this.scale = new Scale( this.engine, this.gravityProperty, {
       matrix: Matrix3.translation( -0.7, -Scale.SCALE_BASE_BOUNDS.minY ),

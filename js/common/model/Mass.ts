@@ -271,10 +271,17 @@ export default abstract class Mass extends PhetioObject {
 
     this.visibleProperty = new GatedVisibleProperty( this.internalVisibleProperty, tandem );
 
-    this.materialProperty = new MaterialProperty( options.material, combineOptions<PropertyOptions<Material>>( {
+    this.materialProperty = new MaterialProperty( options.material, tandem => Material.createCustomSolidMaterial( tandem.createTandem( 'customMaterial' ), {
+      density: options.material.density,
+
+      // TODO: It is incorrect to take the range of the default value, this affects the color, see https://github.com/phetsims/density-buoyancy-common/issues/268
+      densityRange: options.material.densityProperty.range
+    } ), combineOptions<PropertyOptions<Material> & PickRequired<PhetioObjectOptions, 'tandem'>>( {
       valueType: Material,
       reentrant: true,
-      tandem: tandem?.createTandem( 'materialProperty' ),
+
+      // TODO: Is this correct? See // TODO: Is the aggregate custom material supposed to be solid or liquid? Or maybe it doesn't matter. It mainly affects the color. See https://github.com/phetsims/density-buoyancy-common/issues/256
+      tandem: ( tandem || Tandem.OPT_OUT ).createTandem( 'materialProperty' ),
       phetioValueType: ReferenceIO( IOType.ObjectIO ),
       phetioFeatured: true
     }, options.materialPropertyOptions ) );

@@ -12,33 +12,22 @@ import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import Material from './Material.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import MappedWrappedProperty from './MappedWrappedProperty.js';
-import optionize from '../../../../phet-core/js/optionize.js';
+import { EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
+import PickRequired from '../../../../phet-core/js/types/PickRequired.js';
+import { PhetioObjectOptions } from '../../../../tandem/js/PhetioObject.js';
 
-type SelfOptions = {
-  customMaterial?: Material;
-};
+type SelfOptions = EmptySelfOptions;
 
-type MaterialPropertyOptions = PropertyOptions<Material> & SelfOptions;
+type MaterialPropertyOptions = SelfOptions & PropertyOptions<Material> & PickRequired<PhetioObjectOptions, 'tandem'>;
 
 export default class MaterialProperty extends MappedWrappedProperty<Material> {
   public readonly densityProperty: TReadOnlyProperty<number>;
   public readonly customMaterial: Material;
 
-  public constructor( material: Material, providedOptions?: MaterialPropertyOptions ) {
-
-    const options = optionize<MaterialPropertyOptions, SelfOptions, PropertyOptions<Material>>()( {
-
-      customMaterial: Material.createCustomSolidMaterial( providedOptions && providedOptions.tandem ? providedOptions.tandem.createTandem( 'customMaterial' ) : Tandem.OPT_OUT, {
-        density: material.density,
-
-        // TODO: It is incorrect to take the range of the default value, this affects the color, see https://github.com/phetsims/density-buoyancy-common/issues/268
-        densityRange: material.densityProperty.range
-      } )
-    }, providedOptions );
-
-    super( material, options.customMaterial, providedOptions );
-
+  public constructor( material: Material, createCustomMaterial: ( tandem: Tandem ) => Material, providedOptions: MaterialPropertyOptions ) {
+    const customMaterial = createCustomMaterial( providedOptions.tandem.createTandem( 'customMaterial' ) );
+    super( material, customMaterial, providedOptions );
     this.densityProperty = this.dynamicValueProperty;
     this.customMaterial = this.customValue;
   }

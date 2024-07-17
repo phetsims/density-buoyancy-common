@@ -242,6 +242,8 @@ export default class CompareBlockSetModel extends BlockSetModel<BlockSet> {
    * Creates a material property based on the provided color, density, and block set value change status.
    * If the block set value has not changed, it attempts to use an initial material with the same density.
    * Otherwise, it creates a custom material with a modified color based on the density.
+   *
+   * TODO: Should this return MaterialProperty and create its own customMaterial? see https://github.com/phetsims/density-buoyancy-common/issues/256
    */
   private static createMaterialProperty( tandem: Tandem, colorProperty: TReadOnlyProperty<Color>, densityProperty: TReadOnlyProperty<number>,
                                          blockSetValueChangedProperty: TReadOnlyProperty<boolean>, initialMaterials: Material[] ): TReadOnlyProperty<Material> {

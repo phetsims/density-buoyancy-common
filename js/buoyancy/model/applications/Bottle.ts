@@ -199,9 +199,7 @@ export default class Bottle extends ApplicationsMass {
     const vertices = Bottle.getFlatIntersectionVertices();
 
     // Used to calculate the color of the bottle's custom material
-    // TODO: Provide this to the customMaterial of the inside material MaterialProperty. https://github.com/phetsims/density-buoyancy-common/issues/268
-    // const BOTTLE_DENSITY_RANGE = new Range( 10, 10000 );
-    // TODO: Is the custom material inside the bottle supposed to be solid or liquid? Or maybe it doesn't matter. It mainly affects the color. See https://github.com/phetsims/density-buoyancy-common/issues/268
+    // TODO: Is the aggregate custom material supposed to be solid or liquid? Or maybe it doesn't matter. It mainly affects the color. See https://github.com/phetsims/density-buoyancy-common/issues/268
     const customMaterial = Material.createCustomSolidMaterial( providedOptions.tandem.createTandem( 'customMaterial' ), {
       nameProperty: DensityBuoyancyCommonStrings.systemAStringProperty,
       density: ( BOTTLE_MASS + BOTTLE_INITIAL_INTERIOR_MATERIAL.density * BOTTLE_INITIAL_INTERIOR_VOLUME ) / BOTTLE_VOLUME,
@@ -228,7 +226,11 @@ export default class Bottle extends ApplicationsMass {
 
     const materialInsideTandem = options.tandem.createTandem( 'materialInside' );
 
-    this.materialInsideProperty = new MaterialProperty( BOTTLE_INITIAL_INTERIOR_MATERIAL, {
+    // TODO: Is the materialInside custom material supposed to be solid or liquid? Or maybe it doesn't matter. It mainly affects the color. See https://github.com/phetsims/density-buoyancy-common/issues/268
+    this.materialInsideProperty = new MaterialProperty( BOTTLE_INITIAL_INTERIOR_MATERIAL, tandem => Material.createCustomLiquidMaterial( tandem, {
+      density: BOTTLE_INITIAL_INTERIOR_MATERIAL.density,
+      densityRange: new Range( 10, 10000 )
+    } ), {
       valueType: Material,
       reentrant: true,
       tandem: materialInsideTandem.createTandem( 'materialProperty' ),

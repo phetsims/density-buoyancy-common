@@ -57,16 +57,15 @@ export default class Pool extends Basin {
     this.stepBottom = bounds.minY;
     this.stepTop = bounds.maxY;
 
-    this.fluidMaterialProperty = new MaterialProperty( Material.WATER, {
+    this.fluidMaterialProperty = new MaterialProperty( Material.WATER, tandem => Material.createCustomLiquidMaterial( tandem, {
+      density: Material.WATER.density,
+      densityRange: DensityBuoyancyCommonConstants.FLUID_DENSITY_RANGE_PER_M3
+    } ), {
       valueType: Material,
       phetioValueType: ReferenceIO( IOType.ObjectIO ),
       tandem: this.fluidTandem.createTandem( 'materialProperty' ),
       phetioReadOnly: true,
-      phetioDocumentation: 'The material of the fluid in the pool',
-      customMaterial: Material.createCustomLiquidMaterial( this.fluidTandem.createTandem( 'customMaterial' ), {
-        density: Material.WATER.density,
-        densityRange: DensityBuoyancyCommonConstants.FLUID_DENSITY_RANGE_PER_M3
-      } )
+      phetioDocumentation: 'The material of the fluid in the pool'
     } );
 
     // DerivedProperty doesn't need disposal, since everything here lives for the lifetime of the simulation

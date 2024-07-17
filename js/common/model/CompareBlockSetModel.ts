@@ -244,6 +244,7 @@ export default class CompareBlockSetModel extends BlockSetModel<BlockSet> {
                                          blockSetValueChangedProperty: TReadOnlyProperty<boolean>, initialMaterials: Material[] ): TReadOnlyProperty<Material> {
 
     // Create and return a custom material with the modified color and density.
+    // TODO: there is unused and commented out code here, see https://github.com/phetsims/density-buoyancy-common/issues/256
     const myColorProperty = new DerivedProperty( [ colorProperty, densityProperty ], ( color, density ) => {
       // myCustomMaterial.densityProperty.value = density;
 

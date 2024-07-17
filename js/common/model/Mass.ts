@@ -228,6 +228,7 @@ export default abstract class Mass extends PhetioObject {
         Material.WOOD,
 
         // TODO: Visit this tandem after moving elsewhere, see https://github.com/phetsims/density-buoyancy-common/issues/256
+        // TODO: MaterialProperty really wants to create its own custom instances, see https://github.com/phetsims/density-buoyancy-common/issues/256
         Material.createCustomSolidMaterial( providedOptions.tandem ? providedOptions.tandem.createTandem( 'customSolidMaterial' ) : Tandem.OPT_OUT, {
           density: 1000,
           colorProperty: new ColorProperty( Color.white )

@@ -22,7 +22,7 @@ export type HasValueProperty = {
   valueProperty: TProperty<number>;
 };
 
-// TODO: reset these, https://github.com/phetsims/density-buoyancy-common/issues/256
+// TODO: reset these, https://github.com/phetsims/density-buoyancy-common/issues/267
 export default abstract class MappedWrappedProperty<T extends HasValueProperty> extends Property<T> {
   protected readonly dynamicValueProperty: TReadOnlyProperty<number>;
   public readonly customValue: T;

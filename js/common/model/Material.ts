@@ -57,7 +57,7 @@ export type MaterialOptions = SelfOptions & StrictOmit<PhetioObjectOptions, 'tan
 
 const MATERIALS_TANDEM = Tandem.GLOBAL_MODEL.createTandem( 'materials' );
 
-// TODO: Resetting all Property instances that can/should be, https://github.com/phetsims/density-buoyancy-common/issues/256
+// TODO: Resetting all Property instances that can/should be, https://github.com/phetsims/density-buoyancy-common/issues/267
 // TODO: Material should wire up color properties https://github.com/phetsims/density-buoyancy-common/issues/256
 // TODO: Material only needs one color Property, https://github.com/phetsims/density-buoyancy-common/issues/256
 // TODO: Material should know its density range https://github.com/phetsims/density-buoyancy-common/issues/256
@@ -184,8 +184,8 @@ export default class Material extends PhetioObject implements HasValueProperty {
 
   /**
    * TODO: a couple thoughts. https://github.com/phetsims/density-buoyancy-common/issues/256
-   *       1. could this be solved is MaterialProperty.colorProperty was a dynamic property, then these usages would just link to that to update the THREE mesh.
-   *       2. At the very leas, move this to a prototype method on MaterialProperty.
+   *  1. could this be solved is MaterialProperty.colorProperty was a dynamic property, then these usages would just link to that to update the THREE mesh.
+   *  2. At the very least, move this to a prototype method on MaterialProperty.
    *
    * Keep a material's color and opacity to match the liquid color from a given Property<Material>
    *

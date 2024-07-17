@@ -187,7 +187,6 @@ export default class Bottle extends ApplicationsMass {
   // model-coordinate bounds in x,y
   private readonly bottleBounds: Bounds2;
 
-  // TODO: look through all usages of Property<Material> to see if they should be MaterialProperty. https://github.com/phetsims/density-buoyancy-common/issues/256
   public readonly materialInsideProperty: MaterialProperty;
   public readonly materialInsideVolumeRange = new Range( 0, 10 );
   public readonly materialInsideVolumeProperty: Property<number>; // m^3

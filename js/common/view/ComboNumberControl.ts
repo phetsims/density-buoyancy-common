@@ -51,8 +51,7 @@ export type ComboNumberControlOptions<T extends Material | Gravity> = SelfOption
 
 export default abstract class ComboNumberControl<T extends Material | Gravity> extends VBox {
 
-  // TODO: Rename property => mappedWrapperProperty, see https://github.com/phetsims/density-buoyancy-common/issues/256
-  private readonly property: MappedWrappedProperty<T>;
+  private readonly mappedWrappedProperty: MappedWrappedProperty<T>;
   private readonly disposalCallbacks: ( () => void )[];
   private readonly numberControl: NumberControl;
   private readonly comboBox: ComboBox<T>;
@@ -97,8 +96,8 @@ export default abstract class ComboNumberControl<T extends Material | Gravity> e
             };
 
             // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
-            this.property.link( listener );
-            disposalCallbacks.push( () => this.property.unlink( listener ) );
+            this.mappedWrappedProperty.link( listener );
+            disposalCallbacks.push( () => this.mappedWrappedProperty.unlink( listener ) );
 
             return bottomContent;
           },
@@ -161,7 +160,7 @@ export default abstract class ComboNumberControl<T extends Material | Gravity> e
 
     super();
 
-    this.property = options.property;
+    this.mappedWrappedProperty = options.property;
     this.disposalCallbacks = disposalCallbacks;
 
     // Prevent an infinite loop in the following listeners.
@@ -169,24 +168,24 @@ export default abstract class ComboNumberControl<T extends Material | Gravity> e
 
     // When the user changes the density by dragging the slider, automatically switch from the predefined material to
     // the custom material.
-    this.property.customValue.valueProperty.lazyLink( () => {
+    this.mappedWrappedProperty.customValue.valueProperty.lazyLink( () => {
       if ( !isChangingToPredefinedMaterialLock ) {
-        this.property.value = this.property.customValue;
+        this.mappedWrappedProperty.value = this.mappedWrappedProperty.customValue;
       }
     } );
 
     // In the explore screen, when switching from custom to wood, change the density back to the wood density
     // However, when switching to a mystery material, do not change the custom value. This prevents clever students from discovering
     // the mystery values by using the UI instead of by computing them, see https://github.com/phetsims/buoyancy/issues/54
-    this.property.lazyLink( richObject => {
+    this.mappedWrappedProperty.lazyLink( richObject => {
       if ( !richObject.custom && !richObject.hidden ) {
         isChangingToPredefinedMaterialLock = true;
-        this.property.customValue.valueProperty.value = richObject.valueProperty.value;
+        this.mappedWrappedProperty.customValue.valueProperty.value = richObject.valueProperty.value;
         isChangingToPredefinedMaterialLock = false;
       }
     } );
 
-    const correctUnitsProperty = new UnitConversionProperty( this.property.customValue.valueProperty, {
+    const correctUnitsProperty = new UnitConversionProperty( this.mappedWrappedProperty.customValue.valueProperty, {
       factor: options.unitsConversionFactor
     } );
 
@@ -196,11 +195,11 @@ export default abstract class ComboNumberControl<T extends Material | Gravity> e
         accessibleName: options.titleProperty
       }
     }, options.numberControlOptions ) );
-    this.numberControl.addLinkedElement( this.property, {
+    this.numberControl.addLinkedElement( this.mappedWrappedProperty, {
       tandemName: 'valueProperty'
     } );
 
-    this.comboBox = new ComboBox( this.property, options.comboItems, options.listParent, combineOptions<ComboBoxOptions>( {
+    this.comboBox = new ComboBox( this.mappedWrappedProperty, options.comboItems, options.listParent, combineOptions<ComboBoxOptions>( {
       tandem: options.tandem.createTandem( 'comboBox' )
     }, options.comboBoxOptions ) );
 

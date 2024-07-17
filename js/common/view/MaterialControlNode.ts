@@ -97,10 +97,12 @@ export default class MaterialControlNode extends VBox {
       };
     };
 
-    // When switching to custom, set the custom density to the previous material's density (clamped just in case)
+    // When switching to custom, set the custom density to the previous material's density (clamped just in case).
+    // However, when switching from a mystery material, do not change the custom value. This prevents clever students from discovering
+    // the mystery values by using the UI instead of by computing them, see https://github.com/phetsims/buoyancy/issues/54
     if ( customMaterials.length > 0 && options.syncCustomMaterialDensity ) {
       materialProperty.lazyLink( ( material, oldMaterial ) => {
-        if ( material.custom ) {
+        if ( material.custom && !oldMaterial.hidden ) {
           assert && assert( materialProperty.customMaterial === customMaterials[ 0 ], 'I would really rather know what customMaterial we are dealing with' );
 
           // Handle our minimum volume if we're switched to custom (if needed)

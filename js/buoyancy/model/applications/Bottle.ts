@@ -197,14 +197,12 @@ export default class Bottle extends ApplicationsMass {
 
     const vertices = Bottle.getFlatIntersectionVertices();
 
-    // Used to calculate the color of the bottle's custom material
-    // TODO: Is the aggregate custom material supposed to be solid or liquid? Or maybe it doesn't matter. It mainly affects the color. See https://github.com/phetsims/density-buoyancy-common/issues/268
+    // The overall composite material for the bottle + inside material system.
+    // This is not used for colorizing, since the bottle + liquid composite system is rendered separately, it just
+    // needs to be a superset of all possible values across the different inside materials
     const customMaterial = Material.createCustomSolidMaterial( providedOptions.tandem.createTandem( 'customMaterial' ), {
       nameProperty: DensityBuoyancyCommonStrings.systemAStringProperty,
       density: ( BOTTLE_MASS + BOTTLE_INITIAL_INTERIOR_MATERIAL.density * BOTTLE_INITIAL_INTERIOR_VOLUME ) / BOTTLE_VOLUME,
-
-      // This is not used for colorizing, since the bottle + liquid composite system is rendered separately, it just
-      // needs to be a superset of all possible values across the different inside materials
       densityRange: new Range( 0, 1000000000 )
     } );
 

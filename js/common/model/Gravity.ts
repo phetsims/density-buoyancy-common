@@ -18,8 +18,6 @@ import PhetioObject, { PhetioObjectOptions } from '../../../../tandem/js/PhetioO
 import Tandem from '../../../../tandem/js/Tandem.js';
 import PickRequired from '../../../../phet-core/js/types/PickRequired.js';
 
-const customStringProperty = DensityBuoyancyCommonStrings.gravity.customStringProperty;
-
 const GRAVITY_TANDEM = Tandem.GLOBAL_MODEL.createTandem( 'gravities' );
 
 type SelfOptions = {
@@ -68,18 +66,6 @@ export default class Gravity extends PhetioObject implements HasValueProperty {
 
   public get valueProperty(): TProperty<number> {
     return this.gravityValueProperty;
-  }
-
-  /**
-   * Returns a custom material that can be modified at will.
-   */
-  public static createCustomGravity( value: number, tandem: Tandem ): Gravity {
-    return new Gravity( {
-      nameProperty: customStringProperty,
-      tandem: tandem,
-      value: value,
-      custom: true
-    } );
   }
 
   public static readonly EARTH = new Gravity( {

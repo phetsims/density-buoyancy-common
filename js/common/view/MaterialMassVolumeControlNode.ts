@@ -157,22 +157,12 @@ export default class MaterialMassVolumeControlNode extends MaterialControlNode {
 
     // passed to the NumberControl
     const numberControlMassProperty = new NumberProperty( massProperty.value, {
-      tandem: getMassRelatedTandem( massNumberControlContainerTandem.createTandem( 'numberControlMassProperty' ) ),
-      phetioDocumentation: 'For internal use only',
-      phetioFeatured: false,
-      phetioState: false,
-      phetioReadOnly: true,
       units: 'kg'
     } );
 
     // passed to the NumberControl - liters from m^3
     const numberControlVolumeProperty = new NumberProperty( volumeProperty.value * LITERS_IN_CUBIC_METER, {
       range: new Range( options.minVolumeLiters, options.maxVolumeLiters ),
-      tandem: volumeNumberControlTandem.createTandem( 'numberControlVolumeProperty' ),
-      phetioDocumentation: 'For internal use only',
-      phetioFeatured: false,
-      phetioState: false,
-      phetioReadOnly: true,
       units: 'L'
     } );
 

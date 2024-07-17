@@ -109,7 +109,7 @@ export default class BuoyancyApplicationsScreenView extends BuoyancyScreenView<B
     this.positionResetSceneButton();
 
     // TODO: create in bottle? https://github.com/phetsims/density-buoyancy-common/issues/256
-    // TODO: Fix units, see https://github.com/phetsims/density-buoyancy-common/issues/256
+    // TODO: Fix units, see https://github.com/phetsims/density-buoyancy-common/issues/266
     const customInsideBottleMaterial = Material.createCustomSolidMaterial( {
       density: 1000,
       densityRange: new Range( 50, 20000 )

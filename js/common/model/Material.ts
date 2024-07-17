@@ -23,10 +23,11 @@ import Range from '../../../../dot/js/Range.js';
 import NumberProperty from '../../../../axon/js/NumberProperty.js';
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
-import PhetioObject from '../../../../tandem/js/PhetioObject.js';
+import PhetioObject, { PhetioObjectOptions } from '../../../../tandem/js/PhetioObject.js';
 import { HasValueProperty } from './MappedWrappedProperty.js';
+import StrictOmit from '../../../../phet-core/js/types/StrictOmit.js';
 
-export type MaterialOptions = {
+type SelfOptions = {
   nameProperty?: TReadOnlyProperty<string>;
 
   // in SI (kg/m^3)
@@ -38,7 +39,7 @@ export type MaterialOptions = {
   // in SI (Pa * s). For reference a poise is 1e-2 Pa*s, and a centipoise is 1e-3 Pa*s.
   viscosity?: number;
 
-  // TODO: Eliminate, see https://github.com/phetsims/density-buoyancy-common/issues/176
+  // Whether the material is custom (can be modified by the user)
   custom?: boolean;
 
   // If true, don't show the density in number pickers/readouts, often called a "mystery" material elsewhere in the code.
@@ -51,6 +52,8 @@ export type MaterialOptions = {
   // Used for the color of depth lines added on top of the Material
   depthLinesColorProperty?: TReadOnlyProperty<Color>;
 };
+
+export type MaterialOptions = SelfOptions & StrictOmit<PhetioObjectOptions, 'tandem'>;
 
 const MATERIALS_TANDEM = Tandem.GLOBAL_MODEL.createTandem( 'materials' );
 
@@ -71,7 +74,7 @@ export default class Material extends PhetioObject implements HasValueProperty {
 
   public constructor( tandem: Tandem, providedOptions: MaterialOptions ) {
 
-    const options = optionize<MaterialOptions, MaterialOptions>()( {
+    const options = optionize<MaterialOptions, SelfOptions, PhetioObjectOptions>()( {
       nameProperty: new TinyProperty( 'unknown' ),
       density: 1,
       densityRange: new Range( 0.8, 23000 ),
@@ -84,7 +87,6 @@ export default class Material extends PhetioObject implements HasValueProperty {
 
     assert && assert( isFinite( options.density ), 'density should be finite, but it was: ' + options.density );
 
-    // TODO: better options pattern https://github.com/phetsims/density-buoyancy-common/issues/256
     super( {
       tandem: tandem,
       phetioState: false
@@ -105,9 +107,6 @@ export default class Material extends PhetioObject implements HasValueProperty {
     this.depthLinesColorProperty = options.depthLinesColorProperty;
 
     assert && assert( !( this.custom && this.hidden ), 'cannot be a mystery custom material' );
-
-    // TODO: make this happen less https://github.com/phetsims/density-buoyancy-common/issues/256
-    console.log( 'hello new material' );
   }
 
   /**

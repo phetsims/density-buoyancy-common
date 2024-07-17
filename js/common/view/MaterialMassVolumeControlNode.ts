@@ -20,7 +20,7 @@ import Range from '../../../../dot/js/Range.js';
 import Utils from '../../../../dot/js/Utils.js';
 import optionize, { combineOptions } from '../../../../phet-core/js/optionize.js';
 import NumberControl, { LayoutFunction, NumberControlOptions } from '../../../../scenery-phet/js/NumberControl.js';
-import { HBox, ManualConstraint, Node, TColor, Text, VBox, VBoxOptions } from '../../../../scenery/js/imports.js';
+import { AlignGroup, HBox, ManualConstraint, Node, TColor, Text, VBox, VBoxOptions } from '../../../../scenery/js/imports.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
 import Material from '../model/Material.js';
@@ -358,10 +358,29 @@ export default class MaterialMassVolumeControlNode extends MaterialControlNode {
       const showHighDensityMassNumberControlProperty = new DerivedProperty( [ materialProperty ], material => {
         return material.density > options.highDensityThreshold && !material.custom;
       } );
+
+      const alignGroup = new AlignGroup();
+
+      const createAlignGroupChild = ( node: Node ) => {
+        return alignGroup.createBox( new VBox( {
+          stretch: true,
+          children: [ node ]
+        } ), {
+          align: 'stretch'
+        } );
+      };
+
+      const highDensityAlignGroup = createAlignGroupChild(
+        createMassNumberControl( options.highDensityMaxMass!, 'highDensityMassNumberControl' )
+      );
+      const lowDensityAlignGroup = createAlignGroupChild(
+        createMassNumberControl( options.maxMass, 'lowDensityMassNumberControl' )
+      );
+
       const toggleNode = new BooleanToggleNode(
         showHighDensityMassNumberControlProperty,
-        createMassNumberControl( options.highDensityMaxMass!, 'highDensityMassNumberControl' ),
-        createMassNumberControl( options.maxMass, 'lowDensityMassNumberControl' ), {
+        highDensityAlignGroup,
+        lowDensityAlignGroup, {
           excludeInvisibleChildrenFromBounds: true
         }
       );

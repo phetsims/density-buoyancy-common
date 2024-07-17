@@ -35,11 +35,9 @@ export default class BlockControlNode extends MaterialMassVolumeControlNode {
       ...options.mysteryMaterials
     ];
 
-    // If we have useDensityControlInsteadOfMassControl, we control the logic completely here, and hence will shut off
-    // that one-way synchronization in the super.
-    // TODO: Use optionize, see https://github.com/phetsims/density-buoyancy-common/issues/256
-    if ( options.useDensityControlInsteadOfMassControl ) {
-      options.syncCustomMaterialDensity = false;
+    // If we have useDensityControlInsteadOfMassControl, we control the logic completely here, and hence do not want the  one-way synchronization in the super.
+    if ( assert && options.useDensityControlInsteadOfMassControl ) {
+      assert && assert( options.syncCustomMaterialDensity === false );
     }
 
     super( cuboid.materialProperty, cuboid.massProperty, cuboid.volumeProperty, materials,

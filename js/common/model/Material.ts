@@ -27,63 +27,14 @@ import Tandem from '../../../../tandem/js/Tandem.js';
 import PhetioObject from '../../../../tandem/js/PhetioObject.js';
 import { HasValueProperty } from './MappedWrappedProperty.js';
 
-// TODO: get rid of this whole thing and MaterialName?, https://github.com/phetsims/density-buoyancy-common/issues/256
-const nonCustomMaterialNames = [
-  'ALUMINUM',
-  'APPLE',
-  'BOAT_BODY',
-  'BRICK',
-  'CONCRETE',
-  'COPPER',
-  'DIAMOND',
-  'GLASS',
-  'GOLD',
-  'HUMAN',
-  'ICE',
-  'LEAD',
-  'PLATINUM',
-  'PVC',
-  'PYRITE',
-  'SILVER',
-  'STEEL',
-  'STYROFOAM',
-  'TANTALUM',
-  'TITANIUM',
-  'WOOD',
-  'AIR',
-  'FLUID_A',
-  'FLUID_B',
-  'FLUID_C',
-  'FLUID_D',
-  'FLUID_E',
-  'FLUID_F',
-  'GASOLINE',
-  'HONEY',
-  'MERCURY',
-  'OIL',
-  'SAND',
-  'SEAWATER',
-  'WATER',
-  'MATERIAL_O',
-  'MATERIAL_P',
-  'MATERIAL_R',
-  'MATERIAL_S',
-  'MATERIAL_V',
-  'MATERIAL_W',
-  'MATERIAL_X',
-  'MATERIAL_Y' ] as const;
-
 // TODO: phetioIDs for custom materials?  https://github.com/phetsims/density-buoyancy-common/issues/256
 let customTandemIndex = 0;
-
-type NonCustomMaterialName = typeof nonCustomMaterialNames[ number ];
-export type MaterialName = NonCustomMaterialName | 'CUSTOM';
 
 export type MaterialOptions = {
   nameProperty?: TReadOnlyProperty<string>;
 
   // If set, this material will be available at Material[ identifier ] as a global
-  identifier: MaterialName;
+  identifier: string;
 
   // Used for tandems
   tandemName: string;
@@ -120,7 +71,6 @@ type NoIdentifierMaterialOptions = StrictOmit<MaterialOptions, 'identifier' | 't
 export default class Material extends PhetioObject implements HasValueProperty {
 
   public readonly nameProperty: TReadOnlyProperty<string>;
-  public readonly identifier: MaterialName;
   public readonly tandemName: string | null;
   public readonly viscosity: number;
 
@@ -153,7 +103,6 @@ export default class Material extends PhetioObject implements HasValueProperty {
     } );
 
     this.nameProperty = options.nameProperty;
-    this.identifier = options.identifier;
     this.tandemName = options.tandemName;
     this.densityProperty = new NumberProperty( options.density, {
       tandem: this.tandem.createTandem( 'densityProperty' ),
@@ -680,12 +629,6 @@ export default class Material extends PhetioObject implements HasValueProperty {
     Material.MATERIAL_Y
   ] as const;
 
-  public static getMaterial( materialName: MaterialName ): Material {
-    const material = _.find( Material.MATERIALS, material => material.identifier === materialName )!;
-    assert && assert( material, `unknown material name: ${materialName}` );
-    return material;
-  }
-
   public static readonly DENSITY_MYSTERY_MATERIALS = [
     Material.WOOD,
     Material.GASOLINE,
@@ -778,8 +721,7 @@ class LiquidMaterial extends Material {
   }
 }
 
-assert && assert( _.every( Material.MATERIALS, material => !( material.custom || material.identifier === 'CUSTOM' ) ),
-  'custom materials not allowed in MATERIALS list' );
+assert && assert( _.every( Material.MATERIALS, material => !material.custom ), 'custom materials not allowed in MATERIALS list' );
 assert && assert( _.uniq( Material.MATERIALS ).length === Material.MATERIALS.length, 'duplicate in Material.MATERIALS' );
 
 densityBuoyancyCommon.register( 'Material', Material );

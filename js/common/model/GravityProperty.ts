@@ -17,11 +17,13 @@ import { PhetioObjectOptions } from '../../../../tandem/js/PhetioObject.js';
 
 export default class GravityProperty extends MappedWrappedProperty<Gravity> {
   public readonly gravityValueProperty: TReadOnlyProperty<number>;
+  public readonly customGravity: Gravity;
 
   public constructor( gravity: Gravity, providedOptions: PropertyOptions<Gravity> & PickRequired<PhetioObjectOptions, 'tandem'> ) {
     super( gravity, Gravity.createCustomGravity( gravity.gravityValue, providedOptions.tandem.createTandem( 'customGravity' ) ), providedOptions );
 
     this.gravityValueProperty = this.dynamicValueProperty;
+    this.customGravity = this.customValue;
   }
 }
 densityBuoyancyCommon.register( 'GravityProperty', GravityProperty );

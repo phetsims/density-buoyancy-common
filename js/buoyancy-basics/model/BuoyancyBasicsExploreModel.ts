@@ -55,7 +55,7 @@ export default class BuoyancyBasicsExploreModel extends DensityBuoyancyModel {
     this.massB = Cube.createWithMass( this.engine, Material.ALUMINUM, new Vector2( 0.05, 0.35 ), 13.5, {
       tag: MassTag.OBJECT_B,
       adjustableMaterial: true,
-      materialValidValues: Material.SIMPLE_MASS_MATERIALS.concat( [ Material.createCustomSolidMaterial( blockBTandem, {
+      materialValidValues: Material.SIMPLE_MASS_MATERIALS.concat( [ Material.createCustomSolidMaterial( blockBTandem.createTandem( 'customMaterial' ), {
         density: 1000,
         colorProperty: new ColorProperty( Color.RED )
       } ) ] ),

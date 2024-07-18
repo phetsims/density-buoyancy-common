@@ -137,7 +137,6 @@ export default class BuoyancyShapesScreenView extends BuoyancyScreenView<Buoyanc
 
     const materialControlNode = new MaterialControlNode( this.model.materialProperty, new Property( 1 ),
       Material.SIMPLE_MASS_MATERIALS, this.popupLayer, {
-        supportCustomMaterial: false,
         tandem: options.tandem.createTandem( 'materialControlNode' )
       } );
     const objectAShapeSizeControlNode = new ShapeSizeControlNode(

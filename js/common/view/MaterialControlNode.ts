@@ -27,10 +27,6 @@ type SelfMaterialControlNodeOptions = {
   // A label, if provided to be placed to the right of the ComboBox
   labelNode?: Node | null;
 
-  // If a custom material should be added to the ComboBox
-  // TODO: delete this, https://github.com/phetsims/density-buoyancy-common/issues/256
-  supportCustomMaterial?: boolean;
-
   // If a hidden material (Mystery materials for example) should be added to the ComboBox
   // TODO: why can't this just be derived from if you pass in mystery material in the parameter? https://github.com/phetsims/density-buoyancy-common/issues/256
   supportHiddenMaterial?: boolean;
@@ -55,7 +51,6 @@ export default class MaterialControlNode extends VBox {
     const options = optionize<MaterialControlNodeOptions, SelfMaterialControlNodeOptions, VBoxOptions>()( {
       syncCustomMaterialDensity: true,
       labelNode: null,
-      supportCustomMaterial: true,
       supportHiddenMaterial: false,
       minCustomMass: 0.5,
       maxCustomMass: 10,
@@ -80,9 +75,6 @@ export default class MaterialControlNode extends VBox {
     const customMaterials = materials.filter( material => material.custom );
     const mysteryMaterials = materials.filter( material => material.hidden );
 
-    if ( options.supportCustomMaterial ) {
-      assert && assert( customMaterials.length > 0, 'custom please' );
-    }
     assert && assert( customMaterials.length <= 1, 'one or less custom materials please' );
 
     const materialToItem = ( material: Material ) => {
@@ -116,7 +108,7 @@ export default class MaterialControlNode extends VBox {
     // TODO: But hidden ones!!! https://github.com/phetsims/density-buoyancy-common/issues/270
     const comboBox = new ComboBox( materialProperty, [
       ...regularMaterials.map( materialToItem ),
-      ...( options.supportCustomMaterial ? customMaterials.map( materialToItem ) : [] ),
+      ...customMaterials.map( materialToItem ),
       ...mysteryMaterials.map( materialToItem )
     ], listParent, {
       xMargin: 8,

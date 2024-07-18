@@ -135,7 +135,7 @@ export default class DensityNumberLineNode extends Node {
     background.localBounds = new Bounds2( 0, 0, options.width, options.height ).dilatedX( options.maxLabelWidth / 2 );
 
     const lineOptions = { stroke: 'black' };
-    // TODO: BUG: what if the density changes? https://github.com/phetsims/density-buoyancy-common/issues/256
+    // TODO AV: BUG: what if the density changes? https://github.com/phetsims/density-buoyancy-common/issues/256
     options.materials.forEach( ( material, index ) => {
       const x = this.modelViewTransform( material.density );
       const label = new Text( material.nameProperty, {

@@ -254,7 +254,6 @@ export default abstract class Mass extends PhetioObject {
       valueType: Material,
       reentrant: true,
 
-      // TODO: Is this correct? See https://github.com/phetsims/density-buoyancy-common/issues/256
       tandem: tandem?.createTandem( 'materialProperty' ),
       phetioValueType: ReferenceIO( IOType.ObjectIO ),
       phetioFeatured: true

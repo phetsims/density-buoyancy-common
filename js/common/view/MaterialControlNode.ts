@@ -28,7 +28,7 @@ type SelfMaterialControlNodeOptions = {
   labelNode?: Node | null;
 
   // If a hidden material (Mystery materials for example) should be added to the ComboBox
-  // TODO: why can't this just be derived from if you pass in mystery material in the parameter? https://github.com/phetsims/density-buoyancy-common/issues/256
+  // TODO AV: why can't this just be derived from if you pass in mystery material in the parameter? https://github.com/phetsims/density-buoyancy-common/issues/256
   supportHiddenMaterial?: boolean;
 
   minCustomMass?: number;
@@ -69,8 +69,7 @@ export default class MaterialControlNode extends VBox {
 
     const comboMaxWidth = 110;
 
-    // TODO: Should all these be separate options instead of one list that needs parsing? MK does not know, https://github.com/phetsims/density-buoyancy-common/issues/256
-    // TODO: sort at usage sites instead? https://github.com/phetsims/density-buoyancy-common/issues/256
+    // TODO AV: sort at usage sites instead? https://github.com/phetsims/density-buoyancy-common/issues/256
     const regularMaterials = materials.filter( material => !material.hidden && !material.custom );
     const customMaterials = materials.filter( material => material.custom );
     const mysteryMaterials = materials.filter( material => material.hidden );

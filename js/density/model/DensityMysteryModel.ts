@@ -78,12 +78,12 @@ export default class DensityMysteryModel extends BlockSetModel<MysteryBlockSet> 
       adjustableMaterial: true
     };
 
-    // TODO: this should just set density/color on 5 references that live forever. https://github.com/phetsims/density-buoyancy-common/issues/256
+    // TODO AV: this should just set density/color on 5 references that live forever. https://github.com/phetsims/density-buoyancy-common/issues/256
     const createMysteryMaterials = () => {
       const densities = dotRandom.shuffle( randomMaterials ).slice( 0, 5 ).map( material => material.density );
       const colors = dotRandom.shuffle( randomColors ).slice( 0, 5 );
 
-      // TODO: Specify the correct tandems throughout this file? See https://github.com/phetsims/density-buoyancy-common/issues/123
+      // TODO AV: Specify the correct tandems throughout this file? See https://github.com/phetsims/density-buoyancy-common/issues/123
       return _.range( 0, 5 ).map( i => Material.createCustomMaterial( Tandem.OPT_OUT, {
         density: densities[ i ],
         colorProperty: colors[ i ]

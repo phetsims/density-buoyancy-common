@@ -99,9 +99,6 @@ export default class Scale extends Mass {
         phetioReadOnly: true
       },
       materialPropertyOptions: {
-        phetioReadOnly: true,
-
-        // TODO: Scale materials should not be phet-io instrumented, right? See https://github.com/phetsims/density-buoyancy-common/issues/256
         tandem: Tandem.OPT_OUT
       },
       massPropertyOptions: {

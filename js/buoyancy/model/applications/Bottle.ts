@@ -185,7 +185,6 @@ export default class Bottle extends ApplicationsMass {
 
   public readonly materialInsideProperty: MaterialProperty;
   public readonly materialInsideVolumeRange = new Range( 0, 10 );
-  // TODO: BUG: When switching to a mystery material for the bottle, why does the volume sometimes change to 10L?, see https://github.com/phetsims/density-buoyancy-common/issues/256
   public readonly materialInsideVolumeProperty: Property<number>; // m^3
 
   public readonly maxVolumeDisplacedProperty = new NumberProperty( ApplicationsMass.DEFAULT_DISPLACEMENT_VOLUME );

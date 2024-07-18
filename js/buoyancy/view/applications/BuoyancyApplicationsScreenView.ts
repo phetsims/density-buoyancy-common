@@ -158,6 +158,7 @@ export default class BuoyancyApplicationsScreenView extends BuoyancyScreenView<B
         visibleProperty: new GatedVisibleProperty( customDensityControlVisibleProperty, customBottleDensityControlTandem ),
         sliderOptions: {
           accessibleName: DensityBuoyancyCommonStrings.densityStringProperty,
+          phetioLinkedProperty: model.bottle.materialInsideProperty.customMaterial.densityProperty,
           thumbNode: new PrecisionSliderThumb( {
             tandem: customBottleDensityControlTandem.createTandem( 'slider' ).createTandem( 'thumbNode' )
           } )

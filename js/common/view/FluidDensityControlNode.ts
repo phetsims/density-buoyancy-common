@@ -66,7 +66,7 @@ export default class FluidDensityControlNode extends ComboNumberControl<Material
             font: DensityBuoyancyCommonConstants.COMBO_BOX_ITEM_FONT,
             maxWidth: 160
           } ),
-          tandemName: `${material.tandem.name}Item`,
+          tandemName: `${material.tandem.name.replace( 'Material', '' )}Item`,
           a11yName: material.nameProperty,
           comboBoxListItemNodeOptions: {
             visible: !options.invisibleMaterials.includes( material )

@@ -26,6 +26,7 @@ import Cuboid from '../../common/model/Cuboid.js';
 import MassTag from '../../common/model/MassTag.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import LocalizedStringProperty from '../../../../chipper/js/LocalizedStringProperty.js';
+import Tandem from '../../../../tandem/js/Tandem.js';
 
 // constants
 const randomMaterials = Material.DENSITY_MYSTERY_MATERIALS;
@@ -77,13 +78,15 @@ export default class DensityMysteryModel extends BlockSetModel<MysteryBlockSet> 
       adjustableMaterial: true
     };
 
+    // TODO: this should just set density/color on 5 references that live forever. https://github.com/phetsims/density-buoyancy-common/issues/256
     const createMysteryMaterials = () => {
       const densities = dotRandom.shuffle( randomMaterials ).slice( 0, 5 ).map( material => material.density );
       const colors = dotRandom.shuffle( randomColors ).slice( 0, 5 );
 
-      return _.range( 0, 5 ).map( i => Material.createCustomMaterial( {
+      // TODO: Specify the correct tandems throughout this file? See https://github.com/phetsims/density-buoyancy-common/issues/123
+      return _.range( 0, 5 ).map( i => Material.createCustomMaterial( Tandem.OPT_OUT, {
         density: densities[ i ],
-        customColor: colors[ i ]
+        colorProperty: colors[ i ]
       } ) );
     };
     const createMysteryVolumes = () => {
@@ -106,9 +109,9 @@ export default class DensityMysteryModel extends BlockSetModel<MysteryBlockSet> 
           return [
             Cube.createWithVolume(
               model.engine,
-              Material.createCustomMaterial( {
+              Material.createCustomMaterial( Tandem.OPT_OUT, {
                 density: Material.WATER.density,
-                customColor: DensityBuoyancyCommonColors.compareRedColorProperty
+                colorProperty: DensityBuoyancyCommonColors.compareRedColorProperty
               } ),
               Vector2.ZERO,
               0.005,
@@ -117,9 +120,9 @@ export default class DensityMysteryModel extends BlockSetModel<MysteryBlockSet> 
 
             Cube.createWithVolume(
               model.engine,
-              Material.createCustomMaterial( {
+              Material.createCustomMaterial( Tandem.OPT_OUT, {
                 density: Material.WOOD.density,
-                customColor: DensityBuoyancyCommonColors.compareBlueColorProperty
+                colorProperty: DensityBuoyancyCommonColors.compareBlueColorProperty
               } ),
               Vector2.ZERO,
               0.001,
@@ -128,9 +131,9 @@ export default class DensityMysteryModel extends BlockSetModel<MysteryBlockSet> 
 
             Cube.createWithVolume(
               model.engine,
-              Material.createCustomMaterial( {
+              Material.createCustomMaterial( Tandem.OPT_OUT, {
                 density: Material.WOOD.density,
-                customColor: DensityBuoyancyCommonColors.compareGreenColorProperty
+                colorProperty: DensityBuoyancyCommonColors.compareGreenColorProperty
               } ),
               Vector2.ZERO,
               0.007,
@@ -139,9 +142,9 @@ export default class DensityMysteryModel extends BlockSetModel<MysteryBlockSet> 
 
             Cube.createWithVolume(
               model.engine,
-              Material.createCustomMaterial( {
+              Material.createCustomMaterial( Tandem.OPT_OUT, {
                 density: Material.GOLD.density,
-                customColor: DensityBuoyancyCommonColors.compareYellowColorProperty
+                colorProperty: DensityBuoyancyCommonColors.compareYellowColorProperty
               } ),
               Vector2.ZERO,
               0.001,
@@ -150,9 +153,9 @@ export default class DensityMysteryModel extends BlockSetModel<MysteryBlockSet> 
 
             Cube.createWithVolume(
               model.engine,
-              Material.createCustomMaterial( {
+              Material.createCustomMaterial( Tandem.OPT_OUT, {
                 density: Material.DIAMOND.density,
-                customColor: DensityBuoyancyCommonColors.comparePurpleColorProperty
+                colorProperty: DensityBuoyancyCommonColors.comparePurpleColorProperty
               } ),
               Vector2.ZERO,
               0.0055,
@@ -163,9 +166,9 @@ export default class DensityMysteryModel extends BlockSetModel<MysteryBlockSet> 
           return [
             Cube.createWithMass(
               model.engine,
-              Material.createCustomMaterial( {
+              Material.createCustomMaterial( Tandem.OPT_OUT, {
                 density: 4500,
-                customColor: DensityBuoyancyCommonColors.mysteryPinkColorProperty
+                colorProperty: DensityBuoyancyCommonColors.mysteryPinkColorProperty
               } ),
               Vector2.ZERO,
               18,
@@ -174,9 +177,9 @@ export default class DensityMysteryModel extends BlockSetModel<MysteryBlockSet> 
 
             Cube.createWithMass(
               model.engine,
-              Material.createCustomMaterial( {
+              Material.createCustomMaterial( Tandem.OPT_OUT, {
                 density: 11340,
-                customColor: DensityBuoyancyCommonColors.mysteryOrangeColorProperty
+                colorProperty: DensityBuoyancyCommonColors.mysteryOrangeColorProperty
               } ),
               Vector2.ZERO,
               18,
@@ -185,9 +188,9 @@ export default class DensityMysteryModel extends BlockSetModel<MysteryBlockSet> 
 
             Cube.createWithVolume(
               model.engine,
-              Material.createCustomMaterial( {
+              Material.createCustomMaterial( Tandem.OPT_OUT, {
                 density: Material.COPPER.density,
-                customColor: DensityBuoyancyCommonColors.mysteryLightPurpleColorProperty
+                colorProperty: DensityBuoyancyCommonColors.mysteryLightPurpleColorProperty
               } ),
               Vector2.ZERO,
               0.005,
@@ -196,9 +199,9 @@ export default class DensityMysteryModel extends BlockSetModel<MysteryBlockSet> 
 
             Cube.createWithMass(
               model.engine,
-              Material.createCustomMaterial( {
+              Material.createCustomMaterial( Tandem.OPT_OUT, {
                 density: 2700,
-                customColor: DensityBuoyancyCommonColors.mysteryLightGreenColorProperty
+                colorProperty: DensityBuoyancyCommonColors.mysteryLightGreenColorProperty
               } ),
               Vector2.ZERO,
               2.7,
@@ -207,9 +210,9 @@ export default class DensityMysteryModel extends BlockSetModel<MysteryBlockSet> 
 
             Cube.createWithMass(
               model.engine,
-              Material.createCustomMaterial( {
+              Material.createCustomMaterial( Tandem.OPT_OUT, {
                 density: 2700,
-                customColor: DensityBuoyancyCommonColors.mysteryBrownColorProperty
+                colorProperty: DensityBuoyancyCommonColors.mysteryBrownColorProperty
               } ),
               Vector2.ZERO,
               10.8,
@@ -220,9 +223,9 @@ export default class DensityMysteryModel extends BlockSetModel<MysteryBlockSet> 
           return [
             Cube.createWithMass(
               model.engine,
-              Material.createCustomMaterial( {
+              Material.createCustomMaterial( Tandem.OPT_OUT, {
                 density: 950,
-                customColor: DensityBuoyancyCommonColors.mysteryWhiteColorProperty
+                colorProperty: DensityBuoyancyCommonColors.mysteryWhiteColorProperty
               } ),
               Vector2.ZERO,
               6,
@@ -231,9 +234,9 @@ export default class DensityMysteryModel extends BlockSetModel<MysteryBlockSet> 
 
             Cube.createWithMass(
               model.engine,
-              Material.createCustomMaterial( {
+              Material.createCustomMaterial( Tandem.OPT_OUT, {
                 density: 1000, // same as water, in SI (kg/m^3)
-                customColor: DensityBuoyancyCommonColors.mysteryGrayColorProperty
+                colorProperty: DensityBuoyancyCommonColors.mysteryGrayColorProperty
               } ),
               Vector2.ZERO,
               6,
@@ -242,9 +245,9 @@ export default class DensityMysteryModel extends BlockSetModel<MysteryBlockSet> 
 
             Cube.createWithMass(
               model.engine,
-              Material.createCustomMaterial( {
+              Material.createCustomMaterial( Tandem.OPT_OUT, {
                 density: 400,
-                customColor: DensityBuoyancyCommonColors.mysteryMustardColorProperty
+                colorProperty: DensityBuoyancyCommonColors.mysteryMustardColorProperty
               } ),
               Vector2.ZERO,
               2,
@@ -253,9 +256,9 @@ export default class DensityMysteryModel extends BlockSetModel<MysteryBlockSet> 
 
             Cube.createWithMass(
               model.engine,
-              Material.createCustomMaterial( {
+              Material.createCustomMaterial( Tandem.OPT_OUT, {
                 density: 7800,
-                customColor: DensityBuoyancyCommonColors.mysteryPeachColorProperty
+                colorProperty: DensityBuoyancyCommonColors.mysteryPeachColorProperty
               } ),
               Vector2.ZERO,
               23.4,
@@ -264,9 +267,9 @@ export default class DensityMysteryModel extends BlockSetModel<MysteryBlockSet> 
 
             Cube.createWithMass(
               model.engine,
-              Material.createCustomMaterial( {
+              Material.createCustomMaterial( Tandem.OPT_OUT, {
                 density: 950,
-                customColor: DensityBuoyancyCommonColors.mysteryMaroonColorProperty
+                colorProperty: DensityBuoyancyCommonColors.mysteryMaroonColorProperty
               } ),
               Vector2.ZERO,
               2.85,

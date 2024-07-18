@@ -32,27 +32,24 @@ export default class MassLabelNode extends Node {
       pickable: false
     } );
 
-    this.readoutStringProperty = new DerivedProperty(
-      [
-        mass.materialProperty,
-        mass.volumeProperty,
-        DensityBuoyancyCommonStrings.kilogramsPatternStringProperty,
-        DensityBuoyancyCommonStrings.questionMarkStringProperty
-      ],
-      (
-        material,
-        volume,
-        patternStringProperty,
-        questionMarkString
-      ) => {
-        return material.hidden ?
-               questionMarkString :
-               StringUtils.fillIn( patternStringProperty, {
-                 // Deriving the mass instead of using massProperty to avoid including the contained mass, for the case of the boat
-                 kilograms: Utils.toFixed( volume * material.density, 2 ),
-                 decimalPlaces: 2
-               } );
-      } );
+    this.readoutStringProperty = new DerivedProperty( [
+      mass.materialProperty,
+      mass.materialProperty.densityProperty,
+      mass.volumeProperty,
+      DensityBuoyancyCommonStrings.kilogramsPatternStringProperty,
+      DensityBuoyancyCommonStrings.questionMarkStringProperty
+    ], (
+      material,
+      density,
+      volume,
+      patternStringProperty,
+      questionMarkString
+    ) => material.hidden ? questionMarkString :
+         StringUtils.fillIn( patternStringProperty, {
+           // Deriving the mass instead of using massProperty to avoid including the contained mass, for the case of the boat
+           kilograms: Utils.toFixed( volume * density, 2 ),
+           decimalPlaces: 2
+         } ) );
 
     const readoutText = new Text( this.readoutStringProperty, {
       font: new PhetFont( {

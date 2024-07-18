@@ -1,7 +1,7 @@
 // Copyright 2024, University of Colorado Boulder
 
 /**
- * Represents a mass that interacts in the scene, and can potentially float or displace fluid.
+ * TODO: Documentation, see https://github.com/phetsims/density-buoyancy-common/issues/257
  *
  * @author Jonathan Olson (PhET Interactive Simulations)
  */

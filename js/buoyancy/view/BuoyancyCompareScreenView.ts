@@ -9,7 +9,6 @@
 import { combineOptions } from '../../../../phet-core/js/optionize.js';
 import { AlignBox, Node, VBox } from '../../../../scenery/js/imports.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
-import Material from '../../common/model/Material.js';
 import DensityBuoyancyScreenView, { DensityBuoyancyScreenViewOptions } from '../../common/view/DensityBuoyancyScreenView.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
@@ -23,7 +22,6 @@ import Vector3 from '../../../../dot/js/Vector3.js';
 import ScreenView from '../../../../joist/js/ScreenView.js';
 import BlockSet from '../../common/model/BlockSet.js';
 import { ReadoutItemOptions } from './ReadoutListAccordionBox.js';
-import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import Mass from '../../common/model/Mass.js';
 import Bounds2 from '../../../../dot/js/Bounds2.js';
 import { DensityMaterials } from '../../common/view/MaterialView.js';
@@ -39,6 +37,7 @@ import Panel from '../../../../sun/js/Panel.js';
 import BuoyancyScreenView from './BuoyancyScreenView.js';
 import StrictOmit from '../../../../phet-core/js/types/StrictOmit.js';
 import FluidIconMesh from '../../common/view/FluidIconMesh.js';
+import MaterialProperty from '../../common/model/MaterialProperty.js';
 
 // constants
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN_SMALL;
@@ -122,7 +121,7 @@ export default class BuoyancyCompareScreenView extends BuoyancyScreenView<Buoyan
     } );
 
     const readoutItemsCache = new Map<BlockSet, {
-      densityItems: ReadoutItemOptions<TReadOnlyProperty<Material>>[];
+      densityItems: ReadoutItemOptions<MaterialProperty>[];
       submergedItems: ReadoutItemOptions<Mass>[];
     }>();
 

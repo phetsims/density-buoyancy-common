@@ -91,12 +91,7 @@ export default class BuoyancyExploreScreenView extends BuoyancyScreenView<Buoyan
       }
     );
 
-    const customMaterial = Material.createCustomLiquidMaterial( {
-      density: 1000, // Same as water, in SI (kg/m^3)
-      densityRange: DensityBuoyancyCommonConstants.FLUID_DENSITY_RANGE_PER_M3
-    } );
-
-    const fluidDensityPanel = new FluidDensityPanel( model, customMaterial, invisibleMaterials, this.popupLayer, tandem.createTandem( 'fluidDensityPanel' ) );
+    const fluidDensityPanel = new FluidDensityPanel( model, invisibleMaterials, this.popupLayer, tandem.createTandem( 'fluidDensityPanel' ) );
 
     this.addChild( new AlignBox( fluidDensityPanel, {
       alignBoundsProperty: this.visibleBoundsProperty,

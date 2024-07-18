@@ -2,13 +2,12 @@
 
 /**
  * Handles controlling a quantity with a NumberControl, but combined with a ComboBox for specific non-custom values.
+ * TODO: More careful review as part of https://github.com/phetsims/density-buoyancy-common/issues/123
  *
  * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
 import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
-import NumberProperty from '../../../../axon/js/NumberProperty.js';
-import Property from '../../../../axon/js/Property.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import Dimension2 from '../../../../dot/js/Dimension2.js';
 import Range from '../../../../dot/js/Range.js';
@@ -24,45 +23,35 @@ import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
 import PickRequired from '../../../../phet-core/js/types/PickRequired.js';
 import { PhetioObjectOptions } from '../../../../tandem/js/PhetioObject.js';
+import Material from '../model/Material.js';
+import Gravity from '../model/Gravity.js';
+import MappedWrappedProperty from '../model/MappedWrappedProperty.js';
+import UnitConversionProperty from '../../../../axon/js/UnitConversionProperty.js';
 
-type SelfOptions<T> = {
+type SelfOptions<T extends Material | Gravity> = {
   titleProperty: TReadOnlyProperty<string>;
   valuePatternProperty: TReadOnlyProperty<string>; // with {{value}} placeholder
-  property: Property<T>;
+  property: MappedWrappedProperty<T>;
   range: Range;
-
-  // Converts the Property values into numeric values
-  toNumericValue: ( t: T ) => number;
-
-  // Given a numeric value, creates the corresponding rich object
-  createCustomValue: ( n: number ) => T;
-
-  // Given a main value, returns whether it is a custom value or not
-  isCustomValue: ( t: T ) => boolean;
-
-  // Given a main value, returns whether it is a hidden value or not
-  isHiddenValue: ( t: T ) => boolean;
 
   listParent: Node;
 
   comboItems: ComboBoxItem<T>[];
 
-  // The token value in items that is the designated custom value
-  customValue: T;
-
   getFallbackNode?: ( t: T ) => Node | null;
 
   numberControlOptions?: NumberControlOptions;
   comboBoxOptions?: ComboBoxOptions;
+
+  // TODO: Can we remove this? https://github.com/phetsims/density-buoyancy-common/issues/266
+  unitsConversionFactor: number;
 } & PickRequired<PhetioObjectOptions, 'tandem'>;
 
-export type ComboNumberControlOptions<T> = SelfOptions<T> & VBoxOptions;
+export type ComboNumberControlOptions<T extends Material | Gravity> = SelfOptions<T> & VBoxOptions;
 
-export default abstract class ComboNumberControl<T> extends VBox {
+export default abstract class ComboNumberControl<T extends Material | Gravity> extends VBox {
 
-  private readonly property: Property<T>;
-  private readonly numberProperty: Property<number>;
-  private readonly comboProperty: Property<T>;
+  private readonly mappedWrappedProperty: MappedWrappedProperty<T>;
   private readonly disposalCallbacks: ( () => void )[];
   private readonly numberControl: NumberControl;
   private readonly comboBox: ComboBox<T>;
@@ -107,8 +96,8 @@ export default abstract class ComboNumberControl<T> extends VBox {
             };
 
             // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
-            this.property.link( listener );
-            disposalCallbacks.push( () => this.property.unlink( listener ) );
+            this.mappedWrappedProperty.link( listener );
+            disposalCallbacks.push( () => this.mappedWrappedProperty.unlink( listener ) );
 
             return bottomContent;
           },
@@ -166,92 +155,51 @@ export default abstract class ComboNumberControl<T> extends VBox {
     }, providedOptions );
 
     assert && assert( !options.children, 'Children should not be specified for ComboNumberControl' );
-    assert && assert( options.property instanceof Property );
-    assert && assert( typeof options.toNumericValue === 'function' );
-    assert && assert( typeof options.createCustomValue === 'function' );
-    assert && assert( typeof options.isCustomValue === 'function' );
-    assert && assert( Array.isArray( options.comboItems ) );
-    assert && assert( options.customValue );
 
     const getFallbackNode = options.getFallbackNode;
 
     super();
 
-    const getNumericValue = ( value: T ) => options.toNumericValue( value );
-    const getComboValue = ( value: T ) => options.isCustomValue( value ) ? options.customValue : value;
-
-    this.property = options.property;
-    this.numberProperty = new NumberProperty( getNumericValue( this.property.value ) );
-    this.comboProperty = new Property( getComboValue( this.property.value ) );
+    this.mappedWrappedProperty = options.property;
     this.disposalCallbacks = disposalCallbacks;
 
-    // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
-    // Track the last non-hidden value, so that if we go to CUSTOM, we'll use this (and not just show the hidden value,
-    // see https://github.com/phetsims/buoyancy/issues/54
-    let lastNonHiddenValue = this.property.value;
-    this.property.link( value => {
-      if ( !options.isHiddenValue( value ) ) {
-        lastNonHiddenValue = value;
+    // Prevent an infinite loop in the following listeners.
+    let isChangingToPredefinedMaterialLock = false;
+
+    // When the user changes the density by dragging the slider, automatically switch from the predefined material to
+    // the custom material.
+    this.mappedWrappedProperty.customValue.valueProperty.lazyLink( () => {
+      if ( !isChangingToPredefinedMaterialLock ) {
+        this.mappedWrappedProperty.value = this.mappedWrappedProperty.customValue;
       }
     } );
 
-    let locked = false;
-
-    // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
-    this.property.lazyLink( value => {
-      if ( !locked ) {
-        locked = true;
-
-        this.numberProperty.value = getNumericValue( value );
-        this.comboProperty.value = getComboValue( value );
-
-        locked = false;
-      }
-    } );
-    // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
-    this.numberProperty.lazyLink( value => {
-      if ( !locked ) {
-        locked = true;
-
-        this.property.value = options.createCustomValue( value );
-        this.comboProperty.value = options.customValue;
-
-        locked = false;
-      }
-    } );
-    // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
-    this.comboProperty.lazyLink( value => {
-      if ( !locked ) {
-        locked = true;
-
-        if ( options.isCustomValue( value ) ) {
-          // We'll swap to the last non-hidden value (and make it custom). This is so that we don't immediately show a
-          // "hidden" previous value (e.g. FLUID_A) and the students have to guess it.
-          // See https://github.com/phetsims/buoyancy/issues/54
-          const newValue = getNumericValue( lastNonHiddenValue );
-          this.property.value = options.createCustomValue( newValue );
-          this.numberProperty.value = newValue;
-        }
-        else {
-          this.property.value = value;
-          this.numberProperty.value = getNumericValue( value );
-        }
-
-        locked = false;
+    // In the explore screen, when switching from custom to wood, change the density back to the wood density
+    // However, when switching to a mystery material, do not change the custom value. This prevents clever students from discovering
+    // the mystery values by using the UI instead of by computing them, see https://github.com/phetsims/buoyancy/issues/54
+    this.mappedWrappedProperty.lazyLink( richObject => {
+      if ( !richObject.custom && !richObject.hidden ) {
+        isChangingToPredefinedMaterialLock = true;
+        this.mappedWrappedProperty.customValue.valueProperty.value = richObject.valueProperty.value;
+        isChangingToPredefinedMaterialLock = false;
       }
     } );
 
-    this.numberControl = new NumberControl( options.titleProperty, this.numberProperty, options.range, combineOptions<NumberControlOptions>( {
+    const correctUnitsProperty = new UnitConversionProperty( this.mappedWrappedProperty.customValue.valueProperty, {
+      factor: options.unitsConversionFactor
+    } );
+
+    this.numberControl = new NumberControl( options.titleProperty, correctUnitsProperty, options.range, combineOptions<NumberControlOptions>( {
       tandem: options.tandem.createTandem( 'numberControl' ),
       sliderOptions: {
         accessibleName: options.titleProperty
       }
     }, options.numberControlOptions ) );
-    this.numberControl.addLinkedElement( this.property, {
+    this.numberControl.addLinkedElement( this.mappedWrappedProperty, {
       tandemName: 'valueProperty'
     } );
 
-    this.comboBox = new ComboBox( this.comboProperty, options.comboItems, options.listParent, combineOptions<ComboBoxOptions>( {
+    this.comboBox = new ComboBox( this.mappedWrappedProperty, options.comboItems, options.listParent, combineOptions<ComboBoxOptions>( {
       tandem: options.tandem.createTandem( 'comboBox' )
     }, options.comboBoxOptions ) );
 
@@ -272,9 +220,6 @@ export default abstract class ComboNumberControl<T> extends VBox {
   public override dispose(): void {
     this.numberControl.dispose();
     this.comboBox.dispose();
-
-    this.numberProperty.dispose();
-    this.comboProperty.dispose();
 
     this.disposalCallbacks.forEach( callback => callback() );
 

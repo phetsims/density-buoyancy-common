@@ -8,7 +8,6 @@
  * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
-import Property from '../../../../axon/js/Property.js';
 import Utils from '../../../../dot/js/Utils.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
 import ThreeUtils from '../../../../mobius/js/ThreeUtils.js';
@@ -52,6 +51,7 @@ import Wood26_nrm_jpg from '../../../images/Wood26_nrm_jpg.js';
 import Wood26_rgh_jpg from '../../../images/Wood26_rgh_jpg.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import Material from '../model/Material.js';
+import ReadOnlyProperty from '../../../../axon/js/ReadOnlyProperty.js';
 
 // MaterialView definition
 
@@ -339,10 +339,10 @@ class GreyMetalMaterialView extends MaterialView {
 
 export class ColoredMaterialView extends MaterialView<THREE.MeshLambertMaterial> {
 
-  private readonly colorProperty: Property<Color>;
+  private readonly colorProperty: ReadOnlyProperty<Color>;
   private readonly listener: ( color: Color ) => void;
 
-  public constructor( colorProperty: Property<Color> ) {
+  public constructor( colorProperty: ReadOnlyProperty<Color> ) {
 
     assert && assert( colorProperty !== null, 'colorProperty should not be null' );
 
@@ -388,7 +388,7 @@ export class DensityMaterials {
     else if ( material === Material.COPPER ) {
       return new CopperMaterialView();
     }
-    else if ( material === Material.GOLD ) {
+    else if ( material === Material.GOLD || material === Material.PYRITE || material === Material.MATERIAL_X || material === Material.MATERIAL_Y ) {
       return new GoldMaterialView();
     }
     else if ( material === Material.SILVER ) {
@@ -403,9 +403,6 @@ export class DensityMaterials {
     else if ( material === Material.PVC ) {
       return new PVCMaterialView();
     }
-    else if ( material === Material.PYRITE ) {
-      return new GoldMaterialView();
-    }
     else if ( material === Material.STEEL ) {
       return new SteelMaterialView();
     }
@@ -418,27 +415,9 @@ export class DensityMaterials {
     else if ( material === Material.WOOD ) {
       return new WoodMaterialView();
     }
-    else if ( material === Material.MATERIAL_O ) {
-      return new ColoredMaterialView( material.customColor! );
-    }
-    else if ( material === Material.MATERIAL_P ) {
-      return new ColoredMaterialView( material.customColor! );
-    }
-    else if ( material === Material.MATERIAL_V ) {
-      return new ColoredMaterialView( material.customColor! );
-    }
-    else if ( material === Material.MATERIAL_W ) {
-      return new ColoredMaterialView( material.customColor! );
-    }
-    else if ( material === Material.MATERIAL_X ) {
-      return new GoldMaterialView();
-    }
-    else if ( material === Material.MATERIAL_Y ) {
-      return new GoldMaterialView();
-    }
-    else if ( material.custom ) {
-      assert && assert( material.customColor, 'customColor required for custom materials' );
-      return new ColoredMaterialView( material.customColor! );
+    else if ( material.custom || material.hidden ) {
+      assert && assert( material.colorProperty, 'colorProperty required for custom materials' );
+      return new ColoredMaterialView( material.colorProperty! );
     }
     else {
       return new DebugMaterialView();

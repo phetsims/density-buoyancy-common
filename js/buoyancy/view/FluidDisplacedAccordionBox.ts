@@ -76,14 +76,16 @@ export default class FluidDisplacedAccordionBox extends AccordionBox {
     const beakerVolumeProperty = new NumberProperty( 0, { range: BEAKER_RANGE.copy() } );
 
     const solutionFillProperty = new DynamicProperty<Color, Color, Material>( fluidMaterialProperty, {
-      derive: material => material.liquidColor!,
+      derive: material => {
+        assert && assert( material.colorProperty, 'liquid color needed here' );
+        return material.colorProperty!;
+      },
       map: color => {
 
         // Below this threshold, use the same color for better contrast, see https://github.com/phetsims/buoyancy/issues/154
         if ( fluidMaterialProperty.value.custom ) {
-
           if ( fluidMaterialProperty.value.density < SAME_COLOR_MIN_DENSITY_THRESHOLD ) {
-            color = Material.getCustomLiquidColor( SAME_COLOR_MIN_DENSITY_THRESHOLD, DensityBuoyancyCommonConstants.FLUID_DENSITY_RANGE_PER_M3 ).value;
+            color = Material.getCustomLiquidColor( SAME_COLOR_MIN_DENSITY_THRESHOLD, DensityBuoyancyCommonConstants.FLUID_DENSITY_RANGE_PER_M3 );
           }
 
           return color.withAlpha( 0.8 );
@@ -121,7 +123,7 @@ export default class FluidDisplacedAccordionBox extends AccordionBox {
 
       // Convert density units from kg/m^3=>kg/L
       return ( fluidMaterial.density / DensityBuoyancyCommonConstants.LITERS_IN_CUBIC_METER ) *
-             gravity.value * displacedVolume;
+             gravity.gravityValue * displacedVolume;
     }, {
       tandem: options.tandem.createTandem( 'displacedWeightProperty' ),
       phetioValueType: NumberIO,
@@ -197,7 +199,7 @@ export default class FluidDisplacedAccordionBox extends AccordionBox {
     const beakerNode = new BeakerNode( new NumberProperty( 0.2, {
       range: BEAKER_RANGE.copy()
     } ), combineOptions<BeakerNodeOptions>( {
-      solutionFill: Material.WATER.liquidColor
+      solutionFill: Material.WATER.colorProperty
     }, FluidDisplacedAccordionBox.getBeakerOptions() ) );
 
     scaleIcon.top = beakerNode.bottom - 30;

@@ -18,9 +18,8 @@ import Range from '../../../../dot/js/Range.js';
 import TProperty from '../../../../axon/js/TProperty.js';
 import { Color } from '../../../../scenery/js/imports.js';
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
-import Material from './Material.js';
+import Material, { CustomSolidMaterial } from './Material.js';
 import Property from '../../../../axon/js/Property.js';
-import Tandem from '../../../../tandem/js/Tandem.js';
 import Cube, { CubeOptions } from './Cube.js';
 import merge from '../../../../phet-core/js/merge.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
@@ -29,6 +28,7 @@ import WithRequired from '../../../../phet-core/js/types/WithRequired.js';
 import HasChangedNumberProperty from './HasChangedNumberProperty.js';
 import propertyStateHandlerSingleton from '../../../../axon/js/propertyStateHandlerSingleton.js';
 import PropertyStatePhase from '../../../../axon/js/PropertyStatePhase.js';
+import Tandem from '../../../../tandem/js/Tandem.js';
 
 // This hard coded range is a bit arbitrary, but it lends itself to better colors than the provided range in the options.
 const COLOR_DENSITY_RANGE = new Range( 10, 10000 );
@@ -44,6 +44,8 @@ type CubeData = {
   sameMassCubeOptions: WithRequired<Partial<CubeOptions>, 'tandem'>;
   sameVolumeCubeOptions: WithRequired<Partial<CubeOptions>, 'tandem'>;
   sameDensityCubeOptions: WithRequired<Partial<CubeOptions>, 'tandem'>;
+
+  tandemName: string;
 };
 
 type CubeDataInternal = {
@@ -139,15 +141,15 @@ export default class CompareBlockSetModel extends BlockSetModel<BlockSet> {
       return merge( {
 
         sameMassDensityProperty: sameMassDensityProperty,
-        sameMassMaterialProperty: CompareBlockSetModel.createMaterialProperty( cubeData.colorProperty, sameMassDensityProperty,
+        sameMassMaterialProperty: CompareBlockSetModel.createMaterialProperty( tandem.createTandem( cubeData.tandemName ).createTandem( 'sameMassCustomMaterial' ), cubeData.colorProperty, sameMassDensityProperty,
           massProperty.hasChangedProperty, options.initialMaterials ),
 
         sameVolumeDensityProperty: sameVolumeDensityProperty,
-        sameVolumeMaterialProperty: CompareBlockSetModel.createMaterialProperty( cubeData.colorProperty, sameVolumeDensityProperty,
+        sameVolumeMaterialProperty: CompareBlockSetModel.createMaterialProperty( tandem.createTandem( cubeData.tandemName ).createTandem( 'sameVolumeCustomMaterial' ), cubeData.colorProperty, sameVolumeDensityProperty,
           volumeProperty.hasChangedProperty, options.initialMaterials ),
 
         sameDensityDensityProperty: sameDensityDensityProperty,
-        sameDensityMaterialProperty: CompareBlockSetModel.createMaterialProperty( cubeData.colorProperty, sameDensityDensityProperty,
+        sameDensityMaterialProperty: CompareBlockSetModel.createMaterialProperty( tandem.createTandem( cubeData.tandemName ).createTandem( 'sameDensityCustomMaterial' ), cubeData.colorProperty, sameDensityDensityProperty,
           densityProperty.hasChangedProperty, options.initialMaterials )
 
       }, cubeData );
@@ -159,8 +161,7 @@ export default class CompareBlockSetModel extends BlockSetModel<BlockSet> {
       // don't need to be removed.
       return blockSet === BlockSet.SAME_MASS ?
              cubesData.map( cubeData => {
-               const cube = Cube.createWithMass( model.engine, cubeData.sameMassMaterialProperty.value, Vector2.ZERO,
-                 massProperty.value, cubeData.sameMassCubeOptions );
+               const cube = Cube.createWithMass( model.engine, cubeData.sameMassMaterialProperty.value, Vector2.ZERO, massProperty.value, cubeData.sameMassCubeOptions );
 
                cubeData.sameMassMaterialProperty.link( material => cube.materialProperty.set( material ) );
                massProperty.lazyLink( massValue => cubeData.sameMassDensityProperty.set( massValue / cube.volumeProperty.value ) );
@@ -190,6 +191,7 @@ export default class CompareBlockSetModel extends BlockSetModel<BlockSet> {
 
                // We must undefer the Cube's materialProperty first, in order for the DynamicProperty in DensityAccordionBox to be correctly unregistered
                // We do not know why scheduling a NOTIFY order dependency was not sufficient
+               // TODO: Does this logic simplify now that Material is mutable? See https://github.com/phetsims/density-buoyancy-common/issues/163
                propertyStateHandlerSingleton.registerPhetioOrderDependency( cube.materialProperty, PropertyStatePhase.UNDEFER, model.blockSetProperty, PropertyStatePhase.UNDEFER );
 
                return cube;
@@ -240,39 +242,50 @@ export default class CompareBlockSetModel extends BlockSetModel<BlockSet> {
    * Creates a material property based on the provided color, density, and block set value change status.
    * If the block set value has not changed, it attempts to use an initial material with the same density.
    * Otherwise, it creates a custom material with a modified color based on the density.
+   *
+   * TODO: Should this return MaterialProperty and create its own customMaterial? see https://github.com/phetsims/density-buoyancy-common/issues/256
    */
-  private static createMaterialProperty( colorProperty: TReadOnlyProperty<Color>, densityProperty: TReadOnlyProperty<number>,
+  private static createMaterialProperty( tandem: Tandem, colorProperty: TReadOnlyProperty<Color>, densityProperty: TReadOnlyProperty<number>,
                                          blockSetValueChangedProperty: TReadOnlyProperty<boolean>, initialMaterials: Material[] ): TReadOnlyProperty<Material> {
-    return new DerivedProperty( [ colorProperty, densityProperty, blockSetValueChangedProperty ],
-      ( color, density, blockSetValueChanged ) => {
 
-        // If the block set value has not changed, attempt to use an initial material with the same density.
-        if ( !blockSetValueChanged ) {
-          for ( let i = 0; i < initialMaterials.length; i++ ) {
-            const material = initialMaterials[ i ];
-            if ( material.density === density ) {
-              return material;
-            }
+    // Create and return a custom material with the modified color and density.
+    // TODO: there is unused and commented out code here, see https://github.com/phetsims/density-buoyancy-common/issues/256
+    const myColorProperty = new DerivedProperty( [ colorProperty, densityProperty ], ( color, density ) => {
+      // myCustomMaterial.densityProperty.value = density;
+
+      // Calculate the lightness of the material based on its density.
+      const lightness = Material.getNormalizedLightness( densityProperty.value, COLOR_DENSITY_RANGE ); // 0-1
+
+      // Modify the color brightness based on the lightness.
+      const modifier = 0.1;
+      const rawValue = ( lightness * 2 - 1 ) * ( 1 - modifier ) + modifier;
+      const power = 0.7;
+
+      return colorProperty.value.colorUtilsBrightness( Math.sign( rawValue ) * Math.pow( Math.abs( rawValue ), power ) );
+    } );
+    const myCustomMaterial = new CustomSolidMaterial( tandem, {
+      density: densityProperty.value,
+      colorProperty: myColorProperty
+    } );
+
+    // TODO: Pass the densityProperty directly into the custom one https://github.com/phetsims/density-buoyancy-common/issues/256
+    densityProperty.link( density => {
+      myCustomMaterial.densityProperty.value = density;
+    } );
+
+    return new DerivedProperty( [ densityProperty, blockSetValueChangedProperty ], ( density, blockSetValueChanged ) => {
+
+      // If the block set value has not changed, attempt to use an initial material with the same density.
+      if ( !blockSetValueChanged ) {
+        for ( let i = 0; i < initialMaterials.length; i++ ) {
+          const material = initialMaterials[ i ];
+          if ( material.density === density ) {
+            return material;
           }
         }
-
-        // Calculate the lightness of the material based on its density.
-        const lightness = Material.getNormalizedLightness( density, COLOR_DENSITY_RANGE ); // 0-1
-
-        // Modify the color brightness based on the lightness.
-        const modifier = 0.1;
-        const rawValue = ( lightness * 2 - 1 ) * ( 1 - modifier ) + modifier;
-        const power = 0.7;
-        const modifiedColor = color.colorUtilsBrightness( Math.sign( rawValue ) * Math.pow( Math.abs( rawValue ), power ) );
-
-        // Create and return a custom material with the modified color and density.
-        return Material.createCustomSolidMaterial( {
-          density: density,
-          customColor: new Property( modifiedColor, { tandem: Tandem.OPT_OUT } )
-        } );
-      }, {
-        tandem: Tandem.OPT_OUT
-      } );
+      }
+      return myCustomMaterial;
+    } );
   }
 }
 

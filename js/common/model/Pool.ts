@@ -12,8 +12,7 @@ import Basin from './Basin.js';
 import Mass from './Mass.js';
 import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
-import Property from '../../../../axon/js/Property.js';
-import Material from './Material.js';
+import Material, { CustomLiquidMaterial } from './Material.js';
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import NumberIO from '../../../../tandem/js/types/NumberIO.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
@@ -21,12 +20,15 @@ import Utils from '../../../../dot/js/Utils.js';
 import PoolScale from './PoolScale.js';
 import PhysicsEngine from './PhysicsEngine.js';
 import Gravity from './Gravity.js';
+import ReferenceIO from '../../../../tandem/js/types/ReferenceIO.js';
+import IOType from '../../../../tandem/js/types/IOType.js';
+import MaterialProperty from './MaterialProperty.js';
 
 export default class Pool extends Basin {
 
   public readonly bounds: Bounds3;
 
-  public readonly fluidMaterialProperty: Property<Material>;
+  public readonly fluidMaterialProperty: MaterialProperty;
   public readonly fluidDensityProperty: TReadOnlyProperty<number>;
 
   // In Liters, how much volume does the Pool fluid + displaced Masses take up.
@@ -55,9 +57,12 @@ export default class Pool extends Basin {
     this.stepBottom = bounds.minY;
     this.stepTop = bounds.maxY;
 
-    this.fluidMaterialProperty = new Property( Material.WATER, {
+    this.fluidMaterialProperty = new MaterialProperty( Material.WATER, tandem => new CustomLiquidMaterial( tandem, {
+      density: Material.WATER.density,
+      densityRange: DensityBuoyancyCommonConstants.FLUID_DENSITY_RANGE_PER_M3
+    } ), {
       valueType: Material,
-      phetioValueType: Material.MaterialIO,
+      phetioValueType: ReferenceIO( IOType.ObjectIO ),
       tandem: this.fluidTandem.createTandem( 'materialProperty' ),
       phetioReadOnly: true,
       phetioDocumentation: 'The material of the fluid in the pool'

@@ -16,12 +16,13 @@ import { combineOptions } from '../../../../phet-core/js/optionize.js';
  * @author Sam Reid (PhET Interactive Simulations)
  */
 export default class FluidDensityPanel extends Panel {
-  public constructor( model: DensityBuoyancyModel, customMaterial: Material, invisibleMaterials: Material[], popupLayer: Node, tandem: Tandem ) {
-    const fluidDensityControlNode = new FluidDensityControlNode( model.pool.fluidMaterialProperty, [
+  public constructor( model: DensityBuoyancyModel, invisibleMaterials: Material[], popupLayer: Node, tandem: Tandem ) {
+    const fluidMaterialProperty = model.pool.fluidMaterialProperty;
+    const fluidDensityControlNode = new FluidDensityControlNode( fluidMaterialProperty, [
         ...Material.BUOYANCY_FLUID_MATERIALS,
-        customMaterial,
+        fluidMaterialProperty.customMaterial,
         ...Material.BUOYANCY_FLUID_MYSTERY_MATERIALS
-      ], customMaterial,
+      ],
       popupLayer, {
         invisibleMaterials: invisibleMaterials,
         tandem: tandem

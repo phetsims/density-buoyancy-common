@@ -107,8 +107,8 @@ export default class BoatView extends MeasurableMassView {
       topPoolClipPlane.constant = -poolFluidY;
     } );
 
-    Material.linkLiquidColor( boat.fluidMaterialProperty, topFluidMaterial );
-    Material.linkLiquidColor( boat.fluidMaterialProperty, boatDrawingData.backMiddleMaterial );
+    Material.linkColorProperty( boat.fluidMaterialProperty, topFluidMaterial );
+    Material.linkColorProperty( boat.fluidMaterialProperty, boatDrawingData.backMiddleMaterial );
 
     // see the static function for the rest of render orders
     topFluid.renderOrder = 3;

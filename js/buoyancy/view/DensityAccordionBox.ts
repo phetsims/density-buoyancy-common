@@ -17,14 +17,13 @@ import Utils from '../../../../dot/js/Utils.js';
 import ReadoutListAccordionBox, { ReadoutData, ReadoutListAccordionBoxOptions } from './ReadoutListAccordionBox.js';
 import DerivedStringProperty from '../../../../axon/js/DerivedStringProperty.js';
 import optionize, { EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
+import MaterialProperty from '../../common/model/MaterialProperty.js';
 
-type DensityReadoutType = TReadOnlyProperty<Material>;
-
-type ParentOptions = ReadoutListAccordionBoxOptions<DensityReadoutType>;
+type ParentOptions = ReadoutListAccordionBoxOptions<MaterialProperty>;
 type SelfOptions = EmptySelfOptions;
 type DensityAccordionBoxOptions = SelfOptions & ParentOptions;
 
-export default class DensityAccordionBox extends ReadoutListAccordionBox<DensityReadoutType> {
+export default class DensityAccordionBox extends ReadoutListAccordionBox<MaterialProperty> {
 
   public constructor( titleStringProperty: TReadOnlyProperty<string>, providedOptions?: DensityAccordionBoxOptions ) {
 
@@ -36,7 +35,7 @@ export default class DensityAccordionBox extends ReadoutListAccordionBox<Density
     super( titleStringProperty, options );
   }
 
-  public override generateReadoutData( materialProperty: DensityReadoutType ): ReadoutData {
+  public override generateReadoutData( materialProperty: MaterialProperty ): ReadoutData {
 
     // Use DynamicProperty so that this name is updated based on the material AND material's name changing.
     const nameProperty = new DynamicProperty<string, string, Material>( materialProperty, {
@@ -47,16 +46,19 @@ export default class DensityAccordionBox extends ReadoutListAccordionBox<Density
     const valueProperty = new DerivedStringProperty(
       [
         materialProperty,
+        materialProperty.densityProperty,
         DensityBuoyancyCommonConstants.KILOGRAMS_PER_VOLUME_PATTERN_STRING_PROPERTY,
         DensityBuoyancyCommonStrings.questionMarkStringProperty
       ],
-      ( material, patternStringProperty, questionMarkString ) => {
+      ( material, density, patternStringProperty, questionMarkString ) => {
         return material.hidden ?
                questionMarkString :
                StringUtils.fillIn( patternStringProperty, {
 
                  // convert from kg/m^3 to kg/L
-                 value: Utils.toFixed( material.density / DensityBuoyancyCommonConstants.LITERS_IN_CUBIC_METER, 2 ),
+                 // Can do with a DynamicProperty that takes the value of density of the selected material
+                 // Or with DerivedProperty.deriveAny across all the validValues which are Materials and then take their densityProperties
+                 value: Utils.toFixed( density / DensityBuoyancyCommonConstants.LITERS_IN_CUBIC_METER, 2 ),
                  decimalPlaces: 2
                } );
       } );

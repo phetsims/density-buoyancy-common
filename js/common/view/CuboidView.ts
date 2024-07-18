@@ -95,6 +95,7 @@ export default class CuboidView extends MeasurableMassView {
     const materialListener = ( material: Material ) => {
       this.depthLinesNode.stroke = material.depthLinesColorProperty;
     };
+
     cuboid.materialProperty.link( materialListener );
 
     this.disposeEmitter.addListener( () => {

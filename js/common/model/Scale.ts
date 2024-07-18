@@ -26,6 +26,7 @@ import Gravity from './Gravity.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import { MassShape } from './MassShape.js';
 import PickOptional from '../../../../phet-core/js/types/PickOptional.js';
+import Tandem from '../../../../tandem/js/Tandem.js';
 
 // constants
 export const SCALE_WIDTH = 0.15;
@@ -98,7 +99,10 @@ export default class Scale extends Mass {
         phetioReadOnly: true
       },
       materialPropertyOptions: {
-        phetioReadOnly: true
+        phetioReadOnly: true,
+
+        // TODO: Scale materials should not be phet-io instrumented, right? See https://github.com/phetsims/density-buoyancy-common/issues/256
+        tandem: Tandem.OPT_OUT
       },
       massPropertyOptions: {
         phetioDocumentation: PhetioObject.DEFAULT_OPTIONS.phetioDocumentation
@@ -125,8 +129,8 @@ export default class Scale extends Mass {
     } );
 
     this.measuredMassProperty = new DerivedProperty( [ this.measuredWeightInterpolatedProperty, gravityProperty ], ( force, gravity ) => {
-      if ( gravity.value !== 0 ) {
-        return force / gravity.value;
+      if ( gravity.gravityValue !== 0 ) {
+        return force / gravity.gravityValue;
       }
       else {
         return 0;

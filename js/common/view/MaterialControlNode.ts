@@ -8,45 +8,40 @@
  * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
-import DynamicProperty from '../../../../axon/js/DynamicProperty.js';
 import Property from '../../../../axon/js/Property.js';
-import Utils from '../../../../dot/js/Utils.js';
 import optionize from '../../../../phet-core/js/optionize.js';
 import { HBox, Node, Text, VBox, VBoxOptions } from '../../../../scenery/js/imports.js';
 import ComboBox from '../../../../sun/js/ComboBox.js';
-import StringIO from '../../../../tandem/js/types/StringIO.js';
-import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
-import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
-import Material, { MaterialName } from '../model/Material.js';
+import Material from '../model/Material.js';
 import { PhetioObjectOptions } from '../../../../tandem/js/PhetioObject.js';
 import PickRequired from '../../../../phet-core/js/types/PickRequired.js';
-import Range from '../../../../dot/js/Range.js';
+import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
+import MaterialProperty from '../model/MaterialProperty.js';
+import Utils from '../../../../dot/js/Utils.js';
 
 type SelfMaterialControlNodeOptions = {
+
+  syncCustomMaterialDensity?: boolean;
 
   // A label, if provided to be placed to the right of the ComboBox
   labelNode?: Node | null;
 
-  // If a custom material should be added to the ComboBox
-  supportCustomMaterial?: boolean;
-
   // If a hidden material (Mystery materials for example) should be added to the ComboBox
+  // TODO: why can't this just be derived from if you pass in mystery material in the parameter? https://github.com/phetsims/density-buoyancy-common/issues/256
   supportHiddenMaterial?: boolean;
 
   minCustomMass?: number;
   maxCustomMass?: number;
   minCustomVolumeLiters?: number;
   maxVolumeLiters?: number;
-
 } & PickRequired<PhetioObjectOptions, 'tandem'>;
 
 export type MaterialControlNodeOptions = SelfMaterialControlNodeOptions & VBoxOptions;
 
 export default class MaterialControlNode extends VBox {
-  protected customDensityRange: Range;
 
-  public constructor( materialProperty: Property<Material>,
+  public constructor( materialProperty: MaterialProperty,
                       volumeProperty: Property<number>,
                       materials: Material[],
                       listParent: Node,
@@ -54,8 +49,8 @@ export default class MaterialControlNode extends VBox {
 
 
     const options = optionize<MaterialControlNodeOptions, SelfMaterialControlNodeOptions, VBoxOptions>()( {
+      syncCustomMaterialDensity: true,
       labelNode: null,
-      supportCustomMaterial: true,
       supportHiddenMaterial: false,
       minCustomMass: 0.5,
       maxCustomMass: 10,
@@ -68,75 +63,52 @@ export default class MaterialControlNode extends VBox {
       align: 'left'
     } );
 
-    this.customDensityRange = new Range(
-      options.minCustomMass / options.maxVolumeLiters * DensityBuoyancyCommonConstants.LITERS_IN_CUBIC_METER,
-
-      // Prevent divide by zero errors (infinity) with a manual, tiny number
-      options.maxCustomMass / ( options.minCustomVolumeLiters ) * DensityBuoyancyCommonConstants.LITERS_IN_CUBIC_METER
-    );
-
     if ( !options.supportHiddenMaterial ) {
       materials = materials.filter( material => !material.hidden );
     }
 
-    const materialNames: MaterialName[] = [ ...materials.map( material => material.identifier ) ];
-    options.supportCustomMaterial && materialNames.push( 'CUSTOM' );
-
-    // TODO: https://github.com/phetsims/density-buoyancy-common/issues/163 re-evaluate eliminating or moving this code
-    //       after addressing #163
-    const comboBoxMaterialProperty = new DynamicProperty( new Property( materialProperty ), {
-      bidirectional: true,
-      map: ( material: Material ) => material.identifier,
-      inverseMap: ( materialName: MaterialName ): Material => {
-        if ( materialName === 'CUSTOM' ) {
-          // Handle our minimum volume if we're switched to custom (if needed)
-          const volume = Math.max( volumeProperty.value, options.minCustomVolumeLiters / DensityBuoyancyCommonConstants.LITERS_IN_CUBIC_METER );
-          return Material.createCustomSolidMaterial( {
-            density: Utils.clamp( materialProperty.value.density, options.minCustomMass / volume, options.maxCustomMass / volume ),
-            densityRange: this.customDensityRange
-          } );
-        }
-        else {
-          return Material.getMaterial( materialName );
-        }
-      },
-      reentrant: true,
-      phetioState: false,
-      tandem: options.tandem.createTandem( 'comboBoxMaterialProperty' ),
-      phetioFeatured: true,
-      phetioDocumentation: 'Current material of the block. Changing the material will result in changes to the mass, but the volume will remain the same.',
-      validValues: materialNames,
-      phetioValueType: StringIO
-    } );
-
     const comboMaxWidth = 110;
 
-    const regularMaterials = materials.filter( material => !material.hidden );
+    // TODO: Should all these be separate options instead of one list that needs parsing? MK does not know, https://github.com/phetsims/density-buoyancy-common/issues/256
+    // TODO: sort at usage sites instead? https://github.com/phetsims/density-buoyancy-common/issues/256
+    const regularMaterials = materials.filter( material => !material.hidden && !material.custom );
+    const customMaterials = materials.filter( material => material.custom );
     const mysteryMaterials = materials.filter( material => material.hidden );
+
+    assert && assert( customMaterials.length <= 1, 'one or less custom materials please' );
 
     const materialToItem = ( material: Material ) => {
       return {
-        value: material.identifier,
+        value: material,
         createNode: () => new Text( material.nameProperty, {
           font: DensityBuoyancyCommonConstants.COMBO_BOX_ITEM_FONT,
           maxWidth: comboMaxWidth
         } ),
-        tandemName: `${material.tandemName}Item`,
+        tandemName: `${material.tandem.name}Item`,
         a11yName: material.nameProperty
       };
     };
 
-    // TODO: parametrize to MaterialName, https://github.com/phetsims/density-buoyancy-common/issues/176
-    const comboBox = new ComboBox( comboBoxMaterialProperty, [
+    // When switching to custom, set the custom density to the previous material's density (clamped just in case).
+    // However, when switching from a mystery material, do not change the custom value. This prevents clever students from discovering
+    // the mystery values by using the UI instead of by computing them, see https://github.com/phetsims/buoyancy/issues/54
+    if ( customMaterials.length > 0 && options.syncCustomMaterialDensity ) {
+      materialProperty.lazyLink( ( material, oldMaterial ) => {
+        if ( material.custom && !oldMaterial.hidden ) {
+          assert && assert( materialProperty.customMaterial === customMaterials[ 0 ], 'I would really rather know what customMaterial we are dealing with' );
+
+          // Handle our minimum volume if we're switched to custom (if needed)
+          const maxVolume = Math.max( volumeProperty.value, options.minCustomVolumeLiters / DensityBuoyancyCommonConstants.LITERS_IN_CUBIC_METER );
+          materialProperty.customMaterial.densityProperty.value = Utils.clamp( oldMaterial.density, options.minCustomMass / maxVolume, options.maxCustomMass / maxVolume );
+        }
+      } );
+    }
+
+    // TODO: But can we just use the validValues of the provided MaterialProperty, https://github.com/phetsims/density-buoyancy-common/issues/270
+    // TODO: But hidden ones!!! https://github.com/phetsims/density-buoyancy-common/issues/270
+    const comboBox = new ComboBox( materialProperty, [
       ...regularMaterials.map( materialToItem ),
-      ...( options.supportCustomMaterial ? [ {
-        value: 'CUSTOM',
-        createNode: () => new Text( DensityBuoyancyCommonStrings.material.customStringProperty, {
-          font: DensityBuoyancyCommonConstants.COMBO_BOX_ITEM_FONT,
-          maxWidth: comboMaxWidth
-        } ),
-        tandemName: 'customItem'
-      } ] : [] ),
+      ...customMaterials.map( materialToItem ),
       ...mysteryMaterials.map( materialToItem )
     ], listParent, {
       xMargin: 8,

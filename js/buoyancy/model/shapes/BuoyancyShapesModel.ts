@@ -27,6 +27,9 @@ import isSettingPhetioStateProperty from '../../../../../tandem/js/isSettingPhet
 import MassTag from '../../../common/model/MassTag.js';
 import Duck from './Duck.js';
 import BuoyancyShapeModel from './BuoyancyShapeModel.js';
+import ReferenceIO from '../../../../../tandem/js/types/ReferenceIO.js';
+import IOType from '../../../../../tandem/js/types/IOType.js';
+import MaterialProperty from '../../../common/model/MaterialProperty.js';
 
 export type BuoyancyShapesModelOptions = DensityBuoyancyModelOptions;
 
@@ -38,7 +41,7 @@ export default class BuoyancyShapesModel extends DensityBuoyancyModel {
   public readonly objectA: BuoyancyShapeModel;
   public readonly objectB: BuoyancyShapeModel;
 
-  public readonly materialProperty: Property<Material>;
+  public readonly materialProperty: MaterialProperty;
 
   public constructor( options: BuoyancyShapesModelOptions ) {
 
@@ -51,10 +54,13 @@ export default class BuoyancyShapesModel extends DensityBuoyancyModel {
       phetioFeatured: true
     } );
 
-    this.materialProperty = new Property( Material.WOOD, {
-      tandem: objectsTandem.createTandem( 'materialProperty' ),
-      phetioValueType: Material.MaterialIO
-    } );
+    this.materialProperty = new MaterialProperty( Material.WOOD,
+
+      // This hack is a way of saying, we do not create or support a custom material in this case.
+      () => Material.WOOD, {
+        tandem: objectsTandem.createTandem( 'materialProperty' ),
+        phetioValueType: ReferenceIO( IOType.ObjectIO )
+      } );
 
     this.scale = new Scale( this.engine, this.gravityProperty, {
       matrix: Matrix3.translation( -0.7, -Scale.SCALE_BASE_BOUNDS.minY ),
@@ -164,6 +170,7 @@ export default class BuoyancyShapesModel extends DensityBuoyancyModel {
         throw new Error( `shape not recognized: ${shape}` );
     }
 
+    // When the main material selector changes, propagate that through to the mass.
     this.materialProperty.lazyLink( material => {
       mass.materialProperty.value = material;
     } );

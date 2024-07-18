@@ -87,12 +87,7 @@ export default class BuoyancyShapesScreenView extends BuoyancyScreenView<Buoyanc
     const invisibleMaterials = [ ...Material.BUOYANCY_FLUID_MYSTERY_MATERIALS ];
     displayedMysteryMaterials.forEach( displayed => arrayRemove( invisibleMaterials, displayed ) );
 
-    const customMaterial = Material.createCustomLiquidMaterial( {
-      density: 1000, // Same as water, in SI (kg/m^3)
-      densityRange: DensityBuoyancyCommonConstants.FLUID_DENSITY_RANGE_PER_M3
-    } );
-
-    const fluidDensityPanel = new FluidDensityPanel( model, customMaterial, invisibleMaterials, this.popupLayer, tandem.createTandem( 'fluidDensityPanel' ) );
+    const fluidDensityPanel = new FluidDensityPanel( model, invisibleMaterials, this.popupLayer, tandem.createTandem( 'fluidDensityPanel' ) );
 
     this.addChild( new AlignBox( fluidDensityPanel, {
       alignBoundsProperty: this.visibleBoundsProperty,
@@ -142,7 +137,6 @@ export default class BuoyancyShapesScreenView extends BuoyancyScreenView<Buoyanc
 
     const materialControlNode = new MaterialControlNode( this.model.materialProperty, new Property( 1 ),
       Material.SIMPLE_MASS_MATERIALS, this.popupLayer, {
-        supportCustomMaterial: false,
         tandem: options.tandem.createTandem( 'materialControlNode' )
       } );
     const objectAShapeSizeControlNode = new ShapeSizeControlNode(

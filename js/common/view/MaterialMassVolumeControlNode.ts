@@ -35,6 +35,7 @@ import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import BooleanToggleNode from '../../../../sun/js/BooleanToggleNode.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
 import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
+import MaterialProperty from '../model/MaterialProperty.js';
 
 // constants
 const LITERS_IN_CUBIC_METER = DensityBuoyancyCommonConstants.LITERS_IN_CUBIC_METER;
@@ -73,7 +74,7 @@ export default class MaterialMassVolumeControlNode extends MaterialControlNode {
   // the density slider can be added to this layer to show up in the right position (above the volume slider).
   protected readonly densityControlPlaceholderLayer: Node = new Node();
 
-  public constructor( materialProperty: Property<Material>,
+  public constructor( materialProperty: MaterialProperty,
                       massProperty: ReadOnlyProperty<number>,
                       volumeProperty: Property<number>,
                       materials: Material[],
@@ -125,26 +126,25 @@ export default class MaterialMassVolumeControlNode extends MaterialControlNode {
     let userVolumeChanging = false;
 
     // DerivedProperty doesn't need disposal, since everything here lives for the lifetime of the simulation
-    const enabledMassRangeProperty = new DerivedProperty( [ materialProperty ], material => {
-      if ( material.custom ) {
-        return new Range( options.minCustomMass, options.maxCustomMass );
-      }
-      else {
-        const density = material.density;
+    const enabledMassRangeProperty = new DerivedProperty( [ materialProperty, materialProperty.densityProperty ],
+      ( material, density ) => {
+        if ( material.custom ) {
+          return new Range( options.minCustomMass, options.maxCustomMass );
+        }
+        else {
+          const maxMassRange = supportTwoMassNumberControls && density > options.highDensityThreshold ? options.highDensityMaxMass! : options.maxMass;
 
-        const maxMassRange = supportTwoMassNumberControls && density > options.highDensityThreshold ? options.highDensityMaxMass! : options.maxMass;
+          const minMass = Utils.clamp( density * options.minVolumeLiters / LITERS_IN_CUBIC_METER, options.minMass, maxMassRange );
+          const maxMass = Utils.clamp( density * options.maxVolumeLiters / LITERS_IN_CUBIC_METER, options.minMass, maxMassRange );
 
-        const minMass = Utils.clamp( density * options.minVolumeLiters / LITERS_IN_CUBIC_METER, options.minMass, maxMassRange );
-        const maxMass = Utils.clamp( density * options.maxVolumeLiters / LITERS_IN_CUBIC_METER, options.minMass, maxMassRange );
-
-        return new WorkaroundRange( minMass, maxMass );
-      }
-    }, {
-      reentrant: true,
-      phetioState: false,
-      phetioValueType: Range.RangeIO,
-      valueComparisonStrategy: 'equalsFunction'
-    } );
+          return new WorkaroundRange( minMass, maxMass );
+        }
+      }, {
+        reentrant: true,
+        phetioState: false,
+        phetioValueType: Range.RangeIO,
+        valueComparisonStrategy: 'equalsFunction'
+      } );
 
     const enabledVolumeRangeProperty = new DerivedProperty( [ materialProperty ], material => {
       return new WorkaroundRange(
@@ -175,10 +175,7 @@ export default class MaterialMassVolumeControlNode extends MaterialControlNode {
 
         // If we're custom, adjust the density
         if ( materialProperty.value.custom && !options.customKeepsConstantDensity ) {
-          materialProperty.value = Material.createCustomSolidMaterial( {
-            density: massProperty.value / cubicMeters,
-            densityRange: this.customDensityRange
-          } );
+          materialProperty.value.densityProperty.value = massProperty.value / cubicMeters;
         }
         setVolume( cubicMeters );
 
@@ -214,10 +211,7 @@ export default class MaterialMassVolumeControlNode extends MaterialControlNode {
         // It is possible for the volumeProperty to be 0, so avoid the infinite density case, see https://github.com/phetsims/density-buoyancy-common/issues/78
         if ( materialProperty.value.custom && volumeProperty.value > 0 ) {
           if ( !options.customKeepsConstantDensity ) { // Separate if statement, so we don't setVolume() below
-            materialProperty.value = Material.createCustomSolidMaterial( {
-              density: mass / volumeProperty.value,
-              densityRange: this.customDensityRange
-            } );
+            materialProperty.value.densityProperty.value = mass / volumeProperty.value;
           }
         }
         else {

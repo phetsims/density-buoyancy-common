@@ -36,7 +36,7 @@ export default class FluidSelectionPanel extends Panel {
             font: DensityBuoyancyCommonConstants.COMBO_BOX_ITEM_FONT,
             maxWidth: 160
           } ),
-          tandemName: `${material.tandemName}Item`,
+          tandemName: `${material.tandem.name}Item`,
           a11yName: material.nameProperty
         };
       } ),

@@ -12,7 +12,7 @@ import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import Material from './Material.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import MappedWrappedProperty from './MappedWrappedProperty.js';
-import { EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
+import { combineOptions, EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
 import PickRequired from '../../../../phet-core/js/types/PickRequired.js';
 import { PhetioObjectOptions } from '../../../../tandem/js/PhetioObject.js';
@@ -27,7 +27,9 @@ export default class MaterialProperty extends MappedWrappedProperty<Material> {
 
   public constructor( material: Material, createCustomMaterial: ( tandem: Tandem ) => Material, providedOptions: MaterialPropertyOptions ) {
     const customMaterial = createCustomMaterial( providedOptions.tandem.createTandem( 'customMaterial' ) );
-    super( material, customMaterial, providedOptions );
+    super( material, customMaterial, combineOptions<MaterialPropertyOptions>( {
+      phetioFeatured: true
+    }, providedOptions ) );
     this.densityProperty = this.dynamicValueProperty;
     this.customMaterial = this.customValue;
   }

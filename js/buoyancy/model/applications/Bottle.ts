@@ -232,7 +232,7 @@ export default class Bottle extends ApplicationsMass {
     } ), {
       valueType: Material,
       reentrant: true,
-      tandem: materialInsideTandem.createTandem( 'materialInsideProperty' ),
+      tandem: materialInsideTandem.createTandem( 'materialProperty' ),
       phetioValueType: ReferenceIO( IOType.ObjectIO )
     } );
 
@@ -243,8 +243,8 @@ export default class Bottle extends ApplicationsMass {
       units: 'm^3'
     } );
 
-    this.materialInsideMassProperty = new DerivedProperty( [ this.materialInsideProperty, this.materialInsideVolumeProperty ], ( material, volume ) => {
-      return material.density * volume;
+    this.materialInsideMassProperty = new DerivedProperty( [ this.materialInsideProperty.densityProperty, this.materialInsideVolumeProperty ], ( density, volume ) => {
+      return density * volume;
     }, {
       tandem: materialInsideTandem.createTandem( 'massProperty' ),
       phetioDocumentation: 'Mass of the material inside the bottle.',

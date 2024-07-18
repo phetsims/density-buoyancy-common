@@ -20,7 +20,7 @@ import Vector3 from '../../../../dot/js/Vector3.js';
 import { Shape } from '../../../../kite/js/imports.js';
 import EnumerationIO from '../../../../tandem/js/types/EnumerationIO.js';
 import optionize, { combineOptions } from '../../../../phet-core/js/optionize.js';
-import { Color, ColorProperty, GatedVisibleProperty, PDOMValueType } from '../../../../scenery/js/imports.js';
+import { GatedVisibleProperty, PDOMValueType } from '../../../../scenery/js/imports.js';
 import PhetioObject, { PhetioObjectOptions } from '../../../../tandem/js/PhetioObject.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
 import BooleanIO from '../../../../tandem/js/types/BooleanIO.js';
@@ -76,9 +76,6 @@ type SelfOptions = {
   materialPropertyOptions?: PropertyOptions<Material>;
   volumePropertyOptions?: NumberPropertyOptions;
   massPropertyOptions?: NumberPropertyOptions;
-
-  // Accepted values for the Material Combo Box
-  materialValidValues?: Material[];
 
   minVolume?: number;
   maxVolume?: number;
@@ -205,32 +202,6 @@ export default abstract class Mass extends PhetioObject {
       materialPropertyOptions: {},
       volumePropertyOptions: {},
       massPropertyOptions: {},
-
-      /*
-        TODO: Make the default an empty list and move this list to density's mystery screen
-      // TODO: Should all masses be created with their valid materials immediately?
-      // TODO: Move the materialValidValues over to the view, and let each materialProperty be able to take on any material.
-      // TODO: please note `materialPropertyOptions`. https://github.com/phetsims/density-buoyancy-common/issues/270
-       */
-      materialValidValues: [
-        Material.ALUMINUM,
-        Material.BRICK,
-        Material.COPPER,
-        Material.ICE,
-        Material.PLATINUM,
-        Material.STEEL,
-        Material.STYROFOAM,
-        Material.WOOD,
-
-        // TODO: Visit this tandem after moving elsewhere, see https://github.com/phetsims/density-buoyancy-common/issues/270
-        new CustomSolidMaterial( providedOptions.tandem ?
-                                 providedOptions.tandem.createTandem( 'customSolidMaterial' ) :
-                                 Tandem.OPT_OUT, {
-          density: 1000,
-          colorProperty: new ColorProperty( Color.white )
-        } )
-      ],
-
       minVolume: 0,
       maxVolume: Number.POSITIVE_INFINITY
     }, providedOptions );
@@ -274,7 +245,7 @@ export default abstract class Mass extends PhetioObject {
 
     this.visibleProperty = new GatedVisibleProperty( this.internalVisibleProperty, tandem );
 
-    this.materialProperty = new MaterialProperty( options.material, tandem => new CustomSolidMaterial( tandem.createTandem( 'customMaterial' ), {
+    this.materialProperty = new MaterialProperty( options.material, tandem => new CustomSolidMaterial( tandem, {
       density: options.material.density,
 
       // TODO: It is incorrect to take the range of the default value, this affects the color, see https://github.com/phetsims/density-buoyancy-common/issues/268

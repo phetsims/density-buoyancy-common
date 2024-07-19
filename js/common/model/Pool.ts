@@ -57,13 +57,17 @@ export default class Pool extends Basin {
     this.stepBottom = bounds.minY;
     this.stepTop = bounds.maxY;
 
-    this.fluidMaterialProperty = new MaterialProperty( Material.WATER, tandem => new CustomLiquidMaterial( tandem, {
+    const fluidMaterialPropertyTandem = this.fluidTandem.createTandem( 'materialProperty' );
+
+    const customFluidMaterial = new CustomLiquidMaterial( fluidMaterialPropertyTandem.createTandem( 'customMaterial' ), {
       density: Material.WATER.density,
       densityRange: DensityBuoyancyCommonConstants.FLUID_DENSITY_RANGE_PER_M3
-    } ), {
+    } );
+
+    this.fluidMaterialProperty = new MaterialProperty( Material.WATER, customFluidMaterial, {
       valueType: Material,
       phetioValueType: ReferenceIO( IOType.ObjectIO ),
-      tandem: this.fluidTandem.createTandem( 'materialProperty' ),
+      tandem: fluidMaterialPropertyTandem,
       phetioDocumentation: 'The material of the fluid in the pool'
     } );
 

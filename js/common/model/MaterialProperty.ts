@@ -13,20 +13,19 @@ import Material from './Material.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import MappedWrappedProperty from './MappedWrappedProperty.js';
 import { combineOptions, EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
-import Tandem from '../../../../tandem/js/Tandem.js';
 import PickRequired from '../../../../phet-core/js/types/PickRequired.js';
 import { PhetioObjectOptions } from '../../../../tandem/js/PhetioObject.js';
 
 type SelfOptions = EmptySelfOptions;
 
-type MaterialPropertyOptions = SelfOptions & PropertyOptions<Material> & PickRequired<PhetioObjectOptions, 'tandem'>;
+export type MaterialPropertyOptions = SelfOptions & PropertyOptions<Material> & PickRequired<PhetioObjectOptions, 'tandem'>;
 
 export default class MaterialProperty extends MappedWrappedProperty<Material> {
   public readonly densityProperty: TReadOnlyProperty<number>;
   public readonly customMaterial: Material;
 
-  public constructor( material: Material, createCustomMaterial: ( tandem: Tandem ) => Material, providedOptions: MaterialPropertyOptions ) {
-    const customMaterial = createCustomMaterial( providedOptions.tandem.createTandem( 'customMaterial' ) );
+  // Note the material could be the customMaterial
+  public constructor( material: Material, customMaterial: Material, providedOptions: MaterialPropertyOptions ) {
     super( material, customMaterial, combineOptions<MaterialPropertyOptions>( {
       phetioFeatured: true
     }, providedOptions ) );

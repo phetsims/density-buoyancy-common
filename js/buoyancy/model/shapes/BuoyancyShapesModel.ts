@@ -57,7 +57,7 @@ export default class BuoyancyShapesModel extends DensityBuoyancyModel {
     this.materialProperty = new MaterialProperty( Material.WOOD,
 
       // This hack is a way of saying, we do not create or support a custom material in this case.
-      () => Material.WOOD, {
+      Material.WOOD, {
         tandem: objectsTandem.createTandem( 'materialProperty' ),
         phetioValueType: ReferenceIO( IOType.ObjectIO )
       } );

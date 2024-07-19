@@ -10,7 +10,7 @@ import BooleanProperty, { BooleanPropertyOptions } from '../../../../axon/js/Boo
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import Emitter from '../../../../axon/js/Emitter.js';
 import NumberProperty, { NumberPropertyOptions } from '../../../../axon/js/NumberProperty.js';
-import Property, { PropertyOptions } from '../../../../axon/js/Property.js';
+import Property from '../../../../axon/js/Property.js';
 import Matrix3, { Matrix3StateObject } from '../../../../dot/js/Matrix3.js';
 import Range from '../../../../dot/js/Range.js';
 import Utils from '../../../../dot/js/Utils.js';
@@ -27,7 +27,7 @@ import BooleanIO from '../../../../tandem/js/types/BooleanIO.js';
 import IOType from '../../../../tandem/js/types/IOType.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import InterpolatedProperty from './InterpolatedProperty.js';
-import Material, { CustomSolidMaterial } from './Material.js';
+import Material, { CustomSolidMaterial, MaterialOptions } from './Material.js';
 import PhysicsEngine, { PhysicsEngineBody } from './PhysicsEngine.js';
 import Basin from './Basin.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
@@ -41,7 +41,7 @@ import Bounds3 from '../../../../dot/js/Bounds3.js';
 import BlendedVector2Property from './BlendedVector2Property.js';
 import { GuardedNumberProperty, GuardedNumberPropertyOptions } from './GuardedNumberProperty.js';
 import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
-import MaterialProperty from './MaterialProperty.js';
+import MaterialProperty, { MaterialPropertyOptions } from './MaterialProperty.js';
 import ReferenceIO from '../../../../tandem/js/types/ReferenceIO.js';
 
 // For the Buoyancy Shapes screen, but needed here because setRatios is included in each core type
@@ -54,7 +54,9 @@ type SelfOptions = {
   // Required
   body: PhysicsEngineBody;
   shape: Shape;
-  material: Material;
+
+  // Use "CUSTOM" to tell the MaterialProperty to take the initial value from the internal customMaterial it creates.
+  material: Material | 'CUSTOM';
   volume: number;
   massShape: MassShape;
 
@@ -73,7 +75,8 @@ type SelfOptions = {
   tag?: MassTag;
   accessibleName?: PDOMValueType | null;
   inputEnabledPropertyOptions?: BooleanPropertyOptions;
-  materialPropertyOptions?: PropertyOptions<Material>;
+  materialPropertyOptions?: Partial<MaterialPropertyOptions>;
+  customMaterialOptions?: MaterialOptions;
   volumePropertyOptions?: NumberPropertyOptions;
   massPropertyOptions?: NumberPropertyOptions;
 
@@ -199,7 +202,13 @@ export default abstract class Mass extends PhetioObject {
       accessibleName: null,
       phetioType: Mass.MassIO,
       inputEnabledPropertyOptions: {},
-      materialPropertyOptions: {},
+      materialPropertyOptions: {
+        valueType: Material,
+        reentrant: true,
+        phetioValueType: ReferenceIO( IOType.ObjectIO ),
+        phetioFeatured: true
+      },
+      customMaterialOptions: {},
       volumePropertyOptions: {},
       massPropertyOptions: {},
       minVolume: 0,
@@ -212,7 +221,7 @@ export default abstract class Mass extends PhetioObject {
     super( options );
 
     // TODO: Why did the question mark disappear? See https://github.com/phetsims/density-buoyancy-common/issues/243
-    const tandem: Tandem = options.tandem;
+    const tandem = options.tandem;
 
     this.engine = engine;
     this.body = options.body;
@@ -245,19 +254,13 @@ export default abstract class Mass extends PhetioObject {
 
     this.visibleProperty = new GatedVisibleProperty( this.internalVisibleProperty, tandem );
 
-    this.materialProperty = new MaterialProperty( options.material, tandem => new CustomSolidMaterial( tandem, {
-      density: options.material.density,
+    options.materialPropertyOptions.tandem = options.materialPropertyOptions.tandem || tandem.createTandem( 'materialProperty' );
+    const customSolidMaterial = new CustomSolidMaterial( options.materialPropertyOptions.tandem.createTandem( 'customMaterial' ), combineOptions<MaterialOptions>( {
+      density: options.material === 'CUSTOM' ? undefined : options.material.density
+    }, options.customMaterialOptions ) );
 
-      // TODO: It is incorrect to take the range of the default value, this affects the color, see https://github.com/phetsims/density-buoyancy-common/issues/268
-      densityRange: options.material.densityProperty.range
-    } ), combineOptions<PropertyOptions<Material> & PickRequired<PhetioObjectOptions, 'tandem'>>( {
-      valueType: Material,
-      reentrant: true,
-
-      tandem: tandem?.createTandem( 'materialProperty' ),
-      phetioValueType: ReferenceIO( IOType.ObjectIO ),
-      phetioFeatured: true
-    }, options.materialPropertyOptions ) );
+    const initialMaterial = options.material === 'CUSTOM' ? customSolidMaterial : options.material;
+    this.materialProperty = new MaterialProperty( initialMaterial, customSolidMaterial, options.materialPropertyOptions as MaterialPropertyOptions );
 
     this.volumeProperty = new NumberProperty( options.volume, combineOptions<NumberPropertyOptions>( {
       tandem: tandem?.createTandem( 'volumeProperty' ),

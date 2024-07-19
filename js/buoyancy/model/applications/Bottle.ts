@@ -196,22 +196,23 @@ export default class Bottle extends ApplicationsMass {
 
     const vertices = Bottle.getFlatIntersectionVertices();
 
-    // The overall composite material for the bottle + inside material system.
-    // This is not used for colorizing, since the bottle + liquid composite system is rendered separately, it just
-    // needs to be a superset of all possible values across the different inside materials
-    const customMaterial = new CustomSolidMaterial( providedOptions.tandem.createTandem( 'customMaterial' ), {
-      nameProperty: DensityBuoyancyCommonStrings.systemAStringProperty,
-      density: ( BOTTLE_MASS + BOTTLE_INITIAL_INTERIOR_MATERIAL.density * BOTTLE_INITIAL_INTERIOR_VOLUME ) / BOTTLE_VOLUME,
-      densityRange: new Range( 0, 1000000000 )
-    } );
 
     const options = optionize<BottleOptions, EmptySelfOptions, InstrumentedMassOptions>()( {
       body: engine.createFromVertices( vertices, true ),
       shape: Shape.polygon( vertices ),
       volume: BOTTLE_VOLUME,
-      material: customMaterial,
+      material: 'CUSTOM',
       materialPropertyOptions: {
-        validValues: [ customMaterial ]
+        phetioReadOnly: true
+      },
+
+      // The overall composite material for the bottle + inside material system.
+      // This is not used for colorizing, since the bottle + liquid composite system is rendered separately, it just
+      // needs to be a superset of all possible values across the different inside materials
+      customMaterialOptions: {
+        nameProperty: DensityBuoyancyCommonStrings.systemAStringProperty,
+        density: ( BOTTLE_MASS + BOTTLE_INITIAL_INTERIOR_MATERIAL.density * BOTTLE_INITIAL_INTERIOR_VOLUME ) / BOTTLE_VOLUME,
+        densityRange: new Range( 0, 1000000000 )
       },
       massShape: MassShape.BLOCK,
 
@@ -225,13 +226,17 @@ export default class Bottle extends ApplicationsMass {
 
     const materialInsideTandem = options.tandem.createTandem( 'materialInside' );
 
-    this.materialInsideProperty = new MaterialProperty( BOTTLE_INITIAL_INTERIOR_MATERIAL, tandem => new CustomSolidMaterial( tandem, {
+    const materialInsidePropertyTandem = materialInsideTandem.createTandem( 'materialProperty' );
+
+    const customInsideMaterial = new CustomSolidMaterial( materialInsidePropertyTandem.createTandem( 'customMaterial' ), {
       density: BOTTLE_INITIAL_INTERIOR_MATERIAL.density,
       densityRange: new Range( 50, 20000 )
-    } ), {
+    } );
+
+    this.materialInsideProperty = new MaterialProperty( BOTTLE_INITIAL_INTERIOR_MATERIAL, customInsideMaterial, {
       valueType: Material,
       reentrant: true,
-      tandem: materialInsideTandem.createTandem( 'materialProperty' ),
+      tandem: materialInsidePropertyTandem,
       phetioValueType: ReferenceIO( IOType.ObjectIO )
     } );
 

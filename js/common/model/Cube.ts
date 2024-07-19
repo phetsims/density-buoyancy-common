@@ -77,7 +77,7 @@ export default class Cube extends Cuboid {
   /**
    * Creates a Cube with a defined volume
    */
-  public static createWithVolume( engine: PhysicsEngine, material: Material, position: Vector2, volume: number, options?: StrictOmit<CubeOptions, 'matrix' | 'material'> ): Cube {
+  public static createWithVolume( engine: PhysicsEngine, material: Material | 'CUSTOM', position: Vector2, volume: number, options?: StrictOmit<CubeOptions, 'matrix' | 'material'> ): Cube {
     return new Cube( engine, volume, combineOptions<CubeOptions>( {
       matrix: Matrix3.translation( position.x, position.y ),
       minVolume: Cuboid.MIN_VOLUME,
@@ -89,8 +89,16 @@ export default class Cube extends Cuboid {
   /**
    * Creates a Cube with a defined volume
    */
-  public static createWithMass( engine: PhysicsEngine, material: Material, position: Vector2, mass: number, options?: StrictOmit<CubeOptions, 'matrix' | 'material'> ): Cube {
-    return Cube.createWithVolume( engine, material, position, mass / material.density, options );
+  public static createWithMass( engine: PhysicsEngine, material: Material | 'CUSTOM', position: Vector2, mass: number, options?: StrictOmit<CubeOptions, 'matrix' | 'material'> ): Cube {
+    let density: number;
+    if ( material === 'CUSTOM' ) {
+      assert && assert( options?.customMaterialOptions?.density, 'density needed to create with mass' );
+      density = options!.customMaterialOptions!.density!;
+    }
+    else {
+      density = material.density;
+    }
+    return Cube.createWithVolume( engine, material, position, mass / density, options );
   }
 }
 

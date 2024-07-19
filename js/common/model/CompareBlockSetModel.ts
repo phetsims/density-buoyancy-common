@@ -199,7 +199,7 @@ export default class CompareBlockSetModel extends BlockSetModel<BlockSet> {
 
                // We must undefer the Cube's materialProperty first, in order for the DynamicProperty in DensityAccordionBox to be correctly unregistered
                // We do not know why scheduling a NOTIFY order dependency was not sufficient
-               // TODO: Does this logic simplify now that Material is mutable? See https://github.com/phetsims/density-buoyancy-common/issues/163 and https://github.com/phetsims/density-buoyancy-common/issues/273
+               // TODO: Does this logic simplify now that Material is mutable? See https://github.com/phetsims/density-buoyancy-common/issues/163 and https://github.com/phetsims/density-buoyancy-common/issues/273 and https://github.com/phetsims/buoyancy/issues/67
                propertyStateHandlerSingleton.registerPhetioOrderDependency( cube.materialProperty, PropertyStatePhase.UNDEFER, model.blockSetProperty, PropertyStatePhase.UNDEFER );
 
                return cube;

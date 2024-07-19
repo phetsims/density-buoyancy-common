@@ -54,7 +54,8 @@ export default class BuoyancyLabModel extends DensityBuoyancyModel {
       }, {
         tandem: this.pool.fluidTandem.createTandem( 'displacedVolumeProperty' ),
         phetioValueType: NumberIO,
-        phetioFeatured: true
+        phetioFeatured: true,
+        units: 'L'
       }
     );
   }

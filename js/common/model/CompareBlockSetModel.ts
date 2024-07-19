@@ -155,8 +155,10 @@ export default class CompareBlockSetModel extends BlockSetModel<BlockSet> {
       }, cubeData );
     } );
 
+    // TODO: Helpful documentation please, see https://github.com/phetsims/density-buoyancy-common/issues/257
     const createMasses = ( model: BlockSetModel<BlockSet>, blockSet: BlockSet ) => {
 
+      // TODO: Helpful documentation please, see https://github.com/phetsims/density-buoyancy-common/issues/257
       // In the following code, the cube instance persists for the lifetime of the simulation and the listeners
       // don't need to be removed.
       return blockSet === BlockSet.SAME_MASS ?
@@ -164,6 +166,8 @@ export default class CompareBlockSetModel extends BlockSetModel<BlockSet> {
                const cube = Cube.createWithMass( model.engine, cubeData.sameMassMaterialProperty.value, Vector2.ZERO, massProperty.value, cubeData.sameMassCubeOptions );
 
                cubeData.sameMassMaterialProperty.link( material => cube.materialProperty.set( material ) );
+
+               // TODO: Helpful documentation please, see https://github.com/phetsims/density-buoyancy-common/issues/257
                massProperty.lazyLink( massValue => cubeData.sameMassDensityProperty.set( massValue / cube.volumeProperty.value ) );
 
                // We must undefer the Cube's materialProperty first, in order for the DynamicProperty in DensityAccordionBox to be correctly unregistered

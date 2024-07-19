@@ -52,7 +52,8 @@ export default class Cuboid extends Mass {
       tandem: options.tandem.createTandem( 'sizeProperty' ),
       phetioDocumentation: 'For internal use only.',
       phetioValueType: Bounds3.Bounds3IO,
-      phetioReadOnly: true
+      phetioReadOnly: true,
+      units: 'm'
     } );
 
     this.stepArea = 0;

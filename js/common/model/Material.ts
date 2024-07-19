@@ -6,7 +6,6 @@
  * TODO: Add Migration processors for changes that made Material and Gravity mutable, see https://github.com/phetsims/density-buoyancy-common/issues/256
  *
  * TODO: see https://github.com/phetsims/density-buoyancy-common/issues/256 there was a bug when changing the custom density of a block in screen 1
- * TODO: see https://github.com/phetsims/density-buoyancy-common/issues/256 buoyancy.labScreen.model.block.sizeProperty has no units
  *
  * @author Jonathan Olson (PhET Interactive Simulations)
  */

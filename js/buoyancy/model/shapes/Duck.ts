@@ -49,7 +49,8 @@ export default class Duck extends Mass {
       valueType: Bounds3,
       tandem: options.tandem.createTandem( 'sizeProperty' ),
       phetioDocumentation: 'For internal use only.',
-      phetioValueType: Bounds3.Bounds3IO
+      phetioValueType: Bounds3.Bounds3IO,
+      units: 'm'
     } );
 
     this.stepMaximumArea = 0;

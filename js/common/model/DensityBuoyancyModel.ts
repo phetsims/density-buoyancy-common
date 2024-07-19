@@ -74,7 +74,6 @@ export default class DensityBuoyancyModel implements TModel {
       valueType: Gravity,
       phetioValueType: ReferenceIO( IOType.ObjectIO ),
       tandem: tandem.createTandem( 'gravityProperty' ),
-      phetioReadOnly: true,
       phetioDocumentation: 'The acceleration due to gravity applied to all masses, (may be potentially custom or hidden from view)'
     } );
 

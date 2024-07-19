@@ -83,7 +83,7 @@ export default class Material extends PhetioObject implements HasValueProperty {
     const options = optionize<MaterialOptions, SelfOptions, PhetioObjectOptions>()( {
       nameProperty: new TinyProperty( 'unknown' ),
       density: 1,
-      densityRange: new Range( 0.8, 23000 ),
+      densityRange: new Range( 0.8, 27000 ),
       viscosity: 1e-3,
       custom: false,
       hidden: false,

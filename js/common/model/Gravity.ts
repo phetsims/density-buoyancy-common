@@ -51,7 +51,6 @@ export default class Gravity extends PhetioObject implements HasValueProperty {
 
     this.nameProperty = options.nameProperty;
 
-    // TODO: Make sure gravityValueProperty is reset, see https://github.com/phetsims/density-buoyancy-common/issues/267
     this.gravityValueProperty = new NumberProperty( options.value, {
       tandem: options.tandem.createTandem( 'gravityValueProperty' )
     } );
@@ -65,6 +64,10 @@ export default class Gravity extends PhetioObject implements HasValueProperty {
 
   public get valueProperty(): TProperty<number> {
     return this.gravityValueProperty;
+  }
+
+  public reset(): void {
+    this.gravityValueProperty.reset();
   }
 
   public static readonly EARTH = new Gravity( {

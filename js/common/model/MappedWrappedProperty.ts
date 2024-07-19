@@ -18,11 +18,9 @@ import TProperty from '../../../../axon/js/TProperty.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 
 export type HasValueProperty = {
-
   valueProperty: TProperty<number>;
 };
 
-// TODO: reset these, https://github.com/phetsims/density-buoyancy-common/issues/267
 export default abstract class MappedWrappedProperty<T extends HasValueProperty> extends Property<T> {
   protected readonly dynamicValueProperty: TReadOnlyProperty<number>;
   public readonly customValue: T;

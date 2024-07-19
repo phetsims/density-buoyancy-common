@@ -33,6 +33,11 @@ export default class MaterialProperty extends MappedWrappedProperty<Material> {
     this.densityProperty = this.dynamicValueProperty;
     this.customMaterial = this.customValue;
   }
+
+  public override reset(): void {
+    super.reset();
+    this.customMaterial.reset();
+  }
 }
 
 densityBuoyancyCommon.register( 'MaterialProperty', MaterialProperty );

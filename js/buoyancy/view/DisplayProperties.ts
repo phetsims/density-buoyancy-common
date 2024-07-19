@@ -12,6 +12,15 @@ import Tandem from '../../../../tandem/js/Tandem.js';
 import NumberProperty from '../../../../axon/js/NumberProperty.js';
 import Range from '../../../../dot/js/Range.js';
 import Property from '../../../../axon/js/Property.js';
+import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
+import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
+
+const ZOOM_SCALES: number[] = [];
+
+// Populating zoom scales with powers of 2 from -9 to 0
+for ( let i = 8; i > 0; i-- ) {
+  ZOOM_SCALES.push( Math.pow( 0.5, i ) );
+}
 
 type DisplayPropertiesOptions = {
   canShowForces: boolean;
@@ -31,7 +40,11 @@ export default class DisplayProperties {
   public readonly massValuesVisibleProperty: Property<boolean>;
   public readonly depthLinesVisibleProperty: Property<boolean>;
 
-  public readonly vectorZoomProperty: NumberProperty;
+  // The integer value of the selected vector zoom level
+  public readonly vectorZoomLevelProperty: NumberProperty;
+
+  // Actual zoom applied to the vectors based on a power of 2 scale
+  public readonly vectorZoomProperty: TReadOnlyProperty<number>;
 
   public readonly supportsDepthLines: boolean;
 
@@ -56,9 +69,19 @@ export default class DisplayProperties {
       phetioFeatured: true,
       phetioDocumentation: 'Displays a mass readout on each object'
     } );
-    this.vectorZoomProperty = new NumberProperty( options.initialForceScale, {
-      tandem: options.canShowForces ? tandem.createTandem( 'vectorZoomProperty' ) : Tandem.OPT_OUT,
-      range: new Range( Math.pow( 0.5, 9 ), 1 )
+
+    // Zoom level for vectors
+    this.vectorZoomLevelProperty = new NumberProperty( 4, {
+      numberType: 'Integer',
+      range: new Range( 0, ZOOM_SCALES.length - 1 ),
+      tandem: tandem.createTandem( 'vectorZoomLevelProperty' ),
+      phetioFeatured: true,
+      phetioDocumentation: 'Controls the zoom of the vector arrows'
+    } );
+
+    // Scale factor for the current zoom level
+    this.vectorZoomProperty = new DerivedProperty( [ this.vectorZoomLevelProperty ], ( zoomLevel: number ) => {
+      return ZOOM_SCALES[ zoomLevel ];
     } );
 
     this.depthLinesVisibleProperty = new BooleanProperty( false, {
@@ -74,7 +97,6 @@ export default class DisplayProperties {
     this.massValuesVisibleProperty.reset();
     this.forceValuesVisibleProperty.reset();
     this.depthLinesVisibleProperty.reset();
-    this.vectorZoomProperty.reset();
   }
 
 }

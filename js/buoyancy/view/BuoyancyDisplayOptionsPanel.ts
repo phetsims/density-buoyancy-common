@@ -75,7 +75,7 @@ export default class BuoyancyDisplayOptionsPanel extends Panel {
       }, checkboxOptions ) );
     };
 
-    const plusMinusZoomButtonGroup = new PlusMinusZoomButtonGroup( displayProperties.vectorZoomProperty, {
+    const plusMinusZoomButtonGroup = new PlusMinusZoomButtonGroup( displayProperties.vectorZoomLevelProperty, {
       spacing: 3, // Custom small spacing between the buttons
       buttonOptions: {
         cornerRadius: 3,
@@ -84,8 +84,8 @@ export default class BuoyancyDisplayOptionsPanel extends Panel {
         xMargin: 7,
         yMargin: 7
       },
-      applyZoomIn: ( scale: number ) => scale * 2,
-      applyZoomOut: ( scale: number ) => scale / 2,
+      applyZoomIn: ( scale: number ) => scale + 1,
+      applyZoomOut: ( scale: number ) => scale - 1,
       tandem: forcesSubpanelTandem.createTandem( 'vectorZoomButtonGroup' )
     } );
 

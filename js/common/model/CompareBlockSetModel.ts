@@ -83,8 +83,12 @@ export type CompareBlockSetModelOptions = SelfOptions & StrictOmit<ParentOptions
 type OptionizeParent = StrictOmit<ParentOptions, 'createMassesCallback'>;
 
 export default class CompareBlockSetModel extends BlockSetModel<BlockSet> {
+
+  // TODO: Helpful documentation please, see https://github.com/phetsims/density-buoyancy-common/issues/257
   public readonly massProperty: NumberProperty;
   public readonly volumeProperty: NumberProperty;
+
+  // TODO: When are these properties used? How do they relate to the custom or non-custom material values? see https://github.com/phetsims/density-buoyancy-common/issues/257
   public readonly densityProperty: NumberProperty;
 
   public constructor( providedOptions: CompareBlockSetModelOptions ) {

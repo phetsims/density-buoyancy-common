@@ -3,8 +3,6 @@
 /**
  * Represents different materials that solids/liquids in the simulations can take, including density/viscosity/color.
  *
- * TODO: Add Migration processors for changes that made Material and Gravity mutable, see https://github.com/phetsims/density-buoyancy-common/issues/256
- *
  * TODO AV: BUG: see https://github.com/phetsims/density-buoyancy-common/issues/256 there was a bug when changing the custom density of a block in screen 1. The block didn't seem to change its floating level.
  *
  * @author Jonathan Olson (PhET Interactive Simulations)

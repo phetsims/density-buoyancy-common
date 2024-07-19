@@ -84,11 +84,11 @@ type OptionizeParent = StrictOmit<ParentOptions, 'createMassesCallback'>;
 
 export default class CompareBlockSetModel extends BlockSetModel<BlockSet> {
 
-  // TODO: Helpful documentation please, see https://github.com/phetsims/density-buoyancy-common/issues/257
+  // TODO: Helpful documentation please, see https://github.com/phetsims/density-buoyancy-common/issues/273
   public readonly massProperty: NumberProperty;
   public readonly volumeProperty: NumberProperty;
 
-  // TODO: When are these properties used? How do they relate to the custom or non-custom material values? see https://github.com/phetsims/density-buoyancy-common/issues/257
+  // TODO: When are these properties used? How do they relate to the custom or non-custom material values? see https://github.com/phetsims/density-buoyancy-common/issues/273
   public readonly densityProperty: NumberProperty;
 
   public constructor( providedOptions: CompareBlockSetModelOptions ) {
@@ -159,10 +159,10 @@ export default class CompareBlockSetModel extends BlockSetModel<BlockSet> {
       }, cubeData );
     } );
 
-    // TODO: Helpful documentation please, see https://github.com/phetsims/density-buoyancy-common/issues/257
+    // TODO: Helpful documentation please, see https://github.com/phetsims/density-buoyancy-common/issues/273
     const createMasses = ( model: BlockSetModel<BlockSet>, blockSet: BlockSet ) => {
 
-      // TODO: Helpful documentation please, see https://github.com/phetsims/density-buoyancy-common/issues/257
+      // TODO: Helpful documentation please, see https://github.com/phetsims/density-buoyancy-common/issues/273
       // In the following code, the cube instance persists for the lifetime of the simulation and the listeners
       // don't need to be removed.
       return blockSet === BlockSet.SAME_MASS ?
@@ -171,7 +171,7 @@ export default class CompareBlockSetModel extends BlockSetModel<BlockSet> {
 
                cubeData.sameMassMaterialProperty.link( material => cube.materialProperty.set( material ) );
 
-               // TODO: Helpful documentation please, see https://github.com/phetsims/density-buoyancy-common/issues/257
+               // TODO: Helpful documentation please, see https://github.com/phetsims/density-buoyancy-common/issues/273
                massProperty.lazyLink( massValue => cubeData.sameMassDensityProperty.set( massValue / cube.volumeProperty.value ) );
 
                // We must undefer the Cube's materialProperty first, in order for the DynamicProperty in DensityAccordionBox to be correctly unregistered
@@ -199,7 +199,7 @@ export default class CompareBlockSetModel extends BlockSetModel<BlockSet> {
 
                // We must undefer the Cube's materialProperty first, in order for the DynamicProperty in DensityAccordionBox to be correctly unregistered
                // We do not know why scheduling a NOTIFY order dependency was not sufficient
-               // TODO: Does this logic simplify now that Material is mutable? See https://github.com/phetsims/density-buoyancy-common/issues/163
+               // TODO: Does this logic simplify now that Material is mutable? See https://github.com/phetsims/density-buoyancy-common/issues/163 and https://github.com/phetsims/density-buoyancy-common/issues/273
                propertyStateHandlerSingleton.registerPhetioOrderDependency( cube.materialProperty, PropertyStatePhase.UNDEFER, model.blockSetProperty, PropertyStatePhase.UNDEFER );
 
                return cube;
@@ -251,13 +251,13 @@ export default class CompareBlockSetModel extends BlockSetModel<BlockSet> {
    * If the block set value has not changed, it attempts to use an initial material with the same density.
    * Otherwise, it creates a custom material with a modified color based on the density.
    *
-   * TODO: Should this return MaterialProperty and create its own customMaterial? see https://github.com/phetsims/density-buoyancy-common/issues/256
+   * TODO: Should this return MaterialProperty and create its own customMaterial? see https://github.com/phetsims/density-buoyancy-common/issues/273
    */
   private static createMaterialProperty( tandem: Tandem, colorProperty: TReadOnlyProperty<Color>, densityProperty: TReadOnlyProperty<number>,
                                          blockSetValueChangedProperty: TReadOnlyProperty<boolean>, initialMaterials: Material[] ): TReadOnlyProperty<Material> {
 
     // Create and return a custom material with the modified color and density.
-    // TODO: there is unused and commented out code here, see https://github.com/phetsims/density-buoyancy-common/issues/256
+    // TODO: there is unused and commented out code here, see https://github.com/phetsims/density-buoyancy-common/issues/273
     const myColorProperty = new DerivedProperty( [ colorProperty, densityProperty ], ( color, density ) => {
       // myCustomMaterial.densityProperty.value = density;
 
@@ -276,7 +276,7 @@ export default class CompareBlockSetModel extends BlockSetModel<BlockSet> {
       colorProperty: myColorProperty
     } );
 
-    // TODO: Pass the densityProperty directly into the custom one https://github.com/phetsims/density-buoyancy-common/issues/256
+    // TODO: Pass the densityProperty directly into the custom one https://github.com/phetsims/density-buoyancy-common/issues/273
     densityProperty.link( density => {
       myCustomMaterial.densityProperty.value = density;
     } );

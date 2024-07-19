@@ -355,7 +355,6 @@ export default class MaterialMassVolumeControlNode extends MaterialControlNode {
     }
     else if ( supportTwoMassNumberControls ) {
 
-      // TODO: does this have the right default? https://github.com/phetsims/density-buoyancy-common/issues/256
       const showHighDensityMassNumberControlProperty = new DerivedProperty( [ materialProperty, materialProperty.densityProperty ], ( material, density ) => {
         return density > options.highDensityThreshold && !material.custom;
       } );

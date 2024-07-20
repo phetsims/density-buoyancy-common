@@ -74,14 +74,14 @@ export default class DensityIntroScreenView extends DensityBuoyancyScreenView<De
         displayDensities: [
           // DerivedProperty doesn't need disposal, since everything here lives for the lifetime of the simulation
           {
-            densityProperty: new DerivedProperty( [ model.massA.materialProperty ], material => material.density ),
+            densityProperty: model.massA.materialProperty.densityProperty,
             nameProperty: model.massA.tag.nameProperty,
             visibleProperty: new BooleanProperty( true ),
             isHiddenProperty: new BooleanProperty( false ),
             color: DensityBuoyancyCommonColors.tagAProperty
           },
           {
-            densityProperty: new DerivedProperty( [ model.massB.materialProperty ], material => material.density ),
+            densityProperty: model.massB.materialProperty.densityProperty,
             nameProperty: model.massB.tag.nameProperty,
             visibleProperty: model.massB.visibleProperty,
             isHiddenProperty: new BooleanProperty( false ),

@@ -72,7 +72,9 @@ export default class Pool extends Basin {
     } );
 
     // DerivedProperty doesn't need disposal, since everything here lives for the lifetime of the simulation
-    this.fluidDensityProperty = new DerivedProperty( [ this.fluidMaterialProperty ], fluidMaterial => fluidMaterial.density, {
+    this.fluidDensityProperty = new DerivedProperty(
+      [ this.fluidMaterialProperty.densityProperty, this.fluidMaterialProperty ],
+        ( density, material ) => density, {
       tandem: this.fluidTandem.createTandem( 'densityProperty' ),
       phetioFeatured: true,
       phetioValueType: NumberIO,

@@ -129,7 +129,6 @@ export default class BuoyancyApplicationsScreenView extends BuoyancyScreenView<B
       maxVolumeLiters: model.bottle.materialInsideVolumeRange.max,
       minCustomVolumeLiters: 0.5,
       showMassAsReadout: true,
-      supportHiddenMaterial: true,
       customKeepsConstantDensity: true,
       tandem: materialInsideControlsTandem,
 
@@ -229,8 +228,7 @@ export default class BuoyancyApplicationsScreenView extends BuoyancyScreenView<B
       Material.MATERIAL_W
     ] ), cubicMeters => model.block.updateSize( Cube.boundsFromVolume( cubicMeters ) ), this.popupLayer, true, {
       tandem: tandem.createTandem( 'blockControls' ),
-      highDensityMaxMass: 215,
-      supportHiddenMaterial: true
+      highDensityMaxMass: 215
     } );
 
     model.block.materialProperty.link( material => {

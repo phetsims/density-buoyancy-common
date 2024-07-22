@@ -27,10 +27,6 @@ type SelfMaterialControlNodeOptions = {
   // A label, if provided to be placed to the right of the ComboBox
   labelNode?: Node | null;
 
-  // If a hidden material (Mystery materials for example) should be added to the ComboBox
-  // TODO AV: why can't this just be derived from if you pass in mystery material in the parameter? https://github.com/phetsims/density-buoyancy-common/issues/256
-  supportHiddenMaterial?: boolean;
-
   minCustomMass?: number;
   maxCustomMass?: number;
   minCustomVolumeLiters?: number;
@@ -51,7 +47,6 @@ export default class MaterialControlNode extends VBox {
     const options = optionize<MaterialControlNodeOptions, SelfMaterialControlNodeOptions, VBoxOptions>()( {
       syncCustomMaterialDensity: true,
       labelNode: null,
-      supportHiddenMaterial: false,
       minCustomMass: 0.5,
       maxCustomMass: 10,
       minCustomVolumeLiters: 1,
@@ -62,10 +57,6 @@ export default class MaterialControlNode extends VBox {
       spacing: DensityBuoyancyCommonConstants.SPACING,
       align: 'left'
     } );
-
-    if ( !options.supportHiddenMaterial ) {
-      materials = materials.filter( material => !material.hidden );
-    }
 
     const comboMaxWidth = 110;
 

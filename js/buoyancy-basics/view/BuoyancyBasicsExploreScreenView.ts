@@ -77,7 +77,6 @@ export default class BuoyancyBasicsExploreScreenView extends BuoyancyScreenView<
         tandem: tandem,
         minCustomMass: 0.1,
         maxCustomMass: 15,
-        supportHiddenMaterial: true,
         mysteryMaterials: []
       }
     );

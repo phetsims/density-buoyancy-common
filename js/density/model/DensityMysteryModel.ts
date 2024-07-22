@@ -114,8 +114,21 @@ export default class DensityMysteryModel extends BlockSetModel<MysteryBlockSet> 
 
       const cube1DTandem = set1Tandem.createTandem( `block${MassTag.ONE_D.tandemName}` );
       const cube1BTandem = set1Tandem.createTandem( `block${MassTag.ONE_B.tandemName}` );
+      const set1ETandem = set1Tandem.createTandem( `block${MassTag.ONE_E.tandemName}` );
+      const set1CTandem = set1Tandem.createTandem( `block${MassTag.ONE_C.tandemName}` );
+      const set1ATandem = set1Tandem.createTandem( `block${MassTag.ONE_A.tandemName}` );
+      const set2DTandem = set2Tandem.createTandem( `block${MassTag.TWO_D.tandemName}` );
+      const set2ATandem = set2Tandem.createTandem( `block${MassTag.TWO_A.tandemName}` );
+      const set2ETandem = set2Tandem.createTandem( `block${MassTag.TWO_E.tandemName}` );
+      const set2CTandem = set2Tandem.createTandem( `block${MassTag.TWO_C.tandemName}` );
+      const set2BTandem = set2Tandem.createTandem( `block${MassTag.TWO_B.tandemName}` );
+      const set3ETandem = set3Tandem.createTandem( `block${MassTag.THREE_E.tandemName}` );
+      const set3BTandem = set3Tandem.createTandem( `block${MassTag.THREE_B.tandemName}` );
+      const set3DTandem = set3Tandem.createTandem( `block${MassTag.THREE_D.tandemName}` );
+      const set3CTandem = set3Tandem.createTandem( `block${MassTag.THREE_C.tandemName}` );
+      const set3ATandem = set3Tandem.createTandem( `block${MassTag.THREE_A.tandemName}` );
 
-      // TODO: Factor out all this duplicated code
+      // TODO: Factor out all this duplicated code, https://github.com/phetsims/density-buoyancy-common/issues/275
       switch( blockSet ) {
         case MysteryBlockSet.SET_1:
           return [
@@ -157,10 +170,10 @@ export default class DensityMysteryModel extends BlockSetModel<MysteryBlockSet> 
               combineOptions<CubeOptions>( {}, commonCubeOptions, {
                 customMaterialOptions: {
                   density: Material.WOOD.density,
-                  colorProperty: DensityBuoyancyCommonColors.compareGreenColorProperty
+                  colorProperty: createColorProperty( DensityBuoyancyCommonColors.compareGreenColorProperty, set1ETandem )
                 },
                 tag: MassTag.ONE_E,
-                tandem: set1Tandem.createTandem( `block${MassTag.ONE_E.tandemName}` )
+                tandem: set1ETandem
               } )
             ),
 
@@ -172,10 +185,10 @@ export default class DensityMysteryModel extends BlockSetModel<MysteryBlockSet> 
               combineOptions<CubeOptions>( {}, commonCubeOptions, {
                 customMaterialOptions: {
                   density: Material.GOLD.density,
-                  colorProperty: DensityBuoyancyCommonColors.compareYellowColorProperty
+                  colorProperty: createColorProperty( DensityBuoyancyCommonColors.compareYellowColorProperty, set1CTandem )
                 },
                 tag: MassTag.ONE_C,
-                tandem: set1Tandem.createTandem( `block${MassTag.ONE_C.tandemName}` )
+                tandem: set1CTandem
               } )
             ),
 
@@ -187,10 +200,10 @@ export default class DensityMysteryModel extends BlockSetModel<MysteryBlockSet> 
               combineOptions<CubeOptions>( {}, commonCubeOptions, {
                 customMaterialOptions: {
                   density: Material.DIAMOND.density,
-                  colorProperty: DensityBuoyancyCommonColors.comparePurpleColorProperty
+                  colorProperty: createColorProperty( DensityBuoyancyCommonColors.comparePurpleColorProperty, set1ATandem )
                 },
                 tag: MassTag.ONE_A,
-                tandem: set1Tandem.createTandem( `block${MassTag.ONE_A.tandemName}` )
+                tandem: set1ATandem
               } )
             )
           ];
@@ -204,10 +217,10 @@ export default class DensityMysteryModel extends BlockSetModel<MysteryBlockSet> 
               combineOptions<CubeOptions>( {}, commonCubeOptions, {
                 customMaterialOptions: {
                   density: 4500,
-                  colorProperty: DensityBuoyancyCommonColors.mysteryPinkColorProperty
+                  colorProperty: createColorProperty( DensityBuoyancyCommonColors.mysteryPinkColorProperty, set2DTandem )
                 },
                 tag: MassTag.TWO_D,
-                tandem: set2Tandem.createTandem( `block${MassTag.TWO_D.tandemName}` )
+                tandem: set2DTandem
               } )
             ),
 
@@ -219,10 +232,10 @@ export default class DensityMysteryModel extends BlockSetModel<MysteryBlockSet> 
               combineOptions<CubeOptions>( {}, commonCubeOptions, {
                 customMaterialOptions: {
                   density: 11340,
-                  colorProperty: DensityBuoyancyCommonColors.mysteryOrangeColorProperty
+                  colorProperty: createColorProperty( DensityBuoyancyCommonColors.mysteryOrangeColorProperty, set2ATandem )
                 },
                 tag: MassTag.TWO_A,
-                tandem: set2Tandem.createTandem( `block${MassTag.TWO_A.tandemName}` )
+                tandem: set2ATandem
               } )
             ),
 
@@ -234,10 +247,10 @@ export default class DensityMysteryModel extends BlockSetModel<MysteryBlockSet> 
               combineOptions<CubeOptions>( {}, commonCubeOptions, {
                 customMaterialOptions: {
                   density: Material.COPPER.density,
-                  colorProperty: DensityBuoyancyCommonColors.mysteryLightPurpleColorProperty
+                  colorProperty: createColorProperty( DensityBuoyancyCommonColors.mysteryLightPurpleColorProperty, set2ETandem )
                 },
                 tag: MassTag.TWO_E,
-                tandem: set2Tandem.createTandem( `block${MassTag.TWO_E.tandemName}` )
+                tandem: set2ETandem
               } )
             ),
 
@@ -249,10 +262,10 @@ export default class DensityMysteryModel extends BlockSetModel<MysteryBlockSet> 
               combineOptions<CubeOptions>( {}, commonCubeOptions, {
                 customMaterialOptions: {
                   density: 2700,
-                  colorProperty: DensityBuoyancyCommonColors.mysteryLightGreenColorProperty
+                  colorProperty: createColorProperty( DensityBuoyancyCommonColors.mysteryLightGreenColorProperty, set2CTandem )
                 },
                 tag: MassTag.TWO_C,
-                tandem: set2Tandem.createTandem( `block${MassTag.TWO_C.tandemName}` )
+                tandem: set2CTandem
               } )
             ),
 
@@ -264,10 +277,10 @@ export default class DensityMysteryModel extends BlockSetModel<MysteryBlockSet> 
               combineOptions<CubeOptions>( {}, commonCubeOptions, {
                 customMaterialOptions: {
                   density: 2700,
-                  colorProperty: DensityBuoyancyCommonColors.mysteryBrownColorProperty
+                  colorProperty: createColorProperty( DensityBuoyancyCommonColors.mysteryBrownColorProperty, set2BTandem )
                 },
                 tag: MassTag.TWO_B,
-                tandem: set2Tandem.createTandem( `block${MassTag.TWO_B.tandemName}` )
+                tandem: set2BTandem
               } )
             )
           ];
@@ -281,10 +294,10 @@ export default class DensityMysteryModel extends BlockSetModel<MysteryBlockSet> 
               combineOptions<CubeOptions>( {}, commonCubeOptions, {
                 customMaterialOptions: {
                   density: 950,
-                  colorProperty: DensityBuoyancyCommonColors.mysteryWhiteColorProperty
+                  colorProperty: createColorProperty( DensityBuoyancyCommonColors.mysteryWhiteColorProperty, set3ETandem )
                 },
                 tag: MassTag.THREE_E,
-                tandem: set3Tandem.createTandem( `block${MassTag.THREE_E.tandemName}` )
+                tandem: set3ETandem
               } )
             ),
 
@@ -296,10 +309,10 @@ export default class DensityMysteryModel extends BlockSetModel<MysteryBlockSet> 
               combineOptions<CubeOptions>( {}, commonCubeOptions, {
                 customMaterialOptions: {
                   density: 1000, // same as water, in SI (kg/m^3)
-                  colorProperty: DensityBuoyancyCommonColors.mysteryGrayColorProperty
+                  colorProperty: createColorProperty( DensityBuoyancyCommonColors.mysteryGrayColorProperty, set3BTandem )
                 },
                 tag: MassTag.THREE_B,
-                tandem: set3Tandem.createTandem( `block${MassTag.THREE_B.tandemName}` )
+                tandem: set3BTandem
               } )
             ),
 
@@ -311,10 +324,10 @@ export default class DensityMysteryModel extends BlockSetModel<MysteryBlockSet> 
               combineOptions<CubeOptions>( {}, commonCubeOptions, {
                 customMaterialOptions: {
                   density: 400,
-                  colorProperty: DensityBuoyancyCommonColors.mysteryMustardColorProperty
+                  colorProperty: createColorProperty( DensityBuoyancyCommonColors.mysteryMustardColorProperty, set3DTandem )
                 },
                 tag: MassTag.THREE_D,
-                tandem: set3Tandem.createTandem( `block${MassTag.THREE_D.tandemName}` )
+                tandem: set3DTandem
               } )
             ),
 
@@ -326,10 +339,10 @@ export default class DensityMysteryModel extends BlockSetModel<MysteryBlockSet> 
               combineOptions<CubeOptions>( {}, commonCubeOptions, {
                 customMaterialOptions: {
                   density: 7800,
-                  colorProperty: DensityBuoyancyCommonColors.mysteryPeachColorProperty
+                  colorProperty: createColorProperty( DensityBuoyancyCommonColors.mysteryPeachColorProperty, set3CTandem )
                 },
                 tag: MassTag.THREE_C,
-                tandem: set3Tandem.createTandem( `block${MassTag.THREE_C.tandemName}` )
+                tandem: set3CTandem
               } )
             ),
 
@@ -341,10 +354,10 @@ export default class DensityMysteryModel extends BlockSetModel<MysteryBlockSet> 
               combineOptions<CubeOptions>( {}, commonCubeOptions, {
                 customMaterialOptions: {
                   density: 950,
-                  colorProperty: DensityBuoyancyCommonColors.mysteryMaroonColorProperty
+                  colorProperty: createColorProperty( DensityBuoyancyCommonColors.mysteryMaroonColorProperty, set3ATandem )
                 },
                 tag: MassTag.THREE_A,
-                tandem: set3Tandem.createTandem( `block${MassTag.THREE_A.tandemName}` )
+                tandem: set3ATandem
               } )
             )
           ];

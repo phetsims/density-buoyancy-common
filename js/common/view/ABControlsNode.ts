@@ -21,7 +21,7 @@ type SelfOptions = {
   mysteryMaterials?: Material[];
 };
 
-export type PrimarySecondaryControlsNodeOptions = SelfOptions & BlockControlNodeOptions & { tandem: Tandem };
+export type ABControlsNodeOptions = SelfOptions & BlockControlNodeOptions & { tandem: Tandem };
 
 export default class ABControlsNode extends ABPanelsNode {
 
@@ -36,7 +36,7 @@ export default class ABControlsNode extends ABPanelsNode {
    * @param popupLayer
    * @param options - Applied to each BlockControlNode
    */
-  public constructor( massA: Cuboid, massB: Cuboid, popupLayer: Node, options: PrimarySecondaryControlsNodeOptions ) {
+  public constructor( massA: Cuboid, massB: Cuboid, popupLayer: Node, options: ABControlsNodeOptions ) {
 
     const tandem = options.tandem;
     const omittedOptions = _.omit( options, [ 'tandem' ] );

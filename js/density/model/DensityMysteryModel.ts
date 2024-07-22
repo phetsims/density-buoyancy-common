@@ -26,8 +26,10 @@ import Cuboid from '../../common/model/Cuboid.js';
 import MassTag from '../../common/model/MassTag.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import LocalizedStringProperty from '../../../../chipper/js/LocalizedStringProperty.js';
-import { ColorProperty } from '../../../../scenery/js/imports.js';
+import { Color, ColorProperty } from '../../../../scenery/js/imports.js';
 import Emitter from '../../../../axon/js/Emitter.js';
+import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
+import Tandem from '../../../../tandem/js/Tandem.js';
 
 // constants
 const randomColors = [
@@ -102,7 +104,18 @@ export default class DensityMysteryModel extends BlockSetModel<MysteryBlockSet> 
     const set3Tandem = blockSetsTandem.createTandem( 'set3' );
     const randomTandem = blockSetsTandem.createTandem( 'random' );
 
+    const createColorProperty = ( colorProperty: TReadOnlyProperty<Color>, cubeTandem: Tandem ) => {
+      return new ColorProperty( colorProperty.value, {
+        tandem: cubeTandem.createTandem( 'materialProperty' ).createTandem( 'customMaterial' ).createTandem( 'colorProperty' )
+      } );
+    };
+
     const createMasses = ( model: DensityBuoyancyModel, blockSet: MysteryBlockSet ) => {
+
+      const cube1DTandem = set1Tandem.createTandem( `block${MassTag.ONE_D.tandemName}` );
+      const cube1BTandem = set1Tandem.createTandem( `block${MassTag.ONE_B.tandemName}` );
+
+      // TODO: Factor out all this duplicated code
       switch( blockSet ) {
         case MysteryBlockSet.SET_1:
           return [
@@ -114,10 +127,10 @@ export default class DensityMysteryModel extends BlockSetModel<MysteryBlockSet> 
               combineOptions<CubeOptions>( {}, commonCubeOptions, {
                 customMaterialOptions: {
                   density: Material.WATER.density,
-                  colorProperty: DensityBuoyancyCommonColors.compareRedColorProperty
+                  colorProperty: createColorProperty( DensityBuoyancyCommonColors.compareRedColorProperty, cube1DTandem )
                 },
                 tag: MassTag.ONE_D,
-                tandem: set1Tandem.createTandem( `block${MassTag.ONE_D.tandemName}` )
+                tandem: cube1DTandem
               } )
             ),
 
@@ -129,10 +142,10 @@ export default class DensityMysteryModel extends BlockSetModel<MysteryBlockSet> 
               combineOptions<CubeOptions>( {}, commonCubeOptions, {
                 customMaterialOptions: {
                   density: Material.WOOD.density,
-                  colorProperty: DensityBuoyancyCommonColors.compareBlueColorProperty
+                  colorProperty: createColorProperty( DensityBuoyancyCommonColors.compareBlueColorProperty, cube1BTandem )
                 },
                 tag: MassTag.ONE_B,
-                tandem: set1Tandem.createTandem( `block${MassTag.ONE_B.tandemName}` )
+                tandem: cube1BTandem
               } )
             ),
 

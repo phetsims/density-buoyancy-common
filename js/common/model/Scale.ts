@@ -15,7 +15,6 @@ import Enumeration from '../../../../phet-core/js/Enumeration.js';
 import EnumerationValue from '../../../../phet-core/js/EnumerationValue.js';
 import optionize from '../../../../phet-core/js/optionize.js';
 import PhetioObject from '../../../../tandem/js/PhetioObject.js';
-import IOType from '../../../../tandem/js/types/IOType.js';
 import NumberIO from '../../../../tandem/js/types/NumberIO.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import InterpolatedProperty from './InterpolatedProperty.js';
@@ -90,8 +89,6 @@ export default class Scale extends Mass {
 
       displayType: DisplayType.NEWTONS,
       material: Material.PLATINUM,
-
-      phetioType: Scale.ScaleIO,
 
       accessibleName: 'Scale',
 
@@ -212,14 +209,6 @@ export default class Scale extends Mass {
 
     this.measuredWeightInterpolatedProperty.setRatio( interpolationRatio );
   }
-
-  // Not interesting or useful, but maintained as a documentation point, and for backward compatibility with
-  // legacy publications of Density
-  private static readonly ScaleIO = new IOType( 'ScaleIO', {
-    valueType: Scale,
-    supertype: Mass.MassIO,
-    documentation: 'Represents scale used for measuring mass/weight'
-  } );
 
   public static readonly SCALE_WIDTH = SCALE_WIDTH;
   public static readonly SCALE_HEIGHT = SCALE_HEIGHT;

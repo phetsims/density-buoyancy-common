@@ -12,7 +12,7 @@ import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import StrictOmit from '../../../../phet-core/js/types/StrictOmit.js';
 import BlockSetModel, { BlockSetModelOptions } from './BlockSetModel.js';
 import BlockSet from './BlockSet.js';
-import optionize from '../../../../phet-core/js/optionize.js';
+import optionize, { combineOptions } from '../../../../phet-core/js/optionize.js';
 import NumberProperty from '../../../../axon/js/NumberProperty.js';
 import Range from '../../../../dot/js/Range.js';
 import TProperty from '../../../../axon/js/TProperty.js';
@@ -20,7 +20,7 @@ import { Color } from '../../../../scenery/js/imports.js';
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import Material, { CustomSolidMaterial } from './Material.js';
 import Property from '../../../../axon/js/Property.js';
-import Cube, { CubeOptions } from './Cube.js';
+import Cube, { CubeOptions, StrictCubeOptions } from './Cube.js';
 import merge from '../../../../phet-core/js/merge.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
@@ -67,6 +67,9 @@ type SelfOptions = {
   sameDensityValue?: number;
   sameDensityRange?: Range;
 
+  // Provided options to cubes for all blockSets
+  sharedCubeOptions?: Partial<StrictCubeOptions>;
+
   // Support for using non-custom materials as the initial materials of the blocks, but only if their densities are
   // the same. Once the variable changes for the given block set, these are ignored, and custom materials are used. Use
   // an empty list to opt out of this feature.
@@ -102,6 +105,12 @@ export default class CompareBlockSetModel extends BlockSetModel<BlockSet> {
       sameDensityRange: new Range( 100, 3000 ),
 
       initialMaterials: [],
+
+      sharedCubeOptions: {
+        materialPropertyOptions: {
+          phetioReadOnly: true // See https://github.com/phetsims/density-buoyancy-common/issues/270#issuecomment-2243371397
+        }
+      },
 
       // BlockSetModel options
       initialMode: BlockSet.SAME_MASS,
@@ -159,6 +168,8 @@ export default class CompareBlockSetModel extends BlockSetModel<BlockSet> {
       }, cubeData );
     } );
 
+    const getCubeOptions = ( cubeOptions: StrictCubeOptions ) => combineOptions<CubeOptions>( {}, options.sharedCubeOptions, cubeOptions );
+
     // TODO: Helpful documentation please, see https://github.com/phetsims/density-buoyancy-common/issues/273
     const createMasses = ( model: BlockSetModel<BlockSet>, blockSet: BlockSet ) => {
 
@@ -167,7 +178,8 @@ export default class CompareBlockSetModel extends BlockSetModel<BlockSet> {
       // don't need to be removed.
       return blockSet === BlockSet.SAME_MASS ?
              cubesData.map( cubeData => {
-               const cube = Cube.createWithMass( model.engine, cubeData.sameMassMaterialProperty.value, Vector2.ZERO, massProperty.value, cubeData.sameMassCubeOptions );
+               const cube = Cube.createWithMass( model.engine, cubeData.sameMassMaterialProperty.value, Vector2.ZERO,
+                 massProperty.value, getCubeOptions( cubeData.sameMassCubeOptions ) );
 
                cubeData.sameMassMaterialProperty.link( material => cube.materialProperty.set( material ) );
 
@@ -183,7 +195,7 @@ export default class CompareBlockSetModel extends BlockSetModel<BlockSet> {
              blockSet === BlockSet.SAME_VOLUME ?
              cubesData.map( cubeData => {
                const cube = Cube.createWithMass( model.engine, cubeData.sameVolumeMaterialProperty.value, Vector2.ZERO,
-                 cubeData.sameVolumeMass, cubeData.sameVolumeCubeOptions );
+                 cubeData.sameVolumeMass, getCubeOptions( cubeData.sameVolumeCubeOptions ) );
 
                cubeData.sameVolumeMaterialProperty.link( material => cube.materialProperty.set( material ) );
 
@@ -207,7 +219,7 @@ export default class CompareBlockSetModel extends BlockSetModel<BlockSet> {
                const startingMass = options.sameDensityValue * cubeData.sameDensityVolume;
 
                const cube = Cube.createWithMass( model.engine, cubeData.sameDensityMaterialProperty.value, Vector2.ZERO,
-                 startingMass, cubeData.sameDensityCubeOptions );
+                 startingMass, getCubeOptions( cubeData.sameDensityCubeOptions ) );
 
                cubeData.sameDensityMaterialProperty.link( material => cube.materialProperty.set( material ) );
                densityProperty.lazyLink( density => cubeData.sameDensityDensityProperty.set( density ) );

@@ -25,6 +25,8 @@ type SelfOptions = {
 
 export type CubeOptions = SelfOptions & CuboidOptions;
 
+export type StrictCubeOptions = StrictOmit<CubeOptions, 'matrix' | 'material'>;
+
 export default class Cube extends Cuboid {
   public constructor( engine: PhysicsEngine, volume: number, providedOptions: CubeOptions ) {
 
@@ -77,7 +79,7 @@ export default class Cube extends Cuboid {
   /**
    * Creates a Cube with a defined volume
    */
-  public static createWithVolume( engine: PhysicsEngine, material: Material | 'CUSTOM', position: Vector2, volume: number, options?: StrictOmit<CubeOptions, 'matrix' | 'material'> ): Cube {
+  public static createWithVolume( engine: PhysicsEngine, material: Material | 'CUSTOM', position: Vector2, volume: number, options?: StrictCubeOptions ): Cube {
     return new Cube( engine, volume, combineOptions<CubeOptions>( {
       matrix: Matrix3.translation( position.x, position.y ),
       minVolume: Cuboid.MIN_VOLUME,
@@ -89,7 +91,7 @@ export default class Cube extends Cuboid {
   /**
    * Creates a Cube with a defined volume
    */
-  public static createWithMass( engine: PhysicsEngine, material: Material | 'CUSTOM', position: Vector2, mass: number, options?: StrictOmit<CubeOptions, 'matrix' | 'material'> ): Cube {
+  public static createWithMass( engine: PhysicsEngine, material: Material | 'CUSTOM', position: Vector2, mass: number, options?: StrictCubeOptions ): Cube {
     let density: number;
     if ( material === 'CUSTOM' ) {
       assert && assert( options?.customMaterialOptions?.density, 'density needed to create with mass' );

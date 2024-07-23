@@ -33,3 +33,7 @@ Notes about coordinates:
   2. P2 engine
   3. ThreeJS rendering
 - View coordinates are used only for Scenery rendering.
+
+### Units
+The units for the model are meters, kilograms, and seconds. However, for the user interface, volumes are displayed as L = dm^3,
+so there are several conversions between the two. See https://github.com/phetsims/density-buoyancy-common/issues/266

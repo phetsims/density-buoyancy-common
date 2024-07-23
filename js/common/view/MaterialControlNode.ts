@@ -60,7 +60,7 @@ export default class MaterialControlNode extends VBox {
 
     const comboMaxWidth = 110;
 
-    // TODO AV: sort at usage sites instead? https://github.com/phetsims/density-buoyancy-common/issues/256
+    // TODO AV: sort at usage sites instead? https://github.com/phetsims/density-buoyancy-common/issues/237
     const regularMaterials = materials.filter( material => !material.hidden && !material.custom );
     const customMaterials = materials.filter( material => material.custom );
     const mysteryMaterials = materials.filter( material => material.hidden );

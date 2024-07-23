@@ -76,7 +76,7 @@ export default class DisplayProperties {
       range: new Range( 0, ZOOM_SCALES.length - 1 ),
       tandem: tandem.createTandem( 'vectorZoomLevelProperty' ),
       phetioFeatured: true,
-      phetioDocumentation: 'Controls the zoom of the vector arrows'
+      phetioDocumentation: 'Controls the zoom level of the force vectors. Smaller values are more zoomed out.'
     } );
 
     // Scale factor for the current zoom level

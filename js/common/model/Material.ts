@@ -243,8 +243,7 @@ export default class Material extends PhetioObject implements HasValueProperty {
 
   public static readonly LEAD = new Material( SOLIDS_TANDEM.createTandem( 'lead' ), {
     nameProperty: DensityBuoyancyCommonStrings.material.leadStringProperty,
-    density: 11342,
-    colorProperty: DensityBuoyancyCommonColors.materialLeadColorProperty
+    density: 11342
   } );
 
   public static readonly PLATINUM = new Material( SOLIDS_TANDEM.createTandem( 'platinum' ), {
@@ -300,8 +299,7 @@ export default class Material extends PhetioObject implements HasValueProperty {
   public static readonly AIR = new Material( FLUIDS_TANDEM.createTandem( 'air' ), {
     nameProperty: DensityBuoyancyCommonStrings.material.airStringProperty,
     density: 1.2,
-    viscosity: 0,
-    colorProperty: DensityBuoyancyCommonColors.materialAirColorProperty
+    viscosity: 0
   } );
 
   public static readonly FLUID_A = new Material( FLUIDS_TANDEM.createTandem( 'fluidA' ), {

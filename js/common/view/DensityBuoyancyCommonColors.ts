@@ -177,12 +177,6 @@ const DensityBuoyancyCommonColors = {
   } ),
 
   // "liquid" material colors
-  materialAirColorProperty: new ProfileColorProperty( densityBuoyancyCommon, 'materialAir', {
-    default: new Color( 0, 0, 0, 0 )
-  }, {
-    phetioReadOnly: true,
-    tandem: packageName === 'density' ? Tandem.OPT_OUT : tandem.createTandem( 'materialAirColorProperty' )
-  } ),
   materialConcreteColorProperty: new ProfileColorProperty( densityBuoyancyCommon, 'materialConcrete', {
     default: new Color( 128, 130, 133 )
   }, {
@@ -242,12 +236,6 @@ const DensityBuoyancyCommonColors = {
   }, {
     phetioReadOnly: true,
     tandem: packageName === 'density' ? Tandem.OPT_OUT : tandem.createTandem( 'materialHoneyColorProperty' )
-  } ),
-  materialLeadColorProperty: new ProfileColorProperty( densityBuoyancyCommon, 'materialLead', {
-    default: new Color( 80, 85, 90 )
-  }, {
-    phetioReadOnly: true,
-    tandem: packageName === 'density' ? Tandem.OPT_OUT : tandem.createTandem( 'materialLeadColorProperty' )
   } ),
   materialMercuryColorProperty: new ProfileColorProperty( densityBuoyancyCommon, 'materialMercury', {
     default: new Color( 219, 206, 202, 0.8 )

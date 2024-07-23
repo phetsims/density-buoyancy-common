@@ -474,9 +474,6 @@ export default class DensityMysteryModel extends BlockSetModel<MysteryBlockSet> 
       },
       volumePropertyOptions: {
         phetioFeatured: false
-      },
-      inputEnabledPropertyOptions: {
-        phetioFeatured: false
       }
     } );
     this.availableMasses.push( this.scale );

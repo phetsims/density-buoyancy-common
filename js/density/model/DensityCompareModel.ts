@@ -59,24 +59,15 @@ export default class DensityCompareModel extends CompareBlockSetModel {
           colorProperty: DensityBuoyancyCommonColors.compareYellowColorProperty,
           sameMassCubeOptions: {
             tag: MassTag.B,
-            tandem: blockSetsTandem.createTandem( BlockSet.SAME_MASS.tandemName ).createTandem( 'yellowBlock' ),
-            inputEnabledPropertyOptions: {
-              phetioFeatured: true
-            }
+            tandem: blockSetsTandem.createTandem( BlockSet.SAME_MASS.tandemName ).createTandem( 'yellowBlock' )
           },
           sameVolumeCubeOptions: {
             tag: MassTag.A,
-            tandem: blockSetsTandem.createTandem( BlockSet.SAME_VOLUME.tandemName ).createTandem( 'yellowBlock' ),
-            inputEnabledPropertyOptions: {
-              phetioFeatured: true
-            }
+            tandem: blockSetsTandem.createTandem( BlockSet.SAME_VOLUME.tandemName ).createTandem( 'yellowBlock' )
           },
           sameDensityCubeOptions: {
             tag: MassTag.B,
-            tandem: blockSetsTandem.createTandem( BlockSet.SAME_DENSITY.tandemName ).createTandem( 'yellowBlock' ),
-            inputEnabledPropertyOptions: {
-              phetioFeatured: true
-            }
+            tandem: blockSetsTandem.createTandem( BlockSet.SAME_DENSITY.tandemName ).createTandem( 'yellowBlock' )
           }
         }, {
           tandemName: 'compareB',
@@ -86,24 +77,15 @@ export default class DensityCompareModel extends CompareBlockSetModel {
           colorProperty: DensityBuoyancyCommonColors.compareBlueColorProperty,
           sameMassCubeOptions: {
             tag: MassTag.A,
-            tandem: blockSetsTandem.createTandem( BlockSet.SAME_MASS.tandemName ).createTandem( 'blueBlock' ),
-            inputEnabledPropertyOptions: {
-              phetioFeatured: true
-            }
+            tandem: blockSetsTandem.createTandem( BlockSet.SAME_MASS.tandemName ).createTandem( 'blueBlock' )
           },
           sameVolumeCubeOptions: {
             tag: MassTag.C,
-            tandem: blockSetsTandem.createTandem( BlockSet.SAME_VOLUME.tandemName ).createTandem( 'blueBlock' ),
-            inputEnabledPropertyOptions: {
-              phetioFeatured: true
-            }
+            tandem: blockSetsTandem.createTandem( BlockSet.SAME_VOLUME.tandemName ).createTandem( 'blueBlock' )
           },
           sameDensityCubeOptions: {
             tag: MassTag.A,
-            tandem: blockSetsTandem.createTandem( BlockSet.SAME_DENSITY.tandemName ).createTandem( 'blueBlock' ),
-            inputEnabledPropertyOptions: {
-              phetioFeatured: true
-            }
+            tandem: blockSetsTandem.createTandem( BlockSet.SAME_DENSITY.tandemName ).createTandem( 'blueBlock' )
           }
         }, {
           tandemName: 'compareC',
@@ -113,24 +95,15 @@ export default class DensityCompareModel extends CompareBlockSetModel {
           colorProperty: DensityBuoyancyCommonColors.compareGreenColorProperty,
           sameMassCubeOptions: {
             tag: MassTag.C,
-            tandem: blockSetsTandem.createTandem( BlockSet.SAME_MASS.tandemName ).createTandem( 'greenBlock' ),
-            inputEnabledPropertyOptions: {
-              phetioFeatured: true
-            }
+            tandem: blockSetsTandem.createTandem( BlockSet.SAME_MASS.tandemName ).createTandem( 'greenBlock' )
           },
           sameVolumeCubeOptions: {
             tag: MassTag.D,
-            tandem: blockSetsTandem.createTandem( BlockSet.SAME_VOLUME.tandemName ).createTandem( 'greenBlock' ),
-            inputEnabledPropertyOptions: {
-              phetioFeatured: true
-            }
+            tandem: blockSetsTandem.createTandem( BlockSet.SAME_VOLUME.tandemName ).createTandem( 'greenBlock' )
           },
           sameDensityCubeOptions: {
             tag: MassTag.C,
-            tandem: blockSetsTandem.createTandem( BlockSet.SAME_DENSITY.tandemName ).createTandem( 'greenBlock' ),
-            inputEnabledPropertyOptions: {
-              phetioFeatured: true
-            }
+            tandem: blockSetsTandem.createTandem( BlockSet.SAME_DENSITY.tandemName ).createTandem( 'greenBlock' )
           }
         }, {
           tandemName: 'compareD',
@@ -140,24 +113,15 @@ export default class DensityCompareModel extends CompareBlockSetModel {
           colorProperty: DensityBuoyancyCommonColors.compareRedColorProperty,
           sameMassCubeOptions: {
             tag: MassTag.D,
-            tandem: blockSetsTandem.createTandem( BlockSet.SAME_MASS.tandemName ).createTandem( 'redBlock' ),
-            inputEnabledPropertyOptions: {
-              phetioFeatured: true
-            }
+            tandem: blockSetsTandem.createTandem( BlockSet.SAME_MASS.tandemName ).createTandem( 'redBlock' )
           },
           sameVolumeCubeOptions: {
             tag: MassTag.B,
-            tandem: blockSetsTandem.createTandem( BlockSet.SAME_VOLUME.tandemName ).createTandem( 'redBlock' ),
-            inputEnabledPropertyOptions: {
-              phetioFeatured: true
-            }
+            tandem: blockSetsTandem.createTandem( BlockSet.SAME_VOLUME.tandemName ).createTandem( 'redBlock' )
           },
           sameDensityCubeOptions: {
             tag: MassTag.D,
-            tandem: blockSetsTandem.createTandem( BlockSet.SAME_DENSITY.tandemName ).createTandem( 'redBlock' ),
-            inputEnabledPropertyOptions: {
-              phetioFeatured: true
-            }
+            tandem: blockSetsTandem.createTandem( BlockSet.SAME_DENSITY.tandemName ).createTandem( 'redBlock' )
           }
         } ]
     }, providedOptions );

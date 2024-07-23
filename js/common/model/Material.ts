@@ -448,54 +448,6 @@ export default class Material extends PhetioObject implements HasValueProperty {
     density: Material.GOLD.density
   } );
 
-  // TODO: Convert to an object literal like{AIR: new Material( ... ), ...} as const
-  // TODO: Then we can lift the keys for a string union of "NonCustomMaterialName". https://github.com/phetsims/density-buoyancy-common/issues/176
-  public static readonly MATERIALS = [
-    Material.ALUMINUM,
-    Material.APPLE,
-    Material.BOAT_BODY,
-    Material.BRICK,
-    Material.CONCRETE,
-    Material.COPPER,
-    Material.DIAMOND,
-    Material.GLASS,
-    Material.GOLD,
-    Material.HUMAN,
-    Material.ICE,
-    Material.LEAD,
-    Material.PLATINUM,
-    Material.PVC,
-    Material.PYRITE,
-    Material.SILVER,
-    Material.STEEL,
-    Material.STYROFOAM,
-    Material.TANTALUM,
-    Material.TITANIUM,
-    Material.WOOD,
-    Material.AIR,
-    Material.FLUID_A,
-    Material.FLUID_B,
-    Material.FLUID_C,
-    Material.FLUID_D,
-    Material.FLUID_E,
-    Material.FLUID_F,
-    Material.GASOLINE,
-    Material.HONEY,
-    Material.MERCURY,
-    Material.OIL,
-    Material.SAND,
-    Material.SEAWATER,
-    Material.WATER,
-    Material.MATERIAL_O,
-    Material.MATERIAL_P,
-    Material.MATERIAL_R,
-    Material.MATERIAL_S,
-    Material.MATERIAL_V,
-    Material.MATERIAL_W,
-    Material.MATERIAL_X,
-    Material.MATERIAL_Y
-  ] as const;
-
   public static readonly DENSITY_MYSTERY_MATERIALS = [
     Material.WOOD,
     Material.GASOLINE,
@@ -597,8 +549,5 @@ export class CustomLiquidMaterial extends Material {
     }
   }
 }
-
-assert && assert( _.every( Material.MATERIALS, material => !material.custom ), 'custom materials not allowed in MATERIALS list' );
-assert && assert( _.uniq( Material.MATERIALS ).length === Material.MATERIALS.length, 'duplicate in Material.MATERIALS' );
 
 densityBuoyancyCommon.register( 'Material', Material );

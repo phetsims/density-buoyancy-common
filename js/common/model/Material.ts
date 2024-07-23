@@ -8,7 +8,6 @@
 
 import DynamicProperty from '../../../../axon/js/DynamicProperty.js';
 import TProperty from '../../../../axon/js/TProperty.js';
-import Property from '../../../../axon/js/Property.js';
 import Utils from '../../../../dot/js/Utils.js';
 import ThreeUtils from '../../../../mobius/js/ThreeUtils.js';
 import optionize, { combineOptions, EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
@@ -305,42 +304,42 @@ export default class Material extends PhetioObject implements HasValueProperty {
   public static readonly FLUID_A = new Material( FLUIDS_TANDEM.createTandem( 'fluidA' ), {
     nameProperty: DensityBuoyancyCommonStrings.material.fluidAStringProperty,
     density: 3100,
-    colorProperty: DensityBuoyancyCommonColors.materialDensityAColorProperty,
+    colorProperty: DensityBuoyancyCommonColors.materialFluidAColorProperty,
     hidden: true
   } );
 
   public static readonly FLUID_B = new Material( FLUIDS_TANDEM.createTandem( 'fluidB' ), {
     nameProperty: DensityBuoyancyCommonStrings.material.fluidBStringProperty,
     density: 790,
-    colorProperty: DensityBuoyancyCommonColors.materialDensityBColorProperty,
+    colorProperty: DensityBuoyancyCommonColors.materialFluidBColorProperty,
     hidden: true
   } );
 
   public static readonly FLUID_C = new Material( FLUIDS_TANDEM.createTandem( 'fluidC' ), {
     nameProperty: DensityBuoyancyCommonStrings.material.fluidCStringProperty,
     density: 490,
-    colorProperty: DensityBuoyancyCommonColors.materialDensityCColorProperty,
+    colorProperty: DensityBuoyancyCommonColors.materialFluidCColorProperty,
     hidden: true
   } );
 
   public static readonly FLUID_D = new Material( FLUIDS_TANDEM.createTandem( 'fluidD' ), {
     nameProperty: DensityBuoyancyCommonStrings.material.fluidDStringProperty,
     density: 2890,
-    colorProperty: DensityBuoyancyCommonColors.materialDensityDColorProperty,
+    colorProperty: DensityBuoyancyCommonColors.materialFluidDColorProperty,
     hidden: true
   } );
 
   public static readonly FLUID_E = new Material( FLUIDS_TANDEM.createTandem( 'fluidE' ), {
     nameProperty: DensityBuoyancyCommonStrings.material.fluidEStringProperty,
     density: 1260,
-    colorProperty: DensityBuoyancyCommonColors.materialDensityEColorProperty,
+    colorProperty: DensityBuoyancyCommonColors.materialFluidEColorProperty,
     hidden: true
   } );
 
   public static readonly FLUID_F = new Material( FLUIDS_TANDEM.createTandem( 'fluidF' ), {
     nameProperty: DensityBuoyancyCommonStrings.material.fluidFStringProperty,
     density: 6440,
-    colorProperty: DensityBuoyancyCommonColors.materialDensityFColorProperty,
+    colorProperty: DensityBuoyancyCommonColors.materialFluidFColorProperty,
     hidden: true
   } );
 
@@ -398,14 +397,14 @@ export default class Material extends PhetioObject implements HasValueProperty {
   public static readonly MATERIAL_O = new Material( SOLIDS_TANDEM.createTandem( 'materialO' ), {
     nameProperty: DensityBuoyancyCommonStrings.material.materialOStringProperty,
     hidden: true,
-    colorProperty: new Property( new Color( '#f00' ) ),
+    colorProperty: DensityBuoyancyCommonColors.materialOColorProperty,
     density: 950 // Same as the Human's average density
   } );
 
   public static readonly MATERIAL_P = new Material( SOLIDS_TANDEM.createTandem( 'materialP' ), {
     nameProperty: DensityBuoyancyCommonStrings.material.materialPStringProperty,
     hidden: true,
-    colorProperty: new Property( new Color( '#0f0' ) ),
+    colorProperty: DensityBuoyancyCommonColors.materialPColorProperty,
     density: Material.DIAMOND.density
   } );
 
@@ -426,14 +425,14 @@ export default class Material extends PhetioObject implements HasValueProperty {
   public static readonly MATERIAL_V = new Material( SOLIDS_TANDEM.createTandem( 'materialV' ), {
     nameProperty: DensityBuoyancyCommonStrings.material.materialVStringProperty,
     hidden: true,
-    colorProperty: new Property( new Color( '#ff0' ) ),
+    colorProperty: DensityBuoyancyCommonColors.materialVColorProperty,
     density: Material.TITANIUM.density
   } );
 
   public static readonly MATERIAL_W = new Material( SOLIDS_TANDEM.createTandem( 'materialW' ), {
     nameProperty: DensityBuoyancyCommonStrings.material.materialWStringProperty,
     hidden: true,
-    colorProperty: new Property( new Color( '#0af' ) ),
+    colorProperty: DensityBuoyancyCommonColors.materialWColorProperty,
     density: Material.MERCURY.density
   } );
 

@@ -128,7 +128,7 @@ export default class DensityMysteryModel extends BlockSetModel<MysteryBlockSet> 
       const set3CTandem = set3Tandem.createTandem( `block${MassTag.THREE_C.tandemName}` );
       const set3ATandem = set3Tandem.createTandem( `block${MassTag.THREE_A.tandemName}` );
 
-      // TODO: Factor out all this duplicated code, https://github.com/phetsims/density-buoyancy-common/issues/275
+      // TODO: Factor out all this duplicated code, https://github.com/phetsims/density-buoyancy-common/issues/276
       switch( blockSet ) {
         case MysteryBlockSet.SET_1:
           return [

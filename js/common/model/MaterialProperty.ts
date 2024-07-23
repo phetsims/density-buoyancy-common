@@ -25,8 +25,8 @@ export default class MaterialProperty extends MappedWrappedProperty<Material> {
   public readonly customMaterial: Material;
 
   // Note the material could be the customMaterial
-  public constructor( material: Material, customMaterial: Material, providedOptions: MaterialPropertyOptions ) {
-    super( material, customMaterial, combineOptions<MaterialPropertyOptions>( {
+  public constructor( material: Material, customMaterial: Material, availableMaterials: Material[], providedOptions: MaterialPropertyOptions ) {
+    super( material, customMaterial, availableMaterials, combineOptions<MaterialPropertyOptions>( {
       phetioFeatured: true
     }, providedOptions ) );
     this.densityProperty = this.dynamicValueProperty;

@@ -260,7 +260,11 @@ export default abstract class Mass extends PhetioObject {
     }, options.customMaterialOptions ) );
 
     const initialMaterial = options.material === 'CUSTOM' ? customSolidMaterial : options.material;
-    this.materialProperty = new MaterialProperty( initialMaterial, customSolidMaterial, options.materialPropertyOptions as MaterialPropertyOptions );
+    this.materialProperty = new MaterialProperty( initialMaterial, customSolidMaterial,
+
+      // TODO: Do this part next, https://github.com/phetsims/density-buoyancy-common/issues/270
+      [],
+      options.materialPropertyOptions as MaterialPropertyOptions );
 
     this.volumeProperty = new NumberProperty( options.volume, combineOptions<NumberPropertyOptions>( {
       tandem: tandem?.createTandem( 'volumeProperty' ),

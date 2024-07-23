@@ -24,6 +24,8 @@ import ReferenceIO from '../../../../tandem/js/types/ReferenceIO.js';
 import IOType from '../../../../tandem/js/types/IOType.js';
 import MaterialProperty from './MaterialProperty.js';
 
+export type FluidSelectionType = 'justWater' | 'simple' | 'all';
+
 export default class Pool extends Basin {
 
   public readonly bounds: Bounds3;
@@ -39,7 +41,9 @@ export default class Pool extends Basin {
 
   public readonly fluidTandem: Tandem;
 
-  public constructor( bounds: Bounds3, usePoolScale: boolean, engine: PhysicsEngine, gravityProperty: TReadOnlyProperty<Gravity>, tandem: Tandem ) {
+  public constructor( bounds: Bounds3, usePoolScale: boolean, engine: PhysicsEngine,
+                      gravityProperty: TReadOnlyProperty<Gravity>,
+                      fluidSelectionType: FluidSelectionType, tandem: Tandem ) {
 
     const initialVolume = DensityBuoyancyCommonConstants.DESIRED_STARTING_POOL_VOLUME;
 
@@ -64,7 +68,15 @@ export default class Pool extends Basin {
       densityRange: DensityBuoyancyCommonConstants.FLUID_DENSITY_RANGE_PER_M3
     } );
 
-    this.fluidMaterialProperty = new MaterialProperty( Material.WATER, customFluidMaterial, {
+    const availableMaterials = fluidSelectionType === 'justWater' ? [ Material.WATER ] :
+                               fluidSelectionType === 'simple' ? Material.BUOYANCY_FLUID_MATERIALS :
+                               fluidSelectionType === 'all' ? [
+                                 ...Material.BUOYANCY_FLUID_MATERIALS,
+                                 customFluidMaterial,
+                                 ...Material.BUOYANCY_FLUID_MYSTERY_MATERIALS
+                               ] : [];
+
+    this.fluidMaterialProperty = new MaterialProperty( Material.WATER, customFluidMaterial, availableMaterials, {
       valueType: Material,
       phetioValueType: ReferenceIO( IOType.ObjectIO ),
       tandem: fluidMaterialPropertyTandem,
@@ -74,12 +86,12 @@ export default class Pool extends Basin {
     // DerivedProperty doesn't need disposal, since everything here lives for the lifetime of the simulation
     this.fluidDensityProperty = new DerivedProperty(
       [ this.fluidMaterialProperty.densityProperty, this.fluidMaterialProperty ],
-        ( density, material ) => density, {
-      tandem: this.fluidTandem.createTandem( 'densityProperty' ),
-      phetioFeatured: true,
-      phetioValueType: NumberIO,
-      units: 'kg/m^3'
-    } );
+      ( density, material ) => density, {
+        tandem: this.fluidTandem.createTandem( 'densityProperty' ),
+        phetioFeatured: true,
+        phetioValueType: NumberIO,
+        units: 'kg/m^3'
+      } );
 
     // DerivedProperty doesn't need disposal, since everything here lives for the lifetime of the simulation
     this.fluidLevelVolumeProperty = new DerivedProperty( [ this.fluidYInterpolatedProperty ],

@@ -24,8 +24,16 @@ export type HasValueProperty = {
 export default abstract class MappedWrappedProperty<T extends HasValueProperty> extends Property<T> {
   protected readonly dynamicValueProperty: TReadOnlyProperty<number>;
   public readonly customValue: T;
+  public readonly availableValues: T[];
 
-  protected constructor( initialValue: T, customValue: T, providedOptions?: PropertyOptions<T> ) {
+  protected constructor( initialValue: T, customValue: T, availableValues: T[], providedOptions: PropertyOptions<T> ) {
+
+    if ( availableValues.length > 0 ) {
+
+      // TODO: https://github.com/phetsims/density-buoyancy-common/issues/270 optionize please
+      providedOptions.validValues = availableValues;
+    }
+
     super( initialValue, providedOptions );
 
     this.dynamicValueProperty = new DynamicProperty<number, number, T>( this, {
@@ -34,6 +42,7 @@ export default abstract class MappedWrappedProperty<T extends HasValueProperty> 
     } );
 
     this.customValue = customValue;
+    this.availableValues = availableValues;
   }
 }
 densityBuoyancyCommon.register( 'MappedWrappedProperty', MappedWrappedProperty );

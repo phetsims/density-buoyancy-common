@@ -233,7 +233,17 @@ export default class Bottle extends ApplicationsMass {
       densityRange: new Range( 50, 20000 )
     } );
 
-    this.materialInsideProperty = new MaterialProperty( BOTTLE_INITIAL_INTERIOR_MATERIAL, customInsideMaterial, {
+    this.materialInsideProperty = new MaterialProperty( BOTTLE_INITIAL_INTERIOR_MATERIAL, customInsideMaterial, [
+      Material.GASOLINE,
+      Material.OIL,
+      Material.WATER,
+      Material.SAND,
+      Material.CONCRETE,
+      Material.COPPER,
+      customInsideMaterial,
+      Material.MATERIAL_R,
+      Material.MATERIAL_S
+    ], {
       valueType: Material,
       reentrant: true,
       tandem: materialInsidePropertyTandem,

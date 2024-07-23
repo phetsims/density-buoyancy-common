@@ -31,15 +31,7 @@ export default class GravityControlNode extends ComboNumberControl<Gravity> {
       property: gravityProperty,
       range: new Range( 0.1, 25 ),
       listParent: listParent,
-      comboItems: [
-        Gravity.MOON,
-        Gravity.EARTH,
-        Gravity.JUPITER,
-
-        // Custom goes before mystery, see https://github.com/phetsims/density-buoyancy-common/issues/161
-        gravityProperty.customGravity,
-        Gravity.PLANET_X
-      ].map( gravity => {
+      comboItems: gravityProperty.availableValues.map( gravity => {
         return {
           value: gravity,
           createNode: () => new Text( gravity.nameProperty, {

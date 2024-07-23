@@ -15,7 +15,7 @@ import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonQueryParameters from '../DensityBuoyancyCommonQueryParameters.js';
 import Gravity from './Gravity.js';
 import P2Engine from './P2Engine.js';
-import Pool from './Pool.js';
+import Pool, { FluidSelectionType } from './Pool.js';
 import Scale from './Scale.js';
 import optionize from '../../../../phet-core/js/optionize.js';
 import PhysicsEngine, { PhysicsEngineBody } from './PhysicsEngine.js';
@@ -29,6 +29,7 @@ import Basin from './Basin.js';
 import GravityProperty from './GravityProperty.js';
 import ReferenceIO from '../../../../tandem/js/types/ReferenceIO.js';
 import IOType from '../../../../tandem/js/types/IOType.js';
+import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 
 // constants
 const BLOCK_SPACING = 0.01;
@@ -41,7 +42,10 @@ const POOL_BACK_Z = -POOL_DEPTH / 2;
 
 export type DensityBuoyancyModelOptions = {
   usePoolScale?: boolean;
+  fluidSelectionType: FluidSelectionType;
 } & PickRequired<PhetioObjectOptions, 'tandem'>;
+
+const customStringProperty = DensityBuoyancyCommonStrings.gravity.customStringProperty;
 
 export default class DensityBuoyancyModel implements TModel {
 
@@ -70,10 +74,26 @@ export default class DensityBuoyancyModel implements TModel {
 
     const tandem = options.tandem;
 
-    this.gravityProperty = new GravityProperty( Gravity.EARTH, {
+    const initialGravity = Gravity.EARTH;
+    const gravityPropertyTandem = tandem.createTandem( 'gravityProperty' );
+
+    const customGravity = new Gravity( {
+      nameProperty: customStringProperty,
+      tandem: gravityPropertyTandem.createTandem( 'customGravity' ),
+      value: initialGravity.gravityValue,
+      custom: true
+    } );
+
+    this.gravityProperty = new GravityProperty( initialGravity, customGravity, [
+      Gravity.MOON,
+      Gravity.EARTH,
+      Gravity.JUPITER,
+      customGravity,
+      Gravity.PLANET_X
+    ], {
       valueType: Gravity,
       phetioValueType: ReferenceIO( IOType.ObjectIO ),
-      tandem: tandem.createTandem( 'gravityProperty' ),
+      tandem: gravityPropertyTandem,
       phetioDocumentation: 'The acceleration due to gravity applied to all masses, (may be potentially custom or hidden from view)'
     } );
 
@@ -135,7 +155,8 @@ export default class DensityBuoyancyModel implements TModel {
     ];
 
     this.engine = new P2Engine();
-    this.pool = new Pool( this.poolBounds, options.usePoolScale, this.engine, this.gravityProperty, tandem.createTandem( 'pool' ) );
+
+    this.pool = new Pool( this.poolBounds, options.usePoolScale, this.engine, this.gravityProperty, options.fluidSelectionType, tandem.createTandem( 'pool' ) );
 
     this.groundBody = this.engine.createGround( this.groundPoints );
     this.engine.addBody( this.groundBody );

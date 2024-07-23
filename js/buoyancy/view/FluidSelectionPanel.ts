@@ -7,7 +7,6 @@
  */
 
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
-import Material from '../../common/model/Material.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import Panel, { PanelOptions } from '../../../../sun/js/Panel.js';
 import { Node, Text, VBox } from '../../../../scenery/js/imports.js';
@@ -15,13 +14,13 @@ import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonCo
 import { EmptySelfOptions, optionize3 } from '../../../../phet-core/js/optionize.js';
 import WithRequired from '../../../../phet-core/js/types/WithRequired.js';
 import ComboBox from '../../../../sun/js/ComboBox.js';
-import Property from '../../../../axon/js/Property.js';
+import MaterialProperty from '../../common/model/MaterialProperty.js';
 
 type FluidSelectionPanelOptions = WithRequired<PanelOptions, 'tandem'>;
 
 export default class FluidSelectionPanel extends Panel {
 
-  public constructor( fluidMaterialProperty: Property<Material>, listParent: Node, providedOptions?: FluidSelectionPanelOptions ) {
+  public constructor( fluidMaterialProperty: MaterialProperty, listParent: Node, providedOptions?: FluidSelectionPanelOptions ) {
 
     const options = optionize3<FluidSelectionPanelOptions, EmptySelfOptions, PanelOptions>()( {}, DensityBuoyancyCommonConstants.PANEL_OPTIONS, providedOptions );
 
@@ -29,7 +28,7 @@ export default class FluidSelectionPanel extends Panel {
 
     const fluidBox = new ComboBox(
       fluidMaterialProperty,
-      Material.BUOYANCY_FLUID_MATERIALS.map( material => {
+      fluidMaterialProperty.availableValues.map( material => {
         return {
           value: material,
           createNode: () => new Text( material.nameProperty, {

@@ -110,32 +110,23 @@ export default class BuoyancyApplicationsScreenView extends BuoyancyScreenView<B
 
     const bottleControlsTandem = tandem.createTandem( 'bottleControls' );
     const materialInsideControlsTandem = bottleControlsTandem.createTandem( 'materialInsideControls' );
-    const materialInsideControls = new MaterialMassVolumeControlNode( model.bottle.materialInsideProperty, model.bottle.materialInsideMassProperty, model.bottle.materialInsideVolumeProperty, [
-      Material.GASOLINE,
-      Material.OIL,
-      Material.WATER,
-      Material.SAND,
-      Material.CONCRETE,
-      Material.COPPER,
-      model.bottle.materialInsideProperty.customMaterial,
-      Material.MATERIAL_R,
-      Material.MATERIAL_S
-    ], volume => model.bottle.materialInsideVolumeProperty.set( volume ), this.popupLayer, true, {
-      minMass: 0,
-      minCustomMass: 0,
-      maxCustomMass: 100,
-      maxMass: 100,
-      minVolumeLiters: model.bottle.materialInsideVolumeRange.min,
-      maxVolumeLiters: model.bottle.materialInsideVolumeRange.max,
-      minCustomVolumeLiters: 0.5,
-      showMassAsReadout: true,
-      customKeepsConstantDensity: true,
-      tandem: materialInsideControlsTandem,
+    const materialInsideControls = new MaterialMassVolumeControlNode( model.bottle.materialInsideProperty, model.bottle.materialInsideMassProperty, model.bottle.materialInsideVolumeProperty,
+      model.bottle.materialInsideProperty.availableValues, volume => model.bottle.materialInsideVolumeProperty.set( volume ), this.popupLayer, true, {
+        minMass: 0,
+        minCustomMass: 0,
+        maxCustomMass: 100,
+        maxMass: 100,
+        minVolumeLiters: model.bottle.materialInsideVolumeRange.min,
+        maxVolumeLiters: model.bottle.materialInsideVolumeRange.max,
+        minCustomVolumeLiters: 0.5,
+        showMassAsReadout: true,
+        customKeepsConstantDensity: true,
+        tandem: materialInsideControlsTandem,
 
-      // When controlling the material inside, the custom density is an independent variable and should not automatically
-      // sync with the previously selected material's density.
-      syncCustomMaterialDensity: false
-    } );
+        // When controlling the material inside, the custom density is an independent variable and should not automatically
+        // sync with the previously selected material's density.
+        syncCustomMaterialDensity: false
+      } );
 
     // This DerivedProperty doesn't need disposal, since everything here lives for the lifetime of the simulation
     const airLitersProperty = new DerivedProperty( [ model.bottle.materialInsideVolumeProperty ], volume => toLiters( 0.01 - volume ) );

@@ -52,7 +52,6 @@ export default class DensityCompareModel extends CompareBlockSetModel {
       },
       cubesData: [
         {
-          tandemName: 'compareA',
           sameMassVolume: 0.01,
           sameVolumeMass: 8,
           sameDensityVolume: 0.006,
@@ -70,7 +69,6 @@ export default class DensityCompareModel extends CompareBlockSetModel {
             tandem: blockSetsTandem.createTandem( BlockSet.SAME_DENSITY.tandemName ).createTandem( 'yellowBlock' )
           }
         }, {
-          tandemName: 'compareB',
           sameMassVolume: 0.005,
           sameVolumeMass: 6,
           sameDensityVolume: 0.004,
@@ -88,7 +86,6 @@ export default class DensityCompareModel extends CompareBlockSetModel {
             tandem: blockSetsTandem.createTandem( BlockSet.SAME_DENSITY.tandemName ).createTandem( 'blueBlock' )
           }
         }, {
-          tandemName: 'compareC',
           sameMassVolume: 0.0025,
           sameVolumeMass: 4,
           sameDensityVolume: 0.002,
@@ -106,7 +103,6 @@ export default class DensityCompareModel extends CompareBlockSetModel {
             tandem: blockSetsTandem.createTandem( BlockSet.SAME_DENSITY.tandemName ).createTandem( 'greenBlock' )
           }
         }, {
-          tandemName: 'compareD',
           sameMassVolume: 0.00125,
           sameVolumeMass: 2,
           sameDensityVolume: 0.001,

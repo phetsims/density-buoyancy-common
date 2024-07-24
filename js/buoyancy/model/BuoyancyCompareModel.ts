@@ -32,7 +32,6 @@ export default class BuoyancyCompareModel extends CompareBlockSetModel {
       sameDensityValue: Material.WOOD.density,
       cubesData: [
         {
-          tandemName: 'compareA',
           sameMassVolume: 0.002,
           sameVolumeMass: 10,
           sameDensityVolume: 0.005,
@@ -50,7 +49,6 @@ export default class BuoyancyCompareModel extends CompareBlockSetModel {
             tandem: blockSetsTandem.createTandem( BlockSet.SAME_DENSITY.tandemName ).createTandem( 'block3A' )
           }
         }, {
-          tandemName: 'compareB',
           sameMassVolume: 0.01,
           sameVolumeMass: 2,
           sameDensityVolume: 0.01,

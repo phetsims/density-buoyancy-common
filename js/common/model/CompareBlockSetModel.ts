@@ -8,27 +8,26 @@
  * @author Michael Kauzmann (PhET Interactive Simulations)
  */
 
-import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import StrictOmit from '../../../../phet-core/js/types/StrictOmit.js';
 import BlockSetModel, { BlockSetModelOptions } from './BlockSetModel.js';
 import BlockSet from './BlockSet.js';
 import optionize, { combineOptions } from '../../../../phet-core/js/optionize.js';
 import NumberProperty from '../../../../axon/js/NumberProperty.js';
 import Range from '../../../../dot/js/Range.js';
-import TProperty from '../../../../axon/js/TProperty.js';
-import { Color } from '../../../../scenery/js/imports.js';
-import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
-import Material, { CustomSolidMaterial } from './Material.js';
+import { Color, ColorProperty } from '../../../../scenery/js/imports.js';
+import Material from './Material.js';
 import Property from '../../../../axon/js/Property.js';
 import Cube, { CubeOptions, StrictCubeOptions } from './Cube.js';
-import merge from '../../../../phet-core/js/merge.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import WithRequired from '../../../../phet-core/js/types/WithRequired.js';
 import HasChangedNumberProperty from './HasChangedNumberProperty.js';
 import propertyStateHandlerSingleton from '../../../../axon/js/propertyStateHandlerSingleton.js';
 import PropertyStatePhase from '../../../../axon/js/PropertyStatePhase.js';
-import Tandem from '../../../../tandem/js/Tandem.js';
+import Multilink from '../../../../axon/js/Multilink.js';
+import PhysicsEngine from './PhysicsEngine.js';
+import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
+import { MaterialSchema } from './Mass.js';
 
 // This hard coded range is a bit arbitrary, but it lends itself to better colors than the provided range in the options.
 const COLOR_DENSITY_RANGE = new Range( 10, 10000 );
@@ -44,18 +43,7 @@ type CubeData = {
   sameMassCubeOptions: WithRequired<Partial<CubeOptions>, 'tandem'>;
   sameVolumeCubeOptions: WithRequired<Partial<CubeOptions>, 'tandem'>;
   sameDensityCubeOptions: WithRequired<Partial<CubeOptions>, 'tandem'>;
-
-  tandemName: string;
 };
-
-type CubeDataInternal = {
-  sameMassDensityProperty: TProperty<number>;
-  sameMassMaterialProperty: TReadOnlyProperty<Material>;
-  sameVolumeDensityProperty: TProperty<number>;
-  sameVolumeMaterialProperty: TReadOnlyProperty<Material>;
-  sameDensityDensityProperty: TProperty<number>;
-  sameDensityMaterialProperty: TReadOnlyProperty<Material>;
-} & CubeData;
 
 type SelfOptions = {
   cubesData: CubeData[];
@@ -109,8 +97,7 @@ export default class CompareBlockSetModel extends BlockSetModel<BlockSet> {
       sharedCubeOptions: {
         materialPropertyOptions: {
           phetioReadOnly: true // See https://github.com/phetsims/density-buoyancy-common/issues/270#issuecomment-2243371397
-        },
-        availableMassMaterials: [] // TODO: 'CUSTOM' isn't right in here, instead we need to figure out the "side MaterialProperty" instances first. https://github.com/phetsims/density-buoyancy-common/issues/273
+        }
       },
 
       // BlockSetModel options
@@ -145,30 +132,6 @@ export default class CompareBlockSetModel extends BlockSetModel<BlockSet> {
       units: 'kg/m^3'
     } );
 
-    const cubesData: CubeDataInternal[] = options.cubesData.map( cubeData => {
-      const sameMassDensityProperty = new NumberProperty( options.sameMassValue / cubeData.sameMassVolume );
-      const sameVolumeDensityProperty = new NumberProperty( cubeData.sameVolumeMass / options.sameVolumeValue );
-      const sameDensityDensityProperty = new NumberProperty( options.sameDensityValue, {
-        range: options.sameDensityRange
-      } );
-
-      return merge( {
-
-        sameMassDensityProperty: sameMassDensityProperty,
-        sameMassMaterialProperty: CompareBlockSetModel.createMaterialProperty( tandem.createTandem( cubeData.tandemName ).createTandem( 'sameMassCustomMaterial' ), cubeData.colorProperty, sameMassDensityProperty,
-          massProperty.hasChangedProperty, options.initialMaterials ),
-
-        sameVolumeDensityProperty: sameVolumeDensityProperty,
-        sameVolumeMaterialProperty: CompareBlockSetModel.createMaterialProperty( tandem.createTandem( cubeData.tandemName ).createTandem( 'sameVolumeCustomMaterial' ), cubeData.colorProperty, sameVolumeDensityProperty,
-          volumeProperty.hasChangedProperty, options.initialMaterials ),
-
-        sameDensityDensityProperty: sameDensityDensityProperty,
-        sameDensityMaterialProperty: CompareBlockSetModel.createMaterialProperty( tandem.createTandem( cubeData.tandemName ).createTandem( 'sameDensityCustomMaterial' ), cubeData.colorProperty, sameDensityDensityProperty,
-          densityProperty.hasChangedProperty, options.initialMaterials )
-
-      }, cubeData );
-    } );
-
     // TODO: We lost type checking for availableMassMaterials because of the `CubeOptions` type, https://github.com/phetsims/density-buoyancy-common/issues/273
     const getCubeOptions = ( cubeOptions: StrictOmit<StrictCubeOptions, 'availableMassMaterials'> ) => combineOptions<CubeOptions>( {}, options.sharedCubeOptions, cubeOptions );
 
@@ -178,36 +141,38 @@ export default class CompareBlockSetModel extends BlockSetModel<BlockSet> {
       // In the following code, the cube instance persists for the lifetime of the simulation and the listeners
       // don't need to be removed.
       return blockSet === BlockSet.SAME_MASS ?
-             cubesData.map( cubeData => {
-               const cube = Cube.createWithMass( model.engine, cubeData.sameMassMaterialProperty.value, Vector2.ZERO,
-                 massProperty.value, getCubeOptions( cubeData.sameMassCubeOptions ) );
+             options.cubesData.map( cubeData => {
+               const cube = CompareBlockSetModel.createCube( model.engine, Vector2.ZERO,
+                 massProperty.value, options.sameMassValue / cubeData.sameMassVolume,
+                 cubeData.colorProperty, massProperty.hasChangedProperty, options.initialMaterials, getCubeOptions( cubeData.sameMassCubeOptions )
+               );
 
-               cubeData.sameMassMaterialProperty.link( material => cube.materialProperty.set( material ) );
-
-               // TODO: Helpful documentation please, see https://github.com/phetsims/density-buoyancy-common/issues/273
-               massProperty.lazyLink( massValue => cubeData.sameMassDensityProperty.set( massValue / cube.volumeProperty.value ) );
+               // Keep this block's density in sync with the controlling massProperty when it changes.
+               massProperty.lazyLink( massValue => cube.materialProperty.customMaterial.densityProperty.set( massValue / cube.volumeProperty.value ) );
 
                // We must undefer the Cube's materialProperty first, in order for the DynamicProperty in DensityAccordionBox to be correctly unregistered
                // We do not know why scheduling a NOTIFY order dependency was not sufficient
+               // TODO: We may not need these anymore, https://github.com/phetsims/density-buoyancy-common/issues/273
                propertyStateHandlerSingleton.registerPhetioOrderDependency( cube.materialProperty, PropertyStatePhase.UNDEFER, model.blockSetProperty, PropertyStatePhase.UNDEFER );
                return cube;
              } ) :
 
              blockSet === BlockSet.SAME_VOLUME ?
-             cubesData.map( cubeData => {
-               const cube = Cube.createWithMass( model.engine, cubeData.sameVolumeMaterialProperty.value, Vector2.ZERO,
-                 cubeData.sameVolumeMass, getCubeOptions( cubeData.sameVolumeCubeOptions ) );
+             options.cubesData.map( cubeData => {
+               const cube = CompareBlockSetModel.createCube( model.engine, Vector2.ZERO,
+                 cubeData.sameVolumeMass, cubeData.sameVolumeMass / options.sameVolumeValue,
+                 cubeData.colorProperty, volumeProperty.hasChangedProperty, options.initialMaterials,
+                 getCubeOptions( cubeData.sameVolumeCubeOptions ) );
 
-               cubeData.sameVolumeMaterialProperty.link( material => cube.materialProperty.set( material ) );
-
+               // Keep this block's density in sync with the controlling volumeProperty when it changes.
                volumeProperty.lazyLink( volume => {
                  const size = Cube.boundsFromVolume( volume );
                  cube.updateSize( size );
 
                  // Our volume listener is triggered AFTER the cubes have phet-io applyState run, so we can't rely on
-                 // inspecting their mass at that time (and instead need an external reference from the data).
+                 // inspecting their mass at that time (and instead need an external reference from the cubeData).
                  // See https://github.com/phetsims/density/issues/111
-                 cubeData.sameVolumeDensityProperty.value = cubeData.sameVolumeMass / volume;
+                 cube.materialProperty.customMaterial.densityProperty.value = cubeData.sameVolumeMass / volume;
                } );
 
                // We must undefer the Cube's materialProperty first, in order for the DynamicProperty in DensityAccordionBox to be correctly unregistered
@@ -216,14 +181,18 @@ export default class CompareBlockSetModel extends BlockSetModel<BlockSet> {
 
                return cube;
              } ) :
-             cubesData.map( cubeData => {
+             options.cubesData.map( cubeData => {
                const startingMass = options.sameDensityValue * cubeData.sameDensityVolume;
 
-               const cube = Cube.createWithMass( model.engine, cubeData.sameDensityMaterialProperty.value, Vector2.ZERO,
-                 startingMass, getCubeOptions( cubeData.sameDensityCubeOptions ) );
+               const cube = CompareBlockSetModel.createCube( model.engine, Vector2.ZERO,
+                 startingMass, options.sameDensityValue,
+                 cubeData.colorProperty, densityProperty.hasChangedProperty, options.initialMaterials,
+                 combineOptions<StrictCubeOptions>( {
+                   customMaterialOptions: { densityRange: options.sameDensityRange } // TODO: totally unsure, https://github.com/phetsims/density-buoyancy-common/issues/273
+                 }, getCubeOptions( cubeData.sameDensityCubeOptions ) ) );
 
-               cubeData.sameDensityMaterialProperty.link( material => cube.materialProperty.set( material ) );
-               densityProperty.lazyLink( density => cubeData.sameDensityDensityProperty.set( density ) );
+               // Keep this block's density in sync with the controlling densityProperty when it changes.
+               densityProperty.lazyLink( density => cube.materialProperty.customMaterial.densityProperty.set( density ) );
 
                // We must undefer the Cube's materialProperty first, in order for the DynamicProperty in DensityAccordionBox to be correctly unregistered
                // We do not know why scheduling a NOTIFY order dependency was not sufficient
@@ -258,55 +227,77 @@ export default class CompareBlockSetModel extends BlockSetModel<BlockSet> {
     super.reset();
   }
 
-  /**
-   * Creates a material property based on the provided color, density, and block set value change status.
-   * If the block set value has not changed, it attempts to use an initial material with the same density.
-   * Otherwise, it creates a custom material with a modified color based on the density.
-   *
-   * TODO: Should this return MaterialProperty and create its own customMaterial? see https://github.com/phetsims/density-buoyancy-common/issues/273
-   * TODO: Can we use initialMaterials as the availableMassMaterials for the blocks created for this blockSet? https://github.com/phetsims/density-buoyancy-common/issues/273
-   */
-  private static createMaterialProperty( tandem: Tandem, colorProperty: TReadOnlyProperty<Color>, densityProperty: TReadOnlyProperty<number>,
-                                         blockSetValueChangedProperty: TReadOnlyProperty<boolean>, initialMaterials: Material[] ): TReadOnlyProperty<Material> {
+  // Get a material from a list given a desired density, or null if none match.
+  private static getMaterial( density: number, blockSetValueChanged: boolean, nonCustomMaterials: Material[] ): Material | null {
 
-    // Create and return a custom material with the modified color and density.
-    // TODO: there is unused and commented out code here, see https://github.com/phetsims/density-buoyancy-common/issues/273
-    const myColorProperty = new DerivedProperty( [ colorProperty, densityProperty ], ( color, density ) => {
-      // myCustomMaterial.densityProperty.value = density;
+    // If the block set value has not changed, attempt to use an initial material with the same density.
+    if ( !blockSetValueChanged ) {
+      for ( let i = 0; i < nonCustomMaterials.length; i++ ) {
+        const material = nonCustomMaterials[ i ];
+        if ( material.density === density ) {
+          return material;
+        }
+      }
+    }
+    return null;
+  }
 
-      // Calculate the lightness of the material based on its density.
-      const lightness = Material.getNormalizedLightness( densityProperty.value, COLOR_DENSITY_RANGE ); // 0-1
+
+  private static createCube( engine: PhysicsEngine,
+                             position: Vector2,
+                             mass: number,
+                             initialDensity: number,
+                             baseColorProperty: ColorProperty,
+                             blockSetValueChangedProperty: TReadOnlyProperty<boolean>,
+                             initialMaterials: Material[],
+                             providedOptions?: StrictCubeOptions ): Cube {
+
+    const densityAdjustedColorProperty = new ColorProperty( baseColorProperty.value );
+
+    const options = combineOptions<StrictCubeOptions>( {
+      customMaterialOptions: {
+        density: initialDensity,
+        colorProperty: densityAdjustedColorProperty
+      },
+      materialPropertyOptions: {
+        phetioReadOnly: true // TODO: And readonly density!!! https://github.com/phetsims/density-buoyancy-common/issues/273
+      },
+      availableMassMaterials: [
+        ...initialMaterials,
+        'CUSTOM'
+      ]
+    }, providedOptions );
+
+    // Having the correct initialMaterial is vital to get resetting to work.
+    const initialMaterial: MaterialSchema = CompareBlockSetModel.getMaterial( initialDensity, blockSetValueChangedProperty.value,
+      initialMaterials ) || 'CUSTOM';
+
+    const cube = Cube.createWithMass( engine, initialMaterial, position, mass, options );
+
+    Multilink.multilink( [ baseColorProperty, cube.materialProperty.densityProperty ], ( color, density ) => {
+
+      // Calculate the lightness of the material based on its density, but keep a consistent range independent of the available ranges for all usages.
+      // TODO: Why not just use the lightness based on the actual densityProperty.range here? https://github.com/phetsims/density-buoyancy-common/issues/268
+      const lightness = Material.getNormalizedLightness( density, COLOR_DENSITY_RANGE ); // 0-1
 
       // Modify the color brightness based on the lightness.
       const modifier = 0.1;
       const rawValue = ( lightness * 2 - 1 ) * ( 1 - modifier ) + modifier;
       const power = 0.7;
 
-      return colorProperty.value.colorUtilsBrightness( Math.sign( rawValue ) * Math.pow( Math.abs( rawValue ), power ) );
-    } );
-    const myCustomMaterial = new CustomSolidMaterial( tandem, {
-      density: densityProperty.value,
-      colorProperty: myColorProperty
+      const factor = Math.sign( rawValue ) * Math.pow( Math.abs( rawValue ), power );
+      densityAdjustedColorProperty.value = color.colorUtilsBrightness( factor );
     } );
 
-    // TODO: Pass the densityProperty directly into the custom one https://github.com/phetsims/density-buoyancy-common/issues/273
-    densityProperty.link( density => {
-      myCustomMaterial.densityProperty.value = density;
-    } );
+    Multilink.multilink( [ cube.materialProperty.densityProperty, blockSetValueChangedProperty ],
+      ( density, blockSetValueChanged ) => {
 
-    return new DerivedProperty( [ densityProperty, blockSetValueChangedProperty ], ( density, blockSetValueChanged ) => {
+        // Custom if a non custom was not found.
+        cube.materialProperty.value = CompareBlockSetModel.getMaterial( density, blockSetValueChanged,
+          initialMaterials ) || cube.materialProperty.customMaterial;
+      } );
 
-      // If the block set value has not changed, attempt to use an initial material with the same density.
-      if ( !blockSetValueChanged ) {
-        for ( let i = 0; i < initialMaterials.length; i++ ) {
-          const material = initialMaterials[ i ];
-          if ( material.density === density ) {
-            return material;
-          }
-        }
-      }
-      return myCustomMaterial;
-    } );
+    return cube;
   }
 }
 

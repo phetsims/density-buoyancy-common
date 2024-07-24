@@ -42,7 +42,6 @@ import BlendedVector2Property from './BlendedVector2Property.js';
 import { GuardedNumberProperty, GuardedNumberPropertyOptions } from './GuardedNumberProperty.js';
 import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
 import MaterialProperty, { MaterialPropertyOptions } from './MaterialProperty.js';
-import ReferenceIO from '../../../../tandem/js/types/ReferenceIO.js';
 
 // For the Buoyancy Shapes screen, but needed here because setRatios is included in each core type
 // See https://github.com/phetsims/buoyancy/issues/29

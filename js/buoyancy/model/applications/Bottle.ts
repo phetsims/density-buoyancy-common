@@ -90,8 +90,6 @@ import ApplicationsMass, { ApplicationsMassOptions } from './ApplicationsMass.js
 import NumberIO from '../../../../../tandem/js/types/NumberIO.js';
 import DensityBuoyancyCommonConstants from '../../../common/DensityBuoyancyCommonConstants.js';
 import MaterialProperty from '../../../common/model/MaterialProperty.js';
-import ReferenceIO from '../../../../../tandem/js/types/ReferenceIO.js';
-import IOType from '../../../../../tandem/js/types/IOType.js';
 
 // constants (in logical coordinates)
 const BODY_CORNER_RADIUS = 0.02; // Used both between the taper/body and between the body/base

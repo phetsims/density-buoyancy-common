@@ -20,8 +20,6 @@ import Utils from '../../../../dot/js/Utils.js';
 import PoolScale from './PoolScale.js';
 import PhysicsEngine from './PhysicsEngine.js';
 import Gravity from './Gravity.js';
-import ReferenceIO from '../../../../tandem/js/types/ReferenceIO.js';
-import IOType from '../../../../tandem/js/types/IOType.js';
 import MaterialProperty from './MaterialProperty.js';
 
 export type FluidSelectionType = 'justWater' | 'simple' | 'all';

@@ -27,8 +27,6 @@ import isSettingPhetioStateProperty from '../../../../../tandem/js/isSettingPhet
 import MassTag from '../../../common/model/MassTag.js';
 import Duck from './Duck.js';
 import BuoyancyShapeModel from './BuoyancyShapeModel.js';
-import ReferenceIO from '../../../../../tandem/js/types/ReferenceIO.js';
-import IOType from '../../../../../tandem/js/types/IOType.js';
 import MaterialProperty from '../../../common/model/MaterialProperty.js';
 
 export type BuoyancyShapesModelOptions = DensityBuoyancyModelOptions;
@@ -62,8 +60,7 @@ export default class BuoyancyShapesModel extends DensityBuoyancyModel {
       // This hack is a way of saying, we do not create or support a custom material in this case.
       Material.WOOD,
       this.availableMaterials, {
-        tandem: objectsTandem.createTandem( 'materialProperty' ),
-        phetioValueType: ReferenceIO( IOType.ObjectIO )
+        tandem: objectsTandem.createTandem( 'materialProperty' )
       } );
 
     this.scale = new Scale( this.engine, this.gravityProperty, {

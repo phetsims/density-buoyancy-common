@@ -203,10 +203,7 @@ export default abstract class Mass extends PhetioObject {
       phetioType: Mass.MassIO,
       inputEnabledPropertyOptions: {},
       materialPropertyOptions: {
-        valueType: Material,
-        reentrant: true,
-        phetioValueType: ReferenceIO( IOType.ObjectIO ),
-        phetioFeatured: true
+        reentrant: true
       },
       customMaterialOptions: {},
       volumePropertyOptions: {},

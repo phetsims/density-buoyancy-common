@@ -246,10 +246,8 @@ export default class Bottle extends ApplicationsMass {
       Material.MATERIAL_R,
       Material.MATERIAL_S
     ], {
-      valueType: Material,
       reentrant: true,
-      tandem: materialInsidePropertyTandem,
-      phetioValueType: ReferenceIO( IOType.ObjectIO )
+      tandem: materialInsidePropertyTandem
     } );
 
     this.materialInsideVolumeProperty = new NumberProperty( BOTTLE_INITIAL_INTERIOR_VOLUME, {

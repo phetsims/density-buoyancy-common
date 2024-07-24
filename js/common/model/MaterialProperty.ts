@@ -15,6 +15,8 @@ import MappedWrappedProperty from './MappedWrappedProperty.js';
 import { combineOptions, EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
 import PickRequired from '../../../../phet-core/js/types/PickRequired.js';
 import { PhetioObjectOptions } from '../../../../tandem/js/PhetioObject.js';
+import IOType from '../../../../tandem/js/types/IOType.js';
+import ReferenceIO from '../../../../tandem/js/types/ReferenceIO.js';
 
 type SelfOptions = EmptySelfOptions;
 
@@ -27,6 +29,8 @@ export default class MaterialProperty extends MappedWrappedProperty<Material> {
   // Note the material could be the customMaterial
   public constructor( material: Material, customMaterial: Material, availableMaterials: Material[], providedOptions: MaterialPropertyOptions ) {
     super( material, customMaterial, availableMaterials, combineOptions<MaterialPropertyOptions>( {
+      valueType: Material,
+      phetioValueType: ReferenceIO( IOType.ObjectIO ),
       phetioFeatured: true
     }, providedOptions ) );
     this.densityProperty = this.dynamicValueProperty;

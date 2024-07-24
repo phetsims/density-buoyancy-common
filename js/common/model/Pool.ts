@@ -77,8 +77,6 @@ export default class Pool extends Basin {
                                ] : [];
 
     this.fluidMaterialProperty = new MaterialProperty( Material.WATER, customFluidMaterial, availableMaterials, {
-      valueType: Material,
-      phetioValueType: ReferenceIO( IOType.ObjectIO ),
       tandem: fluidMaterialPropertyTandem,
       phetioDocumentation: 'The material of the fluid in the pool'
     } );

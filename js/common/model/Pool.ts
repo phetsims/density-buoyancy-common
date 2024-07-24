@@ -63,7 +63,9 @@ export default class Pool extends Basin {
 
     const customFluidMaterial = new CustomLiquidMaterial( fluidMaterialPropertyTandem.createTandem( 'customMaterial' ), {
       density: Material.WATER.density,
-      densityRange: DensityBuoyancyCommonConstants.FLUID_DENSITY_RANGE_PER_M3
+      densityPropertyOptions: {
+        range: DensityBuoyancyCommonConstants.FLUID_DENSITY_RANGE_PER_M3
+      }
     } );
 
     const availableMaterials = fluidSelectionType === 'justWater' ? [ Material.WATER ] :

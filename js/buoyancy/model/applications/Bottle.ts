@@ -212,7 +212,7 @@ export default class Bottle extends ApplicationsMass {
       customMaterialOptions: {
         nameProperty: DensityBuoyancyCommonStrings.systemAStringProperty,
         density: ( BOTTLE_MASS + BOTTLE_INITIAL_INTERIOR_MATERIAL.density * BOTTLE_INITIAL_INTERIOR_VOLUME ) / BOTTLE_VOLUME,
-        densityRange: new Range( 0, 1000000000 )
+        densityPropertyOptions: { range: new Range( 0, 1000000000 ) }
       },
       massShape: MassShape.BLOCK,
 
@@ -230,7 +230,7 @@ export default class Bottle extends ApplicationsMass {
 
     const customInsideMaterial = new CustomSolidMaterial( materialInsidePropertyTandem.createTandem( 'customMaterial' ), {
       density: BOTTLE_INITIAL_INTERIOR_MATERIAL.density,
-      densityRange: new Range( 50, 20000 )
+      densityPropertyOptions: { range: new Range( 50, 20000 ) }
     } );
 
     this.materialInsideProperty = new MaterialProperty( BOTTLE_INITIAL_INTERIOR_MATERIAL, customInsideMaterial, [

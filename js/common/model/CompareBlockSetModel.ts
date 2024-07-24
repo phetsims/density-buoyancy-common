@@ -188,7 +188,9 @@ export default class CompareBlockSetModel extends BlockSetModel<BlockSet> {
                  cubeData.colorProperty, densityProperty.hasChangedProperty, options.initialMaterials,
                  combineOptions<StrictCubeOptions>( {
                    customMaterialOptions: {
-                     densityRange: options.sameDensityRange
+                     densityPropertyOptions: {
+                       range: options.sameDensityRange
+                     }
                    }
                  }, getCubeOptions( cubeData.sameDensityCubeOptions ) ) );
 

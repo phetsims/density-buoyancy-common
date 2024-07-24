@@ -19,7 +19,7 @@ import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import TinyProperty from '../../../../axon/js/TinyProperty.js';
 import ReadOnlyProperty from '../../../../axon/js/ReadOnlyProperty.js';
 import Range from '../../../../dot/js/Range.js';
-import NumberProperty from '../../../../axon/js/NumberProperty.js';
+import NumberProperty, { NumberPropertyOptions } from '../../../../axon/js/NumberProperty.js';
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
 import PhetioObject, { PhetioObjectOptions } from '../../../../tandem/js/PhetioObject.js';
@@ -33,7 +33,7 @@ type SelfOptions = {
   density?: number;
 
   // What potential densities can this Material accept? (mostly applies to custom materials)
-  densityRange?: Range;
+  densityPropertyOptions?: NumberPropertyOptions;
 
   // in SI (Pa * s). For reference a poise is 1e-2 Pa*s, and a centipoise is 1e-3 Pa*s.
   viscosity?: number;
@@ -74,7 +74,13 @@ export default class Material extends PhetioObject implements HasValueProperty {
     const options = optionize<MaterialOptions, SelfOptions, PhetioObjectOptions>()( {
       nameProperty: new TinyProperty( 'unknown' ),
       density: 1,
-      densityRange: new Range( 0.8, 27000 ),
+      densityPropertyOptions: {
+        tandem: tandem.createTandem( 'densityProperty' ),
+        phetioFeatured: true,
+        phetioDocumentation: 'Density of the material',
+        range: new Range( 0.8, 27000 ),
+        units: 'kg/m^3'
+      },
       viscosity: 1e-3,
       custom: false,
       hidden: false,
@@ -90,13 +96,7 @@ export default class Material extends PhetioObject implements HasValueProperty {
     } );
 
     this.nameProperty = options.nameProperty;
-    this.densityProperty = new NumberProperty( options.density, {
-      tandem: this.tandem.createTandem( 'densityProperty' ),
-      phetioFeatured: true,
-      phetioDocumentation: 'Density of the material',
-      range: options.densityRange,
-      units: 'kg/m^3'
-    } );
+    this.densityProperty = new NumberProperty( options.density, options.densityPropertyOptions );
     this.viscosity = options.viscosity;
     this.custom = options.custom;
     this.hidden = options.hidden;

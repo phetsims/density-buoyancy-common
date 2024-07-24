@@ -73,13 +73,13 @@ export type CompareBlockSetModelOptions = SelfOptions & StrictOmit<ParentOptions
 // Filled in later, and so not needed by the optionize call
 type OptionizeParent = StrictOmit<ParentOptions, 'createMassesCallback'>;
 
+type StrictCubeOptionsNoAvailableMaterials = StrictOmit<StrictCubeOptions, 'availableMassMaterials'>;
+
 export default class CompareBlockSetModel extends BlockSetModel<BlockSet> {
 
-  // TODO: Helpful documentation please, see https://github.com/phetsims/density-buoyancy-common/issues/273
+  // Properties that control all blocks within the block set named for it massProperty -> "sameMass".
   public readonly massProperty: NumberProperty;
   public readonly volumeProperty: NumberProperty;
-
-  // TODO: When are these properties used? How do they relate to the custom or non-custom material values? see https://github.com/phetsims/density-buoyancy-common/issues/273
   public readonly densityProperty: NumberProperty;
 
   public constructor( providedOptions: CompareBlockSetModelOptions ) {
@@ -132,12 +132,11 @@ export default class CompareBlockSetModel extends BlockSetModel<BlockSet> {
       units: 'kg/m^3'
     } );
 
-    // TODO: We lost type checking for availableMassMaterials because of the `CubeOptions` type, https://github.com/phetsims/density-buoyancy-common/issues/273
-    const getCubeOptions = ( cubeOptions: StrictOmit<StrictCubeOptions, 'availableMassMaterials'> ) => combineOptions<CubeOptions>( {}, options.sharedCubeOptions, cubeOptions );
+    const getCubeOptions = ( cubeOptions: StrictCubeOptionsNoAvailableMaterials ) => combineOptions<StrictCubeOptionsNoAvailableMaterials>( {}, options.sharedCubeOptions, cubeOptions );
 
-    // TODO: Helpful documentation please, see https://github.com/phetsims/density-buoyancy-common/issues/273
+    // Create one mass for each cubeData/blockSet combo, based on the provided blockSet
     const createMasses = ( model: BlockSetModel<BlockSet>, blockSet: BlockSet ) => {
-      // TODO: Helpful documentation please, see https://github.com/phetsims/density-buoyancy-common/issues/273
+
       // In the following code, the cube instance persists for the lifetime of the simulation and the listeners
       // don't need to be removed.
       return blockSet === BlockSet.SAME_MASS ?
@@ -188,7 +187,9 @@ export default class CompareBlockSetModel extends BlockSetModel<BlockSet> {
                  startingMass, options.sameDensityValue,
                  cubeData.colorProperty, densityProperty.hasChangedProperty, options.initialMaterials,
                  combineOptions<StrictCubeOptions>( {
-                   customMaterialOptions: { densityRange: options.sameDensityRange } // TODO: totally unsure, https://github.com/phetsims/density-buoyancy-common/issues/273
+                   customMaterialOptions: {
+                     densityRange: options.sameDensityRange
+                   }
                  }, getCubeOptions( cubeData.sameDensityCubeOptions ) ) );
 
                // Keep this block's density in sync with the controlling densityProperty when it changes.
@@ -250,7 +251,7 @@ export default class CompareBlockSetModel extends BlockSetModel<BlockSet> {
                              baseColorProperty: ColorProperty,
                              blockSetValueChangedProperty: TReadOnlyProperty<boolean>,
                              initialMaterials: Material[],
-                             providedOptions?: StrictCubeOptions ): Cube {
+                             providedOptions?: StrictCubeOptionsNoAvailableMaterials ): Cube {
 
     const densityAdjustedColorProperty = new ColorProperty( baseColorProperty.value );
 

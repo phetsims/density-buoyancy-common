@@ -10,7 +10,6 @@ import TEmitter from '../../../../axon/js/TEmitter.js';
 import TinyEmitter from '../../../../axon/js/TinyEmitter.js';
 import Matrix3 from '../../../../dot/js/Matrix3.js';
 import Vector2, { Vector2StateObject } from '../../../../dot/js/Vector2.js';
-import optionize from '../../../../phet-core/js/optionize.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonQueryParameters from '../DensityBuoyancyCommonQueryParameters.js';
 import PhysicsEngine, { PhysicsBodyType, PhysicsEngineBody } from './PhysicsEngine.js';
@@ -33,8 +32,6 @@ const BODY_TYPE_MAPPER: Record<PhysicsBodyType, P2BodyType> = {
   KINEMATIC: p2.Body.KINEMATIC, // Cannot be moved by other bodies, but can move.
   STATIC: p2.Body.STATIC // Cannot move, for anything.
 };
-
-type BodySetMassOptions = { canRotate?: boolean };
 
 export type BodyStateObject = {
   position: Vector2StateObject;
@@ -131,19 +128,10 @@ export default class P2Engine extends PhysicsEngine {
   /**
    * Sets the mass of a body (and whether it can rotate, which for some engines needs to be set at the same time).
    */
-  public bodySetMass( body: PhysicsEngineBody, mass: number, providedOptions?: BodySetMassOptions ): void {
-    const options = optionize<BodySetMassOptions>()( {
-      // {boolean} - optional
-      canRotate: false
-    }, providedOptions );
-
+  public bodySetMass( body: PhysicsEngineBody, mass: number ): void {
     body.mass = mass * MASS_SCALE;
-
-    if ( !options.canRotate ) {
-      body.fixedRotation = true;
-    }
-
-    body.updateMassProperties();
+    body.fixedRotation = true;
+        body.updateMassProperties();
   }
 
   /**

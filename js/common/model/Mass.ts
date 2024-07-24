@@ -62,7 +62,6 @@ type SelfOptions = {
 
   visible?: boolean;
   matrix?: Matrix3;
-  canRotate?: boolean;
   canMove?: boolean;
 
   // Allow Customization of the material beyond initial value, this includes PhET-iO support for changing the density
@@ -91,7 +90,6 @@ export type MassIOStateObject = {
   matrix: Matrix3StateObject;
   stepMatrix: Matrix3StateObject;
   originalMatrix: Matrix3StateObject;
-  canRotate: boolean;
   canMove: boolean;
   tag: MassTagStateObject;
   massShape: string;
@@ -168,7 +166,6 @@ export default abstract class Mass extends PhetioObject {
   // Fired when this mass's input (drag) should be interrupted.
   public readonly interruptedEmitter: TEmitter;
 
-  private canRotate: boolean;
   public canMove: boolean;
   public tag: MassTag;
 
@@ -194,7 +191,6 @@ export default abstract class Mass extends PhetioObject {
     const options = optionize<MassOptions, SelfOptions, PhetioObjectOptions>()( {
       visible: true,
       matrix: new Matrix3(),
-      canRotate: false,
       canMove: true,
       adjustableMaterial: false,
       adjustableColor: true,
@@ -381,7 +377,6 @@ export default abstract class Mass extends PhetioObject {
     this.transformedEmitter = new Emitter();
     this.interruptedEmitter = new Emitter();
 
-    this.canRotate = options.canRotate;
     this.canMove = options.canMove;
     this.tag = options.tag;
 
@@ -407,9 +402,7 @@ export default abstract class Mass extends PhetioObject {
       this.massProperty
     ], () => {
       // Don't allow a fully-zero value for the physics engines
-      engine.bodySetMass( this.body, Math.max( this.massProperty.value, 0.01 ), {
-        canRotate: options.canRotate
-      } );
+      engine.bodySetMass( this.body, Math.max( this.massProperty.value, 0.01 ) );
     } );
 
     this.writeData();
@@ -630,7 +623,6 @@ export default abstract class Mass extends PhetioObject {
       matrix: Matrix3.Matrix3IO,
       stepMatrix: Matrix3.Matrix3IO,
       originalMatrix: Matrix3.Matrix3IO,
-      canRotate: BooleanIO,
       canMove: BooleanIO,
       tag: MassTag.MassTagIO,
       massShape: EnumerationIO( MassShape ),
@@ -645,7 +637,6 @@ export default abstract class Mass extends PhetioObject {
         matrix: Matrix3.toStateObject( mass.matrix ),
         stepMatrix: Matrix3.toStateObject( mass.stepMatrix ),
         originalMatrix: Matrix3.toStateObject( mass.originalMatrix ),
-        canRotate: mass.canRotate,
         canMove: mass.canMove,
         tag: MassTag.MassTagIO.toStateObject( mass.tag ),
         massShape: EnumerationIO( MassShape ).toStateObject( mass.massShape )
@@ -655,7 +646,6 @@ export default abstract class Mass extends PhetioObject {
       mass.matrix.set( Matrix3.fromStateObject( obj.matrix ) );
       mass.stepMatrix.set( Matrix3.fromStateObject( obj.stepMatrix ) );
       mass.originalMatrix.set( Matrix3.fromStateObject( obj.originalMatrix ) );
-      mass.canRotate = obj.canRotate;
       mass.canMove = obj.canMove;
       MassTag.MassTagIO.applyState( mass.tag, obj.tag );
       mass.engine.bodyApplyState( mass.body, obj );

@@ -46,7 +46,7 @@ export default abstract class PhysicsEngine {
   /**
    * Sets the mass of a body (and whether it can rotate, which for some engines needs to be set at the same time).
    */
-  public abstract bodySetMass( body: PhysicsEngineBody, mass: number, options?: { canRotate?: boolean } ): void;
+  public abstract bodySetMass( body: PhysicsEngineBody, mass: number ): void;
 
   /**
    * Sets the provided matrix to the current transformation matrix of the body (to reduce allocations)

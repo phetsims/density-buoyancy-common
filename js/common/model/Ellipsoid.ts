@@ -38,8 +38,6 @@ export default class Ellipsoid extends Mass {
       massShape: MassShape.ELLIPSOID
     }, providedOptions );
 
-    assert && assert( !options.canRotate );
-
     super( engine, options as InstrumentedMassOptions );
 
     this.sizeProperty = new Property( size, {

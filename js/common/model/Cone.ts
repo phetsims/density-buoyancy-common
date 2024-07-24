@@ -51,8 +51,6 @@ export default class Cone extends Mass {
       massShape: isVertexUp ? MassShape.CONE : MassShape.INVERTED_CONE
     }, providedOptions );
 
-    assert && assert( !options.canRotate );
-
     super( engine, options as InstrumentedMassOptions );
 
     this.radiusProperty = new NumberProperty( radius, {

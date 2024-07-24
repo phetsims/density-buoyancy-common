@@ -41,8 +41,6 @@ export default class Duck extends Mass {
       massShape: MassShape.DUCK
     }, providedConfig );
 
-    assert && assert( !options.canRotate );
-
     super( engine, options as InstrumentedMassOptions );
 
     this.sizeProperty = new Property( size, {

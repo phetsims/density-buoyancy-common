@@ -13,9 +13,8 @@ import PhysicsEngine from '../../../common/model/PhysicsEngine.js';
 import Vector2 from '../../../../../dot/js/Vector2.js';
 import Vector3 from '../../../../../dot/js/Vector3.js';
 import Bounds3 from '../../../../../dot/js/Bounds3.js';
-import StrictOmit from '../../../../../phet-core/js/types/StrictOmit.js';
 
-export type ApplicationsMassOptions = StrictOmit<InstrumentedMassOptions, 'canRotate'>;
+export type ApplicationsMassOptions = InstrumentedMassOptions;
 
 export default abstract class ApplicationsMass extends Mass {
 

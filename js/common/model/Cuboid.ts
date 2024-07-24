@@ -42,8 +42,6 @@ export default class Cuboid extends Mass {
       massShape: MassShape.BLOCK
     }, providedOptions );
 
-    assert && assert( !options.canRotate );
-
     super( engine, options );
 
     this.sizeProperty = new Property( size, {

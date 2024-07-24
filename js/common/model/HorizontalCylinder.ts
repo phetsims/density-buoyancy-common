@@ -43,8 +43,6 @@ export default class HorizontalCylinder extends Mass {
       massShape: MassShape.HORIZONTAL_CYLINDER
     }, providedOptions );
 
-    assert && assert( !options.canRotate );
-
     super( engine, options as InstrumentedMassOptions );
 
     // {Property.<number>}

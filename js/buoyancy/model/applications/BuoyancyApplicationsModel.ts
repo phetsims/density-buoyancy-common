@@ -20,7 +20,7 @@ import { BottleOrBoat, BottleOrBoatValues } from './BottleOrBoat.js';
 import StringUnionProperty from '../../../../../axon/js/StringUnionProperty.js';
 import MassTag from '../../../common/model/MassTag.js';
 import Basin from '../../../common/model/Basin.js';
-import Mass from '../../../common/model/Mass.js';
+import Mass, { MaterialSchema } from '../../../common/model/Mass.js';
 
 export type BuoyancyApplicationsModelOptions = DensityBuoyancyModelOptions;
 
@@ -67,9 +67,27 @@ export default class BuoyancyApplicationsModel extends DensityBuoyancyModel {
     } );
     this.availableMasses.push( this.bottle );
 
+    const sortedByDensity: MaterialSchema[] = _.sortBy( [
+        Material.PYRITE,
+        Material.STEEL,
+        Material.SILVER,
+        Material.TANTALUM,
+        Material.GOLD,
+        Material.PLATINUM
+      ].concat( Material.SIMPLE_MASS_MATERIALS ),
+
+      material => material.density );
+    const availableMassMaterials = sortedByDensity.concat( [
+      // Adding custom/mystery Materials separately, so they aren't sorted above by density
+      'CUSTOM',
+      Material.MATERIAL_V,
+      Material.MATERIAL_W
+    ] );
+
     this.block = Cube.createWithVolume( this.engine, Material.BRICK, new Vector2( -0.5, 0.3 ), 0.001, {
       visible: false,
-      tandem: objectsTandem.createTandem( 'block' )
+      tandem: objectsTandem.createTandem( 'block' ),
+      availableMassMaterials: availableMassMaterials
     } );
     this.availableMasses.push( this.block );
 

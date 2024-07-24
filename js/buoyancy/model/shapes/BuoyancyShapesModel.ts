@@ -42,6 +42,7 @@ export default class BuoyancyShapesModel extends DensityBuoyancyModel {
   public readonly objectB: BuoyancyShapeModel;
 
   public readonly materialProperty: MaterialProperty;
+  private readonly availableMaterials: Material[];
 
   public constructor( options: BuoyancyShapesModelOptions ) {
 
@@ -54,11 +55,13 @@ export default class BuoyancyShapesModel extends DensityBuoyancyModel {
       phetioFeatured: true
     } );
 
+    this.availableMaterials = Material.SIMPLE_MASS_MATERIALS;
+
     this.materialProperty = new MaterialProperty( Material.WOOD,
 
       // This hack is a way of saying, we do not create or support a custom material in this case.
       Material.WOOD,
-      Material.SIMPLE_MASS_MATERIALS, {
+      this.availableMaterials, {
         tandem: objectsTandem.createTandem( 'materialProperty' ),
         phetioValueType: ReferenceIO( IOType.ObjectIO )
       } );
@@ -116,6 +119,10 @@ export default class BuoyancyShapesModel extends DensityBuoyancyModel {
   private createMass( tandem: Tandem, shape: MassShape, widthRatio: number, heightRatio: number, tag: MassTag ): Mass {
     const massOptions = {
       material: this.materialProperty.value,
+      availableMassMaterials: this.availableMaterials,
+      materialPropertyOptions: {
+        phetioReadOnly: true
+      },
       minVolume: 0.0002, // Cones have a smaller volume at min height/width
       maxVolume: Cuboid.MAX_VOLUME, // Cubes are the highest volume object in this screen
       tandem: tandem,

@@ -28,7 +28,9 @@ import DensityBuoyancyCommonConstants, { toLiters } from '../../../common/Densit
 import NumberProperty from '../../../../../axon/js/NumberProperty.js';
 import Pool from '../../../common/model/Pool.js';
 
-export type BoatOptions = StrictOmit<ApplicationsMassOptions, 'body' | 'shape' | 'volume' | 'material' | 'massShape'>;
+// TODO Factor out this type, https://github.com/phetsims/density-buoyancy-common/issues/270
+export type BoatOptions = StrictOmit<ApplicationsMassOptions,
+  'body' | 'shape' | 'volume' | 'material' | 'massShape' | 'availableMassMaterials'>;
 
 export default class Boat extends ApplicationsMass {
 
@@ -65,6 +67,7 @@ export default class Boat extends ApplicationsMass {
       volume: volume,
       massShape: MassShape.BLOCK,
       material: Material.BOAT_BODY,
+      availableMassMaterials: [ Material.BOAT_BODY ],
 
       accessibleName: 'Boat'
     }, providedOptions );

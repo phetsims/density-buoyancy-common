@@ -204,23 +204,11 @@ export default class BuoyancyApplicationsScreenView extends BuoyancyScreenView<B
 
     const rightBottleContent = new Panel( bottleBox, DensityBuoyancyCommonConstants.PANEL_OPTIONS );
 
-    const blockControls = new MaterialMassVolumeControlNode( model.block.materialProperty, model.block.massProperty, model.block.volumeProperty, _.sortBy( [
-        Material.PYRITE,
-        Material.STEEL,
-        Material.SILVER,
-        Material.TANTALUM,
-        Material.GOLD,
-        Material.PLATINUM
-      ].concat( Material.SIMPLE_MASS_MATERIALS ),
-      material => material.density ).concat( [
-      // Adding custom/mystery Materials separately, so they aren't sorted by density
-      model.block.materialProperty.customMaterial,
-      Material.MATERIAL_V,
-      Material.MATERIAL_W
-    ] ), cubicMeters => model.block.updateSize( Cube.boundsFromVolume( cubicMeters ) ), this.popupLayer, true, {
-      tandem: tandem.createTandem( 'blockControls' ),
-      highDensityMaxMass: 215
-    } );
+    const blockControls = new MaterialMassVolumeControlNode( model.block.materialProperty, model.block.massProperty, model.block.volumeProperty,
+      model.block.materialProperty.availableValues, cubicMeters => model.block.updateSize( Cube.boundsFromVolume( cubicMeters ) ), this.popupLayer, true, {
+        tandem: tandem.createTandem( 'blockControls' ),
+        highDensityMaxMass: 215
+      } );
 
     model.block.materialProperty.link( material => {
       if ( material === Material.MATERIAL_V ) {

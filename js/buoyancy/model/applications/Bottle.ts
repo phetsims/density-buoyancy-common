@@ -176,7 +176,8 @@ const BOTTLE_INITIAL_INTERIOR_VOLUME = 0.004;
 // {Material}
 const BOTTLE_INITIAL_INTERIOR_MATERIAL = Material.WATER;
 
-export type BottleOptions = StrictOmit<ApplicationsMassOptions, 'body' | 'shape' | 'volume' | 'material' | 'massShape'>;
+export type BottleOptions = StrictOmit<ApplicationsMassOptions,
+  'body' | 'shape' | 'volume' | 'material' | 'massShape' | 'availableMassMaterials'>;
 
 export default class Bottle extends ApplicationsMass {
 
@@ -202,6 +203,7 @@ export default class Bottle extends ApplicationsMass {
       shape: Shape.polygon( vertices ),
       volume: BOTTLE_VOLUME,
       material: 'CUSTOM',
+      availableMassMaterials: [ 'CUSTOM' ],
       materialPropertyOptions: {
         phetioReadOnly: true
       },

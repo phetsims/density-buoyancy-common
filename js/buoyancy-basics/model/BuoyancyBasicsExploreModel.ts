@@ -17,6 +17,7 @@ import Scale, { DisplayType } from '../../common/model/Scale.js';
 import TwoBlockMode from '../../common/model/TwoBlockMode.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import MassTag from '../../common/model/MassTag.js';
+import { MaterialSchema } from '../../common/model/Mass.js';
 
 type BuoyancyBasicsExploreModelOptions = DensityBuoyancyModelOptions;
 
@@ -37,11 +38,17 @@ export default class BuoyancyBasicsExploreModel extends DensityBuoyancyModel {
       phetioFeatured: true
     } );
 
+    const availableMassMaterials: MaterialSchema[] = [
+      ...Material.SIMPLE_MASS_MATERIALS,
+      'CUSTOM'
+    ];
+
     const blockATandem = blocksTandem.createTandem( 'blockA' );
     this.massA = Cube.createWithMass( this.engine, Material.WOOD, new Vector2( -0.2, 0.2 ), 2, {
       tag: MassTag.OBJECT_A,
       adjustableMaterial: true,
       adjustableColor: false,
+      availableMassMaterials: availableMassMaterials,
       tandem: blockATandem
     } );
     this.availableMasses.push( this.massA );
@@ -51,6 +58,7 @@ export default class BuoyancyBasicsExploreModel extends DensityBuoyancyModel {
       tag: MassTag.OBJECT_B,
       adjustableMaterial: true,
       adjustableColor: false,
+      availableMassMaterials: availableMassMaterials,
       tandem: blockBTandem,
       visible: false
     } );

@@ -13,8 +13,8 @@ import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import Cuboid, { CuboidOptions } from './Cuboid.js';
 import PhysicsEngine from './PhysicsEngine.js';
 import optionize, { combineOptions } from '../../../../phet-core/js/optionize.js';
-import Material from './Material.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
+import { MaterialSchema } from './Mass.js';
 
 type SelfOptions = {
 
@@ -79,7 +79,7 @@ export default class Cube extends Cuboid {
   /**
    * Creates a Cube with a defined volume
    */
-  public static createWithVolume( engine: PhysicsEngine, material: Material | 'CUSTOM', position: Vector2, volume: number, options?: StrictCubeOptions ): Cube {
+  public static createWithVolume( engine: PhysicsEngine, material: MaterialSchema, position: Vector2, volume: number, options?: StrictCubeOptions ): Cube {
     return new Cube( engine, volume, combineOptions<CubeOptions>( {
       matrix: Matrix3.translation( position.x, position.y ),
       minVolume: Cuboid.MIN_VOLUME,
@@ -91,7 +91,7 @@ export default class Cube extends Cuboid {
   /**
    * Creates a Cube with a defined volume
    */
-  public static createWithMass( engine: PhysicsEngine, material: Material | 'CUSTOM', position: Vector2, mass: number, options?: StrictCubeOptions ): Cube {
+  public static createWithMass( engine: PhysicsEngine, material: MaterialSchema, position: Vector2, mass: number, options?: StrictCubeOptions ): Cube {
     let density: number;
     if ( material === 'CUSTOM' ) {
       assert && assert( options?.customMaterialOptions?.density, 'density needed to create with mass' );

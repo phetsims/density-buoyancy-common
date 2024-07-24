@@ -18,6 +18,7 @@ import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 import NumberIO from '../../../../tandem/js/types/NumberIO.js';
 import ReadOnlyProperty from '../../../../axon/js/ReadOnlyProperty.js';
+import { MaterialSchema } from '../../common/model/Mass.js';
 
 export type BuoyancyLabModelOptions = DensityBuoyancyModelOptions;
 
@@ -31,8 +32,16 @@ export default class BuoyancyLabModel extends DensityBuoyancyModel {
 
     super( options );
 
+    const availableMassMaterials: MaterialSchema[] = [
+      ...Material.SIMPLE_MASS_MATERIALS,
+      'CUSTOM',
+      Material.MATERIAL_O,
+      Material.MATERIAL_P
+    ];
+
     this.block = Cube.createWithMass( this.engine, Material.WOOD, new Vector2( -0.2, 0.2 ), 2, {
-      tandem: options.tandem.createTandem( 'block' )
+      tandem: options.tandem.createTandem( 'block' ),
+      availableMassMaterials: availableMassMaterials
     } );
     this.availableMasses.push( this.block );
 

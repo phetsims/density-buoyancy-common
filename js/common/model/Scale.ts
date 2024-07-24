@@ -65,7 +65,10 @@ type SelfOptions = {
   displayType?: DisplayType;
 };
 
-export type ScaleOptions = SelfOptions & StrictOmit<InstrumentedMassOptions, 'body' | 'shape' | 'volume' | 'material' | 'massShape'> & PickOptional<InstrumentedMassOptions, 'body' | 'shape'>;
+// TODO: Cleanup https://github.com/phetsims/density-buoyancy-common/issues/270
+export type ScaleOptions = SelfOptions & StrictOmit<InstrumentedMassOptions,
+  'body' | 'shape' | 'volume' | 'material' | 'massShape' | 'availableMassMaterials'> &
+  PickOptional<InstrumentedMassOptions, 'body' | 'shape'>;
 
 export default class Scale extends Mass {
 
@@ -89,6 +92,7 @@ export default class Scale extends Mass {
 
       displayType: DisplayType.NEWTONS,
       material: Material.PLATINUM,
+      availableMassMaterials: [ Material.PLATINUM ],
 
       accessibleName: 'Scale',
 

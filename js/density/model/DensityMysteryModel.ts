@@ -30,6 +30,7 @@ import { Color, ColorProperty } from '../../../../scenery/js/imports.js';
 import Emitter from '../../../../axon/js/Emitter.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
+import { MaterialSchema } from '../../common/model/Mass.js';
 
 // constants
 const randomColors = [
@@ -77,7 +78,11 @@ export default class DensityMysteryModel extends BlockSetModel<MysteryBlockSet> 
 
     const commonCubeOptions = {
       adjustVolumeOnMassChanged: true,
-      adjustableMaterial: true
+      adjustableMaterial: true,
+      availableMassMaterials: [
+        ...Material.DENSITY_MYSTERY_PHET_IO_CUSTOMIZABLE_MATERIAL,
+        'CUSTOM'
+      ] satisfies MaterialSchema[]
     };
 
     let densities: number[];
@@ -382,16 +387,15 @@ export default class DensityMysteryModel extends BlockSetModel<MysteryBlockSet> 
               tandem: cubeTandem.createTandem( 'materialProperty' ).createTandem( 'customMaterial' ).createTandem( 'colorProperty' )
             } );
 
-            const cube = Cube.createWithVolume( model.engine, 'CUSTOM', Vector2.ZERO, mysteryVolumes[ i ], {
-              adjustVolumeOnMassChanged: true,
-              adjustableMaterial: true,
-              tag: tags[ i ],
-              tandem: cubeTandem,
-              customMaterialOptions: {
-                colorProperty: colorProperty,
-                density: densities[ i ]
-              }
-            } );
+            const cube = Cube.createWithVolume( model.engine, 'CUSTOM', Vector2.ZERO, mysteryVolumes[ i ],
+              combineOptions<CubeOptions>( {}, commonCubeOptions, {
+                tag: tags[ i ],
+                tandem: cubeTandem,
+                customMaterialOptions: {
+                  colorProperty: colorProperty,
+                  density: densities[ i ]
+                }
+              } ) );
 
             randomizeMaterialsEmitter.addListener( () => {
               cube.materialProperty.customMaterial.densityProperty.value = densities[ i ];

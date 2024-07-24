@@ -49,14 +49,16 @@ import ReferenceIO from '../../../../tandem/js/types/ReferenceIO.js';
 export const MASS_MIN_SHAPES_DIMENSION = 0.1; // 10cm => 1L square
 export const MASS_MAX_SHAPES_DIMENSION = Math.pow( 0.01, 1 / 3 ); // 10L square
 
+export type MaterialSchema = Material | 'CUSTOM'; // We pass 'CUSTOM' so materialProperty can create the customMaterial
+
 type SelfOptions = {
 
   // Required
   body: PhysicsEngineBody;
   shape: Shape;
 
-  // Use "CUSTOM" to tell the MaterialProperty to take the initial value from the internal customMaterial it creates.
-  material: Material | 'CUSTOM';
+  material: MaterialSchema;
+  availableMassMaterials: MaterialSchema[];
   volume: number;
   massShape: MassShape;
 
@@ -66,10 +68,12 @@ type SelfOptions = {
 
   // Allow Customization of the material beyond initial value, this includes PhET-iO support for changing the density
   // and color, as well as support for some screens to adjust density instead of mass/volume as is most typical, see https://github.com/phetsims/density/issues/101
+  // TODO AV: Get outta here, https://github.com/phetsims/density-buoyancy-common/issues/270
   adjustableMaterial?: boolean;
 
   // Only used when adjustableMaterial:true. Set to true to support a PhET-iO instrumented Property to set the color
   // of the block. Set to false in order to calculate the color based on the current density + the density range.
+  // TODO AV: Get outta here, https://github.com/phetsims/density-buoyancy-common/issues/270
   adjustableColor?: boolean;
   tag?: MassTag;
   accessibleName?: PDOMValueType | null;
@@ -252,14 +256,12 @@ export default abstract class Mass extends PhetioObject {
 
     options.materialPropertyOptions.tandem = options.materialPropertyOptions.tandem || tandem.createTandem( 'materialProperty' );
     const customSolidMaterial = new CustomSolidMaterial( options.materialPropertyOptions.tandem.createTandem( 'customMaterial' ), combineOptions<MaterialOptions>( {
-      density: options.material === 'CUSTOM' ? undefined : options.material.density
+      density: options.material === 'CUSTOM' ? undefined : options.material.density // The undefined makes sure we don't override the default
     }, options.customMaterialOptions ) );
 
     const initialMaterial = options.material === 'CUSTOM' ? customSolidMaterial : options.material;
     this.materialProperty = new MaterialProperty( initialMaterial, customSolidMaterial,
-
-      // TODO: Do this part next, https://github.com/phetsims/density-buoyancy-common/issues/270
-      [],
+      options.availableMassMaterials.map( x => x === 'CUSTOM' ? customSolidMaterial : x ),
       options.materialPropertyOptions as MaterialPropertyOptions );
 
     this.volumeProperty = new NumberProperty( options.volume, combineOptions<NumberPropertyOptions>( {

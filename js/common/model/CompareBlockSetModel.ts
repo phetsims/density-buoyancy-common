@@ -109,7 +109,8 @@ export default class CompareBlockSetModel extends BlockSetModel<BlockSet> {
       sharedCubeOptions: {
         materialPropertyOptions: {
           phetioReadOnly: true // See https://github.com/phetsims/density-buoyancy-common/issues/270#issuecomment-2243371397
-        }
+        },
+        availableMassMaterials: [] // TODO: 'CUSTOM' isn't right in here, instead we need to figure out the "side MaterialProperty" instances first. https://github.com/phetsims/density-buoyancy-common/issues/273
       },
 
       // BlockSetModel options
@@ -168,11 +169,11 @@ export default class CompareBlockSetModel extends BlockSetModel<BlockSet> {
       }, cubeData );
     } );
 
-    const getCubeOptions = ( cubeOptions: StrictCubeOptions ) => combineOptions<CubeOptions>( {}, options.sharedCubeOptions, cubeOptions );
+    // TODO: We lost type checking for availableMassMaterials because of the `CubeOptions` type, https://github.com/phetsims/density-buoyancy-common/issues/273
+    const getCubeOptions = ( cubeOptions: StrictOmit<StrictCubeOptions, 'availableMassMaterials'> ) => combineOptions<CubeOptions>( {}, options.sharedCubeOptions, cubeOptions );
 
     // TODO: Helpful documentation please, see https://github.com/phetsims/density-buoyancy-common/issues/273
     const createMasses = ( model: BlockSetModel<BlockSet>, blockSet: BlockSet ) => {
-
       // TODO: Helpful documentation please, see https://github.com/phetsims/density-buoyancy-common/issues/273
       // In the following code, the cube instance persists for the lifetime of the simulation and the listeners
       // don't need to be removed.
@@ -263,6 +264,7 @@ export default class CompareBlockSetModel extends BlockSetModel<BlockSet> {
    * Otherwise, it creates a custom material with a modified color based on the density.
    *
    * TODO: Should this return MaterialProperty and create its own customMaterial? see https://github.com/phetsims/density-buoyancy-common/issues/273
+   * TODO: Can we use initialMaterials as the availableMassMaterials for the blocks created for this blockSet? https://github.com/phetsims/density-buoyancy-common/issues/273
    */
   private static createMaterialProperty( tandem: Tandem, colorProperty: TReadOnlyProperty<Color>, densityProperty: TReadOnlyProperty<number>,
                                          blockSetValueChangedProperty: TReadOnlyProperty<boolean>, initialMaterials: Material[] ): TReadOnlyProperty<Material> {

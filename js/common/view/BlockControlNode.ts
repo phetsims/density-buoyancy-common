@@ -21,7 +21,7 @@ import UnitConversionProperty from '../../../../axon/js/UnitConversionProperty.j
 import Range from '../../../../dot/js/Range.js';
 
 type SelfOptions = {
-  mysteryMaterials: Material[]; // Provide empty list to opt out.
+  mysteryMaterials: Material[]; // Provide empty list to opt out. // TODO: delete, https://github.com/phetsims/density-buoyancy-common/issues/270
 };
 
 export type BlockControlNodeOptions = MaterialMassVolumeControlNodeOptions & SelfOptions;
@@ -29,11 +29,7 @@ export type BlockControlNodeOptions = MaterialMassVolumeControlNodeOptions & Sel
 export default class BlockControlNode extends MaterialMassVolumeControlNode {
   public constructor( cuboid: Cuboid, listParent: Node, numberControlMassPropertyFeatured: boolean, options: BlockControlNodeOptions ) {
 
-    const materials = [
-      ...Material.SIMPLE_MASS_MATERIALS,
-      cuboid.materialProperty.customMaterial,
-      ...options.mysteryMaterials
-    ];
+    const materials = cuboid.materialProperty.availableValues;
 
     // If we have useDensityControlInsteadOfMassControl, we control the logic completely here, and hence do not want the  one-way synchronization in the super.
     if ( assert && options.useDensityControlInsteadOfMassControl ) {

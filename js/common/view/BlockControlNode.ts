@@ -21,7 +21,7 @@ import UnitConversionProperty from '../../../../axon/js/UnitConversionProperty.j
 import Range from '../../../../dot/js/Range.js';
 
 type SelfOptions = {
-  mysteryMaterials: Material[]; // Provide empty list to opt out. // TODO: delete, https://github.com/phetsims/density-buoyancy-common/issues/270
+  mysteryMaterials: Material[]; // Provide empty list to opt out. // TODO AV: delete, https://github.com/phetsims/density-buoyancy-common/issues/270
 };
 
 export type BlockControlNodeOptions = MaterialMassVolumeControlNodeOptions & SelfOptions;

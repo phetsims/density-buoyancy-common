@@ -80,7 +80,10 @@ export default class DensityMysteryModel extends BlockSetModel<MysteryBlockSet> 
       adjustVolumeOnMassChanged: true,
       adjustableMaterial: true,
       availableMassMaterials: [
-        ...Material.DENSITY_MYSTERY_PHET_IO_CUSTOMIZABLE_MATERIAL,
+        ...Material.SIMPLE_MASS_MATERIALS,
+        Material.STEEL,
+        Material.COPPER,
+        Material.PLATINUM,
         'CUSTOM'
       ] satisfies MaterialSchema[]
     };

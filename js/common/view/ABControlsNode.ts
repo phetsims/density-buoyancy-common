@@ -18,7 +18,7 @@ import ABPanelsNode from './ABPanelsNode.js';
 import Material from '../model/Material.js';
 
 type SelfOptions = {
-  mysteryMaterials?: Material[]; // TODO: delete, https://github.com/phetsims/density-buoyancy-common/issues/270
+  mysteryMaterials?: Material[]; // TODO AV: delete, https://github.com/phetsims/density-buoyancy-common/issues/270
 };
 
 export type ABControlsNodeOptions = SelfOptions & BlockControlNodeOptions & { tandem: Tandem };

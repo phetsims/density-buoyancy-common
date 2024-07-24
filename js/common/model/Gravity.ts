@@ -54,7 +54,7 @@ export default class Gravity extends PhetioObject implements HasValueProperty {
     this.gravityValueProperty = new NumberProperty( options.value, {
       tandem: options.tandem.createTandem( 'gravityValueProperty' )
 
-      // TODO: range for gravity. Consult the slider to check for the range, see https://github.com/phetsims/density-buoyancy-common/issues/270
+      // TODO AV: range for gravity. Consult the slider to check for the range, see https://github.com/phetsims/density-buoyancy-common/issues/270
     } );
     this.custom = options.custom;
     this.hidden = options.hidden;

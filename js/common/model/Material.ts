@@ -473,14 +473,6 @@ export default class Material extends PhetioObject implements HasValueProperty {
     Material.ALUMINUM
   ];
 
-  // TODO: This is the exact list from Density 1.1 (adding in PVC), do we need to support this exactly for some reason? Or can it just be a more general list? https://github.com/phetsims/density-buoyancy-common/issues/270
-  public static readonly DENSITY_MYSTERY_PHET_IO_CUSTOMIZABLE_MATERIAL = [
-    ...Material.SIMPLE_MASS_MATERIALS,
-    Material.STEEL,
-    Material.COPPER,
-    Material.PLATINUM
-  ];
-
   public static readonly BUOYANCY_FLUID_MATERIALS = [
     Material.GASOLINE,
     Material.OIL,

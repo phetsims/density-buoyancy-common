@@ -65,7 +65,6 @@ type SelfOptions = {
   displayType?: DisplayType;
 };
 
-// TODO: Cleanup https://github.com/phetsims/density-buoyancy-common/issues/270
 export type ScaleOptions = SelfOptions & StrictOmit<InstrumentedMassOptions,
   'body' | 'shape' | 'volume' | 'material' | 'massShape' | 'availableMassMaterials'> &
   PickOptional<InstrumentedMassOptions, 'body' | 'shape'>;

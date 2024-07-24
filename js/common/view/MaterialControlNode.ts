@@ -60,10 +60,7 @@ export default class MaterialControlNode extends VBox {
 
     const comboMaxWidth = 110;
 
-    // TODO AV: sort at usage sites instead? https://github.com/phetsims/density-buoyancy-common/issues/237
-    const regularMaterials = materials.filter( material => !material.hidden && !material.custom );
     const customMaterials = materials.filter( material => material.custom );
-    const mysteryMaterials = materials.filter( material => material.hidden );
 
     assert && assert( customMaterials.length <= 1, 'one or less custom materials please' );
 
@@ -94,17 +91,13 @@ export default class MaterialControlNode extends VBox {
       } );
     }
 
-    // TODO: But can we just use the validValues of the provided MaterialProperty, https://github.com/phetsims/density-buoyancy-common/issues/270
-    // TODO: But hidden ones!!! https://github.com/phetsims/density-buoyancy-common/issues/270
-    const comboBox = new ComboBox( materialProperty, [
-      ...regularMaterials.map( materialToItem ),
-      ...customMaterials.map( materialToItem ),
-      ...mysteryMaterials.map( materialToItem )
-    ], listParent, {
-      xMargin: 8,
-      yMargin: 4,
-      tandem: options.tandem.createTandem( 'comboBox' )
-    } );
+    const comboBox = new ComboBox( materialProperty,
+      materialProperty.availableValues.map( materialToItem ),
+      listParent, {
+        xMargin: 8,
+        yMargin: 4,
+        tandem: options.tandem.createTandem( 'comboBox' )
+      } );
 
     this.children = [
       new HBox( {

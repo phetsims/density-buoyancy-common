@@ -28,9 +28,10 @@ export default abstract class MappedWrappedProperty<T extends HasValueProperty> 
 
   protected constructor( initialValue: T, customValue: T, availableValues: T[], providedOptions: PropertyOptions<T> ) {
 
+    // TODO AV: Is this still needed? https://github.com/phetsims/density-buoyancy-common/issues/270
     if ( availableValues.length > 0 ) {
 
-      // TODO: https://github.com/phetsims/density-buoyancy-common/issues/270 optionize please
+      // TODO AV: https://github.com/phetsims/density-buoyancy-common/issues/270 optionize please
       providedOptions.validValues = availableValues;
     }
 

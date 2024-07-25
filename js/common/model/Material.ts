@@ -75,6 +75,10 @@ export default class Material extends PhetioObject implements HasValueProperty {
         tandem: tandem.createTandem( 'densityProperty' ),
         phetioFeatured: true,
         phetioDocumentation: 'Density of the material',
+        rangePropertyOptions: {
+          reentrant: true, // needed for the range mutation in MaterialControlNode, see https://github.com/phetsims/density-buoyancy-common/issues/268
+          valueComparisonStrategy: 'equalsFunction'
+        },
         range: new Range( 0.8, 27000 ), // TODO Can this range change if we have enough info about the actual range of the densities? https://github.com/phetsims/density-buoyancy-common/issues/268
         units: 'kg/m^3'
       },

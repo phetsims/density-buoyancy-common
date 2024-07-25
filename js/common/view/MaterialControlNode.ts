@@ -19,6 +19,7 @@ import PickRequired from '../../../../phet-core/js/types/PickRequired.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import MaterialProperty from '../model/MaterialProperty.js';
 import Utils from '../../../../dot/js/Utils.js';
+import Range from '../../../../dot/js/Range.js';
 
 type SelfMaterialControlNodeOptions = {
 
@@ -75,6 +76,19 @@ export default class MaterialControlNode extends VBox {
         a11yName: material.nameProperty
       };
     };
+
+    // Set the custom density range, then this control owns the range of the density.
+    // TODO: Should this move to the model somehow? https://github.com/phetsims/density-buoyancy-common/issues/268
+    if ( customMaterials.length > 0 ) {
+      materialProperty.customMaterial.densityProperty.rangeProperty.link( () => {
+        materialProperty.customMaterial.densityProperty.rangeProperty.value = new Range(
+          options.minCustomMass / options.maxVolumeLiters * DensityBuoyancyCommonConstants.LITERS_IN_CUBIC_METER,
+
+          // Prevent divide by zero errors (infinity) with a manual, tiny number
+          options.maxCustomMass / ( options.minCustomVolumeLiters ) * DensityBuoyancyCommonConstants.LITERS_IN_CUBIC_METER
+        );
+      } );
+    }
 
     // When switching to custom, set the custom density to the previous material's density (clamped just in case).
     // However, when switching from a mystery material, do not change the custom value. This prevents clever students from discovering

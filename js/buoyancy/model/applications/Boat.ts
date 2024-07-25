@@ -17,7 +17,6 @@ import densityBuoyancyCommon from '../../../densityBuoyancyCommon.js';
 import BoatBasin from './BoatBasin.js';
 import BoatDesign from './BoatDesign.js';
 import PhysicsEngine from '../../../common/model/PhysicsEngine.js';
-import TProperty from '../../../../../axon/js/TProperty.js';
 import Multilink from '../../../../../axon/js/Multilink.js';
 import TReadOnlyProperty from '../../../../../axon/js/TReadOnlyProperty.js';
 import { MassShape } from '../../../common/model/MassShape.js';

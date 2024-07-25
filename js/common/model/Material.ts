@@ -515,7 +515,6 @@ export class CustomLiquidMaterial extends Material {
     }, providedOptions );
 
     super( tandem, options );
-    // TODO: This could be custom color given a "liquid" flag/subtype, https://github.com/phetsims/density-buoyancy-common/issues/268
     if ( !this.colorProperty && this.custom ) {
       // TODO: can we make this field readonly again? https://github.com/phetsims/density-buoyancy-common/issues/268
       this.colorProperty = new DerivedProperty( [ this.densityProperty, this.densityProperty.rangeProperty ], ( density, densityRange ) => {

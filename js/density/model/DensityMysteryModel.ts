@@ -386,7 +386,6 @@ export default class DensityMysteryModel extends BlockSetModel<MysteryBlockSet> 
             const cubeTandem = randomTandem.createTandem( `block${tags[ i ].tandemName}` );
 
             const colorProperty = new ColorProperty( colors[ i ].value, {
-              // TODO: Is this where we want things? https://github.com/phetsims/density-buoyancy-common/issues/268
               tandem: cubeTandem.createTandem( 'materialProperty' ).createTandem( 'customMaterial' ).createTandem( 'colorProperty' )
             } );
 

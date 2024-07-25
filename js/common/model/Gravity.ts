@@ -13,10 +13,10 @@ import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js'
 import DensityBuoyancyCommonQueryParameters from '../DensityBuoyancyCommonQueryParameters.js';
 import NumberProperty from '../../../../axon/js/NumberProperty.js';
 import { HasValueProperty } from './MappedWrappedProperty.js';
-import TProperty from '../../../../axon/js/TProperty.js';
 import PhetioObject, { PhetioObjectOptions } from '../../../../tandem/js/PhetioObject.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
 import PickRequired from '../../../../phet-core/js/types/PickRequired.js';
+import Property from '../../../../axon/js/Property.js';
 
 const GRAVITY_TANDEM = Tandem.GLOBAL_MODEL.createTandem( 'gravities' );
 
@@ -64,7 +64,7 @@ export default class Gravity extends PhetioObject implements HasValueProperty {
     return this.gravityValueProperty.value;
   }
 
-  public get valueProperty(): TProperty<number> {
+  public get valueProperty(): Property<number> {
     return this.gravityValueProperty;
   }
 

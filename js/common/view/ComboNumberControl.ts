@@ -194,7 +194,7 @@ export default abstract class ComboNumberControl<T extends Material | Gravity> e
         accessibleName: options.titleProperty
       }
     }, options.numberControlOptions ) );
-    this.numberControl.addLinkedElement( this.mappedWrappedProperty, {
+    this.numberControl.addLinkedElement( this.mappedWrappedProperty.customValue.valueProperty, {
       tandemName: 'valueProperty'
     } );
 

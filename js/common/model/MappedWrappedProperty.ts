@@ -14,11 +14,10 @@
 import Property, { PropertyOptions } from '../../../../axon/js/Property.js';
 import DynamicProperty from '../../../../axon/js/DynamicProperty.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
-import TProperty from '../../../../axon/js/TProperty.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 
 export type HasValueProperty = {
-  valueProperty: TProperty<number>;
+  valueProperty: Property<number>;
 };
 
 export default abstract class MappedWrappedProperty<T extends HasValueProperty> extends Property<T> {

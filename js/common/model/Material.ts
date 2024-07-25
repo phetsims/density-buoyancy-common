@@ -54,8 +54,6 @@ const MATERIALS_TANDEM = Tandem.GLOBAL_MODEL.createTandem( 'materials' );
 const SOLIDS_TANDEM = MATERIALS_TANDEM.createTandem( 'solids' );
 const FLUIDS_TANDEM = MATERIALS_TANDEM.createTandem( 'fluids' );
 
-// TODO: Material should wire up color properties https://github.com/phetsims/density-buoyancy-common/issues/268
-// TODO: Material should know its density range https://github.com/phetsims/density-buoyancy-common/issues/268
 export default class Material extends PhetioObject implements HasValueProperty {
 
   public readonly nameProperty: TReadOnlyProperty<string>;
@@ -79,7 +77,7 @@ export default class Material extends PhetioObject implements HasValueProperty {
           reentrant: true, // needed for the range mutation in MaterialControlNode, see https://github.com/phetsims/density-buoyancy-common/issues/268
           valueComparisonStrategy: 'equalsFunction'
         },
-        range: new Range( 0.8, 27000 ), // TODO Can this range change if we have enough info about the actual range of the densities? https://github.com/phetsims/density-buoyancy-common/issues/268
+        range: new Range( 0.8, 27000 ),
         units: 'kg/m^3'
       },
       viscosity: 1e-3,
@@ -486,8 +484,6 @@ export class CustomSolidMaterial extends Material {
 
       // TODO: can we make this field readonly again? https://github.com/phetsims/density-buoyancy-common/issues/268
       this.colorProperty = new DerivedProperty( [ this.densityProperty, this.densityProperty.rangeProperty ], ( density, densityRange ) => {
-
-        // TODO: The dynamic range for the bottle interior solid material flattens out quickly past 4 kg/L, see https://github.com/phetsims/density-buoyancy-common/issues/268
 
         // Returns a value suitable for use in colors (0-255 value) that should be used as a grayscale value for
         // a material of a given density. The mappíng is inverted, i.e. larger densities yield darker colors.

@@ -43,7 +43,6 @@ type SelfOptions<T extends Material | Gravity> = {
   numberControlOptions?: NumberControlOptions;
   comboBoxOptions?: ComboBoxOptions;
 
-  // TODO: Can we remove this? https://github.com/phetsims/density-buoyancy-common/issues/266
   unitsConversionFactor: number;
 } & PickRequired<PhetioObjectOptions, 'tandem'>;
 

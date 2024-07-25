@@ -36,6 +36,7 @@ import BooleanToggleNode from '../../../../sun/js/BooleanToggleNode.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
 import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
 import MaterialProperty from '../model/MaterialProperty.js';
+import isSettingPhetioStateProperty from '../../../../tandem/js/isSettingPhetioStateProperty.js';
 
 // constants
 const LITERS_IN_CUBIC_METER = DensityBuoyancyCommonConstants.LITERS_IN_CUBIC_METER;
@@ -124,6 +125,14 @@ export default class MaterialMassVolumeControlNode extends MaterialControlNode {
     let userMassChanging = false;
     let modelVolumeChanging = false;
     let userVolumeChanging = false;
+
+    // reset locks before setting state also so that below listeners have the correct effect. See https://github.com/phetsims/density-buoyancy-common/issues/217
+    isSettingPhetioStateProperty.lazyLink( () => {
+      modelMassChanging = false;
+      userMassChanging = false;
+      modelVolumeChanging = false;
+      userVolumeChanging = false;
+    } );
 
     // DerivedProperty doesn't need disposal, since everything here lives for the lifetime of the simulation
     const enabledMassRangeProperty = new DerivedProperty( [ materialProperty, materialProperty.densityProperty ],

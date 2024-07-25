@@ -1,7 +1,14 @@
 // Copyright 2019-2024, University of Colorado Boulder
 
 /**
- * Adapter for the p2.js physics engine
+ * Adapter for the p2.js physics engine (two-dimensional physics). See PhysicsEngine for API.
+ *
+ * This class uses many configuration values from query parameters, it would be good to know those when looking at this
+ * file.
+ *
+ * For MVT, there are scale factors applied internally that mean that p2 units are not SI, but the DBC model is.
+ *
+ * Please note, rotation is not supported.
  *
  * @author Jonathan Olson (PhET Interactive Simulations)
  */
@@ -126,12 +133,12 @@ export default class P2Engine extends PhysicsEngine {
   }
 
   /**
-   * Sets the mass of a body (and whether it can rotate, which for some engines needs to be set at the same time).
+   * Sets the mass of a body.
    */
   public bodySetMass( body: PhysicsEngineBody, mass: number ): void {
     body.mass = mass * MASS_SCALE;
     body.fixedRotation = true;
-        body.updateMassProperties();
+    body.updateMassProperties();
   }
 
   /**

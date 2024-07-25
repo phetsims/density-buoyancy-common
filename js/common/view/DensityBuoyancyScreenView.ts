@@ -40,7 +40,6 @@ import FluidLevelIndicator from './FluidLevelIndicator.js';
 import DensityBuoyancyModel from '../model/DensityBuoyancyModel.js';
 import MassView from './MassView.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
-import Material from '../model/Material.js';
 import PickRequired from '../../../../phet-core/js/types/PickRequired.js';
 import { PhetioObjectOptions } from '../../../../tandem/js/PhetioObject.js';
 import BackgroundEventTargetListener from './BackgroundEventTargetListener.js';
@@ -479,7 +478,7 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
       depthWrite: false
     } );
 
-    Material.linkColorProperty( model.pool.fluidMaterialProperty, fluidMaterial );
+    model.pool.fluidMaterialProperty.linkColorProperty( fluidMaterial );
     const fluidMesh = new THREE.Mesh( fluidGeometry, fluidMaterial );
     this.sceneNode.stage.threeScene.add( fluidMesh );
     fluidMesh.renderOrder = 10;

@@ -27,6 +27,7 @@ import Vector2 from '../../../../../dot/js/Vector2.js';
 import DensityBuoyancyCommonConstants, { toLiters } from '../../../common/DensityBuoyancyCommonConstants.js';
 import NumberProperty from '../../../../../axon/js/NumberProperty.js';
 import Pool from '../../../common/model/Pool.js';
+import MaterialProperty from '../../../common/model/MaterialProperty.js';
 
 export type BoatOptions = StrictOmit<ApplicationsMassOptions,
   'body' | 'shape' | 'volume' | 'material' | 'massShape' | 'availableMassMaterials'>;
@@ -34,7 +35,7 @@ export type BoatOptions = StrictOmit<ApplicationsMassOptions,
 export default class Boat extends ApplicationsMass {
 
   // The volume that the boat can hold inside it.
-  public readonly fluidMaterialProperty: TProperty<Material>;
+  public readonly fluidMaterialProperty: MaterialProperty;
 
   public readonly maxVolumeDisplacedProperty: NumberProperty;
 
@@ -55,7 +56,7 @@ export default class Boat extends ApplicationsMass {
   public verticalVelocity = 0;
   public verticalAcceleration = 0;
 
-  public constructor( engine: PhysicsEngine, blockWidthProperty: TReadOnlyProperty<number>, fluidMaterialProperty: TProperty<Material>, providedOptions: BoatOptions ) {
+  public constructor( engine: PhysicsEngine, blockWidthProperty: TReadOnlyProperty<number>, fluidMaterialProperty: MaterialProperty, providedOptions: BoatOptions ) {
 
     const boatIntersectionVertices = BoatDesign.getIntersectionVertices( blockWidthProperty.value / 2, toLiters( ApplicationsMass.DEFAULT_DISPLACEMENT_VOLUME ) );
     const volume = BoatDesign.ONE_LITER_HULL_VOLUME * toLiters( ApplicationsMass.DEFAULT_DISPLACEMENT_VOLUME );

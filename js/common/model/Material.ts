@@ -6,10 +6,7 @@
  * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
-import DynamicProperty from '../../../../axon/js/DynamicProperty.js';
-import TProperty from '../../../../axon/js/TProperty.js';
 import Utils from '../../../../dot/js/Utils.js';
-import ThreeUtils from '../../../../mobius/js/ThreeUtils.js';
 import optionize, { combineOptions, EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
 import { Color } from '../../../../scenery/js/imports.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
@@ -152,28 +149,6 @@ export default class Material extends PhetioObject implements HasValueProperty {
       DensityBuoyancyCommonColors.customFluidDarkColorProperty.value,
       DensityBuoyancyCommonColors.customFluidLightColorProperty.value,
       lightnessFactor );
-  }
-
-  /**
-   * TODO: a couple thoughts. https://github.com/phetsims/density-buoyancy-common/issues/268
-   *  1. could this be solved is MaterialProperty.colorProperty was a dynamic property, then these usages would just link to that to update the THREE mesh.
-   *  2. At the very least, move this to a prototype method on MaterialProperty.
-   *
-   * Keep a material's color and opacity to match the liquid color from a given Property<Material>
-   *
-   * NOTE: Only call this for things that exist for the lifetime of this simulation (otherwise it would leak memory)
-   */
-  public static linkColorProperty( property: TProperty<Material>, threeMaterial: THREE.MeshPhongMaterial | THREE.MeshLambertMaterial | THREE.MeshBasicMaterial ): void {
-    new DynamicProperty<Color, Color, Material>( property, {
-      derive: material => {
-        assert && assert( material.colorProperty );
-
-        return material.colorProperty!;
-      }
-    } ).link( ( color: Color ) => {
-      threeMaterial.color = ThreeUtils.colorToThree( color );
-      threeMaterial.opacity = color.alpha;
-    } );
   }
 
   ////////////////// SOLIDS //////////////////

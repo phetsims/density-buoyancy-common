@@ -8,7 +8,6 @@
 
 import TReadOnlyProperty from '../../../../../axon/js/TReadOnlyProperty.js';
 import Multilink from '../../../../../axon/js/Multilink.js';
-import Material from '../../../common/model/Material.js';
 import densityBuoyancyCommon from '../../../densityBuoyancyCommon.js';
 import Boat from '../../model/applications/Boat.js';
 import BoatDesign from '../../model/applications/BoatDesign.js';
@@ -107,8 +106,8 @@ export default class BoatView extends MeasurableMassView {
       topPoolClipPlane.constant = -poolFluidY;
     } );
 
-    Material.linkColorProperty( boat.fluidMaterialProperty, topFluidMaterial );
-    Material.linkColorProperty( boat.fluidMaterialProperty, boatDrawingData.backMiddleMaterial );
+    boat.fluidMaterialProperty.linkColorProperty( topFluidMaterial );
+    boat.fluidMaterialProperty.linkColorProperty( boatDrawingData.backMiddleMaterial );
 
     // see the static function for the rest of render orders
     topFluid.renderOrder = 3;

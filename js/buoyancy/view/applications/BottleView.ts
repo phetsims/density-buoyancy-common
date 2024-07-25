@@ -92,9 +92,9 @@ export default class BottleView extends MeasurableMassView {
 
     interiorSurface.renderOrder = 2;
 
-    Material.linkColorProperty( bottle.materialInsideProperty, interiorSurfaceMaterial );
-    Material.linkColorProperty( bottle.materialInsideProperty, bottleDrawingData.backBottomMaterial );
-    Material.linkColorProperty( bottle.materialInsideProperty, bottleDrawingData.frontBottomMaterial );
+    bottle.materialInsideProperty.linkColorProperty( interiorSurfaceMaterial );
+    bottle.materialInsideProperty.linkColorProperty( bottleDrawingData.backBottomMaterial );
+    bottle.materialInsideProperty.linkColorProperty( bottleDrawingData.frontBottomMaterial );
 
     const bottleSize = bottle.getBounds();
     this.tagOffsetProperty.value = new Vector3( -bottleSize.width / 2 + TAG_OFFSET, bottleSize.height / 2 - TAG_OFFSET, bottleSize.depth / 2 );

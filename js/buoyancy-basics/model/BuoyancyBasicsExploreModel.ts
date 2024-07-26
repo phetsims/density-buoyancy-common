@@ -19,6 +19,7 @@ import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import MassTag from '../../common/model/MassTag.js';
 import { MaterialSchema } from '../../common/model/Mass.js';
 import optionize, { EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
+import merge from '../../../../phet-core/js/merge.js';
 
 type BuoyancyBasicsExploreModelOptions = DensityBuoyancyModelOptions;
 
@@ -43,26 +44,26 @@ export default class BuoyancyBasicsExploreModel extends DensityBuoyancyModel {
       phetioFeatured: true
     } );
 
-    const availableMassMaterials: MaterialSchema[] = [
-      ...Material.SIMPLE_MASS_MATERIALS,
-      'CUSTOM'
-    ];
+    const sharedBlockOptions = {
+      availableMassMaterials: [
+        ...Material.SIMPLE_MASS_MATERIALS,
+        'CUSTOM'
+      ] satisfies MaterialSchema[]
+    };
 
     const blockATandem = blocksTandem.createTandem( 'blockA' );
-    this.massA = Cube.createWithMass( this.engine, Material.WOOD, new Vector2( -0.2, 0.2 ), 2, {
+    this.massA = Cube.createWithMass( this.engine, Material.WOOD, new Vector2( -0.2, 0.2 ), 2, merge( {}, sharedBlockOptions, {
       tag: MassTag.OBJECT_A,
-      availableMassMaterials: availableMassMaterials,
       tandem: blockATandem
-    } );
+    } ) );
     this.availableMasses.push( this.massA );
 
     const blockBTandem = blocksTandem.createTandem( 'blockB' );
-    this.massB = Cube.createWithMass( this.engine, Material.ALUMINUM, new Vector2( 0.05, 0.35 ), 13.5, {
+    this.massB = Cube.createWithMass( this.engine, Material.ALUMINUM, new Vector2( 0.05, 0.35 ), 13.5, merge( {}, sharedBlockOptions, {
       tag: MassTag.OBJECT_B,
-      availableMassMaterials: availableMassMaterials,
       tandem: blockBTandem,
       visible: false
-    } );
+    } ) );
     this.availableMasses.push( this.massB );
 
     this.modeProperty.link( mode => {

@@ -52,8 +52,6 @@ type SelfOptions = {
   sameDensityValue?: number;
   sameDensityRange?: Range;
 
-  colorDensityRange?: Range; // Only used for color calculation (lightness/darkness factor)
-
   // Provided options to cubes for all blockSets
   sharedCubeOptions?: Partial<StrictCubeOptions>;
 
@@ -90,8 +88,6 @@ export default class CompareBlockSetModel extends BlockSetModel<BlockSet> {
       sameVolumeRange: new Range( 0.001, 0.01 ),
       sameDensityValue: 400,
       sameDensityRange: new Range( 100, 3000 ),
-
-      colorDensityRange: new Range( 10, 10000 ),
 
       initialMaterials: [],
 
@@ -133,6 +129,9 @@ export default class CompareBlockSetModel extends BlockSetModel<BlockSet> {
       units: 'kg/m^3'
     } );
 
+    // A good approximation of the potential range (as used for the block shading), is the range for the sameDensity control
+    const colorDensityRange = options.sameDensityRange;
+
     const getCubeOptions = ( cubeOptions: StrictCubeOptionsNoAvailableMaterials ) => combineOptions<StrictCubeOptionsNoAvailableMaterials>( {}, options.sharedCubeOptions, cubeOptions );
 
     // Create one mass for each cubeData/blockSet combo, based on the provided blockSet
@@ -144,7 +143,7 @@ export default class CompareBlockSetModel extends BlockSetModel<BlockSet> {
              options.cubesData.map( cubeData => {
                const cube = CompareBlockSetModel.createCube( model.engine, Vector2.ZERO,
                  massProperty.value, options.sameMassValue / cubeData.sameMassVolume,
-                 cubeData.colorProperty, massProperty.hasChangedProperty, options.initialMaterials, options.colorDensityRange, getCubeOptions( cubeData.sameMassCubeOptions )
+                 cubeData.colorProperty, massProperty.hasChangedProperty, options.initialMaterials, colorDensityRange, getCubeOptions( cubeData.sameMassCubeOptions )
                );
 
                // Keep this block's density in sync with the controlling massProperty when it changes.
@@ -162,7 +161,7 @@ export default class CompareBlockSetModel extends BlockSetModel<BlockSet> {
                const cube = CompareBlockSetModel.createCube( model.engine, Vector2.ZERO,
                  cubeData.sameVolumeMass, cubeData.sameVolumeMass / options.sameVolumeValue,
                  cubeData.colorProperty, volumeProperty.hasChangedProperty, options.initialMaterials,
-                 options.colorDensityRange, getCubeOptions( cubeData.sameVolumeCubeOptions ) );
+                 colorDensityRange, getCubeOptions( cubeData.sameVolumeCubeOptions ) );
 
                // Keep this block's density in sync with the controlling volumeProperty when it changes.
                volumeProperty.lazyLink( volume => {
@@ -187,7 +186,7 @@ export default class CompareBlockSetModel extends BlockSetModel<BlockSet> {
                const cube = CompareBlockSetModel.createCube( model.engine, Vector2.ZERO,
                  startingMass, options.sameDensityValue,
                  cubeData.colorProperty, densityProperty.hasChangedProperty, options.initialMaterials,
-                 options.colorDensityRange,
+                 colorDensityRange,
                  combineOptions<StrictCubeOptions>( {
                    customMaterialOptions: {
                      densityPropertyOptions: {
@@ -286,16 +285,10 @@ export default class CompareBlockSetModel extends BlockSetModel<BlockSet> {
     Multilink.multilink( [ baseColorProperty, cube.materialProperty.densityProperty ], ( color, density ) => {
 
       // Calculate the lightness of the material based on its density, but keep a consistent range independent of the available ranges for all usages.
-      // TODO: Why not just use the lightness based on the actual densityProperty.range here? https://github.com/phetsims/density-buoyancy-common/issues/268
       const lightness = Material.getNormalizedLightness( density, colorDensityRange ); // 0-1
-
-      // Modify the color brightness based on the lightness.
-      const modifier = 0.1;
-      const rawValue = ( lightness * 2 - 1 ) * ( 1 - modifier ) + modifier;
-      const power = 0.7;
-
-      const factor = Math.sign( rawValue ) * Math.pow( Math.abs( rawValue ), power );
-      densityAdjustedColorProperty.value = color.colorUtilsBrightness( factor );
+      const scale = 0.4; // Scale to prevent too much lightness/darkness changing
+      const factor = lightness * 2 - 1;
+      densityAdjustedColorProperty.value = color.colorUtilsBrightness( factor * scale );
     } );
 
     Multilink.multilink( [ cube.materialProperty.densityProperty, blockSetValueChangedProperty ],

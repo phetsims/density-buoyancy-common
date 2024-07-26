@@ -32,7 +32,6 @@ export default class BuoyancyCompareModel extends CompareBlockSetModel {
       initialMaterials: [ Material.WOOD, Material.BRICK ],
       sameMassValue: 4,
       sameDensityValue: Material.WOOD.density,
-      colorDensityRange: new Range( 0, 5000 ),
       cubesData: [
         {
           sameMassVolume: 0.002,

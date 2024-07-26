@@ -132,13 +132,13 @@ export default class Material extends PhetioObject implements HasValueProperty {
 
   /**
    * Returns a lightness factor from 0-1 that can be used to map a density to a desired color.
+   * 1: lots of lightness
+   * 0: lots of darkness
+   * .5: no change to color.
+   * TODO AV: Double check all usages to make sure linear mapping behaves well, https://github.com/phetsims/density-buoyancy-common/issues/268
    */
   public static getNormalizedLightness( density: number, densityRange: Range ): number {
-    // TODO: Should this be more like .95 or .9 to soften the harsher full white/black colors, or 1 for the actual interpolation between the two colors, https://github.com/phetsims/density-buoyancy-common/issues/268
-    const scaleFactor = 1;
-
-    // TODO: This linear algorithm isn't excellent in the compare screen, since you can easily have an outlier block that can be really dense, https://github.com/phetsims/density-buoyancy-common/issues/268
-    return Utils.clamp( 0.5 - scaleFactor * ( densityRange.getNormalizedValue( density ) - 0.5 ), 0, 1 );
+    return Utils.clamp( 1 - densityRange.getNormalizedValue( density ), 0, 1 );
   }
 
   /**
@@ -487,6 +487,7 @@ export class CustomSolidMaterial extends Material {
 
         // Returns a value suitable for use in colors (0-255 value) that should be used as a grayscale value for
         // a material of a given density. The mappíng is inverted, i.e. larger densities yield darker colors.
+        // TODO AV: Interpolate between two ColorProfileProperties like getCustomLiquidColor(),  https://github.com/phetsims/density-buoyancy-common/issues/268
         const lightness = Utils.roundSymmetric( Material.getNormalizedLightness( density, densityRange ) * 255 );
         return new Color( lightness, lightness, lightness );
       } );

@@ -7,7 +7,6 @@
  */
 
 import Matrix3 from '../../../../dot/js/Matrix3.js';
-import Range from '../../../../dot/js/Range.js';
 import Scale, { DisplayType } from '../../common/model/Scale.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import MassTag from '../../common/model/MassTag.js';

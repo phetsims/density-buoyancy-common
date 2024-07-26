@@ -15,26 +15,26 @@ import Property, { PropertyOptions } from '../../../../axon/js/Property.js';
 import DynamicProperty from '../../../../axon/js/DynamicProperty.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
+import optionize, { EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
 
 export type HasValueProperty = {
   valueProperty: Property<number>;
 };
+
+type MappedWrappedPropertyOptions<T> = PropertyOptions<T>;
 
 export default abstract class MappedWrappedProperty<T extends HasValueProperty> extends Property<T> {
   protected readonly dynamicValueProperty: TReadOnlyProperty<number>;
   public readonly customValue: T;
   public readonly availableValues: T[];
 
-  protected constructor( initialValue: T, customValue: T, availableValues: T[], providedOptions: PropertyOptions<T> ) {
+  protected constructor( initialValue: T, customValue: T, availableValues: T[], providedOptions: MappedWrappedPropertyOptions<T> ) {
 
-    // TODO AV: Is this still needed? https://github.com/phetsims/density-buoyancy-common/issues/270
-    if ( availableValues.length > 0 ) {
+    const options = optionize<MappedWrappedPropertyOptions<T>, EmptySelfOptions, PropertyOptions<T>>()( {
+      validValues: availableValues
+    }, providedOptions );
 
-      // TODO AV: https://github.com/phetsims/density-buoyancy-common/issues/270 optionize please
-      providedOptions.validValues = availableValues;
-    }
-
-    super( initialValue, providedOptions );
+    super( initialValue, options );
 
     this.dynamicValueProperty = new DynamicProperty<number, number, T>( this, {
       bidirectional: false,

@@ -133,8 +133,7 @@ export default class BuoyancyLabScreenView extends BuoyancyScreenView<BuoyancyLa
       {
         tandem: tandem.createTandem( 'blockPanel' ),
         minCustomMass: 0.1,
-        maxVolumeLiters: maxBlockVolume,
-        mysteryMaterials: [ Material.MATERIAL_O, Material.MATERIAL_P ]
+        maxVolumeLiters: maxBlockVolume
       }
     ) ] );
 

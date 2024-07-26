@@ -76,8 +76,7 @@ export default class BuoyancyBasicsExploreScreenView extends BuoyancyScreenView<
         customKeepsConstantDensity: true,
         tandem: tandem,
         minCustomMass: 0.1,
-        maxCustomMass: 15,
-        mysteryMaterials: []
+        maxCustomMass: 15
       }
     );
 

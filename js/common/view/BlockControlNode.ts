@@ -12,7 +12,6 @@ import Cube from '../model/Cube.js';
 import Cuboid from '../model/Cuboid.js';
 import MaterialMassVolumeControlNode, { MaterialMassVolumeControlNodeOptions } from './MaterialMassVolumeControlNode.js';
 import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
-import Material from '../model/Material.js';
 import NumberControl, { NumberControlOptions } from '../../../../scenery-phet/js/NumberControl.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import { combineOptions } from '../../../../phet-core/js/optionize.js';
@@ -20,11 +19,7 @@ import PrecisionSliderThumb from './PrecisionSliderThumb.js';
 import UnitConversionProperty from '../../../../axon/js/UnitConversionProperty.js';
 import Range from '../../../../dot/js/Range.js';
 
-type SelfOptions = {
-  mysteryMaterials: Material[]; // Provide empty list to opt out. // TODO AV: delete, https://github.com/phetsims/density-buoyancy-common/issues/270
-};
-
-export type BlockControlNodeOptions = MaterialMassVolumeControlNodeOptions & SelfOptions;
+export type BlockControlNodeOptions = MaterialMassVolumeControlNodeOptions;
 
 export default class BlockControlNode extends MaterialMassVolumeControlNode {
   public constructor( cuboid: Cuboid, listParent: Node, numberControlMassPropertyFeatured: boolean, options: BlockControlNodeOptions ) {

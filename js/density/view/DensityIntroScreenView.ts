@@ -56,8 +56,7 @@ export default class DensityIntroScreenView extends DensityBuoyancyScreenView<De
       model.massB,
       this.popupLayer, {
         tandem: tandem,
-        maxCustomMass: 10,
-        mysteryMaterials: []
+        maxCustomMass: 10
       } );
 
     const accordionTandem = tandem.createTandem( 'densityAccordionBox' );

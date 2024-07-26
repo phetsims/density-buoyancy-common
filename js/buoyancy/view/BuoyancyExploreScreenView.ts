@@ -85,8 +85,7 @@ export default class BuoyancyExploreScreenView extends BuoyancyScreenView<Buoyan
       this.popupLayer,
       {
         tandem: tandem,
-        minCustomMass: 0.1,
-        mysteryMaterials: [ Material.MATERIAL_X, Material.MATERIAL_Y ]
+        minCustomMass: 0.1
       }
     );
 

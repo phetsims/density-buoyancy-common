@@ -15,13 +15,8 @@ import Cuboid from '../model/Cuboid.js';
 import BlockControlNode, { BlockControlNodeOptions } from './BlockControlNode.js';
 import DensityBuoyancyCommonColors from './DensityBuoyancyCommonColors.js';
 import ABPanelsNode from './ABPanelsNode.js';
-import Material from '../model/Material.js';
 
-type SelfOptions = {
-  mysteryMaterials?: Material[]; // TODO AV: delete, https://github.com/phetsims/density-buoyancy-common/issues/270
-};
-
-export type ABControlsNodeOptions = SelfOptions & BlockControlNodeOptions & { tandem: Tandem };
+export type ABControlsNodeOptions = BlockControlNodeOptions & { tandem: Tandem };
 
 export default class ABControlsNode extends ABPanelsNode {
 

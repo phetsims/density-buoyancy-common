@@ -6,7 +6,6 @@
  * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
-import Range from '../../../../dot/js/Range.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import { GatedVisibleProperty, Node, Text } from '../../../../scenery/js/imports.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
@@ -29,7 +28,7 @@ export default class GravityControlNode extends ComboNumberControl<Gravity> {
       titleProperty: DensityBuoyancyCommonStrings.gravity.nameStringProperty,
       valuePatternProperty: DensityBuoyancyCommonStrings.metersPerSecondSquaredPatternStringProperty,
       property: gravityProperty,
-      range: new Range( 0.1, 25 ),
+      range: gravityProperty.customGravity.gravityValueProperty.rangeProperty.value,
       listParent: listParent,
       comboItems: gravityProperty.availableValues.map( gravity => {
         return {

@@ -17,6 +17,7 @@ import PhetioObject, { PhetioObjectOptions } from '../../../../tandem/js/PhetioO
 import Tandem from '../../../../tandem/js/Tandem.js';
 import PickRequired from '../../../../phet-core/js/types/PickRequired.js';
 import Property from '../../../../axon/js/Property.js';
+import Range from '../../../../dot/js/Range.js';
 
 const GRAVITY_TANDEM = Tandem.GLOBAL_MODEL.createTandem( 'gravities' );
 
@@ -52,9 +53,8 @@ export default class Gravity extends PhetioObject implements HasValueProperty {
     this.nameProperty = options.nameProperty;
 
     this.gravityValueProperty = new NumberProperty( options.value, {
-      tandem: options.tandem.createTandem( 'gravityValueProperty' )
-
-      // TODO AV: range for gravity. Consult the slider to check for the range, see https://github.com/phetsims/density-buoyancy-common/issues/270
+      tandem: options.tandem.createTandem( 'gravityValueProperty' ),
+      range: new Range( 0.1, 25 )
     } );
     this.custom = options.custom;
     this.hidden = options.hidden;

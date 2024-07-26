@@ -29,9 +29,6 @@ import PhysicsEngine from './PhysicsEngine.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import { MaterialSchema } from './Mass.js';
 
-// This hard coded range is a bit arbitrary, but it lends itself to better colors than the provided range in the options.
-const COLOR_DENSITY_RANGE = new Range( 10, 10000 );
-
 assert && assert( BlockSet.enumeration.values.length === 3, 'This class is very hard coded for the three "SAME" values of BlockSet' );
 
 // Public API for specifying a cube in the BlockSet. A cube will exist in all BlockSet values.
@@ -54,6 +51,8 @@ type SelfOptions = {
   sameVolumeRange?: Range;
   sameDensityValue?: number;
   sameDensityRange?: Range;
+
+  colorDensityRange?: Range; // Only used for color calculation (lightness/darkness factor)
 
   // Provided options to cubes for all blockSets
   sharedCubeOptions?: Partial<StrictCubeOptions>;
@@ -91,6 +90,8 @@ export default class CompareBlockSetModel extends BlockSetModel<BlockSet> {
       sameVolumeRange: new Range( 0.001, 0.01 ),
       sameDensityValue: 400,
       sameDensityRange: new Range( 100, 3000 ),
+
+      colorDensityRange: new Range( 10, 10000 ),
 
       initialMaterials: [],
 
@@ -143,7 +144,7 @@ export default class CompareBlockSetModel extends BlockSetModel<BlockSet> {
              options.cubesData.map( cubeData => {
                const cube = CompareBlockSetModel.createCube( model.engine, Vector2.ZERO,
                  massProperty.value, options.sameMassValue / cubeData.sameMassVolume,
-                 cubeData.colorProperty, massProperty.hasChangedProperty, options.initialMaterials, getCubeOptions( cubeData.sameMassCubeOptions )
+                 cubeData.colorProperty, massProperty.hasChangedProperty, options.initialMaterials, options.colorDensityRange, getCubeOptions( cubeData.sameMassCubeOptions )
                );
 
                // Keep this block's density in sync with the controlling massProperty when it changes.
@@ -161,7 +162,7 @@ export default class CompareBlockSetModel extends BlockSetModel<BlockSet> {
                const cube = CompareBlockSetModel.createCube( model.engine, Vector2.ZERO,
                  cubeData.sameVolumeMass, cubeData.sameVolumeMass / options.sameVolumeValue,
                  cubeData.colorProperty, volumeProperty.hasChangedProperty, options.initialMaterials,
-                 getCubeOptions( cubeData.sameVolumeCubeOptions ) );
+                 options.colorDensityRange, getCubeOptions( cubeData.sameVolumeCubeOptions ) );
 
                // Keep this block's density in sync with the controlling volumeProperty when it changes.
                volumeProperty.lazyLink( volume => {
@@ -186,6 +187,7 @@ export default class CompareBlockSetModel extends BlockSetModel<BlockSet> {
                const cube = CompareBlockSetModel.createCube( model.engine, Vector2.ZERO,
                  startingMass, options.sameDensityValue,
                  cubeData.colorProperty, densityProperty.hasChangedProperty, options.initialMaterials,
+                 options.colorDensityRange,
                  combineOptions<StrictCubeOptions>( {
                    customMaterialOptions: {
                      densityPropertyOptions: {
@@ -253,6 +255,7 @@ export default class CompareBlockSetModel extends BlockSetModel<BlockSet> {
                              baseColorProperty: ColorProperty,
                              blockSetValueChangedProperty: TReadOnlyProperty<boolean>,
                              initialMaterials: Material[],
+                             colorDensityRange: Range,
                              providedOptions?: StrictCubeOptionsNoAvailableMaterials ): Cube {
 
     const densityAdjustedColorProperty = new ColorProperty( baseColorProperty.value );
@@ -284,7 +287,7 @@ export default class CompareBlockSetModel extends BlockSetModel<BlockSet> {
 
       // Calculate the lightness of the material based on its density, but keep a consistent range independent of the available ranges for all usages.
       // TODO: Why not just use the lightness based on the actual densityProperty.range here? https://github.com/phetsims/density-buoyancy-common/issues/268
-      const lightness = Material.getNormalizedLightness( density, COLOR_DENSITY_RANGE ); // 0-1
+      const lightness = Material.getNormalizedLightness( density, colorDensityRange ); // 0-1
 
       // Modify the color brightness based on the lightness.
       const modifier = 0.1;

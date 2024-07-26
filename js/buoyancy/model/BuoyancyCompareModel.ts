@@ -7,6 +7,7 @@
  */
 
 import Matrix3 from '../../../../dot/js/Matrix3.js';
+import Range from '../../../../dot/js/Range.js';
 import Scale, { DisplayType } from '../../common/model/Scale.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import MassTag from '../../common/model/MassTag.js';
@@ -31,6 +32,7 @@ export default class BuoyancyCompareModel extends CompareBlockSetModel {
       initialMaterials: [ Material.WOOD, Material.BRICK ],
       sameMassValue: 4,
       sameDensityValue: Material.WOOD.density,
+      colorDensityRange: new Range( 0, 5000 ),
       cubesData: [
         {
           sameMassVolume: 0.002,

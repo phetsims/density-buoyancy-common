@@ -213,7 +213,13 @@ export default class CompareBlockSetModel extends BlockSetModel<BlockSet> {
                const cube = CompareBlockSetModel.createCube( model.engine, Vector2.ZERO,
                  startingMass, options.sameDensityValue,
                  cubeData.colorProperty, densityProperty.hasChangedProperty, options.initialMaterials,
-                 getCubeOptions( cubeData.sameDensityCubeOptions ) );
+                 combineOptions<StrictCubeOptions>( {
+                   customMaterialOptions: {
+                     densityPropertyOptions: {
+                       range: options.sameDensityRange
+                     }
+                   }
+                 }, getCubeOptions( cubeData.sameDensityCubeOptions ) ) );
 
                // Keep this block's density in sync with the controlling densityProperty when it changes.
                densityProperty.lazyLink( density => cube.materialProperty.customMaterial.densityProperty.set( density ) );

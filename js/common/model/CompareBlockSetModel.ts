@@ -29,6 +29,9 @@ import PhysicsEngine from './PhysicsEngine.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import { MaterialSchema } from './Mass.js';
 
+// This hard coded range is a bit arbitrary, but it lends itself to better colors than the provided range in the options.
+const COLOR_DENSITY_RANGE = new Range( 10, 10000 );
+
 assert && assert( BlockSet.enumeration.values.length === 3, 'This class is very hard coded for the three "SAME" values of BlockSet' );
 
 // Public API for specifying a cube in the BlockSet. A cube will exist in all BlockSet values.
@@ -82,7 +85,6 @@ export default class CompareBlockSetModel extends BlockSetModel<BlockSet> {
   public constructor( providedOptions: CompareBlockSetModelOptions ) {
 
     const options = optionize<CompareBlockSetModelOptions, SelfOptions, OptionizeParent>()( {
-      // TODO: use RangeWithValue? https://github.com/phetsims/density-buoyancy-common/issues/123
       sameMassValue: 5,
       sameMassRange: new Range( 1, 10 ),
       sameVolumeValue: 0.005,
@@ -130,36 +132,7 @@ export default class CompareBlockSetModel extends BlockSetModel<BlockSet> {
       units: 'kg/m^3'
     } );
 
-
-    // Calculate the total possible density values for all blocks on the screen. This keeps the density range the same
-    // for all block sets.
-    const fullDensityRange = options.sameDensityRange.copy();
-
-    const updateRange = ( density: number ) => {
-      if ( density < fullDensityRange.min ) {
-        fullDensityRange.min = density;
-      }
-      if ( density > fullDensityRange.max ) {
-        fullDensityRange.max = density;
-      }
-    };
-
-    options.cubesData.forEach( cubeData => {
-      updateRange( options.sameMassRange.min / cubeData.sameMassVolume );
-      updateRange( options.sameMassRange.max / cubeData.sameMassVolume );
-      updateRange( cubeData.sameVolumeMass / options.sameVolumeRange.min );
-      updateRange( cubeData.sameVolumeMass / options.sameVolumeRange.max );
-    } );
-
-    const getCubeOptions = ( cubeOptions: StrictCubeOptionsNoAvailableMaterials ) => {
-      return combineOptions<StrictCubeOptionsNoAvailableMaterials>( {
-        customMaterialOptions: {
-          densityPropertyOptions: {
-            range: fullDensityRange
-          }
-        }
-      }, options.sharedCubeOptions, cubeOptions );
-    };
+    const getCubeOptions = ( cubeOptions: StrictCubeOptionsNoAvailableMaterials ) => combineOptions<StrictCubeOptionsNoAvailableMaterials>( {}, options.sharedCubeOptions, cubeOptions );
 
     // Create one mass for each cubeData/blockSet combo, based on the provided blockSet
     const createMasses = ( model: BlockSetModel<BlockSet>, blockSet: BlockSet ) => {
@@ -307,10 +280,11 @@ export default class CompareBlockSetModel extends BlockSetModel<BlockSet> {
 
     const cube = Cube.createWithMass( engine, initialMaterial, position, mass, options );
 
-    Multilink.multilink( [ baseColorProperty, cube.materialProperty.densityProperty, cube.materialProperty.customMaterial.densityProperty.rangeProperty ], ( color, density, range ) => {
+    Multilink.multilink( [ baseColorProperty, cube.materialProperty.densityProperty ], ( color, density ) => {
 
       // Calculate the lightness of the material based on its density, but keep a consistent range independent of the available ranges for all usages.
-      const lightness = Material.getNormalizedLightness( density, range ); // 0-1
+      // TODO: Why not just use the lightness based on the actual densityProperty.range here? https://github.com/phetsims/density-buoyancy-common/issues/268
+      const lightness = Material.getNormalizedLightness( density, COLOR_DENSITY_RANGE ); // 0-1
 
       // Modify the color brightness based on the lightness.
       const modifier = 0.1;

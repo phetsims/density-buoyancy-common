@@ -28,6 +28,7 @@ import MassTag from '../../../common/model/MassTag.js';
 import Duck from './Duck.js';
 import BuoyancyShapeModel from './BuoyancyShapeModel.js';
 import MaterialProperty from '../../../common/model/MaterialProperty.js';
+import optionize, { EmptySelfOptions } from '../../../../../phet-core/js/optionize.js';
 
 export type BuoyancyShapesModelOptions = DensityBuoyancyModelOptions;
 
@@ -42,7 +43,11 @@ export default class BuoyancyShapesModel extends DensityBuoyancyModel {
   public readonly materialProperty: MaterialProperty;
   private readonly availableMaterials: Material[];
 
-  public constructor( options: BuoyancyShapesModelOptions ) {
+  public constructor( providedOptions: BuoyancyShapesModelOptions ) {
+
+    const options = optionize<BuoyancyShapesModelOptions, EmptySelfOptions, DensityBuoyancyModelOptions>()( {
+      fluidSelectionType: 'all'
+    }, providedOptions );
 
     super( options );
 

@@ -27,6 +27,7 @@ export default class DensityCompareModel extends CompareBlockSetModel {
     const blockSetsTandem = tandem.createTandem( 'blockSets' );
 
     const options = optionize<DensityCompareModelOptions, EmptySelfOptions, CompareBlockSetModelOptions>()( {
+      fluidSelectionType: 'justWater',
       usePoolScale: false,
       sameDensityValue: 500,
       sameDensityRange: new Range( 100, 2000 ),

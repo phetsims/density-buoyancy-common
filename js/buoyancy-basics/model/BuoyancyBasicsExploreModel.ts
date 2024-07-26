@@ -18,6 +18,7 @@ import TwoBlockMode from '../../common/model/TwoBlockMode.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import MassTag from '../../common/model/MassTag.js';
 import { MaterialSchema } from '../../common/model/Mass.js';
+import optionize, { EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
 
 type BuoyancyBasicsExploreModelOptions = DensityBuoyancyModelOptions;
 
@@ -27,7 +28,11 @@ export default class BuoyancyBasicsExploreModel extends DensityBuoyancyModel {
   public readonly massA: Cube;
   public readonly massB: Cube;
 
-  public constructor( options: BuoyancyBasicsExploreModelOptions ) {
+  public constructor( providedOptions: BuoyancyBasicsExploreModelOptions ) {
+
+    const options = optionize<BuoyancyBasicsExploreModelOptions, EmptySelfOptions, DensityBuoyancyModelOptions>()( {
+      fluidSelectionType: 'simple'
+    }, providedOptions );
 
     super( options );
 

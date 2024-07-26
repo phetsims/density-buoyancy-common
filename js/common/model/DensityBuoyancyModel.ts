@@ -42,7 +42,7 @@ const POOL_BACK_Z = -POOL_DEPTH / 2;
 
 export type DensityBuoyancyModelOptions = {
   usePoolScale?: boolean;
-  fluidSelectionType: FluidSelectionType;
+  fluidSelectionType?: FluidSelectionType;
 } & PickRequired<PhetioObjectOptions, 'tandem'>;
 
 const customStringProperty = DensityBuoyancyCommonStrings.gravity.customStringProperty;
@@ -69,7 +69,8 @@ export default class DensityBuoyancyModel implements TModel {
 
   public constructor( providedOptions?: DensityBuoyancyModelOptions ) {
     const options = optionize<DensityBuoyancyModelOptions, DensityBuoyancyModelOptions>()( {
-      usePoolScale: true
+      usePoolScale: true,
+      fluidSelectionType: 'justWater'
     }, providedOptions );
 
     const tandem = options.tandem;

@@ -19,6 +19,7 @@ import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonCo
 import NumberIO from '../../../../tandem/js/types/NumberIO.js';
 import ReadOnlyProperty from '../../../../axon/js/ReadOnlyProperty.js';
 import { MaterialSchema } from '../../common/model/Mass.js';
+import optionize, { EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
 
 export type BuoyancyLabModelOptions = DensityBuoyancyModelOptions;
 
@@ -28,7 +29,11 @@ export default class BuoyancyLabModel extends DensityBuoyancyModel {
 
   public readonly fluidDisplacedVolumeProperty: ReadOnlyProperty<number>;
 
-  public constructor( options: BuoyancyLabModelOptions ) {
+  public constructor( providedOptions: BuoyancyLabModelOptions ) {
+
+    const options = optionize<BuoyancyLabModelOptions, EmptySelfOptions, DensityBuoyancyModelOptions>()( {
+      fluidSelectionType: 'all'
+    }, providedOptions );
 
     super( options );
 

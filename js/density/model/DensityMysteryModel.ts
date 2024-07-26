@@ -447,6 +447,7 @@ export default class DensityMysteryModel extends BlockSetModel<MysteryBlockSet> 
 
     const options = optionize<DensityMysteryModelOptions, EmptySelfOptions, BlockSetModelOptions<MysteryBlockSet>>()( {
 
+      fluidSelectionType: 'justWater',
       initialMode: MysteryBlockSet.SET_1,
       BlockSet: MysteryBlockSet.enumeration,
 

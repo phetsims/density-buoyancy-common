@@ -21,6 +21,7 @@ import StringUnionProperty from '../../../../../axon/js/StringUnionProperty.js';
 import MassTag from '../../../common/model/MassTag.js';
 import Basin from '../../../common/model/Basin.js';
 import Mass, { MaterialSchema } from '../../../common/model/Mass.js';
+import optionize, { EmptySelfOptions } from '../../../../../phet-core/js/optionize.js';
 
 export type BuoyancyApplicationsModelOptions = DensityBuoyancyModelOptions;
 
@@ -46,7 +47,11 @@ export default class BuoyancyApplicationsModel extends DensityBuoyancyModel {
   // Flag that sets an animation to empty the boat of any fluid inside of it
   protected spillingFluidOutOfBoat = false;
 
-  public constructor( options: BuoyancyApplicationsModelOptions ) {
+  public constructor( providedOptions: BuoyancyApplicationsModelOptions ) {
+
+    const options = optionize<BuoyancyApplicationsModelOptions, EmptySelfOptions, DensityBuoyancyModelOptions>()( {
+      fluidSelectionType: 'all'
+    }, providedOptions );
 
     const tandem = options.tandem;
 

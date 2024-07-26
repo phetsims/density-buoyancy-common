@@ -42,6 +42,8 @@ import BlendedVector2Property from './BlendedVector2Property.js';
 import { GuardedNumberProperty, GuardedNumberPropertyOptions } from './GuardedNumberProperty.js';
 import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
 import MaterialProperty, { MaterialPropertyOptions } from './MaterialProperty.js';
+import PropertyStatePhase from '../../../../axon/js/PropertyStatePhase.js';
+import propertyStateHandlerSingleton from '../../../../axon/js/propertyStateHandlerSingleton.js';
 
 // For the Buoyancy Shapes screen, but needed here because setRatios is included in each core type
 // See https://github.com/phetsims/buoyancy/issues/29
@@ -245,6 +247,13 @@ export default abstract class Mass extends PhetioObject {
     this.materialProperty = new MaterialProperty( initialMaterial, customSolidMaterial,
       options.availableMassMaterials.map( x => x === 'CUSTOM' ? customSolidMaterial : x ),
       options.materialPropertyOptions as MaterialPropertyOptions );
+
+    // There are complicated order dependencies in how DynamicProperties unlink to old values and link to new ones. See https://github.com/phetsims/buoyancy/issues/67
+    // Note: Just NOTIFY didn't work, neither did internalVisibleProperty.addPhetioStateDependencies()
+    if ( this.materialProperty.isPhetioInstrumented() ) {
+      propertyStateHandlerSingleton.registerPhetioOrderDependency( this.materialProperty, PropertyStatePhase.UNDEFER, this.internalVisibleProperty, PropertyStatePhase.UNDEFER );
+      propertyStateHandlerSingleton.registerPhetioOrderDependency( this.materialProperty, PropertyStatePhase.NOTIFY, this.internalVisibleProperty, PropertyStatePhase.NOTIFY );
+    }
 
     this.volumeProperty = new NumberProperty( options.volume, combineOptions<NumberPropertyOptions>( {
       tandem: tandem?.createTandem( 'volumeProperty' ),

@@ -65,15 +65,6 @@ type SelfOptions = {
   matrix?: Matrix3;
   canMove?: boolean;
 
-  // Allow Customization of the material beyond initial value, this includes PhET-iO support for changing the density
-  // and color, as well as support for some screens to adjust density instead of mass/volume as is most typical, see https://github.com/phetsims/density/issues/101
-  // TODO AV: Get outta here, https://github.com/phetsims/density-buoyancy-common/issues/270
-  adjustableMaterial?: boolean;
-
-  // Only used when adjustableMaterial:true. Set to true to support a PhET-iO instrumented Property to set the color
-  // of the block. Set to false in order to calculate the color based on the current density + the density range.
-  // TODO AV: Get outta here, https://github.com/phetsims/density-buoyancy-common/issues/270
-  adjustableColor?: boolean;
   tag?: MassTag;
   accessibleName?: PDOMValueType | null;
   inputEnabledPropertyOptions?: BooleanPropertyOptions;
@@ -192,8 +183,6 @@ export default abstract class Mass extends PhetioObject {
       visible: true,
       matrix: new Matrix3(),
       canMove: true,
-      adjustableMaterial: false,
-      adjustableColor: true,
       tag: MassTag.NONE,
       accessibleName: null,
       phetioType: Mass.MassIO,

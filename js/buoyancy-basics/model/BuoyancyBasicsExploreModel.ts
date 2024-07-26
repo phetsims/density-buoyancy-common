@@ -46,8 +46,6 @@ export default class BuoyancyBasicsExploreModel extends DensityBuoyancyModel {
     const blockATandem = blocksTandem.createTandem( 'blockA' );
     this.massA = Cube.createWithMass( this.engine, Material.WOOD, new Vector2( -0.2, 0.2 ), 2, {
       tag: MassTag.OBJECT_A,
-      adjustableMaterial: true,
-      adjustableColor: false,
       availableMassMaterials: availableMassMaterials,
       tandem: blockATandem
     } );
@@ -56,8 +54,6 @@ export default class BuoyancyBasicsExploreModel extends DensityBuoyancyModel {
     const blockBTandem = blocksTandem.createTandem( 'blockB' );
     this.massB = Cube.createWithMass( this.engine, Material.ALUMINUM, new Vector2( 0.05, 0.35 ), 13.5, {
       tag: MassTag.OBJECT_B,
-      adjustableMaterial: true,
-      adjustableColor: false,
       availableMassMaterials: availableMassMaterials,
       tandem: blockBTandem,
       visible: false

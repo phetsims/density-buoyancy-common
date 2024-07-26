@@ -78,7 +78,6 @@ export default class DensityMysteryModel extends BlockSetModel<MysteryBlockSet> 
 
     const commonCubeOptions = {
       adjustVolumeOnMassChanged: true,
-      adjustableMaterial: true,
       availableMassMaterials: [
         ...Material.SIMPLE_MASS_MATERIALS,
         Material.STEEL,

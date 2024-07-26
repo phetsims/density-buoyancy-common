@@ -25,6 +25,9 @@ type SelfMaterialControlNodeOptions = {
 
   syncCustomMaterialDensity?: boolean;
 
+  // When true, this control will set the MaterialProperty's custom materials density range based on provided custom schema.
+  ownsCustomDensityRange?: boolean;
+
   // A label, if provided to be placed to the right of the ComboBox
   labelNode?: Node | null;
 
@@ -47,6 +50,7 @@ export default class MaterialControlNode extends VBox {
 
     const options = optionize<MaterialControlNodeOptions, SelfMaterialControlNodeOptions, VBoxOptions>()( {
       syncCustomMaterialDensity: true,
+      ownsCustomDensityRange: true,
       labelNode: null,
       minCustomMass: 0.5,
       maxCustomMass: 10,
@@ -79,7 +83,7 @@ export default class MaterialControlNode extends VBox {
 
     // Set the custom density range, then this control owns the range of the density.
     // TODO: Should this move to the model somehow? https://github.com/phetsims/density-buoyancy-common/issues/268
-    if ( customMaterials.length > 0 ) {
+    if ( customMaterials.length > 0 && options.ownsCustomDensityRange ) {
       materialProperty.customMaterial.densityProperty.rangeProperty.link( () => {
         materialProperty.customMaterial.densityProperty.rangeProperty.value = new Range(
           options.minCustomMass / options.maxVolumeLiters * DensityBuoyancyCommonConstants.LITERS_IN_CUBIC_METER,

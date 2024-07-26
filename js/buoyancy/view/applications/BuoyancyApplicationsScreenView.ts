@@ -121,6 +121,7 @@ export default class BuoyancyApplicationsScreenView extends BuoyancyScreenView<B
         minCustomVolumeLiters: 0.5,
         showMassAsReadout: true,
         customKeepsConstantDensity: true,
+        ownsCustomDensityRange: false, // Bottle has a good range for itself.
         tandem: materialInsideControlsTandem,
 
         // When controlling the material inside, the custom density is an independent variable and should not automatically

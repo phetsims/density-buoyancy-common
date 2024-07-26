@@ -10,6 +10,7 @@ import EnumerationProperty from '../../../../axon/js/EnumerationProperty.js';
 import Property from '../../../../axon/js/Property.js';
 import Matrix3 from '../../../../dot/js/Matrix3.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
+import Range from '../../../../dot/js/Range.js';
 import Cube from '../../common/model/Cube.js';
 import DensityBuoyancyModel, { DensityBuoyancyModelOptions } from '../../common/model/DensityBuoyancyModel.js';
 import Material from '../../common/model/Material.js';
@@ -45,6 +46,11 @@ export default class BuoyancyBasicsExploreModel extends DensityBuoyancyModel {
     } );
 
     const sharedBlockOptions = {
+      customMaterialOptions: {
+        densityPropertyOptions: {
+          range: new Range( 10, 10000 )
+        }
+      },
       availableMassMaterials: [
         ...Material.SIMPLE_MASS_MATERIALS,
         'CUSTOM'

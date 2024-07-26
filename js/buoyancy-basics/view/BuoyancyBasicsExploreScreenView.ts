@@ -73,6 +73,7 @@ export default class BuoyancyBasicsExploreScreenView extends BuoyancyScreenView<
       this.popupLayer, {
         useDensityControlInsteadOfMassControl: true,
         syncCustomMaterialDensity: false,
+        ownsCustomDensityRange: false,
         customKeepsConstantDensity: true,
         tandem: tandem,
         minCustomMass: 0.1,

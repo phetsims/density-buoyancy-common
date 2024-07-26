@@ -17,7 +17,6 @@ import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js'
 import { combineOptions } from '../../../../phet-core/js/optionize.js';
 import PrecisionSliderThumb from './PrecisionSliderThumb.js';
 import UnitConversionProperty from '../../../../axon/js/UnitConversionProperty.js';
-import Range from '../../../../dot/js/Range.js';
 
 export type BlockControlNodeOptions = MaterialMassVolumeControlNodeOptions;
 
@@ -68,14 +67,15 @@ export default class BlockControlNode extends MaterialMassVolumeControlNode {
       const densityNumberControl = new NumberControl(
         DensityBuoyancyCommonStrings.densityStringProperty,
         densityAsLitersProperty,
-        new Range( customDensityProperty.range.min / DensityBuoyancyCommonConstants.LITERS_IN_CUBIC_METER, 10 ),
+        densityAsLitersProperty.range,
         combineOptions<NumberControlOptions>( {
           sliderOptions: {
             accessibleName: DensityBuoyancyCommonStrings.densityStringProperty,
             thumbNode: new PrecisionSliderThumb( {
               tandem: densityNumberControlTandem.createTandem( 'slider' ).createTandem( 'thumbNode' ),
               thumbFill: options.color
-            } )
+            } ),
+            phetioLinkedProperty: customDensityProperty
           },
           numberDisplayOptions: {
             valuePattern: DensityBuoyancyCommonConstants.KILOGRAMS_PER_VOLUME_PATTERN_STRING_PROPERTY

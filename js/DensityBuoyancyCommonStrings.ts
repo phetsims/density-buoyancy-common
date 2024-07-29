@@ -40,8 +40,6 @@ type StringsType = {
     'honeyStringProperty': LocalizedStringProperty;
     'humanStringProperty': LocalizedStringProperty;
     'iceStringProperty': LocalizedStringProperty;
-    'materialOStringProperty': LocalizedStringProperty;
-    'materialPStringProperty': LocalizedStringProperty;
     'materialRStringProperty': LocalizedStringProperty;
     'materialSStringProperty': LocalizedStringProperty;
     'materialTStringProperty': LocalizedStringProperty;

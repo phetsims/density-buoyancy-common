@@ -370,17 +370,17 @@ export default class Material extends PhetioObject implements HasValueProperty {
 
   ////////////////// MYSTERY MATERIALS //////////////////
 
-  public static readonly MATERIAL_O = new Material( SOLIDS_TANDEM.createTandem( 'materialO' ), {
-    nameProperty: DensityBuoyancyCommonStrings.material.materialOStringProperty,
+  public static readonly MATERIAL_T = new Material( SOLIDS_TANDEM.createTandem( 'materialT' ), {
+    nameProperty: DensityBuoyancyCommonStrings.material.materialTStringProperty,
     hidden: true,
-    colorProperty: DensityBuoyancyCommonColors.materialOColorProperty,
+    colorProperty: DensityBuoyancyCommonColors.materialTColorProperty,
     density: 950 // Same as the Human's average density
   } );
 
-  public static readonly MATERIAL_P = new Material( SOLIDS_TANDEM.createTandem( 'materialP' ), {
-    nameProperty: DensityBuoyancyCommonStrings.material.materialPStringProperty,
+  public static readonly MATERIAL_U = new Material( SOLIDS_TANDEM.createTandem( 'materialU' ), {
+    nameProperty: DensityBuoyancyCommonStrings.material.materialUStringProperty,
     hidden: true,
-    colorProperty: DensityBuoyancyCommonColors.materialPColorProperty,
+    colorProperty: DensityBuoyancyCommonColors.materialUColorProperty,
     density: Material.DIAMOND.density
   } );
 

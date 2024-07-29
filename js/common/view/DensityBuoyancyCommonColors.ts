@@ -220,10 +220,10 @@ const DensityBuoyancyCommonColors = {
     phetioReadOnly: true,
     tandem: packageName === 'density' ? Tandem.OPT_OUT : tandem.createTandem( 'materialWaterColorProperty' )
   } ),
-  materialOColorProperty: new ProfileColorProperty( densityBuoyancyCommon, 'materialO', {
+  materialTColorProperty: new ProfileColorProperty( densityBuoyancyCommon, 'materialT', {
     default: new Color( 'rgba(255,0,0,1)' )
   } ),
-  materialPColorProperty: new ProfileColorProperty( densityBuoyancyCommon, 'materialP', {
+  materialUColorProperty: new ProfileColorProperty( densityBuoyancyCommon, 'materialU', {
     default: new Color( 'rgba(0,255,0,1)' )
   } ),
   materialRColorProperty: new ProfileColorProperty( densityBuoyancyCommon, 'materialR', {

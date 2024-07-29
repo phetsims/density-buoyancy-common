@@ -22,6 +22,7 @@ import Tandem from '../../../../tandem/js/Tandem.js';
 import PhetioObject, { PhetioObjectOptions } from '../../../../tandem/js/PhetioObject.js';
 import { HasValueProperty } from './MappedWrappedProperty.js';
 import StrictOmit from '../../../../phet-core/js/types/StrictOmit.js';
+import packageJSON from '../../../../joist/js/packageJSON.js';
 
 type SelfOptions = {
   nameProperty?: TReadOnlyProperty<string>;
@@ -370,54 +371,54 @@ export default class Material extends PhetioObject implements HasValueProperty {
 
   ////////////////// MYSTERY MATERIALS //////////////////
 
-  public static readonly MATERIAL_R = new Material( SOLIDS_TANDEM.createTandem( 'materialR' ), {
+  public static readonly MATERIAL_R = new Material( packageJSON.name === 'buoyancy' ? SOLIDS_TANDEM.createTandem( 'materialR' ) : Tandem.OPT_OUT, {
     nameProperty: DensityBuoyancyCommonStrings.material.materialRStringProperty,
     hidden: true,
     density: Material.PYRITE.density
   } );
 
-  public static readonly MATERIAL_S = new Material( SOLIDS_TANDEM.createTandem( 'materialS' ), {
+  public static readonly MATERIAL_S = new Material( packageJSON.name === 'buoyancy' ? SOLIDS_TANDEM.createTandem( 'materialS' ) : Tandem.OPT_OUT, {
     nameProperty: DensityBuoyancyCommonStrings.material.materialSStringProperty,
     hidden: true,
     density: Material.GOLD.density
   } );
 
-  public static readonly MATERIAL_T = new Material( SOLIDS_TANDEM.createTandem( 'materialT' ), {
+  public static readonly MATERIAL_T = new Material( packageJSON.name === 'buoyancy' ? SOLIDS_TANDEM.createTandem( 'materialT' ) : Tandem.OPT_OUT, {
     nameProperty: DensityBuoyancyCommonStrings.material.materialTStringProperty,
     hidden: true,
     colorProperty: DensityBuoyancyCommonColors.materialTColorProperty,
     density: 950 // Same as the Human's average density
   } );
 
-  public static readonly MATERIAL_U = new Material( SOLIDS_TANDEM.createTandem( 'materialU' ), {
+  public static readonly MATERIAL_U = new Material( packageJSON.name === 'buoyancy' ? SOLIDS_TANDEM.createTandem( 'materialU' ) : Tandem.OPT_OUT, {
     nameProperty: DensityBuoyancyCommonStrings.material.materialUStringProperty,
     hidden: true,
     colorProperty: DensityBuoyancyCommonColors.materialUColorProperty,
     density: Material.DIAMOND.density
   } );
 
-  public static readonly MATERIAL_V = new Material( SOLIDS_TANDEM.createTandem( 'materialV' ), {
+  public static readonly MATERIAL_V = new Material( packageJSON.name === 'buoyancy' ? SOLIDS_TANDEM.createTandem( 'materialV' ) : Tandem.OPT_OUT, {
     nameProperty: DensityBuoyancyCommonStrings.material.materialVStringProperty,
     hidden: true,
     colorProperty: DensityBuoyancyCommonColors.materialVColorProperty,
     density: Material.ICE.density
   } );
 
-  public static readonly MATERIAL_W = new Material( SOLIDS_TANDEM.createTandem( 'materialW' ), {
+  public static readonly MATERIAL_W = new Material( packageJSON.name === 'buoyancy' ? SOLIDS_TANDEM.createTandem( 'materialW' ) : Tandem.OPT_OUT, {
     nameProperty: DensityBuoyancyCommonStrings.material.materialWStringProperty,
     hidden: true,
     colorProperty: DensityBuoyancyCommonColors.materialWColorProperty,
     density: Material.LEAD.density
   } );
 
-  public static readonly MATERIAL_X = new Material( SOLIDS_TANDEM.createTandem( 'materialX' ), {
+  public static readonly MATERIAL_X = new Material( packageJSON.name === 'buoyancy' ? SOLIDS_TANDEM.createTandem( 'materialX' ) : Tandem.OPT_OUT, {
     nameProperty: DensityBuoyancyCommonStrings.material.materialXStringProperty,
     hidden: true,
     colorProperty: DensityBuoyancyCommonColors.materialXColorProperty,
     density: Material.TITANIUM.density
   } );
 
-  public static readonly MATERIAL_Y = new Material( SOLIDS_TANDEM.createTandem( 'materialY' ), {
+  public static readonly MATERIAL_Y = new Material( packageJSON.name === 'buoyancy' ? SOLIDS_TANDEM.createTandem( 'materialY' ) : Tandem.OPT_OUT, {
     nameProperty: DensityBuoyancyCommonStrings.material.materialYStringProperty,
     hidden: true,
     colorProperty: DensityBuoyancyCommonColors.materialYColorProperty,

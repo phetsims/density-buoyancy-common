@@ -241,8 +241,8 @@ export default class Bottle extends ApplicationsMass {
       Material.CONCRETE,
       Material.COPPER,
       customInsideMaterial,
-      Material.MATERIAL_R,
-      Material.MATERIAL_S
+      Material.MATERIAL_V,
+      Material.MATERIAL_W
     ], {
       reentrant: true,
       tandem: materialInsidePropertyTandem

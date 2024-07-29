@@ -370,6 +370,18 @@ export default class Material extends PhetioObject implements HasValueProperty {
 
   ////////////////// MYSTERY MATERIALS //////////////////
 
+  public static readonly MATERIAL_R = new Material( SOLIDS_TANDEM.createTandem( 'materialR' ), {
+    nameProperty: DensityBuoyancyCommonStrings.material.materialRStringProperty,
+    hidden: true,
+    density: Material.PYRITE.density
+  } );
+
+  public static readonly MATERIAL_S = new Material( SOLIDS_TANDEM.createTandem( 'mysteryY' ), {
+    nameProperty: DensityBuoyancyCommonStrings.material.materialSStringProperty,
+    hidden: true,
+    density: Material.GOLD.density
+  } );
+
   public static readonly MATERIAL_T = new Material( SOLIDS_TANDEM.createTandem( 'materialT' ), {
     nameProperty: DensityBuoyancyCommonStrings.material.materialTStringProperty,
     hidden: true,
@@ -384,44 +396,32 @@ export default class Material extends PhetioObject implements HasValueProperty {
     density: Material.DIAMOND.density
   } );
 
-  public static readonly MATERIAL_R = new Material( SOLIDS_TANDEM.createTandem( 'materialR' ), {
-    nameProperty: DensityBuoyancyCommonStrings.material.materialRStringProperty,
-    hidden: true,
-    colorProperty: DensityBuoyancyCommonColors.materialRColorProperty,
-    density: Material.ICE.density
-  } );
-
-  public static readonly MATERIAL_S = new Material( SOLIDS_TANDEM.createTandem( 'materialS' ), {
-    nameProperty: DensityBuoyancyCommonStrings.material.materialSStringProperty,
-    hidden: true,
-    colorProperty: DensityBuoyancyCommonColors.materialSColorProperty,
-    density: Material.LEAD.density
-  } );
-
   public static readonly MATERIAL_V = new Material( SOLIDS_TANDEM.createTandem( 'materialV' ), {
     nameProperty: DensityBuoyancyCommonStrings.material.materialVStringProperty,
     hidden: true,
     colorProperty: DensityBuoyancyCommonColors.materialVColorProperty,
-    density: Material.TITANIUM.density
+    density: Material.ICE.density
   } );
 
   public static readonly MATERIAL_W = new Material( SOLIDS_TANDEM.createTandem( 'materialW' ), {
     nameProperty: DensityBuoyancyCommonStrings.material.materialWStringProperty,
     hidden: true,
     colorProperty: DensityBuoyancyCommonColors.materialWColorProperty,
-    density: Material.MERCURY.density
+    density: Material.LEAD.density
   } );
 
   public static readonly MATERIAL_X = new Material( SOLIDS_TANDEM.createTandem( 'materialX' ), {
     nameProperty: DensityBuoyancyCommonStrings.material.materialXStringProperty,
     hidden: true,
-    density: Material.PYRITE.density
+    colorProperty: DensityBuoyancyCommonColors.materialXColorProperty,
+    density: Material.TITANIUM.density
   } );
 
-  public static readonly MATERIAL_Y = new Material( SOLIDS_TANDEM.createTandem( 'mysteryY' ), {
+  public static readonly MATERIAL_Y = new Material( SOLIDS_TANDEM.createTandem( 'materialY' ), {
     nameProperty: DensityBuoyancyCommonStrings.material.materialYStringProperty,
     hidden: true,
-    density: Material.GOLD.density
+    colorProperty: DensityBuoyancyCommonColors.materialYColorProperty,
+    density: Material.MERCURY.density
   } );
 
   public static readonly DENSITY_MYSTERY_MATERIALS = [

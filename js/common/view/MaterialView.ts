@@ -388,7 +388,7 @@ export class DensityMaterials {
     else if ( material === Material.COPPER ) {
       return new CopperMaterialView();
     }
-    else if ( material === Material.GOLD || material === Material.PYRITE || material === Material.MATERIAL_X || material === Material.MATERIAL_Y ) {
+    else if ( material === Material.GOLD || material === Material.PYRITE || material === Material.MATERIAL_R || material === Material.MATERIAL_S ) {
       return new GoldMaterialView();
     }
     else if ( material === Material.SILVER ) {

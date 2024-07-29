@@ -212,10 +212,10 @@ export default class BuoyancyApplicationsScreenView extends BuoyancyScreenView<B
       } );
 
     model.block.materialProperty.link( material => {
-      if ( material === Material.MATERIAL_V ) {
+      if ( material === Material.MATERIAL_X ) {
         model.block.volumeProperty.value = 0.006;
       }
-      else if ( material === Material.MATERIAL_W ) {
+      else if ( material === Material.MATERIAL_Y ) {
         model.block.volumeProperty.value = 0.003;
       }
     } );

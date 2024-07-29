@@ -100,10 +100,10 @@ export default class BuoyancyExploreScreenView extends BuoyancyScreenView<Buoyan
 
     [ model.massA, model.massB ].forEach( mass => {
       mass.materialProperty.link( material => {
-        if ( material === Material.MATERIAL_X ) {
+        if ( material === Material.MATERIAL_R ) {
           mass.volumeProperty.value = 0.003;
         }
-        else if ( material === Material.MATERIAL_Y ) {
+        else if ( material === Material.MATERIAL_S ) {
           mass.volumeProperty.value = 0.001;
         }
       } );

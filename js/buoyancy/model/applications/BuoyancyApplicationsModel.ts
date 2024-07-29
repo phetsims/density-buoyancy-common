@@ -85,8 +85,8 @@ export default class BuoyancyApplicationsModel extends DensityBuoyancyModel {
     const availableMassMaterials = sortedByDensity.concat( [
       // Adding custom/mystery Materials separately, so they aren't sorted above by density
       'CUSTOM',
-      Material.MATERIAL_V,
-      Material.MATERIAL_W
+      Material.MATERIAL_X,
+      Material.MATERIAL_Y
     ] );
 
     this.block = Cube.createWithVolume( this.engine, Material.BRICK, new Vector2( -0.5, 0.3 ), 0.001, {

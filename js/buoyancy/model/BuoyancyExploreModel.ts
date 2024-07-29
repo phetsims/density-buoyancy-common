@@ -46,8 +46,8 @@ export default class BuoyancyExploreModel extends DensityBuoyancyModel {
     const availableMassMaterials: MaterialSchema[] = [
       ...Material.SIMPLE_MASS_MATERIALS,
       'CUSTOM',
-      Material.MATERIAL_X,
-      Material.MATERIAL_Y
+      Material.MATERIAL_R,
+      Material.MATERIAL_S
     ];
 
     this.massA = Cube.createWithMass( this.engine, Material.WOOD, new Vector2( -0.2, 0.2 ), 2, {

@@ -226,16 +226,16 @@ const DensityBuoyancyCommonColors = {
   materialUColorProperty: new ProfileColorProperty( densityBuoyancyCommon, 'materialU', {
     default: new Color( 'rgba(0,255,0,1)' )
   } ),
-  materialRColorProperty: new ProfileColorProperty( densityBuoyancyCommon, 'materialR', {
+  materialVColorProperty: new ProfileColorProperty( densityBuoyancyCommon, 'materialV', {
     default: new Color( 'rgba(255,115,0,0.61)' )
   } ),
-  materialSColorProperty: new ProfileColorProperty( densityBuoyancyCommon, 'materialS', {
+  materialWColorProperty: new ProfileColorProperty( densityBuoyancyCommon, 'materialW', {
     default: new Color( 'rgba(255,16,223,0.5)' )
   } ),
-  materialVColorProperty: new ProfileColorProperty( densityBuoyancyCommon, 'materialV', {
+  materialXColorProperty: new ProfileColorProperty( densityBuoyancyCommon, 'materialX', {
     default: new Color( 'rgba(255,255,0,1)' )
   } ),
-  materialWColorProperty: new ProfileColorProperty( densityBuoyancyCommon, 'materialW', {
+  materialYColorProperty: new ProfileColorProperty( densityBuoyancyCommon, 'materialY', {
     default: new Color( 'rgba(0,170,255,1)' )
   } ),
   customFluidLightColorProperty: new ProfileColorProperty( densityBuoyancyCommon, 'customFluidLight', {

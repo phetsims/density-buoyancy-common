@@ -2,6 +2,7 @@
 
 /**
  * Represents basin of the interior of the boat (that a fluid can reside in at a specific level).
+ * Exists for the lifetime of the simulation and does not need to be disposed.
  *
  * @author Jonathan Olson (PhET Interactive Simulations)
  */

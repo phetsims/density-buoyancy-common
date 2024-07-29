@@ -376,7 +376,7 @@ export default class Material extends PhetioObject implements HasValueProperty {
     density: Material.PYRITE.density
   } );
 
-  public static readonly MATERIAL_S = new Material( SOLIDS_TANDEM.createTandem( 'mysteryY' ), {
+  public static readonly MATERIAL_S = new Material( SOLIDS_TANDEM.createTandem( 'materialS' ), {
     nameProperty: DensityBuoyancyCommonStrings.material.materialSStringProperty,
     hidden: true,
     density: Material.GOLD.density

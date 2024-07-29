@@ -241,7 +241,7 @@ export default class BoatDesign {
    * @returns - Whether the fluid is completely filled
    */
   public static fillFluidVertexArray( fluidY: number, boatX: number, boatY: number, liters: number, poolBounds: Bounds3, positionArray: Float32Array, wasFilled: boolean ): boolean {
-    
+
     const outsideBottomY = -BoatDesign.DESIGN_BOAT_HEIGHT;
     const scale = BoatDesign.getScaleForLiters( liters );
     const designY = BoatDesign.getDesignY( boatY, scale );

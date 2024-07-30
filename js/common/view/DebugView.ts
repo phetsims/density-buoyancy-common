@@ -1,7 +1,8 @@
 // Copyright 2020-2024, University of Colorado Boulder
 
 /**
- * Shows a 2d version of the model, with assorted debugging information
+ * Shows a 2d version of the model, with assorted debugging information.
+ * TODO: Document how to show the debug view here. see https://github.com/phetsims/density-buoyancy-common/issues/257
  *
  * @author Jonathan Olson (PhET Interactive Simulations)
  */

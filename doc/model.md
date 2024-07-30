@@ -107,14 +107,14 @@ their values based on other elements.
 
 | Name       | Material | Density (kg/m^3) | Screen              |
 |------------|----------|------------------|---------------------|
-| MATERIAL O | Human    | 950              | Lab                 |
-| MATERIAL P | Diamond  | 3510             | Lab                 |
-| MATERIAL R | Ice      | 919              | Applications Bottle |
-| MATERIAL S | Lead     | 11342            | Applications Bottle |
-| MATERIAL V | Titanium | 4500             | Applications Boat   |
-| MATERIAL W | Mercury  | 13593            | Applications Boat   |
-| MATERIAL X | Pyrite   | 5010             | Explore             |
-| MATERIAL Y | Gold     | 19320            | Explore             |
+| MATERIAL R | Pyrite   | 5010             | Explore             |
+| MATERIAL S | Gold     | 19320            | Explore             |
+| MATERIAL T | Human    | 950              | Lab                 |
+| MATERIAL U | Diamond  | 3510             | Lab                 |
+| MATERIAL V | Ice      | 919              | Applications Bottle |
+| MATERIAL W | Lead     | 11342            | Applications Bottle |
+| MATERIAL X | Titanium | 4500             | Applications Boat   |
+| MATERIAL Y | Mercury  | 13593            | Applications Boat   |
 
 ### Table 2. Mystery Liquids
 

@@ -162,28 +162,6 @@ export default abstract class ComboNumberControl<T extends Material | Gravity> e
     this.mappedWrappedProperty = options.property;
     this.disposalCallbacks = disposalCallbacks;
 
-    // Prevent an infinite loop in the following listeners.
-    let isChangingToPredefinedMaterialLock = false;
-
-    // When the user changes the density by dragging the slider, automatically switch from the predefined material to
-    // the custom material.
-    this.mappedWrappedProperty.customValue.valueProperty.lazyLink( () => {
-      if ( !isChangingToPredefinedMaterialLock ) {
-        this.mappedWrappedProperty.value = this.mappedWrappedProperty.customValue;
-      }
-    } );
-
-    // In the explore screen, when switching from custom to wood, change the density back to the wood density
-    // However, when switching to a mystery material, do not change the custom value. This prevents clever students from discovering
-    // the mystery values by using the UI instead of by computing them, see https://github.com/phetsims/buoyancy/issues/54
-    this.mappedWrappedProperty.lazyLink( richObject => {
-      if ( !richObject.custom && !richObject.hidden ) {
-        isChangingToPredefinedMaterialLock = true;
-        this.mappedWrappedProperty.customValue.valueProperty.value = richObject.valueProperty.value;
-        isChangingToPredefinedMaterialLock = false;
-      }
-    } );
-
     const correctUnitsProperty = new UnitConversionProperty( this.mappedWrappedProperty.customValue.valueProperty, {
       factor: options.unitsConversionFactor
     } );

@@ -91,7 +91,7 @@ export default class BuoyancyShapesModel extends DensityBuoyancyModel {
 
 
     // When a new mass is created, set up its position to be that of the old mass
-    [ this.objectA, this.objectB ].forEach( ( shapeModel: BuoyancyShapeModel ) => {
+    [ this.objectA, this.objectB ].forEach( shapeModel => {
 
       // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
       shapeModel.shapeProperty.lazyLink( ( newMass, oldMass ) => {

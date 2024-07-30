@@ -14,7 +14,6 @@
 import Property, { PropertyOptions } from '../../../../axon/js/Property.js';
 import { ReadOnlyPropertyState } from '../../../../axon/js/ReadOnlyProperty.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
-import Vector3 from '../../../../dot/js/Vector3.js';
 import optionize from '../../../../phet-core/js/optionize.js';
 import IntentionalAny from '../../../../phet-core/js/types/IntentionalAny.js';
 import IOType from '../../../../tandem/js/types/IOType.js';

@@ -153,25 +153,11 @@ export default class Material extends PhetioObject implements HasValueProperty {
       lightnessFactor );
   }
 
-  ////////////////// SOLIDS //////////////////
+  ////////////////// DEFAULT SOLIDS ////////////////// Shared across all 3 sims
 
   public static readonly ALUMINUM = new Material( SOLIDS_TANDEM.createTandem( 'aluminum' ), {
     nameProperty: DensityBuoyancyCommonStrings.material.aluminumStringProperty,
     density: 2700
-  } );
-
-  public static readonly APPLE = new Material( SOLIDS_TANDEM.createTandem( 'apple' ), {
-    nameProperty: DensityBuoyancyCommonStrings.material.appleStringProperty,
-    // "Some Physical Properties of Apple" - Averaged the two cultivars' densities for this
-    // http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.548.1131&rep=rep1&type=pdf
-    density: 832
-  } );
-
-  // In essence identical to aluminum, but with a different name for the Density readout
-  // TODO: Unify the names body vs hull, see https://github.com/phetsims/density-buoyancy-common/issues/123
-  public static readonly BOAT_BODY = new Material( SOLIDS_TANDEM.createTandem( 'boatHull' ), {
-    nameProperty: DensityBuoyancyCommonStrings.material.boatHullStringProperty,
-    density: Material.ALUMINUM.density
   } );
 
   public static readonly BRICK = new Material( SOLIDS_TANDEM.createTandem( 'brick' ), {
@@ -180,71 +166,14 @@ export default class Material extends PhetioObject implements HasValueProperty {
     depthLinesColorProperty: DensityBuoyancyCommonColors.depthLinesLightColorProperty
   } );
 
-  public static readonly CONCRETE = new Material( SOLIDS_TANDEM.createTandem( 'concrete' ), {
-    nameProperty: DensityBuoyancyCommonStrings.material.concreteStringProperty,
-    density: 3150,
-    colorProperty: DensityBuoyancyCommonColors.materialConcreteColorProperty
-  } );
-
-  public static readonly COPPER = new Material( SOLIDS_TANDEM.createTandem( 'copper' ), {
-    nameProperty: DensityBuoyancyCommonStrings.material.copperStringProperty,
-    density: 8960,
-    colorProperty: DensityBuoyancyCommonColors.materialCopperColorProperty
-  } );
-
-  public static readonly DIAMOND = new Material( SOLIDS_TANDEM.createTandem( 'diamond' ), {
-    nameProperty: DensityBuoyancyCommonStrings.material.diamondStringProperty,
-    density: 3510
-  } );
-
-  public static readonly GLASS = new Material( SOLIDS_TANDEM.createTandem( 'glass' ), {
-    nameProperty: DensityBuoyancyCommonStrings.material.glassStringProperty,
-    density: 2700
-  } );
-
-  public static readonly GOLD = new Material( SOLIDS_TANDEM.createTandem( 'gold' ), {
-    nameProperty: DensityBuoyancyCommonStrings.material.goldStringProperty,
-    density: 19320
-  } );
-
-  public static readonly HUMAN = new Material( SOLIDS_TANDEM.createTandem( 'human' ), {
-    nameProperty: DensityBuoyancyCommonStrings.material.humanStringProperty,
-    density: 950
-  } );
-
   public static readonly ICE = new Material( SOLIDS_TANDEM.createTandem( 'ice' ), {
     nameProperty: DensityBuoyancyCommonStrings.material.iceStringProperty,
     density: 919
   } );
 
-  public static readonly LEAD = new Material( SOLIDS_TANDEM.createTandem( 'lead' ), {
-    nameProperty: DensityBuoyancyCommonStrings.material.leadStringProperty,
-    density: 11342
-  } );
-
-  public static readonly PLATINUM = new Material( SOLIDS_TANDEM.createTandem( 'platinum' ), {
-    nameProperty: DensityBuoyancyCommonStrings.material.platinumStringProperty,
-    density: 21450
-  } );
-
   public static readonly PVC = new Material( SOLIDS_TANDEM.createTandem( 'pvc' ), {
     nameProperty: DensityBuoyancyCommonStrings.material.pvcStringProperty,
     density: 1440
-  } );
-
-  public static readonly PYRITE = new Material( SOLIDS_TANDEM.createTandem( 'pyrite' ), {
-    nameProperty: DensityBuoyancyCommonStrings.material.pyriteStringProperty,
-    density: 5010
-  } );
-
-  public static readonly SILVER = new Material( SOLIDS_TANDEM.createTandem( 'silver' ), {
-    nameProperty: DensityBuoyancyCommonStrings.material.silverStringProperty,
-    density: 10490
-  } );
-
-  public static readonly STEEL = new Material( SOLIDS_TANDEM.createTandem( 'steel' ), {
-    nameProperty: DensityBuoyancyCommonStrings.material.steelStringProperty,
-    density: 7800
   } );
 
   public static readonly STYROFOAM = new Material( SOLIDS_TANDEM.createTandem( 'styrofoam' ), {
@@ -254,108 +183,183 @@ export default class Material extends PhetioObject implements HasValueProperty {
     density: 150
   } );
 
-  public static readonly TANTALUM = new Material( SOLIDS_TANDEM.createTandem( 'tantalum' ), {
-    nameProperty: DensityBuoyancyCommonStrings.material.tantalumStringProperty,
-    density: 16650
-  } );
-
-  public static readonly TITANIUM = new Material( SOLIDS_TANDEM.createTandem( 'titanium' ), {
-    nameProperty: DensityBuoyancyCommonStrings.material.titaniumStringProperty,
-    density: 4500
-  } );
-
   public static readonly WOOD = new Material( SOLIDS_TANDEM.createTandem( 'wood' ), {
     nameProperty: DensityBuoyancyCommonStrings.material.woodStringProperty,
     density: 400,
     depthLinesColorProperty: DensityBuoyancyCommonColors.depthLinesLightColorProperty
   } );
 
-  ////////////////// LIQUIDS //////////////////
+  ////////////////// BUOYANCY ONLY SOLIDS //////////////////
 
-  public static readonly AIR = new Material( FLUIDS_TANDEM.createTandem( 'air' ), {
-    nameProperty: DensityBuoyancyCommonStrings.material.airStringProperty,
-    density: 1.2,
-    viscosity: 0
+  // In essence identical to aluminum, but with a different name for the Density readout
+  // TODO AV: Unify the names body vs hull, see https://github.com/phetsims/density-buoyancy-common/issues/123
+  public static readonly BOAT_BODY = new Material( Tandem.OPT_OUT, {
+    nameProperty: DensityBuoyancyCommonStrings.material.boatHullStringProperty,
+    density: Material.ALUMINUM.density
   } );
 
-  public static readonly FLUID_A = new Material( FLUIDS_TANDEM.createTandem( 'fluidA' ), {
-    nameProperty: DensityBuoyancyCommonStrings.material.fluidAStringProperty,
-    density: 3100,
-    colorProperty: DensityBuoyancyCommonColors.materialFluidAColorProperty,
-    hidden: true
+  public static readonly CONCRETE = new Material( packageJSON.name === 'buoyancy' ? SOLIDS_TANDEM.createTandem( 'concrete' ) : Tandem.OPT_OUT, {
+    nameProperty: DensityBuoyancyCommonStrings.material.concreteStringProperty,
+    density: 3150,
+    colorProperty: DensityBuoyancyCommonColors.materialConcreteColorProperty
   } );
 
-  public static readonly FLUID_B = new Material( FLUIDS_TANDEM.createTandem( 'fluidB' ), {
-    nameProperty: DensityBuoyancyCommonStrings.material.fluidBStringProperty,
-    density: 790,
-    colorProperty: DensityBuoyancyCommonColors.materialFluidBColorProperty,
-    hidden: true
+  public static readonly COPPER = new Material( packageJSON.name === 'buoyancy' ? SOLIDS_TANDEM.createTandem( 'copper' ) : Tandem.OPT_OUT, {
+    nameProperty: DensityBuoyancyCommonStrings.material.copperStringProperty,
+    density: 8960,
+    colorProperty: DensityBuoyancyCommonColors.materialCopperColorProperty
   } );
 
-  public static readonly FLUID_C = new Material( FLUIDS_TANDEM.createTandem( 'fluidC' ), {
-    nameProperty: DensityBuoyancyCommonStrings.material.fluidCStringProperty,
-    density: 490,
-    colorProperty: DensityBuoyancyCommonColors.materialFluidCColorProperty,
-    hidden: true
+  public static readonly GOLD = new Material( packageJSON.name === 'buoyancy' ? SOLIDS_TANDEM.createTandem( 'gold' ) : Tandem.OPT_OUT, {
+    nameProperty: DensityBuoyancyCommonStrings.material.goldStringProperty,
+    density: 19320
   } );
 
-  public static readonly FLUID_D = new Material( FLUIDS_TANDEM.createTandem( 'fluidD' ), {
-    nameProperty: DensityBuoyancyCommonStrings.material.fluidDStringProperty,
-    density: 2890,
-    colorProperty: DensityBuoyancyCommonColors.materialFluidDColorProperty,
-    hidden: true
+  public static readonly PLATINUM = new Material( packageJSON.name === 'buoyancy' ? SOLIDS_TANDEM.createTandem( 'platinum' ) : Tandem.OPT_OUT, {
+    nameProperty: DensityBuoyancyCommonStrings.material.platinumStringProperty,
+    density: 21450
   } );
 
-  public static readonly FLUID_E = new Material( FLUIDS_TANDEM.createTandem( 'fluidE' ), {
-    nameProperty: DensityBuoyancyCommonStrings.material.fluidEStringProperty,
-    density: 1260,
-    colorProperty: DensityBuoyancyCommonColors.materialFluidEColorProperty,
-    hidden: true
+  public static readonly PYRITE = new Material( packageJSON.name === 'buoyancy' ? SOLIDS_TANDEM.createTandem( 'pyrite' ) : Tandem.OPT_OUT, {
+    nameProperty: DensityBuoyancyCommonStrings.material.pyriteStringProperty,
+    density: 5010
   } );
 
-  public static readonly FLUID_F = new Material( FLUIDS_TANDEM.createTandem( 'fluidF' ), {
-    nameProperty: DensityBuoyancyCommonStrings.material.fluidFStringProperty,
-    density: 6440,
-    colorProperty: DensityBuoyancyCommonColors.materialFluidFColorProperty,
-    hidden: true
-  } );
-
-  public static readonly GASOLINE = new Material( FLUIDS_TANDEM.createTandem( 'gasoline' ), {
-    nameProperty: DensityBuoyancyCommonStrings.material.gasolineStringProperty,
-    density: 680,
-    viscosity: 6e-4,
-    colorProperty: DensityBuoyancyCommonColors.materialGasolineColorProperty
-  } );
-
-  public static readonly HONEY = new Material( FLUIDS_TANDEM.createTandem( 'honey' ), {
-    nameProperty: DensityBuoyancyCommonStrings.material.honeyStringProperty,
-    density: 1440,
-    viscosity: 0.03, // NOTE: actual value around 2.5, but we can get away with this for animation
-    colorProperty: DensityBuoyancyCommonColors.materialHoneyColorProperty
-  } );
-
-  public static readonly MERCURY = new Material( FLUIDS_TANDEM.createTandem( 'mercury' ), {
-    nameProperty: DensityBuoyancyCommonStrings.material.mercuryStringProperty,
-    density: 13593,
-    viscosity: 1.53e-3,
-    colorProperty: DensityBuoyancyCommonColors.materialMercuryColorProperty
-  } );
-
-  public static readonly OIL = new Material( FLUIDS_TANDEM.createTandem( 'oil' ), {
-    nameProperty: DensityBuoyancyCommonStrings.material.oilStringProperty,
-    density: 920,
-    viscosity: 0.02, // Too much bigger and it won't work, not particularly physical
-    colorProperty: DensityBuoyancyCommonColors.materialOilColorProperty
-  } );
-
-  public static readonly SAND = new Material( FLUIDS_TANDEM.createTandem( 'sand' ), {
+  public static readonly SAND = new Material( packageJSON.name === 'buoyancy' ? SOLIDS_TANDEM.createTandem( 'sand' ) : Tandem.OPT_OUT, {
     nameProperty: DensityBuoyancyCommonStrings.material.sandStringProperty,
     density: 1442,
     viscosity: 0.03, // Too much bigger and it won't work, not particularly physical
     colorProperty: DensityBuoyancyCommonColors.materialSandColorProperty
   } );
 
-  public static readonly SEAWATER = new Material( FLUIDS_TANDEM.createTandem( 'seawater' ), {
+  public static readonly SILVER = new Material( packageJSON.name === 'buoyancy' ? SOLIDS_TANDEM.createTandem( 'silver' ) : Tandem.OPT_OUT, {
+    nameProperty: DensityBuoyancyCommonStrings.material.silverStringProperty,
+    density: 10490
+  } );
+
+  public static readonly STEEL = new Material( packageJSON.name === 'buoyancy' ? SOLIDS_TANDEM.createTandem( 'steel' ) : Tandem.OPT_OUT, {
+    nameProperty: DensityBuoyancyCommonStrings.material.steelStringProperty,
+    density: 7800
+  } );
+
+  public static readonly TANTALUM = new Material( packageJSON.name === 'buoyancy' ? SOLIDS_TANDEM.createTandem( 'tantalum' ) : Tandem.OPT_OUT, {
+    nameProperty: DensityBuoyancyCommonStrings.material.tantalumStringProperty,
+    density: 16650
+  } );
+
+  ////////////////// OTHER SOLIDS //////////////////
+
+  public static readonly APPLE = new Material( Tandem.OPT_OUT, {
+    nameProperty: DensityBuoyancyCommonStrings.material.appleStringProperty,
+    // "Some Physical Properties of Apple" - Averaged the two cultivars' densities for this
+    // http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.548.1131&rep=rep1&type=pdf
+    density: 832
+  } );
+
+  public static readonly DIAMOND = new Material( Tandem.OPT_OUT, {
+    nameProperty: DensityBuoyancyCommonStrings.material.diamondStringProperty,
+    density: 3510
+  } );
+
+  public static readonly GLASS = new Material( Tandem.OPT_OUT, {
+    nameProperty: DensityBuoyancyCommonStrings.material.glassStringProperty,
+    density: 2700
+  } );
+
+  public static readonly HUMAN = new Material( Tandem.OPT_OUT, {
+    nameProperty: DensityBuoyancyCommonStrings.material.humanStringProperty,
+    density: 950
+  } );
+
+  public static readonly LEAD = new Material( Tandem.OPT_OUT, {
+    nameProperty: DensityBuoyancyCommonStrings.material.leadStringProperty,
+    density: 11342
+  } );
+
+  public static readonly TITANIUM = new Material( Tandem.OPT_OUT, {
+    nameProperty: DensityBuoyancyCommonStrings.material.titaniumStringProperty,
+    density: 4500
+  } );
+
+  ////////////////// LIQUIDS //////////////////
+
+  public static readonly AIR = new Material( Tandem.OPT_OUT, {
+    nameProperty: DensityBuoyancyCommonStrings.material.airStringProperty,
+    density: 1.2,
+    viscosity: 0
+  } );
+
+  public static readonly FLUID_A = new Material( packageJSON.name === 'buoyancy' ? FLUIDS_TANDEM.createTandem( 'fluidA' ) : Tandem.OPT_OUT, {
+    nameProperty: DensityBuoyancyCommonStrings.material.fluidAStringProperty,
+    density: 3100,
+    colorProperty: DensityBuoyancyCommonColors.materialFluidAColorProperty,
+    hidden: true
+  } );
+
+  public static readonly FLUID_B = new Material( packageJSON.name === 'buoyancy' ? FLUIDS_TANDEM.createTandem( 'fluidB' ) : Tandem.OPT_OUT, {
+    nameProperty: DensityBuoyancyCommonStrings.material.fluidBStringProperty,
+    density: 790,
+    colorProperty: DensityBuoyancyCommonColors.materialFluidBColorProperty,
+    hidden: true
+  } );
+
+  public static readonly FLUID_C = new Material( packageJSON.name === 'buoyancy' ? FLUIDS_TANDEM.createTandem( 'fluidC' ) : Tandem.OPT_OUT, {
+    nameProperty: DensityBuoyancyCommonStrings.material.fluidCStringProperty,
+    density: 490,
+    colorProperty: DensityBuoyancyCommonColors.materialFluidCColorProperty,
+    hidden: true
+  } );
+
+  public static readonly FLUID_D = new Material( packageJSON.name === 'buoyancy' ? FLUIDS_TANDEM.createTandem( 'fluidD' ) : Tandem.OPT_OUT, {
+    nameProperty: DensityBuoyancyCommonStrings.material.fluidDStringProperty,
+    density: 2890,
+    colorProperty: DensityBuoyancyCommonColors.materialFluidDColorProperty,
+    hidden: true
+  } );
+
+  public static readonly FLUID_E = new Material( packageJSON.name === 'buoyancy' ? FLUIDS_TANDEM.createTandem( 'fluidE' ) : Tandem.OPT_OUT, {
+    nameProperty: DensityBuoyancyCommonStrings.material.fluidEStringProperty,
+    density: 1260,
+    colorProperty: DensityBuoyancyCommonColors.materialFluidEColorProperty,
+    hidden: true
+  } );
+
+  public static readonly FLUID_F = new Material( packageJSON.name === 'buoyancy' ? FLUIDS_TANDEM.createTandem( 'fluidF' ) : Tandem.OPT_OUT, {
+    nameProperty: DensityBuoyancyCommonStrings.material.fluidFStringProperty,
+    density: 6440,
+    colorProperty: DensityBuoyancyCommonColors.materialFluidFColorProperty,
+    hidden: true
+  } );
+
+  public static readonly GASOLINE = new Material( packageJSON.name === 'density' ? Tandem.OPT_OUT : FLUIDS_TANDEM.createTandem( 'gasoline' ), {
+    nameProperty: DensityBuoyancyCommonStrings.material.gasolineStringProperty,
+    density: 680,
+    viscosity: 6e-4,
+    colorProperty: DensityBuoyancyCommonColors.materialGasolineColorProperty
+  } );
+
+  public static readonly HONEY = new Material( packageJSON.name === 'density' ? Tandem.OPT_OUT : FLUIDS_TANDEM.createTandem( 'honey' ), {
+    nameProperty: DensityBuoyancyCommonStrings.material.honeyStringProperty,
+    density: 1440,
+    viscosity: 0.03, // NOTE: actual value around 2.5, but we can get away with this for animation
+    colorProperty: DensityBuoyancyCommonColors.materialHoneyColorProperty
+  } );
+
+  public static readonly MERCURY = new Material( packageJSON.name === 'density' ? Tandem.OPT_OUT : FLUIDS_TANDEM.createTandem( 'mercury' ), {
+    nameProperty: DensityBuoyancyCommonStrings.material.mercuryStringProperty,
+    density: 13593,
+    viscosity: 1.53e-3,
+    colorProperty: DensityBuoyancyCommonColors.materialMercuryColorProperty
+  } );
+
+  public static readonly OIL = new Material( packageJSON.name === 'density' ? Tandem.OPT_OUT : FLUIDS_TANDEM.createTandem( 'oil' ), {
+    nameProperty: DensityBuoyancyCommonStrings.material.oilStringProperty,
+    density: 920,
+    viscosity: 0.02, // Too much bigger and it won't work, not particularly physical
+    colorProperty: DensityBuoyancyCommonColors.materialOilColorProperty
+  } );
+
+  public static readonly SEAWATER = new Material( packageJSON.name === 'density' ? Tandem.OPT_OUT : FLUIDS_TANDEM.createTandem( 'seawater' ), {
     nameProperty: DensityBuoyancyCommonStrings.material.seawaterStringProperty,
     density: 1029,
     viscosity: 1.88e-3,

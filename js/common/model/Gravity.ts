@@ -18,6 +18,7 @@ import Tandem from '../../../../tandem/js/Tandem.js';
 import PickRequired from '../../../../phet-core/js/types/PickRequired.js';
 import Property from '../../../../axon/js/Property.js';
 import Range from '../../../../dot/js/Range.js';
+import packageJSON from '../../../../joist/js/packageJSON.js';
 
 const GRAVITY_TANDEM = Tandem.GLOBAL_MODEL.createTandem( 'gravities' );
 
@@ -80,19 +81,19 @@ export default class Gravity extends PhetioObject implements HasValueProperty {
 
   public static readonly JUPITER = new Gravity( {
     nameProperty: DensityBuoyancyCommonStrings.gravity.jupiterStringProperty,
-    tandem: GRAVITY_TANDEM.createTandem( 'jupiter' ),
+    tandem: packageJSON.name === 'buoyancy' ? GRAVITY_TANDEM.createTandem( 'jupiter' ) : Tandem.OPT_OUT,
     value: 24.8
   } );
 
   public static readonly MOON = new Gravity( {
     nameProperty: DensityBuoyancyCommonStrings.gravity.moonStringProperty,
-    tandem: GRAVITY_TANDEM.createTandem( 'moon' ),
+    tandem: packageJSON.name === 'buoyancy' ? GRAVITY_TANDEM.createTandem( 'moon' ) : Tandem.OPT_OUT,
     value: 1.6
   } );
 
   public static readonly PLANET_X = new Gravity( {
     nameProperty: DensityBuoyancyCommonStrings.gravity.planetXStringProperty,
-    tandem: GRAVITY_TANDEM.createTandem( 'planetX' ),
+    tandem: packageJSON.name === 'buoyancy' ? GRAVITY_TANDEM.createTandem( 'planetX' ) : Tandem.OPT_OUT,
     value: 19.6,
     hidden: true
   } );

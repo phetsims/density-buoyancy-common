@@ -26,7 +26,8 @@ import ReferenceIO from '../../../../../tandem/js/types/ReferenceIO.js';
 export type BuoyancyShapeModelOptions = PickRequired<PhetioObjectOptions, 'tandem'>;
 
 export default class BuoyancyShapeModel {
-  // The currentlyt selected shape, from which the mass changes to this type.
+
+  // The currently selected shape, from which the mass changes to this type.
   public readonly shapeNameProperty: Property<MassShape>;
   public readonly widthRatioProperty: Property<number>;
   public readonly heightRatioProperty: Property<number>;

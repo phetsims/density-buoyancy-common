@@ -311,6 +311,9 @@ export default class Bottle extends ApplicationsMass {
    * @param t
    */
   private static evaluateCubic( controlPoints: Vector2[], t: number ): Vector2 {
+
+    // Is this algorithm duplicated in dot? Are these variables using conventionally established names?
+    // TODO: See https://github.com/phetsims/density-buoyancy-common/issues/123
     const mt = 1 - t;
     const mmm = mt * mt * mt;
     const mmt = 3 * mt * mt * t;

@@ -67,6 +67,7 @@ export default class BuoyancyLabModel extends DensityBuoyancyModel {
         return percentSubmerged / 100 * volume * DensityBuoyancyCommonConstants.LITERS_IN_CUBIC_METER;
       }, {
         tandem: this.pool.fluidTandem.createTandem( 'displacedVolumeProperty' ),
+        phetioDocumentation: 'Volume of fluid displaced by objects in the pool.',
         phetioValueType: NumberIO,
         phetioFeatured: true,
         units: 'L'

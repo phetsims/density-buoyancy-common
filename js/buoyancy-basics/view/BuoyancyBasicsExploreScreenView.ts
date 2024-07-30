@@ -159,6 +159,8 @@ export default class BuoyancyBasicsExploreScreenView extends BuoyancyScreenView<
 
     ManualConstraint.create( this, [ this.resetAllButton, blocksModeRadioButtonGroup ],
       ( resetAllButtonWrapper, blocksModeRadioButtonGroupWrapper ) => {
+
+      // TODO: What if the reset all button is not visible due to phet-io? See https://github.com/phetsims/density-buoyancy-common/issues/123
         blocksModeRadioButtonGroupWrapper.right = resetAllButtonWrapper.left - DensityBuoyancyCommonConstants.MARGIN;
         blocksModeRadioButtonGroupWrapper.bottom = resetAllButtonWrapper.bottom;
       } );
@@ -167,6 +169,7 @@ export default class BuoyancyBasicsExploreScreenView extends BuoyancyScreenView<
 
     // DerivedProperty doesn't need disposal, since everything here lives for the lifetime of the simulation
     this.rightBarrierViewPointPropertyProperty.value = new DerivedProperty( [ rightSideVBox.boundsProperty, this.visibleBoundsProperty ], ( boxBounds, visibleBounds ) => {
+
       // We might not have a box, see https://github.com/phetsims/density/issues/110
       return new Vector2( isFinite( boxBounds.left ) ? boxBounds.left : visibleBounds.right, visibleBounds.centerY );
     } );

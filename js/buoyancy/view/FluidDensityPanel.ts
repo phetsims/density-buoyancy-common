@@ -21,9 +21,15 @@ export default class FluidDensityPanel extends Panel {
     const fluidDensityControlNode = new FluidDensityControlNode( fluidMaterialProperty, fluidMaterialProperty.availableValues,
       popupLayer, {
         invisibleMaterials: invisibleMaterials,
+
+        // TODO: Passing the same tandem 2 places seems suspicious. Check it and document if OK, see https://github.com/phetsims/density-buoyancy-common/issues/123
         tandem: tandem
       } );
-    super( fluidDensityControlNode, combineOptions<PanelOptions>( { tandem: tandem }, DensityBuoyancyCommonConstants.PANEL_OPTIONS ) );
+    super( fluidDensityControlNode, combineOptions<PanelOptions>( {
+
+      // TODO: See note above, see https://github.com/phetsims/density-buoyancy-common/issues/123
+      tandem: tandem
+    }, DensityBuoyancyCommonConstants.PANEL_OPTIONS ) );
   }
 }
 

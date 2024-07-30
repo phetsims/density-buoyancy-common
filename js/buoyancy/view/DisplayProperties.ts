@@ -17,7 +17,7 @@ import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 
 const ZOOM_SCALES: number[] = [];
 
-// Populating zoom scales with powers of 2 from -9 to 0
+// Populating zoom scales with powers of 2
 for ( let i = 8; i > 0; i-- ) {
   ZOOM_SCALES.push( Math.pow( 0.5, i ) );
 }
@@ -97,6 +97,8 @@ export default class DisplayProperties {
     this.massValuesVisibleProperty.reset();
     this.forceValuesVisibleProperty.reset();
     this.depthLinesVisibleProperty.reset();
+
+    // TODO: Reset vectorZoomLevelProperty? See https://github.com/phetsims/density-buoyancy-common/issues/123
   }
 
 }

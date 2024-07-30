@@ -304,6 +304,7 @@ export default abstract class Mass extends PhetioObject {
       }
     }, options.massPropertyOptions ) );
 
+    // TODO: It looks like massProperty behaves like a DerivedProperty, can it be implemented like one? If not, please document, see https://github.com/phetsims/density-buoyancy-common/issues/123
     Multilink.multilink( [
       this.materialProperty.densityProperty,
       this.volumeProperty,
@@ -527,9 +528,6 @@ export default abstract class Mass extends PhetioObject {
 
   /**
    * Steps forward in time.
-   *
-   * @param dt - In seconds
-   * @param interpolationRatio
    */
   public step( dt: number, interpolationRatio: number ): void {
     this.readData();

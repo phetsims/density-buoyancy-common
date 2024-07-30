@@ -216,6 +216,8 @@ export default class DensityBuoyancyModel implements TModel {
     // once per "physics engine step", and so results in potentially up to "p2MaxSubSteps" calls per simulation frame
     // (30 as of writing). This instance lives for the lifetime of the simulation, so we don't need to remove this
     // listener.
+    // TODO: This is a very complex method, and it is in many ways the heart of the model. https://github.com/phetsims/density-buoyancy-common/issues/257
+    // TODO: It is recommended to provide more clarifying high-level documentation to show the main steps and their purpose https://github.com/phetsims/density-buoyancy-common/issues/257
     this.engine.addPostStepListener( dt => {
       this.updateFluid();
 

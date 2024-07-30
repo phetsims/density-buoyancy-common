@@ -18,6 +18,7 @@ import Mass from './Mass.js';
 import { PhetioObjectOptions } from '../../../../tandem/js/PhetioObject.js';
 import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
 
+// TODO: Add SelfOptions for optionize, see https://github.com/phetsims/density-buoyancy-common/issues/123
 export type BasinOptions = {
   initialVolume?: number;
   initialY?: number;
@@ -42,6 +43,8 @@ export default abstract class Basin {
   public childBasin: Basin | null;
 
   protected constructor( providedOptions?: BasinOptions ) {
+
+    // TODO: Use standard optionize type parameters, see https://github.com/phetsims/density-buoyancy-common/issues/123
     const options = optionize<BasinOptions>()( {
       initialVolume: 0,
       initialY: 0,
@@ -189,6 +192,7 @@ export default abstract class Basin {
 
   /**
    * Hybrid root-finding given our constraints (guaranteed interval, value/derivative). Combines Newton's and bisection.
+   * TODO: Move to a utility file or dot, see https://github.com/phetsims/density-buoyancy-common/issues/123
    */
   private static findRoot( minX: number, maxX: number, tolerance: number, valueFunction: ( n: number ) => number, derivativeFunction: ( n: number ) => number ): number {
     let x = ( minX + maxX ) / 2;

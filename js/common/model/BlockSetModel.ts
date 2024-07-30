@@ -33,7 +33,7 @@ export type BlockSetModelOptions<BlockSetValue extends EnumerationValue> = SelfO
 
 export default class BlockSetModel<BlockSetValue extends EnumerationValue> extends DensityBuoyancyModel {
 
-  // TODO: https://github.com/phetsims/density-buoyancy-common/issues/123 Why is this capitalized?
+  // TODO: https://github.com/phetsims/density-buoyancy-common/issues/123 Convert to lowercase
   private readonly BlockSet: Enumeration<BlockSetValue>;
   public readonly blockSetProperty: Property<BlockSetValue>;
 
@@ -50,7 +50,6 @@ export default class BlockSetModel<BlockSetValue extends EnumerationValue> exten
 
     const tandem = options.tandem;
 
-    // {Property.<BlockSetValue>}
     this.blockSetProperty = new EnumerationProperty( options.initialMode, {
       tandem: tandem.createTandem( 'blockSets' ).createTandem( 'blockSetProperty' ),
       phetioDocumentation: 'Controls the set of blocks to be displayed',
@@ -76,6 +75,7 @@ export default class BlockSetModel<BlockSetValue extends EnumerationValue> exten
       this.positionMasses( blockSet );
     } );
 
+    // TODO: Add helpful documentation for what this link is for, see https://github.com/phetsims/density-buoyancy-common/issues/257
     // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
     this.blockSetProperty.link( ( blockSet, oldBlockSet ) => {
       if ( oldBlockSet ) {

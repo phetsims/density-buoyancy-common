@@ -32,11 +32,9 @@ export default class Cone extends Mass {
   public readonly radiusProperty: Property<number>;
   public readonly heightProperty: Property<number>;
   public readonly isVertexUp: boolean;
-  private readonly vertexSign: number;
 
   // Step information
   private stepRadius: number;
-  private stepHeight: number;
   private stepArea: number;
   private stepMaximumVolume: number;
 
@@ -63,9 +61,7 @@ export default class Cone extends Mass {
     } );
 
     this.isVertexUp = isVertexUp;
-    this.vertexSign = isVertexUp ? 1 : -1;
     this.stepRadius = 0;
-    this.stepHeight = 0;
     this.stepArea = 0;
     this.stepMaximumVolume = 0;
 
@@ -139,7 +135,6 @@ export default class Cone extends Mass {
     this.stepTop = yOffset + this.heightProperty.value * ( this.isVertexUp ? TOP_FROM_CENTER_RATIO : BOTTOM_FROM_CENTER_RATIO );
 
     this.stepRadius = this.radiusProperty.value;
-    this.stepHeight = this.heightProperty.value;
     this.stepArea = Math.PI * this.stepRadius * this.stepRadius;
     this.stepMaximumVolume = this.stepArea * this.heightProperty.value / 3;
   }

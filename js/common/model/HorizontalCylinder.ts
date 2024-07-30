@@ -30,8 +30,6 @@ export default class HorizontalCylinder extends Mass {
 
   // Step information
   private stepRadius: number;
-  private stepHeight: number;
-  private stepArea: number;
   private stepMaximumVolume: number;
   private stepMaximumArea: number;
 
@@ -45,7 +43,6 @@ export default class HorizontalCylinder extends Mass {
 
     super( engine, options as InstrumentedMassOptions );
 
-    // {Property.<number>}
     this.radiusProperty = new NumberProperty( radius, {
       tandem: options.tandem.createTandem( 'radiusProperty' ),
       range: new Range( 0, Number.POSITIVE_INFINITY )
@@ -56,8 +53,6 @@ export default class HorizontalCylinder extends Mass {
     } );
 
     this.stepRadius = 0;
-    this.stepHeight = 0;
-    this.stepArea = 0;
     this.stepMaximumVolume = 0;
     this.stepMaximumArea = 0;
 
@@ -127,7 +122,6 @@ export default class HorizontalCylinder extends Mass {
     this.stepTop = yOffset + this.radiusProperty.value;
 
     this.stepRadius = this.radiusProperty.value;
-    this.stepHeight = this.lengthProperty.value;
     this.stepMaximumArea = 2 * this.stepRadius * this.lengthProperty.value;
     this.stepMaximumVolume = Math.PI * this.stepRadius * this.stepRadius * this.lengthProperty.value;
   }

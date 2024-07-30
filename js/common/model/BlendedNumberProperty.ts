@@ -5,7 +5,7 @@
  *
  * Please see BlendedVector2Property to see the vector implementation of this concept.
  *
- * @author Sam Reid
+ * @author Sam Reid (PhET Interactive Simulations)
  */
 
 import Property from '../../../../axon/js/Property.js';

@@ -100,13 +100,6 @@ export default class InterpolatedProperty<T> extends Property<T> {
     return a.blend( b, ratio );
   }
 
-  /**
-   * Interpolation for Vector3.
-   */
-  private static interpolateVector3( a: Vector3, b: Vector3, ratio: number ): Vector3 {
-    return a.blend( b, ratio );
-  }
-
   public static readonly InterpolatedPropertyIO = ( parameterType: IOType ): IOType => {
     assert && assert( parameterType, 'InterpolatedPropertyIO needs parameterType' );
 

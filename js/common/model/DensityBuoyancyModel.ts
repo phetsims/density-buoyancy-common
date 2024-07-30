@@ -65,6 +65,7 @@ export default class DensityBuoyancyModel implements TModel {
   private readonly groundBody: PhysicsEngineBody;
   private barrierBody: PhysicsEngineBody;
 
+  // TODO: Document how availableMasses differs from masses, see https://github.com/phetsims/density-buoyancy-common/issues/293
   protected readonly availableMasses: ObservableArray<Mass>;
   public readonly masses: ObservableArray<Mass>;
 

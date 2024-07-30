@@ -69,6 +69,7 @@ export default class BuoyancyCompareModel extends CompareBlockSetModel {
         }
       ],
 
+      // TODO: Can this be simplified since we do the same thing for each BlockSet?, see https://github.com/phetsims/density-buoyancy-common/issues/295
       positionMassesCallback: ( model, blockSet, masses ) => {
         assert && assert( masses.length === 2, 'two masses please' );
         switch( blockSet ) {

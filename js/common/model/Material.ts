@@ -74,6 +74,7 @@ export default class Material extends PhetioObject implements HasValueProperty {
         tandem: tandem.createTandem( 'densityProperty' ),
         phetioFeatured: true,
         phetioDocumentation: 'Density of the material',
+        phetioReadOnly: !( providedOptions.hidden || providedOptions.custom ), // Read-only unless it's a mystery or custom material
         rangePropertyOptions: {
           reentrant: true, // needed for the range mutation in MaterialControlNode, see https://github.com/phetsims/density-buoyancy-common/issues/268
           valueComparisonStrategy: 'equalsFunction'

@@ -60,12 +60,13 @@ export default class DensityBuoyancyModel implements TModel {
   // somewhat meant to be adjusted.
   public readonly invisibleBarrierBoundsProperty: Property<Bounds3>;
 
-  public readonly masses: ObservableArray<Mass>;
   public readonly pool: Pool;
   public readonly engine: PhysicsEngine;
   private readonly groundBody: PhysicsEngineBody;
   private barrierBody: PhysicsEngineBody;
+
   protected readonly availableMasses: ObservableArray<Mass>;
+  public readonly masses: ObservableArray<Mass>;
 
   public constructor( providedOptions?: DensityBuoyancyModelOptions ) {
     const options = optionize<DensityBuoyancyModelOptions, DensityBuoyancyModelOptions>()( {

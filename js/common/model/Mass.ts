@@ -228,6 +228,9 @@ export default abstract class Mass extends PhetioObject {
       phetioFeatured: true
     }, options.inputEnabledPropertyOptions ) );
 
+    // TODO: We create internalVisibleProprety to pass into GatedVisibleProperty, but it differs from the defaults, see https://github.com/phetsims/density-buoyancy-common/issues/294
+    // and naming in GatedVisibleProperty. Can we use the default one in GatedVisibleProperty instead? Or match up with its
+    // conventions
     this.internalVisibleProperty = new BooleanProperty( options.visible, {
       phetioDocumentation: 'For internal use only',
 

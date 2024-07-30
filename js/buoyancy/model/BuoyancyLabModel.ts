@@ -26,7 +26,6 @@ export type BuoyancyLabModelOptions = DensityBuoyancyModelOptions;
 export default class BuoyancyLabModel extends DensityBuoyancyModel {
 
   public readonly block: Cube;
-
   public readonly fluidDisplacedVolumeProperty: ReadOnlyProperty<number>;
 
   public constructor( providedOptions: BuoyancyLabModelOptions ) {

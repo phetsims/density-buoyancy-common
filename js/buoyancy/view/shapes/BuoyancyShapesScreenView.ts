@@ -64,12 +64,14 @@ export default class BuoyancyShapesScreenView extends BuoyancyScreenView<Buoyanc
   private readonly rightBox: MultiSectionPanelsNode;
   private readonly positionInfoButton: () => void;
 
+  // TODO: https://github.com/phetsims/density-buoyancy-common/issues/257 Please add helpful documentation throughout this constructor
   public constructor( model: BuoyancyShapesModel, options: BuoyancyShapesScreenViewOptions ) {
 
     const tandem = options.tandem;
 
     super( model,
 
+      // TODO: Why is combineOptions preferable to optionize here? See https://github.com/phetsims/density-buoyancy-common/issues/123
       combineOptions<DensityBuoyancyScreenViewOptions>( {
         supportsDepthLines: false,
         forcesInitiallyDisplayed: false,
@@ -242,6 +244,7 @@ export default class BuoyancyShapesScreenView extends BuoyancyScreenView<Buoyanc
     const scaleViews = this.massViews.filter( massView => massView instanceof ScaleView );
 
     // Layer for the focusable masses. Must be in the scene graph, so they can populate the pdom order
+    // TODO: Remove pdomOrder:[] or document why it is necessary, see https://github.com/phetsims/density-buoyancy-common/issues/123
     const massALayer = new Node( { pdomOrder: [] } );
     this.addChild( massALayer );
     const massBLayer = new Node( { pdomOrder: [] } );

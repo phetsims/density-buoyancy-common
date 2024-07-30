@@ -19,7 +19,7 @@ import DisplayProperties from '../DisplayProperties.js';
 
 export default class DuckView extends MeasurableMassView {
 
-  private duckGeometry: THREE.BufferGeometry;
+  private readonly duckGeometry: THREE.BufferGeometry;
   private readonly updateListener: ( newSize: Bounds3 ) => void;
 
   public constructor( private readonly duck: Duck, modelViewTransform: THREEModelViewTransform, displayProperties: DisplayProperties ) {

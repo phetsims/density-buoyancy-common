@@ -339,6 +339,7 @@ export default class Bottle extends ApplicationsMass {
   private static evaluateCubicDerivative( controlPoints: Vector2[], t: number ): Vector2 {
     const mt = 1 - t;
 
+    // TODO: Where are these algorithms documented? Maybe point to wikipedia? https://github.com/phetsims/density-buoyancy-common/issues/123
     return new Vector2(
       controlPoints[ 0 ].x * ( -3 * mt * mt ) +
       controlPoints[ 1 ].x * ( 3 * mt * mt - 6 * mt * t ) +
@@ -469,6 +470,8 @@ export default class Bottle extends ApplicationsMass {
         a, c, d
       );
     };
+
+    // TODO: Add documentation, see https://github.com/phetsims/density-buoyancy-common/issues/257
     const approximateProfile = ( profileVectors: Vector2[] ) => {
       _.range( 0, profileVectors.length - 1 ).forEach( i => {
         const a = profileVectors[ i ];
@@ -768,6 +771,7 @@ const FLAT_INTERSECTION_VERTICES = [ ${flatIntersectionVertices.map( v => `new V
     ];
   }
 
+  // TODO: Remove unused code, see https://github.com/phetsims/density-buoyancy-common/issues/123
   private static getMainFlatIntersectionProfile(): Vector2[] {
     return [
       ...Bottle.getCapProfile(),
@@ -789,6 +793,7 @@ const FLAT_INTERSECTION_VERTICES = [ ${flatIntersectionVertices.map( v => `new V
     return y / ( 2 * FULL_RADIUS ) + 0.5;
   }
 
+  // TODO: What is a quadRing and how is it used? https://github.com/phetsims/density-buoyancy-common/issues/257
   private static quadRing( positions: number[], normals: number[], uvs: number[], radialSegments: number, x0: number, r0: number, x1: number, r1: number, nx0: number, nr0: number, nx1: number, nr1: number ): void {
     _.range( 0, radialSegments ).forEach( i => {
       const theta0 = 2 * Math.PI * i / radialSegments;
@@ -1119,6 +1124,7 @@ const FLAT_INTERSECTION_VERTICES = [ ${flatIntersectionVertices.map( v => `new V
 
   /**
    * Replaces the main page with a debug view of the bottle, for debugging various curves and properties.
+   * TODO: Is this unused? See https://github.com/phetsims/density-buoyancy-common/issues/123
    */
   private static getDebugCanvas(): HTMLCanvasElement {
     const canvas = document.createElement( 'canvas' );
@@ -1207,6 +1213,8 @@ const FLAT_INTERSECTION_VERTICES = [ ${flatIntersectionVertices.map( v => `new V
 
     return canvas;
   }
+
+  // TODO: Are many of these constants unused? https://github.com/phetsims/density-buoyancy-common/issues/123
 
   // The number to scale the original values by to get a 10L-volume bottle
   private static readonly TEN_LITER_SCALE_MULTIPLIER = TEN_LITER_SCALE_MULTIPLIER;

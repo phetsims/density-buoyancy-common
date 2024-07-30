@@ -2,7 +2,7 @@
 
 import densityBuoyancyCommon from '../../../densityBuoyancyCommon.js';
 import PhetFont from '../../../../../scenery-phet/js/PhetFont.js';
-import Dialog, { DialogOptions } from '../../../../../sun/js/Dialog.js';
+import Dialog from '../../../../../sun/js/Dialog.js';
 import Tandem from '../../../../../tandem/js/Tandem.js';
 import { RichText, VBox } from '../../../../../scenery/js/imports.js';
 import DensityBuoyancyCommonStrings from '../../../DensityBuoyancyCommonStrings.js';
@@ -13,17 +13,9 @@ import DensityBuoyancyCommonConstants from '../../../common/DensityBuoyancyCommo
  *
  * @author Agustín Vallejo (PhET Interactive Simulations)
  */
-
-
 export default class ShapesInfoDialog extends Dialog {
 
   public constructor( tandem: Tandem ) {
-
-    const options: DialogOptions = {
-      isDisposable: false,
-      titleAlign: 'center',
-      tandem: tandem
-    };
 
     const content = new VBox( {
       align: 'left',
@@ -38,7 +30,11 @@ export default class ShapesInfoDialog extends Dialog {
       ]
     } );
 
-    super( content, options );
+    super( content, {
+      isDisposable: false,
+      titleAlign: 'center',
+      tandem: tandem
+    } );
   }
 }
 

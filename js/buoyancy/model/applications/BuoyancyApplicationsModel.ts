@@ -144,6 +144,8 @@ export default class BuoyancyApplicationsModel extends DensityBuoyancyModel {
   }
 
   public override step( dt: number ): void {
+
+    // TODO: This seems an odd spot to put the assertion, is it necessary? See https://github.com/phetsims/density-buoyancy-common/issues/123
     assert && assert( !this.boat.visibleProperty.value || !this.bottle.visibleProperty.value,
       'Boat and bottle should not be visible at the same time' );
 

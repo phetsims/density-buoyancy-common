@@ -1,7 +1,7 @@
 // Copyright 2019-2024, University of Colorado Boulder
 
 /**
- * The main model for the Compare screen of the Buoyancy: Basics simulation.
+ * The main model for the Compare screen for Buoyancy and Buoyancy: Basics.
  *
  * @author Michael Kauzmann (PhET Interactive Simulations)
  */
@@ -92,7 +92,6 @@ export default class BuoyancyCompareModel extends CompareBlockSetModel {
     }, providedOptions );
 
     super( options );
-
 
     // Left scale
     this.availableMasses.push( new Scale( this.engine, this.gravityProperty, {

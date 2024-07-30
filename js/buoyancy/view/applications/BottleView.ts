@@ -190,6 +190,9 @@ export default class BottleView extends MeasurableMassView {
       backTop
     ].forEach( ( view, index ) => {
       if ( view ) {
+
+        // TODO: Explain the meaning of the arithmetic, see https://github.com/phetsims/density-buoyancy-common/issues/257
+        // TODO: Why is the +1 important? See https://github.com/phetsims/density-buoyancy-common/issues/257
         view.renderOrder = -( index + 1 );
       }
     } );

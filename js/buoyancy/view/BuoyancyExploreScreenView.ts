@@ -42,12 +42,13 @@ type BuoyancyExploreScreenViewOptions = StrictOmit<DensityBuoyancyScreenViewOpti
 
 export default class BuoyancyExploreScreenView extends BuoyancyScreenView<BuoyancyExploreModel> {
 
-  private rightBox: ABControlsNode;
+  private readonly rightBox: ABControlsNode;
 
   public constructor( model: BuoyancyExploreModel, options: BuoyancyExploreScreenViewOptions ) {
 
     const tandem = options.tandem;
 
+    // TODO: https://github.com/phetsims/density-buoyancy-common/issues/123 why is combineOptions preferable to optionize in this case?
     super( model, combineOptions<DensityBuoyancyScreenViewOptions>( {
       supportsDepthLines: true,
       forcesInitiallyDisplayed: false,
@@ -55,6 +56,7 @@ export default class BuoyancyExploreScreenView extends BuoyancyScreenView<Buoyan
       cameraLookAt: DensityBuoyancyCommonConstants.BUOYANCY_CAMERA_LOOK_AT
     }, options ) );
 
+    // TODO: This code is duplicated, see https://github.com/phetsims/density-buoyancy-common/issues/291
     const displayOptionsPanel = new BuoyancyDisplayOptionsPanel( this.displayProperties, {
       tandem: tandem.createTandem( 'displayOptionsPanel' ),
       contentWidth: this.modelToViewPoint( new Vector3(
@@ -82,8 +84,7 @@ export default class BuoyancyExploreScreenView extends BuoyancyScreenView<Buoyan
     this.rightBox = new ABControlsNode(
       model.massA,
       model.massB,
-      this.popupLayer,
-      {
+      this.popupLayer, {
         tandem: tandem,
         minCustomMass: 0.1
       }
@@ -129,8 +130,8 @@ export default class BuoyancyExploreScreenView extends BuoyancyScreenView<Buoyan
 
     // Adjust the visibility after, since we want to size the box's location for its "full" bounds
     // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
-    model.massB.visibleProperty.link( visible => {
-      const masses = visible ? [ model.massA, model.massB ] : [ model.massA ];
+    model.massB.visibleProperty.link( massBVisible => {
+      const masses = massBVisible ? [ model.massA, model.massB ] : [ model.massA ];
       objectDensityAccordionBox.setReadoutItems( masses.map( ( mass, index ) => {
         return {
           readoutItem: mass.materialProperty,
@@ -147,6 +148,7 @@ export default class BuoyancyExploreScreenView extends BuoyancyScreenView<Buoyan
       } ) );
     } );
 
+    // TODO: https://github.com/phetsims/density-buoyancy-common/issues/291 26 lines duplicated
     const rightSideVBox = new VBox( {
       spacing: DensityBuoyancyCommonConstants.SPACING_SMALL,
       align: 'right',
@@ -170,6 +172,8 @@ export default class BuoyancyExploreScreenView extends BuoyancyScreenView<Buoyan
 
     ManualConstraint.create( this, [ this.resetAllButton, blocksModeRadioButtonGroup ],
       ( resetAllButtonWrapper, blocksModeRadioButtonGroupWrapper ) => {
+
+        // TODO: What if the reset all button is invisible due to phet-io customization? See https://github.com/phetsims/density-buoyancy-common/issues/123
         blocksModeRadioButtonGroupWrapper.right = resetAllButtonWrapper.left - DensityBuoyancyCommonConstants.MARGIN;
         blocksModeRadioButtonGroupWrapper.bottom = resetAllButtonWrapper.bottom;
       } );
@@ -264,6 +268,8 @@ export default class BuoyancyExploreScreenView extends BuoyancyScreenView<Buoyan
       children: [
         boxScene,
         ForceDiagramNode.getExploreIcon().mutate( {
+
+          // TODO: Document the arithmetic, what is the intended effect? see https://github.com/phetsims/density-buoyancy-common/issues/257
           center: boxScene.center.plusXY( 0, boxScene.height * 0.09 )
         } )
       ]

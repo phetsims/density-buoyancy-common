@@ -95,6 +95,7 @@ export default class ShapeSizeControlNode extends VBox {
     }, numberControlOptions ) );
 
     // DerivedProperty doesn't need disposal, since everything here lives for the lifetime of the simulation
+    // TODO: Consider UnitConversionProperty, see https://github.com/phetsims/density-buoyancy-common/issues/123
     const litersProperty = new DerivedProperty( [ volumeProperty ], volume => toLiters( volume ) );
 
     this.children = [

@@ -29,7 +29,7 @@ export default class MaterialProperty extends MappedWrappedProperty<Material> {
   public readonly densityProperty: TReadOnlyProperty<number>;
   public readonly customMaterial: Material;
 
-  // Note the material could be the customMaterial
+  // Note the material could be the customMaterial. That is not a bug, that is a workaround that means there is no customMaterial.
   public constructor( material: Material, customMaterial: Material, availableMaterials: Material[], providedOptions: MaterialPropertyOptions ) {
     super( material, customMaterial, availableMaterials, combineOptions<MaterialPropertyOptions>( {
       valueType: Material,

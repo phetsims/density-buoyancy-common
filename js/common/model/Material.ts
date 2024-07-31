@@ -446,6 +446,7 @@ export default class Material extends PhetioObject implements HasValueProperty {
     Material.GOLD
   ];
 
+  // TODO: Document where these are typically used and why this is a natural grouping, see https://github.com/phetsims/density-buoyancy-common/issues/257
   public static readonly SIMPLE_MASS_MATERIALS = [
     Material.STYROFOAM,
     Material.WOOD,

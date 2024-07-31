@@ -194,7 +194,7 @@ export default class Material extends PhetioObject implements HasValueProperty {
 
   // In essence identical to aluminum, but with a different name for the Density readout
   // TODO AV: Unify the names body vs hull, see https://github.com/phetsims/density-buoyancy-common/issues/123
-  public static readonly BOAT_BODY = new Material( Tandem.OPT_OUT, {
+  public static readonly BOAT_BODY = new Material( packageJSON.name === 'buoyancy' ? SOLIDS_TANDEM.createTandem( 'boatBody' ) : Tandem.OPT_OUT, {
     nameProperty: DensityBuoyancyCommonStrings.material.boatHullStringProperty,
     density: Material.ALUMINUM.density
   } );

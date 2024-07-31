@@ -155,6 +155,7 @@ export default abstract class PhysicsEngine {
 
   /**
    * Removes a listener to be called after each internal step.
+   * TODO: Remove this method, see https://github.com/phetsims/density-buoyancy-common/issues/302
    */
   protected abstract removePostStepListener( listener: ( dt: number ) => void ): void;
 

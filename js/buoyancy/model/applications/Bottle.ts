@@ -39,6 +39,8 @@
  * TODO: https://github.com/phetsims/density-buoyancy-common/issues/123 This file is > 1200 lines of complicated code
  * with many magic numbers. We should make an effort to remove unused parts, and clean up where possible.
  *
+ * TODO: https://github.com/phetsims/density-buoyancy-common/issues/123 this file has 9 unused declarations.
+ *
  * Diagram in x,r coordinates, showing the "profile" (exactly half of the bottle, and the curves that the
  * three-dimensional form will be made from):
  *

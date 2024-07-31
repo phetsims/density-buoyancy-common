@@ -189,7 +189,7 @@ export default class BuoyancyShapesScreenView extends BuoyancyScreenView<Buoyanc
       model.modeProperty
     ], ( massA, massB, mode ) => {
       const masses = mode === TwoBlockMode.ONE_BLOCK ? [ massA ] : [ massA, massB ];
-      percentSubmergedAccordionBox.setReadoutItems( masses.map( ( mass, index ) => {
+      percentSubmergedAccordionBox.setReadoutItems( masses.map( mass => {
         return {
           readoutItem: mass,
           readoutNameProperty: new PatternStringProperty( DensityBuoyancyCommonStrings.shapeTagPatternStringProperty, { tag: mass.nameProperty } ),

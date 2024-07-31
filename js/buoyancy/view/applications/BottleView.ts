@@ -25,14 +25,14 @@ export default class BottleView extends MeasurableMassView {
 
   public constructor( bottle: Bottle,
                       modelViewTransform: THREEModelViewTransform,
-                      displayPropreties: DisplayProperties ) {
+                      displayProperties: DisplayProperties ) {
 
     super( bottle,
 
       // @ts-expect-error
       new THREE.Geometry(),
       modelViewTransform,
-      displayPropreties
+      displayProperties
     );
 
     const bottomClipPlane = new THREE.Plane( new THREE.Vector3( 0, -1, 0 ), 0 );

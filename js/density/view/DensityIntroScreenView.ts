@@ -37,7 +37,7 @@ type DensityIntroScreenViewOptions = StrictOmit<DensityBuoyancyScreenViewOptions
 
 export default class DensityIntroScreenView extends DensityBuoyancyScreenView<DensityIntroModel> {
 
-  private rightBox: ABControlsNode;
+  private readonly rightBox: ABControlsNode;
 
   public constructor( model: DensityIntroModel, options: DensityIntroScreenViewOptions ) {
 

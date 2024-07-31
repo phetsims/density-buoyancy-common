@@ -94,11 +94,11 @@ export type DensityNumberLineNodeOptions = SelfOptions & NodeOptions;
 export default class DensityNumberLineNode extends Node {
 
   private readonly modelViewTransform: ( density: number ) => number;
-
   private markerNodes: Node[] = [];
 
   public constructor( providedOptions?: DensityNumberLineNodeOptions ) {
 
+    // TODO: DensityNumberLineNode only has one instantiation site, so why are things like materials in the defaults? See https://github.com/phetsims/density-buoyancy-common/issues/123
     const options = optionize<DensityNumberLineNodeOptions, SelfOptions, NodeOptions>()( {
       materials: [
         Material.HUMAN,
@@ -227,6 +227,8 @@ export default class DensityNumberLineNode extends Node {
         isHiddenProperty
       ], ( density, isVisible, isHidden ) => {
         marker.x = this.modelViewTransform( density );
+
+        // TODO: what is undefined + 1E-5? (Hint: it is NaN). Is that a good way to do this? See https://github.com/phetsims/density-buoyancy-common/issues/257
         marker.visible = isVisible && !isHidden && density < options.maxDensity! + 1e-5;
       } );
     } );

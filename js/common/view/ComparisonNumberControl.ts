@@ -1,7 +1,7 @@
 // Copyright 2021-2024, University of Colorado Boulder
 
 /**
- * Supertype for the NumberControls in the Compare screen
+ * Subtype for the NumberControls in the Compare screen, see BlocksValuePanel.
  *
  * @author Jonathan Olson (PhET Interactive Simulations)
  */

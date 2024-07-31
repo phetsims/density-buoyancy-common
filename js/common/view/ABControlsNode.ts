@@ -29,12 +29,12 @@ export default class ABControlsNode extends ABPanelsNode {
    * @param massA
    * @param massB
    * @param popupLayer
-   * @param options - Applied to each BlockControlNode
+   * @param blockControlNodeOptions - Applied to each BlockControlNode
    */
-  public constructor( massA: Cuboid, massB: Cuboid, popupLayer: Node, options: ABControlsNodeOptions ) {
+  public constructor( massA: Cuboid, massB: Cuboid, popupLayer: Node, blockControlNodeOptions: ABControlsNodeOptions ) {
 
-    const tandem = options.tandem;
-    const omittedOptions = _.omit( options, [ 'tandem' ] );
+    const tandem = blockControlNodeOptions.tandem;
+    const omittedOptions = _.omit( blockControlNodeOptions, [ 'tandem' ] );
 
     const controlANode = new BlockControlNode( massA, popupLayer, true, combineOptions<BlockControlNodeOptions>( {
       labelNode: ABPanelsNode.getTagALabelNode(),

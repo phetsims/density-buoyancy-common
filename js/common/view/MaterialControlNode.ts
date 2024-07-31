@@ -47,7 +47,6 @@ export default class MaterialControlNode extends VBox {
                       listParent: Node,
                       providedOptions: MaterialControlNodeOptions ) {
 
-
     const options = optionize<MaterialControlNodeOptions, SelfMaterialControlNodeOptions, VBoxOptions>()( {
       syncCustomMaterialDensity: true,
       ownsCustomDensityRange: true,

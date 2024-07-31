@@ -32,7 +32,6 @@ export default class MassTagNode extends Node {
   public constructor( massTag: MassTag, maxTextWidth = 100 ) {
 
     assert && assert( massTag !== MassTag.NONE, 'MassTagNode must have a provided MassTag' );
-
     assert && assert( !massTag.nameProperty.isDisposed, 'do not dispose a nameProperty' );
 
     const visibleProperty = new DerivedProperty( [ massTag.nameProperty ], name => name.length > 0 );
@@ -68,7 +67,6 @@ export default class MassTagNode extends Node {
       visibleProperty.dispose();
       backgroundNode.dispose();
     } );
-
   }
 }
 

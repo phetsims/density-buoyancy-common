@@ -38,6 +38,7 @@ type SelfOptions<T extends Material | Gravity> = {
 
   comboItems: ComboBoxItem<T>[];
 
+  // TODO: What is a fallback node? When is it shown? https://github.com/phetsims/density-buoyancy-common/issues/257
   getFallbackNode?: ( t: T ) => Node | null;
 
   numberControlOptions?: NumberControlOptions;

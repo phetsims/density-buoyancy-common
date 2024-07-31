@@ -45,7 +45,6 @@ export const chooseDecimalPlaces = ( value: number ): number => {
 
 const LITERS_IN_CUBIC_METER = 1000;
 
-
 const FLUID_DENSITY_RANGE_PER_L = new Range( 0.5, 15 );
 
 const DensityBuoyancyCommonConstants = {

@@ -17,17 +17,15 @@ import DisplayProperties from '../../buoyancy/view/DisplayProperties.js';
 
 export default class EllipsoidView extends MeasurableMassView {
 
-  private readonly ellipsoid: Ellipsoid;
   private readonly ellipsoidGeometry: THREE.SphereGeometry;
   private readonly updateListener: ( newSize: Bounds3 ) => void;
 
-  public constructor( ellipsoid: Ellipsoid, modelViewTransform: THREEModelViewTransform, displayProperties: DisplayProperties ) {
+  public constructor( private readonly ellipsoid: Ellipsoid, modelViewTransform: THREEModelViewTransform, displayProperties: DisplayProperties ) {
 
     const ellipsoidGeometry = new THREE.SphereGeometry( 0.5, 30, 24 );
 
     super( ellipsoid, ellipsoidGeometry, modelViewTransform, displayProperties );
 
-    this.ellipsoid = ellipsoid;
     this.ellipsoidGeometry = ellipsoidGeometry;
 
     const positionTag = () => {

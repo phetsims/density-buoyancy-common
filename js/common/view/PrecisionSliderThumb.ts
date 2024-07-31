@@ -62,7 +62,6 @@ export default class PrecisionSliderThumb extends Node {
 
     super( options );
 
-
     // highlight thumb on pointer over
     const pressListener = new PressListener( {
       attach: false,

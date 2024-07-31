@@ -81,6 +81,8 @@ export default class MaterialMassVolumeControlNode extends MaterialControlNode {
                       materials: Material[],
                       setVolume: ( volume: number ) => void,
                       listParent: Node,
+
+                      // TODO: Remove unused, see https://github.com/phetsims/density-buoyancy-common/issues/123
                       numberControlMassPropertyFeatured: boolean,
                       providedOptions: MaterialMassVolumeControlNodeOptions ) {
 
@@ -105,6 +107,7 @@ export default class MaterialMassVolumeControlNode extends MaterialControlNode {
     assert && assert( options.minVolumeLiters <= options.minCustomVolumeLiters, 'This seems to be a requirement, I hope you never hit this' );
 
     // If we will be creating a high density mass NumberControl in addition to the normal one.
+    // TODO: Change from !! to !== null ? Since it has different semantics for 0 which is numeric but falsy. See https://github.com/phetsims/density-buoyancy-common/issues/123
     const supportTwoMassNumberControls = !!options.highDensityMaxMass;
 
     // Mass-related elements should not be instrumented if showing as a Density control instead of Mass control.
@@ -175,6 +178,7 @@ export default class MaterialMassVolumeControlNode extends MaterialControlNode {
       units: 'L'
     } );
 
+    // TODO: Document the purpose of this lazyLink, see https://github.com/phetsims/density-buoyancy-common/issues/257
     // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
     numberControlVolumeProperty.lazyLink( liters => {
       if ( !modelVolumeChanging && !userMassChanging ) {
@@ -192,12 +196,13 @@ export default class MaterialMassVolumeControlNode extends MaterialControlNode {
       }
     } );
 
+    // TODO: Document the purpose of this lazyLink, see https://github.com/phetsims/density-buoyancy-common/issues/257
     // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
     volumeProperty.lazyLink( cubicMeters => {
       if ( !userVolumeChanging ) {
         modelVolumeChanging = true;
 
-        // If the value is close to min/max, massage it to the exact value, see https://github.com/phetsims/density/issues/46
+        // If the value is close to min/max, set it to the exact min/max, see https://github.com/phetsims/density/issues/46
         let volumeLiters = cubicMeters * LITERS_IN_CUBIC_METER;
         if ( volumeLiters > options.minVolumeLiters && volumeLiters < options.minVolumeLiters + 1e-10 ) {
           volumeLiters = options.minVolumeLiters;
@@ -212,6 +217,7 @@ export default class MaterialMassVolumeControlNode extends MaterialControlNode {
       }
     } );
 
+    // TODO: Document the purpose of this lazyLink, see https://github.com/phetsims/density-buoyancy-common/issues/257
     // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
     numberControlMassProperty.lazyLink( mass => {
       if ( !modelMassChanging && !userVolumeChanging ) {
@@ -231,6 +237,7 @@ export default class MaterialMassVolumeControlNode extends MaterialControlNode {
       }
     } );
 
+    // TODO: Document the purpose of this lazyLink, see https://github.com/phetsims/density-buoyancy-common/issues/257
     // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
     massProperty.lazyLink( mass => {
       if ( !userMassChanging ) {
@@ -479,6 +486,8 @@ const getMassReadoutLayoutFunction = ( normalLayoutFunction: LayoutFunction ) =>
   return ( titleNode: Node, numberDisplay: NumberDisplay, slider: Slider, decrementButton: ArrowButton | null, incrementButton: ArrowButton | null ) => {
     const tempNode = normalLayoutFunction( titleNode, numberDisplay, slider, decrementButton, incrementButton );
     const width = tempNode.width;
+
+    // TODO: Safe to dispose the parent before detaching the children? See https://github.com/phetsims/density-buoyancy-common/issues/123
     tempNode.dispose();
     titleNode.detach();
     numberDisplay.detach();

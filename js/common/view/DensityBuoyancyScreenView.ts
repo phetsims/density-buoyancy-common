@@ -2,6 +2,8 @@
 
 /**
  * The main base ScreenView for all Density/Buoyancy screens.
+ * TODO: Elaborate on the main responsibilities of this class, see https://github.com/phetsims/density-buoyancy-common/issues/257
+ * TODO: Currently at 871 lines, this file is more complex. Can it be simplified or modularized? See https://github.com/phetsims/density-buoyancy-common/issues/123
  *
  * @author Jonathan Olson (PhET Interactive Simulations)
  */
@@ -89,7 +91,7 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
   private readonly backgroundLayer: Node;
   protected readonly resetAllButton: Node;
 
-  // The sky background, in a unit 0-to-1 rectangle (so we can scale it to match)
+  // The sky background
   private readonly backgroundNode: Rectangle;
 
   protected readonly sceneNode: ThreeIsometricNode;
@@ -100,6 +102,7 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
 
   private readonly debugView?: DebugView;
 
+  // TODO: What are these for? See https://github.com/phetsims/density-buoyancy-common/issues/257
   // Subtypes can provide their own values to control the barrier sizing.
   private readonly leftBarrierViewPointPropertyProperty: Property<TReadOnlyProperty<Vector2>>;
   protected readonly rightBarrierViewPointPropertyProperty: Property<TReadOnlyProperty<Vector2>>;
@@ -154,6 +157,7 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
     } );
     this.addChild( this.backgroundNode );
 
+    // TODO: The backgroundNode is behind the backgroundLayer, please document, see https://github.com/phetsims/density-buoyancy-common/issues/257
     this.backgroundLayer = new Node();
     this.addChild( this.backgroundLayer );
 
@@ -205,7 +209,7 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
       this.massViews,
       this.getMassViewUnderPointer.bind( this ),
       this.sceneNode.getRayFromScreenPoint.bind( this.sceneNode ),
-      ( point: Vector3 ) => this.localToGlobalPoint( this.modelToViewPoint( point ) ),
+      point => this.localToGlobalPoint( this.modelToViewPoint( point ) ),
       updateCursor,
       this.tandem.createTandem( 'backgroundEventTargetListener' )
     );
@@ -350,7 +354,7 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
       topColorArray[ offset + 8 ] = topColorArray[ offset + 14 ] = topColorArray[ offset + 17 ] = grassFarColor.b / 255;
       topGeometry.attributes.color.needsUpdate = true;
     } );
-    // @ts-expect-error - THREE.js version incompat?
+    // @ts-expect-error - THREE.js version incompatibility?
     const topMaterial = new THREE.MeshBasicMaterial( { vertexColors: THREE.VertexColors } );
     const topMesh = new THREE.Mesh( topGeometry, topMaterial );
     this.sceneNode.stage.threeScene.add( topMesh );
@@ -453,6 +457,7 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
         opacity: 0.5
       } );
 
+      // TODO: Document the purpose of this link, see https://github.com/phetsims/density-buoyancy-common/issues/257
       // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
       model.invisibleBarrierBoundsProperty.link( bounds => {
         let index = 0;
@@ -503,7 +508,6 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
     model.masses.forEach( onMassAdded );
 
     const onMassRemoved = ( mass: Mass ) => {
-      // Mass view
       const massView = _.find( this.massViews, massView => massView.mass === mass )!;
 
       // Remove the mass view
@@ -515,6 +519,8 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
 
     const fluidLevelIndicator = new FluidLevelIndicator( model.pool.fluidLevelVolumeProperty );
     this.addChild( fluidLevelIndicator );
+
+    // TODO: Document the reason for this link: https://github.com/phetsims/density-buoyancy-common/issues/257
     // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
     model.pool.fluidYInterpolatedProperty.link( fluidY => {
       const modelPoint = new Vector3( model.poolBounds.minX, fluidY, model.poolBounds.maxZ );
@@ -830,7 +836,6 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
 
     return array;
   }
-
 
   /**
    * Fills the positionArray with an X,Z cross-section of the fluid around a boat at a given y value (for a given liters

@@ -22,7 +22,6 @@ import Utils from '../../../../dot/js/Utils.js';
 
 export default class MassLabelNode extends Node {
 
-  private readonly mass: Mass;
   private readonly showMassValuesProperty: TReadOnlyProperty<boolean>;
   private readonly showMassesListener: ( n: boolean ) => void;
   private readonly readoutStringProperty: TReadOnlyProperty<string>;
@@ -65,7 +64,6 @@ export default class MassLabelNode extends Node {
 
     this.addChild( readoutPanel );
 
-    this.mass = mass;
     this.showMassValuesProperty = showMassValuesProperty;
 
     // Keep it centered

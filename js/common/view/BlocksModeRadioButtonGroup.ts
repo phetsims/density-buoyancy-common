@@ -27,6 +27,7 @@ const bMaterial = new THREE.MeshLambertMaterial();
 
 const ICON_SCALE = 0.15;
 
+// TODO: Add helpful documentation please, see https://github.com/phetsims/density-buoyancy-common/issues/257
 // These live for the lifetime of the simulation, so we don't need to remove this listener
 DensityBuoyancyCommonColors.tagAProperty.link( labelColor => {
   aMaterial.color = ThreeUtils.colorToThree( labelColor );

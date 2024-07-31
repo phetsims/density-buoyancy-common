@@ -1,7 +1,6 @@
 // Copyright 2024, University of Colorado Boulder
 
 /**
- *
  * A containing Node for all decoration layers that are set on top of the THREE stage Node. This pattern was developed
  * because it is much easier to super-impose scenery content onto THREE graphics in an overlay, than it is to try to
  * re-render the scenery content into the THREE state. See https://github.com/phetsims/density-buoyancy-common/issues/112

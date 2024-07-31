@@ -2,6 +2,7 @@
 
 /**
  * Shows a readout in front of a scale, for its measured mass/weight.
+ * Not dependent on a Scale model instance.
  *
  * @author Jonathan Olson (PhET Interactive Simulations)
  */
@@ -27,7 +28,6 @@ type GeneralScaleReadoutNodeSelfOptions = {
 };
 type GeneralScaleReadoutNodeOptions = NodeOptions & GeneralScaleReadoutNodeSelfOptions;
 
-// Not dependent on a Scale model instance.
 export class GeneralScaleReadoutNode extends Node {
 
   private readonly stringProperty: TReadOnlyProperty<string>;
@@ -91,18 +91,17 @@ export class GeneralScaleReadoutNode extends Node {
   }
 }
 
+// TODO: https://github.com/phetsims/density-buoyancy-common/issues/257 document how this differs from GeneralScaleReadoutNode
+// TODO: How can a client choose which one they need? See https://github.com/phetsims/density-buoyancy-common/issues/257
 export default class ScaleReadoutNode extends GeneralScaleReadoutNode {
 
-  public readonly mass: Scale;
-
-  public constructor( mass: Scale, gravityProperty: TReadOnlyProperty<Gravity> ) {
+  // TODO: Rename mass => scale, see https://github.com/phetsims/density-buoyancy-common/issues/123
+  public constructor( public readonly mass: Scale, gravityProperty: TReadOnlyProperty<Gravity> ) {
 
     const blendedProperty = new BlendedNumberProperty( mass.measuredWeightInterpolatedProperty.value );
     mass.stepEmitter.addListener( () => blendedProperty.step( mass.measuredWeightInterpolatedProperty.value ) );
 
     super( blendedProperty, gravityProperty, mass.displayType );
-
-    this.mass = mass;
   }
 }
 

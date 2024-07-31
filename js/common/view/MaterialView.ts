@@ -53,15 +53,9 @@ import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import Material from '../model/Material.js';
 import ReadOnlyProperty from '../../../../axon/js/ReadOnlyProperty.js';
 
-// MaterialView definition
-
 class MaterialView<T extends THREE.Material = THREE.Material> {
 
-  public readonly material: T;
-
-  public constructor( material: T ) {
-    this.material = material;
-  }
+  public constructor( public readonly material: T ) { }
 
   /**
    * Releases references
@@ -70,7 +64,6 @@ class MaterialView<T extends THREE.Material = THREE.Material> {
     this.material.dispose();
   }
 }
-
 
 // constants
 

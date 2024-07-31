@@ -71,7 +71,6 @@ export default class DensityIntroScreenView extends DensityBuoyancyScreenView<De
     } );
     const densityAccordionBox = new AccordionBox( new DensityNumberLineNode( {
         displayDensities: [
-          // DerivedProperty doesn't need disposal, since everything here lives for the lifetime of the simulation
           {
             densityProperty: model.massA.materialProperty.densityProperty,
             nameProperty: model.massA.tag.nameProperty,
@@ -118,6 +117,7 @@ export default class DensityIntroScreenView extends DensityBuoyancyScreenView<De
 
     // DerivedProperty doesn't need disposal, since everything here lives for the lifetime of the simulation
     this.rightBarrierViewPointPropertyProperty.value = new DerivedProperty( [ this.rightBox.boundsProperty, this.visibleBoundsProperty ], ( boxBounds, visibleBounds ) => {
+
       // We might not have a box, see https://github.com/phetsims/density/issues/110
       return new Vector2( isFinite( boxBounds.left ) ? boxBounds.left : visibleBounds.right, visibleBounds.centerY );
     } );
@@ -132,6 +132,7 @@ export default class DensityIntroScreenView extends DensityBuoyancyScreenView<De
     this.addChild( this.popupLayer );
 
     // Layer for the focusable masses. Must be in the scene graph, so they can populate the pdom order
+    // TODO: Is it important to say pdomOrder:[] here? If so, document why. If not, remove it. https://github.com/phetsims/density-buoyancy-common/issues/123
     const cubeALayer = new Node( { pdomOrder: [] } );
     this.addChild( cubeALayer );
     const cubeBLayer = new Node( { pdomOrder: [] } );

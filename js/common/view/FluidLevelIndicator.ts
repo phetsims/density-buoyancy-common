@@ -15,7 +15,6 @@ import Panel from '../../../../sun/js/Panel.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
 import DensityBuoyancyCommonColors from './DensityBuoyancyCommonColors.js';
-import Tandem from '../../../../tandem/js/Tandem.js';
 
 export default class FluidLevelIndicator extends Node {
 
@@ -29,11 +28,9 @@ export default class FluidLevelIndicator extends Node {
     } );
     this.addChild( highlightPath );
 
-    // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
     const readoutText = new RichText( new PatternStringProperty( DensityBuoyancyCommonConstants.VOLUME_PATTERN_STRING_PROPERTY, {
       value: volumeProperty
     }, {
-      tandem: Tandem.OPT_OUT,
       decimalPlaces: 2
     } ), {
       font: new PhetFont( { size: 18 } ),
@@ -41,7 +38,6 @@ export default class FluidLevelIndicator extends Node {
     } );
 
     const readoutPanel = new Panel( readoutText, {
-      // Not using the typical margins for UI panels in this sim
       cornerRadius: DensityBuoyancyCommonConstants.CORNER_RADIUS
     } );
     this.addChild( readoutPanel );

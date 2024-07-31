@@ -28,7 +28,6 @@ const INVERT_Y_TRANSFORM = ModelViewTransform2.createSinglePointScaleInvertedYMa
 
 export default abstract class MassView extends Disposable {
 
-  public readonly mass: Mass;
   public readonly massMesh: MassThreeMesh;
 
   private readonly positionListener: () => void;
@@ -39,14 +38,13 @@ export default abstract class MassView extends Disposable {
   public readonly focusablePath: Path | null;
   public readonly focusableShapeProperty = new Property( new Shape() );
 
-  protected constructor( mass: Mass, initialGeometry: THREE.BufferGeometry,
+  protected constructor( public readonly mass: Mass,
+                         initialGeometry: THREE.BufferGeometry,
                          protected readonly modelViewTransform: THREEModelViewTransform ) {
 
     super();
 
-    this.mass = mass;
     this.massMesh = new MassThreeMesh( mass, initialGeometry );
-
 
     const repositionMassTagNode = () => {
       assert && assert( this.massTagNode, 'do not reposition massTagNode if you do not have a massTag' );

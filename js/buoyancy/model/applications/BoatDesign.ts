@@ -17,7 +17,7 @@
  * compute a shape (for a given block size) such that in 2D it "acts" as the proper 3d shape. This is mainly due to
  * the block corners pressing against the inside of the boat's hull.
  *
- * REVIEW: https://github.com/phetsims/density-buoyancy-common/issues/123 This file is > 800 lines of complicated code
+ * TODO: https://github.com/phetsims/density-buoyancy-common/issues/123 This file is > 800 lines of complicated code
  * with many magic numbers. We should make an effort to remove unused parts, and clean up where possible.
  *
  * @author Jonathan Olson (PhET Interactive Simulations)
@@ -696,7 +696,7 @@ BoatDesign.ONE_LITER_HULL_VOLUME = BoatDesign.DESIGN_HULL_VOLUME * BoatDesign.ON
 
   /**
    * Replaces the main page with a debug view of the bottle, for debugging various curves and properties.
-   * REVIEW: https://github.com/phetsims/density-buoyancy-common/issues/123 this is unused and also says "bottle"
+   * TODO: https://github.com/phetsims/density-buoyancy-common/issues/123 this is unused and also says "bottle"
    *
    * phet.densityBuoyancyCommon.BoatDesign.getDebugCanvas()
    */

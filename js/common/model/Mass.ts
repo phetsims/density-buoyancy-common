@@ -596,7 +596,7 @@ export default abstract class Mass extends PhetioObject {
 
   /**
    * Given a list of values and a ratio from 0 (the start) to 1 (the end), return an interpolated value.
-   * REVIEW: See if this and other occurrences should use dot piecewise linear functions.
+   * TODO: See if this and other occurrences should use dot piecewise linear functions, see https://github.com/phetsims/density-buoyancy-common/issues/123
    */
   protected static evaluatePiecewiseLinear( values: number[], ratio: number ): number {
     const logicalIndex = ratio * ( values.length - 1 );

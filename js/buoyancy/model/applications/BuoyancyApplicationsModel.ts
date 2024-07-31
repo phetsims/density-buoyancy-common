@@ -111,7 +111,7 @@ export default class BuoyancyApplicationsModel extends DensityBuoyancyModel {
       canMove: false,
       inputEnabledPropertyOptions: {
 
-        // REVIEW: Why can the input enabled be turned on? Is this adding a phet-io feature that makes the scale movable?
+        // TODO: Why can the input enabled be turned on? Is this adding a phet-io feature that makes the scale movable? see , see https://github.com/phetsims/density-buoyancy-common/issues/123
         // If so, is changing the inputEnabledProperty to true the only thing that has to happen to make it work?
         phetioReadOnly: false
       }
@@ -119,7 +119,7 @@ export default class BuoyancyApplicationsModel extends DensityBuoyancyModel {
     this.availableMasses.push( this.scale );
 
     // Adjust pool volume so that it's at the desired value WITH the pool scales inside.
-    // REVIEW: How does this relate to https://github.com/phetsims/density-buoyancy-common/blob/4038cb05c2b5c2b8b1f600bfbcf0a7eaac4617a2/js/common/model/DensityBuoyancyModel.ts#L435-L437
+    // TODO: How does this relate to https://github.com/phetsims/density-buoyancy-common/blob/4038cb05c2b5c2b8b1f600bfbcf0a7eaac4617a2/js/common/model/DensityBuoyancyModel.ts#L435-L437, see , see https://github.com/phetsims/density-buoyancy-common/issues/123
     this.pool.fluidVolumeProperty.setInitialValue( this.pool.fluidVolumeProperty.value );
 
     // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
@@ -165,7 +165,7 @@ export default class BuoyancyApplicationsModel extends DensityBuoyancyModel {
     this.boat.resetPosition();
     this.block.resetPosition();
 
-    // REVIEW: Can we call boat.reset() here?
+    // TODO: Can we call boat.reset() here? See , see https://github.com/phetsims/density-buoyancy-common/issues/123
     this.boat.verticalAcceleration = 0;
     this.boat.verticalVelocity = 0;
 
@@ -177,7 +177,7 @@ export default class BuoyancyApplicationsModel extends DensityBuoyancyModel {
    */
   public override reset(): void {
 
-    // REVIEW: Can we call resetBoatScene from reset?
+    // TODO: Can we call resetBoatScene from reset? See , see https://github.com/phetsims/density-buoyancy-common/issues/123
 
     this.bottle.reset();
     this.block.reset();

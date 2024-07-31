@@ -113,7 +113,6 @@ export default class Scale extends Mass {
 
     super( engine, options );
 
-    // Disable lint to hide the InterpolatedProperty implementation detail.
     this.measuredWeightInterpolatedProperty = new InterpolatedProperty( 0, { // eslint-disable-line tandem-name-should-match
       interpolate: InterpolatedProperty.interpolateNumber,
       phetioValueType: NumberIO,
@@ -215,6 +214,8 @@ export default class Scale extends Mass {
 
   public static readonly SCALE_WIDTH = SCALE_WIDTH;
   public static readonly SCALE_HEIGHT = SCALE_HEIGHT;
+
+  // TODO: Remove unused attributes, see https://github.com/phetsims/density-buoyancy-common/issues/123
   private static readonly SCALE_DEPTH = SCALE_DEPTH;
   private static readonly SCALE_BASE_HEIGHT = SCALE_BASE_HEIGHT;
   public static readonly SCALE_TOP_HEIGHT = SCALE_TOP_HEIGHT;

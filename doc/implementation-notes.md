@@ -37,3 +37,5 @@ Notes about coordinates:
 ### Units
 The units for the model are meters, kilograms, and seconds. However, for the user interface, volumes are displayed as L = dm^3,
 so there are several conversions between the two. See https://github.com/phetsims/density-buoyancy-common/issues/266
+
+TODO: Add a section about disposal. What is dynamically created and disposed? Just views? See https://github.com/phetsims/density-buoyancy-common/issues/123

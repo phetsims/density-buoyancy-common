@@ -2,6 +2,7 @@
 
 /**
  * A general class for shared functionality between the boat and bottle.
+ * TODO: Please add more precise documentation, see https://github.com/phetsims/density-buoyancy-common/issues/257
  *
  * @author Agustín Vallejo (PhET Interactive Simulations)
  */

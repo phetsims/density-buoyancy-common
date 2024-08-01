@@ -1,8 +1,13 @@
 // Copyright 2020-2024, University of Colorado Boulder
 
 /**
- * Represents basin of the interior of the boat (that a fluid can reside in at a specific level).
- * Exists for the lifetime of the simulation and does not need to be disposed.
+ * Represents the basin of the interior of the boat where fluid can reside at a specific level.
+ *
+ * Additional class responsibilities include:
+ * - Whether a mass (like an object) is inside the basin.
+ * - The maximum area and volume that can be filled with fluid at a given height.
+ *
+ *  The `BoatBasin` exists for the lifetime of the simulation and does not need to be disposed.
  *
  * @author Jonathan Olson (PhET Interactive Simulations)
  */

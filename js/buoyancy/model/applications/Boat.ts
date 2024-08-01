@@ -65,8 +65,8 @@ export default class Boat extends ApplicationsMass {
       shape: Shape.polygon( boatIntersectionVertices ),
       volume: volume,
       massShape: MassShape.BLOCK,
-      material: Material.BOAT_BODY,
-      availableMassMaterials: [ Material.BOAT_BODY ],
+      material: Material.BOAT_HULL,
+      availableMassMaterials: [ Material.BOAT_HULL ],
 
       accessibleName: 'Boat'
     }, providedOptions );

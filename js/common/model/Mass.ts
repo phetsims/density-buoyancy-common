@@ -242,9 +242,11 @@ export default abstract class Mass extends PhetioObject {
     this.visibleProperty = new GatedVisibleProperty( this.internalVisibleProperty, tandem );
 
     options.materialPropertyOptions.tandem = options.materialPropertyOptions.tandem || tandem.createTandem( 'materialProperty' );
-    const customSolidMaterial = new CustomSolidMaterial( options.materialPropertyOptions.tandem.createTandem( 'customMaterial' ), combineOptions<MaterialOptions>( {
-      density: options.material === 'CUSTOM' ? undefined : options.material.density // The undefined makes sure we don't override the default
-    }, options.customMaterialOptions ) );
+    const customSolidMaterial = new CustomSolidMaterial(
+      options.availableMassMaterials.includes( 'CUSTOM' ) ? options.materialPropertyOptions.tandem.createTandem( 'customMaterial' ) : Tandem.OPT_OUT,
+      combineOptions<MaterialOptions>( {
+        density: options.material === 'CUSTOM' ? undefined : options.material.density // The undefined makes sure we don't override the default
+      }, options.customMaterialOptions ) );
 
     const initialMaterial = options.material === 'CUSTOM' ? customSolidMaterial : options.material;
     this.materialProperty = new MaterialProperty( initialMaterial, customSolidMaterial,

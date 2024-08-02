@@ -13,9 +13,7 @@
  */
 
 import Property, { PropertyOptions } from '../../../../axon/js/Property.js';
-import DynamicProperty from '../../../../axon/js/DynamicProperty.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
-import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import optionize, { EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
 
 // TODO: Consider renaming given the new fields, https://github.com/phetsims/density-buoyancy-common/issues/281
@@ -28,8 +26,6 @@ export type HasValueProperty = {
 type MappedWrappedPropertyOptions<T> = PropertyOptions<T>;
 
 export default abstract class MappedWrappedProperty<T extends HasValueProperty> extends Property<T> {
-  // TODO: Please document, see https://github.com/phetsims/density-buoyancy-common/issues/281
-  protected readonly dynamicValueProperty: TReadOnlyProperty<number>;
   public readonly customValue: T;
   public readonly availableValues: T[];
 
@@ -40,11 +36,6 @@ export default abstract class MappedWrappedProperty<T extends HasValueProperty> 
     }, providedOptions );
 
     super( initialValue, options );
-
-    this.dynamicValueProperty = new DynamicProperty<number, number, T>( this, {
-      bidirectional: false,
-      derive: value => value.valueProperty
-    } );
 
     this.customValue = customValue;
     this.availableValues = availableValues;

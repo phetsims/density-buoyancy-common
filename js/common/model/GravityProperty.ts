@@ -14,15 +14,22 @@ import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import MappedWrappedProperty from './MappedWrappedProperty.js';
 import PickRequired from '../../../../phet-core/js/types/PickRequired.js';
 import { PhetioObjectOptions } from '../../../../tandem/js/PhetioObject.js';
+import DynamicProperty from '../../../../axon/js/DynamicProperty.js';
 
 export default class GravityProperty extends MappedWrappedProperty<Gravity> {
+
+  // Takes the value of the currently selected Gravity instance
   public readonly gravityValueProperty: TReadOnlyProperty<number>;
+
   public readonly customGravity: Gravity;
 
   public constructor( gravity: Gravity, customGravity: Gravity, availableValues: Gravity[], providedOptions: PropertyOptions<Gravity> & PickRequired<PhetioObjectOptions, 'tandem'> ) {
     super( gravity, customGravity, availableValues, providedOptions );
 
-    this.gravityValueProperty = this.dynamicValueProperty;
+    this.gravityValueProperty = new DynamicProperty<number, number, Gravity>( this, {
+      bidirectional: false,
+      derive: value => value.valueProperty
+    } );
     this.customGravity = this.customValue;
   }
 

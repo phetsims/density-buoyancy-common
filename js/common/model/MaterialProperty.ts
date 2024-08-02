@@ -26,7 +26,10 @@ type SelfOptions = EmptySelfOptions;
 export type MaterialPropertyOptions = SelfOptions & PropertyOptions<Material> & PickRequired<PhetioObjectOptions, 'tandem'>;
 
 export default class MaterialProperty extends MappedWrappedProperty<Material> {
+
+  // Takes the density value of the currently selected Material instance
   public readonly densityProperty: TReadOnlyProperty<number>;
+
   public readonly customMaterial: Material;
 
   // Note the material could be the customMaterial. That is not a bug, that is a workaround that means there is no customMaterial.
@@ -36,7 +39,10 @@ export default class MaterialProperty extends MappedWrappedProperty<Material> {
       phetioValueType: ReferenceIO( IOType.ObjectIO ),
       phetioFeatured: true
     }, providedOptions ) );
-    this.densityProperty = this.dynamicValueProperty;
+    this.densityProperty = new DynamicProperty<number, number, Material>( this, {
+      bidirectional: false,
+      derive: value => value.valueProperty
+    } );
     this.customMaterial = this.customValue;
   }
 

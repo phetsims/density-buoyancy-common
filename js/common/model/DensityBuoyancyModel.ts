@@ -93,7 +93,9 @@ export default class DensityBuoyancyModel implements TModel {
       Gravity.JUPITER,
       customGravity,
       Gravity.PLANET_X
-    ], {
+
+      // Only take the values instrumented for the current sim. See Gravity.ts for what is instrumented on each screen.
+    ].filter( gravity => gravity.isPhetioInstrumented() ), {
       valueType: Gravity,
       phetioValueType: ReferenceIO( IOType.ObjectIO ),
       tandem: gravityPropertyTandem,

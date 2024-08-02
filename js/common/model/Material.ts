@@ -203,7 +203,7 @@ export default class Material extends PhetioObject implements HasValueProperty {
     colorProperty: DensityBuoyancyCommonColors.materialConcreteColorProperty
   } );
 
-  public static readonly COPPER = new Material( packageJSON.name === 'buoyancy' ? SOLIDS_TANDEM.createTandem( 'copper' ) : Tandem.OPT_OUT, {
+  public static readonly COPPER = new Material( packageJSON.name === 'density' || packageJSON.name === 'buoyancy' ? SOLIDS_TANDEM.createTandem( 'copper' ) : Tandem.OPT_OUT, {
     nameProperty: DensityBuoyancyCommonStrings.material.copperStringProperty,
     density: 8960,
     colorProperty: DensityBuoyancyCommonColors.materialCopperColorProperty
@@ -214,7 +214,7 @@ export default class Material extends PhetioObject implements HasValueProperty {
     density: 19320
   } );
 
-  public static readonly PLATINUM = new Material( packageJSON.name === 'buoyancy' ? SOLIDS_TANDEM.createTandem( 'platinum' ) : Tandem.OPT_OUT, {
+  public static readonly PLATINUM = new Material( packageJSON.name === 'density' || packageJSON.name === 'buoyancy' ? SOLIDS_TANDEM.createTandem( 'platinum' ) : Tandem.OPT_OUT, {
     nameProperty: DensityBuoyancyCommonStrings.material.platinumStringProperty,
     density: 21450
   } );
@@ -236,7 +236,7 @@ export default class Material extends PhetioObject implements HasValueProperty {
     density: 10490
   } );
 
-  public static readonly STEEL = new Material( packageJSON.name === 'buoyancy' ? SOLIDS_TANDEM.createTandem( 'steel' ) : Tandem.OPT_OUT, {
+  public static readonly STEEL = new Material( packageJSON.name === 'density' || packageJSON.name === 'buoyancy' ? SOLIDS_TANDEM.createTandem( 'steel' ) : Tandem.OPT_OUT, {
     nameProperty: DensityBuoyancyCommonStrings.material.steelStringProperty,
     density: 7800
   } );

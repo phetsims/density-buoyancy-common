@@ -166,7 +166,7 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
       cameraPosition: options.cameraPosition,
       viewOffset: options.viewOffset,
       getPhetioMouseHit: point => {
-        const pointedAtMass = this.getMassViewUnderPoint( this.localToGlobalPoint( point ) );
+        const pointedAtMass = this.getMassViewUnderPoint( this.localToGlobalPoint( point ), 'autoselect' );
         return pointedAtMass ? pointedAtMass.massView.mass.getPhetioMouseHitTarget() : pointedAtMass;
       },
 
@@ -667,13 +667,13 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
     if ( point === null ) {
       return null;
     }
-    return this.getMassViewUnderPoint( point );
+    return this.getMassViewUnderPoint( point, 'input' );
   }
 
   /**
    * Returns the closest grab-able mass under the point
    */
-  private getMassViewUnderPoint( point: Vector2 ): PointedAtMassView | null {
+  private getMassViewUnderPoint( point: Vector2, mode: 'autoselect' | 'input' ): PointedAtMassView | null {
     const ray = this.sceneNode.getRayFromScreenPoint( point );
 
     const entries: PointedAtMassView[] = [];
@@ -686,7 +686,12 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
       }
 
       const t = intersections.length ? intersections[ 0 ].distance : null;
-      if ( t !== null && massView.mass.canMove && massView.mass.inputEnabledProperty.value ) {
+
+      // Visit everything when in autoselect, but for input events, the mass must be movable and enabled.
+      const isMassSelectable = mode === 'autoselect' || ( massView.mass.canMove && massView.mass.inputEnabledProperty.value );
+
+      // Only visit masses that can move.
+      if ( t !== null && isMassSelectable ) {
         entries.push( {
           massView: massView,
           t: t

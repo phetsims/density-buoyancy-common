@@ -61,12 +61,13 @@ export default class Pool extends Basin {
 
     const fluidMaterialPropertyTandem = this.fluidTandem.createTandem( 'materialProperty' );
 
-    const customFluidMaterial = new CustomLiquidMaterial( fluidMaterialPropertyTandem.createTandem( 'customMaterial' ), {
-      density: Material.WATER.density,
-      densityPropertyOptions: {
-        range: DensityBuoyancyCommonConstants.FLUID_DENSITY_RANGE_PER_M3
-      }
-    } );
+    const customFluidMaterial = new CustomLiquidMaterial(
+      fluidSelectionType === 'all' ? fluidMaterialPropertyTandem.createTandem( 'customMaterial' ) : Tandem.OPT_OUT, {
+        density: Material.WATER.density,
+        densityPropertyOptions: {
+          range: DensityBuoyancyCommonConstants.FLUID_DENSITY_RANGE_PER_M3
+        }
+      } );
 
     const availableMaterials = fluidSelectionType === 'justWater' ? [ Material.WATER ] :
                                fluidSelectionType === 'simple' ? Material.BUOYANCY_FLUID_MATERIALS :

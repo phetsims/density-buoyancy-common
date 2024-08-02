@@ -137,7 +137,6 @@ export default class Material extends PhetioObject implements HasValueProperty {
    * 1: lots of lightness
    * 0: lots of darkness
    * .5: no change to color.
-   * TODO AV: Double check all usages to make sure linear mapping behaves well, https://github.com/phetsims/density-buoyancy-common/issues/268
    */
   public static getNormalizedLightness( density: number, densityRange: Range ): number {
     return Utils.clamp( 1 - densityRange.getNormalizedValue( density ), 0, 1 );
@@ -493,9 +492,11 @@ export class CustomSolidMaterial extends Material {
 
         // Returns a value suitable for use in colors (0-255 value) that should be used as a grayscale value for
         // a material of a given density. The mappíng is inverted, i.e. larger densities yield darker colors.
-        // TODO AV: Interpolate between two ColorProfileProperties like getCustomLiquidColor(),  https://github.com/phetsims/density-buoyancy-common/issues/268
-        const lightness = Utils.roundSymmetric( Material.getNormalizedLightness( density, densityRange ) * 255 );
-        return new Color( lightness, lightness, lightness );
+        const lightnessFactor = Material.getNormalizedLightness( density, densityRange );
+        return Color.interpolateRGBA(
+          new Color( '#000' ),
+          new Color( '#FFF' ),
+          lightnessFactor );
       } );
     }
 

@@ -24,8 +24,8 @@ const LINE_WIDTH = 0.1;
 
 export default class DebugView extends Node {
 
-  protected model: DensityBuoyancyModel;
-  protected layoutBounds: Bounds2;
+  protected readonly model: DensityBuoyancyModel;
+  protected readonly layoutBounds: Bounds2;
   protected readonly modelViewTransform: ModelViewTransform2;
   protected readonly poolPath: Path;
   protected readonly massNodes: DebugMassNode[];

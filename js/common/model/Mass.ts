@@ -28,7 +28,7 @@ import IOType from '../../../../tandem/js/types/IOType.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import InterpolatedProperty from './InterpolatedProperty.js';
 import Material, { CustomSolidMaterial, MaterialOptions } from './Material.js';
-import PhysicsEngine, { PhysicsEngineBody } from './PhysicsEngine.js';
+import P2Engine, { PhysicsEngineBody } from './P2Engine.js';
 import Basin from './Basin.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import Multilink from '../../../../axon/js/Multilink.js';
@@ -93,7 +93,7 @@ export type MassIOStateObject = {
 
 export default abstract class Mass extends PhetioObject {
 
-  protected readonly engine: PhysicsEngine;
+  protected readonly engine: P2Engine;
   public readonly body: PhysicsEngineBody;
 
   private readonly massShape: MassShape;
@@ -179,7 +179,7 @@ export default abstract class Mass extends PhetioObject {
   public stepBottom: number; // minimum y value of the mass
   public stepTop: number; // maximum y value of the mass
 
-  protected constructor( engine: PhysicsEngine, providedOptions: MassOptions ) {
+  protected constructor( engine: P2Engine, providedOptions: MassOptions ) {
 
     const options = optionize<MassOptions, SelfOptions, PhetioObjectOptions>()( {
       visible: true,

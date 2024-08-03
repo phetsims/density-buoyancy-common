@@ -16,7 +16,7 @@ import Material from '../../../common/model/Material.js';
 import densityBuoyancyCommon from '../../../densityBuoyancyCommon.js';
 import BoatBasin from './BoatBasin.js';
 import BoatDesign from './BoatDesign.js';
-import PhysicsEngine from '../../../common/model/PhysicsEngine.js';
+import P2Engine from '../../../common/model/P2Engine.js';
 import Multilink from '../../../../../axon/js/Multilink.js';
 import TReadOnlyProperty from '../../../../../axon/js/TReadOnlyProperty.js';
 import { MassShape } from '../../../common/model/MassShape.js';
@@ -55,7 +55,7 @@ export default class Boat extends ApplicationsMass {
   public verticalVelocity = 0;
   public verticalAcceleration = 0;
 
-  public constructor( engine: PhysicsEngine, blockWidthProperty: TReadOnlyProperty<number>, fluidMaterialProperty: MaterialProperty, providedOptions: BoatOptions ) {
+  public constructor( engine: P2Engine, blockWidthProperty: TReadOnlyProperty<number>, fluidMaterialProperty: MaterialProperty, providedOptions: BoatOptions ) {
 
     const boatIntersectionVertices = BoatDesign.getIntersectionVertices( blockWidthProperty.value / 2, toLiters( ApplicationsMass.DEFAULT_DISPLACEMENT_VOLUME ) );
     const volume = BoatDesign.ONE_LITER_HULL_VOLUME * toLiters( ApplicationsMass.DEFAULT_DISPLACEMENT_VOLUME );

@@ -8,7 +8,7 @@
  */
 
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
-import PhysicsEngine from './PhysicsEngine.js';
+import P2Engine from './P2Engine.js';
 import Scale, { DisplayType, SCALE_HEIGHT, SCALE_WIDTH } from './Scale.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import { Shape } from '../../../../kite/js/imports.js';
@@ -29,7 +29,7 @@ export default class PoolScale extends Scale {
   // See PoolScaleHeightControl for the mapping to model coordinates.
   public readonly heightProperty: Property<number>;
 
-  public constructor( engine: PhysicsEngine, gravityProperty: GravityProperty, tandem: Tandem ) {
+  public constructor( engine: P2Engine, gravityProperty: GravityProperty, tandem: Tandem ) {
 
     const vertices = [
       new Vector2( -SCALE_WIDTH / 2, -SCALE_HEIGHT / 2 * SCALE_INVISIBLE_VERTICAL_EXTENSION_FACTOR ),

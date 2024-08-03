@@ -1,7 +1,7 @@
 // Copyright 2019-2024, University of Colorado Boulder
 
 /**
- * Adapter for the p2.js physics engine (two-dimensional physics). See PhysicsEngine for API.
+ * Adapter for the p2.js physics engine (two-dimensional physics).
  *
  * This class uses many configuration values from query parameters, it would be good to know those when looking at this
  * file.
@@ -19,7 +19,12 @@ import Matrix3 from '../../../../dot/js/Matrix3.js';
 import Vector2, { Vector2StateObject } from '../../../../dot/js/Vector2.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonQueryParameters from '../DensityBuoyancyCommonQueryParameters.js';
-import PhysicsEngine, { PhysicsBodyType, PhysicsEngineBody } from './PhysicsEngine.js';
+
+export const PhysicsBodyTypeValues = [ 'STATIC', 'DYNAMIC', 'KINEMATIC' ] as const;
+export type PhysicsBodyType = ( typeof PhysicsBodyTypeValues )[number];
+
+// NOTE: if we're using something other than P2, we'll need to improve this typing
+export type PhysicsEngineBody = p2.Body;
 
 // constants
 const FIXED_TIME_STEP = DensityBuoyancyCommonQueryParameters.p2FixedTimeStep;
@@ -46,7 +51,11 @@ export type BodyStateObject = {
   force: Vector2StateObject;
 };
 
-export default class P2Engine extends PhysicsEngine {
+export default class P2Engine {
+
+  // Engines typically work in fixed-time steps, this is how far we are in the
+  // display from the "previous" step (0) to the "next" step (1).
+  public interpolationRatio = 1;
 
   private readonly world: p2.World;
 
@@ -60,7 +69,6 @@ export default class P2Engine extends PhysicsEngine {
   private readonly internalStepEmitter: TEmitter<[ number ]>;
 
   public constructor() {
-    super();
 
     this.world = new p2.World( {} );
 
@@ -111,7 +119,8 @@ export default class P2Engine extends PhysicsEngine {
   }
 
   /**
-   * Steps forward in time.
+   * Steps forward in time. This could produce multiple "physics engine steps", though this function is only called once
+   * per simulation step.
    */
   public step( dt: number ): void {
     this.world.step( FIXED_TIME_STEP, dt, MAX_SUB_STEPS );
@@ -133,7 +142,7 @@ export default class P2Engine extends PhysicsEngine {
   }
 
   /**
-   * Sets the mass of a body.
+   * Sets the mass of a body (and whether it can rotate, which for some engines needs to be set at the same time).
    */
   public bodySetMass( body: PhysicsEngineBody, mass: number ): void {
     body.mass = mass * MASS_SCALE;
@@ -265,6 +274,7 @@ export default class P2Engine extends PhysicsEngine {
    * Returns a serialized form of a body
    */
   public bodyResetHidden( body: PhysicsEngineBody ): void {
+
     // Bodies don't start with velocity/force applied
     body.velocity[ 0 ] = 0;
     body.velocity[ 1 ] = 0;
@@ -396,6 +406,7 @@ export default class P2Engine extends PhysicsEngine {
 
   /**
    * Removes a listener to be called after each internal step.
+   * TODO: Remove this method, see https://github.com/phetsims/density-buoyancy-common/issues/302
    */
   protected removePostStepListener( listener: ( dt: number ) => void ): void {
     this.internalStepEmitter.removeListener( listener );

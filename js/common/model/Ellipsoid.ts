@@ -16,7 +16,7 @@ import { Shape } from '../../../../kite/js/imports.js';
 import optionize, { EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import Mass, { InstrumentedMassOptions, MASS_MAX_SHAPES_DIMENSION, MASS_MIN_SHAPES_DIMENSION } from './Mass.js';
-import PhysicsEngine from './PhysicsEngine.js';
+import P2Engine from './P2Engine.js';
 import { MassShape } from './MassShape.js';
 import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
 import Utils from '../../../../dot/js/Utils.js';
@@ -31,7 +31,7 @@ export default class Ellipsoid extends Mass {
   private stepMaximumArea: number;
   private stepMaximumVolume: number;
 
-  public constructor( engine: PhysicsEngine, size: Bounds3, providedOptions: EllipsoidOptions ) {
+  public constructor( engine: P2Engine, size: Bounds3, providedOptions: EllipsoidOptions ) {
     const options = optionize<EllipsoidOptions, EmptySelfOptions, InstrumentedMassOptions>()( {
       body: engine.createFromVertices( Ellipsoid.getEllipsoidVertices( size.width, size.height ), false ),
       shape: Ellipsoid.getEllipsoidShape( size.width, size.height ),

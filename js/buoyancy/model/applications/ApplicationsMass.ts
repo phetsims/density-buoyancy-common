@@ -10,7 +10,7 @@
 import NumberProperty from '../../../../../axon/js/NumberProperty.js';
 import Mass, { InstrumentedMassOptions } from '../../../common/model/Mass.js';
 import densityBuoyancyCommon from '../../../densityBuoyancyCommon.js';
-import PhysicsEngine from '../../../common/model/PhysicsEngine.js';
+import P2Engine from '../../../common/model/P2Engine.js';
 import Vector2 from '../../../../../dot/js/Vector2.js';
 import Vector3 from '../../../../../dot/js/Vector3.js';
 import Bounds3 from '../../../../../dot/js/Bounds3.js';
@@ -27,7 +27,7 @@ export default abstract class ApplicationsMass extends Mass {
 
   protected readonly massLabelOffsetVector3: Vector3;
 
-  protected constructor( engine: PhysicsEngine, options: ApplicationsMassOptions ) {
+  protected constructor( engine: P2Engine, options: ApplicationsMassOptions ) {
 
     super( engine, options );
 

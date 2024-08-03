@@ -14,11 +14,10 @@ import Vector2 from '../../../../dot/js/Vector2.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonQueryParameters from '../DensityBuoyancyCommonQueryParameters.js';
 import Gravity from './Gravity.js';
-import P2Engine from './P2Engine.js';
 import Pool, { FluidSelectionType } from './Pool.js';
 import Scale from './Scale.js';
 import optionize from '../../../../phet-core/js/optionize.js';
-import PhysicsEngine, { PhysicsEngineBody } from './PhysicsEngine.js';
+import P2Engine, { PhysicsEngineBody } from './P2Engine.js';
 import Mass from './Mass.js';
 import Cuboid from './Cuboid.js';
 import TModel from '../../../../joist/js/TModel.js';
@@ -61,7 +60,7 @@ export default class DensityBuoyancyModel implements TModel {
   public readonly invisibleBarrierBoundsProperty: Property<Bounds3>;
 
   public readonly pool: Pool;
-  public readonly engine: PhysicsEngine;
+  public readonly engine: P2Engine;
   private readonly groundBody: PhysicsEngineBody;
   private barrierBody: PhysicsEngineBody;
 

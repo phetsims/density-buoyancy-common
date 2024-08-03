@@ -36,10 +36,8 @@ const groundMaterial = new p2.Material();
 const barrierMaterial = new p2.Material();
 const dynamicMaterial = new p2.Material();
 
-type BodyType = typeof p2.Body.KINEMATIC | typeof p2.Body.DYNAMIC | typeof p2.Body.STATIC;
-
 // Map the general supported type into the language the p2 understands
-const BODY_TYPE_MAPPER: Record<PhysicsBodyType, BodyType> = {
+const BODY_TYPE_MAPPER = {
   DYNAMIC: p2.Body.DYNAMIC, // Default, can be moved around, and can be effected by other bodies moving around.
   KINEMATIC: p2.Body.KINEMATIC, // Cannot be moved by other bodies, but can move.
   STATIC: p2.Body.STATIC // Cannot move, for anything.

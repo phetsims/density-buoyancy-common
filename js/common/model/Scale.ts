@@ -21,11 +21,11 @@ import InterpolatedProperty from './InterpolatedProperty.js';
 import Mass, { InstrumentedMassOptions } from './Mass.js';
 import Material from './Material.js';
 import PhysicsEngine from './PhysicsEngine.js';
-import Gravity from './Gravity.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import { MassShape } from './MassShape.js';
 import PickOptional from '../../../../phet-core/js/types/PickOptional.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
+import GravityProperty from './GravityProperty.js';
 
 // constants
 export const SCALE_WIDTH = 0.15;
@@ -79,7 +79,7 @@ export default class Scale extends Mass {
 
   public readonly displayType: DisplayType;
 
-  public constructor( engine: PhysicsEngine, gravityProperty: TReadOnlyProperty<Gravity>, providedOptions: ScaleOptions ) {
+  public constructor( engine: PhysicsEngine, gravityProperty: GravityProperty, providedOptions: ScaleOptions ) {
 
     const bodyType = providedOptions.canMove === false ? 'STATIC' : 'DYNAMIC';
 
@@ -124,13 +124,8 @@ export default class Scale extends Mass {
       phetioHighFrequency: true
     } );
 
-    this.measuredMassProperty = new DerivedProperty( [ this.measuredWeightInterpolatedProperty, gravityProperty ], ( force, gravity ) => {
-      if ( gravity.gravityValue !== 0 ) {
-        return force / gravity.gravityValue;
-      }
-      else {
-        return 0;
-      }
+    this.measuredMassProperty = new DerivedProperty( [ this.measuredWeightInterpolatedProperty, gravityProperty.gravityValueProperty ], ( force, gravityValue ) => {
+      return gravityValue === 0 ? 0 : force / gravityValue;
     }, {
       phetioValueType: NumberIO,
       tandem: options.tandem.createTandem( 'measuredMassProperty' ),

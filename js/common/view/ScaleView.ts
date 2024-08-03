@@ -18,13 +18,14 @@ import Gravity from '../model/Gravity.js';
 import MassDecorationLayer from './MassDecorationLayer.js';
 import { THREEModelViewTransform } from './DensityBuoyancyScreenView.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
+import GravityProperty from '../model/GravityProperty.js';
 
 export default class ScaleView extends MassView {
 
   private readonly scaleGeometry: THREE.BufferGeometry;
   private readonly scaleReadoutNode: ScaleReadoutNode;
 
-  public constructor( mass: Scale, modelViewTransform: THREEModelViewTransform, gravityProperty: TReadOnlyProperty<Gravity> ) {
+  public constructor( mass: Scale, modelViewTransform: THREEModelViewTransform, gravityProperty: GravityProperty ) {
 
     const scaleGeometry = ScaleView.getScaleGeometry();
     super( mass, scaleGeometry, modelViewTransform );

@@ -19,8 +19,8 @@ import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import Utils from '../../../../dot/js/Utils.js';
 import PoolScale from './PoolScale.js';
 import PhysicsEngine from './PhysicsEngine.js';
-import Gravity from './Gravity.js';
 import MaterialProperty from './MaterialProperty.js';
+import GravityProperty from './GravityProperty.js';
 
 export type FluidSelectionType = 'justWater' | 'simple' | 'all';
 
@@ -40,7 +40,7 @@ export default class Pool extends Basin {
   public readonly fluidTandem: Tandem;
 
   public constructor( bounds: Bounds3, usePoolScale: boolean, engine: PhysicsEngine,
-                      gravityProperty: TReadOnlyProperty<Gravity>,
+                      gravityProperty: GravityProperty,
                       fluidSelectionType: FluidSelectionType, tandem: Tandem ) {
 
     const initialVolume = DensityBuoyancyCommonConstants.DESIRED_STARTING_POOL_VOLUME;

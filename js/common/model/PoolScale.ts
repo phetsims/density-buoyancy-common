@@ -9,7 +9,6 @@
 
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import PhysicsEngine from './PhysicsEngine.js';
-import Gravity from './Gravity.js';
 import Scale, { DisplayType, SCALE_HEIGHT, SCALE_WIDTH } from './Scale.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import { Shape } from '../../../../kite/js/imports.js';
@@ -18,7 +17,7 @@ import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js
 import Range from '../../../../dot/js/Range.js';
 import Property from '../../../../axon/js/Property.js';
 import NumberProperty from '../../../../axon/js/NumberProperty.js';
-import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
+import GravityProperty from './GravityProperty.js';
 
 // To prevent objects from being dragged beneath the scale, we extend the invisible part of the scale vertically downward.
 // This has to be big enough to cover all the way to the bottom of the pool when the scale is at its maximum height.
@@ -30,7 +29,7 @@ export default class PoolScale extends Scale {
   // See PoolScaleHeightControl for the mapping to model coordinates.
   public readonly heightProperty: Property<number>;
 
-  public constructor( engine: PhysicsEngine, gravityProperty: TReadOnlyProperty<Gravity>, tandem: Tandem ) {
+  public constructor( engine: PhysicsEngine, gravityProperty: GravityProperty, tandem: Tandem ) {
 
     const vertices = [
       new Vector2( -SCALE_WIDTH / 2, -SCALE_HEIGHT / 2 * SCALE_INVISIBLE_VERTICAL_EXTENSION_FACTOR ),

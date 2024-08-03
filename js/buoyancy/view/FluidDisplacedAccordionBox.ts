@@ -30,6 +30,7 @@ import { DisplayType } from '../../common/model/Scale.js';
 import PickRequired from '../../../../phet-core/js/types/PickRequired.js';
 import NumberIO from '../../../../tandem/js/types/NumberIO.js';
 import ReadOnlyProperty from '../../../../axon/js/ReadOnlyProperty.js';
+import GravityProperty from '../../common/model/GravityProperty.js';
 
 type SelfOptions = EmptySelfOptions;
 
@@ -48,7 +49,7 @@ export default class FluidDisplacedAccordionBox extends AccordionBox {
   public constructor( displayedDisplacedVolumeProperty: ReadOnlyProperty<number>, // Imported as property to link to it in phet-io
                       maxBeakerVolume: number,
                       fluidMaterialProperty: TReadOnlyProperty<Material>,
-                      gravityProperty: TReadOnlyProperty<Gravity>,
+                      gravityProperty: GravityProperty,
                       providedOptions?: FluidDisplacedAccordionBoxOptions ) {
     const options = optionize<FluidDisplacedAccordionBoxOptions, SelfOptions, AccordionBoxOptions>()( {
       titleNode: new RichText( DensityBuoyancyCommonStrings.fluidDisplacedStringProperty, {
@@ -116,14 +117,14 @@ export default class FluidDisplacedAccordionBox extends AccordionBox {
     } );
 
     const displacedWeightProperty = new DerivedProperty( [
-      gravityProperty,
+      gravityProperty.gravityValueProperty,
       displayedDisplacedVolumeProperty,
       fluidMaterialProperty
-    ], ( gravity, displacedVolume, fluidMaterial ) => {
+    ], ( gravityValue, displacedVolume, fluidMaterial ) => {
 
       // Convert density units from kg/m^3=>kg/L
       return ( fluidMaterial.density / DensityBuoyancyCommonConstants.LITERS_IN_CUBIC_METER ) *
-             gravity.gravityValue * displacedVolume;
+             gravityValue * displacedVolume;
     }, {
       tandem: options.tandem.createTandem( 'displacedWeightProperty' ),
       phetioValueType: NumberIO,

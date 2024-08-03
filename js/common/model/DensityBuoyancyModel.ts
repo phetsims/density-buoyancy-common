@@ -223,7 +223,7 @@ export default class DensityBuoyancyModel implements TModel {
     this.engine.addPostStepListener( dt => {
       this.updateFluid();
 
-      const gravity = this.gravityProperty.value.gravityValue;
+      const gravity = this.gravityProperty.gravityValueProperty.value;
       this.updateVerticalMotion( dt );
 
       // Will set the force Properties for all the masses

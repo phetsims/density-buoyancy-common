@@ -22,6 +22,7 @@ import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import BlendedNumberProperty from '../model/BlendedNumberProperty.js';
 import optionize from '../../../../phet-core/js/optionize.js';
+import GravityProperty from '../model/GravityProperty.js';
 
 type GeneralScaleReadoutNodeSelfOptions = {
   textMaxWidth?: number;
@@ -32,7 +33,7 @@ export class GeneralScaleReadoutNode extends Node {
 
   private readonly stringProperty: TReadOnlyProperty<string>;
 
-  public constructor( forceProperty: TReadOnlyProperty<number>, gravityProperty: TReadOnlyProperty<Gravity>,
+  public constructor( forceProperty: TReadOnlyProperty<number>, gravityProperty: GravityProperty,
                       displayType: DisplayType, providedOptions?: GeneralScaleReadoutNodeOptions ) {
     const options = optionize<GeneralScaleReadoutNodeOptions, GeneralScaleReadoutNodeSelfOptions, NodeOptions>()( {
       pickable: false,
@@ -42,10 +43,10 @@ export class GeneralScaleReadoutNode extends Node {
 
     this.stringProperty = new DerivedProperty( [
       forceProperty,
-      gravityProperty,
+      gravityProperty.gravityValueProperty,
       DensityBuoyancyCommonStrings.newtonsPatternStringProperty,
       DensityBuoyancyCommonStrings.kilogramsPatternStringProperty
-    ], ( scaleForce, gravity, newtonsPattern, kilogramsPattern ) => {
+    ], ( scaleForce, gravityValue, newtonsPattern, kilogramsPattern ) => {
       if ( displayType === DisplayType.NEWTONS ) {
         return StringUtils.fillIn( newtonsPattern, {
           newtons: Utils.toFixed( scaleForce, chooseDecimalPlaces( scaleForce ) )
@@ -53,7 +54,7 @@ export class GeneralScaleReadoutNode extends Node {
       }
       else {
         return StringUtils.fillIn( kilogramsPattern, {
-          kilograms: gravity.gravityValue > 0 ? Utils.toFixed( scaleForce / gravity.gravityValue, chooseDecimalPlaces( scaleForce ) ) : '-'
+          kilograms: gravityValue > 0 ? Utils.toFixed( scaleForce / gravityValue, chooseDecimalPlaces( scaleForce ) ) : '-'
         } );
       }
     } );
@@ -96,7 +97,7 @@ export class GeneralScaleReadoutNode extends Node {
 export default class ScaleReadoutNode extends GeneralScaleReadoutNode {
 
   // TODO: Rename mass => scale, see https://github.com/phetsims/density-buoyancy-common/issues/123
-  public constructor( public readonly mass: Scale, gravityProperty: TReadOnlyProperty<Gravity> ) {
+  public constructor( public readonly mass: Scale, gravityProperty: GravityProperty ) {
 
     const blendedProperty = new BlendedNumberProperty( mass.measuredWeightInterpolatedProperty.value );
     mass.stepEmitter.addListener( () => blendedProperty.step( mass.measuredWeightInterpolatedProperty.value ) );

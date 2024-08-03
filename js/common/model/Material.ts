@@ -7,7 +7,7 @@
  */
 
 import Utils from '../../../../dot/js/Utils.js';
-import optionize, { combineOptions, EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
+import optionize, { EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
 import { Color } from '../../../../scenery/js/imports.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
@@ -120,16 +120,6 @@ export default class Material extends PhetioObject implements HasValueProperty {
 
   public reset(): void {
     this.densityProperty.reset();
-  }
-
-  /**
-   * Returns a custom material that can be modified at will.
-   */
-  public static createCustomMaterial( tandem: Tandem, options: MaterialOptions ): Material {
-    return new Material( tandem, combineOptions<MaterialOptions>( {
-      nameProperty: DensityBuoyancyCommonStrings.material.customStringProperty,
-      custom: true
-    }, options ) );
   }
 
   /**
@@ -248,7 +238,7 @@ export default class Material extends PhetioObject implements HasValueProperty {
 
   ////////////////// OTHER SOLIDS //////////////////
 
-  public static readonly APPLE = new Material( Tandem.OPT_OUT, {
+  private static readonly APPLE = new Material( Tandem.OPT_OUT, {
     nameProperty: DensityBuoyancyCommonStrings.material.appleStringProperty,
     // "Some Physical Properties of Apple" - Averaged the two cultivars' densities for this
     // http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.548.1131&rep=rep1&type=pdf
@@ -270,7 +260,7 @@ export default class Material extends PhetioObject implements HasValueProperty {
     density: 950
   } );
 
-  public static readonly LEAD = new Material( Tandem.OPT_OUT, {
+  private static readonly LEAD = new Material( Tandem.OPT_OUT, {
     nameProperty: DensityBuoyancyCommonStrings.material.leadStringProperty,
     density: 11342
   } );
@@ -282,7 +272,7 @@ export default class Material extends PhetioObject implements HasValueProperty {
 
   ////////////////// LIQUIDS //////////////////
 
-  public static readonly AIR = new Material( Tandem.OPT_OUT, {
+  private static readonly AIR = new Material( Tandem.OPT_OUT, {
     nameProperty: DensityBuoyancyCommonStrings.material.airStringProperty,
     density: 1.2,
     viscosity: 0
@@ -337,14 +327,14 @@ export default class Material extends PhetioObject implements HasValueProperty {
     colorProperty: DensityBuoyancyCommonColors.materialGasolineColorProperty
   } );
 
-  public static readonly HONEY = new Material( packageJSON.name === 'density' ? Tandem.OPT_OUT : FLUIDS_TANDEM.createTandem( 'honey' ), {
+  private static readonly HONEY = new Material( packageJSON.name === 'density' ? Tandem.OPT_OUT : FLUIDS_TANDEM.createTandem( 'honey' ), {
     nameProperty: DensityBuoyancyCommonStrings.material.honeyStringProperty,
     density: 1440,
     viscosity: 0.03, // NOTE: actual value around 2.5, but we can get away with this for animation
     colorProperty: DensityBuoyancyCommonColors.materialHoneyColorProperty
   } );
 
-  public static readonly MERCURY = new Material( packageJSON.name === 'density' ? Tandem.OPT_OUT : FLUIDS_TANDEM.createTandem( 'mercury' ), {
+  private static readonly MERCURY = new Material( packageJSON.name === 'density' ? Tandem.OPT_OUT : FLUIDS_TANDEM.createTandem( 'mercury' ), {
     nameProperty: DensityBuoyancyCommonStrings.material.mercuryStringProperty,
     density: 13593,
     viscosity: 1.53e-3,
@@ -358,7 +348,7 @@ export default class Material extends PhetioObject implements HasValueProperty {
     colorProperty: DensityBuoyancyCommonColors.materialOilColorProperty
   } );
 
-  public static readonly SEAWATER = new Material( packageJSON.name === 'density' ? Tandem.OPT_OUT : FLUIDS_TANDEM.createTandem( 'seawater' ), {
+  private static readonly SEAWATER = new Material( packageJSON.name === 'density' ? Tandem.OPT_OUT : FLUIDS_TANDEM.createTandem( 'seawater' ), {
     nameProperty: DensityBuoyancyCommonStrings.material.seawaterStringProperty,
     density: 1029,
     viscosity: 1.88e-3,

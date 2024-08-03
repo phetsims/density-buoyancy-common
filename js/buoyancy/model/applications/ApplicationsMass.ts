@@ -23,7 +23,7 @@ export default abstract class ApplicationsMass extends Mass {
   protected static readonly DEFAULT_DISPLACEMENT_VOLUME = 0.01;
 
   // The volume of the mass's capacity AND itself. For example the boat is the hull plus how much the boat can hold.
-  public readonly abstract maxVolumeDisplacedProperty: NumberProperty;
+  protected readonly abstract maxVolumeDisplacedProperty: NumberProperty;
 
   protected readonly massLabelOffsetVector3: Vector3;
 

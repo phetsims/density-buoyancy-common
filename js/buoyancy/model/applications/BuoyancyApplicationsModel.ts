@@ -45,7 +45,7 @@ export default class BuoyancyApplicationsModel extends DensityBuoyancyModel {
   private readonly scale: Scale; // Scale sitting on the ground next to the pool
 
   // Flag that sets an animation to empty the boat of any fluid inside of it
-  protected spillingFluidOutOfBoat = false;
+  private spillingFluidOutOfBoat = false;
 
   public constructor( providedOptions: BuoyancyApplicationsModelOptions ) {
 

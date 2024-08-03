@@ -223,7 +223,7 @@ export default class Boat extends ApplicationsMass {
   /**
    * Checks if the boat is submerged and sets the flag
    */
-  public setSubmergedState( fluidLevel: number ): void {
+  private setSubmergedState( fluidLevel: number ): void {
 
     // TODO: Should we set this value at the beginning of the post physics engine step, see https://github.com/phetsims/density-buoyancy-common/issues/123
     // It currently seems like it is updated partway through (after it is accessed)?

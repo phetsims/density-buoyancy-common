@@ -24,18 +24,19 @@ const LINE_WIDTH = 0.1;
 
 export default class DebugView extends Node {
 
+  protected model: DensityBuoyancyModel;
+  private layoutBounds: Bounds2;
   protected readonly modelViewTransform: ModelViewTransform2;
-  protected readonly poolPath: Path;
+  private readonly poolPath: Path;
   protected readonly massNodes: DebugMassNode[];
 
   // proportional to the area at that level that is displaced in the pool
-  protected readonly poolAreaPath: Path;
+  private readonly poolAreaPath: Path;
 
   // proportional to the volume up to that level that is displaced in the pool
-  protected readonly poolVolumePath: Path;
+  private readonly poolVolumePath: Path;
 
-  public constructor( protected readonly model: DensityBuoyancyModel,
-                      protected readonly layoutBounds: Bounds2 ) {
+  public constructor( model: DensityBuoyancyModel, layoutBounds: Bounds2 ) {
     super();
 
     this.model = model;

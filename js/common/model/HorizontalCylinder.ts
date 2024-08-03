@@ -76,7 +76,7 @@ export default class HorizontalCylinder extends Mass {
     this.massLabelOffsetProperty.value = new Vector3( 0, -radius * 0.5, radius * 0.7 );
   }
 
-  public override getLocalBounds(): Bounds3 {
+  protected override getLocalBounds(): Bounds3 {
     const bounds2 = this.shapeProperty.value.bounds;
     return new Bounds3( bounds2.minX, bounds2.minY, -this.radiusProperty.value, bounds2.maxX, bounds2.maxY, this.radiusProperty.value );
   }

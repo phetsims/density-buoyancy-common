@@ -19,7 +19,7 @@ import DynamicProperty from '../../../../axon/js/DynamicProperty.js';
 export default class GravityProperty extends MappedWrappedProperty<Gravity> {
 
   // Takes the value of the currently selected Gravity instance
-  public readonly gravityValueProperty: TReadOnlyProperty<number>;
+  private readonly gravityValueProperty: TReadOnlyProperty<number>;
 
   public readonly customGravity: Gravity;
 

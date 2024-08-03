@@ -221,11 +221,11 @@ export default class BoatDesign {
     );
   }
 
-  public static getScaleForLiters( liters: number ): number {
+  private static getScaleForLiters( liters: number ): number {
     return Math.pow( liters, 1 / 3 ) * BoatDesign.ONE_LITER_SCALE_MULTIPLIER;
   }
 
-  public static getDesignY( boatY: number, scale: number ): number {
+  private static getDesignY( boatY: number, scale: number ): number {
     return boatY / scale + BoatDesign.DESIGN_CENTROID.y;
   }
 

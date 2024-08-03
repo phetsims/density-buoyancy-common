@@ -188,7 +188,7 @@ export default class Bottle extends ApplicationsMass {
   public readonly materialInsideVolumeRange = new Range( 0, 10 );
   public readonly materialInsideVolumeProperty: Property<number>; // m^3
 
-  public readonly maxVolumeDisplacedProperty = new NumberProperty( ApplicationsMass.DEFAULT_DISPLACEMENT_VOLUME );
+  protected readonly maxVolumeDisplacedProperty = new NumberProperty( ApplicationsMass.DEFAULT_DISPLACEMENT_VOLUME );
 
   // In kg (kilograms)
   public readonly materialInsideMassProperty: ReadOnlyProperty<number>;

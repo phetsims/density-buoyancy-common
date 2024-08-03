@@ -397,7 +397,7 @@ export default class P2Engine extends PhysicsEngine {
   /**
    * Removes a listener to be called after each internal step.
    */
-  public removePostStepListener( listener: ( dt: number ) => void ): void {
+  protected removePostStepListener( listener: ( dt: number ) => void ): void {
     this.internalStepEmitter.removeListener( listener );
   }
 

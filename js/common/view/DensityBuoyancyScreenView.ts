@@ -109,7 +109,7 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
 
   protected readonly resetEmitter = new Emitter();
 
-  public readonly displayProperties: DisplayProperties;
+  protected readonly displayProperties: DisplayProperties;
 
   public constructor( model: Model, providedOptions: SelfOptions ) {
 
@@ -822,7 +822,7 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
   /**
    * Creates a coordinate float array to be used with fillFluidVertexArray, for three.js purposes.
    */
-  public static createFluidVertexArray(): Float32Array {
+  protected static createFluidVertexArray(): Float32Array {
     const CROSS_SECTION_SAMPLES = 30;
     return new Float32Array( ( CROSS_SECTION_SAMPLES + 1.5 ) * 3 * 3 * 4 );
   }
@@ -830,7 +830,7 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
   /**
    * Creates a coordinate float array to be used with fillFluidVertexArray, for three.js purposes.
    */
-  public static createFluidNormalArray(): Float32Array {
+  protected static createFluidNormalArray(): Float32Array {
     const array = DensityBuoyancyScreenView.createFluidVertexArray();
 
     for ( let i = 0; i < array.length / 3; i++ ) {
@@ -848,7 +848,7 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
    *
    * @returns - Whether the fluid is completely filled
    */
-  public static fillFluidVertexArray( fluidY: number, boatX: number, boatY: number, liters: number, poolBounds: Bounds3, positionArray: Float32Array, wasFilled: boolean ): boolean {
+  private static fillFluidVertexArray( fluidY: number, boatX: number, boatY: number, liters: number, poolBounds: Bounds3, positionArray: Float32Array, wasFilled: boolean ): boolean {
 
     let index = 0;
 

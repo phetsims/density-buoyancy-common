@@ -31,7 +31,7 @@ export default class Cuboid extends Mass {
   private stepArea: number;
   private stepMaximumVolume: number;
 
-  public static readonly MIN_VOLUME = 0.001;
+  protected static readonly MIN_VOLUME = 0.001;
   public static readonly MAX_VOLUME = 0.01;
 
   public constructor( engine: PhysicsEngine, size: Bounds3, providedOptions: CuboidOptions ) {
@@ -86,7 +86,7 @@ export default class Cuboid extends Mass {
     }
   }
 
-  public override getLocalBounds(): Bounds3 {
+  protected override getLocalBounds(): Bounds3 {
     return this.sizeProperty.value;
   }
 

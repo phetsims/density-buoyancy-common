@@ -52,7 +52,7 @@ export default class ForceDiagramNode extends Node {
 
   private readonly axisNode: Line;
 
-  public constructor( public readonly mass: Mass, public readonly displayProperties: DisplayProperties ) {
+  public constructor( private readonly mass: Mass, private readonly displayProperties: DisplayProperties ) {
     super( {
 
       // Make unpickable so the user can grab the mass through the force diagram

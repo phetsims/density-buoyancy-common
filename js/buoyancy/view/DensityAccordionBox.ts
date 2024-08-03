@@ -35,7 +35,7 @@ export default class DensityAccordionBox extends ReadoutListAccordionBox<Materia
     super( titleStringProperty, options );
   }
 
-  public override generateReadoutData( materialProperty: MaterialProperty ): ReadoutData {
+  protected override generateReadoutData( materialProperty: MaterialProperty ): ReadoutData {
 
     // Use DynamicProperty so that this name is updated based on the material AND material's name changing.
     const nameProperty = new DynamicProperty<string, string, Material>( materialProperty, {

@@ -25,7 +25,7 @@ import HasChangedNumberProperty from './HasChangedNumberProperty.js';
 import propertyStateHandlerSingleton from '../../../../axon/js/propertyStateHandlerSingleton.js';
 import PropertyStatePhase from '../../../../axon/js/PropertyStatePhase.js';
 import Multilink from '../../../../axon/js/Multilink.js';
-import P2Engine from './P2Engine.js';
+import PhysicsEngine from './PhysicsEngine.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import { MaterialSchema } from './Mass.js';
 
@@ -247,7 +247,7 @@ export default class CompareBlockSetModel extends BlockSetModel<BlockSet> {
   }
 
 
-  private static createCube( engine: P2Engine,
+  private static createCube( engine: PhysicsEngine,
                              position: Vector2,
                              mass: number,
                              initialDensity: number,

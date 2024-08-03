@@ -18,7 +18,7 @@ import NumberIO from '../../../../tandem/js/types/NumberIO.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import Utils from '../../../../dot/js/Utils.js';
 import PoolScale from './PoolScale.js';
-import P2Engine from './P2Engine.js';
+import PhysicsEngine from './PhysicsEngine.js';
 import MaterialProperty from './MaterialProperty.js';
 import GravityProperty from './GravityProperty.js';
 
@@ -39,7 +39,7 @@ export default class Pool extends Basin {
 
   public readonly fluidTandem: Tandem;
 
-  public constructor( bounds: Bounds3, usePoolScale: boolean, engine: P2Engine,
+  public constructor( bounds: Bounds3, usePoolScale: boolean, engine: PhysicsEngine,
                       gravityProperty: GravityProperty,
                       fluidSelectionType: FluidSelectionType, tandem: Tandem ) {
 

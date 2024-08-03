@@ -11,7 +11,7 @@ import StrictOmit from '../../../../phet-core/js/types/StrictOmit.js';
 import Matrix3 from '../../../../dot/js/Matrix3.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import Cuboid, { CuboidOptions } from './Cuboid.js';
-import P2Engine from './P2Engine.js';
+import PhysicsEngine from './PhysicsEngine.js';
 import optionize, { combineOptions } from '../../../../phet-core/js/optionize.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import { MaterialSchema } from './Mass.js';
@@ -28,7 +28,7 @@ export type CubeOptions = SelfOptions & CuboidOptions;
 export type StrictCubeOptions = StrictOmit<CubeOptions, 'matrix' | 'material'>;
 
 export default class Cube extends Cuboid {
-  public constructor( engine: P2Engine, volume: number, providedOptions: CubeOptions ) {
+  public constructor( engine: PhysicsEngine, volume: number, providedOptions: CubeOptions ) {
 
     let options = optionize<CubeOptions, SelfOptions, CuboidOptions>()( {
       adjustVolumeOnMassChanged: false,
@@ -79,7 +79,7 @@ export default class Cube extends Cuboid {
   /**
    * Creates a Cube with a defined volume
    */
-  public static createWithVolume( engine: P2Engine, material: MaterialSchema, position: Vector2, volume: number, options?: StrictCubeOptions ): Cube {
+  public static createWithVolume( engine: PhysicsEngine, material: MaterialSchema, position: Vector2, volume: number, options?: StrictCubeOptions ): Cube {
     return new Cube( engine, volume, combineOptions<CubeOptions>( {
       matrix: Matrix3.translation( position.x, position.y ),
       minVolume: Cuboid.MIN_VOLUME,
@@ -91,7 +91,7 @@ export default class Cube extends Cuboid {
   /**
    * Creates a Cube with a defined volume
    */
-  public static createWithMass( engine: P2Engine, material: MaterialSchema, position: Vector2, mass: number, options?: StrictCubeOptions ): Cube {
+  public static createWithMass( engine: PhysicsEngine, material: MaterialSchema, position: Vector2, mass: number, options?: StrictCubeOptions ): Cube {
     let density: number;
     if ( material === 'CUSTOM' ) {
       assert && assert( options?.customMaterialOptions?.density, 'density needed to create with mass' );

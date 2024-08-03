@@ -36,10 +36,10 @@ const groundMaterial = new p2.Material();
 const barrierMaterial = new p2.Material();
 const dynamicMaterial = new p2.Material();
 
-type P2BodyType = typeof p2.Body.KINEMATIC | typeof p2.Body.DYNAMIC | typeof p2.Body.STATIC;
+type BodyType = typeof p2.Body.KINEMATIC | typeof p2.Body.DYNAMIC | typeof p2.Body.STATIC;
 
 // Map the general supported type into the language the p2 understands
-const BODY_TYPE_MAPPER: Record<PhysicsBodyType, P2BodyType> = {
+const BODY_TYPE_MAPPER: Record<PhysicsBodyType, BodyType> = {
   DYNAMIC: p2.Body.DYNAMIC, // Default, can be moved around, and can be effected by other bodies moving around.
   KINEMATIC: p2.Body.KINEMATIC, // Cannot be moved by other bodies, but can move.
   STATIC: p2.Body.STATIC // Cannot move, for anything.
@@ -51,7 +51,7 @@ export type BodyStateObject = {
   force: Vector2StateObject;
 };
 
-export default class P2Engine {
+export default class PhysicsEngine {
 
   // Engines typically work in fixed-time steps, this is how far we are in the
   // display from the "previous" step (0) to the "next" step (1).
@@ -183,7 +183,7 @@ export default class P2Engine {
    * Returns the velocity of a body.
    */
   public bodyGetVelocity( body: PhysicsEngineBody ): Vector2 {
-    return P2Engine.p2ToVector( body.velocity );
+    return PhysicsEngine.p2ToVector( body.velocity );
   }
 
   /**
@@ -206,7 +206,7 @@ export default class P2Engine {
    * Returns the applied contact force computed in the last step.
    */
   public bodyGetContactForces( body: PhysicsEngineBody ): Vector2 {
-    return P2Engine.p2ToVector( body.vlambda ).timesScalar( body.mass / FIXED_TIME_STEP / MASS_SCALE );
+    return PhysicsEngine.p2ToVector( body.vlambda ).timesScalar( body.mass / FIXED_TIME_STEP / MASS_SCALE );
   }
 
   /**
@@ -228,7 +228,7 @@ export default class P2Engine {
       }
 
       if ( sign ) {
-        result.add( P2Engine.p2ToVector( equation.normalA ).timesScalar( sign * equation.multiplier / MASS_SCALE ) );
+        result.add( PhysicsEngine.p2ToVector( equation.normalA ).timesScalar( sign * equation.multiplier / MASS_SCALE ) );
       }
     }
 
@@ -248,9 +248,9 @@ export default class P2Engine {
    */
   public bodyToStateObject( body: PhysicsEngineBody ): BodyStateObject {
     return {
-      position: P2Engine.p2ToVector( body.position ).toStateObject(),
-      velocity: P2Engine.p2ToVector( body.velocity ).toStateObject(),
-      force: P2Engine.p2ToVector( body.force ).toStateObject() // we applied forces after the step
+      position: PhysicsEngine.p2ToVector( body.position ).toStateObject(),
+      velocity: PhysicsEngine.p2ToVector( body.velocity ).toStateObject(),
+      force: PhysicsEngine.p2ToVector( body.force ).toStateObject() // we applied forces after the step
     };
   }
 
@@ -299,7 +299,7 @@ export default class P2Engine {
       mass: 0
     } );
 
-    body.fromPolygon( vertices.map( P2Engine.vectorToP2 ) );
+    body.fromPolygon( vertices.map( PhysicsEngine.vectorToP2 ) );
 
     // Workaround, since using Convex wasn't working
     body.shapes.forEach( shape => {
@@ -318,7 +318,7 @@ export default class P2Engine {
       mass: 0
     } );
 
-    body.fromPolygon( vertices.map( P2Engine.vectorToP2 ) );
+    body.fromPolygon( vertices.map( PhysicsEngine.vectorToP2 ) );
 
     // Workaround, since using Convex wasn't working
     body.shapes.forEach( shape => {
@@ -346,7 +346,7 @@ export default class P2Engine {
    * Updates the width/height of a box body.
    */
   public updateBox( body: PhysicsEngineBody, width: number, height: number ): void {
-    P2Engine.removeShapes( body );
+    PhysicsEngine.removeShapes( body );
 
     const box = new p2.Box( {
       width: width * SIZE_SCALE,
@@ -376,7 +376,7 @@ export default class P2Engine {
    * Updates the vertices of a dynamic vertex-based body.
    */
   public updateFromVertices( body: PhysicsEngineBody, vertices: Vector2[], workaround: boolean ): void {
-    P2Engine.removeShapes( body );
+    PhysicsEngine.removeShapes( body );
 
     if ( workaround ) {
       body.fromPolygon( vertices.map( v => p2.vec2.fromValues( v.x * SIZE_SCALE, v.y * SIZE_SCALE ) ) );
@@ -388,7 +388,7 @@ export default class P2Engine {
     }
     else {
       const shape = new p2.Convex( {
-        vertices: vertices.map( P2Engine.vectorToP2 )
+        vertices: vertices.map( PhysicsEngine.vectorToP2 )
       } );
 
       shape.material = dynamicMaterial;
@@ -422,7 +422,7 @@ export default class P2Engine {
     const nullBody = new p2.Body();
     this.nullBodyMap[ body.id ] = nullBody;
 
-    const globalPoint = P2Engine.vectorToP2( position );
+    const globalPoint = PhysicsEngine.vectorToP2( position );
     const localPoint = p2.vec2.create();
     body.toLocalFrame( localPoint, globalPoint );
     this.world.addBody( nullBody );
@@ -446,7 +446,7 @@ export default class P2Engine {
     assert && assert( pointerConstraint );
 
     // @ts-expect-error it should have pivotA...
-    p2.vec2.copy( pointerConstraint.pivotA, P2Engine.vectorToP2( position ) );
+    p2.vec2.copy( pointerConstraint.pivotA, PhysicsEngine.vectorToP2( position ) );
     pointerConstraint.bodyA.wakeUp();
     pointerConstraint.bodyB.wakeUp();
   }
@@ -489,4 +489,4 @@ export default class P2Engine {
   }
 }
 
-densityBuoyancyCommon.register( 'P2Engine', P2Engine );
+densityBuoyancyCommon.register( 'PhysicsEngine', PhysicsEngine );

@@ -84,7 +84,7 @@ import Mass, { InstrumentedMassOptions } from '../../../common/model/Mass.js';
 import Material, { CustomSolidMaterial } from '../../../common/model/Material.js';
 import densityBuoyancyCommon from '../../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../../DensityBuoyancyCommonStrings.js';
-import P2Engine from '../../../common/model/P2Engine.js';
+import PhysicsEngine from '../../../common/model/PhysicsEngine.js';
 import Multilink from '../../../../../axon/js/Multilink.js';
 import { MassShape } from '../../../common/model/MassShape.js';
 import ReadOnlyProperty from '../../../../../axon/js/ReadOnlyProperty.js';
@@ -193,7 +193,7 @@ export default class Bottle extends ApplicationsMass {
   // In kg (kilograms)
   public readonly materialInsideMassProperty: ReadOnlyProperty<number>;
 
-  public constructor( engine: P2Engine, providedOptions: BottleOptions ) {
+  public constructor( engine: PhysicsEngine, providedOptions: BottleOptions ) {
 
     const vertices = Bottle.getFlatIntersectionVertices();
 

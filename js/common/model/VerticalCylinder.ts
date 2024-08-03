@@ -17,7 +17,7 @@ import { Shape } from '../../../../kite/js/imports.js';
 import optionize, { EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import Mass, { InstrumentedMassOptions, MASS_MAX_SHAPES_DIMENSION, MASS_MIN_SHAPES_DIMENSION } from './Mass.js';
-import P2Engine from './P2Engine.js';
+import PhysicsEngine from './PhysicsEngine.js';
 import { MassShape } from './MassShape.js';
 import Bounds3 from '../../../../dot/js/Bounds3.js';
 import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
@@ -35,7 +35,7 @@ export default class VerticalCylinder extends Mass {
   private stepArea: number;
   private stepMaximumVolume: number;
 
-  public constructor( engine: P2Engine, radius: number, height: number, providedOptions: VerticalCylinderOptions ) {
+  public constructor( engine: PhysicsEngine, radius: number, height: number, providedOptions: VerticalCylinderOptions ) {
     const options = optionize<VerticalCylinderOptions, EmptySelfOptions, InstrumentedMassOptions>()( {
       body: engine.createBox( 2 * radius, height ),
       shape: VerticalCylinder.getVerticalCylinderShape( radius, height ),

@@ -28,13 +28,13 @@ import IOType from '../../../../tandem/js/types/IOType.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import InterpolatedProperty from './InterpolatedProperty.js';
 import Material, { CustomSolidMaterial, MaterialOptions } from './Material.js';
-import P2Engine, { PhysicsEngineBody } from './P2Engine.js';
+import PhysicsEngine, { PhysicsEngineBody } from './PhysicsEngine.js';
 import Basin from './Basin.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import Multilink from '../../../../axon/js/Multilink.js';
 import PickRequired from '../../../../phet-core/js/types/PickRequired.js';
 import { MassShape } from './MassShape.js';
-import { BodyStateObject } from './P2Engine.js';
+import { BodyStateObject } from './PhysicsEngine.js';
 import TEmitter from '../../../../axon/js/TEmitter.js';
 import MassTag, { MassTagStateObject } from './MassTag.js';
 import Bounds3 from '../../../../dot/js/Bounds3.js';
@@ -93,7 +93,7 @@ export type MassIOStateObject = {
 
 export default abstract class Mass extends PhetioObject {
 
-  protected readonly engine: P2Engine;
+  protected readonly engine: PhysicsEngine;
   public readonly body: PhysicsEngineBody;
 
   private readonly massShape: MassShape;
@@ -179,7 +179,7 @@ export default abstract class Mass extends PhetioObject {
   public stepBottom: number; // minimum y value of the mass
   public stepTop: number; // maximum y value of the mass
 
-  protected constructor( engine: P2Engine, providedOptions: MassOptions ) {
+  protected constructor( engine: PhysicsEngine, providedOptions: MassOptions ) {
 
     const options = optionize<MassOptions, SelfOptions, PhetioObjectOptions>()( {
       visible: true,

@@ -17,7 +17,7 @@ import Gravity from './Gravity.js';
 import Pool, { FluidSelectionType } from './Pool.js';
 import Scale from './Scale.js';
 import optionize from '../../../../phet-core/js/optionize.js';
-import P2Engine, { PhysicsEngineBody } from './P2Engine.js';
+import PhysicsEngine, { PhysicsEngineBody } from './PhysicsEngine.js';
 import Mass from './Mass.js';
 import Cuboid from './Cuboid.js';
 import TModel from '../../../../joist/js/TModel.js';
@@ -60,7 +60,7 @@ export default class DensityBuoyancyModel implements TModel {
   public readonly invisibleBarrierBoundsProperty: Property<Bounds3>;
 
   public readonly pool: Pool;
-  public readonly engine: P2Engine;
+  public readonly engine: PhysicsEngine;
   private readonly groundBody: PhysicsEngineBody;
   private barrierBody: PhysicsEngineBody;
 
@@ -158,7 +158,7 @@ export default class DensityBuoyancyModel implements TModel {
       new Vector2( this.groundBounds.minX, this.groundBounds.maxY )
     ];
 
-    this.engine = new P2Engine();
+    this.engine = new PhysicsEngine();
 
     this.pool = new Pool( this.poolBounds, options.usePoolScale, this.engine, this.gravityProperty, options.fluidSelectionType, tandem.createTandem( 'pool' ) );
 

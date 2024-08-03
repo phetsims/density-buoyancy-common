@@ -17,7 +17,7 @@ import { Shape } from '../../../../../kite/js/imports.js';
 import optionize, { EmptySelfOptions } from '../../../../../phet-core/js/optionize.js';
 import densityBuoyancyCommon from '../../../densityBuoyancyCommon.js';
 import Mass, { InstrumentedMassOptions, MASS_MAX_SHAPES_DIMENSION, MASS_MIN_SHAPES_DIMENSION } from '../../../common/model/Mass.js';
-import P2Engine from '../../../common/model/P2Engine.js';
+import PhysicsEngine from '../../../common/model/PhysicsEngine.js';
 import { MassShape } from '../../../common/model/MassShape.js';
 import { flatDuckData } from './DuckData.js';
 import DensityBuoyancyCommonConstants from '../../../common/DensityBuoyancyCommonConstants.js';
@@ -32,7 +32,7 @@ export default class Duck extends Mass {
   private stepMaximumArea: number;
   private stepMaximumVolume: number;
 
-  public constructor( engine: P2Engine, size: Bounds3, providedConfig: DuckOptions ) {
+  public constructor( engine: PhysicsEngine, size: Bounds3, providedConfig: DuckOptions ) {
 
     const options = optionize<DuckOptions, EmptySelfOptions, InstrumentedMassOptions>()( {
       body: engine.createFromVertices( Duck.getDuckVertices( size.width, size.height ), false ),

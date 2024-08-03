@@ -20,7 +20,7 @@ import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import InterpolatedProperty from './InterpolatedProperty.js';
 import Mass, { InstrumentedMassOptions } from './Mass.js';
 import Material from './Material.js';
-import P2Engine from './P2Engine.js';
+import PhysicsEngine from './PhysicsEngine.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import { MassShape } from './MassShape.js';
 import PickOptional from '../../../../phet-core/js/types/PickOptional.js';
@@ -79,7 +79,7 @@ export default class Scale extends Mass {
 
   public readonly displayType: DisplayType;
 
-  public constructor( engine: P2Engine, gravityProperty: GravityProperty, providedOptions: ScaleOptions ) {
+  public constructor( engine: PhysicsEngine, gravityProperty: GravityProperty, providedOptions: ScaleOptions ) {
 
     const bodyType = providedOptions.canMove === false ? 'STATIC' : 'DYNAMIC';
 

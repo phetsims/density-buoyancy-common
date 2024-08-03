@@ -17,7 +17,6 @@ import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import DensityBuoyancyCommonConstants, { chooseDecimalPlaces } from '../DensityBuoyancyCommonConstants.js';
 import Scale, { DisplayType } from '../model/Scale.js';
-import Gravity from '../model/Gravity.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import BlendedNumberProperty from '../model/BlendedNumberProperty.js';

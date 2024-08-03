@@ -17,7 +17,6 @@ import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js'
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 import NumberDisplay from '../../../../scenery-phet/js/NumberDisplay.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
-import Gravity from '../../common/model/Gravity.js';
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import Material from '../../common/model/Material.js';
 import DynamicProperty from '../../../../axon/js/DynamicProperty.js';

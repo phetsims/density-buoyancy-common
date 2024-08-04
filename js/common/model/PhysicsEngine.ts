@@ -403,14 +403,6 @@ export default class PhysicsEngine {
   }
 
   /**
-   * Removes a listener to be called after each internal step.
-   * TODO: Remove this method, see https://github.com/phetsims/density-buoyancy-common/issues/302
-   */
-  protected removePostStepListener( listener: ( dt: number ) => void ): void {
-    this.internalStepEmitter.removeListener( listener );
-  }
-
-  /**
    * Adds in a pointer constraint so that the body's current point at the position will stay at the position
    * (if the body is getting dragged).
    */

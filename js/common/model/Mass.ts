@@ -204,9 +204,6 @@ export default abstract class Mass extends PhetioObject {
 
     super( options );
 
-    // TODO: Why did the question mark disappear? See https://github.com/phetsims/density-buoyancy-common/issues/243
-    const tandem = options.tandem;
-
     this.engine = engine;
     this.body = options.body;
     this.massShape = options.massShape;
@@ -215,15 +212,16 @@ export default abstract class Mass extends PhetioObject {
       valueType: Shape
     } );
 
+    const tandem = options.tandem;
     this.userControlledProperty = new BooleanProperty( false, {
-      tandem: tandem?.createTandem( 'userControlledProperty' ),
+      tandem: tandem.createTandem( 'userControlledProperty' ),
       phetioDocumentation: 'For internal use only',
       phetioReadOnly: true,
       phetioState: false
     } );
 
     this.inputEnabledProperty = new BooleanProperty( options.canMove, combineOptions<BooleanPropertyOptions>( {
-      tandem: options.canMove ? tandem?.createTandem( 'inputEnabledProperty' ) : Tandem.OPT_OUT,
+      tandem: options.canMove ? tandem.createTandem( 'inputEnabledProperty' ) : Tandem.OPT_OUT,
       phetioDocumentation: 'Sets whether the element will have input enabled, and hence be interactive',
       phetioFeatured: true
     }, options.inputEnabledPropertyOptions ) );
@@ -261,7 +259,7 @@ export default abstract class Mass extends PhetioObject {
     }
 
     this.volumeProperty = new NumberProperty( options.volume, combineOptions<NumberPropertyOptions>( {
-      tandem: tandem?.createTandem( 'volumeProperty' ),
+      tandem: tandem.createTandem( 'volumeProperty' ),
       phetioFeatured: true,
       range: new Range( options.minVolume, options.maxVolume ),
       phetioReadOnly: true,
@@ -273,7 +271,7 @@ export default abstract class Mass extends PhetioObject {
     this.percentSubmergedProperty = new NumberProperty( 0, {
       range: new Range( 0, 100 ),
       units: '%',
-      tandem: tandem?.createTandem( 'percentSubmergedProperty' ),
+      tandem: tandem.createTandem( 'percentSubmergedProperty' ),
       phetioReadOnly: true
     } );
 
@@ -283,7 +281,7 @@ export default abstract class Mass extends PhetioObject {
     } );
 
     this.massProperty = new GuardedNumberProperty( this.materialProperty.value.density * this.volumeProperty.value + this.containedMassProperty.value, combineOptions<GuardedNumberPropertyOptions>( {
-      tandem: tandem?.createTandem( 'massProperty' ),
+      tandem: tandem.createTandem( 'massProperty' ),
       phetioReadOnly: true,
       phetioState: false,
       phetioFeatured: true,
@@ -323,7 +321,7 @@ export default abstract class Mass extends PhetioObject {
     this.gravityForceInterpolatedProperty = new InterpolatedProperty( Vector2.ZERO, {
       interpolate: InterpolatedProperty.interpolateVector2,
       valueComparisonStrategy: 'equalsFunction',
-      tandem: tandem?.createTandem( 'gravityForceInterpolatedProperty' ),
+      tandem: tandem.createTandem( 'gravityForceInterpolatedProperty' ),
       phetioValueType: Vector2.Vector2IO,
       phetioReadOnly: true,
       units: 'N',
@@ -333,7 +331,7 @@ export default abstract class Mass extends PhetioObject {
     this.buoyancyForceInterpolatedProperty = new InterpolatedProperty( Vector2.ZERO, {
       interpolate: InterpolatedProperty.interpolateVector2,
       valueComparisonStrategy: 'equalsFunction',
-      tandem: tandem?.createTandem( 'buoyancyForceInterpolatedProperty' ),
+      tandem: tandem.createTandem( 'buoyancyForceInterpolatedProperty' ),
       phetioValueType: Vector2.Vector2IO,
       phetioReadOnly: true,
       units: 'N',
@@ -343,7 +341,7 @@ export default abstract class Mass extends PhetioObject {
     this.contactForceInterpolatedProperty = new InterpolatedProperty( Vector2.ZERO, {
       interpolate: InterpolatedProperty.interpolateVector2,
       valueComparisonStrategy: 'equalsFunction',
-      tandem: tandem?.createTandem( 'contactForceInterpolatedProperty' ),
+      tandem: tandem.createTandem( 'contactForceInterpolatedProperty' ),
       phetioValueType: Vector2.Vector2IO,
       phetioReadOnly: true,
       units: 'N',

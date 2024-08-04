@@ -362,53 +362,24 @@ class DebugMaterialView extends MaterialView {
 }
 
 export class DensityMaterials {
-  /**
-   * Returns a view for the given Material.
-   */
   public static getMaterialView( material: Material ): MaterialView {
-    if ( material === Material.ALUMINUM ) {
-      return new AluminumMaterialView();
-    }
-    else if ( material === Material.BRICK ) {
-      return new BrickMaterialView();
-    }
-    else if ( material === Material.COPPER ) {
-      return new CopperMaterialView();
-    }
-    else if ( material === Material.GOLD || material === Material.PYRITE || material === Material.MATERIAL_R || material === Material.MATERIAL_S ) {
-      return new GoldMaterialView();
-    }
-    else if ( material === Material.SILVER ) {
-      return new GreyMetalMaterialView();
-    }
-    else if ( material === Material.ICE ) {
-      return new IceMaterialView();
-    }
-    else if ( material === Material.PLATINUM ) {
-      return new PlatinumMaterialView();
-    }
-    else if ( material === Material.PVC ) {
-      return new PVCMaterialView();
-    }
-    else if ( material === Material.STEEL ) {
-      return new SteelMaterialView();
-    }
-    else if ( material === Material.TANTALUM ) {
-      return new GreyMetalMaterialView( 0.3 );
-    }
-    else if ( material === Material.STYROFOAM ) {
-      return new StyrofoamMaterialView();
-    }
-    else if ( material === Material.WOOD ) {
-      return new WoodMaterialView();
-    }
-    else if ( material.custom || material.hidden ) {
-      assert && assert( material.colorProperty, 'colorProperty required for custom materials' );
-      return new ColoredMaterialView( material.colorProperty! );
-    }
-    else {
-      return new DebugMaterialView();
-    }
+    return material === Material.ALUMINUM ? new AluminumMaterialView() :
+           material === Material.BRICK ? new BrickMaterialView() :
+           material === Material.COPPER ? new CopperMaterialView() :
+           ( material === Material.GOLD ||
+             material === Material.PYRITE ||
+             material === Material.MATERIAL_R ||
+             material === Material.MATERIAL_S ) ? new GoldMaterialView() :
+           material === Material.SILVER ? new GreyMetalMaterialView() :
+           material === Material.ICE ? new IceMaterialView() :
+           material === Material.PLATINUM ? new PlatinumMaterialView() :
+           material === Material.PVC ? new PVCMaterialView() :
+           material === Material.STEEL ? new SteelMaterialView() :
+           material === Material.TANTALUM ? new GreyMetalMaterialView( 0.3 ) :
+           material === Material.STYROFOAM ? new StyrofoamMaterialView() :
+           material === Material.WOOD ? new WoodMaterialView() :
+           material.custom || material.hidden ? ( assert && assert( material.colorProperty, 'colorProperty required for custom materials' ), new ColoredMaterialView( material.colorProperty! ) ) :
+           new DebugMaterialView();
   }
 
   public static readonly woodColorTexture = woodColorTexture;

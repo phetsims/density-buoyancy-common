@@ -20,6 +20,7 @@ import Mass from '../../../common/model/Mass.js';
 import densityBuoyancyCommon from '../../../densityBuoyancyCommon.js';
 import Boat from './Boat.js';
 import BoatDesign from './BoatDesign.js';
+import DensityBuoyancyCommonConstants from '../../../common/DensityBuoyancyCommonConstants.js';
 
 export default class BoatBasin extends Basin {
 
@@ -39,8 +40,7 @@ export default class BoatBasin extends Basin {
    * See Pool.isMassInside
    */
   public isMassInside( mass: Mass ): boolean {
-    const slip = 0.01; // 1 cm of potential overlap due to physics stiffness variables.
-    if ( mass === this.boat || mass.stepBottom >= this.stepTop || mass.stepTop <= this.stepBottom - slip ) {
+    if ( mass === this.boat || mass.stepBottom >= this.stepTop || mass.stepTop <= this.stepBottom - DensityBuoyancyCommonConstants.SLIP ) {
       return false;
     }
     const stepMiddle = ( mass.stepTop + mass.stepBottom ) / 2;
@@ -53,12 +53,10 @@ export default class BoatBasin extends Basin {
    * accounts for "slip", which occurs when two objects overlap a bit due to physics stiffness modeling.
    */
   private oneLiterShapeContainsPoint( point: Vector2 ): boolean {
-    const slip = 0.01; // 1 cm of potential overlap due to physics stiffness variables.
-
     const oneLiterPoint = point.minus( this.boat.matrix.translation ).timesScalar( 1 / this.boat.stepMultiplier );
 
     // Check both a point slightly below AND the actual point.
-    const slippedPoint = oneLiterPoint.plusXY( 0, slip );
+    const slippedPoint = oneLiterPoint.plusXY( 0, DensityBuoyancyCommonConstants.SLIP );
     return ( this.oneLiterShape.bounds.containsPoint( oneLiterPoint ) || this.oneLiterShape.bounds.containsPoint( slippedPoint ) ) &&
            ( this.oneLiterShape.containsPoint( oneLiterPoint ) || this.oneLiterShape.containsPoint( slippedPoint ) );
   }

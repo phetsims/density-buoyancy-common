@@ -124,11 +124,9 @@ export default class Pool extends Basin {
    */
   public isMassInside( mass: Mass ): boolean {
 
-    const SLIP = 0.01; // 1 cm of potential overlap due to physics stiffness variables, see BoatBasin.isMassInside
-
     // Horizontal position does not need to be considered because the only way for a shape to have part below the top
     // of the empty pool is for it to be inside the pool.
-    return mass.stepBottom < this.stepTop - SLIP;
+    return mass.stepBottom < this.stepTop - DensityBuoyancyCommonConstants.SLIP;
   }
 
   /**

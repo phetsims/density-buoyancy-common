@@ -47,9 +47,6 @@ export default class DuckView extends MeasurableMassView {
 
   }
 
-  /**
-   * Releases references.
-   */
   public override dispose(): void {
     this.duck.sizeProperty.unlink( this.updateListener );
     this.duckGeometry.dispose();

@@ -57,9 +57,6 @@ class MaterialView<T extends THREE.Material = THREE.Material> {
 
   public constructor( public readonly material: T ) { }
 
-  /**
-   * Releases references
-   */
   public dispose(): void {
     this.material.dispose();
   }
@@ -349,9 +346,6 @@ export class ColoredMaterialView extends MaterialView<THREE.MeshLambertMaterial>
     this.colorProperty.link( this.listener );
   }
 
-  /**
-   * Releases references
-   */
   public override dispose(): void {
     this.colorProperty.unlink( this.listener );
 

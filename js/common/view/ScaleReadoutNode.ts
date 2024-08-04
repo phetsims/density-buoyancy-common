@@ -81,9 +81,6 @@ export class GeneralScaleReadoutNode extends Node {
     this.addChild( readoutPanel );
   }
 
-  /**
-   * Releases references.
-   */
   public override dispose(): void {
     this.stringProperty.dispose();
 

@@ -174,9 +174,6 @@ export default abstract class MassView extends Disposable {
     this.massTagNode && decorationLayer.massTagsLayer.addChild( this.massTagNode );
   }
 
-  /**
-   * Releases references.
-   */
   public override dispose(): void {
     this.mass.transformedEmitter.removeListener( this.positionListener );
     this.massMesh.dispose();

@@ -64,9 +64,6 @@ export default class ConeView extends MeasurableMassView {
     this.cone.heightProperty.lazyLink( this.updateListener );
   }
 
-  /**
-   * Releases references.
-   */
   public override dispose(): void {
     this.cone.radiusProperty.unlink( this.updateListener );
     this.cone.heightProperty.unlink( this.updateListener );

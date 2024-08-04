@@ -574,9 +574,6 @@ export default abstract class Mass extends PhetioObject {
     this.resetPosition();
   }
 
-  /**
-   * Releases references
-   */
   public override dispose(): void {
 
     assert && assert( !this.isDisposed );

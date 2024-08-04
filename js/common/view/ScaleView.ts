@@ -60,9 +60,6 @@ export default class ScaleView extends MassView {
     this.updateDecorationLayer();
   }
 
-  /**
-   * Releases references.
-   */
   public override dispose(): void {
     this.scaleGeometry.dispose();
 

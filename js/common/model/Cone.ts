@@ -197,9 +197,6 @@ export default class Cone extends Mass {
     super.reset();
   }
 
-  /**
-   * Releases references
-   */
   public override dispose(): void {
     this.radiusProperty.dispose();
     this.heightProperty.dispose();

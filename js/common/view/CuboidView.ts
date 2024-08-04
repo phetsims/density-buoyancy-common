@@ -115,13 +115,6 @@ export default class CuboidView extends MeasurableMassView {
   }
 
   /**
-   * Releases references.
-   */
-  public override dispose(): void {
-    super.dispose();
-  }
-
-  /**
    * Updates provided geometry arrays given the specific size.
    *
    * @param positionArray

@@ -61,9 +61,6 @@ export default class VerticalCylinderView extends MeasurableMassView {
     this.verticalCylinder.heightProperty.lazyLink( this.updateListener );
   }
 
-  /**
-   * Releases references.
-   */
   public override dispose(): void {
     this.verticalCylinder.radiusProperty.unlink( this.updateListener );
     this.verticalCylinder.heightProperty.unlink( this.updateListener );

@@ -38,9 +38,6 @@ export default class MassThreeMesh extends THREE.Mesh {
 
   }
 
-  /**
-   * Releases references.
-   */
   public dispose(): void {
     this.mass.materialProperty.unlink( this.materialListener );
 

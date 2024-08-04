@@ -60,9 +60,6 @@ export default class HorizontalCylinderView extends MeasurableMassView {
     this.horizontalCylinder.lengthProperty.lazyLink( this.updateListener );
   }
 
-  /**
-   * Releases references.
-   */
   public override dispose(): void {
     this.horizontalCylinder.radiusProperty.unlink( this.updateListener );
     this.horizontalCylinder.lengthProperty.unlink( this.updateListener );

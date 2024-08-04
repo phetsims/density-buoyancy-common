@@ -192,9 +192,6 @@ export default abstract class ComboNumberControl<T extends Material | Gravity> e
     this.mutate( options );
   }
 
-  /**
-   * Releases references.
-   */
   public override dispose(): void {
     this.numberControl.dispose();
     this.comboBox.dispose();

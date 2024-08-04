@@ -174,9 +174,6 @@ export default class HorizontalCylinder extends Mass {
     super.reset();
   }
 
-  /**
-   * Releases references
-   */
   public override dispose(): void {
     this.radiusProperty.dispose();
     this.lengthProperty.dispose();

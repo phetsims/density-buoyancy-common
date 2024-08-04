@@ -43,9 +43,6 @@ export default class EllipsoidView extends MeasurableMassView {
     this.ellipsoid.sizeProperty.link( this.updateListener );
   }
 
-  /**
-   * Releases references.
-   */
   public override dispose(): void {
     this.ellipsoid.sizeProperty.unlink( this.updateListener );
     this.ellipsoidGeometry.dispose();

@@ -172,9 +172,6 @@ export default class Cuboid extends Mass {
     super.reset();
   }
 
-  /**
-   * Releases references
-   */
   public override dispose(): void {
     this.sizeProperty.dispose();
 

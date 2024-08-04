@@ -9,7 +9,7 @@
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import { combineOptions } from '../../../../phet-core/js/optionize.js';
-import { AlignBox, ManualConstraint, Node, VBox } from '../../../../scenery/js/imports.js';
+import { ManualConstraint, Node, VBox } from '../../../../scenery/js/imports.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 import Material from '../../common/model/Material.js';
 import DensityBuoyancyScreenView, { DensityBuoyancyScreenViewOptions } from '../../common/view/DensityBuoyancyScreenView.js';
@@ -66,12 +66,7 @@ export default class BuoyancyExploreScreenView extends BuoyancyScreenView<Buoyan
       ) ).x - 2 * MARGIN
     } );
 
-    this.addChild( new AlignBox( displayOptionsPanel, {
-      alignBoundsProperty: this.visibleBoundsProperty,
-      xAlign: 'left',
-      yAlign: 'bottom',
-      margin: MARGIN
-    } ) );
+    this.addAlignBox( displayOptionsPanel, 'left', 'bottom' );
 
     const displayedMysteryMaterials = [
       Material.FLUID_A,
@@ -92,12 +87,7 @@ export default class BuoyancyExploreScreenView extends BuoyancyScreenView<Buoyan
 
     const fluidDensityPanel = new FluidDensityPanel( model, invisibleMaterials, this.popupLayer, tandem.createTandem( 'fluidDensityPanel' ) );
 
-    this.addChild( new AlignBox( fluidDensityPanel, {
-      alignBoundsProperty: this.visibleBoundsProperty,
-      xAlign: 'center',
-      yAlign: 'bottom',
-      margin: MARGIN
-    } ) );
+    this.addAlignBox( fluidDensityPanel, 'center', 'bottom' );
 
     [ model.massA, model.massB ].forEach( mass => {
       mass.materialProperty.link( material => {
@@ -159,12 +149,7 @@ export default class BuoyancyExploreScreenView extends BuoyancyScreenView<Buoyan
       ]
     } );
 
-    this.addChild( new AlignBox( rightSideVBox, {
-      alignBoundsProperty: this.visibleBoundsProperty,
-      xAlign: 'right',
-      yAlign: 'top',
-      margin: MARGIN
-    } ) );
+    this.addAlignBox( rightSideVBox, 'right', 'top' );
 
     const blocksModeRadioButtonGroup = new BlocksModeRadioButtonGroup( model.modeProperty, {
       tandem: this.tandem.createTandem( 'blocksModeRadioButtonGroup' )

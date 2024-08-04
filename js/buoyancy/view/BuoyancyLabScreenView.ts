@@ -10,7 +10,7 @@
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import { combineOptions } from '../../../../phet-core/js/optionize.js';
-import { AlignBox, HBox, LayoutProxy, ManualConstraint, Node, VBox } from '../../../../scenery/js/imports.js';
+import { HBox, LayoutProxy, ManualConstraint, Node, VBox } from '../../../../scenery/js/imports.js';
 import Panel, { PanelOptions } from '../../../../sun/js/Panel.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 import Material from '../../common/model/Material.js';
@@ -119,12 +119,7 @@ export default class BuoyancyLabScreenView extends BuoyancyScreenView<BuoyancyLa
       ]
     } );
 
-    this.addChild( new AlignBox( bottomNode, {
-      alignBoundsProperty: this.visibleBoundsProperty,
-      xAlign: 'center',
-      yAlign: 'bottom',
-      margin: MARGIN
-    } ) );
+    this.addAlignBox( bottomNode, 'center', 'bottom' );
 
     this.rightBox = new MultiSectionPanelsNode( [ new BlockControlNode(
       model.block,
@@ -170,12 +165,7 @@ export default class BuoyancyLabScreenView extends BuoyancyScreenView<BuoyancyLa
         percentSubmergedAccordionBox
       ]
     } );
-    this.addChild( new AlignBox( rightSideVBox, {
-      alignBoundsProperty: this.visibleBoundsProperty,
-      xAlign: 'right',
-      yAlign: 'top',
-      margin: MARGIN
-    } ) );
+    this.addAlignBox( rightSideVBox, 'right', 'top' );
 
     // DerivedProperty doesn't need disposal, since everything here lives for the lifetime of the simulation
     this.rightBarrierViewPointPropertyProperty.value = new DerivedProperty( [ rightSideVBox.boundsProperty, this.visibleBoundsProperty ], ( boxBounds, visibleBounds ) => {

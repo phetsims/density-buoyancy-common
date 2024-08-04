@@ -9,7 +9,7 @@
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import { combineOptions } from '../../../../phet-core/js/optionize.js';
-import { AlignBox, ManualConstraint, Node, VBox } from '../../../../scenery/js/imports.js';
+import { ManualConstraint, Node, VBox } from '../../../../scenery/js/imports.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 import { DensityBuoyancyScreenViewOptions } from '../../common/view/DensityBuoyancyScreenView.js';
 import ABControlsNode from '../../common/view/ABControlsNode.js';
@@ -60,12 +60,7 @@ export default class BuoyancyBasicsExploreScreenView extends BuoyancyScreenView<
       ) ).x - 2 * MARGIN
     } );
 
-    this.addChild( new AlignBox( displayOptionsPanel, {
-      alignBoundsProperty: this.visibleBoundsProperty,
-      xAlign: 'left',
-      yAlign: 'bottom',
-      margin: MARGIN
-    } ) );
+    this.addAlignBox( displayOptionsPanel, 'left', 'bottom' );
 
     this.rightBox = new ABControlsNode(
       model.massA,
@@ -85,12 +80,7 @@ export default class BuoyancyBasicsExploreScreenView extends BuoyancyScreenView<
       tandem: options.tandem.createTandem( 'fluidPanel' )
     } );
 
-    this.addChild( new AlignBox( fluidPanel, {
-      alignBoundsProperty: this.visibleBoundsProperty,
-      xAlign: 'center',
-      yAlign: 'bottom',
-      margin: MARGIN
-    } ) );
+    this.addAlignBox( fluidPanel, 'center', 'bottom' );
 
     const densityComparisonAccordionBox = new DensityAccordionBox( DensityBuoyancyCommonStrings.densityComparisonStringProperty, {
       contentWidthMax: this.rightBox.content.width,
@@ -146,12 +136,7 @@ export default class BuoyancyBasicsExploreScreenView extends BuoyancyScreenView<
       ]
     } );
 
-    this.addChild( new AlignBox( rightSideVBox, {
-      alignBoundsProperty: this.visibleBoundsProperty,
-      xAlign: 'right',
-      yAlign: 'top',
-      margin: MARGIN
-    } ) );
+    this.addAlignBox( rightSideVBox, 'right', 'top' );
 
     const blocksModeRadioButtonGroup = new BlocksModeRadioButtonGroup( model.modeProperty, {
       tandem: this.tandem.createTandem( 'blocksModeRadioButtonGroup' )
@@ -160,7 +145,7 @@ export default class BuoyancyBasicsExploreScreenView extends BuoyancyScreenView<
     ManualConstraint.create( this, [ this.resetAllButton, blocksModeRadioButtonGroup ],
       ( resetAllButtonWrapper, blocksModeRadioButtonGroupWrapper ) => {
 
-      // TODO: What if the reset all button is not visible due to phet-io? See https://github.com/phetsims/density-buoyancy-common/issues/123
+        // TODO: What if the reset all button is not visible due to phet-io? See https://github.com/phetsims/density-buoyancy-common/issues/123
         blocksModeRadioButtonGroupWrapper.right = resetAllButtonWrapper.left - DensityBuoyancyCommonConstants.MARGIN;
         blocksModeRadioButtonGroupWrapper.bottom = resetAllButtonWrapper.bottom;
       } );

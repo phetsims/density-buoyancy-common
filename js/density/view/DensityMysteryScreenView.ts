@@ -7,7 +7,7 @@
  */
 
 import RefreshButton from '../../../../scenery-phet/js/buttons/RefreshButton.js';
-import { AlignBox, Node, Text, VBox } from '../../../../scenery/js/imports.js';
+import { Node, Text, VBox } from '../../../../scenery/js/imports.js';
 import AccordionBox, { AccordionBoxOptions } from '../../../../sun/js/AccordionBox.js';
 import Panel, { PanelOptions } from '../../../../sun/js/Panel.js';
 import VerticalAquaRadioButtonGroup from '../../../../sun/js/VerticalAquaRadioButtonGroup.js';
@@ -28,8 +28,6 @@ import ScaleView from '../../common/view/ScaleView.js';
 import MassView from '../../common/view/MassView.js';
 import CuboidView from '../../common/view/CuboidView.js';
 import StrictOmit from '../../../../phet-core/js/types/StrictOmit.js';
-
-const MARGIN = DensityBuoyancyCommonConstants.MARGIN_SMALL;
 
 type DensityMysteryScreenViewOptions = StrictOmit<DensityBuoyancyScreenViewOptions, 'canShowForces' | 'supportsDepthLines' | 'forcesInitiallyDisplayed' | 'massValuesInitiallyDisplayed' | 'initialForceScale'>;
 
@@ -57,12 +55,7 @@ export default class DensityMysteryScreenView extends DensityBuoyancyScreenView<
       accessibleName: DensityBuoyancyCommonStrings.densityTableStringProperty
     }, DensityBuoyancyCommonConstants.ACCORDION_BOX_OPTIONS ) );
 
-    this.addChild( new AlignBox( densityTableAccordionBox, {
-      alignBoundsProperty: this.visibleBoundsProperty,
-      xAlign: 'center',
-      yAlign: 'top',
-      margin: MARGIN
-    } ) );
+    this.addAlignBox( densityTableAccordionBox, 'center', 'top' );
 
     const blocksPanelTandem = tandem.createTandem( 'blocksPanel' );
 
@@ -125,12 +118,7 @@ export default class DensityMysteryScreenView extends DensityBuoyancyScreenView<
       }
     }, DensityBuoyancyCommonConstants.PANEL_OPTIONS ) );
 
-    this.addChild( new AlignBox( blockSetPanel, {
-      alignBoundsProperty: this.visibleBoundsProperty,
-      xAlign: 'right',
-      yAlign: 'top',
-      margin: MARGIN
-    } ) );
+    this.addAlignBox( blockSetPanel, 'right', 'top' );
 
     this.addChild( this.popupLayer );
 

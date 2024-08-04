@@ -16,7 +16,7 @@ import resetArrow_png from '../../../../../scenery-phet/images/resetArrow_png.js
 import NumberControl, { NumberControlOptions } from '../../../../../scenery-phet/js/NumberControl.js';
 import NumberDisplay from '../../../../../scenery-phet/js/NumberDisplay.js';
 import PhetFont from '../../../../../scenery-phet/js/PhetFont.js';
-import { AlignBox, Color, GatedVisibleProperty, HBox, HSeparator, Image, ManualConstraint, Node, Text, VBox } from '../../../../../scenery/js/imports.js';
+import { Color, GatedVisibleProperty, HBox, HSeparator, Image, ManualConstraint, Node, Text, VBox } from '../../../../../scenery/js/imports.js';
 import RectangularPushButton from '../../../../../sun/js/buttons/RectangularPushButton.js';
 import RectangularRadioButtonGroup from '../../../../../sun/js/buttons/RectangularRadioButtonGroup.js';
 import Panel from '../../../../../sun/js/Panel.js';
@@ -295,12 +295,7 @@ export default class BuoyancyApplicationsScreenView extends BuoyancyScreenView<B
       ]
     } );
 
-    this.addChild( new AlignBox( rightSideVBox, {
-      alignBoundsProperty: this.visibleBoundsProperty,
-      xAlign: 'right',
-      yAlign: 'top',
-      margin: MARGIN
-    } ) );
+    this.addAlignBox( rightSideVBox, 'right', 'top' );
 
     // DerivedProperty doesn't need disposal, since everything here lives for the lifetime of the simulation
     this.rightBarrierViewPointPropertyProperty.value = new DerivedProperty( [ rightSideVBox.boundsProperty, this.visibleBoundsProperty ], ( boxBounds, visibleBounds ) => {
@@ -351,12 +346,7 @@ export default class BuoyancyApplicationsScreenView extends BuoyancyScreenView<B
       ) ).x - 2 * MARGIN
     } );
 
-    this.addChild( new AlignBox( displayOptionsPanel, {
-      alignBoundsProperty: this.visibleBoundsProperty,
-      xAlign: 'left',
-      yAlign: 'bottom',
-      margin: MARGIN
-    } ) );
+    this.addAlignBox( displayOptionsPanel, 'left', 'bottom' );
 
     const applicationModeRadioButtonGroup = new RectangularRadioButtonGroup( model.applicationModeProperty, [ {
       value: 'BOTTLE',
@@ -380,13 +370,7 @@ export default class BuoyancyApplicationsScreenView extends BuoyancyScreenView<B
 
 
     const fluidDensityPanel = new FluidDensityPanel( model, invisibleMaterials, this.popupLayer, tandem.createTandem( 'fluidDensityPanel' ) );
-
-    this.addChild( new AlignBox( fluidDensityPanel, {
-      alignBoundsProperty: this.visibleBoundsProperty,
-      xAlign: 'center',
-      yAlign: 'bottom',
-      margin: MARGIN
-    } ) );
+    this.addAlignBox( fluidDensityPanel, 'center', 'bottom' );
 
     ManualConstraint.create( this, [ this.resetAllButton, applicationModeRadioButtonGroup ],
       ( resetAllButtonWrapper, applicationModeRadioButtonGroupWrapper ) => {

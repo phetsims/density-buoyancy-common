@@ -8,7 +8,7 @@
 
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
-import { AlignBox, Node, RichText } from '../../../../scenery/js/imports.js';
+import { Node, RichText } from '../../../../scenery/js/imports.js';
 import AccordionBox, { AccordionBoxOptions } from '../../../../sun/js/AccordionBox.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 import ABControlsNode from '../../common/view/ABControlsNode.js';
@@ -29,9 +29,6 @@ import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
 import StrictOmit from '../../../../phet-core/js/types/StrictOmit.js';
 import FluidIconMesh from '../../common/view/FluidIconMesh.js';
 import DerivedStringProperty from '../../../../axon/js/DerivedStringProperty.js';
-
-// constants
-const MARGIN = DensityBuoyancyCommonConstants.MARGIN_SMALL;
 
 type DensityIntroScreenViewOptions = StrictOmit<DensityBuoyancyScreenViewOptions, 'canShowForces' | 'supportsDepthLines' | 'forcesInitiallyDisplayed' | 'massValuesInitiallyDisplayed' | 'initialForceScale'>;
 
@@ -100,20 +97,9 @@ export default class DensityIntroScreenView extends DensityBuoyancyScreenView<De
       tandem: accordionTandem,
       accessibleName: accordionBoxTitleStringProperty
     }, DensityBuoyancyCommonConstants.ACCORDION_BOX_OPTIONS ) );
+    this.addAlignBox( densityAccordionBox, 'center', 'top' );
 
-    this.addChild( new AlignBox( densityAccordionBox, {
-      alignBoundsProperty: this.visibleBoundsProperty,
-      xAlign: 'center',
-      yAlign: 'top',
-      margin: MARGIN
-    } ) );
-
-    this.addChild( new AlignBox( this.rightBox, {
-      alignBoundsProperty: this.visibleBoundsProperty,
-      xAlign: 'right',
-      yAlign: 'top',
-      margin: MARGIN
-    } ) );
+    this.addAlignBox( this.rightBox, 'right', 'top' );
 
     // DerivedProperty doesn't need disposal, since everything here lives for the lifetime of the simulation
     this.rightBarrierViewPointPropertyProperty.value = new DerivedProperty( [ this.rightBox.boundsProperty, this.visibleBoundsProperty ], ( boxBounds, visibleBounds ) => {

@@ -7,7 +7,7 @@
  */
 
 import { combineOptions } from '../../../../phet-core/js/optionize.js';
-import { AlignBox, Node, VBox } from '../../../../scenery/js/imports.js';
+import { Node, VBox } from '../../../../scenery/js/imports.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 import DensityBuoyancyScreenView, { DensityBuoyancyScreenViewOptions } from '../../common/view/DensityBuoyancyScreenView.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
@@ -72,13 +72,7 @@ export default class BuoyancyCompareScreenView extends BuoyancyScreenView<Buoyan
     const tandem = options.tandem;
 
     const blocksPanel = new BlocksPanel( model.blockSetProperty, tandem.createTandem( 'blocksPanel' ) );
-
-    this.addChild( new AlignBox( blocksPanel, {
-      alignBoundsProperty: this.visibleBoundsProperty,
-      xAlign: 'right',
-      yAlign: 'top',
-      margin: MARGIN
-    } ) );
+    this.addAlignBox( blocksPanel, 'right', 'top' );
 
     const displayOptionsPanel = new BuoyancyDisplayOptionsPanel( this.displayProperties, {
       tandem: options.tandem.createTandem( 'displayOptionsPanel' ),
@@ -88,22 +82,14 @@ export default class BuoyancyCompareScreenView extends BuoyancyScreenView<Buoyan
         this.model.poolBounds.front
       ) ).x - 2 * MARGIN
     } );
-    this.addChild( new AlignBox( displayOptionsPanel, {
-      alignBoundsProperty: this.visibleBoundsProperty,
-      xAlign: 'left',
-      yAlign: 'bottom',
-      margin: MARGIN
-    } ) );
+
+    this.addAlignBox( displayOptionsPanel, 'left', 'bottom' );
 
     const fluidPanel = new FluidSelectionPanel( model.pool.fluidMaterialProperty, this.popupLayer, {
       tandem: options.tandem.createTandem( 'fluidPanel' )
     } );
-    this.addChild( new AlignBox( fluidPanel, {
-      alignBoundsProperty: this.visibleBoundsProperty,
-      xAlign: 'center',
-      yAlign: 'bottom',
-      margin: MARGIN
-    } ) );
+
+    this.addAlignBox( fluidPanel, 'center', 'bottom' );
 
     this.blocksValuePanel = new BlocksValuePanel( model.massProperty, model.volumeProperty, model.densityProperty, model.blockSetProperty, {
       sliderTrackSize: new Dimension2( 120, 0.5 ),

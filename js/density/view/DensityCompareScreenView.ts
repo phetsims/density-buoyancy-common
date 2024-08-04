@@ -7,7 +7,7 @@
  */
 
 import Vector3 from '../../../../dot/js/Vector3.js';
-import { AlignBox, Node } from '../../../../scenery/js/imports.js';
+import { Node } from '../../../../scenery/js/imports.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 import DensityBuoyancyScreenView, { DensityBuoyancyScreenViewOptions } from '../../common/view/DensityBuoyancyScreenView.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
@@ -43,13 +43,7 @@ export default class DensityCompareScreenView extends DensityBuoyancyScreenView<
     }, options ) );
 
     const blocksPanel = new BlocksPanel( model.blockSetProperty, tandem.createTandem( 'blocksPanel' ) );
-
-    this.addChild( new AlignBox( blocksPanel, {
-      alignBoundsProperty: this.visibleBoundsProperty,
-      xAlign: 'right',
-      yAlign: 'top',
-      margin: MARGIN
-    } ) );
+    this.addAlignBox( blocksPanel, 'right', 'top' );
 
     const blocksValuePanel = new BlocksValuePanel( model.massProperty, model.volumeProperty, model.densityProperty, model.blockSetProperty, {
       tandem: tandem.createTandem( 'blocksValuePanel' )

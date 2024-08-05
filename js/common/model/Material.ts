@@ -22,7 +22,7 @@ import NumberProperty, { NumberPropertyOptions } from '../../../../axon/js/Numbe
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
 import PhetioObject, { PhetioObjectOptions } from '../../../../tandem/js/PhetioObject.js';
-import { HasValueProperty } from './MappedWrappedProperty.js';
+import { MappedWrappedObject } from './MappedWrappedProperty.js';
 import StrictOmit from '../../../../phet-core/js/types/StrictOmit.js';
 import packageJSON from '../../../../joist/js/packageJSON.js';
 
@@ -63,7 +63,7 @@ const MATERIALS_TANDEM = Tandem.GLOBAL_MODEL.createTandem( 'materials' );
 const SOLIDS_TANDEM = MATERIALS_TANDEM.createTandem( 'solids' );
 const FLUIDS_TANDEM = MATERIALS_TANDEM.createTandem( 'fluids' );
 
-export default class Material extends PhetioObject implements HasValueProperty {
+export default class Material extends PhetioObject implements MappedWrappedObject {
 
   public readonly nameProperty: TReadOnlyProperty<string>;
   public readonly viscosity: number;

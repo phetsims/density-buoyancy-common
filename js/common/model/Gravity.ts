@@ -12,7 +12,7 @@ import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import DensityBuoyancyCommonQueryParameters from '../DensityBuoyancyCommonQueryParameters.js';
 import NumberProperty from '../../../../axon/js/NumberProperty.js';
-import { HasValueProperty } from './MappedWrappedProperty.js';
+import { MappedWrappedObject } from './MappedWrappedProperty.js';
 import PhetioObject, { PhetioObjectOptions } from '../../../../tandem/js/PhetioObject.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
 import PickRequired from '../../../../phet-core/js/types/PickRequired.js';
@@ -34,7 +34,7 @@ type SelfOptions = {
 
 export type GravityOptions = SelfOptions & PickRequired<PhetioObjectOptions, 'tandem'>;
 
-export default class Gravity extends PhetioObject implements HasValueProperty {
+export default class Gravity extends PhetioObject implements MappedWrappedObject {
 
   public readonly nameProperty: TReadOnlyProperty<string>;
   public readonly gravityValueProperty: NumberProperty;

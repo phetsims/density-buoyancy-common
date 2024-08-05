@@ -44,7 +44,7 @@ import StrictOmit from '../../../../../phet-core/js/types/StrictOmit.js';
 import FluidIconMesh from '../../../common/view/FluidIconMesh.js';
 import Mass from '../../../common/model/Mass.js';
 import HorizontalCylinder from '../../model/shapes/HorizontalCylinder.js';
-import HorizontalCylinderView from '../../../common/view/HorizontalCylinderView.js';
+import HorizontalCylinderView from './HorizontalCylinderView.js';
 import VerticalCylinder from '../../model/shapes/VerticalCylinder.js';
 import VerticalCylinderView from '../../../common/view/VerticalCylinderView.js';
 import Duck from '../../model/shapes/Duck.js';

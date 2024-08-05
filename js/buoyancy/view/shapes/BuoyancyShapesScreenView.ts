@@ -45,14 +45,14 @@ import BuoyancyScreenView from '../BuoyancyScreenView.js';
 import StrictOmit from '../../../../../phet-core/js/types/StrictOmit.js';
 import FluidIconMesh from '../../../common/view/FluidIconMesh.js';
 import Mass from '../../../common/model/Mass.js';
-import Ellipsoid from '../../../common/model/Ellipsoid.js';
-import EllipsoidView from '../../../common/view/EllipsoidView.js';
 import HorizontalCylinder from '../../../common/model/HorizontalCylinder.js';
 import HorizontalCylinderView from '../../../common/view/HorizontalCylinderView.js';
 import VerticalCylinder from '../../../common/model/VerticalCylinder.js';
 import VerticalCylinderView from '../../../common/view/VerticalCylinderView.js';
 import Duck from '../../model/shapes/Duck.js';
 import DuckView from './DuckView.js';
+import Ellipsoid from '../../model/shapes/Ellipsoid.js';
+import EllipsoidView from './EllipsoidView.js';
 
 // constants
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN_SMALL;

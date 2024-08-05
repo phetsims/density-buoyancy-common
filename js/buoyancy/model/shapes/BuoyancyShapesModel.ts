@@ -14,7 +14,6 @@ import Tandem from '../../../../../tandem/js/Tandem.js';
 import Cone from '../../../common/model/Cone.js';
 import Cuboid from '../../../common/model/Cuboid.js';
 import DensityBuoyancyModel, { DensityBuoyancyModelOptions } from '../../../common/model/DensityBuoyancyModel.js';
-import Ellipsoid from '../../../common/model/Ellipsoid.js';
 import HorizontalCylinder from '../../../common/model/HorizontalCylinder.js';
 import Mass from '../../../common/model/Mass.js';
 import Material from '../../../common/model/Material.js';
@@ -29,6 +28,7 @@ import Duck from './Duck.js';
 import BuoyancyShapeModel from './BuoyancyShapeModel.js';
 import MaterialProperty from '../../../common/model/MaterialProperty.js';
 import optionize, { EmptySelfOptions } from '../../../../../phet-core/js/optionize.js';
+import Ellipsoid from './Ellipsoid.js';
 
 export type BuoyancyShapesModelOptions = DensityBuoyancyModelOptions;
 

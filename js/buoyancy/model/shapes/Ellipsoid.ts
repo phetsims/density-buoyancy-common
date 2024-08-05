@@ -2,7 +2,6 @@
 
 /**
  * An adjustable Ellipsoid.
- * TODO https://github.com/phetsims/density-buoyancy-common/issues/299 are shapes like Ellipsoid/Cone/etc used outside of the shapes screen? Could they be moved? Or move to a common/model/masses/ directory?
  *
  * @author Jonathan Olson (PhET Interactive Simulations)
  */

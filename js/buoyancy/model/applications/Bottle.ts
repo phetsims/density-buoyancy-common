@@ -473,18 +473,30 @@ export default class Bottle extends ApplicationsMass {
       );
     };
 
-    // TODO: Add documentation, see https://github.com/phetsims/density-buoyancy-common/issues/257
-    const approximateProfile = ( profileVectors: Vector2[] ) => {
+    /**
+     * This function takes in a set of profile vectors and generates mirrored quadrilateral vertices for approximating
+     * the cross-sectional profile of the bottle at a given height. A profile vector represents a 2D point that defines
+     * part of the outline of the bottle's shape. These vectors are used to create an accurate representation of the
+     * fluid content within the bottle for rendering purposes.
+     *
+     * @param profileVectors - An array of objects representing 2D points (profile vectors) that outline the bottle's shape.
+     */
+    const approximateProfile = ( profileVectors: Vector2[] ): void => {
+
+      // Loop through the profile vectors to create quadrilaterals
       _.range( 0, profileVectors.length - 1 ).forEach( i => {
         const a = profileVectors[ i ];
         const b = profileVectors[ i + 1 ];
 
+        // Check if both points are above the absolute Y value
         if ( a.y > absY && b.y > absY ) {
           mirroredQuad( a.x, radial( a.y ), b.x, radial( b.y ) );
         }
+
+        // Handle case where only one point is above the absolute Y value
         else if ( a.y > absY || b.y > absY ) {
           const ratio = ( absY - a.y ) / ( b.y - a.y );
-          const x = a.x + ratio * ( b.y - a.y );
+          const x = a.x + ratio * ( b.y - a.y ); // TODO: Should this be b.x - a.x? see see https://github.com/phetsims/density-buoyancy-common/issues/257
 
           if ( a.y > absY ) {
             triangles.push(

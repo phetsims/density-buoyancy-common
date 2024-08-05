@@ -13,7 +13,7 @@ import Matrix3 from '../../../../../dot/js/Matrix3.js';
 import Tandem from '../../../../../tandem/js/Tandem.js';
 import Cuboid from '../../../common/model/Cuboid.js';
 import DensityBuoyancyModel, { DensityBuoyancyModelOptions } from '../../../common/model/DensityBuoyancyModel.js';
-import HorizontalCylinder from '../../../common/model/HorizontalCylinder.js';
+import HorizontalCylinder from './HorizontalCylinder.js';
 import Mass from '../../../common/model/Mass.js';
 import Material from '../../../common/model/Material.js';
 import Scale, { DisplayType } from '../../../common/model/Scale.js';

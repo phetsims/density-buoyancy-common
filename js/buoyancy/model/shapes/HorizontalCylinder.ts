@@ -6,20 +6,20 @@
  * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
-import NumberProperty from '../../../../axon/js/NumberProperty.js';
-import StrictOmit from '../../../../phet-core/js/types/StrictOmit.js';
-import Property from '../../../../axon/js/Property.js';
-import Range from '../../../../dot/js/Range.js';
-import Vector3 from '../../../../dot/js/Vector3.js';
-import { Shape } from '../../../../kite/js/imports.js';
-import optionize, { EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
-import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
-import Mass, { InstrumentedMassOptions, MASS_MAX_SHAPES_DIMENSION, MASS_MIN_SHAPES_DIMENSION } from './Mass.js';
-import PhysicsEngine from './PhysicsEngine.js';
-import { MassShape } from './MassShape.js';
-import Bounds3 from '../../../../dot/js/Bounds3.js';
-import Utils from '../../../../dot/js/Utils.js';
-import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
+import NumberProperty from '../../../../../axon/js/NumberProperty.js';
+import StrictOmit from '../../../../../phet-core/js/types/StrictOmit.js';
+import Property from '../../../../../axon/js/Property.js';
+import Range from '../../../../../dot/js/Range.js';
+import Vector3 from '../../../../../dot/js/Vector3.js';
+import { Shape } from '../../../../../kite/js/imports.js';
+import optionize, { EmptySelfOptions } from '../../../../../phet-core/js/optionize.js';
+import densityBuoyancyCommon from '../../../densityBuoyancyCommon.js';
+import Mass, { InstrumentedMassOptions, MASS_MAX_SHAPES_DIMENSION, MASS_MIN_SHAPES_DIMENSION } from '../../../common/model/Mass.js';
+import PhysicsEngine from '../../../common/model/PhysicsEngine.js';
+import { MassShape } from '../../../common/model/MassShape.js';
+import Bounds3 from '../../../../../dot/js/Bounds3.js';
+import Utils from '../../../../../dot/js/Utils.js';
+import DensityBuoyancyCommonConstants from '../../../common/DensityBuoyancyCommonConstants.js';
 
 export type HorizontalCylinderOptions = StrictOmit<InstrumentedMassOptions, 'body' | 'shape' | 'volume' | 'massShape'>;
 

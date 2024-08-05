@@ -3,6 +3,8 @@
 /**
  * Represents different materials that solids/liquids in the simulations can take, including density/viscosity/color.
  *
+ * // TODO AV: Add ColorMaterial https://github.com/phetsims/density-buoyancy-common/issues/268
+ *
  * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
@@ -47,6 +49,12 @@ type SelfOptions = {
 
   // Used for the color of depth lines added on top of the Material
   depthLinesColorProperty?: TReadOnlyProperty<Color>;
+
+  createColorProperty?: (
+    colorProperty: ReadOnlyProperty<Color> | null,
+    densityProperty: NumberProperty,
+    isCustom: boolean
+  ) => ReadOnlyProperty<Color> | null;
 };
 
 export type MaterialOptions = SelfOptions & StrictOmit<PhetioObjectOptions, 'tandem'>;
@@ -62,7 +70,7 @@ export default class Material extends PhetioObject implements HasValueProperty {
   public readonly custom: boolean;
   public readonly hidden: boolean;
   public readonly colorProperty: ReadOnlyProperty<Color> | null;
-  public depthLinesColorProperty: TReadOnlyProperty<Color>;
+  public depthLinesColorProperty: TReadOnlyProperty<Color>; // TODO AV: readonly https://github.com/phetsims/density-buoyancy-common/issues/268
   public readonly densityProperty: NumberProperty;
 
   public constructor( tandem: Tandem, providedOptions: MaterialOptions ) {
@@ -86,7 +94,10 @@ export default class Material extends PhetioObject implements HasValueProperty {
       custom: false,
       hidden: false,
       colorProperty: null,
-      depthLinesColorProperty: DensityBuoyancyCommonColors.depthLinesDarkColorProperty
+      depthLinesColorProperty: DensityBuoyancyCommonColors.depthLinesDarkColorProperty,
+      createColorProperty: ( colorProperty: ReadOnlyProperty<Color> | null, densityProperty: NumberProperty, isCustom: boolean ) => {
+        return colorProperty;
+      }
     }, providedOptions );
 
     assert && assert( isFinite( options.density ), 'density should be finite, but it was: ' + options.density );
@@ -101,7 +112,7 @@ export default class Material extends PhetioObject implements HasValueProperty {
     this.viscosity = options.viscosity;
     this.custom = options.custom;
     this.hidden = options.hidden;
-    this.colorProperty = this.createColorProperty( options.colorProperty );
+    this.colorProperty = options.createColorProperty( options.colorProperty, this.densityProperty, this.custom );
     this.depthLinesColorProperty = options.depthLinesColorProperty;
 
     assert && assert( !( this.custom && this.hidden ), 'cannot be a mystery custom material' );
@@ -112,10 +123,6 @@ export default class Material extends PhetioObject implements HasValueProperty {
    */
   public get density(): number {
     return this.densityProperty.value;
-  }
-
-  protected createColorProperty( providedColorProperty: ReadOnlyProperty<Color> | null ): ReadOnlyProperty<Color> | null {
-    return providedColorProperty;
   }
 
   public get valueProperty(): NumberProperty {
@@ -472,7 +479,24 @@ export class CustomSolidMaterial extends Material {
 
     const options = optionize<MaterialOptions, EmptySelfOptions, MaterialOptions>()( {
       nameProperty: DensityBuoyancyCommonStrings.material.customStringProperty,
-      custom: true
+      custom: true,
+      createColorProperty: ( colorProperty, densityProperty, isCustom ) => {
+        if ( colorProperty ) {
+          return colorProperty;
+        }
+        else {
+          return new DerivedProperty( [ densityProperty, densityProperty.rangeProperty ], ( density, densityRange ) => {
+
+            // Returns a value suitable for use in colors (0-255 value) that should be used as a grayscale value for
+            // a material of a given density. The mappíng is inverted, i.e. larger densities yield darker colors.
+            const lightnessFactor = Material.getNormalizedLightness( density, densityRange );
+            return Color.interpolateRGBA(
+              new Color( '#000' ),
+              new Color( '#FFF' ),
+              lightnessFactor );
+          } );
+        }
+      }
     }, providedOptions );
 
     super( tandem, options );
@@ -480,7 +504,7 @@ export class CustomSolidMaterial extends Material {
     assert && assert( this.custom, 'SolidMaterial should only be used for custom materials' );
 
     this.depthLinesColorProperty = new DerivedProperty( [
-      this.colorProperty!, // TODO AV: this good? https://github.com/phetsims/density-buoyancy-common/issues/268
+      this.colorProperty!,
       DensityBuoyancyCommonColors.depthLinesLightColorProperty,
       DensityBuoyancyCommonColors.depthLinesDarkColorProperty
     ], ( color, depthLinesLightColor, depthLinesDarkColor ) => {
@@ -490,43 +514,24 @@ export class CustomSolidMaterial extends Material {
       return isDark ? depthLinesLightColor : depthLinesDarkColor;
     } );
   }
-
-  protected override createColorProperty( providedColorProperty: ReadOnlyProperty<Color> | null ): ReadOnlyProperty<Color> | null {
-    if ( providedColorProperty ) {
-      return super.createColorProperty( providedColorProperty );
-    }
-    else {
-      return new DerivedProperty( [ this.densityProperty, this.densityProperty.rangeProperty ], ( density, densityRange ) => {
-
-        // Returns a value suitable for use in colors (0-255 value) that should be used as a grayscale value for
-        // a material of a given density. The mappíng is inverted, i.e. larger densities yield darker colors.
-        const lightnessFactor = Material.getNormalizedLightness( density, densityRange );
-        return Color.interpolateRGBA(
-          new Color( '#000' ),
-          new Color( '#FFF' ),
-          lightnessFactor );
-      } );
-    }
-  }
 }
 
 export class CustomLiquidMaterial extends Material {
   public constructor( tandem: Tandem, providedOptions: MaterialOptions ) {
     super( tandem, optionize<MaterialOptions, EmptySelfOptions, MaterialOptions>()( {
       nameProperty: DensityBuoyancyCommonStrings.material.customStringProperty,
-      custom: true
+      custom: true,
+      createColorProperty: ( colorProperty, densityProperty, isCustom ) => {
+        if ( colorProperty || !isCustom ) {
+          return colorProperty;
+        }
+        else {
+          return new DerivedProperty( [ densityProperty, densityProperty.rangeProperty ], ( density, densityRange ) => {
+            return Material.getCustomLiquidColor( density, densityRange );
+          } );
+        }
+      }
     }, providedOptions ) );
-  }
-
-  protected override createColorProperty( providedColorProperty: ReadOnlyProperty<Color> | null ): ReadOnlyProperty<Color> | null {
-    if ( providedColorProperty && !this.custom ) {
-      return super.createColorProperty( providedColorProperty );
-    }
-    else {
-      return new DerivedProperty( [ this.densityProperty, this.densityProperty.rangeProperty ], ( density, densityRange ) => {
-        return Material.getCustomLiquidColor( density, densityRange );
-      } );
-    }
   }
 }
 

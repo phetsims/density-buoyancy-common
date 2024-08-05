@@ -142,7 +142,7 @@ export default class PhysicsEngine {
   /**
    * Sets the mass of a body (and whether it can rotate, which for some engines needs to be set at the same time).
    */
-  public bodySetMass( body: PhysicsEngineBody, mass: number ): void {
+  public static bodySetMass( body: PhysicsEngineBody, mass: number ): void {
     body.mass = mass * MASS_SCALE;
     body.fixedRotation = true;
     body.updateMassProperties();
@@ -151,21 +151,21 @@ export default class PhysicsEngine {
   /**
    * Sets the provided matrix to the current transformation matrix of the body (to reduce allocations)
    */
-  public bodyGetMatrixTransform( body: PhysicsEngineBody, matrix: Matrix3 ): Matrix3 {
+  public static bodyGetMatrixTransform( body: PhysicsEngineBody, matrix: Matrix3 ): Matrix3 {
     return matrix.setToTranslationRotation( body.interpolatedPosition[ 0 ] / SIZE_SCALE, body.interpolatedPosition[ 1 ] / SIZE_SCALE, body.interpolatedAngle );
   }
 
   /**
    * Sets the provided matrix to the current transformation matrix of the body (to reduce allocations)
    */
-  public bodyGetStepMatrixTransform( body: PhysicsEngineBody, matrix: Matrix3 ): Matrix3 {
+  public static bodyGetStepMatrixTransform( body: PhysicsEngineBody, matrix: Matrix3 ): Matrix3 {
     return matrix.setToTranslationRotation( body.position[ 0 ] / SIZE_SCALE, body.position[ 1 ] / SIZE_SCALE, body.angle );
   }
 
   /**
    * Sets the position of a body.
    */
-  public bodySetPosition( body: PhysicsEngineBody, position: Vector2 ): void {
+  public static bodySetPosition( body: PhysicsEngineBody, position: Vector2 ): void {
     body.position[ 0 ] = position.x * SIZE_SCALE;
     body.position[ 1 ] = position.y * SIZE_SCALE;
   }
@@ -173,21 +173,21 @@ export default class PhysicsEngine {
   /**
    * Sets the rotation of a body.
    */
-  public bodySetRotation( body: PhysicsEngineBody, rotation: number ): void {
+  public static bodySetRotation( body: PhysicsEngineBody, rotation: number ): void {
     body.angle = rotation;
   }
 
   /**
    * Returns the velocity of a body.
    */
-  public bodyGetVelocity( body: PhysicsEngineBody ): Vector2 {
+  public static bodyGetVelocity( body: PhysicsEngineBody ): Vector2 {
     return PhysicsEngine.p2ToVector( body.velocity );
   }
 
   /**
    * Sets the velocity of a body.
    */
-  public bodySetVelocity( body: PhysicsEngineBody, velocity: Vector2 ): void {
+  public static bodySetVelocity( body: PhysicsEngineBody, velocity: Vector2 ): void {
     body.velocity[ 0 ] = velocity.x * SIZE_SCALE;
     body.velocity[ 1 ] = velocity.y * SIZE_SCALE;
   }
@@ -203,7 +203,7 @@ export default class PhysicsEngine {
   /**
    * Returns the applied contact force computed in the last step.
    */
-  public bodyGetContactForces( body: PhysicsEngineBody ): Vector2 {
+  public static bodyGetContactForces( body: PhysicsEngineBody ): Vector2 {
     return PhysicsEngine.p2ToVector( body.vlambda ).timesScalar( body.mass / FIXED_TIME_STEP / MASS_SCALE );
   }
 
@@ -236,7 +236,7 @@ export default class PhysicsEngine {
   /**
    * Resets the contact forces that have happened on a body to 0 after measurement.
    */
-  public resetContactForces( body: PhysicsEngineBody ): void {
+  public static resetContactForces( body: PhysicsEngineBody ): void {
     body.vlambda[ 0 ] = 0;
     body.vlambda[ 1 ] = 0;
   }
@@ -244,7 +244,7 @@ export default class PhysicsEngine {
   /**
    * Returns a serialized form of a body
    */
-  public bodyToStateObject( body: PhysicsEngineBody ): BodyStateObject {
+  public static bodyToStateObject( body: PhysicsEngineBody ): BodyStateObject {
     return {
       position: PhysicsEngine.p2ToVector( body.position ).toStateObject(),
       velocity: PhysicsEngine.p2ToVector( body.velocity ).toStateObject(),
@@ -255,7 +255,7 @@ export default class PhysicsEngine {
   /**
    * Applies a given state object to a body.
    */
-  public bodyApplyState( body: PhysicsEngineBody, obj: BodyStateObject ): void {
+  public static bodyApplyState( body: PhysicsEngineBody, obj: BodyStateObject ): void {
 
     // We will ignore infinities
     body.position[ 0 ] = obj.position.x * SIZE_SCALE;
@@ -271,7 +271,7 @@ export default class PhysicsEngine {
   /**
    * Returns a serialized form of a body
    */
-  public bodyResetHidden( body: PhysicsEngineBody ): void {
+  public static bodyResetHidden( body: PhysicsEngineBody ): void {
 
     // Bodies don't start with velocity/force applied
     body.velocity[ 0 ] = 0;

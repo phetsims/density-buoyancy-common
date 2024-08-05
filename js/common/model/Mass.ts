@@ -398,8 +398,9 @@ export default abstract class Mass extends PhetioObject {
       this.shapeProperty,
       this.massProperty
     ], () => {
+
       // Don't allow a fully-zero value for the physics engines
-      engine.bodySetMass( this.body, Math.max( this.massProperty.value, 0.01 ) );
+      PhysicsEngine.bodySetMass( this.body, Math.max( this.massProperty.value, 0.01 ) );
     } );
 
     this.writeData();
@@ -457,7 +458,7 @@ export default abstract class Mass extends PhetioObject {
    * Reads transform/velocity from the physics model engine and set.
    */
   private readData(): void {
-    this.engine.bodyGetMatrixTransform( this.body, this.matrix );
+    PhysicsEngine.bodyGetMatrixTransform( this.body, this.matrix );
 
     // Apply the body offset
     this.matrix.set02( this.matrix.m02() + this.bodyOffsetProperty.value.x );
@@ -470,8 +471,8 @@ export default abstract class Mass extends PhetioObject {
    * Writes position/velocity/etc. to the physics model engine.
    */
   public writeData(): void {
-    this.engine.bodySetPosition( this.body, this.matrix.translation.minus( this.bodyOffsetProperty.value ) );
-    this.engine.bodySetRotation( this.body, this.matrix.rotation );
+    PhysicsEngine.bodySetPosition( this.body, this.matrix.translation.minus( this.bodyOffsetProperty.value ) );
+    PhysicsEngine.bodySetRotation( this.body, this.matrix.rotation );
 
     this.transformedEmitter.emit();
   }
@@ -515,7 +516,7 @@ export default abstract class Mass extends PhetioObject {
    * used for determining basin volumes and cross-sections)
    */
   public updateStepInformation(): void {
-    this.engine.bodyGetStepMatrixTransform( this.body, this.stepMatrix );
+    PhysicsEngine.bodyGetStepMatrixTransform( this.body, this.stepMatrix );
 
     // Apply the body offset
     this.stepMatrix.set02( this.stepMatrix.m02() + this.bodyOffsetProperty.value.x );
@@ -553,7 +554,7 @@ export default abstract class Mass extends PhetioObject {
    * Resets things to their original values.
    */
   public reset(): void {
-    this.engine.bodyResetHidden( this.body );
+    PhysicsEngine.bodyResetHidden( this.body );
 
     this.internalVisibleProperty.reset();
     this.shapeProperty.reset();
@@ -629,7 +630,7 @@ export default abstract class Mass extends PhetioObject {
         canMove: mass.canMove,
         tag: MassTag.MassTagIO.toStateObject( mass.tag ),
         massShape: EnumerationIO( MassShape ).toStateObject( mass.massShape )
-      }, mass.engine.bodyToStateObject( mass.body ) );
+      }, PhysicsEngine.bodyToStateObject( mass.body ) );
     },
     applyState( mass: Mass, obj: MassIOStateObject ) {
       mass.matrix.set( Matrix3.fromStateObject( obj.matrix ) );
@@ -637,7 +638,7 @@ export default abstract class Mass extends PhetioObject {
       mass.originalMatrix.set( Matrix3.fromStateObject( obj.originalMatrix ) );
       mass.canMove = obj.canMove;
       MassTag.MassTagIO.applyState( mass.tag, obj.tag );
-      mass.engine.bodyApplyState( mass.body, obj );
+      PhysicsEngine.bodyApplyState( mass.body, obj );
       mass.transformedEmitter.emit();
     },
     stateObjectToCreateElementArguments: ( stateObject: MassIOStateObject ) => [ EnumerationIO( MassShape ).fromStateObject( stateObject.massShape ) ]

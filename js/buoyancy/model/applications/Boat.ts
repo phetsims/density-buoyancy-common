@@ -245,7 +245,7 @@ export default class Boat extends ApplicationsMass {
 
   public updateVerticalMotion( pool: Pool, dt: number ): void {
     this.setSubmergedState( pool.fluidYInterpolatedProperty.currentValue );
-    const nextBoatVerticalVelocity = this.engine.bodyGetVelocity( this.body ).y;
+    const nextBoatVerticalVelocity = PhysicsEngine.bodyGetVelocity( this.body ).y;
     this.verticalAcceleration = ( nextBoatVerticalVelocity - this.verticalVelocity ) / dt;
     this.verticalVelocity = nextBoatVerticalVelocity;
   }

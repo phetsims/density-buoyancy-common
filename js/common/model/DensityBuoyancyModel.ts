@@ -227,7 +227,7 @@ export default class DensityBuoyancyModel implements TModel {
 
       // Will set the force Properties for all the masses
       this.masses.forEach( mass => {
-        let contactForce = this.engine.bodyGetContactForces( mass.body );
+        let contactForce = PhysicsEngine.bodyGetContactForces( mass.body );
 
         // p2.js will report bad forces for static scales, so we need to zero these out
         if ( !contactForce.isFinite() ) {
@@ -254,7 +254,7 @@ export default class DensityBuoyancyModel implements TModel {
           } );
         }
 
-        this.engine.resetContactForces( mass.body );
+        PhysicsEngine.resetContactForces( mass.body );
         mass.contactForceInterpolatedProperty.setNextValue( contactForce );
 
         if ( mass instanceof Scale ) {
@@ -270,12 +270,12 @@ export default class DensityBuoyancyModel implements TModel {
           mass.measuredWeightInterpolatedProperty.setNextValue( scaleForce );
         }
 
-        const velocity = this.engine.bodyGetVelocity( mass.body );
+        const velocity = PhysicsEngine.bodyGetVelocity( mass.body );
 
         // Limit velocity, so things converge faster.
         if ( velocity.magnitude > 5 ) {
           velocity.setMagnitude( 5 );
-          this.engine.bodySetVelocity( mass.body, velocity );
+          PhysicsEngine.bodySetVelocity( mass.body, velocity );
         }
 
         const basin = mass.containingBasin;

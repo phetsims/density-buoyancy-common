@@ -22,6 +22,7 @@ import MassTag from '../../../common/model/MassTag.js';
 import Basin from '../../../common/model/Basin.js';
 import Mass, { MaterialSchema } from '../../../common/model/Mass.js';
 import optionize, { EmptySelfOptions } from '../../../../../phet-core/js/optionize.js';
+import PhysicsEngine from '../../../common/model/PhysicsEngine.js';
 
 export type BuoyancyApplicationsModelOptions = DensityBuoyancyModelOptions;
 
@@ -325,7 +326,7 @@ export default class BuoyancyApplicationsModel extends DensityBuoyancyModel {
     // If the boat is moving, assume the fluid moves with it, and apply viscosity due to the movement of our mass
     // inside the boat's fluid.
     if ( basin === this.boat.basin ) {
-      velocity.subtract( this.engine.bodyGetVelocity( this.boat.body ) );
+      velocity.subtract( PhysicsEngine.bodyGetVelocity( this.boat.body ) );
     }
   }
 

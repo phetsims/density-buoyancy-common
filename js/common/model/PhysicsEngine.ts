@@ -283,7 +283,7 @@ export default class PhysicsEngine {
   /**
    * Sets the previous position of a body to the current position. This is helpful for making sure the body is stationary.
    */
-  public bodySynchronizePrevious( body: PhysicsEngineBody ): void {
+  public static bodySynchronizePrevious( body: PhysicsEngineBody ): void {
     body.previousPosition[ 0 ] = body.position[ 0 ];
     body.previousPosition[ 1 ] = body.position[ 1 ];
   }

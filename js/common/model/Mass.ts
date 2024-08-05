@@ -403,7 +403,7 @@ export default abstract class Mass extends PhetioObject {
     } );
 
     this.writeData();
-    this.engine.bodySynchronizePrevious( this.body );
+    PhysicsEngine.bodySynchronizePrevious( this.body );
     // TODO: why not call transformedEmitter()? https://github.com/phetsims/density-buoyancy-common/issues/231
 
     this.stepX = 0; // x-value of the position
@@ -472,6 +472,8 @@ export default abstract class Mass extends PhetioObject {
   public writeData(): void {
     this.engine.bodySetPosition( this.body, this.matrix.translation.minus( this.bodyOffsetProperty.value ) );
     this.engine.bodySetRotation( this.body, this.matrix.rotation );
+
+    this.transformedEmitter.emit();
   }
 
   /**
@@ -523,7 +525,6 @@ export default abstract class Mass extends PhetioObject {
   public setPosition( x: number, y: number ): void {
     this.matrix.setToTranslation( x, y );
     this.writeData();
-    this.transformedEmitter.emit();
   }
 
   /**
@@ -531,8 +532,6 @@ export default abstract class Mass extends PhetioObject {
    */
   public step( dt: number, interpolationRatio: number ): void {
     this.readData();
-
-    this.transformedEmitter.emit();
 
     this.contactForceInterpolatedProperty.setRatio( interpolationRatio );
     this.buoyancyForceInterpolatedProperty.setRatio( interpolationRatio );
@@ -547,8 +546,7 @@ export default abstract class Mass extends PhetioObject {
   public resetPosition(): void {
     this.matrix.set( this.originalMatrix );
     this.writeData();
-    this.engine.bodySynchronizePrevious( this.body );
-    this.transformedEmitter.emit();
+    PhysicsEngine.bodySynchronizePrevious( this.body );
   }
 
   /**

@@ -103,7 +103,6 @@ export default class PoolScaleHeightControl extends NumberControl {
       poolScale.matrix.set02( SCALE_X_POSITION );
       poolScale.matrix.set12( currentHeight + Scale.SCALE_HEIGHT / 2 );
       poolScale.writeData();
-      poolScale.transformedEmitter.emit();
     } );
 
     thumbNode.touchArea = thumbInteractionArea.copy().rect( -10, -10, 20, 50 );

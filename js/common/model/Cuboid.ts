@@ -82,6 +82,7 @@ export default class Cuboid extends Mass {
       this.forceOffsetProperty.value = new Vector3( 0, 0, size.maxZ );
       this.massLabelOffsetProperty.value = new Vector3( size.minX, size.minY, size.maxZ );
 
+      // Calling transformedEmitter twice for safety, it was already called in writeData
       this.transformedEmitter.emit();
     }
   }

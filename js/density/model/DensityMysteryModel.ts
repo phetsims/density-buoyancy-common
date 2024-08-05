@@ -31,6 +31,7 @@ import Emitter from '../../../../axon/js/Emitter.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
 import { MaterialSchema } from '../../common/model/Mass.js';
+import PhysicsEngine from '../../common/model/PhysicsEngine.js';
 
 // constants
 const randomColors = [
@@ -294,15 +295,14 @@ export default class DensityMysteryModel extends BlockSetModel<MysteryBlockSet> 
     scalePositionProperty.lazyLink( position => {
       this.scale.matrix.set02( position.x );
       this.scale.matrix.set12( position.y );
-      this.scale.writeData();
 
       // When we reset-all, we'll want it to move back to here
       this.scale.setResetLocation();
 
       // Adjust its previous position also
-      this.engine.bodySynchronizePrevious( this.scale.body );
+      PhysicsEngine.bodySynchronizePrevious( this.scale.body );
 
-      this.scale.transformedEmitter.emit();
+      this.scale.writeData();
     } );
   }
 

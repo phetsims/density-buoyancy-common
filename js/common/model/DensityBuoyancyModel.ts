@@ -247,9 +247,8 @@ export default class DensityBuoyancyModel implements TModel {
 
                 otherMass.matrix.set02( mass.matrix.m02() - delta );
                 otherMass.writeData();
-                otherMass.transformedEmitter.emit();
 
-                this.engine.bodySynchronizePrevious( otherMass.body );
+                PhysicsEngine.bodySynchronizePrevious( otherMass.body );
               }
             }
           } );
@@ -393,7 +392,7 @@ export default class DensityBuoyancyModel implements TModel {
    * Moves masses' previous positions to their current positions.
    */
   protected syncPreviousMassPositionsToCurrent(): void {
-    this.masses.forEach( mass => this.engine.bodySynchronizePrevious( mass.body ) );
+    this.masses.forEach( mass => PhysicsEngine.bodySynchronizePrevious( mass.body ) );
   }
 
   /**
@@ -409,7 +408,6 @@ export default class DensityBuoyancyModel implements TModel {
       );
       position -= BLOCK_SPACING + mass.sizeProperty.value.width;
       mass.writeData();
-      mass.transformedEmitter.emit();
     } );
   }
 
@@ -426,7 +424,6 @@ export default class DensityBuoyancyModel implements TModel {
       );
       position += BLOCK_SPACING + mass.sizeProperty.value.width;
       mass.writeData();
-      mass.transformedEmitter.emit();
     } );
   }
 
@@ -459,9 +456,8 @@ export default class DensityBuoyancyModel implements TModel {
     masses.forEach( mass => {
       mass.matrix.setToTranslation( x, position + mass.sizeProperty.value.height / 2 );
       position += mass.sizeProperty.value.height;
+      PhysicsEngine.bodySynchronizePrevious( mass.body );
       mass.writeData();
-      this.engine.bodySynchronizePrevious( mass.body );
-      mass.transformedEmitter.emit();
     } );
   }
 

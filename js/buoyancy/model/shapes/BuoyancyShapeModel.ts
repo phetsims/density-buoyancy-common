@@ -84,7 +84,6 @@ export default class BuoyancyShapeModel {
     const minYAfter = this.shapeProperty.value.getBounds().minY;
     this.shapeProperty.value.matrix.multiplyMatrix( Matrix3.translation( 0, minYBefore - minYAfter ) );
     this.shapeProperty.value.writeData();
-    this.shapeProperty.value.transformedEmitter.emit();
   }
 
   public reset(): void {

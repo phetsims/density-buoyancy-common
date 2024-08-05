@@ -100,7 +100,6 @@ export default class BuoyancyShapesModel extends DensityBuoyancyModel {
           newMass.matrix.set( oldMass.matrix );
         }
         newMass.writeData();
-        newMass.transformedEmitter.emit();
 
         if ( this.availableMasses.includes( oldMass ) ) {
           this.availableMasses.remove( oldMass );

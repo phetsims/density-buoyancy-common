@@ -18,7 +18,7 @@ import Mass from '../../../common/model/Mass.js';
 import Material from '../../../common/model/Material.js';
 import Scale, { DisplayType } from '../../../common/model/Scale.js';
 import TwoBlockMode from '../../../common/model/TwoBlockMode.js';
-import VerticalCylinder from '../../../common/model/VerticalCylinder.js';
+import VerticalCylinder from './VerticalCylinder.js';
 import densityBuoyancyCommon from '../../../densityBuoyancyCommon.js';
 import { MassShape } from '../../../common/model/MassShape.js';
 import isSettingPhetioStateProperty from '../../../../../tandem/js/isSettingPhetioStateProperty.js';

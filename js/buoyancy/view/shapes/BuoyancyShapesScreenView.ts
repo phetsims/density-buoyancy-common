@@ -45,7 +45,7 @@ import FluidIconMesh from '../../../common/view/FluidIconMesh.js';
 import Mass from '../../../common/model/Mass.js';
 import HorizontalCylinder from '../../../common/model/HorizontalCylinder.js';
 import HorizontalCylinderView from '../../../common/view/HorizontalCylinderView.js';
-import VerticalCylinder from '../../../common/model/VerticalCylinder.js';
+import VerticalCylinder from '../../model/shapes/VerticalCylinder.js';
 import VerticalCylinderView from '../../../common/view/VerticalCylinderView.js';
 import Duck from '../../model/shapes/Duck.js';
 import DuckView from './DuckView.js';

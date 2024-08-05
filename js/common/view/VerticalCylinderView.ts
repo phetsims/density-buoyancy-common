@@ -9,7 +9,7 @@
 import Vector3 from '../../../../dot/js/Vector3.js';
 import TriangleArrayWriter from '../../../../mobius/js/TriangleArrayWriter.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
-import VerticalCylinder from '../model/VerticalCylinder.js';
+import VerticalCylinder from '../../buoyancy/model/shapes/VerticalCylinder.js';
 import { TAG_OFFSET } from './MassTagNode.js';
 import MeasurableMassView from './MeasurableMassView.js';
 import { THREEModelViewTransform } from './DensityBuoyancyScreenView.js';

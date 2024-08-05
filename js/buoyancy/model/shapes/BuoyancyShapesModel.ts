@@ -11,7 +11,6 @@ import EnumerationProperty from '../../../../../axon/js/EnumerationProperty.js';
 import Property from '../../../../../axon/js/Property.js';
 import Matrix3 from '../../../../../dot/js/Matrix3.js';
 import Tandem from '../../../../../tandem/js/Tandem.js';
-import Cone from '../../../common/model/Cone.js';
 import Cuboid from '../../../common/model/Cuboid.js';
 import DensityBuoyancyModel, { DensityBuoyancyModelOptions } from '../../../common/model/DensityBuoyancyModel.js';
 import HorizontalCylinder from '../../../common/model/HorizontalCylinder.js';
@@ -29,6 +28,7 @@ import BuoyancyShapeModel from './BuoyancyShapeModel.js';
 import MaterialProperty from '../../../common/model/MaterialProperty.js';
 import optionize, { EmptySelfOptions } from '../../../../../phet-core/js/optionize.js';
 import Ellipsoid from './Ellipsoid.js';
+import Cone from './Cone.js';
 
 export type BuoyancyShapesModelOptions = DensityBuoyancyModelOptions;
 

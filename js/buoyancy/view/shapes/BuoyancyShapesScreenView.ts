@@ -36,8 +36,6 @@ import PatternStringProperty from '../../../../../axon/js/PatternStringProperty.
 import DensityBuoyancyCommonStrings from '../../../DensityBuoyancyCommonStrings.js';
 import { DensityMaterials } from '../../../common/view/MaterialView.js';
 import ThreeUtils from '../../../../../mobius/js/ThreeUtils.js';
-import Cone from '../../../common/model/Cone.js';
-import ConeView from '../../../common/view/ConeView.js';
 import ScaleView from '../../../common/view/ScaleView.js';
 import MassView from '../../../common/view/MassView.js';
 import FluidDensityPanel from '../FluidDensityPanel.js';
@@ -53,6 +51,8 @@ import Duck from '../../model/shapes/Duck.js';
 import DuckView from './DuckView.js';
 import Ellipsoid from '../../model/shapes/Ellipsoid.js';
 import EllipsoidView from './EllipsoidView.js';
+import Cone from '../../model/shapes/Cone.js';
+import ConeView from './ConeView.js';
 
 // constants
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN_SMALL;

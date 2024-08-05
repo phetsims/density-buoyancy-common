@@ -6,14 +6,14 @@
  * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
-import Vector3 from '../../../../dot/js/Vector3.js';
-import TriangleArrayWriter from '../../../../mobius/js/TriangleArrayWriter.js';
-import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
-import Cone from '../model/Cone.js';
-import { TAG_OFFSET } from './MassTagNode.js';
-import MeasurableMassView from './MeasurableMassView.js';
-import { THREEModelViewTransform } from './DensityBuoyancyScreenView.js';
-import DisplayProperties from '../../buoyancy/view/DisplayProperties.js';
+import Vector3 from '../../../../../dot/js/Vector3.js';
+import TriangleArrayWriter from '../../../../../mobius/js/TriangleArrayWriter.js';
+import densityBuoyancyCommon from '../../../densityBuoyancyCommon.js';
+import Cone from '../../model/shapes/Cone.js';
+import { TAG_OFFSET } from '../../../common/view/MassTagNode.js';
+import MeasurableMassView from '../../../common/view/MeasurableMassView.js';
+import { THREEModelViewTransform } from '../../../common/view/DensityBuoyancyScreenView.js';
+import DisplayProperties from '../DisplayProperties.js';
 
 // constants
 const segments = 64;

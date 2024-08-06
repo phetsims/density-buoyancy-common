@@ -403,13 +403,14 @@ export default abstract class Mass extends PhetioObject {
       PhysicsEngine.bodySetMass( this.body, Math.max( this.massProperty.value, 0.01 ) );
     } );
 
-    this.writeData();
+
     PhysicsEngine.bodySynchronizePrevious( this.body );
-    // TODO: why not call transformedEmitter()? https://github.com/phetsims/density-buoyancy-common/issues/231
 
     this.stepX = 0; // x-value of the position
     this.stepBottom = 0; // minimum y value of the mass
     this.stepTop = 0; // maximum y value of the mass
+
+    this.writeData();
   }
 
   /**
@@ -659,8 +660,7 @@ export default abstract class Mass extends PhetioObject {
       mass.body.force[ 0 ] = obj.force.x * SIZE_SCALE;
       mass.body.force[ 1 ] = obj.force.y * SIZE_SCALE;
 
-      // TODO: Should we call mass.writeData here? See https://github.com/phetsims/density-buoyancy-common/issues/231
-      mass.transformedEmitter.emit();
+      mass.writeData();
     }
   } );
 }

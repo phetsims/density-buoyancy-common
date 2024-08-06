@@ -102,7 +102,7 @@ export default class Boat extends ApplicationsMass {
       this.volumeProperty.value = Utils.roundToInterval( volume, DensityBuoyancyCommonConstants.TOLERANCE );
 
       this.bodyOffsetProperty.value = Utils.centroidOfPolygon( vertices ).negated();
-      this.writeData(); // TODO: why not call transformedEmitter? https://github.com/phetsims/density-buoyancy-common/issues/231
+      this.writeData();
     } );
 
     this.fluidMaterialProperty = fluidMaterialProperty;

@@ -244,33 +244,6 @@ export default class PhysicsEngine {
   /**
    * Returns a serialized form of a body
    */
-  public static bodyToStateObject( body: PhysicsEngineBody ): BodyStateObject {
-    return {
-      position: PhysicsEngine.p2ToVector( body.position ).toStateObject(),
-      velocity: PhysicsEngine.p2ToVector( body.velocity ).toStateObject(),
-      force: PhysicsEngine.p2ToVector( body.force ).toStateObject() // we applied forces after the step
-    };
-  }
-
-  /**
-   * Applies a given state object to a body.
-   */
-  public static bodyApplyState( body: PhysicsEngineBody, obj: BodyStateObject ): void {
-
-    // We will ignore infinities
-    body.position[ 0 ] = obj.position.x * SIZE_SCALE;
-    body.position[ 1 ] = obj.position.y * SIZE_SCALE;
-    body.previousPosition[ 0 ] = obj.position.x * SIZE_SCALE;
-    body.previousPosition[ 1 ] = obj.position.y * SIZE_SCALE;
-    body.velocity[ 0 ] = obj.velocity.x * SIZE_SCALE;
-    body.velocity[ 1 ] = obj.velocity.y * SIZE_SCALE;
-    body.force[ 0 ] = obj.force.x * SIZE_SCALE;
-    body.force[ 1 ] = obj.force.y * SIZE_SCALE;
-  }
-
-  /**
-   * Returns a serialized form of a body
-   */
   public static bodyResetHidden( body: PhysicsEngineBody ): void {
 
     // Bodies don't start with velocity/force applied
@@ -465,7 +438,7 @@ export default class PhysicsEngine {
   /**
    * Converts a p2.vec2 to a Vector2
    */
-  private static p2ToVector( vector: [ number, number ] ): Vector2 {
+  public static p2ToVector( vector: [ number, number ] ): Vector2 {
     return new Vector2( vector[ 0 ] / SIZE_SCALE, vector[ 1 ] / SIZE_SCALE );
   }
 

@@ -28,13 +28,12 @@ import IOType from '../../../../tandem/js/types/IOType.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import InterpolatedProperty from './InterpolatedProperty.js';
 import Material, { CustomSolidMaterial, MaterialOptions } from './Material.js';
-import PhysicsEngine, { PhysicsEngineBody } from './PhysicsEngine.js';
+import PhysicsEngine, { BodyStateObject, PhysicsEngineBody } from './PhysicsEngine.js';
 import Basin from './Basin.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import Multilink from '../../../../axon/js/Multilink.js';
 import PickRequired from '../../../../phet-core/js/types/PickRequired.js';
 import { MassShape } from './MassShape.js';
-import { BodyStateObject } from './PhysicsEngine.js';
 import TEmitter from '../../../../axon/js/TEmitter.js';
 import MassTag, { MassTagStateObject } from './MassTag.js';
 import Bounds3 from '../../../../dot/js/Bounds3.js';
@@ -44,6 +43,7 @@ import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js
 import MaterialProperty, { MaterialPropertyOptions } from './MaterialProperty.js';
 import PropertyStatePhase from '../../../../axon/js/PropertyStatePhase.js';
 import propertyStateHandlerSingleton from '../../../../axon/js/propertyStateHandlerSingleton.js';
+import DensityBuoyancyCommonQueryParameters from '../DensityBuoyancyCommonQueryParameters.js';
 
 // For the Buoyancy Shapes screen, but needed here because setRatios is included in each core type
 // See https://github.com/phetsims/buoyancy/issues/29
@@ -616,8 +616,6 @@ export default abstract class Mass extends PhetioObject {
       canMove: BooleanIO,
       tag: MassTag.MassTagIO,
       massShape: EnumerationIO( MassShape ),
-
-      // engine.bodyToStateObject
       position: Vector2.Vector2IO,
       velocity: Vector2.Vector2IO,
       force: Vector2.Vector2IO
@@ -629,19 +627,41 @@ export default abstract class Mass extends PhetioObject {
         originalMatrix: Matrix3.toStateObject( mass.originalMatrix ),
         canMove: mass.canMove,
         tag: MassTag.MassTagIO.toStateObject( mass.tag ),
-        massShape: EnumerationIO( MassShape ).toStateObject( mass.massShape )
-      }, PhysicsEngine.bodyToStateObject( mass.body ) );
+        massShape: EnumerationIO( MassShape ).toStateObject( mass.massShape ),
+
+        // Applies SIZE_SCALE
+        position: PhysicsEngine.p2ToVector( mass.body.position ).toStateObject(),
+        velocity: PhysicsEngine.p2ToVector( mass.body.velocity ).toStateObject(),
+        force: PhysicsEngine.p2ToVector( mass.body.force ).toStateObject() // we applied forces after the step
+      } );
     },
     applyState( mass: Mass, obj: MassIOStateObject ) {
+
+      const SIZE_SCALE = DensityBuoyancyCommonQueryParameters.p2SizeScale;
+
       mass.matrix.set( Matrix3.fromStateObject( obj.matrix ) );
       mass.stepMatrix.set( Matrix3.fromStateObject( obj.stepMatrix ) );
       mass.originalMatrix.set( Matrix3.fromStateObject( obj.originalMatrix ) );
       mass.canMove = obj.canMove;
       MassTag.MassTagIO.applyState( mass.tag, obj.tag );
-      PhysicsEngine.bodyApplyState( mass.body, obj );
+
+      // We will ignore infinities
+      mass.body.position[ 0 ] = obj.position.x * SIZE_SCALE;
+      mass.body.position[ 1 ] = obj.position.y * SIZE_SCALE;
+
+      // TODO: Are the next 2 lines synchronizePreviousPosition? See https://github.com/phetsims/density-buoyancy-common/issues/300
+      mass.body.previousPosition[ 0 ] = obj.position.x * SIZE_SCALE;
+      mass.body.previousPosition[ 1 ] = obj.position.y * SIZE_SCALE;
+
+      mass.body.velocity[ 0 ] = obj.velocity.x * SIZE_SCALE;
+      mass.body.velocity[ 1 ] = obj.velocity.y * SIZE_SCALE;
+
+      mass.body.force[ 0 ] = obj.force.x * SIZE_SCALE;
+      mass.body.force[ 1 ] = obj.force.y * SIZE_SCALE;
+
+      // TODO: Should we call mass.writeData here? See https://github.com/phetsims/density-buoyancy-common/issues/231
       mass.transformedEmitter.emit();
-    },
-    stateObjectToCreateElementArguments: ( stateObject: MassIOStateObject ) => [ EnumerationIO( MassShape ).fromStateObject( stateObject.massShape ) ]
+    }
   } );
 }
 

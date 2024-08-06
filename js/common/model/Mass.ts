@@ -638,7 +638,7 @@ export default abstract class Mass extends PhetioObject {
     },
     applyState( mass: Mass, obj: MassIOStateObject ) {
 
-      // Some of the following attributes are not public, but are settable since this IO Type is declared as a static
+      // Some of the following attributes are not public, but are settable since this IOType is declared as a static
       // class member. This is preferable to making the attributes public everywhere.
       const SIZE_SCALE = DensityBuoyancyCommonQueryParameters.p2SizeScale;
 

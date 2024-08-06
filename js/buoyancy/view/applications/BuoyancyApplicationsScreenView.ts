@@ -34,8 +34,6 @@ import DensityAccordionBox from '../DensityAccordionBox.js';
 import arrayRemove from '../../../../../phet-core/js/arrayRemove.js';
 import BottleView from './BottleView.js';
 import BoatView from './BoatView.js';
-import bottle_icon_png from '../../../../images/bottle_icon_png.js';
-import boat_icon_png from '../../../../images/boat_icon_png.js';
 import SubmergedAccordionBox from '../SubmergedAccordionBox.js';
 import PrecisionSliderThumb from '../../../common/view/PrecisionSliderThumb.js';
 import Bottle from '../../model/applications/Bottle.js';
@@ -50,10 +48,11 @@ import Mass from '../../../common/model/Mass.js';
 import Boat from '../../model/applications/Boat.js';
 import DebugView from '../../../common/view/DebugView.js';
 import ApplicationsDebugView from './ApplicationsDebugView.js';
+import getBoatIcon from './getBoatIcon.js';
+import getBottleIcon from './getBottleIcon.js';
 
 // constants
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN_SMALL;
-const ICON_SCALE = 0.08;
 
 type BuoyancyExploreScreenViewOptions = StrictOmit<DensityBuoyancyScreenViewOptions, 'canShowForces' | 'supportsDepthLines' | 'forcesInitiallyDisplayed' | 'massValuesInitiallyDisplayed' | 'initialForceScale'>;
 
@@ -349,11 +348,11 @@ export default class BuoyancyApplicationsScreenView extends BuoyancyScreenView<B
 
     const applicationModeRadioButtonGroup = new RectangularRadioButtonGroup( model.applicationModeProperty, [ {
       value: 'BOTTLE',
-      createNode: () => BuoyancyApplicationsScreenView.getBottleIcon(),
+      createNode: () => getBottleIcon(),
       tandemName: 'bottleRadioButton'
     }, {
       value: 'BOAT',
-      createNode: () => BuoyancyApplicationsScreenView.getBoatIcon(),
+      createNode: () => getBoatIcon(),
       tandemName: 'boatRadioButton'
     } ], {
       orientation: 'horizontal',
@@ -486,33 +485,6 @@ export default class BuoyancyApplicationsScreenView extends BuoyancyScreenView<B
     fluidGeometry.computeBoundingSphere();
 
     return wasFilled;
-  }
-
-  // TODO: Consider simplifying this file by moving the icons to a separate file, see https://github.com/phetsims/density-buoyancy-common/issues/317
-  private static getBoatIcon(): Node {
-    const boatIcon = DensityBuoyancyScreenView.getThreeIcon( boat_icon_png, () => {
-      return DensityBuoyancyScreenView.getAngledIcon( 6, new Vector3( -0.03, 0, 0 ), scene => {
-
-        const topBoatClipPlane: THREE.Plane = new THREE.Plane( new THREE.Vector3( 0, 1, 0 ), 0 );
-        const bottomBoatClipPlane: THREE.Plane = new THREE.Plane( new THREE.Vector3( 0, -1, 0 ), 0 );
-        const topPoolClipPlane: THREE.Plane = new THREE.Plane( new THREE.Vector3( 0, 1, 0 ), 0 );
-        const bottomPoolClipPlane: THREE.Plane = new THREE.Plane( new THREE.Vector3( 0, -1, 0 ), 0 );
-
-        scene.add( BoatView.getBoatDrawingData( topBoatClipPlane, bottomBoatClipPlane, topPoolClipPlane, bottomPoolClipPlane ).group );
-      }, null );
-    } );
-    boatIcon.setScaleMagnitude( ICON_SCALE );
-    return boatIcon;
-  }
-
-  private static getBottleIcon(): Node {
-    const bottle = DensityBuoyancyScreenView.getThreeIcon( bottle_icon_png, () => {
-      return DensityBuoyancyScreenView.getAngledIcon( 3.4, new Vector3( -0.02, 0, 0 ), scene => {
-        scene.add( BottleView.getBottleDrawingData().group );
-      }, null );
-    } );
-    bottle.setScaleMagnitude( ICON_SCALE );
-    return bottle;
   }
 }
 

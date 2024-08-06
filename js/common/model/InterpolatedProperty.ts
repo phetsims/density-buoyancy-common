@@ -21,13 +21,13 @@ import NumberIO from '../../../../tandem/js/types/NumberIO.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import IOTypeCache from '../../../../tandem/js/IOTypeCache.js';
 
-type Interpolate<T> = ( a: T, b: T, ratio: number ) => T;
-type SelfOptions<T> = {
+type Interpolate<T extends Vector2 | number> = ( a: T, b: T, ratio: number ) => T;
+type SelfOptions<T extends Vector2 | number> = {
   interpolate: Interpolate<T>;
 };
-export type InterpolatedPropertyOptions<T> = SelfOptions<T> & PropertyOptions<T>;
+export type InterpolatedPropertyOptions<T extends Vector2 | number> = SelfOptions<T> & PropertyOptions<T>;
 
-export default class InterpolatedProperty<T> extends Property<T> {
+export default class InterpolatedProperty<T extends Vector2 | number> extends Property<T> {
 
   // The most recently set value, but changing this will not fire listeners.
   public currentValue: T;
@@ -120,8 +120,11 @@ export default class InterpolatedProperty<T> extends Property<T> {
 
           return parentStateObject;
         },
-        applyState: ( interpolatedProperty: InterpolatedProperty<IntentionalAny>, stateObject: InterpolatedPropertyIOStateObject ) => {
+        applyState: ( interpolatedProperty: InterpolatedProperty<Vector2 | number>, stateObject: InterpolatedPropertyIOStateObject ) => {
           PropertyIOImpl.applyState( interpolatedProperty, stateObject );
+
+          // Writes to the private members, but it doesn't fail type checking because InterpolatedPropertyIO is declared
+          // as a static member. This is preferable to making them public.
           interpolatedProperty.currentValue = parameterType.fromStateObject( stateObject.currentValue );
           interpolatedProperty.previousValue = parameterType.fromStateObject( stateObject.previousValue );
           interpolatedProperty.ratio = stateObject.ratio;

@@ -29,6 +29,7 @@ import GravityProperty from './GravityProperty.js';
 import ReferenceIO from '../../../../tandem/js/types/ReferenceIO.js';
 import IOType from '../../../../tandem/js/types/IOType.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
+import Tandem from '../../../../tandem/js/Tandem.js';
 
 // constants
 const BLOCK_SPACING = 0.01;
@@ -42,6 +43,7 @@ const POOL_BACK_Z = -POOL_DEPTH / 2;
 export type DensityBuoyancyModelOptions = {
   usePoolScale?: boolean;
   fluidSelectionType?: FluidSelectionType;
+  isGravityPropertyInstrumented?: boolean;
 } & PickRequired<PhetioObjectOptions, 'tandem'>;
 
 const customStringProperty = DensityBuoyancyCommonStrings.gravity.customStringProperty;
@@ -71,13 +73,14 @@ export default class DensityBuoyancyModel implements TModel {
   public constructor( providedOptions?: DensityBuoyancyModelOptions ) {
     const options = optionize<DensityBuoyancyModelOptions, DensityBuoyancyModelOptions>()( {
       usePoolScale: true,
-      fluidSelectionType: 'justWater'
+      fluidSelectionType: 'justWater',
+      isGravityPropertyInstrumented: false
     }, providedOptions );
 
     const tandem = options.tandem;
 
     const initialGravity = Gravity.EARTH;
-    const gravityPropertyTandem = tandem.createTandem( 'gravityProperty' );
+    const gravityPropertyTandem = options.isGravityPropertyInstrumented ? tandem.createTandem( 'gravityProperty' ) : Tandem.OPT_OUT;
 
     const customGravity = new Gravity( {
       nameProperty: customStringProperty,

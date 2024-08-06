@@ -31,7 +31,8 @@ export default class BuoyancyLabModel extends DensityBuoyancyModel {
   public constructor( providedOptions: BuoyancyLabModelOptions ) {
 
     const options = optionize<BuoyancyLabModelOptions, EmptySelfOptions, DensityBuoyancyModelOptions>()( {
-      fluidSelectionType: 'all'
+      fluidSelectionType: 'all',
+      isGravityPropertyInstrumented: true
     }, providedOptions );
 
     super( options );

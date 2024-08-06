@@ -16,7 +16,7 @@
 import TEmitter from '../../../../axon/js/TEmitter.js';
 import TinyEmitter from '../../../../axon/js/TinyEmitter.js';
 import Matrix3 from '../../../../dot/js/Matrix3.js';
-import Vector2, { Vector2StateObject } from '../../../../dot/js/Vector2.js';
+import Vector2 from '../../../../dot/js/Vector2.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonQueryParameters from '../DensityBuoyancyCommonQueryParameters.js';
 
@@ -41,12 +41,6 @@ const BODY_TYPE_MAPPER = {
   DYNAMIC: p2.Body.DYNAMIC, // Default, can be moved around, and can be effected by other bodies moving around.
   KINEMATIC: p2.Body.KINEMATIC, // Cannot be moved by other bodies, but can move.
   STATIC: p2.Body.STATIC // Cannot move, for anything.
-};
-
-export type BodyStateObject = {
-  position: Vector2StateObject;
-  velocity: Vector2StateObject;
-  force: Vector2StateObject;
 };
 
 export default class PhysicsEngine {

@@ -14,28 +14,26 @@ import Property from '../../../../axon/js/Property.js';
 import Matrix3, { Matrix3StateObject } from '../../../../dot/js/Matrix3.js';
 import Range from '../../../../dot/js/Range.js';
 import Utils from '../../../../dot/js/Utils.js';
-import Vector2 from '../../../../dot/js/Vector2.js';
+import Vector2, { Vector2StateObject } from '../../../../dot/js/Vector2.js';
 import Vector2Property from '../../../../dot/js/Vector2Property.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
 import { Shape } from '../../../../kite/js/imports.js';
-import EnumerationIO from '../../../../tandem/js/types/EnumerationIO.js';
 import optionize, { combineOptions } from '../../../../phet-core/js/optionize.js';
 import { GatedVisibleProperty, PDOMValueType } from '../../../../scenery/js/imports.js';
 import PhetioObject, { PhetioObjectOptions } from '../../../../tandem/js/PhetioObject.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
-import BooleanIO from '../../../../tandem/js/types/BooleanIO.js';
 import IOType from '../../../../tandem/js/types/IOType.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import InterpolatedProperty from './InterpolatedProperty.js';
 import Material, { CustomSolidMaterial, MaterialOptions } from './Material.js';
-import PhysicsEngine, { BodyStateObject, PhysicsEngineBody } from './PhysicsEngine.js';
+import PhysicsEngine, { PhysicsEngineBody } from './PhysicsEngine.js';
 import Basin from './Basin.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import Multilink from '../../../../axon/js/Multilink.js';
 import PickRequired from '../../../../phet-core/js/types/PickRequired.js';
 import { MassShape } from './MassShape.js';
 import TEmitter from '../../../../axon/js/TEmitter.js';
-import MassTag, { MassTagStateObject } from './MassTag.js';
+import MassTag from './MassTag.js';
 import Bounds3 from '../../../../dot/js/Bounds3.js';
 import BlendedVector2Property from './BlendedVector2Property.js';
 import { GuardedNumberProperty, GuardedNumberPropertyOptions } from './GuardedNumberProperty.js';
@@ -86,17 +84,15 @@ export type MassIOStateObject = {
   matrix: Matrix3StateObject;
   stepMatrix: Matrix3StateObject;
   originalMatrix: Matrix3StateObject;
-  canMove: boolean;
-  tag: MassTagStateObject;
-  massShape: string;
-} & BodyStateObject;
+  position: Vector2StateObject;
+  velocity: Vector2StateObject;
+  force: Vector2StateObject;
+};
 
 export default abstract class Mass extends PhetioObject {
 
   protected readonly engine: PhysicsEngine;
   public readonly body: PhysicsEngineBody;
-
-  private readonly massShape: MassShape;
 
   // Without the matrix applied (effectively in "local" model coordinates)
   public readonly shapeProperty: Property<Shape>;
@@ -159,8 +155,8 @@ export default abstract class Mass extends PhetioObject {
   // Fired when this mass's input (drag) should be interrupted.
   public readonly interruptedEmitter: TEmitter;
 
-  public canMove: boolean;
-  public tag: MassTag;
+  public readonly canMove: boolean;
+  public readonly tag: MassTag;
 
   public readonly nameProperty: TReadOnlyProperty<string>;
 
@@ -206,7 +202,6 @@ export default abstract class Mass extends PhetioObject {
 
     this.engine = engine;
     this.body = options.body;
-    this.massShape = options.massShape;
 
     this.shapeProperty = new Property( options.shape, {
       valueType: Shape
@@ -614,9 +609,6 @@ export default abstract class Mass extends PhetioObject {
       matrix: Matrix3.Matrix3IO,
       stepMatrix: Matrix3.Matrix3IO,
       originalMatrix: Matrix3.Matrix3IO,
-      canMove: BooleanIO,
-      tag: MassTag.MassTagIO,
-      massShape: EnumerationIO( MassShape ),
       position: Vector2.Vector2IO,
       velocity: Vector2.Vector2IO,
       force: Vector2.Vector2IO
@@ -626,9 +618,6 @@ export default abstract class Mass extends PhetioObject {
         matrix: Matrix3.toStateObject( mass.matrix ),
         stepMatrix: Matrix3.toStateObject( mass.stepMatrix ),
         originalMatrix: Matrix3.toStateObject( mass.originalMatrix ),
-        canMove: mass.canMove,
-        tag: MassTag.MassTagIO.toStateObject( mass.tag ),
-        massShape: EnumerationIO( MassShape ).toStateObject( mass.massShape ),
 
         // Applies SIZE_SCALE
         position: PhysicsEngine.p2ToVector( mass.body.position ).toStateObject(),
@@ -636,31 +625,27 @@ export default abstract class Mass extends PhetioObject {
         force: PhysicsEngine.p2ToVector( mass.body.force ).toStateObject() // we applied forces after the step
       } );
     },
-    applyState( mass: Mass, obj: MassIOStateObject ) {
+    applyState( mass: Mass, stateObject: MassIOStateObject ) {
 
       // Some of the following attributes are not public, but are settable since this IOType is declared as a static
       // class member. This is preferable to making the attributes public everywhere.
       const SIZE_SCALE = DensityBuoyancyCommonQueryParameters.p2SizeScale;
 
-      mass.matrix.set( Matrix3.fromStateObject( obj.matrix ) );
-      mass.stepMatrix.set( Matrix3.fromStateObject( obj.stepMatrix ) );
-      mass.originalMatrix.set( Matrix3.fromStateObject( obj.originalMatrix ) );
-      mass.canMove = obj.canMove;
-      MassTag.MassTagIO.applyState( mass.tag, obj.tag );
+      mass.matrix.set( Matrix3.fromStateObject( stateObject.matrix ) );
+      mass.stepMatrix.set( Matrix3.fromStateObject( stateObject.stepMatrix ) );
+      mass.originalMatrix.set( Matrix3.fromStateObject( stateObject.originalMatrix ) );
 
       // We will ignore infinities
-      mass.body.position[ 0 ] = obj.position.x * SIZE_SCALE;
-      mass.body.position[ 1 ] = obj.position.y * SIZE_SCALE;
+      mass.body.position[ 0 ] = stateObject.position.x * SIZE_SCALE;
+      mass.body.position[ 1 ] = stateObject.position.y * SIZE_SCALE;
 
-      // TODO: Are the next 2 lines synchronizePreviousPosition? See https://github.com/phetsims/density-buoyancy-common/issues/300
-      mass.body.previousPosition[ 0 ] = obj.position.x * SIZE_SCALE;
-      mass.body.previousPosition[ 1 ] = obj.position.y * SIZE_SCALE;
+      mass.body.velocity[ 0 ] = stateObject.velocity.x * SIZE_SCALE;
+      mass.body.velocity[ 1 ] = stateObject.velocity.y * SIZE_SCALE;
 
-      mass.body.velocity[ 0 ] = obj.velocity.x * SIZE_SCALE;
-      mass.body.velocity[ 1 ] = obj.velocity.y * SIZE_SCALE;
+      mass.body.force[ 0 ] = stateObject.force.x * SIZE_SCALE;
+      mass.body.force[ 1 ] = stateObject.force.y * SIZE_SCALE;
 
-      mass.body.force[ 0 ] = obj.force.x * SIZE_SCALE;
-      mass.body.force[ 1 ] = obj.force.y * SIZE_SCALE;
+      PhysicsEngine.bodySynchronizePrevious( mass.body );
 
       mass.writeData();
     }

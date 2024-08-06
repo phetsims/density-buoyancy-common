@@ -39,8 +39,6 @@ import BlendedVector2Property from './BlendedVector2Property.js';
 import { GuardedNumberProperty, GuardedNumberPropertyOptions } from './GuardedNumberProperty.js';
 import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
 import MaterialProperty, { MaterialPropertyOptions } from './MaterialProperty.js';
-import PropertyStatePhase from '../../../../axon/js/PropertyStatePhase.js';
-import propertyStateHandlerSingleton from '../../../../axon/js/propertyStateHandlerSingleton.js';
 import DensityBuoyancyCommonQueryParameters from '../DensityBuoyancyCommonQueryParameters.js';
 
 // For the Buoyancy Shapes screen, but needed here because setRatios is included in each core type
@@ -221,17 +219,12 @@ export default abstract class Mass extends PhetioObject {
       phetioFeatured: true
     }, options.inputEnabledPropertyOptions ) );
 
-    // TODO: We create internalVisibleProperty to pass into GatedVisibleProperty, but it differs from the defaults, see https://github.com/phetsims/density-buoyancy-common/issues/294
-    // and naming in GatedVisibleProperty. Can we use the default one in GatedVisibleProperty instead? Or match up with its
-    // conventions
-    this.internalVisibleProperty = new BooleanProperty( options.visible, {
-      phetioDocumentation: 'For internal use only',
+    // This Property is determined by the model, such as "is the boat scene selected" or "has the user selected the 2nd block"
+    // It does not need to be independently phet-io instrumented because the upstream Property (like selected scene)
+    // is instrumented.
+    this.internalVisibleProperty = new BooleanProperty( options.visible );
 
-      // instrumentation is needed for PhET-iO State only, not customizable.
-      tandem: tandem.createTandem( 'internalVisibleProperty' ),
-      phetioReadOnly: true
-    } );
-
+    // Provide additional control for PhET-iO studio users to hide/show the mass, independently of whether the model wants to show it
     this.visibleProperty = new GatedVisibleProperty( this.internalVisibleProperty, tandem );
 
     options.materialPropertyOptions.tandem = options.materialPropertyOptions.tandem || tandem.createTandem( 'materialProperty' );
@@ -258,13 +251,6 @@ export default abstract class Mass extends PhetioObject {
     this.materialProperty = new MaterialProperty( initialMaterial, customSolidMaterial,
       availableMaterials,
       options.materialPropertyOptions as MaterialPropertyOptions );
-
-    // There are complicated order dependencies in how DynamicProperties unlink to old values and link to new ones. See https://github.com/phetsims/buoyancy/issues/67
-    // Note: Just NOTIFY didn't work, neither did internalVisibleProperty.addPhetioStateDependencies()
-    if ( this.materialProperty.isPhetioInstrumented() ) {
-      propertyStateHandlerSingleton.registerPhetioOrderDependency( this.materialProperty, PropertyStatePhase.UNDEFER, this.internalVisibleProperty, PropertyStatePhase.UNDEFER );
-      propertyStateHandlerSingleton.registerPhetioOrderDependency( this.materialProperty, PropertyStatePhase.NOTIFY, this.internalVisibleProperty, PropertyStatePhase.NOTIFY );
-    }
 
     this.volumeProperty = new NumberProperty( options.volume, combineOptions<NumberPropertyOptions>( {
       tandem: tandem.createTandem( 'volumeProperty' ),

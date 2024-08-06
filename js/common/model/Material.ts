@@ -3,8 +3,6 @@
 /**
  * Represents different materials that solids/liquids in the simulations can take, including density/viscosity/color.
  *
- * // TODO AV: Add ColorMaterial https://github.com/phetsims/density-buoyancy-common/issues/268
- *
  * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
@@ -48,13 +46,18 @@ type SelfOptions = {
   colorProperty?: ReadOnlyProperty<Color> | null;
 
   // Used for the color of depth lines added on top of the Material
-  depthLinesColorProperty?: TReadOnlyProperty<Color>;
+  depthLinesColorProperty?: ReadOnlyProperty<Color>;
 
   createColorProperty?: (
     colorProperty: ReadOnlyProperty<Color> | null,
     densityProperty: NumberProperty,
     isCustom: boolean
   ) => ReadOnlyProperty<Color> | null;
+
+  createDepthLinesColorProperty?: (
+    depthLinesColor: ReadOnlyProperty<Color>,
+    colorProperty: ReadOnlyProperty<Color>
+  ) => ReadOnlyProperty<Color>;
 };
 
 export type MaterialOptions = SelfOptions & StrictOmit<PhetioObjectOptions, 'tandem'>;
@@ -70,7 +73,7 @@ export default class Material extends PhetioObject implements MappedWrappedObjec
   public readonly custom: boolean;
   public readonly hidden: boolean;
   public readonly colorProperty: ReadOnlyProperty<Color> | null;
-  public depthLinesColorProperty: TReadOnlyProperty<Color>; // TODO AV: readonly https://github.com/phetsims/density-buoyancy-common/issues/268
+  public readonly depthLinesColorProperty: ReadOnlyProperty<Color>;
   public readonly densityProperty: NumberProperty;
 
   public constructor( tandem: Tandem, providedOptions: MaterialOptions ) {
@@ -97,6 +100,9 @@ export default class Material extends PhetioObject implements MappedWrappedObjec
       depthLinesColorProperty: DensityBuoyancyCommonColors.depthLinesDarkColorProperty,
       createColorProperty: ( colorProperty: ReadOnlyProperty<Color> | null, densityProperty: NumberProperty, isCustom: boolean ) => {
         return colorProperty;
+      },
+      createDepthLinesColorProperty: ( depthLinesColor: ReadOnlyProperty<Color>, colorProperty: ReadOnlyProperty<Color> ) => {
+        return depthLinesColor;
       }
     }, providedOptions );
 
@@ -113,7 +119,7 @@ export default class Material extends PhetioObject implements MappedWrappedObjec
     this.custom = options.custom;
     this.hidden = options.hidden;
     this.colorProperty = options.createColorProperty( options.colorProperty, this.densityProperty, this.custom );
-    this.depthLinesColorProperty = options.depthLinesColorProperty;
+    this.depthLinesColorProperty = options.createDepthLinesColorProperty( options.depthLinesColorProperty, this.colorProperty! );
 
     assert && assert( !( this.custom && this.hidden ), 'cannot be a mystery custom material' );
   }
@@ -496,23 +502,24 @@ export class CustomSolidMaterial extends Material {
               lightnessFactor );
           } );
         }
+      },
+      createDepthLinesColorProperty: ( depthLinesColor, colorProperty ) => {
+        return new DerivedProperty( [
+          colorProperty,
+          DensityBuoyancyCommonColors.depthLinesLightColorProperty,
+          DensityBuoyancyCommonColors.depthLinesDarkColorProperty
+        ], ( color, depthLinesLightColor, depthLinesDarkColor ) => {
+
+          // The lighter depth line color has better contrast, so use that for more than half
+          const isDark = ( color.r + color.g + color.b ) / 3 < 255 * 0.6;
+          return isDark ? depthLinesLightColor : depthLinesDarkColor;
+        } );
       }
     }, providedOptions );
 
     super( tandem, options );
 
     assert && assert( this.custom, 'SolidMaterial should only be used for custom materials' );
-
-    this.depthLinesColorProperty = new DerivedProperty( [
-      this.colorProperty!,
-      DensityBuoyancyCommonColors.depthLinesLightColorProperty,
-      DensityBuoyancyCommonColors.depthLinesDarkColorProperty
-    ], ( color, depthLinesLightColor, depthLinesDarkColor ) => {
-
-      // The lighter depth line color has better contrast, so use that for more than half
-      const isDark = ( color.r + color.g + color.b ) / 3 < 255 * 0.6;
-      return isDark ? depthLinesLightColor : depthLinesDarkColor;
-    } );
   }
 }
 

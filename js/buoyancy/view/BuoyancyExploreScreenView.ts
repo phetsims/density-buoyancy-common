@@ -12,7 +12,7 @@ import { combineOptions } from '../../../../phet-core/js/optionize.js';
 import { ManualConstraint, Node, VBox } from '../../../../scenery/js/imports.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 import Material from '../../common/model/Material.js';
-import DensityBuoyancyScreenView, { DensityBuoyancyScreenViewOptions } from '../../common/view/DensityBuoyancyScreenView.js';
+import { DensityBuoyancyScreenViewOptions } from '../../common/view/DensityBuoyancyScreenView.js';
 import ABControlsNode from '../../common/view/ABControlsNode.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
@@ -24,17 +24,12 @@ import SubmergedAccordionBox from './SubmergedAccordionBox.js';
 import PatternStringProperty from '../../../../axon/js/PatternStringProperty.js';
 import BlocksModeRadioButtonGroup from '../../common/view/BlocksModeRadioButtonGroup.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
-import { DensityMaterials } from '../../common/view/MaterialView.js';
-import ThreeUtils from '../../../../mobius/js/ThreeUtils.js';
-import ForceDiagramNode from '../../common/view/ForceDiagramNode.js';
-import buoyancy_explore_screen_block_png from '../../../images/buoyancy_explore_screen_block_png.js';
 import CuboidView from '../../common/view/CuboidView.js';
 import ScaleView from '../../common/view/ScaleView.js';
 import MassView from '../../common/view/MassView.js';
 import FluidDensityPanel from './FluidDensityPanel.js';
 import BuoyancyScreenView from './BuoyancyScreenView.js';
 import StrictOmit from '../../../../phet-core/js/types/StrictOmit.js';
-import FluidIconMesh from '../../common/view/FluidIconMesh.js';
 
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN_SMALL;
 
@@ -223,42 +218,6 @@ export default class BuoyancyExploreScreenView extends BuoyancyScreenView<Buoyan
       percentSubmergedAccordionBox,
       this.resetAllButton
     ];
-  }
-
-  public static getBuoyancyExploreIcon(): Node {
-    const boxScene = DensityBuoyancyScreenView.getThreeIcon( buoyancy_explore_screen_block_png, () => {
-      return DensityBuoyancyScreenView.getAngledIcon( 5.5, new Vector3( 0, 0, 0 ), scene => {
-
-        const boxGeometry = new THREE.BoxGeometry( 0.1, 0.1, 0.1 );
-
-        const box = new THREE.Mesh( boxGeometry, new THREE.MeshStandardMaterial( {
-          map: DensityMaterials.woodColorTexture,
-          normalMap: DensityMaterials.woodNormalTexture,
-          normalScale: new THREE.Vector2( 1, -1 ),
-          roughnessMap: DensityMaterials.woodRoughnessTexture,
-          metalness: 0
-
-          // NOTE: Removed the environment map for now
-        } ) );
-        box.position.copy( ThreeUtils.vectorToThree( new Vector3( 0, 0, 0 ) ) );
-
-        scene.add( box );
-
-        scene.add( new FluidIconMesh( new Vector3( 0, -0.5, 0.12 ) ) );
-      } );
-    } );
-
-
-    return new Node( {
-      children: [
-        boxScene,
-        ForceDiagramNode.getExploreIcon().mutate( {
-
-          // TODO: Document the arithmetic, what is the intended effect? see https://github.com/phetsims/density-buoyancy-common/issues/257
-          center: boxScene.center.plusXY( 0, boxScene.height * 0.09 )
-        } )
-      ]
-    } );
   }
 }
 

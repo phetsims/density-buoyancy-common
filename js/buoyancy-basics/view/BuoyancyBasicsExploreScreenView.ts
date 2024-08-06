@@ -20,7 +20,6 @@ import BuoyancyDisplayOptionsPanel from '../../buoyancy/view/BuoyancyDisplayOpti
 import SubmergedAccordionBox from '../../buoyancy/view/SubmergedAccordionBox.js';
 import PatternStringProperty from '../../../../axon/js/PatternStringProperty.js';
 import BlocksModeRadioButtonGroup from '../../common/view/BlocksModeRadioButtonGroup.js';
-import BuoyancyExploreScreenView from '../../buoyancy/view/BuoyancyExploreScreenView.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
 import FluidSelectionPanel from '../../buoyancy/view/FluidSelectionPanel.js';
 import CuboidView from '../../common/view/CuboidView.js';
@@ -29,6 +28,7 @@ import MassView from '../../common/view/MassView.js';
 import DensityAccordionBox from '../../buoyancy/view/DensityAccordionBox.js';
 import BuoyancyScreenView from '../../buoyancy/view/BuoyancyScreenView.js';
 import StrictOmit from '../../../../phet-core/js/types/StrictOmit.js';
+import getBuoyancyExploreIcon from '../../buoyancy/view/getBuoyancyExploreIcon.js';
 
 // constants
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN_SMALL;
@@ -210,7 +210,7 @@ export default class BuoyancyBasicsExploreScreenView extends BuoyancyScreenView<
   }
 
   public static getBuoyancyBasicsExploreIcon(): Node {
-    return BuoyancyExploreScreenView.getBuoyancyExploreIcon();
+    return getBuoyancyExploreIcon();
   }
 }
 

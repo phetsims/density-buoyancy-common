@@ -19,7 +19,7 @@ import densityBuoyancyCommon from '../../../densityBuoyancyCommon.js';
 import DensityAccordionBox from '../DensityAccordionBox.js';
 import ShapeSizeControlNode from './ShapeSizeControlNode.js';
 import BuoyancyShapesModel from '../../model/shapes/BuoyancyShapesModel.js';
-import DensityBuoyancyScreenView, { DensityBuoyancyScreenViewOptions } from '../../../common/view/DensityBuoyancyScreenView.js';
+import { DensityBuoyancyScreenViewOptions } from '../../../common/view/DensityBuoyancyScreenView.js';
 import { combineOptions } from '../../../../../phet-core/js/optionize.js';
 import MaterialControlNode from '../../../common/view/MaterialControlNode.js';
 import MultiSectionPanelsNode from '../../../common/view/MultiSectionPanelsNode.js';
@@ -34,14 +34,11 @@ import Multilink from '../../../../../axon/js/Multilink.js';
 import TwoBlockMode from '../../../common/model/TwoBlockMode.js';
 import PatternStringProperty from '../../../../../axon/js/PatternStringProperty.js';
 import DensityBuoyancyCommonStrings from '../../../DensityBuoyancyCommonStrings.js';
-import { DensityMaterials } from '../../../common/view/MaterialView.js';
-import ThreeUtils from '../../../../../mobius/js/ThreeUtils.js';
 import ScaleView from '../../../common/view/ScaleView.js';
 import MassView from '../../../common/view/MassView.js';
 import FluidDensityPanel from '../FluidDensityPanel.js';
 import BuoyancyScreenView from '../BuoyancyScreenView.js';
 import StrictOmit from '../../../../../phet-core/js/types/StrictOmit.js';
-import FluidIconMesh from '../../../common/view/FluidIconMesh.js';
 import Mass from '../../../common/model/Mass.js';
 import HorizontalCylinder from '../../model/shapes/HorizontalCylinder.js';
 import HorizontalCylinderView from './HorizontalCylinderView.js';
@@ -306,27 +303,6 @@ export default class BuoyancyShapesScreenView extends BuoyancyScreenView<Buoyanc
     }
 
     this.positionInfoButton();
-  }
-
-  public static getBuoyancyShapesIcon(): Node {
-
-    return DensityBuoyancyScreenView.getAngledIcon( 5.5, new Vector3( 0, 0, 0 ), scene => {
-
-      const coneGeometry = ConeView.getConeGeometry( Cone.getRadiusFromRatio( 0.2 ), Cone.getHeightFromRatio( 0.35 ), true );
-
-      const cone = new THREE.Mesh( coneGeometry, new THREE.MeshStandardMaterial( {
-        map: DensityMaterials.woodColorTexture,
-        normalMap: DensityMaterials.woodNormalTexture,
-        normalScale: new THREE.Vector2( 1, -1 ),
-        roughnessMap: DensityMaterials.woodRoughnessTexture,
-        metalness: 0
-        // NOTE: Removed the environment map for now
-      } ) );
-      cone.position.copy( ThreeUtils.vectorToThree( new Vector3( 0, -0.02, 0 ) ) );
-
-      scene.add( cone );
-      scene.add( new FluidIconMesh() );
-    } );
   }
 }
 

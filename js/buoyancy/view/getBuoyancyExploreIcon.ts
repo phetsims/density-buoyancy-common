@@ -13,7 +13,7 @@ import Vector3 from '../../../../dot/js/Vector3.js';
 import { DensityMaterials } from '../../common/view/MaterialView.js';
 import ThreeUtils from '../../../../mobius/js/ThreeUtils.js';
 import FluidIconMesh from '../../common/view/FluidIconMesh.js';
-import ForceDiagramNode from '../../common/view/ForceDiagramNode.js';
+import getExploreIcon from '../../common/view/getExploreIcon.js';
 
 const getBuoyancyExploreIcon = (): Node => {
   const boxScene = DensityBuoyancyScreenView.getThreeIcon( buoyancy_explore_screen_block_png, () => {
@@ -38,11 +38,10 @@ const getBuoyancyExploreIcon = (): Node => {
     } );
   } );
 
-
   return new Node( {
     children: [
       boxScene,
-      ForceDiagramNode.getExploreIcon().mutate( {
+      getExploreIcon().mutate( {
 
         // TODO: Document the arithmetic, what is the intended effect? see https://github.com/phetsims/density-buoyancy-common/issues/257
         center: boxScene.center.plusXY( 0, boxScene.height * 0.09 )

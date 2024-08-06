@@ -616,12 +616,10 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
 
   /**
    * Projects a 3d model point to a 2d view point (in the screen view's coordinate frame).
+   * see https://github.com/phetsims/density-buoyancy-common/issues/142
    */
   public modelToViewPoint( point: Vector3 ): Vector2 {
-
-    // We'll want to transform global coordinates into screen coordinates here
-    // TODO: This would be better code, but it relies on the screenView already being a child. Can we get rid of animatedPanZoomSingleton usage somehow?, `this.globalToLocalPoint( this.sceneNode.projectPoint( point ) )` https://github.com/phetsims/density-buoyancy-common/issues/142
-    return this.parentToLocalPoint( animatedPanZoomSingleton.listener.matrixProperty.value.inverted().timesVector2( this.sceneNode.projectPoint( point ) ) );
+    return this.globalToLocalPoint( this.sceneNode.projectPoint( point ) );
   }
 
   /**

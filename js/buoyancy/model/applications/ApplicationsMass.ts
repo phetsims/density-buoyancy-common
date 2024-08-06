@@ -1,8 +1,11 @@
 // Copyright 2024, University of Colorado Boulder
 
 /**
- * A general class for shared functionality between the boat and bottle.
- * TODO: Please add more precise documentation, see https://github.com/phetsims/density-buoyancy-common/issues/257
+ * A general abstract class for shared functionality between the boat and bottle in the density-buoyancy simulation.
+ * This class extends the Mass class and introduces methods to calculate displaced volume and area based on fluid level.
+ *
+ * The class is intended to be extended by specific implementations like boat and bottle, providing common properties
+ * and methods to handle mass-related calculations in a physics simulation environment.
  *
  * @author Agustín Vallejo (PhET Interactive Simulations)
  */

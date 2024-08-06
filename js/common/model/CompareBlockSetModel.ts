@@ -257,7 +257,7 @@ export default class CompareBlockSetModel extends BlockSetModel<BlockSet> {
                              colorDensityRange: Range,
                              providedOptions?: StrictCubeOptionsNoAvailableMaterials ): Cube {
 
-    // TODO: Document that this behaves like a DerivedProperty, see https://github.com/phetsims/density-buoyancy-common/issues/123
+    // TODO: Document that this behaves like a DerivedProperty, see https://github.com/phetsims/density-buoyancy-common/issues/317
     const densityAdjustedColorProperty = new ColorProperty( baseColorProperty.value );
 
     const options = combineOptions<StrictCubeOptions>( {
@@ -292,7 +292,7 @@ export default class CompareBlockSetModel extends BlockSetModel<BlockSet> {
       densityAdjustedColorProperty.value = color.colorUtilsBrightness( factor * scale );
     } );
 
-    // TODO: Document the reason and effect of this multilink, see https://github.com/phetsims/density-buoyancy-common/issues/123
+    // TODO: Document the reason and effect of this multilink, see https://github.com/phetsims/density-buoyancy-common/issues/317
     Multilink.multilink( [ cube.materialProperty.densityProperty, blockSetValueChangedProperty ],
       ( density, blockSetValueChanged ) => {
 

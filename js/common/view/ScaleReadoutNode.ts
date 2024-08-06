@@ -92,7 +92,7 @@ export class GeneralScaleReadoutNode extends Node {
 // TODO: How can a client choose which one they need? See https://github.com/phetsims/density-buoyancy-common/issues/257
 export default class ScaleReadoutNode extends GeneralScaleReadoutNode {
 
-  // TODO: Rename mass => scale, see https://github.com/phetsims/density-buoyancy-common/issues/123
+  // TODO: Rename mass => scale, see https://github.com/phetsims/density-buoyancy-common/issues/317
   public constructor( public readonly mass: Scale, gravityProperty: GravityProperty ) {
 
     const blendedProperty = new BlendedNumberProperty( mass.measuredWeightInterpolatedProperty.value );

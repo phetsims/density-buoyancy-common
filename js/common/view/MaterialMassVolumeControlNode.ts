@@ -82,7 +82,7 @@ export default class MaterialMassVolumeControlNode extends MaterialControlNode {
                       setVolume: ( volume: number ) => void,
                       listParent: Node,
 
-                      // TODO: Remove unused, see https://github.com/phetsims/density-buoyancy-common/issues/123
+                      // TODO: Remove unused, see https://github.com/phetsims/density-buoyancy-common/issues/317
                       numberControlMassPropertyFeatured: boolean,
                       providedOptions: MaterialMassVolumeControlNodeOptions ) {
 
@@ -107,7 +107,7 @@ export default class MaterialMassVolumeControlNode extends MaterialControlNode {
     assert && assert( options.minVolumeLiters <= options.minCustomVolumeLiters, 'This seems to be a requirement, I hope you never hit this' );
 
     // If we will be creating a high density mass NumberControl in addition to the normal one.
-    // TODO: Change from !! to !== null ? Since it has different semantics for 0 which is numeric but falsy. See https://github.com/phetsims/density-buoyancy-common/issues/123
+    // TODO: Change from !! to !== null ? Since it has different semantics for 0 which is numeric but falsy. See https://github.com/phetsims/density-buoyancy-common/issues/317
     const supportTwoMassNumberControls = !!options.highDensityMaxMass;
 
     // Mass-related elements should not be instrumented if showing as a Density control instead of Mass control.
@@ -487,7 +487,7 @@ const getMassReadoutLayoutFunction = ( normalLayoutFunction: LayoutFunction ) =>
     const tempNode = normalLayoutFunction( titleNode, numberDisplay, slider, decrementButton, incrementButton );
     const width = tempNode.width;
 
-    // TODO: Safe to dispose the parent before detaching the children? See https://github.com/phetsims/density-buoyancy-common/issues/123
+    // TODO: Safe to dispose the parent before detaching the children? See https://github.com/phetsims/density-buoyancy-common/issues/317
     tempNode.dispose();
     titleNode.detach();
     numberDisplay.detach();

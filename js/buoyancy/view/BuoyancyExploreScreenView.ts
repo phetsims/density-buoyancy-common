@@ -48,7 +48,7 @@ export default class BuoyancyExploreScreenView extends BuoyancyScreenView<Buoyan
 
     const tandem = options.tandem;
 
-    // TODO: https://github.com/phetsims/density-buoyancy-common/issues/123 why is combineOptions preferable to optionize in this case?
+    // TODO: https://github.com/phetsims/density-buoyancy-common/issues/317 why is combineOptions preferable to optionize in this case?
     super( model, combineOptions<DensityBuoyancyScreenViewOptions>( {
       supportsDepthLines: true,
       forcesInitiallyDisplayed: false,
@@ -158,7 +158,7 @@ export default class BuoyancyExploreScreenView extends BuoyancyScreenView<Buoyan
     ManualConstraint.create( this, [ this.resetAllButton, blocksModeRadioButtonGroup ],
       ( resetAllButtonWrapper, blocksModeRadioButtonGroupWrapper ) => {
 
-        // TODO: What if the reset all button is invisible due to phet-io customization? See https://github.com/phetsims/density-buoyancy-common/issues/123
+        // TODO: What if the reset all button is invisible due to phet-io customization? See https://github.com/phetsims/density-buoyancy-common/issues/317
         blocksModeRadioButtonGroupWrapper.right = resetAllButtonWrapper.left - DensityBuoyancyCommonConstants.MARGIN;
         blocksModeRadioButtonGroupWrapper.bottom = resetAllButtonWrapper.bottom;
       } );

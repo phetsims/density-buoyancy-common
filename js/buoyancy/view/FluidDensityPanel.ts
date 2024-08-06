@@ -22,12 +22,12 @@ export default class FluidDensityPanel extends Panel {
       popupLayer, {
         invisibleMaterials: invisibleMaterials,
 
-        // TODO: Passing the same tandem 2 places seems suspicious. Check it and document if OK, see https://github.com/phetsims/density-buoyancy-common/issues/123
+        // TODO: Passing the same tandem 2 places seems suspicious. Check it and document if OK, see https://github.com/phetsims/density-buoyancy-common/issues/317
         tandem: tandem
       } );
     super( fluidDensityControlNode, combineOptions<PanelOptions>( {
 
-      // TODO: See note above, see https://github.com/phetsims/density-buoyancy-common/issues/123
+      // TODO: See note above, see https://github.com/phetsims/density-buoyancy-common/issues/317
       tandem: tandem
     }, DensityBuoyancyCommonConstants.PANEL_OPTIONS ) );
   }

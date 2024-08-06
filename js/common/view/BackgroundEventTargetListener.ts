@@ -128,7 +128,7 @@ export default class BackgroundEventTargetListener implements TInputListener {
         this.endDragAction.execute( mass );
       };
 
-      // TODO: Add a type annotation so we can track down documentation for createPanTargetBounds, see https://github.com/phetsims/density-buoyancy-common/issues/123
+      // TODO: Add a type annotation so we can track down documentation for createPanTargetBounds, see https://github.com/phetsims/density-buoyancy-common/issues/317
       const listener = {
         // end drag on either up or cancel (not supporting full cancel behavior)
         up: endDrag,

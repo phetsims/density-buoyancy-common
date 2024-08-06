@@ -52,7 +52,7 @@ export default class VolumeUnitsControl extends HBox {
     };
   }
 
-  // TODO: Are preference controls ever disposed? https://github.com/phetsims/density-buoyancy-common/issues/123
+  // TODO: Are preference controls ever disposed? https://github.com/phetsims/density-buoyancy-common/issues/317
   public override dispose(): void {
     super.dispose();
     this.disposeVolumeUnitsControl();

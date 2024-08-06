@@ -28,7 +28,7 @@ export default class BlocksPanel extends Panel {
           font: DensityBuoyancyCommonConstants.RADIO_BUTTON_FONT,
           maxWidth: 160,
 
-          // TODO: This looks like a rare occasion where we instrumented a Text, but normally we don't instrument those. Can this be uninstrumented? See https://github.com/phetsims/density-buoyancy-common/issues/123
+          // TODO: This looks like a rare occasion where we instrumented a Text, but normally we don't instrument those. Can this be uninstrumented? See https://github.com/phetsims/density-buoyancy-common/issues/317
           tandem: tandem.createTandem( 'labelText' )
         } ),
         value: blockSet,

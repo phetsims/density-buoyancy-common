@@ -73,7 +73,7 @@ export default class PoolScaleHeightControl extends NumberControl {
         accessibleName: Tandem.toAccessibleName( providedOptions, 'Control' )
       },
 
-      // TODO: Aren't these optional by default? Can we omit the OPT_OUT? See https://github.com/phetsims/density-buoyancy-common/issues/123
+      // TODO: Aren't these optional by default? Can we omit the OPT_OUT? See https://github.com/phetsims/density-buoyancy-common/issues/317
       titleNodeOptions: { tandem: Tandem.OPT_OUT },
       numberDisplayOptions: { tandem: Tandem.OPT_OUT },
       delta: DEFAULT_RANGE.getLength() / 2000,

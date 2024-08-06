@@ -90,7 +90,7 @@ export default class BuoyancyShapesModel extends DensityBuoyancyModel {
     } );
 
 
-    // TODO: This documentation on the next line doesn't seem fully correct: https://github.com/phetsims/density-buoyancy-common/issues/123
+    // TODO: This documentation on the next line doesn't seem fully correct: https://github.com/phetsims/density-buoyancy-common/issues/317
     // When a new mass is created, set up its position to be that of the old mass
     [ this.objectA, this.objectB ].forEach( shapeModel => {
 

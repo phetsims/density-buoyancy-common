@@ -299,7 +299,7 @@ export default abstract class Mass extends PhetioObject {
       }
     }, options.massPropertyOptions ) );
 
-    // TODO: It looks like massProperty behaves like a DerivedProperty, can it be implemented like one? If not, please document, see https://github.com/phetsims/density-buoyancy-common/issues/123
+    // TODO: It looks like massProperty behaves like a DerivedProperty, can it be implemented like one? If not, please document, see https://github.com/phetsims/density-buoyancy-common/issues/317
     Multilink.multilink( [
       this.materialProperty.densityProperty,
       this.volumeProperty,
@@ -588,7 +588,7 @@ export default abstract class Mass extends PhetioObject {
 
   /**
    * Given a list of values and a ratio from 0 (the start) to 1 (the end), return an interpolated value.
-   * TODO: See if this and other occurrences should use dot piecewise linear functions, see https://github.com/phetsims/density-buoyancy-common/issues/123
+   * TODO: See if this and other occurrences should use dot piecewise linear functions, see https://github.com/phetsims/density-buoyancy-common/issues/317
    */
   protected static evaluatePiecewiseLinear( values: number[], ratio: number ): number {
     const logicalIndex = ratio * ( values.length - 1 );

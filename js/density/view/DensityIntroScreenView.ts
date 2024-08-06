@@ -118,7 +118,7 @@ export default class DensityIntroScreenView extends DensityBuoyancyScreenView<De
     this.addChild( this.popupLayer );
 
     // Layer for the focusable masses. Must be in the scene graph, so they can populate the pdom order
-    // TODO: Is it important to say pdomOrder:[] here? If so, document why. If not, remove it. https://github.com/phetsims/density-buoyancy-common/issues/123
+    // TODO: Is it important to say pdomOrder:[] here? If so, document why. If not, remove it. https://github.com/phetsims/density-buoyancy-common/issues/317
     const cubeALayer = new Node( { pdomOrder: [] } );
     this.addChild( cubeALayer );
     const cubeBLayer = new Node( { pdomOrder: [] } );

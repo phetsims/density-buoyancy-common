@@ -22,7 +22,7 @@ export default class BlendedVector2Property extends Property<Vector2> {
     // This adds a hysteresis effect to the readout, which reduces flickering inherent to the model.
     const MIN_BLEND = 0.1; // When close, blend with the old value more
 
-    // TODO: Does this MAX_BLEND differ from BlendedNumberProperty max on purpose? If so, document. See , see https://github.com/phetsims/density-buoyancy-common/issues/123
+    // TODO: Does this MAX_BLEND differ from BlendedNumberProperty max on purpose? If so, document. See , see https://github.com/phetsims/density-buoyancy-common/issues/317
     const MAX_BLEND = 0.7; // When far apart, take the new value completely
     const blendAmount = Utils.clamp(
       Utils.linear( 0, 1, MIN_BLEND, MAX_BLEND, newValue.minus( oldValue ).magnitude ),

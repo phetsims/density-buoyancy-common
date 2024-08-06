@@ -81,7 +81,7 @@ export default class BuoyancyApplicationsScreenView extends BuoyancyScreenView<B
     const resetBoatButtonTandem = tandem.createTandem( 'resetBoatButton' );
     const resetBoatButton = new RectangularPushButton( {
 
-      // TODO: The outer Node layer looks extraneous, please remove, see https://github.com/phetsims/density-buoyancy-common/issues/123
+      // TODO: The outer Node layer looks extraneous, please remove, see https://github.com/phetsims/density-buoyancy-common/issues/317
       content: new Node( {
         children: [
           new Image( resetArrow_png, { scale: 0.3 } )
@@ -205,7 +205,7 @@ export default class BuoyancyApplicationsScreenView extends BuoyancyScreenView<B
       ]
     } );
 
-    // TODO: Move this panel + bottleBox to a new file like BottlePanel.ts, see https://github.com/phetsims/density-buoyancy-common/issues/123
+    // TODO: Move this panel + bottleBox to a new file like BottlePanel.ts, see https://github.com/phetsims/density-buoyancy-common/issues/317
     const rightBottleContent = new Panel( bottleBox, DensityBuoyancyCommonConstants.PANEL_OPTIONS );
 
     const blockControls = new MaterialMassVolumeControlNode( model.block.materialProperty, model.block.massProperty, model.block.volumeProperty,
@@ -267,7 +267,7 @@ export default class BuoyancyApplicationsScreenView extends BuoyancyScreenView<B
       ]
     } );
 
-    // TODO: Move rightBoatContent and boatBox to a new file like BoatPanel.ts, see https://github.com/phetsims/density-buoyancy-common/issues/123
+    // TODO: Move rightBoatContent and boatBox to a new file like BoatPanel.ts, see https://github.com/phetsims/density-buoyancy-common/issues/317
     const rightBoatContent = new Panel( boatBox, DensityBuoyancyCommonConstants.PANEL_OPTIONS );
 
     const objectDensityAccordionBox = new DensityAccordionBox( DensityBuoyancyCommonStrings.objectDensityStringProperty, {
@@ -383,7 +383,7 @@ export default class BuoyancyApplicationsScreenView extends BuoyancyScreenView<B
     this.addChild( this.popupLayer );
 
     // Layer for the focusable masses. Must be in the scene graph, so they can populate the pdom order
-    // TODO: Remove pdomOrder:[] or document why it is necessary, see https://github.com/phetsims/density-buoyancy-common/issues/123
+    // TODO: Remove pdomOrder:[] or document why it is necessary, see https://github.com/phetsims/density-buoyancy-common/issues/317
     const blockLayer = new Node( { pdomOrder: [] } );
     this.addChild( blockLayer );
     const bottleBoatLayer = new Node( { pdomOrder: [] } );
@@ -489,7 +489,7 @@ export default class BuoyancyApplicationsScreenView extends BuoyancyScreenView<B
     return wasFilled;
   }
 
-  // TODO: Consider simplifying this file by moving the icons to a separate file, see https://github.com/phetsims/density-buoyancy-common/issues/123
+  // TODO: Consider simplifying this file by moving the icons to a separate file, see https://github.com/phetsims/density-buoyancy-common/issues/317
   private static getBoatIcon(): Node {
     const boatIcon = DensityBuoyancyScreenView.getThreeIcon( boat_icon_png, () => {
       return DensityBuoyancyScreenView.getAngledIcon( 6, new Vector3( -0.03, 0, 0 ), scene => {

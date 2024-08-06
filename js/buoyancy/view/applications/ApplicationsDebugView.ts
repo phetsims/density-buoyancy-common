@@ -2,7 +2,7 @@
 /**
  * Extends DebugView, which shows a 2d version of the model. In this case, used for the boat's shape.
  * TODO: Document how to show the debug view here. see https://github.com/phetsims/density-buoyancy-common/issues/257
- * TODO: This file is overly-complicated and under-documented, see https://github.com/phetsims/density-buoyancy-common/issues/123
+ * TODO: This file is overly-complicated and under-documented, see https://github.com/phetsims/density-buoyancy-common/issues/317
  *
  * @author Jonathan Olson (PhET Interactive Simulations)
  */
@@ -52,7 +52,7 @@ export default class ApplicationsDebugView extends DebugView {
   public override step( dt: number ): void {
     super.step( dt );
 
-    // TODO: Change this to say this.applicationsModel.boat instead of searches and instanceof operations, see https://github.com/phetsims/density-buoyancy-common/issues/123
+    // TODO: Change this to say this.applicationsModel.boat instead of searches and instanceof operations, see https://github.com/phetsims/density-buoyancy-common/issues/317
     const boat = this.model.masses.find( mass => mass instanceof Boat );
     if ( boat instanceof Boat ) {
       const boatYValues = _.range( boat.stepBottom, boat.stepTop, 0.002 );

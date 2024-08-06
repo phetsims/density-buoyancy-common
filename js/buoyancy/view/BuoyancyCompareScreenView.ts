@@ -56,7 +56,7 @@ export default class BuoyancyCompareScreenView extends BuoyancyScreenView<Buoyan
 
   public constructor( model: BuoyancyCompareModel, options: BuoyancyCompareScreenViewOptions ) {
 
-    // TODO: https://github.com/phetsims/density-buoyancy-common/issues/123 is combineOptions preferable to optionize here?
+    // TODO: https://github.com/phetsims/density-buoyancy-common/issues/317 is combineOptions preferable to optionize here?
     super( model, combineOptions<DensityBuoyancyScreenViewOptions>( {
       supportsDepthLines: true,
       forcesInitiallyDisplayed: false,

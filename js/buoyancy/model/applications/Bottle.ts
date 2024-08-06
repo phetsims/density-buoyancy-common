@@ -36,10 +36,10 @@
  *              the tip to the saddle point (second curve).
  * - Saddle point: The true mathematical saddle where the saddle/tip curves meet back up, at r=0
  *
- * TODO: https://github.com/phetsims/density-buoyancy-common/issues/123 This file is > 1200 lines of complicated code
+ * TODO: https://github.com/phetsims/density-buoyancy-common/issues/317 This file is > 1200 lines of complicated code
  * with many magic numbers. We should make an effort to remove unused parts, and clean up where possible.
  *
- * TODO: https://github.com/phetsims/density-buoyancy-common/issues/123 this file has 9 unused declarations.
+ * TODO: https://github.com/phetsims/density-buoyancy-common/issues/317 this file has 9 unused declarations.
  *
  * Diagram in x,r coordinates, showing the "profile" (exactly half of the bottle, and the curves that the
  * three-dimensional form will be made from):
@@ -315,7 +315,7 @@ export default class Bottle extends ApplicationsMass {
   private static evaluateCubic( controlPoints: Vector2[], t: number ): Vector2 {
 
     // Is this algorithm duplicated in dot? Are these variables using conventionally established names?
-    // TODO: See https://github.com/phetsims/density-buoyancy-common/issues/123
+    // TODO: See https://github.com/phetsims/density-buoyancy-common/issues/317
     const mt = 1 - t;
     const mmm = mt * mt * mt;
     const mmt = 3 * mt * mt * t;
@@ -341,7 +341,7 @@ export default class Bottle extends ApplicationsMass {
   private static evaluateCubicDerivative( controlPoints: Vector2[], t: number ): Vector2 {
     const mt = 1 - t;
 
-    // TODO: Where are these algorithms documented? Maybe point to wikipedia? https://github.com/phetsims/density-buoyancy-common/issues/123
+    // TODO: Where are these algorithms documented? Maybe point to wikipedia? https://github.com/phetsims/density-buoyancy-common/issues/317
     return new Vector2(
       controlPoints[ 0 ].x * ( -3 * mt * mt ) +
       controlPoints[ 1 ].x * ( 3 * mt * mt - 6 * mt * t ) +
@@ -785,7 +785,7 @@ const FLAT_INTERSECTION_VERTICES = [ ${flatIntersectionVertices.map( v => `new V
     ];
   }
 
-  // TODO: Remove unused code, see https://github.com/phetsims/density-buoyancy-common/issues/123
+  // TODO: Remove unused code, see https://github.com/phetsims/density-buoyancy-common/issues/317
   private static getMainFlatIntersectionProfile(): Vector2[] {
     return [
       ...Bottle.getCapProfile(),
@@ -1157,7 +1157,7 @@ const FLAT_INTERSECTION_VERTICES = [ ${flatIntersectionVertices.map( v => `new V
 
   /**
    * Replaces the main page with a debug view of the bottle, for debugging various curves and properties.
-   * TODO: Is this unused? See https://github.com/phetsims/density-buoyancy-common/issues/123
+   * TODO: Is this unused? See https://github.com/phetsims/density-buoyancy-common/issues/317
    */
   private static getDebugCanvas(): HTMLCanvasElement {
     const canvas = document.createElement( 'canvas' );
@@ -1247,7 +1247,7 @@ const FLAT_INTERSECTION_VERTICES = [ ${flatIntersectionVertices.map( v => `new V
     return canvas;
   }
 
-  // TODO: Are many of these constants unused? https://github.com/phetsims/density-buoyancy-common/issues/123
+  // TODO: Are many of these constants unused? https://github.com/phetsims/density-buoyancy-common/issues/317
 
   // The number to scale the original values by to get a 10L-volume bottle
   private static readonly TEN_LITER_SCALE_MULTIPLIER = TEN_LITER_SCALE_MULTIPLIER;

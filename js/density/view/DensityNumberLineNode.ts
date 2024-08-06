@@ -98,7 +98,7 @@ export default class DensityNumberLineNode extends Node {
 
   public constructor( providedOptions?: DensityNumberLineNodeOptions ) {
 
-    // TODO: DensityNumberLineNode only has one instantiation site, so why are things like materials in the defaults? See https://github.com/phetsims/density-buoyancy-common/issues/123
+    // TODO: DensityNumberLineNode only has one instantiation site, so why are things like materials in the defaults? See https://github.com/phetsims/density-buoyancy-common/issues/317
     const options = optionize<DensityNumberLineNodeOptions, SelfOptions, NodeOptions>()( {
       materials: [
         Material.HUMAN,

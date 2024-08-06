@@ -112,7 +112,7 @@ export default class BuoyancyApplicationsModel extends DensityBuoyancyModel {
       canMove: false,
       inputEnabledPropertyOptions: {
 
-        // TODO: Why can the input enabled be turned on? Is this adding a phet-io feature that makes the scale movable? see , see https://github.com/phetsims/density-buoyancy-common/issues/123
+        // TODO: Why can the input enabled be turned on? Is this adding a phet-io feature that makes the scale movable? see , see https://github.com/phetsims/density-buoyancy-common/issues/317
         // If so, is changing the inputEnabledProperty to true the only thing that has to happen to make it work?
         phetioReadOnly: false
       }
@@ -120,7 +120,7 @@ export default class BuoyancyApplicationsModel extends DensityBuoyancyModel {
     this.availableMasses.push( this.scale );
 
     // Adjust pool volume so that it's at the desired value WITH the pool scales inside.
-    // TODO: How does this relate to https://github.com/phetsims/density-buoyancy-common/blob/4038cb05c2b5c2b8b1f600bfbcf0a7eaac4617a2/js/common/model/DensityBuoyancyModel.ts#L435-L437, see , see https://github.com/phetsims/density-buoyancy-common/issues/123
+    // TODO: How does this relate to https://github.com/phetsims/density-buoyancy-common/blob/4038cb05c2b5c2b8b1f600bfbcf0a7eaac4617a2/js/common/model/DensityBuoyancyModel.ts#L435-L437, see , see https://github.com/phetsims/density-buoyancy-common/issues/317
     this.pool.fluidVolumeProperty.setInitialValue( this.pool.fluidVolumeProperty.value );
 
     // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
@@ -146,7 +146,7 @@ export default class BuoyancyApplicationsModel extends DensityBuoyancyModel {
 
   public override step( dt: number ): void {
 
-    // TODO: This seems an odd spot to put the assertion, is it necessary? See https://github.com/phetsims/density-buoyancy-common/issues/123
+    // TODO: This seems an odd spot to put the assertion, is it necessary? See https://github.com/phetsims/density-buoyancy-common/issues/317
     assert && assert( !this.boat.visibleProperty.value || !this.bottle.visibleProperty.value,
       'Boat and bottle should not be visible at the same time' );
 
@@ -166,7 +166,7 @@ export default class BuoyancyApplicationsModel extends DensityBuoyancyModel {
     this.boat.resetPosition();
     this.block.resetPosition();
 
-    // TODO: Can we call boat.reset() here? See , see https://github.com/phetsims/density-buoyancy-common/issues/123
+    // TODO: Can we call boat.reset() here? See , see https://github.com/phetsims/density-buoyancy-common/issues/317
     this.boat.verticalAcceleration = 0;
     this.boat.verticalVelocity = 0;
 
@@ -178,7 +178,7 @@ export default class BuoyancyApplicationsModel extends DensityBuoyancyModel {
    */
   public override reset(): void {
 
-    // TODO: Can we call resetBoatScene from reset? See , see https://github.com/phetsims/density-buoyancy-common/issues/123
+    // TODO: Can we call resetBoatScene from reset? See , see https://github.com/phetsims/density-buoyancy-common/issues/317
 
     this.bottle.reset();
     this.block.reset();

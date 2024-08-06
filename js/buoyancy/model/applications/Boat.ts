@@ -225,7 +225,7 @@ export default class Boat extends ApplicationsMass {
    */
   private setSubmergedState( fluidLevel: number ): void {
 
-    // TODO: Should we set this value at the beginning of the post physics engine step, see https://github.com/phetsims/density-buoyancy-common/issues/123
+    // TODO: Should we set this value at the beginning of the post physics engine step, see https://github.com/phetsims/density-buoyancy-common/issues/317
     // It currently seems like it is updated partway through (after it is accessed)?
     this.isFullySubmerged = this.stepTop < fluidLevel - DensityBuoyancyCommonConstants.TOLERANCE;
   }

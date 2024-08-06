@@ -59,7 +59,7 @@ export default class BuoyancyExploreModel extends DensityBuoyancyModel {
     this.massB = Cube.createWithMass( this.engine, Material.ALUMINUM, new Vector2( 0.05, 0.35 ), 13.5, {
       tag: MassTag.OBJECT_B,
 
-      // TODO: Tandem doesn't match variable name, see https://github.com/phetsims/density-buoyancy-common/issues/123
+      // TODO: Tandem doesn't match variable name, see https://github.com/phetsims/density-buoyancy-common/issues/317
       tandem: blocksTandem.createTandem( 'blockB' ),
       availableMassMaterials: availableMassMaterials,
       visible: false

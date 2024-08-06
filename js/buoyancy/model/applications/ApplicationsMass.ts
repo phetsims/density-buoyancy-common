@@ -60,13 +60,13 @@ export default abstract class ApplicationsMass extends Mass {
    *
    * Assumes step information was updated.
    *
-   * TODO: Why is this different than getDisplacedVolume? Should they share implementation? See https://github.com/phetsims/density-buoyancy-common/issues/123
+   * TODO: Why is this different than getDisplacedVolume? Should they share implementation? See https://github.com/phetsims/density-buoyancy-common/issues/317
    */
   public getDisplacedArea( fluidLevel: number ): number {
     const bottom = this.stepBottom;
     const top = this.stepTop;
 
-    // TODO: https://github.com/phetsims/density-buoyancy-common/issues/123 if the fluid level is beyond the top, it probably shouldn't be 0, right?
+    // TODO: https://github.com/phetsims/density-buoyancy-common/issues/317 if the fluid level is beyond the top, it probably shouldn't be 0, right?
     if ( fluidLevel < bottom || fluidLevel > top ) {
       return 0;
     }

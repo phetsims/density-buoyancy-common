@@ -3,7 +3,7 @@
 /**
  * The main base ScreenView for all Density/Buoyancy screens.
  * TODO: Elaborate on the main responsibilities of this class, see https://github.com/phetsims/density-buoyancy-common/issues/257
- * TODO: Currently at 871 lines, this file is more complex. Can it be simplified or modularized? See https://github.com/phetsims/density-buoyancy-common/issues/123
+ * TODO: Currently at 871 lines, this file is more complex. Can it be simplified or modularized? See https://github.com/phetsims/density-buoyancy-common/issues/317
  *
  * @author Jonathan Olson (PhET Interactive Simulations)
  */

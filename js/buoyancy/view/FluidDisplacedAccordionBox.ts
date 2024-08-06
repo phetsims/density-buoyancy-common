@@ -140,7 +140,7 @@ export default class FluidDisplacedAccordionBox extends AccordionBox {
       forceReadout.centerX = beakerNode.centerX;
     } );
 
-    // TODO: Does any of this layout need to be dynamic? What if things disappear or reshape? See https://github.com/phetsims/density-buoyancy-common/issues/123
+    // TODO: Does any of this layout need to be dynamic? What if things disappear or reshape? See https://github.com/phetsims/density-buoyancy-common/issues/317
     numberDisplay.bottom = beakerNode.bottom - beakerNode.height * 0.05;
     numberDisplay.right = beakerNode.right;
     scaleIcon.top = beakerNode.bottom - 13;
@@ -162,7 +162,7 @@ export default class FluidDisplacedAccordionBox extends AccordionBox {
     );
     super( panel, options );
 
-    // TODO: Rename displayedDisplacedVolumeProperty to displacedVolumeProperty to match the tandem, see https://github.com/phetsims/density-buoyancy-common/issues/123
+    // TODO: Rename displayedDisplacedVolumeProperty to displacedVolumeProperty to match the tandem, see https://github.com/phetsims/density-buoyancy-common/issues/317
     this.addLinkedElement( displayedDisplacedVolumeProperty, {
       tandemName: 'displacedVolumeProperty'
     } );

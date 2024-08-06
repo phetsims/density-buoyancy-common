@@ -33,7 +33,7 @@ export type BlockSetModelOptions<BlockSetValue extends EnumerationValue> = SelfO
 
 export default class BlockSetModel<BlockSetValue extends EnumerationValue> extends DensityBuoyancyModel {
 
-  // TODO: https://github.com/phetsims/density-buoyancy-common/issues/123 Convert to lowercase
+  // TODO: https://github.com/phetsims/density-buoyancy-common/issues/317 Convert to lowercase
   private readonly BlockSet: Enumeration<BlockSetValue>;
   public readonly blockSetProperty: Property<BlockSetValue>;
 

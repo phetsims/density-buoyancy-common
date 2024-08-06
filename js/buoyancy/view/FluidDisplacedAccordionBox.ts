@@ -12,7 +12,7 @@ import BeakerNode, { BeakerNodeOptions } from '../../../../scenery-phet/js/Beake
 import NumberProperty from '../../../../axon/js/NumberProperty.js';
 import Range from '../../../../dot/js/Range.js';
 import optionize, { combineOptions, EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
-import { Color, Node, RichText, Text } from '../../../../scenery/js/imports.js';
+import { Color, Node, RichText } from '../../../../scenery/js/imports.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 import NumberDisplay from '../../../../scenery-phet/js/NumberDisplay.js';
@@ -20,7 +20,6 @@ import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import Material from '../../common/model/Material.js';
 import DynamicProperty from '../../../../axon/js/DynamicProperty.js';
-import BuoyancyLabScreenView from './BuoyancyLabScreenView.js';
 import AccordionBox, { AccordionBoxOptions } from '../../../../sun/js/AccordionBox.js';
 import Panel, { PanelOptions } from '../../../../sun/js/Panel.js';
 import DensityBuoyancyCommonColors from '../../common/view/DensityBuoyancyCommonColors.js';
@@ -42,7 +41,7 @@ const CONTENT_WIDTH = 105;
 const SAME_COLOR_MIN_DENSITY_THRESHOLD = 1000; // 1 kg/L
 
 // Beaker expects a range between 0 (empty) and 1 (full)
-const BEAKER_RANGE = new Range( 0, 1 );
+export const BEAKER_RANGE = new Range( 0, 1 );
 
 export default class FluidDisplacedAccordionBox extends AccordionBox {
 
@@ -169,7 +168,7 @@ export default class FluidDisplacedAccordionBox extends AccordionBox {
     } );
   }
 
-  private static getBeakerOptions(): BeakerNodeOptions {
+  public static getBeakerOptions(): BeakerNodeOptions {
     return {
       lineWidth: 1,
       beakerHeight: CONTENT_WIDTH * 0.55,
@@ -179,40 +178,6 @@ export default class FluidDisplacedAccordionBox extends AccordionBox {
       numberOfTicks: 9, // The top is the 10th tick mark
       majorTickMarkModulus: 5
     };
-  }
-
-  /**
-   * Create an icon which can be used for the Lab screen home screen and navigation bar icons.
-   * NOTE: observe the duplication with the code above, this will allow us to adjust the icon independently of
-   * the in-simulation representation.
-   */
-  public static createIcon(): Node {
-
-    const scaleIcon = getFluidDisplacedAccordionBoxScaleIcon();
-    scaleIcon.scale( 1.8 );
-
-    const newtonUnitText = new Text( DensityBuoyancyCommonStrings.NStringProperty, {
-      font: new PhetFont( {
-        size: 34,
-        weight: 'bold'
-      } ),
-      maxWidth: scaleIcon.width * 0.8 // margins on the scale, and the icon goes beyond the actual scale, see https://github.com/phetsims/density-buoyancy-common/issues/108
-    } );
-
-    const beakerNode = new BeakerNode( new NumberProperty( 0.2, {
-      range: BEAKER_RANGE.copy()
-    } ), combineOptions<BeakerNodeOptions>( {
-      solutionFill: Material.WATER.colorProperty
-    }, FluidDisplacedAccordionBox.getBeakerOptions() ) );
-
-    scaleIcon.top = beakerNode.bottom - 30;
-    scaleIcon.centerX = beakerNode.centerX;
-    newtonUnitText.centerY = scaleIcon.bottom - 21;
-    newtonUnitText.centerX = beakerNode.centerX;
-
-    return new Node( {
-      children: [ scaleIcon, beakerNode, newtonUnitText ]
-    } );
   }
 }
 

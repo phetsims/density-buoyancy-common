@@ -14,7 +14,7 @@ import { HBox, LayoutProxy, ManualConstraint, Node, VBox } from '../../../../sce
 import Panel, { PanelOptions } from '../../../../sun/js/Panel.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 import Material from '../../common/model/Material.js';
-import DensityBuoyancyScreenView, { DensityBuoyancyScreenViewOptions } from '../../common/view/DensityBuoyancyScreenView.js';
+import { DensityBuoyancyScreenViewOptions } from '../../common/view/DensityBuoyancyScreenView.js';
 import GravityControlNode from '../../common/view/GravityControlNode.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import BuoyancyLabModel from '../model/BuoyancyLabModel.js';
@@ -26,10 +26,7 @@ import MultiSectionPanelsNode from '../../common/view/MultiSectionPanelsNode.js'
 import FluidDisplacedAccordionBox from './FluidDisplacedAccordionBox.js';
 import SubmergedAccordionBox from './SubmergedAccordionBox.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
-import ThreeUtils from '../../../../mobius/js/ThreeUtils.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
-import ScaleView from '../../common/view/ScaleView.js';
-import fluid_displaced_scale_icon_png from '../../../images/fluid_displaced_scale_icon_png.js';
 import CuboidView from '../../common/view/CuboidView.js';
 import FluidDensityPanel from './FluidDensityPanel.js';
 import BuoyancyScreenView from './BuoyancyScreenView.js';

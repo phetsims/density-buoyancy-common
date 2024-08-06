@@ -74,7 +74,7 @@ export default class BuoyancyShapeModel {
     } );
   }
 
-  // TODO: Document that the main part of this method is to keep the bottom at the same y value during a shape change, see https://github.com/phetsims/density-buoyancy-common/issues/257
+  // Change the shape, keeping the bottom at the same y value
   private changeShape(): void {
 
     // Triggering dimension change first

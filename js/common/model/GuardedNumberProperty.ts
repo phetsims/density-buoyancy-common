@@ -1,7 +1,8 @@
 // Copyright 2024, University of Colorado Boulder
 
 /**
- * TODO: Documentation, see https://github.com/phetsims/density-buoyancy-common/issues/257
+ * For PhET-iO, GuardedNumberProperty is a NumberProperty that has a custom validation function that can be used to
+ * provide more specific validation error messages.
  *
  * @author Jonathan Olson (PhET Interactive Simulations)
  */

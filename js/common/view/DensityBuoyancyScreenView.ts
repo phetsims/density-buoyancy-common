@@ -770,7 +770,7 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
   /**
    * Returns an icon for selection, given a scene setup callback.
    */
-  protected static getAngledIcon( zoom: number, lookAt: Vector3, setupScene: ( scene: THREE.Scene ) => void, background: THREE.Color | null = new THREE.Color( 0xffffff ) ): Node {
+  public static getAngledIcon( zoom: number, lookAt: Vector3, setupScene: ( scene: THREE.Scene ) => void, background: THREE.Color | null = new THREE.Color( 0xffffff ) ): Node {
     const width = Screen.MINIMUM_HOME_SCREEN_ICON_SIZE.width;
     const height = Screen.MINIMUM_HOME_SCREEN_ICON_SIZE.height;
 

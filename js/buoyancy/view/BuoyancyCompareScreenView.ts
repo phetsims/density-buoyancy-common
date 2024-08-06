@@ -9,7 +9,7 @@
 import { combineOptions } from '../../../../phet-core/js/optionize.js';
 import { Node, VBox } from '../../../../scenery/js/imports.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
-import DensityBuoyancyScreenView, { DensityBuoyancyScreenViewOptions } from '../../common/view/DensityBuoyancyScreenView.js';
+import { DensityBuoyancyScreenViewOptions } from '../../common/view/DensityBuoyancyScreenView.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import BuoyancyCompareModel from '../model/BuoyancyCompareModel.js';
@@ -24,8 +24,6 @@ import BlockSet from '../../common/model/BlockSet.js';
 import { ReadoutItemOptions } from './ReadoutListAccordionBox.js';
 import Mass from '../../common/model/Mass.js';
 import Bounds2 from '../../../../dot/js/Bounds2.js';
-import { DensityMaterials } from '../../common/view/MaterialView.js';
-import ThreeUtils from '../../../../mobius/js/ThreeUtils.js';
 import FluidSelectionPanel from './FluidSelectionPanel.js';
 import BlocksValuePanel from '../../common/view/BlocksValuePanel.js';
 import Dimension2 from '../../../../dot/js/Dimension2.js';
@@ -36,7 +34,6 @@ import BlocksPanel from '../../common/view/BlocksPanel.js';
 import Panel from '../../../../sun/js/Panel.js';
 import BuoyancyScreenView from './BuoyancyScreenView.js';
 import StrictOmit from '../../../../phet-core/js/types/StrictOmit.js';
-import FluidIconMesh from '../../common/view/FluidIconMesh.js';
 import MaterialProperty from '../../common/model/MaterialProperty.js';
 
 // constants
@@ -225,38 +222,6 @@ export default class BuoyancyCompareScreenView extends BuoyancyScreenView<Buoyan
   public override layout( viewBounds: Bounds2 ): void {
     super.layout( viewBounds );
     this.layoutRightSidePanels();
-  }
-
-  public static getBuoyancyCompareIcon(): Node {
-    return DensityBuoyancyScreenView.getAngledIcon( 4, new Vector3( 0, -0.05, 0 ), scene => {
-
-      const boxGeometry = new THREE.BoxGeometry( 0.1, 0.1, 0.1 );
-
-      const box1 = new THREE.Mesh( boxGeometry, new THREE.MeshStandardMaterial( {
-        map: DensityMaterials.woodColorTexture,
-        normalMap: DensityMaterials.woodNormalTexture,
-        normalScale: new THREE.Vector2( 1, -1 ),
-        roughnessMap: DensityMaterials.woodRoughnessTexture,
-        metalness: 0
-        // NOTE: Removed the environment map for now
-      } ) );
-      box1.position.copy( ThreeUtils.vectorToThree( new Vector3( 0.08, -0.02, 0 ) ) );
-
-      scene.add( box1 );
-
-      const box2 = new THREE.Mesh( boxGeometry, new THREE.MeshStandardMaterial( {
-        map: DensityMaterials.brickColorTexture,
-        normalMap: DensityMaterials.brickNormalTexture,
-        normalScale: new THREE.Vector2( 1, -1 ),
-        metalness: 0
-        // NOTE: Removed the environment map for now
-      } ) );
-      box2.position.copy( ThreeUtils.vectorToThree( new Vector3( -0.08, -0.1, 0 ) ) );
-
-      scene.add( box2 );
-
-      scene.add( new FluidIconMesh( new Vector3( 0, -0.5, 0.12 ) ) );
-    } );
   }
 }
 

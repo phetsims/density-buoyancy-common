@@ -87,13 +87,18 @@ export default class Material extends PhetioObject implements MappedWrappedObjec
         phetioDocumentation: 'Density of the material',
         phetioReadOnly: !( providedOptions.hidden || providedOptions.custom ), // Read-only unless it's a mystery or custom material
         rangePropertyOptions: {
+
           // When used in a MaterialControlNode, the component will override the rangeProperty, even when the sim is reset
           // This is done in a recursive/reentrant link call, so we need to ensure that the value comparison is an equals function
           reentrant: true,
           valueComparisonStrategy: 'equalsFunction'
         },
         range: new Range( 0.8, 27000 ),
-        units: 'kg/m^3'
+        units: 'kg/m^3',
+
+        // Like the rangeProperty above, in MaterialControlNode, when syncCustomMaterialDensity is true, MaterialControlNode
+        // overrides the density value to keep it in range when material changes.
+        reentrant: true
       },
       viscosity: 1e-3,
       custom: false,

@@ -81,8 +81,11 @@ export default class MaterialControlNode extends VBox {
     };
 
     // Set the custom density range, then this control owns the range of the density.
-    // TODO: Should this move to the model somehow? https://github.com/phetsims/density-buoyancy-common/issues/268
     if ( customMaterials.length > 0 && options.ownsCustomDensityRange ) {
+
+      // The range typically changes during resetAll or reset scene. However, when it does, we revert it back to the
+      // desired range for this control. Since the rangeProperty has valueComparisonStrategy 'equalsFunction' this is
+      // not an infinite loop.
       materialProperty.customMaterial.densityProperty.rangeProperty.link( () => {
         materialProperty.customMaterial.densityProperty.rangeProperty.value = new Range(
           options.minCustomMass / options.maxVolumeLiters * DensityBuoyancyCommonConstants.LITERS_IN_CUBIC_METER,

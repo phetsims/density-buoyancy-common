@@ -807,7 +807,26 @@ const FLAT_INTERSECTION_VERTICES = [ ${flatIntersectionVertices.map( v => `new V
     return y / ( 2 * FULL_RADIUS ) + 0.5;
   }
 
-  // TODO: What is a quadRing and how is it used? https://github.com/phetsims/density-buoyancy-common/issues/257
+  /**
+   * Generates vertices, normals, and UVs for a ring of quads (quadrilateral faces) and appends them to the provided arrays.
+   *
+   * This method constructs a ring of quads by iterating through the specified number of radial segments. Each segment
+   * corresponds to a slice of the ring, defined by its start and end angles (theta). The positions, normals, and UV
+   * coordinates for each vertex of the quads are calculated and pushed to the respective arrays.
+   *
+   * @param positions - Array to hold the positions of the vertices.
+   * @param normals - Array to hold the normal vectors of the vertices.
+   * @param uvs - Array to hold the UV coordinates of the vertices.
+   * @param radialSegments - The number of segments around the ring.
+   * @param x0 - The x-coordinate for the start of the ring.
+   * @param r0 - The radius at the start of the ring.
+   * @param x1 - The x-coordinate for the end of the ring.
+   * @param r1 - The radius at the end of the ring.
+   * @param nx0 - The x-component of the normal at the start of the ring.
+   * @param nr0 - The radius component of the normal at the start of the ring.
+   * @param nx1 - The x-component of the normal at the end of the ring.
+   * @param nr1 - The radius component of the normal at the end of the ring.
+   */
   private static quadRing( positions: number[], normals: number[], uvs: number[], radialSegments: number, x0: number, r0: number, x1: number, r1: number, nx0: number, nr0: number, nx1: number, nr1: number ): void {
     _.range( 0, radialSegments ).forEach( i => {
       const theta0 = 2 * Math.PI * i / radialSegments;

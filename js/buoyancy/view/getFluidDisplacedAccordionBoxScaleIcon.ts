@@ -1,0 +1,37 @@
+// Copyright 2019-2024, University of Colorado Boulder
+
+/**
+ * The fluid displaced accordion box scale icon
+ *
+ * @author Michael Kauzmann (PhET Interactive Simulations)
+ * @author Jonathan Olson (PhET Interactive Simulations)
+ */
+import { Node } from '../../../../scenery/js/imports.js';
+import DensityBuoyancyScreenView from '../../common/view/DensityBuoyancyScreenView.js';
+import fluid_displaced_scale_icon_png from '../../../images/fluid_displaced_scale_icon_png.js';
+import Vector3 from '../../../../dot/js/Vector3.js';
+import ScaleView from '../../common/view/ScaleView.js';
+import ThreeUtils from '../../../../mobius/js/ThreeUtils.js';
+
+const getFluidDisplacedAccordionBoxScaleIcon = (): Node => {
+
+  // Hard coded zoom and view-port vector help to center the icon.
+  const image = DensityBuoyancyScreenView.getThreeIcon( fluid_displaced_scale_icon_png, () => {
+    return DensityBuoyancyScreenView.getAngledIcon( 8, new Vector3( 0, 0.25, 0 ), scene => {
+      const scaleGeometry = ScaleView.getScaleGeometry();
+
+      const scale = new THREE.Mesh( scaleGeometry, new THREE.MeshStandardMaterial( {
+        color: 0xffffff,
+        roughness: 0.2,
+        metalness: 0.7,
+        emissive: 0x666666
+      } ) );
+
+      scale.position.copy( ThreeUtils.vectorToThree( new Vector3( 0, 0.25, 0 ) ) );
+      scene.add( scale );
+    }, null );
+  } );
+  image.setScaleMagnitude( 0.12 );
+  return image;
+};
+export default getFluidDisplacedAccordionBoxScaleIcon;

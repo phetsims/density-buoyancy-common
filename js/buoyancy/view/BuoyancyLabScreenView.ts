@@ -204,28 +204,6 @@ export default class BuoyancyLabScreenView extends BuoyancyScreenView<BuoyancyLa
       this.resetAllButton
     ];
   }
-
-  public static getFluidDisplacedAccordionBoxScaleIcon(): Node {
-
-    // Hard coded zoom and view-port vector help to center the icon.
-    const image = DensityBuoyancyScreenView.getThreeIcon( fluid_displaced_scale_icon_png, () => {
-      return DensityBuoyancyScreenView.getAngledIcon( 8, new Vector3( 0, 0.25, 0 ), scene => {
-        const scaleGeometry = ScaleView.getScaleGeometry();
-
-        const scale = new THREE.Mesh( scaleGeometry, new THREE.MeshStandardMaterial( {
-          color: 0xffffff,
-          roughness: 0.2,
-          metalness: 0.7,
-          emissive: 0x666666
-        } ) );
-
-        scale.position.copy( ThreeUtils.vectorToThree( new Vector3( 0, 0.25, 0 ) ) );
-        scene.add( scale );
-      }, null );
-    } );
-    image.setScaleMagnitude( 0.12 );
-    return image;
-  }
 }
 
 densityBuoyancyCommon.register( 'BuoyancyLabScreenView', BuoyancyLabScreenView );

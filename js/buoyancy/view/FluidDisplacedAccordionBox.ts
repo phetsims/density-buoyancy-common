@@ -30,6 +30,7 @@ import PickRequired from '../../../../phet-core/js/types/PickRequired.js';
 import NumberIO from '../../../../tandem/js/types/NumberIO.js';
 import ReadOnlyProperty from '../../../../axon/js/ReadOnlyProperty.js';
 import GravityProperty from '../../common/model/GravityProperty.js';
+import getFluidDisplacedAccordionBoxScaleIcon from './getFluidDisplacedAccordionBoxScaleIcon.js';
 
 type SelfOptions = EmptySelfOptions;
 
@@ -130,7 +131,7 @@ export default class FluidDisplacedAccordionBox extends AccordionBox {
       phetioFeatured: true
     } );
 
-    const scaleIcon = BuoyancyLabScreenView.getFluidDisplacedAccordionBoxScaleIcon();
+    const scaleIcon = getFluidDisplacedAccordionBoxScaleIcon();
 
     const forceReadout = new GeneralScaleReadoutNode( displacedWeightProperty, gravityProperty, DisplayType.NEWTONS, {
       textMaxWidth: scaleIcon.width * 0.8 // margins on the scale, and the icon goes beyond the actual scale, see https://github.com/phetsims/density-buoyancy-common/issues/108
@@ -187,7 +188,7 @@ export default class FluidDisplacedAccordionBox extends AccordionBox {
    */
   public static createIcon(): Node {
 
-    const scaleIcon = BuoyancyLabScreenView.getFluidDisplacedAccordionBoxScaleIcon();
+    const scaleIcon = getFluidDisplacedAccordionBoxScaleIcon();
     scaleIcon.scale( 1.8 );
 
     const newtonUnitText = new Text( DensityBuoyancyCommonStrings.NStringProperty, {

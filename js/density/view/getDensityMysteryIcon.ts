@@ -1,7 +1,7 @@
 // Copyright 2020-2024, University of Colorado Boulder
 
 /**
- * The main view for the Mystery screen of the Density simulation.
+ * The icon for the Mystery screen of the Density simulation.
  *
  * @author Jonathan Olson (PhET Interactive Simulations)
  */

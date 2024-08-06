@@ -7,14 +7,15 @@
  * @author Michael Kauzmann (PhET Interactive Simulations)
  */
 
-import { PropertyOptions } from '../../../../axon/js/Property.js';
 import Gravity from './Gravity.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
-import MappedWrappedProperty from './MappedWrappedProperty.js';
+import MappedWrappedProperty, { MappedWrappedPropertyOptions } from './MappedWrappedProperty.js';
 import PickRequired from '../../../../phet-core/js/types/PickRequired.js';
 import { PhetioObjectOptions } from '../../../../tandem/js/PhetioObject.js';
 import DynamicProperty from '../../../../axon/js/DynamicProperty.js';
+
+type GravityPropertyOptions = MappedWrappedPropertyOptions<Gravity> & PickRequired<PhetioObjectOptions, 'tandem'>;
 
 export default class GravityProperty extends MappedWrappedProperty<Gravity> {
 
@@ -23,7 +24,7 @@ export default class GravityProperty extends MappedWrappedProperty<Gravity> {
 
   public readonly customGravity: Gravity;
 
-  public constructor( gravity: Gravity, customGravity: Gravity, availableValues: Gravity[], providedOptions: PropertyOptions<Gravity> & PickRequired<PhetioObjectOptions, 'tandem'> ) {
+  public constructor( gravity: Gravity, customGravity: Gravity, availableValues: Gravity[], providedOptions: GravityPropertyOptions ) {
     super( gravity, customGravity, availableValues, providedOptions );
 
     this.gravityValueProperty = new DynamicProperty<number, number, Gravity>( this, {

@@ -7,12 +7,11 @@
  * @author Michael Kauzmann (PhET Interactive Simulations)
  */
 
-import { PropertyOptions } from '../../../../axon/js/Property.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import Material from './Material.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
-import MappedWrappedProperty from './MappedWrappedProperty.js';
-import { combineOptions, EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
+import MappedWrappedProperty, { MappedWrappedPropertyOptions } from './MappedWrappedProperty.js';
+import optionize from '../../../../phet-core/js/optionize.js';
 import PickRequired from '../../../../phet-core/js/types/PickRequired.js';
 import { PhetioObjectOptions } from '../../../../tandem/js/PhetioObject.js';
 import IOType from '../../../../tandem/js/types/IOType.js';
@@ -21,9 +20,12 @@ import DynamicProperty from '../../../../axon/js/DynamicProperty.js';
 import { Color } from '../../../../scenery/js/imports.js';
 import ThreeUtils from '../../../../mobius/js/ThreeUtils.js';
 
-type SelfOptions = EmptySelfOptions;
+type SelfOptions = {
+  invisibleMaterials?: Material[];
+};
 
-export type MaterialPropertyOptions = SelfOptions & PropertyOptions<Material> & PickRequired<PhetioObjectOptions, 'tandem'>;
+type ParentOptions = MappedWrappedPropertyOptions<Material> & PickRequired<PhetioObjectOptions, 'tandem'>;
+export type MaterialPropertyOptions = SelfOptions & ParentOptions;
 
 export default class MaterialProperty extends MappedWrappedProperty<Material> {
 
@@ -31,19 +33,23 @@ export default class MaterialProperty extends MappedWrappedProperty<Material> {
   public readonly densityProperty: TReadOnlyProperty<number>;
 
   public readonly customMaterial: Material;
+  public readonly invisibleMaterials: Material[];
 
   // Note the material could be the customMaterial. That is not a bug, that is a workaround that means there is no customMaterial.
   public constructor( material: Material, customMaterial: Material, availableMaterials: Material[], providedOptions: MaterialPropertyOptions ) {
-    super( material, customMaterial, availableMaterials, combineOptions<MaterialPropertyOptions>( {
+    const options = optionize<MaterialPropertyOptions, SelfOptions, ParentOptions>()( {
+      invisibleMaterials: [],
       valueType: Material,
       phetioValueType: ReferenceIO( IOType.ObjectIO ),
       phetioFeatured: true
-    }, providedOptions ) );
+    }, providedOptions );
+    super( material, customMaterial, availableMaterials, options );
     this.densityProperty = new DynamicProperty<number, number, Material>( this, {
       bidirectional: false,
       derive: value => value.valueProperty
     } );
     this.customMaterial = this.customValue;
+    this.invisibleMaterials = options.invisibleMaterials;
   }
 
   public override reset(): void {

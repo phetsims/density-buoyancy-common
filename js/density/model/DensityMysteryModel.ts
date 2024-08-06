@@ -92,7 +92,7 @@ export default class DensityMysteryModel extends BlockSetModel<MysteryBlockSet> 
     let colors: ColorProperty[];
     const randomizeMaterialsEmitter = new Emitter();
     const randomizeMysteryMaterials = () => {
-      densities = dotRandom.shuffle( Material.DENSITY_MYSTERY_MATERIALS ).slice( 0, 5 ).map( material => material.density );
+      densities = dotRandom.shuffle( Material.DENSITY_MYSTERY_SCREEN_MATERIALS ).slice( 0, 5 ).map( material => material.density );
       colors = dotRandom.shuffle( randomColors ).slice( 0, 5 );
       randomizeMaterialsEmitter.emit();
     };

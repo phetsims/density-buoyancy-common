@@ -92,6 +92,7 @@ import ApplicationsMass, { ApplicationsMassOptions } from './ApplicationsMass.js
 import NumberIO from '../../../../../tandem/js/types/NumberIO.js';
 import DensityBuoyancyCommonConstants from '../../../common/DensityBuoyancyCommonConstants.js';
 import MaterialProperty from '../../../common/model/MaterialProperty.js';
+import arrayRemove from '../../../../../phet-core/js/arrayRemove.js';
 
 // constants (in logical coordinates)
 const BODY_CORNER_RADIUS = 0.02; // Used both between the taper/body and between the body/base
@@ -235,6 +236,14 @@ export default class Bottle extends ApplicationsMass {
       densityPropertyOptions: { range: new Range( 50, 20000 ) }
     } );
 
+    const displayedMysteryMaterials = [
+      Material.MATERIAL_V,
+      Material.MATERIAL_W
+    ];
+
+    const invisibleMaterials = [ ...Material.BUOYANCY_FLUID_MYSTERY_MATERIALS, ...Material.ALL_MYSTERY_SOLID_MATERIALS ];
+    displayedMysteryMaterials.forEach( displayed => arrayRemove( invisibleMaterials, displayed ) );
+
     this.materialInsideProperty = new MaterialProperty( BOTTLE_INITIAL_INTERIOR_MATERIAL, customInsideMaterial, [
       Material.GASOLINE,
       Material.OIL,
@@ -242,12 +251,10 @@ export default class Bottle extends ApplicationsMass {
       Material.SAND,
       Material.CONCRETE,
       Material.COPPER,
-      customInsideMaterial,
-      Material.MATERIAL_V,
-      Material.MATERIAL_W
-    ], {
+      customInsideMaterial, ...displayedMysteryMaterials, ...invisibleMaterials ], {
       reentrant: true,
-      tandem: materialInsidePropertyTandem
+      tandem: materialInsidePropertyTandem,
+      invisibleMaterials: invisibleMaterials
     } );
 
     this.materialInsideVolumeProperty = new NumberProperty( BOTTLE_INITIAL_INTERIOR_VOLUME, {

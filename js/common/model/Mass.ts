@@ -242,8 +242,21 @@ export default abstract class Mass extends PhetioObject {
       }, options.customMaterialOptions ) );
 
     const initialMaterial = options.material === 'CUSTOM' ? customSolidMaterial : options.material;
+    let availableMaterials = options.availableMassMaterials.map( x => x === 'CUSTOM' ? customSolidMaterial : x );
+
+    // If there is at least one hidden item, add all other other hidden items that we didn't already have
+    if ( _.some( availableMaterials, material => material.hidden ) ) {
+
+      const visibleHiddenMaterials = availableMaterials.filter( x => x.hidden );
+      const invisibleHiddenMaterials = Material.ALL_MYSTERY_SOLID_MATERIALS.filter( x => !visibleHiddenMaterials.includes( x ) );
+
+      availableMaterials = availableMaterials.filter( x => !x.hidden );
+      availableMaterials.push( ...Material.ALL_MYSTERY_SOLID_MATERIALS );
+
+      options.materialPropertyOptions.invisibleMaterials = invisibleHiddenMaterials;
+    }
     this.materialProperty = new MaterialProperty( initialMaterial, customSolidMaterial,
-      options.availableMassMaterials.map( x => x === 'CUSTOM' ? customSolidMaterial : x ),
+      availableMaterials,
       options.materialPropertyOptions as MaterialPropertyOptions );
 
     // There are complicated order dependencies in how DynamicProperties unlink to old values and link to new ones. See https://github.com/phetsims/buoyancy/issues/67

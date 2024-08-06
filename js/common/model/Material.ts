@@ -442,7 +442,18 @@ export default class Material extends PhetioObject implements MappedWrappedObjec
     density: Material.MERCURY.density
   } );
 
-  public static readonly DENSITY_MYSTERY_MATERIALS = [
+  public static readonly ALL_MYSTERY_SOLID_MATERIALS = [
+    Material.MATERIAL_R,
+    Material.MATERIAL_S,
+    Material.MATERIAL_T,
+    Material.MATERIAL_U,
+    Material.MATERIAL_V,
+    Material.MATERIAL_W,
+    Material.MATERIAL_X,
+    Material.MATERIAL_Y
+  ];
+
+  public static readonly DENSITY_MYSTERY_SCREEN_MATERIALS = [
     Material.WOOD,
     Material.GASOLINE,
     Material.APPLE,

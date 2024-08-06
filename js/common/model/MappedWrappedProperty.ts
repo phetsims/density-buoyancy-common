@@ -21,7 +21,7 @@ export type MappedWrappedObject = {
   hidden: boolean;
 };
 
-type MappedWrappedPropertyOptions<T> = PropertyOptions<T>;
+export type MappedWrappedPropertyOptions<T extends MappedWrappedObject> = PropertyOptions<T>;
 
 export default abstract class MappedWrappedProperty<T extends MappedWrappedObject> extends Property<T> {
   public readonly customValue: T;

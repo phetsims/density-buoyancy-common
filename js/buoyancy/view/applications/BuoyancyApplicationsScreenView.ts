@@ -44,7 +44,6 @@ import Vector2 from '../../../../../dot/js/Vector2.js';
 import FluidDensityPanel from '../FluidDensityPanel.js';
 import BuoyancyScreenView from '../BuoyancyScreenView.js';
 import StrictOmit from '../../../../../phet-core/js/types/StrictOmit.js';
-import FluidIconMesh from '../../../common/view/FluidIconMesh.js';
 import BoatDesign from '../../model/applications/BoatDesign.js';
 import BooleanProperty from '../../../../../axon/js/BooleanProperty.js';
 import Mass from '../../../common/model/Mass.js';
@@ -514,39 +513,6 @@ export default class BuoyancyApplicationsScreenView extends BuoyancyScreenView<B
     } );
     bottle.setScaleMagnitude( ICON_SCALE );
     return bottle;
-  }
-
-  public static getBuoyancyApplicationsIcon(): Node {
-
-    return DensityBuoyancyScreenView.getAngledIcon( 5.5, new Vector3( 0, 0, 0 ), scene => {
-
-      const primaryGeometry = Bottle.getPrimaryGeometry();
-
-      const bottleGroup = new THREE.Group();
-
-      const frontBottomMaterial = new THREE.MeshPhongMaterial( {
-        color: Material.OIL.colorProperty!.value.toHexString(),
-        opacity: 0.8,
-        transparent: true,
-        side: THREE.FrontSide
-      } );
-      const frontBottom = new THREE.Mesh( primaryGeometry, frontBottomMaterial );
-      frontBottom.renderOrder = -1;
-      bottleGroup.add( frontBottom );
-
-      const cap = new THREE.Mesh( Bottle.getCapGeometry(), new THREE.MeshPhongMaterial( {
-        color: 0xFF3333,
-        side: THREE.DoubleSide
-      } ) );
-      bottleGroup.add( cap );
-
-      bottleGroup.scale.multiplyScalar( 0.5 );
-      bottleGroup.position.add( new THREE.Vector3( 0.01, 0, 0.05 ) );
-
-      scene.add( bottleGroup );
-
-      scene.add( new FluidIconMesh() );
-    } );
   }
 }
 

@@ -18,13 +18,6 @@ import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js'
 import DensityMysteryModel, { MysteryBlockSet } from '../model/DensityMysteryModel.js';
 import DensityTableNode from './DensityTableNode.js';
 import { combineOptions } from '../../../../phet-core/js/optionize.js';
-import ThreeUtils from '../../../../mobius/js/ThreeUtils.js';
-import Vector3 from '../../../../dot/js/Vector3.js';
-import TextureQuad from '../../../../mobius/js/TextureQuad.js';
-import NodeTexture from '../../../../mobius/js/NodeTexture.js';
-import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
-import Vector2 from '../../../../dot/js/Vector2.js';
-import ScaleView from '../../common/view/ScaleView.js';
 import MassView from '../../common/view/MassView.js';
 import CuboidView from '../../common/view/CuboidView.js';
 import StrictOmit from '../../../../phet-core/js/types/StrictOmit.js';
@@ -159,48 +152,6 @@ export default class DensityMysteryScreenView extends DensityBuoyancyScreenView<
     this.pdomControlAreaNode.pdomOrder = [
       this.resetAllButton
     ];
-  }
-
-  public static getDensityMysteryIcon(): Node {
-
-    return DensityBuoyancyScreenView.getAngledIcon( 4, new Vector3( 0, -0.01, 0 ), scene => {
-
-      const boxGeometry = new THREE.BoxGeometry( 0.1, 0.1, 0.1 );
-
-      const box = new THREE.Mesh( boxGeometry, new THREE.MeshLambertMaterial( {
-        color: 0x00ff00
-      } ) );
-      box.position.copy( ThreeUtils.vectorToThree( new Vector3( 0, 0.03, 0 ) ) );
-
-      scene.add( box );
-
-      const labelSize = 0.1;
-      const label = new TextureQuad( new NodeTexture( new Text( '?', {
-        font: new PhetFont( {
-          size: 120
-        } ),
-        center: new Vector2( 128, 128 )
-      } ), {
-        width: 256,
-        height: 256
-      } ), labelSize, labelSize );
-
-      label.position.copy( ThreeUtils.vectorToThree( new Vector3( 0 - labelSize * 0.5, 0.03, 0.15 ) ) );
-
-      scene.add( label );
-
-      const scaleGeometry = ScaleView.getScaleGeometry();
-
-      const scale = new THREE.Mesh( scaleGeometry, new THREE.MeshStandardMaterial( {
-        color: 0xffffff,
-        roughness: 0.2,
-        metalness: 0.7,
-        emissive: 0x666666
-      } ) );
-
-      scale.position.copy( ThreeUtils.vectorToThree( new Vector3( 0, -0.03, 0 ) ) );
-      scene.add( scale );
-    } );
   }
 }
 

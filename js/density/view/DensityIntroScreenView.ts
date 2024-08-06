@@ -19,15 +19,11 @@ import DensityIntroModel from '../model/DensityIntroModel.js';
 import DensityBuoyancyScreenView, { DensityBuoyancyScreenViewOptions } from '../../common/view/DensityBuoyancyScreenView.js';
 import { combineOptions } from '../../../../phet-core/js/optionize.js';
 import DensityBuoyancyCommonPreferences from '../../common/model/DensityBuoyancyCommonPreferences.js';
-import ThreeUtils from '../../../../mobius/js/ThreeUtils.js';
-import { DensityMaterials } from '../../common/view/MaterialView.js';
-import Vector3 from '../../../../dot/js/Vector3.js';
 import DensityBuoyancyCommonColors from '../../common/view/DensityBuoyancyCommonColors.js';
 import BlocksModeRadioButtonGroup from '../../common/view/BlocksModeRadioButtonGroup.js';
 import MassView from '../../common/view/MassView.js';
 import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
 import StrictOmit from '../../../../phet-core/js/types/StrictOmit.js';
-import FluidIconMesh from '../../common/view/FluidIconMesh.js';
 import DerivedStringProperty from '../../../../axon/js/DerivedStringProperty.js';
 
 type DensityIntroScreenViewOptions = StrictOmit<DensityBuoyancyScreenViewOptions, 'canShowForces' | 'supportsDepthLines' | 'forcesInitiallyDisplayed' | 'massValuesInitiallyDisplayed' | 'initialForceScale'>;
@@ -156,28 +152,6 @@ export default class DensityIntroScreenView extends DensityBuoyancyScreenView<De
       densityAccordionBox,
       this.resetAllButton
     ];
-  }
-
-  public static getDensityIntroIcon(): Node {
-
-    return DensityBuoyancyScreenView.getAngledIcon( 5.5, new Vector3( 0, 0, 0 ), scene => {
-
-      const boxGeometry = new THREE.BoxGeometry( 0.1, 0.1, 0.1 );
-
-      const box = new THREE.Mesh( boxGeometry, new THREE.MeshStandardMaterial( {
-        map: DensityMaterials.woodColorTexture,
-        normalMap: DensityMaterials.woodNormalTexture,
-        normalScale: new THREE.Vector2( 1, -1 ),
-        roughnessMap: DensityMaterials.woodRoughnessTexture,
-        metalness: 0
-        // NOTE: Removed the environment map for now
-      } ) );
-      box.position.copy( ThreeUtils.vectorToThree( new Vector3( 0, 0, 0 ) ) );
-
-      scene.add( box );
-
-      scene.add( new FluidIconMesh( new Vector3( 0, -0.5, 0 ), new THREE.BoxGeometry( 1, 1, 0.12 ) ) );
-    } );
   }
 }
 

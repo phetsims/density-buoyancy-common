@@ -11,8 +11,6 @@ import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import DensityBuoyancyCommonColors from '../view/DensityBuoyancyCommonColors.js';
 import StringProperty from '../../../../axon/js/StringProperty.js';
-import IOType from '../../../../tandem/js/types/IOType.js';
-import StringIO from '../../../../tandem/js/types/StringIO.js';
 import TProperty from '../../../../axon/js/TProperty.js';
 
 export type MassTagStateObject = {

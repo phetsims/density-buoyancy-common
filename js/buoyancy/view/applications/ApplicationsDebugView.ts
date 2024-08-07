@@ -1,7 +1,7 @@
 // Copyright 2024, University of Colorado Boulder
 /**
- * Extends DebugView, which shows a 2d version of the model. In this case, used for the boat's shape.
- * TODO: Document how to show the debug view here. see https://github.com/phetsims/density-buoyancy-common/issues/257
+ * Extends DebugView, which shows a 2d version of the model in a semi-transparent overlay. In this case, used for the
+ * boat's shape.
  * TODO: This file is overly-complicated and under-documented, see https://github.com/phetsims/density-buoyancy-common/issues/317
  *
  * @author Jonathan Olson (PhET Interactive Simulations)

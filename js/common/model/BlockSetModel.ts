@@ -33,8 +33,7 @@ export type BlockSetModelOptions<BlockSetValue extends EnumerationValue> = SelfO
 
 export default class BlockSetModel<BlockSetValue extends EnumerationValue> extends DensityBuoyancyModel {
 
-  // TODO: https://github.com/phetsims/density-buoyancy-common/issues/317 Convert to lowercase
-  private readonly BlockSet: Enumeration<BlockSetValue>;
+  private readonly blockSet: Enumeration<BlockSetValue>;
   public readonly blockSetProperty: Property<BlockSetValue>;
 
   private readonly createMassesCallback: ( model: BlockSetModel<BlockSetValue>, blockSet: BlockSetValue ) => Cuboid[];
@@ -46,7 +45,7 @@ export default class BlockSetModel<BlockSetValue extends EnumerationValue> exten
   public constructor( options: BlockSetModelOptions<BlockSetValue> ) {
     super( options );
 
-    this.BlockSet = options.BlockSet;
+    this.blockSet = options.BlockSet;
 
     const tandem = options.tandem;
 
@@ -112,15 +111,15 @@ export default class BlockSetModel<BlockSetValue extends EnumerationValue> exten
     this.blockSetProperty.reset();
 
     // Reset every available mass.
-    this.BlockSet.values.forEach( blockSet => this.blockSetToMassesMap.get( blockSet )!.forEach( mass => mass.reset() ) );
+    this.blockSet.values.forEach( blockSet => this.blockSetToMassesMap.get( blockSet )!.forEach( mass => mass.reset() ) );
 
     super.reset();
 
     // Reposition AFTER the reset
-    this.BlockSet.values.forEach( blockSet => this.positionMasses( blockSet ) );
+    this.blockSet.values.forEach( blockSet => this.positionMasses( blockSet ) );
 
     // Update the visibility again since it was reset above
-    this.BlockSet.values.forEach( blockSet => this.blockSetToMassesMap.get( blockSet )!.forEach( mass => {
+    this.blockSet.values.forEach( blockSet => this.blockSetToMassesMap.get( blockSet )!.forEach( mass => {
       mass.internalVisibleProperty.value = blockSet === this.blockSetProperty.value;
     } ) );
   }

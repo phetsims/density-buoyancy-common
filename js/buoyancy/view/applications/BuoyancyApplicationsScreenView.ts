@@ -79,12 +79,7 @@ export default class BuoyancyApplicationsScreenView extends BuoyancyScreenView<B
     const resetBoatButtonTandem = tandem.createTandem( 'resetBoatButton' );
     const resetBoatButton = new RectangularPushButton( {
 
-      // TODO: The outer Node layer looks extraneous, please remove, see https://github.com/phetsims/density-buoyancy-common/issues/317
-      content: new Node( {
-        children: [
-          new Image( resetArrow_png, { scale: 0.3 } )
-        ]
-      } ),
+      content: new Image( resetArrow_png, { scale: 0.3 } ),
       xMargin: 5,
       yMargin: 3,
       baseColor: new Color( 220, 220, 220 ),
@@ -111,7 +106,7 @@ export default class BuoyancyApplicationsScreenView extends BuoyancyScreenView<B
     const bottleControlsTandem = tandem.createTandem( 'bottleControls' );
     const materialInsideControlsTandem = bottleControlsTandem.createTandem( 'materialInsideControls' );
     const materialInsideControls = new MaterialMassVolumeControlNode( model.bottle.materialInsideProperty, model.bottle.materialInsideMassProperty, model.bottle.materialInsideVolumeProperty,
-      model.bottle.materialInsideProperty.availableValues, volume => model.bottle.materialInsideVolumeProperty.set( volume ), this.popupLayer, true, {
+      model.bottle.materialInsideProperty.availableValues, volume => model.bottle.materialInsideVolumeProperty.set( volume ), this.popupLayer, {
         minMass: 0,
         minCustomMass: 0,
         maxCustomMass: 100,
@@ -207,7 +202,7 @@ export default class BuoyancyApplicationsScreenView extends BuoyancyScreenView<B
     const rightBottleContent = new Panel( bottleBox, DensityBuoyancyCommonConstants.PANEL_OPTIONS );
 
     const blockControls = new MaterialMassVolumeControlNode( model.block.materialProperty, model.block.massProperty, model.block.volumeProperty,
-      model.block.materialProperty.availableValues, cubicMeters => model.block.updateSize( Cube.boundsFromVolume( cubicMeters ) ), this.popupLayer, true, {
+      model.block.materialProperty.availableValues, cubicMeters => model.block.updateSize( Cube.boundsFromVolume( cubicMeters ) ), this.popupLayer, {
         tandem: tandem.createTandem( 'blockControls' ),
         highDensityMaxMass: 215
       } );

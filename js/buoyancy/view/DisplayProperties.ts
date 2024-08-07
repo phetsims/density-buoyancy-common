@@ -97,8 +97,7 @@ export default class DisplayProperties {
     this.massValuesVisibleProperty.reset();
     this.forceValuesVisibleProperty.reset();
     this.depthLinesVisibleProperty.reset();
-
-    // TODO: Reset vectorZoomLevelProperty? See https://github.com/phetsims/density-buoyancy-common/issues/317
+    this.vectorZoomLevelProperty.reset();
   }
 
 }

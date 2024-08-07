@@ -36,7 +36,7 @@ export default class ABControlsNode extends ABPanelsNode {
     const tandem = blockControlNodeOptions.tandem;
     const omittedOptions = _.omit( blockControlNodeOptions, [ 'tandem' ] );
 
-    const controlANode = new BlockControlNode( blockA, popupLayer, true, combineOptions<BlockControlNodeOptions>( {
+    const controlANode = new BlockControlNode( blockA, popupLayer, combineOptions<BlockControlNodeOptions>( {
       labelNode: ABPanelsNode.getTagALabelNode(),
       color: DensityBuoyancyCommonColors.tagAProperty,
       tandem: tandem.createTandem( 'blockAPanel' ),
@@ -45,7 +45,7 @@ export default class ABControlsNode extends ABPanelsNode {
       }
     }, omittedOptions ) );
 
-    const controlBNode = new BlockControlNode( blockB, popupLayer, false, combineOptions<BlockControlNodeOptions>( {
+    const controlBNode = new BlockControlNode( blockB, popupLayer, combineOptions<BlockControlNodeOptions>( {
       labelNode: ABPanelsNode.getTagBLabelNode(),
       color: DensityBuoyancyCommonColors.tagBProperty,
       tandem: tandem.createTandem( 'blockBPanel' ),

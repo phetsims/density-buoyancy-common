@@ -81,9 +81,6 @@ export default class MaterialMassVolumeControlNode extends MaterialControlNode {
                       materials: Material[],
                       setVolume: ( volume: number ) => void,
                       listParent: Node,
-
-                      // TODO: Remove unused, see https://github.com/phetsims/density-buoyancy-common/issues/317
-                      numberControlMassPropertyFeatured: boolean,
                       providedOptions: MaterialMassVolumeControlNodeOptions ) {
 
     const options = optionize<MaterialMassVolumeControlNodeOptions, SelfOptions, MaterialControlNodeOptions>()( {

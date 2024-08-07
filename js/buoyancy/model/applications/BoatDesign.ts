@@ -697,8 +697,8 @@ BoatDesign.ONE_LITER_HULL_VOLUME = BoatDesign.DESIGN_HULL_VOLUME * BoatDesign.ON
   }
 
   /**
-   * Replaces the main page with a debug view of the bottle, for debugging various curves and properties.
-   * TODO: https://github.com/phetsims/density-buoyancy-common/issues/317 this is unused and also says "bottle"
+   * Replaces the main page with a debug view of the boat, for debugging various curves and properties.
+   * TODO: https://github.com/phetsims/density-buoyancy-common/issues/317 this is unused
    *
    * phet.densityBuoyancyCommon.BoatDesign.getDebugCanvas()
    */

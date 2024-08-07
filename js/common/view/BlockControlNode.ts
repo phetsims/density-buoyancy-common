@@ -21,7 +21,7 @@ import UnitConversionProperty from '../../../../axon/js/UnitConversionProperty.j
 export type BlockControlNodeOptions = MaterialMassVolumeControlNodeOptions;
 
 export default class BlockControlNode extends MaterialMassVolumeControlNode {
-  public constructor( cuboid: Cuboid, listParent: Node, numberControlMassPropertyFeatured: boolean, options: BlockControlNodeOptions ) {
+  public constructor( cuboid: Cuboid, listParent: Node, options: BlockControlNodeOptions ) {
 
     const materials = cuboid.materialProperty.availableValues;
 
@@ -31,7 +31,7 @@ export default class BlockControlNode extends MaterialMassVolumeControlNode {
     }
 
     super( cuboid.materialProperty, cuboid.massProperty, cuboid.volumeProperty, materials,
-      cubicMeters => cuboid.updateSize( Cube.boundsFromVolume( cubicMeters ) ), listParent, numberControlMassPropertyFeatured, options );
+      cubicMeters => cuboid.updateSize( Cube.boundsFromVolume( cubicMeters ) ), listParent, options );
 
     if ( options.useDensityControlInsteadOfMassControl ) {
 

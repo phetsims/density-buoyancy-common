@@ -45,7 +45,7 @@ export const BEAKER_RANGE = new Range( 0, 1 );
 
 export default class FluidDisplacedAccordionBox extends AccordionBox {
 
-  public constructor( displayedDisplacedVolumeProperty: ReadOnlyProperty<number>, // Imported as property to link to it in phet-io
+  public constructor( displacedVolumeProperty: ReadOnlyProperty<number>, // Imported as property to link to it in phet-io
                       maxBeakerVolume: number,
                       fluidMaterialProperty: TReadOnlyProperty<Material>,
                       gravityProperty: GravityProperty,
@@ -100,11 +100,11 @@ export default class FluidDisplacedAccordionBox extends AccordionBox {
       solutionFill: solutionFillProperty
     }, FluidDisplacedAccordionBox.getBeakerOptions() ) );
 
-    displayedDisplacedVolumeProperty.link( displayedLiters => {
+    displacedVolumeProperty.link( displayedLiters => {
       beakerVolumeProperty.value = displayedLiters / maxBeakerVolume;
     } );
 
-    const numberDisplay = new NumberDisplay( displayedDisplacedVolumeProperty, new Range( 0, maxBeakerVolume ), {
+    const numberDisplay = new NumberDisplay( displacedVolumeProperty, new Range( 0, maxBeakerVolume ), {
       valuePattern: DensityBuoyancyCommonConstants.VOLUME_PATTERN_STRING_PROPERTY,
       useRichText: true,
       decimalPlaces: 2,
@@ -117,7 +117,7 @@ export default class FluidDisplacedAccordionBox extends AccordionBox {
 
     const displacedWeightProperty = new DerivedProperty( [
       gravityProperty.gravityValueProperty,
-      displayedDisplacedVolumeProperty,
+      displacedVolumeProperty,
       fluidMaterialProperty
     ], ( gravityValue, displacedVolume, fluidMaterial ) => {
 
@@ -162,8 +162,7 @@ export default class FluidDisplacedAccordionBox extends AccordionBox {
     );
     super( panel, options );
 
-    // TODO: Rename displayedDisplacedVolumeProperty to displacedVolumeProperty to match the tandem, see https://github.com/phetsims/density-buoyancy-common/issues/317
-    this.addLinkedElement( displayedDisplacedVolumeProperty, {
+    this.addLinkedElement( displacedVolumeProperty, {
       tandemName: 'displacedVolumeProperty'
     } );
   }

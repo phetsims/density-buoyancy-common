@@ -217,7 +217,8 @@ export default class Bottle extends ApplicationsMass {
         density: ( BOTTLE_MASS + BOTTLE_INITIAL_INTERIOR_MATERIAL.density * BOTTLE_INITIAL_INTERIOR_VOLUME ) / BOTTLE_VOLUME,
         densityPropertyOptions: {
           range: new Range( 0, 1000000000 ),
-          phetioReadOnly: true
+          phetioReadOnly: true,
+          phetioDocumentation: 'Density of the bottle system.'
         }
       },
       massShape: MassShape.BLOCK,

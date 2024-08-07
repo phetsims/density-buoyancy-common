@@ -181,18 +181,15 @@ export default class BottleView extends MeasurableMassView {
 
     // Set render order for all elements
     [
-      frontTopForDepth,
-      frontTop,
-      null, // renderOrder place holder for interiorSurface
-      frontBottomForDepth,
+      frontTopForDepth, // index 0, render order -1
+      frontTop, // index 1, render order -2
+      null, // index 2, render order +2, renderOrder place holder for interiorSurface, see above
+      frontBottomForDepth, // index 3, render order -4
       frontBottom,
       backBottom,
       backTop
     ].forEach( ( view, index ) => {
       if ( view ) {
-
-        // TODO: Explain the meaning of the arithmetic, see https://github.com/phetsims/density-buoyancy-common/issues/257
-        // TODO: Why is the +1 important? See https://github.com/phetsims/density-buoyancy-common/issues/257
         view.renderOrder = -( index + 1 );
       }
     } );

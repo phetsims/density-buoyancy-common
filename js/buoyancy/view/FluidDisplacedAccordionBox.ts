@@ -127,7 +127,8 @@ export default class FluidDisplacedAccordionBox extends AccordionBox {
     }, {
       tandem: options.tandem.createTandem( 'displacedWeightProperty' ),
       phetioValueType: NumberIO,
-      phetioFeatured: true
+      phetioFeatured: true,
+      units: 'N'
     } );
 
     const scaleIcon = getFluidDisplacedAccordionBoxScaleIcon();

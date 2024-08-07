@@ -124,11 +124,11 @@ export default class BuoyancyShapesScreenView extends BuoyancyScreenView<Buoyanc
     };
 
     // Create and configure the control nodes for materials and shapes.
-    const materialControlNode = new MaterialControlNode( this.model.materialProperty, new Property( 1 ),
+    const materialControls = new MaterialControlNode( this.model.materialProperty, new Property( 1 ),
       this.model.materialProperty.availableValues, this.popupLayer, {
         tandem: options.tandem.createTandem( 'materialControls' )
       } );
-    const objectAShapeSizeControlNode = new ShapeSizeControlNode(
+    const objectAShapeSizeControls = new ShapeSizeControlNode(
       model.objectA,
       new DynamicProperty( model.objectA.shapeProperty, { derive: 'volumeProperty' } ),
       this.popupLayer, {
@@ -150,7 +150,7 @@ export default class BuoyancyShapesScreenView extends BuoyancyScreenView<Buoyanc
       }
     );
     this.rightBox = new MultiSectionPanelsNode(
-      [ materialControlNode, objectAShapeSizeControlNode, objectBShapeSizeControlNode ]
+      [ materialControls, objectAShapeSizeControls, objectBShapeSizeControlNode ]
     );
 
     // Create and configure accordion boxes for object density and percent submerged.
@@ -234,8 +234,8 @@ export default class BuoyancyShapesScreenView extends BuoyancyScreenView<Buoyanc
     // The focus order is described in https://github.com/phetsims/density-buoyancy-common/issues/121
     this.pdomPlayAreaNode.pdomOrder = [
       blockALayer,
-      materialControlNode,
-      objectAShapeSizeControlNode,
+      materialControls,
+      objectAShapeSizeControls,
       blockBLayer,
       objectBShapeSizeControlNode,
       fluidDensityPanel,

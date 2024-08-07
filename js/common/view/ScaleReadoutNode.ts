@@ -93,7 +93,7 @@ export class GeneralScaleReadoutNode extends Node {
 }
 
 /**
- * Shows a mass or weight readout on a scale.
+ * Shows a mass or weight readout on a ScaleNode.
  */
 export default class ScaleReadoutNode extends GeneralScaleReadoutNode {
 

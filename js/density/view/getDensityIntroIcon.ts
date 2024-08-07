@@ -1,4 +1,4 @@
-// Copyright 2019-2024, University of Colorado Boulder
+// Copyright 2024, University of Colorado Boulder
 
 /**
  * The icon for the Intro screen of the Density simulation.

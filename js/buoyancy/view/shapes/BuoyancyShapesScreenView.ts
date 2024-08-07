@@ -172,8 +172,8 @@ export default class BuoyancyShapesScreenView extends BuoyancyScreenView<Buoyanc
       model.objectA.shapeProperty,
       model.objectB.shapeProperty,
       model.modeProperty
-    ], ( massA, massB, mode ) => {
-      const masses = mode === TwoBlockMode.ONE_BLOCK ? [ massA ] : [ massA, massB ];
+    ], ( blockA, blockB, mode ) => {
+      const masses = mode === TwoBlockMode.ONE_BLOCK ? [ blockA ] : [ blockA, blockB ];
       percentSubmergedAccordionBox.setReadoutItems( masses.map( mass => {
         return {
           readoutItem: mass,
@@ -224,19 +224,19 @@ export default class BuoyancyShapesScreenView extends BuoyancyScreenView<Buoyanc
 
     // Layer for the focusable masses. Must be in the scene graph, so they can populate the pdom order
     // TODO: Remove pdomOrder:[] or document why it is necessary, see https://github.com/phetsims/density-buoyancy-common/issues/317
-    const massALayer = new Node( { pdomOrder: [] } );
-    this.addChild( massALayer );
-    const massBLayer = new Node( { pdomOrder: [] } );
-    this.addChild( massBLayer );
+    const blockALayer = new Node( { pdomOrder: [] } );
+    this.addChild( blockALayer );
+    const blockBLayer = new Node( { pdomOrder: [] } );
+    this.addChild( blockBLayer );
 
     // The focus order is described in https://github.com/phetsims/density-buoyancy-common/issues/121
     this.pdomPlayAreaNode.pdomOrder = [
 
-      massALayer,
+      blockALayer,
       materialControlNode,
       objectAShapeSizeControlNode,
 
-      massBLayer,
+      blockBLayer,
       objectBShapeSizeControlNode,
 
       fluidDensityPanel,
@@ -249,11 +249,11 @@ export default class BuoyancyShapesScreenView extends BuoyancyScreenView<Buoyanc
 
     const massViewAdded = ( massView: MassView ) => {
       if ( massView.mass === model.objectB.shapeProperty.value ) {
-        massBLayer.pdomOrder = [ ...massBLayer.pdomOrder!, massView.focusablePath ];
+        blockBLayer.pdomOrder = [ ...blockBLayer.pdomOrder!, massView.focusablePath ];
         // nothing to do for removal since disposal of the node will remove it from the pdom order
       }
       else if ( massView.mass === model.objectA.shapeProperty.value ) {
-        massALayer.pdomOrder = [ ...massALayer.pdomOrder!, massView.focusablePath ];
+        blockALayer.pdomOrder = [ ...blockALayer.pdomOrder!, massView.focusablePath ];
         // nothing to do for removal since disposal of the node will remove it from the pdom order
       }
     };

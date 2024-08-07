@@ -24,8 +24,8 @@ export type DensityIntroModelOptions = DensityBuoyancyModelOptions;
 export default class DensityIntroModel extends DensityBuoyancyModel {
 
   public readonly modeProperty: Property<TwoBlockMode>;
-  public readonly massA: Cuboid;
-  public readonly massB: Cuboid;
+  public readonly blockA: Cuboid;
+  public readonly blockB: Cuboid;
 
   public constructor( providedOptions: DensityIntroModelOptions ) {
 
@@ -49,22 +49,22 @@ export default class DensityIntroModel extends DensityBuoyancyModel {
       'CUSTOM'
     ];
 
-    this.massA = Cube.createWithMass( this.engine, Material.WOOD, new Vector2( -0.2, 0.2 ), 2, {
+    this.blockA = Cube.createWithMass( this.engine, Material.WOOD, new Vector2( -0.2, 0.2 ), 2, {
       tag: MassTag.OBJECT_A,
       tandem: blocksTandem.createTandem( 'blockA' ),
       availableMassMaterials: availableMassMaterials
     } );
-    this.availableMasses.push( this.massA );
-    this.massB = Cube.createWithMass( this.engine, Material.ALUMINUM, new Vector2( 0.2, 0.2 ), 13.5, {
+    this.availableMasses.push( this.blockA );
+    this.blockB = Cube.createWithMass( this.engine, Material.ALUMINUM, new Vector2( 0.2, 0.2 ), 13.5, {
       tag: MassTag.OBJECT_B,
       tandem: blocksTandem.createTandem( 'blockB' ),
       availableMassMaterials: availableMassMaterials,
       visible: false
     } );
-    this.availableMasses.push( this.massB );
+    this.availableMasses.push( this.blockB );
 
     this.modeProperty.link( mode => {
-      this.massB.internalVisibleProperty.value = mode === TwoBlockMode.TWO_BLOCKS;
+      this.blockB.internalVisibleProperty.value = mode === TwoBlockMode.TWO_BLOCKS;
     } );
   }
 
@@ -74,8 +74,8 @@ export default class DensityIntroModel extends DensityBuoyancyModel {
   public override reset(): void {
     this.modeProperty.reset();
 
-    this.massA.reset();
-    this.massB.reset();
+    this.blockA.reset();
+    this.blockB.reset();
 
     super.reset();
   }

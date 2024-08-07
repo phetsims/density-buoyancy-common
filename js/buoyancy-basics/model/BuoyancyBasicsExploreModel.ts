@@ -26,8 +26,8 @@ type BuoyancyBasicsExploreModelOptions = DensityBuoyancyModelOptions;
 export default class BuoyancyBasicsExploreModel extends DensityBuoyancyModel {
 
   public readonly modeProperty: Property<TwoBlockMode>;
-  public readonly massA: Cube;
-  public readonly massB: Cube;
+  public readonly blockA: Cube;
+  public readonly blockB: Cube;
 
   public constructor( providedOptions: BuoyancyBasicsExploreModelOptions ) {
 
@@ -57,22 +57,22 @@ export default class BuoyancyBasicsExploreModel extends DensityBuoyancyModel {
     };
 
     const blockATandem = blocksTandem.createTandem( 'blockA' );
-    this.massA = Cube.createWithMass( this.engine, Material.WOOD, new Vector2( -0.2, 0.2 ), 2, combineOptions<StrictCubeOptions>( {}, sharedBlockOptions, {
+    this.blockA = Cube.createWithMass( this.engine, Material.WOOD, new Vector2( -0.2, 0.2 ), 2, combineOptions<StrictCubeOptions>( {}, sharedBlockOptions, {
       tag: MassTag.OBJECT_A,
       tandem: blockATandem
     } ) );
-    this.availableMasses.push( this.massA );
+    this.availableMasses.push( this.blockA );
 
     const blockBTandem = blocksTandem.createTandem( 'blockB' );
-    this.massB = Cube.createWithMass( this.engine, Material.ALUMINUM, new Vector2( 0.05, 0.35 ), 13.5, combineOptions<StrictCubeOptions>( {}, sharedBlockOptions, {
+    this.blockB = Cube.createWithMass( this.engine, Material.ALUMINUM, new Vector2( 0.05, 0.35 ), 13.5, combineOptions<StrictCubeOptions>( {}, sharedBlockOptions, {
       tag: MassTag.OBJECT_B,
       tandem: blockBTandem,
       visible: false
     } ) );
-    this.availableMasses.push( this.massB );
+    this.availableMasses.push( this.blockB );
 
     this.modeProperty.link( mode => {
-      this.massB.internalVisibleProperty.value = mode === TwoBlockMode.TWO_BLOCKS;
+      this.blockB.internalVisibleProperty.value = mode === TwoBlockMode.TWO_BLOCKS;
     } );
 
     // Left scale
@@ -93,8 +93,8 @@ export default class BuoyancyBasicsExploreModel extends DensityBuoyancyModel {
   public override reset(): void {
     this.modeProperty.reset();
 
-    this.massA.reset();
-    this.massB.reset();
+    this.blockA.reset();
+    this.blockB.reset();
 
     super.reset();
   }

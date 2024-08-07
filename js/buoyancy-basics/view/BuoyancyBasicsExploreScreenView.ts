@@ -63,8 +63,8 @@ export default class BuoyancyBasicsExploreScreenView extends BuoyancyScreenView<
     this.addAlignBox( displayOptionsPanel, 'left', 'bottom' );
 
     this.rightBox = new ABControlsNode(
-      model.massA,
-      model.massB,
+      model.blockA,
+      model.blockB,
       this.popupLayer, {
         useDensityControlInsteadOfMassControl: true,
         syncCustomMaterialDensity: false,
@@ -92,7 +92,7 @@ export default class BuoyancyBasicsExploreScreenView extends BuoyancyScreenView<
       tandem: tandem.createTandem( 'percentSubmergedAccordionBox' )
     } );
 
-    const customExploreScreenFormatting = [ model.massA, model.massB ].map( mass => {
+    const customExploreScreenFormatting = [ model.blockA, model.blockB ].map( mass => {
       return {
         readoutNameProperty: new PatternStringProperty( DensityBuoyancyCommonStrings.blockPatternStringProperty, { tag: mass.nameProperty } ),
         readoutFormat: { font: DensityBuoyancyCommonConstants.ITEM_FONT, fill: mass.tag.colorProperty }
@@ -101,8 +101,8 @@ export default class BuoyancyBasicsExploreScreenView extends BuoyancyScreenView<
 
     // Adjust the visibility after, since we want to size the box's location for its "full" bounds
     // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
-    model.massB.visibleProperty.link( visible => {
-      const masses = visible ? [ model.massA, model.massB ] : [ model.massA ];
+    model.blockB.visibleProperty.link( visible => {
+      const masses = visible ? [ model.blockA, model.blockB ] : [ model.blockA ];
       const submergedReadoutItems = masses.map( ( mass, index ) => {
         return {
           readoutItem: mass,
@@ -192,7 +192,7 @@ export default class BuoyancyBasicsExploreScreenView extends BuoyancyScreenView<
     ];
 
     const massViewAdded = ( massView: MassView ) => {
-      if ( massView instanceof CuboidView && massView.mass === model.massB ) {
+      if ( massView instanceof CuboidView && massView.mass === model.blockB ) {
         cuboidPDOMLayer.pdomOrder = [ ...cuboidPDOMLayer.pdomOrder!, massView.focusablePath ];
         // nothing to do for removal since disposal of the node will remove it from the pdom order
       }

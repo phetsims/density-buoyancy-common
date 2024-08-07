@@ -26,17 +26,17 @@ export default class ABControlsNode extends ABPanelsNode {
   public readonly controlBNode: BlockControlNode;
 
   /**
-   * @param massA
-   * @param massB
+   * @param blockA
+   * @param blockB
    * @param popupLayer
    * @param blockControlNodeOptions - Applied to each BlockControlNode
    */
-  public constructor( massA: Cuboid, massB: Cuboid, popupLayer: Node, blockControlNodeOptions: ABControlsNodeOptions ) {
+  public constructor( blockA: Cuboid, blockB: Cuboid, popupLayer: Node, blockControlNodeOptions: ABControlsNodeOptions ) {
 
     const tandem = blockControlNodeOptions.tandem;
     const omittedOptions = _.omit( blockControlNodeOptions, [ 'tandem' ] );
 
-    const controlANode = new BlockControlNode( massA, popupLayer, true, combineOptions<BlockControlNodeOptions>( {
+    const controlANode = new BlockControlNode( blockA, popupLayer, true, combineOptions<BlockControlNodeOptions>( {
       labelNode: ABPanelsNode.getTagALabelNode(),
       color: DensityBuoyancyCommonColors.tagAProperty,
       tandem: tandem.createTandem( 'blockAPanel' ),
@@ -45,7 +45,7 @@ export default class ABControlsNode extends ABPanelsNode {
       }
     }, omittedOptions ) );
 
-    const controlBNode = new BlockControlNode( massB, popupLayer, false, combineOptions<BlockControlNodeOptions>( {
+    const controlBNode = new BlockControlNode( blockB, popupLayer, false, combineOptions<BlockControlNodeOptions>( {
       labelNode: ABPanelsNode.getTagBLabelNode(),
       color: DensityBuoyancyCommonColors.tagBProperty,
       tandem: tandem.createTandem( 'blockBPanel' ),
@@ -57,11 +57,11 @@ export default class ABControlsNode extends ABPanelsNode {
     super(
       new Node( {
         children: [ controlANode ],
-        visibleProperty: DerivedProperty.and( [ massA.visibleProperty, controlANode.visibleProperty ] )
+        visibleProperty: DerivedProperty.and( [ blockA.visibleProperty, controlANode.visibleProperty ] )
       } ),
       new Node( {
         children: [ controlBNode ],
-        visibleProperty: DerivedProperty.and( [ massB.visibleProperty, controlBNode.visibleProperty ] )
+        visibleProperty: DerivedProperty.and( [ blockB.visibleProperty, controlBNode.visibleProperty ] )
       } )
     );
 

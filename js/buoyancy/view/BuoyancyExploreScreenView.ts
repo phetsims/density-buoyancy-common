@@ -72,8 +72,8 @@ export default class BuoyancyExploreScreenView extends BuoyancyScreenView<Buoyan
     displayedMysteryMaterials.forEach( displayed => arrayRemove( invisibleMaterials, displayed ) );
 
     this.rightBox = new ABControlsNode(
-      model.massA,
-      model.massB,
+      model.blockA,
+      model.blockB,
       this.popupLayer, {
         tandem: tandem,
         minCustomMass: 0.1
@@ -84,7 +84,7 @@ export default class BuoyancyExploreScreenView extends BuoyancyScreenView<Buoyan
 
     this.addAlignBox( fluidDensityPanel, 'center', 'bottom' );
 
-    [ model.massA, model.massB ].forEach( mass => {
+    [ model.blockA, model.blockB ].forEach( mass => {
       mass.materialProperty.link( material => {
         if ( material === Material.MATERIAL_R ) {
           mass.volumeProperty.value = 0.003;
@@ -106,7 +106,7 @@ export default class BuoyancyExploreScreenView extends BuoyancyScreenView<Buoyan
       tandem: tandem.createTandem( 'percentSubmergedAccordionBox' )
     } );
 
-    const customExploreScreenFormatting = [ model.massA, model.massB ].map( mass => {
+    const customExploreScreenFormatting = [ model.blockA, model.blockB ].map( mass => {
       return {
         readoutNameProperty: new PatternStringProperty( DensityBuoyancyCommonStrings.blockPatternStringProperty, { tag: mass.nameProperty } ),
         readoutFormat: { font: DensityBuoyancyCommonConstants.ITEM_FONT, fill: mass.tag.colorProperty }
@@ -115,8 +115,8 @@ export default class BuoyancyExploreScreenView extends BuoyancyScreenView<Buoyan
 
     // Adjust the visibility after, since we want to size the box's location for its "full" bounds
     // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
-    model.massB.visibleProperty.link( massBVisible => {
-      const masses = massBVisible ? [ model.massA, model.massB ] : [ model.massA ];
+    model.blockB.visibleProperty.link( blockBVisible => {
+      const masses = blockBVisible ? [ model.blockA, model.blockB ] : [ model.blockA ];
       objectDensityAccordionBox.setReadoutItems( masses.map( ( mass, index ) => {
         return {
           readoutItem: mass.materialProperty,
@@ -202,7 +202,7 @@ export default class BuoyancyExploreScreenView extends BuoyancyScreenView<Buoyan
     ];
 
     const massViewAdded = ( massView: MassView ) => {
-      if ( massView instanceof CuboidView && massView.mass === model.massB ) {
+      if ( massView instanceof CuboidView && massView.mass === model.blockB ) {
         cuboidPDOMLayer.pdomOrder = [ ...cuboidPDOMLayer.pdomOrder!, massView.focusablePath ];
 
         // nothing to do for removal since disposal of the node will remove it from the pdom order

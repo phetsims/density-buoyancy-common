@@ -45,8 +45,8 @@ export default class DensityIntroScreenView extends DensityBuoyancyScreenView<De
     }, options ) );
 
     this.rightBox = new ABControlsNode(
-      model.massA,
-      model.massB,
+      model.blockA,
+      model.blockB,
       this.popupLayer, {
         tandem: tandem,
         maxCustomMass: 10
@@ -65,16 +65,16 @@ export default class DensityIntroScreenView extends DensityBuoyancyScreenView<De
     const densityAccordionBox = new AccordionBox( new DensityNumberLineNode( {
         displayDensities: [
           {
-            densityProperty: model.massA.materialProperty.densityProperty,
-            nameProperty: model.massA.tag.nameProperty,
+            densityProperty: model.blockA.materialProperty.densityProperty,
+            nameProperty: model.blockA.tag.nameProperty,
             visibleProperty: new BooleanProperty( true ),
             isHiddenProperty: new BooleanProperty( false ),
             color: DensityBuoyancyCommonColors.tagAProperty
           },
           {
-            densityProperty: model.massB.materialProperty.densityProperty,
-            nameProperty: model.massB.tag.nameProperty,
-            visibleProperty: model.massB.visibleProperty,
+            densityProperty: model.blockB.materialProperty.densityProperty,
+            nameProperty: model.blockB.tag.nameProperty,
+            visibleProperty: model.blockB.visibleProperty,
             isHiddenProperty: new BooleanProperty( false ),
             color: DensityBuoyancyCommonColors.tagBProperty
           }
@@ -131,11 +131,11 @@ export default class DensityIntroScreenView extends DensityBuoyancyScreenView<De
     ];
 
     const massViewAdded = ( massView: MassView ) => {
-      if ( massView.mass === model.massA ) {
+      if ( massView.mass === model.blockA ) {
         cubeALayer.pdomOrder = [ ...cubeALayer.pdomOrder!, massView.focusablePath ];
         // nothing to do for removal since disposal of the node will remove it from the pdom order
       }
-      else if ( massView.mass === model.massB ) {
+      else if ( massView.mass === model.blockB ) {
         cubeBLayer.pdomOrder = [ ...cubeBLayer.pdomOrder!, massView.focusablePath ];
         // nothing to do for removal since disposal of the node will remove it from the pdom order
       }

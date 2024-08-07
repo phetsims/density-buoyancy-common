@@ -241,8 +241,14 @@ export default class Bottle extends ApplicationsMass {
       Material.MATERIAL_W
     ];
 
+    const omittedMysteryMaterials = [
+      Material.MATERIAL_R,
+      Material.MATERIAL_S
+    ];
+
     const invisibleMaterials = [ ...Material.BUOYANCY_FLUID_MYSTERY_MATERIALS, ...Material.ALL_MYSTERY_SOLID_MATERIALS ];
     displayedMysteryMaterials.forEach( displayed => arrayRemove( invisibleMaterials, displayed ) );
+    omittedMysteryMaterials.forEach( omitted => arrayRemove( invisibleMaterials, omitted ) );
 
     this.materialInsideProperty = new MaterialProperty( BOTTLE_INITIAL_INTERIOR_MATERIAL, customInsideMaterial, [
       Material.GASOLINE,

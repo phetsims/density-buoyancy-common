@@ -61,7 +61,6 @@ export default class BuoyancyShapesScreenView extends BuoyancyScreenView<Buoyanc
   private readonly rightBox: MultiSectionPanelsNode;
   private readonly positionInfoButton: () => void;
 
-  // TODO: https://github.com/phetsims/density-buoyancy-common/issues/257 Please add helpful documentation throughout this constructor
   public constructor( model: BuoyancyShapesModel, options: BuoyancyShapesScreenViewOptions ) {
 
     const tandem = options.tandem;
@@ -77,18 +76,19 @@ export default class BuoyancyShapesScreenView extends BuoyancyScreenView<Buoyanc
         // Show the forces as larger in this case, because the masses are significantly smaller, see https://github.com/phetsims/density-buoyancy-common/issues/186
         initialForceScale: 1 / 4,
         cameraLookAt: DensityBuoyancyCommonConstants.BUOYANCY_CAMERA_LOOK_AT
-      }, options ) );
+      }, options )
+    );
 
-    const displayedMysteryMaterials = [
-      Material.FLUID_C,
-      Material.FLUID_D
-    ];
+    // Determine which mystery materials are displayed and which are invisible (but can be enabled in PhET-iO studio)
+    const displayedMysteryMaterials = [ Material.FLUID_C, Material.FLUID_D ];
     const invisibleMaterials = [ ...Material.BUOYANCY_FLUID_MYSTERY_MATERIALS ];
     displayedMysteryMaterials.forEach( displayed => arrayRemove( invisibleMaterials, displayed ) );
 
+    // Create and add the FluidDensityPanel to the screen.
     const fluidDensityPanel = new FluidDensityPanel( model, invisibleMaterials, this.popupLayer, tandem.createTandem( 'fluidDensityPanel' ) );
     this.addAlignBox( fluidDensityPanel, 'center', 'bottom' );
 
+    // Create and add the BuoyancyDisplayOptionsPanel to the screen.
     const displayOptionsPanel = new BuoyancyDisplayOptionsPanel( this.displayProperties, {
       tandem: tandem.createTandem( 'displayOptionsPanel' ),
       contentWidth: this.modelToViewPoint( new Vector3(
@@ -99,7 +99,7 @@ export default class BuoyancyShapesScreenView extends BuoyancyScreenView<Buoyanc
     } );
     this.addAlignBox( displayOptionsPanel, 'left', 'bottom' );
 
-    // Info button and associated dialog
+    // Create the info button and associated dialog, and add to the screen.
     const infoButtonTandem = tandem.createTandem( 'infoButton' );
     const infoDialog = new ShapesInfoDialog( infoButtonTandem.createTandem( 'infoDialog' ) );
     const infoButton = new InfoButton( {
@@ -112,6 +112,7 @@ export default class BuoyancyShapesScreenView extends BuoyancyScreenView<Buoyanc
     } );
     this.addChild( infoButton );
 
+    // Position the info button relative to the pool bounds.
     this.positionInfoButton = () => {
       const bottomLeftPoolPoint = this.modelToViewPoint( new Vector3(
         this.model.poolBounds.minX,
@@ -122,15 +123,14 @@ export default class BuoyancyShapesScreenView extends BuoyancyScreenView<Buoyanc
       infoButton.left = bottomLeftPoolPoint.x;
     };
 
+    // Create and configure the control nodes for materials and shapes.
     const materialControlNode = new MaterialControlNode( this.model.materialProperty, new Property( 1 ),
       this.model.materialProperty.availableValues, this.popupLayer, {
         tandem: options.tandem.createTandem( 'materialControlNode' )
       } );
     const objectAShapeSizeControlNode = new ShapeSizeControlNode(
       model.objectA,
-      new DynamicProperty( model.objectA.shapeProperty, {
-        derive: 'volumeProperty'
-      } ),
+      new DynamicProperty( model.objectA.shapeProperty, { derive: 'volumeProperty' } ),
       this.popupLayer, {
         labelNode: ABPanelsNode.getTagALabelNode(),
         tandem: tandem.createTandem( 'objectAShapeSizeControlNode' )
@@ -139,9 +139,7 @@ export default class BuoyancyShapesScreenView extends BuoyancyScreenView<Buoyanc
     const objectBShapeSizeControlNodeTandem = tandem.createTandem( 'objectBShapeSizeControlNodeTandem' );
     const objectBShapeSizeControlNode = new ShapeSizeControlNode(
       model.objectB,
-      new DynamicProperty( model.objectB.shapeProperty, {
-        derive: 'volumeProperty'
-      } ),
+      new DynamicProperty( model.objectB.shapeProperty, { derive: 'volumeProperty' } ),
       this.popupLayer, {
         labelNode: ABPanelsNode.getTagBLabelNode(),
         visibleProperty: new GatedVisibleProperty(
@@ -152,22 +150,21 @@ export default class BuoyancyShapesScreenView extends BuoyancyScreenView<Buoyanc
       }
     );
     this.rightBox = new MultiSectionPanelsNode(
-      [ materialControlNode,
-        objectAShapeSizeControlNode,
-        objectBShapeSizeControlNode ]
+      [ materialControlNode, objectAShapeSizeControlNode, objectBShapeSizeControlNode ]
     );
 
+    // Create and configure accordion boxes for object density and percent submerged.
     const objectDensityAccordionBox = new DensityAccordionBox( DensityBuoyancyCommonStrings.objectDensityStringProperty, {
       contentWidthMax: this.rightBox.content.width,
       readoutItems: [ { readoutItem: model.materialProperty } ],
       tandem: tandem.createTandem( 'objectDensityAccordionBox' )
     } );
-
     const percentSubmergedAccordionBox = new SubmergedAccordionBox( {
       contentWidthMax: this.rightBox.content.width,
       tandem: tandem.createTandem( 'percentSubmergedAccordionBox' )
     } );
 
+    // Update the percent submerged accordion box when relevant properties change.
     Multilink.multilink( [
       model.objectA.shapeProperty,
       model.objectB.shapeProperty,
@@ -183,6 +180,7 @@ export default class BuoyancyShapesScreenView extends BuoyancyScreenView<Buoyanc
       } ) );
     } );
 
+    // Create a VBox for the right side components and add it to the screen.
     const rightSideVBox = new VBox( {
       spacing: DensityBuoyancyCommonConstants.SPACING_SMALL,
       align: 'right',
@@ -194,10 +192,12 @@ export default class BuoyancyShapesScreenView extends BuoyancyScreenView<Buoyanc
     } );
     this.addAlignBox( rightSideVBox, 'right', 'top' );
 
+    // Create and add a radio button group for blocks mode.
     const blocksModeRadioButtonGroup = new BlocksModeRadioButtonGroup( model.modeProperty, {
       tandem: this.tandem.createTandem( 'blocksModeRadioButtonGroup' )
     } );
 
+    // Manually constrain the layout of the reset button and blocks mode radio button group.
     ManualConstraint.create( this, [ this.resetAllButton, blocksModeRadioButtonGroup ],
       ( resetAllButtonWrapper, blocksModeRadioButtonGroupWrapper ) => {
         blocksModeRadioButtonGroupWrapper.right = resetAllButtonWrapper.left - DensityBuoyancyCommonConstants.MARGIN;
@@ -206,6 +206,7 @@ export default class BuoyancyShapesScreenView extends BuoyancyScreenView<Buoyanc
 
     this.addChild( blocksModeRadioButtonGroup );
 
+    // Set the property for the right barrier viewpoint.
     // DerivedProperty doesn't need disposal, since everything here lives for the lifetime of the simulation
     this.rightBarrierViewPointPropertyProperty.value = new DerivedProperty( [ rightSideVBox.boundsProperty, this.visibleBoundsProperty ], ( boxBounds, visibleBounds ) => {
 
@@ -215,6 +216,7 @@ export default class BuoyancyShapesScreenView extends BuoyancyScreenView<Buoyanc
 
     this.addChild( this.popupLayer );
 
+    // Add listener to reset specific components when the reset emitter triggers.
     this.resetEmitter.addListener( () => {
       percentSubmergedAccordionBox.reset();
       objectDensityAccordionBox.reset();
@@ -231,22 +233,19 @@ export default class BuoyancyShapesScreenView extends BuoyancyScreenView<Buoyanc
 
     // The focus order is described in https://github.com/phetsims/density-buoyancy-common/issues/121
     this.pdomPlayAreaNode.pdomOrder = [
-
       blockALayer,
       materialControlNode,
       objectAShapeSizeControlNode,
-
       blockBLayer,
       objectBShapeSizeControlNode,
-
       fluidDensityPanel,
 
       // The blocks are added (a) pool then (b) outside, but the focus order is (a) outside then (b) pool
       ..._.reverse( scaleViews.map( scaleView => scaleView.focusablePath ) ),
-
       this.poolScaleHeightControl
     ];
 
+    // Add mass view items to the appropriate layers based on their associated mass.
     const massViewAdded = ( massView: MassView ) => {
       if ( massView.mass === model.objectB.shapeProperty.value ) {
         blockBLayer.pdomOrder = [ ...blockBLayer.pdomOrder!, massView.focusablePath ];
@@ -260,6 +259,7 @@ export default class BuoyancyShapesScreenView extends BuoyancyScreenView<Buoyanc
     this.massViews.addItemAddedListener( massViewAdded );
     this.massViews.forEach( massViewAdded );
 
+    // Define the focus order for the control area, ensuring accessibility for various UI elements.
     this.pdomControlAreaNode.pdomOrder = [
       blocksModeRadioButtonGroup,
       displayOptionsPanel,

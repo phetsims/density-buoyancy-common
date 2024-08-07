@@ -43,7 +43,7 @@ const getBuoyancyExploreIcon = (): Node => {
       boxScene,
       getExploreIcon().mutate( {
 
-        // TODO: Document the arithmetic, what is the intended effect? see https://github.com/phetsims/density-buoyancy-common/issues/257
+        // Move the arrow to the center of the boxScene, fine tuned manually
         center: boxScene.center.plusXY( 0, boxScene.height * 0.09 )
       } )
     ]

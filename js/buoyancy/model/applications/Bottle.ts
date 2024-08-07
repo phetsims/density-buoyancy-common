@@ -215,7 +215,10 @@ export default class Bottle extends ApplicationsMass {
       customMaterialOptions: {
         nameProperty: DensityBuoyancyCommonStrings.systemAStringProperty,
         density: ( BOTTLE_MASS + BOTTLE_INITIAL_INTERIOR_MATERIAL.density * BOTTLE_INITIAL_INTERIOR_VOLUME ) / BOTTLE_VOLUME,
-        densityPropertyOptions: { range: new Range( 0, 1000000000 ) }
+        densityPropertyOptions: {
+          range: new Range( 0, 1000000000 ),
+          phetioReadOnly: true
+        }
       },
       massShape: MassShape.BLOCK,
 

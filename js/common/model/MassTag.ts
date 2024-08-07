@@ -66,28 +66,6 @@ export default class MassTag {
   public static readonly C = new MassTag( DensityBuoyancyCommonStrings.massLabel.cStringProperty, 'C' );
   public static readonly D = new MassTag( DensityBuoyancyCommonStrings.massLabel.dStringProperty, 'D' );
   public static readonly E = new MassTag( DensityBuoyancyCommonStrings.massLabel.eStringProperty, 'E' );
-
-  // TODO: Eliminate MassTagIO, see https://github.com/phetsims/density-buoyancy-common/issues/300
-  public static MassTagIO = new IOType<MassTag, MassTagStateObject>( 'MassTagIO', {
-    valueType: MassTag,
-    documentation: 'The name and color for the label of a mass.',
-    stateSchema: {
-      name: StringIO,
-      color: Color.ColorIO
-    },
-    toStateObject( massTag ) {
-      return {
-        name: massTag.nameProperty.value,
-        color: Color.ColorIO.toStateObject( massTag.colorProperty.value )
-      };
-    },
-    applyState( massTag, stateObject ) {
-      if ( stateObject.name !== 'FROM_MIGRATION' ) {
-        massTag.nameProperty.value = stateObject.name;
-        massTag.colorProperty.value = Color.ColorIO.fromStateObject( stateObject.color );
-      }
-    }
-  } );
 }
 
 

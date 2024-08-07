@@ -198,7 +198,6 @@ export default class Bottle extends ApplicationsMass {
 
     const vertices = Bottle.getFlatIntersectionVertices();
 
-
     const options = optionize<BottleOptions, EmptySelfOptions, InstrumentedMassOptions>()( {
       body: engine.createFromVertices( vertices, true ),
       shape: Shape.polygon( vertices ),
@@ -223,7 +222,11 @@ export default class Bottle extends ApplicationsMass {
       },
       massShape: MassShape.BLOCK,
 
-      accessibleName: 'Bottle'
+      accessibleName: 'Bottle',
+
+      volumePropertyOptions: {
+        phetioDocumentation: 'Volume of the bottle.'
+      }
     }, providedOptions );
 
     super( engine, options );

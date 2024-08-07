@@ -68,7 +68,11 @@ export default class Boat extends ApplicationsMass {
       material: Material.BOAT_HULL,
       availableMassMaterials: [ Material.BOAT_HULL ],
 
-      accessibleName: 'Boat'
+      accessibleName: 'Boat',
+
+      volumePropertyOptions: {
+        phetioDocumentation: 'Volume of the boat hull.'
+      }
     }, providedOptions );
 
     super( engine, options );

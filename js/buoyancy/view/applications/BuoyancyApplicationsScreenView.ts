@@ -465,7 +465,10 @@ export default class BuoyancyApplicationsScreenView extends BuoyancyScreenView<B
     return new ApplicationsDebugView( this.model, this.layoutBounds );
   }
 
-  // TODO: Document why boat is a special case here, see https://github.com/phetsims/density-buoyancy-common/issues/257
+  /**
+   * If there is a block inside the boat, the picking logic should pick through the boat hull to the block, otherwise
+   * you would not be able to take a block out of the boat.
+   */
   protected override getMinClosestEntry( entries: PointedAtMassView[] ): PointedAtMassView | undefined {
     return _.minBy( entries, entry => {
       return entry.massView.mass instanceof Boat ? Number.POSITIVE_INFINITY : entry.t;

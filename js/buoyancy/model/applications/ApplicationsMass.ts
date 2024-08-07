@@ -56,7 +56,7 @@ export default abstract class ApplicationsMass extends Mass {
   protected abstract evaluatePiecewiseLinearVolume( ratio: number ): number;
 
   /**
-   * Returns the displayed area of this object at a given y level
+   * Returns the displaced area of this object at a given y level
    *
    * Assumes step information was updated.
    *
@@ -67,6 +67,7 @@ export default abstract class ApplicationsMass extends Mass {
     const top = this.stepTop;
 
     // TODO: https://github.com/phetsims/density-buoyancy-common/issues/317 if the fluid level is beyond the top, it probably shouldn't be 0, right?
+    // AV: I think the area refers to the horizontal slice, so outside the bounds it should be 0. But will come back to this later to better document.
     if ( fluidLevel < bottom || fluidLevel > top ) {
       return 0;
     }

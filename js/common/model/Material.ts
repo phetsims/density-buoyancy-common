@@ -469,7 +469,7 @@ export default class Material extends PhetioObject implements MappedWrappedObjec
     Material.GOLD
   ];
 
-  // TODO: Document where these are typically used and why this is a natural grouping, see https://github.com/phetsims/density-buoyancy-common/issues/257
+  /** This group represents the solid materials that can be selected in many of the simpler selection controls.*/
   public static readonly SIMPLE_MASS_MATERIALS = [
     Material.STYROFOAM,
     Material.WOOD,

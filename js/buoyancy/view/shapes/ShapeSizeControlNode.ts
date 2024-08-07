@@ -113,6 +113,7 @@ export default class ShapeSizeControlNode extends VBox {
         layoutOptions: { stretch: true },
         align: 'center',
         justify: 'spaceBetween',
+        tandem: options.tandem.createTandem( 'volumeDisplay' ),
         children: [
           new Text( DensityBuoyancyCommonStrings.volumeStringProperty, {
             font: DensityBuoyancyCommonConstants.READOUT_FONT,

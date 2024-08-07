@@ -126,17 +126,17 @@ export default class BuoyancyShapesScreenView extends BuoyancyScreenView<Buoyanc
     // Create and configure the control nodes for materials and shapes.
     const materialControlNode = new MaterialControlNode( this.model.materialProperty, new Property( 1 ),
       this.model.materialProperty.availableValues, this.popupLayer, {
-        tandem: options.tandem.createTandem( 'materialControlNode' )
+        tandem: options.tandem.createTandem( 'materialControls' )
       } );
     const objectAShapeSizeControlNode = new ShapeSizeControlNode(
       model.objectA,
       new DynamicProperty( model.objectA.shapeProperty, { derive: 'volumeProperty' } ),
       this.popupLayer, {
         labelNode: ABPanelsNode.getTagALabelNode(),
-        tandem: tandem.createTandem( 'objectAShapeSizeControlNode' )
+        tandem: tandem.createTandem( 'objectAShapeSizeControls' )
       }
     );
-    const objectBShapeSizeControlNodeTandem = tandem.createTandem( 'objectBShapeSizeControlNodeTandem' );
+    const objectBShapeSizeControlNodeTandem = tandem.createTandem( 'objectBShapeSizeControls' );
     const objectBShapeSizeControlNode = new ShapeSizeControlNode(
       model.objectB,
       new DynamicProperty( model.objectB.shapeProperty, { derive: 'volumeProperty' } ),

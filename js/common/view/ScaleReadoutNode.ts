@@ -28,6 +28,10 @@ type GeneralScaleReadoutNodeSelfOptions = {
 };
 type GeneralScaleReadoutNodeOptions = NodeOptions & GeneralScaleReadoutNodeSelfOptions;
 
+/**
+ * Shows the displaced weight in the Fluid Displaced accordion box, and is subtyped to show a mass/weight readout
+ * on a Scale.
+ */
 export class GeneralScaleReadoutNode extends Node {
 
   private readonly stringProperty: TReadOnlyProperty<string>;
@@ -88,8 +92,9 @@ export class GeneralScaleReadoutNode extends Node {
   }
 }
 
-// TODO: https://github.com/phetsims/density-buoyancy-common/issues/257 document how this differs from GeneralScaleReadoutNode
-// TODO: How can a client choose which one they need? See https://github.com/phetsims/density-buoyancy-common/issues/257
+/**
+ * Shows a mass or weight readout on a scale.
+ */
 export default class ScaleReadoutNode extends GeneralScaleReadoutNode {
 
   public constructor(

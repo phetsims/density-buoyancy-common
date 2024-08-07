@@ -50,7 +50,7 @@ export default class ScaleView extends MassView {
   }
 
   private updateDecorationLayer(): void {
-    const withOffsetPoint = this.scaleReadoutNode.mass.matrix.translation.toVector3().plus( Scale.SCALE_FRONT_OFFSET );
+    const withOffsetPoint = this.scaleReadoutNode.buoyancyScale.matrix.translation.toVector3().plus( Scale.SCALE_FRONT_OFFSET );
     this.scaleReadoutNode.translation = this.modelViewTransform.modelToViewPoint( withOffsetPoint );
   }
 

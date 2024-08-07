@@ -74,7 +74,7 @@ export default class BlockSetModel<BlockSetValue extends EnumerationValue> exten
       this.positionMasses( blockSet );
     } );
 
-    // TODO: Add helpful documentation for what this link is for, see https://github.com/phetsims/density-buoyancy-common/issues/257
+    // When the block set (scene) changes, hide the blocks in the old scene and show the blocks in the new scene.
     // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
     this.blockSetProperty.link( ( blockSet, oldBlockSet ) => {
       if ( oldBlockSet ) {

@@ -173,12 +173,6 @@ export default class Cuboid extends Mass {
     super.reset();
   }
 
-  public override dispose(): void {
-    this.sizeProperty.dispose();
-
-    super.dispose();
-  }
-
   private static getVolume( size: Bounds3 ): number {
 
     // Rounding to proactively prevent infinite compounding rounding errors, like https://github.com/phetsims/density-buoyancy-common/issues/192

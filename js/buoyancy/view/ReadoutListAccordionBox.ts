@@ -21,6 +21,7 @@ import PatternStringProperty from '../../../../axon/js/PatternStringProperty.js'
 import TinyProperty from '../../../../axon/js/TinyProperty.js';
 import WithRequired from '../../../../phet-core/js/types/WithRequired.js';
 import DerivedStringProperty from '../../../../axon/js/DerivedStringProperty.js';
+import Disposable from '../../../../axon/js/Disposable.js';
 
 const DEFAULT_FONT = new PhetFont( 14 );
 const HBOX_SPACING = 5;
@@ -158,9 +159,7 @@ export default abstract class ReadoutListAccordionBox<ReadoutType> extends Accor
   protected abstract generateReadoutData( readoutType: ReadoutType ): ReadoutData;
 
   public override dispose(): void {
-    assert && assert( false, 'Not disposable' );
-    this.cleanupEmitter.emit();
-    super.dispose();
+    Disposable.assertNotDisposable();
   }
 }
 

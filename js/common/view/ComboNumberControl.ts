@@ -27,6 +27,7 @@ import Material from '../model/Material.js';
 import Gravity from '../model/Gravity.js';
 import MappedWrappedProperty from '../model/MappedWrappedProperty.js';
 import UnitConversionProperty from '../../../../axon/js/UnitConversionProperty.js';
+import Disposable from '../../../../axon/js/Disposable.js';
 
 type SelfOptions<T extends Material | Gravity> = {
   titleProperty: TReadOnlyProperty<string>;
@@ -52,13 +53,11 @@ export type ComboNumberControlOptions<T extends Material | Gravity> = SelfOption
 export default abstract class ComboNumberControl<T extends Material | Gravity> extends VBox {
 
   private readonly mappedWrappedProperty: MappedWrappedProperty<T>;
-  private readonly disposalCallbacks: ( () => void )[];
   private readonly numberControl: NumberControl;
   private readonly comboBox: ComboBox<T>;
 
   protected constructor( providedOptions: SelfOptions<T> ) {
 
-    const disposalCallbacks: ( () => void )[] = [];
     const numberDisplayVisibleProperty = new BooleanProperty( true );
 
     const options = optionize<ComboNumberControlOptions<T>, SelfOptions<T>, VBoxOptions>()( {
@@ -97,8 +96,6 @@ export default abstract class ComboNumberControl<T extends Material | Gravity> e
 
             // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
             this.mappedWrappedProperty.link( listener );
-            disposalCallbacks.push( () => this.mappedWrappedProperty.unlink( listener ) );
-
             return bottomContent;
           },
           sliderPadding: 5
@@ -161,7 +158,6 @@ export default abstract class ComboNumberControl<T extends Material | Gravity> e
     super();
 
     this.mappedWrappedProperty = options.property;
-    this.disposalCallbacks = disposalCallbacks;
 
     const correctUnitsProperty = new UnitConversionProperty( this.mappedWrappedProperty.customValue.valueProperty, {
       factor: options.unitsConversionFactor
@@ -193,12 +189,7 @@ export default abstract class ComboNumberControl<T extends Material | Gravity> e
   }
 
   public override dispose(): void {
-    this.numberControl.dispose();
-    this.comboBox.dispose();
-
-    this.disposalCallbacks.forEach( callback => callback() );
-
-    super.dispose();
+    Disposable.assertNotDisposable();
   }
 }
 

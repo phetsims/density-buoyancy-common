@@ -17,6 +17,7 @@ import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import { VolumeUnits } from '../DensityBuoyancyCommonQueryParameters.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
+import Disposable from '../../../../axon/js/Disposable.js';
 
 type SelfOptions = EmptySelfOptions;
 
@@ -52,10 +53,8 @@ export default class VolumeUnitsControl extends HBox {
     };
   }
 
-  // TODO: Are preference controls ever disposed? https://github.com/phetsims/density-buoyancy-common/issues/317
   public override dispose(): void {
-    super.dispose();
-    this.disposeVolumeUnitsControl();
+    Disposable.assertNotDisposable();
   }
 }
 

@@ -168,12 +168,6 @@ export default class Duck extends Mass {
     super.reset();
   }
 
-  public override dispose(): void {
-    this.sizeProperty.dispose();
-
-    super.dispose();
-  }
-
   /**
    * Returns a duck shape
    */

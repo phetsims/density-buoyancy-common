@@ -40,6 +40,7 @@ import { GuardedNumberProperty, GuardedNumberPropertyOptions } from './GuardedNu
 import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
 import MaterialProperty, { MaterialPropertyOptions } from './MaterialProperty.js';
 import DensityBuoyancyCommonQueryParameters from '../DensityBuoyancyCommonQueryParameters.js';
+import Disposable from '../../../../axon/js/Disposable.js';
 
 // For the Buoyancy Shapes screen, but needed here because setRatios is included in each core type
 // See https://github.com/phetsims/buoyancy/issues/29
@@ -569,20 +570,7 @@ export default abstract class Mass extends PhetioObject {
   }
 
   public override dispose(): void {
-
-    assert && assert( !this.isDisposed );
-
-    this.userControlledProperty.dispose();
-    this.inputEnabledProperty.dispose();
-    this.materialProperty.dispose();
-    this.volumeProperty.dispose();
-    this.massProperty.dispose();
-    this.gravityForceInterpolatedProperty.dispose();
-    this.buoyancyForceInterpolatedProperty.dispose();
-    this.contactForceInterpolatedProperty.dispose();
-    this.internalVisibleProperty.dispose();
-    this.visibleProperty.dispose();
-    super.dispose();
+    Disposable.assertNotDisposable();
   }
 
   /**

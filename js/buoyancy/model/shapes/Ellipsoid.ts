@@ -156,12 +156,6 @@ export default class Ellipsoid extends Mass {
     super.reset();
   }
 
-  public override dispose(): void {
-    this.sizeProperty.dispose();
-
-    super.dispose();
-  }
-
   /**
    * Returns an ellipsoid shape
    */

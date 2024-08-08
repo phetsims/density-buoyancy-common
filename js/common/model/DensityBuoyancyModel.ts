@@ -218,36 +218,41 @@ export default class DensityBuoyancyModel implements TModel {
 
     // The main engine post-step actions, that will determine the net forces applied on each mass. This callback fires
     // once per "physics engine step", and so results in potentially up to "p2MaxSubSteps" calls per simulation frame
-    // (30 as of writing). This instance lives for the lifetime of the simulation, so we don't need to remove this
-    // listener.
-    // TODO: This is a very complex method, and it is in many ways the heart of the model. https://github.com/phetsims/density-buoyancy-common/issues/257
-    // TODO: It is recommended to provide more clarifying high-level documentation to show the main steps and their purpose https://github.com/phetsims/density-buoyancy-common/issues/257
+    // (30 as of writing).
+    //
+    // The purpose of this listener is to update the state of the simulation by adjusting forces, handling collisions,
+    // and applying specific rules to certain objects.
+    //
+    // This instance lives for the lifetime of the simulation, so we don't need to remove this listener.
     this.engine.addPostStepListener( dt => {
+
+      // Check for fluid level/overflow and which basin contains which other basin.
       this.updateFluid();
 
       const gravity = this.gravityProperty.gravityValueProperty.value;
-      this.updateVerticalMotion( dt );
+      this.updateVerticalMotion( dt ); // Updates the vertical motion of the Boat, if present.
 
-      // Will set the force Properties for all the masses
       this.masses.forEach( mass => {
         let contactForce = PhysicsEngine.bodyGetContactForces( mass.body );
 
-        // p2.js will report bad forces for static scales, so we need to zero these out
+        // p2.js sometimes reports incorrect forces for static objects (immovable Scale instances), so these need to be corrected.
         if ( !contactForce.isFinite() ) {
           contactForce = Vector2.ZERO;
         }
 
-        // Teleporting blocks to the left of the volumelessScale (pool scale with slider) when they get trapped beneath it
+        // Horizontally force out objects trapped by the PoolScale (which is controlled by the slider)
         if ( mass instanceof PoolScale ) {
           this.masses.forEach( otherMass => {
             if ( mass !== otherMass ) {
               const horizontalForce = this.engine.bodyGetContactForceBetween( mass.body, otherMass.body ).x;
-              // Blocks should never experiment +x forces by this scale. If they do, they are trapped beneath it.
+
+              // Blocks should never experience +x forces (to the right) by this scale. If they do, they are trapped beneath it.
               if ( horizontalForce > 0 ) {
 
                 const minSpacing = 0.1; // Ideal new spacing between the scale and the mass
                 const delta = otherMass.getBounds().maxX - mass.getBounds().minX + minSpacing;
 
+                // Adjust the position of the otherMass to resolve the collision.
                 otherMass.matrix.set02( mass.matrix.m02() - delta );
                 otherMass.writeData();
 
@@ -257,14 +262,18 @@ export default class DensityBuoyancyModel implements TModel {
           } );
         }
 
+        // Reset contact forces after we have stored them.
         PhysicsEngine.resetContactForces( mass.body );
         mass.contactForceInterpolatedProperty.setNextValue( contactForce );
 
+        // Measure the weight on any Scale, including the PoolScale
         if ( mass instanceof Scale ) {
           let scaleForce = 0;
           this.masses.forEach( otherMass => {
             if ( mass !== otherMass ) {
               const verticalForce = this.engine.bodyGetContactForceBetween( mass.body, otherMass.body ).y;
+
+              // Accumulate positive vertical forces to measure the weight on the scale.
               if ( verticalForce > 0 ) {
                 scaleForce += verticalForce;
               }
@@ -275,7 +284,7 @@ export default class DensityBuoyancyModel implements TModel {
 
         const velocity = PhysicsEngine.bodyGetVelocity( mass.body );
 
-        // Limit velocity, so things converge faster.
+        // Limit the velocity of the mass to ensure stability and faster convergence.
         if ( velocity.magnitude > 5 ) {
           velocity.setMagnitude( 5 );
           PhysicsEngine.bodySetVelocity( mass.body, velocity );
@@ -287,12 +296,13 @@ export default class DensityBuoyancyModel implements TModel {
         if ( basin ) {
           const displacedVolume = mass.getDisplacedVolume( basin.fluidYInterpolatedProperty.currentValue );
 
-          // The submergedVolume of the mass cannot be more than the fluid volume in the basin. Bug fix for https://github.com/phetsims/buoyancy/issues/135
+          // Ensure the submerged volume does not exceed the fluid volume in the basin. Bug fix for https://github.com/phetsims/buoyancy/issues/135
           submergedVolume = displacedVolume > basin.fluidVolumeProperty.value ? basin.fluidVolumeProperty.value : displacedVolume;
         }
 
         let massValue = mass.massProperty.value;
 
+        // Update the submerged volume and mass value based on current conditions.
         submergedVolume = this.getUpdatedSubmergedVolume( mass, submergedVolume );
         massValue = this.getUpdatedMassValue( mass, massValue, submergedVolume );
 
@@ -306,10 +316,9 @@ export default class DensityBuoyancyModel implements TModel {
 
           this.adjustVelocity( basin, velocity );
 
-          // Increase the generally-visible viscosity effect
-          const ratioSubmerged =
-            ( 1 - DensityBuoyancyCommonQueryParameters.viscositySubmergedRatio ) +
-            DensityBuoyancyCommonQueryParameters.viscositySubmergedRatio * submergedVolume / mass.volumeProperty.value;
+          // Calculate and apply viscous forces to simulate fluid resistance.
+          const ratioSubmerged = ( 1 - DensityBuoyancyCommonQueryParameters.viscositySubmergedRatio ) +
+                                 DensityBuoyancyCommonQueryParameters.viscositySubmergedRatio * submergedVolume / mass.volumeProperty.value;
           const hackedViscosity = 0.03 * Math.pow( this.pool.fluidMaterialProperty.value.viscosity / 0.03, 0.8 );
           const viscosityMass = Math.max( DensityBuoyancyCommonQueryParameters.viscosityMassCutoff, massValue );
           const viscousForce = velocity.times( -hackedViscosity * viscosityMass * ratioSubmerged * 3000 * DensityBuoyancyCommonQueryParameters.viscosityMultiplier );
@@ -322,22 +331,24 @@ export default class DensityBuoyancyModel implements TModel {
           const maxViscousForceMagnitude = velocity.magnitude * massValue / dt;
           const viscousForceMagnitude = Math.min( viscousForce.magnitude, maxViscousForceMagnitude );
 
-          // Apply the viscous force if it exceeds the threshold.
+          // Apply the viscous force if it is significant.
           if ( viscousForce.magnitude > 1E-6 ) {
             const actualViscousForce = viscousForce.normalize().times( viscousForceMagnitude );
             this.engine.bodyApplyForce( mass.body, actualViscousForce );
           }
         }
         else {
+
+          // If not submerged, set buoyancy force to zero.
           mass.buoyancyForceInterpolatedProperty.setNextValue( Vector2.ZERO );
         }
 
-        // Gravity
+        // Apply gravitational force to the mass.
         const gravityForce = new Vector2( 0, -massValue * gravity );
         this.engine.bodyApplyForce( mass.body, gravityForce );
         mass.gravityForceInterpolatedProperty.setNextValue( gravityForce );
 
-        // Calculates the submerged ratio for the mass
+        // Update the fraction of the mass that is submerged.
         mass.updateSubmergedMassFraction( gravity, this.pool.fluidDensityProperty.value );
       } );
     } );
@@ -467,7 +478,7 @@ export default class DensityBuoyancyModel implements TModel {
   // NOTE: The functions below are to be overridden in BuoyancyApplicationsModel for Boat functionality
 
   /**
-   * Computes the heights of the main pool fluid.
+   * Computes the heights of the main pool fluid. Also check for fluid level/overflow and which basin contains which other basin.
    * NOTE: the overridden method in BuoyancyApplicationsModel does NOT call super.updateFluid()
    */
   protected updateFluid(): void {

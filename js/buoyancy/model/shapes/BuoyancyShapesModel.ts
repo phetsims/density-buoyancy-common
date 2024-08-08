@@ -89,17 +89,15 @@ export default class BuoyancyShapesModel extends DensityBuoyancyModel {
       tandem: objectsTandem.createTandem( 'objectB' )
     } );
 
-
-    // TODO: This documentation on the next line doesn't seem fully correct: https://github.com/phetsims/density-buoyancy-common/issues/317
-    // When a new mass is created, set up its position to be that of the old mass
+    // When the shape changes, update the location, then update the availableMasses
     [ this.objectA, this.objectB ].forEach( shapeModel => {
 
       // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
       shapeModel.shapeProperty.lazyLink( ( newMass, oldMass ) => {
         if ( !isSettingPhetioStateProperty.value ) {
           newMass.matrix.set( oldMass.matrix );
+          newMass.writeData();
         }
-        newMass.writeData();
 
         if ( this.availableMasses.includes( oldMass ) ) {
           this.availableMasses.remove( oldMass );

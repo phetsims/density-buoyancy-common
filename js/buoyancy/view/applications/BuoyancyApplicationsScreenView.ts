@@ -87,7 +87,7 @@ export default class BuoyancyApplicationsScreenView extends BuoyancyScreenView<B
         model.resetBoatScene();
       },
       visibleProperty: new GatedVisibleProperty(
-        new DerivedProperty( [ model.applicationModeProperty ], scene => scene === 'BOAT' ),
+        new DerivedProperty( [ model.applicationModeProperty ], scene => scene === 'boat' ),
         resetBoatButtonTandem ),
       tandem: resetBoatButtonTandem
     } );
@@ -299,9 +299,9 @@ export default class BuoyancyApplicationsScreenView extends BuoyancyScreenView<B
 
     // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
     model.applicationModeProperty.link( scene => {
-      rightBottleContent.visible = scene === 'BOTTLE';
-      rightBoatContent.visible = scene === 'BOAT';
-      this.poolScaleHeightControl!.visible = scene === 'BOTTLE';
+      rightBottleContent.visible = scene === 'bottle';
+      rightBoatContent.visible = scene === 'boat';
+      this.poolScaleHeightControl!.visible = scene === 'bottle';
       if ( this.poolScaleHeightControl && !this.poolScaleHeightControl.visible ) {
         this.poolScaleHeightControl.interruptSubtreeInput();
       }
@@ -317,15 +317,15 @@ export default class BuoyancyApplicationsScreenView extends BuoyancyScreenView<B
 
 
     model.applicationModeProperty.link( scene => {
-      const materials = scene === 'BOTTLE' ? [ model.bottle.materialInsideProperty, model.bottle.materialProperty ] :
-                        scene === 'BOAT' ? [ model.block.materialProperty, model.boat.materialProperty ] : [];
+      const materials = scene === 'bottle' ? [ model.bottle.materialInsideProperty, model.bottle.materialProperty ] :
+                        scene === 'boat' ? [ model.block.materialProperty, model.boat.materialProperty ] : [];
       assert && assert( materials.length > 0, 'unsupported Scene', scene );
       objectDensityAccordionBox.setReadoutItems( materials.map( material => {
         return { readoutItem: material };
       } ) );
       const submergedObjects = [ {
-        readoutItem: scene === 'BOTTLE' ? model.bottle : model.boat,
-        readoutNameProperty: scene === 'BOTTLE' ? DensityBuoyancyCommonStrings.bottleStringProperty : DensityBuoyancyCommonStrings.boatStringProperty
+        readoutItem: scene === 'bottle' ? model.bottle : model.boat,
+        readoutNameProperty: scene === 'bottle' ? DensityBuoyancyCommonStrings.bottleStringProperty : DensityBuoyancyCommonStrings.boatStringProperty
       } ];
       percentSubmergedAccordionBox.setReadoutItems( submergedObjects );
     } );
@@ -342,11 +342,11 @@ export default class BuoyancyApplicationsScreenView extends BuoyancyScreenView<B
     this.addAlignBox( displayOptionsPanel, 'left', 'bottom' );
 
     const applicationModeRadioButtonGroup = new RectangularRadioButtonGroup( model.applicationModeProperty, [ {
-      value: 'BOTTLE',
+      value: 'bottle',
       createNode: () => getBottleIcon(),
       tandemName: 'bottleRadioButton'
     }, {
-      value: 'BOAT',
+      value: 'boat',
       createNode: () => getBoatIcon(),
       tandemName: 'boatRadioButton'
     } ], {

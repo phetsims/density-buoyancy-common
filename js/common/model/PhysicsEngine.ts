@@ -20,6 +20,7 @@ import Vector2 from '../../../../dot/js/Vector2.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonQueryParameters from '../DensityBuoyancyCommonQueryParameters.js';
 
+// Normally our enums are lowercase, but in this case, we match with the p2.js API
 export const PhysicsBodyTypeValues = [ 'STATIC', 'DYNAMIC', 'KINEMATIC' ] as const;
 export type PhysicsBodyType = ( typeof PhysicsBodyTypeValues )[number];
 

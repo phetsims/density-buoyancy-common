@@ -39,8 +39,6 @@
  * TODO: https://github.com/phetsims/density-buoyancy-common/issues/317 This file is > 1200 lines of complicated code
  * with many magic numbers. We should make an effort to remove unused parts, and clean up where possible.
  *
- * TODO: https://github.com/phetsims/density-buoyancy-common/issues/317 this file has 9 unused declarations.
- *
  * Diagram in x,r coordinates, showing the "profile" (exactly half of the bottle, and the curves that the
  * three-dimensional form will be made from):
  *
@@ -414,10 +412,6 @@ export default class Bottle extends ApplicationsMass {
     return Bottle.evaluateCubic( BASE_SADDLE_CONTROL_POINTS, t );
   }
 
-  private static getTaperParametricFromRadius( r: number ): number {
-    return Bottle.getParametricFromRadius( TAPER_CONTROL_POINTS, r );
-  }
-
   private static getBaseFirstTipParametricFromRadius( r: number ): number {
     return Bottle.getParametricFromRadius( BASE_FIRST_TIP_CONTROL_POINTS, r );
   }
@@ -647,7 +641,12 @@ export default class Bottle extends ApplicationsMass {
     return area;
   }
 
-  private static computeBottleData( samples = 1000, accuracyMultiplier = 100 ): string {
+  /**
+   * Run this from the browser console to output the constants for the bottle geometry, pasted at the bottom of the file.
+   *
+   * copy(phet.densityBuoyancyCommon.Bottle.computeBottleData())
+   */
+  public static computeBottleData( samples = 1000, accuracyMultiplier = 100 ): string {
     const desiredVolume = 0.01;
 
     const multiplier = FULL_RADIUS * 2;
@@ -1169,9 +1168,11 @@ const FLAT_INTERSECTION_VERTICES = [ ${flatIntersectionVertices.map( v => `new V
 
   /**
    * Replaces the main page with a debug view of the bottle, for debugging various curves and properties.
-   * TODO: Is this unused? See https://github.com/phetsims/density-buoyancy-common/issues/317
+   *
+   * Invoke from the browser console like so:
+   * phet.densityBuoyancyCommon.Bottle.getDebugCanvas()
    */
-  private static getDebugCanvas(): HTMLCanvasElement {
+  public static getDebugCanvas(): HTMLCanvasElement {
     const canvas = document.createElement( 'canvas' );
     const context = canvas.getContext( '2d' )!;
 
@@ -1258,21 +1259,6 @@ const FLAT_INTERSECTION_VERTICES = [ ${flatIntersectionVertices.map( v => `new V
 
     return canvas;
   }
-
-  // TODO: Are many of these constants unused? https://github.com/phetsims/density-buoyancy-common/issues/317
-
-  // The number to scale the original values by to get a 10L-volume bottle
-  private static readonly TEN_LITER_SCALE_MULTIPLIER = TEN_LITER_SCALE_MULTIPLIER;
-
-  // The maximum bounding radius for the 10L-volume bottle
-  private static readonly MAX_RADIUS = FULL_RADIUS * TEN_LITER_SCALE_MULTIPLIER;
-
-  // The maximum length for the 10L-volume bottle
-  private static readonly MAX_LENGTH = BASE_TIP * TEN_LITER_SCALE_MULTIPLIER;
-
-  // From the bottom to top, cross-sectional area and cumulative (displaced) volume
-  private static readonly TEN_LITER_DISPLACED_AREAS = TEN_LITER_DISPLACED_AREAS;
-  private static readonly TEN_LITER_DISPLACED_VOLUMES = TEN_LITER_DISPLACED_VOLUMES;
 
   private static readonly FLAT_INTERSECTION_VERTICES = FLAT_INTERSECTION_VERTICES;
 }

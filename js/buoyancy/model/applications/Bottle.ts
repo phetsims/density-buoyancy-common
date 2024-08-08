@@ -805,14 +805,6 @@ const FLAT_INTERSECTION_VERTICES = [ ${flatIntersectionVertices.map( v => `new V
     ];
   }
 
-  // TODO: Remove unused code, see https://github.com/phetsims/density-buoyancy-common/issues/317
-  private static getMainFlatIntersectionProfile(): Vector2[] {
-    return [
-      ...Bottle.getCapProfile(),
-      ...Bottle.getLipToBodyProfile()
-    ];
-  }
-
   /**
    * For UV-mapping
    */

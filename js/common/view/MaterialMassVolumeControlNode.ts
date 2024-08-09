@@ -175,7 +175,8 @@ export default class MaterialMassVolumeControlNode extends MaterialControlNode {
       units: 'L'
     } );
 
-    // TODO: Document the purpose of this lazyLink, see https://github.com/phetsims/density-buoyancy-common/issues/257
+    // Update the volume when the user is changing it.
+    // If the material is custom and not set to keep constant density, recalculate the density based on the new volume.
     // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
     numberControlVolumeProperty.lazyLink( liters => {
       if ( !modelVolumeChanging && !userMassChanging ) {
@@ -193,7 +194,7 @@ export default class MaterialMassVolumeControlNode extends MaterialControlNode {
       }
     } );
 
-    // TODO: Document the purpose of this lazyLink, see https://github.com/phetsims/density-buoyancy-common/issues/257
+    // Update the numberControlVolumeProperty when the model changes the volumeProperty changes
     // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
     volumeProperty.lazyLink( cubicMeters => {
       if ( !userVolumeChanging ) {
@@ -214,7 +215,7 @@ export default class MaterialMassVolumeControlNode extends MaterialControlNode {
       }
     } );
 
-    // TODO: Document the purpose of this lazyLink, see https://github.com/phetsims/density-buoyancy-common/issues/257
+    // Update the density or volume when the user is changing the mass.
     // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
     numberControlMassProperty.lazyLink( mass => {
       if ( !modelMassChanging && !userVolumeChanging ) {
@@ -234,7 +235,7 @@ export default class MaterialMassVolumeControlNode extends MaterialControlNode {
       }
     } );
 
-    // TODO: Document the purpose of this lazyLink, see https://github.com/phetsims/density-buoyancy-common/issues/257
+    // When the model changes the mass, update the enabledMassRangeProperty and numberControlMassProperty
     // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
     massProperty.lazyLink( mass => {
       if ( !userMassChanging ) {

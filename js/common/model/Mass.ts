@@ -548,8 +548,10 @@ export default abstract class Mass extends PhetioObject {
 
   /**
    * Resets things to their original values.
+   *
+   * @param resetInternalVisibleProperty - do not hide the boat when resetting the boat scene
    */
-  public reset(): void {
+  public reset( resetInternalVisibleProperty = true ): void {
 
     // Clear velocity and force on the p2 body
     this.body.velocity[ 0 ] = 0;
@@ -557,7 +559,7 @@ export default abstract class Mass extends PhetioObject {
     this.body.force[ 0 ] = 0;
     this.body.force[ 1 ] = 0;
 
-    this.internalVisibleProperty.reset();
+    resetInternalVisibleProperty && this.internalVisibleProperty.reset();
     this.shapeProperty.reset();
     this.materialProperty.reset();
     this.volumeProperty.reset();

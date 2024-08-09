@@ -237,14 +237,14 @@ export default class Boat extends ApplicationsMass {
   /**
    * Resets values to their original state
    */
-  public override reset(): void {
+  public override reset( resetInternalVisibleProperty = true ): void {
     this.maxVolumeDisplacedProperty.reset();
 
     this.basin.reset();
     this.verticalVelocity = 0;
     this.verticalAcceleration = 0;
 
-    super.reset();
+    super.reset( resetInternalVisibleProperty );
   }
 
   public updateVerticalMotion( pool: Pool, dt: number ): void {

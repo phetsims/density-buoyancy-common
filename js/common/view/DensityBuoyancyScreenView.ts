@@ -457,7 +457,8 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
         opacity: 0.5
       } );
 
-      // TODO: Document the purpose of this link, see https://github.com/phetsims/density-buoyancy-common/issues/257
+      // Only when showing the debug barrier, when the model-reported invisible barrier boundary changes, update the 3D
+      // barrier geometry.
       // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
       model.invisibleBarrierBoundsProperty.link( bounds => {
         let index = 0;
@@ -520,7 +521,7 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
     const fluidLevelIndicator = new FluidLevelIndicator( model.pool.fluidLevelVolumeProperty );
     this.addChild( fluidLevelIndicator );
 
-    // TODO: Document the reason for this link: https://github.com/phetsims/density-buoyancy-common/issues/257
+    // Update the fluid level indicator's position
     // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
     model.pool.fluidYInterpolatedProperty.link( fluidY => {
       const modelPoint = new Vector3( model.poolBounds.minX, fluidY, model.poolBounds.maxZ );

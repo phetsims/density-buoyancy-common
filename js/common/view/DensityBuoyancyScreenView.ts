@@ -106,6 +106,8 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
   // There is an invisible barrier that prevents objects from being dragged behind control panels.
   // Subtypes can provide their own values to control the barrier sizing.
   private readonly leftBarrierViewPointPropertyProperty: Property<TReadOnlyProperty<Vector2>>;
+
+  // TODO: There's repeated code setting the value of this. Factor out, see https://github.com/phetsims/density-buoyancy-common/issues/291
   protected readonly rightBarrierViewPointPropertyProperty: Property<TReadOnlyProperty<Vector2>>;
 
   protected readonly resetEmitter = new Emitter();

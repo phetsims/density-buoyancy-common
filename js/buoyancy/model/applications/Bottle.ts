@@ -318,13 +318,13 @@ export default class Bottle extends ApplicationsMass {
   }
 
   /**
-   * @param controlPoints - Four points for a cubic
-   * @param t
+   * Standard implementation of a cubic Bézier curve evaluation
+   *
+   * @param controlPoints - Four points that define the cubic
+   * @param t - number between 0 and 1 inclusive
    */
   private static evaluateCubic( controlPoints: Vector2[], t: number ): Vector2 {
 
-    // Is this algorithm duplicated in dot? Are these variables using conventionally established names?
-    // TODO: See https://github.com/phetsims/density-buoyancy-common/issues/317
     const mt = 1 - t;
     const mmm = mt * mt * mt;
     const mmt = 3 * mt * mt * t;
@@ -336,6 +336,7 @@ export default class Bottle extends ApplicationsMass {
       controlPoints[ 1 ].x * mmt +
       controlPoints[ 2 ].x * mtt +
       controlPoints[ 3 ].x * ttt,
+
       controlPoints[ 0 ].y * mmm +
       controlPoints[ 1 ].y * mmt +
       controlPoints[ 2 ].y * mtt +
@@ -344,22 +345,29 @@ export default class Bottle extends ApplicationsMass {
   }
 
   /**
+   * Standard implementation of a cubic Bézier curve derivative evaluation
+   *
    * @param controlPoints - Four points for a cubic
-   * @param t
+   * @param t - number between 0 and 1 inclusive
    */
   private static evaluateCubicDerivative( controlPoints: Vector2[], t: number ): Vector2 {
     const mt = 1 - t;
 
-    // TODO: Where are these algorithms documented? Maybe point to wikipedia? https://github.com/phetsims/density-buoyancy-common/issues/317
+    const a = -3 * mt * mt;
+    const b = 3 * mt * mt - 6 * mt * t;
+    const c = 6 * mt * t - 3 * t * t;
+    const d = 3 * t * t;
+
     return new Vector2(
-      controlPoints[ 0 ].x * ( -3 * mt * mt ) +
-      controlPoints[ 1 ].x * ( 3 * mt * mt - 6 * mt * t ) +
-      controlPoints[ 2 ].x * ( 6 * mt * t - 3 * t * t ) +
-      controlPoints[ 3 ].x * ( 3 * t * t ),
-      controlPoints[ 0 ].y * ( -3 * mt * mt ) +
-      controlPoints[ 1 ].y * ( 3 * mt * mt - 6 * mt * t ) +
-      controlPoints[ 2 ].y * ( 6 * mt * t - 3 * t * t ) +
-      controlPoints[ 3 ].y * ( 3 * t * t )
+      controlPoints[ 0 ].x * a +
+      controlPoints[ 1 ].x * b +
+      controlPoints[ 2 ].x * c +
+      controlPoints[ 3 ].x * d,
+
+      controlPoints[ 0 ].y * a +
+      controlPoints[ 1 ].y * b +
+      controlPoints[ 2 ].y * c +
+      controlPoints[ 3 ].y * d
     );
   }
 

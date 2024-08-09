@@ -20,6 +20,7 @@ import Tandem from '../../../../tandem/js/Tandem.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import Multilink from '../../../../axon/js/Multilink.js';
+import WithRequired from '../../../../phet-core/js/types/WithRequired.js';
 
 // Type declarations: DisplayDensity is the object which will construct the marker and the legend
 export type DisplayDensity = {
@@ -173,7 +174,10 @@ export default class DensityNumberLineNode extends Node {
     this.mutate( options );
   }
 
-  private createContents( options: DensityNumberLineNodeOptions ): void {
+  /**
+   * @param options - filled in by optionize above, but optionize doesn't export a type declaration for that
+   */
+  private createContents( options: WithRequired<DensityNumberLineNodeOptions, 'maxDensity'> ): void {
 
     const labelOptions = {
       font: new PhetFont( { size: 16, weight: 'bold' } ),
@@ -227,9 +231,7 @@ export default class DensityNumberLineNode extends Node {
         isHiddenProperty
       ], ( density, isVisible, isHidden ) => {
         marker.x = this.modelViewTransform( density );
-
-        // TODO: what is undefined + 1E-5? (Hint: it is NaN). Is that a good way to do this? See https://github.com/phetsims/density-buoyancy-common/issues/257
-        marker.visible = isVisible && !isHidden && density < options.maxDensity! + 1e-5;
+        marker.visible = isVisible && !isHidden && density < ( options.maxDensity + 1e-5 );
       } );
     } );
 

@@ -550,7 +550,12 @@ export default abstract class Mass extends PhetioObject {
    * Resets things to their original values.
    */
   public reset(): void {
-    PhysicsEngine.bodyResetHidden( this.body );
+
+    // Clear velocity and force on the p2 body
+    this.body.velocity[ 0 ] = 0;
+    this.body.velocity[ 1 ] = 0;
+    this.body.force[ 0 ] = 0;
+    this.body.force[ 1 ] = 0;
 
     this.internalVisibleProperty.reset();
     this.shapeProperty.reset();

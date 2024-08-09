@@ -237,18 +237,6 @@ export default class PhysicsEngine {
   }
 
   /**
-   * Returns a serialized form of a body
-   */
-  public static bodyResetHidden( body: PhysicsEngineBody ): void {
-
-    // Bodies don't start with velocity/force applied
-    body.velocity[ 0 ] = 0;
-    body.velocity[ 1 ] = 0;
-    body.force[ 0 ] = 0;
-    body.force[ 1 ] = 0;
-  }
-
-  /**
    * Sets the previous position of a body to the current position. This is helpful for making sure the body is stationary.
    */
   public static bodySynchronizePrevious( body: PhysicsEngineBody ): void {

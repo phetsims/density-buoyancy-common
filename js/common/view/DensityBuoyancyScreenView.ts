@@ -2,7 +2,7 @@
 
 /**
  * The main base ScreenView for all Density/Buoyancy screens.
- * TODO: Elaborate on the main responsibilities of this class, see https://github.com/phetsims/density-buoyancy-common/issues/257
+ * TODO: Elaborate on the main responsibilities of this class, see https://github.com/phetsims/density-buoyancy-common/issues/317
  * TODO: Currently at 871 lines, this file is more complex. Can it be simplified or modularized? See https://github.com/phetsims/density-buoyancy-common/issues/317
  *
  * @author Jonathan Olson (PhET Interactive Simulations)
@@ -88,11 +88,10 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
 
   protected readonly model: Model;
   protected readonly popupLayer: Node;
-  private readonly backgroundLayer: Node;
   protected readonly resetAllButton: Node;
 
   // The sky background
-  private readonly backgroundNode: Rectangle;
+  private readonly skyRectangle: Rectangle;
 
   protected readonly sceneNode: ThreeIsometricNode;
 
@@ -102,7 +101,7 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
 
   private readonly debugView?: DebugView;
 
-  // TODO: What are these for? See https://github.com/phetsims/density-buoyancy-common/issues/257
+  // There is an invisible barrier that prevents objects from being dragged behind control panels.
   // Subtypes can provide their own values to control the barrier sizing.
   private readonly leftBarrierViewPointPropertyProperty: Property<TReadOnlyProperty<Vector2>>;
   protected readonly rightBarrierViewPointPropertyProperty: Property<TReadOnlyProperty<Vector2>>;
@@ -140,7 +139,7 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
 
     this.model = model;
     this.popupLayer = new Node();
-    this.backgroundNode = new Rectangle( 0, 0, 1, 1, {
+    this.skyRectangle = new Rectangle( 0, 0, 1, 1, {
       pickable: false,
       fill: new LinearGradient( 0, 0, 0, 1 )
         .addColorStop( 0, DensityBuoyancyCommonColors.skyTopProperty )
@@ -149,17 +148,13 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
 
     // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
     this.visibleBoundsProperty.link( visibleBounds => {
-      this.backgroundNode.setRect( visibleBounds.left, visibleBounds.top, visibleBounds.width, visibleBounds.height );
+      this.skyRectangle.setRect( visibleBounds.left, visibleBounds.top, visibleBounds.width, visibleBounds.height );
 
-      this.backgroundNode.fill = new LinearGradient( visibleBounds.centerX, visibleBounds.top, visibleBounds.centerX, visibleBounds.centerY )
+      this.skyRectangle.fill = new LinearGradient( visibleBounds.centerX, visibleBounds.top, visibleBounds.centerX, visibleBounds.centerY )
         .addColorStop( 0, DensityBuoyancyCommonColors.skyTopProperty )
         .addColorStop( 1, DensityBuoyancyCommonColors.skyBottomProperty );
     } );
-    this.addChild( this.backgroundNode );
-
-    // TODO: The backgroundNode is behind the backgroundLayer, please document, see https://github.com/phetsims/density-buoyancy-common/issues/257
-    this.backgroundLayer = new Node();
-    this.addChild( this.backgroundLayer );
+    this.addChild( this.skyRectangle );
 
     this.sceneNode = new ThreeIsometricNode( this.layoutBounds, {
       parentMatrixProperty: animatedPanZoomSingleton.listener.matrixProperty,

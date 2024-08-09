@@ -52,6 +52,8 @@ import { Shape } from '../../../../kite/js/imports.js';
 import DisplayProperties from '../../buoyancy/view/DisplayProperties.js';
 import { BufferGeometry } from '../../../../chipper/node_modules/@types/three/index.js';
 import Bounds3 from '../../../../dot/js/Bounds3.js';
+import BuoyancyDisplayOptionsPanel from '../../buoyancy/view/BuoyancyDisplayOptionsPanel.js';
+import packageJSON from '../../../../joist/js/packageJSON.js';
 
 // constants
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN_SMALL;
@@ -110,6 +112,8 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
 
   protected readonly displayProperties: DisplayProperties;
 
+  protected readonly displayOptionsPanel: BuoyancyDisplayOptionsPanel;
+
   public constructor( model: Model, providedOptions: SelfOptions ) {
 
     const scaleIncrease = 3.5;
@@ -129,6 +133,8 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
 
     super( options );
 
+    this.model = model;
+
     this.displayProperties = new DisplayProperties( options.tandem.createTandem( 'displayProperties' ), {
       canShowForces: options.canShowForces,
       supportsDepthLines: options.supportsDepthLines,
@@ -137,7 +143,6 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
       initialForceScale: options.initialForceScale
     } );
 
-    this.model = model;
     this.popupLayer = new Node();
     this.skyRectangle = new Rectangle( 0, 0, 1, 1, {
       pickable: false,
@@ -171,6 +176,16 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
     this.addChild( this.sceneNode );
 
     this.addChild( this.massDecorationLayer );
+
+    // TODO: This field is not used in density, see https://github.com/phetsims/density-buoyancy-common/issues/291
+    this.displayOptionsPanel = new BuoyancyDisplayOptionsPanel( this.displayProperties, {
+      tandem: packageJSON.name === 'density' ? Tandem.OPT_OUT : tandem.createTandem( 'displayOptionsPanel' ),
+      contentWidth: this.modelToViewPoint( new Vector3(
+        this.model.poolBounds.left,
+        this.model.poolBounds.top,
+        this.model.poolBounds.front
+      ) ).x - 2 * MARGIN
+    } );
 
     this.massViews = createObservableArray<MassView>();
 
@@ -613,6 +628,7 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
   /**
    * Projects a 3d model point to a 2d view point (in the screen view's coordinate frame).
    * see https://github.com/phetsims/density-buoyancy-common/issues/142
+   * TODO: This breaks if sceneNode hasn't been defined, https://github.com/phetsims/density-buoyancy-common/issues/317
    */
   public modelToViewPoint( point: Vector3 ): Vector2 {
     return this.globalToLocalPoint( this.sceneNode.projectPoint( point ) );

@@ -19,13 +19,11 @@ import GravityControlNode from '../../common/view/GravityControlNode.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import BuoyancyLabModel from '../model/BuoyancyLabModel.js';
 import DensityAccordionBox from './DensityAccordionBox.js';
-import BuoyancyDisplayOptionsPanel from './BuoyancyDisplayOptionsPanel.js';
 import BlockControlNode from '../../common/view/BlockControlNode.js';
 import MultiSectionPanelsNode from '../../common/view/MultiSectionPanelsNode.js';
 import FluidDisplacedAccordionBox from './FluidDisplacedAccordionBox.js';
 import SubmergedAccordionBox from './SubmergedAccordionBox.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
-import Vector3 from '../../../../dot/js/Vector3.js';
 import CuboidView from '../../common/view/CuboidView.js';
 import FluidDensityPanel from './FluidDensityPanel.js';
 import BuoyancyScreenView from './BuoyancyScreenView.js';
@@ -67,14 +65,7 @@ export default class BuoyancyLabScreenView extends BuoyancyScreenView<BuoyancyLa
       spacing: DensityBuoyancyCommonConstants.SPACING_SMALL,
       children: [
         fluidDisplacedAccordionBox,
-        new BuoyancyDisplayOptionsPanel( this.displayProperties, {
-          tandem: tandem.createTandem( 'displayOptionsPanel' ),
-          contentWidth: this.modelToViewPoint( new Vector3(
-            this.model.poolBounds.left,
-            this.model.poolBounds.top,
-            this.model.poolBounds.front
-          ) ).x - 2 * MARGIN
-        } )
+        this.displayOptionsPanel
       ]
     } );
 

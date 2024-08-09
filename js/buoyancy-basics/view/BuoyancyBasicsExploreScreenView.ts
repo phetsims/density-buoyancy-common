@@ -16,11 +16,9 @@ import ABControlsNode from '../../common/view/ABControlsNode.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import BuoyancyBasicsExploreModel from '../model/BuoyancyBasicsExploreModel.js';
-import BuoyancyDisplayOptionsPanel from '../../buoyancy/view/BuoyancyDisplayOptionsPanel.js';
 import SubmergedAccordionBox from '../../buoyancy/view/SubmergedAccordionBox.js';
 import PatternStringProperty from '../../../../axon/js/PatternStringProperty.js';
 import BlocksModeRadioButtonGroup from '../../common/view/BlocksModeRadioButtonGroup.js';
-import Vector3 from '../../../../dot/js/Vector3.js';
 import FluidSelectionPanel from '../../buoyancy/view/FluidSelectionPanel.js';
 import CuboidView from '../../common/view/CuboidView.js';
 import ScaleView from '../../common/view/ScaleView.js';
@@ -29,9 +27,6 @@ import DensityAccordionBox from '../../buoyancy/view/DensityAccordionBox.js';
 import BuoyancyScreenView from '../../buoyancy/view/BuoyancyScreenView.js';
 import StrictOmit from '../../../../phet-core/js/types/StrictOmit.js';
 import getBuoyancyExploreIcon from '../../buoyancy/view/getBuoyancyExploreIcon.js';
-
-// constants
-const MARGIN = DensityBuoyancyCommonConstants.MARGIN_SMALL;
 
 type BuoyancyExploreScreenViewOptions = StrictOmit<DensityBuoyancyScreenViewOptions, 'canShowForces' | 'supportsDepthLines' | 'forcesInitiallyDisplayed' | 'massValuesInitiallyDisplayed' | 'initialForceScale'>;
 
@@ -51,16 +46,7 @@ export default class BuoyancyBasicsExploreScreenView extends BuoyancyScreenView<
       viewOffset: DensityBuoyancyCommonConstants.BUOYANCY_BASICS_VIEW_OFFSET
     }, options ) );
 
-    const displayOptionsPanel = new BuoyancyDisplayOptionsPanel( this.displayProperties, {
-      tandem: tandem.createTandem( 'displayOptionsPanel' ),
-      contentWidth: this.modelToViewPoint( new Vector3(
-        this.model.poolBounds.left,
-        this.model.poolBounds.top,
-        this.model.poolBounds.front
-      ) ).x - 2 * MARGIN
-    } );
-
-    this.addAlignBox( displayOptionsPanel, 'left', 'bottom' );
+    this.addAlignBox( this.displayOptionsPanel, 'left', 'bottom' );
 
     this.rightBox = new ABControlsNode(
       model.blockA,
@@ -202,7 +188,7 @@ export default class BuoyancyBasicsExploreScreenView extends BuoyancyScreenView<
 
     this.pdomControlAreaNode.pdomOrder = [
       blocksModeRadioButtonGroup,
-      displayOptionsPanel,
+      this.displayOptionsPanel,
       densityComparisonAccordionBox,
       percentSubmergedAccordionBox,
       this.resetAllButton

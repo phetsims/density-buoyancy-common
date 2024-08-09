@@ -14,7 +14,6 @@ import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import BuoyancyCompareModel from '../model/BuoyancyCompareModel.js';
 import DensityAccordionBox from './DensityAccordionBox.js';
-import BuoyancyDisplayOptionsPanel from './BuoyancyDisplayOptionsPanel.js';
 import SubmergedAccordionBox from './SubmergedAccordionBox.js';
 import PatternStringProperty from '../../../../axon/js/PatternStringProperty.js';
 import Property from '../../../../axon/js/Property.js';
@@ -71,16 +70,7 @@ export default class BuoyancyCompareScreenView extends BuoyancyScreenView<Buoyan
     const blocksPanel = new BlocksPanel( model.blockSetProperty, tandem.createTandem( 'blocksPanel' ) );
     this.addAlignBox( blocksPanel, 'right', 'top' );
 
-    const displayOptionsPanel = new BuoyancyDisplayOptionsPanel( this.displayProperties, {
-      tandem: options.tandem.createTandem( 'displayOptionsPanel' ),
-      contentWidth: this.modelToViewPoint( new Vector3(
-        this.model.poolBounds.left,
-        this.model.poolBounds.top,
-        this.model.poolBounds.front
-      ) ).x - 2 * MARGIN
-    } );
-
-    this.addAlignBox( displayOptionsPanel, 'left', 'bottom' );
+    this.addAlignBox( this.displayOptionsPanel, 'left', 'bottom' );
 
     const fluidPanel = new FluidSelectionPanel( model.pool.fluidMaterialProperty, this.popupLayer, {
       tandem: options.tandem.createTandem( 'fluidPanel' )
@@ -202,7 +192,7 @@ export default class BuoyancyCompareScreenView extends BuoyancyScreenView<Buoyan
     this.massViews.forEach( massViewAdded );
 
     this.pdomControlAreaNode.pdomOrder = [
-      displayOptionsPanel,
+      this.displayOptionsPanel,
       densityComparisonAccordionBox,
       percentSubmergedAccordionBox,
       this.resetAllButton

@@ -25,7 +25,6 @@ import Cube from '../../../common/model/Cube.js';
 import Material from '../../../common/model/Material.js';
 import DensityBuoyancyCommonColors from '../../../common/view/DensityBuoyancyCommonColors.js';
 import DensityBuoyancyScreenView, { DensityBuoyancyScreenViewOptions, PointedAtMassView } from '../../../common/view/DensityBuoyancyScreenView.js';
-import BuoyancyDisplayOptionsPanel from '../BuoyancyDisplayOptionsPanel.js';
 import MaterialMassVolumeControlNode from '../../../common/view/MaterialMassVolumeControlNode.js';
 import densityBuoyancyCommon from '../../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../../DensityBuoyancyCommonStrings.js';
@@ -49,9 +48,6 @@ import DebugView from '../../../common/view/DebugView.js';
 import ApplicationsDebugView from './ApplicationsDebugView.js';
 import getBoatIcon from './getBoatIcon.js';
 import getBottleIcon from './getBottleIcon.js';
-
-// constants
-const MARGIN = DensityBuoyancyCommonConstants.MARGIN_SMALL;
 
 type BuoyancyExploreScreenViewOptions = StrictOmit<DensityBuoyancyScreenViewOptions, 'canShowForces' | 'supportsDepthLines' | 'forcesInitiallyDisplayed' | 'massValuesInitiallyDisplayed' | 'initialForceScale'>;
 
@@ -324,16 +320,7 @@ export default class BuoyancyApplicationsScreenView extends BuoyancyScreenView<B
       percentSubmergedAccordionBox.setReadoutItems( submergedObjects );
     } );
 
-    const displayOptionsPanel = new BuoyancyDisplayOptionsPanel( this.displayProperties, {
-      tandem: tandem.createTandem( 'displayOptionsPanel' ),
-      contentWidth: this.modelToViewPoint( new Vector3(
-        this.model.poolBounds.left,
-        this.model.poolBounds.top,
-        this.model.poolBounds.front
-      ) ).x - 2 * MARGIN
-    } );
-
-    this.addAlignBox( displayOptionsPanel, 'left', 'bottom' );
+    this.addAlignBox( this.displayOptionsPanel, 'left', 'bottom' );
 
     const applicationModeRadioButtonGroup = new RectangularRadioButtonGroup( model.applicationModeProperty, [ {
       value: 'bottle',
@@ -411,7 +398,7 @@ export default class BuoyancyApplicationsScreenView extends BuoyancyScreenView<B
     this.massViews.forEach( massViewAdded );
 
     this.pdomControlAreaNode.pdomOrder = [
-      displayOptionsPanel,
+      this.displayOptionsPanel,
       objectDensityAccordionBox,
       percentSubmergedAccordionBox,
       applicationModeRadioButtonGroup,

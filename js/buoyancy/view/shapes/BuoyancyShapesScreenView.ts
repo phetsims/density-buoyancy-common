@@ -13,7 +13,6 @@ import Vector2 from '../../../../../dot/js/Vector2.js';
 import { GatedVisibleProperty, ManualConstraint, Node, VBox } from '../../../../../scenery/js/imports.js';
 import DensityBuoyancyCommonConstants from '../../../common/DensityBuoyancyCommonConstants.js';
 import Material from '../../../common/model/Material.js';
-import BuoyancyDisplayOptionsPanel from '../BuoyancyDisplayOptionsPanel.js';
 import ABPanelsNode from '../../../common/view/ABPanelsNode.js';
 import densityBuoyancyCommon from '../../../densityBuoyancyCommon.js';
 import DensityAccordionBox from '../DensityAccordionBox.js';
@@ -50,9 +49,6 @@ import EllipsoidView from './EllipsoidView.js';
 import Cone from '../../model/shapes/Cone.js';
 import ConeView from './ConeView.js';
 
-// constants
-const MARGIN = DensityBuoyancyCommonConstants.MARGIN_SMALL;
-
 type BuoyancyShapesScreenViewOptions = StrictOmit<DensityBuoyancyScreenViewOptions, 'canShowForces' | 'supportsDepthLines' | 'forcesInitiallyDisplayed' | 'massValuesInitiallyDisplayed' | 'initialForceScale'>;
 
 export default class BuoyancyShapesScreenView extends BuoyancyScreenView<BuoyancyShapesModel> {
@@ -85,17 +81,7 @@ export default class BuoyancyShapesScreenView extends BuoyancyScreenView<Buoyanc
     // Create and add the FluidDensityPanel to the screen.
     const fluidDensityPanel = new FluidDensityPanel( model, invisibleMaterials, this.popupLayer, tandem.createTandem( 'fluidDensityPanel' ) );
     this.addAlignBox( fluidDensityPanel, 'center', 'bottom' );
-
-    // Create and add the BuoyancyDisplayOptionsPanel to the screen.
-    const displayOptionsPanel = new BuoyancyDisplayOptionsPanel( this.displayProperties, {
-      tandem: tandem.createTandem( 'displayOptionsPanel' ),
-      contentWidth: this.modelToViewPoint( new Vector3(
-        this.model.poolBounds.left,
-        this.model.poolBounds.top,
-        this.model.poolBounds.front
-      ) ).x - 2 * MARGIN
-    } );
-    this.addAlignBox( displayOptionsPanel, 'left', 'bottom' );
+    this.addAlignBox( this.displayOptionsPanel, 'left', 'bottom' );
 
     // Create the info button and associated dialog, and add to the screen.
     const infoButtonTandem = tandem.createTandem( 'infoButton' );
@@ -260,7 +246,7 @@ export default class BuoyancyShapesScreenView extends BuoyancyScreenView<Buoyanc
     // Define the focus order for the control area, ensuring accessibility for various UI elements.
     this.pdomControlAreaNode.pdomOrder = [
       blocksModeRadioButtonGroup,
-      displayOptionsPanel,
+      this.displayOptionsPanel,
       objectDensityAccordionBox,
       percentSubmergedAccordionBox,
       infoButton,

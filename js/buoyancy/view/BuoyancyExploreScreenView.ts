@@ -18,11 +18,9 @@ import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import BuoyancyExploreModel from '../model/BuoyancyExploreModel.js';
 import DensityAccordionBox from './DensityAccordionBox.js';
-import BuoyancyDisplayOptionsPanel from './BuoyancyDisplayOptionsPanel.js';
 import SubmergedAccordionBox from './SubmergedAccordionBox.js';
 import PatternStringProperty from '../../../../axon/js/PatternStringProperty.js';
 import BlocksModeRadioButtonGroup from '../../common/view/BlocksModeRadioButtonGroup.js';
-import Vector3 from '../../../../dot/js/Vector3.js';
 import CuboidView from '../../common/view/CuboidView.js';
 import ScaleView from '../../common/view/ScaleView.js';
 import MassView from '../../common/view/MassView.js';
@@ -50,17 +48,7 @@ export default class BuoyancyExploreScreenView extends BuoyancyScreenView<Buoyan
       cameraLookAt: DensityBuoyancyCommonConstants.BUOYANCY_CAMERA_LOOK_AT
     }, options ) );
 
-    // TODO: This code is duplicated, see https://github.com/phetsims/density-buoyancy-common/issues/291
-    const displayOptionsPanel = new BuoyancyDisplayOptionsPanel( this.displayProperties, {
-      tandem: tandem.createTandem( 'displayOptionsPanel' ),
-      contentWidth: this.modelToViewPoint( new Vector3(
-        this.model.poolBounds.left,
-        this.model.poolBounds.top,
-        this.model.poolBounds.front
-      ) ).x - 2 * MARGIN
-    } );
-
-    this.addAlignBox( displayOptionsPanel, 'left', 'bottom' );
+    this.addAlignBox( this.displayOptionsPanel, 'left', 'bottom' );
 
     // Determine which mystery materials are displayed and which are invisible (but can be enabled in PhET-iO studio)
     const displayedMysteryMaterials = [ Material.FLUID_A, Material.FLUID_B ];
@@ -208,7 +196,7 @@ export default class BuoyancyExploreScreenView extends BuoyancyScreenView<Buoyan
 
     this.pdomControlAreaNode.pdomOrder = [
       blocksModeRadioButtonGroup,
-      displayOptionsPanel,
+      this.displayOptionsPanel,
       objectDensityAccordionBox,
       percentSubmergedAccordionBox,
       this.resetAllButton

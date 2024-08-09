@@ -131,8 +131,9 @@ export default class BuoyancyBasicsExploreScreenView extends BuoyancyScreenView<
     ManualConstraint.create( this, [ this.resetAllButton, blocksModeRadioButtonGroup ],
       ( resetAllButtonWrapper, blocksModeRadioButtonGroupWrapper ) => {
 
-        // TODO: What if the reset all button is not visible due to phet-io? See https://github.com/phetsims/density-buoyancy-common/issues/317
-        blocksModeRadioButtonGroupWrapper.right = resetAllButtonWrapper.left - DensityBuoyancyCommonConstants.MARGIN;
+        // Set the location of the blocks mode radio button relative to the reset all button, or the right side of the screen
+        // if the reset all button is not visible
+        blocksModeRadioButtonGroupWrapper.right = resetAllButtonWrapper.visible ? ( resetAllButtonWrapper.left - DensityBuoyancyCommonConstants.MARGIN ) : resetAllButtonWrapper.right;
         blocksModeRadioButtonGroupWrapper.bottom = resetAllButtonWrapper.bottom;
       } );
 

@@ -23,6 +23,7 @@ import MassDecorationLayer from './MassDecorationLayer.js';
 import MassThreeMesh from './MassThreeMesh.js';
 import { THREEModelViewTransform } from './DensityBuoyancyScreenView.js';
 import sharedSoundPlayers from '../../../../tambo/js/sharedSoundPlayers.js';
+import GrabDragInteraction from '../../../../scenery-phet/js/accessibility/GrabDragInteraction.js';
 
 const INVERT_Y_TRANSFORM = ModelViewTransform2.createSinglePointScaleInvertedYMapping( Vector2.ZERO, Vector2.ZERO, 1 );
 
@@ -30,13 +31,12 @@ export default abstract class MassView extends Disposable {
 
   public readonly massMesh: MassThreeMesh;
 
-  private readonly positionListener: () => void;
-
   private readonly massTagNode: Node | null = null;
   protected readonly tagOffsetProperty: Property<Vector3> = new Property<Vector3>( Vector3.ZERO );
 
-  public readonly focusablePath: Path | null;
   public readonly focusableShapeProperty = new Property( new Shape() );
+  public readonly focusablePath: InteractiveHighlightingPath | null = null;
+  private readonly grabDragInteraction: GrabDragInteraction | null = null;
 
   protected constructor( public readonly mass: Mass,
                          initialGeometry: THREE.BufferGeometry,
@@ -61,7 +61,7 @@ export default abstract class MassView extends Disposable {
     const grabSoundPlayer = sharedSoundPlayers.get( 'grab' );
     const releaseSoundPlayer = sharedSoundPlayers.get( 'release' );
 
-    this.positionListener = () => {
+    const positionListener = () => {
       const position = mass.matrix.translation;
 
       // LHS is NOT a Vector2, don't try to simplify this
@@ -92,47 +92,33 @@ export default abstract class MassView extends Disposable {
 
         this.focusableShapeProperty.value = shape;
 
-        this.focusablePath.focusHighlight = shape;
+        if ( this.focusablePath.focusHighlight && this.focusablePath.focusHighlight instanceof Path ) {
+          this.focusablePath.focusHighlight.setShape( shape );
+        }
       }
 
       this.massTagNode && repositionMassTagNode();
     };
 
-    this.focusablePath = null;
-
     if ( mass.canMove ) {
-
       this.focusablePath = new InteractiveHighlightingPath( this.focusableShapeProperty, {
         accessibleName: this.mass.accessibleName,
         tagName: 'div',
         focusable: true
       } );
       const endKeyboardInteraction = () => {
-        keyboardDragListener.interrupt();
-        mass.interruptedEmitter.removeListener( endKeyboardInteraction );
-        this.focusablePath!.removeInputListener( blurListener );
+        this.grabDragInteraction!.interrupt();
+
+        // BackgroundTargetEventListener calls mass.interruptedEmitter.emit(); on mouse/touch down to clean up interaction
+        // This interrupts keyboard interaction, so we must be graceful in case there was no keyboard interaction.
+        mass.interruptedEmitter.hasListener( endKeyboardInteraction ) && mass.interruptedEmitter.removeListener( endKeyboardInteraction );
+
         releaseSoundPlayer.play();
         mass.endDrag();
       };
 
-      const blurListener = {
-        blur: endKeyboardInteraction
-      };
-
-      this.focusablePath.addInputListener( {
-        focus: () => {
-
-          // We want the newer interaction to take precedent, so tabbing to the item should interrupt the previous mouse drag (if applicable).
-          mass.userControlledProperty.value && mass.interruptedEmitter.emit();
-
-          mass.interruptedEmitter.addListener( endKeyboardInteraction );
-          this.focusablePath!.addInputListener( blurListener );
-          grabSoundPlayer.play();
-          mass.startDrag( mass.matrix.translation );
-        }
-      } );
-
       const keyboardDragListener = new KeyboardDragListener( {
+
         // In model units per second
         dragSpeed: 3,
         shiftDragSpeed: 0.5,
@@ -146,16 +132,48 @@ export default abstract class MassView extends Disposable {
         tandem: Tandem.OPT_OUT
       } );
 
-      this.focusablePath.addInputListener( keyboardDragListener );
+      const blockCenter = modelViewTransform.modelToViewPoint( mass.matrix.translation.toVector3().plus( this.tagOffsetProperty.value ).plusXYZ( 0, 0, 0.0001 ) );
+
+      positionListener();
+      this.grabDragInteraction = new GrabDragInteraction( this.focusablePath, keyboardDragListener, {
+
+        // TODO: https://github.com/phetsims/density-buoyancy-common/issues/209
+        // This cue position is only good at startup. If the user moves the block with the mouse before tabbing to it,
+        // the cue will not be correctly positioned.
+        // TODO: https://github.com/phetsims/density-buoyancy-common/issues/209
+        // Put the cue under the block probably (currently centered on its starting point)
+        grabCueOptions: {
+          center: blockCenter
+        },
+        onGrab() {
+
+          // We want the newer interaction to take precedent, so tabbing to the item should interrupt the previous mouse drag (if applicable).
+          mass.userControlledProperty.value && mass.interruptedEmitter.emit();
+
+          mass.interruptedEmitter.addListener( endKeyboardInteraction );
+          grabSoundPlayer.play();
+          mass.startDrag( mass.matrix.translation );
+        },
+        onRelease() {
+          endKeyboardInteraction();
+        },
+
+        // TODO: https://github.com/phetsims/density-buoyancy-common/issues/209 why is the tandem required in the parent class? Overinstrumentation?
+        tandem: Tandem.OPT_OUT
+      } );
 
       this.disposeEmitter.addListener( () => {
+        this.grabDragInteraction!.dispose();
         keyboardDragListener.dispose();
         this.focusablePath && this.focusablePath.dispose();
       } );
     }
 
-    this.mass.transformedEmitter.addListener( this.positionListener );
-    this.positionListener();
+    this.mass.transformedEmitter.addListener( positionListener );
+
+    this.disposeEmitter.addListener( () => this.mass.transformedEmitter.removeListener( positionListener ) );
+
+    positionListener();
   }
 
   // Override in subclasses to add subclass-specific behavior
@@ -175,7 +193,6 @@ export default abstract class MassView extends Disposable {
   }
 
   public override dispose(): void {
-    this.mass.transformedEmitter.removeListener( this.positionListener );
     this.massMesh.dispose();
 
     this.massTagNode && this.massTagNode.dispose();

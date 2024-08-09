@@ -31,7 +31,6 @@ import densityBuoyancyCommon from '../../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../../DensityBuoyancyCommonStrings.js';
 import BuoyancyApplicationsModel from '../../model/applications/BuoyancyApplicationsModel.js';
 import DensityAccordionBox from '../DensityAccordionBox.js';
-import arrayRemove from '../../../../../phet-core/js/arrayRemove.js';
 import BottleView from './BottleView.js';
 import BoatView from './BoatView.js';
 import SubmergedAccordionBox from '../SubmergedAccordionBox.js';
@@ -307,14 +306,9 @@ export default class BuoyancyApplicationsScreenView extends BuoyancyScreenView<B
       }
     } );
 
-    const displayedMysteryMaterials = [
-      Material.FLUID_E,
-      Material.FLUID_F
-    ];
-
-    const invisibleMaterials = [ ...Material.BUOYANCY_FLUID_MYSTERY_MATERIALS ];
-    displayedMysteryMaterials.forEach( displayed => arrayRemove( invisibleMaterials, displayed ) );
-
+    // Determine which mystery materials are displayed and which are invisible (but can be enabled in PhET-iO studio)
+    const displayedMysteryMaterials = [ Material.FLUID_E, Material.FLUID_F ];
+    const invisibleMaterials = [ ...Material.BUOYANCY_FLUID_MYSTERY_MATERIALS ].filter( material => !displayedMysteryMaterials.includes( material ) );
 
     model.applicationModeProperty.link( scene => {
       const materials = scene === 'bottle' ? [ model.bottle.materialInsideProperty, model.bottle.materialProperty ] :

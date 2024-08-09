@@ -18,7 +18,6 @@ import { DensityBuoyancyScreenViewOptions } from '../../common/view/DensityBuoya
 import GravityControlNode from '../../common/view/GravityControlNode.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import BuoyancyLabModel from '../model/BuoyancyLabModel.js';
-import arrayRemove from '../../../../phet-core/js/arrayRemove.js';
 import DensityAccordionBox from './DensityAccordionBox.js';
 import BuoyancyDisplayOptionsPanel from './BuoyancyDisplayOptionsPanel.js';
 import BlockControlNode from '../../common/view/BlockControlNode.js';
@@ -96,13 +95,9 @@ export default class BuoyancyLabScreenView extends BuoyancyScreenView<BuoyancyLa
       positionLeftSideContent( leftSideContent );
     } );
 
-    const displayedMysteryMaterials = [
-      Material.FLUID_A,
-      Material.FLUID_B
-    ];
-
-    const invisibleMaterials = [ ...Material.BUOYANCY_FLUID_MYSTERY_MATERIALS ];
-    displayedMysteryMaterials.forEach( displayed => arrayRemove( invisibleMaterials, displayed ) );
+    // Determine which mystery materials are displayed and which are invisible (but can be enabled in PhET-iO studio)
+    const displayedMysteryMaterials = [ Material.FLUID_A, Material.FLUID_B ];
+    const invisibleMaterials = [ ...Material.BUOYANCY_FLUID_MYSTERY_MATERIALS ].filter( material => !displayedMysteryMaterials.includes( material ) );
 
     const gravityPanelTandem = tandem.createTandem( 'gravityPanel' );
 

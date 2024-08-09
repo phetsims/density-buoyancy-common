@@ -23,7 +23,6 @@ import { DensityBuoyancyScreenViewOptions } from '../../../common/view/DensityBu
 import { combineOptions } from '../../../../../phet-core/js/optionize.js';
 import MaterialControlNode from '../../../common/view/MaterialControlNode.js';
 import MultiSectionPanelsNode from '../../../common/view/MultiSectionPanelsNode.js';
-import arrayRemove from '../../../../../phet-core/js/arrayRemove.js';
 import InfoButton from '../../../../../scenery-phet/js/buttons/InfoButton.js';
 import ShapesInfoDialog from './ShapesInfoDialog.js';
 import Vector3 from '../../../../../dot/js/Vector3.js';
@@ -81,8 +80,7 @@ export default class BuoyancyShapesScreenView extends BuoyancyScreenView<Buoyanc
 
     // Determine which mystery materials are displayed and which are invisible (but can be enabled in PhET-iO studio)
     const displayedMysteryMaterials = [ Material.FLUID_C, Material.FLUID_D ];
-    const invisibleMaterials = [ ...Material.BUOYANCY_FLUID_MYSTERY_MATERIALS ];
-    displayedMysteryMaterials.forEach( displayed => arrayRemove( invisibleMaterials, displayed ) );
+    const invisibleMaterials = [ ...Material.BUOYANCY_FLUID_MYSTERY_MATERIALS ].filter( material => !displayedMysteryMaterials.includes( material ) );
 
     // Create and add the FluidDensityPanel to the screen.
     const fluidDensityPanel = new FluidDensityPanel( model, invisibleMaterials, this.popupLayer, tandem.createTandem( 'fluidDensityPanel' ) );

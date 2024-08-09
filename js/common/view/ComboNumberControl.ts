@@ -39,7 +39,10 @@ type SelfOptions<T extends Material | Gravity> = {
 
   comboItems: ComboBoxItem<T>[];
 
-  // TODO: What is a fallback node? When is it shown? https://github.com/phetsims/density-buoyancy-common/issues/257
+  /**
+   * For mystery materials, a fallback node is displayed to keep the values hidden.
+   * It may say something like "What is the value of gravity?"
+   */
   getFallbackNode?: ( t: T ) => Node | null;
 
   numberControlOptions?: NumberControlOptions;

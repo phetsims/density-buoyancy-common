@@ -6,10 +6,8 @@
  * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
-import DerivedProperty from '../../../../../axon/js/DerivedProperty.js';
 import DynamicProperty from '../../../../../axon/js/DynamicProperty.js';
 import Property from '../../../../../axon/js/Property.js';
-import Vector2 from '../../../../../dot/js/Vector2.js';
 import { GatedVisibleProperty, ManualConstraint, Node, VBox } from '../../../../../scenery/js/imports.js';
 import DensityBuoyancyCommonConstants from '../../../common/DensityBuoyancyCommonConstants.js';
 import Material from '../../../common/model/Material.js';
@@ -190,13 +188,7 @@ export default class BuoyancyShapesScreenView extends BuoyancyScreenView<Buoyanc
 
     this.addChild( blocksModeRadioButtonGroup );
 
-    // Set the property for the right barrier viewpoint.
-    // DerivedProperty doesn't need disposal, since everything here lives for the lifetime of the simulation
-    this.rightBarrierViewPointPropertyProperty.value = new DerivedProperty( [ rightSideVBox.boundsProperty, this.visibleBoundsProperty ], ( boxBounds, visibleBounds ) => {
-
-      // We might not have a box, see https://github.com/phetsims/density/issues/110
-      return new Vector2( isFinite( boxBounds.left ) ? boxBounds.left : visibleBounds.right, visibleBounds.centerY );
-    } );
+    this.setRightBarrierViewPoint( rightSideVBox.boundsProperty );
 
     this.addChild( this.popupLayer );
 

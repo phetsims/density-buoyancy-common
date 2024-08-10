@@ -36,7 +36,6 @@ import SubmergedAccordionBox from '../SubmergedAccordionBox.js';
 import PrecisionSliderThumb from '../../../common/view/PrecisionSliderThumb.js';
 import Bottle from '../../model/applications/Bottle.js';
 import MassView from '../../../common/view/MassView.js';
-import Vector2 from '../../../../../dot/js/Vector2.js';
 import FluidDensityPanel from '../FluidDensityPanel.js';
 import BuoyancyScreenView from '../BuoyancyScreenView.js';
 import StrictOmit from '../../../../../phet-core/js/types/StrictOmit.js';
@@ -285,12 +284,7 @@ export default class BuoyancyApplicationsScreenView extends BuoyancyScreenView<B
 
     this.addAlignBox( rightSideVBox, 'right', 'top' );
 
-    // DerivedProperty doesn't need disposal, since everything here lives for the lifetime of the simulation
-    this.rightBarrierViewPointPropertyProperty.value = new DerivedProperty( [ rightSideVBox.boundsProperty, this.visibleBoundsProperty ], ( boxBounds, visibleBounds ) => {
-
-      // We might not have a box, see https://github.com/phetsims/density/issues/110
-      return new Vector2( isFinite( boxBounds.left ) ? boxBounds.left : visibleBounds.right, visibleBounds.centerY );
-    } );
+    this.setRightBarrierViewPoint( rightSideVBox.boundsProperty );
 
     // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
     model.applicationModeProperty.link( scene => {

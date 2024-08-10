@@ -7,8 +7,6 @@
  * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
-import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
-import Vector2 from '../../../../dot/js/Vector2.js';
 import { combineOptions } from '../../../../phet-core/js/optionize.js';
 import { HBox, LayoutProxy, ManualConstraint, Node, VBox } from '../../../../scenery/js/imports.js';
 import Panel, { PanelOptions } from '../../../../sun/js/Panel.js';
@@ -149,12 +147,7 @@ export default class BuoyancyLabScreenView extends BuoyancyScreenView<BuoyancyLa
     } );
     this.addAlignBox( rightSideVBox, 'right', 'top' );
 
-    // DerivedProperty doesn't need disposal, since everything here lives for the lifetime of the simulation
-    this.rightBarrierViewPointPropertyProperty.value = new DerivedProperty( [ rightSideVBox.boundsProperty, this.visibleBoundsProperty ], ( boxBounds, visibleBounds ) => {
-
-      // We might not have a box, see https://github.com/phetsims/density/issues/110
-      return new Vector2( isFinite( boxBounds.left ) ? boxBounds.left : visibleBounds.right, visibleBounds.centerY );
-    } );
+    this.setRightBarrierViewPoint( rightSideVBox.boundsProperty );
 
     // Popup last
     this.addChild( this.popupLayer );

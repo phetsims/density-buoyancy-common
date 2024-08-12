@@ -17,6 +17,7 @@ import InterpolatedProperty from './InterpolatedProperty.js';
 import Mass from './Mass.js';
 import { PhetioObjectOptions } from '../../../../tandem/js/PhetioObject.js';
 import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
+import { findRoot } from '../../../../dot/js/findRoot.js';
 
 // TODO: Add SelfOptions for optionize, see https://github.com/phetsims/density-buoyancy-common/issues/333
 export type BasinOptions = {
@@ -169,7 +170,7 @@ export default abstract class Basin {
     }
 
     // Due to shapes used, there is no analytical solution.
-    this.fluidYInterpolatedProperty.setNextValue( Basin.findRoot(
+    this.fluidYInterpolatedProperty.setNextValue( findRoot(
       this.stepBottom,
       this.stepTop,
       DensityBuoyancyCommonConstants.TOLERANCE,
@@ -188,43 +189,6 @@ export default abstract class Basin {
   public reset(): void {
     this.fluidVolumeProperty.reset();
     this.fluidYInterpolatedProperty.reset();
-  }
-
-  /**
-   * Hybrid root-finding given our constraints (guaranteed interval, value/derivative). Combines Newton's and bisection.
-   * TODO: Move to a utility file or dot, see https://github.com/phetsims/density-buoyancy-common/issues/317
-   */
-  private static findRoot( minX: number, maxX: number, tolerance: number, valueFunction: ( n: number ) => number, derivativeFunction: ( n: number ) => number ): number {
-    let x = ( minX + maxX ) / 2;
-
-    let y;
-    let dy;
-
-    while ( Math.abs( y = valueFunction( x ) ) > tolerance ) {
-      dy = derivativeFunction( x );
-
-      if ( y < 0 ) {
-        minX = x;
-      }
-      else {
-        maxX = x;
-      }
-
-      // Newton's method first
-      x -= y / dy;
-
-      // Bounded to be bisection at the very least
-      if ( x <= minX || x >= maxX ) {
-        x = ( minX + maxX ) / 2;
-
-        // Check to see if it's impossible to pass our tolerance
-        if ( x === minX || x === maxX ) {
-          break;
-        }
-      }
-    }
-
-    return x;
   }
 }
 

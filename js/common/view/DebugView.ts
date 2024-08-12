@@ -68,10 +68,10 @@ export default class DebugView extends Node {
       this.addChild( massNode );
       this.massNodes.push( massNode );
     };
-    model.masses.addItemAddedListener( onMassAdded );
-    model.masses.forEach( onMassAdded );
+    model.visibleMasses.addItemAddedListener( onMassAdded );
+    model.visibleMasses.forEach( onMassAdded );
 
-    model.masses.addItemRemovedListener( mass => {
+    model.visibleMasses.addItemRemovedListener( mass => {
       const massNode = _.find( this.massNodes, massNode => massNode.mass === mass )!;
       arrayRemove( this.massNodes, massNode );
       this.removeChild( massNode );
@@ -105,7 +105,7 @@ export default class DebugView extends Node {
       this.model.poolBounds.minX, this.model.poolBounds.minY,
       this.model.poolBounds.maxX, this.model.pool.fluidYInterpolatedProperty.value
     ) );
-    this.model.masses.forEach( mass => {
+    this.model.visibleMasses.forEach( mass => {
       poolShape = this.mutatePoolShape( mass, poolShape );
     } );
     poolShape = this.modelViewTransform.modelToViewShape( poolShape );

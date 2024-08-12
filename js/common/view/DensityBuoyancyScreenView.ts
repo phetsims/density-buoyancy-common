@@ -501,8 +501,8 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
       massView.decorate( this.massDecorationLayer );
     };
 
-    model.masses.addItemAddedListener( onMassAdded );
-    model.masses.forEach( onMassAdded );
+    model.visibleMasses.addItemAddedListener( onMassAdded );
+    model.visibleMasses.forEach( onMassAdded );
 
     const onMassRemoved = ( mass: Mass ) => {
       const massView = _.find( this.massViews, massView => massView.mass === mass )!;
@@ -512,7 +512,7 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
       arrayRemove( this.massViews, massView );
       massView.dispose();
     };
-    model.masses.addItemRemovedListener( onMassRemoved );
+    model.visibleMasses.addItemRemovedListener( onMassRemoved );
 
     const fluidLevelIndicator = new FluidLevelIndicator( model.pool.fluidLevelVolumeProperty );
     this.addChild( fluidLevelIndicator );

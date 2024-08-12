@@ -8,7 +8,7 @@
 
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import Property from '../../../../axon/js/Property.js';
-import createObservableArray, { ObservableArray } from '../../../../axon/js/createObservableArray.js';
+import createObservableArray from '../../../../axon/js/createObservableArray.js';
 import Bounds3 from '../../../../dot/js/Bounds3.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
@@ -66,9 +66,11 @@ export default class DensityBuoyancyModel implements TModel {
   private readonly groundBody: PhysicsEngineBody;
   private barrierBody: PhysicsEngineBody;
 
-  // TODO: Document how availableMasses differs from masses, see https://github.com/phetsims/density-buoyancy-common/issues/293
-  protected readonly availableMasses: ObservableArray<Mass>;
-  public readonly masses: ObservableArray<Mass>;
+  // All the masses that could be used in the given context. Sometimes availableMasses are removed on the shapes screen.
+  protected readonly availableMasses = createObservableArray<Mass>();
+
+  // A subset of the availableMasses that are currently visible. This registers them with the rendering engine.
+  public readonly visibleMasses = createObservableArray<Mass>();
 
   public constructor( providedOptions?: DensityBuoyancyModelOptions ) {
     const options = optionize<DensityBuoyancyModelOptions, DensityBuoyancyModelOptions>()( {
@@ -178,24 +180,22 @@ export default class DensityBuoyancyModel implements TModel {
       this.engine.addBody( this.barrierBody );
     } );
 
-    this.availableMasses = createObservableArray();
-
     // Control masses by visibility, so that this.masses will be the subset of this.availableMasses that is visible
     const visibilityListenerMap = new Map<Mass, ( visible: boolean ) => void>(); // eslint-disable-line no-spaced-func
     this.availableMasses.addItemAddedListener( mass => {
       const visibilityListener = ( visible: boolean ) => {
         if ( visible ) {
-          this.masses.push( mass );
+          this.visibleMasses.push( mass );
         }
         else {
-          this.masses.remove( mass );
+          this.visibleMasses.remove( mass );
         }
       };
       visibilityListenerMap.set( mass, visibilityListener );
       mass.visibleProperty.lazyLink( visibilityListener );
 
       if ( mass.visibleProperty.value ) {
-        this.masses.push( mass );
+        this.visibleMasses.push( mass );
       }
     } );
     this.availableMasses.addItemRemovedListener( mass => {
@@ -203,15 +203,14 @@ export default class DensityBuoyancyModel implements TModel {
       visibilityListenerMap.delete( mass );
 
       if ( mass.visibleProperty.value ) {
-        this.masses.remove( mass );
+        this.visibleMasses.remove( mass );
       }
     } );
 
-    this.masses = createObservableArray();
-    this.masses.addItemAddedListener( mass => {
+    this.visibleMasses.addItemAddedListener( mass => {
       this.engine.addBody( mass.body );
     } );
-    this.masses.addItemRemovedListener( mass => {
+    this.visibleMasses.addItemRemovedListener( mass => {
       this.engine.removeBody( mass.body );
       mass.interruptedEmitter.emit();
     } );
@@ -232,7 +231,7 @@ export default class DensityBuoyancyModel implements TModel {
       const gravity = this.gravityProperty.gravityValueProperty.value;
       this.updateVerticalMotion( dt ); // Updates the vertical motion of the Boat, if present.
 
-      this.masses.forEach( mass => {
+      this.visibleMasses.forEach( mass => {
         let contactForce = PhysicsEngine.bodyGetContactForces( mass.body );
 
         // p2.js sometimes reports incorrect forces for static objects (immovable Scale instances), so these need to be corrected.
@@ -242,7 +241,7 @@ export default class DensityBuoyancyModel implements TModel {
 
         // Horizontally force out objects trapped by the PoolScale (which is controlled by the slider)
         if ( mass instanceof PoolScale ) {
-          this.masses.forEach( otherMass => {
+          this.visibleMasses.forEach( otherMass => {
             if ( mass !== otherMass ) {
               const horizontalForce = this.engine.bodyGetContactForceBetween( mass.body, otherMass.body ).x;
 
@@ -269,7 +268,7 @@ export default class DensityBuoyancyModel implements TModel {
         // Measure the weight on any Scale, including the PoolScale
         if ( mass instanceof Scale ) {
           let scaleForce = 0;
-          this.masses.forEach( otherMass => {
+          this.visibleMasses.forEach( otherMass => {
             if ( mass !== otherMass ) {
               const verticalForce = this.engine.bodyGetContactForceBetween( mass.body, otherMass.body ).y;
 
@@ -363,9 +362,9 @@ export default class DensityBuoyancyModel implements TModel {
    * @param assignableBasins - The basins that masses can be assigned to, note these must be specified in order of precedence
    */
   protected updateFluidForBasins( basins: Basin[], assignableBasins: Basin[] ): void {
-    this.masses.forEach( mass => mass.updateStepInformation() );
+    this.visibleMasses.forEach( mass => mass.updateStepInformation() );
     basins.forEach( basin => {
-      basin.stepMasses = this.masses.filter( mass => basin.isMassInside( mass ) );
+      basin.stepMasses = this.visibleMasses.filter( mass => basin.isMassInside( mass ) );
     } );
 
     // Check to see if fluid "spilled" out of the pool, and set the finalized fluid volume
@@ -373,7 +372,7 @@ export default class DensityBuoyancyModel implements TModel {
 
     basins.forEach( basin => basin.computeY() );
 
-    this.masses.forEach( mass => {
+    this.visibleMasses.forEach( mass => {
       mass.containingBasin = assignableBasins.find( basin => basin.isMassInside( mass ) ) || null;
     } );
   }
@@ -386,7 +385,10 @@ export default class DensityBuoyancyModel implements TModel {
     this.gravityProperty.reset();
 
     this.pool.reset();
-    this.masses.forEach( mass => mass.reset() );
+
+    // NOTE: Resetting all availableMasses here is buggy, for instance on the Shapes screen, resetting shows the 2nd shape
+    // if it was hidden.
+    this.visibleMasses.forEach( mass => mass.reset() );
   }
 
   /**
@@ -395,7 +397,7 @@ export default class DensityBuoyancyModel implements TModel {
   public step( dt: number ): void {
     this.engine.step( dt );
 
-    this.masses.forEach( mass => {
+    this.visibleMasses.forEach( mass => {
       mass.step( dt, this.engine.interpolationRatio );
     } );
 
@@ -406,7 +408,7 @@ export default class DensityBuoyancyModel implements TModel {
    * Moves masses' previous positions to their current positions.
    */
   protected syncPreviousMassPositionsToCurrent(): void {
-    this.masses.forEach( mass => PhysicsEngine.bodySynchronizePrevious( mass.body ) );
+    this.visibleMasses.forEach( mass => PhysicsEngine.bodySynchronizePrevious( mass.body ) );
   }
 
   /**

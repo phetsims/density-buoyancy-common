@@ -225,16 +225,6 @@ export default class Boat extends ApplicationsMass {
   }
 
   /**
-   * Checks if the boat is submerged and sets the flag
-   */
-  private setSubmergedState( fluidLevel: number ): void {
-
-    // TODO: Should we set this value at the beginning of the post physics engine step, see https://github.com/phetsims/density-buoyancy-common/issues/317
-    // It currently seems like it is updated partway through (after it is accessed)?
-    this.isFullySubmerged = this.stepTop < fluidLevel - DensityBuoyancyCommonConstants.TOLERANCE;
-  }
-
-  /**
    * Resets values to their original state
    */
   public override reset( resetInternalVisibleProperty = true ): void {
@@ -248,7 +238,11 @@ export default class Boat extends ApplicationsMass {
   }
 
   public updateVerticalMotion( pool: Pool, dt: number ): void {
-    this.setSubmergedState( pool.fluidYInterpolatedProperty.currentValue );
+
+    // This runs after this.updateFluid() in the post step function, so we have the new proposed value for the fluid height.
+    // THEN we check to see if the boat is submerged underneath it.
+    this.isFullySubmerged = this.stepTop < pool.fluidYInterpolatedProperty.currentValue - DensityBuoyancyCommonConstants.TOLERANCE;
+
     const nextBoatVerticalVelocity = PhysicsEngine.bodyGetVelocity( this.body ).y;
     this.verticalAcceleration = ( nextBoatVerticalVelocity - this.verticalVelocity ) / dt;
     this.verticalVelocity = nextBoatVerticalVelocity;

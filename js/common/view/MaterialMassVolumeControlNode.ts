@@ -103,8 +103,9 @@ export default class MaterialMassVolumeControlNode extends MaterialControlNode {
 
     assert && assert( options.minVolumeLiters <= options.minCustomVolumeLiters, 'This seems to be a requirement, I hope you never hit this' );
 
+    assert && assert( options.highDensityMaxMass !== 0, 'highDensityMaxMass should not be 0' );
+
     // If we will be creating a high density mass NumberControl in addition to the normal one.
-    // TODO: Change from !! to !== null ? Since it has different semantics for 0 which is numeric but falsy. See https://github.com/phetsims/density-buoyancy-common/issues/317
     const supportTwoMassNumberControls = !!options.highDensityMaxMass;
 
     // Mass-related elements should not be instrumented if showing as a Density control instead of Mass control.

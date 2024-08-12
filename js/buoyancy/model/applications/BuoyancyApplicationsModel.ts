@@ -113,10 +113,6 @@ export default class BuoyancyApplicationsModel extends DensityBuoyancyModel {
     } );
     this.availableMasses.push( this.scale );
 
-    // Adjust pool volume so that it's at the desired value WITH the pool scales inside.
-    // TODO: How does this relate to https://github.com/phetsims/density-buoyancy-common/blob/4038cb05c2b5c2b8b1f600bfbcf0a7eaac4617a2/js/common/model/DensityBuoyancyModel.ts#L435-L437, see , see https://github.com/phetsims/density-buoyancy-common/issues/317
-    this.pool.fluidVolumeProperty.setInitialValue( this.pool.fluidVolumeProperty.value );
-
     // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
     this.applicationModeProperty.link( ( scene, previousScene ) => {
       this.bottle.internalVisibleProperty.value = scene === 'bottle';

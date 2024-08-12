@@ -7,7 +7,6 @@
  */
 
 import BooleanProperty from '../../../../../axon/js/BooleanProperty.js';
-import DerivedProperty from '../../../../../axon/js/DerivedProperty.js';
 import TReadOnlyProperty from '../../../../../axon/js/TReadOnlyProperty.js';
 import Dimension2 from '../../../../../dot/js/Dimension2.js';
 import Range from '../../../../../dot/js/Range.js';
@@ -16,7 +15,8 @@ import NumberControl, { NumberControlOptions } from '../../../../../scenery-phet
 import NumberDisplay from '../../../../../scenery-phet/js/NumberDisplay.js';
 import { FlowBoxOptions, HBox, HSeparator, Node, Text, VBox } from '../../../../../scenery/js/imports.js';
 import ComboBox from '../../../../../sun/js/ComboBox.js';
-import DensityBuoyancyCommonConstants, { toLiters } from '../../../common/DensityBuoyancyCommonConstants.js';
+import DensityBuoyancyCommonConstants from '../../../common/DensityBuoyancyCommonConstants.js';
+import UnitConversionProperty from '../../../../../axon/js/UnitConversionProperty.js';
 import { MassShape } from '../../../common/model/MassShape.js';
 import densityBuoyancyCommon from '../../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../../DensityBuoyancyCommonStrings.js';
@@ -31,8 +31,11 @@ type SelfOptions = {
 export type ShapeSizeControlNodeOptions = SelfOptions & WithRequired<FlowBoxOptions, 'tandem'>;
 
 export default class ShapeSizeControlNode extends VBox {
-  public constructor( shapeModel: BuoyancyShapeModel, volumeProperty: TReadOnlyProperty<number>,
-                      listParent: Node, providedOptions?: ShapeSizeControlNodeOptions ) {
+  public constructor(
+    shapeModel: BuoyancyShapeModel,
+    volumeProperty: TReadOnlyProperty<number>, // cubic meters
+    listParent: Node,
+    providedOptions?: ShapeSizeControlNodeOptions ) {
 
     const options = optionize<ShapeSizeControlNodeOptions, SelfOptions, FlowBoxOptions>()( {
       labelNode: null
@@ -94,9 +97,9 @@ export default class ShapeSizeControlNode extends VBox {
       }
     }, numberControlOptions ) );
 
-    // DerivedProperty doesn't need disposal, since everything here lives for the lifetime of the simulation
-    // TODO: Consider UnitConversionProperty, see https://github.com/phetsims/density-buoyancy-common/issues/317
-    const litersProperty = new DerivedProperty( [ volumeProperty ], volume => toLiters( volume ) );
+    const litersProperty = new UnitConversionProperty( volumeProperty, {
+      factor: DensityBuoyancyCommonConstants.LITERS_IN_CUBIC_METER
+    } );
 
     this.children = [
       new HBox( {

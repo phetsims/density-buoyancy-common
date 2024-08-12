@@ -170,7 +170,7 @@ export default class BuoyancyApplicationsModel extends DensityBuoyancyModel {
    */
   public override reset(): void {
 
-    // TODO: Can we call resetBoatScene from reset? See , see https://github.com/phetsims/density-buoyancy-common/issues/317
+    // TODO: Can we call resetBoatScene from reset, see https://github.com/phetsims/density-buoyancy-common/issues/317
 
     this.bottle.reset();
     this.block.reset();

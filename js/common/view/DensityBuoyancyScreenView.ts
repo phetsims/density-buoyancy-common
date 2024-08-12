@@ -2,8 +2,8 @@
 
 /**
  * The main base ScreenView for all Density/Buoyancy screens.
- * TODO: Elaborate on the main responsibilities of this class, see https://github.com/phetsims/density-buoyancy-common/issues/317
- * TODO: Currently at 871 lines, this file is more complex. Can it be simplified or modularized? See https://github.com/phetsims/density-buoyancy-common/issues/317
+ * TODO: Elaborate on the main responsibilities of this class, see https://github.com/phetsims/density-buoyancy-common/issues/334
+ * TODO: Currently at 871 lines, this file is more complex. Can it be simplified or modularized? See https://github.com/phetsims/density-buoyancy-common/issues/334
  *
  * @author Jonathan Olson (PhET Interactive Simulations)
  */
@@ -624,7 +624,6 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
   /**
    * Projects a 3d model point to a 2d view point (in the screen view's coordinate frame).
    * see https://github.com/phetsims/density-buoyancy-common/issues/142
-   * TODO: This breaks if sceneNode hasn't been defined, https://github.com/phetsims/density-buoyancy-common/issues/317
    */
   public modelToViewPoint( point: Vector3 ): Vector2 {
     return this.globalToLocalPoint( this.sceneNode.projectPoint( point ) );

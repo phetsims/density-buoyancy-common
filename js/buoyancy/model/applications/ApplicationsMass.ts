@@ -61,14 +61,14 @@ export default abstract class ApplicationsMass extends Mass {
    *
    * Assumes step information was updated.
    *
-   * TODO: Why is this different than getDisplacedVolume? Should they share implementation? See https://github.com/phetsims/density-buoyancy-common/issues/317
+   * TODO: Why is this different than getDisplacedVolume? Should they share implementation? See https://github.com/phetsims/density-buoyancy-common/issues/330
    */
   public getDisplacedArea( fluidLevel: number ): number {
     const bottom = this.stepBottom;
     const top = this.stepTop;
 
-    // TODO: https://github.com/phetsims/density-buoyancy-common/issues/317 if the fluid level is beyond the top, it probably shouldn't be 0, right?
-    // AV: I think the area refers to the horizontal slice, so outside the bounds it should be 0. But will come back to this later to better document.
+    // If the fluidLevel we are interested in is fully above or fully below the mass, then the mass does not displace any
+    // area in that horizontal slice.
     if ( fluidLevel < bottom || fluidLevel > top ) {
       return 0;
     }
@@ -106,7 +106,7 @@ export default abstract class ApplicationsMass extends Mass {
 
   /**
    * Given a list of values and a ratio from 0 (the start) to 1 (the end), return an interpolated value.
-   * TODO: See if this and other occurrences should use dot piecewise linear functions, see https://github.com/phetsims/density-buoyancy-common/issues/317
+   * TODO: See if this and other occurrences should use dot piecewise linear functions, see https://github.com/phetsims/density-buoyancy-common/issues/330
    */
   protected static evaluatePiecewiseLinear( values: number[], ratio: number ): number {
     const logicalIndex = ratio * ( values.length - 1 );

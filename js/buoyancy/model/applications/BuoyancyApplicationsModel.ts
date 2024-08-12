@@ -109,13 +109,7 @@ export default class BuoyancyApplicationsModel extends DensityBuoyancyModel {
       matrix: Matrix3.translation( -0.77, -Scale.SCALE_BASE_BOUNDS.minY ),
       displayType: DisplayType.NEWTONS,
       tandem: tandem.createTandem( 'scale' ),
-      canMove: false,
-      inputEnabledPropertyOptions: {
-
-        // TODO: Why can the input enabled be turned on? Is this adding a phet-io feature that makes the scale movable? see , see https://github.com/phetsims/density-buoyancy-common/issues/317
-        // If so, is changing the inputEnabledProperty to true the only thing that has to happen to make it work?
-        phetioReadOnly: false
-      }
+      canMove: false
     } );
     this.availableMasses.push( this.scale );
 

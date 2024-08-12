@@ -21,7 +21,7 @@ import BuoyancyDisplayOptionsPanel from './BuoyancyDisplayOptionsPanel.js';
 // constants
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN_SMALL;
 
-type BuoyancyScreenViewOptions = StrictOmit<DensityBuoyancyScreenViewOptions, 'canShowForces'>;
+export type BuoyancyScreenViewOptions = StrictOmit<DensityBuoyancyScreenViewOptions, 'canShowForces'>;
 
 export default abstract class BuoyancyScreenView<T extends DensityBuoyancyModel> extends DensityBuoyancyScreenView<T> {
 

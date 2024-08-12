@@ -6,10 +6,9 @@
  * @author Michael Kauzmann (PhET Interactive Simulations)
  */
 
-import { combineOptions } from '../../../../phet-core/js/optionize.js';
+import optionize, { EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
 import { Node, VBox } from '../../../../scenery/js/imports.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
-import { DensityBuoyancyScreenViewOptions } from '../../common/view/DensityBuoyancyScreenView.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import BuoyancyCompareModel from '../model/BuoyancyCompareModel.js';
@@ -31,7 +30,7 @@ import MassView from '../../common/view/MassView.js';
 import CuboidView from '../../common/view/CuboidView.js';
 import BlocksPanel from '../../common/view/BlocksPanel.js';
 import Panel from '../../../../sun/js/Panel.js';
-import BuoyancyScreenView from './BuoyancyScreenView.js';
+import BuoyancyScreenView, { BuoyancyScreenViewOptions } from './BuoyancyScreenView.js';
 import StrictOmit from '../../../../phet-core/js/types/StrictOmit.js';
 import MaterialProperty from '../../common/model/MaterialProperty.js';
 
@@ -41,7 +40,7 @@ const MARGIN = DensityBuoyancyCommonConstants.MARGIN_SMALL;
 // Relatively arbitrary default
 const MAX_RIGHT_SIDE_CONTENT_WIDTH = ScreenView.DEFAULT_LAYOUT_BOUNDS.width / 2;
 
-type BuoyancyCompareScreenViewOptions = StrictOmit<DensityBuoyancyScreenViewOptions, 'canShowForces' | 'supportsDepthLines' | 'forcesInitiallyDisplayed' | 'massValuesInitiallyDisplayed' | 'initialForceScale'>;
+type BuoyancyCompareScreenViewOptions = StrictOmit<BuoyancyScreenViewOptions, | 'supportsDepthLines' | 'forcesInitiallyDisplayed' | 'massValuesInitiallyDisplayed' | 'initialForceScale'>;
 
 export default class BuoyancyCompareScreenView extends BuoyancyScreenView<BuoyancyCompareModel> {
 
@@ -50,10 +49,9 @@ export default class BuoyancyCompareScreenView extends BuoyancyScreenView<Buoyan
 
   private readonly blocksValuePanel: Panel;
 
-  public constructor( model: BuoyancyCompareModel, options: BuoyancyCompareScreenViewOptions ) {
+  public constructor( model: BuoyancyCompareModel, providedOptions: BuoyancyCompareScreenViewOptions ) {
 
-    // TODO: https://github.com/phetsims/density-buoyancy-common/issues/317 is combineOptions preferable to optionize here?
-    super( model, combineOptions<DensityBuoyancyScreenViewOptions>( {
+    const options = optionize<BuoyancyCompareScreenViewOptions, EmptySelfOptions, BuoyancyScreenViewOptions>()( {
       supportsDepthLines: true,
       forcesInitiallyDisplayed: false,
       massValuesInitiallyDisplayed: true,
@@ -63,7 +61,9 @@ export default class BuoyancyCompareScreenView extends BuoyancyScreenView<Buoyan
       viewOffset: DensityBuoyancyCommonConstants.BUOYANCY_BASICS_VIEW_OFFSET,
 
       layoutBounds: ScreenView.DEFAULT_LAYOUT_BOUNDS // used by constant above.
-    }, options ) );
+    }, providedOptions );
+
+    super( model, options );
 
     const tandem = options.tandem;
 

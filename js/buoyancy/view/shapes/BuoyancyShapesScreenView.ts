@@ -195,7 +195,7 @@ export default class BuoyancyShapesScreenView extends BuoyancyScreenView<Buoyanc
     const scaleViews = this.massViews.filter( massView => massView instanceof ScaleView );
 
     // Layer for the focusable masses. Must be in the scene graph, so they can populate the pdom order
-    // TODO: Remove pdomOrder:[] or document why it is necessary, see https://github.com/phetsims/density-buoyancy-common/issues/317
+    // TODO: Remove pdomOrder:[] or document why it is necessary, see https://github.com/phetsims/density-buoyancy-common/issues/329
     const blockALayer = new Node( { pdomOrder: [] } );
     this.addChild( blockALayer );
     const blockBLayer = new Node( { pdomOrder: [] } );

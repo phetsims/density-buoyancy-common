@@ -346,7 +346,7 @@ export default class BuoyancyApplicationsScreenView extends BuoyancyScreenView<B
     this.addChild( this.popupLayer );
 
     // Layer for the focusable masses. Must be in the scene graph, so they can populate the pdom order
-    // TODO: Remove pdomOrder:[] or document why it is necessary, see https://github.com/phetsims/density-buoyancy-common/issues/317
+    // TODO: Remove pdomOrder:[] or document why it is necessary, see https://github.com/phetsims/density-buoyancy-common/issues/329
     const blockLayer = new Node( { pdomOrder: [] } );
     this.addChild( blockLayer );
     const bottleBoatLayer = new Node( { pdomOrder: [] } );

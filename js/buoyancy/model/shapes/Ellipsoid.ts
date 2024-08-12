@@ -61,7 +61,7 @@ export default class Ellipsoid extends Mass {
   /**
    * Updates the size of the ellipsoid.
    */
-  private updateSize( size: Bounds3 ): void {
+  protected updateSize( size: Bounds3 ): void {
     this.engine.updateFromVertices( this.body, Ellipsoid.getEllipsoidVertices( size.width, size.height ), false );
     this.sizeProperty.value = size;
     this.shapeProperty.value = Ellipsoid.getEllipsoidShape( size.width, size.height );
@@ -100,9 +100,11 @@ export default class Ellipsoid extends Mass {
     const xOffset = this.stepMatrix.m02();
     const yOffset = this.stepMatrix.m12();
 
+    const size = this.sizeProperty.value;
+
     this.stepX = xOffset;
-    this.stepBottom = yOffset + this.sizeProperty.value.minY;
-    this.stepTop = yOffset + this.sizeProperty.value.maxY;
+    this.stepBottom = yOffset + size.minY;
+    this.stepTop = yOffset + size.maxY;
 
     const a = this.sizeProperty.value.width / 2;
     const b = this.sizeProperty.value.height / 2;
@@ -181,7 +183,7 @@ export default class Ellipsoid extends Mass {
   /**
    * Returns the volume of an ellipsoid with the given axis-aligned bounding box.
    */
-  private static getVolume( size: Bounds3 ): number {
+  protected static getVolume( size: Bounds3 ): number {
     const value = Math.PI * size.volume / 6;
 
     // Rounding to proactively prevent infinite compounding rounding errors, like https://github.com/phetsims/density-buoyancy-common/issues/192

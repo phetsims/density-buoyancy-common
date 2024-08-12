@@ -244,6 +244,9 @@ export default class BuoyancyShapesScreenView extends BuoyancyScreenView<Buoyanc
     if ( mass instanceof Cone ) {
       return new ConeView( mass, this, this.displayProperties );
     }
+    else if ( mass instanceof Duck ) {
+      return new DuckView( mass, this, this.displayProperties );
+    }
     else if ( mass instanceof Ellipsoid ) {
       return new EllipsoidView( mass, this, this.displayProperties );
     }
@@ -252,9 +255,6 @@ export default class BuoyancyShapesScreenView extends BuoyancyScreenView<Buoyanc
     }
     else if ( mass instanceof VerticalCylinder ) {
       return new VerticalCylinderView( mass, this, this.displayProperties );
-    }
-    else if ( mass instanceof Duck ) {
-      return new DuckView( mass, this, this.displayProperties );
     }
     else {
       return super.getMassViewFromMass( mass );

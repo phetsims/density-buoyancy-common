@@ -8,7 +8,7 @@
 
 import DynamicProperty from '../../../../../axon/js/DynamicProperty.js';
 import Property from '../../../../../axon/js/Property.js';
-import { GatedVisibleProperty, ManualConstraint, Node, VBox } from '../../../../../scenery/js/imports.js';
+import { GatedVisibleProperty, Node, VBox } from '../../../../../scenery/js/imports.js';
 import DensityBuoyancyCommonConstants from '../../../common/DensityBuoyancyCommonConstants.js';
 import Material from '../../../common/model/Material.js';
 import ABPanelsNode from '../../../common/view/ABPanelsNode.js';
@@ -179,13 +179,7 @@ export default class BuoyancyShapesScreenView extends BuoyancyScreenView<Buoyanc
       tandem: this.tandem.createTandem( 'blocksModeRadioButtonGroup' )
     } );
 
-    // Manually constrain the layout of the reset button and blocks mode radio button group.
-    ManualConstraint.create( this, [ this.resetAllButton, blocksModeRadioButtonGroup ],
-      ( resetAllButtonWrapper, blocksModeRadioButtonGroupWrapper ) => {
-        blocksModeRadioButtonGroupWrapper.right = resetAllButtonWrapper.left - DensityBuoyancyCommonConstants.MARGIN;
-        blocksModeRadioButtonGroupWrapper.bottom = resetAllButtonWrapper.bottom;
-      } );
-
+    this.alignNodeWithResetAllButton( blocksModeRadioButtonGroup );
     this.addChild( blocksModeRadioButtonGroup );
 
     this.setRightBarrierViewPoint( rightSideVBox.boundsProperty );

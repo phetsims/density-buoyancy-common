@@ -7,7 +7,7 @@
  */
 
 import { combineOptions } from '../../../../phet-core/js/optionize.js';
-import { ManualConstraint, Node, VBox } from '../../../../scenery/js/imports.js';
+import { Node, VBox } from '../../../../scenery/js/imports.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 import { DensityBuoyancyScreenViewOptions } from '../../common/view/DensityBuoyancyScreenView.js';
 import ABControlsNode from '../../common/view/ABControlsNode.js';
@@ -126,14 +126,7 @@ export default class BuoyancyBasicsExploreScreenView extends BuoyancyScreenView<
       tandem: this.tandem.createTandem( 'blocksModeRadioButtonGroup' )
     } );
 
-    ManualConstraint.create( this, [ this.resetAllButton, blocksModeRadioButtonGroup ],
-      ( resetAllButtonWrapper, blocksModeRadioButtonGroupWrapper ) => {
-
-        // Set the location of the blocks mode radio button relative to the reset all button, or the right side of the screen
-        // if the reset all button is not visible
-        blocksModeRadioButtonGroupWrapper.right = resetAllButtonWrapper.visible ? ( resetAllButtonWrapper.left - DensityBuoyancyCommonConstants.MARGIN ) : resetAllButtonWrapper.right;
-        blocksModeRadioButtonGroupWrapper.bottom = resetAllButtonWrapper.bottom;
-      } );
+    this.alignNodeWithResetAllButton( blocksModeRadioButtonGroup );
 
     this.addChild( blocksModeRadioButtonGroup );
 

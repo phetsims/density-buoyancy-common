@@ -25,7 +25,7 @@ import arrayRemove from '../../../../phet-core/js/arrayRemove.js';
 import optionize from '../../../../phet-core/js/optionize.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import ResetAllButton from '../../../../scenery-phet/js/buttons/ResetAllButton.js';
-import { AlignBox, AlignBoxXAlign, AlignBoxYAlign, animatedPanZoomSingleton, Color, ColorProperty, Image, ImageableImage, LinearGradient, Mouse, Node, Pointer, Rectangle, Text } from '../../../../scenery/js/imports.js';
+import { AlignBox, AlignBoxXAlign, AlignBoxYAlign, animatedPanZoomSingleton, Color, ColorProperty, Image, ImageableImage, LinearGradient, ManualConstraint, Mouse, Node, Pointer, Rectangle, Text } from '../../../../scenery/js/imports.js';
 import Checkbox from '../../../../sun/js/Checkbox.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
@@ -775,6 +775,17 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
       yAlign: yAlign,
       margin: MARGIN
     } ) );
+  }
+
+  protected alignNodeWithResetAllButton( node: Node ): void {
+    ManualConstraint.create( this, [ this.resetAllButton, node ],
+      ( resetAllButtonWrapper, nodeWrapper ) => {
+
+        // Set the location of the node relative to the reset all button, or the right side of the screen
+        // if the reset all button is not visible
+        nodeWrapper.right = resetAllButtonWrapper.visible ? ( resetAllButtonWrapper.left - DensityBuoyancyCommonConstants.MARGIN ) : resetAllButtonWrapper.right;
+        nodeWrapper.bottom = resetAllButtonWrapper.bottom;
+      } );
   }
 
   /**

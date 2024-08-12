@@ -7,7 +7,7 @@
  */
 
 import { combineOptions } from '../../../../phet-core/js/optionize.js';
-import { ManualConstraint, Node, VBox } from '../../../../scenery/js/imports.js';
+import { Node, VBox } from '../../../../scenery/js/imports.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 import Material from '../../common/model/Material.js';
 import { DensityBuoyancyScreenViewOptions } from '../../common/view/DensityBuoyancyScreenView.js';
@@ -25,8 +25,6 @@ import MassView from '../../common/view/MassView.js';
 import FluidDensityPanel from './FluidDensityPanel.js';
 import BuoyancyScreenView from './BuoyancyScreenView.js';
 import StrictOmit from '../../../../phet-core/js/types/StrictOmit.js';
-
-const MARGIN = DensityBuoyancyCommonConstants.MARGIN_SMALL;
 
 type BuoyancyExploreScreenViewOptions = StrictOmit<DensityBuoyancyScreenViewOptions, 'canShowForces' | 'supportsDepthLines' | 'forcesInitiallyDisplayed' | 'massValuesInitiallyDisplayed' | 'initialForceScale'>;
 
@@ -131,18 +129,7 @@ export default class BuoyancyExploreScreenView extends BuoyancyScreenView<Buoyan
       tandem: this.tandem.createTandem( 'blocksModeRadioButtonGroup' )
     } );
 
-    ManualConstraint.create( this, [ this.resetAllButton, blocksModeRadioButtonGroup ],
-      ( resetAllButtonWrapper, blocksModeRadioButtonGroupWrapper ) => {
-
-        // TODO: What if the reset all button is invisible due to phet-io customization? See https://github.com/phetsims/density-buoyancy-common/issues/317
-        blocksModeRadioButtonGroupWrapper.right = resetAllButtonWrapper.left - DensityBuoyancyCommonConstants.MARGIN;
-        blocksModeRadioButtonGroupWrapper.bottom = resetAllButtonWrapper.bottom;
-      } );
-
-    this.visibleBoundsProperty.link( visibleBounds => {
-      blocksModeRadioButtonGroup.bottom = this.visibleBoundsProperty.value.bottom - MARGIN;
-    } );
-
+    this.alignNodeWithResetAllButton( blocksModeRadioButtonGroup );
     this.addChild( blocksModeRadioButtonGroup );
 
     this.setRightBarrierViewPoint( rightSideVBox.boundsProperty );

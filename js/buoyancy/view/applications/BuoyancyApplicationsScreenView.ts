@@ -16,7 +16,7 @@ import resetArrow_png from '../../../../../scenery-phet/images/resetArrow_png.js
 import NumberControl, { NumberControlOptions } from '../../../../../scenery-phet/js/NumberControl.js';
 import NumberDisplay from '../../../../../scenery-phet/js/NumberDisplay.js';
 import PhetFont from '../../../../../scenery-phet/js/PhetFont.js';
-import { Color, GatedVisibleProperty, HBox, HSeparator, Image, ManualConstraint, Node, Text, VBox } from '../../../../../scenery/js/imports.js';
+import { Color, GatedVisibleProperty, HBox, HSeparator, Image, Node, Text, VBox } from '../../../../../scenery/js/imports.js';
 import RectangularPushButton from '../../../../../sun/js/buttons/RectangularPushButton.js';
 import RectangularRadioButtonGroup from '../../../../../sun/js/buttons/RectangularRadioButtonGroup.js';
 import Panel from '../../../../../sun/js/Panel.js';
@@ -340,12 +340,7 @@ export default class BuoyancyApplicationsScreenView extends BuoyancyScreenView<B
     const fluidDensityPanel = new FluidDensityPanel( model, invisibleMaterials, this.popupLayer, tandem.createTandem( 'fluidDensityPanel' ) );
     this.addAlignBox( fluidDensityPanel, 'center', 'bottom' );
 
-    ManualConstraint.create( this, [ this.resetAllButton, applicationModeRadioButtonGroup ],
-      ( resetAllButtonWrapper, applicationModeRadioButtonGroupWrapper ) => {
-        applicationModeRadioButtonGroupWrapper.right = resetAllButtonWrapper.left - DensityBuoyancyCommonConstants.MARGIN;
-        applicationModeRadioButtonGroupWrapper.bottom = resetAllButtonWrapper.bottom;
-      } );
-
+    this.alignNodeWithResetAllButton( applicationModeRadioButtonGroup );
     this.addChild( applicationModeRadioButtonGroup );
 
     this.addChild( this.popupLayer );

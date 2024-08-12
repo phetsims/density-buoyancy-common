@@ -484,11 +484,9 @@ const getMassReadoutLayoutFunction = ( normalLayoutFunction: LayoutFunction ) =>
   return ( titleNode: Node, numberDisplay: NumberDisplay, slider: Slider, decrementButton: ArrowButton | null, incrementButton: ArrowButton | null ) => {
     const tempNode = normalLayoutFunction( titleNode, numberDisplay, slider, decrementButton, incrementButton );
     const width = tempNode.width;
-
-    // TODO: Safe to dispose the parent before detaching the children? See https://github.com/phetsims/density-buoyancy-common/issues/317
-    tempNode.dispose();
     titleNode.detach();
     numberDisplay.detach();
+    tempNode.dispose();
     return new Node( {
       children: [ new HBox( {
         children: [ titleNode, numberDisplay ],

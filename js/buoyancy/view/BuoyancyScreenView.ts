@@ -16,12 +16,18 @@ import PoolScaleHeightControl from '../../common/view/PoolScaleHeightControl.js'
 import Vector3 from '../../../../dot/js/Vector3.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 import Bounds2 from '../../../../dot/js/Bounds2.js';
+import BuoyancyDisplayOptionsPanel from './BuoyancyDisplayOptionsPanel.js';
+
+// constants
+const MARGIN = DensityBuoyancyCommonConstants.MARGIN_SMALL;
 
 type BuoyancyScreenViewOptions = StrictOmit<DensityBuoyancyScreenViewOptions, 'canShowForces'>;
 
 export default abstract class BuoyancyScreenView<T extends DensityBuoyancyModel> extends DensityBuoyancyScreenView<T> {
 
   protected readonly poolScaleHeightControl: PoolScaleHeightControl | null = null;
+
+  protected readonly displayOptionsPanel: BuoyancyDisplayOptionsPanel;
 
   protected constructor( model: T,
                          providedOptions: BuoyancyScreenViewOptions ) {
@@ -32,6 +38,8 @@ export default abstract class BuoyancyScreenView<T extends DensityBuoyancyModel>
 
     super( model, options );
 
+    const tandem = options.tandem;
+
     if ( model.pool.scale ) {
       this.poolScaleHeightControl = new PoolScaleHeightControl( model.pool.scale,
         model.poolBounds, model.pool.fluidYInterpolatedProperty, this, {
@@ -39,6 +47,15 @@ export default abstract class BuoyancyScreenView<T extends DensityBuoyancyModel>
         } );
       this.addChild( this.poolScaleHeightControl );
     }
+
+    this.displayOptionsPanel = new BuoyancyDisplayOptionsPanel( this.displayProperties, {
+      tandem: tandem.createTandem( 'displayOptionsPanel' ),
+      contentWidth: this.modelToViewPoint( new Vector3(
+        this.model.poolBounds.left,
+        this.model.poolBounds.top,
+        this.model.poolBounds.front
+      ) ).x - 2 * MARGIN
+    } );
   }
 
   private positionScaleHeightControl(): void {

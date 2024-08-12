@@ -52,8 +52,6 @@ import { Shape } from '../../../../kite/js/imports.js';
 import DisplayProperties from '../../buoyancy/view/DisplayProperties.js';
 import { BufferGeometry } from '../../../../chipper/node_modules/@types/three/index.js';
 import Bounds3 from '../../../../dot/js/Bounds3.js';
-import BuoyancyDisplayOptionsPanel from '../../buoyancy/view/BuoyancyDisplayOptionsPanel.js';
-import packageJSON from '../../../../joist/js/packageJSON.js';
 
 // constants
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN_SMALL;
@@ -111,8 +109,6 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
   protected readonly resetEmitter = new Emitter();
 
   protected readonly displayProperties: DisplayProperties;
-
-  protected readonly displayOptionsPanel: BuoyancyDisplayOptionsPanel;
 
   public constructor( model: Model, providedOptions: SelfOptions ) {
 
@@ -176,16 +172,6 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
     this.addChild( this.sceneNode );
 
     this.addChild( this.massDecorationLayer );
-
-    // TODO: This field is not used in density, see https://github.com/phetsims/density-buoyancy-common/issues/291
-    this.displayOptionsPanel = new BuoyancyDisplayOptionsPanel( this.displayProperties, {
-      tandem: packageJSON.name === 'density' ? Tandem.OPT_OUT : tandem.createTandem( 'displayOptionsPanel' ),
-      contentWidth: this.modelToViewPoint( new Vector3(
-        this.model.poolBounds.left,
-        this.model.poolBounds.top,
-        this.model.poolBounds.front
-      ) ).x - 2 * MARGIN
-    } );
 
     this.massViews = createObservableArray<MassView>();
 

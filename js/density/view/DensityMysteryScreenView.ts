@@ -97,8 +97,7 @@ export default class DensityMysteryScreenView extends DensityBuoyancyScreenView<
       children: [
         new Text( DensityBuoyancyCommonStrings.blocksStringProperty, {
           font: DensityBuoyancyCommonConstants.TITLE_FONT,
-          maxWidth: 85,
-          tandem: blocksPanelTandem.createTandem( 'titleText' )
+          maxWidth: 85
         } ),
         blockSetContent
       ],

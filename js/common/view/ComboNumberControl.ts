@@ -2,7 +2,6 @@
 
 /**
  * Handles controlling a quantity with a NumberControl, but combined with a ComboBox for specific non-custom values.
- * TODO: More careful review as part of https://github.com/phetsims/density-buoyancy-common/issues/317
  *
  * @author Jonathan Olson (PhET Interactive Simulations)
  */

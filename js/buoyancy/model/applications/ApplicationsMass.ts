@@ -17,6 +17,7 @@ import PhysicsEngine from '../../../common/model/PhysicsEngine.js';
 import Vector2 from '../../../../../dot/js/Vector2.js';
 import Vector3 from '../../../../../dot/js/Vector3.js';
 import Bounds3 from '../../../../../dot/js/Bounds3.js';
+import Utils from '../../../../../dot/js/Utils.js';
 
 export type ApplicationsMassOptions = InstrumentedMassOptions;
 
@@ -68,8 +69,11 @@ export default abstract class ApplicationsMass extends Mass {
 
     // TODO: https://github.com/phetsims/density-buoyancy-common/issues/317 if the fluid level is beyond the top, it probably shouldn't be 0, right?
     // AV: I think the area refers to the horizontal slice, so outside the bounds it should be 0. But will come back to this later to better document.
-    if ( fluidLevel < bottom || fluidLevel > top ) {
+    if ( fluidLevel < bottom ) {
       return 0;
+    }
+    if ( fluidLevel > top ) {
+      fluidLevel = top;
     }
 
     const ratio = ( fluidLevel - bottom ) / ( top - bottom );
@@ -103,6 +107,21 @@ export default abstract class ApplicationsMass extends Mass {
     // For boat and bottle this is a no-op
   }
 
+  /**
+   * Given a list of values and a ratio from 0 (the start) to 1 (the end), return an interpolated value.
+   * TODO: See if this and other occurrences should use dot piecewise linear functions, see https://github.com/phetsims/density-buoyancy-common/issues/317
+   */
+  protected static evaluatePiecewiseLinear( values: number[], ratio: number ): number {
+    const logicalIndex = ratio * ( values.length - 1 );
+    if ( logicalIndex % 1 === 0 ) {
+      return values[ logicalIndex ];
+    }
+    else {
+      const a = values[ Math.floor( logicalIndex ) ];
+      const b = values[ Math.ceil( logicalIndex ) ];
+      return Utils.linear( Math.floor( logicalIndex ), Math.ceil( logicalIndex ), a, b, logicalIndex );
+    }
+  }
 }
 
 densityBuoyancyCommon.register( 'ApplicationsMass', ApplicationsMass );

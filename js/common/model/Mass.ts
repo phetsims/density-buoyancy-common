@@ -580,22 +580,6 @@ export default abstract class Mass extends PhetioObject {
     Disposable.assertNotDisposable();
   }
 
-  /**
-   * Given a list of values and a ratio from 0 (the start) to 1 (the end), return an interpolated value.
-   * TODO: See if this and other occurrences should use dot piecewise linear functions, see https://github.com/phetsims/density-buoyancy-common/issues/317
-   */
-  protected static evaluatePiecewiseLinear( values: number[], ratio: number ): number {
-    const logicalIndex = ratio * ( values.length - 1 );
-    if ( logicalIndex % 1 === 0 ) {
-      return values[ logicalIndex ];
-    }
-    else {
-      const a = values[ Math.floor( logicalIndex ) ];
-      const b = values[ Math.ceil( logicalIndex ) ];
-      return Utils.linear( Math.floor( logicalIndex ), Math.ceil( logicalIndex ), a, b, logicalIndex );
-    }
-  }
-
   public static readonly MassIO = new IOType<Mass, MassIOStateObject>( 'MassIO', {
     valueType: Mass,
     documentation: 'Represents a mass that interacts in the scene, and can potentially float or displace fluid.',

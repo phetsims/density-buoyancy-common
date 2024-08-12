@@ -11,7 +11,7 @@ import StrictOmit from '../../../../../phet-core/js/types/StrictOmit.js';
 import Utils from '../../../../../dot/js/Utils.js';
 import Range from '../../../../../dot/js/Range.js';
 import { Shape } from '../../../../../kite/js/imports.js';
-import Mass, { MassOptions } from '../../../common/model/Mass.js';
+import { MassOptions } from '../../../common/model/Mass.js';
 import Material from '../../../common/model/Material.js';
 import densityBuoyancyCommon from '../../../densityBuoyancyCommon.js';
 import BoatBasin from './BoatBasin.js';
@@ -176,11 +176,11 @@ export default class Boat extends ApplicationsMass {
   }
 
   protected override evaluatePiecewiseLinearArea( ratio: number ): number {
-    return Mass.evaluatePiecewiseLinear( BoatDesign.ONE_LITER_DISPLACED_AREAS, ratio ) * this.stepMultiplier * this.stepMultiplier;
+    return ApplicationsMass.evaluatePiecewiseLinear( BoatDesign.ONE_LITER_DISPLACED_AREAS, ratio ) * this.stepMultiplier * this.stepMultiplier;
   }
 
   protected override evaluatePiecewiseLinearVolume( ratio: number ): number {
-    return Mass.evaluatePiecewiseLinear( BoatDesign.ONE_LITER_DISPLACED_VOLUMES, ratio ) * this.stepMultiplier * this.stepMultiplier * this.stepMultiplier;
+    return ApplicationsMass.evaluatePiecewiseLinear( BoatDesign.ONE_LITER_DISPLACED_VOLUMES, ratio ) * this.stepMultiplier * this.stepMultiplier * this.stepMultiplier;
   }
 
   /**
@@ -198,7 +198,7 @@ export default class Boat extends ApplicationsMass {
     else {
       const ratio = ( fluidLevel - bottom ) / ( top - bottom );
 
-      return Mass.evaluatePiecewiseLinear( BoatDesign.ONE_LITER_INTERNAL_AREAS, ratio ) * this.stepMultiplier * this.stepMultiplier;
+      return ApplicationsMass.evaluatePiecewiseLinear( BoatDesign.ONE_LITER_INTERNAL_AREAS, ratio ) * this.stepMultiplier * this.stepMultiplier;
     }
   }
 
@@ -220,7 +220,7 @@ export default class Boat extends ApplicationsMass {
     else {
       const ratio = ( fluidLevel - bottom ) / ( top - bottom );
 
-      return Mass.evaluatePiecewiseLinear( BoatDesign.ONE_LITER_INTERNAL_VOLUMES, ratio ) * this.stepMultiplier * this.stepMultiplier * this.stepMultiplier;
+      return ApplicationsMass.evaluatePiecewiseLinear( BoatDesign.ONE_LITER_INTERNAL_VOLUMES, ratio ) * this.stepMultiplier * this.stepMultiplier * this.stepMultiplier;
     }
   }
 

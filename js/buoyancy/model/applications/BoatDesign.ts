@@ -683,14 +683,11 @@ export default class BoatDesign {
 
 BoatDesign.ONE_LITER_SCALE_MULTIPLIER = ${oneLiterMultiplier};
 BoatDesign.DESIGN_CENTROID = new Vector3( ${centroid.x}, ${centroid.y}, ${centroid.z} );
-BoatDesign.DESIGN_DISPLACED_VOLUME = ${displacedVolume};
 BoatDesign.DESIGN_HULL_VOLUME = ${actualVolume};
-BoatDesign.ONE_LITER_HEIGHT = ${oneLiterHeight};
 BoatDesign.ONE_LITER_DISPLACED_AREAS = [ ${oneLiterDisplacedAreas.join( ', ' )} ];
 BoatDesign.ONE_LITER_DISPLACED_VOLUMES = [ ${oneLiterDisplacedCumulativeVolumes.join( ', ' )} ];
 BoatDesign.ONE_LITER_INTERNAL_AREAS = [ ${oneLiterInternalAreas.join( ', ' )} ];
 BoatDesign.ONE_LITER_INTERNAL_VOLUMES = [ ${oneLiterInternalCumulativeVolumes.join( ', ' )} ];
-BoatDesign.DESIGN_BOUNDS = new Bounds3( ${designBounds.minX}, ${designBounds.minY}, ${designBounds.minZ}, ${designBounds.maxX}, ${designBounds.maxY}, ${designBounds.maxZ} );
 BoatDesign.ONE_LITER_BOUNDS = new Bounds3( ${oneLiterBounds.minX}, ${oneLiterBounds.minY}, ${oneLiterBounds.minZ}, ${oneLiterBounds.maxX}, ${oneLiterBounds.maxY}, ${oneLiterBounds.maxZ} );
 BoatDesign.ONE_LITER_INTERIOR_BOTTOM = ${oneLiterInteriorBottom};
 BoatDesign.ONE_LITER_HULL_VOLUME = BoatDesign.DESIGN_HULL_VOLUME * BoatDesign.ONE_LITER_SCALE_MULTIPLIER * BoatDesign.ONE_LITER_SCALE_MULTIPLIER * BoatDesign.ONE_LITER_SCALE_MULTIPLIER;

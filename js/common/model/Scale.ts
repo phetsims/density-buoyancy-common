@@ -210,12 +210,7 @@ export default class Scale extends Mass {
   public static readonly SCALE_WIDTH = SCALE_WIDTH;
   public static readonly SCALE_HEIGHT = SCALE_HEIGHT;
 
-  // TODO: Remove unused attributes, see https://github.com/phetsims/density-buoyancy-common/issues/317
-  private static readonly SCALE_DEPTH = SCALE_DEPTH;
-  private static readonly SCALE_BASE_HEIGHT = SCALE_BASE_HEIGHT;
   public static readonly SCALE_TOP_HEIGHT = SCALE_TOP_HEIGHT;
-  private static readonly SCALE_AREA = SCALE_AREA;
-  private static readonly SCALE_VOLUME = SCALE_VOLUME;
   public static readonly SCALE_BASE_BOUNDS = SCALE_BASE_BOUNDS;
   public static readonly SCALE_FRONT_OFFSET = SCALE_FRONT_OFFSET;
 }

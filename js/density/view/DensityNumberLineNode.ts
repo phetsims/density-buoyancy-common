@@ -33,8 +33,6 @@ export type DisplayDensity = {
 
 type SelfOptions = {
   displayDensities: DisplayDensity[];
-  materials?: Material[];
-  materialsMaxWidths?: number[];
   width?: number;
   height?: number;
   maxDensity?: number;
@@ -99,19 +97,7 @@ export default class DensityNumberLineNode extends Node {
 
   public constructor( providedOptions?: DensityNumberLineNodeOptions ) {
 
-    // TODO: DensityNumberLineNode only has one instantiation site, so why are things like materials in the defaults? See https://github.com/phetsims/density-buoyancy-common/issues/317
     const options = optionize<DensityNumberLineNodeOptions, SelfOptions, NodeOptions>()( {
-      materials: [
-        Material.HUMAN,
-        Material.GLASS,
-        Material.TITANIUM,
-        Material.STEEL,
-        Material.COPPER
-      ],
-      // We need different maxWidths for each, since some are closer to others
-      materialsMaxWidths: [
-        60, 60, 70, 45, 45
-      ],
       width: WIDTH,
       height: HEIGHT,
       maxDensity: MAX_DENSITY,
@@ -121,6 +107,19 @@ export default class DensityNumberLineNode extends Node {
     }, providedOptions );
 
     super();
+
+    const materials = [
+      Material.HUMAN,
+      Material.GLASS,
+      Material.TITANIUM,
+      Material.STEEL,
+      Material.COPPER
+    ];
+
+    // We need different maxWidths for each, since some are closer to others
+    const materialsMaxWidths = [
+      60, 60, 70, 45, 45
+    ];
 
     this.modelViewTransform = ( density: number ) => {
       return options.width * Math.min( density, options.maxDensity ) / options.maxDensity;
@@ -136,11 +135,11 @@ export default class DensityNumberLineNode extends Node {
     background.localBounds = new Bounds2( 0, 0, options.width, options.height ).dilatedX( options.maxLabelWidth / 2 );
 
     const lineOptions = { stroke: 'black' };
-    options.materials.forEach( ( material, index ) => {
+    materials.forEach( ( material, index ) => {
       const x = this.modelViewTransform( material.density );
       const label = new Text( material.nameProperty, {
         font: new PhetFont( 12 ),
-        maxWidth: index < options.materialsMaxWidths.length ? options.materialsMaxWidths[ index ] : 70
+        maxWidth: index < materialsMaxWidths.length ? materialsMaxWidths[ index ] : 70
       } );
 
       // Avoid infinite loops like https://github.com/phetsims/axon/issues/447 by applying the maxWidth to a different Node

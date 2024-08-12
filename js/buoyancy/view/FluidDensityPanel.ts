@@ -22,12 +22,11 @@ export default class FluidDensityPanel extends Panel {
       popupLayer, {
         invisibleMaterials: invisibleMaterials,
 
-        // TODO: Passing the same tandem 2 places seems suspicious. Check it and document if OK, see https://github.com/phetsims/density-buoyancy-common/issues/317
+        // The ComboNumberControl masquerades as the parent Panel so that we can avoid unnecessary nesting in the tandem tree.
+        // Hence this tandem is passed to children but deleted before the FluidDensityControlNode is itself instrumented.
         tandem: tandem
       } );
     super( fluidDensityControlNode, combineOptions<PanelOptions>( {
-
-      // TODO: See note above, see https://github.com/phetsims/density-buoyancy-common/issues/317
       tandem: tandem
     }, DensityBuoyancyCommonConstants.PANEL_OPTIONS ) );
   }

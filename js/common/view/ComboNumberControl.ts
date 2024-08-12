@@ -184,7 +184,8 @@ export default abstract class ComboNumberControl<T extends Material | Gravity> e
       this.comboBox
     ];
 
-    // @ts-expect-error
+    // @ts-expect-error The ComboNumberControl masquerades as the parent Panel so that we can avoid unnecessary
+    // nesting in the tandem tree.
     delete options.tandem;
 
     this.mutate( options );

@@ -94,6 +94,9 @@ export default class BuoyancyLabScreenView extends BuoyancyScreenView<BuoyancyLa
       spacing: 2 * DensityBuoyancyCommonConstants.SPACING,
       children: [
         new FluidDensityPanel( model, invisibleMaterials, this.popupLayer, tandem.createTandem( 'fluidDensityPanel' ) ),
+
+        // The ComboNumberControl masquerades as the parent Panel so that we can avoid unnecessary nesting in the tandem tree.
+        // Hence gravityPanelTandem is passed to children but deleted before the FluidDensityControlNode is itself instrumented.
         new Panel( new GravityControlNode( model.gravityProperty, this.popupLayer, gravityPanelTandem ), combineOptions<PanelOptions>( {
           tandem: gravityPanelTandem
         }, DensityBuoyancyCommonConstants.PANEL_OPTIONS ) )

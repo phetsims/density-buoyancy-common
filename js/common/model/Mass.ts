@@ -277,7 +277,7 @@ export default abstract class Mass extends PhetioObject {
 
     this.massProperty = new GuardedNumberProperty( this.materialProperty.value.density * this.volumeProperty.value + this.containedMassProperty.value, combineOptions<GuardedNumberPropertyOptions>( {
       tandem: tandem.createTandem( 'massProperty' ),
-      phetioReadOnly: true,
+      phetioReadOnly: true, // Can be overridden
       phetioState: false,
       phetioFeatured: true,
       phetioDocumentation: 'Current mass of the object',
@@ -285,6 +285,7 @@ export default abstract class Mass extends PhetioObject {
       reentrant: true,
       range: new Range( Number.MIN_VALUE, Number.POSITIVE_INFINITY ),
 
+      // phetioReadonly is true by default but sometimes set to false, so we need to validate the provided values
       getPhetioSpecificValidationError: proposedMass => {
 
         // density = mass/ volume
@@ -299,7 +300,7 @@ export default abstract class Mass extends PhetioObject {
       }
     }, options.massPropertyOptions ) );
 
-    // TODO: It looks like massProperty behaves like a DerivedProperty, can it be implemented like one? If not, please document, see https://github.com/phetsims/density-buoyancy-common/issues/317
+    // This behaves like a DerivedProperty, but we're using Multilink to have massProperty be a GuardedNumberProperty
     Multilink.multilink( [
       this.materialProperty.densityProperty,
       this.volumeProperty,

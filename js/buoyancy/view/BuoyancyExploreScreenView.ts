@@ -36,7 +36,7 @@ export default class BuoyancyExploreScreenView extends BuoyancyScreenView<Buoyan
 
     const tandem = options.tandem;
 
-    // TODO: https://github.com/phetsims/density-buoyancy-common/issues/317 why is combineOptions preferable to optionize in this case?
+    // TODO: https://github.com/phetsims/density-buoyancy-common/issues/333 why is combineOptions preferable to optionize in this case?
     super( model, combineOptions<DensityBuoyancyScreenViewOptions>( {
       supportsDepthLines: true,
       forcesInitiallyDisplayed: false,

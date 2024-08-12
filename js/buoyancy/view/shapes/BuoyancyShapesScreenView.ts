@@ -60,7 +60,7 @@ export default class BuoyancyShapesScreenView extends BuoyancyScreenView<Buoyanc
 
     super( model,
 
-      // TODO: Why is combineOptions preferable to optionize here? See https://github.com/phetsims/density-buoyancy-common/issues/317
+      // TODO: Why is combineOptions preferable to optionize here? See https://github.com/phetsims/density-buoyancy-common/issues/333
       combineOptions<DensityBuoyancyScreenViewOptions>( {
         supportsDepthLines: false,
         forcesInitiallyDisplayed: false,

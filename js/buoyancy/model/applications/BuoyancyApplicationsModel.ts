@@ -146,8 +146,7 @@ export default class BuoyancyApplicationsModel extends DensityBuoyancyModel {
   /**
    * Moves the boat and block to their initial locations (see https://github.com/phetsims/buoyancy/issues/25)
    */
-  public resetBoatScene(): void {
-
+  public restartBoatScene(): void {
     this.pool.reset( false );
     this.block.resetPosition();
     this.boat.reset( false );
@@ -159,9 +158,6 @@ export default class BuoyancyApplicationsModel extends DensityBuoyancyModel {
    * Resets things to their original values.
    */
   public override reset(): void {
-
-    // TODO: Can we call resetBoatScene from reset, see https://github.com/phetsims/density-buoyancy-common/issues/317
-
     this.bottle.reset();
     this.block.reset();
     this.boat.reset();

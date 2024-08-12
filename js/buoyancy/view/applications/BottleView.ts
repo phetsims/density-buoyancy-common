@@ -90,7 +90,7 @@ export default class BottleView extends MeasurableMassView {
 
     bottleGroup.add( interiorSurface );
 
-    interiorSurface.renderOrder = 2;
+    interiorSurface.renderOrder = -3;
 
     bottle.materialInsideProperty.linkColorProperty( interiorSurfaceMaterial );
     bottle.materialInsideProperty.linkColorProperty( bottleDrawingData.backBottomMaterial );
@@ -183,7 +183,7 @@ export default class BottleView extends MeasurableMassView {
     [
       frontTopForDepth, // index 0, render order -1
       frontTop, // index 1, render order -2
-      null, // index 2, render order +2, renderOrder place holder for interiorSurface, see above
+      null, // index 2, render order -3, renderOrder place holder for interiorSurface, see constructor
       frontBottomForDepth, // index 3, render order -4
       frontBottom,
       backBottom,

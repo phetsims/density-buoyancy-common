@@ -69,11 +69,8 @@ export default abstract class ApplicationsMass extends Mass {
 
     // TODO: https://github.com/phetsims/density-buoyancy-common/issues/317 if the fluid level is beyond the top, it probably shouldn't be 0, right?
     // AV: I think the area refers to the horizontal slice, so outside the bounds it should be 0. But will come back to this later to better document.
-    if ( fluidLevel < bottom ) {
+    if ( fluidLevel < bottom || fluidLevel > top ) {
       return 0;
-    }
-    if ( fluidLevel > top ) {
-      fluidLevel = top;
     }
 
     const ratio = ( fluidLevel - bottom ) / ( top - bottom );

@@ -24,7 +24,8 @@ export default class SubmergedAccordionBox extends ReadoutListAccordionBox<Mass>
       readoutItems: [],
       expandedDefaultValue: false,
 
-      accessibleName: DensityBuoyancyCommonStrings.percentSubmergedStringProperty
+      accessibleName: DensityBuoyancyCommonStrings.percentSubmergedStringProperty,
+      phetioFeatured: true
     }, providedOptions );
 
     super( DensityBuoyancyCommonStrings.percentSubmergedStringProperty, options );

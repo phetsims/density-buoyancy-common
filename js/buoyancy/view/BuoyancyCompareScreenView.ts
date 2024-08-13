@@ -80,7 +80,10 @@ export default class BuoyancyCompareScreenView extends BuoyancyScreenView<Buoyan
 
     this.blocksValuePanel = new BlocksValuePanel( model.massProperty, model.volumeProperty, model.densityProperty, model.blockSetProperty, {
       sliderTrackSize: new Dimension2( 120, 0.5 ),
-      tandem: tandem.createTandem( 'blocksValuePanel' )
+      tandem: tandem.createTandem( 'blocksValuePanel' ),
+      visiblePropertyOptions: {
+        phetioFeatured: true
+      }
     } );
 
     // Materials are set in densityBox.setMaterials() below

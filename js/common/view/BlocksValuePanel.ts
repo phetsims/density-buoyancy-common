@@ -25,7 +25,7 @@ type SelfOptions = {
   sliderTrackSize?: Dimension2;
 };
 
-type BlocksValuePanelOptions = SelfOptions & PickRequired<Partial<PanelOptions>, 'tandem'>;
+type BlocksValuePanelOptions = SelfOptions & PickRequired<Partial<PanelOptions>, 'tandem' | 'visiblePropertyOptions'>;
 
 export default class BlocksValuePanel extends Panel {
 

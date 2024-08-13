@@ -44,7 +44,10 @@ export default class DensityCompareScreenView extends DensityBuoyancyScreenView<
     this.addAlignBox( blocksPanel, 'right', 'top' );
 
     const blocksValuePanel = new BlocksValuePanel( model.massProperty, model.volumeProperty, model.densityProperty, model.blockSetProperty, {
-      tandem: tandem.createTandem( 'blocksValuePanel' )
+      tandem: tandem.createTandem( 'blocksValuePanel' ),
+      visiblePropertyOptions: {
+        phetioFeatured: true
+      }
     } );
 
     this.addChild( blocksValuePanel );

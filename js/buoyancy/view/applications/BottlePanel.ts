@@ -91,7 +91,7 @@ export default class BottlePanel extends Panel {
       align: 'left',
       stretch: true,
       tandem: bottleControlsTandem,
-      visiblePropertyOptions:{
+      visiblePropertyOptions: {
         phetioFeatured: true
       },
       children: [

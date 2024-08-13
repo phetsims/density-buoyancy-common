@@ -111,6 +111,9 @@ export default class BuoyancyLabScreenView extends BuoyancyScreenView<BuoyancyLa
       this.popupLayer,
       {
         tandem: tandem.createTandem( 'blockPanel' ),
+        visiblePropertyOptions: {
+          phetioFeatured: true
+        },
         minCustomMass: 0.1,
         maxVolumeLiters: maxBlockVolume
       }

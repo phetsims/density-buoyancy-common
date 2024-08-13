@@ -29,6 +29,9 @@ export default class BoatPanel extends Panel {
     const blockControls = new MaterialMassVolumeControlNode( block.materialProperty, block.massProperty, block.volumeProperty,
       block.materialProperty.availableValues, cubicMeters => block.updateSize( Cube.boundsFromVolume( cubicMeters ) ), popupLayer, {
         tandem: tandem.createTandem( 'blockControls' ),
+        visiblePropertyOptions: {
+          phetioFeatured: true
+        },
         highDensityMaxMass: 215
       } );
     const boatVolumeControlTandem = tandem.createTandem( 'boatVolumeNumberControl' );

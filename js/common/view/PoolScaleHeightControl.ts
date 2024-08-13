@@ -88,6 +88,9 @@ export default class PoolScaleHeightControl extends NumberControl {
         // Set the origin to exactly where placement should be (at the bottom of the slider, to line up with the scale at the bottom
         vBox.y = -( actualIncrement.height + margin + slider.height - thumbNode.width / 2 );
         return vBox;
+      },
+      numberDisplayOptions: {
+        tandem: Tandem.OPT_OUT
       }
     }, providedOptions );
 

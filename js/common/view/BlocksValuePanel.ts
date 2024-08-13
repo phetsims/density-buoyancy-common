@@ -61,6 +61,9 @@ export default class BlocksValuePanel extends Panel {
         DensityBuoyancyCommonStrings.kilogramsPatternStringProperty,
         'kilograms', {
           tandem: options.tandem.createTandem( 'massNumberControl' ),
+          visiblePropertyOptions: {
+            phetioFeatured: true
+          },
           sliderOptions: {
             phetioLinkedProperty: massProperty,
             trackSize: options.sliderTrackSize,
@@ -77,6 +80,9 @@ export default class BlocksValuePanel extends Panel {
         DensityBuoyancyCommonConstants.VOLUME_PATTERN_STRING_PROPERTY,
         'value', {
           tandem: options.tandem.createTandem( 'volumeNumberControl' ),
+          visiblePropertyOptions: {
+            phetioFeatured: true
+          },
           sliderOptions: {
             phetioLinkedProperty: volumeProperty,
             trackSize: options.sliderTrackSize,
@@ -93,6 +99,9 @@ export default class BlocksValuePanel extends Panel {
         DensityBuoyancyCommonConstants.KILOGRAMS_PER_VOLUME_PATTERN_STRING_PROPERTY,
         'value', {
           tandem: options.tandem.createTandem( 'densityNumberControl' ),
+          visiblePropertyOptions: {
+            phetioFeatured: true
+          },
           sliderOptions: {
             phetioLinkedProperty: densityProperty,
             trackSize: options.sliderTrackSize,

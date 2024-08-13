@@ -55,6 +55,7 @@ export default class Gravity extends PhetioObject implements MappedWrappedObject
 
     this.gravityValueProperty = new NumberProperty( options.value, {
       tandem: options.tandem.createTandem( 'gravityValueProperty' ),
+      phetioFeatured: true,
       range: new Range( 0.1, 25 )
     } );
     this.custom = options.custom;

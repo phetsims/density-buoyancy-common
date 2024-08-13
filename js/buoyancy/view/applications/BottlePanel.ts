@@ -43,6 +43,9 @@ export default class BottlePanel extends Panel {
         customKeepsConstantDensity: true,
         ownsCustomDensityRange: false, // Bottle has a good range for itself.
         tandem: materialInsideControlsTandem,
+        visiblePropertyOptions: {
+          phetioFeatured: true
+        },
 
         // When controlling the material inside, the custom density is an independent variable and should not automatically
         // sync with the previously selected material's density.

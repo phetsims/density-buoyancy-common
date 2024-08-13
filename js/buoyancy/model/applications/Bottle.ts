@@ -511,7 +511,7 @@ export default class Bottle extends ApplicationsMass {
         // Handle case where only one point is above the absolute Y value
         else if ( a.y > absY || b.y > absY ) {
           const ratio = ( absY - a.y ) / ( b.y - a.y );
-          const x = a.x + ratio * ( b.y - a.y ); // TODO: Should this be b.x - a.x? see see https://github.com/phetsims/density-buoyancy-common/issues/319
+          const x = a.x + ratio * ( b.y - a.y );
 
           if ( a.y > absY ) {
             triangles.push(

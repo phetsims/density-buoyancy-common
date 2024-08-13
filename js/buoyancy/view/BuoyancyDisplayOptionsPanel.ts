@@ -86,7 +86,10 @@ export default class BuoyancyDisplayOptionsPanel extends Panel {
       },
       applyZoomIn: ( scale: number ) => scale + 1,
       applyZoomOut: ( scale: number ) => scale - 1,
-      tandem: forcesSubpanelTandem.createTandem( 'vectorZoomButtonGroup' )
+      tandem: forcesSubpanelTandem.createTandem( 'vectorZoomButtonGroup' ),
+      visiblePropertyOptions: {
+        phetioFeatured: true
+      }
     } );
 
     const content = new VBox( {

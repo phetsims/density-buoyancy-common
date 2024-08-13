@@ -81,7 +81,8 @@ export default class Boat extends ApplicationsMass {
       tandem: options.tandem.createTandem( 'maxVolumeDisplacedProperty' ),
       phetioDocumentation: 'The total volume of the boat, including its capacity and hull.',
       range: new Range( 0.005, 0.03 ),
-      units: 'm^3'
+      units: 'm^3',
+      phetioFeatured: true
     } );
 
     // Update the shape when the block width or displacement changes

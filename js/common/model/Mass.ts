@@ -211,7 +211,8 @@ export default abstract class Mass extends PhetioObject {
       tandem: tandem.createTandem( 'userControlledProperty' ),
       phetioDocumentation: 'For internal use only',
       phetioReadOnly: true,
-      phetioState: false
+      phetioState: false,
+      phetioFeatured: true
     } );
 
     this.inputEnabledProperty = new BooleanProperty( options.canMove, combineOptions<BooleanPropertyOptions>( {
@@ -267,7 +268,8 @@ export default abstract class Mass extends PhetioObject {
       range: new Range( 0, 100 ),
       units: '%',
       tandem: tandem.createTandem( 'percentSubmergedProperty' ),
-      phetioReadOnly: true
+      phetioReadOnly: true,
+      phetioFeatured: true
     } );
 
     this.containedMassProperty = new NumberProperty( 0, {

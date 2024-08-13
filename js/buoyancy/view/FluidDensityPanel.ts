@@ -27,7 +27,10 @@ export default class FluidDensityPanel extends Panel {
         tandem: tandem
       } );
     super( fluidDensityControlNode, combineOptions<PanelOptions>( {
-      tandem: tandem
+      tandem: tandem,
+      visiblePropertyOptions: {
+        phetioFeatured: true
+      }
     }, DensityBuoyancyCommonConstants.PANEL_OPTIONS ) );
   }
 }

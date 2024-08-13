@@ -90,7 +90,8 @@ export default class DisplayProperties {
 
     this.depthLinesVisibleProperty = new BooleanProperty( false, {
       tandem: options.supportsDepthLines ? tandem.createTandem( 'depthLinesVisibleProperty' ) : Tandem.OPT_OUT,
-      phetioDocumentation: 'Display visual lines on blocks to aid in calculating the percentage that the block is submerged.'
+      phetioDocumentation: 'Display visual lines on blocks to aid in calculating the percentage that the block is submerged.',
+      phetioFeatured: true
     } );
   }
 

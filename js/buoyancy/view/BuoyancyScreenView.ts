@@ -50,6 +50,9 @@ export default abstract class BuoyancyScreenView<T extends DensityBuoyancyModel>
 
     this.displayOptionsPanel = new BuoyancyDisplayOptionsPanel( this.displayProperties, {
       tandem: tandem.createTandem( 'displayOptionsPanel' ),
+      visiblePropertyOptions: {
+        phetioFeatured: true
+      },
       contentWidth: this.modelToViewPoint( new Vector3(
         this.model.poolBounds.left,
         this.model.poolBounds.top,

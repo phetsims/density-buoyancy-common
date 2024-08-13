@@ -41,7 +41,8 @@ export default class BuoyancyShapeModel {
   public constructor( massShape: MassShape, width: number, height: number, massTag: MassTag, createMass: BuoyancyShapesModel['createMass'], options: BuoyancyShapeModelOptions ) {
 
     this.shapeNameProperty = new EnumerationProperty( massShape, {
-      tandem: options.tandem.createTandem( 'shapeNameProperty' )
+      tandem: options.tandem.createTandem( 'shapeNameProperty' ),
+      phetioFeatured: true
     } );
 
     this.widthRatioProperty = new NumberProperty( width, {
@@ -67,7 +68,8 @@ export default class BuoyancyShapeModel {
       tandem: options.tandem.createTandem( 'shapeProperty' ),
       phetioReadOnly: true,
       phetioDocumentation: 'A reference to the currently selected shape based on the shape name.',
-      phetioValueType: ReferenceIO( Mass.MassIO )
+      phetioValueType: ReferenceIO( Mass.MassIO ),
+      phetioFeatured: true
     } );
     this.shapeNameProperty.link( () => this.changeShape() );
 

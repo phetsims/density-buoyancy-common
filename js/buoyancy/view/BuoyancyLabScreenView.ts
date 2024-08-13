@@ -170,10 +170,6 @@ export default class BuoyancyLabScreenView extends BuoyancyScreenView<BuoyancyLa
 
     const cuboidViews = this.massViews.filter( massView => massView instanceof CuboidView );
 
-    // Layer for the focusable masses. Must be in the scene graph, so they can populate the pdom order
-    const cuboidPDOMLayer = new Node( { pdomOrder: [] } );
-    this.addChild( cuboidPDOMLayer );
-
     // The focus order is described in https://github.com/phetsims/density-buoyancy-common/issues/121
     this.pdomPlayAreaNode.pdomOrder = [
       cuboidViews[ 0 ].focusablePath,

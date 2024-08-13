@@ -39,7 +39,6 @@ export default class Cube extends Cuboid {
     }, providedOptions );
 
     if ( options.adjustVolumeOnMassChanged ) {
-      //TODO AV https://github.com/phetsims/density-buoyancy-common/issues/333
       options = combineOptions<typeof options>( {
         massPropertyOptions: {
           phetioReadOnly: false

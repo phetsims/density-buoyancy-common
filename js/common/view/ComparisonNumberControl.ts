@@ -32,6 +32,8 @@ export default class ComparisonNumberControl extends NumberControl {
     valueName: string,
     options?: ComparisonNumberControlOptions
   ) {
+
+    // TODO AV https://github.com/phetsims/density-buoyancy-common/issues/333
     super( titleStringProperty, property, property.range, combineOptions<NumberControlOptions>( {
       layoutFunction: NumberControl.createLayoutFunction4( {
         sliderPadding: 5

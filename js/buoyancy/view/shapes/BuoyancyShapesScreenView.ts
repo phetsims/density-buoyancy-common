@@ -16,8 +16,7 @@ import densityBuoyancyCommon from '../../../densityBuoyancyCommon.js';
 import DensityAccordionBox from '../DensityAccordionBox.js';
 import ShapeSizeControlNode from './ShapeSizeControlNode.js';
 import BuoyancyShapesModel from '../../model/shapes/BuoyancyShapesModel.js';
-import { DensityBuoyancyScreenViewOptions } from '../../../common/view/DensityBuoyancyScreenView.js';
-import { combineOptions } from '../../../../../phet-core/js/optionize.js';
+import optionize, { EmptySelfOptions } from '../../../../../phet-core/js/optionize.js';
 import MaterialControlNode from '../../../common/view/MaterialControlNode.js';
 import MultiSectionPanelsNode from '../../../common/view/MultiSectionPanelsNode.js';
 import InfoButton from '../../../../../scenery-phet/js/buttons/InfoButton.js';
@@ -33,7 +32,7 @@ import DensityBuoyancyCommonStrings from '../../../DensityBuoyancyCommonStrings.
 import ScaleView from '../../../common/view/ScaleView.js';
 import MassView from '../../../common/view/MassView.js';
 import FluidDensityPanel from '../FluidDensityPanel.js';
-import BuoyancyScreenView from '../BuoyancyScreenView.js';
+import BuoyancyScreenView, { BuoyancyScreenViewOptions } from '../BuoyancyScreenView.js';
 import StrictOmit from '../../../../../phet-core/js/types/StrictOmit.js';
 import Mass from '../../../common/model/Mass.js';
 import HorizontalCylinder from '../../model/shapes/HorizontalCylinder.js';
@@ -47,30 +46,28 @@ import EllipsoidView from './EllipsoidView.js';
 import Cone from '../../model/shapes/Cone.js';
 import ConeView from './ConeView.js';
 
-type BuoyancyShapesScreenViewOptions = StrictOmit<DensityBuoyancyScreenViewOptions, 'canShowForces' | 'supportsDepthLines' | 'forcesInitiallyDisplayed' | 'massValuesInitiallyDisplayed' | 'initialForceScale'>;
+type BuoyancyShapesScreenViewOptions = StrictOmit<BuoyancyScreenViewOptions, 'supportsDepthLines' | 'forcesInitiallyDisplayed' | 'massValuesInitiallyDisplayed' | 'initialForceScale'>;
 
 export default class BuoyancyShapesScreenView extends BuoyancyScreenView<BuoyancyShapesModel> {
 
   private readonly rightBox: MultiSectionPanelsNode;
   private readonly positionInfoButton: () => void;
 
-  public constructor( model: BuoyancyShapesModel, options: BuoyancyShapesScreenViewOptions ) {
+  public constructor( model: BuoyancyShapesModel, providedOptions: BuoyancyShapesScreenViewOptions ) {
+
+    const options = optionize<BuoyancyShapesScreenViewOptions, EmptySelfOptions, BuoyancyScreenViewOptions>()( {
+      supportsDepthLines: false,
+      forcesInitiallyDisplayed: false,
+      massValuesInitiallyDisplayed: true,
+
+      // Show the forces as larger in this case, because the masses are significantly smaller, see https://github.com/phetsims/density-buoyancy-common/issues/186
+      initialForceScale: 1 / 4,
+      cameraLookAt: DensityBuoyancyCommonConstants.BUOYANCY_CAMERA_LOOK_AT
+    }, providedOptions );
+
+    super( model, options );
 
     const tandem = options.tandem;
-
-    super( model,
-
-      // TODO: Why is combineOptions preferable to optionize here? See https://github.com/phetsims/density-buoyancy-common/issues/333
-      combineOptions<DensityBuoyancyScreenViewOptions>( {
-        supportsDepthLines: false,
-        forcesInitiallyDisplayed: false,
-        massValuesInitiallyDisplayed: true,
-
-        // Show the forces as larger in this case, because the masses are significantly smaller, see https://github.com/phetsims/density-buoyancy-common/issues/186
-        initialForceScale: 1 / 4,
-        cameraLookAt: DensityBuoyancyCommonConstants.BUOYANCY_CAMERA_LOOK_AT
-      }, options )
-    );
 
     // Determine which mystery materials are displayed and which are invisible (but can be enabled in PhET-iO studio)
     const displayedMysteryMaterials = [ Material.FLUID_C, Material.FLUID_D ];

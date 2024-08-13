@@ -8,7 +8,7 @@
 
 import DerivedProperty from '../../../../../axon/js/DerivedProperty.js';
 import Vector3 from '../../../../../dot/js/Vector3.js';
-import { combineOptions } from '../../../../../phet-core/js/optionize.js';
+import optionize, { EmptySelfOptions } from '../../../../../phet-core/js/optionize.js';
 import resetArrow_png from '../../../../../scenery-phet/images/resetArrow_png.js';
 import { Color, GatedVisibleProperty, Image, Node, VBox } from '../../../../../scenery/js/imports.js';
 import RectangularPushButton from '../../../../../sun/js/buttons/RectangularPushButton.js';
@@ -16,7 +16,7 @@ import RectangularRadioButtonGroup from '../../../../../sun/js/buttons/Rectangul
 import DensityBuoyancyCommonConstants from '../../../common/DensityBuoyancyCommonConstants.js';
 import Material from '../../../common/model/Material.js';
 import DensityBuoyancyCommonColors from '../../../common/view/DensityBuoyancyCommonColors.js';
-import DensityBuoyancyScreenView, { DensityBuoyancyScreenViewOptions, PointedAtMassView } from '../../../common/view/DensityBuoyancyScreenView.js';
+import DensityBuoyancyScreenView, { PointedAtMassView } from '../../../common/view/DensityBuoyancyScreenView.js';
 import densityBuoyancyCommon from '../../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../../DensityBuoyancyCommonStrings.js';
 import BuoyancyApplicationsModel from '../../model/applications/BuoyancyApplicationsModel.js';
@@ -27,7 +27,7 @@ import SubmergedAccordionBox from '../SubmergedAccordionBox.js';
 import Bottle from '../../model/applications/Bottle.js';
 import MassView from '../../../common/view/MassView.js';
 import FluidDensityPanel from '../FluidDensityPanel.js';
-import BuoyancyScreenView from '../BuoyancyScreenView.js';
+import BuoyancyScreenView, { BuoyancyScreenViewOptions } from '../BuoyancyScreenView.js';
 import StrictOmit from '../../../../../phet-core/js/types/StrictOmit.js';
 import BoatDesign from '../../model/applications/BoatDesign.js';
 import Mass from '../../../common/model/Mass.js';
@@ -39,22 +39,24 @@ import getBottleIcon from './getBottleIcon.js';
 import BoatPanel from './BoatPanel.js';
 import BottlePanel from './BottlePanel.js';
 
-type BuoyancyExploreScreenViewOptions = StrictOmit<DensityBuoyancyScreenViewOptions, 'canShowForces' | 'supportsDepthLines' | 'forcesInitiallyDisplayed' | 'massValuesInitiallyDisplayed' | 'initialForceScale'>;
+type BuoyancyApplicationsScreenViewOptions = StrictOmit<BuoyancyScreenViewOptions, 'supportsDepthLines' | 'forcesInitiallyDisplayed' | 'massValuesInitiallyDisplayed' | 'initialForceScale'>;
 
 export default class BuoyancyApplicationsScreenView extends BuoyancyScreenView<BuoyancyApplicationsModel> {
 
   private readonly positionResetSceneButton: () => void;
 
-  public constructor( model: BuoyancyApplicationsModel, options: BuoyancyExploreScreenViewOptions ) {
+  public constructor( model: BuoyancyApplicationsModel, providedOptions: BuoyancyApplicationsScreenViewOptions ) {
 
-    const tandem = options.tandem;
-
-    super( model, combineOptions<DensityBuoyancyScreenViewOptions>( {
+    const options = optionize<BuoyancyApplicationsScreenViewOptions, EmptySelfOptions, BuoyancyScreenViewOptions>()( {
       supportsDepthLines: false,
       forcesInitiallyDisplayed: false,
       massValuesInitiallyDisplayed: true,
       cameraLookAt: DensityBuoyancyCommonConstants.BUOYANCY_CAMERA_LOOK_AT
-    }, options ) );
+    }, providedOptions );
+
+    super( model, options );
+
+    const tandem = options.tandem;
 
     // For clipping planes in BottleView
     if ( this.sceneNode.stage.threeRenderer ) {

@@ -19,6 +19,7 @@ export default class SubmergedAccordionBox extends ReadoutListAccordionBox<Mass>
 
   public constructor( providedOptions?: ReadoutListAccordionBoxOptions<Mass> ) {
 
+    // TODO AV https://github.com/phetsims/density-buoyancy-common/issues/333
     const options = combineOptions<ReadoutListAccordionBoxOptions<Mass>>( {
       visibleProperty: DensityBuoyancyCommonPreferences.percentSubmergedVisibleProperty,
       readoutItems: [],

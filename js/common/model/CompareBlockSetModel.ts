@@ -259,6 +259,7 @@ export default class CompareBlockSetModel extends BlockSetModel<BlockSet> {
     // Behaves like a derived property but order of dependencies forces it to be a normal property
     const densityAdjustedColorProperty = new ColorProperty( baseColorProperty.value );
 
+    // TODO AV https://github.com/phetsims/density-buoyancy-common/issues/333
     const options = combineOptions<StrictCubeOptions>( {
       customMaterialOptions: {
         density: initialDensity,

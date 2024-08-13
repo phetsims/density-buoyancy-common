@@ -7,12 +7,11 @@
  * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
-import { combineOptions } from '../../../../phet-core/js/optionize.js';
+import optionize, { combineOptions, EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
 import { HBox, LayoutProxy, ManualConstraint, Node, VBox } from '../../../../scenery/js/imports.js';
 import Panel, { PanelOptions } from '../../../../sun/js/Panel.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 import Material from '../../common/model/Material.js';
-import { DensityBuoyancyScreenViewOptions } from '../../common/view/DensityBuoyancyScreenView.js';
 import GravityControlNode from '../../common/view/GravityControlNode.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import BuoyancyLabModel from '../model/BuoyancyLabModel.js';
@@ -24,28 +23,30 @@ import SubmergedAccordionBox from './SubmergedAccordionBox.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import CuboidView from '../../common/view/CuboidView.js';
 import FluidDensityPanel from './FluidDensityPanel.js';
-import BuoyancyScreenView from './BuoyancyScreenView.js';
+import BuoyancyScreenView, { BuoyancyScreenViewOptions } from './BuoyancyScreenView.js';
 import StrictOmit from '../../../../phet-core/js/types/StrictOmit.js';
 
 // constants
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN_SMALL;
 
-type BuoyancyLabScreenViewOptions = StrictOmit<DensityBuoyancyScreenViewOptions, 'canShowForces' | 'supportsDepthLines' | 'forcesInitiallyDisplayed' | 'massValuesInitiallyDisplayed' | 'initialForceScale'>;
+type BuoyancyLabScreenViewOptions = StrictOmit<BuoyancyScreenViewOptions, 'supportsDepthLines' | 'forcesInitiallyDisplayed' | 'massValuesInitiallyDisplayed' | 'initialForceScale'>;
 
 export default class BuoyancyLabScreenView extends BuoyancyScreenView<BuoyancyLabModel> {
 
   private readonly rightBox: MultiSectionPanelsNode;
 
-  public constructor( model: BuoyancyLabModel, options: BuoyancyLabScreenViewOptions ) {
+  public constructor( model: BuoyancyLabModel, providedOptions: BuoyancyLabScreenViewOptions ) {
 
-    const tandem = options.tandem;
-
-    super( model, combineOptions<DensityBuoyancyScreenViewOptions>( {
+    const options = optionize<BuoyancyLabScreenViewOptions, EmptySelfOptions, BuoyancyScreenViewOptions>()( {
       supportsDepthLines: true,
       forcesInitiallyDisplayed: true,
       massValuesInitiallyDisplayed: false,
       cameraLookAt: DensityBuoyancyCommonConstants.BUOYANCY_CAMERA_LOOK_AT
-    }, options ) );
+    }, providedOptions );
+
+    super( model, options );
+
+    const tandem = options.tandem;
 
     // In liters
     const maxBlockVolume = 10;

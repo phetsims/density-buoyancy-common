@@ -17,7 +17,7 @@ import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import DensityMysteryModel, { MysteryBlockSet } from '../model/DensityMysteryModel.js';
 import DensityTableNode from './DensityTableNode.js';
-import { combineOptions } from '../../../../phet-core/js/optionize.js';
+import optionize, { combineOptions, EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
 import MassView from '../../common/view/MassView.js';
 import CuboidView from '../../common/view/CuboidView.js';
 import StrictOmit from '../../../../phet-core/js/types/StrictOmit.js';
@@ -25,17 +25,19 @@ import StrictOmit from '../../../../phet-core/js/types/StrictOmit.js';
 type DensityMysteryScreenViewOptions = StrictOmit<DensityBuoyancyScreenViewOptions, 'canShowForces' | 'supportsDepthLines' | 'forcesInitiallyDisplayed' | 'massValuesInitiallyDisplayed' | 'initialForceScale'>;
 
 export default class DensityMysteryScreenView extends DensityBuoyancyScreenView<DensityMysteryModel> {
-  public constructor( model: DensityMysteryModel, options: DensityMysteryScreenViewOptions ) {
+  public constructor( model: DensityMysteryModel, providedOptions: DensityMysteryScreenViewOptions ) {
 
-    const tandem = options.tandem;
-
-    super( model, combineOptions<DensityBuoyancyScreenViewOptions>( {
+    const options = optionize<DensityMysteryScreenViewOptions, EmptySelfOptions, DensityBuoyancyScreenViewOptions>()( {
       canShowForces: false,
       supportsDepthLines: false,
       forcesInitiallyDisplayed: false,
       massValuesInitiallyDisplayed: false,
       cameraLookAt: DensityBuoyancyCommonConstants.DENSITY_CAMERA_LOOK_AT
-    }, options ) );
+    }, providedOptions );
+
+    super( model, options );
+
+    const tandem = options.tandem;
 
     const densityTableAccordionBoxTandem = tandem.createTandem( 'densityTableAccordionBox' );
     const densityTableAccordionBox = new AccordionBox( new DensityTableNode(), combineOptions<AccordionBoxOptions>( {

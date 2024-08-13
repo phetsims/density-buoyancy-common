@@ -17,7 +17,7 @@ import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js'
 import DensityNumberLineNode from './DensityNumberLineNode.js';
 import DensityIntroModel from '../model/DensityIntroModel.js';
 import DensityBuoyancyScreenView, { DensityBuoyancyScreenViewOptions } from '../../common/view/DensityBuoyancyScreenView.js';
-import { combineOptions } from '../../../../phet-core/js/optionize.js';
+import optionize, { combineOptions, EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
 import DensityBuoyancyCommonPreferences from '../../common/model/DensityBuoyancyCommonPreferences.js';
 import DensityBuoyancyCommonColors from '../../common/view/DensityBuoyancyCommonColors.js';
 import BlocksModeRadioButtonGroup from '../../common/view/BlocksModeRadioButtonGroup.js';
@@ -32,17 +32,19 @@ export default class DensityIntroScreenView extends DensityBuoyancyScreenView<De
 
   private readonly rightBox: ABControlsNode;
 
-  public constructor( model: DensityIntroModel, options: DensityIntroScreenViewOptions ) {
+  public constructor( model: DensityIntroModel, providedOptions: DensityIntroScreenViewOptions ) {
 
-    const tandem = options.tandem;
-
-    super( model, combineOptions<DensityBuoyancyScreenViewOptions>( {
+    const options = optionize<DensityIntroScreenViewOptions, EmptySelfOptions, DensityBuoyancyScreenViewOptions>()( {
       canShowForces: false,
       supportsDepthLines: false,
       forcesInitiallyDisplayed: false,
       massValuesInitiallyDisplayed: true,
       cameraLookAt: DensityBuoyancyCommonConstants.DENSITY_CAMERA_LOOK_AT
-    }, options ) );
+    }, providedOptions );
+
+    super( model, options );
+
+    const tandem = options.tandem;
 
     this.rightBox = new ABControlsNode(
       model.blockA,

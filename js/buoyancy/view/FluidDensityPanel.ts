@@ -26,6 +26,8 @@ export default class FluidDensityPanel extends Panel {
         // Hence this tandem is passed to children but deleted before the FluidDensityControlNode is itself instrumented.
         tandem: tandem
       } );
+
+    // TODO AV https://github.com/phetsims/density-buoyancy-common/issues/333
     super( fluidDensityControlNode, combineOptions<PanelOptions>( {
       tandem: tandem,
       visiblePropertyOptions: {

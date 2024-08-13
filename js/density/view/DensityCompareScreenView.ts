@@ -13,7 +13,7 @@ import DensityBuoyancyScreenView, { DensityBuoyancyScreenViewOptions } from '../
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityCompareModel from '../model/DensityCompareModel.js';
 import Bounds2 from '../../../../dot/js/Bounds2.js';
-import { combineOptions } from '../../../../phet-core/js/optionize.js';
+import optionize, { EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
 import BlocksValuePanel from '../../common/view/BlocksValuePanel.js';
 import MassView from '../../common/view/MassView.js';
 import CuboidView from '../../common/view/CuboidView.js';
@@ -28,17 +28,19 @@ export default class DensityCompareScreenView extends DensityBuoyancyScreenView<
 
   private readonly positionPanel: () => void;
 
-  public constructor( model: DensityCompareModel, options: DensityCompareScreenViewOptions ) {
+  public constructor( model: DensityCompareModel, providedOptions: DensityCompareScreenViewOptions ) {
 
-    const tandem = options.tandem;
-
-    super( model, combineOptions<DensityBuoyancyScreenViewOptions>( {
+    const options = optionize<DensityCompareScreenViewOptions, EmptySelfOptions, DensityBuoyancyScreenViewOptions>()( {
       canShowForces: false,
       supportsDepthLines: false,
       forcesInitiallyDisplayed: false,
       massValuesInitiallyDisplayed: true,
       cameraLookAt: DensityBuoyancyCommonConstants.DENSITY_CAMERA_LOOK_AT
-    }, options ) );
+    }, providedOptions );
+
+    super( model, options );
+
+    const tandem = options.tandem;
 
     const blocksPanel = new BlocksPanel( model.blockSetProperty, tandem.createTandem( 'blocksPanel' ) );
     this.addAlignBox( blocksPanel, 'right', 'top' );

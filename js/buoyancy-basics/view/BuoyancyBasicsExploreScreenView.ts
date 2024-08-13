@@ -6,10 +6,9 @@
  * @author Michael Kauzmann (PhET Interactive Simulations)
  */
 
-import { combineOptions } from '../../../../phet-core/js/optionize.js';
+import optionize, { EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
 import { Node, VBox } from '../../../../scenery/js/imports.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
-import { DensityBuoyancyScreenViewOptions } from '../../common/view/DensityBuoyancyScreenView.js';
 import ABControlsNode from '../../common/view/ABControlsNode.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
@@ -22,27 +21,29 @@ import CuboidView from '../../common/view/CuboidView.js';
 import ScaleView from '../../common/view/ScaleView.js';
 import MassView from '../../common/view/MassView.js';
 import DensityAccordionBox from '../../buoyancy/view/DensityAccordionBox.js';
-import BuoyancyScreenView from '../../buoyancy/view/BuoyancyScreenView.js';
+import BuoyancyScreenView, { BuoyancyScreenViewOptions } from '../../buoyancy/view/BuoyancyScreenView.js';
 import StrictOmit from '../../../../phet-core/js/types/StrictOmit.js';
 import getBuoyancyExploreIcon from '../../buoyancy/view/getBuoyancyExploreIcon.js';
 
-type BuoyancyExploreScreenViewOptions = StrictOmit<DensityBuoyancyScreenViewOptions, 'canShowForces' | 'supportsDepthLines' | 'forcesInitiallyDisplayed' | 'massValuesInitiallyDisplayed' | 'initialForceScale'>;
+type BuoyancyBasicsExploreScreenViewOptions = StrictOmit<BuoyancyScreenViewOptions, 'supportsDepthLines' | 'forcesInitiallyDisplayed' | 'massValuesInitiallyDisplayed' | 'initialForceScale'>;
 
 export default class BuoyancyBasicsExploreScreenView extends BuoyancyScreenView<BuoyancyBasicsExploreModel> {
 
   private readonly rightBox: ABControlsNode;
 
-  public constructor( model: BuoyancyBasicsExploreModel, options: BuoyancyExploreScreenViewOptions ) {
+  public constructor( model: BuoyancyBasicsExploreModel, providedOptions: BuoyancyBasicsExploreScreenViewOptions ) {
 
-    const tandem = options.tandem;
-
-    super( model, combineOptions<DensityBuoyancyScreenViewOptions>( {
+    const options = optionize<BuoyancyBasicsExploreScreenViewOptions, EmptySelfOptions, BuoyancyScreenViewOptions>()( {
       supportsDepthLines: true,
       forcesInitiallyDisplayed: false,
       massValuesInitiallyDisplayed: true,
       cameraLookAt: DensityBuoyancyCommonConstants.BUOYANCY_BASICS_CAMERA_LOOK_AT,
       viewOffset: DensityBuoyancyCommonConstants.BUOYANCY_BASICS_VIEW_OFFSET
-    }, options ) );
+    }, providedOptions );
+
+    super( model, options );
+
+    const tandem = options.tandem;
 
     this.addAlignBox( this.displayOptionsPanel, 'left', 'bottom' );
 

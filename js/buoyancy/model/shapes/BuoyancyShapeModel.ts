@@ -45,11 +45,13 @@ export default class BuoyancyShapeModel {
     } );
 
     this.widthRatioProperty = new NumberProperty( width, {
-      tandem: options.tandem.createTandem( 'widthRatioProperty' )
+      tandem: options.tandem.createTandem( 'widthRatioProperty' ),
+      phetioFeatured: true
     } );
 
     this.heightRatioProperty = new NumberProperty( height, {
-      tandem: options.tandem.createTandem( 'heightRatioProperty' )
+      tandem: options.tandem.createTandem( 'heightRatioProperty' ),
+      phetioFeatured: true
     } );
 
     MassShape.enumeration.values.forEach( shape => {

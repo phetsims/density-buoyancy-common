@@ -11,7 +11,7 @@ import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js'
 import Panel, { PanelOptions } from '../../../../sun/js/Panel.js';
 import { Node, Text, VBox } from '../../../../scenery/js/imports.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
-import { EmptySelfOptions, optionize3 } from '../../../../phet-core/js/optionize.js';
+import { EmptySelfOptions, optionize4 } from '../../../../phet-core/js/optionize.js';
 import WithRequired from '../../../../phet-core/js/types/WithRequired.js';
 import ComboBox from '../../../../sun/js/ComboBox.js';
 import MaterialProperty from '../../common/model/MaterialProperty.js';
@@ -22,7 +22,11 @@ export default class FluidSelectionPanel extends Panel {
 
   public constructor( fluidMaterialProperty: MaterialProperty, listParent: Node, providedOptions?: FluidSelectionPanelOptions ) {
 
-    const options = optionize3<FluidSelectionPanelOptions, EmptySelfOptions, PanelOptions>()( {}, DensityBuoyancyCommonConstants.PANEL_OPTIONS, providedOptions );
+    const options = optionize4<FluidSelectionPanelOptions, EmptySelfOptions, PanelOptions>()( {}, DensityBuoyancyCommonConstants.PANEL_OPTIONS, {
+      visiblePropertyOptions: {
+        phetioFeatured: true
+      }
+    }, providedOptions );
 
     const comboBoxTandem = options.tandem.createTandem( 'comboBox' );
 

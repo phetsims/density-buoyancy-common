@@ -115,7 +115,10 @@ export default class BuoyancyShapesScreenView extends BuoyancyScreenView<Buoyanc
       new DynamicProperty( model.objectA.shapeProperty, { derive: 'volumeProperty' } ),
       this.popupLayer, {
         labelNode: ABPanelsNode.getTagALabelNode(),
-        tandem: tandem.createTandem( 'objectAShapeSizeControls' )
+        tandem: tandem.createTandem( 'objectAShapeSizeControls' ),
+        visiblePropertyOptions: {
+          phetioFeatured: true
+        }
       }
     );
     const objectBShapeSizeControlNodeTandem = tandem.createTandem( 'objectBShapeSizeControls' );

@@ -53,16 +53,20 @@ export default class DisplayProperties {
     this.supportsDepthLines = options.supportsDepthLines;
 
     this.gravityForceVisibleProperty = new BooleanProperty( options.forcesInitiallyDisplayed, {
-      tandem: options.canShowForces ? tandem.createTandem( 'gravityForceVisibleProperty' ) : Tandem.OPT_OUT
+      tandem: options.canShowForces ? tandem.createTandem( 'gravityForceVisibleProperty' ) : Tandem.OPT_OUT,
+      phetioFeatured: true
     } );
     this.buoyancyForceVisibleProperty = new BooleanProperty( options.forcesInitiallyDisplayed, {
-      tandem: options.canShowForces ? tandem.createTandem( 'buoyancyForceVisibleProperty' ) : Tandem.OPT_OUT
+      tandem: options.canShowForces ? tandem.createTandem( 'buoyancyForceVisibleProperty' ) : Tandem.OPT_OUT,
+      phetioFeatured: true
     } );
     this.contactForceVisibleProperty = new BooleanProperty( options.forcesInitiallyDisplayed, {
-      tandem: options.canShowForces ? tandem.createTandem( 'contactForceVisibleProperty' ) : Tandem.OPT_OUT
+      tandem: options.canShowForces ? tandem.createTandem( 'contactForceVisibleProperty' ) : Tandem.OPT_OUT,
+      phetioFeatured: true
     } );
     this.forceValuesVisibleProperty = new BooleanProperty( options.forcesInitiallyDisplayed, {
-      tandem: options.canShowForces ? tandem.createTandem( 'forceValuesVisibleProperty' ) : Tandem.OPT_OUT
+      tandem: options.canShowForces ? tandem.createTandem( 'forceValuesVisibleProperty' ) : Tandem.OPT_OUT,
+      phetioFeatured: true
     } );
     this.massValuesVisibleProperty = new BooleanProperty( options.massValuesInitiallyDisplayed, {
       tandem: tandem.createTandem( 'massValuesVisibleProperty' ),

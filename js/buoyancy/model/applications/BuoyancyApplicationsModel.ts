@@ -60,7 +60,8 @@ export default class BuoyancyApplicationsModel extends DensityBuoyancyModel {
 
     this.applicationModeProperty = new StringUnionProperty<BottleOrBoat>( 'bottle', {
       validValues: BottleOrBoatValues,
-      tandem: options.tandem.createTandem( 'applicationModeProperty' )
+      tandem: options.tandem.createTandem( 'applicationModeProperty' ),
+      phetioFeatured: true
     } );
 
     const objectsTandem = tandem.createTandem( 'objects' );

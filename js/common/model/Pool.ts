@@ -105,7 +105,8 @@ export default class Pool extends Basin {
         units: 'L',
         tandem: this.fluidTandem.createTandem( 'levelVolumeProperty' ),
         phetioValueType: NumberIO,
-        phetioDocumentation: 'The volume of fluid in the pool plus the volume of fluid displaced by objects in the pool.'
+        phetioDocumentation: 'The volume of fluid in the pool plus the volume of fluid displaced by objects in the pool.',
+        phetioFeatured: true
       } );
 
     if ( usePoolScale ) {

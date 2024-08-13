@@ -51,7 +51,8 @@ export default class PoolScale extends Scale {
 
     this.heightProperty = new NumberProperty( DensityBuoyancyCommonConstants.POOL_SCALE_INITIAL_HEIGHT, {
       range: new Range( 0, 1 ),
-      tandem: tandem.createTandem( 'heightProperty' )
+      tandem: tandem.createTandem( 'heightProperty' ),
+      phetioFeatured: true
     } );
   }
 

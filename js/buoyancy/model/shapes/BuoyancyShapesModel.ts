@@ -92,17 +92,27 @@ export default class BuoyancyShapesModel extends DensityBuoyancyModel {
     // When the shape changes, update the location, then update the availableMasses
     [ this.objectA, this.objectB ].forEach( shapeModel => {
 
+      shapeModel.getAllMasses().forEach( mass => {
+        this.availableMasses.push( mass );
+
+        // Initially selected one made visible below in link()
+        mass.internalVisibleProperty.value = false;
+      } );
+
+      this.availableMasses.push( ...shapeModel.getAllMasses() );
+
       // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
-      shapeModel.shapeProperty.lazyLink( ( newMass, oldMass ) => {
-        if ( !isSettingPhetioStateProperty.value ) {
+      shapeModel.shapeProperty.link( ( newMass, oldMass ) => {
+        if ( oldMass && !isSettingPhetioStateProperty.value ) {
           newMass.matrix.set( oldMass.matrix );
           newMass.writeData();
         }
 
-        if ( this.availableMasses.includes( oldMass ) ) {
-          this.availableMasses.remove( oldMass );
-          this.availableMasses.add( newMass );
+        if ( oldMass ) {
+          oldMass.internalVisibleProperty.value = false;
         }
+
+        newMass.internalVisibleProperty.value = true;
       } );
     } );
 

@@ -78,6 +78,10 @@ export default class BuoyancyShapeModel {
     } );
   }
 
+  public getAllMasses(): Mass[] {
+    return Array.from( this.shapeCacheMap.values() );
+  }
+
   // Change the shape, keeping the bottom at the same y value
   private changeShape(): void {
 

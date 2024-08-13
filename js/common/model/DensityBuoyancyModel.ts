@@ -181,8 +181,6 @@ export default class DensityBuoyancyModel implements TModel {
       this.engine.addBody( this.barrierBody );
     } );
 
-    // Control masses by visibility, so that this.masses will be the subset of this.availableMasses that is visible
-    const visibilityListenerMap = new Map<Mass, ( visible: boolean ) => void>(); // eslint-disable-line no-spaced-func
     this.availableMasses.addItemAddedListener( mass => {
       const visibilityListener = ( visible: boolean ) => {
         if ( visible ) {
@@ -192,20 +190,14 @@ export default class DensityBuoyancyModel implements TModel {
           this.visibleMasses.remove( mass );
         }
       };
-      visibilityListenerMap.set( mass, visibilityListener );
       mass.visibleProperty.lazyLink( visibilityListener );
 
       if ( mass.visibleProperty.value ) {
         this.visibleMasses.push( mass );
       }
     } );
-    this.availableMasses.addItemRemovedListener( mass => {
-      mass.visibleProperty.unlink( visibilityListenerMap.get( mass )! );
-      visibilityListenerMap.delete( mass );
-
-      if ( mass.visibleProperty.value ) {
-        this.visibleMasses.remove( mass );
-      }
+    this.availableMasses.addItemRemovedListener( () => {
+      assert && assert( false, 'Masses should not be removed from availableMasses' );
     } );
 
     this.visibleMasses.addItemAddedListener( mass => {

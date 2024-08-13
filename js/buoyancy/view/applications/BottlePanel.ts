@@ -91,6 +91,9 @@ export default class BottlePanel extends Panel {
       align: 'left',
       stretch: true,
       tandem: bottleControlsTandem,
+      visiblePropertyOptions:{
+        phetioFeatured: true
+      },
       children: [
         new Text( DensityBuoyancyCommonStrings.materialInsideStringProperty, {
           font: DensityBuoyancyCommonConstants.TITLE_FONT,

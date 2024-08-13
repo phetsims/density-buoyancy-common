@@ -33,7 +33,7 @@ import getFluidDisplacedAccordionBoxScaleIcon from './getFluidDisplacedAccordion
 
 type SelfOptions = EmptySelfOptions;
 
-type FluidDisplacedAccordionBoxOptions = SelfOptions & PickRequired<AccordionBoxOptions, 'tandem'>;
+type FluidDisplacedAccordionBoxOptions = SelfOptions & PickRequired<AccordionBoxOptions, 'tandem' | 'phetioFeatured'>;
 
 const CONTENT_WIDTH = 105;
 

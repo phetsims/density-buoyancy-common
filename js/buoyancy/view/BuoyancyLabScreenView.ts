@@ -55,7 +55,8 @@ export default class BuoyancyLabScreenView extends BuoyancyScreenView<BuoyancyLa
       maxBlockVolume,
       model.pool.fluidMaterialProperty,
       model.gravityProperty, {
-        tandem: tandem.createTandem( 'fluidDisplacedAccordionBox' )
+        tandem: tandem.createTandem( 'fluidDisplacedAccordionBox' ),
+        phetioFeatured: true
       } );
 
     const leftSideVBox = new VBox( {

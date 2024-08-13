@@ -52,7 +52,7 @@ export default class ApplicationsDebugView extends DebugView {
   public override step( dt: number ): void {
     super.step( dt );
 
-    // TODO: Change this to say this.applicationsModel.boat instead of searches and instanceof operations, see https://github.com/phetsims/density-buoyancy-common/issues/317
+    // Special handling for the boat, but only if it is visible
     const boat = this.model.visibleMasses.find( mass => mass instanceof Boat );
     if ( boat instanceof Boat ) {
       const boatYValues = _.range( boat.stepBottom, boat.stepTop, 0.002 );

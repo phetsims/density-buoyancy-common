@@ -263,7 +263,8 @@ export default class Bottle extends ApplicationsMass {
       tandem: materialInsideTandem.createTandem( 'volumeProperty' ),
       phetioDocumentation: 'Volume of the material inside the bottle.',
       range: this.materialInsideVolumeRange.times( 1 / DensityBuoyancyCommonConstants.LITERS_IN_CUBIC_METER ),
-      units: 'm^3'
+      units: 'm^3',
+      phetioFeatured: true
     } );
 
     this.materialInsideMassProperty = new DerivedProperty( [ this.materialInsideProperty.densityProperty, this.materialInsideVolumeProperty ], ( density, volume ) => {
@@ -271,7 +272,8 @@ export default class Bottle extends ApplicationsMass {
     }, {
       tandem: materialInsideTandem.createTandem( 'massProperty' ),
       phetioDocumentation: 'Mass of the material inside the bottle.',
-      phetioValueType: NumberIO
+      phetioValueType: NumberIO,
+      phetioFeatured: true
     } );
 
     // Synchronize the overall density of the bottle + material system to the materialProperty. This should not be done

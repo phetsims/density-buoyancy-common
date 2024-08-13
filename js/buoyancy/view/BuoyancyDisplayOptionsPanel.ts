@@ -101,6 +101,9 @@ export default class BuoyancyDisplayOptionsPanel extends Panel {
           spacing: checkboxSpacing,
           align: 'left',
           tandem: forcesSubpanelTandem,
+          visiblePropertyOptions: {
+            phetioFeatured: true
+          },
           stretch: true,
           children: [
             new Text( DensityBuoyancyCommonStrings.forcesStringProperty, {

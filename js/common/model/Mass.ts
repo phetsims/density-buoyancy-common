@@ -321,7 +321,8 @@ export default abstract class Mass extends PhetioObject {
       phetioValueType: Vector2.Vector2IO,
       phetioReadOnly: true,
       units: 'N',
-      phetioHighFrequency: true
+      phetioHighFrequency: true,
+      phetioFeatured: true
     } );
 
     this.buoyancyForceInterpolatedProperty = new InterpolatedProperty( Vector2.ZERO, {
@@ -331,7 +332,8 @@ export default abstract class Mass extends PhetioObject {
       phetioValueType: Vector2.Vector2IO,
       phetioReadOnly: true,
       units: 'N',
-      phetioHighFrequency: true
+      phetioHighFrequency: true,
+      phetioFeatured: true
     } );
 
     this.contactForceInterpolatedProperty = new InterpolatedProperty( Vector2.ZERO, {
@@ -341,7 +343,8 @@ export default abstract class Mass extends PhetioObject {
       phetioValueType: Vector2.Vector2IO,
       phetioReadOnly: true,
       units: 'N',
-      phetioHighFrequency: true
+      phetioHighFrequency: true,
+      phetioFeatured: true
     } );
 
     this.contactForceBlendedProperty = new BlendedVector2Property( this.contactForceInterpolatedProperty.value );

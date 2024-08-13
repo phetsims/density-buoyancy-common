@@ -7,7 +7,7 @@
  */
 
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
-import { combineOptions } from '../../../../phet-core/js/optionize.js';
+import optionize, { EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
 import Utils from '../../../../dot/js/Utils.js';
 import ReadoutListAccordionBox, { ReadoutData, ReadoutListAccordionBoxOptions } from './ReadoutListAccordionBox.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
@@ -15,12 +15,13 @@ import DensityBuoyancyCommonPreferences from '../../common/model/DensityBuoyancy
 import Mass from '../../common/model/Mass.js';
 import PatternStringProperty from '../../../../axon/js/PatternStringProperty.js';
 
+type SubmergedAccordionBoxOptions = ReadoutListAccordionBoxOptions<Mass>;
+
 export default class SubmergedAccordionBox extends ReadoutListAccordionBox<Mass> {
 
   public constructor( providedOptions?: ReadoutListAccordionBoxOptions<Mass> ) {
 
-    // TODO AV https://github.com/phetsims/density-buoyancy-common/issues/333
-    const options = combineOptions<ReadoutListAccordionBoxOptions<Mass>>( {
+    const options = optionize<SubmergedAccordionBoxOptions, EmptySelfOptions, ReadoutListAccordionBoxOptions<Mass>>()( {
       visibleProperty: DensityBuoyancyCommonPreferences.percentSubmergedVisibleProperty,
       readoutItems: [],
       expandedDefaultValue: false,

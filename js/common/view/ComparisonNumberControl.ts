@@ -9,7 +9,7 @@
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import Dimension2 from '../../../../dot/js/Dimension2.js';
 import Utils from '../../../../dot/js/Utils.js';
-import { combineOptions } from '../../../../phet-core/js/optionize.js';
+import optionize, { EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
 import PatternStringProperty from '../../../../axon/js/PatternStringProperty.js';
 import NumberControl, { NumberControlOptions } from '../../../../scenery-phet/js/NumberControl.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
@@ -30,11 +30,10 @@ export default class ComparisonNumberControl extends NumberControl {
     titleStringProperty: TReadOnlyProperty<string>,
     valuePatternStringProperty: TReadOnlyProperty<string>,
     valueName: string,
-    options?: ComparisonNumberControlOptions
+    providedOptions?: ComparisonNumberControlOptions
   ) {
 
-    // TODO AV https://github.com/phetsims/density-buoyancy-common/issues/333
-    super( titleStringProperty, property, property.range, combineOptions<NumberControlOptions>( {
+    super( titleStringProperty, property, property.range, optionize<ComparisonNumberControlOptions, EmptySelfOptions, NumberControlOptions>()( {
       layoutFunction: NumberControl.createLayoutFunction4( {
         sliderPadding: 5
       } ),
@@ -83,7 +82,7 @@ export default class ComparisonNumberControl extends NumberControl {
         } ],
         trackSize: DEFAULT_COMPARISON_TRACK_SIZE
       }
-    }, options ) );
+    }, providedOptions ) );
   }
 }
 

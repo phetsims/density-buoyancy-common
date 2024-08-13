@@ -8,7 +8,9 @@ import DensityBuoyancyModel from '../../common/model/DensityBuoyancyModel.js';
 import { Node } from '../../../../scenery/js/imports.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
 import Panel, { PanelOptions } from '../../../../sun/js/Panel.js';
-import { combineOptions } from '../../../../phet-core/js/optionize.js';
+import optionize, { EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
+
+type FluidDensityPanelOptions = PanelOptions;
 
 /**
  * Panel that allows the user to adjust the fluid density.
@@ -27,8 +29,7 @@ export default class FluidDensityPanel extends Panel {
         tandem: tandem
       } );
 
-    // TODO AV https://github.com/phetsims/density-buoyancy-common/issues/333
-    super( fluidDensityControlNode, combineOptions<PanelOptions>( {
+    super( fluidDensityControlNode, optionize<FluidDensityPanelOptions, EmptySelfOptions, PanelOptions>()( {
       tandem: tandem,
       visiblePropertyOptions: {
         phetioFeatured: true

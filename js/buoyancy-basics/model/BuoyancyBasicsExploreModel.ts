@@ -20,6 +20,8 @@ import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import MassTag from '../../common/model/MassTag.js';
 import { MaterialSchema } from '../../common/model/Mass.js';
 import optionize, { combineOptions, EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
+import propertyStateHandlerSingleton from '../../../../axon/js/propertyStateHandlerSingleton.js';
+import PropertyStatePhase from '../../../../axon/js/PropertyStatePhase.js';
 
 type BuoyancyBasicsExploreModelOptions = DensityBuoyancyModelOptions;
 
@@ -74,6 +76,11 @@ export default class BuoyancyBasicsExploreModel extends DensityBuoyancyModel {
     this.modeProperty.link( mode => {
       this.blockB.internalVisibleProperty.value = mode === TwoBlockMode.TWO_BLOCKS;
     } );
+
+    // Undefer the materialInsideProperty before the applicationMode. For unknown reasons this fixes the order in the DynamicProperty link/unlink
+    // see https://github.com/phetsims/buoyancy/issues/67
+    propertyStateHandlerSingleton.registerPhetioOrderDependency( this.blockA.materialProperty, PropertyStatePhase.UNDEFER, this.modeProperty, PropertyStatePhase.UNDEFER );
+    propertyStateHandlerSingleton.registerPhetioOrderDependency( this.blockB.materialProperty, PropertyStatePhase.UNDEFER, this.modeProperty, PropertyStatePhase.UNDEFER );
 
     // Left scale
     this.availableMasses.push( new Scale( this.engine, this.gravityProperty, {

@@ -53,11 +53,13 @@ export default class Cone extends Mass {
 
     this.radiusProperty = new NumberProperty( radius, {
       tandem: options.tandem.createTandem( 'radiusProperty' ),
-      range: new Range( 0, Number.POSITIVE_INFINITY )
+      range: new Range( 0, Number.POSITIVE_INFINITY ),
+      phetioReadOnly: true
     } );
     this.heightProperty = new NumberProperty( height, {
       tandem: options.tandem.createTandem( 'heightProperty' ),
-      range: new Range( 0, Number.POSITIVE_INFINITY )
+      range: new Range( 0, Number.POSITIVE_INFINITY ),
+      phetioReadOnly: true
     } );
 
     this.isVertexUp = isVertexUp;

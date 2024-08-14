@@ -22,6 +22,7 @@ import PickRequired from '../../../../../phet-core/js/types/PickRequired.js';
 import { PhetioObjectOptions } from '../../../../../tandem/js/PhetioObject.js';
 import BuoyancyShapesModel from './BuoyancyShapesModel.js';
 import ReferenceIO from '../../../../../tandem/js/types/ReferenceIO.js';
+import Range from '../../../../../dot/js/Range.js';
 
 export type BuoyancyShapeModelOptions = PickRequired<PhetioObjectOptions, 'tandem'>;
 
@@ -47,12 +48,14 @@ export default class BuoyancyShapeModel {
 
     this.widthRatioProperty = new NumberProperty( width, {
       tandem: options.tandem.createTandem( 'widthRatioProperty' ),
-      phetioFeatured: true
+      phetioFeatured: true,
+      range: new Range( 0, 1 )
     } );
 
     this.heightRatioProperty = new NumberProperty( height, {
       tandem: options.tandem.createTandem( 'heightRatioProperty' ),
-      phetioFeatured: true
+      phetioFeatured: true,
+      range: new Range( 0, 1 )
     } );
 
     MassShape.enumeration.values.forEach( shape => {

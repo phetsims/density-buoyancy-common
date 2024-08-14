@@ -45,7 +45,8 @@ export default class HorizontalCylinder extends Mass {
 
     this.radiusProperty = new NumberProperty( radius, {
       tandem: options.tandem.createTandem( 'radiusProperty' ),
-      range: new Range( 0, Number.POSITIVE_INFINITY )
+      range: new Range( 0, Number.POSITIVE_INFINITY ),
+      phetioReadOnly: true
     } );
     this.lengthProperty = new NumberProperty( length, {
       tandem: options.tandem.createTandem( 'lengthProperty' ),

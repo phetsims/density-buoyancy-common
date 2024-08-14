@@ -7,7 +7,6 @@
  * @author Michael Kauzmann (PhET Interactive Simulations)
  */
 
-import StrictOmit from '../../../../../phet-core/js/types/StrictOmit.js';
 import Bounds3 from '../../../../../dot/js/Bounds3.js';
 import Utils from '../../../../../dot/js/Utils.js';
 import Vector2 from '../../../../../dot/js/Vector2.js';
@@ -15,25 +14,25 @@ import Vector3 from '../../../../../dot/js/Vector3.js';
 import { Shape } from '../../../../../kite/js/imports.js';
 import optionize, { EmptySelfOptions } from '../../../../../phet-core/js/optionize.js';
 import densityBuoyancyCommon from '../../../densityBuoyancyCommon.js';
-import { InstrumentedMassOptions } from '../../../common/model/Mass.js';
 import PhysicsEngine from '../../../common/model/PhysicsEngine.js';
 import { MassShape } from '../../../common/model/MassShape.js';
 import { flatDuckData } from './DuckData.js';
-import Ellipsoid from './Ellipsoid.js';
+import Ellipsoid, { EllipsoidOptions } from './Ellipsoid.js';
 
-export type DuckOptions = StrictOmit<InstrumentedMassOptions, 'body' | 'shape' | 'volume' | 'massShape'>;
+type SelfOptions = EmptySelfOptions;
+export type DuckOptions = SelfOptions & EllipsoidOptions;
 
 export default class Duck extends Ellipsoid {
   public constructor( engine: PhysicsEngine, size: Bounds3, providedConfig: DuckOptions ) {
 
-    const options = optionize<DuckOptions, EmptySelfOptions, InstrumentedMassOptions>()( {
+    const options = optionize<DuckOptions, EmptySelfOptions, EllipsoidOptions>()( {
       body: engine.createFromVertices( Duck.getDuckVertices( size.width, size.height ), false ),
       shape: Duck.getDuckShape( size.width, size.height ),
       volume: Ellipsoid.getVolume( size ),
       massShape: MassShape.DUCK
     }, providedConfig );
 
-    super( engine, size, options as InstrumentedMassOptions );
+    super( engine, size, options );
   }
 
   /**

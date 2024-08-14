@@ -498,10 +498,13 @@ export default class Material extends PhetioObject implements MappedWrappedObjec
   ];
 }
 
-export class CustomSolidMaterial extends Material {
-  public constructor( tandem: Tandem, providedOptions: MaterialOptions ) {
+type CustomSolidMaterialSelfOptions = EmptySelfOptions;
+type CustomSolidMaterialOptions = MaterialOptions & CustomSolidMaterialSelfOptions;
 
-    const options = optionize<MaterialOptions, EmptySelfOptions, MaterialOptions>()( {
+export class CustomSolidMaterial extends Material {
+  public constructor( tandem: Tandem, providedOptions: CustomSolidMaterialOptions ) {
+
+    const options = optionize<CustomSolidMaterialOptions, CustomSolidMaterialSelfOptions, MaterialOptions>()( {
       nameProperty: DensityBuoyancyCommonStrings.material.customStringProperty,
       custom: true,
       createColorProperty: ( colorProperty, densityProperty, isCustom ) => {

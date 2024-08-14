@@ -19,7 +19,7 @@ import { MaterialSchema } from './Mass.js';
 type SelfOptions = {
 
   // When true, volume will update upon a mass change. The default (false) will update the density on mass change.
-  // This will also make the massProperty phetioReadOnly:false. Careful!
+  // By design, this should be accompanied by massProperty phetioReadOnly:false
   adjustVolumeOnMassChanged?: boolean;
 };
 
@@ -30,7 +30,7 @@ export type StrictCubeOptions = StrictOmit<CubeOptions, 'matrix' | 'material'>;
 export default class Cube extends Cuboid {
   public constructor( engine: PhysicsEngine, volume: number, providedOptions: CubeOptions ) {
 
-    let options = optionize<CubeOptions, SelfOptions, CuboidOptions>()( {
+    const options = optionize<CubeOptions, SelfOptions, CuboidOptions>()( {
       adjustVolumeOnMassChanged: false,
 
       volumePropertyOptions: {
@@ -38,12 +38,8 @@ export default class Cube extends Cuboid {
       }
     }, providedOptions );
 
-    if ( options.adjustVolumeOnMassChanged ) {
-      options = combineOptions<typeof options>( {
-        massPropertyOptions: {
-          phetioReadOnly: false
-        }
-      }, options );
+    if ( assert && options.adjustVolumeOnMassChanged ) {
+      assert && assert( options.massPropertyOptions && options.massPropertyOptions.phetioReadOnly === false, 'adjustVolumeOnMassChanged must have massPropertyOptions.phetioReadOnly === false' );
     }
 
     super( engine, Cube.boundsFromVolume( volume ), options );

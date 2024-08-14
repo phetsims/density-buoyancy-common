@@ -15,7 +15,7 @@ import Vector3 from '../../../../dot/js/Vector3.js';
 import { Shape } from '../../../../kite/js/imports.js';
 import optionize, { EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
-import Mass, { InstrumentedMassOptions, MASS_MAX_SHAPES_DIMENSION, MASS_MIN_SHAPES_DIMENSION } from './Mass.js';
+import Mass, { InstrumentedMassOptions, MASS_MAX_SHAPES_DIMENSION, MASS_MIN_SHAPES_DIMENSION, MassOptions } from './Mass.js';
 import PhysicsEngine from './PhysicsEngine.js';
 import { MassShape } from './MassShape.js';
 import Utils from '../../../../dot/js/Utils.js';
@@ -35,7 +35,7 @@ export default class Cuboid extends Mass {
   public static readonly MAX_VOLUME = 0.01;
 
   public constructor( engine: PhysicsEngine, size: Bounds3, providedOptions: CuboidOptions ) {
-    const options = optionize<CuboidOptions, EmptySelfOptions, InstrumentedMassOptions>()( {
+    const options = optionize<CuboidOptions, EmptySelfOptions, MassOptions>()( {
       body: engine.createBox( size.width, size.height ),
       shape: Shape.rect( size.minX, size.minY, size.width, size.height ),
       volume: Cuboid.getVolume( size ),

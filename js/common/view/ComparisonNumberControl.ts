@@ -33,7 +33,7 @@ export default class ComparisonNumberControl extends NumberControl {
     providedOptions?: ComparisonNumberControlOptions
   ) {
 
-    super( titleStringProperty, property, property.range, optionize<ComparisonNumberControlOptions, EmptySelfOptions, NumberControlOptions>()( {
+    const options = optionize<ComparisonNumberControlOptions, EmptySelfOptions, NumberControlOptions>()( {
       layoutFunction: NumberControl.createLayoutFunction4( {
         sliderPadding: 5
       } ),
@@ -82,7 +82,9 @@ export default class ComparisonNumberControl extends NumberControl {
         } ],
         trackSize: DEFAULT_COMPARISON_TRACK_SIZE
       }
-    }, providedOptions ) );
+    }, providedOptions );
+
+    super( titleStringProperty, property, property.range, options );
   }
 }
 

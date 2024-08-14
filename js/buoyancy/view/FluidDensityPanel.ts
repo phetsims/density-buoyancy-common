@@ -29,12 +29,14 @@ export default class FluidDensityPanel extends Panel {
         tandem: tandem
       } );
 
-    super( fluidDensityControlNode, optionize<FluidDensityPanelOptions, EmptySelfOptions, PanelOptions>()( {
+    const options = optionize<FluidDensityPanelOptions, EmptySelfOptions, PanelOptions>()( {
       tandem: tandem,
       visiblePropertyOptions: {
         phetioFeatured: true
       }
-    }, DensityBuoyancyCommonConstants.PANEL_OPTIONS ) );
+    }, DensityBuoyancyCommonConstants.PANEL_OPTIONS );
+
+    super( fluidDensityControlNode, options );
   }
 }
 

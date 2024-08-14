@@ -49,7 +49,7 @@ export default class Cone extends Mass {
       massShape: isVertexUp ? MassShape.CONE : MassShape.INVERTED_CONE
     }, providedOptions );
 
-    super( engine, options as InstrumentedMassOptions );
+    super( engine, options );
 
     this.radiusProperty = new NumberProperty( radius, {
       tandem: options.tandem.createTandem( 'radiusProperty' ),

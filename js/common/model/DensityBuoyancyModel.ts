@@ -73,7 +73,7 @@ export default class DensityBuoyancyModel implements TModel {
   public readonly visibleMasses = createObservableArray<Mass>();
 
   public constructor( providedOptions?: DensityBuoyancyModelOptions ) {
-    const options = optionize<DensityBuoyancyModelOptions, DensityBuoyancyModelOptions>()( {
+    const options = optionize<DensityBuoyancyModelOptions>()( {
       usePoolScale: true,
       fluidSelectionType: 'justWater',
       isGravityPropertyInstrumented: false

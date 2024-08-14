@@ -14,7 +14,7 @@ import Vector3 from '../../../../../dot/js/Vector3.js';
 import { Shape } from '../../../../../kite/js/imports.js';
 import optionize, { EmptySelfOptions } from '../../../../../phet-core/js/optionize.js';
 import densityBuoyancyCommon from '../../../densityBuoyancyCommon.js';
-import Mass, { InstrumentedMassOptions, MASS_MAX_SHAPES_DIMENSION, MASS_MIN_SHAPES_DIMENSION } from '../../../common/model/Mass.js';
+import Mass, { InstrumentedMassOptions, MASS_MAX_SHAPES_DIMENSION, MASS_MIN_SHAPES_DIMENSION, MassOptions } from '../../../common/model/Mass.js';
 import PhysicsEngine from '../../../common/model/PhysicsEngine.js';
 import { MassShape } from '../../../common/model/MassShape.js';
 import Bounds3 from '../../../../../dot/js/Bounds3.js';
@@ -34,14 +34,14 @@ export default class HorizontalCylinder extends Mass {
   private stepMaximumArea: number;
 
   public constructor( engine: PhysicsEngine, radius: number, length: number, providedOptions: HorizontalCylinderOptions ) {
-    const options = optionize<HorizontalCylinderOptions, EmptySelfOptions, InstrumentedMassOptions>()( {
+    const options = optionize<HorizontalCylinderOptions, EmptySelfOptions, MassOptions>()( {
       body: engine.createBox( length, radius * 2 ),
       shape: HorizontalCylinder.getHorizontalCylinderShape( radius, length ),
       volume: HorizontalCylinder.getVolume( radius, length ),
       massShape: MassShape.HORIZONTAL_CYLINDER
     }, providedOptions );
 
-    super( engine, options as InstrumentedMassOptions );
+    super( engine, options );
 
     this.radiusProperty = new NumberProperty( radius, {
       tandem: options.tandem.createTandem( 'radiusProperty' ),

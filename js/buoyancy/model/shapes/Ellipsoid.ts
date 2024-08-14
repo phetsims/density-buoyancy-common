@@ -15,12 +15,20 @@ import { Shape } from '../../../../../kite/js/imports.js';
 import optionize, { EmptySelfOptions } from '../../../../../phet-core/js/optionize.js';
 import densityBuoyancyCommon from '../../../densityBuoyancyCommon.js';
 import Utils from '../../../../../dot/js/Utils.js';
-import Mass, { InstrumentedMassOptions, MASS_MAX_SHAPES_DIMENSION, MASS_MIN_SHAPES_DIMENSION } from '../../../common/model/Mass.js';
+import Mass, { InstrumentedMassOptions, MASS_MAX_SHAPES_DIMENSION, MASS_MIN_SHAPES_DIMENSION, MassOptions } from '../../../common/model/Mass.js';
 import PhysicsEngine from '../../../common/model/PhysicsEngine.js';
 import { MassShape } from '../../../common/model/MassShape.js';
 import DensityBuoyancyCommonConstants from '../../../common/DensityBuoyancyCommonConstants.js';
+import WithOptional from '../../../../../phet-core/js/types/WithOptional.js';
 
-export type EllipsoidOptions = StrictOmit<InstrumentedMassOptions, 'body' | 'shape' | 'volume' | 'massShape'>;
+type SelfOptions = EmptySelfOptions;
+
+// Promote required attributes to optional
+type OptionalAttributes = 'body' | 'shape' | 'massShape' | 'volume';
+
+export type EllipsoidOptions = SelfOptions &
+  StrictOmit<InstrumentedMassOptions, OptionalAttributes> &
+  WithOptional<InstrumentedMassOptions, OptionalAttributes>;
 
 export default class Ellipsoid extends Mass {
 
@@ -31,14 +39,14 @@ export default class Ellipsoid extends Mass {
   private stepMaximumVolume: number;
 
   public constructor( engine: PhysicsEngine, size: Bounds3, providedOptions: EllipsoidOptions ) {
-    const options = optionize<EllipsoidOptions, EmptySelfOptions, InstrumentedMassOptions>()( {
+    const options = optionize<StrictOmit<EllipsoidOptions, OptionalAttributes>, SelfOptions, MassOptions>()( {
       body: engine.createFromVertices( Ellipsoid.getEllipsoidVertices( size.width, size.height ), false ),
       shape: Ellipsoid.getEllipsoidShape( size.width, size.height ),
       volume: Ellipsoid.getVolume( size ),
       massShape: MassShape.ELLIPSOID
     }, providedOptions );
 
-    super( engine, options as InstrumentedMassOptions );
+    super( engine, options );
 
     this.sizeProperty = new Property( size, {
       valueType: Bounds3,

@@ -60,7 +60,7 @@ export default class Boat extends ApplicationsMass {
     const boatIntersectionVertices = BoatDesign.getIntersectionVertices( blockWidthProperty.value / 2, toLiters( ApplicationsMass.DEFAULT_DISPLACEMENT_VOLUME ) );
     const volume = BoatDesign.ONE_LITER_HULL_VOLUME * toLiters( ApplicationsMass.DEFAULT_DISPLACEMENT_VOLUME );
 
-    const options = optionize<BoatOptions, EmptySelfOptions, MassOptions>()( {
+    const options = optionize<BoatOptions, EmptySelfOptions, ApplicationsMassOptions>()( {
       body: engine.createFromVertices( boatIntersectionVertices, true ),
       shape: Shape.polygon( boatIntersectionVertices ),
       volume: volume,

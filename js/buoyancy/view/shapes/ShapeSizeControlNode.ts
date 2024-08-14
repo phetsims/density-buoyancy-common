@@ -13,7 +13,7 @@ import Range from '../../../../../dot/js/Range.js';
 import optionize, { combineOptions } from '../../../../../phet-core/js/optionize.js';
 import NumberControl, { NumberControlOptions } from '../../../../../scenery-phet/js/NumberControl.js';
 import NumberDisplay from '../../../../../scenery-phet/js/NumberDisplay.js';
-import { FlowBoxOptions, HBox, HSeparator, Node, Text, VBox } from '../../../../../scenery/js/imports.js';
+import { FlowBoxOptions, HBox, HSeparator, Node, Text, VBox, VBoxOptions } from '../../../../../scenery/js/imports.js';
 import ComboBox from '../../../../../sun/js/ComboBox.js';
 import DensityBuoyancyCommonConstants from '../../../common/DensityBuoyancyCommonConstants.js';
 import UnitConversionProperty from '../../../../../axon/js/UnitConversionProperty.js';
@@ -37,7 +37,7 @@ export default class ShapeSizeControlNode extends VBox {
     listParent: Node,
     providedOptions?: ShapeSizeControlNodeOptions ) {
 
-    const options = optionize<ShapeSizeControlNodeOptions, SelfOptions, FlowBoxOptions>()( {
+    const options = optionize<ShapeSizeControlNodeOptions, SelfOptions, VBoxOptions>()( {
       labelNode: null
     }, providedOptions );
 

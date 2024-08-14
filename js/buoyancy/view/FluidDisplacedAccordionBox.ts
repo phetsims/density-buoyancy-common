@@ -50,6 +50,7 @@ export default class FluidDisplacedAccordionBox extends AccordionBox {
                       fluidMaterialProperty: TReadOnlyProperty<Material>,
                       gravityProperty: GravityProperty,
                       providedOptions?: FluidDisplacedAccordionBoxOptions ) {
+
     const options = optionize<FluidDisplacedAccordionBoxOptions, SelfOptions, AccordionBoxOptions>()( {
       titleNode: new RichText( DensityBuoyancyCommonStrings.fluidDisplacedStringProperty, {
         font: DensityBuoyancyCommonConstants.TITLE_FONT,

@@ -31,9 +31,9 @@ export default abstract class ApplicationsMass extends Mass {
 
   protected readonly massLabelOffsetVector3: Vector3;
 
-  protected constructor( engine: PhysicsEngine, options: ApplicationsMassOptions ) {
+  protected constructor( engine: PhysicsEngine, providedOptions: ApplicationsMassOptions ) {
 
-    super( engine, options );
+    super( engine, providedOptions );
 
     const bounds = this.shapeProperty.value.getBounds();
 

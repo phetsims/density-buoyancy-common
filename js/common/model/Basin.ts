@@ -19,12 +19,10 @@ import { PhetioObjectOptions } from '../../../../tandem/js/PhetioObject.js';
 import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
 import { findRoot } from '../../../../dot/js/findRoot.js';
 
-type SelfOptions = {
+export type BasinOptions = {
   initialVolume?: number;
   initialY?: number;
-};
-
-export type BasinOptions = SelfOptions & Pick<PhetioObjectOptions, 'tandem'>;
+} & Pick<PhetioObjectOptions, 'tandem'>;
 
 export default abstract class Basin {
 
@@ -46,7 +44,7 @@ export default abstract class Basin {
 
   protected constructor( providedOptions?: BasinOptions ) {
 
-    const options = optionize<BasinOptions, SelfOptions, PhetioObjectOptions>()( {
+    const options = optionize<BasinOptions>()( {
       initialVolume: 0,
       initialY: 0,
       tandem: Tandem.REQUIRED

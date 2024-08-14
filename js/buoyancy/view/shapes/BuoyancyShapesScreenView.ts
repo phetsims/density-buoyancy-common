@@ -55,6 +55,7 @@ export default class BuoyancyShapesScreenView extends BuoyancyScreenView<Buoyanc
   public constructor( model: BuoyancyShapesModel, providedOptions: BuoyancyShapesScreenViewOptions ) {
 
     const options = optionize<BuoyancyShapesScreenViewOptions, EmptySelfOptions, BuoyancyScreenViewOptions>()( {
+
       // Show the forces as larger in this case, because the masses are significantly smaller, see https://github.com/phetsims/density-buoyancy-common/issues/186
       initialForceScale: 1 / 4
     }, providedOptions );

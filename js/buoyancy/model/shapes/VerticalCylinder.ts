@@ -16,7 +16,7 @@ import Vector3 from '../../../../../dot/js/Vector3.js';
 import { Shape } from '../../../../../kite/js/imports.js';
 import optionize, { EmptySelfOptions } from '../../../../../phet-core/js/optionize.js';
 import densityBuoyancyCommon from '../../../densityBuoyancyCommon.js';
-import Mass, { InstrumentedMassOptions, MASS_MAX_SHAPES_DIMENSION, MASS_MIN_SHAPES_DIMENSION } from '../../../common/model/Mass.js';
+import Mass, { InstrumentedMassOptions, MASS_MAX_SHAPES_DIMENSION, MASS_MIN_SHAPES_DIMENSION, MassOptions } from '../../../common/model/Mass.js';
 import PhysicsEngine from '../../../common/model/PhysicsEngine.js';
 import { MassShape } from '../../../common/model/MassShape.js';
 import Bounds3 from '../../../../../dot/js/Bounds3.js';
@@ -36,14 +36,14 @@ export default class VerticalCylinder extends Mass {
   private stepMaximumVolume: number;
 
   public constructor( engine: PhysicsEngine, radius: number, height: number, providedOptions: VerticalCylinderOptions ) {
-    const options = optionize<VerticalCylinderOptions, EmptySelfOptions, InstrumentedMassOptions>()( {
+    const options = optionize<VerticalCylinderOptions, EmptySelfOptions, MassOptions>()( {
       body: engine.createBox( 2 * radius, height ),
       shape: VerticalCylinder.getVerticalCylinderShape( radius, height ),
       volume: VerticalCylinder.getVolume( radius, height ),
       massShape: MassShape.VERTICAL_CYLINDER
     }, providedOptions );
 
-    super( engine, options as InstrumentedMassOptions );
+    super( engine, options );
 
     // {Property.<number>}
     this.radiusProperty = new NumberProperty( radius, {

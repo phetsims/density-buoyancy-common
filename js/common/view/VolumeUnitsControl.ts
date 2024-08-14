@@ -25,8 +25,6 @@ type VolumeUnitsControlOptions = SelfOptions & PickRequired<HBoxOptions, 'tandem
 
 export default class VolumeUnitsControl extends HBox {
 
-  private readonly disposeVolumeUnitsControl: () => void;
-
   public constructor( beakerUnitsProperty: Property<VolumeUnits>, providedOptions: VolumeUnitsControlOptions ) {
 
     const options = optionize<VolumeUnitsControlOptions, SelfOptions, HBoxOptions>()( {
@@ -46,11 +44,6 @@ export default class VolumeUnitsControl extends HBox {
     super( options );
 
     this.addLinkedElement( beakerUnitsProperty );
-
-    this.disposeVolumeUnitsControl = (): void => {
-      labelText.dispose();
-      radioButtonGroup.dispose();
-    };
   }
 
   public override dispose(): void {

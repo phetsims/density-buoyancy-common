@@ -1,43 +1,59 @@
-The physics engine is somewhat abstracted as a PhysicsEngine, it could be swapped out potentially in the future with
-another engine. The interface is compatible with a physics engine that is "stepped" internally, e.g. it can have
-multiple internal steps for every time we step it. We hook into this with a callback that handles the physics on each
-"internal" step (e.g. compute liquid level, then apply forces). Masses and other objects will have "step" properties
-that are updated/computed on every step, but also have "interpolated" values that are shown to the user (for instance,
-if the physics steps are longer than our animation frame steps, this is needed).
 
-The 3D view is handled with three.js (and mobius as our support library). Instead of subtyping Node, we subtype three.js
-view types, using a ThreeIsometricNode to put the 3d view into our Scenery view. This sim isn't
-supported without WebGL/three.js, so it won't load the main logic if that isn't supported (e.g. a headless browser
-without WebGL).
 
-Masses extend the supertype `Mass` (e.g. Cuboid, Scale). Liquids are handled by their `Basin` (container), of
-which `Pool` and `BoatBasin` derive from.
+This document contains notes that may be helpful to developers and future maintainers of the simulations in the suite: Density, Buoyancy, and Buoyancy: Basics.
 
-Both masses and liquids can have a `Material`, both determining the density, viscosity (if a liquid), and other display
-properties. These can be custom or preset (similar to the `Gravity`).
+### Timeline
 
-Each model step effectively does:
+This suite of simulations spans several years of development, as outlined below:
 
-- Run (potentially multiple, potentially zero) engine steps:
-  - Physics is handled by p2.js
-  - Compute the liquid level
-  - Compute forces to be applied in the next step
-- Figure out how far each mass and liquid level is between the two most recent engine steps, and interpolate those
-  values (for smooth handling)
+- **2019**: Development of Density and Buoyancy began, with a shared repository named `density-buoyancy-common`.
+- **2021**: The decision was made to split the project into two separate simulations, leading to the creation of the Buoyancy repository.
+- **2022**: The Density simulation was published with PhET-iO, while the Buoyancy simulation was put on hold.
+- **2024**: Development of Buoyancy resumed, incorporating significant design changes based on feedback. Buoyancy: Basics was added to the suite.
 
-Notes about coordinates:
+### Directory Structure
 
-- Model coordinates are in meters
-- Model coordinates are used by:
-  1. Sim model
-  2. P2 engine
-  3. ThreeJS rendering
-- View coordinates are used only for Scenery rendering.
+This suite differs from others in that all critical files are contained within the `density-buoyancy-common` repository, while the specific simulation repositories only include the basic Sim and Screen logic.
 
-### Units
-The units for the model are meters, kilograms, and seconds. However, for the user interface, volumes are displayed as L = dm^3,
-so there are several conversions between the two. See https://github.com/phetsims/density-buoyancy-common/issues/266
+Within the `density-buoyancy-common/js` directory, each simulation has its own folder, as well as a shared `common/` folder. These folders are further divided into the usual `view/` and `model/` subfolders. In some cases, particularly in Buoyancy, a screen required multiple individual files, so you may find paths such as `density-buoyancy-common/js/buoyancy/model/applications/Bottle.ts`.
 
-TODO: Add a section about disposal. What is dynamically created and disposed? Just views? See https://github.com/phetsims/density-buoyancy-common/issues/123
-### Disposal
-Model elements (Mass instances) are all preallocated, and are not disposed.
+All three simulations feature a Compare Screen. Density has its own implementation, but Buoyancy and Buoyancy: Basics share the same logic for both the model and screen view. Specifically, Buoyancy: Basics re-uses the `BuoyancyCompare*` files.
+
+### External Libraries
+
+To achieve the desired behavior and interactions, a few additional libraries are used in these simulations, in addition to the ones commonly used in PhET Sims:
+
+- **THREE.js**: This library is utilized for 3D rendering. The most significant uses of THREE.js are in the `DensityBuoyancyCommonScreenView.ts` file, where 3D assets are created, model-to-view and view-to-model transformations are handled, ray tracing for mouse interaction is implemented, and elements like MassViews are managed.
+- **P2 Physics Engine**: This library handles the collisions and movement of bodies, offering many customizable physical properties that can be adjusted via query parameters.
+
+It's important to note that for every model step, the engine performs multiple substeps to improve accuracy. As a result, some numerical properties are listed as `*InterpolatedProperty`, as they require correction for the potential offset between the model's `dt` and the engine's internal `dt`. The `interpolationRatio` accounts for this.
+
+### Model & Engine Structure
+
+- **DensityBuoyancyModel**:
+  - Contains the P2 engine and key simulation elements such as the pool and masses.
+  - `this.engine.addPostStepListener`: This callback is crucial as it determines the application of forces calculated by the engine. Buoyant forces, gravity, and viscosity are applied here, and the weight display for scales is also calculated in this section.
+  - At the end of the file, there are multiple no-ops which get rewritten in `BuoyancyApplicationsModel.ts`, reserved for the boat functionalities.
+- **BuoyancyApplicationsModel.ts**: As mentioned above, this file contains the boat functionalities, such as the features of spilling water into and out of the boat, depending on its height, i.e. if the boat is dragged out of the pool, it returns the water that might have been inside it.
+- **BlockSetModel**: An extension of the common model that handles the creation and memory of block sets, such as “Same Mass” or “Same Density” blocks, particularly in the Density Mystery Screen or Compare Screens across all three simulations.
+- **BuoyancyShapeModel.ts**: This class serves as the main model for a single shape object within the Buoyancy Shapes Screen. The class caches all possible mass instances to simplify PhET-iO implementation. This approach avoids unnecessary disposal since all properties persist for the lifetime of the simulation.
+
+
+### Important Files
+
+In addition to the model classes mentioned above, the following files are also important:
+
+- **Mass.ts**: This file provides the general implementation of a mass in these simulations and defines all its physical properties. All other shapes are derived from this class.
+- **Material.ts**: Defines all mass and fluid materials, including their densities, viscosities, and colors.
+- **MaterialView.ts**: Creates the MaterialViews for the materials defined above and loads all the textures seen in the simulation.
+- **DisplayProperties.ts**: Handles the visibility of multiple UI elements in the sim such as force vectors, depth lines, etc.
+
+### Additional Comments
+
+- **BlendedNumberProperty and BlendedVector2Property**: These properties use linear interpolation between old and new values to prevent sudden small changes and flickering.
+- **MappedWrappedProperty.ts**: A utility class that manages materials and gravity by using a Property to represent their characteristics (e.g., density or gravity value). This class allows for custom values to be set alongside named constant values. For instance, when a density is changed via the slider, the simulation switches to a custom material.
+- For more complex geometries, such as the Boat, Bottle, or Duck, the mesh data can be found in `BoatDesign.ts`, `Bottle.ts`, and `DuckData.ts`. Some important notes regarding each:
+  - **Boat.ts and Bottle.ts**: These files include precomputed data, such as curves for displaced areas and volumes and the 2D shape used for physics intersections. The geometry is calculated via the `compute*Data()` static functions.
+  - **Duck**: Modeled in Blender and converted to THREE.js via scripting. If you need to modify the duck geometry, refer to this discussion: [Buoyancy Issue #101](https://github.com/phetsims/buoyancy/issues/101) and prepare accordingly. The Duck's displacement of water from the pool is modeled as an ellipsoid. 
+- Enumeration is managed using both `EnumerationValue` and `string[]`, depending on the specific requirements.
+- [Query Parameters File](https://github.com/phetsims/density-buoyancy-common/blob/main/js/common/DensityBuoyancyCommonQueryParameters.ts)

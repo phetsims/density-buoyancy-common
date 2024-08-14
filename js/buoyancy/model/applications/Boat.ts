@@ -11,7 +11,6 @@ import StrictOmit from '../../../../../phet-core/js/types/StrictOmit.js';
 import Utils from '../../../../../dot/js/Utils.js';
 import Range from '../../../../../dot/js/Range.js';
 import { Shape } from '../../../../../kite/js/imports.js';
-import { MassOptions } from '../../../common/model/Mass.js';
 import Material from '../../../common/model/Material.js';
 import densityBuoyancyCommon from '../../../densityBuoyancyCommon.js';
 import BoatBasin from './BoatBasin.js';

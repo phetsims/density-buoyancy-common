@@ -38,6 +38,8 @@ import getBoatIcon from './getBoatIcon.js';
 import getBottleIcon from './getBottleIcon.js';
 import BoatPanel from './BoatPanel.js';
 import BottlePanel from './BottlePanel.js';
+import propertyStateHandlerSingleton from '../../../../../axon/js/propertyStateHandlerSingleton.js';
+import PropertyStatePhase from '../../../../../axon/js/PropertyStatePhase.js';
 
 type BuoyancyApplicationsScreenViewOptions = StrictOmit<BuoyancyScreenViewOptions, 'supportsDepthLines' | 'forcesInitiallyDisplayed' | 'massValuesInitiallyDisplayed' | 'initialForceScale'>;
 
@@ -144,6 +146,10 @@ export default class BuoyancyApplicationsScreenView extends BuoyancyScreenView<B
     // Determine which mystery materials are displayed and which are invisible (but can be enabled in PhET-iO studio)
     const displayedMysteryMaterials = [ Material.FLUID_E, Material.FLUID_F ];
     const invisibleMaterials = [ ...Material.BUOYANCY_FLUID_MYSTERY_MATERIALS ].filter( material => !displayedMysteryMaterials.includes( material ) );
+
+    // Undefer the materialInsideProperty before the applicationMode. For unknown reasons this fixes the order in the DynamicProperty link/unlink
+    // see https://github.com/phetsims/buoyancy/issues/67
+    propertyStateHandlerSingleton.registerPhetioOrderDependency( model.bottle.materialInsideProperty, PropertyStatePhase.UNDEFER, model.applicationModeProperty, PropertyStatePhase.UNDEFER );
 
     model.applicationModeProperty.link( scene => {
       const materials = scene === 'bottle' ? [ model.bottle.materialInsideProperty, model.bottle.materialProperty ] :

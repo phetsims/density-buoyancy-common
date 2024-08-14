@@ -141,8 +141,13 @@ export default class BuoyancyApplicationsScreenView extends BuoyancyScreenView<B
     const displayedMysteryMaterials = [ Material.FLUID_E, Material.FLUID_F ];
     const invisibleMaterials = [ ...Material.BUOYANCY_FLUID_MYSTERY_MATERIALS ].filter( material => !displayedMysteryMaterials.includes( material ) );
 
-    // Undefer the materialInsideProperty before the applicationMode. For unknown reasons this fixes the order in the DynamicProperty link/unlink
-    // see https://github.com/phetsims/buoyancy/issues/67
+    // This listener order dependency is needed because of the complexity of DynamicProperty. When the
+    // underlying property of a DynamicProperty is changed, DynamicProperty cleans up its reference to the
+    // oldProperty, but if that occurs before the actual state set for the DynamicProperty value, then an
+    // error occurs while unlinking the listener. Specifically: applicationModeProperty listener triggers an
+    // uninstrumented DynamicProperty to dispose that is pointing to the materialInsideProperty, but the
+    // DynamicProperty is out of sync because materialInsideProperty has undeferred but not notified.
+    // See https://github.com/phetsims/buoyancy/issues/67
     propertyStateHandlerSingleton.registerPhetioOrderDependency( model.bottle.materialInsideProperty, PropertyStatePhase.UNDEFER, model.applicationModeProperty, PropertyStatePhase.UNDEFER );
 
     model.applicationModeProperty.link( scene => {

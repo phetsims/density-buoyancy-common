@@ -77,8 +77,9 @@ export default class BuoyancyBasicsExploreModel extends DensityBuoyancyModel {
       this.blockB.internalVisibleProperty.value = mode === TwoBlockMode.TWO_BLOCKS;
     } );
 
-    // Undefer the materialInsideProperty before the applicationMode. For unknown reasons this fixes the order in the DynamicProperty link/unlink
-    // see https://github.com/phetsims/buoyancy/issues/67
+    // Because the materialProperty is used by a DynamicProperty, which is read from a listener of the
+    // modeProperty (in ReadoutAccordionBox), we need to make sure that the materialProperty is updated
+    // before the blockSetProperty is. See better doc in BuoyancyApplicationScreen about applicationModeProperty.
     propertyStateHandlerSingleton.registerPhetioOrderDependency( this.blockA.materialProperty, PropertyStatePhase.UNDEFER, this.modeProperty, PropertyStatePhase.UNDEFER );
     propertyStateHandlerSingleton.registerPhetioOrderDependency( this.blockB.materialProperty, PropertyStatePhase.UNDEFER, this.modeProperty, PropertyStatePhase.UNDEFER );
 

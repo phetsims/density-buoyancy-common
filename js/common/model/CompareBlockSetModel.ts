@@ -149,8 +149,9 @@ export default class CompareBlockSetModel extends BlockSetModel<BlockSet> {
                // Keep this block's density in sync with the controlling massProperty when it changes.
                massProperty.lazyLink( massValue => cube.materialProperty.customMaterial.densityProperty.set( massValue / cube.volumeProperty.value ) );
 
-               // We must undefer the Cube's materialProperty first, in order for the DynamicProperty in DensityAccordionBox to be correctly unregistered
-               // We do not know why scheduling a NOTIFY order dependency was not sufficient
+               // Because the materialProperty is used by a DynamicProperty, which is read from a listener of the
+               // blockSetProperty (in ReadoutAccordionBox), we need to make sure that the materialProperty is updated
+               // before the blockSetProperty is. See better doc in BuoyancyApplicationScreen about applicationModeProperty.
                propertyStateHandlerSingleton.registerPhetioOrderDependency( cube.materialProperty, PropertyStatePhase.UNDEFER, model.blockSetProperty, PropertyStatePhase.UNDEFER );
                return cube;
              } ) :
@@ -173,8 +174,9 @@ export default class CompareBlockSetModel extends BlockSetModel<BlockSet> {
                  cube.materialProperty.customMaterial.densityProperty.value = cubeData.sameVolumeMass / volume;
                } );
 
-               // We must undefer the Cube's materialProperty first, in order for the DynamicProperty in DensityAccordionBox to be correctly unregistered
-               // We do not know why scheduling a NOTIFY order dependency was not sufficient
+               // Because the materialProperty is used by a DynamicProperty, which is read from a listener of the
+               // blockSetProperty (in ReadoutAccordionBox), we need to make sure that the materialProperty is updated
+               // before the blockSetProperty is. See better doc in BuoyancyApplicationScreen about applicationModeProperty.
                propertyStateHandlerSingleton.registerPhetioOrderDependency( cube.materialProperty, PropertyStatePhase.UNDEFER, model.blockSetProperty, PropertyStatePhase.UNDEFER );
 
                return cube;
@@ -197,8 +199,9 @@ export default class CompareBlockSetModel extends BlockSetModel<BlockSet> {
                // Keep this block's density in sync with the controlling densityProperty when it changes.
                densityProperty.lazyLink( density => cube.materialProperty.customMaterial.densityProperty.set( density ) );
 
-               // We must undefer the Cube's materialProperty first, in order for the DynamicProperty in DensityAccordionBox to be correctly unregistered
-               // We do not know why scheduling a NOTIFY order dependency was not sufficient
+               // Because the materialProperty is used by a DynamicProperty, which is read from a listener of the
+               // blockSetProperty (in ReadoutAccordionBox), we need to make sure that the materialProperty is updated
+               // before the blockSetProperty is. See better doc in BuoyancyApplicationScreen about applicationModeProperty.
                propertyStateHandlerSingleton.registerPhetioOrderDependency( cube.materialProperty, PropertyStatePhase.UNDEFER, model.blockSetProperty, PropertyStatePhase.UNDEFER );
 
                return cube;

@@ -31,7 +31,6 @@ import CuboidView from '../../common/view/CuboidView.js';
 import BlocksPanel from '../../common/view/BlocksPanel.js';
 import Panel from '../../../../sun/js/Panel.js';
 import BuoyancyScreenView, { BuoyancyScreenViewOptions } from './BuoyancyScreenView.js';
-import StrictOmit from '../../../../phet-core/js/types/StrictOmit.js';
 import MaterialProperty from '../../common/model/MaterialProperty.js';
 
 // constants
@@ -40,7 +39,7 @@ const MARGIN = DensityBuoyancyCommonConstants.MARGIN_SMALL;
 // Relatively arbitrary default
 const MAX_RIGHT_SIDE_CONTENT_WIDTH = ScreenView.DEFAULT_LAYOUT_BOUNDS.width / 2;
 
-type BuoyancyCompareScreenViewOptions = StrictOmit<BuoyancyScreenViewOptions, | 'supportsDepthLines' | 'forcesInitiallyDisplayed' | 'massValuesInitiallyDisplayed' | 'initialForceScale'>;
+type BuoyancyCompareScreenViewOptions = BuoyancyScreenViewOptions;
 
 export default class BuoyancyCompareScreenView extends BuoyancyScreenView<BuoyancyCompareModel> {
 
@@ -53,10 +52,8 @@ export default class BuoyancyCompareScreenView extends BuoyancyScreenView<Buoyan
 
     const options = optionize<BuoyancyCompareScreenViewOptions, EmptySelfOptions, BuoyancyScreenViewOptions>()( {
       supportsDepthLines: true,
-      forcesInitiallyDisplayed: false,
-      massValuesInitiallyDisplayed: true,
 
-      // Custom just for this screen
+      // Custom for Buoyancy Basics and Buoyancy Compare Screen
       cameraLookAt: DensityBuoyancyCommonConstants.BUOYANCY_BASICS_CAMERA_LOOK_AT,
       viewOffset: DensityBuoyancyCommonConstants.BUOYANCY_BASICS_VIEW_OFFSET,
 

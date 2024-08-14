@@ -66,15 +66,14 @@ export type THREEModelViewTransform = {
 type SelfOptions = {
   cameraLookAt?: Vector3;
   cameraPosition?: Vector3;
-  viewOffset?: Vector2;
   cameraZoom?: number;
+  viewOffset?: Vector2;
   preventFit?: boolean;
-
-  canShowForces: boolean;
-  supportsDepthLines: boolean;
-  forcesInitiallyDisplayed: boolean;
-  massValuesInitiallyDisplayed: boolean;
+  canShowForces?: boolean;
   initialForceScale?: number;
+  supportsDepthLines?: boolean;
+  forcesInitiallyDisplayed?: boolean;
+  massValuesInitiallyDisplayed?: boolean;
 } & PickRequired<PhetioObjectOptions, 'tandem'>;
 
 export type DensityBuoyancyScreenViewOptions = SelfOptions & ScreenViewOptions;
@@ -115,14 +114,19 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
     const scaleIncrease = 3.5;
 
     const options = optionize<DensityBuoyancyScreenViewOptions, SelfOptions, ScreenViewOptions>()( {
-      cameraLookAt: DensityBuoyancyCommonConstants.BUOYANCY_CAMERA_LOOK_AT,
+      cameraLookAt: DensityBuoyancyCommonConstants.DENSITY_CAMERA_LOOK_AT,
       cameraPosition: new Vector3( 0, 0.2, 2 ).timesScalar( scaleIncrease ),
       cameraZoom: 1.75 * scaleIncrease,
       viewOffset: new Vector2( 0, 0 ),
 
       initialForceScale: 1 / 16,
 
-      preventFit: true
+      preventFit: true,
+
+      canShowForces: false,
+      supportsDepthLines: false,
+      forcesInitiallyDisplayed: false,
+      massValuesInitiallyDisplayed: true
     }, providedOptions );
 
     const tandem = options.tandem;

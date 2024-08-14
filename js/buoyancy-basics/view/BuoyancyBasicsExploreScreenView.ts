@@ -22,10 +22,9 @@ import ScaleView from '../../common/view/ScaleView.js';
 import MassView from '../../common/view/MassView.js';
 import DensityAccordionBox from '../../buoyancy/view/DensityAccordionBox.js';
 import BuoyancyScreenView, { BuoyancyScreenViewOptions } from '../../buoyancy/view/BuoyancyScreenView.js';
-import StrictOmit from '../../../../phet-core/js/types/StrictOmit.js';
 import getBuoyancyExploreIcon from '../../buoyancy/view/getBuoyancyExploreIcon.js';
 
-type BuoyancyBasicsExploreScreenViewOptions = StrictOmit<BuoyancyScreenViewOptions, 'supportsDepthLines' | 'forcesInitiallyDisplayed' | 'massValuesInitiallyDisplayed' | 'initialForceScale'>;
+type BuoyancyBasicsExploreScreenViewOptions = BuoyancyScreenViewOptions;
 
 export default class BuoyancyBasicsExploreScreenView extends BuoyancyScreenView<BuoyancyBasicsExploreModel> {
 
@@ -35,8 +34,6 @@ export default class BuoyancyBasicsExploreScreenView extends BuoyancyScreenView<
 
     const options = optionize<BuoyancyBasicsExploreScreenViewOptions, EmptySelfOptions, BuoyancyScreenViewOptions>()( {
       supportsDepthLines: true,
-      forcesInitiallyDisplayed: false,
-      massValuesInitiallyDisplayed: true,
       cameraLookAt: DensityBuoyancyCommonConstants.BUOYANCY_BASICS_CAMERA_LOOK_AT,
       viewOffset: DensityBuoyancyCommonConstants.BUOYANCY_BASICS_VIEW_OFFSET
     }, providedOptions );

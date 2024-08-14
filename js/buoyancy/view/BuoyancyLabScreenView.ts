@@ -24,12 +24,11 @@ import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js'
 import CuboidView from '../../common/view/CuboidView.js';
 import FluidDensityPanel from './FluidDensityPanel.js';
 import BuoyancyScreenView, { BuoyancyScreenViewOptions } from './BuoyancyScreenView.js';
-import StrictOmit from '../../../../phet-core/js/types/StrictOmit.js';
 
 // constants
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN_SMALL;
 
-type BuoyancyLabScreenViewOptions = StrictOmit<BuoyancyScreenViewOptions, 'supportsDepthLines' | 'forcesInitiallyDisplayed' | 'massValuesInitiallyDisplayed' | 'initialForceScale'>;
+type BuoyancyLabScreenViewOptions = BuoyancyScreenViewOptions;
 
 export default class BuoyancyLabScreenView extends BuoyancyScreenView<BuoyancyLabModel> {
 
@@ -40,8 +39,7 @@ export default class BuoyancyLabScreenView extends BuoyancyScreenView<BuoyancyLa
     const options = optionize<BuoyancyLabScreenViewOptions, EmptySelfOptions, BuoyancyScreenViewOptions>()( {
       supportsDepthLines: true,
       forcesInitiallyDisplayed: true,
-      massValuesInitiallyDisplayed: false,
-      cameraLookAt: DensityBuoyancyCommonConstants.BUOYANCY_CAMERA_LOOK_AT
+      massValuesInitiallyDisplayed: false
     }, providedOptions );
 
     super( model, options );

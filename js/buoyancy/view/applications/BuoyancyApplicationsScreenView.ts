@@ -28,7 +28,6 @@ import Bottle from '../../model/applications/Bottle.js';
 import MassView from '../../../common/view/MassView.js';
 import FluidDensityPanel from '../FluidDensityPanel.js';
 import BuoyancyScreenView, { BuoyancyScreenViewOptions } from '../BuoyancyScreenView.js';
-import StrictOmit from '../../../../../phet-core/js/types/StrictOmit.js';
 import BoatDesign from '../../model/applications/BoatDesign.js';
 import Mass from '../../../common/model/Mass.js';
 import Boat from '../../model/applications/Boat.js';
@@ -41,7 +40,7 @@ import BottlePanel from './BottlePanel.js';
 import propertyStateHandlerSingleton from '../../../../../axon/js/propertyStateHandlerSingleton.js';
 import PropertyStatePhase from '../../../../../axon/js/PropertyStatePhase.js';
 
-type BuoyancyApplicationsScreenViewOptions = StrictOmit<BuoyancyScreenViewOptions, 'supportsDepthLines' | 'forcesInitiallyDisplayed' | 'massValuesInitiallyDisplayed' | 'initialForceScale'>;
+type BuoyancyApplicationsScreenViewOptions = BuoyancyScreenViewOptions;
 
 export default class BuoyancyApplicationsScreenView extends BuoyancyScreenView<BuoyancyApplicationsModel> {
 
@@ -49,12 +48,7 @@ export default class BuoyancyApplicationsScreenView extends BuoyancyScreenView<B
 
   public constructor( model: BuoyancyApplicationsModel, providedOptions: BuoyancyApplicationsScreenViewOptions ) {
 
-    const options = optionize<BuoyancyApplicationsScreenViewOptions, EmptySelfOptions, BuoyancyScreenViewOptions>()( {
-      supportsDepthLines: false,
-      forcesInitiallyDisplayed: false,
-      massValuesInitiallyDisplayed: true,
-      cameraLookAt: DensityBuoyancyCommonConstants.BUOYANCY_CAMERA_LOOK_AT
-    }, providedOptions );
+    const options = optionize<BuoyancyApplicationsScreenViewOptions, EmptySelfOptions, BuoyancyScreenViewOptions>()( {}, providedOptions );
 
     super( model, options );
 

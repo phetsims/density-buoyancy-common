@@ -33,7 +33,6 @@ import ScaleView from '../../../common/view/ScaleView.js';
 import MassView from '../../../common/view/MassView.js';
 import FluidDensityPanel from '../FluidDensityPanel.js';
 import BuoyancyScreenView, { BuoyancyScreenViewOptions } from '../BuoyancyScreenView.js';
-import StrictOmit from '../../../../../phet-core/js/types/StrictOmit.js';
 import Mass from '../../../common/model/Mass.js';
 import HorizontalCylinder from '../../model/shapes/HorizontalCylinder.js';
 import HorizontalCylinderView from './HorizontalCylinderView.js';
@@ -46,7 +45,7 @@ import EllipsoidView from './EllipsoidView.js';
 import Cone from '../../model/shapes/Cone.js';
 import ConeView from './ConeView.js';
 
-type BuoyancyShapesScreenViewOptions = StrictOmit<BuoyancyScreenViewOptions, 'supportsDepthLines' | 'forcesInitiallyDisplayed' | 'massValuesInitiallyDisplayed' | 'initialForceScale'>;
+type BuoyancyShapesScreenViewOptions = BuoyancyScreenViewOptions;
 
 export default class BuoyancyShapesScreenView extends BuoyancyScreenView<BuoyancyShapesModel> {
 
@@ -56,13 +55,8 @@ export default class BuoyancyShapesScreenView extends BuoyancyScreenView<Buoyanc
   public constructor( model: BuoyancyShapesModel, providedOptions: BuoyancyShapesScreenViewOptions ) {
 
     const options = optionize<BuoyancyShapesScreenViewOptions, EmptySelfOptions, BuoyancyScreenViewOptions>()( {
-      supportsDepthLines: false,
-      forcesInitiallyDisplayed: false,
-      massValuesInitiallyDisplayed: true,
-
       // Show the forces as larger in this case, because the masses are significantly smaller, see https://github.com/phetsims/density-buoyancy-common/issues/186
-      initialForceScale: 1 / 4,
-      cameraLookAt: DensityBuoyancyCommonConstants.BUOYANCY_CAMERA_LOOK_AT
+      initialForceScale: 1 / 4
     }, providedOptions );
 
     super( model, options );

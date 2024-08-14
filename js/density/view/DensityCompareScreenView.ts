@@ -18,11 +18,10 @@ import BlocksValuePanel from '../../common/view/BlocksValuePanel.js';
 import MassView from '../../common/view/MassView.js';
 import CuboidView from '../../common/view/CuboidView.js';
 import BlocksPanel from '../../common/view/BlocksPanel.js';
-import StrictOmit from '../../../../phet-core/js/types/StrictOmit.js';
 
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN_SMALL;
 
-type DensityCompareScreenViewOptions = StrictOmit<DensityBuoyancyScreenViewOptions, 'canShowForces' | 'supportsDepthLines' | 'forcesInitiallyDisplayed' | 'massValuesInitiallyDisplayed' | 'initialForceScale'>;
+type DensityCompareScreenViewOptions = DensityBuoyancyScreenViewOptions;
 
 export default class DensityCompareScreenView extends DensityBuoyancyScreenView<DensityCompareModel> {
 
@@ -30,13 +29,7 @@ export default class DensityCompareScreenView extends DensityBuoyancyScreenView<
 
   public constructor( model: DensityCompareModel, providedOptions: DensityCompareScreenViewOptions ) {
 
-    const options = optionize<DensityCompareScreenViewOptions, EmptySelfOptions, DensityBuoyancyScreenViewOptions>()( {
-      canShowForces: false,
-      supportsDepthLines: false,
-      forcesInitiallyDisplayed: false,
-      massValuesInitiallyDisplayed: true,
-      cameraLookAt: DensityBuoyancyCommonConstants.DENSITY_CAMERA_LOOK_AT
-    }, providedOptions );
+    const options = optionize<DensityCompareScreenViewOptions, EmptySelfOptions, DensityBuoyancyScreenViewOptions>()( {}, providedOptions );
 
     super( model, options );
 

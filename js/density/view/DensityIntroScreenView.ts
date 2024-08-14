@@ -23,10 +23,9 @@ import DensityBuoyancyCommonColors from '../../common/view/DensityBuoyancyCommon
 import BlocksModeRadioButtonGroup from '../../common/view/BlocksModeRadioButtonGroup.js';
 import MassView from '../../common/view/MassView.js';
 import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
-import StrictOmit from '../../../../phet-core/js/types/StrictOmit.js';
 import DerivedStringProperty from '../../../../axon/js/DerivedStringProperty.js';
 
-type DensityIntroScreenViewOptions = StrictOmit<DensityBuoyancyScreenViewOptions, 'canShowForces' | 'supportsDepthLines' | 'forcesInitiallyDisplayed' | 'massValuesInitiallyDisplayed' | 'initialForceScale'>;
+type DensityIntroScreenViewOptions = DensityBuoyancyScreenViewOptions;
 
 export default class DensityIntroScreenView extends DensityBuoyancyScreenView<DensityIntroModel> {
 
@@ -34,13 +33,7 @@ export default class DensityIntroScreenView extends DensityBuoyancyScreenView<De
 
   public constructor( model: DensityIntroModel, providedOptions: DensityIntroScreenViewOptions ) {
 
-    const options = optionize<DensityIntroScreenViewOptions, EmptySelfOptions, DensityBuoyancyScreenViewOptions>()( {
-      canShowForces: false,
-      supportsDepthLines: false,
-      forcesInitiallyDisplayed: false,
-      massValuesInitiallyDisplayed: true,
-      cameraLookAt: DensityBuoyancyCommonConstants.DENSITY_CAMERA_LOOK_AT
-    }, providedOptions );
+    const options = optionize<DensityIntroScreenViewOptions, EmptySelfOptions, DensityBuoyancyScreenViewOptions>()( {}, providedOptions );
 
     super( model, options );
 

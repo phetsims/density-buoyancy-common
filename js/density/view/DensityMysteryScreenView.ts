@@ -20,19 +20,14 @@ import DensityTableNode from './DensityTableNode.js';
 import optionize, { combineOptions, EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
 import MassView from '../../common/view/MassView.js';
 import CuboidView from '../../common/view/CuboidView.js';
-import StrictOmit from '../../../../phet-core/js/types/StrictOmit.js';
 
-type DensityMysteryScreenViewOptions = StrictOmit<DensityBuoyancyScreenViewOptions, 'canShowForces' | 'supportsDepthLines' | 'forcesInitiallyDisplayed' | 'massValuesInitiallyDisplayed' | 'initialForceScale'>;
+type DensityMysteryScreenViewOptions = DensityBuoyancyScreenViewOptions;
 
 export default class DensityMysteryScreenView extends DensityBuoyancyScreenView<DensityMysteryModel> {
   public constructor( model: DensityMysteryModel, providedOptions: DensityMysteryScreenViewOptions ) {
 
     const options = optionize<DensityMysteryScreenViewOptions, EmptySelfOptions, DensityBuoyancyScreenViewOptions>()( {
-      canShowForces: false,
-      supportsDepthLines: false,
-      forcesInitiallyDisplayed: false,
-      massValuesInitiallyDisplayed: false,
-      cameraLookAt: DensityBuoyancyCommonConstants.DENSITY_CAMERA_LOOK_AT
+      massValuesInitiallyDisplayed: false
     }, providedOptions );
 
     super( model, options );

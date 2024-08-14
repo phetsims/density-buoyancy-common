@@ -11,7 +11,6 @@ import DensityBuoyancyScreenView, { DensityBuoyancyScreenViewOptions } from '../
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyModel from '../../common/model/DensityBuoyancyModel.js';
 import optionize, { EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
-import StrictOmit from '../../../../phet-core/js/types/StrictOmit.js';
 import PoolScaleHeightControl from '../../common/view/PoolScaleHeightControl.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
@@ -21,7 +20,7 @@ import BuoyancyDisplayOptionsPanel from './BuoyancyDisplayOptionsPanel.js';
 // constants
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN_SMALL;
 
-export type BuoyancyScreenViewOptions = StrictOmit<DensityBuoyancyScreenViewOptions, 'canShowForces'>;
+export type BuoyancyScreenViewOptions = DensityBuoyancyScreenViewOptions;
 
 export default abstract class BuoyancyScreenView<T extends DensityBuoyancyModel> extends DensityBuoyancyScreenView<T> {
 
@@ -33,7 +32,8 @@ export default abstract class BuoyancyScreenView<T extends DensityBuoyancyModel>
                          providedOptions: BuoyancyScreenViewOptions ) {
 
     const options = optionize<BuoyancyScreenViewOptions, EmptySelfOptions, DensityBuoyancyScreenViewOptions>()( {
-      canShowForces: true
+      canShowForces: true,
+      cameraLookAt: DensityBuoyancyCommonConstants.BUOYANCY_CAMERA_LOOK_AT
     }, providedOptions );
 
     super( model, options );

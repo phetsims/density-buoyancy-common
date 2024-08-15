@@ -35,6 +35,7 @@ export default class Boat extends ApplicationsMass {
   // The volume that the boat can hold inside it.
   public readonly fluidMaterialProperty: MaterialProperty;
 
+  // The volume of the mass's capacity AND itself, the boat hull plus how much the boat can hold.
   public readonly maxVolumeDisplacedProperty: NumberProperty;
 
   // The interior that can contain fluid
@@ -86,18 +87,25 @@ export default class Boat extends ApplicationsMass {
 
     // Update the shape when the block width or displacement changes
     Multilink.multilink( [ blockWidthProperty, this.maxVolumeDisplacedProperty ], ( blockWidth, displacementVolume ) => {
+
+      // Exit early if the displacement volume is zero, as no updates are needed in this case.
       if ( displacementVolume === 0 ) {
         return;
       }
 
+      // Determine the outline of the submerged part of the object, important for calculating buoyancy and shape.
       const vertices = BoatDesign.getIntersectionVertices( blockWidth / 2, toLiters( displacementVolume ) );
+
       const volume = BoatDesign.ONE_LITER_HULL_VOLUME * toLiters( displacementVolume );
 
+      // Update the physics engine with the new vertices, altering the object's shape in the simulation.
       engine.updateFromVertices( this.body, vertices, true );
 
+      // Update the shape property with a new polygon created from the calculated vertices.
       // This value changes very rarely and only takes 0-1ms to compute (seen on macbook air m1), so it is OK to run it here.
       this.shapeProperty.value = Shape.polygon( vertices );
 
+      // Calculate the bounds of the current shape and set the mass label offset vector.
       // Mass label on the bottom left of the boat, top because the shape is flipped.
       const bounds = this.shapeProperty.value.getBounds();
       this.massLabelOffsetVector3.setXYZ( bounds.left, bounds.top, 0 );
@@ -105,7 +113,10 @@ export default class Boat extends ApplicationsMass {
       // Rounding to proactively prevent infinite compounding rounding errors, like https://github.com/phetsims/density-buoyancy-common/issues/192
       this.volumeProperty.value = Utils.roundToInterval( volume, DensityBuoyancyCommonConstants.TOLERANCE );
 
+      // Update the body's offset property based on the centroid of the polygon vertices,
+      // with the centroid negated to properly align the object in the simulation space.
       this.bodyOffsetProperty.value = Utils.centroidOfPolygon( vertices ).negated();
+
       this.writeData();
     } );
 

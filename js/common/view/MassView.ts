@@ -165,7 +165,7 @@ export default abstract class MassView extends Disposable {
       this.disposeEmitter.addListener( () => {
         this.grabDragInteraction!.dispose();
         keyboardDragListener.dispose();
-        this.focusablePath && this.focusablePath.dispose();
+        this.focusablePath!.dispose();
       } );
     }
 

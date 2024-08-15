@@ -165,7 +165,8 @@ export default class VerticalCylinder extends Mass {
       return this.stepMaximumVolume;
     }
     else {
-      // This is identical to Cuboid's getDisplacedVolume formula, see there if this needs to change.
+
+      // TODO: Why is the cylinder volume identical to a cuboid volume? See https://github.com/phetsims/density-buoyancy-common/issues/344
       return this.stepMaximumVolume * ( fluidLevel - bottom ) / ( top - bottom );
     }
   }

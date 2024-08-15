@@ -178,32 +178,38 @@ const DensityBuoyancyCommonColors = {
   materialTColorProperty: new ProfileColorProperty( densityBuoyancyCommon, 'materialT', {
     default: new Color( 'rgba(255,0,0,1)' )
   }, {
-    tandem: packageName === 'buoyancy' ? tandem.createTandem( 'materialTColorProperty' ) : Tandem.OPT_OUT
+    tandem: packageName === 'buoyancy' ? tandem.createTandem( 'materialTColorProperty' ) : Tandem.OPT_OUT,
+    phetioFeatured: true
   } ),
   materialUColorProperty: new ProfileColorProperty( densityBuoyancyCommon, 'materialU', {
     default: new Color( 'rgba(0,255,0,1)' )
   }, {
-    tandem: packageName === 'buoyancy' ? tandem.createTandem( 'materialUColorProperty' ) : Tandem.OPT_OUT
+    tandem: packageName === 'buoyancy' ? tandem.createTandem( 'materialUColorProperty' ) : Tandem.OPT_OUT,
+    phetioFeatured: true
   } ),
   materialVColorProperty: new ProfileColorProperty( densityBuoyancyCommon, 'materialV', {
     default: new Color( 'rgba(255,115,0,0.61)' )
   }, {
-    tandem: packageName === 'buoyancy' ? tandem.createTandem( 'materialVColorProperty' ) : Tandem.OPT_OUT
+    tandem: packageName === 'buoyancy' ? tandem.createTandem( 'materialVColorProperty' ) : Tandem.OPT_OUT,
+    phetioFeatured: true
   } ),
   materialWColorProperty: new ProfileColorProperty( densityBuoyancyCommon, 'materialW', {
     default: new Color( 'rgba(255,16,223,0.5)' )
   }, {
-    tandem: packageName === 'buoyancy' ? tandem.createTandem( 'materialWColorProperty' ) : Tandem.OPT_OUT
+    tandem: packageName === 'buoyancy' ? tandem.createTandem( 'materialWColorProperty' ) : Tandem.OPT_OUT,
+    phetioFeatured: true
   } ),
   materialXColorProperty: new ProfileColorProperty( densityBuoyancyCommon, 'materialX', {
     default: new Color( 'rgba(255,255,0,1)' )
   }, {
-    tandem: packageName === 'buoyancy' ? tandem.createTandem( 'materialXColorProperty' ) : Tandem.OPT_OUT
+    tandem: packageName === 'buoyancy' ? tandem.createTandem( 'materialXColorProperty' ) : Tandem.OPT_OUT,
+    phetioFeatured: true
   } ),
   materialYColorProperty: new ProfileColorProperty( densityBuoyancyCommon, 'materialY', {
     default: new Color( 'rgba(0,170,255,1)' )
   }, {
-    tandem: packageName === 'buoyancy' ? tandem.createTandem( 'materialYColorProperty' ) : Tandem.OPT_OUT
+    tandem: packageName === 'buoyancy' ? tandem.createTandem( 'materialYColorProperty' ) : Tandem.OPT_OUT,
+    phetioFeatured: true
   } ),
   customFluidLightColorProperty: new ProfileColorProperty( densityBuoyancyCommon, 'customFluidLight', {
     default: new Color( 255, 255, 255, 0.3 )

@@ -37,7 +37,8 @@ export default class DensityBuoyancyCommonPreferencesNode extends VBox {
     }, providedOptions );
 
     options.children = [ new VolumeUnitsControl( DensityBuoyancyCommonPreferences.volumeUnitsProperty, {
-      tandem: options.tandem.createTandem( 'volumeUnitsControl' )
+      tandem: options.tandem.createTandem( 'volumeUnitsControl' ),
+      phetioFeatured: true
     } ) ];
 
     if ( supportsPercentageSubmergedVisible ) {

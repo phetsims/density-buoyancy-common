@@ -18,10 +18,11 @@ import { VolumeUnits } from '../DensityBuoyancyCommonQueryParameters.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
 import Disposable from '../../../../axon/js/Disposable.js';
+import WithRequired from '../../../../phet-core/js/types/WithRequired.js';
 
 type SelfOptions = EmptySelfOptions;
 
-type VolumeUnitsControlOptions = SelfOptions & PickRequired<HBoxOptions, 'tandem'>;
+type VolumeUnitsControlOptions = SelfOptions & WithRequired<HBoxOptions, 'tandem'>;
 
 export default class VolumeUnitsControl extends HBox {
 

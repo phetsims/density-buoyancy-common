@@ -25,15 +25,15 @@ import Panel, { PanelOptions } from '../../../../sun/js/Panel.js';
 import DensityBuoyancyCommonColors from '../../common/view/DensityBuoyancyCommonColors.js';
 import { GeneralScaleReadoutNode } from '../../common/view/ScaleReadoutNode.js';
 import { DisplayType } from '../../common/model/Scale.js';
-import PickRequired from '../../../../phet-core/js/types/PickRequired.js';
 import NumberIO from '../../../../tandem/js/types/NumberIO.js';
 import ReadOnlyProperty from '../../../../axon/js/ReadOnlyProperty.js';
 import GravityProperty from '../../common/model/GravityProperty.js';
 import getFluidDisplacedAccordionBoxScaleIcon from './getFluidDisplacedAccordionBoxScaleIcon.js';
+import WithRequired from '../../../../phet-core/js/types/WithRequired.js';
 
 type SelfOptions = EmptySelfOptions;
 
-type FluidDisplacedAccordionBoxOptions = SelfOptions & PickRequired<AccordionBoxOptions, 'tandem' | 'phetioFeatured'>;
+type FluidDisplacedAccordionBoxOptions = SelfOptions & WithRequired<AccordionBoxOptions, 'tandem'>;
 
 const CONTENT_WIDTH = 105;
 

@@ -316,7 +316,6 @@ export default class BuoyancyApplicationsModel extends DensityBuoyancyModel {
       this.boat.updateVerticalMotion( this.pool, dt );
     }
   }
-
 }
 
 densityBuoyancyCommon.register( 'BuoyancyApplicationsModel', BuoyancyApplicationsModel );

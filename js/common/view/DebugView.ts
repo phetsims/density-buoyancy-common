@@ -90,7 +90,7 @@ export default class DebugView extends Node {
   }
 
   protected createDebugMassNode( model: DensityBuoyancyModel, mass: Mass, modelViewTransform: ModelViewTransform2 ): DebugMassNode {
-    return new DebugMassNode( model, mass, modelViewTransform );
+    return new DebugMassNode( mass, modelViewTransform );
   }
 
   /**
@@ -142,7 +142,7 @@ export class DebugMassNode extends Node {
   public readonly mass: Mass;
   private readonly dragListener: DragListener;
 
-  public constructor( model: DensityBuoyancyModel, mass: Mass, modelViewTransform: ModelViewTransform2 ) {
+  public constructor( mass: Mass, modelViewTransform: ModelViewTransform2 ) {
     super( {
       cursor: 'pointer'
     } );
@@ -169,7 +169,7 @@ export class DebugMassNode extends Node {
       matrix.set02( 0 );
       matrix.set12( 0 );
 
-      path = this.boatShapeListener( mass, path, intersectionPath, shape, matrix );
+      path = this.getPathForMass( mass, path, intersectionPath, shape, matrix );
     };
     mass.shapeProperty.link( shapeListener );
     this.disposeEmitter.addListener( () => {
@@ -187,8 +187,6 @@ export class DebugMassNode extends Node {
     } );
     transformListener();
 
-    this.specialBoatCase( mass );
-
     this.dragListener = new DragListener( {
       transform: modelViewTransform,
       applyOffset: false,
@@ -205,13 +203,9 @@ export class DebugMassNode extends Node {
     this.addInputListener( this.dragListener );
   }
 
-  protected boatShapeListener( mass: Mass, path: Path, intersectionPath: Path, shape: Shape, matrix: Matrix3 ): Path {
+  protected getPathForMass( mass: Mass, path: Path, intersectionPath: Path, shape: Shape, matrix: Matrix3 ): Path {
     path.shape = shape.transformed( matrix );
     return path;
-  }
-
-  protected specialBoatCase( mass: Mass ): void {
-    // no-op, to be implemented by child class
   }
 }
 

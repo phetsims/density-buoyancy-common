@@ -98,12 +98,18 @@ export default class ApplicationsDebugView extends DebugView {
 
 class ApplicationsDebugMassNode extends DebugMassNode {
 
-  public constructor( private model: DensityBuoyancyModel, mass: Mass, private modelViewTransform: ModelViewTransform2 ) {
-    super( model, mass, modelViewTransform );
+  public constructor( private model: DensityBuoyancyModel, mass: Mass, private readonly modelViewTransform: ModelViewTransform2 ) {
+    assert && assert( !!modelViewTransform, 'modelViewTransform must be provided' );
+
+    super( mass, modelViewTransform );
+
+    this.specialBoatCase( mass );
   }
 
-  protected override specialBoatCase( mass: Mass ): void {
-    if ( mass instanceof Boat ) {
+  protected specialBoatCase( mass: Mass ): void {
+
+    // Since this can be called from the super constructor,
+    if ( mass instanceof Boat && this.modelViewTransform ) {
       const fluidPath = new Path( null, {
         fill: 'rgba(0,128,255,0.5)',
         stroke: 'black',
@@ -180,7 +186,7 @@ class ApplicationsDebugMassNode extends DebugMassNode {
     }
   }
 
-  protected override boatShapeListener( mass: Mass, path: Path, intersectionPath: Path, shape: Shape, matrix: Matrix3 ): Path {
+  protected override getPathForMass( mass: Mass, path: Path, intersectionPath: Path, shape: Shape, matrix: Matrix3 ): Path {
     if ( mass instanceof Boat ) {
       const multiplier = Math.pow( mass.maxVolumeDisplacedProperty.value / 0.001, 1 / 3 );
       const basinShape = mass.basin.oneLiterShape.transformed( Matrix3.scaling( multiplier ) );

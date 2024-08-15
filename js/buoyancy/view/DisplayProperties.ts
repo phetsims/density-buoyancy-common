@@ -14,6 +14,7 @@ import Range from '../../../../dot/js/Range.js';
 import Property from '../../../../axon/js/Property.js';
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
+import packageJSON from '../../../../joist/js/packageJSON.js';
 
 const ZOOM_SCALES: number[] = [];
 
@@ -78,7 +79,7 @@ export default class DisplayProperties {
     this.vectorZoomLevelProperty = new NumberProperty( 4, {
       numberType: 'Integer',
       range: new Range( 0, ZOOM_SCALES.length - 1 ),
-      tandem: tandem.createTandem( 'vectorZoomLevelProperty' ),
+      tandem: packageJSON.name === 'density' ? Tandem.OPT_OUT : tandem.createTandem( 'vectorZoomLevelProperty' ),
       phetioFeatured: true,
       phetioDocumentation: 'Controls the zoom level of the force vectors. Smaller values are more zoomed out.'
     } );

@@ -68,7 +68,6 @@ export default class BuoyancyShapeModel {
 
     // Property doesn't need disposal, since everything here lives for the lifetime of the simulation.
     // Named like this for clarity with PhET-iO naming, do not confuse this with "KITE/Shape" or Mass.shapeProperty.
-    // TODO: Why is this phet-io instrumented? see https://github.com/phetsims/density-buoyancy-common/issues/288
     this.shapeProperty = new DerivedProperty( [ this.shapeNameProperty ], shapeName => this.shapeCacheMap.get( shapeName )!, {
       tandem: options.tandem.createTandem( 'shapeProperty' ),
       phetioReadOnly: true,

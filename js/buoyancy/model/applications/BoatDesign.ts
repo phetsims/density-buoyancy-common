@@ -232,12 +232,28 @@ export default class BoatDesign {
   }
 
   /**
-   * Fills the positionArray with an X,Z cross-section of the fluid around a boat at a given y value (for a given liters
-   * value).
+   * Fills the `positionArray` with vertices representing an X-Z cross-section of fluid around a boat at a specified Y
+   * coordinate (fluidY) based on the given amount of fluid (liters). This function calculates whether the fluid
+   * completely surrounds the boat at the specified fluid level.
    *
-   * @returns - Whether the fluid is completely filled
+   * @param fluidY - The Y-coordinate representing the height of the fluid surface.
+   * @param boatX - The X-coordinate position of the boat.
+   * @param boatY - The Y-coordinate position of the boat.
+   * @param liters - The amount of fluid (in liters) around the boat.
+   * @param poolBounds - The bounds of the fluid pool, specified as a 3D boundary.
+   * @param positionArray - The array to be filled with vertex positions representing the fluid cross-section.
+   * @param wasFilled - A boolean indicating whether the array was previously filled.
+   * @returns - A boolean indicating whether the fluid completely surrounds the boat (i.e., the fluid cross-section is fully filled).
    */
-  public static fillFluidVertexArray( fluidY: number, boatX: number, boatY: number, liters: number, poolBounds: Bounds3, positionArray: Float32Array, wasFilled: boolean ): boolean {
+  public static fillFluidVertexArray(
+    fluidY: number,
+    boatX: number,
+    boatY: number,
+    liters: number,
+    poolBounds: Bounds3,
+    positionArray: Float32Array,
+    wasFilled: boolean
+  ): boolean {
 
     const outsideBottomY = -BoatDesign.DESIGN_BOAT_HEIGHT;
     const scale = BoatDesign.getScaleForLiters( liters );
@@ -245,30 +261,34 @@ export default class BoatDesign {
 
     let index = 0;
 
-    // Front
+    // Fill the front vertices of the fluid cross-section
     index = ThreeUtils.writeFrontVertices( positionArray, index, new Bounds2(
       poolBounds.minX, poolBounds.minY,
       poolBounds.maxX, fluidY
     ), poolBounds.maxZ );
 
-    // If we have a low enough value, just zero things out (won't show anything)
+    // Determine if the fluid fully surrounds the boat
     const isFilled = designY < outsideBottomY || designY > 1e-3 || scale === 0;
+
+    // If we have a low enough value, just zero things out (won't show anything)
     if ( isFilled ) {
 
-      // Top
+      // Fill the top vertices of the fluid cross-section if the fluid fully surrounds the boat
       index = ThreeUtils.writeTopVertices( positionArray, index, new Bounds2(
         poolBounds.minX, poolBounds.minZ,
         poolBounds.maxX, poolBounds.maxZ
       ), fluidY );
     }
     else {
+
+      // Calculate control points for the boat's shape and scale them accordingly
       const controlPoints = BoatDesign.getControlPoints( BoatDesign.getHeightRatioFromDesignY( designY ), false );
       const cubic = new Cubic( ...controlPoints );
 
       const x0 = ( cubic.positionAt( 0 ).x - BoatDesign.DESIGN_CENTROID.x ) * scale + boatX;
       const x1 = ( cubic.positionAt( 1 ).x - BoatDesign.DESIGN_CENTROID.x ) * scale + boatX;
 
-      // Left top
+      // Fill the left and right top vertices of the fluid cross-section
       index = ThreeUtils.writeTopVertices( positionArray, index, new Bounds2(
         poolBounds.minX, poolBounds.minZ,
         x0, poolBounds.maxZ
@@ -280,11 +300,12 @@ export default class BoatDesign {
         poolBounds.maxX, poolBounds.maxZ
       ), fluidY );
 
+      // Fill the vertices around the boat's shape in the fluid cross-section
       for ( let i = 0; i < CROSS_SECTION_SAMPLES; i++ ) {
         const t0 = i / CROSS_SECTION_SAMPLES;
         const t1 = ( i + 1 ) / CROSS_SECTION_SAMPLES;
 
-        // TODO: reduce these allocations? https://github.com/phetsims/density-buoyancy-common/issues/144
+        // Generate positions for the current and next sample points along the boat's cross-section
         const p0 = cubic.positionAt( t0 );
         const p1 = cubic.positionAt( t1 );
 
@@ -293,7 +314,7 @@ export default class BoatDesign {
         const p1x = ( p1.x - BoatDesign.DESIGN_CENTROID.x ) * scale + boatX;
         const p1z = p1.y * scale;
 
-        // Behind the boat
+        // Fill the quad vertices behind the boat
         index = ThreeUtils.writeQuad(
           positionArray, index,
           p0x, fluidY, poolBounds.minZ,
@@ -302,7 +323,7 @@ export default class BoatDesign {
           p1x, fluidY, poolBounds.minZ
         );
 
-        // In front of the boat
+        // Fill the quad vertices in front of the boat
         index = ThreeUtils.writeQuad(
           positionArray, index,
           p1x, fluidY, poolBounds.maxZ,

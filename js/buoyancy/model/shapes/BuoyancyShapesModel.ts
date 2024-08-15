@@ -99,8 +99,6 @@ export default class BuoyancyShapesModel extends DensityBuoyancyModel {
         mass.internalVisibleProperty.value = false;
       } );
 
-      this.availableMasses.push( ...shapeModel.getAllMasses() );
-
       // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
       shapeModel.shapeProperty.link( ( newMass, oldMass ) => {
         if ( oldMass && !isSettingPhetioStateProperty.value ) {

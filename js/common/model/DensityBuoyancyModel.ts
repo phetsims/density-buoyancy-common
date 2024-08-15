@@ -196,7 +196,7 @@ export default class DensityBuoyancyModel implements TModel {
         this.visibleMasses.push( mass );
       }
     } );
-    this.availableMasses.addItemRemovedListener( () => {
+    assert && this.availableMasses.addItemRemovedListener( () => {
       assert && assert( false, 'Masses should not be removed from availableMasses' );
     } );
 

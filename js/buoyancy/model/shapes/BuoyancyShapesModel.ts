@@ -117,6 +117,7 @@ export default class BuoyancyShapesModel extends DensityBuoyancyModel {
     this.availableMasses.add( this.objectA.shapeProperty.value );
     this.availableMasses.add( this.objectB.shapeProperty.value );
 
+    // TODO: PhET-iO State order dependency between modeProeprty and the shapeNameProperty's listeners (that update the derivedProperty below)? https://github.com/phetsims/density-buoyancy-common/issues/288
     this.modeProperty.link( mode => {
       this.objectB.shapeProperty.value.internalVisibleProperty.value = mode === TwoBlockMode.TWO_BLOCKS;
     } );

@@ -16,13 +16,14 @@ import Matrix3 from '../../../../../dot/js/Matrix3.js';
 import Mass from '../../../common/model/Mass.js';
 import densityBuoyancyCommon from '../../../densityBuoyancyCommon.js';
 import { MassShape } from '../../../common/model/MassShape.js';
-import TProperty from '../../../../../axon/js/TProperty.js';
 import MassTag from '../../../common/model/MassTag.js';
 import PickRequired from '../../../../../phet-core/js/types/PickRequired.js';
 import { PhetioObjectOptions } from '../../../../../tandem/js/PhetioObject.js';
+import TReadOnlyProperty from '../../../../../axon/js/TReadOnlyProperty.js';
 import BuoyancyShapesModel from './BuoyancyShapesModel.js';
 import ReferenceIO from '../../../../../tandem/js/types/ReferenceIO.js';
 import Range from '../../../../../dot/js/Range.js';
+import DerivedProperty from '../../../../../axon/js/DerivedProperty.js';
 
 export type BuoyancyShapeModelOptions = PickRequired<PhetioObjectOptions, 'tandem'>;
 
@@ -34,7 +35,7 @@ export default class BuoyancyShapeModel {
   public readonly heightRatioProperty: Property<number>;
 
   // A reference to the currently selected Mass based on the shapeName (MassShape).
-  public readonly shapeProperty: TProperty<Mass>;
+  public readonly shapeProperty: TReadOnlyProperty<Mass>;
 
   // Statically initialize all possible Mass instances to simplify phet-io. This is well within a good memory limit, see https://github.com/phetsims/buoyancy/issues/160
   private readonly shapeCacheMap = new Map<MassShape, Mass>();
@@ -67,34 +68,33 @@ export default class BuoyancyShapeModel {
 
     // Property doesn't need disposal, since everything here lives for the lifetime of the simulation.
     // Named like this for clarity with PhET-iO naming, do not confuse this with "KITE/Shape" or Mass.shapeProperty.
-    this.shapeProperty = new Property( this.shapeCacheMap.get( this.shapeNameProperty.value )!, {
+    // TODO: Why is this phet-io instrumented? see https://github.com/phetsims/density-buoyancy-common/issues/288
+    this.shapeProperty = new DerivedProperty( [ this.shapeNameProperty ], shapeName => this.shapeCacheMap.get( shapeName )!, {
       tandem: options.tandem.createTandem( 'shapeProperty' ),
       phetioReadOnly: true,
       phetioDocumentation: 'A reference to the currently selected shape based on the shape name.',
       phetioValueType: ReferenceIO( Mass.MassIO ),
       phetioFeatured: true
     } );
-    this.shapeNameProperty.link( () => this.changeShape() );
 
-    Multilink.lazyMultilink( [ this.widthRatioProperty, this.heightRatioProperty ], ( widthRatio, heightRatio ) => {
-      this.shapeProperty.value.setRatios( widthRatio, heightRatio );
+    Multilink.lazyMultilink( [ this.shapeProperty, this.widthRatioProperty, this.heightRatioProperty ], ( mass, widthRatio, heightRatio ) => {
+      mass.setRatios( widthRatio, heightRatio );
+    } );
+
+    this.shapeProperty.lazyLink( ( newMass, oldMass ) => {
+
+      // Change the shape, keeping the bottom at the same y value
+      // Triggering dimension change first
+      const minYBefore = oldMass.getBounds().minY;
+      this.widthRatioProperty.notifyListenersStatic(); // Triggering dimension change first
+      const minYAfter = newMass.getBounds().minY;
+      newMass.matrix.multiplyMatrix( Matrix3.translation( 0, minYBefore - minYAfter ) );
+      newMass.writeData();
     } );
   }
 
   public getAllMasses(): Mass[] {
     return Array.from( this.shapeCacheMap.values() );
-  }
-
-  // Change the shape, keeping the bottom at the same y value
-  private changeShape(): void {
-
-    // Triggering dimension change first
-    const minYBefore = this.shapeProperty.value.getBounds().minY;
-    this.shapeProperty.value = this.shapeCacheMap.get( this.shapeNameProperty.value )!;
-    this.widthRatioProperty.notifyListenersStatic(); // Triggering dimension change first
-    const minYAfter = this.shapeProperty.value.getBounds().minY;
-    this.shapeProperty.value.matrix.multiplyMatrix( Matrix3.translation( 0, minYBefore - minYAfter ) );
-    this.shapeProperty.value.writeData();
   }
 
   public reset(): void {

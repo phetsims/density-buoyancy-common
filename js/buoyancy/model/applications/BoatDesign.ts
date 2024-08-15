@@ -17,9 +17,6 @@
  * compute a shape (for a given block size) such that in 2D it "acts" as the proper 3d shape. This is mainly due to
  * the block corners pressing against the inside of the boat's hull.
  *
- * TODO: https://github.com/phetsims/density-buoyancy-common/issues/335 This file is > 800 lines of complicated code
- * with many magic numbers. We should make an effort to remove unused parts, and clean up where possible.
- *
  * @author Jonathan Olson (PhET Interactive Simulations)
  */
 

@@ -405,7 +405,8 @@ export default class MaterialMassVolumeControlNode extends MaterialControlNode {
       // When using two mass number controls, we need to provide a visible property for the group
       // see https://github.com/phetsims/buoyancy/issues/180
       const massNumberControlVisibleProperty = new BooleanProperty( true, {
-        tandem: massNumberControlContainerTandem.createTandem( 'visibleProperty' )
+        tandem: massNumberControlContainerTandem.createTandem( 'visibleProperty' ),
+        phetioFeatured: true
       } );
 
       massContainerNode.visibleProperty = massNumberControlVisibleProperty;

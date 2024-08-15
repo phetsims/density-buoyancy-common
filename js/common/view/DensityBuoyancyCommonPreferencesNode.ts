@@ -47,7 +47,8 @@ export default class DensityBuoyancyCommonPreferencesNode extends VBox {
         descriptionNode: new RichText( DensityBuoyancyCommonStrings.preferences.percentSubmerged.descriptionStringProperty,
           PreferencesDialogConstants.CONTROL_DESCRIPTION_OPTIONS ),
         controlNode: new ToggleSwitch( DensityBuoyancyCommonPreferences.percentSubmergedVisibleProperty, false, true, PreferencesDialogConstants.TOGGLE_SWITCH_OPTIONS ),
-        tandem: options.tandem.createTandem( 'percentSubmergedVisibleControl' )
+        tandem: options.tandem.createTandem( 'percentSubmergedVisibleControl' ),
+        phetioFeatured: true
       } );
       percentSubmergedVisibleControl.addLinkedElement( DensityBuoyancyCommonPreferences.percentSubmergedVisibleProperty );
 

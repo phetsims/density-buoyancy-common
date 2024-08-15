@@ -59,15 +59,15 @@ export default class DensityCompareModel extends CompareBlockSetModel {
           colorProperty: DensityBuoyancyCommonColors.compareYellowColorProperty,
           sameMassCubeOptions: {
             tag: MassTag.B,
-            tandem: blockSetsTandem.createTandem( BlockSet.SAME_MASS.tandemName ).createTandem( 'yellowBlock' )
+            tandem: blockSetsTandem.createTandem( BlockSet.SAME_MASS.tandemName ).createTandem( 'blockB' )
           },
           sameVolumeCubeOptions: {
             tag: MassTag.A,
-            tandem: blockSetsTandem.createTandem( BlockSet.SAME_VOLUME.tandemName ).createTandem( 'yellowBlock' )
+            tandem: blockSetsTandem.createTandem( BlockSet.SAME_VOLUME.tandemName ).createTandem( 'blockA' )
           },
           sameDensityCubeOptions: {
             tag: MassTag.B,
-            tandem: blockSetsTandem.createTandem( BlockSet.SAME_DENSITY.tandemName ).createTandem( 'yellowBlock' )
+            tandem: blockSetsTandem.createTandem( BlockSet.SAME_DENSITY.tandemName ).createTandem( 'blockB' )
           }
         }, {
           sameMassVolume: 0.005,
@@ -76,15 +76,15 @@ export default class DensityCompareModel extends CompareBlockSetModel {
           colorProperty: DensityBuoyancyCommonColors.compareBlueColorProperty,
           sameMassCubeOptions: {
             tag: MassTag.A,
-            tandem: blockSetsTandem.createTandem( BlockSet.SAME_MASS.tandemName ).createTandem( 'blueBlock' )
+            tandem: blockSetsTandem.createTandem( BlockSet.SAME_MASS.tandemName ).createTandem( 'blockA' )
           },
           sameVolumeCubeOptions: {
             tag: MassTag.C,
-            tandem: blockSetsTandem.createTandem( BlockSet.SAME_VOLUME.tandemName ).createTandem( 'blueBlock' )
+            tandem: blockSetsTandem.createTandem( BlockSet.SAME_VOLUME.tandemName ).createTandem( 'blockC' )
           },
           sameDensityCubeOptions: {
             tag: MassTag.A,
-            tandem: blockSetsTandem.createTandem( BlockSet.SAME_DENSITY.tandemName ).createTandem( 'blueBlock' )
+            tandem: blockSetsTandem.createTandem( BlockSet.SAME_DENSITY.tandemName ).createTandem( 'blockA' )
           }
         }, {
           sameMassVolume: 0.0025,
@@ -93,15 +93,15 @@ export default class DensityCompareModel extends CompareBlockSetModel {
           colorProperty: DensityBuoyancyCommonColors.compareGreenColorProperty,
           sameMassCubeOptions: {
             tag: MassTag.C,
-            tandem: blockSetsTandem.createTandem( BlockSet.SAME_MASS.tandemName ).createTandem( 'greenBlock' )
+            tandem: blockSetsTandem.createTandem( BlockSet.SAME_MASS.tandemName ).createTandem( 'blockC' )
           },
           sameVolumeCubeOptions: {
             tag: MassTag.D,
-            tandem: blockSetsTandem.createTandem( BlockSet.SAME_VOLUME.tandemName ).createTandem( 'greenBlock' )
+            tandem: blockSetsTandem.createTandem( BlockSet.SAME_VOLUME.tandemName ).createTandem( 'blockD' )
           },
           sameDensityCubeOptions: {
             tag: MassTag.C,
-            tandem: blockSetsTandem.createTandem( BlockSet.SAME_DENSITY.tandemName ).createTandem( 'greenBlock' )
+            tandem: blockSetsTandem.createTandem( BlockSet.SAME_DENSITY.tandemName ).createTandem( 'blockC' )
           }
         }, {
           sameMassVolume: 0.00125,
@@ -110,15 +110,15 @@ export default class DensityCompareModel extends CompareBlockSetModel {
           colorProperty: DensityBuoyancyCommonColors.compareRedColorProperty,
           sameMassCubeOptions: {
             tag: MassTag.D,
-            tandem: blockSetsTandem.createTandem( BlockSet.SAME_MASS.tandemName ).createTandem( 'redBlock' )
+            tandem: blockSetsTandem.createTandem( BlockSet.SAME_MASS.tandemName ).createTandem( 'blockD' )
           },
           sameVolumeCubeOptions: {
             tag: MassTag.B,
-            tandem: blockSetsTandem.createTandem( BlockSet.SAME_VOLUME.tandemName ).createTandem( 'redBlock' )
+            tandem: blockSetsTandem.createTandem( BlockSet.SAME_VOLUME.tandemName ).createTandem( 'blockB' )
           },
           sameDensityCubeOptions: {
             tag: MassTag.D,
-            tandem: blockSetsTandem.createTandem( BlockSet.SAME_DENSITY.tandemName ).createTandem( 'redBlock' )
+            tandem: blockSetsTandem.createTandem( BlockSet.SAME_DENSITY.tandemName ).createTandem( 'blockD' )
           }
         } ]
     }, providedOptions );

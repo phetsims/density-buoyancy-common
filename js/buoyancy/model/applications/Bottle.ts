@@ -272,7 +272,8 @@ export default class Bottle extends ApplicationsMass {
       tandem: materialInsideTandem.createTandem( 'massProperty' ),
       phetioDocumentation: 'Mass of the material inside the bottle.',
       phetioValueType: NumberIO,
-      phetioFeatured: true
+      phetioFeatured: true,
+      units: 'kg'
     } );
 
     // Synchronize the overall density of the bottle + material system to the materialProperty. This should not be done

@@ -166,7 +166,7 @@ export default class VerticalCylinder extends Mass {
     }
     else {
 
-      // TODO: Why is the cylinder volume identical to a cuboid volume? See https://github.com/phetsims/density-buoyancy-common/issues/344
+      // Similar to cube because the stepMaximumVolume encompasses the cross sectional area which is circular.
       return this.stepMaximumVolume * ( fluidLevel - bottom ) / ( top - bottom );
     }
   }

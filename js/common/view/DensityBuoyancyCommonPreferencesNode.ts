@@ -38,7 +38,10 @@ export default class DensityBuoyancyCommonPreferencesNode extends VBox {
 
     options.children = [ new VolumeUnitsControl( DensityBuoyancyCommonPreferences.volumeUnitsProperty, {
       tandem: options.tandem.createTandem( 'volumeUnitsControl' ),
-      phetioFeatured: true
+      phetioFeatured: true,
+      visiblePropertyOptions: {
+        phetioFeatured: true
+      }
     } ) ];
 
     if ( supportsPercentageSubmergedVisible ) {
@@ -49,7 +52,10 @@ export default class DensityBuoyancyCommonPreferencesNode extends VBox {
           PreferencesDialogConstants.CONTROL_DESCRIPTION_OPTIONS ),
         controlNode: new ToggleSwitch( DensityBuoyancyCommonPreferences.percentSubmergedVisibleProperty, false, true, PreferencesDialogConstants.TOGGLE_SWITCH_OPTIONS ),
         tandem: options.tandem.createTandem( 'percentSubmergedVisibleControl' ),
-        phetioFeatured: true
+        phetioFeatured: true,
+        visiblePropertyOptions: {
+          phetioFeatured: true
+        }
       } );
       percentSubmergedVisibleControl.addLinkedElement( DensityBuoyancyCommonPreferences.percentSubmergedVisibleProperty );
 

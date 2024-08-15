@@ -26,19 +26,23 @@ const LINE_WIDTH = 0.1;
 
 export default class ApplicationsDebugView extends DebugView {
 
+  // Path illustrating displaced area of the boat with a red stroke.
   // proportional to the area at that level that is displaced in the boat
   private readonly boatAreaPath: Path;
 
+  // Path illustrating displaced volume of the boat with a green stroke.
   // proportional to the volume up to that level that is displaced in the boat
   private readonly boatVolumePath: Path;
 
   public constructor( model: BuoyancyApplicationsModel, layoutBounds: Bounds2 ) {
     super( model, layoutBounds );
 
+
     this.boatAreaPath = new Path( null, {
       stroke: 'red'
     } );
     this.addChild( this.boatAreaPath );
+
 
     this.boatVolumePath = new Path( null, {
       stroke: 'green'
@@ -55,16 +59,21 @@ export default class ApplicationsDebugView extends DebugView {
     // Special handling for the boat, but only if it is visible
     const boat = this.model.visibleMasses.find( mass => mass instanceof Boat );
     if ( boat instanceof Boat ) {
+
+      // Range of y-values to evaluate displacement
       const boatYValues = _.range( boat.stepBottom, boat.stepTop, 0.002 );
 
+      // Finding the visual node associated with the boat mass
       const boatNode = _.find( this.massNodes, massNode => massNode.mass === boat )!;
 
+      // Create a boat area shape based on displaced area at each evaluated y level
       const boatAreaShape = new Shape();
       boatYValues.map( y => new Vector2( boat.basin.getDisplacedArea( y ), y ) ).forEach( point => {
         boatAreaShape.lineTo( boatNode.right + point.x * 2000, this.modelViewTransform.modelToViewY( point.y ) );
       } );
       this.boatAreaPath.shape = boatAreaShape;
 
+      // Create a boat volume shape based on displaced volume at each evaluated y level
       const boatVolumeShape = new Shape();
       boatYValues.map( y => new Vector2( boat.basin.getDisplacedVolume( y ), y ) ).forEach( point => {
         boatVolumeShape.lineTo( boatNode.right + point.x * 10000, this.modelViewTransform.modelToViewY( point.y ) );

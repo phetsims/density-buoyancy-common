@@ -24,6 +24,8 @@ import BuoyancyShapesModel from './BuoyancyShapesModel.js';
 import ReferenceIO from '../../../../../tandem/js/types/ReferenceIO.js';
 import Range from '../../../../../dot/js/Range.js';
 import DerivedProperty from '../../../../../axon/js/DerivedProperty.js';
+import { ObservableArray } from '../../../../../axon/js/createObservableArray.js';
+import isSettingPhetioStateProperty from '../../../../../tandem/js/isSettingPhetioStateProperty.js';
 
 export type BuoyancyShapeModelOptions = PickRequired<PhetioObjectOptions, 'tandem'>;
 
@@ -40,7 +42,8 @@ export default class BuoyancyShapeModel {
   // Statically initialize all possible Mass instances to simplify phet-io. This is well within a good memory limit, see https://github.com/phetsims/buoyancy/issues/160
   private readonly shapeCacheMap = new Map<MassShape, Mass>();
 
-  public constructor( massShape: MassShape, width: number, height: number, massTag: MassTag, createMass: BuoyancyShapesModel['createMass'], options: BuoyancyShapeModelOptions ) {
+  public constructor( massShape: MassShape, width: number, height: number, massTag: MassTag, availableMasses: ObservableArray<Mass>,
+                      createMass: BuoyancyShapesModel['createMass'], options: BuoyancyShapeModelOptions ) {
 
     this.shapeNameProperty = new EnumerationProperty( massShape, {
       tandem: options.tandem.createTandem( 'shapeNameProperty' ),
@@ -60,10 +63,16 @@ export default class BuoyancyShapeModel {
     } );
 
     MassShape.enumeration.values.forEach( shape => {
-      this.shapeCacheMap.set( shape, createMass(
+      const mass = createMass(
         options.tandem.createTandem( 'shapes' ).createTandem( shape.tandemName ), shape,
         this.widthRatioProperty.value, this.heightRatioProperty.value, massTag
-      ) );
+      );
+      this.shapeCacheMap.set( shape, mass );
+
+      availableMasses.push( mass );
+
+      // Initially selected one made visible below in link()
+      mass.internalVisibleProperty.value = false;
     } );
 
     // Property doesn't need disposal, since everything here lives for the lifetime of the simulation.
@@ -80,20 +89,24 @@ export default class BuoyancyShapeModel {
       mass.setRatios( widthRatio, heightRatio );
     } );
 
-    this.shapeProperty.lazyLink( ( newMass, oldMass ) => {
+    this.shapeProperty.link( ( newMass, oldMass ) => {
+      if ( oldMass ) {
+        oldMass.internalVisibleProperty.value = false;
 
-      // Change the shape, keeping the bottom at the same y value
-      // Triggering dimension change first
-      const minYBefore = oldMass.getBounds().minY;
-      this.widthRatioProperty.notifyListenersStatic(); // Triggering dimension change first
-      const minYAfter = newMass.getBounds().minY;
-      newMass.matrix.multiplyMatrix( Matrix3.translation( 0, minYBefore - minYAfter ) );
-      newMass.writeData();
+        if ( !isSettingPhetioStateProperty.value ) {
+          newMass.matrix.set( oldMass.matrix );
+
+          // Change the shape, keeping the bottom at the same y value
+          // Triggering dimension change first
+          const minYBefore = oldMass.getBounds().minY;
+          this.widthRatioProperty.notifyListenersStatic(); // Triggering dimension change first
+          newMass.matrix.multiplyMatrix( Matrix3.translation( 0, minYBefore - newMass.getBounds().minY ) );
+          newMass.writeData();
+        }
+      }
+
+      newMass.internalVisibleProperty.value = true;
     } );
-  }
-
-  public getAllMasses(): Mass[] {
-    return Array.from( this.shapeCacheMap.values() );
   }
 
   public reset(): void {

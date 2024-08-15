@@ -21,7 +21,6 @@ import TwoBlockMode from '../../../common/model/TwoBlockMode.js';
 import VerticalCylinder from './VerticalCylinder.js';
 import densityBuoyancyCommon from '../../../densityBuoyancyCommon.js';
 import { MassShape } from '../../../common/model/MassShape.js';
-import isSettingPhetioStateProperty from '../../../../../tandem/js/isSettingPhetioStateProperty.js';
 import MassTag from '../../../common/model/MassTag.js';
 import Duck from './Duck.js';
 import BuoyancyShapeModel from './BuoyancyShapeModel.js';
@@ -81,41 +80,13 @@ export default class BuoyancyShapesModel extends DensityBuoyancyModel {
 
     const boundCreateMass = this.createMass.bind( this );
 
-    this.objectA = new BuoyancyShapeModel( MassShape.BLOCK, 0.25, 0.75, MassTag.OBJECT_A, boundCreateMass, {
+    this.objectA = new BuoyancyShapeModel( MassShape.BLOCK, 0.25, 0.75, MassTag.OBJECT_A, this.availableMasses, boundCreateMass, {
       tandem: objectsTandem.createTandem( 'objectA' )
     } );
 
-    this.objectB = new BuoyancyShapeModel( MassShape.BLOCK, 0.25, 0.75, MassTag.OBJECT_B, boundCreateMass, {
+    this.objectB = new BuoyancyShapeModel( MassShape.BLOCK, 0.25, 0.75, MassTag.OBJECT_B, this.availableMasses, boundCreateMass, {
       tandem: objectsTandem.createTandem( 'objectB' )
     } );
-
-    // When the shape changes, update the location, then update the availableMasses
-    [ this.objectA, this.objectB ].forEach( shapeModel => {
-
-      shapeModel.getAllMasses().forEach( mass => {
-        this.availableMasses.push( mass );
-
-        // Initially selected one made visible below in link()
-        mass.internalVisibleProperty.value = false;
-      } );
-
-      // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
-      shapeModel.shapeProperty.link( ( newMass, oldMass ) => {
-        if ( oldMass && !isSettingPhetioStateProperty.value ) {
-          newMass.matrix.set( oldMass.matrix );
-          newMass.writeData();
-        }
-
-        if ( oldMass ) {
-          oldMass.internalVisibleProperty.value = false;
-        }
-
-        newMass.internalVisibleProperty.value = true;
-      } );
-    } );
-
-    this.availableMasses.add( this.objectA.shapeProperty.value );
-    this.availableMasses.add( this.objectB.shapeProperty.value );
 
     // TODO: PhET-iO State order dependency between modeProeprty and the shapeNameProperty's listeners (that update the derivedProperty below)? https://github.com/phetsims/density-buoyancy-common/issues/288
     this.modeProperty.link( mode => {

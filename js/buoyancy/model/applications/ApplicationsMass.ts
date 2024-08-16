@@ -60,8 +60,6 @@ export default abstract class ApplicationsMass extends Mass {
    * Returns the displaced area of this object at a given y level
    *
    * Assumes step information was updated.
-   *
-   * TODO: Why is this different than getDisplacedVolume? Should they share implementation? See https://github.com/phetsims/density-buoyancy-common/issues/330
    */
   public getDisplacedArea( fluidLevel: number ): number {
     const bottom = this.stepBottom;
@@ -106,7 +104,6 @@ export default abstract class ApplicationsMass extends Mass {
 
   /**
    * Given a list of values and a ratio from 0 (the start) to 1 (the end), return an interpolated value.
-   * TODO: See if this and other occurrences should use dot piecewise linear functions, see https://github.com/phetsims/density-buoyancy-common/issues/330
    */
   protected static evaluatePiecewiseLinear( values: number[], ratio: number ): number {
     const logicalIndex = ratio * ( values.length - 1 );

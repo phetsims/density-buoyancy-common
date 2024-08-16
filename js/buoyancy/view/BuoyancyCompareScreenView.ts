@@ -111,6 +111,7 @@ export default class BuoyancyCompareScreenView extends BuoyancyScreenView<Buoyan
             readoutNameProperty: new PatternStringProperty( DensityBuoyancyCommonStrings.blockPatternStringProperty, {
               tag: mass.nameProperty
             } ),
+            disposeReadoutNameProperty: true,
             readoutFormat: {
               font: DensityBuoyancyCommonConstants.ITEM_FONT,
               fill: mass.tag.colorProperty

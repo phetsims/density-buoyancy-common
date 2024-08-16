@@ -45,6 +45,8 @@ export type ReadoutItemOptions<ReadoutType> = {
   // By default, the implementation of generateReadoutData() will create a default nameProperty, but you can supply your
   // own to be used instead.
   readoutNameProperty?: TReadOnlyProperty<string>;
+  disposeReadoutNameProperty?: boolean; // If true, the readoutNameProperty will be disposed when the ReadoutListAccordionBox is disposed.
+
   readoutFormat?: RichTextOptions; // Any extra formatting options to be passed ONLY to the value text.
 };
 
@@ -139,6 +141,7 @@ export default abstract class ReadoutListAccordionBox<ReadoutType> extends Accor
         valueText.dispose();
         labelText.dispose();
         nameColonProperty.dispose();
+        readoutItem.disposeReadoutNameProperty && readoutItem.readoutNameProperty && readoutItem.readoutNameProperty.dispose();
       } );
 
       const alignGroup = new AlignGroup();

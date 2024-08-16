@@ -84,6 +84,7 @@ export default class BuoyancyExploreScreenView extends BuoyancyScreenView<Buoyan
     const customExploreScreenFormatting = [ model.blockA, model.blockB ].map( mass => {
       return {
         readoutNameProperty: new PatternStringProperty( DensityBuoyancyCommonStrings.blockPatternStringProperty, { tag: mass.nameProperty } ),
+        disposeReadoutNameProperty: true,
         readoutFormat: { font: DensityBuoyancyCommonConstants.ITEM_FONT, fill: mass.tag.colorProperty }
       };
     } );

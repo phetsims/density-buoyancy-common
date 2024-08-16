@@ -148,13 +148,16 @@ export default class BuoyancyShapesScreenView extends BuoyancyScreenView<Buoyanc
       model.modeProperty
     ], ( blockA, blockB, mode ) => {
       const masses = mode === TwoBlockMode.ONE_BLOCK ? [ blockA ] : [ blockA, blockB ];
-      percentSubmergedAccordionBox.setReadoutItems( masses.map( mass => {
+      const readoutItems = masses.map( mass => {
         return {
           readoutItem: mass,
           readoutNameProperty: new PatternStringProperty( DensityBuoyancyCommonStrings.shapeTagPatternStringProperty, { tag: mass.nameProperty } ),
+          disposeReadoutNameProperty: true,
           readoutFormat: { font: DensityBuoyancyCommonConstants.ITEM_FONT, fill: mass.tag.colorProperty }
         };
-      } ) );
+      } );
+
+      percentSubmergedAccordionBox.setReadoutItems( readoutItems );
     } );
 
     // Create a VBox for the right side components and add it to the screen.

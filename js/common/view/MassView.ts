@@ -40,9 +40,12 @@ export default abstract class MassView extends Disposable {
 
   protected constructor( public readonly mass: Mass,
                          initialGeometry: THREE.BufferGeometry,
-                         protected readonly modelViewTransform: THREEModelViewTransform ) {
+                         protected readonly modelViewTransform: THREEModelViewTransform,
+                         isDisposable = true ) {
 
-    super();
+    super( {
+      isDisposable: isDisposable
+    } );
 
     this.massMesh = new MassThreeMesh( mass, initialGeometry );
 
@@ -190,6 +193,11 @@ export default abstract class MassView extends Disposable {
   public decorate( decorationLayer: MassDecorationLayer ): void {
 
     this.massTagNode && decorationLayer.massTagsLayer.addChild( this.massTagNode );
+  }
+
+  public undecorate( decorationLayer: MassDecorationLayer ): void {
+
+    this.massTagNode && decorationLayer.massTagsLayer.removeChild( this.massTagNode );
   }
 
   public override dispose(): void {

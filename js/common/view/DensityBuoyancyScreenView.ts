@@ -514,7 +514,15 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
       // Remove the mass view
       this.sceneNode.stage.threeScene.remove( massView.massMesh );
       arrayRemove( this.massViews, massView );
-      massView.dispose();
+
+      // BottleView and BoatView persist to avoid memory leaks, see https://github.com/phetsims/density-buoyancy-common/issues/168#issuecomment-2293655205 and the following comment
+      if ( massView.isDisposable ) {
+        massView.dispose();
+      }
+      else {
+        massView.focusablePath && this.sceneNode.backgroundEventTarget.removeChild( massView.focusablePath );
+        massView.undecorate( this.massDecorationLayer );
+      }
     };
     model.visibleMasses.addItemRemovedListener( onMassRemoved );
 

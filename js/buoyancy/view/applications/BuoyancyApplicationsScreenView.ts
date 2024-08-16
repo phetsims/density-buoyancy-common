@@ -45,6 +45,8 @@ type BuoyancyApplicationsScreenViewOptions = BuoyancyScreenViewOptions;
 export default class BuoyancyApplicationsScreenView extends BuoyancyScreenView<BuoyancyApplicationsModel> {
 
   private readonly positionResetSceneButton: () => void;
+  private bottleView: BottleView | null = null;
+  private boatView: BoatView | null = null;
 
   public constructor( model: BuoyancyApplicationsModel, providedOptions: BuoyancyApplicationsScreenViewOptions ) {
 
@@ -222,7 +224,9 @@ export default class BuoyancyApplicationsScreenView extends BuoyancyScreenView<B
 
     const massViewAdded = ( massView: MassView ) => {
       if ( massView.mass === model.bottle || massView.mass === model.boat ) {
-        bottleBoatLayer.pdomOrder = [ ...bottleBoatLayer.pdomOrder!, massView.focusablePath ];
+
+        // The _.uniq supports re-adding the bottle or boat, so we don't double up on the focusablePath
+        bottleBoatLayer.pdomOrder = _.uniq( [ ...bottleBoatLayer.pdomOrder!, massView.focusablePath ] );
 
         // nothing to do for removal since disposal of the node will remove it from the pdom order
       }
@@ -259,10 +263,12 @@ export default class BuoyancyApplicationsScreenView extends BuoyancyScreenView<B
 
   protected override getMassViewFromMass( mass: Mass ): MassView {
     if ( mass instanceof Bottle ) {
-      return new BottleView( mass, this, this.displayProperties );
+      this.bottleView ??= new BottleView( mass, this, this.displayProperties );
+      return this.bottleView;
     }
     else if ( mass instanceof Boat ) {
-      return new BoatView( mass, this, this.model.pool.fluidYInterpolatedProperty, this.displayProperties );
+      this.boatView ??= new BoatView( mass, this, this.model.pool.fluidYInterpolatedProperty, this.displayProperties );
+      return this.boatView;
     }
     else {
       return super.getMassViewFromMass( mass );

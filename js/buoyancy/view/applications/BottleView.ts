@@ -32,7 +32,10 @@ export default class BottleView extends MeasurableMassView {
       // @ts-expect-error
       new THREE.Geometry(),
       modelViewTransform,
-      displayProperties
+      displayProperties,
+
+      // not disposable
+      false
     );
 
     const bottomClipPlane = new THREE.Plane( new THREE.Vector3( 0, -1, 0 ), 0 );

@@ -30,8 +30,15 @@ export default class BoatView extends MeasurableMassView {
                       fluidYInterpolatedProperty: TReadOnlyProperty<number>,
                       displayProperties: DisplayProperties ) {
 
-    // @ts-expect-error
-    super( boat, new THREE.Geometry(), modelViewTransform, displayProperties );
+    super( boat,
+
+      // @ts-expect-error
+      new THREE.Geometry(),
+
+      modelViewTransform, displayProperties,
+
+      // not disposable
+      false );
 
     // Clip planes at the boat's fluid level
     const topBoatClipPlane = new THREE.Plane( new THREE.Vector3( 0, 1, 0 ), 0 );
@@ -119,7 +126,7 @@ export default class BoatView extends MeasurableMassView {
   }
 
   /**
-   * Factored out way to get the view object of the boat. (mostly for use as an icon)
+   * Factored out way to get the view object of the boat. Used for the BoatView and the icon.
    */
   public static getBoatDrawingData( topBoatClipPlane: THREE.Plane, bottomBoatClipPlane: THREE.Plane,
                                     topPoolClipPlane: THREE.Plane, bottomPoolClipPlane: THREE.Plane ): BoatDrawingData {

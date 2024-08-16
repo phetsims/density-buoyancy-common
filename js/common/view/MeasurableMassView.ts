@@ -29,9 +29,10 @@ export default class MeasurableMassView extends MassView {
 
   protected constructor( mass: Mass, initialGeometry: THREE.BufferGeometry,
                          modelViewTransform: THREEModelViewTransform,
-                         displayProperties: DisplayProperties ) {
+                         displayProperties: DisplayProperties,
+                         isDisposable = true ) {
 
-    super( mass, initialGeometry, modelViewTransform );
+    super( mass, initialGeometry, modelViewTransform, isDisposable );
 
     this.forceDiagramNode = new ForceDiagramNode( mass, displayProperties );
 
@@ -76,6 +77,13 @@ export default class MeasurableMassView extends MassView {
 
     decorationLayer.forceDiagramLayer.addChild( this.forceDiagramNode );
     decorationLayer.massLabelLayer.addChild( this.massLabelNode );
+  }
+
+  public override undecorate( decorationLayer: MassDecorationLayer ): void {
+    super.undecorate( decorationLayer );
+
+    decorationLayer.forceDiagramLayer.removeChild( this.forceDiagramNode );
+    decorationLayer.massLabelLayer.removeChild( this.massLabelNode );
   }
 
   public override dispose(): void {

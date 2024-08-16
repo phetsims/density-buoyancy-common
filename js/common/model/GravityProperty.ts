@@ -33,10 +33,5 @@ export default class GravityProperty extends MappedWrappedProperty<Gravity> {
     } );
     this.customGravity = this.customValue;
   }
-
-  public override reset(): void {
-    super.reset();
-    this.customGravity.reset();
-  }
 }
 densityBuoyancyCommon.register( 'GravityProperty', GravityProperty );

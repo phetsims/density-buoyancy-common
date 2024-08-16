@@ -19,6 +19,7 @@ export type MappedWrappedObject = {
   valueProperty: Property<number>;
   custom: boolean;
   hidden: boolean;
+  reset(): void;
 };
 
 export type MappedWrappedPropertyOptions<T extends MappedWrappedObject> = PropertyOptions<T>;
@@ -26,6 +27,9 @@ export type MappedWrappedPropertyOptions<T extends MappedWrappedObject> = Proper
 export default abstract class MappedWrappedProperty<T extends MappedWrappedObject> extends Property<T> {
   public readonly customValue: T;
   public readonly availableValues: T[];
+
+  // Prevent an infinite loop in the following listeners.
+  public lockCount = 0;
 
   protected constructor( initialValue: T, customValue: T, availableValues: T[], providedOptions: MappedWrappedPropertyOptions<T> ) {
 
@@ -38,13 +42,10 @@ export default abstract class MappedWrappedProperty<T extends MappedWrappedObjec
     this.customValue = customValue;
     this.availableValues = availableValues;
 
-    // Prevent an infinite loop in the following listeners.
-    let isChangingToPredefinedValueLock = false;
-
     // When the user changes the density by dragging the slider, automatically switch from the predefined material to
     // the custom material.
     this.customValue.valueProperty.lazyLink( () => {
-      if ( !isChangingToPredefinedValueLock ) {
+      if ( this.lockCount === 0 ) {
         this.value = this.customValue;
       }
     } );
@@ -54,9 +55,9 @@ export default abstract class MappedWrappedProperty<T extends MappedWrappedObjec
     // the mystery values by using the UI instead of by computing them, see https://github.com/phetsims/buoyancy/issues/54
     this.lazyLink( mappedWrappedObject => {
       if ( !mappedWrappedObject.custom && !mappedWrappedObject.hidden ) {
-        isChangingToPredefinedValueLock = true;
+        this.lockCount++;
         this.customValue.valueProperty.value = mappedWrappedObject.valueProperty.value;
-        isChangingToPredefinedValueLock = false;
+        this.lockCount--;
       }
     } );
 
@@ -65,12 +66,19 @@ export default abstract class MappedWrappedProperty<T extends MappedWrappedObjec
     this.availableValues.forEach( mappedWrappedObject => {
       mappedWrappedObject.valueProperty.lazyLink( value => {
         if ( this.value === mappedWrappedObject ) {
-          isChangingToPredefinedValueLock = true;
+          this.lockCount++;
           this.customValue.valueProperty.value = value;
-          isChangingToPredefinedValueLock = false;
+          this.lockCount--;
         }
       } );
     } );
+  }
+
+  public override reset(): void {
+    this.lockCount++;
+    super.reset();
+    this.customValue.reset();
+    this.lockCount--;
   }
 }
 densityBuoyancyCommon.register( 'MappedWrappedProperty', MappedWrappedProperty );

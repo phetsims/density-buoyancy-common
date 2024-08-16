@@ -52,11 +52,6 @@ export default class MaterialProperty extends MappedWrappedProperty<Material> {
     this.invisibleMaterials = options.invisibleMaterials;
   }
 
-  public override reset(): void {
-    super.reset();
-    this.customMaterial.reset();
-  }
-
   /**
    * Keep a material's color and opacity to match the liquid color from a given Property<Material>
    *

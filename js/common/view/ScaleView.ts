@@ -14,7 +14,7 @@ import MassView from './MassView.js';
 import VerticalCylinderView from './VerticalCylinderView.js';
 import ScaleReadoutNode from './ScaleReadoutNode.js';
 import MassDecorationLayer from './MassDecorationLayer.js';
-import { THREEModelViewTransform } from './DensityBuoyancyScreenView.js';
+import { THREEModelViewTransform } from '../../../../mobius/js/MobiusScreenView.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
 import GravityProperty from '../model/GravityProperty.js';
 

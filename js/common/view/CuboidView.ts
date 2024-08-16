@@ -18,7 +18,7 @@ import Vector2 from '../../../../dot/js/Vector2.js';
 import Material from '../model/Material.js';
 import MeasurableMassView from './MeasurableMassView.js';
 import MassDecorationLayer from './MassDecorationLayer.js';
-import { THREEModelViewTransform } from './DensityBuoyancyScreenView.js';
+import { THREEModelViewTransform } from '../../../../mobius/js/MobiusScreenView.js';
 import DisplayProperties from '../../buoyancy/view/DisplayProperties.js';
 
 // constants

@@ -18,7 +18,7 @@ import Utils from '../../../../dot/js/Utils.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import Bounds3 from '../../../../dot/js/Bounds3.js';
 import PrecisionSliderThumb from './PrecisionSliderThumb.js';
-import { THREEModelViewTransform } from './DensityBuoyancyScreenView.js';
+import { THREEModelViewTransform } from '../../../../mobius/js/MobiusScreenView.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
 import { Node, VBox } from '../../../../scenery/js/imports.js';
 import NumberControl, { NumberControlOptions } from '../../../../scenery-phet/js/NumberControl.js';

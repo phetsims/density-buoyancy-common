@@ -13,7 +13,7 @@ import Boat from '../../model/applications/Boat.js';
 import BoatDesign from '../../model/applications/BoatDesign.js';
 import DensityBuoyancyCommonConstants from '../../../common/DensityBuoyancyCommonConstants.js';
 import MeasurableMassView from '../../../common/view/MeasurableMassView.js';
-import { THREEModelViewTransform } from '../../../common/view/DensityBuoyancyScreenView.js';
+import { THREEModelViewTransform } from '../../../../../mobius/js/MobiusScreenView.js';
 import DisplayProperties from '../DisplayProperties.js';
 
 type BoatDrawingData = {

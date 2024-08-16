@@ -21,7 +21,7 @@ import Disposable from '../../../../axon/js/Disposable.js';
 import MassTag from '../model/MassTag.js';
 import MassDecorationLayer from './MassDecorationLayer.js';
 import MassThreeMesh from './MassThreeMesh.js';
-import { THREEModelViewTransform } from './DensityBuoyancyScreenView.js';
+import { THREEModelViewTransform } from '../../../../mobius/js/MobiusScreenView.js';
 import sharedSoundPlayers from '../../../../tambo/js/sharedSoundPlayers.js';
 import GrabDragInteraction from '../../../../scenery-phet/js/accessibility/GrabDragInteraction.js';
 

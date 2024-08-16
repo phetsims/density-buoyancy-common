@@ -12,7 +12,7 @@ import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import VerticalCylinder from '../../buoyancy/model/shapes/VerticalCylinder.js';
 import { TAG_OFFSET } from './MassTagNode.js';
 import MeasurableMassView from './MeasurableMassView.js';
-import { THREEModelViewTransform } from './DensityBuoyancyScreenView.js';
+import { THREEModelViewTransform } from '../../../../mobius/js/MobiusScreenView.js';
 import DisplayProperties from '../../buoyancy/view/DisplayProperties.js';
 
 // constants

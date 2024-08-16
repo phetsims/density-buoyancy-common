@@ -8,7 +8,7 @@
 
 import Bounds3 from '../../../../../dot/js/Bounds3.js';
 import Vector3 from '../../../../../dot/js/Vector3.js';
-import { THREEModelViewTransform } from '../../../common/view/DensityBuoyancyScreenView.js';
+import { THREEModelViewTransform } from '../../../../../mobius/js/MobiusScreenView.js';
 import { TAG_OFFSET } from '../../../common/view/MassTagNode.js';
 import MeasurableMassView from '../../../common/view/MeasurableMassView.js';
 import densityBuoyancyCommon from '../../../densityBuoyancyCommon.js';

@@ -55,13 +55,6 @@ import MobiusScreenView, { MobiusScreenViewOptions } from '../../../../mobius/js
 // constants
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN_SMALL;
 
-export type THREEModelViewTransform = {
-  modelToViewPoint: ( modelPoint: Vector3 ) => Vector2;
-  modelToViewDelta: ( point1: Vector3, point2: Vector3 ) => Vector2;
-  viewToModelPoint: ( point: Vector2, modelZ?: number ) => Vector3;
-  viewToModelDelta: ( viewPoint1: Vector2, modelZ1: number, viewPoint2: Vector2, modelZ2: number ) => Vector3;
-};
-
 type SelfOptions = {
   cameraLookAt?: Vector3;
   cameraZoom?: number;
@@ -79,7 +72,7 @@ export type PointedAtMassView = {
   t: number;
 };
 
-export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyModel> extends MobiusScreenView implements THREEModelViewTransform {
+export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyModel> extends MobiusScreenView {
 
   protected readonly model: Model;
   protected readonly popupLayer: Node;
@@ -614,47 +607,6 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
     }
   }
 
-
-  /////////////////////////////////////////////////////////////////
-  // START: model view transform code
-
-  /**
-   * Projects a 3d model point to a 2d view point (in the screen view's coordinate frame).
-   * see https://github.com/phetsims/density-buoyancy-common/issues/142
-   */
-  public modelToViewPoint( point: Vector3 ): Vector2 {
-    return this.globalToLocalPoint( this.sceneNode.projectPoint( point ) );
-  }
-
-  /**
-   Get the difference in screen view coordinates between two model points. Both points are needed because of the 3d nature of the model   */
-  public modelToViewDelta( point1: Vector3, point2: Vector3 ): Vector2 {
-    const viewPoint1 = this.modelToViewPoint( point1 );
-    const viewPoint2 = this.modelToViewPoint( point2 );
-    return viewPoint2.minus( viewPoint1 );
-  }
-
-  /**
-   * Project a 2d global screen coordinate into 3d global coordinate frame. Default to z distance of 0 (center of masses/pool)
-   */
-  public viewToModelPoint( point: Vector2, modelZ = 0 ): Vector3 {
-    const viewPoint = animatedPanZoomSingleton.listener.matrixProperty.value.timesVector2( this.localToParentPoint( point ) );
-    return this.sceneNode.unprojectPoint( viewPoint, modelZ );
-  }
-
-  /**
-   * Get the difference in screen view coordinates from the first to the second provided screen points, in model
-   * coordinates. Both points are needed because of the 3d nature of the model. Please note that the delta can have
-   * negative values.
-   */
-  public viewToModelDelta( viewPoint1: Vector2, modelZ1: number, viewPoint2: Vector2, modelZ2: number ): Vector3 {
-    const modelPoint1 = this.viewToModelPoint( viewPoint1, modelZ1 );
-    const modelPoint2 = this.viewToModelPoint( viewPoint2, modelZ2 );
-    return modelPoint2.minus( modelPoint1 );
-  }
-
-  // END: model view transform code
-  /////////////////////////////////////////////////////////////////
 
   /**
    * Returns the closest grab-able mass under the pointer/

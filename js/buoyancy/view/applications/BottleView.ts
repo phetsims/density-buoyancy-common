@@ -10,7 +10,7 @@ import densityBuoyancyCommon from '../../../densityBuoyancyCommon.js';
 import Bottle from '../../model/applications/Bottle.js';
 import Material from '../../../common/model/Material.js';
 import MeasurableMassView from '../../../common/view/MeasurableMassView.js';
-import { THREEModelViewTransform } from '../../../common/view/DensityBuoyancyScreenView.js';
+import { THREEModelViewTransform } from '../../../../../mobius/js/MobiusScreenView.js';
 import Vector3 from '../../../../../dot/js/Vector3.js';
 import { TAG_OFFSET } from '../../../common/view/MassTagNode.js';
 import DisplayProperties from '../DisplayProperties.js';

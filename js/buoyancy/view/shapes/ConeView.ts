@@ -12,7 +12,7 @@ import densityBuoyancyCommon from '../../../densityBuoyancyCommon.js';
 import Cone from '../../model/shapes/Cone.js';
 import { TAG_OFFSET } from '../../../common/view/MassTagNode.js';
 import MeasurableMassView from '../../../common/view/MeasurableMassView.js';
-import { THREEModelViewTransform } from '../../../common/view/DensityBuoyancyScreenView.js';
+import { THREEModelViewTransform } from '../../../../../mobius/js/MobiusScreenView.js';
 import DisplayProperties from '../DisplayProperties.js';
 
 // constants

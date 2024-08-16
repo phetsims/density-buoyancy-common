@@ -35,7 +35,9 @@ export default class BuoyancyBasicsExploreScreenView extends BuoyancyScreenView<
     const options = optionize<BuoyancyBasicsExploreScreenViewOptions, EmptySelfOptions, BuoyancyScreenViewOptions>()( {
       supportsDepthLines: true,
       cameraLookAt: DensityBuoyancyCommonConstants.BUOYANCY_BASICS_CAMERA_LOOK_AT,
-      viewOffset: DensityBuoyancyCommonConstants.BUOYANCY_BASICS_VIEW_OFFSET
+      sceneNodeOptions: {
+        viewOffset: DensityBuoyancyCommonConstants.BUOYANCY_BASICS_VIEW_OFFSET
+      }
     }, providedOptions );
 
     super( model, options );

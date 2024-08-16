@@ -17,8 +17,6 @@ import Plane3 from '../../../../dot/js/Plane3.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
 import Screen from '../../../../joist/js/Screen.js';
-import ScreenView, { ScreenViewOptions } from '../../../../joist/js/ScreenView.js';
-import ThreeIsometricNode from '../../../../mobius/js/ThreeIsometricNode.js';
 import ThreeStage from '../../../../mobius/js/ThreeStage.js';
 import ThreeUtils from '../../../../mobius/js/ThreeUtils.js';
 import arrayRemove from '../../../../phet-core/js/arrayRemove.js';
@@ -52,6 +50,7 @@ import { Shape } from '../../../../kite/js/imports.js';
 import DisplayProperties from '../../buoyancy/view/DisplayProperties.js';
 import { BufferGeometry } from '../../../../chipper/node_modules/@types/three/index.js';
 import Bounds3 from '../../../../dot/js/Bounds3.js';
+import MobiusScreenView, { MobiusScreenViewOptions } from '../../../../mobius/js/MobiusScreenView.js';
 
 // constants
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN_SMALL;
@@ -65,10 +64,7 @@ export type THREEModelViewTransform = {
 
 type SelfOptions = {
   cameraLookAt?: Vector3;
-  cameraPosition?: Vector3;
   cameraZoom?: number;
-  viewOffset?: Vector2;
-  preventFit?: boolean;
   canShowForces?: boolean;
   initialForceScale?: number;
   supportsDepthLines?: boolean;
@@ -76,14 +72,14 @@ type SelfOptions = {
   massValuesInitiallyDisplayed?: boolean;
 } & PickRequired<PhetioObjectOptions, 'tandem'>;
 
-export type DensityBuoyancyScreenViewOptions = SelfOptions & ScreenViewOptions;
+export type DensityBuoyancyScreenViewOptions = SelfOptions & MobiusScreenViewOptions;
 
 export type PointedAtMassView = {
   massView: MassView;
   t: number;
 };
 
-export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyModel> extends ScreenView implements THREEModelViewTransform {
+export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyModel> extends MobiusScreenView implements THREEModelViewTransform {
 
   protected readonly model: Model;
   protected readonly popupLayer: Node;
@@ -91,8 +87,6 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
 
   // The sky background
   private readonly skyRectangle: Rectangle;
-
-  protected readonly sceneNode: ThreeIsometricNode;
 
   private readonly massDecorationLayer = new MassDecorationLayer();
 
@@ -109,19 +103,27 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
 
   protected readonly displayProperties: DisplayProperties;
 
-  public constructor( model: Model, providedOptions: SelfOptions ) {
+  public constructor( model: Model, providedOptions: DensityBuoyancyScreenViewOptions ) {
 
     const scaleIncrease = 3.5;
 
-    const options = optionize<DensityBuoyancyScreenViewOptions, SelfOptions, ScreenViewOptions>()( {
+    const options = optionize<DensityBuoyancyScreenViewOptions, SelfOptions, MobiusScreenViewOptions>()( {
+      sceneNodeOptions: {
+        parentMatrixProperty: animatedPanZoomSingleton.listener.matrixProperty,
+        cameraPosition: new Vector3( 0, 0.2, 2 ).timesScalar( scaleIncrease ),
+        viewOffset: new Vector2( 0, 0 ),
+        getPhetioMouseHit: point => {
+          const pointedAtMass = this.getMassViewUnderPoint( this.localToGlobalPoint( point ), 'autoselect' );
+          return pointedAtMass ? pointedAtMass.massView.mass.getPhetioMouseHitTarget() : pointedAtMass;
+        },
+
+        // So the sky background will show through
+        backgroundProperty: new ColorProperty( Color.TRANSPARENT )
+      },
       cameraLookAt: DensityBuoyancyCommonConstants.DENSITY_CAMERA_LOOK_AT,
-      cameraPosition: new Vector3( 0, 0.2, 2 ).timesScalar( scaleIncrease ),
       cameraZoom: 1.75 * scaleIncrease,
-      viewOffset: new Vector2( 0, 0 ),
 
       initialForceScale: 1 / 16,
-
-      preventFit: true,
 
       canShowForces: false,
       supportsDepthLines: false,
@@ -160,20 +162,7 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
         .addColorStop( 1, DensityBuoyancyCommonColors.skyBottomProperty );
     } );
     this.addChild( this.skyRectangle );
-
-    this.sceneNode = new ThreeIsometricNode( this.layoutBounds, {
-      parentMatrixProperty: animatedPanZoomSingleton.listener.matrixProperty,
-      cameraPosition: options.cameraPosition,
-      viewOffset: options.viewOffset,
-      getPhetioMouseHit: point => {
-        const pointedAtMass = this.getMassViewUnderPoint( this.localToGlobalPoint( point ), 'autoselect' );
-        return pointedAtMass ? pointedAtMass.massView.mass.getPhetioMouseHitTarget() : pointedAtMass;
-      },
-
-      // So the sky background will show through
-      backgroundProperty: new ColorProperty( Color.TRANSPARENT )
-    } );
-    this.addChild( this.sceneNode );
+    this.skyRectangle.moveToBack();
 
     this.addChild( this.massDecorationLayer );
 
@@ -573,10 +562,6 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
     // This instance lives for the lifetime of the simulation, so we don't need to remove these listeners
     new DynamicProperty( this.leftBarrierViewPointPropertyProperty ).lazyLink( () => this.resizeBarrier() );
     new DynamicProperty( this.rightBarrierViewPointPropertyProperty ).lazyLink( () => this.resizeBarrier() );
-
-    if ( !ThreeUtils.isWebGLEnabled() ) {
-      ThreeUtils.showWebGLWarning( this );
-    }
   }
 
   protected setRightBarrierViewPoint( rightBoxBoundsProperty: TReadOnlyProperty<Bounds2> ): void {
@@ -727,16 +712,6 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
     if ( !this.sceneNode ) {
       return;
     }
-
-    const dimension = phet.joist.sim.dimensionProperty.value;
-
-    const sceneWidth = dimension.width || window.innerWidth; // eslint-disable-line bad-sim-text
-    const sceneHeight = dimension.height || window.innerHeight; // eslint-disable-line bad-sim-text
-
-    this.sceneNode.layout( sceneWidth, sceneHeight );
-
-    // We need to do an initial render for certain layout-based code to work
-    this.sceneNode.render( undefined );
 
     this.resizeBarrier();
 

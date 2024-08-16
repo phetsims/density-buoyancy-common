@@ -45,7 +45,7 @@ export type ReadoutItemOptions<ReadoutType> = {
   // By default, the implementation of generateReadoutData() will create a default nameProperty, but you can supply your
   // own to be used instead.
   readoutNameProperty?: TReadOnlyProperty<string>;
-  disposeReadoutNameProperty?: boolean; // If true, the readoutNameProperty will be disposed when the ReadoutListAccordionBox is disposed.
+  onCleanup?: () => void;
 
   readoutFormat?: RichTextOptions; // Any extra formatting options to be passed ONLY to the value text.
 };
@@ -119,14 +119,15 @@ export default abstract class ReadoutListAccordionBox<ReadoutType> extends Accor
 
       const labelText = new RichText( nameColonProperty, TEXT_OPTIONS );
       const readoutFormat = readoutItem.readoutFormat ? readoutItem.readoutFormat : {};
+      const derivedStringProperty = new DerivedStringProperty( [ nameColonProperty, readoutData.valueProperty ], ( name, value ) => {
+        return `${name} ${value}`;
+      } );
       const valueText = new RichText( readoutData.valueProperty,
         combineOptions<RichTextOptions>( {
 
           // A11y content for the PDOM
           tagName: 'p',
-          innerContent: new DerivedStringProperty( [ nameColonProperty, readoutData.valueProperty ], ( name, value ) => {
-            return `${name} ${value}`;
-          } )
+          innerContent: derivedStringProperty
         }, TEXT_OPTIONS, readoutFormat ) );
 
       const maxWidthListener = ( contentWidthMax: number ) => {
@@ -139,9 +140,10 @@ export default abstract class ReadoutListAccordionBox<ReadoutType> extends Accor
       this.cleanupEmitter.addListener( () => {
         this.contentWidthMaxProperty.unlink( maxWidthListener );
         valueText.dispose();
+        derivedStringProperty.dispose();
         labelText.dispose();
         nameColonProperty.dispose();
-        readoutItem.disposeReadoutNameProperty && readoutItem.readoutNameProperty && readoutItem.readoutNameProperty.dispose();
+        readoutItem.onCleanup && readoutItem.onCleanup();
       } );
 
       const alignGroup = new AlignGroup();

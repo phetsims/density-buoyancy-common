@@ -44,6 +44,7 @@ import Ellipsoid from '../../model/shapes/Ellipsoid.js';
 import EllipsoidView from './EllipsoidView.js';
 import Cone from '../../model/shapes/Cone.js';
 import ConeView from './ConeView.js';
+import { ReadoutItemOptions } from '../ReadoutListAccordionBox.js';
 
 type BuoyancyShapesScreenViewOptions = BuoyancyScreenViewOptions;
 
@@ -149,12 +150,14 @@ export default class BuoyancyShapesScreenView extends BuoyancyScreenView<Buoyanc
     ], ( blockA, blockB, mode ) => {
       const masses = mode === TwoBlockMode.ONE_BLOCK ? [ blockA ] : [ blockA, blockB ];
       const readoutItems = masses.map( mass => {
+        const patternStringProperty = new PatternStringProperty( DensityBuoyancyCommonStrings.shapeTagPatternStringProperty, { tag: mass.nameProperty } );
+
         return {
           readoutItem: mass,
-          readoutNameProperty: new PatternStringProperty( DensityBuoyancyCommonStrings.shapeTagPatternStringProperty, { tag: mass.nameProperty } ),
-          disposeReadoutNameProperty: true,
+          onCleanup: () => patternStringProperty.dispose(),
+          readoutNameProperty: patternStringProperty,
           readoutFormat: { font: DensityBuoyancyCommonConstants.ITEM_FONT, fill: mass.tag.colorProperty }
-        };
+        } satisfies ReadoutItemOptions<Mass>;
       } );
 
       percentSubmergedAccordionBox.setReadoutItems( readoutItems );

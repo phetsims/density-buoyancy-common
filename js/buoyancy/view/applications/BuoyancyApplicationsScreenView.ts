@@ -16,7 +16,7 @@ import RectangularRadioButtonGroup from '../../../../../sun/js/buttons/Rectangul
 import DensityBuoyancyCommonConstants from '../../../common/DensityBuoyancyCommonConstants.js';
 import Material from '../../../common/model/Material.js';
 import DensityBuoyancyCommonColors from '../../../common/view/DensityBuoyancyCommonColors.js';
-import DensityBuoyancyScreenView, { PointedAtMassView } from '../../../common/view/DensityBuoyancyScreenView.js';
+import { PointedAtMassView } from '../../../common/view/DensityBuoyancyScreenView.js';
 import densityBuoyancyCommon from '../../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../../DensityBuoyancyCommonStrings.js';
 import BuoyancyApplicationsModel from '../../model/applications/BuoyancyApplicationsModel.js';
@@ -246,19 +246,6 @@ export default class BuoyancyApplicationsScreenView extends BuoyancyScreenView<B
       applicationModeRadioButtonGroup,
       this.resetAllButton
     ];
-
-    const fluidGeometry = new THREE.BufferGeometry();
-    const fluidPositionArray = DensityBuoyancyScreenView.createFluidVertexArray();
-    fluidGeometry.addAttribute( 'position', new THREE.BufferAttribute( fluidPositionArray, 3 ) );
-    fluidGeometry.addAttribute( 'normal', new THREE.BufferAttribute( DensityBuoyancyScreenView.createFluidNormalArray(), 3 ) );
-
-    // boolean for optimization, to prevent zeroing out the remainder of the array if we have already done so
-    let wasFilled = false;
-
-    // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
-    model.pool.fluidYInterpolatedProperty.link( y => {
-      wasFilled = this.fillFluidGeometry( y, fluidPositionArray, fluidGeometry, wasFilled );
-    } );
   }
 
   protected override getMassViewFromMass( mass: Mass ): MassView {

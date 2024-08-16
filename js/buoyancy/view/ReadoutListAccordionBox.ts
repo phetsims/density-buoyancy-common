@@ -108,8 +108,6 @@ export default abstract class ReadoutListAccordionBox<ReadoutType> extends Accor
 
     this.readoutBox.children = readoutItems.map( readoutItem => {
 
-      // TODO: Create a new type and file for this data structure, see https://github.com/phetsims/buoyancy/issues/67
-      // TODO: So that the map will read readoutItems.map( item => new ReadoutItemNode(item)), and dispose has a method, see https://github.com/phetsims/buoyancy/issues/67
       const readoutData = this.generateReadoutData( readoutItem.readoutItem );
       const nameProperty = readoutItem.readoutNameProperty || readoutData.nameProperty;
       const nameColonProperty = new PatternStringProperty(

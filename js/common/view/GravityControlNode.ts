@@ -17,6 +17,10 @@ import Tandem from '../../../../tandem/js/Tandem.js';
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import GravityProperty from '../model/GravityProperty.js';
 
+const FALLBACK_NODE = new Text( DensityBuoyancyCommonStrings.whatIsTheValueOfGravityStringProperty, {
+  font: new PhetFont( 14 )
+} );
+
 export default class GravityControlNode extends ComboNumberControl<Gravity> {
   public constructor( gravityProperty: GravityProperty, listParent: Node, tandem: Tandem ) {
 
@@ -55,9 +59,7 @@ export default class GravityControlNode extends ComboNumberControl<Gravity> {
       },
       getFallbackNode: gravity => {
         if ( gravity.hidden ) {
-          return new Text( DensityBuoyancyCommonStrings.whatIsTheValueOfGravityStringProperty, {
-            font: new PhetFont( 14 )
-          } );
+          return FALLBACK_NODE;
         }
         else {
           return null;

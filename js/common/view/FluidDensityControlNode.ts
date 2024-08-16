@@ -32,6 +32,10 @@ type ParentOptions = WithRequired<Partial<ComboNumberControlOptions<Material>>, 
 
 type DensityControlNodeOptions = SelfOptions & ParentOptions;
 
+const FALLBACK_NODE = new Text( DensityBuoyancyCommonStrings.whatIsTheFluidDensityStringProperty, {
+  font: new PhetFont( 14 )
+} );
+
 export default class FluidDensityControlNode extends ComboNumberControl<Material> {
   public constructor(
     fluidMaterialProperty: MaterialProperty,
@@ -90,9 +94,7 @@ export default class FluidDensityControlNode extends ComboNumberControl<Material
       },
       getFallbackNode: material => {
         if ( material.hidden ) {
-          return new Text( DensityBuoyancyCommonStrings.whatIsTheFluidDensityStringProperty, {
-            font: new PhetFont( 14 )
-          } );
+          return FALLBACK_NODE;
         }
         else {
           return null;

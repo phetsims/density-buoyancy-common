@@ -6,7 +6,6 @@
  * @author Jonathan Olson (PhET Interactive Simulations)
  */
 import { Node, Text } from '../../../../scenery/js/imports.js';
-import DensityBuoyancyScreenView from '../../common/view/DensityBuoyancyScreenView.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
 import ThreeUtils from '../../../../mobius/js/ThreeUtils.js';
 import TextureQuad from '../../../../mobius/js/TextureQuad.js';
@@ -14,10 +13,11 @@ import NodeTexture from '../../../../mobius/js/NodeTexture.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import ScaleView from '../../common/view/ScaleView.js';
+import MobiusScreenView from '../../../../mobius/js/MobiusScreenView.js';
 
 const getDensityMysteryIcon = (): Node => {
 
-  return DensityBuoyancyScreenView.getAngledIcon( 4, new Vector3( 0, -0.01, 0 ), scene => {
+  return MobiusScreenView.getAngledIcon( 4, new Vector3( 0, -0.01, 0 ), scene => {
 
     const boxGeometry = new THREE.BoxGeometry( 0.1, 0.1, 0.1 );
 

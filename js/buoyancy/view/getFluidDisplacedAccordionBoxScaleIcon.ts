@@ -12,12 +12,13 @@ import fluid_displaced_scale_icon_png from '../../../images/fluid_displaced_scal
 import Vector3 from '../../../../dot/js/Vector3.js';
 import ScaleView from '../../common/view/ScaleView.js';
 import ThreeUtils from '../../../../mobius/js/ThreeUtils.js';
+import MobiusScreenView from '../../../../mobius/js/MobiusScreenView.js';
 
 const getFluidDisplacedAccordionBoxScaleIcon = (): Node => {
 
   // Hard coded zoom and view-port vector help to center the icon.
   const image = DensityBuoyancyScreenView.getThreeIcon( fluid_displaced_scale_icon_png, () => {
-    return DensityBuoyancyScreenView.getAngledIcon( 8, new Vector3( 0, 0.25, 0 ), scene => {
+    return MobiusScreenView.getAngledIcon( 8, new Vector3( 0, 0.25, 0 ), scene => {
       const scaleGeometry = ScaleView.getScaleGeometry();
 
       const scale = new THREE.Mesh( scaleGeometry, new THREE.MeshStandardMaterial( {

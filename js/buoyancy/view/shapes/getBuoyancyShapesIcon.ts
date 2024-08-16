@@ -6,17 +6,17 @@
  * @author Jonathan Olson (PhET Interactive Simulations)
  */
 import { Node } from '../../../../../scenery/js/imports.js';
-import DensityBuoyancyScreenView from '../../../common/view/DensityBuoyancyScreenView.js';
 import Vector3 from '../../../../../dot/js/Vector3.js';
 import ConeView from './ConeView.js';
 import Cone from '../../model/shapes/Cone.js';
 import { DensityMaterials } from '../../../common/view/MaterialView.js';
 import ThreeUtils from '../../../../../mobius/js/ThreeUtils.js';
 import FluidIconMesh from '../../../common/view/FluidIconMesh.js';
+import MobiusScreenView from '../../../../../mobius/js/MobiusScreenView.js';
 
 const getBuoyancyShapesIcon = (): Node => {
 
-  return DensityBuoyancyScreenView.getAngledIcon( 5.5, new Vector3( 0, 0, 0 ), scene => {
+  return MobiusScreenView.getAngledIcon( 5.5, new Vector3( 0, 0, 0 ), scene => {
 
     const coneGeometry = ConeView.getConeGeometry( Cone.getRadiusFromRatio( 0.2 ), Cone.getHeightFromRatio( 0.35 ), true );
 

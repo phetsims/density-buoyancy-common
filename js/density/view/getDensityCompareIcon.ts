@@ -6,14 +6,14 @@
  * @author Jonathan Olson (PhET Interactive Simulations)
  */
 import { Node } from '../../../../scenery/js/imports.js';
-import DensityBuoyancyScreenView from '../../common/view/DensityBuoyancyScreenView.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
 import ThreeUtils from '../../../../mobius/js/ThreeUtils.js';
 import FluidIconMesh from '../../common/view/FluidIconMesh.js';
+import MobiusScreenView from '../../../../mobius/js/MobiusScreenView.js';
 
 const getDensityCompareIcon = (): Node => {
 
-  return DensityBuoyancyScreenView.getAngledIcon( 4.6, new Vector3( 0, -0.02, 0 ), scene => {
+  return MobiusScreenView.getAngledIcon( 4.6, new Vector3( 0, -0.02, 0 ), scene => {
 
     const boxGeometry = new THREE.BoxGeometry( 0.1, 0.1, 0.1 );
 

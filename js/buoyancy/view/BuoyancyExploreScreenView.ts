@@ -108,7 +108,6 @@ export default class BuoyancyExploreScreenView extends BuoyancyScreenView<Buoyan
       } ) );
     } );
 
-    // TODO: https://github.com/phetsims/density-buoyancy-common/issues/291 26 lines duplicated
     const rightSideVBox = new VBox( {
       spacing: DensityBuoyancyCommonConstants.SPACING_SMALL,
       align: 'right',

@@ -51,6 +51,10 @@ import DisplayProperties from '../../buoyancy/view/DisplayProperties.js';
 import { BufferGeometry } from '../../../../chipper/node_modules/@types/three/index.js';
 import Bounds3 from '../../../../dot/js/Bounds3.js';
 import MobiusScreenView, { MobiusScreenViewOptions } from '../../../../mobius/js/MobiusScreenView.js';
+import GroundFrontMesh from './mesh/GroundFrontMesh.js';
+import GroundTopMesh from './mesh/GroundTopMesh.js';
+import PoolMesh from './mesh/PoolMesh.js';
+import BarrierMesh from './mesh/BarrierMesh.js';
 
 // constants
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN_SMALL;
@@ -213,249 +217,16 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
     moonLight.position.set( 2.0, -1.0, 1.0 );
     this.sceneNode.stage.threeScene.add( moonLight );
 
-    // Front ground
-    const frontGeometry = new THREE.BufferGeometry();
-    frontGeometry.addAttribute( 'position', new THREE.BufferAttribute( new Float32Array( [
-      // Left side
-      ...ThreeUtils.frontVertices( new Bounds2(
-        model.groundBounds.minX, model.groundBounds.minY,
-        model.poolBounds.minX, model.groundBounds.maxY
-      ), model.groundBounds.maxZ ),
-
-      // Right side
-      ...ThreeUtils.frontVertices( new Bounds2(
-        model.poolBounds.maxX, model.groundBounds.minY,
-        model.groundBounds.maxX, model.groundBounds.maxY
-      ), model.groundBounds.maxZ ),
-
-      // Bottom
-      ...ThreeUtils.frontVertices( new Bounds2(
-        model.poolBounds.minX, model.groundBounds.minY,
-        model.poolBounds.maxX, model.poolBounds.minY
-      ), model.groundBounds.maxZ )
-    ] ), 3 ) );
-    const groundMaterial = new THREE.MeshBasicMaterial();
-    // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
-    DensityBuoyancyCommonColors.groundProperty.link( groundColor => {
-      groundMaterial.color = ThreeUtils.colorToThree( groundColor );
-    } );
-
-    const frontMesh = new THREE.Mesh( frontGeometry, groundMaterial );
-    this.sceneNode.stage.threeScene.add( frontMesh );
-
-    // Top ground
-    const topGeometry = new THREE.BufferGeometry();
-    topGeometry.addAttribute( 'position', new THREE.BufferAttribute( new Float32Array( [
-      // Left side
-      ...ThreeUtils.topVertices( new Bounds2(
-        model.groundBounds.minX, model.poolBounds.minZ,
-        model.poolBounds.minX, model.groundBounds.maxZ
-      ), model.groundBounds.maxY ),
-
-      // Right side
-      ...ThreeUtils.topVertices( new Bounds2(
-        model.poolBounds.maxX, model.poolBounds.minZ,
-        model.groundBounds.maxX, model.groundBounds.maxZ
-      ), model.groundBounds.maxY ),
-
-      // Back side
-      ...ThreeUtils.topVertices( new Bounds2(
-        model.groundBounds.minX, model.groundBounds.minZ,
-        model.groundBounds.maxX, model.poolBounds.minZ
-      ), model.groundBounds.maxY )
-    ] ), 3 ) );
-    topGeometry.addAttribute( 'normal', new THREE.BufferAttribute( new Float32Array( [
-      // Left
-      0, 1, 0,
-      0, 1, 0,
-      0, 1, 0,
-      0, 1, 0,
-      0, 1, 0,
-      0, 1, 0,
-
-      // Right
-      0, 1, 0,
-      0, 1, 0,
-      0, 1, 0,
-      0, 1, 0,
-      0, 1, 0,
-      0, 1, 0,
-
-      // Back
-      0, 1, 0,
-      0, 1, 0,
-      0, 1, 0,
-      0, 1, 0,
-      0, 1, 0,
-      0, 1, 0
-    ] ), 3 ) );
-    const topColorArray = new Float32Array( [
-      // Left
-      0, 1, 0,
-      0, 1, 0,
-      0, 1, 0,
-      0, 1, 0,
-      0, 1, 0,
-      0, 1, 0,
-
-      // Right
-      0, 1, 0,
-      0, 1, 0,
-      0, 1, 0,
-      0, 1, 0,
-      0, 1, 0,
-      0, 1, 0,
-
-      // Back
-      1, 1, 0,
-      1, 1, 0,
-      0, 1, 1,
-      0, 1, 1,
-      1, 1, 0,
-      0, 1, 1
-    ] );
-    topGeometry.addAttribute( 'color', new THREE.BufferAttribute( topColorArray, 3 ) );
-    // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
-    DensityBuoyancyCommonColors.grassCloseProperty.link( grassCloseColor => {
-      for ( let i = 0; i < 18; i++ ) {
-        topColorArray[ i * 3 + 0 ] = grassCloseColor.r / 255;
-        topColorArray[ i * 3 + 1 ] = grassCloseColor.g / 255;
-        topColorArray[ i * 3 + 2 ] = grassCloseColor.b / 255;
-      }
-      const offset = 3 * 2 * 6;
-      topColorArray[ offset + 0 ] = topColorArray[ offset + 3 ] = topColorArray[ offset + 9 ] = grassCloseColor.r / 255;
-      topColorArray[ offset + 1 ] = topColorArray[ offset + 4 ] = topColorArray[ offset + 10 ] = grassCloseColor.g / 255;
-      topColorArray[ offset + 2 ] = topColorArray[ offset + 5 ] = topColorArray[ offset + 11 ] = grassCloseColor.b / 255;
-      topGeometry.attributes.color.needsUpdate = true;
-    } );
-    // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
-    DensityBuoyancyCommonColors.grassFarProperty.link( grassFarColor => {
-      const offset = 3 * 2 * 6;
-      topColorArray[ offset + 6 ] = topColorArray[ offset + 12 ] = topColorArray[ offset + 15 ] = grassFarColor.r / 255;
-      topColorArray[ offset + 7 ] = topColorArray[ offset + 13 ] = topColorArray[ offset + 16 ] = grassFarColor.g / 255;
-      topColorArray[ offset + 8 ] = topColorArray[ offset + 14 ] = topColorArray[ offset + 17 ] = grassFarColor.b / 255;
-      topGeometry.attributes.color.needsUpdate = true;
-    } );
-    // @ts-expect-error - THREE.js version incompatibility?
-    const topMaterial = new THREE.MeshBasicMaterial( { vertexColors: THREE.VertexColors } );
-    const topMesh = new THREE.Mesh( topGeometry, topMaterial );
-    this.sceneNode.stage.threeScene.add( topMesh );
-
-    // Pool interior
-    const poolGeometry = new THREE.BufferGeometry();
-    poolGeometry.addAttribute( 'position', new THREE.BufferAttribute( new Float32Array( [
-      // Bottom
-      ...ThreeUtils.topVertices( new Bounds2(
-        model.poolBounds.minX, model.poolBounds.minZ,
-        model.poolBounds.maxX, model.poolBounds.maxZ
-      ), model.poolBounds.minY ),
-
-      // Back
-      ...ThreeUtils.frontVertices( new Bounds2(
-        model.poolBounds.minX, model.poolBounds.minY,
-        model.poolBounds.maxX, model.poolBounds.maxY
-      ), model.poolBounds.minZ ),
-
-      // Left
-      ...ThreeUtils.rightVertices( new Bounds2(
-        model.poolBounds.minZ, model.poolBounds.minY,
-        model.poolBounds.maxZ, model.poolBounds.maxY
-      ), model.poolBounds.minX ),
-
-      // Right
-      ...ThreeUtils.leftVertices( new Bounds2(
-        model.poolBounds.minZ, model.poolBounds.minY,
-        model.poolBounds.maxZ, model.poolBounds.maxY
-      ), model.poolBounds.maxX )
-    ] ), 3 ) );
-    poolGeometry.addAttribute( 'normal', new THREE.BufferAttribute( new Float32Array( [
-      // Bottom
-      0, 1, 0,
-      0, 1, 0,
-      0, 1, 0,
-      0, 1, 0,
-      0, 1, 0,
-      0, 1, 0,
-
-      // Back
-      0, 0, 1,
-      0, 0, 1,
-      0, 0, 1,
-      0, 0, 1,
-      0, 0, 1,
-      0, 0, 1,
-
-      // Left
-      1, 0, 0,
-      1, 0, 0,
-      1, 0, 0,
-      1, 0, 0,
-      1, 0, 0,
-      1, 0, 0,
-
-      // Right
-      -1, 0, 0,
-      -1, 0, 0,
-      -1, 0, 0,
-      -1, 0, 0,
-      -1, 0, 0,
-      -1, 0, 0
-    ] ), 3 ) );
-    const poolMaterial = new THREE.MeshLambertMaterial();
-    // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
-    DensityBuoyancyCommonColors.poolSurfaceProperty.link( poolSurfaceColor => {
-      poolMaterial.color = ThreeUtils.colorToThree( poolSurfaceColor );
-    } );
-
-    const poolMesh = new THREE.Mesh( poolGeometry, poolMaterial );
-    this.sceneNode.stage.threeScene.add( poolMesh );
+    this.sceneNode.stage.threeScene.add( new GroundFrontMesh( model.poolBounds, model.groundBounds ) );
+    this.sceneNode.stage.threeScene.add( new GroundTopMesh( model.poolBounds, model.groundBounds ) );
+    this.sceneNode.stage.threeScene.add( new PoolMesh( model.poolBounds ) );
 
     // Debug barrier
     if ( DensityBuoyancyCommonQueryParameters.showBarrier ) {
-      const barrierGeometry = new THREE.BufferGeometry();
-      const barrierPositionArray = new Float32Array( 18 * 2 );
-
-      barrierGeometry.addAttribute( 'position', new THREE.BufferAttribute( barrierPositionArray, 3 ) );
-      barrierGeometry.addAttribute( 'normal', new THREE.BufferAttribute( new Float32Array( [
-        // Left
-        1, 0, 0,
-        1, 0, 0,
-        1, 0, 0,
-        1, 0, 0,
-        1, 0, 0,
-        1, 0, 0,
-
-        // Right
-        -1, 0, 0,
-        -1, 0, 0,
-        -1, 0, 0,
-        -1, 0, 0,
-        -1, 0, 0,
-        -1, 0, 0
-      ] ), 3 ) );
-      const barrierMaterial = new THREE.MeshLambertMaterial( {
-        color: 0xff0000,
-        transparent: true,
-        opacity: 0.5
-      } );
-
-      // Only when showing the debug barrier, when the model-reported invisible barrier boundary changes, update the 3D
-      // barrier geometry.
-      // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
-      model.invisibleBarrierBoundsProperty.link( bounds => {
-        let index = 0;
-        const zyBounds = new Bounds2( bounds.minZ, bounds.minY, bounds.maxZ, bounds.maxY );
-        index = ThreeUtils.writeRightVertices( barrierPositionArray, index, zyBounds, bounds.minX );
-        ThreeUtils.writeLeftVertices( barrierPositionArray, index, zyBounds, bounds.maxX );
-
-        barrierGeometry.attributes.position.needsUpdate = true;
-        barrierGeometry.computeBoundingSphere();
-      } );
-
-      const barrierMesh = new THREE.Mesh( barrierGeometry, barrierMaterial );
-      this.sceneNode.stage.threeScene.add( barrierMesh );
+      this.sceneNode.stage.threeScene.add( new BarrierMesh( model.invisibleBarrierBoundsProperty ) );
     }
 
+    // TODO: own class, https://github.com/phetsims/density-buoyancy-common/issues/334
     // Fluid
     const fluidGeometry = new THREE.BufferGeometry();
     const fluidPositionArray = DensityBuoyancyScreenView.createFluidVertexArray();

@@ -1,6 +1,11 @@
 // Copyright 2024, University of Colorado Boulder
 
 /**
+ * BarrierMesh is a mesh that represents the invisible barrier in the simulation. It is used to prevent the user from
+ * moving objects outside of the simulation area.
+ *
+ * It is only shown when DensityBuoyancyCommonQueryParameters.showBarrier is true.
+ *
  * @author Michael Kauzmann (PhET Interactive Simulations)
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */

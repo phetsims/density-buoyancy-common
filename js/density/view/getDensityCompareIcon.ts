@@ -9,11 +9,11 @@ import { Node } from '../../../../scenery/js/imports.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
 import ThreeUtils from '../../../../mobius/js/ThreeUtils.js';
 import FluidIconMesh from '../../common/view/FluidIconMesh.js';
-import MobiusScreenView from '../../../../mobius/js/MobiusScreenView.js';
+import getAngledIcon from '../../../../mobius/js/getAngledIcon.js';
 
 const getDensityCompareIcon = (): Node => {
 
-  return MobiusScreenView.getAngledIcon( 4.6, new Vector3( 0, -0.02, 0 ), scene => {
+  return getAngledIcon( 4.6, new Vector3( 0, -0.02, 0 ), scene => {
 
     const boxGeometry = new THREE.BoxGeometry( 0.1, 0.1, 0.1 );
 

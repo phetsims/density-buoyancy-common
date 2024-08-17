@@ -13,11 +13,11 @@ import NodeTexture from '../../../../mobius/js/NodeTexture.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import ScaleView from '../../common/view/ScaleView.js';
-import MobiusScreenView from '../../../../mobius/js/MobiusScreenView.js';
+import getAngledIcon from '../../../../mobius/js/getAngledIcon.js';
 
 const getDensityMysteryIcon = (): Node => {
 
-  return MobiusScreenView.getAngledIcon( 4, new Vector3( 0, -0.01, 0 ), scene => {
+  return getAngledIcon( 4, new Vector3( 0, -0.01, 0 ), scene => {
 
     const boxGeometry = new THREE.BoxGeometry( 0.1, 0.1, 0.1 );
 

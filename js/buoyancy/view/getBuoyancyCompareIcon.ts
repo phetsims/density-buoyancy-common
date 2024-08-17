@@ -10,10 +10,10 @@ import { DensityMaterials } from '../../common/view/MaterialView.js';
 import ThreeUtils from '../../../../mobius/js/ThreeUtils.js';
 import FluidIconMesh from '../../common/view/FluidIconMesh.js';
 import { Node } from '../../../../scenery/js/imports.js';
-import MobiusScreenView from '../../../../mobius/js/MobiusScreenView.js';
+import getAngledIcon from '../../../../mobius/js/getAngledIcon.js';
 
 const getBuoyancyCompareIcon = (): Node => {
-  return MobiusScreenView.getAngledIcon( 4, new Vector3( 0, -0.05, 0 ), scene => {
+  return getAngledIcon( 4, new Vector3( 0, -0.05, 0 ), scene => {
 
     const boxGeometry = new THREE.BoxGeometry( 0.1, 0.1, 0.1 );
 

@@ -14,11 +14,11 @@ import { DensityMaterials } from '../../common/view/MaterialView.js';
 import ThreeUtils from '../../../../mobius/js/ThreeUtils.js';
 import FluidIconMesh from '../../common/view/FluidIconMesh.js';
 import getExploreIcon from '../../common/view/getExploreIcon.js';
-import MobiusScreenView from '../../../../mobius/js/MobiusScreenView.js';
+import getAngledIcon from '../../../../mobius/js/getAngledIcon.js';
 
 const getBuoyancyExploreIcon = (): Node => {
   const boxScene = DensityBuoyancyScreenView.getThreeIcon( buoyancy_explore_screen_block_png, () => {
-    return MobiusScreenView.getAngledIcon( 5.5, new Vector3( 0, 0, 0 ), scene => {
+    return getAngledIcon( 5.5, new Vector3( 0, 0, 0 ), scene => {
 
       const boxGeometry = new THREE.BoxGeometry( 0.1, 0.1, 0.1 );
 

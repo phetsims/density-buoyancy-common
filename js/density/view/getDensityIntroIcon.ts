@@ -11,11 +11,11 @@ import Vector3 from '../../../../dot/js/Vector3.js';
 import { DensityMaterials } from '../../common/view/MaterialView.js';
 import ThreeUtils from '../../../../mobius/js/ThreeUtils.js';
 import FluidIconMesh from '../../common/view/FluidIconMesh.js';
-import MobiusScreenView from '../../../../mobius/js/MobiusScreenView.js';
+import getAngledIcon from '../../../../mobius/js/getAngledIcon.js';
 
 const getDensityIntroIcon = (): Node => {
 
-  return MobiusScreenView.getAngledIcon( 5.5, new Vector3( 0, 0, 0 ), scene => {
+  return getAngledIcon( 5.5, new Vector3( 0, 0, 0 ), scene => {
 
     const boxGeometry = new THREE.BoxGeometry( 0.1, 0.1, 0.1 );
 

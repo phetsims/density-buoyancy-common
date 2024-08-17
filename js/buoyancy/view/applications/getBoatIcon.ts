@@ -10,13 +10,13 @@ import DensityBuoyancyScreenView from '../../../common/view/DensityBuoyancyScree
 import boat_icon_png from '../../../../images/boat_icon_png.js';
 import Vector3 from '../../../../../dot/js/Vector3.js';
 import BoatView from './BoatView.js';
-import MobiusScreenView from '../../../../../mobius/js/MobiusScreenView.js';
+import getAngledIcon from '../../../../../mobius/js/getAngledIcon.js';
 
 const ICON_SCALE = 0.08;
 
 const getBoatIcon = (): Node => {
   const boatIcon = DensityBuoyancyScreenView.getThreeIcon( boat_icon_png, () => {
-    return MobiusScreenView.getAngledIcon( 6, new Vector3( -0.03, 0, 0 ), scene => {
+    return getAngledIcon( 6, new Vector3( -0.03, 0, 0 ), scene => {
 
       const topBoatClipPlane: THREE.Plane = new THREE.Plane( new THREE.Vector3( 0, 1, 0 ), 0 );
       const bottomBoatClipPlane: THREE.Plane = new THREE.Plane( new THREE.Vector3( 0, -1, 0 ), 0 );

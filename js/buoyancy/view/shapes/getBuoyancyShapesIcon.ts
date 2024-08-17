@@ -12,11 +12,11 @@ import Cone from '../../model/shapes/Cone.js';
 import { DensityMaterials } from '../../../common/view/MaterialView.js';
 import ThreeUtils from '../../../../../mobius/js/ThreeUtils.js';
 import FluidIconMesh from '../../../common/view/FluidIconMesh.js';
-import MobiusScreenView from '../../../../../mobius/js/MobiusScreenView.js';
+import getAngledIcon from '../../../../../mobius/js/getAngledIcon.js';
 
 const getBuoyancyShapesIcon = (): Node => {
 
-  return MobiusScreenView.getAngledIcon( 5.5, new Vector3( 0, 0, 0 ), scene => {
+  return getAngledIcon( 5.5, new Vector3( 0, 0, 0 ), scene => {
 
     const coneGeometry = ConeView.getConeGeometry( Cone.getRadiusFromRatio( 0.2 ), Cone.getHeightFromRatio( 0.35 ), true );
 

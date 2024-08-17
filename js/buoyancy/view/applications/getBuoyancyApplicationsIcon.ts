@@ -11,11 +11,12 @@ import Vector3 from '../../../../../dot/js/Vector3.js';
 import Bottle from '../../model/applications/Bottle.js';
 import Material from '../../../common/model/Material.js';
 import FluidIconMesh from '../../../common/view/FluidIconMesh.js';
-import MobiusScreenView from '../../../../../mobius/js/MobiusScreenView.js';
+
+import getAngledIcon from '../../../../../mobius/js/getAngledIcon.js';
 
 const getBuoyancyApplicationsIcon = (): Node => {
 
-  return MobiusScreenView.getAngledIcon( 5.5, new Vector3( 0, 0, 0 ), scene => {
+  return getAngledIcon( 5.5, new Vector3( 0, 0, 0 ), scene => {
 
     const primaryGeometry = Bottle.getPrimaryGeometry();
 

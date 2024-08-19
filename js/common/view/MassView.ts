@@ -160,8 +160,6 @@ export default abstract class MassView extends Disposable {
         onRelease() {
           endKeyboardInteraction();
         },
-
-        // TODO: https://github.com/phetsims/density-buoyancy-common/issues/209 why is the tandem required in the parent class? Overinstrumentation?
         tandem: Tandem.OPT_OUT
       } );
 

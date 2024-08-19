@@ -188,6 +188,7 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
 
         this.massViews.forEach( massView => {
           if ( massView.focusablePath ) {
+            // TODO: Doc please https://github.com/phetsims/density-buoyancy-common/issues/210
             massView.focusablePath.shapeProperty = massView === massUnderPointer?.massView ?
                                                    massView.focusableShapeProperty : emptyShapeProperty;
           }

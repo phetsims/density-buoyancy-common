@@ -142,6 +142,8 @@ type StringsType = {
   'densityKgdm3StringProperty': LocalizedStringProperty;
   'widthStringProperty': LocalizedStringProperty;
   'heightStringProperty': LocalizedStringProperty;
+  'radiusStringProperty': LocalizedStringProperty;
+  'widthAndDepthStringProperty': LocalizedStringProperty;
   'systemAStringProperty': LocalizedStringProperty;
   'nameColonPatternStringProperty': LocalizedStringProperty;
   'nameColonValueUnitsPatternStringProperty': LocalizedStringProperty;

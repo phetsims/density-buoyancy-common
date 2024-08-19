@@ -23,6 +23,7 @@ import DensityBuoyancyCommonStrings from '../../../DensityBuoyancyCommonStrings.
 import WithRequired from '../../../../../phet-core/js/types/WithRequired.js';
 import Tandem from '../../../../../tandem/js/Tandem.js';
 import BuoyancyShapeModel from '../../model/shapes/BuoyancyShapeModel.js';
+import DerivedStringProperty from '../../../../../axon/js/DerivedStringProperty.js';
 
 type SelfOptions = {
   labelNode?: Node | null;
@@ -84,16 +85,42 @@ export default class ShapeSizeControlNode extends VBox {
       }
     };
 
-    const widthNumberControl = new NumberControl( DensityBuoyancyCommonStrings.widthStringProperty, shapeModel.widthRatioProperty, new Range( 0, 1 ), combineOptions<NumberControlOptions>( {
-      tandem: options.tandem.createTandem( 'widthNumberControl' ),
-      sliderOptions: {
-        accessibleName: DensityBuoyancyCommonStrings.widthStringProperty
-      }
-    }, numberControlOptions ) );
-    const heightNumberControl = new NumberControl( DensityBuoyancyCommonStrings.heightStringProperty, shapeModel.heightRatioProperty, new Range( 0, 1 ), combineOptions<NumberControlOptions>( {
-      tandem: options.tandem.createTandem( 'heightNumberControl' ),
+    // TODO: Would this be clearer or better using DynamicProperty? See https://github.com/phetsims/density-buoyancy-common/issues/348
+    const verticalStringProperty = new DerivedStringProperty( [
+      shapeModel.shapeNameProperty,
+      DensityBuoyancyCommonStrings.heightStringProperty,
+      DensityBuoyancyCommonStrings.radiusStringProperty
+    ], ( ( shapeName, heightString, radiusString ) => {
+      return shapeName === MassShape.HORIZONTAL_CYLINDER ? radiusString :
+             heightString;
+    } ), {
+      tandem: options.tandem.createTandem( 'verticalStringProperty' ) // To help with studio autoselect
+    } );
+
+    const horizontalStringProperty = new DerivedStringProperty( [
+      shapeModel.shapeNameProperty,
+      DensityBuoyancyCommonStrings.widthStringProperty,
+      DensityBuoyancyCommonStrings.radiusStringProperty,
+      DensityBuoyancyCommonStrings.widthAndDepthStringProperty
+    ], ( ( shapeName, widthString, radiusString, widthAndDepth ) => {
+      return shapeName === MassShape.BLOCK || shapeName === MassShape.DUCK || shapeName === MassShape.ELLIPSOID ? widthAndDepth :
+             shapeName === MassShape.VERTICAL_CYLINDER || shapeName === MassShape.CONE || shapeName === MassShape.INVERTED_CONE ? radiusString :
+             widthString;
+    } ), {
+      tandem: options.tandem.createTandem( 'horizontalStringProperty' ) // To help with studio autoselect
+    } );
+
+    const verticalNumberControl = new NumberControl( verticalStringProperty, shapeModel.heightRatioProperty, new Range( 0, 1 ), combineOptions<NumberControlOptions>( {
+      tandem: options.tandem.createTandem( 'verticalNumberControl' ),
       sliderOptions: {
         accessibleName: DensityBuoyancyCommonStrings.heightStringProperty
+      }
+    }, numberControlOptions ) );
+
+    const horizontalNumberControl = new NumberControl( horizontalStringProperty, shapeModel.widthRatioProperty, new Range( 0, 1 ), combineOptions<NumberControlOptions>( {
+      tandem: options.tandem.createTandem( 'horizontalNumberControl' ),
+      sliderOptions: {
+        accessibleName: horizontalStringProperty
       }
     }, numberControlOptions ) );
 
@@ -109,8 +136,8 @@ export default class ShapeSizeControlNode extends VBox {
           options.labelNode
         ].filter( _.identity ) as Node[]
       } ),
-      heightNumberControl,
-      widthNumberControl,
+      verticalNumberControl,
+      horizontalNumberControl,
       new HSeparator(),
       new HBox( {
         layoutOptions: { stretch: true },
@@ -123,7 +150,7 @@ export default class ShapeSizeControlNode extends VBox {
         children: [
           new Text( DensityBuoyancyCommonStrings.volumeStringProperty, {
             font: DensityBuoyancyCommonConstants.READOUT_FONT,
-            maxWidth: widthNumberControl.width / 2
+            maxWidth: horizontalNumberControl.width / 2
           } ),
 
           // For this number display, the max is 8.66 (for the cube Block) but each shape has a different maximum. But
@@ -134,7 +161,7 @@ export default class ShapeSizeControlNode extends VBox {
             decimalPlaces: 2,
             textOptions: {
               font: DensityBuoyancyCommonConstants.READOUT_FONT,
-              maxWidth: widthNumberControl.width / 3 // to account for the numberDisplay padding
+              maxWidth: horizontalNumberControl.width / 3 // to account for the numberDisplay padding
             }
           } )
         ]

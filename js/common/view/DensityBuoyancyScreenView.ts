@@ -113,7 +113,7 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
         },
 
         // So the sky background will show through
-        backgroundProperty: new ColorProperty( Color.TRANSPARENT )
+        backgroundColorProperty: new ColorProperty( Color.TRANSPARENT )
       },
       cameraLookAt: DensityBuoyancyCommonConstants.DENSITY_CAMERA_LOOK_AT,
       cameraZoom: 1.75 * scaleIncrease,

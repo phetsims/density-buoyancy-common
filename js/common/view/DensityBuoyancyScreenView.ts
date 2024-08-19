@@ -2,10 +2,16 @@
 
 /**
  * The main base ScreenView for all Density/Buoyancy screens.
- * TODO: Elaborate on the main responsibilities of this class, see https://github.com/phetsims/density-buoyancy-common/issues/334
- * TODO: Currently at 871 lines, this file is more complex. Can it be simplified or modularized? See https://github.com/phetsims/density-buoyancy-common/issues/334
+ *
+ * This class is responsible for add THREE.js view for the primary objects of the sim. This includes, the pool,
+ * masses (blocks/scales/etc), and the ground. It also adds the scenery input listener that wires into the THREE stage.
+ *
+ * Subtypes are responsible for adding the necessary masses, and creating scenery controls to adjust these.
  *
  * @author Jonathan Olson (PhET Interactive Simulations)
+ * @author Sam Reid (PhET Interactive Simulations)
+ * @author Agustín Vallejo (PhET Interactive Simulations)
+ * @author Michael Kauzmann (PhET Interactive Simulations)
  */
 
 import BooleanProperty from '../../../../axon/js/BooleanProperty.js';

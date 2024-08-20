@@ -85,7 +85,6 @@ export default class ShapeSizeControlNode extends VBox {
       }
     };
 
-    // TODO: Would this be clearer or better using DynamicProperty? See https://github.com/phetsims/density-buoyancy-common/issues/348
     const verticalStringProperty = new DerivedStringProperty( [
       shapeModel.shapeNameProperty,
       DensityBuoyancyCommonStrings.heightStringProperty,

@@ -20,12 +20,19 @@ import IOType from '../../../../tandem/js/types/IOType.js';
 import NumberIO from '../../../../tandem/js/types/NumberIO.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import IOTypeCache from '../../../../tandem/js/IOTypeCache.js';
+import DensityBuoyancyCommonQueryParameters from '../DensityBuoyancyCommonQueryParameters.js';
 
 type Interpolate<T extends Vector2 | number> = ( a: T, b: T, ratio: number ) => T;
 type SelfOptions<T extends Vector2 | number> = {
   interpolate: Interpolate<T>;
 };
 export type InterpolatedPropertyOptions<T extends Vector2 | number> = SelfOptions<T> & PropertyOptions<T>;
+
+const failStacks: string[] = [];
+
+// Lock the ability to read the value of InterpolatedProperties. This is because the interpolated value can be buggy
+// if read by certain functionality. Instead, the interpolated value is just for the rendering portion, not the model
+let readLockCount = 0;
 
 export default class InterpolatedProperty<T extends Vector2 | number> extends Property<T> {
 
@@ -68,10 +75,30 @@ export default class InterpolatedProperty<T extends Vector2 | number> extends Pr
   public setRatio( ratio: number ): void {
     this.ratio = ratio;
 
+    const lockCount = readLockCount;
+    DensityBuoyancyCommonQueryParameters.debugInterpolatedProperty && InterpolatedProperty.unlock();
+
     // Interpolating between two values ago and the most recent value is a common heuristic to do, but it is important
     // that no model code relies on this, and instead would just use currentValue directly. This is also duplicated from
     // what p2 World does after step.
     this.value = this.interpolate( this.previousValue, this.currentValue, this.ratio );
+
+    DensityBuoyancyCommonQueryParameters.debugInterpolatedProperty && InterpolatedProperty.lock();
+    DensityBuoyancyCommonQueryParameters.debugInterpolatedProperty && assert && assert( lockCount === readLockCount, 'InterpolatedProperty does not support reading other InterpolatedProperties from value set' );
+  }
+
+  public override get(): T {
+
+    // When the query parameter is set, output independent stack traces so we can see if they are safe
+    if ( DensityBuoyancyCommonQueryParameters.debugInterpolatedProperty && readLockCount !== 0 ) {
+      const err = new Error();
+      if ( err.stack && !failStacks.includes( err.stack ) ) {
+        failStacks.push( err.stack );
+        console.log( err.stack );
+      }
+    }
+
+    return super.get();
   }
 
   /**
@@ -97,6 +124,14 @@ export default class InterpolatedProperty<T extends Vector2 | number> extends Pr
    */
   public static interpolateVector2( a: Vector2, b: Vector2, ratio: number ): Vector2 {
     return a.blend( b, ratio );
+  }
+
+  public static lock(): void {
+    readLockCount++;
+  }
+
+  public static unlock(): void {
+    readLockCount--;
   }
 
   public static readonly InterpolatedPropertyIO = ( parameterType: IOType ): IOType => {

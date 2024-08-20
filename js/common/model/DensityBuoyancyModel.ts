@@ -30,6 +30,7 @@ import ReferenceIO from '../../../../tandem/js/types/ReferenceIO.js';
 import IOType from '../../../../tandem/js/types/IOType.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
+import InterpolatedProperty from './InterpolatedProperty.js';
 
 // constants
 const BLOCK_SPACING = 0.01;
@@ -386,6 +387,7 @@ export default class DensityBuoyancyModel implements TModel {
    * Steps forward in time. This is a "simulation step", not a "physics engine step"
    */
   public step( dt: number ): void {
+    DensityBuoyancyCommonQueryParameters.debugInterpolatedProperty && InterpolatedProperty.lock();
     this.engine.step( dt );
 
     this.visibleMasses.forEach( mass => {
@@ -393,6 +395,7 @@ export default class DensityBuoyancyModel implements TModel {
     } );
 
     this.pool.fluidYInterpolatedProperty.setRatio( this.engine.interpolationRatio );
+    DensityBuoyancyCommonQueryParameters.debugInterpolatedProperty && InterpolatedProperty.unlock();
   }
 
   /**

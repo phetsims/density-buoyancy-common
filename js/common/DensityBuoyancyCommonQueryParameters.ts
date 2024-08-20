@@ -188,6 +188,13 @@ const DensityBuoyancyCommonQueryParameters = QueryStringMachine.getAll( {
   // For Density only, enable the prototype description support, see https://github.com/phetsims/joist/issues/941
   descriptionPrototype: {
     type: 'flag'
+  },
+
+  // Ideally, InterpolatedProperty would only be read in the view. This flag will output stack traces for all the times
+  // it is read by the model. They can be inspected manually because there are some safe occurrences to read during the
+  // model step
+  debugInterpolatedProperty: {
+    type: 'flag'
   }
 } );
 

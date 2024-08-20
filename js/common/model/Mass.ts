@@ -174,6 +174,8 @@ export default abstract class Mass extends PhetioObject {
   public stepBottom: number; // minimum y value of the mass
   public stepTop: number; // maximum y value of the mass
 
+  public readonly resetEmitter = new Emitter();
+
   protected constructor( engine: PhysicsEngine, providedOptions: MassOptions ) {
 
     const options = optionize<MassOptions, SelfOptions, PhetioObjectOptions>()( {
@@ -580,6 +582,8 @@ export default abstract class Mass extends PhetioObject {
     // purpose, it will be adjusted by subtypes whenever necessary, and a reset may break things here.
 
     this.resetPosition();
+
+    this.resetEmitter.emit();
   }
 
   public override dispose(): void {

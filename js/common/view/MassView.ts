@@ -24,8 +24,12 @@ import MassThreeMesh from './MassThreeMesh.js';
 import { THREEModelViewTransform } from '../../../../mobius/js/MobiusScreenView.js';
 import sharedSoundPlayers from '../../../../tambo/js/sharedSoundPlayers.js';
 import GrabDragInteraction from '../../../../scenery-phet/js/accessibility/GrabDragInteraction.js';
+import Multilink from '../../../../axon/js/Multilink.js';
 
 const INVERT_Y_TRANSFORM = ModelViewTransform2.createSinglePointScaleInvertedYMapping( Vector2.ZERO, Vector2.ZERO, 1 );
+
+// Empty shape to use when 3d objects are not focused
+const emptyShapeProperty = new Property( Shape.rectangle( 0, 0, 0, 0 ) );
 
 export default abstract class MassView extends Disposable {
 
@@ -34,7 +38,14 @@ export default abstract class MassView extends Disposable {
   private readonly massTagNode: Node | null = null;
   protected readonly tagOffsetProperty: Property<Vector3> = new Property<Vector3>( Vector3.ZERO );
 
+  // The focusablePath.shapeProperty is controlled by the following two Property instances. If either is true, the
+  // focusablePath will be highlighted.
+  public readonly isCursorOverProperty = new Property( false );
+  public readonly isKeyboardFocusedProperty = new Property( false );
+
+  // The focusableShape for when the mouse or keyboard has focused the shape. It's an alternative to the emptyShapeProperty above
   public readonly focusableShapeProperty = new Property( new Shape() );
+
   public readonly focusablePath: InteractiveHighlightingPath | null = null;
   private readonly grabDragInteraction: GrabDragInteraction | null = null;
 
@@ -109,6 +120,24 @@ export default abstract class MassView extends Disposable {
         tagName: 'div',
         focusable: true
       } );
+
+      // Scenery provides isFocused() as a method, but we must convert it to a Property so we can observe changes.
+      this.focusablePath.addInputListener( {
+        focus: () => {
+          this.isKeyboardFocusedProperty.value = true;
+        },
+        blur: () => {
+          this.isKeyboardFocusedProperty.value = false;
+        }
+      } );
+
+      // If the cursor is over the mass, or if the mass has keyboard focus, show the interactive highlight.
+      Multilink.multilink( [ this.isCursorOverProperty, this.isKeyboardFocusedProperty ], ( isCursorOver, isKeyboardFocused ) => {
+
+        this.focusablePath!.shapeProperty = isCursorOver || isKeyboardFocused ?
+                                            this.focusableShapeProperty : emptyShapeProperty;
+      } );
+
       const endKeyboardInteraction = () => {
         this.grabDragInteraction!.interrupt();
 
@@ -169,10 +198,18 @@ export default abstract class MassView extends Disposable {
         this.focusablePath!.dispose();
       } );
     }
+    const resetCursorAndKeyboardProperties = () => {
+      this.isCursorOverProperty.reset();
+      this.isKeyboardFocusedProperty.reset();
+    };
 
     this.mass.transformedEmitter.addListener( positionListener );
+    this.mass.resetEmitter.addListener( resetCursorAndKeyboardProperties );
 
-    this.disposeEmitter.addListener( () => this.mass.transformedEmitter.removeListener( positionListener ) );
+    this.disposeEmitter.addListener( () => {
+      this.mass.transformedEmitter.removeListener( positionListener );
+      this.mass.resetEmitter.removeListener( resetCursorAndKeyboardProperties );
+    } );
 
     positionListener();
   }

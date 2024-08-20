@@ -50,7 +50,6 @@ import BackgroundEventTargetListener from './BackgroundEventTargetListener.js';
 import MassDecorationLayer from './MassDecorationLayer.js';
 import createObservableArray, { ObservableArray } from '../../../../axon/js/createObservableArray.js';
 import Emitter from '../../../../axon/js/Emitter.js';
-import { Shape } from '../../../../kite/js/imports.js';
 import DisplayProperties from '../../buoyancy/view/DisplayProperties.js';
 import { BufferGeometry } from '../../../../chipper/node_modules/@types/three/index.js';
 import MobiusScreenView, { MobiusScreenViewOptions } from '../../../../mobius/js/MobiusScreenView.js';
@@ -177,21 +176,16 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
 
     let mouse: Mouse | null = null;
 
-    // Empty shape to use when 3d objects are not focused
-    const emptyShapeProperty = new Property( Shape.rectangle( 0, 0, 0, 0 ) );
-
     const updateCursor = ( newMouse?: Mouse ) => {
       mouse = newMouse || mouse;
       if ( mouse ) {
-        const massUnderPointer = this.getMassViewUnderPointer( mouse );
-        this.sceneNode.backgroundEventTarget.cursor = massUnderPointer ? 'pointer' : null;
+
+        // When the mouse hovers over a mass, show the cursor hand
+        const massUnderPointerEntry = this.getMassViewUnderPointer( mouse );
+        this.sceneNode.backgroundEventTarget.cursor = massUnderPointerEntry ? 'pointer' : null;
 
         this.massViews.forEach( massView => {
-          if ( massView.focusablePath ) {
-            // TODO: Doc please https://github.com/phetsims/density-buoyancy-common/issues/210
-            massView.focusablePath.shapeProperty = massView === massUnderPointer?.massView ?
-                                                   massView.focusableShapeProperty : emptyShapeProperty;
-          }
+          massView.isCursorOverProperty.value = massView === massUnderPointerEntry?.massView;
         } );
       }
     };

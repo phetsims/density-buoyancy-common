@@ -34,7 +34,7 @@ export default class BottlePanel extends Panel {
       bottle.materialInsideProperty.availableValues, volume => bottle.materialInsideVolumeProperty.set( volume ), popupLayer, {
         minMass: 0,
         minCustomMass: 0,
-        maxCustomMass: 100,
+        maxCustomMass: 200,
         maxMass: 100,
         minVolumeLiters: bottle.materialInsideVolumeRange.min,
         maxVolumeLiters: bottle.materialInsideVolumeRange.max,

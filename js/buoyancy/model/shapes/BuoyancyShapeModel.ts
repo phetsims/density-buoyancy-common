@@ -33,8 +33,8 @@ export default class BuoyancyShapeModel {
 
   // The currently selected shape, from which the mass changes to this type.
   public readonly shapeNameProperty: Property<MassShape>;
-  public readonly widthRatioProperty: Property<number>;
-  public readonly heightRatioProperty: Property<number>;
+  public readonly horizontalRatioProperty: Property<number>;
+  public readonly verticalRatioProperty: Property<number>;
 
   // A reference to the currently selected Mass based on the shapeName (MassShape).
   public readonly shapeProperty: TReadOnlyProperty<Mass>;
@@ -50,14 +50,14 @@ export default class BuoyancyShapeModel {
       phetioFeatured: true
     } );
 
-    this.widthRatioProperty = new NumberProperty( width, {
-      tandem: options.tandem.createTandem( 'widthRatioProperty' ),
+    this.horizontalRatioProperty = new NumberProperty( width, {
+      tandem: options.tandem.createTandem( 'horizontalRatioProperty' ),
       phetioFeatured: true,
       range: new Range( 0, 1 )
     } );
 
-    this.heightRatioProperty = new NumberProperty( height, {
-      tandem: options.tandem.createTandem( 'heightRatioProperty' ),
+    this.verticalRatioProperty = new NumberProperty( height, {
+      tandem: options.tandem.createTandem( 'verticalRatioProperty' ),
       phetioFeatured: true,
       range: new Range( 0, 1 )
     } );
@@ -65,7 +65,7 @@ export default class BuoyancyShapeModel {
     MassShape.enumeration.values.forEach( shape => {
       const mass = createMass(
         options.tandem.createTandem( 'shapes' ).createTandem( shape.tandemName ), shape,
-        this.widthRatioProperty.value, this.heightRatioProperty.value, massTag
+        this.horizontalRatioProperty.value, this.verticalRatioProperty.value, massTag
       );
       this.shapeCacheMap.set( shape, mass );
 
@@ -85,7 +85,7 @@ export default class BuoyancyShapeModel {
       phetioFeatured: true
     } );
 
-    Multilink.lazyMultilink( [ this.shapeProperty, this.widthRatioProperty, this.heightRatioProperty ], ( mass, widthRatio, heightRatio ) => {
+    Multilink.lazyMultilink( [ this.shapeProperty, this.horizontalRatioProperty, this.verticalRatioProperty ], ( mass, widthRatio, heightRatio ) => {
       mass.setRatios( widthRatio, heightRatio );
     } );
 
@@ -99,7 +99,7 @@ export default class BuoyancyShapeModel {
           // Change the shape, keeping the bottom at the same y value
           // Triggering dimension change first
           const minYBefore = oldMass.getBounds().minY;
-          this.widthRatioProperty.notifyListenersStatic(); // Triggering dimension change first
+          this.horizontalRatioProperty.notifyListenersStatic(); // Triggering dimension change first
           newMass.matrix.multiplyMatrix( Matrix3.translation( 0, minYBefore - newMass.getBounds().minY ) );
           newMass.writeData();
         }
@@ -111,8 +111,8 @@ export default class BuoyancyShapeModel {
 
   public reset(): void {
     this.shapeNameProperty.reset();
-    this.heightRatioProperty.reset();
-    this.widthRatioProperty.reset();
+    this.verticalRatioProperty.reset();
+    this.horizontalRatioProperty.reset();
   }
 }
 

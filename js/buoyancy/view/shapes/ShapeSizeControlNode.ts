@@ -110,14 +110,14 @@ export default class ShapeSizeControlNode extends VBox {
       tandem: options.tandem.createTandem( 'horizontalStringProperty' ) // To help with studio autoselect
     } );
 
-    const verticalNumberControl = new NumberControl( verticalStringProperty, shapeModel.heightRatioProperty, new Range( 0, 1 ), combineOptions<NumberControlOptions>( {
+    const verticalNumberControl = new NumberControl( verticalStringProperty, shapeModel.verticalRatioProperty, new Range( 0, 1 ), combineOptions<NumberControlOptions>( {
       tandem: options.tandem.createTandem( 'verticalNumberControl' ),
       sliderOptions: {
         accessibleName: DensityBuoyancyCommonStrings.heightStringProperty
       }
     }, numberControlOptions ) );
 
-    const horizontalNumberControl = new NumberControl( horizontalStringProperty, shapeModel.widthRatioProperty, new Range( 0, 1 ), combineOptions<NumberControlOptions>( {
+    const horizontalNumberControl = new NumberControl( horizontalStringProperty, shapeModel.horizontalRatioProperty, new Range( 0, 1 ), combineOptions<NumberControlOptions>( {
       tandem: options.tandem.createTandem( 'horizontalNumberControl' ),
       sliderOptions: {
         accessibleName: horizontalStringProperty

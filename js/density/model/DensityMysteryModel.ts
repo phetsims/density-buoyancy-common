@@ -296,7 +296,7 @@ export default class DensityMysteryModel extends BlockSetModel<MysteryBlockSet> 
     // Move the scale with the barrier, see https://github.com/phetsims/density/issues/73
     // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
     scalePositionProperty.lazyLink( position => {
-      this.scale.matrix.setToTranslation( position.x,position.y );
+      this.scale.matrix.setToTranslation( position.x, position.y );
 
       // When we reset-all, we'll want it to move back to here
       this.scale.setResetLocation();

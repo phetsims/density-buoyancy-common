@@ -17,6 +17,7 @@ import Matrix3 from '../../../../../dot/js/Matrix3.js';
 import { Shape } from '../../../../../kite/js/imports.js';
 import Bounds2 from '../../../../../dot/js/Bounds2.js';
 import densityBuoyancyCommon from '../../../densityBuoyancyCommon.js';
+import Cube from '../../../common/model/Cube.js';
 
 // Constants
 const scratchMatrix = new Matrix3();
@@ -88,7 +89,7 @@ export default class ApplicationsDebugMassNode extends DebugMassNode {
       } );
 
       // @ts-expect-error - The block is assumed to be present in the model.
-      const block = this.model.block;
+      const block: Cube = this.model.block;
       const fluidListener = () => {
         const y = mass.basin.fluidYInterpolatedProperty.value;
 

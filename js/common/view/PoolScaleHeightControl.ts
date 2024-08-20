@@ -99,9 +99,7 @@ export default class PoolScaleHeightControl extends NumberControl {
     poolScale.heightProperty.link( height => {
       const currentHeight = Utils.linear( 0, 1, minY, maxY, height );
 
-      poolScale.matrix.set02( SCALE_X_POSITION );
-      poolScale.matrix.set12( currentHeight + Scale.SCALE_HEIGHT / 2 );
-      poolScale.writeData();
+      poolScale.setPosition( SCALE_X_POSITION, currentHeight + Scale.SCALE_HEIGHT / 2 );
     } );
 
     thumbNode.touchArea = thumbInteractionArea.copy().rect( -10, -10, 20, 50 );

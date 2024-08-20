@@ -108,6 +108,10 @@ export default abstract class MassView extends Disposable {
 
         if ( this.focusablePath.focusHighlight && this.focusablePath.focusHighlight instanceof Path ) {
           this.focusablePath.focusHighlight.setShape( shape );
+
+          // TODO: https://github.com/phetsims/density-buoyancy-common/issues/209
+          // Put the cue under the block probably (currently centered on its starting point)
+          this.grabDragInteraction!.grabCueNode.center = modelViewTransform.modelToViewPoint( mass.matrix.translation.toVector3().plus( this.tagOffsetProperty.value ).plusXYZ( 0, 0, 0.0001 ) );
         }
       }
 
@@ -164,19 +168,8 @@ export default abstract class MassView extends Disposable {
         tandem: Tandem.OPT_OUT
       } );
 
-      const blockCenter = modelViewTransform.modelToViewPoint( mass.matrix.translation.toVector3().plus( this.tagOffsetProperty.value ).plusXYZ( 0, 0, 0.0001 ) );
-
       positionListener();
       this.grabDragInteraction = new GrabDragInteraction( this.focusablePath, keyboardDragListener, {
-
-        // TODO: https://github.com/phetsims/density-buoyancy-common/issues/209
-        // This cue position is only good at startup. If the user moves the block with the mouse before tabbing to it,
-        // the cue will not be correctly positioned.
-        // TODO: https://github.com/phetsims/density-buoyancy-common/issues/209
-        // Put the cue under the block probably (currently centered on its starting point)
-        grabCueOptions: {
-          center: blockCenter
-        },
         onGrab() {
 
           // We want the newer interaction to take precedent, so tabbing to the item should interrupt the previous mouse drag (if applicable).

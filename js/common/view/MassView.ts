@@ -226,12 +226,10 @@ export default abstract class MassView extends Disposable {
    * as opposed to the software engineering term "decorator pattern".
    */
   public decorate( decorationLayer: MassDecorationLayer ): void {
-
     this.massTagNode && decorationLayer.massTagsLayer.addChild( this.massTagNode );
   }
 
   public undecorate( decorationLayer: MassDecorationLayer ): void {
-
     this.massTagNode && decorationLayer.massTagsLayer.removeChild( this.massTagNode );
   }
 

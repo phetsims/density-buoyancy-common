@@ -28,6 +28,7 @@ import MaterialProperty from '../../../common/model/MaterialProperty.js';
 import optionize, { EmptySelfOptions } from '../../../../../phet-core/js/optionize.js';
 import Ellipsoid from './Ellipsoid.js';
 import Cone from './Cone.js';
+import DerivedProperty from '../../../../../axon/js/DerivedProperty.js';
 
 export type BuoyancyShapesModelOptions = DensityBuoyancyModelOptions;
 
@@ -85,12 +86,8 @@ export default class BuoyancyShapesModel extends DensityBuoyancyModel {
     } );
 
     this.objectB = new BuoyancyShapeModel( MassShape.BLOCK, 0.25, 0.75, MassTag.OBJECT_B, this.availableMasses, boundCreateMass, {
-      tandem: objectsTandem.createTandem( 'objectB' )
-    } );
-
-    // TODO: PhET-iO State order dependency between modeProeprty and the shapeNameProperty's listeners (that update the derivedProperty below)? https://github.com/phetsims/density-buoyancy-common/issues/288
-    this.modeProperty.link( mode => {
-      this.objectB.shapeProperty.value.internalVisibleProperty.value = mode === TwoBlockMode.TWO_BLOCKS;
+      tandem: objectsTandem.createTandem( 'objectB' ),
+      selectedShapeIsVisibleProperty: new DerivedProperty( [ this.modeProperty ], mode => mode === TwoBlockMode.TWO_BLOCKS )
     } );
 
     this.setInitialPositions();
@@ -178,16 +175,15 @@ export default class BuoyancyShapesModel extends DensityBuoyancyModel {
    */
   public override reset(): void {
 
+    // This must go before resetting the individual shape models to keep visibility correct.
+    super.reset();
+
     this.objectA.reset();
     this.objectB.reset();
 
-    // Reset the mode after resetting the shapeBProperty, otherwise the secondary mass will become visible
-    // if it changes, see https://github.com/phetsims/density-buoyancy-common/issues/221
     this.modeProperty.reset();
 
     this.materialProperty.reset();
-
-    super.reset();
 
     this.setInitialPositions();
   }

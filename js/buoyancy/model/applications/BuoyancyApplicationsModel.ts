@@ -69,7 +69,7 @@ export default class BuoyancyApplicationsModel extends DensityBuoyancyModel {
     this.bottle = new Bottle( this.engine, {
       matrix: Matrix3.translation( 0, 0 ),
       tandem: objectsTandem.createTandem( 'bottle' ),
-      visible: true,
+      visible: this.applicationModeProperty.value === 'bottle',
       tag: MassTag.OBJECT_A
     } );
     this.availableMasses.push( this.bottle );
@@ -92,7 +92,7 @@ export default class BuoyancyApplicationsModel extends DensityBuoyancyModel {
     ] );
 
     this.block = Cube.createWithVolume( this.engine, Material.BRICK, new Vector2( -0.5, 0.3 ), 0.001, {
-      visible: false,
+      visible: this.applicationModeProperty.value === 'boat',
       tandem: objectsTandem.createTandem( 'block' ),
       availableMassMaterials: availableMassMaterials
     } );
@@ -102,7 +102,7 @@ export default class BuoyancyApplicationsModel extends DensityBuoyancyModel {
     this.boat = new Boat( this.engine, new DerivedProperty( [ this.block.sizeProperty ], size => size.depth ), this.pool.fluidMaterialProperty, {
       matrix: Matrix3.translation( 0, -0.1 ),
       tandem: objectsTandem.createTandem( 'boat' ),
-      visible: false
+      visible: this.applicationModeProperty.value === 'boat'
     } );
     this.availableMasses.push( this.boat );
 
@@ -115,17 +115,12 @@ export default class BuoyancyApplicationsModel extends DensityBuoyancyModel {
     this.availableMasses.push( this.scale );
 
     // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
-    this.applicationModeProperty.link( ( scene, previousScene ) => {
-      this.bottle.internalVisibleProperty.value = scene === 'bottle';
-      this.boat.internalVisibleProperty.value = scene === 'boat';
-      this.block.internalVisibleProperty.value = scene === 'boat';
-
-      // As described in https://github.com/phetsims/buoyancy/issues/118#issue-2192969056, the submerged scale only shows for the bottle scene, not for the boat
-      this.pool.scale!.internalVisibleProperty.value = scene === 'bottle';
+    this.applicationModeProperty.link( ( mode, previousScene ) => {
+      this.updateMassVisibilities();
 
       // When switching from boat to bottle scene, subtract the scale volume from the pool and vice versa (-1 and 1)
       // But don't do it when the bottle scene is first loaded (0)
-      const plusMinusScaleVolume = scene === 'bottle' ?
+      const plusMinusScaleVolume = mode === 'bottle' ?
                                    previousScene === 'boat' ? -1 : 0 : 1;
       this.pool.fluidVolumeProperty.value += plusMinusScaleVolume * this.pool.scale!.volumeProperty.value;
       this.pool.fluidVolumeProperty.setInitialValue( this.pool.fluidVolumeProperty.value );
@@ -168,6 +163,7 @@ export default class BuoyancyApplicationsModel extends DensityBuoyancyModel {
 
     this.applicationModeProperty.reset();
 
+    this.updateMassVisibilities();
     assert && assert( !this.boat.visibleProperty.value || !this.bottle.visibleProperty.value,
       'Boat and bottle should not be visible at the same time' );
   }
@@ -315,6 +311,19 @@ export default class BuoyancyApplicationsModel extends DensityBuoyancyModel {
     if ( dt !== 0 && this.boat.visibleProperty.value ) {
       this.boat.updateVerticalMotion( this.pool, dt );
     }
+  }
+
+  private updateMassVisibilities(): void {
+    const mode = this.applicationModeProperty.value;
+    this.scale.internalVisibleProperty.value = true; // Unnecessary, but for completeness.
+
+    this.boat.internalVisibleProperty.value = mode === 'boat';
+    this.block.internalVisibleProperty.value = mode === 'boat';
+
+    // As described in https://github.com/phetsims/buoyancy/issues/118#issue-2192969056, the submerged scale only shows
+    // for the bottle scene, not for the boat
+    this.pool.scale!.internalVisibleProperty.value = mode === 'bottle';
+    this.bottle.internalVisibleProperty.value = mode === 'bottle';
   }
 }
 

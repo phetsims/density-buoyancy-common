@@ -59,7 +59,7 @@ export default class DensityIntroModel extends DensityBuoyancyModel {
       tag: MassTag.OBJECT_B,
       tandem: blocksTandem.createTandem( 'blockB' ),
       availableMassMaterials: availableMassMaterials,
-      visible: false
+      visible: this.modeProperty.value === TwoBlockMode.TWO_BLOCKS
     } );
     this.availableMasses.push( this.blockB );
 
@@ -74,9 +74,7 @@ export default class DensityIntroModel extends DensityBuoyancyModel {
   public override reset(): void {
     this.modeProperty.reset();
 
-    this.blockA.reset();
-    this.blockB.reset();
-
+    // Blocks are reset in the super
     super.reset();
   }
 }

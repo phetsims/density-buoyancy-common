@@ -69,7 +69,7 @@ export default class BuoyancyBasicsExploreModel extends DensityBuoyancyModel {
     this.blockB = Cube.createWithMass( this.engine, Material.ALUMINUM, new Vector2( 0.05, 0.35 ), 13.5, combineOptions<StrictCubeOptions>( {}, sharedBlockOptions, {
       tag: MassTag.OBJECT_B,
       tandem: blockBTandem,
-      visible: false
+      visible: this.modeProperty.value === TwoBlockMode.TWO_BLOCKS
     } ) );
     this.availableMasses.push( this.blockB );
 
@@ -101,9 +101,7 @@ export default class BuoyancyBasicsExploreModel extends DensityBuoyancyModel {
   public override reset(): void {
     this.modeProperty.reset();
 
-    this.blockA.reset();
-    this.blockB.reset();
-
+    // Blocks are reset in the super
     super.reset();
   }
 }

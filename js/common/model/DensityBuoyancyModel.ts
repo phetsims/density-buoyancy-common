@@ -379,9 +379,7 @@ export default class DensityBuoyancyModel implements TModel {
 
     this.pool.reset();
 
-    // NOTE: Resetting all availableMasses here is buggy, for instance on the Shapes screen, resetting shows the 2nd shape
-    // if it was hidden.
-    this.visibleMasses.forEach( mass => mass.reset() );
+    this.availableMasses.forEach( mass => mass.reset() );
   }
 
   /**

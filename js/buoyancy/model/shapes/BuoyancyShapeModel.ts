@@ -2,7 +2,8 @@
 
 /**
  * The main model for a single shape model object in the sim. This manages changing the shape, phet-io, and updating
- * the size of the shape
+ * the size of the shape. In this file, we use "shape" to describe the "Mass" subtypes. This is different from KITE/Shape.
+ * Please forgive us.
  *
  * @author Jonathan Olson (PhET Interactive Simulations)
  * @author Michael Kauzmann (PhET Interactive Simulations)
@@ -26,8 +27,16 @@ import Range from '../../../../../dot/js/Range.js';
 import DerivedProperty from '../../../../../axon/js/DerivedProperty.js';
 import { ObservableArray } from '../../../../../axon/js/createObservableArray.js';
 import isSettingPhetioStateProperty from '../../../../../tandem/js/isSettingPhetioStateProperty.js';
+import optionize from '../../../../../phet-core/js/optionize.js';
+import TinyProperty from '../../../../../axon/js/TinyProperty.js';
 
-export type BuoyancyShapeModelOptions = PickRequired<PhetioObjectOptions, 'tandem'>;
+type SelfOptions = {
+
+  // The "selected Mass shape" (current value of shapeProperty) determines its visibility based on this Property.
+  // Defaults to "always visible".
+  selectedShapeIsVisibleProperty?: TReadOnlyProperty<boolean>;
+};
+export type BuoyancyShapeModelOptions = SelfOptions & PickRequired<PhetioObjectOptions, 'tandem'>;
 
 export default class BuoyancyShapeModel {
 
@@ -42,8 +51,14 @@ export default class BuoyancyShapeModel {
   // Statically initialize all possible Mass instances to simplify phet-io. This is well within a good memory limit, see https://github.com/phetsims/buoyancy/issues/160
   private readonly shapeCacheMap = new Map<MassShape, Mass>();
 
+  private readonly selectedShapeIsVisibleProperty: TReadOnlyProperty<boolean>;
+
   public constructor( massShape: MassShape, width: number, height: number, massTag: MassTag, availableMasses: ObservableArray<Mass>,
-                      createMass: BuoyancyShapesModel['createMass'], options: BuoyancyShapeModelOptions ) {
+                      createMass: BuoyancyShapesModel['createMass'], providedOptions: BuoyancyShapeModelOptions ) {
+
+    const options = optionize<BuoyancyShapeModelOptions, SelfOptions>()( {
+      selectedShapeIsVisibleProperty: new TinyProperty( true )
+    }, providedOptions );
 
     this.shapeNameProperty = new EnumerationProperty( massShape, {
       tandem: options.tandem.createTandem( 'shapeNameProperty' ),
@@ -61,6 +76,8 @@ export default class BuoyancyShapeModel {
       phetioFeatured: true,
       range: new Range( 0, 1 )
     } );
+
+    this.selectedShapeIsVisibleProperty = options.selectedShapeIsVisibleProperty;
 
     MassShape.enumeration.values.forEach( shape => {
       const mass = createMass(
@@ -90,22 +107,20 @@ export default class BuoyancyShapeModel {
     } );
 
     this.shapeProperty.link( ( newMass, oldMass ) => {
-      if ( oldMass ) {
-        oldMass.internalVisibleProperty.value = false;
+      if ( oldMass && !isSettingPhetioStateProperty.value ) {
+        newMass.matrix.set( oldMass.matrix );
 
-        if ( !isSettingPhetioStateProperty.value ) {
-          newMass.matrix.set( oldMass.matrix );
-
-          // Change the shape, keeping the bottom at the same y value
-          // Triggering dimension change first
-          const minYBefore = oldMass.getBounds().minY;
-          this.horizontalRatioProperty.notifyListenersStatic(); // Triggering dimension change first
-          newMass.matrix.multiplyMatrix( Matrix3.translation( 0, minYBefore - newMass.getBounds().minY ) );
-          newMass.writeData();
-        }
+        // Change the shape, keeping the bottom at the same y value
+        // Triggering dimension change first
+        const minYBefore = oldMass.getBounds().minY;
+        this.horizontalRatioProperty.notifyListenersStatic(); // Triggering dimension change first
+        newMass.matrix.multiplyMatrix( Matrix3.translation( 0, minYBefore - newMass.getBounds().minY ) );
+        newMass.writeData();
       }
+    } );
 
-      newMass.internalVisibleProperty.value = true;
+    Multilink.multilink( [ this.shapeProperty, options.selectedShapeIsVisibleProperty ], () => {
+      this.updateShapeVisibilities();
     } );
   }
 
@@ -113,6 +128,15 @@ export default class BuoyancyShapeModel {
     this.shapeNameProperty.reset();
     this.verticalRatioProperty.reset();
     this.horizontalRatioProperty.reset();
+
+    // Last is best here to make sure visibility isn't mutated later
+    this.updateShapeVisibilities();
+  }
+
+  private updateShapeVisibilities(): void {
+    for ( const mass of this.shapeCacheMap.values() ) {
+      mass.internalVisibleProperty.value = mass === this.shapeProperty.value && this.selectedShapeIsVisibleProperty.value;
+    }
   }
 }
 

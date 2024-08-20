@@ -78,7 +78,10 @@ export default class BlockControlNode extends MaterialMassVolumeControlNode {
             phetioLinkedProperty: customDensityProperty
           },
           numberDisplayOptions: {
-            valuePattern: DensityBuoyancyCommonConstants.KILOGRAMS_PER_VOLUME_PATTERN_STRING_PROPERTY
+            valuePattern: DensityBuoyancyCommonConstants.KILOGRAMS_PER_VOLUME_PATTERN_STRING_PROPERTY,
+
+            // Use rich text so that kg/dm^3 is displayed correctly
+            useRichText: true
           },
           tandem: densityNumberControlTandem
         }, MaterialMassVolumeControlNode.getNumberControlOptions() ) );

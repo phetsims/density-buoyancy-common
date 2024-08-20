@@ -10,7 +10,7 @@ import Property from '../../../../axon/js/Property.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import Mass from '../model/Mass.js';
-import { InteractiveHighlighting, KeyboardDragListener, Node, Path } from '../../../../scenery/js/imports.js';
+import { HighlightPath, InputShape, InteractiveHighlighting, InteractiveHighlightingOptions, KeyboardDragListener, Node, Path, PathOptions } from '../../../../scenery/js/imports.js';
 import { Shape } from '../../../../kite/js/imports.js';
 import MassTagNode from './MassTagNode.js';
 import ConvexHull2 from '../../../../dot/js/ConvexHull2.js';
@@ -25,6 +25,7 @@ import { THREEModelViewTransform } from '../../../../mobius/js/MobiusScreenView.
 import sharedSoundPlayers from '../../../../tambo/js/sharedSoundPlayers.js';
 import GrabDragInteraction from '../../../../scenery-phet/js/accessibility/GrabDragInteraction.js';
 import Multilink from '../../../../axon/js/Multilink.js';
+import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 
 const INVERT_Y_TRANSFORM = ModelViewTransform2.createSinglePointScaleInvertedYMapping( Vector2.ZERO, Vector2.ZERO, 1 );
 
@@ -106,13 +107,15 @@ export default abstract class MassView extends Disposable {
 
         this.focusableShapeProperty.value = shape;
 
-        if ( this.focusablePath.focusHighlight && this.focusablePath.focusHighlight instanceof Path ) {
-          this.focusablePath.focusHighlight.setShape( shape );
+        assert && assert( this.focusablePath.focusHighlight instanceof Path );
+        assert && assert( this.focusablePath.interactiveHighlight instanceof Path );
+        ( this.focusablePath.focusHighlight as Path ).setShape( shape );
+        ( this.focusablePath.interactiveHighlight as Path ).setShape( shape );
+        ( this.focusablePath.focusHighlight as Path ).setShape( shape );
 
-          // TODO: https://github.com/phetsims/density-buoyancy-common/issues/209
-          // Put the cue under the block probably (currently centered on its starting point)
-          this.grabDragInteraction!.grabCueNode.center = modelViewTransform.modelToViewPoint( mass.matrix.translation.toVector3().plus( this.tagOffsetProperty.value ).plusXYZ( 0, 0, 0.0001 ) );
-        }
+        // TODO: https://github.com/phetsims/density-buoyancy-common/issues/209
+        // Put the cue under the block probably (currently centered on its starting point)
+        this.grabDragInteraction!.grabCueNode.center = modelViewTransform.modelToViewPoint( mass.matrix.translation.toVector3().plus( this.tagOffsetProperty.value ).plusXYZ( 0, 0, 0.0001 ) );
       }
 
       this.massTagNode && repositionMassTagNode();
@@ -121,6 +124,8 @@ export default abstract class MassView extends Disposable {
     if ( mass.canMove ) {
       this.focusablePath = new InteractiveHighlightingPath( this.focusableShapeProperty, {
         accessibleName: this.mass.accessibleName,
+        focusHighlight: new HighlightPath( null ),
+        interactiveHighlight: new HighlightPath( null ),
         tagName: 'div',
         focusable: true
       } );
@@ -168,7 +173,6 @@ export default abstract class MassView extends Disposable {
         tandem: Tandem.OPT_OUT
       } );
 
-      positionListener();
       this.grabDragInteraction = new GrabDragInteraction( this.focusablePath, keyboardDragListener, {
         onGrab() {
 
@@ -190,6 +194,9 @@ export default abstract class MassView extends Disposable {
         keyboardDragListener.dispose();
         this.focusablePath!.dispose();
       } );
+
+      // Last, after declaring everything.
+      positionListener();
     }
     const resetCursorAndKeyboardProperties = () => {
       this.isCursorOverProperty.reset();
@@ -239,6 +246,10 @@ export default abstract class MassView extends Disposable {
  * Intermediate class to create a Path with InteractiveHighlightingNode.
  * @mixes InteractiveHighlighting
  */
-class InteractiveHighlightingPath extends InteractiveHighlighting( Path ) {}
+class InteractiveHighlightingPath extends InteractiveHighlighting( Path ) {
+  public constructor( shape: InputShape | TReadOnlyProperty<InputShape>, options?: InteractiveHighlightingOptions & PathOptions ) {
+    super( shape, options );
+  }
+}
 
 densityBuoyancyCommon.register( 'MassView', MassView );

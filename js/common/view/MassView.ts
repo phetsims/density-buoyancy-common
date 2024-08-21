@@ -26,6 +26,7 @@ import sharedSoundPlayers from '../../../../tambo/js/sharedSoundPlayers.js';
 import GrabDragInteraction from '../../../../scenery-phet/js/accessibility/GrabDragInteraction.js';
 import Multilink from '../../../../axon/js/Multilink.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
+import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
 
 const INVERT_Y_TRANSFORM = ModelViewTransform2.createSinglePointScaleInvertedYMapping( Vector2.ZERO, Vector2.ZERO, 1 );
 
@@ -112,9 +113,9 @@ export default abstract class MassView extends Disposable {
         ( this.focusablePath.focusHighlight as Path ).setShape( shape );
         ( this.focusablePath.interactiveHighlight as Path ).setShape( shape );
 
-        // TODO: https://github.com/phetsims/density-buoyancy-common/issues/209
-        // Put the cue under the block probably (currently centered on its starting point)
-        this.grabDragInteraction!.grabCueNode.center = modelViewTransform.modelToViewPoint( mass.matrix.translation.toVector3().plus( this.tagOffsetProperty.value ).plusXYZ( 0, 0, 0.0001 ) );
+        // Put the cue under the block. Use the shape directly because it shares the same coordinate frame as the
+        // focusablePath it appears in.
+        this.grabDragInteraction!.grabCueNode.centerTop = shape.bounds.centerBottom.plusXY( 0, DensityBuoyancyCommonConstants.MARGIN_SMALL );
       }
 
       this.massTagNode && repositionMassTagNode();

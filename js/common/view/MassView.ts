@@ -90,14 +90,6 @@ export default abstract class MassView extends Disposable {
     const grabSoundPlayer = sharedSoundPlayers.get( 'grab' );
     const releaseSoundPlayer = sharedSoundPlayers.get( 'release' );
 
-    const positionListener = () => {
-      const position = mass.matrix.translation;
-
-      // LHS is NOT a Vector2, don't try to simplify this
-      this.massMesh.position.x = position.x;
-      this.massMesh.position.y = position.y;
-    };
-
     if ( mass.canMove ) {
       this.focusablePath = new InteractiveHighlightingPath( this.focusableShapeProperty, {
         accessibleName: this.mass.accessibleName,
@@ -205,6 +197,10 @@ export default abstract class MassView extends Disposable {
           this.grabDragInteraction.grabCueNode.centerTop = shape.bounds.centerBottom.plusXY( 0, DensityBuoyancyCommonConstants.MARGIN_SMALL );
         }
       };
+
+      // Update the focusablePath shape when the mass is transformed. We are uncertain why we need to update this after
+      // both the mass.transformedEmitter and the sceneNodeRenderedEmitter, but both are required or the shape will
+      // lag or advance by a frame, see https://github.com/phetsims/density-buoyancy-common/issues/209
       this.sceneNodeRenderedEmitter.addListener( myListener );
       mass.transformedEmitter.addListener( myListener );
 
@@ -221,6 +217,14 @@ export default abstract class MassView extends Disposable {
       this.isKeyboardFocusedProperty.reset();
 
       this.grabDragInteraction && this.grabDragInteraction.reset();
+    };
+
+    const positionListener = () => {
+      const position = mass.matrix.translation;
+
+      // LHS is NOT a Vector2, don't try to simplify this
+      this.massMesh.position.x = position.x;
+      this.massMesh.position.y = position.y;
     };
 
     this.mass.transformedEmitter.addListener( positionListener );

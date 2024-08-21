@@ -20,7 +20,6 @@ import IOType from '../../../../tandem/js/types/IOType.js';
 import NumberIO from '../../../../tandem/js/types/NumberIO.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import IOTypeCache from '../../../../tandem/js/IOTypeCache.js';
-import DensityBuoyancyCommonQueryParameters from '../DensityBuoyancyCommonQueryParameters.js';
 
 type Interpolate<T extends Vector2 | number> = ( a: T, b: T, ratio: number ) => T;
 type SelfOptions<T extends Vector2 | number> = {
@@ -29,7 +28,8 @@ type SelfOptions<T extends Vector2 | number> = {
 export type InterpolatedPropertyOptions<T extends Vector2 | number> = SelfOptions<T> & PropertyOptions<T>;
 
 // Lock the ability to read the value of InterpolatedProperties. This is because the interpolated value can be buggy
-// if read by certain functionality. Instead, the interpolated value is just for the rendering portion, not the model
+// if read by certain functionality. For example, the interpolated value is just for the rendering portion of the sim,
+// never the model.
 let readLockCount = 0;
 
 export default class InterpolatedProperty<T extends Vector2 | number> extends Property<T> {
@@ -43,7 +43,9 @@ export default class InterpolatedProperty<T extends Vector2 | number> extends Pr
 
   private readonly interpolate: Interpolate<T>;
 
-  private nextGetIsModelReadSafe = false; // See doc in DensityBuoyancyCommonQueryParameters.debugInterpolatedProperty
+  // When true, getting the value of this InterpolatedProperty will not trigger an assertion, even when the Property
+  // is locked.
+  private nextReadIsSafe = false;
 
   public constructor( initialValue: T, providedOptions: InterpolatedPropertyOptions<T> ) {
 
@@ -76,31 +78,27 @@ export default class InterpolatedProperty<T extends Vector2 | number> extends Pr
     this.ratio = ratio;
 
     const lockCount = readLockCount;
-    DensityBuoyancyCommonQueryParameters.debugInterpolatedProperty && InterpolatedProperty.unlock();
+    InterpolatedProperty.unlock();
 
     // Interpolating between two values ago and the most recent value is a common heuristic to do, but it is important
     // that no model code relies on this, and instead would just use currentValue directly. This is also duplicated from
     // what p2 World does after step.
     this.value = this.interpolate( this.previousValue, this.currentValue, this.ratio );
 
-    DensityBuoyancyCommonQueryParameters.debugInterpolatedProperty && InterpolatedProperty.lock();
-    DensityBuoyancyCommonQueryParameters.debugInterpolatedProperty && assert && assert( lockCount === readLockCount, 'InterpolatedProperty does not support reading other InterpolatedProperties from value set' );
+    InterpolatedProperty.lock();
+    assert && assert( lockCount === readLockCount, 'InterpolatedProperty does not support reading other InterpolatedProperties from value set' );
   }
 
   // Call right before getting the value when you know it is safe to do so in a model context
-  public markModelReadSafe(): void {
-    this.nextGetIsModelReadSafe = true;
+  public markNextLockedReadSafe(): void {
+    this.nextReadIsSafe = true;
   }
 
   public override get(): T {
 
-    // When the query parameter is set, output independent stack traces so we can see if value reads from the model are safe.
-    if ( DensityBuoyancyCommonQueryParameters.debugInterpolatedProperty && readLockCount !== 0 ) {
-
-      // Cannot read from an InterpolatedProperty during model step unless you mark the read as safe first.
-      assert && assert( this.nextGetIsModelReadSafe, 'cannot read InterpolatedProperty from the model' );
-    }
-    this.nextGetIsModelReadSafe = false;
+    // Cannot read from an InterpolatedProperty during model step unless you mark the read as safe first.
+    assert && readLockCount !== 0 && assert( this.nextReadIsSafe, 'cannot read InterpolatedProperty from the model' );
+    this.nextReadIsSafe = false; // This value is only for a single read, so always set back to unsafe.
 
     return super.get();
   }

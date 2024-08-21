@@ -387,7 +387,10 @@ export default class DensityBuoyancyModel implements TModel {
    * Steps forward in time. This is a "simulation step", not a "physics engine step"
    */
   public step( dt: number ): void {
-    DensityBuoyancyCommonQueryParameters.debugInterpolatedProperty && InterpolatedProperty.lock();
+
+    // Ideally, InterpolatedProperty would only be read in the view. Locking InterpolatedProperty while doing the model
+    // step provides the facility for asserting that this assumption is correct, see https://github.com/phetsims/density-buoyancy-common/issues/132
+    InterpolatedProperty.lock();
 
     this.engine.step( dt );
 
@@ -397,7 +400,7 @@ export default class DensityBuoyancyModel implements TModel {
 
     this.pool.fluidYInterpolatedProperty.setRatio( this.engine.interpolationRatio );
 
-    DensityBuoyancyCommonQueryParameters.debugInterpolatedProperty && InterpolatedProperty.unlock();
+    InterpolatedProperty.unlock();
   }
 
   /**

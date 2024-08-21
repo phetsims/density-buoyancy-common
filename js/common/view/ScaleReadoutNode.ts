@@ -104,7 +104,7 @@ export default class ScaleReadoutNode extends GeneralScaleReadoutNode {
 
     const blendedProperty = new BlendedNumberProperty( buoyancyScale.measuredWeightInterpolatedProperty.value );
     const update = () => {
-      buoyancyScale.measuredWeightInterpolatedProperty.markModelReadSafe();
+      buoyancyScale.measuredWeightInterpolatedProperty.markNextLockedReadSafe();
       blendedProperty.step( buoyancyScale.measuredWeightInterpolatedProperty.value );
     };
     buoyancyScale.stepEmitter.addListener( update );

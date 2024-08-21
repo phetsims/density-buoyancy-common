@@ -124,6 +124,8 @@ export default abstract class MassView extends Disposable {
     if ( mass.canMove ) {
       this.focusablePath = new InteractiveHighlightingPath( this.focusableShapeProperty, {
         accessibleName: this.mass.accessibleName,
+
+        // Prefer HighlightPath to HighlightFromNode here, since we must accommodate the empty shape when not highlighted
         focusHighlight: new HighlightPath( null ),
         interactiveHighlight: new HighlightPath( null ),
         tagName: 'div',

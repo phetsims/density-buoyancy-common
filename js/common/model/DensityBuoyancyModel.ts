@@ -388,6 +388,7 @@ export default class DensityBuoyancyModel implements TModel {
    */
   public step( dt: number ): void {
     DensityBuoyancyCommonQueryParameters.debugInterpolatedProperty && InterpolatedProperty.lock();
+
     this.engine.step( dt );
 
     this.visibleMasses.forEach( mass => {
@@ -395,6 +396,7 @@ export default class DensityBuoyancyModel implements TModel {
     } );
 
     this.pool.fluidYInterpolatedProperty.setRatio( this.engine.interpolationRatio );
+
     DensityBuoyancyCommonQueryParameters.debugInterpolatedProperty && InterpolatedProperty.unlock();
   }
 

@@ -6,8 +6,6 @@
  * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
-import TReadOnlyProperty from '../../../../../axon/js/TReadOnlyProperty.js';
-import Multilink from '../../../../../axon/js/Multilink.js';
 import densityBuoyancyCommon from '../../../densityBuoyancyCommon.js';
 import Boat from '../../model/applications/Boat.js';
 import BoatDesign from '../../model/applications/BoatDesign.js';
@@ -15,6 +13,7 @@ import DensityBuoyancyCommonConstants from '../../../common/DensityBuoyancyCommo
 import MeasurableMassView from '../../../common/view/MeasurableMassView.js';
 import { THREEModelViewTransform } from '../../../../../mobius/js/MobiusScreenView.js';
 import DisplayProperties from '../DisplayProperties.js';
+import InterpolatedProperty from '../../../common/model/InterpolatedProperty.js';
 
 type BoatDrawingData = {
   backMiddleMaterial: THREE.MeshBasicMaterial;
@@ -27,7 +26,7 @@ export default class BoatView extends MeasurableMassView {
 
   public constructor( boat: Boat,
                       modelViewTransform: THREEModelViewTransform,
-                      fluidYInterpolatedProperty: TReadOnlyProperty<number>,
+                      poolFluidYInterpolatedProperty: InterpolatedProperty<number>,
                       displayProperties: DisplayProperties ) {
 
     super( boat,
@@ -79,20 +78,25 @@ export default class BoatView extends MeasurableMassView {
     const topFluid = new THREE.Mesh( topFluidGeometry, topFluidMaterial );
     this.massMesh.add( topFluid );
 
-    const fluidMultilink = Multilink.multilink( [
-      boat.basin.fluidYInterpolatedProperty,
-      boat.maxVolumeDisplacedProperty,
-      boat.basin.fluidVolumeProperty
-    ], ( boatFluidY, boatDisplacement, boatFluidVolume ) => {
-      const poolFluidY = fluidYInterpolatedProperty.value;
+    const fluidListener = () => {
+      boat.basin.fluidYInterpolatedProperty.markModelReadSafe();
+      const boatFluidY = boat.basin.fluidYInterpolatedProperty.value;
+      const boatDisplacement = boat.maxVolumeDisplacedProperty.value;
+      const boatFluidVolume = boat.basin.fluidVolumeProperty.value;
+
+      poolFluidYInterpolatedProperty.markModelReadSafe();
+      const poolFluidY = poolFluidYInterpolatedProperty.value;
+
       const liters = boatDisplacement / 0.001;
 
       const relativeBoatFluidY = boatFluidY - boat.matrix.translation.y;
 
       const maximumVolume = boat.basin.getEmptyVolume( Number.POSITIVE_INFINITY );
+
+      // TODO: Can we use the local variable? https://github.com/phetsims/density-buoyancy-common/issues/132
       const volume = boat.basin.fluidVolumeProperty.value;
       const isFull = volume >= maximumVolume - VOLUME_TOLERANCE;
-      if ( boatFluidVolume > 0 && ( !isFull || BoatDesign.shouldBoatFluidDisplayIfFull( fluidYInterpolatedProperty.value - boat.matrix.translation.y, liters ) ) ) {
+      if ( boatFluidVolume > 0 && ( !isFull || BoatDesign.shouldBoatFluidDisplayIfFull( poolFluidY - boat.matrix.translation.y, liters ) ) ) {
         BoatDesign.fillCrossSectionVertexArray( relativeBoatFluidY, liters, topFluidPositionArray );
       }
       else {
@@ -111,7 +115,8 @@ export default class BoatView extends MeasurableMassView {
       }
       bottomPoolClipPlane.constant = poolFluidY;
       topPoolClipPlane.constant = -poolFluidY;
-    } );
+    };
+    boat.stepEmitter.addListener( fluidListener );
 
     boat.fluidMaterialProperty.linkColorProperty( topFluidMaterial );
     boat.fluidMaterialProperty.linkColorProperty( boatDrawingData.backMiddleMaterial );
@@ -120,7 +125,7 @@ export default class BoatView extends MeasurableMassView {
     topFluid.renderOrder = 3;
 
     this.disposeEmitter.addListener( () => {
-      fluidMultilink.dispose();
+      boat.stepEmitter.removeListener( fluidListener );
       boat.maxVolumeDisplacedProperty.unlink( updateBoatScale );
     } );
   }

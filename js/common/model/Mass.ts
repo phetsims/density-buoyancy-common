@@ -351,7 +351,10 @@ export default abstract class Mass extends PhetioObject {
     } );
 
     this.contactForceBlendedProperty = new BlendedVector2Property( this.contactForceInterpolatedProperty.value );
-    this.stepEmitter.addListener( () => this.contactForceBlendedProperty.step( this.contactForceInterpolatedProperty.value ) );
+    this.stepEmitter.addListener( () => {
+      this.contactForceInterpolatedProperty.markModelReadSafe();
+      this.contactForceBlendedProperty.step( this.contactForceInterpolatedProperty.value );
+    } );
 
     this.forceOffsetProperty = new Property( Vector3.ZERO, {
       valueType: Vector3,

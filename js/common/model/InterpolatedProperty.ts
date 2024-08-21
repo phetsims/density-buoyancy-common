@@ -28,8 +28,6 @@ type SelfOptions<T extends Vector2 | number> = {
 };
 export type InterpolatedPropertyOptions<T extends Vector2 | number> = SelfOptions<T> & PropertyOptions<T>;
 
-const failStacks: string[] = [];
-
 // Lock the ability to read the value of InterpolatedProperties. This is because the interpolated value can be buggy
 // if read by certain functionality. Instead, the interpolated value is just for the rendering portion, not the model
 let readLockCount = 0;
@@ -44,6 +42,8 @@ export default class InterpolatedProperty<T extends Vector2 | number> extends Pr
   private ratio: number;
 
   private readonly interpolate: Interpolate<T>;
+
+  private nextGetIsModelReadSafe = false; // See doc in DensityBuoyancyCommonQueryParameters.debugInterpolatedProperty
 
   public constructor( initialValue: T, providedOptions: InterpolatedPropertyOptions<T> ) {
 
@@ -87,16 +87,20 @@ export default class InterpolatedProperty<T extends Vector2 | number> extends Pr
     DensityBuoyancyCommonQueryParameters.debugInterpolatedProperty && assert && assert( lockCount === readLockCount, 'InterpolatedProperty does not support reading other InterpolatedProperties from value set' );
   }
 
+  // Call right before getting the value when you know it is safe to do so in a model context
+  public markModelReadSafe(): void {
+    this.nextGetIsModelReadSafe = true;
+  }
+
   public override get(): T {
 
-    // When the query parameter is set, output independent stack traces so we can see if they are safe
+    // When the query parameter is set, output independent stack traces so we can see if value reads from the model are safe.
     if ( DensityBuoyancyCommonQueryParameters.debugInterpolatedProperty && readLockCount !== 0 ) {
-      const err = new Error();
-      if ( err.stack && !failStacks.includes( err.stack ) ) {
-        failStacks.push( err.stack );
-        console.log( err.stack );
-      }
+
+      // Cannot read from an InterpolatedProperty during model step unless you mark the read as safe first.
+      assert && assert( this.nextGetIsModelReadSafe, 'cannot read InterpolatedProperty from the model' );
     }
+    this.nextGetIsModelReadSafe = false;
 
     return super.get();
   }

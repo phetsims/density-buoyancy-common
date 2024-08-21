@@ -194,7 +194,8 @@ const DensityBuoyancyCommonQueryParameters = QueryStringMachine.getAll( {
   // it is read by the model. They can be inspected manually because there are some safe occurrences to read during the
   // model step
   debugInterpolatedProperty: {
-    type: 'flag'
+    type: 'boolean',
+    defaultValue: true
   }
 } );
 

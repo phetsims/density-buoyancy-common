@@ -23,6 +23,7 @@ type BoatDrawingData = {
 const VOLUME_TOLERANCE = DensityBuoyancyCommonConstants.TOLERANCE;
 
 export default class BoatView extends MeasurableMassView {
+  private readonly fluidListener: VoidFunction;
 
   public constructor( boat: Boat,
                       modelViewTransform: THREEModelViewTransform,
@@ -52,13 +53,12 @@ export default class BoatView extends MeasurableMassView {
     const boatGroup = boatDrawingData.group;
     this.massMesh.add( boatGroup );
 
-    const updateBoatScale = ( volume: number ) => {
+    boat.maxVolumeDisplacedProperty.link( volume => {
       const scale = Math.pow( volume / 0.001, 1 / 3 );
       boatGroup.scale.x = scale;
       boatGroup.scale.y = scale;
       boatGroup.scale.z = scale;
-    };
-    boat.maxVolumeDisplacedProperty.link( updateBoatScale );
+    } );
 
     const topFluidPositionArray = BoatDesign.createCrossSectionVertexArray();
     const topFluidNormalArray = new Float32Array( topFluidPositionArray.length );
@@ -78,13 +78,11 @@ export default class BoatView extends MeasurableMassView {
     const topFluid = new THREE.Mesh( topFluidGeometry, topFluidMaterial );
     this.massMesh.add( topFluid );
 
-    const fluidListener = () => {
-      boat.basin.fluidYInterpolatedProperty.markModelReadSafe();
+    this.fluidListener = () => {
       const boatFluidY = boat.basin.fluidYInterpolatedProperty.value;
       const boatDisplacement = boat.maxVolumeDisplacedProperty.value;
       const boatFluidVolume = boat.basin.fluidVolumeProperty.value;
 
-      poolFluidYInterpolatedProperty.markModelReadSafe();
       const poolFluidY = poolFluidYInterpolatedProperty.value;
 
       const liters = boatDisplacement / 0.001;
@@ -93,9 +91,7 @@ export default class BoatView extends MeasurableMassView {
 
       const maximumVolume = boat.basin.getEmptyVolume( Number.POSITIVE_INFINITY );
 
-      // TODO: Can we use the local variable? https://github.com/phetsims/density-buoyancy-common/issues/132
-      const volume = boat.basin.fluidVolumeProperty.value;
-      const isFull = volume >= maximumVolume - VOLUME_TOLERANCE;
+      const isFull = boatFluidVolume >= maximumVolume - VOLUME_TOLERANCE;
       if ( boatFluidVolume > 0 && ( !isFull || BoatDesign.shouldBoatFluidDisplayIfFull( poolFluidY - boat.matrix.translation.y, liters ) ) ) {
         BoatDesign.fillCrossSectionVertexArray( relativeBoatFluidY, liters, topFluidPositionArray );
       }
@@ -105,7 +101,7 @@ export default class BoatView extends MeasurableMassView {
       topFluidGeometry.attributes.position.needsUpdate = true;
       topFluidGeometry.computeBoundingSphere();
 
-      if ( boat.basin.fluidVolumeProperty.value > VOLUME_TOLERANCE ) {
+      if ( boatFluidVolume > VOLUME_TOLERANCE ) {
         bottomBoatClipPlane.constant = boatFluidY;
         topBoatClipPlane.constant = -boatFluidY;
       }
@@ -116,18 +112,18 @@ export default class BoatView extends MeasurableMassView {
       bottomPoolClipPlane.constant = poolFluidY;
       topPoolClipPlane.constant = -poolFluidY;
     };
-    boat.stepEmitter.addListener( fluidListener );
 
     boat.fluidMaterialProperty.linkColorProperty( topFluidMaterial );
     boat.fluidMaterialProperty.linkColorProperty( boatDrawingData.backMiddleMaterial );
 
     // see the static function for the rest of render orders
     topFluid.renderOrder = 3;
+  }
 
-    this.disposeEmitter.addListener( () => {
-      boat.stepEmitter.removeListener( fluidListener );
-      boat.maxVolumeDisplacedProperty.unlink( updateBoatScale );
-    } );
+  public override step( dt: number ): void {
+    super.step( dt );
+
+    this.fluidListener();
   }
 
   /**

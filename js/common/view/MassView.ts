@@ -27,6 +27,7 @@ import GrabDragInteraction from '../../../../scenery-phet/js/accessibility/GrabD
 import Multilink from '../../../../axon/js/Multilink.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
+import Emitter from '../../../../axon/js/Emitter.js';
 
 const INVERT_Y_TRANSFORM = ModelViewTransform2.createSinglePointScaleInvertedYMapping( Vector2.ZERO, Vector2.ZERO, 1 );
 
@@ -51,6 +52,8 @@ export default abstract class MassView extends Disposable {
   public readonly focusablePath: InteractiveHighlightingPath | null = null;
   private readonly grabDragInteraction: GrabDragInteraction | null = null;
 
+  public readonly sceneNodeRenderedEmitter = new Emitter();
+
   protected constructor( public readonly mass: Mass,
                          initialGeometry: THREE.BufferGeometry,
                          protected readonly modelViewTransform: THREEModelViewTransform,
@@ -62,15 +65,25 @@ export default abstract class MassView extends Disposable {
 
     this.massMesh = new MassThreeMesh( mass, initialGeometry );
 
-    const repositionMassTagNode = () => {
-      assert && assert( this.massTagNode, 'do not reposition massTagNode if you do not have a massTag' );
-      this.massTagNode!.translation = modelViewTransform.modelToViewPoint( mass.matrix.translation.toVector3().plus( this.tagOffsetProperty.value ).plusXYZ( 0, 0, 0.0001 ) );
-    };
-
     if ( mass.tag !== MassTag.NONE ) {
+
       this.massTagNode = new MassTagNode( this.mass.tag );
+
+      const repositionMassTagNode = () => {
+        assert && assert( this.massTagNode, 'do not reposition massTagNode if you do not have a massTag' );
+        this.massTagNode!.translation = modelViewTransform.modelToViewPoint( mass.matrix.translation.toVector3().plus( this.tagOffsetProperty.value ).plusXYZ( 0, 0, 0.0001 ) );
+      };
+
       this.tagOffsetProperty.lazyLink( repositionMassTagNode );
-      this.disposeEmitter.addListener( () => this.tagOffsetProperty.unlink( repositionMassTagNode ) );
+
+      // This will call repositionMassTagNode during startup, when Sim.ts calls layout()
+      this.sceneNodeRenderedEmitter.addListener( repositionMassTagNode );
+      mass.transformedEmitter.addListener( repositionMassTagNode );
+
+      this.disposeEmitter.addListener( () => {
+        this.tagOffsetProperty.unlink( repositionMassTagNode );
+        mass.transformedEmitter.removeListener( repositionMassTagNode );
+      } );
     }
 
     // sound generation
@@ -83,42 +96,6 @@ export default abstract class MassView extends Disposable {
       // LHS is NOT a Vector2, don't try to simplify this
       this.massMesh.position.x = position.x;
       this.massMesh.position.y = position.y;
-
-      if ( this.focusablePath && !this.focusablePath.isDisposed ) {
-
-        const shiftedBbox = mass.getBounds();
-
-        // To support dragging while zoomed in, KeyboardDragListener will keep the position of the focusablePath in view.
-        this.focusablePath.center = modelViewTransform.modelToViewPoint( shiftedBbox.center );
-
-        // The points that make up the corners of the Bounds3 in THREE.js space, applied onto a 2d plane for scenery.
-        const massViewPoints = [
-          modelViewTransform.modelToViewPoint( new Vector3( shiftedBbox.minX, shiftedBbox.minY, shiftedBbox.minZ ) ),
-          modelViewTransform.modelToViewPoint( new Vector3( shiftedBbox.minX, shiftedBbox.minY, shiftedBbox.maxZ ) ),
-          modelViewTransform.modelToViewPoint( new Vector3( shiftedBbox.minX, shiftedBbox.maxY, shiftedBbox.minZ ) ),
-          modelViewTransform.modelToViewPoint( new Vector3( shiftedBbox.minX, shiftedBbox.maxY, shiftedBbox.maxZ ) ),
-          modelViewTransform.modelToViewPoint( new Vector3( shiftedBbox.maxX, shiftedBbox.minY, shiftedBbox.minZ ) ),
-          modelViewTransform.modelToViewPoint( new Vector3( shiftedBbox.maxX, shiftedBbox.minY, shiftedBbox.maxZ ) ),
-          modelViewTransform.modelToViewPoint( new Vector3( shiftedBbox.maxX, shiftedBbox.maxY, shiftedBbox.minZ ) ),
-          modelViewTransform.modelToViewPoint( new Vector3( shiftedBbox.maxX, shiftedBbox.maxY, shiftedBbox.maxZ ) )
-        ];
-
-        // Update the shape based on the current view of the mass in 3d space
-        const shape = Shape.polygon( ConvexHull2.grahamScan( massViewPoints, false ) );
-
-        this.focusableShapeProperty.value = shape;
-
-        assert && assert( this.focusablePath.focusHighlight instanceof Path );
-        assert && assert( this.focusablePath.interactiveHighlight instanceof Path );
-        ( this.focusablePath.focusHighlight as Path ).setShape( shape );
-        ( this.focusablePath.interactiveHighlight as Path ).setShape( shape );
-
-        // Put the cue under the block. Use the shape directly because it shares the same coordinate frame as the
-        // focusablePath it appears in.
-        this.grabDragInteraction!.grabCueNode.centerTop = shape.bounds.centerBottom.plusXY( 0, DensityBuoyancyCommonConstants.MARGIN_SMALL );
-      }
-
-      this.massTagNode && repositionMassTagNode();
     };
 
     if ( mass.canMove ) {
@@ -191,10 +168,52 @@ export default abstract class MassView extends Disposable {
         tandem: Tandem.OPT_OUT
       } );
 
+
+      const myListener = () => {
+
+        if ( this.focusablePath && this.grabDragInteraction && !this.focusablePath.isDisposed ) {
+
+          const shiftedBbox = mass.getBounds();
+
+          // To support dragging while zoomed in, KeyboardDragListener will keep the position of the focusablePath in view.
+          this.focusablePath.center = modelViewTransform.modelToViewPoint( shiftedBbox.center );
+
+          // The points that make up the corners of the Bounds3 in THREE.js space, applied onto a 2d plane for scenery.
+          const massViewPoints = [
+            modelViewTransform.modelToViewPoint( new Vector3( shiftedBbox.minX, shiftedBbox.minY, shiftedBbox.minZ ) ),
+            modelViewTransform.modelToViewPoint( new Vector3( shiftedBbox.minX, shiftedBbox.minY, shiftedBbox.maxZ ) ),
+            modelViewTransform.modelToViewPoint( new Vector3( shiftedBbox.minX, shiftedBbox.maxY, shiftedBbox.minZ ) ),
+            modelViewTransform.modelToViewPoint( new Vector3( shiftedBbox.minX, shiftedBbox.maxY, shiftedBbox.maxZ ) ),
+            modelViewTransform.modelToViewPoint( new Vector3( shiftedBbox.maxX, shiftedBbox.minY, shiftedBbox.minZ ) ),
+            modelViewTransform.modelToViewPoint( new Vector3( shiftedBbox.maxX, shiftedBbox.minY, shiftedBbox.maxZ ) ),
+            modelViewTransform.modelToViewPoint( new Vector3( shiftedBbox.maxX, shiftedBbox.maxY, shiftedBbox.minZ ) ),
+            modelViewTransform.modelToViewPoint( new Vector3( shiftedBbox.maxX, shiftedBbox.maxY, shiftedBbox.maxZ ) )
+          ];
+
+          // Update the shape based on the current view of the mass in 3d space
+          const shape = Shape.polygon( ConvexHull2.grahamScan( massViewPoints, false ) );
+
+          this.focusableShapeProperty.value = shape;
+
+          assert && assert( this.focusablePath.focusHighlight instanceof Path );
+          assert && assert( this.focusablePath.interactiveHighlight instanceof Path );
+          ( this.focusablePath.focusHighlight as Path ).setShape( shape );
+          ( this.focusablePath.interactiveHighlight as Path ).setShape( shape );
+
+          // Put the cue under the block. Use the shape directly because it shares the same coordinate frame as the
+          // focusablePath it appears in.
+          this.grabDragInteraction.grabCueNode.centerTop = shape.bounds.centerBottom.plusXY( 0, DensityBuoyancyCommonConstants.MARGIN_SMALL );
+        }
+      };
+      this.sceneNodeRenderedEmitter.addListener( myListener );
+      mass.transformedEmitter.addListener( myListener );
+
       this.disposeEmitter.addListener( () => {
         this.grabDragInteraction!.dispose();
         keyboardDragListener.dispose();
         this.focusablePath!.dispose();
+
+        mass.transformedEmitter.removeListener( myListener );
       } );
     }
     const resetListener = () => {
@@ -239,6 +258,8 @@ export default abstract class MassView extends Disposable {
     this.massMesh.dispose();
 
     this.massTagNode && this.massTagNode.dispose();
+
+    this.sceneNodeRenderedEmitter.dispose();
 
     super.dispose();
   }

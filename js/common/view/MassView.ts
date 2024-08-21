@@ -200,17 +200,19 @@ export default abstract class MassView extends Disposable {
       // Last, after declaring everything.
       positionListener();
     }
-    const resetCursorAndKeyboardProperties = () => {
+    const resetListener = () => {
       this.isCursorOverProperty.reset();
       this.isKeyboardFocusedProperty.reset();
+
+      this.grabDragInteraction && this.grabDragInteraction.reset();
     };
 
     this.mass.transformedEmitter.addListener( positionListener );
-    this.mass.resetEmitter.addListener( resetCursorAndKeyboardProperties );
+    this.mass.resetEmitter.addListener( resetListener );
 
     this.disposeEmitter.addListener( () => {
       this.mass.transformedEmitter.removeListener( positionListener );
-      this.mass.resetEmitter.removeListener( resetCursorAndKeyboardProperties );
+      this.mass.resetEmitter.removeListener( resetListener );
     } );
 
     positionListener();

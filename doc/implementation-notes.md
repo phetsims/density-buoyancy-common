@@ -38,7 +38,6 @@ It's important to note that for every model step, the engine performs multiple s
 - **BlockSetModel**: An extension of the common model that handles the creation and memory of block sets, such as “Same Mass” or “Same Density” blocks, particularly in the Density Mystery Screen or Compare Screens across all three simulations.
 - **BuoyancyShapeModel.ts**: This class serves as the main model for a single shape object within the Buoyancy Shapes Screen. The class caches all possible mass instances to simplify PhET-iO implementation. This approach avoids unnecessary disposal since all properties persist for the lifetime of the simulation.
 
-
 ### Important Files
 
 In addition to the model classes mentioned above, the following files are also important:
@@ -47,6 +46,17 @@ In addition to the model classes mentioned above, the following files are also i
 - **Material.ts**: Defines all mass and fluid materials, including their densities, viscosities, and colors.
 - **MaterialView.ts**: Creates the MaterialViews for the materials defined above and loads all the textures seen in the simulation.
 - **DisplayProperties.ts**: Handles the visibility of multiple UI elements in the sim such as force vectors, depth lines, etc.
+
+### PhET-iO Considerations
+
+- Model objects, such as Mass and its subtypes are statically preallocated, this simulation does not use PhetioGroup or PhetioCapsule. However the views are dynamically created and destroyed as masses are added and removed from the active part of the model, called `visibleMasses`. The dynamic views are not PhET-iO instrumented, so the API has no dynamic parts.
+- The simulation requires `propertyStateHandlerSingleton.registerPhetioOrderDependency`. Search for occurrences of that term for more comprehensive documentation.
+- Material was refactored from an immutable type with IO Type support in Density 1.0 to be a mutable Property. The simulation still has `MassIO` which
+encodes many parts of the Mass state.
+
+### Resetting and `Mass.internalVisibleProperty`
+
+- Each mass has an `internalVisibleProperty` that is managed by the simulation and is not PhET-iO stateful (but is uniquely determined by upstream quantities that are phet-io instrumented, such as which scene is selected). To ensure the correct objects are visible, the `internalVisibleProperty` instances are often reset last during the reset functions.
 
 ### Additional Comments
 
@@ -57,3 +67,4 @@ In addition to the model classes mentioned above, the following files are also i
   - **Duck**: Modeled in Blender and converted to THREE.js via scripting. If you need to modify the duck geometry, refer to this discussion: [Buoyancy Issue #101](https://github.com/phetsims/buoyancy/issues/101) and prepare accordingly. The Duck's displacement of water from the pool is modeled as an ellipsoid. 
 - Enumeration is managed using both `EnumerationValue` and `string[]`, depending on the specific requirements.
 - [Query Parameters File](https://github.com/phetsims/density-buoyancy-common/blob/main/js/common/DensityBuoyancyCommonQueryParameters.ts)
+

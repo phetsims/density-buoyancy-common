@@ -111,7 +111,6 @@ export default abstract class MassView extends Disposable {
         assert && assert( this.focusablePath.interactiveHighlight instanceof Path );
         ( this.focusablePath.focusHighlight as Path ).setShape( shape );
         ( this.focusablePath.interactiveHighlight as Path ).setShape( shape );
-        ( this.focusablePath.focusHighlight as Path ).setShape( shape );
 
         // TODO: https://github.com/phetsims/density-buoyancy-common/issues/209
         // Put the cue under the block probably (currently centered on its starting point)

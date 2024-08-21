@@ -196,9 +196,6 @@ export default abstract class MassView extends Disposable {
         keyboardDragListener.dispose();
         this.focusablePath!.dispose();
       } );
-
-      // Last, after declaring everything.
-      positionListener();
     }
     const resetListener = () => {
       this.isCursorOverProperty.reset();
@@ -215,6 +212,7 @@ export default abstract class MassView extends Disposable {
       this.mass.resetEmitter.removeListener( resetListener );
     } );
 
+    // Last, after declaring everything.
     positionListener();
   }
 

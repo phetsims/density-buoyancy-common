@@ -32,7 +32,6 @@ import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import Multilink from '../../../../axon/js/Multilink.js';
 import PickRequired from '../../../../phet-core/js/types/PickRequired.js';
 import { MassShape } from './MassShape.js';
-import TEmitter from '../../../../axon/js/TEmitter.js';
 import MassTag from './MassTag.js';
 import Bounds3 from '../../../../dot/js/Bounds3.js';
 import BlendedVector2Property from './BlendedVector2Property.js';
@@ -148,11 +147,11 @@ export default abstract class Mass extends PhetioObject {
   // Transform matrix set in the internal physics engine steps, used by masses to determine their per-physics-step information.
   protected readonly stepMatrix: Matrix3;
 
-  public readonly transformedEmitter: TEmitter;
+  public readonly transformedEmitter = new Emitter();
   public readonly stepEmitter = new Emitter();
 
   // Fired when this mass's input (drag) should be interrupted.
-  public readonly interruptedEmitter: TEmitter;
+  public readonly interruptedEmitter = new Emitter();
 
   public readonly canMove: boolean;
   public readonly tag: MassTag;
@@ -373,9 +372,6 @@ export default abstract class Mass extends PhetioObject {
 
     this.matrix = options.matrix;
     this.stepMatrix = new Matrix3();
-
-    this.transformedEmitter = new Emitter();
-    this.interruptedEmitter = new Emitter();
 
     this.canMove = options.canMove;
     this.tag = options.tag;

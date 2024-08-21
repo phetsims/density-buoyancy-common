@@ -439,6 +439,10 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
 
     this.sceneNode.render( undefined );
 
+    // Once three.js renders the blocks, we get the coordinates of the bounds from the graham-scan. Then we can trigger
+    // the transformedEmitter to update other parts of the view that rely on that shape.
+    this.massViews.forEach( massView => massView.mass.transformedEmitter.emit() );
+
     this.debugView && this.debugView.step( dt );
   }
 

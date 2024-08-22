@@ -147,8 +147,9 @@ export default abstract class Basin {
    */
   public getEmptyVolume( y: number ): number {
     const emptyVolume = this.getMaximumVolume( y ) - this.getDisplacedVolume( y );
-    assert && assert( emptyVolume >= -1e-11, 'empty volume should be non-negative' );
-    return emptyVolume;
+
+    // p2 can sometimes incorrectly assigns the stepMasses, so we need to be tolerant here if the displacedVolume exceeds the maximum
+    return Math.max( 0, emptyVolume );
   }
 
   /**

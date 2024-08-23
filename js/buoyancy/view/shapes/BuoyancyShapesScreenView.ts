@@ -215,19 +215,15 @@ export default class BuoyancyShapesScreenView extends BuoyancyScreenView<Buoyanc
       this.poolScaleHeightControl
     ];
 
-    // Add mass view items to the appropriate layers based on their associated mass.
-    const massViewAdded = ( massView: MassView ) => {
-      if ( massView.mass === model.objectB.shapeProperty.value ) {
-        blockBLayer.pdomOrder = [ ...blockBLayer.pdomOrder!, massView.focusablePath ];
-        // nothing to do for removal since disposal of the node will remove it from the pdom order
-      }
-      else if ( massView.mass === model.objectA.shapeProperty.value ) {
-        blockALayer.pdomOrder = [ ...blockALayer.pdomOrder!, massView.focusablePath ];
-        // nothing to do for removal since disposal of the node will remove it from the pdom order
-      }
+    // For focus order, update PDOM element when the shapeProperty changes
+    const updateMassViewLayerA = () => {
+      blockALayer.pdomOrder = this.massViews.filter( massView => massView.mass === model.objectA.shapeProperty.value ).map( massView => massView.focusablePath );
     };
-    this.massViews.addItemAddedListener( massViewAdded );
-    this.massViews.forEach( massViewAdded );
+    const updateMassViewLayerB = () => {
+      blockBLayer.pdomOrder = this.massViews.filter( massView => massView.mass === model.objectB.shapeProperty.value ).map( massView => massView.focusablePath );
+    };
+    model.objectA.shapeProperty.link( updateMassViewLayerA );
+    model.objectB.shapeProperty.link( updateMassViewLayerB );
 
     // Define the focus order for the control area, ensuring accessibility for various UI elements.
     this.pdomControlAreaNode.pdomOrder = [

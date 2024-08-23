@@ -37,6 +37,9 @@ export default class MaterialProperty extends MappedWrappedProperty<Material> {
 
   // Note the material could be the customMaterial. That is not a bug, that is a workaround that means there is no customMaterial.
   public constructor( material: Material, customMaterial: Material, availableMaterials: Material[], providedOptions: MaterialPropertyOptions ) {
+
+    assert && assert( customMaterial.custom, 'customMaterial should be custom' );
+
     const options = optionize<MaterialPropertyOptions, SelfOptions, ParentOptions>()( {
       invisibleMaterials: [],
       valueType: Material,

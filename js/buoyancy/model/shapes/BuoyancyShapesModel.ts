@@ -15,7 +15,7 @@ import Cuboid from '../../../common/model/Cuboid.js';
 import DensityBuoyancyModel, { DensityBuoyancyModelOptions } from '../../../common/model/DensityBuoyancyModel.js';
 import HorizontalCylinder from './HorizontalCylinder.js';
 import Mass from '../../../common/model/Mass.js';
-import Material from '../../../common/model/Material.js';
+import Material, { CustomSolidMaterial } from '../../../common/model/Material.js';
 import Scale, { DisplayType } from '../../../common/model/Scale.js';
 import TwoBlockMode from '../../../common/model/TwoBlockMode.js';
 import VerticalCylinder from './VerticalCylinder.js';
@@ -62,8 +62,10 @@ export default class BuoyancyShapesModel extends DensityBuoyancyModel {
 
     this.materialProperty = new MaterialProperty( Material.WOOD,
 
-      // This hack is a way of saying, we do not create or support a custom material in this case.
-      Material.WOOD,
+      // Placeholder for custom material which is not used in the shapes screen.
+      new CustomSolidMaterial( Tandem.OPT_OUT, {
+        density: Material.WOOD.density
+      } ),
       this.availableMaterials, {
         tandem: objectsTandem.createTandem( 'materialProperty' )
       } );

@@ -39,27 +39,6 @@ export default class BlockControlNode extends MaterialMassVolumeControlNode {
 
       const customDensityProperty = cuboid.materialProperty.customMaterial.densityProperty;
 
-      let isChangingToPredefinedMaterialLock = false;
-
-      // When the user changes the density by dragging the slider, automatically switch from the predefined material to
-      // the custom material
-      customDensityProperty.lazyLink( () => {
-        if ( !isChangingToPredefinedMaterialLock ) {
-          cuboid.materialProperty.value = cuboid.materialProperty.customMaterial;
-        }
-      } );
-
-      // In the explore screen, when switching from custom to wood, change the density back to the wood density
-      // However, when switching to a mystery material, do not change the custom value. This prevents clever students from discovering
-      // the mystery values by using the UI instead of by computing them, see https://github.com/phetsims/buoyancy/issues/54
-      cuboid.materialProperty.lazyLink( material => {
-        if ( !material.custom && !material.hidden ) {
-          isChangingToPredefinedMaterialLock = true;
-          customDensityProperty.value = material.density;
-          isChangingToPredefinedMaterialLock = false;
-        }
-      } );
-
       const densityAsLitersProperty = new UnitConversionProperty( customDensityProperty, {
         factor: 1 / DensityBuoyancyCommonConstants.LITERS_IN_CUBIC_METER
       } );

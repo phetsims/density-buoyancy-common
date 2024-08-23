@@ -175,6 +175,14 @@ export default abstract class Mass extends PhetioObject {
 
   public readonly resetEmitter = new Emitter();
 
+  // MassViews and their GrabDragInteractions are recreated, the mass stores relevant information from one instantiation to
+  // another. These quantities do not need to be PhET-iO stateful, because they are related to usability and
+  // accessibility, and when studio launches a Standard PhET-iO Wrapper, these values should be zeroed out, not preserved
+  // in the state. These values are internal, and should not be read. Instead, get the most up-to-date info from the
+  // view's GrabDragInteraction itself.
+  public numberOfKeyboardGrabs = 0;
+  public numberOfGrabs = 0;
+
   protected constructor( engine: PhysicsEngine, providedOptions: MassOptions ) {
 
     const options = optionize<MassOptions, SelfOptions, PhetioObjectOptions>()( {
@@ -581,6 +589,9 @@ export default abstract class Mass extends PhetioObject {
     // purpose, it will be adjusted by subtypes whenever necessary, and a reset may break things here.
 
     this.resetPosition();
+
+    this.numberOfGrabs = 0;
+    this.numberOfKeyboardGrabs = 0;
 
     this.resetEmitter.emit();
   }

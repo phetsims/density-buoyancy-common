@@ -225,6 +225,11 @@ export default class BuoyancyShapesScreenView extends BuoyancyScreenView<Buoyanc
     model.objectA.shapeProperty.link( updateMassViewLayerA );
     model.objectB.shapeProperty.link( updateMassViewLayerB );
 
+    model.modeProperty.link( () => {
+      updateMassViewLayerA();
+      updateMassViewLayerB();
+    } );
+
     // Define the focus order for the control area, ensuring accessibility for various UI elements.
     this.pdomControlAreaNode.pdomOrder = [
       blocksModeRadioButtonGroup,

@@ -119,7 +119,6 @@ export default abstract class MassView extends Disposable {
       } );
 
       const endKeyboardInteraction = () => {
-        this.grabDragInteraction!.interrupt();
 
         // BackgroundTargetEventListener calls mass.interruptedEmitter.emit(); on mouse/touch down to clean up interaction
         // This interrupts keyboard interaction, so we must be graceful in case there was no keyboard interaction.

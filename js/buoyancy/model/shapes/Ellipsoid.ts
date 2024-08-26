@@ -182,9 +182,15 @@ export default class Ellipsoid extends Mass {
     for ( let i = 0; i < segments; i++ ) {
       const theta = i / segments * 2 * Math.PI;
 
-      vertices.push( new Vector2( Math.cos( theta ) * width / 2, Math.sin( theta ) * height / 2 ) );
-    }
+      if ( Math.abs( theta - Math.PI / 2 ) < DensityBuoyancyCommonConstants.TOLERANCE || Math.abs( theta - 3 * Math.PI / 2 ) < DensityBuoyancyCommonConstants.TOLERANCE ) {
 
+        // At 90 degrees and 270 degrees (top and bottom of the ellipsoid), we do not want to have single point because
+        // with the center of mass of the ellipsoid, it "leans" to the right.
+      }
+      else {
+        vertices.push( new Vector2( Math.cos( theta ) * width / 2, Math.sin( theta ) * height / 2 ) );
+      }
+    }
     return vertices;
   }
 

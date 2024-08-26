@@ -91,8 +91,20 @@ export default abstract class ComboNumberControl<T extends Material | Gravity> e
 
               if ( fallbackNode !== null ) {
                 fallbackContainer.addChild( fallbackNode );
-                fallbackNode.maxWidth = bottomBox.width;
-                fallbackNode.center = bottomBox.center;
+
+                if ( bottomBox.bounds.isFinite() ) {
+
+                  // NOTE: this shrinks it to be too small if only the increment or decrement button is visible.
+                  // However, that is not a productive use case, and is hence not supported.
+                  fallbackNode.maxWidth = bottomBox.width;
+                  fallbackNode.center = bottomBox.center;
+                }
+                else {
+
+                  // The slider, and increment/decrement buttons are not visible, so we cannot position based on that.
+                  fallbackNode.maxWidth = null;
+                  fallbackNode.left = 0;
+                }
               }
             };
 

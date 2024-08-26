@@ -45,8 +45,10 @@ type BuoyancyApplicationsScreenViewOptions = BuoyancyScreenViewOptions;
 export default class BuoyancyApplicationsScreenView extends BuoyancyScreenView<BuoyancyApplicationsModel> {
 
   private readonly positionResetSceneButton: () => void;
-  private bottleView: BottleView | null = null;
-  private boatView: BoatView | null = null;
+
+  // The super constructor calls getMassViewFromMass which will populate these with the correct values during startup.
+  private bottleView!: BottleView;
+  private boatView!: BoatView;
 
   public constructor( model: BuoyancyApplicationsModel, providedOptions: BuoyancyApplicationsScreenViewOptions ) {
 

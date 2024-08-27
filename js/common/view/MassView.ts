@@ -166,8 +166,7 @@ export default abstract class MassView extends Disposable {
           mass.interruptedEmitter.hasListener( endKeyboardInteraction ) && endKeyboardInteraction();
         },
         tandem: Tandem.OPT_OUT,
-        numberOfKeyboardGrabs: mass.numberOfKeyboardGrabs,
-        numberOfGrabs: mass.numberOfGrabs
+        grabDragModel: mass.grabDragModel
       } );
 
       const myListener = () => {
@@ -214,10 +213,6 @@ export default abstract class MassView extends Disposable {
       mass.transformedEmitter.addListener( myListener );
 
       this.disposeEmitter.addListener( () => {
-
-        // Keep in sync for the next time this mass will create a new view
-        mass.numberOfKeyboardGrabs = this.grabDragInteraction!.numberOfKeyboardGrabs;
-        mass.numberOfGrabs = this.grabDragInteraction!.numberOfGrabs;
 
         this.grabDragInteraction!.dispose();
         keyboardDragListener.dispose();

@@ -40,6 +40,7 @@ import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js
 import MaterialProperty, { MaterialPropertyOptions } from './MaterialProperty.js';
 import DensityBuoyancyCommonQueryParameters from '../DensityBuoyancyCommonQueryParameters.js';
 import Disposable from '../../../../axon/js/Disposable.js';
+import { GrabDragModel } from '../../../../scenery-phet/js/accessibility/GrabDragInteraction.js';
 
 // For the Buoyancy Shapes screen, but needed here because setRatios is included in each core type
 // See https://github.com/phetsims/buoyancy/issues/29
@@ -73,6 +74,8 @@ type SelfOptions = {
 
   minVolume?: number;
   maxVolume?: number;
+
+  grabDragModel?: GrabDragModel;
 };
 
 export type MassOptions = SelfOptions & PhetioObjectOptions;
@@ -175,13 +178,11 @@ export default abstract class Mass extends PhetioObject {
 
   public readonly resetEmitter = new Emitter();
 
-  // MassViews and their GrabDragInteractions are recreated, the mass stores relevant information from one instantiation to
-  // another. These quantities do not need to be PhET-iO stateful, because they are related to usability and
-  // accessibility, and when studio launches a Standard PhET-iO Wrapper, these values should be zeroed out, not preserved
-  // in the state. These values are internal, and should not be read. Instead, get the most up-to-date info from the
-  // view's GrabDragInteraction itself.
-  public numberOfKeyboardGrabs = 0;
-  public numberOfGrabs = 0;
+  // MassViews and their GrabDragInteractions are recreated, the mass stores relevant model information from one instantiation to
+  // another. This does not need to be PhET-iO stateful, because it is related to usability and
+  // accessibility within user input, and when studio launches a Standard PhET-iO Wrapper, the model
+  // data about the interaction should zero out, not preserved in the state.
+  public grabDragModel: GrabDragModel;
 
   protected constructor( engine: PhysicsEngine, providedOptions: MassOptions ) {
 
@@ -200,7 +201,8 @@ export default abstract class Mass extends PhetioObject {
       volumePropertyOptions: {},
       massPropertyOptions: {},
       minVolume: 0,
-      maxVolume: Number.POSITIVE_INFINITY
+      maxVolume: Number.POSITIVE_INFINITY,
+      grabDragModel: new GrabDragModel()
     }, providedOptions );
 
     assert && assert( options.body, 'options.body required' );
@@ -404,6 +406,8 @@ export default abstract class Mass extends PhetioObject {
 
     this.originalMatrix = this.matrix.copy();
 
+    this.grabDragModel = options.grabDragModel;
+
     Multilink.multilink( [
       this.shapeProperty,
       this.massProperty
@@ -590,8 +594,7 @@ export default abstract class Mass extends PhetioObject {
 
     this.resetPosition();
 
-    this.numberOfGrabs = 0;
-    this.numberOfKeyboardGrabs = 0;
+    this.grabDragModel.reset(); // TODO: who owns this for resetting? https://github.com/phetsims/scenery-phet/issues/867
 
     this.resetEmitter.emit();
   }

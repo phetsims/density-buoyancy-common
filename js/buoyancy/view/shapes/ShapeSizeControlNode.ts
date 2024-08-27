@@ -76,7 +76,7 @@ export default class ShapeSizeControlNode extends VBox {
         tandem: Tandem.OPT_OUT
       },
       layoutFunction: NumberControl.createLayoutFunction4( {
-        hasReadoutProperty: new BooleanProperty( false ),
+        numberDisplayParentNodeOptions: { visibleProperty: new BooleanProperty( false ) },
         sliderPadding: 5
       } ),
       titleNodeOptions: {

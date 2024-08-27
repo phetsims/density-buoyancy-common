@@ -14,7 +14,7 @@ import optionize, { combineOptions } from '../../../../phet-core/js/optionize.js
 import PatternStringProperty from '../../../../axon/js/PatternStringProperty.js';
 import NumberControl, { NumberControlOptions } from '../../../../scenery-phet/js/NumberControl.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
-import { Node, Text, VBox, VBoxOptions } from '../../../../scenery/js/imports.js';
+import { HStrut, Node, Text, VBox, VBoxOptions } from '../../../../scenery/js/imports.js';
 import ComboBox, { ComboBoxItem, ComboBoxOptions } from '../../../../sun/js/ComboBox.js';
 import SunConstants from '../../../../sun/js/SunConstants.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
@@ -27,6 +27,7 @@ import Gravity from '../model/Gravity.js';
 import MappedWrappedProperty from '../model/MappedWrappedProperty.js';
 import UnitConversionProperty from '../../../../axon/js/UnitConversionProperty.js';
 import Disposable from '../../../../axon/js/Disposable.js';
+import BooleanToggleNode from '../../../../sun/js/BooleanToggleNode.js';
 
 type SelfOptions<T extends Material | Gravity> = {
   titleProperty: TReadOnlyProperty<string>;
@@ -60,8 +61,6 @@ export default abstract class ComboNumberControl<T extends Material | Gravity> e
 
   protected constructor( providedOptions: SelfOptions<T> ) {
 
-    const numberDisplayVisibleProperty = new BooleanProperty( true );
-
     const options = optionize<ComboNumberControlOptions<T>, SelfOptions<T>, VBoxOptions>()( {
       getFallbackNode: () => null,
 
@@ -71,48 +70,22 @@ export default abstract class ComboNumberControl<T extends Material | Gravity> e
         layoutFunction: NumberControl.createLayoutFunction4( {
           createBottomContent: bottomBox => {
 
-            const fallbackContainer = new Node();
-
-            // Supports Pendulum Lab's questionText where a question is substituted for the slider
-            const bottomContent = new Node( {
-              children: [
-                bottomBox,
-                fallbackContainer
-              ]
-            } );
-
-            const listener = ( value: T ) => {
-              const fallbackNode = getFallbackNode( value );
-              const hasFallback = fallbackNode !== null;
-
-              bottomBox.visible = !hasFallback;
-              numberDisplayVisibleProperty.value = !hasFallback;
-              fallbackContainer.removeAllChildren();
+            const showFallbackProperty = new BooleanProperty( false );
+            const fallbackContainer = new Node( { children: [ new HStrut( 5 ) ] } ); // Just so it has some bounds to start
+            this.mappedWrappedProperty.link( () => {
+              const fallbackNode = getFallbackNode( this.mappedWrappedProperty.value );
+              showFallbackProperty.value = fallbackNode !== null;
 
               if ( fallbackNode !== null ) {
-                fallbackContainer.addChild( fallbackNode );
-
-                if ( bottomBox.bounds.isFinite() ) {
-
-                  // NOTE: this shrinks it to be too small if only the increment or decrement button is visible.
-                  // However, that is not a productive use case, and is hence not supported.
-                  fallbackNode.maxWidth = bottomBox.width;
-                  fallbackNode.center = bottomBox.center;
-                }
-                else {
-
-                  // The slider, and increment/decrement buttons are not visible, so we cannot position based on that.
-                  fallbackNode.maxWidth = null;
-                  fallbackNode.left = 0;
-                }
+                fallbackContainer.children = [ fallbackNode ];
               }
-            };
-
-            // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
-            this.mappedWrappedProperty.link( listener );
-            return bottomContent;
+            } );
+            return new BooleanToggleNode( showFallbackProperty, fallbackContainer, bottomBox );
           },
-          sliderPadding: 5
+          sliderPadding: 5,
+          numberDisplayParentNodeOptions: {
+            excludeInvisibleChildrenFromBounds: false
+          }
         } ),
         titleNodeOptions: {
           font: DensityBuoyancyCommonConstants.TITLE_FONT,
@@ -128,8 +101,7 @@ export default abstract class ComboNumberControl<T extends Material | Gravity> e
           maxWidth: 100,
           decimalPlaces: 2,
           useRichText: true,
-          useFullHeight: true,
-          visibleProperty: numberDisplayVisibleProperty
+          useFullHeight: true
         },
         arrowButtonOptions: {
           scale: DensityBuoyancyCommonConstants.ARROW_BUTTON_SCALE

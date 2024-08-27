@@ -144,17 +144,25 @@ export default abstract class MassView extends Disposable {
       } );
 
       this.grabDragInteraction = new GrabDragInteraction( this.focusablePath, keyboardDragListener, {
-        onGrab() {
+        onGrab( event ) {
+
+          // Do not start a mass drag from GrabDragInteraction unless it is from keyboard input.
+          if ( !event.isFromPDOM() ) {
+            return;
+          }
 
           // We want the newer interaction to take precedent, so tabbing to the item should interrupt the previous mouse drag (if applicable).
-          mass.userControlledProperty.value && mass.interruptedEmitter.emit();
+          mass.interruptedEmitter.emit();
 
           mass.interruptedEmitter.addListener( endKeyboardInteraction );
           grabSoundPlayer.play();
           mass.startDrag( mass.matrix.translation );
         },
         onRelease() {
-          endKeyboardInteraction();
+
+          // This is an awkward metric to determine if the GrabDrag is in control of input at this time. It is easier
+          // than manually tracking other forms of input (like mouse/touch).
+          mass.interruptedEmitter.hasListener( endKeyboardInteraction ) && endKeyboardInteraction();
         },
         tandem: Tandem.OPT_OUT,
         numberOfKeyboardGrabs: mass.numberOfKeyboardGrabs,

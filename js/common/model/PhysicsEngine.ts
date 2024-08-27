@@ -363,6 +363,7 @@ export default class PhysicsEngine {
    * (if the body is getting dragged).
    */
   public addPointerConstraint( body: PhysicsEngineBody, position: Vector2 ): void {
+
     // Create an empty body used for the constraint (we don't want it intersecting). It will just be used for applying
     // the effects of this constraint.
     const nullBody = new p2.Body();
@@ -389,7 +390,7 @@ export default class PhysicsEngine {
    */
   public updatePointerConstraint( body: PhysicsEngineBody, position: Vector2 ): void {
     const pointerConstraint = this.pointerConstraintMap[ body.id ];
-    assert && assert( pointerConstraint );
+    assert && assert( pointerConstraint, `pointer constraint expected for physics body #${body.id}` );
 
     // @ts-expect-error it should have pivotA...
     p2.vec2.copy( pointerConstraint.pivotA, PhysicsEngine.vectorToP2( position ) );
@@ -402,6 +403,7 @@ export default class PhysicsEngine {
    */
   public removePointerConstraint( body: PhysicsEngineBody ): void {
     const nullBody = this.nullBodyMap[ body.id ];
+    assert && assert( nullBody, `cannot remove physics body #${body.id}` );
     const pointerConstraint = this.pointerConstraintMap[ body.id ];
 
     this.world.removeConstraint( pointerConstraint );

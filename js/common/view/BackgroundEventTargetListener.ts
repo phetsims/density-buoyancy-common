@@ -42,9 +42,7 @@ export default class BackgroundEventTargetListener implements TInputListener {
                       private readonly updateCursor: ( mouse: Mouse ) => void,
                       tandem: Tandem ) {
 
-    this.startDragAction = new PhetioAction( ( mass: Mass, position: Vector2 ) => {
-      mass.startDrag( position );
-    }, {
+    this.startDragAction = new PhetioAction( ( mass: Mass, position: Vector2 ) => mass.startDrag( position ), {
       tandem: tandem.createTandem( 'startDragAction' ),
       phetioDocumentation: 'Starts the dragging of a mass',
       phetioReadOnly: true,
@@ -58,9 +56,7 @@ export default class BackgroundEventTargetListener implements TInputListener {
       } ]
     } );
 
-    this.updateDragAction = new PhetioAction( ( mass: Mass, position: Vector2 ) => {
-      mass.updateDrag( position );
-    }, {
+    this.updateDragAction = new PhetioAction( ( mass: Mass, position: Vector2 ) => mass.updateDrag( position ), {
       tandem: tandem.createTandem( 'updateDragAction' ),
       phetioDocumentation: 'Continues the dragging of a mass',
       phetioReadOnly: true,
@@ -74,9 +70,7 @@ export default class BackgroundEventTargetListener implements TInputListener {
       } ]
     } );
 
-    this.endDragAction = new PhetioAction( ( mass: Mass ) => {
-      mass.endDrag();
-    }, {
+    this.endDragAction = new PhetioAction( ( mass: Mass ) => mass.endDrag(), {
       tandem: tandem.createTandem( 'endDragAction' ),
       phetioDocumentation: 'Continues the dragging of a mass',
       phetioReadOnly: true,

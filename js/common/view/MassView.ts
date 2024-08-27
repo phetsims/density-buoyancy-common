@@ -98,7 +98,8 @@ export default abstract class MassView extends Disposable {
         focusHighlight: new HighlightPath( null ),
         interactiveHighlight: new HighlightPath( null ),
         tagName: 'div',
-        focusable: true
+        focusable: true,
+        inputEnabledProperty: mass.inputEnabledProperty
       } );
 
       // Scenery provides isFocused() as a method, but we must convert it to a Property so we can observe changes.

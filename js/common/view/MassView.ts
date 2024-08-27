@@ -120,9 +120,10 @@ export default abstract class MassView extends Disposable {
 
       const endKeyboardInteraction = () => {
 
-        // BackgroundTargetEventListener calls mass.interruptedEmitter.emit(); on mouse/touch down to clean up interaction
-        // This interrupts keyboard interaction, so we must be graceful in case there was no keyboard interaction.
-        mass.interruptedEmitter.hasListener( endKeyboardInteraction ) && mass.interruptedEmitter.removeListener( endKeyboardInteraction );
+        // When this function is called, it should only be done because keyboard is in control of input. This prevents
+        // multi-input bugs like https://github.com/phetsims/density-buoyancy-common/issues/356
+        assert && assert( mass.interruptedEmitter.hasListener( endKeyboardInteraction ), 'must have this listener to call it' );
+        mass.interruptedEmitter.removeListener( endKeyboardInteraction );
 
         releaseSoundPlayer.play();
         mass.endDrag();

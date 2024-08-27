@@ -16,6 +16,7 @@ import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyModel from '../model/DensityBuoyancyModel.js';
 import Mass from '../model/Mass.js';
 import arrayRemove from '../../../../phet-core/js/arrayRemove.js';
+import Tandem from '../../../../tandem/js/Tandem.js';
 
 // constants
 const scratchMatrix = new Matrix3();
@@ -198,7 +199,8 @@ export class DebugMassNode extends Node {
       },
       end: () => {
         mass.endDrag();
-      }
+      },
+      tandem: Tandem.OPT_OUT
     } );
     this.addInputListener( this.dragListener );
   }

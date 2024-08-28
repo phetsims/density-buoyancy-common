@@ -37,9 +37,9 @@ type CubeData = {
   sameVolumeMass: number;
   sameDensityVolume: number;
   colorProperty: Property<Color>;
-  sameMassCubeOptions: WithRequired<Partial<CubeOptions>, 'tandem'>;
-  sameVolumeCubeOptions: WithRequired<Partial<CubeOptions>, 'tandem'>;
-  sameDensityCubeOptions: WithRequired<Partial<CubeOptions>, 'tandem'>;
+  sameMassCubeOptions: WithRequired<Partial<CubeOptions>, 'tandem' | 'grabDragModel'>;
+  sameVolumeCubeOptions: WithRequired<Partial<CubeOptions>, 'tandem' | 'grabDragModel'>;
+  sameDensityCubeOptions: WithRequired<Partial<CubeOptions>, 'tandem' | 'grabDragModel'>;
 };
 
 type SelfOptions = {

@@ -21,6 +21,7 @@ import { MaterialSchema } from '../../common/model/Mass.js';
 import optionize, { EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
 import propertyStateHandlerSingleton from '../../../../axon/js/propertyStateHandlerSingleton.js';
 import PropertyStatePhase from '../../../../axon/js/PropertyStatePhase.js';
+import { GrabDragModel } from '../../../../scenery-phet/js/accessibility/GrabDragInteraction.js';
 
 export type BuoyancyExploreModelOptions = DensityBuoyancyModelOptions;
 
@@ -52,17 +53,20 @@ export default class BuoyancyExploreModel extends DensityBuoyancyModel {
       Material.MATERIAL_S
     ];
 
+    const grabDragModel = new GrabDragModel();
     this.blockA = Cube.createWithMass( this.engine, Material.WOOD, new Vector2( -0.2, 0.2 ), 2, {
       tag: MassTag.OBJECT_A,
       tandem: blocksTandem.createTandem( 'blockA' ),
-      availableMassMaterials: availableMassMaterials
+      availableMassMaterials: availableMassMaterials,
+      grabDragModel: grabDragModel
     } );
     this.availableMasses.push( this.blockA );
     this.blockB = Cube.createWithMass( this.engine, Material.ALUMINUM, new Vector2( 0.05, 0.35 ), 13.5, {
       tag: MassTag.OBJECT_B,
       tandem: blocksTandem.createTandem( 'blockB' ),
       availableMassMaterials: availableMassMaterials,
-      visible: this.modeProperty.value === TwoBlockMode.TWO_BLOCKS
+      visible: this.modeProperty.value === TwoBlockMode.TWO_BLOCKS,
+      grabDragModel: grabDragModel
     } );
     this.availableMasses.push( this.blockB );
 
@@ -86,7 +90,6 @@ export default class BuoyancyExploreModel extends DensityBuoyancyModel {
         phetioReadOnly: false
       }
     } ) );
-
   }
 
   /**

@@ -29,6 +29,7 @@ import optionize, { EmptySelfOptions } from '../../../../../phet-core/js/optioni
 import Ellipsoid from './Ellipsoid.js';
 import Cone from './Cone.js';
 import DerivedProperty from '../../../../../axon/js/DerivedProperty.js';
+import { GrabDragModel } from '../../../../../scenery-phet/js/accessibility/GrabDragInteraction.js';
 
 export type BuoyancyShapesModelOptions = DensityBuoyancyModelOptions;
 
@@ -42,6 +43,9 @@ export default class BuoyancyShapesModel extends DensityBuoyancyModel {
 
   public readonly materialProperty: MaterialProperty;
   private readonly availableMaterials: Material[];
+
+  // @ts-expect-error
+  private myGrabDragModel: GrabDragModel | null; // do not initialize to null or it will be overridden after superconstructor
 
   public constructor( providedOptions: BuoyancyShapesModelOptions ) {
 
@@ -96,6 +100,7 @@ export default class BuoyancyShapesModel extends DensityBuoyancyModel {
   }
 
   private createMass( tandem: Tandem, shape: MassShape, widthRatio: number, heightRatio: number, tag: MassTag ): Mass {
+    this.myGrabDragModel = this.myGrabDragModel || new GrabDragModel();
     const massOptions = {
       material: this.materialProperty.value,
       availableMassMaterials: this.availableMaterials,
@@ -105,7 +110,8 @@ export default class BuoyancyShapesModel extends DensityBuoyancyModel {
       minVolume: 0.0002, // Cones have a smaller volume at min height/width
       maxVolume: Cuboid.MAX_VOLUME, // Cubes are the highest volume object in this screen
       tandem: tandem,
-      tag: tag
+      tag: tag,
+      grabDragModel: this.myGrabDragModel
     };
 
     let mass: Mass;

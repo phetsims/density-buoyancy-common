@@ -182,7 +182,8 @@ export default abstract class Mass extends PhetioObject {
   // another. This does not need to be PhET-iO stateful, because it is related to usability and
   // accessibility within user input, and when studio launches a Standard PhET-iO Wrapper, the model
   // data about the interaction should zero out, not preserved in the state.
-  public grabDragModel: GrabDragModel;
+  // NOTE: This is unused for the PoolScale, since it is controlled by a slider
+  public readonly grabDragModel: GrabDragModel;
 
   protected constructor( engine: PhysicsEngine, providedOptions: MassOptions ) {
 
@@ -202,6 +203,9 @@ export default abstract class Mass extends PhetioObject {
       massPropertyOptions: {},
       minVolume: 0,
       maxVolume: Number.POSITIVE_INFINITY,
+
+      // By default, each Mass keeps track of its own interaction. Pass in a shared grabDragModel in cases where the simulation
+      // should hide the grab/drag UI hints for one Mass after interacting with another Mass
       grabDragModel: new GrabDragModel()
     }, providedOptions );
 

@@ -40,7 +40,7 @@ import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js
 import MaterialProperty, { MaterialPropertyOptions } from './MaterialProperty.js';
 import DensityBuoyancyCommonQueryParameters from '../DensityBuoyancyCommonQueryParameters.js';
 import Disposable from '../../../../axon/js/Disposable.js';
-import { GrabDragModel } from '../../../../scenery-phet/js/accessibility/GrabDragInteraction.js';
+import { GrabDragCueModel } from '../../../../scenery-phet/js/accessibility/GrabDragInteraction.js';
 
 // For the Buoyancy Shapes screen, but needed here because setRatios is included in each core type
 // See https://github.com/phetsims/buoyancy/issues/29
@@ -75,7 +75,7 @@ type SelfOptions = {
   minVolume?: number;
   maxVolume?: number;
 
-  grabDragModel?: GrabDragModel;
+  grabDragCueModel?: GrabDragCueModel;
 };
 
 export type MassOptions = SelfOptions & PhetioObjectOptions;
@@ -183,7 +183,7 @@ export default abstract class Mass extends PhetioObject {
   // accessibility within user input, and when studio launches a Standard PhET-iO Wrapper, the model
   // data about the interaction should zero out, not preserved in the state.
   // NOTE: This is unused for the PoolScale, since it is controlled by a slider
-  public readonly grabDragModel: GrabDragModel;
+  public readonly grabDragCueModel: GrabDragCueModel;
 
   protected constructor( engine: PhysicsEngine, providedOptions: MassOptions ) {
 
@@ -204,9 +204,9 @@ export default abstract class Mass extends PhetioObject {
       minVolume: 0,
       maxVolume: Number.POSITIVE_INFINITY,
 
-      // By default, each Mass keeps track of its own interaction. Pass in a shared grabDragModel in cases where the simulation
+      // By default, each Mass keeps track of its own interaction. Pass in a shared grabDragCueModel in cases where the simulation
       // should hide the grab/drag UI hints for one Mass after interacting with another Mass
-      grabDragModel: new GrabDragModel()
+      grabDragCueModel: new GrabDragCueModel()
     }, providedOptions );
 
     assert && assert( options.body, 'options.body required' );
@@ -410,7 +410,7 @@ export default abstract class Mass extends PhetioObject {
 
     this.originalMatrix = this.matrix.copy();
 
-    this.grabDragModel = options.grabDragModel;
+    this.grabDragCueModel = options.grabDragCueModel;
 
     Multilink.multilink( [
       this.shapeProperty,
@@ -598,7 +598,7 @@ export default abstract class Mass extends PhetioObject {
 
     this.resetPosition();
 
-    this.grabDragModel.reset(); // TODO: who owns this for resetting? https://github.com/phetsims/scenery-phet/issues/867
+    this.grabDragCueModel.reset(); // TODO: who owns this for resetting? https://github.com/phetsims/scenery-phet/issues/867
 
     this.resetEmitter.emit();
   }

@@ -167,7 +167,7 @@ export default abstract class MassView extends Disposable {
           mass.interruptedEmitter.hasListener( endKeyboardInteraction ) && endKeyboardInteraction();
         },
         tandem: Tandem.OPT_OUT,
-        grabDragModel: mass.grabDragModel
+        grabDragCueModel: mass.grabDragCueModel
       } );
 
       const myListener = () => {

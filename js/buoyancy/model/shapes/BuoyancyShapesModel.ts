@@ -44,8 +44,7 @@ export default class BuoyancyShapesModel extends DensityBuoyancyModel {
   public readonly materialProperty: MaterialProperty;
   private readonly availableMaterials: Material[];
 
-  // @ts-expect-error
-  private myGrabDragModel: GrabDragModel | null; // do not initialize to null or it will be overridden after superconstructor
+  private readonly grabDragModel = new GrabDragModel();
 
   public constructor( providedOptions: BuoyancyShapesModelOptions ) {
 
@@ -100,7 +99,6 @@ export default class BuoyancyShapesModel extends DensityBuoyancyModel {
   }
 
   private createMass( tandem: Tandem, shape: MassShape, widthRatio: number, heightRatio: number, tag: MassTag ): Mass {
-    this.myGrabDragModel = this.myGrabDragModel || new GrabDragModel();
     const massOptions = {
       material: this.materialProperty.value,
       availableMassMaterials: this.availableMaterials,
@@ -111,7 +109,7 @@ export default class BuoyancyShapesModel extends DensityBuoyancyModel {
       maxVolume: Cuboid.MAX_VOLUME, // Cubes are the highest volume object in this screen
       tandem: tandem,
       tag: tag,
-      grabDragModel: this.myGrabDragModel
+      grabDragModel: this.grabDragModel // All Mass shapes except the scale share the same interaction model, see https://github.com/phetsims/density-buoyancy-common/issues/368
     };
 
     let mass: Mass;

@@ -16,7 +16,6 @@ import MassTag from '../../common/model/MassTag.js';
 import BlockSet from '../../common/model/BlockSet.js';
 import CompareBlockSetModel, { CompareBlockSetModelOptions } from '../../common/model/CompareBlockSetModel.js';
 import Range from '../../../../dot/js/Range.js';
-import { GrabDragModel } from '../../../../scenery-phet/js/accessibility/GrabDragInteraction.js';
 
 export type DensityCompareModelOptions = StrictOmit<CompareBlockSetModelOptions, 'positionMassesCallback' | 'cubesData'>;
 
@@ -26,7 +25,6 @@ export default class DensityCompareModel extends CompareBlockSetModel {
     const tandem = providedOptions.tandem;
 
     const blockSetsTandem = tandem.createTandem( 'blockSets' );
-    const grabDragModel = new GrabDragModel();
 
     const options = optionize<DensityCompareModelOptions, EmptySelfOptions, CompareBlockSetModelOptions>()( {
       fluidSelectionType: 'justWater',
@@ -61,18 +59,15 @@ export default class DensityCompareModel extends CompareBlockSetModel {
           colorProperty: DensityBuoyancyCommonColors.compareYellowColorProperty,
           sameMassCubeOptions: {
             tag: MassTag.B,
-            tandem: blockSetsTandem.createTandem( BlockSet.SAME_MASS.tandemName ).createTandem( 'blockB' ),
-            grabDragModel: grabDragModel
+            tandem: blockSetsTandem.createTandem( BlockSet.SAME_MASS.tandemName ).createTandem( 'blockB' )
           },
           sameVolumeCubeOptions: {
             tag: MassTag.A,
-            tandem: blockSetsTandem.createTandem( BlockSet.SAME_VOLUME.tandemName ).createTandem( 'blockA' ),
-            grabDragModel: grabDragModel
+            tandem: blockSetsTandem.createTandem( BlockSet.SAME_VOLUME.tandemName ).createTandem( 'blockA' )
           },
           sameDensityCubeOptions: {
             tag: MassTag.B,
-            tandem: blockSetsTandem.createTandem( BlockSet.SAME_DENSITY.tandemName ).createTandem( 'blockB' ),
-            grabDragModel: grabDragModel
+            tandem: blockSetsTandem.createTandem( BlockSet.SAME_DENSITY.tandemName ).createTandem( 'blockB' )
           }
         }, {
           sameMassVolume: 0.005,
@@ -81,18 +76,15 @@ export default class DensityCompareModel extends CompareBlockSetModel {
           colorProperty: DensityBuoyancyCommonColors.compareBlueColorProperty,
           sameMassCubeOptions: {
             tag: MassTag.A,
-            tandem: blockSetsTandem.createTandem( BlockSet.SAME_MASS.tandemName ).createTandem( 'blockA' ),
-            grabDragModel: grabDragModel
+            tandem: blockSetsTandem.createTandem( BlockSet.SAME_MASS.tandemName ).createTandem( 'blockA' )
           },
           sameVolumeCubeOptions: {
             tag: MassTag.C,
-            tandem: blockSetsTandem.createTandem( BlockSet.SAME_VOLUME.tandemName ).createTandem( 'blockC' ),
-            grabDragModel: grabDragModel
+            tandem: blockSetsTandem.createTandem( BlockSet.SAME_VOLUME.tandemName ).createTandem( 'blockC' )
           },
           sameDensityCubeOptions: {
             tag: MassTag.A,
-            tandem: blockSetsTandem.createTandem( BlockSet.SAME_DENSITY.tandemName ).createTandem( 'blockA' ),
-            grabDragModel: grabDragModel
+            tandem: blockSetsTandem.createTandem( BlockSet.SAME_DENSITY.tandemName ).createTandem( 'blockA' )
           }
         }, {
           sameMassVolume: 0.0025,
@@ -101,18 +93,15 @@ export default class DensityCompareModel extends CompareBlockSetModel {
           colorProperty: DensityBuoyancyCommonColors.compareGreenColorProperty,
           sameMassCubeOptions: {
             tag: MassTag.C,
-            tandem: blockSetsTandem.createTandem( BlockSet.SAME_MASS.tandemName ).createTandem( 'blockC' ),
-            grabDragModel: grabDragModel
+            tandem: blockSetsTandem.createTandem( BlockSet.SAME_MASS.tandemName ).createTandem( 'blockC' )
           },
           sameVolumeCubeOptions: {
             tag: MassTag.D,
-            tandem: blockSetsTandem.createTandem( BlockSet.SAME_VOLUME.tandemName ).createTandem( 'blockD' ),
-            grabDragModel: grabDragModel
+            tandem: blockSetsTandem.createTandem( BlockSet.SAME_VOLUME.tandemName ).createTandem( 'blockD' )
           },
           sameDensityCubeOptions: {
             tag: MassTag.C,
-            tandem: blockSetsTandem.createTandem( BlockSet.SAME_DENSITY.tandemName ).createTandem( 'blockC' ),
-            grabDragModel: grabDragModel
+            tandem: blockSetsTandem.createTandem( BlockSet.SAME_DENSITY.tandemName ).createTandem( 'blockC' )
           }
         }, {
           sameMassVolume: 0.00125,
@@ -121,18 +110,15 @@ export default class DensityCompareModel extends CompareBlockSetModel {
           colorProperty: DensityBuoyancyCommonColors.compareRedColorProperty,
           sameMassCubeOptions: {
             tag: MassTag.D,
-            tandem: blockSetsTandem.createTandem( BlockSet.SAME_MASS.tandemName ).createTandem( 'blockD' ),
-            grabDragModel: grabDragModel
+            tandem: blockSetsTandem.createTandem( BlockSet.SAME_MASS.tandemName ).createTandem( 'blockD' )
           },
           sameVolumeCubeOptions: {
             tag: MassTag.B,
-            tandem: blockSetsTandem.createTandem( BlockSet.SAME_VOLUME.tandemName ).createTandem( 'blockB' ),
-            grabDragModel: grabDragModel
+            tandem: blockSetsTandem.createTandem( BlockSet.SAME_VOLUME.tandemName ).createTandem( 'blockB' )
           },
           sameDensityCubeOptions: {
             tag: MassTag.D,
-            tandem: blockSetsTandem.createTandem( BlockSet.SAME_DENSITY.tandemName ).createTandem( 'blockD' ),
-            grabDragModel: grabDragModel
+            tandem: blockSetsTandem.createTandem( BlockSet.SAME_DENSITY.tandemName ).createTandem( 'blockD' )
           }
         } ]
     }, providedOptions );

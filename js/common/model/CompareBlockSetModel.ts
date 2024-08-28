@@ -28,6 +28,7 @@ import Multilink from '../../../../axon/js/Multilink.js';
 import PhysicsEngine from './PhysicsEngine.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import { MaterialSchema } from './Mass.js';
+import { GrabDragModel } from '../../../../scenery-phet/js/accessibility/GrabDragInteraction.js';
 
 assert && assert( BlockSet.enumeration.values.length === 3, 'This class is very hard coded for the three "SAME" values of BlockSet' );
 
@@ -37,9 +38,9 @@ type CubeData = {
   sameVolumeMass: number;
   sameDensityVolume: number;
   colorProperty: Property<Color>;
-  sameMassCubeOptions: WithRequired<Partial<CubeOptions>, 'tandem' | 'grabDragModel'>;
-  sameVolumeCubeOptions: WithRequired<Partial<CubeOptions>, 'tandem' | 'grabDragModel'>;
-  sameDensityCubeOptions: WithRequired<Partial<CubeOptions>, 'tandem' | 'grabDragModel'>;
+  sameMassCubeOptions: WithRequired<Partial<CubeOptions>, 'tandem'>;
+  sameVolumeCubeOptions: WithRequired<Partial<CubeOptions>, 'tandem'>;
+  sameDensityCubeOptions: WithRequired<Partial<CubeOptions>, 'tandem'>;
 };
 
 type SelfOptions = {
@@ -92,6 +93,7 @@ export default class CompareBlockSetModel extends BlockSetModel<BlockSet> {
       initialMaterials: [],
 
       sharedCubeOptions: {
+        grabDragModel: new GrabDragModel(),
         materialPropertyOptions: {
           phetioReadOnly: true // See https://github.com/phetsims/density-buoyancy-common/issues/270#issuecomment-2243371397
         }

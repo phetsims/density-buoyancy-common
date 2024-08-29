@@ -28,6 +28,8 @@ import Multilink from '../../../../axon/js/Multilink.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
 import Emitter from '../../../../axon/js/Emitter.js';
+import WASDCueNode from '../../../../scenery-phet/js/accessibility/nodes/WASDCueNode.js';
+import Bounds2 from '../../../../dot/js/Bounds2.js';
 
 const INVERT_Y_TRANSFORM = ModelViewTransform2.createSinglePointScaleInvertedYMapping( Vector2.ZERO, Vector2.ZERO, 1 );
 
@@ -145,6 +147,8 @@ export default abstract class MassView extends Disposable {
         tandem: Tandem.OPT_OUT
       } );
 
+      const dragCueBoundsProperty = new Property( Bounds2.create( mass.getBounds() ) );
+
       this.grabDragInteraction = new GrabDragInteraction( this.focusablePath, keyboardDragListener, {
         onGrab( event ) {
 
@@ -166,8 +170,9 @@ export default abstract class MassView extends Disposable {
           // than manually tracking other forms of input (like mouse/touch).
           mass.interruptedEmitter.hasListener( endKeyboardInteraction ) && endKeyboardInteraction();
         },
-        tandem: Tandem.OPT_OUT,
-        grabDragCueModel: mass.grabDragCueModel
+        dragCueNode: new WASDCueNode( dragCueBoundsProperty ),
+        grabDragCueModel: mass.grabDragCueModel,
+        tandem: Tandem.OPT_OUT
       } );
 
       const myListener = () => {
@@ -204,6 +209,8 @@ export default abstract class MassView extends Disposable {
           // Put the cue under the block. Use the shape directly because it shares the same coordinate frame as the
           // focusablePath it appears in.
           this.grabDragInteraction.grabCueNode.centerTop = shape.bounds.centerBottom.plusXY( 0, DensityBuoyancyCommonConstants.MARGIN_SMALL );
+
+          dragCueBoundsProperty.value = shape.bounds;
         }
       };
 

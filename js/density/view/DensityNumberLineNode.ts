@@ -102,7 +102,7 @@ export default class DensityNumberLineNode extends Node {
       height: HEIGHT,
       maxDensity: MAX_DENSITY,
       linePadding: 2,
-      maxLabelWidth: 80,
+      maxLabelWidth: 90,
       showNumericValue: true
     }, providedOptions );
 
@@ -179,7 +179,7 @@ export default class DensityNumberLineNode extends Node {
   private createContents( options: WithRequired<DensityNumberLineNodeOptions, 'maxDensity'> ): void {
 
     const labelOptions = {
-      font: new PhetFont( { size: 16, weight: 'bold' } ),
+      font: new PhetFont( { size: 14, weight: 'bold' } ),
       maxWidth: options.maxLabelWidth
     };
 

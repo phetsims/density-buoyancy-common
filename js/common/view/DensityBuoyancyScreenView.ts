@@ -174,15 +174,16 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
     this.sceneNode.stage.threeCamera.updateMatrixWorld( true );
     this.sceneNode.stage.threeCamera.updateProjectionMatrix();
 
-    let mouse: Mouse | null = null;
+    const updateCursor = ( newPointer?: Pointer ) => {
 
-    const updateCursor = ( newMouse?: Mouse ) => {
-      mouse = newMouse || mouse;
-      if ( mouse ) {
-
+      // TODO: Don't we want to clear out the cursor if we don't have a pointer? https://github.com/phetsims/density-buoyancy-common/issues/363
+      if ( newPointer ) {
+        
         // When the mouse hovers over a mass, show the cursor hand
-        const massUnderPointerEntry = this.getMassViewUnderPointer( mouse );
-        this.sceneNode.backgroundEventTarget.cursor = massUnderPointerEntry ? 'pointer' : null;
+        const massUnderPointerEntry = this.getMassViewUnderPointer( newPointer );
+        if ( newPointer instanceof Mouse ) {
+          this.sceneNode.backgroundEventTarget.cursor = massUnderPointerEntry ? 'pointer' : null;
+        }
 
         this.massViews.forEach( massView => {
           massView.isCursorOverProperty.value = massView === massUnderPointerEntry?.massView;
@@ -363,6 +364,9 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
    */
   private getMassViewUnderPointer( pointer: Pointer ): PointedAtMassView | null {
     const point = pointer.point;
+
+    // TODO: This doesn't seem to ever support null, delete? Added inhttps://github.com/phetsims/density-buoyancy-common/commit/55f8bf9a7ed1335e42de81396140ceae54ccd970
+    //       https://github.com/phetsims/density-buoyancy-common/issues/363
     if ( point === null ) {
       return null;
     }

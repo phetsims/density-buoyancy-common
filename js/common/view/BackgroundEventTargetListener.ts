@@ -39,7 +39,7 @@ export default class BackgroundEventTargetListener implements TInputListener {
                       private readonly getMassViewUnderPointer: DensityBuoyancyScreenView<DensityBuoyancyModel>['getMassViewUnderPointer'],
                       private readonly getRayFromScreenPoint: ThreeIsometricNode['getRayFromScreenPoint'],
                       private readonly modelToGlobalViewPoint: ( point: Vector3 ) => Vector2,
-                      private readonly updateCursor: ( pointer: Pointer ) => void,
+                      private readonly updatePointerOver: ( pointer: Pointer ) => void,
                       tandem: Tandem ) {
 
     this.startDragAction = new PhetioAction( ( mass: Mass, position: Vector2 ) => mass.startDrag( position ), {
@@ -83,7 +83,7 @@ export default class BackgroundEventTargetListener implements TInputListener {
   }
 
   public move( event: SceneryEvent<MouseEvent | TouchEvent | PointerEvent> ): void {
-    this.updateCursor( event.pointer );
+    this.updatePointerOver( event.pointer ); // Update for mouse and touch
   }
 
   public down( event: SceneryEvent<MouseEvent | TouchEvent | PointerEvent> ): void {

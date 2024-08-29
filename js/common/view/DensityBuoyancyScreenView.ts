@@ -174,7 +174,7 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
     this.sceneNode.stage.threeCamera.updateMatrixWorld( true );
     this.sceneNode.stage.threeCamera.updateProjectionMatrix();
 
-    const updateCursor = ( newPointer?: Pointer ) => {
+    const updatePointerOver = ( newPointer?: Pointer ) => {
 
       // TODO: Don't we want to clear out the cursor if we don't have a pointer? https://github.com/phetsims/density-buoyancy-common/issues/363
       if ( newPointer ) {
@@ -185,6 +185,7 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
           this.sceneNode.backgroundEventTarget.cursor = massUnderPointerEntry ? 'pointer' : null;
         }
 
+        // This also needs to support touch, see https://github.com/phetsims/density-buoyancy-common/issues/363
         this.massViews.forEach( massView => {
           massView.isCursorOverProperty.value = massView === massUnderPointerEntry?.massView;
         } );
@@ -196,15 +197,15 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
       this.getMassViewUnderPointer.bind( this ),
       this.sceneNode.getRayFromScreenPoint.bind( this.sceneNode ),
       point => this.localToGlobalPoint( this.modelToViewPoint( point ) ),
-      updateCursor,
+      updatePointerOver,
       this.tandem.createTandem( 'backgroundEventTargetListener' )
     );
     this.sceneNode.backgroundEventTarget.addInputListener( backgroundEventTargetListener );
 
     // On re-layout or zoom, update the cursor also
     // This instance lives for the lifetime of the simulation, so we don't need to remove these listeners
-    this.transformEmitter.addListener( updateCursor );
-    animatedPanZoomSingleton.listener.matrixProperty.lazyLink( () => updateCursor() );
+    this.transformEmitter.addListener( updatePointerOver );
+    animatedPanZoomSingleton.listener.matrixProperty.lazyLink( () => updatePointerOver() );
 
     const ambientLight = new THREE.AmbientLight( 0x333333 );
     this.sceneNode.stage.threeScene.add( ambientLight );

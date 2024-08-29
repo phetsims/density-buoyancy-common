@@ -71,11 +71,12 @@ if ( duckGeometry.isBufferGeometry && duckGeometry.attributes.position ) {
   maxValues.subtract( minValues );
   const normalizationFactors = new Vector3( Math.abs( maxValues.x ), Math.abs( maxValues.y ), Math.abs( maxValues.z ) );
 
-  duckGeometry.scale( 1 / normalizationFactors.x, 1 / normalizationFactors.y, 1 / normalizationFactors.z );
+  // Calibrated with p2 geometry using ?showDebug
+  duckGeometry.scale( 1 / normalizationFactors.x * 0.975, 1 / normalizationFactors.y, 1 / normalizationFactors.z );
 }
 
-// translate the 3d shape up
-duckGeometry.translate( 0, 0.08, 0 );
+// Calibrated with p2 geometry using ?showDebug
+duckGeometry.translate( -0.06, 0.08, 0 );
 
 // Parsing the geometry of the 2d duck
 export let flatDuckData = FlatDuckData;
@@ -83,7 +84,7 @@ const grahamScan = ConvexHull2.grahamScan( flatDuckData, false );
 const bounds = Shape.polygon( grahamScan ).bounds;
 
 // translate the vertices so that the centroid is at the origin
-flatDuckData = flatDuckData.map( vertex => vertex.subtractXY( bounds.center.x, bounds.center.y - 0.04 ) );
+flatDuckData = flatDuckData.map( vertex => vertex.subtractXY( bounds.center.x, bounds.center.y ) );
 
 // Normalizing the vertices
 flatDuckData = flatDuckData.map( vertex => vertex.componentMultiply( new Vector2( 1 / bounds.width, 1 / bounds.height ) ) );

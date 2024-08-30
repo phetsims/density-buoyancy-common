@@ -150,6 +150,7 @@ export default abstract class MassView extends Disposable {
 
       const dragCueBoundsProperty = new Property( Bounds2.create( mass.getBounds() ) );
 
+      const wasdCueNode = new WASDCueNode( dragCueBoundsProperty );
       this.grabDragInteraction = new GrabDragInteraction( this.focusablePath, keyboardDragListener, {
         onGrab( event ) {
 
@@ -172,7 +173,7 @@ export default abstract class MassView extends Disposable {
           mass.interruptedEmitter.hasListener( endKeyboardInteraction ) && endKeyboardInteraction();
         },
         showDragCueNode: () => mass.grabDragCueModel.shouldShowDragCue,
-        dragCueNode: new WASDCueNode( dragCueBoundsProperty ),
+        dragCueNode: wasdCueNode,
         grabDragCueModel: mass.grabDragCueModel,
         tandem: Tandem.OPT_OUT
       } );
@@ -229,6 +230,7 @@ export default abstract class MassView extends Disposable {
         this.focusablePath!.dispose();
 
         mass.transformedEmitter.removeListener( myListener );
+        wasdCueNode.dispose();
       } );
     }
     const resetListener = () => {

@@ -16,8 +16,6 @@ import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import Mass from '../model/Mass.js';
 import DensityBuoyancyCommonColors from './DensityBuoyancyCommonColors.js';
-import InterpolatedProperty from '../model/InterpolatedProperty.js';
-import Vector2 from '../../../../dot/js/Vector2.js';
 import { combineOptions } from '../../../../phet-core/js/optionize.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import { chooseDecimalPlaces } from '../DensityBuoyancyCommonConstants.js';
@@ -123,13 +121,18 @@ export default class ForceDiagramNode extends Node {
     const downwardArrows: ArrowNode[] = [];
     const labels: Node[] = [];
 
-    const updateArrow = ( forceProperty: InterpolatedProperty<Vector2> | BlendedVector2Property, showForceProperty: TReadOnlyProperty<boolean>, arrowNode: ArrowNode, textNode: Text, labelNode: Node ) => {
+    const updateArrow = ( forceProperty: BlendedVector2Property, showForceProperty: TReadOnlyProperty<boolean>, arrowNode: ArrowNode, textNode: Text, labelNode: Node ) => {
       const y = forceProperty.value.y;
-      if ( showForceProperty.value && Math.abs( y ) > 1e-5 ) {
+
+      // Set the threshold high enough to avoid flickering due to spurious values from the p2 engine, but low enough that
+      // forces will still add up correctly (they are rounded to nearest 0.1 when over 10 or 0.01 when under 10).
+      if ( showForceProperty.value && Math.abs( y ) >= 0.05 ) {
         arrowNode.setTip( 0, -y * this.displayProperties.vectorZoomProperty.value * 20 ); // Default zoom is 20 units per Newton
-        ( y > 0 ? upwardArrows : downwardArrows ).push( arrowNode );
+        const arrowNodes = y > 0 ? upwardArrows : downwardArrows;
+        arrowNodes.push( arrowNode );
 
         if ( this.displayProperties.forceValuesVisibleProperty.value ) {
+
           // We have a listener to the string that will call update
           textNode.string = StringUtils.fillIn( DensityBuoyancyCommonStrings.newtonsPatternStringProperty, {
             newtons: Utils.toFixed( forceProperty.value.magnitude, chooseDecimalPlaces( forceProperty.value.magnitude ) )
@@ -141,8 +144,8 @@ export default class ForceDiagramNode extends Node {
 
     // Documentation specifies that contact force should always be on the left if there are conflicts
     updateArrow( this.mass.contactForceBlendedProperty, this.displayProperties.contactForceVisibleProperty, this.contactArrowNode, this.contactLabelText, this.contactLabelNode );
-    updateArrow( this.mass.gravityForceInterpolatedProperty, this.displayProperties.gravityForceVisibleProperty, this.gravityArrowNode, this.gravityLabelText, this.gravityLabelNode );
-    updateArrow( this.mass.buoyancyForceInterpolatedProperty, this.displayProperties.buoyancyForceVisibleProperty, this.buoyancyArrowNode, this.buoyancyLabelText, this.buoyancyLabelNode );
+    updateArrow( this.mass.gravityForceBlendedProperty, this.displayProperties.gravityForceVisibleProperty, this.gravityArrowNode, this.gravityLabelText, this.gravityLabelNode );
+    updateArrow( this.mass.buoyancyForceBlendedProperty, this.displayProperties.buoyancyForceVisibleProperty, this.buoyancyArrowNode, this.buoyancyLabelText, this.buoyancyLabelNode );
 
     this.children = [
       ...upwardArrows,

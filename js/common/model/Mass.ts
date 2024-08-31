@@ -131,6 +131,8 @@ export default abstract class Mass extends PhetioObject {
   public readonly contactForceInterpolatedProperty: InterpolatedProperty<Vector2>;
 
   // A force with an interpolation to blend new values with old ones to avoid flickering
+  public readonly gravityForceBlendedProperty: BlendedVector2Property;
+  public readonly buoyancyForceBlendedProperty: BlendedVector2Property;
   public readonly contactForceBlendedProperty: BlendedVector2Property;
 
   public readonly forceOffsetProperty: Property<Vector3>;
@@ -365,9 +367,19 @@ export default abstract class Mass extends PhetioObject {
     } );
 
     this.contactForceBlendedProperty = new BlendedVector2Property( this.contactForceInterpolatedProperty.value );
+    this.gravityForceBlendedProperty = new BlendedVector2Property( this.gravityForceInterpolatedProperty.value );
+    this.buoyancyForceBlendedProperty = new BlendedVector2Property( this.buoyancyForceInterpolatedProperty.value );
+
     this.stepEmitter.addListener( () => {
+
       this.contactForceInterpolatedProperty.markNextLockedReadSafe();
       this.contactForceBlendedProperty.step( this.contactForceInterpolatedProperty.value );
+
+      this.gravityForceInterpolatedProperty.markNextLockedReadSafe();
+      this.gravityForceBlendedProperty.step( this.gravityForceInterpolatedProperty.value );
+
+      this.buoyancyForceInterpolatedProperty.markNextLockedReadSafe();
+      this.buoyancyForceBlendedProperty.step( this.buoyancyForceInterpolatedProperty.value );
     } );
 
     this.forceOffsetProperty = new Property( Vector3.ZERO, {

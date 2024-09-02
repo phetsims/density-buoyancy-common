@@ -18,6 +18,7 @@ import PhysicsEngine from '../../../common/model/PhysicsEngine.js';
 import { MassShape } from '../../../common/model/MassShape.js';
 import { flatDuckData } from './DuckData.js';
 import Ellipsoid, { EllipsoidOptions } from './Ellipsoid.js';
+import ConvexHull2 from '../../../../../dot/js/ConvexHull2.js';
 
 type SelfOptions = EmptySelfOptions;
 export type DuckOptions = SelfOptions & EllipsoidOptions;
@@ -68,7 +69,9 @@ export default class Duck extends Ellipsoid {
     const vertices = this.getFlatGeometry();
 
     // Scale the vertices to the given width and height
-    return vertices.map( vertex => vertex.componentTimes( new Vector2( width, height ) ) );
+    const vector2s = vertices.map( vertex => vertex.componentTimes( new Vector2( width, height ) ) );
+
+    return ConvexHull2.grahamScan( vector2s, false );
   }
 
   private static getFlatGeometry(): Vector2[] {

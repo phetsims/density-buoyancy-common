@@ -226,7 +226,7 @@ export default abstract class Mass extends PhetioObject {
     const tandem = options.tandem;
     this.userControlledProperty = new BooleanProperty( false, {
       tandem: tandem.createTandem( 'userControlledProperty' ),
-      phetioDocumentation: 'For internal use only',
+      phetioDocumentation: 'Indicates whether the user is currently controlling the item',
       phetioReadOnly: true,
       phetioState: false,
       phetioFeatured: true

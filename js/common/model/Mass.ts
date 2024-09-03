@@ -616,7 +616,8 @@ export default abstract class Mass extends PhetioObject {
 
     this.resetPosition();
 
-    this.grabDragCueModel.reset(); // TODO: who owns this for resetting? https://github.com/phetsims/scenery-phet/issues/867
+    // Reset here even though it duplicates the reset when the GrabDragInteraction is reset in MassView.
+    this.grabDragCueModel.reset();
 
     this.resetEmitter.emit();
   }

@@ -51,7 +51,6 @@ export default abstract class MassView extends Disposable {
   // The focusableShape for when the mouse or keyboard has focused the shape. It's an alternative to the emptyShapeProperty above
   public readonly focusableShapeProperty = new Property( new Shape() );
 
-  // TODO: Grab drag will handle interactive highlighting for us if we update the shape correctly, make this just a Node(). https://github.com/phetsims/scenery-phet/issues/869
   public readonly focusablePath: InteractiveHighlightingPath | null = null;
   private readonly grabDragInteraction: GrabDragInteraction | null = null;
 
@@ -100,10 +99,6 @@ export default abstract class MassView extends Disposable {
         // Prefer HighlightPath to HighlightFromNode here, since we must accommodate the empty shape when not highlighted
         focusHighlight: new HighlightPath( null ),
         interactiveHighlight: new HighlightPath( null ),
-
-        // TODO: GrabDragInteraction does this for us, https://github.com/phetsims/scenery-phet/issues/869
-        tagName: 'div',
-        focusable: true,
         inputEnabledProperty: mass.inputEnabledProperty
       } );
 

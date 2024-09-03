@@ -23,7 +23,7 @@ import MassDecorationLayer from './MassDecorationLayer.js';
 import MassThreeMesh from './MassThreeMesh.js';
 import { THREEModelViewTransform } from '../../../../mobius/js/MobiusScreenView.js';
 import sharedSoundPlayers from '../../../../tambo/js/sharedSoundPlayers.js';
-import GrabDragInteraction from '../../../../scenery-phet/js/accessibility/GrabDragInteraction.js';
+import GrabDragInteraction from '../../../../scenery-phet/js/accessibility/grab-drag/GrabDragInteraction.js';
 import Multilink from '../../../../axon/js/Multilink.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';

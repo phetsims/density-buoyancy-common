@@ -21,7 +21,7 @@ import { MaterialSchema } from '../../common/model/Mass.js';
 import optionize, { EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
 import propertyStateHandlerSingleton from '../../../../axon/js/propertyStateHandlerSingleton.js';
 import PropertyStatePhase from '../../../../axon/js/PropertyStatePhase.js';
-import { GrabDragCueModel } from '../../../../scenery-phet/js/accessibility/GrabDragInteraction.js';
+import { GrabDragCueModel } from '../../../../scenery-phet/js/accessibility/grab-drag/GrabDragInteraction.js';
 
 export type BuoyancyExploreModelOptions = DensityBuoyancyModelOptions;
 

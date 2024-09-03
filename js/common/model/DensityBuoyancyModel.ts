@@ -239,8 +239,11 @@ export default class DensityBuoyancyModel implements TModel {
             if ( mass !== otherMass ) {
               const horizontalForce = this.engine.bodyGetContactForceBetween( mass.body, otherMass.body ).x;
 
-              // Blocks should never experience +x forces (to the right) by this scale. If they do, they are trapped beneath it.
-              if ( horizontalForce > 0 && mass.getBounds().centerY > otherMass.getBounds().centerY ) {
+              // Blocks should never experience +x forces (to the right) by the PoolScale.
+              // If they do, they are trapped beneath it, so teleport them back to the left.
+              if ( horizontalForce > 0 && mass.getBounds().centerX < otherMass.getBounds().centerX ) {
+
+                otherMass.interruptedEmitter.emit();
 
                 const minSpacing = 0.1; // Ideal new spacing between the scale and the mass
                 const delta = otherMass.getBounds().maxX - mass.getBounds().minX + minSpacing;

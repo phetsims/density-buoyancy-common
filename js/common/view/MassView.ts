@@ -147,7 +147,6 @@ export default abstract class MassView extends Disposable {
           mass.grabDragCueModel.shouldShowDragCue = false;
           mass.updateDrag( mass.matrix.translation.add( listener.modelDelta ) );
         },
-        enabledProperty: mass.inputEnabledProperty,
         tandem: Tandem.OPT_OUT
       } );
 

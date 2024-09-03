@@ -100,6 +100,8 @@ export default abstract class MassView extends Disposable {
         // Prefer HighlightPath to HighlightFromNode here, since we must accommodate the empty shape when not highlighted
         focusHighlight: new HighlightPath( null ),
         interactiveHighlight: new HighlightPath( null ),
+
+        // TODO: GrabDragInteraction does this for us, https://github.com/phetsims/scenery-phet/issues/869
         tagName: 'div',
         focusable: true,
         inputEnabledProperty: mass.inputEnabledProperty

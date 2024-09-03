@@ -32,7 +32,7 @@ import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
 import { MaterialSchema } from '../../common/model/Mass.js';
 import PhysicsEngine from '../../common/model/PhysicsEngine.js';
-import { GrabDragCueModel } from '../../../../scenery-phet/js/accessibility/grab-drag/GrabDragInteraction.js';
+import GrabDragCueModel from '../../../../scenery-phet/js/accessibility/grab-drag/GrabDragCueModel.js';
 
 // constants
 const randomColors = [

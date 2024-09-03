@@ -28,7 +28,7 @@ import Multilink from '../../../../axon/js/Multilink.js';
 import PhysicsEngine from './PhysicsEngine.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import { MaterialSchema } from './Mass.js';
-import { GrabDragCueModel } from '../../../../scenery-phet/js/accessibility/grab-drag/GrabDragInteraction.js';
+import GrabDragCueModel from '../../../../scenery-phet/js/accessibility/grab-drag/GrabDragCueModel.js';
 
 assert && assert( BlockSet.enumeration.values.length === 3, 'This class is very hard coded for the three "SAME" values of BlockSet' );
 

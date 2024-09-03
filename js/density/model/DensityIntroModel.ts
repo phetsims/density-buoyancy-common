@@ -18,7 +18,7 @@ import TwoBlockMode from '../../common/model/TwoBlockMode.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import MassTag from '../../common/model/MassTag.js';
 import { MaterialSchema } from '../../common/model/Mass.js';
-import { GrabDragCueModel } from '../../../../scenery-phet/js/accessibility/grab-drag/GrabDragInteraction.js';
+import GrabDragCueModel from '../../../../scenery-phet/js/accessibility/grab-drag/GrabDragCueModel.js';
 
 export type DensityIntroModelOptions = DensityBuoyancyModelOptions;
 

@@ -40,7 +40,7 @@ import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js
 import MaterialProperty, { MaterialPropertyOptions } from './MaterialProperty.js';
 import DensityBuoyancyCommonQueryParameters from '../DensityBuoyancyCommonQueryParameters.js';
 import Disposable from '../../../../axon/js/Disposable.js';
-import { GrabDragCueModel } from '../../../../scenery-phet/js/accessibility/grab-drag/GrabDragInteraction.js';
+import GrabDragCueModel from '../../../../scenery-phet/js/accessibility/grab-drag/GrabDragCueModel.js';
 
 // For the Buoyancy Shapes screen, but needed here because setRatios is included in each core type
 // See https://github.com/phetsims/buoyancy/issues/29

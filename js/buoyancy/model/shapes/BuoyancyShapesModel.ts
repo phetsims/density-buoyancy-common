@@ -29,7 +29,7 @@ import optionize, { EmptySelfOptions } from '../../../../../phet-core/js/optioni
 import Ellipsoid from './Ellipsoid.js';
 import Cone from './Cone.js';
 import DerivedProperty from '../../../../../axon/js/DerivedProperty.js';
-import { GrabDragCueModel } from '../../../../../scenery-phet/js/accessibility/grab-drag/GrabDragInteraction.js';
+import GrabDragCueModel from '../../../../../scenery-phet/js/accessibility/grab-drag/GrabDragCueModel.js';
 
 export type BuoyancyShapesModelOptions = DensityBuoyancyModelOptions;
 

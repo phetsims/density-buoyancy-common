@@ -166,6 +166,8 @@ type StringsType = {
   'valuePercentStringProperty': LocalizedStringProperty;
   'fluidDisplacedStringProperty': LocalizedStringProperty;
   'depthLinesStringProperty': LocalizedStringProperty;
+  'itemLowercaseStringProperty': LocalizedStringProperty;
+  'itemTitlecaseStringProperty': LocalizedStringProperty;
 };
 
 const DensityBuoyancyCommonStrings = getStringModule( 'DENSITY_BUOYANCY_COMMON' ) as StringsType;

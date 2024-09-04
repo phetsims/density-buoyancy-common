@@ -14,12 +14,18 @@ import SliderControlsKeyboardHelpSection from '../../../../scenery-phet/js/keybo
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import ComboBoxKeyboardHelpSection from '../../../../scenery-phet/js/keyboard/help/ComboBoxKeyboardHelpSection.js';
 import KeyboardHelpSection from '../../../../scenery-phet/js/keyboard/help/KeyboardHelpSection.js';
+import GrabReleaseKeyboardHelpSection from '../../../../scenery-phet/js/keyboard/help/GrabReleaseKeyboardHelpSection.js';
+import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 
 export default class DensityBuoyancyCommonKeyboardHelpNode extends TwoColumnKeyboardHelpContent {
 
   public constructor( showSliderHelp: boolean, showChangeChoiceHelp: boolean ) {
 
     const leftColumn: KeyboardHelpSection[] = [
+      new GrabReleaseKeyboardHelpSection(
+        DensityBuoyancyCommonStrings.itemTitlecaseStringProperty,
+        DensityBuoyancyCommonStrings.itemLowercaseStringProperty
+      ),
       new MoveDraggableItemsKeyboardHelpSection()
     ];
 

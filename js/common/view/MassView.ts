@@ -94,8 +94,6 @@ export default abstract class MassView extends Disposable {
 
     if ( mass.canMove ) {
       this.focusablePath = new InteractiveHighlightingPath( this.focusableShapeProperty, {
-        accessibleName: this.mass.accessibleName,
-
         // Prefer HighlightPath to HighlightFromNode here, since we must accommodate the empty shape when not highlighted
         focusHighlight: new HighlightPath( null ),
         interactiveHighlight: new HighlightPath( null ),
@@ -172,7 +170,8 @@ export default abstract class MassView extends Disposable {
         showDragCueNode: () => mass.grabDragCueModel.shouldShowDragCue,
         dragCueNode: wasdCueNode,
         grabDragCueModel: mass.grabDragCueModel,
-        tandem: Tandem.OPT_OUT
+        tandem: Tandem.OPT_OUT,
+        objectToGrabString: this.mass.accessibleName
       } );
 
       const myListener = () => {

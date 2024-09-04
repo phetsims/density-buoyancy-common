@@ -133,7 +133,7 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
         // Reduce the pixel ratio on mobile safari to preserve memory and prevent crashing, see https://github.com/phetsims/density-buoyancy-common/issues/316
         threeRendererPixelRatio:
           QueryStringMachine.containsKey( 'threeRendererPixelRatio' ) ? MobiusQueryParameters.threeRendererPixelRatio :
-          platform.mobileSafari ? 1 :
+          platform.mobileSafari ? ( window.devicePixelRatio ? window.devicePixelRatio * 0.9 : 1 ) :
           MobiusQueryParameters.threeRendererPixelRatio
       },
       cameraLookAt: DensityBuoyancyCommonConstants.DENSITY_CAMERA_LOOK_AT,

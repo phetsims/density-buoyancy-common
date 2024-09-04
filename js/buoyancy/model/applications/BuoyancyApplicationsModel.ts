@@ -100,7 +100,7 @@ export default class BuoyancyApplicationsModel extends DensityBuoyancyModel {
 
     // DerivedProperty doesn't need disposal, since everything here lives for the lifetime of the simulation
     this.boat = new Boat( this.engine, new DerivedProperty( [ this.block.sizeProperty ], size => size.depth ), this.pool.fluidMaterialProperty, {
-      matrix: Matrix3.translation( 0, -0.1 ),
+      matrix: Matrix3.translation( 0.08, -0.1 ),
       tandem: objectsTandem.createTandem( 'boat' ),
       visible: this.applicationModeProperty.value === 'boat'
     } );
@@ -140,12 +140,13 @@ export default class BuoyancyApplicationsModel extends DensityBuoyancyModel {
   }
 
   /**
-   * Moves the boat and block to their initial locations (see https://github.com/phetsims/buoyancy/issues/25)
+   * Moves the boat and block to their initial positions. Does not change the volume of boat or block. This is designed
+   * to allow the student to re-float a sunken boat.
    */
-  public restartBoatScene(): void {
+  public resetBoatAndBlockPosition(): void {
     this.pool.reset( false );
     this.block.resetPosition();
-    this.boat.reset( false );
+    this.boat.resetPosition();
 
     this.spillingFluidOutOfBoat = false;
   }

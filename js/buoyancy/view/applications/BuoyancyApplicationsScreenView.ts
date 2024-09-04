@@ -70,9 +70,7 @@ export default class BuoyancyApplicationsScreenView extends BuoyancyScreenView<B
       xMargin: 5,
       yMargin: 3,
       baseColor: new Color( 220, 220, 220 ),
-      listener: () => {
-        model.restartBoatScene();
-      },
+      listener: () => model.resetBoatAndBlockPosition(),
       visibleProperty: new GatedVisibleProperty(
         new DerivedProperty( [ model.applicationModeProperty ], scene => scene === 'boat' ),
         resetBoatButtonTandem ),

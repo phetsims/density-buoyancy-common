@@ -58,6 +58,8 @@ import GroundTopMesh from './mesh/GroundTopMesh.js';
 import PoolMesh from './mesh/PoolMesh.js';
 import BarrierMesh from './mesh/BarrierMesh.js';
 import FluidMesh from './mesh/FluidMesh.js';
+import platform from '../../../../phet-core/js/platform.js';
+import MobiusQueryParameters from '../../../../mobius/js/MobiusQueryParameters.js';
 
 // constants
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN_SMALL;
@@ -118,7 +120,21 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
         },
 
         // So the sky background will show through
-        backgroundColorProperty: new ColorProperty( Color.TRANSPARENT )
+        backgroundColorProperty: new ColorProperty( Color.TRANSPARENT ),
+
+        threeRendererOptions: {
+
+          // Reduce memory usage on mobile safari to prevent crashing by turning off antialiasing, see https://github.com/phetsims/density-buoyancy-common/issues/316.
+          antialias: QueryStringMachine.containsKey( 'threeRendererAntialias' ) ? MobiusQueryParameters.threeRendererAntialias :
+                     platform.mobileSafari ? false :
+                     MobiusQueryParameters.threeRendererAntialias
+        },
+
+        // Reduce the pixel ratio on mobile safari to preserve memory and prevent crashing, see https://github.com/phetsims/density-buoyancy-common/issues/316
+        threeRendererPixelRatio:
+          QueryStringMachine.containsKey( 'threeRendererPixelRatio' ) ? MobiusQueryParameters.threeRendererPixelRatio :
+          platform.mobileSafari ? 1 :
+          MobiusQueryParameters.threeRendererPixelRatio
       },
       cameraLookAt: DensityBuoyancyCommonConstants.DENSITY_CAMERA_LOOK_AT,
       cameraZoom: 1.75 * scaleIncrease,
@@ -178,7 +194,7 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
 
       // TODO: Don't we want to clear out the cursor if we don't have a pointer? https://github.com/phetsims/density-buoyancy-common/issues/363
       if ( newPointer ) {
-        
+
         // When the mouse hovers over a mass, show the cursor hand
         const massUnderPointerEntry = this.getMassViewUnderPointer( newPointer );
         if ( newPointer instanceof Mouse ) {

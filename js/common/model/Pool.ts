@@ -161,9 +161,9 @@ export default class Pool extends Basin {
    * @param okToResetScale - flag to indicate whether the pool scale can be reset. For instance, when resetting the boat
    *                       - scene, reset everything except the scale, see https://github.com/phetsims/buoyancy/issues/179
    */
-  public override reset( okToResetScale = true ): void {
+  public override reset( okToResetScale = true, okToResetFluidMaterial = true ): void {
     super.reset();
-    this.fluidMaterialProperty.reset();
+    okToResetFluidMaterial && this.fluidMaterialProperty.reset();
     okToResetScale && this.scale && this.scale.reset();
   }
 }

@@ -158,7 +158,7 @@ export default class BuoyancyApplicationsModel extends DensityBuoyancyModel {
     this.boat.basin.fluidVolumeProperty.value = 0;
     this.boat.basin.computeY();
 
-    this.pool.reset( false );
+    this.pool.reset( false, false );
   }
 
   /**

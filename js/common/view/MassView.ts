@@ -137,7 +137,7 @@ export default abstract class MassView extends Disposable {
         // This is needed for keyboard but not for mouse/touch because keyboard input applies deltas, not absolute positions
         transform: INVERT_Y_TRANSFORM,
         drag: ( event, listener ) => {
-          mass.grabDragCueModel.shouldShowDragCue = false;
+          mass.grabDragUsageTracker.shouldShowDragCue = false;
           mass.updateDrag( mass.matrix.translation.add( listener.modelDelta ) );
         },
         tandem: Tandem.OPT_OUT
@@ -167,9 +167,9 @@ export default abstract class MassView extends Disposable {
           // than manually tracking other forms of input (like mouse/touch).
           mass.interruptedEmitter.hasListener( endKeyboardInteraction ) && endKeyboardInteraction();
         },
-        showDragCueNode: () => mass.grabDragCueModel.shouldShowDragCue,
+        showDragCueNode: () => mass.grabDragUsageTracker.shouldShowDragCue,
         dragCueNode: wasdCueNode,
-        grabDragCueModel: mass.grabDragCueModel,
+        grabDragUsageTracker: mass.grabDragUsageTracker,
         tandem: Tandem.OPT_OUT,
         objectToGrabString: this.mass.accessibleName
       } );

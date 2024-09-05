@@ -28,7 +28,7 @@ import Multilink from '../../../../axon/js/Multilink.js';
 import PhysicsEngine from './PhysicsEngine.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import { MaterialSchema } from './Mass.js';
-import GrabDragCueModel from '../../../../scenery-phet/js/accessibility/grab-drag/GrabDragCueModel.js';
+import GrabDragUsageTracker from '../../../../scenery-phet/js/accessibility/grab-drag/GrabDragUsageTracker.js';
 
 assert && assert( BlockSet.enumeration.values.length === 3, 'This class is very hard coded for the three "SAME" values of BlockSet' );
 
@@ -93,7 +93,7 @@ export default class CompareBlockSetModel extends BlockSetModel<BlockSet> {
       initialMaterials: [],
 
       sharedCubeOptions: {
-        grabDragCueModel: new GrabDragCueModel(),
+        grabDragUsageTracker: new GrabDragUsageTracker(),
         materialPropertyOptions: {
           phetioReadOnly: true // See https://github.com/phetsims/density-buoyancy-common/issues/270#issuecomment-2243371397
         }

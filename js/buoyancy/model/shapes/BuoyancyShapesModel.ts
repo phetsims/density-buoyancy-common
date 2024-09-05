@@ -29,7 +29,7 @@ import optionize, { EmptySelfOptions } from '../../../../../phet-core/js/optioni
 import Ellipsoid from './Ellipsoid.js';
 import Cone from './Cone.js';
 import DerivedProperty from '../../../../../axon/js/DerivedProperty.js';
-import GrabDragCueModel from '../../../../../scenery-phet/js/accessibility/grab-drag/GrabDragCueModel.js';
+import GrabDragUsageTracker from '../../../../../scenery-phet/js/accessibility/grab-drag/GrabDragUsageTracker.js';
 
 export type BuoyancyShapesModelOptions = DensityBuoyancyModelOptions;
 
@@ -44,7 +44,7 @@ export default class BuoyancyShapesModel extends DensityBuoyancyModel {
   public readonly materialProperty: MaterialProperty;
   private readonly availableMaterials: Material[];
 
-  private readonly grabDragCueModel = new GrabDragCueModel();
+  private readonly grabDragUsageTracker = new GrabDragUsageTracker();
 
   public constructor( providedOptions: BuoyancyShapesModelOptions ) {
 
@@ -109,7 +109,7 @@ export default class BuoyancyShapesModel extends DensityBuoyancyModel {
       maxVolume: Cuboid.MAX_VOLUME, // Cubes are the highest volume object in this screen
       tandem: tandem,
       tag: tag,
-      grabDragCueModel: this.grabDragCueModel // All Mass shapes except the scale share the same interaction model, see https://github.com/phetsims/density-buoyancy-common/issues/368
+      grabDragUsageTracker: this.grabDragUsageTracker // All Mass shapes except the scale share the same interaction model, see https://github.com/phetsims/density-buoyancy-common/issues/368
     };
 
     let mass: Mass;

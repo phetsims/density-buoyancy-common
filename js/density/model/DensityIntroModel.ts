@@ -18,7 +18,7 @@ import TwoBlockMode from '../../common/model/TwoBlockMode.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import MassTag from '../../common/model/MassTag.js';
 import { MaterialSchema } from '../../common/model/Mass.js';
-import GrabDragCueModel from '../../../../scenery-phet/js/accessibility/grab-drag/GrabDragCueModel.js';
+import GrabDragUsageTracker from '../../../../scenery-phet/js/accessibility/grab-drag/GrabDragUsageTracker.js';
 
 export type DensityIntroModelOptions = DensityBuoyancyModelOptions;
 
@@ -50,12 +50,12 @@ export default class DensityIntroModel extends DensityBuoyancyModel {
       'CUSTOM'
     ];
 
-    const grabDragCueModel = new GrabDragCueModel();
+    const grabDragUsageTracker = new GrabDragUsageTracker();
     this.blockA = Cube.createWithMass( this.engine, Material.WOOD, new Vector2( -0.2, 0.2 ), 2, {
       tag: MassTag.OBJECT_A,
       tandem: blocksTandem.createTandem( 'blockA' ),
       availableMassMaterials: availableMassMaterials,
-      grabDragCueModel: grabDragCueModel
+      grabDragUsageTracker: grabDragUsageTracker
     } );
     this.availableMasses.push( this.blockA );
     this.blockB = Cube.createWithMass( this.engine, Material.ALUMINUM, new Vector2( 0.2, 0.2 ), 13.5, {
@@ -63,7 +63,7 @@ export default class DensityIntroModel extends DensityBuoyancyModel {
       tandem: blocksTandem.createTandem( 'blockB' ),
       availableMassMaterials: availableMassMaterials,
       visible: this.modeProperty.value === TwoBlockMode.TWO_BLOCKS,
-      grabDragCueModel: grabDragCueModel
+      grabDragUsageTracker: grabDragUsageTracker
     } );
     this.availableMasses.push( this.blockB );
 

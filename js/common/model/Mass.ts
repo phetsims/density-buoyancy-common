@@ -40,7 +40,7 @@ import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js
 import MaterialProperty, { MaterialPropertyOptions } from './MaterialProperty.js';
 import DensityBuoyancyCommonQueryParameters from '../DensityBuoyancyCommonQueryParameters.js';
 import Disposable from '../../../../axon/js/Disposable.js';
-import GrabDragCueModel from '../../../../scenery-phet/js/accessibility/grab-drag/GrabDragCueModel.js';
+import GrabDragUsageTracker from '../../../../scenery-phet/js/accessibility/grab-drag/GrabDragUsageTracker.js';
 
 // For the Buoyancy Shapes screen, but needed here because setRatios is included in each core type
 // See https://github.com/phetsims/buoyancy/issues/29
@@ -75,7 +75,7 @@ type SelfOptions = {
   minVolume?: number;
   maxVolume?: number;
 
-  grabDragCueModel?: GrabDragCueModel;
+  grabDragUsageTracker?: GrabDragUsageTracker;
 };
 
 export type MassOptions = SelfOptions & PhetioObjectOptions;
@@ -185,7 +185,7 @@ export default abstract class Mass extends PhetioObject {
   // accessibility within user input, and when studio launches a Standard PhET-iO Wrapper, the model
   // data about the interaction should zero out, not preserved in the state.
   // NOTE: This is unused for the PoolScale, since it is controlled by a slider
-  public readonly grabDragCueModel: GrabDragCueModel;
+  public readonly grabDragUsageTracker: GrabDragUsageTracker;
 
   protected constructor( engine: PhysicsEngine, providedOptions: MassOptions ) {
 
@@ -206,9 +206,9 @@ export default abstract class Mass extends PhetioObject {
       minVolume: 0,
       maxVolume: Number.POSITIVE_INFINITY,
 
-      // By default, each Mass keeps track of its own interaction. Pass in a shared grabDragCueModel in cases where the simulation
+      // By default, each Mass keeps track of its own interaction. Pass in a shared grabDragUsageTracker in cases where the simulation
       // should hide the grab/drag UI hints for one Mass after interacting with another Mass
-      grabDragCueModel: new GrabDragCueModel()
+      grabDragUsageTracker: new GrabDragUsageTracker()
     }, providedOptions );
 
     assert && assert( options.body, 'options.body required' );
@@ -428,7 +428,7 @@ export default abstract class Mass extends PhetioObject {
 
     this.originalMatrix = this.matrix.copy();
 
-    this.grabDragCueModel = options.grabDragCueModel;
+    this.grabDragUsageTracker = options.grabDragUsageTracker;
 
     Multilink.multilink( [
       this.shapeProperty,
@@ -617,7 +617,7 @@ export default abstract class Mass extends PhetioObject {
     this.resetPosition();
 
     // Reset here even though it duplicates the reset when the GrabDragInteraction is reset in MassView.
-    this.grabDragCueModel.reset();
+    this.grabDragUsageTracker.reset();
 
     this.resetEmitter.emit();
   }

@@ -32,7 +32,7 @@ import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
 import { MaterialSchema } from '../../common/model/Mass.js';
 import PhysicsEngine from '../../common/model/PhysicsEngine.js';
-import GrabDragCueModel from '../../../../scenery-phet/js/accessibility/grab-drag/GrabDragCueModel.js';
+import GrabDragUsageTracker from '../../../../scenery-phet/js/accessibility/grab-drag/GrabDragUsageTracker.js';
 
 // constants
 const randomColors = [
@@ -92,7 +92,7 @@ export default class DensityMysteryModel extends BlockSetModel<MysteryBlockSet> 
       ] satisfies MaterialSchema[],
 
       // Shared to all Masses on this screen
-      grabDragCueModel: new GrabDragCueModel()
+      grabDragUsageTracker: new GrabDragUsageTracker()
     };
 
     let densities: number[];

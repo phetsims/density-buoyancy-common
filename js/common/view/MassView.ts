@@ -173,7 +173,7 @@ export default abstract class MassView extends Disposable {
         objectToGrabString: this.mass.accessibleName
       } );
 
-      const myListener = () => {
+      const massTransformedListener = () => {
 
         if ( this.focusablePath && this.grabDragInteraction && !this.focusablePath.isDisposed ) {
 
@@ -215,8 +215,8 @@ export default abstract class MassView extends Disposable {
       // Update the focusablePath shape when the mass is transformed. We are uncertain why we need to update this after
       // both the mass.transformedEmitter and the sceneNodeRenderedEmitter, but both are required or the shape will
       // lag or advance by a frame, see https://github.com/phetsims/density-buoyancy-common/issues/209
-      this.sceneNodeRenderedEmitter.addListener( myListener );
-      mass.transformedEmitter.addListener( myListener );
+      this.sceneNodeRenderedEmitter.addListener( massTransformedListener );
+      mass.transformedEmitter.addListener( massTransformedListener );
 
       this.disposeEmitter.addListener( () => {
 
@@ -224,7 +224,7 @@ export default abstract class MassView extends Disposable {
         keyboardDragListener.dispose();
         this.focusablePath!.dispose();
 
-        mass.transformedEmitter.removeListener( myListener );
+        mass.transformedEmitter.removeListener( massTransformedListener );
         wasdCueNode.dispose();
       } );
     }

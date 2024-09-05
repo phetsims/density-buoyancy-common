@@ -587,6 +587,11 @@ export default abstract class Mass extends PhetioObject {
     PhysicsEngine.bodySynchronizePrevious( this.body );
   }
 
+  // There is no instrumented view, and we don't have any strings to show. Always return ourselves, see https://github.com/phetsims/density-buoyancy-common/issues/387
+  public override getPhetioMouseHitTarget( fromLinking = false ): PhetioObject | 'phetioNotSelectable' {
+    return this;
+  }
+
   /**
    * Resets things to their original values.
    *

@@ -147,10 +147,10 @@ export default abstract class MassView extends Disposable {
 
       const wasdCueNode = new WASDCueNode( dragCueBoundsProperty );
       this.grabDragInteraction = new GrabDragInteraction( this.focusablePath, keyboardDragListener, {
-        onGrab( event ) {
+        onGrab: () => {
 
           // Do not start a mass drag from GrabDragInteraction unless it is from keyboard input.
-          if ( !event.isFromPDOM() ) {
+          if ( this.grabDragInteraction!.pressReleaseListener.isPressed ) {
             return;
           }
 
@@ -161,7 +161,7 @@ export default abstract class MassView extends Disposable {
           grabSoundPlayer.play();
           mass.startDrag( mass.matrix.translation );
         },
-        onRelease() {
+        onRelease: () => {
 
           // This is an awkward metric to determine if the GrabDrag is in control of input at this time. It is easier
           // than manually tracking other forms of input (like mouse/touch).

@@ -26,6 +26,7 @@ import DensityBuoyancyCommonConstants, { toLiters } from '../../../common/Densit
 import NumberProperty from '../../../../../axon/js/NumberProperty.js';
 import Pool from '../../../common/model/Pool.js';
 import MaterialProperty from '../../../common/model/MaterialProperty.js';
+import DensityBuoyancyCommonStrings from '../../../DensityBuoyancyCommonStrings.js';
 
 export type BoatOptions = StrictOmit<ApplicationsMassOptions,
   'body' | 'shape' | 'volume' | 'material' | 'massShape' | 'availableMassMaterials'>;
@@ -68,7 +69,7 @@ export default class Boat extends ApplicationsMass {
       material: Material.BOAT_HULL,
       availableMassMaterials: [ Material.BOAT_HULL ],
 
-      accessibleName: 'Boat',
+      accessibleName: DensityBuoyancyCommonStrings.boatStringProperty,
 
       volumePropertyOptions: {
         phetioDocumentation: 'Volume of the boat hull.'

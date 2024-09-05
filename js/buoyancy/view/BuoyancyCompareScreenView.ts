@@ -88,7 +88,8 @@ export default class BuoyancyCompareScreenView extends BuoyancyScreenView<Buoyan
     // Materials are set in densityBox.setMaterials() below
     const densityComparisonAccordionBox = new DensityAccordionBox( DensityBuoyancyCommonStrings.densityComparisonStringProperty, {
       contentWidthMax: this.rightSideMaxContentWidthProperty,
-      tandem: options.tandem.createTandem( 'densityComparisonAccordionBox' )
+      tandem: options.tandem.createTandem( 'densityComparisonAccordionBox' ),
+      accessibleName: DensityBuoyancyCommonStrings.densityComparisonStringProperty
     } );
 
     const percentSubmergedAccordionBox = new SubmergedAccordionBox( {

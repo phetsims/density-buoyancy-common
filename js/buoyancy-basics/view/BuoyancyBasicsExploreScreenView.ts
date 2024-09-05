@@ -68,7 +68,8 @@ export default class BuoyancyBasicsExploreScreenView extends BuoyancyScreenView<
 
     const densityComparisonAccordionBox = new DensityAccordionBox( DensityBuoyancyCommonStrings.densityComparisonStringProperty, {
       contentWidthMax: this.rightBox.content.width,
-      tandem: tandem.createTandem( 'densityComparisonAccordionBox' )
+      tandem: tandem.createTandem( 'densityComparisonAccordionBox' ),
+      accessibleName: DensityBuoyancyCommonStrings.densityComparisonStringProperty
     } );
 
     const percentSubmergedAccordionBox = new SubmergedAccordionBox( {

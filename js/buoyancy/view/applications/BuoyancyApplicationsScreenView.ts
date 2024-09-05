@@ -74,7 +74,9 @@ export default class BuoyancyApplicationsScreenView extends BuoyancyScreenView<B
       visibleProperty: new GatedVisibleProperty(
         new DerivedProperty( [ model.applicationModeProperty ], scene => scene === 'boat' ),
         resetBoatButtonTandem ),
-      tandem: resetBoatButtonTandem
+      tandem: resetBoatButtonTandem,
+      accessibleName: DensityBuoyancyCommonStrings.a11y.resetBoatStringProperty,
+      containerTagName: 'p'
     } );
     this.addChild( resetBoatButton );
 

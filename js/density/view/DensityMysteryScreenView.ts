@@ -74,7 +74,7 @@ export default class DensityMysteryScreenView extends DensityBuoyancyScreenView<
       },
       iconHeight: 20,
       tandem: blocksPanelTandem.createTandem( 'randomBlocksRefreshButton' ),
-      accessibleName: 'Random Block Refresh'
+      accessibleName: DensityBuoyancyCommonStrings.a11y.randomBlockRefreshStringProperty
     } );
     const blockSetContent = new VBox( {
       spacing: DensityBuoyancyCommonConstants.SPACING_SMALL

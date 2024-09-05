@@ -168,6 +168,12 @@ type StringsType = {
   'depthLinesStringProperty': LocalizedStringProperty;
   'itemLowercaseStringProperty': LocalizedStringProperty;
   'itemTitlecaseStringProperty': LocalizedStringProperty;
+  'a11y': {
+    'infoStringProperty': LocalizedStringProperty;
+    'resetBoatStringProperty': LocalizedStringProperty;
+    'randomBlockRefreshStringProperty': LocalizedStringProperty;
+    'scaleStringProperty': LocalizedStringProperty;
+  }
 };
 
 const DensityBuoyancyCommonStrings = getStringModule( 'DENSITY_BUOYANCY_COMMON' ) as StringsType;

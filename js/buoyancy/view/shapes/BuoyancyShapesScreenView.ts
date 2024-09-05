@@ -78,7 +78,7 @@ export default class BuoyancyShapesScreenView extends BuoyancyScreenView<Buoyanc
     const infoButtonTandem = tandem.createTandem( 'infoButton' );
     const infoDialog = new ShapesInfoDialog( infoButtonTandem.createTandem( 'infoDialog' ) );
     const infoButton = new InfoButton( {
-      accessibleName: 'infoButton',
+      accessibleName: DensityBuoyancyCommonStrings.a11y.infoStringProperty,
       scale: 0.5,
       iconFill: 'rgb( 41, 106, 163 )',
       touchAreaDilation: 20,

@@ -26,6 +26,7 @@ import { MassShape } from './MassShape.js';
 import PickOptional from '../../../../phet-core/js/types/PickOptional.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
 import GravityProperty from './GravityProperty.js';
+import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 
 // constants
 export const SCALE_WIDTH = 0.15;
@@ -93,7 +94,7 @@ export default class Scale extends Mass {
       material: Material.PLATINUM,
       availableMassMaterials: [ Material.PLATINUM ],
 
-      accessibleName: 'Scale',
+      accessibleName: DensityBuoyancyCommonStrings.a11y.scaleStringProperty,
 
       inputEnabledPropertyOptions: {
         phetioReadOnly: true

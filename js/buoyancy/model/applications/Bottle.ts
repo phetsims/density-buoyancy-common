@@ -238,7 +238,7 @@ export default class Bottle extends ApplicationsMass {
       },
       massShape: MassShape.BLOCK,
 
-      accessibleName: 'Bottle',
+      accessibleName: DensityBuoyancyCommonStrings.bottleStringProperty,
 
       volumePropertyOptions: {
         phetioDocumentation: 'Volume of the bottle.'

@@ -167,7 +167,6 @@ export default abstract class MassView extends Disposable {
           // than manually tracking other forms of input (like mouse/touch).
           mass.interruptedEmitter.hasListener( endKeyboardInteraction ) && endKeyboardInteraction();
         },
-        showDragCueNode: () => mass.grabDragUsageTracker.shouldShowDragCue,
         dragCueNode: wasdCueNode,
         grabDragUsageTracker: mass.grabDragUsageTracker,
         tandem: Tandem.OPT_OUT,

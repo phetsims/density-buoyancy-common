@@ -94,7 +94,12 @@ export default class BuoyancyApplicationsModel extends DensityBuoyancyModel {
     this.block = Cube.createWithVolume( this.engine, Material.BRICK, new Vector2( -0.5, 0.3 ), 0.001, {
       visible: this.applicationModeProperty.value === 'boat',
       tandem: objectsTandem.createTandem( 'block' ),
-      availableMassMaterials: availableMassMaterials
+      availableMassMaterials: availableMassMaterials,
+      customMaterialOptions: {
+        densityPropertyOptions: {
+          phetioReadOnly: true // Controlled by mass and volume
+        }
+      }
     } );
     this.availableMasses.push( this.block );
 

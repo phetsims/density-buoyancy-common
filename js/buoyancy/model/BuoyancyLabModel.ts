@@ -46,7 +46,12 @@ export default class BuoyancyLabModel extends DensityBuoyancyModel {
 
     this.block = Cube.createWithMass( this.engine, Material.WOOD, new Vector2( -0.2, 0.2 ), 2, {
       tandem: options.tandem.createTandem( 'block' ),
-      availableMassMaterials: availableMassMaterials
+      availableMassMaterials: availableMassMaterials,
+      customMaterialOptions: {
+        densityPropertyOptions: {
+          phetioReadOnly: true // Controlled by mass and volume
+        }
+      }
     } );
     this.availableMasses.push( this.block );
 

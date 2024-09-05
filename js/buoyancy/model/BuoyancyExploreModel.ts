@@ -58,7 +58,12 @@ export default class BuoyancyExploreModel extends DensityBuoyancyModel {
       tag: MassTag.OBJECT_A,
       tandem: blocksTandem.createTandem( 'blockA' ),
       availableMassMaterials: availableMassMaterials,
-      grabDragUsageTracker: grabDragUsageTracker
+      grabDragUsageTracker: grabDragUsageTracker,
+      customMaterialOptions: {
+        densityPropertyOptions: {
+          phetioReadOnly: true // Controlled by mass and volume
+        }
+      }
     } );
     this.availableMasses.push( this.blockA );
     this.blockB = Cube.createWithMass( this.engine, Material.ALUMINUM, new Vector2( 0.05, 0.35 ), 13.5, {
@@ -66,7 +71,12 @@ export default class BuoyancyExploreModel extends DensityBuoyancyModel {
       tandem: blocksTandem.createTandem( 'blockB' ),
       availableMassMaterials: availableMassMaterials,
       visible: this.modeProperty.value === TwoBlockMode.TWO_BLOCKS,
-      grabDragUsageTracker: grabDragUsageTracker
+      grabDragUsageTracker: grabDragUsageTracker,
+      customMaterialOptions: {
+        densityPropertyOptions: {
+          phetioReadOnly: true // Controlled by mass and volume
+        }
+      }
     } );
     this.availableMasses.push( this.blockB );
 

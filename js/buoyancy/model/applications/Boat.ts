@@ -122,7 +122,7 @@ export default class Boat extends ApplicationsMass {
 
     this.fluidMaterialProperty = fluidMaterialProperty;
 
-    this.basin = new BoatBasin( this );
+    this.basin = new BoatBasin( this, options.tandem );
 
     Multilink.multilink( [ this.fluidMaterialProperty, this.basin.fluidVolumeProperty ], ( material, volume ) => {
       this.containedMassProperty.value = material.density * volume;

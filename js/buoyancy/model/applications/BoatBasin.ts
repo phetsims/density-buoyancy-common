@@ -27,11 +27,11 @@ export default class BoatBasin extends Basin {
   // Used for intersection
   public readonly oneLiterShape = Shape.polygon( BoatDesign.getBasinOneLiterVertices() );
 
-  public constructor( private readonly boat: Boat ) {
+  public constructor( private readonly boat: Boat, tandem: Tandem ) {
     super( {
       initialVolume: 0,
       initialY: 0,
-      tandem: Tandem.OPT_OUT
+      tandem: tandem
     } );
   }
 

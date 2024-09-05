@@ -144,11 +144,21 @@ export default class BuoyancyApplicationsModel extends DensityBuoyancyModel {
    * to allow the student to re-float a sunken boat.
    */
   public resetBoatAndBlockPosition(): void {
-    this.pool.reset( false );
+
     this.block.resetPosition();
     this.boat.resetPosition();
 
+    // Reset boat's other variables
+    this.boat.isFullySubmerged = false;
+    this.boat.verticalVelocity = 0;
+    this.boat.verticalAcceleration = 0;
+
     this.spillingFluidOutOfBoat = false;
+
+    this.boat.basin.fluidVolumeProperty.value = 0;
+    this.boat.basin.computeY();
+
+    this.pool.reset( false );
   }
 
   /**

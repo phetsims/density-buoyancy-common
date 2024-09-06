@@ -190,27 +190,31 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
     this.sceneNode.stage.threeCamera.updateMatrixWorld( true );
     this.sceneNode.stage.threeCamera.updateProjectionMatrix();
 
-    const updatePointerOver = ( newPointer?: Pointer ) => {
+    const updatePointerOver = ( pointer: Pointer ) => {
 
-      // TODO: Don't we want to clear out the cursor if we don't have a pointer? https://github.com/phetsims/density-buoyancy-common/issues/363
-      if ( newPointer ) {
-
-        // When the mouse hovers over a mass, show the cursor hand
-        const massUnderPointerEntry = this.getMassViewUnderPointer( newPointer );
-        if ( newPointer instanceof Mouse ) {
-          this.sceneNode.backgroundEventTarget.cursor = massUnderPointerEntry ? 'pointer' : null;
-        }
-
-        // This also needs to support touch, see https://github.com/phetsims/density-buoyancy-common/issues/363
-        this.massViews.forEach( massView => {
-          massView.isCursorOverProperty.value = massView === massUnderPointerEntry?.massView;
-        } );
+      // When the mouse hovers over a mass, show the cursor hand
+      const massUnderPointerEntry = this.getMassViewUnderPoint( pointer.point );
+      if ( pointer instanceof Mouse ) {
+        this.sceneNode.backgroundEventTarget.cursor = massUnderPointerEntry ? 'pointer' : null;
       }
+
+      // This also needs to support touch, see https://github.com/phetsims/density-buoyancy-common/issues/363
+      this.massViews.forEach( massView => {
+        massView.isCursorOverProperty.value = massView === massUnderPointerEntry?.massView;
+      } );
+    };
+
+    // Clear out the cursor if we don't have a pointer, see https://github.com/phetsims/density-buoyancy-common/issues/363
+    const clearPointerOver = () => {
+      this.sceneNode.backgroundEventTarget.cursor = null;
+      this.massViews.forEach( massView => {
+        massView.isCursorOverProperty.value = false;
+      } );
     };
 
     const backgroundEventTargetListener = new BackgroundEventTargetListener(
       this.massViews,
-      this.getMassViewUnderPointer.bind( this ),
+      this.getMassViewUnderPoint.bind( this ),
       this.sceneNode.getRayFromScreenPoint.bind( this.sceneNode ),
       point => this.localToGlobalPoint( this.modelToViewPoint( point ) ),
       updatePointerOver,
@@ -220,8 +224,8 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
 
     // On re-layout or zoom, update the cursor also
     // This instance lives for the lifetime of the simulation, so we don't need to remove these listeners
-    this.transformEmitter.addListener( updatePointerOver );
-    animatedPanZoomSingleton.listener.matrixProperty.lazyLink( () => updatePointerOver() );
+    this.transformEmitter.addListener( clearPointerOver );
+    animatedPanZoomSingleton.listener.matrixProperty.lazyLink( clearPointerOver );
 
     const ambientLight = new THREE.AmbientLight( 0x333333 );
     this.sceneNode.stage.threeScene.add( ambientLight );
@@ -375,25 +379,10 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
     }
   }
 
-
   /**
-   * Returns the closest grab-able mass under the pointer/
+   * Returns the interactive mass under the pointer that is closest to the ray origin.
    */
-  private getMassViewUnderPointer( pointer: Pointer ): PointedAtMassView | null {
-    const point = pointer.point;
-
-    // TODO: This doesn't seem to ever support null, delete? Added inhttps://github.com/phetsims/density-buoyancy-common/commit/55f8bf9a7ed1335e42de81396140ceae54ccd970
-    //       https://github.com/phetsims/density-buoyancy-common/issues/363
-    if ( point === null ) {
-      return null;
-    }
-    return this.getMassViewUnderPoint( point, 'input' );
-  }
-
-  /**
-   * Returns the closest grab-able mass under the point
-   */
-  private getMassViewUnderPoint( point: Vector2, mode: 'autoselect' | 'input' ): PointedAtMassView | null {
+  private getMassViewUnderPoint( point: Vector2, mode: 'autoselect' | 'input' = 'input' ): PointedAtMassView | null {
     const ray = this.sceneNode.getRayFromScreenPoint( point );
 
     const entries: PointedAtMassView[] = [];

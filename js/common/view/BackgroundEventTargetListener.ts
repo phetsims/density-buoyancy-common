@@ -36,7 +36,7 @@ export default class BackgroundEventTargetListener implements TInputListener {
 
   // Using a "create" function here because that makes it easier to implement TInputListener
   public constructor( private readonly massViews: MassView[],
-                      private readonly getMassViewUnderPointer: DensityBuoyancyScreenView<DensityBuoyancyModel>['getMassViewUnderPointer'],
+                      private readonly getMassViewUnderPoint: DensityBuoyancyScreenView<DensityBuoyancyModel>['getMassViewUnderPoint'],
                       private readonly getRayFromScreenPoint: ThreeIsometricNode['getRayFromScreenPoint'],
                       private readonly modelToGlobalViewPoint: ( point: Vector3 ) => Vector2,
                       private readonly updatePointerOver: ( pointer: Pointer ) => void,
@@ -90,7 +90,7 @@ export default class BackgroundEventTargetListener implements TInputListener {
     if ( !event.canStartPress() ) { return; }
 
     const pointer = event.pointer;
-    const massEntry = this.getMassViewUnderPointer( pointer );
+    const massEntry = this.getMassViewUnderPoint( pointer.point );
 
     if ( massEntry && massEntry.massView.mass.canMove ) {
       const mass = massEntry.massView.mass;

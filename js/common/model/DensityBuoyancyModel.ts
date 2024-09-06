@@ -399,6 +399,20 @@ export default class DensityBuoyancyModel implements TModel {
 
     this.visibleMasses.forEach( mass => {
       mass.step( dt, this.engine.interpolationRatio );
+
+      // If the mass is under the pool (likely because user forced it there), interrupt dragging and move it back up.
+      if ( !( mass instanceof Scale ) && mass.matrix.m12() < this.poolBounds.minY ) {
+        mass.interruptedEmitter.emit();
+
+        const minSpacing = 0.1; // Ideal new spacing between the floor and the mass
+        const delta = mass.getBounds().maxY - mass.getBounds().minY + minSpacing;
+
+        // Adjust the position of the mass to resolve the collision.
+        mass.matrix.set12( mass.matrix.m12() + delta );
+        mass.writeData();
+
+        PhysicsEngine.bodySynchronizePrevious( mass.body );
+      }
     } );
 
     this.pool.fluidYInterpolatedProperty.setRatio( this.engine.interpolationRatio );

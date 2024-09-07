@@ -95,8 +95,8 @@ export default abstract class MassView extends Disposable {
     if ( mass.canMove ) {
       this.focusablePath = new InteractiveHighlightingPath( this.focusableShapeProperty, {
         // Prefer HighlightPath to HighlightFromNode here, since we must accommodate the empty shape when not highlighted
-        focusHighlight: new HighlightPath( null ),
-        interactiveHighlight: new HighlightPath( null ),
+        focusHighlight: new HighlightPath( this.focusableShapeProperty ),
+        interactiveHighlight: new HighlightPath( this.focusableShapeProperty ),
         inputEnabledProperty: mass.inputEnabledProperty
       } );
 
@@ -199,11 +199,6 @@ export default abstract class MassView extends Disposable {
           const shape = Shape.polygon( ConvexHull2.grahamScan( massViewPoints, false ) );
 
           this.focusableShapeProperty.value = shape;
-
-          assert && assert( this.focusablePath.focusHighlight instanceof Path );
-          assert && assert( this.focusablePath.interactiveHighlight instanceof Path );
-          ( this.focusablePath.focusHighlight as Path ).setShape( shape );
-          ( this.focusablePath.interactiveHighlight as Path ).setShape( shape );
 
           // Put the cue under the block. Use the shape directly because it shares the same coordinate frame as the
           // focusablePath it appears in.

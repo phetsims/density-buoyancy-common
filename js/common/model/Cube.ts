@@ -31,11 +31,7 @@ export default class Cube extends Cuboid {
   public constructor( engine: PhysicsEngine, volume: number, providedOptions: CubeOptions ) {
 
     const options = optionize<CubeOptions, SelfOptions, CuboidOptions>()( {
-      adjustVolumeOnMassChanged: false,
-
-      volumePropertyOptions: {
-        phetioReadOnly: false
-      }
+      adjustVolumeOnMassChanged: false
     }, providedOptions );
 
     if ( assert && options.adjustVolumeOnMassChanged ) {

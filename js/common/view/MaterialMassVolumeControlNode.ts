@@ -108,13 +108,13 @@ export default class MaterialMassVolumeControlNode extends MaterialControlNode {
     // If we will be creating a high density mass NumberControl in addition to the normal one.
     const supportTwoMassNumberControls = !!options.highDensityMaxMass;
 
-    // Mass-related elements should not be instrumented if showing as a Density control instead of Mass control.
-    const getMassRelatedTandem = ( tandem: Tandem ): Tandem => {
-      return options.useDensityControlInsteadOfMassControl ? Tandem.OPT_OUT : tandem;
-    };
+    if ( options.highDensityMaxMass ) {
+      assert && assert( options.highDensityMaxMass > options.maxMass, 'highDensityMaxMass should be greater than maxMass' );
+    }
 
-    const massNumberControlContainerTandem = options.showMassAsReadout ?
-                                             options.tandem.createTandem( 'massDisplay' ) :
+    // Mass-related elements should not be instrumented if showing as a Density control instead of Mass control.
+    const massNumberControlContainerTandem = options.useDensityControlInsteadOfMassControl ? Tandem.OPT_OUT :
+                                             options.showMassAsReadout ? options.tandem.createTandem( 'massDisplay' ) :
                                              options.tandem.createTandem( 'massNumberControl' );
 
     const volumeNumberControlTandem = options.tandem.createTandem( 'volumeNumberControl' );
@@ -153,7 +153,10 @@ export default class MaterialMassVolumeControlNode extends MaterialControlNode {
         reentrant: true,
         phetioState: false,
         phetioValueType: Range.RangeIO,
-        valueComparisonStrategy: 'equalsFunction'
+        valueComparisonStrategy: 'equalsFunction',
+        units: 'kg',
+        tandem: massNumberControlContainerTandem.createTandem( 'enabledRangeProperty' ),
+        phetioDocumentation: 'This range accommodates the full range of the corresponding volume, given the current material/density.'
       } );
 
     const enabledVolumeRangeProperty = new DerivedProperty( [ materialProperty ], material => {
@@ -167,14 +170,36 @@ export default class MaterialMassVolumeControlNode extends MaterialControlNode {
 
     // passed to the NumberControl
     const numberControlMassProperty = new NumberProperty( massProperty.value, {
-      units: 'kg'
+      range: new Range( options.minMass, options.highDensityMaxMass || options.maxMass ),
+      units: 'kg',
+      tandem: massNumberControlContainerTandem.createTandem( 'massProperty' ),
+      phetioFeatured: true,
+
+      // Does not need to be stateful because the model itself preserves the value. This is an intermediate adapter so
+      // that PhET-iO custom wrapper developers can set the value, and have the dependent variables update correctly.
+      // see https://github.com/phetsims/density-buoyancy-common/issues/378
+      phetioState: false,
+      phetioReadOnly: options.showMassAsReadout,
+      phetioDocumentation: 'This Property is defined and controlled in the view, and is used to propagate the user-selected mass value to the model.'
     } );
+
+    numberControlMassProperty.addLinkedElement( massProperty );
 
     // passed to the NumberControl - liters from m^3
     const numberControlVolumeProperty = new NumberProperty( volumeProperty.value * LITERS_IN_CUBIC_METER, {
       range: new Range( options.minVolumeLiters, options.maxVolumeLiters ),
-      units: 'L'
+      units: 'L',
+      tandem: volumeNumberControlTandem.createTandem( 'volumeProperty' ),
+      phetioFeatured: true,
+
+      // Does not need to be stateful because the model itself preserves the value. This is an intermediate adapter so
+      // that PhET-iO custom wrapper developers can set the value, and have the dependent variables update correctly.
+      // see https://github.com/phetsims/density-buoyancy-common/issues/378
+      phetioState: false,
+      phetioDocumentation: 'This Property is defined and controlled in the view, and is used to propagate the user-selected volume value to the model.'
     } );
+
+    numberControlVolumeProperty.addLinkedElement( volumeProperty );
 
     // Update the volume when the user is changing it.
     // If the material is custom and not set to keep constant density, recalculate the density based on the new volume.
@@ -268,7 +293,7 @@ export default class MaterialMassVolumeControlNode extends MaterialControlNode {
           tandem: volumeNumberControlTandem.createTandem( 'slider' ).createTandem( 'thumbNode' )
         } ),
         constrainValue: ( value: number ) => Utils.roundSymmetric( value * 2 ) / 2,
-        phetioLinkedProperty: volumeProperty,
+        phetioLinkedProperty: numberControlVolumeProperty,
         accessibleName: DensityBuoyancyCommonStrings.volumeStringProperty
       },
       numberDisplayOptions: {
@@ -289,14 +314,11 @@ export default class MaterialMassVolumeControlNode extends MaterialControlNode {
       excludeInvisibleChildrenFromBounds: true
     } );
 
-    const createMassNumberControl = ( maxMass: number, tandemName?: string ) => {
+    const createMassNumberControl = ( maxMass: number, tandem: Tandem ) => {
+
       // If we are showing the mass as a readout, don't provide all the number control tandems
       // see https://github.com/phetsims/buoyancy/issues/180
-      const numberControlTandem = options.showMassAsReadout ?
-                                  Tandem.OPT_OUT :
-                                  getMassRelatedTandem( tandemName ?
-                                                        massNumberControlContainerTandem.createTandem( tandemName ) :
-                                                        massNumberControlContainerTandem );
+      const numberControlTandem = options.showMassAsReadout ? Tandem.OPT_OUT : tandem;
 
       return new NumberControl(
         DensityBuoyancyCommonStrings.massStringProperty,
@@ -326,7 +348,7 @@ export default class MaterialMassVolumeControlNode extends MaterialControlNode {
               }
               return enabledMassRangeProperty.value.constrainValue( Utils.toFixedNumber( value, 1 ) );
             },
-            phetioLinkedProperty: massProperty,
+            phetioLinkedProperty: numberControlMassProperty,
             accessibleName: DensityBuoyancyCommonStrings.massStringProperty
           },
           numberDisplayOptions: {
@@ -386,10 +408,10 @@ export default class MaterialMassVolumeControlNode extends MaterialControlNode {
       };
 
       const highDensityAlignGroup = createAlignGroupChild(
-        createMassNumberControl( options.highDensityMaxMass!, 'highDensityMassNumberControl' )
+        createMassNumberControl( options.highDensityMaxMass!, massNumberControlContainerTandem.createTandem( 'highDensityMassNumberControl' ) )
       );
       const lowDensityAlignGroup = createAlignGroupChild(
-        createMassNumberControl( options.maxMass, 'lowDensityMassNumberControl' )
+        createMassNumberControl( options.maxMass, massNumberControlContainerTandem.createTandem( 'lowDensityMassNumberControl' ) )
       );
 
       const toggleNode = new BooleanToggleNode(
@@ -412,7 +434,8 @@ export default class MaterialMassVolumeControlNode extends MaterialControlNode {
       massContainerNode.visibleProperty = massNumberControlVisibleProperty;
     }
     else {
-      massContainerNode.addChild( createMassNumberControl( options.maxMass ) );
+
+      massContainerNode.addChild( createMassNumberControl( options.maxMass, massNumberControlContainerTandem ) );
     }
 
     const massVolumeVBox = new VBox( combineOptions<VBoxOptions>( {

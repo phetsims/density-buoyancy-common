@@ -83,6 +83,9 @@ export default class DensityMysteryModel extends BlockSetModel<MysteryBlockSet> 
       massPropertyOptions: {
         phetioReadOnly: false
       },
+      volumePropertyOptions: {
+        phetioReadOnly: false
+      },
       availableMassMaterials: [
         ...Material.SIMPLE_MASS_MATERIALS,
         Material.STEEL,

@@ -5,46 +5,36 @@
  * provide more specific validation error messages.
  *
  * @author Jonathan Olson (PhET Interactive Simulations)
+ * @author Michael Kauzmann (PhET Interactive Simulations)
+ * @author Sam Reid (PhET Interactive Simulations)
  */
 
 import NumberProperty, { NumberPropertyOptions } from '../../../../axon/js/NumberProperty.js';
-import optionize, { EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
-import IOType from '../../../../tandem/js/types/IOType.js';
-import NumberIO from '../../../../tandem/js/types/NumberIO.js';
-import NullableIO from '../../../../tandem/js/types/NullableIO.js';
-import StringIO from '../../../../tandem/js/types/StringIO.js';
+import optionize from '../../../../phet-core/js/optionize.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 
-export type GuardedNumberPropertyOptions = NumberPropertyOptions & { getPhetioSpecificValidationError: ( value: number ) => string | null };
+type SelfOptions = { getPhetioSpecificValidationError: ( value: number ) => string | null };
+
+export type GuardedNumberPropertyOptions = NumberPropertyOptions & SelfOptions;
 
 export class GuardedNumberProperty extends NumberProperty {
+
+  // Property validation logic is run for every value set, so it cannot be used in cases where we only want validation
+  // for setting the value during a PhET-iO API call.
   protected readonly getPhetioSpecificValidationError: ( number: number ) => string | null;
 
   public constructor( value: number, providedOptions: GuardedNumberPropertyOptions ) {
-    const options = optionize<GuardedNumberPropertyOptions, EmptySelfOptions, NumberPropertyOptions>()( {
-      phetioOuterType: () => GuardedNumberPropertyIO
-    }, providedOptions );
+    const options = optionize<GuardedNumberPropertyOptions, SelfOptions, NumberPropertyOptions>()( {}, providedOptions );
     super( value, options );
 
     this.getPhetioSpecificValidationError = options.getPhetioSpecificValidationError;
   }
-}
 
-const GuardedNumberPropertyIO = new IOType( 'GuardedNumberPropertyIO', {
-  supertype: NumberProperty.NumberPropertyIO,
-  parameterTypes: [ NumberIO ],
-  methods: {
-    getValidationError: {
-      returnType: NullableIO( StringIO ),
-      parameterTypes: [ NumberIO ],
-      implementation: function( this: GuardedNumberProperty, value: number ) {
+  public override getValidationError( value: number ): string | null {
 
-        // Fails early on the first error, checking the superclass validation first
-        return this.getValidationError( value ) || this.getPhetioSpecificValidationError( value );
-      },
-      documentation: 'Checks to see if a proposed value is valid. Returns the first validation error, or null if the value is valid.'
-    }
+    // Fails early on the first error encountered, so check the superclass validation first
+    return super.getValidationError( value ) || this.getPhetioSpecificValidationError( value );
   }
-} );
+}
 
 densityBuoyancyCommon.register( 'GuardedNumberProperty', GuardedNumberProperty );

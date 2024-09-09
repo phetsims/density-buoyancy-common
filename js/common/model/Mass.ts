@@ -300,7 +300,9 @@ export default abstract class Mass extends PhetioObject {
       tandem: Tandem.OPT_OUT
     } );
 
-    this.massProperty = new GuardedNumberProperty( this.materialProperty.value.density * this.volumeProperty.value + this.containedMassProperty.value, combineOptions<GuardedNumberPropertyOptions>( {
+    const startingMass = this.materialProperty.value.density * this.volumeProperty.value + this.containedMassProperty.value;
+
+    this.massProperty = new GuardedNumberProperty( startingMass, combineOptions<GuardedNumberPropertyOptions>( {
       tandem: tandem.createTandem( 'massProperty' ),
       phetioReadOnly: true, // Can be overridden
       phetioState: false,

@@ -37,6 +37,7 @@ import Tandem from '../../../../tandem/js/Tandem.js';
 import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
 import MaterialProperty from '../model/MaterialProperty.js';
 import isSettingPhetioStateProperty from '../../../../tandem/js/isSettingPhetioStateProperty.js';
+import { GuardedNumberProperty } from '../model/GuardedNumberProperty.js';
 
 // constants
 const LITERS_IN_CUBIC_METER = DensityBuoyancyCommonConstants.LITERS_IN_CUBIC_METER;
@@ -169,7 +170,7 @@ export default class MaterialMassVolumeControlNode extends MaterialControlNode {
     } );
 
     // passed to the NumberControl
-    const numberControlMassProperty = new NumberProperty( massProperty.value, {
+    const numberControlMassProperty = new GuardedNumberProperty( massProperty.value, {
       range: new Range( options.minMass, options.highDensityMaxMass || options.maxMass ),
       units: 'kg',
       tandem: massNumberControlContainerTandem.createTandem( 'massProperty' ),
@@ -180,7 +181,15 @@ export default class MaterialMassVolumeControlNode extends MaterialControlNode {
       // see https://github.com/phetsims/density-buoyancy-common/issues/378
       phetioState: false,
       phetioReadOnly: options.showMassAsReadout,
-      phetioDocumentation: 'This Property is defined and controlled in the view, and is used to propagate the user-selected mass value to the model.'
+      phetioDocumentation: 'This Property is defined and controlled in the view, and is used to propagate the user-selected mass value to the model.',
+
+      // Bypass the WorkaroundRange
+      getPhetioSpecificValidationError: proposedMass => {
+        if ( !Range.prototype.contains.call( enabledMassRangeProperty.value, proposedMass ) ) {
+          return `The proposed mass ${proposedMass}kg should be between the values of ${enabledMassRangeProperty.value.min}-${enabledMassRangeProperty.value.max}.`;
+        }
+        return null;
+      }
     } );
 
     numberControlMassProperty.addLinkedElement( massProperty );

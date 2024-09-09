@@ -242,17 +242,7 @@ export default class DensityBuoyancyModel implements TModel {
               // Blocks should never experience +x forces (to the right) by the PoolScale.
               // If they do, they are trapped beneath it, so teleport them back to the left.
               if ( horizontalForce > 0 && mass.getBounds().centerX < otherMass.getBounds().centerX ) {
-
-                otherMass.interruptedEmitter.emit();
-
-                const minSpacing = 0.1; // Ideal new spacing between the scale and the mass
-                const delta = otherMass.getBounds().maxX - mass.getBounds().minX + minSpacing;
-
-                // Adjust the position of the otherMass to resolve the collision.
-                otherMass.matrix.set02( mass.matrix.m02() - delta );
-                otherMass.writeData();
-
-                PhysicsEngine.bodySynchronizePrevious( otherMass.body );
+                otherMass.teleportLeft( mass );
               }
             }
           } );
@@ -402,16 +392,7 @@ export default class DensityBuoyancyModel implements TModel {
 
       // If the mass is under the pool (likely because user forced it there), interrupt dragging and move it back up.
       if ( !( mass instanceof Scale ) && mass.matrix.m12() < this.poolBounds.minY ) {
-        mass.interruptedEmitter.emit();
-
-        const minSpacing = 0.1; // Ideal new spacing between the floor and the mass
-        const delta = mass.getBounds().maxY - mass.getBounds().minY + minSpacing;
-
-        // Adjust the position of the mass to resolve the collision.
-        mass.matrix.set12( mass.matrix.m12() + delta );
-        mass.writeData();
-
-        PhysicsEngine.bodySynchronizePrevious( mass.body );
+        mass.teleportUp();
       }
     } );
 

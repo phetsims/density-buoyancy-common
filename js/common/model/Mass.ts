@@ -541,6 +541,39 @@ export default abstract class Mass extends PhetioObject {
   }
 
   /**
+   * Teleports the mass to the right of the given scale.
+   * @param scale
+   */
+  public teleportLeft( scale: Mass ): void {
+    this.interruptedEmitter.emit();
+
+    const minSpacing = 0.1; // Ideal new spacing between the scale and the mass
+    const delta = this.getBounds().maxX - scale.getBounds().minX + minSpacing;
+
+    // Adjust the position of the otherMass to resolve the collision.
+    this.matrix.set02( scale.matrix.m02() - delta );
+    this.writeData();
+
+    PhysicsEngine.bodySynchronizePrevious( this.body );
+  }
+
+  /**
+   * Teleports the mass up, to avoid clipping with the floor
+   */
+  public teleportUp(): void {
+    this.interruptedEmitter.emit();
+
+    const minSpacing = 0.1; // Ideal new spacing between the floor and the mass
+    const delta = this.getBounds().maxY - this.getBounds().minY + minSpacing;
+
+    // Adjust the position of the mass to resolve the collision.
+    this.matrix.set12( this.matrix.m12() + delta );
+    this.writeData();
+
+    PhysicsEngine.bodySynchronizePrevious( this.body );
+  }
+
+  /**
    * Sets the general size of the mass based on a general size scale.
    */
   public abstract setRatios( widthRatio: number, heightRatio: number ): void;

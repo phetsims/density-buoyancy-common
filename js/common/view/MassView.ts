@@ -138,7 +138,7 @@ export default abstract class MassView extends Disposable {
         transform: INVERT_Y_TRANSFORM,
         drag: ( event, listener ) => {
           mass.grabDragUsageTracker.shouldShowDragCue = false;
-          mass.updateDragFromDelta( listener.modelDelta ); // Update based on deltas instead of absolute, fixing, https://github.com/phetsims/density-buoyancy-common/issues/367
+          mass.updateDrag( mass.matrix.translation.add( listener.modelDelta ) );
         },
         tandem: Tandem.OPT_OUT
       } );

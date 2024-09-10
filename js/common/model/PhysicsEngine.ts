@@ -402,25 +402,6 @@ export default class PhysicsEngine {
   }
 
   /**
-   * Updates a pointer constraint so that the body will move by the provided delta value. This can be useful because
-   * pointerConstraints can be initialized with an offset from, the body origin.
-   */
-  public updatePointerConstraintFromDelta( body: PhysicsEngineBody, deltaVector: Vector2 ): void {
-    const delta = PhysicsEngine.vectorToP2( deltaVector );
-
-    const pointerConstraint = this.pointerConstraintMap[ body.id ];
-    assert && assert( pointerConstraint, `pointer constraint expected for physics body #${body.id}` );
-
-    // @ts-expect-error it should have pivotA...
-    pointerConstraint.pivotA[ 0 ] += delta[ 0 ];
-    // @ts-expect-error it should have pivotA...
-    pointerConstraint.pivotA[ 1 ] += delta[ 1 ];
-
-    pointerConstraint.bodyA.wakeUp();
-    pointerConstraint.bodyB.wakeUp();
-  }
-
-  /**
    * Removes a pointer constraint.
    */
   public removePointerConstraint( body: PhysicsEngineBody ): void {

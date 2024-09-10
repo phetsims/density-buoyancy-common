@@ -364,6 +364,9 @@ export default class PhysicsEngine {
    */
   public addPointerConstraint( body: PhysicsEngineBody, position: Vector2 ): void {
 
+    assert && assert( !this.pointerConstraintMap.hasOwnProperty( body.id ), 'there is already a pointer constraint for this body' );
+    assert && assert( !this.nullBodyMap.hasOwnProperty( body.id ), 'there is already a null body for this body' );
+
     // Create an empty body used for the constraint (we don't want it intersecting). It will just be used for applying
     // the effects of this constraint.
     const nullBody = new p2.Body();

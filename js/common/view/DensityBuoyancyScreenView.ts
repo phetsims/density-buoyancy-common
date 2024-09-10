@@ -376,6 +376,15 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
       const rightPoint = new Plane3( Vector3.Z_UNIT, 0.09 ).intersectWithRay( rightRay );
       const topPoint = new Plane3( Vector3.Z_UNIT, 0.09 ).intersectWithRay( topRay );
       this.model.invisibleBarrierBoundsProperty.value = this.model.invisibleBarrierBoundsProperty.value.setMaxY( topPoint.y + 0.06 ).setMinX( leftPoint.x + 0.01 ).withMaxX( rightPoint.x - 0.01 );
+
+      // rescue any dragged blocks that were trapped by the invisible barrier
+      this.massViews.forEach( massView => {
+        const intersect = massView.mass.getBounds().intersectsBounds( this.model.invisibleBarrierBoundsProperty.value );
+
+        if ( intersect && massView.mass.canMove && massView.mass.userControlledProperty.value ) {
+          massView.mass.resetPosition();
+        }
+      } );
     }
   }
 

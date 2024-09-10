@@ -157,7 +157,8 @@ export default class MaterialMassVolumeControlNode extends MaterialControlNode {
         valueComparisonStrategy: 'equalsFunction',
         units: 'kg',
         tandem: massNumberControlContainerTandem.createTandem( 'enabledRangeProperty' ),
-        phetioDocumentation: 'This range accommodates the full range of the corresponding volume, given the current material/density.'
+        phetioDocumentation: 'This range accommodates the full range of the corresponding volume, given the current material/density.',
+        phetioFeatured: !options.showMassAsReadout
       } );
 
     const enabledVolumeRangeProperty = new DerivedProperty( [ materialProperty ], material => {

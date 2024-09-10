@@ -533,6 +533,13 @@ export default abstract class Mass extends PhetioObject {
   }
 
   /**
+   * Updates a current drag with a new 2d (x,y) model delta.
+   */
+  public updateDragFromDelta( delta: Vector2 ): void {
+    this.engine.updatePointerConstraintFromDelta( this.body, delta );
+  }
+
+  /**
    * Ends a physics model engine drag.
    */
   public endDrag(): void {

@@ -17,6 +17,7 @@ import MassDecorationLayer from './MassDecorationLayer.js';
 import { THREEModelViewTransform } from '../../../../mobius/js/MobiusScreenView.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
 import GravityProperty from '../model/GravityProperty.js';
+import phetioStateSetEmitter from '../../../../tandem/js/phetioStateSetEmitter.js';
 
 export default class ScaleView extends MassView {
 
@@ -34,9 +35,9 @@ export default class ScaleView extends MassView {
     // Update the decoration layer when phet-io state is set
     if ( Tandem.PHET_IO_ENABLED ) {
       const updateDecorationLayer = () => this.updateDecorationLayer();
-      phet.phetio.phetioEngine.phetioStateEngine.stateSetEmitter.addListener( updateDecorationLayer );
+      phetioStateSetEmitter.addListener( updateDecorationLayer );
       this.disposeEmitter.addListener( () => {
-        phet.phetio.phetioEngine.phetioStateEngine.stateSetEmitter.removeListener( updateDecorationLayer );
+        phetioStateSetEmitter.removeListener( updateDecorationLayer );
       } );
     }
 

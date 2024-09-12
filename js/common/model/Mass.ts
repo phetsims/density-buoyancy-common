@@ -41,6 +41,7 @@ import MaterialProperty, { MaterialPropertyOptions } from './MaterialProperty.js
 import DensityBuoyancyCommonQueryParameters from '../DensityBuoyancyCommonQueryParameters.js';
 import Disposable from '../../../../axon/js/Disposable.js';
 import GrabDragUsageTracker from '../../../../scenery-phet/js/accessibility/grab-drag/GrabDragUsageTracker.js';
+import phetioStateSetEmitter from '../../../../tandem/js/phetioStateSetEmitter.js';
 
 // For the Buoyancy Shapes screen, but needed here because setRatios is included in each core type
 // See https://github.com/phetsims/buoyancy/issues/29
@@ -233,7 +234,7 @@ export default abstract class Mass extends PhetioObject {
     } );
 
     // If a user was dragging a Mass at the moment the state is set, it should no longer be user controlled.
-    Tandem.PHET_IO_ENABLED && phet.phetio.phetioEngine.phetioStateEngine.stateSetEmitter.addListener( () => {
+    phetioStateSetEmitter.addListener( () => {
       this.interruptedEmitter.emit();
       this.userControlledProperty.reset();
     } );

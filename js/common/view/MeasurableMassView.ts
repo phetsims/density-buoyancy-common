@@ -19,6 +19,7 @@ import MassDecorationLayer from './MassDecorationLayer.js';
 import { THREEModelViewTransform } from '../../../../mobius/js/MobiusScreenView.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
 import DisplayProperties from '../../buoyancy/view/DisplayProperties.js';
+import phetioStateSetEmitter from '../../../../tandem/js/phetioStateSetEmitter.js';
 
 const scratchVector2 = new Vector2( 0, 0 );
 
@@ -41,9 +42,9 @@ export default class MeasurableMassView extends MassView {
     // Update the decoration layer when phet-io state is set
     const updateDecorationLayer = () => this.updateDecorationLayer();
     if ( Tandem.PHET_IO_ENABLED ) {
-      phet.phetio.phetioEngine.phetioStateEngine.stateSetEmitter.addListener( updateDecorationLayer );
+      phetioStateSetEmitter.addListener( updateDecorationLayer );
       this.disposeEmitter.addListener( () => {
-        phet.phetio.phetioEngine.phetioStateEngine.stateSetEmitter.removeListener( updateDecorationLayer );
+        phetioStateSetEmitter.removeListener( updateDecorationLayer );
       } );
     }
 

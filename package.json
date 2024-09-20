@@ -47,7 +47,7 @@
         },
         "parserOptions": {
           "project": [
-            "../density-buoyancy-common/tsconfig.json"
+            "../chipper/tsconfig/eslint-all/tsconfig.json"
           ]
         }
       }

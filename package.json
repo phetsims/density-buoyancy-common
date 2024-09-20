@@ -16,7 +16,6 @@
       "../sherpa/lib/three-r104.js"
     ],
     "phetLibs": [
-      "density-buoyancy-common",
       "mobius"
     ],
     "supportsOutputJS": true,
@@ -44,6 +43,11 @@
               "ts-check": true,
               "ts-nocheck": true
             }
+          ]
+        },
+        "parserOptions": {
+          "project": [
+            "../density-buoyancy-common/tsconfig.json"
           ]
         }
       }

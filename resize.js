@@ -2,7 +2,7 @@
 
 // @author Jonathan Olson (PhET Interactive Simulations)
 
-/* eslint-env node */
+/* global require */
 
 const grunt = require( 'grunt' );
 const jimp = require( 'jimp' );

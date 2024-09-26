@@ -114,7 +114,7 @@ export default class Scale extends Mass {
 
     super( engine, options );
 
-    this.measuredWeightInterpolatedProperty = new InterpolatedProperty( 0, { // eslint-disable-line tandem-name-should-match
+    this.measuredWeightInterpolatedProperty = new InterpolatedProperty( 0, { // eslint-disable-line phet/tandem-name-should-match
       interpolate: InterpolatedProperty.interpolateNumber,
       phetioValueType: NumberIO,
       tandem: options.tandem.createTandem( 'measuredWeightProperty' ),

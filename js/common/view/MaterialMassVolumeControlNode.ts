@@ -362,7 +362,7 @@ export default class MaterialMassVolumeControlNode extends MaterialControlNode {
             accessibleName: DensityBuoyancyCommonStrings.massStringProperty
           },
           numberDisplayOptions: {
-            ...( options.showMassAsReadout ? // eslint-disable-line no-object-spread-on-non-literals
+            ...( options.showMassAsReadout ? // eslint-disable-line phet/no-object-spread-on-non-literals
                 {
                   numberFormatter: value => {
                     if ( options.showMassAsReadout && materialProperty.value.hidden ) {

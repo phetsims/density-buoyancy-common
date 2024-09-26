@@ -220,7 +220,7 @@ export default class CompareBlockSetModel extends BlockSetModel<BlockSet> {
     super( {
       createMassesCallback: createMasses,
 
-      ...options // eslint-disable-line no-object-spread-on-non-literals
+      ...options // eslint-disable-line phet/no-object-spread-on-non-literals
     } );
 
     this.massProperty = massProperty;

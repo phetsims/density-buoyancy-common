@@ -635,6 +635,8 @@ export default abstract class Mass extends PhetioObject {
    */
   public reset( resetInternalVisibleProperty = true ): void {
 
+    this.interruptedEmitter.emit();
+
     // Clear velocity and force on the p2 body
     this.body.velocity[ 0 ] = 0;
     this.body.velocity[ 1 ] = 0;

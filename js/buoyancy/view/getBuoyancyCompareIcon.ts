@@ -6,11 +6,11 @@
  * @author Michael Kauzmann (PhET Interactive Simulations)
  */
 import Vector3 from '../../../../dot/js/Vector3.js';
-import { DensityMaterials } from '../../common/view/MaterialView.js';
-import ThreeUtils from '../../../../mobius/js/ThreeUtils.js';
-import FluidIconMesh from '../../common/view/FluidIconMesh.js';
-import { Node } from '../../../../scenery/js/imports.js';
 import getAngledIcon from '../../../../mobius/js/getAngledIcon.js';
+import ThreeUtils from '../../../../mobius/js/ThreeUtils.js';
+import { Node } from '../../../../scenery/js/imports.js';
+import FluidIconMesh from '../../common/view/FluidIconMesh.js';
+import { DensityMaterials } from '../../common/view/MaterialView.js';
 
 const getBuoyancyCompareIcon = (): Node => {
   return getAngledIcon( 4, new Vector3( 0, -0.05, 0 ), scene => {

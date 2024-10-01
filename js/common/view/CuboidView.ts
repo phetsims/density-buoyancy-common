@@ -6,20 +6,20 @@
  * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
+import Bounds3 from '../../../../dot/js/Bounds3.js';
+import Vector2 from '../../../../dot/js/Vector2.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
+import { Shape } from '../../../../kite/js/imports.js';
+import { THREEModelViewTransform } from '../../../../mobius/js/MobiusScreenView.js';
 import TriangleArrayWriter from '../../../../mobius/js/TriangleArrayWriter.js';
+import { Path } from '../../../../scenery/js/imports.js';
+import DisplayProperties from '../../buoyancy/view/DisplayProperties.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import Cuboid from '../model/Cuboid.js';
-import Bounds3 from '../../../../dot/js/Bounds3.js';
-import { TAG_OFFSET } from './MassTagNode.js';
-import { Path } from '../../../../scenery/js/imports.js';
-import { Shape } from '../../../../kite/js/imports.js';
-import Vector2 from '../../../../dot/js/Vector2.js';
 import Material from '../model/Material.js';
-import MeasurableMassView from './MeasurableMassView.js';
 import MassDecorationLayer from './MassDecorationLayer.js';
-import { THREEModelViewTransform } from '../../../../mobius/js/MobiusScreenView.js';
-import DisplayProperties from '../../buoyancy/view/DisplayProperties.js';
+import { TAG_OFFSET } from './MassTagNode.js';
+import MeasurableMassView from './MeasurableMassView.js';
 
 // constants
 const numElements = 18 * 3;

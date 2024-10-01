@@ -7,23 +7,23 @@
  */
 
 import BooleanProperty from '../../../../../axon/js/BooleanProperty.js';
+import DerivedStringProperty from '../../../../../axon/js/DerivedStringProperty.js';
 import TReadOnlyProperty from '../../../../../axon/js/TReadOnlyProperty.js';
+import UnitConversionProperty from '../../../../../axon/js/UnitConversionProperty.js';
 import Dimension2 from '../../../../../dot/js/Dimension2.js';
 import Range from '../../../../../dot/js/Range.js';
 import optionize, { combineOptions } from '../../../../../phet-core/js/optionize.js';
+import WithRequired from '../../../../../phet-core/js/types/WithRequired.js';
 import NumberControl, { NumberControlOptions } from '../../../../../scenery-phet/js/NumberControl.js';
 import NumberDisplay from '../../../../../scenery-phet/js/NumberDisplay.js';
 import { FlowBoxOptions, HBox, HSeparator, Node, Text, VBox, VBoxOptions } from '../../../../../scenery/js/imports.js';
 import ComboBox from '../../../../../sun/js/ComboBox.js';
+import Tandem from '../../../../../tandem/js/Tandem.js';
 import DensityBuoyancyCommonConstants from '../../../common/DensityBuoyancyCommonConstants.js';
-import UnitConversionProperty from '../../../../../axon/js/UnitConversionProperty.js';
 import { MassShape } from '../../../common/model/MassShape.js';
 import densityBuoyancyCommon from '../../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../../DensityBuoyancyCommonStrings.js';
-import WithRequired from '../../../../../phet-core/js/types/WithRequired.js';
-import Tandem from '../../../../../tandem/js/Tandem.js';
 import BuoyancyShapeModel from '../../model/shapes/BuoyancyShapeModel.js';
-import DerivedStringProperty from '../../../../../axon/js/DerivedStringProperty.js';
 
 type SelfOptions = {
   labelNode?: Node | null;

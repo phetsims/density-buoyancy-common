@@ -11,6 +11,7 @@
  * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
+import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import NumberProperty from '../../../../axon/js/NumberProperty.js';
 import Property from '../../../../axon/js/Property.js';
@@ -19,25 +20,24 @@ import Dimension2 from '../../../../dot/js/Dimension2.js';
 import Range from '../../../../dot/js/Range.js';
 import Utils from '../../../../dot/js/Utils.js';
 import optionize, { combineOptions } from '../../../../phet-core/js/optionize.js';
+import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
 import NumberControl, { LayoutFunction, NumberControlOptions } from '../../../../scenery-phet/js/NumberControl.js';
+import NumberDisplay from '../../../../scenery-phet/js/NumberDisplay.js';
+import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import { AlignGroup, HBox, ManualConstraint, Node, TColor, Text, VBox, VBoxOptions } from '../../../../scenery/js/imports.js';
+import BooleanToggleNode from '../../../../sun/js/BooleanToggleNode.js';
+import ArrowButton from '../../../../sun/js/buttons/ArrowButton.js';
+import Slider from '../../../../sun/js/Slider.js';
+import isSettingPhetioStateProperty from '../../../../tandem/js/isSettingPhetioStateProperty.js';
+import Tandem from '../../../../tandem/js/Tandem.js';
+import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
-import Material from '../model/Material.js';
-import PrecisionSliderThumb from './PrecisionSliderThumb.js';
-import MaterialControlNode, { MaterialControlNodeOptions } from './MaterialControlNode.js';
-import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
-import NumberDisplay from '../../../../scenery-phet/js/NumberDisplay.js';
-import Slider from '../../../../sun/js/Slider.js';
-import ArrowButton from '../../../../sun/js/buttons/ArrowButton.js';
-import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
-import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
-import BooleanToggleNode from '../../../../sun/js/BooleanToggleNode.js';
-import Tandem from '../../../../tandem/js/Tandem.js';
-import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
-import MaterialProperty from '../model/MaterialProperty.js';
-import isSettingPhetioStateProperty from '../../../../tandem/js/isSettingPhetioStateProperty.js';
 import { GuardedNumberProperty } from '../model/GuardedNumberProperty.js';
+import Material from '../model/Material.js';
+import MaterialProperty from '../model/MaterialProperty.js';
+import MaterialControlNode, { MaterialControlNodeOptions } from './MaterialControlNode.js';
+import PrecisionSliderThumb from './PrecisionSliderThumb.js';
 
 // constants
 const LITERS_IN_CUBIC_METER = DensityBuoyancyCommonConstants.LITERS_IN_CUBIC_METER;

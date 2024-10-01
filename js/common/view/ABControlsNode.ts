@@ -12,9 +12,9 @@ import { Node } from '../../../../scenery/js/imports.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import Cuboid from '../model/Cuboid.js';
+import ABPanelsNode from './ABPanelsNode.js';
 import BlockControlNode, { BlockControlNodeOptions } from './BlockControlNode.js';
 import DensityBuoyancyCommonColors from './DensityBuoyancyCommonColors.js';
-import ABPanelsNode from './ABPanelsNode.js';
 
 export type ABControlsNodeOptions = BlockControlNodeOptions & { tandem: Tandem };
 

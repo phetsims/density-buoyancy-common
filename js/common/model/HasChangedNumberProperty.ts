@@ -6,9 +6,9 @@
  * @author Michael Kauzmann (PhET Interactive Simulations)
  */
 
+import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
 import NumberProperty, { NumberPropertyOptions } from '../../../../axon/js/NumberProperty.js';
 import Property from '../../../../axon/js/Property.js';
-import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 
 export default class HasChangedNumberProperty extends NumberProperty {

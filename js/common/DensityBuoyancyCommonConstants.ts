@@ -6,20 +6,20 @@
  * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
-import Dimension2 from '../../../dot/js/Dimension2.js';
-import Vector3 from '../../../dot/js/Vector3.js';
+import DerivedProperty from '../../../axon/js/DerivedProperty.js';
 import PatternStringProperty from '../../../axon/js/PatternStringProperty.js';
+import Dimension2 from '../../../dot/js/Dimension2.js';
+import Range from '../../../dot/js/Range.js';
+import Vector2 from '../../../dot/js/Vector2.js';
+import Vector3 from '../../../dot/js/Vector3.js';
 import PhetFont from '../../../scenery-phet/js/PhetFont.js';
+import { DEFAULT_FILL, DEFAULT_FILL_HIGHLIGHTED } from '../../../sun/js/SliderThumb.js';
+import Tandem from '../../../tandem/js/Tandem.js';
 import densityBuoyancyCommon from '../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../DensityBuoyancyCommonStrings.js';
-import DensityBuoyancyCommonColors from './view/DensityBuoyancyCommonColors.js';
-import DerivedProperty from '../../../axon/js/DerivedProperty.js';
-import DensityBuoyancyCommonPreferences from './model/DensityBuoyancyCommonPreferences.js';
 import { VolumeUnits } from './DensityBuoyancyCommonQueryParameters.js';
-import Tandem from '../../../tandem/js/Tandem.js';
-import { DEFAULT_FILL, DEFAULT_FILL_HIGHLIGHTED } from '../../../sun/js/SliderThumb.js';
-import Vector2 from '../../../dot/js/Vector2.js';
-import Range from '../../../dot/js/Range.js';
+import DensityBuoyancyCommonPreferences from './model/DensityBuoyancyCommonPreferences.js';
+import DensityBuoyancyCommonColors from './view/DensityBuoyancyCommonColors.js';
 
 const CORNER_RADIUS = 5;
 const litersPatternStringProperty = new PatternStringProperty( DensityBuoyancyCommonStrings.litersPatternStringProperty, {

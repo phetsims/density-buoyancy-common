@@ -9,18 +9,18 @@
  * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
-import DebugView, { DebugMassNode } from '../../../common/view/DebugView.js';
-import { Path } from '../../../../../scenery/js/imports.js';
-import BuoyancyApplicationsModel from '../../model/applications/BuoyancyApplicationsModel.js';
 import Bounds2 from '../../../../../dot/js/Bounds2.js';
-import Boat from '../../model/applications/Boat.js';
-import { Shape } from '../../../../../kite/js/imports.js';
-import Vector2 from '../../../../../dot/js/Vector2.js';
-import densityBuoyancyCommon from '../../../densityBuoyancyCommon.js';
 import Matrix3 from '../../../../../dot/js/Matrix3.js';
+import Vector2 from '../../../../../dot/js/Vector2.js';
+import { Shape } from '../../../../../kite/js/imports.js';
+import ModelViewTransform2 from '../../../../../phetcommon/js/view/ModelViewTransform2.js';
+import { Path } from '../../../../../scenery/js/imports.js';
 import DensityBuoyancyModel from '../../../common/model/DensityBuoyancyModel.js';
 import Mass from '../../../common/model/Mass.js';
-import ModelViewTransform2 from '../../../../../phetcommon/js/view/ModelViewTransform2.js';
+import DebugView, { DebugMassNode } from '../../../common/view/DebugView.js';
+import densityBuoyancyCommon from '../../../densityBuoyancyCommon.js';
+import Boat from '../../model/applications/Boat.js';
+import BuoyancyApplicationsModel from '../../model/applications/BuoyancyApplicationsModel.js';
 import ApplicationsDebugMassNode from './ApplicationsDebugMassNode.js';
 
 export default class ApplicationsDebugView extends DebugView {

@@ -16,10 +16,10 @@ import { ReadOnlyPropertyState } from '../../../../axon/js/ReadOnlyProperty.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import optionize from '../../../../phet-core/js/optionize.js';
 import IntentionalAny from '../../../../phet-core/js/types/IntentionalAny.js';
+import IOTypeCache from '../../../../tandem/js/IOTypeCache.js';
 import IOType from '../../../../tandem/js/types/IOType.js';
 import NumberIO from '../../../../tandem/js/types/NumberIO.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
-import IOTypeCache from '../../../../tandem/js/IOTypeCache.js';
 
 type Interpolate<T extends Vector2 | number> = ( a: T, b: T, ratio: number ) => T;
 type SelfOptions<T extends Vector2 | number> = {

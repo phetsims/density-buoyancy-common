@@ -6,32 +6,32 @@
  * @author Michael Kauzmann (PhET Interactive Simulations)
  */
 
+import PatternStringProperty from '../../../../axon/js/PatternStringProperty.js';
+import Property from '../../../../axon/js/Property.js';
+import Bounds2 from '../../../../dot/js/Bounds2.js';
+import Dimension2 from '../../../../dot/js/Dimension2.js';
+import Vector3 from '../../../../dot/js/Vector3.js';
+import ScreenView from '../../../../joist/js/ScreenView.js';
 import optionize, { EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
 import { Node, VBox } from '../../../../scenery/js/imports.js';
+import Panel from '../../../../sun/js/Panel.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
+import BlockSet from '../../common/model/BlockSet.js';
+import Mass from '../../common/model/Mass.js';
+import MaterialProperty from '../../common/model/MaterialProperty.js';
+import BlocksPanel from '../../common/view/BlocksPanel.js';
+import BlocksValuePanel from '../../common/view/BlocksValuePanel.js';
+import CuboidView from '../../common/view/CuboidView.js';
+import MassView from '../../common/view/MassView.js';
+import ScaleView from '../../common/view/ScaleView.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import BuoyancyCompareModel from '../model/BuoyancyCompareModel.js';
-import DensityAccordionBox from './DensityAccordionBox.js';
-import SubmergedAccordionBox from './SubmergedAccordionBox.js';
-import PatternStringProperty from '../../../../axon/js/PatternStringProperty.js';
-import Property from '../../../../axon/js/Property.js';
-import Vector3 from '../../../../dot/js/Vector3.js';
-import ScreenView from '../../../../joist/js/ScreenView.js';
-import BlockSet from '../../common/model/BlockSet.js';
-import { ReadoutItemOptions } from './ReadoutListAccordionBox.js';
-import Mass from '../../common/model/Mass.js';
-import Bounds2 from '../../../../dot/js/Bounds2.js';
-import FluidSelectionPanel from './FluidSelectionPanel.js';
-import BlocksValuePanel from '../../common/view/BlocksValuePanel.js';
-import Dimension2 from '../../../../dot/js/Dimension2.js';
-import ScaleView from '../../common/view/ScaleView.js';
-import MassView from '../../common/view/MassView.js';
-import CuboidView from '../../common/view/CuboidView.js';
-import BlocksPanel from '../../common/view/BlocksPanel.js';
-import Panel from '../../../../sun/js/Panel.js';
 import BuoyancyScreenView, { BuoyancyScreenViewOptions } from './BuoyancyScreenView.js';
-import MaterialProperty from '../../common/model/MaterialProperty.js';
+import DensityAccordionBox from './DensityAccordionBox.js';
+import FluidSelectionPanel from './FluidSelectionPanel.js';
+import { ReadoutItemOptions } from './ReadoutListAccordionBox.js';
+import SubmergedAccordionBox from './SubmergedAccordionBox.js';
 
 // constants
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN_SMALL;

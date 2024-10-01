@@ -7,14 +7,14 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-import DensityBuoyancyScreenView, { DensityBuoyancyScreenViewOptions } from '../../common/view/DensityBuoyancyScreenView.js';
-import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
-import DensityBuoyancyModel from '../../common/model/DensityBuoyancyModel.js';
-import optionize, { EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
-import PoolScaleHeightControl from '../../common/view/PoolScaleHeightControl.js';
-import Vector3 from '../../../../dot/js/Vector3.js';
-import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 import Bounds2 from '../../../../dot/js/Bounds2.js';
+import Vector3 from '../../../../dot/js/Vector3.js';
+import optionize, { EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
+import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
+import DensityBuoyancyModel from '../../common/model/DensityBuoyancyModel.js';
+import DensityBuoyancyScreenView, { DensityBuoyancyScreenViewOptions } from '../../common/view/DensityBuoyancyScreenView.js';
+import PoolScaleHeightControl from '../../common/view/PoolScaleHeightControl.js';
+import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import BuoyancyDisplayOptionsPanel from './BuoyancyDisplayOptionsPanel.js';
 
 // constants

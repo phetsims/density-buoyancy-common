@@ -6,14 +6,14 @@
  * @author Agustín Vallejo (PhET Interactive Simulations)
  */
 
-import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
-import optionize, { EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
+import PatternStringProperty from '../../../../axon/js/PatternStringProperty.js';
 import Utils from '../../../../dot/js/Utils.js';
-import ReadoutListAccordionBox, { ReadoutData, ReadoutListAccordionBoxOptions } from './ReadoutListAccordionBox.js';
-import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
+import optionize, { EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
 import DensityBuoyancyCommonPreferences from '../../common/model/DensityBuoyancyCommonPreferences.js';
 import Mass from '../../common/model/Mass.js';
-import PatternStringProperty from '../../../../axon/js/PatternStringProperty.js';
+import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
+import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
+import ReadoutListAccordionBox, { ReadoutData, ReadoutListAccordionBoxOptions } from './ReadoutListAccordionBox.js';
 
 type SubmergedAccordionBoxOptions = ReadoutListAccordionBoxOptions<Mass>;
 

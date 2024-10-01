@@ -6,17 +6,17 @@
  * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
+import UnitConversionProperty from '../../../../axon/js/UnitConversionProperty.js';
+import { combineOptions } from '../../../../phet-core/js/optionize.js';
+import NumberControl, { NumberControlOptions } from '../../../../scenery-phet/js/NumberControl.js';
 import { Node } from '../../../../scenery/js/imports.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
+import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
+import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
 import Cube from '../model/Cube.js';
 import Cuboid from '../model/Cuboid.js';
 import MaterialMassVolumeControlNode, { MaterialMassVolumeControlNodeOptions } from './MaterialMassVolumeControlNode.js';
-import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
-import NumberControl, { NumberControlOptions } from '../../../../scenery-phet/js/NumberControl.js';
-import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
-import { combineOptions } from '../../../../phet-core/js/optionize.js';
 import PrecisionSliderThumb from './PrecisionSliderThumb.js';
-import UnitConversionProperty from '../../../../axon/js/UnitConversionProperty.js';
 
 export type BlockControlNodeOptions = MaterialMassVolumeControlNodeOptions;
 

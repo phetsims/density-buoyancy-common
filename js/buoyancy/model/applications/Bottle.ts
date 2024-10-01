@@ -69,9 +69,10 @@
  */
 
 import DerivedProperty from '../../../../../axon/js/DerivedProperty.js';
-import StrictOmit from '../../../../../phet-core/js/types/StrictOmit.js';
+import Multilink from '../../../../../axon/js/Multilink.js';
 import NumberProperty from '../../../../../axon/js/NumberProperty.js';
 import Property from '../../../../../axon/js/Property.js';
+import ReadOnlyProperty from '../../../../../axon/js/ReadOnlyProperty.js';
 import Bounds2 from '../../../../../dot/js/Bounds2.js';
 import Range from '../../../../../dot/js/Range.js';
 import Utils from '../../../../../dot/js/Utils.js';
@@ -79,17 +80,16 @@ import Vector2 from '../../../../../dot/js/Vector2.js';
 import Vector3 from '../../../../../dot/js/Vector3.js';
 import { Shape } from '../../../../../kite/js/imports.js';
 import optionize, { EmptySelfOptions } from '../../../../../phet-core/js/optionize.js';
-import Material, { CustomSolidMaterial } from '../../../common/model/Material.js';
-import densityBuoyancyCommon from '../../../densityBuoyancyCommon.js';
-import DensityBuoyancyCommonStrings from '../../../DensityBuoyancyCommonStrings.js';
-import PhysicsEngine from '../../../common/model/PhysicsEngine.js';
-import Multilink from '../../../../../axon/js/Multilink.js';
-import { MassShape } from '../../../common/model/MassShape.js';
-import ReadOnlyProperty from '../../../../../axon/js/ReadOnlyProperty.js';
-import ApplicationsMass, { ApplicationsMassOptions } from './ApplicationsMass.js';
+import StrictOmit from '../../../../../phet-core/js/types/StrictOmit.js';
 import NumberIO from '../../../../../tandem/js/types/NumberIO.js';
 import DensityBuoyancyCommonConstants from '../../../common/DensityBuoyancyCommonConstants.js';
+import { MassShape } from '../../../common/model/MassShape.js';
+import Material, { CustomSolidMaterial } from '../../../common/model/Material.js';
 import MaterialProperty from '../../../common/model/MaterialProperty.js';
+import PhysicsEngine from '../../../common/model/PhysicsEngine.js';
+import densityBuoyancyCommon from '../../../densityBuoyancyCommon.js';
+import DensityBuoyancyCommonStrings from '../../../DensityBuoyancyCommonStrings.js';
+import ApplicationsMass, { ApplicationsMassOptions } from './ApplicationsMass.js';
 
 // constants (in logical coordinates)
 const BODY_CORNER_RADIUS = 0.02; // Used both between the taper/body and between the body/base. This radius helps in

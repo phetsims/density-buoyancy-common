@@ -8,20 +8,20 @@
 
 import EnumerationProperty from '../../../../axon/js/EnumerationProperty.js';
 import Property from '../../../../axon/js/Property.js';
+import propertyStateHandlerSingleton from '../../../../axon/js/propertyStateHandlerSingleton.js';
+import PropertyStatePhase from '../../../../axon/js/PropertyStatePhase.js';
 import Matrix3 from '../../../../dot/js/Matrix3.js';
-import Vector2 from '../../../../dot/js/Vector2.js';
 import Range from '../../../../dot/js/Range.js';
+import Vector2 from '../../../../dot/js/Vector2.js';
+import optionize, { combineOptions, EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
 import Cube, { StrictCubeOptions } from '../../common/model/Cube.js';
 import DensityBuoyancyModel, { DensityBuoyancyModelOptions } from '../../common/model/DensityBuoyancyModel.js';
+import { MaterialSchema } from '../../common/model/Mass.js';
+import MassTag from '../../common/model/MassTag.js';
 import Material from '../../common/model/Material.js';
 import Scale, { DisplayType } from '../../common/model/Scale.js';
 import TwoBlockMode from '../../common/model/TwoBlockMode.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
-import MassTag from '../../common/model/MassTag.js';
-import { MaterialSchema } from '../../common/model/Mass.js';
-import optionize, { combineOptions, EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
-import propertyStateHandlerSingleton from '../../../../axon/js/propertyStateHandlerSingleton.js';
-import PropertyStatePhase from '../../../../axon/js/PropertyStatePhase.js';
 
 type BuoyancyBasicsExploreModelOptions = DensityBuoyancyModelOptions;
 

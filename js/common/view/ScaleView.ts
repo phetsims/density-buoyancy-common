@@ -7,17 +7,17 @@
  */
 
 import Vector3 from '../../../../dot/js/Vector3.js';
+import { THREEModelViewTransform } from '../../../../mobius/js/MobiusScreenView.js';
+import phetioStateSetEmitter from '../../../../tandem/js/phetioStateSetEmitter.js';
+import Tandem from '../../../../tandem/js/Tandem.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
+import GravityProperty from '../model/GravityProperty.js';
 import Scale from '../model/Scale.js';
 import CuboidView from './CuboidView.js';
-import MassView from './MassView.js';
-import VerticalCylinderView from './VerticalCylinderView.js';
-import ScaleReadoutNode from './ScaleReadoutNode.js';
 import MassDecorationLayer from './MassDecorationLayer.js';
-import { THREEModelViewTransform } from '../../../../mobius/js/MobiusScreenView.js';
-import Tandem from '../../../../tandem/js/Tandem.js';
-import GravityProperty from '../model/GravityProperty.js';
-import phetioStateSetEmitter from '../../../../tandem/js/phetioStateSetEmitter.js';
+import MassView from './MassView.js';
+import ScaleReadoutNode from './ScaleReadoutNode.js';
+import VerticalCylinderView from './VerticalCylinderView.js';
 
 export default class ScaleView extends MassView {
 

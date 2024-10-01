@@ -6,11 +6,11 @@
  * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
+import packageJSON from '../../../../joist/js/packageJSON.js';
 import PhetColorScheme from '../../../../scenery-phet/js/PhetColorScheme.js';
 import { Color, ProfileColorProperty } from '../../../../scenery/js/imports.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
-import packageJSON from '../../../../joist/js/packageJSON.js';
 
 const tandem = Tandem.COLORS;
 const packageName = packageJSON.name;

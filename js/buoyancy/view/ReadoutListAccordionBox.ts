@@ -8,20 +8,20 @@
  * @author Agustín Vallejo (PhET Interactive Simulations)
  */
 
-import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
-import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
-import { AlignGroup, HBox, RichText, RichTextOptions, Text, VBox } from '../../../../scenery/js/imports.js';
-import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
-import TinyEmitter from '../../../../axon/js/TinyEmitter.js';
-import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
-import { combineOptions, optionize4 } from '../../../../phet-core/js/optionize.js';
-import AccordionBox, { AccordionBoxOptions } from '../../../../sun/js/AccordionBox.js';
-import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
-import PatternStringProperty from '../../../../axon/js/PatternStringProperty.js';
-import TinyProperty from '../../../../axon/js/TinyProperty.js';
-import WithRequired from '../../../../phet-core/js/types/WithRequired.js';
 import DerivedStringProperty from '../../../../axon/js/DerivedStringProperty.js';
 import Disposable from '../../../../axon/js/Disposable.js';
+import PatternStringProperty from '../../../../axon/js/PatternStringProperty.js';
+import TinyEmitter from '../../../../axon/js/TinyEmitter.js';
+import TinyProperty from '../../../../axon/js/TinyProperty.js';
+import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
+import { combineOptions, optionize4 } from '../../../../phet-core/js/optionize.js';
+import WithRequired from '../../../../phet-core/js/types/WithRequired.js';
+import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
+import { AlignGroup, HBox, RichText, RichTextOptions, Text, VBox } from '../../../../scenery/js/imports.js';
+import AccordionBox, { AccordionBoxOptions } from '../../../../sun/js/AccordionBox.js';
+import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
+import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
+import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 
 const DEFAULT_FONT = new PhetFont( 14 );
 const HBOX_SPACING = 5;

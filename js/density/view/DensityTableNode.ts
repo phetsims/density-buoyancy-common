@@ -14,10 +14,10 @@ import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import { GridBackgroundNode, GridBox, Node, Rectangle, RichText, Text, TLayoutOptions } from '../../../../scenery/js/imports.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 import DensityBuoyancyCommonPreferences from '../../common/model/DensityBuoyancyCommonPreferences.js';
+import Material from '../../common/model/Material.js';
 import DensityBuoyancyCommonColors from '../../common/view/DensityBuoyancyCommonColors.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
-import Material from '../../common/model/Material.js';
 
 // constants
 const headerFont = new PhetFont( { size: 12, weight: 'bold' } );

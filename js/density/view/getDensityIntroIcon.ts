@@ -6,12 +6,12 @@
  * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
-import { Node } from '../../../../scenery/js/imports.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
-import { DensityMaterials } from '../../common/view/MaterialView.js';
-import ThreeUtils from '../../../../mobius/js/ThreeUtils.js';
-import FluidIconMesh from '../../common/view/FluidIconMesh.js';
 import getAngledIcon from '../../../../mobius/js/getAngledIcon.js';
+import ThreeUtils from '../../../../mobius/js/ThreeUtils.js';
+import { Node } from '../../../../scenery/js/imports.js';
+import FluidIconMesh from '../../common/view/FluidIconMesh.js';
+import { DensityMaterials } from '../../common/view/MaterialView.js';
 
 const getDensityIntroIcon = (): Node => {
 

@@ -7,26 +7,26 @@
  */
 
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
-import StrictOmit from '../../../../phet-core/js/types/StrictOmit.js';
+import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import Bounds3 from '../../../../dot/js/Bounds3.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
 import { Shape } from '../../../../kite/js/imports.js';
 import Enumeration from '../../../../phet-core/js/Enumeration.js';
 import EnumerationValue from '../../../../phet-core/js/EnumerationValue.js';
 import optionize from '../../../../phet-core/js/optionize.js';
+import PickOptional from '../../../../phet-core/js/types/PickOptional.js';
+import StrictOmit from '../../../../phet-core/js/types/StrictOmit.js';
 import PhetioObject from '../../../../tandem/js/PhetioObject.js';
+import Tandem from '../../../../tandem/js/Tandem.js';
 import NumberIO from '../../../../tandem/js/types/NumberIO.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
+import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
+import GravityProperty from './GravityProperty.js';
 import InterpolatedProperty from './InterpolatedProperty.js';
 import Mass, { InstrumentedMassOptions } from './Mass.js';
+import { MassShape } from './MassShape.js';
 import Material from './Material.js';
 import PhysicsEngine from './PhysicsEngine.js';
-import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
-import { MassShape } from './MassShape.js';
-import PickOptional from '../../../../phet-core/js/types/PickOptional.js';
-import Tandem from '../../../../tandem/js/Tandem.js';
-import GravityProperty from './GravityProperty.js';
-import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 
 // constants
 export const SCALE_WIDTH = 0.15;

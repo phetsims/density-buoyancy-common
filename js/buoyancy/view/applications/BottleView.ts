@@ -6,13 +6,13 @@
  * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
+import Vector3 from '../../../../../dot/js/Vector3.js';
+import { THREEModelViewTransform } from '../../../../../mobius/js/MobiusScreenView.js';
+import Material from '../../../common/model/Material.js';
+import { TAG_OFFSET } from '../../../common/view/MassTagNode.js';
+import MeasurableMassView from '../../../common/view/MeasurableMassView.js';
 import densityBuoyancyCommon from '../../../densityBuoyancyCommon.js';
 import Bottle from '../../model/applications/Bottle.js';
-import Material from '../../../common/model/Material.js';
-import MeasurableMassView from '../../../common/view/MeasurableMassView.js';
-import { THREEModelViewTransform } from '../../../../../mobius/js/MobiusScreenView.js';
-import Vector3 from '../../../../../dot/js/Vector3.js';
-import { TAG_OFFSET } from '../../../common/view/MassTagNode.js';
 import DisplayProperties from '../DisplayProperties.js';
 
 type BottleDrawingData = {

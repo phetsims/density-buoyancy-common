@@ -9,17 +9,17 @@
  */
 
 import Property from '../../../../axon/js/Property.js';
+import Range from '../../../../dot/js/Range.js';
+import Utils from '../../../../dot/js/Utils.js';
 import optionize from '../../../../phet-core/js/optionize.js';
+import PickRequired from '../../../../phet-core/js/types/PickRequired.js';
 import { HBox, Node, Text, VBox, VBoxOptions } from '../../../../scenery/js/imports.js';
 import ComboBox from '../../../../sun/js/ComboBox.js';
+import { PhetioObjectOptions } from '../../../../tandem/js/PhetioObject.js';
+import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
 import Material from '../model/Material.js';
-import { PhetioObjectOptions } from '../../../../tandem/js/PhetioObject.js';
-import PickRequired from '../../../../phet-core/js/types/PickRequired.js';
-import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import MaterialProperty from '../model/MaterialProperty.js';
-import Utils from '../../../../dot/js/Utils.js';
-import Range from '../../../../dot/js/Range.js';
 
 type SelfMaterialControlNodeOptions = {
 

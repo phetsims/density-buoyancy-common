@@ -6,14 +6,14 @@
  * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
+import { THREEModelViewTransform } from '../../../../../mobius/js/MobiusScreenView.js';
+import DensityBuoyancyCommonConstants from '../../../common/DensityBuoyancyCommonConstants.js';
+import InterpolatedProperty from '../../../common/model/InterpolatedProperty.js';
+import MeasurableMassView from '../../../common/view/MeasurableMassView.js';
 import densityBuoyancyCommon from '../../../densityBuoyancyCommon.js';
 import Boat from '../../model/applications/Boat.js';
 import BoatDesign from '../../model/applications/BoatDesign.js';
-import DensityBuoyancyCommonConstants from '../../../common/DensityBuoyancyCommonConstants.js';
-import MeasurableMassView from '../../../common/view/MeasurableMassView.js';
-import { THREEModelViewTransform } from '../../../../../mobius/js/MobiusScreenView.js';
 import DisplayProperties from '../DisplayProperties.js';
-import InterpolatedProperty from '../../../common/model/InterpolatedProperty.js';
 
 type BoatDrawingData = {
   backMiddleMaterial: THREE.MeshBasicMaterial;

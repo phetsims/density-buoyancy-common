@@ -8,9 +8,13 @@
 
 import BooleanProperty, { BooleanPropertyOptions } from '../../../../axon/js/BooleanProperty.js';
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
+import Disposable from '../../../../axon/js/Disposable.js';
 import Emitter from '../../../../axon/js/Emitter.js';
+import Multilink from '../../../../axon/js/Multilink.js';
 import NumberProperty, { NumberPropertyOptions } from '../../../../axon/js/NumberProperty.js';
 import Property from '../../../../axon/js/Property.js';
+import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
+import Bounds3 from '../../../../dot/js/Bounds3.js';
 import Matrix3, { Matrix3StateObject } from '../../../../dot/js/Matrix3.js';
 import Range from '../../../../dot/js/Range.js';
 import Utils from '../../../../dot/js/Utils.js';
@@ -19,28 +23,24 @@ import Vector2Property from '../../../../dot/js/Vector2Property.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
 import { Shape } from '../../../../kite/js/imports.js';
 import optionize, { combineOptions } from '../../../../phet-core/js/optionize.js';
+import PickRequired from '../../../../phet-core/js/types/PickRequired.js';
+import GrabDragUsageTracker from '../../../../scenery-phet/js/accessibility/grab-drag/GrabDragUsageTracker.js';
 import { GatedVisibleProperty, PDOMValueType } from '../../../../scenery/js/imports.js';
 import PhetioObject, { PhetioObjectOptions } from '../../../../tandem/js/PhetioObject.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
 import IOType from '../../../../tandem/js/types/IOType.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
-import InterpolatedProperty from './InterpolatedProperty.js';
-import Material, { CustomSolidMaterial, MaterialOptions } from './Material.js';
-import PhysicsEngine, { PhysicsEngineBody } from './PhysicsEngine.js';
+import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
+import DensityBuoyancyCommonQueryParameters from '../DensityBuoyancyCommonQueryParameters.js';
 import Basin from './Basin.js';
-import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
-import Multilink from '../../../../axon/js/Multilink.js';
-import PickRequired from '../../../../phet-core/js/types/PickRequired.js';
-import { MassShape } from './MassShape.js';
-import MassTag from './MassTag.js';
-import Bounds3 from '../../../../dot/js/Bounds3.js';
 import BlendedVector2Property from './BlendedVector2Property.js';
 import { GuardedNumberProperty, GuardedNumberPropertyOptions } from './GuardedNumberProperty.js';
-import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
+import InterpolatedProperty from './InterpolatedProperty.js';
+import { MassShape } from './MassShape.js';
+import MassTag from './MassTag.js';
+import Material, { CustomSolidMaterial, MaterialOptions } from './Material.js';
 import MaterialProperty, { MaterialPropertyOptions } from './MaterialProperty.js';
-import DensityBuoyancyCommonQueryParameters from '../DensityBuoyancyCommonQueryParameters.js';
-import Disposable from '../../../../axon/js/Disposable.js';
-import GrabDragUsageTracker from '../../../../scenery-phet/js/accessibility/grab-drag/GrabDragUsageTracker.js';
+import PhysicsEngine, { PhysicsEngineBody } from './PhysicsEngine.js';
 
 // For the Buoyancy Shapes screen, but needed here because setRatios is included in each core type
 // See https://github.com/phetsims/buoyancy/issues/29

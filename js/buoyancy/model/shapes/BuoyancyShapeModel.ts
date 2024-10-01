@@ -9,26 +9,26 @@
  * @author Michael Kauzmann (PhET Interactive Simulations)
  */
 
+import { ObservableArray } from '../../../../../axon/js/createObservableArray.js';
+import DerivedProperty from '../../../../../axon/js/DerivedProperty.js';
 import EnumerationProperty from '../../../../../axon/js/EnumerationProperty.js';
 import Multilink from '../../../../../axon/js/Multilink.js';
 import NumberProperty from '../../../../../axon/js/NumberProperty.js';
 import Property from '../../../../../axon/js/Property.js';
+import TinyProperty from '../../../../../axon/js/TinyProperty.js';
+import TReadOnlyProperty from '../../../../../axon/js/TReadOnlyProperty.js';
 import Matrix3 from '../../../../../dot/js/Matrix3.js';
+import Range from '../../../../../dot/js/Range.js';
+import optionize from '../../../../../phet-core/js/optionize.js';
+import PickRequired from '../../../../../phet-core/js/types/PickRequired.js';
+import isSettingPhetioStateProperty from '../../../../../tandem/js/isSettingPhetioStateProperty.js';
+import { PhetioObjectOptions } from '../../../../../tandem/js/PhetioObject.js';
+import ReferenceIO from '../../../../../tandem/js/types/ReferenceIO.js';
 import Mass from '../../../common/model/Mass.js';
-import densityBuoyancyCommon from '../../../densityBuoyancyCommon.js';
 import { MassShape } from '../../../common/model/MassShape.js';
 import MassTag from '../../../common/model/MassTag.js';
-import PickRequired from '../../../../../phet-core/js/types/PickRequired.js';
-import { PhetioObjectOptions } from '../../../../../tandem/js/PhetioObject.js';
-import TReadOnlyProperty from '../../../../../axon/js/TReadOnlyProperty.js';
+import densityBuoyancyCommon from '../../../densityBuoyancyCommon.js';
 import BuoyancyShapesModel from './BuoyancyShapesModel.js';
-import ReferenceIO from '../../../../../tandem/js/types/ReferenceIO.js';
-import Range from '../../../../../dot/js/Range.js';
-import DerivedProperty from '../../../../../axon/js/DerivedProperty.js';
-import { ObservableArray } from '../../../../../axon/js/createObservableArray.js';
-import isSettingPhetioStateProperty from '../../../../../tandem/js/isSettingPhetioStateProperty.js';
-import optionize from '../../../../../phet-core/js/optionize.js';
-import TinyProperty from '../../../../../axon/js/TinyProperty.js';
 
 type SelfOptions = {
 

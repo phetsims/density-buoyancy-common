@@ -6,31 +6,31 @@
  * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
+import createObservableArray from '../../../../axon/js/createObservableArray.js';
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import Property from '../../../../axon/js/Property.js';
-import createObservableArray from '../../../../axon/js/createObservableArray.js';
 import Bounds3 from '../../../../dot/js/Bounds3.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
-import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
-import DensityBuoyancyCommonQueryParameters from '../DensityBuoyancyCommonQueryParameters.js';
-import Gravity from './Gravity.js';
-import Pool, { FluidSelectionType } from './Pool.js';
-import Scale from './Scale.js';
-import optionize from '../../../../phet-core/js/optionize.js';
-import PhysicsEngine, { PhysicsEngineBody } from './PhysicsEngine.js';
-import Mass from './Mass.js';
-import Cuboid from './Cuboid.js';
 import TModel from '../../../../joist/js/TModel.js';
-import { PhetioObjectOptions } from '../../../../tandem/js/PhetioObject.js';
+import optionize from '../../../../phet-core/js/optionize.js';
 import PickRequired from '../../../../phet-core/js/types/PickRequired.js';
-import PoolScale from './PoolScale.js';
-import Basin from './Basin.js';
-import GravityProperty from './GravityProperty.js';
-import ReferenceIO from '../../../../tandem/js/types/ReferenceIO.js';
-import IOType from '../../../../tandem/js/types/IOType.js';
-import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
+import { PhetioObjectOptions } from '../../../../tandem/js/PhetioObject.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
+import IOType from '../../../../tandem/js/types/IOType.js';
+import ReferenceIO from '../../../../tandem/js/types/ReferenceIO.js';
+import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
+import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
+import DensityBuoyancyCommonQueryParameters from '../DensityBuoyancyCommonQueryParameters.js';
+import Basin from './Basin.js';
+import Cuboid from './Cuboid.js';
+import Gravity from './Gravity.js';
+import GravityProperty from './GravityProperty.js';
 import InterpolatedProperty from './InterpolatedProperty.js';
+import Mass from './Mass.js';
+import PhysicsEngine, { PhysicsEngineBody } from './PhysicsEngine.js';
+import Pool, { FluidSelectionType } from './Pool.js';
+import PoolScale from './PoolScale.js';
+import Scale from './Scale.js';
 
 // constants
 const BLOCK_SPACING = 0.01;

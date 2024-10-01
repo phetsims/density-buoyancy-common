@@ -6,23 +6,23 @@
  * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
+import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
+import NumberProperty, { NumberPropertyOptions } from '../../../../axon/js/NumberProperty.js';
+import ReadOnlyProperty from '../../../../axon/js/ReadOnlyProperty.js';
+import TinyProperty from '../../../../axon/js/TinyProperty.js';
+import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
+import Range from '../../../../dot/js/Range.js';
 import Utils from '../../../../dot/js/Utils.js';
+import packageJSON from '../../../../joist/js/packageJSON.js';
 import optionize, { EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
+import StrictOmit from '../../../../phet-core/js/types/StrictOmit.js';
 import { Color } from '../../../../scenery/js/imports.js';
+import PhetioObject, { PhetioObjectOptions } from '../../../../tandem/js/PhetioObject.js';
+import Tandem from '../../../../tandem/js/Tandem.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import DensityBuoyancyCommonColors from '../view/DensityBuoyancyCommonColors.js';
-import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
-import TinyProperty from '../../../../axon/js/TinyProperty.js';
-import ReadOnlyProperty from '../../../../axon/js/ReadOnlyProperty.js';
-import Range from '../../../../dot/js/Range.js';
-import NumberProperty, { NumberPropertyOptions } from '../../../../axon/js/NumberProperty.js';
-import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
-import Tandem from '../../../../tandem/js/Tandem.js';
-import PhetioObject, { PhetioObjectOptions } from '../../../../tandem/js/PhetioObject.js';
 import { MappedWrappedObject } from './MappedWrappedProperty.js';
-import StrictOmit from '../../../../phet-core/js/types/StrictOmit.js';
-import packageJSON from '../../../../joist/js/packageJSON.js';
 
 type SelfOptions = {
   nameProperty?: TReadOnlyProperty<string>;

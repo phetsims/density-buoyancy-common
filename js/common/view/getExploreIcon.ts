@@ -6,9 +6,9 @@
  * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
-import { Node, VBox } from '../../../../scenery/js/imports.js';
-import ArrowNode, { ArrowNodeOptions } from '../../../../scenery-phet/js/ArrowNode.js';
 import { combineOptions } from '../../../../phet-core/js/optionize.js';
+import ArrowNode, { ArrowNodeOptions } from '../../../../scenery-phet/js/ArrowNode.js';
+import { Node, VBox } from '../../../../scenery/js/imports.js';
 import DensityBuoyancyCommonColors from './DensityBuoyancyCommonColors.js';
 import { arrowOptions } from './ForceDiagramNode.js';
 

@@ -6,21 +6,21 @@
  * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
-import Bounds3 from '../../../../dot/js/Bounds3.js';
-import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
-import Basin from './Basin.js';
-import Mass from './Mass.js';
-import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
-import Tandem from '../../../../tandem/js/Tandem.js';
-import Material, { CustomLiquidMaterial } from './Material.js';
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
-import NumberIO from '../../../../tandem/js/types/NumberIO.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
+import Bounds3 from '../../../../dot/js/Bounds3.js';
 import Utils from '../../../../dot/js/Utils.js';
-import PoolScale from './PoolScale.js';
-import PhysicsEngine from './PhysicsEngine.js';
-import MaterialProperty from './MaterialProperty.js';
+import Tandem from '../../../../tandem/js/Tandem.js';
+import NumberIO from '../../../../tandem/js/types/NumberIO.js';
+import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
+import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
+import Basin from './Basin.js';
 import GravityProperty from './GravityProperty.js';
+import Mass from './Mass.js';
+import Material, { CustomLiquidMaterial } from './Material.js';
+import MaterialProperty from './MaterialProperty.js';
+import PhysicsEngine from './PhysicsEngine.js';
+import PoolScale from './PoolScale.js';
 
 export type FluidSelectionType = 'justWater' | 'simple' | 'all';
 

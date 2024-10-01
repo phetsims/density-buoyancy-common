@@ -6,23 +6,23 @@
  * @author Michael Kauzmann (PhET Interactive Simulations)
  */
 
+import PatternStringProperty from '../../../../axon/js/PatternStringProperty.js';
 import optionize, { EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
 import { Node, VBox } from '../../../../scenery/js/imports.js';
+import BuoyancyScreenView, { BuoyancyScreenViewOptions } from '../../buoyancy/view/BuoyancyScreenView.js';
+import DensityAccordionBox from '../../buoyancy/view/DensityAccordionBox.js';
+import FluidSelectionPanel from '../../buoyancy/view/FluidSelectionPanel.js';
+import getBuoyancyExploreIcon from '../../buoyancy/view/getBuoyancyExploreIcon.js';
+import SubmergedAccordionBox from '../../buoyancy/view/SubmergedAccordionBox.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 import ABControlsNode from '../../common/view/ABControlsNode.js';
+import BlocksModeRadioButtonGroup from '../../common/view/BlocksModeRadioButtonGroup.js';
+import CuboidView from '../../common/view/CuboidView.js';
+import MassView from '../../common/view/MassView.js';
+import ScaleView from '../../common/view/ScaleView.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import BuoyancyBasicsExploreModel from '../model/BuoyancyBasicsExploreModel.js';
-import SubmergedAccordionBox from '../../buoyancy/view/SubmergedAccordionBox.js';
-import PatternStringProperty from '../../../../axon/js/PatternStringProperty.js';
-import BlocksModeRadioButtonGroup from '../../common/view/BlocksModeRadioButtonGroup.js';
-import FluidSelectionPanel from '../../buoyancy/view/FluidSelectionPanel.js';
-import CuboidView from '../../common/view/CuboidView.js';
-import ScaleView from '../../common/view/ScaleView.js';
-import MassView from '../../common/view/MassView.js';
-import DensityAccordionBox from '../../buoyancy/view/DensityAccordionBox.js';
-import BuoyancyScreenView, { BuoyancyScreenViewOptions } from '../../buoyancy/view/BuoyancyScreenView.js';
-import getBuoyancyExploreIcon from '../../buoyancy/view/getBuoyancyExploreIcon.js';
 
 type BuoyancyBasicsExploreScreenViewOptions = BuoyancyScreenViewOptions;
 

@@ -12,18 +12,18 @@ import { HBox, LayoutProxy, ManualConstraint, Node, VBox } from '../../../../sce
 import Panel, { PanelOptions } from '../../../../sun/js/Panel.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 import Material from '../../common/model/Material.js';
-import GravityControlNode from '../../common/view/GravityControlNode.js';
-import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
-import BuoyancyLabModel from '../model/BuoyancyLabModel.js';
-import DensityAccordionBox from './DensityAccordionBox.js';
 import BlockControlNode from '../../common/view/BlockControlNode.js';
+import CuboidView from '../../common/view/CuboidView.js';
+import GravityControlNode from '../../common/view/GravityControlNode.js';
 import MultiSectionPanelsNode from '../../common/view/MultiSectionPanelsNode.js';
+import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
+import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
+import BuoyancyLabModel from '../model/BuoyancyLabModel.js';
+import BuoyancyScreenView, { BuoyancyScreenViewOptions } from './BuoyancyScreenView.js';
+import DensityAccordionBox from './DensityAccordionBox.js';
+import FluidDensityPanel from './FluidDensityPanel.js';
 import FluidDisplacedAccordionBox from './FluidDisplacedAccordionBox.js';
 import SubmergedAccordionBox from './SubmergedAccordionBox.js';
-import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
-import CuboidView from '../../common/view/CuboidView.js';
-import FluidDensityPanel from './FluidDensityPanel.js';
-import BuoyancyScreenView, { BuoyancyScreenViewOptions } from './BuoyancyScreenView.js';
 
 // constants
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN_SMALL;

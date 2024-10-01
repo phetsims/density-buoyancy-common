@@ -6,13 +6,13 @@
  * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
-import { Node } from '../../../../../scenery/js/imports.js';
 import Vector3 from '../../../../../dot/js/Vector3.js';
-import Bottle from '../../model/applications/Bottle.js';
-import Material from '../../../common/model/Material.js';
-import FluidIconMesh from '../../../common/view/FluidIconMesh.js';
 
 import getAngledIcon from '../../../../../mobius/js/getAngledIcon.js';
+import { Node } from '../../../../../scenery/js/imports.js';
+import Material from '../../../common/model/Material.js';
+import FluidIconMesh from '../../../common/view/FluidIconMesh.js';
+import Bottle from '../../model/applications/Bottle.js';
 
 const getBuoyancyApplicationsIcon = (): Node => {
 

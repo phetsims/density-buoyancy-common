@@ -6,15 +6,15 @@
  * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
-import { Node } from '../../../../scenery/js/imports.js';
-import DensityBuoyancyScreenView from '../../common/view/DensityBuoyancyScreenView.js';
-import buoyancy_explore_screen_block_png from '../../../images/buoyancy_explore_screen_block_png.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
-import { DensityMaterials } from '../../common/view/MaterialView.js';
+import getAngledIcon from '../../../../mobius/js/getAngledIcon.js';
 import ThreeUtils from '../../../../mobius/js/ThreeUtils.js';
+import { Node } from '../../../../scenery/js/imports.js';
+import buoyancy_explore_screen_block_png from '../../../images/buoyancy_explore_screen_block_png.js';
+import DensityBuoyancyScreenView from '../../common/view/DensityBuoyancyScreenView.js';
 import FluidIconMesh from '../../common/view/FluidIconMesh.js';
 import getExploreIcon from '../../common/view/getExploreIcon.js';
-import getAngledIcon from '../../../../mobius/js/getAngledIcon.js';
+import { DensityMaterials } from '../../common/view/MaterialView.js';
 
 const getBuoyancyExploreIcon = (): Node => {
   const boxScene = DensityBuoyancyScreenView.getThreeIcon( buoyancy_explore_screen_block_png, () => {

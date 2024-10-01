@@ -6,19 +6,19 @@
  * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
+import Disposable from '../../../../axon/js/Disposable.js';
 import Property from '../../../../axon/js/Property.js';
+import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
+import PreferencesDialog from '../../../../joist/js/preferences/PreferencesDialog.js';
 import optionize, { EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
-import { HBox, HBoxOptions, RichText, Text } from '../../../../scenery/js/imports.js';
 import PickRequired from '../../../../phet-core/js/types/PickRequired.js';
+import WithRequired from '../../../../phet-core/js/types/WithRequired.js';
+import { HBox, HBoxOptions, RichText, Text } from '../../../../scenery/js/imports.js';
 import AquaRadioButtonGroup, { AquaRadioButtonGroupItem, AquaRadioButtonGroupOptions } from '../../../../sun/js/AquaRadioButtonGroup.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
-import PreferencesDialog from '../../../../joist/js/preferences/PreferencesDialog.js';
-import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
-import { VolumeUnits } from '../DensityBuoyancyCommonQueryParameters.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
-import Disposable from '../../../../axon/js/Disposable.js';
-import WithRequired from '../../../../phet-core/js/types/WithRequired.js';
+import { VolumeUnits } from '../DensityBuoyancyCommonQueryParameters.js';
 
 type SelfOptions = EmptySelfOptions;
 

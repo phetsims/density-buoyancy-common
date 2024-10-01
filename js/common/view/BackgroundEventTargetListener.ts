@@ -8,22 +8,22 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
-import { Pointer, SceneryEvent, TInputListener } from '../../../../scenery/js/imports.js';
-import Plane3 from '../../../../dot/js/Plane3.js';
-import Vector3 from '../../../../dot/js/Vector3.js';
-import arrayRemove from '../../../../phet-core/js/arrayRemove.js';
 import Bounds2 from '../../../../dot/js/Bounds2.js';
-import Mass from '../model/Mass.js';
-import PhetioAction from '../../../../tandem/js/PhetioAction.js';
+import Plane3 from '../../../../dot/js/Plane3.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
-import EventType from '../../../../tandem/js/EventType.js';
-import Tandem from '../../../../tandem/js/Tandem.js';
-import MassView from './MassView.js';
-import DensityBuoyancyScreenView from './DensityBuoyancyScreenView.js';
-import DensityBuoyancyModel from '../model/DensityBuoyancyModel.js';
+import Vector3 from '../../../../dot/js/Vector3.js';
 import ThreeIsometricNode from '../../../../mobius/js/ThreeIsometricNode.js';
+import arrayRemove from '../../../../phet-core/js/arrayRemove.js';
+import { Pointer, SceneryEvent, TInputListener } from '../../../../scenery/js/imports.js';
 import sharedSoundPlayers from '../../../../tambo/js/sharedSoundPlayers.js';
+import EventType from '../../../../tandem/js/EventType.js';
+import PhetioAction from '../../../../tandem/js/PhetioAction.js';
+import Tandem from '../../../../tandem/js/Tandem.js';
+import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
+import DensityBuoyancyModel from '../model/DensityBuoyancyModel.js';
+import Mass from '../model/Mass.js';
+import DensityBuoyancyScreenView from './DensityBuoyancyScreenView.js';
+import MassView from './MassView.js';
 
 export default class BackgroundEventTargetListener implements TInputListener {
   private readonly draggedMasses: Mass[] = [];

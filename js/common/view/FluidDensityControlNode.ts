@@ -6,19 +6,19 @@
  * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
+import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import Dimension2 from '../../../../dot/js/Dimension2.js';
 import Range from '../../../../dot/js/Range.js';
+import optionize from '../../../../phet-core/js/optionize.js';
+import WithRequired from '../../../../phet-core/js/types/WithRequired.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import { GatedVisibleProperty, Node, Text } from '../../../../scenery/js/imports.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
 import Material from '../model/Material.js';
-import ComboNumberControl, { ComboNumberControlOptions } from './ComboNumberControl.js';
-import optionize from '../../../../phet-core/js/optionize.js';
-import WithRequired from '../../../../phet-core/js/types/WithRequired.js';
-import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import MaterialProperty from '../model/MaterialProperty.js';
+import ComboNumberControl, { ComboNumberControlOptions } from './ComboNumberControl.js';
 
 type SelfOptions = {
 

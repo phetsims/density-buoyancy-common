@@ -1,18 +1,18 @@
 // Copyright 2024, University of Colorado Boulder
 
+import Vector3 from '../../../../../dot/js/Vector3.js';
+import getAngledIcon from '../../../../../mobius/js/getAngledIcon.js';
+import ThreeUtils from '../../../../../mobius/js/ThreeUtils.js';
 /**
  * The icon for the Shapes screen of the Buoyancy simulation.
  *
  * @author Jonathan Olson (PhET Interactive Simulations)
  */
 import { Node } from '../../../../../scenery/js/imports.js';
-import Vector3 from '../../../../../dot/js/Vector3.js';
-import ConeView from './ConeView.js';
-import Cone from '../../model/shapes/Cone.js';
-import { DensityMaterials } from '../../../common/view/MaterialView.js';
-import ThreeUtils from '../../../../../mobius/js/ThreeUtils.js';
 import FluidIconMesh from '../../../common/view/FluidIconMesh.js';
-import getAngledIcon from '../../../../../mobius/js/getAngledIcon.js';
+import { DensityMaterials } from '../../../common/view/MaterialView.js';
+import Cone from '../../model/shapes/Cone.js';
+import ConeView from './ConeView.js';
 
 const getBuoyancyShapesIcon = (): Node => {
 

@@ -8,9 +8,9 @@
 
 import { Node } from '../../../../scenery/js/imports.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
-import MultiSectionPanelsNode from './MultiSectionPanelsNode.js';
-import MassTagNode from './MassTagNode.js';
 import MassTag from '../model/MassTag.js';
+import MassTagNode from './MassTagNode.js';
+import MultiSectionPanelsNode from './MultiSectionPanelsNode.js';
 
 export default class ABPanelsNode extends MultiSectionPanelsNode {
 

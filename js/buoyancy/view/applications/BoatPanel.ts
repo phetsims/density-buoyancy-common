@@ -5,21 +5,21 @@
  * @author Agustín Vallejo
  */
 
-import densityBuoyancyCommon from '../../../densityBuoyancyCommon.js';
-import DensityBuoyancyCommonConstants from '../../../common/DensityBuoyancyCommonConstants.js';
-import { HSeparator, Node, Text, VBox } from '../../../../../scenery/js/imports.js';
-import NumberControl, { NumberControlOptions } from '../../../../../scenery-phet/js/NumberControl.js';
-import DensityBuoyancyCommonStrings from '../../../DensityBuoyancyCommonStrings.js';
 import UnitConversionProperty from '../../../../../axon/js/UnitConversionProperty.js';
+import Utils from '../../../../../dot/js/Utils.js';
 import { combineOptions } from '../../../../../phet-core/js/optionize.js';
+import NumberControl, { NumberControlOptions } from '../../../../../scenery-phet/js/NumberControl.js';
+import PhetFont from '../../../../../scenery-phet/js/PhetFont.js';
+import { HSeparator, Node, Text, VBox } from '../../../../../scenery/js/imports.js';
+import Panel from '../../../../../sun/js/Panel.js';
+import Tandem from '../../../../../tandem/js/Tandem.js';
+import DensityBuoyancyCommonConstants from '../../../common/DensityBuoyancyCommonConstants.js';
+import Cube from '../../../common/model/Cube.js';
 import MaterialMassVolumeControlNode from '../../../common/view/MaterialMassVolumeControlNode.js';
 import PrecisionSliderThumb from '../../../common/view/PrecisionSliderThumb.js';
-import Utils from '../../../../../dot/js/Utils.js';
-import PhetFont from '../../../../../scenery-phet/js/PhetFont.js';
+import densityBuoyancyCommon from '../../../densityBuoyancyCommon.js';
+import DensityBuoyancyCommonStrings from '../../../DensityBuoyancyCommonStrings.js';
 import Boat from '../../model/applications/Boat.js';
-import Panel from '../../../../../sun/js/Panel.js';
-import Cube from '../../../common/model/Cube.js';
-import Tandem from '../../../../../tandem/js/Tandem.js';
 
 export default class BoatPanel extends Panel {
 

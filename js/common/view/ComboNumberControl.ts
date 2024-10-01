@@ -7,27 +7,27 @@
  */
 
 import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
+import Disposable from '../../../../axon/js/Disposable.js';
+import PatternStringProperty from '../../../../axon/js/PatternStringProperty.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
+import UnitConversionProperty from '../../../../axon/js/UnitConversionProperty.js';
 import Dimension2 from '../../../../dot/js/Dimension2.js';
 import Range from '../../../../dot/js/Range.js';
 import optionize, { combineOptions } from '../../../../phet-core/js/optionize.js';
-import PatternStringProperty from '../../../../axon/js/PatternStringProperty.js';
+import PickRequired from '../../../../phet-core/js/types/PickRequired.js';
 import NumberControl, { NumberControlOptions } from '../../../../scenery-phet/js/NumberControl.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import { HStrut, Node, Text, VBox, VBoxOptions } from '../../../../scenery/js/imports.js';
+import BooleanToggleNode from '../../../../sun/js/BooleanToggleNode.js';
 import ComboBox, { ComboBoxItem, ComboBoxOptions } from '../../../../sun/js/ComboBox.js';
 import SunConstants from '../../../../sun/js/SunConstants.js';
+import { PhetioObjectOptions } from '../../../../tandem/js/PhetioObject.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
-import PickRequired from '../../../../phet-core/js/types/PickRequired.js';
-import { PhetioObjectOptions } from '../../../../tandem/js/PhetioObject.js';
-import Material from '../model/Material.js';
 import Gravity from '../model/Gravity.js';
 import MappedWrappedProperty from '../model/MappedWrappedProperty.js';
-import UnitConversionProperty from '../../../../axon/js/UnitConversionProperty.js';
-import Disposable from '../../../../axon/js/Disposable.js';
-import BooleanToggleNode from '../../../../sun/js/BooleanToggleNode.js';
+import Material from '../model/Material.js';
 
 type SelfOptions<T extends Material | Gravity> = {
   titleProperty: TReadOnlyProperty<string>;

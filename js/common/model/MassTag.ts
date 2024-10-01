@@ -6,12 +6,12 @@
  * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
+import StringProperty from '../../../../axon/js/StringProperty.js';
+import TProperty from '../../../../axon/js/TProperty.js';
 import { Color, ColorProperty, ColorState } from '../../../../scenery/js/imports.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import DensityBuoyancyCommonColors from '../view/DensityBuoyancyCommonColors.js';
-import StringProperty from '../../../../axon/js/StringProperty.js';
-import TProperty from '../../../../axon/js/TProperty.js';
 
 export type MassTagStateObject = {
   name: string;

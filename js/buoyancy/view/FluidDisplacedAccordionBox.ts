@@ -6,30 +6,30 @@
  * @author Michael Kauzmann (PhET Interactive Simulations)
  */
 
-import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
-import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
-import BeakerNode, { BeakerNodeOptions } from '../../../../scenery-phet/js/BeakerNode.js';
+import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
+import DynamicProperty from '../../../../axon/js/DynamicProperty.js';
 import NumberProperty from '../../../../axon/js/NumberProperty.js';
+import ReadOnlyProperty from '../../../../axon/js/ReadOnlyProperty.js';
+import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import Range from '../../../../dot/js/Range.js';
 import optionize, { combineOptions, EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
-import { Color, Node, RichText } from '../../../../scenery/js/imports.js';
-import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
-import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
+import WithRequired from '../../../../phet-core/js/types/WithRequired.js';
+import BeakerNode, { BeakerNodeOptions } from '../../../../scenery-phet/js/BeakerNode.js';
 import NumberDisplay from '../../../../scenery-phet/js/NumberDisplay.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
-import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
-import Material from '../../common/model/Material.js';
-import DynamicProperty from '../../../../axon/js/DynamicProperty.js';
+import { Color, Node, RichText } from '../../../../scenery/js/imports.js';
 import AccordionBox, { AccordionBoxOptions } from '../../../../sun/js/AccordionBox.js';
 import Panel, { PanelOptions } from '../../../../sun/js/Panel.js';
+import NumberIO from '../../../../tandem/js/types/NumberIO.js';
+import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
+import GravityProperty from '../../common/model/GravityProperty.js';
+import Material from '../../common/model/Material.js';
+import { DisplayType } from '../../common/model/Scale.js';
 import DensityBuoyancyCommonColors from '../../common/view/DensityBuoyancyCommonColors.js';
 import { GeneralScaleReadoutNode } from '../../common/view/ScaleReadoutNode.js';
-import { DisplayType } from '../../common/model/Scale.js';
-import NumberIO from '../../../../tandem/js/types/NumberIO.js';
-import ReadOnlyProperty from '../../../../axon/js/ReadOnlyProperty.js';
-import GravityProperty from '../../common/model/GravityProperty.js';
+import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
+import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import getFluidDisplacedAccordionBoxScaleIcon from './getFluidDisplacedAccordionBoxScaleIcon.js';
-import WithRequired from '../../../../phet-core/js/types/WithRequired.js';
 
 type SelfOptions = EmptySelfOptions;
 

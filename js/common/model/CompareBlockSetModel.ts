@@ -8,27 +8,27 @@
  * @author Michael Kauzmann (PhET Interactive Simulations)
  */
 
-import StrictOmit from '../../../../phet-core/js/types/StrictOmit.js';
-import BlockSetModel, { BlockSetModelOptions } from './BlockSetModel.js';
-import BlockSet from './BlockSet.js';
-import optionize, { combineOptions } from '../../../../phet-core/js/optionize.js';
+import Multilink from '../../../../axon/js/Multilink.js';
 import NumberProperty from '../../../../axon/js/NumberProperty.js';
-import Range from '../../../../dot/js/Range.js';
-import { Color, ColorProperty } from '../../../../scenery/js/imports.js';
-import Material from './Material.js';
 import Property from '../../../../axon/js/Property.js';
-import Cube, { CubeOptions, StrictCubeOptions } from './Cube.js';
-import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
-import Vector2 from '../../../../dot/js/Vector2.js';
-import WithRequired from '../../../../phet-core/js/types/WithRequired.js';
-import HasChangedNumberProperty from './HasChangedNumberProperty.js';
 import propertyStateHandlerSingleton from '../../../../axon/js/propertyStateHandlerSingleton.js';
 import PropertyStatePhase from '../../../../axon/js/PropertyStatePhase.js';
-import Multilink from '../../../../axon/js/Multilink.js';
-import PhysicsEngine from './PhysicsEngine.js';
-import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
-import { MaterialSchema } from './Mass.js';
+import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
+import Range from '../../../../dot/js/Range.js';
+import Vector2 from '../../../../dot/js/Vector2.js';
+import optionize, { combineOptions } from '../../../../phet-core/js/optionize.js';
+import StrictOmit from '../../../../phet-core/js/types/StrictOmit.js';
+import WithRequired from '../../../../phet-core/js/types/WithRequired.js';
 import GrabDragUsageTracker from '../../../../scenery-phet/js/accessibility/grab-drag/GrabDragUsageTracker.js';
+import { Color, ColorProperty } from '../../../../scenery/js/imports.js';
+import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
+import BlockSet from './BlockSet.js';
+import BlockSetModel, { BlockSetModelOptions } from './BlockSetModel.js';
+import Cube, { CubeOptions, StrictCubeOptions } from './Cube.js';
+import HasChangedNumberProperty from './HasChangedNumberProperty.js';
+import { MaterialSchema } from './Mass.js';
+import Material from './Material.js';
+import PhysicsEngine from './PhysicsEngine.js';
 
 assert && assert( BlockSet.enumeration.values.length === 3, 'This class is very hard coded for the three "SAME" values of BlockSet' );
 

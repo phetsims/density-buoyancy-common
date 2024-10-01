@@ -7,18 +7,18 @@
  * @author Michael Kauzmann (PhET Interactive Simulations)
  */
 
-import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
-import Material from './Material.js';
+import DynamicProperty from '../../../../axon/js/DynamicProperty.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
-import MappedWrappedProperty, { MappedWrappedPropertyOptions } from './MappedWrappedProperty.js';
+import ThreeUtils from '../../../../mobius/js/ThreeUtils.js';
 import optionize from '../../../../phet-core/js/optionize.js';
 import PickRequired from '../../../../phet-core/js/types/PickRequired.js';
+import { Color } from '../../../../scenery/js/imports.js';
 import { PhetioObjectOptions } from '../../../../tandem/js/PhetioObject.js';
 import IOType from '../../../../tandem/js/types/IOType.js';
 import ReferenceIO from '../../../../tandem/js/types/ReferenceIO.js';
-import DynamicProperty from '../../../../axon/js/DynamicProperty.js';
-import { Color } from '../../../../scenery/js/imports.js';
-import ThreeUtils from '../../../../mobius/js/ThreeUtils.js';
+import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
+import MappedWrappedProperty, { MappedWrappedPropertyOptions } from './MappedWrappedProperty.js';
+import Material from './Material.js';
 
 type SelfOptions = {
   invisibleMaterials?: Material[];

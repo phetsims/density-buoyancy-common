@@ -6,33 +6,33 @@
  * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
-import StrictOmit from '../../../../phet-core/js/types/StrictOmit.js';
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
+import Emitter from '../../../../axon/js/Emitter.js';
+import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
+import LocalizedStringProperty from '../../../../chipper/js/LocalizedStringProperty.js';
 import dotRandom from '../../../../dot/js/dotRandom.js';
 import Matrix3 from '../../../../dot/js/Matrix3.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import Enumeration from '../../../../phet-core/js/Enumeration.js';
 import EnumerationValue from '../../../../phet-core/js/EnumerationValue.js';
 import optionize, { combineOptions, EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
+import StrictOmit from '../../../../phet-core/js/types/StrictOmit.js';
+import GrabDragUsageTracker from '../../../../scenery-phet/js/accessibility/grab-drag/GrabDragUsageTracker.js';
+import { Color, ColorProperty } from '../../../../scenery/js/imports.js';
+import Tandem from '../../../../tandem/js/Tandem.js';
 import { toCubicMeters } from '../../common/DensityBuoyancyCommonConstants.js';
 import BlockSetModel, { BlockSetModelOptions } from '../../common/model/BlockSetModel.js';
 import Cube, { CubeOptions } from '../../common/model/Cube.js';
+import Cuboid from '../../common/model/Cuboid.js';
+import DensityBuoyancyModel from '../../common/model/DensityBuoyancyModel.js';
+import { MaterialSchema } from '../../common/model/Mass.js';
+import MassTag from '../../common/model/MassTag.js';
 import Material from '../../common/model/Material.js';
+import PhysicsEngine from '../../common/model/PhysicsEngine.js';
 import Scale, { DisplayType } from '../../common/model/Scale.js';
 import DensityBuoyancyCommonColors from '../../common/view/DensityBuoyancyCommonColors.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
-import DensityBuoyancyModel from '../../common/model/DensityBuoyancyModel.js';
-import Cuboid from '../../common/model/Cuboid.js';
-import MassTag from '../../common/model/MassTag.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
-import LocalizedStringProperty from '../../../../chipper/js/LocalizedStringProperty.js';
-import { Color, ColorProperty } from '../../../../scenery/js/imports.js';
-import Emitter from '../../../../axon/js/Emitter.js';
-import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
-import Tandem from '../../../../tandem/js/Tandem.js';
-import { MaterialSchema } from '../../common/model/Mass.js';
-import PhysicsEngine from '../../common/model/PhysicsEngine.js';
-import GrabDragUsageTracker from '../../../../scenery-phet/js/accessibility/grab-drag/GrabDragUsageTracker.js';
 
 // constants
 const randomColors = [

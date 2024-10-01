@@ -7,13 +7,13 @@
  * @author Michael Kauzmann (PhET Interactive Simulations)
  */
 
-import Gravity from './Gravity.js';
+import DynamicProperty from '../../../../axon/js/DynamicProperty.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
-import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
-import MappedWrappedProperty, { MappedWrappedPropertyOptions } from './MappedWrappedProperty.js';
 import PickRequired from '../../../../phet-core/js/types/PickRequired.js';
 import { PhetioObjectOptions } from '../../../../tandem/js/PhetioObject.js';
-import DynamicProperty from '../../../../axon/js/DynamicProperty.js';
+import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
+import Gravity from './Gravity.js';
+import MappedWrappedProperty, { MappedWrappedPropertyOptions } from './MappedWrappedProperty.js';
 
 type GravityPropertyOptions = MappedWrappedPropertyOptions<Gravity> & PickRequired<PhetioObjectOptions, 'tandem'>;
 

@@ -1,16 +1,16 @@
 // Copyright 2024, University of Colorado Boulder
 
+import Vector3 from '../../../../../dot/js/Vector3.js';
+import getAngledIcon from '../../../../../mobius/js/getAngledIcon.js';
 /**
  * The icon for the bottle scene
  *
  * @author Jonathan Olson (PhET Interactive Simulations)
  */
 import { Node } from '../../../../../scenery/js/imports.js';
-import DensityBuoyancyScreenView from '../../../common/view/DensityBuoyancyScreenView.js';
 import bottle_icon_png from '../../../../images/bottle_icon_png.js';
-import Vector3 from '../../../../../dot/js/Vector3.js';
+import DensityBuoyancyScreenView from '../../../common/view/DensityBuoyancyScreenView.js';
 import BottleView from './BottleView.js';
-import getAngledIcon from '../../../../../mobius/js/getAngledIcon.js';
 
 const ICON_SCALE = 0.08;
 

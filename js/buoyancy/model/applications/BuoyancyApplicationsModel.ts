@@ -7,22 +7,22 @@
  */
 
 import DerivedProperty from '../../../../../axon/js/DerivedProperty.js';
+import StringUnionProperty from '../../../../../axon/js/StringUnionProperty.js';
 import Matrix3 from '../../../../../dot/js/Matrix3.js';
 import Vector2 from '../../../../../dot/js/Vector2.js';
+import optionize, { EmptySelfOptions } from '../../../../../phet-core/js/optionize.js';
+import Basin from '../../../common/model/Basin.js';
 import Cube from '../../../common/model/Cube.js';
 import DensityBuoyancyModel, { DensityBuoyancyModelOptions } from '../../../common/model/DensityBuoyancyModel.js';
+import Mass, { MaterialSchema } from '../../../common/model/Mass.js';
+import MassTag from '../../../common/model/MassTag.js';
 import Material from '../../../common/model/Material.js';
+import PhysicsEngine from '../../../common/model/PhysicsEngine.js';
 import Scale, { DisplayType } from '../../../common/model/Scale.js';
 import densityBuoyancyCommon from '../../../densityBuoyancyCommon.js';
 import Boat from './Boat.js';
 import Bottle from './Bottle.js';
 import { BottleOrBoat, BottleOrBoatValues } from './BottleOrBoat.js';
-import StringUnionProperty from '../../../../../axon/js/StringUnionProperty.js';
-import MassTag from '../../../common/model/MassTag.js';
-import Basin from '../../../common/model/Basin.js';
-import Mass, { MaterialSchema } from '../../../common/model/Mass.js';
-import optionize, { EmptySelfOptions } from '../../../../../phet-core/js/optionize.js';
-import PhysicsEngine from '../../../common/model/PhysicsEngine.js';
 
 export type BuoyancyApplicationsModelOptions = DensityBuoyancyModelOptions;
 

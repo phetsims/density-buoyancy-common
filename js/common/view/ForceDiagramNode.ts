@@ -6,21 +6,21 @@
  * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
+import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import Utils from '../../../../dot/js/Utils.js';
+import { combineOptions } from '../../../../phet-core/js/optionize.js';
 import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
 import ArrowNode, { ArrowNodeOptions } from '../../../../scenery-phet/js/ArrowNode.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import { Line, Node, Text } from '../../../../scenery/js/imports.js';
 import Panel from '../../../../sun/js/Panel.js';
+import DisplayProperties from '../../buoyancy/view/DisplayProperties.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
-import Mass from '../model/Mass.js';
-import DensityBuoyancyCommonColors from './DensityBuoyancyCommonColors.js';
-import { combineOptions } from '../../../../phet-core/js/optionize.js';
-import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import { chooseDecimalPlaces } from '../DensityBuoyancyCommonConstants.js';
 import BlendedVector2Property from '../model/BlendedVector2Property.js';
-import DisplayProperties from '../../buoyancy/view/DisplayProperties.js';
+import Mass from '../model/Mass.js';
+import DensityBuoyancyCommonColors from './DensityBuoyancyCommonColors.js';
 
 // constants
 export const arrowOptions = {

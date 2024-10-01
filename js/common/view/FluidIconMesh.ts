@@ -6,10 +6,10 @@
  * @author Michael Kauzmann (PhET Interactive Simulations)
  */
 
+import Vector3 from '../../../../dot/js/Vector3.js';
+import ThreeUtils from '../../../../mobius/js/ThreeUtils.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonColors from './DensityBuoyancyCommonColors.js';
-import ThreeUtils from '../../../../mobius/js/ThreeUtils.js';
-import Vector3 from '../../../../dot/js/Vector3.js';
 
 export default class FluidIconMesh extends THREE.Mesh {
 

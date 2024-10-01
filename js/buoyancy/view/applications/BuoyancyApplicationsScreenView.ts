@@ -7,6 +7,8 @@
  */
 
 import DerivedProperty from '../../../../../axon/js/DerivedProperty.js';
+import propertyStateHandlerSingleton from '../../../../../axon/js/propertyStateHandlerSingleton.js';
+import PropertyStatePhase from '../../../../../axon/js/PropertyStatePhase.js';
 import Vector3 from '../../../../../dot/js/Vector3.js';
 import optionize, { EmptySelfOptions } from '../../../../../phet-core/js/optionize.js';
 import resetArrow_png from '../../../../../scenery-phet/images/resetArrow_png.js';
@@ -14,31 +16,29 @@ import { Color, GatedVisibleProperty, Image, Node, VBox } from '../../../../../s
 import RectangularPushButton from '../../../../../sun/js/buttons/RectangularPushButton.js';
 import RectangularRadioButtonGroup from '../../../../../sun/js/buttons/RectangularRadioButtonGroup.js';
 import DensityBuoyancyCommonConstants from '../../../common/DensityBuoyancyCommonConstants.js';
+import Mass from '../../../common/model/Mass.js';
 import Material from '../../../common/model/Material.js';
+import DebugView from '../../../common/view/DebugView.js';
 import DensityBuoyancyCommonColors from '../../../common/view/DensityBuoyancyCommonColors.js';
 import { PointedAtMassView } from '../../../common/view/DensityBuoyancyScreenView.js';
+import MassView from '../../../common/view/MassView.js';
 import densityBuoyancyCommon from '../../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../../DensityBuoyancyCommonStrings.js';
-import BuoyancyApplicationsModel from '../../model/applications/BuoyancyApplicationsModel.js';
-import DensityAccordionBox from '../DensityAccordionBox.js';
-import BottleView from './BottleView.js';
-import BoatView from './BoatView.js';
-import SubmergedAccordionBox from '../SubmergedAccordionBox.js';
-import Bottle from '../../model/applications/Bottle.js';
-import MassView from '../../../common/view/MassView.js';
-import FluidDensityPanel from '../FluidDensityPanel.js';
-import BuoyancyScreenView, { BuoyancyScreenViewOptions } from '../BuoyancyScreenView.js';
-import BoatDesign from '../../model/applications/BoatDesign.js';
-import Mass from '../../../common/model/Mass.js';
 import Boat from '../../model/applications/Boat.js';
-import DebugView from '../../../common/view/DebugView.js';
+import BoatDesign from '../../model/applications/BoatDesign.js';
+import Bottle from '../../model/applications/Bottle.js';
+import BuoyancyApplicationsModel from '../../model/applications/BuoyancyApplicationsModel.js';
+import BuoyancyScreenView, { BuoyancyScreenViewOptions } from '../BuoyancyScreenView.js';
+import DensityAccordionBox from '../DensityAccordionBox.js';
+import FluidDensityPanel from '../FluidDensityPanel.js';
+import SubmergedAccordionBox from '../SubmergedAccordionBox.js';
 import ApplicationsDebugView from './ApplicationsDebugView.js';
+import BoatPanel from './BoatPanel.js';
+import BoatView from './BoatView.js';
+import BottlePanel from './BottlePanel.js';
+import BottleView from './BottleView.js';
 import getBoatIcon from './getBoatIcon.js';
 import getBottleIcon from './getBottleIcon.js';
-import BoatPanel from './BoatPanel.js';
-import BottlePanel from './BottlePanel.js';
-import propertyStateHandlerSingleton from '../../../../../axon/js/propertyStateHandlerSingleton.js';
-import PropertyStatePhase from '../../../../../axon/js/PropertyStatePhase.js';
 
 type BuoyancyApplicationsScreenViewOptions = BuoyancyScreenViewOptions;
 

@@ -7,14 +7,14 @@
  */
 
 import Bounds3 from '../../../../dot/js/Bounds3.js';
-import StrictOmit from '../../../../phet-core/js/types/StrictOmit.js';
 import Matrix3 from '../../../../dot/js/Matrix3.js';
+import Vector2 from '../../../../dot/js/Vector2.js';
+import optionize, { combineOptions } from '../../../../phet-core/js/optionize.js';
+import StrictOmit from '../../../../phet-core/js/types/StrictOmit.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import Cuboid, { CuboidOptions } from './Cuboid.js';
-import PhysicsEngine from './PhysicsEngine.js';
-import optionize, { combineOptions } from '../../../../phet-core/js/optionize.js';
-import Vector2 from '../../../../dot/js/Vector2.js';
 import { MaterialSchema } from './Mass.js';
+import PhysicsEngine from './PhysicsEngine.js';
 
 type SelfOptions = {
 

@@ -6,12 +6,12 @@
  * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
+import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
+import StringUnionProperty from '../../../../axon/js/StringUnionProperty.js';
+import packageJSON from '../../../../joist/js/packageJSON.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
-import StringUnionProperty from '../../../../axon/js/StringUnionProperty.js';
 import DensityBuoyancyCommonQueryParameters, { VolumeUnits, VolumeUnitsValues } from '../DensityBuoyancyCommonQueryParameters.js';
-import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
-import packageJSON from '../../../../joist/js/packageJSON.js';
 
 export const supportsPercentageSubmergedVisible = packageJSON.name !== 'density';
 

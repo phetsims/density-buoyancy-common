@@ -7,19 +7,19 @@
  * @author Michael Kauzmann (PhET Interactive Simulations)
  */
 
-import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
-import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
-import { optionize4 } from '../../../../phet-core/js/optionize.js';
-import Panel, { PanelOptions } from '../../../../sun/js/Panel.js';
-import UnitConversionProperty from '../../../../axon/js/UnitConversionProperty.js';
-import ComparisonNumberControl, { DEFAULT_COMPARISON_TRACK_SIZE } from './ComparisonNumberControl.js';
-import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
-import BlockSet from '../model/BlockSet.js';
-import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import NumberProperty from '../../../../axon/js/NumberProperty.js';
+import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
+import UnitConversionProperty from '../../../../axon/js/UnitConversionProperty.js';
 import Dimension2 from '../../../../dot/js/Dimension2.js';
-import ToggleNode from '../../../../sun/js/ToggleNode.js';
+import { optionize4 } from '../../../../phet-core/js/optionize.js';
 import WithRequired from '../../../../phet-core/js/types/WithRequired.js';
+import Panel, { PanelOptions } from '../../../../sun/js/Panel.js';
+import ToggleNode from '../../../../sun/js/ToggleNode.js';
+import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
+import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
+import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
+import BlockSet from '../model/BlockSet.js';
+import ComparisonNumberControl, { DEFAULT_COMPARISON_TRACK_SIZE } from './ComparisonNumberControl.js';
 
 type SelfOptions = {
   sliderTrackSize?: Dimension2;

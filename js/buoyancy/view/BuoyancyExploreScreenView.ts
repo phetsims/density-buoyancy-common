@@ -6,23 +6,23 @@
  * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
+import PatternStringProperty from '../../../../axon/js/PatternStringProperty.js';
 import optionize, { EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
 import { Node, VBox } from '../../../../scenery/js/imports.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 import Material from '../../common/model/Material.js';
 import ABControlsNode from '../../common/view/ABControlsNode.js';
+import BlocksModeRadioButtonGroup from '../../common/view/BlocksModeRadioButtonGroup.js';
+import CuboidView from '../../common/view/CuboidView.js';
+import MassView from '../../common/view/MassView.js';
+import ScaleView from '../../common/view/ScaleView.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import BuoyancyExploreModel from '../model/BuoyancyExploreModel.js';
-import DensityAccordionBox from './DensityAccordionBox.js';
-import SubmergedAccordionBox from './SubmergedAccordionBox.js';
-import PatternStringProperty from '../../../../axon/js/PatternStringProperty.js';
-import BlocksModeRadioButtonGroup from '../../common/view/BlocksModeRadioButtonGroup.js';
-import CuboidView from '../../common/view/CuboidView.js';
-import ScaleView from '../../common/view/ScaleView.js';
-import MassView from '../../common/view/MassView.js';
-import FluidDensityPanel from './FluidDensityPanel.js';
 import BuoyancyScreenView, { BuoyancyScreenViewOptions } from './BuoyancyScreenView.js';
+import DensityAccordionBox from './DensityAccordionBox.js';
+import FluidDensityPanel from './FluidDensityPanel.js';
+import SubmergedAccordionBox from './SubmergedAccordionBox.js';
 
 type BuoyancyExploreScreenViewOptions = BuoyancyScreenViewOptions;
 

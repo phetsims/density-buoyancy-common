@@ -1,16 +1,16 @@
 // Copyright 2024, University of Colorado Boulder
 
+import Vector3 from '../../../../../dot/js/Vector3.js';
+import getAngledIcon from '../../../../../mobius/js/getAngledIcon.js';
 /**
  * The icon for the boat scene
  *
  * @author Jonathan Olson (PhET Interactive Simulations)
  */
 import { Node } from '../../../../../scenery/js/imports.js';
-import DensityBuoyancyScreenView from '../../../common/view/DensityBuoyancyScreenView.js';
 import boat_icon_png from '../../../../images/boat_icon_png.js';
-import Vector3 from '../../../../../dot/js/Vector3.js';
+import DensityBuoyancyScreenView from '../../../common/view/DensityBuoyancyScreenView.js';
 import BoatView from './BoatView.js';
-import getAngledIcon from '../../../../../mobius/js/getAngledIcon.js';
 
 const ICON_SCALE = 0.08;
 

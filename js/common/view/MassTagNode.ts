@@ -7,15 +7,15 @@
  * @author Michael Kauzmann (PhET Interactive Simulations)
  */
 
-import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
-import { MASS_MIN_SHAPES_DIMENSION } from '../model/Mass.js';
-import { Color, Node, Text } from '../../../../scenery/js/imports.js';
-import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
-import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
-import BackgroundNode from '../../../../scenery-phet/js/BackgroundNode.js';
-import MassTag from '../model/MassTag.js';
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
+import BackgroundNode from '../../../../scenery-phet/js/BackgroundNode.js';
+import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
+import { Color, Node, Text } from '../../../../scenery/js/imports.js';
+import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
+import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
+import { MASS_MIN_SHAPES_DIMENSION } from '../model/Mass.js';
+import MassTag from '../model/MassTag.js';
 
 // In model coordinates, the margin for the MassTagNode's placement from the top left of the mass.
 export const TAG_OFFSET = MASS_MIN_SHAPES_DIMENSION / 20;

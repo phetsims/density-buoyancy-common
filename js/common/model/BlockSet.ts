@@ -9,10 +9,10 @@
  * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
+import LocalizedStringProperty from '../../../../chipper/js/LocalizedStringProperty.js';
 import Enumeration from '../../../../phet-core/js/Enumeration.js';
 import EnumerationValue from '../../../../phet-core/js/EnumerationValue.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
-import LocalizedStringProperty from '../../../../chipper/js/LocalizedStringProperty.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 
 export default class BlockSet extends EnumerationValue {

@@ -5,10 +5,10 @@
  * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
-import densityBuoyancyCommon from '../../../densityBuoyancyCommon.js';
-import ThreeUtils from '../../../../../mobius/js/ThreeUtils.js';
 import Bounds2 from '../../../../../dot/js/Bounds2.js';
 import Bounds3 from '../../../../../dot/js/Bounds3.js';
+import ThreeUtils from '../../../../../mobius/js/ThreeUtils.js';
+import densityBuoyancyCommon from '../../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonColors from '../DensityBuoyancyCommonColors.js';
 
 export default class GroundTopMesh extends THREE.Mesh {

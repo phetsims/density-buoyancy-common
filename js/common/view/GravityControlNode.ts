@@ -6,16 +6,16 @@
  * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
+import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import { GatedVisibleProperty, Node, Text } from '../../../../scenery/js/imports.js';
+import Tandem from '../../../../tandem/js/Tandem.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
 import Gravity from '../model/Gravity.js';
-import ComboNumberControl from './ComboNumberControl.js';
-import Tandem from '../../../../tandem/js/Tandem.js';
-import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import GravityProperty from '../model/GravityProperty.js';
+import ComboNumberControl from './ComboNumberControl.js';
 
 const FALLBACK_NODE = new Text( DensityBuoyancyCommonStrings.whatIsTheValueOfGravityStringProperty, {
   font: new PhetFont( 14 )

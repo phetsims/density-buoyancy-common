@@ -7,20 +7,20 @@
  */
 
 import NumberProperty from '../../../../../axon/js/NumberProperty.js';
-import StrictOmit from '../../../../../phet-core/js/types/StrictOmit.js';
 import Property from '../../../../../axon/js/Property.js';
+import Bounds3 from '../../../../../dot/js/Bounds3.js';
 import Range from '../../../../../dot/js/Range.js';
+import Utils from '../../../../../dot/js/Utils.js';
 import Vector2 from '../../../../../dot/js/Vector2.js';
 import Vector3 from '../../../../../dot/js/Vector3.js';
 import { Shape } from '../../../../../kite/js/imports.js';
 import optionize, { EmptySelfOptions } from '../../../../../phet-core/js/optionize.js';
-import densityBuoyancyCommon from '../../../densityBuoyancyCommon.js';
-import Mass, { InstrumentedMassOptions, MASS_MAX_SHAPES_DIMENSION, MASS_MIN_SHAPES_DIMENSION, MassOptions } from '../../../common/model/Mass.js';
-import PhysicsEngine from '../../../common/model/PhysicsEngine.js';
-import { MassShape } from '../../../common/model/MassShape.js';
-import Bounds3 from '../../../../../dot/js/Bounds3.js';
-import Utils from '../../../../../dot/js/Utils.js';
+import StrictOmit from '../../../../../phet-core/js/types/StrictOmit.js';
 import DensityBuoyancyCommonConstants from '../../../common/DensityBuoyancyCommonConstants.js';
+import Mass, { InstrumentedMassOptions, MASS_MAX_SHAPES_DIMENSION, MASS_MIN_SHAPES_DIMENSION, MassOptions } from '../../../common/model/Mass.js';
+import { MassShape } from '../../../common/model/MassShape.js';
+import PhysicsEngine from '../../../common/model/PhysicsEngine.js';
+import densityBuoyancyCommon from '../../../densityBuoyancyCommon.js';
 
 const BOTTOM_FROM_CENTER_RATIO = 0.25; // center of mass to the bottom is 1/4 of the height of the cone
 const TOP_FROM_CENTER_RATIO = 0.75; // center of mass to the tip is 3/4 of the height of the cone

@@ -5,14 +5,14 @@
  * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
-import densityBuoyancyCommon from '../../../densityBuoyancyCommon.js';
+import TReadOnlyProperty from '../../../../../axon/js/TReadOnlyProperty.js';
+import Bounds2 from '../../../../../dot/js/Bounds2.js';
 import Bounds3 from '../../../../../dot/js/Bounds3.js';
 import ThreeUtils from '../../../../../mobius/js/ThreeUtils.js';
-import Bounds2 from '../../../../../dot/js/Bounds2.js';
-import MaterialProperty from '../../model/MaterialProperty.js';
-import TReadOnlyProperty from '../../../../../axon/js/TReadOnlyProperty.js';
-import DensityBuoyancyScreenView from '../DensityBuoyancyScreenView.js';
+import densityBuoyancyCommon from '../../../densityBuoyancyCommon.js';
 import DensityBuoyancyModel from '../../model/DensityBuoyancyModel.js';
+import MaterialProperty from '../../model/MaterialProperty.js';
+import DensityBuoyancyScreenView from '../DensityBuoyancyScreenView.js';
 
 export default class FluidMesh extends THREE.Mesh {
   public constructor( fluidMaterialProperty: MaterialProperty, fluidYInterpolatedProperty: TReadOnlyProperty<number>,

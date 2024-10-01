@@ -225,8 +225,12 @@ export default abstract class MassView extends Disposable {
       } );
     }
     const resetListener = () => {
+
+      // After reset, do not assume the cursor is over an object. It will be updated the next time the cursor moves.
       this.isCursorOverProperty.reset();
-      this.isKeyboardFocusedProperty.reset();
+
+      // NOTE: Do not reset the focus state (isKeyboardFocusedProperty) because it may persist through a reset (like
+      // with global keyboard shortcuts) https://github.com/phetsims/density-buoyancy-common/issues/399
 
       this.grabDragInteraction && this.grabDragInteraction.reset();
     };

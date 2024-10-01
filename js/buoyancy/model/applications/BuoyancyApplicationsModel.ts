@@ -150,6 +150,10 @@ export default class BuoyancyApplicationsModel extends DensityBuoyancyModel {
    */
   public resetBoatAndBlockPosition(): void {
 
+    // Interrupt first in case they are currently being dragged,
+    this.block.interruptedEmitter.emit();
+    this.boat.interruptedEmitter.emit();
+
     this.block.resetPosition();
     this.boat.resetPosition();
 

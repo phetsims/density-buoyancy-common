@@ -7,15 +7,15 @@
  */
 
 import Matrix3 from '../../../../dot/js/Matrix3.js';
-import Scale, { DisplayType } from '../../common/model/Scale.js';
-import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
-import MassTag from '../../common/model/MassTag.js';
 import optionize, { EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
-import BlockSet from '../../common/model/BlockSet.js';
-import DensityBuoyancyCommonColors from '../../common/view/DensityBuoyancyCommonColors.js';
-import CompareBlockSetModel, { BLOCK_SETS_TANDEM_NAME, CompareBlockSetModelOptions } from '../../common/model/CompareBlockSetModel.js';
 import StrictOmit from '../../../../phet-core/js/types/StrictOmit.js';
+import BlockSet from '../../common/model/BlockSet.js';
+import CompareBlockSetModel, { BLOCK_SETS_TANDEM_NAME, CompareBlockSetModelOptions } from '../../common/model/CompareBlockSetModel.js';
+import MassTag from '../../common/model/MassTag.js';
 import Material from '../../common/model/Material.js';
+import Scale, { DisplayType } from '../../common/model/Scale.js';
+import DensityBuoyancyCommonColors from '../../common/view/DensityBuoyancyCommonColors.js';
+import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 
 export type BuoyancyCompareModelOptions = StrictOmit<CompareBlockSetModelOptions, 'positionMassesCallback' | 'cubesData'>;
 

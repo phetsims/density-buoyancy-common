@@ -9,8 +9,8 @@
  */
 
 import Property from '../../../../axon/js/Property.js';
-import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import Utils from '../../../../dot/js/Utils.js';
+import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 
 export default class BlendedNumberProperty extends Property<number> {
 

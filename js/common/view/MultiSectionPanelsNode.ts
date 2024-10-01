@@ -8,12 +8,12 @@
  * @author Michael Kauzmann (PhET Interactive Simulations)
  */
 
+import interleave from '../../../../phet-core/js/interleave.js';
+import { EmptySelfOptions, optionize3 } from '../../../../phet-core/js/optionize.js';
 import { FlowBox, HSeparator, Node } from '../../../../scenery/js/imports.js';
 import Panel, { PanelOptions } from '../../../../sun/js/Panel.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
-import interleave from '../../../../phet-core/js/interleave.js';
-import { EmptySelfOptions, optionize3 } from '../../../../phet-core/js/optionize.js';
 
 export type MultiSectionPanelsNodeOptions = PanelOptions;
 

@@ -6,30 +6,30 @@
  * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
+import Disposable from '../../../../axon/js/Disposable.js';
+import Emitter from '../../../../axon/js/Emitter.js';
+import Multilink from '../../../../axon/js/Multilink.js';
 import Property from '../../../../axon/js/Property.js';
-import Vector3 from '../../../../dot/js/Vector3.js';
-import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
-import Mass from '../model/Mass.js';
-import { HighlightPath, InputShape, InteractiveHighlighting, InteractiveHighlightingOptions, KeyboardDragListener, Node, Path, PathOptions } from '../../../../scenery/js/imports.js';
-import { Shape } from '../../../../kite/js/imports.js';
-import MassTagNode from './MassTagNode.js';
+import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
+import Bounds2 from '../../../../dot/js/Bounds2.js';
 import ConvexHull2 from '../../../../dot/js/ConvexHull2.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
+import Vector3 from '../../../../dot/js/Vector3.js';
+import { Shape } from '../../../../kite/js/imports.js';
+import { THREEModelViewTransform } from '../../../../mobius/js/MobiusScreenView.js';
 import ModelViewTransform2 from '../../../../phetcommon/js/view/ModelViewTransform2.js';
+import GrabDragInteraction from '../../../../scenery-phet/js/accessibility/grab-drag/GrabDragInteraction.js';
+import WASDCueNode from '../../../../scenery-phet/js/accessibility/nodes/WASDCueNode.js';
+import { HighlightPath, InputShape, InteractiveHighlighting, InteractiveHighlightingOptions, KeyboardDragListener, Node, Path, PathOptions } from '../../../../scenery/js/imports.js';
+import sharedSoundPlayers from '../../../../tambo/js/sharedSoundPlayers.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
-import Disposable from '../../../../axon/js/Disposable.js';
+import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
+import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
+import Mass from '../model/Mass.js';
 import MassTag from '../model/MassTag.js';
 import MassDecorationLayer from './MassDecorationLayer.js';
+import MassTagNode from './MassTagNode.js';
 import MassThreeMesh from './MassThreeMesh.js';
-import { THREEModelViewTransform } from '../../../../mobius/js/MobiusScreenView.js';
-import sharedSoundPlayers from '../../../../tambo/js/sharedSoundPlayers.js';
-import GrabDragInteraction from '../../../../scenery-phet/js/accessibility/grab-drag/GrabDragInteraction.js';
-import Multilink from '../../../../axon/js/Multilink.js';
-import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
-import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
-import Emitter from '../../../../axon/js/Emitter.js';
-import WASDCueNode from '../../../../scenery-phet/js/accessibility/nodes/WASDCueNode.js';
-import Bounds2 from '../../../../dot/js/Bounds2.js';
 
 const INVERT_Y_TRANSFORM = ModelViewTransform2.createSinglePointScaleInvertedYMapping( Vector2.ZERO, Vector2.ZERO, 1 );
 

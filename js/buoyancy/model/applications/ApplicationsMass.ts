@@ -11,13 +11,13 @@
  */
 
 import NumberProperty from '../../../../../axon/js/NumberProperty.js';
-import Mass, { InstrumentedMassOptions } from '../../../common/model/Mass.js';
-import densityBuoyancyCommon from '../../../densityBuoyancyCommon.js';
-import PhysicsEngine from '../../../common/model/PhysicsEngine.js';
-import Vector2 from '../../../../../dot/js/Vector2.js';
-import Vector3 from '../../../../../dot/js/Vector3.js';
 import Bounds3 from '../../../../../dot/js/Bounds3.js';
 import Utils from '../../../../../dot/js/Utils.js';
+import Vector2 from '../../../../../dot/js/Vector2.js';
+import Vector3 from '../../../../../dot/js/Vector3.js';
+import Mass, { InstrumentedMassOptions } from '../../../common/model/Mass.js';
+import PhysicsEngine from '../../../common/model/PhysicsEngine.js';
+import densityBuoyancyCommon from '../../../densityBuoyancyCommon.js';
 
 export type ApplicationsMassOptions = InstrumentedMassOptions;
 

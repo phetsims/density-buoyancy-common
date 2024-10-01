@@ -6,18 +6,18 @@
  * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
+import Bounds2 from '../../../../dot/js/Bounds2.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
+import optionize, { EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
 import { Node } from '../../../../scenery/js/imports.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
+import BlocksPanel from '../../common/view/BlocksPanel.js';
+import BlocksValuePanel from '../../common/view/BlocksValuePanel.js';
+import CuboidView from '../../common/view/CuboidView.js';
 import DensityBuoyancyScreenView, { DensityBuoyancyScreenViewOptions } from '../../common/view/DensityBuoyancyScreenView.js';
+import MassView from '../../common/view/MassView.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityCompareModel from '../model/DensityCompareModel.js';
-import Bounds2 from '../../../../dot/js/Bounds2.js';
-import optionize, { EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
-import BlocksValuePanel from '../../common/view/BlocksValuePanel.js';
-import MassView from '../../common/view/MassView.js';
-import CuboidView from '../../common/view/CuboidView.js';
-import BlocksPanel from '../../common/view/BlocksPanel.js';
 
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN_SMALL;
 

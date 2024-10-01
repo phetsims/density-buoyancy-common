@@ -5,22 +5,22 @@
  * @author Agustín Vallejo
  */
 
-import densityBuoyancyCommon from '../../../densityBuoyancyCommon.js';
-import DensityBuoyancyCommonConstants, { toLiters } from '../../../common/DensityBuoyancyCommonConstants.js';
-import { GatedVisibleProperty, HBox, HSeparator, Node, Text, VBox } from '../../../../../scenery/js/imports.js';
-import NumberControl, { NumberControlOptions } from '../../../../../scenery-phet/js/NumberControl.js';
-import DensityBuoyancyCommonStrings from '../../../DensityBuoyancyCommonStrings.js';
+import BooleanProperty from '../../../../../axon/js/BooleanProperty.js';
+import DerivedProperty from '../../../../../axon/js/DerivedProperty.js';
 import UnitConversionProperty from '../../../../../axon/js/UnitConversionProperty.js';
+import Range from '../../../../../dot/js/Range.js';
 import { combineOptions } from '../../../../../phet-core/js/optionize.js';
-import MaterialMassVolumeControlNode from '../../../common/view/MaterialMassVolumeControlNode.js';
-import PrecisionSliderThumb from '../../../common/view/PrecisionSliderThumb.js';
+import NumberControl, { NumberControlOptions } from '../../../../../scenery-phet/js/NumberControl.js';
+import NumberDisplay from '../../../../../scenery-phet/js/NumberDisplay.js';
 import PhetFont from '../../../../../scenery-phet/js/PhetFont.js';
+import { GatedVisibleProperty, HBox, HSeparator, Node, Text, VBox } from '../../../../../scenery/js/imports.js';
 import Panel from '../../../../../sun/js/Panel.js';
 import Tandem from '../../../../../tandem/js/Tandem.js';
-import DerivedProperty from '../../../../../axon/js/DerivedProperty.js';
-import BooleanProperty from '../../../../../axon/js/BooleanProperty.js';
-import NumberDisplay from '../../../../../scenery-phet/js/NumberDisplay.js';
-import Range from '../../../../../dot/js/Range.js';
+import DensityBuoyancyCommonConstants, { toLiters } from '../../../common/DensityBuoyancyCommonConstants.js';
+import MaterialMassVolumeControlNode from '../../../common/view/MaterialMassVolumeControlNode.js';
+import PrecisionSliderThumb from '../../../common/view/PrecisionSliderThumb.js';
+import densityBuoyancyCommon from '../../../densityBuoyancyCommon.js';
+import DensityBuoyancyCommonStrings from '../../../DensityBuoyancyCommonStrings.js';
 import Bottle from '../../model/applications/Bottle.js';
 
 export default class BottlePanel extends Panel {

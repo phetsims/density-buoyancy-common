@@ -6,21 +6,21 @@
  * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
+import Property from '../../../../axon/js/Property.js';
+import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
+import { combineOptions, optionize4 } from '../../../../phet-core/js/optionize.js';
+import WithRequired from '../../../../phet-core/js/types/WithRequired.js';
 import ArrowNode, { ArrowNodeOptions } from '../../../../scenery-phet/js/ArrowNode.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import PlusMinusZoomButtonGroup from '../../../../scenery-phet/js/PlusMinusZoomButtonGroup.js';
 import { Color, HBox, HSeparator, Text, TextOptions, VBox } from '../../../../scenery/js/imports.js';
+import RectangularButton from '../../../../sun/js/buttons/RectangularButton.js';
 import Checkbox, { CheckboxOptions } from '../../../../sun/js/Checkbox.js';
-import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
-import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
+import Panel, { PanelOptions } from '../../../../sun/js/Panel.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 import DensityBuoyancyCommonColors from '../../common/view/DensityBuoyancyCommonColors.js';
-import { combineOptions, optionize4 } from '../../../../phet-core/js/optionize.js';
-import RectangularButton from '../../../../sun/js/buttons/RectangularButton.js';
-import WithRequired from '../../../../phet-core/js/types/WithRequired.js';
-import Panel, { PanelOptions } from '../../../../sun/js/Panel.js';
-import Property from '../../../../axon/js/Property.js';
-import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
+import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
+import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import DisplayProperties from './DisplayProperties.js';
 
 // constants

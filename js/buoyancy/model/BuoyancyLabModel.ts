@@ -7,19 +7,19 @@
  * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
+import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
+import ReadOnlyProperty from '../../../../axon/js/ReadOnlyProperty.js';
 import Matrix3 from '../../../../dot/js/Matrix3.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
+import optionize, { EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
+import NumberIO from '../../../../tandem/js/types/NumberIO.js';
+import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 import Cube from '../../common/model/Cube.js';
 import DensityBuoyancyModel, { DensityBuoyancyModelOptions } from '../../common/model/DensityBuoyancyModel.js';
+import { MaterialSchema } from '../../common/model/Mass.js';
 import Material from '../../common/model/Material.js';
 import Scale, { DisplayType } from '../../common/model/Scale.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
-import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
-import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
-import NumberIO from '../../../../tandem/js/types/NumberIO.js';
-import ReadOnlyProperty from '../../../../axon/js/ReadOnlyProperty.js';
-import { MaterialSchema } from '../../common/model/Mass.js';
-import optionize, { EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
 
 export type BuoyancyLabModelOptions = DensityBuoyancyModelOptions;
 

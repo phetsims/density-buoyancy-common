@@ -6,16 +6,16 @@
  * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
-import StrictOmit from '../../../../phet-core/js/types/StrictOmit.js';
+import Range from '../../../../dot/js/Range.js';
 import optionize, { EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
-import Cuboid from '../../common/model/Cuboid.js';
-import DensityBuoyancyCommonColors from '../../common/view/DensityBuoyancyCommonColors.js';
-import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
-import DensityBuoyancyModel from '../../common/model/DensityBuoyancyModel.js';
-import MassTag from '../../common/model/MassTag.js';
+import StrictOmit from '../../../../phet-core/js/types/StrictOmit.js';
 import BlockSet from '../../common/model/BlockSet.js';
 import CompareBlockSetModel, { CompareBlockSetModelOptions } from '../../common/model/CompareBlockSetModel.js';
-import Range from '../../../../dot/js/Range.js';
+import Cuboid from '../../common/model/Cuboid.js';
+import DensityBuoyancyModel from '../../common/model/DensityBuoyancyModel.js';
+import MassTag from '../../common/model/MassTag.js';
+import DensityBuoyancyCommonColors from '../../common/view/DensityBuoyancyCommonColors.js';
+import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 
 export type DensityCompareModelOptions = StrictOmit<CompareBlockSetModelOptions, 'positionMassesCallback' | 'cubesData'>;
 

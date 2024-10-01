@@ -7,29 +7,29 @@
  * @author Michael Kauzmann (PhET Interactive Simulations)
  */
 
+import DerivedProperty from '../../../../../axon/js/DerivedProperty.js';
 import EnumerationProperty from '../../../../../axon/js/EnumerationProperty.js';
 import Property from '../../../../../axon/js/Property.js';
 import Matrix3 from '../../../../../dot/js/Matrix3.js';
+import optionize, { EmptySelfOptions } from '../../../../../phet-core/js/optionize.js';
+import GrabDragUsageTracker from '../../../../../scenery-phet/js/accessibility/grab-drag/GrabDragUsageTracker.js';
 import Tandem from '../../../../../tandem/js/Tandem.js';
 import Cuboid from '../../../common/model/Cuboid.js';
 import DensityBuoyancyModel, { DensityBuoyancyModelOptions } from '../../../common/model/DensityBuoyancyModel.js';
-import HorizontalCylinder from './HorizontalCylinder.js';
 import Mass from '../../../common/model/Mass.js';
-import Material, { CustomSolidMaterial } from '../../../common/model/Material.js';
-import Scale, { DisplayType } from '../../../common/model/Scale.js';
-import TwoBlockMode from '../../../common/model/TwoBlockMode.js';
-import VerticalCylinder from './VerticalCylinder.js';
-import densityBuoyancyCommon from '../../../densityBuoyancyCommon.js';
 import { MassShape } from '../../../common/model/MassShape.js';
 import MassTag from '../../../common/model/MassTag.js';
-import Duck from './Duck.js';
-import BuoyancyShapeModel from './BuoyancyShapeModel.js';
+import Material, { CustomSolidMaterial } from '../../../common/model/Material.js';
 import MaterialProperty from '../../../common/model/MaterialProperty.js';
-import optionize, { EmptySelfOptions } from '../../../../../phet-core/js/optionize.js';
-import Ellipsoid from './Ellipsoid.js';
+import Scale, { DisplayType } from '../../../common/model/Scale.js';
+import TwoBlockMode from '../../../common/model/TwoBlockMode.js';
+import densityBuoyancyCommon from '../../../densityBuoyancyCommon.js';
+import BuoyancyShapeModel from './BuoyancyShapeModel.js';
 import Cone from './Cone.js';
-import DerivedProperty from '../../../../../axon/js/DerivedProperty.js';
-import GrabDragUsageTracker from '../../../../../scenery-phet/js/accessibility/grab-drag/GrabDragUsageTracker.js';
+import Duck from './Duck.js';
+import Ellipsoid from './Ellipsoid.js';
+import HorizontalCylinder from './HorizontalCylinder.js';
+import VerticalCylinder from './VerticalCylinder.js';
 
 export type BuoyancyShapesModelOptions = DensityBuoyancyModelOptions;
 

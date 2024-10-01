@@ -7,27 +7,27 @@
  * @author Agustín Vallejo (PhET Interactive Simulations)
  */
 
-import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
-import Slider from '../../../../sun/js/Slider.js';
-import optionize, { EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
-import Range from '../../../../dot/js/Range.js';
-import Tandem from '../../../../tandem/js/Tandem.js';
-import Dimension2 from '../../../../dot/js/Dimension2.js';
-import Scale from '../model/Scale.js';
-import Utils from '../../../../dot/js/Utils.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import Bounds3 from '../../../../dot/js/Bounds3.js';
-import PrecisionSliderThumb from './PrecisionSliderThumb.js';
-import { THREEModelViewTransform } from '../../../../mobius/js/MobiusScreenView.js';
+import Dimension2 from '../../../../dot/js/Dimension2.js';
+import Range from '../../../../dot/js/Range.js';
+import Utils from '../../../../dot/js/Utils.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
-import { Node, VBox } from '../../../../scenery/js/imports.js';
-import NumberControl, { NumberControlOptions } from '../../../../scenery-phet/js/NumberControl.js';
-import NumberDisplay from '../../../../scenery-phet/js/NumberDisplay.js';
-import ArrowButton from '../../../../sun/js/buttons/ArrowButton.js';
+import { Shape } from '../../../../kite/js/imports.js';
+import { THREEModelViewTransform } from '../../../../mobius/js/MobiusScreenView.js';
+import optionize, { EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
 import Orientation from '../../../../phet-core/js/Orientation.js';
 import WithRequired from '../../../../phet-core/js/types/WithRequired.js';
-import { Shape } from '../../../../kite/js/imports.js';
+import NumberControl, { NumberControlOptions } from '../../../../scenery-phet/js/NumberControl.js';
+import NumberDisplay from '../../../../scenery-phet/js/NumberDisplay.js';
+import { Node, VBox } from '../../../../scenery/js/imports.js';
+import ArrowButton from '../../../../sun/js/buttons/ArrowButton.js';
+import Slider from '../../../../sun/js/Slider.js';
+import Tandem from '../../../../tandem/js/Tandem.js';
+import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import PoolScale from '../model/PoolScale.js';
+import Scale from '../model/Scale.js';
+import PrecisionSliderThumb from './PrecisionSliderThumb.js';
 
 // constants
 const DEFAULT_RANGE = new Range( 0, 1 );

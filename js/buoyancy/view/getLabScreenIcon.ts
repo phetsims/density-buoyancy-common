@@ -1,4 +1,8 @@
 // Copyright 2024, University of Colorado Boulder
+import NumberProperty from '../../../../axon/js/NumberProperty.js';
+import { combineOptions } from '../../../../phet-core/js/optionize.js';
+import BeakerNode, { BeakerNodeOptions } from '../../../../scenery-phet/js/BeakerNode.js';
+import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 /**
  * Create an icon which can be used for the Lab screen home screen and navigation bar icons.
  * NOTE: observe the duplication with the code above, this will allow us to adjust the icon independently of
@@ -7,14 +11,10 @@
  * @author Michael Kauzmann (PhET Interactive Simulations)
  */
 import { Node, Text } from '../../../../scenery/js/imports.js';
-import getFluidDisplacedAccordionBoxScaleIcon from './getFluidDisplacedAccordionBoxScaleIcon.js';
-import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
-import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
-import BeakerNode, { BeakerNodeOptions } from '../../../../scenery-phet/js/BeakerNode.js';
-import NumberProperty from '../../../../axon/js/NumberProperty.js';
-import { combineOptions } from '../../../../phet-core/js/optionize.js';
 import Material from '../../common/model/Material.js';
+import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import FluidDisplacedAccordionBox, { BEAKER_RANGE } from './FluidDisplacedAccordionBox.js';
+import getFluidDisplacedAccordionBoxScaleIcon from './getFluidDisplacedAccordionBoxScaleIcon.js';
 
 const getLabScreenIcon = (): Node => {
 

@@ -10,17 +10,17 @@
  * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
+import PreferencesControl from '../../../../joist/js/preferences/PreferencesControl.js';
+import PreferencesDialogConstants from '../../../../joist/js/preferences/PreferencesDialogConstants.js';
 import optionize, { EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
 import PickRequired from '../../../../phet-core/js/types/PickRequired.js';
 import { RichText, Text, VBox, VBoxOptions } from '../../../../scenery/js/imports.js';
-import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
-import DensityBuoyancyCommonPreferences, { supportsPercentageSubmergedVisible } from '../model/DensityBuoyancyCommonPreferences.js';
-import VolumeUnitsControl from './VolumeUnitsControl.js';
-import PreferencesControl from '../../../../joist/js/preferences/PreferencesControl.js';
-import PreferencesDialogConstants from '../../../../joist/js/preferences/PreferencesDialogConstants.js';
 import ToggleSwitch from '../../../../sun/js/ToggleSwitch.js';
+import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
+import DensityBuoyancyCommonPreferences, { supportsPercentageSubmergedVisible } from '../model/DensityBuoyancyCommonPreferences.js';
+import VolumeUnitsControl from './VolumeUnitsControl.js';
 
 type SelfOptions = EmptySelfOptions;
 

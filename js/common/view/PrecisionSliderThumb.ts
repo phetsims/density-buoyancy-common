@@ -9,8 +9,8 @@
 import { Shape } from '../../../../kite/js/imports.js';
 import optionize from '../../../../phet-core/js/optionize.js';
 import { Color, Line, Node, NodeOptions, Path, PressListener, TColor } from '../../../../scenery/js/imports.js';
-import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
+import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
 
 type SelfOptions = {

@@ -8,6 +8,7 @@
  * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
+import ReadOnlyProperty from '../../../../axon/js/ReadOnlyProperty.js';
 import Utils from '../../../../dot/js/Utils.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
 import ThreeUtils from '../../../../mobius/js/ThreeUtils.js';
@@ -51,7 +52,6 @@ import Wood26_nrm_jpg from '../../../images/Wood26_nrm_jpg.js';
 import Wood26_rgh_jpg from '../../../images/Wood26_rgh_jpg.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import Material from '../model/Material.js';
-import ReadOnlyProperty from '../../../../axon/js/ReadOnlyProperty.js';
 
 class MaterialView<T extends THREE.Material = THREE.Material> {
 

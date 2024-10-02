@@ -65,6 +65,7 @@ export default class BlockControlNode extends MaterialMassVolumeControlNode {
           tandem: densityNumberControlTandem
         }, MaterialMassVolumeControlNode.getNumberControlOptions() ) );
       this.densityControlPlaceholderLayer.addChild( densityNumberControl );
+      this.densityControlPlaceholderLayer.visibleProperty = densityNumberControl.visibleProperty;
     }
   }
 }

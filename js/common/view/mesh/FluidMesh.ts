@@ -9,6 +9,7 @@ import TReadOnlyProperty from '../../../../../axon/js/TReadOnlyProperty.js';
 import Bounds2 from '../../../../../dot/js/Bounds2.js';
 import Bounds3 from '../../../../../dot/js/Bounds3.js';
 import ThreeUtils from '../../../../../mobius/js/ThreeUtils.js';
+import Tandem from '../../../../../tandem/js/Tandem.js';
 import densityBuoyancyCommon from '../../../densityBuoyancyCommon.js';
 import DensityBuoyancyModel from '../../model/DensityBuoyancyModel.js';
 import MaterialProperty from '../../model/MaterialProperty.js';
@@ -37,6 +38,11 @@ export default class FluidMesh extends THREE.Mesh {
     // This instance lives for the lifetime of the simulation, so we don't need to remove this listener
     fluidYInterpolatedProperty.link( y => {
       wasFilled = fillFluidGeometry( y, fluidPositionArray, fluidGeometry, wasFilled );
+    } );
+
+    // To prevent PhET-iO state artifact reported in https://github.com/phetsims/density-buoyancy-common/issues/416
+    Tandem.PHET_IO_ENABLED && phet.phetio.phetioEngine.phetioStateEngine.stateSetEmitter.addListener( () => {
+      wasFilled = fillFluidGeometry( fluidYInterpolatedProperty.value, fluidPositionArray, fluidGeometry, wasFilled );
     } );
   }
 

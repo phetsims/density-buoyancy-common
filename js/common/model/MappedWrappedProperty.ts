@@ -65,7 +65,7 @@ export default abstract class MappedWrappedProperty<T extends MappedWrappedObjec
     // if that default is currently selected, update the custom value to match the new value.
     this.availableValues.forEach( mappedWrappedObject => {
       mappedWrappedObject.valueProperty.lazyLink( value => {
-        if ( this.value === mappedWrappedObject ) {
+        if ( this.value === mappedWrappedObject && !mappedWrappedObject.hidden ) {
           this.lockCount++;
           this.customValue.valueProperty.value = value;
           this.lockCount--;

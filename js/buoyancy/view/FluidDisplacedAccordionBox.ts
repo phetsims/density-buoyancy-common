@@ -12,9 +12,10 @@ import NumberProperty from '../../../../axon/js/NumberProperty.js';
 import ReadOnlyProperty from '../../../../axon/js/ReadOnlyProperty.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import Range from '../../../../dot/js/Range.js';
+import Utils from '../../../../dot/js/Utils.js';
 import optionize, { combineOptions, EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
 import WithRequired from '../../../../phet-core/js/types/WithRequired.js';
-import BeakerNode, { BeakerNodeOptions } from '../../../../scenery-phet/js/BeakerNode.js';
+import BeakerNode, { BeakerNodeOptions, SOLUTION_VISIBLE_THRESHOLD } from '../../../../scenery-phet/js/BeakerNode.js';
 import NumberDisplay from '../../../../scenery-phet/js/NumberDisplay.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import { Color, Node, RichText } from '../../../../scenery/js/imports.js';
@@ -101,14 +102,19 @@ export default class FluidDisplacedAccordionBox extends AccordionBox {
       solutionFill: solutionFillProperty
     }, FluidDisplacedAccordionBox.getBeakerOptions() ) );
 
-    displacedVolumeProperty.link( displayedLiters => {
-      beakerVolumeProperty.value = displayedLiters / maxBeakerVolume;
+    const decimalPlaces = 2;
+    displacedVolumeProperty.link( displacedLiters => {
+      const newValue = displacedLiters / maxBeakerVolume;
+      const formatted = Utils.toFixed( displacedLiters, decimalPlaces );
+
+      // Iff the readout shows 0, don't show liquid in the beaker.
+      beakerVolumeProperty.value = formatted === '0.00' ? 0 : Math.max( SOLUTION_VISIBLE_THRESHOLD, newValue );
     } );
 
     const numberDisplay = new NumberDisplay( displacedVolumeProperty, new Range( 0, maxBeakerVolume ), {
       valuePattern: DensityBuoyancyCommonConstants.VOLUME_PATTERN_STRING_PROPERTY,
       useRichText: true,
-      decimalPlaces: 2,
+      decimalPlaces: decimalPlaces,
       textOptions: {
         font: new PhetFont( 14 ),
         maxWidth: beakerNode.width * 0.66 // recognizing that this isn't the maxWidth of the whole NumberDisplay.

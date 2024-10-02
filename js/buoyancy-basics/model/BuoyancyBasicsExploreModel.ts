@@ -14,6 +14,7 @@ import Matrix3 from '../../../../dot/js/Matrix3.js';
 import Range from '../../../../dot/js/Range.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import optionize, { combineOptions, EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
+import GrabDragUsageTracker from '../../../../scenery-phet/js/accessibility/grab-drag/GrabDragUsageTracker.js';
 import Cube, { StrictCubeOptions } from '../../common/model/Cube.js';
 import DensityBuoyancyModel, { DensityBuoyancyModelOptions } from '../../common/model/DensityBuoyancyModel.js';
 import { MaterialSchema } from '../../common/model/Mass.js';
@@ -58,9 +59,12 @@ export default class BuoyancyBasicsExploreModel extends DensityBuoyancyModel {
       ] satisfies MaterialSchema[]
     };
 
+    const grabDragUsageTracker = new GrabDragUsageTracker();
+
     const blockATandem = blocksTandem.createTandem( 'blockA' );
     this.blockA = Cube.createWithMass( this.engine, Material.WOOD, new Vector2( -0.2, 0.2 ), 2, combineOptions<StrictCubeOptions>( {}, sharedBlockOptions, {
       tag: MassTag.OBJECT_A,
+      grabDragUsageTracker: grabDragUsageTracker,
       tandem: blockATandem
     } ) );
     this.availableMasses.push( this.blockA );
@@ -68,6 +72,7 @@ export default class BuoyancyBasicsExploreModel extends DensityBuoyancyModel {
     const blockBTandem = blocksTandem.createTandem( 'blockB' );
     this.blockB = Cube.createWithMass( this.engine, Material.ALUMINUM, new Vector2( 0.05, 0.35 ), 13.5, combineOptions<StrictCubeOptions>( {}, sharedBlockOptions, {
       tag: MassTag.OBJECT_B,
+      grabDragUsageTracker: grabDragUsageTracker,
       tandem: blockBTandem,
       visible: this.modeProperty.value === TwoBlockMode.TWO_BLOCKS
     } ) );

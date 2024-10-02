@@ -47,6 +47,8 @@ import PhysicsEngine, { PhysicsEngineBody } from './PhysicsEngine.js';
 export const MASS_MIN_SHAPES_DIMENSION = 0.1; // 10cm => 1L square
 export const MASS_MAX_SHAPES_DIMENSION = Math.pow( 0.01, 1 / 3 ); // 10L square
 
+const START_DRAG_OFFSET = 0.0001;
+
 export type MaterialSchema = Material | 'CUSTOM'; // We pass 'CUSTOM' so materialProperty can create the customMaterial
 
 type SelfOptions = {
@@ -522,7 +524,12 @@ export default abstract class Mass extends PhetioObject {
   public startDrag( position: Vector2 ): void {
     assert && assert( !this.userControlledProperty.value, 'cannot start a drag when already userControlled' );
     this.userControlledProperty.value = true;
-    this.engine.addPointerConstraint( this.body, position );
+
+    // Move the mass up just a tiny bit when starting a drag. This prevents the scale from thinking that user controlled
+    // objects are affected by non-user-controlled forces (like gravity), https://github.com/phetsims/density-buoyancy-common/issues/414
+    this.setPosition( this.matrix.translation.x, this.matrix.translation.y + START_DRAG_OFFSET );
+
+    this.engine.addPointerConstraint( this.body, position.plusXY( 0, START_DRAG_OFFSET ) );
   }
 
   /**

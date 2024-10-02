@@ -33,7 +33,10 @@ type ParentOptions = WithRequired<Partial<ComboNumberControlOptions<Material>>, 
 type DensityControlNodeOptions = SelfOptions & ParentOptions;
 
 const FALLBACK_NODE = new Text( DensityBuoyancyCommonStrings.whatIsTheFluidDensityStringProperty, {
-  font: new PhetFont( 14 )
+  font: new PhetFont( 14 ),
+
+  // estimate as the same max width as the combo box below
+  maxWidth: 210
 } );
 
 export default class FluidDensityControlNode extends ComboNumberControl<Material> {

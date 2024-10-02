@@ -18,7 +18,10 @@ import GravityProperty from '../model/GravityProperty.js';
 import ComboNumberControl from './ComboNumberControl.js';
 
 const FALLBACK_NODE = new Text( DensityBuoyancyCommonStrings.whatIsTheValueOfGravityStringProperty, {
-  font: new PhetFont( 14 )
+  font: new PhetFont( 14 ),
+
+  // estimate as the same max width as the combo box below
+  maxWidth: 210
 } );
 
 export default class GravityControlNode extends ComboNumberControl<Gravity> {

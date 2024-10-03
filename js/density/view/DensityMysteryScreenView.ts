@@ -64,8 +64,7 @@ export default class DensityMysteryScreenView extends DensityBuoyancyScreenView<
     } ), {
       align: 'left',
       spacing: DensityBuoyancyCommonConstants.SPACING_SMALL,
-      tandem: blocksPanelTandem.createTandem( 'blockSetRadioButtonGroup' ),
-      phetioVisiblePropertyInstrumented: false
+      tandem: blocksPanelTandem.createTandem( 'blockSetRadioButtonGroup' )
     } );
     const randomBlocksRefreshButton = new RefreshButton( {
       listener: () => {

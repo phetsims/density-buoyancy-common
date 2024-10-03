@@ -170,9 +170,11 @@ export default class MaterialMassVolumeControlNode extends MaterialControlNode {
       valueComparisonStrategy: 'equalsFunction'
     } );
 
+    const maxMass = Math.max( ...[ options.maxMass, options.maxCustomMass, options.highDensityMaxMass ].filter( x => typeof x === 'number' ) );
+
     // passed to the NumberControl
     const numberControlMassProperty = new GuardedNumberProperty( massProperty.value, {
-      range: new Range( options.minMass, options.highDensityMaxMass || options.maxMass ),
+      range: new Range( options.minMass, maxMass ),
       units: 'kg',
       tandem: massNumberControlContainerTandem.createTandem( 'massProperty' ),
       phetioFeatured: true,

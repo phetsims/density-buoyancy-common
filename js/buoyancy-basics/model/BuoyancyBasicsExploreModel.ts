@@ -50,7 +50,7 @@ export default class BuoyancyBasicsExploreModel extends DensityBuoyancyModel {
     const sharedBlockOptions = {
       customMaterialOptions: {
         densityPropertyOptions: {
-          range: new Range( 10, 10000 )
+          range: new Range( 100, 10000 )
         }
       },
       availableMassMaterials: [

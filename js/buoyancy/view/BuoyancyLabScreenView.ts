@@ -116,7 +116,6 @@ export default class BuoyancyLabScreenView extends BuoyancyScreenView<BuoyancyLa
         visiblePropertyOptions: {
           phetioFeatured: true
         },
-        minCustomMass: 0.1,
         maxVolumeLiters: maxBlockVolume
       }
     ) ] );

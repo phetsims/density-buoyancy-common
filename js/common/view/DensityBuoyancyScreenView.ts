@@ -379,9 +379,9 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
 
       // rescue any dragged blocks that were trapped by the invisible barrier
       this.massViews.forEach( massView => {
-        const intersect = massView.mass.getBounds().intersectsBounds( this.model.invisibleBarrierBoundsProperty.value );
+        const fullyContains = this.model.invisibleBarrierBoundsProperty.value.containsBounds( massView.mass.getBounds() );
 
-        if ( intersect && massView.mass.canMove && massView.mass.userControlledProperty.value ) {
+        if ( !fullyContains && massView.mass.canMove && massView.mass.userControlledProperty.value ) {
           massView.mass.resetPosition();
         }
       } );

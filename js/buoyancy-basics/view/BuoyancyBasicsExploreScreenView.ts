@@ -55,7 +55,6 @@ export default class BuoyancyBasicsExploreScreenView extends BuoyancyScreenView<
         ownsCustomDensityRange: false,
         customKeepsConstantDensity: true,
         tandem: tandem,
-        minCustomMass: 0.1,
         maxCustomMass: 15
       }
     );

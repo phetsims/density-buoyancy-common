@@ -404,7 +404,7 @@ export default class Material extends PhetioObject implements MappedWrappedObjec
     nameProperty: DensityBuoyancyCommonStrings.material.materialTStringProperty,
     hidden: true,
     colorProperty: DensityBuoyancyCommonColors.materialTColorProperty,
-    density: 950 // Same as the Human's average density
+    density: Material.HUMAN.density
   } );
 
   public static readonly MATERIAL_U = new Material( packageJSON.name === 'buoyancy' ? SOLIDS_TANDEM.createTandem( 'materialU' ) : Tandem.OPT_OUT, {

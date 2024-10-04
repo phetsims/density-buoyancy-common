@@ -43,7 +43,8 @@ type BuoyancyCompareScreenViewOptions = BuoyancyScreenViewOptions;
 
 export default class BuoyancyCompareScreenView extends BuoyancyScreenView<BuoyancyCompareModel> {
 
-  private readonly rightSideMaxContentWidthProperty = new Property( MAX_RIGHT_SIDE_CONTENT_WIDTH );
+  // Reentrant when setting ?stringTest=double,
+  private readonly rightSideMaxContentWidthProperty = new Property( MAX_RIGHT_SIDE_CONTENT_WIDTH, { reentrant: true } );
   private readonly rightSidePanelsVBox: Node;
 
   private readonly blocksValuePanel: Panel;

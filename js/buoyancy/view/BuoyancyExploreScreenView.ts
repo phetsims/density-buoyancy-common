@@ -50,8 +50,7 @@ export default class BuoyancyExploreScreenView extends BuoyancyScreenView<Buoyan
       model.blockA,
       model.blockB,
       this.popupLayer, {
-        tandem: tandem,
-        minCustomMass: 0.1
+        tandem: tandem
       }
     );
 

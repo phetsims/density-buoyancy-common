@@ -98,7 +98,7 @@ export default class BuoyancyShapesModel extends DensityBuoyancyModel {
     this.setInitialPositions();
   }
 
-  private createMass( tandem: Tandem, shape: MassShape, widthRatio: number, heightRatio: number, tag: MassTag ): Mass {
+  private createMass( tandem: Tandem, shape: MassShape, widthRatio: number, heightRatio: number, tag: MassTag, initiallyVisible: boolean ): Mass {
     const massOptions = {
       material: this.materialProperty.value,
       availableMassMaterials: this.availableMaterials,
@@ -109,7 +109,7 @@ export default class BuoyancyShapesModel extends DensityBuoyancyModel {
       maxVolume: Cuboid.MAX_VOLUME, // Cubes are the highest volume object in this screen
       tandem: tandem,
       tag: tag,
-      visible: false, // Most shapes will always be invisible, so initialize as invisible for performance on reset().
+      visible: initiallyVisible, // Most shapes will always be invisible, so initialize as invisible for performance on reset().
       grabDragUsageTracker: this.grabDragUsageTracker // All Mass shapes except the scale share the same interaction model, see https://github.com/phetsims/density-buoyancy-common/issues/368
     };
 

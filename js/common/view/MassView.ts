@@ -93,10 +93,13 @@ export default abstract class MassView extends Disposable {
     const releaseSoundPlayer = sharedSoundPlayers.get( 'release' );
 
     if ( mass.canMove ) {
+      const focusHighlightPath = new HighlightPath( this.focusableShapeProperty );
+      const interactiveHighlightPath = new HighlightPath( this.focusableShapeProperty );
+
       this.focusablePath = new InteractiveHighlightingPath( this.focusableShapeProperty, {
         // Prefer HighlightPath to HighlightFromNode here, since we must accommodate the empty shape when not highlighted
-        focusHighlight: new HighlightPath( this.focusableShapeProperty ),
-        interactiveHighlight: new HighlightPath( this.focusableShapeProperty ),
+        focusHighlight: focusHighlightPath,
+        interactiveHighlight: interactiveHighlightPath,
         inputEnabledProperty: mass.inputEnabledProperty
       } );
 
@@ -220,6 +223,9 @@ export default abstract class MassView extends Disposable {
         keyboardDragListener.dispose();
         this.focusablePath!.dispose();
 
+        focusHighlightPath.dispose();
+        interactiveHighlightPath.dispose();
+
         mass.transformedEmitter.removeListener( massTransformedListener );
         wasdCueNode.dispose();
       } );
@@ -249,6 +255,9 @@ export default abstract class MassView extends Disposable {
     this.disposeEmitter.addListener( () => {
       this.mass.transformedEmitter.removeListener( positionListener );
       this.mass.resetEmitter.removeListener( resetListener );
+      this.isCursorOverProperty.dispose();
+      this.isKeyboardFocusedProperty.dispose();
+      this.focusableShapeProperty.dispose();
     } );
 
     // Last, after declaring everything.

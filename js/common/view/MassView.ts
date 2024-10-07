@@ -219,6 +219,11 @@ export default abstract class MassView extends Disposable {
 
       this.disposeEmitter.addListener( () => {
 
+        // In order to handle sequencing issues during disposal, start by blurring the focusablePath.
+        // This ensures the downstream disposals will not try to use intermediate states that could cause problems.
+        // see https://github.com/phetsims/density-buoyancy-common/issues/399
+        this.focusablePath!.blur();
+
         this.grabDragInteraction!.dispose();
         keyboardDragListener.dispose();
         this.focusablePath!.dispose();

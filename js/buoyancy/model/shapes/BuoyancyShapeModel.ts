@@ -82,7 +82,8 @@ export default class BuoyancyShapeModel {
     MassShape.enumeration.values.forEach( shape => {
       const mass = createMass(
         options.tandem.createTandem( 'shapes' ).createTandem( shape.tandemName ), shape,
-        this.horizontalRatioProperty.value, this.verticalRatioProperty.value, massTag
+        this.horizontalRatioProperty.value, this.verticalRatioProperty.value, massTag,
+        shape === massShape
       );
       this.shapeCacheMap.set( shape, mass );
 

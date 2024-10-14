@@ -16,6 +16,7 @@ import Tandem from '../../../../tandem/js/Tandem.js';
 import DisplayProperties from '../../buoyancy/view/DisplayProperties.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import Mass from '../model/Mass.js';
+import { Node } from '../../../../scenery/js/imports.js';
 import ForceDiagramNode from './ForceDiagramNode.js';
 import MassDecorationLayer from './MassDecorationLayer.js';
 import MassLabelNode from './MassLabelNode.js';
@@ -31,9 +32,10 @@ export default class MeasurableMassView extends MassView {
   protected constructor( mass: Mass, initialGeometry: THREE.BufferGeometry,
                          modelViewTransform: THREEModelViewTransform,
                          displayProperties: DisplayProperties,
+                         interactionCueParentNode: Node,
                          isDisposable = true ) {
 
-    super( mass, initialGeometry, modelViewTransform, isDisposable );
+    super( mass, initialGeometry, modelViewTransform, interactionCueParentNode, isDisposable );
 
     this.forceDiagramNode = new ForceDiagramNode( mass, displayProperties );
 

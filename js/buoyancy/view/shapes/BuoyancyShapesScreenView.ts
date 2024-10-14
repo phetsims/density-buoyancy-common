@@ -243,19 +243,19 @@ export default class BuoyancyShapesScreenView extends BuoyancyScreenView<Buoyanc
 
   protected override getMassViewFromMass( mass: Mass ): MassView {
     if ( mass instanceof Cone ) {
-      return new ConeView( mass, this, this.displayProperties );
+      return new ConeView( mass, this, this.displayProperties, this.popupLayer );
     }
     else if ( mass instanceof Duck ) {
-      return new DuckView( mass, this, this.displayProperties );
+      return new DuckView( mass, this, this.displayProperties, this.popupLayer );
     }
     else if ( mass instanceof Ellipsoid ) {
-      return new EllipsoidView( mass, this, this.displayProperties );
+      return new EllipsoidView( mass, this, this.displayProperties, this.popupLayer );
     }
     else if ( mass instanceof HorizontalCylinder ) {
-      return new HorizontalCylinderView( mass, this, this.displayProperties );
+      return new HorizontalCylinderView( mass, this, this.displayProperties, this.popupLayer );
     }
     else if ( mass instanceof VerticalCylinder ) {
-      return new VerticalCylinderView( mass, this, this.displayProperties );
+      return new VerticalCylinderView( mass, this, this.displayProperties, this.popupLayer );
     }
     else {
       return super.getMassViewFromMass( mass );

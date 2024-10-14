@@ -9,6 +9,7 @@
 import Vector3 from '../../../../../dot/js/Vector3.js';
 import { THREEModelViewTransform } from '../../../../../mobius/js/MobiusScreenView.js';
 import TriangleArrayWriter from '../../../../../mobius/js/TriangleArrayWriter.js';
+import { Node } from '../../../../../scenery/js/imports.js';
 import { TAG_OFFSET } from '../../../common/view/MassTagNode.js';
 import MeasurableMassView from '../../../common/view/MeasurableMassView.js';
 import densityBuoyancyCommon from '../../../densityBuoyancyCommon.js';
@@ -26,7 +27,7 @@ export default class HorizontalCylinderView extends MeasurableMassView {
   private readonly updateListener: () => void;
 
   public constructor( horizontalCylinder: HorizontalCylinder, modelViewTransform: THREEModelViewTransform,
-                      displayProperties: DisplayProperties ) {
+                      displayProperties: DisplayProperties, interactionCueParentNode: Node ) {
 
     const positionArray = new Float32Array( numElements * 3 );
     const normalArray = new Float32Array( numElements * 3 );
@@ -39,7 +40,7 @@ export default class HorizontalCylinderView extends MeasurableMassView {
     horizontalCylinderGeometry.addAttribute( 'normal', new THREE.BufferAttribute( normalArray, 3 ) );
     horizontalCylinderGeometry.addAttribute( 'uv', new THREE.BufferAttribute( uvArray, 2 ) );
 
-    super( horizontalCylinder, horizontalCylinderGeometry, modelViewTransform, displayProperties );
+    super( horizontalCylinder, horizontalCylinderGeometry, modelViewTransform, displayProperties, interactionCueParentNode );
 
     const positionTag = () => {
       const radius = horizontalCylinder.radiusProperty.value;

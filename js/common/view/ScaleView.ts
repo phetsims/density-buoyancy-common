@@ -14,6 +14,7 @@ import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import GravityProperty from '../model/GravityProperty.js';
 import Scale from '../model/Scale.js';
 import CuboidView from './CuboidView.js';
+import { Node } from '../../../../scenery/js/imports.js';
 import MassDecorationLayer from './MassDecorationLayer.js';
 import MassView from './MassView.js';
 import ScaleReadoutNode from './ScaleReadoutNode.js';
@@ -24,10 +25,10 @@ export default class ScaleView extends MassView {
   private readonly scaleGeometry: THREE.BufferGeometry;
   private readonly scaleReadoutNode: ScaleReadoutNode;
 
-  public constructor( mass: Scale, modelViewTransform: THREEModelViewTransform, gravityProperty: GravityProperty ) {
+  public constructor( mass: Scale, modelViewTransform: THREEModelViewTransform, gravityProperty: GravityProperty, interactionCueParentNode: Node ) {
 
     const scaleGeometry = ScaleView.getScaleGeometry();
-    super( mass, scaleGeometry, modelViewTransform );
+    super( mass, scaleGeometry, modelViewTransform, interactionCueParentNode );
 
     this.scaleGeometry = scaleGeometry;
     this.scaleReadoutNode = new ScaleReadoutNode( mass, gravityProperty );

@@ -10,6 +10,7 @@ import Vector3 from '../../../../../dot/js/Vector3.js';
 import { THREEModelViewTransform } from '../../../../../mobius/js/MobiusScreenView.js';
 import Material from '../../../common/model/Material.js';
 import { TAG_OFFSET } from '../../../common/view/MassTagNode.js';
+import { Node } from '../../../../../scenery/js/imports.js';
 import MeasurableMassView from '../../../common/view/MeasurableMassView.js';
 import densityBuoyancyCommon from '../../../densityBuoyancyCommon.js';
 import Bottle from '../../model/applications/Bottle.js';
@@ -25,7 +26,8 @@ export default class BottleView extends MeasurableMassView {
 
   public constructor( bottle: Bottle,
                       modelViewTransform: THREEModelViewTransform,
-                      displayProperties: DisplayProperties ) {
+                      displayProperties: DisplayProperties,
+                      interactionCueParentNode: Node ) {
 
     super( bottle,
 
@@ -33,6 +35,7 @@ export default class BottleView extends MeasurableMassView {
       new THREE.Geometry(),
       modelViewTransform,
       displayProperties,
+      interactionCueParentNode,
 
       // not disposable
       false

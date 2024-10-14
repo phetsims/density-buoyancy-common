@@ -59,6 +59,7 @@ export default abstract class MassView extends Disposable {
   protected constructor( public readonly mass: Mass,
                          initialGeometry: THREE.BufferGeometry,
                          protected readonly modelViewTransform: THREEModelViewTransform,
+                         interactionCueParentNode: Node,
                          isDisposable = true ) {
 
     super( {
@@ -149,8 +150,9 @@ export default abstract class MassView extends Disposable {
       const dragCueBoundsProperty = new Property( Bounds2.create( mass.getBounds() ) );
 
       const wasdCueNode = new WASDCueNode( dragCueBoundsProperty );
-      this.grabDragInteraction = new GrabDragInteraction( this.focusablePath, keyboardDragListener, {
+      this.grabDragInteraction = new GrabDragInteraction( this.focusablePath, keyboardDragListener, interactionCueParentNode, {
         idleStateOptions: { positionInPDOM: false }, // Improved performance since we don't support gesture description, see https://github.com/phetsims/density-buoyancy-common/issues/389
+        grabCueOffset: new Vector2( 0, DensityBuoyancyCommonConstants.MARGIN_SMALL ),
         onGrab: () => {
 
           // Do not start a mass drag from GrabDragInteraction unless it is from keyboard input.
@@ -202,10 +204,6 @@ export default abstract class MassView extends Disposable {
           const shape = Shape.polygon( ConvexHull2.grahamScan( massViewPoints, false ) );
 
           this.focusableShapeProperty.value = shape;
-
-          // Put the cue under the block. Use the shape directly because it shares the same coordinate frame as the
-          // focusablePath it appears in.
-          this.grabDragInteraction.grabCueNode.centerTop = shape.bounds.centerBottom.plusXY( 0, DensityBuoyancyCommonConstants.MARGIN_SMALL );
 
           dragCueBoundsProperty.value = shape.bounds;
         }

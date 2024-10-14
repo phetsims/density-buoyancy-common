@@ -252,11 +252,11 @@ export default class BuoyancyApplicationsScreenView extends BuoyancyScreenView<B
 
   protected override getMassViewFromMass( mass: Mass ): MassView {
     if ( mass instanceof Bottle ) {
-      this.bottleView ??= new BottleView( mass, this, this.displayProperties );
+      this.bottleView ??= new BottleView( mass, this, this.displayProperties, this.popupLayer );
       return this.bottleView;
     }
     else if ( mass instanceof Boat ) {
-      this.boatView ??= new BoatView( mass, this, this.model.pool.fluidYInterpolatedProperty, this.displayProperties );
+      this.boatView ??= new BoatView( mass, this, this.model.pool.fluidYInterpolatedProperty, this.displayProperties, this.popupLayer );
       return this.boatView;
     }
     else {

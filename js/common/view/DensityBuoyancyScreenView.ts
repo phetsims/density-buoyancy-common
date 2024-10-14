@@ -345,10 +345,10 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
 
   protected getMassViewFromMass( mass: Mass ): MassView {
     if ( mass instanceof Cuboid ) {
-      return new CuboidView( mass, this, this.displayProperties );
+      return new CuboidView( mass, this, this.displayProperties, this.popupLayer );
     }
     else if ( mass instanceof Scale ) {
-      return new ScaleView( mass, this, this.model.gravityProperty );
+      return new ScaleView( mass, this, this.model.gravityProperty, this.popupLayer );
     }
     else {
       throw new Error( 'massView is falsy' );

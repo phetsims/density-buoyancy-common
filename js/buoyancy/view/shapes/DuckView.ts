@@ -11,6 +11,7 @@ import Bounds3 from '../../../../../dot/js/Bounds3.js';
 import Vector2 from '../../../../../dot/js/Vector2.js';
 import Vector3 from '../../../../../dot/js/Vector3.js';
 import { THREEModelViewTransform } from '../../../../../mobius/js/MobiusScreenView.js';
+import { Node } from '../../../../../scenery/js/imports.js';
 import MeasurableMassView from '../../../common/view/MeasurableMassView.js';
 import densityBuoyancyCommon from '../../../densityBuoyancyCommon.js';
 import Duck from '../../model/shapes/Duck.js';
@@ -22,11 +23,11 @@ export default class DuckView extends MeasurableMassView {
   private readonly duckGeometry: THREE.BufferGeometry;
   private readonly updateListener: ( newSize: Bounds3 ) => void;
 
-  public constructor( private readonly duck: Duck, modelViewTransform: THREEModelViewTransform, displayProperties: DisplayProperties ) {
+  public constructor( private readonly duck: Duck, modelViewTransform: THREEModelViewTransform, displayProperties: DisplayProperties, interactionCueParentNode: Node ) {
 
     const localDuckGeometry = duckGeometry.clone();
 
-    super( duck, localDuckGeometry, modelViewTransform, displayProperties );
+    super( duck, localDuckGeometry, modelViewTransform, displayProperties, interactionCueParentNode );
 
     this.duckGeometry = localDuckGeometry;
 

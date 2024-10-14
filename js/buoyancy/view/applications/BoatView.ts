@@ -10,6 +10,7 @@ import { THREEModelViewTransform } from '../../../../../mobius/js/MobiusScreenVi
 import DensityBuoyancyCommonConstants from '../../../common/DensityBuoyancyCommonConstants.js';
 import InterpolatedProperty from '../../../common/model/InterpolatedProperty.js';
 import MeasurableMassView from '../../../common/view/MeasurableMassView.js';
+import { Node } from '../../../../../scenery/js/imports.js';
 import densityBuoyancyCommon from '../../../densityBuoyancyCommon.js';
 import Boat from '../../model/applications/Boat.js';
 import BoatDesign from '../../model/applications/BoatDesign.js';
@@ -28,14 +29,15 @@ export default class BoatView extends MeasurableMassView {
   public constructor( boat: Boat,
                       modelViewTransform: THREEModelViewTransform,
                       poolFluidYInterpolatedProperty: InterpolatedProperty<number>,
-                      displayProperties: DisplayProperties ) {
+                      displayProperties: DisplayProperties,
+                      interactionCueParentNode: Node ) {
 
     super( boat,
 
       // @ts-expect-error
       new THREE.Geometry(),
 
-      modelViewTransform, displayProperties,
+      modelViewTransform, displayProperties, interactionCueParentNode,
 
       // not disposable
       false );

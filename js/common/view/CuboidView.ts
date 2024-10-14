@@ -12,7 +12,7 @@ import Vector3 from '../../../../dot/js/Vector3.js';
 import { Shape } from '../../../../kite/js/imports.js';
 import { THREEModelViewTransform } from '../../../../mobius/js/MobiusScreenView.js';
 import TriangleArrayWriter from '../../../../mobius/js/TriangleArrayWriter.js';
-import { Path } from '../../../../scenery/js/imports.js';
+import { Node, Path } from '../../../../scenery/js/imports.js';
 import DisplayProperties from '../../buoyancy/view/DisplayProperties.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import Cuboid from '../model/Cuboid.js';
@@ -32,13 +32,14 @@ export default class CuboidView extends MeasurableMassView {
 
   public constructor( cuboid: Cuboid,
                       modelViewTransform: THREEModelViewTransform,
-                      displayProperties: DisplayProperties ) {
+                      displayProperties: DisplayProperties,
+                      interactionCueParentNode: Node ) {
 
     const size = cuboid.sizeProperty.value;
 
     const cuboidGeometry = CuboidView.getCuboidGeometry( size );
 
-    super( cuboid, cuboidGeometry, modelViewTransform, displayProperties );
+    super( cuboid, cuboidGeometry, modelViewTransform, displayProperties, interactionCueParentNode );
 
     const positionTag = () => {
       const size = cuboid.sizeProperty.value;

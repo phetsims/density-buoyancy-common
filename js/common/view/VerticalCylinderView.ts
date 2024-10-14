@@ -13,6 +13,7 @@ import VerticalCylinder from '../../buoyancy/model/shapes/VerticalCylinder.js';
 import DisplayProperties from '../../buoyancy/view/DisplayProperties.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import { TAG_OFFSET } from './MassTagNode.js';
+import { Node } from '../../../../scenery/js/imports.js';
 import MeasurableMassView from './MeasurableMassView.js';
 
 // constants
@@ -26,7 +27,7 @@ export default class VerticalCylinderView extends MeasurableMassView {
   private readonly updateListener: () => void;
 
   public constructor( verticalCylinder: VerticalCylinder, modelViewTransform: THREEModelViewTransform,
-                      displayProperties: DisplayProperties ) {
+                      displayProperties: DisplayProperties, interactionCueParentNode: Node ) {
 
     const positionArray = new Float32Array( numElements * 3 );
     const normalArray = new Float32Array( numElements * 3 );
@@ -39,7 +40,7 @@ export default class VerticalCylinderView extends MeasurableMassView {
     verticalCylinderGeometry.addAttribute( 'normal', new THREE.BufferAttribute( normalArray, 3 ) );
     verticalCylinderGeometry.addAttribute( 'uv', new THREE.BufferAttribute( uvArray, 2 ) );
 
-    super( verticalCylinder, verticalCylinderGeometry, modelViewTransform, displayProperties );
+    super( verticalCylinder, verticalCylinderGeometry, modelViewTransform, displayProperties, interactionCueParentNode );
 
     const positionTag = () => {
       const radius = verticalCylinder.radiusProperty.value;

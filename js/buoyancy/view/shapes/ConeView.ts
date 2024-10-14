@@ -10,6 +10,7 @@ import Vector3 from '../../../../../dot/js/Vector3.js';
 import { THREEModelViewTransform } from '../../../../../mobius/js/MobiusScreenView.js';
 import TriangleArrayWriter from '../../../../../mobius/js/TriangleArrayWriter.js';
 import { TAG_OFFSET } from '../../../common/view/MassTagNode.js';
+import { Node } from '../../../../../scenery/js/imports.js';
 import MeasurableMassView from '../../../common/view/MeasurableMassView.js';
 import densityBuoyancyCommon from '../../../densityBuoyancyCommon.js';
 import Cone from '../../model/shapes/Cone.js';
@@ -25,11 +26,11 @@ export default class ConeView extends MeasurableMassView {
   private readonly coneGeometry: THREE.BufferGeometry;
   private readonly updateListener: () => void;
 
-  public constructor( cone: Cone, modelViewTransform: THREEModelViewTransform, displayProperties: DisplayProperties ) {
+  public constructor( cone: Cone, modelViewTransform: THREEModelViewTransform, displayProperties: DisplayProperties, interactionCueParentNode: Node ) {
 
     const coneGeometry = ConeView.getConeGeometry( cone.radiusProperty.value, cone.heightProperty.value, cone.isVertexUp );
 
-    super( cone, coneGeometry, modelViewTransform, displayProperties );
+    super( cone, coneGeometry, modelViewTransform, displayProperties, interactionCueParentNode );
 
     this.cone = cone;
     this.coneGeometry = coneGeometry;

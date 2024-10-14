@@ -20,9 +20,7 @@ export default [
     }
   },
   {
-    files: [
-      '**/*.ts'
-    ],
+    files: [ '**/*.ts' ],
     rules: {
       '@typescript-eslint/ban-ts-comment': [
         'error',

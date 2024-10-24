@@ -68,9 +68,7 @@ export default class PoolScaleHeightControl extends NumberControl {
         orientation: Orientation.VERTICAL,
         thumbNode: thumbNode,
         thumbYOffset: thumbNode.height / 2,
-        trackSize: new Dimension2( 3, sliderTrackHeight ),
-        // NumberControl does not support accessibleName, so we pass the tandem name of the NumberControl to the slider
-        accessibleName: Tandem.toAccessibleName( providedOptions, 'Control' )
+        trackSize: new Dimension2( 3, sliderTrackHeight )
       },
       delta: DEFAULT_RANGE.getLength() / 2000,
       layoutFunction( titleNode: Node, numberDisplay: NumberDisplay, slider: Slider, decrementButton: ArrowButton | null, incrementButton: ArrowButton | null ) {

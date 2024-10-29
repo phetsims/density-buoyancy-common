@@ -45,7 +45,7 @@ export default class GravityControlNode extends ComboNumberControl<Gravity> {
             maxWidth: 160
           } ),
           tandemName: `${gravity.tandem.name.replace( 'Gravity', '' )}Item`,
-          a11yName: gravity.nameProperty
+          accessibleName: gravity.nameProperty
         };
       } ),
       comboBoxOptions: {

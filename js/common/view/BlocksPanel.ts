@@ -30,9 +30,11 @@ export default class BlocksPanel extends Panel {
         } ),
         value: blockSet,
         tandemName: `${blockSet.tandemName}RadioButton`,
+        options: {
 
-        // pdom
-        labelContent: blockSet.stringProperty
+          // pdom
+          accessibleName: blockSet.stringProperty
+        }
       };
     } ), {
       align: 'left',

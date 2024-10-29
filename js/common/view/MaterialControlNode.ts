@@ -76,7 +76,7 @@ export default class MaterialControlNode extends VBox {
           maxWidth: comboMaxWidth
         } ),
         tandemName: `${material.tandem.name.replace( 'Material', '' )}Item`,
-        a11yName: material.nameProperty,
+        accessibleName: material.nameProperty,
         comboBoxListItemNodeOptions: {
           visible: !materialProperty.invisibleMaterials.includes( material )
         }

@@ -55,7 +55,7 @@ export default class ShapeSizeControlNode extends VBox {
           maxWidth: 110 // 160 minus maxWidth of the icons
         } ),
         tandemName: `${massShape.tandemName}Item`,
-        a11yName: massShape.shapeString
+        accessibleName: massShape.shapeString
       };
     } ), listParent, {
       xMargin: 8,

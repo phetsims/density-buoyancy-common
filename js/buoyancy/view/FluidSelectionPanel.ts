@@ -40,7 +40,7 @@ export default class FluidSelectionPanel extends Panel {
             maxWidth: 160
           } ),
           tandemName: `${material.tandem.name}Item`,
-          a11yName: material.nameProperty
+          accessibleName: material.nameProperty
         };
       } ),
       listParent, {

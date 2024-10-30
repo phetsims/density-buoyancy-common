@@ -305,7 +305,7 @@ export default class MaterialMassVolumeControlNode extends MaterialControlNode {
           tandem: volumeNumberControlTandem.createTandem( 'slider' ).createTandem( 'thumbNode' )
         } ),
         constrainValue: ( value: number ) => Utils.roundSymmetric( value * 2 ) / 2,
-        phetioLinkedProperty: numberControlVolumeProperty,
+        phetioLinkedProperty: numberControlVolumeProperty
       },
       numberDisplayOptions: {
         valuePattern: DensityBuoyancyCommonConstants.VOLUME_PATTERN_STRING_PROPERTY,
@@ -360,7 +360,7 @@ export default class MaterialMassVolumeControlNode extends MaterialControlNode {
               }
               return enabledMassRangeProperty.value.constrainValue( Utils.toFixedNumber( value, 1 ) );
             },
-            phetioLinkedProperty: numberControlMassProperty,
+            phetioLinkedProperty: numberControlMassProperty
           },
           numberDisplayOptions: {
             ...( options.showMassAsReadout ? // eslint-disable-line phet/no-object-spread-on-non-literals

@@ -88,8 +88,7 @@ export default class FluidDensityControlNode extends ComboNumberControl<Material
         },
         sliderOptions: {
           // Slightly longer, see https://github.com/phetsims/buoyancy/issues/33
-          trackSize: new Dimension2( 130, 0.5 ),
-          accessibleName: DensityBuoyancyCommonStrings.fluidDensityStringProperty
+          trackSize: new Dimension2( 130, 0.5 )
         }
       },
       comboBoxOptions: {

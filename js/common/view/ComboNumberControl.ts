@@ -152,9 +152,7 @@ export default abstract class ComboNumberControl<T extends Material | Gravity> e
     this.numberControl = new NumberControl( options.titleProperty, correctUnitsProperty, options.range, combineOptions<NumberControlOptions>( {
       tandem: options.tandem.createTandem( 'numberControl' ),
       phetioFeatured: true,
-      sliderOptions: {
-        accessibleName: options.titleProperty
-      }
+      accessibleName: options.titleProperty
     }, options.numberControlOptions ) );
     this.numberControl.addLinkedElement( this.mappedWrappedProperty.customValue.valueProperty, {
       tandemName: 'valueProperty'

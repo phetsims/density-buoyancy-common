@@ -49,7 +49,6 @@ export default class BlockControlNode extends MaterialMassVolumeControlNode {
         densityAsLitersProperty.range,
         combineOptions<NumberControlOptions>( {
           sliderOptions: {
-            accessibleName: DensityBuoyancyCommonStrings.densityStringProperty,
             thumbNode: new PrecisionSliderThumb( {
               tandem: densityNumberControlTandem.createTandem( 'slider' ).createTandem( 'thumbNode' ),
               thumbFill: options.color
@@ -62,6 +61,7 @@ export default class BlockControlNode extends MaterialMassVolumeControlNode {
             // Use rich text so that kg/dm^3 is displayed correctly
             useRichText: true
           },
+          accessibleName: DensityBuoyancyCommonStrings.densityStringProperty,
           tandem: densityNumberControlTandem
         }, MaterialMassVolumeControlNode.getNumberControlOptions() ) );
       this.densityControlPlaceholderLayer.addChild( densityNumberControl );

@@ -67,8 +67,8 @@ export default class BlocksValuePanel extends Panel {
           sliderOptions: {
             phetioLinkedProperty: massProperty,
             trackSize: options.sliderTrackSize,
-            accessibleName: DensityBuoyancyCommonStrings.massStringProperty
           },
+          accessibleName: DensityBuoyancyCommonStrings.massStringProperty,
           phetioVisiblePropertyInstrumented: false
         }
       )
@@ -86,8 +86,8 @@ export default class BlocksValuePanel extends Panel {
           sliderOptions: {
             phetioLinkedProperty: volumeProperty,
             trackSize: options.sliderTrackSize,
-            accessibleName: DensityBuoyancyCommonStrings.volumeStringProperty
           },
+          accessibleName: DensityBuoyancyCommonStrings.volumeStringProperty,
           phetioVisiblePropertyInstrumented: false
         }
       )
@@ -104,9 +104,9 @@ export default class BlocksValuePanel extends Panel {
           },
           sliderOptions: {
             phetioLinkedProperty: densityProperty,
-            trackSize: options.sliderTrackSize,
-            accessibleName: DensityBuoyancyCommonStrings.densityStringProperty
+            trackSize: options.sliderTrackSize
           },
+          accessibleName: DensityBuoyancyCommonStrings.densityStringProperty,
           phetioVisiblePropertyInstrumented: false
         }
       )

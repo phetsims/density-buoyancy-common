@@ -70,9 +70,10 @@ export default class BoatPanel extends Panel {
             }, {
               value: boatVolumeRange.max,
               label: new Text( boatVolumeRange.max, { font: new PhetFont( 12 ), maxWidth: 50 } )
-            } ],
-            accessibleName: DensityBuoyancyCommonStrings.boatVolumeStringProperty
+            } ]
           },
+
+          accessibleName: DensityBuoyancyCommonStrings.boatVolumeStringProperty,
           tandem: boatVolumeControlTandem
         } ) )
       ]

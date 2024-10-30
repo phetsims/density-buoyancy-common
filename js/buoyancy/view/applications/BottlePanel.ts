@@ -71,7 +71,6 @@ export default class BottlePanel extends Panel {
       combineOptions<NumberControlOptions>( {
         visibleProperty: new GatedVisibleProperty( customDensityControlVisibleProperty, customBottleDensityControlTandem ),
         sliderOptions: {
-          accessibleName: DensityBuoyancyCommonStrings.densityStringProperty,
           phetioLinkedProperty: bottle.materialInsideProperty.customMaterial.densityProperty,
           thumbNode: new PrecisionSliderThumb( {
             tandem: customBottleDensityControlTandem.createTandem( 'slider' ).createTandem( 'thumbNode' )
@@ -83,6 +82,7 @@ export default class BottlePanel extends Panel {
           // Use rich text so that kg/dm^3 is displayed correctly
           useRichText: true
         },
+        accessibleName: DensityBuoyancyCommonStrings.densityStringProperty,
         tandem: customBottleDensityControlTandem
       }, MaterialMassVolumeControlNode.getNumberControlOptions() ) );
 

@@ -306,13 +306,13 @@ export default class MaterialMassVolumeControlNode extends MaterialControlNode {
         } ),
         constrainValue: ( value: number ) => Utils.roundSymmetric( value * 2 ) / 2,
         phetioLinkedProperty: numberControlVolumeProperty,
-        accessibleName: DensityBuoyancyCommonStrings.volumeStringProperty
       },
       numberDisplayOptions: {
         valuePattern: DensityBuoyancyCommonConstants.VOLUME_PATTERN_STRING_PROPERTY,
         useRichText: true
       },
       enabledRangeProperty: enabledVolumeRangeProperty,
+      accessibleName: DensityBuoyancyCommonStrings.volumeStringProperty,
       tandem: volumeNumberControlTandem,
       titleNodeOptions: {
         visiblePropertyOptions: {
@@ -361,7 +361,6 @@ export default class MaterialMassVolumeControlNode extends MaterialControlNode {
               return enabledMassRangeProperty.value.constrainValue( Utils.toFixedNumber( value, 1 ) );
             },
             phetioLinkedProperty: numberControlMassProperty,
-            accessibleName: DensityBuoyancyCommonStrings.massStringProperty
           },
           numberDisplayOptions: {
             ...( options.showMassAsReadout ? // eslint-disable-line phet/no-object-spread-on-non-literals
@@ -385,6 +384,7 @@ export default class MaterialMassVolumeControlNode extends MaterialControlNode {
             )
           },
           enabledRangeProperty: enabledMassRangeProperty,
+          accessibleName: DensityBuoyancyCommonStrings.massStringProperty,
           tandem: numberControlTandem,
           titleNodeOptions: {
             visiblePropertyOptions: {

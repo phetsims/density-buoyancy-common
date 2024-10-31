@@ -8,7 +8,7 @@
 
 import EnumerationProperty from '../../../../axon/js/EnumerationProperty.js';
 import Property from '../../../../axon/js/Property.js';
-import propertyStateHandlerSingleton from '../../../../axon/js/propertyStateHandlerSingleton.js';
+import { propertyStateHandlerSingleton } from '../../../../axon/js/PropertyStateHandler.js';
 import PropertyStatePhase from '../../../../axon/js/PropertyStatePhase.js';
 import Matrix3 from '../../../../dot/js/Matrix3.js';
 import Range from '../../../../dot/js/Range.js';

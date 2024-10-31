@@ -11,7 +11,7 @@
 import Multilink from '../../../../axon/js/Multilink.js';
 import NumberProperty from '../../../../axon/js/NumberProperty.js';
 import Property from '../../../../axon/js/Property.js';
-import propertyStateHandlerSingleton from '../../../../axon/js/propertyStateHandlerSingleton.js';
+import { propertyStateHandlerSingleton } from '../../../../axon/js/PropertyStateHandler.js';
 import PropertyStatePhase from '../../../../axon/js/PropertyStatePhase.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import Range from '../../../../dot/js/Range.js';

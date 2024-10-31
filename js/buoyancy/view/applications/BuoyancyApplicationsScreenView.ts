@@ -7,7 +7,7 @@
  */
 
 import DerivedProperty from '../../../../../axon/js/DerivedProperty.js';
-import propertyStateHandlerSingleton from '../../../../../axon/js/propertyStateHandlerSingleton.js';
+import { propertyStateHandlerSingleton } from '../../../../../axon/js/PropertyStateHandler.js';
 import PropertyStatePhase from '../../../../../axon/js/PropertyStatePhase.js';
 import Vector3 from '../../../../../dot/js/Vector3.js';
 import optionize, { EmptySelfOptions } from '../../../../../phet-core/js/optionize.js';

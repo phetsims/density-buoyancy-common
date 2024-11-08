@@ -8,13 +8,13 @@
 
 import Vector3 from '../../../../dot/js/Vector3.js';
 import { THREEModelViewTransform } from '../../../../mobius/js/MobiusScreenView.js';
+import { Node } from '../../../../scenery/js/imports.js';
 import phetioStateSetEmitter from '../../../../tandem/js/phetioStateSetEmitter.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import GravityProperty from '../model/GravityProperty.js';
 import Scale from '../model/Scale.js';
 import CuboidView from './CuboidView.js';
-import { Node } from '../../../../scenery/js/imports.js';
 import MassDecorationLayer from './MassDecorationLayer.js';
 import MassView from './MassView.js';
 import ScaleReadoutNode from './ScaleReadoutNode.js';

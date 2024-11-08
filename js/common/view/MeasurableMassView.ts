@@ -11,12 +11,12 @@
 import Matrix3 from '../../../../dot/js/Matrix3.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import { THREEModelViewTransform } from '../../../../mobius/js/MobiusScreenView.js';
+import { Node } from '../../../../scenery/js/imports.js';
 import phetioStateSetEmitter from '../../../../tandem/js/phetioStateSetEmitter.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
 import DisplayProperties from '../../buoyancy/view/DisplayProperties.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import Mass from '../model/Mass.js';
-import { Node } from '../../../../scenery/js/imports.js';
 import ForceDiagramNode from './ForceDiagramNode.js';
 import MassDecorationLayer from './MassDecorationLayer.js';
 import MassLabelNode from './MassLabelNode.js';

@@ -9,11 +9,11 @@
 import Vector3 from '../../../../dot/js/Vector3.js';
 import { THREEModelViewTransform } from '../../../../mobius/js/MobiusScreenView.js';
 import TriangleArrayWriter from '../../../../mobius/js/TriangleArrayWriter.js';
+import { Node } from '../../../../scenery/js/imports.js';
 import VerticalCylinder from '../../buoyancy/model/shapes/VerticalCylinder.js';
 import DisplayProperties from '../../buoyancy/view/DisplayProperties.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import { TAG_OFFSET } from './MassTagNode.js';
-import { Node } from '../../../../scenery/js/imports.js';
 import MeasurableMassView from './MeasurableMassView.js';
 
 // constants

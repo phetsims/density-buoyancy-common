@@ -7,13 +7,14 @@
 
 import BooleanProperty from '../../../../../axon/js/BooleanProperty.js';
 import DerivedProperty from '../../../../../axon/js/DerivedProperty.js';
+import { GatedVisibleProperty } from '../../../../../axon/js/GatedBooleanProperty.js';
 import UnitConversionProperty from '../../../../../axon/js/UnitConversionProperty.js';
 import Range from '../../../../../dot/js/Range.js';
 import { combineOptions } from '../../../../../phet-core/js/optionize.js';
 import NumberControl, { NumberControlOptions } from '../../../../../scenery-phet/js/NumberControl.js';
 import NumberDisplay from '../../../../../scenery-phet/js/NumberDisplay.js';
 import PhetFont from '../../../../../scenery-phet/js/PhetFont.js';
-import { GatedVisibleProperty, HBox, HSeparator, Node, Text, VBox } from '../../../../../scenery/js/imports.js';
+import { HBox, HSeparator, Node, Text, VBox } from '../../../../../scenery/js/imports.js';
 import Panel from '../../../../../sun/js/Panel.js';
 import Tandem from '../../../../../tandem/js/Tandem.js';
 import DensityBuoyancyCommonConstants, { toLiters } from '../../../common/DensityBuoyancyCommonConstants.js';

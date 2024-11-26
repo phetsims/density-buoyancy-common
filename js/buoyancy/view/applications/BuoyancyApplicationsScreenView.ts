@@ -7,12 +7,13 @@
  */
 
 import DerivedProperty from '../../../../../axon/js/DerivedProperty.js';
+import { GatedVisibleProperty } from '../../../../../axon/js/GatedBooleanProperty.js';
 import { propertyStateHandlerSingleton } from '../../../../../axon/js/PropertyStateHandler.js';
 import PropertyStatePhase from '../../../../../axon/js/PropertyStatePhase.js';
 import Vector3 from '../../../../../dot/js/Vector3.js';
 import optionize, { EmptySelfOptions } from '../../../../../phet-core/js/optionize.js';
 import resetArrow_png from '../../../../../scenery-phet/images/resetArrow_png.js';
-import { Color, GatedVisibleProperty, Image, Node, VBox } from '../../../../../scenery/js/imports.js';
+import { Color, Image, Node, VBox } from '../../../../../scenery/js/imports.js';
 import RectangularPushButton from '../../../../../sun/js/buttons/RectangularPushButton.js';
 import RectangularRadioButtonGroup from '../../../../../sun/js/buttons/RectangularRadioButtonGroup.js';
 import DensityBuoyancyCommonConstants from '../../../common/DensityBuoyancyCommonConstants.js';

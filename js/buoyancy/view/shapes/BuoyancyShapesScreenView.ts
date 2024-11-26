@@ -7,6 +7,7 @@
  */
 
 import DynamicProperty from '../../../../../axon/js/DynamicProperty.js';
+import { GatedVisibleProperty } from '../../../../../axon/js/GatedBooleanProperty.js';
 import Multilink from '../../../../../axon/js/Multilink.js';
 import PatternStringProperty from '../../../../../axon/js/PatternStringProperty.js';
 import Property from '../../../../../axon/js/Property.js';
@@ -14,7 +15,7 @@ import Bounds2 from '../../../../../dot/js/Bounds2.js';
 import Vector3 from '../../../../../dot/js/Vector3.js';
 import optionize, { EmptySelfOptions } from '../../../../../phet-core/js/optionize.js';
 import InfoButton from '../../../../../scenery-phet/js/buttons/InfoButton.js';
-import { GatedVisibleProperty, Node, VBox } from '../../../../../scenery/js/imports.js';
+import { Node, VBox } from '../../../../../scenery/js/imports.js';
 import DensityBuoyancyCommonConstants from '../../../common/DensityBuoyancyCommonConstants.js';
 import Mass from '../../../common/model/Mass.js';
 import Material from '../../../common/model/Material.js';

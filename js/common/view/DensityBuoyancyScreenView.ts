@@ -292,7 +292,6 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
 
     this.resetAllButton = new ResetAllButton( {
       listener: () => {
-        this.interruptSubtreeInput();
         model.reset();
         this.resetEmitter.emit();
       },

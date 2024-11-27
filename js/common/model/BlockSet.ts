@@ -9,7 +9,7 @@
  * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
-import LocalizedStringProperty from '../../../../chipper/js/LocalizedStringProperty.js';
+import LocalizedStringProperty from '../../../../chipper/js/browser/LocalizedStringProperty.js';
 import Enumeration from '../../../../phet-core/js/Enumeration.js';
 import EnumerationValue from '../../../../phet-core/js/EnumerationValue.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';

@@ -16,6 +16,7 @@ import PropertyStatePhase from '../../../../axon/js/PropertyStatePhase.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import Range from '../../../../dot/js/Range.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
+import { affirmLazy } from '../../../../perennial-alias/js/browser-and-node/affirm.js';
 import optionize, { combineOptions } from '../../../../phet-core/js/optionize.js';
 import StrictOmit from '../../../../phet-core/js/types/StrictOmit.js';
 import WithRequired from '../../../../phet-core/js/types/WithRequired.js';
@@ -30,7 +31,7 @@ import { MaterialSchema } from './Mass.js';
 import Material from './Material.js';
 import PhysicsEngine from './PhysicsEngine.js';
 
-assert && assert( BlockSet.enumeration.values.length === 3, 'This class is very hard coded for the three "SAME" values of BlockSet' );
+affirmLazy( () => BlockSet.enumeration.values.length === 3, 'This class is very hard coded for the three "SAME" values of BlockSet' );
 
 // Public API for specifying a cube in the BlockSet. A cube will exist in all BlockSet values.
 type CubeData = {

@@ -9,6 +9,7 @@
 import Bounds3 from '../../../../dot/js/Bounds3.js';
 import Matrix3 from '../../../../dot/js/Matrix3.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
+import affirm, { isAffirmEnabled } from '../../../../perennial-alias/js/browser-and-node/affirm.js';
 import optionize, { combineOptions } from '../../../../phet-core/js/optionize.js';
 import StrictOmit from '../../../../phet-core/js/types/StrictOmit.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
@@ -34,8 +35,8 @@ export default class Cube extends Cuboid {
       adjustVolumeOnMassChanged: false
     }, providedOptions );
 
-    if ( assert && options.adjustVolumeOnMassChanged ) {
-      assert && assert( options.massPropertyOptions && options.massPropertyOptions.phetioReadOnly === false, 'adjustVolumeOnMassChanged must have massPropertyOptions.phetioReadOnly === false' );
+    if ( isAffirmEnabled() && options.adjustVolumeOnMassChanged ) {
+      affirm( options.massPropertyOptions && options.massPropertyOptions.phetioReadOnly === false, 'adjustVolumeOnMassChanged must have massPropertyOptions.phetioReadOnly === false' );
     }
 
     super( engine, Cube.boundsFromVolume( volume ), options );

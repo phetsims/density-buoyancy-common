@@ -71,7 +71,8 @@ export default class BuoyancyDisplayOptionsPanel extends Panel {
         containerTagName: 'p',
         accessibleName: label,
         boxWidth: 14,
-        touchAreaYDilation: 2.2
+        touchAreaYDilation: 2.2,
+        phetioDisplayOnlyPropertyInstrumented: true
       }, checkboxOptions ) );
     };
 

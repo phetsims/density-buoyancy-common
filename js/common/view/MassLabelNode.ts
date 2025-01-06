@@ -8,7 +8,7 @@
  */
 
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
-import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
+import ReadOnlyProperty from '../../../../axon/js/ReadOnlyProperty.js';
 import Utils from '../../../../dot/js/Utils.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
@@ -22,16 +22,12 @@ import Mass from '../model/Mass.js';
 
 export default class MassLabelNode extends Node {
 
-  private readonly showMassValuesProperty: TReadOnlyProperty<boolean>;
-  private readonly showMassesListener: ( n: boolean ) => void;
-  private readonly readoutStringProperty: TReadOnlyProperty<string>;
-
-  public constructor( mass: Mass, showMassValuesProperty: TReadOnlyProperty<boolean> ) {
+  public constructor( mass: Mass, showMassValuesProperty: ReadOnlyProperty<boolean> ) {
     super( {
       pickable: false
     } );
 
-    this.readoutStringProperty = new DerivedProperty( [
+    const readoutStringProperty = new DerivedProperty( [
       mass.materialProperty,
       mass.materialProperty.densityProperty,
       mass.volumeProperty,
@@ -50,7 +46,7 @@ export default class MassLabelNode extends Node {
            decimalPlaces: 2
          } ) );
 
-    const readoutText = new Text( this.readoutStringProperty, {
+    const readoutText = new Text( readoutStringProperty, {
       font: new PhetFont( {
         size: 18
       } ),
@@ -64,25 +60,15 @@ export default class MassLabelNode extends Node {
 
     this.addChild( readoutPanel );
 
-    this.showMassValuesProperty = showMassValuesProperty;
-
     // Keep it centered
     ManualConstraint.create( this, [ readoutPanel ], readoutWrapper => {
       readoutWrapper.center = Vector2.ZERO;
     } );
 
-    this.showMassesListener = shown => {
+    showMassValuesProperty.link( shown => {
       readoutPanel.visible = shown;
-    };
-
-    this.showMassValuesProperty.link( this.showMassesListener );
-  }
-
-  public override dispose(): void {
-    this.showMassValuesProperty.unlink( this.showMassesListener );
-    this.readoutStringProperty.dispose();
-
-    super.dispose();
+    }, { disposer: this } );
+    this.addDisposable( readoutPanel, readoutText, readoutStringProperty );
   }
 }
 

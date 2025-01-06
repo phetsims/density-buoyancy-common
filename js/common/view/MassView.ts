@@ -77,16 +77,11 @@ export default abstract class MassView extends Disposable {
         this.massTagNode!.translation = modelViewTransform.modelToViewPoint( mass.matrix.translation.toVector3().plus( this.tagOffsetProperty.value ).plusXYZ( 0, 0, 0.0001 ) );
       };
 
-      this.tagOffsetProperty.lazyLink( repositionMassTagNode );
+      this.tagOffsetProperty.lazyLink( repositionMassTagNode, { disposer: this } );
 
       // This will call repositionMassTagNode during startup, when Sim.ts calls layout()
-      this.sceneNodeRenderedEmitter.addListener( repositionMassTagNode );
-      mass.transformedEmitter.addListener( repositionMassTagNode );
-
-      this.disposeEmitter.addListener( () => {
-        this.tagOffsetProperty.unlink( repositionMassTagNode );
-        mass.transformedEmitter.removeListener( repositionMassTagNode );
-      } );
+      this.sceneNodeRenderedEmitter.addListener( repositionMassTagNode, { disposer: this } );
+      mass.transformedEmitter.addListener( repositionMassTagNode, { disposer: this } );
     }
 
     // sound generation
@@ -212,8 +207,8 @@ export default abstract class MassView extends Disposable {
       // Update the focusablePath shape when the mass is transformed. We are uncertain why we need to update this after
       // both the mass.transformedEmitter and the sceneNodeRenderedEmitter, but both are required or the shape will
       // lag or advance by a frame, see https://github.com/phetsims/density-buoyancy-common/issues/209
-      this.sceneNodeRenderedEmitter.addListener( massTransformedListener );
-      mass.transformedEmitter.addListener( massTransformedListener );
+      this.sceneNodeRenderedEmitter.addListener( massTransformedListener, { disposer: this } );
+      mass.transformedEmitter.addListener( massTransformedListener, { disposer: this } );
 
       this.disposeEmitter.addListener( () => {
 
@@ -225,11 +220,8 @@ export default abstract class MassView extends Disposable {
         this.grabDragInteraction!.dispose();
         keyboardDragListener.dispose();
         this.focusablePath!.dispose();
-
         focusHighlightPath.dispose();
         interactiveHighlightPath.dispose();
-
-        mass.transformedEmitter.removeListener( massTransformedListener );
         wasdCueNode.dispose();
       } );
     }
@@ -252,16 +244,12 @@ export default abstract class MassView extends Disposable {
       this.massMesh.position.y = position.y;
     };
 
-    this.mass.transformedEmitter.addListener( positionListener );
-    this.mass.resetEmitter.addListener( resetListener );
+    this.mass.transformedEmitter.addListener( positionListener, { disposer: this } );
+    this.mass.resetEmitter.addListener( resetListener, { disposer: this } );
 
-    this.disposeEmitter.addListener( () => {
-      this.mass.transformedEmitter.removeListener( positionListener );
-      this.mass.resetEmitter.removeListener( resetListener );
-      this.isCursorOverProperty.dispose();
-      this.isKeyboardFocusedProperty.dispose();
-      this.focusableShapeProperty.dispose();
-    } );
+    this.addDisposable( this.isCursorOverProperty,
+      this.isKeyboardFocusedProperty,
+      this.focusableShapeProperty );
 
     // Last, after declaring everything.
     positionListener();

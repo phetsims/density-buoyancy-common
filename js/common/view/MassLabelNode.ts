@@ -1,4 +1,4 @@
-// Copyright 2019-2024, University of Colorado Boulder
+// Copyright 2019-2025, University of Colorado Boulder
 
 /**
  * A label shown in front of a mass that shows its mass-value. This is not to be confused with a label for the name of

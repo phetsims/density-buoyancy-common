@@ -10,6 +10,7 @@
 
 import Matrix3 from '../../../../dot/js/Matrix3.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
+import Vector3 from '../../../../dot/js/Vector3.js';
 import { THREEModelViewTransform } from '../../../../mobius/js/MobiusScreenView.js';
 import { Node } from '../../../../scenery/js/imports.js';
 import phetioStateSetEmitter from '../../../../tandem/js/phetioStateSetEmitter.js';
@@ -57,7 +58,7 @@ export default class MeasurableMassView extends MassView {
     this.forceDiagramNode.update();
 
     // Reposition force diagram
-    const modelOrigin = this.mass.matrix.translation.toVector3().plus( this.mass.forceOffsetProperty.value );
+    const modelOrigin = Vector3.from( this.mass.matrix.translation ).plus( this.mass.forceOffsetProperty.value );
     const viewOrigin = this.modelViewTransform.modelToViewPoint( modelOrigin );
     this.forceDiagramNode.matrix = Matrix3.rowMajor(
       1, 0, viewOrigin.x,
@@ -66,7 +67,7 @@ export default class MeasurableMassView extends MassView {
     );
 
     // Reposition mass label
-    const modelPoint = this.modelViewTransform.modelToViewPoint( this.mass.matrix.translation.toVector3().plus( this.mass.massLabelOffsetProperty.value ) );
+    const modelPoint = this.modelViewTransform.modelToViewPoint( Vector3.from( this.mass.matrix.translation ).plus( this.mass.massLabelOffsetProperty.value ) );
     const offsetPoint = scratchVector2.setXY( this.massLabelNode.width / 2, this.massLabelNode.height / 2 ).componentMultiply( this.mass.massLabelOffsetOrientationProperty.value );
     this.massLabelNode.translation = modelPoint.plus( offsetPoint );
   }

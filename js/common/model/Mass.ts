@@ -464,7 +464,7 @@ export default abstract class Mass extends PhetioObject {
    * Get the bounds of this mass in parent coordinates.
    */
   public getBounds(): Bounds3 {
-    return this.getLocalBounds().shifted( this.matrix.translation.toVector3() );
+    return this.getLocalBounds().shifted( Vector3.from( this.matrix.translation ) );
   }
 
   /**

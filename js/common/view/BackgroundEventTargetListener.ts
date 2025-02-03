@@ -109,7 +109,7 @@ export default class BackgroundEventTargetListener implements TInputListener {
       const initialPosition = initialRay.pointAtDistance( initialT );
       const initialPlane = new Plane3( Vector3.Z_UNIT, initialPosition.z );
 
-      this.startDragAction.execute( mass, initialPosition.toVector2() );
+      this.startDragAction.execute( mass, Vector2.from( initialPosition ) );
       pointer.cursor = 'pointer';
 
       const endDrag = () => {
@@ -131,7 +131,7 @@ export default class BackgroundEventTargetListener implements TInputListener {
           const ray = this.getRayFromScreenPoint( pointer.point );
           const position = initialPlane.intersectWithRay( ray );
 
-          this.updateDragAction.execute( mass, position.toVector2() );
+          this.updateDragAction.execute( mass, Vector2.from( position ) );
         },
 
         createPanTargetBounds: () => {

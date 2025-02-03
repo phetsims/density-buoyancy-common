@@ -67,8 +67,9 @@ export default class CuboidView extends MeasurableMassView {
 
       for ( let i = 1; i < DEPTH_LINE_SECTIONS; i++ ) {
         const y = ( DEPTH_LINE_SECTIONS - i ) * modelHeightPerSection - modelHeight / 2;
-        const viewLeft = modelViewTransform.modelToViewPoint( cuboid.matrix.translation.toVector3().plusXYZ( size.minX, y, size.maxZ ) );
-        const viewRight = modelViewTransform.modelToViewPoint( cuboid.matrix.translation.toVector3().plusXYZ( size.maxX, y, size.maxZ ) );
+        const asVector3 = Vector3.from( cuboid.matrix.translation );
+        const viewLeft = modelViewTransform.modelToViewPoint( asVector3.plusXYZ( size.minX, y, size.maxZ ) );
+        const viewRight = modelViewTransform.modelToViewPoint( asVector3.plusXYZ( size.maxX, y, size.maxZ ) );
 
         assert && assert( !viewLeft.equals( Vector2.ZERO ) );
 

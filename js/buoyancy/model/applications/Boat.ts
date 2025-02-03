@@ -13,6 +13,7 @@ import TReadOnlyProperty from '../../../../../axon/js/TReadOnlyProperty.js';
 import Range from '../../../../../dot/js/Range.js';
 import Utils from '../../../../../dot/js/Utils.js';
 import Vector2 from '../../../../../dot/js/Vector2.js';
+import Vector3 from '../../../../../dot/js/Vector3.js';
 import { Shape } from '../../../../../kite/js/imports.js';
 import optionize, { EmptySelfOptions } from '../../../../../phet-core/js/optionize.js';
 import StrictOmit from '../../../../../phet-core/js/types/StrictOmit.js';
@@ -130,7 +131,7 @@ export default class Boat extends ApplicationsMass {
     } );
 
     const bounds = this.shapeProperty.value.getBounds();
-    this.forceOffsetProperty.value = new Vector2( 0.375 * bounds.left, 0 ).toVector3();
+    this.forceOffsetProperty.value = Vector3.from( new Vector2( 0.375 * bounds.left, 0 ) );
   }
 
   /**

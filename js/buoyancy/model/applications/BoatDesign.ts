@@ -140,7 +140,7 @@ export default class BoatDesign {
     } );
 
     const fullPoints = points.concat( _.sortBy( interiorPoints, point => point.x ) );
-    return _.reverse( fullPoints.map( designPoint => BoatDesign.designToModel( designPoint.toVector3(), liters ).toVector2() ) );
+    return _.reverse( fullPoints.map( designPoint => Vector2.from( BoatDesign.designToModel( Vector3.from( designPoint ), liters ) ) ) );
   }
 
   /**
@@ -165,7 +165,7 @@ export default class BoatDesign {
       ...frontPoints,
       new Vector2( insideBottomPoints[ 3 ].x, insideBottomY ),
       new Vector2( insideTopPoints[ 3 ].x, 0 )
-    ].map( designPoint => BoatDesign.designToModel( designPoint.toVector3(), 1 ).toVector2() );
+    ].map( designPoint => Vector2.from( BoatDesign.designToModel( Vector3.from( designPoint ), 1 ) ) );
   }
 
   /**

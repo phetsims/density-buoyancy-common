@@ -74,7 +74,7 @@ export default abstract class MassView extends Disposable {
 
       const repositionMassTagNode = () => {
         assert && assert( this.massTagNode, 'do not reposition massTagNode if you do not have a massTag' );
-        this.massTagNode!.translation = modelViewTransform.modelToViewPoint( mass.matrix.translation.toVector3().plus( this.tagOffsetProperty.value ).plusXYZ( 0, 0, 0.0001 ) );
+        this.massTagNode!.translation = modelViewTransform.modelToViewPoint( Vector3.from( mass.matrix.translation ).plus( this.tagOffsetProperty.value ).plusXYZ( 0, 0, 0.0001 ) );
       };
 
       this.tagOffsetProperty.lazyLink( repositionMassTagNode, { disposer: this } );

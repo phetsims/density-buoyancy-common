@@ -1,4 +1,4 @@
-// Copyright 2024, University of Colorado Boulder
+// Copyright 2024-2025, University of Colorado Boulder
 
 /**
  * MeasurableMassView adds visual decorations such as the mass label and force diagram layer.

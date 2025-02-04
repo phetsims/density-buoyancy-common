@@ -1,4 +1,4 @@
-// Copyright 2019-2024, University of Colorado Boulder
+// Copyright 2019-2025, University of Colorado Boulder
 
 /**
  * A boat (Mass) that can contain some fluid inside.  Boats exist for the lifetime of the sim and do not need to be

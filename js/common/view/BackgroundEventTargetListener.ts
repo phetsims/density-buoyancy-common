@@ -1,4 +1,4 @@
-// Copyright 2024, University of Colorado Boulder
+// Copyright 2024-2025, University of Colorado Boulder
 
 /**
  * BackgroundEventTargetListener supports dragging masses around the screen and changing the cursor when it is over a

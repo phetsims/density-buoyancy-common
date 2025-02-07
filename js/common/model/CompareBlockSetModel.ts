@@ -21,7 +21,8 @@ import optionize, { combineOptions } from '../../../../phet-core/js/optionize.js
 import StrictOmit from '../../../../phet-core/js/types/StrictOmit.js';
 import WithRequired from '../../../../phet-core/js/types/WithRequired.js';
 import GrabDragUsageTracker from '../../../../scenery-phet/js/accessibility/grab-drag/GrabDragUsageTracker.js';
-import { Color, ColorProperty } from '../../../../scenery/js/imports.js';
+import Color from '../../../../scenery/js/util/Color.js';
+import ColorProperty from '../../../../scenery/js/util/ColorProperty.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import BlockSet from './BlockSet.js';
 import BlockSetModel, { BlockSetModelOptions } from './BlockSetModel.js';

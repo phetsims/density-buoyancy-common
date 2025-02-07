@@ -12,7 +12,7 @@ import ReadOnlyProperty from '../../../../axon/js/ReadOnlyProperty.js';
 import Utils from '../../../../dot/js/Utils.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
 import ThreeUtils from '../../../../mobius/js/ThreeUtils.js';
-import { Color } from '../../../../scenery/js/imports.js';
+import Color from '../../../../scenery/js/util/Color.js';
 import Bricks25_AO_jpg from '../../../images/Bricks25_AO_jpg.js';
 import Bricks25_col_jpg from '../../../images/Bricks25_col_jpg.js';
 import Bricks25_nrm_jpg from '../../../images/Bricks25_nrm_jpg.js';

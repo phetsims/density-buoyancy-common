@@ -9,7 +9,7 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-import { Node } from '../../../../scenery/js/imports.js';
+import Node from '../../../../scenery/js/nodes/Node.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 
 export default class MassDecorationLayer extends Node {

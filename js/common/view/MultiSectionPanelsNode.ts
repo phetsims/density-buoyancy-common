@@ -10,7 +10,9 @@
 
 import interleave from '../../../../phet-core/js/interleave.js';
 import { EmptySelfOptions, optionize3 } from '../../../../phet-core/js/optionize.js';
-import { FlowBox, HSeparator, Node } from '../../../../scenery/js/imports.js';
+import FlowBox from '../../../../scenery/js/layout/nodes/FlowBox.js';
+import HSeparator from '../../../../scenery/js/layout/nodes/HSeparator.js';
+import Node from '../../../../scenery/js/nodes/Node.js';
 import Panel, { PanelOptions } from '../../../../sun/js/Panel.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';

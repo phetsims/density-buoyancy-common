@@ -8,7 +8,8 @@
 
 import { combineOptions } from '../../../../phet-core/js/optionize.js';
 import ArrowNode, { ArrowNodeOptions } from '../../../../scenery-phet/js/ArrowNode.js';
-import { Node, VBox } from '../../../../scenery/js/imports.js';
+import VBox from '../../../../scenery/js/layout/nodes/VBox.js';
+import Node from '../../../../scenery/js/nodes/Node.js';
 import DensityBuoyancyCommonColors from './DensityBuoyancyCommonColors.js';
 import { arrowOptions } from './ForceDiagramNode.js';
 

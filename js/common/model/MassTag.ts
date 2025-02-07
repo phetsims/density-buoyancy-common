@@ -8,7 +8,8 @@
 
 import StringProperty from '../../../../axon/js/StringProperty.js';
 import TProperty from '../../../../axon/js/TProperty.js';
-import { Color, ColorProperty, ColorState } from '../../../../scenery/js/imports.js';
+import Color, { ColorState } from '../../../../scenery/js/util/Color.js';
+import ColorProperty from '../../../../scenery/js/util/ColorProperty.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import DensityBuoyancyCommonColors from '../view/DensityBuoyancyCommonColors.js';

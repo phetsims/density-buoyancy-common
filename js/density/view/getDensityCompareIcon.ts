@@ -8,7 +8,7 @@ import ThreeUtils from '../../../../mobius/js/ThreeUtils.js';
  *
  * @author Jonathan Olson (PhET Interactive Simulations)
  */
-import { Node } from '../../../../scenery/js/imports.js';
+import Node from '../../../../scenery/js/nodes/Node.js';
 import FluidIconMesh from '../../common/view/FluidIconMesh.js';
 
 const getDensityCompareIcon = (): Node => {

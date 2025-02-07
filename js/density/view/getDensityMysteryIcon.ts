@@ -12,7 +12,8 @@ import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
  *
  * @author Jonathan Olson (PhET Interactive Simulations)
  */
-import { Node, Text } from '../../../../scenery/js/imports.js';
+import Node from '../../../../scenery/js/nodes/Node.js';
+import Text from '../../../../scenery/js/nodes/Text.js';
 import ScaleView from '../../common/view/ScaleView.js';
 
 const getDensityMysteryIcon = (): Node => {

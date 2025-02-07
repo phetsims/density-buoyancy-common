@@ -15,7 +15,13 @@ import optionize, { combineOptions } from '../../../../phet-core/js/optionize.js
 import WithRequired from '../../../../phet-core/js/types/WithRequired.js';
 import ArrowNode, { ArrowNodeOptions } from '../../../../scenery-phet/js/ArrowNode.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
-import { Line, ManualConstraint, Node, NodeOptions, Rectangle, RichText, Text, TextOptions, TPaint } from '../../../../scenery/js/imports.js';
+import ManualConstraint from '../../../../scenery/js/layout/constraints/ManualConstraint.js';
+import Line from '../../../../scenery/js/nodes/Line.js';
+import Node, { NodeOptions } from '../../../../scenery/js/nodes/Node.js';
+import Rectangle from '../../../../scenery/js/nodes/Rectangle.js';
+import RichText from '../../../../scenery/js/nodes/RichText.js';
+import Text, { TextOptions } from '../../../../scenery/js/nodes/Text.js';
+import TPaint from '../../../../scenery/js/util/TPaint.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 import Material from '../../common/model/Material.js';

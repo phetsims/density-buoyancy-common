@@ -9,7 +9,7 @@
 import Bounds2 from '../../../../dot/js/Bounds2.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
 import optionize, { EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
-import { Node } from '../../../../scenery/js/imports.js';
+import Node from '../../../../scenery/js/nodes/Node.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 import BlocksPanel from '../../common/view/BlocksPanel.js';
 import BlocksValuePanel from '../../common/view/BlocksValuePanel.js';

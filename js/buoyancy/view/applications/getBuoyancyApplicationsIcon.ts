@@ -9,7 +9,7 @@
 import Vector3 from '../../../../../dot/js/Vector3.js';
 
 import getAngledIcon from '../../../../../mobius/js/getAngledIcon.js';
-import { Node } from '../../../../../scenery/js/imports.js';
+import Node from '../../../../../scenery/js/nodes/Node.js';
 import Material from '../../../common/model/Material.js';
 import FluidIconMesh from '../../../common/view/FluidIconMesh.js';
 import Bottle from '../../model/applications/Bottle.js';

@@ -7,7 +7,7 @@ import getAngledIcon from '../../../../../mobius/js/getAngledIcon.js';
  *
  * @author Jonathan Olson (PhET Interactive Simulations)
  */
-import { Node } from '../../../../../scenery/js/imports.js';
+import Node from '../../../../../scenery/js/nodes/Node.js';
 import bottle_icon_png from '../../../../images/bottle_icon_png.js';
 import DensityBuoyancyScreenView from '../../../common/view/DensityBuoyancyScreenView.js';
 import BottleView from './BottleView.js';

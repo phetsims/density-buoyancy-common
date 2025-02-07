@@ -16,7 +16,12 @@ import optionize, { combineOptions } from '../../../../../phet-core/js/optionize
 import WithRequired from '../../../../../phet-core/js/types/WithRequired.js';
 import NumberControl, { NumberControlOptions } from '../../../../../scenery-phet/js/NumberControl.js';
 import NumberDisplay from '../../../../../scenery-phet/js/NumberDisplay.js';
-import { FlowBoxOptions, HBox, HSeparator, Node, Text, VBox, VBoxOptions } from '../../../../../scenery/js/imports.js';
+import { FlowBoxOptions } from '../../../../../scenery/js/layout/nodes/FlowBox.js';
+import HBox from '../../../../../scenery/js/layout/nodes/HBox.js';
+import HSeparator from '../../../../../scenery/js/layout/nodes/HSeparator.js';
+import VBox, { VBoxOptions } from '../../../../../scenery/js/layout/nodes/VBox.js';
+import Node from '../../../../../scenery/js/nodes/Node.js';
+import Text from '../../../../../scenery/js/nodes/Text.js';
 import ComboBox from '../../../../../sun/js/ComboBox.js';
 import Tandem from '../../../../../tandem/js/Tandem.js';
 import DensityBuoyancyCommonConstants from '../../../common/DensityBuoyancyCommonConstants.js';

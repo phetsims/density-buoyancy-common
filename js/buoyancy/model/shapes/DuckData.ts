@@ -10,7 +10,7 @@
 import ConvexHull2 from '../../../../../dot/js/ConvexHull2.js';
 import Vector2 from '../../../../../dot/js/Vector2.js';
 import Vector3 from '../../../../../dot/js/Vector3.js';
-import { Shape } from '../../../../../kite/js/imports.js';
+import Shape from '../../../../../kite/js/Shape.js';
 import densityBuoyancyCommon from '../../../densityBuoyancyCommon.js';
 
 /* eslint-disable */

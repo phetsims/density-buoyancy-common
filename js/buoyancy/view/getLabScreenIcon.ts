@@ -10,7 +10,8 @@ import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
  *
  * @author Michael Kauzmann (PhET Interactive Simulations)
  */
-import { Node, Text } from '../../../../scenery/js/imports.js';
+import Node from '../../../../scenery/js/nodes/Node.js';
+import Text from '../../../../scenery/js/nodes/Text.js';
 import Material from '../../common/model/Material.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import FluidDisplacedAccordionBox, { BEAKER_RANGE } from './FluidDisplacedAccordionBox.js';

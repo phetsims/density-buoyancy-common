@@ -8,7 +8,8 @@
 
 import PatternStringProperty from '../../../../axon/js/PatternStringProperty.js';
 import optionize, { EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
-import { Node, VBox } from '../../../../scenery/js/imports.js';
+import VBox from '../../../../scenery/js/layout/nodes/VBox.js';
+import Node from '../../../../scenery/js/nodes/Node.js';
 import BuoyancyScreenView, { BuoyancyScreenViewOptions } from '../../buoyancy/view/BuoyancyScreenView.js';
 import DensityAccordionBox from '../../buoyancy/view/DensityAccordionBox.js';
 import FluidSelectionPanel from '../../buoyancy/view/FluidSelectionPanel.js';

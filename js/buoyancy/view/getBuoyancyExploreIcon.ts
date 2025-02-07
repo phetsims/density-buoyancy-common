@@ -9,7 +9,7 @@
 import Vector3 from '../../../../dot/js/Vector3.js';
 import getAngledIcon from '../../../../mobius/js/getAngledIcon.js';
 import ThreeUtils from '../../../../mobius/js/ThreeUtils.js';
-import { Node } from '../../../../scenery/js/imports.js';
+import Node from '../../../../scenery/js/nodes/Node.js';
 import buoyancy_explore_screen_block_png from '../../../images/buoyancy_explore_screen_block_png.js';
 import DensityBuoyancyScreenView from '../../common/view/DensityBuoyancyScreenView.js';
 import FluidIconMesh from '../../common/view/FluidIconMesh.js';

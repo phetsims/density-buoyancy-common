@@ -12,9 +12,9 @@
 import Bounds2 from '../../../../../dot/js/Bounds2.js';
 import Matrix3 from '../../../../../dot/js/Matrix3.js';
 import Vector2 from '../../../../../dot/js/Vector2.js';
-import { Shape } from '../../../../../kite/js/imports.js';
+import Shape from '../../../../../kite/js/Shape.js';
 import ModelViewTransform2 from '../../../../../phetcommon/js/view/ModelViewTransform2.js';
-import { Path } from '../../../../../scenery/js/imports.js';
+import Path from '../../../../../scenery/js/nodes/Path.js';
 import DensityBuoyancyModel from '../../../common/model/DensityBuoyancyModel.js';
 import Mass from '../../../common/model/Mass.js';
 import DebugView, { DebugMassNode } from '../../../common/view/DebugView.js';

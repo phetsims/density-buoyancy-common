@@ -1,7 +1,8 @@
 // Copyright 2024, University of Colorado Boulder
 
 import PhetFont from '../../../../../scenery-phet/js/PhetFont.js';
-import { RichText, VBox } from '../../../../../scenery/js/imports.js';
+import VBox from '../../../../../scenery/js/layout/nodes/VBox.js';
+import RichText from '../../../../../scenery/js/nodes/RichText.js';
 import Dialog from '../../../../../sun/js/Dialog.js';
 import Tandem from '../../../../../tandem/js/Tandem.js';
 import DensityBuoyancyCommonConstants from '../../../common/DensityBuoyancyCommonConstants.js';

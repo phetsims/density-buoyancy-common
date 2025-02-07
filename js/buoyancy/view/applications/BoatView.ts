@@ -7,7 +7,7 @@
  */
 
 import { THREEModelViewTransform } from '../../../../../mobius/js/MobiusScreenView.js';
-import { Node } from '../../../../../scenery/js/imports.js';
+import Node from '../../../../../scenery/js/nodes/Node.js';
 import DensityBuoyancyCommonConstants from '../../../common/DensityBuoyancyCommonConstants.js';
 import InterpolatedProperty from '../../../common/model/InterpolatedProperty.js';
 import MeasurableMassView from '../../../common/view/MeasurableMassView.js';

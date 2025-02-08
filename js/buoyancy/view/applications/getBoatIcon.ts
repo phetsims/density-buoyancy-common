@@ -1,4 +1,4 @@
-// Copyright 2024, University of Colorado Boulder
+// Copyright 2024-2025, University of Colorado Boulder
 
 import Vector3 from '../../../../../dot/js/Vector3.js';
 import getAngledIcon from '../../../../../mobius/js/getAngledIcon.js';

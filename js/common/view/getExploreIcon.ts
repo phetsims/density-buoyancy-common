@@ -1,4 +1,4 @@
-// Copyright 2024, University of Colorado Boulder
+// Copyright 2024-2025, University of Colorado Boulder
 
 /**
  * Shows the icon for the explore screen, which is a force diagram with gravity and buoyancy forces.

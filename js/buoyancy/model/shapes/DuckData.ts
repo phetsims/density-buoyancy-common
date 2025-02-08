@@ -1,4 +1,4 @@
-// Copyright 2024, University of Colorado Boulder
+// Copyright 2024-2025, University of Colorado Boulder
 /**
  * DuckData modeled in blender by PhET, exported to .obj, and converted to THREE.js data using
  * The obj2three.js script in three.js-r86/utils/converters/obj2three.js

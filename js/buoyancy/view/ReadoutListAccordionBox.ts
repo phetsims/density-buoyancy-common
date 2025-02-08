@@ -1,4 +1,4 @@
-// Copyright 2024, University of Colorado Boulder
+// Copyright 2024-2025, University of Colorado Boulder
 
 /**
  * Common class for DensityAccordionBox and SubmergedAccordionBox. This class is used to create an AccordionBox that

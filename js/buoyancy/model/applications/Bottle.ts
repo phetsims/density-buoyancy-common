@@ -1,4 +1,4 @@
-// Copyright 2019-2024, University of Colorado Boulder
+// Copyright 2019-2025, University of Colorado Boulder
 
 /**
  * Models a 3-dimensional bottle that is borrowed from an approximate 2-liter bottle design (although it is increased

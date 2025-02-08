@@ -1,4 +1,4 @@
-// Copyright 2019-2024, University of Colorado Boulder
+// Copyright 2019-2025, University of Colorado Boulder
 
 /**
  * Handles controlling a quantity with a NumberControl, but combined with a ComboBox for specific non-custom values.

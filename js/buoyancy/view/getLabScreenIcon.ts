@@ -1,4 +1,4 @@
-// Copyright 2024, University of Colorado Boulder
+// Copyright 2024-2025, University of Colorado Boulder
 import NumberProperty from '../../../../axon/js/NumberProperty.js';
 import { combineOptions } from '../../../../phet-core/js/optionize.js';
 import BeakerNode, { BeakerNodeOptions } from '../../../../scenery-phet/js/BeakerNode.js';

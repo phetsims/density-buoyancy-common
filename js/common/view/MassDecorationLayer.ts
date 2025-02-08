@@ -1,4 +1,4 @@
-// Copyright 2024, University of Colorado Boulder
+// Copyright 2024-2025, University of Colorado Boulder
 
 /**
  * A containing Node for all decoration layers that are set on top of the THREE stage Node. This pattern was developed

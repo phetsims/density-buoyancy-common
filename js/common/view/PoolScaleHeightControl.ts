@@ -1,4 +1,4 @@
-// Copyright 2024, University of Colorado Boulder
+// Copyright 2024-2025, University of Colorado Boulder
 
 /**
  * Slider control with tweaker buttons that changes the height of the Scale for some screens in the density-buoyancy

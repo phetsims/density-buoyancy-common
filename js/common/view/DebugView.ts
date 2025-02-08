@@ -1,4 +1,4 @@
-// Copyright 2020-2024, University of Colorado Boulder
+// Copyright 2020-2025, University of Colorado Boulder
 
 /**
  * DebugView shows a 2d version of the model in a semi-transparent overlay. Enable it with ?showDebug

@@ -38,11 +38,6 @@ const SPACING = 10;
 // A value applied across the code to prevent unexpected rounding errors.
 const TOLERANCE = 1e-7;
 
-// Returns the number of decimal places to show for a given value. 1 for big values, 2 for smaller. i.e. 11.1 vs 1.11
-export const chooseDecimalPlaces = ( value: number ): number => {
-  return value >= 10 ? 1 : 2;
-};
-
 const LITERS_IN_CUBIC_METER = 1000;
 
 const FLUID_DENSITY_RANGE_PER_L = new Range( 0.5, 15 );

@@ -17,7 +17,6 @@ import Panel from '../../../../sun/js/Panel.js';
 import DisplayProperties from '../../buoyancy/view/DisplayProperties.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
-import { chooseDecimalPlaces } from '../DensityBuoyancyCommonConstants.js';
 import BlendedVector2Property from '../model/BlendedVector2Property.js';
 import Mass from '../model/Mass.js';
 import DensityBuoyancyCommonColors from './DensityBuoyancyCommonColors.js';
@@ -135,7 +134,7 @@ export default class ForceDiagramNode extends Node {
 
           // We have a listener to the string that will call update
           textNode.string = StringUtils.fillIn( DensityBuoyancyCommonStrings.newtonsPatternStringProperty, {
-            newtons: Utils.toFixed( forceProperty.value.magnitude, chooseDecimalPlaces( forceProperty.value.magnitude ) )
+            newtons: Utils.toFixed( forceProperty.value.magnitude, 2 )
           } );
           labels.push( labelNode );
         }

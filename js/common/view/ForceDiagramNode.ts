@@ -134,7 +134,7 @@ export default class ForceDiagramNode extends Node {
 
           // We have a listener to the string that will call update
           textNode.string = StringUtils.fillIn( DensityBuoyancyCommonStrings.newtonsPatternStringProperty, {
-            newtons: Utils.toFixed( forceProperty.value.magnitude, 2 )
+            newtons: Utils.toFixed( forceProperty.value.magnitude, 1 )
           } );
           labels.push( labelNode );
         }

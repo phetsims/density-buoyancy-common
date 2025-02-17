@@ -1,4 +1,5 @@
 // Copyright 2024-2025, University of Colorado Boulder
+
 /**
  * ApplicationsDebugMassNode extends DebugMassNode to provide specialized visual representations
  * for masses in the Buoyancy simulation, particularly focusing on the boat's interactions with fluid.

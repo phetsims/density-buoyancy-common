@@ -9,7 +9,7 @@
 import Disposable from '../../../../axon/js/Disposable.js';
 import Property from '../../../../axon/js/Property.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
-import PreferencesDialog from '../../../../joist/js/preferences/PreferencesDialog.js';
+import PreferencesDialogConstants from '../../../../joist/js/preferences/PreferencesDialogConstants.js';
 import optionize, { EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
 import PickRequired from '../../../../phet-core/js/types/PickRequired.js';
 import WithRequired from '../../../../phet-core/js/types/WithRequired.js';
@@ -35,7 +35,7 @@ export default class VolumeUnitsControl extends HBox {
     }, providedOptions );
 
     const labelText = new Text( DensityBuoyancyCommonStrings.volumeUnitsStringProperty, {
-      font: PreferencesDialog.CONTENT_FONT
+      font: PreferencesDialogConstants.CONTENT_FONT
     } );
 
     const radioButtonGroup = new VolumeUnitsRadioButtonGroup( beakerUnitsProperty, {
@@ -82,7 +82,7 @@ function createItem( value: VolumeUnits, stringProperty: TReadOnlyProperty<strin
   return {
     value: value,
     createNode: tandem => new RichText( stringProperty, {
-      font: PreferencesDialog.CONTENT_FONT,
+      font: PreferencesDialogConstants.CONTENT_FONT,
       maxWidth: 200
     } ),
     tandemName: `${value}RadioButton`

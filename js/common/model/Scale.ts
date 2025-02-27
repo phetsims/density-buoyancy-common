@@ -132,8 +132,7 @@ export default class Scale extends Mass {
       tandem: options.tandem.createTandem( 'measuredMassProperty' ),
       phetioDocumentation: 'Mass measured by the scale, in kg.',
       phetioFeatured: true,
-      units: 'kg',
-      phetioReadOnly: true
+      units: 'kg'
     } );
 
     this.displayType = options.displayType;

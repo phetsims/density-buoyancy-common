@@ -97,7 +97,6 @@ export default class BuoyancyShapeModel {
     // Named like this for clarity with PhET-iO naming, do not confuse this with "KITE/Shape" or Mass.shapeProperty.
     this.shapeProperty = new DerivedProperty( [ this.shapeNameProperty ], shapeName => this.shapeCacheMap.get( shapeName )!, {
       tandem: options.tandem.createTandem( 'shapeProperty' ),
-      phetioReadOnly: true,
       phetioDocumentation: 'A reference to the currently selected shape based on the shape name.',
       phetioValueType: ReferenceIO( Mass.MassIO ),
       phetioFeatured: true

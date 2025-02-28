@@ -1,4 +1,4 @@
-// Copyright 2024, University of Colorado Boulder
+// Copyright 2024-2025, University of Colorado Boulder
 
 /**
  * The main model for a single shape model object in the sim. This manages changing the shape, phet-io, and updating

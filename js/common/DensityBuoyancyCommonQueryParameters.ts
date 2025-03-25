@@ -6,6 +6,7 @@
  * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
+import { QueryStringMachine } from '../../../query-string-machine/js/QueryStringMachineModule.js';
 import densityBuoyancyCommon from '../densityBuoyancyCommon.js';
 
 export const VolumeUnitsValues = [ 'liters', 'decimetersCubed' ] as const;

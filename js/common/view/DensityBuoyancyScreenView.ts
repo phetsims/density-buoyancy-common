@@ -33,6 +33,7 @@ import arrayRemove from '../../../../phet-core/js/arrayRemove.js';
 import optionize from '../../../../phet-core/js/optionize.js';
 import platform from '../../../../phet-core/js/platform.js';
 import PickRequired from '../../../../phet-core/js/types/PickRequired.js';
+import { QueryStringMachine } from '../../../../query-string-machine/js/QueryStringMachineModule.js';
 import ResetAllButton from '../../../../scenery-phet/js/buttons/ResetAllButton.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import Mouse from '../../../../scenery/js/input/Mouse.js';

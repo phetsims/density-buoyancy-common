@@ -17,7 +17,7 @@ import Vector2 from '../../../../dot/js/Vector2.js';
 import optionize from '../../../../phet-core/js/optionize.js';
 import IntentionalAny from '../../../../phet-core/js/types/IntentionalAny.js';
 import IOTypeCache from '../../../../tandem/js/IOTypeCache.js';
-import IOType from '../../../../tandem/js/types/IOType.js';
+import IOType, { AnyIOType } from '../../../../tandem/js/types/IOType.js';
 import NumberIO from '../../../../tandem/js/types/NumberIO.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 
@@ -136,28 +136,28 @@ export default class InterpolatedProperty<T extends Vector2 | number> extends Pr
     readLockCount--;
   }
 
-  public static readonly InterpolatedPropertyIO = ( parameterType: IOType ): IOType => {
+  public static readonly InterpolatedPropertyIO = ( parameterType: AnyIOType ): AnyIOType => {
     assert && assert( parameterType, 'InterpolatedPropertyIO needs parameterType' );
 
     if ( !cache.has( parameterType ) ) {
       const PropertyIOImpl = Property.PropertyIO( parameterType );
 
-      const ioType = new IOType( `InterpolatedPropertyIO<${parameterType.typeName}>`, {
+      const ioType = new IOType<IntentionalAny, IntentionalAny>( `InterpolatedPropertyIO<${parameterType.typeName}>`, {
         valueType: InterpolatedProperty,
         supertype: PropertyIOImpl,
         parameterTypes: [ parameterType ],
         documentation: 'Extends PropertyIO to interpolation (with a current/previous value, and a ratio between the two)',
-        toStateObject: ( interpolatedProperty: InterpolatedProperty<IntentionalAny> ): InterpolatedPropertyIOStateObject => {
+        toStateObject: ( interpolatedProperty: InterpolatedProperty<IntentionalAny> ): InterpolatedPropertyIOState => {
 
-          const parentStateObject = PropertyIOImpl.toStateObject( interpolatedProperty );
+          return {
+            ...PropertyIOImpl.toStateObject( interpolatedProperty ), // eslint-disable-line phet/no-object-spread-on-non-literals
 
-          parentStateObject.currentValue = parameterType.toStateObject( interpolatedProperty.currentValue );
-          parentStateObject.previousValue = parameterType.toStateObject( interpolatedProperty.previousValue );
-          parentStateObject.ratio = interpolatedProperty.ratio;
-
-          return parentStateObject;
+            currentValue: parameterType.toStateObject( interpolatedProperty.currentValue ),
+            previousValue: parameterType.toStateObject( interpolatedProperty.previousValue ),
+            ratio: interpolatedProperty.ratio
+          };
         },
-        applyState: ( interpolatedProperty: InterpolatedProperty<Vector2 | number>, stateObject: InterpolatedPropertyIOStateObject ) => {
+        applyState: ( interpolatedProperty: InterpolatedProperty<Vector2 | number>, stateObject: InterpolatedPropertyIOState ) => {
           PropertyIOImpl.applyState( interpolatedProperty, stateObject );
 
           // Writes to the private members, but it doesn't fail type checking because InterpolatedPropertyIO is declared
@@ -184,7 +184,8 @@ export default class InterpolatedProperty<T extends Vector2 | number> extends Pr
 // the parameter type, so that it is only created once
 const cache = new IOTypeCache();
 
-export type InterpolatedPropertyIOStateObject = ReadOnlyPropertyState<IntentionalAny> & {
+// TODO: This should be parametric, https://github.com/phetsims/tandem/issues/261
+export type InterpolatedPropertyIOState = ReadOnlyPropertyState<IntentionalAny> & {
   currentValue: IntentionalAny;
   previousValue: IntentionalAny;
   ratio: number;

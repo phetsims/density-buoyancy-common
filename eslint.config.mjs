@@ -30,7 +30,8 @@ export default [
           'ts-check': true,
           'ts-nocheck': true
         }
-      ]
+      ],
+      'phet/documentation-before-imports': 'off'
     }
   }
 ];

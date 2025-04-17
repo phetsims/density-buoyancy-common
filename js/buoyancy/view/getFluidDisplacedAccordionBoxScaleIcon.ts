@@ -1,14 +1,15 @@
 // Copyright 2024-2025, University of Colorado Boulder
 
-import Vector3 from '../../../../dot/js/Vector3.js';
-import getAngledIcon from '../../../../mobius/js/getAngledIcon.js';
-import ThreeUtils from '../../../../mobius/js/ThreeUtils.js';
 /**
  * The fluid displaced accordion box scale icon
  *
  * @author Michael Kauzmann (PhET Interactive Simulations)
  * @author Jonathan Olson (PhET Interactive Simulations)
  */
+
+import Vector3 from '../../../../dot/js/Vector3.js';
+import getAngledIcon from '../../../../mobius/js/getAngledIcon.js';
+import ThreeUtils from '../../../../mobius/js/ThreeUtils.js';
 import Node from '../../../../scenery/js/nodes/Node.js';
 import fluid_displaced_scale_icon_png from '../../../images/fluid_displaced_scale_icon_png.js';
 import DensityBuoyancyScreenView from '../../common/view/DensityBuoyancyScreenView.js';

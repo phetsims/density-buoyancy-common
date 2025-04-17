@@ -1,5 +1,11 @@
 // Copyright 2024-2025, University of Colorado Boulder
 
+/**
+ * The icon for the Mystery screen of the Density simulation.
+ *
+ * @author Jonathan Olson (PhET Interactive Simulations)
+ */
+
 import Vector2 from '../../../../dot/js/Vector2.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
 import getAngledIcon from '../../../../mobius/js/getAngledIcon.js';
@@ -7,11 +13,6 @@ import NodeTexture from '../../../../mobius/js/NodeTexture.js';
 import TextureQuad from '../../../../mobius/js/TextureQuad.js';
 import ThreeUtils from '../../../../mobius/js/ThreeUtils.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
-/**
- * The icon for the Mystery screen of the Density simulation.
- *
- * @author Jonathan Olson (PhET Interactive Simulations)
- */
 import Node from '../../../../scenery/js/nodes/Node.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
 import ScaleView from '../../common/view/ScaleView.js';

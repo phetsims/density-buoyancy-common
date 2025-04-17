@@ -1,12 +1,12 @@
 // Copyright 2024, University of Colorado Boulder
 
-import { CreditsData } from '../../../joist/js/CreditsNode.js';
-
 /**
  * Credits for the density/buoyancy sims
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
+
+import { CreditsData } from '../../../joist/js/CreditsNode.js';
 
 const DensityBuoyancyCommonCredits: CreditsData = {
   leadDesign: 'Diana L\u00f3pez Tavares, Kelly Lancaster',

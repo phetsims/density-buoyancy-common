@@ -1,13 +1,14 @@
 // Copyright 2024-2025, University of Colorado Boulder
 
-import Vector3 from '../../../../dot/js/Vector3.js';
-import getAngledIcon from '../../../../mobius/js/getAngledIcon.js';
-import ThreeUtils from '../../../../mobius/js/ThreeUtils.js';
 /**
  * The icon for the Compare screen of the Density simulation.
  *
  * @author Jonathan Olson (PhET Interactive Simulations)
  */
+
+import Vector3 from '../../../../dot/js/Vector3.js';
+import getAngledIcon from '../../../../mobius/js/getAngledIcon.js';
+import ThreeUtils from '../../../../mobius/js/ThreeUtils.js';
 import Node from '../../../../scenery/js/nodes/Node.js';
 import FluidIconMesh from '../../common/view/FluidIconMesh.js';
 

@@ -1,5 +1,11 @@
 // Copyright 2024-2025, University of Colorado Boulder
 
+/**
+ * ShapesInfoDialog is a dialog that displays info related to the forces and torque limitations within the sim
+ *
+ * @author Agustín Vallejo (PhET Interactive Simulations)
+ */
+
 import PhetFont from '../../../../../scenery-phet/js/PhetFont.js';
 import VBox from '../../../../../scenery/js/layout/nodes/VBox.js';
 import RichText from '../../../../../scenery/js/nodes/RichText.js';
@@ -9,11 +15,6 @@ import DensityBuoyancyCommonConstants from '../../../common/DensityBuoyancyCommo
 import densityBuoyancyCommon from '../../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../../DensityBuoyancyCommonStrings.js';
 
-/**
- * ShapesInfoDialog is a dialog that displays info related to the forces and torque limitations within the sim
- *
- * @author Agustín Vallejo (PhET Interactive Simulations)
- */
 export default class ShapesInfoDialog extends Dialog {
 
   public constructor( tandem: Tandem ) {

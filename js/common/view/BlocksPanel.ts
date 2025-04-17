@@ -1,10 +1,5 @@
 // Copyright 2024-2025, University of Colorado Boulder
 
-import Property from '../../../../axon/js/Property.js';
-import { combineOptions } from '../../../../phet-core/js/optionize.js';
-import VBox from '../../../../scenery/js/layout/nodes/VBox.js';
-import Node from '../../../../scenery/js/nodes/Node.js';
-import Text from '../../../../scenery/js/nodes/Text.js';
 /**
  * Panel that has a radio button group to choose between:
  *
@@ -14,6 +9,12 @@ import Text from '../../../../scenery/js/nodes/Text.js';
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
+
+import Property from '../../../../axon/js/Property.js';
+import { combineOptions } from '../../../../phet-core/js/optionize.js';
+import VBox from '../../../../scenery/js/layout/nodes/VBox.js';
+import Node from '../../../../scenery/js/nodes/Node.js';
+import Text from '../../../../scenery/js/nodes/Text.js';
 import Panel, { PanelOptions } from '../../../../sun/js/Panel.js';
 import VerticalAquaRadioButtonGroup from '../../../../sun/js/VerticalAquaRadioButtonGroup.js';
 import Tandem from '../../../../tandem/js/Tandem.js';

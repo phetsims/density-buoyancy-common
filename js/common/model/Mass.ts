@@ -69,7 +69,7 @@ type SelfOptions = {
   canMove?: boolean;
 
   tag?: MassTag;
-  accessibleName?: PDOMValueType | null;
+  accessibleName?: PDOMValueType;
   inputEnabledPropertyOptions?: BooleanPropertyOptions;
   materialPropertyOptions?: Partial<MaterialPropertyOptions>;
   customMaterialOptions?: MaterialOptions;

@@ -155,7 +155,7 @@ export default abstract class MassView extends Disposable {
         onGrab: () => {
 
           // Do not start a mass drag from GrabDragInteraction unless it is from keyboard input.
-          if ( this.grabDragInteraction!.isInputFromMouseOrTouch() ) {
+          if ( this.grabDragInteraction!.currentInputType === 'pointer' ) {
             return;
           }
 

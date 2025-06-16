@@ -7,7 +7,7 @@
  */
 
 import DynamicProperty from '../../../../../axon/js/DynamicProperty.js';
-import { GatedVisibleProperty } from '../../../../../axon/js/GatedBooleanProperty.js';
+import GatedVisibleProperty from '../../../../../axon/js/GatedVisibleProperty.js';
 import Multilink from '../../../../../axon/js/Multilink.js';
 import PatternStringProperty from '../../../../../axon/js/PatternStringProperty.js';
 import Property from '../../../../../axon/js/Property.js';

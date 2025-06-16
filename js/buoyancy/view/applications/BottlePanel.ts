@@ -8,7 +8,7 @@
 
 import BooleanProperty from '../../../../../axon/js/BooleanProperty.js';
 import DerivedProperty from '../../../../../axon/js/DerivedProperty.js';
-import { GatedVisibleProperty } from '../../../../../axon/js/GatedBooleanProperty.js';
+import GatedVisibleProperty from '../../../../../axon/js/GatedVisibleProperty.js';
 import UnitConversionProperty from '../../../../../axon/js/UnitConversionProperty.js';
 import Range from '../../../../../dot/js/Range.js';
 import { combineOptions } from '../../../../../phet-core/js/optionize.js';

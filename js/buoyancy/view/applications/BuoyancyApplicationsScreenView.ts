@@ -7,7 +7,7 @@
  */
 
 import DerivedProperty from '../../../../../axon/js/DerivedProperty.js';
-import { GatedVisibleProperty } from '../../../../../axon/js/GatedBooleanProperty.js';
+import GatedVisibleProperty from '../../../../../axon/js/GatedVisibleProperty.js';
 import { propertyStateHandlerSingleton } from '../../../../../axon/js/PropertyStateHandler.js';
 import PropertyStatePhase from '../../../../../axon/js/PropertyStatePhase.js';
 import Vector3 from '../../../../../dot/js/Vector3.js';

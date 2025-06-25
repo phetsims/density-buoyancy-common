@@ -9,7 +9,6 @@
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import Emitter from '../../../../axon/js/Emitter.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
-import LocalizedStringProperty from '../../../../chipper/js/browser/LocalizedStringProperty.js';
 import dotRandom from '../../../../dot/js/dotRandom.js';
 import Matrix3 from '../../../../dot/js/Matrix3.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
@@ -60,7 +59,7 @@ export class MysteryBlockSet extends EnumerationValue {
   public static readonly SET_3 = new MysteryBlockSet( DensityBuoyancyCommonStrings.blockSet.set3StringProperty, 'set3' );
   public static readonly RANDOM = new MysteryBlockSet( DensityBuoyancyCommonStrings.blockSet.randomStringProperty, 'random' );
 
-  public constructor( public readonly stringProperty: LocalizedStringProperty, public readonly tandemName: string ) {
+  public constructor( public readonly stringProperty: TReadOnlyProperty<string>, public readonly tandemName: string ) {
     super();
   }
 

@@ -9,7 +9,7 @@
  * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
-import LocalizedStringProperty from '../../../../chipper/js/browser/LocalizedStringProperty.js';
+import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import Enumeration from '../../../../phet-core/js/Enumeration.js';
 import EnumerationValue from '../../../../phet-core/js/EnumerationValue.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
@@ -20,7 +20,7 @@ export default class BlockSet extends EnumerationValue {
   public static readonly SAME_VOLUME = new BlockSet( DensityBuoyancyCommonStrings.blockSet.sameVolumeStringProperty, 'sameVolume' );
   public static readonly SAME_DENSITY = new BlockSet( DensityBuoyancyCommonStrings.blockSet.sameDensityStringProperty, 'sameDensity' );
 
-  public constructor( public readonly stringProperty: LocalizedStringProperty, public readonly tandemName: string ) {
+  public constructor( public readonly stringProperty: TReadOnlyProperty<string>, public readonly tandemName: string ) {
     super();
   }
 

@@ -6,7 +6,7 @@
  * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
-import type LocalizedStringProperty from '../../../../chipper/js/browser/LocalizedStringProperty.js';
+import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import Enumeration from '../../../../phet-core/js/Enumeration.js';
 import EnumerationValue from '../../../../phet-core/js/EnumerationValue.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
@@ -42,7 +42,7 @@ export class MassShape extends EnumerationValue {
     'duck'
   );
 
-  public constructor( public readonly shapeString: LocalizedStringProperty, public readonly tandemName: string ) {super();}
+  public constructor( public readonly shapeString: TReadOnlyProperty<string>, public readonly tandemName: string ) {super();}
 
   public static readonly enumeration = new Enumeration( MassShape, {
     phetioDocumentation: 'Shape of the mass'

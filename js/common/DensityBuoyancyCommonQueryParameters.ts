@@ -184,11 +184,6 @@ const DensityBuoyancyCommonQueryParameters = QueryStringMachine.getAll( {
   viscosityMassCutoff: {
     type: 'number',
     defaultValue: 0.5
-  },
-
-  // For Density only, enable the prototype description support, see https://github.com/phetsims/joist/issues/941
-  descriptionPrototype: {
-    type: 'flag'
   }
 } );
 

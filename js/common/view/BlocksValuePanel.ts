@@ -8,7 +8,7 @@
  */
 
 import NumberProperty from '../../../../axon/js/NumberProperty.js';
-import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
+import { TReadOnlyProperty } from '../../../../axon/js/TReadOnlyProperty.js';
 import UnitConversionProperty from '../../../../axon/js/UnitConversionProperty.js';
 import Dimension2 from '../../../../dot/js/Dimension2.js';
 import { optionize4 } from '../../../../phet-core/js/optionize.js';

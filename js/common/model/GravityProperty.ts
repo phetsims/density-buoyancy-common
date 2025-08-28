@@ -8,7 +8,7 @@
  */
 
 import DynamicProperty from '../../../../axon/js/DynamicProperty.js';
-import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
+import { TReadOnlyProperty } from '../../../../axon/js/TReadOnlyProperty.js';
 import PickRequired from '../../../../phet-core/js/types/PickRequired.js';
 import { PhetioObjectOptions } from '../../../../tandem/js/PhetioObject.js';
 import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';

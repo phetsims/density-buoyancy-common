@@ -13,7 +13,7 @@ import Disposable from '../../../../axon/js/Disposable.js';
 import PatternStringProperty from '../../../../axon/js/PatternStringProperty.js';
 import TinyEmitter from '../../../../axon/js/TinyEmitter.js';
 import TinyProperty from '../../../../axon/js/TinyProperty.js';
-import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
+import { TReadOnlyProperty } from '../../../../axon/js/TReadOnlyProperty.js';
 import { combineOptions, optionize4 } from '../../../../phet-core/js/optionize.js';
 import WithRequired from '../../../../phet-core/js/types/WithRequired.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';

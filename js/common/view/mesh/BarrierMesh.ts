@@ -1,4 +1,4 @@
-// Copyright 2024, University of Colorado Boulder
+// Copyright 2024-2025, University of Colorado Boulder
 
 /**
  * BarrierMesh is a mesh that represents the invisible barrier in the simulation. It is used to prevent the user from

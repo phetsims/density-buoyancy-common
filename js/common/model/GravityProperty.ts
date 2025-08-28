@@ -1,4 +1,4 @@
-// Copyright 2024, University of Colorado Boulder
+// Copyright 2024-2025, University of Colorado Boulder
 
 /**
  * GravityProperty adds a more domain-specific name for the value property. It is analogous to MaterialProperty.

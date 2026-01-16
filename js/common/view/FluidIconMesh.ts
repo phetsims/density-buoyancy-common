@@ -13,7 +13,7 @@ import DensityBuoyancyCommonColors from './DensityBuoyancyCommonColors.js';
 
 export default class FluidIconMesh extends THREE.Mesh {
 
-  public constructor( position: Vector3 = new Vector3( 0, -0.5, 0.1 ), fluidGeometry = new THREE.BoxGeometry( 1, 1, 0.2 ) ) {
+  public constructor( position: Vector3 = new Vector3( 0, -0.5, 0.1 ), fluidGeometry: THREE.BoxGeometry = new THREE.BoxGeometry( 1, 1, 0.2 ) ) {
 
     const fluidMaterial = new THREE.MeshLambertMaterial( {
       transparent: true

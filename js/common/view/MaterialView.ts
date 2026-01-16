@@ -382,12 +382,12 @@ export class DensityMaterials {
            new DebugMaterialView();
   }
 
-  public static readonly woodColorTexture = woodColorTexture;
-  public static readonly woodNormalTexture = woodNormalTexture;
-  public static readonly woodRoughnessTexture = woodRoughnessTexture;
+  public static readonly woodColorTexture: THREE.Texture = woodColorTexture;
+  public static readonly woodNormalTexture: THREE.Texture = woodNormalTexture;
+  public static readonly woodRoughnessTexture: THREE.Texture = woodRoughnessTexture;
 
-  public static readonly brickColorTexture = brickColorTexture;
-  public static readonly brickNormalTexture = brickNormalTexture;
+  public static readonly brickColorTexture: THREE.Texture = brickColorTexture;
+  public static readonly brickNormalTexture: THREE.Texture = brickNormalTexture;
 }
 
 export default MaterialView;

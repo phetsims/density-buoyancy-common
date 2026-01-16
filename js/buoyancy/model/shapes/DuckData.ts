@@ -49,7 +49,7 @@ const FlatDuckData = [
 // Parsing the geometry of the 3d duck
 const loader = new THREE.ObjectLoader();
 const mainDuckGeometry = loader.parse( DuckData );
-export const duckGeometry = ( mainDuckGeometry.children[ 0 ] as THREE.Mesh ).geometry;
+export const duckGeometry: THREE.BufferGeometry = ( mainDuckGeometry.children[ 0 ] as THREE.Mesh ).geometry;
 
 const minValues = new Vector3( 0, 0, 0 );
 const maxValues = new Vector3( 0, 0, 0 );

@@ -150,7 +150,6 @@ export default abstract class MassView extends Disposable {
 
       const wasdCueNode = new WASDCueNode( dragCueBoundsProperty );
       this.grabDragInteraction = new GrabDragInteraction( this.focusablePath, keyboardDragListener, interactionCueParentNode, {
-        idleStateOptions: { positionInPDOM: false }, // Improved performance since we don't support gesture description, see https://github.com/phetsims/density-buoyancy-common/issues/389
         grabCueOffset: new Vector2( 0, DensityBuoyancyCommonConstants.MARGIN_SMALL ),
         onGrab: inputType => {
 

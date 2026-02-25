@@ -3,7 +3,7 @@
 /**
  * Panel that contains information and controls related to the Bottle in the Applications Screen
  *
- * @author Agustín Vallejo
+ * @author Agustín Vallejo (PhET Interactive Simulations)
  */
 
 import BooleanProperty from '../../../../../axon/js/BooleanProperty.js';

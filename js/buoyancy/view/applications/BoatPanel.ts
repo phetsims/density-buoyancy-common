@@ -3,7 +3,7 @@
 /**
  * Panel that contains information and controls related to the Boat and Block in the Applications Screen
  *
- * @author Agustín Vallejo
+ * @author Agustín Vallejo (PhET Interactive Simulations)
  */
 
 import UnitConversionProperty from '../../../../../axon/js/UnitConversionProperty.js';

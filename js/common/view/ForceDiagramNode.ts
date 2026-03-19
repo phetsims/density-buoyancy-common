@@ -17,7 +17,6 @@ import Node from '../../../../scenery/js/nodes/Node.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
 import Panel from '../../../../sun/js/Panel.js';
 import DisplayProperties from '../../buoyancy/view/DisplayProperties.js';
-import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import BlendedVector2Property from '../model/BlendedVector2Property.js';
 import Mass from '../model/Mass.js';
@@ -188,5 +187,3 @@ export default class ForceDiagramNode extends Node {
     this.axisNode.x2 = axisHalfWidth;
   }
 }
-
-densityBuoyancyCommon.register( 'ForceDiagramNode', ForceDiagramNode );

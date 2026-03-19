@@ -11,7 +11,6 @@
 import Property from '../../../../axon/js/Property.js';
 import Utils from '../../../../dot/js/Utils.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
-import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 
 export default class BlendedVector2Property extends Property<Vector2> {
 
@@ -31,5 +30,3 @@ export default class BlendedVector2Property extends Property<Vector2> {
     this.value = oldValue.blend( newValue, blendAmount );
   }
 }
-
-densityBuoyancyCommon.register( 'BlendedVector2Property', BlendedVector2Property );

@@ -12,7 +12,6 @@ import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import Node from '../../../../scenery/js/nodes/Node.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
-import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
 import Gravity from '../model/Gravity.js';
@@ -73,5 +72,3 @@ export default class GravityControlNode extends ComboNumberControl<Gravity> {
     } );
   }
 }
-
-densityBuoyancyCommon.register( 'GravityControlNode', GravityControlNode );

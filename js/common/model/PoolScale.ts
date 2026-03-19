@@ -13,7 +13,6 @@ import Range from '../../../../dot/js/Range.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import Shape from '../../../../kite/js/Shape.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
-import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
 import GravityProperty from './GravityProperty.js';
 import PhysicsEngine from './PhysicsEngine.js';
@@ -65,5 +64,3 @@ export default class PoolScale extends Scale {
     this.heightProperty.notifyListenersStatic();
   }
 }
-
-densityBuoyancyCommon.register( 'PoolScale', PoolScale );

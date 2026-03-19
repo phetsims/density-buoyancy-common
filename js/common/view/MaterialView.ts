@@ -50,7 +50,6 @@ import Styrofoam_001_rgh_jpg from '../../../images/Styrofoam_001_rgh_jpg.js';
 import Wood26_col_jpg from '../../../images/Wood26_col_jpg.js';
 import Wood26_nrm_jpg from '../../../images/Wood26_nrm_jpg.js';
 import Wood26_rgh_jpg from '../../../images/Wood26_rgh_jpg.js';
-import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import Material from '../model/Material.js';
 
 class MaterialView<T extends THREE.Material = THREE.Material> {
@@ -391,4 +390,3 @@ export class DensityMaterials {
 }
 
 export default MaterialView;
-densityBuoyancyCommon.register( 'MaterialView', MaterialView );

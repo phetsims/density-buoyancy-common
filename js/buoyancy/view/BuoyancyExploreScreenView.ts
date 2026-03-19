@@ -17,7 +17,6 @@ import BlocksModeRadioButtonGroup from '../../common/view/BlocksModeRadioButtonG
 import CuboidView from '../../common/view/CuboidView.js';
 import MassView from '../../common/view/MassView.js';
 import ScaleView from '../../common/view/ScaleView.js';
-import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import BuoyancyExploreModel from '../model/BuoyancyExploreModel.js';
 import BuoyancyScreenView, { BuoyancyScreenViewOptions } from './BuoyancyScreenView.js';
@@ -178,5 +177,3 @@ export default class BuoyancyExploreScreenView extends BuoyancyScreenView<Buoyan
     ];
   }
 }
-
-densityBuoyancyCommon.register( 'BuoyancyExploreScreenView', BuoyancyExploreScreenView );

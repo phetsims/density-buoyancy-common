@@ -22,7 +22,6 @@ import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonCo
 import DensityBuoyancyCommonPreferences from '../../common/model/DensityBuoyancyCommonPreferences.js';
 import Material from '../../common/model/Material.js';
 import DensityBuoyancyCommonColors from '../../common/view/DensityBuoyancyCommonColors.js';
-import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 
 // constants
@@ -86,5 +85,3 @@ export default class DensityTableNode extends Node {
     ];
   }
 }
-
-densityBuoyancyCommon.register( 'DensityTableNode', DensityTableNode );

@@ -13,7 +13,6 @@ import Vector3 from '../../../../../dot/js/Vector3.js';
 import { THREEModelViewTransform } from '../../../../../mobius/js/MobiusScreenView.js';
 import Node from '../../../../../scenery/js/nodes/Node.js';
 import MeasurableMassView from '../../../common/view/MeasurableMassView.js';
-import densityBuoyancyCommon from '../../../densityBuoyancyCommon.js';
 import Duck from '../../model/shapes/Duck.js';
 import { duckGeometry } from '../../model/shapes/DuckData.js';
 import DisplayProperties from '../DisplayProperties.js';
@@ -55,5 +54,3 @@ export default class DuckView extends MeasurableMassView {
     super.dispose();
   }
 }
-
-densityBuoyancyCommon.register( 'DuckView', DuckView );

@@ -15,7 +15,6 @@ import WithRequired from '../../../../phet-core/js/types/WithRequired.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import Node from '../../../../scenery/js/nodes/Node.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
-import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
 import Material from '../model/Material.js';
@@ -107,5 +106,3 @@ export default class FluidDensityControlNode extends ComboNumberControl<Material
     } );
   }
 }
-
-densityBuoyancyCommon.register( 'FluidDensityControlNode', FluidDensityControlNode );

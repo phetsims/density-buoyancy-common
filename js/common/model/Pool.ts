@@ -12,7 +12,6 @@ import Bounds3 from '../../../../dot/js/Bounds3.js';
 import Utils from '../../../../dot/js/Utils.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
 import NumberIO from '../../../../tandem/js/types/NumberIO.js';
-import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
 import Basin from './Basin.js';
 import GravityProperty from './GravityProperty.js';
@@ -167,5 +166,3 @@ export default class Pool extends Basin {
     okToResetScale && this.scale && this.scale.reset();
   }
 }
-
-densityBuoyancyCommon.register( 'Pool', Pool );

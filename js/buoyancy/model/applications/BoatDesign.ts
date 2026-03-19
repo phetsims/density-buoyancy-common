@@ -28,7 +28,6 @@ import Vector3 from '../../../../../dot/js/Vector3.js';
 import Segment, { Cubic, Line } from '../../../../../kite/js/segments/Segment.js';
 import ThreeUtils from '../../../../../mobius/js/ThreeUtils.js';
 import Color from '../../../../../scenery/js/util/Color.js';
-import densityBuoyancyCommon from '../../../densityBuoyancyCommon.js';
 
 // constants
 const CROSS_SECTION_SAMPLES = 30;
@@ -823,5 +822,3 @@ BoatDesign.ONE_LITER_HULL_VOLUME = BoatDesign.DESIGN_HULL_VOLUME * BoatDesign.ON
   public static readonly ONE_LITER_INTERIOR_BOTTOM = -0.019283652710155048;
   public static readonly ONE_LITER_HULL_VOLUME = BoatDesign.DESIGN_HULL_VOLUME * BoatDesign.ONE_LITER_SCALE_MULTIPLIER * BoatDesign.ONE_LITER_SCALE_MULTIPLIER * BoatDesign.ONE_LITER_SCALE_MULTIPLIER;
 }
-
-densityBuoyancyCommon.register( 'BoatDesign', BoatDesign );

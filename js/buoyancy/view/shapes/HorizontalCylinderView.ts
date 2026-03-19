@@ -12,7 +12,6 @@ import TriangleArrayWriter from '../../../../../mobius/js/TriangleArrayWriter.js
 import Node from '../../../../../scenery/js/nodes/Node.js';
 import { TAG_OFFSET } from '../../../common/view/MassTagNode.js';
 import MeasurableMassView from '../../../common/view/MeasurableMassView.js';
-import densityBuoyancyCommon from '../../../densityBuoyancyCommon.js';
 import HorizontalCylinder from '../../model/shapes/HorizontalCylinder.js';
 import DisplayProperties from '../DisplayProperties.js';
 
@@ -162,5 +161,3 @@ export default class HorizontalCylinderView extends MeasurableMassView {
     return writer.getOffset();
   }
 }
-
-densityBuoyancyCommon.register( 'HorizontalCylinderView', HorizontalCylinderView );

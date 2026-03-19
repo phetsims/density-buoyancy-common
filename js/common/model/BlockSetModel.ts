@@ -11,7 +11,6 @@ import Property from '../../../../axon/js/Property.js';
 import Enumeration from '../../../../phet-core/js/Enumeration.js';
 import EnumerationValue from '../../../../phet-core/js/EnumerationValue.js';
 import DensityBuoyancyModel, { DensityBuoyancyModelOptions } from '../../common/model/DensityBuoyancyModel.js';
-import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import Cuboid from './Cuboid.js';
 
 type SelfOptions<BlockSetValue extends EnumerationValue> = {
@@ -124,5 +123,3 @@ export default class BlockSetModel<BlockSetValue extends EnumerationValue> exten
     } ) );
   }
 }
-
-densityBuoyancyCommon.register( 'BlockSetModel', BlockSetModel );

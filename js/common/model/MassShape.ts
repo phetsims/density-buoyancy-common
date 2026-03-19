@@ -9,7 +9,6 @@
 import { TReadOnlyProperty } from '../../../../axon/js/TReadOnlyProperty.js';
 import Enumeration from '../../../../phet-core/js/Enumeration.js';
 import EnumerationValue from '../../../../phet-core/js/EnumerationValue.js';
-import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 
 export class MassShape extends EnumerationValue {
@@ -48,5 +47,3 @@ export class MassShape extends EnumerationValue {
     phetioDocumentation: 'Shape of the mass'
   } );
 }
-
-densityBuoyancyCommon.register( 'MassShape', MassShape );

@@ -19,7 +19,6 @@ import MassTag from '../../../common/model/MassTag.js';
 import Material from '../../../common/model/Material.js';
 import PhysicsEngine from '../../../common/model/PhysicsEngine.js';
 import Scale, { DisplayType } from '../../../common/model/Scale.js';
-import densityBuoyancyCommon from '../../../densityBuoyancyCommon.js';
 import Boat from './Boat.js';
 import Bottle from './Bottle.js';
 import { BottleOrBoat, BottleOrBoatValues } from './BottleOrBoat.js';
@@ -346,5 +345,3 @@ export default class BuoyancyApplicationsModel extends DensityBuoyancyModel {
     this.bottle.internalVisibleProperty.value = mode === 'bottle';
   }
 }
-
-densityBuoyancyCommon.register( 'BuoyancyApplicationsModel', BuoyancyApplicationsModel );

@@ -16,7 +16,6 @@ import Color from '../../../../scenery/js/util/Color.js';
 import { PhetioObjectOptions } from '../../../../tandem/js/PhetioObject.js';
 import IOType from '../../../../tandem/js/types/IOType.js';
 import ReferenceIO from '../../../../tandem/js/types/ReferenceIO.js';
-import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import MappedWrappedProperty, { MappedWrappedPropertyOptions } from './MappedWrappedProperty.js';
 import Material from './Material.js';
 
@@ -72,5 +71,3 @@ export default class MaterialProperty extends MappedWrappedProperty<Material> {
     } );
   }
 }
-
-densityBuoyancyCommon.register( 'MaterialProperty', MaterialProperty );

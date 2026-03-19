@@ -19,7 +19,6 @@ import DensityBuoyancyCommonConstants from '../../../common/DensityBuoyancyCommo
 import Mass, { InstrumentedMassOptions, MASS_MAX_SHAPES_DIMENSION, MASS_MIN_SHAPES_DIMENSION, MassOptions } from '../../../common/model/Mass.js';
 import { MassShape } from '../../../common/model/MassShape.js';
 import PhysicsEngine from '../../../common/model/PhysicsEngine.js';
-import densityBuoyancyCommon from '../../../densityBuoyancyCommon.js';
 
 type SelfOptions = EmptySelfOptions;
 
@@ -204,5 +203,3 @@ export default class Ellipsoid extends Mass {
     return Utils.roundToInterval( value, DensityBuoyancyCommonConstants.TOLERANCE );
   }
 }
-
-densityBuoyancyCommon.register( 'Ellipsoid', Ellipsoid );

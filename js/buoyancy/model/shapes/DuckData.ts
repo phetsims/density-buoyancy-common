@@ -12,7 +12,6 @@ import ConvexHull2 from '../../../../../dot/js/ConvexHull2.js';
 import Vector2 from '../../../../../dot/js/Vector2.js';
 import Vector3 from '../../../../../dot/js/Vector3.js';
 import Shape from '../../../../../kite/js/Shape.js';
-import densityBuoyancyCommon from '../../../densityBuoyancyCommon.js';
 
 /* eslint-disable */
 const DuckData = {
@@ -89,5 +88,3 @@ flatDuckData = flatDuckData.map( vertex => vertex.subtractXY( bounds.center.x, b
 
 // Normalizing the vertices
 flatDuckData = flatDuckData.map( vertex => vertex.componentMultiply( new Vector2( 1 / bounds.width, 1 / bounds.height ) ) );
-
-densityBuoyancyCommon.register( 'DuckData', DuckData );

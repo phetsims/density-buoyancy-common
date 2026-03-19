@@ -26,7 +26,6 @@ import DebugView from '../../../common/view/DebugView.js';
 import DensityBuoyancyCommonColors from '../../../common/view/DensityBuoyancyCommonColors.js';
 import { PointedAtMassView } from '../../../common/view/DensityBuoyancyScreenView.js';
 import MassView from '../../../common/view/MassView.js';
-import densityBuoyancyCommon from '../../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../../DensityBuoyancyCommonStrings.js';
 import Boat from '../../model/applications/Boat.js';
 import BoatDesign from '../../model/applications/BoatDesign.js';
@@ -303,5 +302,3 @@ export default class BuoyancyApplicationsScreenView extends BuoyancyScreenView<B
     return wasFilled;
   }
 }
-
-densityBuoyancyCommon.register( 'BuoyancyApplicationsScreenView', BuoyancyApplicationsScreenView );

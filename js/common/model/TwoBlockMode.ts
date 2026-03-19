@@ -8,7 +8,6 @@
 
 import Enumeration from '../../../../phet-core/js/Enumeration.js';
 import EnumerationValue from '../../../../phet-core/js/EnumerationValue.js';
-import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 
 export default class TwoBlockMode extends EnumerationValue {
   public static readonly ONE_BLOCK = new TwoBlockMode();
@@ -18,5 +17,3 @@ export default class TwoBlockMode extends EnumerationValue {
     phetioDocumentation: 'Whether one or two blocks are visible'
   } );
 }
-
-densityBuoyancyCommon.register( 'TwoBlockMode', TwoBlockMode );

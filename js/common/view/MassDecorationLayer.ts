@@ -10,7 +10,6 @@
  */
 
 import Node from '../../../../scenery/js/nodes/Node.js';
-import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 
 export default class MassDecorationLayer extends Node {
   public readonly depthLinesLayer = new Node();
@@ -29,5 +28,3 @@ export default class MassDecorationLayer extends Node {
     this.addChild( this.scaleReadoutLayer );
   }
 }
-
-densityBuoyancyCommon.register( 'MassDecorationLayer', MassDecorationLayer );

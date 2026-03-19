@@ -17,7 +17,6 @@ import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import Node, { NodeOptions } from '../../../../scenery/js/nodes/Node.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
 import Panel from '../../../../sun/js/Panel.js';
-import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
 import BlendedNumberProperty from '../model/BlendedNumberProperty.js';
@@ -118,5 +117,3 @@ export default class ScaleReadoutNode extends GeneralScaleReadoutNode {
     } );
   }
 }
-
-densityBuoyancyCommon.register( 'ScaleReadoutNode', ScaleReadoutNode );

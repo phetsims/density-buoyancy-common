@@ -1,4 +1,4 @@
-// Copyright 2024-2026, University of Colorado Boulder
+// Copyright 2024, University of Colorado Boulder
 
 /**
  * NumberProperty that composes an additional Property that monitors if that Property's value has changed or not.

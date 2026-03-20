@@ -1,4 +1,4 @@
-// Copyright 2024-2026, University of Colorado Boulder
+// Copyright 2024, University of Colorado Boulder
 
 /**
  * A general abstract class for shared functionality between the boat and bottle in the density-buoyancy simulation.

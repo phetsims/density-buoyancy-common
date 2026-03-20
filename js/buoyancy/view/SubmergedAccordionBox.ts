@@ -1,4 +1,4 @@
-// Copyright 2019-2026, University of Colorado Boulder
+// Copyright 2019-2024, University of Colorado Boulder
 
 /**
  * An AccordionBox that displays the percentage of a material that is submerged in a fluid.

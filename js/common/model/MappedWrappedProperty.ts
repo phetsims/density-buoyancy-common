@@ -1,4 +1,4 @@
-// Copyright 2024-2026, University of Colorado Boulder
+// Copyright 2024, University of Colorado Boulder
 
 /**
  * Materials and Gravity are classes that have an axon Property that represents their characteristic (density or gravity value).

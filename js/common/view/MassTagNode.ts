@@ -14,7 +14,6 @@ import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import Node from '../../../../scenery/js/nodes/Node.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
 import Color from '../../../../scenery/js/util/Color.js';
-import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
 import { MASS_MIN_SHAPES_DIMENSION } from '../model/Mass.js';
 import MassTag from '../model/MassTag.js';
@@ -71,5 +70,3 @@ export default class MassTagNode extends Node {
     } );
   }
 }
-
-densityBuoyancyCommon.register( 'MassTagNode', MassTagNode );

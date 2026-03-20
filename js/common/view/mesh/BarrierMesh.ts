@@ -14,7 +14,6 @@ import { TReadOnlyProperty } from '../../../../../axon/js/TReadOnlyProperty.js';
 import Bounds2 from '../../../../../dot/js/Bounds2.js';
 import Bounds3 from '../../../../../dot/js/Bounds3.js';
 import ThreeUtils from '../../../../../mobius/js/ThreeUtils.js';
-import densityBuoyancyCommon from '../../../densityBuoyancyCommon.js';
 
 export default class BarrierMesh extends THREE.Mesh {
   public constructor( invisibleBarrierBoundsProperty: TReadOnlyProperty<Bounds3> ) {
@@ -61,5 +60,3 @@ export default class BarrierMesh extends THREE.Mesh {
     super( barrierGeometry, barrierMaterial );
   }
 }
-
-densityBuoyancyCommon.register( 'BarrierMesh', BarrierMesh );

@@ -31,7 +31,6 @@ import Material from '../../common/model/Material.js';
 import PhysicsEngine from '../../common/model/PhysicsEngine.js';
 import Scale, { DisplayType } from '../../common/model/Scale.js';
 import DensityBuoyancyCommonColors from '../../common/view/DensityBuoyancyCommonColors.js';
-import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 
 // constants
@@ -325,5 +324,3 @@ export default class DensityMysteryModel extends BlockSetModel<MysteryBlockSet> 
     this.regenerate( MysteryBlockSet.RANDOM );
   }
 }
-
-densityBuoyancyCommon.register( 'DensityMysteryModel', DensityMysteryModel );

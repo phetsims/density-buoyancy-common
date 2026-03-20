@@ -12,7 +12,6 @@ import { THREEModelViewTransform } from '../../../../../mobius/js/MobiusScreenVi
 import Node from '../../../../../scenery/js/nodes/Node.js';
 import { TAG_OFFSET } from '../../../common/view/MassTagNode.js';
 import MeasurableMassView from '../../../common/view/MeasurableMassView.js';
-import densityBuoyancyCommon from '../../../densityBuoyancyCommon.js';
 import Ellipsoid from '../../model/shapes/Ellipsoid.js';
 import DisplayProperties from '../DisplayProperties.js';
 
@@ -51,5 +50,3 @@ export default class EllipsoidView extends MeasurableMassView {
     super.dispose();
   }
 }
-
-densityBuoyancyCommon.register( 'EllipsoidView', EllipsoidView );

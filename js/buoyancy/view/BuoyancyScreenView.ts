@@ -14,7 +14,6 @@ import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonCo
 import DensityBuoyancyModel from '../../common/model/DensityBuoyancyModel.js';
 import DensityBuoyancyScreenView, { DensityBuoyancyScreenViewOptions } from '../../common/view/DensityBuoyancyScreenView.js';
 import PoolScaleHeightControl from '../../common/view/PoolScaleHeightControl.js';
-import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import BuoyancyDisplayOptionsPanel from './BuoyancyDisplayOptionsPanel.js';
 
 // constants
@@ -87,5 +86,3 @@ export default abstract class BuoyancyScreenView<T extends DensityBuoyancyModel>
     this.positionScaleHeightControl();
   }
 }
-
-densityBuoyancyCommon.register( 'BuoyancyScreenView', BuoyancyScreenView );

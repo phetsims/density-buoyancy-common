@@ -181,6 +181,4 @@ type StringsType = {
 
 const DensityBuoyancyCommonStrings = getStringModule( 'DENSITY_BUOYANCY_COMMON' ) as StringsType;
 
-densityBuoyancyCommon.register( 'DensityBuoyancyCommonStrings', DensityBuoyancyCommonStrings );
-
 export default DensityBuoyancyCommonStrings;

@@ -12,7 +12,6 @@ import Node from '../../../../../scenery/js/nodes/Node.js';
 import Material from '../../../common/model/Material.js';
 import { TAG_OFFSET } from '../../../common/view/MassTagNode.js';
 import MeasurableMassView from '../../../common/view/MeasurableMassView.js';
-import densityBuoyancyCommon from '../../../densityBuoyancyCommon.js';
 import Bottle from '../../model/applications/Bottle.js';
 import DisplayProperties from '../DisplayProperties.js';
 
@@ -207,5 +206,3 @@ export default class BottleView extends MeasurableMassView {
     };
   }
 }
-
-densityBuoyancyCommon.register( 'BottleView', BottleView );

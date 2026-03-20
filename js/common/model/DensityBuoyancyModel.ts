@@ -18,7 +18,6 @@ import { PhetioObjectOptions } from '../../../../tandem/js/PhetioObject.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
 import IOType from '../../../../tandem/js/types/IOType.js';
 import ReferenceIO from '../../../../tandem/js/types/ReferenceIO.js';
-import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import DensityBuoyancyCommonQueryParameters from '../DensityBuoyancyCommonQueryParameters.js';
 import Basin from './Basin.js';
@@ -509,5 +508,3 @@ export default class DensityBuoyancyModel implements TModel {
     // no-op
   }
 }
-
-densityBuoyancyCommon.register( 'DensityBuoyancyModel', DensityBuoyancyModel );

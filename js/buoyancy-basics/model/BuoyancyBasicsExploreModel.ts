@@ -22,7 +22,6 @@ import MassTag from '../../common/model/MassTag.js';
 import Material from '../../common/model/Material.js';
 import Scale, { DisplayType } from '../../common/model/Scale.js';
 import TwoBlockMode from '../../common/model/TwoBlockMode.js';
-import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 
 type BuoyancyBasicsExploreModelOptions = DensityBuoyancyModelOptions;
 
@@ -110,5 +109,3 @@ export default class BuoyancyBasicsExploreModel extends DensityBuoyancyModel {
     super.reset();
   }
 }
-
-densityBuoyancyCommon.register( 'BuoyancyBasicsExploreModel', BuoyancyBasicsExploreModel );

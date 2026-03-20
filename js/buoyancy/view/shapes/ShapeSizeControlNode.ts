@@ -26,7 +26,6 @@ import ComboBox from '../../../../../sun/js/ComboBox.js';
 import Tandem from '../../../../../tandem/js/Tandem.js';
 import DensityBuoyancyCommonConstants from '../../../common/DensityBuoyancyCommonConstants.js';
 import { MassShape } from '../../../common/model/MassShape.js';
-import densityBuoyancyCommon from '../../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../../DensityBuoyancyCommonStrings.js';
 import BuoyancyShapeModel from '../../model/shapes/BuoyancyShapeModel.js';
 
@@ -171,5 +170,3 @@ export default class ShapeSizeControlNode extends VBox {
     this.mutate( options );
   }
 }
-
-densityBuoyancyCommon.register( 'ShapeSizeControlNode', ShapeSizeControlNode );

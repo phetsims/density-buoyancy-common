@@ -53,7 +53,6 @@ import Checkbox from '../../../../sun/js/Checkbox.js';
 import { PhetioObjectOptions } from '../../../../tandem/js/PhetioObject.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
 import DisplayProperties from '../../buoyancy/view/DisplayProperties.js';
-import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
 import DensityBuoyancyCommonQueryParameters from '../DensityBuoyancyCommonQueryParameters.js';
 import Cuboid from '../model/Cuboid.js';
@@ -513,5 +512,3 @@ export default class DensityBuoyancyScreenView<Model extends DensityBuoyancyMode
     }
   }
 }
-
-densityBuoyancyCommon.register( 'DensityBuoyancyScreenView', DensityBuoyancyScreenView );

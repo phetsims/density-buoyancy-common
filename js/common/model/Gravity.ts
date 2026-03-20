@@ -15,7 +15,6 @@ import optionize from '../../../../phet-core/js/optionize.js';
 import PickRequired from '../../../../phet-core/js/types/PickRequired.js';
 import PhetioObject, { PhetioObjectOptions } from '../../../../tandem/js/PhetioObject.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
-import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import DensityBuoyancyCommonQueryParameters from '../DensityBuoyancyCommonQueryParameters.js';
 import { MappedWrappedObject } from './MappedWrappedProperty.js';
@@ -99,5 +98,3 @@ export default class Gravity extends PhetioObject implements MappedWrappedObject
     hidden: true
   } );
 }
-
-densityBuoyancyCommon.register( 'Gravity', Gravity );

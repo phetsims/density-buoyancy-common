@@ -87,7 +87,6 @@ import { MassShape } from '../../../common/model/MassShape.js';
 import Material, { CustomSolidMaterial } from '../../../common/model/Material.js';
 import MaterialProperty from '../../../common/model/MaterialProperty.js';
 import PhysicsEngine from '../../../common/model/PhysicsEngine.js';
-import densityBuoyancyCommon from '../../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../../DensityBuoyancyCommonStrings.js';
 import ApplicationsMass, { ApplicationsMassOptions } from './ApplicationsMass.js';
 
@@ -1449,5 +1448,3 @@ const FLAT_INTERSECTION_VERTICES = [ ${flatIntersectionVertices.map( v => `new V
 
   private static readonly FLAT_INTERSECTION_VERTICES = FLAT_INTERSECTION_VERTICES;
 }
-
-densityBuoyancyCommon.register( 'Bottle', Bottle );

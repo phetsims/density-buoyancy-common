@@ -21,7 +21,6 @@ import DensityBuoyancyCommonConstants from '../../../common/DensityBuoyancyCommo
 import Cube from '../../../common/model/Cube.js';
 import MaterialMassVolumeControlNode from '../../../common/view/MaterialMassVolumeControlNode.js';
 import PrecisionSliderThumb from '../../../common/view/PrecisionSliderThumb.js';
-import densityBuoyancyCommon from '../../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../../DensityBuoyancyCommonStrings.js';
 import Boat from '../../model/applications/Boat.js';
 
@@ -88,5 +87,3 @@ export default class BoatPanel extends Panel {
     this.contentWidth = boatBox.width;
   }
 }
-
-densityBuoyancyCommon.register( 'BoatPanel', BoatPanel );

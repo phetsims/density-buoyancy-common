@@ -25,7 +25,6 @@ import BlocksValuePanel from '../../common/view/BlocksValuePanel.js';
 import CuboidView from '../../common/view/CuboidView.js';
 import MassView from '../../common/view/MassView.js';
 import ScaleView from '../../common/view/ScaleView.js';
-import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import BuoyancyCompareModel from '../model/BuoyancyCompareModel.js';
 import BuoyancyScreenView, { BuoyancyScreenViewOptions } from './BuoyancyScreenView.js';
@@ -219,5 +218,3 @@ export default class BuoyancyCompareScreenView extends BuoyancyScreenView<Buoyan
     this.layoutRightSidePanels();
   }
 }
-
-densityBuoyancyCommon.register( 'BuoyancyCompareScreenView', BuoyancyCompareScreenView );

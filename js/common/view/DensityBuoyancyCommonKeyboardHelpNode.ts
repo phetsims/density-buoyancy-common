@@ -14,7 +14,6 @@ import KeyboardHelpSection from '../../../../scenery-phet/js/keyboard/help/Keybo
 import MoveDraggableItemsKeyboardHelpSection from '../../../../scenery-phet/js/keyboard/help/MoveDraggableItemsKeyboardHelpSection.js';
 import SliderControlsKeyboardHelpSection from '../../../../scenery-phet/js/keyboard/help/SliderControlsKeyboardHelpSection.js';
 import TwoColumnKeyboardHelpContent from '../../../../scenery-phet/js/keyboard/help/TwoColumnKeyboardHelpContent.js';
-import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 
 export default class DensityBuoyancyCommonKeyboardHelpNode extends TwoColumnKeyboardHelpContent {
@@ -46,5 +45,3 @@ export default class DensityBuoyancyCommonKeyboardHelpNode extends TwoColumnKeyb
     super( leftColumn, rightColumn );
   }
 }
-
-densityBuoyancyCommon.register( 'DensityBuoyancyCommonKeyboardHelpNode', DensityBuoyancyCommonKeyboardHelpNode );

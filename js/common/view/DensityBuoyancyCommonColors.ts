@@ -227,6 +227,4 @@ const DensityBuoyancyCommonColors = {
   } )
 };
 
-densityBuoyancyCommon.register( 'DensityBuoyancyCommonColors', DensityBuoyancyCommonColors );
-
 export default DensityBuoyancyCommonColors;

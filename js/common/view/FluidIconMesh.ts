@@ -8,7 +8,6 @@
 
 import Vector3 from '../../../../dot/js/Vector3.js';
 import ThreeUtils from '../../../../mobius/js/ThreeUtils.js';
-import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonColors from './DensityBuoyancyCommonColors.js';
 
 export default class FluidIconMesh extends THREE.Mesh {
@@ -26,5 +25,3 @@ export default class FluidIconMesh extends THREE.Mesh {
     this.position.copy( ThreeUtils.vectorToThree( position ) );
   }
 }
-
-densityBuoyancyCommon.register( 'FluidIconMesh', FluidIconMesh );

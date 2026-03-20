@@ -19,7 +19,6 @@ import IntentionalAny from '../../../../phet-core/js/types/IntentionalAny.js';
 import IOTypeCache from '../../../../tandem/js/IOTypeCache.js';
 import IOType, { AnyIOType } from '../../../../tandem/js/types/IOType.js';
 import NumberIO from '../../../../tandem/js/types/NumberIO.js';
-import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 
 type Interpolate<T extends Vector2 | number> = ( a: T, b: T, ratio: number ) => T;
 type SelfOptions<T extends Vector2 | number> = {
@@ -190,5 +189,3 @@ export type InterpolatedPropertyIOState = ReadOnlyPropertyState<IntentionalAny> 
   previousValue: IntentionalAny;
   ratio: number;
 };
-
-densityBuoyancyCommon.register( 'InterpolatedProperty', InterpolatedProperty );

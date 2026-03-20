@@ -17,7 +17,6 @@ import Node from '../../../../scenery/js/nodes/Node.js';
 import RectangularRadioButtonGroup, { RectangularRadioButtonGroupOptions } from '../../../../sun/js/buttons/RectangularRadioButtonGroup.js';
 import doubleCuboidIcon_png from '../../../mipmaps/doubleCuboidIcon_png.js';
 import singleCuboidIcon_png from '../../../mipmaps/singleCuboidIcon_png.js';
-import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonQueryParameters from '../DensityBuoyancyCommonQueryParameters.js';
 import TwoBlockMode from '../model/TwoBlockMode.js';
 import DensityBuoyancyCommonColors from './DensityBuoyancyCommonColors.js';
@@ -181,5 +180,3 @@ export default class BlocksModeRadioButtonGroup extends RectangularRadioButtonGr
     }
   }
 }
-
-densityBuoyancyCommon.register( 'BlocksModeRadioButtonGroup', BlocksModeRadioButtonGroup );

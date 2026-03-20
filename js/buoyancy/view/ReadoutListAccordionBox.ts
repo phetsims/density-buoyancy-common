@@ -24,7 +24,6 @@ import RichText, { RichTextOptions } from '../../../../scenery/js/nodes/RichText
 import Text from '../../../../scenery/js/nodes/Text.js';
 import AccordionBox, { AccordionBoxOptions } from '../../../../sun/js/AccordionBox.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
-import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 
 const DEFAULT_FONT = new PhetFont( 14 );
@@ -169,5 +168,3 @@ export default abstract class ReadoutListAccordionBox<ReadoutType> extends Accor
     Disposable.assertNotDisposable();
   }
 }
-
-densityBuoyancyCommon.register( 'ReadoutListAccordionBox', ReadoutListAccordionBox );

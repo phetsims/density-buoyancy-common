@@ -18,7 +18,6 @@ import Tandem from '../../../../../tandem/js/Tandem.js';
 import DensityBuoyancyCommonConstants from '../../../common/DensityBuoyancyCommonConstants.js';
 import Basin from '../../../common/model/Basin.js';
 import Mass from '../../../common/model/Mass.js';
-import densityBuoyancyCommon from '../../../densityBuoyancyCommon.js';
 import Boat from './Boat.js';
 import BoatDesign from './BoatDesign.js';
 
@@ -75,5 +74,3 @@ export default class BoatBasin extends Basin {
     return this.boat.getBasinVolume( y );
   }
 }
-
-densityBuoyancyCommon.register( 'BoatBasin', BoatBasin );

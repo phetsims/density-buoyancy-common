@@ -21,7 +21,6 @@ import sharedSoundPlayers from '../../../../tambo/js/sharedSoundPlayers.js';
 import EventType from '../../../../tandem/js/EventType.js';
 import PhetioAction from '../../../../tandem/js/PhetioAction.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
-import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyModel from '../model/DensityBuoyancyModel.js';
 import Mass from '../model/Mass.js';
 import DensityBuoyancyScreenView from './DensityBuoyancyScreenView.js';
@@ -168,5 +167,3 @@ export default class BackgroundEventTargetListener implements TInputListener {
     this.draggedMasses.slice().forEach( mass => mass.interruptedEmitter.emit() );
   }
 }
-
-densityBuoyancyCommon.register( 'BackgroundEventTargetListener', BackgroundEventTargetListener );

@@ -15,7 +15,6 @@ import Node from '../../../../scenery/js/nodes/Node.js';
 import Path from '../../../../scenery/js/nodes/Path.js';
 import RichText from '../../../../scenery/js/nodes/RichText.js';
 import Panel from '../../../../sun/js/Panel.js';
-import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
 import DensityBuoyancyCommonColors from './DensityBuoyancyCommonColors.js';
 
@@ -50,5 +49,3 @@ export default class FluidLevelIndicator extends Node {
     } );
   }
 }
-
-densityBuoyancyCommon.register( 'FluidLevelIndicator', FluidLevelIndicator );

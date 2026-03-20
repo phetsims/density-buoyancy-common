@@ -16,7 +16,6 @@ import Shape from '../../../../../kite/js/Shape.js';
 import optionize, { EmptySelfOptions } from '../../../../../phet-core/js/optionize.js';
 import { MassShape } from '../../../common/model/MassShape.js';
 import PhysicsEngine from '../../../common/model/PhysicsEngine.js';
-import densityBuoyancyCommon from '../../../densityBuoyancyCommon.js';
 import { flatDuckData } from './DuckData.js';
 import Ellipsoid, { EllipsoidOptions } from './Ellipsoid.js';
 
@@ -78,5 +77,3 @@ export default class Duck extends Ellipsoid {
     return flatDuckData;
   }
 }
-
-densityBuoyancyCommon.register( 'Duck', Duck );

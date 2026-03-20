@@ -15,7 +15,6 @@ import ComboBox from '../../../../sun/js/ComboBox.js';
 import Panel, { PanelOptions } from '../../../../sun/js/Panel.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 import MaterialProperty from '../../common/model/MaterialProperty.js';
-import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 
 type FluidSelectionPanelOptions = WithRequired<PanelOptions, 'tandem'>;
@@ -63,5 +62,3 @@ export default class FluidSelectionPanel extends Panel {
     } ), options );
   }
 }
-
-densityBuoyancyCommon.register( 'FluidSelectionPanel', FluidSelectionPanel );

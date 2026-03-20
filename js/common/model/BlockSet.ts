@@ -12,7 +12,6 @@
 import { TReadOnlyProperty } from '../../../../axon/js/TReadOnlyProperty.js';
 import Enumeration from '../../../../phet-core/js/Enumeration.js';
 import EnumerationValue from '../../../../phet-core/js/EnumerationValue.js';
-import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 
 export default class BlockSet extends EnumerationValue {
@@ -29,5 +28,3 @@ export default class BlockSet extends EnumerationValue {
   } );
 
 }
-
-densityBuoyancyCommon.register( 'BlockSet', BlockSet );

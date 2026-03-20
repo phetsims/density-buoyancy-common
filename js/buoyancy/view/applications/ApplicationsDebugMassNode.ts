@@ -17,7 +17,6 @@ import Cube from '../../../common/model/Cube.js';
 import DensityBuoyancyModel from '../../../common/model/DensityBuoyancyModel.js';
 import Mass from '../../../common/model/Mass.js';
 import { DebugMassNode } from '../../../common/view/DebugView.js';
-import densityBuoyancyCommon from '../../../densityBuoyancyCommon.js';
 import Boat from '../../model/applications/Boat.js';
 
 // Constants
@@ -175,5 +174,3 @@ export default class ApplicationsDebugMassNode extends DebugMassNode {
     return path;
   }
 }
-
-densityBuoyancyCommon.register( 'ApplicationsDebugMassNode', ApplicationsDebugMassNode );

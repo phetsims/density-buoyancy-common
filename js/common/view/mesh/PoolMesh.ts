@@ -8,7 +8,6 @@
 import Bounds2 from '../../../../../dot/js/Bounds2.js';
 import Bounds3 from '../../../../../dot/js/Bounds3.js';
 import ThreeUtils from '../../../../../mobius/js/ThreeUtils.js';
-import densityBuoyancyCommon from '../../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonColors from '../DensityBuoyancyCommonColors.js';
 
 export default class PoolMesh extends THREE.Mesh {
@@ -83,5 +82,3 @@ export default class PoolMesh extends THREE.Mesh {
     super( poolGeometry, poolMaterial );
   }
 }
-
-densityBuoyancyCommon.register( 'PoolMesh', PoolMesh );

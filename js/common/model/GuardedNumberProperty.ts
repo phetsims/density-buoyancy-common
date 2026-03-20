@@ -11,7 +11,6 @@
 
 import NumberProperty, { NumberPropertyOptions } from '../../../../axon/js/NumberProperty.js';
 import optionize from '../../../../phet-core/js/optionize.js';
-import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 
 type SelfOptions = { getPhetioSpecificValidationError: ( value: number ) => string | null };
 
@@ -36,5 +35,3 @@ export class GuardedNumberProperty extends NumberProperty {
     return super.getValidationError( value ) || this.getPhetioSpecificValidationError( value );
   }
 }
-
-densityBuoyancyCommon.register( 'GuardedNumberProperty', GuardedNumberProperty );

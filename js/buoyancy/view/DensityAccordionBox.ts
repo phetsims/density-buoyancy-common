@@ -15,7 +15,6 @@ import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 import Material from '../../common/model/Material.js';
 import MaterialProperty from '../../common/model/MaterialProperty.js';
-import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import ReadoutListAccordionBox, { ReadoutData, ReadoutListAccordionBoxOptions } from './ReadoutListAccordionBox.js';
 
@@ -74,5 +73,3 @@ export default class DensityAccordionBox extends ReadoutListAccordionBox<Materia
     };
   }
 }
-
-densityBuoyancyCommon.register( 'DensityAccordionBox', DensityAccordionBox );

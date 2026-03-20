@@ -18,7 +18,6 @@ import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonCo
 import CuboidView from '../../common/view/CuboidView.js';
 import DensityBuoyancyScreenView, { DensityBuoyancyScreenViewOptions } from '../../common/view/DensityBuoyancyScreenView.js';
 import MassView from '../../common/view/MassView.js';
-import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import DensityMysteryModel, { MysteryBlockSet } from '../model/DensityMysteryModel.js';
 import DensityTableNode from './DensityTableNode.js';
@@ -152,5 +151,3 @@ export default class DensityMysteryScreenView extends DensityBuoyancyScreenView<
     ];
   }
 }
-
-densityBuoyancyCommon.register( 'DensityMysteryScreenView', DensityMysteryScreenView );

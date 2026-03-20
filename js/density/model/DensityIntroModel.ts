@@ -18,7 +18,6 @@ import { MaterialSchema } from '../../common/model/Mass.js';
 import MassTag from '../../common/model/MassTag.js';
 import Material from '../../common/model/Material.js';
 import TwoBlockMode from '../../common/model/TwoBlockMode.js';
-import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 
 export type DensityIntroModelOptions = DensityBuoyancyModelOptions;
 
@@ -92,5 +91,3 @@ export default class DensityIntroModel extends DensityBuoyancyModel {
     super.reset();
   }
 }
-
-densityBuoyancyCommon.register( 'DensityIntroModel', DensityIntroModel );

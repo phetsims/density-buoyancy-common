@@ -20,7 +20,6 @@ import BlockControlNode from '../../common/view/BlockControlNode.js';
 import CuboidView from '../../common/view/CuboidView.js';
 import GravityControlNode from '../../common/view/GravityControlNode.js';
 import MultiSectionPanelsNode from '../../common/view/MultiSectionPanelsNode.js';
-import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import BuoyancyLabModel from '../model/BuoyancyLabModel.js';
 import BuoyancyScreenView, { BuoyancyScreenViewOptions } from './BuoyancyScreenView.js';
@@ -188,5 +187,3 @@ export default class BuoyancyLabScreenView extends BuoyancyScreenView<BuoyancyLa
     ];
   }
 }
-
-densityBuoyancyCommon.register( 'BuoyancyLabScreenView', BuoyancyLabScreenView );

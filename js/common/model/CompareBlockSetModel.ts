@@ -23,6 +23,7 @@ import WithRequired from '../../../../phet-core/js/types/WithRequired.js';
 import GrabDragUsageTracker from '../../../../scenery-phet/js/accessibility/grab-drag/GrabDragUsageTracker.js';
 import Color from '../../../../scenery/js/util/Color.js';
 import ColorProperty from '../../../../scenery/js/util/ColorProperty.js';
+import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import BlockSet from './BlockSet.js';
 import BlockSetModel, { BlockSetModelOptions } from './BlockSetModel.js';
 import Cube, { CubeOptions, StrictCubeOptions } from './Cube.js';
@@ -312,3 +313,5 @@ export default class CompareBlockSetModel extends BlockSetModel<BlockSet> {
 
 // The tandem where all cubes should be nested under
 export const BLOCK_SETS_TANDEM_NAME = 'blockSets';
+
+densityBuoyancyCommon.register( 'CompareBlockSetModel', CompareBlockSetModel );

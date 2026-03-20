@@ -15,6 +15,7 @@ import Vector3 from '../../../../dot/js/Vector3.js';
 import Shape from '../../../../kite/js/Shape.js';
 import optionize, { EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
 import StrictOmit from '../../../../phet-core/js/types/StrictOmit.js';
+import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
 import Mass, { InstrumentedMassOptions, MASS_MAX_SHAPES_DIMENSION, MASS_MIN_SHAPES_DIMENSION, MassOptions } from './Mass.js';
 import { MassShape } from './MassShape.js';
@@ -179,3 +180,5 @@ export default class Cuboid extends Mass {
     return Utils.roundToInterval( size.volume, DensityBuoyancyCommonConstants.TOLERANCE );
   }
 }
+
+densityBuoyancyCommon.register( 'Cuboid', Cuboid );

@@ -15,6 +15,7 @@ import { optionize4 } from '../../../../phet-core/js/optionize.js';
 import WithRequired from '../../../../phet-core/js/types/WithRequired.js';
 import Panel, { PanelOptions } from '../../../../sun/js/Panel.js';
 import ToggleNode from '../../../../sun/js/ToggleNode.js';
+import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
 import BlockSet from '../model/BlockSet.js';
@@ -114,3 +115,5 @@ export default class BlocksValuePanel extends Panel {
     super( toggleNode, options );
   }
 }
+
+densityBuoyancyCommon.register( 'BlocksValuePanel', BlocksValuePanel );

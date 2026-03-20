@@ -11,6 +11,7 @@ import Node from '../../../../../scenery/js/nodes/Node.js';
 import DensityBuoyancyCommonConstants from '../../../common/DensityBuoyancyCommonConstants.js';
 import InterpolatedProperty from '../../../common/model/InterpolatedProperty.js';
 import MeasurableMassView from '../../../common/view/MeasurableMassView.js';
+import densityBuoyancyCommon from '../../../densityBuoyancyCommon.js';
 import Boat from '../../model/applications/Boat.js';
 import BoatDesign from '../../model/applications/BoatDesign.js';
 import DisplayProperties from '../DisplayProperties.js';
@@ -230,3 +231,5 @@ export default class BoatView extends MeasurableMassView {
     };
   }
 }
+
+densityBuoyancyCommon.register( 'BoatView', BoatView );

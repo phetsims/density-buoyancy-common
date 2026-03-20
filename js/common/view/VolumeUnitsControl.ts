@@ -17,6 +17,7 @@ import HBox, { HBoxOptions } from '../../../../scenery/js/layout/nodes/HBox.js';
 import RichText from '../../../../scenery/js/nodes/RichText.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
 import AquaRadioButtonGroup, { AquaRadioButtonGroupItem, AquaRadioButtonGroupOptions } from '../../../../sun/js/AquaRadioButtonGroup.js';
+import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
 import { VolumeUnits } from '../DensityBuoyancyCommonQueryParameters.js';
@@ -87,3 +88,5 @@ function createItem( value: VolumeUnits, stringProperty: TReadOnlyProperty<strin
     tandemName: `${value}RadioButton`
   };
 }
+
+densityBuoyancyCommon.register( 'VolumeUnitsControl', VolumeUnitsControl );

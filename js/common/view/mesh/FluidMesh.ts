@@ -10,6 +10,7 @@ import Bounds2 from '../../../../../dot/js/Bounds2.js';
 import Bounds3 from '../../../../../dot/js/Bounds3.js';
 import ThreeUtils from '../../../../../mobius/js/ThreeUtils.js';
 import phetioStateSetEmitter from '../../../../../tandem/js/phetioStateSetEmitter.js';
+import densityBuoyancyCommon from '../../../densityBuoyancyCommon.js';
 import DensityBuoyancyModel from '../../model/DensityBuoyancyModel.js';
 import MaterialProperty from '../../model/MaterialProperty.js';
 import DensityBuoyancyScreenView from '../DensityBuoyancyScreenView.js';
@@ -98,3 +99,5 @@ export default class FluidMesh extends THREE.Mesh {
     return true;
   }
 }
+
+densityBuoyancyCommon.register( 'FluidMesh', FluidMesh );

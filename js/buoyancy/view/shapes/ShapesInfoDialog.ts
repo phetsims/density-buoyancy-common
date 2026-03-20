@@ -12,6 +12,7 @@ import RichText from '../../../../../scenery/js/nodes/RichText.js';
 import Dialog from '../../../../../sun/js/Dialog.js';
 import Tandem from '../../../../../tandem/js/Tandem.js';
 import DensityBuoyancyCommonConstants from '../../../common/DensityBuoyancyCommonConstants.js';
+import densityBuoyancyCommon from '../../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../../DensityBuoyancyCommonStrings.js';
 
 export default class ShapesInfoDialog extends Dialog {
@@ -38,3 +39,5 @@ export default class ShapesInfoDialog extends Dialog {
     } );
   }
 }
+
+densityBuoyancyCommon.register( 'ShapesInfoDialog', ShapesInfoDialog );

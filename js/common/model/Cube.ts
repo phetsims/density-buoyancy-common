@@ -12,6 +12,7 @@ import Vector2 from '../../../../dot/js/Vector2.js';
 import affirm, { isAffirmEnabled } from '../../../../perennial-alias/js/browser-and-node/affirm.js';
 import optionize, { combineOptions } from '../../../../phet-core/js/optionize.js';
 import StrictOmit from '../../../../phet-core/js/types/StrictOmit.js';
+import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import Cuboid, { CuboidOptions } from './Cuboid.js';
 import { MaterialSchema } from './Mass.js';
 import PhysicsEngine from './PhysicsEngine.js';
@@ -95,3 +96,5 @@ export default class Cube extends Cuboid {
     return Cube.createWithVolume( engine, material, position, mass / density, options );
   }
 }
+
+densityBuoyancyCommon.register( 'Cube', Cube );

@@ -30,6 +30,7 @@ import Material from '../../common/model/Material.js';
 import { DisplayType } from '../../common/model/Scale.js';
 import DensityBuoyancyCommonColors from '../../common/view/DensityBuoyancyCommonColors.js';
 import { GeneralScaleReadoutNode } from '../../common/view/ScaleReadoutNode.js';
+import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import getFluidDisplacedAccordionBoxScaleIcon from './getFluidDisplacedAccordionBoxScaleIcon.js';
 
@@ -187,3 +188,5 @@ export default class FluidDisplacedAccordionBox extends AccordionBox {
     };
   }
 }
+
+densityBuoyancyCommon.register( 'FluidDisplacedAccordionBox', FluidDisplacedAccordionBox );

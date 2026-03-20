@@ -21,6 +21,7 @@ import BlocksModeRadioButtonGroup from '../../common/view/BlocksModeRadioButtonG
 import DensityBuoyancyCommonColors from '../../common/view/DensityBuoyancyCommonColors.js';
 import DensityBuoyancyScreenView, { DensityBuoyancyScreenViewOptions } from '../../common/view/DensityBuoyancyScreenView.js';
 import MassView from '../../common/view/MassView.js';
+import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import DensityIntroModel from '../model/DensityIntroModel.js';
 import DensityNumberLineNode from './DensityNumberLineNode.js';
@@ -148,3 +149,5 @@ export default class DensityIntroScreenView extends DensityBuoyancyScreenView<De
     ];
   }
 }
+
+densityBuoyancyCommon.register( 'DensityIntroScreenView', DensityIntroScreenView );

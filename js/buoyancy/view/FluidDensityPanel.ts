@@ -14,6 +14,7 @@ import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonCo
 import DensityBuoyancyModel from '../../common/model/DensityBuoyancyModel.js';
 import Material from '../../common/model/Material.js';
 import FluidDensityControlNode from '../../common/view/FluidDensityControlNode.js';
+import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 
 type FluidDensityPanelOptions = PanelOptions;
 
@@ -39,3 +40,5 @@ export default class FluidDensityPanel extends Panel {
     super( fluidDensityControlNode, options );
   }
 }
+
+densityBuoyancyCommon.register( 'FluidDensityPanel', FluidDensityPanel );

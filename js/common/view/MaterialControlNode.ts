@@ -19,6 +19,7 @@ import Node from '../../../../scenery/js/nodes/Node.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
 import ComboBox from '../../../../sun/js/ComboBox.js';
 import { PhetioObjectOptions } from '../../../../tandem/js/PhetioObject.js';
+import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
 import Material from '../model/Material.js';
 import MaterialProperty from '../model/MaterialProperty.js';
@@ -136,3 +137,5 @@ export default class MaterialControlNode extends VBox {
     ];
   }
 }
+
+densityBuoyancyCommon.register( 'MaterialControlNode', MaterialControlNode );

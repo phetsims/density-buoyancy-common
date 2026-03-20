@@ -13,6 +13,7 @@
 
 import Property, { PropertyOptions } from '../../../../axon/js/Property.js';
 import optionize, { EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
+import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 
 export type MappedWrappedObject = {
   valueProperty: Property<number>;
@@ -80,3 +81,4 @@ export default abstract class MappedWrappedProperty<T extends MappedWrappedObjec
     this.lockCount--;
   }
 }
+densityBuoyancyCommon.register( 'MappedWrappedProperty', MappedWrappedProperty );

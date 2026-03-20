@@ -11,6 +11,7 @@ import DynamicProperty from '../../../../axon/js/DynamicProperty.js';
 import { TReadOnlyProperty } from '../../../../axon/js/TReadOnlyProperty.js';
 import PickRequired from '../../../../phet-core/js/types/PickRequired.js';
 import { PhetioObjectOptions } from '../../../../tandem/js/PhetioObject.js';
+import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import Gravity from './Gravity.js';
 import MappedWrappedProperty, { MappedWrappedPropertyOptions } from './MappedWrappedProperty.js';
 
@@ -33,3 +34,4 @@ export default class GravityProperty extends MappedWrappedProperty<Gravity> {
     this.customGravity = this.customValue;
   }
 }
+densityBuoyancyCommon.register( 'GravityProperty', GravityProperty );

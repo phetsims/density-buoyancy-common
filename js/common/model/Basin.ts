@@ -14,6 +14,7 @@ import optionize from '../../../../phet-core/js/optionize.js';
 import { PhetioObjectOptions } from '../../../../tandem/js/PhetioObject.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
 import NumberIO from '../../../../tandem/js/types/NumberIO.js';
+import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
 import InterpolatedProperty from './InterpolatedProperty.js';
 import Mass from './Mass.js';
@@ -189,3 +190,5 @@ export default abstract class Basin {
     this.fluidYInterpolatedProperty.reset();
   }
 }
+
+densityBuoyancyCommon.register( 'Basin', Basin );

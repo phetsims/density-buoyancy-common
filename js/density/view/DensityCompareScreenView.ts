@@ -16,6 +16,7 @@ import BlocksValuePanel from '../../common/view/BlocksValuePanel.js';
 import CuboidView from '../../common/view/CuboidView.js';
 import DensityBuoyancyScreenView, { DensityBuoyancyScreenViewOptions } from '../../common/view/DensityBuoyancyScreenView.js';
 import MassView from '../../common/view/MassView.js';
+import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityCompareModel from '../model/DensityCompareModel.js';
 
 const MARGIN = DensityBuoyancyCommonConstants.MARGIN_SMALL;
@@ -107,3 +108,5 @@ export default class DensityCompareScreenView extends DensityBuoyancyScreenView<
     this.positionPanel();
   }
 }
+
+densityBuoyancyCommon.register( 'DensityCompareScreenView', DensityCompareScreenView );

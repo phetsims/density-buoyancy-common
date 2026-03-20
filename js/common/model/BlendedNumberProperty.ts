@@ -10,6 +10,7 @@
 
 import Property from '../../../../axon/js/Property.js';
 import Utils from '../../../../dot/js/Utils.js';
+import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 
 export default class BlendedNumberProperty extends Property<number> {
 
@@ -26,3 +27,5 @@ export default class BlendedNumberProperty extends Property<number> {
     this.value = blendAmount * newValue + ( 1 - blendAmount ) * oldValue;
   }
 }
+
+densityBuoyancyCommon.register( 'BlendedNumberProperty', BlendedNumberProperty );

@@ -17,6 +17,7 @@ import Node from '../../../../scenery/js/nodes/Node.js';
 import Path from '../../../../scenery/js/nodes/Path.js';
 import Rectangle from '../../../../scenery/js/nodes/Rectangle.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
+import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyModel from '../model/DensityBuoyancyModel.js';
 import Mass from '../model/Mass.js';
 
@@ -212,3 +213,5 @@ export class DebugMassNode extends Node {
     return path;
   }
 }
+
+densityBuoyancyCommon.register( 'DebugView', DebugView );

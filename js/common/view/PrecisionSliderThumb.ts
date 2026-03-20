@@ -15,6 +15,7 @@ import Path from '../../../../scenery/js/nodes/Path.js';
 import Color from '../../../../scenery/js/util/Color.js';
 import TColor from '../../../../scenery/js/util/TColor.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
+import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
 
 type SelfOptions = {
@@ -82,3 +83,5 @@ export default class PrecisionSliderThumb extends Node {
     this.touchArea = this.localBounds.dilatedXY( options.touchXDilation, options.touchYDilation );
   }
 }
+
+densityBuoyancyCommon.register( 'PrecisionSliderThumb', PrecisionSliderThumb );

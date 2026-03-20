@@ -17,6 +17,7 @@ import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
 import SunConstants from '../../../../sun/js/SunConstants.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
+import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
 
 export type ComparisonNumberControlOptions = NumberControlOptions;
@@ -86,3 +87,5 @@ export default class ComparisonNumberControl extends NumberControl {
     super( titleStringProperty, property, property.range, options );
   }
 }
+
+densityBuoyancyCommon.register( 'ComparisonNumberControl', ComparisonNumberControl );

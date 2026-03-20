@@ -19,6 +19,7 @@ import StrictOmit from '../../../../phet-core/js/types/StrictOmit.js';
 import Color from '../../../../scenery/js/util/Color.js';
 import PhetioObject, { PhetioObjectOptions } from '../../../../tandem/js/PhetioObject.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
+import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import DensityBuoyancyCommonColors from '../view/DensityBuoyancyCommonColors.js';
 import { MappedWrappedObject } from './MappedWrappedProperty.js';
@@ -561,3 +562,5 @@ export class CustomLiquidMaterial extends Material {
     }, providedOptions ) );
   }
 }
+
+densityBuoyancyCommon.register( 'Material', Material );

@@ -11,6 +11,7 @@ import { THREEModelViewTransform } from '../../../../mobius/js/MobiusScreenView.
 import Node from '../../../../scenery/js/nodes/Node.js';
 import phetioStateSetEmitter from '../../../../tandem/js/phetioStateSetEmitter.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
+import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import GravityProperty from '../model/GravityProperty.js';
 import Scale from '../model/Scale.js';
 import CuboidView from './CuboidView.js';
@@ -98,3 +99,5 @@ export default class ScaleView extends MassView {
     return scaleGeometry;
   }
 }
+
+densityBuoyancyCommon.register( 'ScaleView', ScaleView );

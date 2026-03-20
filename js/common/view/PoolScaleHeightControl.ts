@@ -25,6 +25,7 @@ import Node from '../../../../scenery/js/nodes/Node.js';
 import ArrowButton from '../../../../sun/js/buttons/ArrowButton.js';
 import Slider from '../../../../sun/js/Slider.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
+import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import PoolScale from '../model/PoolScale.js';
 import Scale from '../model/Scale.js';
 import PrecisionSliderThumb from './PrecisionSliderThumb.js';
@@ -103,3 +104,5 @@ export default class PoolScaleHeightControl extends NumberControl {
     thumbNode.touchArea = thumbInteractionArea.copy().rect( -10, -10, 20, 50 );
   }
 }
+
+densityBuoyancyCommon.register( 'PoolScaleHeightControl', PoolScaleHeightControl );

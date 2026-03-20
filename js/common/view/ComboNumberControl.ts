@@ -26,6 +26,7 @@ import ComboBox, { ComboBoxItem, ComboBoxOptions } from '../../../../sun/js/Comb
 import SunConstants from '../../../../sun/js/SunConstants.js';
 import { PhetioObjectOptions } from '../../../../tandem/js/PhetioObject.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
+import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
 import Gravity from '../model/Gravity.js';
 import MappedWrappedProperty from '../model/MappedWrappedProperty.js';
@@ -180,3 +181,5 @@ export default abstract class ComboNumberControl<T extends Material | Gravity> e
     Disposable.assertNotDisposable();
   }
 }
+
+densityBuoyancyCommon.register( 'ComboNumberControl', ComboNumberControl );

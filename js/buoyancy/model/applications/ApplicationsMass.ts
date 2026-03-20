@@ -17,6 +17,7 @@ import Vector2 from '../../../../../dot/js/Vector2.js';
 import Vector3 from '../../../../../dot/js/Vector3.js';
 import Mass, { InstrumentedMassOptions } from '../../../common/model/Mass.js';
 import PhysicsEngine from '../../../common/model/PhysicsEngine.js';
+import densityBuoyancyCommon from '../../../densityBuoyancyCommon.js';
 
 export type ApplicationsMassOptions = InstrumentedMassOptions;
 
@@ -116,3 +117,5 @@ export default abstract class ApplicationsMass extends Mass {
     }
   }
 }
+
+densityBuoyancyCommon.register( 'ApplicationsMass', ApplicationsMass );

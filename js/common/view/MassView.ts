@@ -27,6 +27,7 @@ import Node from '../../../../scenery/js/nodes/Node.js';
 import Path, { InputShape, PathOptions } from '../../../../scenery/js/nodes/Path.js';
 import sharedSoundPlayers from '../../../../tambo/js/sharedSoundPlayers.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
+import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
 import Mass from '../model/Mass.js';
 import MassTag from '../model/MassTag.js';
@@ -296,3 +297,5 @@ class InteractiveHighlightingPath extends InteractiveHighlighting( Path ) {
     super( shape, options );
   }
 }
+
+densityBuoyancyCommon.register( 'MassView', MassView );

@@ -23,6 +23,7 @@ import Checkbox, { CheckboxOptions } from '../../../../sun/js/Checkbox.js';
 import Panel, { PanelOptions } from '../../../../sun/js/Panel.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 import DensityBuoyancyCommonColors from '../../common/view/DensityBuoyancyCommonColors.js';
+import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import DisplayProperties from './DisplayProperties.js';
 
@@ -162,3 +163,5 @@ export default class BuoyancyDisplayOptionsPanel extends Panel {
     super( content, options );
   }
 }
+
+densityBuoyancyCommon.register( 'BuoyancyDisplayOptionsPanel', BuoyancyDisplayOptionsPanel );

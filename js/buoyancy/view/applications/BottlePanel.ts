@@ -25,6 +25,7 @@ import Tandem from '../../../../../tandem/js/Tandem.js';
 import DensityBuoyancyCommonConstants, { toLiters } from '../../../common/DensityBuoyancyCommonConstants.js';
 import MaterialMassVolumeControlNode from '../../../common/view/MaterialMassVolumeControlNode.js';
 import PrecisionSliderThumb from '../../../common/view/PrecisionSliderThumb.js';
+import densityBuoyancyCommon from '../../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../../DensityBuoyancyCommonStrings.js';
 import Bottle from '../../model/applications/Bottle.js';
 
@@ -143,3 +144,5 @@ export default class BottlePanel extends Panel {
     this.contentWidth = bottleBox.width;
   }
 }
+
+densityBuoyancyCommon.register( 'BottlePanel', BottlePanel );

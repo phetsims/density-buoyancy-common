@@ -16,6 +16,7 @@ import Node from '../../../../scenery/js/nodes/Node.js';
 import phetioStateSetEmitter from '../../../../tandem/js/phetioStateSetEmitter.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
 import DisplayProperties from '../../buoyancy/view/DisplayProperties.js';
+import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import Mass from '../model/Mass.js';
 import ForceDiagramNode from './ForceDiagramNode.js';
 import MassDecorationLayer from './MassDecorationLayer.js';
@@ -97,3 +98,5 @@ export default class MeasurableMassView extends MassView {
     this.massLabelNode.dispose();
   }
 }
+
+densityBuoyancyCommon.register( 'MeasurableMassView', MeasurableMassView );

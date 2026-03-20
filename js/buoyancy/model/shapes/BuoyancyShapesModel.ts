@@ -23,6 +23,7 @@ import Material, { CustomSolidMaterial } from '../../../common/model/Material.js
 import MaterialProperty from '../../../common/model/MaterialProperty.js';
 import Scale, { DisplayType } from '../../../common/model/Scale.js';
 import TwoBlockMode from '../../../common/model/TwoBlockMode.js';
+import densityBuoyancyCommon from '../../../densityBuoyancyCommon.js';
 import BuoyancyShapeModel from './BuoyancyShapeModel.js';
 import Cone from './Cone.js';
 import Duck from './Duck.js';
@@ -194,3 +195,5 @@ export default class BuoyancyShapesModel extends DensityBuoyancyModel {
     this.setInitialPositions();
   }
 }
+
+densityBuoyancyCommon.register( 'BuoyancyShapesModel', BuoyancyShapesModel );

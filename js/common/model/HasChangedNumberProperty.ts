@@ -9,6 +9,7 @@
 import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
 import NumberProperty, { NumberPropertyOptions } from '../../../../axon/js/NumberProperty.js';
 import Property from '../../../../axon/js/Property.js';
+import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 
 export default class HasChangedNumberProperty extends NumberProperty {
 
@@ -37,3 +38,5 @@ export default class HasChangedNumberProperty extends NumberProperty {
     super.dispose();
   }
 }
+
+densityBuoyancyCommon.register( 'HasChangedNumberProperty', HasChangedNumberProperty );

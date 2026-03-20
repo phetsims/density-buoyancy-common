@@ -10,6 +10,7 @@ import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
 import StringUnionProperty from '../../../../axon/js/StringUnionProperty.js';
 import packageJSON from '../../../../joist/js/packageJSON.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
+import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonQueryParameters, { VolumeUnits, VolumeUnitsValues } from '../DensityBuoyancyCommonQueryParameters.js';
 
 export const supportsPercentageSubmergedVisible = packageJSON.name !== 'density';
@@ -26,4 +27,5 @@ const DensityBuoyancyCommonPreferences = {
   } )
 };
 
+densityBuoyancyCommon.register( 'DensityBuoyancyCommonPreferences', DensityBuoyancyCommonPreferences );
 export default DensityBuoyancyCommonPreferences;

@@ -12,6 +12,7 @@ import TriangleArrayWriter from '../../../../../mobius/js/TriangleArrayWriter.js
 import Node from '../../../../../scenery/js/nodes/Node.js';
 import { TAG_OFFSET } from '../../../common/view/MassTagNode.js';
 import MeasurableMassView from '../../../common/view/MeasurableMassView.js';
+import densityBuoyancyCommon from '../../../densityBuoyancyCommon.js';
 import Cone from '../../model/shapes/Cone.js';
 import DisplayProperties from '../DisplayProperties.js';
 
@@ -157,3 +158,5 @@ export default class ConeView extends MeasurableMassView {
     return coneGeometry;
   }
 }
+
+densityBuoyancyCommon.register( 'ConeView', ConeView );

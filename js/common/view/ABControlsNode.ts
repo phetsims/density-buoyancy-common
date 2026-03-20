@@ -10,6 +10,7 @@ import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import { combineOptions } from '../../../../phet-core/js/optionize.js';
 import Node from '../../../../scenery/js/nodes/Node.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
+import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import Cuboid from '../model/Cuboid.js';
 import ABPanelsNode from './ABPanelsNode.js';
 import BlockControlNode, { BlockControlNodeOptions } from './BlockControlNode.js';
@@ -68,3 +69,5 @@ export default class ABControlsNode extends ABPanelsNode {
     this.controlBNode = controlBNode;
   }
 }
+
+densityBuoyancyCommon.register( 'ABControlsNode', ABControlsNode );

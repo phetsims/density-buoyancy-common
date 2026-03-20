@@ -25,6 +25,7 @@ import TPaint from '../../../../scenery/js/util/TPaint.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
 import DensityBuoyancyCommonConstants from '../../common/DensityBuoyancyCommonConstants.js';
 import Material from '../../common/model/Material.js';
+import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 
 // Type declarations: DisplayDensity is the object which will construct the marker and the legend
@@ -242,3 +243,5 @@ export default class DensityNumberLineNode extends Node {
     this.markerNodes = markerNodes;
   }
 }
+
+densityBuoyancyCommon.register( 'DensityNumberLineNode', DensityNumberLineNode );

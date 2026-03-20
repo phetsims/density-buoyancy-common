@@ -15,6 +15,7 @@ import TriangleArrayWriter from '../../../../mobius/js/TriangleArrayWriter.js';
 import Node from '../../../../scenery/js/nodes/Node.js';
 import Path from '../../../../scenery/js/nodes/Path.js';
 import DisplayProperties from '../../buoyancy/view/DisplayProperties.js';
+import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import Cuboid from '../model/Cuboid.js';
 import Material from '../model/Material.js';
 import MassDecorationLayer from './MassDecorationLayer.js';
@@ -227,3 +228,5 @@ export default class CuboidView extends MeasurableMassView {
     return cuboidGeometry;
   }
 }
+
+densityBuoyancyCommon.register( 'CuboidView', CuboidView );

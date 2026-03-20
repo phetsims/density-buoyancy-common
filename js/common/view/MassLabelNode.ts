@@ -17,6 +17,7 @@ import ManualConstraint from '../../../../scenery/js/layout/constraints/ManualCo
 import Node from '../../../../scenery/js/nodes/Node.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
 import Panel from '../../../../sun/js/Panel.js';
+import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
 import Mass from '../model/Mass.js';
@@ -72,3 +73,5 @@ export default class MassLabelNode extends Node {
     this.addDisposable( readoutPanel, readoutText, readoutStringProperty );
   }
 }
+
+densityBuoyancyCommon.register( 'MassLabelNode', MassLabelNode );

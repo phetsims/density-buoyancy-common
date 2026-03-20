@@ -19,6 +19,7 @@ import StrictOmit from '../../../../phet-core/js/types/StrictOmit.js';
 import PhetioObject from '../../../../tandem/js/PhetioObject.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
 import NumberIO from '../../../../tandem/js/types/NumberIO.js';
+import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import GravityProperty from './GravityProperty.js';
 import InterpolatedProperty from './InterpolatedProperty.js';
@@ -213,3 +214,5 @@ export default class Scale extends Mass {
   public static readonly SCALE_BASE_BOUNDS = SCALE_BASE_BOUNDS;
   public static readonly SCALE_FRONT_OFFSET = SCALE_FRONT_OFFSET;
 }
+
+densityBuoyancyCommon.register( 'Scale', Scale );

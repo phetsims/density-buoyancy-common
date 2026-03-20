@@ -19,6 +19,7 @@ import Path from '../../../../../scenery/js/nodes/Path.js';
 import DensityBuoyancyModel from '../../../common/model/DensityBuoyancyModel.js';
 import Mass from '../../../common/model/Mass.js';
 import DebugView, { DebugMassNode } from '../../../common/view/DebugView.js';
+import densityBuoyancyCommon from '../../../densityBuoyancyCommon.js';
 import Boat from '../../model/applications/Boat.js';
 import BuoyancyApplicationsModel from '../../model/applications/BuoyancyApplicationsModel.js';
 import ApplicationsDebugMassNode from './ApplicationsDebugMassNode.js';
@@ -123,3 +124,5 @@ export default class ApplicationsDebugView extends DebugView {
     return poolShape;
   }
 }
+
+densityBuoyancyCommon.register( 'ApplicationsDebugView', ApplicationsDebugView );

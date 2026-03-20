@@ -17,6 +17,7 @@ import TEmitter from '../../../../axon/js/TEmitter.js';
 import TinyEmitter from '../../../../axon/js/TinyEmitter.js';
 import Matrix3 from '../../../../dot/js/Matrix3.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
+import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonQueryParameters from '../DensityBuoyancyCommonQueryParameters.js';
 
 // Normally our enums are lowercase, but in this case, we match with the p2.js API
@@ -438,3 +439,5 @@ export default class PhysicsEngine {
     }
   }
 }
+
+densityBuoyancyCommon.register( 'PhysicsEngine', PhysicsEngine );

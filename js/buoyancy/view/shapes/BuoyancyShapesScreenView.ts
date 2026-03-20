@@ -28,6 +28,7 @@ import MaterialControlNode from '../../../common/view/MaterialControlNode.js';
 import MultiSectionPanelsNode from '../../../common/view/MultiSectionPanelsNode.js';
 import ScaleView from '../../../common/view/ScaleView.js';
 import VerticalCylinderView from '../../../common/view/VerticalCylinderView.js';
+import densityBuoyancyCommon from '../../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../../DensityBuoyancyCommonStrings.js';
 import BuoyancyShapesModel from '../../model/shapes/BuoyancyShapesModel.js';
 import Cone from '../../model/shapes/Cone.js';
@@ -276,3 +277,5 @@ export default class BuoyancyShapesScreenView extends BuoyancyScreenView<Buoyanc
     this.positionInfoButton();
   }
 }
+
+densityBuoyancyCommon.register( 'BuoyancyShapesScreenView', BuoyancyShapesScreenView );

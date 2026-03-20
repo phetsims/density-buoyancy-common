@@ -15,6 +15,7 @@ import Vector3 from '../../../dot/js/Vector3.js';
 import PhetFont from '../../../scenery-phet/js/PhetFont.js';
 import { DEFAULT_FILL, DEFAULT_FILL_HIGHLIGHTED } from '../../../sun/js/SliderThumb.js';
 import Tandem from '../../../tandem/js/Tandem.js';
+import densityBuoyancyCommon from '../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../DensityBuoyancyCommonStrings.js';
 import { VolumeUnits } from './DensityBuoyancyCommonQueryParameters.js';
 import DensityBuoyancyCommonPreferences from './model/DensityBuoyancyCommonPreferences.js';
@@ -146,5 +147,7 @@ export const toLiters = ( cubicMeters: number ): number => {
 export const toCubicMeters = ( liters: number ): number => {
   return liters / DensityBuoyancyCommonConstants.LITERS_IN_CUBIC_METER;
 };
+
+densityBuoyancyCommon.register( 'DensityBuoyancyCommonConstants', DensityBuoyancyCommonConstants );
 
 export default DensityBuoyancyCommonConstants;

@@ -19,6 +19,7 @@ import DensityBuoyancyModel, { DensityBuoyancyModelOptions } from '../../common/
 import { MaterialSchema } from '../../common/model/Mass.js';
 import Material from '../../common/model/Material.js';
 import Scale, { DisplayType } from '../../common/model/Scale.js';
+import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 
 export type BuoyancyLabModelOptions = DensityBuoyancyModelOptions;
 
@@ -88,3 +89,5 @@ export default class BuoyancyLabModel extends DensityBuoyancyModel {
     this.block.reset();
   }
 }
+
+densityBuoyancyCommon.register( 'BuoyancyLabModel', BuoyancyLabModel );

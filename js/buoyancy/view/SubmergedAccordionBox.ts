@@ -11,6 +11,7 @@ import Utils from '../../../../dot/js/Utils.js';
 import optionize, { EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
 import DensityBuoyancyCommonPreferences from '../../common/model/DensityBuoyancyCommonPreferences.js';
 import Mass from '../../common/model/Mass.js';
+import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import ReadoutListAccordionBox, { ReadoutData, ReadoutListAccordionBoxOptions } from './ReadoutListAccordionBox.js';
 
@@ -51,3 +52,5 @@ export default class SubmergedAccordionBox extends ReadoutListAccordionBox<Mass>
     };
   }
 }
+
+densityBuoyancyCommon.register( 'SubmergedAccordionBox', SubmergedAccordionBox );

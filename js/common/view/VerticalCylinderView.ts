@@ -12,6 +12,7 @@ import TriangleArrayWriter from '../../../../mobius/js/TriangleArrayWriter.js';
 import Node from '../../../../scenery/js/nodes/Node.js';
 import VerticalCylinder from '../../buoyancy/model/shapes/VerticalCylinder.js';
 import DisplayProperties from '../../buoyancy/view/DisplayProperties.js';
+import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import { TAG_OFFSET } from './MassTagNode.js';
 import MeasurableMassView from './MeasurableMassView.js';
 
@@ -162,3 +163,5 @@ export default class VerticalCylinderView extends MeasurableMassView {
     return writer.getOffset();
   }
 }
+
+densityBuoyancyCommon.register( 'VerticalCylinderView', VerticalCylinderView );

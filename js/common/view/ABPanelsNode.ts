@@ -7,6 +7,7 @@
  */
 
 import Node from '../../../../scenery/js/nodes/Node.js';
+import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import MassTag from '../model/MassTag.js';
 import MassTagNode from './MassTagNode.js';
 import MultiSectionPanelsNode from './MultiSectionPanelsNode.js';
@@ -40,3 +41,5 @@ export default class ABPanelsNode extends MultiSectionPanelsNode {
     } );
   }
 }
+
+densityBuoyancyCommon.register( 'ABPanelsNode', ABPanelsNode );

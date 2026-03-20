@@ -7,6 +7,7 @@
  */
 
 import { QueryStringMachine } from '../../../query-string-machine/js/QueryStringMachineModule.js';
+import densityBuoyancyCommon from '../densityBuoyancyCommon.js';
 
 export const VolumeUnitsValues = [ 'liters', 'decimetersCubed' ] as const;
 export type VolumeUnits = ( typeof VolumeUnitsValues )[number];
@@ -186,4 +187,5 @@ const DensityBuoyancyCommonQueryParameters = QueryStringMachine.getAll( {
   }
 } );
 
+densityBuoyancyCommon.register( 'DensityBuoyancyCommonQueryParameters', DensityBuoyancyCommonQueryParameters );
 export default DensityBuoyancyCommonQueryParameters;

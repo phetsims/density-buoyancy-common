@@ -15,6 +15,7 @@ import MassTag from '../../common/model/MassTag.js';
 import Material from '../../common/model/Material.js';
 import Scale, { DisplayType } from '../../common/model/Scale.js';
 import DensityBuoyancyCommonColors from '../../common/view/DensityBuoyancyCommonColors.js';
+import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 
 export type BuoyancyCompareModelOptions = StrictOmit<CompareBlockSetModelOptions, 'positionMassesCallback' | 'cubesData'>;
 
@@ -88,3 +89,6 @@ export default class BuoyancyCompareModel extends CompareBlockSetModel {
     } ) );
   }
 }
+
+
+densityBuoyancyCommon.register( 'BuoyancyCompareModel', BuoyancyCompareModel );

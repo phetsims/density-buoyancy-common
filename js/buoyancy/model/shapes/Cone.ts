@@ -20,6 +20,7 @@ import DensityBuoyancyCommonConstants from '../../../common/DensityBuoyancyCommo
 import Mass, { InstrumentedMassOptions, MASS_MAX_SHAPES_DIMENSION, MASS_MIN_SHAPES_DIMENSION, MassOptions } from '../../../common/model/Mass.js';
 import { MassShape } from '../../../common/model/MassShape.js';
 import PhysicsEngine from '../../../common/model/PhysicsEngine.js';
+import densityBuoyancyCommon from '../../../densityBuoyancyCommon.js';
 
 const BOTTOM_FROM_CENTER_RATIO = 0.25; // center of mass to the bottom is 1/4 of the height of the cone
 const TOP_FROM_CENTER_RATIO = 0.75; // center of mass to the tip is 3/4 of the height of the cone
@@ -221,3 +222,5 @@ export default class Cone extends Mass {
     return Utils.roundToInterval( volume, DensityBuoyancyCommonConstants.TOLERANCE );
   }
 }
+
+densityBuoyancyCommon.register( 'Cone', Cone );

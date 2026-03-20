@@ -14,6 +14,7 @@ import { TReadOnlyProperty } from '../../../../axon/js/TReadOnlyProperty.js';
 import Range from '../../../../dot/js/Range.js';
 import packageJSON from '../../../../joist/js/packageJSON.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
+import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 
 const ZOOM_SCALES: number[] = [];
 
@@ -106,3 +107,5 @@ export default class DisplayProperties {
   }
 
 }
+
+densityBuoyancyCommon.register( 'DisplayProperties', DisplayProperties );

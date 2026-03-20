@@ -7,6 +7,7 @@
  * @author Michael Kauzmann (PhET Interactive Simulations)
  */
 
+import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import Mass from '../model/Mass.js';
 import Material from '../model/Material.js';
 import MaterialView, { DensityMaterials } from './MaterialView.js';
@@ -46,3 +47,5 @@ export default class MassThreeMesh extends THREE.Mesh {
     super.dispose && super.dispose();
   }
 }
+
+densityBuoyancyCommon.register( 'MassThreeMesh', MassThreeMesh );

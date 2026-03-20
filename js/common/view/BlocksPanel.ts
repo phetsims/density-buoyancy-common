@@ -18,6 +18,7 @@ import Text from '../../../../scenery/js/nodes/Text.js';
 import Panel, { PanelOptions } from '../../../../sun/js/Panel.js';
 import VerticalAquaRadioButtonGroup from '../../../../sun/js/VerticalAquaRadioButtonGroup.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
+import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
 import BlockSet from '../model/BlockSet.js';
@@ -63,3 +64,5 @@ export default class BlocksPanel extends Panel {
     }, DensityBuoyancyCommonConstants.PANEL_OPTIONS ) );
   }
 }
+
+densityBuoyancyCommon.register( 'BlocksPanel', BlocksPanel );

@@ -14,6 +14,7 @@ import FlowBox from '../../../../scenery/js/layout/nodes/FlowBox.js';
 import HSeparator from '../../../../scenery/js/layout/nodes/HSeparator.js';
 import Node from '../../../../scenery/js/nodes/Node.js';
 import Panel, { PanelOptions } from '../../../../sun/js/Panel.js';
+import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
 
 export type MultiSectionPanelsNodeOptions = PanelOptions;
@@ -39,3 +40,5 @@ export default class MultiSectionPanelsNode extends Panel {
     this.content = content;
   }
 }
+
+densityBuoyancyCommon.register( 'MultiSectionPanelsNode', MultiSectionPanelsNode );

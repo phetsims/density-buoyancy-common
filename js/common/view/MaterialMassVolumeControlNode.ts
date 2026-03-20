@@ -36,6 +36,7 @@ import ArrowButton from '../../../../sun/js/buttons/ArrowButton.js';
 import Slider from '../../../../sun/js/Slider.js';
 import isSettingPhetioStateProperty from '../../../../tandem/js/isSettingPhetioStateProperty.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
+import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
 import { GuardedNumberProperty } from '../model/GuardedNumberProperty.js';
@@ -538,3 +539,5 @@ const getMassReadoutLayoutFunction = ( normalLayoutFunction: LayoutFunction ) =>
     } );
   };
 };
+
+densityBuoyancyCommon.register( 'MaterialMassVolumeControlNode', MaterialMassVolumeControlNode );

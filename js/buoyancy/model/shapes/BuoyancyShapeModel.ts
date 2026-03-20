@@ -27,6 +27,7 @@ import ReferenceIO from '../../../../../tandem/js/types/ReferenceIO.js';
 import Mass from '../../../common/model/Mass.js';
 import { MassShape } from '../../../common/model/MassShape.js';
 import MassTag from '../../../common/model/MassTag.js';
+import densityBuoyancyCommon from '../../../densityBuoyancyCommon.js';
 import BuoyancyShapesModel from './BuoyancyShapesModel.js';
 
 type SelfOptions = {
@@ -138,3 +139,6 @@ export default class BuoyancyShapeModel {
     }
   }
 }
+
+
+densityBuoyancyCommon.register( 'BuoyancyShapeModel', BuoyancyShapeModel );

@@ -23,6 +23,7 @@ import Material from '../../../common/model/Material.js';
 import MaterialProperty from '../../../common/model/MaterialProperty.js';
 import PhysicsEngine from '../../../common/model/PhysicsEngine.js';
 import Pool from '../../../common/model/Pool.js';
+import densityBuoyancyCommon from '../../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../../DensityBuoyancyCommonStrings.js';
 import ApplicationsMass, { ApplicationsMassOptions } from './ApplicationsMass.js';
 import BoatBasin from './BoatBasin.js';
@@ -260,3 +261,5 @@ export default class Boat extends ApplicationsMass {
     this.verticalVelocity = nextBoatVerticalVelocity;
   }
 }
+
+densityBuoyancyCommon.register( 'Boat', Boat );

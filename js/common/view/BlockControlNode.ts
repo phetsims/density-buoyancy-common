@@ -10,6 +10,7 @@ import UnitConversionProperty from '../../../../axon/js/UnitConversionProperty.j
 import { combineOptions } from '../../../../phet-core/js/optionize.js';
 import NumberControl, { NumberControlOptions } from '../../../../scenery-phet/js/NumberControl.js';
 import Node from '../../../../scenery/js/nodes/Node.js';
+import densityBuoyancyCommon from '../../densityBuoyancyCommon.js';
 import DensityBuoyancyCommonStrings from '../../DensityBuoyancyCommonStrings.js';
 import DensityBuoyancyCommonConstants from '../DensityBuoyancyCommonConstants.js';
 import Cube from '../model/Cube.js';
@@ -68,3 +69,5 @@ export default class BlockControlNode extends MaterialMassVolumeControlNode {
     }
   }
 }
+
+densityBuoyancyCommon.register( 'BlockControlNode', BlockControlNode );

@@ -1,4 +1,4 @@
-// Copyright 2024, University of Colorado Boulder
+// Copyright 2024-2026, University of Colorado Boulder
 
 /**
  * Abstract type for Buoyancy ScreenView classes. This is mostly a marker/placeholder, but it does capture the default

@@ -1,4 +1,4 @@
-// Copyright 2024-2025, University of Colorado Boulder
+// Copyright 2024-2026, University of Colorado Boulder
 
 /**
  * ShapesInfoDialog is a dialog that displays info related to the forces and torque limitations within the sim
